@@ -96,7 +96,7 @@ public class BaseController extends Controller {
 				e.printStackTrace();
 			}
 		}
-		return super.setCookie(name, value, maxAgeInSeconds, path, domain,true);
+		return super.setCookie(name, value, maxAgeInSeconds, path, domain);
 	}
 
 	@Override

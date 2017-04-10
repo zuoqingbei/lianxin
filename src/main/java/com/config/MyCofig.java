@@ -31,7 +31,6 @@ public class MyCofig extends JFinalConfig {
     @Override
     public void configConstant(Constants me) {
     	loadPropertyFile("config.txt");
-	    me.setI18nDefaultBaseName("camel");
 	    me.setDevMode(getPropertyToBoolean("devMode", true));
 		//me.setError404View("${tpl_dir}404.htm");
 		//me.setError500View("${tpl_dir}500.htm");
