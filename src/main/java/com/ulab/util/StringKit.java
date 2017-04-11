@@ -2,7 +2,7 @@
  * Copyright (c) 2014. 骆驼CMS
  */
 
-package com.util;
+package com.ulab.util;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

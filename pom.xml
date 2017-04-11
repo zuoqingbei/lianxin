@@ -27,8 +27,18 @@
 			<version>8.1.8</version>
 			<scope>provide</scope>
 		</dependency>
-		<!-- <dependency> <groupId>com.jfinal</groupId> <artifactId>jfinal-ext</artifactId> 
-			<version>3.1.4</version> </dependency> -->
+		<dependency>
+		    <groupId>com.jfinal</groupId>
+		    <artifactId>jfinal-ext</artifactId>
+		    <version>3.1.4</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.beetl</groupId>
+			<artifactId>beetl-core</artifactId>
+			<version>2.1.4</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -56,7 +66,17 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.28</version>
 		</dependency>
-
+		
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpcore</artifactId>
+		    <version>4.4.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.4</version>
+		</dependency> 
 		<!-- 解决与tomcat7冲突 -->
 		<dependency>
 			<groupId>com.ibm.icu</groupId>

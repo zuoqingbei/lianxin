@@ -1,5 +1,5 @@
 
-package com.core;
+package com.ulab.core;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -26,9 +26,9 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.Table;
 import com.jfinal.plugin.activerecord.TableMapping;
 import com.jfinal.upload.UploadFile;
-import com.model.User;
-import com.util.StringKit;
-import com.util.TypeConverter;
+import com.ulab.model.User;
+import com.ulab.util.StringKit;
+import com.ulab.util.TypeConverter;
 
 public class BaseController extends Controller {
 
