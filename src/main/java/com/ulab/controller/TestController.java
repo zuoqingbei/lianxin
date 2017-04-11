@@ -18,6 +18,7 @@ public class TestController extends BaseController {
 	//dubbo注入 预留口
 	/*@Inject.BY_NAME
 	private BlogService blogService;*/
+	
     public void test() {
     	User user=User.dao.findById("7");
     	System.out.println(user);
