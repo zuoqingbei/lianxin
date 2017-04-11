@@ -5,3 +5,5 @@
 /bin/
 /build/
 /target
+/target/
+/target/m2e-wtp/web-resources/META-INF/maven/hlht/hlht/pom.properties
