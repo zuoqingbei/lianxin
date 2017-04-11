@@ -6,4 +6,5 @@
 /build/
 /target
 /target/
-/*.log
+/hlht.log
+/*.log/
