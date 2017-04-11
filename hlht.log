@@ -1826,3 +1826,84 @@ Caused by: java.lang.ClassNotFoundException: com.jfinal.log.Logger
 
 2017-04-11 15:14:56
 [INFO]-[Thread: JFinal-Scanner]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-11 15:37:30
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.Server.doStart()]: jetty-8.1.8.v20121106
+
+2017-04-11 15:37:30
+[INFO]-[Thread: main]-[org.eclipse.jetty.webapp.StandardDescriptorProcessor.visitServlet()]: NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
+
+2017-04-11 15:37:30
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-11 15:37:30
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-11 15:37:30
+[ERROR]-[Thread: main]-[com.jfinal.ext.kit.ClassSearcher.findjarFiles()]: file search error:D:\workspaces\hlht\hlht\src\main\webapp\WEB-INF\lib is not a dir！
+
+2017-04-11 15:37:30
+[ERROR]-[Thread: main]-[com.jfinal.ext.kit.ClassSearcher.findjarFiles()]: file search error:D:\workspaces\hlht\hlht\src\main\webapp\WEB-INF\lib is not a dir！
+
+2017-04-11 15:37:30
+[ERROR]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-11 15:37:30
+[INFO]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-11 15:37:30
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.AbstractConnector.doStart()]: Started SelectChannelConnector@0.0.0.0:80
+
+2017-04-11 15:40:41
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.Server.doStart()]: jetty-8.1.8.v20121106
+
+2017-04-11 15:40:42
+[INFO]-[Thread: main]-[org.eclipse.jetty.webapp.StandardDescriptorProcessor.visitServlet()]: NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
+
+2017-04-11 15:40:42
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-11 15:40:42
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-11 15:40:42
+[ERROR]-[Thread: main]-[com.jfinal.ext.kit.ClassSearcher.findjarFiles()]: file search error:D:\workspaces\hlht\hlht\src\main\webapp\WEB-INF\lib is not a dir！
+
+2017-04-11 15:40:42
+[ERROR]-[Thread: main]-[com.jfinal.ext.kit.ClassSearcher.findjarFiles()]: file search error:D:\workspaces\hlht\hlht\src\main\webapp\WEB-INF\lib is not a dir！
+
+2017-04-11 15:40:42
+[ERROR]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-11 15:40:42
+[INFO]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-11 15:40:42
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.AbstractConnector.doStart()]: Started SelectChannelConnector@0.0.0.0:80
+
+2017-04-11 15:45:05
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.Server.doStart()]: jetty-8.1.8.v20121106
+
+2017-04-11 15:45:05
+[INFO]-[Thread: main]-[org.eclipse.jetty.webapp.StandardDescriptorProcessor.visitServlet()]: NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
+
+2017-04-11 15:45:05
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-11 15:45:05
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-11 15:45:05
+[ERROR]-[Thread: main]-[com.jfinal.ext.kit.ClassSearcher.findjarFiles()]: file search error:D:\workspaces\hlht\hlht\src\main\webapp\WEB-INF\lib is not a dir！
+
+2017-04-11 15:45:05
+[ERROR]-[Thread: main]-[com.jfinal.ext.kit.ClassSearcher.findjarFiles()]: file search error:D:\workspaces\hlht\hlht\src\main\webapp\WEB-INF\lib is not a dir！
+
+2017-04-11 15:45:05
+[ERROR]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-11 15:45:06
+[INFO]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-11 15:45:06
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.AbstractConnector.doStart()]: Started SelectChannelConnector@0.0.0.0:80
