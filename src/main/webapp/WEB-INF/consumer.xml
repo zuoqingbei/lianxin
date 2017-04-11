@@ -12,6 +12,7 @@
 	设置本机IP，一定要正确
 	<dubbo:protocol host="10.130.96.85" />
 
+
 	使用multicast广播注册中心暴露发现服务地址
 	<dubbo:registry protocol="multicast" address="multicast://224.5.6.7:2181" />
 
