@@ -15,6 +15,7 @@ import com.ulab.model.User;
 @ControllerBind(controllerKey = "/test", viewPath = "/test")
 @Before({GlobalInterceptor.class})
 public class TestController extends BaseController {
+	
 	//dubbo注入 预留口
 	/*@Inject.BY_NAME
 	private BlogService blogService;*/
