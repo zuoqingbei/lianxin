@@ -18,6 +18,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
+import com.jfinal.render.ViewType;
 import com.model.User;
 
 /**
@@ -36,6 +37,7 @@ public class MyCofig extends JFinalConfig {
 		//me.setError500View("${tpl_dir}500.htm");
 		me.setEncoding("UTF-8");  
 		me.setMaxPostSize(536870912);//512M
+		//me.setViewType(ViewType.JSP);
     }
 
     @Override

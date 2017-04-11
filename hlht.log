@@ -1,0 +1,120 @@
+
+2017-04-10 16:43:14
+[ERROR]-[Thread: JFinal-Scanner]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-10 16:43:14
+[INFO]-[Thread: JFinal-Scanner]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-10 16:51:57
+[ERROR]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-10 16:51:57
+[INFO]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-10 17:57:21
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.Server.doStart()]: jetty-8.1.8.v20121106
+
+2017-04-10 17:57:21
+[INFO]-[Thread: main]-[org.eclipse.jetty.webapp.StandardDescriptorProcessor.visitServlet()]: NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
+
+2017-04-10 17:57:21
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 17:57:21
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 17:57:21
+[ERROR]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-10 17:57:22
+[INFO]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-10 17:57:22
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.AbstractConnector.doStart()]: Started SelectChannelConnector@0.0.0.0:80
+
+2017-04-10 18:01:44
+[INFO]-[Thread: JFinal-Scanner]-[com.alibaba.druid.pool.DruidDataSource.close()]: {dataSource-1} closed
+
+2017-04-10 18:01:44
+[INFO]-[Thread: JFinal-Scanner]-[org.eclipse.jetty.server.handler.ContextHandler.doStop()]: stopped o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:01:44
+[INFO]-[Thread: JFinal-Scanner]-[org.eclipse.jetty.webapp.StandardDescriptorProcessor.visitServlet()]: NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
+
+2017-04-10 18:01:44
+[INFO]-[Thread: JFinal-Scanner]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:01:44
+[INFO]-[Thread: JFinal-Scanner]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:01:44
+[ERROR]-[Thread: JFinal-Scanner]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-10 18:01:45
+[INFO]-[Thread: JFinal-Scanner]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-10 18:22:49
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.Server.doStart()]: jetty-8.1.8.v20121106
+
+2017-04-10 18:22:50
+[INFO]-[Thread: main]-[org.eclipse.jetty.webapp.StandardDescriptorProcessor.visitServlet()]: NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
+
+2017-04-10 18:22:50
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:22:50
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:22:50
+[ERROR]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-10 18:22:50
+[INFO]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-10 18:22:50
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.AbstractConnector.doStart()]: Started SelectChannelConnector@0.0.0.0:80
+
+2017-04-10 18:29:10
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.Server.doStart()]: jetty-8.1.8.v20121106
+
+2017-04-10 18:29:10
+[INFO]-[Thread: main]-[org.eclipse.jetty.webapp.StandardDescriptorProcessor.visitServlet()]: NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
+
+2017-04-10 18:29:10
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:29:10
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:29:10
+[ERROR]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-10 18:29:11
+[INFO]-[Thread: main]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
+
+2017-04-10 18:29:11
+[INFO]-[Thread: main]-[org.eclipse.jetty.server.AbstractConnector.doStart()]: Started SelectChannelConnector@0.0.0.0:80
+
+2017-04-10 18:29:31
+[WARN]-[Thread: qtp28224868-19]-[com.jfinal.core.ActionHandler.handle()]: 404 Action Not Found: /druid
+
+2017-04-10 18:31:36
+[INFO]-[Thread: JFinal-Scanner]-[com.alibaba.druid.pool.DruidDataSource.close()]: {dataSource-1} closed
+
+2017-04-10 18:31:36
+[INFO]-[Thread: JFinal-Scanner]-[org.eclipse.jetty.server.handler.ContextHandler.doStop()]: stopped o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:31:37
+[INFO]-[Thread: JFinal-Scanner]-[org.eclipse.jetty.webapp.StandardDescriptorProcessor.visitServlet()]: NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
+
+2017-04-10 18:31:37
+[INFO]-[Thread: JFinal-Scanner]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:31:37
+[INFO]-[Thread: JFinal-Scanner]-[org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized()]: started o.e.j.w.WebAppContext{/,file:/D:/workspaces/hlht/hlht/src/main/webapp/}
+
+2017-04-10 18:31:37
+[ERROR]-[Thread: JFinal-Scanner]-[com.alibaba.druid.pool.DruidDataSource.oracleValidationQueryCheck()]: invalid oracle validationQuery. select 1, may should be : select 1 FROM DUAL
+
+2017-04-10 18:31:37
+[INFO]-[Thread: JFinal-Scanner]-[com.alibaba.druid.pool.DruidDataSource.init()]: {dataSource-1} inited
