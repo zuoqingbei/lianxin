@@ -58,8 +58,8 @@ function mapFlat(data) {
 //{name:'福州',value:95}
 function dataToObject(data){
 	var item = new Object();
-	item.name=data.SHORTNAME;
-	item.value=data.VALUE;
+	item.name=data.shortname;
+	item.value=data.value;
 	return item;
 }
 /**
@@ -78,10 +78,10 @@ function dataToObject(data){
 ]
  */
 function dataToArray(data){
-	//console.log(data.CLIST)
+	//console.log(data.clist)
 	var d = new Array();
-	for(var x=0;x<data.CLIST.length;x++){
-		d.push(dataToObject(data.CLIST[x]));
+	for(var x=0;x<data.clist.length;x++){
+		d.push(dataToObject(data.clist[x]));
 	}
 	return d;
 }
@@ -101,11 +101,11 @@ function dataToArray(data){
  */
 function dataToArrayContinueArray(data){
 	var d = new Array();
-	for(var x=0;x<data.CLIST.length;x++){
-		var obj=data.CLIST[x];
+	for(var x=0;x<data.clist.length;x++){
+		var obj=data.clist[x];
 		var e= new Array();
 		var item0 = new Object();
-		item0.name=obj.PSHORTNAME;
+		item0.name=obj.pshortname;
 		e.push(item0);
 		e.push(dataToObject(obj));
 		d.push(e);
@@ -123,14 +123,14 @@ function dataToArrayContinueArray(data){
 function dataToArrayAll(data){
 	var d = new Array();
 	for(var i=0;i<data.length;i++){
-		for(var x=0;x<data[i].CLIST.length;x++){
-			var obj=data[i].CLIST[x];
+		for(var x=0;x<data[i].clist.length;x++){
+			var obj=data[i].clist[x];
 			var e= new Array();
 			var item0 = new Object();
-			item0.name=obj.PSHORTNAME;
+			item0.name=obj.pshortname;
 			e.push(item0);
 			var item1 = new Object();
-			item1.name=obj.SHORTNAME;
+			item1.name=obj.shortname;
 			e.push(item1);
 			d.push(e);
 		}
@@ -148,11 +148,11 @@ function dataToArrayAll(data){
 function geoCoord(data){
 	var r='{';
 	for(var i=0;i<data.length;i++){
-		r+="\""+data[i].SHORTNAME+"\":["+data[i].LNG+","+data[i].LAT+"],";
-		for(var x=0;x<data[i].CLIST.length;x++){
-			var obj=data[i].CLIST[x];
-			var key=obj.SHORTNAME;
-			r+="\""+key+"\":["+obj.LNG+","+obj.LAT+"],";
+		r+="\""+data[i].shortname+"\":["+data[i].lng+","+data[i].lat+"],";
+		for(var x=0;x<data[i].clist.length;x++){
+			var obj=data[i].clist[x];
+			var key=obj.shortname;
+			r+="\""+key+"\":["+obj.lng+","+obj.lat+"],";
 		}
 		//r+="\"上海\":[121.4648,31.2891],";
 	}
@@ -163,7 +163,7 @@ function geoCoord(data){
 function legendData(data){
 	var legendData = [];
 	for(var i=0;i<data.length;i++) {
-		var name = (data[i].SHORTNAME==null?data[i].SHORTNAME:data[i].SHORTNAME);// 名称
+		var name = (data[i].shortname==null?data[i].shortname:data[i].shortname);// 名称
 		legendData.push(name);
 	}
 	return legendData;
@@ -205,7 +205,7 @@ function seriesData(data){
 	    for(var i=0;i<data.length;i++){
 	    	//var seriesData =dataToArray(data[i])
 	    	item={
-					name: data[i].SHORTNAME,
+					name: data[i].shortname,
 					type: 'map',
 					mapType: 'china',
 					data:[],

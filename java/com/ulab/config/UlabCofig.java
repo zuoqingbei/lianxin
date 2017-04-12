@@ -71,7 +71,7 @@ public class UlabCofig extends JFinalConfig {
 		me.add(dp);
 		arp = new AutoTableBindPlugin(dp);// 设置数据库方言
 		arp.setDialect(new OracleDialect());
-		arp.setContainerFactory(new CaseInsensitiveContainerFactory(false));// 忽略大小写
+		arp.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
 		arp.setShowSql(true);
 		me.add(arp);
 	}
