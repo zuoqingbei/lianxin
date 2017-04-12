@@ -1,0 +1,128 @@
+
+{
+    "airportsFields": [
+        "name",
+        "city",
+        "country",
+        "longitude",
+        "latitude"
+    ],
+
+    "airlineFields": [
+        "name",
+        "country"
+    ],
+
+    "airports~":[
+        "机场 青岛0，咸阳1，北京2，济南3，广州4，上海5，南京6",
+        "[名称，城市，国家，经度，纬度]"
+    ],
+    "airports":[
+        [
+            "Liuting",
+            "Qingdao",
+            "China",
+            120.374436,
+            36.266108
+        ],
+        [
+            "Xianyang",
+            "Xi'an",
+            "China",
+            108.751592,
+            34.447119
+        ],
+        [
+            "Beijing Nanyuan Airport",
+            "Beijing",
+            "China",
+            116.387778,
+            39.7825
+        ],
+        [
+            "Jinan",
+            "Jinan",
+            "China",
+            117.215992,
+            36.857214
+        ],
+        [
+            "Guangzhou South Railway Station",
+            "Guangzhou",
+            "China",
+            113.270631,
+            22.990081
+        ],
+        [
+            "Longhua Airport",
+            "Shanghai",
+            "China",
+            121.453611,
+            31.166944
+        ],
+        [
+            "Nanjing Railway Station",
+            "Nanjing",
+            "China",
+            118.792189,
+            32.088583
+        ]
+    ],
+    "airlines~":[
+        "航空公司",
+        "[名称，国家]",
+        "机场 青岛0，咸阳1，北京2，济南3，广州4，上海5，南京6"
+    ],
+    "airlines": [
+        [
+            "华北",
+            "山东"
+        ],
+        [
+            "南方",
+            "广东"
+        ],
+        [
+            "华东",
+            "上海"
+        ]
+
+    ],
+
+    "routes~":[
+        "航线",
+        "[航空公司序号（从0开始），起点，终点]",
+        "删掉某个航空公司的所有航线，图例就不能选中",
+        "机场 青岛0，咸阳1，北京2，济南3，广州4，上海5，南京6"
+    ],
+    "routes": [
+        [
+            0,
+            0,
+            1
+        ],
+        [
+            0,
+            0,
+            2
+        ],
+        [
+            0,
+            0,
+            3
+        ],
+        [
+            0,
+            0,
+            4
+        ],
+        [
+            0,
+            0,
+            5
+        ]
+
+    ]
+
+}
+

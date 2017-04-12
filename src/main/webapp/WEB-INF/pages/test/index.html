@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>ECharts</title>
+    <link rel="shortcut icon" href="${contextPath!}/static/img/favicon.png">
+    <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/example.css">
+    <style>
+        body{
+            margin: 0;
+
+        }
+        #main{
+            width:60%;
+            margin:0 auto;
+        }
+        #switch.btn {
+            position: relative;
+            left:3em;
+            top: -5px;
+            padding:7px 10px;
+            z-index: 1000;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+        iframe{
+            width:100%;
+            height:640px;
+        }
+    </style>
+
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<main id="main">
+    <div id="chart" ></div>
+    <!--<iframe style="display: none" id="iframe" scrolling="no" frameborder="0" src="${contextPath!}/static/tflatMap.htmlhtml"></iframe>-->
+</main>
+<!-- ECharts单文件引入 -->
+<script type="text/javascript" src="${contextPath!}/static/js/jquery.min.js"></script>
+<script src="${contextPath!}/static/asserts/echarts/echarts.js"></script>
+<script src="${contextPath!}/static/asserts/js/require.js"></script>
+<!-- 引入 ECharts-X 主文件 -->
+<script src="${contextPath!}/static/asserts/echarts/echarts-x.js"></script>
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            'echarts': '${contextPath!}/static/dep/echarts/build',
+            'echarts-x': '${contextPath!}/static/dep/echarts-x/build'
+        }
+    });
+    // 然后就可以动态加载图表进行绘制啦
+    require([
+        'echarts',
+        'echarts-x',
+        // ECharts-X 中 map3d 的地图绘制基于 ECharts 中的 map。
+        'echarts/chart/map',
+        'echarts-x/chart/map3d'
+    ])
+
+</script>
+
+<header id="header">
+    <h1><a href="">ECharts-X</a></h1>
+    <div id="toolbar">
+        <button id="echarts2" class="btn">echarts2平面地图</button>
+        <button id="bigger" class="btn">放大</button>
+        <button id="smaller" class="btn">缩小</button>
+    </div>
+    <button id="switch" class="btn">点击切换显示方式</button>
+</header>
+
+<script id="code-source">
+
+    //myChart.showLoading();
+
+    $.ajax({
+        url: '${contextPath!}/static/data/hailianTest01.json',
+        success: function (data) {
+            var markPointStyle = {
+                normal: {
+                    color: 'red'
+                }
+            };
+            // Airport: [name（机场名？）, city, country, longitude（经度）, latitude（纬度）]
+            //map和forEach都可以对数组进行遍历，区别是map可以返回一个修改后的数组，但不影响原数组
+            var airports = data.airports.map(function (item) {
+                //返回带有标记样式和经纬度的对象
+                return {
+                    itemStyle: markPointStyle,
+                    geoCoord: [item[3], item[4]]
+                }
+            });
+
+            // Route: [airlineIndex(航空公司编号), sourceAirportIndex（起点）, destinationAirportIndex（终点）]
+            var routesGroupByAirline = {};
+
+            data.routes.forEach(function (route) {//遍历所有航线
+
+                //airlines是所有图例（航空公司），其每个下标就是航空公司编号（route[0]）
+                var airline = data.airlines[route[0]];
+                var airlineName = airline[0];
+
+                //对象的属性名是变量时需要用中括号来获取值
+                if (!routesGroupByAirline[airlineName]) {
+                    routesGroupByAirline[airlineName] = [];
+                }
+                routesGroupByAirline[airlineName].push(route);
+            });
+
+            var opts = {
+                title: {
+                    text: '海联地图数据测试中心',
+                    subtext: 'U-lab项目demo',
+                    sublink: 'http://openflights.org/data.html',
+                    x: 'center',
+                    y: 'top',
+                    textStyle: {
+                        color: 'white'
+                    }
+                },
+                legend: {
+                    show: true,
+                    //   遍历航空公司名称显示图例
+                    data: data.airlines.map(function (item,index,array) {
+//                        if(index <5){
+//                        console.log("xiabiao:"+index+" "+item[0]);
+                        return item[0];
+//                        }else {
+//                            return false;
+//                        }
+
+                    }),
+                    selected: {},
+                    x: 'left',
+                    orient: 'vertical',
+                    textStyle: {
+                        color: 'white'
+                    }
+                },
+                tooltip: {
+                    formatter: '{b}'
+                },
+                series: [{
+                    type: 'map3d',
+                    mapType: 'world',
+                    flat: false, /*是否使用平面图*/
+                    flatAngle: 0,
+                    baseLayer: {
+                        backgroundColor: '',
+                        backgroundImage: '${contextPath!}/static/img/earth.jpg'
+                    },
+                    itemStyle: {
+                        normal: {
+                            borderWidth: 1,
+                            borderColor: 'yellow',
+                            areaStyle: {
+                                color: 'rgba(0, 0, 0, 0)'
+                            }
+                        }
+                    },
+                    markPoint: {
+                        symbol:"heart",
+                        effect: {
+                            shadowBlur: 0.2
+                        },
+                        large: true,
+                        symbolSize : 15,
+                        data: airports
+                    },
+                    roam:{
+                        autoRotateAfterStill: 30,
+                        focus: 'China'
+                    }
+                }]
+            };
+
+            //默认选中华北
+            opts.legend.data.forEach(function (name) {
+                if (name.indexOf('华北') >= 0) {
+                    opts.legend.selected[name] = true;
+                } else {
+                    opts.legend.selected[name] = false;
+                }
+            });
+            /*
+             "青岛":[120.33,36.07],
+             "北京":[116.46,39.92],
+             */
+            data.airlines.forEach(function (item) {
+                var airlineName = item[0];
+                var routes = routesGroupByAirline[airlineName];
+                if (routes) {
+                    opts.series.push({
+                        type: 'map3d',
+                        name: airlineName,
+                        markLine: {
+                            effect: {
+                                show: true
+                            },
+                            distance:2,
+                            data: routes.map(function (item) {
+                                //geoCoord：通过绝对经纬度指定地区的名称文本位置
+                                //route中的起点终点数值是机场的下标！
+                                return [{
+                                    // 获取起点的经纬度
+                                    geoCoord: airports[item[1]].geoCoord
+                                }, {
+                                    // 获取终点的经纬度
+                                    geoCoord: airports[item[2]].geoCoord
+                                }]
+                            })
+                        }
+                    });
+                }
+            });
+
+            myChart.setOption(opts);
+
+            myChart.hideLoading();
+
+        }
+
+    });
+
+</script>
+
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/js/flat.js"></script>
+<script src="${contextPath!}/static/js/boot.js"></script>
+<script src="${contextPath!}/static/js/main.js"></script>
+<script>
+    $(function () {
+        var $main = $("#main");
+        var $chart = $("#chart");
+        var $iframe = $("#iframe");
+        var sphere = '<div id="chart" ></div>';
+        var iframe = '<iframe id="iframe" scrolling="no" frameborder="0" src="${contextPath!}/test/flatMap"></iframe>';
+        $("#echarts2").click(function () {
+            var $chart = $("#chart");
+            if($chart.length > 0){
+                $chart.remove();
+                $main.append(iframe)
+            }else{
+                $("#iframe").remove();
+                $main.append(sphere);
+                require(['start'],function (start) {
+                    setTimeout(function () {
+                        console.log($('#code-source').text())
+                        start.runCode($('#code-source').text())
+                    });
+
+                });
+            }
+        })
+
+    })
+</script>
+<script>
+    if (document.location.href.indexOf('local') == -1) {
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fb78830c9a5dad062d08b90b2bc0cf5da' type='text/javascript'%3E%3C/script%3E"));
+    }
+</script>
+
+</body>

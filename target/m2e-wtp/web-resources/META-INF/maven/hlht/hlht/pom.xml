@@ -13,44 +13,51 @@
 			<artifactId>jfinal</artifactId>
 			<version>1.9</version>
 		</dependency>
-
-
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
-		</dependency>
-
-		<dependency>
+	
+	<!-- 如果用main方法启动项目 需要放开jetty-server -->
+	<!-- 	<dependency>
 			<groupId>com.jfinal</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>8.1.8</version>
 			<scope>provide</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 		    <groupId>com.jfinal</groupId>
 		    <artifactId>jfinal-ext</artifactId>
 		    <version>3.1.4</version>
 		</dependency>
-		
+
+		<!-- 解决与tomcat7冲突 -->
+		<dependency>
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>icu4j</artifactId>
+			<version>3.4.4</version>
+		</dependency>
+		<!-- 引用模板 -->
 		<dependency>
 			<groupId>org.beetl</groupId>
 			<artifactId>beetl-core</artifactId>
 			<version>2.1.4</version>
 		</dependency>
 		
+
+		<!-- 工具类 -->
+		
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-		<!-- 工具类 -->
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
@@ -77,23 +84,19 @@
 		    <artifactId>httpclient</artifactId>
 		    <version>4.4</version>
 		</dependency> 
-		<!-- 解决与tomcat7冲突 -->
-		<dependency>
-			<groupId>com.ibm.icu</groupId>
-			<artifactId>icu4j</artifactId>
-			<version>3.4.4</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>2.3.19</version>
 		</dependency>
-		<dependency>
+		<!-- 如果用tomcat启动项目 ojdbc14必须放到lib文件夹下 否则启动不了-->
+	<!-- 	<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc14</artifactId>
 			<version>10.2.0.4.0</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency> -->
 		
 		
 		<dependency>
@@ -101,6 +104,8 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.12</version>
 		</dependency>
+		
+		<!-- 引入dubbo -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>
