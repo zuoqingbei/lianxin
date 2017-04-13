@@ -330,7 +330,7 @@
         flatData();
     })
 	function flatData(){
-    	$.post("${contextPath!}/test/flatAjax",{},function(data){
+    	$.post("${contextPath!}/test/labAjax",{},function(data){
     		console.log(data)
     		var myChart = echarts.init(document.getElementById('mapFlat'));
     		 myChart.setOption(mapFlat(data));

@@ -74,158 +74,166 @@
 </header>
 
 <script id="code-source">
+	$.post("${contextPath!}/test/labAjax",{},function(data){
+		console.log(data)
+		loadMap(data);
+	})
+   
+   function loadMap(mData){
+		 //myChart.showLoading();
 
-    //myChart.showLoading();
+		  var markPointStyle = {
+	                normal: {
+	                    color: 'red'
+	                }
+	            };
+	            // Airport: [name（机场名？）, city, country, longitude（经度）, latitude（纬度）]
+	            //map和forEach都可以对数组进行遍历，区别是map可以返回一个修改后的数组，但不影响原数组
+	          /*   var airports = data.airports.map(function (item) {
+	                //返回带有标记样式和经纬度的对象
+	                return {
+	                    itemStyle: markPointStyle,
+	                    geoCoord: [item[3], item[4]]
+	                }
+	            }); 
+	            console.log(airports) */
+	            var airports=getAirports(mData,markPointStyle);
+	            // Route: [airlineIndex(航空公司编号), sourceAirportIndex（起点）, destinationAirportIndex（终点）]
+	            var opts = {
+	                title: {
+	                    text: '海联地图数据测试中心',
+	                    subtext: 'U-lab项目demo',
+	                    sublink: 'http://openflights.org/data.html',
+	                    x: 'center',
+	                    y: 'top',
+	                    textStyle: {
+	                        color: 'white'
+	                    }
+	                },
+	                legend: {
+	                    show: true,
+	                    //   遍历航空公司名称显示图例
+	                    data: legendData(mData),
+	                    selected: {},
+	                    x: 'left',
+	                    orient: 'vertical',
+	                    textStyle: {
+	                        color: 'white'
+	                    }
+	                },
+	                tooltip: {
+	                    formatter: '{b}'
+	                },
+	                series: [{
+	                    type: 'map3d',
+	                    mapType: 'world',
+	                    flat: false, /*是否使用平面图*/
+	                    flatAngle: 0,
+	                    baseLayer: {
+	                        backgroundColor: '',
+	                        backgroundImage: '${contextPath!}/static/img/earth.jpg'
+	                    },
+	                    itemStyle: {
+	                        normal: {
+	                            borderWidth: 1,
+	                            borderColor: 'yellow',
+	                            areaStyle: {
+	                                color: 'rgba(0, 0, 0, 0)'
+	                            }
+	                        }
+	                    },
+	                    markPoint: {
+	                        symbol:"heart",
+	                        effect: {
+	                            shadowBlur: 0.2
+	                        },
+	                        large: true,
+	                        symbolSize : 15,
+	                        data: airports
+	                    },
+	                    roam:{
+	                        autoRotateAfterStill: 30,
+	                        focus: 'China'
+	                    }
+	                }]
+	            };
 
-    $.ajax({
-        url: '${contextPath!}/static/data/hailianTest01.json',
-        success: function (data) {
-            var markPointStyle = {
-                normal: {
-                    color: 'red'
-                }
-            };
-            // Airport: [name（机场名？）, city, country, longitude（经度）, latitude（纬度）]
-            //map和forEach都可以对数组进行遍历，区别是map可以返回一个修改后的数组，但不影响原数组
-            var airports = data.airports.map(function (item) {
-                //返回带有标记样式和经纬度的对象
-                return {
-                    itemStyle: markPointStyle,
-                    geoCoord: [item[3], item[4]]
-                }
-            });
+	            //默认选中华北
+	            opts.legend.data.forEach(function (name) {
+	                if (name.indexOf('中心') >= 0) {
+	                    opts.legend.selected[name] = true;
+	                } else {
+	                    opts.legend.selected[name] = false;
+	                }
+	            });
+	             for(var x=0;x<mData.length;x++){
+	            	 opts.series.push({
+	                        type: 'map3d',
+	                        name: mData[x].shortname,
+	                        markLine: {
+	                            effect: {
+	                                show: true
+	                            },
+	                            distance:1,
+	                            data: lineGeoCoord(mData[x])
+	                        }
+	                    });
+	            }
+	          
+	            myChart.setOption(opts);
 
-            // Route: [airlineIndex(航空公司编号), sourceAirportIndex（起点）, destinationAirportIndex（终点）]
-            var routesGroupByAirline = {};
-
-            data.routes.forEach(function (route) {//遍历所有航线
-
-                //airlines是所有图例（航空公司），其每个下标就是航空公司编号（route[0]）
-                var airline = data.airlines[route[0]];
-                var airlineName = airline[0];
-
-                //对象的属性名是变量时需要用中括号来获取值
-                if (!routesGroupByAirline[airlineName]) {
-                    routesGroupByAirline[airlineName] = [];
-                }
-                routesGroupByAirline[airlineName].push(route);
-            });
-
-            var opts = {
-                title: {
-                    text: '海联地图数据测试中心',
-                    subtext: 'U-lab项目demo',
-                    sublink: 'http://openflights.org/data.html',
-                    x: 'center',
-                    y: 'top',
-                    textStyle: {
-                        color: 'white'
-                    }
-                },
-                legend: {
-                    show: true,
-                    //   遍历航空公司名称显示图例
-                    data: data.airlines.map(function (item,index,array) {
-//                        if(index <5){
-//                        console.log("xiabiao:"+index+" "+item[0]);
-                        return item[0];
-//                        }else {
-//                            return false;
-//                        }
-
-                    }),
-                    selected: {},
-                    x: 'left',
-                    orient: 'vertical',
-                    textStyle: {
-                        color: 'white'
-                    }
-                },
-                tooltip: {
-                    formatter: '{b}'
-                },
-                series: [{
-                    type: 'map3d',
-                    mapType: 'world',
-                    flat: false, /*是否使用平面图*/
-                    flatAngle: 0,
-                    baseLayer: {
-                        backgroundColor: '',
-                        backgroundImage: '${contextPath!}/static/img/earth.jpg'
-                    },
-                    itemStyle: {
-                        normal: {
-                            borderWidth: 1,
-                            borderColor: 'yellow',
-                            areaStyle: {
-                                color: 'rgba(0, 0, 0, 0)'
-                            }
-                        }
-                    },
-                    markPoint: {
-                        symbol:"heart",
-                        effect: {
-                            shadowBlur: 0.2
-                        },
-                        large: true,
-                        symbolSize : 15,
-                        data: airports
-                    },
-                    roam:{
-                        autoRotateAfterStill: 30,
-                        focus: 'China'
-                    }
-                }]
-            };
-
-            //默认选中华北
-            opts.legend.data.forEach(function (name) {
-                if (name.indexOf('华北') >= 0) {
-                    opts.legend.selected[name] = true;
-                } else {
-                    opts.legend.selected[name] = false;
-                }
-            });
-            /*
-             "青岛":[120.33,36.07],
-             "北京":[116.46,39.92],
-             */
-            data.airlines.forEach(function (item) {
-                var airlineName = item[0];
-                var routes = routesGroupByAirline[airlineName];
-                if (routes) {
-                    opts.series.push({
-                        type: 'map3d',
-                        name: airlineName,
-                        markLine: {
-                            effect: {
-                                show: true
-                            },
-                            distance:2,
-                            data: routes.map(function (item) {
-                                //geoCoord：通过绝对经纬度指定地区的名称文本位置
-                                //route中的起点终点数值是机场的下标！
-                                return [{
-                                    // 获取起点的经纬度
-                                    geoCoord: airports[item[1]].geoCoord
-                                }, {
-                                    // 获取终点的经纬度
-                                    geoCoord: airports[item[2]].geoCoord
-                                }]
-                            })
-                        }
-                    });
-                }
-            });
-
-            myChart.setOption(opts);
-
-            myChart.hideLoading();
-
-        }
-
-    });
-
+	            myChart.hideLoading();
+	}
+	//加载全部位置属性
+	function getAirports(data,markPointStyle){
+		var d = new Array();
+		for(var i=0;i<data.length;i++){
+			var pitem0 = new Object();
+			pitem0.geoCoord=[data[i].lng,data[i].lat];
+			pitem0.itemStyle=markPointStyle;
+			d.push(pitem0);
+			for(var x=0;x<data[i].clist.length;x++){
+				var obj=data[i].clist[x];
+				var item0 = new Object();
+				item0.geoCoord=[obj.lng,obj.lat];
+				item0.itemStyle=markPointStyle;
+				d.push(item0);
+			}
+		}
+		return d;
+	}
+	
+	 //legend标题
+	function legendData(data){
+		var legendData = [];
+		for(var i=0;i<data.length;i++) {
+			var name = (data[i].shortname==null?data[i].shortname:data[i].shortname);// 名称
+			legendData.push(name);
+		}
+		return legendData;
+	}
+	//拼接地图迁徙起点-终点坐标
+	/**
+	 * [
+	    [{geoCoord:'起点坐标'},{geoCoord:'终点坐标'}],
+	    [{geoCoord:'起点坐标'},{geoCoord:'终点坐标'}]
+	]
+	 */
+	function lineGeoCoord(data){
+		var d = new Array();
+		for(var x=0;x<data.clist.length;x++){
+			var obj=data.clist[x];
+			var e= new Array();
+			var item0 = new Object();
+			item0.geoCoord=[obj.plng,obj.plat];
+			e.push(item0);
+			var item1 = new Object();
+			item1.geoCoord=[obj.lng,obj.lat];
+			e.push(item1);
+			d.push(e);
+		}
+		return d;
+	}
 </script>
 
 <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>

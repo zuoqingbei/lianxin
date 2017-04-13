@@ -175,7 +175,7 @@ function seriesData(data){
 	            type: 'map',
 	            roam: true,
 	            hoverable: false,
-	            mapType: 'china',
+	            mapType: 'world',
 	            itemStyle:{
 	                normal:{
 	                    borderColor:'rgba(100,149,237,1)',
@@ -207,7 +207,7 @@ function seriesData(data){
 	    	item={
 					name: data[i].shortname,
 					type: 'map',
-					mapType: 'china',
+					mapType: 'world',
 					data:[],
 					markLine : {
 						smooth:true,

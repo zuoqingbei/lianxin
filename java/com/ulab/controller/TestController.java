@@ -9,6 +9,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
+import com.ulab.model.LabModel;
 import com.ulab.model.User;
 /**
  * 
@@ -54,17 +55,29 @@ public class TestController extends BaseController {
      * @param  
      * @return_type   void
      */
-    public void flatAjax(){
-    	List<Record> parentList=Db.find("SELECT \"from_area\",a.\"shortname\",a.\"lng\" ,a.\"lat\" from \"t_b_flat\" f LEFT JOIN \"t_b_area\" a on a.\"id\"=f.\"from_area\" GROUP BY \"from_area\",a.\"shortname\",a.\"lng\" ,a.\"lat\" ");
+  /*  public void flatAjax(){
+    	List<Record> parentList=Db.find("SELECT \"from_area\",a.\"short_name\" as shortname,a.\"lng\" ,a.\"lat\" from \"t_b_flat\" f LEFT JOIN \"t_b_dictionary\" a on a.\"id\"=f.\"from_area\" GROUP BY \"from_area\",a.\"short_name\",a.\"lng\" ,a.\"lat\" ");
     	for(Record r:parentList){
-    		String sql="SELECT f.*,a.\"shortname\" as pshortname,a.\"lng\" as plng,a.\"lat\" as plat";
-    		sql+=" ,b.\"shortname\" as shortname,b.\"lng\" ,b.\"lat\" from  ";
-    		sql+=" \"t_b_flat\" f LEFT JOIN \"t_b_area\" a on f.\"from_area\"=a.\"id\" LEFT JOIN \"t_b_area\" b on f.\"to\"=b.\"id\" ";
+    		String sql="SELECT f.*,a.\"short_name\" as pshortname,a.\"lng\" as plng,a.\"lat\" as plat";
+    		sql+=" ,b.\"short_name\" as shortname,b.\"lng\" ,b.\"lat\" from  ";
+    		sql+=" \"t_b_flat\" f LEFT JOIN \"t_b_dictionary\" a on f.\"from_area\"=a.\"id\" LEFT JOIN \"t_b_dictionary\" b on f.\"to\"=b.\"id\" ";
     		sql+=" WHERE f.\"from_area\"='"+r.get("from_area")+"' ";
-    		sql+="  order by b.\"sort\" desc ";
+    		sql+="  order by b.\"order_no\" desc ";
     		List<Record> cList=Db.find(sql);
     		r.set("cList", cList);
     	}
+    	renderJson(parentList);
+    }*/
+    /**
+     * 
+     * @time   2017年4月13日 上午9:38:56
+     * @author zuoqb
+     * @todo   全球实验室数据
+     * @param  
+     * @return_type   void
+     */
+    public void labAjax(){
+    	List<Record> parentList=LabModel.dao.labShowWorldMap();
     	renderJson(parentList);
     }
 }
