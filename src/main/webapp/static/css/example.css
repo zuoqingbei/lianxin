@@ -1,6 +1,8 @@
+/* 3/7 = 0.4285714285714286 */
+/* 3/7 = 0.1428571428571429 */
+
 html, body {
     height: 100%;
-
     font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -52,41 +54,4 @@ body {
 
 #chart {
     height: 100%;
-}
-
-#editor {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    
-    z-index: 200;
-    display: none;
-}
-
-#code-editor textarea {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 50px;
-}
-
-#editor .CodeMirror {
-    height: 100%;
-    font-size: 14px;
-    background-color: rgba(0, 0, 0, 0.5);
-    line-height: 22px;
-}
-
-#editor-toolbar {
-    position: absolute;
-    right: 30px;
-    bottom: 20px;
-    z-index: 100;
-}
-
-#editor-toolbar button {
-    margin: 5px;
 }

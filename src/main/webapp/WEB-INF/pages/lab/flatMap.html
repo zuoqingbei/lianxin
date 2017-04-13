@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <style>
+        html,body {
+            margin: 0;
+            width: 100%;
+            height: 98%;
+        }
+
+        #mapFlat {
+            /*width: 100%;*/
+            height: 100%;
+        }
+        #switchLegend{
+            position: absolute;
+            left: 10px;
+            bottom:10px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="mapFlat"></div>
+<button id="switchLegend">图例开关</button>
+<script src="${contextPath!}/static/js/common.js"></script>
+<script src="${contextPath!}/static/asserts/echarts/echarts-all.js"></script>
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/asserts/js/require.js"></script>
+<script src="${contextPath!}/static/js/flat.js"></script>
+<script>
+	var contextPath='${contextPath!}';
+    $(function () {
+       	$.post("${contextPath!}/lab/labAjax",{},function(data){
+	    		var myChart = echarts.init(document.getElementById('mapFlat'));
+	    		 myChart.setOption(mapFlat(data));
+		        //图例展开开关
+		        $("#switchLegend").click(function () {
+		            if(myChart.getOption().legend.show){
+		                myChart.setOption({
+		                    legend: {
+		                        show: false
+		                    }
+		                })
+		            }else{
+		                myChart.setOption({
+		                    legend: {
+		                        show: true
+		                    }
+		                })
+		            }
+		
+		        })
+	    })
+
+
+
+        /*//循环执行，每隔3秒换个地点显示刷新
+        window.setInterval(function () {
+            myChart.setOption({
+                legend: {
+                    show:false,
+                    selected: {
+                        'shanghai Top10': false,
+                        'beijing Top10': true,
+                        'guangzhou Top10': false
+                    },
+                }
+                /!*
+                 series: [{
+                 data: [542, 532, 746, 786, 986, 522, 635, 899, 666, 555, 543, 234]
+                 }]
+                 *!/
+            });
+        }, 3000);*/
+    });
+
+</script>
+</body>
+</html>

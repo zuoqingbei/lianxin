@@ -1,130 +1,106 @@
-body {
-  margin: 0px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+/* global CssReset*/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote {
+  margin: 0;
+  padding: 0;
 }
-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  text-align: left;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-  background-color: #3f4657;
-  margin-bottom: 0;
-  z-index: 100;
+*{
+  padding: 0;
+  margin: 0;
 }
-header h1 {
-  margin: 5px 0 0 30px;
-  display: inline-block;
+body,html{
+  width: 100%;
+  height: 100%;
+  font-family: "Microsoft yahei", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-header h1 a {
-  font-size: 22px;
-  color: #82becd;
-  padding-left: 50px;
-  background-image: url(../img/echarts-logo.png);
-  background-repeat: no-repeat;
-  line-height: 35px;
-  display: inline-block;
+fieldset, img {
+  border: 0;
+}
+iframe {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-y: hidden;
+}
+ul, ol, dl, li, dt, dd {
+  list-style: none;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+  line-height: 1;
+  font-weight: normal;/*这里是新增的*/
+}
+a {
   text-decoration: none;
-  text-shadow: #393f4e 1px 1px, #393f4e 2px 2px, #393f4e 3px 3px, #393f4e 4px 4px, #393f4e 5px 5px, #393f4e 6px 6px, #393f4f 7px 7px, #3a4050 8px 8px, #3b4151 9px 9px, #3b4252 10px 10px, #3c4253 11px 11px, #3d4354 12px 12px, #3d4455 13px 13px;
 }
-header .links {
-  float: right;
-  margin: 0px 30px 0px 0px;
+a:hover {
+  text-decoration: none;
 }
-header .links li {
+
+
+/*定义公共样式*/
+
+@font-face {/*fontinSansCR常规*/
+  font-family: DIGITAL-Regular;
+  src: url('../asserts/fonts/DIGITAL-Regular.ttf') format("truetype");
+  font-weight: normal;
+}
+.clear:after{/*清除浮动*/
+  content: "";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  height: 0;
+}
+.clear{
+  zoom: 1;/*为解决IE6，IE7的兼容性问题*/
+}
+.hidden{
+  display: none;
+}
+.fl{
   float: left;
-  list-style: none;
 }
-header .links li:hover,
-header .links li.active {
-  border-bottom: 3px solid #22A7C8;
-  margin-bottom: -3px;
+.fr{
+  float: right;
 }
-header .links li a {
-  color: white;
-  text-decoration: none;
-  padding: 0px 10px;
-  height: 50px;
-  line-height: 50px;
-  display: inline-block;
+
+
+/*整个页面布局*/
+#content{
+  display: flex;
+  width:3186px;
+  height:100%;
+  background-color: rgba(174, 174, 174, 0.39);
+  background: url("../img/bg_star.png");
 }
-header .links li a:hover {
-  text-decoration: none;
+@media (min-width: 13000px) {
+  #content{
+    width:100%;
+  }
 }
-nav.sidebar {
-  width: 300px;
-}
-nav.sidebar ul.top {
-  margin: 0px 0px 0px 20px;
-}
-nav.sidebar ul.top > li {
-  margin-top: 20px;
-}
-nav.sidebar ul.top > li > a {
-  font-size: 16px;
-}
-nav.sidebar ul {
-  margin: 0px;
-  padding: 0px;
-}
-nav.sidebar ul li {
-  list-style: none;
-  line-height: 20px;
-  font-size: 14px;
-  margin-top: 10px;
-}
-nav.sidebar ul li a {
-  font-size: 14px;
-  padding-left: 10px;
-}
-nav.sidebar ul li.current > a {
-  margin-left: -2px;
-  border-left: 2px solid #3f4657;
-  color: #3f4657;
-}
-nav.sidebar ul li:hover > a {
-  border-left: 1px solid #3f4657;
-  margin-left: -1px;
-  color: #3f4657;
-}
-nav.sidebar ul li:hover.current > a {
-  border-left-width: 2px;
-  margin-left: -2px;
-}
-nav.sidebar a {
+
+#content>div{
   position: relative;
-  text-decoration: none;
-  color: #333;
+  outline: 1px dashed #ccc;
+  outline-offset: -1px;
 }
-.affix {
+#left{
+  flex: 3;
+  background-color: rgba(205, 92, 92, 0.29);
+}
+#right{
+  flex: 4;
+  background-color: rgba(135, 206, 235, 0.28);
+}
+
+#mask{
   position: fixed;
-  top: 40px;
+  width:100%;
+  height:100%;
+  z-index: 999999;
+  background: blue;
 }
-.affix-top {
-  position: absolute;
-  top: 80px;
-}
-.affix-bottom {
-  position: absolute;
-}
-#footer {
-  height: 50px;
-  padding-top: 100px;
-  font-size: 14px;
-}
-#footer a {
-  text-decoration: none;
-  color: #1a4a7d;
-}
-#footer a:hover {
-  text-decoration: underline;
-}
-#footer .links {
-  margin: 20px 0px 30px 0px;
-}
-#footer .links li {
-  display: inline;
-  padding: 0px 3px;
-}
+
+
+
