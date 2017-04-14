@@ -1,20 +1,23 @@
-## layout("/WEB-INF/pages/layout/ulab.html",{title:"测试"}){
+## layout("ulab.html",{title:"测试"}){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>测试</title>
 </head>
 <body>
-	123--${user.id!}
-	##if(user.id=="6"){
-	${user.material_code!}
-	##}else{
-	${user.special_number_code!}
-	##}
 	
-	 ##layout("/WEB-INF/pages/layout/left.html", {param:"statisticsmeeting"}){
+	 ##layout("left.html", {param:"statisticsmeeting"}){
 	 ##}
 </body>
 </html>
-
+<script>
+var contextPath='${contextPath!}';
+alert(123)
+//产线维度实验室数量统计
+function proLineStatis(){
+	$.post(contextPath+'/lab/proLineStatisAjax',{},function(data){
+		console.log(data)
+	})
+}
+</script>
 ##}

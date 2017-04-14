@@ -10,4 +10,7 @@ package com.ulab.core;
 public class Constants {
 	//用户
 	public static final String SESSION_USER="session_user";
+	public static final String	ATTR_TEMPLTE_DIR					= "tpl_dir";
+	public static final String	LAYOUT_TEMPLTE_DIR					= "/layout/";//layout模板路径
+	public static final String	TAG_TEMPLTE_DIR					= "/tag/";//tag模板路径
 }

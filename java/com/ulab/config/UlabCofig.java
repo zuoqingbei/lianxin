@@ -7,6 +7,7 @@ package com.ulab.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal.BeetlRenderFactory;
 
 import com.jfinal.config.Constants;
@@ -26,6 +27,8 @@ import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.ulab.core.BaseController;
+import com.ulab.util.HTMLTagSupportWrapper;
+import com.ulab.util.TemplteLayoutTag;
 
 /**
  * 
@@ -46,6 +49,10 @@ public class UlabCofig extends JFinalConfig {
 		//设置根页面路径
 		me.setBaseViewPath("/WEB-INF/pages");
 	    me.setMainRenderFactory(new BeetlRenderFactory());
+	    
+	    GroupTemplate gt = BeetlRenderFactory.groupTemplate;
+	    gt.registerTag("htmltag", HTMLTagSupportWrapper.class);
+	    gt.registerTag("layout", TemplteLayoutTag.class);
     }
 
     @Override

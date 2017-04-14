@@ -13,6 +13,7 @@ public class LabModel extends Model<LabModel> {
 	public static final LabModel dao = new LabModel();
 	public static final int SHOW_IN_MAP=0;//显示在地图
 	public static final int DEL_FALG=0;//未删除标志
+	public static final String WHERE_SQL="   ";
 	/**
 	 * 
 	 * @time   2017年4月13日 上午9:46:53
@@ -42,5 +43,49 @@ public class LabModel extends Model<LabModel> {
     		r.set("cList", cList);
     	}
     	return parentList;
+	}
+	/**
+	 * 
+	 * @time   2017年4月14日 下午3:14:37
+	 * @author zuoqb
+	 * @todo   查询实验室总数
+	 */
+	public Integer findAllCount(){
+		Record data=Db.findFirst("select  nvl(count(1),0) as count from t_b_lab_info lab where  lab.del_flag= "+DEL_FALG);
+		return Integer.valueOf(data.getBigDecimal("count").toString());
+	}
+	
+	/**
+	 * 
+	 * @time   2017年4月14日 下午3:14:37
+	 * @author zuoqb
+	 * @todo   查询实验室所分布大洲数量及国家数量
+	 */
+	public Record labSpread(){
+		StringBuffer sb=new StringBuffer();
+		sb.append(" select * from  ");
+		sb.append("  (select nvl(count(distinct lab.location),0)   as areanum from t_b_lab_info lab where lab.del_flag="+DEL_FALG+WHERE_SQL+" )a ");
+		sb.append("  left join  ");
+		sb.append("  (select nvl(count(distinct  lab.country),0) as countrynum from t_b_lab_info lab where lab.del_flag="+DEL_FALG+WHERE_SQL+")t ");
+		sb.append("  on 1=1 ");
+		return Db.findFirst(sb.toString());
+	}
+	
+	
+	/**
+	 * 
+	 * @time   2017年4月14日 下午8:06:44
+	 * @author zuoqb
+	 * @todo   按照某维度统计数量
+	 * @param  @param filed:统计维度
+	 * @param  @return
+	 * @return_type   List<Record>
+	 */
+	public List<Record> labStatisByField(String field){
+		StringBuffer sb=new StringBuffer();
+		sb.append(" select d.name as name, nvl(count(1),0) as count from   ");
+		sb.append("  t_b_lab_info lab left join t_b_dictionary d on lab."+field+"=d.id ");
+		sb.append("  where lab.del_flag="+DEL_FALG+" group by d.name,d .order_no order by d.order_no ");
+		return Db.find(sb.toString());
 	}
 }

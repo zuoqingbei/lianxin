@@ -50,7 +50,8 @@ var mapSphere = function mapSphere(myChart) {
                         },
                         baseLayer: {
                             backgroundColor: '',
-                            backgroundImage: contextPath+'/static/img/earth.jpg'
+                            backgroundImage: contextPath+'/static/img/earth.jpg',
+                            quality: 'high'
                         },
                         itemStyle: {
                             normal: {
@@ -67,23 +68,20 @@ var mapSphere = function mapSphere(myChart) {
                                 shadowBlur: 0.2
                             },
                             large: true,
-                            symbolSize: 15,
+                            symbolSize: 10,
                             data: airports
                         },
                         roam: {
+                        	autoRotate: false,//是否自动旋转
                             autoRotateAfterStill: 30,
                             focus: 'China'
                         }
                     }]
                 };
 
-                //默认选中华北
+                //默认选中
 	            opts.legend.data.forEach(function (name) {
-	                if (name.indexOf('中心') >= 0) {
-	                    opts.legend.selected[name] = true;
-	                } else {
-	                    opts.legend.selected[name] = false;
-	                }
+	            	opts.legend.selected[name] = true;
 	            });
                 /*
                  "青岛":[120.33,36.07],
@@ -94,14 +92,27 @@ var mapSphere = function mapSphere(myChart) {
 	                        type: 'map3d',
 	                        name: mData[x].shortname,
 	                        markLine: {
+	                            smooth: true,
 	                            effect: {
 	                                show: true
 	                            },
-	                            distance:1,
+	                            distance:3,
+	                            itemStyle: {
+		                            normal: {
+		                                // 线的颜色默认是取 legend 的颜色
+		                                // color: "red",
+		                                // 线宽，这里线宽是屏幕的像素大小
+		                                borderWidth: 20,
+                                        width: '30',
+                                        opacity: '1'
+		                            }
+		                        },
 	                            data: lineGeoCoord(mData[x])
 	                        }
+	                       
 	                    });
 	            }
+	            console.log(opts.series)
                 myChart.setOption(opts);
 
                 myChart.hideLoading();

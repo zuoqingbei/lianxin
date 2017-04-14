@@ -32,4 +32,5 @@ public class LabMapModel extends Model<LabModel> {
     	}
     	return parentList;
 	}
+	
 }

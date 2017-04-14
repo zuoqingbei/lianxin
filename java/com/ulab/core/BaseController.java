@@ -26,7 +26,6 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.Table;
 import com.jfinal.plugin.activerecord.TableMapping;
 import com.jfinal.upload.UploadFile;
-import com.ulab.model.User;
 import com.ulab.util.StringKit;
 import com.ulab.util.TypeConverter;
 
@@ -47,9 +46,6 @@ public class BaseController extends Controller {
 		return parasUrl;
 	}
 
-	public User getLoginUser() {
-		return this.getSessionAttr(Constants.SESSION_USER);
-	}
 
 	public String getRequestUrl() {
 		return getRequest().getRequestURL()
