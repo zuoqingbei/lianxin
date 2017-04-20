@@ -88,4 +88,20 @@ public class LabModel extends Model<LabModel> {
 		sb.append("  where lab.del_flag="+DEL_FALG+" group by d.name,d .order_no order by d.order_no ");
 		return Db.find(sb.toString());
 	}
+	/**
+	 * 
+	 * @time   2017年4月19日 下午3:17:48
+	 * @author zuoqb
+	 * @todo   实验室联通统计
+	 * @param  @return
+	 * @return_type   Record
+	 */
+	public Record labLink(){
+		StringBuffer sb=new StringBuffer();
+		sb.append(" select all_num,link_num,un_link_num,to_char(round(link_num/all_num*100))||'%' as link_rate ");
+		sb.append("  from (select count(*) as all_num from t_b_lab_info lab where lab.del_flag=0 ) a ");
+		sb.append("  left join (select count(*) as link_num from t_b_lab_info lab where lab.del_flag=0 and lab.link_status=1 )b on 1=1  ");
+		sb.append("  left join (select count(*) as un_link_num from t_b_lab_info lab where lab.del_flag=0 and lab.link_status=0 )b on 1=1 ");
+		return Db.findFirst(sb.toString());
+	}
 }

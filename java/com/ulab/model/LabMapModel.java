@@ -3,6 +3,7 @@ package com.ulab.model;
 
 import java.util.List;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
@@ -32,5 +33,29 @@ public class LabMapModel extends Model<LabModel> {
     	}
     	return parentList;
 	}
-	
+	/**
+	 * 
+	 * @time   2017年4月18日 下午5:16:53
+	 * @author zuoqb
+	 * @todo   展示在平面图上的数据
+	 * @param  @param productCode
+	 * @param  @param labType
+	 * @param  @return
+	 * @return_type   List<Record>
+	 */
+	public List<Record> labShowFlatMap(String productCode,String labType){
+		String sWhere=" del_flag="+DEL_FALG+"  and show_in_map="+SHOW_IN_MAP;
+		if(StringUtils.isNotEmpty(productCode)){
+			sWhere+="  and product_code='"+productCode+"' ";
+		}
+		if(StringUtils.isNotEmpty(labType)){
+			sWhere+=" and lab_type_code='"+labType+"' ";
+		}
+    	String sql="";
+    	sql+=" select b.num,lab.lat,lab.lng,lab.name,lab.jiance37_name as title,sysdate as datetime from t_b_lab_info lab left join ( ";
+    	sql+=" select lng,lat,count(1) as num from t_b_lab_info where "+sWhere;
+    	sql+=" group by lng,lat ";
+    	sql+=" )b on lab.lng=b.lng and lab.lat=b.lat where "+sWhere;
+		return Db.find(sql);
+	}
 }

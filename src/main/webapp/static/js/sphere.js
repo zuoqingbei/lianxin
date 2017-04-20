@@ -1,29 +1,22 @@
-/**
- * 
- */
-var mapSphere = function mapSphere(myChart) {
-    myChart.showLoading();
-        $.ajax({
-            url: contextPath+'/lab/labAjax',
-            success: function (mData) {
-                var markPointStyle = {
-                    normal: {
-                        color: 'red'
-                    }
-                };
-                // Airport: [name（机场名？）, city, country, longitude（经度）, latitude（纬度）]
-                //map和forEach都可以对数组进行遍历，区别是map可以返回一个修改后的数组，但不影响原数组
-              /*  var airports = data.airports.map(function (item) {
-                    //返回带有标记样式和经纬度的对象
-                    return {
-                        itemStyle: markPointStyle,
-                        geoCoord: [item[3], item[4]]
-                    }
-                });*/
-                var airports=getAirports(mData,markPointStyle);
-                // Route: [airlineIndex(航空公司编号), sourceAirportIndex（起点）, destinationAirportIndex（终点）]
-               
-                var opts = {
+// var mapSphere = function mapSphere(myChart) {
+function mapSphere() {
+    var  opts;
+    $.ajax({
+    	url: contextPath+'/lab/labAjax',
+        async:false,
+        success: function (mData) {
+            var markPointStyle = {
+                normal: {
+                    color: 'red'
+                }
+            };
+            // Airport: [name（机场名？）, city, country, longitude（经度）, latitude（纬度）]
+            //map和forEach都可以对数组进行遍历，区别是map可以返回一个修改后的数组，但不影响原数组
+            var airports=getAirports(mData,markPointStyle);
+            // Route: [airlineIndex(航空公司编号), sourceAirportIndex（起点）, destinationAirportIndex（终点）]
+
+
+            opts = {
                     legend: {
                         show: true,
                         //   遍历航空公司名称显示图例
@@ -112,15 +105,13 @@ var mapSphere = function mapSphere(myChart) {
 	                       
 	                    });
 	            }
-	            console.log(opts.series)
-                myChart.setOption(opts);
 
-                myChart.hideLoading();
+               // myChart.hideLoading();
+          
 
-            }
+        }
 
-        });
-        
+    });
+    return opts;
 
 };
-

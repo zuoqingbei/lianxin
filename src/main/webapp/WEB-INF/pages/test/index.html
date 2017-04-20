@@ -39,6 +39,14 @@ p{color:red;font-size: 16px}
 		<ul id="kz_lab_code_statis">
 		</ul>
 	</div>
+	
+	<!-- 实验室联通数据统计-->
+	<p>实验室联通数据统计</p>
+	<div>
+		<div>实验室总数：<span id="link_lab_all_count"></span></div> 
+		<div>已联通总数：<span id="linked_status_num"></span></div> 
+		<div>联通率：<span id="link_status_rate"></span></div> 
+	</div>
 </body>
 </html>
 
@@ -55,6 +63,7 @@ $(document).ready(function () {
 	labTypeStatis();
 	labPropertiesStatis();
 	labLifeCycleStatis();
+	labLinkStatis();
 });
 </script>
 ##}

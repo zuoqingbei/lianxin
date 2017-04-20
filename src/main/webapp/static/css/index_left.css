@@ -1,13 +1,91 @@
-#left header{
+/*布局*/
+#l{
+    padding: 0 0 1em;
+    display: flex;
+    flex-direction: column;
+}
+#l header{
+    flex:1;
+}
+#l .btnGroup{
+    flex:1;
+}
+#l .switchGroup{
+    flex:20;
+}
+/*地图切换区域*/
+#l .switch.flat{
+    display: none;
+}
+#l .switch.flat>div{
+    outline: 1px solid #ee8004;
+}
+#l .flat .mapArea{
+    flex:4;
+}
+#l .flat .flat-right{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+}
+
+/*平面地图布局*/
+#l .flat .flat-right>div{
+    flex:1;
+    padding:5%;
+    outline: 1px solid rgba(238, 196, 2, 0.38);
+    outline-offset: -1px;
+}
+
+
+
+/*球形地图布局*/
+#l .switch.sphere{
+    display: flex;
+}
+#l .switch.sphere>div{
+    outline: 1px solid #ee8004;
+}
+
+#l .sphere .sphere-left,
+#l .sphere .sphere-right{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+}
+#l .sphere .mapArea{
+    flex:3;
+}
+#l .sphere .mapArea iframe{
+    height: 100%;
+}
+
+#l .sphere .sphere-left>div,
+#l .sphere .sphere-right>div{
+    padding:3%;
+    outline: 1px solid rgba(238, 196, 2, 0.38);
+    outline-offset: -1px;
+}
+#l .sphere [class$=top],
+#l .sphere [class$=bottom]{
+    flex:1;
+}
+
+#l header{
     text-align: center;
 }
-#left h1{
-    margin:1em auto;
+#l h1{
+    margin: 1em auto 0;
     font-size: 1.6em;
     color: #66CCFE;
 }
-
-#left .numberInfo .item{
+#l .switchGroup{
+    height: 68%;
+}
+#l .numberInfo{
+    overflow: hidden;
+}
+#l .numberInfo .item{
     text-align: center;
     width:25%;
     color: #fff;
@@ -15,57 +93,69 @@
     float: left;
 }
 
-#left .numberInfo .item:nth-of-type(1){
+#l .numberInfo .item:nth-of-type(1){
     margin-left: 25%;
 }
 
-#left .numberInfo .item h3{
+#l .numberInfo .item h3{
     text-align: center;
     font-size: .7em;
 }
-#left .numberInfo .item .nb{
+#l .numberInfo .item .nb{
     font-family: DIGITAL-Regular;
     font-size: 2em;
     font-style: italic;
     color: orange;
 }
-#left .switchGroup{
-    height: 68%;
-}
-#left .switch{
+#l .switch{
     height:100%;
-    border:1px solid pink;
 }
-#left .mapArea{
+#l .mapArea{
     width:60%;
     height: 100%;
-    margin:0 auto;
-    outline: 1px solid yellow;
 }
-
-#left .flat .mapArea{
+#l .sphere .mapArea,
+#l .flat .mapArea{
     height:100%;
 }
-#left .sphere .mapArea{
-    /*height:100%;*/
-}
 
-#left .flat iframe{
+
+/*平面地图样式*/
+#l .flat iframe{
     width:100%;
     height:90%;
 }
-
-#left .btnGroup{
-    text-align: center;
-    margin-top: .5em;
+/*每块图表*/
+#l .flat .flat-right>div>div{
+    position: relative;
+    height:100%;
+    border-style: solid;
+    border-image: url("../img/chartBorder.png") 120 52 30 / 13% 6% 6%;
 }
-#left .btnGroup img{
+#l .flat .flat-right>div>div h3{
+    position: absolute;
+    left: 23%;
+    top: 1.5%;
+    /*font-size: 100%;*/
+    font-weight: normal;
+    color: #fff;
+}
+#l .flat .flat-right>div>div #myChart{
+    width: 100%;
+    height: 100%;
+}
+
+#l .btnGroup{
+    text-align: right;
+    margin-right: 2em;
+}
+#l .btnGroup img{
     cursor:pointer;
     margin-right: 1em;
     width:3em;
 }
 
-#left #switchlegend{
+#l #switchlegend{
     position: absolute;
     left: 10px;
     bottom:10px;

@@ -1,7 +1,7 @@
 //{name:'福州',value:95}
 function dataToObject(data){
 	var item = new Object();
-	item.name=data.shortname;
+	item.name=data.name;
 	item.value=data.value;
 	return item;
 }
@@ -28,6 +28,38 @@ function dataToArray(data){
 	}
 	return d;
 }
+function jsonToArray(data){
+	//console.log(data.clist)
+	var d = new Array();
+	var p=  {
+	        lng:120.355171,
+	        lat: 36.082981,
+	        litude:[120.355171,36.082981],
+	        dateTime: '',
+	        title: '青岛',
+	        id: '1',
+	        url: 'http://www.baidu.com/s?wd=1',
+	        name: '青岛',
+	        value: 0
+	    }
+	d.push(p);
+	for(var x=0;x<data.length;x++){
+		var obj=data[x];
+		var e=  {
+	        lng:obj.lng,
+	        lat: obj.lat,
+	        litude:[obj.lng,obj.lat],
+	        dateTime: obj.datetime,
+	        title: obj.title,
+	        id: '1',
+	        url: 'http://www.baidu.com/s?wd=1',
+	        name: obj.name,
+	        value: obj.num
+	    }
+		d.push(e);
+	}
+	return d;
+}
 /**
  * [
     [{name:'广州'},{name:'福州',value:95}],
@@ -44,11 +76,11 @@ function dataToArray(data){
  */
 function dataToArrayContinueArray(data){
 	var d = new Array();
-	for(var x=0;x<data.clist.length;x++){
-		var obj=data.clist[x];
+	for(var x=0;x<data.length;x++){
+		var obj=data[x];
 		var e= new Array();
 		var item0 = new Object();
-		item0.name=obj.pshortname;
+		item0.name="青岛";
 		e.push(item0);
 		e.push(dataToObject(obj));
 		d.push(e);
@@ -103,14 +135,218 @@ function geoCoord(data){
 	r+='}'
 	return $.parseJSON(r);
 }
+function joinArr(){
+	var arr=new Array();
+	arr=arr.concat(legendData1);
+	arr.push("");
+	arr=arr.concat(legendData2);
+	return arr;
+}
+function createArrData(myChart,isFirst){
+	//myChart.clear();
+	if(true){
+		legendData1=[];//产线
+		legendData2=[];//实验室类型
+		legendDataCode1=[];//产线
+		legendDataCode2=[];//实验室类型
+		selectedData='{';
+		$.post(contextPath+"/lab/dicAjax",{},function(data){
+			$.each(data.productLine,function(index,item){
+				legendData1[index]=item.short_name;
+				legendDataCode1[index]=item.id;
+				if(item.id==productCode){
+					selectedData+="\""+item.short_name+"\":true,";
+				}else{
+					selectedData+="\""+item.short_name+"\":false,";
+				}
+			});
+			$.each(data.labType,function(index,item){
+				legendData2[index]=item.short_name;
+				legendDataCode2[index]=item.id;
+				if(item.id==labType){
+					selectedData+="\""+item.short_name+"\":true,";
+				}else{
+					selectedData+="\""+item.short_name+"\":false,";
+				}
+			});
+			selectedData=selectedData.substr(0,selectedData.length-1);
+			selectedData+='}';
+			selectedData=$.parseJSON(selectedData);
+			flatEchartData(myChart);
+		})
+	}
+}
+function flatEchartData(myChart){
+	$.post(contextPath+"/lab/labShowFlatMapAjax",{"productCode":productCode,"labType":labType},function(dataBase1){
+		mDataBase=jsonToArray(dataBase1);
+		var option = {
+	    // backgroundColor: "rgba(255,0,0,0)",
+	    color: ['gold', 'aqua', 'lime'],
+	    title: {
+	        show:false,
+	        text: '模拟迁徙',
+	        subtext: '数据纯属虚构',
+	        x: 'center',
+	        textStyle: {
+	            color: '#fff'
+	        }
+	    },
+	    calculable: false,
+	    tooltip: {
+	        show: true,
+	        showContent: true,
+	        enterable: true,
+	        trigger: 'item',
+	//				        showDelay:100,
+	        hideDelay: 300,
+	        position: function (p) {
+	//                return [p[0] - 130, p[1] - 90];
+	            return [p[0] + 100, p[1] + 100];
+	        },
+	        padding: [0, 0, 0, 0],
+	//            width: 207,
+	//            height: 110,
+	//            backgroundColor: 'rgba(13,43,67,0.7)',
+	//            borderColor: 'rgba(31,120,214,1)',
+	        // params : 数组内容同模板变量，
+	        formatter: function (param) {
+	            //在这里是第一步
+	            console.log("param:" , param)
+	            $elList = [];
+	            //提示框的内容清空
+	            $echartTips.empty();
+	            //初始化轮播，就是将轮播定时器停止
+	            stopNewsShown();
+	            //调用轮播方法，参数主要是弹出点坐标
+	            var $el = addNewsElem(param.data);
+	            return '';
+	        },
+	    },
+	    legend: {
+	        // orient: 'vertical',
+	        x: '50%',
+	        y: "bottom",
+	        data: joinArr(),
+	        selectedMode: 'multiple',
+	        selected:selectedData,
+	        textStyle: {
+	            color: '#fff'
+	        }
+	    },
+	
+	    series: seriesData(mDataBase)
+	}
+		myChart.clear();
+		startNewsShown();
+		myChart.setOption(option);
+		//setEvent(myChart);
+})
+}
+function setEvent(myChart){
+	//图例展开开关
+    $(".switchLegend").click(function () {
+        if (myChart.getOption().legend.show) {
+            myChart.setOption({
+                legend: {
+                    show: false
+                }
+            })
+        } else {
+            myChart.setOption({
+                legend: {
+                    show: true
+                }
+            })
+        }
+    });
+
+    //全选开关
+    $(".selectAll").find("input[type=checkbox]").click(function () {
+        var opt = myChart.getOption();
+        var citys = opt.legend.selected;
+        console.log(citys)
+        if ($(this).is(':checked')) {
+            for (var city in citys) {
+                if (citys.hasOwnProperty(city)) {
+                    citys[city] = true;
+                }
+            }
+            productCode="";
+            labType="";
+        } else {
+            for (var city2 in citys) {
+                if (citys.hasOwnProperty(city2)) {
+                    citys[city2] = false;
+                }
+            }
+            productCode="-1";
+            labType="-1";
+        }
+        opt.legend.selected = citys;
+        myChart.clear();//这一步很重要！
+       // myChart.setOption(opt);
+        createArrData(myChart,false);
+    });
+    //上下每行只选择一个
+    var opts = myChart.getOption();
+    var ecConfig = echarts.config;
+    myChart.on(ecConfig.EVENT.LEGEND_SELECTED, function (params) {
+        if (legendData2.indexOf(params.target) === -1) {//第一行
+            for (var city in legendData1) {
+                if (legendData1.hasOwnProperty(city)&&legendData1[city]===params.target) {
+                	productCode=legendDataCode1[isHasElementOne(legendData1,params.target)];
+                    opts.legend.selected[legendData1[city]] = true;
+                    if(labType=="-1"){
+                    	labType="";
+                    }
+                }else{
+                    opts.legend.selected[legendData1[city]] = false;
+                }
+            }
+        } else {//第二行
+            for (var city2 in legendData2) {
+                if (legendData2.hasOwnProperty(city2)&&legendData2[city2]===params.target) {
+                	labType=legendDataCode2[isHasElementOne(legendData2,params.target)];
+                	if(productCode=="-1"){
+                		productCode="";
+                	}
+                    opts.legend.selected[legendData2[city2]] = true;
+                }else{
+                    opts.legend.selected[legendData2[city2]] = false;
+                }
+            }
+        }
+    	console.log( opts.legend.selected)
+        myChart.clear();
+        //myChart.setOption(opts);
+        createArrData(myChart,false);
+    });
+    $(window).resize(function () {
+        myChart.resize();
+    });
+}
+function isHasElementOne(arr, value) {
+	for (var i = 0, vlen = arr.length; i < vlen; i++) {
+		if (arr[i] == value) {
+			return i;
+		}
+	}
+	return -1;
+} 
 function seriesData(data){
 	 var seriesData = [];
 	    var item={
-	            name: '',
+	    		tooltip:{
+	    	          show:false
+	    	        },
+	            name: 'zy_hotpoint',
 	            type: 'map',
-	            roam: true,
+	            roam: false,
 	            hoverable: false,
 	            mapType: 'world',
+	            mapLocation:{
+	                x:'right',
+	            },
 	            itemStyle:{
 	                normal:{
 	                    borderColor:'rgba(100,149,237,1)',
@@ -121,73 +357,98 @@ function seriesData(data){
 	                }
 	            },
 	            data:[],
-	            markLine : {
-	                smooth:true,
-	                symbol: ['none', 'circle'],
-	                symbolSize : 1,
-	                itemStyle : {
-	                    normal: {
-	                        color:'#fff',
-	                        borderWidth:1,
-	                        borderColor:'rgba(30,144,255,0.5)'
+	            markPoint: {
+	                symbol: 'emptyCircle',
+	                symbolSize: function (v) {
+	                    if (v > 15) {
+	                        return v / 12;
+	                    } else {
+	                        return 10;
 	                    }
 	                },
-	                data : dataToArrayAll(data),
+	                effect: {
+	                    show: true,
+	                    type: 'scale',//圈圈
+	                    loop: true,
+	                    shadowBlur: 0
+	                },
+	                itemStyle: {
+	                    normal: {label: {show: false}},
+	                    emphasis: {label: {show: false}}
+	                },
+	                data: data
 	            },
-	            geoCoord: geoCoord(data)
+	            geoCoord: getGeoArr(data)
+	         
 	        };
 	    seriesData.push(item);
-	    for(var i=0;i<data.length;i++){
-	    	//var seriesData =dataToArray(data[i])
-	    	item={
-					name: data[i].shortname,
-					type: 'map',
-					mapType: 'world',
-					data:[],
-					markLine : {
-						smooth:true,
-						effect : {
-							show: true,
-							scaleSize: 1,
-							period: 30,
-							color: '#fff',
-							shadowBlur: 10
-						},
-						itemStyle : {
-							normal: {
-								borderWidth:1,
-								lineStyle: {
-									type: 'solid',
-									shadowBlur: 10
-								}
-							}
-						},
-						data : dataToArrayContinueArray(data[i])
-					},
-					markPoint : {
-						symbol:'emptyCircle',
-						symbolSize : function (v){
-							return 10 + v/10
-						},
-						effect : {
-							show: true,
-							shadowBlur : 0
-						},
-						itemStyle:{
-							normal:{
-								label:{show:false}
-							},
-							emphasis: {
-								label:{position:'top'}
-							}
-						},
-						data : dataToArray(data[i])
-					}
-			}
-	    	
-	    	seriesData.push(item);
-	    	
-	    }
+
+    	item={
+                name: '',
+                type: 'map',
+                roam: false,
+                hoverable: false,
+                mapType: 'world',
+                mapLocation: {
+                    x: "0",
+                    // y: "top"
+                },
+                itemStyle: {
+                    normal: {
+                        borderColor: 'rgba(100,149,237,1)',
+                        borderWidth: 0.5,
+                        areaStyle: {
+                            color: '#1b1b1b'
+                        }
+                    }
+                },
+                data: [],
+                markPoint: {
+                    symbol: 'emptyCircle',
+                    symbolSize: function (v) {
+                        if (v > 15) {
+                            return v / 12;
+                        } else {
+                            return 1;
+                        }
+                    },
+                    effect: {
+                        show: true,
+                        type: 'scale',//圈圈
+                        loop: true,
+                        shadowBlur: 0
+                    },
+                    itemStyle: {
+                        normal: {label: {show: false}},
+                        emphasis: {label: {show: false}}
+                    },
+                    data: data
+                },
+                markLine: {
+                    smooth: true,
+                    effect: {
+                        show: true,
+                        scaleSize: 2,
+                        period: 30,
+                        color: '#fff',
+                        shadowBlur: 10
+                    },
+                    itemStyle: {
+                        normal: {
+                            borderWidth: 1,
+                            lineStyle: {
+                                type: 'solid',
+                                shadowBlur: 10
+                            }
+                        }
+                    },
+                    data:dataToArrayContinueArray(data)
+                },
+            }
+    	
+    	seriesData.push(item);
+    	
+    
 	    return seriesData;
 }
 

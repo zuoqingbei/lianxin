@@ -61,3 +61,13 @@ function labLifeCycleStatis(){
 		$("#kz_lab_code_statis").html(htmls);
 	})
 }
+
+//实验室联通数据统计
+function labLinkStatis(){
+	$.post(contextPath+'/lab/labLinkAjax',{},function(data){
+		console.log(data)
+		$("#link_lab_all_count").html(data.all_num);
+		$("#linked_status_num").html(data.link_num);
+		$("#link_status_rate").html(data.link_rate);
+	})
+}

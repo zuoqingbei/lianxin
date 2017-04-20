@@ -111,4 +111,8 @@ public class TestController extends BaseController {
   		r.set("result", result);
   		renderJson(r);
   	}
+  	
+    public void linkEchart() {
+        render("linkEchart.html");
+    }
 }

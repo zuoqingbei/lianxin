@@ -1,12 +1,16 @@
 package com.ulab.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
+import com.ulab.model.DicModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 /**
@@ -20,12 +24,42 @@ import com.ulab.model.LabModel;
 public class LabController extends BaseController {
 	
     public void index() {
-        render("index.html");
+        render("index_left.html");
     }
+    /**
+     * 
+     * @time   2017年4月19日 下午3:19:44
+     * @author zuoqb
+     * @todo   进入平面地图
+     * @param  
+     * @return_type   void
+     */
     public void flatMap() {
+    	/*List<Record> labType=DicModel.dao.findDicByType("lab_type");
+    	List<Record> productLine=DicModel.dao.findDicByType("line_type");
+    	setAttr("labType", labType);
+    	setAttr("productLine", productLine);*/
         render("flatMap.html");
     }
-  
+    public void sphereMap() {
+        render("sphereMap.html");
+    }
+    /**
+     * 
+     * @time   2017年4月19日 下午3:20:03
+     * @author zuoqb
+     * @todo   获取字典数据
+     * @param  
+     * @return_type   void
+     */
+    public void dicAjax(){
+    	List<Record> labType=DicModel.dao.findDicByType("lab_type");
+    	List<Record> productLine=DicModel.dao.findDicByType("line_type");
+    	Map<String,Object> map=new HashMap<String,Object>();
+    	map.put("labType", labType);
+    	map.put("productLine", productLine);
+    	renderJson(map);
+    }
     /**
      * 
      * @time   2017年4月13日 上午9:38:56
@@ -38,6 +72,21 @@ public class LabController extends BaseController {
     	List<Record> parentList=LabMapModel.dao.labShowWorldMap();
     	renderJson(parentList);
     }
+    /**
+     * 
+     * @time   2017年4月19日 上午9:53:33
+     * @author zuoqb
+     * @todo   平面图展示数据
+     * @param  
+     * @return_type   void
+     */
+    public void labShowFlatMapAjax(){
+    	String productCode=getPara("productCode");
+    	String labType=getPara("labType");
+    	List<Record> parentList=LabMapModel.dao.labShowFlatMap(productCode,labType);
+    	renderJson(parentList);
+    }
+    
     
     /**
      * 
@@ -70,5 +119,15 @@ public class LabController extends BaseController {
     	String field=getPara("field");
     	List<Record> labStatis=LabModel.dao.labStatisByField(field);
 		renderJson(labStatis);
+    }
+    /**
+     * 
+     * @time   2017年4月14日 下午4:59:52
+     * @author zuoqb
+     * @todo   实验室联通数据统计
+     */
+    public void labLinkAjax(){
+    	Record  recode=LabModel.dao.labLink();
+		renderJson(recode);
     }
 }

@@ -64,14 +64,16 @@ a:hover {
 .fr{
   float: right;
 }
-
+.placeHolder{/*拖动时放置位置的背景色*/
+  background-color: rgba(0, 255, 167, 0.29);
+}
 
 /*整个页面布局*/
 #content{
   display: flex;
   width:3186px;
   height:100%;
-  background-color: rgba(174, 174, 174, 0.39);
+  /*background-color: rgba(174, 174, 174, 0.39);*/
   background: url("../img/bg_star.png");
 }
 @media (min-width: 13000px) {
@@ -85,9 +87,9 @@ a:hover {
   outline: 1px dashed #ccc;
   outline-offset: -1px;
 }
-#left{
+#l{
   flex: 3;
-  background-color: rgba(205, 92, 92, 0.29);
+  /*background-color: rgba(205, 92, 92, 0.29);*/
 }
 #right{
   flex: 4;
