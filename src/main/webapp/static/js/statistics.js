@@ -53,7 +53,7 @@ function labPropertiesStatis(){
 
 //按照实验室生命周期（可开展实验）统计数量
 function labLifeCycleStatis(){
-	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"kz_lab_code"},function(data){
+	$.post(contextPath+'/lab/labCarryNumStatisAjax',{},function(data){
 		var htmls="";
 		$.each(data,function(index,item){
 			htmls+="<li>"+item.name+":"+item.count+"</li>";
@@ -65,7 +65,6 @@ function labLifeCycleStatis(){
 //实验室联通数据统计
 function labLinkStatis(){
 	$.post(contextPath+'/lab/labLinkAjax',{},function(data){
-		console.log(data)
 		$("#link_lab_all_count").html(data.all_num);
 		$("#linked_status_num").html(data.link_num);
 		$("#link_status_rate").html(data.link_rate);

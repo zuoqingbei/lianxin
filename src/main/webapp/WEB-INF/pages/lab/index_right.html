@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>U-lab数据中心</title>
+    <!--<link rel="stylesheet" href="../asserts/css/bootstrap.min.css">-->
+
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/index_left.css">
+    <link rel="stylesheet" href="../css/index_right.css">
+    <style>
+    </style>
+</head>
+<body>
+<!--
+<div id="mask">
+    &lt;!&ndash;<h1>点此进入</h1>&ndash;&gt;
+</div>
+-->
+<div id="content">
+    <div id="l">
+        <header>
+            <h1>U-lab全球互联数据中心</h1>
+        </header>
+        <div class="btnGroup">
+            <img class="sphere" src="../img/btn_sphere_on.png">
+            <img class="sphere" src="../img/btn_flat_off.png">
+        </div>
+        <div class="switchGroup">
+            <div class="switch sphere hidden">
+                <div class="sphere-right">
+                    <div class="sphere-left-top"></div>
+                    <div class="sphere-left-bottom"></div>
+                </div>
+                <div id="chart" class="mapArea">
+
+                </div>
+                <button id="switchLegend">图例开关</button>
+            </div>
+            <div class="switch flat">
+<!--电子表字体数据，暂时不用了
+                <div class="numberInfo cf">
+                    <div class="item">
+                        <h3>实验室总数</h3>
+                        <div class="nb">7583</div>
+                    </div>
+                    <div class="item">
+                        <h3>已联通数</h3>
+                        <div class="nb">7589</div>
+                    </div>
+                    <div class="item">
+                        <h3>连通率</h3>
+                        <div class="nb">98%</div>
+                    </div>
+                </div>
+-->
+                <div class="mapArea">
+                    <!--<iframe id="iframe" scrolling="no" frameborder="0" src="../pages/flatMap.html"></iframe>-->
+                </div>
+                <div class="flat-right">
+                    <div class="flat-right-top">
+                        <div class="professional">
+                            <h3>专业能力</h3>
+                            <div id="myChart"></div>
+                        </div>
+                    </div>
+                    <div class="flat-right-bottom">
+                        <div class="testPurpose">
+                            <h3>试验目的</h3>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="right">
+        <!--这里是后面4屏的代码-->
+        <div class="tab">
+            <ul>
+                <li class="tab-item">总状态</li>
+                <li class="tab-item">运营状态</li>
+                <li class="tab-item">数据结果</li>
+                <li class="tab-item">数据挖掘应用</li>
+            </ul>
+        </div>
+        <!--总状态-->
+        <div class="box selected total_state">
+            <div class="total_left"></div>
+            <div class="total_right"></div>
+        </div>
+        <!--运营状态-->
+        <div class="box yunying_state">22</div>
+        <!--数据结果-->
+        <div class="box shuju_result">33</div>
+        <!--数据挖掘应用-->
+        <div class="box shuju_apply">44</div>
+    </div>
+</div>
+<!--屏幕描述
+一共 7x3 个屏幕，
+每一块屏幕是1920x1080
+总共的大小就是13440x3240
+3/7的宽度是5760,
+在笔记本上比例不变适应高度后，宽度为3186px
+-->
+
+<script src="../asserts/js/jquery-2.2.4.js"></script>
+<!--<script src="../asserts/js/require.js"></script>-->
+<script src="../asserts/js/bootstrap.min.js"></script>
+<script src="../asserts/echarts/echarts.js"></script>
+<script src="../asserts/echarts/echarts-x.js"></script>
+<<<<<<< HEAD:pages/index.html
+<script src="../asserts/js/jquery.dragsort-0.5.2.js"></script>
+<script src="../asserts/js/require.js"></script>
+=======
+>>>>>>> bfb2da0aa15d3a5ed60947a1349fabbc44e39095:pages/index_right.html
+<script>
+    // 路径配置
+    require.config({
+        paths: {
+            'echarts-3.5.2':'../asserts/echarts/echarts-3.5.2',
+            'echarts-all':'../asserts/echarts/echarts-all',
+            'echarts': '../dep/echarts/build',
+            'echarts-x': '../dep/echarts-x/build'
+        }
+    });
+    // 然后就可以动态加载图表进行绘制啦
+    require([
+        'echarts',
+        'echarts-x',
+        // ECharts-X 中 map3d 的地图绘制基于 ECharts 中的 map。
+        'echarts/chart/map',
+        'echarts-x/chart/map3d'
+    ])
+</script>
+<script src="../js/sphere.js"></script>
+<script src="../js/boot.js"></script>
+<<<<<<< HEAD:pages/index.html
+<script src="../js/flat.js"></script>
+<script src="../js/manyEcharts.js"></script>
+<script src="../js/main_left.js"></script>
+=======
+<script src="../js/main.js"></script>
+<script>
+</script>
+>>>>>>> bfb2da0aa15d3a5ed60947a1349fabbc44e39095:pages/index_right.html
+<script>
+    if (document.location.href.indexOf('local') == -1) {
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fb78830c9a5dad062d08b90b2bc0cf5da' type='text/javascript'%3E%3C/script%3E"));
+    }
+</script>
+<!--右面 4*3 js代码-->
+<script>
+    $(function(){
+        $(".tab-item").click(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+
+            // 3. 获取到当前菜单的索引号
+            var index = $(this).index();
+
+            // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
+            //.selected display:block
+            $(".box:eq(" + index + ")").addClass("selected").siblings().removeClass("selected");
+        });
+    })
+</script>
+</body>
+</html>

@@ -51,7 +51,7 @@ public class LabModel extends Model<LabModel> {
 	 * @todo   查询实验室总数
 	 */
 	public Integer findAllCount(){
-		Record data=Db.findFirst("select  nvl(count(1),0) as count from t_b_lab_info lab where  lab.del_flag= "+DEL_FALG);
+		Record data=Db.findFirst("SELECT nvl(count(1),0) as count from(select  1 from t_b_lab_info lab where  lab.del_flag="+DEL_FALG+" GROUP BY code ) ");
 		return Integer.valueOf(data.getBigDecimal("count").toString());
 	}
 	
@@ -85,7 +85,7 @@ public class LabModel extends Model<LabModel> {
 		StringBuffer sb=new StringBuffer();
 		sb.append(" select d.name as name, nvl(count(1),0) as count from   ");
 		sb.append("  t_b_lab_info lab left join t_b_dictionary d on lab."+field+"=d.id ");
-		sb.append("  where lab.del_flag="+DEL_FALG+" group by d.name,d .order_no order by d.order_no ");
+		sb.append("  where lab.del_flag="+DEL_FALG+" and lab."+field+" is not null group by d.name,d .order_no order by d.order_no ");
 		return Db.find(sb.toString());
 	}
 	/**
@@ -99,7 +99,7 @@ public class LabModel extends Model<LabModel> {
 	public Record labLink(){
 		StringBuffer sb=new StringBuffer();
 		sb.append(" select all_num,link_num,un_link_num,to_char(round(link_num/all_num*100))||'%' as link_rate ");
-		sb.append("  from (select count(*) as all_num from t_b_lab_info lab where lab.del_flag=0 ) a ");
+		sb.append("  from (select count (*) as all_num from(select 1 from t_b_lab_info lab where lab.del_flag=0 group by code) ) a ");
 		sb.append("  left join (select count(*) as link_num from t_b_lab_info lab where lab.del_flag=0 and lab.link_status=1 )b on 1=1  ");
 		sb.append("  left join (select count(*) as un_link_num from t_b_lab_info lab where lab.del_flag=0 and lab.link_status=0 )b on 1=1 ");
 		return Db.findFirst(sb.toString());

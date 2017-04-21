@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #demo {
+            background: #FFF;
+            overflow:hidden;
+            border: 1px dashed #CCC;
+            width: 260px;
+            height:200px;
+            /*  padding: 0;
+             margin: 0; */
+        }
+        #list{
+            padding: 0;
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+ <div id="demo">
+
+  <div id="indemo">
+
+  <div id="demo1">
+      <ul id="list">
+      <li>“啦啦啦”：又一网络新词1</li>
+      <li>“啦啦啦”：又一网络新词2</li>
+      <li>“啦啦啦”：又一网络新词3</li>
+      <li>“啦啦啦”：又一网络新词4</li>
+      <li>“啦啦啦”：又一网络新词5</li>
+      <li>“啦啦啦”：又一网络新词6</li>
+      <li>“啦啦啦”：又一网络新词7</li>
+      <li>“啦啦啦”：又一网络新词8</li>
+      <li>“啦啦啦”：又一网络新词9</li>
+      <li>“啦啦啦”：又一网络新词10</li>
+      <li>“啦啦啦”：又一网络新词11</li>
+      <li>“啦啦啦”：又一网络新词12</li>
+      <li>“啦啦啦”：又一网络新词13</li>
+      <li>“啦啦啦”：又一网络新词14</li>
+      </ul>
+  </div>
+  <div id="demo2">
+  </div>
+  </div>
+  </div>
+
+</body>
+
+<script>
+
+   var speed=20;
+
+   var tab=document.getElementById("demo");
+
+   var tab1=document.getElementById("demo1");
+
+   var tab2=document.getElementById("demo2");
+
+   tab2.innerHTML=tab1.innerHTML;
+
+   function Marquee(){
+        if(tab2.offsetHeight<=tab.scrollTop)
+
+        tab.scrollTop-=tab1.offsetHeight;
+
+        else{
+          tab.scrollTop++;
+
+            }
+
+         }
+
+     var MyMar=setInterval(Marquee,speed);
+
+     tab.onmouseover=function() {clearInterval(MyMar)};
+
+     tab.onmouseout=function() {MyMar=setInterval
+
+         (Marquee,speed)};
+
+    </script>

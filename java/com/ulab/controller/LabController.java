@@ -11,6 +11,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
 import com.ulab.model.DicModel;
+import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 /**
@@ -119,6 +120,17 @@ public class LabController extends BaseController {
     	String field=getPara("field");
     	List<Record> labStatis=LabModel.dao.labStatisByField(field);
 		renderJson(labStatis);
+    }
+    
+    /**
+     * 
+     * @time   2017年4月21日12:12:13
+     * @author zuoqb
+     * @todo  开展类型数量统计
+     */
+    public void labCarryNumStatisAjax(){
+    	List<Record> carryStatis=LabCarryModel.dao.labCarryNumStatis();
+		renderJson(carryStatis);
     }
     /**
      * 

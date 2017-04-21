@@ -1,0 +1,93 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Jquery UI</title>
+    <link rel="stylesheet" href="jquery-ui.min.css">
+    <script src="jquery.js"></script>
+    <script src="jquery-ui.min.js"></script>
+    <style>
+        .tabCss {
+            width 100%;
+        }
+        .drop {
+            width: 100px;
+            border: 1px solid #D6D6D6;
+            text-align: center;
+            height: 34px;
+            padding: 0
+        }
+        .drapDiv {
+            display:block;
+            color: #FFF;
+            background-color: #5779D0;
+            height: 34px;
+            line-height: 34px;
+            width: 100px
+        }
+        .assigned {
+            border: 1px solid #BC2A4D;
+        }
+
+    </style>
+</head>
+<body>
+<div class="right">
+    <table class="tabCss">
+        <tr>
+            <td class="drop" id="00"><div class="drapDiv">1</div></td>
+            <td class="drop" id="01"><div class="drapDiv">2</div></td>
+            <td class="drop" id="02"><div class="drapDiv">3</div></td>
+        </tr>
+        <tr>
+            <td class="drop" id="10"><div class="drapDiv">4</div></td>
+            <td class="drop" id="11"><div class="drapDiv">5</div></td>
+            <td class="drop" id="12"><div class="drapDiv">6</div></td>
+        </tr>
+        <tr>
+            <td class="drop" id="20"><div class="drapDiv">7</div></td>
+            <td class="drop" id="21"><div class="drapDiv">8</div></td>
+            <td class="drop" id="22"><div class="drapDiv">9</div></td>
+        </tr>
+        <tr>
+            <td class="drop" id="30"><div class="drapDiv">10</div></td>
+            <td class="drop" id="31"><div class="drapDiv">11</div></td>
+            <td class="drop" id="32"><div class="drapDiv">12</div></td>
+        </tr>
+    </table>
+</div>
+<script>
+    $(function() {
+        //leave元素父节点ID
+        var leaveId;
+        $( ".drop div" ).draggable({
+            helper: "clone",
+            revert: "invalid",
+            start : function( event, ui ) {
+                //记录
+                leaveId = $(this).parent().attr('id');
+            }
+        });
+
+
+        $('td.drop').droppable({
+            accept : '.drapDiv',
+            disabled: false,
+            drop : function(event, ui) {
+                //获取target元素
+                var oldClone = $(this).children().get(0);
+                var d = $(oldClone).clone(true).context;
+                //复制到leave元素
+                $('#' + leaveId).empty().append(d);
+                //  $(d).draggable( "option", "disabled", false );
+                //重置
+                leaveId = '';
+                var dragDiv = ui.draggable;
+                $(this).empty().append(dragDiv);
+
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

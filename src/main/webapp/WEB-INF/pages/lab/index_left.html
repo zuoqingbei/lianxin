@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>U-lab数据中心</title>
+    <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
+</head>
+<body>
+<!--
+<div id="mask">
+    &lt;!&ndash;<h1>点此进入</h1>&ndash;&gt;
+</div>
+-->
+<div id="content">
+    <div id="l">
+        <header>
+            <h1>U-lab全球互联数据中心</h1>
+        </header>
+        <div class="btnGroup">
+            <img class="sphere" src="${contextPath!}/static/img/btn_sphere_on.png">
+            <img class="sphere" src="${contextPath!}/static/img/btn_flat_off.png">
+        </div>
+        <div class="switchGroup">
+            <div class="switch sphere">
+                <div class="sphere-left">
+                    <div class="sphere-left-top"></div>
+                    <div class="sphere-left-bottom"></div>
+                </div>
+                <div class="mapArea">
+                    <!--球体地图位置-->
+                    <iframe src="${contextPath!}/lab/sphereMap"></iframe>
+                </div>
+                <div class="sphere-right">
+                    <div class="sphere-right-top"></div>
+                    <div class="sphere-right-bottom"></div>
+                </div>
+            </div>
+            <div class="switch flat hidden">
+                <div class="numberInfo cf hidden">
+                    <div class="item">
+                        <h3>实验室总数</h3>
+                        <div class="nb">7583</div>
+                    </div>
+                    <div class="item">
+                        <h3>已联通数</h3>
+                        <div class="nb">7589</div>
+                    </div>
+                    <div class="item">
+                        <h3>连通率</h3>
+                        <div class="nb">98%</div>
+                    </div>
+                </div>
+                <div class="mapArea">
+                    <!--平面地图位置-->
+                </div>
+                <div class="flat-right">
+                    <div class="flat-right-top">
+                        <div class="chartBorder">
+                            <h3>专业能力</h3>
+                            <div class="myChart" id="myChart"></div>
+                        </div>
+                    </div>
+                    <div class="flat-right-bottom">
+                        <div class="chartBorder">
+                            <h3>试验目的</h3>
+                            <div class="myChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div id="middle"></div>-->
+    <div id="right">
+        <!--这里是后面4屏的代码-->
+    </div>
+</div>
+
+<!--屏幕描述
+一共 7x3 个屏幕，
+每一块屏幕是1920x1080
+总共的大小就是13440x3240
+3/7的宽度是5760,
+在笔记本上比例不变适应高度后，宽度为3186px
+-->
+
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/js/common.js"></script>
+<script src="${contextPath!}/static/asserts/echarts/echarts-all.js"></script>
+<script src="${contextPath!}/static/js/manyEcharts.js"></script>
+<!--<script src="${contextPath!}/static/asserts/js/jquery.dragsort-0.5.2.js"></script>-->
+
+<script>
+var contextPath='${contextPath!}';
+    /*
+     $(function () {//拖动动作
+     $("#content").dragsort({
+     dragSelector: "#left,#right",
+     dragBetween: true,
+     dragEnd: function () {},
+     placeHolderTemplate: "<div class='placeHolder'><div></div></div>"
+     });
+     });
+     */
+
+    var myChart = echarts.init($("#l").find(".flat-right-top>div>.myChart")[0]);
+    var option = getLineEcharts();
+//    var option = {
+//
+//        title: {
+//            color:"#fff",
+//            text: 'ECharts 入门示例'
+//        },
+//        tooltip: {},
+//        legend: {
+//            data: ['销量']
+//        },
+//        xAxis: {
+//            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+//        },
+//        yAxis: {},
+//        series: [{
+//            name: '销量',
+//            type: 'bar',
+//            data: [5, 20, 36, 10, 10, 20]
+//        }]
+//    };
+//    console.log("option:", option);
+//    option.title.text = "2222222";
+    // 使用刚指定的配置项和数据显示图表。
+//    myChart.clear();
+    myChart.setOption(option);
+    myChart.setOption({
+    legend: {
+        data: ['销量']
+    },
+//        show: false,
+
+        title:{
+            text:"123345"
+        },
+        xAxis: {
+
+            data:["性能","可靠性","安全","用户模拟","EMC","用户体验","运输"]
+        },
+        series: [{
+            data: [0, 1, 2, 4, 4, 20, 22]
+        }]
+    });
+//console.log("xaxis:",myChart.getOption().xAxis)
+
+
+
+    var myCharts = [myChart]
+</script>
+<script src="${contextPath!}/static/js/main_left.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+.active{
+    border: 1px solid pink;
+}
+.box{
+    width: 100%;
+    display: none;
+}
+.selected{
+    display: block;
+}
+.tab{
+    width: 90%;
+    height: 10%;
+    text-align: center;
+    margin: 0 auto;
+}
+.tab ul{
+
+}
+.tab ul li{
+    display: inline-block;
+    padding: 0.5em;
+    width: 15%;
+    background-color: pink;
+    margin-top: 0.8em;
+}
+.total_state{
+    width: 100%;
+    height: 89%;
+    text-align: center;
+    font-size: 0;
+}
+.total_state .total_left{
+    width: 50%;
+    height: 100%;
+    background-color: #1b6d85;
+    display: inline-block;
+    /*font-size: 0.8em;*/
+}
+.total_state .total_right{
+    width: 50%;
+    height: 100%;
+    background-color: #5bc0de;
+    display: inline-block;
+    /*font-size: 0.8em;*/
+}

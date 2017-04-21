@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <title>球形地图</title>
+    <style>
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #sphereMap {
+            height: 100%;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="sphereMap"></div>
+    <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+    <script src="${contextPath!}/static/js/common.js"></script>
+    <script src="${contextPath!}/static/asserts/echarts/echarts.js"></script>
+    <script src="${contextPath!}/static/asserts/echarts/echarts-x.js"></script>
+    <script src="${contextPath!}/static/js/sphere.js"></script>
+    <script src="${contextPath!}/static/js/boot.js"></script>
+
+</body>
+<script>
+var contextPath='${contextPath!}';
+    // 路径配置
+    require.config({
+        paths: {
+            'echarts': '${contextPath!}/static/dep/echarts/build',
+            'echarts-x': '${contextPath!}/static/dep/echarts-x/build'
+        }
+    });
+    // 然后就可以动态加载图表进行绘制啦
+    require([
+        'echarts',
+        'echarts-x',
+        // ECharts-X 中 map3d 的地图绘制基于 ECharts 中的 map。
+        'echarts/chart/map',
+        'echarts-x/chart/map3d'
+    ])
+</script>
+
+
+</html>

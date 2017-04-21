@@ -1,0 +1,244 @@
+.box {
+    width: 100%;
+    height: 100%;
+    background-color: pink;
+}
+
+.header_box {
+    width: 90%;
+    height: 10%;
+    /*background-color: #2e6da4;*/
+    margin: 0 auto;
+}
+
+.top_dropdown {
+    height: 10%;
+}
+
+.tabs li {
+    float: left;
+    margin-right: 1em;
+    margin-top: 1em;
+}
+
+#title_box {
+    text-align: center;
+    margin: 0.5% auto;
+}
+
+/*video start*/
+
+.video_box {
+    width: 100%;
+    height: 85%;
+}
+
+.video_left {
+    width: 15%;
+}
+
+.video_left ul {
+    text-align: center;
+    margin-left: 15%;
+}
+
+.video_left ul li {
+    width: 80%;
+    padding: 0.5em;
+    background-color: #2e6da4;
+    text-align: center;
+    margin-bottom: 0.5em;
+    color: white;
+}
+
+.video_left ul li:hover {
+    color: orange;
+}
+
+.video_right {
+    width: 83%;
+    height: 100%;
+    margin: 0 auto;
+    border: 1px solid red;
+}
+
+/*video end*/
+
+/*equipment start*/
+.contents_box {
+    width: 100%;
+    height: 85%;
+}
+
+.contents_box > ul {
+    height: 32%;
+    /*margin-bottom: 1%;*/
+    /*border: 1px solid red;*/
+    padding: 0 1%;
+}
+
+.contents_box > ul > li {
+    display: inline-block;
+    float: left;
+    width: 23%;
+    height: 87%;
+    text-align: center;
+    border: 1px solid blue;
+    margin: 1%;
+}
+
+.contents_box > ul > li > table > th {
+    text-align: center;
+}
+
+.contents_box > ul > li > table {
+    width: 100%;
+}
+
+.contents_box > ul > li > table tr td:first-of-type {
+    width: 25%;
+}
+
+.contents_box > ul > li > table tr td:last-of-type {
+    width: 75%;
+    text-align: left;
+}
+
+.progress {
+    width: 50%;
+    height: 0.8em;
+    margin-bottom: 0;
+}
+
+.progress-bar {
+    font-size: 0.7em;
+    line-height: 0.9em;
+    height: 0.7em;
+}
+
+/*equipment end*/
+
+/*order start*/
+.order_box{
+    height: 85%;
+}
+.order_left {
+    width: 10%;
+    height: 100%;
+}
+
+.order_left ul {
+    text-align: center;
+    /*padding-left: 15%;*/
+    height: 100%;
+    /*background-color: lightblue;*/
+}
+
+.order_left ul li {
+    width: 100%;
+    /*padding: 0.5em;*/
+    background-color: #2e6da4;
+    text-align: center;
+    /*margin-bottom: 0.5em;*/
+    color: white;
+}
+.order_left ul li:nth-of-type(3){
+    /*background-color: red;*/
+    height: 30%;
+}
+.order_left ul li:nth-of-type(4){
+    /*background-color: yellow;*/
+    height: 30%;
+}
+.order_left ul li:nth-of-type(5){
+    /*background-color: orange;*/
+    height: 30%;
+}
+.order_left ul li #pie1,#pie2,#pie3 {
+    width: 100%;
+    height: 100%;
+    /*background-color: lawngreen;*/
+}
+.order_right{
+    width: 90%;
+    height: 100%;
+}
+.order_right .order_views{
+    width: 100%;
+    height: 100%;
+    background-color: orange;
+}
+.order_right ul{
+    height: 32%;
+    padding: 1% 2.3%;
+}
+.order_right ul li{
+    width: 16.6%;
+    height: 100%;
+    text-align: center;
+    border: 1px solid blue;
+    float: left;
+    /*margin: 0.5%;*/
+}
+.order_right .order_views ul li #pie4{
+    width: 100%;
+    height: 80%;
+    background-color: pink;
+    /*margin-top: 15%;*/
+    /*margin-top: 32%;*/
+}
+
+/*order end*/
+
+
+/*monitor start*/
+.monitor_box {
+    height: 85%;
+}
+.monitor_left {
+    width: 10%;
+    height: 100%;
+}
+
+.monitor_left ul {
+    text-align: center;
+    /*padding-left: 15%;*/
+    height: 100%;
+    /*background-color: lightblue;*/
+}
+
+.monitor_left ul li {
+    width: 100%;
+    padding: 0.5em;
+    background-color: #2e6da4;
+    text-align: center;
+    margin-bottom: 0.5em;
+    color: white;
+}
+.monitor_left ul li:hover{
+    color: orange;
+}
+.monitor_right{
+    border: 1px solid blue;
+    height: 100%;
+    width: 90%;
+}
+#line_box{
+    width:95%;
+    height: 90%;
+    margin: 0 auto;
+}
+.radio_box{
+    margin-left: 2%;
+}
+
+/*monitor end*/
+
+/*ppt start*/
+/*ppt end*/
+
+/*info start*/
+/*info end*/
+
+/*lines start*/
+/*lines end*/
