@@ -33,10 +33,10 @@ public class LabCarryModel extends Model<LabCarryModel> {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public List<Record> labCarryNumStatis(){
+	public List<Record> labCarryNumStatis(String sqlWhere){
 		StringBuffer sb=new StringBuffer();
 		sb.append(" select d.name as name, nvl(count(1),0) as count from   ");
-		sb.append(" t_b_lab_carry c left join t_b_dictionary d on c.carry_code = d.id");
+		sb.append(" t_b_lab_carry c left join t_b_lab_info lab on lab.code=c.lab_code left join t_b_dictionary d on c.carry_code = d.id");
 		sb.append("  where c.del_flag=0  group by d.name,d .order_no order by d.order_no ");
 		return Db.find(sb.toString());
 	}

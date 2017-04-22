@@ -2,14 +2,14 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-    <title>U-lab数据中心</title>
+    <title>U-lab全球互联数据中心</title>
     <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
     <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
 </head>
 <body>
 <!--
 <div id="mask">
-    &lt;!&ndash;<h1>点此进入</h1>&ndash;&gt;
+    <video src="${contextPath!}/static/img/movie.ogg"  width="100%" height="100%" preload="auto" >点此进入</video>
 </div>
 -->
 <div id="content">
@@ -37,39 +37,89 @@
                 </div>
             </div>
             <div class="switch flat hidden">
-                <div class="numberInfo cf hidden">
-                    <div class="item">
-                        <h3>实验室总数</h3>
-                        <div class="nb">7583</div>
-                    </div>
-                    <div class="item">
-                        <h3>已联通数</h3>
-                        <div class="nb">7589</div>
-                    </div>
-                    <div class="item">
-                        <h3>连通率</h3>
-                        <div class="nb">98%</div>
-                    </div>
-                </div>
-                <div class="mapArea">
-                    <!--平面地图位置-->
-                </div>
-                <div class="flat-right">
-                    <div class="flat-right-top">
-                        <div class="chartBorder">
-                            <h3>专业能力</h3>
-                            <div class="myChart" id="myChart"></div>
+                <div class="flat-main">
+                    <div class="flat-left">
+                        <div class="flat-left-top">
+                            <div class="chartBorder">
+                                <h3>产线统计</h3>
+                                <h4>实验室总数： <strong id="lab_all_count"> 0 </strong></h4>
+                                <ul id="pro_line">
+                                    <li><span class="icon"></span>冰冷<span class="number"></span></li>
+                                    <li><span class="icon"></span>洗涤<span class="number"></span></li>
+                                    <li><span class="icon"></span>家空<span class="number"></span></li>
+                                    <li><span class="icon"></span>商空<span class="number"></span></li>
+                                    <li><span class="icon"></span>热水器<span class="number"></span></li>
+                                    <li><span class="icon"></span>厨电<span class="number"></span></li>
+                                    <li><span class="icon"></span>电视<span class="number"></span></li>
+                                </ul>
+                                <div class="myChart"></div>
+                            </div>
+                        </div>
+                        <div class="flat-left-bottom">
+                            <div class="chartBorder">
+                                <h3>实验室统计</h3>
+                                <h4>实验室分布在<strong id="area_num"> 0 </strong>大州，<strong id="country_num"> 0 </strong>个国家</h4>
+                                <div class="myChart"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="flat-right-bottom">
-                        <div class="chartBorder">
-                            <h3>试验目的</h3>
-                            <div class="myChart"></div>
+                    <div class="mapArea">
+                        <!--平面地图位置-->
+                    </div>
+                    <div class="flat-right">
+                        <div class="flat-right-top">
+                            <div class="chartBorder">
+                                <h3>专业能力</h3>
+                                <div class="myChart"></div>
+                            </div>
+                        </div>
+                        <div class="flat-right-bottom">
+                            <div class="chartBorder">
+                                <h3>试验目的</h3>
+                                <h4>P1:对比试验 P2:新品调试 P3:新品确认<br>
+                                    P4:小批验证 入厂/出厂 P5:年度型检 监督抽测"</h4>
+                                <div class="myChart"></div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <!--平面地图下面的导航-->
+                <div class="flat-footer controlBar">
+                        <div class="legend">
+                            <div class="legend-l navSwitch">产线</div>
+                            <div class="legend-r navSwitch">实验室</div>
+                            <div class="selectAll">
+                                <label for="navSelectAll"><span class="icon"></span> 全选</label>
+                                <input id="navSelectAll" checked type="checkbox" class="hidden">
+                            </div>
+                            <div class="labLine">
+                                <ul class="lab hidden">
+                                	##for(type in labType){
+                                		<li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.name!}</a> </li>
+                                	##}
+                                </ul>
+                                <ul class="line">
+                                   ##for(type in productLine){
+                                		<li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.name!}</a> </li>
+                                	##}
+                                </ul>
+                            </div>
+
+                            <ul class="legend-bottom">
+                                <li class="active"><a href=""><span class="icon"></span> 中心实验室</a> </li>
+                                <li><a href=""><span class="icon"></span> 冰冷</a> </li>
+                                <li><a href=""><span class="icon"></span> 洗涤</a> </li>
+                                <li><a href=""><span class="icon"></span> 家空</a> </li>
+                                <li><a href=""><span class="icon"></span> 商空</a> </li>
+                                <li><a href=""><span class="icon"></span> 热水器</a> </li>
+                                <li><a href=""><span class="icon"></span> 厨电</a> </li>
+                            </ul>
+                        </div>
                 </div>
             </div>
+
         </div>
+
     </div>
     <!--<div id="middle"></div>-->
     <div id="right">
@@ -87,72 +137,43 @@
 
 <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
 <script src="${contextPath!}/static/js/common.js"></script>
-<script src="${contextPath!}/static/asserts/echarts/echarts-all.js"></script>
+<script src="${contextPath!}/static/js/statistics.js"></script>
+<script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
 <script src="${contextPath!}/static/js/manyEcharts.js"></script>
+<!--<script src="${contextPath!}/static/img/bar_chip.png"></script>-->
 <!--<script src="${contextPath!}/static/asserts/js/jquery.dragsort-0.5.2.js"></script>-->
-
 <script>
 var contextPath='${contextPath!}';
-    /*
-     $(function () {//拖动动作
-     $("#content").dragsort({
-     dragSelector: "#left,#right",
-     dragBetween: true,
-     dragEnd: function () {},
-     placeHolderTemplate: "<div class='placeHolder'><div></div></div>"
-     });
-     });
-     */
+var myCharts;
+var myChartFlatRT;
+var myChartFlatRB;
+var myChartFlatLB;
+var pathSymbols = {
+        bar_chip: '${contextPath!}/static/img/bar_chip.png'
+    };
+$(function () {
+	//右上角的图表
+    myChartFlatRT = echarts.init($("#l").find(".flat-right-top .myChart")[0]);
+    //右下角的图表
+    myChartFlatRB = echarts.init($("#l").find(".flat-right-bottom .myChart")[0]);
+    
+    //左下角的图表
+    myChartFlatLB = echarts.init($("#l").find(".flat-left-bottom .myChart")[0]);
+    myCharts = [myChartFlatRT, myChartFlatRB,myChartFlatLB];
+  //产线维度实验室数量统计
+    proLineStatis();
+    //实验室数量统计
+    labNumStatis();
+    //实验室区域数量统计：大洲 国家
+	labAreaSpread();
+	//按照实验室四大类统计数量
+    labTypeStatis();
+	//专业能力-实验室性质
+	labPropertiesStatis();
+	//实验目的--可开展实验类型
+	labLifeCycleStatis();
 
-    var myChart = echarts.init($("#l").find(".flat-right-top>div>.myChart")[0]);
-    var option = getLineEcharts();
-//    var option = {
-//
-//        title: {
-//            color:"#fff",
-//            text: 'ECharts 入门示例'
-//        },
-//        tooltip: {},
-//        legend: {
-//            data: ['销量']
-//        },
-//        xAxis: {
-//            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-//        },
-//        yAxis: {},
-//        series: [{
-//            name: '销量',
-//            type: 'bar',
-//            data: [5, 20, 36, 10, 10, 20]
-//        }]
-//    };
-//    console.log("option:", option);
-//    option.title.text = "2222222";
-    // 使用刚指定的配置项和数据显示图表。
-//    myChart.clear();
-    myChart.setOption(option);
-    myChart.setOption({
-    legend: {
-        data: ['销量']
-    },
-//        show: false,
-
-        title:{
-            text:"123345"
-        },
-        xAxis: {
-
-            data:["性能","可靠性","安全","用户模拟","EMC","用户体验","运输"]
-        },
-        series: [{
-            data: [0, 1, 2, 4, 4, 20, 22]
-        }]
-    });
-//console.log("xaxis:",myChart.getOption().xAxis)
-
-
-
-    var myCharts = [myChart]
+});
 </script>
 <script src="${contextPath!}/static/js/main_left.js"></script>
 </body>

@@ -14,6 +14,7 @@ import com.ulab.model.DicModel;
 import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
+import com.ulab.util.SqlUtil;
 /**
  * 
  * @time   2017年4月11日 上午10:59:00
@@ -25,6 +26,10 @@ import com.ulab.model.LabModel;
 public class LabController extends BaseController {
 	
     public void index() {
+    	List<Record> labType=DicModel.dao.findDicByType("lab_type");
+    	List<Record> productLine=DicModel.dao.findDicByType("line_type");
+    	setAttr("labType", labType);
+    	setAttr("productLine", productLine);
         render("index_left.html");
     }
     /**
@@ -36,10 +41,6 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void flatMap() {
-    	/*List<Record> labType=DicModel.dao.findDicByType("lab_type");
-    	List<Record> productLine=DicModel.dao.findDicByType("line_type");
-    	setAttr("labType", labType);
-    	setAttr("productLine", productLine);*/
         render("flatMap.html");
     }
     public void sphereMap() {
@@ -70,7 +71,7 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void labAjax(){
-    	List<Record> parentList=LabMapModel.dao.labShowWorldMap();
+    	List<Record> parentList=LabModel.dao.labShowWorldMap();
     	renderJson(parentList);
     }
     /**
@@ -82,9 +83,8 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void labShowFlatMapAjax(){
-    	String productCode=getPara("productCode");
-    	String labType=getPara("labType");
-    	List<Record> parentList=LabMapModel.dao.labShowFlatMap(productCode,labType);
+    	String sqlWhere=SqlUtil.commonWhereSql(this,null);
+    	List<Record> parentList=LabMapModel.dao.labShowFlatMap(sqlWhere);
     	renderJson(parentList);
     }
     
@@ -118,7 +118,8 @@ public class LabController extends BaseController {
      */
     public void labStatisByFiledAjax(){
     	String field=getPara("field");
-    	List<Record> labStatis=LabModel.dao.labStatisByField(field);
+    	String sqlWhere=SqlUtil.commonWhereSql(this,"lab");
+    	List<Record> labStatis=LabModel.dao.labStatisByField(sqlWhere,field);
 		renderJson(labStatis);
     }
     
@@ -129,7 +130,8 @@ public class LabController extends BaseController {
      * @todo  开展类型数量统计
      */
     public void labCarryNumStatisAjax(){
-    	List<Record> carryStatis=LabCarryModel.dao.labCarryNumStatis();
+    	String sqlWhere=SqlUtil.commonWhereSql(this,"lab");
+    	List<Record> carryStatis=LabCarryModel.dao.labCarryNumStatis(sqlWhere);
 		renderJson(carryStatis);
     }
     /**

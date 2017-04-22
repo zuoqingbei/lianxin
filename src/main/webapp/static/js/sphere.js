@@ -65,8 +65,11 @@ function mapSphere() {
                             data: airports
                         },
                         roam: {
-                        	autoRotate: false,//是否自动旋转
+                        	autoRotate: true,//是否自动旋转
                             autoRotateAfterStill: 30,
+                            zoom:1,
+                            minZoom:1,
+                            maxZoom:1,
                             focus: 'China'
                         }
                     }]
@@ -89,11 +92,11 @@ function mapSphere() {
 	                            effect: {
 	                                show: true
 	                            },
-	                            distance:3,
+	                            distance:10,
 	                            itemStyle: {
 		                            normal: {
 		                                // 线的颜色默认是取 legend 的颜色
-		                                // color: "red",
+		                                //color: "yellow",
 		                                // 线宽，这里线宽是屏幕的像素大小
 		                                borderWidth: 20,
                                         width: '30',

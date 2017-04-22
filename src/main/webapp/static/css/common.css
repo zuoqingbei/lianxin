@@ -73,8 +73,8 @@ a:hover {
   display: flex;
   width:3186px;
   height:100%;
-  /*background-color: rgba(174, 174, 174, 0.39);*/
-  background: url("../img/bg_star.png");
+  background: url("../img/bg_star.png") ;
+  background-size: 100%;
 }
 @media (min-width: 13000px) {
   #content{
@@ -101,8 +101,10 @@ a:hover {
   width:100%;
   height:100%;
   z-index: 999999;
-  background: blue;
+  /*background: blue;*/
 }
 
-
+video{
+  position: relative;
+}
 

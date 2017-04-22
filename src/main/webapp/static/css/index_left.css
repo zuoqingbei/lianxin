@@ -13,27 +13,39 @@
 #l .switchGroup{
     flex:20;
 }
-/*地图切换区域*/
+
+/*平面地图切换的大区域，先分上下，上面再分左中右，左右再分上下*/
 #l .switch.flat{
+    padding:0 1%;
     display: none;
+    flex-direction: column;
 }
 #l .switch.flat>div{
-    outline: 1px solid #ee8004;
+    /*outline: 1px solid red;*/
 }
-#l .flat .mapArea{
+#l .flat .flat-main{/*上面*/
+    display: flex;
     flex:4;
 }
-#l .flat .flat-right{
+#l .flat .flat-footer{/*下面*/
+    flex:1;
+}
+
+#l .flat .flat-left,
+#l .flat .flat-right{/*左右*/
     flex:1;
     display: flex;
     flex-direction: column;
 }
+#l .flat .mapArea{/*中间大地图*/
+    flex:3;
+}
 
-/*平面地图布局*/
-#l .flat .flat-right>div{
+#l .flat .flat-left>div,
+#l .flat .flat-right>div{/*左右4个小图表*/
     flex:1;
-    padding:5%;
-    outline: 1px solid rgba(238, 196, 2, 0.38);
+    padding: 5%;
+    /*outline: 1px solid rgba(238, 196, 2, 0.38);*/
     outline-offset: -1px;
 }
 
@@ -71,6 +83,9 @@
     flex:1;
 }
 
+
+
+/*头部样式*/
 #l header{
     text-align: center;
 }
@@ -79,9 +94,18 @@
     font-size: 1.6em;
     color: #66CCFE;
 }
-#l .switchGroup{
-    height: 68%;
+#l .btnGroup{
+    text-align: right;
+    margin-right: 2em;
 }
+#l .btnGroup img{
+    cursor:pointer;
+    margin-right: 1em;
+    width:2em;
+    height: 2em;
+}
+
+/*
 #l .numberInfo{
     overflow: hidden;
 }
@@ -107,6 +131,8 @@
     font-style: italic;
     color: orange;
 }
+*/
+
 #l .switch{
     height:100%;
 }
@@ -123,38 +149,205 @@
 /*平面地图样式*/
 #l .flat iframe{
     width:100%;
-    height:90%;
+    height:100%;
 }
-/*每块图表*/
-#l .flat .flat-right>div>div{
+
+#l .flat-footer{
+    /*display: flex;*/
+    margin:0 auto;
+    height:100%;
+    width:100%;
+}
+
+#l .flat-footer .legend{
+    position: relative;
+    /*flex: 6;*/
+    text-align: center;
+    margin: 0 auto;
+    height: 100%;
+    width: 44%;
+    color: #999;
+    background: url(../img/nav-border.png);
+    background-size: 100% 100%;
+}
+#l .flat-footer .legend-l,
+#l .flat-footer .legend-r{
+    cursor: pointer;
+    position: absolute;
+    height: 53%;
+    width: 11%;
+    line-height: 480%;
+    font-size: 75%;
+    text-align: center;
+    background-size: 100%;
+    top: 12.6%;
+    z-index: 10;
+}
+#l .flat-footer .legend-l{
+    cursor: pointer;
+    color: #00e673;
+    background-image: url(../img/navSwitch_on.png) ;
+    left: 0;
+}
+#l .flat-footer .legend-r{
+    color: #6cf;
+    background-image: url(../img/navSwitch_off.png) ;
+    right: 0;
+}
+
+#l .flat-footer .legend .icon{
+    display: inline-block;
+    position: relative;
+    top: .2em;
+    width: 1em;
+    height: 1em;
+    background-size: 100%;
+}
+#l .flat-footer .legend .selectAll{
+    color: #00e673;
+    padding-top: .5%;
+    font-size: 75%;
+}
+#l .flat-footer .legend .selectAll label{
+    cursor: pointer;
+}
+#l .flat-footer .legend .selectAll .icon{
+    background-image: url("../img/navSelectAll_on.png");
+}
+#l .flat-footer .legend .labLine{
+    margin-top: 1.5%;
+}
+#l .flat-footer .legend ul.lab,
+#l .flat-footer .legend ul.line{
+    text-align: center;
+    /*position: relative;*/
+    /*top: 8%;*/
+}
+#l .flat-footer .legend ul.legend-bottom{
+    position: relative;
+    top:31%
+}
+#l .flat-footer .legend ul.legend-bottom li a{
+    color: #6cf;
+}
+#l .flat-footer .legend ul li{
+    display: inline-block;
+    margin-right: 3%;
+}
+#l .flat-footer .legend ul li a{
+    font-size: 75%;
+    color: #999;
+}
+#l .flat-footer .legend ul li.active a{
+    color: #00e673;
+}
+
+#l .flat-footer .legend ul.lab li:nth-child(1) a .icon{
+    background-image: url("../img/navDevlp_on.png");
+}
+#l .flat-footer .legend ul.lab li:nth-child(2) a .icon{
+    background-image: url("../img/navCenter_off.png");
+}
+#l .flat-footer .legend ul.lab li:nth-child(3) a .icon{
+    background-image: url("../img/navModule_off.png");
+}
+#l .flat-footer .legend ul.lab li:nth-child(4) a .icon{
+    background-image: url("../img/navFac_off.png");
+}
+
+
+
+
+/*每块图表的样式*/
+#l .flat .flat-left>div .chartBorder,
+#l .flat .flat-right>div .chartBorder{/*每块图表边框*/
     position: relative;
     height:100%;
     border-style: solid;
-    border-image: url("../img/chartBorder.png") 120 52 30 / 13% 6% 6%;
+    border-image: url("../img/chartBorder.png") 120 52 30 / 13% 6% 6% ;
 }
+#l .flat .flat-left>div>div h3,
 #l .flat .flat-right>div>div h3{
     position: absolute;
     left: 23%;
-    top: 1.5%;
+    top: 1.1%;
     /*font-size: 100%;*/
     font-weight: normal;
     color: #fff;
 }
-#l .flat .flat-right>div>div #myChart{
+#l .flat .flat-left>div .chartBorder .myChart,
+#l .flat .flat-right>div .chartBorder .myChart{
     width: 100%;
     height: 100%;
 }
-
-#l .btnGroup{
-    text-align: right;
-    margin-right: 2em;
+#l .flat .chartBorder h4{
+    position: absolute;
+    left: 2%;
+    width: 87%;
+    padding: 1.2% 2%;
+    margin: 12% 3% 0;
+    color: #66ccff;
+    font-size: 60%;
+    line-height: 182%;
+    background-color: rgba(102,204,255,.15);
 }
-#l .btnGroup img{
-    cursor:pointer;
-    margin-right: 1em;
-    width:3em;
+#l .flat .chartBorder h4 strong{
+    color: #fff;
+    font-size: 160%;
+    font-weight: normal;
+}
+#l .flat .chartBorder ul{
+    position: relative;
+    margin: 0 24%;
+    top: 30%;
+    font-size: 55%;
+    color: #6cf;
+}
+#l .flat .chartBorder ul li{
+    margin-bottom: 2px;
+    line-height: 180%;
+}
+#l .flat-left-top ul li .icon{
+    display: inline-block;
+    position: relative;
+    margin-right: 0.5em;
+    top: .2em;
+    width: 6%;
+    height: 1em;
+    background-size: 100% 100%;
 }
 
+#l .flat .chartBorder ul li:nth-of-type(1) .icon{
+    background-image: url("../img/line_bl.png");
+}
+#l .flat .chartBorder ul li:nth-of-type(2) .icon{
+    background-image: url("../img/line_xd.png");
+}
+#l .flat .chartBorder ul li:nth-of-type(3) .icon{
+    background-image: url("../img/line_jk.png");
+}
+#l .flat .chartBorder ul li:nth-of-type(4) .icon{
+    background-image: url("../img/line_sk.png");
+}
+#l .flat .chartBorder ul li:nth-of-type(5) .icon{
+    background-image: url("../img/line_rsq.png");
+}
+#l .flat .chartBorder ul li:nth-of-type(6) .icon{
+    background-image: url("../img/line_cd.png");
+}
+#l .flat .chartBorder ul li:nth-of-type(7) .icon{
+    background-image: url("../img/line_ds.png");
+}
+
+#l .flat .chartBorder ul li .number {
+    background-image: url(../img/bgNumber.png);
+    background-size: 95% 100%;
+    background-repeat: no-repeat;
+    font-size: 160%;
+    letter-spacing: 6px;
+    padding: 0 0 0 3px;
+    float: right;
+}
 #l #switchlegend{
     position: absolute;
     left: 10px;

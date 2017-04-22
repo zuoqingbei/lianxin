@@ -12,18 +12,189 @@ function getGeoArr(data) {
     // console.log("geo"+geo);
     return geo;
 }
-var mDataBase;
-var productCode,labType;
-var legendData1 ;
-var legendData2;
-var legendDataCode1 ;
-var legendDataCode2;
-var selectedData;
-/*productCode=24;
-labType=4;*/
+/**
+ * 平面世界地图数据准备
+ * @param myChart
+ * @param isFirst
+ */
+function createArrData(productCode,labType){
+	$.post(contextPath+"/lab/labShowFlatMapAjax",{"productCode":productCode,"labType":labType},function(dataBase1){
+		mDataBase=jsonToArray(dataBase1);
+		var option = {
+	    // backgroundColor: "rgba(255,0,0,0)",
+	    color: ['gold', 'aqua', 'lime'],
+	    title: {
+	        show:false,
+	        text: '模拟迁徙',
+	        subtext: '数据纯属虚构',
+	        x: 'center',
+	        textStyle: {
+	            color: '#fff'
+	        }
+	    },
+	    calculable: false,
+	    tooltip: {
+	        show: true,
+	        showContent: true,
+	        enterable: true,
+	        trigger: 'item',
+	//				        showDelay:100,
+	        hideDelay: 300,
+	        position: function (p) {
+	//                return [p[0] - 130, p[1] - 90];
+	            return [p[0] + 100, p[1] + 100];
+	        },
+	        padding: [0, 0, 0, 0],
+	//            width: 207,
+	//            height: 110,
+	//            backgroundColor: 'rgba(13,43,67,0.7)',
+	//            borderColor: 'rgba(31,120,214,1)',
+	        // params : 数组内容同模板变量，
+	        formatter: function (param) {
+	            //在这里是第一步
+	            $elList = [];
+	            //提示框的内容清空
+	            $echartTips.empty();
+	            //初始化轮播，就是将轮播定时器停止
+	            stopNewsShown();
+	            //调用轮播方法，参数主要是弹出点坐标
+	            var $el = addNewsElem(param.data);
+	            return '';
+	        },
+	    },
+	 
+	
+	    series: seriesData(mDataBase)
+	}
+		myChart.clear();
+		startNewsShown();
+		myChart.setOption(option);
+		//setEvent(myChart);
+})
+
+}
+function seriesData(data){
+	 var seriesData = [];
+	    var item={
+	    		tooltip:{
+	    	          show:false
+	    	        },
+	            name: 'zy_hotpoint',
+	            type: 'map',
+	            roam: false,
+	            hoverable: false,
+	            mapType: 'world',
+	            mapLocation:{
+	                x:'right',
+	            },
+	            itemStyle:{
+	                normal:{
+	                    borderColor:'rgba(100,149,237,1)',
+	                    borderWidth:0.5,
+	                    areaStyle:{
+	                        color: '#1b1b1b'
+	                    }
+	                }
+	            },
+	            data:[],
+	            markPoint: {
+	                symbol: 'emptyCircle',
+	                symbolSize: function (v) {
+	                    if (v > 15) {
+	                        return v / 12;
+	                    } else {
+	                        return 10;
+	                    }
+	                },
+	                effect: {
+	                    show: true,
+	                    type: 'scale',//圈圈
+	                    loop: true,
+	                    shadowBlur: 0
+	                },
+	                itemStyle: {
+	                    normal: {label: {show: false}},
+	                    emphasis: {label: {show: false}}
+	                },
+	                data: data
+	            },
+	            geoCoord: getGeoArr(data)
+	         
+	        };
+	    seriesData.push(item);
+
+   	item={
+               name: '',
+               type: 'map',
+               roam: false,
+               hoverable: false,
+               mapType: 'world',
+               mapLocation: {
+                   x: "0",
+                   // y: "top"
+               },
+               itemStyle: {
+                   normal: {
+                       borderColor: 'rgba(100,149,237,1)',
+                       borderWidth: 0.5,
+                       areaStyle: {
+                           color: '#1b1b1b'
+                       }
+                   }
+               },
+               data: [],
+               markPoint: {
+                   symbol: 'emptyCircle',
+                   symbolSize: function (v) {
+                       if (v > 15) {
+                           return v / 12;
+                       } else {
+                           return 1;
+                       }
+                   },
+                   effect: {
+                       show: true,
+                       type: 'scale',//圈圈
+                       loop: true,
+                       shadowBlur: 0
+                   },
+                   itemStyle: {
+                       normal: {label: {show: false}},
+                       emphasis: {label: {show: false}}
+                   },
+                   data: data
+               },
+               markLine: {
+                   smooth: true,
+                   effect: {
+                       show: true,
+                       scaleSize: 2,
+                       period: 30,
+                       color: '#fff',
+                       shadowBlur: 10
+                   },
+                   itemStyle: {
+                       normal: {
+                           borderWidth: 1,
+                           lineStyle: {
+                               type: 'solid',
+                               shadowBlur: 10
+                           }
+                       }
+                   },
+                   data:dataToArrayContinueArray(data)
+               },
+           }
+   	
+   	seriesData.push(item);
+   	
+   
+	    return seriesData;
+}
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('mapFlat'));
-createArrData(myChart,true);
+//调用父页面 获取数据
+window.parent.selectActLi();
 
 
 

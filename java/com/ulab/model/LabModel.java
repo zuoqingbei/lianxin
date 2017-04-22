@@ -11,34 +11,29 @@ import com.jfinal.plugin.activerecord.Record;
 public class LabModel extends Model<LabModel> {
 	private static final long serialVersionUID = 4762813779629969917L;
 	public static final LabModel dao = new LabModel();
-	public static final int SHOW_IN_MAP=0;//显示在地图
+	public static final int SHOW_IN_MAP=1;//显示在地图
 	public static final int DEL_FALG=0;//未删除标志
 	public static final String WHERE_SQL="   ";
+	public static final String QD_LNG="120.355171";//青岛经度
+	public static final String QD_LAT="36.082981";//青岛维度
 	/**
 	 * 
-	 * @time   2017年4月13日 上午9:46:53
+	 * @time   2017年4月21日 下午2:38:19
 	 * @author zuoqb
-	 * @todo   查询展示在世界地图上的实验室-Map3D数据 数据是一级  二级
+	  * @todo   查询展示在世界地图上的实验室-Map3D数据 数据是一级  二级
 	 * 实验室等级 0：四大类 1：一级子类 2：二级子类
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
 	public List<Record> labShowWorldMap(){
-		String pFromSql=" select distinct parent_id from t_b_lab_info where lab_level=1 and show_in_map="+LabModel.SHOW_IN_MAP+" and del_flag="+LabModel.DEL_FALG;
-		String pSql=" select c.id,c.short_name as shortname,c.lng,c.lat,c. id as cid,c.parent_id as pid,nvl (n.num, 0) as value from ";
-		pSql+=" (select * from t_b_lab_info where id in ("+pFromSql+")"+"  order by order_no) c ";
-		//数量
-		pSql+=" left join (select parent_id,	count (1) as num from	t_b_lab_info where parent_id in (";
-		pSql+=" select id 	from 	t_b_lab_info where id in ("+pFromSql+")";
-		pSql+=" 	)	group by parent_id) n on n.parent_id = c. id ";
+		String pSql="select id,d.short_name as shortname,'"+QD_LNG+"' as lng,'"+QD_LAT+"' as lat,a.num as value from t_b_dictionary d  ";
+		pSql+=" left join (select lab_type_code,count(1) as num from(select  lab_type_code,code from t_b_lab_info where del_flag=0 and show_in_map=1 group by lab_type_code,code) group by lab_type_code ";
+		pSql+=" )a on d.id=a.lab_type_code where d.type='lab_type' and d.del_flag=0 order by d.order_no ";
 		List<Record> parentList=Db.find(pSql);
     	for(Record r:parentList){
-    		String fromSql="  from t_b_lab_info where parent_id="+r.get("id")+" and del_flag="+LabModel.DEL_FALG+" and show_in_map="+LabModel.SHOW_IN_MAP;
-    		String sql=" select p.short_name as pshortname,p.lng as plng,p.lat as plat,c.short_name as shortname,c.lng,c.lat,c.id as cid,p.id as pid,nvl(n.num,0) as value ";
-    		sql+="  from ("+" select * "+fromSql+" order by order_no ) c left join t_b_lab_info  p on c.parent_id=p.id ";
-    		//统计数量
-    		sql+=" left join (select parent_id,count(1) as num from t_b_lab_info where parent_id in(";
-    		sql+=" select id "+fromSql+") and del_flag=0 and show_in_map=0 group by parent_id)n on n.parent_id=c.id";
+    		String sql="select p.short_name as pshortname,'"+QD_LNG+"' as plng,'"+QD_LAT+"' as plat,c.name as shortname,c.lng,c.lat,0 as value from t_b_lab_info c";
+    		sql+="  left join t_b_dictionary p on p.id=c.lab_type_code ";
+    		sql+="   where c.del_flag=0 and c.show_in_map=1 and c.lab_type_code='"+r.get("id")+"'";
     		List<Record> cList=Db.find(sql);
     		r.set("cList", cList);
     	}
@@ -81,11 +76,11 @@ public class LabModel extends Model<LabModel> {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public List<Record> labStatisByField(String field){
+	public List<Record> labStatisByField(String sqlWhere,String field){
 		StringBuffer sb=new StringBuffer();
 		sb.append(" select d.name as name, nvl(count(1),0) as count from   ");
 		sb.append("  t_b_lab_info lab left join t_b_dictionary d on lab."+field+"=d.id ");
-		sb.append("  where lab.del_flag="+DEL_FALG+" and lab."+field+" is not null group by d.name,d .order_no order by d.order_no ");
+		sb.append("  where lab.del_flag="+DEL_FALG+" and lab."+field+" is not null "+sqlWhere+" group by d.name,d .order_no order by d.order_no ");
 		return Db.find(sb.toString());
 	}
 	/**
