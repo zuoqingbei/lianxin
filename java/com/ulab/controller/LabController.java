@@ -12,6 +12,7 @@ import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
 import com.ulab.model.DicModel;
 import com.ulab.model.LabCarryModel;
+import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 import com.ulab.util.SqlUtil;
@@ -143,5 +144,33 @@ public class LabController extends BaseController {
     public void labLinkAjax(){
     	Record  recode=LabModel.dao.labLink();
 		renderJson(recode);
+    }
+    ////////////////////////////////////右侧////////////////////////////
+    public void right() {
+        render("index_right.html");
+    }
+    /**
+     * 
+     * @time   2017年4月23日 下午12:07:14
+     * @author zuoqb
+     * @todo   标准状态数据统计
+     * @param  
+     * @return_type   void
+     */
+    public void standardStatusAjax(){
+    	Record  recode=LabDataResultModel.dao.standardStatus();
+		renderJson(recode);
+    }
+    /**
+     * 
+     * @time   2017年4月23日 下午12:07:14
+     * @author zuoqb
+     * @todo   能力状态数据统计
+     * @param  
+     * @return_type   void
+     */
+    public void abilityStatusAjax(){
+    	List<Record>  list=LabDataResultModel.dao.dataResultBType(1);
+		renderJson(list);
     }
 }

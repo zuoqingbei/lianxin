@@ -124,10 +124,7 @@ function reloadData(productCode,labType){
 	 //console.log(echarts.init(document.getElementById('iframe').contentWindow.document.getElementById("mapFlat")))
 	 //document.getElementById('iframe').contentWindow.say()
 	document.getElementById('iframe').contentWindow.createArrData(productCode,labType);
-	//专业能力-实验室性质
-	labPropertiesStatis();
-	//实验目的--可开展实验类型
-	labLifeCycleStatis();
+	reloadLeftData();
 }
 //点击a元素时
 function navSelectA() {//这里会触发地图中要加载的数据

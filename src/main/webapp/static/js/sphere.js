@@ -92,7 +92,7 @@ function mapSphere() {
 	                            effect: {
 	                                show: true
 	                            },
-	                            distance:10,
+	                            distance:6,
 	                            itemStyle: {
 		                            normal: {
 		                                // 线的颜色默认是取 legend 的颜色

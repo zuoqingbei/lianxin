@@ -95,12 +95,12 @@
                             <div class="labLine">
                                 <ul class="lab hidden">
                                 	##for(type in labType){
-                                		<li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.name!}</a> </li>
+                                		<li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.short_name!}</a> </li>
                                 	##}
                                 </ul>
                                 <ul class="line">
                                    ##for(type in productLine){
-                                		<li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.name!}</a> </li>
+                                		<li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.short_name!}</a> </li>
                                 	##}
                                 </ul>
                             </div>
@@ -160,18 +160,7 @@ $(function () {
     //左下角的图表
     myChartFlatLB = echarts.init($("#l").find(".flat-left-bottom .myChart")[0]);
     myCharts = [myChartFlatRT, myChartFlatRB,myChartFlatLB];
-  //产线维度实验室数量统计
-    proLineStatis();
-    //实验室数量统计
-    labNumStatis();
-    //实验室区域数量统计：大洲 国家
-	labAreaSpread();
-	//按照实验室四大类统计数量
-    labTypeStatis();
-	//专业能力-实验室性质
-	labPropertiesStatis();
-	//实验目的--可开展实验类型
-	labLifeCycleStatis();
+    reloadLeftData();
 
 });
 </script>

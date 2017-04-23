@@ -7,6 +7,7 @@ import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
+import com.ulab.core.Constants;
 @TableBind(tableName = "t_b_lab_carry",pkName="id")
 public class LabCarryModel extends Model<LabCarryModel> {
 	private static final long serialVersionUID = 4762813779629969917L;
@@ -22,7 +23,7 @@ public class LabCarryModel extends Model<LabCarryModel> {
 	 */
 	public List<Record> findCarryByCode(String labCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select * from t_b_lab_carry where lab_code='"+labCode+"' and del_flag=0  ");
+		sb.append(" select * from t_b_lab_carry where lab_code='"+labCode+"' and del_flag="+Constants.DEL_FALG+"  ");
 		return Db.find(sb.toString());
 	}
 	/**
@@ -37,7 +38,7 @@ public class LabCarryModel extends Model<LabCarryModel> {
 		StringBuffer sb=new StringBuffer();
 		sb.append(" select d.name as name, nvl(count(1),0) as count from   ");
 		sb.append(" t_b_lab_carry c left join t_b_lab_info lab on lab.code=c.lab_code left join t_b_dictionary d on c.carry_code = d.id");
-		sb.append("  where c.del_flag=0  group by d.name,d .order_no order by d.order_no ");
+		sb.append("  where c.del_flag="+Constants.DEL_FALG+"  group by d.name,d .order_no order by d.order_no ");
 		return Db.find(sb.toString());
 	}
 }

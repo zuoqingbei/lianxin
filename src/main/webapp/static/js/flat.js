@@ -343,12 +343,12 @@ function getTopicHtml(currentPoint) {
     var time = currentPoint.dateTime;
     var title = currentPoint.title;
     var id = currentPoint.id;
-    var url = "/YIJIAN/article?artid=";
+    var url = "";
     return $('<div class="echart_tip">' +
         '<div class="dialog_title echart_content">' +
-        '<a title="' + title + '"  href="' + url + id + '" target="_blank" >' +
+        '<a title="' + title + '"  href="#" target="_blank" >' +
         '<span style="color:#ffffff;font-size:16px;text-shadow:2px 2px 2px rgba(0,0,0,0.9);">' + title + '</span>' +
-        '</a>' + city + '&nbsp;&nbsp' + time +
+        '</a>实验室数量：' + value +
         '</div>' +
         '<div class="echart_tip_arrow">' +
         '<div class="echart_tip_line"></div>' +

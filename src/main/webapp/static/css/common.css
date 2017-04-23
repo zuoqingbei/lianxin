@@ -93,7 +93,7 @@ a:hover {
 }
 #right{
   flex: 4;
-  background-color: rgba(135, 206, 235, 0.28);
+  /*background-color: rgba(135, 206, 235, 0.28);*/
 }
 
 #mask{

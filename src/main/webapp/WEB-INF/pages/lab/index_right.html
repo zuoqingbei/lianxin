@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <title>U-lab数据中心</title>
-    <!--<link rel="stylesheet" href="../asserts/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">-->
 
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/index_left.css">
-    <link rel="stylesheet" href="../css/index_right.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
+    <link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/index_right.css">
     <style>
     </style>
 </head>
@@ -23,8 +24,8 @@
             <h1>U-lab全球互联数据中心</h1>
         </header>
         <div class="btnGroup">
-            <img class="sphere" src="../img/btn_sphere_on.png">
-            <img class="sphere" src="../img/btn_flat_off.png">
+            <img class="sphere" src="${contextPath!}/static/img/btn_sphere_on.png">
+            <img class="sphere" src="${contextPath!}/static/img/btn_flat_off.png">
         </div>
         <div class="switchGroup">
             <div class="switch sphere hidden">
@@ -38,24 +39,8 @@
                 <button id="switchLegend">图例开关</button>
             </div>
             <div class="switch flat">
-<!--电子表字体数据，暂时不用了
-                <div class="numberInfo cf">
-                    <div class="item">
-                        <h3>实验室总数</h3>
-                        <div class="nb">7583</div>
-                    </div>
-                    <div class="item">
-                        <h3>已联通数</h3>
-                        <div class="nb">7589</div>
-                    </div>
-                    <div class="item">
-                        <h3>连通率</h3>
-                        <div class="nb">98%</div>
-                    </div>
-                </div>
--->
                 <div class="mapArea">
-                    <!--<iframe id="iframe" scrolling="no" frameborder="0" src="../pages/flatMap.html"></iframe>-->
+                    <!--<iframe id="iframe" scrolling="no" frameborder="0" src="${contextPath!}/static/pages/flatMap.html"></iframe>-->
                 </div>
                 <div class="flat-right">
                     <div class="flat-right-top">
@@ -79,16 +64,204 @@
         <!--这里是后面4屏的代码-->
         <div class="tab">
             <ul>
-                <li class="tab-item">总状态</li>
-                <li class="tab-item">运营状态</li>
+                <li class="tab-item active">总状态</li>
+                <li class="tab-item">实验室状态</li>
                 <li class="tab-item">数据结果</li>
                 <li class="tab-item">数据挖掘应用</li>
             </ul>
         </div>
         <!--总状态-->
         <div class="box selected total_state">
-            <div class="total_left"></div>
-            <div class="total_right"></div>
+            <div class="total_top">
+                <div class="total_top_1">
+                    <div class="echarts_title">设施状态</div>
+                    <div id="myChart1"></div>
+
+                </div>
+                <div class="total_top_2">
+                    <div class="echarts_title">人员状态</div>
+                   <div class="total_top_2_box">
+                       <ul>
+                           <li class="total_top_2_left xueli">学历
+                               <ul>
+
+                                   <li>
+                                       <span class="bar_name">研究生</span>
+                                       <div class="progress">
+                                           <div class="progress-bar1" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%;height: 110%"></div>
+                                       </div>
+                                       <span>50%</span>
+                                   </li>
+                                   <li>
+                                       <span class="bar_name">本科</span>
+                                       <div class="progress">
+                                           <div class="progress-bar1" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;height: 110%"></div>
+                                       </div>
+                                       <span>40%</span>
+                                   </li>
+                                   <li>
+                                       <span class="bar_name">其他</span>
+                                       <div class="progress">
+                                           <div class="progress-bar1" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;height: 110%"></div>
+                                       </div>
+                                       <span>10%</span>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class=" total_top_2_left nianxian">年限
+                               <ul>
+
+                                   <li>
+                                       <span class="bar_name">3-8年</span>
+                                       <div class="progress">
+                                           <div class="progress-bar2" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;height: 110%"></div>
+                                       </div>
+                                       <span>50%</span>
+                                   </li>
+                                   <li>
+                                       <span class="bar_name">8-15年</span>
+                                       <div class="progress">
+                                           <div class="progress-bar2" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;height: 110%"></div>
+                                       </div>
+                                       <span>30%</span>
+                                   </li>
+                                   <li>
+                                       <span class="bar_name">3年以下</span>
+                                       <div class="progress">
+                                           <div class="progress-bar2" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;height: 110%"></div>
+                                       </div>
+                                       <span>10%</span>
+                                   </li>
+
+                                   <li>
+                                       <span class="bar_name">15年以上</span>
+                                       <div class="progress">
+                                           <div class="progress-bar2" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;height: 110%"></div>
+                                       </div>
+                                       <span>10%</span>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="total_top_2_left zizhi">资历
+                               <ul>
+
+                                   <li>
+                                       <span class="bar_name">权限检测</span>
+                                       <div class="progress">
+                                           <div class="progress-bar3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;height: 110%"></div>
+                                       </div>
+                                       <span>50%</span>
+                                   </li>
+                                   <li>
+                                       <span class="bar_name">标准权限</span>
+                                       <div class="progress">
+                                           <div class="progress-bar3" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;height: 110%"></div>
+                                       </div>
+                                       <span>30%</span>
+                                   </li>
+                                   <li>
+                                       <span class="bar_name">审核权限</span>
+                                       <div class="progress">
+                                           <div class="progress-bar3" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%;height: 110%"></div>
+                                       </div>
+                                       <span>15%</span>
+                                   </li>
+                                   <li>
+                                       <span class="bar_name">出具报告权限</span>
+                                       <div class="progress">
+                                           <div class="progress-bar3" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%;height: 110%"></div>
+                                       </div>
+                                       <span>5%</span>
+                                   </li>
+                               </ul>
+                           </li>
+                       </ul>
+                   </div>
+                </div>
+                <div class="total_top_3">
+                    <div class="echarts_title">标准状态</div>
+                    <div class="total_top_3_left">
+                        <ul>
+                            <li>制修订情况</li>
+                            <li id="reviseNum">0</li>
+                        </ul>
+                        <ul>
+                            <li>标准总数</li>
+                            <li id="standardNum">0</li>
+                        </ul>
+                    </div>
+                    <div class="total_top_3_right">
+                        <div id="myChart2"></div>
+                    </div>
+                </div>
+                <div class="total_top_4">
+                    <div class="echarts_title">能力状态</div>
+                    <div id="myChart3"></div>
+                    <div class="echarts_line">
+                        <span>应具备数</span></br><span>380</span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="total_center">
+                <div class="total_center_1">
+                    <div class="echarts_title">一次合格率</div>
+                    <div class="echarts_title_left">
+                        <ul>
+                            <li>海尔今年实验室一次合格率为<span>98%</span></li>
+                            <li style="display: inline-block">同比上升</li><span>50%</span>
+                        </ul>
+                    </div>
+                    <div id="myChart4"></div>
+                </div>
+                <div class="total_center_2">
+                    <div class="echarts_title">问题闭环率</div>
+                    <div class="echarts_title_left">
+                        <ul>
+                            <li>海尔今年实验室问题闭环率为<span>98%</span></li>
+                            <li style="display: inline-block">同比上升</li><span>50%</span>
+                        </ul>
+                    </div>
+                    <div id="myChart5"></div>
+                </div>
+                <div class="total_center_3">
+                    <div class="echarts_title">订单及时率</div>
+                    <div id="myChart6"></div>
+                </div>
+                <div class="total_center_4">
+                    <div class="echarts_title">用户满意度</div>
+                    <div id="myChart7"></div>
+                </div>
+            </div>
+            <div class="total_bottom">
+                <div class="total_bottom_left">
+                    <div class="total_bottom_pie">
+                        <div id="myChart8"></div>
+                    </div>
+                    <div class="total_bottom_bar1">
+                        <div class="echarts_title echarts_title1">量产一致型号数</div>
+                        <div id="myChart9"></div>
+                    </div>
+                    <div class="total_bottom_bar2">
+                        <div class="echarts_title echarts_title1">量产不一致型号数</div>
+                        <div id="myChart10"></div>
+                    </div>
+
+                </div>
+                <div class="total_bottom_right">
+                    <div class="total_bottom_pie">
+                        <div id="myChart11"></div>
+                    </div>
+                    <div class="total_bottom_bar1">
+                        <div class="echarts_title echarts_title1">共产一致型号数</div>
+                        <div id="myChart12"></div>
+                    </div>
+                    <div class="total_bottom_bar2">
+                        <div class="echarts_title echarts_title1">共产不一致型号数</div>
+                        <div id="myChart13"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!--运营状态-->
         <div class="box yunying_state">22</div>
@@ -105,67 +278,31 @@
 3/7的宽度是5760,
 在笔记本上比例不变适应高度后，宽度为3186px
 -->
-
-<script src="../asserts/js/jquery-2.2.4.js"></script>
-<!--<script src="../asserts/js/require.js"></script>-->
-<script src="../asserts/js/bootstrap.min.js"></script>
-<script src="../asserts/echarts/echarts.js"></script>
-<script src="../asserts/echarts/echarts-x.js"></script>
-<<<<<<< HEAD:pages/index.html
-<script src="../asserts/js/jquery.dragsort-0.5.2.js"></script>
-<script src="../asserts/js/require.js"></script>
-=======
->>>>>>> bfb2da0aa15d3a5ed60947a1349fabbc44e39095:pages/index_right.html
 <script>
-    // 路径配置
-    require.config({
-        paths: {
-            'echarts-3.5.2':'../asserts/echarts/echarts-3.5.2',
-            'echarts-all':'../asserts/echarts/echarts-all',
-            'echarts': '../dep/echarts/build',
-            'echarts-x': '../dep/echarts-x/build'
-        }
-    });
-    // 然后就可以动态加载图表进行绘制啦
-    require([
-        'echarts',
-        'echarts-x',
-        // ECharts-X 中 map3d 的地图绘制基于 ECharts 中的 map。
-        'echarts/chart/map',
-        'echarts-x/chart/map3d'
-    ])
+var contextPath='${contextPath!}';
 </script>
-<script src="../js/sphere.js"></script>
-<script src="../js/boot.js"></script>
-<<<<<<< HEAD:pages/index.html
-<script src="../js/flat.js"></script>
-<script src="../js/manyEcharts.js"></script>
-<script src="../js/main_left.js"></script>
-=======
-<script src="../js/main.js"></script>
-<script>
-</script>
->>>>>>> bfb2da0aa15d3a5ed60947a1349fabbc44e39095:pages/index_right.html
-<script>
-    if (document.location.href.indexOf('local') == -1) {
-        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fb78830c9a5dad062d08b90b2bc0cf5da' type='text/javascript'%3E%3C/script%3E"));
-    }
-</script>
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/asserts/js/bootstrap.min.js"></script>
+<script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.min.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/manyEcharts.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/right_statistics.js?time=New Date()"></script>
 <!--右面 4*3 js代码-->
 <script>
-    $(function(){
+    $(function () {
+    	standardStatus();
+    	abilityStatus();
         $(".tab-item").click(function () {
             $(this).addClass("active").siblings().removeClass("active");
 
             // 3. 获取到当前菜单的索引号
             var index = $(this).index();
-
             // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
             //.selected display:block
             $(".box:eq(" + index + ")").addClass("selected").siblings().removeClass("selected");
         });
-    })
+    });
+
 </script>
 </body>
 </html>

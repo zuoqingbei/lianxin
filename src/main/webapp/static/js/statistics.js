@@ -4,6 +4,20 @@
  */
 var field="field";
 var labType="",productCode="";
+function reloadLeftData(){
+	 //实验室数量统计
+    labNumStatis();
+    //产线维度实验室数量统计
+    proLineStatis();
+    //实验室区域数量统计：大洲 国家
+	labAreaSpread();
+	//按照实验室四大类统计数量
+    labTypeStatis();
+	//专业能力-实验室性质
+	labPropertiesStatis();
+	//实验目的--可开展实验类型
+	labLifeCycleStatis();
+}
 //实验室数量统计
 function labNumStatis(){
 	$.post(contextPath+'/lab/labNumStatisAjax',{},function(data){
@@ -21,7 +35,7 @@ function labAreaSpread(){
 
 //产线维度实验室数量统计
 function proLineStatis(){
-	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"product_code"},function(data){
+	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"product_code","labType":labType},function(data){
 		var nums=[];
 		$("#pro_line").html("");
 		$.each(data,function(index,item){
@@ -35,7 +49,7 @@ function proLineStatis(){
 
 //按照实验室四大类统计数量
 function labTypeStatis(){
-	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code"},function(data){
+	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code","productCode":productCode},function(data){
 			myChartFlatLB.clear();
 		 	myChartFlatLB.setOption(getLineEcharts());
 		    myChartFlatLB.setOption({
