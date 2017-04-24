@@ -100,7 +100,7 @@ function standardStatus(){
 //		            color:'#66ccff'
 		        color: '#ff9933'
 		    },
-		    series: [
+		   /* series: [
 		        {
 		            type: 'pie',
 		            center: ['35%', '22%'],
@@ -183,7 +183,80 @@ function standardStatus(){
 		                {name: '企业标准', value: num6, itemStyle: labelTop}
 		            ]
 		        }
-		    ]
+		    ]*/
+		    series: [
+				        {
+				            type: 'pie',
+				            center: ['35%', '22%'],
+				            radius: radius,
+				            x: '40%', // for funnel
+				            itemStyle: labelFromatter,
+				            data: [
+				                {name: 'other', value: 100-num0, itemStyle: labelBottom},
+				                {name: '牵头起草数', value: num0, itemStyle: labelTop}
+				            ]
+				        },
+				        {
+				            type: 'pie',
+				            center: ['65%', '22%'],
+				            radius: radius,
+				            x: '60%', // for funnel
+				            itemStyle: labelFromatter,
+				            data: [
+				                {name: 'other', value: 100-num1, itemStyle: labelBottom},
+				                {name: '参与起草数', value: num1, itemStyle: labelTop}
+				            ]
+				        },
+				        {
+				            type: 'pie',
+				            center: ['10%', '75%'],
+				            radius: radius,
+				            y: '55%',   // for funnel
+				            x: '0%',    // for funnel
+				            itemStyle: labelFromatter,
+				            data: [
+				                {name: 'other', value: 100-num2, itemStyle: labelBottom},
+				                {name: '国家标准', value: num2, itemStyle: labelTop}
+				            ]
+				        },
+				        {
+				            type: 'pie',
+				            center: ['35%', '75%'],
+				            radius: radius,
+				            y: '55%',   // for funnel
+				            x: '20%',    // for funnel
+				            itemStyle: labelFromatter,
+				            data: [
+				                {name: 'other', value: 100-num3, itemStyle: labelBottom},
+				                {name: '国际标准', value: num3, itemStyle: labelTop}
+				            ]
+				        },
+				        {
+				            type: 'pie',
+				            center: ['60%', '75%'],
+				            radius: radius,
+				            y: '55%',   // for funnel
+				            x: '40%', // for funnel
+				            itemStyle: labelFromatter,
+				            data: [
+				                {name: 'other', value: 100-num4, itemStyle: labelBottom},
+				                {name: '行业标准', value: num4, itemStyle: labelTop}
+				            ]
+				        },
+				      
+				        {
+				            type: 'pie',
+				            center: ['85%', '75%'],
+				            radius: radius,
+				            y: '55%',   // for funnel
+				            x: '80%', // for funnel
+				            itemStyle: labelFromatter,
+				            data: [
+				                {name: 'other', value: 100-num6, itemStyle: labelBottom},
+				                {name: '企业标准', value: num6, itemStyle: labelTop}
+				            ]
+				        }
+				    ]
 		};
 		myChart2.setOption(option);
 	})
@@ -192,7 +265,13 @@ function standardStatus(){
 //能力状态
 function abilityStatus(){
 	$.post(contextPath+'/lab/abilityStatusAjax',{},function(data){
-		console.log(data)
+		var maxNum=parseInt(data.allnum);
+		$.each(data.data,function(index,item){
+			if(maxNum<parseInt(item.count)){
+				maxNum=parseInt(item.count);
+			}
+		})
+		$("#ability_all_num").html(data.allnum)
 		//能力状态 柱形图
 		var myChart3 = echarts.init(document.getElementById("myChart3"));
 		myChart3.setOption(getBarEcharts());
@@ -201,14 +280,15 @@ function abilityStatus(){
 		    yAxis: [
 		        {
 		            name: "数量",
-		            type: 'value'
+		            type: 'value',
+		            max: maxNum
 		        }
 		    ],
 		    xAxis: [
 		        {
 		            name: "",
 		            type: 'category',
-		            data: statisticRightLengend(data)
+		            data: statisticRightLengend(data.data)
 		        }
 		    ],
 		    grid: {
@@ -218,7 +298,7 @@ function abilityStatus(){
 		    series: [
 		        {
 		            symbolSize: ['40%', '10%'],
-		            data: statisticRightSeriesData(data)
+		            data: statisticRightSeriesData(data.data)
 		        }
 		    ]
 		});

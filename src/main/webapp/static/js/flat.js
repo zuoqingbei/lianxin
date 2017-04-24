@@ -146,8 +146,8 @@ function seriesData(data){
                markPoint: {
                    symbol: 'emptyCircle',
                    symbolSize: function (v) {
-                       if (v > 15) {
-                           return v / 12;
+                       if (v > 30) {
+                           return v / 30;
                        } else {
                            return 1;
                        }

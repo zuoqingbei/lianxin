@@ -128,11 +128,13 @@ public class LabController extends BaseController {
      * 
      * @time   2017年4月21日12:12:13
      * @author zuoqb
-     * @todo  开展类型数量统计
+     * @todo  开展类型数量统计-实验目的
      */
     public void labCarryNumStatisAjax(){
     	String sqlWhere=SqlUtil.commonWhereSql(this,"lab");
+    	//开展类型-实验目的
     	List<Record> carryStatis=LabCarryModel.dao.labCarryNumStatis(sqlWhere);
+    	//实验目的对应的订单量
 		renderJson(carryStatis);
     }
     /**
@@ -170,7 +172,11 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void abilityStatusAjax(){
+    	Integer allNum=LabDataResultModel.dao.resultNumStatisticBType(3);
     	List<Record>  list=LabDataResultModel.dao.dataResultBType(1);
-		renderJson(list);
+    	Record result=new Record();
+    	result.set("allNum", allNum);
+    	result.set("data", list);
+		renderJson(result);
     }
 }

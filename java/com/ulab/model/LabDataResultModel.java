@@ -58,4 +58,16 @@ public class LabDataResultModel extends Model<LabDataResultModel> {
 		record.set("standardData", LabDataResultModel.dao.dataResultBType(0));
 		return record;
 	}
+	/**
+	 * 
+	 * @time   2017年4月24日 上午10:43:22
+	 * @author zuoqb
+	 * @todo   实验目的对应的订单
+	 * @param  @return
+	 * @return_type   List<Record>
+	 */
+	/*public List<Record> orderByCarry(){
+		StringBuffer sb=new StringBuffer();
+		return Db.find(sb.toString());
+	}*/
 }

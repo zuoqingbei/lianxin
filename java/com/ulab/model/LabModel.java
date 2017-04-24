@@ -91,7 +91,7 @@ public class LabModel extends Model<LabModel> {
 				+ field + "=d.id ");
 		sb.append("  where lab.del_flag=" + Constants.DEL_FALG + " and lab." + field
 				+ " is not null " + sqlWhere
-				+ " group by d.name,d .order_no,d.id order by d.order_no ");
+				+ " group by d.name,d .order_no,d.id order by d.order_no desc ");
 		List<Record> list=Db.find(sb.toString());
 		if(Constants.MONI_JOIN_TIYAN&&"properties_code".equals(field)){
 			//如果统计实验室性质，需要对用户体验与用户模拟做合并处理
