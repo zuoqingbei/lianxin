@@ -27,7 +27,7 @@ public class LabMapModel extends Model<LabModel> {
 		String sWhere=" del_flag="+Constants.DEL_FALG;
 		sWhere+=sqlWhere;
     	String sql="";
-    	sql+=" select m.lng,m.lat,m.short_name as title,m.name,lab.num,'' as datetime  from t_b_lab_map m left join (";
+    	sql+=" select m.lng,m.lat,m.short_name as title,m.name,lab.num,'' as datetime,m.location,m.lab_type  from t_b_lab_map m left join (";
     	sql+=" select belong_gl_code,count(1) as num from t_b_lab_info lab where "+sWhere+" group by lab.belong_gl_code ";
     	sql+=" ) lab on lab.belong_gl_code=m.id ";
 		return Db.find(sql);

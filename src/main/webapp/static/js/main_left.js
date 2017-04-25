@@ -2,9 +2,18 @@
  * Created by Administrator on 2017/4/7 0007.
  */
 var $left = $("#l");
-
+//加载时调整页面比例
+function pageResize() {
+    var h = $(window).height();
+    console.log(h);
+    $("#content").css("width",h*16*7/(9*3));
+}
 //进入时的视频淡出效果
 function videoFadeOut() {
+	    $("body").prepend('<div id="mask">'+
+                            '<video src="'+contentPath+'/img/movieHead.mp4"  width="100%" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>'+
+                      '</div>'
+    );
     var $video = $('video');
     $video.click(function(){
         $(this)[0].play()
@@ -19,7 +28,7 @@ function videoFadeOut() {
 }
 //切换地图显示区域
 function switchMapArea(charts) {
-    var iframe = '<iframe id="iframe" scrolling="no" frameborder="0" src="'+contextPath+'/lab/flatMap" ></iframe>';
+    var iframe =  '<iframe id="iframe" scrolling="no" frameborder="0" src="'+contextPath+'/lab/flatMap" ></iframe>';
     $left.find(".btnGroup img").click(function () {
         var src = $(this).attr("src");
         if (src.indexOf("off") >= 0) {
@@ -33,14 +42,20 @@ function switchMapArea(charts) {
                 $left.find(".flat .mapArea iframe").remove();
                 $left.find(".switch.flat").css("display","flex").find(".mapArea").append(iframe).parent().parent()
                     .siblings().hide();
-
-                for(var i = 0; i < charts.length;i++){
-                    charts[i].resize();
-                }
-
             }
         }
     });
+    
+}
+//重置echart图标大小 在加载平面地图时被调用
+function resetSize(){
+	   for(var i = 0; i < myCharts.length;i++){
+           myCharts[i].resize();
+       }
+	  /* if(getSelectLab()){
+		   document.getElementById('iframe').contentWindow.createArrData(productCode,labType);
+	   }*/
+	   document.getElementById('iframe').contentWindow.createArrData(productCode,labType);
 }
 //切换生产线和实验室的列表显示
 function navLabLine() {
@@ -101,21 +116,32 @@ function navSelectAll() {
 }
 //选取被激活li元素下面的值
 function selectActLi() {
+	getSelectLab();
+    reloadData(productCode,labType);
+}
+//获取实验室类别 产线选择类型
+function getSelectLab(){
 	//实验室类别
-	labType="";
-	productCode="";
+	var changed=true;
+	var mlabType="";
+	var mproductCode="";
     var $actLi = $(".legend .labLine .lab").find("li.active");
     $actLi.each(function () {
-    	labType+=$(this).attr("code")+","
+    	mlabType+=$(this).attr("code")+","
     });
     //产线
     var $actLiPro = $(".legend .labLine .line").find("li.active");
     $actLiPro.each(function () {
-    	productCode+=$(this).attr("code")+","
+    	mproductCode+=$(this).attr("code")+","
     });
-    productCode=productCode.substr(0,productCode.length-1);
-    labType=labType.substr(0,labType.length-1);
-    reloadData(productCode,labType);
+    mproductCode=mproductCode.substr(0,mproductCode.length-1);
+    mlabType=mlabType.substr(0,mlabType.length-1);
+    if(mlabType==labType&&mproductCode==productCode){
+    	changed=false;
+    }
+    labType=mlabType;
+    productCode=mproductCode;
+    return changed;
 }
 //重置数据
 function reloadData(productCode,labType){
@@ -164,7 +190,35 @@ function flatLTnumberShow(n) {
     }
 
 }
+//球形地图右下角的广告滚动
+function sphereRBscroll() {
+    var speed = 100;
+    var $scrollBoard = $(".scroll");
+    var $ul1 = $(".scroll ul:first");
+    var $ul2 = $(".scroll ul:last");
+    $scrollBoard.css("height",$scrollBoard.width)
+    $ul2.html($ul1.html());
 
+    function Marquee() {
+        //scrollTop:溢出上边界的高度
+        //offsetHeight:元素包括border和padding的高度
+        //$scrollBoard这个高度一定要小，且不能用百分比
+        if ($ul2[0].offsetHeight <= $scrollBoard[0].scrollTop)
+            $scrollBoard[0].scrollTop -= $ul2[0].offsetHeight;
+        else {
+            $scrollBoard[0].scrollTop++;
+        }
+    }
+    var MyMar = setInterval(Marquee, speed);
+    $scrollBoard.hover(function () {
+        clearInterval(MyMar)
+    },function () {
+        MyMar = setInterval(Marquee, speed);
+    })
+
+
+
+}
 
 $(function () {
 
@@ -178,4 +232,10 @@ $(function () {
     navSelectAll();
     //点击a元素时
     navSelectA();
+	//球形地图右下角的广告滚动
+    sphereRBscroll();
 });
+
+/*$(window).resize(function () {
+    pageResize();
+});*/

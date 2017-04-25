@@ -31,7 +31,16 @@ public class LabController extends BaseController {
     	List<Record> productLine=DicModel.dao.findDicByType("line_type");
     	setAttr("labType", labType);
     	setAttr("productLine", productLine);
-        render("index_left.html");
+    	//实验室轮播信息
+    	String sqlWhere=SqlUtil.commonWhereSql(this,null);
+    	List<Record> labInfo=LabMapModel.dao.labShowFlatMap(sqlWhere);
+    	for(Record r:labInfo){
+    		if(r.getStr("title").length()>4){
+    			r.set("title", r.getStr("title").substring(0,4));
+    		}
+    	}
+    	setAttr("labInfo", labInfo);
+        render("index.html");
     }
     /**
      * 
@@ -46,6 +55,9 @@ public class LabController extends BaseController {
     }
     public void sphereMap() {
         render("sphereMap.html");
+    }
+    public void wordCloud() {
+        render("wordCloud.html");
     }
     /**
      * 
@@ -120,7 +132,8 @@ public class LabController extends BaseController {
     public void labStatisByFiledAjax(){
     	String field=getPara("field");
     	String sqlWhere=SqlUtil.commonWhereSql(this,"lab");
-    	List<Record> labStatis=LabModel.dao.labStatisByField(sqlWhere,field);
+    	String sort=getPara("sort");
+    	List<Record> labStatis=LabModel.dao.labStatisByField(sqlWhere,field,sort);
 		renderJson(labStatis);
     }
     

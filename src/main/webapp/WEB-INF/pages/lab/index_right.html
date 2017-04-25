@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <title>U-lab数据中心</title>
-    <!--<link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" href="../asserts/css/bootstrap.min.css">-->
 
-    <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
-    <link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
-    <link rel="stylesheet" href="${contextPath!}/static/css/index_right.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../asserts/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/index_left.css">
+    <link rel="stylesheet" href="../css/index_right.css">
     <style>
     </style>
 </head>
@@ -24,8 +24,8 @@
             <h1>U-lab全球互联数据中心</h1>
         </header>
         <div class="btnGroup">
-            <img class="sphere" src="${contextPath!}/static/img/btn_sphere_on.png">
-            <img class="sphere" src="${contextPath!}/static/img/btn_flat_off.png">
+            <img class="sphere" src="../img/btn_sphere_on.png">
+            <img class="sphere" src="../img/btn_flat_off.png">
         </div>
         <div class="switchGroup">
             <div class="switch sphere hidden">
@@ -40,7 +40,7 @@
             </div>
             <div class="switch flat">
                 <div class="mapArea">
-                    <!--<iframe id="iframe" scrolling="no" frameborder="0" src="${contextPath!}/static/pages/flatMap.html"></iframe>-->
+                    <!--<iframe id="iframe" scrolling="no" frameborder="0" src="../pages/flatMap.html"></iframe>-->
                 </div>
                 <div class="flat-right">
                     <div class="flat-right-top">
@@ -70,9 +70,29 @@
                 <li class="tab-item">数据挖掘应用</li>
             </ul>
         </div>
+        <div class="lab">
+            <ul class="lab_img">
+                <!--<li><img src="../img/TotalState/yf.png" alt=""></li>-->
+                <!--<li><img src="../img/TotalState/zx.png" alt=""></li>-->
+                <!--<li><img src="../img/TotalState/mks.png" alt=""></li>-->
+                <!--<li><img src="../img/TotalState/gc.png" alt=""></li>-->
+                <li class="lab_img_item"></li>
+                <li class="lab_img_item"></li>
+                <li class="lab_img_item"></li>
+                <li class="lab_img_item"></li>
+            </ul>
+            <br>
+            <ul class="lab_word">
+                <li class="lab_item">工厂实验室</li>
+                <li class="lab_item">模块商实验室</li>
+                <li class="lab_item">中心实验室</li>
+                <li class="lab_item">研发实验室</li>
+            </ul>
+        </div>
         <!--总状态-->
         <div class="box selected total_state">
             <div class="total_top">
+                <div class="total_name">实验室状态</div>
                 <div class="total_top_1">
                     <div class="echarts_title">设施状态</div>
                     <div id="myChart1"></div>
@@ -182,12 +202,12 @@
                     <div class="echarts_title">标准状态</div>
                     <div class="total_top_3_left">
                         <ul>
-                            <li>制修订情况</li>
-                            <li id="reviseNum">0</li>
+                            <li>起草数</li>
+                            <li>246</li>
                         </ul>
                         <ul>
                             <li>标准总数</li>
-                            <li id="standardNum">0</li>
+                            <li>246</li>
                         </ul>
                     </div>
                     <div class="total_top_3_right">
@@ -197,18 +217,18 @@
                 <div class="total_top_4">
                     <div class="echarts_title">能力状态</div>
                     <div id="myChart3"></div>
-                    <div class="echarts_line"  style="top:41.5%">
-                        <span>应具备数</span></br><span id="ability_all_num">0</span>
+                    <div class="echarts_line">
+                        <span>应具备数</span></br><span>380</span>
                     </div>
-
                 </div>
             </div>
             <div class="total_center">
+                <div class="total_name">数据结果</div>
                 <div class="total_center_1">
                     <div class="echarts_title">一次合格率</div>
                     <div class="echarts_title_left">
                         <ul>
-                            <li>海尔今年实验室一次合格率为<span>98%</span></li>
+                            <li>当年一次合格率为<span>98%</span></li>
                             <li style="display: inline-block">同比上升</li><span>50%</span>
                         </ul>
                     </div>
@@ -218,7 +238,7 @@
                     <div class="echarts_title">问题闭环率</div>
                     <div class="echarts_title_left">
                         <ul>
-                            <li>海尔今年实验室问题闭环率为<span>98%</span></li>
+                            <li>当年问题闭环率为<span>98%</span></li>
                             <li style="display: inline-block">同比上升</li><span>50%</span>
                         </ul>
                     </div>
@@ -234,6 +254,7 @@
                 </div>
             </div>
             <div class="total_bottom">
+                <div class="total_name">数据应用</div>
                 <div class="total_bottom_left">
                     <div class="total_bottom_pie">
                         <div id="myChart8"></div>
@@ -263,12 +284,81 @@
                 </div>
             </div>
         </div>
-        <!--运营状态-->
-        <div class="box yunying_state">22</div>
+        <!--设施状态-->
+        <div class="box sheshi_state">
+            <div class="sheshi_top">
+                <div class="sheshi_top_left"></div>
+                <div class="sheshi_top_rihght"></div>
+            </div>
+            <div class="sheshi_bottom">
+                <div class="sheshi_bottom_left"></div>
+                <div class="sheshi_bottom_right"></div>
+            </div>
+        </div>
         <!--数据结果-->
-        <div class="box shuju_result">33</div>
+        <div class="box shuju_result">
+            <div class="shuju_result_top">
+                <div class="shuju_result_top_left">
+                    <div class="left_name">
+                       <div class="left_name1 fl">
+                           <ul>
+                               <li>整机</li>
+                               <li class="left_name_num">1358<b class="left_name_icon">1</b><span class="left_name_up">0.05%</span></li>
+                           </ul>
+                       </div>
+                        <div class="left_name2 fl">
+                            <ul>
+                                <li>模块</li>
+                                <li class="left_name_num">1358<b class="left_name_icon">1</b><span class="left_name_up">0.05%</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="left_bottom">
+                        <div id="myChart20"></div>
+                        <div id="myChart21"></div>
+                    </div>
+                </div>
+                <div class="shuju_result_top_center"></div>
+                <div class="shuju_result_top_rihght"></div>
+            </div>
+            <div class="shuju_result_bottom">
+                <div class="shuju_result_bottom_left"></div>
+                <div class="shuju_result_bottom_right"></div>
+            </div>
+        </div>
         <!--数据挖掘应用-->
-        <div class="box shuju_apply">44</div>
+        <div class="box shuju_apply">
+            <div class="shuju_apply_top">
+                <div class="shuju_top_left">
+                    <div class="shuju_top_pie">
+                        <div id="myChart14"></div>
+                    </div>
+                    <div class="shuju_top_bar1">
+                        <div class="echarts_title echarts_title1">量产一致型号数</div>
+                        <div id="myChart15"></div>
+                    </div>
+                    <div class="shuju_top_bar2">
+                        <div class="echarts_title echarts_title1">量产不一致型号数</div>
+                        <div id="myChart16"></div>
+                    </div>
+                </div>
+                <div class="shuju_top_right">
+                    <div class="shuju_top_pie">
+                        <div id="myChart17"></div>
+                    </div>
+                    <div class="shuju_top_bar1">
+                        <div class="echarts_title echarts_title1">共产一致型号数</div>
+                        <div id="myChart18"></div>
+                    </div>
+                    <div class="shuju_top_bar2">
+                        <div class="echarts_title echarts_title1">共产不一致型号数</div>
+                        <div id="myChart19"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="shuju_apply_center"></div>
+            <div class="shuju_apply_bottom"></div>
+        </div>
     </div>
 </div>
 <!--屏幕描述
@@ -278,20 +368,16 @@
 3/7的宽度是5760,
 在笔记本上比例不变适应高度后，宽度为3186px
 -->
-<script>
-var contextPath='${contextPath!}';
-</script>
-<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
-<script src="${contextPath!}/static/asserts/js/bootstrap.min.js"></script>
-<script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.min.js?time=New Date()"></script>
-<script src="${contextPath!}/static/js/manyEcharts.js?time=New Date()"></script>
-<script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
-<script src="${contextPath!}/static/js/right_statistics.js?time=New Date()"></script>
+
+<script src="../asserts/js/jquery-2.2.4.js"></script>
+<script src="../asserts/js/bootstrap.min.js"></script>
+<script src="../asserts/echarts/echarts-3.5.2.min.js?time=New Date()"></script>
+<script src="../js/manyEcharts.js?time=New Date()"></script>
+<script src="../js/main_right.js?time=New Date()"></script>
+
 <!--右面 4*3 js代码-->
 <script>
     $(function () {
-    	standardStatus();
-    	abilityStatus();
         $(".tab-item").click(function () {
             $(this).addClass("active").siblings().removeClass("active");
 
@@ -300,6 +386,10 @@ var contextPath='${contextPath!}';
             // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
             //.selected display:block
             $(".box:eq(" + index + ")").addClass("selected").siblings().removeClass("selected");
+        });
+
+        $(".lab_item").click(function () {
+            $(this).addClass("word_active").siblings().removeClass("word_active");
         });
     });
 

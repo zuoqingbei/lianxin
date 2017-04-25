@@ -265,7 +265,7 @@ function getAreaEcharts() {
         },
         xAxis: [
             {
-                name: '月份',
+                name: '',
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -296,7 +296,7 @@ function getAreaEcharts() {
         ],
         yAxis: [
             {
-                name: "数量",
+                name: "",
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -490,7 +490,7 @@ function getYuanhuan() {
     option = {
         tooltip: {
             trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
+            formatter: "{b} : {c} ({d}%)"
         },
         toolbox: {
             show: false,

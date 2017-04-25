@@ -20,10 +20,57 @@
     color: #66ccff;
     cursor: pointer;
 }
+#right .lab{
+    /*width: 30%;*/
+    /*height: 80%;*/
+    position: absolute;
+    top: 2%;
+    right: 1%;
+}
 
+.lab ul li{
+    float: right;
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    color: #66ccff;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.2em 1em;
+    cursor: pointer;
+}
+#right  .lab .lab_img li{
+    background: url("../img/TotalState/yf.png") no-repeat;
+    background-size: 100% 100%;
+    margin-right: 2.4em;
+}
+.lab .lab_img li:nth-of-type(2){
+    background: url("../img/TotalState/mks.png") no-repeat;
+    background-size: 100% 100%;
+}
+.lab .lab_img li:nth-of-type(3){
+    background: url("../img/TotalState/zx.png") no-repeat;
+    background-size: 100% 100%;
+}
+.lab .lab_img li:nth-of-type(1){
+    background: url("../img/TotalState/gc.png") no-repeat;
+    background-size: 100% 100%;
+}
+.lab .lab_word li{
+    width: 6em;
+    padding: 0;
+    font-size: 0.8em;
+}
+.lab .lab_word li:hover{
+    color: #00e673;
+}
+.lab_word .word_active{
+    color: #00e673;
+}
+/*总状态*/
 .total_state {
     width: 100%;
-    height: 89%;
+    height: 92%;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -35,20 +82,37 @@
     flex-direction: row;
     background: url("../img/TotalState/border-1 .png") no-repeat;
     background-size: 100% 97%;
+    position: relative;
 
 }
-
+.total_name{
+    position: absolute;
+    top:26%;
+    left: 0;
+    width: 1.6em;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+.total_center .total_name{
+    top: 32%;
+}
+.total_bottom .total_name{
+    top:32%;
+}
 .total_state .total_center {
     background: url("../img/TotalState/border-1 .png") no-repeat;
     background-size: 100% 97%;
     flex: 1;
+    position: relative;
 }
 
 .total_state .total_bottom {
-    /*flex: 1;*/
-    height: 34%;
+    flex: 1;
+    /*height: 34%;*/
     background: url("../img/TotalState/border-1-2.png") no-repeat;
     background-size: 100% 97%;
+    position: relative;
 }
 
 .total_top_1 {
@@ -81,7 +145,7 @@
 }
 
 .echarts_title1 {
-    width: 90%;
+    width: 65%;
     margin-top: 7%;
 }
 
@@ -115,35 +179,36 @@
 
 .total_top_2_box > ul > li .progress {
     display: inline-block;
-    width: 75%;
+    width:70%;
     /*height: 20%;*/
-    height: 1.4em;
+    height: 1em;
     border-radius: 3px;
     border: 1px solid #66ccff;
-    margin-bottom: 2.5%;
+    margin-bottom: 5%;
+    background-color: transparent;
 
 }
 
 .total_top_2_box > ul .xueli .progress {
-    margin-bottom: 12%;
+    margin-bottom: 14%;
 }
 
 .total_top_2_box > ul > li .bar_name {
     position: absolute;
-    right: 23%;
-    font-size: 12px;
-    margin-top: 0.2em;
+     right: 26%;
+    font-size: 0.6em;
+    /*margin-top: 0em;*/
 }
 
 .total_top_2 .total_top_2_box > ul > li span:last-of-type {
     position: absolute;
     right: 0;
     color: #ff9933;
-    margin-top: 0.1em;
+    /*margin-top: 0.1em;*/
 }
 
 .total_top_2_box > ul > li .progress .progress-bar1 {
-    background-color: #66ffcc;
+    background-color: #8BDDFF;
 }
 
 .total_top_2_box > ul > li .progress .progress-bar2 {
@@ -155,7 +220,7 @@
 }
 
 .xueli > ul > li .progress {
-    border: 1px solid #66ffcc;
+    border: 1px solid  #8BDDFF;;
 }
 
 .zizhi > ul > li .progress {
@@ -177,8 +242,18 @@
     height: 70%;
     /*background-color: #bce8f1;*/
     float: left;
+    position: relative;
 }
-
+.biaozhun_line{
+    width: 70%;
+    height: 10%;
+    background-color: plum;
+    position: absolute;
+    top: 38%;
+    left: 15%;
+    background: url("../img/TotalState/line.png") no-repeat;
+    background-size: 100% 100%;
+}
 #myChart2 {
     width: 100%;
     height: 90%;
@@ -229,6 +304,7 @@
 
 .total_center_1 {
     flex: 1;
+    position: relative;
 }
 
 .total_center_2 {
@@ -244,16 +320,17 @@
 }
 
 .echarts_title_left {
-    width: 38%;
+    width: 45%;
     height: 80%;
     float: left;
     padding-left: 10%;
     margin-top: -3%;
 }
 
+
 #myChart4 {
-    width: 60%;
-    height: 75%;
+    width: 50%;
+    height: 70%;
     float: left;
 }
 
@@ -276,8 +353,8 @@
 }
 
 #myChart5 {
-    width: 60%;
-    height: 75%;
+    width: 50%;
+    height: 70%;
     float: left;
 }
 
@@ -313,49 +390,24 @@
     float: left;
 }
 
-.total_bottom_bar1 {
-    width: 37%;
+.total_bottom_bar1,.total_bottom_bar2 {
+    width: 70%;
     height: 100%;
     float: left;
 }
 
-.total_bottom_bar2 {
-    width: 37%;
-    height: 100%;
-    float: left;
-}
 
-#myChart8 {
+#myChart8,#myChart11 {
     margin-top: 12%;
     width: 100%;
     height: 100%;
 }
 
-#myChart9 {
+#myChart9,#myChart10,#myChart12,#myChart13 {
     width: 100%;
-    height: 69%;
+    height: 60%;
 }
 
-#myChart10 {
-    width: 100%;
-    height: 69%;
-}
-
-#myChart11 {
-    margin-top: 12%;
-    width: 100%;
-    height: 100%;
-}
-
-#myChart12 {
-    width: 100%;
-    height: 69%;
-}
-
-#myChart13 {
-    width: 100%;
-    height: 69%;
-}
 
 /*tab栏切换样式*/
 #right .active {
@@ -364,10 +416,205 @@
     color: #00e673;
 }
 
+
+
+/*设施状态*/
+.sheshi_state{
+    width: 100%;
+    height: 90%;
+    /*background-color: #00B2F8;*/
+    display: none;
+    flex-direction:column;
+}
+.sheshi_top{
+    margin-top: 1%;
+    flex: 1;
+    display: flex;
+    flex-direction:row ;
+}
+.sheshi_bottom{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+.sheshi_top_left{
+    flex: 1;
+    background: url("../img/sheshiState/border .png") no-repeat;
+    background-size: 98% 98%
+}
+.sheshi_top_rihght{
+    flex: 1;
+    background: url("../img/sheshiState/border .png") no-repeat;
+    background-size: 98% 98%;
+}
+.sheshi_bottom_left{
+    flex: 1;
+    background: url("../img/sheshiState/border .png") no-repeat;
+    background-size: 98% 98%;
+}
+.sheshi_bottom_right{
+    flex: 1;
+    background: url("../img/sheshiState/border .png") no-repeat;
+    background-size: 98% 98%;
+}
+
+
+/*数据结果*/
+.shuju_result{
+    width: 100%;
+    height: 90%;
+    /*background-color: #00B2F8;*/
+    display: none;
+    flex-direction:column;
+}
+.shuju_result_top{
+    margin-top: 1%;
+    flex: 1;
+    display: flex;
+    flex-direction:row ;
+}
+.shuju_result_bottom{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+.shuju_result_top_left{
+    flex: 1;
+    background: url("../img/sheshiState/border .png") no-repeat;
+    background-size: 98% 98%
+}
+.shuju_result_top_center{
+    flex: 1;
+    background: url("../img/sheshiState/border .png") no-repeat;
+    background-size: 98% 98%
+}
+.shuju_result_top_rihght{
+    flex: 1;
+    background: url("../img/sheshiState/border .png") no-repeat;
+    background-size: 98% 98%;
+}
+.shuju_result_bottom_left{
+    flex: 1;
+    background: url("../img/sheshiState/border .png") no-repeat;
+    background-size: 98% 98%;
+}
+.shuju_result_bottom_right{
+    flex: 1;
+    background: url("../img/sheshiState/border .png") no-repeat;
+    background-size: 98% 98%;
+}
+.left_name{
+    width: 98%;
+    height: 15%;
+    margin-top: 4%;
+}
+.left_name1,.left_name2{
+    width: 25%;
+    height: 120%;
+    text-align: center;
+    margin-left: 15%;
+    background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
+    background-size: 100% 100%;
+}
+.left_name1>ul>li:first-of-type{
+    padding-top: 0.2em;
+    color: white;
+}
+
+.left_name2>ul>li:first-of-type{
+    padding-top: 0.2em;
+    color: white;
+}
+.left_name_num{
+    font-size: 1.5em;
+    color: #f93;
+}
+.left_name_icon{
+    /*background: url("../img");*/
+    width: 1em;
+    height: 1em;
+    background-color: pink;
+    margin-left: 0.5em;
+
+}
+.left_name_up{
+    color: #66ccff;
+    font-size: 0.5em;
+    margin-left: 0.5em;
+}
+.shuju_result_top_left .left_bottom{
+    height: 70%;
+    width: 98%;
+    background-color: pink;
+}
+
+
+/*数据挖掘*/
+.shuju_apply{
+    width: 100%;
+    height: 90%;
+    /*background-color: #00B2F8;*/
+    display: none;
+    flex-direction:column;
+}
+.shuju_apply_top{
+    margin-top: 1%;
+    flex: 1;
+    background: url("../img/shujuWajue/border .png") no-repeat;
+    background-size:100% 100%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+.shuju_apply_center{
+    flex: 1;
+}
+.shuju_apply_bottom{
+    flex: 1;
+    /*background: url("../img/TotalState/border-2-2.png") no-repeat;*/
+    /*background-size: 98% 98%*/
+}
+.shuju_top_left{
+    flex: 1;
+    width: 100%;
+    height: 100%;
+
+}
+.shuju_top_pie{
+    width: 26%;
+    height: 100%;
+    float: left;
+}
+.shuju_top_bar1,.shuju_top_bar2{
+    width: 37%;
+    height: 100%;
+    float: left;
+}
+
+#myChart14,#myChart17{
+    margin-top: 15%;
+    width:17em;
+    height: 9.5em;
+    display: inline-block;
+    background-color: palegoldenrod;
+}
+#myChart15,#myChart16,#myChart18,#myChart19{
+    width: 20em;
+    height: 9em;
+    display: inline-block;
+    background-color: pink;
+}
+
+.shuju_top_right{
+    flex: 1;
+}
+
 .box {
     display: none;
 }
 
 .selected {
-    display: block;
+    display: flex;
 }

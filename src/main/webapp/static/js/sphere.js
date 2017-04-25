@@ -7,7 +7,7 @@ function mapSphere() {
         success: function (mData) {
             var markPointStyle = {
                 normal: {
-                    color: 'red'
+                    color: '#fbf679'
                 }
             };
             // Airport: [name（机场名？）, city, country, longitude（经度）, latitude（纬度）]
@@ -17,8 +17,18 @@ function mapSphere() {
 
 
             opts = {
+            		   title: {
+            		        show:true,
+            		        text: '全球实验中心互联，加速产品迭代升级，创用户最佳体验',
+            		        //subtext: '数据纯属虚构',
+            		        x: 'center',
+            		        textStyle: {
+            		            color: '#66ccff',
+            		            fontSize:13,
+            		        }
+            		    },
                     legend: {
-                        show: true,
+                        show: false,
                         //   遍历航空公司名称显示图例
                         data:legendData(mData),
                         selected: {},
@@ -33,45 +43,44 @@ function mapSphere() {
                         formatter: '{b}'
                     },
                     series: [{
-                        type: 'map3d',
-                        mapType: 'world',
-                        flat: false, /*是否使用平面图*/
-                        flatAngle: 0,
-                        mapLocation: {
-                            x: "0%"
-                            // y: "top"
-                        },
-                        baseLayer: {
-                            backgroundColor: '',
-                            backgroundImage: contextPath+'/static/img/earth.jpg',
-                            quality: 'high'
-                        },
-                        itemStyle: {
-                            normal: {
-                                borderWidth: 1,
-                                borderColor: 'yellow',
-                                areaStyle: {
-                                    color: 'rgba(0, 0, 0, 0)'
-                                }
+                         type: 'map3d',
+                    mapType: 'world',
+                    flat: false, /*是否使用平面图*/
+                    flatAngle: 0,
+                    mapLocation: {
+                        x: 0,
+                        y: 0,
+                        width: '100%',
+                        height: '100%'
+                    },
+                    baseLayer: {
+                        backgroundColor: 'rgba(20,143,204,.8)',
+                    },
+                    itemStyle: {
+                        normal: {
+                            width: 2,
+                            borderWidth: 1,
+                            borderColor: '#00ffff',
+                            areaStyle: {
+                                color: 'rgba(0, 0, 0, 0)'
                             }
-                        },
+                        }
+                    },
                         markPoint: {
-                            symbol: "heart",
+                            symbol: "triangle",
                             effect: {
-                                shadowBlur: 0.2
+                                shadowBlur: 0.1
                             },
                             large: true,
-                            symbolSize: 10,
+                            symbolSize: 5,
                             data: airports
                         },
-                        roam: {
-                        	autoRotate: true,//是否自动旋转
-                            autoRotateAfterStill: 30,
-                            zoom:1,
-                            minZoom:1,
-                            maxZoom:1,
-                            focus: 'China'
-                        }
+                        roam:{
+                        zoom: 1.3,
+                        minZoom: 1.3,
+                        maxZoom: 1.3,
+                        // focus:"Pakistan"
+                    }
                     }]
                 };
 
@@ -93,16 +102,25 @@ function mapSphere() {
 	                                show: true
 	                            },
 	                            distance:6,
-	                            itemStyle: {
-		                            normal: {
-		                                // 线的颜色默认是取 legend 的颜色
-		                                //color: "yellow",
-		                                // 线宽，这里线宽是屏幕的像素大小
-		                                borderWidth: 20,
-                                        width: '30',
-                                        opacity: '1'
-		                            }
-		                        },
+	                              itemStyle : {
+									normal: {
+										// 线的颜色默认是取 legend 的颜色
+										// color: null
+										// 线宽，这里线宽是屏幕的像素大小
+										width: 5,
+										// 线的透明度
+										opacity: 1,
+										// color:"rgba(50,143,204,1)",
+										color:"#7bb4ff",
+										borderWidth:5,
+										borderColor:"#7bb4ff",
+										lineStyle: {
+											type: 'solid',
+											shadowBlur: 5
+										}
+									}
+								},
+								distance: 0,
 	                            data: lineGeoCoord(mData[x])
 	                        }
 	                       

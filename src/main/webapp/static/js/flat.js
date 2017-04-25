@@ -88,23 +88,19 @@ function seriesData(data){
 	                x:'right',
 	            },
 	            itemStyle:{
-	                normal:{
-	                    borderColor:'rgba(100,149,237,1)',
-	                    borderWidth:0.5,
-	                    areaStyle:{
-	                        color: '#1b1b1b'
-	                    }
-	                }
+	                 normal: {
+						borderColor: '#8DF0FF',
+						borderWidth: 0.2,
+						areaStyle: {
+							   color: 'rgba(20,143,204,0.6)'
+						}
+					}
 	            },
 	            data:[],
 	            markPoint: {
 	                symbol: 'emptyCircle',
 	                symbolSize: function (v) {
-	                    if (v > 15) {
-	                        return v / 12;
-	                    } else {
-	                        return 10;
-	                    }
+	                     return 3;
 	                },
 	                effect: {
 	                    show: true,
@@ -146,11 +142,7 @@ function seriesData(data){
                markPoint: {
                    symbol: 'emptyCircle',
                    symbolSize: function (v) {
-                       if (v > 30) {
-                           return v / 30;
-                       } else {
-                           return 1;
-                       }
+                        return 3;
                    },
                    effect: {
                        show: true,
@@ -166,22 +158,23 @@ function seriesData(data){
                },
                markLine: {
                    smooth: true,
-                   effect: {
-                       show: true,
-                       scaleSize: 2,
-                       period: 30,
-                       color: '#fff',
-                       shadowBlur: 10
-                   },
-                   itemStyle: {
-                       normal: {
-                           borderWidth: 1,
-                           lineStyle: {
-                               type: 'solid',
-                               shadowBlur: 10
-                           }
-                       }
-                   },
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 5,
+                    color: '#ff0',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                        color:"rgba(20,143,204,.7)",
+                        borderWidth:1,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 0
+                        }
+                    }
+                },
                    data:dataToArrayContinueArray(data)
                },
            }
@@ -194,8 +187,8 @@ function seriesData(data){
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('mapFlat'));
 //调用父页面 获取数据
-window.parent.selectActLi();
-
+//window.parent.selectActLi();
+window.parent.resetSize();
 
 
 var showTopicIndex = 0;

@@ -3,47 +3,115 @@
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <title>U-lab全球互联数据中心</title>
-    <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
-    <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/index_left.css">
 </head>
 <body>
-<!--
-<div id="mask">
-    <video src="${contextPath!}/static/img/movie.ogg"  width="100%" height="100%" preload="auto" >点此进入</video>
-</div>
--->
 <div id="content">
     <div id="l">
         <header>
             <h1>U-lab全球互联数据中心</h1>
         </header>
         <div class="btnGroup">
-            <img class="sphere" src="${contextPath!}/static/img/btn_sphere_on.png">
-            <img class="sphere" src="${contextPath!}/static/img/btn_flat_off.png">
+            <img class="sphere" src="../img/ico/btn_sphere_on.png">
+            <img class="sphere" src="../img/ico/btn_flat_off.png">
         </div>
         <div class="switchGroup">
             <div class="switch sphere">
                 <div class="sphere-left">
-                    <div class="sphere-left-top"></div>
-                    <div class="sphere-left-bottom"></div>
+                    <div class="sphere-left-top">
+                        <div class="chartBorder">
+                            <h3>海尔实验室主要分布在 <strong>6</strong>大洲</h3>
+                            <div class="myChart"></div>
+                        </div>
+                    </div>
+                    <div class="sphere-left-bottom">
+                        <div class="chartBorder">
+                            <h3>海尔现已有<strong>50+</strong>的产品分类</h3>
+                            <div class="myChart">
+                                <iframe src="wordCloud.html"></iframe>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="mapArea">
                     <!--球体地图位置-->
-                    <iframe src="${contextPath!}/lab/sphereMap"></iframe>
+                    <iframe src="sphereMap.html"></iframe>
                 </div>
                 <div class="sphere-right">
-                    <div class="sphere-right-top"></div>
-                    <div class="sphere-right-bottom"></div>
+                    <div class="sphere-right-top">
+                        <div class="chartBorder">
+                            <h3>海尔实验室总数为 <strong>1577</strong></h3>
+                            <div class="myChart"></div>
+                        </div>
+                    </div>
+                    <div class="sphere-right-bottom">
+                        <div class="chartBorder">
+                            <h3>实验室信息</h3>
+                            <ul class="header">
+                                <li>实验室名称</li>
+                                <li>所在地</li>
+                                <li>类型</li>
+                            </ul>
+                            <div class="scroll">
+                                <ul>
+                                    <li>
+                                        <ul>
+                                            <li>中海博睿</li>
+                                            <li>青岛</li>
+                                            <li>研发类实验室</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <li>中海博睿</li>
+                                            <li>青岛</li>
+                                            <li>研发类实验室</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <li>中海博睿</li>
+                                            <li>青岛</li>
+                                            <li>研发类实验室</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <li>中海博睿</li>
+                                            <li>青岛</li>
+                                            <li>研发类实验室</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <li>中海博睿</li>
+                                            <li>青岛</li>
+                                            <li>研发类实验室</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <li>中海博睿</li>
+                                            <li>青岛</li>
+                                            <li>研发类实验室</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="scrollAux"></ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="switch flat hidden">
+            <div class="switch flat">
                 <div class="flat-main">
                     <div class="flat-left">
                         <div class="flat-left-top">
                             <div class="chartBorder">
                                 <h3>产线统计</h3>
-                                <h4>实验室总数： <strong id="lab_all_count"> 0 </strong></h4>
-                                <ul id="pro_line">
+                                <h4>实验室总数： <strong> 388 </strong></h4>
+                                <ul>
                                     <li><span class="icon"></span>冰冷<span class="number"></span></li>
                                     <li><span class="icon"></span>洗涤<span class="number"></span></li>
                                     <li><span class="icon"></span>家空<span class="number"></span></li>
@@ -58,7 +126,7 @@
                         <div class="flat-left-bottom">
                             <div class="chartBorder">
                                 <h3>实验室统计</h3>
-                                <h4>实验室分布在<strong id="area_num"> 0 </strong>大州，<strong id="country_num"> 0 </strong>个国家</h4>
+                                <h4>实验室分布在<strong> 5 </strong>大州，<strong> 20 </strong>个国家</h4>
                                 <div class="myChart"></div>
                             </div>
                         </div>
@@ -66,6 +134,7 @@
                     <div class="mapArea">
                         <!--平面地图位置-->
                     </div>
+                    <div id="maskSphere"></div>
                     <div class="flat-right">
                         <div class="flat-right-top">
                             <div class="chartBorder">
@@ -85,43 +154,47 @@
                 </div>
                 <!--平面地图下面的导航-->
                 <div class="flat-footer controlBar">
-                        <div class="legend">
-                            <div class="legend-l navSwitch">产线</div>
-                            <div class="legend-r navSwitch">实验室</div>
-                            <div class="selectAll">
-                                <label for="navSelectAll"><span class="icon"></span> 全选</label>
-                                <input id="navSelectAll" checked type="checkbox" class="hidden">
-                            </div>
-                            <div class="labLine">
-                                <ul class="lab hidden">
-                                	##for(type in labType){
-                                		<li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.short_name!}</a> </li>
-                                	##}
-                                </ul>
-                                <ul class="line">
-                                   ##for(type in productLine){
-                                		<li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.short_name!}</a> </li>
-                                	##}
-                                </ul>
-                            </div>
-
-                            <ul class="legend-bottom">
-                                <li class="active"><a href=""><span class="icon"></span> 中心实验室</a> </li>
-                                <li><a href=""><span class="icon"></span> 冰冷</a> </li>
-                                <li><a href=""><span class="icon"></span> 洗涤</a> </li>
-                                <li><a href=""><span class="icon"></span> 家空</a> </li>
-                                <li><a href=""><span class="icon"></span> 商空</a> </li>
-                                <li><a href=""><span class="icon"></span> 热水器</a> </li>
-                                <li><a href=""><span class="icon"></span> 厨电</a> </li>
+                    <div class="legend">
+                        <div class="legend-l navSwitch">产线</div>
+                        <div class="legend-r navSwitch">实验室</div>
+                        <div class="selectAll">
+                            <label for="navSelectAll"><span class="icon"></span> 全选</label>
+                            <input id="navSelectAll" checked type="checkbox" class="hidden">
+                        </div>
+                        <div class="labLine">
+                            <ul class="lab hidden">
+                                <li class="active"><a href=""><span class="icon"></span> 研发类实验室</a></li>
+                                <li class="active"><a href=""><span class="icon"></span> 中心实验室</a></li>
+                                <li class="active"><a href=""><span class="icon"></span> 模块商实验室</a></li>
+                                <li class="active"><a href=""><span class="icon"></span> 工厂实验室</a></li>
+                            </ul>
+                            <ul class="line">
+                                <li class="active"><a href=""><span class="icon"></span> 冰冷</a></li>
+                                <li class="active"><a href=""><span class="icon"></span> 洗涤</a></li>
+                                <li class="active"><a href=""><span class="icon"></span> 家空</a></li>
+                                <li class="active"><a href=""><span class="icon"></span> 商空</a></li>
+                                <li class="active"><a href=""><span class="icon"></span> 热水器</a></li>
+                                <li class="active"><a href=""><span class="icon"></span> 厨电</a></li>
+                                <li class="active"><a href=""><span class="icon"></span> 电视</a></li>
                             </ul>
                         </div>
+
+                        <ul class="legend-bottom">
+                            <li class="active"><a href=""><span class="icon"></span> 中心实验室</a></li>
+                            <li><a href=""><span class="icon"></span> 冰冷</a></li>
+                            <li><a href=""><span class="icon"></span> 洗涤</a></li>
+                            <li><a href=""><span class="icon"></span> 家空</a></li>
+                            <li><a href=""><span class="icon"></span> 商空</a></li>
+                            <li><a href=""><span class="icon"></span> 热水器</a></li>
+                            <li><a href=""><span class="icon"></span> 厨电</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
         </div>
 
     </div>
-    <!--<div id="middle"></div>-->
     <div id="right">
         <!--这里是后面4屏的代码-->
     </div>
@@ -135,35 +208,20 @@
 在笔记本上比例不变适应高度后，宽度为3186px
 -->
 
-<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
-<script src="${contextPath!}/static/js/common.js"></script>
-<script src="${contextPath!}/static/js/statistics.js"></script>
-<script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
-<script src="${contextPath!}/static/js/manyEcharts.js"></script>
-<!--<script src="${contextPath!}/static/img/bar_chip.png"></script>-->
-<!--<script src="${contextPath!}/static/asserts/js/jquery.dragsort-0.5.2.js"></script>-->
+<script src="../asserts/js/jquery-2.2.4.js"></script>
 <script>
-var contextPath='${contextPath!}';
-var myCharts;
-var myChartFlatRT;
-var myChartFlatRB;
-var myChartFlatLB;
-var pathSymbols = {
-        bar_chip: '${contextPath!}/static/img/bar_chip.png'
-    };
-$(function () {
-	//右上角的图表
-    myChartFlatRT = echarts.init($("#l").find(".flat-right-top .myChart")[0]);
-    //右下角的图表
-    myChartFlatRB = echarts.init($("#l").find(".flat-right-bottom .myChart")[0]);
-    
-    //左下角的图表
-    myChartFlatLB = echarts.init($("#l").find(".flat-left-bottom .myChart")[0]);
-    myCharts = [myChartFlatRT, myChartFlatRB,myChartFlatLB];
-    reloadLeftData();
-
-});
+    function pageResize() {
+        var h = $(window).height();
+        console.log(h);
+        $("#content").css("width",h*16*7/(9*3));
+    }
+    pageResize();
 </script>
-<script src="${contextPath!}/static/js/main_left.js"></script>
+<script src="../asserts/echarts/echarts-3.5.2.js"></script>
+<script src="../asserts/echarts/wordcloudFromNet.js"></script>
+<script src="../js/manyEcharts.js"></script>
+<script src="../js/leftCharts.js"></script>
+
+<script src="../js/main_left.js"></script>
 </body>
 </html>

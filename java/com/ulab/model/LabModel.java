@@ -3,6 +3,7 @@ package com.ulab.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
@@ -84,14 +85,17 @@ public class LabModel extends Model<LabModel> {
 	 * @param @return
 	 * @return_type List<Record>
 	 */
-	public List<Record> labStatisByField(String sqlWhere, String field) {
+	public List<Record> labStatisByField(String sqlWhere, String field,String sort) {
+		if(StringUtils.isBlank(sort)){
+			sort=" desc ";
+		}
 		StringBuffer sb = new StringBuffer();
-		sb.append(" select d.name as name, nvl(count(1),0) as count,d.id from   ");
+		sb.append(" select d.short_name as name, nvl(count(1),0) as count,d.id from   ");
 		sb.append("  t_b_lab_info lab left join t_b_dictionary d on lab."
 				+ field + "=d.id ");
 		sb.append("  where lab.del_flag=" + Constants.DEL_FALG + " and lab." + field
 				+ " is not null " + sqlWhere
-				+ " group by d.name,d .order_no,d.id order by d.order_no desc ");
+				+ " group by d.name,d.short_name,d .order_no,d.id order by d.order_no  "+sort);
 		List<Record> list=Db.find(sb.toString());
 		if(Constants.MONI_JOIN_TIYAN&&"properties_code".equals(field)){
 			//如果统计实验室性质，需要对用户体验与用户模拟做合并处理

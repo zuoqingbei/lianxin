@@ -20,50 +20,51 @@ function standardStatus(){
 		//多个圆环图  标准状态
 		var myChart2 = echarts.init(document.getElementById("myChart2"));
 		var labelTop = {
-		    normal: {
-		        color: '#66ccff',
-		        label: {
-		            show: true,
-		            position: 'center',
-		            formatter: '{b}',
-		            textStyle: {
-		                baseline: 'bottom',
-		                color: '#66ccff'
-		            }
-		        },
-		        labelLine: {
-		            show: false
-		        }
-		    }
-		};
-		var labelFromatter = {
-		    normal: {
-		        label: {
-		            formatter: function (params) {
-		                return 100 - params.value + '%'
-		            },
-		            textStyle: {
-		                baseline: 'top'
-		            }
-		        }
-		    },
-		};
-		var labelBottom = {
-		    normal: {
-		        color: '#234f65',
-		        label: {
-		            show: true,
-		            position: 'center'
-		        },
-		        labelLine: {
-		            show: false
-		        }
-		    },
-		    emphasis: {
-		        color: 'rgba(0,0,0,0)'
-		    },
-		};
-		var radius = [20, 25];
+			    normal: {
+			        color: '#66ccff',
+			        label: {
+			            show: true,
+			            position: 'center',
+			            formatter: '{b}',
+			            textStyle: {
+			                baseline: 'bottom',
+			                color: '#66ccff',
+			                fontSize:8
+			            }
+			        },
+			        labelLine: {
+			            show: false
+			        }
+			    }
+			};
+			var labelFromatter = {
+			    normal: {
+			        label: {
+			            formatter: function (params) {
+			                return 100 - params.value + '%'
+			            },
+			            textStyle: {
+			                baseline: 'top'
+			            }
+			        }
+			    },
+			};
+			var labelBottom = {
+			    normal: {
+			        color: '#234f65',
+			        label: {
+			            show: true,
+			            position: 'center'
+			        },
+			        labelLine: {
+			            show: false
+			        }
+			    },
+			    emphasis: {
+			        color: 'rgba(0,0,0,0)'
+			    },
+			};
+			var radius = [20, 25];
 		option = {
 		    toolbox: {
 		        show: false,
@@ -100,90 +101,6 @@ function standardStatus(){
 //		            color:'#66ccff'
 		        color: '#ff9933'
 		    },
-		   /* series: [
-		        {
-		            type: 'pie',
-		            center: ['35%', '22%'],
-		            radius: radius,
-		            x: '40%', // for funnel
-		            itemStyle: labelFromatter,
-		            data: [
-		                {name: 'other', value: 100-num0, itemStyle: labelBottom},
-		                {name: '牵头起草数', value: num0, itemStyle: labelTop}
-		            ]
-		        },
-		        {
-		            type: 'pie',
-		            center: ['65%', '22%'],
-		            radius: radius,
-		            x: '60%', // for funnel
-		            itemStyle: labelFromatter,
-		            data: [
-		                {name: 'other', value: 100-num1, itemStyle: labelBottom},
-		                {name: '参与起草数', value: num1, itemStyle: labelTop}
-		            ]
-		        },
-		        {
-		            type: 'pie',
-		            center: ['10%', '75%'],
-		            radius: radius,
-		            y: '55%',   // for funnel
-		            x: '0%',    // for funnel
-		            itemStyle: labelFromatter,
-		            data: [
-		                {name: 'other', value: 100-num2, itemStyle: labelBottom},
-		                {name: '国家标准', value: num2, itemStyle: labelTop}
-		            ]
-		        },
-		        {
-		            type: 'pie',
-		            center: ['30%', '75%'],
-		            radius: radius,
-		            y: '55%',   // for funnel
-		            x: '20%',    // for funnel
-		            itemStyle: labelFromatter,
-		            data: [
-		                {name: 'other', value: 100-num3, itemStyle: labelBottom},
-		                {name: '国际标准', value: num3, itemStyle: labelTop}
-		            ]
-		        },
-		        {
-		            type: 'pie',
-		            center: ['50%', '75%'],
-		            radius: radius,
-		            y: '55%',   // for funnel
-		            x: '40%', // for funnel
-		            itemStyle: labelFromatter,
-		            data: [
-		                {name: 'other', value: 100-num4, itemStyle: labelBottom},
-		                {name: '行业标准', value: num4, itemStyle: labelTop}
-		            ]
-		        },
-		        {
-		            type: 'pie',
-		            center: ['70%', '75%'],
-		            radius: radius,
-		            y: '55%',   // for funnel
-		            x: '60%', // for funnel
-		            itemStyle: labelFromatter,
-		            data: [
-		                {name: 'other', value: 100-num5, itemStyle: labelBottom},
-		                {name: '当地标准', value: num5, itemStyle: labelTop}
-		            ]
-		        },
-		        {
-		            type: 'pie',
-		            center: ['90%', '75%'],
-		            radius: radius,
-		            y: '55%',   // for funnel
-		            x: '80%', // for funnel
-		            itemStyle: labelFromatter,
-		            data: [
-		                {name: 'other', value: 100-num6, itemStyle: labelBottom},
-		                {name: '企业标准', value: num6, itemStyle: labelTop}
-		            ]
-		        }
-		    ]*/
 		    series: [
 				        {
 				            type: 'pie',
@@ -297,8 +214,8 @@ function abilityStatus(){
 		    },
 		    series: [
 		        {
-		            symbolSize: ['40%', '10%'],
-		            data: statisticRightSeriesData(data.data)
+		            symbolSize: ['60%', '10%'],
+		            data: statisticRightSeriesData(data.data,bar_chip)
 		        }
 		    ]
 		});
@@ -319,6 +236,7 @@ function statisticRightSeriesData(data,bar_chip){
 		obj.symbol=bar_chip;
 		series.push(obj);
 	});
+	console.log(series)
 	return series;
 }
 function standardSeriesData(data,name){
