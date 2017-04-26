@@ -27,7 +27,7 @@ transition: opacity 300ms;
 .echart_tip.bottom>.dialog_title.echart_content{top: auto;  bottom: -68px;}
 
 .dialog_title{border-bottom:1px #00B2F8 solid;color:#cccccc;padding-left:10px;padding-bottom:5px;position: absolute;
-    width:300px;font-size:12px;text-align:left;z-index:10;text-shadow:2px 2px 2px rgba(0,0,0,0.9);}
+    width:150px;font-size:12px;text-align:left;z-index:10;text-shadow:2px 2px 2px rgba(0,0,0,0.9);}
 .dialog_title>a{color: #ffffff;font-size: 14px;
     line-height: 1.4em;max-height: 2.8em;display:block;
     display: -webkit-box;text-overflow: ellipsis;word-break: break-all;

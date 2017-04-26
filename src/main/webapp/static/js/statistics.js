@@ -18,6 +18,19 @@ function reloadLeftData(){
 	//实验目的--可开展实验类型
 	labLifeCycleStatis();
 	//labCarouselInfo();
+	worldLabTypeStatis();
+}
+function reloadLeftData2(){
+   //产线维度实验室数量统计
+   proLineStatis();
+   //实验室区域数量统计：大洲 国家
+	labAreaSpread();
+	//按照实验室四大类统计数量
+   labTypeStatis();
+	//专业能力-实验室性质
+	labPropertiesStatis();
+	//实验目的--可开展实验类型
+	labLifeCycleStatis();
 }
 //实验室信息轮播数据
 /*function labCarouselInfo(){
@@ -179,11 +192,15 @@ function worldTyleEchart(data){
 	    ]
 	});
 }
-
+function worldLabTypeStatis(){
+	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code","productCode":productCode},function(data){
+		worldTyleEchart(data)
+	})
+}
 //按照实验室四大类统计数量
 function labTypeStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code","productCode":productCode},function(data){
-		worldTyleEchart(data)
+		//worldTyleEchart(data)
 		myChartFlatLB.resize();
 		myChartFlatLB.clear();
 		 	myChartFlatLB.setOption(getLineEcharts());
@@ -239,7 +256,6 @@ function labTypeStatis(){
 		                },
 		                nameGap: 10,
 		                offset: 5,
-		              max: 300,
 		                splitLine: {  //刻度线
 		                    show: true,
 		                    lineStyle: {

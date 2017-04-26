@@ -8,20 +8,19 @@ function pageResize() {
     console.log(h);
     $("#content").css("width",h*16*7/(9*3));
 }
-//进入时的视频淡出效果
 function videoFadeOut() {
-	    $("body").prepend('<div id="mask">'+
-                            '<video src="'+contentPath+'/img/movieHead.mp4"  width="100%" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>'+
+   /* $("body").prepend('<div id="mask" style="background-color: black">'+
+                            '<video src="'+contextPath+'/static/img/movieHead_blackBoard.mp4"  width="100%" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>'+
                       '</div>'
-    );
+    );*/
     var $video = $('video');
-    $video.click(function(){
+    $video.click(function () {
         $(this)[0].play()
     });
-    $video[0].addEventListener('ended',function(){
+    $video[0].addEventListener('ended', function () {
         $(this).animate({
-            opacity:0
-        },3000,function () {
+            opacity: 0
+        }, 3000, function () {
             $(this).parent().hide();
         })
     });
@@ -117,7 +116,7 @@ function navSelectAll() {
 //选取被激活li元素下面的值
 function selectActLi() {
 	getSelectLab();
-    reloadData(productCode,labType);
+    reloadData2(productCode,labType);
 }
 //获取实验室类别 产线选择类型
 function getSelectLab(){
@@ -223,7 +222,7 @@ function sphereRBscroll() {
 $(function () {
 
     //进入时的视频淡出效果
-    // videoFadeOut();
+    //videoFadeOut();
     //切换地图显示区域
     switchMapArea(myCharts);
     //切换生产线和实验室的列表显示
