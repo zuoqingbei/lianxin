@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>wordCloud</title>
+    <style>
+        html,body{
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #main{
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+
+    <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+    <script src="${contextPath!}/static/asserts/echarts/echarts-all-2.2.7.min.js"></script>
+    <!--<script src="${contextPath!}/static/asserts/echarts/echarts-all.js"></script>-->
+    <script>
+        //球形地图右上角的环形图表
+        var myChartSphereLB = echarts.init($("#main")[0]);
+        function createRandomItemStyle() {
+            return {
+                normal: {
+                    color: 'rgb(' + [
+                        Math.round(Math.random() * 70+50),
+                        Math.round(Math.random() * 170+50),
+                        Math.round(Math.random() * 150+50)
+                    ].join(',') + ')',
+                    textStyle:{
+                        fontFamily:'黑体'
+                    }
+
+                }
+            };
+        }
+        var strArr = ["Haier", "冰箱", "洗衣机", "空调", "电脑", "冷柜","冰吧冷柜", "曲面电视", "智能电视", "热水器",
+            "手机","整体衣柜", "扫地机器人", "整体厨房", "电磁炉", "电饭煲", "空气魔方", "空气净化器", "净水机",
+            "智慧", "互联", "U-Lab", "太阳能"
+        ];
+        var dataArr = new Array();
+        strArr.forEach(function (item, index, array) {
+            var oneData = new Object();
+            oneData.name = item;
+            oneData.value = Math.random() * 700;
+            oneData.itemStyle = createRandomItemStyle();
+            if (index < 6) {
+                oneData.value = 3000 -300*index;
+                oneData.itemStyle = {normal: {color: function () {
+//                    console.log('rgb( ' + parseInt(Math.random()*100+150)+' ,'+ parseInt(Math.random()*100+100) +',62)')
+                    return 'rgb( ' + parseInt(Math.random()*70+30)+' ,'+ parseInt(Math.random()*120+60) +',220)';
+//                    return 'rgb( 200 ,180,12)';
+                } }}
+            }
+
+            dataArr.push(oneData);
+//        console.log("oneData.itemStyle.color",oneData.itemStyle);
+        });
+//        console.log("dataArr", dataArr);
+        option = {
+            textStyle: {
+//                fontFamily: 'Microsoft yahei',
+                fontFamily: '黑体'
+            },
+          series: [{
+                name: '海尔茶品',
+                type: 'wordCloud',
+                size: ['100%', '100%'],
+                textRotation: [0, 45, 90, -45, -90],
+                textPadding: 0,
+              textStyle: {
+//                fontFamily: 'Microsoft yahei',
+                  fontFamily: '黑体'
+              },
+                center:["50%", "50%"],
+                autoSize: {
+                    enable: true,
+                    minSize: 12
+                },
+                data: dataArr,
+                itemStyle: {
+                    normal: {
+//                        fontFamily:"Microsoft yahei"
+                    }
+                }
+            }]
+        };
+        myChartSphereLB.setOption(option);
+        $(window).resize(function () {
+            myChartSphereLB.resize();
+        });
+    </script>
+</body>
+</html>

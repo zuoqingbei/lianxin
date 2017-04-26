@@ -36,7 +36,7 @@ public class LabController extends BaseController {
     	List<Record> labInfo=LabMapModel.dao.labShowFlatMap(sqlWhere);
     	for(Record r:labInfo){
     		if(r.getStr("title").length()>4){
-    			r.set("title", r.getStr("title").substring(0,4));
+    			r.set("title", r.getStr("title").substring(0,4)+"...");
     		}
     	}
     	setAttr("labInfo", labInfo);

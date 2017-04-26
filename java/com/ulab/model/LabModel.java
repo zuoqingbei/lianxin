@@ -27,7 +27,7 @@ public class LabModel extends Model<LabModel> {
 		String pSql = "select id,d.short_name as shortname,'" + Constants.QD_LNG
 				+ "' as lng,'" + Constants.QD_LAT
 				+ "' as lat,a.num as value from t_b_dictionary d  ";
-		pSql += " left join (select lab_type_code,count(1) as num from(select  lab_type_code,code from t_b_lab_info where del_flag="+Constants.DEL_FALG+" and show_in_map="+Constants.SHOW_IN_MAP+" group by lab_type_code,code) group by lab_type_code ";
+		pSql += " left join (select lab_type_code,count(1) as num from(select  lab_type_code,code from t_b_lab_info where del_flag="+Constants.DEL_FALG+" and show_in_map="+Constants.SHOW_IN_MAP+" and link_status=1 group by lab_type_code,code) group by lab_type_code ";
 		pSql += " )a on d.id=a.lab_type_code where d.type='lab_type' and d.del_flag="+Constants.DEL_FALG+" order by d.order_no ";
 		List<Record> parentList = Db.find(pSql);
 		for (Record r : parentList) {
