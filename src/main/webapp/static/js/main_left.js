@@ -116,7 +116,7 @@ function navSelectAll() {
 //选取被激活li元素下面的值
 function selectActLi() {
 	getSelectLab();
-    reloadData2(productCode,labType);
+    reloadData(productCode,labType);
 }
 //获取实验室类别 产线选择类型
 function getSelectLab(){
