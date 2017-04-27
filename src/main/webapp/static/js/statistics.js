@@ -70,7 +70,7 @@ function proLineStatis(){
 //球形图 右上角实验室数量按照四大类展示
 function worldTyleEchart(data){
 	//球形地图右上角的环形图表
-	console.log("datadatadatadatadatadatadata")
+//	console.log("datadatadatadatadatadatadata")
 	console.log(data)
 	var num2=standardSeriesData(data,"研发实验室");
 	var num3=standardSeriesData(data,"中心实验室");
@@ -90,7 +90,7 @@ function worldTyleEchart(data){
 	                return allNum -  params.value
 	            },
 	            textStyle: {
-	                fontSize:16,
+	                fontSize:bodyScale*13,
 	                color: "#f90",
 	                baseline: 'bottom'
 	            }
@@ -121,7 +121,7 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-	                fontSize: "60%",
+	                fontSize: bodyScale*9,
 	                baseline: 'top'
 	            }
 	        },
@@ -133,7 +133,7 @@ function worldTyleEchart(data){
 	        color: '#6cf'
 	    }
 	};
-	var radius = [30, 39];
+	var radius = ["27%", "36%"];
 	myChartSphereRT.setOption({
 	    textStyle: {
 	        color: '#6cf',
@@ -197,7 +197,7 @@ function worldLabTypeStatis(){
 		worldTyleEchart(data)
 	})
 }
-//按照实验室四大类统计数量
+//平面地图左下角，按照实验室四大类统计数量
 function labTypeStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code","productCode":productCode},function(data){
 		//worldTyleEchart(data)
@@ -214,10 +214,11 @@ function labTypeStatis(){
 		        },
 		        textStyle: {
 		            color: "#6cf",
-		            fontSize: "60%"
+		            fontSize: bodyScale*7
 		        },
 		        grid: {
 //		            show:true,
+		        	x:"20%",
 		        	 x2: "15%",
 		             y: "15%",
 		             y2: "14%"
@@ -230,7 +231,7 @@ function labTypeStatis(){
 		                axisLabel: {
 		                    textStyle: {
 		                        color: "#66ccff",
-		                        fontSize: "60%"
+		                        fontSize: bodyScale*7
 		                    },
 		                    rotate:0
 		                },
@@ -240,22 +241,23 @@ function labTypeStatis(){
 		                    }
 		                },
 
-		                offset: 5
+		                offset: bodyScale*5
 
 		            }
 		        ],
 		        yAxis: [
 		            {
-		                name: "数量 ",
+		                name: "　数量　　　　　　　",
+//		                name: "数量　　　",
 		                type: 'value',
 		                axisLabel: {
 		                    textStyle: {
 		                        color: "#66ccff",
-		                        fontSize: "60%"
+		                        fontSize: bodyScale*7
 		                    }
 		                },
-		                nameGap: 10,
-		                offset: 5,
+		                nameGap: bodyScale*10,
+		                offset: bodyScale*5,
 		                splitLine: {  //刻度线
 		                    show: true,
 		                    lineStyle: {
@@ -295,11 +297,11 @@ function labPropertiesStatis(){
 	        },
 	        textStyle: {
 	            color: "#6cf",
-	            fontSize: "60%"
+	            fontSize: bodyScale*8
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "25%",
+	        	 x: "40%",
 	             x2: "20%",
 	             y:"15%"
 	        },
@@ -310,7 +312,7 @@ function labPropertiesStatis(){
 	                axisLabel: {
 	                    textStyle: {
 	                        color: "#66ccff",
-	                        fontSize: "60%"
+	                        fontSize: bodyScale*6
 	                    }
 	                },
 	                axisLine: {
@@ -324,7 +326,8 @@ function labPropertiesStatis(){
 	                        color: "#234f65"
 	                    }
 	                },
-	                offset: 5
+	                nameGap: bodyScale*10,
+	                offset: 5//调整个坐标轴标签的远近
 
 	            }
 	        ],
@@ -334,9 +337,10 @@ function labPropertiesStatis(){
 	                type: 'category',
 	                data: statisticLengend(data),
 	                axisLabel: {
+	                	margin:bodyScale*2,
 	                    textStyle: {
 	                        color: "#66ccff",
-	                        fontSize: "60%"
+	                        fontSize: bodyScale*10
 	                    }
 	                },
 	                nameGap: 10,
@@ -359,7 +363,7 @@ function labPropertiesStatis(){
 	})
 }
 
-//按照实验室生命周期（可开展实验）统计数量
+//平面地图改到右上角的，按照实验室生命周期（可开展实验）统计数量
 function labLifeCycleStatis(){
 	$.post(contextPath+'/lab/labCarryNumStatisAjax',{"labType":labType,"productCode":productCode},function(data){
 		myChartFlatRB.resize();
@@ -377,13 +381,15 @@ function labLifeCycleStatis(){
 	        grid: {
 	            left:"10%",
 	            right: '10%',
-	            top:"30%"
+	            top:"15%"
 	        },
 	        legend: {
 	        	   data:['实验室数量','检测订单量'],
 	               textStyle:{
-	                   fontSize: "50%"
+	                   fontSize: bodyScale*4
 	               },
+	               itemWidth: bodyScale*5,
+	               itemHeight: bodyScale*5
 	        },
 	        xAxis: [
 	            {
@@ -394,7 +400,7 @@ function labLifeCycleStatis(){
 	                },
 	                axisLabel: {
 	                    textStyle: {
-	                        fontSize: "70%"
+	                        fontSize: bodyScale*4
 	                    }
 	                },
 	                splitLine: {  //刻度线
@@ -419,7 +425,7 @@ function labLifeCycleStatis(){
 	                },
 	                axisLabel: {
 	                    textStyle: {
-	                        fontSize: "60%"
+	                        fontSize: bodyScale*5
 	                    }
 	                    // formatter: '{value} ml'
 	                },
@@ -442,7 +448,7 @@ function labLifeCycleStatis(){
 	                 },
 	                 axisLabel: {
 	                     textStyle: {
-	                         fontSize: "60%"
+	                         fontSize: bodyScale*5
 	                     }
 	                     // formatter: '{value} ml'
 	                 },

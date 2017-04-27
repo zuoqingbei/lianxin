@@ -67,7 +67,7 @@
 .lab_word .word_active{
     color: #00e673;
 }
-/*总状态*/
+/*鎬荤姸鎬�*/
 .total_state {
     width: 100%;
     height: 92%;
@@ -162,7 +162,7 @@
 }
 
 .total_top_2 .total_top_2_box > ul {
-    height: 77%;
+    height: 88%;
     /*background-color:red;*/
     display: flex;
     flex-direction: row;
@@ -176,27 +176,34 @@
     position: relative;
     padding-right: 3.5%;
 }
-
+.total_top_2 .total_top_2_box > ul > li ul{
+	height:100%;
+}
+.total_top_2 .total_top_2_box > ul > li ul li{
+	height:25%;
+}
 .total_top_2_box > ul > li .progress {
     display: inline-block;
     width:70%;
-    /*height: 20%;*/
-    height: 1em;
+    height: 40%;
+    /*  height: 1em;*/
     border-radius: 3px;
     border: 1px solid #66ccff;
-    margin-bottom: 5%;
+    margin-bottom: 1%;
     background-color: transparent;
 
 }
 
+/*  
 .total_top_2_box > ul .xueli .progress {
     margin-bottom: 14%;
 }
+*/
 
 .total_top_2_box > ul > li .bar_name {
     position: absolute;
      right: 26%;
-    font-size: 0.6em;
+    font-size: 0.8em;
     /*margin-top: 0em;*/
 }
 
@@ -368,7 +375,7 @@
     height: 65%;
 }
 
-/*挖掘应用*/
+/*鎸栨帢搴旂敤*/
 .total_bottom {
     display: flex;
     flex-direction: row;
@@ -409,16 +416,8 @@
 }
 
 
-/*tab栏切换样式*/
-#right .active {
-    background: url("../img/TotalState/border-click.png") no-repeat;
-    background-size: 100% 100%;
-    color: #00e673;
-}
 
-
-
-/*设施状态*/
+/*璁炬柦鐘舵��*/
 .sheshi_state{
     width: 100%;
     height: 90%;
@@ -459,7 +458,7 @@
 }
 
 
-/*数据结果*/
+/*鏁版嵁缁撴灉*/
 .shuju_result{
     width: 100%;
     height: 90%;
@@ -549,7 +548,7 @@
 }
 
 
-/*数据挖掘*/
+/*鏁版嵁鎸栨帢*/
 .shuju_apply{
     width: 100%;
     height: 90%;
@@ -611,10 +610,21 @@
     flex: 1;
 }
 
-.box {
+
+
+
+/*tab鏍忓垏鎹㈡牱寮�*/
+#right .tab .active_right {
+    background: url("../img/TotalState/border-click.png") no-repeat;
+    background-size: 100% 100%;
+    color: #00e673;
+}
+
+#right .box {
     display: none;
 }
 
-.selected {
+#right .selected {
     display: flex;
 }
+

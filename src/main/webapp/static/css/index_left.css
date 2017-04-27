@@ -106,11 +106,12 @@
     margin: 1% auto 0;
     position: relative;
     padding: 1% 0;
-    padding-left: 6%;
-    font-size: 1.6em;
+    padding-left: 8%;
+    font-size: 2em;
+    letter-spacing: .05em;
     color: #66CCFE;
     background: url(../img/bg_title.png);
-    background-size: 77% 100%;
+    background-size: 98% 100%;
     background-position-x: 50%;
     background-repeat: no-repeat;
 }
@@ -132,8 +133,8 @@
 #l .btnGroup img{
     cursor:pointer;
     margin-right: 1em;
-    width:2em;
-    height: 2em;
+    width:2.2em;
+    height: 2.2em;
 }
 
 
@@ -159,7 +160,7 @@
 #l .sphere-left-top .myChart{
     height: 60%;
     margin: 26% 3%;
-/*     background: url("../img/sphereLT.png"); */
+    /*background: url("../img/sphereLT.png");*/
     background: url("../img/5dz.png");
     background-size: 100% 100%;
 }
@@ -177,6 +178,7 @@
     position: absolute;
     width: 100%;
     top: 1.8%;
+    font-size: 1.3em;
     font-weight: normal;
     color: #6cf;
     margin-top: 3%;
@@ -187,13 +189,16 @@
     width: auto;
     left: -16%;
     top: -0.5%;
-    font-size: 120%;
+    /*font-size: 120%;*/
+    font-size: 1.4em;
     font-weight: normal;
     color: #fff;
 }
-
+@media screen and (min-width: 640px) and (max-width: 999px){
+    /*对应于媒体宽度在640~999px之间应该显示的样式*/
+}
 #l .sphere .chartBorder h3 strong{
-    font-size: 125%;
+    font-size: 1.2em;
     font-weight: normal;
     color: #f93;
 }
@@ -206,7 +211,7 @@
     margin-top: 3%;
     padding: 0 3%;
     overflow: hidden;
-    font-size: 75%;
+    font-size: .7em;
     color: #6cf;
     text-align: center;
 }
@@ -216,7 +221,7 @@
     box-shadow: 0 2px 3px -2px;
 }
 #l .sphere-right-bottom .chartBorder>.scroll{
-    height: 9.5em;
+    height: 13.5em;
     overflow: hidden;
     margin: 5% 0;
 }
@@ -227,9 +232,19 @@
 #l .sphere-right-bottom .chartBorder>ul>li>ul{
     overflow: hidden;
 }
-#l .sphere-right-bottom .chartBorder>ul.header>li,
-#l .sphere-right-bottom .chartBorder ul>li>ul>li{
-    width:33%;
+#l .sphere-right-bottom .chartBorder>ul.header>li:nth-of-type(1),
+#l .sphere-right-bottom .chartBorder ul>li>ul>li:nth-of-type(1){
+    width:30%;
+    float: left;
+}
+#l .sphere-right-bottom .chartBorder>ul.header>li:nth-of-type(2),
+#l .sphere-right-bottom .chartBorder ul>li>ul>li:nth-of-type(2){
+    width:30%;
+    float: left;
+}
+#l .sphere-right-bottom .chartBorder>ul.header>li:nth-of-type(3),
+#l .sphere-right-bottom .chartBorder ul>li>ul>li:nth-of-type(3){
+    width:40%;
     float: left;
 }
 
@@ -250,6 +265,7 @@
 #l .flat-footer .legend{
     position: relative;
     text-align: center;
+    font-size:1.1em;
     margin: 0 auto;
     height: 100%;
     width: 51%;
@@ -263,8 +279,8 @@
     position: absolute;
     height: 50%;
     width: 11%;
-    line-height: 550%;
-    font-size: 75%;
+    line-height: 5em;
+    font-size: .9em;
     text-align: center;
     background-size: 100% 100%;
     top: 14.6%;
@@ -286,12 +302,12 @@
     display: inline-block;
     position: relative;
     top: .2em;
+    margin-right: .2em;
     width: 1.5em;
     height: 1em;
     background-position: 50%;
     background-size: contain;
     background-repeat: no-repeat;
-    margin-right: .2em;
 }
 #l .flat-footer .legend .selectAll{
     color: #6cf;
@@ -321,7 +337,7 @@
 }
 #l .flat-footer .legend ul li{
     display: inline-block;
-    margin: 0 1%;
+    margin: 0 1.5%;
 }
 #l .flat-footer .legend ul li a{
     font-size: 90%;
@@ -414,7 +430,7 @@
     display: inline-block;
     font-size: 118%;
     left: 36%;
-    padding-top: 1%;
+    padding-top: 1.5%;
     font-weight: normal;
     color: #fff;
     transform: translate(-50%, 14%);
@@ -433,6 +449,9 @@
     line-height: 180%;
     background-color: rgba(102,204,255,.15);
 }
+#l .flat .flat-right-bottom .chartBorder h4{
+	margin: 4% 2% 0;
+}
 
 #l .flat .chartBorder h4 strong{
     color: #fff;
@@ -441,7 +460,7 @@
 }
 #l .flat-left-bottom .myChart{
     height: 72%;
-    margin-bottom: 5%;
+    margin: 1% 2% 5%;
 }
 #l .flat-right-top .myChart{
     height: 80%;
@@ -449,19 +468,19 @@
 }
 #l .flat-right-bottom .myChart{
     height: 65%;
-    margin-bottom: 5%;
+    padding: 8% 0 0%;
 }
 
 #l .flat .chartBorder ul{
     position: relative;
-    margin: 1% 15%;
+    margin: 1% 15% 1% 18%;
     top: 3%;
     height: 72%;
-    font-size: 63%;
+    font-size: 0.9em;
     color: #6cf;
 }
 #l .flat .chartBorder ul li{
-    margin-bottom: 2%;
+    margin-bottom: 3%;
     line-height: 201%;
     height: 11%;
 }
