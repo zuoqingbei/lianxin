@@ -162,7 +162,7 @@
         <!--这里是后面4屏的代码-->
         <div class="tab">
             <ul>
-                <li class="tab-item active">总状态</li>
+                <li class="tab-item active_right">总状态</li>
                 <li class="tab-item">实验室状态</li>
                 <li class="tab-item">数据结果</li>
                 <li class="tab-item">数据挖掘应用</li>
@@ -475,12 +475,16 @@
 
 <script>
 var contextPath='${contextPath!}';
-    function pageResize() {
-        var h = $(window).height();
-        console.log(h);
-        $("#content").css("width",h*16*7/(9*3));
-    }
-    pageResize();
+var bodyScale = 1;
+function pageResize() {
+    var h = $(window).height();
+    $("#content").css("width",h*16*7/(9*3));
+    var bodyFontSize = h/595*100+"%";
+    bodyScale = h/595;
+    $("body").css("font-size",bodyFontSize);
+    console.log("屏幕高度："+h+", body字号："+bodyFontSize)
+}
+pageResize();
 </script>
 <script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
 <script src="${contextPath!}/static/asserts/echarts/wordcloudFromNet.js?time=New Date()"></script>
@@ -492,17 +496,18 @@ var contextPath='${contextPath!}';
 <script src="${contextPath!}/static/js/main_left.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
 <script>
-  /*   $(function () {
+     $(function () {
         $(".tab-item").click(function () {
-            $(this).addClass("active").siblings().removeClass("active");
+            $(this).addClass("active_right").siblings().removeClass("active_right");
 
             // 3. 获取到当前菜单的索引号
             var index = $(this).index();
             // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
-            //.selected display:block
+            //.selected display:flex
             $(".box:eq(" + index + ")").addClass("selected").siblings().removeClass("selected");
+          
         });
-    }); */
+    }); 
 
 </script>
 <script>

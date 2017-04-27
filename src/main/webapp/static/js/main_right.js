@@ -263,7 +263,7 @@ var labelBottom = {
         color: 'rgba(0,0,0,0)'
     },
 };
-var radius = [20, 25];
+var radius = ['30%', '45%'];
 option = {
     toolbox: {
         show: false,
@@ -527,7 +527,7 @@ myChart4.setOption({
             name: '一次合格率',
             type: 'pie',
             clockWise: false,
-            radius: [50, 60],
+            radius: ['50%', '60%'],
             itemStyle: dataStyle,
             data: [
                 {
@@ -546,7 +546,7 @@ myChart4.setOption({
             name: '一次合格率',
             type: 'pie',
             clockWise: false,
-            radius: [40, 50],
+            radius: ['40%', '50%'],
             itemStyle: dataStyle,
             data: [
                 {
@@ -578,7 +578,7 @@ myChart5.setOption({
             name: '问题闭环率',
             type: 'pie',
             clockWise: false,
-            radius: [50, 60],
+            radius: ['50%', '60%'],
             itemStyle: dataStyle,
             data: [
                 {
@@ -597,7 +597,7 @@ myChart5.setOption({
             name: '问题闭环率',
             type: 'pie',
             clockWise: false,
-            radius: [40, 50],
+            radius: ['40%', '50%'],
             itemStyle: dataStyle,
             data: [
                 {
@@ -629,6 +629,8 @@ myChart6.setOption({
         textStyle:{
             fontSize:8
         },
+        itemWidth: 2,  //图例标记的图形宽度
+        itemHeight: 1, //图例标记的图形高度
     },
     grid: {
         x: 23,
@@ -676,6 +678,8 @@ myChart7.setOption({
         textStyle:{
             fontSize:8
         },
+        itemWidth: 5,  //图例标记的图形宽度
+        itemHeight: 2, //图例标记的图形高度
     },
     grid: {
         y: 28
@@ -728,7 +732,7 @@ myChart8.setOption({
         {
             name: '',
             type: 'pie',
-            radius: [0, 50],
+            radius: [0, '50%'],
             center: ['50%', '55%'],
             roseType: 'radius',
             label: {
@@ -915,7 +919,7 @@ myChart11.setOption({
         {
             name: '',
             type: 'pie',
-            radius: [0, 50],
+            radius: [0, '50%'],
             center: ['50%', '55%'],
             roseType: 'radius',
             label: {
