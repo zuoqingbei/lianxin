@@ -168,27 +168,23 @@
                 <li class="tab-item">数据挖掘应用</li>
             </ul>
         </div>
-        <div class="lab">
-            <ul class="lab_img" style="display:none;">
-                <!--<li><img src="${contextPath!}/static/img/TotalState/yf.png" alt=""></li>-->
-                <!--<li><img src="${contextPath!}/static/img/TotalState/zx.png" alt=""></li>-->
-                <!--<li><img src="${contextPath!}/static/img/TotalState/mks.png" alt=""></li>-->
-                <!--<li><img src="${contextPath!}/static/img/TotalState/gc.png" alt=""></li>-->
-                <li class="lab_img_item"></li>
-                <li class="lab_img_item"></li>
-                <li class="lab_img_item"></li>
-                <li class="lab_img_item"></li>
+          <div class="lab">
+            <ul class="lab_icon">
+                <li><img src="../img/TotalState/yf.png" alt=""></li>
+                <li><img src="../img/TotalState/zx.png" alt=""></li>
+                <li><img src="../img/TotalState/mks.png" alt=""></li>
+                <li><img src="../img/TotalState/gc.png" alt=""></li>
             </ul>
-            <br>
-            <ul class="lab_word" style="display:none;">
+            <ul class="lab_name">
                 <li class="lab_item">工厂实验室</li>
                 <li class="lab_item">模块商实验室</li>
                 <li class="lab_item">中心实验室</li>
                 <li class="lab_item">研发实验室</li>
             </ul>
         </div>
+        
         <!--总状态-->
-        <div class="box selected total_state">
+        <div class="box total_state">
             <div class="total_top">
                 <div class="total_name">实验室状态</div>
                 <div class="total_top_1">
@@ -316,7 +312,7 @@
                 <div class="total_top_4">
                     <div class="echarts_title">能力状态</div>
                     <div id="myChart3"></div>
-                    <div class="echarts_line" style="top:40.5%">
+                    <div class="echarts_line" style="top:35%">
                         <span>应具备数</span></br><span id="ability_all_num">0</span>
                     </div>
                 </div>
@@ -383,47 +379,635 @@
                 </div>
             </div>
         </div>
-        </div>
-        <!--设施状态-->
-        <div class="box sheshi_state">
+ 		<!--实验室状态-->
+        <div class="box sheshi_state selected">
             <div class="sheshi_top">
-                <div class="sheshi_top_left"></div>
-                <div class="sheshi_top_rihght"></div>
+
+                <div class="sheshi_top_left">
+                    <div class='sheshi_title'>设施状态</div>
+                    <ul>
+                        <li>
+                            <div class="zaixian">
+                                <ul>
+                                    <li>整体在线率</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <table>
+                                        <tr>
+                                            <th></th>
+                                            <th>产线在线率</th>
+                                            <th>同比</th>
+                                        </tr>
+                                        <tr>
+                                            <td>冰冷</td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>家空</td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>洗涤</td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>商空</td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>热水器</td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>厨电</td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>其他</td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                    </table>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="zaixian">
+                                <ul>
+                                    <li>整体完好率</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <table>
+                                        <tr>
+                                            <th></th>
+                                            <th>产线在线率</th>
+                                            <th>同比</th>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                    </table>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="zaixian">
+                                <ul>
+                                    <li>整体利用率</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <table>
+                                        <tr>
+                                            <th></th>
+                                            <th>产线在线率</th>
+                                            <th>同比</th>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 60%;"></div>
+
+                                                </div>
+                                                <span class="zaixianlv">60%</span>
+                                            </td>
+                                            <td><span><img src="../img/sheshiState/rise.png"
+                                                           alt=""></span><span>1%</span></td>
+                                        </tr>
+                                    </table>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sheshi_top_rihght">
+                    <div class='sheshi_title'>人员状态</div>
+                    <div class="renyuan_top">
+                        <ul>
+                            <li>
+                                <div>学历</div>
+                                <div id="myChart22"></div>
+                            </li>
+                            <li>
+                                <div>工作年限</div>
+                                <div id="myChart23"></div>
+                            </li>
+                            <li>
+                                <div>资质</div>
+                                <div id="myChart24"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="renyuan_bottom">
+                        <ul>
+                            <li>
+                                <div id="myChart25"></div>
+                            </li>
+                            <li>
+                                <div id="myChart26"></div>
+                            </li>
+                            <li>
+                                <div id="myChart27"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="sheshi_bottom">
-                <div class="sheshi_bottom_left"></div>
-                <div class="sheshi_bottom_right"></div>
+                <div class="sheshi_bottom_left">
+                    <div class='sheshi_title'>标准状态</div>
+                    <div class="biaozhun_left">
+                        <div>牵头/参与起草数分布情况</div>
+                    </div>
+                    <div class="biaozhun_right">
+                        <div>标准数量分布情况</div>
+                        <div class="biaozhun_right_echarts">
+                            <ul>
+                                <li>
+                                    <div id="myChart28"></div>
+                                </li>
+                                <li>
+                                    <div id="myChart29"></div>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <div id="myChart30"></div>
+                                </li>
+                                <li>
+
+                                    <div id="myChart31"></div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="sheshi_bottom_right">
+                    <div class='sheshi_title'>能力状态</div>
+                    <div>不同产线的能力状态分布</div>
+                    <div class="nengli_top">
+                        <ul>
+                            <li>冰冷</li>
+                            <li>洗涤</li>
+                            <li>家空</li>
+                            <li>商空</li>
+                            <li>热水器</li>
+                            <li>厨电</li>
+                            <li>其他</li>
+                        </ul>
+                    </div>
+                    <div class="nengli_bottom">
+                        <ul>
+                            <li>
+                                <div id="myChart32"></div>
+                            </li>
+                            <li>
+                                <div id="myChart33"></div>
+                            </li>
+                            <li>
+                                <div id="myChart34"></div>
+                            </li>
+                            <li>
+                                <div id="myChart35"></div>
+                            </li>
+                            <li>
+                                <div id="myChart36"></div>
+                            </li>
+                            <li>
+                                <div id="myChart37"></div>
+                            </li>
+                            <li>
+                                <div id="myChart38"></div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
             </div>
         </div>
         <!--数据结果-->
         <div class="box shuju_result">
             <div class="shuju_result_top">
                 <div class="shuju_result_top_left">
-                    <div class="left_name">
-                        <div class="left_name1 fl">
-                            <ul>
-                                <li>整机</li>
-                                <li class="left_name_num">1358<b class="left_name_icon">1</b><span class="left_name_up">0.05%</span></li>
-                            </ul>
-                        </div>
-                        <div class="left_name2 fl">
-                            <ul>
-                                <li>模块</li>
-                                <li class="left_name_num">1358<b class="left_name_icon">1</b><span class="left_name_up">0.05%</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="left_bottom">
-                        <div id="myChart20"></div>
-                        <div id="myChart21"></div>
-                    </div>
+                    <div class="shuju_title">订单类别</div>
+                    <ul>
+                        <li class="order_left">
+                            <div class="order_all">
+                                <ul>
+                                    <li>整机</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <div id="myChart39"></div>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="order_left">
+                            <div class="order_all">
+                                <ul>
+                                    <li>模块</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <div id="myChart40"></div>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="shuju_result_top_center"></div>
-                <div class="shuju_result_top_rihght"></div>
+                <div class="shuju_result_top_center">
+                    <div class="shuju_title">一次合格率</div>
+                    <ul>
+                        <li class="order_left">
+                            <div class="order_all">
+                                <ul>
+                                    <li>整机</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <div id="myChart41"></div>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="order_left">
+                            <div class="order_all">
+                                <ul>
+                                    <li>模块</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <div id="myChart42"></div>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="shuju_result_top_right">
+                    <div class="shuju_title">问题闭环率</div>
+                    <ul>
+                        <li class="order_left">
+                            <div class="order_all">
+                                <ul>
+                                    <li>整机</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <div id="myChart43"></div>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="order_left">
+                            <div class="order_all">
+                                <ul>
+                                    <li>模块</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <div id="myChart44"></div>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="shuju_result_bottom">
-                <div class="shuju_result_bottom_left"></div>
-                <div class="shuju_result_bottom_right"></div>
+                <div class="shuju_result_bottom_left">
+                    <div class="shuju_title">订单及时率</div>
+                    <ul>
+                        <li class="order_left">
+                            <div class="order_all">
+                                <ul>
+                                    <li>2016年及时率</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <div id="myChart45"></div>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="order_left">
+                            <div class="order_all">
+                                <ul>
+                                    <li>2017年及时率</li>
+                                    <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                          alt=""></span><span
+                                            class="up_num">0.05%</span></li>
+                                </ul>
+                                <ul>
+                                    <div id="myChart46"></div>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="shuju_result_bottom_right">
+                    <div class="shuju_title">检测满意度</div>
+                    <div class="jiance_left">
+                        <ul>
+                            <li class="order_left">
+                                <div class="order_all">
+                                    <ul>
+                                        <li>2016年满意度</li>
+                                        <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                              alt=""></span><span
+                                                class="up_num">0.05%</span></li>
+                                    </ul>
+                                    <ul>
+                                        <div id="myChart47"></div>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="order_left">
+                                <div class="order_all">
+                                    <ul>
+                                        <li>2017年满意度</li>
+                                        <li class="sheshi_num">96% <span><img src="../img/sheshiState/rise.png"
+                                                                              alt=""></span><span
+                                                class="up_num">0.05%</span></li>
+                                    </ul>
+                                    <ul>
+                                        <div id="myChart48"></div>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="jiance_right">
+                        <div class="jiance_right_name">检测满意度趋势变化</div>
+                        <div id="myChart49"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--数据挖掘应用-->
@@ -459,6 +1043,7 @@
             <div class="shuju_apply_center"></div>
             <div class="shuju_apply_bottom"></div>
         </div>
+              
     </div>
 </div>
 
@@ -496,19 +1081,21 @@ pageResize();
 <script src="${contextPath!}/static/js/main_left.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
 <script>
-     $(function () {
-        $(".tab-item").click(function () {
-            $(this).addClass("active_right").siblings().removeClass("active_right");
+$(function () {
+    $(".tab-item").click(function () {
+        $(this).addClass("active").siblings().removeClass("active");
 
-            // 3. 获取到当前菜单的索引号
-            var index = $(this).index();
-            // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
-            //.selected display:flex
-            $(".box:eq(" + index + ")").addClass("selected").siblings().removeClass("selected");
-          
-        });
-    }); 
+        // 3. 获取到当前菜单的索引号
+        var index = $(this).index();
+        // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
+        //.selected display:block
+        $(".box:eq(" + index + ")").addClass("selected").siblings().removeClass("selected");
+    });
 
+    $(".lab_item").click(function () {
+        $(this).addClass("word_active").siblings().removeClass("word_active");
+    });
+});
 </script>
 <script>
 var contextPath='${contextPath!}';

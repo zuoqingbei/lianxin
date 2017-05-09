@@ -42,7 +42,7 @@ function getLineEcharts() {
 
         xAxis: {
             data: [],
-            boundaryGap: false,
+            boundaryGap: true,
             splitLine: {
                 show: false
             },
@@ -53,7 +53,7 @@ function getLineEcharts() {
                 show: true,
                 // rotate: 30,
                 textStyle: {
-                    color: '#66ccff'
+                    color: '#66ccff',
                 }
             },
             axisTick: {
@@ -72,7 +72,7 @@ function getLineEcharts() {
             axisLabel: {   //坐标值
                 show: true,
                 textStyle: {
-                    color: '#66ccff'
+                    color: '#66ccff',
                 }
             },
             splitLine: {  //刻度线
@@ -147,7 +147,6 @@ function getBarEcharts() {
                 axisTick: {  //刻度值
                     show: false
                 },
-                max: 400,
                 offset: 5
 
             }
@@ -265,7 +264,7 @@ function getAreaEcharts() {
         },
         xAxis: [
             {
-                name: '',
+                name: '月份',
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -296,7 +295,7 @@ function getAreaEcharts() {
         ],
         yAxis: [
             {
-                name: "",
+                name: "数量",
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -336,6 +335,7 @@ function getRadarEcharts() {
             text: '',
             subtext: ''
         },
+
         tooltip: {
             trigger: 'axis'
         },
@@ -490,7 +490,7 @@ function getYuanhuan() {
     option = {
         tooltip: {
             trigger: 'item',
-            formatter: "{b} : {c} ({d}%)"
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         toolbox: {
             show: false,
@@ -845,4 +845,67 @@ function getRoseEcharts() {
         series: []
     };
     return option;
+}
+
+//散点图
+function  getScatterEcharts() {
+
+    option = {
+        title: {
+            text: '',
+            link: ''
+        },
+        legend: {
+            data: ['Punch Card'],
+            left: 'right'
+        },
+        tooltip: {
+            position: 'top',
+            formatter: function (params) {
+                return params.value[2] + ' commits in ' + hours[params.value[0]] + ' of ' + days[params.value[1]];
+            }
+        },
+        grid: {
+            top:0,
+            left: 2,
+            bottom: 10,
+            right: 10,
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: [],
+            boundaryGap: false,
+            // splitLine: {
+            //     show: true,
+            //     lineStyle: {
+            //         color: '#999',
+            //         type: 'dashed'
+            //     }
+            // },
+            axisLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'category',
+            data: [],
+            axisLine: {
+                show: false
+            },
+
+        },
+        series: [{
+
+            type: 'scatter',
+            symbolSize: function (val) {
+                return val[2] * 2;
+            },
+            data: [],
+            animationDelay: function (idx) {
+                return idx * 5;
+            }
+        }]
+    };
+    return option
 }
