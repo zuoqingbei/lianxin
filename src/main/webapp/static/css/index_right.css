@@ -20,52 +20,45 @@
     color: #66ccff;
     cursor: pointer;
 }
-#right .lab{
-    /*width: 30%;*/
-    /*height: 80%;*/
-    position: absolute;
-    top: 2%;
-    right: 1%;
-}
 
-.lab ul li{
-    float: right;
-    display: inline-block;
-    width: 2em;
-    height: 2em;
-    color: #66ccff;
-    text-align: center;
-    vertical-align: middle;
-    padding: 0.2em 1em;
+#right .lab{
+    width: 20%;
+    height: 8%;
+    position: absolute;
+    top: 4%;
+    right: 1%;
+    color: #66CCFE;
     cursor: pointer;
 }
-#right  .lab .lab_img li{
-    background: url("../img/TotalState/yf.png") no-repeat;
-    background-size: 100% 100%;
-    margin-right: 2.4em;
+#right .lab .lab_name{
+    width: 100%;
+    height: 100%;
+    /*background-color: red;*/
+    padding-top: 10%;
 }
-.lab .lab_img li:nth-of-type(2){
-    background: url("../img/TotalState/mks.png") no-repeat;
-    background-size: 100% 100%;
+#right .lab .lab_name li{
+   float: left;
+    width: 25%;
+    text-align: center;
 }
-.lab .lab_img li:nth-of-type(3){
-    background: url("../img/TotalState/zx.png") no-repeat;
-    background-size: 100% 100%;
+#right .lab .lab_icon{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80%;
+    cursor: pointer;
 }
-.lab .lab_img li:nth-of-type(1){
-    background: url("../img/TotalState/gc.png") no-repeat;
-    background-size: 100% 100%;
+#right .lab .lab_icon li{
+    float: left;
+    width: 25%;
+    height: 60%;
+    display: inline-block;
+   text-align: center;
 }
-.lab .lab_word li{
-    width: 6em;
-    padding: 0;
-    font-size: 0.8em;
-}
-.lab .lab_word li:hover{
-    color: #00e673;
-}
-.lab_word .word_active{
-    color: #00e673;
+#right .lab .lab_icon li img{
+   width: 35%;
+    height: 100%;
 }
 /*鎬荤姸鎬�*/
 .total_state {
@@ -87,18 +80,19 @@
 }
 .total_name{
     position: absolute;
-    top:26%;
-    left: 0;
+    top:35%;
+    left: 2px;
     width: 1.6em;
     text-align: center;
     vertical-align: middle;
     color: white;
+    
 }
 .total_center .total_name{
-    top: 32%;
+    top: 38%;
 }
 .total_bottom .total_name{
-    top:32%;
+    top:38%;
 }
 .total_state .total_center {
     background: url("../img/TotalState/border-1 .png") no-repeat;
@@ -137,7 +131,7 @@
 }
 
 .echarts_title {
-    width: 50%;
+    width: 41%;
     color: white;
     background: url("../img/TotalState/title-border.png") no-repeat;
     background-size: 100% 100%;
@@ -145,7 +139,7 @@
 }
 
 .echarts_title1 {
-    width: 65%;
+    width: 53%;
     margin-top: 7%;
 }
 
@@ -215,7 +209,7 @@
 }
 
 .total_top_2_box > ul > li .progress .progress-bar1 {
-    background-color: #8BDDFF;
+    background-color: #66ccff;
 }
 
 .total_top_2_box > ul > li .progress .progress-bar2 {
@@ -223,15 +217,15 @@
 }
 
 .total_top_2_box > ul > li .progress .progress-bar3 {
-    background-color: #4397f7;
+    background-color: #66ccff;
 }
 
 .xueli > ul > li .progress {
-    border: 1px solid  #8BDDFF;;
+    border: 1px solid  #66ccff;;
 }
 
 .zizhi > ul > li .progress {
-    border: 1px solid #4397f7;
+    border: 1px solid #66ccff;
 }
 
 .total_top_3 .total_top_3_left {
@@ -327,16 +321,16 @@
 }
 
 .echarts_title_left {
-    width: 45%;
+    width: 33%;
     height: 80%;
     float: left;
     padding-left: 10%;
-    margin-top: -3%;
+    margin-top: 3%;
 }
 
 
 #myChart4 {
-    width: 50%;
+    width: 66%;
     height: 70%;
     float: left;
 }
@@ -360,7 +354,7 @@
 }
 
 #myChart5 {
-    width: 50%;
+    width:66%;
     height: 70%;
     float: left;
 }
@@ -415,16 +409,16 @@
     height: 60%;
 }
 
-
-
-/*璁炬柦鐘舵��*/
+/*设施状态*/
 .sheshi_state{
     width: 100%;
     height: 90%;
     /*background-color: #00B2F8;*/
     display: none;
     flex-direction:column;
+    color: white;
 }
+
 .sheshi_top{
     margin-top: 1%;
     flex: 1;
@@ -436,27 +430,250 @@
     display: flex;
     flex-direction: row;
 }
+.sheshi_title{
+    position:absolute;
+    top:0.5%;
+    left:3.5%;
+    color: white;
+    font-size: 1.1em;
+}
 .sheshi_top_left{
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
-    background-size: 98% 98%
+    background-size: 98% 98%;
+    position:relative;
+    padding-top: 2%;
+    /*padding-left: 0.7%;*/
+    height: 100%;
+
 }
+.sheshi_top_left>ul{
+    height: 92%;
+}
+.sheshi_top_left>ul>li{
+    height: 100%;
+    display: inline-block;
+    width: 32%;
+}
+.sheshi_top_left .zaixian{
+    padding-top: 1%;
+    height: 15%;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #00aaff;
+    background: url("../img/sheshiState/gznx-bg.png") no-repeat;
+    background-size: 100% 100%;
+    font-size: 0.8em;
+}
+.sheshi_top_left .zaixian table{
+    width:100%;
+    /*background-color: pink;*/
+    margin-top: 1.5em;
+    text-align: center;
+}
+
+.sheshi_top_left .zaixian table tr th{
+    width: 33%;
+    text-align: center;
+}
+.sheshi_top_left .zaixian table tr td{
+    width: 25%;
+    padding: 0.7em 0;
+    color:  #66ccff;
+    font-size: 1.1em;
+    position: relative;
+
+}
+.sheshi_top_left .zaixian table tr td img{
+    width: 0.7em;
+    height: 0.7em;
+    display: inline-block;
+    margin-right: 0.5em;
+}
+
+.sheshi_top_left .zaixian table tr td:nth-of-type(2){
+    width: 50%;
+}
+.sheshi_top_left .zaixian table tr td .progress{
+    width:50%;
+    margin-bottom: 0;
+    height: 0.5em;
+    background-color: #234f65;
+}
+.sheshi_top_left .zaixian table tr td .progress .progress-bar{
+    background-color: #66CCFE;
+}
+.sheshi_top_left .zaixian table tr td  .zaixianlv{
+    position: absolute;
+    top: 25%;
+    right:25%;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    color: #f93;
+}
+.sheshi_num{
+    font-size: 1.4em;
+    color: #f93;
+}
+.sheshi_num img{
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    margin-right: 0.2em;
+}
+.up_num{
+    font-size: 0.7em;
+    color: #6cf;
+}
+
+
 .sheshi_top_rihght{
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
+    position:relative;
+    padding-top: 2%;
+    height: 100%;
 }
+.sheshi_top_rihght .renyuan_top{
+    width: 100%;
+    height: 30%;
+}
+.sheshi_top_rihght .renyuan_top>ul{
+    width: 98%;
+    height: 30%;
+}
+.sheshi_top_rihght .renyuan_top>ul>li{
+    width: 33%;
+    height: 100%;
+    display: inline-block;
+    text-align: center;
+    margin: 0 auto;
+}
+#myChart22,#myChart23,#myChart24{
+    width:60%;
+    height:4.5em;
+}
+#myChart24{
+    width: 70%;
+}
+.sheshi_top_rihght .renyuan_bottom{
+    height: 64%;
+}
+.sheshi_top_rihght .renyuan_bottom>ul{
+    width: 98%;
+    height: 100%;
+}
+.sheshi_top_rihght .renyuan_bottom>ul>li{
+    width: 33%;
+    height: 100%;
+    display: inline-block;
+    text-align: center;
+    margin: 0 auto;
+}
+#myChart25,#myChart26,#myChart27{
+    width: 90%;
+    height: 100%;
+    background-color: #00aaff;
+}
+
 .sheshi_bottom_left{
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
+    position:relative;
+    padding-top: 2%;
+    color: #66CCFE;
 }
+.sheshi_bottom_left .biaozhun_left{
+    width: 34%;
+    height: 90%;
+    background-color: plum;
+    float: left;
+    text-align: center;
+    font-size: 1.2em;
+}
+.sheshi_bottom_left .biaozhun_right{
+    width: 64%;
+    height: 90%;
+    float: left;
+    text-align: center;
+    font-size: 1.2em;
+}
+.sheshi_bottom_left .biaozhun_right .biaozhun_right_echarts{
+    width: 100%;
+    height: 100%;
+}
+.sheshi_bottom_left .biaozhun_right ul{
+    width: 100%;
+    height: 44%;
+    display: inline-block;
+}
+.sheshi_bottom_left .biaozhun_right ul li{
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+#myChart28,#myChart29,#myChart30,#myChart31{
+    width: 100%;
+    height: 100%;
+}
+
 .sheshi_bottom_right{
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
+    position:relative;
+    text-align: center;
+    padding-top: 2%;
+    color: #66CCFE;
+    font-size: 1.2em;
 }
-
+.sheshi_bottom_right .nengli_top{
+    width: 100%;
+    height: 20%;
+}
+.sheshi_bottom_right .nengli_top ul{
+    width: 85%;
+    height: 100%;
+    margin: 0 auto;
+    background: url("../img/sheshiState/nl-bg.png") no-repeat;
+    background-size: 100% 100%;
+    margin-top: 1%;
+}
+.sheshi_bottom_right .nengli_top ul li{
+    width: 14%;
+    height: 100%;
+    line-height: 100%;
+    float: left;
+    font-size: 1.3em;
+    color: white;
+    padding-top: 2%;
+}
+.nengli_bottom{
+    width: 100%;
+    height: 65%;
+}
+.nengli_bottom ul{
+    width: 95%;
+    height: 100%;
+}
+.nengli_bottom ul li{
+    width: 14%;
+    height: 100%;
+    float: left;
+}
+#myChart32,#myChart33,#myChart34,#myChart35,#myChart36,#myChart37,#myChart38{
+    width: 100%;
+    height: 100%;
+}
+#myChart39,#myChart40,#myChart41,#myChart42,#myChart43,#myChart44,#myChart45,#myChart46,#myChart47,#myChart48,#myChart49 {
+    width: 85%;
+    height: 100%;
+    background-color: #00aaff;
+}
 
 /*鏁版嵁缁撴灉*/
 .shuju_result{
@@ -465,12 +682,14 @@
     /*background-color: #00B2F8;*/
     display: none;
     flex-direction:column;
+    color: white;
 }
 .shuju_result_top{
     margin-top: 1%;
     flex: 1;
     display: flex;
     flex-direction:row ;
+
 }
 .shuju_result_bottom{
     flex: 1;
@@ -480,73 +699,229 @@
 .shuju_result_top_left{
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
-    background-size: 98% 98%
+    background-size: 98% 98%;
+    height: 100%;
+    padding-top: 2%;
+    position: relative;
+
 }
+.shuju_result_top_left>ul{
+    width: 98%;
+    height: 92%;
+    /*background-color: pink;*/
+    text-align: center;
+    vertical-align: middle;
+}
+.shuju_result_top_left>ul .order_left{
+    width: 50%;
+    height: 100%;
+    margin: 0 auto;
+    /*background-color: #00aaff;*/
+    float: left;
+}
+.shuju_result_top_left>ul .order_left .order_all{
+    width: 100%;
+    height: 100%;
+}
+.shuju_result_top_left>ul .order_left ul:last-of-type{
+    height: 80%;
+}
+.shuju_result_top_left>ul .order_left ul:first-of-type{
+    width: 47%;
+    height: 18%;
+    display: inline-block;
+    background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
+    background-size: 100% 100%;
+    padding-top: 1%;
+}
+.shuju_title{
+    position: absolute;
+    top: 0.5%;
+    left: 2.5%;
+    font-size: 1.1em;
+}
+
 .shuju_result_top_center{
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
-    background-size: 98% 98%
+    background-size: 98% 98%;
+    padding-top: 2%;
+    position: relative;
 }
-.shuju_result_top_rihght{
+.shuju_result_top_center>ul{
+    width: 98%;
+    height: 92%;
+    /*background-color: pink;*/
+    text-align: center;
+    vertical-align: middle;
+}
+.shuju_result_top_center>ul .order_left{
+    width: 50%;
+    height: 100%;
+    margin: 0 auto;
+    /*background-color: #00aaff;*/
+    float: left;
+}
+.shuju_result_top_center>ul .order_left .order_all{
+    width: 100%;
+    height: 100%;
+}
+.shuju_result_top_center>ul .order_left ul:last-of-type{
+    height: 80%;
+}
+.shuju_result_top_center>ul .order_left ul:first-of-type{
+    width: 47%;
+    height: 18%;
+    display: inline-block;
+    background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
+    background-size: 100% 100%;
+    padding-top: 1%;
+}
+
+
+
+
+.shuju_result_top_right{
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
+    padding-top: 2%;
+    position: relative;
 }
+.shuju_result_top_right>ul{
+    width: 98%;
+    height: 92%;
+    /*background-color: pink;*/
+    text-align: center;
+    vertical-align: middle;
+}
+.shuju_result_top_right>ul .order_left{
+    width: 50%;
+    height: 100%;
+    margin: 0 auto;
+    /*background-color: #00aaff;*/
+    float: left;
+}
+.shuju_result_top_right>ul .order_left .order_all{
+    width: 100%;
+    height: 100%;
+
+}
+.shuju_result_top_right>ul .order_left ul:last-of-type{
+    height: 80%;
+}
+.shuju_result_top_right>ul .order_left ul:first-of-type{
+    width: 47%;
+    height: 18%;
+    display: inline-block;
+    background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
+    background-size: 100% 100%;
+    padding-top: 1%;
+}
+
+
+
 .shuju_result_bottom_left{
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
+    padding-top: 2%;
+    position: relative;
 }
+.shuju_result_bottom_left>ul{
+    width: 98%;
+    height: 92%;
+    /*background-color: pink;*/
+    text-align: center;
+    vertical-align: middle;
+}
+.shuju_result_bottom_left>ul .order_left{
+    width: 50%;
+    height: 100%;
+    margin: 0 auto;
+    /*background-color: #00aaff;*/
+    float: left;
+}
+.shuju_result_bottom_left>ul .order_left .order_all{
+    width: 100%;
+    height: 100%;
+
+}
+.shuju_result_bottom_left>ul .order_left ul:last-of-type{
+    height: 80%;
+}
+.shuju_result_bottom_left>ul .order_left ul:first-of-type{
+    width: 30%;
+    height: 18%;
+    display: inline-block;
+    background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
+    background-size: 100% 100%;
+    padding-top: 1%;
+}
+
+
 .shuju_result_bottom_right{
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
+    padding-top: 2%;
+    position: relative;
 }
-.left_name{
+.shuju_result_bottom_right .jiance_left{
+    width: 49%;
+    height: 92%;
+    float: left;
+}
+.shuju_result_bottom_right .jiance_left>ul{
     width: 98%;
-    height: 15%;
-    margin-top: 4%;
-}
-.left_name1,.left_name2{
-    width: 25%;
-    height: 120%;
+    height: 92%;
+    /*background-color: pink;*/
     text-align: center;
-    margin-left: 15%;
+    vertical-align: middle;
+}
+.shuju_result_bottom_right .jiance_left>ul .order_left{
+    width: 50%;
+    height: 100%;
+    margin: 0 auto;
+    /*background-color: #00aaff;*/
+    float: left;
+}
+.shuju_result_bottom_right .jiance_left>ul .order_left .order_all{
+    width: 100%;
+    height: 100%;
+
+}
+.shuju_result_bottom_right .jiance_left>ul .order_left ul:last-of-type{
+    height: 90%;
+}
+.shuju_result_bottom_right .jiance_left>ul .order_left ul:first-of-type{
+    width: 55%;
+    height: 18%;
+    display: inline-block;
     background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
     background-size: 100% 100%;
-}
-.left_name1>ul>li:first-of-type{
-    padding-top: 0.2em;
-    color: white;
+    padding-top: 1%;
 }
 
-.left_name2>ul>li:first-of-type{
-    padding-top: 0.2em;
-    color: white;
-}
-.left_name_num{
-    font-size: 1.5em;
-    color: #f93;
-}
-.left_name_icon{
-    /*background: url("../img");*/
-    width: 1em;
-    height: 1em;
-    background-color: pink;
-    margin-left: 0.5em;
 
+.shuju_result_bottom_right .jiance_right{
+    width: 49%;
+    height: 92%;
+    float: left;
 }
-.left_name_up{
-    color: #66ccff;
-    font-size: 0.5em;
-    margin-left: 0.5em;
+.jiance_right_name{
+    height: 15%;
+    width: 100%;
+    text-align: center;
+    color: #66CCFE;
+    font-size: 1.3em;
 }
-.shuju_result_top_left .left_bottom{
-    height: 70%;
-    width: 98%;
-    background-color: pink;
+.shuju_top_right{
+    flex: 1;
 }
-
+#myChart49{
+    height: 85%;
+}
 
 /*鏁版嵁鎸栨帢*/
 .shuju_apply{
@@ -606,9 +981,6 @@
     background-color: pink;
 }
 
-.shuju_top_right{
-    flex: 1;
-}
 
 
 
@@ -627,4 +999,7 @@
 #right .selected {
     display: flex;
 }
+
+
+
 
