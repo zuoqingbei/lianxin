@@ -1900,33 +1900,27 @@ myChart24.setOption({
 
 //人员状态 学历 散点图
 var myChart25 = echarts.init(document.getElementById("myChart25"));
-myChart25.setOption(getScatterEcharts());
-var data = [[0, 0, 5], [0, 1, 1], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0], [0, 6, 0], [1, 0, 7], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0], [1, 6, 0], [2, 0, 1], [2, 1, 1], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0], [2, 6, 0], [3, 0, 7], [3, 1, 3], [3, 2, 0], [3, 3, 0], [3, 4, 0], [3, 5, 0], [3, 6, 0], [4, 0, 1], [4, 1, 3], [4, 2, 0], [4, 3, 0], [4, 4, 0], [4, 5, 1], [4, 6, 0], [5, 0, 2], [5, 1, 1], [5, 2, 0], [5, 3, 3], [5, 4, 0], [5, 5, 0], [5, 6, 0], [6, 0, 1], [6, 1, 0], [6, 2, 0], [6, 3, 0], [6, 4, 0], [6, 5, 0], [6, 6, 0]];
-data = data.map(function (item) {
-    return [item[1], item[0], item[2]];
-});
+var data = [
+    [['本科','冰冷',212,1990],['本科','洗涤',222,1990],['本科','家空',411,1990],['本科','商空',510,1990],['本科','热水器',114,1990],['本科','厨电',545,1990],['本科','其他',645,1990]],
+
+    [['研究生','冰冷',411,2015],['研究生','洗涤',523,2015],['研究生','家空',312,1990],['研究生','商空',447,1990],['研究生','热水器',328,1990],['研究生','厨电',129,1990],['研究生','其他',329,1990]]
+    ,[['其他','冰冷',333,1996],['其他','洗涤',163,1996],['其他','家空',214,1996],['其他','商空',128,1996],['其他','热水器',224,1996],['其他','厨电',446,1996],['其他','其他',446,1996]],
+
+];
 myChart25.setOption({
-    color: ["#66ccff"],
     grid: {
-        left: 7,
-        bottom: 10,
-        right: 40,
-        // containLabel: true
+        right: 0,
+        bottom: 25,
+        left: 40,
+        top:0
     },
-    legend: {
-        show: false
-    },
-    tooltip: {
-        trigger: 'item',
-        axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: '#234f65'
-            }
-        }
-    },
+
     xAxis: {
-        data: ['本科', '研究生', '其他'],
+        type:'category',
+        data:["本科",'研究生','其他'],
+        splitLine: {
+            show: false
+        },
         axisLine: {
             show: false
         },
@@ -1935,13 +1929,7 @@ myChart25.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%'
-            }
-        },
-        splitLine: {  //刻度线
-            show: true,
-            lineStyle: {
-                color: '#234f65'
+                fontSize:8
             }
         },
         axisTick: {
@@ -1953,180 +1941,156 @@ myChart25.setOption({
         },
     },
     yAxis: {
-        data: ['冰冷', '家空', '洗涤', '商空', '热水器', '厨电', '其他'],
-        axisLine: { //坐标轴
+        type:'category',
+        data:['冰冷','洗涤','家空','商空','热水器','厨电','其他'],
+        splitLine: {
             show: false
         },
-        axisLabel: {   //坐标值
+        axisLine: {
+            show: false
+        },
+        axisLabel: {
             show: true,
+            // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%'
+                fontSize:8
             }
         },
-
-        axisTick: {  //刻度值
+        axisTick: {
             show: false,
-        }
+            alignWithLabel: true,
+            lineStyle: {
+                color: '#66ccff'
+            }
+        },
+        scale: true
     },
     series: [{
-        data: data
-    }]
+        name: '1990',
+        data: data[0],
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]) / 2;
+        },
+        // label: {
+        //     emphasis: {
+        //         show: true,
+        //         formatter: function (param) {
+        //             return param.data[3];
+        //         },
+        //         position: 'top'
+        //     }
+        // },
+        itemStyle: {
+            normal: {
+                // shadowBlur: 10,
+                // shadowColor: 'rgba(120, 36, 50, 0.5)',
+                // shadowOffsetY: 5,
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: 'rgb(102, 204, 255)'
+                },
+                    {
+                        offset: 1,
+                        color: 'rgb(102, 204, 255)'
+                    }
+                ])
+            }
+        }
+    }, {
+        name: '2015',
+        data: data[1],
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]) / 2;
+        },
+        // label: {
+        //     emphasis: {
+        //         show: true,
+        //         formatter: function (param) {
+        //             return param.data[3];
+        //         },
+        //         position: 'top'
+        //     }
+        // },
+        itemStyle: {
+            normal: {
+                // shadowBlur: 10,
+                // shadowColor: 'rgba(25, 100, 150, 0.5)',
+                // shadowOffsetY: 5,
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: 'rgb(255,255,153)'
+                },
+                    {
+                        offset: 1,
+                        color: 'rgb(255,255,153)'
+                    }
+                ])
+            }
+        }
+    },{
+        name: '1996',
+        data: data[2],
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]) / 2;
+        },
+        // label: {
+        //     emphasis: {
+        //         show: true,
+        //         formatter: function (param) {
+        //             return param.data[3];
+        //         },
+        //         position: 'top'
+        //     }
+        // },
+        itemStyle: {
+            normal: {
+                // shadowBlur: 10,
+                // shadowColor: 'rgba(120, 36, 50, 0.5)',
+                // shadowOffsetY: 5,
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: 'rgb(102,255,204)'
+                },
+                    {
+                        offset: 1,
+                        color: 'rgb(102,255,204)'
+                    }
+                ])
+            }
+        }
+    }
+    ]
 });
-
-//
-// var data = [
-//    [[0,0,4],[0,1,8],[0,2,4],[0,3,4],[0,4,7],[0,5,3],[0,6,10]],[[1,0,14],[1,1,8],[1,2,4],[1,3,14],[1,4,17],[1,5,13],[1,6,10]],[[2,0,14],[2,1,8],[2,2,4],[2,3,14],[2,4,7],[2,5,13],[1,6,10]]
-// ];
-//
-// option = {
-//     legend: {
-//         right: 10,
-//         data: ['本科', '研究生','其他']
-//     },
-//     xAxis: {
-//         type:'category' ,
-//         data:['本科','研究生','其他'],
-//         splitLine: {
-//             lineStyle: {
-//                 type: 'dashed'
-//             }
-//         }
-//     },
-//     yAxis: {
-//         type:'category' ,
-//         data:['冰冷','洗涤','家空','商空','热水器','厨电','其他'],
-//         splitLine: {
-//             lineStyle: {
-//                 type: 'dashed'
-//             }
-//         },
-//         scale: true
-//     },
-//     series: [{
-//         name: '本科',
-//         data: data[0],
-//         type: 'scatter',
-//         symbolSize: function (data) {
-//             return Math.sqrt(data[2]) / 15e2;
-//         },
-//         label: {
-//             emphasis: {
-//                 show: true,
-//                 formatter: function (param) {
-//                     return param.data[3];
-//                 },
-//                 position: 'top'
-//             }
-//         },
-//         itemStyle: {
-//             normal: {
-//                 shadowBlur: 10,
-//                 shadowColor: 'rgba(120, 36, 50, 0.5)',
-//                 shadowOffsetY: 5,
-//                 color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
-//                     offset: 0,
-//                     color: 'rgb(251, 118, 123)'
-//                 }, {
-//                     offset: 1,
-//                     color: 'rgb(204, 46, 72)'
-//                 }])
-//             }
-//         }
-//     }, {
-//         name: '研究生',
-//         data: data[1],
-//         type: 'scatter',
-//         symbolSize: function (data) {
-//             return Math.sqrt(data[2]) / 15e2;
-//         },
-//         label: {
-//             emphasis: {
-//                 show: true,
-//                 formatter: function (param) {
-//                     return param.data[3];
-//                 },
-//                 position: 'top'
-//             }
-//         },
-//         itemStyle: {
-//             normal: {
-//                 shadowBlur: 10,
-//                 shadowColor: 'rgba(25, 100, 150, 0.5)',
-//                 shadowOffsetY: 5,
-//                 color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
-//                     offset: 0,
-//                     color: 'rgb(129, 227, 238)'
-//                 }, {
-//                     offset: 1,
-//                     color: 'rgb(25, 183, 207)'
-//                 }])
-//             }
-//         }
-//     },{
-//         name: '其他',
-//         data: data[2],
-//         type: 'scatter',
-//         symbolSize: function (data) {
-//             return Math.sqrt(data[2]) / 15e2;
-//         },
-//         label: {
-//             emphasis: {
-//                 show: true,
-//                 formatter: function (param) {
-//                     return param.data[3];
-//                 },
-//                 position: 'top'
-//             }
-//         },
-//         itemStyle: {
-//             normal: {
-//                 shadowBlur: 10,
-//                 shadowColor: 'rgba(120, 36, 50, 0.5)',
-//                 shadowOffsetY: 5,
-//                 color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
-//                     offset: 0,
-//                     color: 'rgb(251, 118, 223)'
-//                 }, {
-//                     offset: 1,
-//                     color: 'rgb(204, 46, 172)'
-//                 }])
-//             }
-//         }
-//     }
-//     ]
-// };
-// myChart25.setOption(option)
 
 //人员状态 工作年限 散点图
 var myChart26 = echarts.init(document.getElementById("myChart26"));
 myChart26.setOption(getScatterEcharts());
-var data = [[0, 0, 5], [0, 1, 1], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0], [0, 6, 0], [1, 0, 7], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0], [1, 6, 0], [2, 0, 1], [2, 1, 1], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0], [2, 6, 0], [3, 0, 7], [3, 1, 3], [3, 2, 0], [3, 3, 0], [3, 4, 0], [3, 5, 0], [3, 6, 0], [4, 0, 1], [4, 1, 3], [4, 2, 0], [4, 3, 0], [4, 4, 0], [4, 5, 1], [4, 6, 0], [5, 0, 2], [5, 1, 1], [5, 2, 0], [5, 3, 3], [5, 4, 0], [5, 5, 0], [5, 6, 0], [6, 0, 1], [6, 1, 0], [6, 2, 0], [6, 3, 0], [6, 4, 0], [6, 5, 0], [6, 6, 0]];
-data = data.map(function (item) {
-    return [item[1], item[0], item[2]];
-});
+var data = [
+    [['3年以下','冰冷',212,1990],['3年以下','洗涤',222,1990],['3年以下','家空',411,1990],['3年以下','商空',510,1990],['3年以下','热水器',114,1990],['3年以下','厨电',545,1990],['3年以下','其他',645,1990]],
+    [['3-8年','冰冷',411,2015],['3-8年','洗涤',523,2015],['3-8年','家空',312,1990],['3-8年','商空',447,1990],['3-8年','热水器',328,1990],['3-8年','厨电',129,1990],['3-8年','其他',329,1990]],
+    [['8-15年','冰冷',433,1996],['8-15年','洗涤',263,1996],['8-15年','家空',514,1996],['8-15年','商空',328,1996],['8-15年','热水器',524,1996],['8-15年','厨电',646,1996],['8-15年','其他',146,1996]],
+    [['15年以上','冰冷',333,1999],['15年以上','洗涤',163,1999],['15年以上','家空',214,1999],['15年以上','商空',128,1999],['15年以上','热水器',224,1999],['15年以上','厨电',446,1999],['15年以上','其他',446,1999]]
+
+];
+
 myChart26.setOption({
-    color: ["#66ccff"],
     grid: {
-        left: 7,
+        right: 10,
         bottom: 10,
-        right: 40,
-        // containLabel: true
+        left: 0,
+        top:0
     },
-    legend: {
-        show: false
-    },
-    tooltip: {
-        trigger: 'item',
-        axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: '#234f65'
-            }
-        }
-    },
+
     xAxis: {
-        data: ['3年以下', '3-8年', '8-15年', '15年以上'],
+        type:'category',
+        data:["3年以下",'3-8年','8-15年','15年以上'],
+        splitLine: {
+            show: false
+        },
         axisLine: {
             show: false
         },
@@ -2135,13 +2099,7 @@ myChart26.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%'
-            }
-        },
-        splitLine: {  //刻度线
-            show: true,
-            lineStyle: {
-                color: '#234f65'
+                fontSize:8
             }
         },
         axisTick: {
@@ -2153,56 +2111,189 @@ myChart26.setOption({
         },
     },
     yAxis: {
-        data: ['冰冷', '家空', '洗涤', '商空', '热水器', '厨电', '其他'],
-        axisLine: { //坐标轴
+        type:'category',
+        data:['冰冷','洗涤','家空','商空','热水器','厨电','其他'],
+        splitLine: {
             show: false
         },
-        axisLabel: {   //坐标值
+        axisLine: {
+            show: false
+        },
+        axisLabel: {
             show: false,
+            // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%'
+                fontSize:8
             }
         },
-
-        axisTick: {  //刻度值
+        axisTick: {
             show: false,
-        }
+            alignWithLabel: true,
+            lineStyle: {
+                color: '#66ccff'
+            }
+        },
+        scale: true
     },
     series: [{
-        data: data
-    }]
+        name: '1990',
+        data: data[0],
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]) / 2;
+        },
+        // label: {
+        //     emphasis: {
+        //         show: true,
+        //         formatter: function (param) {
+        //             return param.data[3];
+        //         },
+        //         position: 'top'
+        //     }
+        // },
+        itemStyle: {
+            normal: {
+                // shadowBlur: 10,
+                // shadowColor: 'rgba(120, 36, 50, 0.5)',
+                // shadowOffsetY: 5,
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: 'rgb(102, 204, 255)'
+                },
+                    {
+                        offset: 1,
+                        color: 'rgb(102, 204, 255)'
+                    }
+                ])
+            }
+        }
+    }, {
+        name: '2015',
+        data: data[1],
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]) / 2;
+        },
+        // label: {
+        //     emphasis: {
+        //         show: true,
+        //         formatter: function (param) {
+        //             return param.data[3];
+        //         },
+        //         position: 'top'
+        //     }
+        // },
+        itemStyle: {
+            normal: {
+                // shadowBlur: 10,
+                // shadowColor: 'rgba(25, 100, 150, 0.5)',
+                // shadowOffsetY: 5,
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: 'rgb(255,255,153)'
+                },
+                    {
+                        offset: 1,
+                        color: 'rgb(255,255,153)'
+                    }
+                ])
+            }
+        }
+    },{
+        name: '1996',
+        data: data[2],
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]) / 2;
+        },
+        // label: {
+        //     emphasis: {
+        //         show: true,
+        //         formatter: function (param) {
+        //             return param.data[3];
+        //         },
+        //         position: 'top'
+        //     }
+        // },
+        itemStyle: {
+            normal: {
+                // shadowBlur: 10,
+                // shadowColor: 'rgba(120, 36, 50, 0.5)',
+                // shadowOffsetY: 5,
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: 'rgb(102,255,204)'
+                },
+                    {
+                        offset: 1,
+                        color: 'rgb(102,255,204)'
+                    }
+                ])
+            }
+        }
+    },
+        {
+            name: '1999',
+            data: data[3],
+            type: 'scatter',
+            symbolSize: function (data) {
+                return Math.sqrt(data[2]) / 2;
+            },
+            // label: {
+            //     emphasis: {
+            //         show: true,
+            //         formatter: function (param) {
+            //             return param.data[3];
+            //         },
+            //         position: 'top'
+            //     }
+            // },
+            itemStyle: {
+                normal: {
+                    // shadowBlur: 10,
+                    // shadowColor: 'rgba(25, 100, 150, 0.5)',
+                    // shadowOffsetY: 5,
+                    color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                        offset: 0,
+                        color: 'rgb(255,102,102)'
+                    },
+                        {
+                            offset: 1,
+                            color: 'rgb(255,102,102)'
+                        }
+                    ])
+                }
+            }
+        }
+    ]
 });
 
 //人员状态 资质 散点图
 var myChart27 = echarts.init(document.getElementById("myChart27"));
 myChart27.setOption(getScatterEcharts());
-var data = [[0, 0, 5], [0, 1, 1], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0], [0, 6, 0], [1, 0, 7], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0], [1, 6, 0], [2, 0, 1], [2, 1, 1], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0], [2, 6, 0], [3, 0, 7], [3, 1, 3], [3, 2, 0], [3, 3, 0], [3, 4, 0], [3, 5, 0], [3, 6, 0], [4, 0, 1], [4, 1, 3], [4, 2, 0], [4, 3, 0], [4, 4, 0], [4, 5, 1], [4, 6, 0], [5, 0, 2], [5, 1, 1], [5, 2, 0], [5, 3, 3], [5, 4, 0], [5, 5, 0], [5, 6, 0], [6, 0, 1], [6, 1, 0], [6, 2, 0], [6, 3, 0], [6, 4, 0], [6, 5, 0], [6, 6, 0]];
-data = data.map(function (item) {
-    return [item[1], item[0], item[2]];
-});
+var data = [
+    [['检测权限','冰冷',212,1990],['检测权限','洗涤',222,1990],['检测权限','家空',411,1990],['检测权限','商空',510,1990],['检测权限','热水器',114,1990],['检测权限','厨电',545,1990],['检测权限','其他',645,1990]],
+    [['出具报告权限','冰冷',411,2015],['出具报告权限','洗涤',523,2015],['出具报告权限','家空',312,1990],['出具报告权限','商空',447,1990],['出具报告权限','热水器',328,1990],['出具报告权限','厨电',129,1990],['出具报告权限','其他',329,1990]],
+    [['审核权限','冰冷',433,1996],['审核权限','洗涤',263,1996],['审核权限','家空',514,1996],['审核权限','商空',328,1996],['审核权限','热水器',524,1996],['审核权限','厨电',646,1996],['审核权限','其他',146,1996]],
+    [['批准报告权限','冰冷',333,1999],['批准报告权限','洗涤',163,1999],['批准报告权限','家空',214,1999],['批准报告权限','商空',128,1999],['批准报告权限','热水器',224,1999],['批准报告权限','厨电',446,1999],['批准报告权限','其他',446,1999]]
+
+];
+
 myChart27.setOption({
-    color: ["#66ccff"],
     grid: {
-        left: 7,
+        right: 10,
         bottom: 10,
-        right: 40,
-        // containLabel: true
+        left: 0,
+        top:0
     },
-    legend: {
-        show: false
-    },
-    tooltip: {
-        trigger: 'item',
-        axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: '#234f65'
-            }
-        }
-    },
+
     xAxis: {
-        data: ['检测权限', '出具报告权限', '审核权限', '批准权限'],
+        type:'category',
+        data:["检测权限",'出具报告权限','审核权限','批准报告权限'],
+        splitLine: {
+            show: false
+        },
         axisLine: {
             show: false
         },
@@ -2211,7 +2302,7 @@ myChart27.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%'
+                fontSize:8
             }
         },
         axisTick: {
@@ -2221,36 +2312,165 @@ myChart27.setOption({
                 color: '#66ccff'
             }
         },
-        splitLine: {  //刻度线
-            show: true,
-            lineStyle: {
-                color: '#234f65'
-            }
-        },
     },
     yAxis: {
-
-        data: ['冰冷', '家空', '洗涤', '商空', '热水器', '厨电', '其他'],
-        axisLine: { //坐标轴
+        type:'category',
+        data:['冰冷','洗涤','家空','商空','热水器','厨电','其他'],
+        splitLine: {
             show: false
         },
-        axisLabel: {   //坐标值
+        axisLine: {
+            show: false
+        },
+        axisLabel: {
             show: false,
+            // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%'
+                fontSize:8
             }
         },
-        axisTick: {  //刻度值
+        axisTick: {
             show: false,
-        }
+            alignWithLabel: true,
+            lineStyle: {
+                color: '#66ccff'
+            }
+        },
+        scale: true
     },
     series: [{
-        data: data
-    }]
+        name: '1990',
+        data: data[0],
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]) / 2;
+        },
+        // label: {
+        //     emphasis: {
+        //         show: true,
+        //         formatter: function (param) {
+        //             return param.data[3];
+        //         },
+        //         position: 'top'
+        //     }
+        // },
+        itemStyle: {
+            normal: {
+                // shadowBlur: 10,
+                // shadowColor: 'rgba(120, 36, 50, 0.5)',
+                // shadowOffsetY: 5,
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: 'rgb(102, 204, 255)'
+                },
+                    {
+                        offset: 1,
+                        color: 'rgb(102, 204, 255)'
+                    }
+                ])
+            }
+        }
+    }, {
+        name: '2015',
+        data: data[1],
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]) / 2;
+        },
+        // label: {
+        //     emphasis: {
+        //         show: true,
+        //         formatter: function (param) {
+        //             return param.data[3];
+        //         },
+        //         position: 'top'
+        //     }
+        // },
+        itemStyle: {
+            normal: {
+                // shadowBlur: 10,
+                // shadowColor: 'rgba(25, 100, 150, 0.5)',
+                // shadowOffsetY: 5,
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: 'rgb(255,255,153)'
+                },
+                    {
+                        offset: 1,
+                        color: 'rgb(255,255,153)'
+                    }
+                ])
+            }
+        }
+    },{
+        name: '1996',
+        data: data[2],
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]) / 2;
+        },
+        // label: {
+        //     emphasis: {
+        //         show: true,
+        //         formatter: function (param) {
+        //             return param.data[3];
+        //         },
+        //         position: 'top'
+        //     }
+        // },
+        itemStyle: {
+            normal: {
+                // shadowBlur: 10,
+                // shadowColor: 'rgba(120, 36, 50, 0.5)',
+                // shadowOffsetY: 5,
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: 'rgb(102,255,204)'
+                },
+                    {
+                        offset: 1,
+                        color: 'rgb(102,255,204)'
+                    }
+                ])
+            }
+        }
+    },
+        {
+            name: '1999',
+            data: data[3],
+            type: 'scatter',
+            symbolSize: function (data) {
+                return Math.sqrt(data[2]) / 2;
+            },
+            // label: {
+            //     emphasis: {
+            //         show: true,
+            //         formatter: function (param) {
+            //             return param.data[3];
+            //         },
+            //         position: 'top'
+            //     }
+            // },
+            itemStyle: {
+                normal: {
+                    // shadowBlur: 10,
+                    // shadowColor: 'rgba(25, 100, 150, 0.5)',
+                    // shadowOffsetY: 5,
+                    color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                        offset: 0,
+                        color: 'rgb(255,102,102)'
+                    },
+                        {
+                            offset: 1,
+                            color: 'rgb(255,102,102)'
+                        }
+                    ])
+                }
+            }
+        }
+    ]
 });
-
-
 //标准状态 国际标准
 var myChart28 = echarts.init(document.getElementById("myChart28"));
 myChart28.setOption(getRadarEcharts());
