@@ -164,22 +164,26 @@
     height:96%;
 }
 #l .sphere-left-top .chartBorder,
-#l .sphere-left-bottom .chartBorder{
+#l .sphere-left-bottom .chartBorder,
+#l .sphere-right-bottom .chartBorder{
     position: relative;
     height: 95%;
-    border-style: solid;
-    border-image: url("../img/chartBorder_noTitle.png") 120 52 30 / 13% 6% 6% ;
+    background: url("../img/chartBorder-short.png");
+    background-size: 100% 100%;
+    /*border-style: solid;*/
+    /*border-image: url("../img/chartBorder_noTitle.png") 120 52 30 / 13% 6% 6% ;*/
 }
 #l .sphere-left-top .myChart{
-    height: 60%;
-    margin: 6% 3%;
+    height: 58%;
+    margin: 25% 3%;
     /*background: url("../img/sphereLT.png");*/
     background: url("../img/5dz.png");
     background-size: 100% 100%;
 }
 #l .sphere-left-bottom iframe{
-    /*margin-top: 15%;*/
-    height: 90%;
+    position: relative;
+    top: 25%;
+    height: 76%;
 }
 #l .sphere-right-bottom .chartBorder{
     padding:0 5%;
@@ -188,33 +192,28 @@
     height: 90%;
 }
 #l .sphere .chartBorder h3{
-    position: absolute;
-    width: 100%;
-    top: 1.8%;
-    font-size: 1.3em;
     font-weight: normal;
-    color: #6cf;
     margin-top: 3%;
     text-align: center;
-}
-#l .sphere-right-top .chartBorder h3,
-#l .sphere-right-bottom .chartBorder h3{
     position: relative;
     width: auto;
     left: -17%;
     top: 2.5%;
-    /*font-size: 120%;*/
     font-size: 1.2em;
-    font-weight: normal;
     color: #fff;
 }
 #l .sphere-right-bottom .chartBorder h3{
-    left:-18%;
+    left:-24%;
+}
+#l .sphere-left-bottom .chartBorder h3,
+#l .sphere-left-top .chartBorder h3{
+    left:-21%;
 }
 #l .sphere .chartBorder h4.noBG{
-    margin-top: 2%;
+    position: relative;
+    margin-top: -12%;
+    top: 19%;
     font-size: 120%;
-    background: none;
 }
 @media screen and (min-width: 640px) and (max-width: 999px){
     /*对应于媒体宽度在640~999px之间应该显示的样式*/
@@ -229,7 +228,7 @@
 }
 #l .sphere-left-bottom .chartBorder .myChart,
 #l .sphere-right-top-temp .chartBorder .myChart{
-    height:100%;
+    height:90%;
 }
 #l .sphere-right-bottom .chartBorder>ul,
 #l .sphere-right-bottom .chartBorder>.scroll>ul{
@@ -241,7 +240,7 @@
     text-align: center;
 }
 #l .sphere-right-bottom .chartBorder>ul.header{
-    margin-top: 0;
+    margin-top: 20%;
     border-bottom: 1px solid #6cf;
     box-shadow: 0 2px 3px -2px;
 }
@@ -416,7 +415,7 @@
     color: #f93;
 }
 #l .flat-footer .legend ul.line li:nth-child(7).active a{
-    color: #ff9;
+    color: #f09;
 }
 #l .flat-footer .legend ul.line li:nth-child(1) a .icon{
     background-image: url("../img/ico/line_bl_on.png");
@@ -437,7 +436,7 @@
     background-image: url("../img/ico/line_cd_on.png");
 }
 #l .flat-footer .legend ul.line li:nth-child(7) a .icon{
-    background-image: url("../img/ico/line_ds_on.png");
+    background-image: url("../img/ico/line_qt_on.png");
 }
 
 
@@ -453,10 +452,9 @@
     background: url("../img/border_flat.png");
     background-size: 100% 100%;
 }
-#l .sphere .sphere-right-top .chartBorder,
-#l .sphere .sphere-right-bottom .chartBorder{
+#l .sphere .sphere-right-top .chartBorder{
     height:95%;
-    background: url("../img/border_sphereR.png");
+    background: url("../img/border_sphereRT.png");
     background-size: 100% 100%;
     /*border-image: url("../img/border_sphereR.png") 120 52 30 / 13% 6% 6% ;*/
 }
@@ -517,7 +515,7 @@
 #l .flat .chartBorder ul{
     position: relative;
     margin: 1% 15% 1% 18%;
-    top: 3%;
+    top: 23%;
     height: 72%;
     font-size: 0.9em;
     color: #6cf;
@@ -533,9 +531,9 @@
     display: inline-block;
     position: relative;
     margin-right: 0.5em;
-    top: .2em;
-    width: 6%;
-    height: 1em;
+    top: .4em;
+    width: 1.5em;
+    height: 1.5em;
     background-size: 100% 100%;
 }
 
@@ -558,11 +556,11 @@
     background-image: url("../img/ico/line_cd.png");
 }
 #l .sphere-right-top ul li:nth-of-type(7) .icon{
-    background-image: url("../img/ico/line_ds.png");
+    background-image: url("../img/ico/line_qt.png");
 }
 #l .sphere .chartBorder ul li .number,
 #l .flat .chartBorder ul li .number {
-    height: 90%;
+    height: 96%;
     background-image: url(../img/bgNumber.png);
     background-size: 95% 100%;
     background-repeat: no-repeat;

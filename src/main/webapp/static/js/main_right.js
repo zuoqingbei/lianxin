@@ -1,5 +1,5 @@
 // 多个方向盘 设施状态
-var myCharts = echarts.init(document.getElementById("myChart1"));
+var myChart1 = echarts.init(document.getElementById("myChart1"));
 option = {
     tooltip: {
         formatter: "{a} <br/>{c}%"
@@ -214,7 +214,7 @@ option = {
         }
     ]
 };
-myCharts.setOption(option);
+myChart1.setOption(option);
 
 //多个圆环图  标准状态
 var myChart2 = echarts.init(document.getElementById("myChart2"));
@@ -4055,3 +4055,33 @@ myChart49.setOption({
     ]
 
 });
+//var str=''
+//for(var i=1;i<50;i++){
+//	str+="myChart"+i+','
+//}
+//console.log(str)
+
+var right_echarts=[myChart1,myChart2,myChart3,myChart4,myChart5,myChart6,myChart7,myChart8,myChart9,
+                   myChart11,myChart12,myChart14,myChart15,myChart16,myChart17,myChart18,myChart19,
+                   myChart22,myChart23,myChart24,myChart25,myChart26,myChart27,myChart28,myChart29,myChart30,
+                   myChart31,myChart32,myChart33,myChart34,myChart35,myChart36,myChart37,myChart38,myChart39,myChart40,
+                   myChart41,myChart42,myChart43,myChart44,myChart45,myChart46,myChart47,myChart48,myChart49,
+                   ]
+//重置echart图标大小 在加载平面地图时被调用
+function resetSizeRight() {
+    for (var i = 0; i < right_echarts.length; i++) {
+    	right_echarts[i].resize();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+

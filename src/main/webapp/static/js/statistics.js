@@ -119,8 +119,10 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-	                fontSize: bodyScale*7,
-	                baseline: 'top'
+// 	                fontSize: bodyScale*7,
+	                fontSize: 6.666666666666,
+	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
+                    baseline: 'top'
 	            }
 	        },
 	        labelLine: {
@@ -464,6 +466,11 @@ function labLifeCycleStatis(){
 	            {	 name:'实验室数量',
 	                type: 'line',
 	                max: 500,
+	                lineStyle:{
+	        			normal:{
+	        				width:0.5
+						}
+					},
 	                areaStyle: {
 	                    normal: {
 	                        color: {
@@ -489,7 +496,11 @@ function labLifeCycleStatis(){
 	                type:'line',
 	                yAxisIndex: 1,
 	                data:[26, 59, 90, 120, 126, 150, 175,220,230],
-
+                    lineStyle:{
+                        normal:{
+                            width:0.5
+                        }
+                    },
 	                areaStyle: {
 	                    normal: {
 	                        color: {

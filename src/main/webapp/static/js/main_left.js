@@ -73,10 +73,10 @@ function navLabLine() {
             });
             if (text.indexOf("产线") >= 0) {
 
-                $(".legend ul.line").show().siblings().hide("slow");
+                $(".legend ul.line").show().siblings().hide();
             } else {
                 // $(".legend ul.lab").css("top","15px");
-                $(".legend ul.lab").show().siblings().hide("slow");
+                $(".legend ul.lab").show().siblings().hide();
             }
         }
     });
