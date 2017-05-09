@@ -6,7 +6,7 @@ var bodyScale = 1;
         var bodyFontSize = h/595*100+"%";
         bodyScale = h/595;
         $("body").css("font-size",bodyFontSize);
-        console.log("屏幕高度："+h+", body字号："+bodyFontSize)
+        // console.log("屏幕高度："+h+", body字号："+bodyFontSize)
     }
     pageResize();
 function mapSphere() {
@@ -27,15 +27,17 @@ function mapSphere() {
 
 
             opts = {
-            		   title: {
-            		        show:true,
-            		        text: '全球实验中心互联，加速产品迭代升级，创用户最佳体验',
+            		title: {
+            		        show:false,
+            		        // text: '全球实验中心互联，加速产品迭代升级，创用户最佳体验',
+            		        text: '数据互联   实时共享  提效增值 \n\n\n',
             		        //subtext: '数据纯属虚构',
             		        x: 'center',
             		        textStyle: {
-            		            color: '#66ccff',
-            		            fontSize:bodyScale*15,
-            		            fontFamily: '"Microsoft yahei", "微软雅黑", Sans Serif'
+            		            color: '#fff',
+            		            fontSize:bodyScale*21,
+            		            fontFamily: '"Microsoft yahei", "微软雅黑", Sans Serif',
+                                fontWeight:"normal"
             		        }
             		    },
                     legend: {

@@ -7,7 +7,7 @@ var labType="",productCode="";
 function reloadLeftData(){
 	 //实验室数量统计
     labNumStatis();
-    //产线维度实验室数量统计
+    //实验室总数及分布
     proLineStatis();
     //实验室区域数量统计：大洲 国家
 	labAreaSpread();
@@ -63,22 +63,20 @@ function proLineStatis(){
 			$("#pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number">'+item.count+'</span></li>');
 			nums.push(item.count);
 		});
-		flatLTnumberShow(nums);
+		sphereRTnumberShow(nums);
 	})
 }
 
-//球形图 右上角实验室数量按照四大类展示
+//平面地图左上角的环形图，实验室数量按照四大类展示
 function worldTyleEchart(data){
-	//球形地图右上角的环形图表
-//	console.log("datadatadatadatadatadatadata")
-	console.log(data)
-	var num2=standardSeriesData(data,"研发实验室");
+	// console.log(data);
+	var num2=standardSeriesData(data,"研发-调试");
 	var num3=standardSeriesData(data,"中心实验室");
 	var num4=standardSeriesData(data,"工厂实验室");
 	var num5=standardSeriesData(data,"模块商实验室");
 	var allNum=parseInt(num2)+parseInt(num3)+parseInt(num4)+parseInt(num5);
-	var myChartSphereRT = echarts.init($("#l").find(".sphere-right-top .myChart")[0]);
-	myChartSphereRT.setOption(getYuanhuan());
+	// var myChartFlatLT = echarts.init($("#l").find(".sphere-right-top .myChart")[0]);
+	myChartFlatLT.setOption(getYuanhuan());
 	var labelTop = {
 	    normal: {
 	        color: '#064f66',
@@ -121,8 +119,10 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-	                fontSize: bodyScale*9,
-	                baseline: 'top'
+// 	                fontSize: bodyScale*7,
+	                fontSize: 6.666666666666,
+	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
+                    baseline: 'top'
 	            }
 	        },
 	        labelLine: {
@@ -134,7 +134,7 @@ function worldTyleEchart(data){
 	    }
 	};
 	var radius = ["27%", "36%"];
-	myChartSphereRT.setOption({
+	myChartFlatLT.setOption({
 	    textStyle: {
 	        color: '#6cf',
 	        fontSize: "60%"
@@ -148,50 +148,51 @@ function worldTyleEchart(data){
 	    series: [
 	        {
 	            type: 'pie',
-	            center: ['30%', '35%'],
+	            center: ['30%', '33%'],
 	            radius: radius,
 	            x: '0%', // for funnel
 	            data: [
 	                {name: 'other', value: allNum-num2, itemStyle: labelTop},
-	                {name: '研发实验室', value: num2, itemStyle: labelBottom}
+	                {name: '研发-调试', value: num2, itemStyle: labelBottom}
 	            ]
 	        },
 	        {
 	            type: 'pie',
-	            center: ['70%', '35%'],
+	            center: ['70%', '33%'],
 	            radius: radius,
 	            x: '20%', // for funnel
 	            itemStyle: labelFromatter,
 	            data: [
 	                {name:'other', value:allNum-num3, itemStyle : labelTop},
-	                {name: '中心实验室', value: num3, itemStyle: labelBottom}
+	                {name: '中海博睿\n新品确认', value: num3, itemStyle: labelBottom}
 	            ]
 	        },
 	        {
 	            type: 'pie',
-	            center: ['30%', '73%'],
+	            center: ['30%', '76%'],
 	            radius: radius,
 	            x: '40%', // for funnel
 	            itemStyle: labelFromatter,
 	            data: [
 	                {name: 'other', value: allNum-num4, itemStyle: labelTop},
-	                {name: '工厂实验室', value: num4, itemStyle: labelBottom}
+	                {name: '模块商\n模块测试', value: num4, itemStyle: labelBottom}
 	            ]
 	        },
 	        {
 	            type: 'pie',
-	            center: ['70%', '73%'],
+	            center: ['70%', '76%'],
 	            radius: radius,
 	            x: '80%', // for funnel
 	            itemStyle: labelFromatter,
 	            data: [
 	                {name: 'other', value: allNum-num5, itemStyle: labelTop},
-	                {name: '模块实验室', value: num5, itemStyle: labelBottom}
+	                {name: '工厂\n量产测试', value: num5, itemStyle: labelBottom}
 	            ]
 	        }
 	    ]
 	});
 }
+
 function worldLabTypeStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code","productCode":productCode},function(data){
 		worldTyleEchart(data)
@@ -363,15 +364,15 @@ function labPropertiesStatis(){
 	})
 }
 
-//平面地图改到右上角的，按照实验室生命周期（可开展实验）统计数量
+//平面地图左下角，产品生命周期全流程测试
 function labLifeCycleStatis(){
 	$.post(contextPath+'/lab/labCarryNumStatisAjax',{"labType":labType,"productCode":productCode},function(data){
-		myChartFlatRB.resize();
-		myChartFlatRB.clear();
-		myChartFlatRB.setOption(getAreaEcharts());
+		myChartFlatLB.resize();
+		myChartFlatLB.clear();
+		myChartFlatLB.setOption(getAreaEcharts());
 		var colors = ['#00e673', '#66ccff'];
 		console.log(statisticLengend(data))
-	    myChartFlatRB.setOption({
+	    myChartFlatLB.setOption({
 	        tooltip: {
 	            trigger: 'axis',
 	            axisPointer: {
@@ -443,7 +444,8 @@ function labLifeCycleStatis(){
 	                 position: 'right',
 	                 axisLine: {
 	                     lineStyle: {
-	                         color: colors[1]
+	                         color: colors[1],
+							 width:0
 	                     }
 	                 },
 	                 axisLabel: {
@@ -464,6 +466,11 @@ function labLifeCycleStatis(){
 	            {	 name:'实验室数量',
 	                type: 'line',
 	                max: 500,
+	                lineStyle:{
+	        			normal:{
+	        				width:0.5
+						}
+					},
 	                areaStyle: {
 	                    normal: {
 	                        color: {
@@ -473,9 +480,9 @@ function labLifeCycleStatis(){
 	                            x2: 0,
 	                            y2: 1,
 	                            colorStops: [{
-	                                offset: 0, color: 'rgba(102,204,255,.1)' // 0% 处的颜色
+	                                offset: 0, color: 'rgba(102,204,255,0)' // 0% 处的颜色
 	                            }, {
-	                                offset: 1, color: 'rgba(102,204,255,1)' // 100% 处的颜色
+	                                offset: 1, color: 'rgba(102,204,255,0)' // 100% 处的颜色
 	                            }],
 	                            globalCoord: false // 缺省为 false
 	                        }
@@ -489,7 +496,11 @@ function labLifeCycleStatis(){
 	                type:'line',
 	                yAxisIndex: 1,
 	                data:[26, 59, 90, 120, 126, 150, 175,220,230],
-
+                    lineStyle:{
+                        normal:{
+                            width:0.5
+                        }
+                    },
 	                areaStyle: {
 	                    normal: {
 	                        color: {
@@ -499,9 +510,9 @@ function labLifeCycleStatis(){
 	                            x2: 0,
 	                            y2: 1,
 	                            colorStops: [{
-	                                offset: 0, color: 'rgba(96,192,255,.1)' // 0% 处的颜色
+	                                offset: 0, color: 'rgba(96,192,255,0)' // 0% 处的颜色
 	                            }, {
-	                                offset: 1, color: 'rgba(96,192,255,1)' // 100% 处的颜色
+	                                offset: 1, color: 'rgba(96,192,255,0)' // 100% 处的颜色
 	                            }],
 	                            globalCoord: false // 缺省为 false
 	                        }

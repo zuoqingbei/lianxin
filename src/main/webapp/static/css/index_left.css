@@ -79,7 +79,12 @@
 }
 #l .sphere .mapArea{
     flex:2.5;
-    padding-top: 4%;
+    padding-top: 2%;
+}
+#l .sphere .mapArea h2{
+    text-align: center;
+    color: white;
+    font-size: 1.8em;
 }
 #l .sphere .mapArea iframe{
     height: 100%;
@@ -101,27 +106,36 @@
 /*头部样式*/
 #l header{
     text-align: center;
+    background: url(../img/bg_title.png);
+    background-size: 98% 80%;
+    background-position-x: 50%;
+    background-position-y: 1em;
+    background-repeat: no-repeat;
 }
 #l h1{
-    margin: 1% auto 0;
     position: relative;
-    padding: 1% 0;
-    padding-left: 8%;
+
     font-size: 2em;
     letter-spacing: .05em;
+    line-height: 1.2em;
     color: #66CCFE;
-    background: url(../img/bg_title.png);
-    background-size: 98% 100%;
-    background-position-x: 50%;
-    background-repeat: no-repeat;
+
+}
+#l h1:nth-of-type(1){
+    margin: .6% auto 0;
+    padding: .5% 0 .3% 5%;
+}
+#l h1:nth-of-type(2){
+    font-size: 1.7em;
+    /*padding-left: 2%;*/
 }
 #l header .mainLogo{
     display: inline-block;
     position: absolute;
-    width: 5%;
-    height: 4%;
-    top: 3%;
-    left: 37%;
+    width: 4.5%;
+    height: 3.63%;
+    top: 1.8%;
+    left: 36.5%;
     background: url(../img/logo_haier.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -147,26 +161,29 @@
 }
 #l .sphere .mapArea,
 #l .flat .mapArea{
-    height:100%;
+    height:96%;
 }
 #l .sphere-left-top .chartBorder,
 #l .sphere-left-bottom .chartBorder,
-#l .sphere-right-top .chartBorder{
+#l .sphere-right-bottom .chartBorder{
     position: relative;
     height: 95%;
-    border-style: solid;
-    border-image: url("../img/chartBorder_noTitle.png") 120 52 30 / 13% 6% 6% ;
+    background: url("../img/chartBorder-short.png");
+    background-size: 100% 100%;
+    /*border-style: solid;*/
+    /*border-image: url("../img/chartBorder_noTitle.png") 120 52 30 / 13% 6% 6% ;*/
 }
 #l .sphere-left-top .myChart{
-    height: 60%;
-    margin: 26% 3%;
+    height: 58%;
+    margin: 25% 3%;
     /*background: url("../img/sphereLT.png");*/
     background: url("../img/5dz.png");
     background-size: 100% 100%;
 }
 #l .sphere-left-bottom iframe{
-    margin-top: 15%;
-    height: 90%;
+    position: relative;
+    top: 25%;
+    height: 76%;
 }
 #l .sphere-right-bottom .chartBorder{
     padding:0 5%;
@@ -175,24 +192,28 @@
     height: 90%;
 }
 #l .sphere .chartBorder h3{
-    position: absolute;
-    width: 100%;
-    top: 1.8%;
-    font-size: 1.3em;
     font-weight: normal;
-    color: #6cf;
     margin-top: 3%;
     text-align: center;
-}
-#l .sphere-right-bottom .chartBorder h3{
     position: relative;
     width: auto;
-    left: -16%;
-    top: -0.5%;
-    /*font-size: 120%;*/
-    font-size: 1.4em;
-    font-weight: normal;
+    left: -17%;
+    top: 2.5%;
+    font-size: 1.2em;
     color: #fff;
+}
+#l .sphere-right-bottom .chartBorder h3{
+    left:-24%;
+}
+#l .sphere-left-bottom .chartBorder h3,
+#l .sphere-left-top .chartBorder h3{
+    left:-21%;
+}
+#l .sphere .chartBorder h4.noBG{
+    position: relative;
+    margin-top: -12%;
+    top: 19%;
+    font-size: 120%;
 }
 @media screen and (min-width: 640px) and (max-width: 999px){
     /*对应于媒体宽度在640~999px之间应该显示的样式*/
@@ -202,9 +223,12 @@
     font-weight: normal;
     color: #f93;
 }
+#l .sphere .chartBorder h4{
+    color: #6cf;
+}
 #l .sphere-left-bottom .chartBorder .myChart,
-#l .sphere-right-top .chartBorder .myChart{
-    height:100%;
+#l .sphere-right-top-temp .chartBorder .myChart{
+    height:90%;
 }
 #l .sphere-right-bottom .chartBorder>ul,
 #l .sphere-right-bottom .chartBorder>.scroll>ul{
@@ -216,14 +240,14 @@
     text-align: center;
 }
 #l .sphere-right-bottom .chartBorder>ul.header{
-    margin-top: 7%;
+    margin-top: 20%;
     border-bottom: 1px solid #6cf;
     box-shadow: 0 2px 3px -2px;
 }
 #l .sphere-right-bottom .chartBorder>.scroll{
-    height: 13.5em;
+    height: 11.5em;
     overflow: hidden;
-    margin: 5% 0;
+    margin: 4% 0;
 }
 #l .sphere-right-bottom .chartBorder>ul>li,
 #l .sphere-right-bottom .chartBorder>.scroll>ul>li{
@@ -326,6 +350,7 @@
 #l .flat-footer .legend ul.lab,
 #l .flat-footer .legend ul.line{
     text-align: center;
+    position: relative;
 }
 #l .flat-footer .legend ul.legend-bottom{
     position: absolute;
@@ -337,7 +362,7 @@
 }
 #l .flat-footer .legend ul li{
     display: inline-block;
-    margin: 0 1.5%;
+    margin: 0 1.3%;
 }
 #l .flat-footer .legend ul li a{
     font-size: 90%;
@@ -390,7 +415,7 @@
     color: #f93;
 }
 #l .flat-footer .legend ul.line li:nth-child(7).active a{
-    color: #ff9;
+    color: #f09;
 }
 #l .flat-footer .legend ul.line li:nth-child(1) a .icon{
     background-image: url("../img/ico/line_bl_on.png");
@@ -411,52 +436,65 @@
     background-image: url("../img/ico/line_cd_on.png");
 }
 #l .flat-footer .legend ul.line li:nth-child(7) a .icon{
-    background-image: url("../img/ico/line_ds_on.png");
+    background-image: url("../img/ico/line_qt_on.png");
 }
 
 
 /*每块图表的样式*/
-#l .sphere .sphere-right-bottom .chartBorder,
+/*#l .sphere .sphere-right-top .chartBorder,*/
+/*#l .sphere .sphere-right-bottom .chartBorder,*/
 #l .flat-left>div .chartBorder,
 #l .flat-right>div .chartBorder{/*每块图表边框*/
     position: relative;
     height:95%;
-    border-style: solid;
-    border-image: url("../img/chartBorder.png") 120 52 30 / 13% 6% 6% ;
+    /*border-style: solid;*/
+    /*border-image: url("../img/chartBorder.png") 120 52 30 / 13% 6% 6% ;*/
+    background: url("../img/border_flat.png");
+    background-size: 100% 100%;
+}
+#l .sphere .sphere-right-top .chartBorder{
+    height:95%;
+    background: url("../img/border_sphereRT.png");
+    background-size: 100% 100%;
+    /*border-image: url("../img/border_sphereR.png") 120 52 30 / 13% 6% 6% ;*/
 }
 #l .flat-left>div>div h3,
 #l .flat-right>div>div h3{
+    text-align: center;
     position: relative;
-    display: inline-block;
     font-size: 118%;
-    left: 36%;
-    padding-top: 1.5%;
+    padding-top: 4%;
     font-weight: normal;
     color: #fff;
-    transform: translate(-50%, 14%);
 }
 #l .flat-left>div .chartBorder .myChart,
 #l .flat-right>div .chartBorder .myChart{
     width: 100%;
     /*height: 100%;*/
 }
+#l .sphere .chartBorder h4,
 #l .flat .chartBorder h4{
     text-align: center;
-    margin: 8% 2% 0;
+    margin: 12% 2% 0;
     padding: 1% 0;
     color: #66ccff;
-    font-size: 66%;
+    font-size: 85%;
     line-height: 180%;
-    background-color: rgba(102,204,255,.15);
+    /*background-color: rgba(102,204,255,.15);*/
 }
 #l .flat .flat-right-bottom .chartBorder h4{
 	margin: 4% 2% 0;
 }
 
+#l .sphere .chartBorder h4 strong,
 #l .flat .chartBorder h4 strong{
-    color: #fff;
-    font-size: 160%;
+    color: #f93;
+    font-size: 140%;
     font-weight: normal;
+}
+#l .flat-left-top .myChart{
+    height: 82%;
+    margin: 1% 2% 5%;
 }
 #l .flat-left-bottom .myChart{
     height: 72%;
@@ -466,59 +504,63 @@
     height: 80%;
     margin-bottom: 5%;
 }
+#l .flat-right-bottom img{
+    width:100%;
+}
 #l .flat-right-bottom .myChart{
     height: 65%;
-    padding: 8% 0 0%;
+    padding: 12% 4% 0;
 }
-
+#l .sphere-right-top ul,
 #l .flat .chartBorder ul{
     position: relative;
     margin: 1% 15% 1% 18%;
-    top: 3%;
+    top: 23%;
     height: 72%;
     font-size: 0.9em;
     color: #6cf;
 }
+#l .sphere-right-top ul li,
 #l .flat .chartBorder ul li{
-    margin-bottom: 3%;
-    line-height: 201%;
+    margin-bottom: 2%;
+    line-height: 166%;
     height: 11%;
 }
 
-#l .flat-left-top ul li .icon{
+#l .sphere-right-top ul li .icon{
     display: inline-block;
     position: relative;
     margin-right: 0.5em;
-    top: .2em;
-    width: 6%;
-    height: 1em;
+    top: .4em;
+    width: 1.5em;
+    height: 1.5em;
     background-size: 100% 100%;
 }
 
-#l .flat-left-top ul li:nth-of-type(1) .icon{
+#l .sphere-right-top ul li:nth-of-type(1) .icon{
     background-image: url("../img/ico/line_bl.png");
 }
-#l .flat-left-top ul li:nth-of-type(2) .icon{
+#l .sphere-right-top ul li:nth-of-type(2) .icon{
     background-image: url("../img/ico/line_xd.png");
 }
-#l .flat-left-top ul li:nth-of-type(3) .icon{
+#l .sphere-right-top ul li:nth-of-type(3) .icon{
     background-image: url("../img/ico/line_jk.png");
 }
-#l .flat-left-top ul li:nth-of-type(4) .icon{
+#l .sphere-right-top ul li:nth-of-type(4) .icon{
     background-image: url("../img/ico/line_sk.png");
 }
-#l .flat-left-top ul li:nth-of-type(5) .icon{
+#l .sphere-right-top ul li:nth-of-type(5) .icon{
     background-image: url("../img/ico/line_rsq.png");
 }
-#l .flat-left-top ul li:nth-of-type(6) .icon{
+#l .sphere-right-top ul li:nth-of-type(6) .icon{
     background-image: url("../img/ico/line_cd.png");
 }
-#l .flat-left-top ul li:nth-of-type(7) .icon{
-    background-image: url("../img/ico/line_ds.png");
+#l .sphere-right-top ul li:nth-of-type(7) .icon{
+    background-image: url("../img/ico/line_qt.png");
 }
-
+#l .sphere .chartBorder ul li .number,
 #l .flat .chartBorder ul li .number {
-    height: 90%;
+    height: 96%;
     background-image: url(../img/bgNumber.png);
     background-size: 95% 100%;
     background-repeat: no-repeat;

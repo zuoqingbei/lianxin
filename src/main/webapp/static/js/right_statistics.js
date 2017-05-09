@@ -221,6 +221,7 @@ function abilityStatus(){
 		});
 	})
 }
+
 function statisticRightLengend(data){
 	var legnend=[];
 	$.each(data,function(index,item){
@@ -228,6 +229,7 @@ function statisticRightLengend(data){
 	});
 	return legnend;
 }
+
 function statisticRightSeriesData(data,bar_chip){
 	var series=[];
 	$.each(data,function(index,item){
@@ -239,6 +241,7 @@ function statisticRightSeriesData(data,bar_chip){
 	console.log(series)
 	return series;
 }
+
 function standardSeriesData(data,name){
 	var num=0;
 	$.each(data,function(index,item){

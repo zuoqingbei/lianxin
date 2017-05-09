@@ -3,67 +3,35 @@
 <head lang="en">
     <meta charset="utf-8">
     <title>wordCloud</title>
+    <!--<link rel="stylesheet" type="text/css" href="miaov_style.css" />-->
     <style>
-html, body {
-	height: 95%;
-	margin: 0;
-}
+        body {background: #ffffff center 230px;}
+        #div1 {position:relative; width:450px; height:450px; margin: 20px auto 0; }
+        #div1 a {position:absolute; top:0px; left:0px; font-family: Microsoft YaHei; color: #0b85ff; font-weight:bold; text-decoration:none; padding: 3px 6px; }
 
-#div1 {
-	position: relative;
-	overflow: hidden;
-	width: 82%;
-	margin: 2% auto;
-	height: 95%;
-}
+        #div1 .blue {color:blue;}
+        #div1 .red {color:red;}
+        #div1 .yellow {color:yellow;}
 
-#div1 a {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	font-family: Microsoft YaHei;
-	color: #6cf;
-	font-weight: normal;
-	text-decoration: none;
-	padding: 3px 6px;
-}
+        p { font: 16px Microsoft YaHei; text-align: center; color: #ba0c0c; }
+        p a { font-size: 14px; color: #ba0c0c; }
+        p a:hover { color: red; }
 
-a.blue {
-	color: blue;
-}
 
-a.red {
-	color: red;
-}
-
-a.yellow {
-	color: yellow;
-}
-
-p {
-	font: 1em Microsoft YaHei;
-	text-align: center;
-	color: #ba0c0c;
-}
-
-p a {
-	font-size: .5em;
-	color: #ba0c0c;
-}
-
-#div1 a:hover {
-	color: #9cffd2;
-}
-</style>
+    </style>
 </head>
 <body>
 
-<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script type="text/javascript" src="jquery-2.2.4.js"></script>
+<script>
+    $(function () {
+        var scale = $("div1").width()/450;
+    })
+</script>
 <script>
     var radius = 180;//3D 球的半径
-//    radius = $("#div1").css("width");
     var dtr = Math.PI/180;
-    var d=300;
+    var d=600;
 
     var mcList = [];
     var active = false;
@@ -71,7 +39,7 @@ p a {
     var lastb = 1;
     var distr = true;
     var tspeed=5;//文字移动速度
-    var size=30;
+    var size=250;
 
     var mouseX=0;
     var mouseY=0;
@@ -188,6 +156,7 @@ p a {
         for(i=0;i<aA.length;i++)
         {
             aTmp.push(aA[i]);
+//            console.log("aA",aA[i])
         }
 
         aTmp.sort
@@ -204,6 +173,7 @@ p a {
         }
 
         oDiv.appendChild(oFragment);
+        console.log("oDiv[0]:",oDiv)
 
         for( var i=1; i<max+1; i++){
             if( distr )
@@ -220,12 +190,17 @@ p a {
             mcList[i-1].cx = radius * Math.cos(theta)*Math.sin(phi);
             mcList[i-1].cy = radius * Math.sin(theta)*Math.sin(phi);
             mcList[i-1].cz = radius * Math.cos(phi);
-
+            //初始位置
+//            console.log("aA["+i+"i-1]",aA[i-1])
             aA[i-1].style.left=mcList[i-1].cx+oDiv.offsetWidth/2-mcList[i-1].offsetWidth/2+'px';
             aA[i-1].style.top=mcList[i-1].cy+oDiv.offsetHeight/2-mcList[i-1].offsetHeight/2+'px';
-        }
+
+
+
+            }
     }
 
+    //每帧的位置
     function doPosition()
     {
         var l=oDiv.offsetWidth/2;
@@ -238,6 +213,7 @@ p a {
             aA[i].style.filter="alpha(opacity="+100*mcList[i].alpha+")";
             aA[i].style.opacity=mcList[i].alpha;
         }
+
     }
 
     function sineCosine( a, b, c)
@@ -253,20 +229,28 @@ p a {
     $(document).ready(function(){
         var i=0;
         var oTag=null;
-        $.getJSON( "${contextPath!}/static/data/wordCloudText.json", function( data ) {
+        $.getJSON( "test.json", function( data ) {
+            $("body").append('<div id="div1" style="border:solid 2px black"></div>');
+
             console.log("这里getjson");
             var items = [];
             $.each( data, function( key, val ) {
-                items.push( "<a href=#  style=font-size:"+val+"em>"+key+"</a>" );
+                items.push( "<a href=#  style=font-size:"+val+"px>"+key+"</a>" );
             });
-            $( "<div/>", {
+            console.log("items.join( '' )",items.join( '' ));
+          /*  $( "<div/>", {
                 "id": "div1",
-                style:"border:solid 0 skyblue",
+                style:"border:solid 2px black",
                 ALIGN: "center",
                 html: items.join( "" )
-            }).appendTo( "body" );
-            //console.log($('div'));
- 			radius = Math.floor($("#div1").width()/3.14);
+            }).appendTo( "body" );*/
+        $("#div1").append(items.join( '' ))
+            radius = Math.floor($("#div1").width()/3.2);
+//            alert($("#div1").width())
+//            $("#div1 a").css("width",$("#div1 a").css("width")*scale)
+
+            console.log("#div1",$("[id=div1]")[0]);
+
             oDiv=document.getElementById('div1');
             aA=oDiv.getElementsByTagName('a');
 
@@ -296,8 +280,8 @@ p a {
             {
                 var oEvent=window.event || ev;
 
-                mouseX=oEvent.clientX-(oDiv.offsetLeft+oDiv.offsetWidth/4);
-                mouseY=oEvent.clientY-(oDiv.offsetTop+oDiv.offsetHeight/4);
+                mouseX=oEvent.clientX-(oDiv.offsetLeft+oDiv.offsetWidth/2);
+                mouseY=oEvent.clientY-(oDiv.offsetTop+oDiv.offsetHeight/2);
 
                 mouseX/=5;
                 mouseY/=5;
