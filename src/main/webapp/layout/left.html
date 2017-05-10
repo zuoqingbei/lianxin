@@ -1,11 +1,4 @@
- <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-    <title>U-lab全球互联数据中心</title>
-    <link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
-    <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
-    <link rel="stylesheet" href="${contextPath!}/static/css/index_right.css">
-</head>
+## layout("ulab.html",{title:"U-lab全球互联数据中心"}){
      <div id="l">
         <header>
             <span class="mainLogo"></span>
@@ -182,6 +175,39 @@
             </div>
 
         </div>
-
     </div>
  
+ 
+ ##}
+ <script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
+<script src="${contextPath!}/static/js/statistics.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/main_left.js?time=New Date()"></script>
+<script>
+    var myCharts;
+    var myChartFlatRT;
+    var myChartFlatRB;
+    var myChartFlatLB;
+    var pathSymbols = {
+        bar_chip: '${contextPath!}/static/img/bar_chip.png'
+    };
+    $(function () {
+        //右上角的图表
+        myChartFlatRT = echarts.init($("#l").find(".flat-right-top .myChart")[0]);
+        //平面左上的环形图
+        myChartFlatLT = echarts.init($("#l").find(".flat-left-top .myChart")[0]);
+        //右下角的图表
+//        myChartFlatRB = echarts.init($("#l").find(".flat-right-bottom .myChart")[0]);
+
+        //左下角的图表
+        myChartFlatLB = echarts.init($("#l").find(".flat-left-bottom .myChart")[0]);
+        myCharts = [myChartFlatLT, myChartFlatRT, myChartFlatLB];
+        //左侧平面地图及其他左侧数据
+        reloadLeftData();
+        //标准状态
+        standardStatus();
+        //能力状态
+        abilityStatus();
+
+
+    });
+</script>
