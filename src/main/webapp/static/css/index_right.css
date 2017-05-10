@@ -12,14 +12,16 @@
 
 .tab ul li {
     display: inline-block;
-    padding: 0.5em 0.5em 0.5em 0;
+    padding: 0.3em 0.3em 0.3em 0;
     width: 8%;
-    margin: 0.8em 3.5em 0 0;
+    margin: 0.9em 3.5em 0 0;
     background: url("../img/TotalState/border-normal.png") no-repeat;
     background-size: 100% 100%;
     color: #66ccff;
     cursor: pointer;
-    font-size: .5em;
+    font-size: 1.4em;
+
+  
 }
 
 #right .lab{
@@ -41,7 +43,8 @@
    float: left;
    width: 25%;
    text-align: center;
-   /*font-size: 1.5em;*/
+   font-size: 0.8em;
+  
 }
 #right .lab .lab_icon{
     position: absolute;
@@ -57,6 +60,8 @@
     height: 60%;
     display: inline-block;
    text-align: center;
+    font-size: 0.8em;
+
 }
 #right .lab .lab_icon li img{
    width: 35%;
@@ -82,12 +87,13 @@
 }
 .total_name{
     position: absolute;
-    top:35%;
-    left: 2px;
+    top:33%;
+    left: 1px;
     width: 1.6em;
     text-align: center;
     vertical-align: middle;
     color: white;
+    font-size: 1.2em;
     
 }
 .total_center .total_name{
@@ -133,11 +139,13 @@
 }
 
 .echarts_title {
-    width: 41%;
+    width: 43%;
     color: white;
     background: url("../img/TotalState/title-border.png") no-repeat;
     background-size: 100% 100%;
-    margin: 6% auto 1% auto;
+    margin: 6% auto 1% auto;    
+    font-size:1.2em;
+    padding: 0.2em;
 }
 
 .echarts_title1 {
