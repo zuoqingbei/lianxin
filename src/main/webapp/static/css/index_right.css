@@ -19,6 +19,7 @@
     background-size: 100% 100%;
     color: #66ccff;
     cursor: pointer;
+    font-size: .5em;
 }
 
 #right .lab{
@@ -38,8 +39,9 @@
 }
 #right .lab .lab_name li{
    float: left;
-    width: 25%;
-    text-align: center;
+   width: 25%;
+   text-align: center;
+   /*font-size: 1.5em;*/
 }
 #right .lab .lab_icon{
     position: absolute;
