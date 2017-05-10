@@ -21,7 +21,7 @@ option = {
             splitNumber: 5,
             radius: '80%',
             textStyle: {
-                fontSize:'60%'
+                fontSize:7
             },
             axisLine: {            // 坐标轴线
                 show:false,
@@ -130,7 +130,7 @@ option = {
             title: {
                 offsetCenter: [0, '100%'],       // x, y，单位px
                 textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                    fontSize: 14,
+                    fontSize: 12,
                     color: '#66ccff',
 //                        fontStyle: 'italic'
                 },
@@ -196,7 +196,7 @@ option = {
             title: {
                 offsetCenter: [0, '100%'],       // x, y，单位px
                 textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                    fontSize: 14,
+                    fontSize: 12,
                     color: '#66ccff',
 //                        fontStyle: 'italic'
                 },
@@ -228,7 +228,7 @@ var labelTop = {
             textStyle: {
                 baseline: 'bottom',
                 color: '#66ccff',
-                fontSize:8
+                fontSize:12,
             }
         },
         labelLine: {
@@ -284,7 +284,6 @@ option = {
                                     },
                                     textStyle: {
                                         baseline: 'middle'
-
                                     }
                                 }
                             },
@@ -298,7 +297,8 @@ option = {
     },
     textStyle: {
 //            color:'#66ccff'
-        color: '#ff9933'
+        color: '#ff9933',
+        fontSize:20,
     },
     series: [
 //            {
@@ -424,45 +424,45 @@ myChart2.setOption(option);
 var myChart3 = echarts.init(document.getElementById("myChart3"));
 myChart3.setOption(getBarEcharts());
 var bar_chip = '../img/bar_chip.png';
-//myChart3.setOption({
-//    textStyle:{
-//        fontSize:8
-//    },
-//    yAxis: [
-//        {
-//            name: "数量",
-//            type: 'value',
-//        },
-//    ],
-//    xAxis: [
-//        {
-//            name: "试验类别",
-//            type: 'category',
-//            data: ["完全具备数", "部分具备", "不具备"]
-//        }
-//    ],
-//    grid: {
-//        x: 48,
-//        y: 28
-//    },
-//    series: [
-//        {
-//            symbolSize: ['60%', '10%'],
-//            data: [{
-//                value: 134,
-//                symbol: bar_chip
-//            }, {
-//                value: 32,
-//                symbol: bar_chip
-//            }, {
-//                value: 2,
-//                symbol: bar_chip
-//            }
-//            ]
-//        }
-//    ]
-//});
-//
+myChart3.setOption({
+    textStyle:{
+        fontSize:8
+   },
+    yAxis: [
+        {
+            name: "数量",
+            type: 'value',
+        },
+    ],
+    xAxis: [
+        {
+            name: "试验类别",
+            type: 'category',
+            data: ["完全具备数", "部分具备", "不具备"]
+        }
+    ],
+    grid: {
+        x: 58,
+        y: 28
+   },
+    series: [
+        {
+            symbolSize: ['60%', '10%'],
+            data: [{
+                value: 134,
+                symbol: bar_chip
+            }, {
+                value: 32,
+                symbol: bar_chip
+            }, {
+                value: 2,
+                symbol: bar_chip
+            }
+            ]
+        }
+    ]
+});
+
 
 //一次合格率 同心圆
 var myChart4 = echarts.init(document.getElementById("myChart4"));

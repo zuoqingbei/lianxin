@@ -87,7 +87,7 @@
 }
 .total_name{
     position: absolute;
-    top:33%;
+    top:31%;
     left: 1px;
     width: 1.6em;
     text-align: center;
@@ -97,10 +97,10 @@
     
 }
 .total_center .total_name{
-    top: 38%;
+    top: 35%;
 }
 .total_bottom .total_name{
-    top:38%;
+    top:35%;
 }
 .total_state .total_center {
     background: url("../img/TotalState/border-1 .png") no-repeat;
@@ -179,12 +179,13 @@
     /*height: 100%;*/
     position: relative;
     padding-right: 3.5%;
+    font-size: 1.1em;
 }
 .total_top_2 .total_top_2_box > ul > li ul{
 	height:100%;
 }
 .total_top_2 .total_top_2_box > ul > li ul li{
-	height:25%;
+	height:24%;
 }
 .total_top_2_box > ul > li .progress {
     display: inline-block;
@@ -246,6 +247,7 @@
 
 .total_top_3 .total_top_3_left ul {
     margin-top: 10%;
+    font-size: 1.2em;
 }
 
 .total_top_3 .total_top_3_right {
@@ -276,11 +278,11 @@
 
 .total_top_3_left > ul li:last-of-type {
     color: #ff9933;
-    font-size: 1.5em;
+    font-size: 1.6em;
 }
 
 #myChart3 {
-    width: 100%;
+    width: 95%;
     height: 63%;
     /*background-color: pink;*/
 }
