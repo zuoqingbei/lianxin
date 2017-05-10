@@ -1,5 +1,16 @@
 ## layout("ulab.html",{title:"U-lab全球互联数据中心"}){
 <html lang="zh-CN">
+<link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">
+ <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
+ <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
+ <link rel="stylesheet" href="${contextPath!}/static/css/index_right.css">
+ <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/asserts/js/bootstrap.min.js"></script>
+<script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
+<script src="${contextPath!}/static/js/manyEcharts.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/common.js?time=New Date()"></script>
+<script src="${contextPath!}/static/asserts/echarts/wordcloudFromNet.js?time=New Date()"></script>
+ 
 <body>
 <!-- <div id="mask" style="background-color: black">
          <video src="${contextPath!}/static/img/movieHead_blackBoard.mp4"  width="100%" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>
@@ -12,15 +23,30 @@
 	 ##}
   
 </div>
-
-
-
-<script src="${contextPath!}/static/asserts/echarts/wordcloudFromNet.js?time=New Date()"></script>
-<!-- <script src="${contextPath!}/static/js/leftCharts.js?time=New Date()"></script> -->
-
-
-
-
 </body>
 </html>
 ##}
+
+<!-- <script src="${contextPath!}/static/js/leftCharts.js?time=New Date()"></script> -->
+
+
+<!--屏幕描述
+一共 7x3 个屏幕，
+每一块屏幕是1920x1080
+总共的大小就是13440x3240
+3/7的宽度是5760,
+在笔记本上比例不变适应高度后，宽度为3186px
+-->
+<script>
+var contextPath = '${contextPath!}';
+    var bodyScale = 1;
+    function pageResize() {
+        var h = $(window).height();
+        $("#content").css("width", h * 16 * 7 / (9 * 3));
+        var bodyFontSize = h / 595 * 100 + "%";
+        bodyScale = h / 595;
+        $("body").css("font-size", bodyFontSize);
+        console.log("屏幕高度：" + h + ", body字号：" + bodyFontSize)
+    }
+    pageResize();
+</script>

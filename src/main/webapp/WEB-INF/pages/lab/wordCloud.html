@@ -59,8 +59,9 @@ p a {
 <body>
 
 <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<!--<script src="../../../static/asserts/js/jquery-2.2.4.js"></script>-->
 <script>
-    var radius = 180;//3D 球的半径
+    var radius = 100;//3D 球的半径
 //    radius = $("#div1").css("width");
     var dtr = Math.PI/180;
     var d=300;
@@ -254,7 +255,9 @@ p a {
         var i=0;
         var oTag=null;
         $.getJSON( "${contextPath!}/static/data/wordCloudText.json", function( data ) {
-            console.log("这里getjson");
+//            $.getJSON( "../../../static/data/wordCloudText.json", function( data ) {
+
+                console.log("这里getjson");
             var items = [];
             $.each( data, function( key, val ) {
                 items.push( "<a href=#  style=font-size:"+val+"em>"+key+"</a>" );
@@ -302,8 +305,10 @@ p a {
                 mouseX/=5;
                 mouseY/=5;
             };
-
-            setInterval(update, 100);
+            setTimeout(function () {
+                setInterval(update, 100);
+            },2000)
+                
         });
     });
 
