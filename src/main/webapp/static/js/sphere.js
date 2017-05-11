@@ -36,7 +36,7 @@ function mapSphere() {
             		        textStyle: {
             		            color: '#fff',
             		            fontSize:bodyScale*21,
-            		            fontFamily: '"Microsoft yahei", "微软雅黑", sans-Serif',
+            		            fontFamily: '"Microsoft yahei", "微软雅黑", Sans Serif',
                                 fontWeight:"normal"
             		        }
             		    },
@@ -80,9 +80,9 @@ function mapSphere() {
                         }
                     },
                         markPoint: {
-                            symbol: "circle",
+                            symbol: "triangle",
                             effect: {
-                                shadowBlur: 0.5
+                                shadowBlur: 0.1
                             },
                             large: true,
                             symbolSize: 5,
