@@ -31,9 +31,12 @@ function switchMapArea(charts) {
     $left.find(".btnGroup img").click(function () {
         var src = $(this).attr("src");
         if (src.indexOf("off") >= 0) {
+
             src = src.replace("off", "on");
+            console.log("------src:"+src)
             $(this).attr("src", src)
-                .siblings().attr("src", $(this).siblings().attr("src").replace("on", "off"))
+                .parent().siblings().find("img")
+                .attr("src", $(this).parent().siblings().find("img").attr("src").replace("on", "off"))
             // var $chart = $("#chart");
             if ($left.find(".switch.sphere").is(":hidden")) {
                 $left.find(".switch.sphere").css("display", "flex").siblings().hide()
@@ -45,6 +48,15 @@ function switchMapArea(charts) {
         }
     });
 
+}
+
+//切换地球和平面地图按钮的提示
+function switchMapBtnTip() {
+    $(".btnGroup img").hover(function () {
+        $(this).siblings().show()
+    },function () {
+        $(this).siblings().hide()
+    })
 }
 //重置echart图标大小 在加载平面地图时被调用
 function resetSize() {
@@ -225,6 +237,8 @@ $(function () {
     //videoFadeOut();
     //切换地图显示区域
     switchMapArea(myCharts);
+    //切换地球和平面地图按钮的提示
+    switchMapBtnTip();
     //切换生产线和实验室的列表显示
     navLabLine();
     //导航栏中的全选
@@ -233,6 +247,7 @@ $(function () {
     navSelectA();
     //球形地图右下角的广告滚动
     sphereRBscroll();
+
 });
 
 /*$(window).resize(function () {
