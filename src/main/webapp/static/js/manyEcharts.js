@@ -9,7 +9,8 @@ function getLineEcharts() {
             left: 'center',
             text: '',
             textStyle: {
-                fontSize: 12
+                fontSize: 12,
+                color: '#66ccff',
             }
         },
         grid: {
@@ -31,18 +32,22 @@ function getLineEcharts() {
             // // itemHeight:10, //图例标记的图形高度
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
-                fontSize: 12
+                fontSize: 10
             }
         },
-        color: ['#4ea3d9', '#f6b65f', '#6be6c1', '#bba1df', '#434247', '#e66bdf'],
-        textStyle: {
-            color: '#333',
-            fontSize: 12
+        color: ['#00e673', '#66ccff'],
+        textStyle: {    //图例文字的样式
+            color: '#66ccff',
+            fontSize: 10
         },
 
         xAxis: {
             data: [],
             boundaryGap: true,
+            nameTextStyle: {
+                color: '#66ccff',
+                fontSize:10
+            },
             splitLine: {
                 show: false
             },
@@ -54,6 +59,7 @@ function getLineEcharts() {
                 // rotate: 30,
                 textStyle: {
                     color: '#66ccff',
+                    fontSize:12
                 }
             },
             axisTick: {
@@ -66,6 +72,10 @@ function getLineEcharts() {
 
         },
         yAxis: {
+            nameTextStyle: {
+                color: '#66ccff',
+                fontSize:10
+            },
             axisLine: { //坐标轴
                 show: false
             },
@@ -73,6 +83,7 @@ function getLineEcharts() {
                 show: true,
                 textStyle: {
                     color: '#66ccff',
+                    fontSize:12
                 }
             },
             splitLine: {  //刻度线
@@ -94,6 +105,14 @@ function getLineEcharts() {
 // 柱状图 横向
 function getBarEcharts() {
     option = {
+        title: {
+            left: 'center',
+            text: '',
+            textStyle: {
+                fontSize: 12,
+                color: '#66ccff',
+            }
+        },
         tooltip: {
             trigger: 'axis'
         },
@@ -108,12 +127,12 @@ function getBarEcharts() {
             // // itemHeight:10, //图例标记的图形高度
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
-                fontSize: 12
+                fontSize: 10
             }
         },
-        textStyle: {
-            color: "#6cf",
-            // fontSize: "60%"
+        textStyle: {    //图例文字的样式
+            color: '#66ccff',
+            fontSize: 10
         },
         grid: {
 //            show:true,
@@ -130,7 +149,7 @@ function getBarEcharts() {
                 axisLabel: {
                     textStyle: {
                         color: "#66ccff",
-                        // fontSize: "60%"
+                        fontSize: 12
                     }
                 },
                 axisLine: {
@@ -160,7 +179,7 @@ function getBarEcharts() {
                 axisLabel: {
                     textStyle: {
                         color: "#66ccff",
-                        // fontSize: "60%"
+                        fontSize: 12
                     }
                 },
                 axisTick: {  //刻度值
@@ -226,6 +245,9 @@ function getAreaEcharts() {
         title: {
             text: ''
         },
+        textStyle: {
+            fontSize: 10
+        },
         color: ['#00e673', '#66ccff'],
         tooltip: {
             trigger: 'axis',
@@ -245,7 +267,7 @@ function getAreaEcharts() {
             // // itemHeight:10, //图例标记的图形高度
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
-                fontSize: 12
+                fontSize: 10
             },
             data: []
         },
@@ -281,7 +303,8 @@ function getAreaEcharts() {
                     show: true,
                     // rotate: 30,
                     textStyle: {
-                        color: '#66ccff'
+                        color: '#66ccff',
+                        fontSize:12
                     }
                 },
                 axisTick: {
@@ -306,7 +329,8 @@ function getAreaEcharts() {
                 axisLabel: {   //坐标值
                     show: true,
                     textStyle: {
-                        color: '#66ccff'
+                        color: '#66ccff',
+                        fontSize:12
                     },
                 },
                 splitLine: {  //刻度线
@@ -335,7 +359,10 @@ function getRadarEcharts() {
             text: '',
             subtext: ''
         },
-
+        textStyle: {    //图例文字的样式
+            color: '#66ccff',
+            fontSize: 10
+        },
         tooltip: {
             trigger: 'axis'
         },
@@ -374,8 +401,22 @@ function getRadarEcharts() {
 //折线图和柱状图
 function getLineAndBar() {
     option = {
+        title: {
+            left: 'center',
+            text: '',
+            textStyle: {
+                fontSize: 12,
+                color: '#66ccff'
+            }
+        },
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                    color: '#999'
+                }
+            }
         },
         toolbox: {
             show: false,
@@ -387,13 +428,20 @@ function getLineAndBar() {
                 saveAsImage: {show: true}
             }
         },
-        calculable: true,
         legend: {
             data: []
         },
         xAxis: {
+            type: 'category',
             data: [],
             boundaryGap: false,
+            axisPointer: {
+                type: 'shadow'
+            },
+            nameTextStyle: {
+                color: '#66ccff',
+                fontSize:10
+            },
             splitLine: {
                 show: false
             },
@@ -417,6 +465,11 @@ function getLineAndBar() {
 
         },
         yAxis: {
+            type: 'value',
+            nameTextStyle: {
+                color: '#66ccff',
+                fontSize:10
+            },
             axisLine: { //坐标轴
                 show: false
             },
@@ -868,7 +921,7 @@ function  getScatterEcharts() {
         grid: {
             top:0,
             left: 2,
-            bottom: 10,
+            bottom: 25,
             right: 10,
             containLabel: true
         },
@@ -899,7 +952,7 @@ function  getScatterEcharts() {
 
             type: 'scatter',
             symbolSize: function (val) {
-                return val[2] * 2;
+                return val[2] * 1.5;
             },
             data: [],
             animationDelay: function (idx) {
