@@ -21,7 +21,7 @@ option = {
             splitNumber: 5,
             radius: '80%',
             textStyle: {
-                fontSize:'60%'
+                fontSize:7
             },
             axisLine: {            // 坐标轴线
                 show:false,
@@ -84,7 +84,7 @@ option = {
         {
             name: '利用率',
             type: 'gauge',
-            center: ['29%', '58%'],    // 默认全局居中
+            center: ['25%', '58%'],    // 默认全局居中
             radius: '70%',
             min: 0,
             max: 100,
@@ -130,7 +130,7 @@ option = {
             title: {
                 offsetCenter: [0, '100%'],       // x, y，单位px
                 textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                    fontSize: 14,
+                    fontSize: 12,
                     color: '#66ccff',
 //                        fontStyle: 'italic'
                 },
@@ -149,7 +149,7 @@ option = {
         {
             name: '完好率',
             type: 'gauge',
-            center: ['71%', '59%'],    // 默认全局居中
+            center: ['75%', '59%'],    // 默认全局居中
             radius: '70%',
             min: 0,
             max: 100,
@@ -196,7 +196,7 @@ option = {
             title: {
                 offsetCenter: [0, '100%'],       // x, y，单位px
                 textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                    fontSize: 14,
+                    fontSize: 12,
                     color: '#66ccff',
 //                        fontStyle: 'italic'
                 },
@@ -228,7 +228,7 @@ var labelTop = {
             textStyle: {
                 baseline: 'bottom',
                 color: '#66ccff',
-                fontSize:8
+                fontSize:12,
             }
         },
         labelLine: {
@@ -284,7 +284,6 @@ option = {
                                     },
                                     textStyle: {
                                         baseline: 'middle'
-
                                     }
                                 }
                             },
@@ -298,7 +297,8 @@ option = {
     },
     textStyle: {
 //            color:'#66ccff'
-        color: '#ff9933'
+        color: '#ff9933',
+        fontSize:20,
     },
     series: [
 //            {
@@ -424,141 +424,101 @@ myChart2.setOption(option);
 var myChart3 = echarts.init(document.getElementById("myChart3"));
 myChart3.setOption(getBarEcharts());
 var bar_chip = '../img/bar_chip.png';
-//myChart3.setOption({
-//    textStyle:{
-//        fontSize:8
-//    },
-//    yAxis: [
-//        {
-//            name: "数量",
-//            type: 'value',
-//        },
-//    ],
-//    xAxis: [
-//        {
-//            name: "试验类别",
-//            type: 'category',
-//            data: ["完全具备数", "部分具备", "不具备"]
-//        }
-//    ],
-//    grid: {
-//        x: 48,
-//        y: 28
-//    },
-//    series: [
-//        {
-//            symbolSize: ['60%', '10%'],
-//            data: [{
-//                value: 134,
-//                symbol: bar_chip
-//            }, {
-//                value: 32,
-//                symbol: bar_chip
-//            }, {
-//                value: 2,
-//                symbol: bar_chip
-//            }
-//            ]
-//        }
-//    ]
-//});
-//
+myChart3.setOption({
+    yAxis: [
+        {
+            name: "数量",
+            type: 'value',
+        },
+    ],
+    xAxis: [
+        {
+            name: "试验类别",
+            type: 'category',
+            data: ["完全具备数", "部分具备", "不具备"]
+        }
+    ],
+    series: [
+        {
+            symbolSize: ['60%', '10%'],
+            data: [{
+                value: 134,
+                symbol: bar_chip
+            }, {
+                value: 32,
+                symbol: bar_chip
+            }, {
+                value: 2,
+                symbol: bar_chip
+            }
+            ]
+        }
+    ]
+});
+
 
 //一次合格率 同心圆
 var myChart4 = echarts.init(document.getElementById("myChart4"));
 myChart4.setOption(getCenterPie());
 var dataStyle = {
     normal: {
-        label: {
-            normal: {
-                show:true,
-                textStyle: {
-                    color: '#66ccff'
-                },
-                formatter: "{a}:{d}%",
-            }
-        },
-        labelLine: {
-            normal: {
-                show: false,
-                lineStyle: {
-                    color: 'gray'
-                },
-                smooth: 0.2,
-                length: 1,
-                length2: 2
-            }
-        },
+        label: {show:false},
+        labelLine: {show:false}
     }
 };
 var placeHolderStyle = {
-    normal: {
+    normal : {
         color: 'rgba(0,0,0,0)',
-        label: {
-            normal: {
-                show:true,
-                textStyle: {
-                    color: '#66ccff'
-                },
-                formatter: "{a}:{d}%",
-            }
-        },
-        labelLine: {
-            normal: {
-                show: true,
-                lineStyle: {
-                    color: 'gray'
-                },
-                smooth: 0.2,
-                length: 1,
-                length2: 2
-            }
-        },
+        label: {show:false},
+        labelLine: {show:false}
     },
-    emphasis: {
+    emphasis : {
         color: 'rgba(0,0,0,0)'
     }
 };
 myChart4.setOption({
-    // textStyle:{
-    //     fontSize:8
-    // },
+    legend:{
+        data:['整机','模块']
+    },
+    textStyle:{
+        fontSize:12
+    },
     color: ['#4397f7', '#66ccff'],
     series: [
         {
-            name: '一次合格率',
+            name: '整机',
             type: 'pie',
             clockWise: false,
             radius: ['50%', '60%'],
             itemStyle: dataStyle,
             data: [
                 {
-                    value: 68,
-                    name: '整机:32%',
+                    value: 2,
+                    name: '整机:2%',
                     itemStyle: placeHolderStyle
                 },
                 {
-                    value: 32,
-                    name: '整机:32%',
+                    value: 98,
+                    name: '整机:98%',
                     // itemStyle: placeHolderStyle
                 }
             ]
         },
         {
-            name: '一次合格率',
+            name: '模块',
             type: 'pie',
             clockWise: false,
             radius: ['40%', '50%'],
             itemStyle: dataStyle,
             data: [
                 {
-                    value: 29,
-                    name: '模块:71%',
+                    value: 5,
+                    name: '模块:5%',
                     itemStyle: placeHolderStyle
                 },
                 {
-                    value: 71,
-                    name: '模块:71%',
+                    value: 95,
+                    name: '模块:95%',
                     // itemStyle: placeHolderStyle
                 }
             ]
@@ -571,45 +531,48 @@ myChart4.setOption({
 var myChart5 = echarts.init(document.getElementById("myChart5"));
 myChart5.setOption(getCenterPie());
 myChart5.setOption({
-    // textStyle:{
-    //     fontSize:8
-    // },
+    legend:{
+        data:['整机','模块']
+    },
+    textStyle:{
+        fontSize:12
+    },
     color: ['#4397f7', '#66ccff'],
     series: [
         {
-            name: '问题闭环率',
+            name: '整机',
             type: 'pie',
             clockWise: false,
             radius: ['50%', '60%'],
             itemStyle: dataStyle,
             data: [
                 {
-                    value: 68,
-                    name: '整机:32%',
+                    value: 2,
+                    name: '整机:2%',
                     itemStyle: placeHolderStyle
                 },
                 {
-                    value: 32,
-                    name: '整机:32%',
+                    value: 98,
+                    name: '整机:98%',
                     // itemStyle: placeHolderStyle
                 }
             ]
         },
         {
-            name: '问题闭环率',
+            name: '模块',
             type: 'pie',
             clockWise: false,
             radius: ['40%', '50%'],
             itemStyle: dataStyle,
             data: [
                 {
-                    value: 29,
-                    name: '模块:71%',
+                    value: 5,
+                    name: '模块:5%',
                     itemStyle: placeHolderStyle
                 },
                 {
-                    value: 71,
-                    name: '模块:71%',
+                    value: 95,
+                    name: '模块:95%',
                     // itemStyle: placeHolderStyle
                 }
             ]
@@ -620,30 +583,34 @@ myChart5.setOption({
 
 //订单及时率
 var myChart6 = echarts.init(document.getElementById("myChart6"));
-myChart6.setOption(getAreaEcharts());
+myChart6.setOption(getLineEcharts());
 myChart6.setOption({
-    textStyle:{
-        fontSize:8
-    },
     legend: {
         show: true,
         data: ['整机', '模块'],
-        textStyle:{
-            fontSize:8
-        },
         itemWidth: 5,  //图例标记的图形宽度
         itemHeight: 3, //图例标记的图形高度
     },
     grid: {
-        x: 23,
-        y: 28
+        right: 43,
+        bottom: 20,
+        left: 38,
+        top:30
     },
+
     yAxis:{
-    	max:100
+        name:'及时率/%',
+        nameTextStyle: {
+            color: '#66ccff'
+        },
+        max:100
     },
     xAxis: [
         {
-            name: '月份',
+            name:"时间",
+            nameTextStyle: {
+                color: '#66ccff'
+            },
             data: ['2016/8','2016/9','2016/9','2016/9','2016/9','2016/9', '2016/9', '2017/3', '2017/3','2017/5']
         }
     ],
@@ -652,44 +619,56 @@ myChart6.setOption({
             name: '整机',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
 //            areaStyle: {normal: {}},
-            data: [40, 32, 40, 34, 50, 55, 40, 41, 44, 46, 45, 45]
+            data: [30, 32, 25, 34, 45, 30, 40, 23,34,46]
         },
         {
             name: '模块',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
 //            areaStyle: {normal: {}},
-            data: [54, 52, 53,49, 40, 40, 48, 43, 40, 46, 48, 52]
+            data: [40, 33,61, 34, 29, 30, 31, 34, 42, 44]
         }
     ]
+
 });
 
 
 //用户满意度
 var myChart7 = echarts.init(document.getElementById("myChart7"));
-myChart7.setOption(getAreaEcharts());
+myChart7.setOption(getLineEcharts());
 myChart7.setOption({
-    textStyle:{
-        fontSize:8
-    },
     legend: {
         show: true,
         data: ['整机', '模块'],
-        textStyle:{
-            fontSize:8
-        },
         itemWidth: 5,  //图例标记的图形宽度
         itemHeight: 3, //图例标记的图形高度
     },
     grid: {
-        y: 28
+        right: 43,
+        bottom: 20,
+        left: 38,
+        top:30
     },
     yAxis:{
+        name:'满意度/%',
     	max:100
     },
     xAxis: [
         {
+            name:"时间",
         	data: ['2016/8','2016/9','2016/9','2016/9','2016/9','2016/9', '2016/9', '2017/3', '2017/3','2017/5']
         }
     ],
@@ -698,204 +677,209 @@ myChart7.setOption({
             name: '整机',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
 //            areaStyle: {normal: {}},
-            data: [30, 32, 25, 34, 45, 30, 40, 23,34,46, 21,34]
+            data: [30, 32, 25, 34, 45, 30, 40, 23,34,46]
         },
         {
             name: '模块',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
 //            areaStyle: {normal: {}},
-            data: [40, 33,61, 34, 29, 30, 31, 34, 42, 44, 34, 28]
+            data: [40, 33,61, 34, 29, 30, 31, 34, 42, 44]
         }
     ]
 
 });
-
-//量产一致与不一致占比
+//模块质量过程检测
 var myChart8 = echarts.init(document.getElementById("myChart8"));
-myChart8.setOption(getRoseEcharts());
-myChart8.setOption({
-
-    color: ['#66ccff', '#4397f7'],
-    legend: {
-        show: true,
-        textStyle: {
-            color: '#66ccff',
-            fontSize: 8,
-        },
-        orient: 'vertical',  //布局  纵向布局
-        data: ['量产一致型号数', '量产不一致型号数'],
-        itemWidth: 10,  //图例标记的图形宽度
-        itemHeight: 2, //图例标记的图形高度
-    },
-    series: [
-        {
-            name: '',
-            type: 'pie',
-            radius: [0, '50%'],
-            center: ['50%', '55%'],
-            roseType: 'radius',
-            label: {
-                normal: {
-                    show: true,
-                    position: "inside",
-                    formatter: "{d}%"
-                },
-                emphasis: {
-                    show: true
-                }
-            },
-            lableLine: {
-                normal: {
-                    show: false
-                },
-                emphasis: {
-                    show: true
-                }
-            },
-            data: [
-                {value: 10, name: '量产一致型号数'},
-                {value: 15, name: '量产不一致型号数'}
-            ]
-        },
-    ]
-});
-
-//量产一致
-var myChart9 = echarts.init(document.getElementById("myChart9"));
-myChart9.setOption(getBarEcharts());
+myChart8.setOption(getBarEcharts());
 var bar_chip = '../img/bar_chip.png';
-var labelSetting = {
-    normal: {
-        show: false,
-        position: 'outside',
-        offset: [10, 0],
-        textStyle: {
-            fontSize: 8
-        }
-    }
-};
-myChart9.setOption({
-    textStyle:{
-        fontSize:8
-    },
-    color: ['#66ccff', '#a5fff1'],
-    legend: {
-        show: true,
-        data: ['2015年', '2016年']
+myChart8.setOption({
+    title: {
+        text: '模块质量过程检测',
+        left:'center'
     },
     grid: {
 //            show:true,
-        x: "12%",
-        x2: "15%",
-        y: '20%',
-        y2: "17%"
+        x: "25%",
+        x2: "21%",
+        y: '25%',
+        y2: "25%"
     },
     yAxis: [
         {
-            name: "数量",
-            type: 'value'
+            name: "Cpk",
+            type: 'category',
+            data: [0,0.5,1,1.5,2],
+            axisLine: { //坐标轴
+                show: false,
+                textStyle: {
+                    color: '#66ccff',
+                }
+            },
+            axisTick: {  //刻度值
+                show: false,
+            }
+        }, {
+            name: "ppm",
+            position: 'right',
+            type: 'category',
+            data: [1230,2460,3690,4920,6150],
+            axisLine: { //坐标轴
+                show: true,
+                textStyle: {
+                    color: '#66ccff',
+                }
+            },
+            axisTick: {  //刻度值
+                show: false,
+            }
         }
+
     ],
     xAxis: [
         {
-            name: "月份",
-            type: 'category',
-            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            type: 'value',
+            splitLine: {  //刻度线
+                show: true,
+                lineStyle: {
+                    color: "#234f65"
+                }
+            },
+            axisLine: { //坐标轴
+                show: false,
+                textStyle: {
+                    color: '#66ccff',
+                }
+            },
+            axisTick: {  //刻度值
+                show: false,
+            }
         }
     ],
-    series: [{
-        name: '2015',
-        type: 'pictorialBar',
-        label: labelSetting,
-        symbolRepeat: true,
-        symbolSize: ['80%', '60%'],
-        barCategoryGap: '40%',
-        data: [{
-            value: 157,
-            symbol: bar_chip
-        }, {
-            value: 21,
-            symbol: bar_chip
-        }, {
-            value: 66,
-            symbol: bar_chip
-        }, {
-            value: 78,
-            symbol: bar_chip
-        }, {
-            value: 123,
-            symbol: bar_chip
-        }, {
-            value: 157,
-            symbol: bar_chip
-        }, {
-            value: 21,
-            symbol: bar_chip
-        }, {
-            value: 66,
-            symbol: bar_chip
-        }, {
-            value: 78,
-            symbol: bar_chip
-        }, {
-            value: 123,
-            symbol: bar_chip
-        }, {
-            value: 78,
-            symbol: bar_chip
-        }, {
-            value: 123,
-            symbol: bar_chip
+    series: [
+        {
+            symbolSize: ['40%', '60%'],
+            data: [{
+                value: 134,
+                symbol: bar_chip
+            }, {
+                value: 32,
+                symbol: bar_chip
+            }, {
+                value: 2,
+                symbol: bar_chip
+            }
+            ]
         }
-        ]
-    }, {
-        name: '2016',
-        type: 'pictorialBar',
-        barGap: '10%',
-        label: labelSetting,
-        symbolRepeat: true,
-        symbolSize: ['80%', '60%'],
-        data: [{
-            value: 184,
-            symbol: bar_chip
-        }, {
-            value: 29,
-            symbol: bar_chip
-        }, {
-            value: 73,
-            symbol: bar_chip
-        }, {
-            value: 91,
-            symbol: bar_chip
-        }, {
-            value: 95,
-            symbol: bar_chip
-        }, {
-            value: 78,
-            symbol: bar_chip
-        }, {
-            value: 123,
-            symbol: bar_chip
-        }, {
-            value: 78,
-            symbol: bar_chip
-        }, {
-            value: 123,
-            symbol: bar_chip
-        }, {
-            value: 78,
-            symbol: bar_chip
-        }, {
-            value: 123,
-            symbol: bar_chip
-        }, {
-            value: 78,
-            symbol: bar_chip
+    ]
+});
+
+
+//Xbar控制图
+var myChart9 = echarts.init(document.getElementById("myChart9"));
+myChart9.setOption(getLineEcharts());
+myChart9.setOption({
+    title: {
+        text: 'Xbar 控制图',
+        left:'center'
+    },
+    grid: {
+        right: 43,
+        bottom: 30,
+        left: 38,
+        top:30
+    },
+    yAxis:{
+        name:'样本均值',
+        max:100
+    },
+    xAxis: [
+        {
+            name:"时间",
+            data: [1,2,3,4,5,6,7,8,9,10,11,12]
         }
-        ]
-    }]
+    ],
+    series: [
+        {
+            type: 'line',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
+//            areaStyle: {normal: {}},
+            data: [30, 32, 25, 34, 45, 30, 40, 23,34,46,34,13]
+        }
+    ]
+
+});
+
+
+//能力直方图
+var myChart10 = echarts.init(document.getElementById("myChart10"));
+myChart10.setOption(getLineAndBar());
+myChart10.setOption({
+    title: {
+        text: '能力直方图',
+        left:'center'
+    },
+    color: ['#00e673','#66ccff'],
+    grid: {
+        right: 13,
+        bottom: 30,
+        left: 38,
+        top:30
+    },
+    legend: {
+        show:false,
+        data:['数量','均值']
+    },
+    // yAxis:{
+    //     axisLabel: {
+    //         show:false,
+    //     },
+    // },
+    xAxis: [
+        {
+            data: [1,2,3,4,5,6,7,8,9,10,11,12]
+        }
+    ],
+    series: [
+        {
+            name:'均值',
+            type: 'line',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
+//            areaStyle: {normal: {}},
+            data: [68, 132, 95, 84, 45, 30, 90, 65,34,46,34,94]
+        },
+        {
+            name:'数量',
+            type: 'bar',
+
+//            areaStyle: {normal: {}},
+            data: [30, 32, 25, 34, 45, 30, 40, 23,34,46,34,13]
+        }
+    ]
+
 });
 
 
@@ -909,7 +893,7 @@ myChart11.setOption({
         show: true,
         textStyle: {
             color: '#66ccff',
-            fontSize: 8,
+            fontSize: 10,
         },
         orient: 'vertical',  //布局  纵向布局
         data: ['共产一致型号数', '共产不一致型号数'],
@@ -951,11 +935,18 @@ myChart11.setOption({
 
 //共产一致
 var myChart12 = echarts.init(document.getElementById("myChart12"));
+var labelSetting = {
+    normal: {
+        show: false,
+        position: 'outside',
+        offset: [10, 0],
+        textStyle: {
+            fontSize: 8
+        }
+    }
+};
 myChart12.setOption(getBarEcharts());
 myChart12.setOption({
-    textStyle:{
-        fontSize:8
-    },
     color: ['#66ccff', '#a5fff1'],
     legend: {
         show: true,
@@ -966,7 +957,7 @@ myChart12.setOption({
         x: "12%",
         x2: "15%",
         y: '20%',
-        y2: "17%"
+        y2: "20%"
     },
     yAxis: [
         {
@@ -1711,25 +1702,18 @@ myChart22.setOption({
         {
             type: 'category',
             data: ["本科", "研究生", "其他"],
+            boundaryGap: false,
             axisLabel: {
                 textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
+                    fontSize:9
                 }
             },
-            axisLine: {
-                show: true,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
-            boundaryGap: false
 
         }
     ],
     grid: {
-        x: '50%',
-        y: '15%',
+        x: '10%',
+        y: '20%',
         y2: "45%"
     },
     series: [
@@ -1750,7 +1734,7 @@ myChart22.setOption({
                         position: 'top',
                         // formatter: "{a}%",
                         textStyle: {
-                            fontSize: '60%',
+                            fontSize: 10,
                             color: "white"
                         },
                         formatter: '{c}%'
@@ -1779,24 +1763,18 @@ myChart23.setOption({
         {
             type: 'category',
             data: ["3年以下", "3-8年", "8-15年", "15年以上"],
+            boundaryGap: false,
             axisLabel: {
                 textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
+                    fontSize:9
                 }
             },
-            axisLine: {
-                show: true,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
-            boundaryGap: false
         }
     ],
     grid: {
-        x: '30%',
-        y: '15%',
+        x: '15%',
+        x2:'15%',
+        y: '19%',
         y2: "45%"
     },
     series: [
@@ -1817,7 +1795,7 @@ myChart23.setOption({
                         position: 'top',
                         // formatter: "{a}%",
                         textStyle: {
-                            fontSize: '60%',
+                            fontSize: 10,
                             color: "white"
                         },
                         formatter: '{c}%'
@@ -1847,25 +1825,18 @@ myChart24.setOption({
         {
             type: 'category',
             data: ["检测权限", "批准权限", "审核权限", "出具报告权限"],
+            boundaryGap: false,
             axisLabel: {
                 textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%",
-                },
-                // rotate:30
-            },
-            axisLine: {
-                show: true,
-                lineStyle: {
-                    color: "#66ccff"
+                    fontSize:9
                 }
             },
-            boundaryGap: false,
         }
     ],
     grid: {
-        x: '30%',
-        y: '15%',
+        x: '15%',
+        x2:'15%',
+        y: '20%',
         y2: "45%"
     },
     series: [
@@ -1886,7 +1857,7 @@ myChart24.setOption({
                         position: 'top',
                         // formatter: "{a}%",
                         textStyle: {
-                            fontSize: '60%',
+                            fontSize: 10,
                             color: "white"
                         },
                         formatter: '{c}%'
@@ -1909,9 +1880,9 @@ var data = [
 ];
 myChart25.setOption({
     grid: {
-        right: 0,
+        right: 45,
         bottom: 25,
-        left: 40,
+        left: 50,
         top:0
     },
 
@@ -1929,7 +1900,7 @@ myChart25.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:8
+                fontSize:12
             }
         },
         axisTick: {
@@ -1954,7 +1925,7 @@ myChart25.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:8
+                fontSize:12
             }
         },
         axisTick: {
@@ -2076,10 +2047,9 @@ var data = [
     [['15年以上','冰冷',333,1999],['15年以上','洗涤',163,1999],['15年以上','家空',214,1999],['15年以上','商空',128,1999],['15年以上','热水器',224,1999],['15年以上','厨电',446,1999],['15年以上','其他',446,1999]]
 
 ];
-
 myChart26.setOption({
     grid: {
-        right: 10,
+        right: 35,
         bottom: 10,
         left: 0,
         top:0
@@ -2099,7 +2069,7 @@ myChart26.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:8
+                fontSize:12
             }
         },
         axisTick: {
@@ -2124,7 +2094,7 @@ myChart26.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:8
+                fontSize:12
             }
         },
         axisTick: {
@@ -2279,10 +2249,9 @@ var data = [
     [['批准报告权限','冰冷',333,1999],['批准报告权限','洗涤',163,1999],['批准报告权限','家空',214,1999],['批准报告权限','商空',128,1999],['批准报告权限','热水器',224,1999],['批准报告权限','厨电',446,1999],['批准报告权限','其他',446,1999]]
 
 ];
-
 myChart27.setOption({
     grid: {
-        right: 10,
+        right: 35,
         bottom: 10,
         left: 0,
         top:0
@@ -2302,7 +2271,7 @@ myChart27.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:8
+                fontSize:12
             }
         },
         axisTick: {
@@ -2327,7 +2296,7 @@ myChart27.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:8
+                fontSize:12
             }
         },
         axisTick: {
@@ -2471,6 +2440,7 @@ myChart27.setOption({
         }
     ]
 });
+
 //标准状态 国际标准
 var myChart28 = echarts.init(document.getElementById("myChart28"));
 myChart28.setOption(getRadarEcharts());
@@ -2481,7 +2451,7 @@ myChart28.setOption({
         top: 'center',
         textStyle: {
             color: '#fff',
-            fontSize: '70%',
+            fontSize: 12,
         }
     },
     polar: [
@@ -2496,17 +2466,17 @@ myChart28.setOption({
                 {text: '其他:1233', max: 6500},
             ],
             center: ['50%', '55%'],
-            radius: '65%',
+            radius: '58%',
             name: {
                 formatter: '{value}',
                 textStyle: {
                     color: '#66ccff',
-                    fontSize: 1.5,
+                    fontSize: 10,
                 }
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {
@@ -2555,7 +2525,7 @@ myChart29.setOption({
         top: 'center',
         textStyle: {
             color: '#fff',
-            fontSize: '70%',
+            fontSize: 12,
         }
     },
     polar: [
@@ -2570,17 +2540,17 @@ myChart29.setOption({
                 {text: '其他:1233', max: 6500},
             ],
             center: ['50%', '55%'],
-            radius: '65%',
+            radius: '58%',
             name: {
                 formatter: '{value}',
                 textStyle: {
                     color: '#66ccff',
-                    fontSize: 1.5,
+                    fontSize: 10,
                 }
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {
@@ -2629,7 +2599,7 @@ myChart30.setOption({
         top: 'center',
         textStyle: {
             color: '#fff',
-            fontSize: '70%',
+            fontSize: 12,
         }
     },
     polar: [
@@ -2644,17 +2614,17 @@ myChart30.setOption({
                 {text: '其他:1233', max: 6500},
             ],
             center: ['50%', '55%'],
-            radius: '65%',
+            radius: '58%',
             name: {
                 formatter: '{value}',
                 textStyle: {
                     color: '#66ccff',
-                    fontSize: 1.5,
+                    fontSize: 10,
                 }
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {
@@ -2703,7 +2673,7 @@ myChart31.setOption({
         top: 'center',
         textStyle: {
             color: '#fff',
-            fontSize: '70%',
+            fontSize: 12,
         }
     },
     polar: [
@@ -2718,17 +2688,17 @@ myChart31.setOption({
                 {text: '其他:1233', max: 6500},
             ],
             center: ['50%', '55%'],
-            radius: '65%',
+            radius: '58%',
             name: {
                 formatter: '{value}',
                 textStyle: {
                     color: '#66ccff',
-                    fontSize: 1.5,
+                    fontSize:10,
                 }
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {
@@ -2775,25 +2745,12 @@ myChart32.setOption({
         {
             type: 'category',
             data: ["完全具备", "部分具备", "完全不具备"],
-            splitLine: {  //刻度线
-                show: false
-            },
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
             axisLine: {
                 show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
             },
             axisTick: {
-                show: false,
-
-            },
+                show: false
+            }
 
         }
     ],
@@ -2801,23 +2758,11 @@ myChart32.setOption({
         {
             show: false,
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             boundaryGap: false,
         }
     ],
     grid: {
-        x: '45%',
+        x: '53%',
         y: '0%',
         y2: "0%"
     },
@@ -2825,14 +2770,14 @@ myChart32.setOption({
         {
             type: "bar",
             data: [11, 23, 12],
-            barWidth: 3,
+            barWidth: 8,
             label: {
                 normal: {
                     show: true,
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: '60%',
+                        fontSize: 10,
                         color: "#ff9933"
                     },
                     formatter: '{c}'
@@ -2850,44 +2795,18 @@ myChart33.setOption({
         {
             type: 'category',
             data: [],
-            splitLine: {  //刻度线
-                show: false
-            },
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
             axisLine: {
                 show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
             },
             axisTick: {
-                show: false,
-
-            },
-
+                show: false
+            }
         }
     ],
     xAxis: [
         {
             show: false,
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             boundaryGap: false,
         }
     ],
@@ -2900,14 +2819,14 @@ myChart33.setOption({
         {
             type: "bar",
             data: [11, 23, 12],
-            barWidth: 3,
+            barWidth: 8,
             label: {
                 normal: {
                     show: true,
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: '60%',
+                        fontSize: 10,
                         color: "#ff9933"
                     },
                     formatter: '{c}'
@@ -2925,44 +2844,18 @@ myChart34.setOption({
         {
             type: 'category',
             data: [],
-            splitLine: {  //刻度线
-                show: false
-            },
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
             axisLine: {
                 show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
             },
             axisTick: {
-                show: false,
-
-            },
-
+                show: false
+            }
         }
     ],
     xAxis: [
         {
             show: false,
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             boundaryGap: false,
         }
     ],
@@ -2975,14 +2868,14 @@ myChart34.setOption({
         {
             type: "bar",
             data: [11, 23, 12],
-            barWidth: 3,
+            barWidth: 8,
             label: {
                 normal: {
                     show: true,
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: '60%',
+                        fontSize: 10,
                         color: "#ff9933"
                     },
                     formatter: '{c}'
@@ -3000,44 +2893,18 @@ myChart35.setOption({
         {
             type: 'category',
             data: [],
-            splitLine: {  //刻度线
-                show: false
-            },
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
             axisLine: {
                 show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
             },
             axisTick: {
-                show: false,
-
-            },
-
+                show: false
+            }
         }
     ],
     xAxis: [
         {
             show: false,
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             boundaryGap: false,
         }
     ],
@@ -3050,14 +2917,14 @@ myChart35.setOption({
         {
             type: "bar",
             data: [11, 23, 12],
-            barWidth: 3,
+            barWidth: 8,
             label: {
                 normal: {
                     show: true,
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: '60%',
+                        fontSize: 10,
                         color: "#ff9933"
                     },
                     formatter: '{c}'
@@ -3075,44 +2942,18 @@ myChart36.setOption({
         {
             type: 'category',
             data: [],
-            splitLine: {  //刻度线
-                show: false
-            },
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
             axisLine: {
                 show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
             },
             axisTick: {
-                show: false,
-
-            },
-
+                show: false
+            }
         }
     ],
     xAxis: [
         {
             show: false,
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             boundaryGap: false,
         }
     ],
@@ -3125,14 +2966,14 @@ myChart36.setOption({
         {
             type: "bar",
             data: [11, 23, 12],
-            barWidth: 3,
+            barWidth: 8,
             label: {
                 normal: {
                     show: true,
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: '60%',
+                        fontSize: 10,
                         color: "#ff9933"
                     },
                     formatter: '{c}'
@@ -3150,44 +2991,18 @@ myChart37.setOption({
         {
             type: 'category',
             data: [],
-            splitLine: {  //刻度线
-                show: false
-            },
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
             axisLine: {
                 show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
             },
             axisTick: {
-                show: false,
-
-            },
-
+                show: false
+            }
         }
     ],
     xAxis: [
         {
             show: false,
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             boundaryGap: false,
         }
     ],
@@ -3200,14 +3015,14 @@ myChart37.setOption({
         {
             type: "bar",
             data: [11, 23, 12],
-            barWidth: 3,
+            barWidth: 8,
             label: {
                 normal: {
                     show: true,
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: '60%',
+                        fontSize: 10,
                         color: "#ff9933"
                     },
                     formatter: '{c}'
@@ -3225,44 +3040,18 @@ myChart38.setOption({
         {
             type: 'category',
             data: [],
-            splitLine: {  //刻度线
-                show: false
-            },
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
             axisLine: {
                 show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
             },
             axisTick: {
-                show: false,
-
-            },
-
+                show: false
+            }
         }
     ],
     xAxis: [
         {
             show: false,
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             boundaryGap: false,
         }
     ],
@@ -3275,14 +3064,14 @@ myChart38.setOption({
         {
             type: "bar",
             data: [11, 23, 12],
-            barWidth: 3,
+            barWidth: 8,
             label: {
                 normal: {
                     show: true,
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: '60%',
+                        fontSize: 10,
                         color: "#ff9933"
                     },
                     formatter: '{c}'
@@ -3331,7 +3120,7 @@ myChart39.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%',
+                fontSize: 12,
 
             },
             // rotate:30,
@@ -3359,7 +3148,7 @@ myChart39.setOption({
             show: true,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%'
+                fontSize: 12
             }
         },
         axisTick: {  //刻度值
@@ -3411,7 +3200,7 @@ myChart40.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%'
+                fontSize: 12
             }
         },
         axisTick: {
@@ -3438,7 +3227,7 @@ myChart40.setOption({
             show: false,
             textStyle: {
                 color: '#66ccff',
-                fontSize: '80%'
+                fontSize: 12
             }
         },
         axisTick: {  //刻度值
@@ -3455,15 +3244,9 @@ myChart40.setOption({
 var myChart41 = echarts.init(document.getElementById("myChart41"));
 myChart41.setOption(getAreaEcharts());
 myChart41.setOption({
-    textStyle: {
-        fontSize: 8
-    },
     legend: {
         show: true,
         data: ['整机', '模块'],
-        textStyle: {
-            fontSize: 8
-        },
         itemWidth: 6, //图例标记的图形宽度
         itemHeight: 6 //图例标记的图形高度
     },
@@ -3493,7 +3276,13 @@ myChart41.setOption({
                 normal: {
                     color: "#66ccff"
                 }
-            }
+            },
+            symbolSize:2,
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
 
         }
     ]
@@ -3505,15 +3294,9 @@ myChart41.setOption({
 var myChart42 = echarts.init(document.getElementById("myChart42"));
 myChart42.setOption(getAreaEcharts());
 myChart42.setOption({
-    textStyle: {
-        fontSize: 8
-    },
     legend: {
         show: true,
         data: ['整机', '模块'],
-        textStyle: {
-            fontSize: 8
-        },
         itemWidth: 6,  //图例标记的图形宽度
         itemHeight: 6 //图例标记的图形高度
     },
@@ -3543,7 +3326,13 @@ myChart42.setOption({
                 normal: {
                     color: "#00e673"
                 }
-            }
+            },
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
         }
     ]
 
@@ -3555,6 +3344,11 @@ var myChart43 = echarts.init(document.getElementById("myChart43"));
 myChart43.setOption(getCenterPie());
 myChart43.setOption({
     color: ['#66ccff', '#00aaff', '#0060ff', '#66ffcc', '#01da92', '#00a870', '#006644'],
+    legend:{
+        data:['冰冷','洗涤','家空','商空','热水器','厨电','其他'],
+        orient :' vertical',  //布局  纵向布局
+
+    },
     series: [
         {
             name: '问题闭环率',
@@ -3701,6 +3495,11 @@ var myChart44 = echarts.init(document.getElementById("myChart44"));
 myChart44.setOption(getCenterPie());
 myChart44.setOption({
     color: ['#66ccff', '#00aaff', '#0060ff', '#66ffcc', '#01da92', '#00a870', '#006644'],
+    legend:{
+        data:['冰冷','洗涤','家空','商空','热水器','厨电','其他'],
+        orient :' vertical',  //布局  纵向布局
+
+    },
     series: [
         {
             name: '问题闭环率',
@@ -3877,12 +3676,12 @@ myChart45.setOption({
                 formatter: '{value}',
                 textStyle: {
                     color: '#66ccff',
-                    fontSize: 1.5,
+                    fontSize: 10,
                 }
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {
@@ -3935,24 +3734,20 @@ myChart45.setOption({
 
 //数据结果 订单及时率 折线图
 var myChart46 = echarts.init(document.getElementById("myChart46"));
-myChart46.setOption(getAreaEcharts());
+myChart46.setOption(getLineEcharts());
 myChart46.setOption({
     color: ['#66ccff', '#00e673', '#4397f7', '#ff9933', '#66ffcc', '#ffff99', '#ff6666'],
-    textStyle: {
-        fontSize: 8
-    },
     legend: {
         show: true,
         data: ['冰冷', '洗涤', '家空', '商空', '热水器', '厨电', '其他'],
-        textStyle: {
-            fontSize: 8
-        },
         itemWidth: 2,  //图例标记的图形宽度
         itemHeight: 3, //图例标记的图形高度
     },
     grid: {
-        x: 5,
-        y: 28
+        x: "15%",
+        x2: "10%",
+        y: '25%',
+        y2: "10%"
     },
     xAxis: [
         {
@@ -3970,6 +3765,12 @@ myChart46.setOption({
             name: '冰冷',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [120, 332, 101, 234, 190, 230, 230, 123, 311, 212, 153, 241],
 
@@ -3978,6 +3779,12 @@ myChart46.setOption({
             name: '洗涤',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [220, 132, 131, 234, 390, 130, 210, 341, 241, 411, 243, 223],
 
@@ -3986,6 +3793,12 @@ myChart46.setOption({
             name: '家空',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [120, 132, 161, 34, 190, 230, 310, 223, 312, 341, 431, 123],
 
@@ -3994,6 +3807,12 @@ myChart46.setOption({
             name: '商空',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [220, 142, 171, 234, 290, 260, 110, 312, 313, 454, 223, 213],
 
@@ -4002,6 +3821,12 @@ myChart46.setOption({
             name: '热水器',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [120, 232, 101, 434, 90, 130, 210, 532, 231, 456, 311, 234],
 
@@ -4010,6 +3835,12 @@ myChart46.setOption({
             name: '厨电',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [90, 139, 141, 184, 290, 230, 310, 312, 431, 412, 313, 451],
 
@@ -4018,6 +3849,12 @@ myChart46.setOption({
             name: '其他',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [120, 132, 101, 134, 390, 30, 110, 313, 534, 123, 411, 311],
 
@@ -4037,12 +3874,6 @@ myChart47.setOption({
             splitLine: {  //刻度线
                 show: false
             },
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
             axisLine: {
                 show: false,
                 lineStyle: {
@@ -4060,18 +3891,6 @@ myChart47.setOption({
         {
             show: false,
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             boundaryGap: false,
         }
     ],
@@ -4091,7 +3910,7 @@ myChart47.setOption({
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: '60%',
+                        fontSize: 10,
                         color: "#ff9933"
                     },
                     formatter: '{c}%'
@@ -4113,18 +3932,6 @@ myChart48.setOption({
             splitLine: {  //刻度线
                 show: false
             },
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             axisTick: {
                 show: false,
 
@@ -4136,18 +3943,6 @@ myChart48.setOption({
         {
             show: false,
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    color: "#66ccff",
-                    fontSize: "60%"
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#66ccff"
-                }
-            },
             boundaryGap: false,
         }
     ],
@@ -4168,7 +3963,7 @@ myChart48.setOption({
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: '60%',
+                        fontSize: 10,
                         color: "#ff9933"
                     },
                     formatter: '{c}%'
@@ -4185,24 +3980,20 @@ myChart48.setOption({
 
 //数据结果 检测满意度 折线图
 var myChart49 = echarts.init(document.getElementById("myChart49"));
-myChart49.setOption(getAreaEcharts());
+myChart49.setOption(getLineEcharts());
 myChart49.setOption({
     color: ['#66ccff', '#00e673', '#4397f7', '#ff9933', '#66ffcc', '#ffff99', '#ff6666'],
-    textStyle: {
-        fontSize: 8
-    },
     legend: {
         show: true,
         data: ['冰冷', '洗涤', '家空', '商空', '热水器', '厨电', '其他'],
-        textStyle: {
-            fontSize: 8
-        },
         itemWidth: 2,  //图例标记的图形宽度
         itemHeight: 3 //图例标记的图形高度
     },
     grid: {
-        x: 5,
-        y: 28
+        x: "15%",
+        x2: "10%",
+        y: '25%',
+        y2: "10%"
     },
     xAxis: [
         {
@@ -4220,6 +4011,12 @@ myChart49.setOption({
             name: '冰冷',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [120, 332, 101, 234, 190, 230, 230, 123, 311, 212, 153, 241],
 
@@ -4228,6 +4025,12 @@ myChart49.setOption({
             name: '洗涤',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [220, 132, 131, 234, 390, 130, 210, 341, 241, 411, 243, 223],
 
@@ -4236,6 +4039,12 @@ myChart49.setOption({
             name: '家空',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [120, 132, 161, 34, 190, 230, 310, 223, 312, 341, 431, 123],
 
@@ -4244,6 +4053,12 @@ myChart49.setOption({
             name: '商空',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [220, 142, 171, 234, 290, 260, 110, 312, 313, 454, 223, 213],
 
@@ -4252,6 +4067,12 @@ myChart49.setOption({
             name: '热水器',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [120, 232, 101, 434, 90, 130, 210, 532, 231, 456, 311, 234],
 
@@ -4260,6 +4081,12 @@ myChart49.setOption({
             name: '厨电',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [90, 139, 141, 184, 290, 230, 310, 312, 431, 412, 313, 451],
 
@@ -4268,6 +4095,12 @@ myChart49.setOption({
             name: '其他',
             type: 'line',
             stack: '总量',
+            lineStyle:{
+                normal:{
+                    width:1
+                }
+            },
+            symbolSize:2,
             // areaStyle: {normal: {}},
             data: [120, 132, 101, 134, 390, 30, 110, 313, 534, 123, 411, 311],
 
