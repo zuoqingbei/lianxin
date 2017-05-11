@@ -14,9 +14,9 @@
                     <div class="sphere-left-top">
                         <div class="chartBorder">
                             <h3>覆盖区域</h3>
-                            <h4 class="noBG"><strong>5</strong>大洲
-                                <strong>18</strong>个国家
-                                <strong>27</strong>工业园区
+                            <h4 class="noBG"><strong id="area_num">0</strong>大洲
+                                <strong id="country_num">0</strong>个国家
+                                <strong id="belong_num">0</strong>工业园区
                             </h4>
                             <div class="myChart"></div>
                         </div>
@@ -127,7 +127,7 @@
                         </div>
                         <div class="flat-right-top">
                             <div class="chartBorder">
-                                <h3>覆盖专业能力：6</h3>
+                                <h3 id="properties_code_div">覆盖专业能力：0</h3>
                                 <div class="myChart">
                                     <!--<img src="${contextPath!}/static/img/flatRT.png">-->
                                 </div>
@@ -153,7 +153,7 @@
                             </ul>
                             <ul class="line">
                                 ##for(type in productLine){
-                                <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.short_name!}</a>
+                                <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.name!}</a>
                                 </li>
                                 ##}
                                 <!--<li  ><a href=""><span class="icon"></span>其它</a> </li>-->
@@ -161,13 +161,13 @@
                         </div>
 
                         <ul class="legend-bottom">
-                            <li class="active"><a href=""><span class="icon"></span> 中心实验室</a></li>
-                            <li><a href=""><span class="icon"></span> 冰冷</a></li>
-                            <li><a href=""><span class="icon"></span> 洗涤</a></li>
-                            <li><a href=""><span class="icon"></span> 家空</a></li>
-                            <li><a href=""><span class="icon"></span> 商空</a></li>
-                            <li><a href=""><span class="icon"></span> 热水器</a></li>
-                            <li><a href=""><span class="icon"></span> 厨电</a></li>
+                        	 ##for(type in productLine){
+                        	 		##if(typeLP.index==0){
+                        	 			<li class="active"><a href=""><span class="icon"></span> ${type.name!}</a></li>
+                        	 		##}else{
+                        	 			<li><a href=""><span class="icon"></span> ${type.name!}</a></li>
+                        	 		##}
+                        	  ##}
                         </ul>
                     </div>
                 </div>

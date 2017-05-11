@@ -4,66 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>测试</title>
 <style>
-p{color:red;font-size: 16px}
 </style>
 </head>
 <body>
-	 <p>实验室总数</p>
-	<div>实验室总数：<span id="lab_all_count"></span></div> 
-	<!-- 根据产线维度统计实验室数量 -->
-	<p> 根据产线维度统计实验室数量 </p>
-	<div>
-		<ul id="pro_line">
-		</ul>
-	</div>
-	<!-- 实验室区域数量统计：大洲 国家 -->
-	<p>实验室区域数量统计：大洲 国家</p>
-	<div>实验室分布<span id="area_num"></span>大洲，<span id="country_num"></span>国家</div>
-	<!-- 按照实验室四大类统计数量 -->
-	<p>按照实验室四大类统计数量 </p>
-	<div>
-		<ul id="lab_type_statis">
-		</ul>
-	</div>
+
 	
-	<!-- 按照实验室实验室性质统计数量 -->
-	<p>按照实验室实验室性质统计数量</p>
-	<div>
-		<ul id="properties_code_statis">
-		</ul>
-	</div>
-	
-	<!-- 按照实验室生命周期（可开展实验）统计数量 -->
-	<p>按照实验室生命周期（可开展实验）统计数量</p>
-	<div>
-		<ul id="kz_lab_code_statis">
-		</ul>
-	</div>
-	
-	<!-- 实验室联通数据统计-->
-	<p>实验室联通数据统计</p>
-	<div>
-		<div>实验室总数：<span id="link_lab_all_count"></span></div> 
-		<div>已联通总数：<span id="linked_status_num"></span></div> 
-		<div>联通率：<span id="link_status_rate"></span></div> 
-	</div>
+	<iframe id="iframe" src="http://10.130.96.27/doc/page/login.asp"></iframe>
 </body>
 </html>
 
 <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
-<script src="${contextPath!}/static/js/statistics.js?random=2"></script>
 <script>
 var contextPath='${contextPath!}';
 //产线维度实验室数量统计
 $(document).ready(function () {
-	labNumStatis();
-	labAreaSpread();
-	
-	proLineStatis();
-	labTypeStatis();
-	labPropertiesStatis();
-	labLifeCycleStatis();
-	labLinkStatis();
+	$("#iframe").contents().find("#username").val("admin");
+	$("#iframe").contents().find("#password").val("ss567890");
+	$("#iframe").contents().find(".login-btn").trigger("click");
+	//window.frames["iframe_ID"].document.getElementById("username").val("admin");
 });
 </script>
 ##}

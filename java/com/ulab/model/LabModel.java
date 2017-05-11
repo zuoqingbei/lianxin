@@ -73,6 +73,10 @@ public class LabModel extends Model<LabModel> {
 		sb.append("  (select nvl(count(distinct  lab.country),0) as countrynum from t_b_lab_info lab where lab.del_flag="
 				+ Constants.DEL_FALG  + ")t ");
 		sb.append("  on 1=1 ");
+		sb.append("  left join  ");
+		sb.append("  (select nvl(count(distinct  lab.belong_gl_code),0) as belongnum from t_b_lab_info lab where lab.del_flag="
+				+ Constants.DEL_FALG  + ")t2 ");
+		sb.append("  on 1=1 ");
 		return Db.findFirst(sb.toString());
 	}
 
