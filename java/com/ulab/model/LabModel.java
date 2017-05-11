@@ -101,7 +101,7 @@ public class LabModel extends Model<LabModel> {
 				+ " is not null " + sqlWhere
 				+ " group by d.name,d.short_name,d .order_no,d.id order by d.order_no  "+sort);
 		List<Record> list=Db.find(sb.toString());
-		if(Constants.MONI_JOIN_TIYAN&&"properties_code".equals(field)){
+		/*if(Constants.MONI_JOIN_TIYAN&&"properties_code".equals(field)){
 			//如果统计实验室性质，需要对用户体验与用户模拟做合并处理
 			for(Record obj:list){
 				if(Constants.EXPERIENCE_ID.equals(obj.get("id"))||Constants.SIMULATION_ID.equals(obj.get("id"))){
@@ -124,7 +124,8 @@ public class LabModel extends Model<LabModel> {
 			return list;
 		}else{
 			return list;
-		}
+		}*/
+		return list;
 	}
 
 	/**

@@ -19,6 +19,7 @@ function reloadLeftData(){
 	labLifeCycleStatis();
 	//labCarouselInfo();
 	worldLabTypeStatis();
+	//专业领域
 }
 function reloadLeftData2(){
    //产线维度实验室数量统计
@@ -91,7 +92,6 @@ function worldTyleEchart(data){
 	            },
 	            textStyle: {
 	                fontSize:bodyScale*13,
-	                // fontSize:10,
 	                color: "#f90",
 	                baseline: 'bottom'
 	            }
@@ -122,8 +122,8 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-	                fontSize: bodyScale*7,
-	                // fontSize: 6.666666666666,
+// 	                fontSize: bodyScale*7,
+	                fontSize: 6.666666666666,
 	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
                     baseline: 'top'
 	            }
@@ -374,7 +374,7 @@ function labLifeCycleStatis(){
 		myChartFlatLB.resize();
 		myChartFlatLB.clear();
 		myChartFlatLB.setOption(getAreaEcharts());
-		var colors = ['#ff9', '#66ccff'];
+		var colors = ['#00e673', '#66ccff'];
 		console.log(statisticLengend(data))
 	    myChartFlatLB.setOption({
 	        tooltip: {
@@ -386,8 +386,7 @@ function labLifeCycleStatis(){
 	        grid: {
 	            left:"10%",
 	            right: '10%',
-	            top:"18%",
-				bottom:"15%"
+	            top:"15%"
 	        },
 	        legend: {
 	        	   data:['实验室数量','检测订单量'],
@@ -406,8 +405,7 @@ function labLifeCycleStatis(){
 	                },
 	                axisLabel: {
 	                    textStyle: {
-	                        fontSize: bodyScale*6
-	                        // fontSize: 10
+	                        fontSize: bodyScale*4
 	                    }
 	                },
 	                splitLine: {  //刻度线
@@ -421,7 +419,7 @@ function labLifeCycleStatis(){
 	        yAxis: [
 	            {
 	            	type: 'value',
-	            	name: '',
+	            	//name: '实验室数量',
 	                min: 0,
 	                max: 500,
 	                axisLine: {
@@ -432,8 +430,7 @@ function labLifeCycleStatis(){
 	                },
 	                axisLabel: {
 	                    textStyle: {
-	                        // fontSize: bodyScale*5
-	                        fontSize: 10
+	                        fontSize: bodyScale*5
 	                    }
 	                    // formatter: '{value} ml'
 	                },
@@ -445,7 +442,7 @@ function labLifeCycleStatis(){
 	                }
 	            },{
 	            	 type: 'value',
-	                 name: '',
+	                 //name: '检测订单量',
 	                 min: 0,
 	                 max: 500,
 	                 position: 'right',
@@ -457,8 +454,7 @@ function labLifeCycleStatis(){
 	                 },
 	                 axisLabel: {
 	                     textStyle: {
-	                         // fontSize: bodyScale*5
-	                         fontSize: 10
+	                         fontSize: bodyScale*5
 	                     }
 	                     // formatter: '{value} ml'
 	                 },
@@ -476,21 +472,9 @@ function labLifeCycleStatis(){
 	                max: 500,
 	                lineStyle:{
 	        			normal:{
-	        				width:1
+	        				width:0.5
 						}
 					},
-                    symbolSize:2,
-                    itemStyle:{
-                        normal: {
-                            color:"#6cf"
-                        },
-                        emphasis:{
-                            symbolSize:5,
-							color: 'rgba(0,0,0,0)',
-                            borderColor:"rgba(255,255,255,0.6)",
-                            borderWidth:1.5
-						}
-                    },
 	                areaStyle: {
 	                    normal: {
 	                        color: {
@@ -518,22 +502,10 @@ function labLifeCycleStatis(){
 	                data:[26, 59, 90, 120, 126, 150, 175,220,230],
                     lineStyle:{
                         normal:{
-                            width:1
+                            width:0.5
                         }
                     },
-                    symbolSize:2,
-                    itemStyle:{
-                        normal: {
-                            color:"#ff9"
-                        },
-                        emphasis:{
-                            color: 'rgba(0,0,0,0)',
-                            // borderColor:"rgba(255,255,255,0.6)",
-                            borderWidth:1.5
-                        }
-                    },
-
-                    areaStyle: {
+	                areaStyle: {
 	                    normal: {
 	                        color: {
 	                            type: 'linear',
