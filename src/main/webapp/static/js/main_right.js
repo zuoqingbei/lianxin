@@ -462,98 +462,63 @@ var myChart4 = echarts.init(document.getElementById("myChart4"));
 myChart4.setOption(getCenterPie());
 var dataStyle = {
     normal: {
-        label: {
-            normal: {
-                show:true,
-                textStyle: {
-                    color: '#66ccff',
-                    fontSize:12
-                },
-                formatter: "{a}:{d}%",
-            }
-        },
-        labelLine: {
-            normal: {
-                show: false,
-                lineStyle: {
-                    color: 'gray'
-                },
-                smooth: 0.2,
-                length: 1,
-                length2: 2
-            }
-        },
+        label: {show:false},
+        labelLine: {show:false}
     }
 };
 var placeHolderStyle = {
-    normal: {
+    normal : {
         color: 'rgba(0,0,0,0)',
-        label: {
-            normal: {
-                show:true,
-                textStyle: {
-                    color: '#66ccff',
-                    fontSize:12
-                },
-                formatter: "{a}:{d}%",
-            }
-        },
-        labelLine: {
-            normal: {
-                show: true,
-                lineStyle: {
-                    color: 'gray'
-                },
-                smooth: 0.2,
-                length: 1,
-                length2: 2
-            }
-        },
+        label: {show:false},
+        labelLine: {show:false}
     },
-    emphasis: {
+    emphasis : {
         color: 'rgba(0,0,0,0)'
     }
 };
 myChart4.setOption({
+    legend:{
+        data:['整机','模块']
+    },
     textStyle:{
         fontSize:12
     },
     color: ['#4397f7', '#66ccff'],
     series: [
         {
-            name: '一次合格率',
+            name: '整机',
             type: 'pie',
             clockWise: false,
             radius: ['50%', '60%'],
             itemStyle: dataStyle,
             data: [
                 {
-                    value: 68,
-                    name: '整机:32%',
+                    value: 2,
+                    name: '整机:2%',
                     itemStyle: placeHolderStyle
                 },
                 {
-                    value: 32,
-                    name: '整机:32%',
+                    value: 98,
+                    name: '整机:98%',
                     // itemStyle: placeHolderStyle
                 }
             ]
         },
         {
-            name: '一次合格率',
+            name: '模块',
             type: 'pie',
             clockWise: false,
             radius: ['40%', '50%'],
             itemStyle: dataStyle,
             data: [
                 {
-                    value: 29,
-                    name: '模块:71%',
+                    value: 5,
+                    name: '模块:5%',
                     itemStyle: placeHolderStyle
                 },
                 {
-                    value: 71,
-                    name: '模块:71%',
+                    value: 95,
+                    name: '模块:95%',
                     // itemStyle: placeHolderStyle
                 }
             ]
@@ -566,45 +531,48 @@ myChart4.setOption({
 var myChart5 = echarts.init(document.getElementById("myChart5"));
 myChart5.setOption(getCenterPie());
 myChart5.setOption({
-    // textStyle:{
-    //     fontSize:8
-    // },
+    legend:{
+        data:['整机','模块']
+    },
+    textStyle:{
+        fontSize:12
+    },
     color: ['#4397f7', '#66ccff'],
     series: [
         {
-            name: '问题闭环率',
+            name: '整机',
             type: 'pie',
             clockWise: false,
             radius: ['50%', '60%'],
             itemStyle: dataStyle,
             data: [
                 {
-                    value: 68,
-                    name: '整机:32%',
+                    value: 2,
+                    name: '整机:2%',
                     itemStyle: placeHolderStyle
                 },
                 {
-                    value: 32,
-                    name: '整机:32%',
+                    value: 98,
+                    name: '整机:98%',
                     // itemStyle: placeHolderStyle
                 }
             ]
         },
         {
-            name: '问题闭环率',
+            name: '模块',
             type: 'pie',
             clockWise: false,
             radius: ['40%', '50%'],
             itemStyle: dataStyle,
             data: [
                 {
-                    value: 29,
-                    name: '模块:71%',
+                    value: 5,
+                    name: '模块:5%',
                     itemStyle: placeHolderStyle
                 },
                 {
-                    value: 71,
-                    name: '模块:71%',
+                    value: 95,
+                    name: '模块:95%',
                     // itemStyle: placeHolderStyle
                 }
             ]
@@ -734,7 +702,6 @@ myChart7.setOption({
     ]
 
 });
-
 //模块质量过程检测
 var myChart8 = echarts.init(document.getElementById("myChart8"));
 myChart8.setOption(getBarEcharts());
@@ -916,6 +883,7 @@ myChart10.setOption({
 });
 
 
+
 //共产一致与不一致占比
 var myChart11 = echarts.init(document.getElementById("myChart11"));
 myChart11.setOption(getRoseEcharts());
@@ -967,6 +935,16 @@ myChart11.setOption({
 
 //共产一致
 var myChart12 = echarts.init(document.getElementById("myChart12"));
+var labelSetting = {
+    normal: {
+        show: false,
+        position: 'outside',
+        offset: [10, 0],
+        textStyle: {
+            fontSize: 8
+        }
+    }
+};
 myChart12.setOption(getBarEcharts());
 myChart12.setOption({
     color: ['#66ccff', '#a5fff1'],
@@ -2498,7 +2476,7 @@ myChart28.setOption({
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {
@@ -2572,7 +2550,7 @@ myChart29.setOption({
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {
@@ -2646,7 +2624,7 @@ myChart30.setOption({
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {
@@ -2720,7 +2698,7 @@ myChart31.setOption({
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {
@@ -3366,6 +3344,11 @@ var myChart43 = echarts.init(document.getElementById("myChart43"));
 myChart43.setOption(getCenterPie());
 myChart43.setOption({
     color: ['#66ccff', '#00aaff', '#0060ff', '#66ffcc', '#01da92', '#00a870', '#006644'],
+    legend:{
+        data:['冰冷','洗涤','家空','商空','热水器','厨电','其他'],
+        orient :' vertical',  //布局  纵向布局
+
+    },
     series: [
         {
             name: '问题闭环率',
@@ -3512,6 +3495,11 @@ var myChart44 = echarts.init(document.getElementById("myChart44"));
 myChart44.setOption(getCenterPie());
 myChart44.setOption({
     color: ['#66ccff', '#00aaff', '#0060ff', '#66ffcc', '#01da92', '#00a870', '#006644'],
+    legend:{
+        data:['冰冷','洗涤','家空','商空','热水器','厨电','其他'],
+        orient :' vertical',  //布局  纵向布局
+
+    },
     series: [
         {
             name: '问题闭环率',
@@ -3693,7 +3681,7 @@ myChart45.setOption({
             },
             splitLine: {
                 lineStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(102,204,255,0.5)',
                 }
             },
             axisLine: {

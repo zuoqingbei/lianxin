@@ -436,13 +436,7 @@ function getLineAndBar() {
             data: [],
             boundaryGap: false,
             axisPointer: {
-                type: 'shadow'
-            },
-            nameTextStyle: {
-                color: '#66ccff',
-                fontSize:10
-            },
-            splitLine: {
+                type: 'shadow',
                 show: false
             },
             axisLine: {
@@ -465,7 +459,6 @@ function getLineAndBar() {
 
         },
         yAxis: {
-            type: 'value',
             nameTextStyle: {
                 color: '#66ccff',
                 fontSize:10
@@ -574,6 +567,19 @@ function getYuanhuan() {
 //同心圆
 function getCenterPie() {
     option = {
+        legend: {
+            show: true,
+            // // right:0,  //图例组件离右边的距离
+            // orient :' horizontal',  //布局  纵向布局
+            // // width:80,      //图行例组件的宽度,默认自适应
+            x : 'right',   //图例显示在右边
+            itemWidth:10,  //图例标记的图形宽度
+            itemHeight:5, //图例标记的图形高度
+            textStyle: {    //图例文字的样式
+                color: '#66ccff',
+                fontSize: 10
+            }
+        },
         title: {
             text: '',
             subtext: '',
@@ -581,11 +587,9 @@ function getCenterPie() {
             x: 'center',
             y: 'center',
             itemGap: 20,
-            textStyle: {
-                color: 'rgba(30,144,255,0.8)',
-                fontFamily: '微软雅黑',
-                fontSize: 35,
-                fontWeight: 'bolder'
+            textStyle: {    //图例文字的样式
+                color: '#66ccff',
+                fontSize: 12
             }
         },
         tooltip: {

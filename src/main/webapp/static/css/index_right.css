@@ -299,9 +299,9 @@
 .echarts_line {
     width: 74%;
     height: 1px;
-    border: 1px dashed #ff9933;
+    border: 1px solid #ff9933;
     position: absolute;
-    top: 45%;
+    top: 39%;
     left: 11%;
 }
 
@@ -447,6 +447,31 @@
     color: #66CCFE;
     font-size: 1em;
 }
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.total_bottom_tab ::-webkit-scrollbar
+{
+    width: 10%;
+    height: 100%;
+    background-color: transparent;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+.total_bottom_tab ::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+/*定义滑块 内阴影+圆角*/
+.total_bottom_tab ::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
+    background-color: #66ccff;
+}
+
+
 .total_bottom_right .total_bottom_bar1{
     width: 70%;
 }
@@ -647,11 +672,52 @@
 }
 .sheshi_bottom_left .biaozhun_left{
     width: 34%;
-    height: 90%;
-    background-color: plum;
+    height: 95%;
     float: left;
     text-align: center;
     font-size: 1.2em;
+}
+.biaozhun_left_left{
+    width: 75%;
+    height: 75%;
+    margin: 4% auto;
+    background: url("../img/sheshiState/bg.png") no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+}
+.biaozhun_left_left>div{
+    width: 5em;
+    height: 5em;
+    text-align: center;
+    vertical-align: middle;
+    /*background-color: pink;*/
+    position: absolute;
+    font-size: 0.8em;
+}
+/*.biaozhun_left_left>div>ul li:first-of-type{*/
+    /*font-size: 1.2em;*/
+/*}*/
+.biaozhun_left_left .biaozhun_world{
+    top: 16%;
+    left: 15%;
+}
+.biaozhun_left_left .biaozhun_country{
+    top:16%;
+    right: 14%;
+}
+.biaozhun_left_left .biaozhun_hangye{
+    bottom: 5%;
+    left:16%;
+}
+.biaozhun_left_left .biaozhun_qiye{
+    bottom: 5%;
+    right: 14%;
+}
+.biaozhun_left_left .biaozhun_total{
+    top: 40%;
+    left: 39%;
+    color: white;
+    font-size: 0.6em;
 }
 .sheshi_bottom_left .biaozhun_right{
     width: 64%;
@@ -723,9 +789,23 @@
     width: 14%;
     height: 100%;
     float: left;
+    position:relative ;
 }
 .nengli_bottom ul li{
     width: 13%;
+
+}
+.nengli_bottom ul .echarts_lines{
+    width: 1px ;
+    height: 45%;
+    display: inline-block;
+    background-color: red;
+    position: absolute;
+    top: 45%;
+    left: 0;
+}
+.nengli_bottom ul .echarts_line1{
+    left: 18%;
 }
 .nengli_bottom ul li:first-of-type{
     width: 19%;
@@ -733,6 +813,7 @@
 #myChart32,#myChart33,#myChart34,#myChart35,#myChart36,#myChart37,#myChart38{
     width: 100%;
     height: 100%;
+
 }
 #myChart39,#myChart40,#myChart41,#myChart42,#myChart43,#myChart44,#myChart45,#myChart46,#myChart47,#myChart48,#myChart49 {
     width: 95%;
