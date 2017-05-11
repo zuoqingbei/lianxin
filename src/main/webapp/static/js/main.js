@@ -6,11 +6,13 @@
 $(function () {
 
     //进入时的首页效果
+/*
     $("#mask").click(function () {
         $(this).animate({"opacity":0},1000,function () {
             $(this).hide();
         })
     });
+*/
 
     var $left = $("#left");
     var iframe = '<iframe id="iframe" scrolling="no" frameborder="0" src="'+contextPath+'/lab/flatMap" ></iframe>';

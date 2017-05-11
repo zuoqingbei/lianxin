@@ -83,11 +83,13 @@
 }
 #l .sphere .mapArea h2{
     text-align: center;
-    color: white;
-    font-size: 1.8em;
+    color: #66ccfe;
+    font-size: 1.4em;
 }
 #l .sphere .mapArea iframe{
     height: 100%;
+    width:96%;
+    margin:0 auto;
 }
 
 #l .sphere .sphere-left>div,
@@ -144,13 +146,23 @@
     text-align: right;
     margin-right: 2em;
 }
+#l .btnGroup>span{
+    position: relative;
+
+}
 #l .btnGroup img{
     cursor:pointer;
     margin-right: 1em;
     width:2.2em;
     height: 2.2em;
 }
-
+#l .btnGroup [class$=btnTip]{
+    position: absolute;
+    left: 0;
+    top: -2em;
+    color: lightblue;
+    display: none;
+}
 
 #l .switch{
     height:100%;
@@ -213,7 +225,7 @@
     position: relative;
     margin-top: -12%;
     top: 19%;
-    font-size: 120%;
+    font-size: 1.2em;
 }
 @media screen and (min-width: 640px) and (max-width: 999px){
     /*对应于媒体宽度在640~999px之间应该显示的样式*/
@@ -235,7 +247,7 @@
     margin-top: 3%;
     padding: 0 3%;
     overflow: hidden;
-    font-size: .7em;
+    font-size: 1em;
     color: #6cf;
     text-align: center;
 }
@@ -333,6 +345,27 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
+#l .flat-footer .legend-bottom li:nth-of-type(1) .icon{
+    background-image: url(../img/ico/line_centerlab_noborder_on.png) ;
+}
+#l .flat-footer .legend-bottom li:nth-of-type(2) .icon{
+    background-image: url(../img/ico/line_bl_noborder_off.png) ;
+}
+#l .flat-footer .legend-bottom li:nth-of-type(3) .icon{
+    background-image: url(../img/ico/line_xd_noborder_off.png) ;
+}
+#l .flat-footer .legend-bottom li:nth-of-type(4) .icon{
+    background-image: url(../img/ico/line_jk_noborder_off.png) ;
+}
+#l .flat-footer .legend-bottom li:nth-of-type(5) .icon{
+    background-image: url(../img/ico/line_sk_noborder_off.png) ;
+}
+#l .flat-footer .legend-bottom li:nth-of-type(6) .icon{
+    background-image: url(../img/ico/line_rsq_noborder_off.png) ;
+}
+#l .flat-footer .legend-bottom li:nth-of-type(7) .icon{
+    background-image: url(../img/ico/line_cd_noborder_off.png) ;
+}
 #l .flat-footer .legend .selectAll{
     color: #6cf;
     padding-top: 1%;
@@ -369,6 +402,7 @@
     color: #999;
 }
 #l .flat-footer .legend ul li.active a{
+    text-decoration: none;
     color: #00e673;
 }
 #l .flat-footer .legend ul.lab li:nth-child(1).active a{
@@ -478,7 +512,7 @@
     margin: 12% 2% 0;
     padding: 1% 0;
     color: #66ccff;
-    font-size: 85%;
+    font-size: .8em;
     line-height: 180%;
     /*background-color: rgba(102,204,255,.15);*/
 }
@@ -489,7 +523,7 @@
 #l .sphere .chartBorder h4 strong,
 #l .flat .chartBorder h4 strong{
     color: #f93;
-    font-size: 140%;
+    font-size: 1.4em;
     font-weight: normal;
 }
 #l .flat-left-top .myChart{
@@ -498,7 +532,7 @@
 }
 #l .flat-left-bottom .myChart{
     height: 72%;
-    margin: 1% 2% 5%;
+    margin: 15% 2% 5%;
 }
 #l .flat-right-top .myChart{
     height: 80%;
@@ -509,7 +543,7 @@
 }
 #l .flat-right-bottom .myChart{
     height: 65%;
-    padding: 12% 4% 0;
+    padding: 25% 4% 0;
 }
 #l .sphere-right-top ul,
 #l .flat .chartBorder ul{
@@ -517,14 +551,16 @@
     margin: 1% 15% 1% 18%;
     top: 23%;
     height: 72%;
-    font-size: 0.9em;
+    font-size: 1em;
     color: #6cf;
 }
 #l .sphere-right-top ul li,
 #l .flat .chartBorder ul li{
     margin-bottom: 2%;
-    line-height: 166%;
+    line-height: 180%;
+    font-size: 1em;
     height: 11%;
+    vertical-align: initial;
 }
 
 #l .sphere-right-top ul li .icon{
@@ -560,11 +596,13 @@
 }
 #l .sphere .chartBorder ul li .number,
 #l .flat .chartBorder ul li .number {
+    position: relative;
+    top: 10%;
     height: 96%;
     background-image: url(../img/bgNumber.png);
     background-size: 95% 100%;
     background-repeat: no-repeat;
-    font-size: 160%;
+    font-size: 1.4em;
     letter-spacing: 6px;
     padding: 0 0 0 3px;
     float: right;
