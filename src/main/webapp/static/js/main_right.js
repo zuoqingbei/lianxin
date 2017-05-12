@@ -21,7 +21,7 @@ option = {
             splitNumber: 5,
             radius: '80%',
             textStyle: {
-                fontSize:7
+                fontSize:7*bodyScale
             },
             axisLine: {            // 坐标轴线
                 show:false,
@@ -34,7 +34,7 @@ option = {
             axisLabel:{
                 show:true,
                 textStyle:{
-                    fontSize:8
+                    fontSize:8*bodyScale
                 }
             },
             axisTick: {            // 坐标轴小标记
@@ -64,7 +64,7 @@ option = {
             title: {
                 offsetCenter: [0, '110%'],       // x, y，单位px
                 textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                    fontSize: 12,
+                    fontSize: 12*bodyScale,
                     color: '#66ccff',
 //                        fontStyle: 'italic'
                 },
@@ -100,7 +100,7 @@ option = {
             axisLabel:{
                 show:true,
                 textStyle:{
-                    fontSize:8
+                    fontSize:8*bodyScale
                 }
             },
             axisTick: {            // 坐标轴小标记
@@ -130,7 +130,7 @@ option = {
             title: {
                 offsetCenter: [0, '100%'],       // x, y，单位px
                 textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                    fontSize: 12,
+                    fontSize: 12*bodyScale,
                     color: '#66ccff',
 //                        fontStyle: 'italic'
                 },
@@ -228,7 +228,7 @@ var labelTop = {
             textStyle: {
                 baseline: 'bottom',
                 color: '#66ccff',
-                fontSize:12,
+                fontSize:12*bodyScale,
             }
         },
         labelLine: {
@@ -298,7 +298,7 @@ option = {
     textStyle: {
 //            color:'#66ccff'
         color: '#ff9933',
-        fontSize:20,
+        fontSize:20*bodyScale,
     },
     series: [
 //            {
@@ -481,7 +481,7 @@ myChart4.setOption({
         data:['整机','模块']
     },
     textStyle:{
-        fontSize:12
+        fontSize:12*bodyScale
     },
     color: ['#4397f7', '#66ccff'],
     series: [
@@ -535,7 +535,7 @@ myChart5.setOption({
         data:['整机','模块']
     },
     textStyle:{
-        fontSize:12
+        fontSize:12*bodyScale
     },
     color: ['#4397f7', '#66ccff'],
     series: [
@@ -837,7 +837,7 @@ myChart10.setOption({
         text: '能力直方图',
         left:'center'
     },
-    color: ['#00e673','#66ccff'],
+    color: ['#ff9933','#66ccff'],
     grid: {
         right: 13,
         bottom: 30,
@@ -862,6 +862,7 @@ myChart10.setOption({
         {
             name:'均值',
             type: 'line',
+            smooth:true,
             lineStyle:{
                 normal:{
                     width:1
@@ -869,14 +870,14 @@ myChart10.setOption({
             },
             symbolSize:2,
 //            areaStyle: {normal: {}},
-            data: [68, 132, 95, 84, 45, 30, 90, 65,34,46,34,94]
+            data: [68, 78, 95, 121, 148, 180, 140, 118,109,76,64,55]
         },
         {
             name:'数量',
             type: 'bar',
 
 //            areaStyle: {normal: {}},
-            data: [30, 32, 25, 34, 45, 30, 40, 23,34,46,34,13]
+            data: [68, 78, 95, 121, 135, 150, 145, 118,109,76,64,55]
         }
     ]
 
@@ -893,7 +894,7 @@ myChart11.setOption({
         show: true,
         textStyle: {
             color: '#66ccff',
-            fontSize: 10,
+            fontSize: 10*bodyScale,
         },
         orient: 'vertical',  //布局  纵向布局
         data: ['共产一致型号数', '共产不一致型号数'],
@@ -941,7 +942,7 @@ var labelSetting = {
         position: 'outside',
         offset: [10, 0],
         textStyle: {
-            fontSize: 8
+            fontSize: 8*bodyScale
         }
     }
 };
@@ -1257,7 +1258,7 @@ myChart17.setOption({
         show: true,
         textStyle: {
             color: '#66ccff',
-            fontSize: 10,
+            fontSize: 10*bodyScale,
         },
         orient: 'vertical',  //布局  纵向布局
         data: ['共产一致型号数', '共产不一致型号数'],
@@ -1568,7 +1569,7 @@ myChart22.setOption({
             boundaryGap: false,
             axisLabel: {
                 textStyle: {
-                    fontSize:9
+                    fontSize:9*bodyScale
                 }
             },
 
@@ -1597,7 +1598,7 @@ myChart22.setOption({
                         position: 'top',
                         // formatter: "{a}%",
                         textStyle: {
-                            fontSize: 10,
+                            fontSize: 10*bodyScale,
                             color: "white"
                         },
                         formatter: '{c}%'
@@ -1629,7 +1630,7 @@ myChart23.setOption({
             boundaryGap: false,
             axisLabel: {
                 textStyle: {
-                    fontSize:9
+                    fontSize:9*bodyScale
                 }
             },
         }
@@ -1658,7 +1659,7 @@ myChart23.setOption({
                         position: 'top',
                         // formatter: "{a}%",
                         textStyle: {
-                            fontSize: 10,
+                            fontSize: 10*bodyScale,
                             color: "white"
                         },
                         formatter: '{c}%'
@@ -1691,7 +1692,7 @@ myChart24.setOption({
             boundaryGap: false,
             axisLabel: {
                 textStyle: {
-                    fontSize:9
+                    fontSize:9*bodyScale
                 }
             },
         }
@@ -1720,7 +1721,7 @@ myChart24.setOption({
                         position: 'top',
                         // formatter: "{a}%",
                         textStyle: {
-                            fontSize: 10,
+                            fontSize: 10*bodyScale,
                             color: "white"
                         },
                         formatter: '{c}%'
@@ -1763,7 +1764,7 @@ myChart25.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:12
+                fontSize:12*bodyScale
             }
         },
         axisTick: {
@@ -1788,7 +1789,7 @@ myChart25.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:12
+                fontSize:12*bodyScale
             }
         },
         axisTick: {
@@ -1932,7 +1933,7 @@ myChart26.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:12
+                fontSize:12*bodyScale
             }
         },
         axisTick: {
@@ -1957,7 +1958,7 @@ myChart26.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:12
+                fontSize:12*bodyScale
             }
         },
         axisTick: {
@@ -2134,7 +2135,7 @@ myChart27.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:12
+                fontSize:12*bodyScale
             }
         },
         axisTick: {
@@ -2159,7 +2160,7 @@ myChart27.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize:12
+                fontSize:12*bodyScale
             }
         },
         axisTick: {
@@ -2556,7 +2557,7 @@ myChart31.setOption({
                 formatter: '{value}',
                 textStyle: {
                     color: '#66ccff',
-                    fontSize:10,
+                    fontSize:10*bodyScale,
                 }
             },
             splitLine: {
@@ -2983,7 +2984,7 @@ myChart39.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: 12,
+                fontSize: 12*bodyScale,
 
             },
             // rotate:30,
@@ -3011,7 +3012,7 @@ myChart39.setOption({
             show: true,
             textStyle: {
                 color: '#66ccff',
-                fontSize: 12
+                fontSize: 12*bodyScale
             }
         },
         axisTick: {  //刻度值
@@ -3063,7 +3064,7 @@ myChart40.setOption({
             // rotate: 30,
             textStyle: {
                 color: '#66ccff',
-                fontSize: 12
+                fontSize: 12*bodyScale
             }
         },
         axisTick: {
@@ -3090,7 +3091,7 @@ myChart40.setOption({
             show: false,
             textStyle: {
                 color: '#66ccff',
-                fontSize: 12
+                fontSize: 12*bodyScale
             }
         },
         axisTick: {  //刻度值
@@ -3517,7 +3518,7 @@ myChart45.setOption({
         itemHeight: 2, //图例标记的图形高度
         textStyle: {    //图例文字的样式
             color: '#66ccff',
-            fontSize: 12
+            fontSize: 12*bodyScale
         },
         data: ['2016年', '2017年']
     },
@@ -3539,7 +3540,7 @@ myChart45.setOption({
                 formatter: '{value}',
                 textStyle: {
                     color: '#66ccff',
-                    fontSize: 10,
+                    fontSize: 10*bodyScale,
                 }
             },
             splitLine: {
@@ -3773,7 +3774,7 @@ myChart47.setOption({
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: 10,
+                        fontSize: 10*bodyScale,
                         color: "#ff9933"
                     },
                     formatter: '{c}%'
@@ -3826,7 +3827,7 @@ myChart48.setOption({
                     position: 'right',
                     // formatter: "{a}%",
                     textStyle: {
-                        fontSize: 10,
+                        fontSize: 10*bodyScale,
                         color: "#ff9933"
                     },
                     formatter: '{c}%'

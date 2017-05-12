@@ -9,7 +9,7 @@ function getLineEcharts() {
             left: 'center',
             text: '',
             textStyle: {
-                fontSize: 12,
+                fontSize: 12*bodyScale,
                 color: '#66ccff',
             }
         },
@@ -32,13 +32,13 @@ function getLineEcharts() {
             // // itemHeight:10, //图例标记的图形高度
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
-                fontSize: 10
+                fontSize: 10*bodyScale
             }
         },
         color: ['#00e673', '#66ccff'],
         textStyle: {    //图例文字的样式
             color: '#66ccff',
-            fontSize: 10
+            fontSize: 10*bodyScale
         },
 
         xAxis: {
@@ -46,7 +46,7 @@ function getLineEcharts() {
             boundaryGap: true,
             nameTextStyle: {
                 color: '#66ccff',
-                fontSize:10
+                fontSize:10*bodyScale
             },
             splitLine: {
                 show: false
@@ -59,7 +59,7 @@ function getLineEcharts() {
                 // rotate: 30,
                 textStyle: {
                     color: '#66ccff',
-                    fontSize:12
+                    fontSize:10*bodyScale,
                 }
             },
             axisTick: {
@@ -74,7 +74,7 @@ function getLineEcharts() {
         yAxis: {
             nameTextStyle: {
                 color: '#66ccff',
-                fontSize:10
+                fontSize:10*bodyScale,
             },
             axisLine: { //坐标轴
                 show: false
@@ -83,7 +83,7 @@ function getLineEcharts() {
                 show: true,
                 textStyle: {
                     color: '#66ccff',
-                    fontSize:12
+                    fontSize:10*bodyScale
                 }
             },
             splitLine: {  //刻度线
@@ -109,7 +109,7 @@ function getBarEcharts() {
             left: 'center',
             text: '',
             textStyle: {
-                fontSize: 12,
+                fontSize: 12*bodyScale,
                 color: '#66ccff',
             }
         },
@@ -124,15 +124,15 @@ function getBarEcharts() {
             // // width:80,      //图行例组件的宽度,默认自适应
             // x : 'right',   //图例显示在右边
             // // itemWidth:10,  //图例标记的图形宽度
-            // // itemHeight:10, //图例标记的图形高度
+            // // itemHeight:10*bodyScale, //图例标记的图形高度
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
-                fontSize: 10
+                fontSize: 10*bodyScale
             }
         },
         textStyle: {    //图例文字的样式
             color: '#66ccff',
-            fontSize: 10
+            fontSize: 10*bodyScale
         },
         grid: {
 //            show:true,
@@ -149,7 +149,7 @@ function getBarEcharts() {
                 axisLabel: {
                     textStyle: {
                         color: "#66ccff",
-                        fontSize: 12
+                        fontSize: 12*bodyScale
                     }
                 },
                 axisLine: {
@@ -179,7 +179,7 @@ function getBarEcharts() {
                 axisLabel: {
                     textStyle: {
                         color: "#66ccff",
-                        fontSize: 12
+                        fontSize: 12*bodyScale
                     }
                 },
                 axisTick: {  //刻度值
@@ -246,7 +246,7 @@ function getAreaEcharts() {
             text: ''
         },
         textStyle: {
-            fontSize: 10
+            fontSize: 10*bodyScale
         },
         color: ['#00e673', '#66ccff'],
         tooltip: {
@@ -267,7 +267,7 @@ function getAreaEcharts() {
             // // itemHeight:10, //图例标记的图形高度
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
-                fontSize: 10
+                fontSize: 10*bodyScale
             },
             data: []
         },
@@ -304,7 +304,7 @@ function getAreaEcharts() {
                     // rotate: 30,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12
+                        fontSize:12*bodyScale
                     }
                 },
                 axisTick: {
@@ -330,7 +330,7 @@ function getAreaEcharts() {
                     show: true,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12
+                        fontSize:12*bodyScale
                     },
                 },
                 splitLine: {  //刻度线
@@ -361,7 +361,7 @@ function getRadarEcharts() {
         },
         textStyle: {    //图例文字的样式
             color: '#66ccff',
-            fontSize: 10
+            fontSize: 10*bodyScale
         },
         tooltip: {
             trigger: 'axis'
@@ -405,7 +405,7 @@ function getLineAndBar() {
             left: 'center',
             text: '',
             textStyle: {
-                fontSize: 12,
+                fontSize: 12*bodyScale,
                 color: '#66ccff'
             }
         },
@@ -461,7 +461,7 @@ function getLineAndBar() {
         yAxis: {
             nameTextStyle: {
                 color: '#66ccff',
-                fontSize:10
+                fontSize:10*bodyScale
             },
             axisLine: { //坐标轴
                 show: false
@@ -475,7 +475,7 @@ function getLineAndBar() {
             splitLine: {  //刻度线
                 show: true,
                 lineStyle: {
-                    color: '#123a67'
+                    color: '#12*bodyScale3a67'
                 }
             },
             axisTick: {  //刻度值
@@ -577,7 +577,7 @@ function getCenterPie() {
             itemHeight:5, //图例标记的图形高度
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
-                fontSize: 10
+                fontSize: 10*bodyScale
             }
         },
         title: {
@@ -589,7 +589,7 @@ function getCenterPie() {
             itemGap: 20,
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
-                fontSize: 12
+                fontSize: 12*bodyScale
             }
         },
         tooltip: {

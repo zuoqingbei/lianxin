@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/asserts/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/common.css">
+    <link rel="stylesheet" href="../static/css/labMain.css">
+    <link rel="stylesheet" href="../static/css/labLine.css">
+    <style>
+        *{
+            padding:0;
+            margin: 0;
+        }
+        body{
+            width: 100%;
+            height: 97%;
+            background-color: #05051E;
+        }
+        .labMain_cb_left{
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="labMain_cb_left">
+    <h3 class="lab_title shishijiance">实时监测</h3>
+    <div class="shishi_left">
+        <div class="sheshi_tab">视频监控</div>
+        <div class="sheshi_tab">曲线监控</div>
+        <div class="sheshi_tab_list">
+            <ul>
+                <li><span></span><a href="#">实验室1</a>
+                    <!--<ul class="taiwei_block">-->
+                    <!--<li>台位A3</li>-->
+                    <!--<li>台位A3</li>-->
+                    <!--<li>台位A3</li>-->
+                    <!--<li>台位A3</li>-->
+                    <!--<li>台位A3</li>-->
+                    <!--<li>台位A3</li>-->
+                    <!--</ul>-->
+                    <!--<div class="dropdown">-->
+                    <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu3"-->
+                    <!--data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                    <!--产线-->
+                    <!--<span class="caret"></span>-->
+                    <!--</button>-->
+                    <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
+                    <!--<li><a href="#">冰箱</a></li>-->
+                    <!--<li><a href="#">洗涤</a></li>-->
+                    <!--<li><a href="#">家空</a></li>-->
+                    <!--<li><a href="#">商空</a></li>-->
+                    <!--<li><a href="#">热水器</a></li>-->
+                    <!--<li><a href="#">厨电</a></li>-->
+                    <!--<li><a href="#">电视</a></li>-->
+                    <!--</ul>-->
+                    <!--</div>-->
+
+                </li>
+
+                <li><span></span><a href="#">实验室1</a></li>
+                <li><span></span><a href="#">实验室1</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="shishi_right">
+        <div class="sheshi_right_left">
+            <div id="main1"></div>
+            <div id="main2"></div>
+        </div>
+        <div class="sheshi_right_right">
+            <ul id="legend_ul">
+            </ul>
+        </div>
+    </div>
+
+</div><!--labMain_cb_left-->
+</body>
+
+</html>
+<script src="../static/asserts/js/jquery-2.2.4.js"></script>
+<script src="../static/asserts/echarts/echarts-3.5.2.js"></script>
+<script src="../static/js/centerLab.js"></script>
+
+<script>
+
+    var bodyScale = 1;//原始比例1
+    $(document).ready(function (e) {
+        pageResize();
+        function pageResize() {
+            var h = $(window).height();
+            var w = h * 16 * 4 / (9 * 3);
+
+            // $("#labMain_content").css("width", h * 16 * 7 / (9 * 3));
+            $(".labMain_content").css("width", h * 16 * 4 / (9 * 3));
+            var bodyFontSize = h / 638 * 100 + "%";
+            bodyScale = h / 638;
+            $("body").css("font-size", bodyFontSize);
+//            console.log("屏幕高度：" + h + ", body字号：" + bodyFontSize)
+        }
+    });
+</script>

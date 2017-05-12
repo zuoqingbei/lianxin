@@ -1,0 +1,129 @@
+.shishijiance{
+    position: absolute;
+    top:1.7%;
+    left: 12%;
+}
+.labMain_cb_left{
+    padding-top: 3%;
+}
+.shishi_left{
+    height: 95%;
+    width: 20%;
+    float: left;
+    text-align: center;
+}
+.shishi_right{
+    height: 100%;
+    width: 80%;
+    float: left;
+    background: url("../img/labMain/shishiBoder.png") no-repeat;
+    background-size: 97% 95%;
+    position: relative;
+    display: none;
+}
+.shishi_right_show{
+    display: block;
+}
+.sheshi_tab{
+    margin: 0 auto;
+    width: 50%;
+    height: 6%;
+    margin-top: 5%;
+    background: url("../img/labMain/border-blue.png") no-repeat;
+    background-size: 100% 100%;
+    font-size: 1.1em;
+    padding-top: 2%;
+    cursor: pointer;
+}
+.sheshi_tab:hover{
+    color: #66ffcc;
+    background: url("../img/labMain/border-green.png") no-repeat;
+    background-size: 100% 100%;
+}
+.sheshi_tab_list{
+    height: 50%;
+    width: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 3%;
+}
+.sheshi_tab_list>ul{
+    width: 100%;
+    height: 100%;
+    padding-top: 10%;
+    padding-left: 10%;
+    background: url("../img/labMain/dropmenu.png") no-repeat;
+    background-size: 100% 100%;
+}
+.sheshi_tab_list>ul>li{
+    width: 100%;
+    height: auto;
+    margin-left: 2%;
+    text-align: left;
+    padding-left:15% ;
+    position: relative;
+    padding-top: 5%;
+}
+.sheshi_tab_list>ul>li>span{
+    display: inline-block;
+    width: 1.3em;
+    height: 1.3em;
+    vertical-align: middle;
+    margin-right: 5%;
+    background: url("../img/labMain/sb.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 30%;
+    left: 0;
+
+
+}
+.sheshi_tab_list>ul>li>span a{
+    font-size: 1em;
+}
+#main1,#main2{
+    width: 100%;
+    height: 45%;
+}
+.shishi_right .sheshi_right_left{
+    width: 90%;
+    height: 100%;
+    float: left;
+}
+.shishi_right .sheshi_right_right{
+    width:15%;
+    height: 100%;
+    float: left;
+    padding-top: 2%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-right: 5%;
+}
+.shishi_right .sheshi_right_right .legend_ul{
+    width: 100%;
+}
+
+.taiwei_hide{
+    display: none;
+}
+.sheshi_tab_list>ul>li:hover{
+    height: auto;
+}
+.sheshi_tab_list>ul>li:hover a{
+    color: #66ffcc;
+}
+.sheshi_tab_list>ul>li:hover .taiwei_hide{
+    display: block;
+}
+.sheshi_tab_list>ul>li:hover span{
+    top:5%;
+}
+.taiwei_hide li{
+    display: inline-block;
+    width: 50%;
+}
+.taiwei_hide li:hover{
+    /*background-color: #66ccff;*/
+    color: white;
+}
