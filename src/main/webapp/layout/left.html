@@ -126,7 +126,7 @@
                     <div class="flat-right">
                         <div class="flat-right-bottom">
                             <div class="chartBorder">
-                                <h3>覆盖专业领域：5</h3>
+                                <h3 id="professional_code_div">覆盖专业领域：0</h3>
                                 <div class="myChart">
                                     <img src="${contextPath!}/static/img/flatRT_text.png">
 
@@ -209,10 +209,6 @@
         myCharts = [myChartFlatLT, myChartFlatRT, myChartFlatLB];
         //左侧平面地图及其他左侧数据
         reloadLeftData();
-        //标准状态
-        standardStatus();
-        //能力状态
-        abilityStatus();
 
 
     });

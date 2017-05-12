@@ -2,21 +2,36 @@
 /**
  * 右侧数据统计
  */
+function loadTab1Data(){
+	 //标准状态
+    standardStatus();
+    //能力状态
+    abilityStatus();
+}
 //标准状态数据统计
 function standardStatus(){
 	$.post(contextPath+'/lab/standardStatusAjax',{},function(data){
 		var reviseNum=parseInt(data.revisenum);
 		var standardNum=parseInt(data.standardnum);
 		$("#reviseNum").html(reviseNum);
+		$("#tab1_qtqc_id").html(reviseNum);
 		$("#standardNum").html(standardNum);
 		var num0=(standardSeriesData(data.revisedata,"牵头起草数")/reviseNum).toFixed(2)*100;
 		var num1=(standardSeriesData(data.revisedata,"参与起草数")/reviseNum).toFixed(2)*100;
+		var gjia=standardSeriesData(data.standarddata,"国家标准");
+		var gjbz=standardSeriesData(data.standarddata,"国际标准");
+		var hybz=standardSeriesData(data.standarddata,"行业标准");
+		var qybz=standardSeriesData(data.standarddata,"企业标准");
+		$("#tab1_gjiabz_id").html(gjia);
+		$("#tab1_gjibz_id").html(gjbz);
+		$("#tab1_hybz_id").html(hybz);
+		$("#tab1_qybz_id").html(qybz);
 		
-		var num2=(standardSeriesData(data.standarddata,"国家标准")/standardNum).toFixed(2)*100;
-		var num3=(standardSeriesData(data.standarddata,"国际标准")/standardNum).toFixed(2)*100;
-		var num4=(standardSeriesData(data.standarddata,"行业标准")/standardNum).toFixed(2)*100;
-		var num5=(standardSeriesData(data.standarddata,"当地标准")/standardNum).toFixed(2)*100;
-		var num6=(standardSeriesData(data.standarddata,"企业标准")/standardNum).toFixed(2)*100;
+		var num2=(gjia/standardNum).toFixed(2)*100;
+		var num3=(gjbz/standardNum).toFixed(2)*100;
+		var num4=(hybz/standardNum).toFixed(2)*100;
+		//var num5=(standardSeriesData(data.standarddata,"当地标准")/standardNum).toFixed(2)*100;
+		var num6=(qybz/standardNum).toFixed(2)*100;
 		//多个圆环图  标准状态
 		var myChart2 = echarts.init(document.getElementById("myChart2"));
 		var labelTop = {

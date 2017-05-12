@@ -192,4 +192,18 @@ public class LabController extends BaseController {
     	result.set("data", list);
 		renderJson(result);
     }
+    /**
+     * 
+     * @time   2017年5月12日 上午7:45:55
+     * @author zuoqb
+     * @todo   标准数量分布情况
+     * @param  
+     * @return_type   void
+     */
+    public void standardDispersedAjax(){
+    	String type=getPara("type");
+    	String typeName=getPara("typeName");
+    	List<Record>  recode=LabDataResultModel.dao.dataResultBTypeAndName(type, typeName);
+		renderJson(recode);
+    }
 }

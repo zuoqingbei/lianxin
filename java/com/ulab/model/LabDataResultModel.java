@@ -58,16 +58,21 @@ public class LabDataResultModel extends Model<LabDataResultModel> {
 		record.set("standardData", LabDataResultModel.dao.dataResultBType(0));
 		return record;
 	}
+	
 	/**
 	 * 
-	 * @time   2017年4月24日 上午10:43:22
+	 * @time   2017年5月12日 上午7:42:41
 	 * @author zuoqb
-	 * @todo   实验目的对应的订单
+	 * @todo   根据类型统计数据结果 
+	 * @param  @param type 数据结果类型。0:标准状态 1：能力状态  2:起草数
+	 * @param  @param typeName 
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	/*public List<Record> orderByCarry(){
+	public List<Record> dataResultBTypeAndName(Object type,Object typeName){
 		StringBuffer sb=new StringBuffer();
+		sb.append(" select product_name as name,num as  count from t_b_date_result t  WHERE  t.del_flag="+Constants.DEL_FALG+" and t.type='"+type+"' and t.type_name='"+typeName+"' ");
 		return Db.find(sb.toString());
-	}*/
+	}
+	
 }

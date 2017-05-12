@@ -20,6 +20,7 @@ function reloadLeftData(){
 	//labCarouselInfo();
 	worldLabTypeStatis();
 	//专业领域
+	professionalStatis();
 }
 function reloadLeftData2(){
    //产线维度实验室数量统计
@@ -39,6 +40,12 @@ function reloadLeftData2(){
 		console.log(data)
 	})
 }*/
+//专业领域
+function professionalStatis(){
+	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"professional_code","labType":labType,"sort":"asc"},function(data){
+		$("#professional_code_div").html("覆盖专业领域："+data.length);
+	})
+}
 //实验室数量统计
 function labNumStatis(){
 	$.post(contextPath+'/lab/labNumStatisAjax',{},function(data){
@@ -71,7 +78,6 @@ function proLineStatis(){
 
 //平面地图左上角的环形图，实验室数量按照四大类展示
 function worldTyleEchart(data){
-	console.log(data)
 	// console.log(data);
 	var num2=standardSeriesData(data,"研发类");
 	var num3=standardSeriesData(data,"中海博睿");

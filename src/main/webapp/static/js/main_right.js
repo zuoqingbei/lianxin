@@ -2442,7 +2442,7 @@ myChart27.setOption({
 });
 
 //标准状态 国际标准
-var myChart28 = echarts.init(document.getElementById("myChart28"));
+/*var myChart28 = echarts.init(document.getElementById("myChart28"));
 myChart28.setOption(getRadarEcharts());
 myChart28.setOption({
     title: {
@@ -2512,11 +2512,11 @@ myChart28.setOption({
             ]
         }
     ]
-});
+});*/
 
 
 //标准状态 国家标准
-var myChart29 = echarts.init(document.getElementById("myChart29"));
+/*var myChart29 = echarts.init(document.getElementById("myChart29"));
 myChart29.setOption(getRadarEcharts());
 myChart29.setOption({
     title: {
@@ -2586,11 +2586,11 @@ myChart29.setOption({
             ]
         }
     ]
-});
+});*/
 
 
 //标准状态 行业标准
-var myChart30 = echarts.init(document.getElementById("myChart30"));
+/*var myChart30 = echarts.init(document.getElementById("myChart30"));
 myChart30.setOption(getRadarEcharts());
 myChart30.setOption({
     title: {
@@ -2660,11 +2660,11 @@ myChart30.setOption({
             ]
         }
     ]
-});
+});*/
 
 
 //标准状态 企业标准
-var myChart31 = echarts.init(document.getElementById("myChart31"));
+/*var myChart31 = echarts.init(document.getElementById("myChart31"));
 myChart31.setOption(getRadarEcharts());
 myChart31.setOption({
     title: {
@@ -2734,7 +2734,7 @@ myChart31.setOption({
             ]
         }
     ]
-});
+});*/
 
 
 //能力状态 冰冷
@@ -4116,8 +4116,8 @@ myChart49.setOption({
 
 var right_echarts=[myChart1,myChart2,myChart3,myChart4,myChart5,myChart6,myChart7,myChart8,myChart9,
                    myChart11,myChart12,myChart14,myChart15,myChart16,myChart17,myChart18,myChart19,
-                   myChart22,myChart23,myChart24,myChart25,myChart26,myChart27,myChart28,myChart29,myChart30,
-                   myChart31,myChart32,myChart33,myChart34,myChart35,myChart36,myChart37,myChart38,myChart39,myChart40,
+                   myChart22,myChart23,myChart24,myChart25,myChart26,myChart27
+                   ,myChart32,myChart33,myChart34,myChart35,myChart36,myChart37,myChart38,myChart39,myChart40,
                    myChart41,myChart42,myChart43,myChart44,myChart45,myChart46,myChart47,myChart48,myChart49,
                    ]
 //重置echart图标大小 在加载平面地图时被调用

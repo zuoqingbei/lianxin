@@ -43,6 +43,7 @@
  <script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
 <script src="${contextPath!}/static/js/right_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/tab2_statistics.js?time=New Date()"></script>
 
 
  <script>
@@ -64,10 +65,9 @@
         	resetSizeRight();
         	
         });
-        //标准状态
-        standardStatus();
-        //能力状态
-        abilityStatus();
+       
+        loadTab1Data();
+        loadTab2Data();
     });
    
 </script>
