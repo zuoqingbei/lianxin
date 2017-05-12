@@ -226,10 +226,15 @@ public class LabController extends BaseController {
     	String type=getPara("type","1");
     	String filed=getPara("filed","product_code");
     	List<List<Record>> map=new ArrayList<List<Record>>();
+    	List<List<Record>> needmap=new ArrayList<List<Record>>();
     	for(Record r:productLine){
     		String filedVaule=r.get("id").toString();
     		map.add(LabDataResultModel.dao.dataResultBTypeAndName(type,filed,filedVaule));
+    		needmap.add(LabDataResultModel.dao.dataResultBTypeAndName(3,filed,filedVaule));
     	}
-		renderJson(map);
+    	List<List<List<Record>>> list=new ArrayList<List<List<Record>>>();
+    	list.add(map);
+    	list.add(needmap);
+		renderJson(list);
     }
 }

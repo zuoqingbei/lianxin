@@ -96,7 +96,10 @@ function seriesData(data){
 						}
 					}
 	            },
-	            data:[],
+	            data:[{
+	            	name:"China",
+	            	selected:true
+	            }],
 	            markPoint: {
 	                symbol: 'emptyCircle',
 	                symbolSize: function (v) {

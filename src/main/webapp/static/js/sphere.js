@@ -274,9 +274,9 @@ function mapSphere() {
                         data: airports
                     },
                     roam: {
-                        zoom: 1.3,
-                        minZoom: 1.3,
-                        maxZoom: 1.3,
+                        zoom: 1.2,
+                        minZoom: 1.2,
+                        maxZoom: 1.2,
                         focus:"中国"
                         // focus:"Pakistan"
                     }
