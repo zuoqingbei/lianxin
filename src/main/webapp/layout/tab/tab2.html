@@ -454,13 +454,16 @@
                     <div>不同产线的能力状态分布</div>
                     <div class="nengli_top">
                         <ul>
-                            <li>冰冷</li>
+                        	 ##for(type in productLine){
+                              <li>${type.name!}</li>
+                              ##}
+                           <!--  <li>冰冷</li>
                             <li>洗涤</li>
                             <li>家空</li>
                             <li>商空</li>
                             <li>热水器</li>
                             <li>厨电</li>
-                            <li>其他</li>
+                            <li>其他</li> -->
                         </ul>
                     </div>
                     <div class="nengli_bottom">

@@ -8,6 +8,8 @@ function loadTab2Data(){
 	standardDispersedStatus("myChart29","国家标准");
 	standardDispersedStatus("myChart30","行业标准");
 	standardDispersedStatus("myChart31","企业标准");
+	//不同产线的能力状态分布
+	abilityByProductLine();
 }
 function tab2IndicatorData(data){
 	//先找出最大值
@@ -26,22 +28,30 @@ function tab2IndicatorData(data){
 	}
 	return indicatorData;
 }
+
 function tab2DataData(data){
 	var indicatorData = [];
 	for(var i=0;i<data.length;i++) {
-		indicatorData.push(data.count);
+		indicatorData.push(data[i].count);
 	}
 	return indicatorData;
 }
+function tab2Lengend(data){
+	var legnend=[];
+	$.each(data,function(index,item){
+		legnend.push(item.type_name);
+	});
+	return legnend;
+}
 //标准数量分布情况
-function standardDispersedStatus(mychartId,typeName){
-	$.post(contextPath+'/lab/standardDispersedAjax',{"type":"0","typeName":typeName},function(data){
+function standardDispersedStatus(mychartId,filedVaule){
+	$.post(contextPath+'/lab/standardDispersedAjax',{"type":"0","filedVaule":filedVaule,"filed":"type_name"},function(data){
 		var myChart = echarts.init(document.getElementById(mychartId));
 		right_echarts.push(myChart);
 		myChart.setOption(getRadarEcharts());
 		myChart.setOption({
 		    title: {
-		        text: typeName,
+		        text: filedVaule,
 		        left: 'center',
 		        top: 'center',
 		        textStyle: {
@@ -103,10 +113,67 @@ function standardDispersedStatus(mychartId,typeName){
 	})
 }
 
-//能力状态
-function abilityStatus(){
-	$.post(contextPath+'/lab/abilityStatusAjax',{},function(data){
-		
+//不同产线的能力状态分布
+function abilityByProductLine(){
+	$.post(contextPath+'/lab/abilityByProductLineAjax',{},function(data){
+		$.each(data,function(index,item){
+			var chartIndex=32+index;
+			var myChart = echarts.init(document.getElementById("myChart"+chartIndex));
+			myChart.setOption(getBarEcharts());
+			right_echarts.push(myChart);
+			var lengendData=[];
+			if(index==0){
+				lengendData=tab2Lengend(item)
+			}
+			var seriesData=tab2DataData(item);
+			myChart.setOption({
+				yAxis: [
+				        {
+				        	type: 'category',
+				        	data:lengendData,
+				        	axisLine: {
+				        		show: false,
+				        	},
+				        	axisTick: {
+				        		show: false
+				        	}
+				        	
+				        }
+				        ],
+				        xAxis: [
+				                {
+				                	show: false,
+				                	type: 'value',
+				                	boundaryGap: false,
+				                }
+				                ],
+				                grid: {
+				                	x: '53%',
+				                	y: '0%',
+				                	y2: "0%"
+				                },
+				                series: [
+				                         {
+				                        	 type: "bar",
+				                        	 data: seriesData,
+				                        	 barWidth: 8,
+				                        	 label: {
+				                        		 normal: {
+				                        			 show: true,
+				                        			 position: 'right',
+				                        			 // formatter: "{a}%",
+				                        			 textStyle: {
+				                        				 fontSize: 10,
+				                        				 color: "#ff9933"
+				                        			 },
+				                        			 formatter: '{c}'
+				                        		 }
+				                        	 },
+				                         }
+				                         ]
+			});
+			
+		});
 	})
 }
 

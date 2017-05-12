@@ -2738,7 +2738,7 @@ myChart31.setOption({
 
 
 //能力状态 冰冷
-var myChart32 = echarts.init(document.getElementById("myChart32"));
+/*var myChart32 = echarts.init(document.getElementById("myChart32"));
 myChart32.setOption(getBarEcharts());
 myChart32.setOption({
     yAxis: [
@@ -2785,10 +2785,10 @@ myChart32.setOption({
             },
         }
     ]
-});
+});*/
 
 //能力状态 洗涤
-var myChart33 = echarts.init(document.getElementById("myChart33"));
+/*var myChart33 = echarts.init(document.getElementById("myChart33"));
 myChart33.setOption(getBarEcharts());
 myChart33.setOption({
     yAxis: [
@@ -2834,10 +2834,10 @@ myChart33.setOption({
             },
         }
     ]
-});
+});*/
 
 //能力状态 家空
-var myChart34 = echarts.init(document.getElementById("myChart34"));
+/*var myChart34 = echarts.init(document.getElementById("myChart34"));
 myChart34.setOption(getBarEcharts());
 myChart34.setOption({
     yAxis: [
@@ -2884,9 +2884,9 @@ myChart34.setOption({
         }
     ]
 });
-
+*/
 //能力状态 商空
-var myChart35 = echarts.init(document.getElementById("myChart35"));
+/*var myChart35 = echarts.init(document.getElementById("myChart35"));
 myChart35.setOption(getBarEcharts());
 myChart35.setOption({
     yAxis: [
@@ -2932,10 +2932,10 @@ myChart35.setOption({
             },
         }
     ]
-});
+});*/
 
 //能力状态 热水器
-var myChart36 = echarts.init(document.getElementById("myChart36"));
+/*var myChart36 = echarts.init(document.getElementById("myChart36"));
 myChart36.setOption(getBarEcharts());
 myChart36.setOption({
     yAxis: [
@@ -2982,9 +2982,9 @@ myChart36.setOption({
         }
     ]
 });
-
+*/
 //能力状态 厨电
-var myChart37 = echarts.init(document.getElementById("myChart37"));
+/*var myChart37 = echarts.init(document.getElementById("myChart37"));
 myChart37.setOption(getBarEcharts());
 myChart37.setOption({
     yAxis: [
@@ -3030,10 +3030,10 @@ myChart37.setOption({
             },
         }
     ]
-});
+});*/
 
 //能力状态 其他
-var myChart38 = echarts.init(document.getElementById("myChart38"));
+/*var myChart38 = echarts.init(document.getElementById("myChart38"));
 myChart38.setOption(getBarEcharts());
 myChart38.setOption({
     yAxis: [
@@ -3079,7 +3079,7 @@ myChart38.setOption({
             },
         }
     ]
-});
+});*/
 
 //数据结果 订单类别 整机
 var myChart39 = echarts.init(document.getElementById("myChart39"));
@@ -4117,7 +4117,7 @@ myChart49.setOption({
 var right_echarts=[myChart1,myChart2,myChart3,myChart4,myChart5,myChart6,myChart7,myChart8,myChart9,
                    myChart11,myChart12,myChart14,myChart15,myChart16,myChart17,myChart18,myChart19,
                    myChart22,myChart23,myChart24,myChart25,myChart26,myChart27
-                   ,myChart32,myChart33,myChart34,myChart35,myChart36,myChart37,myChart38,myChart39,myChart40,
+                   ,myChart39,myChart40,
                    myChart41,myChart42,myChart43,myChart44,myChart45,myChart46,myChart47,myChart48,myChart49,
                    ]
 //重置echart图标大小 在加载平面地图时被调用

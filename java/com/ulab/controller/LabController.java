@@ -1,5 +1,6 @@
 package com.ulab.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ public class LabController extends BaseController {
     	List<Record> productLine=DicModel.dao.findDicByType("line_type");
     	setAttr("labType", labType);
     	setAttr("productLine", productLine);
+    	setSessionAttr("labType", labType);
+    	setSessionAttr("productLine", productLine);
     	//实验室轮播信息
     	String sqlWhere=SqlUtil.commonWhereSql(this,null);
     	List<Record> labInfo=LabMapModel.dao.labShowFlatMap(sqlWhere);
@@ -202,8 +205,31 @@ public class LabController extends BaseController {
      */
     public void standardDispersedAjax(){
     	String type=getPara("type");
-    	String typeName=getPara("typeName");
-    	List<Record>  recode=LabDataResultModel.dao.dataResultBTypeAndName(type, typeName);
+    	String filedVaule=getPara("filedVaule");
+    	String filed=getPara("filed");
+    	List<Record>  recode=LabDataResultModel.dao.dataResultBTypeAndName(type,filed,filedVaule);
 		renderJson(recode);
+    }
+    /**
+     * 
+     * @time   2017年5月12日 上午7:45:55
+     * @author zuoqb
+     * @todo   不同产线的能力状态分布
+     * @param  
+     * @return_type   void
+     */
+    public void abilityByProductLineAjax(){
+    	List<Record> productLine=getSessionAttr("productLine");
+    	if(productLine==null){
+    		productLine=DicModel.dao.findDicByType("line_type");
+    	}
+    	String type=getPara("type","1");
+    	String filed=getPara("filed","product_code");
+    	List<List<Record>> map=new ArrayList<List<Record>>();
+    	for(Record r:productLine){
+    		String filedVaule=r.get("id").toString();
+    		map.add(LabDataResultModel.dao.dataResultBTypeAndName(type,filed,filedVaule));
+    	}
+		renderJson(map);
     }
 }
