@@ -21,7 +21,7 @@
     cursor: pointer;
     font-size: 1.4em;
 
-  
+
 }
 
 #right .lab{
@@ -40,11 +40,11 @@
     padding-top: 10%;
 }
 #right .lab .lab_name li{
-   float: left;
-   width: 25%;
-   text-align: center;
-   font-size: 0.8em;
-  
+    float: left;
+    width: 25%;
+    text-align: center;
+    font-size: 0.8em;
+
 }
 #right .lab .lab_icon{
     position: absolute;
@@ -59,12 +59,12 @@
     width: 25%;
     height: 60%;
     display: inline-block;
-   text-align: center;
+    text-align: center;
     font-size: 0.8em;
 
 }
 #right .lab .lab_icon li img{
-   width: 35%;
+    width: 35%;
     height: 100%;
 }
 /*鎬荤姸鎬�*/
@@ -94,7 +94,7 @@
     vertical-align: middle;
     color: white;
     font-size: 1.2em;
-    
+
 }
 .total_center .total_name{
     top: 35%;
@@ -143,7 +143,7 @@
     color: white;
     background: url("../img/TotalState/title-border.png") no-repeat;
     background-size: 100% 100%;
-    margin: 6% auto 1% auto;    
+    margin: 6% auto 1% auto;
     font-size:1.2em;
     padding: 0.2em;
 }
@@ -185,10 +185,10 @@
     font-size: 1.1em;
 }
 .total_top_2 .total_top_2_box > ul > li ul{
-	height:100%;
+    height:100%;
 }
 .total_top_2 .total_top_2_box > ul > li ul li{
-	height:24%;
+    height:24%;
 }
 .total_top_2_box > ul > li .progress {
     display: inline-block;
@@ -210,7 +210,7 @@
 
 .total_top_2_box > ul > li .bar_name {
     position: absolute;
-     right: 26%;
+    right: 26%;
     font-size: 0.8em;
     /*margin-top: 0em;*/
 }
@@ -369,7 +369,7 @@
     /*margin-left: 15%;*/
     /*background-color: plum;*/
     margin-left:10%;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 .echarts_title_left ul li {
@@ -378,7 +378,7 @@
 
 .echarts_title_left ul span {
     color: #ff9933;
-    font-size: 1.4em;
+    font-size: 1.2em;
 }
 
 #myChart5 {
@@ -695,7 +695,7 @@
     font-size: 0.8em;
 }
 /*.biaozhun_left_left>div>ul li:first-of-type{*/
-    /*font-size: 1.2em;*/
+/*font-size: 1.2em;*/
 /*}*/
 .biaozhun_left_left .biaozhun_world{
     top: 16%;
@@ -780,6 +780,7 @@
 .nengli_bottom{
     width: 100%;
     height: 65%;
+    padding-bottom: 2%;
 }
 .nengli_bottom ul{
     width: 95%;
@@ -797,19 +798,48 @@
 }
 .nengli_bottom ul .echarts_lines{
     width: 1px ;
-    height: 45%;
+    height: 40%;
     display: inline-block;
-    background-color: red;
+    background-color: #66ccff;
     position: absolute;
     top: 45%;
     left: 0;
 }
 .nengli_bottom ul .echarts_line1{
-    left: 18%;
+    left: 17%;
 }
+.nengli_bottom ul .echarts_line2{
+    left:29%;
+}
+.nengli_bottom ul .echarts_line3{
+    left: 41%;
+}
+.nengli_bottom ul .echarts_line4{
+    left: 53%;
+}
+.nengli_bottom ul .echarts_line5{
+    left: 65%;
+}
+.nengli_bottom ul .echarts_line6{
+    left: 77%;
+}
+.nengli_bottom ul .echarts_line7{
+    left: 89%;
+}
+
 .nengli_bottom ul li:first-of-type{
     width: 19%;
 }
+.yingjubei{
+    display: inline-block;
+    width: 4em;
+    position: absolute;
+    bottom: -24%;
+    left: -1.5em;
+    color: #66ccff;
+    font-size: 0.8em;
+}
+
 #myChart32,#myChart33,#myChart34,#myChart35,#myChart36,#myChart37,#myChart38{
     width: 100%;
     height: 100%;
@@ -1101,37 +1131,86 @@
     /*background: url("../img/TotalState/border-2-2.png") no-repeat;*/
     /*background-size: 98% 98%*/
 }
-.shuju_top_left{
+
+
+.shuju_apply_bottom_left {
     flex: 1;
+    /*background-color: pink;*/
+}
+
+.shuju_apply_bottom_right {
+    flex: 1;
+}
+
+.shuju_apply_bottom_pie {
+    width: 28%;
+    height: 65%;
+    /*background-color: yellow;*/
+    float: left;
+}
+
+.shuju_apply_bottom_bar1,.shuju_apply_bottom_bar2 {
+    width: 31%;
+    height: 65%;
+    float: left;
+}
+.shuju_apply_bottom_tab{
+    width: 9%;
+    height: 65%;
+    float: left;
+    background-color: transparent;
+    margin-right: 1%;
+
+}
+.shuju_apply_bottom_tab ul {
+    width: 100%;
+    height: 95%;
+    overflow-y: scroll;
+    padding-top: 11%;
+    background: url("../img/TotalState/scroll bar-border.png") no-repeat;
+    background-size: 100% 100%;
+}
+.shuju_apply_bottom_tab ul li{
+    width: 100%;
+    height: 20%;
+    display: inline-block;
+    color: #66CCFE;
+    font-size: 1em;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.shuju_apply_bottom_tab ::-webkit-scrollbar
+{
+    width: 10%;
+    height: 100%;
+    background-color: transparent;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+.shuju_apply_bottom_tab ::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+/*定义滑块 内阴影+圆角*/
+.shuju_apply_bottom_tab ::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
+    background-color: #66ccff;
+}
+
+
+.shuju_apply_bottom_right .shuju_apply_bottom_bar1{
+    width: 70%;
+}
+
+
+#myChart14,#myChart15,#myChart16,#myChart17,#myChart18,#myChart19 {
     width: 100%;
     height: 100%;
-
 }
-.shuju_top_pie{
-    width: 26%;
-    height: 100%;
-    float: left;
-}
-.shuju_top_bar1,.shuju_top_bar2{
-    width: 37%;
-    height: 100%;
-    float: left;
-}
-
-#myChart14,#myChart17{
-    margin-top: 15%;
-    width:17em;
-    height: 9.5em;
-    display: inline-block;
-    background-color: palegoldenrod;
-}
-#myChart15,#myChart16,#myChart18,#myChart19{
-    width: 20em;
-    height: 9em;
-    display: inline-block;
-    background-color: pink;
-}
-
 
 
 

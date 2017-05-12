@@ -1,0 +1,141 @@
+@charset "utf-8";
+
+
+
+.lab_main{
+	
+	 width:100%; 
+	display:flex;
+	flex-direction: column;
+	margin:1.5em auto;
+	
+	
+	
+	}
+	
+#labMain_cb_left .lab_title {
+    left: 7em;
+}
+.la_top{
+	flex:1;
+	margin: .2em .5em;
+	display:flex;
+	flex-direction: row;
+	
+	}
+.la_data_left{
+	flex:1;
+	margin:1em .5em .5em .5em;
+	background:url(../img/labMain/border-short%20.png)0 0 no-repeat;
+	background-size:100% 100%;
+	
+	}	
+.la_data_left h3{
+	color:#fff;
+	margin:.8em auto 0.5em;
+	text-align:center;
+	
+	}
+	
+.la_datal_content{
+	width:98%;
+	height:90%;
+	margin:1em auto;
+	font-size:0.8em;
+}	
+	
+.la_datal_legend{
+	float:left;
+	height:100%;
+	width:50%;
+	
+	}
+.la_data_left_data{
+	float:left;
+	width:50%;
+	height:80%;
+	
+}	
+
+
+	
+	
+.la_datal_legend ul li{
+	padding:0.5em 0.5em;
+	text-align:left;
+	white-space: nowrap;
+	
+	
+	}			
+	
+.la_data_echart{
+	height:100%;
+	width:100%;
+	}	
+	
+		
+.la_data_right{
+	flex:4;
+	margin:1em .5em .5em .5em;
+	background:url(../img/labMain/border-long.png)0 0 no-repeat;
+	background-size:100% 100%;
+	
+	
+	}	
+.la_data_right p{ text-align:center; font-size:.8em; margin-top:.5em}		
+.right_echart{
+	/*height:7.5em;
+	width:50em;
+	margin:1em;*/
+	width:95%;
+	height:95%;
+	
+	}
+.la_center{
+	flex:1;
+	margin: .2em .5em;
+	display:flex;
+	
+	}		
+.la_bottom{
+	flex:1;
+	margin: .2em .5em;
+	display:flex;
+	flex-direction: row;
+}	
+
+@media screen and (min-width:1920px){
+	
+	/*左侧图表高度*/
+.la_data_left_data{
+	float:left;
+	width:50%;
+	height:90%;
+	
+}
+#labMain_cb_left .lab_title {
+    left: 10em;
+}
+
+.la_datal_legend ul li{
+	padding:1em 1em;
+	
+	
+	}
+	
+}
+
+@media screen and (min-width:7680px){
+	
+	/*左侧图表高度*/
+.la_data_left_data{
+	float:left;
+	width:50%;
+	height:90%;
+	
+}
+#labMain_cb_left .lab_title {
+    left: 8em;
+}
+	
+}
