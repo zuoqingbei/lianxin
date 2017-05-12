@@ -532,7 +532,32 @@
 }
 #l .flat-left-bottom .myChart{
     height: 72%;
-    margin: 15% 2% 5%;
+    margin: 10% 2% 0.2%;
+}
+#l .flat-left-bottom p{
+    position: relative;
+    width: 76%;
+    left: 3.5em;
+    color: #6cf;
+}
+#l .flat-left-bottom p span{
+    position: relative;
+    font-size: .8em;
+}
+#l .flat-left-bottom p span:nth-of-type(1){
+    left:6.25%;
+}
+#l .flat-left-bottom p span:nth-of-type(2){
+    left:12.5%;
+}
+#l .flat-left-bottom p span:nth-of-type(3){
+    left:18.25%;
+}
+#l .flat-left-bottom p span:nth-of-type(4){
+    left:31.25%;
+}
+#l .flat-left-bottom p span:nth-of-type(5){
+    left:44.25%;
 }
 #l .flat-right-top .myChart{
     height: 80%;

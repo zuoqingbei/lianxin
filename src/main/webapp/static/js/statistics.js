@@ -128,8 +128,8 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-// 	                fontSize: bodyScale*7,
-	                fontSize: 6.666666666666,
+	                fontSize: bodyScale*7,
+	                // fontSize: 6,
 	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
                     baseline: 'top'
 	            }
@@ -299,6 +299,7 @@ function labPropertiesStatis(){
 		//右上角的图表
 	    myChartFlatRT.setOption(getLineEcharts());
 	    myChartFlatRT.setOption({
+            color: ['#66ccff'],//屏蔽引入getLineEcharts()造成的两种颜色
 	        tooltip: {
 	            trigger: 'axis'
 	        },
@@ -312,7 +313,7 @@ function labPropertiesStatis(){
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "40%",
+	        	 x: "42%",
 	             x2: "20%",
 	             y:"15%"
 	        },
@@ -351,7 +352,7 @@ function labPropertiesStatis(){
 	                	margin:bodyScale*2,
 	                    textStyle: {
 	                        color: "#66ccff",
-	                        fontSize: bodyScale*10
+	                        fontSize: bodyScale*8
 	                    }
 	                },
 	                nameGap: 10,
@@ -381,7 +382,7 @@ function labLifeCycleStatis(){
 		myChartFlatLB.clear();
 		myChartFlatLB.setOption(getAreaEcharts());
 		var colors = ['#00e673', '#66ccff'];
-		console.log(statisticLengend(data))
+		console.log(statisticLengend(data));
 	    myChartFlatLB.setOption({
 	        tooltip: {
 	            trigger: 'axis',
@@ -392,7 +393,8 @@ function labLifeCycleStatis(){
 	        grid: {
 	            left:"10%",
 	            right: '10%',
-	            top:"15%"
+	            top:"29%,",
+				bottom:"2%"
 	        },
 	        legend: {
 	        	   data:['实验室数量','检测订单量'],
@@ -425,11 +427,14 @@ function labLifeCycleStatis(){
 	        yAxis: [
 	            {
 	            	type: 'value',
-	            	//name: '实验室数量',
-	                min: 0,
+	            	name: '实验室数量     ',
+                    nameTextStyle:{
+	            		fontSize:bodyScale*5
+                    },
+                    nameGap:10,
+					min: 0,
 	                max: 500,
 	                axisLine: {
-
 	                    lineStyle: {
 	                        color: colors[0]
 	                    }
@@ -448,7 +453,11 @@ function labLifeCycleStatis(){
 	                }
 	            },{
 	            	 type: 'value',
-	                 //name: '检测订单量',
+	                 name: '检测订单量',
+                    nameTextStyle:{
+                        fontSize:bodyScale*5
+                    },
+                    nameGap:10,
 	                 min: 0,
 	                 max: 500,
 	                 position: 'right',
@@ -473,44 +482,49 @@ function labLifeCycleStatis(){
 	            }
 	        ],
 	        series: [
-	            {	 name:'实验室数量',
-	                type: 'line',
-	                max: 500,
-	                lineStyle:{
-	        			normal:{
-	        				width:0.5
-						}
-					},
-	                areaStyle: {
-	                    normal: {
-	                        color: {
-	                            type: 'linear',
-	                            x: 0,
-	                            y: 0,
-	                            x2: 0,
-	                            y2: 1,
-	                            colorStops: [{
-	                                offset: 0, color: 'rgba(102,204,255,0)' // 0% 处的颜色
-	                            }, {
-	                                offset: 1, color: 'rgba(102,204,255,0)' // 100% 处的颜色
-	                            }],
-	                            globalCoord: false // 缺省为 false
-	                        }
-	                    },
-	                },
+                {
+                    name:'实验室数量',
+                    type:'line',
+                    yAxisIndex: 1,
+                    hoverAnimation:false,
+                    data: statisticSeriesDataData(data),
+                    lineStyle:{
+                        normal:{
+                            width:1
+                        }
+                    },
+                    symbolSize:2,
 
-	                data: statisticSeriesDataData(data)
-	            },
+                    areaStyle: {
+                        normal: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(96,192,255,0)' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: 'rgba(96,192,255,0)' // 100% 处的颜色
+                                }],
+                                globalCoord: false // 缺省为 false
+                            }
+                        },
+                    },
+                },
 	            {
 	                name:'检测订单量',
 	                type:'line',
 	                yAxisIndex: 1,
+                    hoverAnimation:false,
 	                data:[26, 59, 90, 120, 126, 150, 175,220,230],
                     lineStyle:{
                         normal:{
-                            width:0.5
+                            width:1
                         }
                     },
+                    symbolSize:2,
 	                areaStyle: {
 	                    normal: {
 	                        color: {

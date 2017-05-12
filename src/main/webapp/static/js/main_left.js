@@ -37,14 +37,24 @@ function switchMapArea(charts) {
             $(this).attr("src", src)
                 .parent().siblings().find("img")
                 .attr("src", $(this).parent().siblings().find("img").attr("src").replace("on", "off"))
-            // var $chart = $("#chart");
             if ($left.find(".switch.sphere").is(":hidden")) {
-                $left.find(".switch.sphere").css("display", "flex").siblings().hide()
+                $left.find(".switch.sphere").css({"display": "flex"}).siblings().hide()
             } else {
                 $left.find(".flat .mapArea iframe").remove();
                 $left.find(".switch.flat").css("display", "flex").find(".mapArea").append(iframe).parent().parent()
                     .siblings().hide();
             }
+            /*          var $switchSphere = $left.find(".switch.sphere");
+
+            if ($left.find(".switch.sphere").is(":hidden")) {
+
+                $left.find(".switch.sphere").css({"display": "flex"}).siblings().hide()
+            } else {
+                $left.find(".flat .mapArea iframe").remove();
+                $left.find(".switch.flat").css("display", "flex").find(".mapArea").append(iframe).parent().parent()
+                    .siblings().hide();
+            }
+*/
         }
     });
 
