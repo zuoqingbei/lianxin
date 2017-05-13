@@ -58,12 +58,14 @@
             $(".box:eq(" + index + ")").addClass("selected").siblings().removeClass("selected");
         	resetSizeRight();
         	myChart2.resize();
-
+        	$('#right .lab').css("display",'block');
+        });
+        $(".tab-item").eq(0).click(function () {
+            $('#right .lab').css("display",'none');
         });
         $(".lab_item").click(function () {
             $(this).addClass("word_active").siblings().removeClass("word_active");
         	resetSizeRight();
-        	
         });
        
         loadTab1Data();

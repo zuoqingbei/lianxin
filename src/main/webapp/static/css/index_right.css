@@ -32,6 +32,7 @@
     right: 1%;
     color: #66CCFE;
     cursor: pointer;
+    display: none;
 }
 #right .lab .lab_name{
     width: 100%;
