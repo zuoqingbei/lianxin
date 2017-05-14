@@ -458,8 +458,8 @@ myChart3.setOption({
 
 
 //一次合格率 同心圆
-var myChart4 = echarts.init(document.getElementById("myChart4"));
-myChart4.setOption(getCenterPie());
+/*var myChart4 = echarts.init(document.getElementById("myChart4"));
+myChart4.setOption(getCenterPie());*/
 var dataStyle = {
     normal: {
         label: {show:false},
@@ -476,7 +476,7 @@ var placeHolderStyle = {
         color: 'rgba(0,0,0,0)'
     }
 };
-myChart4.setOption({
+/*myChart4.setOption({
     legend:{
         data:['整机','模块']
     },
@@ -525,7 +525,7 @@ myChart4.setOption({
         }
     ]
 
-});
+});*/
 
 //问题闭环率
 var myChart5 = echarts.init(document.getElementById("myChart5"));
@@ -582,7 +582,7 @@ myChart5.setOption({
 });
 
 //订单及时率
-var myChart6 = echarts.init(document.getElementById("myChart6"));
+/*var myChart6 = echarts.init(document.getElementById("myChart6"));
 myChart6.setOption(getLineEcharts());
 myChart6.setOption({
     legend: {
@@ -643,7 +643,7 @@ myChart6.setOption({
         }
     ]
 
-});
+});*/
 
 
 //用户满意度
@@ -2946,12 +2946,13 @@ myChart38.setOption({
 });*/
 
 //数据结果 订单类别 整机
-var myChart39 = echarts.init(document.getElementById("myChart39"));
+/*var myChart39 = echarts.init(document.getElementById("myChart39"));
 myChart39.setOption(getScatterEcharts());
-var data = [[0, 0, 5], [0, 1, 10], [0, 2, 2], [0, 3, 5], [0, 4, 9], [0, 5, 6], [1, 0, 7], [1, 1, 5], [1, 2, 6], [1, 3, 8], [1, 4, 1], [2, 0, 1], [2, 1, 1], [2, 2, 4], [2, 3, 8], [2, 4, 8], [3, 0, 7], [3, 1, 3], [3, 2, 7], [3, 3, 11], [3, 4, 3], [4, 0, 8], [4, 1, 3], [4, 2, 4], [4, 3, 8], [4, 4, 4], [5, 0, 2], [5, 1, 5], [5, 2, 2], [5, 3, 5], [5, 4, 2], [6, 0, 5], [6, 1, 6], [6, 2, 1], [6, 3, 9], [6, 4, 12]];
+var data = [[0, 0, 5], [0, 1, 10], [0, 2, 2], [0, 3, 5], [0, 4, 9], [0, 5, 6],[1, 0, 7], [1, 1, 5], [1, 2, 6], [1, 3, 8], [1, 4, 1],[2, 0, 1], [2, 1, 1], [2, 2, 4], [2, 3, 8], [2, 4, 8],[3, 0, 7], [3, 1, 3], [3, 2, 7], [3, 3, 11], [3, 4, 3],[4, 0, 8], [4, 1, 3], [4, 2, 4], [4, 3, 8], [4, 4, 4],[5, 0, 2], [5, 1, 5], [5, 2, 2], [5, 3, 5], [5, 4, 2],[6, 0, 5], [6, 1, 6], [6, 2, 1], [6, 3, 9], [6, 4, 12]];
 data = data.map(function (item) {
     return [item[1], item[0], item[2]];
 });
+console.log(data)
 myChart39.setOption({
     color: ["#66ccff"],
     grid: {
@@ -3023,10 +3024,10 @@ myChart39.setOption({
         data: data
     }]
 });
-
+*/
 
 //数据结果 订单类别 模块
-var myChart40 = echarts.init(document.getElementById("myChart40"));
+/*var myChart40 = echarts.init(document.getElementById("myChart40"));
 myChart40.setOption(getScatterEcharts());
 var data = [[0, 0, 5], [0, 1, 10], [0, 2, 2], [0, 3, 5], [0, 4, 9], [1, 0, 7], [1, 1, 5], [1, 2, 6], [1, 3, 8], [1, 4, 1], [2, 0, 1], [2, 1, 1], [2, 2, 4], [2, 3, 8], [2, 4, 8], [3, 0, 7], [3, 1, 3], [3, 2, 7], [3, 3, 11], [3, 4, 3], [4, 0, 8], [4, 1, 3], [4, 2, 4], [4, 3, 8], [4, 4, 4], [5, 0, 2], [5, 1, 5], [5, 2, 2], [5, 3, 5], [5, 4, 2], [6, 0, 5], [6, 1, 6], [6, 2, 1], [6, 3, 9], [6, 4, 12]];
 data = data.map(function (item) {
@@ -3101,11 +3102,11 @@ myChart40.setOption({
     series: [{
         data: data,
     }]
-});
+});*/
 
 
 //数据结果 一次合格率 整机
-var myChart41 = echarts.init(document.getElementById("myChart41"));
+/*var myChart41 = echarts.init(document.getElementById("myChart41"));
 myChart41.setOption(getAreaEcharts());
 myChart41.setOption({
     legend: {
@@ -3151,11 +3152,11 @@ myChart41.setOption({
         }
     ]
 
-});
+});*/
 
 
 //数据结果 一次合格率 模块
-var myChart42 = echarts.init(document.getElementById("myChart42"));
+/*var myChart42 = echarts.init(document.getElementById("myChart42"));
 myChart42.setOption(getAreaEcharts());
 myChart42.setOption({
     legend: {
@@ -3200,7 +3201,7 @@ myChart42.setOption({
         }
     ]
 
-});
+});*/
 
 
 //数据结果 问题闭环率 整机
@@ -3506,7 +3507,7 @@ myChart44.setOption({
 
 
 //数据结果 订单及时率 雷达图
-var myChart45 = echarts.init(document.getElementById("myChart45"));
+/*var myChart45 = echarts.init(document.getElementById("myChart45"));
 myChart45.setOption(getRadarEcharts());
 myChart45.setOption({
     legend: {
@@ -3593,11 +3594,11 @@ myChart45.setOption({
             ]
         }
     ]
-});
+});*/
 
 
 //数据结果 订单及时率 折线图
-var myChart46 = echarts.init(document.getElementById("myChart46"));
+/*var myChart46 = echarts.init(document.getElementById("myChart46"));
 myChart46.setOption(getLineEcharts());
 myChart46.setOption({
     color: ['#66ccff', '#00e673', '#4397f7', '#ff9933', '#66ffcc', '#ffff99', '#ff6666'],
@@ -3725,7 +3726,7 @@ myChart46.setOption({
         }
     ]
 
-});
+});*/
 
 //数据结果 检测满意度 整机
 var myChart47 = echarts.init(document.getElementById("myChart47"));
@@ -3978,11 +3979,10 @@ myChart49.setOption({
 //}
 //console.log(str)
 
-var right_echarts=[myChart1,myChart2,myChart3,myChart4,myChart5,myChart6,myChart7,myChart8,myChart9,
+var right_echarts=[myChart1,myChart2,myChart3,myChart5,myChart7,myChart8,myChart9,
                    myChart11,myChart12,myChart14,myChart15,myChart16,myChart17,myChart18,
-                   myChart22,myChart23,myChart24,myChart25,myChart26,myChart27
-                   ,myChart39,myChart40,
-                   myChart41,myChart42,myChart43,myChart44,myChart45,myChart46,myChart47,myChart48,myChart49,
+                   myChart22,myChart23,myChart24,myChart25,myChart26,myChart27,
+                   myChart43,myChart44,myChart47,myChart48,myChart49,
                    ]
 //重置echart图标大小 在加载平面地图时被调用
 function resetSizeRight() {

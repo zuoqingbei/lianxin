@@ -382,13 +382,20 @@ function labLifeCycleStatis(){
 		myChartFlatLB.clear();
 		myChartFlatLB.setOption(getAreaEcharts());
 		var colors = ['#00e673', '#66ccff'];
-		console.log(statisticLengend(data));
 	    myChartFlatLB.setOption({
 	        tooltip: {
 	            trigger: 'axis',
 	            axisPointer: {
 	                type: 'cross'
-	            }
+	            },
+	            formatter: function(a){  
+	            	var r=a[0].name+"</br>"  
+                    +a[0].seriesName+':'+a[0].value  +"</br>" ;
+	            	if(a.length>0){
+	            		r+=a[1].seriesName+':'+parseFloat(a[1].value)*100  +"</br>"  ;
+	            	}
+                    return r;  
+                },  
 	        },
 	        grid: {
 	            left:"10%",
@@ -453,7 +460,7 @@ function labLifeCycleStatis(){
 	                }
 	            },{
 	            	 type: 'value',
-	                 name: '检测订单量',
+	                 name: '检测订单量(百)',
                     nameTextStyle:{
                         fontSize:bodyScale*5
                     },
@@ -518,7 +525,7 @@ function labLifeCycleStatis(){
 	                type:'line',
 	                yAxisIndex: 1,
                     hoverAnimation:false,
-	                data:[26, 59, 90, 120, 126, 150, 175,220,230],
+	                data:[47.39, 202.33, 56.83,3.81, 168.01, 28.39, 7.59],
                     lineStyle:{
                         normal:{
                             width:1
