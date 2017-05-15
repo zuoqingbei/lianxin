@@ -44,31 +44,33 @@ a, a:hover {
 /*content top star*/
 .labMain_content_top {
     height: 10%;
-    background: url(../img/labMain/labtitle_bg.png) 0 0 no-repeat;
-    background-size: 100% 100%;
+    /*background: url(../img/labMain/labtitle_bg.png) 0 0 no-repeat;
+    background-size: 100% 100%;*/
+    background: url(../img/labMain/labtitle_bg.png) center center no-repeat;
+    background-size: cover;
     position: relative;
 
 }
 
 .labMain_content_top h1 {
-    width: 100%;
-    position: relative;
 
     font-size: 2em;
     letter-spacing: .05em;
     color: #66CCFE;
-    vertical-align: middle;
     text-align: center;
-    padding-top: 1em;
+    line-height: 3;
 }
-
-.labMain_ct_right {
+.labMain_ct_right{
     position: absolute;
-    top: 0.5em;
-    right: 10em;
     text-align: center;
+    top: 2em;
 }
-
+.labMain_ct_right:nth-of-type(1) {
+    right: 4em;
+}
+.labMain_ct_right:nth-of-type(2) {
+    right: 13em;
+}
 .labMain_ct_right img {
     width: 1.8em;
     height: 1.8em;
