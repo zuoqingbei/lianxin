@@ -2,322 +2,433 @@
 /* CSS Document */
 
 /**实验室公共布局css 放公共数据*/
-/*清除浮动代码*/ 
-.clearfloat:after{display:block;clear:both;content:"";visibility:hidden;height:0;line-height:0;}
-.clearfloat{zoom:1}
+/*清除浮动代码*/
+.clearfloat:after {
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0;
+    line-height: 0;
+}
 
-	
+.clearfloat {
+    zoom: 1
+}
 
-body{
-	color:#64ccff;
-	}
-a,a:hover{color:#64ccff;}	
-.lab_title,.lab_one_title,lab_two_title,lab_three_title{
-	color:#fff;
-	
-	}
-/**中海实验室  labMain start**/	
+body {
+    color: #64ccff;
+}
+
+a, a:hover {
+    color: #64ccff;
+}
+
+.lab_title, .lab_one_title, lab_two_title, lab_three_title {
+    color: #fff;
+
+}
+
+/**中海实验室  labMain start**/
 /*content star*/
-.labMain_content{
-	
-	/*width:133%;*/
-	height:100%;
-  background:url(../img/bg_star2.jpg) center center no-repeat;
-	background-size:cover;
-	
-	}
+.labMain_content {
+    /*width:133%;*/
+    height: 100%;
+    background: url(../img/bg_star2.jpg) center center no-repeat;
+    background-size: cover;
+
+}
+
 /*content end*/
 
 /*content top star*/
-.labMain_content_top{
-	height:10%;
-	background:url(../img/labMain/labtitle_bg.png) 0 0 no-repeat;
-   background-size:100% 100%;
-   position:relative;
-	
-	
-	}
-
-	
-
-
-	
-.labMain_content_top h1 {
-	width:100%;
+.labMain_content_top {
+    height: 10%;
+    background: url(../img/labMain/labtitle_bg.png) 0 0 no-repeat;
+    background-size: 100% 100%;
     position: relative;
-	
-    font-size: 2em;	
+
+}
+
+.labMain_content_top h1 {
+    width: 100%;
+    position: relative;
+
+    font-size: 2em;
     letter-spacing: .05em;
     color: #66CCFE;
-	vertical-align:middle;
-   text-align:center;
-	  padding-top:1em;
+    vertical-align: middle;
+    text-align: center;
+    padding-top: 1em;
 }
 
-	
-	
-	
-.labMain_ct_right{
-	position:absolute;
-	top:0.5em;
-	right:10em;
-	text-align:center;
-	}		
-.labMain_ct_right img{
-	width:1.8em;
-	height:1.8em;
-	margin-bottom:.5em;
-	
-	}	
-/*content bottom star*/	
-.labMain_content_bottom{
-	height:90%;	
-	display: flex;
+.labMain_ct_right {
+    position: absolute;
+    top: 0.5em;
+    right: 10em;
+    text-align: center;
+}
+
+.labMain_ct_right img {
+    width: 1.8em;
+    height: 1.8em;
+    margin-bottom: .5em;
+
+}
+
+/*content bottom star*/
+.labMain_content_bottom {
+    height: 90%;
+    display: flex;
     flex-direction: row;
-	
-	
 }
 
-.labMain_cb_left{
-	flex:3;
-	background:url(../img/labMain/lab_left_border.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	position:relative;
-	margin:.8em 1em;
-	display:flex;
-	flex-direction: row;
-	}
- .lab_title{
-	font-size:1.3em;
-	position:absolute;
-	top:.5em;
-	left:9em;
-	
-	
-	}
-.labMain_cbl_one{
-	flex:1;
-	height:100%;
-	
-	
-}
-.labMain_cbl_one img{
-	width:90%;
-	margin:4em 3em ;
-	vertical-align:middle;
-	
-}
-.labMain_cbl_two{
-    flex:1;	
-	
-	height:100%;
-	display:flex;
-	flex-direction: column;
-	
+.labMain_cb_left {
+    flex: 3;
+    background: url(../img/labMain/lab_left_border.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    margin: .8em 1em;
+    display: flex;
+    flex-direction: row;
 }
 
-.labMain_cblt_top{
-	flex:1;
-	margin:1em;
-	display:flex;
-	flex-direction: column;
+.lab_title {
+    font-size: 1.3em;
+    position: absolute;
+    top: .5em;
+    left: 9em;
 }
-.labMain_cblt_tone{
-	flex:1;
-	
-	}
-
-	
-
-.labMain_cblt_tone h3,.labMain_cblt_ttwo h3{
-	font-size:1.2em;
-	margin:2em;
-	
-	height:3em;
-	line-height:3em;
-	width:10em;
-	background:url(../img/sheshiState/gznx-bg.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	padding-left:3em;
-	
-	
-	}
-.labMain_cblt_tone p,.labMain_cblt_ttwo p{
-	margin:1em;
-	
-	}
-.labMain_cblt_ttwo{
-	flex:2;
-	/*background-color:#FC6;*/
-	
-	}		
-.labMain_cblt_bottom{
-	flex:1;
-	/*background:red;*/
-	margin:1em;
-	
-	
-	
-	}	
-.labMain_cb_right{
-	flex:1;
-	display:flex;
-	flex-direction: column;
-	
-	}
-.labMain_cbr_one{
-	flex:1;
-	display:flex;
-	flex-direction: row;
-	margin:0.8em 1em .4em;
-	background:url(../img/labMain/lab_right_border.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	position:relative;
-	
-	
-	}
-.labMain_cb_right h3{
-	font-size:1.2em;
-	
-	}	
-.lab_one_title{
-	position:absolute;
-	left:13%;
-	top:3%;
-	
-	
-	}	
-.labMain_cbr_two{
-	flex:1;
-		display:flex;
-	flex-direction: row;
-	background:url(../img/labMain/lab_right_border.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	margin:0.4em 1em;
-	position:relative;
-	
-	
-	}
-.labMain_cbr_three{
-	flex:1;
-		display:flex;
-	flex-direction: row;
-	background:url(../img/labMain/lab_right_border.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	margin:0.4em 1em .8em;
-	position:relative;
-	
-	
-	}
-	
-.labMain_cbro_ul{
-	flex:2;
-	font-size:1em;
-	
-	
-	
-	
-	
+.zhbr_lab{
+    height: 90%;
+    width: 100%;
+    padding-top: 2%;
 }
-	
-.labMain_cbro_ul ul{
-	margin:3em auto;
-	
-	width:100%;
-	height:70%;
-	padding-top:2em;
-	
-	
-	}
-	
-	
-.labMain_cbro_ul ul li{
-	/*padding:.5em .1em;
-	width:100%;
-	margin:.5em;
-	text-align:center;*/
-	
-	/*margin: 0.5em 0.4em;
-	padding:0.5em 0.5em;*/
-	height: 30%;
-	padding:0em 1.5em;
+.zhbr_lab .labMain_cbl_one {
+    height: 100%;
+    width: 50%;
+    float: left;
+
+}
+
+.labMain_cbl_one img {
+    width: 90%;
+    margin: 4em 3em;
+    vertical-align: middle;
+
+}
+
+.zhbr_lab .labMain_cbl_two {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    float: left;
+    flex-direction: column;
+
+}
+
+.labMain_cblt_top {
+    flex: 1;
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.labMain_cblt_tone {
+    flex: 1;
+
+}
+
+.labMain_cblt_tone h3, .labMain_cblt_ttwo h3 {
+    font-size: 1.2em;
+    margin: 2em;
+
+    height: 3em;
+    line-height: 3em;
+    width: 10em;
+    background: url(../img/sheshiState/gznx-bg.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+    padding-left: 3em;
+
+}
+
+.labMain_cblt_tone p, .labMain_cblt_ttwo p {
+    margin: 1em;
+
+}
+
+.labMain_cblt_ttwo {
+    flex: 2;
+    /*background-color:#FC6;*/
+
+}
+
+.labMain_cblt_bottom {
+    flex: 1;
+    /*background:red;*/
+    margin: 1em;
+
+}
+
+.labMain_cb_right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.labMain_cbr_one {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    margin: 0.8em 1em .4em;
+    background: url(../img/labMain/lab_right_border.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+
+}
+
+.labMain_cb_right h3 {
+    font-size: 1.2em;
+
+}
+
+.lab_one_title {
+    position: absolute;
+    left: 13%;
+    top: 3%;
+
+}
+
+.labMain_cbr_two {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    background: url(../img/labMain/lab_right_border.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+    margin: 0.4em 1em;
+    position: relative;
+
+}
+
+.labMain_cbr_three {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    background: url(../img/labMain/lab_right_border.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+    margin: 0.4em 1em .8em;
+    position: relative;
+
+}
+
+.labMain_cbro_ul {
+    flex: 2;
+    font-size: 1em;
+
+}
+
+.labMain_cbro_ul ul {
+    margin: 3em auto;
+
+    width: 100%;
+    height: 70%;
+    padding-top: 2em;
+
+}
+
+.labMain_cbro_ul ul li {
+    /*padding:.5em .1em;
+    width:100%;
+    margin:.5em;
+    text-align:center;*/
+
+    /*margin: 0.5em 0.4em;
+    padding:0.5em 0.5em;*/
+    height: 30%;
+    padding: 0em 1.5em;
     overflow: hidden;
     /*text-overflow: ellipsis;*/
     white-space: nowrap;
 }
-.labMain_cbro_ul  .li_bg{
-	width:1.8em;
-	height:1.8em;
-	background:red;
-	float:left;
-	background:url(../img/labMain/lab_status.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	margin-right:.4em;
-	
-	
-	}
-.labMain_cbro_ul  .li_bg_01{
-	background:url(../img/labMain/lab_status.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	
-	}	
-.labMain_cbro_ul  .li_bg_02{
-	background:url(../img/labMain/sb.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	
-	}	
-.labMain_cbro_ul  .li_bg_03{
-	background:url(../img/labMain/dd.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	
-	}
-.labMain_cbro_ul  .li_bg_04{
-	background:url(../img/labMain/Pass%20rate.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	
-	}	
-.labMain_cbro_ul  .li_bg_05{
-	background:url(../img/labMain/on-time%20rate.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	
-	}	
-.labMain_cbro_ul  .li_bg_06{
-	background:url(../img/labMain/Satisfaction.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	
-	}		
-.labMain_cbro_ul  .li_bg_07{
-	background:url(../img/labMain/surveillance.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	
-	}	
-.labMain_cbro_ul  .li_bg_08{
-	background:url(../img/labMain/curve.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	
-	}			
 
-.labMain_cbro_ul ul li a{
-	text-align:left;
-	font-size:1.1em;
-	
-	
-	}
-	
-	
+.labMain_cbro_ul .li_bg {
+    width: 1.8em;
+    height: 1.8em;
+    background: red;
+    float: left;
+    background: url(../img/labMain/lab_status.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+    margin-right: .4em;
+
+}
+
+.labMain_cbro_ul .li_bg_01 {
+    background: url(../img/labMain/lab_status.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.labMain_cbro_ul .li_bg_02 {
+    background: url(../img/labMain/sb.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.labMain_cbro_ul .li_bg_03 {
+    background: url(../img/labMain/dd.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.labMain_cbro_ul .li_bg_04 {
+    background: url(../img/labMain/PassRate.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.labMain_cbro_ul .li_bg_05 {
+    background: url(../img/labMain/on-timeRate.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.labMain_cbro_ul .li_bg_06 {
+    background: url(../img/labMain/Satisfaction.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.labMain_cbro_ul .li_bg_07 {
+    background: url(../img/labMain/surveillance.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.labMain_cbro_ul .li_bg_08 {
+    background: url(../img/labMain/curve.png) 0 0 no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.labMain_cbro_ul ul li a {
+    text-align: left;
+    font-size: 1.1em;
+
+}
+
 .labMain_cbr_three ul {
     padding-top: 4em;
 }
 
-.labMain_cbr_three 	 .labMain_cbro_ul ul li{
-	padding:0em 1.5em;
-	height:30%;
-	}	
- 		
-.labMain_cbro_content{
-	flex:4;
-	height:70%;	
-	border:1px solid #00ccff;
-	margin:3em 1em 1em 1em;
+.labMain_cbr_three .labMain_cbro_ul ul li {
+    padding: 0em 1.5em;
+    height: 30%;
+}
 
-	}
+.labMain_cbro_content {
+    flex: 4;
+    height: 75%;
+    /*border: 1px solid #00ccff;*/
+    margin: 3em 1em 1em 1em;
+}
+
+/**中海实验室 labMain end**/
+/*
+@media screen and (min-width: 1920px) {
+
+    body {
+        font-size: 16px;
+    }
+
+    .labMain_content_top h1 {
+        padding-top: 1.2em;
+    }
+
+    .labMain_ct_right {
+        top: 1em;
+    }
+
+    .labMain_cb_left .lab_title {
+        font-size: 1.3em;
+        position: absolute;
+        top: 2%;
+        left: 11%;
+
+    }
+
+    .labMain_cbro_ul ul {
+        margin: 4em auto;
+
+    }
+
+    .labMain_cbro_ul ul li {
+
+        margin: 0.5em 1em;
+        padding: 1em 0;
+    }
+
+    .lab_one_title {
+        left: 5.5em;
+        top: .6em;
+    }
+
+    .labMain_cbro_content {
+        margin: 4em 1em 1em 1em;
+    }
+
+}
+
+@media screen and (min-width: 7680px) {
+    body {
+        font-size: 62px;
+    }
+
+    .labMain_content_top h1 {
+        padding-top: 0.8em;
+    }
+
+    .labMain_cbl_one img {
+
+        margin: 3em;
+
+    }
+
+    .labMain_cb_left .lab_title {
+        font-size: 1.3em;
+        position: absolute;
+        top: 0.3em;
+        left: 7em;
+
+    }
+
+    .labMain_cbro_ul ul {
+        margin: 3em auto;
+
+    }
+
+    .labMain_cbro_ul ul li {
+
+        margin: 0.5em 1em;
+        padding: 0.5em 0;
+    }
+
+    .labMain_cbro_ul ul li a {
+        font-size: 1em;
+        text-align: left;
+
+    }
+
+    .lab_one_title {
+        position: absolute;
+        left: 4em;
+        top: 0.3em;
+
+    }
+
+    .labMain_cbro_content {
+        margin: 3em 1em 1em 1em;
+    }
+
+}
+*/

@@ -6,77 +6,43 @@
     <link rel="stylesheet" href="../static/asserts/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/common.css">
     <link rel="stylesheet" href="../static/css/labMain.css">
-    <link rel="stylesheet" href="../static/css/labLine.css">
 </head>
-
 <body>
 <div class="labMain_content">
     <div class="labMain_content_top">
-        <h1>中海博瑞介绍</h1>
+        <h1>中海博睿介绍</h1>
         <div class="labMain_ct_right">
-            <p><img src="../static/img/labMain/home.png"></p>
+            <p><img src="${contextPath!}/static/img/labMain/home.png"></p>
             <h3>中海博睿实验室</h3>
         </div>
+        <div>
+        </div>
     </div><!--头部content_top-->
-
     <div class="labMain_content_bottom">
-
         <div class="labMain_cb_left">
-            <h3 class="lab_title shishijiance">实时监测</h3>
-            <div class="shishi_left">
-                <div class="sheshi_tab">视频监控</div>
-                <div class="sheshi_tab">曲线监控</div>
-                <div class="sheshi_tab_list">
-                    <ul>
-                        <li><span></span><a href="#">实验室1</a>
-                            <ul class="taiwei_hide">
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                            </ul>
-
-                        </li>
-
-                        <li><span></span><a href="#">实验室1</a>
-                            <ul class="taiwei_hide">
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                            </ul>
-                        </li>
-                        <li><span></span><a href="#">实验室1</a>
-                            <ul class="taiwei_hide">
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                                <li>台位A3</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+            <h3 class="lab_title">中海博睿实验室</h3>
+            <div class="labMain_cbl_one">
+                <img src="${contextPath!}/static/img/labMain/lab_com.jpg"/>
             </div>
-            <div class="shishi_right shishi_right_show">
-                <div class="sheshi_right_left">
-                    <div id="main1"></div>
-                    <div id="main2"></div>
+            <div class="labMain_cbl_two">
+                <div class="labMain_cblt_tone">
+                    <h3>基本介绍</h3>
+                    <p>实验室建成时间为20xx年，占地面积为12000平方米，实验室共25个，高、精、尖专业测试设备800余套</p>
                 </div>
-                <div class="sheshi_right_right">
-                    <ul id="legend_ul">
-                    </ul>
-                </div>
-            </div>
-            <div class="shishi_right"></div>
+                <div class="labMain_cblt_ttwo">
+                    <h3>监测项目</h3>
+                    <p>可进行电子电器产品的运输、安全、性能、EMC、噪音、可靠性等测试及零部件的性能、材料、ROHS等500多项标
+                        准2000多个项目的测试。</p>
 
+                    <p>公司具有完善的环境可靠性试验能力，人工气候室可以模拟再现自然界的各种严酷气候环境，全球环境室可以模拟热
+                        带、寒带、温带各种气候变化，从而提升产品适应能力。
+                    </p>
+                    <p>
+                        可靠性试验室通过输出顾客化的加速试验方案并验证，从而优化设计提高产品可靠性。
+                    </p>
+                </div>
+            </div><!--labMain_cbl_two-->
         </div><!--labMain_cb_left-->
-
         <div class="labMain_cb_right">
             <div class="labMain_cbr_one">
                 <h3 class="lab_one_title">运营状态</h3>
@@ -88,11 +54,11 @@
                     </ul>
                 </div><!--labMain_cbro_ul-->
                 <div class="labMain_cbro_content">
+                    dddd
                     <div></div>
                 </div><!--labMain_cbr_content-->
             </div><!--labMain_cbr_one-->
             <div class="labMain_cbr_two">
-
                 <h3 class="lab_one_title">数据分析</h3>
                 <div class="labMain_cbro_ul">
                     <ul>
@@ -109,56 +75,38 @@
                 <h3 class="lab_one_title">实施监测</h3>
                 <div class="labMain_cbro_ul">
                     <ul>
-
+                        <li><span></span></li>
                         <li><span class="li_bg li_bg_07"></span><a>视频监控</a></li>
                         <li><span class="li_bg li_bg_08"></span><a>曲线监控</a></li>
-                        <li><span></span></li>
                     </ul>
                 </div><!--labMain_cbro_ul-->
-
                 <div class="labMain_cbro_content">
                     <div></div>
-
                 </div><!--labMain_cbr_content-->
-
             </div><!--labMain_cbr_three-->
-
         </div>
         <!--labMain_cb_right-->
-
     </div><!--content_bottom-->
-
 </div><!--content-->
-
 </body>
 </html>
-
 <script src="../static/asserts/js/jquery-2.2.4.js"></script>
 <script src="../static/asserts/echarts/echarts-3.5.2.js"></script>
-<script src="../static/js/centerLab.js"></script>
-
 <script>
-
     var bodyScale = 1;//原始比例1
     $(document).ready(function (e) {
         pageResize();
         function pageResize() {
             var h = $(window).height();
             var w = h * 16 * 4 / (9 * 3);
-
             // $("#labMain_content").css("width", h * 16 * 7 / (9 * 3));
             $(".labMain_content").css("width", h * 16 * 4 / (9 * 3));
             var bodyFontSize = h / 638 * 100 + "%";
+
             bodyScale = h / 638;
             $("body").css("font-size", bodyFontSize);
-//            console.log("屏幕高度：" + h + ", body字号：" + bodyFontSize)
+            console.log("屏幕高度：" + h + ", body字号：" + bodyFontSize)
         }
-        //结构不要改呦
-        $(".sheshi_tab").eq(0).click(function () {
-            $('.labMain_cb_left .shishi_right').css('display','block').siblings().eq(2).css('display','none');
-        });
-        $(".sheshi_tab").eq(1).click(function () {
-            $('.labMain_cb_left .shishi_right').css('display','block').siblings().eq(3).css('display','none');
-        })
+
     });
 </script>

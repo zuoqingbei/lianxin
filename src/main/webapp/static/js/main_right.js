@@ -855,7 +855,7 @@ myChart10.setOption({
     // },
     xAxis: [
         {
-            data: [1,2,3,4,5,6,7,8,9,10,11,12]
+            data: [1,2,3,4,5,6,7,8,9,10,11,12],
         }
     ],
     series: [
@@ -870,12 +870,12 @@ myChart10.setOption({
             },
             symbolSize:2,
 //            areaStyle: {normal: {}},
-            data: [68, 78, 95, 121, 148, 180, 140, 118,109,76,64,55]
+            data: [68, 78, 95, 121, 148, 180, 140, 118,109,76,64,55],
+
         },
         {
             name:'数量',
             type: 'bar',
-
 //            areaStyle: {normal: {}},
             data: [68, 78, 95, 121, 135, 150, 145, 118,109,76,64,55]
         }
@@ -958,7 +958,7 @@ myChart12.setOption({
         x: "12%",
         x2: "15%",
         y: '20%',
-        y2: "20%"
+        y2: "22%"
     },
     yAxis: [
         {
@@ -3115,7 +3115,7 @@ myChart41.setOption({
         itemHeight: 6 //图例标记的图形高度
     },
     grid: {
-        x: 5,
+        x: 7,
         y: 28
     },
     xAxis: [

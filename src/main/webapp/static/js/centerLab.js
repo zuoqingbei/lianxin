@@ -1,3 +1,276 @@
+// 数据分析
+var bodyScale = 1;//原始比例1
+    //左
+    var chartone = echarts.init(document
+        .getElementById("echart_one"));
+    chartone.setOption(initone());
+    //右
+    var charttwo = echarts.init(document
+        .getElementById("echart_two"));
+    charttwo.setOption(getBarEcharts());
+    charttwo.setOption(inittwo());
+
+    //左
+    var chartthree = echarts.init(document
+        .getElementById("echart_three"));
+    chartthree.setOption(initone());
+    //右
+    var chartfour = echarts.init(document
+        .getElementById("echart_four"));
+    chartfour.setOption(getAreaEcharts());
+    chartfour.setOption(initfour());
+
+    //左
+    var chartfive = echarts.init(document
+        .getElementById("echart_five"));
+    chartfive.setOption(initone());
+    //右
+    var chartsix = echarts.init(document
+        .getElementById("echart_six"));
+    chartsix.setOption(getBarEcharts());
+    chartsix.setOption(inittwo());
+    //$("#labMain_cbro_content").load("labAnalysis_small.html");
+    // document.getElementById("labMain_cbro_content").innerHTML = '<object type="text/html" data="labAnalysis_small.html" width="100%" height="100%"></object>';
+
+function initone() {
+    var labelFromatter = {
+        normal: {
+            label: {
+                formatter: function (params) {
+                    return 100 - params.value + '%'
+                },
+            },
+            labelLine: {
+                show: false
+            }
+        },
+    };
+    //5
+    var labelTop = {
+        normal: {
+            color: '#66ccff',
+            label: {
+                show: true,
+                position: 'bottom',
+                formatter: '{b}',
+                textStyle: {
+                    baseline: 'center',
+                    color: '#66ccff',
+                    fontSize: 8
+                }
+            },
+            labelLine: {
+                show: false
+            }
+        }
+    };
+    //95
+    var labelBottom = {
+        normal: {
+            color: '#234f65',
+            label: {
+                show: true,
+                position: 'center'
+            },
+            labelLine: {
+                show: false
+            }
+        },
+        emphasis: {},
+    };
+    var radius = ['45%', '65%'];
+    var option = {
+        textStyle: {
+            color: '#ff9933',
+            fontSize: bodyScale * 12,
+        },
+        grid: {
+            x: "0",
+            y: '0',
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: radius,
+                //x: '40%', // for funnel
+                itemStyle: labelFromatter,
+                data: [
+                    {name: '', value: 5, itemStyle: labelBottom},
+                    {name: '', value: 95, itemStyle: labelTop}
+                ]
+            }
+
+        ]
+
+    };
+    return option;
+
+}
+
+function inittwo() {
+    var bar_chip = '${contextPath!}/static/img/bar_chip.png';
+    var labelSetting = {
+        normal: {
+            show: false,
+            position: 'outside',
+            offset: [10, 0],
+            textStyle: {
+                fontSize: bodyScale * 8
+            }
+        }
+    };
+
+
+    var option = {
+        textStyle: {
+            fontSize: bodyScale * 8
+        },
+        yAxis: [
+            {
+                name: "数量",
+
+                nameTextStyle: {
+                    fontSize: bodyScale * 10,
+
+                },
+
+                type: 'value',
+                max: 100,
+            },
+        ],
+        xAxis: [
+            {
+                name: "",
+                type: 'category',
+                data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+            }
+        ],
+        grid: {
+            // x: "10%",
+//            x2: "25%",
+//            y: '22%',
+//            y2: "26%",
+
+            x: "15%",
+            x2: "10%",
+            y: '20%',
+            y2: "34%",
+        },
+        series: [
+            {
+                symbolSize: ['50%', '10%'],
+                data: [{
+                    value: 99,
+                    symbol: bar_chip
+                }, {
+                    value: 85,
+                    symbol: bar_chip
+                }, {
+                    value: 82,
+                    symbol: bar_chip
+                }
+                    , {
+                        value: 78,
+                        symbol: bar_chip
+                    }
+                    , {
+                        value: 82,
+                        symbol: bar_chip
+                    }
+                    , {
+                        value: 78,
+                        symbol: bar_chip
+                    }
+                    , {
+                        value: 78,
+                        symbol: bar_chip
+                    }, {
+                        value: 82,
+                        symbol: bar_chip
+                    }, {
+                        value: 82,
+                        symbol: bar_chip
+                    }, {
+                        value: 78,
+                        symbol: bar_chip
+                    }
+                    , {
+                        value: 78,
+                        symbol: bar_chip
+                    }, {
+                        value: 82,
+                        symbol: bar_chip
+                    }
+
+                ]
+            }
+        ]
+    };
+    return option;
+
+}
+
+
+function initfour() {
+
+    var option = {
+        textStyle: {
+            fontSize: bodyScale * 8
+        },
+        legend: {
+            show: true,
+            data: ['整机', '模块'],
+            textStyle: {
+                fontSize: bodyScale * 8
+            },
+            itemWidth: 6, //图例标记的图形宽度
+            itemHeight: 6 //图例标记的图形高度
+        },
+        grid: {
+
+            x: "11%",
+            x2: "10%",
+            y: '20%',
+            y2: "20%"
+        },
+        xAxis: [
+            {
+                name: '',
+                data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+            }
+        ],
+        yAxis: [
+            {
+                name: "数量",
+
+                nameTextStyle: {
+                    fontSize: bodyScale * 10,
+
+                },
+            }
+        ],
+        series: [
+            {
+                name: '',
+                type: 'line',
+                stack: '总量',
+                // areaStyle: {normal: {}},
+                data: [99, 85, 82, 78, 82, 60, 82, 60, 82, 85, 82, 78],
+                itemStyle: {
+                    normal: {
+                        color: "#ff6666"
+                    }
+                }
+
+            }
+        ]
+
+    };
+    return option;
+
+}
+
+//曲线
 var colorData = ['#66ccff','#ff9933','#ff6666','#00cc66','#ffff99','#cc99ff','#99ccff','#ff99cc','#ff9900','#ffff00','#ffff00','#66ffff',
 '#3366ff','#660099','#ff0099','#cc6600','#ccff00','99ff99','#00cccc','#006699','#9999ff'];//图例颜色 需手工扩充
 var myChart1;
@@ -112,14 +385,15 @@ var dataBase = {
     ]
 };
 
+
 $(document).ready(function () {
     legendData = dealBracket(dataBase.legend);
     showLegendData = legendData;//默认全选
     //console.log(showLegendData)
     createLegendHtmls();
     createEcharts();
-
 });
+
 //生成echarts图形
 function createEcharts() {
     dealSeriesData();
@@ -128,6 +402,7 @@ function createEcharts() {
     getCharts1();
     getCharts2();
 }
+
 //生成图例控制
 function createLegendHtmls() {
     var htmls = '';
@@ -202,7 +477,7 @@ function getCharts1() {
         grid: {
             x: '13%',
             x2: '3%',
-            y2: '-2%'//下移负数 使两个图重叠
+            y2: '-2%'                //下移负数 使两个图重叠
         },
         xAxis: [
             {
@@ -228,15 +503,10 @@ function getCharts1() {
                         color: '#66ccff'
                     }
                 },
-
-
                 data: xData
             }
-
-
         ],
         yAxis: [
-
             {
                 type: 'value',
                 name: 'Hz',

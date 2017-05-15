@@ -473,9 +473,9 @@ function getLineAndBar() {
                 }
             },
             splitLine: {  //刻度线
-                show: true,
+                show: false,
                 lineStyle: {
-                    color: '#12*bodyScale3a67'
+                    color: "#234f65"
                 }
             },
             axisTick: {  //刻度值

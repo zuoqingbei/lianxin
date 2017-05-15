@@ -421,16 +421,17 @@
 }
 
 .total_bottom_bar1,.total_bottom_bar2 {
-    width: 31%;
+    width: 29%;
     height: 65%;
     float: left;
 }
 .total_bottom_tab{
-    width: 9%;
+    width: 7%;
     height: 65%;
     float: left;
     background-color: transparent;
     margin-right: 1%;
+    margin-left: 5%;
 
 }
 .total_bottom_tab ul {
@@ -1151,16 +1152,17 @@
 }
 
 .shuju_apply_bottom_bar1,.shuju_apply_bottom_bar2 {
-    width: 31%;
+    width: 29%;
     height: 65%;
     float: left;
 }
 .shuju_apply_bottom_tab{
-    width: 9%;
+    width: 7%;
     height: 65%;
     float: left;
     background-color: transparent;
     margin-right: 1%;
+    margin-left: 4%;
 
 }
 .shuju_apply_bottom_tab ul {
