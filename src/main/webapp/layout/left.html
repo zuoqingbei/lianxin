@@ -170,11 +170,10 @@
                         </div>
 
                         <ul class="legend-bottom">
+                        	<li class="active"><a href=""><span class="icon"></span> 中海博睿</a></li>
                         	 ##for(type in productLine){
-                        	 		##if(typeLP.index==0){
-                        	 			<li class="active"><a href=""><span class="icon"></span> ${type.name!}</a></li>
-                        	 		##}else{
-                        	 			<li><a href=""><span class="icon"></span> ${type.name!}</a></li>
+                        	 		##if(!typeLP.last){
+                        	 			<li class=""><a href=""><span class="icon"></span> ${type.name!}</a></li>
                         	 		##}
                         	  ##}
                         </ul>

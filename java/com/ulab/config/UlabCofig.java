@@ -37,7 +37,7 @@ import com.ulab.util.TemplteLayoutTag;
  * @todo   配置文件
  */
 public class UlabCofig extends JFinalConfig {
-
+	
     @Override
     public void configConstant(Constants me) {
     	loadPropertyFile("config.txt");

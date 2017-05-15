@@ -116,14 +116,22 @@ function standardDispersedStatus(mychartId,filedVaule){
 //不同产线的能力状态分布
 function abilityByProductLine(){
 	$.post(contextPath+'/lab/abilityByProductLineAjax',{},function(data){
-		$.each(data,function(index,item){
+		$.each(data[1],function(index,item){
+			//console.log(index+"---"+item)
+			if(item!=null&&item.length>0){
+				$("#yingjubei_id_"+index).html(item[0].count+"&emsp;应具备数")
+			}
+		});
+		$.each(data[0],function(index,item){
 			var chartIndex=32+index;
 			var myChart = echarts.init(document.getElementById("myChart"+chartIndex));
 			myChart.setOption(getBarEcharts());
 			right_echarts.push(myChart);
 			var lengendData=[];
+			var gridX="40%";
 			if(index==0){
-				lengendData=tab2Lengend(item)
+				lengendData=tab2Lengend(item);
+				gridX="53%";
 			}
 			var seriesData=tab2DataData(item);
 			myChart.setOption({
@@ -148,7 +156,7 @@ function abilityByProductLine(){
 				                }
 				                ],
 				                grid: {
-				                	x: '53%',
+				                	x: gridX,
 				                	y: '0%',
 				                	y2: "0%"
 				                },

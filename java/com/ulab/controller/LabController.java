@@ -16,6 +16,7 @@ import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
+import com.ulab.model.OrderModel;
 import com.ulab.util.SqlUtil;
 /**
  * 
@@ -226,10 +227,148 @@ public class LabController extends BaseController {
     	String type=getPara("type","1");
     	String filed=getPara("filed","product_code");
     	List<List<Record>> map=new ArrayList<List<Record>>();
+    	List<List<Record>> needmap=new ArrayList<List<Record>>();
     	for(Record r:productLine){
     		String filedVaule=r.get("id").toString();
     		map.add(LabDataResultModel.dao.dataResultBTypeAndName(type,filed,filedVaule));
+    		needmap.add(LabDataResultModel.dao.dataResultBTypeAndName(3,filed,filedVaule));
     	}
-		renderJson(map);
+    	List<List<List<Record>>> list=new ArrayList<List<List<Record>>>();
+    	list.add(map);
+    	list.add(needmap);
+		renderJson(list);
+    }
+    /**
+     * 
+     * @time   2017年5月13日 下午1:08:58
+     * @author zuoqb
+     * @todo   获取某一年订单整体及时率
+     * @param  
+     * @return_type   void
+     */
+    public void orderYearRateAjax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	List<Record> list=new ArrayList<Record>();
+    	list.add(OrderModel.dao.findOrderRate("2016",labTypeCode));
+    	list.add(OrderModel.dao.findOrderRate("2017",labTypeCode));
+		renderJson(list);
+    }
+    /**
+     * 
+     * @time   2017年5月13日 下午1:08:58
+     * @author zuoqb
+     * @todo   按照产线统计某年整体订单及时率
+     * @param  
+     * @return_type   void
+     */
+    public void findOrderYearRateForProductAjax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	List<List<Record>> list=new ArrayList<List<Record>>();
+    	list.add(OrderModel.dao.findOrderYearRateForProduct("2016",labTypeCode));
+    	list.add(OrderModel.dao.findOrderYearRateForProduct("2017",labTypeCode));
+		renderJson(list);
+    }
+    /**
+     * 
+     * @time   2017年5月13日 下午1:08:58
+     * @author zuoqb
+     * @todo   按照产线统计某年各月份详细订单及时率
+     * @param  
+     * @return_type   void
+     */
+    public void findOrderMonthRateForProductAjax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	List<List<Record>> list=new ArrayList<List<Record>>();
+    	List<Record> productLine=getSessionAttr("productLine");
+    	if(productLine==null){
+    		productLine=DicModel.dao.findDicByType("line_type");
+    	}
+    	for(Record r:productLine){
+    		list.add(OrderModel.dao.findOrderMonthRateForProduct("2017",r.get("id").toString(),labTypeCode));
+    	}
+		renderJson(list);
+    }
+    
+    /**
+     * 
+     * @time   2017年5月13日 下午1:08:58
+     * @author zuoqb
+     * @todo    按照产线统计某年各月份详细订单类别
+     * @param  
+     * @return_type   void
+     */
+    public void findOrderMonthTypeForProductAjax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String desName=getPara("desName","");
+    	List<List<Record>> list=new ArrayList<List<Record>>();
+    	List<Record> productLine=getSessionAttr("productLine");
+    	if(productLine==null){
+    		productLine=DicModel.dao.findDicByType("line_type");
+    	}
+    	for(Record r:productLine){
+    		list.add(OrderModel.dao.findOrderMonthTypeForProduct(r.get("id").toString(),labTypeCode,desName));
+    	}
+		renderJson(list);
+    }
+    /**
+     * 
+     * @time   2017年5月14日 上午8:59:27
+     * @author zuoqb
+     * @todo   一次合格率具体到产线
+     * @param  
+     * @return_type   void
+     */
+    public void findOrderPassForProAjax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String desName=getPara("desName","");
+    	String name=getPara("name","");
+    	List<Record> list=OrderModel.dao.findOrderPassForPro(null, labTypeCode, desName, name);
+		renderJson(list);
+    }
+    
+    /**
+     * 
+     * @time   2017年5月14日 上午8:59:27
+     * @author zuoqb
+     * @todo   一次合格率  整体统计
+     * @param  
+     * @return_type   void
+     */
+    public void findOrderPassForAllAjax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	List<Record> list=new ArrayList<Record>();
+    	list.add(OrderModel.dao.findOrderPassForAll(null, labTypeCode, "整机"));
+    	list.add(OrderModel.dao.findOrderPassForAll(null, labTypeCode, "模块"));
+		renderJson(list);
+    }
+    
+    /**
+     * 
+     * @time   2017年5月14日 上午10:07:01
+     * @author zuoqb
+     * @todo   模块整机订单及时率  tab1
+     * @param  
+     * @return_type   void
+     */
+    
+    public void findOrderYearRateForTab1Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String date=getPara("date","2017");
+    	List<List<Record>> list=new ArrayList<List<Record>>();
+    	list.add(OrderModel.dao.findOrderYearRateForTab1(date,labTypeCode, "整机"));
+    	list.add(OrderModel.dao.findOrderYearRateForTab1(date,labTypeCode, "模块"));
+		renderJson(list);
+    }
+    
+    /**
+     * 
+     * @time   2017年5月14日 上午11:04:34
+     * @author zuoqb
+     * @todo   一次合格率 总状态
+     * @param  
+     * @return_type   void
+     */
+    public void findOrderPassForTab1Ajax(){
+		renderJson(OrderModel.dao.findOrderPassForAll(null, null, null));
     }
 }

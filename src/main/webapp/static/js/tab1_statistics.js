@@ -7,6 +7,159 @@ function loadTab1Data(){
     standardStatus();
     //能力状态
     abilityStatus();
+    //订单及时率
+    findOrderYearRateForTab1();
+    //一次合格率  整体统计 整机 模块
+    findOrderPassForAllTab1();
+   //一次合格率  整体统计 不区分整机 模块
+    findOrderPassForTab1Ajax();
+}
+//一次合格率  整体统计 不区分整机 模块
+function findOrderPassForTab1Ajax(){
+	$.post(contextPath+'/lab/findOrderPassForTab1Ajax',{},function(data){
+		console.log(data)
+		$("#tab1_pass_rate_id").html(data.rate+"%");
+	})
+}
+//一次合格率  整体统计 整机 模块
+function findOrderPassForAllTab1(){
+	$.post(contextPath+'/lab/findOrderPassForAllAjax',{},function(data){
+		var myChart4 = echarts.init(document.getElementById("myChart4"));
+		//right_echarts.push(myChart4);
+		myChart4.setOption(getCenterPie());
+		var dataStyle = {
+		    normal: {
+		        label: {show:false},
+		        labelLine: {show:false}
+		    }
+		};
+		var placeHolderStyle = {
+		    normal : {
+		        color: 'rgba(0,0,0,0)',
+		        label: {show:false},
+		        labelLine: {show:false}
+		    },
+		    emphasis : {
+		        color: 'rgba(0,0,0,0)'
+		    }
+		};
+		myChart4.setOption({
+		    legend:{
+		        data:['整机','模块']
+		    },
+		    textStyle:{
+		        fontSize:12*bodyScale
+		    },
+		    color: ['#4397f7', '#66ccff'],
+		    series: [
+		        {
+		            name: '整机',
+		            type: 'pie',
+		            clockWise: false,
+		            radius: ['50%', '60%'],
+		            itemStyle: dataStyle,
+		            data: [
+		                {
+		                    value: 100-data[0].rate,
+		                    name: '整机',
+		                    itemStyle: placeHolderStyle
+		                },
+		                {
+		                    value: data[0].rate,
+		                    name: '整机',
+		                    // itemStyle: placeHolderStyle
+		                }
+		            ]
+		        },
+		        {
+		            name: '模块',
+		            type: 'pie',
+		            clockWise: false,
+		            radius: ['40%', '50%'],
+		            itemStyle: dataStyle,
+		            data: [
+		                {
+		                    value: 100-data[1].rate,
+		                    name: '模块',
+		                    itemStyle: placeHolderStyle
+		                },
+		                {
+		                    value: data[1].rate,
+		                    name: '模块',
+		                    // itemStyle: placeHolderStyle
+		                }
+		            ]
+		        }
+		    ]
+
+		});
+
+	})
+}
+//订单及时率
+function findOrderYearRateForTab1(){
+	$.post(contextPath+'/lab/findOrderYearRateForTab1Ajax',{"date":"2016"},function(data){
+		var myChart6 = echarts.init(document.getElementById("myChart6"));
+		right_echarts.push(myChart6);
+		myChart6.setOption(getLineEcharts());
+		myChart6.setOption({
+		    legend: {
+		        show: true,
+		        data: ['整机', '模块'],
+		        itemWidth: 5,  //图例标记的图形宽度
+		        itemHeight: 3, //图例标记的图形高度
+		    },
+		    grid: {
+		        right: 43,
+		        bottom: 20,
+		        left: 38,
+		        top:30
+		    },
+
+		    yAxis:{
+		        name:'及时率/%',
+		        nameTextStyle: {
+		            color: '#66ccff'
+		        },
+		        max:100
+		    },
+		    xAxis: [
+		        {
+		            name:"时间",
+		            nameTextStyle: {
+		                color: '#66ccff'
+		            },
+		            data: statisticRightLengend(data[0])
+		        }
+		    ],
+		    series: tab1OrderRateSeries(data)
+
+		});
+	})
+}
+function tab1OrderRateSeries(data){
+	var series=[];
+	$.each(data,function(index,item){
+		var mName;
+		if(index==0){
+			mName="整机";
+		}else{
+			mName="模块";
+		}
+		var it={
+		            name: mName,
+		            type: 'line',
+		            lineStyle:{
+		                normal:{
+		                    width:1
+		                }
+		            },
+		            symbolSize:2,
+		            data: tab1OrderRateSeriseData(item)
+		        };
+		series.push(it);
+	})
+	return series;
 }
 //标准状态数据统计
 function standardStatus(){
@@ -119,7 +272,7 @@ function standardStatus(){
 		    series: [
 				        {
 				            type: 'pie',
-				            center: ['40%', '25%'],
+				            center: ['35%', '22%'],
 				            radius: radius,
 				            x: '40%', // for funnel
 				            itemStyle: labelFromatter,
@@ -130,7 +283,7 @@ function standardStatus(){
 				        },
 				        {
 				            type: 'pie',
-				            center: ['90%', '25%'],
+				            center: ['65%', '22%'],
 				            radius: radius,
 				            x: '60%', // for funnel
 				            itemStyle: labelFromatter,
@@ -244,6 +397,13 @@ function statisticRightLengend(data){
 	});
 	return legnend;
 }
+function tab1OrderRateSeriseData(data){
+	var mData=[];
+	$.each(data,function(index,item){
+		mData.push(item.rate);
+	});
+	return mData;
+}
 
 function statisticRightSeriesData(data,bar_chip){
 	var series=[];
@@ -253,7 +413,6 @@ function statisticRightSeriesData(data,bar_chip){
 		obj.symbol=bar_chip;
 		series.push(obj);
 	});
-	console.log(series)
 	return series;
 }
 

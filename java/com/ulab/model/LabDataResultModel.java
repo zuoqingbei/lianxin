@@ -71,7 +71,7 @@ public class LabDataResultModel extends Model<LabDataResultModel> {
 	 */
 	public List<Record> dataResultBTypeAndName(Object type,Object filed,Object fieldValue){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select product_name as name,num as  count,type_name,product_name from t_b_date_result t  WHERE  t.del_flag="+Constants.DEL_FALG+" and t.type='"+type+"' and t."+filed+"='"+fieldValue+"' ");
+		sb.append(" select product_name as name,num as  count,type_name,product_name from t_b_date_result t  WHERE  t.del_flag="+Constants.DEL_FALG+" and t.type='"+type+"' and t."+filed+"='"+fieldValue+"' order by id  ");
 		return Db.find(sb.toString());
 	}
 	
