@@ -325,7 +325,7 @@ option = {
 //            },
         {
             type: 'pie',
-            center: ['35%', '22%'],
+            center: ['40%', '25%'],
             radius: radius,
             x: '40%', // for funnel
             itemStyle: labelFromatter,
@@ -336,7 +336,7 @@ option = {
         },
         {
             type: 'pie',
-            center: ['65%', '22%'],
+            center: ['90%', '25%'],
             radius: radius,
             x: '60%', // for funnel
             itemStyle: labelFromatter,

@@ -119,18 +119,18 @@ function standardStatus(){
 		    series: [
 				        {
 				            type: 'pie',
-				            center: ['35%', '22%'],
+				            center: ['40%', '25%'],
 				            radius: radius,
 				            x: '40%', // for funnel
 				            itemStyle: labelFromatter,
-				            data: [
+				            data: [s
 				                {name: 'other', value: 100-num0, itemStyle: labelBottom},
 				                {name: '牵头起草数', value: num0, itemStyle: labelTop}
 				            ]
 				        },
 				        {
 				            type: 'pie',
-				            center: ['65%', '22%'],
+				            center: ['90%', '25%'],
 				            radius: radius,
 				            x: '60%', // for funnel
 				            itemStyle: labelFromatter,
