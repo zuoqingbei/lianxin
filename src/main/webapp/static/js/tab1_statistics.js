@@ -29,8 +29,8 @@ function findOrderPassForAllTab1(){
 		myChart4.setOption(getCenterPie());
 		var dataStyle = {
 		    normal: {
-		        label: {show:false},
-		        labelLine: {show:false}
+		        label: {show:true},
+		        labelLine: {show:true,length:3,length2:7,smooth:true}
 		    }
 		};
 		var placeHolderStyle = {
@@ -57,7 +57,12 @@ function findOrderPassForAllTab1(){
 		            type: 'pie',
 		            clockWise: false,
 		            radius: ['50%', '60%'],
-		            itemStyle: dataStyle,
+		            itemStyle: {
+		            	 normal: {
+						        label: {show:true},
+						        labelLine: {show:true,length:12,length2:7,smooth:false}
+						    },
+		            },
 		            data: [
 		                {
 		                    value: 100-data[0].rate,
@@ -76,7 +81,12 @@ function findOrderPassForAllTab1(){
 		            type: 'pie',
 		            clockWise: false,
 		            radius: ['40%', '50%'],
-		            itemStyle: dataStyle,
+		            itemStyle: {
+		            	 normal: {
+						        label: {show:true},
+						        labelLine: {show:true,length:5,length2:22,smooth:false}
+						    },
+		            },
 		            data: [
 		                {
 		                    value: 100-data[1].rate,
@@ -283,7 +293,7 @@ function standardStatus(){
 				        },
 				        {
 				            type: 'pie',
-				            center: ['65%', '22%'],
+				            center: ['85%', '22%'],
 				            radius: radius,
 				            x: '60%', // for funnel
 				            itemStyle: labelFromatter,
@@ -393,7 +403,9 @@ function abilityStatus(){
 function statisticRightLengend(data){
 	var legnend=[];
 	$.each(data,function(index,item){
-		legnend.push(item.name);
+		var name=item.name;
+		name=name.substr(0,4)+"/"+name.substr(4,6);
+		legnend.push(name);
 	});
 	return legnend;
 }

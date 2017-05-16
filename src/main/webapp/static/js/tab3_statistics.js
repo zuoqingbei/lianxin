@@ -43,17 +43,19 @@ function findOrderPassForProAjax(mychartIds,desName){
 		    },
 		    grid: {
 		        x: 5,
-		        y: 28
+		        x2:40,
+		        y: 28,
+		        
 		    },
 		    xAxis: [
 		        {
-		            name: '',
+		            name: '产线',
 		            data:tab3PassLengend(data)
 		        }
 		    ],
 		    yAxis: [
 		        {
-		            name: '',
+		            name: '合格率',
 		            max:100
 		        }
 		    ],
@@ -111,7 +113,7 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		        top: 2,
 		        left: 7,
 		        bottom: 10,
-		        right: 5,
+		        right: 27,
 		        // containLabel: true
 		    },
 		    legend: {

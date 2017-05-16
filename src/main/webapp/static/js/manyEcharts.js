@@ -435,6 +435,10 @@ function getLineAndBar() {
             type: 'category',
             data: [],
             boundaryGap: false,
+            nameTextStyle: {
+                color: '#66ccff',
+                fontSize:10*bodyScale
+            },
             axisPointer: {
                 type: 'shadow',
                 show: false
@@ -456,9 +460,16 @@ function getLineAndBar() {
                     color: '#66ccff'
                 }
             },
+            splitLine: {  //刻度线
+                show: false,
+                lineStyle: {
+                    color: "#234f65"
+                }
+            },
 
         },
         yAxis: {
+            name:'数量',
             nameTextStyle: {
                 color: '#66ccff',
                 fontSize:10*bodyScale
@@ -926,7 +937,7 @@ function  getScatterEcharts() {
             top:0,
             left: 2,
             bottom: 25,
-            right: 10,
+            right: 15,
             containLabel: true
         },
         xAxis: {
@@ -950,17 +961,16 @@ function  getScatterEcharts() {
             axisLine: {
                 show: false
             },
-
         },
         series: [{
 
             type: 'scatter',
             symbolSize: function (val) {
-                return val[2] * 1.5;
+                return val[2] * 1;
             },
             data: [],
             animationDelay: function (idx) {
-                return idx * 5;
+                return idx * 3;
             }
         }]
     };

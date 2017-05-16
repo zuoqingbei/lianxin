@@ -34,6 +34,8 @@ public class OrderModel extends Model<OrderModel> {
 		sb.append(" and product_line_code='"+plCode+"'");
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and o.lab_code='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and o.lab_code is null ");
 		}
 		sb.append(" and d.del_flag=0 and o.del_flag = 0 order by d.order_no");
 		return Db.find(sb.toString());
@@ -72,6 +74,8 @@ public class OrderModel extends Model<OrderModel> {
 		sql+=" where o.desc_name like '%"+desc+"%' and o.name like '%"+date+"%' and o.type = 1 ";
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sql+=" and o.lab_code='"+labTypeCode+"' ";
+		}else{
+			sql+=" and o.lab_code is null ";
 		}
 		sql+=" group by 	o.product_line_code,o.product_line_name, d.order_no,substr(o.name,0,4)order by d.order_no";
 		return sql;
@@ -92,6 +96,8 @@ public class OrderModel extends Model<OrderModel> {
 		sb.append(" o.desc_name like '%"+ALL_NAME+"%' and o.name like '%"+date+"%' and o.type = 1 ");
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and o.lab_code='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and o.lab_code is null ");
 		}
 		sb.append(" )t ");
 		sb.append(" join  ");
@@ -99,6 +105,8 @@ public class OrderModel extends Model<OrderModel> {
 		sb.append(" and o.name like '%"+date+"%' and o.type = 1 ");
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and o.lab_code='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and o.lab_code is null ");
 		}
 		sb.append(" )b on 1=1");
 		return Db.findFirst(sb.toString());
@@ -125,6 +133,8 @@ public class OrderModel extends Model<OrderModel> {
 		sb.append(" and product_line_code='"+plCode+"'");
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and o.lab_code='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and o.lab_code is null ");
 		}
 		sb.append(" and d.del_flag=0 and o.del_flag = 0 order by d.order_no ");
 		return Db.find(sb.toString());
@@ -151,6 +161,8 @@ public class OrderModel extends Model<OrderModel> {
 		}
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and o.lab_code='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and o.lab_code is null ");
 		}
 		sb.append(" and d.del_flag=0 and o.name='"+name+"' order by d.order_no ");
 		return Db.find(sb.toString());
@@ -178,6 +190,8 @@ public class OrderModel extends Model<OrderModel> {
 		}
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and lab_code='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and lab_code is null ");
 		}
 		sb.append(" ) a ");
 		sb.append(" join ");
@@ -190,6 +204,8 @@ public class OrderModel extends Model<OrderModel> {
 		}
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and lab_code='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and lab_code is null ");
 		}
 		sb.append(" )b ");
 		sb.append(" on 1=1");
@@ -231,6 +247,8 @@ public class OrderModel extends Model<OrderModel> {
 		sql+=" where o.desc_name like '%"+desc+"%' and o.name like '%"+date+"%' and o.type = 1 ";
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sql+=" and o.lab_code='"+labTypeCode+"' ";
+		}else{
+			sql+=" and o.lab_code is null ";
 		}
 		sql+=" group by  o. name order by o.name";
 		return sql;
