@@ -169,7 +169,6 @@ myChartFlatRT.setOption({
             },
             max: 25,
             offset: 5
-
         }
     ],
     yAxis: [
