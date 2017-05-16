@@ -393,7 +393,9 @@ function abilityStatus(){
 function statisticRightLengend(data){
 	var legnend=[];
 	$.each(data,function(index,item){
-		legnend.push(item.name);
+		var name=item.name;
+		name=name.substr(0,4)+"/"+name.substr(4,6);
+		legnend.push(name);
 	});
 	return legnend;
 }
