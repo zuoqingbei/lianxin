@@ -346,7 +346,7 @@
     background-repeat: no-repeat;
 }
 #l .flat-footer .legend-bottom li:nth-of-type(1) .icon{
-    background-image: url(../img/ico/line_centerlab_noborder_on.png) ;
+    background-image: url(../img/ico/line_centerlab_noborder_off.png) ;
 }
 #l .flat-footer .legend-bottom li:nth-of-type(2) .icon{
     background-image: url(../img/ico/line_bl_noborder_off.png) ;

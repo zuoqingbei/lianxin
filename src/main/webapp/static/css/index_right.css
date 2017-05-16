@@ -214,6 +214,7 @@
     right: 26%;
     font-size: 0.8em;
     /*margin-top: 0em;*/
+    color:white
 }
 
 .total_top_2 .total_top_2_box > ul > li span:last-of-type {
@@ -267,12 +268,12 @@
     position: relative;
 }
 .biaozhun_line{
-    width: 70%;
+    width: 75%;
     height: 10%;
     background-color: plum;
     position: absolute;
     top: 38%;
-    left: 15%;
+    left: 10%;
     background: url("../img/TotalState/line-2.png") no-repeat;
     background-size: 100% 100%;
 }
@@ -424,7 +425,60 @@
     width: 29%;
     height: 65%;
     float: left;
+    position: relative;
 }
+
+.myChart9_line1{
+    height: 0.1em;
+    width: 67%;
+    display: inline-block;
+    background-color: #ff9933;
+    position: absolute;
+    top: 27%;
+    left: 16%;
+}
+.myChart9_line2{
+    height: 0.1em;
+    width: 67%;
+    display: inline-block;
+    background-color: #ff9933;
+    position: absolute;
+    bottom: 27%;
+    left: 16%;
+}
+.myChart10_lin1{
+    width: 0.1em;
+    height: 61%;
+    display: inline-block;
+    background-color: #ff9933;
+    position: absolute;
+   top: 16%;
+    left: 19%;
+}
+.myChart10_lin2{
+    width: 0.1em;
+    height: 61%;
+    display: inline-block;
+    background-color: #ff9933;
+    position: absolute;
+    top: 16%;
+    right: 19%;
+}
+.myChart10_lin1 span{
+    position: absolute;
+    top: -4%;
+    left: 0;
+    color:#ff9933;
+    padding-left: 0.1em;
+}
+.myChart10_lin2 span{
+    position: absolute;
+    top: -4%;
+    left: 0;
+    color:#ff9933;
+    padding-left: 0.1em;
+}
+
 .total_bottom_tab{
     width: 7%;
     height: 65%;
@@ -852,7 +906,20 @@
     height: 100%;
     background-color: #00aaff;
 }
-
+.order_all>ul{
+    position: relative;
+}
+.labLine{
+    padding-right: 1%;
+    display: inline-block;
+    width: 60%;
+    height: 58%;
+    position: absolute;
+    top: 40%;
+    right: 0;
+    background:url("../img/shujuJieguo/line text.png") no-repeat;
+    background-size: 100% 100%;
+}
 /*鏁版嵁缁撴灉*/
 .shuju_result{
     width: 100%;

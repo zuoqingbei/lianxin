@@ -19,9 +19,12 @@
      ##layout("left.html", {}){
 	 ##}
     
-    ##layout("right.html", {}){
+     ##layout("right.html", {}){
 	 ##}
   
+     ##layout("centerLab.html", {}){
+	 ##}
+
 </div>
 </body>
 </html>
@@ -49,4 +52,18 @@ var contextPath = '${contextPath!}';
         console.log("屏幕高度：" + h + ", body字号：" + bodyFontSize)
     }
     pageResize();
+</script>
+<script>
+    $(function () {
+        var $flatBottomSwitchLi = $("#l").find(".flat-footer .legend ul li");
+        $flatBottomSwitchLi.find("a").click(function () {
+            if($(this).text() ==="中海博睿"){
+                $("#right").hide();
+                $(".labMain_content").show()
+            }
+
+        })
+
+    })
+
 </script>
