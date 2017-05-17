@@ -3,6 +3,9 @@
  * 右侧数据统计
  */
 function loadTab1Data(){
+	findPersonStatusTab1Ajax(1);
+	findPersonStatusTab1Ajax(2);
+	findPersonStatusTab1Ajax(3);
 	 //标准状态
     standardStatus();
     //能力状态
@@ -14,10 +17,23 @@ function loadTab1Data(){
    //一次合格率  整体统计 不区分整机 模块
     findOrderPassForTab1Ajax();
 }
+//人员状态 type:类型 1:学历情况 2:工作年限情况 3:批准权限
+function findPersonStatusTab1Ajax(type){
+	$.post(contextPath+'/lab/findPersonStatusTab1Ajax',{"type":type},function(data){
+		console.log(data)
+		var htmls="";
+		$.each(data,function(index,item){
+			htmls+='<li><span class="bar_name">'+item.name+'</span>';
+			htmls+='<div class="progress">';
+			htmls+='<div class="progress-bar1" role="progressbar" aria-valuenow="'+item.rate+'" aria-valuemin="0" aria-valuemax="100" style="width:'+item.rate+'%;height: 110%"></div>';
+			htmls+='</div><span>'+item.rate+'%</span></li>';
+		});
+		$("#tab1_person_detail_"+type).html(htmls)
+	})
+}
 //一次合格率  整体统计 不区分整机 模块
 function findOrderPassForTab1Ajax(){
 	$.post(contextPath+'/lab/findOrderPassForTab1Ajax',{},function(data){
-		console.log(data)
 		$("#tab1_pass_rate_id").html(data.rate+"%");
 	})
 }
@@ -383,7 +399,7 @@ function abilityStatus(){
 		        {
 		            name: "",
 		            type: 'category',
-		            data: statisticRightLengend(data.data)
+		            data: statisticRightLengend2(data.data)
 		        }
 		    ],
 		    grid: {
@@ -405,6 +421,14 @@ function statisticRightLengend(data){
 	$.each(data,function(index,item){
 		var name=item.name;
 		name=name.substr(0,4)+"/"+name.substr(4,6);
+		legnend.push(name);
+	});
+	return legnend;
+}
+function statisticRightLengend2(data){
+	var legnend=[];
+	$.each(data,function(index,item){
+		var name=item.name;
 		legnend.push(name);
 	});
 	return legnend;
