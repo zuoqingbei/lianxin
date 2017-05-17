@@ -192,6 +192,9 @@
     background: url("../img/5dz.png");
     background-size: 100% 100%;
 }
+#l .sphere-left-top .chartBorder h3{
+    left:-18%;
+}
 #l .sphere-left-bottom iframe{
     position: relative;
     top: 25%;
@@ -200,6 +203,8 @@
 #l .sphere-right-bottom .chartBorder{
     padding:0 5%;
 }
+
+
 #l .sphere-right-top .chartBorder .myChart{
     height: 90%;
 }
@@ -217,8 +222,7 @@
 #l .sphere-right-bottom .chartBorder h3{
     left:-24%;
 }
-#l .sphere-left-bottom .chartBorder h3,
-#l .sphere-left-top .chartBorder h3{
+#l .sphere-left-bottom .chartBorder h3{
     left:-21%;
 }
 #l .sphere .chartBorder h4.noBG{
@@ -315,7 +319,7 @@
     position: absolute;
     height: 50%;
     width: 11%;
-    line-height: 5em;
+    line-height: 5.4em;
     font-size: .9em;
     text-align: center;
     background-size: 100% 100%;
@@ -486,9 +490,10 @@
     background: url("../img/border_flat.png");
     background-size: 100% 100%;
 }
+#l .sphere .sphere-left-top .chartBorder,
 #l .sphere .sphere-right-top .chartBorder{
     height:95%;
-    background: url("../img/border_sphereRT.png");
+    background: url("../img/border_sphereLTRT.png");
     background-size: 100% 100%;
     /*border-image: url("../img/border_sphereR.png") 120 52 30 / 13% 6% 6% ;*/
 }
