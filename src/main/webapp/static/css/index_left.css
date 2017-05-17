@@ -319,8 +319,8 @@
     position: absolute;
     height: 50%;
     width: 11%;
-    line-height: 5.4em;
-    font-size: .9em;
+    line-height: 5em;
+    /*font-size: .9em;*/
     text-align: center;
     background-size: 100% 100%;
     top: 14.6%;
@@ -399,10 +399,10 @@
 }
 #l .flat-footer .legend ul li{
     display: inline-block;
-    margin: 0 1.3%;
+    margin: 0 1.5%;
 }
 #l .flat-footer .legend ul li a{
-    font-size: 90%;
+    /*font-size: 90%;*/
     color: #999;
 }
 #l .flat-footer .legend ul li.active a{
@@ -565,8 +565,8 @@
     left:44.25%;
 }
 #l .flat-right-top .myChart{
-    height: 80%;
-    margin-bottom: 5%;
+    height: 90%;
+    /*margin-bottom: 5%;*/
 }
 #l .flat-right-bottom img{
     width:100%;
