@@ -2,6 +2,7 @@
 /**
  * 右侧tab2数据统计
  */
+var color=['rgb(102, 204, 255)','rgb(255,255,153)','rgb(102,255,204)','rgb(255,102,102)'];
 function loadTab2Data(){
 	//标准数量分布情况
 	standardDispersedStatus("myChart28","国际标准");
@@ -10,6 +11,226 @@ function loadTab2Data(){
 	standardDispersedStatus("myChart31","企业标准");
 	//不同产线的能力状态分布
 	abilityByProductLine();
+	//人员状态 散点
+	personForTab2Ajax("myChart25","1",4);
+	personForTab2Ajax("myChart26","2",4);
+	personForTab2Ajax("myChart27","3",4);
+	//人员状态 柱状
+	findPersonStatusTab2Ajax("myChart22",1);
+	findPersonStatusTab2Ajax("myChart23",2);
+	findPersonStatusTab2Ajax("myChart24",3);
+}
+//人员状态 type:类型 1:学历情况 2:工作年限情况 3:批准权限
+function findPersonStatusTab2Ajax(myChartIds,type){
+	$.post(contextPath+'/lab/findPersonStatusTab1Ajax',{"labTypeCode":labTypeCode,"type":type},function(data){
+		var myChart22 = echarts.init(document.getElementById(myChartIds));
+		right_echarts.push(myChart22);
+		myChart22.setOption(getBarEcharts());
+		myChart22.setOption({
+		    yAxis: [
+		        {
+		            type: 'value',
+		            splitLine: {  //刻度线
+		                show: false
+		            },
+		            show: false
+		        }
+		    ],
+		    xAxis: [
+		        {
+		            type: 'category',
+		            data: tab2PersonLengend(data),
+		            boundaryGap: false,
+		            axisLabel: {
+		                textStyle: {
+		                    fontSize: 9 * bodyScale
+		                }
+		            },
+
+		        }
+		    ],
+		    grid: {
+		    	x: '15%',
+		        x2: '15%',
+		        y: '25%',
+		        y2: "45%"
+		    },
+		    series: [
+		        {
+		            type: "bar",
+		            data: tab2PersonDataData(data),
+		            barWidth: 10,
+		            itemStyle: {
+		                normal: {
+		                    //好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+		                    color: function (params) {
+		                        // build a color map as your need.
+		                       // var colorList = ['#66ccff', '#ffff99', '#66ffcc'];
+		                        return color[params.dataIndex]
+		                    },
+		                    label: {
+		                        show: true,
+		                        position: 'top',
+		                        // formatter: "{a}%",
+		                        textStyle: {
+		                            fontSize: 10 * bodyScale,
+		                            color: "white"
+		                        },
+		                        formatter: '{c}%'
+
+		                    },
+		                }
+		            }
+		        }
+		    ]
+		});
+		
+	})
+}
+//人员状态 散点图
+function personForTab2Ajax(myChartIds,type,divisor){
+	$.post(contextPath+'/lab/personForTab2Ajax',{"labTypeCode":labTypeCode,"type":type},function(res){
+		//console.log(res)
+		var data = [];
+		var yData=[];//产线
+		var xData=[];//类型
+		//准备数据
+		var data0=[];
+		var data1=[];
+		var data2=[];
+		var data3=[];
+		var preYdata=[];
+		$.each(res,function(index,item){
+			preYdata.push(item[0].product_name);
+			data0.push([item[0].name,item[0].product_name,parseInt(item[0].all_num)/divisor,item[0].name]);
+			data1.push([item[1].name,item[1].product_name,parseInt(item[1].all_num)/divisor,item[1].name]);
+			data2.push([item[2].name,item[2].product_name,parseInt(item[2].all_num)/divisor,item[2].name]);
+			data3.push([item[3].name,item[3].product_name,parseInt(item[3].all_num)/divisor,item[3].name]);
+			if(index==0){
+				$.each(item,function(ind,it){
+					xData.push(it.name);
+				})
+			}
+		});
+		for(var x=preYdata.length-1;x>=0;x--){
+			yData.push(preYdata[x]);
+		}
+		data.push(data0);
+		data.push(data1);
+		data.push(data2);
+		data.push(data3);
+		var myChart25 = echarts.init(document.getElementById(myChartIds));
+		right_echarts.push(myChart25)
+		myChart25.setOption({
+		    grid: {
+		        right: 45,
+		        bottom: 25,
+		        left: 50,
+		        top: 0
+		    },
+		    tooltip: {
+		        trigger: 'item',
+		        axisPointer: {
+		            type: 'cross',
+		            label: {
+		                backgroundColor: '#234f65'
+		            }
+		        },
+		        position: 'top',
+	            formatter: function (params) {
+	                return (parseInt(params.value[2]*divisor));
+	            }
+		    },
+		    xAxis: {
+		        type: 'category',
+		        data: xData,
+		        splitLine: {
+		            show: false
+		        },
+		        axisLine: {
+		            show: false
+		        },
+		        axisLabel: {
+		            show: true,
+		            // rotate: 30,
+		            textStyle: {
+		                color: '#66ccff',
+		                fontSize: 12 * bodyScale
+		            }
+		        },
+		        axisTick: {
+		            show: false,
+		            alignWithLabel: true,
+		            lineStyle: {
+		                color: '#66ccff'
+		            }
+		        },
+		    },
+		    yAxis: {
+		        type: 'category',
+		        data: yData,
+		        splitLine: {
+		            show: false
+		        },
+		        axisLine: {
+		            show: false
+		        },
+		        axisLabel: {
+		            show: true,
+		            // rotate: 30,
+		            textStyle: {
+		                color: '#66ccff',
+		                fontSize: 12 * bodyScale
+		            }
+		        },
+		        axisTick: {
+		            show: false,
+		            alignWithLabel: true,
+		            lineStyle: {
+		                color: '#66ccff'
+		            }
+		        },
+		        scale: true
+		    },
+		
+		    series:tab2PersonSanDianSeries(data)
+		    
+		    
+		    
+		});
+
+		
+	})
+}
+
+//散点图数据 -人员
+function tab2PersonSanDianSeries(data){
+	var s=[];
+	$.each(data,function(index,item){
+		var c={
+		        name: item[0][3],
+		        data: item,
+		        type: 'scatter',
+		        symbolSize: function (da) {
+		        	return da[2];
+		        },
+		        itemStyle: {
+		            normal: {
+		                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+		                    offset: 0,
+		                    color: color[index]
+		                },
+		                    {
+		                        offset: 1,
+		                        color: color[index]
+		                    }
+		                ])
+		            }
+		        }
+		    }
+		s.push(c);
+	});
+	return s;
 }
 function tab2IndicatorData(data){
 	//先找出最大值
@@ -42,6 +263,20 @@ function tab2Lengend(data){
 		legnend.push(item.type_name);
 	});
 	return legnend;
+}
+function tab2PersonLengend(data){
+	var legnend=[];
+	$.each(data,function(index,item){
+		legnend.push(item.name);
+	});
+	return legnend;
+}
+function tab2PersonDataData(data){
+	var indicatorData = [];
+	for(var i=0;i<data.length;i++) {
+		indicatorData.push(data[i].rate);
+	}
+	return indicatorData;
 }
 //标准数量分布情况
 function standardDispersedStatus(mychartId,filedVaule){

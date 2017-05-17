@@ -385,4 +385,25 @@ public class LabController extends BaseController {
     	String plCode=getPara("plCode","");
   		renderJson(PersonModel.dao.personDetail(type, plCode, labTypeCode));
       }
+    /**
+     * 
+     * @time   2017年5月17日 下午1:26:59
+     * @author zuoqb
+     * @todo   实验室状态tab2-人员状态数据
+     * @param  
+     * @return_type   void
+     */
+    public void personForTab2Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String type=getPara("type","");
+    	List<List<Record>> list=new ArrayList<List<Record>>();
+    	List<Record> productLine=getSessionAttr("productLine");
+    	if(productLine==null){
+    		productLine=DicModel.dao.findDicByType("line_type");
+    	}
+    	for(Record r:productLine){
+    		list.add(PersonModel.dao.personForTab2(type, r.get("id").toString(), labTypeCode));
+    	}
+		renderJson(list);
+    }
 }

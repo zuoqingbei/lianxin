@@ -55,5 +55,35 @@ public class PersonModel extends Model<LabModel> {
 		sb.append(" )b on 1=1 ");
 		return Db.find(sb.toString());
 	}
+	
+	
+	/**
+	 * 
+	 * @time   2017年5月17日 下午1:24:15
+	 * @author zuoqb
+	 * @todo   实验室状态tab2-人员状态数据
+	 * @param  @param type
+	 * @param  @param plCode
+	 * @param  @param labTypeCode
+	 * @param  @return
+	 * @return_type   List<Record>
+	 */
+	public List<Record> personForTab2(String type,String plCode,String labTypeCode){
+		StringBuffer sb=new StringBuffer();
+		sb.append(" select p.product_code,p.product_name,d.name,sum(d.num) as all_num ");
+		sb.append(" from t_b_person_data p right join  t_b_person_detail d on d .lab_id = p . id ");
+		sb.append(" where 1=1 ");
+		if(StringUtils.isNoneBlank(type)){
+			sb.append(" and d.type='"+type+"' ");
+		}
+		if(StringUtils.isNoneBlank(plCode)){
+			sb.append(" and p.product_code='"+plCode+"' ");
+		}
+		if(StringUtils.isNoneBlank(labTypeCode)){
+			sb.append("  and p.lab_type='"+labTypeCode+"' ");
+		}
+		sb.append("  group by d.name,p.product_code,p.product_name,d.order_no order by d.order_no");
+		return Db.find(sb.toString());
+	}
 
 }

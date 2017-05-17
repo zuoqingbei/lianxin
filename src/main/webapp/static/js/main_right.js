@@ -1667,7 +1667,7 @@ myChart18.setOption({
 
 
 //人员状态 学历 柱状图
-var myChart22 = echarts.init(document.getElementById("myChart22"));
+/*var myChart22 = echarts.init(document.getElementById("myChart22"));
 myChart22.setOption(getBarEcharts());
 myChart22.setOption({
     yAxis: [
@@ -1725,10 +1725,10 @@ myChart22.setOption({
             }
         }
     ]
-});
+});*/
 
 //人员状态 工作年限 柱状图
-var myChart23 = echarts.init(document.getElementById("myChart23"));
+/*var myChart23 = echarts.init(document.getElementById("myChart23"));
 myChart23.setOption(getBarEcharts());
 myChart23.setOption({
     yAxis: [
@@ -1787,9 +1787,9 @@ myChart23.setOption({
         }
     ]
 });
-
+*/
 //人员状态 资质 柱状图
-var myChart24 = echarts.init(document.getElementById("myChart24"));
+/*var myChart24 = echarts.init(document.getElementById("myChart24"));
 myChart24.setOption(getBarEcharts());
 myChart24.setOption({
     yAxis: [
@@ -1848,10 +1848,10 @@ myChart24.setOption({
             }
         }
     ]
-});
+});*/
 
 //人员状态 学历 散点图
-var myChart25 = echarts.init(document.getElementById("myChart25"));
+/*var myChart25 = echarts.init(document.getElementById("myChart25"));
 var data = [
     [['本科', '冰冷', 212, 1990], ['本科', '洗涤', 222, 1990], ['本科', '家空', 411, 1990], ['本科', '商空', 510, 1990], ['本科', '热水器', 114, 1990], ['本科', '厨电', 545, 1990], ['本科', '其他', 645, 1990]],
 
@@ -2017,9 +2017,9 @@ myChart25.setOption({
     }
     ]
 });
-
+*/
 //人员状态 工作年限 散点图
-var myChart26 = echarts.init(document.getElementById("myChart26"));
+/*var myChart26 = echarts.init(document.getElementById("myChart26"));
 myChart26.setOption(getScatterEcharts());
 var data = [
     [['3年以下', '冰冷', 212, 1990], ['3年以下', '洗涤', 222, 1990], ['3年以下', '家空', 411, 1990], ['3年以下', '商空', 510, 1990], ['3年以下', '热水器', 114, 1990], ['3年以下', '厨电', 545, 1990], ['3年以下', '其他', 645, 1990]],
@@ -2219,9 +2219,9 @@ myChart26.setOption({
         }
     ]
 });
-
+*/
 //人员状态 资质 散点图
-var myChart27 = echarts.init(document.getElementById("myChart27"));
+/*var myChart27 = echarts.init(document.getElementById("myChart27"));
 myChart27.setOption(getScatterEcharts());
 var data = [
     [['检测权限', '冰冷', 212, 1990], ['检测权限', '洗涤', 222, 1990], ['检测权限', '家空', 411, 1990], ['检测权限', '商空', 510, 1990], ['检测权限', '热水器', 114, 1990], ['检测权限', '厨电', 545, 1990], ['检测权限', '其他', 645, 1990]],
@@ -2420,7 +2420,7 @@ myChart27.setOption({
             }
         }
     ]
-});
+});*/
 
 //标准状态 国际标准
 /*var myChart28 = echarts.init(document.getElementById("myChart28"));
@@ -4100,7 +4100,6 @@ myChart49.setOption({
 
 var right_echarts = [myChart1, myChart2, myChart3, myChart5, myChart7, myChart8, myChart9,
     myChart11, myChart12, myChart14, myChart15, myChart16, myChart17, myChart18,
-    myChart22, myChart23, myChart24, myChart25, myChart26, myChart27,
     myChart43, myChart44, myChart47, myChart48, myChart49,
 ]
 //重置echart图标大小 在加载平面地图时被调用

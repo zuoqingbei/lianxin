@@ -20,7 +20,6 @@ function loadTab1Data(){
 //人员状态 type:类型 1:学历情况 2:工作年限情况 3:批准权限
 function findPersonStatusTab1Ajax(type){
 	$.post(contextPath+'/lab/findPersonStatusTab1Ajax',{"type":type},function(data){
-		console.log(data)
 		var htmls="";
 		$.each(data,function(index,item){
 			htmls+='<li><span class="bar_name">'+item.name+'</span>';

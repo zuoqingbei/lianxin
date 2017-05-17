@@ -78,8 +78,6 @@ function proLineStatis(){
 
 //平面地图左上角的环形图，实验室数量按照四大类展示
 function worldTyleEchart(data){
-	console.log("datadatadatadatadatadatadata");
-	console.log(data);
 	var num2=standardSeriesData(data,"研发实验室");
 	var num3=standardSeriesData(data,"中海博睿");
 	var num4=standardSeriesData(data,"工厂实验室");
@@ -184,8 +182,8 @@ function worldTyleEchart(data){
 	            x: '40%', // for funnel
 	            itemStyle: labelFromatter,
 	            data: [
-	                {name: 'other', value: allNum-num4, itemStyle: labelTop},
-	                {name: '模块商\n模块测试', value: num4, itemStyle: labelBottom}
+	                {name: 'other', value: allNum-num5, itemStyle: labelTop},
+	                {name: '模块商\n模块测试', value: num5, itemStyle: labelBottom}
 	            ]
 	        },
 	        {
@@ -195,8 +193,8 @@ function worldTyleEchart(data){
 	            x: '80%', // for funnel
 	            itemStyle: labelFromatter,
 	            data: [
-	                {name: 'other', value: allNum-num5, itemStyle: labelTop},
-	                {name: '工厂\n量产测试', value: num5, itemStyle: labelBottom}
+	                {name: 'other', value: allNum-num4, itemStyle: labelTop},
+	                {name: '工厂\n量产测试', value: num4, itemStyle: labelBottom}
 	            ]
 	        }
 	    ]
@@ -567,7 +565,9 @@ function labLinkStatis(){
 function statisticLengend(data){
 	var legnend=[];
 	$.each(data,function(index,item){
-		legnend.push(item.name);
+		var name=item.name;
+		name=name.replace("/","\n");
+		legnend.push(name);
 	});
 	return legnend;
 }
