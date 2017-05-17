@@ -155,19 +155,21 @@
                             <input id="navSelectAll" checked type="checkbox" class="hidden">
                         </div>
                         <div class="labLine">
-                            <ul class="lab" style="display:none;">
-                                ##for(type in labType){
-                                <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.short_name!}</a>
-                                </li>
-                                ##}
-                            </ul>
-                            <ul class="line">
-                                ##for(type in productLine){
-                                <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.name!}</a>
-                                </li>
-                                ##}
-                                <!--<li  ><a href=""><span class="icon"></span>其它</a> </li>-->
-                            </ul>
+                            <div class="animateBox">
+                                <ul class="lab">
+                                    ##for(type in labType){
+                                    <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.short_name!}</a>
+                                    </li>
+                                    ##}
+                                </ul>
+                                <ul class="line">
+                                    ##for(type in productLine){
+                                    <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.name!}</a>
+                                    </li>
+                                    ##}
+                                    <!--<li  ><a href=""><span class="icon"></span>其它</a> </li>-->
+                                </ul>
+                            </div>
                         </div>
 
                         <ul class="legend-bottom">

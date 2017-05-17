@@ -219,7 +219,7 @@
 
 .total_top_2 .total_top_2_box > ul > li span:last-of-type {
     position: absolute;
-    right: 0;
+    right: -1em;
     color: #ff9933;
     /*margin-top: 0.1em;*/
 }
@@ -862,22 +862,22 @@
     left: 0;
 }
 .nengli_bottom ul .echarts_line1{
-    left: 17%;
+    left: 13.6%;
 }
 .nengli_bottom ul .echarts_line2{
-    left:29%;
+    left:27.3%;
 }
 .nengli_bottom ul .echarts_line3{
-    left: 41%;
+    left: 39.6%;
 }
 .nengli_bottom ul .echarts_line4{
-    left: 53%;
+    left: 52.2%;
 }
 .nengli_bottom ul .echarts_line5{
-    left: 65%;
+    left: 63.9%;
 }
 .nengli_bottom ul .echarts_line6{
-    left: 77%;
+    left: 76.5%;
 }
 .nengli_bottom ul .echarts_line7{
     left: 89%;

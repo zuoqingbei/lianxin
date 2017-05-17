@@ -383,12 +383,20 @@
 }
 #l .flat-footer .legend .labLine{
     margin-top: 1.5%;
+    height: 2em;
+    overflow: hidden;
+}
+#l .flat-footer .legend .animateBox{
+    position: relative;
+    top: -1.8em;
 }
 #l .flat-footer .legend ul.lab,
 #l .flat-footer .legend ul.line{
     text-align: center;
-    position: relative;
+
+    margin-bottom: 1%;
 }
+
 #l .flat-footer .legend ul.legend-bottom{
     position: absolute;
     top: 80%;
