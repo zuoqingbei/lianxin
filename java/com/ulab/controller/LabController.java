@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
@@ -17,6 +16,7 @@ import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 import com.ulab.model.OrderModel;
+import com.ulab.model.PersonModel;
 import com.ulab.util.SqlUtil;
 /**
  * 
@@ -371,4 +371,18 @@ public class LabController extends BaseController {
     public void findOrderPassForTab1Ajax(){
 		renderJson(OrderModel.dao.findOrderPassForAll(null, null, null));
     }
+    /**
+     * 
+     * @time   2017年5月17日 上午9:49:23
+     * @author zuoqb
+     * @todo   人员状态-总
+     * @param  
+     * @return_type   void
+     */
+    public void findPersonStatusTab1Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String type=getPara("type","");
+    	String plCode=getPara("plCode","");
+  		renderJson(PersonModel.dao.personDetail(type, plCode, labTypeCode));
+      }
 }

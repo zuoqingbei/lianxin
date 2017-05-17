@@ -12,10 +12,10 @@ function reloadLeftData(){
     //实验室区域数量统计：大洲 国家
 	labAreaSpread();
 	//按照实验室四大类统计数量
-    labTypeStatis();
+   // labTypeStatis();
 	//专业能力-实验室性质
 	labPropertiesStatis();
-	//实验目的--可开展实验类型
+	//实验目的--可开展实验类型 产品生命周期全流程测试
 	labLifeCycleStatis();
 	//labCarouselInfo();
 	worldLabTypeStatis();
@@ -28,7 +28,7 @@ function reloadLeftData2(){
    //实验室区域数量统计：大洲 国家
 	labAreaSpread();
 	//按照实验室四大类统计数量
-    labTypeStatis();
+    //labTypeStatis();
 	//专业能力-实验室性质
 	labPropertiesStatis();
 	//实验目的--可开展实验类型 产品生命周期全流程测试
@@ -78,11 +78,12 @@ function proLineStatis(){
 
 //平面地图左上角的环形图，实验室数量按照四大类展示
 function worldTyleEchart(data){
-	// console.log(data);
-	var num2=standardSeriesData(data,"研发类");
+	console.log("datadatadatadatadatadatadata");
+	console.log(data);
+	var num2=standardSeriesData(data,"研发实验室");
 	var num3=standardSeriesData(data,"中海博睿");
-	var num4=standardSeriesData(data,"工厂类");
-	var num5=standardSeriesData(data,"模块商");
+	var num4=standardSeriesData(data,"工厂实验室");
+	var num5=standardSeriesData(data,"模块商实验室");
 	var allNum=parseInt(num2)+parseInt(num3)+parseInt(num4)+parseInt(num5);
 	// var myChartFlatLT = echarts.init($("#l").find(".sphere-right-top .myChart")[0]);
 	myChartFlatLT.setOption(getYuanhuan());
@@ -208,7 +209,7 @@ function worldLabTypeStatis(){
 	})
 }
 //平面地图左下角，按照实验室四大类统计数量
-function labTypeStatis(){
+/*function labTypeStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code","productCode":productCode},function(data){
 		//worldTyleEchart(data)
 		myChartFlatLB.resize();
@@ -288,7 +289,7 @@ function labTypeStatis(){
 		        ]
 		    });
 	})
-}
+}*/
 
 //按照实验室实验室性质统计数量  ---全方位测试
 function labPropertiesStatis(){
