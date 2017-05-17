@@ -10,7 +10,7 @@ function getLineEcharts() {
             text: '',
             textStyle: {
                 fontSize: 12*bodyScale,
-                color: '#66ccff',
+                color: '#66ccff'
             }
         },
         grid: {
@@ -59,7 +59,7 @@ function getLineEcharts() {
                 // rotate: 30,
                 textStyle: {
                     color: '#66ccff',
-                    fontSize:10*bodyScale,
+                    fontSize:12*bodyScale,
                 }
             },
             axisTick: {
@@ -83,7 +83,7 @@ function getLineEcharts() {
                 show: true,
                 textStyle: {
                     color: '#66ccff',
-                    fontSize:10*bodyScale
+                    fontSize:12*bodyScale
                 }
             },
             splitLine: {  //刻度线

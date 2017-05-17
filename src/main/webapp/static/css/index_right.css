@@ -909,17 +909,7 @@
 .order_all>ul{
     position: relative;
 }
-.labLine{
-    padding-right: 1%;
-    display: inline-block;
-    width: 60%;
-    height: 58%;
-    position: absolute;
-    top: 40%;
-    right: 0;
-    background:url("../img/shujuJieguo/line text.png") no-repeat;
-    background-size: 100% 100%;
-}
+
 /*鏁版嵁缁撴灉*/
 .shuju_result{
     width: 100%;
@@ -1095,7 +1085,6 @@
 .shuju_result_bottom_left>ul .order_left .order_all{
     width: 100%;
     height: 100%;
-
 }
 .shuju_result_bottom_left>ul .order_left ul:last-of-type{
     height: 80%;
@@ -1108,7 +1097,36 @@
     background-size: 100% 100%;
     padding-top: 1%;
 }
-
+.shuju_result_bottom_left>ul .order_left .order_all .order_all_name{
+    width: 65%;
+    height: 18%;
+    /*background-color: pink;*/
+    margin: 0 auto;
+    text-align: center;
+}
+.shuju_result_bottom_left>ul .order_left .order_all .order_all_name ul{
+    float: left;
+    width: 45%;
+    height:100%;
+    background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
+    background-size: 100% 100%;
+    /*margin: 0 5%;*/
+}
+.shuju_result_bottom_left>ul .order_left .order_all .order_all_name ul:first-of-type{
+    margin-right: 10%;
+}
+.shuju_result_bottom_left>ul .order_left .order_all .myChart46_name{
+    height: 15%;
+    width: 100%;
+    text-align: center;
+    color: #66CCFE;
+    font-size: 1.3em;
+}
+.shuju_result_bottom_left>ul .order_left .order_all #myChart46{
+    width: 100%;
+    height: 85%;
+    padding-right: 2%;
+}
 
 .shuju_result_bottom_right{
     flex: 1;
@@ -1222,6 +1240,7 @@
     width: 29%;
     height: 65%;
     float: left;
+    position: relative;
 }
 .shuju_apply_bottom_tab{
     width: 7%;
@@ -1282,9 +1301,13 @@
     height: 100%;
 }
 
-
-
-
+.shuju_apply_bottom_bar2 div span{
+    position: absolute;
+    top:0;
+    left: 0;
+    color: #f93;
+    font-size: 1em;
+}
 /*tab鏍忓垏鎹㈡牱寮�*/
 #right .tab .active_right {
     background: url("../img/TotalState/border-click.png") no-repeat;
