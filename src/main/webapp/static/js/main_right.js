@@ -717,6 +717,7 @@ var myChart8 = echarts.init(document.getElementById("myChart8"));
 myChart8.setOption(getBarEcharts());
 var bar_chip = '../img/bar_chip.png';
 myChart8.setOption({
+    color:["#66ccff","#ff9933"],
     title: {
         text: '模块质量过程检测',
         left: 'center'
@@ -730,7 +731,7 @@ myChart8.setOption({
     },
     yAxis: [
         {
-            // name: "Cpk",
+            name: "Cpk",
             type: 'category',
             position: 'left',
 
@@ -738,7 +739,7 @@ myChart8.setOption({
             axisLine: { //坐标轴
                 show: false,
                 textStyle: {
-                    color: '#66ccff',
+                    color: '#66ccff'
                 }
             },
             axisTick: {  //刻度值
@@ -818,6 +819,7 @@ myChart8.setOption({
 var myChart9 = echarts.init(document.getElementById("myChart9"));
 myChart9.setOption(getLineEcharts());
 myChart9.setOption({
+    color:["#ff9933"],
     title: {
         text: 'Xbar 控制图',
         left: 'center'
@@ -830,7 +832,7 @@ myChart9.setOption({
     },
     yAxis: {
         name: '样本均值',
-        max: 100
+        // max: 100
     },
     xAxis: [
         {
@@ -838,8 +840,43 @@ myChart9.setOption({
             data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         }
     ],
+    visualMap: {
+        show:false,
+        top: 10,
+        right: 10,
+        pieces: [{
+            gt: 0,
+            lte: 50,
+            color: '#096'
+        }, {
+            gt: 50,
+            lte: 100,
+            color: '#ffde33'
+        }, {
+            gt: 1000,
+            lte: 150,
+            color: '#ff9933'
+        }, {
+            gt: 150,
+            lte: 200,
+            color: '#cc0033'
+        },
+            //     {
+            //     gt: 200,
+            //     lte: 300,
+            //     color: '#660099'
+            // }, {
+            //     gt: 300,
+            //     color: '#7e0023'
+            // }
+        ],
+        outOfRange: {
+            color: '#cc0033'
+        }
+    },
     series: [
         {
+            name: '样本均值',
             type: 'line',
             lineStyle: {
                 normal: {
@@ -848,7 +885,17 @@ myChart9.setOption({
             },
             symbolSize: 2,
 //            areaStyle: {normal: {}},
-            data: [30, 32, 25, 34, 45, 30, 40, 23, 34, 46, 34, 13]
+            data: [30, 232, 25, 34, 45, 30, 140, 23, 34, 46, 34, 113],
+            markLine: {
+                silent: true,
+                data: [{
+                    yAxis: 50
+                },{
+                    yAxis: 150
+                }, {
+                    yAxis: 200
+                }]
+            }
         }
     ]
 
@@ -1182,6 +1229,7 @@ myChart14.setOption({
 var myChart15 = echarts.init(document.getElementById("myChart15"));
 myChart15.setOption(getLineEcharts());
 myChart15.setOption({
+    color:["#ff9933"],
     title: {
         text: 'Xbar 控制图',
         left: 'center'
@@ -1194,7 +1242,7 @@ myChart15.setOption({
     },
     yAxis: {
         name: '样本均值',
-        max: 100
+        // max: 100
     },
     xAxis: [
         {
@@ -1202,8 +1250,43 @@ myChart15.setOption({
             data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         }
     ],
+    visualMap: {
+        show:false,
+        top: 10,
+        right: 10,
+        pieces: [{
+            gt: 0,
+            lte: 50,
+            color: '#096'
+        }, {
+            gt: 50,
+            lte: 100,
+            color: '#ffde33'
+        }, {
+            gt: 1000,
+            lte: 150,
+            color: '#ff9933'
+        }, {
+            gt: 150,
+            lte: 200,
+            color: '#cc0033'
+        },
+        //     {
+        //     gt: 200,
+        //     lte: 300,
+        //     color: '#660099'
+        // }, {
+        //     gt: 300,
+        //     color: '#7e0023'
+        // }
+        ],
+        outOfRange: {
+            color: '#cc0033'
+        }
+    },
     series: [
         {
+            name: '样本均值',
             type: 'line',
             lineStyle: {
                 normal: {
@@ -1212,7 +1295,17 @@ myChart15.setOption({
             },
             symbolSize: 2,
 //            areaStyle: {normal: {}},
-            data: [30, 32, 25, 34, 45, 30, 40, 23, 34, 46, 34, 13]
+            data: [30, 232, 25, 34, 45, 30, 140, 23, 34, 46, 34, 113],
+            markLine: {
+                silent: true,
+                data: [{
+                    yAxis: 50
+                },{
+                    yAxis: 150
+                }, {
+                    yAxis: 200
+                }]
+            }
         }
     ]
 
@@ -3232,9 +3325,9 @@ myChart27.setOption({
 var myChart43 = echarts.init(document.getElementById("myChart43"));
 myChart43.setOption(getCenterPie());
 myChart43.setOption({
-    color: ['#66ccff', '#00aaff', '#0060ff', '#66ffcc', '#01da92', '#00a870', '#006644'],
+    color: ['#66ccff', '#00e673', '#ff9933', '#4397f7', '#ffff99', '#ff6666', '#66ffcc'],
     legend: {
-        show: false,
+        show: true,
         data: ['冰冷', '洗涤', '家空', '商空', '热水器', '厨电', '其他'],
         orient: ' vertical',  //布局  纵向布局
 
@@ -3243,14 +3336,9 @@ myChart43.setOption({
         {
             name: '问题闭环率',
             type: 'pie',
-            // clockWise: false,  //旋转方向
+            clockWise: false,  //旋转方向
             radius: [60, 63],
-            itemStyle: {
-                normal: {
-                    label: {show: true},
-                    labelLine: {show: true, length: 10, length2: 7, smooth: false}
-                },
-            },
+            itemStyle: dataStyle,
             data: [
                 {
                     value: 99,
@@ -3267,14 +3355,9 @@ myChart43.setOption({
         {
             name: '问题闭环率',
             type: 'pie',
-            // clockWise: false,
+            clockWise: false,
             radius: [54, 57],
-            itemStyle: {
-                normal: {
-                    label: {show: true},
-                    labelLine: {show: true, length: 15, length2:22, smooth: false}
-                },
-            },
+            itemStyle: dataStyle,
             data: [
                 {
                     value: 98,
@@ -3291,14 +3374,9 @@ myChart43.setOption({
         {
             name: '问题闭环率',
             type: 'pie',
-            // clockWise: false,
+            clockWise: false,
             radius: [48, 51],
-            itemStyle: {
-                normal: {
-                    label: {show: true},
-                    labelLine: {show: true, length: 10, length2: 40, smooth: false}
-                },
-            },
+            itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
@@ -3316,14 +3394,9 @@ myChart43.setOption({
         {
             name: '问题闭环率',
             type: 'pie',
-            // clockWise: false,
+            clockWise: false,
             radius: [42, 45],
-            itemStyle: {
-                normal: {
-                    label: {show: true},
-                    labelLine: {show: true, length: 5, length2:45, smooth: false}
-                },
-            },
+            itemStyle: dataStyle,
             data: [
                 {
                     value: 89,
@@ -3340,14 +3413,9 @@ myChart43.setOption({
         {
             name: '问题闭环率',
             type: 'pie',
-            // clockWise: false,
+            clockWise: false,
             radius: [36, 39],
-            itemStyle: {
-                normal: {
-                    label: {show: true},
-                    labelLine: {show: true, length: 0, length2: 40, smooth: false}
-                },
-            },
+            itemStyle: dataStyle,
             data: [
                 {
                     value: 87,
@@ -3365,14 +3433,9 @@ myChart43.setOption({
         {
             name: '问题闭环率',
             type: 'pie',
-            // clockWise: false,
+            clockWise: false,
             radius: [30, 33],
-            itemStyle: {
-                normal: {
-                    label: {show: true},
-                    labelLine: {show: true, length: 50, length2: 30, smooth: false}
-                }
-            },
+            itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
@@ -3389,14 +3452,9 @@ myChart43.setOption({
         {
             name: '问题闭环率',
             type: 'pie',
-            // clockWise: false,
+            clockWise: false,
             radius: [24, 27],
-            itemStyle: {
-                normal: {
-                    label: {show: true},
-                    labelLine: {show: true, length: 30, length2: 26, smooth: false}
-                },
-            },
+            itemStyle: dataStyle,
             data: [
                 {
                     value: 97,
@@ -3419,7 +3477,7 @@ myChart43.setOption({
 var myChart44 = echarts.init(document.getElementById("myChart44"));
 myChart44.setOption(getCenterPie());
 myChart44.setOption({
-    color: ['#66ccff', '#00aaff', '#0060ff', '#66ffcc', '#01da92', '#00a870', '#006644'],
+    color: ['#66ccff', '#00e673', '#ff9933', '#4397f7', '#ffff99', '#ff6666', '#66ffcc'],
     legend: {
         show: true,
         data: ['冰冷', '洗涤', '家空', '商空', '热水器', '厨电', '其他'],
@@ -3873,8 +3931,8 @@ myChart48.setOption({
         }
     ],
     grid: {
-        x: '30%',
-        x2: "10%",
+        x: '25%',
+        x2: "15%",
         y: '5%',
         y2: "0%"
     },
@@ -3917,7 +3975,7 @@ myChart49.setOption({
     },
     grid: {
         x: "15%",
-        x2: "10%",
+        x2: "15%",
         y: '25%',
         y2: "10%"
     },
