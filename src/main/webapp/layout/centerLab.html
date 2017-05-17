@@ -17,13 +17,13 @@
 <!--<div class="labMain_content" >-->
     <div class="labMain_content_top">
         <h1>中海博睿介绍</h1>
-        <div class="labMain_ct_right">
-            <p><img src="${contextPath!}/static/img/labMain/home.png"></p>
-            <h3>中海博睿实验室</h3>
+        <div class="labMain_ct_btn">
+            <div class="icon"></div>
+            <h3>返回总状态</h3>
         </div>
-        <div class="labMain_ct_right">
-            <p><img src="${contextPath!}/static/img/labMain/home.png"></p>
-            <h3>实验室总状态</h3>
+        <div class="labMain_ct_btn">
+            <div class="icon"></div>
+            <h3>中海博睿实验室</h3>
         </div>
     </div><!--头部content_top-->
 
@@ -571,4 +571,27 @@
         myChart1.resize();
         myChart2.resize();
     }
+</script>
+<script>
+    $(function () {
+        //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
+        var $labMain_ct_btn = $(".labMain_ct_btn");
+        $labMain_ct_btn.eq(0).hover(function () {
+            $(this).css("color","#069").find(".icon").css("background-image","url(${contextPath!}/static/img/labMain/labMain_toTotalStatus_active.png)")
+        },function () {
+            $(this).css("color","#64ccff").find(".icon").css("background-image","url(${contextPath!}/static/img/labMain/labMain_toTotalStatus.png)")
+        }).click(function () {
+            $(".labMain_content").hide();
+            $("#right").show();
+            var $li = $("#l").find(".flat-footer .legend ul li");
+            $li.removeClass("active").each(function () {
+                bgImgOff($(this))
+            })
+        });
+        $labMain_ct_btn.eq(1).hover(function () {
+            $(this).css("color","#069").find(".icon").css("background-image","url(${contextPath!}/static/img/labMain/home_active.png)")
+        },function () {
+            $(this).css("color","#64ccff").find(".icon").css("background-image","url(${contextPath!}/static/img/labMain/home.png)")
+        })
+    })
 </script>

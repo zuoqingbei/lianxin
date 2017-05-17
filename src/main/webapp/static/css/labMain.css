@@ -44,8 +44,6 @@ a, a:hover {
 /*content top star*/
 .labMain_content_top {
     height: 10%;
-    /*background: url(../img/labMain/labtitle_bg.png) 0 0 no-repeat;
-    background-size: 100% 100%;*/
     background: url(../img/labMain/labtitle_bg.png) center center no-repeat;
     background-size: cover;
     position: relative;
@@ -60,22 +58,29 @@ a, a:hover {
     text-align: center;
     line-height: 3;
 }
-.labMain_ct_right{
+.labMain_ct_btn{
     position: absolute;
     text-align: center;
     top: 2em;
+    cursor: pointer;
 }
-.labMain_ct_right:nth-of-type(1) {
+.labMain_ct_btn:nth-of-type(1){
+    left: 2em;
+}
+.labMain_ct_btn:nth-of-type(2) {
     right: 4em;
 }
-.labMain_ct_right:nth-of-type(2) {
-    right: 13em;
+.labMain_ct_btn .icon {
+    width: 2em;
+    height: 2em;
+    margin: 0 auto .5em;
+    background-size: 100% 100%;
 }
-.labMain_ct_right img {
-    width: 1.8em;
-    height: 1.8em;
-    margin-bottom: .5em;
-
+.labMain_ct_btn:nth-of-type(1) .icon{
+    background-image: url("../img/labMain/labMain_toTotalStatus.png");
+}
+.labMain_ct_btn:nth-of-type(2) .icon{
+    background-image: url("../img/labMain/home.png");
 }
 
 /*content bottom star*/

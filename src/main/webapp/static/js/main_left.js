@@ -9,10 +9,10 @@ function pageResize() {
     $("#content").css("width", h * 16 * 7 / (9 * 3));
 }
 function videoFadeOut() {
-     $("body").prepend('<div id="mask" style="background-color: black">'+
-     '<video src="'+contextPath+'/static/img/movieHead_4480.mp4"  width="100%" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>'+
-     '</div>'
-     );
+    $("body").prepend('<div id="mask" style="background-color: black">' +
+        '<video src="' + contextPath + '/static/img/movieHead_4480.mp4"  width="100%" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
+        '</div>'
+    );
     var $video = $('video');
     $video.click(function () {
         $(this)[0].play()
@@ -33,7 +33,7 @@ function switchMapArea(charts) {
         if (src.indexOf("off") >= 0) {
 
             src = src.replace("off", "on");
-            console.log("------src:"+src)
+            console.log("------src:" + src)
             $(this).attr("src", src)
                 .parent().siblings().find("img")
                 .attr("src", $(this).parent().siblings().find("img").attr("src").replace("on", "off"))
@@ -46,15 +46,15 @@ function switchMapArea(charts) {
             }
             /*          var $switchSphere = $left.find(".switch.sphere");
 
-            if ($left.find(".switch.sphere").is(":hidden")) {
+             if ($left.find(".switch.sphere").is(":hidden")) {
 
-                $left.find(".switch.sphere").css({"display": "flex"}).siblings().hide()
-            } else {
-                $left.find(".flat .mapArea iframe").remove();
-                $left.find(".switch.flat").css("display", "flex").find(".mapArea").append(iframe).parent().parent()
-                    .siblings().hide();
-            }
-*/
+             $left.find(".switch.sphere").css({"display": "flex"}).siblings().hide()
+             } else {
+             $left.find(".flat .mapArea iframe").remove();
+             $left.find(".switch.flat").css("display", "flex").find(".mapArea").append(iframe).parent().parent()
+             .siblings().hide();
+             }
+             */
         }
     });
 
@@ -64,7 +64,7 @@ function switchMapArea(charts) {
 function switchMapBtnTip() {
     $(".btnGroup img").hover(function () {
         $(this).siblings().show()
-    },function () {
+    }, function () {
         $(this).siblings().hide()
     })
 }
@@ -125,7 +125,7 @@ function navSelectAll() {
             bgImgOff($(this));
             $actLi.removeClass("active").each(function () {
                 bgImgOff($(this))
-        })
+            })
         } else {
             $(this).css("color", "#6cf");
             bgImgOn($(this));
