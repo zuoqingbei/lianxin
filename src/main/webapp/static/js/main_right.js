@@ -959,7 +959,7 @@ myChart10.setOption({
 
 
 //共产一致与不一致占比
-var myChart11 = echarts.init(document.getElementById("myChart11"));
+/*var myChart11 = echarts.init(document.getElementById("myChart11"));
 myChart11.setOption(getRoseEcharts());
 myChart11.setOption({
     color: ['#66ccff', '#4397f7'],
@@ -1005,10 +1005,9 @@ myChart11.setOption({
             ]
         },
     ]
-});
+});*/
 
 //共产一致
-var myChart12 = echarts.init(document.getElementById("myChart12"));
 var labelSetting = {
     normal: {
         show: false,
@@ -1019,6 +1018,7 @@ var labelSetting = {
         }
     }
 };
+/*var myChart12 = echarts.init(document.getElementById("myChart12"));
 myChart12.setOption(getBarEcharts());
 myChart12.setOption({
     color: ['#66ccff', '#a5fff1'],
@@ -1138,7 +1138,7 @@ myChart12.setOption({
         ]
     }]
 });
-
+*/
 
 //模块质量过程检测
 var myChart14 = echarts.init(document.getElementById("myChart14"));
@@ -1367,7 +1367,7 @@ myChart16.setOption({
 
 
 //共产一致与不一致占比
-var myChart17 = echarts.init(document.getElementById("myChart17"));
+/*var myChart17 = echarts.init(document.getElementById("myChart17"));
 myChart17.setOption(getRoseEcharts());
 myChart17.setOption({
     color: ['#66ccff', '#4397f7'],
@@ -1413,11 +1413,11 @@ myChart17.setOption({
             ]
         },
     ]
-});
+});*/
 
 
 //共产一致
-var myChart18 = echarts.init(document.getElementById("myChart18"));
+/*var myChart18 = echarts.init(document.getElementById("myChart18"));
 myChart18.setOption(getBarEcharts());
 myChart18.setOption({
     color: ['#66ccff', '#a5fff1'],
@@ -1536,7 +1536,7 @@ myChart18.setOption({
         }
         ]
     }]
-});
+});*/
 
 // //数据量挖掘 共产不一致性
 // var myChart19 = echarts.init(document.getElementById("myChart19"));
@@ -4099,7 +4099,7 @@ myChart49.setOption({
 //console.log(str)
 
 var right_echarts = [myChart1, myChart2, myChart3, myChart5, myChart7, myChart8, myChart9,
-    myChart11, myChart12, myChart14, myChart15, myChart16, myChart17, myChart18,
+    myChart14, myChart15, myChart16,
     myChart43, myChart44, myChart47, myChart48, myChart49,
 ]
 //重置echart图标大小 在加载平面地图时被调用

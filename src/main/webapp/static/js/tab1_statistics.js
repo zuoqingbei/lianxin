@@ -16,6 +16,117 @@ function loadTab1Data(){
     findOrderPassForAllTab1();
    //一次合格率  整体统计 不区分整机 模块
     findOrderPassForTab1Ajax();
+    // 共产 一致比重统计
+    communistGravityStatisticForTab1Ajax();
+    //根据类型 时间 统计共产 一致个月份数量
+    communistStatisticForMonthForTab1Ajax();
+}
+//根据类型 时间 统计共产 一致个月份数量
+function communistStatisticForMonthForTab1Ajax(){
+	$.post(contextPath+'/lab/communistStatisticForMonthForTab1Ajax',{"startDate":"201601","endDate":"201612"},function(data){
+		var myChart12 = echarts.init(document.getElementById("myChart12"));
+		right_echarts.push(myChart12);
+		myChart12.setOption(getBarEcharts());
+		myChart12.setOption({
+		    color: ['#66ccff', '#a5fff1'],
+		    legend: {
+		        show: true,
+		        data: ['共产数', '一致数']
+		    },
+		    grid: {
+//		            show:true,
+		        x: "12%",
+		        x2: "15%",
+		        y: '20%',
+		        y2: "22%"
+		    },
+		    yAxis: [
+		        {
+		            name: "数量",
+		            type: 'value'
+		        }
+		    ],
+		    xAxis: [
+		        {
+		            name: "时间",
+		            type: 'category',
+		            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		        }
+		    ],
+		    series: [{
+		        name: '共产数',
+		        type: 'pictorialBar',
+		        label: labelSetting,
+		        symbolRepeat: true,
+		        symbolSize: ['80%', '60%'],
+		        barCategoryGap: '40%',
+		        data: statisticRightSeriesData(data[0],bar_chip)
+		    }, {
+		        name: '一致数',
+		        type: 'pictorialBar',
+		        barGap: '10%',
+		        label: labelSetting,
+		        symbolRepeat: true,
+		        symbolSize: ['80%', '60%'],
+		        data: statisticRightSeriesData(data[1],bar_chip)
+		    }]
+		});
+	})
+}
+
+
+// 共产 一致比重统计
+function communistGravityStatisticForTab1Ajax(){
+	$.post(contextPath+'/lab/communistGravityStatisticForTab1Ajax',{},function(data){
+		var myChart11 = echarts.init(document.getElementById("myChart11"));
+		right_echarts.push(myChart11);
+		myChart11.setOption(getRoseEcharts());
+		myChart11.setOption({
+		    color: ['#66ccff', '#4397f7'],
+		    legend: {
+		        show: true,
+		        textStyle: {
+		            color: '#66ccff',
+		            fontSize: 10 * bodyScale,
+		        },
+		        orient: 'vertical',  //布局  纵向布局
+		        data: ['共产一致型号数', '共产不一致型号数'],
+		        itemWidth: 10,  //图例标记的图形宽度
+		        itemHeight: 2, //图例标记的图形高度
+		    },
+		    series: [
+		        {
+		            name: '',
+		            type: 'pie',
+		            radius: [0, '50%'],
+		            center: ['50%', '55%'],
+		            roseType: 'radius',
+		            label: {
+		                normal: {
+		                    show: true,
+		                    position: "inside",
+		                    formatter: "{d}%"
+		                },
+		                emphasis: {
+		                    show: true
+		                }
+		            },
+		            lableLine: {
+		                normal: {
+		                    show: false
+		                },
+		                emphasis: {
+		                    show: true
+		                }
+		            },
+		            data: [
+		                {value: data.yz_num, name: '共产一致型号数'},
+		                {value: (parseInt(data.gc_num)-parseInt(data.yz_num)), name: '共产不一致型号数'}
+		            ]
+		        },
+		    ]
+		});
+	})
 }
 //人员状态 type:类型 1:学历情况 2:工作年限情况 3:批准权限
 function findPersonStatusTab1Ajax(type){
@@ -123,14 +234,15 @@ function findOrderPassForAllTab1(){
 }
 //订单及时率
 function findOrderYearRateForTab1(){
-	$.post(contextPath+'/lab/findOrderYearRateForTab1Ajax',{"date":"2016"},function(data){
+	$.post(contextPath+'/lab/findOrderYearRateForTab1Ajax',{"startDate":"201606","endDate":"201705"},function(data){
+		console.log(data)
 		var myChart6 = echarts.init(document.getElementById("myChart6"));
 		right_echarts.push(myChart6);
 		myChart6.setOption(getLineEcharts());
 		myChart6.setOption({
 		    legend: {
-		        show: true,
-		        data: ['整机', '模块'],
+		        show: false,
+		        data: ['及时率'],
 		        itemWidth: 5,  //图例标记的图形宽度
 		        itemHeight: 3, //图例标记的图形高度
 		    },
@@ -154,37 +266,23 @@ function findOrderYearRateForTab1(){
 		            nameTextStyle: {
 		                color: '#66ccff'
 		            },
-		            data: statisticRightLengend(data[0])
+		            data: statisticRightLengend2(data)
 		        }
 		    ],
-		    series: tab1OrderRateSeries(data)
+		    series: [{
+				name: '及时率',
+				type: 'line',
+				lineStyle:{
+					normal:{
+						width:1
+					}
+				},
+				symbolSize:2,
+				data: tab1OrderRateSeriseData(data)
+		}]
 
 		});
 	})
-}
-function tab1OrderRateSeries(data){
-	var series=[];
-	$.each(data,function(index,item){
-		var mName;
-		if(index==0){
-			mName="整机";
-		}else{
-			mName="模块";
-		}
-		var it={
-		            name: mName,
-		            type: 'line',
-		            lineStyle:{
-		                normal:{
-		                    width:1
-		                }
-		            },
-		            symbolSize:2,
-		            data: tab1OrderRateSeriseData(item)
-		        };
-		series.push(it);
-	})
-	return series;
 }
 //标准状态数据统计
 function standardStatus(){
