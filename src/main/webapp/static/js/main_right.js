@@ -1,4 +1,5 @@
 // 多个方向盘 设施状态
+$("#myChart").cl
 var myChart1 = echarts.init(document.getElementById("myChart1"));
 option = {
     tooltip: {
@@ -13,7 +14,7 @@ option = {
     },
     series: [
         {
-            name: '在线率',
+            name: '设备完好率',
             type: 'gauge',
             z: 3,
             min: 0,
@@ -79,10 +80,10 @@ option = {
                 },
                 formatter: '{value}%'
             },
-            data: [{value: 98, name: '在线率'}]
+            data: [{value: 98, name: '设备完好率'}]
         },
         {
-            name: '利用率',
+            name: '实验在线率',
             type: 'gauge',
             center: ['25%', '58%'],    // 默认全局居中
             radius: '70%',
@@ -144,10 +145,10 @@ option = {
                 },
                 formatter: '{value}%' //数字显示的样式
             },
-            data: [{value: 96, name: '利用率'}]
+            data: [{value: 96, name: '实验在线率'}]
         },
         {
-            name: '完好率',
+            name: '设备利用率',
             type: 'gauge',
             center: ['75%', '59%'],    // 默认全局居中
             radius: '70%',
@@ -210,7 +211,7 @@ option = {
                 },
                 formatter: '{value}%'
             },
-            data: [{value: 95, name: '完好率'}]
+            data: [{value: 95, name: '设备利用率'}]
         }
     ]
 };
@@ -532,6 +533,7 @@ var myChart5 = echarts.init(document.getElementById("myChart5"));
 myChart5.setOption(getCenterPie());
 myChart5.setOption({
     legend: {
+        show:false,
         data: ['整机', '模块']
     },
     textStyle: {
@@ -544,10 +546,11 @@ myChart5.setOption({
             type: 'pie',
             clockWise: false,
             radius: ['50%', '60%'],
+            center:['40%', '45%'],
             itemStyle: {
                 normal: {
                     label: {show: true},
-                    labelLine: {show: true, length: 12, length2: 7, smooth: false}
+                    labelLine: {show:true,length:12*bodyScale,length2:47*bodyScale,smooth:false}
                 },
             },
             data: [
@@ -568,6 +571,7 @@ myChart5.setOption({
             type: 'pie',
             clockWise: false,
             radius: ['40%', '50%'],
+            center:['40%', '45%'],
             itemStyle: {
                 normal: {
                     label: {show: true},
@@ -719,7 +723,7 @@ var bar_chip = '../img/bar_chip.png';
 myChart8.setOption({
     color:["#66ccff","#ff9933"],
     title: {
-        text: '模块质量过程检测',
+        text: '模块商质量水平分布',
         left: 'center'
     },
     grid: {
@@ -732,10 +736,11 @@ myChart8.setOption({
     yAxis: [
         {
             name: "Cpk",
+            nameGap:8*bodyScale,
             type: 'category',
             position: 'left',
 
-            data: [0, 0.5, 1, 1.5, 2],
+            data: [1, 1.33, 1.67, 2],
             axisLine: { //坐标轴
                 show: false,
                 textStyle: {
@@ -746,10 +751,11 @@ myChart8.setOption({
                 show: false,
             }
         }, {
-            // name: "ppm",
+            name: "ppm",
+            nameGap:8*bodyScale,
             position: 'right',
             type: 'category',
-            data: [1230, 2460, 3690, 4920, 6150],
+            data: [2700],
             axisLine: { //坐标轴
                 show: true,
                 textStyle: {
@@ -806,6 +812,12 @@ myChart8.setOption({
                 value: 32,
                 symbol: bar_chip
             }, {
+                value: 16,
+                symbol: bar_chip
+             }, {
+                value: 2,
+                symbol: bar_chip
+             }, {
                 value: 2,
                 symbol: bar_chip
             }
@@ -903,7 +915,7 @@ myChart9.setOption({
 
 
 //能力直方图
-var myChart10 = echarts.init(document.getElementById("myChart10"));
+/*var myChart10 = echarts.init(document.getElementById("myChart10"));
 myChart10.setOption(getLineAndBar());
 myChart10.setOption({
     title: {
@@ -955,8 +967,113 @@ myChart10.setOption({
         }
     ]
 
-});
-
+});*/
+    var data = [[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
+    /**
+     * Get histogram data out of xy data
+     * @param   {Array} data  Array of tuples [x, y]
+     * @param   {Number} step Resolution for the histogram
+     * @returns {Array}       Histogram data
+     */
+    function histogram(data, step) {
+        var histo = {},
+            x,
+            i,
+            arr = [];
+        // Group down
+        for (i = 0; i < data.length; i++) {
+            x = Math.floor(data[i][0] / step) * step;
+            if (!histo[x]) {
+                histo[x] = 0;
+            }
+            histo[x]++;
+        }
+        // Make the histo group into an array
+        for (x in histo) {
+            if (histo.hasOwnProperty((x))) {
+                arr.push([parseFloat(x), histo[x]]);
+            }
+        }
+        // Finally, sort the array
+        arr.sort(function (a, b) {
+            return a[0] - b[0];
+        });
+        return arr;
+    }
+    $('#myChart10').highcharts({
+        chart: {
+            type: 'column'
+        },
+        credits: {
+            enabled: false
+        },
+        exporting: {
+            enabled:false
+        },
+        title: {
+            text: '直方图'
+        },
+        legend:{
+            enabled:false,
+        },
+        xAxis: {
+            gridLineWidth: 1,
+            min:68,
+            max:80,
+            plotLines:[{
+                color:'red',            //线的颜色，定义为红色
+                dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+                value:71,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                width:2  ,               //标示线的宽度，2px
+                label:{
+                    text:'LSL',  //标签的内容
+                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                },
+                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            },{
+                color:'red',            //线的颜色，定义为红色
+                dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+                value:77,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                width:2  ,               //标示线的宽度，2px
+                label:{
+                    text:'USL',//标签的内容
+                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                },
+                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            }
+            ]
+        },
+        yAxis: [{
+            title: {
+                text: ''
+            },
+            visible:false
+        }, {
+            opposite: true,
+            title: {
+                text: 'Y value'
+            },
+            visible:false,
+        }],
+        series: [{
+            name: '直方图',
+            type: 'column',
+            data: histogram(data, 0.5),
+            pointPadding: 0,
+            groupPadding: 0,
+            pointPlacement: 'between'
+        }, {
+            name: 'XY 数据',
+            type: 'line',
+            data: data,
+            yAxis: 1,
+            marker: {
+                radius: 1.5
+            }
+        }]
+    });
 
 //共产一致与不一致占比
 /*var myChart11 = echarts.init(document.getElementById("myChart11"));

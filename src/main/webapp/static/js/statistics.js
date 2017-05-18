@@ -177,7 +177,7 @@ function worldTyleEchart(data){
 	        },
 	        {
 	            type: 'pie',
-	            center: ['30%', '76%'],
+	            center: ['70%', '76%'],
 	            radius: radius,
 	            x: '40%', // for funnel
 	            itemStyle: labelFromatter,
@@ -188,7 +188,7 @@ function worldTyleEchart(data){
 	        },
 	        {
 	            type: 'pie',
-	            center: ['70%', '76%'],
+	            center: ['30%', '76%'],
 	            radius: radius,
 	            x: '80%', // for funnel
 	            itemStyle: labelFromatter,
@@ -312,13 +312,14 @@ function labPropertiesStatis(){
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "42%",
+	        	 x: "40%",
 	             x2: "20%",
-	             y:"15%"
+	             y:"18%",
+	             y2:"15%"
 	        },
 	        xAxis: [
 	            {
-	                name: "数量",
+	                name: "实验室数量",
 	                type: 'value',
 	                axisLabel: {
 	                    textStyle: {
@@ -344,14 +345,14 @@ function labPropertiesStatis(){
 	        ],
 	        yAxis: [
 	            {
-	                name: "",
+	                name: "专业能力",
 	                type: 'category',
 	                data: statisticLengend(data),
 	                axisLabel: {
-	                	margin:bodyScale*2,
+	                	// margin:bodyScale*2,
 	                    textStyle: {
 	                        color: "#66ccff",
-	                        fontSize: bodyScale*8
+	                        fontSize: bodyScale*6
 	                    }
 	                },
 	                nameGap: 10,

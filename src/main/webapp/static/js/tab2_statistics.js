@@ -380,7 +380,7 @@ function abilityByProductLine(){
 				        	axisTick: {
 				        		show: false
 				        	}
-				        	
+
 				        }
 				        ],
 				        xAxis: [
@@ -415,7 +415,7 @@ function abilityByProductLine(){
 				                         }
 				                         ]
 			});
-			
+
 		});
 	})
 }
