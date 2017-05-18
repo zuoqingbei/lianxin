@@ -61,22 +61,29 @@ function findOrderPassForAllTab1(){
 		};
 		myChart4.setOption({
 		    legend:{
+		    	show:false,
+                x: 'right',
 		        data:['整机','模块']
 		    },
 		    textStyle:{
 		        fontSize:12*bodyScale
 		    },
 		    color: ['#4397f7', '#66ccff'],
+			grid:{ //grid在极坐标中不起作用，只能应用于直角坐标系
+                x:"",
+				x2:""
+			},
 		    series: [
 		        {
 		            name: '整机',
 		            type: 'pie',
 		            clockWise: false,
 		            radius: ['50%', '60%'],
+					center:['40%', '45%'],
 		            itemStyle: {
 		            	 normal: {
 						        label: {show:true},
-						        labelLine: {show:true,length:12,length2:7,smooth:false}
+						        labelLine: {show:true,length:12*bodyScale,length2:47*bodyScale,smooth:false}
 						    },
 		            },
 		            data: [
@@ -97,6 +104,7 @@ function findOrderPassForAllTab1(){
 		            type: 'pie',
 		            clockWise: false,
 		            radius: ['40%', '50%'],
+                    center:['40%', '45%'],
 		            itemStyle: {
 		            	 normal: {
 						        label: {show:true},
@@ -304,7 +312,7 @@ function standardStatus(){
 				            itemStyle: labelFromatter,
 				            data: [
 				                {name: 'other', value: 100-num0, itemStyle: labelBottom},
-				                {name: '牵头起草数', value: num0, itemStyle: labelTop}
+				                {name: '起草数', value: num0, itemStyle: labelTop}
 				            ]
 				        },
 				        {
@@ -315,7 +323,7 @@ function standardStatus(){
 				            itemStyle: labelFromatter,
 				            data: [
 				                {name: 'other', value: 100-num1, itemStyle: labelBottom},
-				                {name: '参与起草数', value: num1, itemStyle: labelTop}
+				                {name: '起草数', value: num1, itemStyle: labelTop}
 				            ]
 				        },
 				        {
