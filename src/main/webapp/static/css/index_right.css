@@ -20,8 +20,10 @@
     color: #66ccff;
     cursor: pointer;
     font-size: 1.4em;
+}
 
-
+.white{
+    color:#fff
 }
 
 #right .lab{
@@ -408,7 +410,6 @@
 
 .total_bottom_left {
     flex: 1;
-    /*background-color: pink;*/
 }
 
 .total_bottom_right {
@@ -418,17 +419,23 @@
 .total_bottom_pie {
     width: 28%;
     height: 65%;
-    /*background-color: yellow;*/
     float: left;
+}
+.total_bottom_pie h3{
+    padding-left: 29%;
 }
 
 .total_bottom_bar1,.total_bottom_bar2 {
-    width: 29%;
+    width: 26%;
     height: 65%;
     float: left;
     position: relative;
 }
-
+.total_bottom_bar1 p.result{
+    color: #00e673;
+    font-size: .8em;
+    margin-top: .2em;
+}
 .myChart9_line1{
     height: 0.1em;
     width: 67%;
@@ -453,7 +460,7 @@
     display: inline-block;
     background-color: #ff9933;
     position: absolute;
-   top: 16%;
+    top: 16%;
     left: 19%;
 }
 .myChart10_lin2{
@@ -481,15 +488,14 @@
 }
 
 .total_bottom_tab{
-    width: 7%;
+    width: 13%;
     height: 65%;
     float: left;
     background-color: transparent;
     margin-right: 1%;
     margin-left: 5%;
-
 }
-.total_bottom_tab ul {
+.total_bottom_tab>ul {
     width: 100%;
     height: 95%;
     overflow-y: scroll;
@@ -497,20 +503,24 @@
     background: url("../img/TotalState/scroll bar-border.png") no-repeat;
     background-size: 100% 100%;
 }
-.total_bottom_tab ul li{
+.total_bottom_tab ul>li.main,
+.total_bottom_tab ul>li>ul>li{
     cursor: pointer;
-    width: 100%;
-    height: 20%;
+    margin-left: 5%;
+    width: 95%;
     display: inline-block;
     color: #66CCFE;
-    font-size: 1em;
+    font-size: .9em;
 }
-.total_bottom_tab ul li:hover{
+.total_bottom_tab ul>li.main.active,
+.total_bottom_tab ul>li>ul>li.active,
+.total_bottom_tab ul>li.main:hover,
+.total_bottom_tab ul>li>ul>li:hover{
     color: #fff;
     background-color: #66CCFE;
 }
-.total_bottom_tab ul li.li-main{
-    font-size: 1.2em;
+.total_bottom_tab>ul>li.main{
+    font-size: 1.1em;
 }
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 .total_bottom_tab ::-webkit-scrollbar
@@ -548,8 +558,10 @@
     width: 100%;
     height: 100%;
 }
-
-#myChart9,#myChart10,#myChart12,#myChart13 {
+#myChart9,#myChart9_2{
+    height: 40%;
+}
+#myChart10,#myChart12,#myChart13 {
     width: 100%;
     height: 100%;
 }
@@ -849,6 +861,7 @@
     width: 100%;
     height: 65%;
     padding-bottom: 2%;
+    padding-left: 1%;
 }
 .nengli_bottom ul{
     width: 95%;

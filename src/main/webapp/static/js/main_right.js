@@ -1,5 +1,5 @@
 // 多个方向盘 设施状态
-$("#myChart").cl
+// $("#myChart").cl
 var myChart1 = echarts.init(document.getElementById("myChart1"));
 option = {
     tooltip: {
@@ -723,6 +723,7 @@ var bar_chip = '../img/bar_chip.png';
 myChart8.setOption({
     color:["#66ccff","#ff9933"],
     title: {
+        show:false,
         text: '模块商质量水平分布',
         left: 'center'
     },
@@ -737,14 +738,14 @@ myChart8.setOption({
         {
             name: "Cpk",
             nameGap:8*bodyScale,
-            type: 'category',
+            // type: 'category',
             position: 'left',
 
             data: [1, 1.33, 1.67, 2],
             axisLine: { //坐标轴
                 show: false,
                 textStyle: {
-                    color: '#66ccff'
+                    color: 'rgba(0,0,0,0)'
                 }
             },
             axisTick: {  //刻度值
@@ -754,8 +755,28 @@ myChart8.setOption({
             name: "ppm",
             nameGap:8*bodyScale,
             position: 'right',
-            type: 'category',
+            // type: 'category',
             data: [2700],
+            axisLine: { //坐标轴
+                show: true,
+                textStyle: {
+                    color: '#66ccff',
+                }
+            },
+            axisTick: {  //刻度值
+                show: false,
+            }
+        }, {
+            name: "",
+            nameGap:8*bodyScale,
+            position: 'right',
+            type: 'category',
+            data: [0.6, 1.16, 1.5, 1.85,2.5],
+            axisLabel:{
+                textStyle:{
+                    color: '#66ccff',
+                }
+            },
             axisLine: { //坐标轴
                 show: true,
                 textStyle: {
@@ -815,10 +836,10 @@ myChart8.setOption({
                 value: 16,
                 symbol: bar_chip
              }, {
-                value: 2,
+                value: 8,
                 symbol: bar_chip
              }, {
-                value: 2,
+                value: 6,
                 symbol: bar_chip
             }
             ]
@@ -832,23 +853,46 @@ var myChart9 = echarts.init(document.getElementById("myChart9"));
 myChart9.setOption(getLineEcharts());
 myChart9.setOption({
     color:["#ff9933"],
+    textStyle:{
+        fontSize:4*bodyScale
+    },
     title: {
+        show:false,
         text: 'Xbar 控制图',
         left: 'center'
     },
     grid: {
-        right: 43,
-        bottom: 30,
-        left: 38,
-        top: 30
+        right: "29%",
+        bottom: "28%",
+        left: "15%",
+        top: "16%"
     },
     yAxis: {
         name: '样本均值',
-        // max: 100
+        max: 74.5,
+        min: 73,
+        axisLabel:{
+            textStyle:{
+                fontSize:5*bodyScale
+            }
+        },
+        splitLine: {  //刻度线
+            show: false
+        },
+        nameGap:2*bodyScale,
+        nameTextStyle:{fontSize:6*bodyScale},
     },
     xAxis: [
         {
             name: "时间",
+            axisLabel:{
+                textStyle:{
+                    fontSize:5*bodyScale
+                },
+                margin:2*bodyScale
+            },
+            nameGap:2*bodyScale,
+            nameTextStyle:{fontSize:6*bodyScale},
             data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         }
     ],
@@ -897,15 +941,132 @@ myChart9.setOption({
             },
             symbolSize: 2,
 //            areaStyle: {normal: {}},
-            data: [30, 232, 25, 34, 45, 30, 140, 23, 34, 46, 34, 113],
+            data: [73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25],
             markLine: {
+                symbolSize:0,
                 silent: true,
+                label:{normal:{formatter:"{b}={c}"}},
                 data: [{
-                    yAxis: 50
+                    name:"UCL",
+                    yAxis: 74.2688
                 },{
-                    yAxis: 150
+                    name:"x",
+                    yAxis: 74.0485
                 }, {
-                    yAxis: 200
+                    name:"LCL",
+                    yAxis: 73.4688
+                }]
+            }
+        }
+    ]
+
+});
+var myChart9_2 = echarts.init(document.getElementById("myChart9_2"));
+myChart9_2.setOption(getLineEcharts());
+myChart9_2.setOption({
+    color:["#ff9933"],
+    textStyle:{
+        fontSize:4*bodyScale
+    },
+    title: {
+        show:false,
+        text: 'Xbar 控制图',
+        left: 'center'
+    },
+    grid: {
+        right: "29%",
+        bottom: "28%",
+        left: "15%",
+        top: "16%"
+    },
+    yAxis: {
+        name: '样本均值',
+        max: 74.5,
+        min: 73,
+        axisLabel:{
+            textStyle:{
+                fontSize:5*bodyScale
+            }
+        },
+        splitLine: {  //刻度线
+            show: false
+        },
+        nameGap:2*bodyScale,
+        nameTextStyle:{fontSize:6*bodyScale},
+    },
+    xAxis: [
+        {
+            name: "时间",
+            axisLabel:{
+                textStyle:{
+                    fontSize:5*bodyScale
+                },
+                margin:2*bodyScale
+            },
+            nameGap:2*bodyScale,
+            nameTextStyle:{fontSize:6*bodyScale},
+            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        }
+    ],
+    visualMap: {
+        show:false,
+        top: 10,
+        right: 10,
+        pieces: [{
+            gt: 0,
+            lte: 50,
+            color: '#096'
+        }, {
+            gt: 50,
+            lte: 100,
+            color: '#ffde33'
+        }, {
+            gt: 1000,
+            lte: 150,
+            color: '#ff9933'
+        }, {
+            gt: 150,
+            lte: 200,
+            color: '#cc0033'
+        },
+            //     {
+            //     gt: 200,
+            //     lte: 300,
+            //     color: '#660099'
+            // }, {
+            //     gt: 300,
+            //     color: '#7e0023'
+            // }
+        ],
+        outOfRange: {
+            color: '#cc0033'
+        }
+    },
+    series: [
+        {
+            name: '样本均值',
+            type: 'line',
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            },
+            symbolSize: 2,
+//            areaStyle: {normal: {}},
+            data: [73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25],
+            markLine: {
+                symbolSize:0,
+                silent: true,
+                label:{normal:{formatter:"{b}={c}"}},
+                data: [{
+                    name:"UCL",
+                    yAxis: 74.2688
+                },{
+                    name:"x",
+                    yAxis: 74.0485
+                }, {
+                    name:"LCL",
+                    yAxis: 73.4688
                 }]
             }
         }
@@ -4226,6 +4387,16 @@ function resetSizeRight() {
     }
 }
 
+$(function () {
+    var $right = $("#right");
+    $right.find(".total_bottom_tab ul>li[class]").click(function () {
+        $(this).parents(".total_bottom_tab").find(".active").removeClass("active");
+        $(this).addClass("active");
+    });
+    $right.find(".total_bottom_tab>ul>li[class]").click(function () {
+        $(this).next().toggle();
+    })
+})
 
 
 
