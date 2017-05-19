@@ -665,7 +665,7 @@ var myChart7 = echarts.init(document.getElementById("myChart7"));
 myChart7.setOption(getLineEcharts());
 myChart7.setOption({
     legend: {
-        show: true,
+        show: false,
         data: ['整机', '模块'],
         itemWidth: 5,  //图例标记的图形宽度
         itemHeight: 3, //图例标记的图形高度
@@ -688,7 +688,7 @@ myChart7.setOption({
     ],
     series: [
         {
-            name: '整机',
+            name: '满意度',
             type: 'line',
             stack: '总量',
             lineStyle: {
@@ -698,8 +698,9 @@ myChart7.setOption({
             },
             symbolSize: 2,
 //            areaStyle: {normal: {}},
-            data: [30, 32, 25, 34, 45, 30, 40, 23, 34, 46]
+            data: [80, 92, 85, 94, 85, 80, 70, 83, 94, 96]
         },
+/*
         {
             name: '模块',
             type: 'line',
@@ -713,11 +714,13 @@ myChart7.setOption({
 //            areaStyle: {normal: {}},
             data: [40, 33, 61, 34, 29, 30, 31, 34, 42, 44]
         }
+*/
     ]
 
 });
 //模块质量过程检测
-/*var myChart8 = echarts.init(document.getElementById("myChart8"));
+/*
+var myChart8 = echarts.init(document.getElementById("myChart8"));
 myChart8.setOption(getBarEcharts());
 var bar_chip = '../img/bar_chip.png';
 myChart8.setOption({
@@ -737,10 +740,14 @@ myChart8.setOption({
     yAxis: [
         {
             name: "Cpk",
-            nameGap:8*bodyScale,
+            nameGap:2*bodyScale,
             // type: 'category',
             position: 'left',
-
+            axisLabel:{
+                textStyle: {
+                    fontSize: 9 * bodyScale
+                }
+            },
             data: [1, 1.33, 1.67, 2],
             axisLine: { //坐标轴
                 show: false,
@@ -752,14 +759,19 @@ myChart8.setOption({
                 show: false,
             }
         }, {
-            name: "ppm",
-            nameGap:8*bodyScale,
+            name: " ",/!*ppm用div替代*!/
             position: 'right',
             // type: 'category',
             data: [2700],
+            axisLabel:{
+                textStyle: {
+                    fontSize: 9 * bodyScale
+                }
+            },
             axisLine: { //坐标轴
                 show: true,
                 textStyle: {
+                    // color: 'rgba(0,0,0,0)',
                     color: '#66ccff',
                 }
             },
@@ -768,11 +780,13 @@ myChart8.setOption({
             }
         }, {
             name: "",
-            nameGap:8*bodyScale,
+            nameGap:2*bodyScale,
             position: 'right',
             type: 'category',
+
             data: [0.6, 1.16, 1.5, 1.85,2.5],
             axisLabel:{
+                show:false,
                 textStyle:{
                     color: '#66ccff',
                 }
@@ -792,6 +806,10 @@ myChart8.setOption({
     xAxis: [
         {
             type: 'value',
+            nameGap:2*bodyScale,
+            axisLabel: {
+                show:false
+            },
             splitLine: {  //刻度线
                 show: true,
                 lineStyle: {
@@ -801,7 +819,7 @@ myChart8.setOption({
             axisLine: { //坐标轴
                 show: false,
                 textStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(0,0,0,0)',
                 }
             },
             axisTick: {  //刻度值
@@ -845,11 +863,13 @@ myChart8.setOption({
             ]
         }
     ]
-});*/
+});
+*/
 
 
 //Xbar控制图
-/*var myChart9 = echarts.init(document.getElementById("myChart9"));
+/*
+var myChart9 = echarts.init(document.getElementById("myChart9"));
 myChart9.setOption(getLineEcharts());
 myChart9.setOption({
     color:["#ff9933"],
@@ -901,10 +921,17 @@ myChart9.setOption({
         top: 10,
         right: 10,
         pieces: [{
-            gt: 0,
-            lte: 50,
-            color: '#096'
-        }, {
+            gt: 73.5,
+            lte: 74,
+            color: function (params, lowLine) {
+                var color;
+                alert(22)
+                console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",params);
+                return "#0ff";
+            }
+
+
+/!*        }, {
             gt: 50,
             lte: 100,
             color: '#ffde33'
@@ -915,7 +942,7 @@ myChart9.setOption({
         }, {
             gt: 150,
             lte: 200,
-            color: '#cc0033'
+            color: '#cc0033'*!/
         },
             //     {
             //     gt: 200,
@@ -936,11 +963,14 @@ myChart9.setOption({
             type: 'line',
             lineStyle: {
                 normal: {
+                    color:"#00e673",
                     width: 1
                 }
             },
+            itemStyle:{normal:{
+                borderColor:"#00e673"
+            }},
             symbolSize: 2,
-//            areaStyle: {normal: {}},
             data: [73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25],
             markLine: {
                 symbolSize:0,
@@ -960,8 +990,8 @@ myChart9.setOption({
         }
     ]
 
-});*/
-/*var myChart9_2 = echarts.init(document.getElementById("myChart9_2"));
+});
+var myChart9_2 = echarts.init(document.getElementById("myChart9_2"));
 myChart9_2.setOption(getLineEcharts());
 myChart9_2.setOption({
     color:["#ff9933"],
@@ -1048,9 +1078,13 @@ myChart9_2.setOption({
             type: 'line',
             lineStyle: {
                 normal: {
+                    color:"#00e673",
                     width: 1
                 }
             },
+            itemStyle:{normal:{
+                borderColor:"#00e673"
+            }},
             symbolSize: 2,
 //            areaStyle: {normal: {}},
             data: [73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25],
@@ -1072,7 +1106,8 @@ myChart9_2.setOption({
         }
     ]
 
-});*/
+});
+*/
 
 
 //能力直方图
@@ -1129,14 +1164,14 @@ myChart10.setOption({
     ]
 
 });*/
-  //  var data = [[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
+    var data = [[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
     /**
      * Get histogram data out of xy data
      * @param   {Array} data  Array of tuples [x, y]
      * @param   {Number} step Resolution for the histogram
      * @returns {Array}       Histogram data
      */
-   /* function histogram(data, step) {
+    function histogram(data, step) {
         var histo = {},
             x,
             i,
@@ -1160,8 +1195,8 @@ myChart10.setOption({
             return a[0] - b[0];
         });
         return arr;
-    }*/
-   /* $('#myChart10').highcharts({
+    }
+    $('#myChart10').highcharts({
         chart: {
             type: 'column'
         },
@@ -1234,7 +1269,7 @@ myChart10.setOption({
                 radius: 1.5
             }
         }]
-    });*/
+    });
 
 //共产一致与不一致占比
 /*var myChart11 = echarts.init(document.getElementById("myChart11"));
@@ -3602,12 +3637,14 @@ myChart27.setOption({
 //数据结果 问题闭环率 整机
 var myChart43 = echarts.init(document.getElementById("myChart43"));
 myChart43.setOption(getCenterPie());
+
 myChart43.setOption({
     color: ['#66ccff', '#00e673', '#ff9933', '#4397f7', '#ffff99', '#ff6666', '#66ffcc'],
     legend: {
         show: true,
-        data: ['冰冷', '洗涤', '家空', '商空', '热水器', '厨电', '其他'],
+        data: ['冰冷'+"89%", '洗涤'+"89%", '家空'+"89%", '商空'+"89%", '热水器'+"89%", '厨电'+"89%", '其他'+"89%"],
         orient: ' vertical',  //布局  纵向布局
+
 
     },
     series: [
@@ -3616,11 +3653,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,  //旋转方向
             radius: [60, 63],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 99,
-                    name: '冰冷',
+                    name: '冰冷'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3635,11 +3673,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [54, 57],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 98,
-                    name: '洗涤',
+                    name: '洗涤'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3654,11 +3693,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [48, 51],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
-                    name: '家空',
+                    name: '家空'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3674,11 +3714,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [42, 45],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 89,
-                    name: '商空',
+                    name: '商空'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3693,11 +3734,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [36, 39],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 87,
-                    name: '热水器',
+                    name: '热水器'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3713,11 +3755,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [30, 33],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
-                    name: '厨电',
+                    name: '厨电'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3732,11 +3775,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [24, 27],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 97,
-                    name: '其他',
+                    name: '其他'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3758,8 +3802,9 @@ myChart44.setOption({
     color: ['#66ccff', '#00e673', '#ff9933', '#4397f7', '#ffff99', '#ff6666', '#66ffcc'],
     legend: {
         show: true,
-        data: ['冰冷', '洗涤', '家空', '商空', '热水器', '厨电', '其他'],
+        data: ['冰冷'+"89%", '洗涤'+"89%", '家空'+"89%", '商空'+"89%", '热水器'+"89%", '厨电'+"89%", '其他'+"89%"],
         orient: ' vertical',  //布局  纵向布局
+
 
     },
     series: [
@@ -3768,11 +3813,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,  //旋转方向
             radius: [60, 63],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 99,
-                    name: '冰冷',
+                    name: '冰冷'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3787,11 +3833,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [54, 57],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 98,
-                    name: '洗涤',
+                    name: '洗涤'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3806,11 +3853,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [48, 51],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
-                    name: '家空',
+                    name: '家空'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3826,11 +3874,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [42, 45],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 89,
-                    name: '商空',
+                    name: '商空'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3845,11 +3894,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [36, 39],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 87,
-                    name: '热水器',
+                    name: '热水器'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3865,11 +3915,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [30, 33],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
-                    name: '厨电',
+                    name: '厨电'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3884,11 +3935,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [24, 27],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 97,
-                    name: '其他',
+                    name: '其他'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -4396,7 +4448,7 @@ $(function () {
     $right.find(".total_bottom_tab>ul>li[class]").click(function () {
         $(this).next().toggle();
     })
-})
+});
 
 
 

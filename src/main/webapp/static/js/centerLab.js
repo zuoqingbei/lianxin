@@ -549,7 +549,7 @@ function getCharts1() {
         },
         grid: {
             x: '13%',
-            x2: '23%',
+            x2: '10%',
             y2: '-2%'                //下移负数 使两个图重叠
         },
         xAxis: [
@@ -868,7 +868,6 @@ function getCharts2() {
                         fontSize:12*bodyScale
                     }
                 },
-                offset:40,
                 axisLine: { //坐标轴
                     show: false
                 },
@@ -887,6 +886,7 @@ function getCharts2() {
                     }
                 },
                 symbolSize:1,
+                offset:40
             }
         ],
         series: seriesBottomData

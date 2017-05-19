@@ -75,13 +75,21 @@ function proLineStatis(){
 		sphereRTnumberShow(nums);
 	})
 }
-
+function standardSeriesDataForLeft(data,name){
+	var num=0;
+	$.each(data,function(index,item){
+		if(item.name==name){
+			num=parseInt(item.count);
+		}
+	});
+	return num;
+}
 //平面地图左上角的环形图，实验室数量按照四大类展示
 function worldTyleEchart(data){
-	var num2=standardSeriesData(data,"研发实验室");
-	var num3=standardSeriesData(data,"中海博睿");
-	var num4=standardSeriesData(data,"工厂实验室");
-	var num5=standardSeriesData(data,"模块商实验室");
+	var num2=standardSeriesDataForLeft(data,"研发实验室");
+	var num3=standardSeriesDataForLeft(data,"中海博睿");
+	var num4=standardSeriesDataForLeft(data,"工厂实验室");
+	var num5=standardSeriesDataForLeft(data,"模块商实验室");
 	var allNum=parseInt(num2)+parseInt(num3)+parseInt(num4)+parseInt(num5);
 	// var myChartFlatLT = echarts.init($("#l").find(".sphere-right-top .myChart")[0]);
 	myChartFlatLT.setOption(getYuanhuan());
@@ -96,7 +104,7 @@ function worldTyleEchart(data){
 	                return allNum -  params.value
 	            },
 	            textStyle: {
-	                fontSize:bodyScale*13,
+	                fontSize:bodyScale*15,
 	                color: "#f90",
 	                baseline: 'bottom'
 	            }
@@ -127,7 +135,7 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-	                fontSize: bodyScale*7,
+	                fontSize: bodyScale*11,
 	                // fontSize: 6,
 	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
                     baseline: 'top'
@@ -203,7 +211,7 @@ function worldTyleEchart(data){
 
 function worldLabTypeStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code","productCode":productCode},function(data){
-		worldTyleEchart(data)
+		worldTyleEchart(data);
 	})
 }
 //平面地图左下角，按照实验室四大类统计数量
@@ -308,11 +316,11 @@ function labPropertiesStatis(){
 	        },
 	        textStyle: {
 	            color: "#6cf",
-	            fontSize: bodyScale*8
+	            fontSize: bodyScale*10
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "40%",
+	        	 x: "30%",
 	             x2: "20%",
 	             y:"18%",
 	             y2:"15%"
@@ -324,9 +332,13 @@ function labPropertiesStatis(){
 	                axisLabel: {
 	                    textStyle: {
 	                        color: "#66ccff",
-	                        fontSize: bodyScale*6
-	                    }
+	                        fontSize: bodyScale*12
+	                    },
+                        interval:0
 	                },
+                    axisTick: {  //刻度值
+                        show: false,
+                    },
 	                axisLine: {
 	                    lineStyle: {
 	                        width: 0
@@ -338,7 +350,7 @@ function labPropertiesStatis(){
 	                        color: "#234f65"
 	                    }
 	                },
-	                nameGap: bodyScale*10,
+	                nameGap: 10,
 	                offset: 5//调整个坐标轴标签的远近
 
 	            }
@@ -352,11 +364,15 @@ function labPropertiesStatis(){
 	                	// margin:bodyScale*2,
 	                    textStyle: {
 	                        color: "#66ccff",
-	                        fontSize: bodyScale*6
-	                    }
+	                        fontSize: bodyScale*11,
+	                    },
+                        interval:0
 	                },
-	                nameGap: 10,
-	                offset: 5,
+                    axisTick: {  //刻度值
+                        show: false,
+                    },
+	                nameGap: 15,
+	                offset: 0,
 //	                minInterval: .5
 	            }
 	        ],
@@ -485,8 +501,12 @@ function labLifeCycleStatis(){
 	                     lineStyle: {
 	                         color: "#234f65"
 	                     }
-	                 }
-	            }
+	                 },
+                    axisTick: {  //刻度值
+                        show: false,
+                    }
+
+                }
 	        ],
 	        series: [
                 {

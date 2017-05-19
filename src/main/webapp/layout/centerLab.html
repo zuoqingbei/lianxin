@@ -168,6 +168,52 @@
                                 <span class="data">80%</span>
                             </div>
                         </div>
+                        <div class="l-top-body-4">
+                            <h4>A室</h4>
+                            <div class="item1">
+                                <h5>实验室状态：<span></span></h5>
+                                <span class="data">在用</span>
+                            </div>
+                            <div class="item2">
+                                <h5>台位负荷：<span></span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"
+                                         aria-valuemax="100" style="width: 84%;height: 100%"></div>
+                                </div>
+                                <span class="data">84%</span>
+                            </div>
+                            <div class="item3">
+                                <h5>月负荷率：<span></span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                         aria-valuemax="100" style="width: 80%;height: 100%"></div>
+                                </div>
+                                <span class="data">80%</span>
+                            </div>
+                        </div>
+                        <div class="l-top-body-5">
+                            <h4>A室</h4>
+                            <div class="item1">
+                                <h5>实验室状态：<span></span></h5>
+                                <span class="data">在用</span>
+                            </div>
+                            <div class="item2">
+                                <h5>台位负荷：<span></span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"
+                                         aria-valuemax="100" style="width: 84%;height: 100%"></div>
+                                </div>
+                                <span class="data">84%</span>
+                            </div>
+                            <div class="item3">
+                                <h5>月负荷率：<span></span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                         aria-valuemax="100" style="width: 80%;height: 100%"></div>
+                                </div>
+                                <span class="data">80%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!--第二行-->
@@ -237,6 +283,44 @@
                             </div>
                         </div>
                         <div class="l-mid-body-3">
+                            <h4>A室</h4>
+                            <div class="item1">
+                                <h5>停机时间：<span></span></h5>
+                                <span class="data">12小时</span>
+                            </div>
+                            <div class="item2">
+                                <h5>停机次数：<span></span></h5>
+                                <span class="data">4次</span>
+                            </div>
+                            <div class="item3">
+                                <h5>当前完好率：<span></span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                         aria-valuemax="100" style="width: 98%;height: 100%"></div>
+                                </div>
+                                <span class="data">98%</span>
+                            </div>
+                        </div>
+                        <div class="l-mid-body-4">
+                            <h4>A室</h4>
+                            <div class="item1">
+                                <h5>停机时间：<span></span></h5>
+                                <span class="data">12小时</span>
+                            </div>
+                            <div class="item2">
+                                <h5>停机次数：<span></span></h5>
+                                <span class="data">4次</span>
+                            </div>
+                            <div class="item3">
+                                <h5>当前完好率：<span></span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                         aria-valuemax="100" style="width: 98%;height: 100%"></div>
+                                </div>
+                                <span class="data">98%</span>
+                            </div>
+                        </div>
+                        <div class="l-mid-body-5">
                             <h4>A室</h4>
                             <div class="item1">
                                 <h5>停机时间：<span></span></h5>
@@ -545,7 +629,7 @@
         });
         $(".sheshi_tab").eq(1).click(function () {
             $('.labMain_cb_left .shishi_right').css('display','block').siblings().eq(3).css('display','none');
-        });
+    });
 
         $(".labMain_cbr_tab").click(function () {
 //            $(this).addClass("active_right").siblings().removeClass("active_right");
@@ -592,6 +676,9 @@
             $(this).css("color","#069").find(".icon").css("background-image","url(${contextPath!}/static/img/labMain/home_active.png)")
         },function () {
             $(this).css("color","#64ccff").find(".icon").css("background-image","url(${contextPath!}/static/img/labMain/home.png)")
+        }).click(function () {
+            $(".labMain_cb_left:eq(0)").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
+
         })
         //合格率
         initThree();

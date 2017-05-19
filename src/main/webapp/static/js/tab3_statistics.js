@@ -36,7 +36,7 @@ function findOrderPassForProAjax(mychartIds,desName){
 		myChart.setOption(getAreaEcharts());
 		myChart.setOption({
 		    legend: {
-		        show: true,
+		        show: false,
 		        data: [desName],
 		        itemWidth: 6, //图例标记的图形宽度
 		        itemHeight: 6 //图例标记的图形高度
@@ -50,12 +50,20 @@ function findOrderPassForProAjax(mychartIds,desName){
 		    xAxis: [
 		        {
 		            name: '产线',
-		            data:tab3PassLengend(data)
+		            data:tab3PassLengend(data),
+                    axisLabel: {
+                        interval:0,
+                        textStyle: {
+                            fontSize: 10*bodyScale,
+
+                        },
+                        // rotate:30,
+                    },
 		        }
 		    ],
 		    yAxis: [
 		        {
-		            name: '合格率',
+		            name: '合格率/%',
 		            max:100
 		        }
 		    ],

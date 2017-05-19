@@ -371,7 +371,7 @@ function abilityByProductLine() {
             var gridX = "40%";
             if (index == 0) {
                 lengendData = tab2Lengend(item);
-                gridX = "53%";
+                gridX = "58%";
             }
             var seriesData = tab2DataData(item);
             myChart.setOption({
@@ -384,8 +384,12 @@ function abilityByProductLine() {
                         },
                         axisTick: {
                             show: false
-                        }
-
+                        },
+                        axisLabel:{
+                            textStyle:{
+                                fontSize:10*bodyScale
+                            }
+                        },
                     }
                 ],
                 xAxis: [
@@ -393,6 +397,7 @@ function abilityByProductLine() {
                         show: false,
                         type: 'value',
                         boundaryGap: false,
+
                     }
                 ],
                 grid: {

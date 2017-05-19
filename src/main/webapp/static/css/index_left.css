@@ -251,7 +251,7 @@
     margin-top: 3%;
     padding: 0 3%;
     overflow: hidden;
-    font-size: 1em;
+    font-size: 1.1em;
     color: #6cf;
     text-align: center;
 }
@@ -587,7 +587,7 @@
 #l .flat .chartBorder ul{
     position: relative;
     margin: 1% 15% 1% 18%;
-    top: 23%;
+    top: 20%;
     height: 72%;
     font-size: 1em;
     color: #6cf;
@@ -596,7 +596,7 @@
 #l .flat .chartBorder ul li{
     margin-bottom: 2%;
     line-height: 180%;
-    font-size: 1em;
+    font-size: 1.2em;
     height: 11%;
     vertical-align: initial;
 }
