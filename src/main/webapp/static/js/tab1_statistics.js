@@ -62,10 +62,17 @@ function mkSqualityLevelForTab1(xhPro){
 	    yAxis: [
 	        {
 	            name: "Cpk",
-	            nameGap:8*bodyScale,
+                axisPointer:{
+                    tiggerTooltip:false
+                },
+	            nameGap:2*bodyScale,
 	            // type: 'category',
 	            position: 'left',
-
+                axisLabel:{
+                    textStyle: {
+                        fontSize: 9 * bodyScale
+                    }
+                },
 	            data: [1, 1.33, 1.67, 2],
 	            axisLine: { //坐标轴
 	                show: false,
@@ -77,11 +84,16 @@ function mkSqualityLevelForTab1(xhPro){
 	                show: false,
 	            }
 	        }, {
-	            name: "ppm",
-	            nameGap:8*bodyScale,
+	            name: " ",/*ppm用div替代*/
+	            // nameGap:8*bodyScale,
 	            position: 'right',
 	            // type: 'category',
-	            data: [2700],
+	            data: [2700,63,0.57,0.002],
+                axisLabel:{
+                    textStyle: {
+                        fontSize: 9 * bodyScale
+                    }
+                },
 	            axisLine: { //坐标轴
 	                show: true,
 	                textStyle: {
@@ -93,11 +105,15 @@ function mkSqualityLevelForTab1(xhPro){
 	            }
 	        }, {
 	            name: "",
-	            nameGap:8*bodyScale,
+                axisPointer:{
+	            	tiggerTooltip:false
+				},
+	            nameGap:2*bodyScale,
 	            position: 'right',
 	            type: 'category',
 	            data: [0.6, 1.16, 1.5, 1.85,2.5],
 	            axisLabel:{
+                    show:false,
 	                textStyle:{
 	                    color: '#66ccff',
 	                }
@@ -117,6 +133,10 @@ function mkSqualityLevelForTab1(xhPro){
 	    xAxis: [
 	        {
 	            type: 'value',
+                nameGap:2*bodyScale,
+                axisLabel: {
+                    show:false
+                },
 	            splitLine: {  //刻度线
 	                show: true,
 	                lineStyle: {
@@ -138,19 +158,19 @@ function mkSqualityLevelForTab1(xhPro){
 	        {
 	            symbolSize: ['40%', '60%'],
 	            data: [{
-	                value: 134,
+	                value: 1,
 	                symbol: bar_chip
 	            }, {
-	                value: 32,
+	                value: 5,
 	                symbol: bar_chip
 	            }, {
-	                value: 16,
-	                symbol: bar_chip
-	             }, {
 	                value: 8,
 	                symbol: bar_chip
 	             }, {
-	                value: 6,
+	                value: 3,
+	                symbol: bar_chip
+	             }, {
+	                value: 0,
 	                symbol: bar_chip
 	            }
 	            ]
@@ -231,26 +251,13 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		        top: 10,
 		        right: 10,
 		        pieces: [{
-		            gt: 0,
-		            lte: 50,
+		            gt: 74,
+		            lte: 74.1,
 		            color: '#096'
-		        }, {
-		            gt: 50,
-		            lte: 100,
-		            color: '#ffde33'
-		        }, {
-		            gt: 1000,
-		            lte: 150,
-		            color: '#ff9933'
-		        }, {
-		            gt: 150,
-		            lte: 200,
-		            color: '#cc0033'
-		        }
-		        ],
-		        outOfRange: {
-		            color: '#cc0033'
-		        }
+		        }],
+                outOfRange: {
+                    color: '#cc0033'
+                }
 		    },
 		    series: [
 		        {
@@ -258,9 +265,16 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		            type: 'line',
 		            lineStyle: {
 		                normal: {
+                            // color:"#00e673",
 		                    width: 1
 		                }
 		            },
+                    itemStyle:{normal:{
+                        // borderColor:"#00e673"
+                        borderColor:function (params) {
+							console.log("...............................",params)
+                        }
+                    }},
 		            symbolSize: 2,
 		            data: tab1OrderRateSeriseData(data),
 		            markLine: {
@@ -335,7 +349,9 @@ function histogram(data, step) {
 }
 var mHeightChart=$('#myChart10').highcharts({
     chart: {
-        type: 'column'
+        type: 'column',
+        backgroundColor: 'rgba(0,0,0,0)',
+        marginBottom: 5*bodyScale
     },
     credits: {
         enabled: false
@@ -344,7 +360,7 @@ var mHeightChart=$('#myChart10').highcharts({
         enabled:false
     },
     title: {
-        text: '直方图'
+        text: '',
     },
     legend:{
         enabled:false,
@@ -394,6 +410,7 @@ var mHeightChart=$('#myChart10').highcharts({
         name: '直方图',
         type: 'column',
         data: histogram(data, 0.5),
+        color:"#4397f7",
         pointPadding: 0,
         groupPadding: 0,
         pointPlacement: 'between'
@@ -401,6 +418,7 @@ var mHeightChart=$('#myChart10').highcharts({
         name: '概率密度',
         type: 'spline',
         data: data,
+		color:"#00e673",
         yAxis: 1,
         marker: {
             radius: 1.5
@@ -635,7 +653,7 @@ function findOrderPassForAllTab1(){
 //订单及时率
 function findOrderYearRateForTab1(){
 	$.post(contextPath+'/lab/findOrderYearRateForTab1Ajax',{"startDate":"201606","endDate":"201705"},function(data){
-		console.log(data)
+		// console.log(data)
 		var myChart6 = echarts.init(document.getElementById("myChart6"));
 		right_echarts.push(myChart6);
 		myChart6.setOption(getLineEcharts());

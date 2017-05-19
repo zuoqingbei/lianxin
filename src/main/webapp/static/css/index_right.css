@@ -460,7 +460,8 @@
     position: relative;
 }
 
-.total_bottom_bar1 p.result {
+.total_bottom_bar1 p.result,
+.total_bottom_bar2 p.result {
     color: #00e673;
     font-size: .8em;
     margin-top: .2em;
@@ -603,11 +604,13 @@
     height: 40%;
 }
 
-#myChart10, #myChart12, #myChart13 {
+#myChart12, #myChart13 {
     width: 100%;
     height: 100%;
 }
-
+#myChart10{
+    height: 78%;
+}
 /*设施状态*/
 .sheshi_state {
     width: 100%;

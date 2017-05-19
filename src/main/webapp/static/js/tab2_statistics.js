@@ -384,8 +384,12 @@ function abilityByProductLine() {
                         },
                         axisTick: {
                             show: false
-                        }
-
+                        },
+                        axisLabel:{
+                            textStyle:{
+                                fontSize:10*bodyScale
+                            }
+                        },
                     }
                 ],
                 xAxis: [
@@ -393,6 +397,7 @@ function abilityByProductLine() {
                         show: false,
                         type: 'value',
                         boundaryGap: false,
+
                     }
                 ],
                 grid: {
