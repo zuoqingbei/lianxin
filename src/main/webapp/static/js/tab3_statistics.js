@@ -398,7 +398,9 @@ function getTab3Serise(data){
 function tab3OrderRateLengend(data){
 	var legnend=[];
 	$.each(data,function(index,item){
-		legnend.push(item.name);
+		var name=item.name;
+		name=name.substr(0,4)+"/"+name.substr(4,name.length);
+		legnend.push(name);
 	});
 	return legnend;
 }

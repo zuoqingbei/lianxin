@@ -125,7 +125,7 @@ public class OrderModel extends Model<OrderModel> {
 		}else{
 			sql+=" and o.lab_code is null ";
 		}
-		sql+=" group by 	o.product_line_code,o.product_line_name, d.order_no,substr(o.name,0,4)order by d.order_no";
+		sql+=" group by 	o.product_line_code,o.product_line_name, d.order_no,substr(o.name,0,4)order by d.order_no  ";
 		return sql;
 	}
 	/**
@@ -301,5 +301,26 @@ public class OrderModel extends Model<OrderModel> {
 		}
 		sql+=" group by  o. name order by o.name";
 		return sql;
+	}
+	
+	/**
+	 * 
+	 * @time   2017年5月19日 下午3:37:52
+	 * @author zuoqb
+	 * @todo  统计到月份的合格率
+	 * @param  @return
+	 * @return_type   List<Record>
+	 */
+	public List<Record> findOrderRateForMonth(String startDate,String endDate){
+		StringBuffer sb=new StringBuffer();
+		sb.append(" select a.*,b.js_count,to_char(b.js_count/a.all_count*100,'00.00') as rate from ");
+		sb.append(" (select name,num as all_count from t_b_order_data where type=4 and del_flag=0 and desc_name='整机-总' ");
+		sb.append(" and to_date(name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
+		sb.append("  order by name)a ");
+		sb.append(" join( ");
+		sb.append(" select name,num as js_count from t_b_order_data where type=4 and del_flag=0 and desc_name='整机-合格' ");
+		sb.append(" and to_date(name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
+		sb.append("  order by name)b on a.name=b.name ");
+		return Db.find(sb.toString());
 	}
 }

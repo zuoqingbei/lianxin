@@ -1,6 +1,7 @@
 package com.ulab.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -273,9 +274,21 @@ public class LabController extends BaseController {
     public void findOrderYearRateForProductAjax(){
     	String labTypeCode=getPara("labTypeCode","");
     	List<List<Record>> list=new ArrayList<List<Record>>();
-    	list.add(OrderModel.dao.findOrderYearRateForProduct("2016",labTypeCode));
-    	list.add(OrderModel.dao.findOrderYearRateForProduct("2017",labTypeCode));
+    	List<Record> list2016=OrderModel.dao.findOrderYearRateForProduct("2016",labTypeCode);
+    	List<Record> list2017=OrderModel.dao.findOrderYearRateForProduct("2017",labTypeCode);
+    	list.add(sort(list2016));
+    	list.add(sort(list2017));
 		renderJson(list);
+    }
+    //数据结果 订单及时率 产线逆时针排序
+    public List<Record> sort(List<Record> list){
+    	List<Record> r=new ArrayList<Record>();
+    	r.add(list.get(0));
+    	list.remove(0);
+    	for(int x=list.size()-1;x>=0;x--){
+    		r.add(list.get(x));
+    	}
+    	return r;
     }
     /**
      * 
@@ -504,6 +517,20 @@ public class LabController extends BaseController {
     	String xhName=getPara("xhName","");//型号
     	String type=getPara("type","");
     	List<Record> list=XbarModel.dao.findXbarData(xhName, type);
+		renderJson(list);
+    }
+    /**
+     * 
+     * @time   2017年5月19日 下午3:43:37
+     * @author zuoqb
+     * @todo   中海博睿 到整机的订单合格率（具体到月份）
+     * @param  
+     * @return_type   void
+     */
+    public void orderRateForCenterLabAjax(){
+    	String startDate=getPara("startDate","201606");
+    	String endDate=getPara("endDate","201705");
+    	List<Record> list=OrderModel.dao.findOrderRateForMonth(startDate, endDate);
 		renderJson(list);
     }
 }

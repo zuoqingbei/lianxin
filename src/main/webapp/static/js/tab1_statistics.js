@@ -295,6 +295,8 @@ function cpkDataForTab1(xhPro){
 			mData.push([parseFloat(item.wkq_num),parseFloat(xhPro.pj_value)]);
 			//mData2.push([parseFloat(item.wkq_num),parseFloat(item.gd_num_2)]);
 		});
+		mHeightChart.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
+		mHeightChart.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
 		mHeightChart.series[0].setData(histogram(mData, 0.5)); // 更新 series
 		mHeightChart.series[1].setData(histogram(mData, 0.5));
 	});
@@ -356,7 +358,7 @@ var mHeightChart=$('#myChart10').highcharts({
         plotLines:[{
             color:'red',            //线的颜色，定义为红色
             dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
-            value:71,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            value:0,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
             width:2  ,               //标示线的宽度，2px
             label:{
                 text:'LSL',  //标签的内容
@@ -367,7 +369,7 @@ var mHeightChart=$('#myChart10').highcharts({
         },{
             color:'red',            //线的颜色，定义为红色
             dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
-            value:77,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            value:0,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
             width:2  ,               //标示线的宽度，2px
             label:{
                 text:'USL',//标签的内容
@@ -417,7 +419,7 @@ function communistStatisticForMonthForTab1Ajax(){
 		    color: ['#66ccff', '#a5fff1'],
 		    legend: {
 		        show: true,
-		        data: ['共产数', '一致数']
+		        data: ['共产型号总数', '共产一致型号数']
 		    },
 		    grid: {
 //		            show:true,
@@ -440,7 +442,7 @@ function communistStatisticForMonthForTab1Ajax(){
 		        }
 		    ],
 		    series: [{
-		        name: '共产数',
+		        name: '共产型号总数',
 		        type: 'pictorialBar',
 		        label: labelSetting,
 		        symbolRepeat: true,
@@ -448,7 +450,7 @@ function communistStatisticForMonthForTab1Ajax(){
 		        barCategoryGap: '40%',
 		        data: statisticRightSeriesData(data[0],bar_chip)
 		    }, {
-		        name: '一致数',
+		        name: '共产一致型号数',
 		        type: 'pictorialBar',
 		        barGap: '10%',
 		        label: labelSetting,
@@ -629,7 +631,6 @@ function findOrderPassForAllTab1(){
 //订单及时率
 function findOrderYearRateForTab1(){
 	$.post(contextPath+'/lab/findOrderYearRateForTab1Ajax',{"startDate":"201606","endDate":"201705"},function(data){
-		console.log(data)
 		var myChart6 = echarts.init(document.getElementById("myChart6"));
 		right_echarts.push(myChart6);
 		myChart6.setOption(getLineEcharts());
@@ -660,7 +661,7 @@ function findOrderYearRateForTab1(){
 		            nameTextStyle: {
 		                color: '#66ccff'
 		            },
-		            data: statisticRightLengend2(data)
+		            data: statistictab1LengendTime(data)
 		        }
 		    ],
 		    series: [{
@@ -920,6 +921,15 @@ function statisticRightLengend2(data){
 	var legnend=[];
 	$.each(data,function(index,item){
 		var name=item.name;
+		legnend.push(name);
+	});
+	return legnend;
+}
+function statistictab1LengendTime(data){
+	var legnend=[];
+	$.each(data,function(index,item){
+		var name=item.name;
+		name=name.substr(0,4)+"/"+name.substr(4,name.length);
 		legnend.push(name);
 	});
 	return legnend;

@@ -3,12 +3,10 @@ var bodyScale = 1;//原始比例1
     //左
     var chartone = echarts.init(document
         .getElementById("echart_one"));
-    chartone.setOption(initone());
     //右
     var charttwo = echarts.init(document
         .getElementById("echart_two"));
-    charttwo.setOption(getBarEcharts());
-    charttwo.setOption(inittwo());
+   
 
     //左
     var chartthree = echarts.init(document
@@ -108,7 +106,6 @@ function initone(mValue) {
     return option;
 
 }
-
 function inittwo() {
     var bar_chip = '${contextPath!}/static/img/bar_chip.png';
     var labelSetting = {
@@ -209,6 +206,75 @@ function inittwo() {
         ]
     };
     return option;
+
+}
+//近12个月一次合格率趋势图
+function initThree() {
+	$.post(contextPath+'/lab/orderRateForCenterLabAjax',{"startDate":"201606","endDate":"201705"},function(data){
+		var resu=dealCenterLab(data);
+		$("#hg_rate_center_lab_pj").html("平均:"+resu[0]+"%");
+		$("#hg_rate_center_lab_height").html("最高:"+resu[1].rate+"%("+resu[1].month+"月)");
+		$("#hg_rate_center_lab_low").html("最低:"+resu[2].rate+"%("+resu[2].month+"月)");
+		chartone.setOption(initone(resu[0]));
+		charttwo.setOption(getBarEcharts());
+		var bar_chip = '${contextPath!}/static/img/bar_chip.png';
+		    var labelSetting = {
+		        normal: {
+		            show: false,
+		            position: 'outside',
+		            offset: [10, 0],
+		            textStyle: {
+		                fontSize: bodyScale * 8
+		            }
+		        }
+		    };
+		    
+
+		    charttwo.setOption({
+		        textStyle: {
+		            fontSize: bodyScale * 8
+		        },
+		        yAxis: [
+		            {
+		                name: "合格率/%",
+
+		                nameTextStyle: {
+		                    fontSize: bodyScale * 10,
+
+		                },
+
+		                type: 'value',
+		                max: 100,
+		            },
+		        ],
+		        xAxis: [
+		            {
+		                name: "",
+		                type: 'category',
+		                data: centerLabOrderRateLengend(data)
+		            }
+		        ],
+		        grid: {
+		            // x: "10%",
+//		            x2: "25%",
+//		            y: '22%',
+//		            y2: "26%",
+
+		            x: "15%",
+		            x2: "10%",
+		            y: '20%',
+		            y2: "34%",
+		        },
+		        series: [
+		            {
+		                symbolSize: ['50%', '10%'],
+		                data: centerLabOrderHgRate(data)
+		            }
+		        ]
+		    });
+		    
+	});
+   
 
 }
 //按照产线统计某年各月份详细订单及时率  数据结果 订单及时率 折线图
@@ -897,9 +963,23 @@ function checkBoxVales() { //jquery获取复选框值
 function centerLabOrderRateLengend(data){
 	var legnend=[];
 	$.each(data,function(index,item){
-		legnend.push(item.name);
+		var name=item.name;
+		name=name.substr(0,4)+"/"+name.substr(4,name.length);
+		legnend.push(name);
 	});
 	return legnend;
+}
+//合格率数据
+function centerLabOrderHgRate(data){
+	var d=[];
+	$.each(data,function(index,item){
+		var it={
+		        value: item.rate,
+		        symbol: bar_chip
+		    };
+		d.push(it)
+	})
+	return d;
 }
 function centerLabRateData(data){
 	var indicatorDataTab3 = [];
