@@ -8,6 +8,12 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.core.Constants;
+/**
+ * 
+ * @time   2017年5月19日 上午10:40:08
+ * @author zuoqb
+ * @todo   数据结果 0:标准状态 1：能力状态  2:起草数
+ */
 @TableBind(tableName = "t_b_date_result",pkName="id")
 public class LabDataResultModel extends Model<LabDataResultModel> {
 	private static final long serialVersionUID = 4762813779629969917L;

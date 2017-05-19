@@ -9,6 +9,12 @@ import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
+/**
+ * 
+ * @time   2017年5月19日 上午10:39:40
+ * @author zuoqb
+ * @todo   设备人员信息
+ */
 @TableBind(tableName = "t_b_person_data",pkName="id")
 public class PersonModel extends Model<LabModel> {
 	private static final long serialVersionUID = 4762813779629969917L;

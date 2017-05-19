@@ -362,9 +362,9 @@
                         <div class="la_datal_content clearfloat">
                             <div class="la_datal_legend">
                                 <ul>
-                                    <li>平均:95%</li>
-                                    <li>最高:100% (5月)</li>
-                                    <li>最低:85% (7月)</li>
+                                    <li id="order_rate_center_lab_pj">平均:95%</li>
+                                    <li id="order_rate_center_lab_height">最高:100% (5月)</li>
+                                    <li id="order_rate_center_lab_low">最低:85% (7月)</li>
                                 </ul>
                             </div>
                             <div class="la_data_left_data">
@@ -593,5 +593,7 @@
         },function () {
             $(this).css("color","#64ccff").find(".icon").css("background-image","url(${contextPath!}/static/img/labMain/home.png)")
         })
+        //近12个月订单及时率趋势图
+        initfour();
     })
 </script>
