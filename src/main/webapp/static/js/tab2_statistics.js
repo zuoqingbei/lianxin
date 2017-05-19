@@ -44,8 +44,9 @@ function findPersonStatusTab2Ajax(myChartIds,type){
 		            axisLabel: {
 		                textStyle: {
 		                    fontSize: 9 * bodyScale
-		                }
-		            },
+		                },
+						interval:0
+		            }
 
 		        }
 		    ],
@@ -123,7 +124,7 @@ function personForTab2Ajax(myChartIds,type,divisor){
 		right_echarts.push(myChart25)
 		myChart25.setOption({
 		    grid: {
-		        right: 45,
+		        right: 0,
 		        bottom: 25,
 		        left: 50,
 		        top: 0
@@ -155,8 +156,9 @@ function personForTab2Ajax(myChartIds,type,divisor){
 		            // rotate: 30,
 		            textStyle: {
 		                color: '#66ccff',
-		                fontSize: 12 * bodyScale
-		            }
+		                fontSize: 10 * bodyScale
+		            },
+		            interval:0
 		        },
 		        axisTick: {
 		            show: false,
@@ -294,6 +296,7 @@ function standardDispersedStatus(mychartId,filedVaule){
 		            fontSize: 12,
 		        }
 		    },
+		    
 		    polar: [
 		        {
 		            indicator:tab2IndicatorData(data),
@@ -338,6 +341,7 @@ function standardDispersedStatus(mychartId,filedVaule){
 		                            areaStyle: {
 		                                color: 'rgba(102,204,255,0.5)',
 		                            },
+		                          
 		                        }
 		                    }
 		                }

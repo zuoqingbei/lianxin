@@ -7,18 +7,18 @@
                 <li>
                     <div class="zaixian">
                         <ul>
-                            <li>整体在线率</li>
+                            <li>实验室在线率</li>
                             <li class="sheshi_num">96% <span><img src="${contextPath!}/static/img/sheshiState/rise.png"
                                                                   alt=""></span><span
                                     class="up_num">0.05%</span></li>
                         </ul>
                         <ul>
                             <table>
-                                <tr>
-                                    <th></th>
-                                    <th>产线在线率</th>
-                                    <th>同比</th>
-                                </tr>
+                                <!--<tr>-->
+                                    <!--<th></th>-->
+                                    <!--<th>产线在线率</th>-->
+                                    <!--<th>同比</th>-->
+                                <!--</tr>-->
                                 <tr>
                                     <td>冰冷</td>
                                     <td>
@@ -32,6 +32,7 @@
                                     </td>
                                     <td><span><img src="${contextPath!}/static/img/sheshiState/rise.png"
                                                    alt=""></span><span>1%</span></td>
+                                    <td>(同比)</td>
                                 </tr>
                                 <tr>
                                     <td>家空</td>
@@ -123,18 +124,18 @@
                 <li>
                     <div class="zaixian">
                         <ul>
-                            <li>整体完好率</li>
+                            <li>设备完好率</li>
                             <li class="sheshi_num">96% <span><img src="${contextPath!}/static/img/sheshiState/rise.png"
                                                                   alt=""></span><span
                                     class="up_num">0.05%</span></li>
                         </ul>
                         <ul>
                             <table>
-                                <tr>
-                                    <th></th>
-                                    <th>产线在线率</th>
-                                    <th>同比</th>
-                                </tr>
+                                <!--<tr>-->
+                                    <!--<th></th>-->
+                                    <!--<th>产线在线率</th>-->
+                                    <!--<th>同比</th>-->
+                                <!--</tr>-->
                                 <tr>
                                     <td></td>
                                     <td>
@@ -148,6 +149,7 @@
                                     </td>
                                     <td><span><img src="${contextPath!}/static/img/sheshiState/rise.png"
                                                    alt=""></span><span>1%</span></td>
+                                    <td>(同比)</td>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -239,18 +241,18 @@
                 <li>
                     <div class="zaixian">
                         <ul>
-                            <li>整体利用率</li>
+                            <li>设备利用率</li>
                             <li class="sheshi_num">96% <span><img src="${contextPath!}/static/img/sheshiState/rise.png"
                                                                   alt=""></span><span
                                     class="up_num">0.05%</span></li>
                         </ul>
                         <ul>
                             <table>
-                                <tr>
-                                    <th></th>
-                                    <th>产线在线率</th>
-                                    <th>同比</th>
-                                </tr>
+                                <!--<tr>-->
+                                    <!--<th></th>-->
+                                    <!--<th>产线在线率</th>-->
+                                    <!--<th>同比</th>-->
+                                <!--</tr>-->
                                 <tr>
                                     <td></td>
                                     <td>
@@ -264,6 +266,7 @@
                                     </td>
                                     <td><span><img src="${contextPath!}/static/img/sheshiState/rise.png"
                                                    alt=""></span><span>1%</span></td>
+                                    <td>(同比)</td>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -359,15 +362,15 @@
             <div class="renyuan_top">
                 <ul>
                     <li>
-                        <div>学历</div>
+                        <div class="renyuan_top_title"><div>学历</div></div>
                         <div id="myChart22"></div>
                     </li>
                     <li>
-                        <div>工作年限</div>
+                        <div class="renyuan_top_title gongzuonianxian"><div>工作年限</div></div>
                         <div id="myChart23"></div>
                     </li>
                     <li>
-                        <div>资质</div>
+                        <div class="renyuan_top_title"><div>资质</div></div>
                         <div id="myChart24"></div>
                     </li>
                 </ul>
@@ -391,7 +394,7 @@
         <div class="sheshi_bottom_left">
             <div class='sheshi_title'>标准状态</div>
             <div class="biaozhun_left">
-                <div>牵头/参与起草数分布情况</div>
+                <div>海尔参与制定标准数</div>
                 <div class="biaozhun_left_left">
                     <div class="biaozhun_world">
                         <ul>
@@ -426,7 +429,7 @@
                 </div>
             </div>
             <div class="biaozhun_right">
-                <div>标准数量分布情况</div>
+                <div>海尔产品涉及标准数</div>
                 <div class="biaozhun_right_echarts">
                     <ul>
                         <li>
@@ -451,7 +454,7 @@
         </div>
         <div class="sheshi_bottom_right">
             <div class='sheshi_title'>能力状态</div>
-            <div>不同产线的能力状态分布</div>
+            <div>具备测试能力的标准数</div>
             <div class="nengli_top">
                 <ul>
                     ##for(type in productLine){

@@ -6,7 +6,7 @@
 	display: flex;
 	width: 100%;
 	flex-direction: column;
-	padding: 0% 1% 2%;
+	padding: 4% 1% 2%;
 	height: 100%;
 }
 .pageBtn {
@@ -74,7 +74,7 @@
 [class$=-header],
 [class$=-body]>div{
 	flex:10;
-	padding: 2% 0 2% 2%;
+	padding: 2% 0 2% 1%;
 }
 [class$=-header]>div,
 [class$=-body]>div>div{
@@ -83,7 +83,7 @@
 
 [class$=-header] [class^=item] h5,
 [class$=-body] [class^=item] h5{
-	width: 7em;
+	width: 6em;
 	display: inline-block;
 	line-height: 0;
 	text-align: justify;
@@ -95,14 +95,14 @@
 }
 
 [class^=item] .progress {
-	width: 40%;
+	width: 32%;
 	height: .8em;
 	display: inline-block;
 	margin: 0 3%;
 	background-color: #224f64;
 }
 [class$=-body] .progress{
-	height: 1.2em;
+	height: 0.8em;
 }
 .progress-bar{
 	background-color: #6cf;
@@ -117,7 +117,11 @@
 	flex:1;
 }
 [class$=-body]>div:nth-of-type(1),
-[class$=-body]>div:nth-of-type(2){
+[class$=-body]>div:nth-of-type(2),
+[class$=-body]>div:nth-of-type(3),
+[class$=-body]>div:nth-of-type(4)
+{
+	flex:1;
 	border-right: 1px dotted rgba(102, 204, 255, 0.7);
 }
 [class$=-body] h4{
@@ -134,8 +138,10 @@ span strong{
 }
 
 
-
-
+.l-top-header,.l-mid-header,.l-bottom-header{
+	border: 1px solid white;
+	color: white;
+}
 
 
 
