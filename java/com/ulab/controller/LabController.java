@@ -10,16 +10,19 @@ import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
+import com.ulab.core.Constants;
 import com.ulab.model.CommunistModel;
 import com.ulab.model.DicModel;
 import com.ulab.model.JianCeModel;
+import com.ulab.model.JianceProModel;
 import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 import com.ulab.model.OrderModel;
 import com.ulab.model.PersonModel;
-import com.ulab.util.NormalDistribution;
+import com.ulab.model.ProviderDicModel;
+import com.ulab.model.XbarModel;
 import com.ulab.util.SqlUtil;
 /**
  * 
@@ -47,6 +50,9 @@ public class LabController extends BaseController {
     		}
     	}
     	setAttr("labInfo", labInfo);
+    	//量产一致性保障 字典
+    	List<Record> providerDic=ProviderDicModel.dao.findProviderDic();
+    	setAttr("providerDic", providerDic);
         render("index.html");
     }
     /**
@@ -452,6 +458,27 @@ public class LabController extends BaseController {
     }
     /**
      * 
+     * @time   2017年5月19日 上午11:04:03
+     * @author zuoqb
+     * @todo  获取产品检测结果对应属性
+     * @param  
+     * @return_type   void
+     */
+    public void jianCeXhProForTab1Ajax(){
+    	String xhCode=getPara("xhCode","");//型号
+    	String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
+    	Record pro=getSessionAttr(redis_key);
+    	if(pro==null){
+    		pro=JianceProModel.dao.findProByFiled(xhCode);
+    		setSessionAttr(redis_key, pro);
+    	}
+    	if(pro==null){
+    		pro=new Record();
+    	}
+		renderJson(pro);
+    }
+    /**
+     * 
      * @time   2017年5月18日 下午4:18:54
      * @author zuoqb
      * @todo   直方图 检测数据
@@ -461,10 +488,22 @@ public class LabController extends BaseController {
     public void jianCeDataForTab1Ajax(){
     	String xhCode=getPara("xhCode","");//型号
     	List<Record> list=JianCeModel.dao.findProviderDicByPid(xhCode);
-    	for(Record r:list){
-    		//r.set("gd_num_2", NormalDistribution.calc(Float.parseFloat(r.getStr("gd_num"))));
-    		r.set("gd_num_2", NormalDistribution.calc(Float.parseFloat(r.getStr("gd_num")),74.7f,0.6734f));
-    	}
+		renderJson(list);
+    }
+  
+    
+    /**
+     * 
+     * @time   2017年5月18日 下午4:18:54
+     * @author zuoqb
+     * @todo   xbar数据
+     * @param  
+     * @return_type   void
+     */
+    public void jianCeXbarForTab1Ajax(){
+    	String xhName=getPara("xhName","");//型号
+    	String type=getPara("type","");
+    	List<Record> list=XbarModel.dao.findXbarData(xhName, type);
 		renderJson(list);
     }
 }

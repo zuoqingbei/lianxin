@@ -7,6 +7,12 @@ import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
+/**
+ * 
+ * @time   2017年5月19日 上午10:39:11
+ * @author zuoqb
+ * @todo   模块商已经产品型号字典数据
+ */
 @TableBind(tableName = "t_b_provider_dic",pkName="id")
 public class ProviderDicModel extends Model<ProviderDicModel> {
 	private static final long serialVersionUID = 4762813779629969917L;

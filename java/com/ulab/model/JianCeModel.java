@@ -7,6 +7,12 @@ import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
+/**
+ * 
+ * @time   2017年5月19日 上午10:40:30
+ * @author zuoqb
+ * @todo   检测原始数据表
+ */
 @TableBind(tableName = "t_b_jiance",pkName="id")
 public class JianCeModel extends Model<JianCeModel> {
 	private static final long serialVersionUID = 4762813779629969917L;

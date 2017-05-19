@@ -2,6 +2,7 @@
 /**
  * 右侧数据统计
  */
+var data = [];//直方图数据
 function loadTab1Data(){
 	findPersonStatusTab1Ajax(1);
 	findPersonStatusTab1Ajax(2);
@@ -21,107 +22,292 @@ function loadTab1Data(){
     //根据类型 时间 统计共产 一致个月份数量
     communistStatisticForMonthForTab1Ajax();
     //直方图
-    cpkDataForTab1("WY77H-C1");
+    loadTab1JianData( $(".total_bottom_tab .active").attr("data"))
 }
-var data = [[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
+//加载量产一致性保障 xhId:产品id  name：产品名称
+function loadTab1JianData(xhId){
+	$.post(contextPath+'/lab/jianCeXhProForTab1Ajax',{"xhCode":xhId},function(xhPro){
+		$("#tab1_jiance_xh_name").html("\""+xhPro.xh_name+"\"");
+		$("#tab1_jiance_xh_result").html(xhPro.jielun);
+		//模块商质量水平分布
+		mkSqualityLevelForTab1(xhPro);
+		//SPC分析
+		scpDataForTab1("myChart9",xhPro,1);
+		scpDataForTab1("myChart9_2",xhPro,2);
+		//直方图
+		cpkDataForTab1(xhPro);
+	
+	});
+}
+//模块商质量水平分布
+function mkSqualityLevelForTab1(xhPro){
+	var myChart8 = echarts.init(document.getElementById("myChart8"));
+	right_echarts.push(myChart8);
+	myChart8.setOption(getBarEcharts());
+	var bar_chip = '../img/bar_chip.png';
+	myChart8.setOption({
+	    color:["#66ccff","#ff9933"],
+	    title: {
+	        show:false,
+	        text: '模块商质量水平分布',
+	        left: 'center'
+	    },
+	    grid: {
+//	            show:true,
+	        x: "25%",
+	        x2: "21%",
+	        y: '25%',
+	        y2: "25%"
+	    },
+	    yAxis: [
+	        {
+	            name: "Cpk",
+	            nameGap:8*bodyScale,
+	            // type: 'category',
+	            position: 'left',
 
-var mHeightChart=$('#myChart10').highcharts({
-        chart: {
-            type: 'column'
-        },
-        credits: {
-            enabled: false
-        },
-        exporting: {
-            enabled:false
-        },
-        title: {
-            text: '直方图'
-        },
-        legend:{
-            enabled:false,
-        },
-        xAxis: {
-            gridLineWidth: 1,
-            min:71,
-            max:77,
-            plotLines:[{
-                color:'red',            //线的颜色，定义为红色
-                dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
-                value:71,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-                width:2  ,               //标示线的宽度，2px
-                label:{
-                    text:'LSL',  //标签的内容
-                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
-                },
-                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
-            },{
-                color:'red',            //线的颜色，定义为红色
-                dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
-                value:77,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-                width:2  ,               //标示线的宽度，2px
-                label:{
-                    text:'USL',//标签的内容
-                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
-                },
-                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
-            }
-            ]
-        },
-        yAxis: [{
-            title: {
-                text: ''
-            },
-            visible:false
-        }, {
-            opposite: true,
-            title: {
-                text: ''
-            },
-            visible:false,
-        }],
-        series: [{
-            name: '直方图',
-            type: 'column',
-            data: histogram(data, 0.5),
-            pointPadding: 0,
-            groupPadding: 0,
-            pointPlacement: 'between'
-        }, {
-            name: '概率密度',
-            type: 'spline',
-            data: data,
-            yAxis: 1,
-            marker: {
-                radius: 1.5
-            }
-        }]
-    }).highcharts();
-//直方图
-function cpkDataForTab1(xhCode){
-	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhCode},function(data){
-		var mData=[];
-		var mData2=[];
-		$.each(data,function(index,item){
-			mData.push([parseFloat(item.gd_num),parseFloat(item.wkq_num)]);
-			mData2.push([parseFloat(item.gd_num),parseFloat(item.gd_num_2)]);
+	            data: [1, 1.33, 1.67, 2],
+	            axisLine: { //坐标轴
+	                show: false,
+	                textStyle: {
+	                    color: 'rgba(0,0,0,0)'
+	                }
+	            },
+	            axisTick: {  //刻度值
+	                show: false,
+	            }
+	        }, {
+	            name: "ppm",
+	            nameGap:8*bodyScale,
+	            position: 'right',
+	            // type: 'category',
+	            data: [2700],
+	            axisLine: { //坐标轴
+	                show: true,
+	                textStyle: {
+	                    color: '#66ccff',
+	                }
+	            },
+	            axisTick: {  //刻度值
+	                show: false,
+	            }
+	        }, {
+	            name: "",
+	            nameGap:8*bodyScale,
+	            position: 'right',
+	            type: 'category',
+	            data: [0.6, 1.16, 1.5, 1.85,2.5],
+	            axisLabel:{
+	                textStyle:{
+	                    color: '#66ccff',
+	                }
+	            },
+	            axisLine: { //坐标轴
+	                show: true,
+	                textStyle: {
+	                    color: '#66ccff',
+	                }
+	            },
+	            axisTick: {  //刻度值
+	                show: false,
+	            }
+	        }
+
+	    ],
+	    xAxis: [
+	        {
+	            type: 'value',
+	            splitLine: {  //刻度线
+	                show: true,
+	                lineStyle: {
+	                    color: "#234f65"
+	                }
+	            },
+	            axisLine: { //坐标轴
+	                show: false,
+	                textStyle: {
+	                    color: '#66ccff',
+	                }
+	            },
+	            axisTick: {  //刻度值
+	                show: false,
+	            }
+	        }
+	    ],
+	    series: [
+	        {
+	            symbolSize: ['40%', '60%'],
+	            data: [{
+	                value: 134,
+	                symbol: bar_chip
+	            }, {
+	                value: 32,
+	                symbol: bar_chip
+	            }, {
+	                value: 16,
+	                symbol: bar_chip
+	             }, {
+	                value: 8,
+	                symbol: bar_chip
+	             }, {
+	                value: 6,
+	                symbol: bar_chip
+	            }
+	            ]
+	        }
+	    ]
+	});
+/*	$.post(contextPath+'/lab/jianCeXbarForTab1Ajax',{"xhName":xhPro.xh_name},function(data){
+		
+	})*/
+}
+//SPC分析  xbar
+function scpDataForTab1(myChartIds,xhPro,type){
+	//类型 1：样本平均值 2：样本标准差
+	$.post(contextPath+'/lab/jianCeXbarForTab1Ajax',{"xhName":xhPro.xh_name,"type":type},function(data){
+		var maxAndMin=getMaxMinForScpTab1(data,xhPro,type);
+		var mTitle,mLcl,mValue,mUcl;
+		if(type==1){
+			mTitle="样本平均值";
+			mLcl=xhPro.jz_lcl;
+			mValue=xhPro.jz_value;
+			mUcl=xhPro.jz_ucl;
+		}else{
+			mTitle="样本标准差";
+			mLcl=xhPro.fc_lcl;
+			mValue=xhPro.fc_value;
+			mUcl=xhPro.fc_ucl;
+		}
+		var myChart9 = echarts.init(document.getElementById(myChartIds));
+		right_echarts.push(myChart9);
+		myChart9.setOption(getLineEcharts());
+		myChart9.setOption({
+		    color:["#ff9933"],
+		    textStyle:{
+		        fontSize:4*bodyScale
+		    },
+		    title: {
+		        show:false,
+		        text: 'Xbar 控制图',
+		        left: 'center'
+		    },
+		    grid: {
+		        right: "29%",
+		        bottom: "28%",
+		        left: "15%",
+		        top: "16%"
+		    },
+		    yAxis: {
+		        name: mTitle,
+		        max: parseFloat(maxAndMin[0]),
+		        min: parseFloat(maxAndMin[1]),
+		        axisLabel:{
+		            textStyle:{
+		                fontSize:5*bodyScale
+		            }
+		        },
+		        splitLine: {  //刻度线
+		            show: false
+		        },
+		        nameGap:2*bodyScale,
+		        nameTextStyle:{fontSize:6*bodyScale},
+		    },
+		    xAxis: [
+		        {
+		            name: "",
+		            axisLabel:{
+		                textStyle:{
+		                    fontSize:5*bodyScale
+		                },
+		                margin:2*bodyScale
+		            },
+		            nameGap:2*bodyScale,
+		            nameTextStyle:{fontSize:6*bodyScale},
+		            data: statisticRightLengend2(data)
+		        }
+		    ],
+		    visualMap: {
+		        show:false,
+		        top: 10,
+		        right: 10,
+		        pieces: [{
+		            gt: 0,
+		            lte: 50,
+		            color: '#096'
+		        }, {
+		            gt: 50,
+		            lte: 100,
+		            color: '#ffde33'
+		        }, {
+		            gt: 1000,
+		            lte: 150,
+		            color: '#ff9933'
+		        }, {
+		            gt: 150,
+		            lte: 200,
+		            color: '#cc0033'
+		        }
+		        ],
+		        outOfRange: {
+		            color: '#cc0033'
+		        }
+		    },
+		    series: [
+		        {
+		            name: mTitle,
+		            type: 'line',
+		            lineStyle: {
+		                normal: {
+		                    width: 1
+		                }
+		            },
+		            symbolSize: 2,
+		            data: tab1OrderRateSeriseData(data),
+		            markLine: {
+		                symbolSize:0,
+		                silent: true,
+		                label:{normal:{formatter:"{b}={c}"}},
+		                data: [{
+		                    name:"UCL",
+		                    yAxis: parseFloat(mUcl)
+		                },{
+		                    name:"x",
+		                    yAxis: parseFloat(mValue)
+		                }, {
+		                    name:"LCL",
+		                    yAxis: parseFloat(mLcl)
+		                }]
+		            }
+		        }
+		    ]
+
 		});
-		console.log(mData2)
-		mHeightChart.series[0].setData(histogram(mData, 0.5)); // 更新 series
-		mHeightChart.series[1].setData(histogram2(mData2, 0.5));
+		
 	});
 	
 }
-function histogram2(arr, step) {
+//直方图
+function cpkDataForTab1(xhPro){
+	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhPro.xh_name},function(data){
+		var mData=[];
+		//var mData2=[];
+		$.each(data,function(index,item){
+			mData.push([parseFloat(item.wkq_num),parseFloat(xhPro.pj_value)]);
+			//mData2.push([parseFloat(item.wkq_num),parseFloat(item.gd_num_2)]);
+		});
+		mHeightChart.series[0].setData(histogram(mData, 0.5)); // 更新 series
+		mHeightChart.series[1].setData(histogram(mData, 0.5));
+	});
+	
+}
+/*function histogram2(arr) {
    
     // Finally, sort the array
     arr.sort(function (a, b) {
         return a[0] - b[0];
     });
     return arr;
-}
+}*/
 function histogram(data, step) {
     var histo = {},
         x,
@@ -147,6 +333,80 @@ function histogram(data, step) {
     });
     return arr;
 }
+var mHeightChart=$('#myChart10').highcharts({
+    chart: {
+        type: 'column'
+    },
+    credits: {
+        enabled: false
+    },
+    exporting: {
+        enabled:false
+    },
+    title: {
+        text: '直方图'
+    },
+    legend:{
+        enabled:false,
+    },
+    xAxis: {
+        gridLineWidth: 1,
+        min:71,
+        max:77,
+        plotLines:[{
+            color:'red',            //线的颜色，定义为红色
+            dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+            value:71,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            width:2  ,               //标示线的宽度，2px
+            label:{
+                text:'LSL',  //标签的内容
+                align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+            },
+            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+        },{
+            color:'red',            //线的颜色，定义为红色
+            dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+            value:77,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            width:2  ,               //标示线的宽度，2px
+            label:{
+                text:'USL',//标签的内容
+                align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+            },
+            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+        }
+        ]
+    },
+    yAxis: [{
+        title: {
+            text: ''
+        },
+        visible:false
+    }, {
+        opposite: true,
+        title: {
+            text: ''
+        },
+        visible:false,
+    }],
+    series: [{
+        name: '直方图',
+        type: 'column',
+        data: histogram(data, 0.5),
+        pointPadding: 0,
+        groupPadding: 0,
+        pointPlacement: 'between'
+    }, {
+        name: '概率密度',
+        type: 'spline',
+        data: data,
+        yAxis: 1,
+        marker: {
+            radius: 1.5
+        }
+    }]
+}).highcharts();
 //根据类型 时间 统计共产 一致个月份数量
 function communistStatisticForMonthForTab1Ajax(){
 	$.post(contextPath+'/lab/communistStatisticForMonthForTab1Ajax',{"startDate":"201601","endDate":"201612"},function(data){
@@ -691,4 +951,28 @@ function standardSeriesData(data,name){
 		}
 	});
 	return num;
+}
+//获取最大值 最小值
+function getMaxMinForScpTab1(data,xhPro,type){
+	var result=[];
+	var max;
+	var min;
+	if(type==1){
+		min=xhPro.jz_lcl;
+		max=xhPro.jz_ucl;
+	}else{
+		min=xhPro.fc_lcl;
+		max=xhPro.fc_ucl;
+	}
+	$.each(data,function(index,item){
+		if(parseFloat(item.num)>parseFloat(max)){
+			max=item.num;
+		}
+		if(parseFloat(item.num)<parseFloat(min)){
+			min=item.num;
+		}
+	});
+	result.push(parseFloat(max)+0.1);
+	result.push(parseFloat(min)-0.1);
+	return result;
 }

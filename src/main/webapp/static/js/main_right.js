@@ -717,7 +717,7 @@ myChart7.setOption({
 
 });
 //模块质量过程检测
-var myChart8 = echarts.init(document.getElementById("myChart8"));
+/*var myChart8 = echarts.init(document.getElementById("myChart8"));
 myChart8.setOption(getBarEcharts());
 var bar_chip = '../img/bar_chip.png';
 myChart8.setOption({
@@ -845,11 +845,11 @@ myChart8.setOption({
             ]
         }
     ]
-});
+});*/
 
 
 //Xbar控制图
-var myChart9 = echarts.init(document.getElementById("myChart9"));
+/*var myChart9 = echarts.init(document.getElementById("myChart9"));
 myChart9.setOption(getLineEcharts());
 myChart9.setOption({
     color:["#ff9933"],
@@ -960,8 +960,8 @@ myChart9.setOption({
         }
     ]
 
-});
-var myChart9_2 = echarts.init(document.getElementById("myChart9_2"));
+});*/
+/*var myChart9_2 = echarts.init(document.getElementById("myChart9_2"));
 myChart9_2.setOption(getLineEcharts());
 myChart9_2.setOption({
     color:["#ff9933"],
@@ -1072,7 +1072,7 @@ myChart9_2.setOption({
         }
     ]
 
-});
+});*/
 
 
 //能力直方图
@@ -4376,7 +4376,7 @@ myChart49.setOption({
 //}
 //console.log(str)
 
-var right_echarts = [myChart1, myChart2, myChart3, myChart5, myChart7, myChart8, myChart9,
+var right_echarts = [myChart1, myChart2, myChart3, myChart5, myChart7,
     myChart14, myChart15, myChart16,
     myChart43, myChart44, myChart47, myChart48, myChart49,
 ]

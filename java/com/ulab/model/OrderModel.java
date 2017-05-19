@@ -270,6 +270,7 @@ public class OrderModel extends Model<OrderModel> {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
+	@Deprecated
 	public List<Record> findOrderYearRateForTab1(String date,String labTypeCode,String descName){
 		StringBuffer sb=new StringBuffer();
 		sb.append(" select t.*,b.js_count,case t.all_count when 0 then '0' else to_char(b.js_count/t.all_count*100,'00.00') end as  rate from");
