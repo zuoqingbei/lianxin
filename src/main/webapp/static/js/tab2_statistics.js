@@ -371,7 +371,7 @@ function abilityByProductLine() {
             var gridX = "40%";
             if (index == 0) {
                 lengendData = tab2Lengend(item);
-                gridX = "53%";
+                gridX = "58%";
             }
             var seriesData = tab2DataData(item);
             myChart.setOption({

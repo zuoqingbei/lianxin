@@ -396,7 +396,7 @@
     /*margin-left: 15%;*/
     /*background-color: plum;*/
     margin-left: 10%;
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 .echarts_title_left ul li {
@@ -416,12 +416,12 @@
 
 #myChart6 {
     width: 100%;
-    height: 65%;
+    height: 60%;
 }
 
 #myChart7 {
     width: 100%;
-    height: 65%;
+    height: 60%;
 }
 
 /*鎸栨帢搴旂敤*/
@@ -533,7 +533,7 @@
 
 .total_bottom_tab > ul {
     width: 100%;
-    height: 95%;
+    height: 100%;
     overflow-y: scroll;
     padding-top: 11%;
     background: url("../img/TotalState/scroll bar-border.png") no-repeat;
@@ -675,7 +675,7 @@
 .sheshi_top_left .zaixian table {
     width: 100%;
     /*background-color: pink;*/
-    margin-top:1.5em;
+    margin-top:2em;
     text-align: center;
 }
 

@@ -96,7 +96,7 @@ function worldTyleEchart(data){
 	                return allNum -  params.value
 	            },
 	            textStyle: {
-	                fontSize:bodyScale*13,
+	                fontSize:bodyScale*15,
 	                color: "#f90",
 	                baseline: 'bottom'
 	            }
@@ -127,7 +127,7 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-	                fontSize: bodyScale*7,
+	                fontSize: bodyScale*11,
 	                // fontSize: 6,
 	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
                     baseline: 'top'
@@ -308,11 +308,11 @@ function labPropertiesStatis(){
 	        },
 	        textStyle: {
 	            color: "#6cf",
-	            fontSize: bodyScale*8
+	            fontSize: bodyScale*10
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "40%",
+	        	 x: "30%",
 	             x2: "20%",
 	             y:"18%",
 	             y2:"15%"
@@ -324,9 +324,13 @@ function labPropertiesStatis(){
 	                axisLabel: {
 	                    textStyle: {
 	                        color: "#66ccff",
-	                        fontSize: bodyScale*6
-	                    }
+	                        fontSize: bodyScale*12
+	                    },
+                        interval:0
 	                },
+                    axisTick: {  //刻度值
+                        show: false,
+                    },
 	                axisLine: {
 	                    lineStyle: {
 	                        width: 0
@@ -338,7 +342,7 @@ function labPropertiesStatis(){
 	                        color: "#234f65"
 	                    }
 	                },
-	                nameGap: bodyScale*10,
+	                nameGap: 10,
 	                offset: 5//调整个坐标轴标签的远近
 
 	            }
@@ -352,11 +356,15 @@ function labPropertiesStatis(){
 	                	// margin:bodyScale*2,
 	                    textStyle: {
 	                        color: "#66ccff",
-	                        fontSize: bodyScale*6
-	                    }
+	                        fontSize: bodyScale*11,
+	                    },
+                        interval:0
 	                },
-	                nameGap: 10,
-	                offset: 5,
+                    axisTick: {  //刻度值
+                        show: false,
+                    },
+	                nameGap: 15,
+	                offset: 0,
 //	                minInterval: .5
 	            }
 	        ],
@@ -485,8 +493,12 @@ function labLifeCycleStatis(){
 	                     lineStyle: {
 	                         color: "#234f65"
 	                     }
-	                 }
-	            }
+	                 },
+                    axisTick: {  //刻度值
+                        show: false,
+                    }
+
+                }
 	        ],
 	        series: [
                 {
