@@ -1,4 +1,5 @@
 // 多个方向盘 设施状态
+// $("#myChart").cl
 var myChart1 = echarts.init(document.getElementById("myChart1"));
 option = {
     tooltip: {
@@ -13,7 +14,7 @@ option = {
     },
     series: [
         {
-            name: '在线率',
+            name: '设备完好率',
             type: 'gauge',
             z: 3,
             min: 0,
@@ -79,10 +80,10 @@ option = {
                 },
                 formatter: '{value}%'
             },
-            data: [{value: 98, name: '在线率'}]
+            data: [{value: 98, name: '设备完好率'}]
         },
         {
-            name: '利用率',
+            name: '实验在线率',
             type: 'gauge',
             center: ['25%', '58%'],    // 默认全局居中
             radius: '70%',
@@ -144,10 +145,10 @@ option = {
                 },
                 formatter: '{value}%' //数字显示的样式
             },
-            data: [{value: 96, name: '利用率'}]
+            data: [{value: 96, name: '实验在线率'}]
         },
         {
-            name: '完好率',
+            name: '设备利用率',
             type: 'gauge',
             center: ['75%', '59%'],    // 默认全局居中
             radius: '70%',
@@ -210,7 +211,7 @@ option = {
                 },
                 formatter: '{value}%'
             },
-            data: [{value: 95, name: '完好率'}]
+            data: [{value: 95, name: '设备利用率'}]
         }
     ]
 };
@@ -532,6 +533,7 @@ var myChart5 = echarts.init(document.getElementById("myChart5"));
 myChart5.setOption(getCenterPie());
 myChart5.setOption({
     legend: {
+        show:false,
         data: ['整机', '模块']
     },
     textStyle: {
@@ -544,10 +546,11 @@ myChart5.setOption({
             type: 'pie',
             clockWise: false,
             radius: ['50%', '60%'],
+            center:['40%', '45%'],
             itemStyle: {
                 normal: {
                     label: {show: true},
-                    labelLine: {show: true, length: 12, length2: 7, smooth: false}
+                    labelLine: {show:true,length:12*bodyScale,length2:47*bodyScale,smooth:false}
                 },
             },
             data: [
@@ -568,6 +571,7 @@ myChart5.setOption({
             type: 'pie',
             clockWise: false,
             radius: ['40%', '50%'],
+            center:['40%', '45%'],
             itemStyle: {
                 normal: {
                     label: {show: true},
@@ -719,7 +723,8 @@ var bar_chip = '../img/bar_chip.png';
 myChart8.setOption({
     color:["#66ccff","#ff9933"],
     title: {
-        text: '模块质量过程检测',
+        show:false,
+        text: '模块商质量水平分布',
         left: 'center'
     },
     grid: {
@@ -732,24 +737,46 @@ myChart8.setOption({
     yAxis: [
         {
             name: "Cpk",
-            type: 'category',
+            nameGap:8*bodyScale,
+            // type: 'category',
             position: 'left',
 
-            data: [0, 0.5, 1, 1.5, 2],
+            data: [1, 1.33, 1.67, 2],
             axisLine: { //坐标轴
                 show: false,
                 textStyle: {
-                    color: '#66ccff'
+                    color: 'rgba(0,0,0,0)'
                 }
             },
             axisTick: {  //刻度值
                 show: false,
             }
         }, {
-            // name: "ppm",
+            name: "ppm",
+            nameGap:8*bodyScale,
+            position: 'right',
+            // type: 'category',
+            data: [2700],
+            axisLine: { //坐标轴
+                show: true,
+                textStyle: {
+                    color: '#66ccff',
+                }
+            },
+            axisTick: {  //刻度值
+                show: false,
+            }
+        }, {
+            name: "",
+            nameGap:8*bodyScale,
             position: 'right',
             type: 'category',
-            data: [1230, 2460, 3690, 4920, 6150],
+            data: [0.6, 1.16, 1.5, 1.85,2.5],
+            axisLabel:{
+                textStyle:{
+                    color: '#66ccff',
+                }
+            },
             axisLine: { //坐标轴
                 show: true,
                 textStyle: {
@@ -806,7 +833,13 @@ myChart8.setOption({
                 value: 32,
                 symbol: bar_chip
             }, {
-                value: 2,
+                value: 16,
+                symbol: bar_chip
+             }, {
+                value: 8,
+                symbol: bar_chip
+             }, {
+                value: 6,
                 symbol: bar_chip
             }
             ]
@@ -820,23 +853,46 @@ var myChart9 = echarts.init(document.getElementById("myChart9"));
 myChart9.setOption(getLineEcharts());
 myChart9.setOption({
     color:["#ff9933"],
+    textStyle:{
+        fontSize:4*bodyScale
+    },
     title: {
+        show:false,
         text: 'Xbar 控制图',
         left: 'center'
     },
     grid: {
-        right: 43,
-        bottom: 30,
-        left: 38,
-        top: 30
+        right: "29%",
+        bottom: "28%",
+        left: "15%",
+        top: "16%"
     },
     yAxis: {
         name: '样本均值',
-        // max: 100
+        max: 74.5,
+        min: 73,
+        axisLabel:{
+            textStyle:{
+                fontSize:5*bodyScale
+            }
+        },
+        splitLine: {  //刻度线
+            show: false
+        },
+        nameGap:2*bodyScale,
+        nameTextStyle:{fontSize:6*bodyScale},
     },
     xAxis: [
         {
             name: "时间",
+            axisLabel:{
+                textStyle:{
+                    fontSize:5*bodyScale
+                },
+                margin:2*bodyScale
+            },
+            nameGap:2*bodyScale,
+            nameTextStyle:{fontSize:6*bodyScale},
             data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         }
     ],
@@ -885,15 +941,132 @@ myChart9.setOption({
             },
             symbolSize: 2,
 //            areaStyle: {normal: {}},
-            data: [30, 232, 25, 34, 45, 30, 140, 23, 34, 46, 34, 113],
+            data: [73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25],
             markLine: {
+                symbolSize:0,
                 silent: true,
+                label:{normal:{formatter:"{b}={c}"}},
                 data: [{
-                    yAxis: 50
+                    name:"UCL",
+                    yAxis: 74.2688
                 },{
-                    yAxis: 150
+                    name:"x",
+                    yAxis: 74.0485
                 }, {
-                    yAxis: 200
+                    name:"LCL",
+                    yAxis: 73.4688
+                }]
+            }
+        }
+    ]
+
+});
+var myChart9_2 = echarts.init(document.getElementById("myChart9_2"));
+myChart9_2.setOption(getLineEcharts());
+myChart9_2.setOption({
+    color:["#ff9933"],
+    textStyle:{
+        fontSize:4*bodyScale
+    },
+    title: {
+        show:false,
+        text: 'Xbar 控制图',
+        left: 'center'
+    },
+    grid: {
+        right: "29%",
+        bottom: "28%",
+        left: "15%",
+        top: "16%"
+    },
+    yAxis: {
+        name: '样本均值',
+        max: 74.5,
+        min: 73,
+        axisLabel:{
+            textStyle:{
+                fontSize:5*bodyScale
+            }
+        },
+        splitLine: {  //刻度线
+            show: false
+        },
+        nameGap:2*bodyScale,
+        nameTextStyle:{fontSize:6*bodyScale},
+    },
+    xAxis: [
+        {
+            name: "时间",
+            axisLabel:{
+                textStyle:{
+                    fontSize:5*bodyScale
+                },
+                margin:2*bodyScale
+            },
+            nameGap:2*bodyScale,
+            nameTextStyle:{fontSize:6*bodyScale},
+            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        }
+    ],
+    visualMap: {
+        show:false,
+        top: 10,
+        right: 10,
+        pieces: [{
+            gt: 0,
+            lte: 50,
+            color: '#096'
+        }, {
+            gt: 50,
+            lte: 100,
+            color: '#ffde33'
+        }, {
+            gt: 1000,
+            lte: 150,
+            color: '#ff9933'
+        }, {
+            gt: 150,
+            lte: 200,
+            color: '#cc0033'
+        },
+            //     {
+            //     gt: 200,
+            //     lte: 300,
+            //     color: '#660099'
+            // }, {
+            //     gt: 300,
+            //     color: '#7e0023'
+            // }
+        ],
+        outOfRange: {
+            color: '#cc0033'
+        }
+    },
+    series: [
+        {
+            name: '样本均值',
+            type: 'line',
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            },
+            symbolSize: 2,
+//            areaStyle: {normal: {}},
+            data: [73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25],
+            markLine: {
+                symbolSize:0,
+                silent: true,
+                label:{normal:{formatter:"{b}={c}"}},
+                data: [{
+                    name:"UCL",
+                    yAxis: 74.2688
+                },{
+                    name:"x",
+                    yAxis: 74.0485
+                }, {
+                    name:"LCL",
+                    yAxis: 73.4688
                 }]
             }
         }
@@ -903,7 +1076,7 @@ myChart9.setOption({
 
 
 //能力直方图
-var myChart10 = echarts.init(document.getElementById("myChart10"));
+/*var myChart10 = echarts.init(document.getElementById("myChart10"));
 myChart10.setOption(getLineAndBar());
 myChart10.setOption({
     title: {
@@ -955,11 +1128,116 @@ myChart10.setOption({
         }
     ]
 
-});
-
+});*/
+  //  var data = [[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
+    /**
+     * Get histogram data out of xy data
+     * @param   {Array} data  Array of tuples [x, y]
+     * @param   {Number} step Resolution for the histogram
+     * @returns {Array}       Histogram data
+     */
+   /* function histogram(data, step) {
+        var histo = {},
+            x,
+            i,
+            arr = [];
+        // Group down
+        for (i = 0; i < data.length; i++) {
+            x = Math.floor(data[i][0] / step) * step;
+            if (!histo[x]) {
+                histo[x] = 0;
+            }
+            histo[x]++;
+        }
+        // Make the histo group into an array
+        for (x in histo) {
+            if (histo.hasOwnProperty((x))) {
+                arr.push([parseFloat(x), histo[x]]);
+            }
+        }
+        // Finally, sort the array
+        arr.sort(function (a, b) {
+            return a[0] - b[0];
+        });
+        return arr;
+    }*/
+   /* $('#myChart10').highcharts({
+        chart: {
+            type: 'column'
+        },
+        credits: {
+            enabled: false
+        },
+        exporting: {
+            enabled:false
+        },
+        title: {
+            text: '直方图'
+        },
+        legend:{
+            enabled:false,
+        },
+        xAxis: {
+            gridLineWidth: 1,
+            min:68,
+            max:80,
+            plotLines:[{
+                color:'red',            //线的颜色，定义为红色
+                dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+                value:71,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                width:2  ,               //标示线的宽度，2px
+                label:{
+                    text:'LSL',  //标签的内容
+                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                },
+                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            },{
+                color:'red',            //线的颜色，定义为红色
+                dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+                value:77,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                width:2  ,               //标示线的宽度，2px
+                label:{
+                    text:'USL',//标签的内容
+                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                },
+                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            }
+            ]
+        },
+        yAxis: [{
+            title: {
+                text: ''
+            },
+            visible:false
+        }, {
+            opposite: true,
+            title: {
+                text: 'Y value'
+            },
+            visible:false,
+        }],
+        series: [{
+            name: '直方图',
+            type: 'column',
+            data: histogram(data, 0.5),
+            pointPadding: 0,
+            groupPadding: 0,
+            pointPlacement: 'between'
+        }, {
+            name: 'XY 数据',
+            type: 'line',
+            data: data,
+            yAxis: 1,
+            marker: {
+                radius: 1.5
+            }
+        }]
+    });*/
 
 //共产一致与不一致占比
-var myChart11 = echarts.init(document.getElementById("myChart11"));
+/*var myChart11 = echarts.init(document.getElementById("myChart11"));
 myChart11.setOption(getRoseEcharts());
 myChart11.setOption({
     color: ['#66ccff', '#4397f7'],
@@ -1005,10 +1283,9 @@ myChart11.setOption({
             ]
         },
     ]
-});
+});*/
 
 //共产一致
-var myChart12 = echarts.init(document.getElementById("myChart12"));
 var labelSetting = {
     normal: {
         show: false,
@@ -1019,6 +1296,7 @@ var labelSetting = {
         }
     }
 };
+/*var myChart12 = echarts.init(document.getElementById("myChart12"));
 myChart12.setOption(getBarEcharts());
 myChart12.setOption({
     color: ['#66ccff', '#a5fff1'],
@@ -1138,7 +1416,7 @@ myChart12.setOption({
         ]
     }]
 });
-
+*/
 
 //模块质量过程检测
 var myChart14 = echarts.init(document.getElementById("myChart14"));
@@ -1367,7 +1645,7 @@ myChart16.setOption({
 
 
 //共产一致与不一致占比
-var myChart17 = echarts.init(document.getElementById("myChart17"));
+/*var myChart17 = echarts.init(document.getElementById("myChart17"));
 myChart17.setOption(getRoseEcharts());
 myChart17.setOption({
     color: ['#66ccff', '#4397f7'],
@@ -1413,11 +1691,11 @@ myChart17.setOption({
             ]
         },
     ]
-});
+});*/
 
 
 //共产一致
-var myChart18 = echarts.init(document.getElementById("myChart18"));
+/*var myChart18 = echarts.init(document.getElementById("myChart18"));
 myChart18.setOption(getBarEcharts());
 myChart18.setOption({
     color: ['#66ccff', '#a5fff1'],
@@ -1536,7 +1814,7 @@ myChart18.setOption({
         }
         ]
     }]
-});
+});*/
 
 // //数据量挖掘 共产不一致性
 // var myChart19 = echarts.init(document.getElementById("myChart19"));
@@ -1667,7 +1945,7 @@ myChart18.setOption({
 
 
 //人员状态 学历 柱状图
-var myChart22 = echarts.init(document.getElementById("myChart22"));
+/*var myChart22 = echarts.init(document.getElementById("myChart22"));
 myChart22.setOption(getBarEcharts());
 myChart22.setOption({
     yAxis: [
@@ -1725,10 +2003,10 @@ myChart22.setOption({
             }
         }
     ]
-});
+});*/
 
 //人员状态 工作年限 柱状图
-var myChart23 = echarts.init(document.getElementById("myChart23"));
+/*var myChart23 = echarts.init(document.getElementById("myChart23"));
 myChart23.setOption(getBarEcharts());
 myChart23.setOption({
     yAxis: [
@@ -1787,9 +2065,9 @@ myChart23.setOption({
         }
     ]
 });
-
+*/
 //人员状态 资质 柱状图
-var myChart24 = echarts.init(document.getElementById("myChart24"));
+/*var myChart24 = echarts.init(document.getElementById("myChart24"));
 myChart24.setOption(getBarEcharts());
 myChart24.setOption({
     yAxis: [
@@ -1848,10 +2126,10 @@ myChart24.setOption({
             }
         }
     ]
-});
+});*/
 
 //人员状态 学历 散点图
-var myChart25 = echarts.init(document.getElementById("myChart25"));
+/*var myChart25 = echarts.init(document.getElementById("myChart25"));
 var data = [
     [['本科', '冰冷', 212, 1990], ['本科', '洗涤', 222, 1990], ['本科', '家空', 411, 1990], ['本科', '商空', 510, 1990], ['本科', '热水器', 114, 1990], ['本科', '厨电', 545, 1990], ['本科', '其他', 645, 1990]],
 
@@ -2017,9 +2295,9 @@ myChart25.setOption({
     }
     ]
 });
-
+*/
 //人员状态 工作年限 散点图
-var myChart26 = echarts.init(document.getElementById("myChart26"));
+/*var myChart26 = echarts.init(document.getElementById("myChart26"));
 myChart26.setOption(getScatterEcharts());
 var data = [
     [['3年以下', '冰冷', 212, 1990], ['3年以下', '洗涤', 222, 1990], ['3年以下', '家空', 411, 1990], ['3年以下', '商空', 510, 1990], ['3年以下', '热水器', 114, 1990], ['3年以下', '厨电', 545, 1990], ['3年以下', '其他', 645, 1990]],
@@ -2219,9 +2497,9 @@ myChart26.setOption({
         }
     ]
 });
-
+*/
 //人员状态 资质 散点图
-var myChart27 = echarts.init(document.getElementById("myChart27"));
+/*var myChart27 = echarts.init(document.getElementById("myChart27"));
 myChart27.setOption(getScatterEcharts());
 var data = [
     [['检测权限', '冰冷', 212, 1990], ['检测权限', '洗涤', 222, 1990], ['检测权限', '家空', 411, 1990], ['检测权限', '商空', 510, 1990], ['检测权限', '热水器', 114, 1990], ['检测权限', '厨电', 545, 1990], ['检测权限', '其他', 645, 1990]],
@@ -2420,7 +2698,7 @@ myChart27.setOption({
             }
         }
     ]
-});
+});*/
 
 //标准状态 国际标准
 /*var myChart28 = echarts.init(document.getElementById("myChart28"));
@@ -4099,8 +4377,7 @@ myChart49.setOption({
 //console.log(str)
 
 var right_echarts = [myChart1, myChart2, myChart3, myChart5, myChart7, myChart8, myChart9,
-    myChart11, myChart12, myChart14, myChart15, myChart16, myChart17, myChart18,
-    myChart22, myChart23, myChart24, myChart25, myChart26, myChart27,
+    myChart14, myChart15, myChart16,
     myChart43, myChart44, myChart47, myChart48, myChart49,
 ]
 //重置echart图标大小 在加载平面地图时被调用
@@ -4110,6 +4387,16 @@ function resetSizeRight() {
     }
 }
 
+$(function () {
+    var $right = $("#right");
+    $right.find(".total_bottom_tab ul>li[class]").click(function () {
+        $(this).parents(".total_bottom_tab").find(".active").removeClass("active");
+        $(this).addClass("active");
+    });
+    $right.find(".total_bottom_tab>ul>li[class]").click(function () {
+        $(this).next().toggle();
+    })
+})
 
 
 

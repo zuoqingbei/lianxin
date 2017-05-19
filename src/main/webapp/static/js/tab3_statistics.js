@@ -190,7 +190,7 @@ function orderTypeAjax(myChartIds,desName,divisor){
 
 //按照产线统计某年各月份详细订单及时率myChart46  数据结果 订单及时率 折线图
 function findOrderMonthRateForProductAjax(){
-	$.post(contextPath+'/lab/findOrderMonthRateForProductAjax',{"labTypeCode":labTypeCode},function(data){
+	$.post(contextPath+'/lab/findOrderMonthRateForProductAjax',{"labTypeCode":labTypeCode,"startDate":"201606","endDate":"201705"},function(data){
 		var myChart46 = echarts.init(document.getElementById("myChart46"));
 		right_echarts.push(myChart46);
 		myChart46.setOption(getLineEcharts());
@@ -211,7 +211,7 @@ function findOrderMonthRateForProductAjax(){
 		    xAxis: [
 		        {
 		            name: '月份',
-		            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		            data: tab3OrderRateLengend(data[0])
 		        }
 		    ],
 		    yAxis: [
@@ -394,6 +394,13 @@ function getTab3Serise(data){
 		series.push(it);
 	})
 	return series;
+}
+function tab3OrderRateLengend(data){
+	var legnend=[];
+	$.each(data,function(index,item){
+		legnend.push(item.name);
+	});
+	return legnend;
 }
 
 

@@ -3,6 +3,9 @@
  * 右侧数据统计
  */
 function loadTab1Data(){
+	findPersonStatusTab1Ajax(1);
+	findPersonStatusTab1Ajax(2);
+	findPersonStatusTab1Ajax(3);
 	 //标准状态
     standardStatus();
     //能力状态
@@ -13,11 +16,260 @@ function loadTab1Data(){
     findOrderPassForAllTab1();
    //一次合格率  整体统计 不区分整机 模块
     findOrderPassForTab1Ajax();
+    // 共产 一致比重统计
+    communistGravityStatisticForTab1Ajax();
+    //根据类型 时间 统计共产 一致个月份数量
+    communistStatisticForMonthForTab1Ajax();
+    //直方图
+    cpkDataForTab1("WY77H-C1");
+}
+var data = [[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
+
+var mHeightChart=$('#myChart10').highcharts({
+        chart: {
+            type: 'column'
+        },
+        credits: {
+            enabled: false
+        },
+        exporting: {
+            enabled:false
+        },
+        title: {
+            text: '直方图'
+        },
+        legend:{
+            enabled:false,
+        },
+        xAxis: {
+            gridLineWidth: 1,
+            min:71,
+            max:77,
+            plotLines:[{
+                color:'red',            //线的颜色，定义为红色
+                dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+                value:71,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                width:2  ,               //标示线的宽度，2px
+                label:{
+                    text:'LSL',  //标签的内容
+                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                },
+                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            },{
+                color:'red',            //线的颜色，定义为红色
+                dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+                value:77,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                width:2  ,               //标示线的宽度，2px
+                label:{
+                    text:'USL',//标签的内容
+                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                },
+                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            }
+            ]
+        },
+        yAxis: [{
+            title: {
+                text: ''
+            },
+            visible:false
+        }, {
+            opposite: true,
+            title: {
+                text: ''
+            },
+            visible:false,
+        }],
+        series: [{
+            name: '直方图',
+            type: 'column',
+            data: histogram(data, 0.5),
+            pointPadding: 0,
+            groupPadding: 0,
+            pointPlacement: 'between'
+        }, {
+            name: '概率密度',
+            type: 'spline',
+            data: data,
+            yAxis: 1,
+            marker: {
+                radius: 1.5
+            }
+        }]
+    }).highcharts();
+//直方图
+function cpkDataForTab1(xhCode){
+	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhCode},function(data){
+		var mData=[];
+		var mData2=[];
+		$.each(data,function(index,item){
+			mData.push([parseFloat(item.gd_num),parseFloat(item.wkq_num)]);
+			mData2.push([parseFloat(item.gd_num),parseFloat(item.gd_num_2)]);
+		});
+		console.log(mData2)
+		mHeightChart.series[0].setData(histogram(mData, 0.5)); // 更新 series
+		mHeightChart.series[1].setData(histogram2(mData2, 0.5));
+	});
+	
+}
+function histogram2(arr, step) {
+   
+    // Finally, sort the array
+    arr.sort(function (a, b) {
+        return a[0] - b[0];
+    });
+    return arr;
+}
+function histogram(data, step) {
+    var histo = {},
+        x,
+        i,
+        arr = [];
+    // Group down
+    for (i = 0; i < data.length; i++) {
+        x = Math.floor(data[i][0] / step) * step;
+        if (!histo[x]) {
+            histo[x] = 0;
+        }
+        histo[x]++;
+    }
+    // Make the histo group into an array
+    for (x in histo) {
+        if (histo.hasOwnProperty((x))) {
+            arr.push([parseFloat(x), histo[x]]);
+        }
+    }
+    // Finally, sort the array
+    arr.sort(function (a, b) {
+        return a[0] - b[0];
+    });
+    return arr;
+}
+//根据类型 时间 统计共产 一致个月份数量
+function communistStatisticForMonthForTab1Ajax(){
+	$.post(contextPath+'/lab/communistStatisticForMonthForTab1Ajax',{"startDate":"201601","endDate":"201612"},function(data){
+		var myChart12 = echarts.init(document.getElementById("myChart12"));
+		right_echarts.push(myChart12);
+		myChart12.setOption(getBarEcharts());
+		myChart12.setOption({
+		    color: ['#66ccff', '#a5fff1'],
+		    legend: {
+		        show: true,
+		        data: ['共产数', '一致数']
+		    },
+		    grid: {
+//		            show:true,
+		        x: "12%",
+		        x2: "15%",
+		        y: '20%',
+		        y2: "22%"
+		    },
+		    yAxis: [
+		        {
+		            name: "数量",
+		            type: 'value'
+		        }
+		    ],
+		    xAxis: [
+		        {
+		            name: "时间",
+		            type: 'category',
+		            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		        }
+		    ],
+		    series: [{
+		        name: '共产数',
+		        type: 'pictorialBar',
+		        label: labelSetting,
+		        symbolRepeat: true,
+		        symbolSize: ['80%', '60%'],
+		        barCategoryGap: '40%',
+		        data: statisticRightSeriesData(data[0],bar_chip)
+		    }, {
+		        name: '一致数',
+		        type: 'pictorialBar',
+		        barGap: '10%',
+		        label: labelSetting,
+		        symbolRepeat: true,
+		        symbolSize: ['80%', '60%'],
+		        data: statisticRightSeriesData(data[1],bar_chip)
+		    }]
+		});
+	})
+}
+
+
+// 共产 一致比重统计
+function communistGravityStatisticForTab1Ajax(){
+	$.post(contextPath+'/lab/communistGravityStatisticForTab1Ajax',{},function(data){
+		var myChart11 = echarts.init(document.getElementById("myChart11"));
+		right_echarts.push(myChart11);
+		myChart11.setOption(getRoseEcharts());
+		myChart11.setOption({
+		    color: ['#66ccff', '#4397f7'],
+		    legend: {
+		        show: true,
+		        textStyle: {
+		            color: '#66ccff',
+		            fontSize: 10 * bodyScale,
+		        },
+		        orient: 'vertical',  //布局  纵向布局
+		        data: ['共产一致型号数', '共产不一致型号数'],
+		        itemWidth: 10,  //图例标记的图形宽度
+		        itemHeight: 2, //图例标记的图形高度
+		    },
+		    series: [
+		        {
+		            name: '',
+		            type: 'pie',
+		            radius: [0, '50%'],
+		            center: ['50%', '55%'],
+		            roseType: 'radius',
+		            label: {
+		                normal: {
+		                    show: true,
+		                    position: "inside",
+		                    formatter: "{d}%"
+		                },
+		                emphasis: {
+		                    show: true
+		                }
+		            },
+		            lableLine: {
+		                normal: {
+		                    show: false
+		                },
+		                emphasis: {
+		                    show: true
+		                }
+		            },
+		            data: [
+		                {value: data.yz_num, name: '共产一致型号数'},
+		                {value: (parseInt(data.gc_num)-parseInt(data.yz_num)), name: '共产不一致型号数'}
+		            ]
+		        },
+		    ]
+		});
+	})
+}
+//人员状态 type:类型 1:学历情况 2:工作年限情况 3:批准权限
+function findPersonStatusTab1Ajax(type){
+	$.post(contextPath+'/lab/findPersonStatusTab1Ajax',{"type":type},function(data){
+		var htmls="";
+		$.each(data,function(index,item){
+			htmls+='<li><span class="bar_name">'+item.name+'</span>';
+			htmls+='<div class="progress">';
+			htmls+='<div class="progress-bar1" role="progressbar" aria-valuenow="'+item.rate+'" aria-valuemin="0" aria-valuemax="100" style="width:'+item.rate+'%;height: 110%"></div>';
+			htmls+='</div><span>'+item.rate+'%</span></li>';
+		});
+		$("#tab1_person_detail_"+type).html(htmls)
+	})
 }
 //一次合格率  整体统计 不区分整机 模块
 function findOrderPassForTab1Ajax(){
 	$.post(contextPath+'/lab/findOrderPassForTab1Ajax',{},function(data){
-		console.log(data)
 		$("#tab1_pass_rate_id").html(data.rate+"%");
 	})
 }
@@ -45,22 +297,29 @@ function findOrderPassForAllTab1(){
 		};
 		myChart4.setOption({
 		    legend:{
+		    	show:false,
+                x: 'right',
 		        data:['整机','模块']
 		    },
 		    textStyle:{
 		        fontSize:12*bodyScale
 		    },
 		    color: ['#4397f7', '#66ccff'],
+			grid:{ //grid在极坐标中不起作用，只能应用于直角坐标系
+                x:"",
+				x2:""
+			},
 		    series: [
 		        {
 		            name: '整机',
 		            type: 'pie',
 		            clockWise: false,
 		            radius: ['50%', '60%'],
+					center:['40%', '45%'],
 		            itemStyle: {
 		            	 normal: {
 						        label: {show:true},
-						        labelLine: {show:true,length:12,length2:7,smooth:false}
+						        labelLine: {show:true,length:12*bodyScale,length2:47*bodyScale,smooth:false}
 						    },
 		            },
 		            data: [
@@ -81,6 +340,7 @@ function findOrderPassForAllTab1(){
 		            type: 'pie',
 		            clockWise: false,
 		            radius: ['40%', '50%'],
+                    center:['40%', '45%'],
 		            itemStyle: {
 		            	 normal: {
 						        label: {show:true},
@@ -108,14 +368,15 @@ function findOrderPassForAllTab1(){
 }
 //订单及时率
 function findOrderYearRateForTab1(){
-	$.post(contextPath+'/lab/findOrderYearRateForTab1Ajax',{"date":"2016"},function(data){
+	$.post(contextPath+'/lab/findOrderYearRateForTab1Ajax',{"startDate":"201606","endDate":"201705"},function(data){
+		console.log(data)
 		var myChart6 = echarts.init(document.getElementById("myChart6"));
 		right_echarts.push(myChart6);
 		myChart6.setOption(getLineEcharts());
 		myChart6.setOption({
 		    legend: {
-		        show: true,
-		        data: ['整机', '模块'],
+		        show: false,
+		        data: ['及时率'],
 		        itemWidth: 5,  //图例标记的图形宽度
 		        itemHeight: 3, //图例标记的图形高度
 		    },
@@ -139,37 +400,23 @@ function findOrderYearRateForTab1(){
 		            nameTextStyle: {
 		                color: '#66ccff'
 		            },
-		            data: statisticRightLengend(data[0])
+		            data: statisticRightLengend2(data)
 		        }
 		    ],
-		    series: tab1OrderRateSeries(data)
+		    series: [{
+				name: '及时率',
+				type: 'line',
+				lineStyle:{
+					normal:{
+						width:1
+					}
+				},
+				symbolSize:2,
+				data: tab1OrderRateSeriseData(data)
+		}]
 
 		});
 	})
-}
-function tab1OrderRateSeries(data){
-	var series=[];
-	$.each(data,function(index,item){
-		var mName;
-		if(index==0){
-			mName="整机";
-		}else{
-			mName="模块";
-		}
-		var it={
-		            name: mName,
-		            type: 'line',
-		            lineStyle:{
-		                normal:{
-		                    width:1
-		                }
-		            },
-		            symbolSize:2,
-		            data: tab1OrderRateSeriseData(item)
-		        };
-		series.push(it);
-	})
-	return series;
 }
 //标准状态数据统计
 function standardStatus(){
@@ -288,7 +535,7 @@ function standardStatus(){
 				            itemStyle: labelFromatter,
 				            data: [
 				                {name: 'other', value: 100-num0, itemStyle: labelBottom},
-				                {name: '牵头起草数', value: num0, itemStyle: labelTop}
+				                {name: '起草数', value: num0, itemStyle: labelTop}
 				            ]
 				        },
 				        {
@@ -299,7 +546,7 @@ function standardStatus(){
 				            itemStyle: labelFromatter,
 				            data: [
 				                {name: 'other', value: 100-num1, itemStyle: labelBottom},
-				                {name: '参与起草数', value: num1, itemStyle: labelTop}
+				                {name: '起草数', value: num1, itemStyle: labelTop}
 				            ]
 				        },
 				        {
@@ -383,7 +630,7 @@ function abilityStatus(){
 		        {
 		            name: "",
 		            type: 'category',
-		            data: statisticRightLengend(data.data)
+		            data: statisticRightLengend2(data.data)
 		        }
 		    ],
 		    grid: {
@@ -405,6 +652,14 @@ function statisticRightLengend(data){
 	$.each(data,function(index,item){
 		var name=item.name;
 		name=name.substr(0,4)+"/"+name.substr(4,6);
+		legnend.push(name);
+	});
+	return legnend;
+}
+function statisticRightLengend2(data){
+	var legnend=[];
+	$.each(data,function(index,item){
+		var name=item.name;
 		legnend.push(name);
 	});
 	return legnend;

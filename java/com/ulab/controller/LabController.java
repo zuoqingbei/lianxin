@@ -5,18 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
+import com.ulab.model.CommunistModel;
 import com.ulab.model.DicModel;
+import com.ulab.model.JianCeModel;
 import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 import com.ulab.model.OrderModel;
+import com.ulab.model.PersonModel;
+import com.ulab.util.NormalDistribution;
 import com.ulab.util.SqlUtil;
 /**
  * 
@@ -278,13 +281,15 @@ public class LabController extends BaseController {
      */
     public void findOrderMonthRateForProductAjax(){
     	String labTypeCode=getPara("labTypeCode","");
+    	String startDate=getPara("startDate","201601");
+    	String endDate=getPara("endDate","201612");
     	List<List<Record>> list=new ArrayList<List<Record>>();
     	List<Record> productLine=getSessionAttr("productLine");
     	if(productLine==null){
     		productLine=DicModel.dao.findDicByType("line_type");
     	}
     	for(Record r:productLine){
-    		list.add(OrderModel.dao.findOrderMonthRateForProduct("2017",r.get("id").toString(),labTypeCode));
+    		list.add(OrderModel.dao.findOrderMonthRateForProduct(startDate,endDate,r.get("id").toString(),labTypeCode));
     	}
 		renderJson(list);
     }
@@ -346,18 +351,23 @@ public class LabController extends BaseController {
      * 
      * @time   2017年5月14日 上午10:07:01
      * @author zuoqb
-     * @todo   模块整机订单及时率  tab1
+     * @todo   订单及时率  tab1
      * @param  
      * @return_type   void
      */
     
     public void findOrderYearRateForTab1Ajax(){
-    	String labTypeCode=getPara("labTypeCode","");
+    	/*String labTypeCode=getPara("labTypeCode","");
     	String date=getPara("date","2017");
     	List<List<Record>> list=new ArrayList<List<Record>>();
     	list.add(OrderModel.dao.findOrderYearRateForTab1(date,labTypeCode, "整机"));
     	list.add(OrderModel.dao.findOrderYearRateForTab1(date,labTypeCode, "模块"));
-		renderJson(list);
+		renderJson(list);*/
+    	String plCode=getPara("plCode","");
+    	String labTypeCode=getPara("labTypeCode","");
+    	String startDate=getPara("startDate","201601");
+    	String endDate=getPara("endDate","201612");
+    	renderJson(OrderModel.dao.findOrderMonthRateForAll(startDate, endDate, plCode, labTypeCode));
     }
     
     /**
@@ -370,5 +380,91 @@ public class LabController extends BaseController {
      */
     public void findOrderPassForTab1Ajax(){
 		renderJson(OrderModel.dao.findOrderPassForAll(null, null, null));
+    }
+    /**
+     * 
+     * @time   2017年5月17日 上午9:49:23
+     * @author zuoqb
+     * @todo   人员状态-总
+     * @param  
+     * @return_type   void
+     */
+    public void findPersonStatusTab1Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String type=getPara("type","");
+    	String plCode=getPara("plCode","");
+  		renderJson(PersonModel.dao.personDetail(type, plCode, labTypeCode));
+      }
+    /**
+     * 
+     * @time   2017年5月17日 下午1:26:59
+     * @author zuoqb
+     * @todo   实验室状态tab2-人员状态数据
+     * @param  
+     * @return_type   void
+     */
+    public void personForTab2Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String type=getPara("type","");
+    	List<List<Record>> list=new ArrayList<List<Record>>();
+    	List<Record> productLine=getSessionAttr("productLine");
+    	if(productLine==null){
+    		productLine=DicModel.dao.findDicByType("line_type");
+    	}
+    	for(Record r:productLine){
+    		list.add(PersonModel.dao.personForTab2(type, r.get("id").toString(), labTypeCode));
+    	}
+		renderJson(list);
+    }
+    //共产 一致数据统计
+    /**
+     * 
+     * @time   2017年5月18日 上午9:55:48
+     * @author zuoqb
+     * @todo   共产 一致比重统计
+     * @param  
+     * @return_type   void
+     */
+    public void communistGravityStatisticForTab1Ajax(){
+    	String plCode=getPara("plCode","");
+    	String labTypeCode=getPara("labTypeCode","");
+    	String startDate=getPara("startDate","201601");
+    	String endDate=getPara("endDate","201612");
+		renderJson(CommunistModel.dao.communistGravityStatistic(startDate, endDate, plCode, labTypeCode));
+    }
+    /**
+     * 
+     * @time   2017年5月18日 上午9:59:03
+     * @author zuoqb
+     * @todo   根据类型 时间 统计共产 一致个月份数量
+     * @param  
+     * @return_type   void
+     */
+    public void communistStatisticForMonthForTab1Ajax(){
+    	String plCode=getPara("plCode","");
+    	String labTypeCode=getPara("labTypeCode","");
+    	String startDate=getPara("startDate","201601");
+    	String endDate=getPara("endDate","201612");
+    	List<List<Record>> list=new ArrayList<List<Record>>();
+    	list.add(CommunistModel.dao.communistStatisticForMonth(startDate, endDate, plCode, labTypeCode, "1"));
+    	list.add(CommunistModel.dao.communistStatisticForMonth(startDate, endDate, plCode, labTypeCode, "2"));
+		renderJson(list);
+    }
+    /**
+     * 
+     * @time   2017年5月18日 下午4:18:54
+     * @author zuoqb
+     * @todo   直方图 检测数据
+     * @param  
+     * @return_type   void
+     */
+    public void jianCeDataForTab1Ajax(){
+    	String xhCode=getPara("xhCode","");//型号
+    	List<Record> list=JianCeModel.dao.findProviderDicByPid(xhCode);
+    	for(Record r:list){
+    		//r.set("gd_num_2", NormalDistribution.calc(Float.parseFloat(r.getStr("gd_num"))));
+    		r.set("gd_num_2", NormalDistribution.calc(Float.parseFloat(r.getStr("gd_num")),74.7f,0.6734f));
+    	}
+		renderJson(list);
     }
 }

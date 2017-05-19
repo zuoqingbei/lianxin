@@ -6,7 +6,7 @@
                 <li class="tab-item active_right">总状态</li>
                 <li class="tab-item">实验室状态</li>
                 <li class="tab-item">数据结果</li>
-                <li class="tab-item">数据挖掘应用</li>
+                <li class="tab-item">数据挖掘</li>
             </ul>
         </div>
           <div class="lab">
@@ -39,11 +39,14 @@
               
     </div>
  ##}
- <script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
+ <!--<script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>-->
+ <script src="${contextPath!}/static/asserts/js/highcharts.js"></script>
+ <!--<script src="../static/asserts/js/highcharts.js"></script>-->
 <script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab1_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab2_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab3_statistics.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/tab4_statistics.js?time=New Date()"></script>
 
  <script>
     $(function () {
@@ -70,6 +73,7 @@
         loadTab1Data();
         loadTab2Data();
         loadTab3Data();
+        loadTab4Data();
     });
    
 </script>

@@ -84,6 +84,7 @@ function navLabLine() {
     $left.find(".legend .navSwitch").click(function () {
         var bgImg = $(this).css("background-image");
         if (bgImg.indexOf("off") > 0) {
+/*
             var text = $(this).text();
             bgImg = bgImg.replace("off", "on");
             $(this).css({
@@ -99,6 +100,25 @@ function navLabLine() {
             } else {
                 // $(".legend ul.lab").css("top","15px");
                 $(".legend ul.lab").show().siblings().hide();
+            }
+*/
+            var text = $(this).text();
+            bgImg = bgImg.replace("off", "on");
+            $(this).css({
+                color: "#00e673",
+                backgroundImage: bgImg
+            }).siblings(".navSwitch").css({
+                color: "#6cf",
+                backgroundImage: bgImg.replace("on", "off")
+            });
+            if (text.indexOf("产线") >= 0) {
+
+                $(".legend .animateBox").animate({top:"-1.8em"},"slow")
+                    .find(".line").addClass("current").siblings().removeClass("current");
+            } else {
+                // $(".legend ul.lab").css("top","15px");
+                $(".legend .animateBox").animate({top:".2em"},"slow")
+                    .find(".lab").addClass("current").siblings().removeClass("current");
             }
         }
     });
@@ -119,7 +139,7 @@ function bgImgOff(e) {
 function navSelectAll() {
     $left.find(".legend .selectAll label").click(function () {
         var bgImg = $(this).find("span").css("background-image");
-        var $actLi = $left.find(".legend .labLine ul").not(":hidden").find("li");
+        var $actLi = $left.find(".legend .labLine ul.current").find("li");
         if ($(this).next("input[type=checkbox]").is(":checked")) {
             $(this).css("color", "#999");
             bgImgOff($(this));

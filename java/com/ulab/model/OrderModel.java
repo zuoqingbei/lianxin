@@ -24,20 +24,68 @@ public class OrderModel extends Model<OrderModel> {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public List<Record> findOrderMonthRateForProduct(String date,String plCode,String labTypeCode){
+	public List<Record> findOrderMonthRateForProduct(String startDate,String endDate,String plCode,String labTypeCode){
 		StringBuffer sb=new StringBuffer();
 		sb.append(" select o.*,case o.num  when 1 then '100' else trim (to_char(o.num * 100, '00.00')) end as rate");
 		sb.append(" from ");
 		sb.append(" t_b_order_data o");
 		sb.append(" left join t_b_dictionary d on o.product_line_code = d . id ");
-		sb.append(" where o.type = 1 and desc_name='及时率' and o.name like '%"+date+"%' ");
-		sb.append(" and product_line_code='"+plCode+"'");
+		sb.append(" where o.type = 1 and desc_name='及时率'  ");
+		sb.append(" and to_date(o.name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
+		if(StringUtils.isNotBlank(plCode)){
+			sb.append(" and product_line_code='"+plCode+"'");
+		}
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and o.lab_code='"+labTypeCode+"' ");
 		}else{
 			sb.append(" and o.lab_code is null ");
 		}
-		sb.append(" and d.del_flag=0 and o.del_flag = 0 order by d.order_no");
+		sb.append(" and d.del_flag=0 and o.del_flag = 0 order by o.name");
+		return Db.find(sb.toString());
+	}
+	/**
+	 * 
+	 * @time   2017年5月18日 上午11:38:23
+	 * @author zuoqb
+	 * @todo   统计全部订单及时率-到月份
+	 * @param  @param startDate
+	 * @param  @param endDate
+	 * @param  @param plCode
+	 * @param  @param labTypeCode
+	 * @param  @return
+	 * @return_type   List<Record>
+	 */
+	public List<Record> findOrderMonthRateForAll(String startDate,String endDate,String plCode,String labTypeCode){
+		StringBuffer sb=new StringBuffer();
+		sb.append(" select	t .*, b.js_count,	case t .all_count when 0 then 	'0' else to_char (b.js_count / t .all_count * 100,'00.00') end as rate");
+		sb.append(" from ");
+		sb.append("(select sum (num) as all_count,o. name  from t_b_order_data o ");
+		sb.append(" where 1=1 and o.desc_name like '%总%'");
+		sb.append(" and to_date(o.name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
+		sb.append(" and o. type = 1 ");
+		if(StringUtils.isNotBlank(plCode)){
+			sb.append(" and o.product_line_code='"+plCode+"'");
+		}
+		if(StringUtils.isNotBlank(labTypeCode)){
+			sb.append(" and o.lab_code='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and o.lab_code is null ");
+		}
+		sb.append(" group by o. name order by o.name) t ");
+		sb.append(" join ( ");
+		sb.append(" select sum (num) as js_count,o. name  from	t_b_order_data o	where		o.desc_name like '%-及时%' ");
+		sb.append(" and to_date(o.name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
+		sb.append(" and o. type = 1 ");
+		if(StringUtils.isNotBlank(plCode)){
+			sb.append(" and o.product_line_code='"+plCode+"'");
+		}
+		if(StringUtils.isNotBlank(labTypeCode)){
+			sb.append(" and o.lab_code='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and o.lab_code is null ");
+		}
+		sb.append(" group by o. name order by o.name) b ");
+		sb.append(" on t .name = b.name ");
 		return Db.find(sb.toString());
 	}
 	/**
