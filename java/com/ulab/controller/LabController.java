@@ -12,12 +12,14 @@ import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
 import com.ulab.model.CommunistModel;
 import com.ulab.model.DicModel;
+import com.ulab.model.JianCeModel;
 import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 import com.ulab.model.OrderModel;
 import com.ulab.model.PersonModel;
+import com.ulab.util.NormalDistribution;
 import com.ulab.util.SqlUtil;
 /**
  * 
@@ -446,6 +448,23 @@ public class LabController extends BaseController {
     	List<List<Record>> list=new ArrayList<List<Record>>();
     	list.add(CommunistModel.dao.communistStatisticForMonth(startDate, endDate, plCode, labTypeCode, "1"));
     	list.add(CommunistModel.dao.communistStatisticForMonth(startDate, endDate, plCode, labTypeCode, "2"));
+		renderJson(list);
+    }
+    /**
+     * 
+     * @time   2017年5月18日 下午4:18:54
+     * @author zuoqb
+     * @todo   直方图 检测数据
+     * @param  
+     * @return_type   void
+     */
+    public void jianCeDataForTab1Ajax(){
+    	String xhCode=getPara("xhCode","");//型号
+    	List<Record> list=JianCeModel.dao.findProviderDicByPid(xhCode);
+    	for(Record r:list){
+    		//r.set("gd_num_2", NormalDistribution.calc(Float.parseFloat(r.getStr("gd_num"))));
+    		r.set("gd_num_2", NormalDistribution.calc(Float.parseFloat(r.getStr("gd_num")),74.7f,0.6734f));
+    	}
 		renderJson(list);
     }
 }

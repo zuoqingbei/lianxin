@@ -20,6 +20,132 @@ function loadTab1Data(){
     communistGravityStatisticForTab1Ajax();
     //根据类型 时间 统计共产 一致个月份数量
     communistStatisticForMonthForTab1Ajax();
+    //直方图
+    cpkDataForTab1("WY77H-C1");
+}
+var data = [[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
+
+var mHeightChart=$('#myChart10').highcharts({
+        chart: {
+            type: 'column'
+        },
+        credits: {
+            enabled: false
+        },
+        exporting: {
+            enabled:false
+        },
+        title: {
+            text: '直方图'
+        },
+        legend:{
+            enabled:false,
+        },
+        xAxis: {
+            gridLineWidth: 1,
+            min:71,
+            max:77,
+            plotLines:[{
+                color:'red',            //线的颜色，定义为红色
+                dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+                value:71,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                width:2  ,               //标示线的宽度，2px
+                label:{
+                    text:'LSL',  //标签的内容
+                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                },
+                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            },{
+                color:'red',            //线的颜色，定义为红色
+                dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+                value:77,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                width:2  ,               //标示线的宽度，2px
+                label:{
+                    text:'USL',//标签的内容
+                    align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                    x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                },
+                zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            }
+            ]
+        },
+        yAxis: [{
+            title: {
+                text: ''
+            },
+            visible:false
+        }, {
+            opposite: true,
+            title: {
+                text: ''
+            },
+            visible:false,
+        }],
+        series: [{
+            name: '直方图',
+            type: 'column',
+            data: histogram(data, 0.5),
+            pointPadding: 0,
+            groupPadding: 0,
+            pointPlacement: 'between'
+        }, {
+            name: '概率密度',
+            type: 'spline',
+            data: data,
+            yAxis: 1,
+            marker: {
+                radius: 1.5
+            }
+        }]
+    }).highcharts();
+//直方图
+function cpkDataForTab1(xhCode){
+	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhCode},function(data){
+		var mData=[];
+		var mData2=[];
+		$.each(data,function(index,item){
+			mData.push([parseFloat(item.gd_num),parseFloat(item.wkq_num)]);
+			mData2.push([parseFloat(item.gd_num),parseFloat(item.gd_num_2)]);
+		});
+		console.log(mData2)
+		mHeightChart.series[0].setData(histogram(mData, 0.5)); // 更新 series
+		mHeightChart.series[1].setData(histogram2(mData2, 0.5));
+	});
+	
+}
+function histogram2(arr, step) {
+   
+    // Finally, sort the array
+    arr.sort(function (a, b) {
+        return a[0] - b[0];
+    });
+    return arr;
+}
+function histogram(data, step) {
+    var histo = {},
+        x,
+        i,
+        arr = [];
+    // Group down
+    for (i = 0; i < data.length; i++) {
+        x = Math.floor(data[i][0] / step) * step;
+        if (!histo[x]) {
+            histo[x] = 0;
+        }
+        histo[x]++;
+    }
+    // Make the histo group into an array
+    for (x in histo) {
+        if (histo.hasOwnProperty((x))) {
+            arr.push([parseFloat(x), histo[x]]);
+        }
+    }
+    // Finally, sort the array
+    arr.sort(function (a, b) {
+        return a[0] - b[0];
+    });
+    return arr;
 }
 //根据类型 时间 统计共产 一致个月份数量
 function communistStatisticForMonthForTab1Ajax(){

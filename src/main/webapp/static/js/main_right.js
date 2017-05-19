@@ -968,14 +968,14 @@ myChart10.setOption({
     ]
 
 });*/
-    var data = [[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
+  //  var data = [[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75],[74, 74], [75, 75], [74.7,74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
     /**
      * Get histogram data out of xy data
      * @param   {Array} data  Array of tuples [x, y]
      * @param   {Number} step Resolution for the histogram
      * @returns {Array}       Histogram data
      */
-    function histogram(data, step) {
+   /* function histogram(data, step) {
         var histo = {},
             x,
             i,
@@ -999,8 +999,8 @@ myChart10.setOption({
             return a[0] - b[0];
         });
         return arr;
-    }
-    $('#myChart10').highcharts({
+    }*/
+   /* $('#myChart10').highcharts({
         chart: {
             type: 'column'
         },
@@ -1073,7 +1073,7 @@ myChart10.setOption({
                 radius: 1.5
             }
         }]
-    });
+    });*/
 
 //共产一致与不一致占比
 /*var myChart11 = echarts.init(document.getElementById("myChart11"));

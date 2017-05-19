@@ -13,12 +13,11 @@ var bodyScale = 1;//原始比例1
     //左
     var chartthree = echarts.init(document
         .getElementById("echart_three"));
-    chartthree.setOption(initone());
+   
     //右
     var chartfour = echarts.init(document
         .getElementById("echart_four"));
-    chartfour.setOption(getAreaEcharts());
-    chartfour.setOption(initfour());
+   
 
     //左
     var chartfive = echarts.init(document
@@ -32,7 +31,10 @@ var bodyScale = 1;//原始比例1
     //$("#labMain_cbro_content").load("labAnalysis_small.html");
     // document.getElementById("labMain_cbro_content").innerHTML = '<object type="text/html" data="labAnalysis_small.html" width="100%" height="100%"></object>';
 
-function initone() {
+function initone(mValue) {
+	if(mValue==null){
+		mValue=95;
+	}
     var labelFromatter = {
         normal: {
             label: {
@@ -95,8 +97,8 @@ function initone() {
                 //x: '40%', // for funnel
                 itemStyle: labelFromatter,
                 data: [
-                    {name: '', value: 5, itemStyle: labelBottom},
-                    {name: '', value: 95, itemStyle: labelTop}
+                    {name: '', value: 100-parseFloat(mValue), itemStyle: labelBottom},
+                    {name: '', value: mValue, itemStyle: labelTop}
                 ]
             }
 
@@ -209,64 +211,69 @@ function inittwo() {
     return option;
 
 }
-
-
+//按照产线统计某年各月份详细订单及时率  数据结果 订单及时率 折线图
 function initfour() {
-
-    var option = {
-        textStyle: {
-            fontSize: bodyScale * 8
-        },
-        legend: {
-            show: true,
-            data: ['整机', '模块'],
-            textStyle: {
-                fontSize: bodyScale * 8
-            },
-            itemWidth: 6, //图例标记的图形宽度
-            itemHeight: 6 //图例标记的图形高度
-        },
-        grid: {
-
-            x: "11%",
-            x2: "10%",
-            y: '20%',
-            y2: "20%"
-        },
-        xAxis: [
-            {
-                name: '',
-                data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-            }
-        ],
-        yAxis: [
-            {
-                name: "数量",
-
-                nameTextStyle: {
-                    fontSize: bodyScale * 10,
-
-                },
-            }
-        ],
-        series: [
-            {
-                name: '',
-                type: 'line',
-                stack: '总量',
-                // areaStyle: {normal: {}},
-                data: [99, 85, 82, 78, 82, 60, 82, 60, 82, 85, 82, 78],
-                itemStyle: {
-                    normal: {
-                        color: "#ff6666"
-                    }
-                }
-
-            }
-        ]
-
-    };
-    return option;
+	$.post(contextPath+'/lab/findOrderYearRateForTab1Ajax',{"labTypeCode":"中心实验室","startDate":"201606","endDate":"201705"},function(data){
+		var resu=dealCenterLab(data);
+		$("#order_rate_center_lab_pj").html("平均:"+resu[0]+"%");
+		$("#order_rate_center_lab_height").html("最高:"+resu[1].rate+"%("+resu[1].month+"月)");
+		$("#order_rate_center_lab_low").html("最低:"+resu[2].rate+"%("+resu[2].month+"月)");
+		chartthree.setOption(initone(resu[0]));
+		chartfour.setOption(getAreaEcharts());
+		chartfour.setOption({
+			textStyle: {
+				fontSize: bodyScale * 8
+			},
+			legend: {
+				show: false,
+				data: [''],
+				textStyle: {
+					fontSize: bodyScale * 8
+				},
+				itemWidth: 6, //图例标记的图形宽度
+				itemHeight: 6 //图例标记的图形高度
+			},
+			grid: {
+				
+				x: "11%",
+				x2: "10%",
+				y: '20%',
+				y2: "20%"
+			},
+			xAxis: [
+			        {
+			        	name: '',
+			        	data: centerLabOrderRateLengend(data)
+			        }
+			        ],
+			        yAxis: [
+			                {
+			                	name: "及时率/%",
+			                	
+			                	nameTextStyle: {
+			                		fontSize: bodyScale * 10,
+			                		
+			                	},
+			                }
+			                ],
+			                series: [
+			                         {
+			                        	 name: '',
+			                        	 type: 'line',
+			                        	 stack: '总量',
+			                        	 // areaStyle: {normal: {}},
+			                        	 data: centerLabRateData(data),
+			                        	 itemStyle: {
+			                        		 normal: {
+			                        			 color: "#ff6666"
+			                        		 }
+			                        	 }
+			                         
+			                         }
+			                         ]
+			
+		});
+	});
 
 }
 
@@ -871,4 +878,64 @@ function checkBoxVales() { //jquery获取复选框值
         chk_value.push($(this).val());
     });
     return chk_value;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//新增
+function centerLabOrderRateLengend(data){
+	var legnend=[];
+	$.each(data,function(index,item){
+		legnend.push(item.name);
+	});
+	return legnend;
+}
+function centerLabRateData(data){
+	var indicatorDataTab3 = [];
+	for(var i=0;i<data.length;i++) {
+		var num=data[i].rate;
+		indicatorDataTab3.push(num);
+	}
+	return indicatorDataTab3;
+}
+//获取平均 最高 最低数据
+function dealCenterLab(data){
+	var result=[];
+	var all_num=0;
+	var js_num=0;
+	var maxData={month:0,rate:0};
+	var minData={month:0,rate:100};
+	$.each(data,function(index,item){
+		var cAllNum=parseInt(item.all_count);
+		var cJsNum=parseInt(item.js_count);
+		var cName=item.name;
+		var cRate=parseFloat(item.rate);
+		if(parseFloat(maxData.rate)<cRate){
+			maxData.rate=cRate;
+			maxData.month=cName;
+		}
+		if(parseFloat(minData.rate)>cRate){
+			minData.rate=cRate;
+			minData.month=cName;
+		}
+		all_num+=cAllNum;
+		js_num+=cJsNum;
+	});
+	//计算整体平均值
+	var allPingjun=parseFloat((parseInt(js_num)/parseInt(all_num))*100).toFixed(2);
+	result.push(allPingjun);
+	result.push(maxData);
+	result.push(minData);
+	return result;
 }
