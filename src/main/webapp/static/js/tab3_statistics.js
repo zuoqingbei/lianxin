@@ -36,7 +36,7 @@ function findOrderPassForProAjax(mychartIds,desName){
 		myChart.setOption(getAreaEcharts());
 		myChart.setOption({
 		    legend: {
-		        show: true,
+		        show: false,
 		        data: [desName],
 		        itemWidth: 6, //图例标记的图形宽度
 		        itemHeight: 6 //图例标记的图形高度

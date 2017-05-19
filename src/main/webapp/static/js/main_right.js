@@ -665,7 +665,7 @@ var myChart7 = echarts.init(document.getElementById("myChart7"));
 myChart7.setOption(getLineEcharts());
 myChart7.setOption({
     legend: {
-        show: true,
+        show: false,
         data: ['整机', '模块'],
         itemWidth: 5,  //图例标记的图形宽度
         itemHeight: 3, //图例标记的图形高度
@@ -688,7 +688,7 @@ myChart7.setOption({
     ],
     series: [
         {
-            name: '整机',
+            name: '满意度',
             type: 'line',
             stack: '总量',
             lineStyle: {
@@ -698,8 +698,9 @@ myChart7.setOption({
             },
             symbolSize: 2,
 //            areaStyle: {normal: {}},
-            data: [30, 32, 25, 34, 45, 30, 40, 23, 34, 46]
+            data: [80, 92, 85, 94, 85, 80, 70, 83, 94, 96]
         },
+/*
         {
             name: '模块',
             type: 'line',
@@ -713,6 +714,7 @@ myChart7.setOption({
 //            areaStyle: {normal: {}},
             data: [40, 33, 61, 34, 29, 30, 31, 34, 42, 44]
         }
+*/
     ]
 
 });
@@ -737,10 +739,14 @@ myChart8.setOption({
     yAxis: [
         {
             name: "Cpk",
-            nameGap:8*bodyScale,
+            nameGap:2*bodyScale,
             // type: 'category',
             position: 'left',
-
+            axisLabel:{
+                textStyle: {
+                    fontSize: 9 * bodyScale
+                }
+            },
             data: [1, 1.33, 1.67, 2],
             axisLine: { //坐标轴
                 show: false,
@@ -752,14 +758,19 @@ myChart8.setOption({
                 show: false,
             }
         }, {
-            name: "ppm",
-            nameGap:8*bodyScale,
+            name: " ",/*ppm用div替代*/
             position: 'right',
             // type: 'category',
             data: [2700],
+            axisLabel:{
+                textStyle: {
+                    fontSize: 9 * bodyScale
+                }
+            },
             axisLine: { //坐标轴
                 show: true,
                 textStyle: {
+                    // color: 'rgba(0,0,0,0)',
                     color: '#66ccff',
                 }
             },
@@ -768,11 +779,13 @@ myChart8.setOption({
             }
         }, {
             name: "",
-            nameGap:8*bodyScale,
+            nameGap:2*bodyScale,
             position: 'right',
             type: 'category',
+
             data: [0.6, 1.16, 1.5, 1.85,2.5],
             axisLabel:{
+                show:false,
                 textStyle:{
                     color: '#66ccff',
                 }
@@ -792,6 +805,10 @@ myChart8.setOption({
     xAxis: [
         {
             type: 'value',
+            nameGap:2*bodyScale,
+            axisLabel: {
+                show:false
+            },
             splitLine: {  //刻度线
                 show: true,
                 lineStyle: {
@@ -801,7 +818,7 @@ myChart8.setOption({
             axisLine: { //坐标轴
                 show: false,
                 textStyle: {
-                    color: '#66ccff',
+                    color: 'rgba(0,0,0,0)',
                 }
             },
             axisTick: {  //刻度值
@@ -901,10 +918,17 @@ myChart9.setOption({
         top: 10,
         right: 10,
         pieces: [{
-            gt: 0,
-            lte: 50,
-            color: '#096'
-        }, {
+            gt: 73.5,
+            lte: 74,
+            color: function (params, lowLine) {
+                var color;
+                alert(22)
+                console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",params);
+                return "#0ff";
+            }
+
+
+/*        }, {
             gt: 50,
             lte: 100,
             color: '#ffde33'
@@ -915,7 +939,7 @@ myChart9.setOption({
         }, {
             gt: 150,
             lte: 200,
-            color: '#cc0033'
+            color: '#cc0033'*/
         },
             //     {
             //     gt: 200,
@@ -936,9 +960,13 @@ myChart9.setOption({
             type: 'line',
             lineStyle: {
                 normal: {
+                    color:"#00e673",
                     width: 1
                 }
             },
+            itemStyle:{normal:{
+                borderColor:"#00e673"
+            }},
             symbolSize: 2,
 //            areaStyle: {normal: {}},
             data: [73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25],
@@ -1048,9 +1076,13 @@ myChart9_2.setOption({
             type: 'line',
             lineStyle: {
                 normal: {
+                    color:"#00e673",
                     width: 1
                 }
             },
+            itemStyle:{normal:{
+                borderColor:"#00e673"
+            }},
             symbolSize: 2,
 //            areaStyle: {normal: {}},
             data: [73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25],
@@ -3607,7 +3639,11 @@ myChart43.setOption({
     legend: {
         show: true,
         data: ['冰冷', '洗涤', '家空', '商空', '热水器', '厨电', '其他'],
+        formatter: function (name,value) {
+            return  name +" "+ value;
+        },
         orient: ' vertical',  //布局  纵向布局
+
 
     },
     series: [
@@ -4396,7 +4432,7 @@ $(function () {
     $right.find(".total_bottom_tab>ul>li[class]").click(function () {
         $(this).next().toggle();
     })
-})
+});
 
 
 

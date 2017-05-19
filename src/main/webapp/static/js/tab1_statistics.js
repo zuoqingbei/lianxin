@@ -31,7 +31,12 @@ function communistStatisticForMonthForTab1Ajax(){
 		    color: ['#66ccff', '#a5fff1'],
 		    legend: {
 		        show: true,
-		        data: ['共产数', '一致数']
+		        data: ['共产数', '一致数'],
+                textStyle: {
+                    fontSize: 10 * bodyScale,
+                },
+                itemWidth: 6 * bodyScale,  //图例标记的图形宽度
+                itemHeight: 6 * bodyScale, //图例标记的图形高度
 		    },
 		    grid: {
 //		            show:true,
@@ -43,7 +48,8 @@ function communistStatisticForMonthForTab1Ajax(){
 		    yAxis: [
 		        {
 		            name: "数量",
-		            type: 'value'
+		            type: 'value',
+					scale:true
 		        }
 		    ],
 		    xAxis: [

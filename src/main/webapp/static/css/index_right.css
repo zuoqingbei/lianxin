@@ -22,11 +22,16 @@
     font-size: 1.4em;
 }
 
-.white{
-    color:#fff
+.white {
+    color: #fff
 }
-
-#right .lab{
+.orange{
+    color: #f93;
+}
+.bigger{
+    font-size: 1.2em;
+}
+#right .lab {
     width: 20%;
     height: 8%;
     position: absolute;
@@ -36,20 +41,23 @@
     cursor: pointer;
     display: none;
 }
-#right .lab .lab_name{
+
+#right .lab .lab_name {
     width: 100%;
     height: 100%;
     /*background-color: red;*/
     padding-top: 10%;
 }
-#right .lab .lab_name li{
+
+#right .lab .lab_name li {
     float: left;
     width: 25%;
     text-align: center;
     font-size: 0.8em;
 
 }
-#right .lab .lab_icon{
+
+#right .lab .lab_icon {
     position: absolute;
     top: 0;
     left: 0;
@@ -57,7 +65,8 @@
     height: 80%;
     cursor: pointer;
 }
-#right .lab .lab_icon li{
+
+#right .lab .lab_icon li {
     float: left;
     width: 25%;
     height: 60%;
@@ -66,10 +75,12 @@
     font-size: 0.8em;
 
 }
-#right .lab .lab_icon li img{
+
+#right .lab .lab_icon li img {
     width: 35%;
     height: 100%;
 }
+
 /*鎬荤姸鎬�*/
 .total_state {
     width: 100%;
@@ -88,9 +99,10 @@
     position: relative;
 
 }
-.total_name{
+
+.total_name {
     position: absolute;
-    top:31%;
+    top: 31%;
     left: 1px;
     width: 1.6em;
     text-align: center;
@@ -99,12 +111,15 @@
     font-size: 1.2em;
 
 }
-.total_center .total_name{
+
+.total_center .total_name {
     top: 35%;
 }
-.total_bottom .total_name{
-    top:35%;
+
+.total_bottom .total_name {
+    top: 35%;
 }
+
 .total_state .total_center {
     background: url("../img/TotalState/border-1 .png") no-repeat;
     background-size: 100% 97%;
@@ -147,7 +162,7 @@
     background: url("../img/TotalState/title-border.png") no-repeat;
     background-size: 100% 100%;
     margin: 6% auto 1% auto;
-    font-size:1.2em;
+    font-size: 1.2em;
     padding: 0.2em;
 }
 
@@ -155,10 +170,12 @@
     width: 53%;
     margin-top: 7%;
 }
-.echarts_title2{
+
+.echarts_title2 {
     margin-top: 4%;
-    width:33%;
+    width: 33%;
 }
+
 #myChart1 {
     width: 80%;
     height: 63%;
@@ -187,15 +204,18 @@
     padding-right: 3.5%;
     font-size: 1.1em;
 }
-.total_top_2 .total_top_2_box > ul > li ul{
-    height:100%;
+
+.total_top_2 .total_top_2_box > ul > li ul {
+    height: 100%;
 }
-.total_top_2 .total_top_2_box > ul > li ul li{
-    height:24%;
+
+.total_top_2 .total_top_2_box > ul > li ul li {
+    height: 24%;
 }
+
 .total_top_2_box > ul > li .progress {
     display: inline-block;
-    width:70%;
+    width: 70%;
     height: 40%;
     /*  height: 1em;*/
     border-radius: 2px;
@@ -216,7 +236,7 @@
     right: 26%;
     font-size: 0.8em;
     /*margin-top: 0em;*/
-    color:white
+    color: white
 }
 
 .total_top_2 .total_top_2_box > ul > li span:last-of-type {
@@ -242,7 +262,7 @@
 }
 
 .xueli > ul > li .progress {
-    border: 1px solid  #66ccff;
+    border: 1px solid #66ccff;
     border-radius: 2px;
 }
 
@@ -269,7 +289,8 @@
     float: left;
     position: relative;
 }
-.biaozhun_line{
+
+.biaozhun_line {
     width: 75%;
     height: 10%;
     background-color: plum;
@@ -279,6 +300,7 @@
     background: url("../img/TotalState/line-2.png") no-repeat;
     background-size: 100% 100%;
 }
+
 #myChart2 {
     width: 100%;
     height: 90%;
@@ -317,7 +339,8 @@
     color: #66ccff;
 
 }
-.echarts_line span:last-of-type{
+
+.echarts_line span:last-of-type {
     position: absolute;
     bottom: 1%;
     right: -10%;
@@ -360,7 +383,6 @@
     margin-top: 3%;
 }
 
-
 #myChart4 {
     width: 58%;
     height: 70%;
@@ -373,7 +395,7 @@
     margin-top: 25%;
     /*margin-left: 15%;*/
     /*background-color: plum;*/
-    margin-left:10%;
+    margin-left: 10%;
     font-size: 1em;
 }
 
@@ -387,7 +409,7 @@
 }
 
 #myChart5 {
-    width:58%;
+    width: 58%;
     height: 70%;
     float: left;
 }
@@ -421,22 +443,30 @@
     height: 65%;
     float: left;
 }
-.total_bottom_pie h3{
+
+.total_bottom_pie h3 {
     padding-left: 29%;
 }
-
-.total_bottom_bar1,.total_bottom_bar2 {
+.total_bottom_pie .rename-ppm{
+    display: inline-block;
+    position: absolute;
+    left: 13.8%;
+    top: 42%;
+}
+.total_bottom_bar1, .total_bottom_bar2 {
     width: 26%;
     height: 65%;
     float: left;
     position: relative;
 }
-.total_bottom_bar1 p.result{
+
+.total_bottom_bar1 p.result {
     color: #00e673;
     font-size: .8em;
     margin-top: .2em;
 }
-.myChart9_line1{
+
+.myChart9_line1 {
     height: 0.1em;
     width: 67%;
     display: inline-block;
@@ -445,7 +475,8 @@
     top: 27%;
     left: 16%;
 }
-.myChart9_line2{
+
+.myChart9_line2 {
     height: 0.1em;
     width: 67%;
     display: inline-block;
@@ -454,7 +485,8 @@
     bottom: 27%;
     left: 16%;
 }
-.myChart10_lin1{
+
+.myChart10_lin1 {
     width: 0.1em;
     height: 61%;
     display: inline-block;
@@ -463,7 +495,8 @@
     top: 16%;
     left: 19%;
 }
-.myChart10_lin2{
+
+.myChart10_lin2 {
     width: 0.1em;
     height: 61%;
     display: inline-block;
@@ -472,22 +505,24 @@
     top: 16%;
     right: 19%;
 }
-.myChart10_lin1 span{
+
+.myChart10_lin1 span {
     position: absolute;
     top: -4%;
     left: 0;
-    color:#ff9933;
-    padding-left: 0.1em;
-}
-.myChart10_lin2 span{
-    position: absolute;
-    top: -4%;
-    left: 0;
-    color:#ff9933;
+    color: #ff9933;
     padding-left: 0.1em;
 }
 
-.total_bottom_tab{
+.myChart10_lin2 span {
+    position: absolute;
+    top: -4%;
+    left: 0;
+    color: #ff9933;
+    padding-left: 0.1em;
+}
+
+.total_bottom_tab {
     width: 13%;
     height: 65%;
     float: left;
@@ -495,7 +530,8 @@
     margin-right: 1%;
     margin-left: 5%;
 }
-.total_bottom_tab>ul {
+
+.total_bottom_tab > ul {
     width: 100%;
     height: 95%;
     overflow-y: scroll;
@@ -503,8 +539,9 @@
     background: url("../img/TotalState/scroll bar-border.png") no-repeat;
     background-size: 100% 100%;
 }
-.total_bottom_tab ul>li.main,
-.total_bottom_tab ul>li>ul>li{
+
+.total_bottom_tab ul > li.main,
+.total_bottom_tab ul > li > ul > li {
     cursor: pointer;
     margin-left: 5%;
     width: 95%;
@@ -512,107 +549,118 @@
     color: #66CCFE;
     font-size: .9em;
 }
-.total_bottom_tab ul>li.main.active,
-.total_bottom_tab ul>li>ul>li.active,
-.total_bottom_tab ul>li.main:hover,
-.total_bottom_tab ul>li>ul>li:hover{
+
+.total_bottom_tab ul > li.main.active,
+.total_bottom_tab ul > li > ul > li.active,
+.total_bottom_tab ul > li.main:hover,
+.total_bottom_tab ul > li > ul > li:hover {
     color: #fff;
     background-color: #66CCFE;
 }
-.total_bottom_tab>ul>li.main{
+
+.total_bottom_tab > ul > li.main {
     font-size: 1.1em;
 }
+.total_bottom_tab > ul ul{
+    background: rgba(99,99,159,0.3);
+}
+
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-.total_bottom_tab ::-webkit-scrollbar
-{
+.total_bottom_tab ::-webkit-scrollbar {
     width: 10%;
     height: 100%;
     background-color: transparent;
 }
 
 /*定义滚动条轨道 内阴影+圆角*/
-.total_bottom_tab ::-webkit-scrollbar-track
-{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+.total_bottom_tab ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     background-color: transparent;
 }
 
 /*定义滑块 内阴影+圆角*/
-.total_bottom_tab ::-webkit-scrollbar-thumb
-{
+.total_bottom_tab ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
+    -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, .3);
     background-color: #66ccff;
 }
 
-
-.total_bottom_right .total_bottom_bar1{
+.total_bottom_right .total_bottom_bar1 {
     width: 70%;
 }
 
-#myChart8{
+#myChart8 {
     left: 14%;
 }
-#myChart8,#myChart11 {
+
+#myChart8, #myChart11 {
     width: 100%;
     height: 100%;
 }
-#myChart9,#myChart9_2{
+
+#myChart9, #myChart9_2 {
     height: 40%;
 }
-#myChart10,#myChart12,#myChart13 {
+
+#myChart10, #myChart12, #myChart13 {
     width: 100%;
     height: 100%;
 }
 
 /*设施状态*/
-.sheshi_state{
+.sheshi_state {
     width: 100%;
     height: 90%;
     /*background-color: #00B2F8;*/
     display: none;
-    flex-direction:column;
+    flex-direction: column;
     color: white;
 }
 
-.sheshi_top{
+.sheshi_top {
     margin-top: 1%;
-    flex: 1;
-    display: flex;
-    flex-direction:row ;
-}
-.sheshi_bottom{
     flex: 1;
     display: flex;
     flex-direction: row;
 }
-.sheshi_title{
-    position:absolute;
-    top:0;
-    left:3%;
+
+.sheshi_bottom {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.sheshi_title {
+    position: absolute;
+    top: 0;
+    left: 3%;
     color: white;
     font-size: 1.2em;
 }
-.sheshi_top_left{
+
+.sheshi_top_left {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
-    position:relative;
+    position: relative;
     padding-top: 2%;
     /*padding-left: 0.7%;*/
     height: 100%;
 
 }
-.sheshi_top_left>ul{
+
+.sheshi_top_left > ul {
     height: 92%;
 }
-.sheshi_top_left>ul>li{
+
+.sheshi_top_left > ul > li {
     height: 100%;
     display: inline-block;
     width: 32%;
 }
-.sheshi_top_left .zaixian{
+
+.sheshi_top_left .zaixian {
     padding-top: 1%;
     height: 15%;
     width: 100%;
@@ -623,86 +671,97 @@
     background-size: 100% 100%;
     font-size: 0.8em;
 }
-.sheshi_top_left .zaixian table{
-    width:100%;
+
+.sheshi_top_left .zaixian table {
+    width: 100%;
     /*background-color: pink;*/
     margin-top: 1.5em;
     text-align: center;
 }
 
-.sheshi_top_left .zaixian table tr th{
+.sheshi_top_left .zaixian table tr th {
     width: 33%;
     text-align: center;
 }
-.sheshi_top_left .zaixian table tr td{
+
+.sheshi_top_left .zaixian table tr td {
     width: 25%;
     padding: 0.7em 0;
-    color:  #66ccff;
+    color: #66ccff;
     font-size: 1.1em;
     position: relative;
 
 }
-.sheshi_top_left .zaixian table tr td img{
+
+.sheshi_top_left .zaixian table tr td img {
     width: 0.7em;
     height: 0.7em;
     display: inline-block;
     margin-right: 0.5em;
 }
 
-.sheshi_top_left .zaixian table tr td:nth-of-type(2){
+.sheshi_top_left .zaixian table tr td:nth-of-type(2) {
     width: 50%;
 }
-.sheshi_top_left .zaixian table tr td .progress{
-    width:50%;
+
+.sheshi_top_left .zaixian table tr td .progress {
+    width: 50%;
     margin-bottom: 0;
     height: 0.5em;
     background-color: #234f65;
 }
-.sheshi_top_left .zaixian table tr td .progress .progress-bar{
+
+.sheshi_top_left .zaixian table tr td .progress .progress-bar {
     background-color: #66CCFE;
 }
-.sheshi_top_left .zaixian table tr td  .zaixianlv{
+
+.sheshi_top_left .zaixian table tr td .zaixianlv {
     position: absolute;
     top: 25%;
-    right:25%;
+    right: 25%;
     display: inline-block;
     width: 1em;
     height: 1em;
     color: #f93;
 }
-.sheshi_num{
+
+.sheshi_num {
     font-size: 1.4em;
     color: #f93;
 }
-.sheshi_num img{
+
+.sheshi_num img {
     display: inline-block;
     width: 0.5em;
     height: 0.5em;
     margin-right: 0.2em;
 }
-.up_num{
+
+.up_num {
     font-size: 0.7em;
     color: #6cf;
 }
 
-
-.sheshi_top_rihght{
+.sheshi_top_rihght {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
-    position:relative;
+    position: relative;
     padding-top: 2%;
     height: 100%;
 }
-.sheshi_top_rihght .renyuan_top{
+
+.sheshi_top_rihght .renyuan_top {
     width: 100%;
     height: 30%;
 }
-.sheshi_top_rihght .renyuan_top>ul{
+
+.sheshi_top_rihght .renyuan_top > ul {
     width: 98%;
     height: 30%;
 }
-.sheshi_top_rihght .renyuan_top>ul>li{
+
+.sheshi_top_rihght .renyuan_top > ul > li {
     width: 33%;
     height: 100%;
     display: inline-block;
@@ -710,54 +769,63 @@
     margin: 0 auto;
     font-size: 1.2em;
 }
-#myChart22,#myChart23,#myChart24{
+
+#myChart22, #myChart23, #myChart24 {
     margin: 0 auto;
-    width:50%;
-    height:4.5em;
+    width: 50%;
+    height: 4.5em;
 }
-#myChart23{
+
+#myChart23 {
     width: 100%;
 }
-#myChart24{
+
+#myChart24 {
     width: 100%;
 }
-.sheshi_top_rihght .renyuan_bottom{
+
+.sheshi_top_rihght .renyuan_bottom {
     height: 64%;
 }
-.sheshi_top_rihght .renyuan_bottom>ul{
+
+.sheshi_top_rihght .renyuan_bottom > ul {
     width: 98%;
     height: 100%;
 }
-.sheshi_top_rihght .renyuan_bottom>ul>li{
+
+.sheshi_top_rihght .renyuan_bottom > ul > li {
     width: 33%;
     height: 100%;
     display: inline-block;
     text-align: center;
     margin: 0 auto;
 }
-#myChart25,#myChart26,#myChart27{
+
+#myChart25, #myChart26, #myChart27 {
     width: 100%;
     height: 100%;
     background-color: #00aaff;
 }
 
-.sheshi_bottom_left{
+.sheshi_bottom_left {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
-    position:relative;
+    position: relative;
     padding-top: 2%;
     color: #66CCFE;
     font-size: 1.2em;
 }
-.sheshi_bottom_left .biaozhun_left{
+
+.sheshi_bottom_left .biaozhun_left {
     width: 34%;
     height: 95%;
     float: left;
     text-align: center;
     font-size: 1.2em;
 }
-.biaozhun_left_left{
+
+.biaozhun_left_left {
     width: 75%;
     height: 75%;
     margin: 4% auto;
@@ -765,7 +833,8 @@
     background-size: 100% 100%;
     position: relative;
 }
-.biaozhun_left_left>div{
+
+.biaozhun_left_left > div {
     width: 5em;
     height: 5em;
     text-align: center;
@@ -774,73 +843,85 @@
     position: absolute;
     font-size: 0.8em;
 }
+
 /*.biaozhun_left_left>div>ul li:first-of-type{*/
 /*font-size: 1.2em;*/
 /*}*/
-.biaozhun_left_left .biaozhun_world{
+.biaozhun_left_left .biaozhun_world {
     top: 16%;
     left: 15%;
 }
-.biaozhun_left_left .biaozhun_country{
-    top:16%;
+
+.biaozhun_left_left .biaozhun_country {
+    top: 16%;
     right: 14%;
 }
-.biaozhun_left_left .biaozhun_hangye{
+
+.biaozhun_left_left .biaozhun_hangye {
     bottom: 5%;
-    left:16%;
+    left: 16%;
 }
-.biaozhun_left_left .biaozhun_qiye{
+
+.biaozhun_left_left .biaozhun_qiye {
     bottom: 5%;
     right: 14%;
 }
-.biaozhun_left_left .biaozhun_total{
+
+.biaozhun_left_left .biaozhun_total {
     top: 40%;
     left: 39%;
     color: white;
     font-size: 0.6em;
 }
-.sheshi_bottom_left .biaozhun_right{
+
+.sheshi_bottom_left .biaozhun_right {
     width: 64%;
     height: 90%;
     float: left;
     text-align: center;
     font-size: 1.2em;
 }
-.sheshi_bottom_left .biaozhun_right .biaozhun_right_echarts{
-    width: 100%;
-    height: 100%;
-}
-.sheshi_bottom_left .biaozhun_right ul{
-    width: 100%;
-    height: 44%;
-    display: inline-block;
-}
-.sheshi_bottom_left .biaozhun_right ul li{
-    width: 50%;
-    height: 100%;
-    float: left;
-}
-#myChart28,#myChart29,#myChart30,#myChart31{
+
+.sheshi_bottom_left .biaozhun_right .biaozhun_right_echarts {
     width: 100%;
     height: 100%;
 }
 
-.sheshi_bottom_right{
+.sheshi_bottom_left .biaozhun_right ul {
+    width: 100%;
+    height: 44%;
+    display: inline-block;
+}
+
+.sheshi_bottom_left .biaozhun_right ul li {
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+#myChart28, #myChart29, #myChart30, #myChart31 {
+    width: 100%;
+    height: 100%;
+}
+
+.sheshi_bottom_right {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
-    position:relative;
+    position: relative;
     text-align: center;
     padding-top: 2%;
     color: #66CCFE;
     font-size: 1.2em;
 
 }
-.sheshi_bottom_right .nengli_top{
+
+.sheshi_bottom_right .nengli_top {
     width: 100%;
     height: 20%;
 }
-.sheshi_bottom_right .nengli_top ul{
+
+.sheshi_bottom_right .nengli_top ul {
     width: 85%;
     height: 100%;
     margin: 0 auto;
@@ -848,7 +929,8 @@
     background-size: 100% 100%;
     margin-top: 1%;
 }
-.sheshi_bottom_right .nengli_top ul li{
+
+.sheshi_bottom_right .nengli_top ul li {
     width: 14%;
     height: 100%;
     line-height: 100%;
@@ -857,28 +939,33 @@
     padding-top: 3%;
     padding-left: 2%;
 }
-.nengli_bottom{
+
+.nengli_bottom {
     width: 100%;
     height: 65%;
     padding-bottom: 2%;
     padding-left: 1%;
 }
-.nengli_bottom ul{
+
+.nengli_bottom ul {
     width: 95%;
     height: 100%;
 }
-.nengli_bottom ul li{
+
+.nengli_bottom ul li {
     width: 14%;
     height: 100%;
     float: left;
-    position:relative ;
+    position: relative;
 }
-.nengli_bottom ul li{
+
+.nengli_bottom ul li {
     width: 13%;
 
 }
-.nengli_bottom ul .echarts_lines{
-    width: 1px ;
+
+.nengli_bottom ul .echarts_lines {
+    width: 1px;
     height: 40%;
     display: inline-block;
     background-color: #66ccff;
@@ -886,32 +973,40 @@
     top: 45%;
     left: 0;
 }
-.nengli_bottom ul .echarts_line1{
+
+.nengli_bottom ul .echarts_line1 {
     left: 13.6%;
 }
-.nengli_bottom ul .echarts_line2{
-    left:27.3%;
+
+.nengli_bottom ul .echarts_line2 {
+    left: 27.3%;
 }
-.nengli_bottom ul .echarts_line3{
+
+.nengli_bottom ul .echarts_line3 {
     left: 39.6%;
 }
-.nengli_bottom ul .echarts_line4{
+
+.nengli_bottom ul .echarts_line4 {
     left: 52.2%;
 }
-.nengli_bottom ul .echarts_line5{
+
+.nengli_bottom ul .echarts_line5 {
     left: 63.9%;
 }
-.nengli_bottom ul .echarts_line6{
+
+.nengli_bottom ul .echarts_line6 {
     left: 76.5%;
 }
-.nengli_bottom ul .echarts_line7{
+
+.nengli_bottom ul .echarts_line7 {
     left: 89%;
 }
 
-.nengli_bottom ul li:first-of-type{
+.nengli_bottom ul li:first-of-type {
     width: 19%;
 }
-.yingjubei{
+
+.yingjubei {
     display: inline-block;
     width: 4em;
     position: absolute;
@@ -921,42 +1016,49 @@
     font-size: 0.8em;
 }
 
-#myChart32,#myChart33,#myChart34,#myChart35,#myChart36,#myChart37,#myChart38{
+#myChart32, #myChart33, #myChart34, #myChart35, #myChart36, #myChart37, #myChart38 {
     width: 100%;
     height: 100%;
 
 }
-#myChart39,#myChart40,#myChart41,#myChart42,#myChart43,#myChart44,#myChart45,#myChart46,#myChart47,#myChart48,#myChart49 {
+
+#myChart39, #myChart40, #myChart41, #myChart42, #myChart43, #myChart44, #myChart45, #myChart46, #myChart47, #myChart48, #myChart49 {
     width: 95%;
     height: 100%;
     background-color: #00aaff;
 }
-.order_all>ul{
+#myChart45{
+    height: 88%;
+}
+.order_all > ul {
     position: relative;
 }
 
 /*鏁版嵁缁撴灉*/
-.shuju_result{
+.shuju_result {
     width: 100%;
     height: 90%;
     /*background-color: #00B2F8;*/
     display: none;
-    flex-direction:column;
+    flex-direction: column;
     color: white;
 }
-.shuju_result_top{
+
+.shuju_result_top {
     margin-top: 1%;
     flex: 1;
     display: flex;
-    flex-direction:row ;
+    flex-direction: row;
 
 }
-.shuju_result_bottom{
+
+.shuju_result_bottom {
     flex: 1;
     display: flex;
     flex-direction: row;
 }
-.shuju_result_top_left{
+
+.shuju_result_top_left {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
@@ -965,28 +1067,33 @@
     position: relative;
 
 }
-.shuju_result_top_left>ul{
+
+.shuju_result_top_left > ul {
     width: 98%;
     height: 92%;
     /*background-color: pink;*/
     text-align: center;
     vertical-align: middle;
 }
-.shuju_result_top_left>ul .order_left{
+
+.shuju_result_top_left > ul .order_left {
     width: 50%;
     height: 100%;
     margin: 0 auto;
     /*background-color: #00aaff;*/
     float: left;
 }
-.shuju_result_top_left>ul .order_left .order_all{
+
+.shuju_result_top_left > ul .order_left .order_all {
     width: 100%;
     height: 100%;
 }
-.shuju_result_top_left>ul .order_left ul:last-of-type{
+
+.shuju_result_top_left > ul .order_left ul:last-of-type {
     height: 80%;
 }
-.shuju_result_top_left>ul .order_left ul:first-of-type{
+
+.shuju_result_top_left > ul .order_left ul:first-of-type {
     width: 47%;
     height: 18%;
     display: inline-block;
@@ -994,47 +1101,55 @@
     background-size: 100% 100%;
     padding-top: 1%;
 }
-.shuju_title{
+
+.shuju_title {
     position: absolute;
     top: 0;
     left: 1%;
     font-size: 1.2em;
 }
-.shuju_title1{
+
+.shuju_title1 {
     position: absolute;
     top: 0;
     left: 2.5%;
     font-size: 1.2em;
 }
-.shuju_result_top_center{
+
+.shuju_result_top_center {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
     padding-top: 2%;
     position: relative;
 }
-.shuju_result_top_center>ul{
+
+.shuju_result_top_center > ul {
     width: 98%;
     height: 92%;
     /*background-color: pink;*/
     text-align: center;
     vertical-align: middle;
 }
-.shuju_result_top_center>ul .order_left{
+
+.shuju_result_top_center > ul .order_left {
     width: 50%;
     height: 100%;
     margin: 0 auto;
     /*background-color: #00aaff;*/
     float: left;
 }
-.shuju_result_top_center>ul .order_left .order_all{
+
+.shuju_result_top_center > ul .order_left .order_all {
     width: 100%;
     height: 100%;
 }
-.shuju_result_top_center>ul .order_left ul:last-of-type{
+
+.shuju_result_top_center > ul .order_left ul:last-of-type {
     height: 80%;
 }
-.shuju_result_top_center>ul .order_left ul:first-of-type{
+
+.shuju_result_top_center > ul .order_left ul:first-of-type {
     width: 47%;
     height: 18%;
     display: inline-block;
@@ -1043,39 +1158,41 @@
     padding-top: 1%;
 }
 
-
-
-
-.shuju_result_top_right{
+.shuju_result_top_right {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
     padding-top: 2%;
     position: relative;
 }
-.shuju_result_top_right>ul{
+
+.shuju_result_top_right > ul {
     width: 98%;
     height: 92%;
     /*background-color: pink;*/
     text-align: center;
     vertical-align: middle;
 }
-.shuju_result_top_right>ul .order_left{
+
+.shuju_result_top_right > ul .order_left {
     width: 50%;
     height: 100%;
     margin: 0 auto;
     /*background-color: #00aaff;*/
     float: left;
 }
-.shuju_result_top_right>ul .order_left .order_all{
+
+.shuju_result_top_right > ul .order_left .order_all {
     width: 100%;
     height: 100%;
 
 }
-.shuju_result_top_right>ul .order_left ul:last-of-type{
+
+.shuju_result_top_right > ul .order_left ul:last-of-type {
     height: 80%;
 }
-.shuju_result_top_right>ul .order_left ul:first-of-type{
+
+.shuju_result_top_right > ul .order_left ul:first-of-type {
     width: 47%;
     height: 18%;
     display: inline-block;
@@ -1084,37 +1201,40 @@
     padding-top: 1%;
 }
 
-
-
-.shuju_result_bottom_left{
+.shuju_result_bottom_left {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
     padding-top: 2%;
     position: relative;
 }
-.shuju_result_bottom_left>ul{
+
+.shuju_result_bottom_left > ul {
     width: 98%;
     height: 92%;
     /*background-color: pink;*/
     text-align: center;
     vertical-align: middle;
 }
-.shuju_result_bottom_left>ul .order_left{
+
+.shuju_result_bottom_left > ul .order_left {
     width: 50%;
     height: 100%;
     margin: 0 auto;
     /*background-color: #00aaff;*/
     float: left;
 }
-.shuju_result_bottom_left>ul .order_left .order_all{
+
+.shuju_result_bottom_left > ul .order_left .order_all {
     width: 100%;
     height: 100%;
 }
-.shuju_result_bottom_left>ul .order_left ul:last-of-type{
+
+.shuju_result_bottom_left > ul .order_left ul:last-of-type {
     height: 80%;
 }
-.shuju_result_bottom_left>ul .order_left ul:first-of-type{
+
+.shuju_result_bottom_left > ul .order_left ul:first-of-type {
     width: 30%;
     height: 18%;
     display: inline-block;
@@ -1122,72 +1242,83 @@
     background-size: 100% 100%;
     padding-top: 1%;
 }
-.shuju_result_bottom_left>ul .order_left .order_all .order_all_name{
+
+.shuju_result_bottom_left > ul .order_left .order_all .order_all_name {
     width: 65%;
     height: 18%;
     /*background-color: pink;*/
     margin: 0 auto;
     text-align: center;
 }
-.shuju_result_bottom_left>ul .order_left .order_all .order_all_name ul{
+
+.shuju_result_bottom_left > ul .order_left .order_all .order_all_name ul {
     float: left;
     width: 45%;
-    height:100%;
+    height: 100%;
     background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
     background-size: 100% 100%;
     /*margin: 0 5%;*/
 }
-.shuju_result_bottom_left>ul .order_left .order_all .order_all_name ul:first-of-type{
+
+.shuju_result_bottom_left > ul .order_left .order_all .order_all_name ul:first-of-type {
     margin-right: 10%;
 }
-.shuju_result_bottom_left>ul .order_left .order_all .myChart46_name{
+
+.shuju_result_bottom_left > ul .order_left .order_all .myChart46_name {
     height: 15%;
     width: 100%;
     text-align: center;
     color: #66CCFE;
     font-size: 1.3em;
 }
-.shuju_result_bottom_left>ul .order_left .order_all #myChart46{
+
+.shuju_result_bottom_left > ul .order_left .order_all #myChart46 {
     width: 100%;
     height: 85%;
     padding-right: 2%;
 }
 
-.shuju_result_bottom_right{
+.shuju_result_bottom_right {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
     background-size: 98% 98%;
     padding-top: 2%;
     position: relative;
 }
-.shuju_result_bottom_right .jiance_left{
+
+.shuju_result_bottom_right .jiance_left {
     width: 49%;
     height: 92%;
     float: left;
 }
-.shuju_result_bottom_right .jiance_left>ul{
+
+.shuju_result_bottom_right .jiance_left > ul {
     width: 98%;
     height: 92%;
     /*background-color: pink;*/
     text-align: center;
     vertical-align: middle;
 }
-.shuju_result_bottom_right .jiance_left>ul .order_left{
+
+.shuju_result_bottom_right .jiance_left > ul .order_left {
     width: 50%;
     height: 100%;
     margin: 0 auto;
     /*background-color: #00aaff;*/
     float: left;
 }
-.shuju_result_bottom_right .jiance_left>ul .order_left .order_all{
+
+.shuju_result_bottom_right .jiance_left > ul .order_left .order_all {
     width: 100%;
     height: 100%;
 
 }
-.shuju_result_bottom_right .jiance_left>ul .order_left ul:last-of-type{
+
+.shuju_result_bottom_right .jiance_left > ul .order_left ul:last-of-type {
     height: 90%;
 }
-.shuju_result_bottom_right .jiance_left>ul .order_left ul:first-of-type{
+
+.shuju_result_bottom_right .jiance_left > ul .order_left ul:first-of-type {
     width: 55%;
     height: 18%;
     display: inline-block;
@@ -1196,54 +1327,58 @@
     padding-top: 1%;
 }
 
-
-.shuju_result_bottom_right .jiance_right{
+.shuju_result_bottom_right .jiance_right {
     width: 49%;
     height: 92%;
     float: left;
 }
-.jiance_right_name{
+
+.jiance_right_name {
     height: 15%;
     width: 100%;
     text-align: center;
     color: #66CCFE;
     font-size: 1.3em;
 }
-.shuju_top_right{
+
+.shuju_top_right {
     flex: 1;
 }
-#myChart49{
+
+#myChart49 {
     height: 85%;
 }
 
 /*鏁版嵁鎸栨帢*/
-.shuju_apply{
+.shuju_apply {
     width: 100%;
     height: 90%;
     /*background-color: #00B2F8;*/
     display: none;
-    flex-direction:column;
+    flex-direction: column;
 }
-.shuju_apply_top{
+
+.shuju_apply_top {
     margin-top: 1%;
     flex: 1;
     background: url("../img/shujuWajue/border .png") no-repeat;
-    background-size:100% 100%;
+    background-size: 100% 100%;
     display: flex;
     flex-direction: row;
     text-align: center;
     width: 100%;
     height: 100%;
 }
-.shuju_apply_center{
+
+.shuju_apply_center {
     flex: 1;
 }
-.shuju_apply_bottom{
+
+.shuju_apply_bottom {
     flex: 1;
     /*background: url("../img/TotalState/border-2-2.png") no-repeat;*/
     /*background-size: 98% 98%*/
 }
-
 
 .shuju_apply_bottom_left {
     flex: 1;
@@ -1261,13 +1396,14 @@
     float: left;
 }
 
-.shuju_apply_bottom_bar1,.shuju_apply_bottom_bar2 {
+.shuju_apply_bottom_bar1, .shuju_apply_bottom_bar2 {
     width: 29%;
     height: 65%;
     float: left;
     position: relative;
 }
-.shuju_apply_bottom_tab{
+
+.shuju_apply_bottom_tab {
     width: 7%;
     height: 65%;
     float: left;
@@ -1276,6 +1412,7 @@
     margin-left: 4%;
 
 }
+
 .shuju_apply_bottom_tab ul {
     width: 100%;
     height: 95%;
@@ -1284,55 +1421,53 @@
     background: url("../img/TotalState/scroll bar-border.png") no-repeat;
     background-size: 100% 100%;
 }
-.shuju_apply_bottom_tab ul li{
+
+.shuju_apply_bottom_tab ul li {
     width: 100%;
     height: 20%;
     display: inline-block;
     color: #66CCFE;
     font-size: 1em;
 }
+
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-.shuju_apply_bottom_tab ::-webkit-scrollbar
-{
+.shuju_apply_bottom_tab ::-webkit-scrollbar {
     width: 10%;
     height: 100%;
     background-color: transparent;
 }
 
 /*定义滚动条轨道 内阴影+圆角*/
-.shuju_apply_bottom_tab ::-webkit-scrollbar-track
-{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+.shuju_apply_bottom_tab ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     background-color: transparent;
 }
 
 /*定义滑块 内阴影+圆角*/
-.shuju_apply_bottom_tab ::-webkit-scrollbar-thumb
-{
+.shuju_apply_bottom_tab ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
+    -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, .3);
     background-color: #66ccff;
 }
 
-
-.shuju_apply_bottom_right .shuju_apply_bottom_bar1{
+.shuju_apply_bottom_right .shuju_apply_bottom_bar1 {
     width: 70%;
 }
 
-
-#myChart14,#myChart15,#myChart16,#myChart17,#myChart18,#myChart19 {
+#myChart14, #myChart15, #myChart16, #myChart17, #myChart18, #myChart19 {
     width: 100%;
     height: 100%;
 }
 
-.shuju_apply_bottom_bar2 div span{
+.shuju_apply_bottom_bar2 div span {
     position: absolute;
-    top:0;
+    top: 0;
     left: 0;
     color: #f93;
     font-size: 1em;
 }
+
 /*tab鏍忓垏鎹㈡牱寮�*/
 #right .tab .active_right {
     background: url("../img/TotalState/border-click.png") no-repeat;
