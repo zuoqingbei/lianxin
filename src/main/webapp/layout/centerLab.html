@@ -545,7 +545,7 @@
         });
         $(".sheshi_tab").eq(1).click(function () {
             $('.labMain_cb_left .shishi_right').css('display','block').siblings().eq(3).css('display','none');
-        });
+    });
 
         $(".labMain_cbr_tab").click(function () {
 //            $(this).addClass("active_right").siblings().removeClass("active_right");
@@ -592,6 +592,9 @@
             $(this).css("color","#069").find(".icon").css("background-image","url(${contextPath!}/static/img/labMain/home_active.png)")
         },function () {
             $(this).css("color","#64ccff").find(".icon").css("background-image","url(${contextPath!}/static/img/labMain/home.png)")
+        }).click(function () {
+            $(".labMain_cb_left:eq(0)").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
+
         })
         //近12个月订单及时率趋势图
         initfour();

@@ -719,6 +719,7 @@ myChart7.setOption({
 
 });
 //模块质量过程检测
+/*
 var myChart8 = echarts.init(document.getElementById("myChart8"));
 myChart8.setOption(getBarEcharts());
 var bar_chip = '../img/bar_chip.png';
@@ -758,7 +759,7 @@ myChart8.setOption({
                 show: false,
             }
         }, {
-            name: " ",/*ppm用div替代*/
+            name: " ",/!*ppm用div替代*!/
             position: 'right',
             // type: 'category',
             data: [2700],
@@ -863,9 +864,11 @@ myChart8.setOption({
         }
     ]
 });
+*/
 
 
 //Xbar控制图
+/*
 var myChart9 = echarts.init(document.getElementById("myChart9"));
 myChart9.setOption(getLineEcharts());
 myChart9.setOption({
@@ -928,7 +931,7 @@ myChart9.setOption({
             }
 
 
-/*        }, {
+/!*        }, {
             gt: 50,
             lte: 100,
             color: '#ffde33'
@@ -939,7 +942,7 @@ myChart9.setOption({
         }, {
             gt: 150,
             lte: 200,
-            color: '#cc0033'*/
+            color: '#cc0033'*!/
         },
             //     {
             //     gt: 200,
@@ -968,7 +971,6 @@ myChart9.setOption({
                 borderColor:"#00e673"
             }},
             symbolSize: 2,
-//            areaStyle: {normal: {}},
             data: [73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25,73.50, 73.75, 74.00, 74.25],
             markLine: {
                 symbolSize:0,
@@ -1105,6 +1107,7 @@ myChart9_2.setOption({
     ]
 
 });
+*/
 
 
 //能力直方图
@@ -3634,14 +3637,12 @@ myChart27.setOption({
 //数据结果 问题闭环率 整机
 var myChart43 = echarts.init(document.getElementById("myChart43"));
 myChart43.setOption(getCenterPie());
+
 myChart43.setOption({
     color: ['#66ccff', '#00e673', '#ff9933', '#4397f7', '#ffff99', '#ff6666', '#66ffcc'],
     legend: {
         show: true,
-        data: ['冰冷', '洗涤', '家空', '商空', '热水器', '厨电', '其他'],
-        formatter: function (name,value) {
-            return  name +" "+ value;
-        },
+        data: ['冰冷'+"89%", '洗涤'+"89%", '家空'+"89%", '商空'+"89%", '热水器'+"89%", '厨电'+"89%", '其他'+"89%"],
         orient: ' vertical',  //布局  纵向布局
 
 
@@ -3652,11 +3653,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,  //旋转方向
             radius: [60, 63],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 99,
-                    name: '冰冷',
+                    name: '冰冷'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3671,11 +3673,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [54, 57],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 98,
-                    name: '洗涤',
+                    name: '洗涤'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3690,11 +3693,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [48, 51],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
-                    name: '家空',
+                    name: '家空'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3710,11 +3714,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [42, 45],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 89,
-                    name: '商空',
+                    name: '商空'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3729,11 +3734,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [36, 39],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 87,
-                    name: '热水器',
+                    name: '热水器'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3749,11 +3755,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [30, 33],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
-                    name: '厨电',
+                    name: '厨电'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3768,11 +3775,12 @@ myChart43.setOption({
             type: 'pie',
             clockWise: false,
             radius: [24, 27],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 97,
-                    name: '其他',
+                    name: '其他'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3794,8 +3802,9 @@ myChart44.setOption({
     color: ['#66ccff', '#00e673', '#ff9933', '#4397f7', '#ffff99', '#ff6666', '#66ffcc'],
     legend: {
         show: true,
-        data: ['冰冷', '洗涤', '家空', '商空', '热水器', '厨电', '其他'],
+        data: ['冰冷'+"89%", '洗涤'+"89%", '家空'+"89%", '商空'+"89%", '热水器'+"89%", '厨电'+"89%", '其他'+"89%"],
         orient: ' vertical',  //布局  纵向布局
+
 
     },
     series: [
@@ -3804,11 +3813,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,  //旋转方向
             radius: [60, 63],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 99,
-                    name: '冰冷',
+                    name: '冰冷'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3823,11 +3833,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [54, 57],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 98,
-                    name: '洗涤',
+                    name: '洗涤'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3842,11 +3853,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [48, 51],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
-                    name: '家空',
+                    name: '家空'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3862,11 +3874,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [42, 45],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 89,
-                    name: '商空',
+                    name: '商空'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3881,11 +3894,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [36, 39],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 87,
-                    name: '热水器',
+                    name: '热水器'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3901,11 +3915,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [30, 33],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 96,
-                    name: '厨电',
+                    name: '厨电'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -3920,11 +3935,12 @@ myChart44.setOption({
             type: 'pie',
             clockWise: false,
             radius: [24, 27],
+            center:["36%","50%"],
             itemStyle: dataStyle,
             data: [
                 {
                     value: 97,
-                    name: '其他',
+                    name: '其他'+"89%",
                     // itemStyle: placeHolderStyle
                 },
                 {
@@ -4412,7 +4428,7 @@ myChart49.setOption({
 //}
 //console.log(str)
 
-var right_echarts = [myChart1, myChart2, myChart3, myChart5, myChart7, myChart8, myChart9,
+var right_echarts = [myChart1, myChart2, myChart3, myChart5, myChart7,
     myChart14, myChart15, myChart16,
     myChart43, myChart44, myChart47, myChart48, myChart49,
 ]
