@@ -139,9 +139,9 @@
             <div class="echarts_title">一次合格率</div>
             <div class="echarts_title_left">
                 <ul>
-                    <li>当年一次合格率<span id="tab1_pass_rate_id">0%</span></li>
+                    <li>当年一次合格率<span id="tab1_pass_rate_id"></span></li>
                     <li style="display: inline-block">同比上升</li>
-                    <span>3.24%</span>
+                    <span id="tab1_pass_rate_rise_id"></span>
                 </ul>
             </div>
             <div id="myChart4"></div>
@@ -149,22 +149,19 @@
         <div class="total_center_2">
             <div class="echarts_title">问题闭环率</div>
             <div class="echarts_title_left">
-                <ul>
-                    <li>当年问题闭环率<span>98.5%</span></li>
-                    <li style="display: inline-block">同比上升</li>
-                    <span>2.3%</span>
+                <ul id="tab1_question_closed_title">
                 </ul>
             </div>
             <div id="myChart5"></div>
         </div>
         <div class="total_center_3">
             <div class="echarts_title">订单及时率</div>
-            <h3>当年订单及时率<span class="orange bigger">97%，</span>同比上升<span class="orange bigger">60%</span></h3>
+            <h3 id="tab1_order_js_compare"><!-- 当年订单及时率<span class="orange bigger">79.39%，</span>同比上升<span class="orange bigger">4.5%</span> --></h3>
             <div id="myChart6"></div>
         </div>
         <div class="total_center_4">
             <div class="echarts_title">用户满意度</div>
-            <h3>海尔今年实验室用户满意度为<span class="orange bigger">99%，</span>同比上升<span class="orange bigger">80%</span></h3>
+            <h3 id="tab1_use_my_title"></h3>
             <div id="myChart7"></div>
         </div>
     </div>
@@ -245,8 +242,8 @@
 
             </div>
             <div class="total_bottom_bar2">
-                <h3><span class="white" id="tab1_jiance_xh_name2">"型号Ａ产品"</span> CpK分析</h3>
-                <p class="result" id="tab1_jiance_xh_result2">过程能力充足</p>
+                <h3><span class="white" id="tab1_jiance_xh_name2"></span> CpK分析</h3>
+                <p class="result" id="tab1_jiance_xh_result2"></p>
                 <div id="myChart10"></div>
             </div>
 

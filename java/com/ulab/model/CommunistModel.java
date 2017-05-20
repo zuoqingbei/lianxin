@@ -33,7 +33,7 @@ public class CommunistModel extends Model<CommunistModel> {
 	 */
 	public Record communistGravityStatistic(String startDate,String endDate,String plCode,String labTypeCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append("  select a.*,b.*,to_char(b.yz_num/a.gc_num*100,'00.00') as rate from  ");
+		sb.append("  select a.*,b.*,to_char(b.yz_num/a.gc_num*100,'00.0') as rate from  ");
 		sb.append("  ( ");
 		sb.append("  select sum(num) as gc_num,'共产总量' as name from t_b_communist_data c where c.del_flag=0  ");
 		if(StringUtils.isNoneBlank(plCode)){

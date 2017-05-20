@@ -1,7 +1,6 @@
 package com.ulab.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,7 @@ import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 import com.ulab.model.CommunistModel;
 import com.ulab.model.DicModel;
+import com.ulab.model.EquipmentModel;
 import com.ulab.model.JianCeModel;
 import com.ulab.model.JianceProModel;
 import com.ulab.model.LabCarryModel;
@@ -23,6 +23,8 @@ import com.ulab.model.LabModel;
 import com.ulab.model.OrderModel;
 import com.ulab.model.PersonModel;
 import com.ulab.model.ProviderDicModel;
+import com.ulab.model.QuestionClosedModel;
+import com.ulab.model.SatisfactionModel;
 import com.ulab.model.XbarModel;
 import com.ulab.util.SqlUtil;
 /**
@@ -334,6 +336,19 @@ public class LabController extends BaseController {
     	}
 		renderJson(list);
     }
+    
+    /**
+     * 
+     * @time   2017年5月20日 上午11:55:08
+     * @author zuoqb
+     * @todo    整机 模块 订单类别占全部订单占比统计
+     * @param  
+     * @return_type   void
+     */
+    public void findOrderTypePercentTab3Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+		renderJson(OrderModel.dao.findOrderTypePercentTab3(labTypeCode));
+    }
     /**
      * 
      * @time   2017年5月14日 上午8:59:27
@@ -532,5 +547,125 @@ public class LabController extends BaseController {
     	String endDate=getPara("endDate","201705");
     	List<Record> list=OrderModel.dao.findOrderRateForMonth(startDate, endDate);
 		renderJson(list);
+    }
+    /**
+     * 
+     * @time   2017年5月20日 上午10:33:50
+     * @author zuoqb
+     * @todo   设备状态统计
+     * @param  
+     * @return_type   void
+     */
+    public void equipmentTotalForLab1Ajax(){
+    	String dataType=getPara("dataType","1");// 1:当前2：同比
+    	String labName=getPara("labName","");
+    	List<Record> list=EquipmentModel.dao.equipmentTotal(dataType, labName);
+		renderJson(list);
+    }
+    /**
+     * 
+     * @time   2017年5月20日 上午10:33:50
+     * @author zuoqb
+     * @todo   设备状态统计 到产线 for tab2
+     * @param  type 类型  0：实验室在线率 1：设备完好率 2：设备利用率 
+     * @return_type   void
+     */
+    public void equipmentStatisForPlForLab2Ajax(){
+    	String type=getPara("type","0");
+    	String labTypeCode=getPara("labTypeCode","");
+    	List<Record> list=EquipmentModel.dao.equipmentStatisForPl(type, labTypeCode);
+		renderJson(list);
+    }
+    
+    /****************满意度统计****************/
+    /**
+     * 
+     * @time   2017年5月20日 下午1:15:38
+     * @author zuoqb
+     * @todo   满意度 到月份数据统计tab1
+     * @param  
+     * @return_type   void
+     */
+    public void satisfactionStatisForMonthForTab1Ajax(){
+    	String startDate=getPara("startDate","201606");
+    	String endDate=getPara("endDate","201705");
+    	String labTypeCode=getPara("labTypeCode","");
+    	List<Record> list=SatisfactionModel.dao.satisfactionStatisForMonth(startDate, endDate,labTypeCode);
+		renderJson(list);
+    }
+    
+    /**
+     * 
+     * @time   2017年5月20日 下午1:15:38
+     * @author zuoqb
+     * @todo     同期 环比满意度占比统计
+     * @param  
+     * @return_type   void
+     */
+    public void satisfactionChangeForTab1Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+		renderJson(SatisfactionModel.dao.satisfactionChange(labTypeCode));
+    }
+    /**
+     * 
+     * @time   2017年5月20日 下午1:55:53
+     * @author zuoqb
+     * @todo    tab3 某一年分 到产线满意度统计
+     * @param  
+     * @return_type   void
+     */
+    public void satisfactionStatisForYearTab3Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String year=getPara("year","");
+		renderJson(SatisfactionModel.dao.satisfactionStatisForYear(year,labTypeCode));
+    }
+    /**
+     * 
+     * @time   2017年5月20日 下午2:24:57
+     * @author zuoqb
+     * @todo   用户满意度趋势变化 满意度到产线 到月数据统计 tab3
+     * @param  
+     * @return_type   void
+     */
+    public void productLineAndMonthForTab3Ajax(){
+    	String startDate=getPara("startDate","201606");
+    	String endDate=getPara("endDate","201705");
+    	String labTypeCode=getPara("labTypeCode","");
+    	List<List<Record>> list=new ArrayList<List<Record>>();
+    	List<Record> productLine=getSessionAttr("productLine");
+    	if(productLine==null){
+    		productLine=DicModel.dao.findDicByType("line_type");
+    	}
+    	for(Record r:productLine){
+    		list.add(SatisfactionModel.dao.productLineAndMonth(startDate,endDate,r.get("id").toString(),labTypeCode));
+    	}
+		renderJson(list);
+    }
+    //问题闭环率
+    /**
+     * 
+     * @time   2017年5月20日 下午3:53:01
+     * @author zuoqb
+     * @todo    统计当前以及同比 模块 整机问题闭环率tab1 
+     * @param  
+     * @return_type   void
+     */
+    public void questionForMkZjTab1Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+		renderJson(QuestionClosedModel.dao.questionForMkZj(labTypeCode));
+    }
+    /**
+     * 
+     * @time   2017年5月20日 下午3:53:01
+     * @author zuoqb
+     * @todo    统计当前以及同比 模块 整机问题闭环率tab3
+     * @param  
+     * @return_type   void
+     */
+    public void productLineForTab3Tab3Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String dataType=getPara("dataType","0");//dataType  0 :当前 1：同比
+    	String type=getPara("type","");//type   0：整机 1：模块
+		renderJson(QuestionClosedModel.dao.productLineForTab3(dataType, type, labTypeCode));
     }
 }

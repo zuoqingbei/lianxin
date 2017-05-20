@@ -20,19 +20,13 @@ var bodyScale = 1;//原始比例1
     //左
     var chartfive = echarts.init(document
         .getElementById("echart_five"));
-    chartfive.setOption(initone());
     //右
     var chartsix = echarts.init(document
         .getElementById("echart_six"));
-    chartsix.setOption(getBarEcharts());
-    chartsix.setOption(inittwo());
     //$("#labMain_cbro_content").load("labAnalysis_small.html");
     // document.getElementById("labMain_cbro_content").innerHTML = '<object type="text/html" data="labAnalysis_small.html" width="100%" height="100%"></object>';
 
 function initone(mValue) {
-	if(mValue==null){
-		mValue=95;
-	}
     var labelFromatter = {
         normal: {
             label: {
@@ -106,27 +100,33 @@ function initone(mValue) {
     return option;
 
 }
+//近12个月用户满意度趋势图
 function inittwo() {
-    var bar_chip = '${contextPath!}/static/img/bar_chip.png';
-    var labelSetting = {
-        normal: {
-            show: false,
-            position: 'outside',
-            offset: [10, 0],
-            textStyle: {
-                fontSize: bodyScale * 8
-            }
-        }
-    };
-
-
-    var option = {
+	$.post(contextPath+'/lab/satisfactionStatisForMonthForTab1Ajax',{"labTypeCode":"中海博睿"},function(data){
+			var resu=dealSatisfactionCenterLab(data);
+			$("#satisfaction_rate_center_lab_pj").html("平均:"+resu[0]+"%");
+			$("#satisfaction_rate_center_lab_height").html("最高:"+resu[1].rate+"%("+resu[1].month+"月)");
+			$("#satisfaction_rate_center_lab_low").html("最低:"+resu[2].rate+"%("+resu[2].month+"月)");
+			chartfive.setOption(initone(resu[0]));
+		    var bar_chip = contextPath+'/static/img/bar_chip.png';
+		    var labelSetting = {
+		        normal: {
+		            show: false,
+		            position: 'outside',
+		            offset: [10, 0],
+		            textStyle: {
+		                fontSize: bodyScale * 8
+		            }
+		        }
+		    };
+		    chartsix.setOption(getBarEcharts());
+		    chartsix.setOption({
         textStyle: {
             fontSize: bodyScale * 8
         },
         yAxis: [
             {
-                name: "数量",
+                name: "满意度/%",
 
                 nameTextStyle: {
                     fontSize: bodyScale * 10,
@@ -141,15 +141,10 @@ function inittwo() {
             {
                 name: "",
                 type: 'category',
-                data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+                data:centerLabOrderRateLengend(data)
             }
         ],
         grid: {
-            // x: "10%",
-//            x2: "25%",
-//            y: '22%',
-//            y2: "26%",
-
             x: "15%",
             x2: "10%",
             y: '20%',
@@ -158,54 +153,13 @@ function inittwo() {
         series: [
             {
                 symbolSize: ['50%', '10%'],
-                data: [{
-                    value: 99,
-                    symbol: bar_chip
-                }, {
-                    value: 85,
-                    symbol: bar_chip
-                }, {
-                    value: 82,
-                    symbol: bar_chip
-                }
-                    , {
-                        value: 78,
-                        symbol: bar_chip
-                    }
-                    , {
-                        value: 82,
-                        symbol: bar_chip
-                    }
-                    , {
-                        value: 78,
-                        symbol: bar_chip
-                    }
-                    , {
-                        value: 78,
-                        symbol: bar_chip
-                    }, {
-                        value: 82,
-                        symbol: bar_chip
-                    }, {
-                        value: 82,
-                        symbol: bar_chip
-                    }, {
-                        value: 78,
-                        symbol: bar_chip
-                    }
-                    , {
-                        value: 78,
-                        symbol: bar_chip
-                    }, {
-                        value: 82,
-                        symbol: bar_chip
-                    }
-
-                ]
+                data: centerLabOrderHgRate(data)
             }
         ]
-    };
-    return option;
+    });
+		   
+		
+	});
 
 }
 //近12个月一次合格率趋势图
@@ -217,7 +171,7 @@ function initThree() {
 		$("#hg_rate_center_lab_low").html("最低:"+resu[2].rate+"%("+resu[2].month+"月)");
 		chartone.setOption(initone(resu[0]));
 		charttwo.setOption(getBarEcharts());
-		var bar_chip = '${contextPath!}/static/img/bar_chip.png';
+		var bar_chip = contextPath+'/static/img/bar_chip.png';
 		    var labelSetting = {
 		        normal: {
 		            show: false,
@@ -1013,7 +967,33 @@ function dealCenterLab(data){
 		js_num+=cJsNum;
 	});
 	//计算整体平均值
-	var allPingjun=parseFloat((parseInt(js_num)/parseInt(all_num))*100).toFixed(2);
+	var allPingjun=parseFloat((parseInt(js_num)/parseInt(all_num))*100).toFixed(1);
+	result.push(allPingjun);
+	result.push(maxData);
+	result.push(minData);
+	return result;
+}
+//获取用户满意度平均 最高 最低数据
+function dealSatisfactionCenterLab(data){
+	var result=[];
+	var all_num=0;
+	var maxData={month:0,rate:0};
+	var minData={month:0,rate:100};
+	$.each(data,function(index,item){
+		all_num=parseFloat(all_num)+parseFloat(item.rate);
+		var cName=item.name;
+		var cRate=parseFloat(item.rate);
+		if(parseFloat(maxData.rate)<cRate){
+			maxData.rate=cRate;
+			maxData.month=cName;
+		}
+		if(parseFloat(minData.rate)>cRate){
+			minData.rate=cRate;
+			minData.month=cName;
+		}
+	});
+	//计算整体平均值
+	var allPingjun=parseFloat(all_num/data.length).toFixed(1);
 	result.push(allPingjun);
 	result.push(maxData);
 	result.push(minData);

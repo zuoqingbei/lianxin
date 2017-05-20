@@ -1,6 +1,6 @@
 // 多个方向盘 设施状态
 // $("#myChart").cl
-var myChart1 = echarts.init(document.getElementById("myChart1"));
+/*var myChart1 = echarts.init(document.getElementById("myChart1"));
 option = {
     tooltip: {
         formatter: "{a} <br/>{c}%"
@@ -215,7 +215,7 @@ option = {
         }
     ]
 };
-myChart1.setOption(option);
+myChart1.setOption(option);*/
 
 //多个圆环图  标准状态
 var myChart2 = echarts.init(document.getElementById("myChart2"));
@@ -529,7 +529,7 @@ var placeHolderStyle = {
  });*/
 
 //问题闭环率
-var myChart5 = echarts.init(document.getElementById("myChart5"));
+/*var myChart5 = echarts.init(document.getElementById("myChart5"));
 myChart5.setOption(getCenterPie());
 myChart5.setOption({
     legend: {
@@ -593,7 +593,7 @@ myChart5.setOption({
         }
     ]
 
-});
+});*/
 
 //订单及时率
 /*var myChart6 = echarts.init(document.getElementById("myChart6"));
@@ -661,7 +661,7 @@ myChart5.setOption({
 
 
 //用户满意度
-var myChart7 = echarts.init(document.getElementById("myChart7"));
+/*var myChart7 = echarts.init(document.getElementById("myChart7"));
 myChart7.setOption(getLineEcharts());
 myChart7.setOption({
     legend: {
@@ -700,7 +700,7 @@ myChart7.setOption({
 //            areaStyle: {normal: {}},
             data: [80, 92, 85, 94, 85, 80, 70, 83, 94, 96]
         },
-/*
+
         {
             name: '模块',
             type: 'line',
@@ -714,10 +714,10 @@ myChart7.setOption({
 //            areaStyle: {normal: {}},
             data: [40, 33, 61, 34, 29, 30, 31, 34, 42, 44]
         }
-*/
+
     ]
 
-});
+});*/
 //模块质量过程检测
 /*
 var myChart8 = echarts.init(document.getElementById("myChart8"));
@@ -3635,7 +3635,7 @@ myChart27.setOption({
 
 
 //数据结果 问题闭环率 整机
-var myChart43 = echarts.init(document.getElementById("myChart43"));
+/*var myChart43 = echarts.init(document.getElementById("myChart43"));
 myChart43.setOption(getCenterPie());
 
 myChart43.setOption({
@@ -3792,11 +3792,11 @@ myChart43.setOption({
             ]
         }
     ]
-});
+});*/
 
 
 //数据结果 问题闭环率 模块
-var myChart44 = echarts.init(document.getElementById("myChart44"));
+/*var myChart44 = echarts.init(document.getElementById("myChart44"));
 myChart44.setOption(getCenterPie());
 myChart44.setOption({
     color: ['#66ccff', '#00e673', '#ff9933', '#4397f7', '#ffff99', '#ff6666', '#66ffcc'],
@@ -3953,7 +3953,7 @@ myChart44.setOption({
         }
     ]
 });
-
+*/
 
 //数据结果 订单及时率 雷达图
 /*var myChart45 = echarts.init(document.getElementById("myChart45"));
@@ -4178,7 +4178,7 @@ myChart44.setOption({
  });*/
 
 //数据结果 检测满意度 整机
-var myChart47 = echarts.init(document.getElementById("myChart47"));
+/*var myChart47 = echarts.init(document.getElementById("myChart47"));
 myChart47.setOption(getBarEcharts());
 myChart47.setOption({
     yAxis: [
@@ -4232,10 +4232,10 @@ myChart47.setOption({
             },
         }
     ]
-});
+});*/
 
 //数据结果 检测满意度 模块
-var myChart48 = echarts.init(document.getElementById("myChart48"));
+/*var myChart48 = echarts.init(document.getElementById("myChart48"));
 myChart48.setOption(getBarEcharts());
 myChart48.setOption({
     yAxis: [
@@ -4290,10 +4290,10 @@ myChart48.setOption({
             }
         }
     ]
-});
+});*/
 
 //数据结果 检测满意度 折线图
-var myChart49 = echarts.init(document.getElementById("myChart49"));
+/*var myChart49 = echarts.init(document.getElementById("myChart49"));
 myChart49.setOption(getLineEcharts());
 myChart49.setOption({
     color: ['#66ccff', '#00e673', '#4397f7', '#ff9933', '#66ffcc', '#ffff99', '#ff6666'],
@@ -4421,16 +4421,15 @@ myChart49.setOption({
         }
     ]
 
-});
+});*/
 //var str=''
 //for(var i=1;i<50;i++){
 //	str+="myChart"+i+','
 //}
 //console.log(str)
 
-var right_echarts = [myChart1, myChart2, myChart3, myChart5, myChart7,
+var right_echarts = [myChart2, myChart3,
     myChart14, myChart15, myChart16,
-    myChart43, myChart44, myChart47, myChart48, myChart49,
 ]
 //重置echart图标大小 在加载平面地图时被调用
 function resetSizeRight() {

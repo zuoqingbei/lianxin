@@ -421,7 +421,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @DEPRECATED
 	     */
 	    echartsProto.setTheme = function () {
-	        console.log('ECharts#setTheme() is DEPRECATED in ECharts 3.0');
+	       // console.log('ECharts#setTheme() is DEPRECATED in ECharts 3.0');
 	    };
 
 	    /**
@@ -646,9 +646,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        if (true) {
-	            console.warn(
+	           /* console.warn(
 	                'No coordinate system that supports ' + methodName + ' found by the given finder.'
-	            );
+	            );*/
 	        }
 	    }
 
@@ -688,16 +688,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                    else {
 	                        if (true) {
-	                            console.warn(key + ': ' + (view
+	                          /*  console.warn(key + ': ' + (view
 	                                ? 'The found component do not support containPoint.'
 	                                : 'No view mapping to the found component.'
-	                            ));
+	                            ));*/
 	                        }
 	                    }
 	                }
 	                else {
 	                    if (true) {
-	                        console.warn(key + ': containPoint is not supported');
+	                       // console.warn(key + ': containPoint is not supported');
 	                    }
 	                }
 	            }, this);
@@ -730,7 +730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (true) {
 	            if (!seriesModel) {
-	                console.warn('There is no specified seires model');
+	               // console.warn('There is no specified seires model');
 	            }
 	        }
 
@@ -1023,7 +1023,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.hideLoading();
 	        if (!loadingEffects[name]) {
 	            if (true) {
-	                console.warn('Loading effects ' + name + ' not exists.');
+	                //console.warn('Loading effects ' + name + ' not exists.');
 	            }
 	            return;
 	        }
@@ -1464,7 +1464,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    echartsProto.dispose = function () {
 	        if (this._disposed) {
 	            if (true) {
-	                console.warn('Instance ' + this.id + ' has been disposed');
+	               // console.warn('Instance ' + this.id + ' has been disposed');
 	            }
 	            return;
 	        }
@@ -1536,7 +1536,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var blendMode = seriesModel.get('blendMode') || null;
 	        if (true) {
 	            if (!env.canvasSupported && blendMode && blendMode !== 'source-over') {
-	                console.warn('Only canvas support blendMode');
+	                //console.warn('Only canvas support blendMode');
 	            }
 	        }
 	        chartView.group.traverse(function (el) {
@@ -1701,7 +1701,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    || (!dom.clientHeight && (!opts || opts.height == null))
 	                )
 	            ) {
-	                console.warn('Can\'t get dom width or height');
+	               // console.warn('Can\'t get dom width or height');
 	            }
 	        }
 
@@ -5907,10 +5907,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (true) {
 	                zrUtil.each(mandatoryMethods, function (method) {
 	                    if (!proto[method]) {
-	                        console.warn(
+	                     /*   console.warn(
 	                            'Method `' + method + '` should be implemented'
 	                            + (proto.type ? ' in ' + proto.type : '') + '.'
-	                        );
+	                        );*/
 	                    }
 	                });
 	            }
@@ -5979,7 +5979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                if (!componentType.sub) {
 	                    if (true) {
 	                        if (storage[componentType.main]) {
-	                            console.warn(componentType.main + ' exists.');
+	                           // console.warn(componentType.main + ' exists.');
 	                        }
 	                    }
 	                    storage[componentType.main] = Clazz;
@@ -11520,7 +11520,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            else if (config.debugMode > 1) {
 	                for (var k in arguments) {
-	                    console.log(arguments[k]);
+	                   // console.log(arguments[k]);
 	                }
 	            }
 	        };
@@ -26094,7 +26094,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        if (!visualMeta || coordSys.type !== 'cartesian2d') {
 	            if (true) {
-	                console.warn('Visual map on line style only support x or y dimension.');
+	                //console.warn('Visual map on line style only support x or y dimension.');
 	            }
 	            return;
 	        }
@@ -33958,7 +33958,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            else {
 	                if (true) {
-	                    console.warn('Given layoutCenter or layoutSize data are invalid. Use left/top/width/height instead.');
+	                   // console.warn('Given layoutCenter or layoutSize data are invalid. Use left/top/width/height instead.');
 	                }
 	            }
 	        }
@@ -48895,8 +48895,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var data = seriesOpt.data;
 	        if (data && data[0] && data[0][0] && data[0][0].coord) {
 	            if (true) {
-	                console.warn('Lines data configuration has been changed to'
-	                    + ' { coords:[[1,2],[2,3]] }');
+	               /* console.warn('Lines data configuration has been changed to'
+	                    + ' { coords:[[1,2],[2,3]] }');*/
 	            }
 	            seriesOpt.data = zrUtil.map(data, function (itemOpt) {
 	                var coords = [
@@ -49068,7 +49068,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (true) {
 	                if (hasEffect && isLarge) {
-	                    console.warn('Large lines not support effect');
+	                  //  console.warn('Large lines not support effect');
 	                }
 	            }
 	            if (hasEffect !== this._hasEffet || isPolyline !== this._isPolyline || isLarge !== this._isLarge) {
@@ -55566,7 +55566,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                if (true) {
 	                    if (!legendDrawedMap[name]) {
-	                        console.warn(name + ' series not exists. Legend data should be same with series name or data name.');
+	                      //  console.warn(name + ' series not exists. Legend data should be same with series name or data name.');
 	                    }
 	                }
 	            }, this);
@@ -66683,10 +66683,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                    if (true) {
 	                        if (interval[0] > interval[1]) {
-	                            console.warn(
+	                          /*  console.warn(
 	                                'Piece ' + index + 'is illegal: ' + interval
 	                                + ' lower bound should not greater then uppper bound.'
-	                            );
+	                            );*/
 	                        }
 	                    }
 

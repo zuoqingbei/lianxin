@@ -26,7 +26,7 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public List<Record> findOrderMonthRateForProduct(String startDate,String endDate,String plCode,String labTypeCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select o.*,case o.num  when 1 then '100' else trim (to_char(o.num * 100, '00.00')) end as rate");
+		sb.append(" select o.*,case o.num  when 1 then '100' else trim (to_char(o.num * 100, '00.0')) end as rate");
 		sb.append(" from ");
 		sb.append(" t_b_order_data o");
 		sb.append(" left join t_b_dictionary d on o.product_line_code = d . id ");
@@ -57,7 +57,7 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public List<Record> findOrderMonthRateForAll(String startDate,String endDate,String plCode,String labTypeCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select	t .*, b.js_count,	case t .all_count when 0 then 	'0' else to_char (b.js_count / t .all_count * 100,'00.00') end as rate");
+		sb.append(" select	t .*, b.js_count,	case t .all_count when 0 then 	'0' else to_char (b.js_count / t .all_count * 100,'00.0') end as rate");
 		sb.append(" from ");
 		sb.append("(select sum (num) as all_count,o. name  from t_b_order_data o ");
 		sb.append(" where 1=1 and o.desc_name like '%总%'");
@@ -99,7 +99,7 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public List<Record> findOrderYearRateForProduct(String date,String labTypeCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select t.*,b.js_count,case t.all_count when 0 then '0' else to_char(b.js_count/t.all_count*100,'00.00') end as  rate from");
+		sb.append(" select t.*,b.js_count,case t.all_count when 0 then '0' else to_char(b.js_count/t.all_count*100,'00.0') end as  rate from");
 		sb.append(" ( ");
 		sb.append(joinSql(date, ALL_NAME,labTypeCode));
 		sb.append(" )t ");
@@ -139,7 +139,7 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public Record findOrderRate(String date,String labTypeCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select t.*,b.*,to_char(b.js_num/t.all_count*100,'00.00') as rate from  ");
+		sb.append(" select t.*,b.*,to_char(b.js_num/t.all_count*100,'00.0') as rate from  ");
 		sb.append(" (select sum (num) as all_count from t_b_order_data o where ");
 		sb.append(" o.desc_name like '%"+ALL_NAME+"%' and o.name like '%"+date+"%' and o.type = 1 ");
 		if(StringUtils.isNotBlank(labTypeCode)){
@@ -202,7 +202,7 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public List<Record> findOrderPassForPro(String plCode,String labTypeCode,String desName,String name){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select o.*,case o.num  when 1 then '100' else to_char(o.num*100,'00.00') end as rate from t_b_order_data o left join t_b_dictionary d on d.id=o.product_line_code  ");
+		sb.append(" select o.*,case o.num  when 1 then '100' else to_char(o.num*100,'00.0') end as rate from t_b_order_data o left join t_b_dictionary d on d.id=o.product_line_code  ");
 		sb.append(" where o.del_flag=0 and o.type=3 and desc_name='"+desName+"'  ");
 		if(StringUtils.isNotBlank(plCode)){
 			sb.append(" and o.product_line_code='"+plCode+"' ");
@@ -228,7 +228,7 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public Record findOrderPassForAll(String plCode,String labTypeCode,String desName){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select to_char(b.pass_count/a.all_count*100,'00.00') as rate,a.*,b.* from  ");
+		sb.append(" select to_char(b.pass_count/a.all_count*100,'00.0') as rate,a.*,b.* from  ");
 		sb.append(" (select sum(num) as all_count from t_b_order_data where del_flag=0 and type=3 and name='总'  ");
 		if(StringUtils.isNotBlank(desName)){
 			sb.append(" and desc_name='"+desName+"'  ");
@@ -273,7 +273,7 @@ public class OrderModel extends Model<OrderModel> {
 	@Deprecated
 	public List<Record> findOrderYearRateForTab1(String date,String labTypeCode,String descName){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select t.*,b.js_count,case t.all_count when 0 then '0' else to_char(b.js_count/t.all_count*100,'00.00') end as  rate from");
+		sb.append(" select t.*,b.js_count,case t.all_count when 0 then '0' else to_char(b.js_count/t.all_count*100,'00.0') end as  rate from");
 		sb.append(" ( ");
 		sb.append(joinSqlTab1(date, descName+"-"+ALL_NAME,labTypeCode));
 		sb.append(" )t ");
@@ -313,7 +313,7 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public List<Record> findOrderRateForMonth(String startDate,String endDate){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select a.*,b.js_count,to_char(b.js_count/a.all_count*100,'00.00') as rate from ");
+		sb.append(" select a.*,b.js_count,to_char(b.js_count/a.all_count*100,'00.0') as rate from ");
 		sb.append(" (select name,num as all_count from t_b_order_data where type=4 and del_flag=0 and desc_name='整机-总' ");
 		sb.append(" and to_date(name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
 		sb.append("  order by name)a ");
@@ -323,4 +323,35 @@ public class OrderModel extends Model<OrderModel> {
 		sb.append("  order by name)b on a.name=b.name ");
 		return Db.find(sb.toString());
 	}
+	
+	/**
+	 * 
+	 * @time   2017年5月20日 上午11:50:41
+	 * @author zuoqb
+	 * @todo   整机 模块 订单类别占全部订单占比统计
+	 * @param  @param labTypeCode
+	 * @param  @return
+	 * @return_type   List<Record>
+	 */
+	public Record findOrderTypePercentTab3(String labTypeCode){
+		StringBuffer sb=new StringBuffer();
+		sb.append(" select a.*,b.*,to_char(a.zj/(a.zj+b.mk)*100,'00.0') as zj_rate,to_char(b.mk/(a.zj+b.mk)*100,'00.0') as mk_rate, ");
+		sb.append(" '4.3' as zj_rise,'2.1' as mk_rise from ( ");
+		sb.append(" select sum(num) as zj from t_b_order_data where type=2  and desc_name='模块' ");
+		if(StringUtils.isNotBlank(labTypeCode)){
+			sb.append(" and lab_name='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and lab_name is null ");
+		}
+		sb.append("  group by desc_name)a join ( ");
+		sb.append(" select sum(num) as mk from t_b_order_data where type=2  and desc_name='整机'    ");
+		if(StringUtils.isNotBlank(labTypeCode)){
+			sb.append(" and lab_name='"+labTypeCode+"' ");
+		}else{
+			sb.append(" and lab_name is null ");
+		}
+		sb.append(" group by desc_name)b on 1=1 ");
+		return Db.findFirst(sb.toString());
+	}
+	
 }

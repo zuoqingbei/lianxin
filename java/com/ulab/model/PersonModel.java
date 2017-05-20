@@ -33,7 +33,7 @@ public class PersonModel extends Model<LabModel> {
 	 */
 	public List<Record> personDetail(String type,String plCode,String labTypeCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select to_char(a.num/b.all_num * 100, '00.00') as rate,a.*,b.* from ( ");
+		sb.append(" select to_char(a.num/b.all_num * 100, '00.0') as rate,a.*,b.* from ( ");
 		sb.append(" select d.name,sum(d.num) as num from t_b_person_data p right join t_b_person_detail d on d.lab_id=p.id  ");
 		sb.append(" where d.del_flag=0 ");
 		if(StringUtils.isNoneBlank(type)){

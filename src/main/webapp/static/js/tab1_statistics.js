@@ -4,6 +4,13 @@
  */
 var data = [];//直方图数据
 function loadTab1Data(){
+	// 同期 环比满意度占比统计
+	satisfactionChangeForTab1Ajax();
+	//满意度 到月份数据统计tab1
+	satisfactionStatisForMonthForTab1Ajax();
+	//设备状态统计
+	equipmentTotalForLab1Ajax();
+	//人员信息
 	findPersonStatusTab1Ajax(1);
 	findPersonStatusTab1Ajax(2);
 	findPersonStatusTab1Ajax(3);
@@ -11,6 +18,8 @@ function loadTab1Data(){
     standardStatus();
     //能力状态
     abilityStatus();
+    //订单及时率与同比比较
+    orderYearRateForTab1Ajax();
     //订单及时率
     findOrderYearRateForTab1();
     //一次合格率  整体统计 整机 模块
@@ -23,12 +32,370 @@ function loadTab1Data(){
     communistStatisticForMonthForTab1Ajax();
     //直方图
     loadTab1JianData( $(".total_bottom_tab .active").attr("data"))
+    //统计当前以及同比 模块 整机问题闭环率tab1 
+    questionForMkZjTab1Ajax();
+}
+//统计当前以及同比 模块 整机问题闭环率tab1 
+function questionForMkZjTab1Ajax(){
+	$.post(contextPath+'/lab/questionForMkZjTab1Ajax',{},function(data){
+		var all_rate=((parseFloat(data[0].mk)+parseFloat(data[0].zj)+parseFloat(data[1].mk)+parseFloat(data[1].zj))/4).toFixed(1);
+		var rise_rate=((parseFloat(data[1].mk)+parseFloat(data[1].zj)-parseFloat(data[0].mk)-parseFloat(data[0].zj))/2).toFixed(1);
+		var htmls='<li>当年问题闭环率<span>'+all_rate+'%</span></li>';
+		htmls+='<li style="display: inline-block">同比上升</li>';
+		htmls+=' <span>2'+rise_rate+'%</span>';
+		$("#tab1_question_closed_title").html(htmls);
+		var myChart5 = echarts.init(document.getElementById("myChart5"));
+		right_echarts.push(myChart5);
+		myChart5.setOption(getCenterPie());
+		myChart5.setOption({
+		    legend: {
+		        show:false,
+		        data: ['整机', '模块']
+		    },
+		    textStyle: {
+		        fontSize: 12 * bodyScale
+		    },
+		    color: ['#4397f7', '#66ccff'],
+		    series: [
+		        {
+		            name: '整机',
+		            type: 'pie',
+		            clockWise: false,
+		            radius: ['50%', '60%'],
+		            center:['40%', '45%'],
+		            itemStyle: {
+		                normal: {
+		                    label: {show: true},
+		                    labelLine: {show:true,length:12*bodyScale,length2:47*bodyScale,smooth:false}
+		                },
+		            },
+		            data: [
+		                {
+		                    value: 100-parseFloat(data[1].zj),
+		                    name: '整机',
+		                    itemStyle: placeHolderStyle
+		                },
+		                {
+		                    value:parseFloat(data[1].zj),
+		                    name: '整机',
+		                    // itemStyle: placeHolderStyle
+		                }
+		            ]
+		        },
+		        {
+		            name: '模块',
+		            type: 'pie',
+		            clockWise: false,
+		            radius: ['40%', '50%'],
+		            center:['40%', '45%'],
+		            itemStyle: {
+		                normal: {
+		                    label: {show: true},
+		                    labelLine: {show: true, length: 6, length2: 20, smooth: false}
+		                },
+		            },
+		            data: [
+		                {
+		                    value: 100-parseFloat(data[1].mk),
+		                    name: '模块',
+		                    itemStyle: placeHolderStyle
+		                },
+		                {
+		                    value: parseFloat(data[1].mk),
+		                    name: '模块',
+		                    // itemStyle: placeHolderStyle
+		                }
+		            ]
+		        }
+		    ]
+
+		});
+	})
+}
+
+// 同期 环比满意度占比统计
+function satisfactionChangeForTab1Ajax(){
+	$.post(contextPath+'/lab/satisfactionChangeForTab1Ajax',{},function(data){
+		var htmls='海尔今年实验室用户满意度为<span class="orange bigger">'+data.tq+'%，</span>同比上升<span class="orange bigger">'+data.change_num+'%</span>';
+		$("#tab1_use_my_title").html(htmls);
+	})
+}
+//满意度 到月份数据统计tab1
+function satisfactionStatisForMonthForTab1Ajax(){
+	$.post(contextPath+'/lab/satisfactionStatisForMonthForTab1Ajax',{},function(data){
+		var myChart7 = echarts.init(document.getElementById("myChart7"));
+		right_echarts.push(myChart7);
+		myChart7.setOption(getLineEcharts());
+		myChart7.setOption({
+		    legend: {
+		        show: false,
+		        data: ['整机', '模块'],
+		        itemWidth: 5,  //图例标记的图形宽度
+		        itemHeight: 3, //图例标记的图形高度
+		    },
+		    grid: {
+		        right: 43,
+		        bottom: 20,
+		        left: 38,
+		        top: 30
+		    },
+		    yAxis: {
+		        name: '满意度/%',
+		        max: 100
+		    },
+		    xAxis: [
+		        {
+		            name: "时间",
+		            data: statistictab1LengendTime(data)
+		        }
+		    ],
+		    series: [
+		        {
+		            name: '满意度',
+		            type: 'line',
+		            stack: '总量',
+		            lineStyle: {
+		                normal: {
+		                    width: 1
+		                }
+		            },
+		            symbolSize: 2,
+		            data: tab1OrderRateSeriseData(data)
+		        }
+		    ]
+
+		});
+	})
+}
+//设备状态统计
+function equipmentTotalForLab1Ajax(){
+	$.post(contextPath+'/lab/equipmentTotalForLab1Ajax',{},function(data){
+		var myChart1 = echarts.init(document.getElementById("myChart1"));
+		right_echarts.push(myChart1);
+		option = {
+		    tooltip: {
+		        formatter: "{a} <br/>{c}%"
+		    },
+		    toolbox: {
+		        show: false,
+		        feature: {
+		            restore: {show: true},
+		            saveAsImage: {show: true}
+		        }
+		    },
+		    series: [
+		        {
+		            name: '设备完好率',
+		            type: 'gauge',
+		            z: 3,
+		            min: 0,
+		            max: 100,
+		            splitNumber: 5,
+		            radius: '80%',
+		            textStyle: {
+		                fontSize: 7 * bodyScale
+		            },
+		            axisLine: {            // 坐标轴线
+		                show: false,
+		                lineStyle: {       // 属性lineStyle控制线条样式
+		                    width: 7,
+		                    color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
+		                },
+
+		            },
+		            axisLabel: {
+		                show: true,
+		                textStyle: {
+		                    fontSize: 8 * bodyScale
+		                }
+		            },
+		            axisTick: {            // 坐标轴小标记
+		                length: 5,        // 属性length控制线长
+		                lineStyle: {       // 属性lineStyle控制线条样式
+		                    color: '#66ccff'
+		                }
+		            },
+		            splitLine: {           // 分隔线
+		                length: 11,         // 属性length控制线长
+		                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+		                    color: '#66ccff'
+		                }
+		            },
+		            itemStyle: {
+		                normal: {
+		                    color: "#ff9933",
+		                    // borderColor:"red",
+		                    // borderWidth:2,
+//		                        opacity:0.5
+		                }
+		            },
+		            pointer: {
+		                length: "55%",
+		                width: 3
+		            },
+		            title: {
+		                offsetCenter: [0, '110%'],       // x, y，单位px
+		                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+		                    fontSize: 12 * bodyScale,
+		                    color: '#66ccff',
+//		                        fontStyle: 'italic'
+		                },
+
+		            },
+		            detail: {
+		                offsetCenter: [0, '70%'],
+		                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+		                    fontWeight: 'bolder',
+		                    fontSize: '170%',
+		                    color: "#ff9933"
+		                },
+		                formatter: '{value}%'
+		            },
+		            data: [{value: data[1].rate, name: '设备完好率'}]
+		        },
+		        {
+		            name: '实验在线率',
+		            type: 'gauge',
+		            center: ['25%', '58%'],    // 默认全局居中
+		            radius: '70%',
+		            min: 0,
+		            max: 100,
+		            endAngle: 45,
+		            splitNumber: 5,
+		            axisLine: {            // 坐标轴线
+		                lineStyle: {       // 属性lineStyle控制线条样式
+		                    width: 7,
+		                    color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
+
+		                },
+		            },
+		            axisLabel: {
+		                show: true,
+		                textStyle: {
+		                    fontSize: 8 * bodyScale
+		                }
+		            },
+		            axisTick: {            // 坐标轴小标记
+		                length: 7,        // 属性length控制线长
+		                lineStyle: {       // 属性lineStyle控制线条样式
+		                    color: 'auto'
+		                }
+		            },
+		            splitLine: {           // 分隔线
+		                length: 11,         // 属性length控制线长
+		                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+		                    color: 'auto'
+		                }
+		            },
+		            itemStyle: {
+		                normal: {
+		                    color: "#ff9933",
+//		                        borderColor:"red",
+//		                        borderWidth:2,
+//		                        opacity:0.5
+		                }
+		            },
+		            pointer: {
+		                length: "55%",
+		                width: 3
+		            },
+		            title: {
+		                offsetCenter: [0, '100%'],       // x, y，单位px
+		                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+		                    fontSize: 12 * bodyScale,
+		                    color: '#66ccff',
+//		                        fontStyle: 'italic'
+		                },
+		            },
+		            detail: {
+		                offsetCenter: ['15%', '50%'],//数字显示的位置
+		                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+		                    fontWeight: 'bolder',
+		                    fontSize: '170%',
+		                    color: "#ff9933"
+		                },
+		                formatter: '{value}%' //数字显示的样式
+		            },
+		            data: [{value: data[0].rate, name: '实验在线率'}]
+		        },
+		        {
+		            name: '设备利用率',
+		            type: 'gauge',
+		            center: ['75%', '59%'],    // 默认全局居中
+		            radius: '70%',
+		            min: 0,
+		            max: 100,
+		            startAngle: 135,
+		            endAngle: -45,
+		            splitNumber: 5,
+		            axisLine: {            // 坐标轴线
+		                lineStyle: {       // 属性lineStyle控制线条样式
+		                    width: 7,
+		                    color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
+
+		                }
+		            },
+		            axisLabel: {
+		                show: true,
+		                textStyle: {
+		                    fontSize: 8
+		                }
+		            },
+		            axisTick: {            // 坐标轴小标记
+		                length: 7,        // 属性length控制线长
+		                lineStyle: {       // 属性lineStyle控制线条样式
+		                    color: 'auto'
+		                }
+		            },
+		            splitLine: {           // 分隔线
+		                length: 11,         // 属性length控制线长
+		                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+		                    color: 'auto'
+		                }
+		            },
+		            itemStyle: {
+		                normal: {
+		                    color: "#ff9933",
+//		                        borderColor:"red",
+//		                        borderWidth:2,
+//		                        opacity:0.5
+		                }
+		            },
+		            pointer: {
+		                length: "55%",
+		                width: 3
+		            },
+		            title: {
+		                offsetCenter: [0, '100%'],       // x, y，单位px
+		                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+		                    fontSize: 12,
+		                    color: '#66ccff',
+//		                        fontStyle: 'italic'
+		                },
+		            },
+		            detail: {
+		                offsetCenter: ['-15%', '50%'],
+		                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+		                    fontWeight: 'bolder',
+		                    fontSize: '170%',
+		                    color: "#ff9933"
+		                },
+		                formatter: '{value}%'
+		            },
+		            data: [{value: data[2].rate, name: '设备利用率'}]
+		        }
+		    ]
+		};
+		myChart1.setOption(option);
+	});
 }
 //加载量产一致性保障 xhId:产品id  name：产品名称
 function loadTab1JianData(xhId){
 	$.post(contextPath+'/lab/jianCeXhProForTab1Ajax',{"xhCode":xhId},function(xhPro){
 		$("#tab1_jiance_xh_name").html("\""+xhPro.xh_name+"\"");
 		$("#tab1_jiance_xh_result").html(xhPro.jielun);
+		$("#tab1_jiance_xh_name2").html("\""+xhPro.xh_name+"\"");
+		$("#tab1_jiance_xh_result2").html(xhPro.jielun);
 		//模块商质量水平分布
 		mkSqualityLevelForTab1(xhPro);
 		//SPC分析
@@ -251,8 +618,8 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		        top: 10,
 		        right: 10,
 		        pieces: [{
-		            gt: 74,
-		            lte: 74.1,
+		            gt:  parseFloat(mLcl),
+		            lte: parseFloat(mUcl),
 		            color: '#096'
 		        }],
                 outOfRange: {
@@ -311,6 +678,8 @@ function cpkDataForTab1(xhPro){
 		});
 		mHeightChart.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
 		mHeightChart.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
+		mHeightChart.options.xAxis[0].max=parseFloat(xhPro.lsl);
+		mHeightChart.options.xAxis[0].min=parseFloat(xhPro.usl);
 		mHeightChart.series[0].setData(histogram(mData, 0.5)); // 更新 series
 		mHeightChart.series[1].setData(histogram(mData, 0.5));
 	});
@@ -556,6 +925,7 @@ function findPersonStatusTab1Ajax(type){
 function findOrderPassForTab1Ajax(){
 	$.post(contextPath+'/lab/findOrderPassForTab1Ajax',{},function(data){
 		$("#tab1_pass_rate_id").html(data.rate+"%");
+		$("#tab1_pass_rate_rise_id").html("2.8%");
 	})
 }
 //一次合格率  整体统计 整机 模块
@@ -649,6 +1019,19 @@ function findOrderPassForAllTab1(){
 
 		});
 
+	})
+}
+//获取某一年订单整体及时率
+function orderYearRateForTab1Ajax(){
+	$.post(contextPath+'/lab/orderYearRateAjax',{},function(data){
+		var name;
+		if(parseFloat(data[1].rate)<data[0].rate){
+			name="同比下降";
+		}else{
+			name="同比上升";
+		}
+		var htmls='当年订单及时率<span class="orange bigger">'+data[1].rate+'%，</span>'+name+'<span class="orange bigger">'+(parseFloat(data[1].rate)-parseFloat(data[0].rate)).toFixed(1)+'%</span>'
+		$("#tab1_order_js_compare").html(htmls);
 	})
 }
 //订单及时率
