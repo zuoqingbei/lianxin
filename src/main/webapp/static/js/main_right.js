@@ -265,7 +265,7 @@ var labelBottom = {
     },
 };
 var radius = ['30%', '45%'];
-option = {
+/*option = {
     toolbox: {
         show: false,
         feature: {
@@ -419,13 +419,13 @@ option = {
         }
     ]
 };
-myChart2.setOption(option);
+myChart2.setOption(option);*/
 
 //能力状态 柱形图
-var myChart3 = echarts.init(document.getElementById("myChart3"));
-myChart3.setOption(getBarEcharts());
+/*var myChart3 = echarts.init(document.getElementById("myChart3"));
+myChart3.setOption(getBarEcharts());*/
 var bar_chip = '../img/bar_chip.png';
-myChart3.setOption({
+/*myChart3.setOption({
     yAxis: [
         {
             name: "数量",
@@ -455,7 +455,7 @@ myChart3.setOption({
             ]
         }
     ]
-});
+});*/
 
 
 //一次合格率 同心圆
@@ -1454,7 +1454,7 @@ myChart12.setOption({
 */
 
 //模块质量过程检测
-var myChart14 = echarts.init(document.getElementById("myChart14"));
+/*var myChart14 = echarts.init(document.getElementById("myChart14"));
 myChart14.setOption(getBarEcharts());
 myChart14.setOption({
     title: {
@@ -1535,11 +1535,11 @@ myChart14.setOption({
             ]
         }
     ]
-});
+});*/
 
 
 //Xbar控制图
-var myChart15 = echarts.init(document.getElementById("myChart15"));
+/*var myChart15 = echarts.init(document.getElementById("myChart15"));
 myChart15.setOption(getLineEcharts());
 myChart15.setOption({
     color:["#ff9933"],
@@ -1622,11 +1622,11 @@ myChart15.setOption({
         }
     ]
 
-});
+});*/
 
 
 //能力直方图
-var myChart16 = echarts.init(document.getElementById("myChart16"));
+/*var myChart16 = echarts.init(document.getElementById("myChart16"));
 myChart16.setOption(getLineAndBar());
 myChart16.setOption({
     title: {
@@ -1676,7 +1676,7 @@ myChart16.setOption({
         }
     ]
 
-});
+});*/
 
 
 //共产一致与不一致占比
@@ -4428,8 +4428,7 @@ myChart49.setOption({
 //}
 //console.log(str)
 
-var right_echarts = [myChart2, myChart3,
-    myChart14, myChart15, myChart16,
+var right_echarts = [
 ]
 //重置echart图标大小 在加载平面地图时被调用
 function resetSizeRight() {

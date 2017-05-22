@@ -31,7 +31,7 @@ function loadTab1Data(){
     //根据类型 时间 统计共产 一致个月份数量
     communistStatisticForMonthForTab1Ajax();
     //直方图
-    loadTab1JianData( $(".total_bottom_tab .active").attr("data"))
+    loadTab1JianData( $(".tab1 .total_bottom_tab .active").attr("data"));
     //统计当前以及同比 模块 整机问题闭环率tab1 
     questionForMkZjTab1Ajax();
 }
@@ -390,11 +390,11 @@ function equipmentTotalForLab1Ajax(){
 	});
 }
 //加载量产一致性保障 xhId:产品id  name：产品名称
-function loadTab1JianData(xhId){
+function loadTab1JianData(xhId,xName){
 	$.post(contextPath+'/lab/jianCeXhProForTab1Ajax',{"xhCode":xhId},function(xhPro){
-		$("#tab1_jiance_xh_name").html("\""+xhPro.xh_name+"\"");
+		$("#tab1_jiance_xh_name").html("\""+xName+"\"");
 		$("#tab1_jiance_xh_result").html(xhPro.jielun);
-		$("#tab1_jiance_xh_name2").html("\""+xhPro.xh_name+"\"");
+		$("#tab1_jiance_xh_name2").html("\""+xName+"\"");
 		$("#tab1_jiance_xh_result2").html(xhPro.jielun);
 		//模块商质量水平分布
 		mkSqualityLevelForTab1(xhPro);
@@ -544,9 +544,6 @@ function mkSqualityLevelForTab1(xhPro){
 	        }
 	    ]
 	});
-/*	$.post(contextPath+'/lab/jianCeXbarForTab1Ajax',{"xhName":xhPro.xh_name},function(data){
-		
-	})*/
 }
 //SPC分析  xbar
 function scpDataForTab1(myChartIds,xhPro,type){

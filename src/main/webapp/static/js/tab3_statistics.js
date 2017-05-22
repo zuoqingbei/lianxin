@@ -38,7 +38,6 @@ function loadTab3Data(){
 // 统计当前以及同比 模块 整机问题闭环率tab3  type   0：整机 1：模块
 function productLineForTab3Tab3Ajax(myChartIds,type){
 	$.post(contextPath+'/lab/productLineForTab3Tab3Ajax',{"labTypeCode":labTypeCode,"type":type},function(data){
-		console.log(data)
 		var mTitle;
 		if(type==0){
 			mTitle="整机";

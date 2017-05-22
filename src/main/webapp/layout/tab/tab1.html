@@ -167,7 +167,7 @@
     </div>
     <div class="total_bottom">
         <div class="total_name">数据应用</div>
-        <div class="total_bottom_left">
+        <div class="total_bottom_left tab1">
             <div class="echarts_title echarts_title2">量产一致性保障</div>
             <div class="total_bottom_pie">
                 <h3>模块商质量水平分布</h3>
@@ -182,9 +182,9 @@
 	                		<ul>
 		                		##for(c in p.children){
 		                			##if(pLP.first&&cLP.first){
-			                			<li class="main${p.id}-sub active" data="${c.id}" onclick="loadTab1JianData('${c.id}')">${c.name}</li>
+			                			<li class="main${p.id}-sub active" data="${c.id}" onclick="loadTab1JianData('${c.id}','${c.name}')">${c.name}</li>
 			                		##}else{
-			                			<li class="main${p.id}-sub" data="${c.id}" onclick="loadTab1JianData('${c.id}')">${c.name}</li>
+			                			<li class="main${p.id}-sub" data="${c.id}" onclick="loadTab1JianData('${c.id}','${c.name}')">${c.name}</li>
 			                		##}
 		                		##}
 	                		 </ul>
