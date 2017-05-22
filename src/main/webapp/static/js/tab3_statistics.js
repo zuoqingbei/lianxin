@@ -520,6 +520,9 @@ function findOrderYearRateForProductAjax(){
 	$.post(contextPath+'/lab/findOrderYearRateForProductAjax',{"labTypeCode":labTypeCode},function(data){
 		var myChart45 = echarts.init(document.getElementById("myChart45"));
 		right_echarts.push(myChart45);
+		if(data==null||data.length==0){
+			return;
+		}
 		myChart45.setOption(getRadarEcharts());
 		myChart45.setOption({
 		    legend: {
@@ -613,42 +616,36 @@ function orderYearRateAjax(){
 }
 
 function tab3IndicatorData(da){
-	var data=da[0];
-	var data2=da[1];
-	//先找出最大值
-	var maxNum=100;
-	/*for(var i=0;i<data.length;i++) {
-		if(parseInt(data[i].all_count)>parseInt(maxNum)){
-			maxNum=parseInt(data[i].all_count);
-		}
-	}
-	for(var i=0;i<data2.length;i++) {
-		if(parseInt(data2[i].all_count)>parseInt(maxNum)){
-			maxNum=parseInt(data2[i].all_count);
-		}
-	}*/
 	var indicatorData = [];
-	for(var i=0;i<data.length;i++) {
-		var obj=new Object();
-		obj.max=maxNum;
-		obj.text=data[i].name;
-		indicatorData.push(obj);
+	if(da!=null&&da.length>0){
+		var data=da[0];
+		var data2=da[1];
+		for(var i=0;i<data.length;i++) {
+			var obj=new Object();
+			obj.max=maxNum;
+			obj.text=data[i].name;
+			indicatorData.push(obj);
+		}
 	}
 	return indicatorData;
 }
 
 function tab3DataData(data,index){
 	var indicatorData = [];
-	for(var i=0;i<data[index].length;i++) {
-		indicatorData.push(data[index][i].rate);
+	if(data!=null&&data.length>0){
+		for(var i=0;i<data[index].length;i++) {
+			indicatorData.push(data[index][i].rate);
+		}
 	}
 	return indicatorData;
 }
 function tab3RateData(data){
 	var indicatorDataTab3 = [];
-	for(var i=0;i<data.length;i++) {
-		var num=data[i].rate;
-		indicatorDataTab3.push(num);
+	if(data!=null&&data.length>0){
+		for(var i=0;i<data.length;i++) {
+			var num=data[i].rate;
+			indicatorDataTab3.push(num);
+		}
 	}
 	return indicatorDataTab3;
 }
@@ -668,22 +665,24 @@ function tab3PassLengend(data){
 }
 function getTab3Serise(data){
 	var series=[];
-	$.each(data,function(index,item){
-		var it={
-		            name: item[0].product_line_name,
-		            type: 'line',
-		           /* stack: '总量',*/
-		            lineStyle:{
-		                normal:{
-		                    width:1
-		                }
-		            },
-		            symbolSize:2,
-		            data: tab3RateData(item),
-
-		        };
-		series.push(it);
-	})
+	if(data!=null&&data.length>0){
+		$.each(data,function(index,item){
+			var it={
+					name: item[0].product_line_name,
+					type: 'line',
+					/* stack: '总量',*/
+					lineStyle:{
+						normal:{
+							width:1
+						}
+					},
+					symbolSize:2,
+					data: tab3RateData(item),
+					
+			};
+			series.push(it);
+		})
+	}
 	return series;
 }
 function tab3OrderRateLengend(data){

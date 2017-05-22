@@ -279,8 +279,12 @@ public class LabController extends BaseController {
     	List<List<Record>> list=new ArrayList<List<Record>>();
     	List<Record> list2016=OrderModel.dao.findOrderYearRateForProduct("2016",labTypeCode);
     	List<Record> list2017=OrderModel.dao.findOrderYearRateForProduct("2017",labTypeCode);
-    	list.add(sort(list2016));
-    	list.add(sort(list2017));
+    	if(list2016!=null&&list2016.size()>0){
+    		list.add(sort(list2016));
+    	}
+    	if(list2017!=null&&list2017.size()>0){
+    		list.add(sort(list2017));
+    	}
 		renderJson(list);
     }
     //数据结果 订单及时率 产线逆时针排序
@@ -311,7 +315,10 @@ public class LabController extends BaseController {
     		productLine=DicModel.dao.findDicByType("line_type");
     	}
     	for(Record r:productLine){
-    		list.add(OrderModel.dao.findOrderMonthRateForProduct(startDate,endDate,r.get("id").toString(),labTypeCode));
+    		List<Record> data=OrderModel.dao.findOrderMonthRateForProduct(startDate,endDate,r.get("id").toString(),labTypeCode);
+    		if(data!=null&&data.size()>0){
+    			list.add(data);
+    		}
     	}
 		renderJson(list);
     }
@@ -333,7 +340,10 @@ public class LabController extends BaseController {
     		productLine=DicModel.dao.findDicByType("line_type");
     	}
     	for(Record r:productLine){
-    		list.add(OrderModel.dao.findOrderMonthTypeForProduct(r.get("id").toString(),labTypeCode,desName));
+    		List<Record> data=OrderModel.dao.findOrderMonthTypeForProduct(r.get("id").toString(),labTypeCode,desName);
+    		if(data!=null&&data.size()>0){
+    			list.add(data);
+    		}
     	}
 		renderJson(list);
     }
@@ -348,7 +358,11 @@ public class LabController extends BaseController {
      */
     public void findOrderTypePercentTab3Ajax(){
     	String labTypeCode=getPara("labTypeCode","");
-		renderJson(OrderModel.dao.findOrderTypePercentTab3(labTypeCode));
+    	Record data=OrderModel.dao.findOrderTypePercentTab3(labTypeCode);
+    	if(data==null){
+    		data=new Record();
+    	}
+		renderJson(data);
     }
     /**
      * 
@@ -377,8 +391,16 @@ public class LabController extends BaseController {
     public void findOrderPassForAllAjax(){
     	String labTypeCode=getPara("labTypeCode","");
     	List<Record> list=new ArrayList<Record>();
-    	list.add(OrderModel.dao.findOrderPassForAll(null, labTypeCode, "整机"));
-    	list.add(OrderModel.dao.findOrderPassForAll(null, labTypeCode, "模块"));
+    	Record r1=OrderModel.dao.findOrderPassForAll(null, labTypeCode, "整机");
+    	if(r1==null){
+    		r1=new Record();
+    	}
+    	list.add(r1);
+    	Record r2=OrderModel.dao.findOrderPassForAll(null, labTypeCode, "模块");
+    	if(r2==null){
+    		r2=new Record();
+    	}
+    	list.add(r2);
 		renderJson(list);
     }
     
@@ -447,7 +469,10 @@ public class LabController extends BaseController {
     		productLine=DicModel.dao.findDicByType("line_type");
     	}
     	for(Record r:productLine){
-    		list.add(PersonModel.dao.personForTab2(type, r.get("id").toString(), labTypeCode));
+    		List<Record> data=PersonModel.dao.personForTab2(type, r.get("id").toString(), labTypeCode);
+    		if(data!=null&&data.size()>0){
+    			list.add(data);
+    		}
     	}
 		renderJson(list);
     }
@@ -648,7 +673,11 @@ public class LabController extends BaseController {
      */
     public void satisfactionChangeForTab1Ajax(){
     	String labTypeCode=getPara("labTypeCode","");
-		renderJson(SatisfactionModel.dao.satisfactionChange(labTypeCode));
+    	Record r=SatisfactionModel.dao.satisfactionChange(labTypeCode);
+    	if(r==null){
+    		r=new Record();
+    	}
+		renderJson(r);
     }
     /**
      * 
@@ -681,7 +710,10 @@ public class LabController extends BaseController {
     		productLine=DicModel.dao.findDicByType("line_type");
     	}
     	for(Record r:productLine){
-    		list.add(SatisfactionModel.dao.productLineAndMonth(startDate,endDate,r.get("id").toString(),labTypeCode));
+    		List<Record>  data=SatisfactionModel.dao.productLineAndMonth(startDate,endDate,r.get("id").toString(),labTypeCode);
+    		if(data!=null&&data.size()>0){
+    			list.add(data);
+    		}
     	}
 		renderJson(list);
     }

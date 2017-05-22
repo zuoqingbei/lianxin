@@ -176,10 +176,18 @@ function personForTab2Ajax(myChartIds,type,divisor){
 		for(var x=preYdata.length-1;x>=0;x--){
 			yData.push(preYdata[x]);
 		}
-		data.push(data0);
-		data.push(data1);
-		data.push(data2);
-		data.push(data3);
+		if(data0.length>0){
+			data.push(data0);
+		}
+		if(data1.length>0){
+			data.push(data1);
+		}
+		if(data2.length>0){
+			data.push(data2);
+		}
+		if(data3.length>0){
+			data.push(data3);
+		}
 		var myChart25 = echarts.init(document.getElementById(myChartIds));
 		right_echarts.push(myChart25)
 		myChart25.setOption({

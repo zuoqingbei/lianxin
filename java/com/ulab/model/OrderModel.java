@@ -228,7 +228,7 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public Record findOrderPassForAll(String plCode,String labTypeCode,String desName){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select to_char(b.pass_count/a.all_count*100,'00.0') as rate,a.*,b.* from  ");
+		sb.append(" select case  a .all_count when 0 then '0' else to_char(b.pass_count/a.all_count*100,'00.0') end as rate,a.*,b.* from  ");
 		sb.append(" (select sum(num) as all_count from t_b_order_data where del_flag=0 and type=3 and name='总'  ");
 		if(StringUtils.isNotBlank(desName)){
 			sb.append(" and desc_name='"+desName+"'  ");
