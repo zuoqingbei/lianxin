@@ -21,4 +21,5 @@ public class Constants {
 	 * 量产缓存
 	 */
 	public static final String JIANC_EPRO_SESSION="jianc_epro_session_";//产品型号检测结果属性
+	public static final String JIANC_GAUSSIAN_SESSION="jianc_gaussian_session_";
 }

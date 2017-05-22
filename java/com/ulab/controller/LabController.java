@@ -545,19 +545,22 @@ public class LabController extends BaseController {
      */
     public List<Record> gaussian(String xhCode){
     	String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
+    	String gaussian_key=Constants.JIANC_GAUSSIAN_SESSION+xhCode;
     	Record pro=getSessionAttr(redis_key);
     	if(pro==null){
     		pro=JianceProModel.dao.findProByFiled(xhCode);
     		setSessionAttr(redis_key, pro);
     	}
-    	List<Record> list=new ArrayList<Record>();
-    	if(pro!=null){
+    	List<Record> list=getSessionAttr(gaussian_key);
+    	if(pro!=null&&list==null){
+    		list=new ArrayList<Record>();
     		double pj=Double.parseDouble(pro.get("pj_value").toString());
     		double fc=Double.parseDouble(pro.get("fc_value").toString());
     		for(int x=0;x<50000;x++){
     			Record r=new Record();
     			list.add(r.set("num",NormalDistribution.calc(pj, fc)));
     		}
+    		setSessionAttr(gaussian_key, list);
     	}
     	return list;
     }

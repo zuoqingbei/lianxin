@@ -2,7 +2,6 @@
 /**
  * 右侧tab3数据统计
  */
-var labTypeCode;//实验室类型
 function loadTab3Data(){
 	//整机 模块 订单类别占全部订单占比统计
 	findOrderTypePercentTab3Ajax();

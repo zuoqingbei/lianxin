@@ -298,12 +298,46 @@ function cpkDataForTab4(xhPro){
 		$.each(data[1],function(index,item){
 			mData2.push([parseFloat(item.num),parseFloat(item.num)]);
 		});
-		mHeightChartTab4.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
-		mHeightChartTab4.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
+		//mHeightChartTab4.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
+		//mHeightChartTab4.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
 		mHeightChartTab4.options.xAxis[0].max=parseFloat(xhPro.lsl);
 		mHeightChartTab4.options.xAxis[0].min=parseFloat(xhPro.usl);
 		mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
 		mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));
+		mHeightChartTab4.xAxis[0].addPlotLine({
+            color:'red',            //线的颜色，定义为红色
+            dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+            value:parseFloat(xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            width:2  ,               //标示线的宽度，2px
+            label:{
+                text:'LSL',  //标签的内容
+                verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                style: {
+                    color: 'red',
+                   /* fontWeight: 'bold',*/
+                    fontSize:12
+                } 
+            },
+            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+        });
+		mHeightChartTab4.xAxis[0].addPlotLine({
+            color:'red',            //线的颜色，定义为红色
+            dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+            value:parseFloat(xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            width:2  ,               //标示线的宽度，2px
+            label:{
+                text:'USL',//标签的内容
+                align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                style: {
+                    color: 'red',
+                    /*fontWeight: 'bold',*/
+                    fontSize:12
+                }
+            },
+            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+        });
 	});
 	
 }
@@ -333,6 +367,16 @@ function histogramTab4(data, step) {
     return arr;
 }
 var mHeightChartTab4=$('#myChart16').highcharts({
+	tooltip:{
+		formatter:function(p){
+			if(this.series.name=="概率密度"){
+				return false;
+			}else{
+				var h=this.point.x+"<br/>直方图："+this.point.y;
+				return h;
+			}
+		}
+	},
     chart: {
         type: 'column',
         backgroundColor: 'rgba(0,0,0,0)',
@@ -351,43 +395,10 @@ var mHeightChartTab4=$('#myChart16').highcharts({
         enabled:false,
     },
     xAxis: {
-        gridLineWidth: 1,
+        gridLineWidth: 0,
         min:71,
         max:77,
-        plotLines:[{
-            color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
-            value:0,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
-            label:{
-                text:'LSL',  //标签的内容
-                align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
-                style: {
-                    color: 'red',
-                   /* fontWeight: 'bold',*/
-                    fontSize:12
-                } 
-            },
-            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
-        },{
-            color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
-            value:0,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
-            label:{
-                text:'USL',//标签的内容
-                align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
-                style: {
-                    color: 'red',
-                   /* fontWeight: 'bold',*/
-                    fontSize:12
-                } 
-            },
-            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
-        }
-        ]
+        plotLines:[]
     },
     yAxis: [{
         title: {

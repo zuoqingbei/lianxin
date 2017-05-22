@@ -676,12 +676,46 @@ function cpkDataForTab1(xhPro){
 		$.each(data[1],function(index,item){
 			mData2.push([parseFloat(item.num),parseFloat(item.num)]);
 		});
-		mHeightChart.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
-		mHeightChart.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
+		/*mHeightChart.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
+		mHeightChart.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);*/
 		mHeightChart.options.xAxis[0].max=parseFloat(xhPro.lsl);
 		mHeightChart.options.xAxis[0].min=parseFloat(xhPro.usl);
 		mHeightChart.series[0].setData(histogram(mData, 0.3)); // 更新 series
 		mHeightChart.series[1].setData(histogram(mData2, 0.3));
+		mHeightChart.xAxis[0].addPlotLine({
+            color:'red',            //线的颜色，定义为红色
+            dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+            value:parseFloat(xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            width:2  ,               //标示线的宽度，2px
+            label:{
+                text:'LSL',  //标签的内容
+                verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                style: {
+                    color: 'red',
+                   /* fontWeight: 'bold',*/
+                    fontSize:12
+                } 
+            },
+            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+        });
+		mHeightChart.xAxis[0].addPlotLine({
+            color:'red',            //线的颜色，定义为红色
+            dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+            value:parseFloat(xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            width:2  ,               //标示线的宽度，2px
+            label:{
+                text:'USL',//标签的内容
+                align:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                style: {
+                    color: 'red',
+                    /*fontWeight: 'bold',*/
+                    fontSize:12
+                }
+            },
+            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+        });
 	});
 	
 }
@@ -719,6 +753,16 @@ function histogram(data, step) {
     return arr;
 }
 var mHeightChart=$('#myChart10').highcharts({
+	tooltip:{
+		formatter:function(p){
+			if(this.series.name=="概率密度"){
+				return false;
+			}else{
+				var h=this.point.x+"<br/>直方图："+this.point.y;
+				return h;
+			}
+		}
+	},
     chart: {
         type: 'column',
         backgroundColor: 'rgba(0,0,0,0)',
@@ -737,43 +781,10 @@ var mHeightChart=$('#myChart10').highcharts({
         enabled:false,
     },
     xAxis: {
-        gridLineWidth: 1,
+        gridLineWidth: 0,
         min:71,
         max:77,
-        plotLines:[{
-            color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
-            value:0,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
-            label:{
-                text:'LSL',  //标签的内容
-                verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
-                style: {
-                    color: 'red',
-                   /* fontWeight: 'bold',*/
-                    fontSize:12
-                } 
-            },
-            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
-        },{
-            color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
-            value:0,                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
-            label:{
-                text:'USL',//标签的内容
-                align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
-                style: {
-                    color: 'red',
-                    /*fontWeight: 'bold',*/
-                    fontSize:12
-                }
-            },
-            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
-        }
-        ]
+        plotLines:[]
     },
     yAxis: [{
         title: {
@@ -802,7 +813,7 @@ var mHeightChart=$('#myChart10').highcharts({
 		color:"#00e673",
         yAxis: 1,
         marker: {
-            radius: 1.5
+            radius: 1
         }
     }]
 }).highcharts();
@@ -1115,10 +1126,10 @@ function standardStatus(){
 		var gjbz=standardSeriesData(data.standarddata,"国际标准");
 		var hybz=standardSeriesData(data.standarddata,"行业标准");
 		var qybz=standardSeriesData(data.standarddata,"企业标准");
-	/*	$("#tab1_gjiabz_id").html(gjia);
+		$("#tab1_gjiabz_id").html(gjia);
 		$("#tab1_gjibz_id").html(gjbz);
 		$("#tab1_hybz_id").html(hybz);
-		$("#tab1_qybz_id").html(qybz);*/
+		$("#tab1_qybz_id").html(qybz);
 		
 		var num2=gjia;
 		var num3=gjbz;

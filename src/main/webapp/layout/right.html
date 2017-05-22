@@ -47,8 +47,8 @@
 <script src="${contextPath!}/static/js/tab2_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab3_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab4_statistics.js?time=New Date()"></script>
-
  <script>
+	var labTypeCode;//实验室类型
     $(function () {
     
         $(".tab-item").click(function () {
@@ -69,7 +69,7 @@
             $(this).addClass("word_active").siblings().removeClass("word_active");
         	resetSizeRight();
         });
-       
+       // labTypeCode="模块商实验室";
         loadTab1Data();
         loadTab2Data();
         loadTab3Data();
