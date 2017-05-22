@@ -442,7 +442,8 @@ function communistStatisticForMonthForTab4Ajax(){
 		    yAxis: [
 		        {
 		            name: "数量",
-		            type: 'value'
+		            type: 'value',
+					scale:true
 		        }
 		    ],
 		    xAxis: [
@@ -498,7 +499,7 @@ function communistGravityStatisticForTab4Ajax(){
 		            name: '',
 		            type: 'pie',
 		            radius: [0, '50%'],
-		            center: ['50%', '55%'],
+		            center: ['35%', '55%'],
 		            roseType: 'radius',
 		            label: {
 		                normal: {

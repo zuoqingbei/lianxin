@@ -330,9 +330,13 @@ function labPropertiesStatis(){
 	                name: "实验室数量",
 	                type: 'value',
 	                axisLabel: {
+                        rotate:-90,
 	                    textStyle: {
 	                        color: "#66ccff",
-	                        fontSize: bodyScale*12
+	                        // color: "#f00",
+	                        fontSize: bodyScale*12,
+
+
 	                    },
                         interval:0
 	                },

@@ -190,8 +190,8 @@ function satisfactionStatisForYearTab3Ajax2017(){
 		        }
 		    ],
 		    grid: {
-		        x: '25%',
-		        x2: "15%",
+		        x: '28%',
+		        x2: "23%",
 		        y: '5%',
 		        y2: "0%"
 		    },
@@ -263,7 +263,8 @@ function satisfactionStatisForYearTab3Ajax2016(){
 		        }
 		    ],
 		    grid: {
-		        x: '35%',
+		        x: '30%',
+				x2:'20%',
 		        y: '5%',
 		        y2: "0%"
 		    },
