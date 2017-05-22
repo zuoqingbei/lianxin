@@ -58,7 +58,7 @@ function productLineForTab3Tab3Ajax(myChartIds,type){
 		            type: 'pie',
 		            clockWise: false,  //旋转方向
 		            radius:mRadius[index],
-		            center:["36%","50%"],
+		            center:["35%","50%"],
 		            itemStyle: dataStyle,
 		            data: [
 		                {
@@ -79,6 +79,7 @@ function productLineForTab3Tab3Ajax(myChartIds,type){
 		    color: ['#66ccff', '#00e673', '#ff9933', '#4397f7', '#ffff99', '#ff6666', '#66ffcc'],
 		    legend: {
 		        show: true,
+				right:"-2%",
 		        data: mData,
 		        orient: ' vertical',  //布局  纵向布局
 

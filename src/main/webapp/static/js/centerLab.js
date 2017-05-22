@@ -135,6 +135,7 @@ function inittwo() {
 
                 type: 'value',
                 max: 100,
+                scale:true,
             },
         ],
         xAxis: [
@@ -147,7 +148,7 @@ function inittwo() {
         grid: {
             x: "15%",
             x2: "10%",
-            y: '20%',
+            y: '23%',
             y2: "34%",
         },
         series: [
@@ -199,6 +200,7 @@ function initThree() {
 
 		                type: 'value',
 		                max: 100,
+                        scale:true,
 		            },
 		        ],
 		        xAxis: [
@@ -216,7 +218,7 @@ function initThree() {
 
 		            x: "15%",
 		            x2: "10%",
-		            y: '20%',
+		            y: '23%',
 		            y2: "34%",
 		        },
 		        series: [
@@ -257,7 +259,7 @@ function initfour() {
 				
 				x: "11%",
 				x2: "10%",
-				y: '20%',
+				y: '23%',
 				y2: "20%"
 			},
 			xAxis: [

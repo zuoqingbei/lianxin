@@ -104,7 +104,7 @@ function worldTyleEchart(data){
 	                return allNum -  params.value
 	            },
 	            textStyle: {
-	                fontSize:bodyScale*15,
+	                fontSize:bodyScale*13,
 	                color: "#f90",
 	                baseline: 'bottom'
 	            }
@@ -135,7 +135,7 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-	                fontSize: bodyScale*11,
+	                fontSize: bodyScale*10,
 	                // fontSize: 6,
 	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
                     baseline: 'top'
@@ -321,13 +321,13 @@ function labPropertiesStatis(){
 	        grid: {
 //	            show:true,
 	        	 x: "30%",
-	             x2: "20%",
+	             x2: "23%",
 	             y:"18%",
-	             y2:"15%"
+	             y2:"25%"
 	        },
 	        xAxis: [
 	            {
-	                name: "实验室数量",
+	                name: " 实验室\n 数量",
 	                type: 'value',
 	                axisLabel: {
                         rotate:-90,
@@ -354,14 +354,15 @@ function labPropertiesStatis(){
 	                        color: "#234f65"
 	                    }
 	                },
-	                nameGap: bodyScale*2,
+	                nameGap: bodyScale*4,
 	                offset: 5//调整个坐标轴标签的远近
 
 	            }
 	        ],
 	        yAxis: [
 	            {
-	                name: "专业能力",
+	                // name: "专业能力",
+	                name: "",
 	                type: 'category',
 	                data: statisticLengend(data),
 	                axisLabel: {
@@ -375,7 +376,7 @@ function labPropertiesStatis(){
                     axisTick: {  //刻度值
                         show: false,
                     },
-	                nameGap: 15,
+	                nameGap: bodyScale*3,
 	                offset: 0,
 //	                minInterval: .5
 	            }
@@ -434,20 +435,21 @@ function labLifeCycleStatis(){
 	        xAxis: [
 	            {
 	                name: "",
+					nameGap:2*bodyScale,
 	                type: 'category',
 	                axisTick: {
 	                    alignWithLabel: true
 	                },
 	                axisLabel: {
 	                    textStyle: {
-	                        fontSize: bodyScale*4
+	                        fontSize: bodyScale*9
 	                    }
 	                },
 	                splitLine: {  //刻度线
 	                    show: false,
 	                },
-	                data: statisticLengend(data)
-	                
+	                // data: statisticLengend(data)
+                    data:[1,2,3,"",4,"",5]
 
 	            }
 	        ],
@@ -468,7 +470,7 @@ function labLifeCycleStatis(){
 	                },
 	                axisLabel: {
 	                    textStyle: {
-	                        fontSize: bodyScale*5
+	                        fontSize: bodyScale*7
 	                    }
 	                    // formatter: '{value} ml'
 	                },
@@ -482,7 +484,7 @@ function labLifeCycleStatis(){
 	            	 type: 'value',
 	                 name: '检测订单量(百)',
                     nameTextStyle:{
-                        fontSize:bodyScale*5
+                        fontSize:bodyScale*7
                     },
                     nameGap:10,
 	                 min: 0,

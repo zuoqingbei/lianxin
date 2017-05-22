@@ -517,7 +517,7 @@
 #l .flat-left>div .chartBorder .myChart,
 #l .flat-right>div .chartBorder .myChart{
     width: 100%;
-    /*height: 100%;*/
+    /*height: 90%;*/
 }
 #l .sphere .chartBorder h4,
 #l .flat .chartBorder h4{
@@ -543,8 +543,8 @@
     height: 82%;
     margin: 1% 2% 5%;
 }
-#l .flat-left-bottom .myChart{
-    height: 72%;
+#l .flat-left-bottom .chartBorder .myChart{
+    height: 60%;
     margin: 10% 2% 0.2%;
 }
 #l .flat-left-bottom p{
@@ -556,6 +556,9 @@
 #l .flat-left-bottom p span{
     position: relative;
     font-size: .8em;
+}
+#l .flat-left-bottom div.added{
+    margin: 1% 3% 1%;
 }
 #l .flat-left-bottom p span:nth-of-type(1){
     left:6.25%;

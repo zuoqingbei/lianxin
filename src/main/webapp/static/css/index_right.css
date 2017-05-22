@@ -431,7 +431,7 @@
 }
 
 .total_bottom_left {
-    flex: 1;
+    flex: 1.03;
 }
 
 .total_bottom_right {
@@ -464,7 +464,9 @@
     float: left;
     position: relative;
 }
-
+.tab4  .total_bottom_bar2 {
+    width: 30%;
+}
 .total_bottom_bar1 p.result,
 .total_bottom_bar2 p.result {
     color: #00e673;
@@ -553,7 +555,7 @@
 .total_bottom_tab ul > li > ul > li {
     cursor: pointer;
     text-align: left;
-    margin-left: 2%;
+    margin-left: 6%;
     width: 95%;
     display: inline-block;
     color: #66CCFE;

@@ -198,7 +198,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		        left: 'center'
 		    },
 		    grid: {
-		        right: "29%",
+		        right: "24%",
 		        bottom: "28%",
 		        left: "15%",
 		        top: "16%"
@@ -501,11 +501,11 @@ function communistGravityStatisticForTab4Ajax(){
 		            type: 'pie',
 		            radius: [0, '50%'],
 		            center: ['35%', '55%'],
-		            roseType: 'radius',
+		            // roseType: 'radius',
 		            label: {
 		                normal: {
 		                    show: true,
-		                    position: "inside",
+		                    position: "outside",
 		                    formatter: "{d}%"
 		                },
 		                emphasis: {

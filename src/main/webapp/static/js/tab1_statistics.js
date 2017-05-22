@@ -576,7 +576,7 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		        left: 'center'
 		    },
 		    grid: {
-		        right: "29%",
+		        right: "24%",
 		        bottom: "28%",
 		        left: "15%",
 		        top: "16%"
@@ -722,7 +722,8 @@ var mHeightChart=$('#myChart10').highcharts({
     chart: {
         type: 'column',
         backgroundColor: 'rgba(0,0,0,0)',
-        marginBottom: 5*bodyScale
+        marginBottom: 5*bodyScale,
+        marginRight: 5*bodyScale
     },
     credits: {
         enabled: false
@@ -890,12 +891,16 @@ function communistGravityStatisticForTab1Ajax(){
 		            type: 'pie',
 		            radius: [0, '50%'],
 		            center: ['50%', '55%'],
-		            roseType: 'radius',
+		            // roseType: 'radius',
 		            label: {
 		                normal: {
 		                    show: true,
-		                    position: "inside",
-		                    formatter: "{d}%"
+		                    // position: "inside",
+		                    position: "outside",
+		                    formatter: "{d}%",
+                            textStyle:{
+		                    	// color:"#4397f7"
+							}
 		                },
 		                emphasis: {
 		                    show: true

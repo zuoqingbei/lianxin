@@ -95,7 +95,7 @@
 }
 
 [class^=item] .progress {
-	width: 32%;
+	width: 24%;
 	height: .8em;
 	display: inline-block;
 	margin: 0 3%;
