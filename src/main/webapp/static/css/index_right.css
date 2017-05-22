@@ -447,11 +447,16 @@
 .total_bottom_pie h3 {
     padding-left: 29%;
 }
-.total_bottom_pie .rename-ppm{
+.total_bottom_pie .rename-ppm,
+.shuju_apply_bottom_pie .rename-ppm{
     display: inline-block;
     position: absolute;
     left: 13.8%;
     top: 42%;
+}
+.shuju_apply_bottom_pie .rename-ppm{
+    right: -63%;
+    top: 20%;
 }
 .total_bottom_bar1, .total_bottom_bar2 {
     width: 26%;
@@ -524,7 +529,7 @@
 }
 
 .total_bottom_tab {
-    width: 13%;
+    width: 11%;
     height: 65%;
     float: left;
     background-color: transparent;
@@ -544,7 +549,8 @@
 .total_bottom_tab ul > li.main,
 .total_bottom_tab ul > li > ul > li {
     cursor: pointer;
-    margin-left: 5%;
+    text-align: left;
+    margin-left: 2%;
     width: 95%;
     display: inline-block;
     color: #66CCFE;
@@ -560,7 +566,7 @@
 }
 
 .total_bottom_tab > ul > li.main {
-    font-size: 1.1em;
+    font-size: 1.01em;
 }
 .total_bottom_tab > ul ul{
     background: rgba(99,99,159,0.3);
@@ -674,7 +680,12 @@
     background-size: 100% 100%;
     font-size: 1em;
 }
-
+ .zaixian ul{
+    padding-top: 1%;
+}
+.order_left .order_all ul{
+    padding-top: 2%;
+}
 .sheshi_top_left .zaixian table {
     width: 100%;
     /*background-color: pink;*/
@@ -1115,7 +1126,7 @@
     display: inline-block;
     background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
     background-size: 100% 100%;
-    padding-top: 1%;
+    padding-top: 2%;
 }
 
 .shuju_title {
@@ -1171,7 +1182,7 @@
     display: inline-block;
     background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
     background-size: 100% 100%;
-    padding-top: 1%;
+    padding-top: 2%;
 }
 
 .shuju_result_top_right {
@@ -1214,7 +1225,7 @@
     display: inline-block;
     background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
     background-size: 100% 100%;
-    padding-top: 1%;
+    padding-top: 2%;
 }
 
 .shuju_result_bottom_left {
@@ -1271,6 +1282,7 @@
     float: left;
     width: 45%;
     height: 100%;
+    padding-top: 2%;
     background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
     background-size: 100% 100%;
     /*margin: 0 5%;*/
@@ -1340,7 +1352,7 @@
     display: inline-block;
     background: url("../img/shujuJieguo/bz-bg.png") no-repeat;
     background-size: 100% 100%;
-    padding-top: 1%;
+    padding-top: 2%;
 }
 
 .shuju_result_bottom_right .jiance_right {
@@ -1408,7 +1420,7 @@
 .shuju_apply_bottom_pie {
     width: 28%;
     height: 65%;
-    /*background-color: yellow;*/
+    position: relative;
     float: left;
 }
 
