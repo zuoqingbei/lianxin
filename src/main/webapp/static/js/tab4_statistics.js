@@ -380,7 +380,8 @@ var mHeightChartTab4=$('#myChart16').highcharts({
     chart: {
         type: 'column',
         backgroundColor: 'rgba(0,0,0,0)',
-        marginBottom: 5*bodyScale
+        marginBottom: 5*bodyScale,
+        marginRight: 5*bodyScale,
     },
     credits: {
         enabled: false

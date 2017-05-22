@@ -636,12 +636,12 @@
 #l .flat .chartBorder ul li .number {
     position: relative;
     top: 10%;
-    height: 96%;
+    height: 102%;
     background-image: url(../img/bgNumber.png);
-    background-size: 95% 100%;
+    background-size: 93% 100%;
     background-repeat: no-repeat;
-    font-size: 1.4em;
-    letter-spacing: 6px;
+    font-size: 1.3em;
+    letter-spacing: 7px;
     padding: 0 0 0 3px;
     float: right;
 }
