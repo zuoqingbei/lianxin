@@ -535,8 +535,11 @@
     background-color: transparent;
     margin-right: 1%;
     margin-left: 5%;
-}
 
+}
+.tab4 .total_bottom_tab {
+    margin-left: .1%;
+}
 .total_bottom_tab > ul {
     width: 100%;
     height: 100%;
@@ -1483,11 +1486,16 @@
     width: 70%;
 }
 
-#myChart14, #myChart15, #myChart16, #myChart17, #myChart18, #myChart19 {
+#myChart14, #myChart17, #myChart18, #myChart19 {
     width: 100%;
     height: 100%;
 }
-
+#myChart15,#myChart15_2{
+    height: 40%;
+}
+#myChart16{
+    height: 60%;
+}
 .shuju_apply_bottom_bar2 div span {
     position: absolute;
     top: 0;
