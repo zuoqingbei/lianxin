@@ -91,11 +91,30 @@ function productLineForTab3Tab3Ajax(myChartIds,type){
 //统计当前以及同比 模块 整机问题闭环率 头部信息 tab3 
 function questionForMkZjTab3Ajax(){
 	$.post(contextPath+'/lab/questionForMkZjTab1Ajax',{"labTypeCode":labTypeCode},function(data){
-		var htmls_zj=data[1].zj+'% <span><img src="'+contextPath+'/static/img/sheshiState/rise.png" alt=""></span><span class="up_num">'+(parseFloat(data[1].zj)-parseFloat(data[0].zj)).toFixed(1)+'%</span>';
-		var htmls_mk=data[1].mk+'% <span><img src="'+contextPath+'/static/img/sheshiState/rise.png" alt=""></span><span class="up_num">'+(parseFloat(data[1].mk)-parseFloat(data[0].mk)).toFixed(1)+'%</span>';
+		var htmls_zj=(data[1].zj==null?0:data[1].zj)+'% <span>'+dealImageForTab3(data[1].zj)+'</span><span class="up_num">'+(parseFloat(data[1].zj==null?0:data[1].zj)-parseFloat(data[0].zj==null?0:data[0].zj)).toFixed(1)+'%</span>';
+		var htmls_mk=(data[1].mk==null?0:data[1].mk)+'% <span>'+dealImageForTab3(data[1].mk)+'</span><span class="up_num">'+(parseFloat(data[1].mk==null?0:data[1].mk)-parseFloat(data[0].mk==null?0:data[0].mk)).toFixed(1)+'%</span>';
 		$("#tab3_question_closed_zj").html(htmls_zj);
 		$("#tab3_question_closed_mk").html(htmls_mk);
 	});
+}
+//判断图片
+function dealImageForTab3(num){
+	var rise_pic=contextPath+"/static/img/sheshiState/rise.png";//上升图片
+	var reduce_pic=contextPath+"/static/img/sheshiState/down.png";//降低图片
+	var no_change=contextPath+"/static/img/sheshiState/cp.png";//没有变化
+	//判断上升或者下降
+	var img="";
+	if(parseFloat(num)>0){
+		//上升
+		img+=' <img src="'+rise_pic+'" alt=""></span>'
+	}else if(parseFloat(num)<0){
+		//下降
+		img+=' <img src="'+reduce_pic+'" alt=""></span>'
+	}else{
+		//没有变化
+		img+=' <img src="'+no_change+'" alt=""></span>'
+	}
+	return img;
 }
 //用户满意度趋势变化     满意度到产线 到月数据统计 
 function productLineAndMonthForTab3Ajax(){
@@ -154,8 +173,8 @@ function productLineAndMonthForTab3Ajax(){
 //同期 环比满意度占比统计
 function satisfactionChangeForTab3Ajax(){
 	$.post(contextPath+'/lab/satisfactionChangeForTab1Ajax',{"labTypeCode":labTypeCode},function(data){
-		var htmls_hb=data.hb+'% <span><img src="'+contextPath+'/static/img/sheshiState/rise.png" alt=""></span><span class="up_num">2.2%</span>';
-		var htmls_tq=data.tq+'% <span><img src="'+contextPath+'/static/img/sheshiState/rise.png" alt=""></span><span class="up_num">'+data.change_num+'%</span>';
+		var htmls_hb=(data.hb==null?0:data.hb)+'% <span>'+dealImageForTab3(data.hb)+'</span><span class="up_num">2.2%</span>';
+		var htmls_tq=(data.tq==null?0:data.tq)+'% <span>'+dealImageForTab3(data.tq)+'</span><span class="up_num">'+(data.change_num==null?0:data.change_num)+'%</span>';
 		$("#tab3_user_my_hb").html(htmls_hb);
 		$("#tab3_user_my_tq").html(htmls_tq);
 	})
@@ -294,19 +313,20 @@ function satisfactionStatisForYearTab3Ajax2016(){
 //整机 模块 订单类别占全部订单占比统计
 function findOrderTypePercentTab3Ajax(){
 	$.post(contextPath+'/lab/findOrderTypePercentTab3Ajax',{"labTypeCode":labTypeCode},function(data){
-		$("#tab3_zj_order_type").html(data.zj_rate+"%");
-		$("#tab3_zj_order_up").html(data.zj_rise+"%");
-		$("#tab3_mk_order_type").html(data.mk_rate+"%");
-		$("#tab3_mk_order_up").html(data.mk_rise+"%");
+		var zj='<span>'+(data.zj_rate==undefined?0:data.zj_rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">'+(data.zj_rise==undefined?0:data.zj_rise)+'%</span>';
+		var mk='<span>'+(data.mk_rate==undefined?0:data.mk_rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">'+(data.mk_rise==undefined?0:data.mk_rise)+'%</span>';
+		$("#tab3_zj_order_type").html(zj);
+		$("#tab3_mk_order_type").html(mk);
 	})
 }
 //一次合格率  整体统计-整机 模块
 function findOrderPassForAllAjax(){
 	$.post(contextPath+'/lab/findOrderPassForAllAjax',{"labTypeCode":labTypeCode},function(data){
-		$("#once_pass_rate_zj").html(data[0].rate+"%");
-		$("#once_pass_rate_mk").html(data[1].rate+"%");
-		$("#once_pass_rate_zj_rise").html("5.4%");
-		$("#once_pass_rate_mk_rise").html("1.9%");
+		var zj='<span>'+(data[0].rate==undefined?0:data[0].rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">2.5%</span>';
+		var mk='<span>'+(data[1].rate==undefined?0:data[1].rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">3.3%</span>';
+		$("#once_pass_rate_zj").html(zj);
+		$("#once_pass_rate_mk").html(mk);
+		
 		
 	})
 }
@@ -608,10 +628,10 @@ function findOrderYearRateForProductAjax(){
 //获取某一年订单整体及时率
 function orderYearRateAjax(){
 	$.post(contextPath+'/lab/orderYearRateAjax',{"labTypeCode":labTypeCode},function(data){
-		$("#order_year_rate_2016").html(data[0].rate+"%");
-		$("#order_year_rate_2017").html(data[1].rate+"%");
-		$("#order_year_rate_up_2016").html("2.3%");
-		$("#order_year_rate_up_2017").html((parseFloat(data[1].rate)-parseFloat(data[0].rate)).toFixed(1)+"%");
+		var h_2016='<span>'+(data[0].rate==undefined?0:data[0].rate)+'%</span><span>'+dealImageForTab3(data[0].rate)+'</span><span class="up_num">2.3%</span>';
+		var h_2017='<span>'+(data[1].rate==undefined?0:data[1].rate)+'%</span><span>'+dealImageForTab3(data[1].rate)+'</span><span class="up_num">'+(parseFloat(data[1].rate==null?0:data[1].rate)-parseFloat(data[0].rate==null?0:data[0].rate)).toFixed(1)+'%</span>';
+		$("#order_year_rate_2016").html(h_2016);
+		$("#order_year_rate_2017").html(h_2017);
 	})
 }
 
@@ -622,7 +642,7 @@ function tab3IndicatorData(da){
 		var data2=da[1];
 		for(var i=0;i<data.length;i++) {
 			var obj=new Object();
-			obj.max=maxNum;
+			obj.max=100;
 			obj.text=data[i].name;
 			indicatorData.push(obj);
 		}

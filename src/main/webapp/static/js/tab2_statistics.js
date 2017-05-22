@@ -27,55 +27,68 @@ function loadTab2Data(){
 //设施状态 type 类型  0：实验室在线率 1：设备完好率 2：设备利用率 
 function equipmentStatisForPlForLab2Ajax(type){
 	var rise_pic=contextPath+"/static/img/sheshiState/rise.png";//上升图片
-	var reduce_pic=contextPath+"/static/img/sheshiState/rise.png";//降低图片
-	var no_change=contextPath+"/static/img/sheshiState/rise.png";//没有变化
+	var reduce_pic=contextPath+"/static/img/sheshiState/down.png";//降低图片
+	var no_change=contextPath+"/static/img/sheshiState/cp.png";//没有变化
 	$.post(contextPath+'/lab/equipmentStatisForPlForLab2Ajax',{"type":type,"labTypeCode":labTypeCode},function(data){
 		var htmls;
 		var all_change=0;
 		var all_rate=0;
 		var topHtmls;
-		$.each(data,function(index,item){
-			all_change+=parseFloat(item.change_num);
-			all_rate+=parseFloat(item.dq);
-			htmls+='<tr><td>'+item.product_name+'</td><td>';
-			htmls+='<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="'+item.dq+'"';
-			htmls+='aria-valuemin="0" aria-valuemax="100" style="width: '+item.dq+'%;"></div>';
-			htmls+='</div> <span class="zaixianlv">'+item.dq+'%</span></td>';
-			htmls+='<td><span>';
-			//判断上升或者下降
-			if(parseFloat(item.change_num)>0){
+		if(data==null||data.length==0){
+			$("#tab2_equipment_top_"+type).html('');
+			$("#tab2_equipment_table_"+type).html('');
+		}else{
+			$.each(data,function(index,item){
+				all_change+=parseFloat(item.change_num);
+				all_rate+=parseFloat(item.dq);
+				htmls+='<tr><td>'+item.product_name+'</td><td>';
+				htmls+='<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="'+item.dq+'"';
+				htmls+='aria-valuemin="0" aria-valuemax="100" style="width: '+item.dq+'%;"></div>';
+				htmls+='</div> <span class="zaixianlv">'+item.dq+'%</span></td>';
+				htmls+='<td><span>';
+				//判断上升或者下降
+				if(parseFloat(item.change_num)>0){
+					//上升
+					htmls+=' <img src="'+rise_pic+'" alt=""></span>'
+				}else if(parseFloat(item.change_num)<0){
+					//下降
+					htmls+=' <img src="'+reduce_pic+'" alt=""></span>'
+				}else{
+					//没有变化
+					htmls+=' <img src="'+no_change+'" alt=""></span>'
+				}
+				if(parseFloat(item.change_num)<0){
+					htmls+=' <span>'+(0-parseFloat(item.change_num))+'%</span></td>';
+				}else{
+					htmls+=' <span>'+item.change_num+'%</span></td>';
+				}
+				if(index==0){
+					htmls+=' <td>(同比)</td>';
+				}
+				htmls+='</tr>';
+			});
+			//求平均值
+			all_rate=(parseFloat(all_rate)/data.length).toFixed(1);
+			all_change=(parseFloat(all_change)/data.length).toFixed(1);
+			topHtmls=all_rate+'% <span>';
+			if(parseFloat(all_change)>0){
 				//上升
-				htmls+=' <img src="'+rise_pic+'" alt=""></span>'
-			}else if(parseFloat(item.change_num)<0){
+				topHtmls+=' <img src="'+rise_pic+'" alt=""></span>'
+			}else if(parseFloat(all_change)<0){
 				//下降
-				htmls+=' <img src="'+reduce_pic+'" alt=""></span>'
+				topHtmls+=' <img src="'+reduce_pic+'" alt=""></span>'
 			}else{
 				//没有变化
-				htmls+=' <img src="'+no_change+'" alt=""></span>'
+				topHtmls+=' <img src="'+no_change+'" alt=""></span>'
 			}
-			htmls+=' <span>'+item.change_num+'%</span></td>';
-			if(index==0){
-				htmls+=' <td>(同比)</td>';
+			if(parseFloat(all_change)<0){
+				topHtmls+='<span class="up_num">'+(0-parseFloat(all_change))+'%</span>';
+			}else{
+				topHtmls+='<span class="up_num">'+all_change+'%</span>';
 			}
-			htmls+='</tr>';
-		});
-		//求平均值
-		all_rate=(parseFloat(all_rate)/data.length).toFixed(1);
-		all_change=(parseFloat(all_change)/data.length).toFixed(1);
-		topHtmls=all_rate+'% <span>';
-		if(parseFloat(all_change)>0){
-			//上升
-			topHtmls+=' <img src="'+rise_pic+'" alt=""></span>'
-		}else if(parseFloat(all_change)<0){
-			//下降
-			topHtmls+=' <img src="'+reduce_pic+'" alt=""></span>'
-		}else{
-			//没有变化
-			topHtmls+=' <img src="'+no_change+'" alt=""></span>'
+			$("#tab2_equipment_top_"+type).html(topHtmls);
+			$("#tab2_equipment_table_"+type).html(htmls);
 		}
-		topHtmls+='<span class="up_num">'+all_change+'%</span>';
-		$("#tab2_equipment_top_"+type).html(topHtmls);
-		$("#tab2_equipment_table_"+type).html(htmls);
 	
 	});
 }
