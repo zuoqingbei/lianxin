@@ -1,5 +1,7 @@
 package com.ulab.util;
 
+import java.util.Random;
+
 public class NormalDistribution {
 	public static double calc(double u) {
 		double y = Math.abs(u);
@@ -45,10 +47,30 @@ public class NormalDistribution {
 		double p=1/(a*Math.sqrt(2*Math.PI))*Math.exp(-Math.pow((x-u),2)/(2*Math.pow(a,2)));
 		return p;
 	}
-
+	/**
+	 * 
+	 * @time   2017年5月22日 上午10:42:09
+	 * @author zuoqb
+	 * @todo   TODO
+	 * @param  @param a:均值
+	 * @param  @param b:方差
+	 * @param  @return
+	 * @return_type   double
+	 */
+	public static double calc(double a,double b) {
+		Random random = new Random();
+		double p=Math.sqrt(b)*random.nextGaussian()+a;
+		return p;
+	}
 	public static void main(String[] args) {
-		for (double d = 0; d < 5.0; d += 0.1) {
+		/*for (double d = 0; d < 5.0; d += 0.1) {
 			System.out.println(d + "," + calc(d));
+		}*/
+		double a=74.0714149999999;
+		double b=0.673417159241667;
+		for(int x=0;x<200;x++){
+			System.out.println(calc(a, b));
 		}
+		
 	}
 }

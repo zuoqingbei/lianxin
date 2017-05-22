@@ -26,6 +26,7 @@ import com.ulab.model.ProviderDicModel;
 import com.ulab.model.QuestionClosedModel;
 import com.ulab.model.SatisfactionModel;
 import com.ulab.model.XbarModel;
+import com.ulab.util.NormalDistribution;
 import com.ulab.util.SqlUtil;
 /**
  * 
@@ -516,10 +517,50 @@ public class LabController extends BaseController {
     public void jianCeDataForTab1Ajax(){
     	String xhCode=getPara("xhCode","");//型号
     	List<Record> list=JianCeModel.dao.findProviderDicByPid(xhCode);
-		renderJson(list);
+    /*	String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
+    	Record pro=getSessionAttr(redis_key);
+    	if(pro==null){
+    		pro=JianceProModel.dao.findProByFiled(xhCode);
+    		setSessionAttr(redis_key, pro);
+    		
+    	}
+    	double pj=Double.parseDouble(pro.get("pj_value").toString());
+		double fc=Double.parseDouble(pro.get("fc_value").toString());
+    	for(Record r:list){
+    		r.set("wkq_num2", NormalDistribution.calc(Double.parseDouble(r.getStr("wkq_num")), pj, fc));
+    	}*/
+    	List<Record> gaussian=gaussian(xhCode);
+    	List<List<Record>> re=new ArrayList<List<Record>>();
+    	re.add(list);
+    	re.add(gaussian);
+		renderJson(re);
     }
-  
-    
+    /**
+     * 
+     * @time   2017年5月22日 上午10:55:03
+     * @author zuoqb
+     * @todo  模拟正态分布曲线数据
+     * @param  
+     * @return_type   void
+     */
+    public List<Record> gaussian(String xhCode){
+    	String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
+    	Record pro=getSessionAttr(redis_key);
+    	if(pro==null){
+    		pro=JianceProModel.dao.findProByFiled(xhCode);
+    		setSessionAttr(redis_key, pro);
+    	}
+    	List<Record> list=new ArrayList<Record>();
+    	if(pro!=null){
+    		double pj=Double.parseDouble(pro.get("pj_value").toString());
+    		double fc=Double.parseDouble(pro.get("fc_value").toString());
+    		for(int x=0;x<50000;x++){
+    			Record r=new Record();
+    			list.add(r.set("num",NormalDistribution.calc(pj, fc)));
+    		}
+    	}
+    	return list;
+    }
     /**
      * 
      * @time   2017年5月18日 下午4:18:54

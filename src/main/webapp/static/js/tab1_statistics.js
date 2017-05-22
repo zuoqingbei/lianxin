@@ -31,7 +31,7 @@ function loadTab1Data(){
     //根据类型 时间 统计共产 一致个月份数量
     communistStatisticForMonthForTab1Ajax();
     //直方图
-    loadTab1JianData( $(".tab1 .total_bottom_tab .active").attr("data"));
+    loadTab1JianData( $(".tab1 .total_bottom_tab .active").attr("data"),$(".tab1 .total_bottom_tab .active").html());
     //统计当前以及同比 模块 整机问题闭环率tab1 
     questionForMkZjTab1Ajax();
 }
@@ -554,7 +554,7 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		if(type==1){
 			mTitle="样本平均值";
 			mLcl=xhPro.jz_lcl;
-			mValue=xhPro.jz_value;
+			mValue=xhPro.pj_value;
 			mUcl=xhPro.jz_ucl;
 		}else{
 			mTitle="样本标准差";
@@ -668,17 +668,20 @@ function scpDataForTab1(myChartIds,xhPro,type){
 function cpkDataForTab1(xhPro){
 	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhPro.xh_name},function(data){
 		var mData=[];
-		//var mData2=[];
-		$.each(data,function(index,item){
+		var mData2=[];
+		$.each(data[0],function(index,item){
 			mData.push([parseFloat(item.wkq_num),parseFloat(xhPro.pj_value)]);
 			//mData2.push([parseFloat(item.wkq_num),parseFloat(item.gd_num_2)]);
+		});
+		$.each(data[1],function(index,item){
+			mData2.push([parseFloat(item.num),parseFloat(item.num)]);
 		});
 		mHeightChart.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
 		mHeightChart.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
 		mHeightChart.options.xAxis[0].max=parseFloat(xhPro.lsl);
 		mHeightChart.options.xAxis[0].min=parseFloat(xhPro.usl);
-		mHeightChart.series[0].setData(histogram(mData, 0.5)); // 更新 series
-		mHeightChart.series[1].setData(histogram(mData, 0.5));
+		mHeightChart.series[0].setData(histogram(mData, 0.3)); // 更新 series
+		mHeightChart.series[1].setData(histogram(mData2, 0.3));
 	});
 	
 }
@@ -744,8 +747,13 @@ var mHeightChart=$('#myChart10').highcharts({
             width:2  ,               //标示线的宽度，2px
             label:{
                 text:'LSL',  //标签的内容
-                align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
+                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                style: {
+                    color: 'red',
+                   /* fontWeight: 'bold',*/
+                    fontSize:12
+                } 
             },
             zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
         },{
@@ -756,7 +764,12 @@ var mHeightChart=$('#myChart10').highcharts({
             label:{
                 text:'USL',//标签的内容
                 align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                style: {
+                    color: 'red',
+                    /*fontWeight: 'bold',*/
+                    fontSize:12
+                }
             },
             zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
         }
@@ -1090,27 +1103,33 @@ function standardStatus(){
 		$("#reviseNum").html(reviseNum);
 		$("#tab1_qtqc_id").html(reviseNum);
 		$("#standardNum").html(standardNum);
-		var num0=(standardSeriesData(data.revisedata,"牵头起草数")/reviseNum).toFixed(2)*100;
+		/*var num0=(standardSeriesData(data.revisedata,"牵头起草数")/reviseNum).toFixed(2)*100;
 		var num1=(standardSeriesData(data.revisedata,"参与起草数")/reviseNum).toFixed(2)*100;
 		var gjia=standardSeriesData(data.standarddata,"国家标准");
 		var gjbz=standardSeriesData(data.standarddata,"国际标准");
 		var hybz=standardSeriesData(data.standarddata,"行业标准");
+		var qybz=standardSeriesData(data.standarddata,"企业标准");*/
+		var num0=standardSeriesData(data.revisedata,"牵头起草数");
+		var num1=standardSeriesData(data.revisedata,"参与起草数");
+		var gjia=standardSeriesData(data.standarddata,"国家标准");
+		var gjbz=standardSeriesData(data.standarddata,"国际标准");
+		var hybz=standardSeriesData(data.standarddata,"行业标准");
 		var qybz=standardSeriesData(data.standarddata,"企业标准");
-		$("#tab1_gjiabz_id").html(gjia);
+	/*	$("#tab1_gjiabz_id").html(gjia);
 		$("#tab1_gjibz_id").html(gjbz);
 		$("#tab1_hybz_id").html(hybz);
-		$("#tab1_qybz_id").html(qybz);
+		$("#tab1_qybz_id").html(qybz);*/
 		
-		var num2=(gjia/standardNum).toFixed(2)*100;
-		var num3=(gjbz/standardNum).toFixed(2)*100;
-		var num4=(hybz/standardNum).toFixed(2)*100;
+		var num2=gjia;
+		var num3=gjbz;
+		var num4=hybz;
 		//var num5=(standardSeriesData(data.standarddata,"当地标准")/standardNum).toFixed(2)*100;
-		var num6=(qybz/standardNum).toFixed(2)*100;
+		var num6=qybz;
 		//多个圆环图  标准状态
 		var myChart2 = echarts.init(document.getElementById("myChart2"));
 		var labelTop = {
 			    normal: {
-			        color: '#66ccff',
+			        color: '#234f65',
 			        label: {
 			            show: true,
 			            position: 'center',
@@ -1130,7 +1149,7 @@ function standardStatus(){
 			    normal: {
 			        label: {
 			            formatter: function (params) {
-			                return 100 - params.value + '%'
+			                return params.value
 			            },
 			            textStyle: {
 			                baseline: 'top'
@@ -1140,7 +1159,7 @@ function standardStatus(){
 			};
 			var labelBottom = {
 			    normal: {
-			        color: '#234f65',
+			        color: '#66ccff',
 			        label: {
 			            show: true,
 			            position: 'center'
@@ -1198,8 +1217,8 @@ function standardStatus(){
 				            x: '40%', // for funnel
 				            itemStyle: labelFromatter,
 				            data: [
-				                {name: 'other', value: 100-num0, itemStyle: labelBottom},
-				                {name: '起草数', value: num0, itemStyle: labelTop}
+				                {name: 'other', value: num0, itemStyle: labelBottom},
+				                {name: '起草数', value: parseInt(reviseNum)-num0, itemStyle: labelTop}
 				            ]
 				        },
 				        {
@@ -1209,8 +1228,8 @@ function standardStatus(){
 				            x: '60%', // for funnel
 				            itemStyle: labelFromatter,
 				            data: [
-				                {name: 'other', value: 100-num1, itemStyle: labelBottom},
-				                {name: '起草数', value: num1, itemStyle: labelTop}
+				                {name: 'other', value: num1, itemStyle: labelBottom},
+				                {name: '起草数', value: parseInt(reviseNum)-num1, itemStyle: labelTop}
 				            ]
 				        },
 				        {
@@ -1221,8 +1240,8 @@ function standardStatus(){
 				            x: '0%',    // for funnel
 				            itemStyle: labelFromatter,
 				            data: [
-				                {name: 'other', value: 100-num2, itemStyle: labelBottom},
-				                {name: '国家标准', value: num2, itemStyle: labelTop}
+				                {name: 'other', value: num2, itemStyle: labelBottom},
+				                {name: '国家标准', value: parseInt(standardNum)-num2, itemStyle: labelTop}
 				            ]
 				        },
 				        {
@@ -1233,8 +1252,8 @@ function standardStatus(){
 				            x: '20%',    // for funnel
 				            itemStyle: labelFromatter,
 				            data: [
-				                {name: 'other', value: 100-num3, itemStyle: labelBottom},
-				                {name: '国际标准', value: num3, itemStyle: labelTop}
+				                {name: 'other', value: num3, itemStyle: labelBottom},
+				                {name: '国际标准', value: parseInt(standardNum)-num3, itemStyle: labelTop}
 				            ]
 				        },
 				        {
@@ -1245,8 +1264,8 @@ function standardStatus(){
 				            x: '40%', // for funnel
 				            itemStyle: labelFromatter,
 				            data: [
-				                {name: 'other', value: 100-num4, itemStyle: labelBottom},
-				                {name: '行业标准', value: num4, itemStyle: labelTop}
+				                {name: 'other', value: num4, itemStyle: labelBottom},
+				                {name: '行业标准', value: parseInt(standardNum)-num4, itemStyle: labelTop}
 				            ]
 				        },
 				      
@@ -1258,8 +1277,8 @@ function standardStatus(){
 				            x: '80%', // for funnel
 				            itemStyle: labelFromatter,
 				            data: [
-				                {name: 'other', value: 100-num6, itemStyle: labelBottom},
-				                {name: '企业标准', value: num6, itemStyle: labelTop}
+				                {name: 'other', value: num6, itemStyle: labelBottom},
+				                {name: '企业标准', value: parseInt(standardNum)-num6, itemStyle: labelTop}
 				            ]
 				        }
 				    ]

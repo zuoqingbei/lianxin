@@ -9,7 +9,7 @@ function loadTab4Data(){
     //根据类型 时间 统计共产 一致个月份数量
     communistStatisticForMonthForTab4Ajax();
     //直方图
-    loadTab4JianData( $(".tab4 .total_bottom_tab .active").attr("data"));
+    loadTab4JianData($(".tab4 .total_bottom_tab .active").attr("data"),$(".tab4 .total_bottom_tab .active").html());
 }
 //加载量产一致性保障 xhId:产品id  name：产品名称
 function loadTab4JianData(xhId,xName){
@@ -176,7 +176,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		if(type==1){
 			mTitle="样本平均值";
 			mLcl=xhPro.jz_lcl;
-			mValue=xhPro.jz_value;
+			mValue=xhPro.pj_value;
 			mUcl=xhPro.jz_ucl;
 		}else{
 			mTitle="样本标准差";
@@ -290,17 +290,20 @@ function scpDataForTab4(myChartIds,xhPro,type){
 function cpkDataForTab4(xhPro){
 	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhPro.xh_name},function(data){
 		var mData=[];
-		//var mData2=[];
-		$.each(data,function(index,item){
+		var mData2=[];
+		$.each(data[0],function(index,item){
 			mData.push([parseFloat(item.wkq_num),parseFloat(xhPro.pj_value)]);
 			//mData2.push([parseFloat(item.wkq_num),parseFloat(item.gd_num_2)]);
+		});
+		$.each(data[1],function(index,item){
+			mData2.push([parseFloat(item.num),parseFloat(item.num)]);
 		});
 		mHeightChartTab4.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
 		mHeightChartTab4.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
 		mHeightChartTab4.options.xAxis[0].max=parseFloat(xhPro.lsl);
 		mHeightChartTab4.options.xAxis[0].min=parseFloat(xhPro.usl);
-		mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.5)); // 更新 series
-		mHeightChartTab4.series[1].setData(histogramTab4(mData, 0.5));
+		mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
+		mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));
 	});
 	
 }
@@ -359,7 +362,12 @@ var mHeightChartTab4=$('#myChart16').highcharts({
             label:{
                 text:'LSL',  //标签的内容
                 align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                style: {
+                    color: 'red',
+                   /* fontWeight: 'bold',*/
+                    fontSize:12
+                } 
             },
             zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
         },{
@@ -370,7 +378,12 @@ var mHeightChartTab4=$('#myChart16').highcharts({
             label:{
                 text:'USL',//标签的内容
                 align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                style: {
+                    color: 'red',
+                   /* fontWeight: 'bold',*/
+                    fontSize:12
+                } 
             },
             zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
         }
