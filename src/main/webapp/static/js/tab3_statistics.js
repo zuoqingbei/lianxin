@@ -144,7 +144,7 @@ function productLineAndMonthForTab3Ajax(){
 		    ],
 		    yAxis: [
 		        {
-		            name: '合格率/%',
+		            name: '满意度/%',
 		        }
 		    ],
 		    series: mSeries

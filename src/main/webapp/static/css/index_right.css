@@ -459,7 +459,7 @@
     top: 20%;
 }
 .total_bottom_bar1, .total_bottom_bar2 {
-    width: 26%;
+    width: 28%;
     height: 65%;
     float: left;
     position: relative;
@@ -533,8 +533,8 @@
     height: 65%;
     float: left;
     background-color: transparent;
-    margin-right: 1%;
-    margin-left: 5%;
+    margin-right: .2%;
+    margin-left: 4%;
 
 }
 .tab4 .total_bottom_tab {
@@ -597,7 +597,7 @@
 }
 
 .total_bottom_right .total_bottom_bar1 {
-    width: 70%;
+    width: 68%;
 }
 
 #myChart8 {
@@ -1494,7 +1494,7 @@
     height: 40%;
 }
 #myChart16{
-    height: 60%;
+    height: 75%;
 }
 .shuju_apply_bottom_bar2 div span {
     position: absolute;

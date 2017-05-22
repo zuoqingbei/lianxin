@@ -334,7 +334,7 @@ function labPropertiesStatis(){
 	                    textStyle: {
 	                        color: "#66ccff",
 	                        // color: "#f00",
-	                        fontSize: bodyScale*12,
+	                        fontSize: bodyScale*10,
 
 
 	                    },
@@ -354,7 +354,7 @@ function labPropertiesStatis(){
 	                        color: "#234f65"
 	                    }
 	                },
-	                nameGap: 10,
+	                nameGap: bodyScale*2,
 	                offset: 5//调整个坐标轴标签的远近
 
 	            }
