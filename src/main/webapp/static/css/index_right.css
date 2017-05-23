@@ -451,12 +451,12 @@
 .shuju_apply_bottom_pie .rename-ppm{
     display: inline-block;
     position: absolute;
-    left: 13.8%;
-    top: 42%;
+    left: 12.8%;
+    top: 33%;
 }
 .shuju_apply_bottom_pie .rename-ppm{
-    right: -63%;
-    top: 20%;
+    right: -47%;
+    top: 8%;
 }
 .total_bottom_bar1, .total_bottom_bar2 {
     width: 28%;
@@ -532,12 +532,15 @@
 
 .total_bottom_tab {
     width: 11%;
-    height: 65%;
+    height: 62%;
     float: left;
     background-color: transparent;
     margin-right: .2%;
     margin-left: 4%;
 
+}
+.shuju_apply_top .total_bottom_tab{
+	height: 65%;
 }
 .tab4 .total_bottom_tab {
     margin-left: .1%;
@@ -608,7 +611,7 @@
 
 #myChart8, #myChart11 {
     width: 100%;
-    height: 100%;
+    height: 85%;
 }
 
 #myChart9, #myChart9_2 {
