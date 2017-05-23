@@ -637,9 +637,11 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		            },
                     itemStyle:{normal:{
                         // borderColor:"#00e673"
+/*
                         borderColor:function (params) {
 							console.log("...............................",params)
                         }
+*/
                     }},
 		            symbolSize: 2* bodyScale,
 		            data: tab1OrderRateSeriseData(data),
@@ -647,12 +649,23 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		                symbolSize:0,
 		                silent: true,
 		                label:{normal:{formatter:"{b}={c}"}},
+						lineStyle:{
+		                	normal:{
+		                		type:"solid",
+								width:1*bodyScale
+							},
+						},
 		                data: [{
 		                    name:"UCL",
 		                    yAxis: parseFloat(mUcl)
 		                },{
 		                    name:"x",
-		                    yAxis: parseFloat(mValue)
+		                    yAxis: parseFloat(mValue),
+                            lineStyle:{
+                                normal:{
+                                    color:"#439ef7"
+                                }
+                            }
 		                }, {
 		                    name:"LCL",
 		                    yAxis: parseFloat(mLcl)
@@ -686,7 +699,7 @@ function cpkDataForTab1(xhPro){
 		mHeightChart.series[1].setData(histogram(mData2, 0.3));
 		mHeightChart.xAxis[0].addPlotLine({
             color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+            dashStyle:'solid',//认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
             width:2* bodyScale,               //标示线的宽度，2px
             label:{
@@ -703,7 +716,7 @@ function cpkDataForTab1(xhPro){
         });
 		mHeightChart.xAxis[0].addPlotLine({
             color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+            dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
             width:2* bodyScale  ,               //标示线的宽度，2px
             label:{

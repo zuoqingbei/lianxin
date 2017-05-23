@@ -48,7 +48,7 @@ function productLineForTab3Tab3Ajax(myChartIds,type){
 		myChart43.setOption(getCenterPie());
 		var mData=[];
 		var mSeries=[];
-		var mRadius=[[60, 63],[54, 57],[48, 51],[42, 45],[36, 39],[30, 33],[24, 27]];
+		var mRadius=[[60*bodyScale, 63*bodyScale],[54*bodyScale, 57*bodyScale],[48*bodyScale, 51*bodyScale],[42*bodyScale, 45*bodyScale],[36*bodyScale, 39*bodyScale],[30*bodyScale, 33*bodyScale],[24*bodyScale, 27*bodyScale]];
 		$.each(data,function(index,item){
 			var mName=item.product_name+item.rate+"%";
 			mData.push(mName);
@@ -345,9 +345,9 @@ function findOrderPassForProAjax(mychartIds,desName){
 		        itemHeight: 6 //图例标记的图形高度
 		    },
 		    grid: {
-		        x: 5,
-		        x2:40,
-		        y: 28,
+		        x: "5%",
+		        x2:"20%",
+		        y: "20%",
 		        
 		    },
 		    xAxis: [

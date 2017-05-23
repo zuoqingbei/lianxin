@@ -1,6 +1,6 @@
 /*布局*/
 #l{
-    padding: 0 0 1em;
+    /*padding: 0 0 1em;*/
     display: flex;
     flex-direction: column;
 }
@@ -87,8 +87,8 @@
     font-size: 1.4em;
 }
 #l .sphere .mapArea iframe{
-    height: 100%;
-    width:96%;
+    height: 96%;
+    width:94%;
     margin:0 auto;
 }
 

@@ -205,10 +205,10 @@ function personForTab2Ajax(myChartIds,type,divisor){
 		right_echarts.push(myChart25)
 		myChart25.setOption({
 		    grid: {
-		        right: 0,
-		        bottom: 25,
-		        left: 50,
-		        top: 0
+		        right: "1%",
+		        bottom: "20%",
+		        left: "20%",
+		        top: "6%"
 		    },
 		    tooltip: {
 		        trigger: 'item',
@@ -374,7 +374,7 @@ function standardDispersedStatus(mychartId,filedVaule){
 		        top: 'center',
 		        textStyle: {
 		            color: '#fff',
-		            fontSize: 12,
+		            fontSize: 12*bodyScale,
 		        }
 		    },
 		    
@@ -387,7 +387,7 @@ function standardDispersedStatus(mychartId,filedVaule){
 		                formatter: '{value}',
 		                textStyle: {
 		                    color: '#66ccff',
-		                    fontSize: 10,
+		                    fontSize: 10*bodyScale,
 		                }
 		            },
 		            splitLine: {
