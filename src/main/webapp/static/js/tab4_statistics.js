@@ -318,7 +318,7 @@ function cpkDataForTab4(xhPro){
 		mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
 		mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));
 		mHeightChartTab4.xAxis[0].addPlotLine({
-            color:'red',            //线的颜色，定义为红色
+            color:'#f93',            //线的颜色，定义为红色
             dashStyle:'solid',//认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
             width:1  ,               //标示线的宽度，2px
@@ -327,7 +327,7 @@ function cpkDataForTab4(xhPro){
                 verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
                 x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
                 style: {
-                    color: 'red',
+                    color: '#f93',
                    /* fontWeight: 'bold',*/
                     fontSize:12
                 } 
@@ -335,7 +335,7 @@ function cpkDataForTab4(xhPro){
             zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
         });
 		mHeightChartTab4.xAxis[0].addPlotLine({
-            color:'red',            //线的颜色，定义为红色
+            color:'#f93',            //线的颜色，定义为红色
             dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
             width:1  ,               //标示线的宽度，2px
@@ -344,7 +344,7 @@ function cpkDataForTab4(xhPro){
                 align:'center',                //标签的水平位置，水平居左,默认是水平居中center
                 x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
                 style: {
-                    color: 'red',
+                    color: '#f93',
                     /*fontWeight: 'bold',*/
                     fontSize:12
                 }
@@ -433,7 +433,8 @@ var mHeightChartTab4=$('#myChart16').highcharts({
         color:"#4397f7",
         pointPadding: 0,
         groupPadding: 0,
-        pointPlacement: 'between'
+        pointPlacement: 'between',
+		borderColor:"rgba(0,0,0,0)"
     }, {
         name: '概率密度',
         type: 'spline',
@@ -524,7 +525,7 @@ function communistGravityStatisticForTab4Ajax(){
 		            name: '',
 		            type: 'pie',
 		            radius: [0, '50%'],
-		            center: ['35%', '55%'],
+		            center: ['45%', '55%'],
 		            // roseType: 'radius',
 		            label: {
 		                normal: {

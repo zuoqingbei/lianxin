@@ -164,6 +164,7 @@ function productLineAndMonthForTab3Ajax(){
 		    yAxis: [
 		        {
 		            name: '满意度/%',
+					scale:true
 		        }
 		    ],
 		    series: mSeries
@@ -218,7 +219,7 @@ function satisfactionStatisForYearTab3Ajax2017(){
 		        {
 		            type: "bar",
 		            data: tab3RateData(data),
-		            barWidth: 7,
+		            barWidth: 7 * bodyScale,
 		            label: {
 		                normal: {
 		                    show: true,
@@ -291,7 +292,7 @@ function satisfactionStatisForYearTab3Ajax2016(){
 		        {
 		            type: "bar",
 		            data: tab3RateData(data),
-		            barWidth: 7,
+		            barWidth: 7 * bodyScale,
 		            label: {
 		                normal: {
 		                    show: true,
