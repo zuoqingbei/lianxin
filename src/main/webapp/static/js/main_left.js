@@ -222,7 +222,7 @@ function sphereRTnumberShow(n) {
                 newStr += "0";
             } else {
                 newStr += '<span style="color: #fff;">' + str + '</span>';
-                console.log(newStr);
+                // console.log(newStr);
                 $flatLTnumber.html(newStr);
                 break;
             }
@@ -265,6 +265,11 @@ $(function () {
 
     //进入时的视频淡出效果
     //videoFadeOut();
+
+    //调整字符云页面的文字大小
+    document.getElementById("wordCloud").contentWindow.resizeText(bodyScale);
+    // wordCloud.window.resizeText(bodyScale);
+
     //切换地图显示区域
     switchMapArea(myCharts);
     //切换地球和平面地图按钮的提示
@@ -277,6 +282,7 @@ $(function () {
     navSelectA();
     //球形地图右下角的广告滚动
     sphereRBscroll();
+
 
 });
 

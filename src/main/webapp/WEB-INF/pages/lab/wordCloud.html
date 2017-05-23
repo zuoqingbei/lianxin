@@ -251,13 +251,24 @@ p a {
         cc = Math.cos(c * dtr);
     }
 
-    $(document).ready(function(){
+    function resizeText(bodyScale) {
+        radius = 100*bodyScale;
+    }
+
+    $(function(){
+        var h = $(window.parent).height();
+        var bodyFontSize = h / 595 * 100 + "%";
+        bodyScale = h / 595;
+        $("body").css("font-size", bodyFontSize);
+        radius = 100*bodyScale;
+        console.log("h:"+h+"~~~~~~~~~~~~~~~~radius:", radius)
+
         var i=0;
         var oTag=null;
         $.getJSON( "${contextPath!}/static/data/wordCloudText.json", function( data ) {
 //            $.getJSON( "../../../static/data/wordCloudText.json", function( data ) {
 
-                console.log("这里getjson");
+//                console.log("这里getjson");
             var items = [];
             $.each( data, function( key, val ) {
                 items.push( "<a href=#  style=font-size:"+val+"em>"+key+"</a>" );
