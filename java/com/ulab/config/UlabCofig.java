@@ -75,6 +75,7 @@ public class UlabCofig extends JFinalConfig {
 		dp.setInitialSize(5);
 		dp.setMaxActive(5);
 		dp.setMinIdle(3);
+		dp.setValidationQuery("select 1 from dual");
 		me.add(dp);
 		arp = new AutoTableBindPlugin(dp);// 设置数据库方言
 		arp.setDialect(new OracleDialect());

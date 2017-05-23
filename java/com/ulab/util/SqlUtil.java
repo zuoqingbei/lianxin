@@ -1,6 +1,7 @@
 package com.ulab.util;
 
-import com.alibaba.dubbo.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import com.ulab.core.BaseController;
 
 public class SqlUtil {

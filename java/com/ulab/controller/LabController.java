@@ -581,7 +581,7 @@ public class LabController extends BaseController {
     		list=new ArrayList<Record>();
     		double pj=Double.parseDouble(pro.get("pj_value").toString());
     		double fc=Double.parseDouble(pro.get("fc_value").toString());
-    		for(int x=0;x<50000;x++){
+    		for(int x=0;x<200000;x++){
     			Record r=new Record();
     			list.add(r.set("num",NormalDistribution.calc(pj, fc)));
     		}
