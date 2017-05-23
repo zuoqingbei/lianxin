@@ -43,10 +43,10 @@ function mkSqualityLevelForTab4(xhPro){
 	    },
 	    grid: {
 //	            show:true,
-	        x: "25%",
+	        x: "15%",
 	        x2: "21%",
-	        y: '25%',
-	        y2: "25%"
+	        y: '15%',
+	        y2: "20%"
 	    },
 	    yAxis: [
 	        {
@@ -124,7 +124,7 @@ function mkSqualityLevelForTab4(xhPro){
 	            type: 'value',
                 nameGap:2*bodyScale,
                 axisLabel: {
-                    show:false
+                    show:true
                 },
 	            splitLine: {  //刻度线
 	                show: true,
@@ -267,13 +267,26 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		                symbolSize:0,
 		                silent: true,
 		                label:{normal:{formatter:"{b}={c}"}},
-		                data: [{
+                        lineStyle:{
+                            normal:{
+                                type:"solid",
+                                width:1*bodyScale
+                            }
+                        },
+
+                        data: [{
 		                    name:"UCL",
 		                    yAxis: parseFloat(mUcl)
 		                },{
 		                    name:"x",
-		                    yAxis: parseFloat(mValue)
-		                }, {
+		                    yAxis: parseFloat(mValue),
+                            lineStyle:{
+                                normal:{
+                                    color:"#439ef7"
+                                }
+                            }
+
+                        }, {
 		                    name:"LCL",
 		                    yAxis: parseFloat(mLcl)
 		                }]
@@ -305,16 +318,16 @@ function cpkDataForTab4(xhPro){
 		mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
 		mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));
 		mHeightChartTab4.xAxis[0].addPlotLine({
-            color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+            color:'#f93',            //线的颜色，定义为红色
+            dashStyle:'solid',//认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
+            width:1  ,               //标示线的宽度，2px
             label:{
                 text:'LSL',  //标签的内容
                 verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
                 x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
                 style: {
-                    color: 'red',
+                    color: '#f93',
                    /* fontWeight: 'bold',*/
                     fontSize:12
                 } 
@@ -322,16 +335,16 @@ function cpkDataForTab4(xhPro){
             zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
         });
 		mHeightChartTab4.xAxis[0].addPlotLine({
-            color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+            color:'#f93',            //线的颜色，定义为红色
+            dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
+            width:1  ,               //标示线的宽度，2px
             label:{
                 text:'USL',//标签的内容
                 align:'center',                //标签的水平位置，水平居左,默认是水平居中center
                 x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
                 style: {
-                    color: 'red',
+                    color: '#f93',
                     /*fontWeight: 'bold',*/
                     fontSize:12
                 }
@@ -420,7 +433,8 @@ var mHeightChartTab4=$('#myChart16').highcharts({
         color:"#4397f7",
         pointPadding: 0,
         groupPadding: 0,
-        pointPlacement: 'between'
+        pointPlacement: 'between',
+		borderColor:"rgba(0,0,0,0)"
     }, {
         name: '概率密度',
         type: 'spline',
@@ -442,7 +456,11 @@ function communistStatisticForMonthForTab4Ajax(){
 		    color: ['#66ccff', '#a5fff1'],
 		    legend: {
 		        show: true,
-		        data: ['共产数', '一致数']
+		        data: ['共产型号总数', '共产一致型号数'],
+                textStyle: {
+                    fontSize: 10 * bodyScale,
+                },
+                itemWidth: 6 * bodyScale,  //图例标记的图形宽度
 		    },
 		    grid: {
 //		            show:true,
@@ -466,7 +484,7 @@ function communistStatisticForMonthForTab4Ajax(){
 		        }
 		    ],
 		    series: [{
-		        name: '共产数',
+		        name: '共产型号总数',
 		        type: 'pictorialBar',
 		        label: labelSetting,
 		        symbolRepeat: true,
@@ -474,7 +492,7 @@ function communistStatisticForMonthForTab4Ajax(){
 		        barCategoryGap: '40%',
 		        data: statisticRightSeriesTab4Data(data[0],bar_chip)
 		    }, {
-		        name: '一致数',
+		        name: '共产一致型号数',
 		        type: 'pictorialBar',
 		        barGap: '10%',
 		        label: labelSetting,
@@ -511,7 +529,7 @@ function communistGravityStatisticForTab4Ajax(){
 		            name: '',
 		            type: 'pie',
 		            radius: [0, '50%'],
-		            center: ['35%', '55%'],
+		            center: ['45%', '55%'],
 		            // roseType: 'radius',
 		            label: {
 		                normal: {

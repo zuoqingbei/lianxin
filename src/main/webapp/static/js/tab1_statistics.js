@@ -130,14 +130,14 @@ function satisfactionStatisForMonthForTab1Ajax(){
 		    legend: {
 		        show: false,
 		        data: ['整机', '模块'],
-		        itemWidth: 5,  //图例标记的图形宽度
-		        itemHeight: 3, //图例标记的图形高度
+		        itemWidth: 5*bodyScale,  //图例标记的图形宽度
+		        itemHeight: 3*bodyScale, //图例标记的图形高度
 		    },
 		    grid: {
-		        right: 43,
-		        bottom: 20,
-		        left: 38,
-		        top: 30
+		        right: '20%',
+		        bottom: '20%',
+		        left: '12%',
+		        top: '20%'
 		    },
 		    yAxis: {
 		        name: '满意度/%',
@@ -156,10 +156,10 @@ function satisfactionStatisForMonthForTab1Ajax(){
 		            stack: '总量',
 		            lineStyle: {
 		                normal: {
-		                    width: 1
+		                    width: 1*bodyScale
 		                }
 		            },
-		            symbolSize: 2,
+		            symbolSize: 2*bodyScale,
 		            data: tab1OrderRateSeriseData(data)
 		        }
 		    ]
@@ -198,7 +198,7 @@ function equipmentTotalForLab1Ajax(){
 		            axisLine: {            // 坐标轴线
 		                show: false,
 		                lineStyle: {       // 属性lineStyle控制线条样式
-		                    width: 7,
+		                    width: 7*bodyScale,
 		                    color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
 		                },
 
@@ -210,7 +210,7 @@ function equipmentTotalForLab1Ajax(){
 		                }
 		            },
 		            axisTick: {            // 坐标轴小标记
-		                length: 5,        // 属性length控制线长
+		                length: 5*bodyScale,        // 属性length控制线长
 		                lineStyle: {       // 属性lineStyle控制线条样式
 		                    color: '#66ccff'
 		                }
@@ -231,7 +231,7 @@ function equipmentTotalForLab1Ajax(){
 		            },
 		            pointer: {
 		                length: "55%",
-		                width: 3
+		                width: 3*bodyScale
 		            },
 		            title: {
 		                offsetCenter: [0, '110%'],       // x, y，单位px
@@ -264,7 +264,7 @@ function equipmentTotalForLab1Ajax(){
 		            splitNumber: 5,
 		            axisLine: {            // 坐标轴线
 		                lineStyle: {       // 属性lineStyle控制线条样式
-		                    width: 7,
+		                    width: 7* bodyScale,
 		                    color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
 
 		                },
@@ -276,13 +276,13 @@ function equipmentTotalForLab1Ajax(){
 		                }
 		            },
 		            axisTick: {            // 坐标轴小标记
-		                length: 7,        // 属性length控制线长
+		                length: 7* bodyScale,        // 属性length控制线长
 		                lineStyle: {       // 属性lineStyle控制线条样式
 		                    color: 'auto'
 		                }
 		            },
 		            splitLine: {           // 分隔线
-		                length: 11,         // 属性length控制线长
+		                length: 11* bodyScale,         // 属性length控制线长
 		                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
 		                    color: 'auto'
 		                }
@@ -297,7 +297,7 @@ function equipmentTotalForLab1Ajax(){
 		            },
 		            pointer: {
 		                length: "55%",
-		                width: 3
+		                width: 3* bodyScale
 		            },
 		            title: {
 		                offsetCenter: [0, '100%'],       // x, y，单位px
@@ -330,7 +330,7 @@ function equipmentTotalForLab1Ajax(){
 		            splitNumber: 5,
 		            axisLine: {            // 坐标轴线
 		                lineStyle: {       // 属性lineStyle控制线条样式
-		                    width: 7,
+		                    width: 7* bodyScale,
 		                    color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
 
 		                }
@@ -338,17 +338,17 @@ function equipmentTotalForLab1Ajax(){
 		            axisLabel: {
 		                show: true,
 		                textStyle: {
-		                    fontSize: 8
+		                    fontSize: 8*bodyScale
 		                }
 		            },
 		            axisTick: {            // 坐标轴小标记
-		                length: 7,        // 属性length控制线长
+		                length: 7* bodyScale,        // 属性length控制线长
 		                lineStyle: {       // 属性lineStyle控制线条样式
 		                    color: 'auto'
 		                }
 		            },
 		            splitLine: {           // 分隔线
-		                length: 11,         // 属性length控制线长
+		                length: 11* bodyScale,         // 属性length控制线长
 		                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
 		                    color: 'auto'
 		                }
@@ -363,12 +363,12 @@ function equipmentTotalForLab1Ajax(){
 		            },
 		            pointer: {
 		                length: "55%",
-		                width: 3
+		                width: 3* bodyScale
 		            },
 		            title: {
 		                offsetCenter: [0, '100%'],       // x, y，单位px
 		                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-		                    fontSize: 12,
+		                    fontSize: 12*bodyScale,
 		                    color: '#66ccff',
 //		                        fontStyle: 'italic'
 		                },
@@ -421,10 +421,10 @@ function mkSqualityLevelForTab1(xhPro){
 	    },
 	    grid: {
 //	            show:true,
-	        x: "25%",
+	        x: "13%",
 	        x2: "21%",
-	        y: '25%',
-	        y2: "25%"
+	        y: '10%',
+	        y2: "20%"
 	    },
 	    yAxis: [
 	        {
@@ -502,7 +502,8 @@ function mkSqualityLevelForTab1(xhPro){
 	            type: 'value',
                 nameGap:2*bodyScale,
                 axisLabel: {
-                    show:false
+                    show:true,
+                  
                 },
 	            splitLine: {  //刻度线
 	                show: true,
@@ -514,7 +515,8 @@ function mkSqualityLevelForTab1(xhPro){
 	                show: false,
 	                textStyle: {
 	                    color: '#66ccff',
-	                }
+	                },
+	                color: '#66ccff',
 	            },
 	            axisTick: {  //刻度值
 	                show: false,
@@ -612,8 +614,8 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		    ],
 		    visualMap: {
 		        show:false,
-		        top: 10,
-		        right: 10,
+		        top: 10* bodyScale,
+		        right: 10* bodyScale,
 		        pieces: [{
 		            gt:  parseFloat(mLcl),
 		            lte: parseFloat(mUcl),
@@ -630,27 +632,40 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		            lineStyle: {
 		                normal: {
                             // color:"#00e673",
-		                    width: 1
+		                    width: 1* bodyScale
 		                }
 		            },
                     itemStyle:{normal:{
                         // borderColor:"#00e673"
+/*
                         borderColor:function (params) {
 							console.log("...............................",params)
                         }
+*/
                     }},
-		            symbolSize: 2,
+		            symbolSize: 2* bodyScale,
 		            data: tab1OrderRateSeriseData(data),
 		            markLine: {
 		                symbolSize:0,
 		                silent: true,
 		                label:{normal:{formatter:"{b}={c}"}},
+						lineStyle:{
+		                	normal:{
+		                		type:"solid",
+								width:1*bodyScale
+							},
+						},
 		                data: [{
 		                    name:"UCL",
 		                    yAxis: parseFloat(mUcl)
 		                },{
 		                    name:"x",
-		                    yAxis: parseFloat(mValue)
+		                    yAxis: parseFloat(mValue),
+                            lineStyle:{
+                                normal:{
+                                    color:"#439ef7"
+                                }
+                            }
 		                }, {
 		                    name:"LCL",
 		                    yAxis: parseFloat(mLcl)
@@ -683,35 +698,35 @@ function cpkDataForTab1(xhPro){
 		mHeightChart.series[0].setData(histogram(mData, 0.3)); // 更新 series
 		mHeightChart.series[1].setData(histogram(mData2, 0.3));
 		mHeightChart.xAxis[0].addPlotLine({
-            color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+            color:'#f93',            //线的颜色，定义为红色
+            dashStyle:'solid',//认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
+            width:2* bodyScale,               //标示线的宽度，2px
             label:{
                 text:'LSL',  //标签的内容
                 verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                x:5* bodyScale,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
                 style: {
-                    color: 'red',
+                    color: '#f93',
                    /* fontWeight: 'bold',*/
-                    fontSize:12
+                    fontSize:12*bodyScale
                 } 
             },
             zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
         });
 		mHeightChart.xAxis[0].addPlotLine({
-            color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+            color:'#f93',            //线的颜色，定义为红色
+            dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
+            width:2* bodyScale  ,               //标示线的宽度，2px
             label:{
                 text:'USL',//标签的内容
                 align:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+                x:5* bodyScale,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
                 style: {
-                    color: 'red',
+                    color: '#f93',
                     /*fontWeight: 'bold',*/
-                    fontSize:12
+                    fontSize:12*bodyScale
                 }
             },
             zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
@@ -806,7 +821,8 @@ var mHeightChart=$('#myChart10').highcharts({
         color:"#4397f7",
         pointPadding: 0,
         groupPadding: 0,
-        pointPlacement: 'between'
+        pointPlacement: 'between',
+        borderColor:"rgba(0,0,0,0)"
     }, {
         name: '概率密度',
         type: 'spline',
@@ -886,6 +902,7 @@ function communistGravityStatisticForTab1Ajax(){
 		myChart11.setOption({
 		    color: ['#66ccff', '#4397f7'],
 		    legend: {
+		    	right:'right',
 		        show: true,
 		        textStyle: {
 		            color: '#66ccff',
@@ -893,15 +910,15 @@ function communistGravityStatisticForTab1Ajax(){
 		        },
 		        orient: 'vertical',  //布局  纵向布局
 		        data: ['共产一致型号数', '共产不一致型号数'],
-		        itemWidth: 10,  //图例标记的图形宽度
-		        itemHeight: 2, //图例标记的图形高度
+		        itemWidth: 10* bodyScale,  //图例标记的图形宽度
+		        itemHeight: 2* bodyScale, //图例标记的图形高度
 		    },
 		    series: [
 		        {
 		            name: '',
 		            type: 'pie',
-		            radius: [0, '50%'],
-		            center: ['50%', '55%'],
+		            radius: [0, '60%'],
+		            center: ['40%', '55%'],
 		            // roseType: 'radius',
 		            label: {
 		                normal: {
@@ -963,7 +980,7 @@ function findOrderPassForAllTab1(){
 		var dataStyle = {
 		    normal: {
 		        label: {show:true},
-		        labelLine: {show:true,length:3,length2:7,smooth:true}
+		        labelLine: {show:true,length:3* bodyScale,length2:7* bodyScale,smooth:true}
 		    }
 		};
 		var placeHolderStyle = {
@@ -1025,7 +1042,7 @@ function findOrderPassForAllTab1(){
 		            itemStyle: {
 		            	 normal: {
 						        label: {show:true},
-						        labelLine: {show:true,length:5,length2:22,smooth:false}
+						        labelLine: {show:true,length:5* bodyScale,length2:22* bodyScale,smooth:false}
 						    },
 		            },
 		            data: [
@@ -1070,14 +1087,14 @@ function findOrderYearRateForTab1(){
 		    legend: {
 		        show: false,
 		        data: ['及时率'],
-		        itemWidth: 5,  //图例标记的图形宽度
-		        itemHeight: 3, //图例标记的图形高度
+		        itemWidth: 5* bodyScale,  //图例标记的图形宽度
+		        itemHeight: 3* bodyScale, //图例标记的图形高度
 		    },
 		    grid: {
-		        right: 43,
-		        bottom: 20,
-		        left: 38,
-		        top:30
+		        right: '20%',
+		        bottom: '20%',
+		        left: '12%',
+		        top:'10%'
 		    },
 
 		    yAxis:{
@@ -1101,10 +1118,10 @@ function findOrderYearRateForTab1(){
 				type: 'line',
 				lineStyle:{
 					normal:{
-						width:1
+						width:1* bodyScale
 					}
 				},
-				symbolSize:2,
+				symbolSize:2* bodyScale,
 				data: tab1OrderRateSeriseData(data)
 		}]
 
@@ -1153,7 +1170,7 @@ function standardStatus(){
 			            textStyle: {
 			                baseline: 'bottom',
 			                color: '#66ccff',
-			                fontSize:8
+			                fontSize:8*bodyScale
 			            }
 			        },
 			        labelLine: {
@@ -1183,12 +1200,12 @@ function standardStatus(){
 			        labelLine: {
 			            show: false
 			        }
-			    },
+			     },
 			    emphasis: {
 			        color: 'rgba(0,0,0,0)'
 			    },
 			};
-			var radius = [20, 25];
+			var radius = ['26%', '35%'];
 		option = {
 		    toolbox: {
 		        show: false,
@@ -1329,12 +1346,15 @@ function abilityStatus(){
 		        {
 		            name: "",
 		            type: 'category',
-		            data: statisticRightLengend2(data.data)
+		            data: statisticRightLengend2(data.data),
+		            axisLabel: {
+						interval:0
+		            }
 		        }
 		    ],
 		    grid: {
-		        x: 48,
-		        y: 28
+		        x: '15%',
+		        y: '12%'
 		    },
 		    series: [
 		        {
