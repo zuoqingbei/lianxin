@@ -267,13 +267,26 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		                symbolSize:0,
 		                silent: true,
 		                label:{normal:{formatter:"{b}={c}"}},
-		                data: [{
+                        lineStyle:{
+                            normal:{
+                                type:"solid",
+                                width:1*bodyScale
+                            }
+                        },
+
+                        data: [{
 		                    name:"UCL",
 		                    yAxis: parseFloat(mUcl)
 		                },{
 		                    name:"x",
-		                    yAxis: parseFloat(mValue)
-		                }, {
+		                    yAxis: parseFloat(mValue),
+                            lineStyle:{
+                                normal:{
+                                    color:"#439ef7"
+                                }
+                            }
+
+                        }, {
 		                    name:"LCL",
 		                    yAxis: parseFloat(mLcl)
 		                }]
@@ -306,9 +319,9 @@ function cpkDataForTab4(xhPro){
 		mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));
 		mHeightChartTab4.xAxis[0].addPlotLine({
             color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//认是solid（实线），这里定义为长虚线
+            dashStyle:'solid',//认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
+            width:1  ,               //标示线的宽度，2px
             label:{
                 text:'LSL',  //标签的内容
                 verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
@@ -323,9 +336,9 @@ function cpkDataForTab4(xhPro){
         });
 		mHeightChartTab4.xAxis[0].addPlotLine({
             color:'red',            //线的颜色，定义为红色
-            dashStyle:'shortDot',//标示线的样式，默认是solid（实线），这里定义为长虚线
+            dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:2  ,               //标示线的宽度，2px
+            width:1  ,               //标示线的宽度，2px
             label:{
                 text:'USL',//标签的内容
                 align:'center',                //标签的水平位置，水平居左,默认是水平居中center
