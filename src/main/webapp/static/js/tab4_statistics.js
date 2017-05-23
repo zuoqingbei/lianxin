@@ -43,10 +43,10 @@ function mkSqualityLevelForTab4(xhPro){
 	    },
 	    grid: {
 //	            show:true,
-	        x: "25%",
+	        x: "15%",
 	        x2: "21%",
-	        y: '25%',
-	        y2: "25%"
+	        y: '15%',
+	        y2: "20%"
 	    },
 	    yAxis: [
 	        {
@@ -124,7 +124,7 @@ function mkSqualityLevelForTab4(xhPro){
 	            type: 'value',
                 nameGap:2*bodyScale,
                 axisLabel: {
-                    show:false
+                    show:true
                 },
 	            splitLine: {  //刻度线
 	                show: true,
@@ -456,7 +456,11 @@ function communistStatisticForMonthForTab4Ajax(){
 		    color: ['#66ccff', '#a5fff1'],
 		    legend: {
 		        show: true,
-		        data: ['共产数', '一致数']
+		        data: ['共产型号总数', '共产一致型号数'],
+                textStyle: {
+                    fontSize: 10 * bodyScale,
+                },
+                itemWidth: 6 * bodyScale,  //图例标记的图形宽度
 		    },
 		    grid: {
 //		            show:true,
@@ -480,7 +484,7 @@ function communistStatisticForMonthForTab4Ajax(){
 		        }
 		    ],
 		    series: [{
-		        name: '共产数',
+		        name: '共产型号总数',
 		        type: 'pictorialBar',
 		        label: labelSetting,
 		        symbolRepeat: true,
@@ -488,7 +492,7 @@ function communistStatisticForMonthForTab4Ajax(){
 		        barCategoryGap: '40%',
 		        data: statisticRightSeriesTab4Data(data[0],bar_chip)
 		    }, {
-		        name: '一致数',
+		        name: '共产一致型号数',
 		        type: 'pictorialBar',
 		        barGap: '10%',
 		        label: labelSetting,

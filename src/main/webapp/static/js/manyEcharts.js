@@ -15,9 +15,9 @@ function getLineEcharts() {
         },
         grid: {
             right: 0,
-            bottom: 20,
-            left: 40,
-            top: 55
+            bottom: '10%',
+            left: '10%',
+            top: '10%'
         },
         tooltip: {
             trigger: 'axis'
@@ -166,7 +166,7 @@ function getBarEcharts() {
                 axisTick: {  //刻度值
                     show: false
                 },
-                offset: 5
+                offset: 5*bodyScale
 
             }
         ],
@@ -228,8 +228,6 @@ function getPieEcharts() {
 
         visualMap: {
             show: false,
-            min: 80,
-            max: 600,
             inRange: {
                 colorLightness: [0, 1]
             }
@@ -584,8 +582,8 @@ function getCenterPie() {
             // orient :' horizontal',  //布局  纵向布局
             // // width:80,      //图行例组件的宽度,默认自适应
             x : 'right',   //图例显示在右边
-            itemWidth:10,  //图例标记的图形宽度
-            itemHeight:5, //图例标记的图形高度
+            itemWidth:10*bodyScale,  //图例标记的图形宽度
+            itemHeight:5*bodyScale, //图例标记的图形高度
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
                 fontSize: 10*bodyScale
@@ -597,7 +595,7 @@ function getCenterPie() {
             sublink: '',
             x: 'center',
             y: 'center',
-            itemGap: 20,
+            itemGap: 20*bodyScale,
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
                 fontSize: 12*bodyScale
@@ -935,7 +933,7 @@ function  getScatterEcharts() {
         },
         grid: {
             top:0,
-            left: 2,
+            left: 1,
             bottom: 25,
             right: 15,
             containLabel: true
