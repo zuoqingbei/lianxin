@@ -1,30 +1,30 @@
 // 数据分析
 var bodyScale = 1;//原始比例1
-    //左
-    var chartone = echarts.init(document
-        .getElementById("echart_one"));
-    //右
-    var charttwo = echarts.init(document
-        .getElementById("echart_two"));
-   
+//左
+var chartone = echarts.init(document
+    .getElementById("echart_one"));
+//右
+var charttwo = echarts.init(document
+    .getElementById("echart_two"));
 
-    //左
-    var chartthree = echarts.init(document
-        .getElementById("echart_three"));
-   
-    //右
-    var chartfour = echarts.init(document
-        .getElementById("echart_four"));
-   
 
-    //左
-    var chartfive = echarts.init(document
-        .getElementById("echart_five"));
-    //右
-    var chartsix = echarts.init(document
-        .getElementById("echart_six"));
-    //$("#labMain_cbro_content").load("labAnalysis_small.html");
-    // document.getElementById("labMain_cbro_content").innerHTML = '<object type="text/html" data="labAnalysis_small.html" width="100%" height="100%"></object>';
+//左
+var chartthree = echarts.init(document
+    .getElementById("echart_three"));
+
+//右
+var chartfour = echarts.init(document
+    .getElementById("echart_four"));
+
+
+//左
+var chartfive = echarts.init(document
+    .getElementById("echart_five"));
+//右
+var chartsix = echarts.init(document
+    .getElementById("echart_six"));
+//$("#labMain_cbro_content").load("labAnalysis_small.html");
+// document.getElementById("labMain_cbro_content").innerHTML = '<object type="text/html" data="labAnalysis_small.html" width="100%" height="100%"></object>';
 
 function initone(mValue) {
     var labelFromatter = {
@@ -89,7 +89,7 @@ function initone(mValue) {
                 //x: '40%', // for funnel
                 itemStyle: labelFromatter,
                 data: [
-                    {name: '', value: 100-parseFloat(mValue), itemStyle: labelBottom},
+                    {name: '', value: 100 - parseFloat(mValue), itemStyle: labelBottom},
                     {name: '', value: mValue, itemStyle: labelTop}
                 ]
             }
@@ -102,206 +102,213 @@ function initone(mValue) {
 }
 //近12个月用户满意度趋势图
 function inittwo() {
-	$.post(contextPath+'/lab/satisfactionStatisForMonthForTab1Ajax',{"labTypeCode":"中海博睿"},function(data){
-			var resu=dealSatisfactionCenterLab(data);
-			$("#satisfaction_rate_center_lab_pj").html("平均:"+resu[0]+"%");
-			$("#satisfaction_rate_center_lab_height").html("最高:"+resu[1].rate+"%("+resu[1].month+"月)");
-			$("#satisfaction_rate_center_lab_low").html("最低:"+resu[2].rate+"%("+resu[2].month+"月)");
-			chartfive.setOption(initone(resu[0]));
-		    var bar_chip = contextPath+'/static/img/bar_chip.png';
-		    var labelSetting = {
-		        normal: {
-		            show: false,
-		            position: 'outside',
-		            offset: [10, 0],
-		            textStyle: {
-		                fontSize: bodyScale * 8
-		            }
-		        }
-		    };
-		    chartsix.setOption(getBarEcharts());
-		    chartsix.setOption({
-        textStyle: {
-            fontSize: bodyScale * 8
-        },
-        yAxis: [
-            {
-                name: "满意度/%",
-
-                nameTextStyle: {
-                    fontSize: bodyScale * 10,
-
-                },
-
-                type: 'value',
-                max: 100,
-                scale:true,
+    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab1Ajax', {"labTypeCode": "中海博睿"}, function (data) {
+        var resu = dealSatisfactionCenterLab(data);
+        $("#satisfaction_rate_center_lab_pj").html("平均:" + resu[0] + "%");
+        $("#satisfaction_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
+        $("#satisfaction_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
+        chartfive.setOption(initone(resu[0]));
+        var bar_chip = contextPath + '/static/img/bar_chip.png';
+        var labelSetting = {
+            normal: {
+                show: false,
+                position: 'outside',
+                offset: [10, 0],
+                textStyle: {
+                    fontSize: bodyScale * 8
+                }
+            }
+        };
+        chartsix.setOption(getBarEcharts());
+        chartsix.setOption({
+            textStyle: {
+                fontSize: bodyScale * 8
             },
-        ],
-        xAxis: [
-            {
-                name: "",
-                type: 'category',
-                data:centerLabOrderRateLengend(data)
-            }
-        ],
-        grid: {
-            x: "15%",
-            x2: "10%",
-            y: '23%',
-            y2: "34%",
-        },
-        series: [
-            {
-                symbolSize: ['50%', '10%'],
-                data: centerLabOrderHgRate(data)
-            }
-        ]
+            yAxis: [
+                {
+                    name: "满意度/%",
+
+                    nameTextStyle: {
+                        fontSize: bodyScale * 10,
+
+                    },
+
+                    type: 'value',
+                    max: 100,
+                    scale: true,
+                },
+            ],
+            xAxis: [
+                {
+                    name: "",
+                    type: 'category',
+                    data: centerLabOrderRateLengend(data)
+                }
+            ],
+            grid: {
+                x: "15%",
+                x2: "10%",
+                y: '23%',
+                y2: "34%",
+            },
+            series: [
+                {
+                    symbolSize: ['50%', '10%'],
+                    data: centerLabOrderHgRate(data)
+                }
+            ]
+        });
+
+
     });
-		   
-		
-	});
 
 }
 //近12个月一次合格率趋势图
 function initThree() {
-	$.post(contextPath+'/lab/orderRateForCenterLabAjax',{"startDate":"201606","endDate":"201705"},function(data){
-		var resu=dealCenterLab(data);
-		$("#hg_rate_center_lab_pj").html("平均:"+resu[0]+"%");
-		$("#hg_rate_center_lab_height").html("最高:"+resu[1].rate+"%("+resu[1].month+"月)");
-		$("#hg_rate_center_lab_low").html("最低:"+resu[2].rate+"%("+resu[2].month+"月)");
-		chartone.setOption(initone(resu[0]));
-		charttwo.setOption(getBarEcharts());
-		var bar_chip = contextPath+'/static/img/bar_chip.png';
-		    var labelSetting = {
-		        normal: {
-		            show: false,
-		            position: 'outside',
-		            offset: [10, 0],
-		            textStyle: {
-		                fontSize: bodyScale * 8
-		            }
-		        }
-		    };
-		    
+    $.post(contextPath + '/lab/orderRateForCenterLabAjax', {
+        "startDate": "201606",
+        "endDate": "201705"
+    }, function (data) {
+        var resu = dealCenterLab(data);
+        $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
+        $("#hg_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
+        $("#hg_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
+        chartone.setOption(initone(resu[0]));
+        charttwo.setOption(getBarEcharts());
+        var bar_chip = contextPath + '/static/img/bar_chip.png';
+        var labelSetting = {
+            normal: {
+                show: false,
+                position: 'outside',
+                offset: [10, 0],
+                textStyle: {
+                    fontSize: bodyScale * 8
+                }
+            }
+        };
 
-		    charttwo.setOption({
-		        textStyle: {
-		            fontSize: bodyScale * 8
-		        },
-		        yAxis: [
-		            {
-		                name: "合格率/%",
 
-		                nameTextStyle: {
-		                    fontSize: bodyScale * 10,
+        charttwo.setOption({
+            textStyle: {
+                fontSize: bodyScale * 8
+            },
+            yAxis: [
+                {
+                    name: "合格率/%",
 
-		                },
+                    nameTextStyle: {
+                        fontSize: bodyScale * 10,
 
-		                type: 'value',
-		                max: 100,
-                        scale:true,
-		            },
-		        ],
-		        xAxis: [
-		            {
-		                name: "",
-		                type: 'category',
-		                data: centerLabOrderRateLengend(data)
-		            }
-		        ],
-		        grid: {
-		            // x: "10%",
+                    },
+
+                    type: 'value',
+                    max: 100,
+                    scale: true,
+                },
+            ],
+            xAxis: [
+                {
+                    name: "",
+                    type: 'category',
+                    data: centerLabOrderRateLengend(data)
+                }
+            ],
+            grid: {
+                // x: "10%",
 //		            x2: "25%",
 //		            y: '22%',
 //		            y2: "26%",
 
-		            x: "15%",
-		            x2: "10%",
-		            y: '23%',
-		            y2: "34%",
-		        },
-		        series: [
-		            {
-		                symbolSize: ['50%', '10%'],
-		                data: centerLabOrderHgRate(data)
-		            }
-		        ]
-		    });
-		    
-	});
-   
+                x: "15%",
+                x2: "10%",
+                y: '23%',
+                y2: "34%",
+            },
+            series: [
+                {
+                    symbolSize: ['50%', '10%'],
+                    data: centerLabOrderHgRate(data)
+                }
+            ]
+        });
+
+    });
+
 
 }
 //按照产线统计某年各月份详细订单及时率  数据结果 订单及时率 折线图
 function initfour() {
-	$.post(contextPath+'/lab/findOrderYearRateForTab1Ajax',{"labTypeCode":"中心实验室","startDate":"201606","endDate":"201705"},function(data){
-		var resu=dealCenterLab(data);
-		$("#order_rate_center_lab_pj").html("平均:"+resu[0]+"%");
-		$("#order_rate_center_lab_height").html("最高:"+resu[1].rate+"%("+resu[1].month+"月)");
-		$("#order_rate_center_lab_low").html("最低:"+resu[2].rate+"%("+resu[2].month+"月)");
-		chartthree.setOption(initone(resu[0]));
-		chartfour.setOption(getAreaEcharts());
-		chartfour.setOption({
-			textStyle: {
-				fontSize: bodyScale * 8
-			},
-			legend: {
-				show: false,
-				data: [''],
-				textStyle: {
-					fontSize: bodyScale * 8
-				},
-				itemWidth: 6, //图例标记的图形宽度
-				itemHeight: 6 //图例标记的图形高度
-			},
-			grid: {
-				
-				x: "11%",
-				x2: "10%",
-				y: '23%',
-				y2: "20%"
-			},
-			xAxis: [
-			        {
-			        	name: '',
-			        	data: centerLabOrderRateLengend(data)
-			        }
-			        ],
-			        yAxis: [
-			                {
-			                	name: "及时率/%",
-			                	
-			                	nameTextStyle: {
-			                		fontSize: bodyScale * 10,
-			                		
-			                	},
-			                }
-			                ],
-			                series: [
-			                         {
-			                        	 name: '',
-			                        	 type: 'line',
-			                        	 stack: '总量',
-			                        	 // areaStyle: {normal: {}},
-			                        	 data: centerLabRateData(data),
-			                        	 itemStyle: {
-			                        		 normal: {
-			                        			 color: "#ff6666"
-			                        		 }
-			                        	 }
-			                         
-			                         }
-			                         ]
-			
-		});
-	});
+    $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
+        "labTypeCode": "中心实验室",
+        "startDate": "201606",
+        "endDate": "201705"
+    }, function (data) {
+        var resu = dealCenterLab(data);
+        $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
+        $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
+        $("#order_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
+        chartthree.setOption(initone(resu[0]));
+        chartfour.setOption(getAreaEcharts());
+        chartfour.setOption({
+            textStyle: {
+                fontSize: bodyScale * 8
+            },
+            legend: {
+                show: false,
+                data: [''],
+                textStyle: {
+                    fontSize: bodyScale * 8
+                },
+                itemWidth: 6, //图例标记的图形宽度
+                itemHeight: 6 //图例标记的图形高度
+            },
+            grid: {
+
+                x: "11%",
+                x2: "10%",
+                y: '23%',
+                y2: "20%"
+            },
+            xAxis: [
+                {
+                    name: '',
+                    data: centerLabOrderRateLengend(data)
+                }
+            ],
+            yAxis: [
+                {
+                    name: "及时率/%",
+
+                    nameTextStyle: {
+                        fontSize: bodyScale * 10,
+
+                    },
+                }
+            ],
+            series: [
+                {
+                    name: '',
+                    type: 'line',
+                    stack: '总量',
+                    // areaStyle: {normal: {}},
+                    data: centerLabRateData(data),
+                    itemStyle: {
+                        normal: {
+                            color: "#ff6666"
+                        }
+                    }
+
+                }
+            ]
+
+        });
+    });
 
 }
 
 //曲线
-var colorData = ['#66ccff','#ff9933','#ff6666','#00cc66','#ffff99','#cc99ff','#99ccff','#ff99cc','#ff9900','#ffff00','#ffff00','#66ffff',
-'#3366ff','#660099','#ff0099','#cc6600','#ccff00','99ff99','#00cccc','#006699','#9999ff'];//图例颜色 需手工扩充
+var colorData = ['#66ccff', '#ff9933', '#ff6666', '#00cc66', '#ffff99', '#cc99ff', '#99ccff', '#ff99cc', '#ff9900', '#ffff00', '#ffff00', '#66ffff',
+    '#3366ff', '#660099', '#ff0099', '#cc6600', '#ccff00', '99ff99', '#00cccc', '#006699', '#9999ff'];//图例颜色 需手工扩充
 var myChart1;
 var myChart2;
 var xData;//x轴坐标数据--对应时间
@@ -430,6 +437,25 @@ function createEcharts() {
     myChart2 = echarts.init(document.getElementById('main2'));
     getCharts1();
     getCharts2();
+
+    /*
+     setInterval(function () {
+
+     seriesBottomData[0].data.shift();
+     seriesBottomData[0].data.push(parseInt(Math.random() * 30)+"");
+     var opt2 = myChart2.getOption();
+     myChart2.clear();
+     opt2.series[0].data = seriesBottomData;
+     myChart2.setOption({
+     series: [{
+     data: seriesBottomData
+     }]
+     });
+     //            myChart2.resize();
+     console.log(opt2.series[0].data[0].data)
+     },3000)
+     */
+
 }
 
 //生成图例控制
@@ -472,7 +498,8 @@ function joinSerise(data, name, index, colorIndex) {
     for (var x = 0; x < data.length; x++) {
         dataArr.push(data[x].value);
         xData.push(data[x].name);
-    };
+    }
+    ;
     var item = {
         name: dealBracketForObj(name),
         type: 'line',
@@ -482,7 +509,7 @@ function joinSerise(data, name, index, colorIndex) {
                 color: colorData[colorIndex]
             }
         },
-        show: false
+        show: false,
     };
     if (index > 0) {
         item.yAxisIndex = index;
@@ -522,7 +549,7 @@ function getCharts1() {
                     // rotate: 30,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12*bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisTick: {
@@ -551,7 +578,7 @@ function getCharts1() {
                     show: true,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12*bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 splitLine: {  //刻度线
@@ -563,12 +590,12 @@ function getCharts1() {
                 axisTick: {  //刻度值
                     show: false,
                 },
-                lineStyle:{
-                    normal:{
-                        width:0.5
+                lineStyle: {
+                    normal: {
+                        width: 0.5
                     }
                 },
-                symbolSize:1,
+                symbolSize: 1,
             },
             {
                 type: 'value',
@@ -582,7 +609,7 @@ function getCharts1() {
                     show: true,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12*bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -597,12 +624,12 @@ function getCharts1() {
                 axisTick: {  //刻度值
                     show: false,
                 },
-                lineStyle:{
-                    normal:{
-                        width:0.5
+                lineStyle: {
+                    normal: {
+                        width: 0.5
                     }
                 },
-                symbolSize:1,
+                symbolSize: 1,
             },
             {
                 type: 'value',
@@ -616,7 +643,7 @@ function getCharts1() {
                     show: true,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12*bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -631,12 +658,12 @@ function getCharts1() {
                 axisTick: {  //刻度值
                     show: false,
                 },
-                lineStyle:{
-                    normal:{
-                        width:0.5
+                lineStyle: {
+                    normal: {
+                        width: 0.5
                     }
                 },
-                symbolSize:1,
+                symbolSize: 1,
 
             }
         ],
@@ -645,7 +672,6 @@ function getCharts1() {
     myChart1.clear();
     myChart1.setOption(option);
     echarts.connect([myChart1, myChart2]);
-
 }
 function getCharts2() {
 
@@ -663,9 +689,9 @@ function getCharts2() {
         },
         grid: {
             x: '13%',
-            x2: '10%',
+            x2: '17%',
             y: '3%',
-            y2:'12%'
+            y2: '14%'
         },
         xAxis: [
             {
@@ -682,7 +708,7 @@ function getCharts2() {
                     // rotate: 30,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12*bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisTick: {
@@ -693,8 +719,6 @@ function getCharts2() {
                     }
                 },
             }
-
-
         ],
         yAxis: [
             {
@@ -707,7 +731,7 @@ function getCharts2() {
                 /*      min: 0,
                  max: 100, */
                 position: 'left',
-                offset: 40,
+                offset: 40 * bodyScale,
                 axisLabel: {
                     formatter: function (params, index) {
                         //console.log(params+"--"+index+"--"+typeof(params))
@@ -718,7 +742,7 @@ function getCharts2() {
                     },
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12*bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -733,12 +757,12 @@ function getCharts2() {
                 axisTick: {  //刻度值
                     show: false,
                 },
-                lineStyle:{
-                    normal:{
-                        width:0.5
+                lineStyle: {
+                    normal: {
+                        width: 0.5
                     }
                 },
-                symbolSize:1,
+                symbolSize: 1,
             },
             {
                 type: 'value',
@@ -752,7 +776,7 @@ function getCharts2() {
                     formatter: '{value} ',
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12*bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -767,12 +791,12 @@ function getCharts2() {
                 axisTick: {  //刻度值
                     show: false,
                 },
-                lineStyle:{
-                    normal:{
-                        width:0.5
+                lineStyle: {
+                    normal: {
+                        width: 0.5
                     }
                 },
-                symbolSize:1,
+                symbolSize: 1,
 
             },
             {
@@ -787,7 +811,7 @@ function getCharts2() {
                     formatter: '{value} ',
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12*bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -802,12 +826,12 @@ function getCharts2() {
                 axisTick: {  //刻度值
                     show: false,
                 },
-                lineStyle:{
-                    normal:{
-                        width:0.5
+                lineStyle: {
+                    normal: {
+                        width: 0.5
                     }
                 },
-                symbolSize:1,
+                symbolSize: 1,
             },
             {
                 type: 'value',
@@ -821,7 +845,7 @@ function getCharts2() {
                     formatter: '{value} ',
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:12*bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -836,26 +860,103 @@ function getCharts2() {
                 axisTick: {  //刻度值
                     show: false,
                 },
-                lineStyle:{
-                    normal:{
-                        width:0.5
+                lineStyle: {
+                    normal: {
+                        width: 0.5
                     }
                 },
-                symbolSize:1,
-                offset:40
+                symbolSize: 1,
+                offset: 40 * bodyScale
             }
         ],
         series: seriesBottomData
     };
-    myChart2.clear();
+    // myChart2.clear();
     myChart2.setOption(option2);
+
     echarts.connect([myChart1, myChart2]);
-    /*    setTimeout(function (){
-     window.onresize = function () {
-     myChart1.resize();
-     myChart2.resize();
+
+    /*
+     function randomData() {
+     now = new Date(+now + oneDay);
+     value = value + Math.random() * 21 - 10;
+     return {
+     name: now.toString(),
+     value: [
+     [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+     Math.round(value)
+     ]
      }
-     },200) */
+     }
+     */
+
+
+    /*
+     option22 = {
+     title: {
+     text: '动态数据 + 时间坐标轴'
+     },
+     tooltip: {
+     trigger: 'axis',
+     formatter: function (params) {
+     params = params[0];
+     var date = new Date(params.name);
+     return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+     },
+     axisPointer: {
+     animation: false
+     }
+     },
+     xAxis: {
+     type: 'time',
+     splitLine: {
+     show: false
+     }
+     },
+     yAxis: {
+     type: 'value',
+     boundaryGap: [0, '100%'],
+     splitLine: {
+     show: false
+     }
+     },
+     series: [{
+     name: '模拟数据',
+     type: 'line',
+     showSymbol: false,
+     hoverAnimation: false,
+     data: data
+     }]
+     };
+     */
+
+    // myChart2.setOption(option22);
+    myChart2.setOption({
+        series: [{
+            animation:false
+        },{
+            animation:false
+        },{
+            animation:false
+        },]
+    });
+    setInterval(function () {
+for(var i=0; i<seriesBottomData.length;i++){
+    seriesBottomData[i].data.shift();
+    seriesBottomData[i].data.push(parseInt(Math.random() * 30));
+}
+        var month = xData.shift();
+        xData.push(month)
+
+        myChart2.setOption({
+            xAxis:[
+                {data:xData}],
+            series: seriesBottomData,
+        });
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesBottomData[0].data)
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
+    }, 2000);
+
 
 }
 //处理括号
@@ -903,101 +1004,121 @@ function checkBoxVales() { //jquery获取复选框值
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 //新增
-function centerLabOrderRateLengend(data){
-	var legnend=[];
-	$.each(data,function(index,item){
-		var name=item.name;
-		name=name.substr(0,4)+"/"+name.substr(4,name.length);
-		legnend.push(name);
-	});
-	return legnend;
+function centerLabOrderRateLengend(data) {
+    var legnend = [];
+    $.each(data, function (index, item) {
+        var name = item.name;
+        name = name.substr(0, 4) + "/" + name.substr(4, name.length);
+        legnend.push(name);
+    });
+    return legnend;
 }
 //合格率数据
-function centerLabOrderHgRate(data){
-	var d=[];
-	$.each(data,function(index,item){
-		var it={
-		        value: item.rate,
-		        symbol: bar_chip
-		    };
-		d.push(it)
-	})
-	return d;
+function centerLabOrderHgRate(data) {
+    var d = [];
+    $.each(data, function (index, item) {
+        var it = {
+            value: item.rate,
+            symbol: bar_chip
+        };
+        d.push(it)
+    })
+    return d;
 }
-function centerLabRateData(data){
-	var indicatorDataTab3 = [];
-	for(var i=0;i<data.length;i++) {
-		var num=data[i].rate;
-		indicatorDataTab3.push(num);
-	}
-	return indicatorDataTab3;
+function centerLabRateData(data) {
+    var indicatorDataTab3 = [];
+    for (var i = 0; i < data.length; i++) {
+        var num = data[i].rate;
+        indicatorDataTab3.push(num);
+    }
+    return indicatorDataTab3;
 }
 //获取平均 最高 最低数据
-function dealCenterLab(data){
-	var result=[];
-	var all_num=0;
-	var js_num=0;
-	var maxData={month:0,rate:0};
-	var minData={month:0,rate:100};
-	$.each(data,function(index,item){
-		var cAllNum=parseInt(item.all_count);
-		var cJsNum=parseInt(item.js_count);
-		var cName=item.name;
-		var cRate=parseFloat(item.rate);
-		if(parseFloat(maxData.rate)<cRate){
-			maxData.rate=cRate;
-			maxData.month=cName;
-		}
-		if(parseFloat(minData.rate)>cRate){
-			minData.rate=cRate;
-			minData.month=cName;
-		}
-		all_num+=cAllNum;
-		js_num+=cJsNum;
-	});
-	//计算整体平均值
-	var allPingjun=parseFloat((parseInt(js_num)/parseInt(all_num))*100).toFixed(1);
-	result.push(allPingjun);
-	result.push(maxData);
-	result.push(minData);
-	return result;
+function dealCenterLab(data) {
+    var result = [];
+    var all_num = 0;
+    var js_num = 0;
+    var maxData = {month: 0, rate: 0};
+    var minData = {month: 0, rate: 100};
+    $.each(data, function (index, item) {
+        var cAllNum = parseInt(item.all_count);
+        var cJsNum = parseInt(item.js_count);
+        var cName = item.name;
+        var cRate = parseFloat(item.rate);
+        if (parseFloat(maxData.rate) < cRate) {
+            maxData.rate = cRate;
+            maxData.month = cName;
+        }
+        if (parseFloat(minData.rate) > cRate) {
+            minData.rate = cRate;
+            minData.month = cName;
+        }
+        all_num += cAllNum;
+        js_num += cJsNum;
+    });
+    //计算整体平均值
+    var allPingjun = parseFloat((parseInt(js_num) / parseInt(all_num)) * 100).toFixed(1);
+    result.push(allPingjun);
+    result.push(maxData);
+    result.push(minData);
+    return result;
 }
 //获取用户满意度平均 最高 最低数据
-function dealSatisfactionCenterLab(data){
-	var result=[];
-	var all_num=0;
-	var maxData={month:0,rate:0};
-	var minData={month:0,rate:100};
-	$.each(data,function(index,item){
-		all_num=parseFloat(all_num)+parseFloat(item.rate);
-		var cName=item.name;
-		var cRate=parseFloat(item.rate);
-		if(parseFloat(maxData.rate)<cRate){
-			maxData.rate=cRate;
-			maxData.month=cName;
-		}
-		if(parseFloat(minData.rate)>cRate){
-			minData.rate=cRate;
-			minData.month=cName;
-		}
-	});
-	//计算整体平均值
-	var allPingjun=parseFloat(all_num/data.length).toFixed(1);
-	result.push(allPingjun);
-	result.push(maxData);
-	result.push(minData);
-	return result;
+function dealSatisfactionCenterLab(data) {
+    var result = [];
+    var all_num = 0;
+    var maxData = {month: 0, rate: 0};
+    var minData = {month: 0, rate: 100};
+    $.each(data, function (index, item) {
+        all_num = parseFloat(all_num) + parseFloat(item.rate);
+        var cName = item.name;
+        var cRate = parseFloat(item.rate);
+        if (parseFloat(maxData.rate) < cRate) {
+            maxData.rate = cRate;
+            maxData.month = cName;
+        }
+        if (parseFloat(minData.rate) > cRate) {
+            minData.rate = cRate;
+            minData.month = cName;
+        }
+    });
+    //计算整体平均值
+    var allPingjun = parseFloat(all_num / data.length).toFixed(1);
+    result.push(allPingjun);
+    result.push(maxData);
+    result.push(minData);
+    return result;
 }
+
+
+//                            _ooOoo_
+//                           o8888888o
+//                           88" . "88
+//                           (| -_- |)
+//                            O\ = /O
+//                        ____/`---'\____
+//                      .   ' \\| |// `.
+//                       / \\||| : |||// \
+//                     / _||||| -:- |||||- \
+//                       | | \\\ - /// | |
+//                     | \_| ''\---/'' | |
+//                      \ .-\__ `-` ___/-. /
+//                   ___`. .' /--.--\ `. . __
+//                ."" '< `.___\_<|>_/___.' >'"".
+//               | | : `- \`.;`\ _ /`;.`/ - ` : | |
+//                 \ \ `-. \_ __\ /__ _/ .-` / /
+//         ======`-.____`-.___\_____/___.-`____.-'======
+//                            `=---='
+//
+//         .............................................
+//                  佛祖保佑             永无BUG
+//            曰:
+//                  写字楼里写字间，写字间里程序员；
+//                  程序人员写程序，又拿程序换酒钱。
+//                  酒醒只在网上坐，酒醉还来网下眠；
+//                  酒醉酒醒日复日，网上网下年复年。
+//                  但愿老死电脑间，不愿鞠躬老板前；
+//                  奔驰宝马贵者趣，公交自行程序员。
+//                  别人笑我忒疯癫，我笑自己命太贱；
+//                  不见满街漂亮妹，哪个归得程序员？

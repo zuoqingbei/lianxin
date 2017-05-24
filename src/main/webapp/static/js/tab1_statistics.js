@@ -141,7 +141,8 @@ function satisfactionStatisForMonthForTab1Ajax(){
 		    },
 		    yAxis: {
 		        name: '满意度/%',
-		        max: 100
+		        max: 100,
+                scale:true
 		    },
 		    xAxis: [
 		        {
@@ -579,7 +580,7 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		    },
 		    grid: {
 		        right: "24%",
-		        bottom: "28%",
+		        bottom: "22%",
 		        left: "15%",
 		        top: "16%"
 		    },
@@ -800,7 +801,8 @@ var mHeightChart=$('#myChart10').highcharts({
         gridLineWidth: 0,
         min:71,
         max:77,
-        plotLines:[]
+        plotLines:[],
+        tickColor:"rgba(0,0,0,0)"
     },
     yAxis: [{
         title: {
@@ -1102,7 +1104,8 @@ function findOrderYearRateForTab1(){
 		        nameTextStyle: {
 		            color: '#66ccff'
 		        },
-		        max:100
+		        max:100,
+				scale:true
 		    },
 		    xAxis: [
 		        {
@@ -1202,7 +1205,7 @@ function standardStatus(){
 			        }
 			     },
 			    emphasis: {
-			        color: 'rgba(0,0,0,0)'
+			        color: '#66ccff'
 			    },
 			};
 			var radius = ['26%', '35%'];
