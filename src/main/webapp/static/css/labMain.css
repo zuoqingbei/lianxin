@@ -183,7 +183,9 @@ a, a:hover {
     flex-direction: column;
 
 }
-
+.labMain_cbr_tab{
+	cursor:pointer;
+}
 .labMain_cbr_one {
     flex: 1;
     display: flex;
@@ -192,7 +194,7 @@ a, a:hover {
     background: url(../img/labMain/lab_right_border.png) 0 0 no-repeat;
     background-size: 100% 100%;
     position: relative;
-
+  
 }
 
 .labMain_cb_right h3 {

@@ -319,7 +319,7 @@ var seriesBottomData = [];
 var topParam = ['Hz', '℃', 'ml'];//上方y参数单位
 var bottomParam = ['V', 'W', 'A', 'kw.h'];
 var dataBase = {
-    legend: ['频率(Hz)', 'M1(℃)', 'M2(℃)', 'M3(℃)', '降雨量(ml)', '电流(V)', '电压(A)', '功率(W)'],
+    legend: ['频率(Hz)', 'M1(℃)', 'M2(℃)', 'M3(℃)', '降雨量(ml)', '电流(V)', '电压(A)', '功率(W)','电压y(kw.h)'],
     list: [
         {
             name: '频率(Hz)',
@@ -408,6 +408,19 @@ var dataBase = {
         }, {
             name: '功率(W)',
             data: [{name: '1月', value: '14'}, {name: '2月', value: '112'}, {name: '3月', value: '57'}, {
+                name: '4月',
+                value: '14'
+            }, {name: '5月', value: '12'}, {name: '6月', value: '15'}, {name: '7月', value: '5'}, {
+                name: '8月',
+                value: '2'
+            }, {name: '9月', value: '11'}, {name: '10月', value: '17'}, {name: '11月', value: '13'}, {
+                name: '12月',
+                value: '5'
+            }]
+        },
+        {
+            name: '电压y(kw.h)',
+            data: [{name: '1月', value: '24'}, {name: '2月', value: '2'}, {name: '3月', value: '17'}, {
                 name: '4月',
                 value: '14'
             }, {name: '5月', value: '12'}, {name: '6月', value: '15'}, {name: '7月', value: '5'}, {
@@ -806,9 +819,18 @@ function getCharts2() {
                     color: '#66ccff'
                 },
                 nameLocation: 'start',
+                /*      min: 0,
+                 max: 100, */
                 position: 'right',
+               
                 axisLabel: {
-                    formatter: '{value} ',
+                    formatter: function (params, index) {
+                        //console.log(params+"--"+index+"--"+typeof(params))
+                        /* if(index==7){
+                         return ""
+                         } */
+                        return params;
+                    },
                     textStyle: {
                         color: '#66ccff',
                         fontSize: 12 * bodyScale
@@ -840,6 +862,7 @@ function getCharts2() {
                     color: '#66ccff'
                 },
                 nameLocation: 'start',
+                offset: 40,
                 position: 'right',
                 axisLabel: {
                     formatter: '{value} ',
@@ -865,8 +888,8 @@ function getCharts2() {
                         width: 0.5
                     }
                 },
-                symbolSize: 1,
-                offset: 40 * bodyScale
+
+                symbolSize:1,
             }
         ],
         series: seriesBottomData

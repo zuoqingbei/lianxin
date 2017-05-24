@@ -137,7 +137,7 @@ function satisfactionStatisForMonthForTab1Ajax(){
 		        right: '20%',
 		        bottom: '20%',
 		        left: '12%',
-		        top: '20%'
+		        top: '22%'
 		    },
 		    yAxis: {
 		        name: '满意度/%',
@@ -854,8 +854,8 @@ function communistStatisticForMonthForTab1Ajax(){
 		    },
 		    grid: {
 //		            show:true,
-		        x: "12%",
-		        x2: "15%",
+		        x: "20%",
+		        x2: "20%",
 		        y: '20%',
 		        y2: "22%"
 		    },
@@ -1096,7 +1096,7 @@ function findOrderYearRateForTab1(){
 		        right: '20%',
 		        bottom: '20%',
 		        left: '12%',
-		        top:'10%'
+		        top: '22%'
 		    },
 
 		    yAxis:{
@@ -1357,7 +1357,7 @@ function abilityStatus(){
 		    ],
 		    grid: {
 		        x: '15%',
-		        y: '12%'
+		        y: '20%'
 		    },
 		    series: [
 		        {
