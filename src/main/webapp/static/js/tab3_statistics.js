@@ -129,10 +129,10 @@ function productLineAndMonthForTab3Ajax(){
 					type: 'line',
 					lineStyle: {
 						normal: {
-							width: 1
+							width: 1* bodyScale
 						}
 					},
-					symbolSize: 2,
+					symbolSize: 2* bodyScale,
 					data: tab3RateData(item),
 					
 			};
@@ -146,8 +146,8 @@ function productLineAndMonthForTab3Ajax(){
 		    legend: {
 		        show: true,
 		        data: mData,
-		        itemWidth: 2,  //图例标记的图形宽度
-		        itemHeight: 3 //图例标记的图形高度
+		        itemWidth: 2* bodyScale,  //图例标记的图形宽度
+		        itemHeight: 3* bodyScale //图例标记的图形高度
 		    },
 		    grid: {
 		        x: "15%",
@@ -342,12 +342,12 @@ function findOrderPassForProAjax(mychartIds,desName){
 		    legend: {
 		        show: false,
 		        data: [desName],
-		        itemWidth: 6, //图例标记的图形宽度
-		        itemHeight: 6 //图例标记的图形高度
+		        itemWidth: 6*bodyScale, //图例标记的图形宽度
+		        itemHeight: 6*bodyScale //图例标记的图形高度
 		    },
 		    grid: {
 		        x: "5%",
-		        x2:"20%",
+		        x2:"16%",
 		        y: "20%",
 		        
 		    },
@@ -382,10 +382,10 @@ function findOrderPassForProAjax(mychartIds,desName){
 		                    color: "#66ccff"
 		                }
 		            },
-		            symbolSize:2,
+		            symbolSize:2*bodyScale,
 		            lineStyle:{
 		                normal:{
-		                    width:1
+		                    width:1* bodyScale
 		                }
 		            },
 
@@ -422,10 +422,10 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		myChart.setOption({
 		    color: ["#66ccff"],
 		    grid: {
-		        top: 2,
-		        left: 7,
-		        bottom: 10,
-		        right: 27,
+		        top: '5%',
+		        left: '4%',
+		        bottom: '5%',
+		        right: '10%',
 		        // containLabel: true
 		    },
 		    legend: {
@@ -458,6 +458,7 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		                fontSize: 12*bodyScale,
 
 		            },
+//		            interval:0
 		            // rotate:30,
 		        },
 		        axisTick: {
@@ -511,8 +512,8 @@ function findOrderMonthRateForProductAjax(){
 		    legend: {
 		        show: true,
 		        data: tab3Lengend(data),
-		        itemWidth: 2,  //图例标记的图形宽度
-		        itemHeight: 3, //图例标记的图形高度
+		        itemWidth: 2* bodyScale,  //图例标记的图形宽度
+		        itemHeight: 3* bodyScale, //图例标记的图形高度
 		    },
 		    grid: {
 		        x: "15%",
@@ -550,10 +551,10 @@ function findOrderYearRateForProductAjax(){
 		    legend: {
 		        show: true,
 		        orient: ' vertical',  //布局  纵向布局
-		        left: 10,
-		        bottom: 5,
-		        itemWidth: 10,  //图例标记的图形宽度
-		        itemHeight: 2, //图例标记的图形高度
+		        left: '4%',
+		        bottom: '5%',
+		        itemWidth: 10* bodyScale,  //图例标记的图形宽度
+		        itemHeight: 2* bodyScale, //图例标记的图形高度
 		        textStyle: {    //图例文字的样式
 		            color: '#66ccff',
 		            fontSize: 12*bodyScale
@@ -695,7 +696,7 @@ function getTab3Serise(data){
 					/* stack: '总量',*/
 					lineStyle:{
 						normal:{
-							width:1
+							width:1* bodyScale
 						}
 					},
 					symbolSize:2,

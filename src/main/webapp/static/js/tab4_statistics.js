@@ -46,7 +46,7 @@ function mkSqualityLevelForTab4(xhPro){
 	        x: "15%",
 	        x2: "21%",
 	        y: '15%',
-	        y2: "20%"
+	        y2: "25%"
 	    },
 	    yAxis: [
 	        {
@@ -199,7 +199,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		    },
 		    grid: {
 		        right: "24%",
-		        bottom: "28%",
+		        bottom: "22%",
 		        left: "15%",
 		        top: "16%"
 		    },

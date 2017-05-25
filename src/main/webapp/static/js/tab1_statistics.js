@@ -137,11 +137,12 @@ function satisfactionStatisForMonthForTab1Ajax(){
 		        right: '20%',
 		        bottom: '20%',
 		        left: '12%',
-		        top: '20%'
+		        top: '22%'
 		    },
 		    yAxis: {
 		        name: '满意度/%',
-		        max: 100
+		        max: 100,
+                scale:true
 		    },
 		    xAxis: [
 		        {
@@ -579,7 +580,7 @@ function scpDataForTab1(myChartIds,xhPro,type){
 		    },
 		    grid: {
 		        right: "24%",
-		        bottom: "28%",
+		        bottom: "22%",
 		        left: "15%",
 		        top: "16%"
 		    },
@@ -800,7 +801,8 @@ var mHeightChart=$('#myChart10').highcharts({
         gridLineWidth: 0,
         min:71,
         max:77,
-        plotLines:[]
+        plotLines:[],
+        tickColor:"rgba(0,0,0,0)"
     },
     yAxis: [{
         title: {
@@ -852,8 +854,8 @@ function communistStatisticForMonthForTab1Ajax(){
 		    },
 		    grid: {
 //		            show:true,
-		        x: "12%",
-		        x2: "15%",
+		        x: "20%",
+		        x2: "20%",
 		        y: '20%',
 		        y2: "22%"
 		    },
@@ -1094,7 +1096,7 @@ function findOrderYearRateForTab1(){
 		        right: '20%',
 		        bottom: '20%',
 		        left: '12%',
-		        top:'10%'
+		        top: '22%'
 		    },
 
 		    yAxis:{
@@ -1102,7 +1104,8 @@ function findOrderYearRateForTab1(){
 		        nameTextStyle: {
 		            color: '#66ccff'
 		        },
-		        max:100
+		        max:100,
+				scale:true
 		    },
 		    xAxis: [
 		        {
@@ -1202,7 +1205,7 @@ function standardStatus(){
 			        }
 			     },
 			    emphasis: {
-			        color: 'rgba(0,0,0,0)'
+			        color: '#66ccff'
 			    },
 			};
 			var radius = ['26%', '35%'];
@@ -1354,7 +1357,7 @@ function abilityStatus(){
 		    ],
 		    grid: {
 		        x: '15%',
-		        y: '12%'
+		        y: '20%'
 		    },
 		    series: [
 		        {
