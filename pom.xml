@@ -118,6 +118,12 @@
 			<artifactId>DubboDemoApi</artifactId>
 			<version>1.0.0</version>
 		</dependency> -->
+		 <!--jfinal quartz 定时任务-->
+         <dependency>
+             <groupId>cn.dreampie</groupId>
+             <artifactId>jfinal-quartz</artifactId>
+             <version>0.2</version>
+         </dependency>
 	</dependencies>
 	<build>
 		<finalName>hlht</finalName>

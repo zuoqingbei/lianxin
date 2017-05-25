@@ -10,6 +10,8 @@ import java.util.List;
 import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal.BeetlRenderFactory;
 
+import cn.dreampie.quartz.QuartzPlugin;
+
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -82,6 +84,11 @@ public class UlabCofig extends JFinalConfig {
 		arp.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
 		arp.setShowSql(true);
 		me.add(arp);
+		//定时器
+		QuartzPlugin quartzPlugin = new QuartzPlugin();
+		quartzPlugin.setJobs("quartz.properties");
+		me.add(quartzPlugin);
+
 	}
 
     @Override
