@@ -435,12 +435,13 @@ function labLifeCycleStatis(){
 	        xAxis: [
 	            {
 	                name: "",
-					nameGap:2*bodyScale,
+					// nameGap:1*bodyScale,
 	                type: 'category',
 	                axisTick: {
 	                    alignWithLabel: true
 	                },
 	                axisLabel: {
+                        margin:3*bodyScale,
 	                    textStyle: {
 	                        fontSize: bodyScale*9
 	                    }
@@ -449,7 +450,7 @@ function labLifeCycleStatis(){
 	                    show: false,
 	                },
 	                // data: statisticLengend(data)
-                    data:[1,2,3,"",4,"",5]
+                    data:["a","b","c","d","e","f","g"]
 
 	            }
 	        ],
