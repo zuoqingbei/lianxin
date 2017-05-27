@@ -2,15 +2,11 @@
  * Created by Administrator on 2017/4/7 0007.
  */
 var $left = $("#l");
-//加载时调整页面比例
-function pageResize() {
-    var h = $(window).height();
-    console.log(h);
-    $("#content").css("width", h * 16 * 7 / (9 * 3));
-}
+
+//进入时的视频淡出效果，开发时注掉下面这些代码
 function videoFadeOut() {
     $("body").prepend('<div id="mask" style="background-color: black">' +
-        '<video src="' + contextPath + '/static/img/movieHead_4480.mp4"  width="100%" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
+        '<video src="' + contextPath + '/static/img/movieHead_4480.mp4"  width="'+ pageW +'" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
         '</div>'
     );
     var $video = $('video');
@@ -18,13 +14,14 @@ function videoFadeOut() {
         $(this)[0].play()
     });
     $video[0].addEventListener('ended', function () {
-        $(this).animate({
+        $(this).parent().animate({
             opacity: 0
         }, 3000, function () {
-            $(this).parent().hide();
+            $(this).hide();
         })
     });
 }
+
 //切换地图显示区域
 function switchMapArea(charts) {
     var iframe = '<iframe id="iframe" scrolling="no" frameborder="0" src="' + contextPath + '/lab/flatMap" ></iframe>';
@@ -263,8 +260,8 @@ function sphereRBscroll() {
 
 $(function () {
 
-    //进入时的视频淡出效果
-    //videoFadeOut();
+    //进入时的视频淡出效果，开发时注掉下面这一行和被调用的代码
+    // videoFadeOut();
 
     //调整字符云页面的文字大小
     document.getElementById("wordCloud").contentWindow.resizeText(bodyScale);
@@ -285,7 +282,3 @@ $(function () {
 
 
 });
-
-/*$(window).resize(function () {
- pageResize();
- });*/
