@@ -1,9 +1,9 @@
 package com.ulab.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.dubbo.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;

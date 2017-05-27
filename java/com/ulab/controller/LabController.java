@@ -25,6 +25,7 @@ import com.ulab.model.PersonModel;
 import com.ulab.model.ProviderDicModel;
 import com.ulab.model.QuestionClosedModel;
 import com.ulab.model.SatisfactionModel;
+import com.ulab.model.SensorTypeModel;
 import com.ulab.model.XbarModel;
 import com.ulab.util.NormalDistribution;
 import com.ulab.util.SqlUtil;
@@ -581,7 +582,7 @@ public class LabController extends BaseController {
     		list=new ArrayList<Record>();
     		double pj=Double.parseDouble(pro.get("pj_value").toString());
     		double fc=Double.parseDouble(pro.get("fc_value").toString());
-    		for(int x=0;x<50000;x++){
+    		for(int x=0;x<200000;x++){
     			Record r=new Record();
     			list.add(r.set("num",NormalDistribution.calc(pj, fc)));
     		}
@@ -743,5 +744,19 @@ public class LabController extends BaseController {
     	String dataType=getPara("dataType","0");//dataType  0 :当前 1：同比
     	String type=getPara("type","");//type   0：整机 1：模块
 		renderJson(QuestionClosedModel.dao.productLineForTab3(dataType, type, labTypeCode));
+    }
+    
+    /**
+     * 
+     * @time   2017年5月26日 下午2:13:12
+     * @author zuoqb
+     * @todo   获取传感器信息
+     * @param  
+     * @return_type   void
+     */
+    public void findSensorByLabCenetrTabAjax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String testUnitId=getPara("testUnitId","");
+		renderJson(SensorTypeModel.dao.findSensorByLab(labTypeCode,testUnitId));
     }
 }
