@@ -43,13 +43,17 @@
 <script>
 var contextPath = '${contextPath!}';
     var bodyScale = 1;
-    function pageResize() {
-        var h = $(window).height();
-        $("#content").css("width", h * 16 * 7 / (9 * 3));
-        var bodyFontSize = h / 595 * 100 + "%";
-        bodyScale = h / 595;
+    var pageH;
+    var pageW;
+    pageH = $(window).height();
+    pageW = pageH * 16 * 7 / (9 * 3);
+
+function pageResize() {
+        $("#content").css("width", pageW);
+        var bodyFontSize = pageH / 595 * 100 + "%";
+        bodyScale = pageH / 595;
         $("body").css("font-size", bodyFontSize);
-        console.log("屏幕高度：" + h + ", body字号：" + bodyFontSize)
+        console.log("屏幕高度：" + pageH + ", body字号：" + bodyFontSize)
     }
     pageResize();
 </script>
