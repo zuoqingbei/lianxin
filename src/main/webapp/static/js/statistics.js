@@ -21,6 +21,8 @@ function reloadLeftData(){
 	worldLabTypeStatis();
 	//专业领域
 	professionalStatis();
+	//联通数
+	labLinkStatis();
 }
 function reloadLeftData2(){
    //产线维度实验室数量统计

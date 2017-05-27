@@ -20,12 +20,15 @@ import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
+import com.ulab.model.Line;
 import com.ulab.model.OrderModel;
 import com.ulab.model.PersonModel;
 import com.ulab.model.ProviderDicModel;
 import com.ulab.model.QuestionClosedModel;
 import com.ulab.model.SatisfactionModel;
+import com.ulab.model.SensorTypeDto;
 import com.ulab.model.SensorTypeModel;
+import com.ulab.model.Value;
 import com.ulab.model.XbarModel;
 import com.ulab.util.NormalDistribution;
 import com.ulab.util.SqlUtil;
@@ -570,7 +573,7 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public List<Record> gaussian(String xhCode){
-    	String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
+    	/*String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
     	String gaussian_key=Constants.JIANC_GAUSSIAN_SESSION+xhCode;
     	Record pro=getSessionAttr(redis_key);
     	if(pro==null){
@@ -582,11 +585,27 @@ public class LabController extends BaseController {
     		list=new ArrayList<Record>();
     		double pj=Double.parseDouble(pro.get("pj_value").toString());
     		double fc=Double.parseDouble(pro.get("fc_value").toString());
-    		for(int x=0;x<200000;x++){
+    		for(int x=0;x<500000;x++){
     			Record r=new Record();
     			list.add(r.set("num",NormalDistribution.calc(pj, fc)));
     		}
     		setSessionAttr(gaussian_key, list);
+    	}*/
+    	String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
+    	Record pro=getSessionAttr(redis_key);
+    	if(pro==null){
+    		pro=JianceProModel.dao.findProByFiled(xhCode);
+    		setSessionAttr(redis_key, pro);
+    	}
+    	List<Record> list=new ArrayList<Record>();
+    	if(pro!=null){
+    		list=new ArrayList<Record>();
+    		double pj=Double.parseDouble(pro.get("pj_value").toString());
+    		double fc=Double.parseDouble(pro.get("fc_value").toString());
+    		for(int x=0;x<100000;x++){
+    			Record r=new Record();
+    			list.add(r.set("num",NormalDistribution.calc(pj, fc)));
+    		}
     	}
     	return list;
     }
@@ -757,6 +776,41 @@ public class LabController extends BaseController {
     public void findSensorByLabCenetrTabAjax(){
     	String labTypeCode=getPara("labTypeCode","");
     	String testUnitId=getPara("testUnitId","");
-		renderJson(SensorTypeModel.dao.findSensorByLab(labTypeCode,testUnitId));
+    	List<Record> sensorList=SensorTypeModel.dao.findSensorByLab(labTypeCode,testUnitId);
+		renderJson(sensorList);
+    }
+    
+    /**
+     * 
+     * @time   2017年5月26日 下午2:13:12
+     * @author zuoqb
+     * @todo   获取传感器信息
+     * @param  
+     * @return_type   void
+     */
+    public void findSensorDataCenetrTabAjax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String testUnitId=getPara("testUnitId","");
+    	SensorTypeDto dto=new SensorTypeDto();
+    	dto.setYbbh("123");
+    	dto.setCpxh("231");
+    	dto.setSybh("dddddd");
+    	List<Line> line=new ArrayList<Line>();
+    	String[] arr={"1:温度(℃)","2:电压(V)","11:瞬时流量(L/min)","10:转速(r/min)"};
+    	for(int i=0;i<arr.length;i++){
+    		Line l=new Line();
+    		List<Value> v=new ArrayList<Value>();
+    		for(int x=0;x<12;x++){
+    			Value m=new Value();
+    			m.setName(x+1+"月");
+    			m.setValue(x+100+"");
+    			v.add(m);
+    		}
+    		l.setName(arr[i]);
+    		l.setData(v);
+    		line.add(l);
+    	}
+    	dto.setList(line);
+		renderJson(dto);
     }
 }

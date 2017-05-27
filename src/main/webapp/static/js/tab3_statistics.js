@@ -11,9 +11,9 @@ function loadTab3Data(){
 	findOrderPassForProAjax("myChart41","整机");
 	findOrderPassForProAjax("myChart42","模块");
 	//数据结果 订单类别 整机
-	orderTypeAjax("myChart39","整机",60);
+	orderTypeAjax("myChart39","整机",30);
 	//数据结果 订单类别 模块
-	orderTypeAjax("myChart40","模块",320);
+	orderTypeAjax("myChart40","模块",240);
 	//findOrderMonthTypeForProduct();
 	// 按照产线统计某年整体订单及时率  数据结果 订单及时率 雷达图
 	findOrderYearRateForProductAjax();
@@ -408,7 +408,7 @@ function orderTypeAjax(myChartIds,desName,divisor){
 					xData.push(it.name);
 				}
 				//拼接数据
-				var value=[index,ind,parseInt(it.num)/divisor];//暂时数量除以divisor
+				var value=[index,ind,parseInt(it.num)/divisor*bodyScale];//暂时数量除以divisor
 				data.push(value);
 			});
 		});
@@ -441,7 +441,7 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		        },
 		        position: 'top',
 	            formatter: function (params) {
-	                return xData[params.value[0]] + ' 中 ' + yData[params.value[1]]+":"+(parseInt(params.value[2]*divisor));
+	                return xData[params.value[0]] + ' 中 ' + yData[params.value[1]]+":"+(parseInt(params.value[2]*divisor/bodyScale));
 	            }
 		    },
 		    xAxis: {
@@ -712,7 +712,7 @@ function tab3OrderRateLengend(data){
 	var legnend=[];
 	$.each(data,function(index,item){
 		var name=item.name;
-		name=name.substr(0,4)+"/"+name.substr(4,name.length);
+		name=name.substr(2,2)+"/"+name.substr(4,name.length);
 		legnend.push(name);
 	});
 	return legnend;

@@ -113,7 +113,7 @@ function inittwo() {
             normal: {
                 show: false,
                 position: 'outside',
-                offset: [10, 0],
+                offset: [10 * bodyScale, 0],
                 textStyle: {
                     fontSize: bodyScale * 8
                 }
@@ -180,7 +180,7 @@ function initThree() {
             normal: {
                 show: false,
                 position: 'outside',
-                offset: [10, 0],
+                offset: [10 * bodyScale, 0],
                 textStyle: {
                     fontSize: bodyScale * 8
                 }
@@ -259,8 +259,8 @@ function initfour() {
                 textStyle: {
                     fontSize: bodyScale * 8
                 },
-                itemWidth: 6, //图例标记的图形宽度
-                itemHeight: 6 //图例标记的图形高度
+                itemWidth: 6 * bodyScale, //图例标记的图形宽度
+                itemHeight: 6 * bodyScale //图例标记的图形高度
             },
             grid: {
 
@@ -307,11 +307,11 @@ function initfour() {
 }
 
 //曲线
-var colorData=['#FFFFCC','#FFCCFF','#FFCC99','#FF99FF','#FF00FF','#CCCC00','#99FFFF',
-               '#99CCCC','#99CC00','#FFFF99','#FFCCCC','#FF99CC','#CC66FF','#9966FF',
+var colorData=['#99CCCC','#99CC00','#FFFF99','#FFCCCC','#FF99CC','#CC66FF','#9966FF',
                '#996633','#FFFF66','#FF9999','#993333','#990099','#66FF66','#FFCC00',
                '#FFFF33','#990000','#66CCFF','#3366CC','#339900','#00FF00','#FFFF00',
                '#003300','#000066','#006666','#336699','#993333','#993399','#996600',
+               '#FFFFCC','#FFCCFF','#FFCC99','#FF99FF','#FF00FF','#CCCC00','#99FFFF',
                '#9966CC','#999900','#99FF00','#CC0033','#CC6600'];//图例颜色 需手工扩充
 var myChart1;
 var myChart2;
@@ -321,10 +321,14 @@ var showLegendData=[];//需要展示图例 自定义
 var seriesTopData=[];
 var seriesBottomData=[];
 var topParam=[];//上方y参数单位
-var bottomParam=[];
-var currentData;
+var bottomParam=[];//下方y轴单位
+var currentData;//当前传感器y信息数据 用于生成y轴
 var totalLegendName=[];//图例全称 包含单位 ['1:频率(Hz)','2:M1(℃)']
-var dataBase={
+var dataBase;
+/* var dataBase={
+		sybh:'实验编号',
+		ybbh:'样品编号',
+		cpxh:'产品型号',
 		list:[
 		     {	name:'1:温度(℃)',
 		    	data:[{name:'1月',value:'-55'},{name:'2月',value:'60'},{name:'3月',value:'447'},{name:'4月',value:'400'},{name:'5月',value:'200'},{name:'6月',value:'250'},{name:'7月',value:'15'},{name:'8月',value:'202'},{name:'9月',value:'21'},{name:'10月',value:'7'},{name:'11月',value:'103'},{name:'12月',value:'215'} ]
@@ -357,23 +361,37 @@ var dataBase={
 		    	  data:[{name:'1月',value:'11'},{name:'2月',value:'80'},{name:'3月',value:'77'},{name:'4月',value:'44'},{name:'5月',value:'55'},{name:'6月',value:'15'},{name:'7月',value:'5'},{name:'8月',value:'20'},{name:'9月',value:'91'},{name:'10月',value:'77'},{name:'11月',value:'13'},{name:'12月',value:'50'} ]
 		      }
 		      ]
-};
+}; */
 
 
 
 $(document).ready(function () {
 	findSensorByLabCenetrTabAjax("HaierWasher20151222","1");
 });
+//获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjax(labTypeCode,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
 		currentData=data;
+		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
 		$.each(data,function(index,item){
-			totalLegendName.push(item.legend);
 			if(index<4){
 				topParam.push(item.unit);
 			}else if(index>=4&&index<8){
 				bottomParam.push(item.unit);
 			}
+		});
+		//获取曲线具体数据
+		findSensorDataCenetrTabAjax(labTypeCode,testUnitId);
+	});
+}
+//获取曲线具体数据
+function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
+	$.post(contextPath+"/lab/findSensorDataCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
+		//console.log(data)
+		dataBase=data;
+		//根据传感器具体数据 生成图例 
+	 	$.each(data.list,function(index,item){
+			totalLegendName.push(item.name);
 		});
 		legendData=dealBracket(totalLegendName);
 		showLegendData=legendData;//默认全选
@@ -393,7 +411,6 @@ function createEcharts(isFirst,obj){
 	getCharts1();	
 	getCharts2();	
 }
-
 //生成图例控制
 function createLegendHtmls() {
     var htmls = '';
@@ -402,7 +419,6 @@ function createLegendHtmls() {
     }
     $("#legend_ul").html(htmls);
 }
-
 //处理线series
 function dealSeriesData(){
 	seriesTopData=[];
@@ -567,7 +583,7 @@ function getCharts1() {
                     color: '#66ccff'
                 },
                 position: 'left',
-                offset: 40,
+                offset: 40 * bodyScale,
                 axisLine: { //坐标轴
                     show: false
                 },
@@ -589,10 +605,10 @@ function getCharts1() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
             },
             {
                 type: 'value',
@@ -625,10 +641,10 @@ function getCharts1() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
             },
             {
                 type: 'value',
@@ -661,15 +677,15 @@ function getCharts1() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
 
             },
             {
                 type: 'value',
-                offset: 40,
+                offset: 40 * bodyScale,
                 name: currentData[3].unit,
 	            max:currentData[3].highvalue,
 	            min:currentData[3].lowvalue,
@@ -699,10 +715,10 @@ function getCharts1() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
 
             }
             
@@ -712,14 +728,8 @@ function getCharts1() {
     myChart1.clear();
     myChart1.setOption(option);
     echarts.connect([myChart1, myChart2]);
-   /* myChart1.setOption({
-        series: [{
-            animation:false
-        },{
-            animation:false
-        },{
-            animation:false
-        },]
+    myChart1.setOption({
+        series:getAnimation(seriesTopData)
     });
     setInterval(function () {
 	 for(var i=0; i<seriesTopData.length;i++){
@@ -734,9 +744,9 @@ function getCharts1() {
                 {data:xData}],
             series: seriesTopData,
         });
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesTopData[0].data)
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
-    }, 2000);*/
+        //console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesTopData[0].data)
+       // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
+    }, 2000);
 }
 function getCharts2() {
 
@@ -826,10 +836,10 @@ function getCharts2() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
             },
             {
                 type: 'value',
@@ -862,10 +872,10 @@ function getCharts2() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
 
             },
             {
@@ -908,10 +918,10 @@ function getCharts2() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
             },
             {
                 type: 'value',
@@ -922,7 +932,7 @@ function getCharts2() {
                     color: '#66ccff'
                 },
                 nameLocation: 'start',
-                offset: 40,
+                offset: 40 * bodyScale,
                 position: 'right',
                 axisLabel: {
                     formatter: '{value} ',
@@ -945,11 +955,11 @@ function getCharts2() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
 
-                symbolSize:1,
+                symbolSize:1 * bodyScale,
             }
         ],
         series: seriesBottomData
@@ -959,16 +969,8 @@ function getCharts2() {
 
     echarts.connect([myChart1, myChart2]);
 
-    /*myChart2.setOption({
-        series: [{
-            animation:false
-        },{
-            animation:false
-        },{
-            animation:false
-        },{
-            animation:false
-        }]
+    myChart2.setOption({
+        series:getAnimation(seriesBottomData)
     });
     setInterval(function () {
 	 for(var i=0; i<seriesBottomData.length;i++){
@@ -986,7 +988,16 @@ function getCharts2() {
         // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesBottomData[0].data)
         // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
     }, 2000);
-*/
+
+}
+//动态加载数据 动画效果 个数与serise数量相同
+function getAnimation(arr){
+	var animation=[];
+	for(var x=0;x<arr.length;x++){
+		animation.push({
+             animation:false
+         });
+	}
 }
 //处理括号
 function dealBracket(arr){
@@ -1038,7 +1049,7 @@ function centerLabOrderRateLengend(data) {
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
-        name = name.substr(0, 4) + "/" + name.substr(4, name.length);
+        name = name.substr(2, 2) + "/" + name.substr(4, name.length);
         legnend.push(name);
     });
     return legnend;
