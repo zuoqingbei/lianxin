@@ -140,8 +140,8 @@ public class LabModel extends Model<LabModel> {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" select all_num,link_num,un_link_num,to_char(round(link_num/all_num*100))||'%' as link_rate ");
 		sb.append("  from (select count (*) as all_num from(select 1 from t_b_lab_info lab where lab.del_flag="+Constants.DEL_FALG+" group by code) ) a ");
-		sb.append("  left join (select count(*) as link_num from t_b_lab_info lab where lab.del_flag="+Constants.DEL_FALG+" and lab.link_status=1 )b on 1=1  ");
-		sb.append("  left join (select count(*) as un_link_num from t_b_lab_info lab where lab.del_flag="+Constants.DEL_FALG+" and lab.link_status=0 )b on 1=1 ");
+		sb.append("  left join (SELECT count(1) as link_num from(select 1 as link_num from t_b_lab_info lab where lab.del_flag="+Constants.DEL_FALG+" and lab.link_status=1 group by code))b on 1=1  ");
+		sb.append("  left join ( SELECT count(1) as un_link_num from(select 1 as un_link_num from t_b_lab_info lab where lab.del_flag="+Constants.DEL_FALG+" and lab.link_status=0  group by code))b on 1=1 ");
 		return Db.findFirst(sb.toString());
 	}
 }

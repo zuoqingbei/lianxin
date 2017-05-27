@@ -767,6 +767,30 @@ public class LabController extends BaseController {
     
     /**
      * 
+     * @time   2017年5月27日 下午1:51:24
+     * @author zuoqb
+     * @todo   加载实验室与台位对照关系 
+     * @param  
+     * @return_type   void
+     */
+    public void loadLabUnitInfoCenterTabAjax(){
+    	List<Record> list=new ArrayList<Record>();
+    	Record r=new Record();
+    	r.set("name", "实验室A");
+    	List<Record> unit=new ArrayList<Record>();
+    	Record r1=new Record();
+    	r1.set("name", "台位1");
+    	Record r2=new Record();
+    	r2.set("name", "台位2");
+    	unit.add(r1);
+    	unit.add(r2);
+    	r.set("children", unit);
+    	list.add(r);
+		renderJson(list);
+    }
+    
+    /**
+     * 
      * @time   2017年5月26日 下午2:13:12
      * @author zuoqb
      * @todo   获取传感器信息
