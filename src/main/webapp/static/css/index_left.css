@@ -642,11 +642,11 @@
     top: 10%;
     height: 102%;
     background-image: url(../img/bgNumber.png);
-    background-size: 93% 100%;
+    background-size: 94% 100%;
     background-repeat: no-repeat;
     font-size: 1.3em;
-    letter-spacing: 7px;
-    padding: 0 0 0 3px;
+    letter-spacing: .4em;
+    padding: 0 0 0 1%;
     float: right;
 }
 #l #switchlegend{

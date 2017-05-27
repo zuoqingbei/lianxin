@@ -256,8 +256,8 @@ function mapSphere() {
                     },
                     itemStyle: {
                         normal: {
-                            width: 2,
-                            borderWidth: 1,
+                            width: 2*parent.bodyScale,
+                            borderWidth: 1*parent.bodyScale,
                             borderColor: '#00ffff',
                             areaStyle: {
                                 color: 'rgba(0, 0, 0, 0)'
@@ -267,10 +267,10 @@ function mapSphere() {
                     markPoint: {
                         symbol: "circle",
                         effect: {
-                            shadowBlur: 0.5
+                            shadowBlur: 0.5*parent.bodyScale
                         },
                         large: true,
-                        symbolSize: 5,
+                        symbolSize: 5*parent.bodyScale,
                         data: airports
                     },
                     roam: {
@@ -306,16 +306,16 @@ function mapSphere() {
                                 // 线的颜色默认是取 legend 的颜色
                                 // color: null
                                 // 线宽，这里线宽是屏幕的像素大小
-                                width: 5,
+                                width: 5*parent.bodyScale,
                                 // 线的透明度
                                 opacity: 1,
                                 // color:"rgba(50,143,204,1)",
                                 color: "#7bb4ff",
-                                borderWidth: 5,
+                                borderWidth: 5*parent.bodyScale,
                                 borderColor: "#7bb4ff",
                                 lineStyle: {
                                     type: 'solid',
-                                    shadowBlur: 5
+                                    shadowBlur: 5*parent.bodyScale
                                 }
                             }
                         },
