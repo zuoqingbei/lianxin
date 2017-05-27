@@ -25,10 +25,12 @@
 <script>
 importJSCSS("${contextPath!}/static/asserts/echarts3.0/echarts.js");
 /* importJSCSS("${contextPath!}/static/asserts/echarts/echarts-all.js"); */
-var colorData=[
-               '#FF9999','#993333','#990099','#66FF66','#FFCC00','#FFFF33','#990000','#66CCFF',
-               '#3366CC','#339900','#00FF00','#FFFF00','#003300','#000066','#006666','#336699',
-               '#993333','#993399','#996600','#9966CC','#999900','#99FF00','#CC0033','#CC6600'];//图例颜色 需手工扩充
+var colorData=['#FFFFCC','#FFCCFF','#FFCC99','#FF99FF','#FF00FF','#CCCC00','#99FFFF',
+               '#99CCCC','#99CC00','#FFFF99','#FFCCCC','#FF99CC','#CC66FF','#9966FF',
+               '#996633','#FFFF66','#FF9999','#993333','#990099','#66FF66','#FFCC00',
+               '#FFFF33','#990000','#66CCFF','#3366CC','#339900','#00FF00','#FFFF00',
+               '#003300','#000066','#006666','#336699','#993333','#993399','#996600',
+               '#9966CC','#999900','#99FF00','#CC0033','#CC6600'];//图例颜色 需手工扩充
 var myChart1;
 var myChart2;
 var xData;//x轴坐标数据--对应时间
@@ -304,7 +306,32 @@ function getCharts1(){
 	};
 	 myChart1.clear();
      myChart1.setOption(option);   
-     echarts.connect([myChart1, myChart2]);                               
+     echarts.connect([myChart1, myChart2]);  
+     myChart1.setOption({
+         series: [{
+             animation:false
+         },{
+             animation:false
+         },{
+             animation:false
+         },]
+     });
+     setInterval(function () {
+	 for(var i=0; i<seriesTopData.length;i++){
+		 seriesTopData[i].data.shift();
+	     seriesTopData[i].data.push(parseInt(Math.random() * 30));
+	 }
+         var month = xData.shift();
+         xData.push(month)
+
+         myChart1.setOption({
+             xAxis:[
+                 {data:xData}],
+             series: seriesTopData,
+         });
+         console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesTopData[0].data)
+         console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
+     }, 2000);
 	                                
 }
 function getCharts2(){
@@ -405,6 +432,31 @@ function getCharts2(){
     	        myChart2.resize();
     	    }
     	},200) */
+     myChart2.setOption({
+         series: [{
+             animation:false
+         },{
+             animation:false
+         },{
+             animation:false
+         },]
+     });
+     setInterval(function () {
+	 for(var i=0; i<seriesBottomData.length;i++){
+	     seriesBottomData[i].data.shift();
+	     seriesBottomData[i].data.push(parseInt(Math.random() * 30));
+	 }
+         var month = xData.shift();
+         xData.push(month)
+
+         myChart2.setOption({
+             xAxis:[
+                 {data:xData}],
+             series: seriesBottomData,
+         });
+         console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesBottomData[0].data)
+         console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
+     }, 2000);
 	                                
 }
 //处理括号
