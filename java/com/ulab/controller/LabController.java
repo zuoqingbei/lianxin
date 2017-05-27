@@ -51,7 +51,7 @@ public class LabController extends BaseController {
     	setSessionAttr("productLine", productLine);
     	//实验室轮播信息
     	String sqlWhere=SqlUtil.commonWhereSql(this,null);
-    	List<Record> labInfo=LabMapModel.dao.labShowFlatMap(sqlWhere);
+    	List<Record> labInfo=LabMapModel.dao.labShowFlatMap2(sqlWhere);
     	for(Record r:labInfo){
     		if(r.getStr("title").length()>4){
     			r.set("title", r.getStr("title").substring(0,4)+"...");

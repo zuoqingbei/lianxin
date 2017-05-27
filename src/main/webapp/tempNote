@@ -1,0 +1,33 @@
+1,更改所有图表的坐标轴label大小为10*bodyScale,坐标轴名字大小为8*bodyScale.
+2,地球右上角列表中数字背景。
+3,地球上的线条加粗,点变大，数值成倍放大，重置按钮放大。
+4,
+
+
+
+
+
+
+
+
+
+
+/*
+*复制这几行到xAxis和yAxis坐标中,确保字体大小和间距
+ nameGap:nameGap,
+ nameTextStyle: nameTextStyle,
+ axisLabel: axisLabel,
+ */
+
+var axisLabel= {
+    margin: 3 * bodyScale,
+    textStyle: {
+        fontSize: 9 * bodyScale
+    }
+};
+var nameGap = 10*bodyScale;
+var nameTextStyle = {
+    color: '#66ccff',
+        fontSize: 8 * bodyScale
+};
+

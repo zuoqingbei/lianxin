@@ -394,9 +394,9 @@ function equipmentTotalForLab1Ajax(){
 function loadTab1JianData(xhId,xName){
 	$.post(contextPath+'/lab/jianCeXhProForTab1Ajax',{"xhCode":xhId},function(xhPro){
 		$("#tab1_jiance_xh_name").html("\""+xName+"\"");
-		$("#tab1_jiance_xh_result").html("结论："+xhPro.jielun);
+		$("#tab1_jiance_xh_result").html(xhPro.jielun);
 		$("#tab1_jiance_xh_name2").html("\""+xName+"\"");
-		$("#tab1_jiance_xh_result2").html("结论："+xhPro.jielun);
+		$("#tab1_jiance_xh_result2").html(xhPro.jielun);
 		//模块商质量水平分布
 		mkSqualityLevelForTab1(xhPro);
 		//SPC分析
@@ -1390,7 +1390,7 @@ function statistictab1LengendTime(data){
 	var legnend=[];
 	$.each(data,function(index,item){
 		var name=item.name;
-		name=name.substr(2,2)+"/"+name.substr(4,name.length);
+		name=name.substr(0,4)+"/"+name.substr(4,name.length);
 		legnend.push(name);
 	});
 	return legnend;
