@@ -102,6 +102,7 @@ public class IntegrationServiceClient {
 		labAllData.setEquipmentCount(equipmentCount);
 		labAllData.setFinishOrderCount(finishOrderCount);
 		labAllData.setTestingOrderCount(testingOrderCount);
+		labAllData.setLabSingleDataList(labSingleDataList);
 		return labAllData;
 	}
 	
