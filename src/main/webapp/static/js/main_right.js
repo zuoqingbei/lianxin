@@ -4465,6 +4465,9 @@ $(function () {
             //取标签名字
             var thisLabel = $(this).parents("ul").next().find("li:eq(" + index + ")").text();
             console.log("```````````````````thisLabel",thisLabel);
+            if(thisLabel=="中海博睿"){
+            	thisLabel="中心实验室";
+            }
             if(thisLabel!=labTypeCode){
             	labTypeCode=thisLabel;
             	 loadTab2Data();

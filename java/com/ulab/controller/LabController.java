@@ -9,6 +9,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
+import com.ulab.client.IntegrationService.IntegrationServiceClient;
 import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 import com.ulab.model.CommunistModel;
@@ -16,17 +17,22 @@ import com.ulab.model.DicModel;
 import com.ulab.model.EquipmentModel;
 import com.ulab.model.JianCeModel;
 import com.ulab.model.JianceProModel;
+import com.ulab.model.LabAllData;
 import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
+import com.ulab.model.Line;
 import com.ulab.model.OrderModel;
 import com.ulab.model.PersonModel;
 import com.ulab.model.ProviderDicModel;
 import com.ulab.model.QuestionClosedModel;
 import com.ulab.model.SatisfactionModel;
+import com.ulab.model.SensorTypeDto;
 import com.ulab.model.SensorTypeModel;
+import com.ulab.model.Value;
 import com.ulab.model.XbarModel;
+import com.ulab.util.JsonUtils;
 import com.ulab.util.NormalDistribution;
 import com.ulab.util.SqlUtil;
 /**
@@ -48,7 +54,7 @@ public class LabController extends BaseController {
     	setSessionAttr("productLine", productLine);
     	//实验室轮播信息
     	String sqlWhere=SqlUtil.commonWhereSql(this,null);
-    	List<Record> labInfo=LabMapModel.dao.labShowFlatMap(sqlWhere);
+    	List<Record> labInfo=LabMapModel.dao.labShowFlatMap2(sqlWhere);
     	for(Record r:labInfo){
     		if(r.getStr("title").length()>4){
     			r.set("title", r.getStr("title").substring(0,4)+"...");
@@ -555,10 +561,10 @@ public class LabController extends BaseController {
     	for(Record r:list){
     		r.set("wkq_num2", NormalDistribution.calc(Double.parseDouble(r.getStr("wkq_num")), pj, fc));
     	}*/
-    	List<Record> gaussian=gaussian(xhCode);
+    	//List<Record> gaussian=gaussian(xhCode);
     	List<List<Record>> re=new ArrayList<List<Record>>();
     	re.add(list);
-    	re.add(gaussian);
+    	//re.add(gaussian);
 		renderJson(re);
     }
     /**
@@ -570,7 +576,7 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public List<Record> gaussian(String xhCode){
-    	String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
+    	/*String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
     	String gaussian_key=Constants.JIANC_GAUSSIAN_SESSION+xhCode;
     	Record pro=getSessionAttr(redis_key);
     	if(pro==null){
@@ -582,11 +588,27 @@ public class LabController extends BaseController {
     		list=new ArrayList<Record>();
     		double pj=Double.parseDouble(pro.get("pj_value").toString());
     		double fc=Double.parseDouble(pro.get("fc_value").toString());
-    		for(int x=0;x<200000;x++){
+    		for(int x=0;x<500000;x++){
     			Record r=new Record();
     			list.add(r.set("num",NormalDistribution.calc(pj, fc)));
     		}
     		setSessionAttr(gaussian_key, list);
+    	}*/
+    	String redis_key=Constants.JIANC_EPRO_SESSION+xhCode;
+    	Record pro=getSessionAttr(redis_key);
+    	if(pro==null){
+    		pro=JianceProModel.dao.findProByFiled(xhCode);
+    		setSessionAttr(redis_key, pro);
+    	}
+    	List<Record> list=new ArrayList<Record>();
+    	if(pro!=null){
+    		list=new ArrayList<Record>();
+    		double pj=Double.parseDouble(pro.get("pj_value").toString());
+    		double fc=Double.parseDouble(pro.get("fc_value").toString());
+    		for(int x=0;x<100000;x++){
+    			Record r=new Record();
+    			list.add(r.set("num",NormalDistribution.calc(pj, fc)));
+    		}
     	}
     	return list;
     }
@@ -748,6 +770,30 @@ public class LabController extends BaseController {
     
     /**
      * 
+     * @time   2017年5月27日 下午1:51:24
+     * @author zuoqb
+     * @todo   加载实验室与台位对照关系 
+     * @param  
+     * @return_type   void
+     */
+    public void loadLabUnitInfoCenterTabAjax(){
+    	List<Record> list=new ArrayList<Record>();
+    	Record r=new Record();
+    	r.set("name", "实验室A");
+    	List<Record> unit=new ArrayList<Record>();
+    	Record r1=new Record();
+    	r1.set("name", "台位1");
+    	Record r2=new Record();
+    	r2.set("name", "台位2");
+    	unit.add(r1);
+    	unit.add(r2);
+    	r.set("children", unit);
+    	list.add(r);
+		renderJson(list);
+    }
+    
+    /**
+     * 
      * @time   2017年5月26日 下午2:13:12
      * @author zuoqb
      * @todo   获取传感器信息
@@ -757,6 +803,36 @@ public class LabController extends BaseController {
     public void findSensorByLabCenetrTabAjax(){
     	String labTypeCode=getPara("labTypeCode","");
     	String testUnitId=getPara("testUnitId","");
-		renderJson(SensorTypeModel.dao.findSensorByLab(labTypeCode,testUnitId));
+    	List<Record> sensorList=SensorTypeModel.dao.findSensorByLab(labTypeCode,testUnitId);
+		renderJson(sensorList);
+    }
+    
+  
+    /**
+     * 
+     * @time   2017年5月26日 下午2:13:12
+     * @author zuoqb
+     * @todo   获取json文件数据
+     * @param  
+     * @return_type   void
+     */
+    public void getJsonFile(){
+    	String fileName=getPara("fileName","");
+    	String path=getWebRootPath()+"/src/main/webapp/static/data/"+fileName;
+    	String json=JsonUtils.readJson(path);
+    	renderText(json);
+    }
+    
+    /**
+     * 
+     * @time   2017年5月31日 下午12:00:34
+     * @author zuoqb
+     * @todo  中海博睿所有实验室-webservice接口
+     * @param  
+     */
+    public void labAllForCenterLabAjax(){
+    	IntegrationServiceClient client = new IntegrationServiceClient();
+		LabAllData labAllData = client.searchLabAllData();
+		renderJson(labAllData);
     }
 }

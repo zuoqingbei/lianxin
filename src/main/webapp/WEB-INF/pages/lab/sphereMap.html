@@ -37,9 +37,9 @@
     <script src="${contextPath!}/static/js/sphere.js"></script>
     <script src="${contextPath!}/static/js/boot.js"></script>
     <script>
-        $(".reset").click(function () {
-
-        })
+        var h = $(window).height();
+        var bodyFontSize = h / 595 * 100 + "%";
+        $("body").css("font-size", bodyFontSize);
     </script>
 </body>
 <script>

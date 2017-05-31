@@ -1,6 +1,8 @@
 
 package com.ulab.core;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
@@ -371,5 +373,17 @@ public class BaseController extends Controller {
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + finalFileName + "\"");
 		} catch (UnsupportedEncodingException e) {
 		}
+	}
+	public static String getWebRootPath(){
+		try {
+			String path = Class .class.getResource("/").toURI().getPath();
+			String url=new File(path).getParentFile().getParentFile().getCanonicalPath();
+			return url;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+	public static void main(String[] args) {
+		System.out.println(getWebRootPath());
 	}
 }
