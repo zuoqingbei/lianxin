@@ -419,6 +419,7 @@ function equipmentTotalForLab1Ajax() {
 }
 //加载量产一致性保障 xhId:产品id  name：产品名称
 function loadTab1JianData(xhId, xName) {
+    alert(1)
     $.post(contextPath + '/lab/jianCeXhProForTab1Ajax', {"xhCode": xhId}, function (xhPro) {
         $("#tab1_jiance_xh_name").html("\"" + xName + "\"");
         $("#tab1_jiance_xh_result").html(xhPro.jielun);
@@ -1491,4 +1492,9 @@ function getMaxMinForScpTab1(data, xhPro, type) {
     result.push(parseFloat(max) + 0.1);
     result.push(parseFloat(min) - 0.1);
     return result;
+}
+function tab1JianSelected(obj) {
+    var id = $(obj).find("option:selected").attr("data");
+    var name = $(obj).find("option:selected").text();
+    loadTab1JianData(id,'${c.name}')
 }
