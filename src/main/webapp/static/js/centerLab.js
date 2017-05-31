@@ -617,7 +617,7 @@ function getCharts1() {
         },
         dataZoom: [{
 	    	start: 0,
-	    	end:5,
+	    	end:100,
 	    	show:false
         }, {
             type: 'inside'
@@ -823,7 +823,7 @@ function getCharts1() {
         //console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesTopData[0].data)
        // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
     }, 2000);*/
-    setInterval(function () {
+   /* setInterval(function () {
    	 var preStart=myChart1.getOption().dataZoom[0].start;
    	 var preEnd=myChart1.getOption().dataZoom[0].end;
    	 myChart1.setOption({
@@ -848,7 +848,7 @@ function getCharts1() {
    		 interval_count1=parseFloat(interval_count1)+0.01;
    	 }
 	 //console.log("myChart1---"+preStart+"--"+preEnd)
-    },30000);
+    },30000);*/
 }
 function getCharts2() {
 
@@ -872,7 +872,7 @@ function getCharts2() {
         },
         dataZoom: [{
 	    	start: 0,
-	    	end:5,
+	    	end:100,
 	    	show:false
         }, {
             type: 'inside'
@@ -1097,7 +1097,7 @@ function getCharts2() {
         // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesBottomData[0].data)
         // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
     }, 2000);*/
-    setInterval(function () {
+   /* setInterval(function () {
    	 var preStart=myChart2.getOption().dataZoom[0].start;
    	 var preEnd=myChart2.getOption().dataZoom[0].end;
    	 myChart2.setOption({
@@ -1123,7 +1123,7 @@ function getCharts2() {
    	 }
 	    	 
 	//console.log("myChart2---"+preStart+"--"+preEnd)
-    },30000);
+    },30000);*/
 
 }
 //动态加载数据 动画效果 个数与serise数量相同

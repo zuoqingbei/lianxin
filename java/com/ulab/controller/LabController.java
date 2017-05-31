@@ -777,19 +777,9 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void loadLabUnitInfoCenterTabAjax(){
-    	List<Record> list=new ArrayList<Record>();
-    	Record r=new Record();
-    	r.set("name", "实验室A");
-    	List<Record> unit=new ArrayList<Record>();
-    	Record r1=new Record();
-    	r1.set("name", "台位1");
-    	Record r2=new Record();
-    	r2.set("name", "台位2");
-    	unit.add(r1);
-    	unit.add(r2);
-    	r.set("children", unit);
-    	list.add(r);
-		renderJson(list);
+    	IntegrationServiceClient client = new IntegrationServiceClient();
+		LabAllData labAllData = client.searchLabAllData();
+		renderJson(labAllData);
     }
     
     /**
@@ -806,6 +796,7 @@ public class LabController extends BaseController {
     	List<Record> sensorList=SensorTypeModel.dao.findSensorByLab(labTypeCode,testUnitId);
 		renderJson(sensorList);
     }
+    
     
   
     /**
