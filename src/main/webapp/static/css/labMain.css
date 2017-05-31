@@ -100,6 +100,10 @@ a, a:hover {
     flex-direction: row;
 }
 
+.labMain_cb_left_column {
+    flex-direction: column;
+}
+
 .lab_title {
     font-size: 1.3em;
     position: absolute;
@@ -109,28 +113,44 @@ a, a:hover {
 .zhbr_lab{
     height: 90%;
     width: 100%;
-    padding-top: 2%;
+    /*padding-top: 2%;*/
 }
 .zhbr_lab .labMain_cbl_one {
-    height: 100%;
+    /*height: 100%;
     width: 50%;
-    float: left;
+    float: left;*/
 
 }
 
-.labMain_cbl_one img {
-    width: 90%;
-    margin: 4em 3em;
-    vertical-align: middle;
-
+.labMain_cbl_one{
+	flex:1;
+	margin:0.1% 1em 0.5% 1em;
+	display:flex;
+	flex-direction: row;		
+	
+	
+	
+}
+.labMain_cbl_one img{
+	/*width: 90%;
+    margin: 4em 3em;*/
+	vertical-align:middle;
+	
+}
+.labMain_cbl_two{
+    flex:1;		
+	margin:0.5% 1em 0.5% 1em;
+	display:flex;
+	flex-direction: row;
+	
 }
 
 .zhbr_lab .labMain_cbl_two {
-    width: 50%;
+    /*width: 50%;
     height: 100%;
     display: flex;
     float: left;
-    flex-direction: column;
+    flex-direction: column;*/
 
 }
 
@@ -142,12 +162,13 @@ a, a:hover {
 }
 
 .labMain_cblt_tone {
-    flex: 1;
+     flex:1;
+	margin: 0.5%;
 
 }
 
 .labMain_cblt_tone h3, .labMain_cblt_ttwo h3 {
-    font-size: 1.2em;
+    /*font-size: 1.2em;
     margin: 2em;
 
     height: 3em;
@@ -155,7 +176,16 @@ a, a:hover {
     width: 10em;
     background: url(../img/sheshiState/gznx-bg.png) 0 0 no-repeat;
     background-size: 100% 100%;
-    padding-left: 3em;
+    padding-left: 3em;*/
+    font-size:1.2em;
+	height:2.5em;
+	line-height:2.5em;
+	width:14em;
+	background:url(../img/sheshiState/gznx-bg.png) 0 0 no-repeat;
+	background-size:100% 100%;
+	margin:1% 1%;
+	padding:0 10%;
+	color:#fff;
 
 }
 
@@ -165,10 +195,60 @@ a, a:hover {
 }
 
 .labMain_cblt_ttwo {
-    flex: 2;
-    /*background-color:#FC6;*/
+    /* flex: 2;
+   background-color:#FC6;*/
+   margin:0% 0.5% ;
+	flex:1;
 
 }
+/*轮播*/
+/*轮播图*/	
+.labMain_lunbo{
+	margin-top:0;
+	width:49em;
+	overflow:hidden;
+	position:relative;
+	
+	}
+.labMain_lunbo ul{
+	position:relative;
+	height:24.6em;
+	
+	}		
+.labMain_lunbo ul li{
+	float:left;
+	display:inline;
+	margin:0 0.7em;
+	position:relative;
+	
+	
+}	
+.labMain_lunbo ul li img{
+	width:24.6em;
+	height:24.6em;
+	
+}	
+.labMain_lunbo ul li span{
+	width:16.3em;
+	height:3em;
+	line-height:3em;
+	background:rgba(0,0,0,0.4);
+	text-align:center;
+	font-size:1.5em;
+	color:#fff;
+	position:absolute;
+	left:0;
+	bottom:0;
+	z-index:20;
+	/*display:none;*/
+	
+}	
+	
+.labMain_cblt_ttwo img{
+	width:55.6em;
+	
+	}
+
 
 .labMain_cblt_bottom {
     flex: 1;
