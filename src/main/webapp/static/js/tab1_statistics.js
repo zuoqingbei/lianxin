@@ -424,7 +424,7 @@ function loadTab1JianData(xhId, xName) {
         $("#tab1_jiance_xh_name").html("\"" + xName + "\"");
         $("#tab1_jiance_xh_result").html("结论："+xhPro.jielun);
         $("#tab1_jiance_xh_name2").html("\"" + xName + "\"");
-        $("#tab1_jiance_xh_result2").html("结论："+xhPro.jielun);
+        $("#tab1_jiance_xh_result2").html("cpk:"+xhPro.cpk+"</br>"+"结论："+xhPro.jielun);
         //模块商质量水平分布
         mkSqualityLevelForTab1(xhPro);
         //SPC分析
