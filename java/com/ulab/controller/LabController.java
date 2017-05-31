@@ -9,6 +9,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
+import com.ulab.client.IntegrationService.IntegrationServiceClient;
 import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 import com.ulab.model.CommunistModel;
@@ -16,6 +17,7 @@ import com.ulab.model.DicModel;
 import com.ulab.model.EquipmentModel;
 import com.ulab.model.JianCeModel;
 import com.ulab.model.JianceProModel;
+import com.ulab.model.LabAllData;
 import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
@@ -819,5 +821,18 @@ public class LabController extends BaseController {
     	String path=getWebRootPath()+"/src/main/webapp/static/data/"+fileName;
     	String json=JsonUtils.readJson(path);
     	renderText(json);
+    }
+    
+    /**
+     * 
+     * @time   2017年5月31日 下午12:00:34
+     * @author zuoqb
+     * @todo  中海博睿所有实验室-webservice接口
+     * @param  
+     */
+    public void labAllForCenterLabAjax(){
+    	IntegrationServiceClient client = new IntegrationServiceClient();
+		LabAllData labAllData = client.searchLabAllData();
+		renderJson(labAllData);
     }
 }

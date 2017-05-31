@@ -114,14 +114,26 @@ function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
 			totalLegendName.push(item.name);
 		});
 		legendData=dealBracket(totalLegendName);
-		for(var x=0;x<8;x++){
+	/* 	for(var x=0;x<8;x++){
 			showLegendData.push(legendData[x]);
-		}
+		} */
+		randomLegend();
 		//showLegendData=legendData;//默认全选
 		console.log(showLegendData)
 		createLegendHtmls();
 		createEcharts(true);
 	});
+}
+function randomLegend(){
+	var num=0;
+	$.each(totalLegendName,function(index,item){
+		if(item.indexOf("℃")==-1){
+			showLegendData.push(dealBracketForObj(item));
+		}else if(num<8){
+			showLegendData.push(dealBracketForObj(item));
+			num++;
+		}
+	})
 }
 //生成echarts图形
 function createEcharts(isFirst,obj){

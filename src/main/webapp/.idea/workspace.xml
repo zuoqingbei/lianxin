@@ -15,17 +15,14 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="centerLab.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/static/js/centerLab.js">
+      <file leaf-file-name="tab1.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/layout/tab/tab1.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="900" column="0" lean-forward="true" selection-start-line="900" selection-start-column="0" selection-end-line="900" selection-end-column="0" />
+            <state relative-caret-position="480">
+              <caret line="247" column="27" lean-forward="true" selection-start-line="247" selection-start-column="27" selection-end-line="247" selection-end-column="27" />
               <folding>
-                <element signature="n#!!block;n#initfour#0" expanded="false" />
-                <marker date="1495616555397" expanded="true" signature="14683:14725" ph="..." />
-                <marker date="1495616555397" expanded="true" signature="14845:14955" ph="..." />
-                <marker date="1495616555397" expanded="true" signature="14976:15022" ph="..." />
-                <marker date="1495616555397" expanded="true" signature="15092:15104" ph="..." />
+                <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#!!top" expanded="false" />
+                <element signature="e#9449#10931#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -34,51 +31,121 @@
       <file leaf-file-name="tab1_statistics.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/tab1_statistics.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="139" column="24" lean-forward="false" selection-start-line="139" selection-start-column="24" selection-end-line="139" selection-end-column="24" />
+            <state relative-caret-position="461">
+              <caret line="1498" column="43" lean-forward="false" selection-start-line="1498" selection-start-column="43" selection-end-line="1498" selection-end-column="43" />
               <folding>
-                <marker date="1495616427039" expanded="true" signature="1471:1492" ph="..." />
-                <marker date="1495616427039" expanded="true" signature="28488:28521" ph="..." />
+                <marker date="1496213387102" expanded="true" signature="1880:1901" ph="..." />
+                <marker date="1496213387102" expanded="true" signature="15346:15556" ph="{...}" />
+                <marker date="1496213387102" expanded="true" signature="15452:15556" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="echart.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/test/echart.html">
+      <file leaf-file-name="left.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/layout/left.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="15" column="14" lean-forward="true" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+            <state relative-caret-position="300">
+              <caret line="15" column="14" lean-forward="false" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+              <folding>
+                <marker date="1496213386887" expanded="true" signature="3224:3394" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="3443:4099" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="3480:4004" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="3581:3924" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="3626:3882" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="4237:9438" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="4277:7426" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="4321:6273" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="4373:5358" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="4407:5029" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="5085:5327" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="5413:6246" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="5467:6215" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="5526:5660" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="5896:6180" ph="..." />
+                <marker date="1496213386887" expanded="false" signature="5916:5922" ph=" " />
+                <marker date="1496213386887" expanded="false" signature="6038:6044" ph=" " />
+                <marker date="1496213386887" expanded="false" signature="6323:6335" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="6336:6401" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="6504:7403" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="6560:6942" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="6614:6911" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="6745:6876" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="6995:7376" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="7049:7345" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="7178:7310" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="7512:9419" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="7553:9396" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="7732:7948" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="7994:8939" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="8047:8908" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="8096:8411" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="8231:8333" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="8461:8873" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="8600:8696" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="8991:9369" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="9718:10461" ph="..." />
+                <marker date="1496213386887" expanded="true" signature="9829:9896" ph="{&quot;bar_chip&quot;: '${contextPath!}/static/img/bar_chip.png'...}" />
+                <marker date="1496213386887" expanded="true" signature="9916:10450" ph="{...}" />
+                <marker date="1496213386887" expanded="true" signature="10127:10223" ph="//..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sphere.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/js/sphere.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="440">
+              <caret line="22" column="17" lean-forward="false" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+              <folding>
+                <element signature="e#1984#11503#0" expanded="false" />
+                <element signature="e#12514#13379#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index_right.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/index_right.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="12060">
+              <caret line="603" column="0" lean-forward="false" selection-start-line="603" selection-start-column="0" selection-end-line="603" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="echart_move.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/test/echart_move.html">
+      <file leaf-file-name="right.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/layout/right.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="64" column="24" lean-forward="true" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
-              <folding />
+            <state relative-caret-position="740">
+              <caret line="37" column="12" lean-forward="false" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="12" />
+              <folding>
+                <marker date="1496213390486" expanded="true" signature="2036:2976" ph="..." />
+                <marker date="1496213390486" expanded="true" signature="2081:2961" ph="{...}" />
+                <marker date="1496213390486" expanded="true" signature="2129:2579" ph="{...}" />
+                <marker date="1496213390486" expanded="true" signature="2299:2367" ph="//..." />
+                <marker date="1496213390486" expanded="true" signature="2629:2692" ph="{...}" />
+                <marker date="1496213390486" expanded="true" signature="2736:2857" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>环形</find>
-      <find>radius</find>
-      <find>25</find>
-      <find>myChart26</find>
-      <find>myChart49</find>
-      <find>gap</find>
-      <find>chart43</find>
-      <find>chart10</find>
       <find>dashStyle:</find>
       <find>red</find>
-      <find>chart11</find>
       <find>chart17</find>
       <find>chart48</find>
       <find>borderColor</find>
@@ -98,6 +165,15 @@
       <find>now</find>
       <find>seriesBottomData</find>
       <find>chart7</find>
+      <find>chart6</find>
+      <find>yAxis:</find>
+      <find>chart2</find>
+      <find>chart12</find>
+      <find>chart11</find>
+      <find>dataStyle</find>
+      <find>total_bottom_tab</find>
+      <find>chart3</find>
+      <find>海尔</find>
     </findStrings>
     <replaceStrings>
       <replace>2</replace>
@@ -118,22 +194,25 @@
         <option value="$PROJECT_DIR$/layout/tab/tab4.html" />
         <option value="$PROJECT_DIR$/layout/right.html" />
         <option value="$PROJECT_DIR$/static/js/main_right.js" />
-        <option value="$PROJECT_DIR$/layout/tab/tab1.html" />
         <option value="$PROJECT_DIR$/static/css/labOprateState.css" />
         <option value="$PROJECT_DIR$/layout/ulab.html" />
         <option value="$PROJECT_DIR$/static/js/main_left.js" />
-        <option value="$PROJECT_DIR$/static/css/index_right.css" />
         <option value="$PROJECT_DIR$/static/js/tab3_statistics.js" />
         <option value="$PROJECT_DIR$/static/js/tab4_statistics.js" />
         <option value="$PROJECT_DIR$/static/js/tab2_statistics.js" />
         <option value="$PROJECT_DIR$/static/js/statistics.js" />
         <option value="$PROJECT_DIR$/static/css/index_left.css" />
-        <option value="$PROJECT_DIR$/layout/left.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/lab/wordCloud.html" />
         <option value="$PROJECT_DIR$/layout/centerLab.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/test/echart_move.html" />
-        <option value="$PROJECT_DIR$/static/js/tab1_statistics.js" />
         <option value="$PROJECT_DIR$/static/js/centerLab.js" />
+        <option value="$PROJECT_DIR$/tempNote" />
+        <option value="$PROJECT_DIR$/layout/left.html" />
+        <option value="$PROJECT_DIR$/static/js/sphere.js" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/test/testSelect.html" />
+        <option value="$PROJECT_DIR$/static/css/index_right.css" />
+        <option value="$PROJECT_DIR$/static/js/tab1_statistics.js" />
+        <option value="$PROJECT_DIR$/layout/tab/tab1.html" />
       </list>
     </option>
   </component>
@@ -164,8 +243,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -177,8 +254,36 @@
               <option name="myItemId" value="webapp" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pages" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -214,61 +319,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="static" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="img" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -314,46 +369,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="asserts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="asserts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="echarts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="layout" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -378,6 +393,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -385,12 +402,14 @@
     <property name="last_opened_file_path" value="F:/海联2017/170516科技大数据" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\git\ulab\src\main\webapp\static\img" />
+      <recent name="C:\Users\Administrator\git\ulab\src\main\webapp" />
       <recent name="C:\Users\Administrator\git\ulab\src\main\webapp\WEB-INF\pages\test" />
       <recent name="C:\Users\Administrator\git\ulab\src\main\webapp\static\asserts\js" />
-      <recent name="C:\Users\Administrator\git\ulab\src\main\webapp\static\img" />
       <recent name="C:\Users\Administrator\git\ulab\src\main\webapp\static\img\labMain" />
     </key>
   </component>
@@ -496,14 +515,17 @@
       <workItem from="1495416866252" duration="26433000" />
       <workItem from="1495502097234" duration="25086000" />
       <workItem from="1495587917941" duration="19848000" />
+      <workItem from="1495865989344" duration="7307000" />
+      <workItem from="1496193549817" duration="5212000" />
+      <workItem from="1496206451633" duration="1992000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="176954000" />
+    <option name="totallyTimeSpent" value="191465000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="753" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="753" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18377976" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -555,20 +577,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/css/centerLab.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/jquery.dragsort-0.5.2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/layout/tab/tab2.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
@@ -615,7 +623,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -638,14 +645,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/layout/right.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="16" column="68" lean-forward="false" selection-start-line="16" selection-start-column="68" selection-end-line="16" selection-end-column="68" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -690,7 +689,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -698,7 +696,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="37" column="35" lean-forward="false" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -706,7 +703,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="89300">
           <caret line="4466" column="43" lean-forward="false" selection-start-line="4466" selection-start-column="43" selection-end-line="4466" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -724,14 +720,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/sphere.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-20">
-          <caret line="11" column="14" lean-forward="true" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/main_left.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
@@ -746,21 +734,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/layout/tab/tab1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="255" column="43" lean-forward="false" selection-start-line="255" selection-start-column="43" selection-end-line="255" selection-end-column="43" />
-          <folding>
-            <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/tab3_statistics.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
           <caret line="218" column="17" lean-forward="true" selection-start-line="218" selection-start-column="17" selection-end-line="218" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -790,9 +767,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
           <caret line="436" column="8" lean-forward="false" selection-start-line="436" selection-start-column="8" selection-end-line="436" selection-end-column="8" />
-          <folding>
-            <element signature="n#!!block;n#statisticRightSeriesTab4Data#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -810,36 +785,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/layout/left.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2320">
-          <caret line="116" column="47" lean-forward="false" selection-start-line="116" selection-start-column="47" selection-end-line="116" selection-end-column="47" />
-          <folding>
-            <element signature="e#5898#5904#1" expanded="false" />
-            <element signature="e#6020#6026#1" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/index_right.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="797" column="0" lean-forward="false" selection-start-line="797" selection-start-column="0" selection-end-line="797" selection-end-column="0" />
-          <folding>
-            <marker date="1495616020873" expanded="true" signature="6393:6546" ph="{...}" />
-            <marker date="1495616020873" expanded="true" signature="11635:11664" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/layout/centerLab.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
           <caret line="743" column="0" lean-forward="false" selection-start-line="743" selection-start-column="0" selection-end-line="743" selection-end-column="0" />
-          <folding>
-            <element signature="n#div#1;n#div#1;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#2;n#div#1;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -847,7 +796,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -855,7 +803,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -863,7 +810,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -871,7 +817,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -879,9 +824,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="18" column="26" lean-forward="true" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="26" />
-          <folding>
-            <marker date="1494818198593" expanded="true" signature="4472:4478" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -889,7 +831,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="7" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -897,47 +838,140 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
           <caret line="0" column="2246" lean-forward="false" selection-start-line="0" selection-start-column="2239" selection-end-line="0" selection-end-column="2246" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/test/echart_move.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="64" column="24" lean-forward="true" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/test/echart_move.html" />
     <entry file="file://$PROJECT_DIR$/WEB-INF/pages/test/echart.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="15" column="14" lean-forward="true" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
-          <folding />
+        <state relative-caret-position="300">
+          <caret line="15" column="14" lean-forward="false" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/tab1_statistics.js">
+    <entry file="file://$PROJECT_DIR$/layout/right.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="139" column="24" lean-forward="false" selection-start-line="139" selection-start-column="24" selection-end-line="139" selection-end-column="24" />
+        <state relative-caret-position="740">
+          <caret line="37" column="12" lean-forward="false" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="12" />
           <folding>
-            <marker date="1495616427039" expanded="true" signature="1471:1492" ph="..." />
-            <marker date="1495616427039" expanded="true" signature="28488:28521" ph="..." />
+            <marker date="1496213390486" expanded="true" signature="2036:2976" ph="..." />
+            <marker date="1496213390486" expanded="true" signature="2081:2961" ph="{...}" />
+            <marker date="1496213390486" expanded="true" signature="2129:2579" ph="{...}" />
+            <marker date="1496213390486" expanded="true" signature="2299:2367" ph="//..." />
+            <marker date="1496213390486" expanded="true" signature="2629:2692" ph="{...}" />
+            <marker date="1496213390486" expanded="true" signature="2736:2857" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/layout/left.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="15" column="14" lean-forward="false" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+          <folding>
+            <marker date="1496213386887" expanded="true" signature="3224:3394" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="3443:4099" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="3480:4004" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="3581:3924" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="3626:3882" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="4237:9438" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="4277:7426" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="4321:6273" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="4373:5358" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="4407:5029" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="5085:5327" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="5413:6246" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="5467:6215" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="5526:5660" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="5896:6180" ph="..." />
+            <marker date="1496213386887" expanded="false" signature="5916:5922" ph=" " />
+            <marker date="1496213386887" expanded="false" signature="6038:6044" ph=" " />
+            <marker date="1496213386887" expanded="false" signature="6323:6335" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="6336:6401" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="6504:7403" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="6560:6942" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="6614:6911" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="6745:6876" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="6995:7376" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="7049:7345" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="7178:7310" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="7512:9419" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="7553:9396" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="7732:7948" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="7994:8939" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="8047:8908" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="8096:8411" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="8231:8333" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="8461:8873" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="8600:8696" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="8991:9369" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="9718:10461" ph="..." />
+            <marker date="1496213386887" expanded="true" signature="9829:9896" ph="{&quot;bar_chip&quot;: '${contextPath!}/static/img/bar_chip.png'...}" />
+            <marker date="1496213386887" expanded="true" signature="9916:10450" ph="{...}" />
+            <marker date="1496213386887" expanded="true" signature="10127:10223" ph="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/sphere.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="22" column="17" lean-forward="false" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+          <folding>
+            <element signature="e#1984#11503#0" expanded="false" />
+            <element signature="e#12514#13379#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/centerLab.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="900" column="0" lean-forward="true" selection-start-line="900" selection-start-column="0" selection-end-line="900" selection-end-column="0" />
+        <state relative-caret-position="-940">
+          <caret line="900" column="0" lean-forward="false" selection-start-line="900" selection-start-column="0" selection-end-line="900" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tempNote">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="24" column="19" lean-forward="false" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/test/testSelect.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="21" column="9" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="21" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/index_right.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12060">
+          <caret line="603" column="0" lean-forward="false" selection-start-line="603" selection-start-column="0" selection-end-line="603" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/tab1_statistics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="1498" column="43" lean-forward="false" selection-start-line="1498" selection-start-column="43" selection-end-line="1498" selection-end-column="43" />
           <folding>
-            <element signature="n#!!block;n#initfour#0" expanded="false" />
-            <marker date="1495616555397" expanded="true" signature="14683:14725" ph="..." />
-            <marker date="1495616555397" expanded="true" signature="14845:14955" ph="..." />
-            <marker date="1495616555397" expanded="true" signature="14976:15022" ph="..." />
-            <marker date="1495616555397" expanded="true" signature="15092:15104" ph="..." />
+            <marker date="1496213387102" expanded="true" signature="1880:1901" ph="..." />
+            <marker date="1496213387102" expanded="true" signature="15346:15556" ph="{...}" />
+            <marker date="1496213387102" expanded="true" signature="15452:15556" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/layout/tab/tab1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="247" column="27" lean-forward="true" selection-start-line="247" selection-start-column="27" selection-end-line="247" selection-end-column="27" />
+          <folding>
+            <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="e#9449#10931#0" expanded="false" />
           </folding>
         </state>
       </provider>

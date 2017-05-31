@@ -368,7 +368,6 @@ var dataBase;
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjax(){
 	$.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
-		console.log(data)
 		var htmls="";
 		$.each(data,function(index,item){
 			htmls+=' <li><span></span><a href="#">'+item.name+'</a>';
@@ -407,7 +406,7 @@ function findSensorByLabCenetrTabAjax(labTypeCode,testUnitId){
 //获取曲线具体数据
 function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
 	$.post(contextPath+"/lab/getJsonFile",{"fileName":"unit.json","testUnitId":testUnitId},function(data){
-		console.log(eval("("+data+")"))
+		//console.log(eval("("+data+")"))
 		data=eval("("+data+")");
 		dataBase=data;
 		//根据传感器具体数据 生成图例 
@@ -415,14 +414,27 @@ function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
 			totalLegendName.push(item.name);
 		});
 		legendData=dealBracket(totalLegendName);
-		for(var x=0;x<8;x++){
-			showLegendData.push(legendData[x]);
-		}
+		randomLegend();
+		$("#center_sybh_id").html(data.sybh);
+	 	$("#center_ypbm_id").html(data.ybbh);
+	 	$("#center_cpxh_id").html(data.cpxh);
 		//showLegendData=legendData;//默认全选
-		console.log(showLegendData)
+		//console.log(showLegendData)
 		createLegendHtmls();
 		createEcharts(true);
 	});
+}
+//温度取8个 其他全部展示
+function randomLegend(){
+	var num=0;
+	$.each(totalLegendName,function(index,item){
+		if(item.indexOf("℃")==-1){
+			showLegendData.push(dealBracketForObj(item));
+		}else if(num<8){
+			showLegendData.push(dealBracketForObj(item));
+			num++;
+		}
+	})
 }
 //生成echarts图形
 function createEcharts(isFirst,obj){
@@ -601,7 +613,7 @@ function getCharts1() {
         grid: {
             x: '13%',
             x2: '10%',
-            y2: '-2%'                //下移负数 使两个图重叠
+            y2: '3%'                //下移负数 使两个图重叠
         },
         dataZoom: [{
 	    	start: 0,
@@ -641,8 +653,8 @@ function getCharts1() {
             {
                 type: 'value',
                 name: currentData[0].unit,
-	            max:currentData[0].highvalue,
-	            min:currentData[0].lowvalue,
+	            /*max:currentData[0].highvalue,
+	            min:currentData[0].lowvalue,*/
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -713,8 +725,8 @@ function getCharts1() {
             {
                 type: 'value',
                 name: currentData[2].unit,
-	            max:currentData[2].highvalue,
-	            min:currentData[2].lowvalue,
+	           /* max:currentData[2].highvalue,
+	            min:currentData[2].lowvalue,*/
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -751,8 +763,8 @@ function getCharts1() {
                 type: 'value',
                 offset: 40 * bodyScale,
                 name: currentData[3].unit,
-	            max:currentData[3].highvalue,
-	            min:currentData[3].lowvalue,
+	           /* max:currentData[3].highvalue,
+	            min:currentData[3].lowvalue,*/
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -836,7 +848,7 @@ function getCharts1() {
    		 interval_count1=parseFloat(interval_count1)+0.01;
    	 }
 	 //console.log("myChart1---"+preStart+"--"+preEnd)
-    },1000);
+    },30000);
 }
 function getCharts2() {
 
@@ -855,7 +867,7 @@ function getCharts2() {
         grid: {
             x: '13%',
             x2: '10%',
-            y: '3%',
+            y: '-2%',
             y2: '14%'
         },
         dataZoom: [{
@@ -896,8 +908,8 @@ function getCharts2() {
             {
                 type: 'value',
                 name: currentData[4].unit,
-	            max:currentData[4].highvalue,
-	            min:currentData[4].lowvalue,
+	           /* max:currentData[4].highvalue,
+	            min:currentData[4].lowvalue,*/
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -941,8 +953,8 @@ function getCharts2() {
             {
                 type: 'value',
                 name: currentData[5].unit,
-	            max:currentData[5].highvalue,
-	            min:currentData[5].lowvalue,
+	           /* max:currentData[5].highvalue,
+	            min:currentData[5].lowvalue,*/
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -978,8 +990,8 @@ function getCharts2() {
             {
                 type: 'value',
                 name: currentData[6].unit,
-	            max:currentData[6].highvalue,
-	            min:currentData[6].lowvalue,
+	           /* max:currentData[6].highvalue,
+	            min:currentData[6].lowvalue,*/
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -1023,8 +1035,8 @@ function getCharts2() {
             {
                 type: 'value',
                 name: currentData[7].unit,
-	            max:currentData[7].highvalue,
-	            min:currentData[7].lowvalue,
+	           /* max:currentData[7].highvalue,
+	            min:currentData[7].lowvalue,*/
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -1111,7 +1123,7 @@ function getCharts2() {
    	 }
 	    	 
 	//console.log("myChart2---"+preStart+"--"+preEnd)
-    },1000);
+    },30000);
 
 }
 //动态加载数据 动画效果 个数与serise数量相同
@@ -1257,10 +1269,143 @@ function dealSatisfactionCenterLab(data) {
     return result;
 }
 
+var labAllInfoData;
+var currentPageNum=1;
+var totalPage=0;
+//获取实验室基本信息
+function labAllForCenterLabAjax(){
+	$.post(contextPath+"/lab/labAllForCenterLabAjax",{},function(data){
+		console.log(data)
+		labAllInfoData=data;
+		$("#lab_center_id_left_0").html(data.labCount);
+		setProgressValue("lab_center_id_left_1",data.lowMonthRate);
+		setProgressValue("lab_center_id_left_2",data.highMonthRate);
+		setProgressValue("lab_center_id_left_3",data.aveMonthRate);
+		//第二行
+		//设备总数
+		$("#lab_center_id_left_4").html(data.equipmentCount);
+		//平均停机时间
+		$("#lab_center_id_left_5").html("2小时");
+		//平均停机次数
+		$("#lab_center_id_left_6").html("3次");
+		//当前完好率
+		setProgressValue("lab_center_id_left_7",null);
+		//第三行
+		//已测订单数
+		$("#lab_center_id_left_8").html(data.finishOrderCount);
+		$("#lab_center_id_left_9").html(data.testingOrderCount);
+		$("#lab_center_id_left_10").html(0);
+		//拼接实验室详情数据
+		joinLabDetailHtmls();
+	});
+}
+function joinLabDetailHtmls(){
+	var top="",center="",bottom="";
+	$.each(labAllInfoData.labSingleDataList,function(index,item){
+		if(index>=(parseInt(currentPageNum)-1)*5&&index<parseInt(currentPageNum)*5){
+			console.log(index>=(currentPageNum-1));
+			top+=joinTopHtmls(index,item);
+			center+=joinCenterHtmls(index,item);
+			bottom+=joinBottomHtmls(index,item);
+		}
+	});
 
-
-
-
+	var allCount=labAllInfoData.labSingleDataList.length;
+	if(parseInt(allCount)%5>0){
+		totalPage=parseInt(parseInt(allCount)/5)+1;
+	}else{
+		totalPage=parseInt(parseInt(allCount)/5);
+	};
+	$("#center_lab_top_div").html(top);
+	$("#center_lab_center_div").html(center);
+	$("#center_lab_bottom_div").html(bottom);
+}
+function prePage(){
+	currentPageNum=parseInt(currentPageNum)-1;
+	if(currentPageNum<=0){
+		currentPageNum=1;
+	}
+	joinLabDetailHtmls();
+}
+function nextPage(){
+	currentPageNum=parseInt(currentPageNum)+1;
+	if(currentPageNum>parseInt(totalPage)){
+		currentPageNum=totalPage;
+	};
+	joinLabDetailHtmls();
+}
+function joinBottomHtmls(index, item){
+	var bodyIndex = index % 5 + 1;
+	var htmls = "";
+	htmls += "<div onclick=labDetailInfo('"+item.labCode+"','"+item.url+"') class='l-bottom-body-" + bodyIndex + "'>";
+	htmls+='<h4>'+item.labName+'</h4>';
+	htmls+='<div class="item1"><h5>已测订单数：<span></span></h5> <span class="data"><strong>'+item.finishOrderCount+'</strong></span></div>';
+	htmls+='<div class="item1"><h5>在测订单数：<span></span></h5><span class="data"><strong>'+item.testingOrderCount+'</strong></span></div>';
+	htmls+='<div class="item1"><h5>待测订单数：<span></span></h5><span class="data"><strong>437</strong></span>';
+	htmls+='</div></div>';
+    return htmls;
+}
+function joinCenterHtmls(index, item) {
+	var bodyIndex = index % 5 + 1;
+	var htmls = "";
+	htmls += "<div onclick=labDetailInfo('"+item.labCode+"','"+item.url+"') class='l-mid-body-" + bodyIndex + "'>";
+	htmls+='<h4>'+item.labName+'</h4>';
+	htmls+='<div class="item4"><h5>设备数：<span></span></h5><span class="data">'+item.equipmentCount+'</span>';
+	htmls+=' </div><div class="item1"><h5>停机时间：<span></span></h5>';
+	htmls+='<span class="data">12小时</span></div>';
+	htmls+='<div class="item2"><h5>停机次数：<span></span></h5> <span class="data">4次</span></div>';
+	htmls+='<div class="item3"> <h5>当前完好率：<span></span></h5><div class="progress">';
+	htmls+='<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"';
+	htmls+='  aria-valuemax="100" style="width: 98%;height: 100%"></div> </div>';
+	htmls+=' <span class="data">98%</span></div></div>';
+	return htmls;
+}
+function joinTopHtmls(index,item){
+	  var bodyIndex=index%5+1;
+	  var htmls="";
+	  htmls+="<div onclick=labDetailInfo('"+item.labCode+"','"+item.url+"') class='l-top-body-"+bodyIndex+"'>";
+	  htmls+='<h4>'+item.labName+'</h4>';
+	  htmls+='<div class="item1"><h5>实验室状态：<span></span></h5>';
+	  htmls+='<span class="data">'+item.labStatus+'</span></div>';
+	  htmls+='<div class="item2"><h5>台位负荷：<span></span></h5>';
+	  htmls+='<div class="progress">';
+	  var testUnitStatus="";
+	  if(item.testUnitStatus==null){
+		  testUnitStatus="0/1";
+	  }else{
+		  testUnitStatus=item.testUnitStatus;
+	  }
+	  var fh=testUnitStatus.split("/");
+	  var rate=(parseInt(fh[0])/parseInt(fh[1])*100).toFixed(1);
+	  htmls+=' <div class="progress-bar" role="progressbar" aria-valuenow="'+rate+'" aria-valuemin="0"';
+	  htmls+='  aria-valuemax="100" style="width: '+rate+'%;height: 100%"></div>';
+	  htmls+=' </div> <span class="data">'+(item.testUnitStatus==null?"":item.testUnitStatus)+'</span></div>';
+	  htmls+='<div class="item3"><h5>月负荷率：<span></span></h5>';
+	  htmls+='<div class="progress">';
+	  var monthRate="";
+	  if(item.monthRate==null){
+		  monthRate="0/1";
+	  }else{
+		  monthRate=item.monthRate;
+	  }
+	  var month=monthRate.split("/");
+	  var monthRate=parseInt(month[0])/parseInt(month[1]).toFixed(1);
+	  htmls+='<div class="progress-bar" role="progressbar" aria-valuenow="'+monthRate+'" aria-valuemin="0"';
+	  htmls+=' aria-valuemax="100" style="width: '+monthRate+'%;height: 100%"></div> </div>';
+	  htmls+='<span class="data">'+(item.monthRate==null?"":item.monthRate)+'</span></div></div>';
+     return htmls;
+}
+function labDetailInfo(labCode,url){
+	console.log(labCode+"---"+url);
+}
+function setProgressValue(ids,value){
+	if(value==null){
+		value=0;
+	}
+	$("#"+ids).find(".progress-bar").attr("aria-valuenow",value);
+	$("#"+ids).find(".progress-bar").css("width",value+"%");
+	$("#"+ids).find(".data").html(value+"%");
+}
 
 
 
