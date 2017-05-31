@@ -11,8 +11,11 @@ import com.ulab.client.webServiceRerigerator.ArrayOfTestProdInfoItem;
 import com.ulab.client.webServiceRerigerator.ArrayOfTestUnitInfo;
 import com.ulab.client.webServiceRerigerator.TestMetadata;
 import com.ulab.client.webServiceRerigerator.TestProdInfoItem;
+import com.ulab.client.webServiceRerigerator.TestUnitInfo;
 import com.ulab.model.LabAllData;
+import com.ulab.model.LabData;
 import com.ulab.model.LabSingleData;
+import com.ulab.model.LabTestUnit;
 
 /**
  * @ClassName: IntegrationServiceClient
@@ -22,6 +25,13 @@ import com.ulab.model.LabSingleData;
  */
 public class IntegrationServiceClient {
 	
+	/**
+	 * @Title: searchLabAllData
+	 * @Description: 查询实验室汇总信息
+	 * @return    设定文件
+	 * @return LabAllData    返回类型
+	 * @throws
+	 */
 	public LabAllData searchLabAllData() {
 		LabAllData labAllData = new LabAllData();
 		int labCount = 0;
@@ -102,9 +112,53 @@ public class IntegrationServiceClient {
 		labAllData.setEquipmentCount(equipmentCount);
 		labAllData.setFinishOrderCount(finishOrderCount);
 		labAllData.setTestingOrderCount(testingOrderCount);
+		labAllData.setLabSingleDataList(labSingleDataList);
 		return labAllData;
 	}
-	
+
+	/**
+	 * @Title: searchLabData
+	 * @Description: 查询实验室明细
+	 * @return    设定文件
+	 * @return List<LabData>    返回类型
+	 * @throws
+	 */
+	public List<LabData> searchLabData() {
+		List<LabData> labDataList = new ArrayList<LabData>();
+		Service service = new Service();
+		ServicePortType port = service.getServiceHttpPort();
+		
+		ArrayOfConnInfo connInfos = port.getConnInfoAll();
+		for(ConnInfo connInfo : connInfos.getConnInfo()){			
+			String labCode = connInfo.getLabCode();			
+			if("aircondition".equals(connInfo.getLabCode()) || "washerkekao01".equals(connInfo.getLabCode()) || !connInfo.getUrl().startsWith("http")) continue;
+			LabData labData = new LabData();
+			labData.setLabCode(labCode);
+			labData.setLabName(connInfo.getWsName());
+			labData.setUrl(connInfo.getUrl());
+			try {
+				com.ulab.client.webServiceRerigerator.Service service2 = new com.ulab.client.webServiceRerigerator.Service(new URL(connInfo.getUrl()));
+				com.ulab.client.webServiceRerigerator.ServicePortType port2 = service2.getServiceHttpPort();
+				ArrayOfTestUnitInfo testUnitInfos = port2.getTestUnitInfo(labCode);
+				List<LabTestUnit> labTestUnitList = new ArrayList<LabTestUnit>();
+				for(TestUnitInfo testUnitInfo : testUnitInfos.getTestUnitInfo()){
+					LabTestUnit labTestUnit = new LabTestUnit();
+					labTestUnit.setTestUnitId(testUnitInfo.getTestUnitId());
+					labTestUnit.setTestUnitName(testUnitInfo.getTestUnitName());
+					labTestUnitList.add(labTestUnit);
+				}
+			labData.setTestUnitList(labTestUnitList);
+			labDataList.add(labData);
+			} catch (MalformedURLException e) {
+				java.util.logging.Logger.getLogger(Service.class.getName())
+                .log(java.util.logging.Level.INFO, 
+                     "Can not initialize the default wsdl from {0}", connInfo.getUrl());
+			}
+		}
+			
+		return labDataList;
+		
+	}
 	
 	/**
 	 * @Title: getLabFlag
