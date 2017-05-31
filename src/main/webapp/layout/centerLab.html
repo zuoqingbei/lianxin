@@ -16,7 +16,7 @@
 <div class="labMain_content" style="display: none">
 <!--<div class="labMain_content" >-->
     <div class="labMain_content_top">
-        <h1>中海博睿介绍</h1>
+        <h1>中海博睿数据中心</h1>
         <div class="labMain_ct_btn">
             <div class="icon"></div>
             <h3>返回总状态</h3>
@@ -58,8 +58,8 @@
         <div class="labMain_cb_left">
             <h3 class="lab_title">运营状态</h3>
             <div class="pageBtn">
-                <span class="icon"></span>
-                <span class="icon"></span>
+                <span class="icon" onclick="prePage()"></span>
+                <span class="icon" onclick="nextPage()"></span>
             </div>
 
             <div class="leftContent">
@@ -71,9 +71,9 @@
                     <div class="l-top-header">
                         <div class="item1">
                             <h5>实验室总数：</h5>
-                            <span class="data">10</span>
+                            <span class="data" id="lab_center_id_left_0">0</span>
                         </div>
-                        <div class="item2">
+                        <div class="item2" id="lab_center_id_left_1">
                             <h5>负荷率最低：</h5>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
@@ -81,7 +81,7 @@
                             </div>
                             <span class="data">80%</span>
                         </div>
-                        <div class="item3">
+                        <div class="item3" id="lab_center_id_left_2">
                             <h5>负荷率最高：</h5>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0"
@@ -89,7 +89,7 @@
                             </div>
                             <span class="data">90%</span>
                         </div>
-                        <div class="item4">
+                        <div class="item4" id="lab_center_id_left_3">
                             <h5>平均负荷率：</h5>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0"
@@ -99,8 +99,8 @@
                         </div>
                     </div>
 
-                    <div class="l-top-body">
-                        <div class="l-top-body-1">
+                    <div class="l-top-body" id="center_lab_top_div">
+                       <!--  <div class="l-top-body-1">
                             <h4>A室</h4>
                             <div class="item1">
                                 <h5>实验室状态：<span></span></h5>
@@ -214,7 +214,7 @@
                                 </div>
                                 <span class="data">80/90</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!--第二行-->
@@ -225,17 +225,17 @@
                     <div class="l-mid-header">
                         <div class="item1">
                             <h5>设备总数：<span></span></h5>
-                            <span class="data">388</span>
+                            <span class="data" id="lab_center_id_left_4">0</span>
                         </div>
                         <div class="item2">
                             <h5>平均停机时间：<span></span></h5>
-                            <span class="data">2小时</span>
+                            <span class="data" id="lab_center_id_left_5"></span>
                         </div>
                         <div class="item3">
                             <h5>平均停机次数：<span></span></h5>
-                            <span class="data">3次</span>
+                            <span class="data" id="lab_center_id_left_6"></span>
                         </div>
-                        <div class="item4">
+                        <div class="item4" id="lab_center_id_left_7">
                             <h5>当前完好率：<span></span></h5>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
@@ -244,8 +244,8 @@
                             <span class="data">98%</span>
                         </div>
                     </div>
-                    <div class="l-mid-body">
-                        <div class="l-mid-body-1">
+                    <div class="l-mid-body" id="center_lab_center_div">
+                       <!--  <div class="l-mid-body-1">
                             <h4>A室</h4>
                             <div class="item4">
                                 <h5>设备数：<span></span></h5>
@@ -359,7 +359,7 @@
                                 </div>
                                 <span class="data">98%</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                 </div>
@@ -371,19 +371,19 @@
                     <div class="l-bottom-header">
                         <div class="item1">
                             <h5>已测订单数：<span></span></h5>
-                            <span class="data">412</span>
+                            <span class="data" id="lab_center_id_left_8"></span>
                         </div>
                         <div class="item1">
                             <h5>在测订单数：<span></span></h5>
-                            <span class="data">284</span>
+                            <span class="data" id="lab_center_id_left_9"></span>
                         </div>
                         <div class="item1">
                             <h5>待测订单数：<span></span></h5>
-                            <span class="data">437</span>
+                            <span class="data" id="lab_center_id_left_10"></span>
                         </div>
                     </div>
-                    <div class="l-bottom-body">
-                        <div class="l-bottom-body-1">
+                    <div class="l-bottom-body" id="center_lab_bottom_div">
+                       <!--  <div class="l-bottom-body-1">
                             <h4>A室</h4>
                             <div class="item1">
                                 <h5>已测订单数：<span></span></h5>
@@ -457,7 +457,7 @@
                                 <h5>待测订单数：<span></span></h5>
                                 <span class="data"><strong>437</strong></span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -548,8 +548,8 @@
                 <div class="sheshi_tab">视频监控</div>
                 <div class="sheshi_tab">曲线监控</div>
                 <div class="sheshi_tab_list">
-                    <ul>
-                        <li><span></span><a href="#">实验室1</a>
+                    <ul id="lab_unit_selected_center">
+                       <!--  <li><span></span><a href="#">实验室1</a>
                             <ul class="taiwei_hide">
                                 <li>台位A3</li>
                                 <li>台位A3</li>
@@ -580,16 +580,16 @@
                                 <li>台位A3</li>
                                 <li>台位A3</li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
             <div class="shishi_right shishi_right_show">
             	<div class='sheshi_right_top'>
             		<ul>
-            			<li>试验编号：<span>m0007m0007m0007</span></li>
-            			<li>样品编号：<span>m0007m0007m0007m0007</span></li>
-            			<li>产品型号：<span>m0007m0007m0007m0007</span></li>
+            			<li>试验编号：<span id="center_sybh_id"></span></li>
+            			<li>样品编号：<span id="center_ypbm_id"></span></li>
+            			<li>产品型号：<span id="center_cpxh_id"></span></li>
             		</ul>
             	</div>
                 <div class="sheshi_right_left">
@@ -744,7 +744,7 @@
         //近12个月用户满意度趋势图
         inittwo();
 
-
+        labAllForCenterLabAjax();
 
 
 

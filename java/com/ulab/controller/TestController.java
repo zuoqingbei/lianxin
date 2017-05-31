@@ -7,12 +7,15 @@ import java.util.Map;
 import java.util.Random;
 
 import com.jfinal.aop.Before;
-import com.jfinal.ext.interceptor.POST;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
 import com.ulab.model.LabModel;
+import com.ulab.model.Line;
+import com.ulab.model.SensorTypeDto;
+import com.ulab.model.Value;
+import com.ulab.util.JsonUtils;
 /**
  * 
  * @time   2017年4月11日 上午10:59:00
@@ -115,4 +118,26 @@ public class TestController extends BaseController {
     public void linkEchart() {
         render("linkEchart.html");
     }
+    public void linkEchart2() {
+        render("linkEchart2.html");
+    }
+    
+    /**
+     * 
+     * @time   2017年5月26日 下午2:13:12
+     * @author zuoqb
+     * @todo   获取json文件数据
+     * @param  
+     * @return_type   void
+     */
+    public void getJsonFile(){
+    	String fileName=getPara("fileName","");
+    	String path=getWebRootPath()+"/src/main/webapp/static/data/"+fileName;
+    	String json=JsonUtils.readJson(path);
+    	renderText(json);
+    }
+    public static void main(String[] args) {
+    	String path="D://unit.json";
+    	System.out.println(JsonUtils.readJson(path));
+	}
 }

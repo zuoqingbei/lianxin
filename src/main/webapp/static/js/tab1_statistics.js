@@ -422,9 +422,9 @@ function loadTab1JianData(xhId, xName) {
     alert(1)
     $.post(contextPath + '/lab/jianCeXhProForTab1Ajax', {"xhCode": xhId}, function (xhPro) {
         $("#tab1_jiance_xh_name").html("\"" + xName + "\"");
-        $("#tab1_jiance_xh_result").html(xhPro.jielun);
+        $("#tab1_jiance_xh_result").html("结论："+xhPro.jielun);
         $("#tab1_jiance_xh_name2").html("\"" + xName + "\"");
-        $("#tab1_jiance_xh_result2").html(xhPro.jielun);
+        $("#tab1_jiance_xh_result2").html("结论："+xhPro.jielun);
         //模块商质量水平分布
         mkSqualityLevelForTab1(xhPro);
         //SPC分析
@@ -710,15 +710,15 @@ function cpkDataForTab1(xhPro) {
             mData.push([parseFloat(item.wkq_num), parseFloat(xhPro.pj_value)]);
             //mData2.push([parseFloat(item.wkq_num),parseFloat(item.gd_num_2)]);
         });
-        $.each(data[1], function (index, item) {
+       /* $.each(data[1], function (index, item) {
             mData2.push([parseFloat(item.num), parseFloat(item.num)]);
-        });
+        });*/
         /*mHeightChart.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
          mHeightChart.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);*/
         mHeightChart.options.xAxis[0].max = parseFloat(xhPro.lsl);
         mHeightChart.options.xAxis[0].min = parseFloat(xhPro.usl);
         mHeightChart.series[0].setData(histogram(mData, 0.3)); // 更新 series
-        mHeightChart.series[1].setData(histogram(mData2, 0.3));
+       /* mHeightChart.series[1].setData(histogram(mData2, 0.3));*/
         mHeightChart.xAxis[0].addPlotLine({
             color: '#f93',            //线的颜色，定义为红色
             dashStyle: 'solid',//认是solid（实线），这里定义为长虚线
@@ -1419,7 +1419,7 @@ function statisticRightLengend(data) {
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
-        name = name.substr(0, 4) + "/" + name.substr(4, 6);
+        name = name.substr(2, 2) + "/" + name.substr(4, 6);
         legnend.push(name);
     });
     return legnend;
@@ -1436,7 +1436,7 @@ function statistictab1LengendTime(data) {
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
-        name = name.substr(0, 4) + "/" + name.substr(4, name.length);
+        name = name.substr(2, 2) + "/" + name.substr(4, name.length);
         legnend.push(name);
     });
     return legnend;
@@ -1496,5 +1496,6 @@ function getMaxMinForScpTab1(data, xhPro, type) {
 function tab1JianSelected(obj) {
     var id = $(obj).find("option:selected").attr("data");
     var name = $(obj).find("option:selected").text();
-    loadTab1JianData(id,'${c.name}')
+    loadTab1JianData(id,name);
 }
+
