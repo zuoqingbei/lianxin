@@ -585,7 +585,27 @@
 }
 #l .flat-right-bottom .myChart{
     height: 65%;
-    padding: 25% 4% 0;
+    padding: 11% 4% 0;
+    text-align: center;
+}
+#l .flat-right-bottom .myChart .myChart_header{
+    margin-bottom: 10%;
+    text-align: center;
+}
+#l .flat-right-bottom .myChart .myChart_num{
+    width: 90%;
+    margin: 0;
+    position: absolute;
+    top: 58%;
+    left: 5%;
+}
+#l .flat-right-bottom .myChart .myChart_num li{
+    width: 20%;
+    float: left;
+    color: #f93;
+}
+#l .flat-right-bottom .myChart .myChart_num li:nth-of-type(2n){
+    margin-top: 12%;
 }
 #l .sphere-right-top ul,
 #l .flat .chartBorder ul{
