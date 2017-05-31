@@ -114,7 +114,7 @@ function navLabLine() {
                     .find(".line").addClass("current").siblings().removeClass("current");
             } else {
                 // $(".legend ul.lab").css("top","15px");
-                $(".legend .animateBox").animate({top:".2em"},"slow")
+                $(".legend .animateBox").animate({top:".4em"},"slow")
                     .find(".lab").addClass("current").siblings().removeClass("current");
             }
         }

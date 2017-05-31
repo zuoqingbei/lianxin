@@ -2,6 +2,18 @@
  * Created by Administrator on 2017/4/12.
  */
 
+var axisLabel = {
+    margin: 3 * bodyScale,
+    textStyle: {
+        fontSize: 9 * bodyScale
+    }
+};
+var nameGap = 10 * bodyScale;
+var nameTextStyle = {
+    color: '#66ccff',
+    fontSize: 8 * bodyScale
+};
+
 // 折线图
 function getLineEcharts() {
     var option = {
