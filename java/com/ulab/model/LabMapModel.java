@@ -32,5 +32,11 @@ public class LabMapModel extends Model<LabModel> {
     	sql+=" ) lab on lab.belong_gl_code=m.id ";
 		return Db.find(sql);
 	}
-
+	public List<Record> labShowFlatMap2(String sqlWhere){
+		String sWhere=" del_flag="+Constants.DEL_FALG;
+		sWhere+=sqlWhere;
+    	String sql="";
+    	sql+=" select name as title,lab_type_name as lab_type,city as location  from t_b_lab_info where del_flag=0 and link_status=1";
+		return Db.find(sql);
+	}
 }

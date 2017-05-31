@@ -15,9 +15,9 @@ function loadTab4Data(){
 function loadTab4JianData(xhId,xName){
 	$.post(contextPath+'/lab/jianCeXhProForTab1Ajax',{"xhCode":xhId},function(xhPro){
 		$("#tab4_jiance_xh_name").html("\""+xName+"\"");
-		$("#tab4_jiance_xh_result").html(xhPro.jielun);
+		$("#tab4_jiance_xh_result").html("结论："+xhPro.jielun);
 		$("#tab4_jiance_xh_name2").html("\""+xName+"\"");
-		$("#tab4_jiance_xh_result2").html(xhPro.jielun);
+		$("#tab4_jiance_xh_result2").html("结论："+xhPro.jielun);
 		//模块商质量水平分布
 		mkSqualityLevelForTab4(xhPro);
 		//SPC分析
@@ -308,15 +308,15 @@ function cpkDataForTab4(xhPro){
 			mData.push([parseFloat(item.wkq_num),parseFloat(xhPro.pj_value)]);
 			//mData2.push([parseFloat(item.wkq_num),parseFloat(item.gd_num_2)]);
 		});
-		$.each(data[1],function(index,item){
+		/*$.each(data[1],function(index,item){
 			mData2.push([parseFloat(item.num),parseFloat(item.num)]);
-		});
+		});*/
 		//mHeightChartTab4.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
 		//mHeightChartTab4.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
 		mHeightChartTab4.options.xAxis[0].max=parseFloat(xhPro.lsl);
 		mHeightChartTab4.options.xAxis[0].min=parseFloat(xhPro.usl);
 		mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
-		mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));
+		/*mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));*/
 		mHeightChartTab4.xAxis[0].addPlotLine({
             color:'#f93',            //线的颜色，定义为红色
             dashStyle:'solid',//认是solid（实线），这里定义为长虚线

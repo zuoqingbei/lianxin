@@ -113,7 +113,7 @@ function inittwo() {
             normal: {
                 show: false,
                 position: 'outside',
-                offset: [10, 0],
+                offset: [10 * bodyScale, 0],
                 textStyle: {
                     fontSize: bodyScale * 8
                 }
@@ -180,7 +180,7 @@ function initThree() {
             normal: {
                 show: false,
                 position: 'outside',
-                offset: [10, 0],
+                offset: [10 * bodyScale, 0],
                 textStyle: {
                     fontSize: bodyScale * 8
                 }
@@ -259,8 +259,8 @@ function initfour() {
                 textStyle: {
                     fontSize: bodyScale * 8
                 },
-                itemWidth: 6, //图例标记的图形宽度
-                itemHeight: 6 //图例标记的图形高度
+                itemWidth: 6 * bodyScale, //图例标记的图形宽度
+                itemHeight: 6 * bodyScale //图例标记的图形高度
             },
             grid: {
 
@@ -307,227 +307,282 @@ function initfour() {
 }
 
 //曲线
-var colorData = ['#66ccff', '#ff9933', '#ff6666', '#00cc66', '#ffff99', '#cc99ff', '#99ccff', '#ff99cc', '#ff9900', '#ffff00', '#ffff00', '#66ffff',
-    '#3366ff', '#660099', '#ff0099', '#cc6600', '#ccff00', '99ff99', '#00cccc', '#006699', '#9999ff'];//图例颜色 需手工扩充
+var colorData=['#99CCCC','#99CC00','#FFFF99','#FFCCCC','#FF99CC','#CC66FF','#9966FF',
+               '#996633','#FFFF66','#FF9999','#993333','#990099','#66FF66','#FFCC00',
+               '#FFFF33','#990000','#66CCFF','#3366CC','#339900','#00FF00','#FFFF00',
+               '#003300','#000066','#006666','#336699','#993333','#993399','#996600',
+               '#FFFFCC','#FFCCFF','#FFCC99','#FF99FF','#FF00FF','#CCCC00','#99FFFF',
+               '#9966CC','#999900','#99FF00','#CC0033','#CC6600'];//图例颜色 需手工扩充
 var myChart1;
 var myChart2;
 var xData;//x轴坐标数据--对应时间
-var legendData = [];//需要把全部图例放入里面 保证名称不同
-var showLegendData = [];//需要展示图例 自定义
-var seriesTopData = [];
-var seriesBottomData = [];
-var topParam = ['Hz', '℃', 'ml'];//上方y参数单位
-var bottomParam = ['V', 'W', 'A', 'kw.h'];
-var dataBase = {
-    legend: ['频率(Hz)', 'M1(℃)', 'M2(℃)', 'M3(℃)', '降雨量(ml)', '电流(V)', '电压(A)', '功率(W)','电压y(kw.h)'],
-    list: [
-        {
-            name: '频率(Hz)',
-            data: [{name: '1月', value: '5'}, {name: '2月', value: '6'}, {name: '3月', value: '7'}, {
-                name: '4月',
-                value: '4'
-            }, {name: '5月', value: '2'}, {name: '6月', value: '25'}, {name: '7月', value: '15'}, {
-                name: '8月',
-                value: '22'
-            }, {name: '9月', value: '21'}, {name: '10月', value: '7'}, {name: '11月', value: '3'}, {
-                name: '12月',
-                value: '15'
-            }]
-        }, {
-            name: 'M1(℃)',
-            data: [{name: '1月', value: '44'}, {name: '2月', value: '52'}, {name: '3月', value: '7'}, {
-                name: '4月',
-                value: '1'
-            }, {name: '5月', value: '24'}, {name: '6月', value: '33'}, {name: '7月', value: '15'}, {
-                name: '8月',
-                value: '22'
-            }, {name: '9月', value: '5'}, {name: '10月', value: '17'}, {name: '11月', value: '13'}, {
-                name: '12月',
-                value: '5'
-            }]
-        }, {
-            name: 'M3(℃)',
-            data: [{name: '1月', value: '24'}, {name: '2月', value: '2'}, {name: '3月', value: '7'}, {
-                name: '4月',
-                value: '11'
-            }, {name: '5月', value: '54'}, {name: '6月', value: '33'}, {name: '7月', value: '15'}, {
-                name: '8月',
-                value: '22'
-            }, {name: '9月', value: '5'}, {name: '10月', value: '17'}, {name: '11月', value: '13'}, {
-                name: '12月',
-                value: '5'
-            }]
-        }, {
-            name: 'M2(℃)',
-            data: [{name: '1月', value: '4'}, {name: '2月', value: '2'}, {name: '3月', value: '17'}, {
-                name: '4月',
-                value: '14'
-            }, {name: '5月', value: '12'}, {name: '6月', value: '15'}, {name: '7月', value: '5'}, {
-                name: '8月',
-                value: '2'
-            }, {name: '9月', value: '11'}, {name: '10月', value: '17'}, {name: '11月', value: '13'}, {
-                name: '12月',
-                value: '5'
-            }]
-        }, {
-            name: '降雨量(ml)',
-            data: [{name: '1月', value: '14'}, {name: '2月', value: '12'}, {name: '3月', value: '37'}, {
-                name: '4月',
-                value: '44'
-            }, {name: '5月', value: '52'}, {name: '6月', value: '45'}, {name: '7月', value: '51'}, {
-                name: '8月',
-                value: '52'
-            }, {name: '9月', value: '41'}, {name: '10月', value: '24'}, {name: '11月', value: '54'}, {
-                name: '12月',
-                value: '33'
-            }]
-        }, {
-            name: '电流(V)',
-            data: [{name: '1月', value: '15'}, {name: '2月', value: '6'}, {name: '3月', value: '7'}, {
-                name: '4月',
-                value: '4'
-            }, {name: '5月', value: '2'}, {name: '6月', value: '25'}, {name: '7月', value: '15'}, {
-                name: '8月',
-                value: '22'
-            }, {name: '9月', value: '21'}, {name: '10月', value: '7'}, {name: '11月', value: '3'}, {
-                name: '12月',
-                value: '15'
-            }]
-        }, {
-            name: '电压(A)',
-            data: [{name: '1月', value: '4'}, {name: '2月', value: '2'}, {name: '3月', value: '17'}, {
-                name: '4月',
-                value: '14'
-            }, {name: '5月', value: '12'}, {name: '6月', value: '15'}, {name: '7月', value: '5'}, {
-                name: '8月',
-                value: '2'
-            }, {name: '9月', value: '11'}, {name: '10月', value: '17'}, {name: '11月', value: '13'}, {
-                name: '12月',
-                value: '5'
-            }]
-        }, {
-            name: '功率(W)',
-            data: [{name: '1月', value: '14'}, {name: '2月', value: '112'}, {name: '3月', value: '57'}, {
-                name: '4月',
-                value: '14'
-            }, {name: '5月', value: '12'}, {name: '6月', value: '15'}, {name: '7月', value: '5'}, {
-                name: '8月',
-                value: '2'
-            }, {name: '9月', value: '11'}, {name: '10月', value: '17'}, {name: '11月', value: '13'}, {
-                name: '12月',
-                value: '5'
-            }]
-        },
-        {
-            name: '电压y(kw.h)',
-            data: [{name: '1月', value: '24'}, {name: '2月', value: '2'}, {name: '3月', value: '17'}, {
-                name: '4月',
-                value: '14'
-            }, {name: '5月', value: '12'}, {name: '6月', value: '15'}, {name: '7月', value: '5'}, {
-                name: '8月',
-                value: '2'
-            }, {name: '9月', value: '11'}, {name: '10月', value: '17'}, {name: '11月', value: '13'}, {
-                name: '12月',
-                value: '5'
-            }]
-        }
-    ]
-};
+var legendData=[];//需要把全部图例放入里面 保证名称不同
+var showLegendData=[];//需要展示图例 自定义
+var seriesTopData=[];
+var seriesBottomData=[];
+var topParam=[];//上方y参数单位
+var bottomParam=[];//下方y轴单位
+var currentData;//当前传感器y信息数据 用于生成y轴
+var totalLegendName=[];//图例全称 包含单位 ['1:频率(Hz)','2:M1(℃)']
+var interval_count1=0;
+var interval_count2=0;
+var dataBase;
+/* var dataBase={
+		sybh:'实验编号',
+		ybbh:'样品编号',
+		cpxh:'产品型号',
+		list:[
+		     {	name:'1:温度(℃)',
+		    	data:[{name:'1月',value:'-55'},{name:'2月',value:'60'},{name:'3月',value:'447'},{name:'4月',value:'400'},{name:'5月',value:'200'},{name:'6月',value:'250'},{name:'7月',value:'15'},{name:'8月',value:'202'},{name:'9月',value:'21'},{name:'10月',value:'7'},{name:'11月',value:'103'},{name:'12月',value:'215'} ]
+		      },{
+		    	  name:'2:电压(V)',
+		    	  data:[{name:'1月',value:'144'},{name:'2月',value:'252'},{name:'3月',value:'227'},{name:'4月',value:'111'},{name:'5月',value:'241'},{name:'6月',value:'233'},{name:'7月',value:'105'},{name:'8月',value:'22'},{name:'9月',value:'55'},{name:'10月',value:'175'},{name:'11月',value:'153'},{name:'12月',value:'55'} ] 
+		      },{
+		    	  name:'3:电流(A)',
+		    	  data:[{name:'1月',value:'24'},{name:'2月',value:'2'},{name:'3月',value:'7'},{name:'4月',value:'11'},{name:'5月',value:'54'},{name:'6月',value:'33'},{name:'7月',value:'15'},{name:'8月',value:'22'},{name:'9月',value:'5'},{name:'10月',value:'37'},{name:'11月',value:'13'},{name:'12月',value:'45'} ] 
+		      },{
+		    	  name:'4:功率(W)',
+		    	  data:[{name:'1月',value:'4000'},{name:'2月',value:'2222'},{name:'3月',value:'1722'},{name:'4月',value:'1422'},{name:'5月',value:'1222'},{name:'6月',value:'1522'},{name:'7月',value:'5222'},{name:'8月',value:'2222'},{name:'9月',value:'1122'},{name:'10月',value:'1722'},{name:'11月',value:'1322'},{name:'12月',value:'5222'} ] 
+		      },{
+		    	  name:'5:耗电量(Wh)',
+		    	  data:[{name:'1月',value:'14000'},{name:'2月',value:'12000'},{name:'3月',value:'3700'},{name:'4月',value:'4400'},{name:'5月',value:'5200'},{name:'6月',value:'12500'},{name:'7月',value:'5100'},{name:'8月',value:'5002'},{name:'9月',value:'4001'},{name:'10月',value:'2004'},{name:'11月',value:'15154'},{name:'12月',value:'11133'} ] 
+		      },{
+		    	  name:'6:频率(Hz)',
+		    	  data:[{name:'1月',value:'15'},{name:'2月',value:'60'},{name:'3月',value:'70'},{name:'4月',value:'40'},{name:'5月',value:'20'},{name:'6月',value:'25'},{name:'7月',value:'15'},{name:'8月',value:'22'},{name:'9月',value:'71'},{name:'10月',value:'56'},{name:'11月',value:'43'},{name:'12月',value:'95'} ]
+		      },{
+		    	  name:'7:功率因数(PF)',
+		    	  data:[{name:'1月',value:'40'},{name:'2月',value:'20'},{name:'3月',value:'17'},{name:'4月',value:'34'},{name:'5月',value:'12'},{name:'6月',value:'65'},{name:'7月',value:'45'},{name:'8月',value:'2'},{name:'9月',value:'71'},{name:'10月',value:'27'},{name:'11月',value:'13'},{name:'12月',value:'65'} ]
+		      },{
+		    	  name:'9:压力(kpa)',
+		    	  data:[{name:'1月',value:'-74'},{name:'2月',value:'82'},{name:'3月',value:'57'},{name:'4月',value:'14'},{name:'5月',value:'12'},{name:'6月',value:'15'},{name:'7月',value:'5'},{name:'8月',value:'2'},{name:'9月',value:'-11'},{name:'10月',value:'67'},{name:'11月',value:'-43'},{name:'12月',value:'50'} ]
+		      },{
+		    	  name:'10:转速(r/min)',
+		    	  data:[{name:'1月',value:'100'},{name:'2月',value:'10'},{name:'3月',value:'2700'},{name:'4月',value:'1400'},{name:'5月',value:'-2212'},{name:'6月',value:'1500'},{name:'7月',value:'522'},{name:'8月',value:'2254'},{name:'9月',value:'1100'},{name:'10月',value:'1527'},{name:'11月',value:'1333'},{name:'12月',value:'500'} ]
+		      },{
+		    	  name:'11:瞬时流量(L/min)',
+		    	  data:[{name:'1月',value:'11'},{name:'2月',value:'80'},{name:'3月',value:'77'},{name:'4月',value:'44'},{name:'5月',value:'55'},{name:'6月',value:'15'},{name:'7月',value:'5'},{name:'8月',value:'20'},{name:'9月',value:'91'},{name:'10月',value:'77'},{name:'11月',value:'13'},{name:'12月',value:'50'} ]
+		      }
+		      ]
+}; */
 
-
+//加载实验室与台位对照关系 生刷选框
+function loadLabUnitInfoCenterTabAjax(){
+	$.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
+		console.log(data)
+		var htmls="";
+		$.each(data,function(index,item){
+			htmls+=' <li><span></span><a href="#">'+item.name+'</a>';
+			if(item.children.length>0){
+				htmls+='<ul class="taiwei_hide">';
+				$.each(item.children,function(ind,it){
+					htmls+='<li onclcik=findSensorByLabCenetrTabAjax(\"'+item.name+'\",\"'+it.name+'\")>'+it.name+'</li>';
+				});
+				htmls+='</ul>';
+			}
+			htmls+=' </li>';
+		});
+		$("#lab_unit_selected_center").html(htmls);
+	});
+}
 $(document).ready(function () {
-    legendData = dealBracket(dataBase.legend);
-    showLegendData = legendData;//默认全选
-    //console.log(showLegendData)
-    createLegendHtmls();
-    createEcharts();
+	loadLabUnitInfoCenterTabAjax();
+	findSensorByLabCenetrTabAjax("refrigerator2016001","2");
 });
-
+//获取传感器信息 用于生成y轴
+function findSensorByLabCenetrTabAjax(labTypeCode,testUnitId){
+	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
+		currentData=data;
+		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
+		$.each(data,function(index,item){
+			if(index<4){
+				topParam.push(item.unit);
+			}else if(index>=4&&index<8){
+				bottomParam.push(item.unit);
+			}
+		});
+		//获取曲线具体数据
+		findSensorDataCenetrTabAjax(labTypeCode,testUnitId);
+	});
+}
+//获取曲线具体数据
+function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
+	$.post(contextPath+"/lab/getJsonFile",{"fileName":"unit.json","testUnitId":testUnitId},function(data){
+		console.log(eval("("+data+")"))
+		data=eval("("+data+")");
+		dataBase=data;
+		//根据传感器具体数据 生成图例 
+	 	$.each(data.list,function(index,item){
+			totalLegendName.push(item.name);
+		});
+		legendData=dealBracket(totalLegendName);
+		for(var x=0;x<8;x++){
+			showLegendData.push(legendData[x]);
+		}
+		//showLegendData=legendData;//默认全选
+		console.log(showLegendData)
+		createLegendHtmls();
+		createEcharts(true);
+	});
+}
 //生成echarts图形
-function createEcharts() {
-    dealSeriesData();
-    myChart1 = echarts.init(document.getElementById('main1'));
-    myChart2 = echarts.init(document.getElementById('main2'));
-    getCharts1();
-    getCharts2();
-
-    /*
-     setInterval(function () {
-
-     seriesBottomData[0].data.shift();
-     seriesBottomData[0].data.push(parseInt(Math.random() * 30)+"");
-     var opt2 = myChart2.getOption();
-     myChart2.clear();
-     opt2.series[0].data = seriesBottomData;
-     myChart2.setOption({
-     series: [{
-     data: seriesBottomData
-     }]
-     });
-     //            myChart2.resize();
-     console.log(opt2.series[0].data[0].data)
-     },3000)
-     */
-
+function createEcharts(isFirst,obj){
+	if(isFirst){
+		dealSeriesData();
+		myChart1= echarts.init(document.getElementById('main1'));
+		myChart2 = echarts.init(document.getElementById('main2'));
+		getCharts1();	
+		getCharts2();	
+	}else{
+		//重绘线
+		dealSeriesData2(obj);
+		var opt1=myChart1.getOption();
+		var opt2=myChart2.getOption();
+		myChart1.clear();
+		myChart2.clear();
+		opt1.xAxis=[{data:xData}];
+		opt1.series=seriesTopData;
+	    myChart1.setOption(opt1);
+	    
+	    opt2.xAxis=[{data:xData}];
+		opt2.series=seriesBottomData;
+	    myChart2.setOption(opt2);
+	}
 }
 
 //生成图例控制
 function createLegendHtmls() {
     var htmls = '';
     for (var x = 0; x < legendData.length; x++) {
-        htmls += '<input style="margin-right: 2%;margin-top: 0;float: left" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" checked><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#66ccff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '</li><span style="float: right">1111</span><br>'
+    	//如果是默认选择的 复选选中
+		if(isHasElementOne(showLegendData,legendData[x])!=-1){
+			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" checked><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#66ccff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '</li><br>'
+		}else{
+			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" ><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#66ccff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '</li><br>'
+		}
+        
     }
     $("#legend_ul").html(htmls);
 }
-
 //处理线series
-function dealSeriesData() {
-    seriesTopData = [];
-    seriesBottomData = [];
-    for (var x = 0; x < dataBase.legend.length; x++) {
-        var currentName = dataBase.legend[x];
-        var data = [];
-        for (var i = 0; i < dataBase.list.length; i++) {
-            if (dataBase.list[i].name == currentName) {
-                data = dataBase.list[i].data;
-            }
-        }
-        var topIndex = isHasElementOne(topParam, dealUnit(currentName));
-        var bottomIndex = isHasElementOne(bottomParam, dealUnit(currentName));
-        if (topIndex > -1 && isHasElementOne(showLegendData, dealBracketForObj(currentName)) > -1) {
-            //展示在上半部分
-            seriesTopData.push(joinSerise(data, currentName, topIndex, x));
-        } else if (bottomIndex > -1 && isHasElementOne(showLegendData, dealBracketForObj(currentName)) > -1) {
-            //展示在下半部分
-            seriesBottomData.push(joinSerise(data, currentName, bottomIndex, x));
-        }
-        //console.log(currentName+"==="+topIndex+"==="+bottomIndex)
-    }
+function dealSeriesData(){
+	seriesTopData=[];
+	seriesBottomData=[];
+	for(var x=0;x<totalLegendName.length;x++){
+		var currentName=totalLegendName[x];
+		var data=[];
+		for(var i=0;i<dataBase.list.length;i++){
+			if(dataBase.list[i].name==currentName){
+				data=dataBase.list[i].data;
+			}
+		};
+		var checked=false;
+		$('input[name="legendcheckbox"]:checked').each(function(){ 
+			if($(this).val()==dealBracketForObj(currentName)){
+				checked=true;
+			}; 
+		}); 
+		if(checked){
+			var topIndex=isHasElementOne(topParam,dealUnit(currentName));
+			var bottomIndex=isHasElementOne(bottomParam,dealUnit(currentName));
+			if(topIndex>-1||bottomIndex>-1){
+				if(topIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
+					//展示在上半部分
+					seriesTopData.push(joinSerise(data,currentName,topIndex,x));
+				}else if(bottomIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
+					//展示在下半部分
+					seriesBottomData.push(joinSerise(data,currentName,bottomIndex,x));
+				}
+			}else{
+				//没有配置 默认画到左下
+				seriesBottomData.push(joinSeriseOther(data,currentName,x));
+			}
+		}
+	}
+};
+//处理线series
+function dealSeriesData2(obj){
+	seriesTopData=[];
+	seriesBottomData=[];
+	for(var x=0;x<totalLegendName.length;x++){
+		var currentName=totalLegendName[x];
+		var data=[];
+		for(var i=0;i<dataBase.list.length;i++){
+			if(dataBase.list[i].name==currentName){
+				data=dataBase.list[i].data;
+			}
+		};
+		var topIndex=isHasElementOne(topParam,dealUnit(currentName));
+		var bottomIndex=isHasElementOne(bottomParam,dealUnit(currentName));
+		if(topIndex>-1||bottomIndex>-1){
+			if(topIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
+				//展示在上半部分
+				seriesTopData.push(joinSerise(data,currentName,topIndex,x));
+			}else if(bottomIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
+				//展示在下半部分
+				seriesBottomData.push(joinSerise(data,currentName,bottomIndex,x));
+			}
+		}else{
+			//没有配置 默认画到左下
+			var checked=false;
+			$('input[name="legendcheckbox"]:checked').each(function(){ 
+				if($(this).val()==dealBracketForObj(currentName)){
+					checked=true;
+				}; 
+			});  
+			if(checked){
+				seriesBottomData.push(joinSeriseOther(data,currentName,x));
+			};
+		}
+	}
+};
+function joinSerise(data,name,index,colorIndex){
+	var dataArr=[];
+	xData=[];
+	for(var x=0;x<data.length;x++){
+		var value=data[x].value;
+		if(value=="N"){
+			value=0;
+		}
+		dataArr.push(value);
+		xData.push(data[x].name);
+	};
+		//console.log(dataArr)
+	var item= {
+	            name:dealBracketForObj(name),
+ 	            type:'line',
+ 	            data:dataArr,
+ 	            itemStyle:{
+ 	        	  normal:{
+ 	        		  color:colorData[colorIndex]
+ 	        	  }
+ 	           },
+ 	           show:false
+ 	        };
+	if(index>0){
+		item.yAxisIndex=index;
+	}
+	return item;
 }
-
-function joinSerise(data, name, index, colorIndex) {
-    var dataArr = [];
-    xData = [];
-    for (var x = 0; x < data.length; x++) {
-        dataArr.push(data[x].value);
-        xData.push(data[x].name);
-    }
-    ;
-    var item = {
-        name: dealBracketForObj(name),
-        type: 'line',
-        data: dataArr,
-        itemStyle: {
-            normal: {
-                color: colorData[colorIndex]
-            }
-        },
-        show: false,
-    };
-    if (index > 0) {
-        item.yAxisIndex = index;
-    }
-    return item;
+function joinSeriseOther(data,name,colorIndex){
+	var dataArr=[];
+	xData=[];
+	for(var x=0;x<data.length;x++){
+		dataArr.push(data[x].value);
+		xData.push(data[x].name);
+	};
+	var item= {
+	            name:dealBracketForObj(name),
+ 	            type:'line',
+ 	            data:dataArr,
+ 	            itemStyle:{
+ 	        	  normal:{
+ 	        		  color:colorData[colorIndex]
+ 	        	  }
+ 	           },
+ 	           show:false
+ 	        };
+	//item.yAxisIndex=1;
+	return item;
 }
 
 function getCharts1() {
@@ -548,6 +603,13 @@ function getCharts1() {
             x2: '10%',
             y2: '-2%'                //下移负数 使两个图重叠
         },
+        dataZoom: [{
+	    	start: 0,
+	    	end:5,
+	    	show:false
+        }, {
+            type: 'inside'
+        }],
         xAxis: [
             {
                 type: 'category',
@@ -578,12 +640,14 @@ function getCharts1() {
         yAxis: [
             {
                 type: 'value',
-                name: 'Hz',
+                name: currentData[0].unit,
+	            max:currentData[0].highvalue,
+	            min:currentData[0].lowvalue,
                 nameTextStyle: {
                     color: '#66ccff'
                 },
                 position: 'left',
-                offset: 40,
+                offset: 40 * bodyScale,
                 axisLine: { //坐标轴
                     show: false
                 },
@@ -605,14 +669,16 @@ function getCharts1() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
             },
             {
                 type: 'value',
-                name: '℃',
+                name: currentData[1].unit,
+	            max:currentData[1].highvalue,
+	            min:currentData[1].lowvalue,
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -639,14 +705,16 @@ function getCharts1() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
             },
             {
                 type: 'value',
-                name: 'ml',
+                name: currentData[2].unit,
+	            max:currentData[2].highvalue,
+	            min:currentData[2].lowvalue,
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -673,18 +741,102 @@ function getCharts1() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
+
+            },
+            {
+                type: 'value',
+                offset: 40 * bodyScale,
+                name: currentData[3].unit,
+	            max:currentData[3].highvalue,
+	            min:currentData[3].lowvalue,
+                nameTextStyle: {
+                    color: '#66ccff'
+                },
+                position: 'right',
+                axisLabel: {
+                    formatter: '{value} ',
+                    show: true,
+                    textStyle: {
+                        color: '#66ccff',
+                        fontSize: 12 * bodyScale
+                    }
+                },
+                axisLine: { //坐标轴
+                    show: false
+                },
+                splitLine: {  //刻度线
+                    show: true,
+                    lineStyle: {
+                        color: '#234f65'
+                    }
+                },
+                axisTick: {  //刻度值
+                    show: false,
+                },
+                lineStyle: {
+                    normal: {
+                        width: 0.5 * bodyScale
+                    }
+                },
+                symbolSize: 1 * bodyScale,
 
             }
+            
         ],
         series: seriesTopData
     };
     myChart1.clear();
     myChart1.setOption(option);
     echarts.connect([myChart1, myChart2]);
+   /* myChart1.setOption({
+        series:getAnimation(seriesTopData)
+    });
+    setInterval(function () {
+	 for(var i=0; i<seriesTopData.length;i++){
+		 seriesTopData[i].data.shift();
+	     seriesTopData[i].data.push(parseInt(Math.random() * 30));
+	 }
+        var month = xData.shift();
+        xData.push(month)
+
+        myChart1.setOption({
+            xAxis:[
+                {data:xData}],
+            series: seriesTopData,
+        });
+        //console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesTopData[0].data)
+       // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
+    }, 2000);*/
+    setInterval(function () {
+   	 var preStart=myChart1.getOption().dataZoom[0].start;
+   	 var preEnd=myChart1.getOption().dataZoom[0].end;
+   	 myChart1.setOption({
+   		 dataZoom: [{
+   			 	start: parseFloat(interval_count1),
+   		    	end:5+parseFloat(interval_count1)
+   	        }, {
+   	            type: 'inside'
+   	        }],
+        });
+   	 if(parseFloat(preEnd)>99.9){
+   		 interval_count1=0;
+   		 myChart1.setOption({
+       		 dataZoom: [{
+       			 	start: 0,
+       		    	end:5
+       	        }, {
+       	            type: 'inside'
+       	        }],
+            });
+   	 }else{
+   		 interval_count1=parseFloat(interval_count1)+0.01;
+   	 }
+	 //console.log("myChart1---"+preStart+"--"+preEnd)
+    },1000);
 }
 function getCharts2() {
 
@@ -702,10 +854,17 @@ function getCharts2() {
         },
         grid: {
             x: '13%',
-            x2: '17%',
+            x2: '10%',
             y: '3%',
             y2: '14%'
         },
+        dataZoom: [{
+	    	start: 0,
+	    	end:5,
+	    	show:false
+        }, {
+            type: 'inside'
+        }],
         xAxis: [
             {
                 type: 'category',
@@ -736,7 +895,9 @@ function getCharts2() {
         yAxis: [
             {
                 type: 'value',
-                name: 'V',
+                name: currentData[4].unit,
+	            max:currentData[4].highvalue,
+	            min:currentData[4].lowvalue,
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -772,14 +933,16 @@ function getCharts2() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
             },
             {
                 type: 'value',
-                name: 'W',
+                name: currentData[5].unit,
+	            max:currentData[5].highvalue,
+	            min:currentData[5].lowvalue,
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -806,15 +969,17 @@ function getCharts2() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
 
             },
             {
                 type: 'value',
-                name: 'A',
+                name: currentData[6].unit,
+	            max:currentData[6].highvalue,
+	            min:currentData[6].lowvalue,
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -850,19 +1015,21 @@ function getCharts2() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
-                symbolSize: 1,
+                symbolSize: 1 * bodyScale,
             },
             {
                 type: 'value',
-                name: 'kw.h',
+                name: currentData[7].unit,
+	            max:currentData[7].highvalue,
+	            min:currentData[7].lowvalue,
                 nameTextStyle: {
                     color: '#66ccff'
                 },
                 nameLocation: 'start',
-                offset: 40,
+                offset: 40 * bodyScale,
                 position: 'right',
                 axisLabel: {
                     formatter: '{value} ',
@@ -885,11 +1052,11 @@ function getCharts2() {
                 },
                 lineStyle: {
                     normal: {
-                        width: 0.5
+                        width: 0.5 * bodyScale
                     }
                 },
 
-                symbolSize:1,
+                symbolSize:1 * bodyScale,
             }
         ],
         series: seriesBottomData
@@ -899,77 +1066,14 @@ function getCharts2() {
 
     echarts.connect([myChart1, myChart2]);
 
-    /*
-     function randomData() {
-     now = new Date(+now + oneDay);
-     value = value + Math.random() * 21 - 10;
-     return {
-     name: now.toString(),
-     value: [
-     [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
-     Math.round(value)
-     ]
-     }
-     }
-     */
-
-
-    /*
-     option22 = {
-     title: {
-     text: '动态数据 + 时间坐标轴'
-     },
-     tooltip: {
-     trigger: 'axis',
-     formatter: function (params) {
-     params = params[0];
-     var date = new Date(params.name);
-     return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
-     },
-     axisPointer: {
-     animation: false
-     }
-     },
-     xAxis: {
-     type: 'time',
-     splitLine: {
-     show: false
-     }
-     },
-     yAxis: {
-     type: 'value',
-     boundaryGap: [0, '100%'],
-     splitLine: {
-     show: false
-     }
-     },
-     series: [{
-     name: '模拟数据',
-     type: 'line',
-     showSymbol: false,
-     hoverAnimation: false,
-     data: data
-     }]
-     };
-     */
-
-    // myChart2.setOption(option22);
-    myChart2.setOption({
-        series: [{
-            animation:false
-        },{
-            animation:false
-        },{
-            animation:false
-        },{
-            animation:false
-        }]
+   /* myChart2.setOption({
+        series:getAnimation(seriesBottomData)
     });
     setInterval(function () {
-for(var i=0; i<seriesBottomData.length;i++){
-    seriesBottomData[i].data.shift();
-    seriesBottomData[i].data.push(parseInt(Math.random() * 30));
-}
+	 for(var i=0; i<seriesBottomData.length;i++){
+	     seriesBottomData[i].data.shift();
+	     seriesBottomData[i].data.push(parseInt(Math.random() * 30));
+	 }
         var month = xData.shift();
         xData.push(month)
 
@@ -980,53 +1084,90 @@ for(var i=0; i<seriesBottomData.length;i++){
         });
         // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesBottomData[0].data)
         // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
-    }, 2000);
+    }, 2000);*/
+    setInterval(function () {
+   	 var preStart=myChart2.getOption().dataZoom[0].start;
+   	 var preEnd=myChart2.getOption().dataZoom[0].end;
+   	 myChart2.setOption({
+   		 dataZoom: [{
+   			 	start:parseFloat(interval_count2),
+   		    	end:5+parseFloat(interval_count2)
+   	        }, {
+   	            type: 'inside'
+   	        }],
+        });
+   	 if(parseFloat(preEnd)>99.9){
+   		 interval_count2=0;
+   		 myChart1.setOption({
+       		 dataZoom: [{
+       			 	start: 0,
+       		    	end:5
+       	        }, {
+       	            type: 'inside'
+       	        }],
+            });
+   	 }else{
+   		 interval_count2=parseFloat(interval_count2)+0.01;
+   	 }
+	    	 
+	//console.log("myChart2---"+preStart+"--"+preEnd)
+    },1000);
 
-
+}
+//动态加载数据 动画效果 个数与serise数量相同
+function getAnimation(arr){
+	var animation=[];
+	for(var x=0;x<arr.length;x++){
+		animation.push({
+             animation:false
+         });
+	}
 }
 //处理括号
-function dealBracket(arr) {
-    var result = new Array();
-    for (var x = 0; x < arr.length; x++) {
-        result.push(dealBracketForObj(arr[x]));
-    }
-    return result;
+function dealBracket(arr){
+	var result=new Array();
+	for(var x=0;x<arr.length;x++){
+		result.push(dealBracketForObj(arr[x]));
+	}
+	return result;
 }
-function dealBracketForObj(obj) {
-    if (obj.indexOf("(") > -1) {
-        return obj.substr(0, obj.indexOf("("));
-    }
-    return obj;
+function dealBracketForObj(obj){
+	if(obj.indexOf("(")>-1){
+		return obj.substr(0,obj.indexOf("("));
+	}
+	return obj;
 }
 //判断数组中某个元素下标
-function isHasElementOne(arr, value) {
-    for (var i = 0, vlen = arr.length; i < vlen; i++) {
-        if (arr[i] == value) {
-            return i;
-        }
-    }
-    return -1;
-}
+function isHasElementOne(arr,value){ 
+	for(var i = 0,vlen = arr.length; i < vlen; i++){ 
+		if(arr[i] == value){ 
+			return i; 
+		} 
+	} 
+	return -1; 
+} 
 //传入字符串获取单位
-function dealUnit(str) {
-    if (str.indexOf("(") > -1 && str.indexOf(")") > -1) {
-        var result = str.substr(str.indexOf("(") + 1, str.indexOf(")"));
-        result = result.substr(0, result.indexOf(")"));
-        return result;
-    }
-    return "";
+function dealUnit(str){
+	if(str.indexOf("(")>-1&&str.indexOf(")")>-1){
+		var result=str.substr(str.indexOf("(")+1,str.indexOf(")"));
+		result=result.substr(0,result.indexOf(")"));
+		return result;
+	}
+	return "";
 }
-function resetOptions(obj) {
-    showLegendData = checkBoxVales();
-    createEcharts();
+function resetOptions(obj){
+	showLegendData=checkBoxVales();
+	interval_count1=0;
+	interval_count2=0;
+	createEcharts(false,obj);
 }
-function checkBoxVales() { //jquery获取复选框值
-    var chk_value = [];
-    $('input[name="legendcheckbox"]:checked').each(function () {
-        chk_value.push($(this).val());
-    });
-    return chk_value;
-}
+function checkBoxVales(){ //jquery获取复选框值 
+	var chk_value =[]; 
+	$('input[name="legendcheckbox"]:checked').each(function(){ 
+		chk_value.push($(this).val()); 
+	}); 
+	return chk_value;
+} 
 
 
 //新增
@@ -1034,7 +1175,7 @@ function centerLabOrderRateLengend(data) {
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
-        name = name.substr(0, 4) + "/" + name.substr(4, name.length);
+        name = name.substr(2, 2) + "/" + name.substr(4, name.length);
         legnend.push(name);
     });
     return legnend;

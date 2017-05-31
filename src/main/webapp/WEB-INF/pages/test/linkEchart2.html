@@ -12,8 +12,8 @@
 <body>
 	
 		<div class="divBlock" style="width: 100%;padding-left:200px;position: absolute;">
-				<div id="main1" style="height: 350px;width:750px;"></div>
-				<div id="main2" style="height: 350px;width:750px;"></div>
+				<div id="main1" style="height: 400px;width:1150px;"></div>
+				<div id="main2" style="height: 400px;width:1150px" ></div>
 		</div>
 		<div style="position: relative;top:20px;width:120px">
 			<ul id="legend_ul">
@@ -25,7 +25,7 @@
 <script>
 importJSCSS("${contextPath!}/static/asserts/echarts3.0/echarts.js");
 /* importJSCSS("${contextPath!}/static/asserts/echarts/echarts-all.js"); */
-var colorData=['#99CCCC','#99CC00','#FFFF99','#FFCCCC','#FF99CC','#CC66FF','#9966FF',
+var colorData=[/* '#99CCCC','#99CC00','#FFFF99','#FFCCCC','#FF99CC','#CC66FF','#9966FF', */
                '#996633','#FFFF66','#FF9999','#993333','#990099','#66FF66','#FFCC00',
                '#FFFF33','#990000','#66CCFF','#3366CC','#339900','#00FF00','#FFFF00',
                '#003300','#000066','#006666','#336699','#993333','#993399','#996600',
@@ -42,6 +42,8 @@ var topParam=[];//上方y参数单位
 var bottomParam=[];//下方y轴单位
 var currentData;//当前传感器y信息数据 用于生成y轴
 var totalLegendName=[];//图例全称 包含单位 ['1:频率(Hz)','2:M1(℃)']
+var interval_count1=0;
+var interval_count2=0;
 var dataBase;
 /* var dataBase={
 		sybh:'实验编号',
@@ -86,7 +88,8 @@ $(document).ready(function() {
 });
 //获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjax(labTypeCode,testUnitId){
-	$.post("${contextPath}/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
+	$.post("${contextPath}/test/getJsonFile",{"fileName":"lab.json","testUnitId":testUnitId},function(data){
+		data=eval("("+data+")");
 		currentData=data;
 		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
 		$.each(data,function(index,item){
@@ -102,15 +105,19 @@ function findSensorByLabCenetrTabAjax(labTypeCode,testUnitId){
 }
 //获取曲线具体数据
 function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
-	$.post("${contextPath}/lab/findSensorDataCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
-		console.log(data)
+	$.post("${contextPath}/test/getJsonFile",{"fileName":"unit.json","testUnitId":testUnitId},function(data){
+		console.log(eval("("+data+")"))
+		data=eval("("+data+")");
 		dataBase=data;
 		//根据传感器具体数据 生成图例 
 	 	$.each(data.list,function(index,item){
 			totalLegendName.push(item.name);
 		});
 		legendData=dealBracket(totalLegendName);
-		showLegendData=legendData;//默认全选
+		for(var x=0;x<8;x++){
+			showLegendData.push(legendData[x]);
+		}
+		//showLegendData=legendData;//默认全选
 		console.log(showLegendData)
 		createLegendHtmls();
 		createEcharts(true);
@@ -120,20 +127,37 @@ function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
 function createEcharts(isFirst,obj){
 	if(isFirst){
 		dealSeriesData();
+		myChart1= echarts.init(document.getElementById('main1'));
+		myChart2 = echarts.init(document.getElementById('main2'));
+		getCharts1();	
+		getCharts2();	
 	}else{
+		//重绘线
 		dealSeriesData2(obj);
+		var opt1=myChart1.getOption();
+		var opt2=myChart2.getOption();
+		myChart1.clear();
+		myChart2.clear();
+		opt1.xAxis=[{data:xData}];
+		opt1.series=seriesTopData;
+	    myChart1.setOption(opt1);
+	    
+	    opt2.xAxis=[{data:xData}];
+		opt2.series=seriesBottomData;
+	    myChart2.setOption(opt2);
 	}
-	myChart1= echarts.init(document.getElementById('main1'));
-	myChart2 = echarts.init(document.getElementById('main2'));
-	getCharts1();	
-	getCharts2();	
 }
 
 //生成图例控制
 function createLegendHtmls(){
 	var htmls='';
 	for(var x=0;x<legendData.length;x++){
-		htmls+='<input type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="'+legendData[x]+'" checked><li  style="color:'+colorData[x]+'" name="'+legendData[x]+'">'+legendData[x]+'</li>'
+		//如果是默认选择的 复选选中
+		if(isHasElementOne(showLegendData,legendData[x])!=-1){
+			htmls+='<input type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="'+legendData[x]+'" checked><li  style="color:'+colorData[x]+'" name="'+legendData[x]+'">'+legendData[x]+'</li>'
+		}else{
+			htmls+='<input type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="'+legendData[x]+'" ><li  style="color:'+colorData[x]+'" name="'+legendData[x]+'">'+legendData[x]+'</li>'
+		}
 	}
 	$("#legend_ul").html(htmls);
 }
@@ -149,19 +173,27 @@ function dealSeriesData(){
 				data=dataBase.list[i].data;
 			}
 		};
-		var topIndex=isHasElementOne(topParam,dealUnit(currentName));
-		var bottomIndex=isHasElementOne(bottomParam,dealUnit(currentName));
-		if(topIndex>-1||bottomIndex>-1){
-			if(topIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
-				//展示在上半部分
-				seriesTopData.push(joinSerise(data,currentName,topIndex,x));
-			}else if(bottomIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
-				//展示在下半部分
-				seriesBottomData.push(joinSerise(data,currentName,bottomIndex,x));
+		var checked=false;
+		$('input[name="legendcheckbox"]:checked').each(function(){ 
+			if($(this).val()==dealBracketForObj(currentName)){
+				checked=true;
+			}; 
+		}); 
+		if(checked){
+			var topIndex=isHasElementOne(topParam,dealUnit(currentName));
+			var bottomIndex=isHasElementOne(bottomParam,dealUnit(currentName));
+			if(topIndex>-1||bottomIndex>-1){
+				if(topIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
+					//展示在上半部分
+					seriesTopData.push(joinSerise(data,currentName,topIndex,x));
+				}else if(bottomIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
+					//展示在下半部分
+					seriesBottomData.push(joinSerise(data,currentName,bottomIndex,x));
+				}
+			}else{
+				//没有配置 默认画到左下
+				seriesBottomData.push(joinSeriseOther(data,currentName,x));
 			}
-		}else{
-			//没有配置 默认画到左下
-			seriesBottomData.push(joinSeriseOther(data,currentName,x));
 		}
 	}
 };
@@ -205,9 +237,14 @@ function joinSerise(data,name,index,colorIndex){
 	var dataArr=[];
 	xData=[];
 	for(var x=0;x<data.length;x++){
-		dataArr.push(data[x].value);
+		var value=data[x].value;
+		if(value=="N"){
+			value=0;
+		}
+		dataArr.push(value);
 		xData.push(data[x].name);
 	};
+		//console.log(dataArr)
 	var item= {
 	            name:dealBracketForObj(name),
  	            type:'line',
@@ -255,7 +292,7 @@ function getCharts1(){
 	        showDelay: 0             // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
 	    },
 	    legend: {
-	    	show:true,
+	    	show:false,
 	        data:legendData
 	    },
 	    grid:{
@@ -263,6 +300,13 @@ function getCharts1(){
 	    	x2:'10%',
 	    	y2:'-0.6%'//下移负数 使两个图重叠
 	    },
+	    dataZoom: [{
+	    	start: 0,
+	    	end:5,
+	    	show:false
+        }, {
+            type: 'inside'
+        }],
 	    xAxis: [
 	        {
 	            type: 'category',
@@ -326,26 +370,33 @@ function getCharts1(){
 	 myChart1.clear();
      myChart1.setOption(option);   
      echarts.connect([myChart1, myChart2]);  
-  myChart1.setOption({
-         series:seriesBottomData(seriesTopData);
-     });
      setInterval(function () {
-	 for(var i=0; i<seriesTopData.length;i++){
-		 seriesTopData[i].data.shift();
-	     seriesTopData[i].data.push(parseInt(Math.random() * 30));
-	 }
-         var month = xData.shift();
-         xData.push(month)
-
-         myChart1.setOption({
-             xAxis:[
-                 {data:xData}],
-             series: seriesTopData,
+    	 var preStart=myChart1.getOption().dataZoom[0].start;
+    	 var preEnd=myChart1.getOption().dataZoom[0].end;
+    	 myChart1.setOption({
+    		 dataZoom: [{
+    			 	start: parseFloat(interval_count1),
+    		    	end:5+parseFloat(interval_count1)
+    	        }, {
+    	            type: 'inside'
+    	        }],
          });
-         console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesTopData[0].data)
-         console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
-     }, 2000);
-	                                
+    	 if(parseFloat(preEnd)>99.9){
+    		 interval_count1=0;
+    		 myChart1.setOption({
+        		 dataZoom: [{
+        			 	start: 0,
+        		    	end:5
+        	        }, {
+        	            type: 'inside'
+        	        }],
+             });
+    	 }else{
+    		 interval_count1=parseFloat(interval_count1)+0.01;
+    	 }
+	    	 console.log("myChart1---"+preStart+"--"+preEnd)
+     },1000)
+                 
 }
 function getCharts2(){
 
@@ -358,7 +409,7 @@ function getCharts2(){
 	        showDelay: 0             // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
 	    },
 	    legend: {
-	    	 show:true,
+	    	 show:false,
 	        data:legendData
 	    },
 	    grid:{
@@ -366,6 +417,13 @@ function getCharts2(){
 	    	x2:'10%',
 	    	y:'1%'
 	    },
+	    dataZoom: [{
+	    	start: 0,
+	    	end:5,
+	    	show:false
+        }, {
+            type: 'inside'
+        }],
 	    xAxis: [
 	        {
 	            type: 'category',
@@ -439,7 +497,34 @@ function getCharts2(){
 	 myChart2.clear();
      myChart2.setOption(option2); 
      echarts.connect([myChart1, myChart2]);
-     myChart2.setOption({
+     setInterval(function () {
+    	 var preStart=myChart2.getOption().dataZoom[0].start;
+    	 var preEnd=myChart2.getOption().dataZoom[0].end;
+    	 myChart2.setOption({
+    		 dataZoom: [{
+    			 	start:parseFloat(interval_count2),
+    		    	end:5+parseFloat(interval_count2)
+    	        }, {
+    	            type: 'inside'
+    	        }],
+         });
+    	 if(parseFloat(preEnd)>99.9){
+    		 interval_count2=0;
+    		 myChart1.setOption({
+        		 dataZoom: [{
+        			 	start: 0,
+        		    	end:5
+        	        }, {
+        	            type: 'inside'
+        	        }],
+             });
+    	 }else{
+    		 interval_count2=parseFloat(interval_count2)+0.01;
+    	 }
+	    	 
+	    	 console.log("myChart2---"+preStart+"--"+preEnd)
+     },1000)
+    /*  myChart2.setOption({
          series:getAnimation(seriesBottomData)
      });
      setInterval(function () {
@@ -457,7 +542,7 @@ function getCharts2(){
          });
          console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesBottomData[0].data)
          console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
-     }, 2000); 
+     }, 2000);  */
 	                                
 }
 //动态加载数据 动画效果 个数与serise数量相同
@@ -503,6 +588,8 @@ function dealUnit(str){
 }
 function resetOptions(obj){
 	showLegendData=checkBoxVales();
+	interval_count1=0;
+	interval_count2=0;
 	createEcharts(false,obj);
 }
 function checkBoxVales(){ //jquery获取复选框值 
