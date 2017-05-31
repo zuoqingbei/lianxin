@@ -30,6 +30,7 @@ import com.ulab.model.SensorTypeDto;
 import com.ulab.model.SensorTypeModel;
 import com.ulab.model.Value;
 import com.ulab.model.XbarModel;
+import com.ulab.util.JsonUtils;
 import com.ulab.util.NormalDistribution;
 import com.ulab.util.SqlUtil;
 /**
@@ -558,10 +559,10 @@ public class LabController extends BaseController {
     	for(Record r:list){
     		r.set("wkq_num2", NormalDistribution.calc(Double.parseDouble(r.getStr("wkq_num")), pj, fc));
     	}*/
-    	List<Record> gaussian=gaussian(xhCode);
+    	//List<Record> gaussian=gaussian(xhCode);
     	List<List<Record>> re=new ArrayList<List<Record>>();
     	re.add(list);
-    	re.add(gaussian);
+    	//re.add(gaussian);
 		renderJson(re);
     }
     /**
@@ -804,37 +805,19 @@ public class LabController extends BaseController {
 		renderJson(sensorList);
     }
     
+  
     /**
      * 
      * @time   2017年5月26日 下午2:13:12
      * @author zuoqb
-     * @todo   获取传感器信息
+     * @todo   获取json文件数据
      * @param  
      * @return_type   void
      */
-    public void findSensorDataCenetrTabAjax(){
-    	String labTypeCode=getPara("labTypeCode","");
-    	String testUnitId=getPara("testUnitId","");
-    	SensorTypeDto dto=new SensorTypeDto();
-    	dto.setYbbh("123");
-    	dto.setCpxh("231");
-    	dto.setSybh("dddddd");
-    	List<Line> line=new ArrayList<Line>();
-    	String[] arr={"1:温度(℃)","2:电压(V)","11:瞬时流量(L/min)","10:转速(r/min)"};
-    	for(int i=0;i<arr.length;i++){
-    		Line l=new Line();
-    		List<Value> v=new ArrayList<Value>();
-    		for(int x=0;x<12;x++){
-    			Value m=new Value();
-    			m.setName(x+1+"月");
-    			m.setValue(x+100+"");
-    			v.add(m);
-    		}
-    		l.setName(arr[i]);
-    		l.setData(v);
-    		line.add(l);
-    	}
-    	dto.setList(line);
-		renderJson(dto);
+    public void getJsonFile(){
+    	String fileName=getPara("fileName","");
+    	String path=getWebRootPath()+"/src/main/webapp/static/data/"+fileName;
+    	String json=JsonUtils.readJson(path);
+    	renderText(json);
     }
 }
