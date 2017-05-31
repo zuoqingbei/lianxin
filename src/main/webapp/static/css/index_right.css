@@ -439,7 +439,7 @@
 }
 
 .total_bottom_pie {
-    width: 28%;
+    width: 33%;
     height: 65%;
     float: left;
 }
@@ -459,10 +459,13 @@
     top: 8%;
 }
 .total_bottom_bar1, .total_bottom_bar2 {
-    width: 28%;
+    width: 26%;
     height: 65%;
     float: left;
     position: relative;
+}
+.total_bottom_bar1{
+    width: 40%;
 }
 .tab4  .total_bottom_bar2 {
     width: 30%;
@@ -531,13 +534,18 @@
 }
 
 .total_bottom_tab {
+    position: absolute;
     width: 11%;
     height: 62%;
     float: left;
     background-color: transparent;
     margin-right: .2%;
-    margin-left: 4%;
-
+    margin-left: 30%;
+    margin-top: -.1%;
+    z-index: 100;
+}
+.total_bottom_tab select{
+    background-color: transparent;
 }
 .shuju_apply_top .total_bottom_tab{
 	height: 65%;
@@ -602,7 +610,7 @@
 }
 
 .total_bottom_right .total_bottom_bar1 {
-    width: 68%;
+    width: 66%;
 }
 
 #myChart8 {
