@@ -88,6 +88,9 @@
 	line-height: 0;
 	text-align: justify;
 }
+[class$=-header] [class^=item] h5{
+	width: 8em;
+}
 [class$=-header] [class^=item] h5 span,
 [class$=-body] [class^=item] h5 span{
 	display: inline-block;

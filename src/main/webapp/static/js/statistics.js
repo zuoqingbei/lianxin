@@ -103,7 +103,7 @@ function worldTyleEchart(data){
 	            position: 'center',
 //	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
 	            formatter: function (params) {
-	                return allNum -  params.value
+	                return allNum -  params.value;
 	            },
 	            textStyle: {
 	                fontSize:bodyScale*13,
@@ -322,10 +322,10 @@ function labPropertiesStatis(){
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "30%",
+	        	 x: "23%",
 	             x2: "23%",
-	             y:"18%",
-	             y2:"25%"
+	             y:"14%",
+	             y2:"15%"
 	        },
 	        xAxis: [
 	            {
@@ -360,12 +360,17 @@ function labPropertiesStatis(){
 	                data: statisticLengend(data),
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
-                    axisLabel: axisLabel,
+                    axisLabel: {
+                        margin: 3 * bodyScale,
+                        textStyle: {
+                            fontSize: 9 * bodyScale
+                        },
+						interval:0
+					},
                     axisTick: {  //刻度值
                         show: false,
                     },
 	                offset: 0,
-//	                minInterval: .5
 	            }
 	        ],
 	        series: [
