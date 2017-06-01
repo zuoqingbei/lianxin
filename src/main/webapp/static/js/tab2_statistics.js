@@ -16,9 +16,9 @@ function loadTab2Data() {
     //不同产线的能力状态分布
     abilityByProductLine();
     //人员状态 散点
-    personForTab2Ajax("myChart25", "1", 2);
+    personForTab2Ajax("myChart25", "1", 3);
     personForTab2Ajax("myChart26", "2", 2);
-    personForTab2Ajax("myChart27", "3", 2);
+    personForTab2Ajax("myChart27", "3", 3);
     //人员状态 柱状
     findPersonStatusTab2Ajax("myChart22", 1);
     findPersonStatusTab2Ajax("myChart23", 2);

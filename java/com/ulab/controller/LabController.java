@@ -63,8 +63,8 @@ public class LabController extends BaseController {
     	String sqlWhere=SqlUtil.commonWhereSql(this,null);
     	List<Record> labInfo=LabMapModel.dao.labShowFlatMap2(sqlWhere);
     	for(Record r:labInfo){
-    		if(r.getStr("title").length()>4){
-    			r.set("title", r.getStr("title").substring(0,4)+"...");
+    		if(r.getStr("title").length()>6){
+    			r.set("title", r.getStr("title").substring(0,6)+"...");
     		}
     	}
     	setAttr("labInfo", labInfo);
@@ -804,12 +804,36 @@ public class LabController extends BaseController {
     	if(sensorList==null){
     		sensorList=new ArrayList<Record>();
     	}
-    	if(sensorList.size()<8){
+    /*	if(sensorList.size()<8){
     		for(int x=sensorList.size();x<8;x++){
     			sensorList.add(new Record());
     		}
+    	}*/
+		renderJson(sortSensor(sensorList));
+    }
+    /**
+     * 
+     * @time   2017年6月1日 下午2:16:14
+     * @author zuoqb
+     * @todo  对y轴进行人为排序
+     * @param  @param sensorList
+     * @param  @return
+     * @return_type   List<Record>
+     */
+    public List<Record> sortSensor(List<Record> sensorList){
+    	String[] units={"℃","Hz","%","","V","A","W","kW·h"};
+    	List<Record> list=new ArrayList<Record>();
+    	for(String unit:units){
+    		Record mSen=new Record();
+    		for(Record r:sensorList){
+    			if(r.getStr("unit").equals(unit)){
+    				mSen=r;
+    				break;
+    			}
+    		}
+    		list.add(mSen);
     	}
-		renderJson(sensorList);
+    	return list;
     }
     /**
      * 
