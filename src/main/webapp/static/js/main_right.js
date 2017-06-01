@@ -218,7 +218,9 @@
  myChart1.setOption(option);*/
 
 //多个圆环图  标准状态
+/*
 var myChart2 = echarts.init(document.getElementById("myChart2"));
+*/
 var labelTop = {
     normal: {
         color: '#66ccff',
@@ -265,6 +267,7 @@ var labelBottom = {
     },
 };
 var radius = ['30%', '45%'];
+
 /*option = {
  toolbox: {
  show: false,
@@ -1196,6 +1199,8 @@ function histogram(data, step) {
     });
     return arr;
 }
+
+/*
 $('#myChart10').highcharts({
     chart: {
         type: 'column'
@@ -1270,6 +1275,7 @@ $('#myChart10').highcharts({
         }
     }]
 });
+*/
 
 //共产一致与不一致占比
 /*var myChart11 = echarts.init(document.getElementById("myChart11"));

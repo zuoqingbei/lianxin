@@ -29,12 +29,56 @@
 
     <div class="labMain_content_bottom">
         <!--中海博睿实验室-->
-        <div class="labMain_cb_left zhbr_lab labMain_cb_left_show">
+        <div class="labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show">
             <h3 class="lab_title">中海博睿实验室</h3>
-            <div class="labMain_cbl_one">
-                <img src="${contextPath!}/static/img/labMain/lab_com.jpg"/>
+            
+             <!--上侧-->
+      <div class="labMain_cbl_one">
+            <div class="labMain_cblt_tone">
+              <h3>基本介绍</h3>
+              <p>中海博睿为原海尔集团质量监测中心，建于1998年12月，累计投资近2.0亿，占地约10000㎡，专业实验室66间，涉及家电、机械和电子电器产品领域，覆盖运输、安全、性能、EMC、噪音、可靠性、用户体验、智能成套家电评测和零部件材料、环保模块等专业的500多项标准2000多个项目的检测能力； </p>
+              <p>中心拥有一支经验丰富的专业团队，在电子电器产品及关键模块领域具有主导和参与重要标准制定的能力，致力于打造集个性定制、智能检测、并联增值为一体的互联互通平台，满足用户个性化需求。 </p>
+              <p> 通过长期与VDE、UL、JET、ETL、TUV莱茵、Intertek、BV、CSA、KTL、CQC、SII等多家国际权威认证检测机构的紧密合作，实现数据互认，逐渐发展为一个开放的检测资源共享平台，无需跨出国门，即可提供国际化的专业服务，从而以最快的速度、最优质的服务、最经济的成本，满足海尔全球产品的当地化需求，支撑产品用户体验引领。 </p>
             </div>
-            <div class="labMain_cbl_two">
+            <!--labMain_cblt_tone-->
+            
+            <div class="labMain_cblt_ttwo"><img src="${contextPath!}/static/img/labMain/labmain_03.png"/> </div>
+            <!--labMain_cblt_ttwo--> 
+        
+      </div>
+      <!--上侧--> 
+      
+        <div class="labMain_cbl_two"> 
+      
+      			<div class="labMain_cblt_tone labMain_lunbo">
+                
+                     <ul class="clearfloat lbul">
+                    <li><img src="${contextPath!}/static/img/labMain/labmain_01.png"/><span>中海博睿实验室</span></li>
+                    <li><img src="${contextPath!}/static/img/labMain/labmain_02.png"/><span>中海博睿实验室</span></li>
+                   <li><img src="${contextPath!}/static/img/labMain/labmain_01.png"/><span>中海博睿实验室</span></li>
+                     <li><img src="${contextPath!}/static/img/labMain/labmain_02.png"/><span>中海博睿实验室</span></li>
+                      <li><img src="${contextPath!}/static/img/labMain/labmain_01.png"/><span>中海博睿实验室</span></li>
+                     <li><img src="${contextPath!}/static/img/labMain/labmain_02.png"/><span>中海博睿实验室</span></li>
+                      <li><img src="${contextPath!}/static/img/labMain/labmain_01.png"/><span>中海博睿实验室</span></li>
+                     <li><img src="${contextPath!}/static/img/labMain/labmain_02.png"/><span>中海博睿实验室</span></li>
+                    
+                    </ul>
+              </div>
+            <!--labMain_lunbo-->
+            
+            <div class="labMain_cblt_ttwo"> <img src="${contextPath!}/static/img/labMain/labmain_04.gif"/> </div>
+            <!--labMain_cblt_ttwo--> 
+
+      
+      
+       </div>
+      <!--labMain_cbl_two--> 
+      
+            
+            <!-- <div class="labMain_cbl_one">
+                <img src="${contextPath!}/static/img/labMain/lab_com.jpg"/>
+            </div> -->
+           <!--  <div class="labMain_cbl_two">
                 <div class="labMain_cblt_tone">
                     <h3>基本介绍</h3>
                     <p>实验室建成时间为20xx年，占地面积为12000平方米，实验室共25个，高、精、尖专业测试设备800余套</p>
@@ -51,7 +95,7 @@
                         可靠性试验室通过输出顾客化的加速试验方案并验证，从而优化设计提高产品可靠性。
                     </p>
                 </div>
-            </div><!--labMain_cbl_two-->
+            </div> --><!--labMain_cbl_two-->
         </div>
 
         <!--运营状态-->
@@ -681,6 +725,61 @@
             $("body").css("font-size", bodyFontSize);
 //            console.log("屏幕高度：" + h + ", body字号：" + bodyFontSize)
         }
+        //lunbo
+      //轮播
+    	//得到ul中的li个数
+    	var li_count=$(".labMain_lunbo ul li").length;
+    	var curPage = 0;
+    	var totalPage = li_count / 2;
+    	//var goLeft = 255 * 2;
+    	
+    	//图片宽度+li间距*2 em变为px
+    	var goLeft = (24.6+0.7*2)*(bodyScale*10)*2;
+    	
+    	//设置ul宽度
+    	$(".lbul").css("width",totalPage * goLeft +"px");
+    	
+
+    	function next(){
+    		curPage ++;
+    		
+    		if(curPage >= totalPage){
+    			curPage = 0;
+    			
+    			
+    			$(".lbul").animate({left:0},100);
+    		}
+    		
+    		changeTo();
+    	}
+    	
+
+    	
+    	function changeTo(){
+    		$(".lbul").animate({left: "-" + goLeft*curPage + "px"},1000);
+    	}
+    	
+    	function lb(){
+    		
+    		lbInterval = setInterval(next,3000)
+
+    	}
+    	
+    	lb();
+    	//鼠标悬浮 定时器开关
+    	$(".labMain_lunbo ul li ").mouseover(function(e) {
+    		clearInterval(lbInterval);
+            
+        }).mouseout(function(e) {
+            lb();
+        });
+        
+        
+        
+        
+        
+        
+        
         //结构不要改呦
         $(".sheshi_tab").eq(0).click(function () {
             $('.labMain_cb_left .shishi_right').css('display','block').siblings().eq(2).css('display','none');

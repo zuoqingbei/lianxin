@@ -6,6 +6,24 @@
 <meta name="renderer" content="webkit">
 <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <title> ${title!'U-lab全球互联数据中心'}</title>
+<script> var contextPath = '${contextPath!}';</script>
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script>
+    var bodyScale = 1;
+    var pageH;
+    var pageW;
+    pageH = $(window).height()-17;
+    pageW = pageH * 16 * 7 / (9 * 3);
+
+    function pageResize() {
+        $("#content").css("width", pageW);
+        var bodyFontSize = pageH / 595 * 100 + "%";
+        bodyScale = pageH / 595;
+        $("body").css("font-size", bodyFontSize);
+        console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+    }
+    pageResize();
+</script>
 </head>
 <body class="zh_CN">
 <!-- 引入公共头header -->
@@ -20,20 +38,5 @@ ${layoutContent}
 3/7的宽度是5760,
 在笔记本上比例不变适应高度后，宽度为3186px
 -->
-<script>
- var contextPath = '${contextPath!}';
-    var bodyScale = 1;
-    function pageResize() {
-        var h = $(window).height();
-        $("#content").css("width", h * 16 * 7 / (9 * 3));
-        var bodyFontSize = h / 595 * 100 + "%";
-        bodyScale = h / 595;
-        $("body").css("font-size", bodyFontSize);
-        console.log("→ → → → → → → → → → → → → → 屏幕高度：" + h + ", body字号：" + bodyFontSize)
-/*         $("#screen").css("width", h * 16 * 7 / (9 * 3))
-            .find(".hline1").css("top","33%");
- */    }
- pageResize();
-</script>
-</html> 
+</html>
   
