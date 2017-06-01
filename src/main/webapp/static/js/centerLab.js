@@ -495,7 +495,7 @@ function randomLegend(){
 	$.each(totalLegendName,function(index,item){
 		if(item.indexOf("℃")==-1){
 			showLegendData.push(dealBracketForObj(item));
-		}else if(num<8){
+		}else if(num<15){
 			showLegendData.push(dealBracketForObj(item));
 			num++;
 		}
@@ -613,13 +613,20 @@ function dealSeriesData2(obj){
 function joinSerise(data,name,index,colorIndex){
 	var dataArr=[];
 	xData=[];
+	//获取最后时间
+	var endStart=parseFloat(data[data.length-1].name)*60;
+	var startTime=parseInt(endStart)-60*2;
 	for(var x=0;x<data.length;x++){
 		var value=data[x].value;
-		if(value!="N"){
+		if(value!="N"&&startTime<=parseInt(parseFloat(data[x].name)*60)){
 			dataArr.push(value);
 			xData.push(parseInt(parseFloat(data[x].name)*60));
 		}
 	};
+	//模拟空白x轴
+	for(var x=1;x<90;x++){
+		xData.push(parseInt((parseFloat(endStart)+x)*60));
+	}
 		//console.log(dataArr)
 	var item= {
 	            name:dealBracketForObj(name),
@@ -642,13 +649,19 @@ function joinSerise(data,name,index,colorIndex){
 function joinSeriseOther(data,name,colorIndex){
 	var dataArr=[];
 	xData=[];
+	var endStart=parseFloat(data[data.length-1].name)*60;
+	var startTime=parseInt(endStart)-60*2;
 	for(var x=0;x<data.length;x++){
 		var value=data[x].value;
-		if(value!="N"){
+		if(value!="N"&&startTime<=parseInt(parseFloat(data[x].name)*60)){
 			dataArr.push(value);
 			xData.push(parseInt(parseFloat(data[x].name)*60));
 		}
 	};
+	//模拟空白x轴
+	for(var x=1;x<90;x++){
+		xData.push(parseInt((parseFloat(endStart)+x)*60));
+	}
 	var item= {
 	            name:dealBracketForObj(name),
 	            symbol:'none',  //这句就是去掉点的  
@@ -964,8 +977,8 @@ function getCharts2() {
                     show: true,
                     // rotate: 30,
                     textStyle: {
-                        color: '#66ccff',
-                        fontSize: 12 * bodyScale
+                        color: '#fff',
+                        fontSize: 10 * bodyScale
                     }
                 },
                 axisTick: {

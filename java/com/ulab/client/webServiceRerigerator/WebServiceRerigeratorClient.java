@@ -59,7 +59,7 @@ public class WebServiceRerigeratorClient {
 			String proNo = inputContent.get(1);
 			String proName = inputContent.get(2);
 			//获取当前在测数据传感器信息
-			ArrayOfSensorInfo sensorInfos = port.getSensorInformation(labCode, testMetadata.getTestIdentification());
+			ArrayOfSensorInfo sensorInfos = port.getSensorInformation(labCode, testMetadata.getTestIdentification());			
 			//获取当前台位传感器类型
 			Map<String, String> sensorTypeMap = new HashMap<String, String>();
 			ArrayOfSensorTypeInfo sensorTypeInfos = port.getTestUnitSensorTypeInfo(labCode, testUnitId);
@@ -78,7 +78,7 @@ public class WebServiceRerigeratorClient {
 			}
 			Date now = new Date();
 			float f2 = (now.getTime() - start.getTime())/3600000f;
-			float f1 = f2 - 24 > 0 ? f2-24 : 0;
+			float f1 = f2 - 3> 0 ? f2-3 : 0;
 			ArrayOfString datas = port.getSensorTestDataByTime(labCode, testMetadata.getTestIdentification(), f1, f2);
 			StringBuilder realTimeData = new StringBuilder();
 			realTimeData.append("{\n");
@@ -87,6 +87,7 @@ public class WebServiceRerigeratorClient {
 			realTimeData.append("cpxh:'").append(proName).append("',\n");
 			realTimeData.append("list:[\n");
 			for(SensorInfo sensorInfo : sensorInfos.getSensorInfo()){
+				if(sensorInfo.getSelected() != 1) continue;
 				StringBuilder sensorData = new StringBuilder();
 				sensorData.append("{ name:'").append(sensorInfo.getSensorId()).append(":").append(sensorInfo.getSensorName()).append("(").append(sensorTypeMap.get(sensorInfo.getSensorTypeId().toString())).append(")',\n");
 				sensorData.append("data:[");
