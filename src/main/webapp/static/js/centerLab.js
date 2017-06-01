@@ -397,7 +397,12 @@ function loadLabUnitInfoCenterTabAjax(){
 			}
 		});
 		$("#lab_unit_selected_center").html(htmls);
-		
+        $(".sheshi_tab_list #lab_unit_selected_center>li").click(function () {
+            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
+            $(this).css('height','auto').siblings().css('height','1.5em');
+            $(this).find('.taiwei_hide').css('display','block');
+        });
+
 	});
 }
 $(document).ready(function () {
@@ -426,7 +431,7 @@ function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":labTypeCode,"url":url,"testUnitId":testUnitId},function(data){
 		if(data==""){
-			alert("暂未开测")
+			alert("暂未开测");
 			return;
 		}
 		myChart1.clear();
