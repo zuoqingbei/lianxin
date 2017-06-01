@@ -29,14 +29,16 @@
 	width:100%;
 	height:100%;
 	vertical-align:middle;
-	padding-top:3%
+	padding-top:3%;
+    text-align: center;
 }
 .sheshi_right_top ul li{
 	display:inline-block;
-	width:33%;
+	width:auto;
 	font-size: 1.2em;
 	text-align:center;
 	color:white;
+    margin-left: 1%;
 }
 
 .sheshi_right_top ul li span{
@@ -87,7 +89,7 @@
 
 }
 .sheshi_tab_list>ul>li a{
-    margin-left: 25%;
+    margin-left: 19%;
 }
 .sheshi_tab_list>ul>li>span{
     display: inline-block;
@@ -98,16 +100,17 @@
     background: url("../img/labMain/sb.png") no-repeat;
     background-size: 100% 100%;
     position: absolute;
+    top:32%;
+    left: 5%;
+}
+.sheshi_tab_list>ul>li:hover span{
     top: 0;
-    left: 10%;
-
-
 }
 .sheshi_tab_list>ul>li>span a{
     font-size: 1em;
 }
 #main1,#main2{
-    width: 90%;
+    width: 89%;
     height: 45%;
 }
 .shishi_right .sheshi_right_left{
@@ -116,15 +119,17 @@
     float: left;
 }
 .shishi_right .sheshi_right_right{
-    width:16%;
-    height: 100%;
+    width: 16%;
+    height: 92.5%;
     float: left;
     padding-top: 2%;
     position: absolute;
     top: 0;
     right: 0;
-    padding-right: 3%;
+    /* padding-right: 3%; */
     overflow-y: auto;
+    margin-right: 3%;
+    /*margin-top: 1%;*/
 }
 .shishi_right .sheshi_right_right .legend_ul{
     width: 100%;

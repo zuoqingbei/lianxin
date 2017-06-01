@@ -9,22 +9,21 @@
                 <div id="myChart14"></div>
             </div>
             <div class="total_bottom_tab">
-                <ul>
-                   ##for(p in providerDic){
-                		<li class="main main${p.id!}">${p.name!}</li>
-                		<li>
-	                		<ul>
-		                		##for(c in p.children){
-		                			##if(pLP.first&&cLP.first){
-			                			<li class="main${p.id}-sub active" data="${c.id}" onclick="loadTab4JianData('${c.id}','${c.name}')">${c.name}</li>
-			                		##}else{
-			                			<li class="main${p.id}-sub" data="${c.id}" onclick="loadTab4JianData('${c.id}','${c.name}')">${c.name}</li>
-			                		##}
-		                		##}
-	                		 </ul>
-                		 </li>
-                	##}
-                </ul>
+                <form action="">
+                    <select name="请选择" onchange="tab1JianSelected(this)">
+                        ##for(p in providerDic){
+                        <optgroup class="main main${p.id!}" label=${p.name!}>
+                            ##for(c in p.children){
+                            ##if(pLP.first&&cLP.first){
+                            <option class="main${p.id}-sub active" data="${c.id}">${c.name}</option>
+                            ##}else{
+                            <option class="main${p.id}-sub" data="${c.id}">${c.name}</option>
+                            ##}
+                            ##}
+                        </optgroup>
+                        ##}
+                    </select>
+                </form>
 
             </div>
              <div class="total_bottom_bar1">

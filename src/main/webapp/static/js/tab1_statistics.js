@@ -233,7 +233,7 @@ function equipmentTotalForLab1Ajax() {
                         }
                     },
                     splitLine: {           // 分隔线
-                        length: 11,         // 属性length控制线长
+                        length: 11* bodyScale,         // 属性length控制线长
                         lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
                             color: '#66ccff'
                         }
@@ -391,7 +391,7 @@ function equipmentTotalForLab1Ajax() {
                         },
                     },
                     detail: {
-                        offsetCenter: ['-15%', '50%'],
+                        offsetCenter: ['-15%', '60%'],
                         textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
                             fontWeight: 'bolder',
                             fontSize: '170%',
