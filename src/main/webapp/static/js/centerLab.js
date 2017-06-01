@@ -338,6 +338,7 @@ var currentData;//当前传感器y信息数据 用于生成y轴
 var totalLegendName=[];//图例全称 包含单位 ['1:频率(Hz)','2:M1(℃)']
 var interval_count1=0;
 var interval_count2=0;
+var mockXdata=[];//模拟的x轴数据
 var dataBase;
 /* var dataBase={
 		sybh:'实验编号',
@@ -624,9 +625,7 @@ function joinSerise(data,name,index,colorIndex){
 		}
 	};
 	//模拟空白x轴
-	for(var x=1;x<90;x++){
-		xData.push(parseInt((parseFloat(endStart)+x)*60));
-	}
+	mockXdataMethod(endStart);
 		//console.log(dataArr)
 	var item= {
 	            name:dealBracketForObj(name),
@@ -659,9 +658,7 @@ function joinSeriseOther(data,name,colorIndex){
 		}
 	};
 	//模拟空白x轴
-	for(var x=1;x<90;x++){
-		xData.push(parseInt((parseFloat(endStart)+x)*60));
-	}
+	mockXdataMethod(endStart);
 	var item= {
 	            name:dealBracketForObj(name),
 	            symbol:'none',  //这句就是去掉点的  
@@ -678,7 +675,15 @@ function joinSeriseOther(data,name,colorIndex){
 	//item.yAxisIndex=1;
 	return item;
 }
-
+//模拟空白x轴
+function mockXdataMethod(endStart){
+	mockXdata=[];
+	//模拟空白x轴
+	for(var x=1;x<90;x++){
+		var value=parseInt((parseFloat(endStart)+x));
+		mockXdata.push(value);
+	}
+}
 function getCharts1() {
     option = {
         tooltip: {
@@ -728,7 +733,7 @@ function getCharts1() {
                         color: '#66ccff'
                     }
                 },
-                data: xData
+                data: xData.concat(mockXdata)
             }
         ],
         yAxis: [
@@ -966,7 +971,7 @@ function getCharts2() {
         xAxis: [
             {
                 type: 'category',
-                data: xData,
+                data: xData.concat(mockXdata),
                 splitLine: {
                     show: false
                 },
@@ -1015,7 +1020,7 @@ function getCharts2() {
                         return params;
                     },
                     textStyle: {
-                        color: '#fff',
+                        color: '#66ccff',
                         fontSize: 10 * bodyScale
                     }
                 },
@@ -1059,7 +1064,7 @@ function getCharts2() {
                     show: false
                 },
                 splitLine: {  //刻度线
-                    show: true,
+                    show: false,
                     lineStyle: {
                         color: '#234f65'
                     }
@@ -1105,7 +1110,7 @@ function getCharts2() {
                     show: false
                 },
                 splitLine: {  //刻度线
-                    show: true,
+                    show: false,
                     lineStyle: {
                         color: '#234f65'
                     }
@@ -1142,7 +1147,7 @@ function getCharts2() {
                     show: false
                 },
                 splitLine: {  //刻度线
-                    show: true,
+                    show: false,
                     lineStyle: {
                         color: '#234f65'
                     }
@@ -1371,12 +1376,12 @@ function labAllForCenterLabAjax(){
 		//第二行
 		//设备总数
 		$("#lab_center_id_left_4").html(data.equipmentCount);
-		//平均停机时间
-		$("#lab_center_id_left_5").html("2小时");
+		//当前完好设备数
+		$("#lab_center_id_left_5").html("201");
 		//平均停机次数
-		$("#lab_center_id_left_6").html("3次");
+		$("#lab_center_id_left_6").html("14");
 		//当前完好率
-		setProgressValue("lab_center_id_left_7",null);
+		setProgressValue("lab_center_id_left_7","93.5");
 		//第三行
 		//已测订单数
 		$("#lab_center_id_left_8").html(data.finishOrderCount);
@@ -1436,23 +1441,27 @@ function joinBottomHtmls(index, item){
 	htmls+='<h4>'+item.labName+'</h4>';
 	htmls+='<div class="item1"><h5>已测订单数：<span></span></h5> <span class="data"><strong>'+item.finishOrderCount+'</strong></span></div>';
 	htmls+='<div class="item1"><h5>在测订单数：<span></span></h5><span class="data"><strong>'+item.testingOrderCount+'</strong></span></div>';
-	htmls+='<div class="item1"><h5>待测订单数：<span></span></h5><span class="data"><strong>437</strong></span>';
+	htmls+='<div class="item1"><h5>待测订单数：<span></span></h5><span class="data"><strong>0</strong></span>';
 	htmls+='</div></div>';
     return htmls;
 }
+var arr1=["1","1","1","3","4","1","1","2"];
+var arr2=["15","10","17","68","89","11","16","22"];
+var arr3=["100","100","98.6","98.9","100","100","100","100"];
 function joinCenterHtmls(index, item) {
+	console.log(item)
 	var bodyIndex = index % 5 + 1;
 	var htmls = "";
 	htmls += "<div onclick=labDetailInfo('"+item.labCode+"','"+item.url+"') class='l-mid-body-" + bodyIndex + "'>";
 	htmls+='<h4>'+item.labName+'</h4>';
 	htmls+='<div class="item4"><h5>设备数：<span></span></h5><span class="data">'+item.equipmentCount+'</span>';
-	htmls+=' </div><div class="item1"><h5>停机时间：<span></span></h5>';
-	htmls+='<span class="data">12小时</span></div>';
-	htmls+='<div class="item2"><h5>停机次数：<span></span></h5> <span class="data">4次</span></div>';
+	htmls+=' </div><div class="item1"><h5>完好设备数：<span></span></h5>';
+	htmls+='<span class="data">'+arr2[index]+'</span></div>';
+	htmls+='<div class="item2"><h5>设备故障台：<span></span></h5> <span class="data">'+arr1[index]+'次</span></div>';
 	htmls+='<div class="item3"> <h5>当前完好率：<span></span></h5><div class="progress">';
-	htmls+='<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"';
-	htmls+='  aria-valuemax="100" style="width: 98%;height: 100%"></div> </div>';
-	htmls+=' <span class="data">98%</span></div></div>';
+	htmls+='<div class="progress-bar" role="progressbar" aria-valuenow="'+arr3[index]+'" aria-valuemin="0"';
+	htmls+='  aria-valuemax="100" style="width: '+arr3[index]+'%;height: 100%"></div> </div>';
+	htmls+=' <span class="data">'+arr3[index]+'%</span></div></div>';
 	return htmls;
 }
 function joinTopHtmls(index,item){
