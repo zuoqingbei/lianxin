@@ -128,10 +128,10 @@ function productLineAndMonthForTab3Ajax(){
 					name: item[0].product_name,
 					type: 'line',
 					lineStyle: {
-						normal: {
-							width: 1* bodyScale
-						}
-					},
+                    normal: {
+                        width: 1* bodyScale
+                    }
+                },
 					symbolSize: 2* bodyScale,
 					data: tab3RateData(item),
 					
@@ -146,13 +146,13 @@ function productLineAndMonthForTab3Ajax(){
 		    legend: {
 		        show: true,
 		        data: mData,
-		        itemWidth: 2* bodyScale,  //图例标记的图形宽度
-		        itemHeight: 3* bodyScale //图例标记的图形高度
+		        itemWidth: 6* bodyScale,  //图例标记的图形宽度
+		        itemHeight: 6* bodyScale //图例标记的图形高度
 		    },
 		    grid: {
 		        x: "15%",
 		        x2: "15%",
-		        y: '25%',
+		        y: '23%',
 		        y2: "10%"
 		    },
 		    xAxis: [
@@ -164,7 +164,10 @@ function productLineAndMonthForTab3Ajax(){
 		    yAxis: [
 		        {
 		            name: '满意度/%',
-					scale:true
+					scale:true,
+                    min:88,
+                    max:100,
+					interval:4,
 		        }
 		    ],
 		    series: mSeries
@@ -512,8 +515,8 @@ function findOrderMonthRateForProductAjax(){
 		    legend: {
 		        show: true,
 		        data: tab3Lengend(data),
-		        itemWidth: 2* bodyScale,  //图例标记的图形宽度
-		        itemHeight: 3* bodyScale, //图例标记的图形高度
+		        itemWidth: 6* bodyScale,  //图例标记的图形宽度
+		        itemHeight:6* bodyScale, //图例标记的图形高度
 		    },
 		    grid: {
 		        x: "15%",
@@ -603,9 +606,9 @@ function findOrderYearRateForProductAjax(){
 		                    name: '2016年',
 		                    itemStyle: {
 		                        normal: {
-		                            color: '#66ccff',
+		                            color: '#66ffcc',
 		                            areaStyle: {
-		                                color: 'rgba(102,204,255,0.2)',
+		                                color: 'rgba(102,255,204,0.2)'
 		                            },
 		                        }
 		                    }
