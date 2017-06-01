@@ -307,12 +307,24 @@ function initfour() {
 }
 
 //曲线
-var colorData=['#99CCCC','#99CC00','#FFFF99','#FFCCCC','#FF99CC','#CC66FF','#9966FF',
-               '#996633','#FFFF66','#FF9999','#993333','#990099','#66FF66','#FFCC00',
-               '#FFFF33','#990000','#66CCFF','#3366CC','#339900','#00FF00','#FFFF00',
-               '#003300','#000066','#006666','#336699','#993333','#993399','#996600',
-               '#FFFFCC','#FFCCFF','#FFCC99','#FF99FF','#FF00FF','#CCCC00','#99FFFF',
-               '#9966CC','#999900','#99FF00','#CC0033','#CC6600'];//图例颜色 需手工扩充
+var colorData=['#eaff56','#bce672','#ff461f','#70f3ff','#e9e7ef','#fff143','#c9dd22','#ff2d51',
+               '#44cef6','#f0f0f4','#faff72','#bddd22','#f36838','#3eede7','#e9f1f6','#ffa631',
+               '#afdd22','#ed5736','#1685a9','#f0fcff','#ffa400','#a3d900','#ff4777','#177cb0',
+               '#e3f9fd','#fa8c35','#9ed900','#f00056','#065279','#d6ecf0','#ff8c31','#9ed048',
+               '#ffb3a7','#003472','#fffbf0','#ff8936','#96ce54','#f47983','#4b5cc4','#f2ecde',
+               '#ff7500','#00bc12','#db5a6b','#a1afc9','#fcefe8','#ffb61e','#0eb83a','#c93756',
+               '#2e4e7e','#fff2df','#ffc773','#0eb83a','#f9906f','#3b2e7e','#f3f9f1','#ffc64b',
+               '#0aa344','#f05654','#4a4266','#e0eee8','#f2be45','#16a951','#ff2121','#426666',
+               '#e0f0e9','#f0c239','#21a675','#f20c00','#425066','#c0ebd7','#e9bb1d','#057748',
+               '#8c4356','#574266','#bbcdc5','#d9b611','#0c8918','#c83c23','#8d4bbb','#c2ccd0',
+               '#eacd76','#00e500','#9d2933','#815463','#bacac6','#eedeb0','#40de5a','#ff4c00',
+               '#815476','#808080','#d3b17d','#00e079','#ff4e20','#4c221b','#75878a','#e29c45',
+               '#00e09e','#f35336','#003371','#88ada6','#a78e44','#3de1ad','#dc3023','#56004f',
+               '#6b6882','#c89b40','#2add9c','#ff3300','#801dae','#725e82','#ae7000','#2edfa3',
+               '#cb3a56','#4c8dae','#ca6924','#7fecad','#a98175','#b0a4e3','#b25d25','#a4e2c6',
+               '#b36d61','#cca4e3','#b35c44','#7bcfa6','#ef7a82','#edd1d8','#ede4cd','#f8b862',
+               '#839b5c','#165e83','#ede1a9','#f39800','#82ae46','#2a4073','#f8e58c','#ee7948',
+               '#93ca76','#bbc8e6'];//图例颜色 需手工扩充
 var myChart1;
 var myChart2;
 var xData;//x轴坐标数据--对应时间
@@ -375,7 +387,7 @@ function loadLabUnitInfoCenterTabAjax(){
 			if(item.testUnitList.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testUnitList,function(ind,it){
-					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>'+it.testUnitName+'</li>';
+					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'</li>';
 				});
 				htmls+='</ul>';
 			}
@@ -394,6 +406,7 @@ $(document).ready(function () {
 //获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
+		resetDataCenterLab();
 		currentData=data;
 		
 		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
@@ -411,10 +424,14 @@ function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 }
 //获取曲线具体数据
 function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
-	myChart1= echarts.init(document.getElementById('main1'));
-	myChart2 = echarts.init(document.getElementById('main2'));
 	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":labTypeCode,"url":url,"testUnitId":testUnitId},function(data){
-		resetDataCenterLab();
+		if(data==""){
+			alert("暂未开测")
+			return;
+		}
+		myChart1.clear();
+		myChart2.clear();
+		$("#legend_ul").html('');
 		//console.log(data)
 		data=eval("("+data+")");
 		dataBase=data;
@@ -434,6 +451,8 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 	});
 }
 function resetDataCenterLab(){
+	myChart1= echarts.init(document.getElementById('main1'));
+	myChart2 = echarts.init(document.getElementById('main2'));
 	myChart1.clear();
 	myChart2.clear();
 	$("#legend_ul").html('');
@@ -476,7 +495,7 @@ function randomLegend(){
 	$.each(totalLegendName,function(index,item){
 		if(item.indexOf("℃")==-1){
 			showLegendData.push(dealBracketForObj(item));
-		}else if(num<8){
+		}else if(num<15){
 			showLegendData.push(dealBracketForObj(item));
 			num++;
 		}
@@ -511,9 +530,9 @@ function createLegendHtmls() {
     for (var x = 0; x < legendData.length; x++) {
     	//如果是默认选择的 复选选中
 		if(isHasElementOne(showLegendData,legendData[x])!=-1){
-			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:1em;height:1em" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" checked><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#66ccff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '</li><br>'
+			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" checked><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#66ccff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '</li><br>'
 		}else{
-			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:1em;height:1em" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" ><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#66ccff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '</li><br>'
+			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" ><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#66ccff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '</li><br>'
 		}
         
     }
@@ -594,14 +613,20 @@ function dealSeriesData2(obj){
 function joinSerise(data,name,index,colorIndex){
 	var dataArr=[];
 	xData=[];
+	//获取最后时间
+	var endStart=parseFloat(data[data.length-1].name)*60;
+	var startTime=parseInt(endStart)-60*2;
 	for(var x=0;x<data.length;x++){
 		var value=data[x].value;
-		if(value=="N"){
-			value=0;
+		if(value!="N"&&startTime<=parseInt(parseFloat(data[x].name)*60)){
+			dataArr.push(value);
+			xData.push(parseInt(parseFloat(data[x].name)*60));
 		}
-		dataArr.push(value);
-		xData.push(parseInt(data[x].name));
 	};
+	//模拟空白x轴
+	for(var x=1;x<90;x++){
+		xData.push(parseInt((parseFloat(endStart)+x)*60));
+	}
 		//console.log(dataArr)
 	var item= {
 	            name:dealBracketForObj(name),
@@ -624,10 +649,19 @@ function joinSerise(data,name,index,colorIndex){
 function joinSeriseOther(data,name,colorIndex){
 	var dataArr=[];
 	xData=[];
+	var endStart=parseFloat(data[data.length-1].name)*60;
+	var startTime=parseInt(endStart)-60*2;
 	for(var x=0;x<data.length;x++){
-		dataArr.push(data[x].value);
-		xData.push(parseInt(data[x].name));
+		var value=data[x].value;
+		if(value!="N"&&startTime<=parseInt(parseFloat(data[x].name)*60)){
+			dataArr.push(value);
+			xData.push(parseInt(parseFloat(data[x].name)*60));
+		}
 	};
+	//模拟空白x轴
+	for(var x=1;x<90;x++){
+		xData.push(parseInt((parseFloat(endStart)+x)*60));
+	}
 	var item= {
 	            name:dealBracketForObj(name),
 	            symbol:'none',  //这句就是去掉点的  
@@ -665,7 +699,7 @@ function getCharts1() {
         },
         dataZoom: [{
 	    	start: 0,
-	    	end:20,
+	    	end:100,
 	    	show:false
         }, {
             type: 'inside'
@@ -701,6 +735,8 @@ function getCharts1() {
             {
                 type: 'value',
                 name: currentData[0].unit,
+                max:120,
+                min:-30,
 	            /*max:currentData[0].highvalue,
 	            min:currentData[0].lowvalue,*/
                 nameTextStyle: {
@@ -737,8 +773,10 @@ function getCharts1() {
             {
                 type: 'value',
                 name: currentData[1].unit,
-	            max:currentData[1].highvalue,
-	            min:currentData[1].lowvalue,
+                max:100,
+                min:0,
+	           /* max:currentData[1].highvalue,
+	            min:currentData[1].lowvalue,*/
                 nameTextStyle: {
                     color: '#66ccff'
                 },
@@ -920,7 +958,7 @@ function getCharts2() {
         },
         dataZoom: [{
 	    	start: 0,
-	    	end:25,
+	    	end:100,
 	    	show:false
         }, {
             type: 'inside'
@@ -939,8 +977,8 @@ function getCharts2() {
                     show: true,
                     // rotate: 30,
                     textStyle: {
-                        color: '#66ccff',
-                        fontSize: 12 * bodyScale
+                        color: '#fff',
+                        fontSize: 10 * bodyScale
                     }
                 },
                 axisTick: {
@@ -956,6 +994,8 @@ function getCharts2() {
             {
                 type: 'value',
                 name: currentData[4].unit,
+                max:300,
+                min:0,
 	           /* max:currentData[4].highvalue,
 	            min:currentData[4].lowvalue,*/
                 nameTextStyle: {
@@ -975,8 +1015,8 @@ function getCharts2() {
                         return params;
                     },
                     textStyle: {
-                        color: '#66ccff',
-                        fontSize: 12 * bodyScale
+                        color: '#fff',
+                        fontSize: 10 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -1355,6 +1395,15 @@ function joinLabDetailHtmls(){
 			bottom+=joinBottomHtmls(index,item);
 		}
 	});
+	if(parseInt(currentPageNum)*5>labAllInfoData.labSingleDataList.length){
+		//如果数量不足 拼接空div
+		for(var x=labAllInfoData.labSingleDataList.length;x<parseInt(currentPageNum)*5;x++){
+			var bodyIndex = x % 5 + 1;
+			top+="<div class='l-top-body-"+bodyIndex+"'></div>";
+			center+="<div class='l-mid-body-"+bodyIndex+"'></div>";
+			bottom+="<div class='l-bottom-body-"+bodyIndex+"'></div>";
+		}
+	}
 
 	var allCount=labAllInfoData.labSingleDataList.length;
 	if(parseInt(allCount)%5>0){

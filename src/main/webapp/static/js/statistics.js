@@ -46,6 +46,11 @@ function reloadLeftData2(){
 function professionalStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"professional_code","labType":labType,"sort":"asc"},function(data){
 		$("#professional_code_div").html("覆盖专业领域："+data.length);
+		var htmls="";
+		$.each(data,function(index,item){
+			htmls+='<li>'+item.count+'</li>';
+		});
+		$("#left_professional_code_num").html(htmls);
 	})
 }
 //实验室数量统计

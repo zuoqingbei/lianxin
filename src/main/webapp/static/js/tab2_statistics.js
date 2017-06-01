@@ -16,9 +16,9 @@ function loadTab2Data() {
     //不同产线的能力状态分布
     abilityByProductLine();
     //人员状态 散点
-    personForTab2Ajax("myChart25", "1", 2);
+    personForTab2Ajax("myChart25", "1", 3);
     personForTab2Ajax("myChart26", "2", 2);
-    personForTab2Ajax("myChart27", "3", 2);
+    personForTab2Ajax("myChart27", "3", 3);
     //人员状态 柱状
     findPersonStatusTab2Ajax("myChart22", 1);
     findPersonStatusTab2Ajax("myChart23", 2);
@@ -52,18 +52,18 @@ function equipmentStatisForPlForLab2Ajax(type) {
                 //判断上升或者下降
                 if (parseFloat(item.change_num) > 0) {
                     //上升
-                    htmls += ' <img src="' + rise_pic + '" alt=""></span>'
+                    htmls += ' <img src="' + rise_pic + '" alt=""></span>';
                 } else if (parseFloat(item.change_num) < 0) {
                     //下降
-                    htmls += ' <img src="' + reduce_pic + '" alt=""></span>'
+                    htmls += ' <img src="' + reduce_pic + '" alt=""></span>';
                 } else {
                     //没有变化
-                    htmls += ' <img src="' + no_change + '" alt=""></span>'
+                    htmls += ' <img src="' + no_change + '" alt=""></span>';
                 }
                 if (parseFloat(item.change_num) < 0) {
-                    htmls += ' <span>' + (0 - parseFloat(item.change_num)) + '%</span></td>';
+                    htmls += ' <span style="color:red;">' + (0 - parseFloat(item.change_num)) + '%</span></td>';
                 } else {
-                    htmls += ' <span>' + item.change_num + '%</span></td>';
+                    htmls += ' <span >' + item.change_num + '%</span></td>';
                 }
                 if (index == 0) {
                     htmls += ' <td>(同比)</td>';
