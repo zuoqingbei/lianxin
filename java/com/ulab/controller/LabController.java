@@ -1,15 +1,20 @@
 package com.ulab.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.client.IntegrationService.IntegrationServiceClient;
+import com.ulab.client.webServiceRerigerator.WebServiceRerigeratorClient;
 import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 import com.ulab.model.CommunistModel;
@@ -19,9 +24,11 @@ import com.ulab.model.JianCeModel;
 import com.ulab.model.JianceProModel;
 import com.ulab.model.LabAllData;
 import com.ulab.model.LabCarryModel;
+import com.ulab.model.LabData;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
+import com.ulab.model.LabTestUnit;
 import com.ulab.model.Line;
 import com.ulab.model.OrderModel;
 import com.ulab.model.PersonModel;
@@ -778,15 +785,15 @@ public class LabController extends BaseController {
      */
     public void loadLabUnitInfoCenterTabAjax(){
     	IntegrationServiceClient client = new IntegrationServiceClient();
-		LabAllData labAllData = client.searchLabAllData();
-		renderJson(labAllData);
+    	List<LabData> labDataList = client.searchLabData();
+		renderJson(labDataList);
     }
     
     /**
      * 
      * @time   2017年5月26日 下午2:13:12
      * @author zuoqb
-     * @todo   获取传感器信息
+     * @todo   获取传感器信息 用于生成y轴
      * @param  
      * @return_type   void
      */
@@ -794,10 +801,46 @@ public class LabController extends BaseController {
     	String labTypeCode=getPara("labTypeCode","");
     	String testUnitId=getPara("testUnitId","");
     	List<Record> sensorList=SensorTypeModel.dao.findSensorByLab(labTypeCode,testUnitId);
+    	if(sensorList==null){
+    		sensorList=new ArrayList<Record>();
+    	}
+    	if(sensorList.size()<8){
+    		for(int x=sensorList.size();x<8;x++){
+    			sensorList.add(new Record());
+    		}
+    	}
 		renderJson(sensorList);
     }
-    
-    
+    /**
+     * 
+     * @time   2017年5月31日 下午3:40:01
+     * @author zuoqb
+     * @todo   曲线数据
+     * @param  
+     * @return_type   void
+     */
+    public void searchRealTimeDataCenterTabAjax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String url=getPara("url","");
+    	String testUnitId=getPara("testUnitId","");
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+    	String fileName=sdf.format(new Date())+"-"+labTypeCode+"-"+testUnitId;
+    	String path=getWebRootPath()+"/src/main/webapp/static/data/"+fileName;
+    	String data="";
+    	if(JsonUtils.judeFileExists(path)){
+    		//直接读取json文件
+    		data=JsonUtils.readJson(path);
+    	}else{
+    		WebServiceRerigeratorClient client = new WebServiceRerigeratorClient();
+    		LabTestUnit labTestUnit = client.searchRealTimeData(labTypeCode, url, Integer.valueOf(testUnitId));
+    		System.out.println(labTestUnit.getRealTimeData());
+    		if(labTestUnit!=null&&StringUtils.isNotBlank(labTestUnit.getRealTimeData())){
+    			JsonUtils.writeJson(getWebRootPath()+"/src/main/webapp/static/data/", labTestUnit.getRealTimeData(), fileName);
+    			data=labTestUnit.getRealTimeData();
+    		}
+    	}
+    	renderText(data);
+    }
   
     /**
      * 

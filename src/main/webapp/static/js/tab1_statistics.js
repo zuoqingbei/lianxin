@@ -419,7 +419,6 @@ function equipmentTotalForLab1Ajax() {
 }
 //加载量产一致性保障 xhId:产品id  name：产品名称
 function loadTab1JianData(xhId, xName) {
-    alert(1)
     $.post(contextPath + '/lab/jianCeXhProForTab1Ajax', {"xhCode": xhId}, function (xhPro) {
         $("#tab1_jiance_xh_name").html("\"" + xName + "\"");
         $("#tab1_jiance_xh_result").html("结论："+xhPro.jielun);

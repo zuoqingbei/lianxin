@@ -369,28 +369,33 @@ var dataBase;
 function loadLabUnitInfoCenterTabAjax(){
 	$.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
 		var htmls="";
+		//console.log(data)
 		$.each(data,function(index,item){
-			htmls+=' <li><span></span><a href="#">'+item.name+'</a>';
-			if(item.children.length>0){
+			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labName+'</a>';
+			if(item.testUnitList.length>0){
 				htmls+='<ul class="taiwei_hide">';
-				$.each(item.children,function(ind,it){
-					htmls+='<li onclcik=findSensorByLabCenetrTabAjax(\"'+item.name+'\",\"'+it.name+'\")>'+it.name+'</li>';
+				$.each(item.testUnitList,function(ind,it){
+					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>'+it.testUnitName+'</li>';
 				});
 				htmls+='</ul>';
 			}
 			htmls+=' </li>';
+			if(index==1){
+				findSensorByLabCenetrTabAjax(item.labCode,item.url,item.testUnitList[index].testUnitId);
+			}
 		});
 		$("#lab_unit_selected_center").html(htmls);
+		
 	});
 }
 $(document).ready(function () {
 	loadLabUnitInfoCenterTabAjax();
-	findSensorByLabCenetrTabAjax("refrigerator2016001","2");
 });
 //获取传感器信息 用于生成y轴
-function findSensorByLabCenetrTabAjax(labTypeCode,testUnitId){
+function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
 		currentData=data;
+		
 		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
 		$.each(data,function(index,item){
 			if(index<4){
@@ -400,11 +405,52 @@ function findSensorByLabCenetrTabAjax(labTypeCode,testUnitId){
 			}
 		});
 		//获取曲线具体数据
-		findSensorDataCenetrTabAjax(labTypeCode,testUnitId);
+		//findSensorDataCenetrTabAjax2(labTypeCode,testUnitId);
+		findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId);
 	});
 }
 //获取曲线具体数据
-function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
+function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
+	myChart1= echarts.init(document.getElementById('main1'));
+	myChart2 = echarts.init(document.getElementById('main2'));
+	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":labTypeCode,"url":url,"testUnitId":testUnitId},function(data){
+		resetDataCenterLab();
+		//console.log(data)
+		data=eval("("+data+")");
+		dataBase=data;
+		//根据传感器具体数据 生成图例 
+	 	$.each(data.list,function(index,item){
+			totalLegendName.push(item.name);
+		});
+		legendData=dealBracket(totalLegendName);
+		randomLegend();
+		$("#center_sybh_id").html(data.sybh);
+	 	$("#center_ypbm_id").html(data.ybbh);
+	 	$("#center_cpxh_id").html(data.cpxh);
+		//showLegendData=legendData;//默认全选
+		//console.log(showLegendData)
+		createLegendHtmls();
+		createEcharts(true);
+	});
+}
+function resetDataCenterLab(){
+	myChart1.clear();
+	myChart2.clear();
+	$("#legend_ul").html('');
+	legendData=[];
+	showLegendData=[];//需要展示图例 自定义
+	seriesTopData=[];
+	seriesBottomData=[];
+	topParam=[];//上方y参数单位
+	bottomParam=[];//下方y轴单位
+	totalLegendName=[];//图例全称 包含单位 ['1:频率(Hz)','2:M1(℃)']
+	interval_count1=0;
+	interval_count2=0;
+}
+//获取曲线具体数据
+/*function findSensorDataCenetrTabAjax2(labTypeCode,testUnitId){
+	myChart1= echarts.init(document.getElementById('main1'));
+	myChart2 = echarts.init(document.getElementById('main2'));
 	$.post(contextPath+"/lab/getJsonFile",{"fileName":"unit.json","testUnitId":testUnitId},function(data){
 		//console.log(eval("("+data+")"))
 		data=eval("("+data+")");
@@ -423,7 +469,7 @@ function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
 		createLegendHtmls();
 		createEcharts(true);
 	});
-}
+}*/
 //温度取8个 其他全部展示
 function randomLegend(){
 	var num=0;
@@ -440,8 +486,6 @@ function randomLegend(){
 function createEcharts(isFirst,obj){
 	if(isFirst){
 		dealSeriesData();
-		myChart1= echarts.init(document.getElementById('main1'));
-		myChart2 = echarts.init(document.getElementById('main2'));
 		getCharts1();	
 		getCharts2();	
 	}else{
@@ -556,12 +600,14 @@ function joinSerise(data,name,index,colorIndex){
 			value=0;
 		}
 		dataArr.push(value);
-		xData.push(data[x].name);
+		xData.push(parseInt(data[x].name));
 	};
 		//console.log(dataArr)
 	var item= {
 	            name:dealBracketForObj(name),
- 	            type:'line',
+	            symbol:'none',  //这句就是去掉点的  
+	            type:'line',  
+	            smooth:true,  //这句就是让曲线变平滑的  
  	            data:dataArr,
  	            itemStyle:{
  	        	  normal:{
@@ -580,11 +626,13 @@ function joinSeriseOther(data,name,colorIndex){
 	xData=[];
 	for(var x=0;x<data.length;x++){
 		dataArr.push(data[x].value);
-		xData.push(data[x].name);
+		xData.push(parseInt(data[x].name));
 	};
 	var item= {
 	            name:dealBracketForObj(name),
- 	            type:'line',
+	            symbol:'none',  //这句就是去掉点的  
+	            type:'line',  
+	            smooth:true,  //这句就是让曲线变平滑的  
  	            data:dataArr,
  	            itemStyle:{
  	        	  normal:{
@@ -617,7 +665,7 @@ function getCharts1() {
         },
         dataZoom: [{
 	    	start: 0,
-	    	end:100,
+	    	end:20,
 	    	show:false
         }, {
             type: 'inside'
@@ -872,7 +920,7 @@ function getCharts2() {
         },
         dataZoom: [{
 	    	start: 0,
-	    	end:100,
+	    	end:25,
 	    	show:false
         }, {
             type: 'inside'
@@ -1275,7 +1323,6 @@ var totalPage=0;
 //获取实验室基本信息
 function labAllForCenterLabAjax(){
 	$.post(contextPath+"/lab/labAllForCenterLabAjax",{},function(data){
-		console.log(data)
 		labAllInfoData=data;
 		$("#lab_center_id_left_0").html(data.labCount);
 		setProgressValue("lab_center_id_left_1",data.lowMonthRate);
@@ -1303,7 +1350,6 @@ function joinLabDetailHtmls(){
 	var top="",center="",bottom="";
 	$.each(labAllInfoData.labSingleDataList,function(index,item){
 		if(index>=(parseInt(currentPageNum)-1)*5&&index<parseInt(currentPageNum)*5){
-			console.log(index>=(currentPageNum-1));
 			top+=joinTopHtmls(index,item);
 			center+=joinCenterHtmls(index,item);
 			bottom+=joinBottomHtmls(index,item);

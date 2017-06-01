@@ -81,7 +81,7 @@ public class WebServiceRerigeratorClient {
 			float f1 = f2 - 24 > 0 ? f2-24 : 0;
 			ArrayOfString datas = port.getSensorTestDataByTime(labCode, testMetadata.getTestIdentification(), f1, f2);
 			StringBuilder realTimeData = new StringBuilder();
-			realTimeData.append("var dataBase={\n");
+			realTimeData.append("{\n");
 			realTimeData.append("sybh:'").append(testNo).append("',\n");
 			realTimeData.append("ybbh:'").append(proNo).append("',\n");
 			realTimeData.append("cpxh:'").append(proName).append("',\n");
