@@ -410,7 +410,7 @@ function equipmentTotalForLab1Ajax() {
 function loadTab1JianData(xhId, xName) {
     $.post(contextPath + '/lab/jianCeXhProForTab1Ajax', {"xhCode": xhId}, function (xhPro) {
         $("#tab1_jiance_xh_name").html("\"" + xName + "\"");
-        $("#tab1_jiance_xh_result").html("结论："+xhPro.jielun);
+        $("#tab1_jiance_xh_result").html("结论："+"过程稳定");
         $("#tab1_jiance_xh_name2").html("\"" + xName + "\"");
         $("#tab1_jiance_xh_result2").html("cpk:"+xhPro.cpk+"</br>"+"结论："+xhPro.jielun);
         //模块商质量水平分布

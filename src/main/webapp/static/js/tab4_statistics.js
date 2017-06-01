@@ -15,9 +15,9 @@ function loadTab4Data(){
 function loadTab4JianData(xhId,xName){
 	$.post(contextPath+'/lab/jianCeXhProForTab1Ajax',{"xhCode":xhId},function(xhPro){
 		$("#tab4_jiance_xh_name").html("\""+xName+"\"");
-		$("#tab4_jiance_xh_result").html("结论："+xhPro.jielun);
+		$("#tab4_jiance_xh_result").html("结论："+"过程稳定");
 		$("#tab4_jiance_xh_name2").html("\""+xName+"\"");
-		$("#tab4_jiance_xh_result2").html("结论："+xhPro.jielun);
+		$("#tab4_jiance_xh_result2").html("cpk:"+xhPro.cpk+"</br>"+"结论："+xhPro.jielun);
 		//模块商质量水平分布
 		mkSqualityLevelForTab4(xhPro);
 		//SPC分析

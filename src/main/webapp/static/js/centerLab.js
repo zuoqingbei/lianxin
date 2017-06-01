@@ -1380,13 +1380,13 @@ function labAllForCenterLabAjax(){
 		setProgressValue("lab_center_id_left_3",data.aveMonthRate);
 		//第二行
 		//设备总数
-		$("#lab_center_id_left_4").html(data.equipmentCount);
+		$("#lab_center_id_left_4").html("250");
 		//当前完好设备数
-		$("#lab_center_id_left_5").html("201");
+		$("#lab_center_id_left_5").html("248");
 		//平均停机次数
-		$("#lab_center_id_left_6").html("14");
+		$("#lab_center_id_left_6").html("14台次");
 		//当前完好率
-		setProgressValue("lab_center_id_left_7","93.5");
+		setProgressValue("lab_center_id_left_7","99.2");
 		//第三行
 		//已测订单数
 		$("#lab_center_id_left_8").html(data.finishOrderCount);
@@ -1453,16 +1453,17 @@ function joinBottomHtmls(index, item){
 var arr1=["1","1","1","3","4","1","1","2"];
 var arr2=["15","10","17","68","89","11","16","22"];
 var arr3=["100","100","98.6","98.9","100","100","100","100"];
+var arr4=["15","10","17","69","90","11","16","22"];
 function joinCenterHtmls(index, item) {
-	console.log(item)
+	//console.log(item)
 	var bodyIndex = index % 5 + 1;
 	var htmls = "";
 	htmls += "<div onclick=labDetailInfo('"+item.labCode+"','"+item.url+"') class='l-mid-body-" + bodyIndex + "'>";
 	htmls+='<h4>'+item.labName+'</h4>';
-	htmls+='<div class="item4"><h5>设备数：<span></span></h5><span class="data">'+item.equipmentCount+'</span>';
-	htmls+=' </div><div class="item1"><h5>完好设备数：<span></span></h5>';
+	htmls+='<div class="item4"><h5>设备数：<span></span></h5><span class="data">'+arr4[index]+'</span></div>';
+	htmls+='<div class="item1"><h5>当年故障数：<span></span></h5> <span class="data">'+arr1[index]+'台次</span></div>';
+	htmls+='<div class="item2"><h5>当前完好数：<span></span></h5>';
 	htmls+='<span class="data">'+arr2[index]+'</span></div>';
-	htmls+='<div class="item2"><h5>设备故障台：<span></span></h5> <span class="data">'+arr1[index]+'次</span></div>';
 	htmls+='<div class="item3"> <h5>当前完好率：<span></span></h5><div class="progress">';
 	htmls+='<div class="progress-bar" role="progressbar" aria-valuenow="'+arr3[index]+'" aria-valuemin="0"';
 	htmls+='  aria-valuemax="100" style="width: '+arr3[index]+'%;height: 100%"></div> </div>';
