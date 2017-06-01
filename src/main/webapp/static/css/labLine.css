@@ -48,7 +48,7 @@
 }
 .sheshi_tab{
     margin: 0 auto;
-    width: 50%;
+    width: 58%;
     height: 6%;
     margin-top: 5%;
     background: url("../img/labMain/border-blue.png") no-repeat;
@@ -64,7 +64,7 @@
 }
 .sheshi_tab_list{
     height: 50%;
-    width: 50%;
+    width: 58%;
     overflow: hidden;
     margin: 0 auto;
     margin-top: 3%;
@@ -91,14 +91,14 @@
 }
 .sheshi_tab_list>ul>li>span{
     display: inline-block;
-    width: 1.3em;
-    height: 1.3em;
+    width: 1.4em;
+    height: 1.4em;
     vertical-align: middle;
     margin-right: 5%;
     background: url("../img/labMain/sb.png") no-repeat;
     background-size: 100% 100%;
     position: absolute;
-    top: 30%;
+    top: 0;
     left: 10%;
 
 
@@ -116,14 +116,15 @@
     float: left;
 }
 .shishi_right .sheshi_right_right{
-    width:15%;
+    width:16%;
     height: 100%;
     float: left;
     padding-top: 2%;
     position: absolute;
     top: 0;
     right: 0;
-    padding-right: 5%;
+    padding-right: 3%;
+    overflow-y: auto;
 }
 .shishi_right .sheshi_right_right .legend_ul{
     width: 100%;

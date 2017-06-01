@@ -3,17 +3,6 @@
  * 右侧数据统计
  */
 
-var axisLabel = {
-    margin: 3 * bodyScale,
-    textStyle: {
-        fontSize: 9 * bodyScale
-    }
-};
-var nameGap = 10 * bodyScale;
-var nameTextStyle = {
-    color: '#66ccff',
-    fontSize: 8 * bodyScale
-};
 
 /*
  *复制这几行到xAxis和yAxis坐标中

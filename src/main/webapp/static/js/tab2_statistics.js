@@ -136,7 +136,7 @@ function findPersonStatusTab2Ajax(myChartIds, type) {
                 {
                     type: "bar",
                     data: tab2PersonDataData(data),
-                    barWidth: 10,
+                    barWidth: 10* bodyScale,
                     itemStyle: {
                         normal: {
                             //好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
@@ -380,7 +380,7 @@ function standardDispersedStatus(mychartId, filedVaule) {
                 top: 'center',
                 textStyle: {
                     color: '#fff',
-                    fontSize: 12 * bodyScale,
+                    fontSize: 10 * bodyScale,
                 }
             },
 
@@ -475,7 +475,8 @@ function abilityByProductLine() {
                         axisLabel: {
                             textStyle: {
                                 fontSize: 10 * bodyScale
-                            }
+                            },
+                            interval: 0,
                         },
                     }
                 ],
@@ -497,14 +498,15 @@ function abilityByProductLine() {
                     {
                         type: "bar",
                         data: seriesData,
-                        barWidth: 8*bodyScale,
+                        barWidth: 12*bodyScale,
+                       
                         label: {
                             normal: {
                                 show: true,
                                 position: 'right',
                                 // formatter: "{a}%",
                                 textStyle: {
-                                    fontSize: 10,
+                                    fontSize: 10*bodyScale,
                                     color: "#ff9933"
                                 },
                                 formatter: '{c}'

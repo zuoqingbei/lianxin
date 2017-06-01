@@ -137,7 +137,7 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-	                fontSize: bodyScale*10,
+	                fontSize: bodyScale*9,
 	                // fontSize: 6,
 	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
                     baseline: 'top'
@@ -330,18 +330,10 @@ function labPropertiesStatis(){
 	        xAxis: [
 	            {
 	                name: " 实验室\n 数量",
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
 	                type: 'value',
-	                axisLabel: {
-                        rotate:-90,
-	                    textStyle: {
-	                        color: "#66ccff",
-	                        // color: "#f00",
-	                        fontSize: bodyScale*10,
-
-
-	                    },
-                        interval:0
-	                },
                     axisTick: {  //刻度值
                         show: false,
                     },
@@ -356,7 +348,6 @@ function labPropertiesStatis(){
 	                        color: "#234f65"
 	                    }
 	                },
-	                nameGap: bodyScale*4,
 	                offset: 5//调整个坐标轴标签的远近
 
 	            }
@@ -367,18 +358,12 @@ function labPropertiesStatis(){
 	                name: "",
 	                type: 'category',
 	                data: statisticLengend(data),
-	                axisLabel: {
-	                	// margin:bodyScale*2,
-	                    textStyle: {
-	                        color: "#66ccff",
-	                        fontSize: bodyScale*11,
-	                    },
-                        interval:0
-	                },
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
                     axisTick: {  //刻度值
                         show: false,
                     },
-	                nameGap: bodyScale*3,
 	                offset: 0,
 //	                minInterval: .5
 	            }
@@ -423,13 +408,13 @@ function labLifeCycleStatis(){
 	        grid: {
 	            left:"10%",
 	            right: '10%',
-	            top:"29%,",
+	            top:"33%,",
 				bottom:"2%"
 	        },
 	        legend: {
 	        	   data:['实验室数量','检测订单量'],
 	               textStyle:{
-	                   fontSize: bodyScale*4
+	                   fontSize: bodyScale*5
 	               },
 	               itemWidth: bodyScale*5,
 	               itemHeight: bodyScale*5
