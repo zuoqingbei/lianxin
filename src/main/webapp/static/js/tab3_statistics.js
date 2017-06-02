@@ -128,10 +128,10 @@ function productLineAndMonthForTab3Ajax(){
 					name: item[0].product_name,
 					type: 'line',
 					lineStyle: {
-						normal: {
-							width: 1* bodyScale
-						}
-					},
+                    normal: {
+                        width: 1* bodyScale
+                    }
+                },
 					symbolSize: 2* bodyScale,
 					data: tab3RateData(item),
 					
@@ -146,13 +146,13 @@ function productLineAndMonthForTab3Ajax(){
 		    legend: {
 		        show: true,
 		        data: mData,
-		        itemWidth: 2* bodyScale,  //图例标记的图形宽度
-		        itemHeight: 3* bodyScale //图例标记的图形高度
+		        itemWidth: 6* bodyScale,  //图例标记的图形宽度
+		        itemHeight: 6* bodyScale //图例标记的图形高度
 		    },
 		    grid: {
 		        x: "15%",
 		        x2: "15%",
-		        y: '25%',
+		        y: '23%',
 		        y2: "10%"
 		    },
 		    xAxis: [
@@ -164,7 +164,10 @@ function productLineAndMonthForTab3Ajax(){
 		    yAxis: [
 		        {
 		            name: '满意度/%',
-					scale:true
+					scale:true,
+                    min:60,
+                    max:100,
+					interval:4,
 		        }
 		    ],
 		    series: mSeries
@@ -249,8 +252,9 @@ function satisfactionStatisForYearTab3Ajax2016(){
 	$.post(contextPath+'/lab/satisfactionStatisForYearTab3Ajax',{"labTypeCode":labTypeCode,"year":"2016年"},function(data){
 		var mData=[];
 		$.each(data,function(index,item){
-			mData.push(item.product_line_name);
+			mData.push(item.product_name);
 		});
+		mData.reverse();
 		var myChart47 = echarts.init(document.getElementById("myChart47"));
 		right_echarts.push(myChart47);
 		myChart47.setOption(getBarEcharts());
@@ -272,7 +276,14 @@ function satisfactionStatisForYearTab3Ajax2016(){
 		                show: false,
 
 		            },
-
+		            axisLabel: {
+	                    show: true,
+	                    // rotate: 30,
+	                    textStyle: {
+	                        color: '#66ccff',
+	                        fontSize: 9 * bodyScale
+	                    }
+	                },
 		        }
 		    ],
 		    xAxis: [
@@ -315,8 +326,13 @@ function satisfactionStatisForYearTab3Ajax2016(){
 //整机 模块 订单类别占全部订单占比统计
 function findOrderTypePercentTab3Ajax(){
 	$.post(contextPath+'/lab/findOrderTypePercentTab3Ajax',{"labTypeCode":labTypeCode},function(data){
-		var zj='<span>'+(data.zj_rate==undefined?0:data.zj_rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">'+(data.zj_rise==undefined?0:data.zj_rise)+'%</span>';
+		console.log(data)
+		/*var zj='<span>'+(data.zj_rate==undefined?0:data.zj_rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">'+(data.zj_rise==undefined?0:data.zj_rise)+'%</span>';
 		var mk='<span>'+(data.mk_rate==undefined?0:data.mk_rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">'+(data.mk_rise==undefined?0:data.mk_rise)+'%</span>';
+		$("#tab3_zj_order_type").html(zj);
+		$("#tab3_mk_order_type").html(mk);*/
+		var zj='<span>'+(data.zj==undefined?0:data.zj)+'</span>';
+		var mk='<span>'+(data.mk==undefined?0:data.mk)+'</span>';
 		$("#tab3_zj_order_type").html(zj);
 		$("#tab3_mk_order_type").html(mk);
 	})
@@ -412,6 +428,7 @@ function orderTypeAjax(myChartIds,desName,divisor){
 				data.push(value);
 			});
 		});
+		yData.reverse();
 		//生成option
 		var myChart = echarts.init(document.getElementById(myChartIds));
 		right_echarts.push(myChart);
@@ -512,8 +529,8 @@ function findOrderMonthRateForProductAjax(){
 		    legend: {
 		        show: true,
 		        data: tab3Lengend(data),
-		        itemWidth: 2* bodyScale,  //图例标记的图形宽度
-		        itemHeight: 3* bodyScale, //图例标记的图形高度
+		        itemWidth: 6* bodyScale,  //图例标记的图形宽度
+		        itemHeight:6* bodyScale, //图例标记的图形高度
 		    },
 		    grid: {
 		        x: "15%",
@@ -603,9 +620,9 @@ function findOrderYearRateForProductAjax(){
 		                    name: '2016年',
 		                    itemStyle: {
 		                        normal: {
-		                            color: '#66ccff',
+		                            color: '#66ffcc',
 		                            areaStyle: {
-		                                color: 'rgba(102,204,255,0.2)',
+		                                color: 'rgba(102,255,204,0.2)'
 		                            },
 		                        }
 		                    }

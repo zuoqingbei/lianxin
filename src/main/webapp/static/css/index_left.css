@@ -274,7 +274,7 @@
 }
 #l .sphere-right-bottom .chartBorder>ul.header>li:nth-of-type(1),
 #l .sphere-right-bottom .chartBorder ul>li>ul>li:nth-of-type(1){
-    width:30%;
+    width:40%;
     float: left;
 }
 #l .sphere-right-bottom .chartBorder>ul.header>li:nth-of-type(2),
@@ -284,7 +284,7 @@
 }
 #l .sphere-right-bottom .chartBorder>ul.header>li:nth-of-type(3),
 #l .sphere-right-bottom .chartBorder ul>li>ul>li:nth-of-type(3){
-    width:40%;
+    width:30%;
     float: left;
 }
 
@@ -408,7 +408,7 @@
 }
 #l .flat-footer .legend ul li{
     display: inline-block;
-    margin: 0 1.5%;
+    margin: 0 1%;
 }
 #l .flat-footer .legend ul li a{
     /*font-size: 90%;*/
@@ -585,7 +585,27 @@
 }
 #l .flat-right-bottom .myChart{
     height: 65%;
-    padding: 25% 4% 0;
+    padding: 11% 4% 0;
+    text-align: center;
+}
+#l .flat-right-bottom .myChart .myChart_header{
+    margin-bottom: 10%;
+    text-align: center;
+}
+#l .flat-right-bottom .myChart .myChart_num{
+    width: 90%;
+    margin: 0;
+    position: absolute;
+    top: 57%;
+    left: 5%;
+}
+#l .flat-right-bottom .myChart .myChart_num li{
+    width: 20%;
+    float: left;
+    color: #f93;
+}
+#l .flat-right-bottom .myChart .myChart_num li:nth-of-type(2n){
+    margin-top: 12%;
 }
 #l .sphere-right-top ul,
 #l .flat .chartBorder ul{

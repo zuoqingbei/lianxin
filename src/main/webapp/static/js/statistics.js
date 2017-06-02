@@ -46,6 +46,11 @@ function reloadLeftData2(){
 function professionalStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"professional_code","labType":labType,"sort":"asc"},function(data){
 		$("#professional_code_div").html("覆盖专业领域："+data.length);
+		var htmls="";
+		$.each(data,function(index,item){
+			htmls+='<li>'+item.count+'</li>';
+		});
+		$("#left_professional_code_num").html(htmls);
 	})
 }
 //实验室数量统计
@@ -103,7 +108,7 @@ function worldTyleEchart(data){
 	            position: 'center',
 //	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
 	            formatter: function (params) {
-	                return allNum -  params.value
+	                return allNum -  params.value;
 	            },
 	            textStyle: {
 	                fontSize:bodyScale*13,
@@ -137,7 +142,7 @@ function worldTyleEchart(data){
 	            formatter : '{b}',
 	            textStyle: {
 //	                    color:"#f90",
-	                fontSize: bodyScale*10,
+	                fontSize: bodyScale*9,
 	                // fontSize: 6,
 	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
                     baseline: 'top'
@@ -322,26 +327,18 @@ function labPropertiesStatis(){
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "30%",
+	        	 x: "23%",
 	             x2: "23%",
-	             y:"18%",
-	             y2:"25%"
+	             y:"14%",
+	             y2:"15%"
 	        },
 	        xAxis: [
 	            {
 	                name: " 实验室\n 数量",
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
 	                type: 'value',
-	                axisLabel: {
-                        rotate:-90,
-	                    textStyle: {
-	                        color: "#66ccff",
-	                        // color: "#f00",
-	                        fontSize: bodyScale*10,
-
-
-	                    },
-                        interval:0
-	                },
                     axisTick: {  //刻度值
                         show: false,
                     },
@@ -356,7 +353,6 @@ function labPropertiesStatis(){
 	                        color: "#234f65"
 	                    }
 	                },
-	                nameGap: bodyScale*4,
 	                offset: 5//调整个坐标轴标签的远近
 
 	            }
@@ -367,20 +363,19 @@ function labPropertiesStatis(){
 	                name: "",
 	                type: 'category',
 	                data: statisticLengend(data),
-	                axisLabel: {
-	                	// margin:bodyScale*2,
-	                    textStyle: {
-	                        color: "#66ccff",
-	                        fontSize: bodyScale*11,
-	                    },
-                        interval:0
-	                },
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: {
+                        margin: 3 * bodyScale,
+                        textStyle: {
+                            fontSize: 9 * bodyScale
+                        },
+						interval:0
+					},
                     axisTick: {  //刻度值
                         show: false,
                     },
-	                nameGap: bodyScale*3,
 	                offset: 0,
-//	                minInterval: .5
 	            }
 	        ],
 	        series: [
@@ -423,13 +418,13 @@ function labLifeCycleStatis(){
 	        grid: {
 	            left:"10%",
 	            right: '10%',
-	            top:"29%,",
+	            top:"33%,",
 				bottom:"2%"
 	        },
 	        legend: {
 	        	   data:['实验室数量','检测订单量'],
 	               textStyle:{
-	                   fontSize: bodyScale*4
+	                   fontSize: bodyScale*5
 	               },
 	               itemWidth: bodyScale*5,
 	               itemHeight: bodyScale*5

@@ -3,17 +3,6 @@
  * 右侧数据统计
  */
 
-var axisLabel = {
-    margin: 3 * bodyScale,
-    textStyle: {
-        fontSize: 9 * bodyScale
-    }
-};
-var nameGap = 10 * bodyScale;
-var nameTextStyle = {
-    color: '#66ccff',
-    fontSize: 8 * bodyScale
-};
 
 /*
  *复制这几行到xAxis和yAxis坐标中
@@ -162,6 +151,7 @@ function satisfactionStatisForMonthForTab1Ajax() {
             yAxis: {
                 name: '满意度/%',
                 max: 100,
+                min:60,
                 scale: true,
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
@@ -244,7 +234,7 @@ function equipmentTotalForLab1Ajax() {
                         }
                     },
                     splitLine: {           // 分隔线
-                        length: 11,         // 属性length控制线长
+                        length: 11* bodyScale,         // 属性length控制线长
                         lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
                             color: '#66ccff'
                         }
@@ -402,7 +392,7 @@ function equipmentTotalForLab1Ajax() {
                         },
                     },
                     detail: {
-                        offsetCenter: ['-15%', '50%'],
+                        offsetCenter: ['-15%', '60%'],
                         textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
                             fontWeight: 'bolder',
                             fontSize: '170%',
@@ -421,9 +411,9 @@ function equipmentTotalForLab1Ajax() {
 function loadTab1JianData(xhId, xName) {
     $.post(contextPath + '/lab/jianCeXhProForTab1Ajax', {"xhCode": xhId}, function (xhPro) {
         $("#tab1_jiance_xh_name").html("\"" + xName + "\"");
-        $("#tab1_jiance_xh_result").html("结论："+xhPro.jielun);
+        $("#tab1_jiance_xh_result").html("结论："+"过程稳定");
         $("#tab1_jiance_xh_name2").html("\"" + xName + "\"");
-        $("#tab1_jiance_xh_result2").html("结论："+xhPro.jielun);
+        $("#tab1_jiance_xh_result2").html("cpk:"+xhPro.cpk+"</br>"+"结论："+xhPro.jielun);
         //模块商质量水平分布
         mkSqualityLevelForTab1(xhPro);
         //SPC分析
@@ -742,7 +732,7 @@ function cpkDataForTab1(xhPro) {
             width: 2 * bodyScale,               //标示线的宽度，2px
             label: {
                 text: 'USL',//标签的内容
-                align: 'center',                //标签的水平位置，水平居左,默认是水平居中center
+                verticalAlign: 'center',                //标签的水平位置，水平居左,默认是水平居中center
                 x: 5 * bodyScale,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
                 style: {
                     color: '#f93',
@@ -802,7 +792,7 @@ var mHeightChart = $('#myChart10').highcharts({
     chart: {
         type: 'column',
         backgroundColor: 'rgba(0,0,0,0)',
-        marginBottom: 5 * bodyScale,
+        spacingBottom: 7 * bodyScale,
         marginRight: 5 * bodyScale
     },
     credits: {
@@ -822,7 +812,15 @@ var mHeightChart = $('#myChart10').highcharts({
         min: 71,
         max: 77,
         plotLines: [],
-        tickColor: "rgba(0,0,0,0)"
+        tickColor: "rgba(0,0,0,0)",
+        labels:{
+        	 y: 10*bodyScale,
+	       	 style: {
+	             /* fontWeight: 'bold',*/
+	             fontSize: 9* bodyScale,
+	             color:"#439ef7"
+	         }
+        }
     },
     yAxis: [{
         title: {
@@ -1142,6 +1140,7 @@ function findOrderYearRateForTab1() {
                 nameTextStyle: nameTextStyle,
                 axisLabel: axisLabel,
                 max: 100,
+                min: 0,
                 scale: true
             },
             xAxis: [
@@ -1175,7 +1174,7 @@ function standardStatus() {
         var reviseNum = parseInt(data.revisenum);
         var standardNum = parseInt(data.standardnum);
         $("#reviseNum").html(reviseNum);
-        $("#tab1_qtqc_id").html(reviseNum);
+        $("#tab1_qtqc_id").html(1144);
         $("#standardNum").html(standardNum);
         /*var num0=(standardSeriesData(data.revisedata,"牵头起草数")/reviseNum).toFixed(2)*100;
          var num1=(standardSeriesData(data.revisedata,"参与起草数")/reviseNum).toFixed(2)*100;
@@ -1189,11 +1188,10 @@ function standardStatus() {
         var gjbz = standardSeriesData(data.standarddata, "国际标准");
         var hybz = standardSeriesData(data.standarddata, "行业标准");
         var qybz = standardSeriesData(data.standarddata, "企业标准");
-        $("#tab1_gjiabz_id").html(gjia);
-        $("#tab1_gjibz_id").html(gjbz);
-        $("#tab1_hybz_id").html(hybz);
-        $("#tab1_qybz_id").html(qybz);
-
+        $("#tab1_gjiabz_id").html(90);
+        $("#tab1_gjibz_id").html(172);
+        $("#tab1_hybz_id").html(114);
+        $("#tab1_qybz_id").html(768);
         var num2 = gjia;
         var num3 = gjbz;
         var num4 = hybz;
@@ -1295,8 +1293,8 @@ function standardStatus() {
                     x: '40%', // for funnel
                     itemStyle: labelFromatter,
                     data: [
-                        {name: 'other', value: num0, itemStyle: labelBottom},
-                        {name: '起草数', value: parseInt(reviseNum) - num0, itemStyle: labelTop}
+                        {name: 'other', value:parseInt(reviseNum) - qybz, itemStyle: labelBottom},
+                        {name: '起草数', value: qybz, itemStyle: labelTop}
                     ]
                 },
                 {
@@ -1306,8 +1304,8 @@ function standardStatus() {
                     x: '60%', // for funnel
                     itemStyle: labelFromatter,
                     data: [
-                        {name: 'other', value: num1, itemStyle: labelBottom},
-                        {name: '起草数', value: parseInt(reviseNum) - num1, itemStyle: labelTop}
+                        {name: 'other', value:qybz, itemStyle: labelBottom},
+                        {name: '起草数', value:  parseInt(reviseNum) - qybz, itemStyle: labelTop}
                     ]
                 },
                 {
@@ -1318,8 +1316,8 @@ function standardStatus() {
                     x: '0%',    // for funnel
                     itemStyle: labelFromatter,
                     data: [
-                        {name: 'other', value: num2, itemStyle: labelBottom},
-                        {name: '国家标准', value: parseInt(standardNum) - num2, itemStyle: labelTop}
+                        {name: 'other', value: num3, itemStyle: labelBottom},
+                        {name: '国际标准', value: parseInt(standardNum) - num3, itemStyle: labelTop}
                     ]
                 },
                 {
@@ -1330,8 +1328,8 @@ function standardStatus() {
                     x: '20%',    // for funnel
                     itemStyle: labelFromatter,
                     data: [
-                        {name: 'other', value: num3, itemStyle: labelBottom},
-                        {name: '国际标准', value: parseInt(standardNum) - num3, itemStyle: labelTop}
+                        {name: 'other', value: num2, itemStyle: labelBottom},
+                        {name: '国家标准', value: parseInt(standardNum) - num2, itemStyle: labelTop}
                     ]
                 },
                 {
@@ -1491,5 +1489,10 @@ function getMaxMinForScpTab1(data, xhPro, type) {
     result.push(parseFloat(max) + 0.1);
     result.push(parseFloat(min) - 0.1);
     return result;
+}
+function tab1JianSelected(obj) {
+    var id = $(obj).find("option:selected").attr("data");
+    var name = $(obj).find("option:selected").text();
+    loadTab1JianData(id,name);
 }
 

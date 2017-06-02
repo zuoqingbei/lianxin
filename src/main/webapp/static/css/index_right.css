@@ -439,7 +439,7 @@
 }
 
 .total_bottom_pie {
-    width: 28%;
+    width: 33%;
     height: 65%;
     float: left;
 }
@@ -459,10 +459,13 @@
     top: 8%;
 }
 .total_bottom_bar1, .total_bottom_bar2 {
-    width: 28%;
+    width: 26%;
     height: 65%;
     float: left;
     position: relative;
+}
+.total_bottom_bar1{
+    width: 40%;
 }
 .tab4  .total_bottom_bar2 {
     width: 30%;
@@ -531,17 +534,24 @@
 }
 
 .total_bottom_tab {
+    position: absolute;
     width: 11%;
     height: 62%;
     float: left;
     background-color: transparent;
     margin-right: .2%;
-    margin-left: 4%;
+    margin-left: 30%;
+    margin-top: -.1%;
+    z-index: 100;
+}
+.total_bottom_tab select{
+    background-color: transparent;
+    border: 1px solid #66CCFE;
+}
+.total_bottom_tab select .optgroup{
+    height: 50px;
+}
 
-}
-.shuju_apply_top .total_bottom_tab{
-	height: 65%;
-}
 .tab4 .total_bottom_tab {
     margin-left: .1%;
 }
@@ -602,7 +612,7 @@
 }
 
 .total_bottom_right .total_bottom_bar1 {
-    width: 68%;
+    width: 66%;
 }
 
 #myChart8 {
@@ -651,12 +661,14 @@
 
 .sheshi_title {
     position: absolute;
-    top: 0;
+    top: 0.3%;
     left: 3%;
     color: white;
     font-size: 1.2em;
 }
-
+.sheshi_bottom .sheshi_title{
+    font-size: 1em;
+}
 .sheshi_top_left {
     flex: 1;
     background: url("../img/sheshiState/border .png") no-repeat;
@@ -862,7 +874,7 @@
 }
 
 .biaozhun_left_left {
-    width: 75%;
+    width: 70%;
     height: 75%;
     margin: 4% auto;
     background: url("../img/sheshiState/bg.png") no-repeat;
@@ -1011,31 +1023,31 @@
 }
 
 .nengli_bottom ul .echarts_line1 {
-    left: 13.6%;
+    left: 15.6%;
 }
 
 .nengli_bottom ul .echarts_line2 {
-    left: 27.3%;
+    left: 29.3%;
 }
 
 .nengli_bottom ul .echarts_line3 {
-    left: 39.6%;
+    left: 41.6%;
 }
 
 .nengli_bottom ul .echarts_line4 {
-    left: 52.2%;
+    left: 54.2%;
 }
 
 .nengli_bottom ul .echarts_line5 {
-    left: 63.9%;
+    left: 65.9%;
 }
 
 .nengli_bottom ul .echarts_line6 {
-    left: 76.5%;
+    left: 78.5%;
 }
 
 .nengli_bottom ul .echarts_line7 {
-    left: 89%;
+    left: 91%;
 }
 
 .nengli_bottom ul li:first-of-type {
@@ -1049,7 +1061,7 @@
     bottom: -24%;
     left: -1.9em;
     color: #66ccff;
-    font-size: 0.8em;
+    font-size: 0.7em;
 }
 
 #myChart32, #myChart33, #myChart34, #myChart35, #myChart36, #myChart37, #myChart38 {
@@ -1405,8 +1417,16 @@
     text-align: center;
     width: 100%;
     height: 100%;
+    position: relative;
 }
-
+.shuju_apply_top .total_bottom_tab{
+    position: absolute;
+    left: 28%;
+    width: 11%;
+    height: 62%;
+    background-color: transparent;
+    z-index: 100;
+}
 .shuju_apply_center {
     flex: 1;
 }

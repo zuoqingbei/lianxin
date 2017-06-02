@@ -256,8 +256,8 @@ function mapSphere() {
                     },
                     itemStyle: {
                         normal: {
-                            width: 2*parent.bodyScale,
-                            borderWidth: 1*parent.bodyScale,
+                            width: 0.5*parent.bodyScale,
+                            borderWidth: 0.5*parent.bodyScale,
                             borderColor: '#00ffff',
                             areaStyle: {
                                 color: 'rgba(0, 0, 0, 0)'
@@ -300,7 +300,17 @@ function mapSphere() {
                         effect: {
                             show: true
                         },
-                        distance: 6,
+                        itemStyle: {
+                            normal: {
+                                // 线的颜色默认是取 legend 的颜色
+                                // color: null
+                                // 线宽，这里线宽是屏幕的像素大小
+                                width: 1000,
+                                // 线的透明度
+                                opacity: 1
+                            }
+                        },
+/*
                         itemStyle: {
                             normal: {
                                 // 线的颜色默认是取 legend 的颜色
@@ -319,6 +329,7 @@ function mapSphere() {
                                 }
                             }
                         },
+*/
                         distance: 0,
                         data: lineGeoCoord(mData[x])
                     }

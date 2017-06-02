@@ -61,7 +61,7 @@
 	position: relative;
 	top: 24%;
 	text-align: center;
-	line-height: 1.3em;
+	/*line-height: 1.3em;*/
 }
 [class$=-header]{
 	margin-right: 2%;
@@ -87,6 +87,9 @@
 	display: inline-block;
 	line-height: 0;
 	text-align: justify;
+}
+[class$=-header] [class^=item] h5{
+	width: 8em;
 }
 [class$=-header] [class^=item] h5 span,
 [class$=-body] [class^=item] h5 span{

@@ -29,12 +29,56 @@
 
     <div class="labMain_content_bottom">
         <!--中海博睿实验室-->
-        <div class="labMain_cb_left zhbr_lab labMain_cb_left_show">
+        <div class="labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show">
             <h3 class="lab_title">中海博睿实验室</h3>
-            <div class="labMain_cbl_one">
-                <img src="${contextPath!}/static/img/labMain/lab_com.jpg"/>
+            
+             <!--上侧-->
+      <div class="labMain_cbl_one">
+            <div class="labMain_cblt_tone">
+              <h3>基本介绍</h3>
+              <p>中海博睿为原海尔集团质量监测中心，建于1998年12月，累计投资近2.0亿，占地约10000㎡，专业实验室66间，涉及家电、机械和电子电器产品领域，覆盖运输、安全、性能、EMC、噪音、可靠性、用户体验、智能成套家电评测和零部件材料、环保模块等专业的500多项标准2000多个项目的检测能力； </p>
+              <p>中心拥有一支经验丰富的专业团队，在电子电器产品及关键模块领域具有主导和参与重要标准制定的能力，致力于打造集个性定制、智能检测、并联增值为一体的互联互通平台，满足用户个性化需求。 </p>
+              <p> 通过长期与VDE、UL、JET、ETL、TUV莱茵、Intertek、BV、CSA、KTL、CQC、SII等多家国际权威认证检测机构的紧密合作，实现数据互认，逐渐发展为一个开放的检测资源共享平台，无需跨出国门，即可提供国际化的专业服务，从而以最快的速度、最优质的服务、最经济的成本，满足海尔全球产品的当地化需求，支撑产品用户体验引领。 </p>
             </div>
-            <div class="labMain_cbl_two">
+            <!--labMain_cblt_tone-->
+            
+            <div class="labMain_cblt_ttwo"><img src="${contextPath!}/static/img/labMain/labmain_03.png"/> </div>
+            <!--labMain_cblt_ttwo--> 
+        
+      </div>
+      <!--上侧--> 
+      
+        <div class="labMain_cbl_two"> 
+      
+      			<div class="labMain_cblt_tone labMain_lunbo">
+                
+                     <ul class="clearfloat lbul">
+                    <li><img src="${contextPath!}/static/img/labMain/labmain_01.png"/><span>中海博睿实验室</span></li>
+                    <li><img src="${contextPath!}/static/img/labMain/labmain_02.png"/><span>中海博睿实验室</span></li>
+                   <li><img src="${contextPath!}/static/img/labMain/labmain_01.png"/><span>中海博睿实验室</span></li>
+                     <li><img src="${contextPath!}/static/img/labMain/labmain_02.png"/><span>中海博睿实验室</span></li>
+                      <li><img src="${contextPath!}/static/img/labMain/labmain_01.png"/><span>中海博睿实验室</span></li>
+                     <li><img src="${contextPath!}/static/img/labMain/labmain_02.png"/><span>中海博睿实验室</span></li>
+                      <li><img src="${contextPath!}/static/img/labMain/labmain_01.png"/><span>中海博睿实验室</span></li>
+                     <li><img src="${contextPath!}/static/img/labMain/labmain_02.png"/><span>中海博睿实验室</span></li>
+                    
+                    </ul>
+              </div>
+            <!--labMain_lunbo-->
+            
+            <div class="labMain_cblt_ttwo"> <img src="${contextPath!}/static/img/labMain/znjd.gif"/> </div>
+            <!--labMain_cblt_ttwo--> 
+
+      
+      
+       </div>
+      <!--labMain_cbl_two--> 
+      
+            
+            <!-- <div class="labMain_cbl_one">
+                <img src="${contextPath!}/static/img/labMain/lab_com.jpg"/>
+            </div> -->
+           <!--  <div class="labMain_cbl_two">
                 <div class="labMain_cblt_tone">
                     <h3>基本介绍</h3>
                     <p>实验室建成时间为20xx年，占地面积为12000平方米，实验室共25个，高、精、尖专业测试设备800余套</p>
@@ -51,15 +95,15 @@
                         可靠性试验室通过输出顾客化的加速试验方案并验证，从而优化设计提高产品可靠性。
                     </p>
                 </div>
-            </div><!--labMain_cbl_two-->
+            </div> --><!--labMain_cbl_two-->
         </div>
 
         <!--运营状态-->
         <div class="labMain_cb_left">
             <h3 class="lab_title">运营状态</h3>
             <div class="pageBtn">
-                <span class="icon"></span>
-                <span class="icon"></span>
+                <span class="icon" onclick="prePage()"></span>
+                <span class="icon" onclick="nextPage()"></span>
             </div>
 
             <div class="leftContent">
@@ -71,9 +115,9 @@
                     <div class="l-top-header">
                         <div class="item1">
                             <h5>实验室总数：</h5>
-                            <span class="data">10</span>
+                            <span class="data" id="lab_center_id_left_0">0</span>
                         </div>
-                        <div class="item2">
+                        <div class="item2" id="lab_center_id_left_1">
                             <h5>负荷率最低：</h5>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
@@ -81,7 +125,7 @@
                             </div>
                             <span class="data">80%</span>
                         </div>
-                        <div class="item3">
+                        <div class="item3" id="lab_center_id_left_2">
                             <h5>负荷率最高：</h5>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0"
@@ -89,7 +133,7 @@
                             </div>
                             <span class="data">90%</span>
                         </div>
-                        <div class="item4">
+                        <div class="item4" id="lab_center_id_left_3">
                             <h5>平均负荷率：</h5>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0"
@@ -99,8 +143,8 @@
                         </div>
                     </div>
 
-                    <div class="l-top-body">
-                        <div class="l-top-body-1">
+                    <div class="l-top-body" id="center_lab_top_div">
+                       <!--  <div class="l-top-body-1">
                             <h4>A室</h4>
                             <div class="item1">
                                 <h5>实验室状态：<span></span></h5>
@@ -214,7 +258,7 @@
                                 </div>
                                 <span class="data">80/90</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!--第二行-->
@@ -225,17 +269,17 @@
                     <div class="l-mid-header">
                         <div class="item1">
                             <h5>设备总数：<span></span></h5>
-                            <span class="data">388</span>
+                            <span class="data" id="lab_center_id_left_4">0</span>
                         </div>
                         <div class="item2">
-                            <h5>平均停机时间：<span></span></h5>
-                            <span class="data">2小时</span>
+                            <h5>当年故障数：<span></span></h5>
+                            <span class="data" id="lab_center_id_left_6"></span>
                         </div>
-                        <div class="item3">
-                            <h5>平均停机次数：<span></span></h5>
-                            <span class="data">3次</span>
+                         <div class="item3">
+                            <h5>当前完好数：<span></span></h5>
+                            <span class="data" id="lab_center_id_left_5"></span>
                         </div>
-                        <div class="item4">
+                        <div class="item4" id="lab_center_id_left_7">
                             <h5>当前完好率：<span></span></h5>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
@@ -244,8 +288,8 @@
                             <span class="data">98%</span>
                         </div>
                     </div>
-                    <div class="l-mid-body">
-                        <div class="l-mid-body-1">
+                    <div class="l-mid-body" id="center_lab_center_div">
+                       <!--  <div class="l-mid-body-1">
                             <h4>A室</h4>
                             <div class="item4">
                                 <h5>设备数：<span></span></h5>
@@ -359,7 +403,7 @@
                                 </div>
                                 <span class="data">98%</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                 </div>
@@ -371,19 +415,19 @@
                     <div class="l-bottom-header">
                         <div class="item1">
                             <h5>已测订单数：<span></span></h5>
-                            <span class="data">412</span>
+                            <span class="data" id="lab_center_id_left_8"></span>
                         </div>
                         <div class="item1">
                             <h5>在测订单数：<span></span></h5>
-                            <span class="data">284</span>
+                            <span class="data" id="lab_center_id_left_9"></span>
                         </div>
                         <div class="item1">
                             <h5>待测订单数：<span></span></h5>
-                            <span class="data">437</span>
+                            <span class="data" id="lab_center_id_left_10"></span>
                         </div>
                     </div>
-                    <div class="l-bottom-body">
-                        <div class="l-bottom-body-1">
+                    <div class="l-bottom-body" id="center_lab_bottom_div">
+                       <!--  <div class="l-bottom-body-1">
                             <h4>A室</h4>
                             <div class="item1">
                                 <h5>已测订单数：<span></span></h5>
@@ -457,7 +501,7 @@
                                 <h5>待测订单数：<span></span></h5>
                                 <span class="data"><strong>437</strong></span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -546,7 +590,7 @@
             <h3 class="lab_title shishijiance">实时监测</h3>
             <div class="shishi_left">
                 <div class="sheshi_tab">视频监控</div>
-                <div class="sheshi_tab">曲线监控</div>
+                <div class="sheshi_tab sheshi_tab_active">曲线监控</div>
                 <div class="sheshi_tab_list">
                     <ul id="lab_unit_selected_center">
                        <!--  <li><span></span><a href="#">实验室1</a>
@@ -595,7 +639,11 @@
                 <div class="sheshi_right_left">
                     <div id="main1"></div>
                     <div id="main2"></div>
+                    <div class="message_box">
+                        <div>该台位未开测</div>
+                    </div>
                 </div>
+
                 <div class="sheshi_right_right">
                     <ul id="legend_ul">
                     </ul>
@@ -664,7 +712,7 @@
 
 <script src="../static/asserts/js/jquery-2.2.4.js"></script>
 <script src="../static/asserts/echarts/echarts-3.5.2.js"></script>
-<script src="../static/js/manyEcharts.js"></script>
+<!--<script src="../static/js/manyEcharts.js"></script>-->
 
 <script src="../static/js/centerLab.js"></script>
 <script>
@@ -681,6 +729,61 @@
             $("body").css("font-size", bodyFontSize);
 //            console.log("屏幕高度：" + h + ", body字号：" + bodyFontSize)
         }
+        //lunbo
+      //轮播
+    	//得到ul中的li个数
+    	var li_count=$(".labMain_lunbo ul li").length;
+    	var curPage = 0;
+    	var totalPage = li_count / 2;
+    	//var goLeft = 255 * 2;
+    	
+    	//图片宽度+li间距*2 em变为px
+    	var goLeft = (24.6+0.7*2)*(bodyScale*10)*2;
+    	
+    	//设置ul宽度
+    	$(".lbul").css("width",totalPage * goLeft +"px");
+    	
+
+    	function next(){
+    		curPage ++;
+    		
+    		if(curPage >= totalPage){
+    			curPage = 0;
+    			
+    			
+    			$(".lbul").animate({left:0},100);
+    		}
+    		
+    		changeTo();
+    	}
+    	
+
+    	
+    	function changeTo(){
+    		$(".lbul").animate({left: "-" + goLeft*curPage + "px"},1000);
+    	}
+    	
+    	function lb(){
+    		
+    		lbInterval = setInterval(next,3000)
+
+    	}
+    	
+    	lb();
+    	//鼠标悬浮 定时器开关
+    	$(".labMain_lunbo ul li ").mouseover(function(e) {
+    		clearInterval(lbInterval);
+            
+        }).mouseout(function(e) {
+            lb();
+        });
+        
+        
+        
+        
+        
+        
+        
         //结构不要改呦
         $(".sheshi_tab").eq(0).click(function () {
             $('.labMain_cb_left .shishi_right').css('display','block').siblings().eq(2).css('display','none');
@@ -698,9 +801,6 @@
             $(".labMain_cb_left:eq(" + index + ")").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
             echartsResize();
         });
-//        $('.labMain_ct_right').click(function () {
-//            $('.labMain_cb_left').css('display','block').siblings().css('display','none');
-//        });
     });
     function echartsResize() {
         chartone.resize();
@@ -744,7 +844,7 @@
         //近12个月用户满意度趋势图
         inittwo();
 
-
+        labAllForCenterLabAjax();
 
 
 
