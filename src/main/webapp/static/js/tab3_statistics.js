@@ -165,7 +165,7 @@ function productLineAndMonthForTab3Ajax(){
 		        {
 		            name: '满意度/%',
 					scale:true,
-                    min:88,
+                    min:60,
                     max:100,
 					interval:4,
 		        }
@@ -252,8 +252,9 @@ function satisfactionStatisForYearTab3Ajax2016(){
 	$.post(contextPath+'/lab/satisfactionStatisForYearTab3Ajax',{"labTypeCode":labTypeCode,"year":"2016年"},function(data){
 		var mData=[];
 		$.each(data,function(index,item){
-			mData.push(item.product_line_name);
+			mData.push(item.product_name);
 		});
+		mData.reverse();
 		var myChart47 = echarts.init(document.getElementById("myChart47"));
 		right_echarts.push(myChart47);
 		myChart47.setOption(getBarEcharts());
@@ -275,6 +276,14 @@ function satisfactionStatisForYearTab3Ajax2016(){
 		                show: false,
 
 		            },
+		            axisLabel: {
+	                    show: true,
+	                    // rotate: 30,
+	                    textStyle: {
+	                        color: '#66ccff',
+	                        fontSize: 9 * bodyScale
+	                    }
+	                },
 
 		        }
 		    ],
@@ -318,8 +327,13 @@ function satisfactionStatisForYearTab3Ajax2016(){
 //整机 模块 订单类别占全部订单占比统计
 function findOrderTypePercentTab3Ajax(){
 	$.post(contextPath+'/lab/findOrderTypePercentTab3Ajax',{"labTypeCode":labTypeCode},function(data){
-		var zj='<span>'+(data.zj_rate==undefined?0:data.zj_rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">'+(data.zj_rise==undefined?0:data.zj_rise)+'%</span>';
+		console.log(data)
+		/*var zj='<span>'+(data.zj_rate==undefined?0:data.zj_rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">'+(data.zj_rise==undefined?0:data.zj_rise)+'%</span>';
 		var mk='<span>'+(data.mk_rate==undefined?0:data.mk_rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">'+(data.mk_rise==undefined?0:data.mk_rise)+'%</span>';
+		$("#tab3_zj_order_type").html(zj);
+		$("#tab3_mk_order_type").html(mk);*/
+		var zj='<span>'+(data.zj==undefined?0:data.zj)+'</span>';
+		var mk='<span>'+(data.mk==undefined?0:data.mk)+'</span>';
 		$("#tab3_zj_order_type").html(zj);
 		$("#tab3_mk_order_type").html(mk);
 	})
@@ -415,6 +429,7 @@ function orderTypeAjax(myChartIds,desName,divisor){
 				data.push(value);
 			});
 		});
+		yData.reverse();
 		//生成option
 		var myChart = echarts.init(document.getElementById(myChartIds));
 		right_echarts.push(myChart);
