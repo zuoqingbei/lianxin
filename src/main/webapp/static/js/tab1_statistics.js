@@ -1188,8 +1188,8 @@ function standardStatus() {
         var gjbz = standardSeriesData(data.standarddata, "国际标准");
         var hybz = standardSeriesData(data.standarddata, "行业标准");
         var qybz = standardSeriesData(data.standarddata, "企业标准");
-        $("#tab1_gjiabz_id").html(90);
-        $("#tab1_gjibz_id").html(172);
+        $("#tab1_gjiabz_id").html(172);
+        $("#tab1_gjibz_id").html(90);
         $("#tab1_hybz_id").html(114);
         $("#tab1_qybz_id").html(768);
         var num2 = gjia;
