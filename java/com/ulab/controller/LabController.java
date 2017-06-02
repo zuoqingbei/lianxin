@@ -851,7 +851,7 @@ public class LabController extends BaseController {
     	String fileName=sdf.format(new Date())+"-"+labTypeCode+"-"+testUnitId;
     	String path=getWebRootPath()+"/src/main/webapp/static/data/"+fileName;
     	String data="";
-    /*	if(JsonUtils.judeFileExists(path)){
+    	if(JsonUtils.judeFileExists(path)){
     		//直接读取json文件
     		data=JsonUtils.readJson(path);
     	}else{
@@ -862,13 +862,13 @@ public class LabController extends BaseController {
     			JsonUtils.writeJson(getWebRootPath()+"/src/main/webapp/static/data/", labTestUnit.getRealTimeData(), fileName);
     			data=labTestUnit.getRealTimeData();
     		}
-    	}*/
-    	WebServiceRerigeratorClient client = new WebServiceRerigeratorClient();
+    	}
+    	/*WebServiceRerigeratorClient client = new WebServiceRerigeratorClient();
 		LabTestUnit labTestUnit = client.searchRealTimeData(labTypeCode, url, Integer.valueOf(testUnitId));
 		System.out.println(labTestUnit.getRealTimeData());
 		if(labTestUnit!=null&&StringUtils.isNotBlank(labTestUnit.getRealTimeData())){
 			data=labTestUnit.getRealTimeData();
-		}
+		}*/
     	renderText(data);
     }
   

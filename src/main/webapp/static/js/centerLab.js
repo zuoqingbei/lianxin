@@ -997,7 +997,7 @@ function getCharts2() {
                     // rotate: 30,
                     textStyle: {
                         color: '#fff',
-                        fontSize: 10 * bodyScale
+                        fontSize: 9 * bodyScale
                     }
                 },
                 axisTick: {
@@ -1071,7 +1071,7 @@ function getCharts2() {
                     formatter: '{value} ',
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 12 * bodyScale
+                        fontSize: 9 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -1117,7 +1117,7 @@ function getCharts2() {
                     },
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 12 * bodyScale
+                        fontSize: 9 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -1154,7 +1154,7 @@ function getCharts2() {
                     formatter: '{value} ',
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 12 * bodyScale
+                        fontSize: 9 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
