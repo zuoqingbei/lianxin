@@ -195,9 +195,11 @@ a, a:hover {
 }
 
 .labMain_cblt_ttwo {
-    /* flex: 2;
-   background-color:#FC6;*/
-   margin:0% 0.5% ;
+    /*flex: 2;*/
+    /*background: url("../img/labMain/znjd-bg.png") no-repeat;*/
+    /*background-size: 100% 100%;*/
+
+   /*margin:0 0.5% ;*/
 	flex:1;
 
 }

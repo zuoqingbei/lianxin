@@ -272,6 +272,7 @@ function satisfactionStatisForYearTab3Ajax2016(){
 		                    color: "#66ccff"
 		                }
 		            },
+<<<<<<< HEAD
 		            axisTick: {
 		                show: false,
 
@@ -284,7 +285,6 @@ function satisfactionStatisForYearTab3Ajax2016(){
 	                        fontSize: 9 * bodyScale
 	                    }
 	                },
-
 		        }
 		    ],
 		    xAxis: [

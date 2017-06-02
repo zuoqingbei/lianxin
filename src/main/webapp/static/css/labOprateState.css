@@ -61,7 +61,7 @@
 	position: relative;
 	top: 24%;
 	text-align: center;
-	line-height: 1.3em;
+	/*line-height: 1.3em;*/
 }
 [class$=-header]{
 	margin-right: 2%;
