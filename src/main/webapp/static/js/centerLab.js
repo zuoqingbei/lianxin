@@ -50,7 +50,7 @@ function initone(mValue) {
                 textStyle: {
                     baseline: 'center',
                     color: '#66ccff',
-                    fontSize: 8
+                    fontSize: 8*bodyScale
                 }
             },
             labelLine: {
@@ -113,7 +113,7 @@ function inittwo() {
             normal: {
                 show: false,
                 position: 'outside',
-                offset: [10 * bodyScale, 0],
+                // offset: [10 * bodyScale, 0],
                 textStyle: {
                     fontSize: bodyScale * 8
                 }
@@ -140,16 +140,19 @@ function inittwo() {
             ],
             xAxis: [
                 {
-                    name: "",
+                    name: "时间",
                     type: 'category',
-                    data: centerLabOrderRateLengend(data)
+                    data: centerLabOrderRateLengend(data),
+                    nameTextStyle: {
+                        fontSize: bodyScale * 10
+                    },
                 }
             ],
             grid: {
-                x: "15%",
-                x2: "10%",
+                x: "6%",
+                x2: "5%",
                 y: '23%',
-                y2: "34%",
+                y2: "30%"
             },
             series: [
                 {
@@ -192,6 +195,7 @@ function initThree() {
             textStyle: {
                 fontSize: bodyScale * 8
             },
+
             yAxis: [
                 {
                     name: "合格率/%",
@@ -208,9 +212,12 @@ function initThree() {
             ],
             xAxis: [
                 {
-                    name: "",
+                    name: "时间",
                     type: 'category',
-                    data: centerLabOrderRateLengend(data)
+                    data: centerLabOrderRateLengend(data),
+                    nameTextStyle: {
+                        fontSize: bodyScale * 10
+                    },
                 }
             ],
             grid: {
@@ -219,10 +226,10 @@ function initThree() {
 //		            y: '22%',
 //		            y2: "26%",
 
-                x: "15%",
-                x2: "10%",
+                x: "6%",
+                x2: "5%",
                 y: '23%',
-                y2: "34%",
+                y2: "30%"
             },
             series: [
                 {
@@ -258,30 +265,28 @@ function initfour() {
                 data: [''],
                 textStyle: {
                     fontSize: bodyScale * 8
-                },
-                itemWidth: 6 * bodyScale, //图例标记的图形宽度
-                itemHeight: 6 * bodyScale //图例标记的图形高度
+                }
             },
             grid: {
-
-                x: "11%",
-                x2: "10%",
+                x: "2%",
+                x2: "5%",
                 y: '23%',
-                y2: "20%"
+                y2: "15%"
             },
             xAxis: [
                 {
-                    name: '',
-                    data: centerLabOrderRateLengend(data)
+                    name: '时间',
+                    data: centerLabOrderRateLengend(data),
+                    nameTextStyle: {
+                        fontSize: bodyScale * 10
+                    },
                 }
             ],
             yAxis: [
                 {
                     name: "及时率/%",
-
                     nameTextStyle: {
-                        fontSize: bodyScale * 10,
-
+                        fontSize: bodyScale * 10
                     },
                 }
             ],
@@ -297,13 +302,10 @@ function initfour() {
                             color: "#ff6666"
                         }
                     }
-
                 }
             ]
-
         });
     });
-
 }
 
 //曲线

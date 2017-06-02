@@ -64,6 +64,11 @@
     background: url("../img/labMain/border-green.png") no-repeat;
     background-size: 100% 100%;
 }
+.sheshi_tab_active{
+    color: #66ffcc;
+    background: url("../img/labMain/border-green.png") no-repeat;
+    background-size: 100% 100%;
+}
 .sheshi_tab_list{
     height:60%;
     width: 58%;
@@ -172,4 +177,24 @@
 }
 .taiwei_hide{
     display: none;
+}
+.sheshi_right_left .message_box{
+    width: 93%;
+    height: 89%;
+    background-color: rgba(35,79,101,0.75);
+    z-index: 999;
+    position: absolute;
+    top: 3%;
+    left: 2%;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 2em;
+    color: white;
+    display: none;
+}
+.sheshi_right_left .message_box div{
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    margin-top: 25%;
 }

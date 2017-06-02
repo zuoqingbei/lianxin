@@ -271,11 +271,13 @@ function satisfactionStatisForYearTab3Ajax2016(){
 		                    color: "#66ccff"
 		                }
 		            },
-		            axisTick: {
-		                show: false,
-
-		            },
-
+                    axisLabel: {   //坐标值
+                        show: true,
+                        textStyle: {
+                            color: '#66ccff',
+                            fontSize:12*bodyScale
+                        }
+                    },
 		        }
 		    ],
 		    xAxis: [
