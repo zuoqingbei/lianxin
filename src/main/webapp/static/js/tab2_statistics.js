@@ -240,7 +240,7 @@ function personForTab2Ajax(myChartIds, type, divisor) {
                     // rotate: 30,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 10 * bodyScale
+                        fontSize: 9 * bodyScale
                     },
                     interval: 0
                 },
@@ -266,7 +266,7 @@ function personForTab2Ajax(myChartIds, type, divisor) {
                     // rotate: 30,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 12 * bodyScale
+                        fontSize: 11* bodyScale
                     }
                 },
                 axisTick: {
@@ -473,7 +473,7 @@ function abilityByProductLine() {
                         },
                         axisLabel: {
                             textStyle: {
-                                fontSize: 10 * bodyScale
+                                fontSize: 11 * bodyScale
                             },
                             interval: 0,
                         },
