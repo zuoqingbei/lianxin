@@ -31,7 +31,7 @@ public class WebServiceRerigeratorClient {
 	 * @return LabTestUnit    返回类型
 	 * @throws
 	 */
-	public LabTestUnit searchRealTimeData(String labCode, String url, int testUnitId) {
+	public LabTestUnit searchRealTimeData(String labCode, String url, int testUnitId,float interval) {
 		LabTestUnit labTestUnit = new LabTestUnit();
 		labTestUnit.setTestUnitId(testUnitId);
 		try {
@@ -78,7 +78,7 @@ public class WebServiceRerigeratorClient {
 			}
 			Date now = new Date();
 			float f2 = (now.getTime() - start.getTime())/3600000f;
-			float f1 = f2 - 3> 0 ? f2-3 : 0;
+			float f1 = f2 - interval> 0 ? f2-interval : 0;
 			ArrayOfString datas = port.getSensorTestDataByTime(labCode, testMetadata.getTestIdentification(), f1, f2);
 			StringBuilder realTimeData = new StringBuilder();
 			realTimeData.append("{\n");

@@ -864,7 +864,8 @@ public class LabController extends BaseController {
     		}
     	}*/
     	WebServiceRerigeratorClient client = new WebServiceRerigeratorClient();
-		LabTestUnit labTestUnit = client.searchRealTimeData(labTypeCode, url, Integer.valueOf(testUnitId));
+    	String interval=getPara("interval","3");
+		LabTestUnit labTestUnit = client.searchRealTimeData(labTypeCode, url, Integer.valueOf(testUnitId),Float.parseFloat(interval));
 		System.out.println(labTestUnit.getRealTimeData());
 		if(labTestUnit!=null&&StringUtils.isNotBlank(labTestUnit.getRealTimeData())){
 			data=labTestUnit.getRealTimeData();
