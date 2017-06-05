@@ -418,7 +418,7 @@ function labLifeCycleStatis(){
 	        grid: {
 	            left:"10%",
 	            right: '10%',
-	            top:"33%,",
+	            top:"35%,",
 				bottom:"2%"
 	        },
 	        legend: {
@@ -482,7 +482,7 @@ function labLifeCycleStatis(){
 	            	 type: 'value',
 	                 name: '检测订单量(百)',
                     nameTextStyle:{
-                        fontSize:bodyScale*7
+                        fontSize:bodyScale*5
                     },
                     nameGap:10,
 	                 min: 0,
@@ -521,10 +521,10 @@ function labLifeCycleStatis(){
                     data: statisticSeriesDataData(data),
                     lineStyle:{
                         normal:{
-                            width:1
+                            width:2*bodyScale
                         }
                     },
-                    symbolSize:2,
+                    symbolSize:2*bodyScale,
 
                     areaStyle: {
                         normal: {
@@ -552,10 +552,10 @@ function labLifeCycleStatis(){
 	                data:[47.39, 202.33, 56.83,3.81, 168.01, 28.39, 7.59],
                     lineStyle:{
                         normal:{
-                            width:1
+                            width:2*bodyScale
                         }
                     },
-                    symbolSize:2,
+                    symbolSize:2*bodyScale,
 	                areaStyle: {
 	                    normal: {
 	                        color: {

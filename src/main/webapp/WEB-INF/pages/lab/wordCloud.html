@@ -61,7 +61,7 @@
 <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
 <!--<script src="../../../static/asserts/js/jquery-2.2.4.js"></script>-->
 <script>
-    var radius = 100;//3D 球的半径
+    var radius = 10;//3D 球的半径
     //    radius = $("#div1").css("width");
     var dtr = Math.PI / 180;
     var d = 300;
@@ -231,7 +231,7 @@
     }
 
     function resizeText(bodyScale) {
-        radius = 100 * bodyScale;
+        radius = 10 * bodyScale;
     }
 
     $(function () {
@@ -239,7 +239,7 @@
         var bodyFontSize = h / 595 * 100 + "%";
         bodyScale = h / 595;
         $("body").css("font-size", bodyFontSize);
-        radius = 70 * bodyScale;
+        radius = 10 * bodyScale;
         console.log("h:" + h + "~~~~~~~~~~~~~~~~radius:", radius)
         tspeed = 2 * bodyScale;
 

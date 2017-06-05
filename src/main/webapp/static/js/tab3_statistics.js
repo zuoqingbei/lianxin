@@ -81,8 +81,6 @@ function productLineForTab3Tab3Ajax(myChartIds,type){
 				right:"-2%",
 		        data: mData,
 		        orient: ' vertical',  //布局  纵向布局
-
-
 		    },
 		    series: mSeries
 		});
@@ -370,6 +368,7 @@ function findOrderPassForProAjax(mychartIds,desName){
 		    xAxis: [
 		        {
 		            name: '产线',
+                    nameGap :10 * bodyScale,
 		            data:tab3PassLengend(data),
                     axisLabel: {
                         interval:0,
@@ -463,28 +462,25 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		    },
 		    xAxis: {
 		        data: xData,
-
+                nameGap :10 * bodyScale,
 		        axisLine: {
 		            show: false
-		        },
-		        axisLabel: {
-		            show: true,
-		            // rotate: 30,
-		            textStyle: {
-		                color: '#66ccff',
-		                fontSize: 12*bodyScale,
-
-		            },
-//		            interval:0
-		            // rotate:30,
 		        },
 		        axisTick: {
 		            show: false,
 		            alignWithLabel: true,
 		            lineStyle: {
 		                color: '#66ccff'
-		            }
+		            },
 		        },
+                axisLabel: {
+                    interval:1,
+                    textStyle: {
+                        fontSize: 10*bodyScale,
+
+                    },
+                    // rotate:30,
+                },
 		        splitLine: {  //刻度线
 		            show: true,
 		            lineStyle: {
@@ -494,15 +490,9 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		    },
 		    yAxis: {
 		        data: yData,
+                nameGap :10 * bodyScale,
 		        axisLine: { //坐标轴
 		            show: false
-		        },
-		        axisLabel: {   //坐标值
-		            show: true,
-		            textStyle: {
-		                color: '#66ccff',
-		                fontSize: 12*bodyScale
-		            }
 		        },
 		        axisTick: {  //刻度值
 		            show: false,

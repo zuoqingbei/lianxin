@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<div class="labMain_content" style="display: none">
+<div class="labMain_content" style="display: none;">
 <!--<div class="labMain_content" >-->
     <div class="labMain_content_top">
         <h1>中海博睿数据中心</h1>
@@ -718,17 +718,19 @@
 <script>
     var bodyScale = 1;//原始比例1
     $(document).ready(function (e) {
-        pageResize();
+        var pageH;
+        var pageW;
+        pageH = $(window).height()-17;
+        pageW = pageH * 16 * 4 / (9 * 3);
+
         function pageResize() {
-            var h = $(window).height();
-            var w = h * 16 * 4 / (9 * 3);
-            // $("#labMain_content").css("width", h * 16 * 7 / (9 * 3));
-            $(".labMain_content").css("width", h * 16 * 4 / (9 * 3));
-            var bodyFontSize = h / 638 * 100 + "%";
-            bodyScale = h / 638;
+            $(".labMain_content").css("width", pageW);
+            var bodyFontSize = pageH / 595 * 100 + "%";
+            bodyScale = pageH / 595;
             $("body").css("font-size", bodyFontSize);
-//            console.log("屏幕高度：" + h + ", body字号：" + bodyFontSize)
+//        console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
         }
+        pageResize();
         //lunbo
       //轮播
     	//得到ul中的li个数

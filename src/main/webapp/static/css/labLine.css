@@ -4,7 +4,7 @@
     left: 12%;
 }
 .labMain_cb_left{
-    padding-top: 3%;
+    padding-top: 2%;
 }
 .shishi_left{
     height: 95%;
@@ -55,15 +55,15 @@
     margin-top: 5%;
     background: url("../img/labMain/border-blue.png") no-repeat;
     background-size: 100% 100%;
-    font-size: 1.1em;
+    font-size: 1.4em;
     padding-top: 2%;
     cursor: pointer;
 }
-.sheshi_tab:hover{
-    color: #66ffcc;
-    background: url("../img/labMain/border-green.png") no-repeat;
-    background-size: 100% 100%;
-}
+/*.sheshi_tab:hover{*/
+    /*color: #66ffcc;*/
+    /*background: url("../img/labMain/border-green.png") no-repeat;*/
+    /*background-size: 100% 100%;*/
+/*}*/
 .sheshi_tab_active{
     color: #66ffcc;
     background: url("../img/labMain/border-green.png") no-repeat;
@@ -71,7 +71,7 @@
 }
 .sheshi_tab_list{
     height:60%;
-    width: 58%;
+    width: 60%;
     overflow: hidden;
     margin: 0 auto;
     margin-top: 3%;
@@ -95,20 +95,21 @@
 
 }
 .sheshi_tab_list>ul>li a{
-    margin-left: 23%;
+    margin-left: 9%;
+    font-size: 1.2em;
 }
-.sheshi_tab_list>ul>li>span{
-    display: inline-block;
-    width: 1.4em;
-    height: 1.4em;
-    vertical-align: middle;
-    /*margin-right: 5%;*/
-    background: url("../img/labMain/sb.png") no-repeat;
-    background-size: 100% 100%;
-    position: absolute;
-    /*top:32%;*/
-    left: 9%;
-}
+/*.sheshi_tab_list>ul>li>span{*/
+    /*display: inline-block;*/
+    /*width: 1.4em;*/
+    /*height: 1.4em;*/
+    /*vertical-align: middle;*/
+    /*!*margin-right: 5%;*!*/
+    /*!*background: url("../img/labMain/sb.png") no-repeat;*!*/
+    /*background-size: 100% 100%;*/
+    /*position: absolute;*/
+    /*!*top:32%;*!*/
+    /*!*left: 9%;*!*/
+/*}*/
 /*.sheshi_tab_list>ul>li:hover span{*/
     /*top: 0;*/
 /*}*/
