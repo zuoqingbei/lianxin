@@ -324,7 +324,6 @@ function satisfactionStatisForYearTab3Ajax2016(){
 //整机 模块 订单类别占全部订单占比统计
 function findOrderTypePercentTab3Ajax(){
 	$.post(contextPath+'/lab/findOrderTypePercentTab3Ajax',{"labTypeCode":labTypeCode},function(data){
-		console.log(data)
 		/*var zj='<span>'+(data.zj_rate==undefined?0:data.zj_rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">'+(data.zj_rise==undefined?0:data.zj_rise)+'%</span>';
 		var mk='<span>'+(data.mk_rate==undefined?0:data.mk_rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">'+(data.mk_rise==undefined?0:data.mk_rise)+'%</span>';
 		$("#tab3_zj_order_type").html(zj);
