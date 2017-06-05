@@ -81,8 +81,6 @@ function productLineForTab3Tab3Ajax(myChartIds,type){
 				right:"-2%",
 		        data: mData,
 		        orient: ' vertical',  //布局  纵向布局
-
-
 		    },
 		    series: mSeries
 		});
@@ -326,7 +324,6 @@ function satisfactionStatisForYearTab3Ajax2016(){
 //整机 模块 订单类别占全部订单占比统计
 function findOrderTypePercentTab3Ajax(){
 	$.post(contextPath+'/lab/findOrderTypePercentTab3Ajax',{"labTypeCode":labTypeCode},function(data){
-		console.log(data)
 		/*var zj='<span>'+(data.zj_rate==undefined?0:data.zj_rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">'+(data.zj_rise==undefined?0:data.zj_rise)+'%</span>';
 		var mk='<span>'+(data.mk_rate==undefined?0:data.mk_rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">'+(data.mk_rise==undefined?0:data.mk_rise)+'%</span>';
 		$("#tab3_zj_order_type").html(zj);
@@ -370,6 +367,7 @@ function findOrderPassForProAjax(mychartIds,desName){
 		    xAxis: [
 		        {
 		            name: '产线',
+                    nameGap :10 * bodyScale,
 		            data:tab3PassLengend(data),
                     axisLabel: {
                         interval:0,
@@ -463,28 +461,25 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		    },
 		    xAxis: {
 		        data: xData,
-
+                nameGap :10 * bodyScale,
 		        axisLine: {
 		            show: false
-		        },
-		        axisLabel: {
-		            show: true,
-		            // rotate: 30,
-		            textStyle: {
-		                color: '#66ccff',
-		                fontSize: 12*bodyScale,
-
-		            },
-//		            interval:0
-		            // rotate:30,
 		        },
 		        axisTick: {
 		            show: false,
 		            alignWithLabel: true,
 		            lineStyle: {
 		                color: '#66ccff'
-		            }
+		            },
 		        },
+                axisLabel: {
+                    interval:1,
+                    textStyle: {
+                        fontSize: 10*bodyScale,
+
+                    },
+                    // rotate:30,
+                },
 		        splitLine: {  //刻度线
 		            show: true,
 		            lineStyle: {
@@ -494,15 +489,9 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		    },
 		    yAxis: {
 		        data: yData,
+                nameGap :10 * bodyScale,
 		        axisLine: { //坐标轴
 		            show: false
-		        },
-		        axisLabel: {   //坐标值
-		            show: true,
-		            textStyle: {
-		                color: '#66ccff',
-		                fontSize: 12*bodyScale
-		            }
 		        },
 		        axisTick: {  //刻度值
 		            show: false,

@@ -64,7 +64,7 @@ function questionForMkZjTab1Ajax() {
             textStyle: {
                 fontSize: 12 * bodyScale
             },
-            color: ['#4397f7', '#66ccff'],
+            color: ['#66ccff', '#06f'],
             series: [
                 {
                     name: '整机',
@@ -211,12 +211,12 @@ function equipmentTotalForLab1Ajax() {
                     splitNumber: 5,
                     radius: '80%',
                     textStyle: {
-                        fontSize: 7 * bodyScale
+                        fontSize: 10 * bodyScale
                     },
                     axisLine: {            // 坐标轴线
                         show: false,
                         lineStyle: {       // 属性lineStyle控制线条样式
-                            width: 7 * bodyScale,
+                            width: 8 * bodyScale,
                             color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
                         },
 
@@ -224,7 +224,7 @@ function equipmentTotalForLab1Ajax() {
                     axisLabel: {
                         show: true,
                         textStyle: {
-                            fontSize: 8 * bodyScale
+                            fontSize: 9 * bodyScale
                         }
                     },
                     axisTick: {            // 坐标轴小标记
@@ -254,7 +254,7 @@ function equipmentTotalForLab1Ajax() {
                     title: {
                         offsetCenter: [0, '110%'],       // x, y，单位px
                         textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                            fontSize: 10 * bodyScale,
+                            fontSize: 12 * bodyScale,
                             color: '#66ccff',
 //		                        fontStyle: 'italic'
                         },
@@ -276,6 +276,9 @@ function equipmentTotalForLab1Ajax() {
                     type: 'gauge',
                     center: ['25%', '58%'],    // 默认全局居中
                     radius: '70%',
+                    textStyle: {
+                        fontSize: 10 * bodyScale
+                    },
                     min: 0,
                     max: 100,
                     endAngle: 45,
@@ -290,7 +293,7 @@ function equipmentTotalForLab1Ajax() {
                     axisLabel: {
                         show: true,
                         textStyle: {
-                            fontSize: 8 * bodyScale
+                            fontSize: 9* bodyScale
                         }
                     },
                     axisTick: {            // 坐标轴小标记
@@ -320,7 +323,7 @@ function equipmentTotalForLab1Ajax() {
                     title: {
                         offsetCenter: [0, '100%'],       // x, y，单位px
                         textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                            fontSize: 10 * bodyScale,
+                            fontSize: 12 * bodyScale,
                             color: '#66ccff',
 //		                        fontStyle: 'italic'
                         },
@@ -341,6 +344,9 @@ function equipmentTotalForLab1Ajax() {
                     type: 'gauge',
                     center: ['75%', '59%'],    // 默认全局居中
                     radius: '70%',
+                    textStyle: {
+                        fontSize: 10 * bodyScale
+                    },
                     min: 0,
                     max: 100,
                     startAngle: 135,
@@ -356,7 +362,7 @@ function equipmentTotalForLab1Ajax() {
                     axisLabel: {
                         show: true,
                         textStyle: {
-                            fontSize: 8 * bodyScale
+                            fontSize: 9 * bodyScale
                         }
                     },
                     axisTick: {            // 坐标轴小标记
@@ -386,7 +392,7 @@ function equipmentTotalForLab1Ajax() {
                     title: {
                         offsetCenter: [0, '100%'],       // x, y，单位px
                         textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                            fontSize: 10 * bodyScale,
+                            fontSize: 12 * bodyScale,
                             color: '#66ccff',
 //		                        fontStyle: 'italic'
                         },
@@ -817,7 +823,7 @@ var mHeightChart = $('#myChart10').highcharts({
         	 y: 10*bodyScale,
 	       	 style: {
 	             /* fontWeight: 'bold',*/
-	             fontSize: 9* bodyScale,
+	             fontSize: 7* bodyScale,
 	             color:"#439ef7"
 	         }
         }
@@ -864,12 +870,12 @@ function communistStatisticForMonthForTab1Ajax() {
         right_echarts.push(myChart12);
         myChart12.setOption(getBarEcharts());
         myChart12.setOption({
-            color: ['#66ccff', '#a5fff1'],
+            color: ['#66ccff', '#06f'],
             legend: {
                 show: true,
                 data: ['共产型号总数', '共产一致型号数'],
                 textStyle: {
-                    fontSize: 10 * bodyScale,
+                    fontSize: 9 * bodyScale,
                 },
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
             },
@@ -929,7 +935,7 @@ function communistGravityStatisticForTab1Ajax() {
         right_echarts.push(myChart11);
         myChart11.setOption(getRoseEcharts());
         myChart11.setOption({
-            color: ['#66ccff', '#4397f7'],
+            color: ['#66ccff', '#06f'],
             legend: {
                 right: 'right',
                 show: true,
@@ -966,7 +972,7 @@ function communistGravityStatisticForTab1Ajax() {
 
                             formatter: "{d}%",
                             textStyle: {
-                                fontSize: 8 * bodyScale
+                                fontSize: 10 * bodyScale
                                 // color:"#4397f7"
                             }
                         },
@@ -1036,7 +1042,7 @@ function findOrderPassForAllTab1() {
             textStyle: {
                 fontSize: 12 * bodyScale
             },
-            color: ['#4397f7', '#66ccff'],
+            color: ['#66ccff', '#06f'],
             grid: { //grid在极坐标中不起作用，只能应用于直角坐标系
                 x: "",
                 x2: ""
@@ -1188,8 +1194,8 @@ function standardStatus() {
         var gjbz = standardSeriesData(data.standarddata, "国际标准");
         var hybz = standardSeriesData(data.standarddata, "行业标准");
         var qybz = standardSeriesData(data.standarddata, "企业标准");
-        $("#tab1_gjiabz_id").html(90);
-        $("#tab1_gjibz_id").html(172);
+        $("#tab1_gjiabz_id").html(172);
+        $("#tab1_gjibz_id").html(90);
         $("#tab1_hybz_id").html(114);
         $("#tab1_qybz_id").html(768);
         var num2 = gjia;

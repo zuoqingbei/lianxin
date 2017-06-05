@@ -1,6 +1,6 @@
 .labMain_cb_left h3.lab_title{
-	top: 1.6%;
-	left: 12.5%;
+	top: 1.2%;
+	left: 12%;
 }
 .leftContent{
 	display: flex;
@@ -40,18 +40,20 @@
 .leftContent>div{
 	flex:1;
 	display: flex;
-	padding: 0.6%;
+	padding: 0.6% 0;
 }
 .l-top>div,
 .l-mid>div,
 .l-bottom>div{
 	display: inline-block;
+	position: relative;
+	font-size: 1.1em;
 }
 /*.l-top-title{*/
 [class$=-title]{
 	/*flex:1;*/
 	margin: 1%;
-	width:1.8em;
+	width:2.3em;
 	color: #fff;
 	font-size: 1.2em;
 	background-image: url("../img/labMain/labOprateState_title.png");
@@ -59,9 +61,10 @@
 }
 [class$=-title] h3{
 	position: relative;
-	top: 24%;
+	top: 22%;
 	text-align: center;
 	/*line-height: 1.3em;*/
+	font-size: 1.4em;
 }
 [class$=-header]{
 	margin-right: 2%;

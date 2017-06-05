@@ -418,7 +418,7 @@ var mHeightChartTab4=$('#myChart16').highcharts({
        	 	 y: 10*bodyScale,
 	       	 style: {
 	             /* fontWeight: 'bold',*/
-	             fontSize: 9* bodyScale,
+	             fontSize: 7* bodyScale,
 	             color:"#439ef7"
 	         }
        }
