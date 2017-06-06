@@ -235,16 +235,16 @@ a, a:hover {
 	
 }	
 .labMain_lunbo ul li span{
-	width:16.3em;
-	height:3em;
-	line-height:3em;
+	width:20.5em;
+	height:2em;
+	line-height:2em;
 	background:rgba(0,0,0,0.4);
 	text-align:center;
-	font-size:1.5em;
+	font-size:1.2em;
 	color:#fff;
 	position:absolute;
 	left:0;
-	bottom:0;
+	bottom:7%;
 	z-index:20;
 	/*display:none;*/
 	
@@ -252,7 +252,7 @@ a, a:hover {
 	
 .labMain_cblt_ttwo img{
 	width:55.6em;
-	
+	height: 100%;
 	}
 
 

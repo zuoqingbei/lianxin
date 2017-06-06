@@ -713,6 +713,7 @@
 <script src="../static/asserts/js/jquery-2.2.4.js"></script>
 <script src="../static/asserts/echarts/echarts-3.5.2.js"></script>
 <!--<script src="../static/js/manyEcharts.js"></script>-->
+<script src="../static/asserts/js/bootstrap.min.js"></script>
 
 <script src="../static/js/centerLab.js"></script>
 <script>
@@ -738,61 +739,58 @@
     	var curPage = 0;
     	var totalPage = li_count / 2;
     	//var goLeft = 255 * 2;
-    	
+
     	//图片宽度+li间距*2 em变为px
     	var goLeft = (24.6+0.7*2)*(bodyScale*10)*2;
-    	
+
     	//设置ul宽度
     	$(".lbul").css("width",totalPage * goLeft +"px");
-    	
+
 
     	function next(){
     		curPage ++;
-    		
+
     		if(curPage >= totalPage){
     			curPage = 0;
-    			
-    			
+
+
     			$(".lbul").animate({left:0},100);
     		}
-    		
+
     		changeTo();
     	}
-    	
 
-    	
+
+
     	function changeTo(){
-    		$(".lbul").animate({left: "-" + goLeft*curPage + "px"},1000);
+    		$(".lbul").animate({left: "-" + goLeft*curPage + "px"},1500);
     	}
-    	
+
     	function lb(){
-    		
-    		lbInterval = setInterval(next,3000)
+
+    		lbInterval = setInterval(next,5000)
 
     	}
-    	
+
     	lb();
     	//鼠标悬浮 定时器开关
     	$(".labMain_lunbo ul li ").mouseover(function(e) {
     		clearInterval(lbInterval);
-            
+
         }).mouseout(function(e) {
             lb();
         });
-        
-        
-        
-        
-        
-        
+
+
         
         //结构不要改呦
         $(".sheshi_tab").eq(0).click(function () {
             $('.labMain_cb_left .shishi_right').css('display','block').siblings().eq(2).css('display','none');
-        	
+        	$(this).addClass('sheshi_tab_active').siblings().removeClass('sheshi_tab_active')
         });
         $(".sheshi_tab").eq(1).click(function () {
             $('.labMain_cb_left .shishi_right').css('display','block').siblings().eq(3).css('display','none');
+            $(this).addClass('sheshi_tab_active').siblings().removeClass('sheshi_tab_active')
     });
 
         $(".labMain_cbr_tab").click(function () {

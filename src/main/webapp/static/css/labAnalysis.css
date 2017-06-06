@@ -59,7 +59,7 @@
 	}
 	
 .la_datal_content{
-	width:96%;
+	width:108%;
 	height:70%;
 	font-size:1em;
 	margin:5.5% 1% 1% 1%;
@@ -87,7 +87,7 @@
 	
 .la_datal_legend ul li{
 	height:33%;
-	padding:3% 1% 1% 5%;
+	/*padding:3% 1% 1% 5%;*/
 	text-align:left;
 	white-space: nowrap;
 }			
