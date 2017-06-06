@@ -21,6 +21,9 @@ import com.ulab.model.LabTestUnit;
  */
 public class WebServiceRerigeratorClient {
 	
+	public LabTestUnit searchRealTimeData(String labCode, String url, int testUnitId) {
+		return searchRealTimeData(labCode, url, testUnitId,3f);
+	}
 	/**
 	 * @Title: searchRealTimeData
 	 * @Description: 查询实验室单个单位实时数据
@@ -91,7 +94,11 @@ public class WebServiceRerigeratorClient {
 				StringBuilder sensorData = new StringBuilder();
 				sensorData.append("{ name:'").append(sensorInfo.getSensorId()).append(":").append(sensorInfo.getSensorName()).append("(").append(sensorTypeMap.get(sensorInfo.getSensorTypeId().toString())).append(")',\n");
 				sensorData.append("data:[");
-				String[] s = datas.getString().get(0).split(";");
+				List<String> d=datas.getString();
+				String[] s ={};
+				if(d!=null&&d.size()>0){
+					s = d.get(0).split(";");
+				}
 				for(String data : s){
 					String[] s1 = data.split(",");
 					sensorData.append("{name:'").append(s1[0]);
@@ -105,7 +112,11 @@ public class WebServiceRerigeratorClient {
 						}
 					}					
 				}
-				sensorData.deleteCharAt(sensorData.length() - 1).append("]\n},");
+				if(d!=null&&d.size()>0){
+					sensorData.deleteCharAt(sensorData.length() - 1).append("]\n},");
+				}else{
+					sensorData.append("]\n},");
+				}
 				realTimeData.append(sensorData);
 			}
 			realTimeData.deleteCharAt(realTimeData.length() - 1).append("\n");
