@@ -21,6 +21,9 @@ import com.ulab.model.LabTestUnit;
  */
 public class WebServiceRerigeratorClient {
 	
+	public LabTestUnit searchRealTimeData(String labCode, String url, int testUnitId) {
+		return searchRealTimeData(labCode, url, testUnitId,3f);
+	}
 	/**
 	 * @Title: searchRealTimeData
 	 * @Description: 查询实验室单个单位实时数据
@@ -31,7 +34,7 @@ public class WebServiceRerigeratorClient {
 	 * @return LabTestUnit    返回类型
 	 * @throws
 	 */
-	public LabTestUnit searchRealTimeData(String labCode, String url, int testUnitId) {
+	public LabTestUnit searchRealTimeData(String labCode, String url, int testUnitId,float interval) {
 		LabTestUnit labTestUnit = new LabTestUnit();
 		labTestUnit.setTestUnitId(testUnitId);
 		try {
@@ -78,7 +81,7 @@ public class WebServiceRerigeratorClient {
 			}
 			Date now = new Date();
 			float f2 = (now.getTime() - start.getTime())/3600000f;
-			float f1 = f2 - 3> 0 ? f2-3 : 0;
+			float f1 = f2 - interval> 0 ? f2-interval : 0;
 			ArrayOfString datas = port.getSensorTestDataByTime(labCode, testMetadata.getTestIdentification(), f1, f2);
 			StringBuilder realTimeData = new StringBuilder();
 			realTimeData.append("{\n");
@@ -91,7 +94,11 @@ public class WebServiceRerigeratorClient {
 				StringBuilder sensorData = new StringBuilder();
 				sensorData.append("{ name:'").append(sensorInfo.getSensorId()).append(":").append(sensorInfo.getSensorName()).append("(").append(sensorTypeMap.get(sensorInfo.getSensorTypeId().toString())).append(")',\n");
 				sensorData.append("data:[");
-				String[] s = datas.getString().get(0).split(";");
+				List<String> d=datas.getString();
+				String[] s ={};
+				if(d!=null&&d.size()>0){
+					s = d.get(0).split(";");
+				}
 				for(String data : s){
 					String[] s1 = data.split(",");
 					sensorData.append("{name:'").append(s1[0]);
@@ -105,7 +112,11 @@ public class WebServiceRerigeratorClient {
 						}
 					}					
 				}
-				sensorData.deleteCharAt(sensorData.length() - 1).append("]\n},");
+				if(d!=null&&d.size()>0){
+					sensorData.deleteCharAt(sensorData.length() - 1).append("]\n},");
+				}else{
+					sensorData.append("]\n},");
+				}
 				realTimeData.append(sensorData);
 			}
 			realTimeData.deleteCharAt(realTimeData.length() - 1).append("\n");

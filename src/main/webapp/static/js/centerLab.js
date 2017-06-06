@@ -437,7 +437,9 @@ function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	});
 }
 //获取曲线具体数据
+var mlabTypeCode,murl,mtestUnitId;
 function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
+	mlabTypeCode=labTypeCode;murl=url;mtestUnitId=testUnitId;
 	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":labTypeCode,"url":url,"testUnitId":testUnitId},function(data){
 		if(data==""){
 			//alert("暂未开测");
@@ -462,6 +464,8 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		//console.log(showLegendData)
 		createLegendHtmls();
 		createEcharts(true);
+		//因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
+		
 	});
 }
 function resetDataCenterLab(){
@@ -528,11 +532,11 @@ function createEcharts(isFirst,obj){
 		var opt2=myChart2.getOption();
 		myChart1.clear();
 		myChart2.clear();
-		opt1.xAxis=[{data:xData}];
+		opt1.xAxis=[{data:xData.concat(mockXdata)}];
 		opt1.series=seriesTopData;
 	    myChart1.setOption(opt1);
 	    
-	    opt2.xAxis=[{data:xData}];
+	    opt2.xAxis=[{data:xData.concat(mockXdata)}];
 		opt2.series=seriesBottomData;
 	    myChart2.setOption(opt2);
 	}
@@ -754,7 +758,7 @@ function getCharts1() {
             {
                 type: 'value',
                 name: currentData[0].unit,
-                max:120,
+                max:90,
                 min:-30,
 	            /*max:currentData[0].highvalue,
 	            min:currentData[0].lowvalue,*/
@@ -909,25 +913,10 @@ function getCharts1() {
     myChart1.clear();
     myChart1.setOption(option);
     echarts.connect([myChart1, myChart2]);
-   /* myChart1.setOption({
+    myChart1.setOption({
         series:getAnimation(seriesTopData)
     });
-    setInterval(function () {
-	 for(var i=0; i<seriesTopData.length;i++){
-		 seriesTopData[i].data.shift();
-	     seriesTopData[i].data.push(parseInt(Math.random() * 30));
-	 }
-        var month = xData.shift();
-        xData.push(month)
-
-        myChart1.setOption({
-            xAxis:[
-                {data:xData}],
-            series: seriesTopData,
-        });
-        //console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesTopData[0].data)
-       // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
-    }, 2000);*/
+    intevalChart1=setInterval("intervalChangeData()", 30000);
    /* setInterval(function () {
    	 var preStart=myChart1.getOption().dataZoom[0].start;
    	 var preEnd=myChart1.getOption().dataZoom[0].end;
@@ -955,6 +944,111 @@ function getCharts1() {
 	 //console.log("myChart1---"+preStart+"--"+preEnd)
     },30000);*/
 }
+var intevalChart1;
+function intervalChangeData() {
+	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.0083333333333333"},function(data){
+		data=eval("("+data+")");
+		dealIntervalSeriesData(data);
+		//clearInterval(intevalChart1);
+		//上方处理
+		var needRefresh=false;
+		for(var i=0; i<intervalSeriesTopData.length;i++){
+			for(var x=0;x<intervalSeriesTopData[i].length;x++){
+				//只有原先没有加入的点蔡添加
+				/*if(isHasElementOne(xData,parseFloat(intervalSeriesTopData[i][x].name)*60)==-1){
+					seriesTopData[i].data.shift();
+					//console.log(intervalSeriesTopData[i][x].value)
+					seriesTopData[i].data.push(intervalSeriesTopData[i][x].value);
+					needRefresh=true;
+				}*/
+				seriesTopData[i].data.shift();
+				seriesTopData[i].data.push(intervalSeriesTopData[i][x].value);
+				needRefresh=true;
+			}
+		}
+		//下方处理
+		for(var i=0; i<intervalSeriesBottomData.length;i++){
+			
+			for(var x=0;x<intervalSeriesBottomData[i].length;x++){
+				/*if(isHasElementOne(xData,parseFloat(intervalSeriesBottomData[i][x].name)*60)==-1){
+					xData.shift();
+					xData.push(parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60))
+					
+					seriesBottomData[i].data.shift();
+					//console.log(intervalSeriesBottomData[i][x].value)
+					seriesBottomData[i].data.push(intervalSeriesBottomData[i][x].value);
+					needRefresh=true;
+				}*/
+				if(i==0){
+					if(isHasElementOne(xData,parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60)==-1)){
+						xData.shift();
+						xData.push(parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60))
+					}
+				}
+				
+				seriesBottomData[i].data.shift();
+				seriesBottomData[i].data.push(intervalSeriesBottomData[i][x].value);
+				needRefresh=true;
+			}
+		}
+		if(needRefresh){
+			var endStart=xData[xData.length-1];
+			//模拟空白x轴
+			mockXdataMethod(endStart);
+			//console.log(endStart)
+			myChart1.setOption({
+				xAxis:[
+				       {data:xData.concat(mockXdata)}],
+				       series: seriesTopData,
+			});
+			myChart2.setOption({
+				xAxis:[
+				       {data:xData.concat(mockXdata)}],
+				       series: seriesBottomData,
+			});
+		}
+	});
+       //console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesTopData[0].data)
+      // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
+}
+//处理线series 定时器使用
+var intervalSeriesTopData=[];
+var intervalSeriesBottomData=[];
+function dealIntervalSeriesData(mData){
+	intervalSeriesTopData=[];
+	intervalSeriesBottomData=[];
+	for(var x=0;x<totalLegendName.length;x++){
+		var currentName=totalLegendName[x];
+		var data=[];
+		for(var i=0;i<mData.list.length;i++){
+			if(mData.list[i].name==currentName){
+				data=mData.list[i].data;
+			}
+		};
+		var checked=false;
+		$('input[name="legendcheckbox"]:checked').each(function(){ 
+			if($(this).val()==dealBracketForObj(currentName)){
+				checked=true;
+			}; 
+		}); 
+		if(checked){
+			var topIndex=isHasElementOne(topParam,dealUnit(currentName));
+			var bottomIndex=isHasElementOne(bottomParam,dealUnit(currentName));
+			if(topIndex>-1||bottomIndex>-1){
+				if(topIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
+					//展示在上半部分
+					intervalSeriesTopData.push(data);
+				}else if(bottomIndex>-1&&isHasElementOne(showLegendData,dealBracketForObj(currentName))>-1){
+					//展示在下半部分
+					intervalSeriesBottomData.push(data);
+				}
+			}else{
+				//没有配置 默认画到左下
+				intervalSeriesBottomData.push(data);
+			}
+		}
+	}
+};
 function getCharts2() {
 
     option2 = {
@@ -1184,7 +1278,9 @@ function getCharts2() {
     myChart2.setOption(option2);
 
     echarts.connect([myChart1, myChart2]);
-
+    myChart2.setOption({
+        series:getAnimation(seriesBottomData)
+    });
    /* myChart2.setOption({
         series:getAnimation(seriesBottomData)
     });
