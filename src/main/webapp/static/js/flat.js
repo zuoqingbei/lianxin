@@ -236,6 +236,7 @@ var $echartTips = $('#echartTips');
 /**
  * 提示渐隐时间
  * @type {number}
+ *  
  */
 var TIP_SETTIMEOUT_TIME = 3000;
 

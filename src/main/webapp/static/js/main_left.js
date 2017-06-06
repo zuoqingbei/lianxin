@@ -264,7 +264,7 @@ $(function () {
      //videoFadeOut();
 
     //调整字符云页面的文字大小
-    document.getElementById("wordCloud").contentWindow.resizeText(bodyScale);
+    // document.getElementById("wordCloud").contentWindow.resizeText(bodyScale);
     // wordCloud.window.resizeText(bodyScale);
 
     //切换地图显示区域
