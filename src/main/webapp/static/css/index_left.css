@@ -401,7 +401,7 @@
 
 #l .flat-footer .legend ul.legend-bottom{
     position: absolute;
-    top: 80%;
+    top: 78%;
     width: 100%;
 }
 #l .flat-footer .legend ul.legend-bottom li a{
@@ -534,7 +534,7 @@
     /*background-color: rgba(102,204,255,.15);*/
 }
 #l .flat .flat-right-bottom .chartBorder h4{
-	margin: 4% 2% 0;
+    margin: 4% 2% 0;
 }
 
 #l .sphere .chartBorder h4 strong,

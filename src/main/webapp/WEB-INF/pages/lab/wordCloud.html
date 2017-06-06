@@ -62,7 +62,7 @@
 <!--<script src="../../../static/asserts/js/jquery-2.2.4.js"></script>-->
 <script>
     var radius = 210;//3D 球的半径
-    //        radius = $("#div1").css("width");
+//       var  radius = $("#div1").css("width")/2-10;
     var dtr = Math.PI / 180;
     var d = 600;
 
@@ -71,7 +71,7 @@
     var lasta = 1;
     var lastb = 1;
     var distr = true;
-    var tspeed = 20;//文字移动速度
+    var tspeed = 5;//文字移动速度
     var size = 250;
 
     var mouseX = 0;
@@ -293,9 +293,9 @@
                 mouseX /= 5;
                 mouseY /= 5;
             };
-            setTimeout(function () {
-                setInterval(update, 30);
-            }, 2000)
+            setTimeout(function () { 
+                setInterval(update, 50);
+             }, 2000) 
 
         });
     });
