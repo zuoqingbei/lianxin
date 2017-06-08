@@ -401,15 +401,24 @@ function loadLabUnitInfoCenterTabAjax(){
 			}
 		});
 		$("#lab_unit_selected_center").html(htmls);
+
         $(".sheshi_tab_list #lab_unit_selected_center>li").click(function () {
+            $(".sheshi_tab").eq(1).trigger('click')
             $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
             $(this).css('height','auto').siblings().css('height','1.5em');
             $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
             $(this).find('.taiwei_hide').css('display','block');
+            // $('.sheshi_tab').removeClass('sheshi_tab_active');
+            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
+
         });
         $('.taiwei_hide>li').click(function () {
-            $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active')
+            $(".sheshi_tab").eq(1).trigger('click')
+            $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
+            // $('.sheshi_tab').removeClass('sheshi_tab_active');
+            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
         })
+
 
 
 	});
