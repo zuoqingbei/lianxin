@@ -67,7 +67,7 @@
     var d = 600;
 
     var mcList = [];
-    var active = false;
+    var active = active;
     var lasta = 1;
     var lastb = 1;
     var distr = true;
@@ -293,9 +293,9 @@
                 mouseX /= 5;
                 mouseY /= 5;
             };
-            setTimeout(function () { 
-                setInterval(update, 50);
-             }, 2000) 
+             setTimeout(function () {  
+                setInterval(update, 150);
+              }, 2000)  
 
         });
     });
