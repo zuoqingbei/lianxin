@@ -234,12 +234,13 @@
                     <li class="main">青岛宝井钢材</li>
                 </ul> -->
                 <form action="">
-                    <select name="请选择" onchange="tab1JianSelected(this)">
+                    <select title="选择要分析的条目" name="请选择" onchange="tab1JianSelected(this)">
                         ##for(p in providerDic){
                             <optgroup class="main main${p.id!}" label=${p.name!}>
                                 ##for(c in p.children){
                                     ##if(pLP.first&&cLP.first){
-                                    <option class="main${p.id}-sub active" data="${c.id}">${c.name}</option>
+                                    <!--<option class="main${p.id}-sub active" data="${c.id}">${c.name}</option>-->
+                                    <option class="main${p.id}-sub" data="${c.id}">${c.name}</option>
                                     ##}else{
                                     <option class="main${p.id}-sub" data="${c.id}">${c.name}</option>
                                     ##}
