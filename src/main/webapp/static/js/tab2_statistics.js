@@ -16,9 +16,9 @@ function loadTab2Data() {
     //不同产线的能力状态分布
     abilityByProductLine();
     //人员状态 散点
-    personForTab2Ajax("myChart25", "1", 3);
-    personForTab2Ajax("myChart26", "2", 2);
-    personForTab2Ajax("myChart27", "3", 3);
+    personForTab2Ajax("myChart25", "1", 1);
+    personForTab2Ajax("myChart26", "2", 1);
+    personForTab2Ajax("myChart27", "3", 1);
     //人员状态 柱状
     findPersonStatusTab2Ajax("myChart22", 1);
     findPersonStatusTab2Ajax("myChart23", 2);
@@ -164,6 +164,17 @@ function findPersonStatusTab2Ajax(myChartIds, type) {
 
     })
 }
+function dealNumberTab2(num){
+	if(parseInt(num)>25){
+		var x=parseInt(parseInt(num)/(parseInt(num)-25));
+		if(25+x>33){
+			return 33*bodyScale;
+		}
+		return (25+x)*bodyScale
+	}else{
+		return parseInt(num)*bodyScale;
+	}
+}
 //人员状态 散点图
 function personForTab2Ajax(myChartIds, type, divisor) {
     $.post(contextPath + '/lab/personForTab2Ajax', {"labTypeCode": labTypeCode, "type": type}, function (res) {
@@ -179,10 +190,15 @@ function personForTab2Ajax(myChartIds, type, divisor) {
         var preYdata = [];
         $.each(res, function (index, item) {
             preYdata.push(item[0].product_name);
-            data0.push([item[0].name, item[0].product_name, parseInt(item[0].all_num) / divisor*bodyScale, item[0].name]);
+            data0.push([item[0].name, item[0].product_name, dealNumberTab2(parseInt(item[0].all_num) / divisor), item[0].name]);
+            data1.push([item[1].name, item[1].product_name, dealNumberTab2(parseInt(item[1].all_num) / divisor), item[1].name]);
+            data2.push([item[2].name, item[2].product_name, dealNumberTab2(parseInt(item[2].all_num) / divisor), item[2].name]);
+            data3.push([item[3].name, item[3].product_name, dealNumberTab2(parseInt(item[3].all_num) / divisor), item[3].name]);
+           
+           /* data0.push([item[0].name, item[0].product_name, parseInt(item[0].all_num) / divisor*bodyScale, item[0].name]);
             data1.push([item[1].name, item[1].product_name, parseInt(item[1].all_num) / divisor*bodyScale, item[1].name]);
             data2.push([item[2].name, item[2].product_name, parseInt(item[2].all_num) / divisor*bodyScale, item[2].name]);
-            data3.push([item[3].name, item[3].product_name, parseInt(item[3].all_num) / divisor*bodyScale, item[3].name]);
+            data3.push([item[3].name, item[3].product_name, parseInt(item[3].all_num) / divisor*bodyScale, item[3].name]);*/
             if (index == 0) {
                 $.each(item, function (ind, it) {
                     xData.push(it.name);

@@ -409,6 +409,17 @@ function findOrderPassForProAjax(mychartIds,desName){
 		});
 	})
 }
+function dealNumberTab3(num){
+	if(parseInt(num)>25){
+		var x=parseInt(parseInt(num)/(parseInt(num)-25));
+		if(25+x>33){
+			return 33*bodyScale;
+		}
+		return (25+x)*bodyScale
+	}else{
+		return parseInt(num)*bodyScale;
+	}
+}
 function orderTypeAjax(myChartIds,desName,divisor){
 	$.post(contextPath+'/lab/findOrderMonthTypeForProductAjax',{"labTypeCode":labTypeCode,"desName":desName},function(res){
 		var data = [];
@@ -422,7 +433,9 @@ function orderTypeAjax(myChartIds,desName,divisor){
 					xData.push(it.name);
 				}
 				//拼接数据
-				var value=[index,ind,parseInt(it.num)/divisor*bodyScale];//暂时数量除以divisor
+				var mV=Math.sqrt(parseInt(it.num));
+				var value=[index,ind,dealNumberTab3(mV)];//暂时数量除以divisor
+				//var value=[index,ind,parseInt(it.num)/divisor*bodyScale];//暂时数量除以divisor
 				data.push(value);
 			});
 		});
