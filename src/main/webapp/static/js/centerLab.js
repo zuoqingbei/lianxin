@@ -107,7 +107,7 @@ function inittwo() {
         $("#satisfaction_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#satisfaction_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
         $("#satisfaction_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
-        chartfive.setOption(initone(resu[0]));
+        chartfive.setOption(initone(data[data.length-1].rate));
         var bar_chip = contextPath + '/static/img/bar_chip.png';
         var labelSetting = {
             normal: {
@@ -177,7 +177,7 @@ function initThree() {
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#hg_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
         $("#hg_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
-        chartone.setOption(initone(resu[0]));
+        chartone.setOption(initone(data[data.length-1].rate));
         charttwo.setOption(getBarEcharts());
         var bar_chip = contextPath + '/static/img/bar_chip.png';
         var labelSetting = {
@@ -255,7 +255,7 @@ function initfour() {
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
         $("#order_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
-        chartthree.setOption(initone(resu[0]));
+        chartthree.setOption(initone(data[data.length-1].rate));
         chartfour.setOption(getAreaEcharts());
         chartfour.setOption({
             textStyle: {
@@ -925,7 +925,7 @@ function getCharts1() {
     myChart1.setOption({
         series:getAnimation(seriesTopData)
     });
-    intevalChart1=setInterval("intervalChangeData()", 60000);
+   // intevalChart1=setInterval("intervalChangeData()", 60000);
    /* setInterval(function () {
    	 var preStart=myChart1.getOption().dataZoom[0].start;
    	 var preEnd=myChart1.getOption().dataZoom[0].end;
@@ -1574,10 +1574,12 @@ function joinCenterHtmls(index, item) {
 	var htmls = "";
 	htmls += "<div onclick=labDetailInfo('"+item.labCode+"','"+item.url+"') class='l-mid-body-" + bodyIndex + "'>";
 	htmls+='<h4>'+item.labName+'</h4>';
-	htmls+='<div class="item4"><h5>设备数：<span></span></h5><span class="data">'+item.equipmentCount+'</span></div>';
+	//htmls+='<div class="item4"><h5>设备数：<span></span></h5><span class="data">'+item.equipmentCount+'</span></div>';
+	htmls+='<div class="item4"><h5>设备数：<span></span></h5><span class="data">'+arr4[index]+'</span></div>';
 	htmls+='<div class="item1"><h5>当年故障数：<span></span></h5> <span class="data">'+arr1[index]+'台次</span></div>';
 	htmls+='<div class="item2"><h5>当前完好数：<span></span></h5>';
-	htmls+='<span class="data">'+parseInt(parseInt(item.equipmentCount)*arr3[index]/100)+'</span></div>';
+	//htmls+='<span class="data">'+parseInt(parseInt(item.equipmentCount)*arr3[index]/100)+'</span></div>';
+	htmls+='<span class="data">'+arr2[index]+'</span></div>';
 	htmls+='<div class="item3"> <h5>当前完好率：<span></span></h5><div class="progress">';
 	htmls+='<div class="progress-bar" role="progressbar" aria-valuenow="'+arr3[index]+'" aria-valuemin="0"';
 	htmls+='  aria-valuemax="100" style="width: '+arr3[index]+'%;height: 100%"></div> </div>';
@@ -1606,17 +1608,16 @@ function joinTopHtmls(index,item){
 	  htmls+=' </div> <span class="data">'+(item.testUnitStatus==null?"":item.testUnitStatus)+'</span></div>';
 	  htmls+='<div class="item3"><h5>月负荷率：<span></span></h5>';
 	  htmls+='<div class="progress">';
-	  var monthRate="";
-	  if(item.monthRate==null){
-		  monthRate="0/1";
+	  var monthRate=item.monthRate;
+	  if(item.monthRate!=null){
+		  monthRate=monthRate.replace("%","");
 	  }else{
-		  monthRate=item.monthRate;
+		  monthRate="0";
 	  }
-	  var month=monthRate.split("/");
-	  var monthRate=parseInt(month[0])/parseInt(month[1]).toFixed(1);
 	  htmls+='<div class="progress-bar" role="progressbar" aria-valuenow="'+monthRate+'" aria-valuemin="0"';
 	  htmls+=' aria-valuemax="100" style="width: '+monthRate+'%;height: 100%"></div> </div>';
-	  htmls+='<span class="data">'+(item.monthRate==null?"":item.monthRate)+'</span></div></div>';
+	  monthRate=parseFloat(monthRate).toFixed(1);
+	  htmls+='<span class="data">'+monthRate+'%</span></div></div>';
      return htmls;
 }
 function labDetailInfo(labCode,url){

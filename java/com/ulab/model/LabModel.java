@@ -90,16 +90,18 @@ public class LabModel extends Model<LabModel> {
 	 * @return_type List<Record>
 	 */
 	public List<Record> labStatisByField(String sqlWhere, String field,String sort) {
+		if("professional_code".equals(field)){
+			System.out.println(1);
+		}
 		if(StringUtils.isBlank(sort)){
 			sort=" desc ";
 		}
 		StringBuffer sb = new StringBuffer();
 		sb.append(" select d.short_name as name, nvl(count(1),0) as count,d.id from   ");
-		sb.append("  t_b_lab_info lab left join t_b_dictionary d on lab."
-				+ field + "=d.id ");
-		sb.append("  where lab.del_flag=" + Constants.DEL_FALG + " and lab." + field
-				+ " is not null " + sqlWhere
-				+ " group by d.name,d.short_name,d .order_no,d.id order by d.order_no  "+sort);
+		sb.append("  (select distinct t.code as labcode,t."+field+",t.del_flag  from t_b_lab_info t ");
+		sb.append(" where t.del_flag= " + Constants.DEL_FALG +" and t." + field+ " is not null " + sqlWhere);
+		sb.append(" ) lab left join t_b_dictionary d on lab."+ field + "=d.id ");
+		sb.append(" group by d.name,d.short_name,d .order_no,d.id order by d.order_no  "+sort);
 		List<Record> list=Db.find(sb.toString());
 		/*if(Constants.MONI_JOIN_TIYAN&&"properties_code".equals(field)){
 			//如果统计实验室性质，需要对用户体验与用户模拟做合并处理

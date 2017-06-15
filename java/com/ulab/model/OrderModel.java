@@ -335,16 +335,16 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public Record findOrderTypePercentTab3(String labTypeCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select a.*,b.*,case (A .zj + b.mk) WHEN a.zj then '100' else to_char(a.zj/(a.zj+b.mk)*100,'00.0') end as  zj_rate,case (a .zj + b.mk) when b.mk then '100' else to_char(b.mk/(a.zj+b.mk)*100,'00.0') end as mk_rate, ");
+		sb.append(" select a.*,b.*,case (A .mk + b.zj) WHEN b.zj then '100' else to_char(b.zj/(b.zj+a.mk)*100,'00.0') end as  zj_rate,case (b.zj + a.mk) when a.mk then '100' else to_char(a.mk/(b.zj+a.mk)*100,'00.0') end as mk_rate, ");
 		sb.append(" '4.3' as zj_rise,'2.1' as mk_rise from ( ");
-		sb.append(" select sum(num) as zj from t_b_order_data where type=2  and desc_name='模块' ");
+		sb.append(" select sum(num) as mk from t_b_order_data where type=2  and desc_name='模块' ");
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and lab_name='"+labTypeCode+"' ");
 		}else{
 			sb.append(" and lab_name is null ");
 		}
 		sb.append("  group by desc_name)a join ( ");
-		sb.append(" select sum(num) as mk from t_b_order_data where type=2  and desc_name='整机'    ");
+		sb.append(" select sum(num) as zj from t_b_order_data where type=2  and desc_name='整机'    ");
 		if(StringUtils.isNotBlank(labTypeCode)){
 			sb.append(" and lab_name='"+labTypeCode+"' ");
 		}else{

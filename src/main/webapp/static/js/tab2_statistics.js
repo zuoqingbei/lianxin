@@ -165,12 +165,13 @@ function findPersonStatusTab2Ajax(myChartIds, type) {
     })
 }
 function dealNumberTab2(num){
-	if(parseInt(num)>25){
-		var x=parseInt(parseInt(num)/(parseInt(num)-25));
-		if(25+x>33){
-			return 33*bodyScale;
+	var max=25;
+	if(parseInt(num)>max){
+		var x=parseInt(parseInt(num)/(parseInt(num)-max));
+		if(max+x>30){
+			return 30*bodyScale;
 		}
-		return (25+x)*bodyScale
+		return (max+x)*bodyScale
 	}else{
 		return parseInt(num)*bodyScale;
 	}
@@ -230,6 +231,7 @@ function personForTab2Ajax(myChartIds, type, divisor) {
                 top: "6%"
             },
             tooltip: {
+            	show:false,
                 trigger: 'item',
                 axisPointer: {
                     type: 'cross',
