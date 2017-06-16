@@ -167,11 +167,35 @@ function mkSqualityLevelForTab4(xhPro){
 	    ]
 	});
 }
+//获取最大值 最小值
+function getMaxMinForScpTab4(data, xhPro, type) {
+    var result = [];
+    var max;
+    var min;
+    if (type == 1) {
+        min = xhPro.jz_lcl;
+        max = xhPro.jz_ucl;
+    } else {
+        min = xhPro.fc_lcl;
+        max = xhPro.fc_ucl;
+    }
+    $.each(data, function (index, item) {
+        if (parseFloat(item.num) > parseFloat(max)) {
+            max = item.num;
+        }
+        if (parseFloat(item.num) < parseFloat(min)) {
+            min = item.num;
+        }
+    });
+    result.push(parseFloat(max) + 0.1);
+    result.push(parseFloat(min) - 0.1);
+    return result;
+}
 //SPC分析  xbar
 function scpDataForTab4(myChartIds,xhPro,type){
 	//类型 1：样本平均值 2：样本标准差
 	$.post(contextPath+'/lab/jianCeXbarForTab1Ajax',{"xhName":xhPro.xh_name,"type":type},function(data){
-		var maxAndMin=getMaxMinForScpTab1(data,xhPro,type);
+		var maxAndMin=getMaxMinForScpTab4(data,xhPro,type);
 		var mTitle,mLcl,mValue,mUcl;
 		if(type==1){
 			mTitle="样本平均值";
@@ -229,7 +253,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		            },
 		            nameGap:2*bodyScale,
 		            nameTextStyle:{fontSize:6*bodyScale},
-		            data: statisticRightLengend2(data)
+		            data: statisticRightLengend4(data)
 		        }
 		    ],
 		    visualMap: {
@@ -262,7 +286,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
                         }
                     }},
 		            symbolSize: 2,
-		            data: tab1OrderRateSeriseData(data),
+		            data: tab4OrderRateSeriseData(data),
 		            markLine: {
 		                symbolSize:0,
 		                silent: true,
@@ -298,6 +322,21 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		
 	});
 	
+}
+function statisticRightLengend4(data) {
+    var legnend = [];
+    $.each(data, function (index, item) {
+        var name = item.name;
+        legnend.push(name);
+    });
+    return legnend;
+}
+function tab4OrderRateSeriseData(data) {
+    var mData = [];
+    $.each(data, function (index, item) {
+        mData.push(item.rate);
+    });
+    return mData;
 }
 //直方图
 function cpkDataForTab4(xhPro){
