@@ -28,6 +28,9 @@ define("start", function (require) {
 
     //点击重置按钮
     $(".reset").click(function () {
+        sphereReset();
+    });
+    function sphereReset() {
         if (myChart) {
             myChart.dispose();
         }
@@ -36,6 +39,7 @@ define("start", function (require) {
         myChart.showLoading();
         myChart.setOption(options);
         myChart.hideLoading();
-    });
+    }
+
 
 });

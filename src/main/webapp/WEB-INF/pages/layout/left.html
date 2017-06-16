@@ -1,4 +1,5 @@
-     <div id="l">
+     <div id="l" class="l left3x3" style="display: none">
+     <!--<div id="l" class="l" >-->
         <header>
             <span class="mainLogo"></span>
             <h1>全球实验室数据中心</h1>
@@ -40,9 +41,9 @@
                     </div>
                 </div>
                 <div class="mapArea">
-                    <h2>数据互联&emsp;&emsp;实时共享&emsp;&emsp;提效增值</h2>
+                    <h2>数据互联&emsp;实时共享&emsp;&emsp;提效增值</h2>
                     <!--球体地图位置-->
-                    <iframe src="${contextPath!}/lab/sphereMap"></iframe>
+                    <iframe  class="iframe map" id="sphereIFrame3x3" src="${contextPath!}/lab/sphereMap"></iframe>
                 </div>
                 <div class="sphere-right">
                     <div class="sphere-right-top">
@@ -55,8 +56,8 @@
                         -->
                         <div class="chartBorder">
                             <h3>实验室总数及分布</h3>
-                            <h4 class="noBG">实验室总数： <strong id="lab_all_count"> 0 </strong></h4>
-                            <ul id="pro_line">
+                            <h4 class="noBG">实验室总数： <strong id="lab_all_count" class="lab_all_count"> 0 </strong></h4>
+                            <ul id="pro_line" class="pro_line">
                             </ul>
                             <div class="myChart"></div>
                         </div>
@@ -164,13 +165,13 @@
                             <div class="animateBox">
                                 <ul class="lab">
                                     ##for(type in labType){
-                                    <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.short_name!}</a>
+                                    <li class="active" code="${type.id!}"><a><span class="icon"></span>${type.short_name!}</a>
                                     </li>
                                     ##}
                                 </ul>
-                                <ul class="line">
+                                <ul class="line current">
                                     ##for(type in productLine){
-                                    <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.name!}</a>
+                                    <li class="active" code="${type.id!}"><a><span class="icon"></span>${type.name!}</a>
                                     </li>
                                     ##}
                                     <!--<li  ><a href=""><span class="icon"></span>其它</a> </li>-->
@@ -179,10 +180,10 @@
                         </div>
 
                         <ul class="legend-bottom">
-                        	<li><a href=""><span class="icon"></span>中海博睿</a></li>
+                        	<li><a ><span class="icon"></span>中海博睿</a></li>
                         	 ##for(type in productLine){
                         	 		##if(!typeLP.last){
-                        	 			<li class=""><a href=""><span class="icon"></span> ${type.name!}</a></li>
+                        	 			<li class=""><a><span class="icon"></span> ${type.name!}</a></li>
                         	 		##}
                         	  ##}
                         </ul>
@@ -200,25 +201,31 @@
 <script>
     var myCharts;
     var myChartFlatRT;
+    var myChartFlatRT_full;
+    var myChartFlatLT;
+    var myChartFlatLT_full;
     var myChartFlatRB;
     var myChartFlatLB;
+    var myChartFlatLB_full;
     var pathSymbols = {
         bar_chip: '${contextPath!}/static/img/bar_chip.png'
     };
     $(function () {
         //右上角的图表
-        myChartFlatRT = echarts.init($("#l").find(".flat-right-top .myChart")[0]);
+        myChartFlatRT = echarts.init($("#l.left3x3").find(".flat-right-top .myChart")[0]);
+        myChartFlatRT_full = echarts.init($("#l.fullScreen_map").find(".flat-right-top .myChart")[0]);
         //平面左上的环形图
-        myChartFlatLT = echarts.init($("#l").find(".flat-left-top .myChart")[0]);
+        myChartFlatLT = echarts.init($("#l.left3x3").find(".flat-left-top .myChart")[0]);
+        myChartFlatLT_full = echarts.init($("#l.fullScreen_map").find(".flat-left-top .myChart")[0]);
         //右下角的图表
 //        myChartFlatRB = echarts.init($("#l").find(".flat-right-bottom .myChart")[0]);
 
         //左下角的图表
-        myChartFlatLB = echarts.init($("#l").find(".flat-left-bottom .myChart")[0]);
-        myCharts = [myChartFlatLT, myChartFlatRT, myChartFlatLB];
+        myChartFlatLB = echarts.init($("#l.left3x3").find(".flat-left-bottom .myChart")[0]);
+        myChartFlatLB_full = echarts.init($("#l.fullScreen_map").find(".flat-left-bottom .myChart")[0]);
+        myCharts = [myChartFlatLT,myChartFlatLT_full, myChartFlatRT,myChartFlatRT_full, myChartFlatLB,myChartFlatLB_full];
         //左侧平面地图及其他左侧数据
         reloadLeftData();
-
 
     });
 </script>

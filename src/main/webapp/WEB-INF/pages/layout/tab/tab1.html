@@ -239,32 +239,18 @@
                             <optgroup class="main main${p.id!}" label=${p.name!}>
                                 ##for(c in p.children){
                                     ##if(pLP.first&&cLP.first){
-                                    <!--<option class="main${p.id}-sub active" data="${c.id}">${c.name}</option>-->
-                                    <option class="main${p.id}-sub" data="${c.id}">${c.name}</option>
+                                    <option class="main${p.id}-sub active" data="${c.id}" value="${c.name}">${c.name}</option>
                                     ##}else{
-                                    <option class="main${p.id}-sub" data="${c.id}">${c.name}</option>
+                                    <option class="main${p.id}-sub" data="${c.id}" value="${c.name}">${c.name}</option>
                                     ##}
                                 ##}
                             </optgroup>
                         ##}
+                        <option class="showLabel" selected style="display: none;">常州弗兰德电器</option>
                     </select>
                 </form>
             </div>
-            <!--<select>
-                <option value="">&#45;&#45;请选择城市&#45;&#45;</option>
-                <optgroup label="四川省">
-                    <option value="成都市">├成都市</option>
-                    <option value="绵阳市">├绵阳市</option>
-                    <option value="眉山市">├眉山市</option>
-                    <option value="德阳市">└德阳市</option>
-                </optgroup>
-                <optgroup label="湖南省">
-                    <option value="长沙市">长沙市</option>
-                    <option value="湘潭市">湘潭市</option>
-                    <option value="岳阳市">岳阳市</option>
-                    <option value="怀化市">怀化市</option>
-                </optgroup>
-            </select>-->
+
             <div class="total_bottom_bar1">
                 <!--<div class="echarts_title echarts_title1">量产一致性对比分析</div>-->
                 <h3><span class="white" id="tab1_jiance_xh_name"></span> SPC分析</h3>
@@ -298,6 +284,3 @@
 </div>
 
 
-<script>
-
-</script>

@@ -246,7 +246,6 @@ function mapSphere() {
                             emphasis:{
                                 areaStyle:{
                                     color:'#00ffff'
-                                    // color:'#f00'
                                 }
                             }
                         }
@@ -254,10 +253,10 @@ function mapSphere() {
                     flat: false, /*是否使用平面图*/
                     flatAngle: 0,
                     mapLocation: {
-                        // x: 0,
-                        // y: 0,
-                        // width: '100%',
-                        // height: '100%'
+                        x: 0,
+                        y: 0,
+                        width: '100%',
+                        height: '100%'
                     },
                     baseLayer: {
                         backgroundColor: 'rgba(20,143,204,.8)',
