@@ -57,7 +57,8 @@ function professionalStatis(){
 			})
 			htmls+='<li>'+count+'</li>';
 		});
-		$("#left_professional_code_num").html(htmls);
+		$(".left3x3 #left_professional_code_num").html(htmls);
+		$(".fullScreen_map #left_professional_code_num").html(htmls);
 	})
 }
 //实验室数量统计
@@ -128,6 +129,27 @@ function worldTyleEchart(data){
 	        }
 	    }
 	};
+	var labelTop_full = {
+	    normal: {
+	        color: '#064f66',
+	        label: {
+	            show: true,
+	            position: 'center',
+//	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
+	            formatter: function (params) {
+	                return allNum -  params.value + '\n';
+	            },
+	            textStyle: {
+	                fontSize:bodyScale*12,
+	                color: "#f90",
+	                baseline: 'bottom'
+	            }
+	        },
+	        labelLine: {
+	            show: false
+	        }
+	    }
+	};
 	var labelFromatter = {
 	    normal: {
 	        label: {
@@ -150,6 +172,29 @@ function worldTyleEchart(data){
 	            textStyle: {
 //	                    color:"#f90",
 	                fontSize: bodyScale*9,
+	                // fontSize: 6,
+	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
+                    baseline: 'top'
+	            }
+	        },
+	        labelLine: {
+	            show: false
+	        }
+	    },
+	    emphasis: {
+	        color: '#6cf'
+	    }
+	};
+	var labelBottom_full = {
+	    normal: {
+	        color: "#6cf",
+	        label: {
+	            show: true,
+	            position: 'center',
+	            formatter : '{b}',
+	            textStyle: {
+//	                    color:"#f90",
+	                fontSize: bodyScale*12,
 	                // fontSize: 6,
 	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
                     baseline: 'top'
@@ -239,8 +284,8 @@ function worldTyleEchart(data){
 	            radius: radius,
 	            x: '0%', // for funnel
 	            data: [
-	                {name: 'other', value: allNum-num2, itemStyle: labelTop},
-	                {name: '研发-调试', value: num2, itemStyle: labelBottom}
+	                {name: 'other', value: allNum-num2, itemStyle: labelTop_full},
+	                {name: '研发-调试', value: num2, itemStyle: labelBottom_full}
 	            ]
 	        },
 	        {
@@ -250,8 +295,8 @@ function worldTyleEchart(data){
 	            x: '20%', // for funnel
 	            itemStyle: labelFromatter,
 	            data: [
-	                {name:'other', value:allNum-num3, itemStyle : labelTop},
-	                {name: '中海博睿\n新品确认', value: num3, itemStyle: labelBottom}
+	                {name:'other', value:allNum-num3, itemStyle : labelTop_full},
+	                {name: '中海博睿\n新品确认', value: num3, itemStyle: labelBottom_full}
 	            ]
 	        },
 	        {
@@ -261,8 +306,8 @@ function worldTyleEchart(data){
 	            x: '40%', // for funnel
 	            itemStyle: labelFromatter,
 	            data: [
-	                {name: 'other', value: allNum-num5, itemStyle: labelTop},
-	                {name: '模块商\n模块测试', value: num5, itemStyle: labelBottom}
+	                {name: 'other', value: allNum-num5, itemStyle: labelTop_full},
+	                {name: '模块商\n模块测试', value: num5, itemStyle: labelBottom_full}
 	            ]
 	        },
 	        {
@@ -272,8 +317,8 @@ function worldTyleEchart(data){
 	            x: '80%', // for funnel
 	            itemStyle: labelFromatter,
 	            data: [
-	                {name: 'other', value: allNum-num4, itemStyle: labelTop},
-	                {name: '工厂\n量产测试', value: num4, itemStyle: labelBottom}
+	                {name: 'other', value: allNum-num4, itemStyle: labelTop_full},
+	                {name: '工厂\n量产测试', value: num4, itemStyle: labelBottom_full}
 	            ]
 	        }
 	    ]
@@ -468,7 +513,7 @@ function labPropertiesStatis(){
 	        },
 	        textStyle: {
 	            color: "#6cf",
-	            fontSize: bodyScale*10
+	            fontSize: bodyScale*21
 	        },
 	        grid: {
 //	            show:true,
@@ -481,8 +526,8 @@ function labPropertiesStatis(){
 	            {
 	                name: " 实验室\n 数量",
                     nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
-                    axisLabel: axisLabel,
+                    nameTextStyle: nameTextStyle_full,
+                    axisLabel: axisLabel_full,
 	                type: 'value',
                     axisTick: {  //刻度值
                         show: false,
@@ -511,9 +556,9 @@ function labPropertiesStatis(){
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: {
-                        margin: 3 * bodyScale,
+                        margin: 5 * bodyScale,
                         textStyle: {
-                            fontSize: 9 * bodyScale
+                            fontSize: 12 * bodyScale
                         },
 						interval:0
 					},
@@ -740,18 +785,18 @@ function labLifeCycleStatis(){
                 },
 	        },
 	        grid: {
-	            left:"10%",
+	            left:"3%",
 	            right: '10%',
 	            top:"35%,",
 				bottom:"2%"
 	        },
 	        legend: {
-	        	   data:['实验室数量','检测订单量'],
+	        	   data:['实验室数量','检测订单量',""],
 	               textStyle:{
-	                   fontSize: bodyScale*5
+	                   fontSize: bodyScale*12
 	               },
-	               itemWidth: bodyScale*5,
-	               itemHeight: bodyScale*5
+	               itemWidth: bodyScale*11,
+	               itemHeight: bodyScale*11
 	        },
 	        xAxis: [
 	            {
@@ -764,7 +809,7 @@ function labLifeCycleStatis(){
 	                axisLabel: {
                         margin:3*bodyScale,
 	                    textStyle: {
-	                        fontSize: bodyScale*9
+	                        fontSize: bodyScale*13
 	                    }
 	                },
 	                splitLine: {  //刻度线
@@ -780,9 +825,9 @@ function labLifeCycleStatis(){
 	            	type: 'value',
 	            	name: '实验室数量     ',
                     nameTextStyle:{
-	            		fontSize:bodyScale*5
+	            		fontSize:bodyScale*10
                     },
-                    nameGap:10,
+                    nameGap:15,
 					min: 0,
 	                max: 500,
 	                axisLine: {
@@ -792,7 +837,7 @@ function labLifeCycleStatis(){
 	                },
 	                axisLabel: {
 	                    textStyle: {
-	                        fontSize: bodyScale*7
+	                        fontSize: bodyScale*10
 	                    }
 	                    // formatter: '{value} ml'
 	                },
@@ -806,9 +851,9 @@ function labLifeCycleStatis(){
 	            	 type: 'value',
 	                 name: '检测订单量(百)',
                     nameTextStyle:{
-                        fontSize:bodyScale*5
+                        fontSize:bodyScale*10
                     },
-                    nameGap:10,
+                    nameGap:15,
 	                 min: 0,
 	                 max: 500,
 	                 position: 'right',
@@ -820,7 +865,7 @@ function labLifeCycleStatis(){
 	                 },
 	                 axisLabel: {
 	                     textStyle: {
-	                         fontSize: bodyScale*5
+	                         fontSize: bodyScale*10
 	                     }
 	                     // formatter: '{value} ml'
 	                 },

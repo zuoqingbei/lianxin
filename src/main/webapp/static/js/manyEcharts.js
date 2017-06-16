@@ -10,10 +10,22 @@ var axisLabel = {
         fontSize:11*bodyScale
     }
 };
+var axisLabel_full = {
+    margin: 5 * bodyScale,
+    show: true,
+    textStyle: {
+        color: '#66ccff',
+        fontSize:16*bodyScale
+    }
+};
 var nameGap = 10 * bodyScale;
 var nameTextStyle = {
     color: '#66ccff',
     fontSize:8 * bodyScale
+};
+var nameTextStyle_full = {
+    color: '#66ccff',
+    fontSize:12 * bodyScale
 };
 
 // 折线图

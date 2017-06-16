@@ -139,7 +139,10 @@
     right: -11%;
 }
 
-#l .flat .chartBorder ul li {
-    line-height: 280%;
-}
+#l.fullScreen_map .flat .chartBorder ul li {
 
+    margin-top: 5%;
+}
+#l.fullScreen_map .flat-right-bottom .myChart .myChart_num li:nth-of-type(2n) {
+    margin-top: 18%;
+}

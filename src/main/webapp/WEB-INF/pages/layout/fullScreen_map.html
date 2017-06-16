@@ -144,7 +144,8 @@
                         <div class="animateBox">
                             <ul class="lab">
                                 ##for(type in labType){
-                                <li class="active" code="${type.id!}"><a><span class="icon"></span>${type.short_name!}</a>
+                                <li class="active" code="${type.id!}"><a><span
+                                        class="icon"></span>${type.short_name!}</a>
                                 </li>
                                 ##}
                             </ul>
@@ -157,16 +158,16 @@
                         </div>
                     </div>
 
-<!--
-                    <ul class="legend-bottom">
-                        <li><a href=""><span class="icon"></span>中海博睿</a></li>
-                        ##for(type in productLine){
-                        ##if(!typeLP.last){
-                        <li class=""><a href=""><span class="icon"></span> ${type.name!}</a></li>
-                        ##}
-                        ##}
-                    </ul>
--->
+                    <!--
+                                        <ul class="legend-bottom">
+                                            <li><a href=""><span class="icon"></span>中海博睿</a></li>
+                                            ##for(type in productLine){
+                                            ##if(!typeLP.last){
+                                            <li class=""><a href=""><span class="icon"></span> ${type.name!}</a></li>
+                                            ##}
+                                            ##}
+                                        </ul>
+                    -->
                 </div>
             </div>
         </div>
@@ -174,20 +175,21 @@
     </div>
 </div>
 <script>
-    $(function () {
-        $(".btnGroup>.quit>img").click(function () {
-            $("#l,#right").show();
-            $(".fullScreen_map").animate({
-                left:-(pageW+100)
-            });
-            resetSizeRight();//重置右边图表
-            var $sphereIFrame3x3 =  $("#sphereIFrame3x3");
-            //通过iframe里重置按钮的模拟触发来重置图表
-            $sphereIFrame3x3.contents().find(".reset").click()
-                .css({"bottom":0,fontSize:bodyScale*8}
+    $(".btnGroup>.quit>img").click(function () {
+        $("#l,#right").show();
+        $(".fullScreen_map").animate({
+            left: -(pageW + 100)
+        });
+        resetSizeRight();//重置右边图表
+        var $sphereIFrame3x3 = $("#sphereIFrame3x3");
+        //通过iframe里重置按钮的模拟触发来重置图表
+        $sphereIFrame3x3.contents().find(".reset").click()
+            .css({"bottom": 0, fontSize: bodyScale * 8}
             );
-            //让球上的提示和文字正常
-            $sphereIFrame3x3[0].contentWindow.spherePageResize();
-        })
+        //让球上的提示和文字正常
+        $sphereIFrame3x3[0].contentWindow.spherePageResize();
+    })
+    $(function () {
+
     })
 </script>

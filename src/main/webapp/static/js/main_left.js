@@ -128,7 +128,7 @@ function navSelectAll() {
             bgImgOn($(this));
             $actLi.addClass("active").each(function () {
                 bgImgOn($(this))
-            })
+            });
         // }
         selectActLi($(this));
     })
@@ -186,9 +186,11 @@ function navSelectA() {//这里会触发地图中要加载的数据
         $selectLi.siblings().removeClass("active").each(function () {
             bgImgOff($(this))
         });
-        bgImgOff(selectAllBtn);//关闭全选状态
-        selectAllBtn.css("color", "#999");
-        if ($(this).parents(".labLine").length > 0) {//如果是生产线和实验室
+        //关闭全选状态
+        bgImgOff($(this).parents(".legend").find(".selectAll label"));
+        $(this).parents(".legend").find(".selectAll label").css("color", "#999");
+        //如果是生产线和实验室
+        if ($(this).parents(".labLine").length > 0) {
             selectActLi($(this));
         }
         // return false;
@@ -239,29 +241,37 @@ function sphereRTnumberShow(n) {
 //球形地图右下角的广告滚动
 function sphereRBscroll() {
     var speed = 100;
-    var $scrollBoard = $(".scroll");
-    var $ul1 = $(".scroll ul:first");
-    var $ul2 = $(".scroll ul:last");
-    $scrollBoard.css("height", $scrollBoard.width)
-    $ul2.html($ul1.html());
+/*
+    var $scrollBoard = $(".fullScreen_map .scroll");
+    var $ul1 = $(".fullScreen_map .scroll ul:first");
+    var $ul2 = $(".fullScreen_map .scroll ul:last");
+*/
+    scroll($(".fullScreen_map .scroll"),$(".fullScreen_map .scroll ul:first"),$(".fullScreen_map .scroll ul:last"));
+    scroll($(".left3x3 .scroll"),$(".left3x3 .scroll ul:first"),$(".left3x3 .scroll ul:last"));
 
-    function Marquee() {
-        //scrollTop:溢出上边界的高度
-        //offsetHeight:元素包括border和padding的高度
-        //$scrollBoard这个高度一定要小，且不能用百分比
-        if ($ul2[0].offsetHeight <= $scrollBoard[0].scrollTop)
-            $scrollBoard[0].scrollTop -= $ul2[0].offsetHeight;
-        else {
-            $scrollBoard[0].scrollTop++;
+    function scroll($scrollBoard,$ul1,$ul2) {
+        $scrollBoard.css("height", $scrollBoard.width);
+        $ul2.html($ul1.html());
+        function Marquee() {
+            //scrollTop:溢出上边界的高度
+            //offsetHeight:元素包括border和padding的高度
+            //$scrollBoard这个高度一定要小，且不能用百分比
+            if ($ul2[0].offsetHeight <= $scrollBoard[0].scrollTop)
+                $scrollBoard[0].scrollTop -= $ul2[0].offsetHeight;
+            else {
+                $scrollBoard[0].scrollTop++;
+            }
         }
+
+        var MyMar = setInterval(Marquee, speed);
+        $scrollBoard.hover(function () {
+            clearInterval(MyMar)
+        }, function () {
+            MyMar = setInterval(Marquee, speed);
+        })
+
     }
 
-    var MyMar = setInterval(Marquee, speed);
-    $scrollBoard.hover(function () {
-        clearInterval(MyMar)
-    }, function () {
-        MyMar = setInterval(Marquee, speed);
-    })
 
 
 }
