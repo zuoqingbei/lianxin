@@ -1015,7 +1015,7 @@ function findOrderPassForTab1Ajax() {
 function findOrderPassForAllTab1() {
     $.post(contextPath + '/lab/findOrderPassForAllAjax', {}, function (data) {
         var myChart4 = echarts.init(document.getElementById("myChart4"));
-        //right_echarts.push(myChart4);
+        right_echarts.push(myChart4);
         myChart4.setOption(getCenterPie());
         var dataStyle = {
             normal: {
@@ -1205,6 +1205,7 @@ function standardStatus() {
         var num6 = qybz;
         //多个圆环图  标准状态
         var myChart2 = echarts.init(document.getElementById("myChart2"));
+        right_echarts.push(myChart2);
         var labelTop = {
             normal: {
                 color: '#234f65',
@@ -1381,6 +1382,7 @@ function abilityStatus() {
         $("#ability_all_num").html(data.allnum)
         //能力状态 柱形图
         var myChart3 = echarts.init(document.getElementById("myChart3"));
+        right_echarts.push(myChart3);
         myChart3.setOption(getBarEcharts());
         var bar_chip = contextPath + '/img/bar_chip.png';
         myChart3.setOption({
@@ -1497,8 +1499,24 @@ function getMaxMinForScpTab1(data, xhPro, type) {
     return result;
 }
 function tab1JianSelected(obj) {
-    var id = $(obj).find("option:selected").attr("data");
-    var name = $(obj).find("option:selected").text();
+    // var id = $(obj).find("option:selected").attr("data");
+    // var name = $(obj).find("option:selected").text();
+
+    //下拉菜单选择
+/*
+    $("select").change(function () {
+
+
+    });
+
+*/  $("option").removeClass("active");
+    var selectedLabel = $("option[value="+$("select").val()+"]").addClass("active").parent().attr("label");
+    $("option.showLabel").text(selectedLabel).prop("selected",true);
+
+    var id = $(obj).find("option.active").attr("data");
+    var name = $(obj).find("option.active").text();
     loadTab1JianData(id,name);
 }
+$(function () {
 
+});

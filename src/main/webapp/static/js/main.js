@@ -14,11 +14,14 @@ $(function () {
     });
 */
 
+/*
     var $left = $("#left");
     var iframe = '<iframe id="iframe" scrolling="no" frameborder="0" src="'+contextPath+'/lab/flatMap" ></iframe>';
+*/
     //切换echarts-x和chearts的显示
 
     //切换echarts-x和chearts的显示(单页面内嵌div)
+/*
     $left.find(".btnGroup img").click(function () {
         var src = $(this).attr("src");
         if (src.indexOf("off") >= 0) {
@@ -35,5 +38,6 @@ $(function () {
             }
         }
     })
+*/
 
 })

@@ -208,7 +208,9 @@ function seriesData(data){
 	    return seriesData;
 }
 // 基于准备好的dom，初始化echarts实例
-var myChart = echarts.init(document.getElementById('mapFlat'));
+var myChart = echarts.init($('.mapFlat')[0]);
+// console.log("------------------$('.mapFlat').length:",$('.mapFlat').length)
+// var myChart3x3 = echarts.init($('.mapFlat')[0]);
 //调用父页面 获取数据
 //window.parent.selectActLi();
 window.parent.resetSize();
@@ -225,13 +227,13 @@ var $elList = [];
  * echart容器
  * @type {*|jQuery|HTMLElement}
  */
-var $echart = $('#mapFlat');
+var $echart = $('.mapFlat');
 
 /**
  * echart弹出新闻提示的容器
  * @type {*|jQuery|HTMLElement}
  */
-var $echartTips = $('#echartTips');
+var $echartTips = $('.echartTips');
 
 /**
  * 提示渐隐时间

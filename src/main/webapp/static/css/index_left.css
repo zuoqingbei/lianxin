@@ -406,13 +406,14 @@
 }
 #l .flat-footer .legend ul.legend-bottom li a{
     color: #6cf;
+    cursor: pointer;
 }
 #l .flat-footer .legend ul li{
     display: inline-block;
     padding: 0.5% 1%;
 }
 #l .flat-footer .legend ul li a{
-    /*font-size: 90%;*/
+    cursor: pointer;
     color: #999;
     display: inline-block;
 }

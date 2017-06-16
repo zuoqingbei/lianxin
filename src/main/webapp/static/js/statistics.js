@@ -57,7 +57,7 @@ function professionalStatis(){
 function labNumStatis(){
 	$.post(contextPath+'/lab/labNumStatisAjax',{},function(data){
 		$("#lab_all_count_1").html(data);
-		$("#lab_all_count").html(data);
+		$(".lab_all_count").html(data);
 	})
 }
 
@@ -74,9 +74,9 @@ function labAreaSpread(){
 function proLineStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"product_code","labType":labType,"sort":"asc"},function(data){
 		var nums=[];
-		$("#pro_line").html("");
+		$(".pro_line").html("");
 		$.each(data,function(index,item){
-			$("#pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number">'+item.count+'</span></li>');
+			$(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number">'+item.count+'</span></li>');
 			nums.push(item.count);
 		});
 		sphereRTnumberShow(nums);
@@ -98,8 +98,8 @@ function worldTyleEchart(data){
 	var num4=standardSeriesDataForLeft(data,"工厂实验室");
 	var num5=standardSeriesDataForLeft(data,"模块商实验室");
 	var allNum=parseInt(num2)+parseInt(num3)+parseInt(num4)+parseInt(num5);
-	// var myChartFlatLT = echarts.init($("#l").find(".sphere-right-top .myChart")[0]);
 	myChartFlatLT.setOption(getYuanhuan());
+	myChartFlatLT_full.setOption(getYuanhuan());
 	var labelTop = {
 	    normal: {
 	        color: '#064f66',
@@ -158,6 +158,63 @@ function worldTyleEchart(data){
 	};
 	var radius = ["27%", "36%"];
 	myChartFlatLT.setOption({
+	    textStyle: {
+	        color: '#6cf',
+	        fontSize: "60%"
+	    },
+	    grid: {
+//	            show:true,
+//	         x: "25%",
+//	         x2: "15%",
+//	         y2: "12%"
+	    },
+	    series: [
+	        {
+	            type: 'pie',
+	            center: ['30%', '33%'],
+	            radius: radius,
+	            x: '0%', // for funnel
+	            data: [
+	                {name: 'other', value: allNum-num2, itemStyle: labelTop},
+	                {name: '研发-调试', value: num2, itemStyle: labelBottom}
+	            ]
+	        },
+	        {
+	            type: 'pie',
+	            center: ['70%', '33%'],
+	            radius: radius,
+	            x: '20%', // for funnel
+	            itemStyle: labelFromatter,
+	            data: [
+	                {name:'other', value:allNum-num3, itemStyle : labelTop},
+	                {name: '中海博睿\n新品确认', value: num3, itemStyle: labelBottom}
+	            ]
+	        },
+	        {
+	            type: 'pie',
+	            center: ['70%', '76%'],
+	            radius: radius,
+	            x: '40%', // for funnel
+	            itemStyle: labelFromatter,
+	            data: [
+	                {name: 'other', value: allNum-num5, itemStyle: labelTop},
+	                {name: '模块商\n模块测试', value: num5, itemStyle: labelBottom}
+	            ]
+	        },
+	        {
+	            type: 'pie',
+	            center: ['30%', '76%'],
+	            radius: radius,
+	            x: '80%', // for funnel
+	            itemStyle: labelFromatter,
+	            data: [
+	                {name: 'other', value: allNum-num4, itemStyle: labelTop},
+	                {name: '工厂\n量产测试', value: num4, itemStyle: labelBottom}
+	            ]
+	        }
+	    ]
+	});
+	myChartFlatLT_full.setOption({
 	    textStyle: {
 	        color: '#6cf',
 	        fontSize: "60%"
@@ -309,10 +366,91 @@ function labPropertiesStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"properties_code","labType":labType,"productCode":productCode},function(data){
 		$("#properties_code_div").html("覆盖专业能力："+data.length);
 		myChartFlatRT.resize();
+		myChartFlatRT_full.resize();
 		myChartFlatRT.clear();
+		myChartFlatRT_full.clear();
 		//右上角的图表
 	    myChartFlatRT.setOption(getLineEcharts());
+	    myChartFlatRT_full.setOption(getLineEcharts());
 	    myChartFlatRT.setOption({
+            color: ['#66ccff'],//屏蔽引入getLineEcharts()造成的两种颜色
+	        tooltip: {
+	            trigger: 'axis'
+	        },
+	        legend: {
+	            show: false,
+	            data: ['专业能力']
+	        },
+	        textStyle: {
+	            color: "#6cf",
+	            fontSize: bodyScale*10
+	        },
+	        grid: {
+//	            show:true,
+	        	 x: "23%",
+	             x2: "23%",
+	             y:"14%",
+	             y2:"15%"
+	        },
+	        xAxis: [
+	            {
+	                name: " 实验室\n 数量",
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
+	                type: 'value',
+                    axisTick: {  //刻度值
+                        show: false,
+                    },
+	                axisLine: {
+	                    lineStyle: {
+	                        width: 0
+	                    }
+	                },
+	                splitLine: {  //刻度线
+	                    show: true,
+	                    lineStyle: {
+	                        color: "#234f65"
+	                    }
+	                },
+	                offset: 5//调整个坐标轴标签的远近
+
+	            }
+	        ],
+	        yAxis: [
+	            {
+	                // name: "专业能力",
+	                name: "",
+	                type: 'category',
+	                data: statisticLengend(data),
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: {
+                        margin: 3 * bodyScale,
+                        textStyle: {
+                            fontSize: 9 * bodyScale
+                        },
+						interval:0
+					},
+                    axisTick: {  //刻度值
+                        show: false,
+                    },
+	                offset: 0,
+	            }
+	        ],
+	        series: [
+	            {
+	                name: '专业能力',
+//	                type:'bar',
+	                type: 'pictorialBar',
+//	                barGap: '10%',
+	                symbolRepeat: true,
+	                symbolSize: ['40%', '80%'],
+	                data: statisticSeriesDataData(data)
+	            }
+	        ]
+	    });
+	    myChartFlatRT_full.setOption({
             color: ['#66ccff'],//屏蔽引入getLineEcharts()造成的两种颜色
 	        tooltip: {
 	            trigger: 'axis'
@@ -397,8 +535,11 @@ function labPropertiesStatis(){
 function labLifeCycleStatis(){
 	$.post(contextPath+'/lab/labCarryNumStatisAjax',{"labType":labType,"productCode":productCode},function(data){
 		myChartFlatLB.resize();
+		myChartFlatLB_full.resize();
 		myChartFlatLB.clear();
+		myChartFlatLB_full.clear();
 		myChartFlatLB.setOption(getAreaEcharts());
+		myChartFlatLB_full.setOption(getAreaEcharts());
 		var colors = ['#00e673', '#66ccff'];
 	    myChartFlatLB.setOption({
 	        tooltip: {
@@ -414,6 +555,182 @@ function labLifeCycleStatis(){
 	            	}
                     return r;  
                 },  
+	        },
+	        grid: {
+	            left:"10%",
+	            right: '10%',
+	            top:"35%,",
+				bottom:"2%"
+	        },
+	        legend: {
+	        	   data:['实验室数量','检测订单量'],
+	               textStyle:{
+	                   fontSize: bodyScale*5
+	               },
+	               itemWidth: bodyScale*5,
+	               itemHeight: bodyScale*5
+	        },
+	        xAxis: [
+	            {
+	                name: "",
+					// nameGap:1*bodyScale,
+	                type: 'category',
+	                axisTick: {
+	                    alignWithLabel: true
+	                },
+	                axisLabel: {
+                        margin:3*bodyScale,
+	                    textStyle: {
+	                        fontSize: bodyScale*9
+	                    }
+	                },
+	                splitLine: {  //刻度线
+	                    show: false,
+	                },
+	                // data: statisticLengend(data)
+                    data:["a","b","c","d","e","f","g"]
+
+	            }
+	        ],
+	        yAxis: [
+	            {
+	            	type: 'value',
+	            	name: '实验室数量     ',
+                    nameTextStyle:{
+	            		fontSize:bodyScale*5
+                    },
+                    nameGap:10,
+					min: 0,
+	                max: 500,
+	                axisLine: {
+	                    lineStyle: {
+	                        color: colors[0]
+	                    }
+	                },
+	                axisLabel: {
+	                    textStyle: {
+	                        fontSize: bodyScale*7
+	                    }
+	                    // formatter: '{value} ml'
+	                },
+	                splitLine: {  //刻度线
+	                    show: true,
+	                    lineStyle: {
+	                        color: "#234f65"
+	                    }
+	                }
+	            },{
+	            	 type: 'value',
+	                 name: '检测订单量(百)',
+                    nameTextStyle:{
+                        fontSize:bodyScale*5
+                    },
+                    nameGap:10,
+	                 min: 0,
+	                 max: 500,
+	                 position: 'right',
+	                 axisLine: {
+	                     lineStyle: {
+	                         color: colors[1],
+							 width:0
+	                     }
+	                 },
+	                 axisLabel: {
+	                     textStyle: {
+	                         fontSize: bodyScale*5
+	                     }
+	                     // formatter: '{value} ml'
+	                 },
+	                 splitLine: {  //刻度线
+	                     show: true,
+	                     lineStyle: {
+	                         color: "#234f65"
+	                     }
+	                 },
+                    axisTick: {  //刻度值
+                        show: false,
+                    }
+
+                }
+	        ],
+	        series: [
+                {
+                    name:'实验室数量',
+                    type:'line',
+                    yAxisIndex: 1,
+                    hoverAnimation:false,
+                    data: statisticSeriesDataData(data),
+                    lineStyle:{
+                        normal:{
+                            width:2*bodyScale
+                        }
+                    },
+                    symbolSize:2*bodyScale,
+
+                    areaStyle: {
+                        normal: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(96,192,255,0)' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: 'rgba(96,192,255,0)' // 100% 处的颜色
+                                }],
+                                globalCoord: false // 缺省为 false
+                            }
+                        },
+                    },
+                },
+	            {
+	                name:'检测订单量',
+	                type:'line',
+	                yAxisIndex: 1,
+                    hoverAnimation:false,
+	                data:[47.39, 202.33, 56.83,3.81, 168.01, 28.39, 7.59],
+                    lineStyle:{
+                        normal:{
+                            width:2*bodyScale
+                        }
+                    },
+                    symbolSize:2*bodyScale,
+	                areaStyle: {
+	                    normal: {
+	                        color: {
+	                            type: 'linear',
+	                            x: 0,
+	                            y: 0,
+	                            x2: 0,
+	                            y2: 1,
+	                            colorStops: [{
+	                                offset: 0, color: 'rgba(96,192,255,0)' // 0% 处的颜色
+	                            }, {
+	                                offset: 1, color: 'rgba(96,192,255,0)' // 100% 处的颜色
+	                            }],
+	                            globalCoord: false // 缺省为 false
+	                        }
+	                    },
+	                },
+	            }
+	        ]
+	    });
+	    myChartFlatLB_full.setOption({
+	        tooltip: {
+	            trigger: 'axis',
+	            axisPointer: {
+	                type: 'cross'
+	            },
+	            formatter: function(a){
+	            	var r=a[0].name+"</br>"
+                    +a[0].seriesName+':'+a[0].value  +"</br>" ;
+	            	if(a.length>0){
+	            		r+=a[1].seriesName+':'+parseFloat(a[1].value)*100  +"</br>"  ;
+	            	}
+                    return r;
+                },
 	        },
 	        grid: {
 	            left:"10%",

@@ -1,19 +1,22 @@
-<h1>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1</h1>
-<div id="full_sphereMap">
+<div id="l" class="l fullScreen_map">
     <header>
         <span class="mainLogo"></span>
         <h1>全球实验室数据中心</h1>
         <h1>Haier U-lab Data Center</h1>
     </header>
     <div class="btnGroup">
-            <span class="oneBtn">
-                <span class="sphere-btnTip">地球</span>
-                <img class="sphere" src="${contextPath!}/static/img/ico/btn_sphere_on.png">
-            </span>
+        <span class="oneBtn">
+            <span class="sphere-btnTip">地球</span>
+            <img class="sphere" src="${contextPath!}/static/img/ico/btn_sphere_on.png">
+        </span>
         <span class="oneBtn">
                 <span class="flat-btnTip">平面</span>
-                <img class="sphere" src="${contextPath!}/static/img/ico/btn_flat_off.png">
-            </span>
+                <img class="flat" src="${contextPath!}/static/img/ico/btn_flat_off.png">
+        </span>
+        <span class="quit">
+                <span class="flat-btnTip">退出</span>
+                <img class="quit" src="${contextPath!}/static/img/labMain/labMain_toTotalStatus.png">
+        </span>
     </div>
     <div class="switchGroup">
         <div class="switch sphere">
@@ -41,32 +44,24 @@
                 </div>
             </div>
             <div class="mapArea">
-                <h2>数据互联&emsp;&emsp;实时共享&emsp;&emsp;提效增值</h2>
+                <h2>数据互联&emsp;实时共享&emsp;提效增值</h2>
                 <!--球体地图位置-->
-                <iframe src="${contextPath!}/lab/sphereMap"></iframe>
+                <iframe class="iframe map" src="${contextPath!}/lab/sphereMap"></iframe>
             </div>
             <div class="sphere-right">
                 <div class="sphere-right-top">
-                    <!--
-                                            <div class="chartBorder">
-                                                <h3>实验室总数及分布</h3>
-                                                <h4>互联实验室数<strong id="lab_all_count_1">388</strong></h4>
-                                                <div class="myChart"></div>
-                                            </div>
-                    -->
                     <div class="chartBorder">
                         <h3>实验室总数及分布</h3>
-                        <h4 class="noBG">实验室总数： <strong id="lab_all_count"> 0 </strong></h4>
-                        <ul id="pro_line">
+                        <h4 class="noBG">实验室总数： <strong id="lab_all_count" class="lab_all_count"> 0 </strong></h4>
+                        <ul id="pro_line" class="pro_line">
                         </ul>
-                        <div class="myChart"></div>
                     </div>
 
                 </div>
                 <div class="sphere-right-bottom">
                     <div class="chartBorder">
                         <h3>互联实验室</h3>
-                        <h4 class="noBG">互联实验室： <strong id="linked_status_num">  </strong></h4>
+                        <h4 class="noBG">互联实验室： <strong id="linked_status_num"> </strong></h4>
                         <ul class="header">
                             <li>实验室名称</li>
                             <li>所在地</li>
@@ -94,30 +89,15 @@
             <div class="flat-main">
                 <div class="flat-left">
                     <div class="flat-left-top">
-                        <!--
-                                                    <div class="chartBorder">
-                                                        <h3>产线统计</h3>
-                                                        <h4>实验室总数： <strong id="lab_all_count"> 0 </strong></h4>
-                                                        <ul id="pro_line" style="margin-top:10px;">
-                                                        </ul>
-                                                        <div class="myChart"></div>
-                                                    </div>
-                        -->
                         <div class="chartBorder">
                             <h3>实验室主要功能分类</h3>
-                            <!--<h4>互联实验室数<strong id="lab_all_count_1">388</strong></h4>-->
                             <div class="myChart"></div>
                         </div>
                     </div>
                     <div class="flat-left-bottom">
                         <div class="chartBorder">
                             <h3>产品生命周期全流程测试</h3>
-                            <!--
-                                                            <h4>P1:对比试验 P2:新品调试 P3:新品确认<br>
-                                                                P4:小批验证 入厂/出厂 P5:年度型检 监督抽测"</h4>
-                            -->
                             <div class="myChart"></div>
-                            <!--<p><span>P1</span><span>P2</span><span>P3</span><span>P4</span><span>P5</span></p>-->
                             <div class="added"><span>a：P1对比试验</span>&emsp;<span>b：P2新品调试</span>
                                 <br>
                                 <span>c：P3新品确认</span>&emsp;<span>d,e：P4小批验证 入厂/出厂</span>
@@ -126,9 +106,9 @@
                     </div>
                 </div>
                 <div class="mapArea" style="z-index: 999">
+                    <h2>数据互联&emsp;实时共享&emsp;提效增值</h2>
                     <!--平面地图位置-->
                 </div>
-                <!--  <div id="maskSphere"></div> -->
                 <div class="flat-right">
                     <div class="flat-right-bottom">
                         <div class="chartBorder">
@@ -146,7 +126,6 @@
                         <div class="chartBorder">
                             <h3 id="properties_code_div">覆盖专业能力：0</h3>
                             <div class="myChart">
-                                <!--<img src="${contextPath!}/static/img/flatRT.png">-->
                             </div>
                         </div>
                     </div>
@@ -165,20 +144,20 @@
                         <div class="animateBox">
                             <ul class="lab">
                                 ##for(type in labType){
-                                <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.short_name!}</a>
+                                <li class="active" code="${type.id!}"><a><span class="icon"></span>${type.short_name!}</a>
                                 </li>
                                 ##}
                             </ul>
-                            <ul class="line">
+                            <ul class="line current">
                                 ##for(type in productLine){
-                                <li class="active" code="${type.id!}"><a href=""><span class="icon"></span>${type.name!}</a>
+                                <li class="active" code="${type.id!}"><a><span class="icon"></span>${type.name!}</a>
                                 </li>
                                 ##}
-                                <!--<li  ><a href=""><span class="icon"></span>其它</a> </li>-->
                             </ul>
                         </div>
                     </div>
 
+<!--
                     <ul class="legend-bottom">
                         <li><a href=""><span class="icon"></span>中海博睿</a></li>
                         ##for(type in productLine){
@@ -187,9 +166,28 @@
                         ##}
                         ##}
                     </ul>
+-->
                 </div>
             </div>
         </div>
 
     </div>
 </div>
+<script>
+    $(function () {
+        $(".btnGroup>.quit>img").click(function () {
+            $("#l,#right").show();
+            $(".fullScreen_map").animate({
+                left:-(pageW+100)
+            });
+            resetSizeRight();//重置右边图表
+            var $sphereIFrame3x3 =  $("#sphereIFrame3x3");
+            //通过iframe里重置按钮的模拟触发来重置图表
+            $sphereIFrame3x3.contents().find(".reset").click()
+                .css({"bottom":0,fontSize:bodyScale*8}
+            );
+            //让球上的提示和文字正常
+            $sphereIFrame3x3[0].contentWindow.spherePageResize();
+        })
+    })
+</script>
