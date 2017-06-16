@@ -162,7 +162,7 @@ public class LabController extends BaseController {
      */
     public void labStatisByFiledAjax(){
     	String field=getPara("field");
-    	String sqlWhere=SqlUtil.commonWhereSql(this,"lab");
+    	String sqlWhere=SqlUtil.commonWhereSql(this,"t");
     	String sort=getPara("sort");
     	List<Record> labStatis=LabModel.dao.labStatisByField(sqlWhere,field,sort);
 		renderJson(labStatis);

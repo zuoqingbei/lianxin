@@ -409,6 +409,18 @@ function findOrderPassForProAjax(mychartIds,desName){
 		});
 	})
 }
+function dealNumberTab3(num){
+	var max=20;
+	if(parseInt(num)>max){
+		var x=parseInt(parseInt(num)/(parseInt(num)-max));
+		if(max+x>30){
+			return 30*bodyScale;
+		}
+		return (max+x)*bodyScale
+	}else{
+		return parseInt(num)*bodyScale;
+	}
+}
 function orderTypeAjax(myChartIds,desName,divisor){
 	$.post(contextPath+'/lab/findOrderMonthTypeForProductAjax',{"labTypeCode":labTypeCode,"desName":desName},function(res){
 		var data = [];
@@ -417,14 +429,27 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		//准备数据
 		$.each(res,function(index,item){
 			yData.push(item[0].product_line_name);
-			$.each(item,function(ind,it){
+			for(var m=item.length-1;m>=0;m--){
+				var it=item[m];
 				if(index==0){
 					xData.push(it.name);
 				}
 				//拼接数据
+				var mV=Math.sqrt(parseInt(it.num));
+				var value=[res.length-index-1,m,dealNumberTab3(mV)];//暂时数量除以divisor
+				//var value=[res.length-index-1,m,parseInt(it.num)/divisor*bodyScale];//暂时数量除以divisor
+				data.push(value);
+			}
+			/*$.each(item,function(ind,it){
+				if(index==0){
+					xData.push(it.name);
+				}
+				//拼接数据
+				var mV=Math.sqrt(parseInt(it.num));
+				//var value=[index,ind,dealNumberTab3(mV)];//暂时数量除以divisor
 				var value=[index,ind,parseInt(it.num)/divisor*bodyScale];//暂时数量除以divisor
 				data.push(value);
-			});
+			});*/
 		});
 		yData.reverse();
 		//生成option
@@ -447,6 +472,7 @@ function orderTypeAjax(myChartIds,desName,divisor){
 		        show: false
 		    },
 		    tooltip: {
+		    	show:false,
 		        trigger: 'item',
 		        axisPointer: {
 		            type: 'cross',

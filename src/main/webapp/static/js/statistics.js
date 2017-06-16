@@ -44,11 +44,18 @@ function reloadLeftData2(){
 }*/
 //专业领域
 function professionalStatis(){
+	var names=['化学','机械','电气','日用消费品','EMC'];
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"professional_code","labType":labType,"sort":"asc"},function(data){
 		$("#professional_code_div").html("覆盖专业领域："+data.length);
 		var htmls="";
-		$.each(data,function(index,item){
-			htmls+='<li>'+item.count+'</li>';
+		$.each(names,function(index,item){
+			var count=0;
+			$.each(data,function(ind,it){
+				if(it.name==item){
+					count=it.count;
+				}
+			})
+			htmls+='<li>'+count+'</li>';
 		});
 		$("#left_professional_code_num").html(htmls);
 	})
