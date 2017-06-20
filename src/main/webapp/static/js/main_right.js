@@ -4438,7 +4438,7 @@ var right_echarts = [];
 //重置echart图标大小 在加载平面地图时被调用
 function resetSizeRight() {
     mHeightChartTab4.reflow();
-    mHeightChart.reflow();
+    // mHeightChart.reflow();
     for (var i = 0; i < right_echarts.length; i++) {
         right_echarts[i].resize();
     }
