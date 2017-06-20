@@ -179,7 +179,10 @@
         $(".left3x3,#right").show();
         $(".fullScreen_map").animate({
             left: -(pageW + 100)
-        },2000);
+        },2000,function () {
+            //让大屏退去后左边显示平面地图
+            $(".l.left3x3 .btnGroup img.flat").click();
+        });
         resetSizeRight();//重置右边图表
         var $sphereIFrame3x3 = $("#sphereIFrame3x3");
         //通过iframe里重置按钮的模拟触发来重置图表
@@ -189,7 +192,6 @@
         //让球上的提示和文字正常
         $sphereIFrame3x3[0].contentWindow.spherePageResize();
 
-        //让大屏退去后左边显示平面地图
-        $(".l.left3x3 .btnGroup img.flat").click();
+
     });
 </script>
