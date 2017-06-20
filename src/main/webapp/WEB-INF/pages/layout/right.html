@@ -3,8 +3,8 @@
         <!--这里是后面4屏的代码-->
         <div class="tab">
             <ul>
-                <li class="tab-item active_right">总状态</li>
-                <li class="tab-item">实验室状态</li>
+               <!--  <li class="tab-item active_right">总状态</li> -->
+                <li class="tab-item active_right">实验室状态</li>
                 <li class="tab-item">数据结果</li>
                 <li class="tab-item">数据挖掘</li>
             </ul>
@@ -24,9 +24,7 @@
             </ul>
         </div>
         
-        <!--总状态-->
-         ##layout("tab/tab1.html", {}){
-	     ##}
+      
  		<!--实验室状态-->
         ##layout("tab/tab2.html", {}){
 	     ##}
@@ -43,7 +41,7 @@
  <script src="${contextPath!}/static/asserts/js/highcharts.js"></script>
  <!--<script src="../static/asserts/js/highcharts.js"></script>-->
 <script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
-<script src="${contextPath!}/static/js/tab1_statistics.js?time=New Date()"></script>
+<!-- <script src="${contextPath!}/static/js/tab1_statistics.js?time=New Date()"></script> -->
 <script src="${contextPath!}/static/js/tab2_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab3_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab4_statistics.js?time=New Date()"></script>
@@ -69,7 +67,7 @@
             $(this).addClass("word_active").siblings().removeClass("word_active");
         	resetSizeRight();
         });
-        loadTab1Data();
+        /* loadTab1Data(); */
         loadTab2Data();
         loadTab3Data();
         loadTab4Data();
