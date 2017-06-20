@@ -20,11 +20,10 @@
     background-size: 97% 95%;
     position: relative;
     display: none;
-    margin-top:1%;
 }
 .sheshi_right_top{
 	height: 6%;
-    width: 100%;
+    width: 80%;
 }
 .sheshi_right_top ul{
 	width:100%;
@@ -39,7 +38,7 @@
 	font-size: 1.2em;
 	text-align:center;
 	color:white;
-    margin-left: 2%;
+    margin-left: 1%;
 }
 
 .sheshi_right_top ul li span{
@@ -128,11 +127,11 @@
 }
 .shishi_right .sheshi_right_right{
     width: 16%;
-    height: 90%;
+    height: 92.5%;
     float: left;
     padding-top: 2%;
     position: absolute;
-    top: 10%;
+    top: 0;
     right: 0;
     /* padding-right: 3%; */
     overflow-y: auto;
