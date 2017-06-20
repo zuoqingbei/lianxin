@@ -322,7 +322,7 @@
     position: absolute;
     height: 50%;
     width: 11%;
-    line-height: 5em;
+    line-height: 4.8em;
     /*font-size: .9em;*/
     text-align: center;
     background-size: 100% 100%;
@@ -550,7 +550,7 @@
 }
 #l .flat-left-bottom .chartBorder .myChart{
     height: 60%;
-    margin: 10% 2% 0.2%;
+    margin: 8% 2% 0.2%;
 }
 #l .flat-left-bottom p{
     position: relative;

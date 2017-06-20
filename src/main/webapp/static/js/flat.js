@@ -12,7 +12,7 @@ function pageResize() {
     var bodyFontSize = pageH / 595 * 100 + "%";
     bodyScale = pageH / 595;
     $("body").css("font-size", bodyFontSize);
-//        console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+       console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
 }
 pageResize();
 
@@ -165,7 +165,7 @@ function seriesData(data){
                markPoint: {
                    symbol: 'emptyCircle',
                    symbolSize: function (v) {
-                        return 3*bodyScale;
+                        return 6*bodyScale;
                    },
                    effect: {
                        show: true,

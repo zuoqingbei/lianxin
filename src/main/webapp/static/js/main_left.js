@@ -21,18 +21,16 @@ function videoFadeOut() {
     });
 }
 
-//切换地图显示区域
+//切换地图显示区域及地图全屏
 function switchMapArea(charts) {
 
     var iframe = '<iframe id="iframe" class="iframe map" scrolling="no" frameborder="0" src="' + contextPath + '/lab/flatMap" ></iframe>';
     $(".l").find(".btnGroup img").click(function () {
         var src = $(this).attr("src");
 
-
         if (src.indexOf("off") >= 0) {
-
             src = src.replace("off", "on");
-            // console.log("------src:" + src)
+            console.log("------src:" + src)
             $(this).attr("src", src)
                 .parent().siblings(".oneBtn").find("img")
                 .attr("src", $(this).parent().siblings().find("img").attr("src").replace("on", "off"))
@@ -42,11 +40,15 @@ function switchMapArea(charts) {
                 $(this).parents(".l").find(".flat .mapArea iframe").remove();
                 $(this).parents(".l").find(".switch.flat").css("display", "flex").find(".mapArea").append(iframe).parent().parent()
                     .siblings().hide();
-
             }
         }
     });
-
+    $(".left3x3 .btnGroup  img.fullScreen").click(function () {
+        $(".fullScreen_map").animate({
+            left: 0
+        },1000).show();
+        $(".left3x3,#right,.labMain_content").hide();
+    })
 }
 
 //切换地球和平面地图按钮的提示
@@ -193,7 +195,15 @@ function navSelectA() {//这里会触发地图中要加载的数据
         if ($(this).parents(".labLine").length > 0) {
             selectActLi($(this));
         }
-        // return false;
+    });
+    //点击中海博睿切换右边页面上
+    var $flatBottomSwitchLi = $("#l.left3x3").find(".flat-footer ul.legend-bottom li");
+    $flatBottomSwitchLi.find("a").click(function () {
+        if($(this).text() ==="中海博睿"){
+            $("#right").hide();
+            $(".labMain_content").show()
+        }
+
     })
 }
 //地球右上角区域的数字样式
@@ -211,7 +221,6 @@ function sphereRTnumberShow(n) {
                     newStr += "0";
                 } else {
                     newStr += '<span style="color: #fff;">' + str + '</span>';
-                    // console.log(newStr);
                     $flatLTnumber.html(newStr);
                     break;
                 }
@@ -241,15 +250,11 @@ function sphereRTnumberShow(n) {
 //球形地图右下角的广告滚动
 function sphereRBscroll() {
     var speed = 100;
-/*
-    var $scrollBoard = $(".fullScreen_map .scroll");
-    var $ul1 = $(".fullScreen_map .scroll ul:first");
-    var $ul2 = $(".fullScreen_map .scroll ul:last");
-*/
-    scroll($(".fullScreen_map .scroll"),$(".fullScreen_map .scroll ul:first"),$(".fullScreen_map .scroll ul:last"));
-    scroll($(".left3x3 .scroll"),$(".left3x3 .scroll ul:first"),$(".left3x3 .scroll ul:last"));
 
-    function scroll($scrollBoard,$ul1,$ul2) {
+    scroll($(".fullScreen_map .scroll"),$(".fullScreen_map .scroll ul:first"),$(".fullScreen_map .scroll ul:last"),50);
+    scroll($(".left3x3 .scroll"),$(".left3x3 .scroll ul:first"),$(".left3x3 .scroll ul:last"),100);
+
+    function scroll($scrollBoard,$ul1,$ul2,speed) {
         $scrollBoard.css("height", $scrollBoard.width);
         $ul2.html($ul1.html());
         function Marquee() {
@@ -279,7 +284,7 @@ function sphereRBscroll() {
 $(function () {
 
     //进入时的视频淡出效果，开发时注掉下面这一行和被调用的代码
-    //videoFadeOut();
+    // videoFadeOut();
 
     //调整字符云页面的文字大小
     // document.getElementById("wordCloud").contentWindow.resizeText(bodyScale);
@@ -297,6 +302,9 @@ $(function () {
     navSelectA();
     //球形地图右下角的广告滚动
     sphereRBscroll();
+
+    // $(".fullScreen_map .sphere-left-bottom iframe")[0].contentWindow.run(300);
+    // $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
 
 
 });
