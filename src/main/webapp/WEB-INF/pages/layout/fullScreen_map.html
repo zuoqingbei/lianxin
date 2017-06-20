@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="mapArea" style="z-index: 999">
-                    <h2>数据互联&emsp;实时共享&emsp;提效增值</h2>
+                    <!--<h2>数据互联&emsp;实时共享&emsp;提效增值</h2>-->
                     <!--平面地图位置-->
                 </div>
                 <div class="flat-right">
@@ -176,10 +176,10 @@
 </div>
 <script>
     $(".btnGroup>.quit>img").click(function () {
-        $("#l,#right").show();
+        $(".left3x3,#right").show();
         $(".fullScreen_map").animate({
             left: -(pageW + 100)
-        });
+        },2000);
         resetSizeRight();//重置右边图表
         var $sphereIFrame3x3 = $("#sphereIFrame3x3");
         //通过iframe里重置按钮的模拟触发来重置图表
@@ -188,8 +188,8 @@
             );
         //让球上的提示和文字正常
         $sphereIFrame3x3[0].contentWindow.spherePageResize();
-    })
-    $(function () {
 
-    })
+        //让大屏退去后左边显示平面地图
+        $(".l.left3x3 .btnGroup img.flat").click();
+    });
 </script>

@@ -51,10 +51,10 @@ function professionalStatis(){
 		$.each(names,function(index,item){
 			var count=0;
 			$.each(data,function(ind,it){
-				if(it.name==item){
+				if(it.name===item){
 					count=it.count;
 				}
-			})
+			});
 			htmls+='<li>'+count+'</li>';
 		});
 		$(".left3x3 #left_professional_code_num").html(htmls);
@@ -84,7 +84,7 @@ function proLineStatis(){
 		var nums=[];
 		$(".pro_line").html("");
 		$.each(data,function(index,item){
-			$(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number">'+item.count+'</span></li>');
+			$(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number" style="color: transparent;">'+item.count+'</span></li>');
 			nums.push(item.count);
 		});
 		sphereRTnumberShow(nums);
@@ -93,7 +93,7 @@ function proLineStatis(){
 function standardSeriesDataForLeft(data,name){
 	var num=0;
 	$.each(data,function(index,item){
-		if(item.name==name){
+		if(item.name===name){
 			num=parseInt(item.count);
 		}
 	});
@@ -301,7 +301,7 @@ function worldTyleEchart(data){
 	        },
 	        {
 	            type: 'pie',
-	            center: ['70%', '76%'],
+	            center: ['70%', '78%'],
 	            radius: radius,
 	            x: '40%', // for funnel
 	            itemStyle: labelFromatter,
@@ -312,7 +312,7 @@ function worldTyleEchart(data){
 	        },
 	        {
 	            type: 'pie',
-	            center: ['30%', '76%'],
+	            center: ['30%', '78%'],
 	            radius: radius,
 	            x: '80%', // for funnel
 	            itemStyle: labelFromatter,
@@ -440,14 +440,14 @@ function labPropertiesStatis(){
 	        grid: {
 //	            show:true,
 	        	 x: "23%",
-	             x2: "23%",
+	             x2: "18%",
 	             y:"14%",
-	             y2:"15%"
+	             y2:"18%"
 	        },
 	        xAxis: [
 	            {
-	                name: " 实验室\n 数量",
-                    nameGap: nameGap,
+                    name: "\n\n\n\n实验室数量",
+                    nameGap:  -15 * bodyScale,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
 	                type: 'value',
@@ -518,19 +518,19 @@ function labPropertiesStatis(){
 	        grid: {
 //	            show:true,
 	        	 x: "23%",
-	             x2: "23%",
+	             x2: "18%",
 	             y:"14%",
-	             y2:"15%"
+	             y2:"18%"
 	        },
 	        xAxis: [
 	            {
-	                name: " 实验室\n 数量",
-                    nameGap: nameGap,
+	                name: "\n\n\n\n\n实验室数量",
+                    nameGap:  -25 * bodyScale,
                     nameTextStyle: nameTextStyle_full,
                     axisLabel: axisLabel_full,
 	                type: 'value',
                     axisTick: {  //刻度值
-                        show: false,
+                        show: false
                     },
 	                axisLine: {
 	                    lineStyle: {
@@ -563,9 +563,9 @@ function labPropertiesStatis(){
 						interval:0
 					},
                     axisTick: {  //刻度值
-                        show: false,
+                        show: false
                     },
-	                offset: 0,
+	                offset: 0
 	            }
 	        ],
 	        series: [
@@ -785,18 +785,21 @@ function labLifeCycleStatis(){
                 },
 	        },
 	        grid: {
-	            left:"3%",
+	            left:"5%",
 	            right: '10%',
-	            top:"35%,",
-				bottom:"2%"
+	            // top:"35%,",
+				bottom:"2%",
+				y:"25%"
 	        },
 	        legend: {
-	        	   data:['实验室数量','检测订单量',""],
+	        	   data:['实验室数量','检测订单量'],
 	               textStyle:{
 	                   fontSize: bodyScale*12
 	               },
 	               itemWidth: bodyScale*11,
-	               itemHeight: bodyScale*11
+	               itemHeight: bodyScale*11,
+                padding: [5, 5, 12*bodyScale],
+                // top:-6*bodyScale
 	        },
 	        xAxis: [
 	            {
@@ -813,7 +816,7 @@ function labLifeCycleStatis(){
 	                    }
 	                },
 	                splitLine: {  //刻度线
-	                    show: false,
+	                    show: false
 	                },
 	                // data: statisticLengend(data)
                     data:["a","b","c","d","e","f","g"]
@@ -884,6 +887,7 @@ function labLifeCycleStatis(){
 	        series: [
                 {
                     name:'实验室数量',
+					symbol:"circle",
                     type:'line',
                     yAxisIndex: 1,
                     hoverAnimation:false,
