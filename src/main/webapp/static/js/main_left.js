@@ -35,7 +35,8 @@ function switchMapArea(charts) {
                 .parent().siblings(".oneBtn").find("img")
                 .attr("src", $(this).parent().siblings().find("img").attr("src").replace("on", "off"))
             if ($(this).parents(".l").find(".switch.sphere").is(":hidden")) {
-                $(this).parents(".l").find(".switch.sphere").css({"display": "flex"}).siblings().hide()
+                $(this).parents(".l").find(".switch.sphere").css({"display": "flex"}).siblings().hide();
+
             } else {
                 $(this).parents(".l").find(".flat .mapArea iframe").remove();
                 $(this).parents(".l").find(".switch.flat").css("display", "flex").find(".mapArea").append(iframe).parent().parent()
