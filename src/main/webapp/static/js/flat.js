@@ -4,17 +4,17 @@
 var bodyScale = 1;
 var pageH;
 var pageW;
-pageH = $(window).height()-17;
+pageH = $(window).height();
 pageW = pageH * 16 * 7 / (9 * 3);
 
 function pageResize() {
-    $("#content").css("width", pageW);
+    $("#content").css("width", pageW).css("background","red");
     var bodyFontSize = pageH / 595 * 100 + "%";
     bodyScale = pageH / 595;
     $("body").css("font-size", bodyFontSize);
        console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
 }
-pageResize();
+// pageResize();
 
 var timeId = null;
 function getGeoArr(data) {
@@ -26,6 +26,7 @@ function getGeoArr(data) {
     return geo;
 }
 /**
+ * 程序被调用的入口——————————————————————————————————————————————————————
  * 平面世界地图数据准备
  * @param myChart
  * @param isFirst
@@ -36,15 +37,6 @@ function createArrData(productCode,labType){
 		var option = {
 	    // backgroundColor: "rgba(255,0,0,0)",
 	    color: ['gold', 'aqua', 'lime'],
-	    title: {
-	        show:false,
-	        text: '模拟迁徙',
-	        subtext: '数据纯属虚构',
-	        x: 'center',
-	        textStyle: {
-	            color: '#fff'
-	        }
-	    },
 	    calculable: false,
 	    tooltip: {
 	        show: true,
@@ -64,6 +56,7 @@ function createArrData(productCode,labType){
 	//            borderColor: 'rgba(31,120,214,1)',
 	        // params : 数组内容同模板变量，
 	        formatter: function (param) {
+                // console.log("------------------param:",param)
 	            //在这里是第一步
 	            $elList = [];
 	            //提示框的内容清空
@@ -251,8 +244,12 @@ function addNewsElem(news) {
     var left, top;
     // console.log("地点经纬度:" + news.litude);
     //getPosByGeo()：经纬度转成像素坐标
-    var xypoint = myChart.chart.map.getPosByGeo("world", news.litude); //坐标
-    // console.log("像素坐标————" + xypoint);
+    // console.log("~~~~~~~~~~~~~~~~~~~~~news.litude:" + news.litude);
+    var xypoint = [0,0];
+    if(news.litude){//若不判断则在markLine上的提示会报错
+        xypoint = myChart.chart.map.getPosByGeo("world", news.litude); //坐标
+    }
+
     left = xypoint[0];
     top = xypoint[1];
 
@@ -337,7 +334,7 @@ function showNews() {
 function startNewsShown() {
 
     if (timeId === null) {
-        console.log("---start---")
+        console.log("---自动提示启动---")
         timeId = setInterval(showNews, 3000);
     }
 }
@@ -357,7 +354,11 @@ function stopNewsShown() {
 }
 
 function getTopicHtml(currentPoint) {
-    var city = currentPoint.name;
+    var city = "";
+    if(currentPoint.name){
+        city = currentPoint.name;
+    }
+
     var value = currentPoint.value;
     var time = currentPoint.dateTime;
     var title = currentPoint.title;

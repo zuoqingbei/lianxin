@@ -22,7 +22,7 @@ function videoFadeOut() {
 }
 
 //切换地图显示区域及地图全屏
-function switchMapArea(charts) {
+function switchMapArea() {
 
     var iframe = '<iframe id="iframe" class="iframe map" scrolling="no" frameborder="0" src="' + contextPath + '/lab/flatMap" ></iframe>';
     $(".l").find(".btnGroup img").click(function () {
@@ -30,7 +30,6 @@ function switchMapArea(charts) {
 
         if (src.indexOf("off") >= 0) {
             src = src.replace("off", "on");
-            console.log("------src:" + src)
             $(this).attr("src", src)
                 .parent().siblings(".oneBtn").find("img")
                 .attr("src", $(this).parent().siblings().find("img").attr("src").replace("on", "off"))
@@ -70,7 +69,7 @@ function resetSize() {
      }*/
     // document.getElementById('iframe').contentWindow.createArrData(productCode, labType);
     for (var k = 0; k < $("#iframe.map").length; k++) {
-        console.log("------$('.iframe.map'):" + $(".iframe.map").length)
+        // console.log("------$('.iframe.map'):" + $(".iframe.map").length);
         $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
     }
 
@@ -292,7 +291,7 @@ $(function () {
     // wordCloud.window.resizeText(bodyScale);
 
     //切换地图显示区域
-    switchMapArea(myCharts);
+    switchMapArea();
     //切换地球和平面地图按钮的提示
     switchMapBtnTip();
     //切换生产线和实验室的列表显示
