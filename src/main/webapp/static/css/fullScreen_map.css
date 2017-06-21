@@ -115,16 +115,16 @@
 }
 
 #l.fullScreen_map .flat .mapArea iframe {
-    height: 133%;
+    height: 142%;
     width: 100%;
-    left:53%;
+    left:52%;
 }
 #l.fullScreen_map .flat-footer .legend{
     z-index: 9999;
     font-size: .9em;
-    width: 21%;
+    width: 20%;
     height: 43%;
-    top: 27%;
+    top: 39%;
     background-image: url(../img/nav-border_noBottom.png);
 }
 #l.fullScreen_map .flat-footer .legend .labLine {
