@@ -99,6 +99,7 @@ function standardSeriesDataForLeft(data,name){
 	});
 	return num;
 }
+
 //平面地图左上角的环形图，实验室数量按照四大类展示
 function worldTyleEchart(data){
 	var num2=standardSeriesDataForLeft(data,"研发实验室");
@@ -134,22 +135,29 @@ function worldTyleEchart(data){
 	        color: '#064f66',
 	        label: {
 	            show: true,
-	            position: 'center',
+	            position: 'outside',
 //	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
 	            formatter: function (params) {
-	                return allNum -  params.value + '\n';
+	                return allNum -  params.value ;
 	            },
 	            textStyle: {
-	                fontSize:bodyScale*12,
+	                fontSize:bodyScale*16,
 	                color: "#f90",
 	                baseline: 'bottom'
 	            }
 	        },
-	        labelLine: {
-	            show: false
-	        }
+
 	    }
 	};
+	var labelLine = {
+		normal: {
+			length2: 5*bodyScale,
+				length: -80*bodyScale,
+				lineStyle: {
+				color: "rgba(0,0,0,0)"
+			}
+		}
+    };
 	var labelFromatter = {
 	    normal: {
 	        label: {
@@ -177,9 +185,7 @@ function worldTyleEchart(data){
                     baseline: 'top'
 	            }
 	        },
-	        labelLine: {
-	            show: false
-	        }
+
 	    },
 	    emphasis: {
 	        color: '#6cf'
@@ -197,7 +203,7 @@ function worldTyleEchart(data){
 	                fontSize: bodyScale*12,
 	                // fontSize: 6,
 	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
-                    baseline: 'top'
+                    baseline: 'bottom'
 	            }
 	        },
 	        labelLine: {
@@ -279,16 +285,34 @@ function worldTyleEchart(data){
 	    },
 	    series: [
 	        {
+                labelLine: {
+                    normal: {
+                        length: -65 * bodyScale,
+                        length2: -5 * bodyScale,
+                        lineStyle: {
+                            color: "rgba(0,0,0,0)"
+                        }
+                    }
+                },
 	            type: 'pie',
 	            center: ['30%', '33%'],
 	            radius: radius,
 	            x: '0%', // for funnel
 	            data: [
 	                {name: 'other', value: allNum-num2, itemStyle: labelTop_full},
-	                {name: '研发-调试', value: num2, itemStyle: labelBottom_full}
+	                {name: '\n研发-调试', value: num2, itemStyle: labelBottom_full}
 	            ]
 	        },
 	        {
+                labelLine: {
+                    normal: {
+                        length: -65 * bodyScale,
+                        length2: -10 * bodyScale,
+                        lineStyle: {
+                            color: "rgba(0,0,0,0)"
+                        }
+                    }
+                },
 	            type: 'pie',
 	            center: ['70%', '33%'],
 	            radius: radius,
@@ -296,10 +320,19 @@ function worldTyleEchart(data){
 	            itemStyle: labelFromatter,
 	            data: [
 	                {name:'other', value:allNum-num3, itemStyle : labelTop_full},
-	                {name: '中海博睿\n新品确认', value: num3, itemStyle: labelBottom_full}
+	                {name: '\n\n中海博睿\n新品确认\n', value: num3, itemStyle: labelBottom_full}
 	            ]
 	        },
 	        {
+                labelLine: {
+                    normal: {
+                        length: -80 * bodyScale,
+                        length2: 10 * bodyScale,
+                        lineStyle: {
+                            color: "rgba(0,0,0,0)"
+                        }
+                    }
+                },
 	            type: 'pie',
 	            center: ['70%', '78%'],
 	            radius: radius,
@@ -307,10 +340,19 @@ function worldTyleEchart(data){
 	            itemStyle: labelFromatter,
 	            data: [
 	                {name: 'other', value: allNum-num5, itemStyle: labelTop_full},
-	                {name: '模块商\n模块测试', value: num5, itemStyle: labelBottom_full}
+	                {name: '\n模块商\n模块测试', value: num5, itemStyle: labelBottom_full}
 	            ]
 	        },
 	        {
+                labelLine: {
+                    normal: {
+                        length: -80 * bodyScale,
+                        length2: 10 * bodyScale,
+                        lineStyle: {
+                            color: "rgba(0,0,0,0)"
+                        }
+                    }
+                },
 	            type: 'pie',
 	            center: ['30%', '78%'],
 	            radius: radius,
@@ -318,7 +360,7 @@ function worldTyleEchart(data){
 	            itemStyle: labelFromatter,
 	            data: [
 	                {name: 'other', value: allNum-num4, itemStyle: labelTop_full},
-	                {name: '工厂\n量产测试', value: num4, itemStyle: labelBottom_full}
+	                {name: '\n工厂\n量产测试', value: num4, itemStyle: labelBottom_full}
 	            ]
 	        }
 	    ]
@@ -330,88 +372,6 @@ function worldLabTypeStatis(){
 		worldTyleEchart(data);
 	})
 }
-//平面地图左下角，按照实验室四大类统计数量
-/*function labTypeStatis(){
-	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code","productCode":productCode},function(data){
-		//worldTyleEchart(data)
-		myChartFlatLB.resize();
-		myChartFlatLB.clear();
-		 	myChartFlatLB.setOption(getLineEcharts());
-		    myChartFlatLB.setOption({
-		        tooltip: {
-		            trigger: 'axis'
-		        },
-		        legend: {
-		            show: false,
-		            data: ['实验室统计']
-		        },
-		        textStyle: {
-		            color: "#6cf",
-		            fontSize: bodyScale*7
-		        },
-		        grid: {
-//		            show:true,
-		        	x:"20%",
-		        	 x2: "15%",
-		             y: "15%",
-		             y2: "14%"
-		        },
-		        xAxis: [
-		            {
-		                name: "",
-		                type: 'category',
-		                data: statisticLengend(data),
-		                axisLabel: {
-		                    textStyle: {
-		                        color: "#66ccff",
-		                        fontSize: bodyScale*7
-		                    },
-		                    rotate:0
-		                },
-		                axisLine: {
-		                    lineStyle: {
-		                        width: 0
-		                    }
-		                },
-
-		                offset: bodyScale*5
-
-		            }
-		        ],
-		        yAxis: [
-		            {
-		                name: "　数量　　　　　　　",
-//		                name: "数量　　　",
-		                type: 'value',
-		                axisLabel: {
-		                    textStyle: {
-		                        color: "#66ccff",
-		                        fontSize: bodyScale*7
-		                    }
-		                },
-		                nameGap: bodyScale*10,
-		                offset: bodyScale*5,
-		                splitLine: {  //刻度线
-		                    show: true,
-		                    lineStyle: {
-		                        color: "#234f65"
-		                    }
-		                },
-		            }],
-		        series: [
-		            {
-		                name: '',
-//		                type:'bar',
-		                type: 'pictorialBar',
-//		                barGap: '10%',
-		                symbolRepeat: true,
-		                symbolSize: ['40%', '20%'],
-		                data: statisticSeriesDataData(data)
-		            }
-		        ]
-		    });
-	})
-}*/
 
 //按照实验室实验室性质统计数量  ---全方位测试
 function labPropertiesStatis(){
@@ -583,7 +543,7 @@ function labPropertiesStatis(){
 	})
 }
 
-//平面地图左下角，产品生命周期全流程测试
+//平面地图左下角，产品生命周期全流程测试，P1~P5
 function labLifeCycleStatis(){
 	$.post(contextPath+'/lab/labCarryNumStatisAjax',{"labType":labType,"productCode":productCode},function(data){
 		myChartFlatLB.resize();
@@ -606,7 +566,7 @@ function labLifeCycleStatis(){
 	            		r+=a[1].seriesName+':'+parseFloat(a[1].value)*100  +"</br>"  ;
 	            	}
                     return r;  
-                },  
+                }
 	        },
 	        grid: {
 	            left:"10%",
@@ -708,6 +668,7 @@ function labLifeCycleStatis(){
 	        series: [
                 {
                     name:'实验室数量',
+                    symbol:"circle",
                     type:'line',
                     yAxisIndex: 1,
                     hoverAnimation:false,
@@ -717,7 +678,7 @@ function labLifeCycleStatis(){
                             width:2*bodyScale
                         }
                     },
-                    symbolSize:2*bodyScale,
+                    symbolSize:3*bodyScale,
 
                     areaStyle: {
                         normal: {
@@ -739,6 +700,7 @@ function labLifeCycleStatis(){
                 },
 	            {
 	                name:'检测订单量',
+                    symbol:"circle",
 	                type:'line',
 	                yAxisIndex: 1,
                     hoverAnimation:false,
@@ -748,7 +710,7 @@ function labLifeCycleStatis(){
                             width:2*bodyScale
                         }
                     },
-                    symbolSize:2*bodyScale,
+                    symbolSize:3*bodyScale,
 	                areaStyle: {
 	                    normal: {
 	                        color: {
@@ -897,7 +859,7 @@ function labLifeCycleStatis(){
                             width:2*bodyScale
                         }
                     },
-                    symbolSize:2*bodyScale,
+                    symbolSize:4*bodyScale,
 
                     areaStyle: {
                         normal: {
@@ -919,6 +881,7 @@ function labLifeCycleStatis(){
                 },
 	            {
 	                name:'检测订单量',
+                    symbol:"circle",
 	                type:'line',
 	                yAxisIndex: 1,
                     hoverAnimation:false,
@@ -928,7 +891,7 @@ function labLifeCycleStatis(){
                             width:2*bodyScale
                         }
                     },
-                    symbolSize:2*bodyScale,
+                    symbolSize:4*bodyScale,
 	                areaStyle: {
 	                    normal: {
 	                        color: {
@@ -979,3 +942,6 @@ function statisticSeriesDataData(data){
 	});
 	return series;
 }
+
+
+
