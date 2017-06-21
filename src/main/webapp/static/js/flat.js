@@ -4,7 +4,7 @@
 var bodyScale = 1;
 var pageH;
 var pageW;
-pageH = $(window).height()-17;
+pageH = $(window).height() - 17;
 pageW = pageH * 16 * 7 / (9 * 3);
 
 function pageResize() {
@@ -12,9 +12,9 @@ function pageResize() {
     var bodyFontSize = pageH / 595 * 100 + "%";
     bodyScale = pageH / 595;
     $("body").css("font-size", bodyFontSize);
-       console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
-}
-pageResize();
+    // console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+};
+// pageResize();
 
 var timeId = null;
 function getGeoArr(data) {
@@ -24,188 +24,187 @@ function getGeoArr(data) {
     }
     // console.log("geo"+geo);
     return geo;
-}
+};
 /**
  * 平面世界地图数据准备
  * @param myChart
  * @param isFirst
  */
-function createArrData(productCode,labType){
-	$.post(contextPath+"/lab/labShowFlatMapAjax",{"productCode":productCode,"labType":labType},function(dataBase1){
-		mDataBase=jsonToArray(dataBase1);
-		var option = {
-	    // backgroundColor: "rgba(255,0,0,0)",
-	    color: ['gold', 'aqua', 'lime'],
-	    title: {
-	        show:false,
-	        text: '模拟迁徙',
-	        subtext: '数据纯属虚构',
-	        x: 'center',
-	        textStyle: {
-	            color: '#fff'
-	        }
-	    },
-	    calculable: false,
-	    tooltip: {
-	        show: true,
-	        showContent: true,
-	        enterable: true,
-	        trigger: 'item',
-	//				        showDelay:100,
-	        hideDelay: 300,
-	        position: function (p) {
-	//                return [p[0] - 130, p[1] - 90];
-	            return [p[0] + 100, p[1] + 100];
-	        },
-	        padding: [0, 0, 0, 0],
-	//            width: 207,
-	//            height: 110,
-	//            backgroundColor: 'rgba(13,43,67,0.7)',
-	//            borderColor: 'rgba(31,120,214,1)',
-	        // params : 数组内容同模板变量，
-	        formatter: function (param) {
-	            //在这里是第一步
-	            $elList = [];
-	            //提示框的内容清空
-	            $echartTips.empty();
-	            //初始化轮播，就是将轮播定时器停止
-	            stopNewsShown();
-	            //调用轮播方法，参数主要是弹出点坐标
-	            var $el = addNewsElem(param.data);
-	            return '';
-	        },
-	    },
-	 
-	
-	    series: seriesData(mDataBase)
-	}
-		myChart.clear();
-		startNewsShown();
-		myChart.setOption(option);
-		//setEvent(myChart);
-})
+function createArrData(productCode, labType) {
+    $.post(contextPath + "/lab/labShowFlatMapAjax", {
+        "productCode": productCode,
+        "labType": labType
+    }, function (dataBase1) {
+        mDataBase = jsonToArray(dataBase1);
+        var option = {
+            // backgroundColor: "rgba(255,0,0,0)",
+            color: ['gold', 'aqua', 'lime'],
+            title: {
+                show: false,
+                text: '模拟迁徙',
+                subtext: '数据纯属虚构',
+                x: 'center',
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+            calculable: true,
+            tooltip: {
+                show: true,
+                showContent: true,
+                enterable: true,
+                trigger: 'item',
+                //				        showDelay:100,
+                hideDelay: 300,
+                position: function (p) {
+                    //                return [p[0] - 130, p[1] - 90];
+                    return [p[0] + 100, p[1] + 100];
+                },
+                padding: [0, 0, 0, 0],
+                //            width: 207,
+                //            height: 110,
+                //            backgroundColor: 'rgba(13,43,67,0.7)',
+                //            borderColor: 'rgba(31,120,214,1)',
+                // params : 数组内容同模板变量，
+                formatter: function (param) {
+                    //在这里是第一步
+                    $elList = [];
+                    //提示框的内容清空
+                    $echartTips.empty();
+                    //初始化轮播，就是将轮播定时器停止
+                    stopNewsShown();
+                    //调用轮播方法，参数主要是弹出点坐标
+                    var $el = addNewsElem(param.data);
+                    return '';
+                },
+            },
+            series: seriesData(mDataBase)
+        }
+        myChart.clear();
+        startNewsShown();
+        myChart.setOption(option);
+        //setEvent(myChart);
+    })
 
 }
-function seriesData(data){
-	 var seriesData = [];
-	    var item={
-	    		tooltip:{
-	    	          show:false
-	    	        },
-	            name: 'zy_hotpoint',
-	            type: 'map',
-	            roam: false,
-	            hoverable: false,
-	            mapType: 'world',
-	            mapLocation:{
-	                x:'right',
-	            },
-	            itemStyle:{
-	                 normal: {
-						borderColor: '#8DF0FF',
-						borderWidth: 0.2*bodyScale,
-						areaStyle: {
-							   color: 'rgba(20,143,204,0.6)'
-						}
-					}
-	            },
-	            data:[{
-	            	name:"China",
-	            	selected:true,
-                    itemStyle:{
-	            	    emphasis:{
-	            	        areaStyle:{
-	            	            color:'#00ffff'
-                            }
-                        }
+function seriesData(data) {
+    var seriesData = [];
+    var item = {
+        tooltip: {
+            show: false
+        },
+        name: 'zy_hotpoint',
+        type: 'map',
+        roam: false,
+        // hoverable: false,
+        mapType: 'world',
+        mapLocation: {
+            x: 'right',
+        },
+        itemStyle: {
+            normal: {
+                borderColor: '#8DF0FF',
+                borderWidth: 0.2 * bodyScale,
+                areaStyle: {
+                    color: 'rgba(20,143,204,0.6)'
+                }
+            }
+        },
+        data: [{
+            name: "China",
+            selected: true,
+            itemStyle: {
+                emphasis: {
+                    areaStyle: {
+                        color: '#00ffff'
                     }
-	            }],
-	            markPoint: {
-	                symbol: 'emptyCircle',
-	                symbolSize: function (v) {
-	                     return 3*bodyScale;
-	                },
-	                effect: {
-	                    show: true,
-	                    type: 'scale',//圈圈
-	                    loop: true,
-	                    shadowBlur: 0
-	                },
-	                itemStyle: {
-	                    normal: {label: {show: false}},
-	                    emphasis: {label: {show: false}}
-	                },
-	                data: data
-	            },
-	            geoCoord: getGeoArr(data)
-	         
-	        };
-	    seriesData.push(item);
+                }
+            }
+        }],
+        markPoint: {
+            symbol: 'emptyCircle',
+            symbolSize: function (v) {
+                return 3 * bodyScale;
+            },
+            effect: {
+                show: true,
+                type: 'scale',//圈圈
+                loop: true,
+                shadowBlur: 0
+            },
+            itemStyle: {
+                normal: {label: {show: false}},
+                emphasis: {label: {show: false}}
+            },
+            data: data
+        },
+        geoCoord: getGeoArr(data)
 
-   	item={
-               name: '',
-               type: 'map',
-               roam: false,
-               hoverable: false,
-               mapType: 'world',
-               mapLocation: {
-                   x: "0",
-                   // y: "top"
-               },
-               itemStyle: {
-                   normal: {
-                       borderColor: 'rgba(100,149,237,1)',
-                       borderWidth: 0.5*bodyScale,
-                       areaStyle: {
-                           color: '#1b1b1b'
-                       }
-                   }
-               },
-               data: [],
-               markPoint: {
-                   symbol: 'emptyCircle',
-                   symbolSize: function (v) {
-                        return 6*bodyScale;
-                   },
-                   effect: {
-                       show: true,
-                       type: 'scale',//圈圈
-                       loop: true,
-                       shadowBlur: 0
-                   },
-                   itemStyle: {
-                       normal: {label: {show: false}},
-                       emphasis: {label: {show: false}}
-                   },
-                   data: data
-               },
-               markLine: {
-                   smooth: true,
-                effect : {
-                    show: true,
-                    scaleSize: 1,
-                    period: 5*bodyScale,
-                    color: '#ff0',
-                    shadowBlur: 10*bodyScale
-                },
-                itemStyle : {
-                    normal: {
-                        color:"rgba(20,143,204,.7)",
-                        borderWidth:1*bodyScale,
-                        lineStyle: {
-                            type: 'solid',
-                            shadowBlur: 0
-                        }
+    };
+    seriesData.push(item);
+
+    item = {
+        name: '',
+        type: 'map',
+        roam: false,
+        // hoverable: false,
+        mapType: 'world',
+        mapLocation: {
+            x: 0,
+            // y: "top"
+        },
+        itemStyle: {
+            normal: {
+                borderColor: 'rgba(100,149,237,1)',
+                borderWidth: 0.5 * bodyScale,
+                areaStyle: {
+                    color: '#1b1b1b'
+                }
+            }
+        },
+        data: [],
+        markPoint: {
+            symbol: 'emptyCircle',
+            symbolSize: function (v) {
+                return 6 * bodyScale;
+            },
+            effect: {
+                show: true,
+                type: 'scale',//圈圈
+                loop: true,
+                shadowBlur: 0
+            },
+            itemStyle: {
+                normal: {label: {show: false}},
+                emphasis: {label: {show: false}}
+            },
+            data: data
+        },
+        markLine: {
+            smooth: true,
+            effect: {
+                show: true,
+                scaleSize: 1,
+                period: 5 * bodyScale,
+                color: '#ff0',
+                shadowBlur: 10 * bodyScale
+            },
+            itemStyle: {
+                normal: {
+                    color: "rgba(20,143,204,.7)",
+                    borderWidth: 1 * bodyScale,
+                    lineStyle: {
+                        type: 'solid',
+                        shadowBlur: 0
                     }
-                },
-                   data:dataToArrayContinueArray(data)
-               },
-           }
-   	
-   	seriesData.push(item);
-   	
-   
-	    return seriesData;
+                }
+            },
+            data: dataToArrayContinueArray(data)
+        },
+    }
+
+    seriesData.push(item);
+    return seriesData;
 }
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init($('.mapFlat')[0]);
@@ -238,7 +237,7 @@ var $echartTips = $('.echartTips');
 /**
  * 提示渐隐时间
  * @type {number}
- *  
+ *
  */
 var TIP_SETTIMEOUT_TIME = 3000;
 
@@ -289,7 +288,6 @@ function addNewsElem(news) {
         $el.remove();
     } else {
         $el.data('offset', offset);
-
         $elList.push($el);
         fadeOutElList();
         startNewsShown();
@@ -337,7 +335,7 @@ function showNews() {
 function startNewsShown() {
 
     if (timeId === null) {
-        console.log("---start---")
+        // console.log("---start---")
         timeId = setInterval(showNews, 3000);
     }
 }
