@@ -117,7 +117,7 @@
 #l.fullScreen_map .flat .mapArea iframe {
     height: 142%;
     width: 100%;
-    left:52%;
+    left: 44%;
 }
 #l.fullScreen_map .flat-footer .legend{
     z-index: 9999;
