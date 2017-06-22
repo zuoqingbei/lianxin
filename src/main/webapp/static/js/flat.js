@@ -4,7 +4,9 @@
 var bodyScale = 1;
 var pageH;
 var pageW;
+
 pageH = $(window).height();
+
 pageW = pageH * 16 * 7 / (9 * 3);
 
 function pageResize() {
@@ -12,8 +14,9 @@ function pageResize() {
     var bodyFontSize = pageH / 595 * 100 + "%";
     bodyScale = pageH / 595;
     $("body").css("font-size", bodyFontSize);
-       console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
-}
+
+    // console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+};
 // pageResize();
 
 var timeId = null;
@@ -24,7 +27,7 @@ function getGeoArr(data) {
     }
     // console.log("geo"+geo);
     return geo;
-}
+};
 /**
  * 程序被调用的入口——————————————————————————————————————————————————————
  * 平面世界地图数据准备
@@ -78,127 +81,126 @@ function createArrData(productCode,labType){
 		//setEvent(myChart);
 })
 
-}
-function seriesData(data){
-	 var seriesData = [];
-	    var item={
-	    		tooltip:{
-	    	          show:false
-	    	        },
-	            name: 'zy_hotpoint',
-	            type: 'map',
-	            roam: false,
-	            hoverable: false,
-	            mapType: 'world',
-	            mapLocation:{
-	                x:'right',
-	            },
-	            itemStyle:{
-	                 normal: {
-						borderColor: '#8DF0FF',
-						borderWidth: 0.2*bodyScale,
-						areaStyle: {
-							   color: 'rgba(20,143,204,0.6)'
-						}
-					}
-	            },
-	            data:[{
-	            	name:"China",
-	            	selected:true,
-                    itemStyle:{
-	            	    emphasis:{
-	            	        areaStyle:{
-	            	            color:'#00ffff'
-                            }
-                        }
-                    }
-	            }],
-	            markPoint: {
-	                symbol: 'emptyCircle',
-	                symbolSize: function (v) {
-	                     return 3*bodyScale;
-	                },
-	                effect: {
-	                    show: true,
-	                    type: 'scale',//圈圈
-	                    loop: true,
-	                    shadowBlur: 0
-	                },
-	                itemStyle: {
-	                    normal: {label: {show: false}},
-	                    emphasis: {label: {show: false}}
-	                },
-	                data: data
-	            },
-	            geoCoord: getGeoArr(data)
-	         
-	        };
-	    seriesData.push(item);
 
-   	item={
-               name: '',
-               type: 'map',
-               roam: false,
-               hoverable: false,
-               mapType: 'world',
-               mapLocation: {
-                   x: "0",
-                   // y: "top"
-               },
-               itemStyle: {
-                   normal: {
-                       borderColor: 'rgba(100,149,237,1)',
-                       borderWidth: 0.5*bodyScale,
-                       areaStyle: {
-                           color: '#1b1b1b'
-                       }
-                   }
-               },
-               data: [],
-               markPoint: {
-                   symbol: 'emptyCircle',
-                   symbolSize: function (v) {
-                        return 6*bodyScale;
-                   },
-                   effect: {
-                       show: true,
-                       type: 'scale',//圈圈
-                       loop: true,
-                       shadowBlur: 0
-                   },
-                   itemStyle: {
-                       normal: {label: {show: false}},
-                       emphasis: {label: {show: false}}
-                   },
-                   data: data
-               },
-               markLine: {
-                   smooth: true,
-                effect : {
-                    show: true,
-                    scaleSize: 1,
-                    period: 5*bodyScale,
-                    color: '#ff0',
-                    shadowBlur: 10*bodyScale
-                },
-                itemStyle : {
-                    normal: {
-                        color:"rgba(20,143,204,.7)",
-                        borderWidth:1*bodyScale,
-                        lineStyle: {
-                            type: 'solid',
-                            shadowBlur: 0
-                        }
+}
+function seriesData(data) {
+    var seriesData = [];
+    var item = {
+        tooltip: {
+            show: false
+        },
+        name: 'zy_hotpoint',
+        type: 'map',
+        roam: false,
+        // hoverable: false,
+        mapType: 'world',
+        mapLocation: {
+            x: 'right',
+        },
+        itemStyle: {
+            normal: {
+                borderColor: '#8DF0FF',
+                borderWidth: 0.2 * bodyScale,
+                areaStyle: {
+                    color: 'rgba(20,143,204,0.6)'
+                }
+            }
+        },
+        data: [{
+            name: "China",
+            selected: true,
+            itemStyle: {
+                emphasis: {
+                    areaStyle: {
+                        color: '#00ffff'
                     }
-                },
-                   data:dataToArrayContinueArray(data)
-               },
-           }
-   	
-   	seriesData.push(item);
-   	
-   
-	    return seriesData;
+                }
+            }
+        }],
+        markPoint: {
+            symbol: 'emptyCircle',
+            symbolSize: function (v) {
+                return 3 * bodyScale;
+            },
+            effect: {
+                show: true,
+                type: 'scale',//圈圈
+                loop: true,
+                shadowBlur: 0
+            },
+            itemStyle: {
+                normal: {label: {show: false}},
+                emphasis: {label: {show: false}}
+            },
+            data: data
+        },
+        geoCoord: getGeoArr(data)
+
+    };
+    seriesData.push(item);
+
+    item = {
+        name: '',
+        type: 'map',
+        roam: false,
+        // hoverable: false,
+        mapType: 'world',
+        mapLocation: {
+            x: 0,
+            // y: "top"
+        },
+        itemStyle: {
+            normal: {
+                borderColor: 'rgba(100,149,237,1)',
+                borderWidth: 0.5 * bodyScale,
+                areaStyle: {
+                    color: '#1b1b1b'
+                }
+            }
+        },
+        data: [],
+        markPoint: {
+            symbol: 'emptyCircle',
+            symbolSize: function (v) {
+                return 6 * bodyScale;
+            },
+            effect: {
+                show: true,
+                type: 'scale',//圈圈
+                loop: true,
+                shadowBlur: 0
+            },
+            itemStyle: {
+                normal: {label: {show: false}},
+                emphasis: {label: {show: false}}
+            },
+            data: data
+        },
+        markLine: {
+            smooth: true,
+            effect: {
+                show: true,
+                scaleSize: 1,
+                period: 5 * bodyScale,
+                color: '#ff0',
+                shadowBlur: 10 * bodyScale
+            },
+            itemStyle: {
+                normal: {
+                    color: "rgba(20,143,204,.7)",
+                    borderWidth: 1 * bodyScale,
+                    lineStyle: {
+                        type: 'solid',
+                        shadowBlur: 0
+                    }
+                }
+            },
+            data: dataToArrayContinueArray(data)
+        },
+    }
+
+    seriesData.push(item);
+    return seriesData;
 }
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init($('.mapFlat')[0]);
@@ -231,7 +233,7 @@ var $echartTips = $('.echartTips');
 /**
  * 提示渐隐时间
  * @type {number}
- *  
+ *
  */
 var TIP_SETTIMEOUT_TIME = 3000;
 
@@ -286,7 +288,6 @@ function addNewsElem(news) {
         $el.remove();
     } else {
         $el.data('offset', offset);
-
         $elList.push($el);
         fadeOutElList();
         startNewsShown();
@@ -335,6 +336,7 @@ function startNewsShown() {
 
     if (timeId === null) {
         console.log("---自动提示启动---")
+
         timeId = setInterval(showNews, 3000);
     }
 }

@@ -72,9 +72,9 @@
 #l.fullScreen_map header .mainLogo{
     background-image: url(../img/logo_haier_bold.png);
     width: 3.3%;
-    height: 5.5%;
+    height: 6.5%;
     top: 2.6%;
-    left: 40.1%;
+    left: 39.7%;
 }
 #l.fullScreen_map h1:nth-of-type(1) {
     margin: 0 auto 0;
