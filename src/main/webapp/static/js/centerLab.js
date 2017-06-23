@@ -1627,6 +1627,7 @@ function setProgressValue(ids,value){
 	if(value==null){
 		value=0;
 	}
+	value=parseFloat(value).toFixed(1);
 	$("#"+ids).find(".progress-bar").attr("aria-valuenow",value);
 	$("#"+ids).find(".progress-bar").css("width",value+"%");
 	$("#"+ids).find(".data").html(value+"%");
