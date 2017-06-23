@@ -399,14 +399,14 @@ function labPropertiesStatis(){
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "3%",
+	        	 x: "23%",
 	             x2: "18%",
 	             y:"14%",
 	             y2:"18%"
 	        },
 	        xAxis: [
 	            {
-                    name: "\n\n\n\n实验室数量",
+                    name: "\n\n\n\n\n实验室数量",
                     nameGap:  -15 * bodyScale,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
