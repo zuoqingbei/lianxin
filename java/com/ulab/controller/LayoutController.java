@@ -50,4 +50,7 @@ public class LayoutController extends BaseController {
 	public void right() {
         render("right.html");
     }
+	public void tab1() {
+	        render("tab/tab1.html");
+	}
 }

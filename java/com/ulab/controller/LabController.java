@@ -90,6 +90,7 @@ public class LabController extends BaseController {
     public void wordCloud() {
         render("wordCloud.html");
     }
+  
     /**
      * 
      * @time   2017年4月19日 下午3:20:03
