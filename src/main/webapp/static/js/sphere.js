@@ -29,19 +29,6 @@ function mapSphere() {
 
 
             opts = {
-                title: {
-                    show: false,
-                    // text: '全球实验中心互联，加速产品迭代升级，创用户最佳体验',
-                    text: '数据互联   实时共享  提效增值 \n\n\n',
-                    //subtext: '数据纯属虚构',
-                    x: 'center',
-                    textStyle: {
-                        color: '#fff',
-                        // fontSize:bodyScale*21,
-                        fontFamily: '"Microsoft yahei", "微软雅黑", Sans Serif',
-                        fontWeight: "normal"
-                    }
-                },
                 legend: {
                     show: false,
                     //   遍历航空公司名称显示图例
