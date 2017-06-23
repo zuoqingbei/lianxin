@@ -326,8 +326,8 @@ function worldTyleEchart(data){
 	        {
                 labelLine: {
                     normal: {
-                        length: -80 * bodyScale,
-                        length2: 10 * bodyScale,
+                        length: -80* bodyScale,
+                        length2:10 * bodyScale,
                         lineStyle: {
                             color: "rgba(0,0,0,0)"
                         }
@@ -346,8 +346,8 @@ function worldTyleEchart(data){
 	        {
                 labelLine: {
                     normal: {
-                        length: -80 * bodyScale,
-                        length2: 10 * bodyScale,
+                        length: -85 * bodyScale,
+                        length2: 15 * bodyScale,
                         lineStyle: {
                             color: "rgba(0,0,0,0)"
                         }
@@ -399,7 +399,7 @@ function labPropertiesStatis(){
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "23%",
+	        	 x: "3%",
 	             x2: "18%",
 	             y:"14%",
 	             y2:"18%"

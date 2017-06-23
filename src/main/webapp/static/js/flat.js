@@ -85,7 +85,6 @@ function createArrData(productCode, labType) {
         myChart.setOption(option);
         //setEvent(myChart);
     })
-
 }
 function seriesData(data) {
     var seriesData = [];
