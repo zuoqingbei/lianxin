@@ -40,7 +40,7 @@ function loadTab1Data() {
     //根据类型 时间 统计共产 一致个月份数量
     communistStatisticForMonthForTab1Ajax();
     //直方图
-    loadTab1JianData($(".tab1 .total_bottom_tab .active").attr("data"), $(".tab1 .total_bottom_tab .active").html());
+    loadTab1JianData($(".tab1 .shujuWajue_left_top_list .active").attr("data"), $(".tab1 .shujuWajue_left_top_list .active").html());
     //统计当前以及同比 模块 整机问题闭环率tab1 
     questionForMkZjTab1Ajax();
 }
@@ -468,7 +468,7 @@ function mkSqualityLevelForTab1(xhPro) {
                     }
                 },
                 axisTick: {  //刻度值
-                    show: false,
+                    show: false
                 }
             }, {
                 name: " ", /*ppm用div替代*/
@@ -482,11 +482,11 @@ function mkSqualityLevelForTab1(xhPro) {
                 axisLine: { //坐标轴
                     show: true,
                     textStyle: {
-                        color: '#66ccff',
+                        color: '#66ccff'
                     }
                 },
                 axisTick: {  //刻度值
-                    show: false,
+                    show: false
                 }
             }, {
                 name: "",
@@ -498,18 +498,17 @@ function mkSqualityLevelForTab1(xhPro) {
                 data: [0.6, 1.16, 1.5, 1.85, 2.5],
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
-                axisLabel: axisLabel,
                 axisLabel: {
-                    show: false,
+                    show: false
                 },
                 axisLine: { //坐标轴
                     show: true,
                     textStyle: {
-                        color: '#66ccff',
+                        color: '#66ccff'
                     }
                 },
                 axisTick: {  //刻度值
-                    show: false,
+                    show: false
                 }
             }
 
@@ -529,12 +528,12 @@ function mkSqualityLevelForTab1(xhPro) {
                 axisLine: { //坐标轴
                     show: false,
                     textStyle: {
-                        color: '#66ccff',
+                        color: '#66ccff'
                     },
-                    color: '#66ccff',
+                    color: '#66ccff'
                 },
                 axisTick: {  //刻度值
-                    show: false,
+                    show: false
                 }
             }
         ],
@@ -568,7 +567,7 @@ function scpDataForTab1(myChartIds, xhPro, type) {
     $.post(contextPath + '/lab/jianCeXbarForTab1Ajax', {"xhName": xhPro.xh_name, "type": type}, function (data) {
         var maxAndMin = getMaxMinForScpTab1(data, xhPro, type);
         var mTitle, mLcl, mValue, mUcl;
-        if (type == 1) {
+        if (type === 1) {
             mTitle = "样本平均值";
             mLcl = xhPro.jz_lcl;
             mValue = xhPro.pj_value;
@@ -611,7 +610,7 @@ function scpDataForTab1(myChartIds, xhPro, type) {
                     show: false
                 },
                 nameGap: 2 * bodyScale,
-                nameTextStyle: {fontSize: 6 * bodyScale},
+                nameTextStyle: {fontSize: 6 * bodyScale}
             },
             xAxis: [
                 {
@@ -746,7 +745,7 @@ function cpkDataForTab1(xhPro) {
                     fontSize: 12 * bodyScale
                 }
             },
-            zIndex: 100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            zIndex: 100  //值越大，显示越向前，默认标示线显示在数据线之后
         });
     });
 
@@ -1498,18 +1497,12 @@ function getMaxMinForScpTab1(data, xhPro, type) {
     result.push(parseFloat(min) - 0.1);
     return result;
 }
+
+//下拉菜单选择
 function tab1JianSelected(obj) {
     // var id = $(obj).find("option:selected").attr("data");
     // var name = $(obj).find("option:selected").text();
-
-    //下拉菜单选择
-/*
-    $("select").change(function () {
-
-
-    });
-
-*/  $("option").removeClass("active");
+  $("option").removeClass("active");
     var selectedLabel = $("option[value="+$("select").val()+"]").addClass("active").parent().attr("label");
     $("option.showLabel").text(selectedLabel).prop("selected",true);
 

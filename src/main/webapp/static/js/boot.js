@@ -18,7 +18,7 @@ define("start", function (require) {
     // $("#sphereMap").css({"height":"600px","width":"100%"});
     var myChart = ec.init($("#sphereMap")[0]);
 
-    console.log("------------------$('#sphereMap').length"+$("#sphereMap").length);
+    // console.log("------------------$('#sphereMap').length"+$("#sphereMap").length);
     //这里需要去除因获取文本而定义成函数的额外字符串
     var options;
     setTimeout(function () {

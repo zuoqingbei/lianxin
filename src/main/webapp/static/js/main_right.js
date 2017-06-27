@@ -4438,6 +4438,7 @@ var right_echarts = [];
 //重置echart图标大小 在加载平面地图时被调用
 function resetSizeRight() {
     mHeightChartTab4.reflow();
+    console.log("直方图重置大小了")
     // mHeightChart.reflow();
     for (var i = 0; i < right_echarts.length; i++) {
         right_echarts[i].resize();
@@ -4445,50 +4446,95 @@ function resetSizeRight() {
 }
 
 $(function () {
-    /*总状态底下的tab列表*/
-    var $right = $("#right");
+    /*总状态顶部的tab列表*/
+    var $right = $("#r");
+/*
     $right.find(".total_bottom_tab ul>li[class]").click(function () {
-        $(this).parents(".total_bottom_tab").find(".active").removeClass("active");
+        $(this).parents(".shujuWajue_left_top_list").find(".active").removeClass("active");
         $(this).addClass("active");
     });
     $right.find(".total_bottom_tab>ul>li[class]").click(function () {
         $(this).next().toggle();
     });
+*/
 
-    /*实验室状态顶上右上角的tab切换*/
-    $right.find(".lab .lab_icon li img").click(function () {
+    /*右四屏左上角的4个实验室tab切换*/
+/*
+    $right.find(".labIcon>ul>li>img").click(function () {
 
         var src = $(this).attr("src");
-        if (src.indexOf("off") >= 0) {
 
+        if (src.indexOf("off") >= 0) {//点亮图标
+            $(this).parent().addClass("active").siblings().removeClass("active");
             var index = $(this).parent().index();
             $(this).attr("src", src.replace("off", "on"))
                 .parent().siblings().find("img").each(function (index, item) {
                 $(item).attr("src", $(this).attr("src").replace("on", "off"));
             });
-            $(this).parents("ul").next().find("li:eq(" + index + ")").css("color","#00e673")
-                .siblings().css("color","#6cf");
 
             //取标签名字
             var thisLabel = $(this).parents("ul").next().find("li:eq(" + index + ")").text();
             console.log("```````````````````thisLabel",thisLabel);
+/!*          //这个赋值没有起作用
             if(thisLabel=="中海博睿"){
             	thisLabel="中心实验室";
             }
+*!/
             if(thisLabel!=labTypeCode){
             	labTypeCode=thisLabel;
             	 loadTab2Data();
                  loadTab3Data();
                  loadTab4Data();
             }
-        }else{
+        }else{//熄灭图标
+            $(this).parent().removeClass("active");
         	  var index = $(this).parent().index();
               $(this).attr("src", src.replace("on", "off"))
                   .parent().siblings().find("img").each(function (index, item) {
                   $(item).attr("src", $(this).attr("src").replace("on", "off"));
               });
-              $(this).parents("ul").next().find("li:eq(" + index + ")").css("color","#6cf")
-              .siblings().css("color","#6cf");
+        	//再次点击同一个 返回全部数据
+        	labTypeCode="";
+        	loadTab2Data();
+            loadTab3Data();
+            loadTab4Data();
+        }
+
+    })
+*/
+    $right.find(".labIcon>ul>li.lab_item").click(function () {
+
+        var $img = $(this).find("img");
+        var src = $img.attr("src");
+        var index = $(this).index();
+
+        if (src.indexOf("off") >= 0) {//点亮图标
+            $(this).addClass("active").siblings().removeClass("active");
+            $img.attr("src", src.replace("off", "on"))
+                .parent().siblings().find("img").each(function (index, item) {
+                $(item).attr("src", $(this).attr("src").replace("on", "off"));
+            });
+            //取标签名字
+            var thisLabel = $(this).find("span.text").text();
+            console.log("```````````````````thisLabel：",thisLabel);
+/*          //这个赋值没有起作用
+            if(thisLabel=="中海博睿"){
+            	thisLabel="中心实验室";
+            	alert('thisLabel=="中海博睿"')
+            }
+        */
+            if(thisLabel!=labTypeCode){
+            	labTypeCode=thisLabel;
+            	 loadTab2Data();
+                 loadTab3Data();
+                 loadTab4Data();
+            }
+        }else{//熄灭图标
+            $(this).removeClass("active");
+              $img.attr("src", src.replace("on", "off"))
+                  .parent().siblings().find("img").each(function (index, item) {
+                  $(item).attr("src", $(this).attr("src").replace("on", "off"));
+              });
         	//再次点击同一个 返回全部数据
         	labTypeCode="";
         	loadTab2Data();

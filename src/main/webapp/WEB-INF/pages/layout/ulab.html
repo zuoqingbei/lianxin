@@ -13,7 +13,6 @@
     var bodyScale = 1;
     var pageH;
     var pageW;
-//    pageH = $(window).height()-17;忘记为何-17
     pageH = $(window).height();
     pageW = pageH * 16 * 7 / (9 * 3);
 
@@ -23,7 +22,7 @@
         bodyScale = pageH / 595;
         $("body").css("font-size", bodyFontSize);
         $(".fullScreen_map").css("width", pageW);
-//        console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+        console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
     }
     pageResize();
 </script>

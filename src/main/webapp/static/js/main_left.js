@@ -47,7 +47,7 @@ function switchMapArea() {
         $(".fullScreen_map").animate({
             left: 0
         },1000).show();
-        $(".left3x3,#right,.labMain_content").hide();
+        $(".left3x3,#r,.labMain_content").hide();
     })
 }
 
@@ -200,7 +200,7 @@ function navSelectA() {//这里会触发地图中要加载的数据
     var $flatBottomSwitchLi = $("#l.left3x3").find(".flat-footer ul.legend-bottom li");
     $flatBottomSwitchLi.find("a").click(function () {
         if($(this).text() ==="中海博睿"){
-            $("#right").hide();
+            $("#r").hide();
             $(".labMain_content").show()
         }
 
