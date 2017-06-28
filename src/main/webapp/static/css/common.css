@@ -96,6 +96,7 @@ h3 {
   position: relative;
   /*outline: 1px dashed #ccc;*/
   outline-offset: -1px;
+  overflow: hidden;
 }
 #l{
   flex: 3;

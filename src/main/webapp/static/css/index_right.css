@@ -47,6 +47,7 @@
 }
 
 #r .labIcon{
+    z-index: 10;
     position: absolute;
     left: 1%;
     top: 2.5%;
