@@ -130,8 +130,8 @@ function satisfactionChangeForTab1Ajax() {
     })
 }
 //满意度 到月份数据统计tab1
-function satisfactionStatisForMonthForTab1Ajax() {
-    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab1Ajax', {}, function (data) {
+function satisfactionStatisForMonthForTab1Ajax() {/*------ 来自tab1 ------*/
+    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {}, function (data) {
         var myChart7 = echarts.init(document.getElementById("myChart7"));
         right_echarts.push(myChart7);
         myChart7.setOption(getLineEcharts());
@@ -1133,10 +1133,10 @@ function findOrderYearRateForTab1() {
                 itemHeight: 3 * bodyScale, //图例标记的图形高度
             },
             grid: {
-                right: '20%',
-                bottom: '20%',
+                right: '15%',
+                bottom: '15%',
                 left: '12%',
-                top: '22%'
+                top: '20%'
             },
 
             yAxis: {
@@ -1436,7 +1436,7 @@ function statisticRightLengend2(data) {
     });
     return legnend;
 }
-function statistictab1LengendTime(data) {
+function statistictab1LengendTime(data) {/*------ 来自tab1 ------*/
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
@@ -1445,7 +1445,7 @@ function statistictab1LengendTime(data) {
     });
     return legnend;
 }
-function tab1OrderRateSeriseData(data) {
+function tab1OrderRateSeriseData(data) {/*------ 来自tab1 ------*/
     var mData = [];
     $.each(data, function (index, item) {
         mData.push(item.rate);

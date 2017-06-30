@@ -408,8 +408,8 @@ function labPropertiesStatis(){
 	            {
                     name: "\n\n\n\n实验室数量",
                     nameGap:  -15 * bodyScale,
-                    nameTextStyle: nameTextStyle,
-                    axisLabel: axisLabel,
+                    nameTextStyle: nameTextStyle_l,
+                    axisLabel: axisLabel_l,
 	                type: 'value',
                     axisTick: {  //刻度值
                         show: false,
@@ -436,7 +436,7 @@ function labPropertiesStatis(){
 	                type: 'category',
 	                data: statisticLengend(data),
                     nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
+                    nameTextStyle: nameTextStyle_l,
                     axisLabel: {
                         margin: 3 * bodyScale,
                         textStyle: {

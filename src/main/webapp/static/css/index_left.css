@@ -108,7 +108,7 @@
 /*头部样式*/
 #l header{
     text-align: center;
-    background: url(../img/bg_title.png);
+    background-image: url(../img/bg_title.png);
     background-size: 98% 80%;
     background-position-x: 50%;
     background-position-y: 1em;
@@ -297,7 +297,7 @@
 	left: -3%;
     width:100%;
     height:100%;
-    transform: rotateX(30deg);
+    /*transform: rotateX(30deg);*/
 }
 
 #l .flat-footer{
