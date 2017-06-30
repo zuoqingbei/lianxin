@@ -13,19 +13,19 @@
     <div class="labIcon">
         <ul>
             <li class="lab_item">
-                <img src="${contextPath!}/static/img/sheshiState/yf_off.png" alt="">
+                <img src="${contextPath!}/static/img/tabCom/yf_off.png" alt="">
                 <span class="text">研发实验室</span>
             </li>
             <li class="lab_item">
-                <img src="${contextPath!}/static/img/sheshiState/zx_off.png" alt="">
+                <img src="${contextPath!}/static/img/tabCom/zx_off.png" alt="">
                 <span class="text">中心实验室</span>
             </li>
             <li class="lab_item">
-                <img src="${contextPath!}/static/img/sheshiState/gc_off.png" alt="">
+                <img src="${contextPath!}/static/img/tabCom/gc_off.png" alt="">
                 <span class="text">工厂实验室</span>
             </li>
             <li class="lab_item">
-                <img src="${contextPath!}/static/img/sheshiState/mks_off.png" alt="">
+                <img src="${contextPath!}/static/img/tabCom/mks_off.png" alt="">
                 <span class="text">模块商实验室</span>
             </li>
         </ul>
@@ -80,6 +80,7 @@
         $('#tab2 .fenye .first').click(function () {
             $('#tab2').css('left','0');
         });
+        //雷达图的透明度
         $('.biaozhun_tabs>ul>li').click(function () {
             $(this).addClass('biaozhun_tabs_selected').siblings('li').removeClass('biaozhun_tabs_selected');
             var index=$(this).index();

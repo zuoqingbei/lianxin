@@ -542,7 +542,7 @@ function satisfactionStatisForYearTab3Ajax2016() {
         "year": "2016年",
         "year2": "2017年"
     }, function (data) {
-        console.log("-------------data:", data[0]);
+        // console.log("-------------data:", data[0]);
         var mData = [];
         $.each(data[0], function (index, item) {
             mData.push(item.product_name);

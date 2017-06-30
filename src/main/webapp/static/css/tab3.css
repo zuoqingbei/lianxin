@@ -20,19 +20,19 @@
     }
 
     .pageSwitch:nth-of-type(1) > span.page_pre {
-        background-image: url("../img/tabCommom/page_pre.png");
+        background-image: url("../img/tabCom/page_pre.png");
     }
 
     .pageSwitch:nth-of-type(1) > span.page_next {
-        background-image: url("../img/tabCommom/page_next_act.png");
+        background-image: url("../img/tabCom/page_next_act.png");
     }
 
     .pageSwitch:nth-of-type(2) > span.page_pre {
-        background-image: url("../img/tabCommom/page_pre_act.png");
+        background-image: url("../img/tabCom/page_pre_act.png");
     }
 
     .pageSwitch:nth-of-type(2) > span.page_next {
-        background-image: url("../img/tabCommom/page_next.png");
+        background-image: url("../img/tabCom/page_next.png");
     }
 
 }
@@ -69,12 +69,12 @@
 
     #t3_l > div {
         margin: 1% .5%;
-        background-image: url("../img/tabCommom/bigBorder_p3.png");
+        background-image: url("../img/tabCom/bigBorder_p3.png");
     }
 
     #t3_r > div {
         margin: 1%;
-        background-image: url("../img/tabCommom/bigBorder_p5.png");
+        background-image: url("../img/tabCom/bigBorder_p5.png");
     }
 
     #tab3 > div > div > div[class$=_top],
@@ -112,7 +112,7 @@
         top: 47%;
         width: 94%;
         height: .4%;
-        background-image: url(../img/tabCommom/divideLine.png);
+        background-image: url(../img/tabCom/divideLine.png);
         background-size: 100%;
     }
 
@@ -126,14 +126,14 @@
         padding: 2.6% 6.8%;
         margin: 1% 1% .5%;
         height: 10%;
-        background-image: url(../img/tabCommom/btn_off.png);
+        background-image: url(../img/tabCom/btn_off.png);
         background-size: 100% 100%;
         cursor: pointer;
     }
 
     #tab3 > div > div > div > .btnGroup > span.active {
         color: #00e673;
-        background-image: url(../img/tabCommom/btn_on.png);
+        background-image: url(../img/tabCom/btn_on.png);
     }
 
 }
