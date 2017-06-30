@@ -46,12 +46,13 @@
 ##}
 <script src="${contextPath!}/static/asserts/js/highcharts.js"></script>
 <script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
- <!--<script src="${contextPath!}/static/js/tab1_statistics.js?time=New Date()"></script>-->
+<script src="${contextPath!}/static/js/tab1_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab2_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab3_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab4_statistics.js?time=New Date()"></script>
 <script>
     var labTypeCode;//实验室类型
+
     $(function () {
 //    右四屏顶部三个大标签的切换
         $(".tab-item").click(function () {
@@ -63,11 +64,34 @@
             resetSizeRight();
         });
 
-//        loadTab1Data();
+/*
+        $(".tab-item").eq(0).click(function () {
+            $('#right .lab').css("display",'none');
+        });
+        $(".lab_item").click(function () {
+            $(this).addClass("word_active").siblings().removeClass("word_active");
+        	resetSizeRight();
+        });
+*/
+//        上一页 下一页
+        $('#tab2 .fenye .last').click(function () {
+            $('#tab2').css('left','-100%');
+        });
+        $('#tab2 .fenye .first').click(function () {
+            $('#tab2').css('left','0');
+        });
+        $('.biaozhun_tabs>ul>li').click(function () {
+            $(this).addClass('biaozhun_tabs_selected').siblings('li').removeClass('biaozhun_tabs_selected');
+            var index=$(this).index();
+            $(".biaozhun_box_echarts:eq(" + index + ")").css("opacity",'1').siblings().css('opacity','0');
+        })
+//        海尔产品涉及数标准切换
+
+
+        /* loadTab1Data(); */
         loadTab2Data();
         loadTab3Data();
         loadTab4Data();
-
     });
 
 </script>

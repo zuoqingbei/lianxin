@@ -34,6 +34,7 @@ function getGeoArr(data) {
  * @param myChart
  * @param isFirst
  */
+
 function createArrData(productCode,labType){
 	$.post(contextPath+"/lab/labShowFlatMapAjax",{"productCode":productCode,"labType":labType},function(dataBase1){
 		mDataBase=jsonToArray(dataBase1);
@@ -80,7 +81,6 @@ function createArrData(productCode,labType){
 		myChart.setOption(option);
 		//setEvent(myChart);
 })
-
 
 }
 function seriesData(data) {

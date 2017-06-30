@@ -82,6 +82,7 @@ h3 {
   height:100%;
   background: url("../img/bg-2.jpg") no-repeat;
   background-size: 100% 100%;
+  float: left;
   /*background-color: #0a1f35;*/
   /*background-color: #000208;*/
   /*background-color: #04032d;*/

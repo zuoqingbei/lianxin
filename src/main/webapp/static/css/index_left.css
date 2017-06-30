@@ -265,7 +265,7 @@
 #l .sphere-right-bottom .chartBorder>.scroll{
     height: 11.5em;
     overflow: hidden;
-    margin: 4% 0;
+    margin: 3% 0;
 }
 #l .sphere-right-bottom .chartBorder>ul>li,
 #l .sphere-right-bottom .chartBorder>.scroll>ul>li{
@@ -602,7 +602,7 @@
     width: 90%;
     margin: 0;
     position: absolute;
-    top: 59%;
+    top: 60%;
     left: 5%;
 }
 #l .flat-right-bottom .myChart .myChart_num li{
@@ -611,7 +611,7 @@
     color: #f93;
 }
 #l .flat-right-bottom .myChart .myChart_num li:nth-of-type(2n){
-    margin-top: 12%;
+    margin-top: 13%;
 }
 #l .sphere-right-top ul,
 #l .flat .chartBorder ul{

@@ -29,8 +29,8 @@
 }
 
 .echart_tip.left.top > .echart_content {
-    bottom: 3em;
-    right: 1.8em;
+    bottom: 3.55em;
+    right: 1.82em;
 }
 
 .echart_tip.left.top > .echart_tip_arrow {
@@ -92,7 +92,7 @@
     padding-bottom: 0.3125em;
     position: absolute;
     width: 7.7em;
-    font-size: 1.3em;
+    font-size: 1.1em;
     text-align: left;
     z-index: 10;
     text-shadow: 0.143em 0.143em 0.143em rgba(0, 0, 0, 0.9);
@@ -101,14 +101,14 @@
 .dialog_title > a {
     color: #ffffff;
     font-size: 0.8em;
-    line-height: 1.4em;
-    max-height: 2.8em;
+    line-height: 1.6em;
+    /*max-height: 2em;*/
     display: block;
     display: -webkit-box;
     text-overflow: ellipsis;
     word-break: break-all;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    /*-webkit-line-clamp: 2;*/
     overflow: hidden;
 }
 
