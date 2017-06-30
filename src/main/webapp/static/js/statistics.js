@@ -399,17 +399,22 @@ function labPropertiesStatis(){
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "23%",
-	             x2: "18%",
-	             y:"14%",
-	             y2:"18%"
+	        	 x: "22%",
+	             x2: "20%",
+	             y:"9%",
+	             y2:"25%"
 	        },
 	        xAxis: [
 	            {
                     name: "\n\n\n\n\n实验室数量",
                     nameGap:  -15 * bodyScale,
-                    nameTextStyle: nameTextStyle,
-                    axisLabel: axisLabel,
+                    // nameTextStyle: nameTextStyle,
+                    axisLabel: {
+                        textStyle: {
+                            color: '#66ccff',
+                            fontSize:11*bodyScale
+                        }
+					},
 	                type: 'value',
                     axisTick: {  //刻度值
                         show: false,
@@ -453,11 +458,11 @@ function labPropertiesStatis(){
 	        series: [
 	            {
 	                name: '专业能力',
-//	                type:'bar',
-	                type: 'pictorialBar',
+	                type:'bar',
+// 	                type: 'pictorialBar',
 //	                barGap: '10%',
-	                symbolRepeat: true,
-	                symbolSize: ['40%', '80%'],
+// 	                symbolRepeat: true,
+// 	                symbolSize: ['40%', '80%'],
 	                data: statisticSeriesDataData(data)
 	            }
 	        ]
@@ -531,11 +536,11 @@ function labPropertiesStatis(){
 	        series: [
 	            {
 	                name: '专业能力',
-//	                type:'bar',
-	                type: 'pictorialBar',
+	                type:'bar',
+	                // type: 'pictorialBar',
 //	                barGap: '10%',
-	                symbolRepeat: true,
-	                symbolSize: ['40%', '80%'],
+// 	                symbolRepeat: true,
+// 	                symbolSize: ['40%', '80%'],
 	                data: statisticSeriesDataData(data)
 	            }
 	        ]

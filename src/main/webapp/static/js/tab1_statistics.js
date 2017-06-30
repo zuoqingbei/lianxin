@@ -274,15 +274,15 @@ function equipmentTotalForLab1Ajax() {
                 {
                     name: '实验在线率',
                     type: 'gauge',
-                    center: ['25%', '58%'],    // 默认全局居中
-                    radius: '70%',
+                    center: ['25%', '50%'],    // 默认全局居中
+                    radius: '80%',
                     textStyle: {
                         fontSize: 10 * bodyScale
                     },
                     min: 0,
                     max: 100,
-                    endAngle: 45,
-                    splitNumber: 5,
+                    // endAngle: 45,
+                    // splitNumber: 5,
                     axisLine: {            // 坐标轴线
                         lineStyle: {       // 属性lineStyle控制线条样式
                             width: 7 * bodyScale,
@@ -342,16 +342,16 @@ function equipmentTotalForLab1Ajax() {
                 {
                     name: '设备利用率',
                     type: 'gauge',
-                    center: ['75%', '59%'],    // 默认全局居中
-                    radius: '70%',
+                    center: ['75%', '50%'],    // 默认全局居中
+                    radius: '80%',
                     textStyle: {
                         fontSize: 10 * bodyScale
                     },
                     min: 0,
                     max: 100,
                     startAngle: 135,
-                    endAngle: -45,
-                    splitNumber: 5,
+                    // endAngle: -45,
+                    // splitNumber: 5,
                     axisLine: {            // 坐标轴线
                         lineStyle: {       // 属性lineStyle控制线条样式
                             width: 7 * bodyScale,

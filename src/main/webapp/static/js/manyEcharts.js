@@ -7,7 +7,7 @@ var axisLabel = {
     show: true,
     textStyle: {
         color: '#66ccff',
-        fontSize:11*bodyScale
+        fontSize:13*bodyScale
     }
 };
 var axisLabel_full = {
@@ -15,17 +15,17 @@ var axisLabel_full = {
     show: true,
     textStyle: {
         color: '#66ccff',
-        fontSize:16*bodyScale
+        fontSize:13*bodyScale
     }
 };
 var nameGap = 10 * bodyScale;
 var nameTextStyle = {
     color: '#66ccff',
-    fontSize:8 * bodyScale
+    fontSize:10 * bodyScale
 };
 var nameTextStyle_full = {
     color: '#66ccff',
-    fontSize:12 * bodyScale
+    fontSize:13 * bodyScale
 };
 
 // 折线图
@@ -142,7 +142,7 @@ function getBarEcharts() {
             // // itemHeight:10*bodyScale, //图例标记的图形高度
             textStyle: {    //图例文字的样式
                 color: '#66ccff',
-                fontSize: 9*bodyScale
+                fontSize: 12*bodyScale
             }
         },
         textStyle: {    //图例文字的样式
@@ -206,11 +206,11 @@ function getBarEcharts() {
         series: [
             {
                 // name: '专业能力',
-//                type:'bar',
-                type: 'pictorialBar',
+               type:'bar',
+                // type: 'pictorialBar',
 //                barGap: '10%',
-                symbolRepeat: true,
-                symbolSize: ['40%', '10%'],
+//                 symbolRepeat: true,
+//                 symbolSize: ['40%', '10%'],
                 data: []
 //                data: [0, 1, 2, 4, 4, 20, 22]
             }
@@ -360,7 +360,7 @@ function getRadarEcharts() {
         },
         textStyle: {    //图例文字的样式
             color: '#66ccff',
-            fontSize: 10*bodyScale
+            fontSize: 12*bodyScale
         },
         tooltip: {
             trigger: 'axis'
@@ -1003,3 +1003,4 @@ function  getScatterEcharts() {
     };
     return option
 }
+
