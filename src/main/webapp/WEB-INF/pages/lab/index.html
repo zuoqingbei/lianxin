@@ -19,13 +19,13 @@
 <div id="content" class="contai">
      ##layout("fullScreen_map.html", {}){
 	 ##}
-    
+
      ##layout("left.html", {}){
 	 ##}
 
      ##layout("right.html", {}){
 	 ##}
-  
+
      ##layout("centerLab.html", {}){
 	 ##}
 
@@ -43,7 +43,11 @@
 -->
 <script>
     $(function () {
+        $(".l.fullScreen_map img.quit").click();
+        $("#r .box:eq(1)").addClass("selected").siblings().removeClass("selected");
+        resetSizeRight();
 
     })
+
 
 </script>

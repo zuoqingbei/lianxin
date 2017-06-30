@@ -176,7 +176,7 @@
 </div>
 <script>
     $(".btnGroup>.quit>img").click(function () {
-        $(".left3x3,#right").show();
+        $(".left3x3,#r").show();
         $(".fullScreen_map").animate({
             left: -(pageW + 100)
         },2000,function () {
@@ -191,7 +191,5 @@
             );
         //让球上的提示和文字正常
         $sphereIFrame3x3[0].contentWindow.spherePageResize();
-
-
     });
 </script>

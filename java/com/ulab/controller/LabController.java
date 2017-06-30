@@ -686,7 +686,7 @@ public class LabController extends BaseController {
      * @param  
      * @return_type   void
      */
-    public void satisfactionStatisForMonthForTab1Ajax(){
+    public void satisfactionStatisForMonthForTab3Ajax(){
     	String startDate=getPara("startDate","201606");
     	String endDate=getPara("endDate","201705");
     	String labTypeCode=getPara("labTypeCode","");
@@ -718,11 +718,24 @@ public class LabController extends BaseController {
      * @param  
      * @return_type   void
      */
-    public void satisfactionStatisForYearTab3Ajax(){
+// 原方法备份
+     /*public void satisfactionStatisForYearTab3Ajax(){
     	String labTypeCode=getPara("labTypeCode","");
     	String year=getPara("year","");
 		renderJson(SatisfactionModel.dao.satisfactionStatisForYear(year,labTypeCode));
+    }*/
+
+    public void satisfactionStatisForYearTab3Ajax(){
+    	String labTypeCode=getPara("labTypeCode","");
+    	String year=getPara("year","");
+    	String year2 = getPara("year2","");
+    	ArrayList< List<Record>> list = new ArrayList<List<Record>>();
+    	list.add(SatisfactionModel.dao.satisfactionStatisForYear(year,labTypeCode));
+    	list.add(SatisfactionModel.dao.satisfactionStatisForYear(year2,labTypeCode));
+    	renderJson(list);
+		//renderJson(SatisfactionModel.dao.satisfactionStatisForYear(year,labTypeCode));
     }
+    
     /**
      * 
      * @time   2017年5月20日 下午2:24:57

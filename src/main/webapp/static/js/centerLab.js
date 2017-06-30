@@ -102,7 +102,7 @@ function initone(mValue) {
 }
 //近12个月用户满意度趋势图
 function inittwo() {
-    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab1Ajax', {"labTypeCode": "中海博睿"}, function (data) {
+    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"labTypeCode": "中海博睿"}, function (data) {
         var resu = dealSatisfactionCenterLab(data);
         $("#satisfaction_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#satisfaction_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");

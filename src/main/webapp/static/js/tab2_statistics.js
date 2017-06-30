@@ -1,34 +1,279 @@
-/////////////////////////////////////////////////////////////////统计数据/////////////////////////////
-/**
- * 右侧tab2数据统计
- */
+
+//设备状态统计
 var color = ['rgb(102, 204, 255)', 'rgb(255,255,153)', 'rgb(102,255,204)', 'rgb(255,102,102)'];
 function loadTab2Data() {
+    //设备状态统计 总状态
+    equipmentTotalForLab1Ajax();
+
     //设施状态type 类型  0：实验室在线率 1：设备完好率 2：设备利用率
     equipmentStatisForPlForLab2Ajax(0);
     equipmentStatisForPlForLab2Ajax(1);
     equipmentStatisForPlForLab2Ajax(2);
+
+    //人员信息 总状态
+    findPersonStatusTab1Ajax(1);
+    findPersonStatusTab1Ajax(2);
+    findPersonStatusTab1Ajax(3);
+
+    //人员信息 各个产线状态 散点图
+    personForTab2Ajax("myChart25", "1", 1);
+    personForTab2Ajax("myChart26", "2", 1);
+    personForTab2Ajax("myChart27", "3", 1);
+
+    //标准状态 总状态
+    standardStatus();
+
     //标准数量分布情况
     standardDispersedStatus("myChart28", "国际标准");
     standardDispersedStatus("myChart29", "国家标准");
     standardDispersedStatus("myChart30", "行业标准");
     standardDispersedStatus("myChart31", "企业标准");
-    //不同产线的能力状态分布
-    abilityByProductLine();
-    //人员状态 散点
-    personForTab2Ajax("myChart25", "1", 1);
-    personForTab2Ajax("myChart26", "2", 1);
-    personForTab2Ajax("myChart27", "3", 1);
-    //人员状态 柱状
-    findPersonStatusTab2Ajax("myChart22", 1);
-    findPersonStatusTab2Ajax("myChart23", 2);
-    findPersonStatusTab2Ajax("myChart24", 3);
+
+    //能力状态 总状态
+    abilityStatus();
+
+    //能力状态分布 不同产线的
+    abilityByProductLine()
 }
-//设施状态 type 类型  0：实验室在线率 1：设备完好率 2：设备利用率 
+
+//设备状态统计 总状态
+function equipmentTotalForLab1Ajax() {
+    $.post(contextPath + '/lab/equipmentTotalForLab1Ajax', {}, function (data) {
+        var myChart1 = echarts.init(document.getElementById("myChart1"));
+        right_echarts.push(myChart1);
+        option = {
+            tooltip: {
+                formatter: "{a} <br/>{c}%"
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            series: [
+                {
+                    name: '设备完好率',
+                    type: 'gauge',
+                    z: 3,
+                    min: 0,
+                    max: 100,
+                    splitNumber: 5,
+                    radius: '85%',
+                    // textStyle: {
+                    //     fontSize: 15 * bodyScale
+                    // },
+                    axisLine: {            // 坐标轴线
+                        show: false,
+                        lineStyle: {       // 属性lineStyle控制线条样式
+                            width: 10 * bodyScale,
+                            color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
+                        },
+
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 11 * bodyScale
+                        }
+                    },
+                    axisTick: {            // 坐标轴小标记
+                        length: 5 * bodyScale,        // 属性length控制线长
+                        lineStyle: {       // 属性lineStyle控制线条样式
+                            color: '#66ccff'
+                        }
+                    },
+                    splitLine: {           // 分隔线
+                        length: 13* bodyScale,         // 属性length控制线长
+                        lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                            color: '#66ccff'
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: "#ff9933",
+                            // borderColor:"red",
+                            // borderWidth:2,
+//		                        opacity:0.5
+                        }
+                    },
+                    pointer: {
+                        length: "55%",
+                        width: 3 * bodyScale
+                    },
+//                     title: {
+//                         offsetCenter: [0, '100%'],       // x, y，单位px
+//                         textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+//                             fontSize: 15 * bodyScale,
+//                             color: '#66ccff',
+// //		                        fontStyle: 'italic'
+//                         },
+//
+//                     },
+                    detail: {
+                        offsetCenter: ['0%', '82%'],
+                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            fontWeight: 'bolder',
+                            fontSize: 25*bodyScale,
+                            color: "#ff9933"
+                        },
+                        formatter: '{value}%'
+                    },
+                    data: [{value: data[1].rate}]
+                    // data: [{value: data[1].rate, name: '设备完好率'}]
+                },
+                {
+                    name: '实验在线率',
+                    type: 'gauge',
+                    center: ['18%', '50%'],    // 默认全局居中
+                    radius: '85%',
+                    // textStyle: {
+                    //     fontSize: 15 * bodyScale
+                    // },
+                    min: 0,
+                    max: 100,
+                    // endAngle: 45,
+                    splitNumber: 5,
+                    axisLine: {            // 坐标轴线
+                        lineStyle: {       // 属性lineStyle控制线条样式
+                            width: 10 * bodyScale,
+                            color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
+
+                        },
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            fontSize:11* bodyScale
+                        }
+                    },
+                    axisTick: {            // 坐标轴小标记
+                        length: 7 * bodyScale,        // 属性length控制线长
+                        lineStyle: {       // 属性lineStyle控制线条样式
+                            color: 'auto'
+                        }
+                    },
+                    splitLine: {           // 分隔线
+                        length: 13 * bodyScale,         // 属性length控制线长
+                        lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                            color: 'auto'
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: "#ff9933",
+//		                        borderColor:"red",
+//		                        borderWidth:2,
+//		                        opacity:0.5
+                        }
+                    },
+                    pointer: {
+                        length: "55%",
+                        width: 3 * bodyScale
+                    },
+//                     title: {
+//                         offsetCenter: [0, '100%'],       // x, y，单位px
+//                         textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+//                             fontSize: 12 * bodyScale,
+//                             color: '#66ccff',
+// //		                        fontStyle: 'italic'
+//                         },
+//                     },
+                    detail: {
+                        offsetCenter: [0, '82%'],
+                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            fontWeight: 'bolder',
+                            fontSize: 25*bodyScale,
+                            color: "#ff9933"
+                        },
+                        formatter: '{value}%' //数字显示的样式
+                    },
+                    // data: [{value: data[0].rate, name: '实验在线率'}]
+                    data: [{value: data[0].rate}]
+                },
+                {
+                    name: '设备利用率',
+                    type: 'gauge',
+                    center: ['82%', '50%'],    // 默认全局居中
+                    radius: '85%',
+                    // textStyle: {
+                    //     fontSize: 10 * bodyScale
+                    // },
+                    min: 0,
+                    max: 100,
+                    // startAngle: 135,
+                    // endAngle: -45,
+                    splitNumber: 5,
+                    axisLine: {            // 坐标轴线
+                        lineStyle: {       // 属性lineStyle控制线条样式
+                            width: 10 * bodyScale,
+                            color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
+
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 11 * bodyScale
+                        }
+                    },
+                    axisTick: {            // 坐标轴小标记
+                        length: 7 * bodyScale,        // 属性length控制线长
+                        lineStyle: {       // 属性lineStyle控制线条样式
+                            color: 'auto'
+                        }
+                    },
+                    splitLine: {           // 分隔线
+                        length: 13 * bodyScale,         // 属性length控制线长
+                        lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                            color: 'auto'
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: "#ff9933",
+//		                        borderColor:"red",
+//		                        borderWidth:2,
+//		                        opacity:0.5
+                        }
+                    },
+                    pointer: {
+                        length: "55%",
+                        width: 3 * bodyScale
+                    },
+//                     title: {
+//                         offsetCenter: [0, '100%'],       // x, y，单位px
+//                         textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+//                             fontSize: 12 * bodyScale,
+//                             color: '#66ccff',
+// //		                        fontStyle: 'italic'
+//                         },
+//                     },
+                    detail: {
+                        offsetCenter: [0, '82%'],
+                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            fontWeight: 'bolder',
+                            fontSize: 25*bodyScale,
+                            color: "#ff9933"
+                        },
+                        formatter: '{value}%'
+                    },
+                    // data: [{value: data[2].rate, name: '设备利用率'}]
+                    data: [{value: data[2].rate}]
+                }
+
+            ]
+        };
+        myChart1.setOption(option);
+    });
+}
+
+//设施状态 各个产线  type 类型  0：实验室在线率 1：设备完好率 2：设备利用率
 function equipmentStatisForPlForLab2Ajax(type) {
-    var rise_pic = contextPath + "/static/img/sheshiState/rise.png";//上升图片
-    var reduce_pic = contextPath + "/static/img/sheshiState/down.png";//降低图片
-    var no_change = contextPath + "/static/img/sheshiState/cp.png";//没有变化
+    var rise_pic = contextPath + "/static/img/tab2/rise.png";//上升图片
+    var reduce_pic = contextPath + "/static/img/tab2/down.png";//降低图片
+    var no_change = contextPath + "/static/img/tab2/cp.png";//没有变化
     $.post(contextPath + '/lab/equipmentStatisForPlForLab2Ajax', {
         "type": type,
         "labTypeCode": labTypeCode
@@ -44,7 +289,11 @@ function equipmentStatisForPlForLab2Ajax(type) {
             $.each(data, function (index, item) {
                 all_change += parseFloat(item.change_num);
                 all_rate += parseFloat(item.dq);
-                htmls += '<tr><td>' + item.product_name + '</td><td>';
+                if(type == 0){
+                    htmls += '<tr><td>' + item.product_name + '</td><td class="td_progress">';
+                }else{
+                    htmls += '<tr><td>' + "" + '</td><td class="td_progress">';
+            }
                 htmls += '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="' + item.dq + '"';
                 htmls += 'aria-valuemin="0" aria-valuemax="100" style="width: ' + item.dq + '%;"></div>';
                 htmls += '</div> <span class="zaixianlv">' + item.dq + '%</span></td>';
@@ -61,7 +310,7 @@ function equipmentStatisForPlForLab2Ajax(type) {
                     htmls += ' <img src="' + no_change + '" alt=""></span>';
                 }
                 if (parseFloat(item.change_num) < 0) {
-                    htmls += ' <span style="color:red;">' + (0 - parseFloat(item.change_num)) + '%</span></td>';
+                    htmls += ' <span style="color:#ff6666;">' + (0 - parseFloat(item.change_num)) + '%</span></td>';
                 } else {
                     htmls += ' <span >' + item.change_num + '%</span></td>';
                 }
@@ -96,87 +345,35 @@ function equipmentStatisForPlForLab2Ajax(type) {
     });
 }
 
-//人员状态 type:类型 1:学历情况 2:工作年限情况 3:批准权限
-function findPersonStatusTab2Ajax(myChartIds, type) {
-    $.post(contextPath + '/lab/findPersonStatusTab1Ajax', {"labTypeCode": labTypeCode, "type": type}, function (data) {
-        var myChart22 = echarts.init(document.getElementById(myChartIds));
-        right_echarts.push(myChart22);
-        myChart22.setOption(getBarEcharts());
-        myChart22.setOption({
-            yAxis: [
-                {
-                    type: 'value',
-                    splitLine: {  //刻度线
-                        show: false
-                    },
-                    show: false
-                }
-            ],
-            xAxis: [
-                {
-                    type: 'category',
-                    data: tab2PersonLengend(data),
-                    boundaryGap: false,
-                    axisLabel: {
-                        textStyle: {
-                            fontSize: 9 * bodyScale
-                        },
-                        interval: 0
-                    }
 
-                }
-            ],
-            grid: {
-                x: '15%',
-                x2: '15%',
-                y: '25%',
-                y2: "45%"
-            },
-            series: [
-                {
-                    type: "bar",
-                    data: tab2PersonDataData(data),
-                    barWidth: 12* bodyScale,
-                    itemStyle: {
-                        normal: {
-                            //好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
-                            color: function (params) {
-                                // build a color map as your need.
-                                // var colorList = ['#66ccff', '#ffff99', '#66ffcc'];
-                                return color[params.dataIndex]
-                            },
-                            label: {
-                                show: true,
-                                position: 'top',
-                                // formatter: "{a}%",
-                                textStyle: {
-                                    fontSize: 10 * bodyScale,
-                                    color: "white"
-                                },
-                                formatter: '{c}%'
-
-                            },
-                        }
-                    }
-                }
-            ]
+//人员状态 总状态 type:类型 1:学历情况 2:工作年限情况 3:批准权限
+function findPersonStatusTab1Ajax(type) {
+    $.post(contextPath + '/lab/findPersonStatusTab1Ajax', {"type": type}, function (data) {
+        var htmls = "";
+        $.each(data, function (index, item) {
+            htmls += '<li><span class="bar_name">' + item.name + '</span>';
+            htmls += '<div class="progress">';
+            htmls += '<div class="progress-bar1" role="progressbar" aria-valuenow="' + item.rate + '" aria-valuemin="0" aria-valuemax="100" style="width:' + item.rate + '%;height: 110%"></div>';
+            htmls += '</div><span>' + item.rate + '%</span></li>';
         });
-
+        $("#tab1_person_detail_" + type).html(htmls)
     })
 }
+
+
 function dealNumberTab2(num){
-	var max=25;
-	if(parseInt(num)>max){
-		var x=parseInt(parseInt(num)/(parseInt(num)-max));
-		if(max+x>30){
-			return 30*bodyScale;
-		}
-		return (max+x)*bodyScale
-	}else{
-		return parseInt(num)*bodyScale;
-	}
+    var max=25;
+    if(parseInt(num)>max){
+        var x=parseInt(parseInt(num)/(parseInt(num)-max));
+        if(max+x>30){
+            return 30*bodyScale;
+        }
+        return (max+x)*bodyScale
+    }else{
+        return parseInt(num)*bodyScale;
+    }
 }
-//人员状态 散点图
+//人员信息 各个产线状态 散点图
 function personForTab2Ajax(myChartIds, type, divisor) {
     $.post(contextPath + '/lab/personForTab2Ajax', {"labTypeCode": labTypeCode, "type": type}, function (res) {
         //console.log(res)
@@ -195,11 +392,11 @@ function personForTab2Ajax(myChartIds, type, divisor) {
             data1.push([item[1].name, item[1].product_name, dealNumberTab2(parseInt(item[1].all_num) / divisor), item[1].name]);
             data2.push([item[2].name, item[2].product_name, dealNumberTab2(parseInt(item[2].all_num) / divisor), item[2].name]);
             data3.push([item[3].name, item[3].product_name, dealNumberTab2(parseInt(item[3].all_num) / divisor), item[3].name]);
-           
-           /* data0.push([item[0].name, item[0].product_name, parseInt(item[0].all_num) / divisor*bodyScale, item[0].name]);
-            data1.push([item[1].name, item[1].product_name, parseInt(item[1].all_num) / divisor*bodyScale, item[1].name]);
-            data2.push([item[2].name, item[2].product_name, parseInt(item[2].all_num) / divisor*bodyScale, item[2].name]);
-            data3.push([item[3].name, item[3].product_name, parseInt(item[3].all_num) / divisor*bodyScale, item[3].name]);*/
+
+            /* data0.push([item[0].name, item[0].product_name, parseInt(item[0].all_num) / divisor*bodyScale, item[0].name]);
+             data1.push([item[1].name, item[1].product_name, parseInt(item[1].all_num) / divisor*bodyScale, item[1].name]);
+             data2.push([item[2].name, item[2].product_name, parseInt(item[2].all_num) / divisor*bodyScale, item[2].name]);
+             data3.push([item[3].name, item[3].product_name, parseInt(item[3].all_num) / divisor*bodyScale, item[3].name]);*/
             if (index == 0) {
                 $.each(item, function (ind, it) {
                     xData.push(it.name);
@@ -226,12 +423,12 @@ function personForTab2Ajax(myChartIds, type, divisor) {
         myChart25.setOption({
             grid: {
                 right: "1%",
-                bottom: "20%",
-                left: "20%",
-                top: "6%"
+                bottom: "10%",
+                left: (type==1?"22%":'8%'),
+                top: "4%"
             },
             tooltip: {
-            	show:false,
+                show:false,
                 trigger: 'item',
                 axisPointer: {
                     type: 'cross',
@@ -258,7 +455,7 @@ function personForTab2Ajax(myChartIds, type, divisor) {
                     // rotate: 30,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 13 * bodyScale
                     },
                     interval: 0
                 },
@@ -280,11 +477,11 @@ function personForTab2Ajax(myChartIds, type, divisor) {
                     show: false
                 },
                 axisLabel: {
-                    show: true,
+                    show: (type == 1),
                     // rotate: 30,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 11* bodyScale
+                        fontSize: 13* bodyScale
                     }
                 },
                 axisTick: {
@@ -305,6 +502,7 @@ function personForTab2Ajax(myChartIds, type, divisor) {
 
     })
 }
+
 
 //散点图数据 -人员
 function tab2PersonSanDianSeries(data) {
@@ -335,52 +533,213 @@ function tab2PersonSanDianSeries(data) {
     });
     return s;
 }
-function tab2IndicatorData(data) {
-    //先找出最大值
-    var maxNum = 0;
-    for (var i = 0; i < data.length; i++) {
-        if (parseInt(data[i].count) > parseInt(maxNum)) {
-            maxNum = parseInt(data[i].count);
-        }
-    }
-    var indicatorData = [];
-    for (var i = 0; i < data.length; i++) {
-        var obj = new Object();
-        obj.max = maxNum;
-        obj.text = data[i].name + ":" + data[i].count;
-        indicatorData.push(obj);
-    }
-    return indicatorData;
+
+
+//标准状态 总状态
+function standardStatus() {
+    $.post(contextPath + '/lab/standardStatusAjax', {}, function (data) {
+        var reviseNum = parseInt(data.revisenum);
+        var standardNum = parseInt(data.standardnum);
+        $("#reviseNum").html(reviseNum);
+        $("#tab1_qtqc_id").html(1144);
+        $("#standardNum").html(standardNum);
+        /*var num0=(standardSeriesData(data.revisedata,"牵头起草数")/reviseNum).toFixed(2)*100;
+         var num1=(standardSeriesData(data.revisedata,"参与起草数")/reviseNum).toFixed(2)*100;
+         var gjia=standardSeriesData(data.standarddata,"国家标准");
+         var gjbz=standardSeriesData(data.standarddata,"国际标准");
+         var hybz=standardSeriesData(data.standarddata,"行业标准");
+         var qybz=standardSeriesData(data.standarddata,"企业标准");*/
+        var num0 = standardSeriesData(data.revisedata, "牵头起草数");
+        var num1 = standardSeriesData(data.revisedata, "参与起草数");
+        var gjia = standardSeriesData(data.standarddata, "国家标准");
+        var gjbz = standardSeriesData(data.standarddata, "国际标准");
+        var hybz = standardSeriesData(data.standarddata, "行业标准");
+        var qybz = standardSeriesData(data.standarddata, "企业标准");
+        $("#tab1_gjiabz_id").html(172);
+        $("#tab1_gjibz_id").html(90);
+        $("#tab1_hybz_id").html(114);
+        $("#tab1_qybz_id").html(768);
+        var num2 = gjia;
+        var num3 = gjbz;
+        var num4 = hybz;
+        //var num5=(standardSeriesData(data.standarddata,"当地标准")/standardNum).toFixed(2)*100;
+        var num6 = qybz;
+        //多个圆环图  标准状态
+        var myChart2 = echarts.init(document.getElementById("myChart2"));
+        right_echarts.push(myChart2);
+        var labelTop = {
+            normal: {
+                color: '#234f65',
+                label: {
+                    show: true,
+                    position: 'center',
+                    formatter: '{b}',
+                    textStyle: {
+                        baseline: 'bottom',
+                        color: '#66ccff',
+                        fontSize: 12 * bodyScale
+                    }
+                },
+                labelLine: {
+                    show: false
+                }
+            }
+        };
+        var labelFromatter = {
+            normal: {
+                label: {
+                    formatter: function (params) {
+                        return params.value
+                    },
+                    textStyle: {
+                        baseline: 'top',
+                        fontSize: 12 * bodyScale
+                    }
+                }
+            },
+        };
+        var labelBottom = {
+            normal: {
+                color: '#66ccff',
+                label: {
+                    show: true,
+                    position: 'center',
+                    textStyle: {
+                        fontSize: 20 * bodyScale
+                    }
+                },
+                labelLine: {
+                    show: false
+                }
+            },
+            emphasis: {
+                color: '#66ccff'
+            },
+        };
+        var radius = ['32%', '40%'];
+        option = {
+            toolbox: {
+                show: false,
+                feature: {
+                    dataView: {show: true, readOnly: false},
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                width: '20%',
+                                height: '30%',
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            formatter: function (params) {
+                                                return 'other\n' + params.value + '%\n'
+                                            },
+                                            textStyle: {
+                                                baseline: 'middle'
+                                            }
+                                        }
+                                    },
+                                }
+                            }
+                        }
+                    },
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            textStyle: {
+//		            color:'#66ccff'
+                color: '#ff9933'
+            },
+            series: [
+                {
+                    type: 'pie',
+                    center: ['35%', '20%'],
+                    radius: radius,
+                    x: '40%', // for funnel
+                    itemStyle: labelFromatter,
+                    data: [
+                        {name: 'other', value:parseInt(reviseNum) - qybz, itemStyle: labelBottom},
+                        {name: '起草数', value: qybz, itemStyle: labelTop}
+                    ]
+                },
+                {
+                    type: 'pie',
+                    center: ['85%', '20%'],
+                    radius: radius,
+                    x: '60%', // for funnel
+                    itemStyle: labelFromatter,
+                    data: [
+                        {name: 'other', value:qybz, itemStyle: labelBottom},
+                        {name: '起草数', value:  parseInt(reviseNum) - qybz, itemStyle: labelTop}
+                    ]
+                },
+                {
+                    type: 'pie',
+                    center: ['10%', '80%'],
+                    radius: radius,
+                    y: '55%',   // for funnel
+                    x: '0%',    // for funnel
+                    itemStyle: labelFromatter,
+                    data: [
+                        {name: 'other', value: num3, itemStyle: labelBottom},
+                        {name: '国际标准', value: parseInt(standardNum) - num3, itemStyle: labelTop}
+                    ]
+                },
+                {
+                    type: 'pie',
+                    center: ['35%', '80%'],
+                    radius: radius,
+                    y: '55%',   // for funnel
+                    x: '20%',    // for funnel
+                    itemStyle: labelFromatter,
+                    data: [
+                        {name: 'other', value: num2, itemStyle: labelBottom},
+                        {name: '国家标准', value: parseInt(standardNum) - num2, itemStyle: labelTop}
+                    ]
+                },
+                {
+                    type: 'pie',
+                    center: ['60%', '80%'],
+                    radius: radius,
+                    y: '55%',   // for funnel
+                    x: '40%', // for funnel
+                    itemStyle: labelFromatter,
+                    data: [
+                        {name: 'other', value: num4, itemStyle: labelBottom},
+                        {name: '行业标准', value: parseInt(standardNum) - num4, itemStyle: labelTop}
+                    ]
+                },
+
+                {
+                    type: 'pie',
+                    center: ['85%', '80%'],
+                    radius: radius,
+                    y: '55%',   // for funnel
+                    x: '80%', // for funnel
+                    itemStyle: labelFromatter,
+                    data: [
+                        {name: 'other', value: num6, itemStyle: labelBottom},
+                        {name: '企业标准', value: parseInt(standardNum) - num6, itemStyle: labelTop}
+                    ]
+                }
+            ]
+        };
+        myChart2.setOption(option);
+    })
 }
 
-function tab2DataData(data) {
-    var indicatorData = [];
-    for (var i = 0; i < data.length; i++) {
-        indicatorData.push(data[i].count);
-    }
-    return indicatorData;
-}
-function tab2Lengend(data) {
-    var legnend = [];
+function standardSeriesData(data, name) {
+    var num = 0;
     $.each(data, function (index, item) {
-        legnend.push(item.type_name);
+        if (item.name == name) {
+            num = parseInt(item.count);
+        }
     });
-    return legnend;
+    return num;
 }
-function tab2PersonLengend(data) {
-    var legnend = [];
-    $.each(data, function (index, item) {
-        legnend.push(item.name);
-    });
-    return legnend;
-}
-function tab2PersonDataData(data) {
-    var indicatorData = [];
-    for (var i = 0; i < data.length; i++) {
-        indicatorData.push(data[i].rate);
-    }
-    return indicatorData;
-}
+
 //标准数量分布情况
 function standardDispersedStatus(mychartId, filedVaule) {
     $.post(contextPath + '/lab/standardDispersedAjax', {
@@ -388,6 +747,7 @@ function standardDispersedStatus(mychartId, filedVaule) {
         "filedVaule": filedVaule,
         "filed": "type_name"
     }, function (data) {
+
         var myChart = echarts.init(document.getElementById(mychartId));
         right_echarts.push(myChart);
         myChart.setOption(getRadarEcharts());
@@ -398,19 +758,19 @@ function standardDispersedStatus(mychartId, filedVaule) {
                 top: 'center',
                 textStyle: {
                     color: '#fff',
-                    fontSize: 10 * bodyScale
+                    fontSize: 15 * bodyScale
                 }
             },
             polar: [
                 {
                     indicator: tab2IndicatorData(data),
-                    center: ['50%', '55%'],
-                    radius: '58%',
+                    center: ['50%', '50%'],
+                    radius: '65%',
                     name: {
                         formatter: '{value}',
                         textStyle: {
                             color: '#66ccff',
-                            fontSize: 10 * bodyScale,
+                            fontSize: 12 * bodyScale,
                         }
                     },
                     splitLine: {
@@ -430,7 +790,6 @@ function standardDispersedStatus(mychartId, filedVaule) {
                         color: '#66ccff'
                     }
                 }
-
             ],
             series: [
                 {
@@ -455,87 +814,224 @@ function standardDispersedStatus(mychartId, filedVaule) {
         });
     })
 }
+function tab2IndicatorData(data) {
+    //先找出最大值
+    var maxNum = 0;
+    for (var i = 0; i < data.length; i++) {
+        if (parseInt(data[i].count) > parseInt(maxNum)) {
+            maxNum = parseInt(data[i].count);
+        }
+    }
+    var indicatorData = [];
+    for (var i = 0; i < data.length; i++) {
+        var obj = new Object();
+        obj.max = maxNum;
+        obj.text = data[i].name + ":" + data[i].count;
+        indicatorData.push(obj);
+    }
+    return indicatorData;
+}
+function tab2DataData(data) {
+    var indicatorData = [];
+    for (var i = 0; i < data.length; i++) {
+        indicatorData.push(data[i].count);
+    }
+    return indicatorData;
+}
 
-//不同产线的能力状态分布
-//不同产线的能力状态分布
-function abilityByProductLine() {
-    $.post(contextPath + '/lab/abilityByProductLineAjax', {}, function (data) {
-        $.each(data[1], function (index, item) {
-            //console.log(index+"---"+item)
-            if (item != null && item.length > 0) {
-                $("#yingjubei_id_" + index).html(item[0].count + "<br>应具备数")
+//能力状态 总状态
+function abilityStatus() {
+    $.post(contextPath + '/lab/abilityStatusAjax', {}, function (data) {
+        var maxNum = parseInt(data.allnum);
+        $.each(data.data, function (index, item) {
+            if (maxNum < parseInt(item.count)) {
+                maxNum = parseInt(item.count);
             }
-        });
-        $.each(data[0], function (index, item) {
-            var chartIndex = 32 + index;
-            var myChart = echarts.init(document.getElementById("myChart" + chartIndex));
-            myChart.setOption(getBarEcharts());
-            right_echarts.push(myChart);
-            var lengendData = [];
-            var gridX = "40%";
-            if (index == 0) {
-                lengendData = tab2Lengend(item);
-                gridX = "58%";
-            }
-            var seriesData = tab2DataData(item);
-            myChart.setOption({
-                yAxis: [
-                    {
-                        type: 'category',
-                        data: lengendData,
-                        axisLine: {
-                            show: false,
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            textStyle: {
-                                fontSize: 11 * bodyScale
-                            },
-                            interval: 0,
-                        },
+        })
+        $("#ability_all_num").html(data.allnum)
+        //能力状态 柱形图
+        var myChart3 = echarts.init(document.getElementById("myChart3"));
+        right_echarts.push(myChart3);
+        myChart3.setOption(getBarEcharts());
+        // var bar_chip = contextPath + '/img/bar_chip.png';
+        myChart3.setOption({
+            yAxis: [
+                {
+                    name: "数量",
+                    type: 'value',
+                    max: maxNum,
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
+                    splitLine: {  //刻度线
+                        show: false
                     }
-                ],
-                xAxis: [
-                    {
-                        show: false,
-                        type: 'value',
-                        boundaryGap: false,
-
-                    }
-                ],
-                grid: {
-                    x: gridX,
-                    x2: "25%",
-                    y: '0%',
-                    y2: "0%"
-                },
-                series: [
-                    {
-                        type: "bar",
-                        data: seriesData,
-                        barWidth: 12*bodyScale,
-                       
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'right',
-                                // formatter: "{a}%",
-                                textStyle: {
-                                    fontSize: 10*bodyScale,
-                                    color: "#ff9933"
-                                },
-                                formatter: '{c}'
-                            }
-                        },
-                    }
-                ]
-            });
-
+                }
+            ],
+            xAxis: [
+                {
+                    name: "",
+                    type: 'category',
+                    data: statisticRightLengend2(data.data),
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel
+                }
+            ],
+            grid: {
+                x: '8%',
+                x2: '5%',
+                y: '12%',
+                y2: '12%'
+            },
+            series: [
+                {
+                    // symbolSize: ['60%', '10%'],
+                   barWidth:"30%",
+                    data: statisticRightSeriesData(data.data)
+                }
+            ]
         });
     })
 }
 
+function statisticRightLengend2(data) {
+    var legnend = [];
+    $.each(data, function (index, item) {
+        var name = item.name;
+        legnend.push(name);
+    });
+    return legnend;
+}
+
+function statisticRightSeriesData(data) {
+    var series = [];
+    $.each(data, function (index, item) {
+        var obj = new Object();
+        obj.value = item.count;
+        // obj.symbol = bar_chip;
+        series.push(obj);
+    });
+    return series;
+}
 
 
+function  abilityByProductLine() {
+    $.post(contextPath + '/lab/abilityByProductLineAjax', {}, function (data) {
+        console.log(data);
+        var xData = [];
+        //var yData = [];
+        var yData1 = [];
+        var yData2 = [];
+        var yData3 = [];
+        for(var i = 0 ; i < data[0].length ; i ++){
+            console.log(data[0][i][0]);
+            if(data[0][i][0]){
+                xData.push(data[0][i][0].product_name);
+                yData1.push(data[0][i][0].count);
+                yData2.push(data[0][i][1].count);
+                yData3.push(data[0][i][2].count);
+            }else {
+                xData.push('其他');
+                yData1.push(0);
+                yData2.push(0);
+                yData3.push(0);
+            }
+        }
+        console.log(yData1);
+        console.log(yData2);
+        console.log(yData3);
+        console.log(xData);
+
+        var myChart32 = echarts.init(document.getElementById("myChart32"));
+        right_echarts.push(myChart32);
+        myChart32.setOption({
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'line'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data: ['完全具备', '部分具备','完全不具备'],
+                textStyle: {    //图例文字的样式
+                    color: '#66ccff',
+                    fontSize: 12*bodyScale
+                },
+                itemWidth:6*bodyScale,  //图例标记的图形宽度
+                itemHeight:6*bodyScale //图例标记的图形高度
+            },
+            grid: {
+                x: '2%',
+                x2: '5%',
+                y: '12%',
+                y2: '2%',
+                containLabel: true
+            },
+            yAxis:  {
+                name:'标准数',
+                type: 'value',
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
+                axisLabel: axisLabel,
+                axisLine: { //坐标轴
+                    show: false
+                },
+                splitLine: {  //刻度线
+                    show: false,
+                    lineStyle: {
+                        color: '#234f65'
+                    }
+                },
+                axisTick: {  //刻度值
+                    show: false,
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: xData,
+                boundaryGap: true,
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
+                axisLabel: axisLabel,
+                splitLine: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false,
+                    // alignWithLabel: true,
+                    lineStyle: {
+                        color: '#66ccff'
+                    }
+                }
+            },
+            color:['#66ccff',"#ffff99",'#66ffcc'],
+            series: [
+                {
+                    name: '完全具备',
+                    type: 'bar',
+                    stack: '总量',
+                    barWidth:"60%",
+                    data: yData1
+                },
+                {
+                    name: '部分具备',
+                    type: 'bar',
+                    stack: '总量',
+                    barWidth:"60%",
+                    data: yData2
+                },
+                {
+                    name: '完全不具备',
+                    type: 'bar',
+                    stack: '总量',
+                    barWidth:"60%",
+                    data: yData3
+                }
+            ]
+        });
+});
+}

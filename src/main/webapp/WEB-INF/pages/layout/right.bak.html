@@ -46,7 +46,7 @@
 ##}
 <script src="${contextPath!}/static/asserts/js/highcharts.js"></script>
 <script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
-<!-- <script src="${contextPath!}/static/js/tab1_statistics.js?time=New Date()"></script>-->
+<script src="${contextPath!}/static/js/tab1_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab2_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab3_statistics.js?time=New Date()"></script>
 <script src="${contextPath!}/static/js/tab4_statistics.js?time=New Date()"></script>
@@ -63,8 +63,10 @@
             $(".box:eq(" + index + ")").addClass("selected").siblings().removeClass("selected");
             resetSizeRight();
         });
+<<<<<<< HEAD
 
-/*
+//        loadTab1Data();
+=======
         $(".tab-item").eq(0).click(function () {
             $('#right .lab').css("display",'none');
         });
@@ -72,7 +74,6 @@
             $(this).addClass("word_active").siblings().removeClass("word_active");
         	resetSizeRight();
         });
-*/
 //        上一页 下一页
         $('#tab2 .fenye .last').click(function () {
             $('#tab2').css('left','-100%');
@@ -89,9 +90,16 @@
 
 
         /* loadTab1Data(); */
+>>>>>>> branch 'deploy0609' of https://github.com/zuoqingbei/ulab.git
         loadTab2Data();
+<<<<<<< HEAD
         loadTab3Data();
         loadTab4Data();
+
+=======
+//        loadTab3Data();
+//        loadTab4Data();
+>>>>>>> branch 'deploy0609' of https://github.com/zuoqingbei/ulab.git
     });
 
 </script>

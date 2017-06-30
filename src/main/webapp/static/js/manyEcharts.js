@@ -10,6 +10,19 @@ var axisLabel = {
         fontSize:13*bodyScale
     }
 };
+var nameGap = 10 * bodyScale;
+var nameTextStyle = {
+    color: '#66ccff',
+    fontSize:12 * bodyScale
+};
+var nameTextStyle_l={
+	color: '#66ccff',
+	fontSize:9 * bodyScale	
+};
+var nameTextStyle_full={
+	color: '#66ccff',
+	fontSize:15 * bodyScale	
+};
 var axisLabel_full = {
     margin: 5 * bodyScale,
     show: true,
@@ -18,14 +31,14 @@ var axisLabel_full = {
         fontSize:13*bodyScale
     }
 };
-var nameGap = 10 * bodyScale;
-var nameTextStyle = {
-    color: '#66ccff',
-    fontSize:10 * bodyScale
-};
-var nameTextStyle_full = {
-    color: '#66ccff',
-    fontSize:13 * bodyScale
+
+var axisLabel_l = {
+    margin: 3 * bodyScale,
+    show: true,
+    textStyle: {
+        color: '#66ccff',
+        fontSize:9*bodyScale
+    }
 };
 
 // 折线图
@@ -97,10 +110,10 @@ function getLineEcharts() {
                 fontSize:7*bodyScale,
             },
             nameGap: nameGap,
+            axisLabel: axisLabel,
             axisLine: { //坐标轴
                 show: false
             },
-            axisLabel: axisLabel,
             splitLine: {  //刻度线
                 show: true,
                 lineStyle: {
@@ -404,6 +417,7 @@ function getRadarEcharts() {
 //折线图和柱状图
 function getLineAndBar() {
     option = {
+        color: ['#66ccff','#4397f7'],
         title: {
             left: 'center',
             text: '',
@@ -438,15 +452,17 @@ function getLineAndBar() {
                 fontSize: 9*bodyScale
             }
         },
+        axis:{
+            nameGap: nameGap,
+            nameTextStyle: nameTextStyle,
+            axisLabel: axisLabel
+        },
         xAxis: {
             type: 'category',
             data: [],
-            boundaryGap: false,
-            nameTextStyle: {
-                color: '#66ccff',
-                fontSize:7*bodyScale
-            },
             nameGap: nameGap,
+            nameTextStyle: nameTextStyle,
+            axisLabel: axisLabel,
             axisPointer: {
                 type: 'shadow',
                 show: false
@@ -454,7 +470,6 @@ function getLineAndBar() {
             axisLine: {
                 show: false
             },
-            axisLabel: axisLabel,
             axisTick: {
                 show: false,
                 alignWithLabel: true,
@@ -467,22 +482,16 @@ function getLineAndBar() {
                 lineStyle: {
                     color: "#234f65"
                 }
-            },
+            }
 
         },
         yAxis: {
             name:'数量',
-            nameTextStyle: {
-                color: '#66ccff',
-                fontSize:7*bodyScale
-            },
             nameGap: nameGap,
-            axisLine: { //坐标轴
-                show: false
-            },
+            nameTextStyle: nameTextStyle,
             axisLabel: axisLabel,
             splitLine: {  //刻度线
-                show: false,
+                show: true,
                 lineStyle: {
                     color: "#234f65"
                 }
@@ -585,7 +594,8 @@ function getCenterPie() {
             itemWidth:6*bodyScale,  //图例标记的图形宽度
             itemHeight:6*bodyScale, //图例标记的图形高度
             textStyle: {    //图例文字的样式
-                color: '#66ccff',
+                // color: '#66ccff',
+                color: ['#66ccff', '#06f'],
                 fontSize: 9*bodyScale
             }
         },
