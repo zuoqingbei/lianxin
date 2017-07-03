@@ -148,8 +148,9 @@
 
 #tab2  .yunying_left_bottom .shebei_chanxian {
     width: 33.3%;
-    height: 95%;
+    height: 82%;
     float: left;
+    margin-top: 1.6%;
 }
 
 #tab2  .yunying_left_bottom .shebei_chanxian table tr th {
@@ -170,14 +171,14 @@
     width: 0.7em;
     height: 0.7em;
     display: inline-block;
-    margin-right: 0.5em;
+    margin-right: 0;
 }
 
 /*#tab2  .yunying_left_bottom .shebei_chanxian table tr td:nth-of-type(2) {*/
     /*width: 45%;*/
 /*}*/
 #tab2  .yunying_left_bottom .shebei_chanxian table .td_progress{
-    width: 29%;
+    width: 40%;
 }
 #tab2  .yunying_left_bottom .shebei_chanxian table tr td .progress {
     width: 45%;

@@ -30,6 +30,7 @@
 }
 #l .flat .flat-footer{/*下面*/
     flex:1;
+    font-size: 1.1em;
 }
 
 #l .flat .flat-left,
@@ -84,7 +85,7 @@
 #l .sphere .mapArea h2{
     text-align: center;
     color: #66ccfe;
-    font-size: 1.4em;
+    font-size: 1.7em;
 }
 #l .sphere .mapArea iframe{
     height: 96%;
@@ -312,8 +313,8 @@
     text-align: center;
     font-size:1.1em;
     margin: 0 auto;
-    height: 100%;
-    width: 51%;
+    height: 95%;
+    width: 54%;
     color: #999;
     background: url(../img/nav-border.png);
     background-size: 100% 100%;
@@ -324,7 +325,7 @@
     position: absolute;
     height: 50%;
     width: 11%;
-    line-height: 4.8em;
+    line-height: 4em;
     /*font-size: .9em;*/
     text-align: center;
     background-size: 100% 100%;
@@ -394,7 +395,7 @@
 }
 #l .flat-footer .legend .animateBox{
     position: relative;
-    top: -1.8em;
+    top: -2.3em;
 }
 #l .flat-footer .legend ul.lab,
 #l .flat-footer .legend ul.line{
@@ -403,7 +404,7 @@
 
 #l .flat-footer .legend ul.legend-bottom{
     position: absolute;
-    top: 78%;
+    top: 75%;
     width: 100%;
 }
 #l .flat-footer .legend ul.legend-bottom li a{
@@ -586,24 +587,30 @@
     height: 90%;
     /*margin-bottom: 5%;*/
 }
+#l .flat-right-top .chartBorder .labName{
+    position: absolute;
+    top: 15%;
+    right: 3%;
+}
 #l .flat-right-bottom img{
     width:100%;
 }
 #l .flat-right-bottom .myChart{
     height: 65%;
-    padding: 11% 4% 0;
+    padding: 11% 0.2%;
     text-align: center;
 }
 #l .flat-right-bottom .myChart .myChart_header{
     margin-bottom: 10%;
     text-align: center;
+    font-size: 1.2em;
 }
 #l .flat-right-bottom .myChart .myChart_num{
-    width: 90%;
+    width: 98%;
     margin: 0;
     position: absolute;
-    top: 60%;
-    left: 5%;
+    top: 63%;
+    left: 1%;
 }
 #l .flat-right-bottom .myChart .myChart_num li{
     width: 20%;
@@ -619,7 +626,7 @@
     margin: 1% 15% 1% 18%;
     top: 20%;
     height: 72%;
-    font-size: 1em;
+    font-size: 1.1em;
     color: #6cf;
 }
 #l .sphere-right-top ul li,

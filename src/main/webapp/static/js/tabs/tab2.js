@@ -408,7 +408,7 @@ function personForTab2Ajax(myChartIds, type, divisor) {
         myChart25.setOption({
             grid: {
                 right: "1%",
-                bottom: "10%",
+                bottom: "0%",
                 left: (type==1?"22%":'8%'),
                 top: "4%"
             },
@@ -427,6 +427,7 @@ function personForTab2Ajax(myChartIds, type, divisor) {
                 }
             },
             xAxis: {
+                boundaryGap: true,
                 type: 'category',
                 data: xData,
                 splitLine: {
@@ -855,6 +856,7 @@ function abilityStatus() {
             ],
             xAxis: [
                 {
+                    boundaryGap: true,
                     name: "",
                     type: 'category',
                     data: statisticRightLengend2(data.data),

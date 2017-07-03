@@ -45,12 +45,20 @@
     left: 83%;
     top: 11%;
 }
+.shujuWajue_left_top_list>div{
+    float: left;
+}
+.shujuWajue_left_top_list>form{
+    float: left;
+    width: 60%;
+}
 .shujuWajue_left_top_list select{
     background-color: rgba(255,255,255,.2);
 }
 
 .shujuWajue_left_bottom {
-    height: 55%;
+    height: 70%;
+    margin-top: 2.5%;
 }
 
 /*此處用flex總是出問題*/
@@ -82,16 +90,10 @@
     height:46%;
 }
 
-
-
-
-
 .shujuWajue_right_top{
     padding-left: 12%;
 }
-.shujuWajue_right_bottom{
-    margin-top: -5%;
-}
+
 #myChart17,
 #myChart18{
     /*background-color: pink;*/

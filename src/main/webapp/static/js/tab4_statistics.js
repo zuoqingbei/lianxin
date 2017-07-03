@@ -227,7 +227,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		        right: "13%",
 		        bottom: "15%",
 		        left: "15%",
-		        top: "16%",
+		        top: "25%",
 				x2:"15%"
 		    },
 		    yAxis: {
@@ -495,13 +495,14 @@ function communistStatisticForMonthForTab4Ajax(){
 		right_echarts.push(myChart18);
 		myChart18.setOption(getBarEcharts());
 		myChart18.setOption({
-		    color: ['#66ccff', '#a5fff1'],
+		    color: ['#2b64f6', '#66ccff'],
 		    legend: {
 		        show: true,
 		        data: ['共产型号总数', '共产一致型号数'],
                 textStyle: {
                     fontSize: 10 * bodyScale,
                 },
+                itemHeight: 6 * bodyScale,
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
 		    },
 		    grid: {
@@ -509,7 +510,7 @@ function communistStatisticForMonthForTab4Ajax(){
 		        x: "10%",
 		        x2: "10%",
 		        y: '15%',
-		        y2: "15%"
+		        y2: "10%"
 		    },
 		    yAxis: [
 		        {
@@ -533,20 +534,24 @@ function communistStatisticForMonthForTab4Ajax(){
 		    ],
 		    series: [{
 		        name: '共产型号总数',
-		        type: 'pictorialBar',
+				type:'bar',
+		        // type: 'pictorialBar',
 		        label: labelSetting,
-		        symbolRepeat: true,
-		        symbolSize: ['80%', '60%'],
+		        // symbolRepeat: true,
+		        // symbolSize: ['80%', '60%'],
 		        barCategoryGap: '40%',
-		        data: statisticRightSeriesTab4Data(data[0],bar_chip)
+                data: statisticRightSeriesTab4Data(data[0])
+		        // data: statisticRightSeriesTab4Data(data[0],bar_chip)
 		    }, {
 		        name: '共产一致型号数',
-		        type: 'pictorialBar',
+                type:'bar',
+                // type: 'pictorialBar',
 		        barGap: '10%',
 		        label: labelSetting,
-		        symbolRepeat: true,
-		        symbolSize: ['80%', '60%'],
-		        data: statisticRightSeriesTab4Data(data[1],bar_chip)
+		        // symbolRepeat: true,
+		        // symbolSize: ['80%', '60%'],
+                data: statisticRightSeriesTab4Data(data[1])
+		        // data: statisticRightSeriesTab4Data(data[1],bar_chip)
 		    }]
 		});
 	})
@@ -789,7 +794,7 @@ function mkSqualityLevelForTab4(xhPro) {
 //	            show:true,
             x: "13%",
             x2: "21%",
-            y: '10%',
+            y: '15%',
             y2: "20%"
         },
         yAxis: [

@@ -92,7 +92,7 @@ function orderTypeAjax(myChartIds, desName, divisor) {
             color: ["#66ccff"],
             grid: {
                 top: '5%',
-                left: '4%',
+                left: '0%',
                 bottom: '5%',
                 right: '10%',
                 // containLabel: true
@@ -115,6 +115,7 @@ function orderTypeAjax(myChartIds, desName, divisor) {
                 }
             },
             xAxis: {
+                boundaryGap: true,
                 data: xData,
                 nameGap: nameGap,
                 axisLine: {
@@ -127,9 +128,16 @@ function orderTypeAjax(myChartIds, desName, divisor) {
                         color: '#66ccff'
                     },
                 },
-            axisLabel: axisLabel,
-                splitLine: {  //刻度线
+                axisLabel: {
                     show: true,
+                    textStyle: {
+                        color: '#66ccff',
+                        fontSize: 13 * bodyScale
+                    },
+                    interval: 0
+                },
+                splitLine: {  //刻度线
+                    show: false,
                     lineStyle: {
                         color: '#234f65'
                     }
@@ -144,6 +152,15 @@ function orderTypeAjax(myChartIds, desName, divisor) {
                 axisTick: {  //刻度值
                     show: false,
                 },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#66ccff',
+                        fontSize: 13 * bodyScale
+                    },
+                    interval: 0
+                },
+
             },
             series: [{
                 data: data
@@ -183,6 +200,7 @@ function productLineForTab3Tab3Ajax(myChartIds, type) {
                 clockWise: false,  //旋转方向
                 radius: mRadius[index],
                 center: ["55%", "50%"],
+                symbol:'circle',
                 itemStyle: dataStyle,
                 data: [
                     {
@@ -236,11 +254,11 @@ function findOrderPassForProAjax(mychartIds, desName) {
             grid: {
                 x: "5%",
                 x2: "16%",
-                y: "14%",
-
+                y: "14%"
             },
             xAxis: [
                 {
+                    boundaryGap: true,
                     name: '产线',
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
@@ -274,7 +292,8 @@ function findOrderPassForProAjax(mychartIds, desName) {
                             color: "#66ccff"
                         }
                     },
-                    symbolSize: 2 * bodyScale,
+                    symbol: 'circle',
+                    symbolSize: 3 * bodyScale,
                     lineStyle: {
                         normal: {
                             width: 1 * bodyScale
@@ -300,8 +319,8 @@ function findOrderYearRateForTab3() {
             legend: {
                 show: false,
                 data: ['及时率'],
-                itemWidth: 5 * bodyScale,  //图例标记的图形宽度
-                itemHeight: 3 * bodyScale, //图例标记的图形高度
+                itemWidth: 6 * bodyScale,  //图例标记的图形宽度
+                itemHeight: 6 * bodyScale, //图例标记的图形高度
             },
             grid: {
                 right: '15%',
@@ -321,6 +340,7 @@ function findOrderYearRateForTab3() {
             },
             xAxis: [
                 {
+                    boundaryGap: true,
                     name: "时间",
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
@@ -337,7 +357,8 @@ function findOrderYearRateForTab3() {
                         width: 1 * bodyScale
                     }
                 },
-                symbolSize: 2 * bodyScale,
+                symbol: 'circle',
+                symbolSize: 3 * bodyScale,
                 data: tab1OrderRateSeriseData(data)
             }]
 
@@ -378,7 +399,7 @@ function findOrderYearRateForProductAjax() {
                         formatter: '{value}',
                         textStyle: {
                             color: '#66ccff',
-                            fontSize: 10 * bodyScale,
+                            fontSize: 13 * bodyScale,
                         }
                     },
                     splitLine: {
@@ -448,6 +469,8 @@ function findOrderMonthRateForProductAjax() {
             color: ['#66ccff', '#00e673', '#4397f7', '#ff9933', '#66ffcc', '#ffff99', '#ff6666'],
             legend: {
                 show: true,
+                nameTextStyle: nameTextStyle,
+                nameGap: nameGap,
                 data: tab3Lengend(data),
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 6 * bodyScale, //图例标记的图形高度
@@ -455,11 +478,12 @@ function findOrderMonthRateForProductAjax() {
             grid: {
                 x: "15%",
                 x2: "13%",
-                y: '20%',
-                y2: "10%"
+                y: '22%',
+                y2: "13%"
             },
             xAxis: [
                 {
+                    boundaryGap: true,
                     name: '月份',
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
@@ -491,12 +515,12 @@ function satisfactionStatisForMonthForTab3Ajax() {
             legend: {
                 show: false,
                 data: ['整机', '模块'],
-                itemWidth: 5 * bodyScale,  //图例标记的图形宽度
-                itemHeight: 3 * bodyScale, //图例标记的图形高度
+                itemWidth: 6 * bodyScale,  //图例标记的图形宽度
+                itemHeight: 6 * bodyScale, //图例标记的图形高度
             },
             grid: {
                 right: '20%',
-                bottom: '20%',
+                bottom: '15%',
                 left: '12%',
                 top: '22%'
             },
@@ -512,6 +536,7 @@ function satisfactionStatisForMonthForTab3Ajax() {
             },
             xAxis: [
                 {
+                    boundaryGap: true,
                     name: "时间",
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
@@ -529,11 +554,11 @@ function satisfactionStatisForMonthForTab3Ajax() {
                             width: 1 * bodyScale
                         }
                     },
-                    symbolSize: 2 * bodyScale,
+                    symbol: 'circle',
+                    symbolSize: 3 * bodyScale,
                     data: tab1OrderRateSeriseData(data)
                 }
             ]
-
         });
     })
 }
@@ -560,12 +585,13 @@ function satisfactionStatisForYearTab3Ajax2016() {
                 textStyle: {
                     fontSize: 12 * bodyScale
                 },
-                itemWidth: 8 * bodyScale,
-                itemHeight: 8 * bodyScale,
+                itemWidth: 6 * bodyScale,
+                itemHeight: 6 * bodyScale,
                 data: ['2016年', '2017年']
             },
             xAxis: [
                 {
+                    boundaryGap: true,
                     show: true,
                     data: mData,
                     axisLine: {
@@ -613,7 +639,7 @@ function satisfactionStatisForYearTab3Ajax2016() {
             grid: {
                 x: '10%',
                 x2: '12%',
-                y: '20%',
+                y: '16%',
                 y2: "15%"
             },
             series: [
@@ -647,7 +673,8 @@ function productLineAndMonthForTab3Ajax() {
                         width: 1 * bodyScale
                     }
                 },
-                symbolSize: 2 * bodyScale,
+                symbol:'circle',
+                symbolSize: 3 * bodyScale,
                 data: tab3RateData(item),
 
             };
@@ -662,16 +689,17 @@ function productLineAndMonthForTab3Ajax() {
                 show: true,
                 data: mData,
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
-                itemHeight: 6 * bodyScale //图例标记的图形高度
+                itemHeight: 6* bodyScale //图例标记的图形高度
             },
             grid: {
                 x: "15%",
                 x2: "15%",
                 y: '23%',
-                y2: "10%"
+                y2: "16%"
             },
             xAxis: [
                 {
+                    boundaryGap: true,
                     name: '月份',
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
@@ -790,7 +818,8 @@ function getTab3Serise(data) {
                         width: 1 * bodyScale
                     }
                 },
-                symbolSize: 2,
+                symbolSize: 3 * bodyScale,
+                symbol: 'circle',
                 data: tab3RateData(item),
 
             };
