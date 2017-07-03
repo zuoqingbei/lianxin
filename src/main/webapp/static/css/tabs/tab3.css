@@ -44,7 +44,6 @@
         display: flex;
         width: 200%;
         height: 92%;
-        /*padding: 1%;*/
         padding: 0.2% 1% .6% 0;
         left: -100%;
         color: #6cf;
@@ -58,7 +57,9 @@
         padding-top: 0.28%;
         /*outline: 1px dotted skyblue;*/
     }
-
+    #t3_l{
+        padding-right: 1%;
+    }
     #t3_l > div,
     #t3_r > div {
         position: relative;
