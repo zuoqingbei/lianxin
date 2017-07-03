@@ -17,7 +17,6 @@
 .shujuWajue>div>div{
     /*outline: 1px dashed yellowgreen;*/
     flex:1;
-    /*height:90%;*/
 }
 .shujuWajue>div>.title{
     position: absolute;
