@@ -24,7 +24,7 @@
       <file leaf-file-name="manyEcharts.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/manyEcharts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
+            <state relative-caret-position="15158">
               <caret line="691" column="28" lean-forward="false" selection-start-line="691" selection-start-column="28" selection-end-line="691" selection-end-column="28" />
               <folding>
                 <element signature="e#0#49#0" expanded="false" />
@@ -36,7 +36,7 @@
       <file leaf-file-name="index_right.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/css/index_right.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-412">
+            <state relative-caret-position="990">
               <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="18" />
               <folding />
             </state>
@@ -53,12 +53,57 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="right.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="right.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/right.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="27" column="59" lean-forward="false" selection-start-line="27" selection-start-column="59" selection-end-line="27" selection-end-column="59" />
+            <state relative-caret-position="212">
+              <caret line="29" column="17" lean-forward="true" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="statistics.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/js/statistics.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="77">
+              <caret line="409" column="27" lean-forward="false" selection-start-line="409" selection-start-column="20" selection-end-line="409" selection-end-column="27" />
+              <folding>
+                <element signature="e#15706#21402#0" expanded="false" />
+                <marker date="1499047485839" expanded="true" signature="2230:2249" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tab4_statistics.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/js/tab4_statistics.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="516" column="30" lean-forward="true" selection-start-line="516" selection-start-column="30" selection-end-line="516" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tab4.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/static/css/tab4.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="19" column="1" lean-forward="true" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tab3.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/tab3.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="74" column="8" lean-forward="true" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="19" />
+              <folding>
+                <element signature="e#12#856#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,8 +111,8 @@
       <file leaf-file-name="main_right.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/main_right.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="4528" column="32" lean-forward="true" selection-start-line="4528" selection-start-column="32" selection-end-line="4528" selection-end-column="32" />
+            <state relative-caret-position="4400">
+              <caret line="4528" column="32" lean-forward="false" selection-start-line="4528" selection-start-column="32" selection-end-line="4528" selection-end-column="32" />
               <folding>
                 <element signature="e#34#4168#0" expanded="false" />
                 <element signature="e#4184#4255#0" expanded="false" />
@@ -175,7 +220,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>42</find>
       <find>chart6</find>
       <find>46</find>
       <find>findOrderYearRateForTab1</find>
@@ -201,10 +245,11 @@
       <find>t48</find>
       <find>axisLabel</find>
       <find>mData</find>
-      <find>覆盖专业能力</find>
       <find>HEAD</find>
       <find>right_echarts</find>
       <find>nameTextStyle</find>
+      <find>覆盖专业</find>
+      <find>覆盖专业能力</find>
     </findStrings>
     <replaceStrings>
       <replace>2</replace>
@@ -252,21 +297,21 @@
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/ulab.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/test/测试span下的img.html" />
         <option value="$PROJECT_DIR$/static/js/tab4_statistics.js" />
-        <option value="$PROJECT_DIR$/static/css/tab4.css" />
         <option value="$PROJECT_DIR$/static/css/common.css" />
         <option value="$PROJECT_DIR$/static/css/index_right.css" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/lab/index.html" />
         <option value="$PROJECT_DIR$/static/js/tab1_statistics.js" />
         <option value="$PROJECT_DIR$/static/css/index_left.css" />
-        <option value="$PROJECT_DIR$/static/css/tab3.css" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/fullScreen_map.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab4.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab3.html" />
-        <option value="$PROJECT_DIR$/static/js/statistics.js" />
         <option value="$PROJECT_DIR$/static/js/manyEcharts.js" />
         <option value="$PROJECT_DIR$/static/js/main_right.js" />
         <option value="$PROJECT_DIR$/static/js/tab3_statistics.js" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/right.html" />
+        <option value="$PROJECT_DIR$/static/js/statistics.js" />
+        <option value="$PROJECT_DIR$/static/css/tab3.css" />
+        <option value="$PROJECT_DIR$/static/css/tab4.css" />
       </list>
     </option>
   </component>
@@ -277,8 +322,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+    <option name="x" value="134" />
+    <option name="y" value="43" />
     <option name="width" value="1382" />
     <option name="height" value="744" />
   </component>
@@ -491,15 +536,15 @@
     <property name="SearchEverywhereHistoryKey" value="chart3&#9;null&#9;null" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\git\ulab\src\main\webapp\static\img\tabCom" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\git\ulab\src\main\webapp\static\css" />
       <recent name="C:\git\ulab\src\main\webapp\static\img\tabCommom" />
       <recent name="C:\git\ulab\src\main\webapp\WEB-INF\pages\layout" />
       <recent name="C:\git\ulab\src\main\webapp\static\js" />
       <recent name="C:\git\ulab\src\main\webapp\static\img\tab3" />
-      <recent name="C:\git\ulab\src\main\webapp\static\img\tabCom" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\git\ulab\src\main\webapp\static\img\tabCom" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -630,15 +675,16 @@
       <workItem from="1498611809839" duration="8035000" />
       <workItem from="1498626924836" duration="14569000" />
       <workItem from="1498699711859" duration="20916000" />
-      <workItem from="1498787720227" duration="13876000" />
+      <workItem from="1498787720227" duration="16085000" />
+      <workItem from="1499046774615" duration="3018000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="468994000" />
+    <option name="totallyTimeSpent" value="474221000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="134" y="43" width="1382" height="744" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17026022" sideWeight="0.8778502" order="0" side_tool="false" content_ui="combo" />
@@ -690,11 +736,7 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/img/sheshiState/border.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/static/img/sheshiState/border.png" />
     <entry file="file://$PROJECT_DIR$/static/css/labMain.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
@@ -878,13 +920,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/tab4.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="6" column="17" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/common.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1122">
@@ -913,17 +948,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="146" column="28" lean-forward="true" selection-start-line="146" selection-start-column="28" selection-end-line="146" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab1.html" />
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -935,15 +963,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6600">
           <caret line="300" column="1" lean-forward="false" selection-start-line="300" selection-start-column="1" selection-end-line="300" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/tab4_statistics.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="526" column="30" lean-forward="true" selection-start-line="526" selection-start-column="30" selection-end-line="526" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -951,21 +970,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22396">
           <caret line="1083" column="0" lean-forward="false" selection-start-line="1083" selection-start-column="0" selection-end-line="1083" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!block;n#satisfactionStatisForMonthForTab1Ajax#0" expanded="false" />
-            <marker date="1498803835268" expanded="true" signature="1688:1709" ph="..." />
-            <marker date="1498803835268" expanded="true" signature="34149:34186" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/statistics.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="592" column="22" lean-forward="false" selection-start-line="592" selection-start-column="22" selection-end-line="592" selection-end-column="22" />
-          <folding>
-            <marker date="1498805852387" expanded="true" signature="2230:2249" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -973,217 +977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="691">
           <caret line="551" column="38" lean-forward="true" selection-start-line="551" selection-start-column="38" selection-end-line="551" selection-end-column="38" />
-          <folding>
-            <element signature="n#!!doc;n#loadTab3Data#0" expanded="false" />
-            <element signature="e#942#1406#0" expanded="false" />
-            <element signature="n#!!block;n#orderTypeAjax#0" expanded="false" />
-            <element signature="e#1639#5071#0" expanded="false" />
-            <element signature="e#1715#1719#0" expanded="false" />
-            <element signature="e#1778#2740#0" expanded="false" />
-            <element signature="e#1886#2333#0" expanded="false" />
-            <element signature="e#1954#2014#0" expanded="false" />
-            <element signature="e#2168#2183#0" expanded="false" />
-            <element signature="e#2346#2730#0" expanded="false" />
-            <element signature="e#2985#3044#0" expanded="false" />
-            <element signature="e#3073#5048#0" expanded="false" />
-            <element signature="e#3125#3293#0" expanded="false" />
-            <element signature="e#3315#3358#0" expanded="false" />
-            <element signature="e#3381#3885#0" expanded="false" />
-            <element signature="e#3474#3630#0" expanded="false" />
-            <element signature="e#3538#3612#0" expanded="false" />
-            <element signature="e#3710#3871#0" expanded="false" />
-            <element signature="e#3906#4694#0" expanded="false" />
-            <element signature="e#4004#4055#0" expanded="false" />
-            <element signature="e#4083#4274#0" expanded="false" />
-            <element signature="e#4191#4255#0" expanded="false" />
-            <element signature="e#4303#4496#0" expanded="false" />
-            <element signature="e#4369#4443#0" expanded="false" />
-            <element signature="e#4525#4679#0" expanded="false" />
-            <element signature="e#4597#4661#0" expanded="false" />
-            <element signature="e#4715#4972#0" expanded="false" />
-            <element signature="e#4813#4870#0" expanded="false" />
-            <element signature="e#4898#4957#0" expanded="false" />
-            <element signature="e#4994#5038#0" expanded="false" />
-            <element signature="e#4995#5037#0" expanded="false" />
-            <element signature="n#!!block;n#productLineForTab3Tab3Ajax#0" expanded="false" />
-            <element signature="e#5341#7118#0" expanded="false" />
-            <element signature="e#5387#5425#0" expanded="false" />
-            <element signature="e#5431#5469#0" expanded="false" />
-            <element signature="e#5815#6698#0" expanded="false" />
-            <element signature="e#5844#5882#0" expanded="false" />
-            <element signature="e#5996#6657#0" expanded="false" />
-            <element signature="e#6240#6643#0" expanded="false" />
-            <element signature="e#6262#6430#0" expanded="false" />
-            <element signature="e#6452#6625#0" expanded="false" />
-            <element signature="e#6729#7110#0" expanded="false" />
-            <element signature="e#6791#7071#0" expanded="false" />
-            <element signature="e#6857#6921#0" expanded="false" />
-            <element signature="n#!!block;n#findOrderPassForProAjax#0" expanded="false" />
-            <element signature="e#7590#7775#0" expanded="false" />
-            <element signature="e#7795#7889#0" expanded="false" />
-            <element signature="e#7910#8337#0" expanded="false" />
-            <element signature="e#7928#8323#0" expanded="false" />
-            <element signature="e#8087#8304#0" expanded="false" />
-            <element signature="e#8161#8243#0" expanded="false" />
-            <element signature="e#8358#8473#0" expanded="false" />
-            <element signature="e#8376#8459#0" expanded="false" />
-            <element signature="e#8709#8837#0" expanded="false" />
-            <element signature="e#8743#8815#0" expanded="false" />
-            <element signature="e#8917#9049#0" expanded="false" />
-            <element signature="e#8951#9027#0" expanded="false" />
-            <element signature="n#!!block;n#findOrderYearRateForTab3#0" expanded="false" />
-            <element signature="e#9227#9293#0" expanded="false" />
-            <element signature="e#9311#10810#0" expanded="false" />
-            <element signature="e#9498#10802#0" expanded="false" />
-            <element signature="e#9520#9705#0" expanded="false" />
-            <element signature="e#9725#9857#0" expanded="false" />
-            <element signature="e#9879#10121#0" expanded="false" />
-            <element signature="e#10142#10412#0" expanded="false" />
-            <element signature="e#10160#10398#0" expanded="false" />
-            <element signature="e#10434#10791#0" expanded="false" />
-            <element signature="e#10435#10790#0" expanded="false" />
-            <element signature="e#10564#10680#0" expanded="false" />
-            <element signature="e#10594#10662#0" expanded="false" />
-            <element signature="n#!!block;n#findOrderYearRateForProductAjax#0" expanded="false" />
-            <element signature="e#11020#14000#0" expanded="false" />
-            <element signature="e#11185#11216#0" expanded="false" />
-            <element signature="e#11293#13992#0" expanded="false" />
-            <element signature="e#11315#11761#0" expanded="false" />
-            <element signature="e#11590#11705#0" expanded="false" />
-            <element signature="e#11813#12797#0" expanded="false" />
-            <element signature="e#11831#12782#0" expanded="false" />
-            <element signature="e#11994#12226#0" expanded="false" />
-            <element signature="e#12077#12204#0" expanded="false" />
-            <element signature="e#12259#12405#0" expanded="false" />
-            <element signature="e#12296#12383#0" expanded="false" />
-            <element signature="e#12437#12574#0" expanded="false" />
-            <element signature="e#12474#12552#0" expanded="false" />
-            <element signature="e#12607#12666#0" expanded="false" />
-            <element signature="e#12699#12763#0" expanded="false" />
-            <element signature="e#12819#13982#0" expanded="false" />
-            <element signature="e#12837#13968#0" expanded="false" />
-            <element signature="e#12900#13950#0" expanded="false" />
-            <element signature="e#12926#13414#0" expanded="false" />
-            <element signature="e#13068#13388#0" expanded="false" />
-            <element signature="e#13110#13358#0" expanded="false" />
-            <element signature="e#13213#13323#0" expanded="false" />
-            <element signature="e#13440#13928#0" expanded="false" />
-            <element signature="e#13582#13902#0" expanded="false" />
-            <element signature="e#13624#13872#0" expanded="false" />
-            <element signature="e#13727#13837#0" expanded="false" />
-            <element signature="n#!!block;n#findOrderMonthRateForProductAjax#0" expanded="false" />
-            <element signature="e#14271#15273#0" expanded="false" />
-            <element signature="e#14463#15265#0" expanded="false" />
-            <element signature="e#14583#14777#0" expanded="false" />
-            <element signature="e#14797#14917#0" expanded="false" />
-            <element signature="e#14938#15077#0" expanded="false" />
-            <element signature="e#14956#15063#0" expanded="false" />
-            <element signature="e#15098#15213#0" expanded="false" />
-            <element signature="e#15116#15199#0" expanded="false" />
-            <element signature="n#!!block;n#satisfactionStatisForMonthForTab3Ajax#0" expanded="false" />
-            <element signature="e#15440#17008#0" expanded="false" />
-            <element signature="e#15627#17000#0" expanded="false" />
-            <element signature="e#15649#15839#0" expanded="false" />
-            <element signature="e#15859#15991#0" expanded="false" />
-            <element signature="e#16012#16257#0" expanded="false" />
-            <element signature="e#16278#16548#0" expanded="false" />
-            <element signature="e#16296#16534#0" expanded="false" />
-            <element signature="e#16570#16989#0" expanded="false" />
-            <element signature="e#16588#16975#0" expanded="false" />
-            <element signature="e#16721#16853#0" expanded="false" />
-            <element signature="e#16755#16831#0" expanded="false" />
-            <element signature="e#18028#18482#0" expanded="false" />
-            <element signature="e#18503#19355#0" expanded="false" />
-            <element signature="e#18589#18654#0" expanded="false" />
-            <element signature="e#18686#18854#0" expanded="false" />
-            <element signature="e#18760#18832#0" expanded="false" />
-            <element signature="e#18886#18946#0" expanded="false" />
-            <element signature="e#18968#19262#0" expanded="false" />
-            <element signature="e#20219#20649#0" expanded="false" />
-            <element signature="e#20288#20608#0" expanded="false" />
-            <element signature="e#20391#20507#0" expanded="false" />
-            <element signature="e#20421#20489#0" expanded="false" />
-            <element signature="e#21163#21283#0" expanded="false" />
-            <element signature="e#21304#21443#0" expanded="false" />
-            <element signature="e#21322#21429#0" expanded="false" />
-            <element signature="e#21464#21675#0" expanded="false" />
-            <element signature="e#21482#21661#0" expanded="false" />
-            <element signature="n#!!block;n#statistictab1LengendTime#0" expanded="false" />
-            <element signature="e#21862#21997#0" expanded="false" />
-            <element signature="n#!!block;n#tab1OrderRateSeriseData#0" expanded="false" />
-            <element signature="e#22153#22191#0" expanded="false" />
-            <element signature="n#!!block;n#dealNumberTab3#0" expanded="false" />
-            <element signature="e#22322#22504#0" expanded="false" />
-            <element signature="e#22415#22461#0" expanded="false" />
-            <element signature="e#22510#22559#0" expanded="false" />
-            <element signature="n#!!block;n#tab3IndicatorData#0" expanded="false" />
-            <element signature="e#22690#22945#0" expanded="false" />
-            <element signature="e#22791#22939#0" expanded="false" />
-            <element signature="n#!!block;n#tab3DataData#0" expanded="false" />
-            <element signature="e#23081#23206#0" expanded="false" />
-            <element signature="e#23136#23200#0" expanded="false" />
-            <element signature="n#!!block;n#tab3Lengend#0" expanded="false" />
-            <element signature="e#23605#23661#0" expanded="false" />
-            <element signature="n#!!block;n#tab3PassLengend#0" expanded="false" />
-            <element signature="e#23781#23834#0" expanded="false" />
-            <element signature="n#!!block;n#getTab3Serise#0" expanded="false" />
-            <element signature="e#23952#24415#0" expanded="false" />
-            <element signature="e#23998#24408#0" expanded="false" />
-            <element signature="e#24021#24368#0" expanded="false" />
-            <element signature="e#24118#24135#0" expanded="false" />
-            <element signature="e#24163#24279#0" expanded="false" />
-            <element signature="e#24193#24261#0" expanded="false" />
-            <element signature="n#!!block;n#tab3OrderRateLengend#0" expanded="false" />
-            <element signature="e#24537#24672#0" expanded="false" />
-            <element signature="e#24731#25423#0" expanded="false" />
-            <element signature="e#25431#25948#0" expanded="false" />
-            <element signature="e#25964#26481#0" expanded="false" />
-            <element signature="e#26498#27406#0" expanded="false" />
-            <element signature="e#27429#28232#0" expanded="false" />
-            <element signature="e#28253#28768#0" expanded="false" />
-            <element signature="e#28784#29412#0" expanded="false" />
-            <element signature="e#29415#31929#0" expanded="false" />
-            <element signature="e#29416#30667#0" expanded="false" />
-            <element signature="e#29417#29594#0" expanded="false" />
-            <element signature="e#29596#29772#0" expanded="false" />
-            <element signature="e#29774#29951#0" expanded="false" />
-            <element signature="e#29953#30130#0" expanded="false" />
-            <element signature="e#30132#30309#0" expanded="false" />
-            <element signature="e#30311#30488#0" expanded="false" />
-            <element signature="e#30490#30666#0" expanded="false" />
-            <element signature="e#30669#31928#0" expanded="false" />
-            <element signature="e#30670#30847#0" expanded="false" />
-            <element signature="e#30849#31026#0" expanded="false" />
-            <element signature="e#31028#31206#0" expanded="false" />
-            <element signature="e#31208#31386#0" expanded="false" />
-            <element signature="e#31388#31567#0" expanded="false" />
-            <element signature="e#31569#31747#0" expanded="false" />
-            <element signature="e#31749#31927#0" expanded="false" />
-            <element signature="e#31937#32114#0" expanded="false" />
-            <element signature="e#32116#32292#0" expanded="false" />
-            <element signature="e#32294#32471#0" expanded="false" />
-            <element signature="e#32473#32650#0" expanded="false" />
-            <element signature="e#32652#32829#0" expanded="false" />
-            <element signature="e#32831#33008#0" expanded="false" />
-            <element signature="e#33010#33186#0" expanded="false" />
-            <marker date="1498808245156" expanded="false" signature="24864:25414" ph="{...}" />
-            <marker date="1498808245156" expanded="false" signature="25665:25683" ph="//..." />
-            <marker date="1498808245156" expanded="false" signature="25719:25777" ph="{...}" />
-            <marker date="1498808245156" expanded="false" signature="25803:25863" ph="{...}" />
-            <marker date="1498808245156" expanded="false" signature="25867:25928" ph="{...}" />
-            <marker date="1498808245156" expanded="false" signature="26109:26473" ph="{...}" />
-            <marker date="1498808245156" expanded="false" signature="28386:28760" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/tab3.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="518">
-          <caret line="229" column="18" lean-forward="false" selection-start-line="229" selection-start-column="18" selection-end-line="229" selection-end-column="18" />
-          <folding>
-            <element signature="e#12#856#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1191,7 +984,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6">
           <caret line="119" column="6" lean-forward="false" selection-start-line="119" selection-start-column="6" selection-end-line="119" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1199,9 +991,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="8" column="50" lean-forward="false" selection-start-line="8" selection-start-column="50" selection-end-line="8" selection-end-column="50" />
-          <folding>
-            <element signature="n#style#0;n#option#0;n#select#0;n#form#0;n#div#2;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1209,7 +998,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
           <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1223,7 +1011,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/manyEcharts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
+        <state relative-caret-position="15158">
           <caret line="691" column="28" lean-forward="false" selection-start-line="691" selection-start-column="28" selection-end-line="691" selection-end-column="28" />
           <folding>
             <element signature="e#0#49#0" expanded="false" />
@@ -1233,7 +1021,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/index_right.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-412">
+        <state relative-caret-position="990">
           <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="18" />
           <folding />
         </state>
@@ -1249,8 +1037,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/main_right.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="4528" column="32" lean-forward="true" selection-start-line="4528" selection-start-column="32" selection-end-line="4528" selection-end-column="32" />
+        <state relative-caret-position="4400">
+          <caret line="4528" column="32" lean-forward="false" selection-start-line="4528" selection-start-column="32" selection-end-line="4528" selection-end-column="32" />
           <folding>
             <element signature="e#34#4168#0" expanded="false" />
             <element signature="e#4184#4255#0" expanded="false" />
@@ -1347,8 +1135,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/right.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="27" column="59" lean-forward="false" selection-start-line="27" selection-start-column="59" selection-end-line="27" selection-end-column="59" />
+        <state relative-caret-position="212">
+          <caret line="29" column="17" lean-forward="true" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/statistics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="77">
+          <caret line="409" column="27" lean-forward="false" selection-start-line="409" selection-start-column="20" selection-end-line="409" selection-end-column="27" />
+          <folding>
+            <element signature="e#15706#21402#0" expanded="false" />
+            <marker date="1499047485839" expanded="true" signature="2230:2249" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/tab3.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="74" column="8" lean-forward="true" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="19" />
+          <folding>
+            <element signature="e#12#856#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/tab4_statistics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="516" column="30" lean-forward="true" selection-start-line="516" selection-start-column="30" selection-end-line="516" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/tab4.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="19" column="1" lean-forward="true" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
           <folding />
         </state>
       </provider>
