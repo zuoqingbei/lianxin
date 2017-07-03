@@ -81,7 +81,7 @@
 
 #tab2  .box_title {
     position: absolute;
-    top: 0.5%;
+    top: 0.65%;
     left: 9%;
     color: white;
     font-size: 1.7em;
@@ -117,7 +117,7 @@
     background-size: 100% 100%;
     float: left;
     text-align: center;
-    padding-top: 1%;
+    padding-top: 1.2%;
     font-size: 1.6em;
     color: white;
 }
@@ -161,7 +161,7 @@
     width: 20%;
     padding: 0;
     color: #66ccff;
-    font-size: 1.2em;
+    font-size: 1.3em;
     position: relative;
     text-align: center;
 }
@@ -177,7 +177,7 @@
     /*width: 45%;*/
 /*}*/
 #tab2  .yunying_left_bottom .shebei_chanxian table .td_progress{
-    width: 35%;
+    width: 29%;
 }
 #tab2  .yunying_left_bottom .shebei_chanxian table tr td .progress {
     width: 45%;
@@ -199,7 +199,9 @@
     height: 1em;
     color: #f93;
 }
-
+#tab2 #tab2_right .yunying_right{
+    margin-left: 1.8%;
+}
 #tab2  .yunying_right_top .echarts_box ul {
     width: 25%;
     height: 100%;
@@ -331,7 +333,7 @@
 #tab2  .right_nextpage .title {
     width: 60%;
     margin-left: 20%;
-    padding-top: 1.5%;
+    padding-top: 2%;
     height: 77%;
 }
 
@@ -352,7 +354,7 @@
     vertical-align: middle;
     /*background-color: pink;*/
     position: absolute;
-    font-size: 1.6em;
+    font-size: 1.5em;
     color: #66ccff;
 }
 
@@ -406,7 +408,7 @@
 }
 
 #tab2  .biaozhun_right_echarts {
-    width: 100%;
+    width: 97%;
     height: 78%;
 }
 
@@ -465,7 +467,7 @@
 
 #tab2  .nengli_top {
     width: 96%;
-    height: 97%;
+    height: 99%;
     margin-left: 2%;
 }
 
@@ -478,10 +480,10 @@
 #tab2  .nengli_bottom .rate .title {
     width: 35%;
     margin-left: 30%;
-    padding-top: 0.5%;
+    padding-top: 1.2%;
 }
 
 #tab2  .nengli_bottom_box {
     width: 100%;
-    height: 85%;
+    height: 79%;
 }

@@ -116,7 +116,7 @@ function orderTypeAjax(myChartIds, desName, divisor) {
             },
             xAxis: {
                 data: xData,
-                nameGap: 10 * bodyScale,
+                nameGap: nameGap,
                 axisLine: {
                     show: false
                 },
@@ -127,14 +127,7 @@ function orderTypeAjax(myChartIds, desName, divisor) {
                         color: '#66ccff'
                     },
                 },
-                axisLabel: {
-                    interval: 1,
-                    textStyle: {
-                        fontSize: 10 * bodyScale,
-
-                    },
-                    // rotate:30,
-                },
+            axisLabel: axisLabel,
                 splitLine: {  //刻度线
                     show: true,
                     lineStyle: {
@@ -144,7 +137,7 @@ function orderTypeAjax(myChartIds, desName, divisor) {
             },
             yAxis: {
                 data: yData,
-                nameGap: 10 * bodyScale,
+                nameGap: nameGap,
                 axisLine: { //坐标轴
                     show: false
                 },
@@ -249,12 +242,13 @@ function findOrderPassForProAjax(mychartIds, desName) {
             xAxis: [
                 {
                     name: '产线',
-                    nameGap: 10 * bodyScale,
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
                     data: tab3PassLengend(data),
                     axisLabel: {
                         interval: 0,
                         textStyle: {
-                            fontSize: 10 * bodyScale,
+                            fontSize: 13 * bodyScale,
 
                         },
                         // rotate:30,
@@ -264,6 +258,8 @@ function findOrderPassForProAjax(mychartIds, desName) {
             yAxis: [
                 {
                     name: '合格率/%',
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
                     max: 100
                 }
             ],
@@ -334,7 +330,7 @@ function findOrderYearRateForTab3() {
             ],
             series: [{
                 name: '及时率',
-                nameGap: 15 * bodyScale,
+                nameGap: nameGap,
                 type: 'line',
                 lineStyle: {
                     normal: {
@@ -458,19 +454,25 @@ function findOrderMonthRateForProductAjax() {
             },
             grid: {
                 x: "15%",
-                x2: "10%",
-                y: '15%',
+                x2: "13%",
+                y: '20%',
                 y2: "10%"
             },
             xAxis: [
                 {
                     name: '月份',
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
                     data: tab3OrderRateLengend(data[0])
                 }
             ],
             yAxis: [
                 {
                     name: '及时率/%',
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
                     max: 100
                 }
             ],
@@ -573,7 +575,7 @@ function satisfactionStatisForYearTab3Ajax2016() {
                     axisLabel: {
                         interval: 0,
                         textStyle: {
-                            // fontSize: 12 * bodyScale
+                            fontSize: 13 * bodyScale
                         }
                     }
                 }
@@ -671,12 +673,18 @@ function productLineAndMonthForTab3Ajax() {
             xAxis: [
                 {
                     name: '月份',
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
                     data: tab3OrderRateLengend(data[0])
                 }
             ],
             yAxis: [
                 {
                     name: '满意度/%',
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
                     scale: true,
                     min: 60,
                     max: 100,

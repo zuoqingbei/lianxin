@@ -87,9 +87,9 @@
 
     #tab3 > div > div > .title {
         position: absolute;
-        top: 1%;
+        top: 0.6%;
         color: #fff;
-        font-size: 1.6em;
+        font-size: 1.7em;
         left: 16%;
         transform: translateX(-50%);
     }
@@ -99,7 +99,7 @@
         padding: 3%;
         text-align: center;
         margin: 3% auto 0;
-        font-size: 1.7em;
+        font-size: 1.6em;
         color: #fff;
         background-image: url(../../img/tab3/border_h3.png);
         background-size: 100% 100%;
@@ -204,8 +204,8 @@
     }
 
     #t3_r > div > div[class$=_bottom] h3 {
-        width: 60%;
-        padding: 5%;
+        width: 56%;
+        margin-bottom: 4%;
     }
 
     #tab3 > div > div > div > p.explain {

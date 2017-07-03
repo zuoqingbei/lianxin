@@ -232,30 +232,21 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		    },
 		    yAxis: {
 		        name: mTitle,
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
+                axisLabel: axisLabel,
 		        max: parseFloat(maxAndMin[0]),
 		        min: parseFloat(maxAndMin[1]),
-		        axisLabel:{
-		            textStyle:{
-		                fontSize:10*bodyScale
-		            }
-		        },
 		        splitLine: {  //刻度线
 		            show: false
 		        },
-		        nameGap:2*bodyScale,
-		        nameTextStyle:{fontSize:10*bodyScale},
 		    },
 		    xAxis: [
 		        {
 		            name: "",
-		            axisLabel:{
-		                textStyle:{
-		                    fontSize:10*bodyScale
-		                },
-		                margin:2*bodyScale
-		            },
-		            nameGap:2*bodyScale,
-		            nameTextStyle:{fontSize:10*bodyScale},
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
 		            data: statisticRightLengend4(data)
 		        }
 		    ],
@@ -523,6 +514,9 @@ function communistStatisticForMonthForTab4Ajax(){
 		    yAxis: [
 		        {
 		            name: "数量",
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
 		            type: 'value',
 					scale:true
 		        }
@@ -530,6 +524,9 @@ function communistStatisticForMonthForTab4Ajax(){
 		    xAxis: [
 		        {
 		            name: "时间",
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
 		            type: 'category',
 		            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 		        }
@@ -560,7 +557,6 @@ function communistGravityStatisticForTab4Ajax() {
     $.post(contextPath + '/lab/communistGravityStatisticForTab1Ajax', {}, function (data) {
         var myChart17 = echarts.init(document.getElementById("myChart17"));
         right_echarts.push(myChart17);
-
         myChart17.setOption(getYuanhuan());
         var labelTop = {
             normal: {

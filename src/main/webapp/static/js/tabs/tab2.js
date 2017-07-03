@@ -72,12 +72,7 @@ function equipmentTotalForLab1Ajax() {
                         },
 
                     },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            fontSize: 11 * bodyScale
-                        }
-                    },
+                    axisLabel: axisLabel,
                     axisTick: {            // 坐标轴小标记
                         length: 5 * bodyScale,        // 属性length控制线长
                         lineStyle: {       // 属性lineStyle控制线条样式
@@ -142,12 +137,7 @@ function equipmentTotalForLab1Ajax() {
 
                         },
                     },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            fontSize:11* bodyScale
-                        }
-                    },
+                    axisLabel:axisLabel,
                     axisTick: {            // 坐标轴小标记
                         length: 7 * bodyScale,        // 属性length控制线长
                         lineStyle: {       // 属性lineStyle控制线条样式
@@ -212,12 +202,7 @@ function equipmentTotalForLab1Ajax() {
 
                         }
                     },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            fontSize: 11 * bodyScale
-                        }
-                    },
+                    axisLabel: axisLabel,
                     axisTick: {            // 坐标轴小标记
                         length: 7 * bodyScale,        // 属性length控制线长
                         lineStyle: {       // 属性lineStyle控制线条样式
@@ -881,7 +866,7 @@ function abilityStatus() {
             grid: {
                 x: '8%',
                 x2: '5%',
-                y: '12%',
+                y: '14%',
                 y2: '12%'
             },
             series: [
@@ -965,7 +950,7 @@ function  abilityByProductLine() {
                 x: '2%',
                 x2: '5%',
                 y: '12%',
-                y2: '2%',
+                y2: '5%',
                 containLabel: true
             },
             yAxis:  {
