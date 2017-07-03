@@ -407,7 +407,7 @@ function labPropertiesStatis(){
 	        xAxis: [
 	            {
                     name: "\n\n\n\n\n实验室数量",
-                    nameGap:  -15 * bodyScale,
+                    nameGap:  150 * bodyScale,
                     nameTextStyle: nameTextStyle_l,
                     axisLabel: axisLabel_l,
 
@@ -634,7 +634,7 @@ function labLifeCycleStatis(){
 	                }
 	            },{
 	            	 type: 'value',
-	                 name: '检测订单量(百)',
+	                 name: '检测订单量(百万)',
                     nameTextStyle:{
                         fontSize:bodyScale*5
                     },
@@ -815,7 +815,7 @@ function labLifeCycleStatis(){
 	                }
 	            },{
 	            	 type: 'value',
-	                 name: '检测订单量(百)',
+	                 name: '检测订单量(百万)',
                     nameTextStyle:{
                         fontSize:bodyScale*10
                     },

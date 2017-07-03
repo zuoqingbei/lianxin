@@ -1,7 +1,7 @@
 .shujuWajue{
     display: flex;
     height: 92%;
-    padding:1%;
+    padding: 0.2% 1% .6% 0;
 }
 .shujuWajue>div{
     position: relative;
@@ -11,8 +11,8 @@
     height: 98%;
     background-image: url("../img/tab4/bigBorder_wajue.png");
     background-size: 100% 100%;
-    margin:1em 1.5em;
-    padding:2%;
+    margin: 1%;
+    padding: 2% 1%;
 }
 .shujuWajue>div>div{
     /*outline: 1px dashed yellowgreen;*/
@@ -65,7 +65,7 @@
 }
 .shujuWajue_left_bottom_cpk{
     width: 32%;
-    margin-left: 6%;
+    /*margin-left: 6%;*/
 }
 .shujuWajue_left_bottom p.result{
     color: #00e673;
