@@ -19,7 +19,7 @@
     background-size: 100% 100%;
     color: #66ccff;
     cursor: pointer;
-    font-size: 1.7em;
+    font-size: 1.9em;
 }
 
 #r .white {
@@ -57,12 +57,12 @@
     position: relative;
     cursor: pointer;
     display: inline-block;
-    margin-left: 9%;
+    margin-left: 12%;
     width: 9.5%;
 }
 #r .labIcon>ul>li>span{
     /*display: block;*/
-    font-size: .8em;
+    font-size: 1em;
 }
 
 #r .labIcon>ul>li>img{
