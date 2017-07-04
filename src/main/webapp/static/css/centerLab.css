@@ -17,7 +17,9 @@
     background-size: 100% 100%;
 }
 .zhbr_lab h3.lab_title {
-    left: 9.5%;
+    top: 1%;
+    left: 8.8%;
+    font-size: 1.8em;
 }
 .zhbr_lab{
     height: 97%;

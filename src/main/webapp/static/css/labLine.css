@@ -23,7 +23,7 @@
 }
 .sheshi_right_top{
 	height: 6%;
-    width: 80%;
+    width: 100%;
 }
 .sheshi_right_top ul{
 	width:100%;
@@ -132,7 +132,7 @@
     float: left;
     padding-top: 2%;
     position: absolute;
-    top: 0;
+    top: 10%;
     right: 0;
     /* padding-right: 3%; */
     overflow-y: auto;
