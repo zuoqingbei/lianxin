@@ -482,11 +482,11 @@ function labPropertiesStatis(){
 	        	 x: "23%",
 	             x2: "18%",
 	             y:"14%",
-	             y2:"18%"
+	             y2:"12%"
 	        },
 	        xAxis: [
 	            {
-	                name: "\n\n\n\n\n实验室数量",
+	                name: "",
                     nameGap:  -25 * bodyScale,
                     nameTextStyle: nameTextStyle_full,
                     axisLabel: axisLabel_full,

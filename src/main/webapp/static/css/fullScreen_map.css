@@ -91,6 +91,7 @@
 #l.fullScreen_map .flat-right>div .chartBorder{
     height:80%;
     overflow: hidden;
+    position: relative;
 }
 
 #l.fullScreen_map .sphere .mapArea iframe,
@@ -122,9 +123,9 @@
 #l.fullScreen_map .flat-footer .legend{
     z-index: 9999;
     font-size: .9em;
-    width: 20%;
-    height: 43%;
-    top: 39%;
+    width: 23%;
+    height: 39%;
+    top: 46%;
     background-image: url(../img/nav-border_noBottom.png);
 }
 #l.fullScreen_map .flat-footer .legend .labLine {
@@ -134,9 +135,12 @@
 #l.fullScreen_map .flat-footer .legend-r {
     height: 80%;
     width: 13%;
-    line-height: 4.0em;
+    line-height: 3.2em;
     top: 17.6%;
     z-index: 10;
+}
+#l.fullScreen_map .flat-footer .legend .selectAll{
+    padding-top: 0.5%;
 }
 #l.fullScreen_map .legend-l{
     left: -11%;

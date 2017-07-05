@@ -174,7 +174,7 @@ function getMaxMinForScpTab4(data, xhPro, type) {
     var result = [];
     var max;
     var min;
-    if (type === 1) {
+    if (type == 1) {
         min = xhPro.jz_lcl;
         max = xhPro.jz_ucl;
     } else {
@@ -199,7 +199,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
 	$.post(contextPath+'/lab/jianCeXbarForTab1Ajax',{"xhName":xhPro.xh_name,"type":type},function(data){
 		var maxAndMin=getMaxMinForScpTab4(data,xhPro,type);
 		var mTitle,mLcl,mValue,mUcl;
-		if(type===1){
+		if(type==1){
 			mTitle="样本平均值";
 			mLcl=xhPro.jz_lcl;
 			mValue=xhPro.pj_value;

@@ -45,7 +45,7 @@
         width: 200%;
         height: 92%;
         padding: 0.2% 1% .6% 0;
-        left: -100%;
+        left:0;
         color: #6cf;
 
     }
@@ -171,7 +171,7 @@
     }
 
     #myChart39 {
-        height: 63%;
+        height: 72%;
         width: 100%;
     }
 }
