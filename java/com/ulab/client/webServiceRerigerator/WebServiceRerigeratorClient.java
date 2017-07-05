@@ -61,6 +61,7 @@ public class WebServiceRerigeratorClient {
 			String testNo = inputContent.get(0);
 			String proNo = inputContent.get(1);
 			String proName = inputContent.get(2);
+			String testPro = inputContent.get(3);//实验项目
 			//获取当前在测数据传感器信息
 			ArrayOfSensorInfo sensorInfos = port.getSensorInformation(labCode, testMetadata.getTestIdentification());			
 			//获取当前台位传感器类型
@@ -87,6 +88,7 @@ public class WebServiceRerigeratorClient {
 			realTimeData.append("{\n");
 			realTimeData.append("sybh:'").append(testNo).append("',\n");
 			realTimeData.append("ybbh:'").append(proNo).append("',\n");
+			realTimeData.append("testPro:'").append(testPro).append("',\n");
 			realTimeData.append("cpxh:'").append(proName).append("',\n");
 			realTimeData.append("list:[\n");
 			for(SensorInfo sensorInfo : sensorInfos.getSensorInfo()){
