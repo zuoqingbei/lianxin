@@ -322,8 +322,9 @@ public class LabController extends BaseController {
      */
     public void findOrderMonthRateForProductAjax(){
     	String labTypeCode=getPara("labTypeCode","");
-    	String startDate=getPara("startDate","201601");
-    	String endDate=getPara("endDate","201612");
+    	String startDate=getPara("startDate","201701");
+    	String endDate=getPara("endDate","");
+    	endDate=dealEndTime(endDate);
     	List<List<Record>> list=new ArrayList<List<Record>>();
     	List<Record> productLine=getSessionAttr("productLine");
     	if(productLine==null){
@@ -331,6 +332,7 @@ public class LabController extends BaseController {
     	}
     	for(Record r:productLine){
     		List<Record> data=OrderModel.dao.findOrderMonthRateForProduct(startDate,endDate,r.get("id").toString(),labTypeCode);
+    		data=dealTimeForLast(data, "name", "rate");
     		if(data!=null&&data.size()>0){
     			list.add(data);
     		}
@@ -437,8 +439,10 @@ public class LabController extends BaseController {
 		renderJson(list);*/
     	String plCode=getPara("plCode","");
     	String labTypeCode=getPara("labTypeCode","");
-    	String startDate=getPara("startDate","201601");
-    	String endDate=getPara("endDate","201612");
+    	String startDate=getPara("startDate","201701");
+    	String endDate=getPara("endDate","");
+    	endDate=dealEndTime(endDate);
+    	endDate=dealEndTime(endDate);
     	renderJson(OrderModel.dao.findOrderMonthRateForAll(startDate, endDate, plCode, labTypeCode));
     }
     
@@ -503,8 +507,9 @@ public class LabController extends BaseController {
     public void communistGravityStatisticForTab1Ajax(){
     	String plCode=getPara("plCode","");
     	String labTypeCode=getPara("labTypeCode","");
-    	String startDate=getPara("startDate","201601");
-    	String endDate=getPara("endDate","201612");
+    	String startDate=getPara("startDate","201701");
+    	String endDate=getPara("endDate","");
+    	endDate=dealEndTime(endDate);
 		renderJson(CommunistModel.dao.communistGravityStatistic(startDate, endDate, plCode, labTypeCode));
     }
     /**
@@ -643,9 +648,11 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void orderRateForCenterLabAjax(){
-    	String startDate=getPara("startDate","201606");
-    	String endDate=getPara("endDate","201705");
+    	String startDate=getPara("startDate","201701");
+    	String endDate=getPara("endDate","");
+    	endDate=dealEndTime(endDate);
     	List<Record> list=OrderModel.dao.findOrderRateForMonth(startDate, endDate);
+    	dealTimeForLast(list, "name", "rate");
 		renderJson(list);
     }
     /**
@@ -687,12 +694,15 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void satisfactionStatisForMonthForTab3Ajax(){
-    	String startDate=getPara("startDate","201606");
-    	String endDate=getPara("endDate","201705");
+    	String startDate=getPara("startDate","201701");
+    	String endDate=getPara("endDate","");
+    	endDate=dealEndTime(endDate);
     	String labTypeCode=getPara("labTypeCode","");
     	List<Record> list=SatisfactionModel.dao.satisfactionStatisForMonth(startDate, endDate,labTypeCode);
+    	list=dealTimeForLast(list,"name","rate");
 		renderJson(list);
     }
+  
     
     /**
      * 
@@ -745,8 +755,9 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void productLineAndMonthForTab3Ajax(){
-    	String startDate=getPara("startDate","201606");
-    	String endDate=getPara("endDate","201705");
+    	String startDate=getPara("startDate","201701");
+    	String endDate=getPara("endDate","");
+    	endDate=dealEndTime(endDate);
     	String labTypeCode=getPara("labTypeCode","");
     	List<List<Record>> list=new ArrayList<List<Record>>();
     	List<Record> productLine=getSessionAttr("productLine");
@@ -755,6 +766,7 @@ public class LabController extends BaseController {
     	}
     	for(Record r:productLine){
     		List<Record>  data=SatisfactionModel.dao.productLineAndMonth(startDate,endDate,r.get("id").toString(),labTypeCode);
+    		data=dealTimeForLast(data, "name", "rate");
     		if(data!=null&&data.size()>0){
     			list.add(data);
     		}
@@ -913,5 +925,49 @@ public class LabController extends BaseController {
     	IntegrationServiceClient client = new IntegrationServiceClient();
 		LabAllData labAllData = client.searchLabAllData();
 		renderJson(labAllData);
+    }
+    /**
+     * 
+     * @time   2017年7月4日 下午3:08:05
+     * @author zuoqb
+     * @todo   处理月份进行补全
+     * @param  @param list：原始数据
+     * @param  @param key：时间轴键
+     * @param  @param key2：时间对应数据键
+     * @param  @return
+     * @return_type   List<Record>
+     */
+    public List<Record> dealTimeForLast(List<Record> list,String key,String key2){
+    	List<Record> mList=list;
+    	if(list==null||list.size()==0){
+    		return mList;
+    	}
+    	Record last=list.get(list.size()-1);
+    	String startDate=last.getStr(key);
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
+    	String endDate=sdf.format(new Date());
+    	for(int x=Integer.valueOf(startDate)+1;x<=Integer.valueOf(endDate);x++){
+    		Record r=new Record();
+    		r.set(key, String.valueOf(x));
+    		r.set(key2, "0");
+    		mList.add(r);
+    	}
+    	return mList;
+    }
+    /**
+     * 
+     * @time   2017年7月4日 下午3:09:53
+     * @author zuoqb
+     * @todo   处理结束时间
+     * @param  @param endDate
+     * @param  @return
+     * @return_type   String
+     */
+    public String dealEndTime(String endDate){
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
+    	if(StringUtils.isBlank(endDate)){
+    		endDate=sdf.format(new Date());
+    	}
+    	return endDate;
     }
 }

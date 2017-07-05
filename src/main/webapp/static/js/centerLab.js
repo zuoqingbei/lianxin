@@ -135,7 +135,7 @@ function inittwo() {
 
                     type: 'value',
                     max: 100,
-                    min:60,
+                    min:0,
                     scale: true,
                 },
             ],
@@ -170,8 +170,8 @@ function inittwo() {
 //近12个月一次合格率趋势图
 function initThree() {
     $.post(contextPath + '/lab/orderRateForCenterLabAjax', {
-        "startDate": "201606",
-        "endDate": "201705"
+        "startDate": "201701",
+        "endDate": ""
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
@@ -248,8 +248,8 @@ function initThree() {
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
         "labTypeCode": "中心实验室",
-        "startDate": "201606",
-        "endDate": "201705"
+        "startDate": "201701",
+        "endDate": ""
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
@@ -1432,8 +1432,14 @@ function dealCenterLab(data) {
     var maxData = {month: 0, rate: 0};
     var minData = {month: 0, rate: 100};
     $.each(data, function (index, item) {
-        var cAllNum = parseInt(item.all_count);
-        var cJsNum = parseInt(item.js_count);
+        var cAllNum =0;
+        if(item.hasOwnProperty("all_count")){
+        	cAllNum=parseInt(item.all_count);
+        }
+        var cJsNum =0;
+        if(item.hasOwnProperty("js_count")){
+        	cJsNum=parseInt(item.js_count);
+        }
         var cName = item.name;
         var cRate = parseFloat(item.rate);
         if (parseFloat(maxData.rate) < cRate) {
@@ -1449,6 +1455,7 @@ function dealCenterLab(data) {
     });
     //计算整体平均值
     var allPingjun = parseFloat((parseInt(js_num) / parseInt(all_num)) * 100).toFixed(1);
+    console.log(js_num+"---"+all_num+"---"+allPingjun)
     result.push(allPingjun);
     result.push(maxData);
     result.push(minData);

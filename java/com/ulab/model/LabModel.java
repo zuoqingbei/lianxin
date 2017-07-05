@@ -90,7 +90,7 @@ public class LabModel extends Model<LabModel> {
 	 * @return_type List<Record>
 	 */
 	public List<Record> labStatisByField(String sqlWhere, String field,String sort) {
-		if("professional_code".equals(field)){
+		if("properties_code".equals(field)){
 			System.out.println(1);
 		}
 		if(StringUtils.isBlank(sort)){

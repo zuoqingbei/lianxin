@@ -471,21 +471,12 @@ var mHeightChartTab4=$('#myChart16').highcharts({
     series: [{
         name: '直方图',
         type: 'column',
-        data: histogram(data, 0.5),
+        data: histogramTab4(data, 0.5),
         color:"#4397f7",
         pointPadding: 0,
         groupPadding: 0,
         pointPlacement: 'between',
 		borderColor:"rgba(0,0,0,0)"
-    }, {
-        name: '概率密度',
-        type: 'spline',
-        data: data,
-		color:"#00e673",
-        yAxis: 1,
-        marker: {
-            radius: 1.5
-        }
     }]
 }).highcharts();
 //根据类型 时间 统计共产 一致个月份数量
@@ -559,11 +550,12 @@ function communistStatisticForMonthForTab4Ajax(){
 
 // 共产 一致比重统计
 function communistGravityStatisticForTab4Ajax() {
-    $.post(contextPath + '/lab/communistGravityStatisticForTab1Ajax', {}, function (data) {
+    $.post(contextPath + '/lab/communistGravityStatisticForTab1Ajax', {"startDate":"201601","endDate":"201612"}, function (data) {
+    	//console.log(data)
         var myChart17 = echarts.init(document.getElementById("myChart17"));
         right_echarts.push(myChart17);
         myChart17.setOption(getYuanhuan());
-        var labelTop = {
+        var labelTop1 = {
             normal: {
                 color: '#064f66',
                 label: {
@@ -571,7 +563,9 @@ function communistGravityStatisticForTab4Ajax() {
                     position: 'center',
 //	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
                     formatter: function (params) {
-                        return 123;
+                    	//var num=(parseInt(data.yz_num)/parseInt(data.gc_num)*100).toFixed(1);
+                        //return num+"%";
+                    	return data.yz_num;
                     },
                     textStyle: {
                         fontSize: bodyScale * 24,
@@ -584,6 +578,29 @@ function communistGravityStatisticForTab4Ajax() {
                 }
             }
         };
+        var labelTop2 = {
+                normal: {
+                    color: '#064f66',
+                    label: {
+                        show: true,
+                        position: 'center',
+//    	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
+                        formatter: function (params) {
+                        	//var num=(parseInt(data.yz_num)/parseInt(data.gc_num)*100).toFixed(1);
+                            //return (100-num)+"%";
+                        	return (parseInt(data.gc_num)-parseInt(data.yz_num));
+                        },
+                        textStyle: {
+                            fontSize: bodyScale * 24,
+                            color: "#f90",
+                            baseline: 'bottom'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    }
+                }
+            };
         var labelLine = {
             normal: {
                 length2: 5 * bodyScale,
@@ -640,7 +657,7 @@ function communistGravityStatisticForTab4Ajax() {
                     radius: radius,
                     x: '0%', // for funnel
                     data: [
-                        {name: 'other', value: data.yz_num, itemStyle: labelTop},
+                        {name: 'other', value: (parseInt(data.gc_num)-parseInt(data.yz_num)), itemStyle: labelTop1},
                         {name: '共产一致占比', value: data.yz_num, itemStyle: labelBottom}
                     ]
                 },
@@ -651,10 +668,10 @@ function communistGravityStatisticForTab4Ajax() {
                     x: '20%', // for funnel
                     itemStyle: labelFromatter,
                     data: [
-                        {name: 'other', value: (parseInt(data.gc_num) - parseInt(data.yz_num)), itemStyle: labelTop},
+                        {name: 'other', value: data.yz_num, itemStyle: labelTop2},
                         {
                             name: '共产不一致占比',
-                            value: (parseInt(data.gc_num) - parseInt(data.yz_num)),
+                            value: (parseInt(data.gc_num)-parseInt(data.yz_num)),
                             itemStyle: labelBottom
                         }
                     ]

@@ -918,14 +918,12 @@ function statisticRightSeriesData(data) {
 
 function  abilityByProductLine() {
     $.post(contextPath + '/lab/abilityByProductLineAjax', {}, function (data) {
-        console.log(data);
         var xData = [];
         //var yData = [];
         var yData1 = [];
         var yData2 = [];
         var yData3 = [];
         for(var i = 0 ; i < data[0].length ; i ++){
-            console.log(data[0][i][0]);
             if(data[0][i][0]){
                 xData.push(data[0][i][0].product_name);
                 yData1.push(data[0][i][0].count);
@@ -938,11 +936,11 @@ function  abilityByProductLine() {
                 yData3.push(0);
             }
         }
-        console.log(yData1);
+   /*     console.log(yData1);
         console.log(yData2);
         console.log(yData3);
         console.log(xData);
-
+*/
         var myChart32 = echarts.init(document.getElementById("myChart32"));
         right_echarts.push(myChart32);
         myChart32.setOption({
