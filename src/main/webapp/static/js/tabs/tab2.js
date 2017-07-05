@@ -72,7 +72,12 @@ function equipmentTotalForLab1Ajax() {
                         },
 
                     },
-                    axisLabel: axisLabel,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 11 * bodyScale
+                        }
+                    },
                     axisTick: {            // 坐标轴小标记
                         length: 5 * bodyScale,        // 属性length控制线长
                         lineStyle: {       // 属性lineStyle控制线条样式
@@ -137,7 +142,12 @@ function equipmentTotalForLab1Ajax() {
 
                         },
                     },
-                    axisLabel:axisLabel,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            fontSize:11* bodyScale
+                        }
+                    },
                     axisTick: {            // 坐标轴小标记
                         length: 7 * bodyScale,        // 属性length控制线长
                         lineStyle: {       // 属性lineStyle控制线条样式
@@ -202,7 +212,12 @@ function equipmentTotalForLab1Ajax() {
 
                         }
                     },
-                    axisLabel: axisLabel,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 11 * bodyScale
+                        }
+                    },
                     axisTick: {            // 坐标轴小标记
                         length: 7 * bodyScale,        // 属性length控制线长
                         lineStyle: {       // 属性lineStyle控制线条样式
@@ -408,7 +423,7 @@ function personForTab2Ajax(myChartIds, type, divisor) {
         myChart25.setOption({
             grid: {
                 right: "1%",
-                bottom: "0%",
+                bottom: "10%",
                 left: (type==1?"22%":'8%'),
                 top: "4%"
             },
@@ -427,7 +442,6 @@ function personForTab2Ajax(myChartIds, type, divisor) {
                 }
             },
             xAxis: {
-                boundaryGap: true,
                 type: 'category',
                 data: xData,
                 splitLine: {
@@ -856,7 +870,6 @@ function abilityStatus() {
             ],
             xAxis: [
                 {
-                    boundaryGap: true,
                     name: "",
                     type: 'category',
                     data: statisticRightLengend2(data.data),
@@ -868,7 +881,7 @@ function abilityStatus() {
             grid: {
                 x: '8%',
                 x2: '5%',
-                y: '14%',
+                y: '12%',
                 y2: '12%'
             },
             series: [
@@ -905,14 +918,12 @@ function statisticRightSeriesData(data) {
 
 function  abilityByProductLine() {
     $.post(contextPath + '/lab/abilityByProductLineAjax', {}, function (data) {
-        console.log(data);
         var xData = [];
         //var yData = [];
         var yData1 = [];
         var yData2 = [];
         var yData3 = [];
         for(var i = 0 ; i < data[0].length ; i ++){
-            console.log(data[0][i][0]);
             if(data[0][i][0]){
                 xData.push(data[0][i][0].product_name);
                 yData1.push(data[0][i][0].count);
@@ -925,11 +936,11 @@ function  abilityByProductLine() {
                 yData3.push(0);
             }
         }
-        console.log(yData1);
+   /*     console.log(yData1);
         console.log(yData2);
         console.log(yData3);
         console.log(xData);
-
+*/
         var myChart32 = echarts.init(document.getElementById("myChart32"));
         right_echarts.push(myChart32);
         myChart32.setOption({
@@ -952,7 +963,7 @@ function  abilityByProductLine() {
                 x: '2%',
                 x2: '5%',
                 y: '12%',
-                y2: '5%',
+                y2: '2%',
                 containLabel: true
             },
             yAxis:  {
