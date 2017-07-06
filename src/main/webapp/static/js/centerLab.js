@@ -135,7 +135,7 @@ function inittwo() {
 
                     type: 'value',
                     max: 100,
-                    min:60,
+                    min:0,
                     scale: true,
                 },
             ],
@@ -170,8 +170,8 @@ function inittwo() {
 //近12个月一次合格率趋势图
 function initThree() {
     $.post(contextPath + '/lab/orderRateForCenterLabAjax', {
-        "startDate": "201606",
-        "endDate": "201705"
+        "startDate": "201701",
+        "endDate": ""
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
@@ -248,8 +248,8 @@ function initThree() {
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
         "labTypeCode": "中心实验室",
-        "startDate": "201606",
-        "endDate": "201705"
+        "startDate": "201701",
+        "endDate": ""
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
@@ -332,6 +332,7 @@ var myChart1;
 var myChart2;
 var xData;//x轴坐标数据--对应时间
 var legendData=[];//需要把全部图例放入里面 保证名称不同
+var legendNumData=[];
 var showLegendData=[];//需要展示图例 自定义
 var seriesTopData=[];
 var seriesBottomData=[];
@@ -463,12 +464,14 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		//根据传感器具体数据 生成图例 
 	 	$.each(data.list,function(index,item){
 			totalLegendName.push(item.name);
+			legendNumData.push(item.data[item.data.length-1].value+increaseBracketForObj(item.name))
 		});
 		legendData=dealBracket(totalLegendName);
 		randomLegend();
 		$("#center_sybh_id").html(data.sybh);
 	 	$("#center_ypbm_id").html(data.ybbh);
 	 	$("#center_cpxh_id").html(data.cpxh);
+	 	$("#center_testPro_id").html(data.testPro);
 		//showLegendData=legendData;//默认全选
 		//console.log(showLegendData)
 		createLegendHtmls();
@@ -484,6 +487,7 @@ function resetDataCenterLab(){
 	myChart2.clear();
 	$("#legend_ul").html('');
 	legendData=[];
+	legendNumData=[];
 	showLegendData=[];//需要展示图例 自定义
 	seriesTopData=[];
 	seriesBottomData=[];
@@ -558,9 +562,9 @@ function createLegendHtmls() {
     for (var x = 0; x < legendData.length; x++) {
     	//如果是默认选择的 复选选中
 		if(isHasElementOne(showLegendData,legendData[x])!=-1){
-			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:'+width+';height:'+width+'" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" checked><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#fff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '&nbsp;<span style="color: #66ccff;">1111</span></li><br>'
+			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:'+width+';height:'+width+'" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" checked><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#fff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '&nbsp;<span style="color: #66ccff;">'+legendNumData[x]+'</span></li><br>'
 		}else{
-			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:'+width+';height:'+width+'" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" ><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#fff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '&nbsp;<span style="color: #66ccff">1111</span></li><br>'
+			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:'+width+';height:'+width+'" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" ><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#fff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '&nbsp;<span style="color: #66ccff">'+legendNumData[x]+'</span></li><br>'
 		}
         
     }
@@ -958,6 +962,7 @@ function intervalChangeData() {
 	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.0083333333333333"},function(data){
 		data=eval("("+data+")");
 		dealIntervalSeriesData(data);
+		createLegendHtmls();
 		//clearInterval(intevalChart1);
 		//上方处理
 		var needRefresh=false;
@@ -1026,6 +1031,14 @@ var intervalSeriesBottomData=[];
 function dealIntervalSeriesData(mData){
 	intervalSeriesTopData=[];
 	intervalSeriesBottomData=[];
+	//处理图例中数变化
+	for(var i=0;i<mData.list.length;i++){
+		var cM=mData.list[i];
+		//console.log(cM)
+		if(cM.data!=null&&cM.data.length>0){
+			legendNumData[i]=cM.data[cM.data.length-1].value+increaseBracketForObj(cM.name);
+		}
+	};
 	for(var x=0;x<totalLegendName.length;x++){
 		var currentName=totalLegendName[x];
 		var data=[];
@@ -1361,6 +1374,12 @@ function dealBracketForObj(obj){
 	}
 	return obj;
 }
+function increaseBracketForObj(obj){
+	if(obj.indexOf("(")>-1){
+		return obj.substr(obj.indexOf("(")+1,obj.indexOf(")")-obj.indexOf("(")-1);
+	}
+	return obj;
+}
 //判断数组中某个元素下标
 function isHasElementOne(arr,value){ 
 	for(var i = 0,vlen = arr.length; i < vlen; i++){ 
@@ -1432,8 +1451,14 @@ function dealCenterLab(data) {
     var maxData = {month: 0, rate: 0};
     var minData = {month: 0, rate: 100};
     $.each(data, function (index, item) {
-        var cAllNum = parseInt(item.all_count);
-        var cJsNum = parseInt(item.js_count);
+        var cAllNum =0;
+        if(item.hasOwnProperty("all_count")){
+        	cAllNum=parseInt(item.all_count);
+        }
+        var cJsNum =0;
+        if(item.hasOwnProperty("js_count")){
+        	cJsNum=parseInt(item.js_count);
+        }
         var cName = item.name;
         var cRate = parseFloat(item.rate);
         if (parseFloat(maxData.rate) < cRate) {

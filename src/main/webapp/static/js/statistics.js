@@ -46,7 +46,7 @@ function reloadLeftData2(){
 function professionalStatis(){
 	var names=['化学','机械','电气','日用消费品','EMC'];
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"professional_code","labType":labType,"sort":"asc"},function(data){
-		$("#professional_code_div").html("覆盖专业领域："+data.length);
+		$(".professional_code_div").html("覆盖专业领域："+data.length);
 		var htmls="";
 		$.each(names,function(index,item){
 			var count=0;
@@ -376,7 +376,7 @@ function worldLabTypeStatis(){
 //按照实验室实验室性质统计数量  ---全方位测试
 function labPropertiesStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"properties_code","labType":labType,"productCode":productCode},function(data){
-		$("#properties_code_div").html("覆盖专业能力："+data.length);
+		$(".properties_code_div").html("覆盖专业能力："+data.length);
 		myChartFlatRT.resize();
 		myChartFlatRT_full.resize();
 		myChartFlatRT.clear();
@@ -464,7 +464,7 @@ function labPropertiesStatis(){
 	            }
 	        ]
 	    });
-        myChartFlatRT_full.setOption({
+	    myChartFlatRT_full.setOption({
             color: ['#66ccff'],//屏蔽引入getLineEcharts()造成的两种颜色
 	        tooltip: {
 	            trigger: 'axis'

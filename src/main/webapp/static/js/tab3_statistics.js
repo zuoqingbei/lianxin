@@ -1075,6 +1075,7 @@ function tab3OrderRateLengend(data) {
 		 var mk='<span>'+(data.mk==undefined?0:data.mk)+'</span>';
 		 $("#tab3_zj_order_type").html(zj);
 		 $("#tab3_mk_order_type").html(mk);
+		 alert(zj)
 		 $(".new_tab3_zj_order_type").html(zj);
 		 $(".new_tab3_mk_order_type").html(mk);
 	 })
