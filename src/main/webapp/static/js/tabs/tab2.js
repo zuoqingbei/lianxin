@@ -1,6 +1,6 @@
 
 //设备状态统计
-var color = ['rgb(102, 204, 255)', 'rgb(255,255,153)', 'rgb(102,255,204)', 'rgb(255,102,102)'];
+var color = ['rgba(102, 204, 255,0.7)', 'rgba(255,255,153,0.7)', 'rgba(102,255,204,0.7)', 'rgba(255,102,102,0.7)'];
 function loadTab2Data() {
     //设备状态统计 总状态
     equipmentTotalForLab1Ajax();
@@ -60,14 +60,14 @@ function equipmentTotalForLab1Ajax() {
                     min: 0,
                     max: 100,
                     splitNumber: 5,
-                    radius: '85%',
+                    radius: '88%',
                     // textStyle: {
                     //     fontSize: 15 * bodyScale
                     // },
                     axisLine: {            // 坐标轴线
                         show: false,
                         lineStyle: {       // 属性lineStyle控制线条样式
-                            width: 10 * bodyScale,
+                            width: 7 * bodyScale,
                             color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
                         },
 
@@ -75,17 +75,17 @@ function equipmentTotalForLab1Ajax() {
                     axisLabel: {
                         show: true,
                         textStyle: {
-                            fontSize: 11 * bodyScale
+                            fontSize: 9 * bodyScale
                         }
                     },
                     axisTick: {            // 坐标轴小标记
-                        length: 5 * bodyScale,        // 属性length控制线长
+                        length: 9 * bodyScale,        // 属性length控制线长
                         lineStyle: {       // 属性lineStyle控制线条样式
                             color: '#66ccff'
                         }
                     },
                     splitLine: {           // 分隔线
-                        length: 13* bodyScale,         // 属性length控制线长
+                        length: 11* bodyScale,         // 属性length控制线长
                         lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
                             color: '#66ccff'
                         }
@@ -127,37 +127,35 @@ function equipmentTotalForLab1Ajax() {
                     name: '实验在线率',
                     type: 'gauge',
                     center: ['18%', '50%'],    // 默认全局居中
-                    radius: '85%',
+                    radius: '88%',
+                    splitNumber: 5,
                     // textStyle: {
                     //     fontSize: 15 * bodyScale
                     // },
-                    min: 0,
-                    max: 100,
-                    // endAngle: 45,
-                    splitNumber: 5,
                     axisLine: {            // 坐标轴线
+                        show: false,
                         lineStyle: {       // 属性lineStyle控制线条样式
-                            width: 10 * bodyScale,
+                            width: 7 * bodyScale,
                             color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
-
                         },
+
                     },
                     axisLabel: {
                         show: true,
                         textStyle: {
-                            fontSize:11* bodyScale
+                            fontSize: 9 * bodyScale
                         }
                     },
                     axisTick: {            // 坐标轴小标记
-                        length: 7 * bodyScale,        // 属性length控制线长
+                        length: 9 * bodyScale,        // 属性length控制线长
                         lineStyle: {       // 属性lineStyle控制线条样式
-                            color: 'auto'
+                            color: '#66ccff'
                         }
                     },
                     splitLine: {           // 分隔线
-                        length: 13 * bodyScale,         // 属性length控制线长
+                        length: 11* bodyScale,         // 属性length控制线长
                         lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                            color: 'auto'
+                            color: '#66ccff'
                         }
                     },
                     itemStyle: {
@@ -196,38 +194,35 @@ function equipmentTotalForLab1Ajax() {
                     name: '设备利用率',
                     type: 'gauge',
                     center: ['82%', '50%'],    // 默认全局居中
-                    radius: '85%',
-                    // textStyle: {
-                    //     fontSize: 10 * bodyScale
-                    // },
-                    min: 0,
-                    max: 100,
-                    // startAngle: 135,
-                    // endAngle: -45,
+                    radius: '88%',
                     splitNumber: 5,
+                    // textStyle: {
+                    //     fontSize: 15 * bodyScale
+                    // },
                     axisLine: {            // 坐标轴线
+                        show: false,
                         lineStyle: {       // 属性lineStyle控制线条样式
-                            width: 10 * bodyScale,
+                            width: 7 * bodyScale,
                             color: [[0.2, '#66ccff'], [0.8, '#66ccff'], [1, '#66ccff']]
+                        },
 
-                        }
                     },
                     axisLabel: {
                         show: true,
                         textStyle: {
-                            fontSize: 11 * bodyScale
+                            fontSize: 9 * bodyScale
                         }
                     },
                     axisTick: {            // 坐标轴小标记
-                        length: 7 * bodyScale,        // 属性length控制线长
+                        length: 9 * bodyScale,        // 属性length控制线长
                         lineStyle: {       // 属性lineStyle控制线条样式
-                            color: 'auto'
+                            color: '#66ccff'
                         }
                     },
                     splitLine: {           // 分隔线
-                        length: 13 * bodyScale,         // 属性length控制线长
+                        length: 11* bodyScale,         // 属性length控制线长
                         lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                            color: 'auto'
+                            color: '#66ccff'
                         }
                     },
                     itemStyle: {
@@ -517,6 +512,9 @@ function tab2PersonSanDianSeries(data) {
             },
             itemStyle: {
                 normal: {
+                    // shadowBlur: 5,
+                    // shadowColor: 'rgba(255,255,255,0.5)',
+                    // shadowOffsetY: 3,
                     color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
                         offset: 0,
                         color: color[index]
@@ -527,7 +525,8 @@ function tab2PersonSanDianSeries(data) {
                         }
                     ])
                 }
-            }
+            },
+
         }
         s.push(c);
     });
@@ -780,7 +779,7 @@ function standardDispersedStatus(mychartId, filedVaule) {
                     },
                     axisLine: {
                         lineStyle: {
-                            color: 'rgba(0,0,0,0)'
+                            color: 'rgba(102,204,255,0.2)',
                         }
                     },
                     splitArea: {
@@ -875,7 +874,8 @@ function abilityStatus() {
                     data: statisticRightLengend2(data.data),
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
-                    axisLabel: axisLabel
+                    axisLabel: axisLabel,
+
                 }
             ],
             grid: {
@@ -888,7 +888,17 @@ function abilityStatus() {
                 {
                     // symbolSize: ['60%', '10%'],
                    barWidth:"30%",
-                    data: statisticRightSeriesData(data.data)
+                    data: statisticRightSeriesData(data.data),
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top',
+                            textStyle:{
+                                fontSize:25*bodyScale,
+                                color: '#ff9933'
+                            }
+                        }
+                    }
                 }
             ]
         });
@@ -957,7 +967,8 @@ function  abilityByProductLine() {
                     fontSize: 12*bodyScale
                 },
                 itemWidth:6*bodyScale,  //图例标记的图形宽度
-                itemHeight:6*bodyScale //图例标记的图形高度
+                itemHeight:6*bodyScale, //图例标记的图形高度
+                itemGap:10*bodyScale,   //图例之间的间隔
             },
             grid: {
                 x: '2%',

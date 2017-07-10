@@ -268,7 +268,8 @@ function findOrderPassForProAjax(mychartIds, desName,obj) {
                 show: false,
                 data: [desName],
                 itemWidth: 6 * bodyScale, //图例标记的图形宽度
-                itemHeight: 6 * bodyScale //图例标记的图形高度
+                itemHeight: 6 * bodyScale, //图例标记的图形高度
+                itemGap:10*bodyScale
             },
             grid: {
                 x: "5%",
@@ -340,6 +341,7 @@ function findOrderYearRateForTab3() {
                 data: ['及时率'],
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 6 * bodyScale, //图例标记的图形高度
+                itemGap:10*bodyScale
             },
             grid: {
                 right: '15%',
@@ -360,7 +362,7 @@ function findOrderYearRateForTab3() {
             xAxis: [
                 {
                     boundaryGap: true,
-                    name: "时间",
+                    name: "月份",
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
@@ -401,6 +403,7 @@ function findOrderYearRateForProductAjax() {
                 bottom: '5%',
                 itemWidth: 10 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 2 * bodyScale, //图例标记的图形高度
+                itemGap:10*bodyScale,
                 textStyle: {    //图例文字的样式
                     color: '#66ccff',
                     fontSize: 12 * bodyScale
@@ -412,8 +415,8 @@ function findOrderYearRateForProductAjax() {
             polar: [
                 {
                     indicator: tab3IndicatorData(data),
-                    center: ['50%', '55%'],
-                    radius: '65%',
+                    center: ['50%', '50%'],
+                    radius: '68%',
                     name: {
                         formatter: '{value}',
                         textStyle: {
@@ -493,6 +496,10 @@ function findOrderMonthRateForProductAjax() {
                 data: tab3Lengend(data),
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 6 * bodyScale, //图例标记的图形高度
+                itemGap:8*bodyScale,
+                textStyle: {
+                    fontSize: 12 * bodyScale
+                },
             },
             grid: {
                 x: "15%",
@@ -536,6 +543,10 @@ function satisfactionStatisForMonthForTab3Ajax() {
                 data: ['整机', '模块'],
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 6 * bodyScale, //图例标记的图形高度
+                itemGap:10*bodyScale,
+                textStyle: {
+                    fontSize: 12 * bodyScale
+                },
             },
             grid: {
                 right: '20%',
@@ -556,7 +567,7 @@ function satisfactionStatisForMonthForTab3Ajax() {
             xAxis: [
                 {
                     boundaryGap: true,
-                    name: "时间",
+                    name: "月份",
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
@@ -605,6 +616,7 @@ function satisfactionStatisForYearTab3Ajax2016() {
                 },
                 itemWidth: 6 * bodyScale,
                 itemHeight: 6 * bodyScale,
+                itemGap:10*bodyScale,
                 data: ['2016年', '2017年']
             },
             xAxis: [
@@ -707,7 +719,11 @@ function productLineAndMonthForTab3Ajax() {
                 show: true,
                 data: mData,
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
-                itemHeight: 6* bodyScale //图例标记的图形高度
+                itemHeight: 6* bodyScale, //图例标记的图形高度
+                itemGap:8*bodyScale,
+                textStyle: {
+                    fontSize: 12 * bodyScale
+                },
             },
             grid: {
                 x: "15%",
@@ -896,7 +912,7 @@ function tab3OrderRateLengend(data) {
 	            type: 'pie',
 	            clockWise: false,  //旋转方向
 	            radius: mRadius[0],
-	            center: ["55%", "50%"],
+	            center: ["59%", "60%"],
 	            symbol:'circle',
 	            itemStyle: dataStyle,
 	            data: [
@@ -920,7 +936,7 @@ function tab3OrderRateLengend(data) {
 	                type: 'pie',
 	                clockWise: false,  //旋转方向
 	                radius: mRadius[1],
-	                center: ["55%", "50%"],
+	                center: ["59%", "60%"],
 	                symbol:'circle',
 	                itemStyle: dataStyle,
 	                data: [
@@ -943,7 +959,7 @@ function tab3OrderRateLengend(data) {
 	            legend: {
 	                top: bodyScale * 15,
 	                textStyle: {
-	                    fontSize: bodyScale * 15
+	                    fontSize: bodyScale * 12
 	                },
 	                show: true,
 	                right: "2%",
@@ -1106,7 +1122,7 @@ function tab3OrderRateLengend(data) {
 		            type: 'pie',
 		            clockWise: false,  // 旋转方向
 		            radius: mRadius[0],
-		            center: ["55%", "50%"],
+		            center: ["59%", "60%"],
 		            symbol:'circle',
 		            itemStyle: dataStyle,
 		            data: [
@@ -1130,7 +1146,7 @@ function tab3OrderRateLengend(data) {
 		                type: 'pie',
 		                clockWise: false,  // 旋转方向
 		                radius: mRadius[1],
-		                center: ["55%", "50%"],
+		                center: ["59%", "60%"],
 		                symbol:'circle',
 		                itemStyle: dataStyle,
 		                data: [
@@ -1153,7 +1169,7 @@ function tab3OrderRateLengend(data) {
 		            legend: {
 		                top: bodyScale * 15,
 		                textStyle: {
-		                    fontSize: bodyScale * 15
+		                    fontSize: bodyScale * 12
 		                },
 		                show: true,
 		                right: "2%",

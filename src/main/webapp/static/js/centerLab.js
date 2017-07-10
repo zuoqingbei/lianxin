@@ -163,7 +163,6 @@ function inittwo() {
             ]
         });
 
-
     });
 
 }
@@ -240,6 +239,7 @@ function initThree() {
             ]
         });
 
+
     });
 
 
@@ -279,7 +279,7 @@ function initfour() {
                     name: '时间',
                     data: centerLabOrderRateLengend(data),
                     nameTextStyle: {
-                        fontSize: bodyScale * 10
+                        fontSize: bodyScale * 10,
                     },
                 }
             ],

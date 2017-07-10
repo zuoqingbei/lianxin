@@ -31,7 +31,7 @@ a, a:hover {
 
 /**中海实验室  labMain start**/
 /*content star*/
-.labMain_content {
+.labMain_content{
    width: 98%;
     height: 100%;
     /*background: url(../img/bg_star2.jpg) center center no-repeat;*/
@@ -305,7 +305,6 @@ a, a:hover {
     background-size: 100% 100%;
     margin: 0.4em 1em .8em;
     position: relative;
-
 }
 
 .labMain_cbro_ul {

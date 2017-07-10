@@ -10,7 +10,7 @@ pageH = $(window).height();
 pageW = pageH * 16 * 7 / (9 * 3);
 
 function pageResize() {
-    $("#content").css("width", pageW).css("background","red");
+    $("#content").css("width", pageW).css("background", "red");
     var bodyFontSize = pageH / 595 * 100 + "%";
     bodyScale = pageH / 595;
     $("body").css("font-size", bodyFontSize);
@@ -35,52 +35,56 @@ function getGeoArr(data) {
  * @param isFirst
  */
 
-function createArrData(productCode,labType){
-	$.post(contextPath+"/lab/labShowFlatMapAjax",{"productCode":productCode,"labType":labType},function(dataBase1){
-		mDataBase=jsonToArray(dataBase1);
-		var option = {
-	    // backgroundColor: "rgba(255,0,0,0)",
-	    color: ['gold', 'aqua', 'lime'],
-	    calculable: false,
-	    tooltip: {
-	        show: true,
-	        showContent: true,
-	        enterable: true,
-	        trigger: 'item',
-	//				        showDelay:100,
-	        hideDelay: 300,
-	        position: function (p) {
-	//                return [p[0] - 130, p[1] - 90];
-	            return [p[0] + 100, p[1] + 100];
-	        },
-	        padding: [0, 0, 0, 0],
-	//            width: 207,
-	//            height: 110,
-	//            backgroundColor: 'rgba(13,43,67,0.7)',
-	//            borderColor: 'rgba(31,120,214,1)',
-	        // params : 数组内容同模板变量，
-	        formatter: function (param) {
-                // console.log("------------------param:",param)
-	            //在这里是第一步
-	            $elList = [];
-	            //提示框的内容清空
-	            $echartTips.empty();
-	            //初始化轮播，就是将轮播定时器停止
-	            stopNewsShown();
-	            //调用轮播方法，参数主要是弹出点坐标
-	            var $el = addNewsElem(param.data);
-	            return '';
-	        },
-	    },
-	 
-	
-	    series: seriesData(mDataBase)
-	}
-		myChart.clear();
-		startNewsShown();
-		myChart.setOption(option);
-		//setEvent(myChart);
-})
+function createArrData(productCode, labType) {
+    $.post(contextPath + "/lab/labShowFlatMapAjax", {
+        "productCode": productCode,
+        "labType": labType
+    }, function (dataBase1) {
+        mDataBase = jsonToArray(dataBase1);
+        var option = {
+            // backgroundColor: "rgba(255,0,0,0)",
+            color: ['gold', 'aqua', 'lime'],
+            calculable: false,
+            tooltip: {
+                show: true,
+                showContent: true,
+                enterable: true,
+                trigger: 'item',
+                //				        showDelay:100,
+                hideDelay: 300,
+                position: function (p) {
+                    //                return [p[0] - 130, p[1] - 90];
+                    return [p[0] + 100, p[1] + 100];
+                },
+                padding: [0, 0, 0, 0],
+                //            width: 207,
+                //            height: 110,
+                //            backgroundColor: 'rgba(13,43,67,0.7)',
+                //            borderColor: 'rgba(31,120,214,1)',
+                // params : 数组内容同模板变量，
+                formatter: function (param) {
+                    // console.log("------------------param:",param)
+                    //在这里是第一步
+                    $elList = [];
+                    //提示框的内容清空
+                    $echartTips.empty();
+                    //初始化轮播，就是将轮播定时器停止
+                    stopNewsShown();
+                    //调用轮播方法，参数主要是弹出点坐标
+                    var $el = addNewsElem(param.data);
+                    return '';
+                },
+            },
+
+
+            series: seriesData(mDataBase)
+        }
+        myChart.clear();
+        startNewsShown();
+        myChart.setOption(option);
+
+        //setEvent(myChart);
+    })
 
 }
 function seriesData(data) {
@@ -116,7 +120,19 @@ function seriesData(data) {
                     }
                 }
             }
-        }],
+        }, {
+            name: "Japan",
+            selected: true,
+        },
+            {
+                name: "New Zealand",
+                selected: true,
+            },
+            {
+                name: "Thailand",
+                selected: true,
+            }
+        ],
         markPoint: {
             symbol: 'emptyCircle',
             symbolSize: function (v) {
@@ -210,6 +226,32 @@ var myChart = echarts.init($('.mapFlat')[0]);
 //window.parent.selectActLi();
 window.parent.resetSize();
 
+// 处理点击事件打印国家名
+myChart.on('click', function (params) {
+    var CountryName = params.name;
+    var a = $("#l", parent.document);
+    a.parent().find(".labMain_content").hide();
+    switch (CountryName) {
+        case 'Japan':
+            a.siblings("#r").hide();
+            // a.parent().find(".labMain_content").hide();
+            a.parent().find(".labMain_content_country").show();
+            break;
+        case 'New Zealand':
+            a.siblings("#r").hide();
+            // a.parent().find(".labMain_content").hide();
+            a.parent().find(".labMain_content_country").show();
+            break;
+        case 'Thailand':
+            a.siblings("#r").hide();
+            // a.parent().find(".labMain_content").hide();
+            a.parent().find(".labMain_content_country").show();
+
+            break;
+        default:
+            alert("暂无该国家实验室信息")
+    }
+});
 
 var showTopicIndex = 0;
 /**
@@ -247,8 +289,8 @@ function addNewsElem(news) {
     // console.log("地点经纬度:" + news.litude);
     //getPosByGeo()：经纬度转成像素坐标
     // console.log("~~~~~~~~~~~~~~~~~~~~~news.litude:" + news.litude);
-    var xypoint = [0,0];
-    if(news.litude){//若不判断则在markLine上的提示会报错
+    var xypoint = [0, 0];
+    if (news.litude) {//若不判断则在markLine上的提示会报错
         xypoint = myChart.chart.map.getPosByGeo("world", news.litude); //坐标
     }
 
@@ -357,7 +399,7 @@ function stopNewsShown() {
 
 function getTopicHtml(currentPoint) {
     var city = "";
-    if(currentPoint.name){
+    if (currentPoint.name) {
         city = currentPoint.name;
     }
 
@@ -369,7 +411,7 @@ function getTopicHtml(currentPoint) {
     return $('<div class="echart_tip">' +
         '<div class="dialog_title echart_content">' +
         '<a title="' + title + '"  href="#" target="_blank" >' +
-        '<span style="color:#ffffff;font-size:1.2em;text-shadow:0.15em 0.15em 0.15em rgba(0,0,0,0.9);">' + title + '</span>' +
+        '<span style="color:#ffffff;font-size:1.6em;text-shadow:0.15em 0.15em 0.15em rgba(0,0,0,0.9);">' + title + '</span>' +
         '</a>实验室数量：' + value +
         '</div>' +
         '<div class="echart_tip_arrow">' +

@@ -47,12 +47,14 @@
 }
 .shujuWajue_left_top_list>div{
     float: left;
+    padding: 0.5%;
 }
 .shujuWajue_left_top_list>form{
     float: left;
     width: 60%;
 }
 .shujuWajue_left_top_list select{
+    padding: 0.5% 1%;
     background-color: rgba(255,255,255,.2);
 }
 

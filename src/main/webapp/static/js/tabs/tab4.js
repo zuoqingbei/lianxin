@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////统计数据/////////////////////////////
 /**
- * 右侧数据统计
+ * 右侧数据统计myChart14
  */
 function loadTab4Data(){
 	// alert("tab4重新加载")
@@ -270,7 +270,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		            lineStyle: {
 		                normal: {
                             // color:"#00e673",
-		                    width: 1
+		                    width: 1*bodyScale
 		                }
 		            },
                     itemStyle:{normal:{
@@ -287,7 +287,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		                label:{normal:{formatter:"{b}={c}"}},
                         lineStyle:{
                             normal:{
-                                type:"solid",
+                                type:"dashed",
                                 width:1*bodyScale
                             }
                         },
@@ -491,10 +491,11 @@ function communistStatisticForMonthForTab4Ajax(){
 		        show: true,
 		        data: ['共产型号总数', '共产一致型号数'],
                 textStyle: {
-                    fontSize: 10 * bodyScale,
+                    fontSize: 12 * bodyScale,
                 },
                 itemHeight: 6 * bodyScale,
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
+				itemGap:10*bodyScale
 		    },
 		    grid: {
 //		            show:true,
@@ -811,7 +812,7 @@ function mkSqualityLevelForTab4(xhPro) {
 //	            show:true,
             x: "13%",
             x2: "21%",
-            y: '15%',
+            y: '17%',
             y2: "20%"
         },
         yAxis: [
@@ -862,7 +863,6 @@ function mkSqualityLevelForTab4(xhPro) {
                 data: [0.6, 1.16, 1.5, 1.85, 2.5],
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
-                axisLabel: axisLabel,
                 axisLabel: {
                     show: false,
                 },
@@ -881,6 +881,7 @@ function mkSqualityLevelForTab4(xhPro) {
         xAxis: [
             {
                 type: 'value',
+				name:"\n\n模块商数量",
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
                 axisLabel: axisLabel,

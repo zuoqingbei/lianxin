@@ -742,53 +742,6 @@
         }
 
         pageResize();
-        //lunbo
-        //轮播
-        //得到ul中的li个数
-        var li_count = $(".labMain_lunbo ul li").length;
-        var curPage = 0;
-        var totalPage = li_count / 2;
-        //var goLeft = 255 * 2;
-
-        //图片宽度+li间距*2 em变为px
-        var goLeft = (24.6 + 0.7 * 2) * (bodyScale * 10) * 2;
-
-        //设置ul宽度
-        $(".lbul").css("width", totalPage * goLeft + "px");
-
-
-        function next() {
-            curPage++;
-
-            if (curPage >= totalPage) {
-                curPage = 0;
-
-
-                $(".lbul").animate({left: 0}, 100);
-            }
-
-            changeTo();
-        }
-
-
-        function changeTo() {
-            $(".lbul").animate({left: "-" + goLeft * curPage + "px"}, 1500);
-        }
-
-        function lb() {
-
-            lbInterval = setInterval(next, 5000)
-
-        }
-
-        lb();
-        //鼠标悬浮 定时器开关
-        $(".labMain_lunbo ul li ").mouseover(function (e) {
-            clearInterval(lbInterval);
-
-        }).mouseout(function (e) {
-            lb();
-        });
 
 
         //结构不要改呦
@@ -813,7 +766,6 @@
     });
     function echartsResize() {
         chartone.resize();
-
         charttwo.resize();
         chartthree.resize();
         chartfour.resize();
@@ -845,7 +797,7 @@
             $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home.png)")
         }).click(function () {
             $(".labMain_cb_left:eq(0)").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
-        })
+        });
         //合格率
         initThree();
         //近12个月订单及时率趋势图

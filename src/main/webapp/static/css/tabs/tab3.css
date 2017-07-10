@@ -82,7 +82,7 @@
 
     #tab3 > div > div > div[class$=_top],
     #tab3 > div > div > div[class$=_bottom] {
-        height: 48%;
+        height: 46%;
         /*outline: 1px dotted skyblue;*/
     }
 
@@ -206,7 +206,8 @@
 
     #t3_r > div > div[class$=_bottom] h3 {
         width: 56%;
-        margin-bottom: 4%;
+        margin-bottom: 2%;
+        margin-top: 4%;
     }
 
     #tab3 > div > div > div > p.explain {
@@ -221,16 +222,16 @@
 
     #myChart6,
     #myChart7 {
-        height: 72%;
+        height: 80%;
     }
 
     #myChart45,
     #myChart46 {
-        height: 90%;
+        height: 101%;
     }
     #myChart47,
     #myChart49 {
-        height: 92%;
+        height: 101%;
     }
 
 }

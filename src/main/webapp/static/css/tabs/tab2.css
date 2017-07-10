@@ -76,7 +76,7 @@
     height: 38%;
     margin-top: 6%;
     margin-left: 1%;
-    border-bottom: 0.15em dashed #234f65;
+    /*border-bottom: 0.15em dashed #234f65;*/
 }
 
 #tab2  .box_title {
@@ -147,10 +147,10 @@
 }
 
 #tab2  .yunying_left_bottom .shebei_chanxian {
-    width: 33.3%;
-    height: 82%;
+    width: 33%;
+    height: 85%;
     float: left;
-    margin-top: 1.6%;
+    margin-top: 1%
 }
 
 #tab2  .yunying_left_bottom .shebei_chanxian table tr th {
@@ -226,11 +226,11 @@
 #tab2  .yunying_right_top .echarts_box ul > li .progress {
     display: inline-block;
     width: 69%;
-    height: 65%;
+    height: 55%;
     /*  height: 1em;*/
     border-radius: 2px;
     border: 1px solid #66ccff;
-    margin-bottom: 3%;
+    margin-top: 2%;
     background-color: transparent;
 }
 
@@ -239,14 +239,14 @@
     right: 33%;
     font-size: 1.2em;
     color: white;
-    margin-top: 2.2%;
+    margin-top: 3.3%;
 }
 
 #tab2  .yunying_right_top .echarts_box ul > li span:last-of-type {
     position: absolute;
     right: -1em;
     color: #ff9933;
-    font-size: 2.2em;
+    font-size: 2.1em;
 }
 
 #tab2  .yunying_right_top .echarts_box ul > li .progress .progress-bar1 {
@@ -355,31 +355,31 @@
     vertical-align: middle;
     /*background-color: pink;*/
     position: absolute;
-    font-size: 1.5em;
+    font-size: 1.4em;
     color: #66ccff;
 }
 
 #tab2  .biaozhun_left_left .biaozhun_world {
-    top: 16%;
-    left: 4%;
+    top: 18%;
+    left: 7%;
     text-align: right;
 }
 
 #tab2  .biaozhun_left_left .biaozhun_country {
-    top: 16%;
-    right: 4%;
+    top: 18%;
+    left: 7%;
     text-align: left;
 }
 
 #tab2  .biaozhun_left_left .biaozhun_hangye {
-    bottom: 11%;
-    left: 15%;
+    bottom: 10%;
+    left: 18%;
     text-align: left;
 }
 
 #tab2  .biaozhun_left_left .biaozhun_qiye {
-    bottom: 11%;
-    right: 15%;
+    bottom: 10%;
+    left: 18%;
     text-align: right;
 }
 
@@ -410,7 +410,7 @@
 
 #tab2  .biaozhun_right_echarts {
     width: 97%;
-    height: 78%;
+    height: 82%;
 }
 
 #tab2 .biaozhun_box {
@@ -450,7 +450,7 @@
     height: 15%;
     margin: 23% auto;
     text-align: center;
-    padding-top: 10%;
+    padding-top: 9%;
     font-size: 1.2em;
 }
 

@@ -534,7 +534,7 @@
     padding: 1% 0;
     color: #66ccff;
     font-size: .8em;
-    line-height: 180%;
+    line-height: 130%;
     /*background-color: rgba(102,204,255,.15);*/
 }
 #l .flat .flat-right-bottom .chartBorder h4{
@@ -593,7 +593,7 @@
     right: 3%;
 }
 #l .flat-right-bottom img{
-    width:100%;
+    width:98%;
 }
 #l .flat-right-bottom .myChart{
     height: 65%;
@@ -609,7 +609,7 @@
     width: 98%;
     margin: 0;
     position: absolute;
-    top: 63%;
+    top: 64%;
     left: 1%;
 }
 #l .flat-right-bottom .myChart .myChart_num li{
@@ -632,7 +632,7 @@
 #l .sphere-right-top ul li,
 #l .flat .chartBorder ul li{
     margin-bottom: 2%;
-    line-height: 180%;
+    line-height: 140%;
     font-size: 1.2em;
     height: 11%;
     vertical-align: initial;
