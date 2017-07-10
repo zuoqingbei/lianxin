@@ -23,9 +23,9 @@ define("start", function (require) {
     var options;
     setTimeout(function () {
         myChart.showLoading();
-        options = mapSphere();
-        myChart.setOption(options);
-        myChart.hideLoading();
+        mapSphere(myChart);
+       /* myChart.setOption(options);
+        myChart.hideLoading();*/
     });
 
     //点击重置按钮
@@ -39,8 +39,9 @@ define("start", function (require) {
         var myChart = ec.init(document.getElementById('sphereMap'));
         myChart.resize();
         myChart.showLoading();
-        myChart.setOption(options);
-        myChart.hideLoading();
+        mapSphere(myChart);
+       /* myChart.setOption(options);
+        myChart.hideLoading();*/
     }
 
 

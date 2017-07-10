@@ -90,6 +90,9 @@ public class LabController extends BaseController {
     public void wordCloud() {
         render("wordCloud.html");
     }
+    public void iframe() {
+        render("iframe.html");
+    }
   
     /**
      * 
