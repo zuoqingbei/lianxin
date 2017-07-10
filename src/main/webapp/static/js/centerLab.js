@@ -386,13 +386,13 @@ var dataBase;
 function loadLabUnitInfoCenterTabAjax(){
 	$.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
 		var htmls="";
-		//console.log(data)
+		console.log(data)
 		$.each(data,function(index,item){
 			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labName+'</a>';
 			if(item.testUnitList.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testUnitList,function(ind,it){
-					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'</li>';
+					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
 				});
 				htmls+='</ul>';
 			}
@@ -471,7 +471,7 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		$("#center_sybh_id").html(data.sybh);
 	 	$("#center_ypbm_id").html(data.ybbh);
 	 	$("#center_cpxh_id").html(data.cpxh);
-	 	$("#center_testPro_id").html(data.testPro);
+	 	$("#center_testPro_id").html(data.testUnitStatus);
 		//showLegendData=legendData;//默认全选
 		//console.log(showLegendData)
 		createLegendHtmls();
