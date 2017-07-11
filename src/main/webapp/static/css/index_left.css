@@ -606,11 +606,11 @@
     font-size: 1.2em;
 }
 #l .flat-right-bottom .myChart .myChart_num{
-    width: 98%;
+    width: 92%;
     margin: 0;
     position: absolute;
-    top: 64%;
-    left: 1%;
+    top: 66%;
+    left: 4%;
 }
 #l .flat-right-bottom .myChart .myChart_num li{
     width: 20%;

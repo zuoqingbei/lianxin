@@ -367,7 +367,7 @@
 
 #tab2  .biaozhun_left_left .biaozhun_country {
     top: 18%;
-    left: 7%;
+    right: 7%;
     text-align: left;
 }
 
@@ -379,7 +379,7 @@
 
 #tab2  .biaozhun_left_left .biaozhun_qiye {
     bottom: 10%;
-    left: 18%;
+    right: 18%;
     text-align: right;
 }
 

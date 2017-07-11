@@ -64,11 +64,11 @@
     /*background: url("../img/labMain/border-green.png") no-repeat;*/
     /*background-size: 100% 100%;*/
 /*}*/
-/* .sheshi_tab_active{
+.sheshi_tab_active{
     color: #66ffcc;
     background: url("../img/labMain/border-green.png") no-repeat;
     background-size: 100% 100%;
-} */
+}
 .sheshi_tab_list{
     height:81%;
     width: 61%;
@@ -143,8 +143,9 @@
     margin-right: 3%;
     /* margin-top: 1%; */
 }
-.shishi_right .sheshi_right_right .legend_ul{
+.shishi_right .sheshi_right_right #legend_ul{
     width: 100%;
+    overflow: hidden;
 }
 
 

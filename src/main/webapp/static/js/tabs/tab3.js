@@ -672,6 +672,12 @@ function satisfactionStatisForYearTab3Ajax2016() {
                 y: '16%',
                 y2: "15%"
             },
+            tooltip: {
+                trigger: 'axis',
+                textStyle: {
+                    fontSize: 10*bodyScale,
+                }
+            },
             series: [
                 {
                     name: '2016年',
