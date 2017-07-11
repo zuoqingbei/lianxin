@@ -152,8 +152,8 @@ function inittwo() {
             grid: {
                 x: "6%",
                 x2: "5%",
-                y: '23%',
-                y2: "30%"
+                y: '20%',
+                y2: "13%"
             },
             series: [
                 {
@@ -228,8 +228,8 @@ function initThree() {
 
                 x: "6%",
                 x2: "5%",
-                y: '23%',
-                y2: "30%"
+                y: '20%',
+                y2: "13%"
             },
             series: [
                 {
@@ -256,7 +256,7 @@ function initfour() {
         $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
         $("#order_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
         chartthree.setOption(initone(data[data.length-1].rate));
-        chartfour.setOption(getAreaEcharts());
+        chartfour.setOption(getLineEcharts());
         chartfour.setOption({
             textStyle: {
                 fontSize: bodyScale * 8
@@ -269,10 +269,10 @@ function initfour() {
                 }
             },
             grid: {
-                x: "2%",
+                x: "6%",
                 x2: "5%",
                 y: '23%',
-                y2: "15%"
+                y2: "25%"
             },
             xAxis: [
                 {
@@ -281,6 +281,14 @@ function initfour() {
                     nameTextStyle: {
                         fontSize: bodyScale * 10,
                     },
+                    axisLabel :{
+                        margin: 8 * bodyScale,
+                        show: true,
+                        textStyle: {
+                            color: '#66ccff',
+                            fontSize:13*bodyScale
+                        }
+                    }
                 }
             ],
             yAxis: [
@@ -295,6 +303,7 @@ function initfour() {
                 {
                     name: '',
                     type: 'line',
+                    symbol: 'circle',
                     stack: '总量',
                     // areaStyle: {normal: {}},
                     data: centerLabRateData(data),
@@ -402,26 +411,17 @@ function loadLabUnitInfoCenterTabAjax(){
 			}
 		});
 		$("#lab_unit_selected_center").html(htmls);
-
         $(".sheshi_tab_list #lab_unit_selected_center>li").click(function () {
-            $(".sheshi_tab").eq(1).trigger('click')
-            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
-            $(this).css('height','auto').siblings().css('height','1.5em');
+            $(".sheshi_tab").eq(1).trigger('click');
+            $(this).children('.taiwei_hide').slideToggle();
             $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-            $(this).find('.taiwei_hide').css('display','block');
-            // $('.sheshi_tab').removeClass('sheshi_tab_active');
-            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
 
         });
+
         $('.taiwei_hide>li').click(function () {
-            $(".sheshi_tab").eq(1).trigger('click')
+           $(".sheshi_tab").eq(1).trigger('click');
             $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-            // $('.sheshi_tab').removeClass('sheshi_tab_active');
-            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
         })
-
-
-
 	});
 }
 $(document).ready(function () {
@@ -1086,10 +1086,10 @@ function getCharts2() {
             data: legendData
         },
         grid: {
-            x: '13%',
-            x2: '10%',
-            y: '-2%',
-            y2: '14%'
+            x: "6%",
+            x2: "5%",
+            y: '20%',
+            y2: "13%"
         },
         dataZoom: [{
 	    	start: 0,

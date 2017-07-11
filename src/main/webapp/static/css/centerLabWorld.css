@@ -2,16 +2,16 @@
     width: 98%;
     height: 100%;
 }
-.labMain_cbr_three {
+.labMain_content_country .labMain_cbr_three {
     background: url(../img/labMain/lab_right_border.png) 0 0 no-repeat;
     background-size: 100% 100%;
     margin: 0.4em 1em .8em;
     position: relative;
     height: 35%;
 }
-.labMain_cbr_onedemo,.labMain_cbr_twodemo{
+.labMain_content_country .labMain_cbr_onedemo,.labMain_cbr_twodemo{
     flex: 1;
 }
-.labMain_cbr_three ul{
+.labMain_content_country .labMain_cbr_three ul{
     padding-top: 2em;
 }

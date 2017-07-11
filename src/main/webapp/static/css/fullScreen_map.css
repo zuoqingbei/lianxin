@@ -124,8 +124,8 @@
 #l.fullScreen_map .flat-footer .legend{
     z-index: 9999;
     font-size: .9em;
-    width: 23%;
-    height: 39%;
+    width: 22%;
+    height: 41%;
     top: 46%;
     background-image: url(../img/nav-border_noBottom.png);
 }
@@ -134,9 +134,9 @@
 }
 #l.fullScreen_map .flat-footer .legend-l,
 #l.fullScreen_map .flat-footer .legend-r {
-    height: 80%;
+    height: 83%;
     width: 13%;
-    line-height: 3.2em;
+    line-height: 3.4em;
     top: 17.6%;
     z-index: 10;
 }

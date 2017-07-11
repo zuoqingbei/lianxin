@@ -744,9 +744,12 @@
         }, function () {
             $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus.png)")
         }).click(function () {
-            alert(111111)
             $(".labMain_content_country").hide();
             $("#r").show();
+            var $li = $(".left3x3").find(".flat-footer .legend ul.legend-bottom li");
+            $li.removeClass("active").each(function () {
+                bgImgOff($(this))
+            })
         });
         $labMain_ct_btn.eq(1).hover(function () {
             $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home_active.png)")

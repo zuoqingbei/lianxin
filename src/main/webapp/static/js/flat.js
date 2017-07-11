@@ -63,7 +63,31 @@ function createArrData(productCode, labType) {
                 //            borderColor: 'rgba(31,120,214,1)',
                 // params : 数组内容同模板变量，
                 formatter: function (param) {
-                    // console.log("------------------param:",param)
+                    // console.log("------------------param:",param.name)
+                    var CountryName = param.name;
+                    var a = $("#l", parent.document);
+                    a.parent().find(".labMain_content").hide();
+                    a.find(".legend-bottom li").removeClass('active')
+                        switch (CountryName) {
+                            case '日本研发中心':
+                                a.siblings("#r").hide();
+                                // a.parent().find(".labMain_content").hide();
+                                a.parent().find(".labMain_content_country").show();
+
+                                break;
+                            case '新西兰研发中心':
+                                a.siblings("#r").hide();
+                                // a.parent().find(".labMain_content").hide();
+                                a.parent().find(".labMain_content_country").show();
+                                break;
+                            case '泰国模块中心':
+                                a.siblings("#r").hide();
+                                // a.parent().find(".labMain_content").hide();
+                                a.parent().find(".labMain_content_country").show();
+                                break;
+                            default:
+                            // alert("暂无该国家实验室信息")
+                        }
                     //在这里是第一步
                     $elList = [];
                     //提示框的内容清空
@@ -87,6 +111,7 @@ function createArrData(productCode, labType) {
     })
 
 }
+
 function seriesData(data) {
     var seriesData = [];
     var item = {
@@ -246,10 +271,9 @@ myChart.on('click', function (params) {
             a.siblings("#r").hide();
             // a.parent().find(".labMain_content").hide();
             a.parent().find(".labMain_content_country").show();
-
             break;
         default:
-            alert("暂无该国家实验室信息")
+            // alert("暂无该国家实验室信息")
     }
 });
 
@@ -341,6 +365,9 @@ function addNewsElem(news) {
             startNewsShown();
         });
         return $el;
+        $el.click(function () {
+            alert()
+        })
     }
     return null;
 }
@@ -377,7 +404,7 @@ function showNews() {
 function startNewsShown() {
 
     if (timeId === null) {
-        console.log("---自动提示启动---")
+        // console.log("---自动提示启动---")
 
         timeId = setInterval(showNews, 3000);
     }
@@ -446,4 +473,20 @@ function fadeInElList($list) {
 
 $(window).resize(function () {
     myChart.resize();
+    var bodyScale = 1;
+    var pageH;
+    var pageW;
+    pageH = $(window).height();
+    pageW = pageH * 16 * 7 / (9 * 3);
+
+    function pageResize() {
+        $("#content").css("width", pageW);
+        var bodyFontSize = pageH / 595 * 100 + "%";
+        bodyScale = pageH / 595;
+        $("body").css("font-size", bodyFontSize);
+        $(".fullScreen_map").css("width", pageW);
+        // console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+    }
+    pageResize();
+
 });
