@@ -15,3 +15,7 @@
 .labMain_content_country .labMain_cbr_three ul{
     padding-top: 2em;
 }
+.shishi_right .sheshi_right_right #legend_ul_world{
+    width: 100%;
+    overflow: hidden;
+}

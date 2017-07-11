@@ -73,17 +73,19 @@ function createArrData(productCode, labType) {
                                 a.siblings("#r").hide();
                                 // a.parent().find(".labMain_content").hide();
                                 a.parent().find(".labMain_content_country").show();
-
+                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
                                 break;
                             case '新西兰研发中心':
                                 a.siblings("#r").hide();
                                 // a.parent().find(".labMain_content").hide();
                                 a.parent().find(".labMain_content_country").show();
+                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
                                 break;
                             case '泰国模块中心':
                                 a.siblings("#r").hide();
                                 // a.parent().find(".labMain_content").hide();
                                 a.parent().find(".labMain_content_country").show();
+                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
                                 break;
                             default:
                             // alert("暂无该国家实验室信息")
