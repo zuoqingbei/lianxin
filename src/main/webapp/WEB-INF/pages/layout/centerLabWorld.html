@@ -595,7 +595,7 @@
                 <!--<div class="sheshi_tab">视频监控</div>-->
                 <div class="sheshi_tab sheshi_tab_active sheshi_tab_lines">曲线监控</div>
                 <div class="sheshi_tab_list">
-                    <ul id="lab_unit_selected_center">
+                    <ul id="lab_unit_selected_center_world">
 
                         <!--  <li><span></span><a href="#">实验室1</a>
                              <ul class="taiwei_hide">
@@ -635,28 +635,28 @@
             <div class="shishi_right shishi_right_show">
                 <div class='sheshi_right_top'>
                     <ul>
-                        <li>试验编号：<span id="center_sybh_id"></span></li>
-                        <li>样品编号：<span id="center_ypbm_id"></span></li>
-                        <li>产品型号：<span id="center_cpxh_id"></span></li>
-                        <li>试验项目：<span id="center_testPro_id"></span></li>
+                      <li>试验编号：<span id="center_sybh_id_world"></span></li>
+                        <li>样品编号：<span id="center_ypbm_id_world"></span></li>
+                        <li>产品型号：<span id="center_cpxh_id_world"></span></li>
+                        <li>试验项目：<span id="center_testPro_id_world"></span></li>
                     </ul>
                 </div>
                 <div class="sheshi_right_left">
-                    <div id="main1"></div>
-                    <div id="main2"></div>
+                    <div id="main1_world"></div>
+                    <div id="main2_world"></div>
                     <div class="message_box">
                         <div>该台位未开测</div>
                     </div>
                 </div>
 
                 <div class="sheshi_right_right">
-                    <ul id="legend_ul">
+                    <ul id="legend_ul_world">
                     </ul>
                 </div>
             </div>
             <div class="shishi_right">
                 <div class="video_box">
-                    <iframe src="http://10.130.96.27/doc/page/preview.asp" frameborder="0" width="100%"
+                    <iframe src="" frameborder="0" width="100%"
                             height="100%"></iframe>
                 </div>
             </div>
@@ -719,7 +719,7 @@
 //        console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
         }
         pageResize();
-
+        resetDataCenterLabWorld();
         $(".labMain_cbr_tab").click(function () {
 //            $(this).addClass("active_right").siblings().removeClass("active_right");
             // 3. 获取到当前菜单的索引号
@@ -731,8 +731,8 @@
         });
     });
     function echartsResizeWorld() {
-        myChart1.resize();
-        myChart2.resize();
+    	myChartWorld1.resize();
+    	myChartWorld2.resize();
     }
 </script>
 <script>
@@ -744,7 +744,6 @@
         }, function () {
             $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus.png)")
         }).click(function () {
-            alert(111111)
             $(".labMain_content_country").hide();
             $("#r").show();
         });
@@ -756,7 +755,6 @@
             $(".zhbr_lab").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
         })
 
-        labAllForCenterLabAjax();
 
 //        实验室文本信息
         var labInfos=[];
@@ -765,6 +763,5 @@
         labInfos[2]="3 main labs on Auckland site: Refrigeration Test Lab，Refrigeration Evaluation Lab，Laundry Evaluation Lab2 main labs on Dunedin site: Cooking Evaluation Lab，Dishwashing Evaluation LabLab capacity including hundreds of testing items for both Compliance Testing & Development Testing based on advanced and reliable measurement system and skilled lab techs."
         //  实验室图片信息
         var labImgs=["${contextPath!}/static/img/labMain/Japan.jpg","${contextPath!}/static/img/labMain/New Zealand.jpg","${contextPath!}/static/img/labMain/Thailand.jpg"];
-
     })
 </script>
