@@ -198,8 +198,8 @@
 }
 #l .sphere-left-bottom iframe{
     position: relative;
-    top: 25%;
-    height: 76%;
+    top: 23%;
+    height: 80%;
 }
 #l .sphere-right-bottom .chartBorder{
     padding:0 5%;
@@ -247,7 +247,9 @@
 }
 #l .sphere-left-bottom .chartBorder .myChart,
 #l .sphere-right-top-temp .chartBorder .myChart{
-    height:90%;
+    height:98%;
+    width: 98%;
+    margin-right: 5%;
 }
 #l .sphere-right-bottom .chartBorder>ul,
 #l .sphere-right-bottom .chartBorder>.scroll>ul{

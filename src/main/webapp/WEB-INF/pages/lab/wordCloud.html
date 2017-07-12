@@ -7,7 +7,7 @@
         html, body {
             height: 95%;
             margin: 0;
-            font-size: 1.2em;
+            font-size: 0.9em;
             width: 100%;
         }
 
@@ -28,6 +28,7 @@
             font-weight: normal;
             text-decoration: none;
             padding: 3px 6px;
+           
         }
 
         a.blue {
@@ -63,7 +64,7 @@
 <!--<script src="../../../static/asserts/js/jquery-2.2.4.js"></script>-->
 <script>
 
-    var radius;//3D 球的半径
+    var radius=220;//3D 球的半径
     var dtr = Math.PI / 180;
     var d = 600;
 
@@ -264,8 +265,6 @@ function run(newRadius) {
 
         oDiv = document.getElementById('div1');
         aA = oDiv.getElementsByTagName('a');
-        //定义字符云的半径
-        radius=oDiv.clientWidth/2-50;
         for (i = 0; i < aA.length; i++) {
             oTag = {};
             oTag.offsetWidth = aA[i].offsetWidth;

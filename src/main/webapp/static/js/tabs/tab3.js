@@ -504,7 +504,7 @@ function findOrderMonthRateForProductAjax() {
             grid: {
                 x: "15%",
                 x2: "13%",
-                y: '22%',
+                y: '19%',
                 y2: "13%"
             },
             xAxis: [
@@ -669,7 +669,7 @@ function satisfactionStatisForYearTab3Ajax2016() {
             grid: {
                 x: '10%',
                 x2: '12%',
-                y: '16%',
+                y: '17%',
                 y2: "15%"
             },
             tooltip: {
@@ -734,7 +734,7 @@ function productLineAndMonthForTab3Ajax() {
             grid: {
                 x: "15%",
                 x2: "15%",
-                y: '23%',
+                y: '20%',
                 y2: "16%"
             },
             xAxis: [

@@ -573,7 +573,7 @@ function labLifeCycleStatis(){
 	        grid: {
 	            left:"10%",
 	            right: '10%',
-	            top:"30%,",
+	            top:"60%,",
 				bottom:"2%"
 	        },
 	        legend: {

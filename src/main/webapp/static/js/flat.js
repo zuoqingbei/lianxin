@@ -261,21 +261,17 @@ myChart.on('click', function (params) {
     switch (CountryName) {
         case 'Japan':
             a.siblings("#r").hide();
-            // a.parent().find(".labMain_content").hide();
             a.parent().find(".labMain_content_country").show();
             window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
             break;
         case 'New Zealand':
             a.siblings("#r").hide();
-            // a.parent().find(".labMain_content").hide();
             a.parent().find(".labMain_content_country").show();
             window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
             break;
         case 'Thailand':
             a.siblings("#r").hide();
-            // a.parent().find(".labMain_content").hide();
             a.parent().find(".labMain_content_country").show();
-
             window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
             break;
         default:

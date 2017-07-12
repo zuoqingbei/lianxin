@@ -252,7 +252,7 @@ function sphereRBscroll() {
     var speed = 100;
 
     scroll($(".fullScreen_map .scroll"),$(".fullScreen_map .scroll ul:first"),$(".fullScreen_map .scroll ul:last"),20);
-    scroll($(".left3x3 .scroll"),$(".left3x3 .scroll ul:first"),$(".left3x3 .scroll ul:last"),100);
+    scroll($(".left3x3 .scroll"),$(".left3x3 .scroll ul:first"),$(".left3x3 .scroll ul:last"),50);
 
     function scroll($scrollBoard,$ul1,$ul2,speed) {
         $scrollBoard.css("height", $scrollBoard.width);
@@ -274,15 +274,10 @@ function sphereRBscroll() {
         }, function () {
             MyMar = setInterval(Marquee, speed);
         })
-
     }
-
-
-
 }
 
 $(function () {
-
     //进入时的视频淡出效果，开发时注掉下面这一行和被调用的代码
     // videoFadeOut();
 
