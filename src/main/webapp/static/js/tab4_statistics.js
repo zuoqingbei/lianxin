@@ -793,7 +793,7 @@ function mkSqualityLevelForTab4(xhPro) {
 //	            show:true,
             x: "13%",
             x2: "21%",
-            y: '10%',
+            y: '13%',
             y2: "20%"
         },
         yAxis: [
