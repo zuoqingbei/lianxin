@@ -126,6 +126,7 @@ function inittwo() {
             },
             yAxis: [
                 {
+
                     name: "满意度/%",
 
                     nameTextStyle: {
@@ -157,7 +158,8 @@ function inittwo() {
             },
             series: [
                 {
-                    symbolSize: ['50%', '10%'],
+                    barWidth:'50%',
+                    // symbolSize: ['50%', '10%'],
                     data: centerLabOrderHgRate(data)
                 }
             ]
@@ -178,7 +180,6 @@ function initThree() {
         $("#hg_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
         chartone.setOption(initone(data[data.length-1].rate));
         charttwo.setOption(getBarEcharts());
-        var bar_chip = contextPath + '/static/img/bar_chip.png';
         var labelSetting = {
             normal: {
                 show: false,
@@ -199,12 +200,10 @@ function initThree() {
             yAxis: [
                 {
                     name: "合格率/%",
-
                     nameTextStyle: {
                         fontSize: bodyScale * 10,
 
                     },
-
                     type: 'value',
                     max: 100,
                     scale: true,
@@ -218,6 +217,7 @@ function initThree() {
                     nameTextStyle: {
                         fontSize: bodyScale * 10
                     },
+
                 }
             ],
             grid: {
@@ -233,16 +233,13 @@ function initThree() {
             },
             series: [
                 {
-                    symbolSize: ['50%', '10%'],
+                    barWidth:'50%',
+                    // symbolSize: ['50%', '10%'],
                     data: centerLabOrderHgRate(data)
                 }
             ]
         });
-
-
     });
-
-
 }
 //按照产线统计某年各月份详细订单及时率  数据结果 订单及时率 折线图
 function initfour() {
@@ -395,7 +392,7 @@ var dataBase;
 function loadLabUnitInfoCenterTabAjax(){
 	$.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
 		var htmls="";
-		//console.log(data)
+		console.log(data)
 		$.each(data,function(index,item){
 			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labName+'</a>';
 			if(item.testUnitList.length>0){
@@ -412,15 +409,20 @@ function loadLabUnitInfoCenterTabAjax(){
 		});
 		$("#lab_unit_selected_center").html(htmls);
         $(".sheshi_tab_list #lab_unit_selected_center>li").click(function () {
-            $(".sheshi_tab").eq(1).trigger('click');
-            $(this).children('.taiwei_hide').slideToggle();
+            $(".sheshi_tab").eq(1).trigger('click')
+            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
+            $(this).css('height','auto').siblings().css('height','1.5em');
             $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
+            $(this).find('.taiwei_hide').css('display','block');
+            // $('.sheshi_tab').removeClass('sheshi_tab_active');
+            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
 
         });
-
         $('.taiwei_hide>li').click(function () {
-           $(".sheshi_tab").eq(1).trigger('click');
+            $(".sheshi_tab").eq(1).trigger('click')
             $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
+            // $('.sheshi_tab').removeClass('sheshi_tab_active');
+            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
         })
 	});
 }
@@ -719,6 +721,9 @@ function getCharts1() {
     option = {
         tooltip: {
             trigger: 'axis',
+            textStyle: {
+                fontSize: 10*bodyScale,
+            },
             axisPointer: {
                 type: 'cross'
             },
@@ -730,8 +735,8 @@ function getCharts1() {
         },
         grid: {
             x: '13%',
-            x2: '10%',
-            y2: '3%'                //下移负数 使两个图重叠
+            x2: '15%',
+            y2: '-3%'                //下移负数 使两个图重叠
         },
         dataZoom: [{
 	    	start: 0,
@@ -1076,6 +1081,9 @@ function getCharts2() {
     option2 = {
         tooltip: {
             trigger: 'axis',
+            textStyle: {
+                fontSize: 10*bodyScale,
+            },
             axisPointer: {
                 type: 'cross'
             },
@@ -1086,9 +1094,9 @@ function getCharts2() {
             data: legendData
         },
         grid: {
-            x: "6%",
-            x2: "5%",
-            y: '20%',
+            x: '13%',
+            x2: '15%',
+            y: '10%',
             y2: "13%"
         },
         dataZoom: [{
@@ -1113,7 +1121,7 @@ function getCharts2() {
                     // rotate: 30,
                     textStyle: {
                         color: '#fff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisTick: {
@@ -1151,7 +1159,7 @@ function getCharts2() {
                     },
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 10 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -1187,7 +1195,7 @@ function getCharts2() {
                     formatter: '{value} ',
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -1233,7 +1241,7 @@ function getCharts2() {
                     },
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 12* bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -1270,7 +1278,7 @@ function getCharts2() {
                     formatter: '{value} ',
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴

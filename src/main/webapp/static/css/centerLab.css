@@ -5,15 +5,15 @@
     display: block;
 }
 .labMain_cbr_one .labMain_cbro_content{
-    background: url("../img/labMain/right01.jpg") no-repeat;
+    background: url("../img/labMain/2.jpg") no-repeat;
     background-size: 100% 100%;
 }
 .labMain_cbr_two .labMain_cbro_content{
-    background: url("../img/labMain/right02.jpg") no-repeat;
+    background: url("../img/labMain/3.jpg") no-repeat;
     background-size: 100% 100%;
 }
 .labMain_cbr_three .labMain_cbro_content{
-    background: url("../img/labMain/right03.jpg") no-repeat;
+    background: url("../img/labMain/4.jpg") no-repeat;
     background-size: 100% 100%;
 }
 .zhbr_lab h3.lab_title {

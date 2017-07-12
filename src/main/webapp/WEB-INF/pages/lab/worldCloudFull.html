@@ -7,7 +7,7 @@
         html, body {
             height: 95%;
             margin: 0;
-            font-size: 1.2em;
+            font-size: 1.3em;
             width: 100%;
         }
 
@@ -28,6 +28,7 @@
             font-weight: normal;
             text-decoration: none;
             padding: 3px 6px;
+            font-size: 1.1em;
         }
 
         a.blue {
@@ -63,7 +64,7 @@
 <!--<script src="../../../static/asserts/js/jquery-2.2.4.js"></script>-->
 <script>
 
-    var radius = 300;//3D 球的半径
+    var radius=350;//3D 球的半径
     var dtr = Math.PI / 180;
     var d = 600;
 
@@ -232,10 +233,6 @@
         cc = Math.cos(c * dtr);
     }
 
-    //    function resizeText(bodyScale) {
-    //        radius =5 * bodyScale;
-    //    }
-
     $(function () {
         var h = $(window.parent).height();
         var  bodyFontSize= h / 625 * 100 + "%";
@@ -248,63 +245,61 @@
         var oTag = null;
         run(radius);
     });
-    function run(newRadius) {
-        radius = newRadius;
+function run(newRadius) {
+    radius = newRadius;
 //    console.log("~~~~~~~~~~~~~~~~newRadius:", radius);
-        $.getJSON("${contextPath!}/static/data/wordCloudText.json", function (data) {
+    $.getJSON("${contextPath!}/static/data/wordCloudText.json", function (data) {
 //            $.getJSON( "../../../static/data/wordCloudText.json", function( data ) {
 
 //                console.log("这里getjson");
-            var items = [];
-            $.each(data, function (key, val) {
-                items.push("<a href=#  style=font-size:" + val + "em>" + key + "</a>");
-            });
-            $("<div/>", {
-                "id": "div1",
-                style: "border:solid 0 skyblue",
-                ALIGN: "center",
-                html: items.join("")
-            }).appendTo("body");
-            //console.log($('div'));
-//            radius = Math.floor($("#div1").width() / 3.14 * bodyScale);
-            oDiv = document.getElementById('div1');
-            aA = oDiv.getElementsByTagName('a');
-
-            for (i = 0; i < aA.length; i++) {
-                oTag = {};
-                oTag.offsetWidth = aA[i].offsetWidth;
-                oTag.offsetHeight = aA[i].offsetHeight;
-                mcList.push(oTag);
-            }
-
-            sineCosine(0, 0, 0);
-
-            positionAll();
-
-            oDiv.onmouseover = function () {
-                active = true;
-            };
-
-            oDiv.onmouseout = function () {
-                active = true;
-            };
-
-            oDiv.onmousemove = function (ev) {
-                var oEvent = window.event || ev;
-
-                mouseX = oEvent.clientX - (oDiv.offsetLeft + oDiv.offsetWidth / 4);
-                mouseY = oEvent.clientY - (oDiv.offsetTop + oDiv.offsetHeight / 4);
-
-                mouseX /= 5;
-                mouseY /= 5;
-            };
-            setTimeout(function () {
-                setInterval(update, 150);
-            }, 2000)
-
+        var items = [];
+        $.each(data, function (key, val) {
+            items.push("<a href=#  style=font-size:" + val + "em>" + key + "</a>");
         });
+        $("<div/>", {
+            "id": "div1",
+            style: "border:solid 0 skyblue",
+            ALIGN: "center",
+            html: items.join("")
+        }).appendTo("body");
 
-    }
+        oDiv = document.getElementById('div1');
+        aA = oDiv.getElementsByTagName('a');
+        for (i = 0; i < aA.length; i++) {
+            oTag = {};
+            oTag.offsetWidth = aA[i].offsetWidth;
+            oTag.offsetHeight = aA[i].offsetHeight;
+            mcList.push(oTag);
+        }
+
+        sineCosine(0, 0, 0);
+
+        positionAll();
+
+        oDiv.onmouseover = function () {
+            active = true;
+        };
+
+        oDiv.onmouseout = function () {
+            active = true;
+        };
+
+        oDiv.onmousemove = function (ev) {
+            var oEvent = window.event || ev;
+
+            mouseX = oEvent.clientX - (oDiv.offsetLeft + oDiv.offsetWidth / 4);
+            mouseY = oEvent.clientY - (oDiv.offsetTop + oDiv.offsetHeight / 4);
+
+            mouseX /= 5;
+            mouseY /= 5;
+        };
+        setTimeout(function () {
+            setInterval(update, 150);
+        }, 2000)
+
+    });
+
+}
 
 </script>
 </body>

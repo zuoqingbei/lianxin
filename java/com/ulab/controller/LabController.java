@@ -93,7 +93,9 @@ public class LabController extends BaseController {
     public void iframe() {
         render("iframe.html");
     }
-  
+    public void wordCloudFull() {
+        render("worldCloudFull.html");
+    }
     /**
      * 
      * @time   2017年4月19日 下午3:20:03

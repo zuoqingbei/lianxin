@@ -1,6 +1,7 @@
 .labMain_cb_left h3.lab_title{
-	top: 1.2%;
-	left: 12%;
+	font-size: 1.8em;
+	top: 0.6%;
+	left: 11.5%;
 }
 .leftContent{
 	display: flex;
