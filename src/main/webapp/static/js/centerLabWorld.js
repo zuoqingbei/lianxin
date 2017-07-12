@@ -31,9 +31,9 @@ function loadLabUnitInfoCenterTabAjaxWorld(type){
 		 //日本
 		 htmls+=' <li><span></span><a href="javascript:void(0);">冰箱D室</a>';
 		 htmls+='<ul class="taiwei_hide">';
-		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D4")>台位：D4 (在测)</li>';
-		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D5")>台位：D5 (在测)</li>';
-		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D6")>台位：D6 (在测)</li>';
+		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D4")>台位：D4 (在用)</li>';
+		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D5")>台位：D5 (在用)</li>';
+		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D6")>台位：D6 (在用)</li>';
 		 htmls+='</ul>';
 		 htmls+=' </li>';
 		 findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D4");
@@ -41,7 +41,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type){
 		 //泰国
 		 htmls+=' <li><span></span><a href="javascript:void(0);">焓差室</a>';
 		 htmls+='<ul class="taiwei_hide">';
-		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160407QDZKA001","2AB")>台位：2AB (在测)</li>';
+		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160407QDZKA001","2AB")>台位：2AB (在用)</li>';
 		 htmls+='</ul>';
 		 htmls+=' </li>';
 		 findSensorByLabCenetrTabAjaxWorld("HR20160407QDZKA001","2AB");
@@ -49,9 +49,9 @@ function loadLabUnitInfoCenterTabAjaxWorld(type){
 		 //新西兰
 		 htmls+=' <li><span></span><a href="javascript:void(0);">冰箱B室</a>';
 		 htmls+='<ul class="taiwei_hide">';
-		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B4")>台位：B4 (在测)</li>';
-		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B5")>台位：B5 (在测)</li>';
-		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B6")>台位：B6 (在测)</li>';
+		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B4")>台位：B4 (在用)</li>';
+		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B5")>台位：B5 (在用)</li>';
+		 htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B6")>台位：B6 (在用)</li>';
 		 htmls+='</ul>';
 		 htmls+=' </li>';
 		 findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B4");
@@ -60,7 +60,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type){
      $("#lab_unit_selected_center_world").html(htmls);
 
 
-        $(".sheshi_tab_list #lab_unit_selected_center>li").click(function () {
+        $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
             $(".sheshi_tab").eq(1).trigger('click');
             $(this).children('.taiwei_hide').slideToggle();
             $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');

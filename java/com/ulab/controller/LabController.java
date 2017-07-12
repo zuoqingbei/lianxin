@@ -41,6 +41,7 @@ import com.ulab.model.Value;
 import com.ulab.model.XbarModel;
 import com.ulab.util.JsonUtils;
 import com.ulab.util.NormalDistribution;
+import com.ulab.util.ServerUtil;
 import com.ulab.util.SqlUtil;
 /**
  * 
@@ -913,8 +914,15 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void getJsonFile(){
+    	String serverType=ServerUtil.getServerId();
     	String fileName=getPara("fileName","");
-    	String path=getWebRootPath()+"/src/main/webapp/static/data/"+fileName;
+    	String dir="";
+    	if("tomcat".equals(serverType)){
+    		dir=getRequest().getRealPath("/")+"/static/data/";
+    	}else{
+    		dir=getWebRootPath()+"/src/main/webapp/static/data/";
+    	}
+    	String path=dir+fileName;
     	String json=JsonUtils.readJson(path);
     	renderText(json);
     }
