@@ -11,11 +11,11 @@
  }
  pageResize();
  */
-function mapSphere() {
+function mapSphere(myChart) {
     var opts;
     $.ajax({
         url: contextPath + '/lab/labAjax',
-        async: false,
+        /*async: false,*/
         success: function (mData) {
             var markPointStyle = {
                 normal: {
@@ -333,7 +333,8 @@ function mapSphere() {
             }
 
             // myChart.hideLoading();
-
+            myChart.setOption(opts);
+            myChart.hideLoading();
 
         }
 

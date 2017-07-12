@@ -46,7 +46,7 @@ function reloadLeftData2(){
 function professionalStatis(){
 	var names=['化学','机械','电气','日用消费品','EMC'];
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"professional_code","labType":labType,"sort":"asc"},function(data){
-		$("#professional_code_div").html("覆盖专业领域："+data.length);
+		$(".professional_code_div").html("覆盖专业领域："+data.length);
 		var htmls="";
 		$.each(names,function(index,item){
 			var count=0;
@@ -376,7 +376,7 @@ function worldLabTypeStatis(){
 //按照实验室实验室性质统计数量  ---全方位测试
 function labPropertiesStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"properties_code","labType":labType,"productCode":productCode},function(data){
-		$("#properties_code_div").html("覆盖专业能力："+data.length);
+		$(".properties_code_div").html("覆盖专业能力："+data.length);
 		myChartFlatRT.resize();
 		myChartFlatRT_full.resize();
 		myChartFlatRT.clear();
@@ -399,14 +399,15 @@ function labPropertiesStatis(){
 	        },
 	        grid: {
 //	            show:true,
-	        	 x: "22%",
-	             x2: "20%",
-	             y:"9%",
-	             y2:"25%"
+	        	 x: "24%",
+	             x2: "12%",
+	             y:"15%",
+	             y2:"15%"
 	        },
 	        xAxis: [
 	            {
-                    name: "\n\n\n\n\n实验室数量",
+                    // name: "\n\n\n\n\n实验室数量",
+					name:"",
                     nameGap:  150 * bodyScale,
                     nameTextStyle: nameTextStyle_l,
                     axisLabel: axisLabel_l,
@@ -481,11 +482,11 @@ function labPropertiesStatis(){
 	        	 x: "23%",
 	             x2: "18%",
 	             y:"14%",
-	             y2:"18%"
+	             y2:"12%"
 	        },
 	        xAxis: [
 	            {
-	                name: "\n\n\n\n\n实验室数量",
+	                name: "",
                     nameGap:  -25 * bodyScale,
                     nameTextStyle: nameTextStyle_full,
                     axisLabel: axisLabel_full,
@@ -572,13 +573,14 @@ function labLifeCycleStatis(){
 	        grid: {
 	            left:"10%",
 	            right: '10%',
-	            top:"35%,",
+	            top:"30%,",
 				bottom:"2%"
 	        },
 	        legend: {
-	        	   data:['实验室数量','检测订单量'],
+	        	   data:['实验室数量','检测订单量(百万)'],
+				   itemGap:bodyScale*40,
 	               textStyle:{
-	                   fontSize: bodyScale*5
+	                   fontSize: bodyScale*8
 	               },
 	               itemWidth: bodyScale*5,
 	               itemHeight: bodyScale*5
@@ -594,7 +596,7 @@ function labLifeCycleStatis(){
 	                axisLabel: {
                         margin:3*bodyScale,
 	                    textStyle: {
-	                        fontSize: bodyScale*9
+	                        fontSize: bodyScale*10
 	                    }
 	                },
 	                splitLine: {  //刻度线
@@ -608,7 +610,7 @@ function labLifeCycleStatis(){
 	        yAxis: [
 	            {
 	            	type: 'value',
-	            	name: '实验室数量     ',
+	            	name: '',
                     nameTextStyle:{
 	            		fontSize:bodyScale*5
                     },
@@ -622,7 +624,7 @@ function labLifeCycleStatis(){
 	                },
 	                axisLabel: {
 	                    textStyle: {
-	                        fontSize: bodyScale*7
+	                        fontSize: bodyScale*10
 	                    }
 	                    // formatter: '{value} ml'
 	                },
@@ -634,7 +636,7 @@ function labLifeCycleStatis(){
 	                }
 	            },{
 	            	 type: 'value',
-	                 name: '检测订单量(百万)',
+	                 name: '',
                     nameTextStyle:{
                         fontSize:bodyScale*5
                     },
@@ -650,7 +652,7 @@ function labLifeCycleStatis(){
 	                 },
 	                 axisLabel: {
 	                     textStyle: {
-	                         fontSize: bodyScale*5
+	                         fontSize: bodyScale*10
 	                     }
 	                     // formatter: '{value} ml'
 	                 },
@@ -700,7 +702,7 @@ function labLifeCycleStatis(){
                     },
                 },
 	            {
-	                name:'检测订单量',
+	                name:'检测订单量(百万)',
                     symbol:"circle",
 	                type:'line',
 	                yAxisIndex: 1,

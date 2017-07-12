@@ -135,7 +135,7 @@ function inittwo() {
 
                     type: 'value',
                     max: 100,
-                    min:60,
+                    min:0,
                     scale: true,
                 },
             ],
@@ -152,8 +152,8 @@ function inittwo() {
             grid: {
                 x: "6%",
                 x2: "5%",
-                y: '23%',
-                y2: "30%"
+                y: '20%',
+                y2: "13%"
             },
             series: [
                 {
@@ -163,15 +163,14 @@ function inittwo() {
             ]
         });
 
-
     });
 
 }
 //近12个月一次合格率趋势图
 function initThree() {
     $.post(contextPath + '/lab/orderRateForCenterLabAjax', {
-        "startDate": "201606",
-        "endDate": "201705"
+        "startDate": "201701",
+        "endDate": ""
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
@@ -229,8 +228,8 @@ function initThree() {
 
                 x: "6%",
                 x2: "5%",
-                y: '23%',
-                y2: "30%"
+                y: '20%',
+                y2: "13%"
             },
             series: [
                 {
@@ -240,6 +239,7 @@ function initThree() {
             ]
         });
 
+
     });
 
 
@@ -248,15 +248,15 @@ function initThree() {
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
         "labTypeCode": "中心实验室",
-        "startDate": "201606",
-        "endDate": "201705"
+        "startDate": "201701",
+        "endDate": ""
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
         $("#order_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
         chartthree.setOption(initone(data[data.length-1].rate));
-        chartfour.setOption(getAreaEcharts());
+        chartfour.setOption(getLineEcharts());
         chartfour.setOption({
             textStyle: {
                 fontSize: bodyScale * 8
@@ -269,18 +269,26 @@ function initfour() {
                 }
             },
             grid: {
-                x: "2%",
+                x: "6%",
                 x2: "5%",
                 y: '23%',
-                y2: "15%"
+                y2: "25%"
             },
             xAxis: [
                 {
                     name: '时间',
                     data: centerLabOrderRateLengend(data),
                     nameTextStyle: {
-                        fontSize: bodyScale * 10
+                        fontSize: bodyScale * 10,
                     },
+                    axisLabel :{
+                        margin: 8 * bodyScale,
+                        show: true,
+                        textStyle: {
+                            color: '#66ccff',
+                            fontSize:13*bodyScale
+                        }
+                    }
                 }
             ],
             yAxis: [
@@ -295,6 +303,7 @@ function initfour() {
                 {
                     name: '',
                     type: 'line',
+                    symbol: 'circle',
                     stack: '总量',
                     // areaStyle: {normal: {}},
                     data: centerLabRateData(data),
@@ -332,6 +341,7 @@ var myChart1;
 var myChart2;
 var xData;//x轴坐标数据--对应时间
 var legendData=[];//需要把全部图例放入里面 保证名称不同
+var legendNumData=[];
 var showLegendData=[];//需要展示图例 自定义
 var seriesTopData=[];
 var seriesBottomData=[];
@@ -391,7 +401,7 @@ function loadLabUnitInfoCenterTabAjax(){
 			if(item.testUnitList.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testUnitList,function(ind,it){
-					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'</li>';
+					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
 				});
 				htmls+='</ul>';
 			}
@@ -401,26 +411,17 @@ function loadLabUnitInfoCenterTabAjax(){
 			}
 		});
 		$("#lab_unit_selected_center").html(htmls);
-
         $(".sheshi_tab_list #lab_unit_selected_center>li").click(function () {
-            $(".sheshi_tab").eq(1).trigger('click')
-            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
-            $(this).css('height','auto').siblings().css('height','1.5em');
+            $(".sheshi_tab").eq(1).trigger('click');
+            $(this).children('.taiwei_hide').slideToggle();
             $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-            $(this).find('.taiwei_hide').css('display','block');
-            // $('.sheshi_tab').removeClass('sheshi_tab_active');
-            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
 
         });
+
         $('.taiwei_hide>li').click(function () {
-            $(".sheshi_tab").eq(1).trigger('click')
+           $(".sheshi_tab").eq(1).trigger('click');
             $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-            // $('.sheshi_tab').removeClass('sheshi_tab_active');
-            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
         })
-
-
-
 	});
 }
 $(document).ready(function () {
@@ -463,12 +464,14 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		//根据传感器具体数据 生成图例 
 	 	$.each(data.list,function(index,item){
 			totalLegendName.push(item.name);
+			legendNumData.push(item.data[item.data.length-1].value+increaseBracketForObj(item.name))
 		});
 		legendData=dealBracket(totalLegendName);
 		randomLegend();
 		$("#center_sybh_id").html(data.sybh);
 	 	$("#center_ypbm_id").html(data.ybbh);
 	 	$("#center_cpxh_id").html(data.cpxh);
+	 	$("#center_testPro_id").html(data.testUnitStatus);
 		//showLegendData=legendData;//默认全选
 		//console.log(showLegendData)
 		createLegendHtmls();
@@ -484,6 +487,7 @@ function resetDataCenterLab(){
 	myChart2.clear();
 	$("#legend_ul").html('');
 	legendData=[];
+	legendNumData=[];
 	showLegendData=[];//需要展示图例 自定义
 	seriesTopData=[];
 	seriesBottomData=[];
@@ -558,9 +562,9 @@ function createLegendHtmls() {
     for (var x = 0; x < legendData.length; x++) {
     	//如果是默认选择的 复选选中
 		if(isHasElementOne(showLegendData,legendData[x])!=-1){
-			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:'+width+';height:'+width+'" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" checked><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#66ccff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '</li><br>'
+			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:'+width+';height:'+width+'" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" checked><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#fff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '&nbsp;<span style="color: #66ccff;">'+legendNumData[x]+'</span></li><br>'
 		}else{
-			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:'+width+';height:'+width+'" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" ><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#66ccff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '</li><br>'
+			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:'+width+';height:'+width+'" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" ><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#fff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '&nbsp;<span style="color: #66ccff">'+legendNumData[x]+'</span></li><br>'
 		}
         
     }
@@ -925,7 +929,7 @@ function getCharts1() {
     myChart1.setOption({
         series:getAnimation(seriesTopData)
     });
-   // intevalChart1=setInterval("intervalChangeData()", 60000);
+   // intevalChart1=setInterval("intervalChangeData()", 30000);b
    /* setInterval(function () {
    	 var preStart=myChart1.getOption().dataZoom[0].start;
    	 var preEnd=myChart1.getOption().dataZoom[0].end;
@@ -958,6 +962,7 @@ function intervalChangeData() {
 	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.0083333333333333"},function(data){
 		data=eval("("+data+")");
 		dealIntervalSeriesData(data);
+		createLegendHtmls();
 		//clearInterval(intevalChart1);
 		//上方处理
 		var needRefresh=false;
@@ -1026,6 +1031,14 @@ var intervalSeriesBottomData=[];
 function dealIntervalSeriesData(mData){
 	intervalSeriesTopData=[];
 	intervalSeriesBottomData=[];
+	//处理图例中数变化
+	for(var i=0;i<mData.list.length;i++){
+		var cM=mData.list[i];
+		//console.log(cM)
+		if(cM.data!=null&&cM.data.length>0){
+			legendNumData[i]=cM.data[cM.data.length-1].value+increaseBracketForObj(cM.name);
+		}
+	};
 	for(var x=0;x<totalLegendName.length;x++){
 		var currentName=totalLegendName[x];
 		var data=[];
@@ -1073,10 +1086,10 @@ function getCharts2() {
             data: legendData
         },
         grid: {
-            x: '13%',
-            x2: '10%',
-            y: '-2%',
-            y2: '14%'
+            x: "6%",
+            x2: "5%",
+            y: '20%',
+            y2: "13%"
         },
         dataZoom: [{
 	    	start: 0,
@@ -1361,6 +1374,12 @@ function dealBracketForObj(obj){
 	}
 	return obj;
 }
+function increaseBracketForObj(obj){
+	if(obj.indexOf("(")>-1){
+		return obj.substr(obj.indexOf("(")+1,obj.indexOf(")")-obj.indexOf("(")-1);
+	}
+	return obj;
+}
 //判断数组中某个元素下标
 function isHasElementOne(arr,value){ 
 	for(var i = 0,vlen = arr.length; i < vlen; i++){ 
@@ -1432,8 +1451,14 @@ function dealCenterLab(data) {
     var maxData = {month: 0, rate: 0};
     var minData = {month: 0, rate: 100};
     $.each(data, function (index, item) {
-        var cAllNum = parseInt(item.all_count);
-        var cJsNum = parseInt(item.js_count);
+        var cAllNum =0;
+        if(item.hasOwnProperty("all_count")){
+        	cAllNum=parseInt(item.all_count);
+        }
+        var cJsNum =0;
+        if(item.hasOwnProperty("js_count")){
+        	cJsNum=parseInt(item.js_count);
+        }
         var cName = item.name;
         var cRate = parseFloat(item.rate);
         if (parseFloat(maxData.rate) < cRate) {

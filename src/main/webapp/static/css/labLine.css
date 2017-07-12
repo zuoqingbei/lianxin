@@ -23,7 +23,7 @@
 }
 .sheshi_right_top{
 	height: 6%;
-    width: 80%;
+    width: 100%;
 }
 .sheshi_right_top ul{
 	width:100%;
@@ -64,11 +64,11 @@
     /*background: url("../img/labMain/border-green.png") no-repeat;*/
     /*background-size: 100% 100%;*/
 /*}*/
-/* .sheshi_tab_active{
+.sheshi_tab_active{
     color: #66ffcc;
     background: url("../img/labMain/border-green.png") no-repeat;
     background-size: 100% 100%;
-} */
+}
 .sheshi_tab_list{
     height:81%;
     width: 61%;
@@ -121,26 +121,31 @@
     width: 89%;
     height: 45%;
 }
+#main1_world,#main2_world{
+    width: 89%;
+    height: 45%;
+}
 .shishi_right .sheshi_right_left{
     width: 90%;
     height: 90%;
     float: left;
 }
 .shishi_right .sheshi_right_right{
-    width: 16%;
-    height: 92.5%;
+    width: 18%;
+    height: 84.5%;
     float: left;
     padding-top: 2%;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 8%;
+    right: -2.5%;
     /* padding-right: 3%; */
     overflow-y: auto;
     margin-right: 3%;
-    /*margin-top: 1%;*/
+    /* margin-top: 1%; */
 }
-.shishi_right .sheshi_right_right .legend_ul{
+.shishi_right .sheshi_right_right #legend_ul{
     width: 100%;
+    overflow: hidden;
 }
 
 

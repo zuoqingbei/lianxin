@@ -202,8 +202,8 @@ function navSelectA() {//这里会触发地图中要加载的数据
         if($(this).text() ==="中海博睿"){
             $("#r").hide();
             $(".labMain_content").show()
+            $(".labMain_content_country").hide()
         }
-
     })
 }
 //地球右上角区域的数字样式
@@ -251,7 +251,7 @@ function sphereRTnumberShow(n) {
 function sphereRBscroll() {
     var speed = 100;
 
-    scroll($(".fullScreen_map .scroll"),$(".fullScreen_map .scroll ul:first"),$(".fullScreen_map .scroll ul:last"),50);
+    scroll($(".fullScreen_map .scroll"),$(".fullScreen_map .scroll ul:first"),$(".fullScreen_map .scroll ul:last"),20);
     scroll($(".left3x3 .scroll"),$(".left3x3 .scroll ul:first"),$(".left3x3 .scroll ul:last"),100);
 
     function scroll($scrollBoard,$ul1,$ul2,speed) {

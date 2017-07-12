@@ -174,7 +174,7 @@ function getMaxMinForScpTab4(data, xhPro, type) {
     var result = [];
     var max;
     var min;
-    if (type === 1) {
+    if (type == 1) {
         min = xhPro.jz_lcl;
         max = xhPro.jz_ucl;
     } else {
@@ -199,7 +199,7 @@ function scpDataForTab4(myChartIds,xhPro,type){
 	$.post(contextPath+'/lab/jianCeXbarForTab1Ajax',{"xhName":xhPro.xh_name,"type":type},function(data){
 		var maxAndMin=getMaxMinForScpTab4(data,xhPro,type);
 		var mTitle,mLcl,mValue,mUcl;
-		if(type===1){
+		if(type==1){
 			mTitle="样本平均值";
 			mLcl=xhPro.jz_lcl;
 			mValue=xhPro.pj_value;
@@ -227,35 +227,26 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		        right: "13%",
 		        bottom: "15%",
 		        left: "15%",
-		        top: "16%",
+		        top: "25%",
 				x2:"15%"
 		    },
 		    yAxis: {
 		        name: mTitle,
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
+                axisLabel: axisLabel,
 		        max: parseFloat(maxAndMin[0]),
 		        min: parseFloat(maxAndMin[1]),
-		        axisLabel:{
-		            textStyle:{
-		                fontSize:10*bodyScale
-		            }
-		        },
 		        splitLine: {  //刻度线
 		            show: false
 		        },
-		        nameGap:2*bodyScale,
-		        nameTextStyle:{fontSize:10*bodyScale},
 		    },
 		    xAxis: [
 		        {
 		            name: "",
-		            axisLabel:{
-		                textStyle:{
-		                    fontSize:10*bodyScale
-		                },
-		                margin:2*bodyScale
-		            },
-		            nameGap:2*bodyScale,
-		            nameTextStyle:{fontSize:10*bodyScale},
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
 		            data: statisticRightLengend4(data)
 		        }
 		    ],
@@ -480,21 +471,12 @@ var mHeightChartTab4=$('#myChart16').highcharts({
     series: [{
         name: '直方图',
         type: 'column',
-        data: histogram(data, 0.5),
+        data: histogramTab4(data, 0.5),
         color:"#4397f7",
         pointPadding: 0,
         groupPadding: 0,
         pointPlacement: 'between',
 		borderColor:"rgba(0,0,0,0)"
-    }, {
-        name: '概率密度',
-        type: 'spline',
-        data: data,
-		color:"#00e673",
-        yAxis: 1,
-        marker: {
-            radius: 1.5
-        }
     }]
 }).highcharts();
 //根据类型 时间 统计共产 一致个月份数量
@@ -504,13 +486,14 @@ function communistStatisticForMonthForTab4Ajax(){
 		right_echarts.push(myChart18);
 		myChart18.setOption(getBarEcharts());
 		myChart18.setOption({
-		    color: ['#66ccff', '#a5fff1'],
+		    color: ['#2b64f6', '#66ccff'],
 		    legend: {
 		        show: true,
 		        data: ['共产型号总数', '共产一致型号数'],
                 textStyle: {
                     fontSize: 10 * bodyScale,
                 },
+                itemHeight: 6 * bodyScale,
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
 		    },
 		    grid: {
@@ -518,11 +501,14 @@ function communistStatisticForMonthForTab4Ajax(){
 		        x: "10%",
 		        x2: "10%",
 		        y: '15%',
-		        y2: "15%"
+		        y2: "10%"
 		    },
 		    yAxis: [
 		        {
 		            name: "数量",
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
 		            type: 'value',
 					scale:true
 		        }
@@ -530,26 +516,33 @@ function communistStatisticForMonthForTab4Ajax(){
 		    xAxis: [
 		        {
 		            name: "时间",
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
 		            type: 'category',
 		            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 		        }
 		    ],
 		    series: [{
 		        name: '共产型号总数',
-		        type: 'pictorialBar',
+				type:'bar',
+		        // type: 'pictorialBar',
 		        label: labelSetting,
-		        symbolRepeat: true,
-		        symbolSize: ['80%', '60%'],
+		        // symbolRepeat: true,
+		        // symbolSize: ['80%', '60%'],
 		        barCategoryGap: '40%',
-		        data: statisticRightSeriesTab4Data(data[0],bar_chip)
+                data: statisticRightSeriesTab4Data(data[0])
+		        // data: statisticRightSeriesTab4Data(data[0],bar_chip)
 		    }, {
 		        name: '共产一致型号数',
-		        type: 'pictorialBar',
+                type:'bar',
+                // type: 'pictorialBar',
 		        barGap: '10%',
 		        label: labelSetting,
-		        symbolRepeat: true,
-		        symbolSize: ['80%', '60%'],
-		        data: statisticRightSeriesTab4Data(data[1],bar_chip)
+		        // symbolRepeat: true,
+		        // symbolSize: ['80%', '60%'],
+                data: statisticRightSeriesTab4Data(data[1])
+		        // data: statisticRightSeriesTab4Data(data[1],bar_chip)
 		    }]
 		});
 	})
@@ -557,12 +550,12 @@ function communistStatisticForMonthForTab4Ajax(){
 
 // 共产 一致比重统计
 function communistGravityStatisticForTab4Ajax() {
-    $.post(contextPath + '/lab/communistGravityStatisticForTab1Ajax', {}, function (data) {
+    $.post(contextPath + '/lab/communistGravityStatisticForTab1Ajax', {"startDate":"201601","endDate":"201612"}, function (data) {
+    	//console.log(data)
         var myChart17 = echarts.init(document.getElementById("myChart17"));
         right_echarts.push(myChart17);
-
         myChart17.setOption(getYuanhuan());
-        var labelTop = {
+        var labelTop1 = {
             normal: {
                 color: '#064f66',
                 label: {
@@ -570,7 +563,9 @@ function communistGravityStatisticForTab4Ajax() {
                     position: 'center',
 //	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
                     formatter: function (params) {
-                        return 123;
+                    	//var num=(parseInt(data.yz_num)/parseInt(data.gc_num)*100).toFixed(1);
+                        //return num+"%";
+                    	return data.yz_num;
                     },
                     textStyle: {
                         fontSize: bodyScale * 24,
@@ -583,6 +578,29 @@ function communistGravityStatisticForTab4Ajax() {
                 }
             }
         };
+        var labelTop2 = {
+                normal: {
+                    color: '#064f66',
+                    label: {
+                        show: true,
+                        position: 'center',
+//    	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
+                        formatter: function (params) {
+                        	//var num=(parseInt(data.yz_num)/parseInt(data.gc_num)*100).toFixed(1);
+                            //return (100-num)+"%";
+                        	return (parseInt(data.gc_num)-parseInt(data.yz_num));
+                        },
+                        textStyle: {
+                            fontSize: bodyScale * 24,
+                            color: "#f90",
+                            baseline: 'bottom'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    }
+                }
+            };
         var labelLine = {
             normal: {
                 length2: 5 * bodyScale,
@@ -639,7 +657,7 @@ function communistGravityStatisticForTab4Ajax() {
                     radius: radius,
                     x: '0%', // for funnel
                     data: [
-                        {name: 'other', value: data.yz_num, itemStyle: labelTop},
+                        {name: 'other', value: (parseInt(data.gc_num)-parseInt(data.yz_num)), itemStyle: labelTop1},
                         {name: '共产一致占比', value: data.yz_num, itemStyle: labelBottom}
                     ]
                 },
@@ -650,10 +668,10 @@ function communistGravityStatisticForTab4Ajax() {
                     x: '20%', // for funnel
                     itemStyle: labelFromatter,
                     data: [
-                        {name: 'other', value: (parseInt(data.gc_num) - parseInt(data.yz_num)), itemStyle: labelTop},
+                        {name: 'other', value: data.yz_num, itemStyle: labelTop2},
                         {
                             name: '共产不一致占比',
-                            value: (parseInt(data.gc_num) - parseInt(data.yz_num)),
+                            value: (parseInt(data.gc_num)-parseInt(data.yz_num)),
                             itemStyle: labelBottom
                         }
                     ]

@@ -17,18 +17,18 @@
             <div class="t3_l_1_top">
                 <div class="zhengJi ">
                     <h4>整机订单数</h4>
-                    <div class="num orange">23456</div>
+                    <div class="num orange new_tab3_zj_order_type"></div>
                 </div>
                 <div class="mokuai">
                     <h4 >整机订单数</h4>
-                    <div class="num orange">23456</div>
+                    <div class="num orange new_tab3_mk_order_type"></div>
                 </div>
             </div>
             <div class="t3_l_1_bottom">
                 <h3>各产品订单类别</h3>
                 <div class="btnGroup">
-                    <span class="active">整机</span>
-                    <span class="">模块</span>
+                    <span class="active" onclick=orderTypeAjax('myChart39','整机','30',this)>整机</span>
+                    <span class="" onclick=orderTypeAjax('myChart39','模块','240',this)>模块</span>
                 </div>
                 <div id="myChart39"></div>
             </div>
@@ -37,17 +37,16 @@
             <span class="title">一次合格率</span>
             <div class="divideLine"></div>
             <div class="t3_l_2_top">
-                <p class="explain">
-                    当年一次合格率 <strong class="orange">96%</strong>
-                    <br>同比上升 <strong class="orange">3%</strong>
+                <p class="explain new_hg_rate_tab3">
+               
                 </p>
                 <div id="myChart43"></div>
             </div>
             <div class="t3_l_2_bottom">
                 <h3>各产品一次合格率</h3>
                 <div class="btnGroup">
-                    <span class="active">整机</span>
-                    <span class="">模块</span>
+                    <span class="active" onclick=findOrderPassForProAjax('myChart41','整机',this)>整机</span>
+                    <span class=""  onclick=findOrderPassForProAjax('myChart41','模块',this)>模块</span>
                 </div>
                 <div id="myChart41"></div>
             </div>
@@ -56,17 +55,15 @@
             <span class="title">问题闭环率</span>
             <div class="divideLine"></div>
             <div class="t3_l_3_top">
-                <p class="explain">
-                    当年问题闭环率 <strong class="orange">96%</strong>
-                    <br>同比上升 <strong class="orange">3%</strong>
+                <p class="explain new_bh_rate_tab3">
                 </p>
                 <div id="myChart44"></div>
             </div>
             <div class="t3_l_3_bottom">
                 <h3>各产品问题闭环率</h3>
                 <div class="btnGroup">
-                    <span class="active">整机</span>
-                    <span class="">模块</span>
+                    <span class="active" onclick=productLineForTab3Tab3Ajax('myChart42','0',this)>整机</span>
+                    <span class="" onclick=productLineForTab3Tab3Ajax('myChart42','1',this)>模块</span>
                 </div>
                 <div id="myChart42"></div>
             </div>
@@ -77,9 +74,7 @@
             <span class="title">订单及时率</span>
             <div class="divideLine"></div>
             <div class="t3_r_1_top">
-                <p class="explain">
-                    当年订单及时率 <strong class="orange">96%</strong> ,
-                    同比上升 <strong class="orange">3%</strong>
+                <p class="explain tab3_new_order_rate">
                 </p>
                 <div id="myChart6"></div>
             </div>
@@ -98,9 +93,7 @@
             <span class="title">用户满意度</span>
             <div class="divideLine"></div>
             <div class="t3_r_2_top">
-                <p class="explain">
-                    当年用户满意度 <strong class="orange">96%</strong> ,
-                    同比上升 <strong class="orange">3%</strong>
+                <p class="explain tab3_new_user_manyi">
                 </p>
                 <div id="myChart7"></div>
             </div>
@@ -133,6 +126,7 @@ $(function () {
     //整机和模块的切换
     $("#tab3").find(".btnGroup > span").click(function () {
         $(this).addClass("active").siblings().removeClass("active")
-    })
+    });
+    loadTab3Data();
 })
 </script>

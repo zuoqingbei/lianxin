@@ -15,11 +15,11 @@
     padding: 0.3em 0.3em 0.3em 0;
     width: 12%;
     margin: 0.9em 5.5em 0 0;
-    background: url("../img/TotalState/border-normal.png") no-repeat;
+    background: url("../img/tabCom/border-normal.png") no-repeat;
     background-size: 100% 100%;
     color: #66ccff;
     cursor: pointer;
-    font-size: 1.7em;
+    font-size: 1.9em;
 }
 
 #r .white {
@@ -41,7 +41,7 @@
 
 /*tab鏍忓垏鎹㈡牱寮�*/
 #r .tab .active_right {
-    background: url("../img/TotalState/border-click.png") no-repeat;
+    background: url("../img/tabCom/border-click.png") no-repeat;
     background-size: 100% 100%;
     color: #00e673;
 }
@@ -57,12 +57,12 @@
     position: relative;
     cursor: pointer;
     display: inline-block;
-    margin-left: 9%;
+    margin-left: 12%;
     width: 9.5%;
 }
 #r .labIcon>ul>li>span{
     /*display: block;*/
-    font-size: .8em;
+    font-size: 1em;
 }
 
 #r .labIcon>ul>li>img{

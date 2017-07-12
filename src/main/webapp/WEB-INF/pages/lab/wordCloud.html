@@ -7,9 +7,11 @@
         html, body {
             height: 95%;
             margin: 0;
+            font-size: 1.2em;
+            width: 100%;
         }
 
-        #div1 {
+        #div1  {
             position: relative;
             overflow: hidden;
             width: 82%;
@@ -57,22 +59,11 @@
     </style>
 </head>
 <body>
-
 <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
 <!--<script src="../../../static/asserts/js/jquery-2.2.4.js"></script>-->
 <script>
-/*
-    var wordCloudScale = 1;
-    $(window).load(function () {
-        wordCloudScale = $('body').height()/$(window).height()
 
-    })
-    console.log("~~~~~~~~~~~~~~~~wordCloudScale:",wordCloudScale);
-*/
-
-
-    var radius = 210;//3D 球的半径
-//       var  radius = $("#div1").css("width")/2-10;
+    var radius;//3D 球的半径
     var dtr = Math.PI / 180;
     var d = 600;
 
@@ -241,10 +232,6 @@
         cc = Math.cos(c * dtr);
     }
 
-    //    function resizeText(bodyScale) {
-    //        radius =5 * bodyScale;
-    //    }
-
     $(function () {
         var h = $(window.parent).height();
         var  bodyFontSize= h / 625 * 100 + "%";
@@ -253,11 +240,9 @@
 //        radius = 5000 * bodyScale;
 //        console.log("h:" + h + "~~~~~~~~~~~~~~~~radius:", radius,bodyFontSize);
 //        tspeed = 5;
-
         var i = 0;
         var oTag = null;
         run(radius);
-
     });
 function run(newRadius) {
     radius = newRadius;
@@ -276,11 +261,11 @@ function run(newRadius) {
             ALIGN: "center",
             html: items.join("")
         }).appendTo("body");
-        //console.log($('div'));
-//            radius = Math.floor($("#div1").width() / 3.14 * bodyScale);
+
         oDiv = document.getElementById('div1');
         aA = oDiv.getElementsByTagName('a');
-
+        //定义字符云的半径
+        radius=oDiv.clientWidth/2-50;
         for (i = 0; i < aA.length; i++) {
             oTag = {};
             oTag.offsetWidth = aA[i].offsetWidth;

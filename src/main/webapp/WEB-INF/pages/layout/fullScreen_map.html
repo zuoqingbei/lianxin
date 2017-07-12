@@ -14,7 +14,7 @@
                 <img class="flat" src="${contextPath!}/static/img/ico/btn_flat_off.png">
         </span>
         <span class="quit">
-                <span class="flat-btnTip">退出</span>
+                <span class="flat-btnTip">切换</span>
                 <img class="quit" src="${contextPath!}/static/img/labMain/labMain_toTotalStatus.png">
         </span>
     </div>
@@ -112,7 +112,7 @@
                 <div class="flat-right">
                     <div class="flat-right-bottom">
                         <div class="chartBorder">
-                            <h3 id="professional_code_div">覆盖专业领域：0</h3>
+                            <h3 class="professional_code_div">覆盖专业领域：0</h3>
                             <div class="myChart">
                                 <div class="myChart_header">各专业领域覆盖实验室数</div>
                                 <ul class="myChart_num" id="left_professional_code_num">
@@ -124,7 +124,8 @@
                     </div>
                     <div class="flat-right-top">
                         <div class="chartBorder">
-                            <h3 id="properties_code_div">覆盖专业能力：0</h3>
+                            <h3 class="properties_code_div">覆盖专业能力：0</h3>
+                            <div class="labName">实验室数量</div>
                             <div class="myChart">
                             </div>
                         </div>
@@ -183,7 +184,7 @@
             //让大屏退去后左边显示平面地图
             $(".l.left3x3 .btnGroup img.flat").click();
         });
-        resetSizeRight();//重置右边图表
+        resetSizeRight(); //重置右边图表
         var $sphereIFrame3x3 = $("#sphereIFrame3x3");
         //通过iframe里重置按钮的模拟触发来重置图表
         $sphereIFrame3x3.contents().find(".reset").click()
@@ -192,4 +193,5 @@
         //让球上的提示和文字正常
         $sphereIFrame3x3[0].contentWindow.spherePageResize();
     });
+    pageResize();
 </script>

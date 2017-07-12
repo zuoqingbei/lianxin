@@ -59,7 +59,10 @@ function getLineEcharts() {
             top: '10%'
         },
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            textStyle: {
+                fontSize: 10*bodyScale,
+            }
         },
         legend: {
             show: true,
@@ -142,7 +145,10 @@ function getBarEcharts() {
             }
         },
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            textStyle: {
+                fontSize: 10*bodyScale,
+            }
         },
         legend: {
             show: true,
@@ -246,7 +252,10 @@ function getPieEcharts() {
 
         tooltip: {
             trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
+            formatter: "{a} <br/>{b} : {c} ({d}%)",
+            textStyle: {
+                fontSize: 10*bodyScale
+            }
         },
 
         visualMap: {
@@ -277,6 +286,9 @@ function getAreaEcharts() {
                 label: {
                     backgroundColor: '#234f65'
                 }
+            },
+            textStyle: {
+                fontSize: 10*bodyScale
             }
         },
         legend: {
@@ -296,7 +308,12 @@ function getAreaEcharts() {
             show: false,
             feature: {
                 saveAsImage: {}
-            }
+            },
+            // trigger: 'item',
+            // textStyle: {
+            //     fontSize: 10*bodyScale,
+            //     color: '#66ccff'
+            // }
         },
         grid: {
             left: '3%',
@@ -376,7 +393,10 @@ function getRadarEcharts() {
             fontSize: 12*bodyScale
         },
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            textStyle: {
+                fontSize: 10*bodyScale
+            }
         },
         legend: {
             x: 'center',
@@ -428,11 +448,8 @@ function getLineAndBar() {
         },
         tooltip: {
             trigger: 'axis',
-            axisPointer: {
-                type: 'cross',
-                crossStyle: {
-                    color: '#999'
-                }
+            textStyle: {
+                fontSize: 10*bodyScale,
             }
         },
         toolbox: {
@@ -509,7 +526,10 @@ function getLineAndBar() {
 function getGaugeEcharts() {
     option = {
         tooltip: {
-            formatter: "{a} <br/>{b} : {c}%"
+            formatter: "{a} <br/>{b} : {c}%",
+            textStyle: {
+                fontSize: 10*bodyScale,
+            }
         },
         toolbox: {
             show: false,
@@ -527,7 +547,10 @@ function getGaugeEcharts() {
 function getManyGauge() {
     option = {
         tooltip: {
-            formatter: "{a} <br/>{c} {b}"
+            formatter: "{a} <br/>{c} {b}",
+            textStyle: {
+                fontSize: 10*bodyScale,
+            }
         },
         toolbox: {
             show: false,
@@ -554,7 +577,10 @@ function getYuanhuan() {
     option = {
         tooltip: {
             trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
+            formatter: "{a} <br/>{b} : {c} ({d}%)",
+            textStyle: {
+                fontSize: 10*bodyScale,
+            }
         },
         toolbox: {
             show: false,
@@ -613,7 +639,10 @@ function getCenterPie() {
         },
         tooltip: {
             show: true,
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
+            formatter: "{a} <br/>{b} : {c} ({d}%)",
+            textStyle: {
+                fontSize: 10*bodyScale,
+            }
         },
         toolbox: {
             show: false,
@@ -906,7 +935,10 @@ function getRoseEcharts() {
         },
         tooltip: {
             trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
+            formatter: "{a} <br/>{b} : {c} ({d}%)",
+            textStyle: {
+                fontSize: 10*bodyScale,
+            }
         },
         legend: {
             x: 'right',
@@ -956,6 +988,9 @@ function  getScatterEcharts() {
             position: 'top',
             formatter: function (params) {
                 return params.value[2] + ' commits in ' + hours[params.value[0]] + ' of ' + days[params.value[1]];
+            },
+            textStyle: {
+                fontSize: 10*bodyScale,
             }
         },
         grid: {

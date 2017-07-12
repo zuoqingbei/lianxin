@@ -117,7 +117,7 @@ function findSensorDataCenetrTabAjax2(){
 }
 //获取曲线具体数据
 function findSensorDataCenetrTabAjax(labTypeCode,testUnitId){
-	$.post("${contextPath}/test/getJsonFile",{"fileName":"unit.json","testUnitId":testUnitId},function(data){
+	$.post("${contextPath}/test/getJsonFile",{"fileName":"HR20170424QDZBX001-B6.json","testUnitId":testUnitId},function(data){
 		console.log(eval("("+data+")"))
 		data=eval("("+data+")");
 		dataBase=data;

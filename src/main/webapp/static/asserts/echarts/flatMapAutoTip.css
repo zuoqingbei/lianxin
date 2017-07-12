@@ -29,8 +29,8 @@
 }
 
 .echart_tip.left.top > .echart_content {
-    bottom: 3.55em;
-    right: 1.82em;
+    bottom: 3.3em;
+    right: 2.05em;
 }
 
 .echart_tip.left.top > .echart_tip_arrow {
@@ -56,7 +56,7 @@
 
 .echart_tip.left.bottom > .echart_content {
     bottom: 4.8em;
-    right: 1.9em;
+    right: 2em;
 }
 
 .echart_tip.left.bottom > .echart_tip_arrow {
@@ -69,20 +69,20 @@
 
 .echart_tip.right.bottom > .echart_content {
     bottom: 4.8em;
-    right: -2em;
+    right: -6.4em;
 }
 
 .echart_tip.right.bottom > .echart_tip_arrow {
-    transform: rotate(148deg);
-    -ms-transform: rotate(148deg);
-    -moz-transform: rotate(148deg);
-    -webkit-transform: rotate(148deg);
-    -o-transform: rotate(148deg);
+    transform: rotate(-148deg);
+    -ms-transform: rotate(-148deg);
+    -moz-transform: rotate(-148deg);
+    -webkit-transform: rotate(-148deg);
+    -o-transform: rotate(-148deg);
 }
 
 .echart_tip.bottom > .dialog_title.echart_content {
     top: auto;
-    bottom: -3.15em;
+    bottom: -3.3em;
 }
 
 .dialog_title {
@@ -92,7 +92,7 @@
     padding-bottom: 0.3125em;
     position: absolute;
     width: 7.7em;
-    font-size: 1.1em;
+    font-size: 1.2em;
     text-align: left;
     z-index: 10;
     text-shadow: 0.143em 0.143em 0.143em rgba(0, 0, 0, 0.9);

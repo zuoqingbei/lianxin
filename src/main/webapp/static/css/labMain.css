@@ -31,7 +31,7 @@ a, a:hover {
 
 /**中海实验室  labMain start**/
 /*content star*/
-.labMain_content {
+.labMain_content{
    width: 98%;
     height: 100%;
     /*background: url(../img/bg_star2.jpg) center center no-repeat;*/
@@ -51,11 +51,11 @@ a, a:hover {
 }
 
 .labMain_content_top h1 {
-    font-size: 2em;
+    font-size: 2.6em;
     letter-spacing: .05em;
     color: #66CCFE;
     text-align: center;
-    line-height: 3;
+    line-height: 2em;
 }
 .labMain_ct_btn{
     position: absolute;
@@ -126,8 +126,8 @@ a, a:hover {
 	flex:1;
 	margin:0.1% 1em 0.5% 1em;
 	display:flex;
-	flex-direction: row;		
-	height: 47%;
+	flex-direction: row;
+	height: 98%;
 	
 	
 }
@@ -139,12 +139,12 @@ a, a:hover {
 	
 }
 .labMain_cbl_two{
-    flex:1;		
+    flex:1;
 	margin:2% 1em 0.5% 1em;
 	display:flex;
 	flex-direction: row;
     height: 46%;
-	
+
 }
 
 .zhbr_lab .labMain_cbl_two {
@@ -164,31 +164,23 @@ a, a:hover {
 }
 
 .labMain_cblt_tone {
-     flex:1;
+     /*flex:1;*/
+    width: 35%;
 	margin: 0.5%;
+    font-size: 1.3em;
 
 }
 
 .labMain_cblt_tone h3, .labMain_cblt_ttwo h3 {
-    /*font-size: 1.2em;
-    margin: 2em;
-
-    height: 3em;
-    line-height: 3em;
-    width: 10em;
-    background: url(../img/sheshiState/gznx-bg.png) 0 0 no-repeat;
+    font-size: 1.3em;
+    height: 2em;
+    line-height: 2em;
+    width: 13em;
+    background: url(../img/labMain/gznx-bg.png) 0 0 no-repeat;
     background-size: 100% 100%;
-    padding-left: 3em;*/
-    font-size:1.2em;
-	height:2.5em;
-	line-height:2.5em;
-	width:14em;
-	background:url(../img/sheshiState/gznx-bg.png) 0 0 no-repeat;
-	background-size:100% 100%;
-	margin:1% 1%;
-	padding:0 12.4%;
-	color:#fff;
-
+    margin: 3% 1%;
+    color: #fff;
+    padding-left: 22%;
 }
 
 .labMain_cblt_tone p, .labMain_cblt_ttwo p {
@@ -204,36 +196,35 @@ a, a:hover {
     background: url("../img/labMain/znjd-bg.png") no-repeat;
     background-size: 100% 100%;
    /*margin:0 0.5% ;*/
-	flex:1;
+	width: 65%;
 
 }
 /*轮播*/
-/*轮播图*/	
+/*轮播图*/
 .labMain_lunbo{
 	margin-top:0;
 	width:49em;
 	overflow:hidden;
 	position:relative;
-	
+
 	}
 .labMain_lunbo ul{
 	position:relative;
 	height:24.6em;
-	
-	}		
+
+	}
 .labMain_lunbo ul li{
 	float:left;
 	display:inline;
 	margin:0 0.7em;
 	position:relative;
-	
-	
-}	
+
+}
 .labMain_lunbo ul li img{
 	width:24.6em;
 	height:24.6em;
-	
-}	
+
+}
 .labMain_lunbo ul li span{
 	width:20.5em;
 	height:2em;
@@ -247,12 +238,12 @@ a, a:hover {
 	bottom:7%;
 	z-index:9;
 	/*display:none;*/
-	
-}	
-	
+
+}
+
 .labMain_cblt_ttwo img{
-	width:55.6em;
-	height: 100%;
+    width: 66em;
+    height: 99%;
 	}
 
 
@@ -284,14 +275,14 @@ a, a:hover {
 }
 
 .labMain_cb_right h3 {
-    font-size: 1.4em;
+    font-size: 1.8em;
 
 }
 
 .lab_one_title {
     position: absolute;
-    left: 10%;
-    top: 2.4%;
+    left: 9%;
+    top: 0.7%;
 
 }
 
@@ -314,7 +305,6 @@ a, a:hover {
     background-size: 100% 100%;
     margin: 0.4em 1em .8em;
     position: relative;
-
 }
 
 .labMain_cbro_ul {
@@ -408,16 +398,16 @@ a, a:hover {
 
 .labMain_cbro_ul ul li a {
     text-align: left;
-    font-size: 1.2em;
+    font-size: 1.3em;
 
 }
 
 .labMain_cbr_three ul {
-    padding-top: 4em;
+    padding-top: 0;
 }
 
 .labMain_cbr_three .labMain_cbro_ul ul li {
-    padding: 0em 1.5em;
+    padding: 0 1.5em;
     height: 30%;
 }
 
