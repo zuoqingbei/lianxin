@@ -14,8 +14,8 @@
                 <img class="flat" src="${contextPath!}/static/img/ico/btn_flat_off.png">
         </span>
         <span class="quit">
-                <span class="flat-btnTip">切换</span>
-                <img class="quit" src="${contextPath!}/static/img/labMain/labMain_toTotalStatus.png">
+                <span class="flat-btnTip">切换</span><a href="${contextPath!}/lab/index">
+                <img class="quit" src="${contextPath!}/static/img/labMain/labMain_toTotalStatus.png"></a>
         </span>
     </div>
     <div class="switchGroup">
@@ -38,7 +38,8 @@
                         <h3>覆盖产品</h3>
                         <h4 class="noBG"><strong>50+</strong>类家电产品</h4>
                         <div class="myChart">
-                            <iframe id="wordCloud" width="100px" height="100px" src="${contextPath!}/lab/wordCloudFull"></iframe>
+                            <iframe id="wordCloud" width="100px" height="100px"
+                                    src="${contextPath!}/lab/wordCloudFull"></iframe>
                         </div>
                     </div>
                 </div>
@@ -176,22 +177,21 @@
     </div>
 </div>
 <script>
-    $(".btnGroup>.quit>img").click(function () {
-        $(".left3x3,#r").show();
-        $(".fullScreen_map").animate({
-            left: -(pageW + 100)
-        },2000,function () {
-            //让大屏退去后左边显示平面地图
-            $(".l.left3x3 .btnGroup img.flat").click();
-        });
-        resetSizeRight(); //重置右边图表
-        var $sphereIFrame3x3 = $("#sphereIFrame3x3");
-        //通过iframe里重置按钮的模拟触发来重置图表
-        $sphereIFrame3x3.contents().find(".reset").click()
-            .css({"bottom": 0, fontSize: bodyScale * 8}
-            );
-        //让球上的提示和文字正常
-        $sphereIFrame3x3[0].contentWindow.spherePageResize();
+    $(function () {
+        var $fullPage = $("#l.fullScreen_map");
+        //右上角的图表
+        myChartFlatRT_full = echarts.init($fullPage.find(".flat-right-top .myChart")[0]);
+        //平面左上的环形图
+        myChartFlatLT_full = echarts.init($fullPage.find(".flat-left-top .myChart")[0]);
+        //右下角的图表
+//        myChartFlatRB = echarts.init($("#l").find(".flat-right-bottom .myChart")[0]);
+
+        //左下角的图表
+        myChartFlatLB_full = echarts.init($fullPage.find(".flat-left-bottom .myChart")[0]);
+        myCharts = [myChartFlatLT_full, myChartFlatRT_full, myChartFlatLB_full];
+        //左侧平面地图及其他左侧数据
+        reloadLeftData();
+
     });
     pageResize();
 </script>

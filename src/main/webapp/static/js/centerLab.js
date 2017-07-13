@@ -392,7 +392,7 @@ var dataBase;
 function loadLabUnitInfoCenterTabAjax(){
 	$.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
 		var htmls="";
-		console.log(data)
+		// console.log(data)
 		$.each(data,function(index,item){
 			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labName+'</a>';
 			if(item.testUnitList.length>0){
