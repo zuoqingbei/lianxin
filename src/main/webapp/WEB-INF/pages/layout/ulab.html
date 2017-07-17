@@ -16,11 +16,8 @@
 
         var bodyScale = 1;
         var pageH = $(window).height();
-        var pageW = pageH * 16 * 7 / (9 * 3);
-        alert(pageW)
-         if (pageH > 2300) { // 如果是大屏幕(2304)
-           pageW -= 42 
-        } 
+        var pageW = pageH * 16 * 7 / (9 * 3)-70;
+     
         function pageResize() {
         	alert(pageW)
             $("#content").css("width", pageW);
