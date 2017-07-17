@@ -1,4 +1,4 @@
-<div id="r" style="display: none">
+<div id="r" style="">
 
     <!--这里是后面4屏的代码-->
 
@@ -32,20 +32,15 @@
 
 
     <!--实验室状态-->
-    <!--##layout("tab/tab2.html", {}){-->
-    <!--##}-->
-    <div class="tabs_content" style="width: 1000px;height: 500px;background-color: pink">
-        <iframe src="${contextPath!}/layout/tab2" frameborder="0" style="width: 100%;height: 100%"></iframe>
-    </div>
+    ##layout("tab/tab2.html", {}){
+    ##}
 
     <!--数据结果-->
-    <!--##layout("tab/tab3.html", {}){-->
-    <!--##}-->
-    <!--<iframe src="${contextPath!}/layout/ta3" frameborder="0"></iframe>-->
+    ##layout("tab/tab3.html", {}){
+    ##}
     <!--数据挖掘应用-->
-    <!--##layout("tab/tab4.html", {}){-->
-    <!--##}-->
-    <!--<iframe src="${contextPath!}/layout/tab4" frameborder="0"></iframe>-->
+    ##layout("tab/tab4.html", {}){
+    ##}
 
 </div>
 <script src="${contextPath!}/static/asserts/js/highcharts.js"></script>

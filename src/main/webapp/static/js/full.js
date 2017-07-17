@@ -284,8 +284,8 @@ $(function () {
     // $(".fullScreen_map .sphere-left-bottom iframe")[0].contentWindow.run(300);
     // $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
 
+/*
     $(".btnGroup>.quit>img").click(function () {
-    	console.log(11111111111111);
         $(".left3x3,#r").show();
         $(".fullScreen_map").animate({
             left: -(pageW + 100)
@@ -301,5 +301,6 @@ $(function () {
         //让球上的提示和文字正常
         $sphereIFrame3x3[0].contentWindow.spherePageResize();
     });
+*/
 
 });

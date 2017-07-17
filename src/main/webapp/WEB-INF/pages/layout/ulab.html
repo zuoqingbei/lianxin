@@ -14,21 +14,20 @@
          一共 7x3 个屏幕，每一块屏幕是1360x768，
          总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
 
-        var bodyScale = 1;
+        var bodyScale = 1, bodyFontSize = 1;
         var pageH = $(window).height();
         var pageW = pageH * 16 * 7 / (9 * 3);
+        bodyFontSize = pageH / 595 * 100 + "%";
+        bodyScale = pageH / 595;
         if (pageH > 2300) { // 如果是大屏幕(2304)
             pageW -= 42
         }
         function pageResize() {
-            $("#content").css("width", pageW);
-            var bodyFontSize = pageH / 595 * 100 + "%";
-            bodyScale = pageH / 595;
             $("body").css("font-size", bodyFontSize);
-            $(".fullScreen_map").css("width", pageW);
+            $("#content").css("width", pageW);
+            $(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位
             console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
         }
-        pageResize();
     </script>
 </head>
 <body class="zh_CN">
