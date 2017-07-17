@@ -32,14 +32,20 @@
 
 
     <!--实验室状态-->
-    ##layout("tab/tab2.html", {}){
-    ##}
+    <!--##layout("tab/tab2.html", {}){-->
+    <!--##}-->
+    <div class="tabs_content" style="width: 1000px;height: 500px;background-color: pink">
+        <iframe src="${contextPath!}/layout/tab2" frameborder="0" style="width: 100%;height: 100%"></iframe>
+    </div>
+
     <!--数据结果-->
-    ##layout("tab/tab3.html", {}){
-    ##}
+    <!--##layout("tab/tab3.html", {}){-->
+    <!--##}-->
+    <!--<iframe src="${contextPath!}/layout/ta3" frameborder="0"></iframe>-->
     <!--数据挖掘应用-->
-    ##layout("tab/tab4.html", {}){
-    ##}
+    <!--##layout("tab/tab4.html", {}){-->
+    <!--##}-->
+    <!--<iframe src="${contextPath!}/layout/tab4" frameborder="0"></iframe>-->
 
 </div>
 <script src="${contextPath!}/static/asserts/js/highcharts.js"></script>
@@ -62,20 +68,20 @@
             resetSizeRight();
         });
 
-/*
-        $(".tab-item").eq(0).click(function () {
-            $('#right .lab').css("display",'none');
-        });
-        $(".lab_item").click(function () {
-            $(this).addClass("word_active").siblings().removeClass("word_active");
-        	resetSizeRight();
-        });
-*/    
+        /*
+         $(".tab-item").eq(0).click(function () {
+         $('#right .lab').css("display",'none');
+         });
+         $(".lab_item").click(function () {
+         $(this).addClass("word_active").siblings().removeClass("word_active");
+         resetSizeRight();
+         });
+         */
 //        上一页 下一页
         $('#tab2 .fenye .last').click(function () {
             $('#tab2').css('left','-100%');
         });
-        
+
         $('#tab2 .fenye .first').click(function () {
             $('#tab2').css('left','0');
         });
@@ -89,9 +95,9 @@
 
 
         /* loadTab1Data(); */
-       /*  loadTab2Data();
-        loadTab3Data();
-        loadTab4Data(); */
+        /*  loadTab2Data();
+         loadTab3Data();
+         loadTab4Data(); */
     });
 
 </script>

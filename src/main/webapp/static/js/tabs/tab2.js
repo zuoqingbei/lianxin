@@ -262,6 +262,7 @@ function equipmentTotalForLab1Ajax() {
         myChart1.setOption(option);
     });
 }
+var labTypeCode;//实验室类型
 
 //设施状态 各个产线  type 类型  0：实验室在线率 1：设备完好率 2：设备利用率
 function equipmentStatisForPlForLab2Ajax(type) {

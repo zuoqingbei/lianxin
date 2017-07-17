@@ -1,22 +1,18 @@
-<!--<!doctype html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--<meta charset="UTF-8">-->
-<!--<meta name="viewport"-->
-<!--content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
-<!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
-
-<!--<title>运营状态</title>-->
-<!--<link rel="stylesheet" href="../../../../static/asserts/css/bootstrap.min.css">-->
-<!--<link rel="stylesheet" href="../../../../static/css/common.css">-->
-<!--<link rel="stylesheet" href="../../../../static/css/tabs/tab2.css">-->
-
-<!--</head>-->
-<!--<body>-->
+<!doctype html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/index_right.css">
     <link rel="stylesheet" href="${contextPath!}/static/css/tabs/tab2.css">
 </head>
-
+<body>
 <div id="tab2" class="box selected">
     <div id="tab2_left">
         <!--分页按钮-->
@@ -194,8 +190,34 @@
         </div>
     </div>
 </div>
+</body>
+</html>
+<script> var contextPath = '${contextPath!}';</script>
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/asserts/js/bootstrap.min.js"></script>
+<script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
+<script src="${contextPath!}/static/js/manyEcharts.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/common.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/main_right.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/tabs/tab2.js?time=New Date()"></script>
 <script>
-$(function () {
-	loadTab2Data();
-});
+    $(function () {
+        var bodyScale = 1;
+        var pageH;
+        var pageW;
+        pageH = $(window).height();
+        pageW = pageH * 16 * 7 / (9 * 3);
+
+        function pageResize() {
+            $("#content").css("width", pageW);
+            var bodyFontSize = pageH / 595 * 100 + "%";
+            bodyScale = pageH / 595;
+            $("body").css("font-size", bodyFontSize);
+            $(".fullScreen_map").css("width", pageW);
+//        console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+        }
+        pageResize();
+
+        loadTab2Data();
+    });
 </script>

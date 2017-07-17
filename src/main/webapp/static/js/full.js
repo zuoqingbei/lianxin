@@ -285,6 +285,7 @@ $(function () {
     // $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
 
     $(".btnGroup>.quit>img").click(function () {
+    	console.log(11111111111111);
         $(".left3x3,#r").show();
         $(".fullScreen_map").animate({
             left: -(pageW + 100)

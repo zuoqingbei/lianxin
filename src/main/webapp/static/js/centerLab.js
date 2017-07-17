@@ -300,7 +300,7 @@ function initfour() {
                 {
                     name: '',
                     type: 'line',
-                    symbol: 'circle',
+                    // symbol: 'circle',
                     stack: '总量',
                     // areaStyle: {normal: {}},
                     data: centerLabRateData(data),
@@ -1437,7 +1437,7 @@ function centerLabOrderHgRate(data) {
     $.each(data, function (index, item) {
         var it = {
             value: item.rate,
-            symbol: bar_chip
+            // symbol: bar_chip
         };
         d.push(it)
     })
