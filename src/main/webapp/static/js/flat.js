@@ -1,23 +1,3 @@
-/**
- * Created by Administrator on 2017/4/15 0015.
- */
-var bodyScale = 1;
-var pageH;
-var pageW;
-
-pageH = $(window).height();
-
-pageW = pageH * 16 * 7 / (9 * 3);
-
-function pageResize() {
-    $("#content").css("width", pageW).css("background", "red");
-    var bodyFontSize = pageH / 595 * 100 + "%";
-    bodyScale = pageH / 595;
-    $("body").css("font-size", bodyFontSize);
-
-    // console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
-};
-// pageResize();
 
 var timeId = null;
 function getGeoArr(data) {
@@ -28,6 +8,7 @@ function getGeoArr(data) {
     // console.log("geo"+geo);
     return geo;
 };
+
 /**
  * 程序被调用的入口——————————————————————————————————————————————————————
  * 平面世界地图数据准备
@@ -475,18 +456,21 @@ function fadeInElList($list) {
 $(window).resize(function () {
     myChart.resize();
     var bodyScale = 1;
-    var pageH;
-    var pageW;
-    pageH = $(window).height();
-    pageW = pageH * 16 * 7 / (9 * 3);
-
+    var pageH = $(window).height();
+    var pageW = pageH * 16 * 7 / (9 * 3);
+   
     function pageResize() {
+    	 if (pageH > 2300) { // 如果是大屏幕(2304)
+    	       pageW -= 42 ;
+    	       return pageW
+    	    }
+    	alert(pageW)
         $("#content").css("width", pageW);
         var bodyFontSize = pageH / 595 * 100 + "%";
         bodyScale = pageH / 595;
         $("body").css("font-size", bodyFontSize);
         $(".fullScreen_map").css("width", pageW);
-        // console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+        console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
     }
     pageResize();
 
