@@ -250,10 +250,10 @@ function sphereRTnumberShow(n) {
 //球形地图右下角的广告滚动
 function sphereRBscroll() {
     var speed = 100;
-    // scroll($(".fullScreen_map .scroll"),$(".fullScreen_map .scroll ul:first"),$(".fullScreen_map .scroll ul:last"),20);
+
+//    scroll($(".fullScreen_map .scroll"),$(".fullScreen_map .scroll ul:first"),$(".fullScreen_map .scroll ul:last"),20);
     scroll($(".left3x3 .scroll"),$(".left3x3 .scroll ul:first"),$(".left3x3 .scroll ul:last"),50);
 
-    // console.log("--------------",$(".left3x3 .scroll").length)
     function scroll($scrollBoard,$ul1,$ul2,speed) {
         $scrollBoard.css("height", $scrollBoard.width);
         $ul2.html($ul1.html());

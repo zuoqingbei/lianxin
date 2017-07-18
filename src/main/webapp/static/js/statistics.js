@@ -378,9 +378,9 @@ function labPropertiesStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"properties_code","labType":labType,"productCode":productCode},function(data){
 		$(".properties_code_div").html("覆盖专业能力："+data.length);
 		myChartFlatRT.resize();
-		myChartFlatRT_full.resize();
+//		myChartFlatRT_full.resize();
 		myChartFlatRT.clear();
-		myChartFlatRT_full.clear();
+//		myChartFlatRT_full.clear();
 		//右上角的图表
 	    myChartFlatRT.setOption(getLineEcharts());
 	    myChartFlatRT_full.setOption(getLineEcharts());
