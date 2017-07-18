@@ -54,6 +54,7 @@ import com.ulab.util.SqlUtil;
 public class LabController extends BaseController {
 	
     public void index() {
+    	setAttr("fromPage", getPara("fromPage",""));
     	List<Record> labType=DicModel.dao.findDicByType("lab_type");
     	List<Record> productLine=DicModel.dao.findDicByType("line_type");
     	setAttr("labType", labType);
