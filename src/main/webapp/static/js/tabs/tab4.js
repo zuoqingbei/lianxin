@@ -414,6 +414,9 @@ function histogramTab4(data, step) {
 }
 var mHeightChartTab4=$('#myChart16').highcharts({
 	tooltip:{
+        textStyle: {
+            fontSize: 10*bodyScale,
+        },
 		formatter:function(p){
 			if(this.series.name=="概率密度"){
 				return false;
@@ -448,11 +451,11 @@ var mHeightChartTab4=$('#myChart16').highcharts({
         plotLines: [],
         tickColor: "rgba(0,0,0,0)",
         labels:{
-       	 	 y: 10*bodyScale,
+       	 	 y: 13*bodyScale,
 	       	 style: {
 	             /* fontWeight: 'bold',*/
-	             fontSize: 7* bodyScale,
-	             color:"#439ef7"
+	             fontSize: 13* bodyScale,
+	             color:"#66ccff"
 	         }
        }
     },
@@ -516,7 +519,7 @@ function communistStatisticForMonthForTab4Ajax(){
 		    ],
 		    xAxis: [
 		        {
-		            name: "时间",
+		            name: "月份",
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
@@ -564,9 +567,9 @@ function communistGravityStatisticForTab4Ajax() {
                     position: 'center',
 //	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
                     formatter: function (params) {
-                    	//var num=(parseInt(data.yz_num)/parseInt(data.gc_num)*100).toFixed(1);
-                        //return num+"%";
-                    	return data.yz_num;
+                    	var num=(parseInt(data.yz_num)/parseInt(data.gc_num)*100).toFixed(1);
+                        return num+"%";
+                    	// return data.yz_num;
                     },
                     textStyle: {
                         fontSize: bodyScale * 24,
@@ -587,9 +590,9 @@ function communistGravityStatisticForTab4Ajax() {
                         position: 'center',
 //    	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
                         formatter: function (params) {
-                        	//var num=(parseInt(data.yz_num)/parseInt(data.gc_num)*100).toFixed(1);
-                            //return (100-num)+"%";
-                        	return (parseInt(data.gc_num)-parseInt(data.yz_num));
+                            var num=(100-(parseInt(data.yz_num)/parseInt(data.gc_num)*100)).toFixed(1);
+                            return num+"%";
+                        	// return (parseInt(data.gc_num)-parseInt(data.yz_num));
                         },
                         textStyle: {
                             fontSize: bodyScale * 24,
@@ -658,8 +661,8 @@ function communistGravityStatisticForTab4Ajax() {
                     radius: radius,
                     x: '0%', // for funnel
                     data: [
-                        {name: 'other', value: (parseInt(data.gc_num)-parseInt(data.yz_num)), itemStyle: labelTop1},
-                        {name: '共产一致占比', value: data.yz_num, itemStyle: labelBottom}
+                        {name: 'other', value:( (parseInt(data.gc_num)-parseInt(data.yz_num))/parseInt(data.gc_num)), itemStyle: labelTop1},
+                        {name: '共产一致占比', value: (data.yz_num/parseInt(data.gc_num)), itemStyle: labelBottom}
                     ]
                 },
                 {
@@ -812,8 +815,8 @@ function mkSqualityLevelForTab4(xhPro) {
 //	            show:true,
             x: "13%",
             x2: "21%",
-            y: '17%',
-            y2: "5%"
+            y: '23%',
+            y2: "20%"
         },
         yAxis: [
             {

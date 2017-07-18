@@ -31,12 +31,12 @@ labInfos[0]="日本研发中心拥有冰箱检测实验室39个，测试台位29
 labInfos[1]="Haier Thailand ACF have own testing laboratory，which can do the normal cooling capacity testing with our engineer. ACF also can develop new product with local parts."
 labInfos[2]="3 main labs on Auckland site: Refrigeration Test Lab，Refrigeration Evaluation Lab，Laundry Evaluation Lab2 main labs on Dunedin site: Cooking Evaluation Lab，Dishwashing Evaluation LabLab capacity including hundreds of testing items for both Compliance Testing & Development Testing based on advanced and reliable measurement system and skilled lab techs."
 //  实验室图片信息
-var labImgs=["../static/img/labMain/Japan.png","../static/img/labMain/NewZealand.png","../static/img/labMain/Thailand.png"];
+var labImgs=["../static/img/labMain/Japan.jpg","../static/img/labMain/NewZealand.jpg","../static/img/labMain/Thailand.jpg"];
 
 //'#labName'    实验室标题名
 //'#labnameIcon'  实验室标题名按钮
 //'#secondName'  实验室名小标题
-var labname=['日本实验室','泰国实验室','新西兰实验室']
+var labname=['日本实验室','泰国实验室','新西兰实验室'];
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorld(type){
 	console.log(labInfos[type])
