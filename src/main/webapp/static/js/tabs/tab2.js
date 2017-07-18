@@ -345,12 +345,22 @@ function equipmentStatisForPlForLab2Ajax(type) {
 function findPersonStatusTab1Ajax(type) {
     $.post(contextPath + '/lab/findPersonStatusTab1Ajax', {"type": type}, function (data) {
         var htmls = "";
-        $.each(data, function (index, item) {
-            htmls += '<li><span class="bar_name">' + item.name + '</span>';
-            htmls += '<div class="progress">';
-            htmls += '<div class="progress-bar1" role="progressbar" aria-valuenow="' + item.rate + '" aria-valuemin="0" aria-valuemax="100" style="width:' + item.rate + '%;height: 110%"></div>';
-            htmls += '</div><span>' + item.rate + '%</span></li>';
-        });
+        if(type==3){
+        	for(var x=data.length-1;x>=0;x--){
+        		var item=data[x];
+        		htmls += '<li><span class="bar_name">' + item.name + '</span>';
+        		htmls += '<div class="progress">';
+        		htmls += '<div class="progress-bar1" role="progressbar" aria-valuenow="' + item.rate + '" aria-valuemin="0" aria-valuemax="100" style="width:' + item.rate + '%;height: 110%"></div>';
+        		htmls += '</div><span>' + item.rate + '%</span></li>';
+        	}
+        }else{
+        	$.each(data, function (index, item) {
+        		htmls += '<li><span class="bar_name">' + item.name + '</span>';
+        		htmls += '<div class="progress">';
+        		htmls += '<div class="progress-bar1" role="progressbar" aria-valuenow="' + item.rate + '" aria-valuemin="0" aria-valuemax="100" style="width:' + item.rate + '%;height: 110%"></div>';
+        		htmls += '</div><span>' + item.rate + '%</span></li>';
+        	});
+        }
         $("#tab1_person_detail_" + type).html(htmls)
     })
 }
@@ -368,6 +378,15 @@ function dealNumberTab2(num) {
         return parseInt(num) * bodyScale;
     }
 }
+function splitStrTab(input){
+	var str=input+"";
+	var result="";
+	for(var i=0,len=str.length;i<len;i++){
+	    result += str[i];
+	    if(i % 2 == 1) result += '\n';
+	}
+	return result;
+}
 //人员信息 各个产线状态 散点图
 function personForTab2Ajax(myChartIds, type, divisor) {
     $.post(contextPath + '/lab/personForTab2Ajax', {"labTypeCode": labTypeCode, "type": type}, function (res) {
@@ -383,19 +402,35 @@ function personForTab2Ajax(myChartIds, type, divisor) {
         var preYdata = [];
         $.each(res, function (index, item) {
             preYdata.push(item[0].product_name);
-            data0.push([item[0].name, item[0].product_name, dealNumberTab2(parseInt(item[0].all_num) / divisor), item[0].name]);
-            data1.push([item[1].name, item[1].product_name, dealNumberTab2(parseInt(item[1].all_num) / divisor), item[1].name]);
-            data2.push([item[2].name, item[2].product_name, dealNumberTab2(parseInt(item[2].all_num) / divisor), item[2].name]);
-            data3.push([item[3].name, item[3].product_name, dealNumberTab2(parseInt(item[3].all_num) / divisor), item[3].name]);
+            var s0,s1,s2,s3;
+            if(type==3){
+            	s0=splitStrTab(item[0].name);
+            	s1=splitStrTab(item[1].name);
+            	s2=splitStrTab(item[2].name);
+            	s3=splitStrTab(item[3].name);
+            }else{
+            	s0=item[0].name;
+            	s1=item[1].name;
+            	s2=item[2].name;
+            	s3=item[3].name;
+            }
+            data0.push([s0, item[0].product_name, dealNumberTab2(parseInt(item[0].all_num) / divisor), s0]);
+            data1.push([s1, item[1].product_name, dealNumberTab2(parseInt(item[1].all_num) / divisor), s1]);
+            data2.push([s2, item[2].product_name, dealNumberTab2(parseInt(item[2].all_num) / divisor), s2]);
+            data3.push([s3, item[3].product_name, dealNumberTab2(parseInt(item[3].all_num) / divisor), s3]);
 
             /* data0.push([item[0].name, item[0].product_name, parseInt(item[0].all_num) / divisor*bodyScale, item[0].name]);
              data1.push([item[1].name, item[1].product_name, parseInt(item[1].all_num) / divisor*bodyScale, item[1].name]);
              data2.push([item[2].name, item[2].product_name, parseInt(item[2].all_num) / divisor*bodyScale, item[2].name]);
              data3.push([item[3].name, item[3].product_name, parseInt(item[3].all_num) / divisor*bodyScale, item[3].name]);*/
             if (index == 0) {
-                $.each(item, function (ind, it) {
-                    xData.push(it.name);
-                })
+            	   $.each(item, function (ind, it) {
+                   	if(type==3){
+                   		 xData.push(splitStrTab(it.name));
+                   	}else{
+                   		 xData.push(it.name);
+                   	};
+                   });
             }
         });
         for (var x = preYdata.length - 1; x >= 0; x--) {
