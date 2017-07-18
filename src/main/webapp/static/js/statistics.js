@@ -58,7 +58,7 @@ function professionalStatis(){
 			htmls+='<li>'+count+'</li>';
 		});
 		$(".left3x3 #left_professional_code_num").html(htmls);
-		$(".fullScreen_map #left_professional_code_num").html(htmls);
+		// $(".fullScreen_map #left_professional_code_num").html(htmls);
 	})
 }
 //实验室数量统计
@@ -108,7 +108,7 @@ function worldTyleEchart(data){
 	var num5=standardSeriesDataForLeft(data,"模块商实验室");
 	var allNum=parseInt(num2)+parseInt(num3)+parseInt(num4)+parseInt(num5);
 	myChartFlatLT.setOption(getYuanhuan());
-	myChartFlatLT_full.setOption(getYuanhuan());
+	// myChartFlatLT_full.setOption(getYuanhuan());
 	var labelTop = {
 	    normal: {
 	        color: '#064f66',
@@ -130,6 +130,7 @@ function worldTyleEchart(data){
 	        }
 	    }
 	};
+/*
 	var labelTop_full = {
 	    normal: {
 	        color: '#064f66',
@@ -149,6 +150,7 @@ function worldTyleEchart(data){
 
 	    }
 	};
+*/
 	var labelLine = {
 		normal: {
 			length2: 5*bodyScale,
@@ -191,6 +193,7 @@ function worldTyleEchart(data){
 	        color: '#6cf'
 	    }
 	};
+/*
 	var labelBottom_full = {
 	    normal: {
 	        color: "#6cf",
@@ -214,6 +217,7 @@ function worldTyleEchart(data){
 	        color: '#6cf'
 	    }
 	};
+*/
 	var radius = ["27%", "36%"];
 	myChartFlatLT.setOption({
 	    textStyle: {
@@ -272,6 +276,7 @@ function worldTyleEchart(data){
 	        }
 	    ]
 	});
+/*
 	myChartFlatLT_full.setOption({
 	    textStyle: {
 	        color: '#6cf',
@@ -365,6 +370,7 @@ function worldTyleEchart(data){
 	        }
 	    ]
 	});
+*/
 }
 
 function worldLabTypeStatis(){
@@ -378,12 +384,12 @@ function labPropertiesStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"properties_code","labType":labType,"productCode":productCode},function(data){
 		$(".properties_code_div").html("覆盖专业能力："+data.length);
 		myChartFlatRT.resize();
-		myChartFlatRT_full.resize();
+		// myChartFlatRT_full.resize();
 		myChartFlatRT.clear();
-		myChartFlatRT_full.clear();
+		// myChartFlatRT_full.clear();
 		//右上角的图表
 	    myChartFlatRT.setOption(getLineEcharts());
-	    myChartFlatRT_full.setOption(getLineEcharts());
+	    // myChartFlatRT_full.setOption(getLineEcharts());
 	    myChartFlatRT.setOption({
             color: ['#66ccff'],//屏蔽引入getLineEcharts()造成的两种颜色
 	        tooltip: {
@@ -422,7 +428,7 @@ function labPropertiesStatis(){
 	                    }
 	                },
 	                splitLine: {  //刻度线
-                        show: false,
+	                    show: true,
 	                    lineStyle: {
 	                        color: "#234f65"
 	                    }
@@ -454,7 +460,6 @@ function labPropertiesStatis(){
 	        ],
 	        series: [
 	            {
-                    barWidth:30,
 	                name: '专业能力',
 	                type:'bar',
 // 	                type: 'pictorialBar',
@@ -465,6 +470,7 @@ function labPropertiesStatis(){
 	            }
 	        ]
 	    });
+/*
 	    myChartFlatRT_full.setOption({
             color: ['#66ccff'],//屏蔽引入getLineEcharts()造成的两种颜色
 	        tooltip: {
@@ -501,7 +507,7 @@ function labPropertiesStatis(){
 	                    }
 	                },
 	                splitLine: {  //刻度线
-	                    show: false,
+	                    show: true,
 	                    lineStyle: {
 	                        color: "#234f65"
 	                    }
@@ -533,7 +539,6 @@ function labPropertiesStatis(){
 	        ],
 	        series: [
 	            {
-                    barWidth:90,
 	                name: '专业能力',
 	                type:'bar',
 	                // type: 'pictorialBar',
@@ -544,6 +549,7 @@ function labPropertiesStatis(){
 	            }
 	        ]
 	    });
+*/
 	})
 }
 
@@ -551,11 +557,11 @@ function labPropertiesStatis(){
 function labLifeCycleStatis(){
 	$.post(contextPath+'/lab/labCarryNumStatisAjax',{"labType":labType,"productCode":productCode},function(data){
 		myChartFlatLB.resize();
-		myChartFlatLB_full.resize();
+		// myChartFlatLB_full.resize();
 		myChartFlatLB.clear();
-		myChartFlatLB_full.clear();
+		// myChartFlatLB_full.clear();
 		myChartFlatLB.setOption(getAreaEcharts());
-		myChartFlatLB_full.setOption(getAreaEcharts());
+		// myChartFlatLB_full.setOption(getAreaEcharts());
 		var colors = ['#00e673', '#66ccff'];
 	    myChartFlatLB.setOption({
 	        tooltip: {
@@ -736,6 +742,7 @@ function labLifeCycleStatis(){
 	            }
 	        ]
 	    });
+/*
 	    myChartFlatLB_full.setOption({
 	        tooltip: {
 	            trigger: 'axis',
@@ -917,6 +924,7 @@ function labLifeCycleStatis(){
 	            }
 	        ]
 	    });
+*/
 	})
 }
 
