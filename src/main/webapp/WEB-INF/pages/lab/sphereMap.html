@@ -33,7 +33,7 @@
 </head>
 <body>
     <div id="sphereMap"></div>
-    <button class="reset" style="display: none">点击重置</button>
+    <button class="reset" style="visibility: hidden">点击重置</button>
 
     <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
     <script src="${contextPath!}/static/js/common.js"></script>
@@ -41,14 +41,6 @@
     <script src="${contextPath!}/static/asserts/echarts/echarts-x.js"></script>
     <script src="${contextPath!}/static/js/sphere.js"></script>
     <script src="${contextPath!}/static/js/boot.js"></script>
-    <script>
-        function spherePageResize() {
-            var h = $(window).height();
-            var bodyFontSize = h / 595 * 100 + "%";
-            $("body").css("font-size", bodyFontSize);
-        }
-        spherePageResize();
-    </script>
 </body>
 <script>
 
