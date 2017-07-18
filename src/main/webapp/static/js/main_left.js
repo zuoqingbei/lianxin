@@ -23,7 +23,7 @@ function videoFadeOut() {
 
 //切换地图显示区域及地图全屏
 function switchMapArea() {
-
+var sphereClicked = false;
     var iframe = '<iframe id="iframe" class="iframe map" scrolling="no" frameborder="0" src="' + contextPath + '/lab/flatMap" ></iframe>';
     $(".l").find(".btnGroup img").click(function () {
         var src = $(this).attr("src");
@@ -35,6 +35,11 @@ function switchMapArea() {
                 .attr("src", $(this).parent().siblings().find("img").attr("src").replace("on", "off"))
             if ($(this).parents(".l").find(".switch.sphere").is(":hidden")) {
                 $(this).parents(".l").find(".switch.sphere").css({"display": "flex"}).siblings().hide();
+                if(!sphereClicked){
+                    $("#sphereIFrame3x3").contents().find(".reset").click();
+                    sphereClicked = !sphereClicked;
+                }
+
 
             } else {
                 $(this).parents(".l").find(".flat .mapArea iframe").remove();
@@ -241,6 +246,7 @@ function sphereRTnumberShow(n) {
          $flatLTnumber.html(newStr);
          break;
          }
+
          }
          */
     }
