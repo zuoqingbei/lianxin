@@ -72,7 +72,7 @@ public class LabController extends BaseController {
     	//量产一致性保障 字典
     	List<Record> providerDic=ProviderDicModel.dao.findProviderDic();
     	setAttr("providerDic", providerDic);
-        render("index.html");
+        render("full.html");
     }
     /**
      * 
@@ -1002,6 +1002,6 @@ public class LabController extends BaseController {
     	//量产一致性保障 字典
     	List<Record> providerDic=ProviderDicModel.dao.findProviderDic();
     	setAttr("providerDic", providerDic);
-        render("full.html");
+        render("index.html");
     }
 }
