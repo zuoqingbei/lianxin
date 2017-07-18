@@ -17,12 +17,10 @@
     background-size: 100% 100%;
 }
 .zhbr_lab h3.lab_title {
-    top: 1%;
-    left: 8.8%;
-    font-size: 1.8em;
-    width: 12%;
-    text-align: center;
-}
+      top: 1%;
+      left: 8.8%;
+      font-size: 1.8em;
+  }
 .zhbr_lab{
     height: 97%;
 }
