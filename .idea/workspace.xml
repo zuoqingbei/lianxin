@@ -15,36 +15,65 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="tab2.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab2.js">
+      <file leaf-file-name="statistics.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/statistics.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="923" column="13" lean-forward="false" selection-start-line="923" selection-start-column="13" selection-end-line="923" selection-end-column="13" />
+            <state relative-caret-position="77">
+              <caret line="569" column="33" lean-forward="true" selection-start-line="569" selection-start-column="33" selection-end-line="569" selection-end-column="33" />
               <folding>
-                <element signature="n#!!block;n#statisticRightSeriesData#0" expanded="false" />
-                <element signature="n#!!block;n#abilityByProductLine#0" expanded="false" />
-                <marker date="1500369748412" expanded="true" signature="12208:12222" ph="..." />
-                <marker date="1500369748412" expanded="true" signature="14104:14141" ph="..." />
+                <marker date="1500372178931" expanded="true" signature="2259:2278" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tab3.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab3.js">
+      <file leaf-file-name="tab2.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="7" column="4" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+            <state relative-caret-position="894">
+              <caret line="958" column="13" lean-forward="false" selection-start-line="958" selection-start-column="13" selection-end-line="958" selection-end-column="13" />
+              <folding>
+                <marker date="1500371573223" expanded="true" signature="12208:12222" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="centerLabWorld.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/centerLabWorld.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="86">
+              <caret line="22" column="26" lean-forward="true" selection-start-line="22" selection-start-column="26" selection-end-line="22" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tab4.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="centerLab.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/centerLab.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="95">
+              <caret line="8" column="31" lean-forward="true" selection-start-line="8" selection-start-column="31" selection-end-line="8" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tab4.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab4.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="86">
-              <caret line="586" column="37" lean-forward="true" selection-start-line="586" selection-start-column="37" selection-end-line="586" selection-end-column="37" />
+            <state relative-caret-position="219">
+              <caret line="593" column="43" lean-forward="true" selection-start-line="593" selection-start-column="43" selection-end-line="593" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="left.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/left.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="314">
+              <caret line="26" column="49" lean-forward="true" selection-start-line="26" selection-start-column="49" selection-end-line="26" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -70,26 +99,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tab2.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/tab/tab2.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="146" column="94" lean-forward="false" selection-start-line="146" selection-start-column="72" selection-end-line="146" selection-end-column="94" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="centerLabWorld.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="33" column="48" lean-forward="false" selection-start-line="33" selection-start-column="48" selection-end-line="33" selection-end-column="48" />
+            <state relative-caret-position="133">
+              <caret line="37" column="14" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="14" />
               <folding>
                 <element signature="n#!!block;n#findSensorByLabCenetrTabAjaxWorld#0" expanded="false" />
                 <element signature="n#!!block;n#findSensorDataCenetrTabAjaxWorld#0" expanded="false" />
                 <element signature="n#!!block;n#randomLegendWorld#0" expanded="false" />
-                <element signature="n#!!block;n#dealSeriesDataWorld#0" expanded="false" />
                 <element signature="n#!!block;n#dealSeriesData2World#0" expanded="false" />
                 <element signature="n#!!block;n#joinSeriseWorld#0" expanded="false" />
                 <element signature="n#!!block;n#joinSeriseOtherWorld#0" expanded="false" />
@@ -99,16 +117,16 @@
                 <element signature="n#!!block;n#checkBoxValesWorld#0" expanded="false" />
                 <element signature="n#!!block;n#getChartsWorld1#0" expanded="false" />
                 <element signature="n#!!block;n#getChartsWorld2#0" expanded="false" />
-                <marker date="1500368947931" expanded="true" signature="13229:13295" ph="..." />
-                <marker date="1500368947931" expanded="true" signature="13440:13550" ph="..." />
-                <marker date="1500368947931" expanded="true" signature="13571:13614" ph="..." />
-                <marker date="1500368947931" expanded="true" signature="13676:13682" ph=" " />
-                <marker date="1500368947931" expanded="true" signature="13695:13710" ph="..." />
-                <marker date="1500368947931" expanded="true" signature="13806:13872" ph="..." />
-                <marker date="1500368947931" expanded="true" signature="14010:14120" ph="..." />
-                <marker date="1500368947931" expanded="true" signature="14141:14184" ph="..." />
-                <marker date="1500368947931" expanded="true" signature="14246:14252" ph=" " />
-                <marker date="1500368947931" expanded="true" signature="14265:14279" ph="..." />
+                <marker date="1500373165676" expanded="true" signature="13272:13338" ph="..." />
+                <marker date="1500373165676" expanded="true" signature="13483:13593" ph="..." />
+                <marker date="1500373165676" expanded="true" signature="13614:13657" ph="..." />
+                <marker date="1500373165676" expanded="true" signature="13719:13725" ph=" " />
+                <marker date="1500373165676" expanded="true" signature="13738:13753" ph="..." />
+                <marker date="1500373165676" expanded="true" signature="13849:13915" ph="..." />
+                <marker date="1500373165676" expanded="true" signature="14053:14163" ph="..." />
+                <marker date="1500373165676" expanded="true" signature="14184:14227" ph="..." />
+                <marker date="1500373165676" expanded="true" signature="14289:14295" ph=" " />
+                <marker date="1500373165676" expanded="true" signature="14308:14322" ph="..." />
               </folding>
             </state>
           </provider>
@@ -128,9 +146,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>symbol</find>
-      <find>$(&quot;#content&quot;)</find>
-      <find>shujuWajue_left_top_list</find>
       <find>海尔参与制定标准数</find>
       <find>cpk</find>
       <find>近12个月订单及时率趋势图</find>
@@ -158,6 +173,9 @@
       <find>myChart14</find>
       <find>shujuWajue_left_top</find>
       <find>center</find>
+      <find>全屏</find>
+      <find>myChart</find>
+      <find>中海</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -181,11 +199,15 @@
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/manyEcharts.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/centerLab.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/tab/tab2.html" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab2.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/css/tabs/tab2.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/css/tabs/tab4.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab4.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/left.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/js/statistics.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/centerLabWorld.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/css/centerLab.css" />
       </list>
     </option>
   </component>
@@ -196,7 +218,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
+    <option name="x" value="-114" />
     <option name="width" value="1382" />
     <option name="height" value="743" />
   </component>
@@ -286,6 +308,130 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="static" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -317,6 +463,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ulab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -439,10 +615,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19370000" />
+    <option name="totallyTimeSpent" value="21311000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1382" height="743" extended-state="0" />
+    <frame x="-114" y="0" width="1382" height="743" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23958333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -580,17 +756,9 @@
         <state relative-caret-position="212">
           <caret line="66" column="26" lean-forward="true" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
           <folding>
-            <marker date="1500366842932" expanded="true" signature="171:194" ph="..." />
-            <marker date="1500366842932" expanded="true" signature="8027:8039" ph="..." />
+            <marker date="1500371573640" expanded="true" signature="171:194" ph="..." />
+            <marker date="1500371573640" expanded="true" signature="8027:8039" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/left.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2603">
-          <caret line="137" column="51" lean-forward="false" selection-start-line="137" selection-start-column="44" selection-end-line="137" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -605,14 +773,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3743">
           <caret line="197" column="0" lean-forward="false" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/centerLabWorld.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="760" column="6" lean-forward="false" selection-start-line="760" selection-start-column="6" selection-end-line="760" selection-end-column="6" />
           <folding />
         </state>
       </provider>
@@ -675,14 +835,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/centerLab.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="22" column="1" lean-forward="false" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/statistics.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
@@ -714,14 +866,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/statistics.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="430" column="35" lean-forward="false" selection-start-line="430" selection-start-column="35" selection-end-line="430" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/ulab.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
@@ -748,6 +892,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-11467">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -855,47 +1000,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="33" column="48" lean-forward="false" selection-start-line="33" selection-start-column="48" selection-end-line="33" selection-end-column="48" />
-          <folding>
-            <element signature="n#!!block;n#findSensorByLabCenetrTabAjaxWorld#0" expanded="false" />
-            <element signature="n#!!block;n#findSensorDataCenetrTabAjaxWorld#0" expanded="false" />
-            <element signature="n#!!block;n#randomLegendWorld#0" expanded="false" />
-            <element signature="n#!!block;n#dealSeriesDataWorld#0" expanded="false" />
-            <element signature="n#!!block;n#dealSeriesData2World#0" expanded="false" />
-            <element signature="n#!!block;n#joinSeriseWorld#0" expanded="false" />
-            <element signature="n#!!block;n#joinSeriseOtherWorld#0" expanded="false" />
-            <element signature="n#!!block;n#mockXdataMethodWorld#0" expanded="false" />
-            <element signature="n#!!block;n#createEchartsWorld#0" expanded="false" />
-            <element signature="n#!!block;n#createLegendHtmlsWorld#0" expanded="false" />
-            <element signature="n#!!block;n#checkBoxValesWorld#0" expanded="false" />
-            <element signature="n#!!block;n#getChartsWorld1#0" expanded="false" />
-            <element signature="n#!!block;n#getChartsWorld2#0" expanded="false" />
-            <marker date="1500368947931" expanded="true" signature="13229:13295" ph="..." />
-            <marker date="1500368947931" expanded="true" signature="13440:13550" ph="..." />
-            <marker date="1500368947931" expanded="true" signature="13571:13614" ph="..." />
-            <marker date="1500368947931" expanded="true" signature="13676:13682" ph=" " />
-            <marker date="1500368947931" expanded="true" signature="13695:13710" ph="..." />
-            <marker date="1500368947931" expanded="true" signature="13806:13872" ph="..." />
-            <marker date="1500368947931" expanded="true" signature="14010:14120" ph="..." />
-            <marker date="1500368947931" expanded="true" signature="14141:14184" ph="..." />
-            <marker date="1500368947931" expanded="true" signature="14246:14252" ph=" " />
-            <marker date="1500368947931" expanded="true" signature="14265:14279" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="923" column="13" lean-forward="false" selection-start-line="923" selection-start-column="13" selection-end-line="923" selection-end-column="13" />
+        <state relative-caret-position="894">
+          <caret line="958" column="13" lean-forward="false" selection-start-line="958" selection-start-column="13" selection-end-line="958" selection-end-column="13" />
           <folding>
-            <element signature="n#!!block;n#statisticRightSeriesData#0" expanded="false" />
-            <element signature="n#!!block;n#abilityByProductLine#0" expanded="false" />
-            <marker date="1500369748412" expanded="true" signature="12208:12222" ph="..." />
-            <marker date="1500369748412" expanded="true" signature="14104:14141" ph="..." />
+            <marker date="1500371573223" expanded="true" signature="12208:12222" ph="..." />
           </folding>
         </state>
       </provider>
@@ -926,8 +1036,73 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab4.js">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="593" column="43" lean-forward="true" selection-start-line="593" selection-start-column="43" selection-end-line="593" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/left.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="26" column="49" lean-forward="true" selection-start-line="26" selection-start-column="49" selection-end-line="26" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/statistics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="77">
+          <caret line="569" column="33" lean-forward="true" selection-start-line="569" selection-start-column="33" selection-end-line="569" selection-end-column="33" />
+          <folding>
+            <marker date="1500372178931" expanded="true" signature="2259:2278" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="37" column="14" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="14" />
+          <folding>
+            <element signature="n#!!block;n#findSensorByLabCenetrTabAjaxWorld#0" expanded="false" />
+            <element signature="n#!!block;n#findSensorDataCenetrTabAjaxWorld#0" expanded="false" />
+            <element signature="n#!!block;n#randomLegendWorld#0" expanded="false" />
+            <element signature="n#!!block;n#dealSeriesData2World#0" expanded="false" />
+            <element signature="n#!!block;n#joinSeriseWorld#0" expanded="false" />
+            <element signature="n#!!block;n#joinSeriseOtherWorld#0" expanded="false" />
+            <element signature="n#!!block;n#mockXdataMethodWorld#0" expanded="false" />
+            <element signature="n#!!block;n#createEchartsWorld#0" expanded="false" />
+            <element signature="n#!!block;n#createLegendHtmlsWorld#0" expanded="false" />
+            <element signature="n#!!block;n#checkBoxValesWorld#0" expanded="false" />
+            <element signature="n#!!block;n#getChartsWorld1#0" expanded="false" />
+            <element signature="n#!!block;n#getChartsWorld2#0" expanded="false" />
+            <marker date="1500373165676" expanded="true" signature="13272:13338" ph="..." />
+            <marker date="1500373165676" expanded="true" signature="13483:13593" ph="..." />
+            <marker date="1500373165676" expanded="true" signature="13614:13657" ph="..." />
+            <marker date="1500373165676" expanded="true" signature="13719:13725" ph=" " />
+            <marker date="1500373165676" expanded="true" signature="13738:13753" ph="..." />
+            <marker date="1500373165676" expanded="true" signature="13849:13915" ph="..." />
+            <marker date="1500373165676" expanded="true" signature="14053:14163" ph="..." />
+            <marker date="1500373165676" expanded="true" signature="14184:14227" ph="..." />
+            <marker date="1500373165676" expanded="true" signature="14289:14295" ph=" " />
+            <marker date="1500373165676" expanded="true" signature="14308:14322" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/centerLabWorld.html">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="86">
-          <caret line="586" column="37" lean-forward="true" selection-start-line="586" selection-start-column="37" selection-end-line="586" selection-end-column="37" />
+          <caret line="22" column="26" lean-forward="true" selection-start-line="22" selection-start-column="26" selection-end-line="22" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/centerLab.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="8" column="31" lean-forward="true" selection-start-line="8" selection-start-column="31" selection-end-line="8" selection-end-column="31" />
           <folding />
         </state>
       </provider>
