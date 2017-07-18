@@ -1,5 +1,4 @@
 
-
 var axisLabel = {
     margin: 3 * bodyScale,
     show: true,
