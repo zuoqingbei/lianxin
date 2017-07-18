@@ -241,7 +241,6 @@ function sphereRTnumberShow(n) {
          $flatLTnumber.html(newStr);
          break;
          }
-
          }
          */
     }
