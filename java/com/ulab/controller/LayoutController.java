@@ -60,13 +60,5 @@ public class LayoutController extends BaseController {
 	public void full() {
 		render("fullScreen_map.html");
 	}
-	public void tab2() {
-		render("tab/tab2.html");
-	}
-	public void tab3() {
-		render("tab/tab3.html");
-	}
-	public void tab4() {
-		render("tab/tab4.html");
-	}
+
 }

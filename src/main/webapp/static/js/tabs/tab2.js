@@ -867,7 +867,7 @@ function abilityStatus() {
         myChart3.setOption({
             yAxis: [
                 {
-                    name: "数量",
+                    name: "标准数",
                     type: 'value',
                     max: maxNum,
                     nameGap: nameGap,
@@ -904,6 +904,7 @@ function abilityStatus() {
                         normal: {
                             show: true,
                             position: 'top',
+                            offset:[0,10],  //数字进行偏移
                             textStyle: {
                                 fontSize: 25 * bodyScale,
                                 color: '#ff9933'
