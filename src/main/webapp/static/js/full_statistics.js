@@ -392,6 +392,7 @@ function labPropertiesStatis(){
 	            {
 	                name: '专业能力',
 	                type:'bar',
+					barWidth:110,
 	                // type: 'pictorialBar',
 //	                barGap: '10%',
 // 	                symbolRepeat: true,
@@ -430,17 +431,17 @@ function labLifeCycleStatis(){
 	            right: '10%',
 	            // top:"35%,",
 				bottom:"2%",
-				y:"25%"
+				top:"15%"
 	        },
 	        legend: {
-	        	   data:['实验室数量','检测订单量'],
+	        	   data:['实验室数量','检测订单量(百万)'],
 	               textStyle:{
 	                   fontSize: bodyScale*12
 	               },
 	               itemWidth: bodyScale*11,
 	               itemHeight: bodyScale*11,
-                padding: [5, 5, 12*bodyScale],
-                // top:-6*bodyScale
+				   itemGap:290,
+                   padding: [3, 12*bodyScale]
 	        },
 	        xAxis: [
 	            {
@@ -467,7 +468,7 @@ function labLifeCycleStatis(){
 	        yAxis: [
 	            {
 	            	type: 'value',
-	            	name: '实验室数量     ',
+	            	name: '',
                     nameTextStyle:{
 	            		fontSize:bodyScale*10
                     },
@@ -493,7 +494,7 @@ function labLifeCycleStatis(){
 	                }
 	            },{
 	            	 type: 'value',
-	                 name: '检测订单量(百万)',
+	                 name: '',
                     nameTextStyle:{
                         fontSize:bodyScale*10
                     },
@@ -559,7 +560,7 @@ function labLifeCycleStatis(){
                     },
                 },
 	            {
-	                name:'检测订单量',
+	                name:'检测订单量(百万)',
                     symbol:"circle",
 	                type:'line',
 	                yAxisIndex: 1,

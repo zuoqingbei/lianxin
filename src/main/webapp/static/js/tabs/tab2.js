@@ -937,7 +937,7 @@ function abilityStatus() {
                 {
                     // symbolSize: ['60%', '10%'],
                     barWidth: "30%",
-                    data: statisticRightSeriesData(data.data),
+                    data: statisticRightSeriesDataAbl(data.data),
                     label: {
                         normal: {
                             show: true,
@@ -962,7 +962,11 @@ function statisticRightLengend2(data) {
         name=name.replace("数","能力");
         legnend.push(name);
     });
-    return legnend;
+    var l=[];
+    l.push(legnend[0]);
+    l.push(legnend[2]);
+    l.push(legnend[1]);
+    return l;
 }
 
 function statisticRightSeriesData(data) {
@@ -975,7 +979,20 @@ function statisticRightSeriesData(data) {
     });
     return series;
 }
-
+function statisticRightSeriesDataAbl(data) {
+    var series = [];
+    $.each(data, function (index, item) {
+        var obj = new Object();
+        obj.value = item.count;
+        // obj.symbol = bar_chip;
+        series.push(obj);
+    });
+    var s=[];
+    s.push(series[0]);
+    s.push(series[2]);
+    s.push(series[1]);
+    return s;
+}
 
 function abilityByProductLine() {
     $.post(contextPath + '/lab/abilityByProductLineAjax', {}, function (data) {

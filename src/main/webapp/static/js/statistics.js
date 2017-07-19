@@ -462,6 +462,7 @@ function labPropertiesStatis(){
 	            {
 	                name: '专业能力',
 	                type:'bar',
+					barWidth:50,
 // 	                type: 'pictorialBar',
 //	                barGap: '10%',
 // 	                symbolRepeat: true,
@@ -581,7 +582,7 @@ function labLifeCycleStatis(){
 	        grid: {
 	            left:"10%",
 	            right: '10%',
-	            top:"30%",
+	            top:"25%",
 				bottom:"2%"
 	        },
 	        legend: {

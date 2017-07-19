@@ -31,6 +31,10 @@
 .echart_tip.left.top > .echart_content {
     bottom: 3.3em;
     right: 2.05em;
+    background-color: black;
+    padding-top: 0.5em;
+    font-family: "Microsoft Yahei", "微软雅黑";
+    font-size: 2em;
 }
 
 .echart_tip.left.top > .echart_tip_arrow {
@@ -56,7 +60,7 @@
 
 .echart_tip.left.bottom > .echart_content {
     bottom: 4.8em;
-    right: 2em;
+    right: 2.15em;
 }
 
 .echart_tip.left.bottom > .echart_tip_arrow {
@@ -70,6 +74,7 @@
 .echart_tip.right.bottom > .echart_content {
     bottom: 4.8em;
     right: -6.4em;
+    background-color: black;
 }
 
 .echart_tip.right.bottom > .echart_tip_arrow {
@@ -82,25 +87,29 @@
 
 .echart_tip.bottom > .dialog_title.echart_content {
     top: auto;
-    bottom: -3.3em;
+    bottom: -3.4em;
+    font-size:2em;
+    background-color: black;
+    padding-top: 0.5em;
+    font-family: "Microsoft Yahei", "微软雅黑";
 }
 
 .dialog_title {
-    border-bottom: 1px #00B2F8 solid;
-    color: #cccccc;
-    padding-left: 0.8em;
+    border-bottom: 0.15em #fff solid;
+    color: #fff;
+    /*padding-left: 0.8em;*/
     padding-bottom: 0.3125em;
     position: absolute;
-    width: 7.7em;
-    font-size: 1.2em;
-    text-align: left;
+    width: 12em;
+    font-size: 2em;
+    text-align: center;
     z-index: 10;
     text-shadow: 0.143em 0.143em 0.143em rgba(0, 0, 0, 0.9);
 }
 
 .dialog_title > a {
     color: #ffffff;
-    font-size: 0.8em;
+    /*font-size: 2em;*/
     line-height: 1.6em;
     /*max-height: 2em;*/
     display: block;
@@ -110,10 +119,11 @@
     -webkit-box-orient: vertical;
     /*-webkit-line-clamp: 2;*/
     overflow: hidden;
+    text-decoration: none;
 }
 
 .dialog_label {
-    border: 1px #00B2F8 solid;
+    border: 0.1em #00B2F8 solid;
     z-index: 10;
     padding: 0.8em;
     position: absolute;
@@ -123,7 +133,7 @@
     line-height: 1.4em;
     max-height: 2.8em;
     color: #afff00;
-    font-size: 1.285em;
+    /*font-size:2em;*/
     display: block;
     display: -webkit-box;
     text-overflow: ellipsis;
@@ -131,6 +141,7 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+    text-decoration: none;
 }
 
 .echart_tip_arrow {
@@ -145,17 +156,17 @@
     width: 2em;
     height: 2em;
     border-radius: 100%;
-    border: 0.14em solid #00B2F8;
+    border: 0.2em solid #00B2F8;
     position: absolute;
     top: -1.2em;
     left: -1.2em;
 }
 
 .echart_tip_arrow > .echart_tip_line {
-    height: 3.5em;
-    left: 0;
-    top: -4.7em;
-    border-left: 1px solid #00B2F8;
+    height: 3.6em;
+    left: 0px;
+    top: -4.8em;
+    border-left: 0.2em solid #fff;
     position: absolute;
 }
 

@@ -536,6 +536,7 @@ function communistStatisticForMonthForTab4Ajax(){
 		        // symbolRepeat: true,
 		        // symbolSize: ['80%', '60%'],
 		        barCategoryGap: '40%',
+				barWidth:60,
                 data: statisticRightSeriesTab4Data(data[0])
 		        // data: statisticRightSeriesTab4Data(data[0],bar_chip)
 		    }, {
@@ -544,6 +545,7 @@ function communistStatisticForMonthForTab4Ajax(){
                 // type: 'pictorialBar',
 		        barGap: '10%',
 		        label: labelSetting,
+                barWidth:60,
 		        // symbolRepeat: true,
 		        // symbolSize: ['80%', '60%'],
                 data: statisticRightSeriesTab4Data(data[1])
