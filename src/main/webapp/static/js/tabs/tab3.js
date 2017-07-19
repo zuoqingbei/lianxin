@@ -1009,7 +1009,7 @@ function tab3OrderRateLengend(data) {
 		 $("#tab3_user_my_hb").html(htmls_hb);
 		 $("#tab3_user_my_tq").html(htmls_tq);*/
 		 var h='';
-		 h+='当年用户满意度 <strong class="orange">'+data.tq+'%</strong> ,';
+		 h+='当月用户满意度 <strong class="orange">'+data.tq+'%</strong> ,';
 		 if(parseFloat(data.change_num)<0){
 			 h+='同比下降';
 		 }else{
@@ -1200,7 +1200,7 @@ function tab3OrderRateLengend(data) {
 		 $("#order_year_rate_2016").html(h_2016);
 		 $("#order_year_rate_2017").html(h_2017);*/
 		 var h='';
-		 h+='当年订单及时率 <strong class="orange tab3_new_order_rate">'+rate2017+'%</strong> ,';
+		 h+='当订月单及时率 <strong class="orange tab3_new_order_rate">'+rate2017+'%</strong> ,';
 		 if(parseFloat(change)<0){
 			 h+='同比上升';
 		 }else{
