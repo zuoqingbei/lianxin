@@ -452,6 +452,7 @@
     text-align: center;
     padding-top: 10%;
     font-size: 1.2em;
+    cursor: pointer;
 }
 
 #tab2  .biaozhun_tabs_unselected {

@@ -19,3 +19,10 @@
     width: 100%;
     overflow: hidden;
 }
+.labMain_content_country .zhbr_lab h3.lab_title {
+    top: 1%;
+    left: 8.8%;
+    font-size: 1.8em;
+    width: 12%;
+    text-align: center;
+}
