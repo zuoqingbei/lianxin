@@ -306,7 +306,7 @@
 
 #l .flat-footer{
     margin:0 auto;
-    height:100%;
+    height:15%;
     width:100%;
 }
 
@@ -612,7 +612,7 @@
     width: 92%;
     margin: 0;
     position: absolute;
-    top: 66%;
+    top: 64%;
     left: 4%;
 }
 #l .flat-right-bottom .myChart .myChart_num li{

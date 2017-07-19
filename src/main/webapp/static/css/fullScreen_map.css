@@ -120,7 +120,7 @@
 #l.fullScreen_map .flat .mapArea iframe {
     height: 142%;
     width: 100%;
-    left: 44%;
+    left: 35%;
 }
 #l.fullScreen_map .flat-footer .legend{
     z-index: 9999;

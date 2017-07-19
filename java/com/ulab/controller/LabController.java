@@ -530,8 +530,9 @@ public class LabController extends BaseController {
     public void communistStatisticForMonthForTab1Ajax(){
     	String plCode=getPara("plCode","");
     	String labTypeCode=getPara("labTypeCode","");
-    	String startDate=getPara("startDate","201601");
-    	String endDate=getPara("endDate","201612");
+    	String startDate=getPara("startDate","201701");
+    	String endDate=getPara("endDate","");
+    	//endDate=dealEndTime(endDate);
     	List<List<Record>> list=new ArrayList<List<Record>>();
     	list.add(CommunistModel.dao.communistStatisticForMonth(startDate, endDate, plCode, labTypeCode, "1"));
     	list.add(CommunistModel.dao.communistStatisticForMonth(startDate, endDate, plCode, labTypeCode, "2"));
