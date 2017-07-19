@@ -15,12 +15,12 @@
 		</dependency>
 	
 	<!-- 如果用main方法启动项目 需要放开jetty-server -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.jfinal</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>8.1.8</version>
 			<scope>provide</scope>
-		</dependency> -->
+		</dependency>
 		<dependency>
 		    <groupId>com.jfinal</groupId>
 		    <artifactId>jfinal-ext</artifactId>
