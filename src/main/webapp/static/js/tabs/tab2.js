@@ -453,7 +453,7 @@ function personForTab2Ajax(myChartIds, type, divisor) {
         myChart25.setOption({
             grid: {
                 right: "1%",
-                bottom: "10%",
+                bottom: "20%",
                 left: (type == 1 ? "22%" : '8%'),
                 top: "4%"
             },
@@ -927,7 +927,7 @@ function abilityStatus() {
             grid: {
                 x: '8%',
                 x2: '5%',
-                y: '12%',
+                y: '14%',
                 y2: '12%'
             },
             series: [
@@ -939,7 +939,7 @@ function abilityStatus() {
                         normal: {
                             show: true,
                             position: 'top',
-                            offset:[0,10],  //数字进行偏移
+                            offset:[0,-10],  //数字进行偏移
                             textStyle: {
                                 fontSize: 25 * bodyScale,
                                 color: '#ff9933'
@@ -956,6 +956,7 @@ function statisticRightLengend2(data) {
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
+        name=name.replace("数","能力");
         legnend.push(name);
     });
     return legnend;

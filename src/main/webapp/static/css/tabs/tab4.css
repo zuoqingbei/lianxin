@@ -39,6 +39,8 @@
 .shujuWajue_left > .shujuWajue_left_top {
     font-size: 1.1em;
     flex: .7;
+    height: 34%;
+    /*margin-bottom: 3%;*/
 }
 
 .shujuWajue_left_top h3 {
@@ -55,12 +57,16 @@
 .shujuWajue_left_top_list > div {
     float: left;
     padding: 0.5%;
+    /*margin-top: 1%;*/
+
 }
 
 .shujuWajue_left_top_list > form {
     float: left;
     width: 60%;
     background-color: transparent;
+    /*margin-top: 1%;*/
+
 }
 
 .shujuWajue_left_top_list select {
@@ -69,8 +75,8 @@
 }
 
 .shujuWajue_left_bottom {
-    height: 70%;
-    margin-top: 2.5%;
+    height: 66%;
+    margin-top: 4%;
 }
 
 /*此處用flex總是出問題*/
@@ -85,7 +91,7 @@
 
 .shujuWajue_left_bottom_cpk {
     width: 32%;
-    margin-left: 3%;
+    margin-left: 7%;
 }
 
 .shujuWajue_left_bottom p.result {
@@ -97,13 +103,11 @@
 }
 
 #myChart14 {
-    height: 82%;
+    height: 80%;
 }
-
-#myChart16 {
-    height: 90%;
+#myChart16{
+    height:90%;
 }
-
 #myChart15,
 #myChart15_2 {
     height: 46%;

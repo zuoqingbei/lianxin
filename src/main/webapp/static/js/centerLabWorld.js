@@ -36,16 +36,17 @@ var labImgs=["../static/img/labMain/Japan.jpg","../static/img/labMain/NewZealand
 //'#labName'    实验室标题名
 //'#labnameIcon'  实验室标题名按钮
 //'#secondName'  实验室名小标题
-var labname=['日本实验室','泰国实验室','新西兰实验室']
+var labname=["日本实验室","泰国实验室","新西兰实验室"];
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorld(type){
-	console.log(labInfos[type])
+	// console.log(labInfos[type])
 	 $(".labMain_cblt_tone").html("<h3>基本介绍</h3>"+"<p style:'font-size:1.3em'>"+labInfos[type]+"</p>");
 	 $(".labMain_cblt_ttwo img").attr("src",labImgs[type]);
-     $('#labName').html(labname[type]);
-    $('#labnameIcon').html(labname[type]);
-    $('#secondName').html(labname[type]);
-	 var htmls="";
+     $("#labName").html(labname[type]);
+     console.log(labname[type])
+    $("#labnameIcon").html(labname[type]);
+    $("#secondName").html(labname[type]);
+    var htmls="";
      //console.log(data)
 	 if(type==0){
 		 //日本
@@ -205,8 +206,8 @@ function dealSeriesDataWorld(){
 			}
 		}
 	}
-	console.log(seriesTopDataWorld)
-	console.log(xDataWorld)
+	// console.log(seriesTopDataWorld)
+	// console.log(xDataWorld)
 };
 //处理线series
 function dealSeriesData2World(obj){

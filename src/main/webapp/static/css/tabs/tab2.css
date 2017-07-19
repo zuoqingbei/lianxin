@@ -450,7 +450,7 @@
     height: 15%;
     margin: 23% auto;
     text-align: center;
-    padding-top: 9%;
+    padding-top: 10%;
     font-size: 1.2em;
 }
 
@@ -463,7 +463,7 @@
 #tab2  .biaozhun_tabs_selected {
     background: url("../../img/tab2/btn-select.png") no-repeat;
     background-size: 100% 100%;
-    color: #66ffcc;
+    color: #00e673;
 }
 
 #tab2  .nengli_top {
