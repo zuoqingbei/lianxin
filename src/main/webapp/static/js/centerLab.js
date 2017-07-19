@@ -934,7 +934,7 @@ function getCharts1() {
     myChart1.setOption({
         series:getAnimation(seriesTopData)
     });
-   // intevalChart1=setInterval("intervalChangeData()", 30000);b
+    intevalChart1=setInterval("intervalChangeData()", 30000);
    /* setInterval(function () {
    	 var preStart=myChart1.getOption().dataZoom[0].start;
    	 var preEnd=myChart1.getOption().dataZoom[0].end;

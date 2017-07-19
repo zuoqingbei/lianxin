@@ -56,6 +56,7 @@ a, a:hover {
     color: #66CCFE;
     text-align: center;
     line-height: 2em;
+     /* font-weight:700; */
 }
 .labMain_ct_btn{
     position: absolute;
