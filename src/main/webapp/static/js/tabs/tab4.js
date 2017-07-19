@@ -484,10 +484,11 @@ var mHeightChartTab4=$('#myChart16').highcharts({
 }).highcharts();
 //根据类型 时间 统计共产 一致个月份数量
 function communistStatisticForMonthForTab4Ajax(){
-	$.post(contextPath+'/lab/communistStatisticForMonthForTab1Ajax',{},function(data){
+	$.post(contextPath+'/lab/communistStatisticForMonthForTab1Ajax',{"startDate":"201601","endDate":"201607"},function(data){
 		var myChart18 = echarts.init(document.getElementById("myChart18"));
 		right_echarts.push(myChart18);
 		myChart18.setOption(getBarEcharts());
+		console.log(data)
 		myChart18.setOption({
 		    color: ['#2b64f6', '#66ccff'],
 		    legend: {
@@ -524,7 +525,7 @@ function communistStatisticForMonthForTab4Ajax(){
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
 		            type: 'category',
-		            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		            data: ["17/01", "17/02", "17/03", "17/04", "17/05", "17/06", "17/07"]
 		        }
 		    ],
 		    series: [{

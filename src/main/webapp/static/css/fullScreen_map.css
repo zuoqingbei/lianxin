@@ -13,7 +13,7 @@
 
 #l.fullScreen_map header h1{
     line-height: 1.2em;
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 #l.fullScreen_map header h1:nth-of-type(2) {
     padding-top: 0;
@@ -73,10 +73,10 @@
 }
 #l.fullScreen_map header .mainLogo{
     background-image: url(../img/logo_haier_bold.png);
-    width: 3.3%;
-    height: 6.5%;
+    width: 4%;
+    height: 7%;
     top: 2.6%;
-    left: 39.7%;
+    left: 39%;
 }
 #l.fullScreen_map h1:nth-of-type(1) {
     margin: 0 auto 0;
@@ -120,7 +120,7 @@
 #l.fullScreen_map .flat .mapArea iframe {
     height: 142%;
     width: 100%;
-    left: 44%;
+    left: 35%;
 }
 #l.fullScreen_map .flat-footer .legend{
     z-index: 9999;

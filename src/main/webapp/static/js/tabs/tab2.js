@@ -433,6 +433,9 @@ function personForTab2Ajax(myChartIds, type, divisor) {
                    });
             }
         });
+    	if(type==3){
+    		xData.reverse();
+    	}
         for (var x = preYdata.length - 1; x >= 0; x--) {
             yData.push(preYdata[x]);
         }

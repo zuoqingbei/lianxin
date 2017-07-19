@@ -14,7 +14,7 @@ var pathSymbols = {
 //进入时的视频淡出效果，开发时注掉下面这些代码
 function videoFadeOut() {
     $("body").prepend('<div id="mask" style="background-color: black">' +
-        '<video src="' + contextPath + '/static/img/movieHead_4480.mp4"  width="' + pageW + '" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
+        '<video src="' + contextPath + '/static/img/movieHead_4480.ogv"  width="' + pageW + '" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
         '</div>'
     );
     var $video = $('video');
@@ -262,8 +262,9 @@ function sphereRBscroll() {
 
 $(function () {
     //进入时的视频淡出效果，开发时注掉下面这一行和被调用的代码
-    // videoFadeOut();
-
+    if(fromPage!="fullScreen"){
+        videoFadeOut();
+    }
     //调整字符云页面的文字大小
     // document.getElementById("wordCloud").contentWindow.resizeText(bodyScale);
     // wordCloud.window.resizeText(bodyScale);
