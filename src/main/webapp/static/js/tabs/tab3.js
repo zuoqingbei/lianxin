@@ -898,7 +898,7 @@ function tab3OrderRateLengend(data) {
 		var pre=((parseFloat(data[0].zj)+parseFloat(data[0].mk))/2).toFixed(1);
 		var change=(parseFloat(cur)-parseFloat(pre)).toFixed(1);
 		var h='';
-		h+=' 当年问题闭环率 <strong class="orange">'+cur+'%</strong><br>';
+		h+=' 本年问题闭环率 <strong class="orange">'+cur+'%</strong><br>';
 		if(change<0){
 			h+='同比下降';
 		}else{
@@ -1009,7 +1009,7 @@ function tab3OrderRateLengend(data) {
 		 $("#tab3_user_my_hb").html(htmls_hb);
 		 $("#tab3_user_my_tq").html(htmls_tq);*/
 		 var h='';
-		 h+='当月用户满意度 <strong class="orange">'+data.tq+'%</strong> ,';
+		 h+='本月用户满意度 <strong class="orange">'+data.tq+'%</strong> ,';
 		 if(parseFloat(data.change_num)<0){
 			 h+='同比下降';
 		 }else{
@@ -1112,7 +1112,7 @@ function tab3OrderRateLengend(data) {
 		 $("#once_pass_rate_mk").html(mk);*/
 			var cur=((parseFloat(data[0].rate)+parseFloat(data[1].rate))/2).toFixed(1);
 			var h='';
-			h+=' 当年一次合格率 <strong class="orange">'+cur+'%</strong><br>';
+			h+='本年一次合格率 <strong class="orange">'+cur+'%</strong><br>';
 			h+='同比上升';
 			h+=' <strong class="orange">3.5%</strong>';
 			$(".new_hg_rate_tab3").html(h);
@@ -1200,7 +1200,7 @@ function tab3OrderRateLengend(data) {
 		 $("#order_year_rate_2016").html(h_2016);
 		 $("#order_year_rate_2017").html(h_2017);*/
 		 var h='';
-		 h+='当订月单及时率 <strong class="orange tab3_new_order_rate">'+rate2017+'%</strong> ,';
+		 h+='本月订单及时率 <strong class="orange tab3_new_order_rate">'+rate2017+'%</strong> ,';
 		 if(parseFloat(change)<0){
 			 h+='同比上升';
 		 }else{

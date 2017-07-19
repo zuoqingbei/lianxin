@@ -306,7 +306,7 @@
 
 #l .flat-footer{
     margin:0 auto;
-    height:15%;
+    height:17%;
     width:100%;
 }
 
@@ -569,7 +569,8 @@
     font-size: .8em;
 }
 #l .flat-left-bottom div.added{
-    padding-left: 8%;
+    padding-left: 1.1%;
+    font-size: 0.9em;
 }
 #l .flat-left-bottom p span:nth-of-type(1){
     left:6.25%;
