@@ -38,7 +38,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="352">
               <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="16" />
-              <folding />
+              <folding>
+                <marker date="1500514752370" expanded="true" signature="1322:1351" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -61,8 +63,12 @@
             <state relative-caret-position="22">
               <caret line="30" column="1" lean-forward="false" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
               <folding>
-                <marker date="1500447880883" expanded="true" signature="343:366" ph="..." />
-                <marker date="1500447880883" expanded="true" signature="7814:7826" ph="..." />
+                <marker date="1500514752386" expanded="true" signature="343:366" ph="..." />
+                <marker date="1500514752386" expanded="true" signature="7814:7826" ph="..." />
+                <marker date="1500514752386" expanded="true" signature="9013:10182" ph="{...}" />
+                <marker date="1500514752386" expanded="true" signature="9023:9165" ph="//..." />
+                <marker date="1500514752386" expanded="true" signature="9397:9558" ph="//..." />
+                <marker date="1500514752386" expanded="true" signature="9560:10179" ph="/*...*/" />
               </folding>
             </state>
           </provider>
@@ -650,12 +656,12 @@
       <workItem from="1500366015314" duration="7901000" />
       <workItem from="1500444488656" duration="1080000" />
       <workItem from="1500446539201" duration="3857000" />
-      <workItem from="1500513360569" duration="953000" />
+      <workItem from="1500513360569" duration="1222000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="524943000" />
+    <option name="totallyTimeSpent" value="525212000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1035,7 +1041,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
           <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="16" />
-          <folding />
+          <folding>
+            <marker date="1500514752370" expanded="true" signature="1322:1351" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1064,8 +1072,12 @@
         <state relative-caret-position="22">
           <caret line="30" column="1" lean-forward="false" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
           <folding>
-            <marker date="1500447880883" expanded="true" signature="343:366" ph="..." />
-            <marker date="1500447880883" expanded="true" signature="7814:7826" ph="..." />
+            <marker date="1500514752386" expanded="true" signature="343:366" ph="..." />
+            <marker date="1500514752386" expanded="true" signature="7814:7826" ph="..." />
+            <marker date="1500514752386" expanded="true" signature="9013:10182" ph="{...}" />
+            <marker date="1500514752386" expanded="true" signature="9023:9165" ph="//..." />
+            <marker date="1500514752386" expanded="true" signature="9397:9558" ph="//..." />
+            <marker date="1500514752386" expanded="true" signature="9560:10179" ph="/*...*/" />
           </folding>
         </state>
       </provider>
