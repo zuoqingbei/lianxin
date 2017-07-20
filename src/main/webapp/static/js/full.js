@@ -14,7 +14,7 @@ var pathSymbols = {
 //进入时的视频淡出效果，开发时注掉下面这些代码
 function videoFadeOut() {
     $("body").prepend('<div id="mask" style="background-color: black">' +
-        '<video src="' + contextPath + '/static/img/movieHead_4480.ogv"  width="' + pageW + '" height="100%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
+        '<video src="' + contextPath + '/static/img/movieHead_4480.ogv"  width="' + pageW*1.04 + '" height="105%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
         '</div>'
     );
     var $video = $('video');

@@ -121,7 +121,9 @@ h3 {
 
 video{
   position: relative;
-  left: -12%;
+  /*为了让视频溢出水印*/
+  left: -2%;
+  top: -3%;
 }
 
  @media screen and (min-width: 960px){
