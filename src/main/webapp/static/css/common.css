@@ -1,163 +1,160 @@
 /* global CssReset*/
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
-*{
-  padding: 0;
-  margin: 0;
+
+* {
+    padding: 0;
+    margin: 0;
 }
-body,html{
-  width: 100%;
-  height: 100%;
-  font-family: "Microsoft yahei", "微软雅黑", "Source Sans Pro", "Helvetica Neue", 'Helvetica', 'Arial',sans-serif;
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: "Microsoft yahei", "微软雅黑", "Source Sans Pro", "Helvetica Neue", 'Helvetica', 'Arial', sans-serif;
 }
+
 fieldset, img {
-  border: 0;
+    border: 0;
 }
+
 iframe {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-y: hidden;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-y: hidden;
 }
+
 ul, ol, dl, li, dt, dd {
-  list-style: none;
+    list-style: none;
 }
+
 h1, h2, h3, h4, h5, h6 {
-  font-size: 100%;
-  line-height: 1;
-  font-weight: normal;/*这里是新增的*/
+    font-size: 100%;
+    line-height: 1;
+    font-weight: normal; /*这里是新增的*/
 }
+
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
+
 a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
+
 h3 {
-  display: block;
-  -webkit-margin-before: 0em;
-  -webkit-margin-after: 0em;
-  -webkit-margin-start: 0em;
-  -webkit-margin-end: 0em;
-  /*font-weight: bold;*/
+    display: block;
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+    -webkit-margin-start: 0em;
+    -webkit-margin-end: 0em;
+    /*font-weight: bold;*/
 }
 
 /*定义公共样式*/
 
-@font-face {/*fontinSansCR常规*/
-  font-family: DIGITAL-Regular;
-  src: url('../asserts/fonts/DIGITAL-Regular.ttf') format("truetype");
-  font-weight: normal;
+@font-face {
+    /*fontinSansCR常规*/
+    font-family: DIGITAL-Regular;
+    src: url('../asserts/fonts/DIGITAL-Regular.ttf') format("truetype");
+    font-weight: normal;
 }
-.clear:after{/*清除浮动*/
-  content: "";
-  display: block;
-  clear: both;
-  visibility: hidden;
-  height: 0;
+
+.clear:after { /*清除浮动*/
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
 }
-.clear{
-  zoom: 1;/*为解决IE6，IE7的兼容性问题*/
+
+.clear {
+    zoom: 1; /*为解决IE6，IE7的兼容性问题*/
 }
-.hidden{
-  display: none;
+
+.hidden {
+    display: none;
 }
-.fl{
-  float: left;
+
+.fl {
+    float: left;
 }
-.fr{
-  float: right;
+
+.fr {
+    float: right;
 }
-.placeHolder{/*拖动时放置位置的背景色*/
-  background-color: rgba(0, 255, 167, 0.29);
+
+.placeHolder { /*拖动时放置位置的背景色*/
+    background-color: rgba(0, 255, 167, 0.29);
 }
 
 /*整个页面布局*/
-#content{
-  display: flex;
-  height:100%;
-  /*width:100%;*/
-  /*background-color: #04032d;*/
-   background: url("../img/bg-2.jpg") no-repeat;
-   background-size: 100% 100%;
-  /*float: left;*/
-  /*background-color: #0a1f35;*/
-  /*background-color: #000208;*/
-  /*background-color: #04032d;*/
-}
-@media (min-width: 13000px) {
-  #content{
-    width:100%;
-  }
+#content {
+    display: flex;
+    height: 100%;
+    /*width:100%;*/
+    /*background-color: #04032d;*/
+    background: url("../img/bg-2.jpg") no-repeat;
+    background-size: 100% 100%;
+    /*float: left;*/
+    /*background-color: #0a1f35;*/
+    /*background-color: #000208;*/
+    /*background-color: #04032d;*/
 }
 
-#content>div{
-  position: relative;
-  /*outline: 1px dashed #ccc;*/
-  outline-offset: -1px;
-  overflow: hidden;
-}
-#l{
-  flex: 3;
-  /*background-color: rgba(205, 92, 92, 0.29);*/
-}
-#r{
-  flex: 4;
-  /*background-color: rgba(135, 206, 235, 0.28);*/
+#content > div {
+    position: relative;
+    outline-offset: -1px;
+    overflow: hidden;
 }
 
-#mask{
-  position: fixed;
-  width:100%;
-  height:100%;
-  z-index: 999999;
-/*   background: url("../img/bg_star2.jpg"); */
-  background-color:#000;
-  background-size: 100% 100%;
+#l {
+    flex: 3;
+    /*background-color: rgba(205, 92, 92, 0.29);*/
 }
 
-video{
-  position: relative;
-  /*为了让视频溢出水印*/
-  left: -2%;
-  top: -3%;
+#r {
+    flex: 4;
+    /*background-color: rgba(135, 206, 235, 0.28);*/
 }
 
- @media screen and (min-width: 960px){
-  body{
-    font-size: 11.2px;
-  }
-}
-@media screen and (min-width: 1366px){
-  body{
-    font-size: 14px;
-  }
-}
-
-@media screen and (min-width: 1440px){
-  body{
-    font-size: 16.8px;
-  }
+#mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    /*   background: url("../img/bg_star2.jpg"); */
+    background-color: #000;
+    background-size: 100% 100%;
 }
 
-@media screen and (min-width: 1920px){
-  body{
-    font-size: 22.5px;
-  }
+video {
+    position: relative;
+    /*为了让视频溢出水印*/
+    left: -2%;
+    top: -3%;
 }
 
-@media screen and (min-width: 2560px){
-  body{
-    font-size: 30px;
-  }
-} 
 
-@media screen and (min-width: 13440px){
-  body{
-    font-size: 157px;
-  }
+/*修改页面切换时的白底色以及柔和过度*/
+
+@media all {
+    @keyframes webEase {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    body {
+        background-color:#04032d;
+        animation-name: webEase;
+        animation-duration: 2s;
+        transition-timing-function: ease;
+    }
 }
 

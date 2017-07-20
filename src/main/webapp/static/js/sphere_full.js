@@ -29,6 +29,7 @@ function mapSphere() {
 
 
             opts = {
+                // grid:{backgroundColor:"red"},
                 title: {
                     show: true,
                     // text: '全球实验中心互联，加速产品迭代升级，创用户最佳体验',
@@ -250,6 +251,7 @@ function mapSphere() {
                             }
                         }
                     }],
+                    // background:"../img/bg_04032d.png",//企图更改加载地球时的黑背景，没有成功
                     flat: false, /*是否使用平面图*/
                     flatAngle: 0,
                     mapLocation: {
