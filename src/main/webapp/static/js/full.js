@@ -261,10 +261,7 @@ function sphereRBscroll() {
 }
 
 $(function () {
-    //进入时的视频淡出效果，开发时注掉下面这一行和被调用的代码
-    if(fromPage!="fullScreen"){
-        videoFadeOut();
-    }
+   
     //调整字符云页面的文字大小
     // document.getElementById("wordCloud").contentWindow.resizeText(bodyScale);
     // wordCloud.window.resizeText(bodyScale);
