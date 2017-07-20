@@ -535,15 +535,15 @@ function communistStatisticForMonthForTab4Ajax(){
 		        label: labelSetting,
 		        // symbolRepeat: true,
 		        // symbolSize: ['80%', '60%'],
-		        barCategoryGap: '40%',
-				barWidth:60,
+		        // barCategoryGap: '40%',
+                barWidth:60,
                 data: statisticRightSeriesTab4Data(data[0])
 		        // data: statisticRightSeriesTab4Data(data[0],bar_chip)
 		    }, {
 		        name: '共产一致型号数',
                 type:'bar',
                 // type: 'pictorialBar',
-		        barGap: '10%',
+                // barGap: '10%',
 		        label: labelSetting,
                 barWidth:60,
 		        // symbolRepeat: true,

@@ -14,18 +14,18 @@
 
 .echart_tip.fade_out {
     opacity: 0;
-    transition: opacity 4000ms;
-    -moz-transition: opacity 4000ms;
-    -webkit-transition: opacity 4000ms;
-    -o-transition: opacity 4000ms;
+    transition: opacity 4500ms;
+    -moz-transition: opacity 4500ms;
+    -webkit-transition: opacity 4500ms;
+    -o-transition: opacity 4500ms;
 }
 
 .echart_tip.fade_in {
     opacity: 1;
-    transition: opacity 30000ms;
-    -moz-transition: opacity 30000ms;
-    -webkit-transition: opacity 30000ms;
-    -o-transition: opacity 30000ms;
+    transition: opacity 1000ms;
+    -moz-transition: opacity 1000ms;
+    -webkit-transition: opacity 1000ms;
+    -o-transition: opacity 1000ms;
 }
 
 .echart_tip.left.top > .echart_content {
@@ -163,10 +163,10 @@
 }
 
 .echart_tip_arrow > .echart_tip_line {
-    height: 3.6em;
-    left: 0px;
-    top: -4.8em;
-    border-left: 0.2em solid #fff;
+    height: 7em;
+    left: 0;
+    top: -8em;
+    border-left: 0.25em solid #fff;
     position: absolute;
 }
 
