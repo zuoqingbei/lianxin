@@ -121,6 +121,7 @@ h3 {
 
 video{
   position: relative;
+  left: -12%;
 }
 
  @media screen and (min-width: 960px){
