@@ -1,16 +1,4 @@
-// var mapSphere = function mapSphere(myChart) {
-/*
- var bodyScale = 1;
- function pageResize() {
- var h = $(window).height();
- $("#content").css("width",h*16*7/(9*3));
- var bodyFontSize = h/595*100+"%";
- bodyScale = h/595;
- $("body").css("font-size",bodyFontSize);
- // console.log("屏幕高度："+h+", body字号："+bodyFontSize)
- }
- pageResize();
- */
+
 function mapSphere(myChart) {
     var opts;
     $.ajax({

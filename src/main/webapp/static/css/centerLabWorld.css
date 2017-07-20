@@ -1,6 +1,5 @@
 .labMain_content_country{
-    width: 98%;
-    height: 100%;
+    flex:4;
 }
 .labMain_content_country .labMain_cbr_three {
     background: url(../img/labMain/lab_right_border.png) 0 0 no-repeat;

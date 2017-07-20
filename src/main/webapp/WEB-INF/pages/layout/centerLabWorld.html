@@ -704,20 +704,6 @@
 <script>
     var bodyScale = 1;//原始比例1
     $(document).ready(function (e) {
-        var pageH;
-        var pageW;
-//        pageH = $(window).height()-17;
-        pageH = $(window).height();
-        pageW = pageH * 16 * 4 / (9 * 3);
-
-        function pageResize() {
-            $(".labMain_content_country").css("width", pageW);
-            var bodyFontSize = pageH / 595 * 100 + "%";
-            bodyScale = pageH / 595;
-            $("body").css("font-size", bodyFontSize);
-//        console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
-        }
-        pageResize();
         resetDataCenterLabWorld();
         $(".labMain_cbr_tab").click(function () {
 //            $(this).addClass("active_right").siblings().removeClass("active_right");
@@ -757,7 +743,5 @@ function echartsResizeWorld() {
         }).click(function () {
             $(".zhbr_lab").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
         })
-
-   
     })
 </script>
