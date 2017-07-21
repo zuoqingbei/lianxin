@@ -718,31 +718,9 @@
 </body>
 </html>
 
-<!--<script src="../static/asserts/js/jquery-2.2.4.js"></script>-->
-<!--<script src="../static/asserts/echarts/echarts-3.5.2.js"></script>-->
-<!--<script src="../static/js/manyEcharts.js"></script>-->
-<!--<script src="../static/asserts/js/bootstrap.min.js"></script>-->
-
 <script src="../static/js/centerLab.js"></script>
 <script>
-    var bodyScale = 1;//原始比例1
     $(document).ready(function (e) {
-        var pageH;
-        var pageW;
-//        pageH = $(window).height()-17;
-        pageH = $(window).height();
-        pageW = pageH * 16 * 4 / (9 * 3);
-
-        function pageResize() {
-            $(".labMain_content").css("width", pageW);
-            var bodyFontSize = pageH / 595 * 100 + "%";
-            bodyScale = pageH / 595;
-            $("body").css("font-size", bodyFontSize);
-//        console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
-        }
-
-        pageResize();
-
 
         //结构不要改呦
         $(".sheshi_tab").eq(0).click(function () {

@@ -1,16 +1,4 @@
-// var mapSphere = function mapSphere(myChart) {
-/*
- var bodyScale = 1;
- function pageResize() {
- var h = $(window).height();
- $("#content").css("width",h*16*7/(9*3));
- var bodyFontSize = h/595*100+"%";
- bodyScale = h/595;
- $("body").css("font-size",bodyFontSize);
- // console.log("屏幕高度："+h+", body字号："+bodyFontSize)
- }
- pageResize();
- */
+
 function mapSphere() {
     var opts;
     $.ajax({
@@ -29,6 +17,7 @@ function mapSphere() {
 
 
             opts = {
+                // grid:{backgroundColor:"red"},
                 title: {
                     show: true,
                     // text: '全球实验中心互联，加速产品迭代升级，创用户最佳体验',
@@ -250,6 +239,7 @@ function mapSphere() {
                             }
                         }
                     }],
+                    // background:"../img/bg_04032d.png",//企图更改加载地球时的黑背景，没有成功
                     flat: false, /*是否使用平面图*/
                     flatAngle: 0,
                     mapLocation: {
@@ -259,7 +249,7 @@ function mapSphere() {
                         height: '100%'
                     },
                     baseLayer: {
-                        backgroundColor: 'rgba(20,143,204,.8)',
+                        backgroundColor: 'rgba(20,143,204,.8)'
                     },
                     itemStyle: {
                         normal: {
@@ -268,7 +258,7 @@ function mapSphere() {
                             borderColor: '#00ffff',
                             areaStyle: {
                                 color: 'rgba(0, 0, 0, 0)'
-                            },
+                            }
                         }
                     },
                     markPoint: {

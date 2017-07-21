@@ -44,7 +44,7 @@
         display: flex;
         width: 200%;
         height: 92%;
-        padding: 0.2% 1% .6% 0;
+        padding: 0.2% 1% .4% 0;
         left:0;
         color: #6cf;
 
@@ -70,7 +70,7 @@
     }
 
     #t3_l > div {
-        margin: 1% .5%;
+        margin: .9% 1.3% 0;
         background-image: url("../../img/tabCom/bigBorder_p3.png");
     }
 

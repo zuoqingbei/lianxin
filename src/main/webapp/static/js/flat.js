@@ -9,18 +9,6 @@ pageH = $(window).height();
 
 pageW = pageH * 16 * 7 / (9 * 3);
 
-/*
-function pageResize() {
-    // $("#content").css("width", pageW).css("background", "red");
-    var bodyFontSize = pageH / 595 * 100 + "%";
-    bodyScale = pageH / 595;
-    $("body").css("font-size", bodyFontSize);
-
-    // console.log("UUUUUUUUUU~~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
-};
-*/
-// pageResize();
-
 var timeId = null;
 function getGeoArr(data) {
     var geo = {};
@@ -481,15 +469,5 @@ $(window).resize(function () {
     var pageW;
     pageH = $(window).height();
     pageW = pageH * 16 * 7 / (9 * 3);
-
-    function pageResize() {
-        // $("#content").css("width", pageW);
-        var bodyFontSize = pageH / 595 * 100 + "%";
-        bodyScale = pageH / 595;
-        $("body").css("font-size", bodyFontSize);
-        // $(".fullScreen_map").css("width", pageW);
-        // console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
-    }
-    // pageResize();
 
 });

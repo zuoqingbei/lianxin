@@ -1,5 +1,6 @@
 // 数据分析
-var bodyScale = 1;//原始比例1
+// var bodyScale = parent.bodyScale;//原始比例1
+console.log("bodyScale-",bodyScale);
 //左
 var chartone = echarts.init(document
     .getElementById("echart_one"));
@@ -718,6 +719,8 @@ function mockXdataMethod(endStart){
 	}
 }
 function getCharts1() {
+    console.log("bodyScale--",bodyScale);
+
     option = {
         tooltip: {
             trigger: 'axis',
@@ -759,9 +762,10 @@ function getCharts1() {
                     // rotate: 30,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 9 * bodyScale,
                     }
                 },
+                // axisname
                 axisTick: {
                     show: false,
                     alignWithLabel: true,
@@ -775,14 +779,13 @@ function getCharts1() {
         yAxis: [
             {
                 type: 'value',
-                name: currentData[0].unit,
+                name: currentData[0].unit+"5",
                 max:90,
                 min:-30,
 	            /*max:currentData[0].highvalue,
 	            min:currentData[0].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 position: 'left',
                 offset: 40 * bodyScale,
                 axisLine: { //坐标轴
@@ -813,15 +816,15 @@ function getCharts1() {
             },
             {
                 type: 'value',
-                name: currentData[1].unit,
+                name: currentData[1].unit+"6",
                 max:100,
                 min:0,
 	           /* max:currentData[1].highvalue,
 	            min:currentData[1].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 position: 'left',
+                offset: 10 * bodyScale,
                 axisLabel: {
                     formatter: '{value} ',
                     show: true,
@@ -851,13 +854,12 @@ function getCharts1() {
             },
             {
                 type: 'value',
-                name: currentData[2].unit,
+                name: currentData[2].unit+"7",
 	           /* max:currentData[2].highvalue,
 	            min:currentData[2].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
                 position: 'right',
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 axisLabel: {
                     formatter: '{value} ',
                     show: true,
@@ -889,12 +891,11 @@ function getCharts1() {
             {
                 type: 'value',
                 offset: 40 * bodyScale,
-                name: currentData[3].unit,
+                name: currentData[3].unit+"1",
 	           /* max:currentData[3].highvalue,
 	            min:currentData[3].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 position: 'right',
                 axisLabel: {
                     formatter: '{value} ',
@@ -1095,9 +1096,9 @@ function getCharts2() {
         },
         grid: {
             x: '13%',
-            x2: '15%',
+            x2: '18%',
             y: '10%',
-            y2: "13%"
+            y2: "15%"
         },
         dataZoom: [{
 	    	start: 0,
@@ -1136,14 +1137,13 @@ function getCharts2() {
         yAxis: [
             {
                 type: 'value',
-                name: currentData[4].unit,
+                name: currentData[4].unit+"　　",
                 max:300,
                 min:0,
 	           /* max:currentData[4].highvalue,
 	            min:currentData[4].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
                 /*      min: 0,
                  max: 100, */
@@ -1183,14 +1183,14 @@ function getCharts2() {
             },
             {
                 type: 'value',
-                name: currentData[5].unit,
+                name: currentData[5].unit+"　　　",
 	           /* max:currentData[5].highvalue,
 	            min:currentData[5].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
                 position: 'left',
+                offset: 10 * bodyScale,
                 axisLabel: {
                     formatter: '{value} ',
                     textStyle: {
@@ -1220,17 +1220,16 @@ function getCharts2() {
             },
             {
                 type: 'value',
-                name: currentData[6].unit,
+                name: "　"+currentData[6].unit,
 	           /* max:currentData[6].highvalue,
 	            min:currentData[6].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
                 /*      min: 0,
                  max: 100, */
                 position: 'right',
-               
+                offset: 10 * bodyScale,
                 axisLabel: {
                     formatter: function (params, index) {
                         //console.log(params+"--"+index+"--"+typeof(params))
@@ -1265,12 +1264,11 @@ function getCharts2() {
             },
             {
                 type: 'value',
-                name: currentData[7].unit,
+                name: "　　"+currentData[7].unit,
 	           /* max:currentData[7].highvalue,
 	            min:currentData[7].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
                 offset: 40 * bodyScale,
                 position: 'right',

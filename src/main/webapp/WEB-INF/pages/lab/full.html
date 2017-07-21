@@ -1,5 +1,5 @@
 ## layout("ulab.html",{title:"U-lab全球互联数据中心"}){
-<html lang="zh-CN">
+<html lang="zh-CN" >
 <link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">
 <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
 <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
@@ -21,17 +21,18 @@
 
 <body>
 
-<div id="content" class="contai">
+<div id="content" class="contai"  >
 
+	<script>
+        //开场视频
+	   if(fromPage!="fullScreen"){
+	        videoFadeOut();
+	    }
+	</script>
      ##layout("fullScreen_map.html", {}){
      ##}
-
 </div>
 
-<script>
-    pageResize();
-
-</script>
 </body>
 </html>
 ##}
