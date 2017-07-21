@@ -278,27 +278,6 @@ $(function () {
     navSelectA();
     //球形地图右下角的广告滚动
     sphereRBscroll();
-
-    // $(".fullScreen_map .sphere-left-bottom iframe")[0].contentWindow.run(300);
-    // $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
-
-/*
-    $(".btnGroup>.quit>img").click(function () {
-        $(".left3x3,#r").show();
-        $(".fullScreen_map").animate({
-            left: -(pageW + 100)
-        }, 2000, function () {
-            //让大屏退去后左边显示平面地图
-            $(".l.left3x3 .btnGroup img.flat").click();
-        });
-        resetSizeRight(); //重置右边图表
-        var $sphereIFrame3x3 = $("#sphereIFrame3x3");
-        //通过iframe里重置按钮的模拟触发来重置图表
-        $sphereIFrame3x3.contents().find(".reset").click()
-            .css({"bottom": 0, fontSize: bodyScale * 8});
-        //让球上的提示和文字正常
-        $sphereIFrame3x3[0].contentWindow.spherePageResize();
-    });
-*/
+    //开场视频已经移到full.html中去了
 
 });

@@ -488,14 +488,14 @@ function communistStatisticForMonthForTab4Ajax(){
 		var myChart18 = echarts.init(document.getElementById("myChart18"));
 		right_echarts.push(myChart18);
 		myChart18.setOption(getBarEcharts());
-		console.log(data)
+		// console.log(data)
 		myChart18.setOption({
 		    color: ['#2b64f6', '#66ccff'],
 		    legend: {
 		        show: true,
 		        data: ['共产型号总数', '共产一致型号数'],
                 textStyle: {
-                    fontSize: 12 * bodyScale,
+                    fontSize: 12 * bodyScale
                 },
                 itemHeight: 6 * bodyScale,
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
