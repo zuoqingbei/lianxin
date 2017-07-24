@@ -1,5 +1,4 @@
 // 数据分析
-// var bodyScale = parent.bodyScale;//原始比例1
 console.log("bodyScale-",bodyScale);
 //左
 var chartone = echarts.init(document
@@ -360,16 +359,16 @@ var dataBase;
 		    	data:[{name:'1月',value:'-55'},{name:'2月',value:'60'},{name:'3月',value:'447'},{name:'4月',value:'400'},{name:'5月',value:'200'},{name:'6月',value:'250'},{name:'7月',value:'15'},{name:'8月',value:'202'},{name:'9月',value:'21'},{name:'10月',value:'7'},{name:'11月',value:'103'},{name:'12月',value:'215'} ]
 		      },{
 		    	  name:'2:电压(V)',
-		    	  data:[{name:'1月',value:'144'},{name:'2月',value:'252'},{name:'3月',value:'227'},{name:'4月',value:'111'},{name:'5月',value:'241'},{name:'6月',value:'233'},{name:'7月',value:'105'},{name:'8月',value:'22'},{name:'9月',value:'55'},{name:'10月',value:'175'},{name:'11月',value:'153'},{name:'12月',value:'55'} ] 
+		    	  data:[{name:'1月',value:'144'},{name:'2月',value:'252'},{name:'3月',value:'227'},{name:'4月',value:'111'},{name:'5月',value:'241'},{name:'6月',value:'233'},{name:'7月',value:'105'},{name:'8月',value:'22'},{name:'9月',value:'55'},{name:'10月',value:'175'},{name:'11月',value:'153'},{name:'12月',value:'55'} ]
 		      },{
 		    	  name:'3:电流(A)',
-		    	  data:[{name:'1月',value:'24'},{name:'2月',value:'2'},{name:'3月',value:'7'},{name:'4月',value:'11'},{name:'5月',value:'54'},{name:'6月',value:'33'},{name:'7月',value:'15'},{name:'8月',value:'22'},{name:'9月',value:'5'},{name:'10月',value:'37'},{name:'11月',value:'13'},{name:'12月',value:'45'} ] 
+		    	  data:[{name:'1月',value:'24'},{name:'2月',value:'2'},{name:'3月',value:'7'},{name:'4月',value:'11'},{name:'5月',value:'54'},{name:'6月',value:'33'},{name:'7月',value:'15'},{name:'8月',value:'22'},{name:'9月',value:'5'},{name:'10月',value:'37'},{name:'11月',value:'13'},{name:'12月',value:'45'} ]
 		      },{
 		    	  name:'4:功率(W)',
-		    	  data:[{name:'1月',value:'4000'},{name:'2月',value:'2222'},{name:'3月',value:'1722'},{name:'4月',value:'1422'},{name:'5月',value:'1222'},{name:'6月',value:'1522'},{name:'7月',value:'5222'},{name:'8月',value:'2222'},{name:'9月',value:'1122'},{name:'10月',value:'1722'},{name:'11月',value:'1322'},{name:'12月',value:'5222'} ] 
+		    	  data:[{name:'1月',value:'4000'},{name:'2月',value:'2222'},{name:'3月',value:'1722'},{name:'4月',value:'1422'},{name:'5月',value:'1222'},{name:'6月',value:'1522'},{name:'7月',value:'5222'},{name:'8月',value:'2222'},{name:'9月',value:'1122'},{name:'10月',value:'1722'},{name:'11月',value:'1322'},{name:'12月',value:'5222'} ]
 		      },{
 		    	  name:'5:耗电量(Wh)',
-		    	  data:[{name:'1月',value:'14000'},{name:'2月',value:'12000'},{name:'3月',value:'3700'},{name:'4月',value:'4400'},{name:'5月',value:'5200'},{name:'6月',value:'12500'},{name:'7月',value:'5100'},{name:'8月',value:'5002'},{name:'9月',value:'4001'},{name:'10月',value:'2004'},{name:'11月',value:'15154'},{name:'12月',value:'11133'} ] 
+		    	  data:[{name:'1月',value:'14000'},{name:'2月',value:'12000'},{name:'3月',value:'3700'},{name:'4月',value:'4400'},{name:'5月',value:'5200'},{name:'6月',value:'12500'},{name:'7月',value:'5100'},{name:'8月',value:'5002'},{name:'9月',value:'4001'},{name:'10月',value:'2004'},{name:'11月',value:'15154'},{name:'12月',value:'11133'} ]
 		      },{
 		    	  name:'6:频率(Hz)',
 		    	  data:[{name:'1月',value:'15'},{name:'2月',value:'60'},{name:'3月',value:'70'},{name:'4月',value:'40'},{name:'5月',value:'20'},{name:'6月',value:'25'},{name:'7月',value:'15'},{name:'8月',value:'22'},{name:'9月',value:'71'},{name:'10月',value:'56'},{name:'11月',value:'43'},{name:'12月',value:'95'} ]
@@ -435,7 +434,7 @@ function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
 		resetDataCenterLab();
 		currentData=data;
-		
+
 		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
 		$.each(data,function(index,item){
 			if(index<4){
@@ -464,7 +463,7 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		//console.log(data)
 		data=eval("("+data+")");
 		dataBase=data;
-		//根据传感器具体数据 生成图例 
+		//根据传感器具体数据 生成图例
 	 	$.each(data.list,function(index,item){
 			totalLegendName.push(item.name);
 			legendNumData.push(item.data[item.data.length-1].value+increaseBracketForObj(item.name))
@@ -480,7 +479,7 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		createLegendHtmls();
 		createEcharts(true);
 		//因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
-		
+
 	});
 }
 function resetDataCenterLab(){
@@ -508,7 +507,7 @@ function resetDataCenterLab(){
 		//console.log(eval("("+data+")"))
 		data=eval("("+data+")");
 		dataBase=data;
-		//根据传感器具体数据 生成图例 
+		//根据传感器具体数据 生成图例
 	 	$.each(data.list,function(index,item){
 			totalLegendName.push(item.name);
 		});
@@ -539,8 +538,8 @@ function randomLegend(){
 function createEcharts(isFirst,obj){
 	if(isFirst){
 		dealSeriesData();
-		getCharts1();	
-		getCharts2();	
+		getCharts1();
+		getCharts2();
 	}else{
 		//重绘线
 		dealSeriesData2(obj);
@@ -551,7 +550,7 @@ function createEcharts(isFirst,obj){
 		opt1.xAxis=[{data:xData.concat(mockXdata)}];
 		opt1.series=seriesTopData;
 	    myChart1.setOption(opt1);
-	    
+
 	    opt2.xAxis=[{data:xData.concat(mockXdata)}];
 		opt2.series=seriesBottomData;
 	    myChart2.setOption(opt2);
@@ -569,7 +568,7 @@ function createLegendHtmls() {
 		}else{
 			htmls += '<input style="margin-right: 2%;margin-top: 0;float: left;width:'+width+';height:'+width+'" type="checkbox" name="legendcheckbox" onclick="resetOptions(this)" value="' + legendData[x] + '" ><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><li  style="color:#fff;display: inline-block;float:left" name="' + legendData[x] + '">' + legendData[x] + '&nbsp;<span style="color: #66ccff">'+legendNumData[x]+'</span></li><br>'
 		}
-        
+
     }
     $("#legend_ul").html(htmls);
 }
@@ -586,11 +585,11 @@ function dealSeriesData(){
 			}
 		};
 		var checked=false;
-		$('input[name="legendcheckbox"]:checked').each(function(){ 
+		$('input[name="legendcheckbox"]:checked').each(function(){
 			if($(this).val()==dealBracketForObj(currentName)){
 				checked=true;
-			}; 
-		}); 
+			};
+		});
 		if(checked){
 			var topIndex=isHasElementOne(topParam,dealUnit(currentName));
 			var bottomIndex=isHasElementOne(bottomParam,dealUnit(currentName));
@@ -634,11 +633,11 @@ function dealSeriesData2(obj){
 		}else{
 			//没有配置 默认画到左下
 			var checked=false;
-			$('input[name="legendcheckbox"]:checked').each(function(){ 
+			$('input[name="legendcheckbox"]:checked').each(function(){
 				if($(this).val()==dealBracketForObj(currentName)){
 					checked=true;
-				}; 
-			});  
+				};
+			});
 			if(checked){
 				seriesBottomData.push(joinSeriseOther(data,currentName,x));
 			};
@@ -663,9 +662,9 @@ function joinSerise(data,name,index,colorIndex){
 		//console.log(dataArr)
 	var item= {
 	            name:dealBracketForObj(name),
-	            symbol:'none',  //这句就是去掉点的  
-	            type:'line',  
-	            smooth:true,  //这句就是让曲线变平滑的  
+	            symbol:'none',  //这句就是去掉点的
+	            type:'line',
+	            smooth:true,  //这句就是让曲线变平滑的
  	            data:dataArr,
  	            itemStyle:{
  	        	  normal:{
@@ -695,9 +694,9 @@ function joinSeriseOther(data,name,colorIndex){
 	mockXdataMethod(endStart);
 	var item= {
 	            name:dealBracketForObj(name),
-	            symbol:'none',  //这句就是去掉点的  
-	            type:'line',  
-	            smooth:true,  //这句就是让曲线变平滑的  
+	            symbol:'none',  //这句就是去掉点的
+	            type:'line',
+	            smooth:true,  //这句就是让曲线变平滑的
  	            data:dataArr,
  	            itemStyle:{
  	        	  normal:{
@@ -719,7 +718,6 @@ function mockXdataMethod(endStart){
 	}
 }
 function getCharts1() {
-    console.log("bodyScale--",bodyScale);
 
     option = {
         tooltip: {
@@ -765,7 +763,6 @@ function getCharts1() {
                         fontSize: 9 * bodyScale,
                     }
                 },
-                // axisname
                 axisTick: {
                     show: false,
                     alignWithLabel: true,
@@ -779,7 +776,7 @@ function getCharts1() {
         yAxis: [
             {
                 type: 'value',
-                name: currentData[0].unit+"5",
+                name: currentData[0].unit,
                 max:90,
                 min:-30,
 	            /*max:currentData[0].highvalue,
@@ -925,7 +922,7 @@ function getCharts1() {
                 symbolSize: 1 * bodyScale,
 
             }
-            
+
         ],
         series: seriesTopData
     };
@@ -988,12 +985,12 @@ function intervalChangeData() {
 		}
 		//下方处理
 		for(var i=0; i<intervalSeriesBottomData.length;i++){
-			
+
 			for(var x=0;x<intervalSeriesBottomData[i].length;x++){
 				/*if(isHasElementOne(xData,parseFloat(intervalSeriesBottomData[i][x].name)*60)==-1){
 					xData.shift();
 					xData.push(parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60))
-					
+
 					seriesBottomData[i].data.shift();
 					//console.log(intervalSeriesBottomData[i][x].value)
 					seriesBottomData[i].data.push(intervalSeriesBottomData[i][x].value);
@@ -1005,7 +1002,7 @@ function intervalChangeData() {
 						xData.push(parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60))
 					}
 				}
-				
+
 				seriesBottomData[i].data.shift();
 				seriesBottomData[i].data.push(intervalSeriesBottomData[i][x].value);
 				needRefresh=true;
@@ -1054,11 +1051,11 @@ function dealIntervalSeriesData(mData){
 			}
 		};
 		var checked=false;
-		$('input[name="legendcheckbox"]:checked').each(function(){ 
+		$('input[name="legendcheckbox"]:checked').each(function(){
 			if($(this).val()==dealBracketForObj(currentName)){
 				checked=true;
-			}; 
-		}); 
+			};
+		});
 		if(checked){
 			var topIndex=isHasElementOne(topParam,dealUnit(currentName));
 			var bottomIndex=isHasElementOne(bottomParam,dealUnit(currentName));
@@ -1352,7 +1349,7 @@ function getCharts2() {
    	 }else{
    		 interval_count2=parseFloat(interval_count2)+0.01;
    	 }
-	    	 
+
 	//console.log("myChart2---"+preStart+"--"+preEnd)
     },30000);*/
 
@@ -1387,14 +1384,14 @@ function increaseBracketForObj(obj){
 	return obj;
 }
 //判断数组中某个元素下标
-function isHasElementOne(arr,value){ 
-	for(var i = 0,vlen = arr.length; i < vlen; i++){ 
-		if(arr[i] == value){ 
-			return i; 
-		} 
-	} 
-	return -1; 
-} 
+function isHasElementOne(arr,value){
+	for(var i = 0,vlen = arr.length; i < vlen; i++){
+		if(arr[i] == value){
+			return i;
+		}
+	}
+	return -1;
+}
 //传入字符串获取单位
 function dealUnit(str){
 	if(str.indexOf("(")>-1&&str.indexOf(")")>-1){
@@ -1411,12 +1408,12 @@ function resetOptions(obj){
 	createEcharts(false,obj);
 }
 function checkBoxVales(){ //jquery获取复选框值 
-	var chk_value =[]; 
-	$('input[name="legendcheckbox"]:checked').each(function(){ 
-		chk_value.push($(this).val()); 
-	}); 
+	var chk_value =[];
+	$('input[name="legendcheckbox"]:checked').each(function(){
+		chk_value.push($(this).val());
+	});
 	return chk_value;
-} 
+}
 
 
 //新增

@@ -1,14 +1,13 @@
 /**
  * Created by Administrator on 2017/4/15 0015.
  */
-var bodyScale = 1;
-var pageH;
-var pageW;
+var bodyScale = parent.bodyScale;
+var pageH = parent.pageH;
+var pageW = parent.pageW;
 
-pageH = $(window).height();
-
-pageW = pageH * 16 * 7 / (9 * 3);
-
+var TIP_SETTIMEOUT_TIME = 2000;//静止显示的时间
+var TIP_SETINTERVAL_TIME = 4000;//每个提示的周期时长
+var stop = false;
 var timeId = null;
 function getGeoArr(data) {
     var geo = {};
@@ -58,28 +57,28 @@ function createArrData(productCode, labType) {
                     var a = $("#l", parent.document);
                     a.parent().find(".labMain_content").hide();
                     a.find(".legend-bottom li").removeClass('active')
-                        switch (CountryName) {
-                            case '日本研发中心':
-                                a.siblings("#r").hide();
-                                // a.parent().find(".labMain_content").hide();
-                                a.parent().find(".labMain_content_country").show();
-                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-                                break;
-                            case '新西兰研发中心':
-                                a.siblings("#r").hide();
-                                // a.parent().find(".labMain_content").hide();
-                                a.parent().find(".labMain_content_country").show();
-                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
-                                break;
-                            case '泰国模块中心':
-                                a.siblings("#r").hide();
-                                // a.parent().find(".labMain_content").hide();
-                                a.parent().find(".labMain_content_country").show();
-                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-                                break;
-                            default:
-                            // alert("暂无该国家实验室信息")
-                        }
+                    switch (CountryName) {
+                        case '日本研发中心':
+                            a.siblings("#r").hide();
+                            // a.parent().find(".labMain_content").hide();
+                            a.parent().find(".labMain_content_country").show();
+                            window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
+                            break;
+                        case '新西兰研发中心':
+                            a.siblings("#r").hide();
+                            // a.parent().find(".labMain_content").hide();
+                            a.parent().find(".labMain_content_country").show();
+                            window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
+                            break;
+                        case '泰国模块中心':
+                            a.siblings("#r").hide();
+                            // a.parent().find(".labMain_content").hide();
+                            a.parent().find(".labMain_content_country").show();
+                            window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
+                            break;
+                        default:
+                        // alert("暂无该国家实验室信息")
+                    }
                     //在这里是第一步
                     $elList = [];
                     //提示框的内容清空
@@ -287,12 +286,6 @@ var $echart = $('.mapFlat');
  */
 var $echartTips = $('.echartTips');
 
-/**
- * 提示渐隐时间
- * @type {number}
- *
- */
-var TIP_SETTIMEOUT_TIME = 3000;
 
 function addNewsElem(news) {
     var $el = getTopicHtml(news);
@@ -348,9 +341,9 @@ function addNewsElem(news) {
         $elList.push($el);
         fadeOutElList();
         startNewsShown();
-        $el.hover(function () {
+        $el.hover(function () {//鼠标移动上去后暂停
             fadeInElList([$el]);
-            stopNewsShown();
+            stopNewsShown($el);
         }, function () {
             fadeOutElList();
             startNewsShown();
@@ -396,12 +389,12 @@ function startNewsShown() {
 
     if (timeId === null) {
         // console.log("---自动提示启动---")
-
-        timeId = setInterval(showNews, 3000);
+        //每个提示的周期长度
+        timeId = setInterval(showNews, TIP_SETINTERVAL_TIME);
     }
 }
 function listenAnimationEnd($el, fn) {
-    //transitionend是css3完成过渡后触发的事件
+    //transitionend是css3完成过渡后触发的事件,下一步将被删除
     $el.on('transitionend', function () {
         $el.off('transitionend');
         fn.call();
@@ -410,9 +403,12 @@ function listenAnimationEnd($el, fn) {
 /**
  * 初始化资讯及新闻轮循
  */
-function stopNewsShown() {
+function stopNewsShown($el) {
     clearInterval(timeId);
     timeId = null;
+    // $el.css("")
+
+    // animation-play-state: paused
 }
 
 function getTopicHtml(currentPoint) {
@@ -427,15 +423,16 @@ function getTopicHtml(currentPoint) {
     var id = currentPoint.id;
     var url = "";
     return $('<div class="echart_tip">' +
-        '<div class="dialog_title echart_content">' +
-        '<a title="' + title + '"  href="#" target="_blank" >' +
-        '<span style="color:#ffffff;font-size:1.6em;text-shadow:0.15em 0.15em 0.15em rgba(0,0,0,0.9);">' + title + '</span>' +
-        '</a>实验室数量：' + value +
-        '</div>' +
-        '<div class="echart_tip_arrow">' +
-        '<div class="echart_tip_line"></div>' +
-        '<div class="echart_tip_head"></div>' +
-        '</div>' +
+            '<div class="dialog_title echart_content">' +
+                '<a title="' + title + '"  href="#" target="_blank" >' +
+                // '<span style="color:#ffffff;font-size:1.6em;text-shadow:0.15em 0.15em 0.15em rgba(0,0,0,0.9);">' + title + '</span>' +
+                    '<span style="">' + title + '</span>' +
+                '</a>实验室数量：' + value +
+            '</div>' +
+            '<div class="echart_tip_arrow">' +
+                '<div class="echart_tip_line"></div>' +
+                '<div class="echart_tip_head"></div>' +
+            '</div>' +
         '</div>');
 }
 /**
@@ -443,11 +440,16 @@ function getTopicHtml(currentPoint) {
  */
 function fadeOutElList() {
     $.each($elList, function (i, $el) {
-        $el.removeClass('fade_in').addClass('fade_out');
-        listenAnimationEnd($el, function () {
-            $el.remove();
-        });
-    });
+        // console.log("---delay3000前")
+        setTimeout(function () {
+            $el.removeClass('fade_in').addClass('fade_out');
+            listenAnimationEnd($el, function () {
+                $el.remove();
+            });
+        }, TIP_SETTIMEOUT_TIME)
+        // console.log("---delay3000后")
+    })
+
 
     $elList = [];
 }
@@ -455,19 +457,10 @@ function fadeOutElList() {
  * 渐入 elList
  */
 function fadeInElList($list) {
+    console.log("---fadeInElList")
     $.each($list, function (i, $el) {
         $el.off('transitionend');
         $el.removeClass('fade_out').addClass('fade_in');
     });
     $elList = $list;
 }
-
-$(window).resize(function () {
-    myChart.resize();
-    var bodyScale = 1;
-    var pageH;
-    var pageW;
-    pageH = $(window).height();
-    pageW = pageH * 16 * 7 / (9 * 3);
-
-});

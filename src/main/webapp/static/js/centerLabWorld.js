@@ -129,9 +129,9 @@ function findSensorByLabCenetrTabAjaxWorld(labTypeCode,testUnitId){
     findSensorDataCenetrTabAjaxWorld(labTypeCode,testUnitId);
 }
 function findSensorDataCenetrTabAjaxWorld(labTypeCode,testUnitId){
+
     mlabTypeCode=labTypeCode;mtestUnitId=testUnitId;
     $.post(contextPath+"/lab/getJsonFile",{"fileName":labTypeCode+"-"+testUnitId+".json"},function(data){
-    	//console.log(data)
     	data=eval("("+data+")");
         if(data==""){
             //alert("暂未开测");
@@ -140,7 +140,6 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode,testUnitId){
         myChartWorld1.clear();
         myChartWorld2.clear();
         $("#legend_ul_world").html('');
-        //console.log(data)
         dataBase=data;
         //根据传感器具体数据 生成图例
         $.each(data.list,function(index,item){

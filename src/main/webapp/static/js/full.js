@@ -278,6 +278,7 @@ $(function () {
     navSelectA();
     //球形地图右下角的广告滚动
     sphereRBscroll();
+
     //开场视频已经移到full.html中去了
 
 });
