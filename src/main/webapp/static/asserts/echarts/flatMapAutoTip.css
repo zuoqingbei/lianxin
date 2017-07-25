@@ -45,7 +45,7 @@
 
 .echart_tip.left.top > .echart_content { /*左上*/
     bottom: 3.3em;
-    right: 2.15em;
+    right: 2.05em;
 }
 .echart_tip.left.top > .echart_tip_arrow {
     transform: rotate(-32deg);
@@ -68,7 +68,7 @@
     transform: rotate(-148deg);
 }
 .echart_tip.right.bottom > .echart_content { /*右下*/
-    left: 2.15em;
+    left: 2.05em;
 }
 .echart_tip.right.bottom > .echart_tip_arrow {
     transform: rotate(148deg);

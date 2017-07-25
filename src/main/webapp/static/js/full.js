@@ -31,6 +31,7 @@ function videoFadeOut() {
 }
 
 //切换地图显示区域及地图全屏
+/*
 function switchMapArea() {
 
     var iframe = '<iframe id="iframe" class="iframe map" scrolling="no" frameborder="0" src="' + contextPath + '/lab/flatMap" ></iframe>';
@@ -59,6 +60,33 @@ function switchMapArea() {
         $(".left3x3,#r,.labMain_content").hide();
     })
 }
+*/
+function switchMapArea() {
+
+    var iframe = '<iframe id="iframeFlatMap" class="iframe map" scrolling="no" frameborder="0" src="' + contextPath + '/lab/flatMap" ></iframe>';
+    $(".l").find(".btnGroup img").click(function () {
+        var src = $(this).attr("src");
+
+        if (src.indexOf("off") >= 0) {
+            src = src.replace("off", "on");
+            $(this).attr("src", src)
+                .parent().siblings(".oneBtn").find("img")
+                .attr("src", $(this).parent().siblings().find("img").attr("src").replace("on", "off"));
+            if ($(this).parents(".l").find(".switch.sphere").is(":hidden")) { //球是隐藏的
+                $(this).parents(".l").find(".switch.sphere").css({"display": "flex"}).siblings().hide();
+            } else { //平面地图是隐藏的
+                $(this).parents(".l").find(".switch.flat").css("display", "flex").siblings().hide();
+                resetSize();
+            }
+        }
+    });
+    $(".left3x3 .btnGroup  img.fullScreen").click(function () {
+        $(".fullScreen_map").animate({
+            left: 0
+        },1000).show();
+        $(".left3x3,#r,.labMain_content").hide();
+    })
+}
 
 //切换地球和平面地图按钮的提示
 function switchMapBtnTip() {
@@ -73,15 +101,9 @@ function resetSize() {
     for (var i = 0; i < myCharts.length; i++) {
         myCharts[i].resize();
     }
-    /* if(getSelectLab()){
-     document.getElementById('iframe').contentWindow.createArrData(productCode,labType);
-     }*/
-    // document.getElementById('iframe').contentWindow.createArrData(productCode, labType);
-    for (var k = 0; k < $("#iframe.map").length; k++) {
-        // console.log("------$('.iframe.map'):" + $(".iframe.map").length);
-        $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
-    }
-
+    var $iframeFlatMap =$("#iframeFlatMap");
+    $iframeFlatMap[0].contentWindow.createArrData(productCode, labType);
+    $iframeFlatMap[0].contentWindow.myFlatMap.resize()
 }
 //切换生产线和实验室的列表显示
 function navLabLine() {
@@ -171,9 +193,9 @@ function reloadData(productCode, labType) {
     //平面地图数据mapFlat
     //console.log(echarts.init(document.getElementById('iframe').contentWindow.document.getElementById("mapFlat")))
     //document.getElementById('iframe').contentWindow.say()
-    for (var k = 0; k < $("#iframe.map").length; k++) {
+    for (var k = 0; k < $("#iframeFlatMapL3x3").length; k++) {
 
-        $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
+        $("#iframeFlatMapL3x3").eq(k)[0].contentWindow.createArrData(productCode, labType);
     }
     reloadLeftData();
 }

@@ -39,21 +39,20 @@ var sphereClicked = false;
                     $("#sphereIFrame3x3").contents().find(".reset").click();
                     sphereClicked = !sphereClicked;
                 }
-
-
             } else {
-                $(this).parents(".l").find(".flat .mapArea iframe").remove();
-                $(this).parents(".l").find(".switch.flat").css("display", "flex").find(".mapArea").append(iframe).parent().parent()
-                    .siblings().hide();
+                $(this).parents(".l").find(".switch.flat").css("display", "flex").siblings().hide();
+                resetSize();
             }
         }
     });
+/*
     $(".left3x3 .btnGroup  img.fullScreen").click(function () {
         $(".fullScreen_map").animate({
             left: 0
         },1000).show();
         $(".left3x3,#r,.labMain_content").hide();
     })
+*/
 }
 
 //切换地球和平面地图按钮的提示
@@ -73,9 +72,9 @@ function resetSize() {
      document.getElementById('iframe').contentWindow.createArrData(productCode,labType);
      }*/
     // document.getElementById('iframe').contentWindow.createArrData(productCode, labType);
-    for (var k = 0; k < $("#iframe.map").length; k++) {
+    for (var k = 0; k < $("#iframeFlatMapL3x3").length; k++) {
         // console.log("------$('.iframe.map'):" + $(".iframe.map").length);
-        $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
+        $("#iframeFlatMapL3x3").eq(k)[0].contentWindow.createArrData(productCode, labType);
     }
 
 }
@@ -177,9 +176,9 @@ function reloadData(productCode, labType) {
     //平面地图数据mapFlat
     //console.log(echarts.init(document.getElementById('iframe').contentWindow.document.getElementById("mapFlat")))
     //document.getElementById('iframe').contentWindow.say()
-    for (var k = 0; k < $("#iframe.map").length; k++) {
+    for (var k = 0; k < $("#iframeFlatMapL3x3").length; k++) {
 
-        $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
+        $("#iframeFlatMapL3x3").eq(k)[0].contentWindow.createArrData(productCode, labType);
     }
     reloadLeftData();
 }
@@ -304,7 +303,8 @@ $(function () {
     sphereRBscroll();
 
     // $(".fullScreen_map .sphere-left-bottom iframe")[0].contentWindow.run(300);
-    // $("#iframe.map").eq(k)[0].contentWindow.createArrData(productCode, labType);
+
+    // $("#iframe.map")[0].contentWindow.createArrData(productCode, labType);
 
 
 });

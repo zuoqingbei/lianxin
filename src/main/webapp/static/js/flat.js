@@ -94,11 +94,10 @@ function createArrData(productCode, labType) {
 
             series: seriesData(mDataBase)
         }
-        myChart.clear();
+        myFlatMap.clear();
         startNewsShown();
-        myChart.setOption(option);
-
-        //setEvent(myChart);
+        myFlatMap.setOption(option);
+        // myFlatMap.resize()
     })
 
 }
@@ -235,15 +234,12 @@ function seriesData(data) {
     return seriesData;
 }
 // 基于准备好的dom，初始化echarts实例
-var myChart = echarts.init($('.mapFlat')[0]);
-// console.log("------------------$('.mapFlat').length:",$('.mapFlat').length)
-// var myChart3x3 = echarts.init($('.mapFlat')[0]);
+var myFlatMap = echarts.init($('.mapFlat')[0]);
 //调用父页面 获取数据
 //window.parent.selectActLi();
-window.parent.resetSize();
 
 // 处理点击事件打印国家名
-myChart.on('click', function (params) {
+myFlatMap.on('click', function (params) {
     var CountryName = params.name;
     var a = $("#l", parent.document);
     a.parent().find(".labMain_content").hide();
@@ -299,7 +295,7 @@ function addNewsElem(news) {
     // console.log("~~~~~~~~~~~~~~~~~~~~~news.litude:" + news.litude);
     var xypoint = [0, 0];
     if (news.litude) {//若不判断则在markLine上的提示会报错
-        xypoint = myChart.chart.map.getPosByGeo("world", news.litude); //坐标
+        xypoint = myFlatMap.chart.map.getPosByGeo("world", news.litude); //坐标
     }
 
     left = xypoint[0];

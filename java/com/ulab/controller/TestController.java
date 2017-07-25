@@ -50,6 +50,10 @@ public class TestController extends BaseController {
     public void flatMap() {
         render("flatMap.html");
     }
+    public void flatMapNoContext() {
+    	render("flatMapNoContext.html");
+    }
+
     /**
      * 
      * @time   2017年4月13日 上午9:38:56
