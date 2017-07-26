@@ -434,7 +434,7 @@ function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
 		resetDataCenterLab();
 		currentData=data;
-
+        console.log("______________data:",data)
 		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
 		$.each(data,function(index,item){
 			if(index<4){
@@ -737,7 +737,7 @@ function getCharts1() {
         grid: {
             x: '13%',
             x2: '15%',
-            y2: '-3%'                //下移负数 使两个图重叠
+            y2: '5%'                //下移负数 使两个图重叠
         },
         dataZoom: [{
 	    	start: 0,
@@ -776,7 +776,7 @@ function getCharts1() {
         yAxis: [
             {
                 type: 'value',
-                name: currentData[0].unit,
+                name: currentData[0].unit+"　　　",
                 max:90,
                 min:-30,
 	            /*max:currentData[0].highvalue,
@@ -813,7 +813,7 @@ function getCharts1() {
             },
             {
                 type: 'value',
-                name: currentData[1].unit+"6",
+                name: currentData[1].unit+"　　　",
                 max:100,
                 min:0,
 	           /* max:currentData[1].highvalue,
@@ -851,10 +851,10 @@ function getCharts1() {
             },
             {
                 type: 'value',
-                name: currentData[2].unit+"7",
+                name: currentData[2].unit,
 	           /* max:currentData[2].highvalue,
 	            min:currentData[2].lowvalue,*/
-                position: 'right',
+                position: 10 * bodyScale,
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
                 axisLabel: {
@@ -888,7 +888,7 @@ function getCharts1() {
             {
                 type: 'value',
                 offset: 40 * bodyScale,
-                name: currentData[3].unit+"1",
+                name: currentData[3].unit,
 	           /* max:currentData[3].highvalue,
 	            min:currentData[3].lowvalue,*/
                 nameGap: nameGap,
@@ -1093,8 +1093,8 @@ function getCharts2() {
         },
         grid: {
             x: '13%',
-            x2: '18%',
-            y: '10%',
+            x2: '15%',
+            y: '5%',
             y2: "15%"
         },
         dataZoom: [{
@@ -1217,7 +1217,7 @@ function getCharts2() {
             },
             {
                 type: 'value',
-                name: "　"+currentData[6].unit,
+                name: "　　"+currentData[6].unit,
 	           /* max:currentData[6].highvalue,
 	            min:currentData[6].lowvalue,*/
                 nameGap: nameGap,
@@ -1267,8 +1267,8 @@ function getCharts2() {
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
-                offset: 40 * bodyScale,
                 position: 'right',
+                offset: 40 * bodyScale,
                 axisLabel: {
                     formatter: '{value} ',
                     textStyle: {

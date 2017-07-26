@@ -452,6 +452,9 @@ function getChartsWorld1() {
     option_world = {
         tooltip: {
             trigger: 'axis',
+            textStyle: {
+                fontSize: 10*bodyScale,
+            },
             axisPointer: {
                 type: 'cross'
             },
@@ -463,8 +466,8 @@ function getChartsWorld1() {
         },
         grid: {
             x: '13%',
-            x2: '10%',
-            y2: '3%'                //下移负数 使两个图重叠
+            x2: '15%',
+            y2: '5%'                  //下移负数 使两个图重叠
         },
         dataZoom: [{
             start: 0,
@@ -487,7 +490,7 @@ function getChartsWorld1() {
                     // rotate: 30,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisTick: {
@@ -503,14 +506,13 @@ function getChartsWorld1() {
         yAxis: [
             {
                 type: 'value',
-                name: "℃",
+                name: "℃"+"　　　",
                 max: 90,
                 min: -30,
                 /*max:currentDataWorld[0].highvalue,
                  min:currentDataWorld[0].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 position: 'left',
                 offset: 40 * bodyScale,
                 axisLine: { //坐标轴
@@ -541,15 +543,15 @@ function getChartsWorld1() {
             },
             {
                 type: 'value',
-                name: "Hz",
+                name: "Hz"+"　　　",
                 max: 100,
                 min: 0,
                 /* max:currentDataWorld[1].highvalue,
                  min:currentDataWorld[1].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 position: 'left',
+                offset: 10 * bodyScale,
                 axisLabel: {
                     formatter: '{value} ',
                     show: true,
@@ -579,13 +581,13 @@ function getChartsWorld1() {
             },
             {
                 type: 'value',
-                name: "%",
+                name: "　　　"+"%",
                 /* max:currentDataWorld[2].highvalue,
                  min:currentDataWorld[2].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 position: 'right',
+                offset: 10 * bodyScale,
                 axisLabel: {
                     formatter: '{value} ',
                     show: true,
@@ -616,14 +618,13 @@ function getChartsWorld1() {
             },
             {
                 type: 'value',
-                offset: 40 * bodyScale,
-                name: "",
+                name: "　　　"+"V",
                 /* max:currentDataWorld[3].highvalue,
                  min:currentDataWorld[3].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 position: 'right',
+                offset: 40 * bodyScale,
                 axisLabel: {
                     formatter: '{value} ',
                     show: true,
@@ -707,9 +708,9 @@ function getChartsWorld2() {
         },
         grid: {
             x: '13%',
-            x2: '10%',
-            y: '-2%',
-            y2: '14%'
+            x2: '15%',
+            y: '5%',
+            y2: "15%"
         },
         dataZoom: [{
             start: 0,
@@ -733,7 +734,7 @@ function getChartsWorld2() {
                     // rotate: 30,
                     textStyle: {
                         color: '#fff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisTick: {
@@ -748,14 +749,13 @@ function getChartsWorld2() {
         yAxis: [
             {
                 type: 'value',
-                name: "V",
+                name: "V"+"　　　",
                 max: 300,
                 min: 0,
                 /* max:currentDataWorld[4].highvalue,
                  min:currentDataWorld[4].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
                 /*      min: 0,
                  max: 100, */
@@ -771,7 +771,7 @@ function getChartsWorld2() {
                     },
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 10 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -795,19 +795,20 @@ function getChartsWorld2() {
             },
             {
                 type: 'value',
-                name: "A",
+                name: "A"+"　　　",
                 /* max:currentDataWorld[5].highvalue,
                  min:currentDataWorld[5].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
                 position: 'left',
+                offset: 10 * bodyScale,
+
                 axisLabel: {
                     formatter: '{value} ',
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -832,17 +833,16 @@ function getChartsWorld2() {
             },
             {
                 type: 'value',
-                name: "W",
+                name: "　　　"+"W",
                 /* max:currentDataWorld[6].highvalue,
                  min:currentDataWorld[6].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
                 /*      min: 0,
                  max: 100, */
                 position: 'right',
-
+                offset: 10 * bodyScale,
                 axisLabel: {
                     formatter: function (params, index) {
                         //console.log(params+"--"+index+"--"+typeof(params))
@@ -853,7 +853,7 @@ function getChartsWorld2() {
                     },
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
@@ -877,20 +877,19 @@ function getChartsWorld2() {
             },
             {
                 type: 'value',
-                name: "kW·h",
+                name: "　　　"+"kW·h",
                 /* max:currentDataWorld[7].highvalue,
                  min:currentDataWorld[7].lowvalue,*/
-                nameTextStyle: {
-                    color: '#66ccff'
-                },
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
-                offset: 40 * bodyScale,
                 position: 'right',
+                offset: 40 * bodyScale,
                 axisLabel: {
                     formatter: '{value} ',
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 9 * bodyScale
+                        fontSize: 12 * bodyScale
                     }
                 },
                 axisLine: { //坐标轴
