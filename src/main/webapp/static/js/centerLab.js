@@ -962,8 +962,10 @@ function getCharts1() {
 }
 var intevalChart1;
 function intervalChangeData() {
-	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.0083333333333333"},function(data){
+	//时间间隔低于4分钟取不到数据
+	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.07"},function(data){
 		data=eval("("+data+")");
+		//console.log(data)
 		dealIntervalSeriesData(data);
 		createLegendHtmls();
 		//clearInterval(intevalChart1);

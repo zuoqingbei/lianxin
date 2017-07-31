@@ -4,10 +4,10 @@ var mSensor = [
         'sensor_type_id': 1,
         'highvalue': 1000,
         'sort': 1,
-        'legend': '1:温度(℃)',
+        'legend': '1:T(℃)',
         'lab_code': 'refrigeratorkekao01',
         'test_unit_id': 1,
-        'sensor_type_name': '温度',
+        'sensor_type_name': 'T',
         'lowvalue': -100
     },
     {
@@ -15,10 +15,10 @@ var mSensor = [
         'sensor_type_id': 6,
         'highvalue': 2000,
         'sort': 6,
-        'legend': '6:频率(Hz)',
+        'legend': '6:F(Hz)',
         'lab_code': 'refrigeratorkekao01',
         'test_unit_id': 1,
-        'sensor_type_name': '频率',
+        'sensor_type_name': 'F',
         'lowvalue': 0
     },
     {
@@ -26,10 +26,10 @@ var mSensor = [
         'sensor_type_id': 8,
         'highvalue': 300,
         'sort': 8,
-        'legend': '8:湿度(%)',
+        'legend': '8:Th(%)',
         'lab_code': 'refrigeratorkekao01',
         'test_unit_id': 1,
-        'sensor_type_name': '湿度',
+        'sensor_type_name': 'Th',
         'lowvalue': 0
     },
     {
@@ -37,10 +37,10 @@ var mSensor = [
         'sensor_type_id': 2,
         'highvalue': 3000,
         'sort': 2,
-        'legend': '2:电压(V)',
+        'legend': '2:U(V)',
         'lab_code': 'refrigeratorkekao01',
         'test_unit_id': 1,
-        'sensor_type_name': '电压',
+        'sensor_type_name': 'U',
         'lowvalue': 0
     },
     {
@@ -48,10 +48,10 @@ var mSensor = [
         'sensor_type_id': 3,
         'highvalue': 2000,
         'sort': 3,
-        'legend': '3:电流(A)',
+        'legend': '3:I(A)',
         'lab_code': 'refrigeratorkekao01',
         'test_unit_id': 1,
-        'sensor_type_name': '电流',
+        'sensor_type_name': 'I',
         'lowvalue': 0
     },
     {
@@ -59,10 +59,10 @@ var mSensor = [
         'sensor_type_id': 4,
         'highvalue': 8000,
         'sort': 4,
-        'legend': '4:功率(W)',
+        'legend': '4:P(W)',
         'lab_code': 'refrigeratorkekao01',
         'test_unit_id': 1,
-        'sensor_type_name': '功率',
+        'sensor_type_name': 'P',
         'lowvalue': 0
     },
     {
@@ -70,10 +70,10 @@ var mSensor = [
         'sensor_type_id': 5,
         'highvalue': 2000,
         'sort': 5,
-        'legend': '5:耗电量(kW·h)',
+        'legend': '5:E(kW·h)',
         'lab_code': 'refrigeratorkekao01',
         'test_unit_id': 1,
-        'sensor_type_name': '耗电量',
+        'sensor_type_name': 'E',
         'lowvalue': 0
     }
 ];
@@ -109,40 +109,40 @@ var labImgs = ["../static/img/labMain/Japan.jpg", "../static/img/labMain/Thailan
 var labname = ["日本实验室", "泰国实验室", "新西兰实验室"];
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorld(type) {
+	window.clearInterval(intevalChart1);
     // console.log(labInfos[type])
     $(".labMain_cblt_tone").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
     $(".labMain_cblt_ttwo img").attr("src", labImgs[type]);
     $("#labName").html(labname[type]);
-    console.log(labname[type])
     $("#labnameIcon").html(labname[type]);
     $("#secondName").html(labname[type]);
     var htmls = "";
     //console.log(data)
     if (type == 0) {
         //日本
-        htmls += ' <li><span></span><a href="javascript:void(0);">冰箱D室</a>';
+        htmls += ' <li><span></span><a href="javascript:void(0);">Refrigeration TL</a>';
         htmls += '<ul class="taiwei_hide">';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D4")>台位：D4 (在用)</li>';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D5")>台位：D5 (在用)</li>';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D6")>台位：D6 (在用)</li>';
+        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D4")>Position：P1（ON）</li>';
+        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D5")>Position：P2（ON）</li>';
+        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D6")>Position：P3（ON）</li>';
         htmls += '</ul>';
         htmls += ' </li>';
         findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005", "D4");
     } else if (type == 1) {
         //泰国
-        htmls += ' <li><span></span><a href="javascript:void(0);">焓差室</a>';
+        htmls += ' <li><span></span><a href="javascript:void(0);">ACF TL</a>';
         htmls += '<ul class="taiwei_hide">';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160407QDZKA001","2AB")>台位：2AB (在用)</li>';
+        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160407QDZKA001","2AB")>Position：P1（ON）</li>';
         htmls += '</ul>';
         htmls += ' </li>';
         findSensorByLabCenetrTabAjaxWorld("HR20160407QDZKA001", "2AB");
     } else {
         //新西兰
-        htmls += ' <li><span></span><a href="javascript:void(0);">冰箱B室</a>';
+        htmls += ' <li><span></span><a href="javascript:void(0);">Refrigeration TL</a>';
         htmls += '<ul class="taiwei_hide">';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B4")>台位：B4 (在用)</li>';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B5")>台位：B5 (在用)</li>';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B6")>台位：B6 (在用)</li>';
+        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B4")>Position：P1（ON）</li>';
+        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B5")>Position：P2（ON）</li>';
+        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B6")>Position：P3（ON）</li>';
         htmls += '</ul>';
         htmls += ' </li>';
         findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001", "B4");
@@ -223,6 +223,11 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId) {
         $("#center_sybh_id_world").html(data.sybh);
         $("#center_ypbm_id_world").html(data.ybbh);
         $("#center_cpxh_id_world").html(data.cpxh);
+        if(data.testPro!=""){
+        	 $("#center_testPro_id_world").parent("li").css("display","block");
+        }else{
+        	 $("#center_testPro_id_world").parent("li").css("display","none");
+        }
         $("#center_testPro_id_world").html(data.testPro);
         //showlegendDataWorld=legendDataWorld;//默认全选
         //console.log(showlegendDataWorld)
