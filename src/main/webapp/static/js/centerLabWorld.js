@@ -153,8 +153,10 @@ function loadLabUnitInfoCenterTabAjaxWorld(type) {
 
     $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
         $(".sheshi_tab").eq(1).trigger('click');
-        $(this).children('.taiwei_hide').slideToggle();
-        $(this).find('a').css('color', "66ffcc").siblings().css('color', '#66ccff');
+        $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
+        $(this).css('height','auto').siblings().css('height','1.5em');
+        $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
+        $(this).find('.taiwei_hide').css('display','block');
     });
 
     $('.taiwei_hide>li').click(function () {
