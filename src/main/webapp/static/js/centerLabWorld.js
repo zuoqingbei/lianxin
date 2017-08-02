@@ -225,12 +225,13 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId) {
         $("#center_sybh_id_world").html(data.sybh);
         $("#center_ypbm_id_world").html(data.ybbh);
         $("#center_cpxh_id_world").html(data.cpxh);
+        alert(data.testPro)
         if(data.testPro!=""){
-        	 $("#center_testPro_id_world").parent("li").css("display","block");
+        	 $("#center_testPro_id_world").parent("li").css("display","inline-block");
+        	 $("#center_testPro_id_world").html(data.testPro);
         }else{
         	 $("#center_testPro_id_world").parent("li").css("display","none");
         }
-        $("#center_testPro_id_world").html(data.testPro);
         //showlegendDataWorld=legendDataWorld;//默认全选
         //console.log(showlegendDataWorld)
         createLegendHtmlsWorld();
