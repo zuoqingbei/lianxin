@@ -106,7 +106,7 @@ var labImgs = ["../static/img/labMain/Japan.jpg", "../static/img/labMain/Thailan
 //'#labName'    实验室标题名
 //'#labnameIcon'  实验室标题名按钮
 //'#secondName'  实验室名小标题
-var labname = ["日本实验室", "泰国实验室", "新西兰实验室"];
+var labname = ["日本研发中心", "泰国工业园数据中心", "新西兰研发中心"];
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorld(type) {
 	window.clearInterval(intevalChart1);
@@ -225,8 +225,7 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId) {
         $("#center_sybh_id_world").html(data.sybh);
         $("#center_ypbm_id_world").html(data.ybbh);
         $("#center_cpxh_id_world").html(data.cpxh);
-        alert(data.testPro)
-        if(data.testPro!=""){
+        if(data.testPro!=""&&data.testPro!=undefined){
         	 $("#center_testPro_id_world").parent("li").css("display","inline-block");
         	 $("#center_testPro_id_world").html(data.testPro);
         }else{
