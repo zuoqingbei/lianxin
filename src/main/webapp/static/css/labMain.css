@@ -20,7 +20,7 @@ body {
     color: #64ccff;
 }
 
-a, a:hover {
+a, a:hover,a:focus {
     color: #64ccff;
 }
 

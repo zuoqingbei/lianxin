@@ -225,7 +225,7 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId) {
         $("#center_sybh_id_world").html(data.sybh);
         $("#center_ypbm_id_world").html(data.ybbh);
         $("#center_cpxh_id_world").html(data.cpxh);
-        alert(data.testPro)
+        // alert(data.testPro)
         if(data.testPro!=""){
         	 $("#center_testPro_id_world").parent("li").css("display","inline-block");
         	 $("#center_testPro_id_world").html(data.testPro);
@@ -475,6 +475,7 @@ function getChartsWorld1() {
         grid: {
             x: '13%',
             x2: '15%',
+            y: '17%',
             y2: '5%'                  //下移负数 使两个图重叠
         },
         dataZoom: [{
