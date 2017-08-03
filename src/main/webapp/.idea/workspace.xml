@@ -15,17 +15,102 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="webapp" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="fullScreen_map.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/fullScreen_map.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="945">
+              <caret line="113" column="50" lean-forward="false" selection-start-line="113" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
+              <folding>
+                <element signature="n#div#0;n#div#1;n#div#0;n#!!top" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="centerLab.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/centerLab.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4751">
+              <caret line="9" column="59" lean-forward="false" selection-start-line="9" selection-start-column="59" selection-end-line="9" selection-end-column="59" />
+              <folding>
+                <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="centerLabWorld.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/centerLabWorld.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1980">
+              <caret line="731" column="14" lean-forward="true" selection-start-line="731" selection-start-column="14" selection-end-line="731" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="zIndex.html" pinned="false" current-in-tab="true">
+        <entry file="file://C:/海联2017/hailianWeb/test/zIndex.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="19" column="9" lean-forward="true" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+            <state relative-caret-position="298">
+              <caret line="32" column="41" lean-forward="true" selection-start-line="32" selection-start-column="41" selection-end-line="32" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="right.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/right.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="350">
+              <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ulab.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/ulab.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="17" column="45" lean-forward="true" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="centerLabWorld.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/centerLabWorld.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="21" column="10" lean-forward="false" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="labMain.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/labMain.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="364">
+              <caret line="94" column="12" lean-forward="true" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -35,76 +120,10 @@
         <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/left.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="22">
-              <caret line="21" column="14" lean-forward="false" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="14" />
+              <caret line="1" column="16" lean-forward="true" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
               <folding>
-                <marker date="1500444297993" expanded="false" signature="7327:9231" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fullScreen_map.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/fullScreen_map.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1452">
-              <caret line="12" column="28" lean-forward="false" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="full.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/full.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="28" column="9" lean-forward="true" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="flatMap.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/flatMap.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="5" column="86" lean-forward="false" selection-start-line="5" selection-start-column="72" selection-end-line="5" selection-end-column="86" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="flatMapAutoTip.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/asserts/echarts/flatMapAutoTip.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="616">
-              <caret line="43" column="0" lean-forward="true" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-              <folding>
-                <element signature="e#1047#1219#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="flat.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/flat.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="428" column="34" lean-forward="false" selection-start-line="428" selection-start-column="34" selection-end-line="428" selection-end-column="34" />
-              <folding>
-                <marker date="1500865846526" expanded="true" signature="11755:11834" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main_left.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/main_left.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="69" column="29" lean-forward="false" selection-start-line="69" selection-start-column="29" selection-end-line="69" selection-end-column="29" />
-              <folding>
-                <marker date="1500372337511" expanded="true" signature="171:194" ph="..." />
-                <marker date="1500372337511" expanded="true" signature="8237:8249" ph="..." />
+                <element signature="n#style#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />
+                <marker date="1501740963689" expanded="false" signature="7302:9206" ph="..." />
               </folding>
             </state>
           </provider>
@@ -122,36 +141,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>点击cho</find>
-      <find>点击chong</find>
-      <find>点击chongzhi</find>
-      <find>点击重置</find>
-      <find>点击重</find>
-      <find>点击</find>
-      <find>点</find>
-      <find>$(&quot;#content&quot;)</find>
-      <find>l</find>
-      <find>lab</find>
-      <find>labC</find>
-      <find>videoFadeOut</find>
-      <find>../</find>
-      <find>backg</find>
-      <find>pageResize</find>
-      <find>main1</find>
-      <find>axisLabel</find>
-      <find>myChart1.resize();</find>
-      <find>option</find>
-      <find>myChart1</find>
-      <find>bodyScale =</find>
-      <find>name: c</find>
-      <find>bodyScale</find>
-      <find>bodyScale-</find>
-      <find>pageW</find>
-      <find>fade_out</find>
-      <find>fadeInElList</find>
-      <find>TIP_SETINTERVAL_TIME</find>
-      <find>data</find>
-      <find>echart_content</find>
+      <find>#iframe</find>
+      <find>#iframe.</find>
+      <find>#iframe.m</find>
+      <find>#iframe.ma</find>
+      <find>#iframe.map</find>
+      <find>re</find>
+      <find>resize</find>
+      <find>resize()</find>
+      <find>.resize()</find>
+      <find>iframeFlatMap</find>
+      <find>resetSize()</find>
+      <find>iframeFlatMapL3x3</find>
+      <find>myChart</find>
+      <find>createArrData</find>
+      <find>main</find>
+      <find>currentData[</find>
+      <find>currentData</find>
+      <find>main1_world</find>
+      <find>myChart1.setOption</find>
+      <find>xAxis: [</find>
+      <find>position:</find>
+      <find>name:</find>
+      <find>axisLabel: {</find>
+      <find>offset:</find>
+      <find>formatter: '{value}</find>
+      <find>myChartWorld1</find>
+      <find>alert</find>
+      <find>sheshi_tab_list</find>
+      <find>home_active.png</find>
+      <find>sheshi_tab</find>
     </findStrings>
     <replaceStrings>
       <replace>2</replace>
@@ -170,13 +189,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/static/css/full_sphereMap.css" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/test/testSelected.html" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab1.html" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/full_sphereMap.html" />
-        <option value="$PROJECT_DIR$/static/js/main.js" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/lab/wordCloud.html" />
-        <option value="$PROJECT_DIR$/static/js/sphere.js" />
         <option value="$PROJECT_DIR$/static/js/tab4_statistics_2.js" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/new-tabs/tab4.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/test/测试span下的img.html" />
@@ -190,42 +202,56 @@
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/full.html" />
         <option value="$PROJECT_DIR$/static/js/full_statistics.js" />
         <option value="$PROJECT_DIR$/static/js/manyEcharts.js" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/lab/flatMap.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab3.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab4.html" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/right.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab2.html" />
         <option value="$PROJECT_DIR$/static/js/statistics.js" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/lab/sphereMap.html" />
-        <option value="$PROJECT_DIR$/static/js/main_left.js" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/left.html" />
-        <option value="$PROJECT_DIR$/static/css/index_left.css" />
         <option value="$PROJECT_DIR$/static/js/boot.js" />
         <option value="$PROJECT_DIR$/static/js/sphere_full.js" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/fullScreen_map.html" />
         <option value="$PROJECT_DIR$/static/css/common.css" />
-        <option value="$PROJECT_DIR$/static/css/fullScreen_map.css" />
-        <option value="$PROJECT_DIR$/static/css/centerLab.css" />
-        <option value="$PROJECT_DIR$/static/css/labMain.css" />
         <option value="$PROJECT_DIR$/static/css/tabs/tab4.css" />
         <option value="$PROJECT_DIR$/static/css/tabs/tab3.css" />
-        <option value="$PROJECT_DIR$/static/css/centerLabWorld.css" />
         <option value="$PROJECT_DIR$/static/js/tabs/tab4.js" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/layout/ulab.html" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/centerLab.html" />
-        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/centerLabWorld.html" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/lab/index.html" />
-        <option value="$PROJECT_DIR$/static/js/full.js" />
-        <option value="$PROJECT_DIR$/static/js/centerLab.js" />
-        <option value="$PROJECT_DIR$/static/js/centerLabWorld.js" />
-        <option value="$PROJECT_DIR$/static/js/flat.js" />
         <option value="$PROJECT_DIR$/static/asserts/echarts/flatMapAutoTip.css" />
         <option value="$PROJECT_DIR$/WEB-INF/pages/lab/full.html" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/test/IframeFlat.html" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/test/flatMapNoContext.html" />
+        <option value="$PROJECT_DIR$/static/dep/echarts-x/build/source/chart/map3d.js" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/test/flatMap.html" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/fullScreen_map.html" />
+        <option value="$PROJECT_DIR$/static/js/flat.js" />
+        <option value="$PROJECT_DIR$/static/js/full.js" />
+        <option value="$PROJECT_DIR$/static/js/main_left.js" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/lab/flatMap.html" />
+        <option value="$PROJECT_DIR$/static/js/centerLabWorld.js" />
+        <option value="$PROJECT_DIR$/static/js/centerLab.js" />
+        <option value="$PROJECT_DIR$/static/css/labLine.css" />
+        <option value="$PROJECT_DIR$/static/css/centerLab.css" />
+        <option value="$PROJECT_DIR$/static/css/index_left.css" />
+        <option value="$PROJECT_DIR$/static/css/fullScreen_map.css" />
+        <option value="$PROJECT_DIR$/static/css/labMain.css" />
+        <option value="$PROJECT_DIR$/static/css/centerLabWorld.css" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/centerLab.html" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/right.html" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/left.html" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/layout/centerLabWorld.html" />
+        <option value="$PROJECT_DIR$/WEB-INF/pages/test/zIndex.html" />
+        <option value="C:/海联2017/hailianWeb/test/zIndex.html" />
       </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsFlowSettings">
+    <service-enabled>false</service-enabled>
+    <exe-path />
+    <annotation-enable>false</annotation-enable>
+    <other-services-enabled>false</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
@@ -256,330 +282,112 @@
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tag" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tabs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="img" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tabs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="asserts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="asserts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="echarts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="asserts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
+          <expand>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="asserts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="asserts" type="462c0819:PsiDirectoryNode" />
+              <item name="echarts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="img" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="img" type="462c0819:PsiDirectoryNode" />
+              <item name="labMain" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="lab" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="layout" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
         </subPane>
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="C:/海联2017/hailianWeb" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="SearchEverywhereHistoryKey" value="chart3&#9;null&#9;null" />
     <property name="ToolWindowTODO.ShowToolbar" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\git\ulab\src\main\webapp\static\img\labMain" />
+      <recent name="C:\git\ulab\src\main\webapp\static\img" />
+      <recent name="C:\git\ulab\src\main\webapp\WEB-INF\pages\layout" />
+      <recent name="C:\git\ulab\src\main\webapp\static\js" />
+      <recent name="C:\git\ulab\src\main\webapp\WEB-INF\pages\test" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\git\ulab\src\main\webapp\static\img\tabCom" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\git\ulab\src\main\webapp\static\asserts\echarts" />
-      <recent name="C:\git\ulab\src\main\webapp\static\img" />
-      <recent name="C:\git\ulab\src\main\webapp\static\js" />
-      <recent name="C:\git\ulab\src\main\webapp\WEB-INF\pages\layout" />
-      <recent name="C:\git\ulab\src\main\webapp\static\css\tabs" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -595,6 +403,14 @@
     </option>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <method />
     </configuration>
@@ -630,15 +446,6 @@
       <option name="cucumberJsArguments" value="" />
       <option name="executablePath" />
       <option name="filePath" />
-      <method />
-    </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <arguments />
-      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -727,12 +534,17 @@
       <workItem from="1500446539201" duration="3857000" />
       <workItem from="1500513360569" duration="15584000" />
       <workItem from="1500599914371" duration="25611000" />
-      <workItem from="1500859026577" duration="4880000" />
+      <workItem from="1500859026577" duration="19570000" />
+      <workItem from="1500944648793" duration="7801000" />
+      <workItem from="1500953561615" duration="18000" />
+      <workItem from="1501033657454" duration="5452000" />
+      <workItem from="1501666788703" duration="620000" />
+      <workItem from="1501723279355" duration="14905000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="570065000" />
+    <option name="totallyTimeSpent" value="613551000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -744,12 +556,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19182156" sideWeight="0.86644953" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19182156" sideWeight="0.86644953" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32736155" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32899022" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -761,7 +573,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -771,7 +582,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32736155" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32899022" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32899022" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19182156" sideWeight="0.86644953" order="0" side_tool="false" content_ui="combo" />
@@ -784,7 +595,7 @@
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="processedProjectFiles" value="true" />
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -827,91 +638,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4">
-          <caret line="14" column="2" lean-forward="true" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/main_right.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="517">
-          <caret line="4528" column="32" lean-forward="false" selection-start-line="4528" selection-start-column="32" selection-end-line="4528" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/iframe.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/tabs/tab2.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/tabs/tab2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="211" column="51" lean-forward="true" selection-start-line="211" selection-start-column="51" selection-end-line="211" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/asserts/js/jquery-2.2.4.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="9795" column="8" lean-forward="false" selection-start-line="9795" selection-start-column="8" selection-end-line="9795" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/worldCloudFull.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="270" column="12" lean-forward="false" selection-start-line="270" selection-start-column="12" selection-end-line="270" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/full_statistics.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/index_right.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="543">
-          <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab4.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="14" column="36" lean-forward="true" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/right.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="81" column="43" lean-forward="false" selection-start-line="81" selection-start-column="43" selection-end-line="81" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/statistics.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="919" column="6" lean-forward="true" selection-start-line="919" selection-start-column="6" selection-end-line="919" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/tab/tab2.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1680">
@@ -968,45 +694,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/index_left.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/common.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1496">
           <caret line="68" column="16" lean-forward="false" selection-start-line="68" selection-start-column="16" selection-end-line="68" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/fullScreen_map.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/centerLab.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/labMain.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="792">
-          <caret line="36" column="18" lean-forward="false" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/centerLabWorld.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="11" lean-forward="true" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -1052,13 +743,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/centerLab.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="728" column="11" lean-forward="true" selection-start-line="728" selection-start-column="11" selection-end-line="728" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/tabs/tab4.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="362">
@@ -1066,58 +750,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/manyEcharts.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/ulab.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="14" column="44" lean-forward="true" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/full.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="280" column="0" lean-forward="false" selection-start-line="280" selection-start-column="0" selection-end-line="280" selection-end-column="0" />
-          <folding>
-            <marker date="1500613965876" expanded="true" signature="343:366" ph="..." />
-            <marker date="1500613965876" expanded="true" signature="7819:7831" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/centerLabWorld.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="661" column="18" lean-forward="true" selection-start-line="661" selection-start-column="18" selection-end-line="661" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/wordCloud.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="327">
           <caret line="270" column="12" lean-forward="false" selection-start-line="270" selection-start-column="12" selection-end-line="270" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/centerLab.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15479">
-          <caret line="720" column="0" lean-forward="true" selection-start-line="720" selection-start-column="0" selection-end-line="720" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/centerLabWorld.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="18" lean-forward="true" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -1135,10 +771,387 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/fullScreen_map.html">
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/fullScreen_map.jsp" />
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/test/flatMapNoContext.html" />
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/test/IframeFlat.html" />
+    <entry file="file://$PROJECT_DIR$/tag/echarts.tag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1452">
-          <caret line="12" column="28" lean-forward="false" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
+        <state relative-caret-position="154">
+          <caret line="58" column="11" lean-forward="true" selection-start-line="58" selection-start-column="11" selection-end-line="58" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/dep/echarts-x/build/source/chart/map3d.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="942" column="34" lean-forward="false" selection-start-line="942" selection-start-column="32" selection-end-line="942" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/test/flatMap.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="35" column="41" lean-forward="false" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/asserts/echarts/flatMapAutoTip.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="770">
+          <caret line="35" column="18" lean-forward="true" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/left_bak.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" column="17" lean-forward="true" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/main_left_bak.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/full.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" column="6" lean-forward="true" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/statistics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1188">
+          <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/full.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3784">
+          <caret line="199" column="21" lean-forward="false" selection-start-line="199" selection-start-column="21" selection-end-line="199" selection-end-column="21" />
+          <folding>
+            <marker date="1500949908272" expanded="true" signature="343:366" ph="..." />
+            <marker date="1500949908272" expanded="false" signature="887:2096" ph="{...}" />
+            <marker date="1500949908272" expanded="true" signature="8711:8723" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/main_left.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="946">
+          <caret line="43" column="28" lean-forward="false" selection-start-line="43" selection-start-column="28" selection-end-line="43" selection-end-column="28" />
+          <folding>
+            <element signature="e#1799#2008#0" expanded="false" />
+            <element signature="n#!!block;n#sphereRBscroll#0" expanded="false" />
+            <marker date="1500951209834" expanded="true" signature="171:194" ph="..." />
+            <marker date="1500951209834" expanded="true" signature="8149:8161" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/flatMap.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="24" column="19" lean-forward="false" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+          <folding>
+            <element signature="e#933#1269#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/flat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" column="4" lean-forward="false" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+          <folding>
+            <marker date="1500949081797" expanded="true" signature="11607:11686" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/manyEcharts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-44">
+          <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/centerLabWorld.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2036">
+          <caret line="124" column="55" lean-forward="false" selection-start-line="124" selection-start-column="55" selection-end-line="124" selection-end-column="55" />
+          <folding>
+            <marker date="1501737937885" expanded="true" signature="8630:8784" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="8630:9116" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="8630:9120" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="8788:8875" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="8884:8971" ph="//..." />
+            <marker date="1501737937885" expanded="true" signature="9150:9460" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="9225:9457" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="9264:9338" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="9358:9451" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="9492:11121" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="9613:11049" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="9744:9871" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="9984:10122" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="10146:11043" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="10369:10894" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="10483:10626" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="10731:10880" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="10900:11033" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="11054:11119" ph="//..." />
+            <marker date="1501737937885" expanded="true" signature="11170:12727" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="11291:12725" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="11422:11549" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="11478:11539" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="11769:12262" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="11879:12010" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="12268:12719" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="12406:12564" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="12592:12695" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="12786:13713" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="12999:13238" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="13336:13633" ph="{&quot;symbol&quot;: 'none'...}" />
+            <marker date="1501737937885" expanded="true" signature="13514:13606" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="13536:13596" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="13654:13694" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="13768:14620" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="13968:14207" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="14278:14575" ph="{&quot;symbol&quot;: 'none'...}" />
+            <marker date="1501737937885" expanded="true" signature="14456:14548" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="14478:14538" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="14670:14846" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="14743:14844" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="14903:15530" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="14922:15014" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="15020:15528" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="15574:17162" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="15688:17121" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="15825:15858" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="15874:15944" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="16093:16203" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="16226:16270" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="16352:16394" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="16458:17114" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="16493:16527" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="16543:16613" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="16755:16865" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="16888:16932" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="17014:17056" ph="..." />
+            <marker date="1501737937885" expanded="true" signature="17195:17342" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="17373:17555" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="17583:24820" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="17605:23853" ph="{&quot;series&quot;: seriesTopDataWorld...}" />
+            <marker date="1501737937885" expanded="true" signature="17624:17881" ph="{&quot;trigger&quot;: 'axis'...}" />
+            <marker date="1501737937885" expanded="true" signature="17678:17733" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="17760:17805" ph="{&quot;type&quot;: 'cross'...}" />
+            <marker date="1501737937885" expanded="true" signature="17899:17969" ph="{&quot;data&quot;: legendDataWorld...}" />
+            <marker date="1501737937885" expanded="true" signature="17985:18115" ph="{&quot;x&quot;: '13%'...}" />
+            <marker date="1501737937885" expanded="true" signature="18135:18256" ph="[...]" />
+            <marker date="1501737937885" expanded="true" signature="18136:18215" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="18217:18255" ph="{&quot;type&quot;: 'inside'...}" />
+            <marker date="1501737937885" expanded="true" signature="18273:19041" ph="[...]" />
+            <marker date="1501737937885" expanded="true" signature="18287:19031" ph="{&quot;type&quot;: 'category'...}" />
+            <marker date="1501737937885" expanded="true" signature="18350:18401" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="18429:18480" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="18509:18742" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="18610:18724" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="18770:18960" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="18878:18942" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="19058:23811" ph="[...]" />
+            <marker date="1501737937885" expanded="true" signature="19072:20241" ph="{&quot;type&quot;: 'value'...}" />
+            <marker date="1501737937885" expanded="true" signature="19205:19294" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="19475:19532" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="19561:19766" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="19634:19748" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="19795:19949" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="19867:19931" ph="{&quot;color&quot;: '##234f65'...}" />
+            <marker date="1501737937885" expanded="true" signature="19977:20036" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="20065:20183" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="20095:20165" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="20255:21460" ph="{&quot;type&quot;: 'value'...}" />
+            <marker date="1501737937885" expanded="true" signature="20388:20478" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="20660:20900" ph="{&quot;formatter&quot;: '{value} '...}" />
+            <marker date="1501737937885" expanded="true" signature="20768:20882" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="20928:20985" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="21014:21168" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="21086:21150" ph="{&quot;color&quot;: '##234f65'...}" />
+            <marker date="1501737937885" expanded="true" signature="21196:21255" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="21284:21402" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="21314:21384" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="21474:22630" ph="{&quot;type&quot;: 'value'...}" />
+            <marker date="1501737937885" expanded="true" signature="21556:21646" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="21829:22069" ph="{&quot;formatter&quot;: '{value} '...}" />
+            <marker date="1501737937885" expanded="true" signature="21937:22051" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="22097:22154" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="22183:22337" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="22255:22319" ph="{&quot;color&quot;: '##234f65'...}" />
+            <marker date="1501737937885" expanded="true" signature="22365:22424" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="22453:22571" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="22483:22553" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="22644:23800" ph="{&quot;type&quot;: 'value'...}" />
+            <marker date="1501737937885" expanded="true" signature="22726:22816" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="22999:23239" ph="{&quot;formatter&quot;: '{value} '...}" />
+            <marker date="1501737937885" expanded="true" signature="23107:23221" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="23267:23324" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="23353:23507" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="23425:23489" ph="{&quot;color&quot;: '##234f65'...}" />
+            <marker date="1501737937885" expanded="true" signature="23535:23594" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="23623:23741" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="23653:23723" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="24006:24062" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="24134:24818" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="24849:33260" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="24872:31670" ph="{&quot;series&quot;: seriesBottomDataWorld...}" />
+            <marker date="1501737937885" expanded="true" signature="24891:25068" ph="{&quot;trigger&quot;: 'axis'...}" />
+            <marker date="1501737937885" expanded="true" signature="24947:24992" ph="{&quot;type&quot;: 'cross'...}" />
+            <marker date="1501737937885" expanded="true" signature="25086:25156" ph="{&quot;data&quot;: legendDataWorld...}" />
+            <marker date="1501737937885" expanded="true" signature="25172:25271" ph="{&quot;x&quot;: '13%'...}" />
+            <marker date="1501737937885" expanded="true" signature="25291:25412" ph="[...]" />
+            <marker date="1501737937885" expanded="true" signature="25292:25371" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="25373:25411" ph="{&quot;type&quot;: 'inside'...}" />
+            <marker date="1501737937885" expanded="true" signature="25429:26193" ph="[...]" />
+            <marker date="1501737937885" expanded="true" signature="25443:26183" ph="{&quot;type&quot;: 'category'...}" />
+            <marker date="1501737937885" expanded="true" signature="25563:25614" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="25642:25693" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="25722:25951" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="25822:25933" ph="{&quot;color&quot;: '##fff'...}" />
+            <marker date="1501737937885" expanded="true" signature="25979:26168" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="26086:26150" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="26210:31625" ph="[...]" />
+            <marker date="1501737937885" expanded="true" signature="26224:27757" ph="{&quot;type&quot;: 'value'...}" />
+            <marker date="1501737937885" expanded="true" signature="26356:26446" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="26582:26627" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="26729:27197" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="26787:27032" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="26890:26971" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="27065:27179" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="27225:27282" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="27311:27465" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="27383:27447" ph="{&quot;color&quot;: '##234f65'...}" />
+            <marker date="1501737937885" expanded="true" signature="27493:27552" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="27581:27699" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="27611:27681" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="27771:28935" ph="{&quot;type&quot;: 'value'...}" />
+            <marker date="1501737937885" expanded="true" signature="27853:27943" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="28165:28373" ph="{&quot;formatter&quot;: '{value} '...}" />
+            <marker date="1501737937885" expanded="true" signature="28241:28355" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="28401:28458" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="28487:28642" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="28560:28624" ph="{&quot;color&quot;: '##234f65'...}" />
+            <marker date="1501737937885" expanded="true" signature="28670:28729" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="28758:28876" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="28788:28858" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="28949:30434" ph="{&quot;type&quot;: 'value'...}" />
+            <marker date="1501737937885" expanded="true" signature="29031:29121" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="29257:29302" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="29405:29873" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="29463:29708" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="29566:29647" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="29741:29855" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="29901:29958" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="29987:30142" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="30060:30124" ph="{&quot;color&quot;: '##234f65'...}" />
+            <marker date="1501737937885" expanded="true" signature="30170:30229" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="30258:30376" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="30288:30358" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="30448:31615" ph="{&quot;type&quot;: 'value'...}" />
+            <marker date="1501737937885" expanded="true" signature="30533:30623" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="30845:31053" ph="{&quot;formatter&quot;: '{value} '...}" />
+            <marker date="1501737937885" expanded="true" signature="30921:31035" ph="{&quot;color&quot;: '##66ccff'...}" />
+            <marker date="1501737937885" expanded="true" signature="31081:31138" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="31167:31322" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="31240:31304" ph="{&quot;color&quot;: '##234f65'...}" />
+            <marker date="1501737937885" expanded="true" signature="31350:31409" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="31438:31556" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="31468:31538" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="31828:31887" ph="{...}" />
+            <marker date="1501737937885" expanded="true" signature="31894:32568" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="32573:33257" ph="/*...*/" />
+            <marker date="1501737937885" expanded="true" signature="33263:34151" ph="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/centerLab.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="428" column="26" lean-forward="false" selection-start-line="428" selection-start-column="26" selection-end-line="428" selection-end-column="26" />
+          <folding>
+            <element signature="e#15424#16016#0" expanded="false" />
+            <marker date="1501728438005" expanded="true" signature="21105:21138" ph="..." />
+            <marker date="1501728438005" expanded="true" signature="21154:21220" ph="..." />
+            <marker date="1501728438005" expanded="true" signature="21349:21459" ph="..." />
+            <marker date="1501728438005" expanded="true" signature="21482:21541" ph="..." />
+            <marker date="1501728438005" expanded="true" signature="21606:21621" ph="..." />
+            <marker date="1501728438005" expanded="true" signature="21701:21734" ph="..." />
+            <marker date="1501728438005" expanded="true" signature="21750:21816" ph="..." />
+            <marker date="1501728438005" expanded="true" signature="21938:22048" ph="..." />
+            <marker date="1501728438005" expanded="true" signature="22071:22130" ph="..." />
+            <marker date="1501728438005" expanded="true" signature="22195:22209" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/labLine.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="174" column="17" lean-forward="true" selection-start-line="174" selection-start-column="17" selection-end-line="174" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/centerLab.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="24" column="20" lean-forward="false" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/index_left.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="518">
+          <caret line="142" column="37" lean-forward="false" selection-start-line="142" selection-start-column="37" selection-end-line="142" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/fullScreen_map.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="70" column="24" lean-forward="true" selection-start-line="70" selection-start-column="24" selection-end-line="70" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/labMain.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="94" column="12" lean-forward="true" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/centerLabWorld.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="21" column="10" lean-forward="false" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/ulab.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="17" column="45" lean-forward="true" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
           <folding />
         </state>
       </provider>
@@ -1146,64 +1159,64 @@
     <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/left.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
-          <caret line="21" column="14" lean-forward="false" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="14" />
+          <caret line="1" column="16" lean-forward="true" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
           <folding>
-            <marker date="1500444297993" expanded="false" signature="7327:9231" ph="..." />
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <marker date="1501740963689" expanded="false" signature="7302:9206" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/right.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/fullScreen_map.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="945">
+          <caret line="113" column="50" lean-forward="false" selection-start-line="113" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
+          <folding>
+            <element signature="n#div#0;n#div#1;n#div#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="19" column="9" lean-forward="true" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+        <state relative-caret-position="298">
+          <caret line="32" column="41" lean-forward="true" selection-start-line="32" selection-start-column="41" selection-end-line="32" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/flatMap.html">
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/centerLab.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="86" lean-forward="false" selection-start-line="5" selection-start-column="72" selection-end-line="5" selection-end-column="86" />
+        <state relative-caret-position="-4751">
+          <caret line="9" column="59" lean-forward="false" selection-start-line="9" selection-start-column="59" selection-end-line="9" selection-end-column="59" />
+          <folding>
+            <element signature="n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#4;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/layout/centerLabWorld.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1980">
+          <caret line="731" column="14" lean-forward="true" selection-start-line="731" selection-start-column="14" selection-end-line="731" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/flat.js">
+    <entry file="file://C:/海联2017/hailianWeb/test/zIndex.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="428" column="34" lean-forward="false" selection-start-line="428" selection-start-column="34" selection-end-line="428" selection-end-column="34" />
-          <folding>
-            <marker date="1500865846526" expanded="true" signature="11755:11834" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/main_left.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="69" column="29" lean-forward="false" selection-start-line="69" selection-start-column="29" selection-end-line="69" selection-end-column="29" />
-          <folding>
-            <marker date="1500372337511" expanded="true" signature="171:194" ph="..." />
-            <marker date="1500372337511" expanded="true" signature="8237:8249" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/asserts/echarts/flatMapAutoTip.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="43" column="0" lean-forward="true" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding>
-            <element signature="e#1047#1219#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/pages/lab/full.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="28" column="9" lean-forward="true" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
+        <state relative-caret-position="342">
+          <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
           <folding />
         </state>
       </provider>

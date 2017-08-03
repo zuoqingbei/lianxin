@@ -67,15 +67,7 @@
             resetSizeRight();
         });
 
-/*
-        $(".tab-item").eq(0).click(function () {
-            $('#right .lab').css("display",'none');
-        });
-        $(".lab_item").click(function () {
-            $(this).addClass("word_active").siblings().removeClass("word_active");
-        	resetSizeRight();
-        });
-*/    
+
 //        上一页 下一页
         $('#tab2 .fenye .last').click(function () {
             $('#tab2').css('left','-100%');
@@ -90,13 +82,6 @@
             var index=$(this).index();
             $(".biaozhun_box_echarts:eq(" + index + ")").css("opacity",'1').siblings().css('opacity','0');
         })
-//        海尔产品涉及数标准切换
-
-
-        /* loadTab1Data(); */
-       /*  loadTab2Data();
-        loadTab3Data();
-        loadTab4Data(); */
     });
 
 </script>

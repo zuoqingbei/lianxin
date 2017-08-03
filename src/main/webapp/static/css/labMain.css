@@ -93,7 +93,7 @@ a, a:hover,a:focus {
 
 .labMain_cb_left {
     flex: 3;
-    background: url(../img/labMain/lab_left_border.png) 0 0 no-repeat;
+    background: url(../img/labMain/lab_left_border_wider.png) 0 0 no-repeat;
     background-size: 100% 100%;
     position: relative;
     margin: .8em 1em;
