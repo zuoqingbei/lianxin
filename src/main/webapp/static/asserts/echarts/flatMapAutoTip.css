@@ -90,15 +90,12 @@
 
 .dialog_title > a {
     color: #ffffff;
-    /*font-size: 2em;*/
     line-height: 1.6em;
-    /*max-height: 2em;*/
     display: block;
     display: -webkit-box;
     text-overflow: ellipsis;
     word-break: break-all;
     -webkit-box-orient: vertical;
-    /*-webkit-line-clamp: 2;*/
     overflow: hidden;
     text-decoration: none;
 }
@@ -156,3 +153,15 @@
     -webkit-box-shadow: 2px 2px 5px #969696; /*webkit*/
     box-shadow: 2px 2px 5px #969696; /*opera或ie9*/
 }
+
+/*提示的文字变大版本,注掉下面代码就是原来大小*/
+@media all{
+    .echart_tip_arrow > .echart_tip_line {
+        height: 8.5em;
+        top: -9.6em;
+    }
+    .dialog_title {
+        font-size: 2.4em;
+    }
+}
+

@@ -209,6 +209,9 @@ function seriesData(data) {
         },
         markLine: {
             smooth: true,
+            tooltip:{
+                show:false
+            },
             effect: {
                 show: true,
                 scaleSize: 1,
