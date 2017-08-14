@@ -111,11 +111,11 @@ var labname = ["日本研发中心", "泰国工业园数据中心", "新西兰�
 function loadLabUnitInfoCenterTabAjaxWorld(type) {
 	window.clearInterval(intevalChart1);
     // console.log(labInfos[type])
-    $(".labMain_cblt_tone").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
-    $(".labMain_cblt_ttwo img").attr("src", labImgs[type]);
-    $("#labName").html(labname[type]);
-    $("#labnameIcon").html(labname[type]);
-    $("#secondName").html(labname[type]);
+    $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
+    $(".labMain_cblt_ttwo_world img").attr("src", labImgs[type]);
+    $("#labName_world").html(labname[type]);
+    $("#labnameIcon_world").html(labname[type]);
+    $("#secondName_world").html(labname[type]);
     var htmls = "";
     //console.log(data)
     if (type == 0) {

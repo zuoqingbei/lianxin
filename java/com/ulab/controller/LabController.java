@@ -449,7 +449,6 @@ public class LabController extends BaseController {
     	String startDate=getPara("startDate","201701");
     	String endDate=getPara("endDate","");
     	endDate=dealEndTime(endDate);
-    	endDate=dealEndTime(endDate);
     	renderJson(OrderModel.dao.findOrderMonthRateForAll(startDate, endDate, plCode, labTypeCode));
     }
     
@@ -900,7 +899,7 @@ public class LabController extends BaseController {
     	WebServiceRerigeratorClient client = new WebServiceRerigeratorClient();
     	String interval=getPara("interval","3");
 		LabTestUnit labTestUnit = client.searchRealTimeData(labTypeCode, url, Integer.valueOf(testUnitId),Float.parseFloat(interval));
-		System.out.println(labTestUnit.getRealTimeData());
+		//System.out.println(labTestUnit.getRealTimeData());
 		if(labTestUnit!=null&&StringUtils.isNotBlank(labTestUnit.getRealTimeData())){
 			data=labTestUnit.getRealTimeData();
 		}
