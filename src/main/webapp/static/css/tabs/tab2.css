@@ -33,7 +33,7 @@
 #tab2  .fenye {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 1%;
 }
 
 #tab2  .fenye div {
@@ -45,8 +45,8 @@
 }
 
 #tab2  .fenye div img {
-    width: 2.2em;
-    height: 2.2em;
+    width: 1.8em;
+    height: 1.8em;
 }
 
 #tab2  .yunying {

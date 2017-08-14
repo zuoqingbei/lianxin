@@ -207,6 +207,7 @@ function navSelectA() {//这里会触发地图中要加载的数据
             $("#r").hide();
             $(".labMain_content").show()
             $(".labMain_content_country").hide()
+            $(".labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show").hide()
         }
     })
 }
@@ -231,23 +232,6 @@ function sphereRTnumberShow(n) {
 
             }
         }
-        /*
-         var $flatLTnumber = $(".sphere-right-top .chartBorder ul li").eq(j).find(".number");
-         console.log("--------------------",$flatLTnumber.length,n);
-         var str = n[j] + "";
-         var newStr = "";
-         for (var i = 0; i < 4; i++) {
-         if (i < 4 - str.length) {
-         newStr += "0";
-         } else {
-         newStr += '<span style="color: #fff;">' + str + '</span>';
-         // console.log(newStr);
-         $flatLTnumber.html(newStr);
-         break;
-         }
-
-         }
-         */
     }
 }
 
