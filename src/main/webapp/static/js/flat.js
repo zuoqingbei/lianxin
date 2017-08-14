@@ -418,6 +418,9 @@ function getTopicHtml(currentPoint) {
     var title = currentPoint.title;
     var id = currentPoint.id;
     var url = "";
+    if((value=="0"&&title=="青岛")||title==undefined){
+    	return "";
+    }
     return $('<div class="echart_tip">' +
             '<div class="dialog_title echart_content">' +
                 '<a title="' + title + '"  href="#" target="_blank" >' +
