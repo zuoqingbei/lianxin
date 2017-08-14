@@ -33,12 +33,12 @@
 #tab2  .fenye {
     position: absolute;
     top: 0;
-    right: 2%
+    right: 0;
 }
 
 #tab2  .fenye div {
-    width: 2.2em;
-    height: 2.2em;
+    width: 1.8em;
+    height: 1.8em;
     margin-right: 1em;
     float: left;
     cursor: pointer;

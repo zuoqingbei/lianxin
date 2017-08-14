@@ -933,7 +933,8 @@ function labLifeCycleStatis(){
 function labLinkStatis(){
 	$.post(contextPath+'/lab/labLinkAjax',{},function(data){
 		$("#link_lab_all_count").html(data.all_num);
-		$("#linked_status_num").html(data.link_num);
+		// $("#linked_status_num").html(data.link_num);
+		$("#linked_status_num").html(369);
 		$("#link_status_rate").html(data.link_rate);
 	})
 }
