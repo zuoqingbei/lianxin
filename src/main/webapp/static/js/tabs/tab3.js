@@ -326,11 +326,38 @@ function findOrderPassForProAjax(mychartIds, desName,obj) {
         });
     })
 }
+//根据当前月,取得历史月份集合(从当前月前推:历史)  
+
+function last_year_month() {
+	 var complDate = [];  
+	    var curDate = new Date();  
+	    var y = curDate.getFullYear();  
+	    var m = curDate.getMonth() + 1;  
+	    //第一次装入当前月(格式yyyy-mm)  
+	    complDate[0] = y.toString().substr(2, 2)+ "/" + (m.toString().length == 1 ? "0" + m : m);  
+	    m--;  
+	    //第一次已经装入,numMonth少计算一次  
+	    for (var i = 1; i < 12; i++, m--) {  
+	        if (m == 0) {  
+	            //到1月后,后推一年  
+	            y--;  
+	            m = 12; //再从12月往后推  
+	        }  
+	        complDate[i] = y.toString().substr(2, 2) +"/" + (m.toString().length == 1 ? "0" + m : m);  
+	    }  
+	return complDate.reverse();
+}
+
 //右-左-上 #6 折线图 订单及时率
 function findOrderYearRateForTab3() {
+/*	var myDate = new Date();
+	var year=myDate.getFullYear(); //获取完整的年份(4位,1970-????)
+	var month=myDate.getMonth(); //获取当前月份(0-11,0代表1月)
+	month=parseInt(month)-1;
+	var end=year+month;*/
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
-        "startDate": "201701",
-        "endDate": ""
+        "startDate": "201601",
+        "endDate": "201612"
     }, function (data) {
         var myChart6 = echarts.init(document.getElementById("myChart6"));
         right_echarts.push(myChart6);
@@ -366,7 +393,8 @@ function findOrderYearRateForTab3() {
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-                    data: statistictab1LengendTime(data)
+                    //data: statistictab1LengendTime(data)
+                    data: last_year_month()
                 }
             ],
             series: [{
@@ -481,8 +509,8 @@ function findOrderYearRateForProductAjax() {
 function findOrderMonthRateForProductAjax() {
     $.post(contextPath + '/lab/findOrderMonthRateForProductAjax', {
         "labTypeCode": labTypeCode,
-        "startDate": "201701",
-        "endDate": ""
+        "startDate": "201601",
+        "endDate": "201712"
     }, function (data) {
         var myChart46 = echarts.init(document.getElementById("myChart46"));
         right_echarts.push(myChart46);
@@ -514,7 +542,8 @@ function findOrderMonthRateForProductAjax() {
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-                    data: tab3OrderRateLengend(data[0])
+                    //data: tab3OrderRateLengend(data[0])
+                    data: last_year_month()
                 }
             ],
             yAxis: [
@@ -533,7 +562,7 @@ function findOrderMonthRateForProductAjax() {
 }
 //右-右-上 #7 折线图 用户满意度
 function satisfactionStatisForMonthForTab3Ajax() {
-    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"startDate":"201701","endDate":""}, function (data) {
+    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"startDate":"201601","endDate":"201705"}, function (data) {
     	var myChart7 = echarts.init(document.getElementById("myChart7"));
         right_echarts.push(myChart7);
         myChart7.setOption(getLineEcharts());
@@ -571,7 +600,8 @@ function satisfactionStatisForMonthForTab3Ajax() {
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-                    data: statistictab1LengendTime(data)
+                    //data: statistictab1LengendTime(data)
+                    data: last_year_month()
                 }
             ],
             series: [
@@ -696,7 +726,7 @@ function satisfactionStatisForYearTab3Ajax2016() {
 }
 //右-右-下-右 #49 折线组图 用户满意度趋势变化 到月数据统计
 function productLineAndMonthForTab3Ajax() {
-    $.post(contextPath + '/lab/productLineAndMonthForTab3Ajax', {"labTypeCode": labTypeCode}, function (data) {
+    $.post(contextPath + '/lab/productLineAndMonthForTab3Ajax', {"labTypeCode": labTypeCode,"startDate":"201606","endDate":"201705"}, function (data) {
         var mData = [];
         var mSeries = [];
         $.each(data, function (index, item) {
@@ -716,6 +746,7 @@ function productLineAndMonthForTab3Ajax() {
             };
             mSeries.push(it);
         });
+        console.log(data)
         var myChart49 = echarts.init(document.getElementById("myChart49"));
         right_echarts.push(myChart49);
         myChart49.setOption(getLineEcharts());
@@ -744,7 +775,8 @@ function productLineAndMonthForTab3Ajax() {
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-                    data: tab3OrderRateLengend(data[0])
+                    //data: tab3OrderRateLengend(data[0])
+                    data: last_year_month()
                 }
             ],
             yAxis: [

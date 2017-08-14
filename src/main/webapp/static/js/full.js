@@ -158,8 +158,9 @@ function navSelectAll() {
 }
 //选取被激活li元素下面的值
 function selectActLi($this) {
-    getSelectLab($this);
-    reloadData(productCode, labType);
+    if(getSelectLab($this)){
+    	reloadData(productCode, labType);
+    };
 }
 //获取实验室类别 产线选择类型
 function getSelectLab($this) {
@@ -193,9 +194,9 @@ function reloadData(productCode, labType) {
     //平面地图数据mapFlat
     //console.log(echarts.init(document.getElementById('iframe').contentWindow.document.getElementById("mapFlat")))
     //document.getElementById('iframe').contentWindow.say()
-    for (var k = 0; k < $("#iframeFlatMapL3x3").length; k++) {
+    for (var k = 0; k < $("#iframeFlatMap").length; k++) {
 
-        $("#iframeFlatMapL3x3").eq(k)[0].contentWindow.createArrData(productCode, labType);
+        $("#iframeFlatMap").eq(k)[0].contentWindow.createArrData(productCode, labType);
     }
     reloadLeftData();
 }

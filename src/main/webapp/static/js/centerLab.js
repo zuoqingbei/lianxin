@@ -448,7 +448,6 @@ function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
 		resetDataCenterLab();
 		currentData=data;
-        console.log("______________data:",data)
 		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
 		$.each(data,function(index,item){
 			if(index<4){
@@ -493,7 +492,9 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		createLegendHtmls();
 		createEcharts(true);
 		//因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
-
+		window.clearInterval(intevalChart1);
+		console.log(intevalChart1)
+		intevalChart1=setInterval("intervalChangeData()", 30000);
 	});
 }
 function resetDataCenterLab(){
@@ -946,7 +947,6 @@ function getCharts1() {
     myChart1.setOption({
         series:getAnimation(seriesTopData)
     });
-    intevalChart1=setInterval("intervalChangeData()", 30000);
    /* setInterval(function () {
    	 var preStart=myChart1.getOption().dataZoom[0].start;
    	 var preEnd=myChart1.getOption().dataZoom[0].end;
@@ -976,6 +976,7 @@ function getCharts1() {
 }
 var intevalChart1;
 function intervalChangeData() {
+	//console.log("----intevalChart1-----------"+intevalChart1)
 	//时间间隔低于4分钟取不到数据
 	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.07"},function(data){
 		data=eval("("+data+")");
@@ -1608,10 +1609,10 @@ function joinBottomHtmls(index, item){
 	htmls+='</div></div>';
     return htmls;
 }
-var arr1=["1","1","1","3","4","1","1","2"];
-var arr2=["15","10","17","68","89","11","16","22"];
-var arr3=["100","100","100","98.9","98.6","100","100","100"];
-var arr4=["15","10","17","69","90","11","16","22"];
+var arr1=["1","1","1","3","4","1","1","2","3","4"];
+var arr2=["15","10","17","68","89","11","16","22","35","104"];
+var arr3=["100","100","100","98.9","98.6","100","100","100","97.2","98.1"];
+var arr4=["15","10","17","69","90","11","16","22","34","102"];
 function joinCenterHtmls(index, item) {
 	//console.log(item)
 	var bodyIndex = index % 5 + 1;
