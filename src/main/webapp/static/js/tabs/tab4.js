@@ -894,6 +894,7 @@ function mkSqualityLevelForTab4(xhPro) {
                 axisLabel: {
                     textStyle: {
                         color: '#66ccff',
+                        fontSize:15*bodyScale
 
                     }
 				},
@@ -903,10 +904,11 @@ function mkSqualityLevelForTab4(xhPro) {
                         color: "#234f65"
                     }
                 },
-                axisLine: { //坐标轴
-                    show: false,
+                axisLine: { //坐标轴s
+                    show: true,
                     textStyle: {
                         color: '#66ccff',
+                        
                     },
                     color: '#66ccff',
                 },
