@@ -102,7 +102,7 @@ function initone(mValue) {
 }
 //近12个月用户满意度趋势图
 function inittwo() {
-    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"labTypeCode": "中海博睿"}, function (data) {
+    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"labTypeCode": "中海博睿","startDate":"201606","endDate":"201706"}, function (data) {
         var resu = dealSatisfactionCenterLab(data);
         $("#satisfaction_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#satisfaction_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
@@ -144,7 +144,8 @@ function inittwo() {
                 {
                     name: "时间",
                     type: 'category',
-                    data: centerLabOrderRateLengend(data),
+                    //data: centerLabOrderRateLengend(data),
+                    data:last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10
                     },
@@ -168,11 +169,30 @@ function inittwo() {
     });
 
 }
+function last_year_month() {
+	 var complDate = [];  
+	    var curDate = new Date();  
+	    var y = curDate.getFullYear();  
+	    var m = curDate.getMonth() + 1;  
+	    //第一次装入当前月(格式yyyy-mm)  
+	    complDate[0] = y.toString().substr(2, 2)+ "/" + (m.toString().length == 1 ? "0" + m : m);  
+	    m--;  
+	    //第一次已经装入,numMonth少计算一次  
+	    for (var i = 1; i < 12; i++, m--) {  
+	        if (m == 0) {  
+	            //到1月后,后推一年  
+	            y--;  
+	            m = 12; //再从12月往后推  
+	        }  
+	        complDate[i] = y.toString().substr(2, 2) +"/" + (m.toString().length == 1 ? "0" + m : m);  
+	    }  
+	return complDate.reverse();
+}
 //近12个月一次合格率趋势图
 function initThree() {
     $.post(contextPath + '/lab/orderRateForCenterLabAjax', {
-        "startDate": "201701",
-        "endDate": ""
+        "startDate": "201601",
+        "endDate": "201612"
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
@@ -213,7 +233,8 @@ function initThree() {
                 {
                     name: "时间",
                     type: 'category',
-                    data: centerLabOrderRateLengend(data),
+                   // data: centerLabOrderRateLengend(data),
+                    data: last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10
                     },
