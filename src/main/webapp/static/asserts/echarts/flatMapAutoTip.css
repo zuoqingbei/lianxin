@@ -35,7 +35,7 @@
     /*font-size:2em;*/
     color:#ffffff;
     /*text-shadow:0.15em 0.15em 0.15em rgba(0,0,0,0.9);*/
-    background-color: black;
+    background-color: rgba(0,0,0,.6);
 }
 .echart_tip.bottom > .dialog_title.echart_content {
     top: auto;
@@ -82,7 +82,7 @@
     padding-bottom: 0.3125em;
     position: absolute;
     width: 12em;
-    font-size: 2em;
+    /*font-size: 2em;*/
     text-align: center;
     z-index: 10;
     text-shadow: 0.143em 0.143em 0.143em rgba(0, 0, 0, 0.9);
@@ -141,9 +141,9 @@
 }
 
 .echart_tip_arrow > .echart_tip_line {
-    height: 7em;
+    /*height: 7em;*/
     left: 0;
-    top: -8em;
+    /*top: -8em;*/
     border-left: 0.25em solid #fff;
     position: absolute;
 }
@@ -157,11 +157,11 @@
 /*提示的文字变大版本,注掉下面代码就是原来大小*/
 @media all{
     .echart_tip_arrow > .echart_tip_line {
-        height: 8.5em;
-        top: -9.6em;
+        height: 3em;
+        top: -4em;
     }
     .dialog_title {
-        font-size: 2.4em;
+        font-size: 1em;
     }
 }
 

@@ -13,6 +13,7 @@ body, html {
     width: 100%;
     height: 100%;
     font-family: "Microsoft yahei", "微软雅黑", "Source Sans Pro", "Helvetica Neue", 'Helvetica', 'Arial', sans-serif;
+    /*font-family:  "Source Sans Pro", "Helvetica Neue", 'Helvetica', 'Arial', sans-serif;*/
 }
 
 fieldset, img {
