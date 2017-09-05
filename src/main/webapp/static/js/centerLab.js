@@ -1001,7 +1001,7 @@ function intervalChangeData() {
 	//时间间隔低于4分钟取不到数据
 	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.07"},function(data){
 		data=eval("("+data+")");
-		//console.log(data)
+		console.log(data)
 		dealIntervalSeriesData(data);
 		createLegendHtmls();
 		//clearInterval(intevalChart1);
@@ -1035,9 +1035,14 @@ function intervalChangeData() {
 					needRefresh=true;
 				}*/
 				if(i==0){
-					if(isHasElementOne(xData,parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60)==-1)){
-						xData.shift();
-						xData.push(parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60))
+					var mIndex=isHasElementOne(xData,parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60));
+					if(parseInt(mIndex)==-1){
+						//console.log(xData[0])
+						var preData=xData.shift();
+						xData=removeReport(xData,preData);
+						xData.push(parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60));
+						//console.log("put:"+parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60)+"=="+xData[xData.length-1])
+					   // console.log(xData[0])
 					}
 				}
 
@@ -1065,6 +1070,15 @@ function intervalChangeData() {
 	});
        //console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomData: ", seriesTopData[0].data)
       // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xData: ", xData)
+}
+function removeReport(xData,val){
+	var res=[];
+	for(var x=0;x<xData.length;x++){
+		if(xData[x]!=val){
+			res.push(xData[x]);
+		}
+	}
+	return res;
 }
 //处理线series 定时器使用
 var intervalSeriesTopData=[];
