@@ -93,8 +93,8 @@
             b = (Math.min(Math.max(-mouseX, -size), size) / radius ) * tspeed;
         }
         else {
-            a = lasta * 0.98;
-            b = lastb * 0.98;
+            a = lasta * 0.99999;
+            b = lastb * 0.99999;
         }
 
         lasta = a;
@@ -245,6 +245,7 @@
         var oTag = null;
         run(radius);
     });
+
 function run(newRadius) {
     radius = newRadius;
 //    console.log("~~~~~~~~~~~~~~~~newRadius:", radius);
@@ -283,15 +284,14 @@ function run(newRadius) {
         oDiv.onmouseout = function () {
             active = true;
         };
-
         oDiv.onmousemove = function (ev) {
             var oEvent = window.event || ev;
 
             mouseX = oEvent.clientX - (oDiv.offsetLeft + oDiv.offsetWidth / 4);
             mouseY = oEvent.clientY - (oDiv.offsetTop + oDiv.offsetHeight / 4);
 
-            mouseX /= 5;
-            mouseY /= 5;
+            mouseX /= 2;
+            mouseY /= 2;
         };
         setTimeout(function () {
             setInterval(update, 150);

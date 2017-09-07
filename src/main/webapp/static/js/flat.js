@@ -9,6 +9,22 @@ var TIP_SETTIMEOUT_TIME = 2000;//静止显示的时间
 var TIP_SETINTERVAL_TIME = 4000;//每个提示的周期时长
 var stop = false;
 var timeId = null;
+
+//使提示框和其中文字大小随屏幕自动伸缩
+function tipResize() {
+    $("head").append("<style>"+
+        "      .echart_tip_arrow > .echart_tip_line {" +
+        "        height: "+3*bodyScale+"em;" +
+        "        top: "+(-4*bodyScale)+"em;" +
+        "    }\n" +
+        "    .dialog_title {\n" +
+        "        font-size: "+bodyScale+"em;\n" +
+        "    }"
+    +"</style>")
+}
+$(function () {
+    tipResize()
+});
 function getGeoArr(data) {
     var geo = {};
     for (var i = 0; i < data.length; i++) {
@@ -17,6 +33,7 @@ function getGeoArr(data) {
     // console.log("geo"+geo);
     return geo;
 };
+
 /**
  * 程序被调用的入口——————————————————————————————————————————————————————
  * 平面世界地图数据准备
@@ -209,8 +226,8 @@ function seriesData(data) {
         },
         markLine: {
             smooth: true,
-            tooltip:{
-                show:false
+            tooltip: {
+                show: false
             },
             effect: {
                 show: true,
@@ -236,6 +253,7 @@ function seriesData(data) {
     seriesData.push(item);
     return seriesData;
 }
+
 // 基于准备好的dom，初始化echarts实例
 var myFlatMap = echarts.init($('.mapFlat')[0]);
 //调用父页面 获取数据
@@ -366,6 +384,7 @@ function showNews() {
     //循环显示器
     showTopicIndex = addEl(mDataBase, showTopicIndex);
     fadeOutElList();
+
     function addEl(list, index) {
         if (list.length === 0) {
             return;
@@ -384,6 +403,7 @@ function showNews() {
         return index;
     }
 }
+
 function startNewsShown() {
 
     if (timeId === null) {
@@ -392,6 +412,7 @@ function startNewsShown() {
         timeId = setInterval(showNews, TIP_SETINTERVAL_TIME);
     }
 }
+
 function listenAnimationEnd($el, fn) {
     //transitionend是css3完成过渡后触发的事件,下一步将被删除
     $el.on('transitionend', function () {
@@ -399,6 +420,7 @@ function listenAnimationEnd($el, fn) {
         fn.call();
     })
 }
+
 /**
  * 初始化资讯及新闻轮循
  */
@@ -421,22 +443,23 @@ function getTopicHtml(currentPoint) {
     var title = currentPoint.title;
     var id = currentPoint.id;
     var url = "";
-    if((value=="0"&&title=="青岛")||title==undefined){
+    /*if((value=="0"&&title=="青岛")||title==undefined){
     	return "";
-    }
+    }*/
     return $('<div class="echart_tip">' +
-            '<div class="dialog_title echart_content">' +
-                '<a title="' + title + '"  href="#" target="_blank" >' +
-                // '<span style="color:#ffffff;font-size:1.6em;text-shadow:0.15em 0.15em 0.15em rgba(0,0,0,0.9);">' + title + '</span>' +
-                    '<span style="">' + title + '</span>' +
-                '</a>实验室数量：' + value +
-            '</div>' +
-            '<div class="echart_tip_arrow">' +
-                '<div class="echart_tip_line"></div>' +
-                '<div class="echart_tip_head"></div>' +
-            '</div>' +
+        '<div class="dialog_title echart_content">' +
+        '<a title="' + title + '"  href="#" target="_blank" >' +
+        // '<span style="color:#ffffff;font-size:1.6em;text-shadow:0.15em 0.15em 0.15em rgba(0,0,0,0.9);">' + title + '</span>' +
+        '<span style="">' + title + '</span>' +
+        '</a>实验室数量：' + value +
+        '</div>' +
+        '<div class="echart_tip_arrow">' +
+        '<div class="echart_tip_line"></div>' +
+        '<div class="echart_tip_head"></div>' +
+        '</div>' +
         '</div>');
 }
+
 /**
  * 渐隐 elList的每一项
  */
@@ -455,6 +478,7 @@ function fadeOutElList() {
 
     $elList = [];
 }
+
 /**
  * 渐入 elList
  */
