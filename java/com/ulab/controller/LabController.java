@@ -448,7 +448,7 @@ public class LabController extends BaseController {
     	String labTypeCode=getPara("labTypeCode","");
     	String startDate=getPara("startDate","201701");
     	String endDate=getPara("endDate","");
-    	endDate=dealEndTime(endDate);
+    	//endDate=dealEndTime(endDate);
     	renderJson(OrderModel.dao.findOrderMonthRateForAll(startDate, endDate, plCode, labTypeCode));
     }
     

@@ -266,8 +266,8 @@ function initThree() {
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
         "labTypeCode": "中心实验室",
-        "startDate": "201701",
-        "endDate": ""
+        "startDate": "201601",
+        "endDate": "201612"
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
@@ -295,7 +295,8 @@ function initfour() {
             xAxis: [
                 {
                     name: '时间',
-                    data: centerLabOrderRateLengend(data),
+                   // data: centerLabOrderRateLengend(data),
+                    data: last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10,
                     },
@@ -469,6 +470,7 @@ function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
 		resetDataCenterLab();
 		currentData=data;
+		console.log(data)
 		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
 		$.each(data,function(index,item){
 			if(index<4){
@@ -812,7 +814,7 @@ function getCharts1() {
         yAxis: [
             {
                 type: 'value',
-                name: currentData[0].unit+"　　　",
+                name: (currentData[0].unit==undefined?"":currentData[0].unit)+"　　　",
                 max:90,
                 min:-30,
 	            /*max:currentData[0].highvalue,
@@ -849,7 +851,7 @@ function getCharts1() {
             },
             {
                 type: 'value',
-                name: currentData[1].unit+"　　　",
+                name:  (currentData[1].unit==undefined?"":currentData[1].unit)+"　　　",
                 max:100,
                 min:0,
 	           /* max:currentData[1].highvalue,
@@ -887,7 +889,7 @@ function getCharts1() {
             },
             {
                 type: 'value',
-                name: currentData[2].unit,
+                name:  (currentData[2].unit==undefined?"":currentData[2].unit),
 	           /* max:currentData[2].highvalue,
 	            min:currentData[2].lowvalue,*/
                 position: 10 * bodyScale,
@@ -924,7 +926,7 @@ function getCharts1() {
             {
                 type: 'value',
                 offset: 40 * bodyScale,
-                name: currentData[3].unit,
+                name:  (currentData[3].unit==undefined?"":currentData[3].unit),
 	           /* max:currentData[3].highvalue,
 	            min:currentData[3].lowvalue,*/
                 nameGap: nameGap,
@@ -1001,7 +1003,6 @@ function intervalChangeData() {
 	//时间间隔低于4分钟取不到数据
 	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.07"},function(data){
 		data=eval("("+data+")");
-		console.log(data)
 		dealIntervalSeriesData(data);
 		createLegendHtmls();
 		//clearInterval(intevalChart1);
@@ -1186,7 +1187,7 @@ function getCharts2() {
         yAxis: [
             {
                 type: 'value',
-                name: currentData[4].unit+"　　",
+                name:  (currentData[4].unit==undefined?"":currentData[4].unit)+"　　",
                 max:300,
                 min:0,
 	           /* max:currentData[4].highvalue,
@@ -1232,7 +1233,7 @@ function getCharts2() {
             },
             {
                 type: 'value',
-                name: currentData[5].unit+"　　　",
+                name:  (currentData[5].unit==undefined?"":currentData[5].unit)+"　　　",
 	           /* max:currentData[5].highvalue,
 	            min:currentData[5].lowvalue,*/
                 nameGap: nameGap,
@@ -1269,7 +1270,7 @@ function getCharts2() {
             },
             {
                 type: 'value',
-                name: "　　"+currentData[6].unit,
+                name: "　　"+ (currentData[6].unit==undefined?"":currentData[6].unit),
 	           /* max:currentData[6].highvalue,
 	            min:currentData[6].lowvalue,*/
                 nameGap: nameGap,
@@ -1313,7 +1314,7 @@ function getCharts2() {
             },
             {
                 type: 'value',
-                name: "　　"+currentData[7].unit,
+                name: "　　"+ (currentData[7].unit==undefined?"":currentData[7].unit),
 	           /* max:currentData[7].highvalue,
 	            min:currentData[7].lowvalue,*/
                 nameGap: nameGap,
