@@ -510,7 +510,7 @@ function findOrderMonthRateForProductAjax() {
     $.post(contextPath + '/lab/findOrderMonthRateForProductAjax', {
         "labTypeCode": labTypeCode,
         "startDate": "201601",
-        "endDate": "201712"
+        "endDate": "201612"
     }, function (data) {
         var myChart46 = echarts.init(document.getElementById("myChart46"));
         right_echarts.push(myChart46);
