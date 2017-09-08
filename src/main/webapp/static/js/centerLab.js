@@ -80,7 +80,7 @@ function initone(mValue) {
         },
         grid: {
             x: "0",
-            y: '0',
+            y: '0'
         },
         series: [
             {
@@ -93,9 +93,7 @@ function initone(mValue) {
                     {name: '', value: mValue, itemStyle: labelTop}
                 ]
             }
-
         ]
-
     };
     return option;
 
@@ -755,6 +753,8 @@ function mockXdataMethod(endStart){
 		mockXdata.push(value);
 	}
 }
+
+//曲线图表样式
 function getCharts1() {
 
     option = {
@@ -772,9 +772,15 @@ function getCharts1() {
             show: false,
             data: legendData
         },
+/*        grid: {
+            x: '13%',
+            x2: '15%',
+            y2: '5%'                //下移负数 使两个图重叠
+        },*/
         grid: {
             x: '13%',
             x2: '15%',
+            y: '15%',
             y2: '5%'                //下移负数 使两个图重叠
         },
         dataZoom: [{

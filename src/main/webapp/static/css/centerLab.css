@@ -1,34 +1,42 @@
-.labMain_content{
-    flex:4;
+.labMain_content {
+    flex: 4;
 }
-.labMain_cb_left{
+
+.labMain_cb_left {
     display: none;
 }
-.labMain_cb_left_show{
+
+.labMain_cb_left_show {
     display: block;
 }
-.labMain_cbr_one .labMain_cbro_content{
-    background: url("../img/labMain/2.jpg") no-repeat;
+
+.labMain_cbr_one .labMain_cbro_content {
+    background: url("../img/labMain/2.png") no-repeat;
     background-size: 100% 100%;
 }
-.labMain_cbr_two .labMain_cbro_content{
-    background: url("../img/labMain/3.jpg") no-repeat;
+
+.labMain_cbr_two .labMain_cbro_content {
+    background: url("../img/labMain/3.png") no-repeat;
     background-size: 100% 100%;
 }
-.labMain_cbr_three .labMain_cbro_content{
-    background: url("../img/labMain/4.jpg") no-repeat;
+
+.labMain_cbr_three .labMain_cbro_content {
+    background: url("../img/labMain/4.png") no-repeat;
     background-size: 100% 100%;
 }
+
 .zhbr_lab h3.lab_title {
-      top: 1%;
-      left: 8.8%;
-      font-size: 1.6em;
-  }
-.zhbr_lab{
+    top: 1%;
+    left: 8.8%;
+    font-size: 1.6em;
+}
+
+.zhbr_lab {
     height: 97%;
 }
-.shishi_right .video_box{
-	width: 97%;
+
+.shishi_right .video_box {
+    width: 97%;
     height: 98%;
 }
 

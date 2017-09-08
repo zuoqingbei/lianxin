@@ -161,10 +161,10 @@ body, canvas{
     width: .5em;
     height:.5em;
 }
-
 ::-webkit-scrollbar-button {
     background-color: transparent;
     height: 0;
+    width:0;
 }
 ::-webkit-scrollbar-thumb {
     margin-right: 2px;

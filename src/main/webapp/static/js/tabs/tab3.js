@@ -136,7 +136,7 @@ function orderTypeAjax(myChartIds, desName, divisor,obj) {
                     show: true,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize: 13 * bodyScale
+                        fontSize: 12 * bodyScale
                     },
                     interval: 0
                 },

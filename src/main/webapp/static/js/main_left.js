@@ -252,7 +252,8 @@ function sphereRBscroll() {
             if ($ul2[0].offsetHeight <= $scrollBoard[0].scrollTop)
                 $scrollBoard[0].scrollTop -= $ul2[0].offsetHeight;
             else {
-                $scrollBoard[0].scrollTop++;
+                // $scrollBoard[0].scrollTop++;
+                $scrollBoard[0].scrollTop += bodyScale;
             }
         }
 
