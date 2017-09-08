@@ -15,7 +15,6 @@ body, html {
     font-family: "Microsoft yahei", "微软雅黑", "Source Sans Pro", "Helvetica Neue", 'Helvetica', 'Arial', sans-serif;
     /*font-family:  "Source Sans Pro", "Helvetica Neue", 'Helvetica', 'Arial', sans-serif;*/
 }
-
 fieldset, img {
     border: 0;
 }
@@ -130,6 +129,14 @@ video {
     top: -3%;
 }
 
+/*鼠标样式设置*/
+body, canvas{
+/*
+	cursor:url("../img/xiongmao.ico"),auto!important;
+ 	cursor:url("../img/favicon.ico"),auto!important;
+*/
+}
+
 
 /*修改页面切换时的白底色以及柔和过度*/
 
@@ -148,5 +155,20 @@ video {
         animation-duration: 2s;
         transition-timing-function: ease;
     }
+}
+
+::-webkit-scrollbar {
+    width: .5em;
+    height:.5em;
+}
+
+::-webkit-scrollbar-button {
+    background-color: transparent;
+    height: 0;
+}
+::-webkit-scrollbar-thumb {
+    margin-right: 2px;
+    background: rgba(51, 187, 255, 0.81);
+    border-radius: 4px;
 }
 
