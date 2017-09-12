@@ -833,10 +833,13 @@ function mkSqualityLevelForTab4(xhPro) {
                 axisLabel: axisLabel,
                 data: [1, 1.33, 1.67, 2],
                 axisLine: { //坐标轴
-                    show: false,
+                    show: true,
                     textStyle: {
                         color: 'rgba(0,0,0,0)'
-                    }
+                    },
+                    lineStyle: {
+                        color: "#234f65"
+                    },
                 },
                 axisTick: {  //刻度值
                     show: false,
@@ -906,9 +909,11 @@ function mkSqualityLevelForTab4(xhPro) {
                 },
                 axisLine: { //坐标轴s
                     show: true,
+                    lineStyle: {
+                        color: "#234f65"
+                    },
                     textStyle: {
-                        color: '#66ccff',
-                        
+                        color: '#66ccff'
                     },
                     color: '#66ccff',
                 },

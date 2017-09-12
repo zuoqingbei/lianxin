@@ -83,8 +83,8 @@ function proLineStatis(){
 		var nums=[];
 		$(".pro_line").html("");
 		$.each(data,function(index,item){
-			$(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number" style="color: transparent;">'+item.count+'</span></li>');
-			nums.push(item.count);
+            $(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number hlnum" style="color: transparent;margin-right: 4%">'+item.count+'</span><span class="number" style="color: transparent;margin-right: 9%">'+item.count+'</span></li>');
+            nums.push(item.count);
 		});
 		sphereRTnumberShow(nums);
 	})
@@ -107,207 +107,150 @@ function worldTyleEchart(data){
 	var num5=standardSeriesDataForLeft(data,"模块商实验室");
 	var allNum=parseInt(num2)+parseInt(num3)+parseInt(num4)+parseInt(num5);
 	myChartFlatLT_full.setOption(getYuanhuan());
-	var labelTop = {
-	    normal: {
-	        color: '#064f66',
-	        label: {
-	            show: true,
-	            position: 'center',
+    var labelTop = {
+        normal: {
+            color: '#064f66',
+            label: {
+                show: true,
+                position: 'center',
 //	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
-	            formatter: function (params) {
-	                return allNum -  params.value;
-	            },
-	            textStyle: {
-	                fontSize:bodyScale*13,
-	                color: "#f90",
-	                baseline: 'bottom'
-	            }
-	        },
-	        labelLine: {
-	            show: false
-	        }
-	    }
-	};
-	var labelTop_full = {
-	    normal: {
-	        color: '#064f66',
-	        label: {
-	            show: true,
-	            position: 'outside',
-//	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
-	            formatter: function (params) {
-	                return allNum -  params.value ;
-	            },
-	            textStyle: {
-	                fontSize:bodyScale*16,
-	                color: "#f90",
-	                baseline: 'bottom'
-	            }
-	        },
-
-	    }
-	};
-	var labelLine = {
-		normal: {
-			length2: 5*bodyScale,
-				length: -80*bodyScale,
-				lineStyle: {
-				color: "rgba(0,0,0,0)"
-			}
-		}
-    };
-	var labelFromatter = {
-	    normal: {
-	        label: {
-	            formatter: function (params) {
-	                return 100 - ( params.value)  + '%'
-	            },
-	            textStyle: {
-	                baseline: 'bottom'
-	            }
-	        }
-	    }
-	};
-	var labelBottom = {
-	    normal: {
-	        color: "#6cf",
-	        label: {
-	            show: true,
-	            position: 'center',
-	            formatter : '{b}',
-	            textStyle: {
-//	                    color:"#f90",
-	                fontSize: bodyScale*9,
-	                // fontSize: 6,
-	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
-                    baseline: 'top'
-	            }
-	        },
-
-	    },
-	    emphasis: {
-	        color: '#6cf'
-	    }
-	};
-	var labelBottom_full = {
-	    normal: {
-	        color: "#6cf",
-	        label: {
-	            show: true,
-	            position: 'center',
-	            formatter : '{b}',
-	            textStyle: {
-//	                    color:"#f90",
-	                fontSize: bodyScale*12,
-	                // fontSize: 6,
-	                // fontFamily:'"Microsoft yahei", "微软雅黑"',
+                formatter: function (params) {
+                    return allNum -  params.value;
+                },
+                textStyle: {
+                    fontSize:bodyScale*20,
+                    color: "#f90",
                     baseline: 'bottom'
-	            }
-	        },
-	        labelLine: {
-	            show: false
-	        }
-	    },
-	    emphasis: {
-	        color: '#6cf'
-	    }
-	};
-	var radius = ["27%", "36%"];
-	myChartFlatLT_full.setOption({
-	    textStyle: {
-	        color: '#6cf',
-	        fontSize: "60%"
-	    },
-	    grid: {
+                }
+            },
+            labelLine: {
+                show: false
+            }
+        }
+    };
+
+    var labelTop_full = {
+        normal: {
+            color: '#064f66',
+            label: {
+                show: true,
+                position: 'outside',
+//	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
+                formatter: function (params) {
+                    return allNum -  params.value ;
+                },
+                textStyle: {
+                    fontSize:bodyScale*20,
+                    color: "#f90",
+                    baseline: 'bottom'
+                }
+            },
+
+        }
+    };
+
+    var labelLine = {
+        normal: {
+            length2: 5*bodyScale,
+            length: -80*bodyScale,
+            lineStyle: {
+                color: "rgba(0,0,0,0)"
+            }
+        }
+    };
+    var labelFromatter = {
+        normal: {
+            label: {
+                formatter: function (params) {
+                    return 100 - ( params.value)  + '%'
+                },
+                textStyle: {
+                    baseline: 'bottom'
+                }
+            }
+        }
+    };
+    var labelBottom = {
+        normal: {
+            color: "#6cf",
+            label: {
+                show: true,
+                position: 'center',
+                formatter : '{b}',
+                textStyle: {
+//	                    color:"#f90",
+                    fontSize: bodyScale*9,
+                    // fontSize: 6,
+                    // fontFamily:'"Microsoft yahei", "微软雅黑"',
+                    baseline: 'top'
+                }
+            },
+
+        },
+        emphasis: {
+            color: '#6cf'
+        }
+    };
+
+    var radius = ["27%", "36%"];
+    myChartFlatLT_full.setOption({
+        textStyle: {
+            color: '#6cf',
+            fontSize: "60%"
+        },
+        grid: {
 //	            show:true,
 //	         x: "25%",
 //	         x2: "15%",
 //	         y2: "12%"
-	    },
-	    series: [
-	        {
-                labelLine: {
-                    normal: {
-                        length: -65 * bodyScale,
-                        length2: -5 * bodyScale,
-                        lineStyle: {
-                            color: "rgba(0,0,0,0)"
-                        }
-                    }
-                },
-	            type: 'pie',
-	            center: ['30%', '33%'],
-	            radius: radius,
-	            x: '0%', // for funnel
-	            data: [
-	                {name: 'other', value: allNum-num2, itemStyle: labelTop_full},
-	                {name: '\n研发-调试', value: num2, itemStyle: labelBottom_full}
-	            ]
-	        },
-	        {
-                labelLine: {
-                    normal: {
-                        length: -65 * bodyScale,
-                        length2: -10 * bodyScale,
-                        lineStyle: {
-                            color: "rgba(0,0,0,0)"
-                        }
-                    }
-                },
-	            type: 'pie',
-	            center: ['70%', '33%'],
-	            radius: radius,
-	            x: '20%', // for funnel
-	            itemStyle: labelFromatter,
-	            data: [
-	                {name:'other', value:allNum-num3, itemStyle : labelTop_full},
-	                {name: '\n\n中海博睿\n新品确认\n', value: num3, itemStyle: labelBottom_full}
-	            ]
-	        },
-	        {
-                labelLine: {
-                    normal: {
-                        length: -80* bodyScale,
-                        length2:10 * bodyScale,
-                        lineStyle: {
-                            color: "rgba(0,0,0,0)"
-                        }
-                    }
-                },
-	            type: 'pie',
-	            center: ['70%', '78%'],
-	            radius: radius,
-	            x: '40%', // for funnel
-	            itemStyle: labelFromatter,
-	            data: [
-	                {name: 'other', value: allNum-num5, itemStyle: labelTop_full},
-	                {name: '\n模块商\n模块测试', value: num5, itemStyle: labelBottom_full}
-	            ]
-	        },
-	        {
-                labelLine: {
-                    normal: {
-                        length: -85 * bodyScale,
-                        length2: 15 * bodyScale,
-                        lineStyle: {
-                            color: "rgba(0,0,0,0)"
-                        }
-                    }
-                },
-	            type: 'pie',
-	            center: ['30%', '78%'],
-	            radius: radius,
-	            x: '80%', // for funnel
-	            itemStyle: labelFromatter,
-	            data: [
-	                {name: 'other', value: allNum-num4, itemStyle: labelTop_full},
-	                {name: '\n工厂\n量产测试', value: num4, itemStyle: labelBottom_full}
-	            ]
-	        }
-	    ]
-	});
+        },
+        series: [
+            {
+                type: 'pie',
+                center: ['30%', '33%'],
+                radius: radius,
+                x: '0%', // for funnel
+                data: [
+                    {name: 'other', value: allNum-num2, itemStyle: labelTop},
+                    {name: '研发-调试', value: num2, itemStyle: labelBottom}
+                ]
+            },
+            {
+                type: 'pie',
+                center: ['70%', '33%'],
+                radius: radius,
+                x: '20%', // for funnel
+                itemStyle: labelFromatter,
+                data: [
+                    {name:'other', value:allNum-num3, itemStyle : labelTop},
+                    {name: '中海博睿\n新品确认', value: num3, itemStyle: labelBottom}
+                ]
+            },
+            {
+                type: 'pie',
+                center: ['70%', '76%'],
+                radius: radius,
+                x: '40%', // for funnel
+                itemStyle: labelFromatter,
+                data: [
+                    {name: 'other', value: allNum-num5, itemStyle: labelTop},
+                    {name: '模块商\n模块测试', value: num5, itemStyle: labelBottom}
+                ]
+            },
+            {
+                type: 'pie',
+                center: ['30%', '76%'],
+                radius: radius,
+                x: '80%', // for funnel
+                itemStyle: labelFromatter,
+                data: [
+                    {name: 'other', value: allNum-num4, itemStyle: labelTop},
+                    {name: '工厂\n量产测试', value: num4, itemStyle: labelBottom}
+                ]
+            }
+        ]
+    });
 }
-
 function worldLabTypeStatis(){
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"lab_type_code","productCode":productCode},function(data){
 		worldTyleEchart(data);
