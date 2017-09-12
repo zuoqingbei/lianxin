@@ -64,7 +64,8 @@ function professionalStatis(){
 //实验室数量统计
 function labNumStatis(){
 	$.post(contextPath+'/lab/labNumStatisAjax',{},function(data){
-		$("#lab_all_count_1").html(data);
+		/*$("#lab_all_count_1").html(data);
+		$(".lab_all_count").html(data);*/
 		$(".lab_all_count").html(data);
 	})
 }
@@ -80,14 +81,16 @@ function labAreaSpread(){
 
 //产线维度实验室数量统计
 function proLineStatis(){
+	var linkNum=[174,60,115,19,23,7,0];
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"product_code","labType":labType,"sort":"asc"},function(data){
 		var nums=[];
 		$(".pro_line").html("");
 		$.each(data,function(index,item){
-			$(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number hlnum" style="color: transparent;">'+item.count+'</span><span class="number" style="color: transparent;">'+item.count+'</span></li>');
+			$(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number hlnum" style="color: transparent;">'+linkNum[index]+'</span><span class="number allnum" style="color: transparent;">'+item.count+'</span></li>');
 			nums.push(item.count);
 		});
 		sphereRTnumberShow(nums);
+		sphereRTHlnumberShow(linkNum);
 	})
 }
 function standardSeriesDataForLeft(data,name){
@@ -932,9 +935,9 @@ function labLifeCycleStatis(){
 //实验室联通数据统计
 function labLinkStatis(){
 	$.post(contextPath+'/lab/labLinkAjax',{},function(data){
-		$("#link_lab_all_count").html(data.all_num);
+		//$("#link_lab_all_count").html(data.all_num);
 		// $("#linked_status_num").html(data.link_num);
-		$("#linked_status_num").html(369);
+		$(".lab_all_count_link").html(398);
 		$("#link_status_rate").html(data.link_rate);
 	})
 }

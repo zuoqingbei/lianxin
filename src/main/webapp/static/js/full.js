@@ -235,7 +235,7 @@ function sphereRTnumberShow(n) {
         for (var j = 0; j < n.length; j++) {
 
 
-            var $flatLTnumber = $(".sphere-right-top .chartBorder ul").eq(k).find("li").eq(j).find(".number");
+            var $flatLTnumber = $(".sphere-right-top .chartBorder ul").eq(k).find("li").eq(j).find(".allnum");
             var str = n[j] + "";
             var newStr = "";
             for (var i = 0; i < 4; i++) {
@@ -252,7 +252,29 @@ function sphereRTnumberShow(n) {
 
     }
 }
+function sphereRTHlnumberShow(n) {
+    for (var k = 0; k < $(".sphere-right-top .chartBorder ul").length; k++) {
+        // console.log("~~~~~~~~~~~~~~~~~~~",$(".sphere-right-top .chartBorder ul").length,n)
+        for (var j = 0; j < n.length; j++) {
 
+
+            var $flatLTnumber = $(".sphere-right-top .chartBorder ul").eq(k).find("li").eq(j).find(".hlnum");
+            var str = n[j] + "";
+            var newStr = "";
+            for (var i = 0; i < 4; i++) {
+                if (i < 4 - str.length) {
+                    newStr += "0";
+                } else {
+                    newStr += '<span style="color: #fff;">' + str + '</span>';
+                    $flatLTnumber.html(newStr);
+                    break;
+                }
+
+            }
+        }
+
+    }
+}
 //球形地图右下角的广告滚动
 function sphereRBscroll() {
     var speed = 100;
