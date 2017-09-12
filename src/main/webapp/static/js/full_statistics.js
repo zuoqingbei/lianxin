@@ -83,6 +83,7 @@ function proLineStatis(){
 	var linkNum=[174,60,115,19,23,7,0];
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"product_code","labType":labType,"sort":"asc"},function(data){
 		var nums=[];
+		var hlnum=[174,60,115,19,23,7,0]
 		$(".pro_line").html("");
 		$.each(data,function(index,item){
             $(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number hlnum" style="color: transparent;margin-right: 4%">'+linkNum[index]+'</span><span class="number allnum" style="color: transparent;margin-right: 9%">'+item.count+'</span></li>');
