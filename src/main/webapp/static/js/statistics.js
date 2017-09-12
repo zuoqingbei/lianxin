@@ -84,7 +84,7 @@ function proLineStatis(){
 		var nums=[];
 		$(".pro_line").html("");
 		$.each(data,function(index,item){
-			$(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number" style="color: transparent;">'+item.count+'</span></li>');
+			$(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number hlnum" style="color: transparent;">'+item.count+'</span><span class="number" style="color: transparent;">'+item.count+'</span></li>');
 			nums.push(item.count);
 		});
 		sphereRTnumberShow(nums);
@@ -130,7 +130,7 @@ function worldTyleEchart(data){
 	        }
 	    }
 	};
-/*
+
 	var labelTop_full = {
 	    normal: {
 	        color: '#064f66',
@@ -150,7 +150,7 @@ function worldTyleEchart(data){
 
 	    }
 	};
-*/
+
 	var labelLine = {
 		normal: {
 			length2: 5*bodyScale,
