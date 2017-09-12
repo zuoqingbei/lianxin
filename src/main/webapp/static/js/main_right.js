@@ -4435,17 +4435,30 @@ var labelSetting = {
 //console.log(str)
 
 var right_echarts = [];
+var rightInterval;
 //重置echart图标大小 在加载平面地图时被调用
 function resetSizeRight() {
-
     mHeightChartTab4.reflow();
     // mHeightChart.reflow();
     for (var i = 0; i < right_echarts.length; i++) {
         right_echarts[i].resize();
     }
 }
-
+function refreshRight() {
+	//alert(1)
+    for (var i = 0; i < right_echarts.length; i++) {
+    	var myChart=right_echarts[i];
+        if(!myChart){
+            return;
+       }
+       //更新数据
+        var option = myChart.getOption();
+        myChart.clear();
+        myChart.setOption(option);    
+    }
+}
 $(function () {
+	rightInterval=setInterval("refreshRight()", 15000);
     /*总状态顶部的tab列表*/
     var $right = $("#r");
 /*

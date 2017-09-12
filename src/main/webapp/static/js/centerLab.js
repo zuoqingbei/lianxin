@@ -468,7 +468,7 @@ function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
 		resetDataCenterLab();
 		currentData=data;
-		console.log(data)
+		//console.log(data)
 		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
 		$.each(data,function(index,item){
 			if(index<4){
@@ -514,7 +514,7 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		createEcharts(true);
 		//因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
 		window.clearInterval(intevalChart1);
-		console.log(intevalChart1)
+		//console.log(intevalChart1)
 		intevalChart1=setInterval("intervalChangeData()", 30000);
 	});
 }
