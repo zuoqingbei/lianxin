@@ -100,7 +100,8 @@ function initone(mValue) {
 }
 //近12个月用户满意度趋势图
 function inittwo() {
-    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"labTypeCode": "中海博睿","startDate":"201606","endDate":"201706"}, function (data) {
+    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"labTypeCode": "中海博睿",
+    	/*"startDate":"201606","endDate":"201706"*/}, function (data) {
         var resu = dealSatisfactionCenterLab(data);
         $("#satisfaction_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#satisfaction_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
@@ -142,8 +143,8 @@ function inittwo() {
                 {
                     name: "时间",
                     type: 'category',
-                    //data: centerLabOrderRateLengend(data),
-                    data:last_year_month(),
+                    data: centerLabOrderRateLengend(data),
+                    //data:last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10
                     },
@@ -189,8 +190,8 @@ function last_year_month() {
 //近12个月一次合格率趋势图
 function initThree() {
     $.post(contextPath + '/lab/orderRateForCenterLabAjax', {
-        "startDate": "201601",
-        "endDate": "201612"
+        /*"startDate": "201601",
+        "endDate": "201612"*/
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
@@ -231,8 +232,8 @@ function initThree() {
                 {
                     name: "时间",
                     type: 'category',
-                   // data: centerLabOrderRateLengend(data),
-                    data: last_year_month(),
+                    data: centerLabOrderRateLengend(data),
+                    //data: last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10
                     },
@@ -264,8 +265,8 @@ function initThree() {
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
         "labTypeCode": "中心实验室",
-        "startDate": "201601",
-        "endDate": "201612"
+      /*  "startDate": "201601",
+        "endDate": "201612"*/
     }, function (data) {
         var resu = dealCenterLab(data);
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
@@ -293,8 +294,8 @@ function initfour() {
             xAxis: [
                 {
                     name: '时间',
-                   // data: centerLabOrderRateLengend(data),
-                    data: last_year_month(),
+                    data: centerLabOrderRateLengend(data),
+                    //data: last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10,
                     },
@@ -1529,7 +1530,7 @@ function dealCenterLab(data) {
             maxData.rate = cRate;
             maxData.month = cName;
         }
-        if (parseFloat(minData.rate) > cRate) {
+        if (parseFloat(minData.rate) > cRate&&item.rate!=0) {
             minData.rate = cRate;
             minData.month = cName;
         }
@@ -1557,7 +1558,7 @@ function dealSatisfactionCenterLab(data) {
             maxData.rate = cRate;
             maxData.month = cName;
         }
-        if (parseFloat(minData.rate) > cRate) {
+        if (parseFloat(minData.rate) > cRate&&item.rate!=0) {
             minData.rate = cRate;
             minData.month = cName;
         }

@@ -351,7 +351,7 @@ public class LabController extends BaseController {
      */
     public void findOrderMonthRateForProductAjax(){
     	String labTypeCode=getPara("labTypeCode","");
-    	String startDate=getPara("startDate","201701");
+    	String startDate=getPara("startDate",dealStartTime());
     	String endDate=getPara("endDate","");
     	endDate=dealEndTime(endDate);
     	List<List<Record>> list=new ArrayList<List<Record>>();
@@ -468,9 +468,9 @@ public class LabController extends BaseController {
 		renderJson(list);*/
     	String plCode=getPara("plCode","");
     	String labTypeCode=getPara("labTypeCode","");
-    	String startDate=getPara("startDate","201701");
+    	String startDate=getPara("startDate",dealStartTime());
     	String endDate=getPara("endDate","");
-    	//endDate=dealEndTime(endDate);
+    	endDate=dealEndTime(endDate);
     	renderJson(OrderModel.dao.findOrderMonthRateForAll(startDate, endDate, plCode, labTypeCode));
     }
     
@@ -535,7 +535,7 @@ public class LabController extends BaseController {
     public void communistGravityStatisticForTab1Ajax(){
     	String plCode=getPara("plCode","");
     	String labTypeCode=getPara("labTypeCode","");
-    	String startDate=getPara("startDate","201701");
+    	String startDate=getPara("startDate",dealStartTime());
     	String endDate=getPara("endDate","");
     	endDate=dealEndTime(endDate);
 		renderJson(CommunistModel.dao.communistGravityStatistic(startDate, endDate, plCode, labTypeCode));
@@ -551,7 +551,7 @@ public class LabController extends BaseController {
     public void communistStatisticForMonthForTab1Ajax(){
     	String plCode=getPara("plCode","");
     	String labTypeCode=getPara("labTypeCode","");
-    	String startDate=getPara("startDate","201701");
+    	String startDate=getPara("startDate",dealStartTime());
     	String endDate=getPara("endDate","");
     	//endDate=dealEndTime(endDate);
     	List<List<Record>> list=new ArrayList<List<Record>>();
@@ -677,11 +677,11 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void orderRateForCenterLabAjax(){
-    	String startDate=getPara("startDate","201701");
+    	String startDate=getPara("startDate",dealStartTime());
     	String endDate=getPara("endDate","");
-    	//endDate=dealEndTime(endDate);
+    	endDate=dealEndTime(endDate);
     	List<Record> list=OrderModel.dao.findOrderRateForMonth(startDate, endDate);
-    	//dealTimeForLast(list, "name", "rate");
+    	dealTimeForLast(list, "name", "rate");
 		renderJson(list);
     }
     /**
@@ -723,12 +723,12 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void satisfactionStatisForMonthForTab3Ajax(){
-    	String startDate=getPara("startDate","201701");
+    	String startDate=getPara("startDate",dealStartTime());
     	String endDate=getPara("endDate","");
-    	//endDate=dealEndTime(endDate);
+    	endDate=dealEndTime(endDate);
     	String labTypeCode=getPara("labTypeCode","");
     	List<Record> list=SatisfactionModel.dao.satisfactionStatisForMonth(startDate, endDate,labTypeCode);
-    	//list=dealTimeForLast(list,"name","rate");
+    	list=dealTimeForLast(list,"name","rate");
 		renderJson(list);
     }
   
@@ -784,7 +784,7 @@ public class LabController extends BaseController {
      * @return_type   void
      */
     public void productLineAndMonthForTab3Ajax(){
-    	String startDate=getPara("startDate","201701");
+    	String startDate=getPara("startDate",dealStartTime());
     	String endDate=getPara("endDate","");
     	endDate=dealEndTime(endDate);
     	String labTypeCode=getPara("labTypeCode","");
@@ -1005,6 +1005,12 @@ public class LabController extends BaseController {
     		endDate=sdf.format(new Date());
     	}
     	return endDate;
+    }
+    public String dealStartTime(){
+    	String startDate;
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy");
+    	startDate=sdf.format(new Date())+"01";
+    	return startDate;
     }
     public void full() {
     	List<Record> labType=DicModel.dao.findDicByType("lab_type");

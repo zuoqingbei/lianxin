@@ -488,13 +488,37 @@ var mHeightChartTab4=$('#myChart16').highcharts({
 		borderColor:"rgba(0,0,0,0)"
     }]
 }).highcharts();
+function getCurrentYearAndDay(){
+	 var date=new Date;
+	 var year=date.getFullYear(); 
+	 var mydate = (year.toString()+getCurrentMonth());
+	 return mydate;
+}
+function getCurrentMonth(){
+	 var date=new Date;
+	 var year=date.getFullYear(); 
+	 var month=date.getMonth()+1;
+	 month =(month<10 ? "0"+month:month); 
+	 return month.toString();
+}
+function getMonthArray(){
+	var arr=[];
+	var date=new Date;
+	var year=date.getFullYear(); 
+	var month=date.getMonth()+1;
+	year=year.toString().substr(2,4);
+	for(var x=1;x<month+1;x++){
+		var  cu =(x<10 ? "0"+x:x); 
+		arr.push((year.toString()+"/"+cu.toString()))
+	}
+	return arr;
+}
 //根据类型 时间 统计共产 一致个月份数量
 function communistStatisticForMonthForTab4Ajax(){
-	$.post(contextPath+'/lab/communistStatisticForMonthForTab1Ajax',{"startDate":"201601","endDate":"201607"},function(data){
+	$.post(contextPath+'/lab/communistStatisticForMonthForTab1Ajax',{"startDate":"201601","endDate":"2016"+getCurrentMonth()},function(data){
 		var myChart18 = echarts.init(document.getElementById("myChart18"));
 		right_echarts.push(myChart18);
 		myChart18.setOption(getBarEcharts());
-		// console.log(data)
 		myChart18.setOption({
 		    color: ['#2b64f6', '#66ccff'],
 		    legend: {
@@ -531,7 +555,7 @@ function communistStatisticForMonthForTab4Ajax(){
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
 		            type: 'category',
-		            data: ["17/01", "17/02", "17/03", "17/04", "17/05", "17/06", "17/07"]
+		            data: getMonthArray()
 		        }
 		    ],
 		    series: [{

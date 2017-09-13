@@ -356,8 +356,8 @@ function findOrderYearRateForTab3() {
 	month=parseInt(month)-1;
 	var end=year+month;*/
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
-        "startDate": "201601",
-        "endDate": "201612"
+        /*"startDate": "201601",
+        "endDate": "201612"*/
     }, function (data) {
         var myChart6 = echarts.init(document.getElementById("myChart6"));
         right_echarts.push(myChart6);
@@ -393,8 +393,8 @@ function findOrderYearRateForTab3() {
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-                    //data: statistictab1LengendTime(data)
-                    data: last_year_month()
+                    data: statistictab1LengendTime(data)
+                    //data: last_year_month()
                 }
             ],
             series: [{
@@ -509,8 +509,8 @@ function findOrderYearRateForProductAjax() {
 function findOrderMonthRateForProductAjax() {
     $.post(contextPath + '/lab/findOrderMonthRateForProductAjax', {
         "labTypeCode": labTypeCode,
-        "startDate": "201601",
-        "endDate": "201612"
+       /* "startDate": "201601",
+        "endDate": "201612"*/
     }, function (data) {
         var myChart46 = echarts.init(document.getElementById("myChart46"));
         right_echarts.push(myChart46);
@@ -542,8 +542,8 @@ function findOrderMonthRateForProductAjax() {
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-                    //data: tab3OrderRateLengend(data[0])
-                    data: last_year_month()
+                    data: tab3OrderRateLengend(data[0])
+                    //data: last_year_month()
                 }
             ],
             yAxis: [
@@ -562,7 +562,7 @@ function findOrderMonthRateForProductAjax() {
 }
 //右-右-上 #7 折线图 用户满意度
 function satisfactionStatisForMonthForTab3Ajax() {
-    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"startDate":"201601","endDate":"201705"}, function (data) {
+    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {/*"startDate":"201601","endDate":"201705"*/}, function (data) {
     	var myChart7 = echarts.init(document.getElementById("myChart7"));
         right_echarts.push(myChart7);
         myChart7.setOption(getLineEcharts());
@@ -600,8 +600,8 @@ function satisfactionStatisForMonthForTab3Ajax() {
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-                    //data: statistictab1LengendTime(data)
-                    data: last_year_month()
+                    data: statistictab1LengendTime(data)
+                    //data: last_year_month()
                 }
             ],
             series: [
@@ -726,7 +726,7 @@ function satisfactionStatisForYearTab3Ajax2016() {
 }
 //右-右-下-右 #49 折线组图 用户满意度趋势变化 到月数据统计
 function productLineAndMonthForTab3Ajax() {
-    $.post(contextPath + '/lab/productLineAndMonthForTab3Ajax', {"labTypeCode": labTypeCode,"startDate":"201606","endDate":"201705"}, function (data) {
+    $.post(contextPath + '/lab/productLineAndMonthForTab3Ajax', {"labTypeCode": labTypeCode/*,"startDate":"201606","endDate":"201705"*/}, function (data) {
         var mData = [];
         var mSeries = [];
         $.each(data, function (index, item) {
@@ -746,7 +746,6 @@ function productLineAndMonthForTab3Ajax() {
             };
             mSeries.push(it);
         });
-        console.log(data)
         var myChart49 = echarts.init(document.getElementById("myChart49"));
         right_echarts.push(myChart49);
         myChart49.setOption(getLineEcharts());
@@ -775,8 +774,8 @@ function productLineAndMonthForTab3Ajax() {
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-                    //data: tab3OrderRateLengend(data[0])
-                    data: last_year_month()
+                    data: tab3OrderRateLengend(data[0])
+                    //data: last_year_month()
                 }
             ],
             yAxis: [
