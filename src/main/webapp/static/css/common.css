@@ -130,10 +130,10 @@ video {
 }
 
 /*鼠标样式设置*/
-body, canvas{
-/*
-	cursor:url("../img/xiongmao.ico"),auto!important;
- 	cursor:url("../img/favicon.ico"),auto!important;
+body, canvas,iframe{
+
+	cursor:url("../img/mouse.ico"),auto!important;
+/* 	cursor:url("../img/favicon.ico"),auto!important;
 */
 }
 
