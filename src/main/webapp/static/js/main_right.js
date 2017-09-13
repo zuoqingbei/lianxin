@@ -4544,7 +4544,8 @@ function refreshHeightChart(){
 	    series: [{
 	        name: '直方图',
 	        type: 'column',
-	        data: histogramTab4(data, 0.5),
+	        //data: histogramTab4(data, 0.5),
+	        data: [],
 	        color:"#4397f7",
 	        pointPadding: 0,
 	        groupPadding: 0,
@@ -4552,15 +4553,23 @@ function refreshHeightChart(){
 			borderColor:"rgba(0,0,0,0)"
 	    }]
 	}).highcharts();
+	setTimeout("resetCPK()",500);
+	//cpkDataForTab4(tab4xhPro);
+	
+}
+//重置CPK分析
+function resetCPK(){
 	var mData=[];
-	var mData2=[];
 	$.each(tab4CPKData[0],function(index,item){
 		mData.push([parseFloat(item.wkq_num),parseFloat(tab4xhPro.pj_value)]);
 	});
 	mHeightChartTab4.options.xAxis[0].max=parseFloat(tab4xhPro.lsl);
 	mHeightChartTab4.options.xAxis[0].min=parseFloat(tab4xhPro.usl);
 	mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
+	mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_1");
+	mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_2");
 	mHeightChartTab4.xAxis[0].addPlotLine({
+		id:"plotline_id_1",
         color:'#f93',            //线的颜色，定义为红色
         dashStyle:'solid',//认是solid（实线），这里定义为长虚线
         value:parseFloat(tab4xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
@@ -4578,6 +4587,7 @@ function refreshHeightChart(){
         zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
     });
 	mHeightChartTab4.xAxis[0].addPlotLine({
+		id:"plotline_id_2",
         color:'#f93',            //线的颜色，定义为红色
         dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
         value:parseFloat(tab4xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
