@@ -714,7 +714,7 @@ function labLifeCycleStatis(){
                     },
                 },
 	            {
-	                name:'检测订单量(百万)',
+	                name:'检测订单量(百)',
                     symbol:"circle",
 	                type:'line',
 	                yAxisIndex: 1,
