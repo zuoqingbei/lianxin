@@ -381,7 +381,7 @@ function labLifeCycleStatis(){
 				top:"15%"
 	        },
 	        legend: {
-	        	   data:['实验室数量','检测订单量(百)'],
+	        	   data:['实验室数量','检测订单量'],
 	               textStyle:{
 	                   fontSize: bodyScale*12
 	               },
