@@ -333,8 +333,12 @@ function tab4OrderRateSeriseData(data) {
     return mData;
 }
 //直方图
+var tab4xhPro;
+var tab4CPKData;
 function cpkDataForTab4(xhPro){
+	tab4xhPro=xhPro;
 	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhPro.xh_name},function(data){
+		tab4CPKData=data;
 		var mData=[];
 		var mData2=[];
 		$.each(data[0],function(index,item){

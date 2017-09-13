@@ -23,12 +23,15 @@
             <div class="switch sphere" style="display: none">
                 <div class="sphere-left">
                     <div class="sphere-left-top">
-                        <div class="chartBorder">
-                            <h3>海尔工业园区分布</h3>
+                        <div class="chartBorder" style="background: url(${contextPath!}/static/img/border_flat.png);    background-size: 100% 100%;" >
+                            <h3 style="left: -4%">海尔实验室全球分布</h3>
                             <h4 class="noBG">覆盖：
                             	<strong id="area_num">0</strong>大洲
-                                <strong id="country_num">0</strong>个国家
-                                <strong id="belong_num">0</strong>工业园区
+                            	 <strong>10</strong>大研发中心
+                                <!-- <strong id="country_num">0</strong>个国家 -->
+                                <!-- <strong id="belong_num">0</strong>工业园区 -->
+                                <br>
+                                <strong>24</strong>工业园区
 
                             </h4>
                             <div class="myChart"></div>
@@ -59,9 +62,9 @@
                                                 </div>
                         -->
                         <div class="chartBorder">
-                            <h3>实验室总数及分布</h3>
-                            <h4 class="noBG" style="float: left;margin-left: 3%">实验室总数： <strong id="lab_all_count" class="lab_all_count"> 0 </strong></h4>
-                            <h4 class="noBG noHL" style="float: right;margin-right: 3%">互联数：<strong  class="lab_all_count_link">0</strong></h4>
+                            <h3>各产品实验室数</h3>
+                            <h4 class="noBG" style="float: left;margin-left: 16%">总数： <strong id="lab_all_count" class="lab_all_count"> 0 </strong></h4>
+                            <h4 class="noBG noHL" style="float: right;margin-right: 5%">互联数：<strong  class="lab_all_count_link">0</strong></h4>
                             <ul id="pro_line" class="pro_line">
                             </ul>
                             <div class="myChart"></div>
@@ -69,8 +72,8 @@
 
                     </div>
                     <div class="sphere-right-bottom">
-                        <div class="chartBorder">
-                            <h3>互联实验室</h3>
+                        <div class="chartBorder" style="background: url(${contextPath!}/static/img/border_sphereLTRT.png);    background-size: 100% 100%;">
+                            <h3>互联实验室明细</h3>
                             <h4 class="noBG">互联实验室： <strong id="linked_status_num" class="lab_all_count_link">  </strong></h4>
                             <ul class="header">
                                 <li>实验室名称</li>

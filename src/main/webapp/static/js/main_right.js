@@ -4445,7 +4445,7 @@ function resetSizeRight() {
     }
 }
 function refreshRight() {
-	//alert(1)
+	refreshHeightChart();
     for (var i = 0; i < right_echarts.length; i++) {
     	var myChart=right_echarts[i];
         if(!myChart){
@@ -4453,9 +4453,147 @@ function refreshRight() {
        }
        //更新数据
         var option = myChart.getOption();
+        var v1,v2,v3;
         myChart.clear();
-        myChart.setOption(option);    
+        if($(myChart._dom).attr("id")=="myChart1"){
+        	//option.series[0].data=[{value: 77}];
+        	v1=option.series[0].data[0].value;
+        	v2=option.series[1].data[0].value;
+        	v3=option.series[2].data[0].value;
+        	option.series[0].data=[{value: 0}];
+        	option.series[1].data=[{value: 0}];
+        	option.series[2].data=[{value: 0}];
+        }
+        myChart.setOption(option);  
+        if($(myChart._dom).attr("id")=="myChart1"){
+        	dealyShow(myChart,option,v1,v2,v3);
+        }
     }
+}
+//重置图标时  为了达到重绘效果 进行延时相应
+function dealyShow(myChart,option,v1,v2,v3){
+	 myChart.clear();
+	  setTimeout(function(){
+		  option.series[0].data=[{value: v1}];
+		  option.series[1].data=[{value: v2}];
+		  option.series[2].data=[{value: v3}];
+		  myChart.setOption(option); 
+     },500);
+}
+//重置HeightChart
+function refreshHeightChart(){
+	mHeightChartTab4=$('#myChart16').highcharts({
+		tooltip:{
+	        textStyle: {
+	            fontSize: 10*bodyScale,
+	        },
+			formatter:function(p){
+				if(this.series.name=="概率密度"){
+					return false;
+				}else{
+					var h=this.point.x+"<br/>直方图："+this.point.y;
+					return h;
+				}
+			}
+		},
+	    chart: {
+	        type: 'column',
+	        backgroundColor: 'rgba(0,0,0,0)',
+	        spacingBottom: 7 * bodyScale,
+	        marginRight: 5*bodyScale,
+	    },
+	    credits: {
+	        enabled: false
+	    },
+	    exporting: {
+	        enabled:false
+	    },
+	    title: {
+	        text: '',
+	    },
+	    legend:{
+	        enabled:false,
+	    },
+	    xAxis: {
+	        gridLineWidth: 0,
+	        min:71,
+	        max:77,
+	        plotLines: [],
+	        tickColor: "rgba(0,0,0,0)",
+	        labels:{
+	       	 	 y: 13*bodyScale,
+		       	 style: {
+		             /* fontWeight: 'bold',*/
+		             fontSize: 13* bodyScale,
+		             color:"#66ccff"
+		         }
+	       }
+	    },
+	    yAxis: [{
+	        title: {
+	            text: ''
+	        },
+	        visible:false
+	    }, {
+	        opposite: true,
+	        title: {
+	            text: ''
+	        },
+	        visible:false,
+	    }],
+	    series: [{
+	        name: '直方图',
+	        type: 'column',
+	        data: histogramTab4(data, 0.5),
+	        color:"#4397f7",
+	        pointPadding: 0,
+	        groupPadding: 0,
+	        pointPlacement: 'between',
+			borderColor:"rgba(0,0,0,0)"
+	    }]
+	}).highcharts();
+	var mData=[];
+	var mData2=[];
+	$.each(tab4CPKData[0],function(index,item){
+		mData.push([parseFloat(item.wkq_num),parseFloat(tab4xhPro.pj_value)]);
+	});
+	mHeightChartTab4.options.xAxis[0].max=parseFloat(tab4xhPro.lsl);
+	mHeightChartTab4.options.xAxis[0].min=parseFloat(tab4xhPro.usl);
+	mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
+	mHeightChartTab4.xAxis[0].addPlotLine({
+        color:'#f93',            //线的颜色，定义为红色
+        dashStyle:'solid',//认是solid（实线），这里定义为长虚线
+        value:parseFloat(tab4xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+        width:1  ,               //标示线的宽度，2px
+        label:{
+            text:'LSL',  //标签的内容
+            verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
+            x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+            style: {
+                color: '#f93',
+               /* fontWeight: 'bold',*/
+                fontSize:12*bodyScale
+            } 
+        },
+        zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+    });
+	mHeightChartTab4.xAxis[0].addPlotLine({
+        color:'#f93',            //线的颜色，定义为红色
+        dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
+        value:parseFloat(tab4xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+        width:1  ,               //标示线的宽度，2px
+        label:{
+            text:'USL',//标签的内容
+            verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
+            x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+            style: {
+                color: '#f93',
+                /*fontWeight: 'bold',*/
+                fontSize:12*bodyScale
+            }
+        },
+        zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+    });
 }
 $(function () {
 	rightInterval=setInterval("refreshRight()", 15000);
