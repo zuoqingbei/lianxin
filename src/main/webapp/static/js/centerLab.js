@@ -356,6 +356,8 @@ var colorData=['#eaff56','#bce672','#ff461f','#70f3ff','#e9e7ef','#fff143','#c9d
                '#93ca76','#bbc8e6'];//图例颜色 需手工扩充
 var myChart1;
 var myChart2;
+myChart1= echarts.init(document.getElementById('main1'));
+myChart2 = echarts.init(document.getElementById('main2'));
 var xData;//x轴坐标数据--对应时间
 var legendData=[];//需要把全部图例放入里面 保证名称不同
 var legendNumData=[];
@@ -412,7 +414,7 @@ var dataBase;
 function loadLabUnitInfoCenterTabAjax(){
 	$.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
 		var htmls="";
-		// console.log(data)
+		 console.log(data)
 		$.each(data,function(index,item){
 			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labName+'</a>';
 			if(item.testUnitList.length>0){
