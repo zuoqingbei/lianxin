@@ -355,6 +355,7 @@ function cpkDataForTab4(xhPro){
 		mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
 		/*mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));*/
 		mHeightChartTab4.xAxis[0].addPlotLine({
+			id:"plotline_id_1",
             color:'#f93',            //线的颜色，定义为红色
             dashStyle:'solid',//认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
@@ -372,6 +373,7 @@ function cpkDataForTab4(xhPro){
             zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
         });
 		mHeightChartTab4.xAxis[0].addPlotLine({
+			id:"plotline_id_2",
             color:'#f93',            //线的颜色，定义为红色
             dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
             value:parseFloat(xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
@@ -478,7 +480,7 @@ var mHeightChartTab4=$('#myChart16').highcharts({
     series: [{
         name: '直方图',
         type: 'column',
-        data: histogramTab4(data, 0.5),
+        data: [],
         color:"#4397f7",
         pointPadding: 0,
         groupPadding: 0,
