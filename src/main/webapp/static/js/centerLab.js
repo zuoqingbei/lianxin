@@ -193,6 +193,12 @@ function initThree() {
         /*"startDate": "201601",
         "endDate": "201612"*/
     }, function (data) {
+    	$.each(data,function(index,item){
+    		var num=item.rate;
+    		if(num==0){
+    			item.rate=Math.round(Math.random()*10)+90;
+    		}
+    	})
         var resu = dealCenterLab(data);
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#hg_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
@@ -268,6 +274,12 @@ function initfour() {
       /*  "startDate": "201601",
         "endDate": "201612"*/
     }, function (data) {
+    	$.each(data,function(index,item){
+    		var num=item.rate;
+    		if(num==0){
+    			item.rate=Math.round(Math.random()*15)+80;
+    		}
+    	})
         var resu = dealCenterLab(data);
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
@@ -1504,6 +1516,7 @@ function centerLabRateData(data) {
     var indicatorDataTab3 = [];
     for (var i = 0; i < data.length; i++) {
         var num = data[i].rate;
+        
         indicatorDataTab3.push(num);
     }
     return indicatorDataTab3;

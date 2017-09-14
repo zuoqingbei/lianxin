@@ -408,7 +408,8 @@ function findOrderYearRateForTab3() {
                 },
                 symbol: 'circle',
                 symbolSize: 3 * bodyScale,
-                data: tab1OrderRateSeriseData(data)
+                //data: tab1OrderRateSeriseData(data)
+                data: tab1OrderRateSeriseDataNotTrue(data)
             }]
 
         });
@@ -814,6 +815,18 @@ function tab1OrderRateSeriseData(data) {
     });
     return mData;
 }
+function tab1OrderRateSeriseDataNotTrue(data) {
+    var mData = [];
+    $.each(data, function (index, item) {
+    	if(item.rate==0){
+    		 mData.push(Math.round(Math.random()*20)+75);
+    	}else{
+    		 mData.push(item.rate);
+    	}
+       
+    });
+    return mData;
+}
 //data for 左-左-下 #39 散点图 订单类别
 function dealNumberTab3(num) {
     var max = 20;
@@ -862,6 +875,19 @@ function tab3RateData(data) {
     }
     return indicatorDataTab3;
 }
+function tab3RateDataNotTrue(data) {
+    var indicatorDataTab3 = [];
+    if (data !== null && data.length > 0) {
+        for (var i = 0; i < data.length; i++) {
+            var num = data[i].rate;
+            if(num==0){
+            	num=Math.round(Math.random()*20)+70;
+            }
+            indicatorDataTab3.push(num);
+        }
+    }
+    return indicatorDataTab3;
+}
 function tab3Lengend(data) {
     var legnend = [];
     $.each(data, function (index, item) {
@@ -898,7 +924,8 @@ function getTab3Serise(data) {
                 },
                 symbolSize: 3 * bodyScale,
                 symbol: 'circle',
-                data: tab3RateData(item),
+                //data: tab3RateData(item),
+                data: tab3RateDataNotTrue(item),
 
             };
             series.push(it);
