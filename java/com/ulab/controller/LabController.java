@@ -52,29 +52,6 @@ import com.ulab.util.SqlUtil;
 @ControllerBind(controllerKey = "/lab", viewPath = "/lab")
 @Before({GlobalInterceptor.class})
 public class LabController extends BaseController {
-	public void index2() {
-		setAttr("fromPage", getPara("fromPage",""));
-    	List<Record> labType=DicModel.dao.findDicByType("lab_type");
-    	List<Record> productLine=DicModel.dao.findDicByType("line_type");
-    	setAttr("labType", labType);
-    	setAttr("productLine", productLine);
-    	setSessionAttr("labType", labType);
-    	setSessionAttr("productLine", productLine);
-    	//实验室轮播信息
-    	String sqlWhere=SqlUtil.commonWhereSql(this,null);
-    	List<Record> labInfo=LabMapModel.dao.labShowFlatMap2(sqlWhere);
-    	for(Record r:labInfo){
-    		if(r.getStr("title").length()>6){
-    			r.set("title", r.getStr("title").substring(0,6)+"...");
-    		}
-    	}
-    	setAttr("labInfo", labInfo);
-    	//量产一致性保障 字典
-    	List<Record> providerDic=ProviderDicModel.dao.findProviderDic();
-    	setAttr("providerDic", providerDic);
-		 render("index2.html");
-	}
-	
     public void index() {
     	setAttr("fromPage", getPara("fromPage",""));
     	List<Record> labType=DicModel.dao.findDicByType("lab_type");
