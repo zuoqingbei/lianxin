@@ -64,6 +64,7 @@
             var index = $(this).index();
             // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
             $(".box:eq(" + index + ")").addClass("selected").siblings().removeClass("selected");
+            console.log("下右侧面开始图表重置");
             resetSizeRight();
         });
 

@@ -4663,8 +4663,9 @@ $(function () {
 
     })
 */
+    
+//    左上角四个图标按钮
     $right.find(".labIcon>ul>li.lab_item").click(function () {
-
         var $img = $(this).find("img");
         var src = $img.attr("src");
         var index = $(this).index();
@@ -4686,9 +4687,6 @@ $(function () {
         */
             if(thisLabel!=labTypeCode){
             	labTypeCode=thisLabel;
-            	 loadTab2Data();
-                 loadTab3Data();
-                 loadTab4Data();
             }
         }else{//熄灭图标
             $(this).removeClass("active");
@@ -4698,10 +4696,12 @@ $(function () {
               });
         	//再次点击同一个 返回全部数据
         	labTypeCode="";
-        	loadTab2Data();
-            loadTab3Data();
-            loadTab4Data();
         }
+        resetSizeRight();
+        loadTab2Data();
+        loadTab3Data();
+        loadTab4Data();
+        /*resetSizeRight();*/
 
     })
 });
