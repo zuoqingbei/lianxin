@@ -19,6 +19,7 @@
 <script src="${contextPath!}/static/js/full_statistics.js"></script>
 
 <body>
+<div id="model" style="background: url('${contextPath!}/static/img/bg-2.jpg') no-repeat;background-size:100% 100%;width:100%;height:100%;position:absolute;top:0;left:0;z-index:10000"></div>
 
 <div id="content" class="contai"  >
 
@@ -26,6 +27,11 @@
         //开场视频
 	   if(fromPage!="fullScreen"){
 	        videoFadeOut();
+	        $("#model").css('display','none');
+	    }else{
+	    	$("#model").animate({opacity:0},2000,function(){
+		 		$(this).css('display','none');
+		 	});
 	    }
 	</script>
      ##layout("fullScreen_map.html", {}){

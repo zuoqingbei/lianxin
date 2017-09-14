@@ -151,9 +151,9 @@ body, canvas,iframe{
         }
     }
     body {
-        /* background-color:#04032d; */
+        /* background-color:black;*/
         background: url(../img/bg-2.jpg) no-repeat;
-    	background-size: 100% 100%;
+    	background-size: 100% 100%; 
        /*  animation-name: webEase;
         animation-duration: 2s;
         transition-timing-function: fast; */
