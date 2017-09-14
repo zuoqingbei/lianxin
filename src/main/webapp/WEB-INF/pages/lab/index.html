@@ -13,18 +13,11 @@
 <script src="${contextPath!}/static/asserts/echarts/wordcloudFromNet.js?time=New Date()"></script>
 
 <body>
-<div id="model" style="background: url('${contextPath!}/static/img/bg-2.jpg') no-repeat;background-size:100% 100%;width:100%;height:100%;position:absolute;top:0;left:0;z-index:10000"></div>
 <div id="content" class="contai">
 <script>
     
 /* background-img: url('${contextPath!}/static/img/bg-2.jpg') */
     pageResize();
-    $(function () {
-	 	$("#model").animate({opacity:0},2000,function(){
-	 		$(this).css('display','none');
-	 	});
-    	
-    })
 </script>
 
      ##layout("left.html", {}){

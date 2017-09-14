@@ -36,11 +36,11 @@ function jsonToArray(data){
 	        lat: 36.082981,
 	        litude:[120.355171,36.082981],
 	        dateTime: '',
-	        title: '青岛',
+	        title: '青岛研发中心',
 	        id: '1',
-	        url: 'http://www.baidu.com/s?wd=1',
-	        name: '青岛',
-	        value: 0
+	        url: '',
+	        name: '青岛研发中心',
+	        value: 168
 	    }
 	d.push(p);
 	for(var x=0;x<data.length;x++){
@@ -52,7 +52,7 @@ function jsonToArray(data){
 	        dateTime: obj.datetime,
 	        title: obj.title,
 	        id: '1',
-	        url: 'http://www.baidu.com/s?wd=1',
+	        url: '',
 	        name: obj.name,
 	        value: obj.num
 	    }
