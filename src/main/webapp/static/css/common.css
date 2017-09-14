@@ -151,9 +151,11 @@ body, canvas,iframe{
         }
     }
     body {
-        background-color:#04032d;
+        /* background-color:#04032d; */
+        background: url(../img/bg-2.jpg) no-repeat;
+    	background-size: 100% 100%;
         animation-name: webEase;
-        animation-duration: 3s;
+        animation-duration: 5s;
         transition-timing-function: ease;
     }
 }
