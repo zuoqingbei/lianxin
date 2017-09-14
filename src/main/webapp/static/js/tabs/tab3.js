@@ -956,14 +956,16 @@ function tab3OrderRateLengend(data) {
 		var pre=((parseFloat(data[0].zj)+parseFloat(data[0].mk))/2).toFixed(1);
 		var change=(parseFloat(cur)-parseFloat(pre)).toFixed(1);
 		var h='';
-		h+=' 本年问题闭环率 <strong class="orange">'+cur+'%</strong><br>';
-		if(change<0){
-			h+='同比下降';
-		}else{
-			h+='同比上升';
+		if(!isNaN(cur)){
+			h+=' 本年问题闭环率 <strong class="orange">'+cur+'%</strong><br>';
+			if(change<0){
+				h+='同比下降';
+			}else{
+				h+='同比上升';
+			}
+			h+=' <strong class="orange">'+change+'%</strong>';
+			$(".new_bh_rate_tab3").html(h)
 		}
-		h+=' <strong class="orange">'+change+'%</strong>';
-		$(".new_bh_rate_tab3").html(h)
 	    var myChart44 = echarts.init(document.getElementById("myChart44"));
 	    right_echarts.push(myChart44);
 	    myChart44.setOption(getCenterPie());
@@ -971,6 +973,9 @@ function tab3OrderRateLengend(data) {
 	    var mSeries = [];
 	    var mRadius = [[70 * bodyScale, 76 * bodyScale], [55 * bodyScale, 61 * bodyScale]];
 	    var name1='整机 '+data[1].zj+"%";
+	    if(data[1].zj==null||data[1].zj=="null"){
+	    	name1="";
+	    }
 	    var it = {
 	            name: '问题闭环率',
 	            type: 'pie',
@@ -995,6 +1000,9 @@ function tab3OrderRateLengend(data) {
 			mData.push(name1);
 	        mSeries.push(it);
 	        var name2='模块 '+data[1].mk+"%";
+	        if(data[1].mk==null||data[1].mk=="null"){
+		    	name2="";
+		    }
 	        var it2 = {
 	                name: '问题闭环率',
 	                type: 'pie',
@@ -1067,14 +1075,16 @@ function tab3OrderRateLengend(data) {
 		 $("#tab3_user_my_hb").html(htmls_hb);
 		 $("#tab3_user_my_tq").html(htmls_tq);*/
 		 var h='';
-		 h+='本月用户满意度 <strong class="orange">'+data.tq+'%</strong> ,';
-		 if(parseFloat(data.change_num)<0){
-			 h+='同比下降';
-		 }else{
-			 h+='同比上升';
+		 if(data.tq!=undefined&&data.change_num!=undefined){
+			 h+='本月用户满意度 <strong class="orange">'+data.tq+'%</strong> ,';
+			 if(parseFloat(data.change_num)<0){
+				 h+='同比下降';
+			 }else{
+				 h+='同比上升';
+			 }
+			 h+=' <strong class="orange">'+data.change_num+'%</strong>';
+			 $(".tab3_new_user_manyi").html(h);
 		 }
-		 h+=' <strong class="orange">'+data.change_num+'%</strong>';
-		 $(".tab3_new_user_manyi").html(h);
 	 });
  }
 
@@ -1170,10 +1180,12 @@ function tab3OrderRateLengend(data) {
 		 $("#once_pass_rate_mk").html(mk);*/
 			var cur=((parseFloat(data[0].rate)+parseFloat(data[1].rate))/2).toFixed(1);
 			var h='';
-			h+='本年一次合格率 <strong class="orange">'+cur+'%</strong><br>';
-			h+='同比上升';
-			h+=' <strong class="orange">3.5%</strong>';
-			$(".new_hg_rate_tab3").html(h);
+			if(!isNaN(cur)){
+				h+='本年一次合格率 <strong class="orange">'+cur+'%</strong><br>';
+				h+='同比上升';
+				h+=' <strong class="orange">3.5%</strong>';
+				$(".new_hg_rate_tab3").html(h);
+			}
 		    var myChart43 = echarts.init(document.getElementById("myChart43"));
 		    right_echarts.push(myChart43);
 		    myChart43.setOption(getCenterPie());
@@ -1181,6 +1193,9 @@ function tab3OrderRateLengend(data) {
 		    var mSeries = [];
 		    var mRadius = [[70 * bodyScale, 76 * bodyScale], [55 * bodyScale, 61 * bodyScale]];
 		    var name1='整机 '+data[0].rate+"%";
+		    if(data[0].rate==null||data[0].rate=="null"){
+		    	name1="";
+		    }
 		    var it = {
 		            name: '一次合格率',
 		            type: 'pie',
@@ -1205,6 +1220,9 @@ function tab3OrderRateLengend(data) {
 				mData.push(name1);
 		        mSeries.push(it);
 		        var name2='模块 '+data[1].rate+"%";
+		        if(data[1].rate==null||data[1].rate=="null"){
+			    	name2="";
+			    }
 		        var it2 = {
 		                name: '一次合格率',
 		                type: 'pie',
@@ -1258,14 +1276,16 @@ function tab3OrderRateLengend(data) {
 		 $("#order_year_rate_2016").html(h_2016);
 		 $("#order_year_rate_2017").html(h_2017);*/
 		 var h='';
-		 h+='本月订单及时率 <strong class="orange tab3_new_order_rate">'+rate2017+'%</strong> ,';
-		 if(parseFloat(change)<0){
-			 h+='同比上升';
-		 }else{
-			 h+='同比下降';
+		 if(rate2017!=null){
+			 h+='本月订单及时率 <strong class="orange tab3_new_order_rate">'+(rate2017==null?"0":rate2017)+'%</strong> ,';
+			 if(parseFloat(change)<0){
+				 h+='同比上升';
+			 }else{
+				 h+='同比下降';
+			 }
+			 h+=' <strong class="orange">'+(isNaN(change)?"0":change)+'%</strong>';
+			 $(".tab3_new_order_rate").html(h);
 		 }
-		 h+=' <strong class="orange">'+change+'%</strong>';
-		 $(".tab3_new_order_rate").html(h);
           
 	 });
  }
