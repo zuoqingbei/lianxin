@@ -80,7 +80,7 @@ function dataToArrayContinueArray(data){
 		var obj=data[x];
 		var e= new Array();
 		var item0 = new Object();
-		item0.name="青岛";
+		item0.name="青岛研发中心";
 		e.push(item0);
 		e.push(dataToObject(obj));
 		d.push(e);
