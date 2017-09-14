@@ -40,7 +40,7 @@ public class SatisfactionModel extends Model<SatisfactionModel> {
 		}else{
 			sb.append(" and s.lab_name is null ");
 		}
-		sb.append(" and to_date(s.name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
+		sb.append(" and to_date(trim(s.name),'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
 		sb.append(" group by s.name order by s.name ");
 		return Db.find(sb.toString());
 	}
@@ -120,7 +120,7 @@ public class SatisfactionModel extends Model<SatisfactionModel> {
 		}else{
 			sb.append("  and s.lab_name is null ");
 		}
-		sb.append(" and to_date(s.name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
+		sb.append(" and to_date(trim(s.name),'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
 		sb.append("  order by s.name ");
 		return Db.find(sb.toString());
 	}
