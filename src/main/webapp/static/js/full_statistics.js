@@ -387,7 +387,7 @@ function labLifeCycleStatis(){
 	               },
 	               itemWidth: bodyScale*11,
 	               itemHeight: bodyScale*11,
-				   itemGap:290,
+	               itemGap:bodyScale*40,
                    padding: [3, 12*bodyScale]
 	        },
 	        xAxis: [
@@ -409,7 +409,6 @@ function labLifeCycleStatis(){
 	                },
 	                // data: statisticLengend(data)
                     data:["a","b","c","d","e","f","g"]
-
 	            }
 	        ],
 	        yAxis: [
@@ -507,7 +506,7 @@ function labLifeCycleStatis(){
                     },
                 },
 	            {
-	                name:'检测订单量(百)',
+	                name:'检测订单量',
                     symbol:"circle",
 	                type:'line',
 	                yAxisIndex: 1,
