@@ -130,15 +130,16 @@ video {
 }
 
 /*鼠标样式设置*/
+@media (min-width:4000px) {
 body, canvas,iframe{
 
 	cursor:url("../img/mouse.ico"),auto!important;
 /* 	cursor:url("../img/favicon.ico"),auto!important;
 */
 }
+}
 
-
-/*修改页面切换时的白底色以及柔和过度*/
+/*修改页面切换时的白底色背景以及柔和过度*/
 
 @media all {
     @keyframes webEase {
@@ -152,7 +153,7 @@ body, canvas,iframe{
     body {
         background-color:#04032d;
         animation-name: webEase;
-        animation-duration: 2s;
+        animation-duration: 3s;
         transition-timing-function: ease;
     }
 }
