@@ -589,7 +589,7 @@ function labLifeCycleStatis(){
 				bottom:"2%"
 	        },
 	        legend: {
-	        	   data:['实验室数量','检测订单量'],
+	        	   data:['实验室数量','检测订单量(百)'],
 				   itemGap:bodyScale*40,
 	               textStyle:{
 	                   fontSize: bodyScale*8
@@ -714,7 +714,7 @@ function labLifeCycleStatis(){
                     },
                 },
 	            {
-	                name:'检测订单量',
+	                name:'检测订单量(百)',
                     symbol:"circle",
 	                type:'line',
 	                yAxisIndex: 1,

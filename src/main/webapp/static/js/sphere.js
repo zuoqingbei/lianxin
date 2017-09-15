@@ -1,4 +1,4 @@
-
+var bodyScale = parent.bodyScale;
 function mapSphere(myChart) {
     var opts;
     $.ajax({
@@ -30,7 +30,10 @@ function mapSphere(myChart) {
                     }
                 },
                 tooltip: {
-                    formatter: '{b}'
+                    formatter: '{b}',
+                    textStyle:{
+                    	fontSize:15*bodyScale
+                    }
                 },
                 series: [{
                     type: 'map3d',
