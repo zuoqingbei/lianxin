@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>the5fire m3u8 test</title>
+<script src="http://the5fireblog.b0.upaiyun.com/staticfile/swfobject.js"></script>
+</head>
+<body>
+<div id="player">
+</div>
+<script>
+    var flashvars = {
+        // M3U8 url, or any other url which compatible with SMP player (flv, mp4, f4m)        
+        // escaped it for urls with ampersands        
+        //src: escape("http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8"),
+        src: escape("http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8"),
+        // url to OSMF HLS Plugin         
+        plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
+    };
+    var params = {
+        // self-explained parameters         
+        allowFullScreen: true,
+        allowScriptAccess: "always",
+        bgcolor: "#000000"
+    };
+    var attrs = {
+        name: "player"
+    };
+
+    swfobject.embedSWF(
+        // url to SMP player        
+        "http://www.the5fire.com/static/demos/swf/StrobeMediaPlayback.swf",
+        // div id where player will be place       
+        "player",
+        // width, height       
+        "800", "485",
+        // minimum flash player version required    
+        "10.2",
+        // other parameters        
+        null,
+        flashvars,
+        params,
+        attrs
+    );
+</script>
+</body>
+</html>

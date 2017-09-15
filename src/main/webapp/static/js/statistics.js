@@ -577,7 +577,7 @@ function labLifeCycleStatis(){
 	            	var r=a[0].name+"</br>"  
                     +a[0].seriesName+':'+a[0].value  +"</br>" ;
 	            	if(a.length>0){
-	            		r+=a[1].seriesName+':'+parseFloat(a[1].value)*100  +"</br>"  ;
+	            		r+=a[1].seriesName+':'+parseFloat(a[1].value)  +"</br>"  ;
 	            	}
                     return r;  
                 }
@@ -589,7 +589,7 @@ function labLifeCycleStatis(){
 				bottom:"2%"
 	        },
 	        legend: {
-	        	   data:['实验室数量','检测订单量(百)'],
+	        	   data:['实验室数量','检测订单量'],
 				   itemGap:bodyScale*40,
 	               textStyle:{
 	                   fontSize: bodyScale*8
@@ -628,7 +628,6 @@ function labLifeCycleStatis(){
                     },
                     nameGap:10,
 					min: 0,
-	                max: 500,
 	                axisLine: {
 	                    lineStyle: {
 	                        color: colors[0]
@@ -654,7 +653,6 @@ function labLifeCycleStatis(){
                     },
                     nameGap:10,
 	                 min: 0,
-	                 max: 500,
 	                 position: 'right',
 	                 axisLine: {
 	                     lineStyle: {
@@ -685,7 +683,6 @@ function labLifeCycleStatis(){
                     name:'实验室数量',
                     symbol:"circle",
                     type:'line',
-                    yAxisIndex: 1,
                     hoverAnimation:false,
                     data: statisticSeriesDataData(data),
                     lineStyle:{
@@ -714,12 +711,12 @@ function labLifeCycleStatis(){
                     },
                 },
 	            {
-	                name:'检测订单量(百)',
+	                name:'检测订单量',
                     symbol:"circle",
 	                type:'line',
 	                yAxisIndex: 1,
                     hoverAnimation:false,
-	                data:[47.39, 202.33, 56.83,3.81, 168.01, 28.39, 7.59],
+	                data:[4739, 20233, 5683,381, 16801, 2839, 759],
                     lineStyle:{
                         normal:{
                             width:2*bodyScale

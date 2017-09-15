@@ -1022,7 +1022,7 @@ var intevalChart1;
 function intervalChangeData() {
 	//console.log("----intevalChart1-----------"+intevalChart1)
 	//时间间隔低于4分钟取不到数据
-	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.07"},function(data){
+	$.post(contextPath+"/lab/searchRealTimeDataCenterTabAjax",{"labTypeCode":mlabTypeCode,"url":murl,"testUnitId":mtestUnitId,"interval":" 0.0083333333333333"},function(data){
 		data=eval("("+data+")");
 		dealIntervalSeriesData(data);
 		createLegendHtmls();
@@ -1032,7 +1032,7 @@ function intervalChangeData() {
 		for(var i=0; i<intervalSeriesTopData.length;i++){
 			for(var x=0;x<intervalSeriesTopData[i].length;x++){
 				//只有原先没有加入的点蔡添加
-				/*if(isHasElementOne(xData,parseFloat(intervalSeriesTopData[i][x].name)*60)==-1){
+				/*if(intervalSeriesTopData[i][x].value!=0){
 					seriesTopData[i].data.shift();
 					//console.log(intervalSeriesTopData[i][x].value)
 					seriesTopData[i].data.push(intervalSeriesTopData[i][x].value);
@@ -1047,10 +1047,8 @@ function intervalChangeData() {
 		for(var i=0; i<intervalSeriesBottomData.length;i++){
 
 			for(var x=0;x<intervalSeriesBottomData[i].length;x++){
-				/*if(isHasElementOne(xData,parseFloat(intervalSeriesBottomData[i][x].name)*60)==-1){
-					xData.shift();
-					xData.push(parseInt(parseFloat(intervalSeriesBottomData[i][x].name)*60))
-
+				/*console.log(intervalSeriesBottomData[i][x].value)
+				if(intervalSeriesBottomData[i][x].value!=0){
 					seriesBottomData[i].data.shift();
 					//console.log(intervalSeriesBottomData[i][x].value)
 					seriesBottomData[i].data.push(intervalSeriesBottomData[i][x].value);
