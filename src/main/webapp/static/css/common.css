@@ -130,14 +130,14 @@ video {
 }
 
 /*鼠标样式设置*/
-@media (min-width:4000px) {
-body, canvas,iframe{
-
+/* @media (min-width:4000px) {
+	body * {
 	cursor:url("../img/mouse.ico"),auto!important;
-/* 	cursor:url("../img/favicon.ico"),auto!important;
-*/
-}
-}
+	}
+	a{
+		cursor:url("../img/pointer.ico"),pointer!important;
+	}
+} */
 
 /*修改页面切换时的白底色背景以及柔和过度*/
 
