@@ -13,7 +13,13 @@
 			<artifactId>jfinal</artifactId>
 			<version>1.9</version>
 		</dependency>
-	
+		<dependency> 
+		       <groupId>mysql</groupId> 
+		       <artifactId>mysql-connector-java</artifactId> 
+		       <version>5.1.6</version> 
+		</dependency>
+		
+		  
 	<!-- 如果用main方法启动项目 需要放开jetty-server -->
 		<dependency>
 			<groupId>com.jfinal</groupId>

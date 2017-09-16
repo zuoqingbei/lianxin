@@ -20,6 +20,7 @@ import com.ulab.core.Constants;
 import com.ulab.model.CommunistModel;
 import com.ulab.model.DicModel;
 import com.ulab.model.EquipmentModel;
+import com.ulab.model.HadoopSensorInfo;
 import com.ulab.model.JianCeModel;
 import com.ulab.model.JianceProModel;
 import com.ulab.model.LabAllData;
@@ -53,6 +54,7 @@ import com.ulab.util.SqlUtil;
 @Before({GlobalInterceptor.class})
 public class LabController extends BaseController {
     public void index() {
+    	List<Record> l=HadoopSensorInfo.dao.findByTestIdentification(Constants.CONFIGNAME_THAILAND,"TGBXA_1040");
     	setAttr("fromPage", getPara("fromPage",""));
     	List<Record> labType=DicModel.dao.findDicByType("lab_type");
     	List<Record> productLine=DicModel.dao.findDicByType("line_type");

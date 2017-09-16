@@ -25,6 +25,7 @@ import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.ext.plugin.tablebind.AutoTableBindPlugin;
 import com.jfinal.ext.route.AutoBindRoutes;
 import com.jfinal.kit.PathKit;
+import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
@@ -70,10 +71,11 @@ public class UlabCofig extends JFinalConfig {
 	@Override
 	public void configPlugin(Plugins me) {
 		AutoTableBindPlugin arp = null;
-		DruidPlugin dp = new DruidPlugin(this.getProperty("oracle.url"),
-				this.getProperty("oracle.user"),
-				this.getProperty("oracle.password"),
-				getProperty("oracle.driver"));
+		//Ulab库
+		DruidPlugin dp = new DruidPlugin(this.getProperty("ulab.url"),
+				this.getProperty("ulab.user"),
+				this.getProperty("ulab.password"),
+				getProperty("ulab.driver"));
 		dp.setInitialSize(5);
 		dp.setMaxActive(5);
 		dp.setMinIdle(3);
@@ -84,6 +86,25 @@ public class UlabCofig extends JFinalConfig {
 		arp.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
 		arp.setShowSql(true);
 		me.add(arp);
+		
+		/**泰国实验室START**/
+		DruidPlugin druidPluginThailand = new DruidPlugin(this.getProperty("thailand.url"),
+				this.getProperty("thailand.user"),
+				this.getProperty("thailand.password"),
+				getProperty("thailand.driver"));
+		druidPluginThailand.setInitialSize(5);
+		druidPluginThailand.setMaxActive(5);
+		druidPluginThailand.setMinIdle(3);
+		me.add(druidPluginThailand);
+		ActiveRecordPlugin thailandARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_THAILAND,
+				druidPluginThailand);
+		thailandARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
+		thailandARP.setShowSql(true);
+		me.add(thailandARP);
+		/**泰国实验室END**/
+		
+		
+		
 		//定时器
 		QuartzPlugin quartzPlugin = new QuartzPlugin();
 		quartzPlugin.setJobs("quartz.properties");

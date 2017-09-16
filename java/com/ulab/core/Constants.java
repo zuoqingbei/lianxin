@@ -22,4 +22,18 @@ public class Constants {
 	 */
 	public static final String JIANC_EPRO_SESSION="jianc_epro_session_";//产品型号检测结果属性
 	public static final String JIANC_GAUSSIAN_SESSION="jianc_gaussian_session_";
+	
+	/**
+	 * 实验室数据源配置名称（与表T_B_DB_CONFIG中config_name对应 不要随便改）
+	 */
+	public static final String CONFIGNAME_THAILAND="thailand";//泰国数据库
+	/**
+	 * 数据源表配置对应字段名称（对应T_B_DB_CONFIG中列名称 必须与表字段相同 不要随便改动）
+	 */
+	public static final String TESTMETADATA="testmetadata";//测试数据元数据信息对应应表名称
+	public static final String SENSORINFO="sensorInfo";//传感器信息对应的表
+	public static final String TESTUNITINFO="testUnitInfo";//监测单元对应的表
+	public static final String SENSORTYPEINFO="sensorTypeInfo";//传感器类型对应的表
+	public static final String TESTDATA="testdata";//测试数据对应的表
+	
 }
