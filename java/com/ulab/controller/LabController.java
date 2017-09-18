@@ -20,7 +20,6 @@ import com.ulab.core.Constants;
 import com.ulab.model.CommunistModel;
 import com.ulab.model.DicModel;
 import com.ulab.model.EquipmentModel;
-import com.ulab.model.HadoopSensorInfo;
 import com.ulab.model.JianCeModel;
 import com.ulab.model.JianceProModel;
 import com.ulab.model.LabAllData;
@@ -30,15 +29,12 @@ import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 import com.ulab.model.LabTestUnit;
-import com.ulab.model.Line;
 import com.ulab.model.OrderModel;
 import com.ulab.model.PersonModel;
 import com.ulab.model.ProviderDicModel;
 import com.ulab.model.QuestionClosedModel;
 import com.ulab.model.SatisfactionModel;
-import com.ulab.model.SensorTypeDto;
 import com.ulab.model.SensorTypeModel;
-import com.ulab.model.Value;
 import com.ulab.model.XbarModel;
 import com.ulab.util.JsonUtils;
 import com.ulab.util.NormalDistribution;
@@ -54,7 +50,7 @@ import com.ulab.util.SqlUtil;
 @Before({GlobalInterceptor.class})
 public class LabController extends BaseController {
     public void index() {
-    	List<Record> l=HadoopSensorInfo.dao.findByTestIdentification(Constants.CONFIGNAME_THAILAND,"TGBXA_1040");
+    	//List<Record> l=HadoopSensorInfo.dao.findByTestIdentification(Constants.CONFIGNAME_THAILAND,"TGBXA_1040");
     	setAttr("fromPage", getPara("fromPage",""));
     	List<Record> labType=DicModel.dao.findDicByType("lab_type");
     	List<Record> productLine=DicModel.dao.findDicByType("line_type");
