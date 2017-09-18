@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>the5fire m3u8 test</title>
-<script src="http://the5fireblog.b0.upaiyun.com/staticfile/swfobject.js"></script>
+<script src="../static/test/swfobject.js"></script>
 </head>
 <body>
 <div id="player">
@@ -14,7 +14,8 @@
         //src: escape("http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8"),
         src: escape("http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8"),
         // url to OSMF HLS Plugin         
-        plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
+        //plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
+        plugin_m3u8: "../static/test/HLSProviderOSMF.swf",
     };
     var params = {
         // self-explained parameters         
@@ -28,7 +29,7 @@
 
     swfobject.embedSWF(
         // url to SMP player        
-        "http://www.the5fire.com/static/demos/swf/StrobeMediaPlayback.swf",
+        "../static/test/StrobeMediaPlayback.swf",
         // div id where player will be place       
         "player",
         // width, height       
