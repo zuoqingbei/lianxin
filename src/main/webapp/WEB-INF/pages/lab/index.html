@@ -14,6 +14,7 @@
 
 <body>
 <div id="content" class="contai">
+
 <script>
     
 /* background-img: url('${contextPath!}/static/img/bg-2.jpg') */
@@ -35,11 +36,16 @@
 	 ##}
 
 </div>
-</body>
-</html>
-##}
-
+<audio id="clickSounds" hidden src="${contextPath!}/static/sounds/cha.wav">123</audio>
 <script>
+//点击鼠标的声音
+$(function(){
+	$("*").click(function(){
+		console.log($("#clickSounds")[0]);
+		//$("#clickSounds")[0].pause();
+		$("#clickSounds")[0].play();
+	})
+})
 
     $(function () {
         //这里是为了方便测试的模拟事件代码，正式使用时请蔽掉
@@ -50,3 +56,7 @@
     })
 
 </script>
+</body>
+</html>
+##}
+
