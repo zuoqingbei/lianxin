@@ -196,7 +196,7 @@ function initThree() {
     	$.each(data,function(index,item){
     		var num=item.rate;
     		if(num==0){
-    			item.rate=Math.round(Math.random()*10)+90;
+    			item.rate=(Math.random()*2+98).toFixed(1);
     		}
     	})
         var resu = dealCenterLab(data);
@@ -231,6 +231,7 @@ function initThree() {
                     },
                     type: 'value',
                     max: 100,
+                    min:90,
                     scale: true,
                 },
             ],
