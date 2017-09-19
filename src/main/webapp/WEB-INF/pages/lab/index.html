@@ -40,10 +40,11 @@
 <script>
 //点击鼠标的声音
 $(function(){
-	$("*").click(function(){
+	$("*").click(function(e){
 		console.log($("#clickSounds")[0]);
 		//$("#clickSounds")[0].pause();
 		$("#clickSounds")[0].play();
+        e.stopPropagation();//阻止冒泡
 	})
 })
 
