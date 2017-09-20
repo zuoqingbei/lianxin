@@ -12,19 +12,21 @@ var timeId = null;
 
 //使提示框和其中文字大小随屏幕自动伸缩
 function tipResize() {
-    $("head").append("<style>"+
+    $("head").append("<style>" +
         "      .echart_tip_arrow > .echart_tip_line {" +
-        "        height: "+3*bodyScale+"em;" +
-        "        top: "+(-4*bodyScale)+"em;" +
+        "        height: " + 3.1 * bodyScale + "em;" +
+        "        top: " + (-4 * bodyScale) + "em;" +
         "    }\n" +
         "    .dialog_title {\n" +
-        "        font-size: "+bodyScale+"em;\n" +
+        "        font-size: " + bodyScale + "em;\n" +
         "    }"
-    +"</style>")
+        + "</style>")
 }
+
 $(function () {
     tipResize()
 });
+
 function getGeoArr(data) {
     var geo = {};
     for (var i = 0; i < data.length; i++) {
@@ -69,29 +71,29 @@ function createArrData(productCode, labType) {
                 //            borderColor: 'rgba(31,120,214,1)',
                 // params : 数组内容同模板变量，
                 formatter: function (param) {
-                    // console.log("------------------param:",param.name)
-                    var CountryName = param.name;
-                    var $l3x3 = $("#l", parent.document);
-                    $("#r,.labMain_content", parent.document).hide().siblings(".labMain_content_country").show();
-                    // $l3x3.parent().find(".labMain_content").hide();
-                    $l3x3.find(".legend-bottom li").removeClass('active');
-                    parent.bgImgOff($l3x3.find(".legend-bottom li"));
-                    // $l3x3.parent().find(".labMain_content_country").show();
-                    console.log("show",CountryName);
-                    switch (CountryName) {
+                    // console.log("------------------param:",param)
+                    /*                    var CountryName = param.name;
+                                        var $l3x3 = $("#l", parent.document);
+                                        $l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
+                                        $l3x3.find(".legend-bottom li").removeClass('active');
+                                        parent.bgImgOff($l3x3.find(".legend-bottom li"));
+                                        console.log("show",CountryName);
 
-                        case '日本研发中心':
-                            window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-                            break;
-                        case '新西兰研发中心':
-                            window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
-                            break;
-                        case '泰国模块中心':
-                            window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-                            break;
-                        default:
-                        console.log("暂无该国家实验室信息")
-                    }
+                                        switch (CountryName) {
+
+                                            case '日本研发中心':
+                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
+                                                break;
+                                            case '新西兰研发中心':
+                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
+                                                break;
+                                            case '泰国模块中心':
+                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
+                                                break;
+                                            default:
+                                            console.log("暂无该国家实验室信息")
+                                        }
+                    */
                     //在这里是第一步
                     $elList = [];
                     //提示框的内容清空
@@ -255,30 +257,59 @@ var myFlatMap = echarts.init($('.mapFlat')[0]);
 //调用父页面 获取数据
 //window.parent.selectActLi();
 
-// 处理点击事件打印国家名
-myFlatMap.on('click', function (params) {
+// 处理点击事件打印国家名,这种写法有bug，即提示出来后那个圈圈就把可点击的国家位置堵在后面了，所以要给圈圈加点击事件。
+/*myFlatMap.on('click', function (params) {
     var CountryName = params.name;
-    var a = $("#l", parent.document);
-    a.parent().find(".labMain_content").hide();
+    var $l3x3 = $("#l", parent.document);
+    $l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
+    $l3x3.find(".legend-bottom li").removeClass('active');
+    parent.bgImgOff($l3x3.find(".legend-bottom li"));
+    // console.log("点击",CountryName);
     switch (CountryName) {
         case 'Japan':
-            a.siblings("#r").hide();
-            a.parent().find(".labMain_content_country").show();
+            // a.siblings("#r").hide();
+            // a.parent().find(".labMain_content_country").show();
             window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
             break;
         case 'New Zealand':
-            a.siblings("#r").hide();
-            a.parent().find(".labMain_content_country").show();
+            // a.siblings("#r").hide();
+            // a.parent().find(".labMain_content_country").show();
             window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
             break;
         case 'Thailand':
-            a.siblings("#r").hide();
-            a.parent().find(".labMain_content_country").show();
+            // a.siblings("#r").hide();
+            // a.parent().find(".labMain_content_country").show();
             window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
             break;
         default:
+            console.log("暂无该国家实验室信息")
     }
-});
+});*/
+
+/*平面地图上点击各个国家的点，右侧切换到对应的实验室页面*/
+var $l3x3 = $("#l", parent.document);
+$("#echartTips").on("click", ".echart_tip_head", function () {
+    // var CountryName = $(this).parent().prev().find("a>span").text();
+    var CountryName = $(this).parent().prev().find("a").attr("data-country");
+    $l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
+    $l3x3.find(".legend-bottom li").removeClass('active');
+    parent.bgImgOff($l3x3.find(".legend-bottom li"));
+
+    switch (CountryName) {
+        case ('日本'):
+            window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
+            break;
+        case ('新西兰'):
+            window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
+            break;
+        case ('泰国'):
+            window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
+            break;
+        default:
+            console.log("暂无该国家实验室信息")
+    }
+    console.log("国家名:",CountryName)
+})
 
 var showTopicIndex = 0;
 /**
@@ -433,7 +464,7 @@ function getTopicHtml(currentPoint) {
     if (currentPoint.name) {
         city = currentPoint.name;
     }
-
+    var country = currentPoint.country;
     var value = currentPoint.value;
     var time = currentPoint.dateTime;
     var title = currentPoint.title;
@@ -444,8 +475,7 @@ function getTopicHtml(currentPoint) {
     }*/
     return $('<div class="echart_tip">' +
         '<div class="dialog_title echart_content">' +
-        '<a title="' + title + '"  href="#" target="_blank" >' +
-        // '<span style="color:#ffffff;font-size:1.6em;text-shadow:0.15em 0.15em 0.15em rgba(0,0,0,0.9);">' + title + '</span>' +
+        '<a title="' + title + '" data-country="' + country + '"  href="#" target="_blank" >' +
         '<span style="">' + title + '</span>' +
         '</a>实验室数量：' + value +
         '</div>' +

@@ -35,35 +35,29 @@ body{
 }
 
 .echart_tip > .echart_content{ /*所有提示框内的文本*/
-    /*font-size:2em;*/
     color:#ffffff;
-    /*text-shadow:0.15em 0.15em 0.15em rgba(0,0,0,0.9);*/
     background-color: rgba(0,0,0,.6);
-}
-.echart_tip.bottom > .dialog_title.echart_content {
-    top: auto;
-    bottom: -3.4em;
     padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
-
-.echart_tip.left.top > .echart_content { /*左上*/
+.echart_tip.bottom >.echart_content {
+    bottom: -3.4em;
+}
+.echart_tip.top >.echart_content {
     bottom: 3.3em;
+}
+.echart_tip.left.top > .echart_content { /*左上*/
     right: 2.05em;
 }
 .echart_tip.left.top > .echart_tip_arrow {
     transform: rotate(-32deg);
 }
-/*
-
-.echart_tip.right.top > .echart_content { !*右上*!
-    bottom: 3.3em;
+.echart_tip.right.top > .echart_content { /*右上*/
     left: -2.05em;
 }
-
 .echart_tip.right.top > .echart_tip_arrow {
     transform: rotate(32deg);
 }
-*/
 .echart_tip.left.bottom > .echart_content { /*左下*/
     right: 2.15em;
 }
@@ -144,10 +138,8 @@ body{
 }
 
 .echart_tip_arrow > .echart_tip_line {
-    /*height: 7em;*/
     left: 0;
-    /*top: -8em;*/
-    border-left: 0.25em solid #fff;
+    border-left: 0.15em solid #fff;
     position: absolute;
 }
 
