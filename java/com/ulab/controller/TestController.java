@@ -11,6 +11,10 @@ import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
+import com.ulab.core.Constants;
+import com.ulab.model.HadoopSensorInfo;
+import com.ulab.model.HadoopSensorTypeInfo;
+import com.ulab.model.HadoopTestUnitInfo;
 import com.ulab.model.LabModel;
 import com.ulab.model.Line;
 import com.ulab.model.SensorTypeDto;
@@ -145,6 +149,19 @@ public class TestController extends BaseController {
     	BrowseUtil.openURL("http://10.130.96.27/doc/page/login.asp?_1493774940116");
     	renderText("");
     }
+    
+    public void testUnitInfo(){
+    	String configName=getPara("configName",Constants.CONFIGNAME_THAILAND);
+    	List<Record> l=HadoopSensorInfo.dao.findByTestIdentification(configName,"TGBXA_1040");
+    	List<Record> testUnitList=HadoopTestUnitInfo.dao.findAllLab(configName);
+    	renderJson(testUnitList);
+    }
+    public void sensorTypeInfo(){
+    	String configName=getPara("configName",Constants.CONFIGNAME_THAILAND);
+    	String labCode=getPara("labTypeCode","TGBXA");
+    	renderJson(HadoopSensorTypeInfo.dao.findSensorTypeInfoByLabCode(configName, labCode));
+    }
+    
     public static void main(String[] args) {
     	String path="D://unit.json";
     	System.out.println(JsonUtils.readJson(path));

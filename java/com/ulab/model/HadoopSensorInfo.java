@@ -9,7 +9,7 @@ import com.ulab.core.Constants;
  * 
  * @time   2017年9月16日 下午5:00:58
  * @author zuoqb
- * @todo   传感器信息
+ * @todo   传感器信息（传感器用于生成测试数据）
  */
 public class HadoopSensorInfo {
 	public static final HadoopSensorInfo dao = new HadoopSensorInfo();
