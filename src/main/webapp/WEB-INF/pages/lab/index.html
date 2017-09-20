@@ -40,12 +40,13 @@
 <script>
 //点击鼠标的声音
 $(function(){
-	$("*").click(function(e){
-		console.log($("#clickSounds")[0]);
-		//$("#clickSounds")[0].pause();
+	$("div,a,img").click(function(e){
+	    //这里可能产生点击冒泡，但不能直接阻止，因为会造成某些点击事件的失效。
+//		console.log($("#clickSounds")[0]);
 		$("#clickSounds")[0].play();
-        e.stopPropagation();//阻止冒泡
+//        e.stopPropagation();//阻止冒泡
 	})
+
 })
 
     $(function () {

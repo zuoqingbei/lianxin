@@ -71,30 +71,26 @@ function createArrData(productCode, labType) {
                 formatter: function (param) {
                     // console.log("------------------param:",param.name)
                     var CountryName = param.name;
-                    var a = $("#l", parent.document);
-                    a.parent().find(".labMain_content").hide();
-                    a.find(".legend-bottom li").removeClass('active')
+                    var $l3x3 = $("#l", parent.document);
+                    $("#r,.labMain_content", parent.document).hide().siblings(".labMain_content_country").show();
+                    // $l3x3.parent().find(".labMain_content").hide();
+                    $l3x3.find(".legend-bottom li").removeClass('active');
+                    parent.bgImgOff($l3x3.find(".legend-bottom li"));
+                    // $l3x3.parent().find(".labMain_content_country").show();
+                    console.log("show",CountryName);
                     switch (CountryName) {
+
                         case '日本研发中心':
-                            a.siblings("#r").hide();
-                            // a.parent().find(".labMain_content").hide();
-                            a.parent().find(".labMain_content_country").show();
                             window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
                             break;
                         case '新西兰研发中心':
-                            a.siblings("#r").hide();
-                            // a.parent().find(".labMain_content").hide();
-                            a.parent().find(".labMain_content_country").show();
                             window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
                             break;
                         case '泰国模块中心':
-                            a.siblings("#r").hide();
-                            // a.parent().find(".labMain_content").hide();
-                            a.parent().find(".labMain_content_country").show();
                             window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
                             break;
                         default:
-                        // alert("暂无该国家实验室信息")
+                        console.log("暂无该国家实验室信息")
                     }
                     //在这里是第一步
                     $elList = [];
@@ -483,7 +479,7 @@ function fadeOutElList() {
  * 渐入 elList
  */
 function fadeInElList($list) {
-    console.log("---fadeInElList")
+    // console.log("---fadeInElList")
     $.each($list, function (i, $el) {
         $el.off('transitionend');
         $el.removeClass('fade_out').addClass('fade_in');

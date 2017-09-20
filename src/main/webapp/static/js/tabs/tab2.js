@@ -693,8 +693,8 @@ function standardStatus() {
                 color: '#ff9933'
             },
             tooltip: {
-                show: true,
-                formatter: "{a} <br/>{b} : {c} ({d}%)",
+                show: false,
+                // formatter: "{a} <br/>{b} : {c} ({d}%)",
                 textStyle: {
                     fontSize: 10 * bodyScale,
                 }

@@ -202,11 +202,8 @@ function worldTyleEchart(data){
             color: '#6cf',
             fontSize: "60%"
         },
-        grid: {
-//	            show:true,
-//	         x: "25%",
-//	         x2: "15%",
-//	         y2: "12%"
+        tooltip: {
+            show: false
         },
         series: [
             {

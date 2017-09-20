@@ -686,7 +686,9 @@ function communistGravityStatisticForTab4Ajax() {
                 color: '#6cf',
                 fontSize: "60%"
             },
-
+            tooltip: {
+                show: false
+            },
             series: [
                 {
                     type: 'pie',

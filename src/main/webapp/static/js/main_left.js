@@ -121,21 +121,12 @@ var selectAllBtn = $(".l").find(".legend .selectAll label");
 //导航栏中的全选
 function navSelectAll() {
     selectAllBtn.click(function () {
-        // var bgImg = $(this).find("span").css("background-image");
         var $actLi = $(this).parents(".l").find(".legend .labLine ul.current").find("li");
-/*        if ($(this).next("input[type=checkbox]").is(":checked")) {
-            $(this).css("color", "#999");
-            bgImgOff($(this));
-            $actLi.removeClass("active").each(function () {
-                bgImgOff($(this))
-            })
-        } else {*/
-            $(this).css("color", "#6cf");
-            bgImgOn($(this));
-            $actLi.addClass("active").each(function () {
-                bgImgOn($(this))
-            });
-        // }
+        $(this).css("color", "#6cf");
+        bgImgOn($(this));
+        $actLi.addClass("active").each(function () {
+            bgImgOn($(this))
+        });
         selectActLi($(this));
     })
 }

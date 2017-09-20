@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>the5fire m3u8 test</title>
+    <title>视频监控测试页</title>
     <script src="../static/test/swfobject.js"></script>
     <script src="../static/asserts/js/jquery-2.2.4.js"></script>
 </head>
@@ -9,9 +9,12 @@
 <div id="player">
 </div>
 <br>
-<button id="local">人脸识别摄像机</button>
-<button id="zhonghaiborui">中海博瑞</button>
-<button id="taiguo">泰国</button>
+<button id="local">本地摄像机</button>
+<button id="zhonghaiborui">中海博瑞-室外北侧</button>
+<button id="taiguo">泰国RF-B</button>
+<button id="taiguo2">泰国IPdome</button>
+<button id="hkstv">香港hkstv测试</button>
+<button id="cctv">cctv测试</button>
 <script>
 
     var flashvars = {
@@ -22,7 +25,8 @@
         // url to OSMF HLS Plugin         
         //plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
         plugin_m3u8: "../static/test/HLSProviderOSMF.swf",
-        autoPlay : "true"
+        autoPlay : "true",
+        autoSwitchQuality : "true",
     };
     var params = {
         // self-explained parameters
@@ -57,7 +61,7 @@ function loadSwf() {
         // width, height
         "800", "485",
         // minimum flash player version required
-        "10.2",
+        "10.4",
         // other parameters
         null,
         flashvars,
@@ -118,6 +122,18 @@ function loadSwf() {
     });
     $("#taiguo").click(function () {
         flashvars.src = "http://192.168.1.168:6713/mag/hls/b055403a5a464b69bebc4b670bfdff60/1/live.m3u8";
+        loadSwf();
+    });
+    $("#taiguo2").click(function () {
+        flashvars.src = "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8";
+        loadSwf();
+    });
+    $("#hkstv").click(function () {
+        flashvars.src = "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8";
+        loadSwf();
+    });
+    $("#cctv").click(function () {
+        flashvars.src = "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8";
         loadSwf();
     });
 
