@@ -14,6 +14,7 @@ import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 import com.ulab.model.HadoopSensorInfo;
 import com.ulab.model.HadoopSensorTypeInfo;
+import com.ulab.model.HadoopTestData;
 import com.ulab.model.HadoopTestUnitInfo;
 import com.ulab.model.LabModel;
 import com.ulab.model.Line;
@@ -152,7 +153,7 @@ public class TestController extends BaseController {
     
     public void testUnitInfo(){
     	String configName=getPara("configName",Constants.CONFIGNAME_THAILAND);
-    	List<Record> l=HadoopSensorInfo.dao.findByTestIdentification(configName,"TGBXA_1040");
+    	List<Record> l=HadoopSensorInfo.dao.findSensorInfoByTestIdentification(configName,"TGBXA_1040");
     	List<Record> testUnitList=HadoopTestUnitInfo.dao.findAllLab(configName);
     	renderJson(testUnitList);
     }
@@ -161,7 +162,14 @@ public class TestController extends BaseController {
     	String labCode=getPara("labTypeCode","TGBXA");
     	renderJson(HadoopSensorTypeInfo.dao.findSensorTypeInfoByLabCode(configName, labCode));
     }
-    
+    public void testData(){
+    	String configName=getPara("configName",Constants.CONFIGNAME_THAILAND);
+    	String labCode=getPara("labTypeCode","TGBXA");
+    	String testUnitId=getPara("testUnitId","1");
+    	String startTime=getPara("startTime");
+    	String interval=getPara("interval","3");
+    	renderJson(HadoopTestData.dao.findTestData(configName, labCode, testUnitId,startTime,Float.parseFloat(interval)));
+    }
     public static void main(String[] args) {
     	String path="D://unit.json";
     	System.out.println(JsonUtils.readJson(path));

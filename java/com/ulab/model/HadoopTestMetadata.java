@@ -29,4 +29,25 @@ public class HadoopTestMetadata {
 		String sql="select * from "+tableName+"  where testunitid='"+testUnitid+"' and  labcode='"+labCode+"' order by createdate desc  ";
 		return Db.use(configName).find(sql);
 	}
+	
+	/**
+	 * 
+	 * @time   2017年9月20日 上午11:17:52
+	 * @author zuoqb
+	 * @todo   根据实验室以及测试单元编码获取最后一次测试信息
+	 * @param  @param configName
+	 * @param  @param labCode
+	 * @param  @param testUnitid
+	 * @param  @return
+	 * @return_type   List<Record>
+	 */
+	public Record findLastTestMetadata(String configName,String labCode,String testUnitId){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.TESTMETADATA);
+		String sql="select * from "+tableName+"  where testunitid='"+testUnitId+"' and  labcode='"+labCode+"' order by createdate desc  ";
+		List<Record> data=Db.use(configName).find(sql);
+		if(data!=null&&data.size()>0){
+			return data.get(0);
+		}
+		return null;
+	}
 }

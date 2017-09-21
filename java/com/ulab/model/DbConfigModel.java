@@ -53,8 +53,7 @@ public class DbConfigModel extends Model<DbConfigModel> {
 	 * @return_type   String
 	 */
 	public String getTableNameByColumn(String configName,String columnName){
-		String sql="select * from t_b_db_config where config_name='"+configName+"'";
-		Record config=Db.findFirst(sql);
+		Record config=getConfigDetail(configName);
 		if(config!=null){
 			return config.getStr(columnName)==null?null:config.getStr(columnName).toLowerCase();
 		}

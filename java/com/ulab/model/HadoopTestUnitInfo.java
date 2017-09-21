@@ -45,7 +45,7 @@ public class HadoopTestUnitInfo {
 	public List<Record> findTestUnitListByLabCode(String configName,String labCode){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.TESTUNITINFO);
 		String sql=" ";
-		sql+=" select t.labcode,t.testunitid,t.testunitname,t.englishname,m.isTesting ";
+		sql+=" select t.labcode,t.testunitid,t.testunitname,t.englishname,m.isTesting,m.testIdentification ";
 		sql+=" from "+tableName+" t   ";
 		sql+=" left join (select t1.* from tb_testmetadata t1 inner join(select labcode,max(createdate) as createdate,testunitid ";
 		sql+=" from tb_testmetadata where  labcode='"+labCode+"' ";

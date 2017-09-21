@@ -2,7 +2,6 @@
 package com.ulab.core;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
@@ -32,8 +31,17 @@ import com.ulab.util.StringKit;
 import com.ulab.util.TypeConverter;
 
 public class BaseController extends Controller {
+	private static BaseController instance;
 
-	
+	public BaseController() {
+	};
+
+	public static BaseController getInstance() {
+		if (instance == null) {
+			instance = new BaseController();
+		}
+		return instance;
+	}
 	public String getParasUrl() {
 		String parasUrl = null;
 		if (getParaMap() != null && getParaMap().size() > 0) {
