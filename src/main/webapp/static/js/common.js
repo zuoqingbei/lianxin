@@ -42,7 +42,8 @@ function jsonToArray(data){
 	        id: '1',
 	        url: '',
 	        name: '青岛研发中心',
-	        value: 168
+	        value: 168,
+            country:"中国"
 	    }
 	d.push(p);
 	for(var x=0;x<data.length;x++){
@@ -56,7 +57,9 @@ function jsonToArray(data){
 	        id: '1',
 	        url: '',
 	        name: obj.name,
-	        value: obj.num
+	        value: obj.num,
+			country:obj.country
+
 	    }
 		d.push(e);
 	}
