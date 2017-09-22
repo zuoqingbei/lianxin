@@ -153,14 +153,13 @@ public class TestController extends BaseController {
     
     public void testUnitInfo(){
     	String configName=getPara("configName",Constants.CONFIGNAME_THAILAND);
-    	List<Record> l=HadoopSensorInfo.dao.findSensorInfoByTestIdentification(configName,"TGBXA_1040");
-    	List<Record> testUnitList=HadoopTestUnitInfo.dao.findAllLab(configName);
+    	List<Record> testUnitList=HadoopTestUnitInfo.dao.findAllLab(this,configName);
     	renderJson(testUnitList);
     }
     public void sensorTypeInfo(){
     	String configName=getPara("configName",Constants.CONFIGNAME_THAILAND);
     	String labCode=getPara("labTypeCode","TGBXA");
-    	renderJson(HadoopSensorTypeInfo.dao.findSensorTypeInfoByLabCode(configName, labCode));
+    	renderJson(HadoopSensorTypeInfo.dao.findSensorTypeInfoByLabCode(this,configName, labCode));
     }
     public void testData(){
     	String configName=getPara("configName",Constants.CONFIGNAME_THAILAND);
@@ -168,7 +167,7 @@ public class TestController extends BaseController {
     	String testUnitId=getPara("testUnitId","1");
     	String startTime=getPara("startTime");
     	String interval=getPara("interval","3");
-    	renderJson(HadoopTestData.dao.findTestData(configName, labCode, testUnitId,startTime,Float.parseFloat(interval)));
+    	renderJson(HadoopTestData.dao.findTestData(this,configName, labCode, testUnitId,startTime,Float.parseFloat(interval)));
     }
     public static void main(String[] args) {
     	String path="D://unit.json";

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 /**
  * 
@@ -24,8 +25,8 @@ public class HadoopTestMetadata {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public List<Record> findTestMetadata(String configName,String labCode,String testUnitid){
-		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.TESTMETADATA);
+	public List<Record> findTestMetadata(BaseController c,String configName,String labCode,String testUnitid){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTMETADATA);
 		String sql="select * from "+tableName+"  where testunitid='"+testUnitid+"' and  labcode='"+labCode+"' order by createdate desc  ";
 		return Db.use(configName).find(sql);
 	}
@@ -41,8 +42,8 @@ public class HadoopTestMetadata {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public Record findLastTestMetadata(String configName,String labCode,String testUnitId){
-		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.TESTMETADATA);
+	public Record findLastTestMetadata(BaseController c,String configName,String labCode,String testUnitId){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTMETADATA);
 		String sql="select * from "+tableName+"  where testunitid='"+testUnitId+"' and  labcode='"+labCode+"' order by createdate desc  ";
 		List<Record> data=Db.use(configName).find(sql);
 		if(data!=null&&data.size()>0){

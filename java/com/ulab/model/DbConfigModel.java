@@ -7,6 +7,7 @@ import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
+import com.ulab.core.BaseController;
 /**
  * 
  * @time   2017年9月16日 下午4:52:34
@@ -52,8 +53,12 @@ public class DbConfigModel extends Model<DbConfigModel> {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public String getTableNameByColumn(String configName,String columnName){
-		Record config=getConfigDetail(configName);
+	public String getTableNameByColumn(BaseController c,String configName,String columnName){
+		Record config=c.getSessionAttr("config_db_"+configName);
+		if(config==null){
+			config=getConfigDetail(configName);
+			c.setSessionAttr("config_db_"+configName, config);
+		}
 		if(config!=null){
 			return config.getStr(columnName)==null?null:config.getStr(columnName).toLowerCase();
 		}

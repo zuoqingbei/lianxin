@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 /**
  * 
@@ -24,12 +25,12 @@ public class HadoopTestUnitInfo {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public List<Record> findAllLab(String configName){
-		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.TESTUNITINFO);
+	public List<Record> findAllLab(BaseController c,String configName){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTUNITINFO);
 		String sql="select distinct labcode from "+tableName+"  order by labcode  ";
 		List<Record> labList=Db.use(configName).find(sql);
 		for(Record lab:labList){
-			lab.set("testUnitList", findTestUnitListByLabCode(configName, lab.getStr("labCode")));
+			lab.set("testunitlist", findTestUnitListByLabCode(c,configName, lab.getStr("labCode")));
 		}
 		return labList;
 	}
@@ -42,8 +43,8 @@ public class HadoopTestUnitInfo {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public List<Record> findTestUnitListByLabCode(String configName,String labCode){
-		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.TESTUNITINFO);
+	public List<Record> findTestUnitListByLabCode(BaseController c,String configName,String labCode){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTUNITINFO);
 		String sql=" ";
 		sql+=" select t.labcode,t.testunitid,t.testunitname,t.englishname,m.isTesting,m.testIdentification ";
 		sql+=" from "+tableName+" t   ";
@@ -55,11 +56,11 @@ public class HadoopTestUnitInfo {
 		List<Record> testUnitList=Db.use(configName).find(sql);
 		//查询该台位目前测试状态isTesting 用来标识实验是否进行当中，正在测试取值为1，反之为0
 		for(Record unit:testUnitList){
-			if(unit.get("isTesting")!=null&&StringUtils.isNotBlank(unit.get("isTesting")+"")&&unit.getBoolean("isTesting")){
-				unit.set("testUnitStatus", "在测");
+			if(unit.get("istesting")!=null&&StringUtils.isNotBlank(unit.get("istesting")+"")&&unit.getBoolean("istesting")){
+				unit.set("testunitstatus", "在测");
 			}else{
-				unit.set("testUnitStatus", "停测");
-				unit.set("isTesting",false);
+				unit.set("testunitstatus", "停测");
+				unit.set("istesting",false);
 			}
 		}
 		return testUnitList;

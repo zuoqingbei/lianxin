@@ -1,5 +1,6 @@
 package com.ulab.model;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 /**
  * 
@@ -32,8 +34,8 @@ public class HadoopTestData {
 	 * @return_type   List<Record>
 	 */
 	@Deprecated
-	public List<Record> findDataByTestIdentification(String configName,String testIdentification,Float startHowLong,Float endHowLong){
-		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.TESTDATA);
+	public List<Record> findDataByTestIdentification(BaseController c,String configName,String testIdentification,Float startHowLong,Float endHowLong){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTDATA);
 		String sql="select * from "+tableName+" where testIdentification='"+testIdentification+"'  ";
 		if(startHowLong!=null){
 			sql+=" and howlong > "+startHowLong;
@@ -56,11 +58,11 @@ public class HadoopTestData {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public List<Record> findDataByTestIdentification(String configName,String testIdentification,Float startHowLong,Float endHowLong,List<Record> sensorInfoList){
-		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.TESTDATA);
+	public List<Record> findDataByTestIdentification(BaseController c,String configName,String testIdentification,Float startHowLong,Float endHowLong,List<Record> sensorInfoList){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTDATA);
 		String sql="select howlong  ";
 		for(Record sInfo:sensorInfoList ){
-			sql+=" , sensorValue_"+sInfo.get("sensorid");
+			sql+=" , sensorvalue_"+sInfo.get("sensorid");
 		}
 		sql+=" from "+tableName+" where testIdentification='"+testIdentification+"'  ";
 		if(startHowLong!=null){
@@ -84,30 +86,78 @@ public class HadoopTestData {
 	 * @param  @return
 	 * @return_type   Record
 	 */
-	public Record findTestData(String configName,String labCode,String testUnitId,String startTime,Float interval){
+	public Record findTestData(BaseController c,String configName,String labCode,String testUnitId,String startTime,Float interval){
 		Record finalTestData=new Record();
-		Record metaData=HadoopTestMetadata.dao.findLastTestMetadata(configName, labCode, testUnitId);
+		Record metaData=HadoopTestMetadata.dao.findLastTestMetadata(c,configName, labCode, testUnitId);
+		String testIdentification=metaData.getStr("testIdentification");//实验编号
 		//获取当前台位实时曲线
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date testBeginTime = null;//开始测试时间
 		Date now = new Date();
+		long distance =0;
 		if(metaData!=null){
 			try {
-				testBeginTime = sdf.parse(metaData.get("testBeginTime")+"");
+				testBeginTime = sdf.parse(metaData.get("testbegintime")+"");//开始测试时间
+				System.out.println("testBeginTime="+sdf.format(testBeginTime));
+				Double maxHowLong=getMaxHowLong(c,configName, testIdentification);//目前测试数据中最大时间
+				System.out.println("maxHowLong="+maxHowLong);
+				Date realEndDate=new Date(testBeginTime.getTime()+ Math.round(maxHowLong)*60*1000);//实际结算时间
+				System.out.println("realEndDate="+sdf.format(realEndDate));
+				distance=CalculateTime(sdf.format(realEndDate));//实际结算时间一当前时间间隔
+				System.out.println("realEndDate="+distance);
 				if(StringUtils.isNotBlank(startTime)){
 					now=sdf.parse(startTime);
 				}
+				now=new Date(now.getTime()- distance*60*1000);//进行时间平移 保证有数据
+				System.out.println("now="+sdf.format(now));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		
 		
-		float f2 = (now.getTime() - testBeginTime.getTime())/3600000f;//已经测试时长
+		float f2 = (now.getTime() - testBeginTime.getTime())/60000f;//已经测试时长 分钟
 		float startHowLong = f2 - interval> 0 ? f2-interval : 0;
 		float endHowLong=startHowLong+interval;
-		joinTestData(configName, startHowLong, endHowLong, finalTestData, metaData);
+		joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData);
 		return finalTestData;
+	}
+	/** 
+	 * 由过去的某一时间,计算距离当前的时间 
+	 * */
+	public long CalculateTime(String time) {
+		long nowTime = System.currentTimeMillis(); //获取当前时间的毫秒数  
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//指定时间格式  
+		Date setTime = null; //指定时间  
+		try {
+			setTime = sdf.parse(time); //将字符串转换为指定的时间格式  
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		}
+
+		long reset = setTime.getTime(); //获取指定时间的毫秒数  
+		long dateDiff = nowTime - reset;
+
+		if (dateDiff < 0) {
+			return 0;
+		} else {
+
+			long dateTemp1 = dateDiff / 1000; //秒  
+			long dateTemp2 = dateTemp1 / 60; //分钟  
+			return dateTemp2;
+		}
+
+	}
+
+	public Double getMaxHowLong(BaseController c,String configName,String testIdentification){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTDATA);
+		String sql=" select	max(howlong) as  howlong from "+tableName+" where testIdentification = '"+testIdentification+"' ";
+		Record r=Db.use(configName).findFirst(sql);
+		if(r!=null){
+			return Double.parseDouble(r.get("howlong")+"");
+		}
+		return null;
 	}
 	/**
 	 * 
@@ -122,14 +172,14 @@ public class HadoopTestData {
 	 * @param  @return
 	 * @return_type   Record
 	 */
-	public Record findTestData(String configName,String labCode,String testUnitId,Float startHowLong,Float endHowLong){
+	public Record findTestData(BaseController c,String configName,String labCode,String testUnitId,Float startHowLong,Float endHowLong){
 		Record finalTestData=new Record();
 		//step1 查询测试基础信息 根据实验室以及测试单元编码获取最后一次测试信息
-		Record metaData=HadoopTestMetadata.dao.findLastTestMetadata(configName, labCode, testUnitId);
-		joinTestData(configName, startHowLong, endHowLong, finalTestData, metaData);
+		Record metaData=HadoopTestMetadata.dao.findLastTestMetadata(c,configName, labCode, testUnitId);
+		joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData);
 		return finalTestData;
 	}
-	private void joinTestData(String configName, Float startHowLong, Float endHowLong, Record finalTestData,
+	private void joinTestData(BaseController c,String configName, Float startHowLong, Float endHowLong, Record finalTestData,
 			Record metaData) {
 		if(metaData!=null){
 			/**
@@ -141,12 +191,12 @@ public class HadoopTestData {
 			String testIdentification=metaData.getStr("testIdentification");//实验编号
 			finalTestData.set("sybh",testIdentification);
 			finalTestData.set("ybbh", metaData.get("sample_code"));
-			finalTestData.set("cpxh", metaData.get("ProductModel"));
-			finalTestData.set("testUnitStatus", metaData.get("testItemName"));
+			finalTestData.set("cpxh", metaData.get("productmodel"));
+			finalTestData.set("testunitstatus", metaData.get("testitemname"));
 			//step2 :查询传感器信息
-			List<Record> sensorInfoList=HadoopSensorInfo.dao.findSensorInfoByTestIdentification(configName, testIdentification);
+			List<Record> sensorInfoList=HadoopSensorInfo.dao.findSensorInfoByTestIdentification(c,configName, testIdentification);
 			//step3 查询具体数据
-			List<Record> allTestData=findDataByTestIdentification(configName, testIdentification, startHowLong, endHowLong,sensorInfoList);
+			List<Record> allTestData=findDataByTestIdentification(c,configName, testIdentification, startHowLong, endHowLong,sensorInfoList);
 			//step3 拼接结构 
 			/**
 			 *  {	name:'1:温度(℃)',
@@ -162,7 +212,7 @@ public class HadoopTestData {
 				List<Record> data=new ArrayList<Record>();
 				for(Record testData:allTestData){
 					Record innerData=new Record();
-					innerData.set("name", testData.get("howlong"));
+					innerData.set("name", Float.parseFloat(testData.get("howlong")+"")/60);
 					//传感器数据，跟sensorinfo中的sensorId对应
 					innerData.set("value", testData.get("sensorValue_"+sensorInfo.get("sensorid")));
 					data.add(innerData);
@@ -173,10 +223,10 @@ public class HadoopTestData {
 			finalTestData.set("list", dataList);
 		}
 	}
-	public Record findTestData(String configName,String labCode,String testUnitId,Float endHowLong){
-		return this.findTestData(configName, labCode, testUnitId, "", endHowLong);
+	public Record findTestData(BaseController c,String configName,String labCode,String testUnitId,Float endHowLong){
+		return this.findTestData(c,configName, labCode, testUnitId, "", endHowLong);
 	}
-	public Record findTestData(String configName,String labCode,String testUnitId){
-		return this.findTestData(configName, labCode, testUnitId, null);
+	public Record findTestData(BaseController c,String configName,String labCode,String testUnitId){
+		return this.findTestData(c,configName, labCode, testUnitId, null);
 	}
 }

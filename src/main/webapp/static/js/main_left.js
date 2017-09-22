@@ -200,6 +200,13 @@ function navSelectA() {//这里会触发地图中要加载的数据
             $(".labMain_content_country").hide()
             $(".labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show").hide()
         }
+        if($(this).text().trim() ==="冰冷"){
+        	var $l3x3 = $("#l");
+        	$l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
+            $l3x3.find(".legend-bottom li").removeClass('active');
+            bgImgOff($l3x3.find(".legend-bottom li"));
+            loadLabUnitInfoCenterTabAjaxWorldHadoop(1,"thailand");
+        }
     })
 }
 //地球右上角区域的数字样式

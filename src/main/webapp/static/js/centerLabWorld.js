@@ -93,7 +93,7 @@ var totalLegendNameWorld = [];//图例全称 包含单位 ['1:频率(Hz)','2:M1(
 var interval_count1World = 0;
 var interval_count2World = 0;
 var mockxDataWorld = [];//模拟的x轴数据
-
+var intevalChartHadoop;
 
 //实验室文本信息
 var labInfos = [];
@@ -107,6 +107,243 @@ var labImgs = ["../static/img/labMain/Japan.jpg", "../static/img/labMain/Thailan
 //'#labnameIcon'  实验室标题名按钮
 //'#secondName'  实验室名小标题
 var labname = ["日本研发中心", "泰国工业园数据中心", "新西兰研发中心"];
+var configName;
+var startTime;
+//加载实验室与台位对照关系 生刷选框
+function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName) {
+	configName=mConfigName;
+	//清除中海博睿定时器
+	window.clearInterval(intevalChart1);
+	window.clearInterval(intevalChartHadoop);
+    $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
+    $(".labMain_cblt_ttwo_world img").attr("src", labImgs[type]);
+    $("#labName_world").html(labname[type]);
+    $("#labnameIcon_world").html(labname[type]);
+    $("#secondName_world").html(labname[type]);
+    //生成下拉
+	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName},function(data){
+		var htmls="";
+		$.each(data,function(index,item){
+			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labcode+'</a>';
+			if(item.testunitlist.length>0){
+				htmls+='<ul class="taiwei_hide">';
+				$.each(item.testunitlist,function(ind,it){
+					htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+item.labcode+'\",\"'+it.testunitid+'\")>台位：'+it.testunitname+'  ('+it.testunitstatus+')</li>';
+				});
+				htmls+='</ul>';
+			}
+			htmls+=' </li>';
+			if(index==1){
+				findSensorTypeInfoHadoop(item.labcode,item.testunitlist[index].testunitid);
+			}
+		});
+		 
+		 $("#lab_unit_selected_center_world").html(htmls);
+	    $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
+	        $(".sheshi_tab").eq(1).trigger('click');
+	        $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
+	        $(this).css('height','auto').siblings().css('height','1.5em');
+	        $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
+	        $(this).find('.taiwei_hide').css('display','block');
+	    });
+
+	    $('.taiwei_hide>li').click(function () {
+	        $(".sheshi_tab").eq(1).trigger('click');
+	        $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
+	    })
+		
+	});
+}
+//查询y轴信息
+function findSensorTypeInfoHadoop(labCode,testUnitId){
+	window.clearInterval(intevalChartHadoop);
+	$.post(contextPath+"/hadoop/sensorTypeInfo",{"configName":configName,"labCode":labCode},function(data){
+		resetDataCenterLabWorld();
+		currentDataWorld=data;
+		//console.log(data)
+		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
+		$.each(data,function(index,item){
+			if (index < 4) {
+	            topParamWorld.push(item.unit);
+	        } else if (index >= 4 && index < 8) {
+	            bottomParamWorld.push(item.unit);
+	        }
+		});
+		//获取曲线具体数据
+	    findTestDataHadoop(labCode, testUnitId);
+	});
+}
+function findTestDataHadoop(labCode, testUnitId) {
+	window.clearInterval(intevalChartHadoop);
+    mlabTypeCode = labCode;
+    mtestUnitId = testUnitId;
+    startTime=parseInt(new Date().getTime()/1000); // 当前时间戳
+    console.log(timestampFormat(startTime))
+    $.post(contextPath + "/hadoop/testData", {"configName":configName,"labCode":labCode,"startTime":timestampFormat(startTime),"testUnitId":testUnitId}, function (data) {
+        if (data == "") {
+            return;
+        }
+        myChartWorld1.clear();
+        myChartWorld2.clear();
+        $("#legend_ul_world").html('');
+        dataBase=data;
+        //根据传感器具体数据 生成图例
+        $.each(data.list, function (index, item) {
+            totalLegendNameWorld.push(item.name);
+            legendNumDataWorld.push(item.data[item.data.length - 1].value + increaseBracketForObj(item.name))
+        });
+        legendDataWorld = dealBracket(totalLegendNameWorld);
+        randomLegendWorld();
+        $("#center_sybh_id_world").html(data.sybh);
+        $("#center_ypbm_id_world").html(data.ybbh);
+        $("#center_cpxh_id_world").html(data.cpxh);
+        if(data.testunitstatus!=""&&data.testPro!=undefined){
+        	 $("#center_testPro_id_world").parent("li").css("display","inline-block");
+        	 $("#center_testPro_id_world").html(data.testunitstatus);
+        }else{
+        	 $("#center_testPro_id_world").parent("li").css("display","none");
+        }
+        //showlegendDataWorld=legendDataWorld;//默认全选
+        //console.log(showlegendDataWorld)
+        createLegendHtmlsWorld();
+        createEchartsWorld(true);
+        //因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
+		intevalChartHadoop=setInterval("intervalChangeDataHadoop()", 30000);
+    });
+}
+function intervalChangeDataHadoop() {
+	window.clearInterval(intevalChartHadoop);
+	//console.log("----intevalChart1-----------"+intevalChart1)
+	var nt=new Date();//定义一个新时间
+    nt.setTime(startTime*1000+1000*60*0.5);//设置新时间比旧时间多一分钟
+	startTime=nt.getTime()/1000;
+	console.log(timestampFormat(startTime))
+	$.post(contextPath+"/hadoop/testData",{"configName":configName,"labCode":mlabTypeCode,"testUnitId":mtestUnitId,"startTime":timestampFormat(startTime),"interval":" 0.5"},function(data){
+		intevalChartHadoop=setInterval("intervalChangeDataHadoop()", 30000);
+		dealIntervalSeriesDataWorld(data);
+		createLegendHtmlsWorld();
+		//上方处理
+		for(var i=0; i<intervalSeriesTopDataWorld.length;i++){
+			for(var x=0;x<intervalSeriesTopDataWorld[i].length;x++){
+				seriesTopDataWorld[i].data.shift();
+				seriesTopDataWorld[i].data.push(intervalSeriesTopDataWorld[i][x].value);
+			}
+		}
+		//下方处理
+		for(var i=0; i<intervalSeriesBottomDataWorld.length;i++){
+			for(var x=0;x<intervalSeriesBottomDataWorld[i].length;x++){
+				if(i==0){
+					var mIndex=isHasElementOne(xDataWorld,parseInt(parseFloat(intervalSeriesBottomDataWorld[i][x].name)*60));
+					if(parseInt(mIndex)==-1){
+						var preData=xDataWorld.shift();
+						xDataWorld=removeReport(xDataWorld,preData);
+						xDataWorld.push(parseInt(parseFloat(intervalSeriesBottomDataWorld[i][x].name)*60));
+					}
+				}
+
+				seriesBottomDataWorld[i].data.shift();
+				seriesBottomDataWorld[i].data.push(intervalSeriesBottomDataWorld[i][x].value);
+			}
+		}
+		var endStart=xDataWorld[xDataWorld.length-1];
+		//模拟空白x轴
+		mockXdataMethodWorld(endStart);
+		myChartWorld1.setOption({
+			xAxis:[
+			       {data:xDataWorld.concat(mockXdataWorld)}],
+			       series: seriesTopDataWorld,
+		});
+		myChartWorld2.setOption({
+			xAxis:[
+			       {data:xDataWorld.concat(mockXdataWorld)}],
+			       series: seriesBottomDataWorld,
+		});
+		
+	});
+}
+//处理线series 定时器使用
+var intervalSeriesTopDataWorld=[];
+var intervalSeriesBottomDataWorld=[];
+function dealIntervalSeriesDataWorld(mData){
+	intervalSeriesTopDataWorld=[];
+	intervalSeriesBottomDataWorld=[];
+	//处理图例中数变化
+	for(var i=0;i<mData.list.length;i++){
+		var cM=mData.list[i];
+		if(cM.data!=null&&cM.data.length>0){
+			legendNumDataWorld[i]=cM.data[cM.data.length-1].value+increaseBracketForObj(cM.name);
+		}
+	};
+	for(var x=0;x<totalLegendNameWorld.length;x++){
+		var currentName=totalLegendNameWorld[x];
+		var data=[];
+		for(var i=0;i<mData.list.length;i++){
+			if(mData.list[i].name==currentName){
+				data=mData.list[i].data;
+			}
+		};
+		var checked=false;
+		$('input[name="legendcheckbox_world"]:checked').each(function(){
+			if($(this).val()==dealBracketForObj(currentName)){
+				checked=true;
+			};
+		});
+		if(checked){
+			var topIndex=isHasElementOne(topParamWorld,dealUnit(currentName));
+			var bottomIndex=isHasElementOne(bottomParamWorld,dealUnit(currentName));
+			if(topIndex>-1||bottomIndex>-1){
+				if(topIndex>-1&&isHasElementOne(showlegendDataWorld,dealBracketForObj(currentName))>-1){
+					//展示在上半部分
+					intervalSeriesTopDataWorld.push(data);
+				}else if(bottomIndex>-1&&isHasElementOne(showlegendDataWorld,dealBracketForObj(currentName))>-1){
+					//展示在下半部分
+					intervalSeriesBottomDataWorld.push(data);
+				}
+			}else{
+				//没有配置 默认画到左下
+				intervalSeriesBottomDataWorld.push(data);
+			}
+		}
+	}
+};
+
+function timestampFormat(timestamp){
+	var d = new Date(timestamp * 1000);    //根据时间戳生成的时间对象
+	var month= (d.getMonth() + 1);
+	if(month<9){
+		month="0"+month;
+	}
+	var date = (d.getFullYear()) + "-" + 
+	month + "-" +
+	           (d.getDate()) + " " + 
+	           (d.getHours()) + ":" + 
+	           (d.getMinutes()) + ":" + 
+	           (d.getSeconds());
+	return date;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorld(type) {
 	window.clearInterval(intevalChart1);
@@ -296,6 +533,14 @@ function dealSeriesData2World(obj) {
     for (var x = 0; x < totalLegendNameWorld.length; x++) {
         var currentName = totalLegendNameWorld[x];
         var data = [];
+        //没有配置 默认画到左下
+        var checked = false;
+        $('input[name="legendcheckbox_world"]:checked').each(function () {
+            if ($(this).val() == dealBracketForObj(currentName)) {
+                checked = true;
+            }
+            ;
+        });
         for (var i = 0; i < dataBase.list.length; i++) {
             if (dataBase.list[i].name == currentName) {
                 data = dataBase.list[i].data;
@@ -304,27 +549,18 @@ function dealSeriesData2World(obj) {
         ;
         var topIndex = isHasElementOne(topParamWorld, dealUnit(currentName));
         var bottomIndex = isHasElementOne(bottomParamWorld, dealUnit(currentName));
-        if (topIndex > -1 || bottomIndex > -1) {
-            if (topIndex > -1 && isHasElementOne(showlegendDataWorld, dealBracketForObj(currentName)) > -1) {
-                //展示在上半部分
-                seriesTopDataWorld.push(joinSeriseWorld(data, currentName, topIndex, x));
-            } else if (bottomIndex > -1 && isHasElementOne(showlegendDataWorld, dealBracketForObj(currentName)) > -1) {
-                //展示在下半部分
-                seriesBottomDataWorld.push(joinSeriseWorld(data, currentName, bottomIndex, x));
-            }
-        } else {
-            //没有配置 默认画到左下
-            var checked = false;
-            $('input[name="legendcheckbox_world"]:checked').each(function () {
-                if ($(this).val() == dealBracketForObj(currentName)) {
-                    checked = true;
-                }
-                ;
-            });
-            if (checked) {
-                seriesBottomDataWorld.push(joinSeriseOtherWorld(data, currentName, x));
-            }
-            ;
+        if (checked) {
+        	if (topIndex > -1 || bottomIndex > -1) {
+        		if (topIndex > -1 && isHasElementOne(showlegendDataWorld, dealBracketForObj(currentName)) > -1) {
+        			//展示在上半部分
+        			seriesTopDataWorld.push(joinSeriseWorld(data, currentName, topIndex, x));
+        		} else if (bottomIndex > -1 && isHasElementOne(showlegendDataWorld, dealBracketForObj(currentName)) > -1) {
+        			//展示在下半部分
+        			seriesBottomDataWorld.push(joinSeriseWorld(data, currentName, bottomIndex, x));
+        		}
+        	} else {
+        		seriesBottomDataWorld.push(joinSeriseOtherWorld(data, currentName, x));
+        	}
         }
     }
 };

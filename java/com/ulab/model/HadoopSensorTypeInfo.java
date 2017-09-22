@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 /**
  * 
@@ -23,8 +24,8 @@ public class HadoopSensorTypeInfo {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public List<Record> findSensorTypeInfoByLabCode(String configName,String labCode){
-		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.SENSORTYPEINFO);
+	public List<Record> findSensorTypeInfoByLabCode(BaseController c,String configName,String labCode){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.SENSORTYPEINFO);
 		String sql="select labcode,sensortypeid,sensortypename,highvalue,lowvalue,unit from "+tableName+" where labcode='"+labCode+"' order by sensortypeid ";
 		List<Record> sensorTypeList=Db.use(configName).find(sql);
 		for(Record sType:sensorTypeList){

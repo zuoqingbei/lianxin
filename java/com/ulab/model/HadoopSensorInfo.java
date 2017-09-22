@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 /**
  * 
@@ -13,12 +14,12 @@ import com.ulab.core.Constants;
  */
 public class HadoopSensorInfo {
 	public static final HadoopSensorInfo dao = new HadoopSensorInfo();
-	public List<Record> findSensorInfoByTestIdentification(String configName,String testIdentification){
-		String tableName=DbConfigModel.dao.getTableNameByColumn(configName, Constants.SENSORINFO);
+	public List<Record> findSensorInfoByTestIdentification(BaseController c,String configName,String testIdentification){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.SENSORINFO);
 		String sql="select * from "+tableName+" where testIdentification='"+testIdentification+"' and selected=1 ";
 		List<Record> sensorInfo=Db.use(configName).find(sql);
 		for(Record sType:sensorInfo){
-			sType.set("legend", sType.get("testunitid")+":"+sType.get("sensorname")+"("+sType.get("unit")+")");
+			sType.set("legend", sType.get("sensorid")+":"+sType.get("sensorname")+"("+sType.get("unit")+")");
 		}
 		return sensorInfo;
 	}
