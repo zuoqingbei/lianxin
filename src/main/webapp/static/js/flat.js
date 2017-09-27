@@ -303,7 +303,8 @@ $("#echartTips").on("click", ".echart_tip_head", function () {
             window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
             break;
         case ('泰国'):
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
+            //window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
+	        window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1,"thailand");
             break;
         default:
             console.log("暂无该国家实验室信息")

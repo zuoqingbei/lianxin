@@ -94,21 +94,29 @@ public class HadoopTestData {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date testBeginTime = null;//开始测试时间
 		Date now = new Date();
+		boolean isOpt=true;
 		long distance =0;
 		if(metaData!=null){
 			try {
 				testBeginTime = sdf.parse(metaData.get("testbegintime")+"");//开始测试时间
 				System.out.println("testBeginTime="+sdf.format(testBeginTime));
-				Double maxHowLong=getMaxHowLong(c,configName, testIdentification);//目前测试数据中最大时间
-				System.out.println("maxHowLong="+maxHowLong);
-				Date realEndDate=new Date(testBeginTime.getTime()+ Math.round(maxHowLong)*60*1000);//实际结算时间
-				System.out.println("realEndDate="+sdf.format(realEndDate));
-				distance=CalculateTime(sdf.format(realEndDate));//实际结算时间一当前时间间隔
-				System.out.println("realEndDate="+distance);
-				if(StringUtils.isNotBlank(startTime)){
-					now=sdf.parse(startTime);
+				if(isOpt){
+					Double maxHowLong=getMaxHowLong(c,configName, testIdentification);//目前测试数据中最大时间
+					System.out.println("maxHowLong="+maxHowLong);
+					Date realEndDate=new Date(testBeginTime.getTime()+ Math.round(maxHowLong)*60*1000);//实际结算时间
+					System.out.println("realEndDate="+sdf.format(realEndDate));
+					distance=CalculateTime(sdf.format(realEndDate));//实际结算时间一当前时间间隔
+					System.out.println("realEndDate="+distance);
+					if(StringUtils.isNotBlank(startTime)){
+						now=sdf.parse(startTime);
+					}
+					now=new Date(now.getTime()- distance*60*1000);//进行时间平移 保证有数据
+				}else{
+					if(StringUtils.isNotBlank(startTime)){
+						now=sdf.parse(startTime);
+					}
 				}
-				now=new Date(now.getTime()- distance*60*1000);//进行时间平移 保证有数据
+				
 				System.out.println("now="+sdf.format(now));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -153,7 +161,12 @@ public class HadoopTestData {
 	public Double getMaxHowLong(BaseController c,String configName,String testIdentification){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTDATA);
 		String sql=" select	max(howlong) as  howlong from "+tableName+" where testIdentification = '"+testIdentification+"' ";
-		Record r=Db.use(configName).findFirst(sql);
+		String key="testIdentification_long_reocrd_"+testIdentification;
+		Record r=c.getSessionAttr(key);
+		if(r==null){
+			r=Db.use(configName).findFirst(sql);
+			c.setSessionAttr(key, r);
+		}
 		if(r!=null){
 			return Double.parseDouble(r.get("howlong")+"");
 		}
