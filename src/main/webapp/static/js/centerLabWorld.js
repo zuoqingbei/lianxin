@@ -111,6 +111,10 @@ var configName;
 var startTime;
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName) {
+	var $l3x3 = $("#l");
+	$l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
+    $l3x3.find(".legend-bottom li").removeClass('active');
+    bgImgOff($l3x3.find(".legend-bottom li"));
 	configName=mConfigName;
 	//清除中海博睿定时器
 	window.clearInterval(intevalChart1);
