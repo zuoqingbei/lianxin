@@ -196,9 +196,11 @@ function navSelectA() {//这里会触发地图中要加载的数据
     $flatBottomSwitchLi.find("a").click(function () {
         if($(this).text() ==="中海博睿"){
             $("#r").hide();
-            $(".labMain_content").show()
-            $(".labMain_content_country").hide()
-            $(".labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show").hide()
+            // $(".labMain_content").show()
+            // console.log("================",$(".lab").show().siblings("div").not("#l")[0])
+            $(".lab").show().siblings("div").not("#l").hide();
+            // $(".labMain_content_country").hide()
+            // $(".labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show").hide()
         }
        /* if($(this).text().trim() ==="冰冷"){
         	var $l3x3 = $("#l");

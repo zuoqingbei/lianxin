@@ -1,0 +1,233 @@
+.lab > div:nth-of-type(1),
+.lab > div > div > div {
+    /*outline: 1px dotted rgba(255, 165, 0, 0.44);*/
+    outline-offset: -1px;
+}
+
+/*主页面布局*/
+@media all {
+    #content>.lab {
+        flex: 4;
+        flex-direction: column;
+        display: flex;
+    }
+
+    .lab_head {
+        flex: 1;
+    }
+
+    .lab_content {
+        flex: 8;
+        display: flex;
+        padding: 1.2em;
+    }
+
+    .lab_content_l {
+        flex: 1;
+    }
+
+    .lab_content_r {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        margin-top: -1em;
+        margin-left: 2em;
+    }
+    .lab_content_r>.labSubNav{
+        flex:1;
+    }
+    .lab_content_r>.switchBox{
+        flex:10;
+        /*outline: 1px dotted rgba(255, 165, 0, 0.44);*/
+        outline-offset: -1px;
+    }
+}
+
+[class^=btn-],
+li:not(.hasChildren),
+.labMainNav > .switchBox > ul > li > header {
+    cursor: pointer;
+}
+
+li:not(.hasChildren).active {
+    color: #00e673;
+}
+
+/*顶部标题栏*/
+@media all {
+    .lab_head {
+        /*height: 10%;*/
+        background: url(../img/labMain/labtitle_bg.png) no-repeat;
+        background-size: 100% 100%;
+        position: relative;
+    }
+
+    .lab_head [class^=btn-] {
+        position: absolute;
+        text-align: center;
+        top: 2em;
+    }
+
+    .lab_head [class^=btn-]:nth-of-type(1) {
+        left: 1em;
+    }
+
+    .lab_head [class^=btn-]:nth-of-type(2) {
+        right: 4em;
+    }
+
+    .lab_head [class^=btn-] .icon {
+        width: 2em;
+        height: 2em;
+        margin: 0 auto .5em;
+        background-size: 100% 100%;
+    }
+
+    .lab_head [class^=btn-]:nth-of-type(1) .icon {
+        background-image: url("../img/labMain/labMain_toTotalStatus.png");
+    }
+
+    .lab_head [class^=btn-]:nth-of-type(2) .icon {
+        background-image: url("../img/labMain/home.png");
+    }
+
+    .lab_head h2 {
+        font-size: 2.6em;
+        letter-spacing: .05em;
+        color: #66CCFE;
+        text-align: center;
+        line-height: 2em;
+    }
+}
+
+/*左侧导航栏*/
+@media all {
+    .labMainNav {
+        height: 100%;
+        font-size: 1.2em;
+        /*border: 1px solid #64ccff;*/
+        background-image: url("../img/lab/labMainNavBoard.png");
+        background-size: 100% 100%;
+    }
+
+    .labMainNav > header > ul {
+        text-align: center;
+    }
+
+    .labMainNav > header > ul > li {
+        display: inline-block;
+        margin: 2em 2em;
+        padding: .8em 2.2em;
+        background-image: url(../img/tabCom/btn_off.png);
+        background-size: 100% 100%;
+    }
+
+    .labMainNav > header > ul > li.active {
+        background-image: url(../img/tabCom/btn_on.png);
+    }
+
+    .labMainNav > .switchBox {
+        /*border: 1px dotted #64ccff;*/
+    }
+
+    .labMainNav > .switchBox > ul {
+        /*padding-left: 4em;*/
+    }
+
+    .labMainNav > .switchBox > ul > li {
+        padding: .8em 0 .8em 4em;
+        list-style: inside disc;
+    }
+
+    .labMainNav > .switchBox > ul > li > header {
+        display: inline-block;
+        width: 90%;
+        padding: .6em 0;
+    }
+
+    .labMainNav > .switchBox > ul > li > header > span { /*折叠符号*/
+        position: relative;
+        padding-left: 2em;
+        top: .2em;
+    }
+
+    .labMainNav > .switchBox > ul > li > header:hover > span {
+        font-weight: bold;
+    }
+
+    .labMainNav > .switchBox > ul > li > header.fold > span {
+        top: -.2em;
+    }
+
+    .labMainNav > .switchBox > ul > li.noChildren:hover,
+    .labMainNav > .switchBox > ul > li > ul > li:hover {
+        outline: .1em solid rgba(0, 230, 115, 0.7);
+        outline-offset: -.1em;
+        background-color: rgba(0, 4, 21, 0.2)
+    }
+
+    .labMainNav > .switchBox > ul > li.noChildren.active,
+    .labMainNav > .switchBox > ul > li > ul > li.active {
+        outline: .1em solid #00e673;
+        outline-offset: -.1em;
+        background-color: rgba(0, 4, 21, 0.67)
+    }
+
+    .labMainNav > .switchBox > ul > li > ul {
+        margin-left: -4em;
+    }
+
+    .labMainNav > .switchBox > ul > li > ul > li {
+        padding: 0.6em 0 .6em 7em;
+    }
+
+    .labMainNav > .switchBox > ul > li {
+
+    }
+
+}
+
+/*右侧tab标签*/
+.lab_content_r{
+    background-image: url("../img/lab/labTabBoardInland_1.png");
+    background-size: 100% 100%;
+}
+.labSubNav>ul{
+    margin-left: 7em;
+}
+
+.labSubNav>ul>li{
+    display: inline-block;
+    text-align: center;
+    width: 9.6em;
+    padding: .75em 0;
+    font-size: 1.6em;
+    color: #fff;
+}
+.labSubNav>ul>li.active{
+    color: #fff;
+}
+
+.lab_content_r>.switchBox{
+    /*background-image: url("../img/lab/labTabBoard_0.png");*/
+    background-size: 100% 100%;
+}
+.lab_content_r>.switchBox>div.item,
+.lab_content_r>.switchBox>div.item>div{
+    height:100%;
+}
+
+.lab_content_r>.switchBox>div.item:not(:nth-of-type(1)){
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+

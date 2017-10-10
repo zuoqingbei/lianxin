@@ -1,6 +1,6 @@
 @charset "utf-8";
 .zhbr_analysis {
-    width: 100%;
+    /*width: 100%;*/
     height: 97%;
 }
 
@@ -8,8 +8,8 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin: 1% auto;
-    height: 95%;
+    /*margin: 1% auto;*/
+    height: 96%;
 }
 
 .labMain_cb_left .lab_title {

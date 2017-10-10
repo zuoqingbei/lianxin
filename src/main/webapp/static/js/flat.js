@@ -289,9 +289,8 @@ var myFlatMap = echarts.init($('.mapFlat')[0]);
 /*平面地图上点击各个国家的点，右侧切换到对应的实验室页面*/
 var $l3x3 = $("#l", parent.document);
 $("#echartTips").on("click", ".echart_tip_head", function () {
-    // var CountryName = $(this).parent().prev().find("a>span").text();
     var CountryName = $(this).parent().prev().find("a").attr("data-country");
-    $l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
+    $l3x3.siblings("#r,.lab").hide().siblings(".labMain_content_country").show();
     $l3x3.find(".legend-bottom li").removeClass('active');
     parent.bgImgOff($l3x3.find(".legend-bottom li"));
 

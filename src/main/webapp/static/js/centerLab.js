@@ -199,6 +199,7 @@ function initThree() {
     			item.rate=(Math.random()*2+98).toFixed(1);
     		}
     	})
+        console.log("---数据分析-近12个月的一次合格率")
         var resu = dealCenterLab(data);
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#hg_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
@@ -281,6 +282,7 @@ function initfour() {
     			item.rate=Math.round(Math.random()*15)+80;
     		}
     	})
+        console.log("---数据分析-近12个月的及时率")
         var resu = dealCenterLab(data);
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
@@ -455,23 +457,17 @@ function loadLabUnitInfoCenterTabAjax(){
 
         });
 */
+        //选择台位
         $("#lab_unit_selected_center>li>a").click(function (e) {
             $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
             $(this).parent().siblings().find('.taiwei_hide').css('display','none');
-            // $(this).css('height','auto').siblings().css('height','1.5em');
-            // $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-            // $(this).find('.taiwei_hide').css('display','block');
             $(this).next().toggle();
             e.stopPropagation()
-            // $('.sheshi_tab').removeClass('sheshi_tab_active');
-            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
-
         });
+
         $('.taiwei_hide>li').click(function () {
             $(".sheshi_tab").eq(1).trigger('click')
             $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-            // $('.sheshi_tab').removeClass('sheshi_tab_active');
-            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
         })
 	});
 }
