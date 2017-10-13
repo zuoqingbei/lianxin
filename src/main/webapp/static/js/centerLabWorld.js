@@ -112,18 +112,19 @@ var startTime;
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName) {
 	var $l3x3 = $("#l");
-	$l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
+	// $l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
     $l3x3.find(".legend-bottom li").removeClass('active');
     bgImgOff($l3x3.find(".legend-bottom li"));
 	configName=mConfigName;
 	//清除中海博睿定时器
 	window.clearInterval(intevalChart1);
 	window.clearInterval(intevalChartHadoop);
-    $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
+    // $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
+    $(".labMain_cblt_tone_world").html( "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
     $(".labMain_cblt_ttwo_world img").attr("src", labImgs[type]);
     $("#labName_world").html(labname[type]);
     $("#labnameIcon_world").html(labname[type]);
-    $("#secondName_world").html(labname[type]);
+    // $("#secondName_world").html(labname[type]);
     //生成下拉
 	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName},function(data){
 		var htmls="";
@@ -325,27 +326,6 @@ function timestampFormat(timestamp){
 	           (d.getSeconds());
 	return date;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //加载实验室与台位对照关系 生刷选框

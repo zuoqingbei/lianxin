@@ -3,14 +3,14 @@
 <div class="lab" style="display: none;">
     <!--頂部標題-->
     <div class="lab_head">
-        <h2>中海博睿数据中心</h2>
+        <h2 id="labName_world">中海博睿数据中心</h2>
         <div class="btn-totalStatus">
             <div class="icon"></div>
             <span>返回总状态</span>
         </div>
         <div class="btn-labHome">
             <div class="icon"></div>
-            <span>中海博睿实验室</span>
+            <span id="labnameIcon_world">中海博睿实验室</span>
         </div>
     </div>
     <div class="lab_content">
@@ -24,19 +24,19 @@
                 </header>
                 <div class="switchBox">
                     <ul class="item inland">
-                        <li class="noChildren active">中海博睿</li>
+                        <li class="noChildren active">中海博睿数据中心</li>
                         <li class="hasChildren">
                             <header class="fold">产线<span>︿</span></header>
                             <ul>
-                                <li>冰冷</li>
-                                <li>洗衣机</li>
-                                <li>家电</li>
-                                <li>商空</li>
-                                <li>热水器</li>
-                                <li>厨电</li>
+                                <li>冰冷数据中心</li>
+                                <li>洗衣机数据中心</li>
+                                <li>家电数据中心</li>
+                                <li>商空数据中心</li>
+                                <li>热水器数据中心</li>
+                                <li>厨电数据中心</li>
                             </ul>
                         </li>
-                        <li class="noChildren">中海模块商数据中心</li>
+                        <li class="noChildren moduleMakersInland">中国模块商数据中心</li>
                     </ul>
                     <ul class="item abroad" style="display: none">
                         <li class="hasChildren">
@@ -49,8 +49,14 @@
                                 <li>泰国研发中心</li>
                             </ul>
                         </li>
-                        <li class="noChildren">海外工厂数据中心</li>
-                        <li class="noChildren">海外采购</li>
+                        <li class="hasChildren">
+                            <header class="fold">海外工厂数据中心<span>︿</span></header>
+                            <ul>
+                                <li>泰国工业园</li>
+                                <li>俄罗斯工业园</li>
+                            </ul>
+                        </li>
+                        <li class="noChildren moduleMakersAbroad">海外模块商数据中心</li>
                     </ul>
                 </div>
             </nav>
@@ -58,10 +64,12 @@
         <div class="lab_content_r">
             <nav class="labSubNav">
                 <ul>
-                    <li class="active">实验室</li>
-                    <li class="onlyInland">运营状态</li>
-                    <li class="onlyInland">数据分析</li>
-                    <li>实时监测</li>
+                    <li class="labHome active">中心介绍</li>
+                    <li class="status">运营状态</li>
+                    <li class="analysis">数据分析</li>
+                    <li class="centerCurves">实时监测（中）</li>
+                    <li class="abroadCurves" style="display: none">实时监测（外）</li>
+                    <li class="moduleMakers" style="display: none">数据互联</li>
                 </ul>
             </nav>
             <div class="switchBox">
@@ -69,8 +77,8 @@
                 <div class="item labHome">
                     <div class="labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show">
                         <div class="labMain_cbl_one">
-                            <div class="labMain_cblt_tone">
-                                <h3>基本介绍</h3>
+                            <div class="labMain_cblt_tone labMain_cblt_tone_world">
+                                <!--<h3>基本介绍</h3>-->
                                 <p>
                                     中海博睿为原海尔集团质量监测中心，建于1998年12月，累计投资近2.0亿，占地约10000㎡，专业实验室66间，涉及家电、机械和电子电器产品领域，覆盖运输、安全、性能、EMC、噪音、可靠性、用户体验、智能成套家电评测和零部件材料、环保模块等专业的500多项标准2000多个项目的检测能力； </p>
                                 <p>
@@ -79,7 +87,8 @@
                                     通过长期与VDE、UL、JET、ETL、TUV莱茵、Intertek、BV、CSA、KTL、CQC、SII等多家国际权威认证检测机构的紧密合作，实现数据互认，逐渐发展为一个开放的检测资源共享平台，无需跨出国门，即可提供国际化的专业服务，从而以最快的速度、最优质的服务、最经济的成本，满足海尔全球产品的当地化需求，支撑产品用户体验引领。 </p>
                             </div>
                             <!--labMain_cblt_tone-->
-                            <div class="labMain_cblt_ttwo"><img src="${contextPath!}/static/img/labMain/labmain-1.png"/>
+                            <div class="labMain_cblt_ttwo labMain_cblt_ttwo_world"><img
+                                    src="${contextPath!}/static/img/labMain/labmain-1.png"/>
                             </div>
                             <!--labMain_cblt_ttwo-->
                         </div>
@@ -269,7 +278,7 @@
                         </div>
                     </div>
                 </div>
-                <!--视频监控和曲线-->
+                <!--中海博瑞视频监控和曲线-->
                 <div class="item monitoring">
                     <div class="labMain_cb_left">
                         <div class="shishi_left">
@@ -283,8 +292,7 @@
                         <div class="shishi_right">
                             <div class="item" hidden>
                                 <div class="video_box">
-                                    <iframe src="http://10.130.96.27/doc/page/preview.asp" frameborder="0" width="100%"
-                                            height="100%"></iframe>
+                                    <iframe src="http://10.130.96.27/doc/page/preview.asp" frameborder="0" height="100%"></iframe>
                                 </div>
                             </div>
                             <div class="item shishi_right_show">
@@ -313,6 +321,51 @@
 
                     </div>
                 </div>
+                <!--国外视频监控和曲线-->
+                <div class="item monitoring">
+                    <div class="labMain_cb_left">
+                        <div class="shishi_left">
+                            <div class="sheshi_tab">视频监控</div>
+                            <div class="sheshi_tab sheshi_tab_active sheshi_tab_lines">曲线监控</div>
+                            <div class="sheshi_tab_list">
+                                <ul id="lab_unit_selected_center_world"></ul>
+                            </div>
+                        </div>
+                        <div class="shishi_right shishi_right_show">
+                            <div class="item" hidden>
+                                <div class="video_box">
+                                    <iframe src="http://10.130.96.27/doc/page/preview.asp" frameborder="0" height="100%"></iframe>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class='sheshi_right_top'>
+                                    <ul>
+                                        <li>Report No.：<span id="center_sybh_id_world"></span></li>
+                                        <li>Sample code：<span id="center_ypbm_id_world"></span></li>
+                                        <li>Model No.：<span id="center_cpxh_id_world"></span></li>
+                                        <li>Test Item：<span id="center_testPro_id_world"></span></li>
+                                    </ul>
+                                </div>
+                                <div class="sheshi_right_left">
+                                    <div id="main1_world"></div>
+                                    <div id="main2_world"></div>
+                                    <div class="message_box">
+                                        <div>该台位未开测</div>
+                                    </div>
+                                </div>
+
+                                <div class="sheshi_right_right">
+                                    <ul id="legend_ul_world">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--嵌入模块商互联界面-->
+                <div class="item ">
+                    <iframe src="http://e-art.taobao.com" frameborder="0"></iframe>
+                </div>
             </div>
         </div>
     </div>
@@ -320,110 +373,4 @@
 
 
 <script src="../static/js/centerLab.js"></script>
-
-<script>
-    function echartsResize() {
-        chartone.resize();
-        charttwo.resize();
-        chartthree.resize();
-        chartfour.resize();
-        chartfive.resize();
-        chartsix.resize();
-        myChart1.resize();
-        myChart2.resize();
-    }
-
-    $(function () {
-
-        //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
-        $(".btn-totalStatus").hover(function () {
-            $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus_active.png)")
-        }, function () {
-            $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus.png)")
-        }).click(function () {
-            $("#r").show().siblings(".lab").hide();
-            var $li = $(".left3x3").find(".flat-footer .legend ul.legend-bottom li");
-            $li.removeClass("active").each(function () {
-                bgImgOff($(this))
-            });
-            resetSizeRight();
-        });
-        $(".btn-labHome").hover(function () {
-            $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home_active.png)")
-        }, function () {
-            $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home.png)")
-        }).click(function () {
-            var borderUrl = $lab_content_r.css("background-image").replace(/[2-4]/, "1");
-            $lab_content_r.css("background-image", borderUrl);
-            $(".lab_content_r>.switchBox>div.item:eq(0)").show().siblings().hide();
-        });
-
-        //左侧主菜单点击事件
-        var $navHeadLi = $(".labMainNav>header>ul>li");
-        var $lab_content_r = $(".lab_content_r");
-        $navHeadLi.click(function () {
-            $navHeadLi.removeClass("active");
-            $(this).addClass("active");
-
-            $(".labMainNav>.switchBox>ul:eq(" + $(this).index() + ")").show().siblings().hide();
-            var borderUrl = "";
-            if ($(this).index() === 1) { //国外
-                borderUrl = $lab_content_r.css("background-image").replace("labTabBoardInland", "labTabBoardForeign")
-                $(".labSubNav>ul>li.onlyInland").hide();
-            } else {                    //国内
-                borderUrl = $lab_content_r.css("background-image").replace("labTabBoardForeign", "labTabBoardInland")
-                $(".labSubNav>ul>li").show();
-            }
-            borderUrl = borderUrl.replace(/[2-4]/, "1");
-            $lab_content_r.css("background-image", borderUrl);
-            $(".lab_content_r>.switchBox>div.item").eq(0).show().siblings().hide();
-        });
-        var $li = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
-        $li.click(function () {
-            $li.removeClass("active");
-            $(this).addClass("active");
-        });
-        var $NavHeader = $(".labMainNav>.switchBox>ul>li>header");
-        $NavHeader.click(function () {
-            if ($(this).next("ul").is(":visible")) {
-                $(this).next("ul").hide();
-                $(this).removeClass("fold").children("span").text("﹀");
-            } else {
-                $(this).next("ul").show();
-                $(this).addClass("fold").children("span").text("︿");
-            }
-        });
-
-        //頂部子菜单点击事件
-        var subNavLi = $(".labSubNav>ul>li");
-        subNavLi.click(function () {
-            subNavLi.removeClass("active");
-            $(this).addClass("active");
-
-            var borderUrl = $lab_content_r.css("background-image").replace(/[1-4]/, $(this).index() + 1);
-            if( $navHeadLi.eq(1).hasClass("active") && $(this).index() === 3){ //国外的曲线监控
-                borderUrl = $lab_content_r.css("background-image").replace(/[1-4]/, $(this).index() - 1);
-            }
-            $lab_content_r.css("background-image", borderUrl);
-
-            $(".lab_content_r>.switchBox>div.item").eq($(this).index()).show().siblings().hide();
-            echartsResize();
-        });
-
-        //实时监测中的视频和曲线切换
-        $(".sheshi_tab").click(function () {
-            var index = $(this).index();
-            $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
-            $(".shishi_right>.item").eq(index).show().siblings().hide();
-        })
-
-        // 数据分析中的合格率、及时率、满意度
-        initThree();//合格率
-        initfour();//及时率
-        inittwo();//满意度
-
-        labAllForCenterLabAjax();
-
-
-    })
-</script>
+<script src="../static/js/lab.js"></script>

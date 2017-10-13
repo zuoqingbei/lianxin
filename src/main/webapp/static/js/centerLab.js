@@ -199,7 +199,7 @@ function initThree() {
     			item.rate=(Math.random()*2+98).toFixed(1);
     		}
     	})
-        console.log("---数据分析-近12个月的一次合格率")
+        // console.log("---数据分析-近12个月的一次合格率")
         var resu = dealCenterLab(data);
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#hg_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
@@ -282,7 +282,7 @@ function initfour() {
     			item.rate=Math.round(Math.random()*15)+80;
     		}
     	})
-        console.log("---数据分析-近12个月的及时率")
+        // console.log("---数据分析-近12个月的及时率")
         var resu = dealCenterLab(data);
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");

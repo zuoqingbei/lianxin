@@ -21,7 +21,7 @@
     position: relative;
     /*display: none;*/
 }
-.shishi_right>div{
+.shishi_right>div:not(.sheshi_right_top){
     height: 96%;
 }
 .sheshi_right_top{

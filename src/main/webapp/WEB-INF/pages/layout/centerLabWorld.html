@@ -34,7 +34,7 @@
         <div class="labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show">
             <h3 class="lab_title" id="secondName_world">中海博睿实验室</h3>
 
-            <!--上侧-->
+            <!--首页-->
             <div class="labMain_cbl_one">
                 <div class="labMain_cblt_tone labMain_cblt_tone_world">
                     <h3>基本介绍</h3>
@@ -103,490 +103,492 @@
              </div> --><!--labMain_cbl_two-->
         </div>
 
-        <!--运营状态-->
-        <!--<div class="labMain_cb_left">-->
-            <!--<h3 class="lab_title">运营状态</h3>-->
-            <!--<div class="pageBtn">-->
-                <!--<span class="icon" onclick="prePage()"></span>-->
-                <!--<span class="icon" onclick="nextPage()"></span>-->
-            <!--</div>-->
+<!--
+        运营状态
+        <div class="labMain_cb_left">
+            <h3 class="lab_title">运营状态</h3>
+            <div class="pageBtn">
+                <span class="icon" onclick="prePage()"></span>
+                <span class="icon" onclick="nextPage()"></span>
+            </div>
 
-            <!--<div class="leftContent">-->
-                <!--&lt;!&ndash;第一行&ndash;&gt;-->
-                <!--<div class="l-top">-->
-                    <!--<div class="l-top-title">-->
-                        <!--<h3>实验室状态</h3>-->
-                    <!--</div>-->
-                    <!--<div class="l-top-header">-->
-                        <!--<div class="item1">-->
-                            <!--<h5>实验室总数：</h5>-->
-                            <!--<span class="data" id="lab_center_id_left_0">0</span>-->
-                        <!--</div>-->
-                        <!--<div class="item2" id="lab_center_id_left_1">-->
-                            <!--<h5>负荷率最低：</h5>-->
-                            <!--<div class="progress">-->
-                                <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                     <!--aria-valuemax="100" style="width: 80%;height: 100%"></div>-->
-                            <!--</div>-->
-                            <!--<span class="data">80%</span>-->
-                        <!--</div>-->
-                        <!--<div class="item3" id="lab_center_id_left_2">-->
-                            <!--<h5>负荷率最高：</h5>-->
-                            <!--<div class="progress">-->
-                                <!--<div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0"-->
-                                     <!--aria-valuemax="100" style="width: 90%;height: 100%"></div>-->
-                            <!--</div>-->
-                            <!--<span class="data">90%</span>-->
-                        <!--</div>-->
-                        <!--<div class="item4" id="lab_center_id_left_3">-->
-                            <!--<h5>平均负荷率：</h5>-->
-                            <!--<div class="progress">-->
-                                <!--<div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0"-->
-                                     <!--aria-valuemax="100" style="width: 85%;height: 100%"></div>-->
-                            <!--</div>-->
-                            <!--<span class="data">85%</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
+            <div class="leftContent">
+                &lt;!&ndash;第一行&ndash;&gt;
+                <div class="l-top">
+                    <div class="l-top-title">
+                        <h3>实验室状态</h3>
+                    </div>
+                    <div class="l-top-header">
+                        <div class="item1">
+                            <h5>实验室总数：</h5>
+                            <span class="data" id="lab_center_id_left_0">0</span>
+                        </div>
+                        <div class="item2" id="lab_center_id_left_1">
+                            <h5>负荷率最低：</h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 80%;height: 100%"></div>
+                            </div>
+                            <span class="data">80%</span>
+                        </div>
+                        <div class="item3" id="lab_center_id_left_2">
+                            <h5>负荷率最高：</h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 90%;height: 100%"></div>
+                            </div>
+                            <span class="data">90%</span>
+                        </div>
+                        <div class="item4" id="lab_center_id_left_3">
+                            <h5>平均负荷率：</h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 85%;height: 100%"></div>
+                            </div>
+                            <span class="data">85%</span>
+                        </div>
+                    </div>
 
-                    <!--<div class="l-top-body" id="center_lab_top_div">-->
-                        <!--&lt;!&ndash;  <div class="l-top-body-1">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>实验室状态：<span></span></h5>-->
-                                 <!--<span class="data">在用</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>台位负荷：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 84%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>月负荷率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 80%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-top-body-2">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>实验室状态：<span></span></h5>-->
-                                 <!--<span class="data">在用</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>台位负荷：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 84%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>月负荷率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 80%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-top-body-3">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>实验室状态：<span></span></h5>-->
-                                 <!--<span class="data">在用</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>台位负荷：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 84%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>月负荷率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 80%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-top-body-4">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>实验室状态：<span></span></h5>-->
-                                 <!--<span class="data">在用</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>台位负荷：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 84%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>月负荷率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 80%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-top-body-5">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>实验室状态：<span></span></h5>-->
-                                 <!--<span class="data">在用</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>台位负荷：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 84%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>月负荷率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 80%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">80/90</span>-->
-                             <!--</div>-->
-                         <!--</div> &ndash;&gt;-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;第二行&ndash;&gt;-->
-                <!--<div class="l-mid">-->
-                    <!--<div class="l-mid-title">-->
-                        <!--<h3>设备状态</h3>-->
-                    <!--</div>-->
-                    <!--<div class="l-mid-header">-->
-                        <!--<div class="item1">-->
-                            <!--<h5>设备总数：<span></span></h5>-->
-                            <!--<span class="data" id="lab_center_id_left_4">0</span>-->
-                        <!--</div>-->
-                        <!--<div class="item2">-->
-                            <!--<h5>当年故障数：<span></span></h5>-->
-                            <!--<span class="data" id="lab_center_id_left_6"></span>-->
-                        <!--</div>-->
-                        <!--<div class="item3">-->
-                            <!--<h5>当前完好数：<span></span></h5>-->
-                            <!--<span class="data" id="lab_center_id_left_5"></span>-->
-                        <!--</div>-->
-                        <!--<div class="item4" id="lab_center_id_left_7">-->
-                            <!--<h5>当前完好率：<span></span></h5>-->
-                            <!--<div class="progress">-->
-                                <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                     <!--aria-valuemax="100" style="width: 98%;height: 100%"></div>-->
-                            <!--</div>-->
-                            <!--<span class="data">98%</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="l-mid-body" id="center_lab_center_div">-->
-                        <!--&lt;!&ndash;  <div class="l-mid-body-1">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item4">-->
-                                 <!--<h5>设备数：<span></span></h5>-->
-                                 <!--<span class="data">12</span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>停机时间：<span></span></h5>-->
-                                 <!--<span class="data">12小时</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>停机次数：<span></span></h5>-->
-                                 <!--<span class="data">4次</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>当前完好率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 98%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">98%</span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-mid-body-2">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item4">-->
-                                 <!--<h5>设备数：<span></span></h5>-->
-                                 <!--<span class="data">12</span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>停机时间：<span></span></h5>-->
-                                 <!--<span class="data">12小时</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>停机次数：<span></span></h5>-->
-                                 <!--<span class="data">4次</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>当前完好率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 98%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">98%</span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-mid-body-3">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item4">-->
-                                 <!--<h5>设备数：<span></span></h5>-->
-                                 <!--<span class="data">12</span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>停机时间：<span></span></h5>-->
-                                 <!--<span class="data">12小时</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>停机次数：<span></span></h5>-->
-                                 <!--<span class="data">4次</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>当前完好率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 98%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">98%</span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-mid-body-4">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item4">-->
-                                 <!--<h5>设备数：<span></span></h5>-->
-                                 <!--<span class="data">12</span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>停机时间：<span></span></h5>-->
-                                 <!--<span class="data">12小时</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>停机次数：<span></span></h5>-->
-                                 <!--<span class="data">4次</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>当前完好率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 98%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">98%</span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-mid-body-5">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item4">-->
-                                 <!--<h5>设备数：<span></span></h5>-->
-                                 <!--<span class="data">12</span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>停机时间：<span></span></h5>-->
-                                 <!--<span class="data">12小时</span>-->
-                             <!--</div>-->
-                             <!--<div class="item2">-->
-                                 <!--<h5>停机次数：<span></span></h5>-->
-                                 <!--<span class="data">4次</span>-->
-                             <!--</div>-->
-                             <!--<div class="item3">-->
-                                 <!--<h5>当前完好率：<span></span></h5>-->
-                                 <!--<div class="progress">-->
-                                     <!--<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"-->
-                                          <!--aria-valuemax="100" style="width: 98%;height: 100%"></div>-->
-                                 <!--</div>-->
-                                 <!--<span class="data">98%</span>-->
-                             <!--</div>-->
-                         <!--</div> &ndash;&gt;-->
-                    <!--</div>-->
+                    <div class="l-top-body" id="center_lab_top_div">
+                        &lt;!&ndash;  <div class="l-top-body-1">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>实验室状态：<span></span></h5>
+                                 <span class="data">在用</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>台位负荷：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 84%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>月负荷率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 80%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                         </div>
+                         <div class="l-top-body-2">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>实验室状态：<span></span></h5>
+                                 <span class="data">在用</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>台位负荷：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 84%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>月负荷率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 80%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                         </div>
+                         <div class="l-top-body-3">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>实验室状态：<span></span></h5>
+                                 <span class="data">在用</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>台位负荷：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 84%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>月负荷率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 80%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                         </div>
+                         <div class="l-top-body-4">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>实验室状态：<span></span></h5>
+                                 <span class="data">在用</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>台位负荷：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 84%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>月负荷率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 80%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                         </div>
+                         <div class="l-top-body-5">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>实验室状态：<span></span></h5>
+                                 <span class="data">在用</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>台位负荷：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="84" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 84%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>月负荷率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 80%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">80/90</span>
+                             </div>
+                         </div> &ndash;&gt;
+                    </div>
+                </div>
+                &lt;!&ndash;第二行&ndash;&gt;
+                <div class="l-mid">
+                    <div class="l-mid-title">
+                        <h3>设备状态</h3>
+                    </div>
+                    <div class="l-mid-header">
+                        <div class="item1">
+                            <h5>设备总数：<span></span></h5>
+                            <span class="data" id="lab_center_id_left_4">0</span>
+                        </div>
+                        <div class="item2">
+                            <h5>当年故障数：<span></span></h5>
+                            <span class="data" id="lab_center_id_left_6"></span>
+                        </div>
+                        <div class="item3">
+                            <h5>当前完好数：<span></span></h5>
+                            <span class="data" id="lab_center_id_left_5"></span>
+                        </div>
+                        <div class="item4" id="lab_center_id_left_7">
+                            <h5>当前完好率：<span></span></h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 98%;height: 100%"></div>
+                            </div>
+                            <span class="data">98%</span>
+                        </div>
+                    </div>
+                    <div class="l-mid-body" id="center_lab_center_div">
+                        &lt;!&ndash;  <div class="l-mid-body-1">
+                             <h4>A室</h4>
+                             <div class="item4">
+                                 <h5>设备数：<span></span></h5>
+                                 <span class="data">12</span>
+                             </div>
+                             <div class="item1">
+                                 <h5>停机时间：<span></span></h5>
+                                 <span class="data">12小时</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>停机次数：<span></span></h5>
+                                 <span class="data">4次</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>当前完好率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 98%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">98%</span>
+                             </div>
+                         </div>
+                         <div class="l-mid-body-2">
+                             <h4>A室</h4>
+                             <div class="item4">
+                                 <h5>设备数：<span></span></h5>
+                                 <span class="data">12</span>
+                             </div>
+                             <div class="item1">
+                                 <h5>停机时间：<span></span></h5>
+                                 <span class="data">12小时</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>停机次数：<span></span></h5>
+                                 <span class="data">4次</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>当前完好率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 98%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">98%</span>
+                             </div>
+                         </div>
+                         <div class="l-mid-body-3">
+                             <h4>A室</h4>
+                             <div class="item4">
+                                 <h5>设备数：<span></span></h5>
+                                 <span class="data">12</span>
+                             </div>
+                             <div class="item1">
+                                 <h5>停机时间：<span></span></h5>
+                                 <span class="data">12小时</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>停机次数：<span></span></h5>
+                                 <span class="data">4次</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>当前完好率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 98%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">98%</span>
+                             </div>
+                         </div>
+                         <div class="l-mid-body-4">
+                             <h4>A室</h4>
+                             <div class="item4">
+                                 <h5>设备数：<span></span></h5>
+                                 <span class="data">12</span>
+                             </div>
+                             <div class="item1">
+                                 <h5>停机时间：<span></span></h5>
+                                 <span class="data">12小时</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>停机次数：<span></span></h5>
+                                 <span class="data">4次</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>当前完好率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 98%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">98%</span>
+                             </div>
+                         </div>
+                         <div class="l-mid-body-5">
+                             <h4>A室</h4>
+                             <div class="item4">
+                                 <h5>设备数：<span></span></h5>
+                                 <span class="data">12</span>
+                             </div>
+                             <div class="item1">
+                                 <h5>停机时间：<span></span></h5>
+                                 <span class="data">12小时</span>
+                             </div>
+                             <div class="item2">
+                                 <h5>停机次数：<span></span></h5>
+                                 <span class="data">4次</span>
+                             </div>
+                             <div class="item3">
+                                 <h5>当前完好率：<span></span></h5>
+                                 <div class="progress">
+                                     <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                                          aria-valuemax="100" style="width: 98%;height: 100%"></div>
+                                 </div>
+                                 <span class="data">98%</span>
+                             </div>
+                         </div> &ndash;&gt;
+                    </div>
 
-                <!--</div>-->
-                <!--&lt;!&ndash;第三行&ndash;&gt;-->
-                <!--<div class="l-bottom">-->
-                    <!--<div class="l-bottom-title">-->
-                        <!--<h3>订单状态</h3>-->
-                    <!--</div>-->
-                    <!--<div class="l-bottom-header">-->
-                        <!--<div class="item1">-->
-                            <!--<h5>已测订单数：<span></span></h5>-->
-                            <!--<span class="data" id="lab_center_id_left_8"></span>-->
-                        <!--</div>-->
-                        <!--<div class="item1">-->
-                            <!--<h5>在测订单数：<span></span></h5>-->
-                            <!--<span class="data" id="lab_center_id_left_9"></span>-->
-                        <!--</div>-->
-                        <!--<div class="item1">-->
-                            <!--<h5>待测订单数：<span></span></h5>-->
-                            <!--<span class="data" id="lab_center_id_left_10"></span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="l-bottom-body" id="center_lab_bottom_div">-->
-                        <!--&lt;!&ndash;  <div class="l-bottom-body-1">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>已测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>412</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>在测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>284</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>待测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>437</strong></span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-bottom-body-2">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>已测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>412</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>在测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>284</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>待测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>437</strong></span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-bottom-body-3">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>已测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>412</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>在测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>284</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>待测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>437</strong></span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-bottom-body-4">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>已测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>412</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>在测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>284</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>待测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>437</strong></span>-->
-                             <!--</div>-->
-                         <!--</div>-->
-                         <!--<div class="l-bottom-body-5">-->
-                             <!--<h4>A室</h4>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>已测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>412</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>在测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>284</strong></span>-->
-                             <!--</div>-->
-                             <!--<div class="item1">-->
-                                 <!--<h5>待测订单数：<span></span></h5>-->
-                                 <!--<span class="data"><strong>437</strong></span>-->
-                             <!--</div>-->
-                         <!--</div> &ndash;&gt;-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+                </div>
+                &lt;!&ndash;第三行&ndash;&gt;
+                <div class="l-bottom">
+                    <div class="l-bottom-title">
+                        <h3>订单状态</h3>
+                    </div>
+                    <div class="l-bottom-header">
+                        <div class="item1">
+                            <h5>已测订单数：<span></span></h5>
+                            <span class="data" id="lab_center_id_left_8"></span>
+                        </div>
+                        <div class="item1">
+                            <h5>在测订单数：<span></span></h5>
+                            <span class="data" id="lab_center_id_left_9"></span>
+                        </div>
+                        <div class="item1">
+                            <h5>待测订单数：<span></span></h5>
+                            <span class="data" id="lab_center_id_left_10"></span>
+                        </div>
+                    </div>
+                    <div class="l-bottom-body" id="center_lab_bottom_div">
+                        &lt;!&ndash;  <div class="l-bottom-body-1">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>已测订单数：<span></span></h5>
+                                 <span class="data"><strong>412</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>在测订单数：<span></span></h5>
+                                 <span class="data"><strong>284</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>待测订单数：<span></span></h5>
+                                 <span class="data"><strong>437</strong></span>
+                             </div>
+                         </div>
+                         <div class="l-bottom-body-2">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>已测订单数：<span></span></h5>
+                                 <span class="data"><strong>412</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>在测订单数：<span></span></h5>
+                                 <span class="data"><strong>284</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>待测订单数：<span></span></h5>
+                                 <span class="data"><strong>437</strong></span>
+                             </div>
+                         </div>
+                         <div class="l-bottom-body-3">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>已测订单数：<span></span></h5>
+                                 <span class="data"><strong>412</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>在测订单数：<span></span></h5>
+                                 <span class="data"><strong>284</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>待测订单数：<span></span></h5>
+                                 <span class="data"><strong>437</strong></span>
+                             </div>
+                         </div>
+                         <div class="l-bottom-body-4">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>已测订单数：<span></span></h5>
+                                 <span class="data"><strong>412</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>在测订单数：<span></span></h5>
+                                 <span class="data"><strong>284</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>待测订单数：<span></span></h5>
+                                 <span class="data"><strong>437</strong></span>
+                             </div>
+                         </div>
+                         <div class="l-bottom-body-5">
+                             <h4>A室</h4>
+                             <div class="item1">
+                                 <h5>已测订单数：<span></span></h5>
+                                 <span class="data"><strong>412</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>在测订单数：<span></span></h5>
+                                 <span class="data"><strong>284</strong></span>
+                             </div>
+                             <div class="item1">
+                                 <h5>待测订单数：<span></span></h5>
+                                 <span class="data"><strong>437</strong></span>
+                             </div>
+                         </div> &ndash;&gt;
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!--&lt;!&ndash;数据分析&ndash;&gt;-->
-        <!--<div class="labMain_cb_left  zhbr_analysis">-->
-            <!--<h3 class="lab_title">数据分析</h3>-->
-            <!--<div class="lab_main">-->
+        &lt;!&ndash;数据分析&ndash;&gt;
+        <div class="labMain_cb_left  zhbr_analysis">
+            <h3 class="lab_title">数据分析</h3>
+            <div class="lab_main">
 
-                <!--<div class="la_top">-->
-                    <!--<div class="la_data_left">-->
-                        <!--<h3>一次合格率</h3>-->
-                        <!--<div class="la_datal_content clearfloat">-->
-                            <!--<div class="la_datal_legend">-->
-                                <!--<ul>-->
-                                    <!--<li id="hg_rate_center_lab_pj"></li>-->
-                                    <!--<li id="hg_rate_center_lab_height"></li>-->
-                                    <!--<li id="hg_rate_center_lab_low"></li>-->
-                                <!--</ul>-->
-                            <!--</div>-->
-                            <!--<div class="la_data_left_data">-->
-                                <!--<div class="la_data_echart" id="echart_one">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="la_data_right">-->
-                        <!--<p>近12个月一次合格率趋势图</p>-->
-                        <!--<div class="right_echart" id="echart_two"></div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;center&ndash;&gt;-->
-                <!--<div class="la_center">-->
-                    <!--<div class="la_data_left">-->
-                        <!--<h3>订单及时率</h3>-->
-                        <!--<div class="la_datal_content clearfloat">-->
-                            <!--<div class="la_datal_legend">-->
-                                <!--<ul>-->
-                                    <!--<li id="order_rate_center_lab_pj"></li>-->
-                                    <!--<li id="order_rate_center_lab_height"></li>-->
-                                    <!--<li id="order_rate_center_lab_low"></li>-->
-                                <!--</ul>-->
-                            <!--</div>-->
-                            <!--<div class="la_data_left_data">-->
-                                <!--<div class="la_data_echart" id="echart_three">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="la_data_right">-->
-                        <!--<p>近12个月订单及时率趋势图</p>-->
-                        <!--<div class="right_echart" id="echart_four"></div>-->
-                    <!--</div>-->
-                <!--</div>&lt;!&ndash;center&ndash;&gt;-->
-                <!--<div class="la_bottom">-->
+                <div class="la_top">
+                    <div class="la_data_left">
+                        <h3>一次合格率</h3>
+                        <div class="la_datal_content clearfloat">
+                            <div class="la_datal_legend">
+                                <ul>
+                                    <li id="hg_rate_center_lab_pj"></li>
+                                    <li id="hg_rate_center_lab_height"></li>
+                                    <li id="hg_rate_center_lab_low"></li>
+                                </ul>
+                            </div>
+                            <div class="la_data_left_data">
+                                <div class="la_data_echart" id="echart_one">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="la_data_right">
+                        <p>近12个月一次合格率趋势图</p>
+                        <div class="right_echart" id="echart_two"></div>
+                    </div>
+                </div>
+                &lt;!&ndash;center&ndash;&gt;
+                <div class="la_center">
+                    <div class="la_data_left">
+                        <h3>订单及时率</h3>
+                        <div class="la_datal_content clearfloat">
+                            <div class="la_datal_legend">
+                                <ul>
+                                    <li id="order_rate_center_lab_pj"></li>
+                                    <li id="order_rate_center_lab_height"></li>
+                                    <li id="order_rate_center_lab_low"></li>
+                                </ul>
+                            </div>
+                            <div class="la_data_left_data">
+                                <div class="la_data_echart" id="echart_three">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="la_data_right">
+                        <p>近12个月订单及时率趋势图</p>
+                        <div class="right_echart" id="echart_four"></div>
+                    </div>
+                </div>&lt;!&ndash;center&ndash;&gt;
+                <div class="la_bottom">
 
-                    <!--<div class="la_data_left">-->
-                        <!--<h3>用户满意度</h3>-->
-                        <!--<div class="la_datal_content clearfloat">-->
-                            <!--<div class="la_datal_legend">-->
-                                <!--<ul>-->
-                                    <!--<li id="satisfaction_rate_center_lab_pj"></li>-->
-                                    <!--<li id="satisfaction_rate_center_lab_height"></li>-->
-                                    <!--<li id="satisfaction_rate_center_lab_low"></li>-->
-                                <!--</ul>-->
-                            <!--</div>-->
-                            <!--<div class="la_data_left_data">-->
-                                <!--<div class="la_data_echart" id="echart_five">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="la_data_right">-->
-                        <!--<p>近12个月用户满意度趋势图</p>-->
-                        <!--<div class="right_echart" id="echart_six"></div>-->
-                    <!--</div>-->
-                <!--</div>&lt;!&ndash;la_bottom&ndash;&gt;-->
-            <!--</div>-->
-        <!--</div>-->
+                    <div class="la_data_left">
+                        <h3>用户满意度</h3>
+                        <div class="la_datal_content clearfloat">
+                            <div class="la_datal_legend">
+                                <ul>
+                                    <li id="satisfaction_rate_center_lab_pj"></li>
+                                    <li id="satisfaction_rate_center_lab_height"></li>
+                                    <li id="satisfaction_rate_center_lab_low"></li>
+                                </ul>
+                            </div>
+                            <div class="la_data_left_data">
+                                <div class="la_data_echart" id="echart_five">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="la_data_right">
+                        <p>近12个月用户满意度趋势图</p>
+                        <div class="right_echart" id="echart_six"></div>
+                    </div>
+                </div>&lt;!&ndash;la_bottom&ndash;&gt;
+            </div>
+        </div>
+-->
 
         <!--视频监控和曲线-->
         <div class="labMain_cb_left">

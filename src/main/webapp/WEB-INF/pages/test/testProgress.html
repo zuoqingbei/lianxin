@@ -14,11 +14,18 @@
     <div class="progressBar" data-pro="60"></div>
 </div>
 
-
+<ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+</ul>
 <script src="../../../static/asserts/js/jquery-2.2.4.js"></script>
 <script>
     $(function () {
-        $(".progress-bar").width("100%").height("100%")
+        $(".progress-bar").width("100%").height("100%");
+        $("ul>li:eq(2),ul>li:eq(3)").siblings().css("background","yellow");
     })
 
 </script>
