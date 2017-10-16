@@ -321,27 +321,26 @@
 
 #l .flat-footer .legend{
     position: relative;
-    top:-11%;
+    top:-3%;
     text-align: center;
     font-size:1.1em;
     margin: 0 auto;
     height: 95%;
     width: 54%;
     color: #999;
-    background: url(../img/nav-border.png);
-    background-size: 100% 100%;
+    background: url(../img/nav-border_noBottom.png) 50% 0 no-repeat;
+    background-size: 82% 71%;
 }
 #l .flat-footer .legend-l,
 #l .flat-footer .legend-r{
     cursor: pointer;
     position: absolute;
-    height: 50%;
+    height: 54%;
     width: 11%;
     line-height: 4em;
-    /*font-size: .9em;*/
     text-align: center;
     background-size: 100% 100%;
-    top: 14.6%;
+    top: 13%;
     z-index: 10;
 }
 #l .flat-footer .legend-l{
