@@ -162,7 +162,7 @@ video {
 
 ::-webkit-scrollbar {
     width: .5em;
-    height:1.6em;
+    height:1.2em;
 }
 ::-webkit-scrollbar-button {
     background-color: transparent;

@@ -40,11 +40,10 @@
 
     .lab_content_r > .switchBox {
         flex: 10;
-        /*outline: 1px dotted rgba(255, 165, 0, 0.44);*/
-        outline-offset: -1px;
     }
 }
 
+/*全局样式*/
 [class^=btn-],
 li:not(.hasChildren),
 .labMainNav > .switchBox > ul > li > header {
@@ -202,46 +201,84 @@ li:not(.hasChildren).active {
 }
 
 /*右侧tab标签*/
-.lab_content_r {
-    background-image: url("../img/lab/labTabBoardInland_1.png");
-    background-size: 100% 100%;
+@media all {
+    .lab_content_r {
+        background-image: url("../img/lab/labTabBoardInland_1.png");
+        background-size: 100% 100%;
+    }
+
+    .labSubNav > ul {
+        margin-left: 7em;
+    }
+
+    .labSubNav > ul > li {
+        display: inline-block;
+        text-align: center;
+        width: 10em;
+        padding: .75em 0;
+        font-size: 1.6em;
+        color: #fff;
+    }
+
+    .labSubNav > ul > li.active {
+        color: #fff;
+    }
+
 }
 
-.labSubNav > ul {
-    margin-left: 7em;
+/*右侧切换的div*/
+@media all {
+    .lab_content_r > .switchBox {
+        background-size: 100% 100%;
+    }
+
+    .lab_content_r > .switchBox > div.item,
+    .lab_content_r > .switchBox > div.item > div {
+        height: 100%;
+    }
+
+    .lab_content_r > .switchBox > div.item:not(:nth-of-type(1)) {
+        display: none;
+    }
+
+    .lab_content_r > .switchBox > div.item > iframe {
+        height: 100%;
+        background-color: #fff;
+    }
 }
 
-.labSubNav > ul > li {
+/*视频监控页面*/
+.monitoring .video_box {
+    padding: 1em;
+    height: 43em;
+    overflow: auto;
+}
+
+.monitoring .video_box > div > div {
     display: inline-block;
-    text-align: center;
-    width: 10em;
-    padding: .75em 0;
-    font-size: 1.6em;
-    color: #fff;
+    outline: 1px dotted darkgray;
+    margin:0 .2em;
 }
 
-.labSubNav > ul > li.active {
-    color: #fff;
+.monitoring .video_box > .video_4x4 > div {
+    width: calc(100% / 4 - .5em);
+    height: 10.5em;
 }
 
-.lab_content_r > .switchBox {
-    background-size: 100% 100%;
+.monitoring .video_box > .video_3x3 > div {
+    width: calc(100% / 3 - .5em);
+    height: 14em;
 }
 
-.lab_content_r > .switchBox > div.item,
-.lab_content_r > .switchBox > div.item > div {
-    height: 100%;
+.monitoring .video_box > .video_2x2 > div {
+    width: calc(100% / 2 - .5em);
+    height: 21em;
 }
 
-.lab_content_r > .switchBox > div.item:not(:nth-of-type(1)) {
-    display: none;
+.monitoring .video_box > .video_1x1 > div {
+    width: calc(100% - .5em);
+    height: 42em;
 }
-
-.lab_content_r > .switchBox > div.item > iframe {
-    height: 100%;
-    background-color: #fff;
-}
-
 
 
 
