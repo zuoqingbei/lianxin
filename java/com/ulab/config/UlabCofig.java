@@ -105,6 +105,7 @@ public class UlabCofig extends JFinalConfig {
 		
 		
 		
+		
 		//定时器
 		QuartzPlugin quartzPlugin = new QuartzPlugin();
 		quartzPlugin.setJobs("quartz.properties");
