@@ -3,7 +3,7 @@
 }
 
 .labMain_cb_left {
-    display: none;
+    /*display: none;*/
 }
 
 .labMain_cb_left_show {
@@ -35,8 +35,4 @@
     height: 97%;
 }
 
-.shishi_right .video_box {
-    width: 97%;
-    height: 98%;
-}
 

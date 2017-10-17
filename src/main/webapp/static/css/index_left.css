@@ -303,7 +303,16 @@
     height:100%;
     /*transform: rotateX(30deg);*/
 }
-
+#l .flat .toLabData{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20%;cursor: pointer;
+    z-index: 1000;
+}
+#l .flat .toLabData:hover{
+    text-decoration: underline;
+}
 #l .flat-footer{
     margin:0 auto;
     height:28%;

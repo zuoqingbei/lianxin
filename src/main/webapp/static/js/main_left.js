@@ -195,10 +195,12 @@ function navSelectA() {//这里会触发地图中要加载的数据
     var $flatBottomSwitchLi = $("#l.left3x3").find(".flat-footer ul.legend-bottom li");
     $flatBottomSwitchLi.find("a").click(function () {
         if($(this).text() ==="中海博睿"){
-            $("#r").hide();
-            $(".labMain_content").show()
-            $(".labMain_content_country").hide()
-            $(".labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show").hide()
+            // $("#r").hide();
+            // $(".labMain_content").show()
+            // console.log("================",$(".lab").show().siblings("div").not("#l")[0])
+            $(".lab").show().siblings("div").not("#l").hide();
+            // $(".labMain_content_country").hide()
+            // $(".labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show").hide()
         }
        /* if($(this).text().trim() ==="冰冷"){
         	var $l3x3 = $("#l");
@@ -288,6 +290,19 @@ function sphereRBscroll() {
     }
 }
 
+//打开实验室数据中心按钮
+function toLabData() {
+    var url = window.location.href;
+    console.log(url);
+    if(url.indexOf("toLabData")>-1){
+        $(".lab").show().siblings("div").not("#l").hide();
+    }
+    $(".toLabData").click(function(){
+        $(".lab").show().siblings("div").not("#l").hide();
+    })
+}
+
+
 $(function () {
     //进入时的视频淡出效果，开发时注掉下面这一行和被调用的代码
     // videoFadeOut();
@@ -296,7 +311,7 @@ $(function () {
     // document.getElementById("wordCloud").contentWindow.resizeText(bodyScale);
     // wordCloud.window.resizeText(bodyScale);
 
-    //切换地图显示区域
+    //切换地图显示区域及地图全屏
     switchMapArea();
     //切换地球和平面地图按钮的提示
     switchMapBtnTip();
@@ -308,7 +323,8 @@ $(function () {
     navSelectA();
     //球形地图右下角的广告滚动
     sphereRBscroll();
-
+    //打开实验室数据中心按钮
+    toLabData();
     // $(".fullScreen_map .sphere-left-bottom iframe")[0].contentWindow.run(300);
 
     // $("#iframe.map")[0].contentWindow.createArrData(productCode, labType);

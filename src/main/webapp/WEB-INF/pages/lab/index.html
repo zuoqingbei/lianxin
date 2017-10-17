@@ -29,7 +29,7 @@
     ##}
 
 
-     ##layout("centerLab.html", {}){
+     ##layout("lab.html", {}){
      ##}
 
      ##layout("centerLabWorld.html", {}){
@@ -43,7 +43,7 @@ $(function(){
 	$("div,a,img").click(function(e){
 	    //这里可能产生点击冒泡，但不能直接阻止，因为会造成某些点击事件的失效。
 //		console.log($("#clickSounds")[0]);
-		$("#clickSounds")[0].play();
+//		$("#clickSounds")[0].play();
 //        e.stopPropagation();//阻止冒泡
 	})
 
@@ -51,7 +51,7 @@ $(function(){
 
     $(function () {
         //这里是为了方便测试的模拟事件代码，正式使用时请蔽掉
-//        $("#l").find(".flat-footer .legend ul.legend-bottom li a").click()
+        $("#l").find(".flat-footer .legend ul.legend-bottom li:eq(0) a").click()
 //        $("#r .box:eq(0)").addClass("selected").siblings().removeClass("selected");
 //        resetSizeRight();
     	
