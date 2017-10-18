@@ -8,16 +8,26 @@ function echartsResize() {
     myChart1.resize();
     myChart2.resize();
 }
+var videoUlrInland = [
+    "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()",//本机
+    "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8?time=New Date()",//室外北侧
+    "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
+    "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()"//CCTV
+];
+var videoUlrAbroad = [
+    "http://192.168.1.168:6713/mag/hls/b055403a5a464b69bebc4b670bfdff60/1/live.m3u8?time=New Date()",//泰国"RF-B"
+    "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
+    "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
+    "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
+    "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()"//本机
+];
 
 $(function () {
 
     //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
     $(".btn-totalStatus").click(function () {
         $("#r").show().siblings(".lab").hide();
-        var $li = $(".left3x3").find(".flat-footer .legend ul.legend-bottom li");
-        $li.removeClass("active").each(function () {
-            bgImgOff($(this))
-        });
+
         resetSizeRight();
     });
 
@@ -126,6 +136,11 @@ $(function () {
 
         if ($(this).text().indexOf("实时监测") > -1) {
             echartsResizeWorld();
+            if($(this).hasClass("centerCurves")){
+                videoShow("smallVideoInland",videoUlrInland[0]);
+            }else {
+                videoShow("smallVideoAbroad",videoUlrAbroad[1]);
+            }
         }
     });
 
@@ -134,18 +149,12 @@ $(function () {
         var index = $(this).index();
         $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
         $(this).parents(".monitoring").find(".shishi_right>.item").eq(index).show().siblings().hide();
-    })
-    var videoUlr = [
-        "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8",//本机
-        "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8",//室外北侧
-        // "http://192.168.1.168:6713/mag/hls/b055403a5a464b69bebc4b670bfdff60/1/live.m3u8",//泰国"RF-B"
-        "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8",//泰国"IPdome"
-        "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8",//香港卫视
-        "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8"//CCTV
-    ];
 
-    function videoLayout(videoUlr) {
-        var $layoutBox = $(".monitoring .video_box > div");
+    });
+
+    function videoLayout(videoUlr,from) {
+        var $monitoring = $(".monitoring");
+        var $layoutBox = (from === "inland" ? $monitoring.eq(0).find(" .video_box > div"):$monitoring.eq(1).find(" .video_box > div"));
         var n = videoUlr.length;
         console.log("videoUlr.length", n);
         if (n < 2) {
@@ -159,28 +168,21 @@ $(function () {
         }
         var videoHtml = "";
         for (var i = 1; i <= n; i++) {
-            videoHtml += '<div ><div id="video' + i + '"></div></div>';
-            videoShow("video"+i,videoUlr[i-1]);
+            videoHtml += '<div ><div id="video' + i + from + '"></div></div>';
+            videoShow("video"+i+from,videoUlr[i-1]);
         }
-        $layoutBox.html(videoHtml);
+        $layoutBox.eq(0).html(videoHtml);
     }
 
     function videoShow(id,url) {
         var flashvars = {
-            // M3U8 url, or any other url which compatible with SMP player (flv, mp4, f4m)
-            // escaped it for urls with ampersands
-            //src: escape("http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8"),
             src: escape(url),
-            // src: escape("http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8"),
-            // url to OSMF HLS Plugin
-            //plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
             plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
             autoPlay : "true",
             autoSwitchQuality : "true",
         };
         var params = {
             // self-explained parameters
-//        play: true,
             allowFullScreen: true,
             allowScriptAccess: "always",
             quality:"low",
@@ -227,7 +229,7 @@ $(function () {
             // width, height
             "100%", "100%",
             // minimum flash player version required
-            "10.4",
+            "27",
             // other parameters
             null,
             flashvars,
@@ -235,7 +237,23 @@ $(function () {
             attrs
         )
     }
-    videoLayout(videoUlr);
+    videoLayout(videoUlrInland,"inland");
+    videoLayout(videoUlrAbroad,"abroad");
+
+    //画中画的视频隐藏显示
+    $(".smallVideoBox>.hideShow").click(function () {
+        var $video = $(this).next();
+        if($video.is(":visible")){
+            $video.hide();
+            $(this).children(".text").text("显示小视频");
+            $(this).children(".icon").css("background-image","url(../static/img/lab/browse.png)")
+        }else{
+            $video.show();
+            $(this).children(".text").text("点击隐藏");
+            $(this).children(".icon").css("background-image","url(../static/img/lab/close.png)")
+        }
+    })
+    
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
     initfour();//及时率
