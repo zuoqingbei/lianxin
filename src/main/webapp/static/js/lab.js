@@ -252,7 +252,7 @@ $(function () {
             $(this).children(".text").text("点击隐藏");
             $(this).children(".icon").css("background-image","url(../static/img/lab/close.png)")
         }
-    })
+    });
     
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
