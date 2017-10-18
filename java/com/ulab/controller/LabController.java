@@ -1005,6 +1005,9 @@ public class LabController extends BaseController {
     	//量产一致性保障 字典
     	List<Record> providerDic=ProviderDicModel.dao.findProviderDic();
     	setAttr("providerDic", providerDic);
+    	//获取工位信息
+    	List<Record> providerDicStation = ProviderDicModel.dao.findProviderDicStation();
+    	setAttr("providerDicStation", providerDicStation);
         render("index.html");
     }
 }
