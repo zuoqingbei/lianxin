@@ -307,11 +307,17 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 20%;cursor: pointer;
-    z-index: 1000;
+    bottom: 3.8%;
+    padding: .8em 7.4em .5em;
+    cursor: pointer;
+    background-image: url(../img/lab/toLabBoard.png);
+    background-size: 100% 100%;
+    z-index: 10000;
 }
-#l .flat .toLabData:hover{
-    text-decoration: underline;
+#l .flat .toLabData:hover span{
+    position: relative;
+    left: .2em;
+
 }
 #l .flat-footer{
     margin:0 auto;
@@ -321,38 +327,38 @@
 
 #l .flat-footer .legend{
     position: relative;
-    top:-3%;
+    top: -20%;
     text-align: center;
-    font-size:1.1em;
+    font-size: 1.1em;
     margin: 0 auto;
-    height: 95%;
-    width: 54%;
+    height: 68%;
+    width: 46%;
     color: #999;
     background: url(../img/nav-border_noBottom.png) 50% 0 no-repeat;
-    background-size: 82% 71%;
+    background-size: 100% 100%;
 }
 #l .flat-footer .legend-l,
 #l .flat-footer .legend-r{
     cursor: pointer;
     position: absolute;
-    height: 54%;
-    width: 11%;
-    line-height: 4em;
+    height: 85%;
+    width: 14%;
+    line-height: 4.5em;
     text-align: center;
     background-size: 100% 100%;
-    top: 13%;
+    top: 14.8%;
     z-index: 10;
 }
 #l .flat-footer .legend-l{
     cursor: pointer;
     color: #00e673;
     background-image: url(../img/ico/navSwitch_on.png) ;
-    left: 0;
+    left: -4.5em;
 }
 #l .flat-footer .legend-r{
     color: #6cf;
     background-image: url(../img/ico/navSwitch_off.png) ;
-    right: 0;
+    right: -4.5em;
 }
 
 #l .flat-footer .legend .icon{
