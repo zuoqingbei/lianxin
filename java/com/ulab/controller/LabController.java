@@ -18,6 +18,7 @@ import com.ulab.client.webServiceRerigerator.WebServiceRerigeratorClient;
 import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 import com.ulab.model.CommunistModel;
+import com.ulab.model.DataCenterModel;
 import com.ulab.model.DicModel;
 import com.ulab.model.EquipmentModel;
 import com.ulab.model.JianCeModel;
@@ -29,6 +30,7 @@ import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 import com.ulab.model.LabTestUnit;
+import com.ulab.model.LabVideoModel;
 import com.ulab.model.OrderModel;
 import com.ulab.model.PersonModel;
 import com.ulab.model.ProviderDicModel;
@@ -1006,5 +1008,43 @@ public class LabController extends BaseController {
     	List<Record> providerDic=ProviderDicModel.dao.findProviderDic();
     	setAttr("providerDic", providerDic);
         render("index.html");
+    }
+    
+    
+    
+    
+    /**
+     * 
+     * @time   2017年10月19日 上午6:03:13
+     * @author zuoqb
+     * @todo   查询全部数据中心数据（包含层级关系）
+     */
+    public void loadAllDataCenterAjax(){
+    	List<Record> centerDataList = DataCenterModel.dao.findAllDataCenter();
+		renderJson(centerDataList);
+    }
+    /**
+     * 
+     * @time   2017年10月19日 上午6:03:13
+     * @author zuoqb
+     * @todo   查询监控数据
+     */
+    public void loadVideosByDataCenterAjax(){
+    	String dataCenterId=getPara("dataCenterId","1");
+    	List<Record> videoList = LabVideoModel.dao.findVideosByDataCenterId(dataCenterId);
+		renderJson(videoList);
+    }
+    /**
+     * 
+     * @time   2017年10月19日 上午6:28:39
+     * @author zuoqb
+     * @todo   根据实验室编码查询某个实验室的画中画监控
+     * @param  
+     * @return_type   void
+     */
+    public void loadTopVideoByLabCodeAjax(){
+    	String labCode=getPara("labCode","lab111");
+    	Record topVideo = LabVideoModel.dao.findTopVideoByLabCode(labCode);
+		renderJson(topVideo);
     }
 }
