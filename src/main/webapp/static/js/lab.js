@@ -237,8 +237,6 @@ $(function () {
             attrs
         )
     }
-    videoLayout(videoUlrInland,"inland");
-    videoLayout(videoUlrAbroad,"abroad");
 
     //画中画的视频隐藏显示
     $(".smallVideoBox>.hideShow").click(function () {
@@ -253,7 +251,18 @@ $(function () {
             $(this).children(".icon").css("background-image","url(../static/img/lab/close.png)")
         }
     });
-    
+
+    function loadNavList() {
+        $.post(contextPath + "/lab/getJsonFile", {"fileName": labTypeCode + "-" + ".json"}, function (data) {
+            console.log("eval前",data);
+            // data = eval("(" + data + ")");
+            console.log("eval后",data)
+        });
+    }
+    loadNavList();
+    videoLayout(videoUlrInland,"inland");
+    videoLayout(videoUlrAbroad,"abroad");
+
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
     initfour();//及时率

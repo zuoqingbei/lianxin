@@ -423,8 +423,9 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId) {
     mlabTypeCode = labTypeCode;
     mtestUnitId = testUnitId;
     $.post(contextPath + "/lab/getJsonFile", {"fileName": labTypeCode + "-" + testUnitId + ".json"}, function (data) {
-        //console.log(data)
+        console.log("eval前",data)
         data = eval("(" + data + ")");
+        console.log("eval后",data)
         if (data == "") {
             //alert("暂未开测");
             return;
