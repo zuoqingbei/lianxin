@@ -51,7 +51,7 @@ public class LabVideoModel extends Model<CommunistModel>{
 	 * @todo   根据数据中心查询实验室列表
 	 */
 	public List<Record> findLabsByDataCenterId(String dataCenterId){
-		String sql="select distinct v.lab_code,lab.lab_name from t_b_lab_video v left join t_b_lab_code lab on lab.lab_code=v.lab_code where v.data_center_id='"+dataCenterId+"'and lab.del_flag=0  and v.del_flag=0 and v.show_flag=0 order by v.order_num";
+		String sql="select distinct v.lab_code,lab.lab_name,lab.order_num from t_b_lab_video v left join t_b_lab_code lab on lab.lab_code=v.lab_code where v.data_center_id='"+dataCenterId+"'and lab.del_flag=0  and v.del_flag=0 and v.show_flag=0 order by lab.order_num";
 		List<Record> list=Db.find(sql);
 		return list;
 	}

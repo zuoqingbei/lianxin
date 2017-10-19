@@ -44,7 +44,7 @@ public class DataCenterModel extends Model<CommunistModel>{
 	 * @return_type   List<Record>
 	 */
 	public List<Record> findDataCenterByLevel(Object level){
-		String sql="select * from t_b_data_center where level='"+level+"' and del_flag=0 order by order_num";
+		String sql="select * from t_b_data_center where center_level='"+level+"' and del_flag=0 order by order_num";
 		return Db.find(sql);
 	}
 	/**
