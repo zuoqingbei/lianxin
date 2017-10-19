@@ -60,4 +60,24 @@ public class ProviderDicModel extends Model<ProviderDicModel> {
 		}
 		return list;
 	}
+	/***
+	 * 获取初始化工位数据
+	 * @author Tom
+	 * @return
+	 */
+	public List<Record> findProviderDicStationInit(){
+		List<Record>  list=findProviderDicByLevel("2");
+		List<Record> result = findProviderDicByPid(list.get(0).get("id")+"");
+		return result;
+	}
+	/***
+	 * 根据parentId获取工位信息
+	 * @param parentId
+	 * @return
+	 */
+	public List<Record> findProviderDicStationByParentId(String parentId){
+		StringBuffer sb=new StringBuffer();
+		sb.append("SELECT * FROM T_B_PROVIDER_DIC T WHERE T .PARENT_ID = '" + parentId + "' ORDER BY T .ORDER_NO");
+		return Db.find(sb.toString());
+	}
 }

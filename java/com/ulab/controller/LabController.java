@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
@@ -1005,9 +1006,19 @@ public class LabController extends BaseController {
     	//量产一致性保障 字典
     	List<Record> providerDic=ProviderDicModel.dao.findProviderDic();
     	setAttr("providerDic", providerDic);
-    	//获取工位信息
-    	List<Record> providerDicStation = ProviderDicModel.dao.findProviderDicStation();
+    	//获取初始化工位信息
+    	List<Record> providerDicStation = ProviderDicModel.dao.findProviderDicStationInit();
     	setAttr("providerDicStation", providerDicStation);
+    	//setCookie("providerDicStation", JSON.toJSON(providerDicStation).toString(), 1000);
         render("index.html");
+    }
+    /***
+     * 根据型号获取工位
+     * @author Tom
+     */
+    public void labGetStationAjax(){
+    	String id = getPara("id","");
+    	List<Record> providerDicStation=ProviderDicModel.dao.findProviderDicStationByParentId(id);
+    	renderJson(providerDicStation);
     }
 }

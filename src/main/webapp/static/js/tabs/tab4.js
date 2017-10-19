@@ -830,7 +830,10 @@ function tab4JianSelected(obj) {
     var name = $(obj).find("option.active").text();
     console.log("-------------$('select').val():",$("select").val())
     // console.log("-------------id,selectOpt:",id,selectOpt[0])
-    loadTab4JianData(id,name);
+    console.log('---------------------------------------');
+    //console.log(providerDicStation);
+    console.log('---------------------------------------');
+    //loadTab4JianData(id,name);
 }
 
 //模块商质量水平分布
