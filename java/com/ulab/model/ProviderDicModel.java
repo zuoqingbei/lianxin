@@ -37,4 +37,47 @@ public class ProviderDicModel extends Model<ProviderDicModel> {
 		sb.append(" select * from t_b_provider_dic where parent_id='"+parentId+"' order by order_no   ");
 		return Db.find(sb.toString());
 	}
+	/***
+	 * 通过DIC_LEVEL来查询数据信息
+	 * @param levelId
+	 * @author Tom
+	 * @return
+	 */
+	public List<Record> findProviderDicByLevel(String levelId){
+		StringBuffer sb=new StringBuffer();
+		sb.append("SELECT * FROM T_B_PROVIDER_DIC T WHERE T .DIC_LEVEL = '" + levelId + "' ORDER BY T .PARENT_ID,T .ORDER_NO");
+		return Db.find(sb.toString());
+	}
+	/***
+	 * 获取工位数据
+	 * @author Tom
+	 * @return
+	 */
+	public List<Record> findProviderDicStation(){
+		List<Record>  list=findProviderDicByLevel("2");
+		for(Record r:list){
+			r.set("children", findProviderDicByPid(r.get("id")+""));
+		}
+		return list;
+	}
+	/***
+	 * 获取初始化工位数据
+	 * @author Tom
+	 * @return
+	 */
+	public List<Record> findProviderDicStationInit(){
+		List<Record>  list=findProviderDicByLevel("2");
+		List<Record> result = findProviderDicByPid(list.get(0).get("id")+"");
+		return result;
+	}
+	/***
+	 * 根据parentId获取工位信息
+	 * @param parentId
+	 * @return
+	 */
+	public List<Record> findProviderDicStationByParentId(String parentId){
+		StringBuffer sb=new StringBuffer();
+		sb.append("SELECT * FROM T_B_PROVIDER_DIC T WHERE T .PARENT_ID = '" + parentId + "' ORDER BY T .ORDER_NO");
+		return Db.find(sb.toString());
+	}
 }
