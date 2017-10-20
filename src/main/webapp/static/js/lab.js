@@ -169,12 +169,21 @@ $(function () {
         }
         var videoHtml = "";
         for (var i = 1; i <= n; i++) {
-            videoHtml += '<div ><div id="video' + i + from + '"></div></div>';
-            videoShow("video"+i+from,videoUlr[i-1]);
+            // videoHtml += '<div><div id="video' + i + from + '"></div></div>';
+            videoHtml += '<div style="cursor: pointer"><div id="video' + i + from + '"><h1 style="font-size: 3em;">'+i+'</h1></div></div>';
+            // videoShow("video"+i+from,videoUlr[i-1]);
         }
         $layoutBox.eq(0).html(videoHtml);
     }
 
+    //另一种方式，点击图片再加载视频
+    $(".video_box > div").on("dblclick","div",function () {
+        $(this).parent().hide().siblings().show();
+        videoShow("floatVideo",videoUlrInland[$(this).index()]);
+    })
+    $("#floatVideoBox").click(function () {
+        $(this).parent().hide().siblings().show();
+    })
     function videoShow(id,url) {
         var flashvars = {
             src: escape(url),
@@ -253,14 +262,7 @@ $(function () {
         }
     });
 
-    function loadNavList() {
-        $.post(contextPath + "/lab/getJsonFile", {"fileName": labTypeCode + "-" + ".json"}, function (data) {
-            console.log("eval前",data);
-            // data = eval("(" + data + ")");
-            console.log("eval后",data)
-        });
-    }
-    loadNavList();
+
     videoLayout(videoUlrInland,"inland");
     videoLayout(videoUlrAbroad,"abroad");
 
