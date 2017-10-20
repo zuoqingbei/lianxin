@@ -9,16 +9,17 @@ function echartsResize() {
     myChart2.resize();
 }
 var videoUlrInland = [
+    "http://10.130.96.113:6713/mag/hls/26667e63e1234554b2295388be3ac813/0/live.m3u8?time=New Date()",//本机
     "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()",//本机
     "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8?time=New Date()",//室外北侧
     "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
-    "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()"//CCTV
+    // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()"//CCTV
 ];
 var videoUlrAbroad = [
     "http://192.168.1.168:6713/mag/hls/b055403a5a464b69bebc4b670bfdff60/1/live.m3u8?time=New Date()",//泰国"RF-B"
     "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
     "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
-    "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
+    // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
     "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()"//本机
 ];
 

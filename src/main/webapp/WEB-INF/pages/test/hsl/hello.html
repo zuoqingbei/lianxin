@@ -2,8 +2,8 @@
 <html>
 <head>
     <title>视频监控测试页</title>
-    <script src="../static/test/swfobject.js"></script>
-    <script src="../static/asserts/js/jquery-2.2.4.js"></script>
+    <script src="swfobject.js"></script>
+    <script src="../../../../static/asserts/js/jquery-2.2.4.js"></script>
 </head>
 <body>
 <div id="player">
@@ -15,23 +15,22 @@
 <button id="taiguo2">泰国IPdome</button>
 <button id="hkstv">香港hkstv测试</button>
 <button id="cctv">cctv测试</button>
-<button id="data1">数据中心服务器</button>
 <script>
 
     var flashvars = {
         // M3U8 url, or any other url which compatible with SMP player (flv, mp4, f4m)        
         // escaped it for urls with ampersands        
         //src: escape("http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8"),
-        src: escape("http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8"),
-        // url to OSMF HLS Plugin         
+//        src: escape("http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8"),
+        src: escape("http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8"),
+        // url to OSMF HLS Plugin
         //plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
-        plugin_m3u8: "../static/test/HLSProviderOSMF.swf",
+        plugin_m3u8: "HLSProviderOSMF.swf",
         autoPlay : "true",
         autoSwitchQuality : "true",
     };
     var params = {
         // self-explained parameters
-//        play: true,
         allowFullScreen: true,
         allowScriptAccess: "always",
         quality:"low",
@@ -56,7 +55,7 @@
 function loadSwf() {
     swfobject.embedSWF(
         // url to SMP player
-        "../static/test/StrobeMediaPlayback.swf",
+        "StrobeMediaPlayback.swf",
         // div id where player will be place
         "player",
         // width, height
@@ -135,10 +134,6 @@ function loadSwf() {
     });
     $("#cctv").click(function () {
         flashvars.src = "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8";
-        loadSwf();
-    });
-    $("#data1").click(function () {
-        flashvars.src = "http://10.130.96.113:6713/mag/hls/26667e63e1234554b2295388be3ac813/1/live.m3u8";
         loadSwf();
     });
 
