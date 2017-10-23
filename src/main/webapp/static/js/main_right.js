@@ -4516,8 +4516,8 @@ function refreshHeightChart(){
 	    },
 	    xAxis: {
 	        gridLineWidth: 0,
-	        min:71,
-	        max:77,
+	        min:rootlsl,
+	        max:rootusl,
 	        plotLines: [],
 	        tickColor: "rgba(0,0,0,0)",
 	        labels:{

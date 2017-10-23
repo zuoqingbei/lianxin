@@ -28,7 +28,7 @@ public class XbarModel extends Model<XbarModel> {
 	 * @return_type   List<Record>
 	 */
 	public List<Record> findXbarData(String xhName,String type){
-		String sql="select id,xh_code,xh_name,type,num as rate,num,result,order_no as name from t_b_xbar where xh_name='"+xhName+"' and type='"+type+"' order by order_no";
+		String sql="select id,xh_code,xh_name,type,num as rate,num,result,order_no as name from t_b_xbar where GW_CODE='"+xhName+"' and type='"+type+"' order by order_no";
 		return Db.find(sql);
 	}
 	

@@ -28,7 +28,7 @@ public class JianCeModel extends Model<JianCeModel> {
 	 */
 	public List<Record> findProviderDicByPid(String xhCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select * from  t_b_jiance where xh_code='"+xhCode+"' order by to_number(id)  ");
+		sb.append(" select * from  t_b_jiance where GW_CODE='"+xhCode+"' order by to_number(id)  ");
 		return Db.find(sb.toString());
 	}
 }

@@ -17,7 +17,7 @@ public class JianceProModel extends Model<JianceProModel> {
 	public static final JianceProModel dao = new JianceProModel();
 	
 	public Record findProByFiled(String filed){
-		String sql="select * from t_b_xh_property where xh_id='"+filed+"' or xh_name ='"+filed+"'";
+		String sql="select * from t_b_xh_property where GW_ID='"+filed+"'";
 		return Db.findFirst(sql);
 	}
 	

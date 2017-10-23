@@ -9,7 +9,12 @@ function loadTab4Data(){
     //根据类型 时间 统计共产 一致个月份数量
     communistStatisticForMonthForTab4Ajax();
     //直方图
-    loadTab4JianData($(".tab4 .shujuWajue_left_top_list .active").attr("data"),$(".tab4 .shujuWajue_left_top_list .active").html());
+    //loadTab4JianData($(".tab4 .shujuWajue_left_top_list .active").attr("data"),$(".tab4 .shujuWajue_left_top_list .active").html());
+    //Tom add start
+    //加载工位数据信息
+    console.log('初始化数据'+$("#station").find("option:selected").attr("data")+$("#station").find("option:selected").text())
+    loadTab4JianData($("#station").find("option:selected").attr("data"),$("#station").find("option:selected").text());
+    //Tom add end
 }
 //加载量产一致性保障 xhId:产品id  name：产品名称
 function loadTab4JianData(xhId,xName){
@@ -195,8 +200,9 @@ function getMaxMinForScpTab4(data, xhPro, type) {
 }
 //SPC分析  xbar
 function scpDataForTab4(myChartIds,xhPro,type){
-	//类型 1：样本平均值 2：样本标准差
-	$.post(contextPath+'/lab/jianCeXbarForTab1Ajax',{"xhName":xhPro.xh_name,"type":type},function(data){
+    //类型 1：样本平均值 2：样本标准差
+    //xh_name--->gw_id
+	$.post(contextPath+'/lab/jianCeXbarForTab1Ajax',{"xhName":xhPro.gw_id,"type":type},function(data){
 		var maxAndMin=getMaxMinForScpTab4(data,xhPro,type);
 		var mTitle,mLcl,mValue,mUcl;
 		if(type==1){
@@ -335,9 +341,12 @@ function tab4OrderRateSeriseData(data) {
 //直方图
 var tab4xhPro;
 var tab4CPKData;
+var rootlsl;
+var rootusl;
 function cpkDataForTab4(xhPro){
-	tab4xhPro=xhPro;
-	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhPro.xh_name},function(data){
+    tab4xhPro=xhPro;
+    //xh_name--->gw_id
+	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhPro.gw_id},function(data){
 		tab4CPKData=data;
 		var mData=[];
 		var mData2=[];
@@ -837,6 +846,7 @@ function tab4JianSelected(obj) {
             if(i==0){
                 var str = "<option class='showLabel active' data='"+data[i].id+"' value='"+data[i].name+"'>"+data[i].name+"</option>";
                 $("#station").append(str);
+                loadTab4JianData(data[i].id,data[i].name);
             }else{
                 var str = "<option class='showLabel' data='"+data[i].id+"' value='"+data[i].name+"'>"+data[i].name+"</option>";
                 $("#station").append(str);
@@ -849,15 +859,11 @@ function tab4JianSelected(obj) {
 
 //工位下拉菜单选择
 function tab4StationSelected(obj){
-    // $("option").removeClass("active");
-    // var selectOpt = $("option[value="+$("select").val()+"]");
-    // var selectedLabel = selectOpt.addClass("active").parent().attr("label");
-    // $("option.showLabel").text(selectedLabel).prop("selected",true);
     var id = $(obj).find("option:selected").attr("data");
     var name = $(obj).find("option:selected").text();
-    // var id = $(obj).find("option.active").attr("data");
-    // var name = $(obj).find("option.active").text();
     console.log(id+name);
+    //工位变化
+    loadTab4JianData(id,name);
 }
 //模块商质量水平分布
 function mkSqualityLevelForTab4(xhPro) {
