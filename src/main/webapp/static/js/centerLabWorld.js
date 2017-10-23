@@ -111,16 +111,17 @@ var configName;
 var startTime;
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName) {
+	var dataCenter=dataCenterMap.get(type);
 	var $l3x3 = $("#l");
 	configName=mConfigName;
 	//清除中海博睿定时器
 	window.clearInterval(intevalChart1);
 	window.clearInterval(intevalChartHadoop);
     // $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
-    $(".labMain_cblt_tone_world").html( "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
-    $(".labMain_cblt_ttwo_world img").attr("src", labImgs[type]);
-    $("#labName_world").html(labname[type]);
-    $("#labnameIcon_world").html(labname[type]);
+    $(".labMain_cblt_tone_world").html( "<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
+    $(".labMain_cblt_ttwo_world img").attr("src", (dataCenter.img_content ==null?"../static/img/labMain/Thailand.jpg":dataCenter.img_content));
+    $("#labName_world").html(dataCenter.center_name);
+    $("#labnameIcon_world").html(dataCenter.center_name);
     // $("#secondName_world").html(labname[type]);
     //生成下拉
 	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName},function(data){
@@ -327,16 +328,48 @@ function timestampFormat(timestamp){
 
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorld(type) {
+	var dataCenter=dataCenterMap.get(type);
 	window.clearInterval(intevalChart1);
     // console.log(labInfos[type])
-    $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
-    $(".labMain_cblt_ttwo_world img").attr("src", labImgs[type]);
-    $("#labName_world").html(labname[type]);
-    $("#labnameIcon_world").html(labname[type]);
-    $("#secondName_world").html(labname[type]);
+    $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
+    $(".labMain_cblt_ttwo_world img").attr("src", dataCenter.img_content);
+    $("#labName_world").html(dataCenter.center_name);
+    $("#labnameIcon_world").html(dataCenter.center_name);
+    $("#secondName_world").html(dataCenter.center_name);
     var htmls = "";
+    $.post(contextPath+"/lab/loadJsonProByDataCenterIdAjax",{"dataCenterId":dataCenter.id},function(da){
+    	alert(da)
+    	$.each(da,function(index,item){
+    		htmls += ' <li><span></span><a href="javascript:void(0);">'+item.pro_name+'</a>';
+    		if(item.children!=null&&item.children.length>0){
+    			htmls += '<ul class="taiwei_hide">';
+    			$.each(item.children,function(ind,it){
+    				if(ind==0){
+    					 findSensorByLabCenetrTabAjaxWorld(item.pro_code, it.pro_code);
+    				}
+    				 htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("'+item.pro_code+'","'+it.pro_code+'")>'+it.pro_name+'</li>';
+    			});
+    		}
+	        htmls += ' </ul></li>';
+    	});
+    	$("#lab_unit_selected_center_world").html(htmls);
+
+
+        $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
+            $(".sheshi_tab").eq(1).trigger('click');
+            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
+            $(this).css('height','auto').siblings().css('height','1.5em');
+            $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
+            $(this).find('.taiwei_hide').css('display','block');
+        });
+
+        $('.taiwei_hide>li').click(function () {
+            $(".sheshi_tab").eq(1).trigger('click');
+            $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
+        })
+    });
     //console.log(data)
-    if (type == 0) {
+   /* if (type == 0) {
         //日本
         htmls += ' <li><span></span><a href="javascript:void(0);">Refrigeration TL</a>';
         htmls += '<ul class="taiwei_hide">';
@@ -364,23 +397,9 @@ function loadLabUnitInfoCenterTabAjaxWorld(type) {
         htmls += '</ul>';
         htmls += ' </li>';
         findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001", "B4");
-    }
+    }*/
 
-    $("#lab_unit_selected_center_world").html(htmls);
-
-
-    $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
-        $(".sheshi_tab").eq(1).trigger('click');
-        $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
-        $(this).css('height','auto').siblings().css('height','1.5em');
-        $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-        $(this).find('.taiwei_hide').css('display','block');
-    });
-
-    $('.taiwei_hide>li').click(function () {
-        $(".sheshi_tab").eq(1).trigger('click');
-        $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-    })
+    
 
 
 }
