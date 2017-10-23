@@ -387,6 +387,4 @@ $(function () {
     inittwo();//满意度
 
     labAllForCenterLabAjax();
-
-
 })

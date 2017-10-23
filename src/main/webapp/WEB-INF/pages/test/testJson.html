@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试json</title>
+</head>
+<body>
+
+    <h1>测试json</h1>
+
+
+<script src="../static/asserts/js/jquery-2.2.4.js"></script>
+<script>
+    $(function () {
+        $.get("http://localhost:8080/hlht/lab/loadAllDataCenterAjax",function (data) {
+            console.log(data);
+            data.forEach(function (lab) {
+                console.log(lab.center_name)
+            })
+        })
+    })
+
+</script>
+
+</body>
+</html>
+
+平面地图的提示框需要设计：
+现状，只有实验室名称和数量两行文字。
+按标书的承诺，需要修改更好看的样式。
+我考虑下面2种：

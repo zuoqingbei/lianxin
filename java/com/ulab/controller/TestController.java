@@ -173,4 +173,7 @@ public class TestController extends BaseController {
     	String path="D://unit.json";
     	System.out.println(JsonUtils.readJson(path));
 	}
+    public void testJson() {
+        render("testJson.html");
+    }
 }
