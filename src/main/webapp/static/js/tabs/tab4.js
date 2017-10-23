@@ -830,7 +830,21 @@ function tab4JianSelected(obj) {
     var name = $(obj).find("option.active").text();
     console.log("-------------$('select').val():",$("select").val())
     // console.log("-------------id,selectOpt:",id,selectOpt[0])
-    loadTab4JianData(id,name);
+    $.post(contextPath+'/lab/labGetStationAjax',{"id":id},function(data){
+        console.log(data);
+        $("#station").html("");
+        for(var i = 0 ; i < data.length ; i++){
+            if(i==0){
+                var str = "<option class='showLabel active' data='"+data[i].id+"' value='"+data[i].name+"'>"+data[i].name+"</option>";
+                $("#station").append(str);
+            }else{
+                var str = "<option class='showLabel' data='"+data[i].id+"' value='"+data[i].name+"'>"+data[i].name+"</option>";
+                $("#station").append(str);
+            }
+        }
+        
+    });
+    //loadTab4JianData(id,name);
 }
 
 //模块商质量水平分布

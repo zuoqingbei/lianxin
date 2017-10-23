@@ -1,3 +1,49 @@
+
+function Map() {
+  var struct = function (key, value) {
+    this.key = key;
+    this.value = value;
+  }
+  var put = function (key, value) {
+    for (var i = 0; i < this.arr.length; i++) {
+      if (this.arr[i].key === key) {
+        this.arr[i].value = value;
+        return;
+      }
+    }
+    this.arr[this.arr.length] = new struct(key, value);
+  }
+  var get = function (key) {
+    for (var i = 0; i < this.arr.length; i++) {
+      if (this.arr[i].key === key) {
+        return this.arr[i].value;
+      }
+    }
+    return null;
+  }
+  var remove = function (key) {
+    var v;
+    for (var i = 0; i < this.arr.length; i++) {
+      v = this.arr.pop();
+      if (v.key === key) {
+        continue;
+      }
+      this.arr.unshift(v);
+    }
+  }
+  var size = function () {
+    return this.arr.length;
+  }
+  var isEmpty = function () {
+    return this.arr.length <= 0;
+  }
+  this.arr = new Array();
+  this.get = get;
+  this.put = put;
+  this.remove = remove;
+  this.size = size;
+  this.isEmpty = isEmpty;
+}
 function echartsResize() {
     chartone.resize();
     charttwo.resize();
@@ -21,9 +67,90 @@ var videoUlrAbroad = [
     "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
     "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()"//本机
 ];
-
+var dataCenterMap=new Map();
+//查询全部数据中心数据（包含层级关系）
+function loadAllDataCenterAjax(){
+	$.post(contextPath+"/lab/loadAllDataCenterAjax",{},function(data){
+		console.log(data)
+		$(".inland").html(createDataCenterHtml(data,0));
+		$(".abroad").html(createDataCenterHtml(data,1));
+		//alert(dataCenterMap.get("1"));
+	});
+}
+function createDataCenterHtml(data,dataType){
+	//dataType:0：国内 1：国外
+	var htmls="";
+	var cuNum=0;
+	$.each(data,function(index,item){
+		if(item.data_type==dataType){
+			var haschildren=false;
+			if(item.haschildren==1){
+				haschildren=true;
+			}
+			dataCenterMap.put(item.id,item);
+			if(!haschildren){
+				htmls+='<li '
+				if(cuNum==0){
+					htmls+=' class=" noChildren active" ';
+				}else{
+					htmls+=' class=" noChildren " ';
+				};
+				cuNum++;
+				//创建li响应方法
+				htmls+=createClickFuntion(item);
+				htmls+=' >'+item.center_name+'</li>';
+			}else{
+				htmls+='<li '
+				if(cuNum==0){
+					htmls+=' class=" hasChildren active" >';
+				}else{
+					htmls+=' class=" hasChildren " >';
+				};
+				cuNum++;
+				htmls+=' <header class="fold">'+item.center_name+'<span>︿</span></header> ';
+				htmls+='<ul>';
+				dataCenterMap.put(item.id,item);
+				$.each(item.children,function(index,cItem){
+					dataCenterMap.put(cItem.id,cItem);
+					htmls+='<li ';
+					htmls+=createClickFuntion(cItem)+" >"+cItem.center_name+'</li>';
+				});
+				htmls+='</ul></li>';
+			}
+			
+		}
+	});
+	return htmls;
+	
+}
+//创建li响应方法
+function createClickFuntion(item){
+	var htmls="";
+	/**
+	 * 数据源 db-直连数据库； url-第三方链接；
+		webservice-连接webservice；json-读取json文件
+	 */
+	var dataSource=item.data_source;
+	if(dataSource=="db"){
+		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop('"+item.id+"','"+item.souce_value+"')"
+	}else if(dataSource=="webservice"){
+		//中海博睿
+		htmls+=" onclick=loadLabUnitInfoCenterTabAjax() ";
+	}else if(dataSource=="json"){
+		//新西兰 日本读取json文件
+		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('"+item.id+"') ";
+	}else if(dataSource=="url"){
+		htmls+=" onclick= intentsUrl('"+item.id+"')";
+	}
+	return htmls;
+}
+//直接跳转第三方地址
+function intentsUrl(type){
+	var dataCenter=dataCenterMap.get(type);
+	var url=dataCenter.souce_value;
+}
 $(function () {
-
+	loadAllDataCenterAjax();
     //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
     $(".btn-totalStatus").click(function () {
         $("#r").show().siblings(".lab").hide();
@@ -260,6 +387,4 @@ $(function () {
     inittwo();//满意度
 
     labAllForCenterLabAjax();
-
-
 })

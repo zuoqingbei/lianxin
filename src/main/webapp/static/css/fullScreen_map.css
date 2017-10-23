@@ -110,24 +110,30 @@
     width: 33%;
     margin: 0 auto;
 }
-#l.fullScreen_map .flat .mapArea iframe {
-    /*top: 2%;*/
-}
+
 #l.fullScreen_map .sphere .chartBorder h4.noBG {
     margin-top: -11%;
 }
 
 #l.fullScreen_map .flat .mapArea iframe {
-    height: 142%;
+    height: 130%;
     width: 100%;
     left: 41%;
 }
+#l.fullScreen_map .toLabData{
+    padding: .5em 5em .4em;
+    bottom:2%;
+}
+#l.fullScreen_map .toLabData>a{
+    color: #6cf;
+}
+
 #l.fullScreen_map .flat-footer .legend{
     z-index: 9999;
     font-size: .9em;
     width: 22%;
     height: 41%;
-    top: 46%;
+    top: 30%;
     background-image: url(../img/nav-border_noBottom.png);
 }
 #l.fullScreen_map .flat-footer .legend .labLine {

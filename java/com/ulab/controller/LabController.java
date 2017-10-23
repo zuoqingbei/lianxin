@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
@@ -18,10 +19,12 @@ import com.ulab.client.webServiceRerigerator.WebServiceRerigeratorClient;
 import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 import com.ulab.model.CommunistModel;
+import com.ulab.model.DataCenterModel;
 import com.ulab.model.DicModel;
 import com.ulab.model.EquipmentModel;
 import com.ulab.model.JianCeModel;
 import com.ulab.model.JianceProModel;
+import com.ulab.model.JsonPropertyModel;
 import com.ulab.model.LabAllData;
 import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabData;
@@ -29,6 +32,7 @@ import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
 import com.ulab.model.LabModel;
 import com.ulab.model.LabTestUnit;
+import com.ulab.model.LabVideoModel;
 import com.ulab.model.OrderModel;
 import com.ulab.model.PersonModel;
 import com.ulab.model.ProviderDicModel;
@@ -1005,6 +1009,71 @@ public class LabController extends BaseController {
     	//量产一致性保障 字典
     	List<Record> providerDic=ProviderDicModel.dao.findProviderDic();
     	setAttr("providerDic", providerDic);
+    	//获取初始化工位信息
+    	List<Record> providerDicStation = ProviderDicModel.dao.findProviderDicStationInit();
+    	setAttr("providerDicStation", providerDicStation);
+    	//setCookie("providerDicStation", JSON.toJSON(providerDicStation).toString(), 1000);
         render("index.html");
+    }
+    /***
+     * 根据型号获取工位
+     * @author Tom
+     */
+    public void labGetStationAjax(){
+    	String id = getPara("id","");
+    	List<Record> providerDicStation=ProviderDicModel.dao.findProviderDicStationByParentId(id);
+    	renderJson(providerDicStation);
+	}
+    
+    
+    
+    
+    /**
+     * 
+     * @time   2017年10月19日 上午6:03:13
+     * @author zuoqb
+     * @todo   查询全部数据中心数据（包含层级关系）
+     */
+    public void loadAllDataCenterAjax(){
+    	List<Record> centerDataList = DataCenterModel.dao.findAllDataCenter();
+		renderJson(centerDataList);
+    }
+    /**
+     * 
+     * @time   2017年10月19日 上午6:03:13
+     * @author zuoqb
+     * @todo   查询监控数据
+     */
+    public void loadVideosByDataCenterAjax(){
+    	String dataCenterId=getPara("dataCenterId","1");
+    	List<Record> videoList = LabVideoModel.dao.findVideosByDataCenterId(dataCenterId);
+		renderJson(videoList);
+    }
+    /**
+     * 
+     * @time   2017年10月19日 上午6:28:39
+     * @author zuoqb
+     * @todo   根据实验室编码查询某个实验室的画中画监控
+     * @param  
+     * @return_type   void
+     */
+    public void loadTopVideoByLabCodeAjax(){
+    	String labCode=getPara("labCode","lab111");
+    	Record topVideo = LabVideoModel.dao.findTopVideoByLabCode(labCode);
+		renderJson(topVideo);
+    }
+    
+    /**
+     * 
+     * @time   2017年10月19日 上午6:28:39
+     * @author zuoqb
+     * @todo   数据中心json文件读取属性
+     * @param  
+     * @return_type   void
+     */
+    public void loadJsonProByDataCenterIdAjax(){
+    	String dataCenterId=getPara("dataCenterId","1");
+    	List<Record> topVideo = JsonPropertyModel.dao.findJsonProperty(dataCenterId);
+		renderJson(topVideo);
     }
 }

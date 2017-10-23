@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>视频监控测试页</title>
+    <script src="swfobject.js"></script>
+    <script src="../../../../static/asserts/js/jquery-2.2.4.js"></script>
+</head>
+<body>
+<div id="player">
+</div>
+<br>
+<button id="local">本地摄像机</button>
+<button id="zhonghaiborui">中海博瑞-室外北侧</button>
+<button id="taiguo">泰国RF-B</button>
+<button id="taiguo2">泰国IPdome</button>
+<button id="hkstv">香港hkstv测试</button>
+<button id="cctv">cctv测试</button>
+<script>
+
+    var flashvars = {
+        // M3U8 url, or any other url which compatible with SMP player (flv, mp4, f4m)        
+        // escaped it for urls with ampersands        
+        //src: escape("http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8"),
+//        src: escape("http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8"),
+        src: escape("http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8"),
+        // url to OSMF HLS Plugin
+        //plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
+        plugin_m3u8: "HLSProviderOSMF.swf",
+        autoPlay : "true",
+        autoSwitchQuality : "true",
+    };
+    var params = {
+        // self-explained parameters
+        allowFullScreen: true,
+        allowScriptAccess: "always",
+        quality:"low",
+        bgcolor: "#000000"
+    };
+    var attrs = {
+        name: "player"
+    };
+
+    /*    swfobject.embedSWF()的五个必须参数和四个可选参数：
+    swfUrl（String，必须的）指定SWF的URL。
+    id（String，必须的）指定将会被Flash内容替换的HTML元素（包含你的替换内容）的id。
+    width（String，必须的）指定SWF的宽。
+    height（String，必须的）指定SWF的高。
+    version（String，必须的）指定你发布的SWF对应的Flash Player版本（格式为：major.minor.release）。
+    expressInstallSwfurl（String，可选的）指定express install SWF的URL并激活Adobe express install [ http://www.adobe.com/cfusion/knowledgebase/index.cfm?id=6a253b75 ]。
+    flashvars（String，可选的）用name:value对指定你的flashvars。
+    params（String，可选的）用name:value对指定你的嵌套object元素的params。
+    attributes（String，可选的）用name:value对指定object的属性。
+     */
+    loadSwf();
+function loadSwf() {
+    swfobject.embedSWF(
+        // url to SMP player
+        "StrobeMediaPlayback.swf",
+        // div id where player will be place
+        "player",
+        // width, height
+        "800", "485",
+        // minimum flash player version required
+        "10.4",
+        // other parameters
+        null,
+        flashvars,
+        params,
+        attrs
+    )
+}
+
+</script>
+
+<!--
+<script type="text/javascript" src="//the5fireblog.b0.upaiyun.com/staticfile/swfobject.js"></script>
+<i>仅供技术交流</i> <br/><br/>
+<div>参考：<a href="https://www.the5fire.com/m3u8-web-player.html">动手现实m3u8浏览器播放器</a></div>
+<br/>
+<div id="moviePlayerWapper" style='background:#000;width:700px;height:380px;'></div>
+<br/>
+<div class="input-group input-group-lg">
+    <input type="text" id="m3u8" class="form-control" placeholder="Username" value="https://www.the5fire.com/static/demos/diaosi.m3u8"/>
+    <span class="input-group-addon">
+        <a href="javascript:play();">播放</a>
+    </span>
+</div>
+
+<script> var play = function () {
+    var m3u8 = document.getElementById('m3u8').value;
+    var flashvars = {
+        // M3U8 url, or any other url which compatible with SMP player (flv, mp4, f4m)
+        // escaped it for urls with ampersands src: escape(m3u8),
+        // url to OSMF HLS Plugin
+         plugin_m3u8: "/static/demos/swf/HLSProviderOSMF.swf",
+    };
+    var params = {
+        // self-explained parameters
+         allowFullScreen: true,
+        allowScriptAccess: "always",
+        bgcolor: "#000000"
+    };
+     var attrs = { name: 'player' },
+     swfobject.embedSWF(
+    // url to SMP player "/static/demos/swf/StrobeMediaPlayback.swf",
+    // div id where player will be place "moviePlayerWapper",
+    // width, height "700", "485",
+    // minimum flash player version required "10.2",
+    // other parameters null, flashvars, params, attrs );
+    // var img = document.createElement("IMG");
+//         window.img = img;
+     )
+    }-->
+<script>
+    $("#local").click(function () {
+        flashvars.src = "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8";
+        loadSwf();
+    });
+    $("#zhonghaiborui").click(function () {
+        flashvars.src = "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8";
+        loadSwf();
+    });
+    $("#taiguo").click(function () {
+        flashvars.src = "http://192.168.1.168:6713/mag/hls/b055403a5a464b69bebc4b670bfdff60/1/live.m3u8";
+        loadSwf();
+    });
+    $("#taiguo2").click(function () {
+        flashvars.src = "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8";
+        loadSwf();
+    });
+    $("#hkstv").click(function () {
+        flashvars.src = "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8";
+        loadSwf();
+    });
+    $("#cctv").click(function () {
+        flashvars.src = "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8";
+        loadSwf();
+    });
+
+</script>
+
+</body>
+</html>
