@@ -1,4 +1,6 @@
 
+//导航选中切换
+
 function Map() {
   var struct = function (key, value) {
     this.key = key;
@@ -71,7 +73,7 @@ var dataCenterMap=new Map();
 //查询全部数据中心数据（包含层级关系）
 function loadAllDataCenterAjax(){
 	$.post(contextPath+"/lab/loadAllDataCenterAjax",{},function(data){
-		console.log(data)
+		// console.log(data)
 		$(".inland").html(createDataCenterHtml(data,0));
 		$(".abroad").html(createDataCenterHtml(data,1));
 		//alert(dataCenterMap.get("1"));
@@ -130,25 +132,77 @@ function createClickFuntion(item){
 	 * 数据源 db-直连数据库； url-第三方链接；
 		webservice-连接webservice；json-读取json文件
 	 */
+	// console.log("item",item)
 	var dataSource=item.data_source;
-	if(dataSource=="db"){
-		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop('"+item.id+"','"+item.souce_value+"')"
+	if(dataSource=="db"){ //国外曲线
+		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop('"+item.id+"','"+item.souce_value+"','"+item.data_type+"',this)"
 	}else if(dataSource=="webservice"){
 		//中海博睿
-		htmls+=" onclick=loadLabUnitInfoCenterTabAjax() ";
+		htmls+=" onclick=loadLabUnitInfoCenterTabAjax("+item.data_type+",this) ";
 	}else if(dataSource=="json"){
-		//新西兰 日本读取json文件
-		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('"+item.id+"') ";
+		//新西兰 日本读取json文件 国外曲线
+		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('"+item.id+"','"+item.data_type+"',this) ";
 	}else if(dataSource=="url"){
-		htmls+=" onclick= intentsUrl('"+item.id+"')";
+		htmls+=" onclick= intentsUrl('"+item.id+"',this)";
 	}
 	return htmls;
 }
 //直接跳转第三方地址
-function intentsUrl(type){
-	var dataCenter=dataCenterMap.get(type);
+function intentsUrl(type,thiselem){
+    var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
+    $mainNavLi.removeClass("active");
+    $(thiselem).addClass("active");
+    moduleMakersTabShow();
+    var dataCenter=dataCenterMap.get(type);
 	var url=dataCenter.souce_value;
+    $(".lab_content_r>.switchBox>div.item").eq(5).find("iframe").attr("src",url);
+	console.log("url",url)
 }
+
+var $lab_content_r = $(".lab_content_r");
+var borderUrl ="";
+function inlandTabShow() { //国内数据中心
+    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
+    labNavAndItemShow();
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.centerCurves").show();
+}
+function inlandTabShow_world() {//国内Hadoop
+    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
+    labNavAndItemShow();
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.abroadCurves").show();
+}
+
+function abroadTabShow() {//国外Hadoop
+    $(".lab_content_r").css("background-image", "url(../static/img/lab/labTabBoardForeign_1.png)");
+    labNavAndItemShow();
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.abroadCurves").show();
+}
+function abroadTabShow_center() {//国外数据中心
+    $(".lab_content_r").css("background-image", "url(../static/img/lab/labTabBoardForeign_1.png)");
+    labNavAndItemShow();
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.centerCurves").show();
+}
+
+function moduleMakersTabShow() { //模块商
+    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoard_onlyOne.png");
+    labNavAndItemShow("moduleMakers");
+    $(".labSubNav>ul>li.moduleMakers").show();
+}
+
+function labNavAndItemShow(mark) {
+    $(".labSubNav>ul>li").hide();
+    if(mark === "moduleMakers"){
+        $(".lab_content_r>.switchBox>div.item").eq(5).show().siblings().hide();
+    }else{
+        $(".lab_content_r>.switchBox>div.item").eq(0).show().siblings().hide();
+
+    }
+}
+
+
+
+
+
 $(function () {
 	loadAllDataCenterAjax();
     //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
@@ -166,7 +220,6 @@ $(function () {
 
     //国内外切换
     var $navHeadLi = $(".labMainNav>header>ul>li");
-    var $lab_content_r = $(".lab_content_r");
     $navHeadLi.click(function () {
         $navHeadLi.removeClass("active");
         $(this).addClass("active");
@@ -179,45 +232,23 @@ $(function () {
         }
     });
 
-    function inlandTabShow() {
-        var borderUrl = $lab_content_r.css("background-image").replace("labTabBoardForeign", "labTabBoardInland");
-        labTabBoard(borderUrl);
-        $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.centerCurves").show();
-    }
-
-    function abroadTabShow() {
-        var borderUrl = $lab_content_r.css("background-image").replace("labTabBoardInland", "labTabBoardForeign");
-        labTabBoard(borderUrl);
-        $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.abroadCurves").show();
-    }
-
-    function moduleMakersTabShow() {
-        var borderUrl = $lab_content_r.css("background-image").replace("labTabBoardInland", "labTabBoardForeign");
-        labTabBoard(borderUrl);
-        $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.moduleMakers").show();
-    }
-
-    function labTabBoard(borderUrl) {
-        $(".labSubNav>ul>li").hide();
-        borderUrl = borderUrl.replace(/[2-5]/, "1");
-        $lab_content_r.css("background-image", borderUrl);
-        $(".lab_content_r>.switchBox>div.item").eq(0).show().siblings().hide();
-    }
-
     //左侧菜单点击事件
-    var $li = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
-    $li.click(function () {
-        $li.removeClass("active");
-        $(this).addClass("active");
-        var CountryName = "";
-        if ($(this).text().indexOf("泰国") > -1) {
-            window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1, "thailand");
-        } else if ($(this).text().indexOf("日本") > -1) {
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-        } else if ($(this).text().indexOf("新西兰") > -1) {
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
-        }
-    });
+    /*    var $li = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
+
+        $li.click(function () {
+            console.log("============",$li[0])
+            $li.removeClass("active");
+            $(this).addClass("active");
+            var CountryName = "";
+            if ($(this).text().indexOf("泰国") > -1) {
+                window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1, "thailand");
+            } else if ($(this).text().indexOf("日本") > -1) {
+                window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
+            } else if ($(this).text().indexOf("新西兰") > -1) {
+                window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
+            }
+        });
+    */
     //非模块商的列表
     var $inlandLiNoModuleMakers = $(".labMainNav>.switchBox>ul>li.noChildren:not(.moduleMakers), .labMainNav>.switchBox>ul>li>ul>li");
     $inlandLiNoModuleMakers.click(function () {
@@ -283,7 +314,7 @@ $(function () {
         var $monitoring = $(".monitoring");
         var $layoutBox = (from === "inland" ? $monitoring.eq(0).find(" .video_box > div"):$monitoring.eq(1).find(" .video_box > div"));
         var n = videoUlr.length;
-        console.log("videoUlr.length", n);
+        // console.log("videoUlr.length", n);
         if (n < 2) {
             $layoutBox.removeClass().addClass("video_1x1");
         } else if (n < 5) {

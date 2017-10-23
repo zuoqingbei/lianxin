@@ -427,10 +427,23 @@ var dataBase;
 }; */
 
 //加载实验室与台位对照关系 生刷选框
-function loadLabUnitInfoCenterTabAjax(){
-	$.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
-		var htmls="";
-		$.each(data,function(index,item){
+function loadLabUnitInfoCenterTabAjax(inlandOrAbroad,thiselem){
+    var htmls="";
+    var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li").removeClass("active");
+    $mainNavLi.removeClass("active");
+    $(thiselem).addClass("active");
+    console.log("loadLabUnitInfoCenterTabAjax")
+    if(inlandOrAbroad==="0"){ // 国内
+        inlandTabShow();
+        console.log("内")
+    }else{ //国外
+        console.log("外");
+        abroadTabShow_center();
+    }
+
+    $.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
+
+        $.each(data,function(index,item){
 			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labName+'</a>';
 			if(item.testUnitList.length>0){
 				htmls+='<ul class="taiwei_hide">';
