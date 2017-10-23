@@ -88,7 +88,7 @@ public class UlabCofig extends JFinalConfig {
 		me.add(arp);
 		
 		/**泰国实验室START**/
-		/*DruidPlugin druidPluginThailand = new DruidPlugin(this.getProperty("thailand.url"),
+		DruidPlugin druidPluginThailand = new DruidPlugin(this.getProperty("thailand.url"),
 				this.getProperty("thailand.user"),
 				this.getProperty("thailand.password"),
 				getProperty("thailand.driver"));
@@ -100,7 +100,7 @@ public class UlabCofig extends JFinalConfig {
 				druidPluginThailand);
 		thailandARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
 		thailandARP.setShowSql(true);
-		me.add(thailandARP);*/
+		me.add(thailandARP);
 		/**泰国实验室END**/
 		
 		
