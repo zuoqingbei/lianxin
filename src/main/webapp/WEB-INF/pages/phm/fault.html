@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<button id="btn">按钮</button>
+<script type="text/javascript">
+$(function(){
+	$("#btn").click(function(){
+		alert("fdg");
+	}
+		$.post("${contextPath}/fault/gongMaoInfo",{},function(data){
+			alert("dfdf");
+			console.log(data)
+			alert(data);
+		},datatype:"json");
+	/* $.ajax({
+		url:"/fault",
+		type:"post"
+		success:function(data){
+			if(data){
+				$.message.alert("结果",data);
+			}else{
+				$.message.alert("结果",data);
+			}
+		}
+		datatype:"json"
+	}); */
+	
+	});
+});
+</script>
+
+</body>
+</html>

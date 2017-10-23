@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="PHW" content="phw二期"/>
+		<title>状态监控演示</title>
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/control.css" />
+		 <script>
+		 	window.onload = function(){
+		        /*屏幕描述
+				         一共 7x3 个屏幕，每一块屏幕是1360x768，
+				         总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
+				
+		        var pageH = $(window).height();
+		        var pageW = pageH * 16 * 7 / (9 * 3);
+		        var bodyScale = pageH / 595;
+		        var bodyFontSize = bodyScale * 100 + "%";
+		        if (pageH > 2300) { // 如果是大屏幕(2304)
+		            pageW -= 42
+		        }
+		        function pageResize() {
+		            $("body").css("font-size", bodyFontSize);
+		            $("#content").css("width", pageW);
+		            $(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
+		            console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+		        }
+		        pageResize()
+	       }
+   		</script>
+	</head>
+	<body>
+		<div id="content">
+			
+			
+			
+		</div>
+		
+		
+		
+		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>
