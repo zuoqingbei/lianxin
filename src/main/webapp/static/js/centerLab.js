@@ -472,7 +472,7 @@ function loadLabUnitInfoCenterTabAjax(){
 	});
 }
 $(document).ready(function () {
-	loadLabUnitInfoCenterTabAjax();
+	//loadLabUnitInfoCenterTabAjax();
 });
 //获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
