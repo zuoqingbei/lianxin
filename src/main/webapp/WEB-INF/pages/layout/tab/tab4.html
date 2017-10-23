@@ -30,7 +30,7 @@
                             ##}
                         </select>
                         <label for="station" style="margin-left: 1em">工位：</label>
-                        <select id="station" name="请选择" >
+                        <select id="station" name="请选择" onchange="tab4StationSelected(this)">
                             ##for(c in providerDicStation){
                                 ##if(cLP.first){
                                     <option class="showLabel active" data="${c.id}" value="${c.name}">${c.name}</option>
