@@ -847,6 +847,18 @@ function tab4JianSelected(obj) {
     //loadTab4JianData(id,name);
 }
 
+//工位下拉菜单选择
+function tab4StationSelected(obj){
+    // $("option").removeClass("active");
+    // var selectOpt = $("option[value="+$("select").val()+"]");
+    // var selectedLabel = selectOpt.addClass("active").parent().attr("label");
+    // $("option.showLabel").text(selectedLabel).prop("selected",true);
+    var id = $(obj).find("option:selected").attr("data");
+    var name = $(obj).find("option:selected").text();
+    // var id = $(obj).find("option.active").attr("data");
+    // var name = $(obj).find("option.active").text();
+    console.log(id+name);
+}
 //模块商质量水平分布
 function mkSqualityLevelForTab4(xhPro) {
     var myChart14 = echarts.init(document.getElementById("myChart14"));

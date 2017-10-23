@@ -24,7 +24,6 @@ import com.ulab.model.DicModel;
 import com.ulab.model.EquipmentModel;
 import com.ulab.model.JianCeModel;
 import com.ulab.model.JianceProModel;
-import com.ulab.model.JsonPropertyModel;
 import com.ulab.model.LabAllData;
 import com.ulab.model.LabCarryModel;
 import com.ulab.model.LabData;
@@ -1060,20 +1059,6 @@ public class LabController extends BaseController {
     public void loadTopVideoByLabCodeAjax(){
     	String labCode=getPara("labCode","lab111");
     	Record topVideo = LabVideoModel.dao.findTopVideoByLabCode(labCode);
-		renderJson(topVideo);
-    }
-    
-    /**
-     * 
-     * @time   2017年10月19日 上午6:28:39
-     * @author zuoqb
-     * @todo   数据中心json文件读取属性
-     * @param  
-     * @return_type   void
-     */
-    public void loadJsonProByDataCenterIdAjax(){
-    	String dataCenterId=getPara("dataCenterId","1");
-    	List<Record> topVideo = JsonPropertyModel.dao.findJsonProperty(dataCenterId);
 		renderJson(topVideo);
     }
 }
