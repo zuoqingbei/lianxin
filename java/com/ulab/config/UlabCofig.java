@@ -88,7 +88,7 @@ public class UlabCofig extends JFinalConfig {
 		me.add(arp);
 		
 		/**泰国实验室START**/
-		/*DruidPlugin druidPluginThailand = new DruidPlugin(this.getProperty("thailand.url"),
+		DruidPlugin druidPluginThailand = new DruidPlugin(this.getProperty("thailand.url"),
 				this.getProperty("thailand.user"),
 				this.getProperty("thailand.password"),
 				getProperty("thailand.driver"));
@@ -100,11 +100,25 @@ public class UlabCofig extends JFinalConfig {
 				druidPluginThailand);
 		thailandARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
 		thailandARP.setShowSql(true);
-		me.add(thailandARP);*/
+		me.add(thailandARP);
 		/**泰国实验室END**/
 		
 		
-		
+		/**胶州海尔空调数据库START**/
+		DruidPlugin jzhekt = new DruidPlugin(this.getProperty("jzhekt.url"),
+				this.getProperty("jzhekt.user"),
+				this.getProperty("jzhekt.password"),
+				getProperty("jzhekt.driver"));
+		jzhekt.setInitialSize(5);
+		jzhekt.setMaxActive(5);
+		jzhekt.setMinIdle(3);
+		me.add(jzhekt);
+		ActiveRecordPlugin jzhektARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_JZKT,
+				jzhekt);
+		thailandARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
+		thailandARP.setShowSql(true);
+		me.add(jzhektARP);
+		/**胶州海尔空调数据库END**/
 		
 		//定时器
 		QuartzPlugin quartzPlugin = new QuartzPlugin();
