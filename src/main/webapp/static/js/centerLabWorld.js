@@ -141,6 +141,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
 	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName},function(data){
 		var htmls="";
 		$.each(data,function(index,item){
+			console.log(item)
 			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labcode+'</a>';
 			if(item.testunitlist.length>0){
 				htmls+='<ul class="taiwei_hide">';

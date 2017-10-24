@@ -30,7 +30,7 @@ public class HadoopTestUnitInfo {
 		String sql="select distinct labcode from "+tableName+"  order by labcode  ";
 		List<Record> labList=Db.use(configName).find(sql);
 		for(Record lab:labList){
-			lab.set("testunitlist", findTestUnitListByLabCode(c,configName, lab.getStr("labCode")));
+			lab.set("testunitlist", findTestUnitListByLabCode(c,configName, lab.getStr("labcode")));
 		}
 		return labList;
 	}

@@ -96,26 +96,28 @@ public class HadoopTestData {
 		Date now = new Date();
 		boolean isOpt=true;
 		long distance =0;
+		if(StringUtils.isNotBlank(metaData.get("testbegintime")+"")&&"null".equals(metaData.get("testbegintime")+"")){
 		if(metaData!=null){
 			try {
-				testBeginTime = sdf.parse(metaData.get("testbegintime")+"");//开始测试时间
-				System.out.println("testBeginTime="+sdf.format(testBeginTime));
-				if(isOpt){
-					Double maxHowLong=getMaxHowLong(c,configName, testIdentification);//目前测试数据中最大时间
-					System.out.println("maxHowLong="+maxHowLong);
-					Date realEndDate=new Date(testBeginTime.getTime()+ Math.round(maxHowLong)*60*1000);//实际结算时间
-					System.out.println("realEndDate="+sdf.format(realEndDate));
-					distance=CalculateTime(sdf.format(realEndDate));//实际结算时间一当前时间间隔
-					System.out.println("realEndDate="+distance);
-					if(StringUtils.isNotBlank(startTime)){
-						now=sdf.parse(startTime);
+					
+					testBeginTime = sdf.parse(metaData.get("testbegintime")+"");//开始测试时间
+					System.out.println("testBeginTime="+sdf.format(testBeginTime));
+					if(isOpt){
+						Double maxHowLong=getMaxHowLong(c,configName, testIdentification);//目前测试数据中最大时间
+						System.out.println("maxHowLong="+maxHowLong);
+						Date realEndDate=new Date(testBeginTime.getTime()+ Math.round(maxHowLong)*60*1000);//实际结算时间
+						System.out.println("realEndDate="+sdf.format(realEndDate));
+						distance=CalculateTime(sdf.format(realEndDate));//实际结算时间一当前时间间隔
+						System.out.println("realEndDate="+distance);
+						if(StringUtils.isNotBlank(startTime)){
+							now=sdf.parse(startTime);
+						}
+						now=new Date(now.getTime()- distance*60*1000);//进行时间平移 保证有数据
+					}else{
+						if(StringUtils.isNotBlank(startTime)){
+							now=sdf.parse(startTime);
+						}
 					}
-					now=new Date(now.getTime()- distance*60*1000);//进行时间平移 保证有数据
-				}else{
-					if(StringUtils.isNotBlank(startTime)){
-						now=sdf.parse(startTime);
-					}
-				}
 				
 				System.out.println("now="+sdf.format(now));
 			} catch (Exception e) {
@@ -128,6 +130,7 @@ public class HadoopTestData {
 		float startHowLong = f2 - interval> 0 ? f2-interval : 0;
 		float endHowLong=startHowLong+interval;
 		joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData);
+		}
 		return finalTestData;
 	}
 	/** 
