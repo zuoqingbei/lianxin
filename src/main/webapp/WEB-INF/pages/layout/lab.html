@@ -8,10 +8,12 @@
             <div class="icon"></div>
             <span>返回总状态</span>
         </div>
+<!--右上角的按钮，暂时不要了
         <div class="btn-labHome">
             <div class="icon"></div>
             <span id="labnameIcon_world">中海博睿实验室</span>
         </div>
+-->
     </div>
     <div class="lab_content">
         <div class="lab_content_l">
@@ -23,41 +25,8 @@
                     </ul>
                 </header>
                 <div class="switchBox">
-                    <ul class="item inland">
-                        <li class="noChildren active">中海博睿数据中心</li>
-                        <li class="hasChildren">
-                            <header class="fold">产线<span>︿</span></header>
-                            <ul>
-                                <li>冰冷数据中心</li>
-                                <li>洗衣机数据中心</li>
-                                <li>家电数据中心</li>
-                                <li>商空数据中心</li>
-                                <li>热水器数据中心</li>
-                                <li>厨电数据中心</li>
-                            </ul>
-                        </li>
-                        <li class="noChildren moduleMakersInland">中国模块商数据中心</li>
-                    </ul>
-                    <ul class="item abroad" style="display: none">
-                        <li class="hasChildren">
-                            <header class="fold">海外研发中心<span>︿</span></header>
-                            <ul>
-                                <li>美国肯塔基州研发中心</li>
-                                <li>美国艾文斯维尔研发中心</li>
-                                <li>新西兰研发中心</li>
-                                <li>日本研发中心</li>
-                                <li>泰国研发中心</li>
-                            </ul>
-                        </li>
-                        <li class="hasChildren">
-                            <header class="fold">海外工厂数据中心<span>︿</span></header>
-                            <ul>
-                                <li>泰国工业园</li>
-                                <li>俄罗斯工业园</li>
-                            </ul>
-                        </li>
-                        <li class="noChildren moduleMakersAbroad">海外模块商数据中心</li>
-                    </ul>
+                    <ul class="item inland"></ul>
+                    <ul class="item abroad" style="display: none"></ul>
                 </div>
             </nav>
         </div>
@@ -67,8 +36,8 @@
                     <li class="labHome active">中心介绍</li>
                     <li class="status">运营状态</li>
                     <li class="analysis">数据分析</li>
-                    <li class="centerCurves">实时监测（中）</li>
-                    <li class="abroadCurves" style="display: none">实时监测（外）</li>
+                    <li class="centerCurves">实时监测</li>
+                    <li class="abroadCurves" style="display: none">实时监测.</li>
                     <li class="moduleMakers" style="display: none">实时数据</li>
                 </ul>
             </nav>
@@ -292,7 +261,8 @@
                         <div class="shishi_right">
                             <div class="item" style="display: none">
                                 <div class="video_box">
-                                    <div class="video_4x4"></div>
+                                    <div class="video_4x4" style="display: none"></div>
+                                    <div id="videoBoxInland"></div>
                                 </div>
                             </div>
                             <div class="item shishi_right_show">
@@ -338,7 +308,8 @@
                         <div class="shishi_right shishi_right_show">
                             <div class="item" hidden>
                                 <div class="video_box">
-                                    <div class="video_4x4"></div>
+                                    <div class="video_4x4" style="display: none"></div>
+                                    <div id="videoBoxAbroad"></div>
                                 </div>
                             </div>
                             <div class="item">

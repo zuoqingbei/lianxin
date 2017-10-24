@@ -112,12 +112,12 @@ var startTime;
 
 
 //加载实验室与台位对照关系 生刷选框
-function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad,thiselem) {
+function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad) {
 	var dataCenter=dataCenterMap.get(type);
 	var $l3x3 = $("#l");
-    var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li").removeClass("active");
-    $mainNavLi.removeClass("active");
-	$(thiselem).addClass("active");
+    // var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li").removeClass("active");
+    // $mainNavLi.removeClass("active");
+    // $(thiselem).addClass("active");
 	configName=mConfigName;
 	//清除中海博睿定时器
 	window.clearInterval(intevalChart1);
@@ -129,7 +129,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
         abroadTabShow();
     }
 
-    // $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + labInfos[type] + "</p>");
+
     $(".labMain_cblt_tone_world").html( "<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
     $(".labMain_cblt_ttwo_world img").attr("src", (dataCenter.img_content ==null?"../static/img/labMain/Thailand.jpg":dataCenter.img_content));
     $("#labName_world").html(dataCenter.center_name);
@@ -339,18 +339,21 @@ function timestampFormat(timestamp){
 
 
 //加载实验室与台位对照关系 生刷选框
-function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad,thiselem) {
+function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
 	var dataCenter=dataCenterMap.get(type);
 	window.clearInterval(intevalChart1);
-    var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
-    $mainNavLi.removeClass("active");
-    $(thiselem).addClass("active");
-    console.log("$mainNavLi",$mainNavLi[0],"inlandOrAbroad",inlandOrAbroad)
+    // var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
+    // $mainNavLi.removeClass("active");
+    // $(thiselem).addClass("active");
+    // console.log("$mainNavLi",$mainNavLi[0],"inlandOrAbroad",inlandOrAbroad)
     if(inlandOrAbroad==="0"){ // 国内
         inlandTabShow();
     }else{ //国外
         abroadTabShow();
+        // videoShow(id,url)
+        // videoShow(id,url)
     }
+
     $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
     $(".labMain_cblt_ttwo_world img").attr("src", dataCenter.img_content);
     $("#labName_world").html(dataCenter.center_name);
@@ -369,7 +372,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad,thiselem) {
     				if(ind==0){
     					 findSensorByLabCenetrTabAjaxWorld(item.pro_code, it.pro_code);
     				}
-    				 htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("'+item.pro_code+'","'+it.pro_code+'")>'+it.pro_name+'</li>';
+    				 htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("'+item.pro_code+'","'+it.pro_code+'") this >'+it.pro_name+'</li>';
     			});
     		}
 	        htmls += ' </ul></li>';
@@ -444,9 +447,20 @@ function resetDataCenterLabWorld() {
 }
 
 //获取传感器信息 用于生成y轴
-function findSensorByLabCenetrTabAjaxWorld(labTypeCode, testUnitId) {
+function findSensorByLabCenetrTabAjaxWorld(labTypeCode, testUnitId, thisElem) {
     resetDataCenterLabWorld();
     currentDataWorld = mSensor;
+    console.log("labTypeCode",labTypeCode)
+    $.post(contextPath+'/lab/loadTopVideoByLabCodeAjax?labCode='+labTypeCode,function(data){
+        var currentUrl = data.videl_url;
+        if($(thisElem).parents(".monitoring").index === 3){ //国内
+            videoShow("smallVideoInland",currentUrl)
+            console.log("smallVideoInland");
+        }else{
+            videoShow("smallVideoAbroad",currentUrl)
+            console.log("smallVideoAbroad");
+        }
+    });
     //根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
     $.each(mSensor, function (index, item) {
         if (index < 4) {
@@ -464,9 +478,7 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId) {
     mlabTypeCode = labTypeCode;
     mtestUnitId = testUnitId;
     $.post(contextPath + "/lab/getJsonFile", {"fileName": labTypeCode + "-" + testUnitId + ".json"}, function (data) {
-        // console.log("eval前",data)
         data = eval("(" + data + ")");
-        // console.log("eval后",data)
         if (data == "") {
             //alert("暂未开测");
             return;
