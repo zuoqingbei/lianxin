@@ -28,6 +28,10 @@ public class Constants {
 	 */
 	public static final String CONFIGNAME_THAILAND="thailand";//泰国数据库
 	/**
+	 * 胶州海尔空调数据库（与表T_B_DB_CONFIG中config_name对应 不要随便改）
+	 */
+	public static final String CONFIGNAME_JZKT="jzkt";//胶州海尔空调数据库
+	/**
 	 * 数据源表配置对应字段名称（对应T_B_DB_CONFIG中列名称 必须与表字段相同 不要随便改动）
 	 */
 	public static final String TESTMETADATA="testmetadata";//测试数据元数据信息对应应表名称
