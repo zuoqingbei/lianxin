@@ -125,9 +125,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
 
     if(inlandOrAbroad==="0"){ // 国内
         inlandTabShow_world();
-        console.log("内")
     }else{ //国外
-        console.log("外");
         abroadTabShow();
     }
 
@@ -350,9 +348,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad,thiselem) {
     console.log("$mainNavLi",$mainNavLi[0],"inlandOrAbroad",inlandOrAbroad)
     if(inlandOrAbroad==="0"){ // 国内
         inlandTabShow();
-        console.log("内")
     }else{ //国外
-        console.log("外");
         abroadTabShow();
     }
     $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
@@ -361,10 +357,10 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad,thiselem) {
     $("#labnameIcon_world").html(dataCenter.center_name);
     $("#secondName_world").html(dataCenter.center_name);
     var htmls = "";
-	alert(dataCenter.id)
+	// alert(dataCenter.id)
 
     $.post(contextPath+"/lab/loadJsonProByDataCenterIdAjax",{"dataCenterId":dataCenter.id},function(da){
-    	 alert(da)
+    	 // alert(da)
     	$.each(da,function(index,item){
     		htmls += ' <li><span></span><a href="javascript:void(0);">'+item.pro_name+'</a>';
     		if(item.children!=null&&item.children.length>0){
