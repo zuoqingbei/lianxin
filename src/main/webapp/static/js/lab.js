@@ -57,17 +57,17 @@ function echartsResize() {
     myChart2.resize();
 }
 var videoUlrInland = [
-    "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()",//本机
-    "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8?time=New Date()",//室外北侧
-    "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
-    "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()"//CCTV
+    "http://10.130.96.113:6713/mag/hls/85d598e47ce4411c9196e965385e895d/0/live.m3u8?time=New Date()",//本机
+    // "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8?time=New Date()",//室外北侧
+    // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
+    // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()"//CCTV
 ];
 var videoUlrAbroad = [
-    "http://192.168.1.168:6713/mag/hls/b055403a5a464b69bebc4b670bfdff60/1/live.m3u8?time=New Date()",//泰国"RF-B"
-    "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
-    "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
-    "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
-    "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()"//本机
+    "http://10.130.96.113:6713/mag/hls/7329e487e5c84c41a1ba9040e89f7814/1/live.m3u8?time=New Date()",//泰国"RF-B"
+    // "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
+    // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
+    // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
+    // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()"//本机
 ];
 var dataCenterMap=new Map();
 //查询全部数据中心数据（包含层级关系）
@@ -89,9 +89,10 @@ function createDataCenterHtml(data,dataType){
 			if(item.haschildren==1){
 				haschildren=true;
 			}
+			console.log("item",item)
 			dataCenterMap.put(item.id,item);
 			if(!haschildren){
-				htmls+='<li '
+				htmls+='<li data-centerid="'+item.id+'" ';
 				if(cuNum==0){
 					htmls+=' class=" noChildren active" ';
 				}else{
@@ -114,7 +115,7 @@ function createDataCenterHtml(data,dataType){
 				dataCenterMap.put(item.id,item);
 				$.each(item.children,function(index,cItem){
 					dataCenterMap.put(cItem.id,cItem);
-					htmls+='<li ';
+					htmls+='<li data-centerid="'+cItem.id+'" ';
 					htmls+=createClickFuntion(cItem)+" >"+cItem.center_name+'</li>';
 				});
 				htmls+='</ul></li>';
@@ -138,7 +139,7 @@ function createClickFuntion(item){
 		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop('"+item.id+"','"+item.souce_value+"','"+item.data_type+"',this)"
 	}else if(dataSource=="webservice"){
 		//中海博睿
-		htmls+=" onclick=loadLabUnitInfoCenterTabAjax("+item.data_type+",this) ";
+		htmls+=" onclick=loadLabUnitInfoCenterTabAjax('"+item.data_type+"',this) ";
 	}else if(dataSource=="json"){
 		//新西兰 日本读取json文件 国外曲线
 		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('"+item.id+"','"+item.data_type+"',this) ";
@@ -198,6 +199,70 @@ function labNavAndItemShow(mark) {
 
     }
 }
+// 视频加载方法
+function videoShow(id,url) {
+    var flashvars = {
+        src: escape(url),
+        plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
+        autoPlay : "true",
+        autoSwitchQuality : "true"
+    };
+    var params = {
+        // self-explained parameters
+        allowFullScreen: true,
+        allowScriptAccess: "always",
+        quality:"low",
+        bgcolor: "#000000"
+    };
+    var attrs = {
+        name: "player"
+    };
+    swfobject.embedSWF(
+        // url to SMP player
+        "../static/asserts/video/StrobeMediaPlayback.swf",
+        // div id where player will be place
+        id,
+        // width, height
+        "100%", "100%",
+        // minimum flash player version required
+        "27",
+        // other parameters
+        null,
+        flashvars,
+        params,
+        attrs
+    )
+    loadSwf(id,flashvars,params,attrs);
+
+    /*    swfobject.embedSWF()的五个必须参数和四个可选参数：
+    swfUrl（String，必须的）指定SWF的URL。
+    id（String，必须的）指定将会被Flash内容替换的HTML元素（包含你的替换内容）的id。
+    width（String，必须的）指定SWF的宽。
+    height（String，必须的）指定SWF的高。
+    version（String，必须的）指定你发布的SWF对应的Flash Player版本（格式为：major.minor.release）。
+    expressInstallSwfurl（String，可选的）指定express install SWF的URL并激活Adobe express install [ http://www.adobe.com/cfusion/knowledgebase/index.cfm?id=6a253b75 ]。
+    flashvars（String，可选的）用name:value对指定你的flashvars。
+    params（String，可选的）用name:value对指定你的嵌套object元素的params。
+    attributes（String，可选的）用name:value对指定object的属性。
+     */
+}
+function loadSwf(id,flashvars,params,attrs) {
+    swfobject.embedSWF(
+        // url to SMP player
+        "../static/asserts/video/StrobeMediaPlayback.swf",
+        // div id where player will be place
+        id,
+        // width, height
+        "100%", "100%",
+        // minimum flash player version required
+        "27",
+        // other parameters
+        null,
+        flashvars,
+        params,
+        attrs
+    )
+}
 
 
 
@@ -233,22 +298,32 @@ $(function () {
     });
 
     //左侧菜单点击事件
-    /*    var $li = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
+    $(".labMainNav>.switchBox").on("click","ul>li.noChildren, ul>li>ul>li",function (){
+        var $li = $(".switchBox>ul>li.noChildren, .switchBox>ul>li>ul>li");
+        $li.removeClass("active");
+        $(this).addClass("active");
+        var $thisElem = $(this);
+        $.post(contextPath+'/lab/loadVideosByDataCenterAjax?dataCenterId='+$thisElem.data("centerid"),function(data){
+            console.log("data",data)
+            var currentUrl = data[0].videos[0].videl_url;
+            console.log("currentUrl",currentUrl);
+            // console.log("$(this).parents(\".inland\")",$thisElem[0]);
+            var videoId = "";
 
-        $li.click(function () {
-            console.log("============",$li[0])
-            $li.removeClass("active");
-            $(this).addClass("active");
-            var CountryName = "";
-            if ($(this).text().indexOf("泰国") > -1) {
-                window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1, "thailand");
-            } else if ($(this).text().indexOf("日本") > -1) {
-                window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-            } else if ($(this).text().indexOf("新西兰") > -1) {
-                window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
+            //转成子码流可以流畅些
+            currentUrl = currentUrl.replace("/0/live.m3u8","/1/live.m3u8")
+
+            if($thisElem.parents(".inland").length>0){
+                videoShow("videoBoxInland",currentUrl)
+                console.log("videoBoxInland");
+            }else{
+                videoShow("videoBoxAbroad",currentUrl)
+                console.log("videoBoxAbroad");
             }
-        });
-    */
+
+        })
+    })
+
     //非模块商的列表
     var $inlandLiNoModuleMakers = $(".labMainNav>.switchBox>ul>li.noChildren:not(.moduleMakers), .labMainNav>.switchBox>ul>li>ul>li");
     $inlandLiNoModuleMakers.click(function () {
@@ -260,8 +335,7 @@ $(function () {
     });
 
     //二级菜单的折叠与展开
-    var $NavHeader = $(".labMainNav>.switchBox>ul>li>header");
-    $NavHeader.click(function () {
+    $(".switchBox").on("click","li>header",function () {
         if ($(this).next("ul").is(":visible")) {
             $(this).next("ul").hide();
             $(this).removeClass("fold").children("span").text("﹀");
@@ -307,7 +381,6 @@ $(function () {
         var index = $(this).index();
         $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
         $(this).parents(".monitoring").find(".shishi_right>.item").eq(index).show().siblings().hide();
-
     });
 
     function videoLayout(videoUlr,from) {
@@ -332,69 +405,6 @@ $(function () {
         $layoutBox.eq(0).html(videoHtml);
     }
 
-    function videoShow(id,url) {
-        var flashvars = {
-            src: escape(url),
-            plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
-            autoPlay : "true",
-            autoSwitchQuality : "true",
-        };
-        var params = {
-            // self-explained parameters
-            allowFullScreen: true,
-            allowScriptAccess: "always",
-            quality:"low",
-            bgcolor: "#000000"
-        };
-        var attrs = {
-            name: "player"
-        };
-        swfobject.embedSWF(
-            // url to SMP player
-            "../static/asserts/video/StrobeMediaPlayback.swf",
-            // div id where player will be place
-            id,
-            // width, height
-            "100%", "100%",
-            // minimum flash player version required
-            "27",
-            // other parameters
-            null,
-            flashvars,
-            params,
-            attrs
-        )
-        // loadSwf(id,flashvars,params,attrs);
-
-        /*    swfobject.embedSWF()的五个必须参数和四个可选参数：
-        swfUrl（String，必须的）指定SWF的URL。
-        id（String，必须的）指定将会被Flash内容替换的HTML元素（包含你的替换内容）的id。
-        width（String，必须的）指定SWF的宽。
-        height（String，必须的）指定SWF的高。
-        version（String，必须的）指定你发布的SWF对应的Flash Player版本（格式为：major.minor.release）。
-        expressInstallSwfurl（String，可选的）指定express install SWF的URL并激活Adobe express install [ http://www.adobe.com/cfusion/knowledgebase/index.cfm?id=6a253b75 ]。
-        flashvars（String，可选的）用name:value对指定你的flashvars。
-        params（String，可选的）用name:value对指定你的嵌套object元素的params。
-        attributes（String，可选的）用name:value对指定object的属性。
-         */
-    }
-    function loadSwf(id,flashvars,params,attrs) {
-        swfobject.embedSWF(
-            // url to SMP player
-            "../static/asserts/video/StrobeMediaPlayback.swf",
-            // div id where player will be place
-            id,
-            // width, height
-            "100%", "100%",
-            // minimum flash player version required
-            "27",
-            // other parameters
-            null,
-            flashvars,
-            params,
-            attrs
-        )
-    }
     videoLayout(videoUlrInland,"inland");
     videoLayout(videoUlrAbroad,"abroad");
 

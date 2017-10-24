@@ -169,8 +169,8 @@ a, a:hover, a:focus {
 }
 
 .labMain_cblt_tone {
-    /*flex:1;*/
-    width: 35%;
+    flex:3;
+    /*width: 30%;*/
     margin: 0.5%;
     font-size: 1.3em;
 
@@ -199,14 +199,16 @@ a, a:hover, a:focus {
 }
 
 .labMain_cbl_two .labMain_cblt_ttwo {
-    /*flex: 2;*/
+
     background: url("../img/labMain/znjd-bg.png") no-repeat;
     background-size: 100% 100%;
     /*margin:0 0.5% ;*/
     width: 65%;
 
 }
-
+.labMain_cblt_ttwo.labMain_cblt_ttwo_world{
+    flex: 7;
+}
 /*轮播*/
 /*轮播图*/
 .labMain_lunbo {

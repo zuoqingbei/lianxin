@@ -427,12 +427,12 @@ var dataBase;
 }; */
 
 //加载实验室与台位对照关系 生刷选框
-function loadLabUnitInfoCenterTabAjax(inlandOrAbroad,thiselem){
+function loadLabUnitInfoCenterTabAjax(inlandOrAbroad){
     var htmls="";
-    var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li").removeClass("active");
-    $mainNavLi.removeClass("active");
-    $(thiselem).addClass("active");
-    console.log("loadLabUnitInfoCenterTabAjax")
+    // var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li").removeClass("active");
+    // $mainNavLi.removeClass("active");
+    // $(thiselem).addClass("active");
+    // console.log("loadLabUnitInfoCenterTabAjax")
     if(inlandOrAbroad==="0"){ // 国内
         inlandTabShow();
         console.log("内")

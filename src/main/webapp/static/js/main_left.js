@@ -192,24 +192,15 @@ function navSelectA() {//这里会触发地图中要加载的数据
         }
     });
     //点击中海博睿切换右边页面上
+/*
     var $flatBottomSwitchLi = $("#l.left3x3").find(".flat-footer ul.legend-bottom li");
     $flatBottomSwitchLi.find("a").click(function () {
         if($(this).text() ==="中海博睿"){
-            // $("#r").hide();
-            // $(".labMain_content").show()
-            // console.log("================",$(".lab").show().siblings("div").not("#l")[0])
             $(".lab").show().siblings("div").not("#l").hide();
-            // $(".labMain_content_country").hide()
-            // $(".labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show").hide()
+
         }
-       /* if($(this).text().trim() ==="冰冷"){
-        	var $l3x3 = $("#l");
-        	$l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
-            $l3x3.find(".legend-bottom li").removeClass('active');
-            bgImgOff($l3x3.find(".legend-bottom li"));
-            loadLabUnitInfoCenterTabAjaxWorldHadoop(1,"thailand");
-        }*/
     })
+*/
 }
 //地球右上角区域的数字样式
 function sphereRTnumberShow(n) {
@@ -293,12 +284,15 @@ function sphereRBscroll() {
 //打开实验室数据中心按钮
 function toLabData() {
     var url = window.location.href;
-    console.log(url);
+    // console.log(url);
     if(url.indexOf("toLabData")>-1){
         $(".lab").show().siblings("div").not("#l").hide();
+
     }
     $(".toLabData").click(function(){
         $(".lab").show().siblings("div").not("#l").hide();
+        console.log($(".lab .switchBox>ul.inland>li:eq(0)"));
+        $(".lab .switchBox>ul.inland>li:eq(0)").click();
     })
 }
 

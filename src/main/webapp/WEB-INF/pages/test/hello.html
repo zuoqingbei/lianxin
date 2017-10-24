@@ -10,8 +10,8 @@
 </div>
 <br>
 <button id="local">本地摄像机</button>
-<button id="zhonghaiborui">中海博瑞-室外北侧</button>
-<button id="taiguo">泰国RF-B</button>
+<button id="zhonghaiborui">体验馆2(数据中心)</button>
+<button id="taiguo">泰国RF-IN(数据中心)</button>
 <button id="taiguo2">泰国IPdome</button>
 <button id="hkstv">香港hkstv测试</button>
 <button id="cctv">cctv测试</button>
@@ -117,11 +117,11 @@ function loadSwf() {
         loadSwf();
     });
     $("#zhonghaiborui").click(function () {
-        flashvars.src = "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8";
+        flashvars.src = "http://10.130.96.113:6713/mag/hls/85d598e47ce4411c9196e965385e895d/1/live.m3u8";
         loadSwf();
     });
     $("#taiguo").click(function () {
-        flashvars.src = "http://192.168.1.168:6713/mag/hls/b055403a5a464b69bebc4b670bfdff60/1/live.m3u8";
+        flashvars.src = "http://10.130.96.113:6713/mag/hls/7329e487e5c84c41a1ba9040e89f7814/0/live.m3u8";
         loadSwf();
     });
     $("#taiguo2").click(function () {
