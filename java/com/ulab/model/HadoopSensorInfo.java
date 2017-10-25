@@ -16,7 +16,7 @@ public class HadoopSensorInfo {
 	public static final HadoopSensorInfo dao = new HadoopSensorInfo();
 	public List<Record> findSensorInfoByTestIdentification(BaseController c,String configName,String testIdentification){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.SENSORINFO);
-		String sql="select * from "+tableName+" where testIdentification='"+testIdentification+"' and selected=1 ";
+		String sql="select testidentification,testunitid,sensortypeid,sensorname,unit,totalsequenceno,selected,labcode,maxselect,minselect,sensorid from "+tableName+" where testIdentification='"+testIdentification+"' and selected=1 ";
 		List<Record> sensorInfo=Db.use(configName).find(sql);
 		for(Record sType:sensorInfo){
 			sType.set("legend", sType.get("sensorid")+":"+sType.get("sensorname")+"("+sType.get("unit")+")");

@@ -89,14 +89,13 @@ public class HadoopTestData {
 	public Record findTestData(BaseController c,String configName,String labCode,String testUnitId,String startTime,Float interval){
 		Record finalTestData=new Record();
 		Record metaData=HadoopTestMetadata.dao.findLastTestMetadata(c,configName, labCode, testUnitId);
-		String testIdentification=metaData.getStr("testIdentification");//实验编号
+		String testIdentification=metaData.getStr("testidentification");//实验编号
 		//获取当前台位实时曲线
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date testBeginTime = null;//开始测试时间
 		Date now = new Date();
 		boolean isOpt=true;
 		long distance =0;
-		if(StringUtils.isNotBlank(metaData.get("testbegintime")+"")&&"null".equals(metaData.get("testbegintime")+"")){
 		if(metaData!=null){
 			try {
 					
@@ -130,7 +129,6 @@ public class HadoopTestData {
 		float startHowLong = f2 - interval> 0 ? f2-interval : 0;
 		float endHowLong=startHowLong+interval;
 		joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData);
-		}
 		return finalTestData;
 	}
 	/** 
@@ -171,9 +169,10 @@ public class HadoopTestData {
 			c.setSessionAttr(key, r);
 		}
 		if(r!=null){
+			if(r.get("howlong")!=null&&StringUtils.isNotBlank(r.get("howlong").toString()))
 			return Double.parseDouble(r.get("howlong")+"");
 		}
-		return null;
+		return 0d;
 	}
 	/**
 	 * 
@@ -204,7 +203,7 @@ public class HadoopTestData {
 				cpxh:'产品型号',
 				testUnitStatus:试验项目
 			 */
-			String testIdentification=metaData.getStr("testIdentification");//实验编号
+			String testIdentification=metaData.getStr("testidentification");//实验编号
 			finalTestData.set("sybh",testIdentification);
 			finalTestData.set("ybbh", metaData.get("sample_code"));
 			finalTestData.set("cpxh", metaData.get("productmodel"));
@@ -230,7 +229,7 @@ public class HadoopTestData {
 					Record innerData=new Record();
 					innerData.set("name", Float.parseFloat(testData.get("howlong")+"")/60);
 					//传感器数据，跟sensorinfo中的sensorId对应
-					innerData.set("value", testData.get("sensorValue_"+sensorInfo.get("sensorid")));
+					innerData.set("value", testData.get("sensorvalue_"+sensorInfo.get("sensorid")));
 					data.add(innerData);
 				}
 				mData.set("data", data);

@@ -27,7 +27,7 @@ public class HadoopTestMetadata {
 	 */
 	public List<Record> findTestMetadata(BaseController c,String configName,String labCode,String testUnitid){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTMETADATA);
-		String sql="select * from "+tableName+"  where testunitid='"+testUnitid+"' and  labcode='"+labCode+"' order by createdate desc  ";
+		String sql="select autoid,labcode,labname,testidentification,testunitid,testbegintime,testendtime,reportbegintime,reportendtime,istesting,reportno,productmodel,productcode,testitemname,testitemid from "+tableName+"  where testunitid='"+testUnitid+"' and  labcode='"+labCode+"' order by createdate desc  ";
 		return Db.use(configName).find(sql);
 	}
 	
@@ -44,11 +44,7 @@ public class HadoopTestMetadata {
 	 */
 	public Record findLastTestMetadata(BaseController c,String configName,String labCode,String testUnitId){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTMETADATA);
-		String sql="select * from "+tableName+"  where testunitid='"+testUnitId+"' and  labcode='"+labCode+"' order by createdate desc  ";
-		List<Record> data=Db.use(configName).find(sql);
-		if(data!=null&&data.size()>0){
-			return data.get(0);
-		}
-		return null;
+		String sql="select autoid,labcode,labname,testidentification,testunitid,testbegintime,testendtime,reportbegintime,reportendtime,istesting,reportno,productmodel,productcode,testitemname,testitemid from "+tableName+"  where testunitid='"+testUnitId+"' and  labcode='"+labCode+"' order by createdate desc  ";
+		return Db.use(configName).findFirst(sql);
 	}
 }
