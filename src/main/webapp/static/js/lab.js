@@ -217,13 +217,17 @@ function videoShow(id,url) {
     var attrs = {
         name: "player"
     };
+    loadSwf(id,flashvars,params,attrs);
+
+}
+function loadSwf(id,flashvars,params,attrs) {
     swfobject.embedSWF(
         // url to SMP player
         "../static/asserts/video/StrobeMediaPlayback.swf",
         // div id where player will be place
         id,
         // width, height
-        "100%", "100%",
+        "100%", "99%",
         // minimum flash player version required
         "27",
         // other parameters
@@ -232,8 +236,6 @@ function videoShow(id,url) {
         params,
         attrs
     )
-    loadSwf(id,flashvars,params,attrs);
-
     /*    swfobject.embedSWF()的五个必须参数和四个可选参数：
     swfUrl（String，必须的）指定SWF的URL。
     id（String，必须的）指定将会被Flash内容替换的HTML元素（包含你的替换内容）的id。
@@ -245,23 +247,6 @@ function videoShow(id,url) {
     params（String，可选的）用name:value对指定你的嵌套object元素的params。
     attributes（String，可选的）用name:value对指定object的属性。
      */
-}
-function loadSwf(id,flashvars,params,attrs) {
-    swfobject.embedSWF(
-        // url to SMP player
-        "../static/asserts/video/StrobeMediaPlayback.swf",
-        // div id where player will be place
-        id,
-        // width, height
-        "100%", "100%",
-        // minimum flash player version required
-        "27",
-        // other parameters
-        null,
-        flashvars,
-        params,
-        attrs
-    )
 }
 
 

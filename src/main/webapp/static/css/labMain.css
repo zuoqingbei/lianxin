@@ -208,6 +208,7 @@ a, a:hover, a:focus {
 }
 .labMain_cblt_ttwo.labMain_cblt_ttwo_world{
     flex: 7;
+    height: 48em;
 }
 /*轮播*/
 /*轮播图*/
@@ -257,7 +258,7 @@ a, a:hover, a:focus {
 
 .labMain_cblt_ttwo img {
     width: 63em;
-    height: 99%;
+    height: 93%;
 }
 
 .labMain_cblt_bottom {
