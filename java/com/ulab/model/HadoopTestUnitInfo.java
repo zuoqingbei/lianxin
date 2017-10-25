@@ -46,7 +46,7 @@ public class HadoopTestUnitInfo {
 	public List<Record> findTestUnitListByLabCode(BaseController c,String configName,String labCode){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTUNITINFO);
 		String sql=" ";
-		sql+=" select distinct t.labcode,t.testunitid,t.testunitname,t.englishname,m.isTesting,m.testIdentification ";
+		sql+=" select distinct t.labcode,t.testunitid,t.testunitname,t.englishname,m.istesting ";
 		sql+=" from "+tableName+" t   ";
 		sql+=" left join (select t1.* from tb_testmetadata t1 inner join(select  labcode,max(createdate) as createdate,testunitid ";
 		sql+=" from tb_testmetadata where  labcode='"+labCode+"' ";
@@ -56,6 +56,11 @@ public class HadoopTestUnitInfo {
 		List<Record> testUnitList=Db.use(configName).find(sql);
 		//查询该台位目前测试状态isTesting 用来标识实验是否进行当中，正在测试取值为1，反之为0
 		for(Record unit:testUnitList){
+			/*Record r=HadoopTestMetadata.dao.findLastTestMetadata(c,configName, labCode, unit.getStr("testunitid"));
+			if(r!=null){
+				unit.set("istesting", r.get("istesting"));
+				unit.set("testIdentification", r.get("testIdentification"));
+			}*/
 			if(unit.get("istesting")!=null&&StringUtils.isNotBlank(unit.get("istesting")+"")&&unit.getBoolean("istesting")){
 				unit.set("testunitstatus", "在测");
 			}else{

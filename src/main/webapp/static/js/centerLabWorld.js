@@ -144,6 +144,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
 			if(item.testunitlist.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testunitlist,function(ind,it){
+					console.log(it.istesting)
 					htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+item.labcode+'\",\"'+it.testunitid+'\")>台位：'+it.testunitname+'  ('+it.testunitstatus+')</li>';
 				});
 				htmls+='</ul>';
