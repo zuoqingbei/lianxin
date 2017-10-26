@@ -24,6 +24,9 @@
 .shishi_right>div:not(.sheshi_right_top){
     height: 96%;
 }
+.shishi_right>div>iframe{
+    height:100%;
+}
 .sheshi_right_top{
 	height: 8%;
     width: 100%;

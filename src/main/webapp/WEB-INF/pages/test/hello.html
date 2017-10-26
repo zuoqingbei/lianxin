@@ -13,62 +13,89 @@
 <button id="zhonghaiborui">体验馆2(数据中心)</button>
 <button id="taiguo">泰国RF-IN(数据中心)</button>
 <button id="taiguo2">泰国IPdome</button>
+<button id="jiaozhou">胶州安全</button>
 <button id="hkstv">香港hkstv测试</button>
 <button id="cctv">cctv测试</button>
 <script>
+    function loadSwf(url) {
 
-    var flashvars = {
-        // M3U8 url, or any other url which compatible with SMP player (flv, mp4, f4m)        
-        // escaped it for urls with ampersands        
-        //src: escape("http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8"),
-        src: escape("http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8"),
-        // url to OSMF HLS Plugin         
-        //plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
-        plugin_m3u8: "../static/test/HLSProviderOSMF.swf",
-        autoPlay : "true",
-        autoSwitchQuality : "true",
-    };
-    var params = {
-        // self-explained parameters
+        $("#player").remove();
+        $("body").append('<div id="player">');
+        var flashvars = {
+            // M3U8 url, or any other url which compatible with SMP player (flv, mp4, f4m)
+            // escaped it for urls with ampersands
+            //src: escape("http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8"),
+            src: escape(url),
+            // url to OSMF HLS Plugin
+            //plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
+            plugin_m3u8: "../static/test/HLSProviderOSMF.swf",
+            autoPlay: "true",
+            autoSwitchQuality: "true",
+        };
+        var params = {
+            // self-explained parameters
 //        play: true,
-        allowFullScreen: true,
-        allowScriptAccess: "always",
-        quality:"low",
-        bgcolor: "#000000"
-    };
-    var attrs = {
-        name: "player"
-    };
+            allowFullScreen: true,
+            allowScriptAccess: "always",
+            quality: "low",
+            bgcolor: "#000000"
+        };
+        var attrs = {
+            name: "player"
+        };
 
-    /*    swfobject.embedSWF()的五个必须参数和四个可选参数：
-    swfUrl（String，必须的）指定SWF的URL。
-    id（String，必须的）指定将会被Flash内容替换的HTML元素（包含你的替换内容）的id。
-    width（String，必须的）指定SWF的宽。
-    height（String，必须的）指定SWF的高。
-    version（String，必须的）指定你发布的SWF对应的Flash Player版本（格式为：major.minor.release）。
-    expressInstallSwfurl（String，可选的）指定express install SWF的URL并激活Adobe express install [ http://www.adobe.com/cfusion/knowledgebase/index.cfm?id=6a253b75 ]。
-    flashvars（String，可选的）用name:value对指定你的flashvars。
-    params（String，可选的）用name:value对指定你的嵌套object元素的params。
-    attributes（String，可选的）用name:value对指定object的属性。
-     */
-    loadSwf();
-function loadSwf() {
-    swfobject.embedSWF(
-        // url to SMP player
-        "../static/test/StrobeMediaPlayback.swf",
-        // div id where player will be place
-        "player",
-        // width, height
-        "800", "485",
-        // minimum flash player version required
-        "10.4",
-        // other parameters
-        null,
-        flashvars,
-        params,
-        attrs
-    )
-}
+        /*
+        swfobject.embedSWF()的五个必须参数和四个可选参数：
+        swfUrl（String，必须的）指定SWF的URL。
+        id（String，必须的）指定将会被Flash内容替换的HTML元素（包含你的替换内容）的id。
+        width（String，必须的）指定SWF的宽。
+        height（String，必须的）指定SWF的高。
+        version（String，必须的）指定你发布的SWF对应的Flash Player版本（格式为：major.minor.release）。
+        expressInstallSwfurl（String，可选的）指定express install SWF的URL并激活Adobe express install [ http://www.adobe.com/cfusion/knowledgebase/index.cfm?id=6a253b75 ]。
+        flashvars（String，可选的）用name:value对指定你的flashvars。
+        params（String，可选的）用name:value对指定你的嵌套object元素的params。
+        attributes（String，可选的）用name:value对指定object的属性。
+         */
+/*
+        2.2   embedSWF: function(
+            swfUrlStr, replaceElemIdStr, widthStr, heightStr, swfVersionStr, xiSwfUrlStr,
+             flashvarsObj, parObj, attObj, callbackFn)
+
+        swfUrlStr：（String，必须的）flash地址url,
+        replaceElemIdStr,：（String，必须的）替换元素的id
+        widthStr：（String，必须的）flash宽度，类型为字符串
+        heightStr：（String，必须的）flash高度
+        swfVersionStr：（String，必须的）指定你发布的SWF对应的Flash Player版本（格式为：major.minor.release）
+        xiSwfUrlStr：（String，可选的）指定express install SWF的URL并激活Adobe express install
+        flashvarsObj：（Object，可选的）用name:value对指定你的flashvars
+        parObj：（Object，可选的）用name:value对指定你的嵌套object元素的params
+        attObj：（Object，可选的）用name:value对指定object的属性
+        callbackFn：（Function，可选的）flash加载完成的回调函数，2.2才支持。
+        callbackFn参数：{success:true/false,id:"object id",ref:DOM Element}
+        success, Boolean to indicate whether the embedding of a SWF was success or not
+        id, String indicating the ID used in swfobject.registerObject
+        ref, HTML object element reference (returns undefined when success=false)
+*/
+        $("#player").hide().show();
+        swfobject.embedSWF(
+            // url to SMP player
+            "../static/test/StrobeMediaPlayback.swf",
+            // div id where player will be place
+            "player",
+            // width, height
+            "800", "485",
+            // minimum flash player version required
+            "10.4",
+            // other parameters
+            null,
+            flashvars,
+            params,
+            attrs,
+            function () {
+                alert(1)
+            }
+        )
+    }
 
 </script>
 
@@ -112,29 +139,36 @@ function loadSwf() {
      )
     }-->
 <script>
+    $(function () {
+        loadSwf("http://192.168.1.168:6713/mag/hls/936f41ee21914f1c9435bb507fd1e81d/1/live.m3u8");
+    })
     $("#local").click(function () {
-        flashvars.src = "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8";
-        loadSwf();
+        var url = "http://10.130.96.65:6713/mag/hls/936f41ee21914f1c9435bb507fd1e81d/1/live.m3u8";
+        loadSwf(url);
     });
     $("#zhonghaiborui").click(function () {
-        flashvars.src = "http://10.130.96.113:6713/mag/hls/85d598e47ce4411c9196e965385e895d/1/live.m3u8";
-        loadSwf();
+        var url = "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8";
+        loadSwf(url);
     });
     $("#taiguo").click(function () {
-        flashvars.src = "http://10.130.96.113:6713/mag/hls/7329e487e5c84c41a1ba9040e89f7814/0/live.m3u8";
-        loadSwf();
+        var url = "http://10.130.96.65:6713/mag/hls/e7f6b53231484bca9ff3fd7a7dc820a5/1/live.m3u8";
+        loadSwf(url);
     });
     $("#taiguo2").click(function () {
-        flashvars.src = "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8";
-        loadSwf();
+        var url = "http://10.130.96.65:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8";
+        loadSwf(url);
+    });
+    $("#jiaozhou").click(function () {
+        var url = "http://10.130.96.65:6713/mag/hls/db2920c76afa4cf2ae02dd0f414a4bd4/1/live.m3u8";
+        loadSwf(url);
     });
     $("#hkstv").click(function () {
-        flashvars.src = "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8";
-        loadSwf();
+        var url = "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8";
+        loadSwf(url);
     });
     $("#cctv").click(function () {
-        flashvars.src = "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8";
-        loadSwf();
+        var url = "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8";
+        loadSwf(url);
     });
 
 </script>

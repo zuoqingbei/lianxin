@@ -57,14 +57,16 @@ function echartsResize() {
     myChart2.resize();
 }
 var videoUlrInland = [
-    "http://10.130.96.113:6713/mag/hls/85d598e47ce4411c9196e965385e895d/0/live.m3u8?time=New Date()",//本机
+    // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8?time=New Date()"//本机
+    "http://10.130.96.65:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8?time=New Date()"//本机
+    // "http://10.130.96.113:6713/mag/hls/85d598e47ce4411c9196e965385e895d/0/live.m3u8?time=New Date()",//本机
     // "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8?time=New Date()",//室外北侧
     // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
     // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()"//CCTV
 ];
 var videoUlrAbroad = [
-    "http://10.130.96.113:6713/mag/hls/7329e487e5c84c41a1ba9040e89f7814/1/live.m3u8?time=New Date()",//泰国"RF-B"
-    // "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
+    // "http://10.130.96.113:6713/mag/hls/7329e487e5c84c41a1ba9040e89f7814/1/live.m3u8?time=New Date()",//泰国"RF-B"
+    "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
     // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
     // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
     // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()"//本机
@@ -89,7 +91,7 @@ function createDataCenterHtml(data,dataType){
 			if(item.haschildren==1){
 				haschildren=true;
 			}
-			console.log("item",item)
+			// console.log("item",item)
 			dataCenterMap.put(item.id,item);
 			if(!haschildren){
 				htmls+='<li data-centerid="'+item.id+'" ';
@@ -110,7 +112,8 @@ function createDataCenterHtml(data,dataType){
 					htmls+=' class=" hasChildren " >';
 				};
 				cuNum++;
-				htmls+=' <header class="fold">'+item.center_name+'<span>︿</span></header> ';
+				// htmls+=' <header class="fold">'+item.center_name+'<span>︿</span></header> ';
+				htmls+=' <header class="fold">'+item.center_name+'<span>∧</span></header> ';
 				htmls+='<ul>';
 				dataCenterMap.put(item.id,item);
 				$.each(item.children,function(index,cItem){
@@ -288,22 +291,23 @@ $(function () {
         $li.removeClass("active");
         $(this).addClass("active");
         var $thisElem = $(this);
+        if($thisElem.attr("onclick").indexOf("intentsUrl")>-1){
+            $(".labSubNav>ul>li:last").addClass("active").siblings().removeClass("active");
+        }else{
+            $(".labSubNav>ul>li:first").addClass("active").siblings().removeClass("active");
+        }
         $.post(contextPath+'/lab/loadVideosByDataCenterAjax?dataCenterId='+$thisElem.data("centerid"),function(data){
             console.log("data",data)
             var currentUrl = data[0].videos[0].videl_url;
             console.log("currentUrl",currentUrl);
-            // console.log("$(this).parents(\".inland\")",$thisElem[0]);
-            var videoId = "";
 
             //转成子码流可以流畅些
             currentUrl = currentUrl.replace("/0/live.m3u8","/1/live.m3u8")
 
             if($thisElem.parents(".inland").length>0){
                 videoShow("videoBoxInland",currentUrl)
-                console.log("videoBoxInland");
             }else{
                 videoShow("videoBoxAbroad",currentUrl)
-                console.log("videoBoxAbroad");
             }
 
         })
@@ -323,10 +327,10 @@ $(function () {
     $(".switchBox").on("click","li>header",function () {
         if ($(this).next("ul").is(":visible")) {
             $(this).next("ul").hide();
-            $(this).removeClass("fold").children("span").text("﹀");
+            $(this).removeClass("fold").children("span").text("∨");
         } else {
             $(this).next("ul").show();
-            $(this).addClass("fold").children("span").text("︿");
+            $(this).addClass("fold").children("span").text("∧");
         }
     });
 
@@ -341,11 +345,23 @@ $(function () {
     subNavLi.click(function () {
         subNavLi.removeClass("active");
         $(this).addClass("active");
+        var borderUrl = $lab_content_r.css("background-image");
 
-        var borderUrl = $lab_content_r.css("background-image").replace(/[1-4]/, $(this).index() + 1);
-        if (( $navHeadLi.eq(1).hasClass("active") && $(this).index() === 4 ) || $(this).index() === 5) { //国外的曲线监控或模块商的互联页面
-            borderUrl = $lab_content_r.css("background-image").replace(/[1-4]/, 2);
+        //边框变换
+        if($(".labMainNav>header>ul>li:eq(0)").hasClass("active")){//国内
+            if($(this).index()<3){
+                borderUrl = borderUrl.replace(/[1-4]/, $(this).index() + 1);
+            }else{
+                borderUrl = borderUrl.replace(/[1-4]/, 4);
+            }
+        }else{//国外
+            if($(this).index()<1){
+                borderUrl = borderUrl.replace(/[1-2]/, 1);
+            }else{
+                borderUrl = borderUrl.replace(/[1-2]/, 2);
+            }
         }
+
         $lab_content_r.css("background-image", borderUrl);
 
         $(".lab_content_r>.switchBox>div.item").eq($(this).index()).show().siblings().hide();
@@ -398,7 +414,7 @@ $(function () {
         var $video = $(this).next();
         if($video.is(":visible")){
             $video.hide();
-            $(this).children(".text").text("显示小视频");
+            $(this).children(".text").text("点击显示监控");
             $(this).children(".icon").css("background-image","url(../static/img/lab/browse.png)")
         }else{
             $video.show();
@@ -407,6 +423,11 @@ $(function () {
         }
     });
     
+    $(".toLabIframe").click(function () {
+        $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
+        videoShow("smallVideoInlandWeb",videoUlrAbroad[0]);
+        videoShow("videoBoxInland",videoUlrAbroad[0]);
+    });
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
     initfour();//及时率

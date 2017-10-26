@@ -19,7 +19,7 @@
     .lab_content {
         flex: 8;
         display: flex;
-        padding: 1.2em;
+        padding: 1.2em 1.2em 1.2em 2.4em;
     }
 
     .lab_content_l {
@@ -32,6 +32,7 @@
         flex-direction: column;
         margin-top: -1em;
         margin-left: 2em;
+        margin-right: 1em;
     }
 
     .lab_content_r > .labSubNav {
@@ -129,7 +130,7 @@ li:not(.hasChildren).active {
 
     .labMainNav > header > ul > li {
         display: inline-block;
-        margin: 2em 2em;
+        margin: 2em 1em;
         padding: .8em 2.2em;
         background-image: url(../img/tabCom/btn_off.png);
         background-size: 100% 100%;
@@ -160,8 +161,8 @@ li:not(.hasChildren).active {
 
     .labMainNav > .switchBox > ul > li > header > span { /*折叠符号*/
         position: relative;
-        padding-left: 2em;
-        top: .2em;
+        padding-left: 8em;
+        top: -.2em;
     }
 
     .labMainNav > .switchBox > ul > li > header:hover > span {
@@ -220,9 +221,11 @@ li:not(.hasChildren).active {
         color: #fff;
     }
 
+    /*
     .labSubNav > ul > li.active {
         color: #fff;
     }
+    */
 
 }
 
@@ -285,12 +288,12 @@ li:not(.hasChildren).active {
     width: 24em;
     height: 13.5em;
     top: 2em;
-    right: 0;
+    /*right: 0;*/
 }
 .monitoring .shishi_right .smallVideoBox>.hideShow{
     text-align: right;
     width: 8em;
-    float: right;
+    /*float: right;*/
     padding-bottom: .2em;
     cursor: pointer;
 }

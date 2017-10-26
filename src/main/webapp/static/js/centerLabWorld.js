@@ -139,7 +139,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
 	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName},function(data){
 		var htmls="";
 		$.each(data,function(index,item){
-			console.log(item)
+			// console.log(item)
 			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labcode+'</a>';
 			if(item.testunitlist.length>0){
 				htmls+='<ul class="taiwei_hide">';
@@ -356,7 +356,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
         // videoShow(id,url)
     }
 
-    $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
+    $(".labMain_cblt_tone_world").html("<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
     $(".labMain_cblt_ttwo_world img").attr("src", dataCenter.img_content);
     $("#labName_world").html(dataCenter.center_name);
     $("#labnameIcon_world").html(dataCenter.center_name);
