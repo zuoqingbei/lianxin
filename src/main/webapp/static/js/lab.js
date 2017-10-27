@@ -147,6 +147,13 @@ function createClickFuntionForDataCenter(item){
 	}
 	return htmls;
 }
+function setCenterLabHtmlDB(dataCenter){
+	 $(".labMain_cblt_tone_world").html("<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
+	    $(".labMain_cblt_ttwo_world img").attr("src", dataCenter.img_content);
+	    $("#labName_world").html(dataCenter.center_name);
+	    $("#labnameIcon_world").html(dataCenter.center_name);
+	    $("#secondName_world").html(dataCenter.center_name);
+}
 //查询数据中心下实验室 level为3(单位/产品) 4（模块/整机）
 function loadAllDataCenterLabAjaxFunc(dataCenterId){
 	var dataCenter=dataCenterMap.get(dataCenterId);
@@ -155,6 +162,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId){
 	if(data_type==0){
 		//alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
 		if(data_source=="db"||data_source=="json"){
+			setCenterLabHtmlDB(dataCenter);
 			inlandTabShow_world();
 		}else if(data_source=="webservice"){
 			inlandTabShow();
@@ -162,6 +170,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId){
 	}else{
 		//alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
 		if(data_source=="db"||data_source=="json"){
+			setCenterLabHtmlDB(dataCenter);
 			abroadTabShow();
 		}else if(data_source=="webservice"){
 			abroadTabShow_center();

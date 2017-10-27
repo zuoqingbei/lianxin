@@ -115,9 +115,6 @@ var startTime;
 function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad) {
 	var dataCenter=dataCenterMap.get(type);
 	var $l3x3 = $("#l");
-    // var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li").removeClass("active");
-    // $mainNavLi.removeClass("active");
-    // $(thiselem).addClass("active");
 	configName=mConfigName;
 	//清除中海博睿定时器
 	window.clearInterval(intevalChart1);
@@ -129,12 +126,6 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
         abroadTabShow();
     }*/
 
-
-    $(".labMain_cblt_tone_world").html( "<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
-    $(".labMain_cblt_ttwo_world img").attr("src", (dataCenter.img_content ==null?"../static/img/labMain/Thailand.jpg":dataCenter.img_content));
-    $("#labName_world").html(dataCenter.center_name);
-    $("#labnameIcon_world").html(dataCenter.center_name);
-    // $("#secondName_world").html(labname[type]);
     //生成下拉
 	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName},function(data){
 		var htmls="<ul>";
@@ -358,11 +349,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
         // videoShow(id,url)
     }*/
 
-    $(".labMain_cblt_tone_world").html("<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
-    $(".labMain_cblt_ttwo_world img").attr("src", dataCenter.img_content);
-    $("#labName_world").html(dataCenter.center_name);
-    $("#labnameIcon_world").html(dataCenter.center_name);
-    $("#secondName_world").html(dataCenter.center_name);
+   
     var htmls = "";
 	// alert(dataCenter.id)
 

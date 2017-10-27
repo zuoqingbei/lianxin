@@ -458,18 +458,6 @@ function loadLabUnitInfoCenterTabAjax(type,inlandOrAbroad){
 			}
 		});
 		$("#lab_unit_selected_center").html(htmls);
-/*
-        $(".sheshi_tab_list #lab_unit_selected_center>li").click(function () {
-            $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
-            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
-            $(this).css('height','auto').siblings().css('height','1.5em');
-            $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-            $(this).find('.taiwei_hide').css('display','block');
-            // $('.sheshi_tab').removeClass('sheshi_tab_active');
-            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
-
-        });
-*/
         //选择台位
         $("#lab_unit_selected_center>li>a").click(function (e) {
             $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
@@ -559,29 +547,6 @@ function resetDataCenterLab(){
 	interval_count1=0;
 	interval_count2=0;
 }
-//获取曲线具体数据
-/*function findSensorDataCenetrTabAjax2(labTypeCode,testUnitId){
-	myChart1= echarts.init(document.getElementById('main1'));
-	myChart2 = echarts.init(document.getElementById('main2'));
-	$.post(contextPath+"/lab/getJsonFile",{"fileName":"unit.json","testUnitId":testUnitId},function(data){
-		//console.log(eval("("+data+")"))
-		data=eval("("+data+")");
-		dataBase=data;
-		//根据传感器具体数据 生成图例
-	 	$.each(data.list,function(index,item){
-			totalLegendName.push(item.name);
-		});
-		legendData=dealBracket(totalLegendName);
-		randomLegend();
-		$("#center_sybh_id").html(data.sybh);
-	 	$("#center_ypbm_id").html(data.ybbh);
-	 	$("#center_cpxh_id").html(data.cpxh);
-		//showLegendData=legendData;//默认全选
-		//console.log(showLegendData)
-		createLegendHtmls();
-		createEcharts(true);
-	});
-}*/
 //温度取8个 其他全部展示
 function randomLegend(){
 	var num=0;
