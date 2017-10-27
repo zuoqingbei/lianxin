@@ -1037,6 +1037,20 @@ public class LabController extends BaseController {
     	List<Record> centerDataList = DataCenterModel.dao.findAllDataCenter();
 		renderJson(centerDataList);
     }
+    
+    /**
+     * 
+     * @time   2017年10月26日 下午9:39:43
+     * @author zuoqb
+     * @todo   TODO
+     * @param  查询数据中心下实验室 level为3(单位/产品) 4（模块/整机）
+     * @return_type   void
+     */
+    public void loadAllDataCenterLabAjax(){
+    	String dataCenterId=getPara("dataCenterId","1");
+    	List<Record> centerDataList = DataCenterModel.dao.findDataCenterLab(dataCenterId);
+		renderJson(centerDataList);
+    }
     /**
      * 
      * @time   2017年10月19日 上午6:03:13

@@ -66,4 +66,23 @@ public class DataCenterModel extends Model<CommunistModel>{
 		}
 		return list;
 	}
+	/**
+	 * 
+	 * @time   2017年10月26日 下午9:37:34
+	 * @author zuoqb
+	 * @todo   根据数据中心查询实验室 level为3(单位/产品)
+	 * @param  @param dataCenterId
+	 * @param  @return
+	 * @return_type   List<Record>
+	 */
+	public List<Record> findDataCenterLab(String dataCenterId){
+		String sql="select * from t_b_data_center where parent_id='"+dataCenterId+"' and center_level=3 and del_flag=0 order by order_num";
+		List<Record> list=Db.find(sql);
+		/*for(Record center:list){
+			if("1".equals(center.getStr("haschildren"))){
+				center.set("children", findDataCenterByParentId(center.get("id")));
+			}
+		}*/
+		return list;
+	}
 }
