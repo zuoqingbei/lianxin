@@ -437,15 +437,15 @@ $(function () {
         //边框变换
         if ($(".labMainNav>header>ul>li:eq(0)").hasClass("active")) {//国内
             if ($(this).index() < 3) {
-                borderUrl = borderUrl.replace(/[1-4]/, $(this).index() + 1);
+                borderUrl = borderUrl.replace(/_[1-4]/, "_" + ($(this).index() + 1));
             } else {
-                borderUrl = borderUrl.replace(/[1-4]/, 4);
+                borderUrl = borderUrl.replace(/_[1-4]/, "_4");
             }
         } else {//国外
             if ($(this).index() < 1) {
-                borderUrl = borderUrl.replace(/[1-2]/, 1);
+                borderUrl = borderUrl.replace(/_[1-2]/, "_1");
             } else {
-                borderUrl = borderUrl.replace(/[1-2]/, 2);
+                borderUrl = borderUrl.replace(/_[1-2]/, "_2");
             }
         }
         $lab_content_r.css("background-image", borderUrl);
