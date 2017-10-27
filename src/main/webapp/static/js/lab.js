@@ -1,51 +1,51 @@
-
 //导航选中切换
 
 function Map() {
-  var struct = function (key, value) {
-    this.key = key;
-    this.value = value;
-  }
-  var put = function (key, value) {
-    for (var i = 0; i < this.arr.length; i++) {
-      if (this.arr[i].key === key) {
-        this.arr[i].value = value;
-        return;
-      }
+    var struct = function (key, value) {
+        this.key = key;
+        this.value = value;
     }
-    this.arr[this.arr.length] = new struct(key, value);
-  }
-  var get = function (key) {
-    for (var i = 0; i < this.arr.length; i++) {
-      if (this.arr[i].key === key) {
-        return this.arr[i].value;
-      }
+    var put = function (key, value) {
+        for (var i = 0; i < this.arr.length; i++) {
+            if (this.arr[i].key === key) {
+                this.arr[i].value = value;
+                return;
+            }
+        }
+        this.arr[this.arr.length] = new struct(key, value);
     }
-    return null;
-  }
-  var remove = function (key) {
-    var v;
-    for (var i = 0; i < this.arr.length; i++) {
-      v = this.arr.pop();
-      if (v.key === key) {
-        continue;
-      }
-      this.arr.unshift(v);
+    var get = function (key) {
+        for (var i = 0; i < this.arr.length; i++) {
+            if (this.arr[i].key === key) {
+                return this.arr[i].value;
+            }
+        }
+        return null;
     }
-  }
-  var size = function () {
-    return this.arr.length;
-  }
-  var isEmpty = function () {
-    return this.arr.length <= 0;
-  }
-  this.arr = new Array();
-  this.get = get;
-  this.put = put;
-  this.remove = remove;
-  this.size = size;
-  this.isEmpty = isEmpty;
+    var remove = function (key) {
+        var v;
+        for (var i = 0; i < this.arr.length; i++) {
+            v = this.arr.pop();
+            if (v.key === key) {
+                continue;
+            }
+            this.arr.unshift(v);
+        }
+    }
+    var size = function () {
+        return this.arr.length;
+    }
+    var isEmpty = function () {
+        return this.arr.length <= 0;
+    }
+    this.arr = new Array();
+    this.get = get;
+    this.put = put;
+    this.remove = remove;
+    this.size = size;
+    this.isEmpty = isEmpty;
 }
+
 function echartsResize() {
     chartone.resize();
     charttwo.resize();
@@ -56,9 +56,11 @@ function echartsResize() {
     myChart1.resize();
     myChart2.resize();
 }
+
 var videoUlrInland = [
     // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8?time=New Date()"//本机
-    "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8?time=New Date()"//本机
+    "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8?time=New Date()",//本机
+    "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/0/live.m3u8?time=New Date()"//本机
     // "http://10.130.96.113:6713/mag/hls/85d598e47ce4411c9196e965385e895d/0/live.m3u8?time=New Date()",//本机
     // "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8?time=New Date()",//室外北侧
     // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
@@ -71,105 +73,113 @@ var videoUlrAbroad = [
     // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
     // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()"//本机
 ];
-var dataCenterMap=new Map();
+var dataCenterMap = new Map();
+
 //查询全部数据中心数据（包含层级关系）
-function loadAllDataCenterAjax(){
-	$.post(contextPath+"/lab/loadAllDataCenterAjax",{},function(data){
-		// console.log(data)
-		$(".inland").html(createDataCenterHtml(data,0));
-		$(".abroad").html(createDataCenterHtml(data,1));
-		//alert(dataCenterMap.get("1"));
-	});
+function loadAllDataCenterAjax() {
+    $.post(contextPath + "/lab/loadAllDataCenterAjax", {}, function (data) {
+        // console.log(data)
+        $(".inland").html(createDataCenterHtml(data, 0));
+        $(".abroad").html(createDataCenterHtml(data, 1));
+        //alert(dataCenterMap.get("1"));
+    });
 }
-function createDataCenterHtml(data,dataType){
-	//dataType:0：国内 1：国外
-	var htmls="";
-	var cuNum=0;
-	$.each(data,function(index,item){
-		if(item.data_type==dataType){
-			var haschildren=false;
-			if(item.haschildren==1){
-				haschildren=true;
-			}
-			// console.log("item",item)
-			dataCenterMap.put(item.id,item);
-			if(!haschildren){
-				htmls+='<li data-centerid="'+item.id+'" ';
-				if(cuNum==0){
-					htmls+=' class=" noChildren active" ';
-				}else{
-					htmls+=' class=" noChildren " ';
-				};
-				cuNum++;
-				//创建li响应方法
-				htmls+=createClickFuntion(item);
-				htmls+=' >'+item.center_name+'</li>';
-			}else{
-				htmls+='<li '
-				if(cuNum==0){
-					htmls+=' class=" hasChildren active" >';
-				}else{
-					htmls+=' class=" hasChildren " >';
-				};
-				cuNum++;
-				// htmls+=' <header class="fold">'+item.center_name+'<span>︿</span></header> ';
-				htmls+=' <header class="fold">'+item.center_name+'<span>∧</span></header> ';
-				htmls+='<ul>';
-				dataCenterMap.put(item.id,item);
-				$.each(item.children,function(index,cItem){
-					dataCenterMap.put(cItem.id,cItem);
-					htmls+='<li data-centerid="'+cItem.id+'" ';
-					htmls+=createClickFuntion(cItem)+" >"+cItem.center_name+'</li>';
-				});
-				htmls+='</ul></li>';
-			}
-			
-		}
-	});
-	return htmls;
-	
+
+function createDataCenterHtml(data, dataType) {
+    //dataType:0：国内 1：国外
+    var htmls = "";
+    var cuNum = 0;
+    $.each(data, function (index, item) {
+        if (item.data_type == dataType) {
+            var haschildren = false;
+            if (item.haschildren == 1) {
+                haschildren = true;
+            }
+            // console.log("item",item)
+            dataCenterMap.put(item.id, item);
+            if (!haschildren) {
+                htmls += '<li data-centerid="' + item.id + '" ';
+                if (cuNum == 0) {
+                    htmls += ' class=" noChildren active" ';
+                } else {
+                    htmls += ' class=" noChildren " ';
+                }
+                ;
+                cuNum++;
+                //创建li响应方法
+                htmls += createClickFuntion(item);
+                htmls += ' >' + item.center_name + '</li>';
+            } else {
+                htmls += '<li '
+                if (cuNum == 0) {
+                    htmls += ' class=" hasChildren active" >';
+                } else {
+                    htmls += ' class=" hasChildren " >';
+                }
+                ;
+                cuNum++;
+                // htmls+=' <header class="fold">'+item.center_name+'<span>︿</span></header> ';
+                htmls += ' <header class="fold">' + item.center_name + '<span>∧</span></header> ';
+                htmls += '<ul>';
+                dataCenterMap.put(item.id, item);
+                $.each(item.children, function (index, cItem) {
+                    dataCenterMap.put(cItem.id, cItem);
+                    htmls += '<li data-centerid="' + cItem.id + '" ';
+                    htmls += createClickFuntion(cItem) + " >" + cItem.center_name + '</li>';
+                });
+                htmls += '</ul></li>';
+            }
+
+        }
+    });
+    return htmls;
+
 }
+
 //创建li响应方法
-function createClickFuntion(item){
-	var htmls="";
-	/**
-	 * 数据源 db-直连数据库； url-第三方链接；
-		webservice-连接webservice；json-读取json文件
-	 */
-	// console.log("item",item)
-	var dataSource=item.data_source;
-	if(dataSource=="db"){ //国外曲线
-		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop('"+item.id+"','"+item.souce_value+"','"+item.data_type+"',this)"
-	}else if(dataSource=="webservice"){
-		//中海博睿
-		htmls+=" onclick=loadLabUnitInfoCenterTabAjax('"+item.data_type+"',this) ";
-	}else if(dataSource=="json"){
-		//新西兰 日本读取json文件 国外曲线
-		htmls+=" onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('"+item.id+"','"+item.data_type+"',this) ";
-	}else if(dataSource=="url"){
-		htmls+=" onclick= intentsUrl('"+item.id+"',this)";
-	}
-	return htmls;
+function createClickFuntion(item) {
+    var htmls = "";
+    /**
+     * 数据源 db-直连数据库； url-第三方链接；
+     webservice-连接webservice；json-读取json文件
+     */
+        // console.log("item",item)
+    var dataSource = item.data_source;
+    if (dataSource == "db") { //国外曲线
+        htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop('" + item.id + "','" + item.souce_value + "','" + item.data_type + "',this)"
+    } else if (dataSource == "webservice") {
+        //中海博睿
+        htmls += " onclick=loadLabUnitInfoCenterTabAjax('" + item.data_type + "',this) ";
+    } else if (dataSource == "json") {
+        //新西兰 日本读取json文件 国外曲线
+        htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "','" + item.data_type + "',this) ";
+    } else if (dataSource == "url") {
+        htmls += " onclick= intentsUrl('" + item.id + "',this)";
+    }
+    return htmls;
 }
+
 //直接跳转第三方地址
-function intentsUrl(type,thiselem){
+function intentsUrl(type, thiselem) {
     var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
     $mainNavLi.removeClass("active");
     $(thiselem).addClass("active");
     moduleMakersTabShow();
-    var dataCenter=dataCenterMap.get(type);
-	var url=dataCenter.souce_value;
-    $(".lab_content_r>.switchBox>div.item").eq(5).find("iframe").attr("src",url);
-	console.log("url",url)
+    var dataCenter = dataCenterMap.get(type);
+    var url = dataCenter.souce_value;
+    $(".lab_content_r>.switchBox>div.item").eq(5).find("iframe").attr("src", url);
+    console.log("url", url)
 }
 
 var $lab_content_r = $(".lab_content_r");
-var borderUrl ="";
+var borderUrl = "";
+
 function inlandTabShow() { //国内数据中心
     $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
     labNavAndItemShow();
     $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.centerCurves").show();
 }
+
 function inlandTabShow_world() {//国内Hadoop
     $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
     labNavAndItemShow();
@@ -181,6 +191,7 @@ function abroadTabShow() {//国外Hadoop
     labNavAndItemShow();
     $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.abroadCurves").show();
 }
+
 function abroadTabShow_center() {//国外数据中心
     $(".lab_content_r").css("background-image", "url(../static/img/lab/labTabBoardForeign_1.png)");
     labNavAndItemShow();
@@ -195,35 +206,37 @@ function moduleMakersTabShow() { //模块商
 
 function labNavAndItemShow(mark) {
     $(".labSubNav>ul>li").hide();
-    if(mark === "moduleMakers"){
+    if (mark === "moduleMakers") {
         $(".lab_content_r>.switchBox>div.item").eq(5).show().siblings().hide();
-    }else{
+    } else {
         $(".lab_content_r>.switchBox>div.item").eq(0).show().siblings().hide();
 
     }
 }
+
 // 视频加载方法
-function videoShow(id,url) {
+function videoShow(id, url) {
     var flashvars = {
         src: escape(url),
         plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
-        autoPlay : "true",
-        autoSwitchQuality : "true"
+        autoPlay: "true",
+        autoSwitchQuality: "true"
     };
     var params = {
         // self-explained parameters
         allowFullScreen: true,
         allowScriptAccess: "always",
-        quality:"low",
+        quality: "low",
         bgcolor: "#000000"
     };
     var attrs = {
         name: "player"
     };
-    loadSwf(id,flashvars,params,attrs);
+    loadSwf(id, flashvars, params, attrs);
 
 }
-function loadSwf(id,flashvars,params,attrs) {
+
+function loadSwf(id, flashvars, params, attrs) {
     swfobject.embedSWF(
         // url to SMP player
         "../static/asserts/video/StrobeMediaPlayback.swf",
@@ -253,11 +266,8 @@ function loadSwf(id,flashvars,params,attrs) {
 }
 
 
-
-
-
 $(function () {
-	loadAllDataCenterAjax();
+    loadAllDataCenterAjax();
     //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
     $(".btn-totalStatus").click(function () {
         $("#r").show().siblings(".lab").hide();
@@ -286,32 +296,32 @@ $(function () {
     });
 
     //左侧菜单点击事件
-    $(".labMainNav>.switchBox").on("click","ul>li.noChildren, ul>li>ul>li",function (){
+    $(".labMainNav>.switchBox").on("click", "ul>li.noChildren, ul>li>ul>li", function () {
         var $li = $(".switchBox>ul>li.noChildren, .switchBox>ul>li>ul>li");
         $li.removeClass("active");
         $(this).addClass("active");
         var $thisElem = $(this);
-        if($thisElem.attr("onclick").indexOf("intentsUrl")>-1){
+        if ($thisElem.attr("onclick").indexOf("intentsUrl") > -1) {
             $(".labSubNav>ul>li:last").addClass("active").siblings().removeClass("active");
-        }else{
+        } else {
             $(".labSubNav>ul>li:first").addClass("active").siblings().removeClass("active");
         }
-        $.post(contextPath+'/lab/loadVideosByDataCenterAjax?dataCenterId='+$thisElem.data("centerid"),function(data){
-            console.log("data",data);
+        $.post(contextPath + '/lab/loadVideosByDataCenterAjax?dataCenterId=' + $thisElem.data("centerid"), function (data) {
+            console.log("data", data);
             var currentUrl = "";
-            if(data){
+            if (data) {
                 currentUrl = data[0].videos[0].videl_url;
             }
 
-            console.log("currentUrl",currentUrl);
+            console.log("currentUrl", currentUrl);
 
             //转成子码流可以流畅些
-            currentUrl = currentUrl.replace("/0/live.m3u8","/1/live.m3u8")
+            // currentUrl = currentUrl.replace("/0/live.m3u8", "/1/live.m3u8")
 
-            if($thisElem.parents(".inland").length>0){ //国内
-                videoShow("videoBoxInland",currentUrl)
-            }else{
-                videoShow("videoBoxAbroad",currentUrl)
+            if ($thisElem.parents(".inland").length > 0) { //国内
+                videoShow("videoBoxInland", currentUrl)
+            } else {
+                videoShow("videoBoxAbroad", currentUrl)
             }
         })
     });
@@ -327,7 +337,7 @@ $(function () {
     });
 
     //二级菜单的折叠与展开
-    $(".switchBox").on("click","li>header",function () {
+    $(".switchBox").on("click", "li>header", function () {
         if ($(this).next("ul").is(":visible")) {
             $(this).next("ul").hide();
             $(this).removeClass("fold").children("span").text("∨");
@@ -351,16 +361,16 @@ $(function () {
         var borderUrl = $lab_content_r.css("background-image");
 
         //边框变换
-        if($(".labMainNav>header>ul>li:eq(0)").hasClass("active")){//国内
-            if($(this).index()<3){
+        if ($(".labMainNav>header>ul>li:eq(0)").hasClass("active")) {//国内
+            if ($(this).index() < 3) {
                 borderUrl = borderUrl.replace(/[1-4]/, $(this).index() + 1);
-            }else{
+            } else {
                 borderUrl = borderUrl.replace(/[1-4]/, 4);
             }
-        }else{//国外
-            if($(this).index()<1){
+        } else {//国外
+            if ($(this).index() < 1) {
                 borderUrl = borderUrl.replace(/[1-2]/, 1);
-            }else{
+            } else {
                 borderUrl = borderUrl.replace(/[1-2]/, 2);
             }
         }
@@ -370,10 +380,10 @@ $(function () {
 
         if ($(this).text().indexOf("实时监测") > -1) {
             echartsResizeWorld();
-            if($(this).hasClass("centerCurves")){
-                videoShow("smallVideoInland",videoUlrInland[0]);
-            }else {
-                videoShow("smallVideoAbroad",videoUlrAbroad[1]);
+            if ($(this).hasClass("centerCurves")) {
+                videoShow("smallVideoInland", videoUlrInland[0]);
+            } else {
+                videoShow("smallVideoAbroad", videoUlrAbroad[1]);
             }
         }
     });
@@ -385,9 +395,9 @@ $(function () {
         $(this).parents(".monitoring").find(".shishi_right>.item").eq(index).show().siblings().hide();
     });
 
-    function videoLayout(videoUlr,from) {
+    function videoLayout(videoUlr, from) {
         var $monitoring = $(".monitoring");
-        var $layoutBox = (from === "inland" ? $monitoring.eq(0).find(" .video_box > div"):$monitoring.eq(1).find(" .video_box > div"));
+        var $layoutBox = (from === "inland" ? $monitoring.eq(0).find(" .video_box > div") : $monitoring.eq(1).find(" .video_box > div"));
         var n = videoUlr.length;
         // console.log("videoUlr.length", n);
         if (n < 2) {
@@ -402,33 +412,44 @@ $(function () {
         var videoHtml = "";
         for (var i = 1; i <= n; i++) {
             videoHtml += '<div ><div id="video' + i + from + '"></div></div>';
-            videoShow("video"+i+from,videoUlr[i-1]);
+            videoShow("video" + i + from, videoUlr[i - 1]);
         }
         $layoutBox.eq(0).html(videoHtml);
     }
 
-    videoLayout(videoUlrInland,"inland");
-    videoLayout(videoUlrAbroad,"abroad");
+    videoLayout(videoUlrInland, "inland");
+    videoLayout(videoUlrAbroad, "abroad");
 
     //画中画的视频隐藏显示
     $(".smallVideoBox>.hideShow").click(function () {
         var $video = $(this).next();
-        if($video.is(":visible")){
+        if ($video.is(":visible")) {
             $video.hide();
             $(this).children(".text").text("点击显示监控");
-            $(this).children(".icon").css("background-image","url(../static/img/lab/browse.png)")
-        }else{
+            $(this).children(".icon").css("background-image", "url(../static/img/lab/browse.png)")
+        } else {
             $video.show();
             $(this).children(".text").text("点击隐藏");
-            $(this).children(".icon").css("background-image","url(../static/img/lab/close.png)")
+            $(this).children(".icon").css("background-image", "url(../static/img/lab/close.png)")
         }
     });
-    
-    $(".toLabIframe").click(function () {
+
+    var $taiweiList = $(".sheshi_tab_list>ul>li>ul>li>ul>li");
+
+    $(".sheshi_tab_list>ul>li.toLabIframe").click(function () {
+        $taiweiList.removeClass("active");
+        $(this).addClass("active");
         $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
-        videoShow("smallVideoInlandWeb",videoUlrInland[0]);
-        videoShow("videoBoxInland",videoUlrInland[0]);
+        videoShow("smallVideoInlandWeb", videoUlrInland[0]);
+        videoShow("videoBoxInland", videoUlrInland[1]);
     });
+
+    //台位选中状态
+    $taiweiList.click(function () {
+        $taiweiList.removeClass("active");
+        $(".sheshi_tab_list>ul>li.toLabIframe.active").removeClass("active");
+        $(this).addClass("active");
+    })
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
     initfour();//及时率
