@@ -107,7 +107,7 @@ function createDataCenterHtml(data, dataType) {
                 ;
                 cuNum++;
                 //创建li响应方法
-                htmls += createClickFuntion(item);
+                htmls += createClickFuntionForDataCenter(item);
                 htmls += ' >' + item.center_name + '</li>';
             } else {
                 htmls += '<li '
@@ -125,7 +125,7 @@ function createDataCenterHtml(data, dataType) {
                 $.each(item.children, function (index, cItem) {
                     dataCenterMap.put(cItem.id, cItem);
                     htmls += '<li data-centerid="' + cItem.id + '" ';
-                    htmls += createClickFuntion(cItem) + " >" + cItem.center_name + '</li>';
+                    htmls += createClickFuntionForDataCenter(cItem) + " >" + cItem.center_name + '</li>';
                 });
                 htmls += '</ul></li>';
             }
@@ -135,7 +135,81 @@ function createDataCenterHtml(data, dataType) {
     return htmls;
 
 }
-
+//创建数据中心li响应方法
+function createClickFuntionForDataCenter(item){
+	var htmls="";
+	var dataSource=item.data_source;
+	//如果是在数据中心配置的为url则直接跳转，否则根据数据中心再去查询对应实验室level为3(单位/产品) 4（模块/整机）
+	if(dataSource=="url"){
+		htmls+=" onclick= intentsUrl('"+item.id+"')";
+	}else{
+		htmls+=" onclick= loadAllDataCenterLabAjaxFunc('"+item.id+"') ";
+	}
+	return htmls;
+}
+//查询数据中心下实验室 level为3(单位/产品) 4（模块/整机）
+function loadAllDataCenterLabAjaxFunc(dataCenterId){
+	var dataCenter=dataCenterMap.get(dataCenterId);
+	var data_type=dataCenter.data_type;
+	var data_source=dataCenter.data_source;
+	if(data_type==0){
+		//alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
+		if(data_source=="db"||data_source=="json"){
+			inlandTabShow_world();
+		}else if(data_source=="webservice"){
+			inlandTabShow();
+		}
+	}else{
+		//alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
+		if(data_source=="db"||data_source=="json"){
+			abroadTabShow();
+		}else if(data_source=="webservice"){
+			abroadTabShow_center();
+		}
+	}
+	$.post(contextPath+"/lab/loadAllDataCenterLabAjax",{"dataCenterId":dataCenterId},function(data){
+	    var html='';
+	    $.each(data,function(index,item){
+	    	var dataSource=item.data_source;
+	    	 dataCenterMap.put(item.id, item);
+	    	 console.log(item.isshow_name)
+	    	if(dataSource=="url"){
+	    		html+='<li  data-center-id="'+item.id+'"  class="toLabIframe quxian_li_'+item.id+'" data-url="'+item.souce_value+'"><header '+createClickFuntion(item)+'>'+(item.isshow_name==0?item.center_name:"")+'</header></li>';
+	    	}else{
+	    		html+='<li class="quxian_li_'+item.id+'" data-center-id="'+item.id+'"  ><header '+createClickFuntion(item)+'>'+(item.isshow_name==0?item.center_name:"")+'</header></li>';
+	    	}
+	    });
+	    $("#lab_unit_selected_center").html(html);
+	    $("#lab_unit_selected_center_world").html(html);
+	    $(".sheshi_tab_list>ul>li.toLabIframe").on("click",function () {
+	        $(this).addClass("active");
+	        $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
+	        videoShow("smallVideoInlandWeb", $(this).attr("data-url"));
+	        videoShow("videoBoxInland", $(this).attr("data-url"));
+	        $("#lab_iframe_video").show();
+	        $("#lab_iframe_video").attr("src",$(this).attr("data-url"))
+	    });
+		$.each(data,function(index,item){
+			if(index==0){
+				var dataSource=item.data_source;
+				if(dataSource=="db"){ //国外曲线
+					window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(item.id,item.souce_value,item.data_type)
+				}else if(dataSource=="webservice"){
+					//中海博睿
+					loadLabUnitInfoCenterTabAjax(item.data_type);
+				}else if(dataSource=="json"){
+					//新西兰 日本读取json文件 国外曲线
+					window.parent.loadLabUnitInfoCenterTabAjaxWorld(item.id,item.data_type);
+				}else if(dataSource=="url"){
+					$("#lab_unit_selected_center").find("li").eq(0).find("header").trigger("click");
+					$("#lab_unit_selected_center_world").find("li").find("header").eq(0).trigger("click");
+				}
+			}
+		});
+		 
+	});
+	
+}
 //创建li响应方法
 function createClickFuntion(item) {
     var htmls = "";
@@ -146,16 +220,16 @@ function createClickFuntion(item) {
         // console.log("item",item)
     var dataSource = item.data_source;
     if (dataSource == "db") { //国外曲线
-        htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop('" + item.id + "','" + item.souce_value + "','" + item.data_type + "',this)"
+        htmls += " onclick= loadLabUnitInfoCenterTabAjaxWorldHadoop('" + item.id + "','" + item.souce_value + "','" + item.data_type + "')"
     } else if (dataSource == "webservice") {
         //中海博睿
-        htmls += " onclick=loadLabUnitInfoCenterTabAjax('" + item.data_type + "',this) ";
+        htmls += " onclick=loadLabUnitInfoCenterTabAjax('" + item.id + "','" + item.data_type + "') ";
     } else if (dataSource == "json") {
         //新西兰 日本读取json文件 国外曲线
-        htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "','" + item.data_type + "',this) ";
-    } else if (dataSource == "url") {
-        htmls += " onclick= intentsUrl('" + item.id + "',this)";
-    }
+        htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "','" + item.data_type + "') ";
+    } /*else if (dataSource == "url") {
+        htmls += " onclick= intentsUrl('" + item.id + "')";
+    }*/
     return htmls;
 }
 
@@ -174,7 +248,7 @@ function intentsUrl(type, thiselem) {
 var $lab_content_r = $(".lab_content_r");
 var borderUrl = "";
 
-function inlandTabShow() { //国内数据中心
+function inlandTabShow() { //国内webservice
     $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
     labNavAndItemShow();
     $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.centerCurves").show();
@@ -306,8 +380,8 @@ $(function () {
         } else {
             $(".labSubNav>ul>li:first").addClass("active").siblings().removeClass("active");
         }
-        $.post(contextPath + '/lab/loadVideosByDataCenterAjax?dataCenterId=' + $thisElem.data("centerid"), function (data) {
-            console.log("data", data);
+       /* $.post(contextPath + '/lab/loadVideosByDataCenterAjax?dataCenterId=' + $thisElem.data("centerid"), function (data) {
+           // console.log("data", data);
             var currentUrl = "";
             if (data) {
                 currentUrl = data[0].videos[0].videl_url;
@@ -323,7 +397,7 @@ $(function () {
             } else {
                 videoShow("videoBoxAbroad", currentUrl)
             }
-        })
+        })*/
     });
 
     //非模块商的列表
@@ -436,13 +510,7 @@ $(function () {
 
     var $taiweiList = $(".sheshi_tab_list>ul>li>ul>li>ul>li");
 
-    $(".sheshi_tab_list>ul>li.toLabIframe").click(function () {
-        $taiweiList.removeClass("active");
-        $(this).addClass("active");
-        $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
-        videoShow("smallVideoInlandWeb", videoUlrInland[0]);
-        videoShow("videoBoxInland", videoUlrInland[1]);
-    });
+ 
 
     //台位选中状态
     $taiweiList.click(function () {
