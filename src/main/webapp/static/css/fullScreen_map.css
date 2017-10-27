@@ -59,6 +59,29 @@
     z-index: 9;
     text-shadow: 1px 1px 1px black;
 }
+/*地球上文字点击可弹窗*/
+#l.fullScreen_map .sphere .mapArea h2:hover{
+    cursor: pointer;
+    color: #fff;
+}
+#l.fullScreen_map .sphere .mapArea .popWindow{
+    position: relative;
+    z-index: 12;
+    top: 2em;
+}
+#l.fullScreen_map .sphere .mapArea .popWindow img{
+    width:100%;
+}
+#l.fullScreen_map .sphere .mapArea .popWindowMask{
+    position: fixed;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.7);
+    z-index: 10;
+    left: 0;
+    top: 0;
+}
+
 #l.fullScreen_map .flat .mapArea h2 {
     top: -7%;
     font-size: 1.4em;
@@ -164,3 +187,5 @@
 #l.fullScreen_map .flat-right-bottom .myChart .myChart_num li:nth-of-type(2n) {
     margin-top: 18%;
 }
+
+

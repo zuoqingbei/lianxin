@@ -1,7 +1,7 @@
 <div id="l" class="l fullScreen_map">
-<script>
-    pageResize();
-</script>
+    <script>
+        pageResize();
+    </script>
     <header>
         <span class="mainLogo"></span>
         <h1>全球实验室数据中心</h1>
@@ -56,13 +56,20 @@
                 <h2>数据互联&emsp;实时共享&emsp;提效增值</h2>
                 <!--球体地图位置-->
                 <iframe class="iframe map" src="${contextPath!}/lab/sphereMap"></iframe>
+                <div class="popWindow" style="display: none;">
+                    <img src="${contextPath!}/static/img/popWindow.png" alt="介绍弹窗">
+                </div>
+                <div class="popWindowMask" style="display: none;"></div>
             </div>
             <div class="sphere-right">
                 <div class="sphere-right-top">
                     <div class="chartBorder">
                         <h3>实验室数量</h3>
-                        <h4 class="noBG" style="float: left;margin-left: 30%">总数： <strong id="lab_all_count" class="lab_all_count"> 0 </strong></h4>
-                        <h4 class="noBG noHL" style="float: right;margin-right: 7%">互联数：<strong class="lab_all_count_link">0</strong></h4>
+                        <h4 class="noBG" style="float: left;margin-left: 30%">总数： <strong id="lab_all_count"
+                                                                                          class="lab_all_count">
+                            0 </strong></h4>
+                        <h4 class="noBG noHL" style="float: right;margin-right: 7%">互联数：<strong
+                                class="lab_all_count_link">0</strong></h4>
                         <ul id="pro_line" class="pro_line full_pro_line">
                         </ul>
 
@@ -70,9 +77,11 @@
 
                 </div>
                 <div class="sphere-right-bottom">
-                    <div class="chartBorder" style="background: url(${contextPath!}/static/img/border_flat.png);    background-size: 100% 100%;">
+                    <div class="chartBorder"
+                         style="background: url(${contextPath!}/static/img/border_flat.png);    background-size: 100% 100%;">
                         <h3 style="    left: 0%;">互联实验室</h3>
-                        <h4 class="noBG">互联实验室： <strong id="linked_status_num" class="lab_all_count_link"> </strong></h4>
+                        <h4 class="noBG">互联实验室： <strong id="linked_status_num" class="lab_all_count_link"> </strong>
+                        </h4>
                         <ul class="header">
                             <li>实验室名称</li>
                             <li>类型</li>
@@ -112,13 +121,15 @@
                             <div class="added" style="padding-left: 6%"><span>a：P1对比试验</span>&emsp;<span>b：P2新品调试</span>
                                 <br>
                                 <span>c：P3新品确认</span>&emsp;<span>d,e：P4小批验证 入厂/出厂</span>
-                                <span>f,g：P5年度型检 监督抽测</span></div>
+                                <span>f,g：P5年度型检 监督抽测</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="mapArea" style="z-index: 999">
                     <!--平面地图位置-->
-                    <iframe id="iframeFlatMap" class="iframe map" scrolling="no" frameborder="0" src="${contextPath!}/lab/flatMap" ></iframe>
+                    <iframe id="iframeFlatMap" class="iframe map" scrolling="no" frameborder="0"
+                            src="${contextPath!}/lab/flatMap"></iframe>
                 </div>
                 <div class="flat-right">
                     <div class="flat-right-bottom">
@@ -169,17 +180,6 @@
                             </ul>
                         </div>
                     </div>
-
-                    <!--
-                                        <ul class="legend-bottom">
-                                            <li><a href=""><span class="icon"></span>中海博睿</a></li>
-                                            ##for(type in productLine){
-                                            ##if(!typeLP.last){
-                                            <li class=""><a href=""><span class="icon"></span> ${type.name!}</a></li>
-                                            ##}
-                                            ##}
-                                        </ul>
-                    -->
                 </div>
             </div>
             <div class="toLabData"><a href="${contextPath!}/lab/full?toLabData"> 进入实验室 <span>&gt;&gt;</span></a></div>
