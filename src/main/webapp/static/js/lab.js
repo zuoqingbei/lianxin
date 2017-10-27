@@ -58,7 +58,7 @@ function echartsResize() {
 }
 var videoUlrInland = [
     // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8?time=New Date()"//本机
-    "http://10.130.96.65:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8?time=New Date()"//本机
+    "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8?time=New Date()"//本机
     // "http://10.130.96.113:6713/mag/hls/85d598e47ce4411c9196e965385e895d/0/live.m3u8?time=New Date()",//本机
     // "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8?time=New Date()",//室外北侧
     // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
@@ -66,7 +66,7 @@ var videoUlrInland = [
 ];
 var videoUlrAbroad = [
     // "http://10.130.96.113:6713/mag/hls/7329e487e5c84c41a1ba9040e89f7814/1/live.m3u8?time=New Date()",//泰国"RF-B"
-    "http://192.168.1.168:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
+    "http://10.130.96.65:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
     // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
     // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
     // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()"//本机
@@ -230,7 +230,7 @@ function loadSwf(id,flashvars,params,attrs) {
         // div id where player will be place
         id,
         // width, height
-        "100%", "99%",
+        "56%", "80%",
         // minimum flash player version required
         "27",
         // other parameters
@@ -297,21 +297,24 @@ $(function () {
             $(".labSubNav>ul>li:first").addClass("active").siblings().removeClass("active");
         }
         $.post(contextPath+'/lab/loadVideosByDataCenterAjax?dataCenterId='+$thisElem.data("centerid"),function(data){
-            console.log("data",data)
-            var currentUrl = data[0].videos[0].videl_url;
+            console.log("data",data);
+            var currentUrl = "";
+            if(data){
+                currentUrl = data[0].videos[0].videl_url;
+            }
+
             console.log("currentUrl",currentUrl);
 
             //转成子码流可以流畅些
             currentUrl = currentUrl.replace("/0/live.m3u8","/1/live.m3u8")
 
-            if($thisElem.parents(".inland").length>0){
+            if($thisElem.parents(".inland").length>0){ //国内
                 videoShow("videoBoxInland",currentUrl)
             }else{
                 videoShow("videoBoxAbroad",currentUrl)
             }
-
         })
-    })
+    });
 
     //非模块商的列表
     var $inlandLiNoModuleMakers = $(".labMainNav>.switchBox>ul>li.noChildren:not(.moduleMakers), .labMainNav>.switchBox>ul>li>ul>li");
@@ -361,9 +364,7 @@ $(function () {
                 borderUrl = borderUrl.replace(/[1-2]/, 2);
             }
         }
-
         $lab_content_r.css("background-image", borderUrl);
-
         $(".lab_content_r>.switchBox>div.item").eq($(this).index()).show().siblings().hide();
         echartsResize();
 
@@ -425,8 +426,8 @@ $(function () {
     
     $(".toLabIframe").click(function () {
         $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
-        videoShow("smallVideoInlandWeb",videoUlrAbroad[0]);
-        videoShow("videoBoxInland",videoUlrAbroad[0]);
+        videoShow("smallVideoInlandWeb",videoUlrInland[0]);
+        videoShow("videoBoxInland",videoUlrInland[0]);
     });
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率

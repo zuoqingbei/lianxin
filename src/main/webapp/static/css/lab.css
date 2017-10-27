@@ -71,7 +71,7 @@ li:not(.hasChildren).active {
     }
 
     .lab_head [class^=btn-]:nth-of-type(1) {
-        left: 1em;
+        left: 3em;
     }
 
     .lab_head [class^=btn-]:nth-of-type(2) {
@@ -209,23 +209,21 @@ li:not(.hasChildren).active {
     }
 
     .labSubNav > ul {
-        margin-left: 7em;
+        margin-left: 8em;
     }
 
     .labSubNav > ul > li {
         display: inline-block;
         text-align: center;
-        width: 10.5em;
+        width: 10em;
         padding: .75em 0;
         font-size: 1.6em;
         color: #fff;
     }
 
-    /*
     .labSubNav > ul > li.active {
-        color: #fff;
+        color: #6cf;
     }
-    */
 
 }
 
@@ -261,6 +259,7 @@ li:not(.hasChildren).active {
     display: inline-block;
     outline: 1px dotted darkgray;
     margin:0 .2em;
+    max-height: 44em;
 }
 
 .monitoring .video_box > .video_4x4 > div {
@@ -285,23 +284,26 @@ li:not(.hasChildren).active {
 
 .monitoring .shishi_right .smallVideoBox{
     position: absolute;
-    width: 24em;
-    height: 13.5em;
-    top: 2em;
-    /*right: 0;*/
+    width: 34.4em;
+    height: 19.5em;
+    top: -.0em;
+    left: 1em;
 }
 .monitoring .shishi_right .smallVideoBox>.hideShow{
-    text-align: right;
-    width: 8em;
-    /*float: right;*/
-    padding-bottom: .2em;
+    width: 10em;
+    margin-left: 4em;
+    padding: .1em .5em;
     cursor: pointer;
+    box-shadow: 0 0 2em 1em rgba(0,0,0,.6);
+}
+.monitoring .shishi_right .smallVideoBox>object{
+    box-shadow: 0 0 1.5em 1.2em rgba(0,0,0,.4);
 }
 .monitoring .shishi_right .smallVideoBox>.hideShow>.icon{
     position: relative;
     display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
+    width: 1.2em;
+    height: 1.2em;
     top: .3em;
     margin: 0 .5em;
     background-image: url(../img/lab/close.png);
