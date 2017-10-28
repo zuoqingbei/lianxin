@@ -423,11 +423,9 @@ $(function () {
     $(".switchBox").on("click", "ul>li>header", function () {
 
         if ($(this).next().is(":visible")) {
-            console.log($(this)[0],"kejian")
             $(this).next("ul").hide();
             $(this).removeClass("fold").children("span").text("∨");
         } else {
-            console.log($(this)[0],"bukejian")
             $(this).next("ul").show();
             $(this).addClass("fold").children("span").text("∧");
         }
