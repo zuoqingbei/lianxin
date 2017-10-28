@@ -43,5 +43,5 @@ public class Constants {
 	 * 重庆实验室hive测试库信息（与表T_B_DB_CONFIG中config_name对应 不要随便改）
 	 */
 	public static final String CONFIGNAME_QC_HIVE = "chongqinghive";//重庆实验室
-
+	
 }

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.client.IntegrationService.IntegrationServiceClient;
@@ -1087,5 +1088,9 @@ public class LabController extends BaseController {
     	String dataCenterId=getPara("dataCenterId","1");
     	List<Record> topVideo = JsonPropertyModel.dao.findJsonProperty(dataCenterId);
 		renderJson(topVideo);
+    }
+    public void hive(){
+    	String sql=" select * from s_bxlab_orcl_talend_test_testmetadata where  ptlabname= 'chongqingxingshiAB' and pt='20171025'";
+		renderJson(Db.use(com.ulab.core.Constants.CONFIGNAME_QC_HIVE).find(sql));
     }
 }
