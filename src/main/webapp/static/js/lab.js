@@ -419,12 +419,15 @@ $(function () {
         }
     });
 
-    //二级菜单的折叠与展开
-    $(".switchBox").on("click", "li>header", function () {
-        if ($(this).next("ul").is(":visible")) {
+    //主菜单二级菜单的折叠与展开
+    $(".switchBox").on("click", "ul>li>header", function () {
+
+        if ($(this).next().is(":visible")) {
+            console.log($(this)[0],"kejian")
             $(this).next("ul").hide();
             $(this).removeClass("fold").children("span").text("∨");
         } else {
+            console.log($(this)[0],"bukejian")
             $(this).next("ul").show();
             $(this).addClass("fold").children("span").text("∧");
         }
@@ -517,16 +520,16 @@ $(function () {
         }
     });
 
-    var $taiweiList = $(".sheshi_tab_list>ul>li>ul>li>ul>li");
 
  
 
     //台位选中状态
-    $taiweiList.click(function () {
-        $taiweiList.removeClass("active");
+$(".sheshi_tab_list").on("click","ul>li>ul>li>ul>li",function () {
+    var $taiweiList = $(".sheshi_tab_list>ul>li>ul>li>ul>li");
+    $taiweiList.removeClass("active");
         $(".sheshi_tab_list>ul>li.toLabIframe.active").removeClass("active");
         $(this).addClass("active");
-    })
+    });
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
     initfour();//及时率
