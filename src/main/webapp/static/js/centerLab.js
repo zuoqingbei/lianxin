@@ -448,6 +448,7 @@ function loadLabUnitInfoCenterTabAjax(type,inlandOrAbroad){
 			if(item.testUnitList.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testUnitList,function(ind,it){
+					
 					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
 				});
 				htmls+='</ul>';
