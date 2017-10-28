@@ -467,10 +467,12 @@ function loadLabUnitInfoCenterTabAjax(type,inlandOrAbroad){
             e.stopPropagation()
         });
 
+/*
         $('.taiwei_hide>li').click(function () {
             $(".sheshi_tab").eq(1).trigger('click')
             $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
         })
+*/
 	});
 }
 $(document).ready(function () {
