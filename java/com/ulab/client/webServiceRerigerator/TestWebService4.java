@@ -194,7 +194,7 @@ public class TestWebService4 {
 //			System.out.println(ToStringBuilder.reflectionToString(testMetadata));
 //		}
 		WebServiceRerigeratorClient client = new WebServiceRerigeratorClient();
-		LabTestUnit labTestUnit = client.searchRealTimeData("Haierrefrigerator20151214", "http://10.130.96.137:8080/WebServiceHaierrefrigerator20151214/services/service?wsdl", 1);
+		LabTestUnit labTestUnit = client.searchRealTimeData("Haierrefrigerator20151214", "http://10.130.96.113:8080/WebServiceHaierrefrigerator20151214/services/service?wsdl", 1);
 		System.out.println(ToStringBuilder.reflectionToString(labTestUnit));
 
 	}

@@ -58,13 +58,13 @@ public class HadoopTestData {
 	 * @param  @return
 	 * @return_type   List<Record>
 	 */
-	public List<Record> findDataByTestIdentification(BaseController c,String configName,String testIdentification,Float startHowLong,Float endHowLong,List<Record> sensorInfoList){
+	public List<Record> findDataByTestIdentification(BaseController c,String configName,String testIdentification,Float startHowLong,Float endHowLong,List<Record> sensorInfoList,String labCode){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTDATA);
 		String sql="select howlong  ";
 		for(Record sInfo:sensorInfoList ){
 			sql+=" , sensorvalue_"+sInfo.get("sensorid");
 		}
-		sql+=" from "+tableName+" where testIdentification='"+testIdentification+"'  ";
+		sql+=" from "+tableName+" where testIdentification='"+testIdentification+"'  "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
 		if(startHowLong!=null){
 			sql+=" and howlong > "+startHowLong;
 		}
@@ -89,46 +89,46 @@ public class HadoopTestData {
 	public Record findTestData(BaseController c,String configName,String labCode,String testUnitId,String startTime,Float interval){
 		Record finalTestData=new Record();
 		Record metaData=HadoopTestMetadata.dao.findLastTestMetadata(c,configName, labCode, testUnitId);
-		String testIdentification=metaData.getStr("testidentification");//实验编号
-		//获取当前台位实时曲线
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date testBeginTime = null;//开始测试时间
-		Date now = new Date();
-		boolean isOpt=true;
-		long distance =0;
 		if(metaData!=null){
-			try {
+			String testIdentification=metaData.getStr("testidentification");//实验编号
+			//获取当前台位实时曲线
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date testBeginTime = null;//开始测试时间
+			Date now = new Date();
+			boolean isOpt=true;
+			long distance =0;
+				try {
+						
+						testBeginTime = sdf.parse(metaData.get("testbegintime")+"");//开始测试时间
+						System.out.println("testBeginTime="+sdf.format(testBeginTime));
+						if(isOpt){
+							Double maxHowLong=getMaxHowLong(c,configName, testIdentification,labCode);//目前测试数据中最大时间
+							System.out.println("maxHowLong="+maxHowLong);
+							Date realEndDate=new Date(testBeginTime.getTime()+ Math.round(maxHowLong)*60*1000);//实际结算时间
+							System.out.println("realEndDate="+sdf.format(realEndDate));
+							distance=CalculateTime(sdf.format(realEndDate));//实际结算时间一当前时间间隔
+							System.out.println("realEndDate="+distance);
+							if(StringUtils.isNotBlank(startTime)){
+								now=sdf.parse(startTime);
+							}
+							now=new Date(now.getTime()- distance*60*1000);//进行时间平移 保证有数据
+						}else{
+							if(StringUtils.isNotBlank(startTime)){
+								now=sdf.parse(startTime);
+							}
+						}
 					
-					testBeginTime = sdf.parse(metaData.get("testbegintime")+"");//开始测试时间
-					System.out.println("testBeginTime="+sdf.format(testBeginTime));
-					if(isOpt){
-						Double maxHowLong=getMaxHowLong(c,configName, testIdentification);//目前测试数据中最大时间
-						System.out.println("maxHowLong="+maxHowLong);
-						Date realEndDate=new Date(testBeginTime.getTime()+ Math.round(maxHowLong)*60*1000);//实际结算时间
-						System.out.println("realEndDate="+sdf.format(realEndDate));
-						distance=CalculateTime(sdf.format(realEndDate));//实际结算时间一当前时间间隔
-						System.out.println("realEndDate="+distance);
-						if(StringUtils.isNotBlank(startTime)){
-							now=sdf.parse(startTime);
-						}
-						now=new Date(now.getTime()- distance*60*1000);//进行时间平移 保证有数据
-					}else{
-						if(StringUtils.isNotBlank(startTime)){
-							now=sdf.parse(startTime);
-						}
-					}
-				
-				System.out.println("now="+sdf.format(now));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+					System.out.println("now="+sdf.format(now));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			
+			
+			float f2 = (now.getTime() - testBeginTime.getTime())/60000f;//已经测试时长 分钟
+			float startHowLong = f2 - interval> 0 ? f2-interval : 0;
+			float endHowLong=startHowLong+interval;
+			joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData,labCode);
 		}
-		
-		
-		float f2 = (now.getTime() - testBeginTime.getTime())/60000f;//已经测试时长 分钟
-		float startHowLong = f2 - interval> 0 ? f2-interval : 0;
-		float endHowLong=startHowLong+interval;
-		joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData);
 		return finalTestData;
 	}
 	/** 
@@ -159,9 +159,9 @@ public class HadoopTestData {
 
 	}
 
-	public Double getMaxHowLong(BaseController c,String configName,String testIdentification){
+	public Double getMaxHowLong(BaseController c,String configName,String testIdentification,String labCode){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTDATA);
-		String sql=" select	max(howlong) as  howlong from "+tableName+" where testIdentification = '"+testIdentification+"' ";
+		String sql=" select	max(howlong) as  howlong from "+tableName+" where testIdentification = '"+testIdentification+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
 		String key="testIdentification_long_reocrd_"+testIdentification;
 		Record r=c.getSessionAttr(key);
 		if(r==null){
@@ -191,11 +191,11 @@ public class HadoopTestData {
 		Record finalTestData=new Record();
 		//step1 查询测试基础信息 根据实验室以及测试单元编码获取最后一次测试信息
 		Record metaData=HadoopTestMetadata.dao.findLastTestMetadata(c,configName, labCode, testUnitId);
-		joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData);
+		joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData,labCode);
 		return finalTestData;
 	}
 	private void joinTestData(BaseController c,String configName, Float startHowLong, Float endHowLong, Record finalTestData,
-			Record metaData) {
+			Record metaData,String labCode) {
 		if(metaData!=null){
 			/**
 			 * sybh:'实验编号',
@@ -209,9 +209,9 @@ public class HadoopTestData {
 			finalTestData.set("cpxh", metaData.get("productmodel"));
 			finalTestData.set("testunitstatus", metaData.get("testitemname"));
 			//step2 :查询传感器信息
-			List<Record> sensorInfoList=HadoopSensorInfo.dao.findSensorInfoByTestIdentification(c,configName, testIdentification);
+			List<Record> sensorInfoList=HadoopSensorInfo.dao.findSensorInfoByTestIdentification(c,configName, testIdentification,labCode);
 			//step3 查询具体数据
-			List<Record> allTestData=findDataByTestIdentification(c,configName, testIdentification, startHowLong, endHowLong,sensorInfoList);
+			List<Record> allTestData=findDataByTestIdentification(c,configName, testIdentification, startHowLong, endHowLong,sensorInfoList,labCode);
 			//step3 拼接结构 
 			/**
 			 *  {	name:'1:温度(℃)',

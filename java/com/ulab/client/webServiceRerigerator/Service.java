@@ -16,7 +16,7 @@ import com.ulab.client.webServiceRerigerator.ServicePortType;
  * 
  */
 @WebServiceClient(name = "service", 
-                  wsdlLocation = "http://10.130.96.137:8080/WebServiceRerigerator/services/service?wsdl",
+                  wsdlLocation = "http://10.130.96.113:8080/WebServiceRerigerator/services/service?wsdl",
                   targetNamespace = "http://mgr") 
 public class Service extends javax.xml.ws.Service {
 
@@ -27,11 +27,11 @@ public class Service extends javax.xml.ws.Service {
     static {
         URL url = null;
         try {
-            url = new URL("http://10.130.96.137:8080/WebServiceRerigerator/services/service?wsdl");
+            url = new URL("http://10.130.96.113:8080/WebServiceRerigerator/services/service?wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(Service.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "http://10.130.96.137:8080/WebServiceRerigerator/services/service?wsdl");
+                     "Can not initialize the default wsdl from {0}", "http://10.130.96.113:8080/WebServiceRerigerator/services/service?wsdl");
         }
         WSDL_LOCATION = url;
     }

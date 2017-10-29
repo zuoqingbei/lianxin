@@ -16,3 +16,11 @@ jzhekt.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
 jzhekt.url = jdbc:sqlserver://10.130.96.107:1433;databaseName=Haier_Interconnection_JZHEKT_2017
 jzhekt.user = Haier_DBReader
 jzhekt.password= Haier2017
+
+# 重庆实验室hive测试库信息
+#chongqing.driver=com.cloudera.impala.jdbc41.Driver
+#chongqing.url=jdbc:impala://10.138.8.211:10000/db_hive_ulab;AuthMech=0
+chongqing.driver=org.apache.hive.jdbc.HiveDriver
+chongqing.url =jdbc:hive2://10.138.8.211:10000/db_hive_ulab
+chongqing.user =hdfs
+chongqing.password=
