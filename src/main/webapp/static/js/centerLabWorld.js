@@ -120,12 +120,6 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
 	window.clearInterval(intevalChart1);
 	window.clearInterval(intevalChartHadoop);
 
-    /*if(inlandOrAbroad==="0"){ // 国内
-        inlandTabShow_world();
-    }else{ //国外
-        abroadTabShow();
-    }*/
-
     //生成下拉
 	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName},function(data){
 		var htmls="<ul>";
@@ -146,29 +140,16 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
 			}
 			htmls+=' </li>';
 			if(index==0){
-				console.log(item.testunitlist)
+				// console.log(item.testunitlist)
 				findSensorTypeInfoHadoop(item.labcode,item.testunitlist[index].testunitid);
 			}
 		});
 		htmls+='</ul>';
-		 
+        // alert("hadoop")
 		$(".quxian_li_"+type).append(htmls);
-/*
-        $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
-            $(".sheshi_tab").eq(1).trigger('click');
-            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
-            $(this).css('height','auto').siblings().css('height','1.5em');
-            $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-            $(this).find('.taiwei_hide').css('display','block');
-        });
-*/
+        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>header").trigger("click");
+        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 
-/*
-	    $('.taiwei_hide>li').click(function () {
-	        $(".sheshi_tab").eq(1).trigger('click');
-	        $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-	    })
-*/
 
 	});
 }
@@ -345,19 +326,6 @@ function timestampFormat(timestamp){
 function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
 	var dataCenter=dataCenterMap.get(type);
 	window.clearInterval(intevalChart1);
-    // var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
-    // $mainNavLi.removeClass("active");
-    // $(thiselem).addClass("active");
-    // console.log("$mainNavLi",$mainNavLi[0],"inlandOrAbroad",inlandOrAbroad)
-  /*  if(inlandOrAbroad==="0"){ // 国内
-        inlandTabShow();
-    }else{ //国外
-        abroadTabShow();
-        // videoShow(id,url)
-        // videoShow(id,url)
-    }*/
-
-   
     var htmls = "";
 	// alert(dataCenter.id)
 
@@ -397,25 +365,10 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
 		console.log(htmls)
 		 
 		$(".quxian_li_"+type).append(htmls);
-    	//$("#lab_unit_selected_center_world").html(htmls);
+		// alert("json")
+        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>header").trigger("click");
+        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 
-
-/*
-        $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
-            $(".sheshi_tab").eq(1).trigger('click');
-            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
-            $(this).css('height','auto').siblings().css('height','1.5em');
-            $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-            $(this).find('.taiwei_hide').css('display','block');
-        });
-*/
-
-/*
-        $('.taiwei_hide>li').click(function () {
-            $(".sheshi_tab").eq(1).trigger('click');
-            $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-        })
-*/
     });
 
     

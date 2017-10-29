@@ -429,17 +429,6 @@ var dataBase;
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjax(type,inlandOrAbroad){
     var htmls="";
-    // var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li").removeClass("active");
-    // $mainNavLi.removeClass("active");
-    // $(thiselem).addClass("active");
-    // console.log("loadLabUnitInfoCenterTabAjax")
-   /* if(inlandOrAbroad==="0"){ // 国内
-        inlandTabShow();
-        console.log("内")
-    }else{ //国外
-        console.log("外");
-        abroadTabShow_center();
-    }*/
 
     $.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
 
@@ -466,18 +455,14 @@ function loadLabUnitInfoCenterTabAjax(type,inlandOrAbroad){
             $(this).next().toggle();
             e.stopPropagation()
         });
-
-/*
-        $('.taiwei_hide>li').click(function () {
-            $(".sheshi_tab").eq(1).trigger('click')
-            $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-        })
-*/
+        $(".sheshi_tab_list").find("ul:eq(0)>li:eq(0)>header").trigger("click");
+        // $("sheshi_tab_list").find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 	});
 }
-$(document).ready(function () {
-	//loadLabUnitInfoCenterTabAjax();
-});
+
+
+
+
 //获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){

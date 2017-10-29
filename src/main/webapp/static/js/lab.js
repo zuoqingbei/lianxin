@@ -217,8 +217,10 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
                     $("#lab_unit_selected_center").find("li").eq(0).find("header").trigger("click");
                     $("#lab_unit_selected_center_world").find("li").find("header").eq(0).trigger("click");
                 }
+                // $("#lab_unit_selected_center_world").find("li").eq(0).find("header").eq(0).trigger("click");
             }
         });
+        //自动触发第一个实验室的第一个台位
 
     });
 
@@ -304,7 +306,9 @@ function labNavAndItemShow(mark) {
 }
 
 // 视频加载方法
-function videoShow(id, url) {
+function videoShow(id, url, mainStream) {
+  // 0-主码流，1-子码流
+
     var flashvars = {
         src: escape(url),
         plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
@@ -321,18 +325,20 @@ function videoShow(id, url) {
     var attrs = {
         name: "player"
     };
-    loadSwf(id, flashvars, params, attrs);
+    loadSwf(id, flashvars, params, attrs, mainStream);
 
 }
 
-function loadSwf(id, flashvars, params, attrs) {
+function loadSwf(id, flashvars, params, attrs, mainStream) {
     swfobject.embedSWF(
         // url to SMP player
         "../static/asserts/video/StrobeMediaPlayback.swf?time=New Date()",
         // div id where player will be place
         id,
         // width, height
-        "56%", "80%",
+        // "56%", "80%",
+        mainStream ?  "56%" :"100%",
+        mainStream ?   "80%":"96%",
         // minimum flash player version required
         "27",
         // other parameters
@@ -380,6 +386,15 @@ $(function () {
 
     //左侧菜单点击事件
     $(".labMainNav>.switchBox").on("click", "ul>li.noChildren, ul>li>ul>li", function () {
+
+        //初始化视频盒子
+        $(".monitoring.world").find(".bigVideoBox").html("<div id=\"bigVideoWorld\"></div>");
+        $(".monitoring.world").find(".smallVideoBox").html("<div class=\"hideShow\"><span class=\"text\">点击隐藏</span><span class=\"icon\"></span></div>\n" +
+            "                                    <div id=\"smallVideoWorld\"></div>");
+        $(".monitoring.webSocket").find(".bigVideoBox").html("<div id=\"bigVideoWS\"></div>");
+        $(".monitoring.webSocket").find(".smallVideoBox:eq(0)").html("<div class=\"hideShow\"><span class=\"text\">点击隐藏</span><span class=\"icon\"></span></div>\n" +
+            "                                    <div id=\"smallVideoWS\"></div>");
+
         var $li = $(".switchBox>ul>li.noChildren, .switchBox>ul>li>ul>li");
         $li.removeClass("active");
         $(this).addClass("active");
@@ -454,10 +469,10 @@ $(function () {
         var index = $(this).index();
         $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
         $(this).parents(".monitoring").find(".shishi_right>.item").eq(index).show().siblings().hide();
-        if(index === 0){
+        if (index === 0) {
             $(".smallVideoBox").hide(500);
             $(".bigVideoBox").show(500);
-        }else{
+        } else {
             $(".bigVideoBox").hide(500);
             $(".smallVideoBox").show(500);
         }
@@ -484,6 +499,7 @@ $(function () {
 
     //台位点击事件
     $(".sheshi_tab_list").on("click", "ul>li>ul>li>ul>li", function () {
+        echartsResizeWorld();
         var $taiweiList = $(".sheshi_tab_list>ul>li>ul>li>ul>li");
         $taiweiList.removeClass("active");
         $(".sheshi_tab_list>ul>li.toLabIframe.active").removeClass("active");
@@ -499,10 +515,11 @@ $(function () {
             if ($parentMonitoring.find(".smallVideoBox").children("object").length === 0) {//还没有被加载过视频
                 videoID = $parentMonitoring.find("div[id^=smallVideo]").attr("id");
                 videoIDBig = $parentMonitoring.find(".bigVideoBox").children().attr("id");
-                // console.log("小大视频id：",videoID,videoIDBig);
+                console.log("还没有被加载过视频：",videoID,videoIDBig);
             } else {//加载过视频后重置id
                 $parentMonitoring.find(".smallVideoBox").append("<div id='" + videoID + "'></div>").children("object").remove();
-                $parentMonitoring.find(".bigVideoBox").append("<div style='height: 100%;' id='" + videoIDBig + "'></div>").children("object").remove();
+                $parentMonitoring.find(".bigVideoBox").append("<div id='" + videoIDBig + "'></div>").children("object").remove();
+                console.log("重置id盒子：",videoID,videoIDBig);
             }
 
             $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
@@ -510,15 +527,8 @@ $(function () {
                     var videoUrlMain = data.videl_url.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
                     var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
                     console.log("data.videl_url", data.videl_url, "videoID", videoID, "videoIDBig", videoIDBig);
-
-                    $parentMonitoring.find(".smallVideoBox").hide(500, function () {
-                        videoShow(videoID, videoUrlSub);
-                    }).show(500)
-                    $parentMonitoring.find(".bigVideoBox").hide().delay(1000, function () {
-                        videoShow(videoIDBig, videoUrlSub);
-                        $(this).show(500)
-                    })
-
+                    videoShow(videoID, videoUrlSub,1);
+                    videoShow(videoIDBig, videoUrlMain,0);
                 }
             })
         }
@@ -532,8 +542,8 @@ $(function () {
         $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
         var webUrl = $(this).parent().data("url");
         $(this).parents(".monitoring").find(".shishi_right>.item.iframe>iframe").attr("src", webUrl);
-        videoShow("smallVideoInlandWeb", videoUlrInland[0].replace("/0/live.m3u8", "/1/live.m3u8"));
-        videoShow("bigVideoWS", videoUlrInland[0].replace("/1/live.m3u8", "/0/live.m3u8"))
+        videoShow("smallVideoWSWeb", videoUlrInland[0].replace("/0/live.m3u8", "/1/live.m3u8"),1);
+        videoShow("bigVideoWS", videoUlrInland[0].replace("/1/live.m3u8", "/0/live.m3u8"),0)
     })
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
