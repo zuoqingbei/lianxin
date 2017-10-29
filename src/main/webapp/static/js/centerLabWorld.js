@@ -380,6 +380,18 @@ function resetDataCenterLabWorld() {
     myChartWorld2 = echarts.init(document.getElementById('main2_world'));
     myChartWorld1.clear();
     myChartWorld2.clear();
+    myChartWorld1.showLoading({
+        text : '数据获取中...',
+        effect: 'whirling',
+        maskColor:"rgba(0,0,0,0)",
+        textColor:"#64ccff"
+    });
+    myChartWorld2.showLoading({
+        text : '数据获取中...',
+        effect: 'whirling',
+        maskColor:"rgba(0,0,0,0)",
+        textColor:"#64ccff"
+    });
     $("#legend_ul_world").html('');
     legendDataWorld = [];
     legendNumDataWorld = [];

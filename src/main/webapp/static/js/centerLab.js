@@ -450,7 +450,7 @@ function loadLabUnitInfoCenterTabAjax(type,inlandOrAbroad){
 		$("#lab_unit_selected_center").html(htmls);
         //选择台位
         $("#lab_unit_selected_center>li>a").click(function (e) {
-            $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
+            // $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
             $(this).parent().siblings().find('.taiwei_hide').css('display','none');
             $(this).next().toggle();
             e.stopPropagation()
@@ -523,6 +523,18 @@ function resetDataCenterLab(){
 	myChart2 = echarts.init(document.getElementById('main2'));
 	myChart1.clear();
 	myChart2.clear();
+    myChart1.showLoading({
+        text : '数据获取中...',
+        effect: 'whirling',
+        maskColor:"rgba(0,0,0,0)",
+        textColor:"#64ccff"
+    });
+    myChart2.showLoading({
+        text : '数据获取中...',
+        effect: 'whirling',
+        maskColor:"rgba(0,0,0,0)",
+        textColor:"#64ccff"
+    });
 	$("#legend_ul").html('');
 	legendData=[];
 	legendNumData=[];

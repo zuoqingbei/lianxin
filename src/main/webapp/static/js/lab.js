@@ -307,8 +307,9 @@ function labNavAndItemShow(mark) {
 
 // 视频加载方法
 function videoShow(id, url, mainStream) {
-  // 0-主码流，1-子码流
+    //mainStream 0-主码流，1-子码流
 
+    console.log("videoShow加载中。。。")
     var flashvars = {
         src: escape(url),
         plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
@@ -337,8 +338,8 @@ function loadSwf(id, flashvars, params, attrs, mainStream) {
         id,
         // width, height
         // "56%", "80%",
-        mainStream ?  "56%" :"100%",
-        mainStream ?   "80%":"96%",
+        mainStream ? "56%" : "100%",
+        mainStream ? "80%" : "96%",
         // minimum flash player version required
         "27",
         // other parameters
@@ -386,6 +387,7 @@ $(function () {
 
     //左侧菜单点击事件
     $(".labMainNav>.switchBox").on("click", "ul>li.noChildren, ul>li>ul>li", function () {
+        prevIsLabUrl = false;
 
         //初始化视频盒子
         $(".monitoring.world").find(".bigVideoBox").html("<div id=\"bigVideoWorld\"></div>");
@@ -464,17 +466,22 @@ $(function () {
         }
     });
 
+    var prevIsLabUrl = false;
     //实时监测中的视频和曲线切换
     $(".sheshi_tab").click(function () {
         var index = $(this).index();
         $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
         $(this).parents(".monitoring").find(".shishi_right>.item").eq(index).show().siblings().hide();
-        if (index === 0) {
+
+        if (index === 0) {//大视频页
             $(".smallVideoBox").hide(500);
             $(".bigVideoBox").show(500);
-        } else {
+        } else {//小视频页
             $(".bigVideoBox").hide(500);
             $(".smallVideoBox").show(500);
+            if(prevIsLabUrl){
+                $(this).parents(".monitoring").find(".shishi_right>.item").eq(2).show().siblings().hide();
+            }
         }
         echartsResizeWorld();
     });
@@ -515,11 +522,11 @@ $(function () {
             if ($parentMonitoring.find(".smallVideoBox").children("object").length === 0) {//还没有被加载过视频
                 videoID = $parentMonitoring.find("div[id^=smallVideo]").attr("id");
                 videoIDBig = $parentMonitoring.find(".bigVideoBox").children().attr("id");
-                console.log("还没有被加载过视频：",videoID,videoIDBig);
+                console.log("还没有被加载过视频：", videoID, videoIDBig);
             } else {//加载过视频后重置id
                 $parentMonitoring.find(".smallVideoBox").append("<div id='" + videoID + "'></div>").children("object").remove();
                 $parentMonitoring.find(".bigVideoBox").append("<div id='" + videoIDBig + "'></div>").children("object").remove();
-                console.log("重置id盒子：",videoID,videoIDBig);
+                console.log("重置id盒子：", videoID, videoIDBig);
             }
 
             $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
@@ -527,8 +534,8 @@ $(function () {
                     var videoUrlMain = data.videl_url.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
                     var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
                     console.log("data.videl_url", data.videl_url, "videoID", videoID, "videoIDBig", videoIDBig);
-                    videoShow(videoID, videoUrlSub,1);
-                    videoShow(videoIDBig, videoUrlMain,0);
+                    videoShow(videoID, videoUrlSub, 1);
+                    videoShow(videoIDBig, videoUrlMain, 0);
                 }
             })
         }
@@ -536,14 +543,16 @@ $(function () {
     });
     //链接型实验室点击和画中画切换
     $(".sheshi_tab_list").on("click", ".toLabIframe>header", function () {
-
+        prevIsLabUrl = true;
         $(".sheshi_tab_list>ul>li>ul>li>ul>li").removeClass("active");
         $(this).addClass("active");
         $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
+        $(this).parents(".monitoring").find(".shishi_right>.item.iframe")
+            .find(".smallVideoBox").children("div:eq(1)").attr("id", "smallVideoWSWeb");
         var webUrl = $(this).parent().data("url");
         $(this).parents(".monitoring").find(".shishi_right>.item.iframe>iframe").attr("src", webUrl);
-        videoShow("smallVideoWSWeb", videoUlrInland[0].replace("/0/live.m3u8", "/1/live.m3u8"),1);
-        videoShow("bigVideoWS", videoUlrInland[0].replace("/1/live.m3u8", "/0/live.m3u8"),0)
+        videoShow("smallVideoWSWeb", videoUlrInland[0].replace("/0/live.m3u8", "/1/live.m3u8"), 1);
+        videoShow("bigVideoWS", videoUlrInland[0].replace("/1/live.m3u8", "/0/live.m3u8"), 0)
     })
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
