@@ -59,8 +59,7 @@ function echartsResize() {
 
 var videoUlrInland = [
     // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8?time=New Date()"//本机
-    "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8?time=New Date()",//本机
-    "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/0/live.m3u8?time=New Date()"//本机
+    "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8?time=New Date()",//体验馆2
     // "http://10.130.96.113:6713/mag/hls/85d598e47ce4411c9196e965385e895d/0/live.m3u8?time=New Date()",//本机
     // "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8?time=New Date()",//室外北侧
     // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
@@ -135,90 +134,96 @@ function createDataCenterHtml(data, dataType) {
     return htmls;
 
 }
+
 //创建数据中心li响应方法
-function createClickFuntionForDataCenter(item){
-	var htmls="";
-	var dataSource=item.data_source;
-	//如果是在数据中心配置的为url则直接跳转，否则根据数据中心再去查询对应实验室level为3(单位/产品) 4（模块/整机）
-	if(dataSource=="url"){
-		htmls+=" onclick= intentsUrl('"+item.id+"')";
-	}else{
-		htmls+=" onclick= loadAllDataCenterLabAjaxFunc('"+item.id+"') ";
-	}
-	return htmls;
+function createClickFuntionForDataCenter(item) {
+    var htmls = "";
+    var dataSource = item.data_source;
+    //如果是在数据中心配置的为url则直接跳转，否则根据数据中心再去查询对应实验室level为3(单位/产品) 4（模块/整机）
+    if (dataSource == "url") {
+        htmls += " onclick= intentsUrl('" + item.id + "')";
+    } else {
+        htmls += " onclick= loadAllDataCenterLabAjaxFunc('" + item.id + "') ";
+    }
+    return htmls;
 }
-function setCenterLabHtmlDB(dataCenter){
-	 $(".labMain_cblt_tone_world").html("<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
-	    $(".labMain_cblt_ttwo_world img").attr("src", dataCenter.img_content);
-	    $("#labName_world").html(dataCenter.center_name);
-	    $("#labnameIcon_world").html(dataCenter.center_name);
-	    $("#secondName_world").html(dataCenter.center_name);
+
+function setCenterLabHtmlDB(dataCenter) {
+    $(".labMain_cblt_tone_world").html("<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
+    $(".labMain_cblt_ttwo_world img").attr("src", dataCenter.img_content);
+    $("#labName_world").html(dataCenter.center_name);
+    $("#labnameIcon_world").html(dataCenter.center_name);
+    $("#secondName_world").html(dataCenter.center_name);
 }
+
 //查询数据中心下实验室 level为3(单位/产品) 4（模块/整机）
-function loadAllDataCenterLabAjaxFunc(dataCenterId){
-	var dataCenter=dataCenterMap.get(dataCenterId);
-	var data_type=dataCenter.data_type;
-	var data_source=dataCenter.data_source;
-	if(data_type==0){
-		//alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
-		if(data_source=="db"||data_source=="json"){
-			setCenterLabHtmlDB(dataCenter);
-			inlandTabShow_world();
-		}else if(data_source=="webservice"){
-			inlandTabShow();
-		}
-	}else{
-		//alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
-		if(data_source=="db"||data_source=="json"){
-			setCenterLabHtmlDB(dataCenter);
-			abroadTabShow();
-		}else if(data_source=="webservice"){
-			abroadTabShow_center();
-		}
-	}
-	$.post(contextPath+"/lab/loadAllDataCenterLabAjax",{"dataCenterId":dataCenterId},function(data){
-	    var html='';
-	    $.each(data,function(index,item){
-	    	var dataSource=item.data_source;
-	    	 dataCenterMap.put(item.id, item);
-	    	 console.log(item.isshow_name)
-	    	if(dataSource=="url"){
-	    		html+='<li  data-center-id="'+item.id+'"  class="toLabIframe quxian_li_'+item.id+'" data-url="'+item.souce_value+'"><header '+createClickFuntion(item)+'>'+(item.isshow_name==0?item.center_name:"")+'</header></li>';
-	    	}else{
-	    		html+='<li class="quxian_li_'+item.id+'" data-center-id="'+item.id+'"  ><header '+createClickFuntion(item)+'>'+(item.isshow_name==0?item.center_name:"")+'</header></li>';
-	    	}
-	    });
-	    $("#lab_unit_selected_center").html(html);
-	    $("#lab_unit_selected_center_world").html(html);
-	    $(".sheshi_tab_list>ul>li.toLabIframe").on("click",function () {
-	        $(this).addClass("active");
-	        $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
-	        videoShow("smallVideoInlandWeb", $(this).attr("data-url"));
-	        videoShow("videoBoxInland", $(this).attr("data-url"));
-	        $("#lab_iframe_video").show();
-	        $("#lab_iframe_video").attr("src",$(this).attr("data-url"))
-	    });
-		$.each(data,function(index,item){
-			if(index==0){
-				var dataSource=item.data_source;
-				if(dataSource=="db"){ //国外曲线
-					window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(item.id,item.souce_value,item.data_type)
-				}else if(dataSource=="webservice"){
-					//中海博睿
-					loadLabUnitInfoCenterTabAjax(item.data_type);
-				}else if(dataSource=="json"){
-					//新西兰 日本读取json文件 国外曲线
-					window.parent.loadLabUnitInfoCenterTabAjaxWorld(item.id,item.data_type);
-				}else if(dataSource=="url"){
-					$("#lab_unit_selected_center").find("li").eq(0).find("header").trigger("click");
-					$("#lab_unit_selected_center_world").find("li").find("header").eq(0).trigger("click");
-				}
-			}
-		});
-		 
-	});
-	
+function loadAllDataCenterLabAjaxFunc(dataCenterId) {
+    var dataCenter = dataCenterMap.get(dataCenterId);
+    var data_type = dataCenter.data_type;
+    var data_source = dataCenter.data_source;
+    if (data_type == 0) {
+        //alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
+        if (data_source == "db" || data_source == "json") {
+            setCenterLabHtmlDB(dataCenter);
+            inlandTabShow_world();
+        } else if (data_source == "webservice") {
+            inlandTabShow();
+        }
+    } else {
+        //alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
+        if (data_source == "db" || data_source == "json") {
+            setCenterLabHtmlDB(dataCenter);
+            abroadTabShow();
+        } else if (data_source == "webservice") {
+            abroadTabShow_center();
+        }
+    }
+    $.post(contextPath + "/lab/loadAllDataCenterLabAjax", {"dataCenterId": dataCenterId}, function (data) {
+        var html = '';
+        $.each(data, function (index, item) {
+            var dataSource = item.data_source;
+            dataCenterMap.put(item.id, item);
+            console.log(item.isshow_name)
+            if (dataSource == "url") {
+                html += '<li  data-center-id="' + item.id + '"  class="toLabIframe quxian_li_' + item.id + '" data-url="' + item.souce_value + '"><header ' + createClickFuntion(item) + '>' + (item.isshow_name == 0 ? item.center_name : "") + '</header></li>';
+            } else {
+                html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header ' + createClickFuntion(item) + '>' + (item.isshow_name == 0 ? item.center_name : "") + '</header></li>';
+            }
+        });
+        $("#lab_unit_selected_center").html(html);
+        $("#lab_unit_selected_center_world").html(html);
+        /*
+                $(".sheshi_tab_list>ul>li.toLabIframe").on("click", function () {
+                    $(this).addClass("active");
+                    $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
+                    // videoShow("smallVideoInlandWeb", $(this).attr("data-url"));
+                    // videoShow("videoBoxInland", $(this).attr("data-url"));
+                    $("#lab_iframe_video").show();
+                    $("#lab_iframe_video").attr("src", $(this).attr("data-url"))
+                });
+        */
+        $.each(data, function (index, item) {
+            if (index == 0) {
+                var dataSource = item.data_source;
+                if (dataSource === "db") { //国外曲线
+                    window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(item.id, item.souce_value, item.data_type)
+                } else if (dataSource === "webservice") {
+                    //中海博睿
+                    loadLabUnitInfoCenterTabAjax(item.data_type);
+                } else if (dataSource === "json") {
+                    //新西兰 日本读取json文件 国外曲线
+                    window.parent.loadLabUnitInfoCenterTabAjaxWorld(item.id, item.data_type);
+                } else if (dataSource === "url") {
+                    $("#lab_unit_selected_center").find("li").eq(0).find("header").trigger("click");
+                    $("#lab_unit_selected_center_world").find("li").find("header").eq(0).trigger("click");
+                }
+            }
+        });
+
+    });
+
 }
+
 //创建li响应方法
 function createClickFuntion(item) {
     var htmls = "";
@@ -236,9 +241,10 @@ function createClickFuntion(item) {
     } else if (dataSource == "json") {
         //新西兰 日本读取json文件 国外曲线
         htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "','" + item.data_type + "') ";
-    } /*else if (dataSource == "url") {
-        htmls += " onclick= intentsUrl('" + item.id + "')";
-    }*/
+    }
+    /*else if (dataSource == "url") {
+           htmls += " onclick= intentsUrl('" + item.id + "')";
+       }*/
     return htmls;
 }
 
@@ -322,7 +328,7 @@ function videoShow(id, url) {
 function loadSwf(id, flashvars, params, attrs) {
     swfobject.embedSWF(
         // url to SMP player
-        "../static/asserts/video/StrobeMediaPlayback.swf",
+        "../static/asserts/video/StrobeMediaPlayback.swf?time=New Date()",
         // div id where player will be place
         id,
         // width, height
@@ -358,12 +364,6 @@ $(function () {
         resetSizeRight();
     });
 
-    $(".btn-labHome").click(function () {
-        var borderUrl = $lab_content_r.css("background-image").replace(/[2-5]/, "1");
-        $lab_content_r.css("background-image", borderUrl);
-        $(".lab_content_r>.switchBox>div.item:eq(0)").show().siblings().hide();
-    });
-
     //国内外切换
     var $navHeadLi = $(".labMainNav>header>ul>li");
     $navHeadLi.click(function () {
@@ -389,24 +389,6 @@ $(function () {
         } else {
             $(".labSubNav>ul>li:first").addClass("active").siblings().removeClass("active");
         }
-       /* $.post(contextPath + '/lab/loadVideosByDataCenterAjax?dataCenterId=' + $thisElem.data("centerid"), function (data) {
-           // console.log("data", data);
-            var currentUrl = "";
-            if (data) {
-                currentUrl = data[0].videos[0].videl_url;
-            }
-
-            console.log("currentUrl", currentUrl);
-
-            //转成子码流可以流畅些
-            // currentUrl = currentUrl.replace("/0/live.m3u8", "/1/live.m3u8")
-
-            if ($thisElem.parents(".inland").length > 0) { //国内
-                videoShow("videoBoxInland", currentUrl)
-            } else {
-                videoShow("videoBoxAbroad", currentUrl)
-            }
-        })*/
     });
 
     //非模块商的列表
@@ -464,11 +446,6 @@ $(function () {
 
         if ($(this).text().indexOf("实时监测") > -1) {
             echartsResizeWorld();
-            if ($(this).hasClass("centerCurves")) {
-                videoShow("smallVideoInland", videoUlrInland[0]);
-            } else {
-                videoShow("smallVideoAbroad", videoUlrAbroad[1]);
-            }
         }
     });
 
@@ -477,32 +454,15 @@ $(function () {
         var index = $(this).index();
         $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
         $(this).parents(".monitoring").find(".shishi_right>.item").eq(index).show().siblings().hide();
+        if(index === 0){
+            $(".smallVideoBox").hide(500);
+            $(".bigVideoBox").show(500);
+        }else{
+            $(".bigVideoBox").hide(500);
+            $(".smallVideoBox").show(500);
+        }
+        echartsResizeWorld();
     });
-
-    function videoLayout(videoUlr, from) {
-        var $monitoring = $(".monitoring");
-        var $layoutBox = (from === "inland" ? $monitoring.eq(0).find(" .video_box > div") : $monitoring.eq(1).find(" .video_box > div"));
-        var n = videoUlr.length;
-        // console.log("videoUlr.length", n);
-        if (n < 2) {
-            $layoutBox.removeClass().addClass("video_1x1");
-        } else if (n < 5) {
-            $layoutBox.removeClass().addClass("video_2x2");
-        } else if (n < 10) {
-            $layoutBox.removeClass().addClass("video_3x3");
-        } else {
-            $layoutBox.removeClass().addClass("video_4x4");
-        }
-        var videoHtml = "";
-        for (var i = 1; i <= n; i++) {
-            videoHtml += '<div ><div id="video' + i + from + '"></div></div>';
-            videoShow("video" + i + from, videoUlr[i - 1]);
-        }
-        $layoutBox.eq(0).html(videoHtml);
-    }
-
-    videoLayout(videoUlrInland, "inland");
-    videoLayout(videoUlrAbroad, "abroad");
 
     //画中画的视频隐藏显示
     $(".smallVideoBox>.hideShow").click(function () {
@@ -518,16 +478,63 @@ $(function () {
         }
     });
 
+    var videoID = ""; //画中画id，放在外面是因为每次加载视频会替换原来指定id的标签
+    var videoIDBig = ""; //大视频id，放在外面是因为每次加载视频会替换原来指定id的标签
+    var prevTaiwei = null;
 
- 
-
-    //台位选中状态
-$(".sheshi_tab_list").on("click","ul>li>ul>li>ul>li",function () {
-    var $taiweiList = $(".sheshi_tab_list>ul>li>ul>li>ul>li");
-    $taiweiList.removeClass("active");
+    //台位点击事件
+    $(".sheshi_tab_list").on("click", "ul>li>ul>li>ul>li", function () {
+        var $taiweiList = $(".sheshi_tab_list>ul>li>ul>li>ul>li");
+        $taiweiList.removeClass("active");
         $(".sheshi_tab_list>ul>li.toLabIframe.active").removeClass("active");
         $(this).addClass("active");
+
+        //实时监测的画中画视频切换
+        if (!$(this).parent().is(prevTaiwei)) {//如果不是同一个实验室下的台位
+            prevTaiwei = $(this).parent();
+            var labCode = $(this).parent().prev().text();//暂时从这里获取，以后拼到属性中
+            labCode = labCode.slice(0, labCode.length - 1);
+
+            var $parentMonitoring = $(this).parents(".monitoring");
+            if ($parentMonitoring.find(".smallVideoBox").children("object").length === 0) {//还没有被加载过视频
+                videoID = $parentMonitoring.find("div[id^=smallVideo]").attr("id");
+                videoIDBig = $parentMonitoring.find(".bigVideoBox").children().attr("id");
+                // console.log("小大视频id：",videoID,videoIDBig);
+            } else {//加载过视频后重置id
+                $parentMonitoring.find(".smallVideoBox").append("<div id='" + videoID + "'></div>").children("object").remove();
+                $parentMonitoring.find(".bigVideoBox").append("<div style='height: 100%;' id='" + videoIDBig + "'></div>").children("object").remove();
+            }
+
+            $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
+                if (data) {
+                    var videoUrlMain = data.videl_url.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
+                    var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
+                    console.log("data.videl_url", data.videl_url, "videoID", videoID, "videoIDBig", videoIDBig);
+
+                    $parentMonitoring.find(".smallVideoBox").hide(500, function () {
+                        videoShow(videoID, videoUrlSub);
+                    }).show(500)
+                    $parentMonitoring.find(".bigVideoBox").hide().delay(1000, function () {
+                        videoShow(videoIDBig, videoUrlSub);
+                        $(this).show(500)
+                    })
+
+                }
+            })
+        }
+
     });
+    //链接型实验室点击和画中画切换
+    $(".sheshi_tab_list").on("click", ".toLabIframe>header", function () {
+
+        $(".sheshi_tab_list>ul>li>ul>li>ul>li").removeClass("active");
+        $(this).addClass("active");
+        $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
+        var webUrl = $(this).parent().data("url");
+        $(this).parents(".monitoring").find(".shishi_right>.item.iframe>iframe").attr("src", webUrl);
+        videoShow("smallVideoInlandWeb", videoUlrInland[0].replace("/0/live.m3u8", "/1/live.m3u8"));
+        videoShow("bigVideoWS", videoUlrInland[0].replace("/1/live.m3u8", "/0/live.m3u8"))
+    })
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
     initfour();//及时率

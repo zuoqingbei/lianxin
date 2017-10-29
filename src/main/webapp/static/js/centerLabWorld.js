@@ -131,7 +131,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
 		var htmls="<ul>";
 		$.each(data,function(index,item){
 			// console.log(item)
-			htmls+=' <li><header>'+item.labcode+'<span>∧</span></header>';
+			htmls+=' <li><header>'+item.labcode+'<span>∨</span></header>';
 			if(item.testunitlist.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testunitlist,function(ind,it){
@@ -378,7 +378,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
     	var htmls="<ul>";
 		$.each(da,function(index,item){
 			// console.log(item)
-			htmls+=' <li><header>'+item.pro_name+'<span>∧</span></header>';
+			htmls+=' <li><header>'+item.pro_name+'<span>∨</span></header>';
 			if(item.children.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.children,function(ind,it){
@@ -398,6 +398,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
     	//$("#lab_unit_selected_center_world").html(htmls);
 
 
+/*
         $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
             $(".sheshi_tab").eq(1).trigger('click');
             $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
@@ -405,6 +406,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
             $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
             $(this).find('.taiwei_hide').css('display','block');
         });
+*/
 
 /*
         $('.taiwei_hide>li').click(function () {

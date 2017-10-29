@@ -249,35 +249,35 @@ li:not(.hasChildren).active {
 }
 
 /*视频监控页面*/
-.monitoring .video_box {
+.monitoring .bigVideoBox {
     padding: 1em;
     height: 45em;
     overflow: auto;
 }
 
-.monitoring .video_box > div > div {
+.monitoring .bigVideoBox > div > div {
     display: inline-block;
     outline: 1px dotted darkgray;
     margin:0 .2em;
     max-height: 44em;
 }
 
-.monitoring .video_box > .video_4x4 > div {
+.monitoring .bigVideoBox > .video_4x4 > div {
     width: calc(100% / 4 - .5em);
     height: 10.5em;
 }
 
-.monitoring .video_box > .video_3x3 > div {
+.monitoring .bigVideoBox > .video_3x3 > div {
     width: calc(100% / 3 - .5em);
     height: 14em;
 }
 
-.monitoring .video_box > .video_2x2 > div {
+.monitoring .bigVideoBox > .video_2x2 > div {
     width: calc(100% / 2 - .5em);
     height: 21em;
 }
 
-.monitoring .video_box > .video_1x1 > div {
+.monitoring .bigVideoBox > .video_1x1 > div {
     width: calc(100% - .5em);
     height: 42em;
 }

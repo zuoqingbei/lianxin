@@ -8,12 +8,6 @@
             <div class="icon"></div>
             <span>返回总状态</span>
         </div>
-<!--右上角的按钮，暂时不要了
-        <div class="btn-labHome">
-            <div class="icon"></div>
-            <span id="labnameIcon_world">中海博睿实验室</span>
-        </div>
--->
     </div>
     <div class="lab_content">
         <div class="lab_content_l">
@@ -287,10 +281,9 @@
                             </div>
                         </div>
                         <div class="shishi_right">
-                            <div class="item" style="display: none">
-                                <div class="video_box">
-                                    <div class="video_4x4" style="display: none"></div>
-                                    <div id="videoBoxInland"></div>
+                            <div class="item video" style="display: none">
+                                <div class="bigVideoBox">
+                                    <div id="bigVideoWS"></div>
                                 </div>
                             </div>
                             <div class="item shishi_right_show">
@@ -316,9 +309,10 @@
                                 </div>
                                 <div class="smallVideoBox">
                                     <div class="hideShow"><span class="text">点击隐藏</span><span class="icon"></span></div>
-                                    <div id="smallVideoInland"></div>
+                                    <div id="smallVideoWS"></div>
                                 </div>
                             </div>
+                            <!--链接型实验室-->
                             <div class="item iframe" style="display: none">
                                 <div class="smallVideoBox">
                                     <div class="hideShow"><span class="text">点击隐藏</span><span class="icon"></span></div>
@@ -344,9 +338,8 @@
                         </div>
                         <div class="shishi_right shishi_right_show">
                             <div class="item" hidden>
-                                <div class="video_box">
-                                    <div class="video_4x4" style="display: none"></div>
-                                    <div id="videoBoxAbroad"></div>
+                                <div class="bigVideoBox">
+                                    <div id="bigVideoWorld"></div>
                                 </div>
                             </div>
                             <div class="item">
@@ -372,7 +365,7 @@
                                 </div>
                                 <div class="smallVideoBox">
                                     <div class="hideShow"><span class="text">点击隐藏</span><span class="icon"></span></div>
-                                    <div id="smallVideoAbroad"></div>
+                                    <div id="smallVideoWorld"></div>
                                 </div>
                                 
                             </div>
@@ -381,7 +374,7 @@
                 </div>
                 <!--嵌入模块商互联界面-->
                 <div class="item ">
-                    <iframe src="http://baidu.com" frameborder="0"></iframe>
+                    <iframe src="" frameborder="0"></iframe>
                 </div>
             </div>
         </div>
@@ -391,4 +384,4 @@
 
 <script src="../static/js/centerLab.js"></script>
 <script src="../static/js/lab.js"></script>
-<script src="../static/asserts/video/swfobject.js"></script>
+<script src="../static/asserts/video/swfobject.js?time=New Date()"></script>

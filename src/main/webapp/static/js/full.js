@@ -178,7 +178,7 @@ function getSelectLab($this) {
     $actLiPro.each(function () {
         mproductCode += $(this).attr("code") + ","
     });
-    $(this).parents = mproductCode.substr(0, mproductCode.length - 1);
+    // $(this).parents = mproductCode.substr(0, mproductCode.length - 1);
     mlabType = mlabType.substr(0, mlabType.length - 1);
     console.log("------------mproductCode,mlabType:",mproductCode,mlabType);
     if (mlabType == labType && mproductCode == productCode) {

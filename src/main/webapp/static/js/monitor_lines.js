@@ -38,7 +38,7 @@ function jsonToArray(data){
         dateTime: '',
         title: '青岛',
         id: '1',
-        url: 'http://www.baidu.com/s?wd=1',
+        url: '',
         name: '青岛',
         value: 0
     }
@@ -52,7 +52,7 @@ function jsonToArray(data){
             dateTime: obj.datetime,
             title: obj.title,
             id: '1',
-            url: 'http://www.baidu.com/s?wd=1',
+            url: '',
             name: obj.name,
             value: obj.num
         }
