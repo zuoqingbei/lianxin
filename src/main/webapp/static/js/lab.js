@@ -337,7 +337,7 @@ function loadSwf(id, flashvars, params, attrs, mainStream) {
         // div id where player will be place
         id,
         // width, height
-        // "56%", "80%",
+        // 根据主子码流选择尺寸比例
         mainStream ? "56%" : "100%",
         mainStream ? "80%" : "96%",
         // minimum flash player version required
@@ -487,7 +487,7 @@ $(function () {
     });
 
     //画中画的视频隐藏显示
-    $(".smallVideoBox>.hideShow").click(function () {
+    $(".smallVideoBox").on("click",".hideShow",function () {
         var $video = $(this).next();
         if ($video.is(":visible")) {
             $video.hide();
