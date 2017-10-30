@@ -381,13 +381,13 @@ function resetDataCenterLabWorld() {
     myChartWorld1.clear();
     myChartWorld2.clear();
     myChartWorld1.showLoading({
-        text : '数据获取中...',
+        text : '数据正在接入...',
         effect: 'whirling',
         maskColor:"rgba(0,0,0,0)",
         textColor:"#64ccff"
     });
     myChartWorld2.showLoading({
-        text : '数据获取中...',
+        text : '数据正在接入...',
         effect: 'whirling',
         maskColor:"rgba(0,0,0,0)",
         textColor:"#64ccff"

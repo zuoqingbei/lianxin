@@ -309,3 +309,13 @@ li:not(.hasChildren).active {
     background-image: url(../img/lab/close.png);
     background-size: contain;
 }
+.monitoring .videoWait{
+    position: absolute;
+    top: 8em;
+    left: 4em;
+}
+.monitoring .bigVideoBox .videoWait{
+    left: 27em;
+    top: 13em;
+    font-size: 1.4em;
+}

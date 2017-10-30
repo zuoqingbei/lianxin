@@ -524,13 +524,13 @@ function resetDataCenterLab(){
 	myChart1.clear();
 	myChart2.clear();
     myChart1.showLoading({
-        text : '数据获取中...',
+        text : '数据正在接入...',
         effect: 'whirling',
         maskColor:"rgba(0,0,0,0)",
         textColor:"#64ccff"
     });
     myChart2.showLoading({
-        text : '数据获取中...',
+        text : '数据正在接入...',
         effect: 'whirling',
         maskColor:"rgba(0,0,0,0)",
         textColor:"#64ccff"

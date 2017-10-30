@@ -210,8 +210,7 @@
 /*}*/
 .taiwei_hide li {
     width: 100%;
-    /*background-color: rgba(102,204,254,0.2);*/
-    padding-left: 20%;
+    padding-left: 14%;
     display: inline-block;
     cursor: pointer;
     border-bottom: 1px solid transparent;
