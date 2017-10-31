@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="PHW" content="phw二期"/>
+		<title></title><!-- ${contextPath}/static/phm/css/common.css -->
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/service.css" />
+		<link rel="stylesheet" type="text/css" href="${contextPath}/static/phm/asserts/css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="${contextPath}/static/phm/asserts/css/htmleaf-demo.css">
+		
+    <!--chen xin js  -->
+   
+	</head>
+	<body>
+		<div id="content">
+			<!--head-->
+			<div id="head">
+				<h1>
+					<a href="index.html">
+						<img src="${contextPath}/static/phm/images/index/logo_haier_bold.png" alt="" />
+					</a>
+				</h1>
+				<h2>基于物联网+大数据的最佳体验</h2>
+			</div>
+			
+			<!--bottom-->
+			<div id="bottom">
+				<div class="left-table">
+					<div class="title">压缩机故障详情</div>
+					
+					<div class="btnBox">
+						<div class="optionsBtn" onclick="showByFobject(this)" >主控板</div>
+						<div class="optionsBtn" onclick="showByFobject(this)" >显示屏</div>
+						<div class="optionsBtn" onclick="showByFobject(this)">压缩机</div>
+						
+					</div>
+					<table border="0" cellpadding="0" cellspacing="0" align="center">
+						<thead>
+							<tr class="row">
+								<th class="col">对象<div class="slide"></div></th>
+								<th class="col">故障现象<div class="slide"></div></th>
+								<th class="col">故障现象<div class="slide"></div></th>
+								<th class="col">故障原因<div class="slide"></div></th>
+								<th class="col">故障原因<div class="slide"></div></th>
+								<th class="col">位号<div class="slide"></div></th>
+								<th class="col">维修措施<div class="slide"></div></th>
+								<th class="col">维修措施<div class="slide"></div></th>
+								<th class="col">责任类别<div class="slide"></div></th>
+							</tr>
+						</thead>
+						<tbody class="content" id="faultInfo">
+						
+						</tbody>
+					</table>
+				</div>
+				<!--center-map-->
+				<div class="center-map">
+					<div id="myMap" style="width:100%;height:100%"></div>
+				</div>
+				<!--right-bar1-->
+				<div class="right-bar1">
+					<p class="bar1-title">各区域压缩机备件需求</p>
+					<div id="bar1" style="width:100%;height:100%"></div>
+				</div>
+				<!--right-bar2-->
+				<div class="right-bar2">
+					<p class="bar2-title">压缩机不同时段需求</p>
+					<div id="bar2" style="width:100%;height:100%"></div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="../asserts/echarts3.0/echarts.js" type="text/javascript" charset="utf-8"></script>
+		<script src="${contextPath}/static/phm/asserts/echarts3.0/china.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="${contextPath}/static/phm/asserts/echarts/echarts-all.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="${contextPath}/static/phm/js/service.js" type="text/javascript" charset="utf-8"></script>
+	 <script type="text/javascript">
+			 /*屏幕描述
+		     一共 7x3 个屏幕，每一块屏幕是1360x768，
+		     总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
+		
+		var pageH = $(window).height();
+		var pageW = pageH * 16 * 7 / (9 * 3);
+		var bodyScale = pageH / 595;
+		var bodyFontSize = bodyScale * 100 + "%";
+		if (pageH > 2300) { // 如果是大屏幕(2304)
+		pageW -= 42
+		}
+		function pageResize() {
+		$("body").css("font-size", bodyFontSize);
+		$("#content").css("width", pageW);
+		$(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
+		console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+		}
+		pageResize();
+		
+		var times=1;//用记录该加载第几页数据
+	    var f_object="";//查询条件对象
+    	$(function(){
+    		
+		    	 	$.ajax({
+		    			type:"get",
+		    			url:"${contextPath}/fault/findPageFaultInfo",
+		    			 data:{page:times,pageSize:"20",f_object:f_object}, 
+		    			success:function(data){
+		    				var faultInformation="";
+			    			$.each(data,function(index,element){
+			    				/* faultInfo */
+			    				/*  debugger;  */
+			    				faultInformation+=
+			    				"<tr class='row'>"
+				    				+"<td class='col'>"+element.f_object+"<div class='slide'></div></td>"
+				    				+"<td class='col'>"+element.f_xx_bianma+"<div class='slide'></div></td>"
+				    				+"<td class='col'>"+element.f_xx_miaoshu+"<div class='slide'></div></td>"
+				    				+"<td class='col'>"+element.f_yy_bianma+"<div class='slide'></div></td>"
+				    				+"<td class='col'>"+element.f_yy_miaoshu+"<div class='slide'></div></td>"
+				    				+"<td class='col'>"+element.f_weihao+"<div class='slide'></div></td>"
+				    				+"<td class='col'>"+element.f_maintenance+"<div class='slide'></div></td>"
+				    				+"<td class='col'>"+element.f_maintenance+"<div class='slide'></div></td>"
+				    				+"<td class='col'>"+element.f_zr_category+"<div class='slide'></div></td>"
+			    				+"</tr>";
+							
+			    			});
+			    			
+			    			$("#faultInfo").html(faultInformation);
+		    				/* console.log(data); */
+		    			},
+		    			error:function(){alert("加载信息错误 ")}
+		    		}) ;
+    	
+    	})
+									    	function showByFobject(obj){
+												//the Scroll to top
+												$(".content").scrollTop(0);
+												Service.init();
+									    		console.log(Service.myHeight,35*bodyScale);
+									    		Service.myHeight =  35*bodyScale;
+									    		
+									    		$(obj).siblings().removeClass("btnActive");
+									    		if($(obj).hasClass("btnActive")){
+									    			$(obj).removeClass("btnActive");
+									    			f_object="";
+									    			times=1;
+									    		}else{
+									    			$(obj).addClass("btnActive");
+									    			f_object=obj.innerHTML;
+									    			times=1;
+									    		};
+									    		console.log("点击times:",times);
+									    		/* if($(obj).css("color")=='rgb(102, 204, 255)'){
+									    			alert("111");
+									    			//$(obj).removeClass(".optionsBtn");
+									    			//$(obj).addClass(".btnActive");
+									    			f_object=obj.innerHTML;
+									    		}
+									    		if($(obj).css("color")=='rgb(0, 230, 115)'){
+									    			console.log(obj);
+									    			$(obj).removeClass("btnActive");
+									    			console.log($(obj).attr("class"));
+									    			
+									    			//$(obj).addClass(".optionsBtn");
+									    			f_object="";
+									    		} */
+									    		$.ajax({
+									    			type:"get",
+									    			url:"${contextPath}/fault/findPageFaultInfo",
+									    			 data:{page:times,pageSize:"20",f_object:f_object}, 
+									    			success:function(data){
+									    				var faultInformation="";
+										    			$.each(data,function(index,element){
+										    				faultInformation+=
+										    				"<tr class='row'>"
+											    				+"<td class='col'>"+element.f_object+"<div class='slide'></div></td>"
+											    				+"<td class='col'>"+element.f_xx_bianma+"<div class='slide'></div></td>"
+											    				+"<td class='col'>"+element.f_xx_miaoshu+"<div class='slide'></div></td>"
+											    				+"<td class='col'>"+element.f_yy_bianma+"<div class='slide'></div></td>"
+											    				+"<td class='col'>"+element.f_yy_miaoshu+"<div class='slide'></div></td>"
+											    				+"<td class='col'>"+element.f_weihao+"<div class='slide'></div></td>"
+											    				+"<td class='col'>"+element.f_maintenance+"<div class='slide'></div></td>"
+											    				+"<td class='col'>"+element.f_maintenance+"<div class='slide'></div></td>"
+											    				+"<td class='col'>"+element.f_zr_category+"<div class='slide'></div></td>"
+										    				+"</tr>";
+														
+										    			});
+										    			
+										    			$("#faultInfo").html(faultInformation);
+									    			},
+									    			error:function(){alert("加载信息错误 ")}
+									    		}) ; 
+									    		
+									    	}
+		
+		window.onload=function(){
+			//alert("222" +times);
+			var that = this;
+		//	console.log(that.bodyScale);
+			var myHeight = 35*that.bodyScale;
+			that.myHeight = 35*that.bodyScale;
+			
+			$(".content").scroll(function(){
+				//滚动条到顶部的距离
+				 var totalheight = $(".content").scrollTop();
+				// console.log(totalheight, that.myHeight	)
+//				 console.log(1)
+				if (that.myHeight >totalheight) {
+					// console.log(2)
+					//模拟生成tr
+					times+=1;
+					console.log("滑动times:",times);
+//					alert(myHeight);
+					$.ajax({
+			    			type:"get",
+			    			url:"findPageFaultInfo",
+			    			 data:{page:times,pageSize:"1",f_object:f_object}, 
+			    			success:function(data){
+			    				var faultInformation="";
+				    			$.each(data,function(index,element){
+				    				faultInformation+=
+				    				"<tr class='row'>"
+					    				+"<td class='col'>"+element.f_object+"<div class='slide'></div></td>"
+					    				+"<td class='col'>"+element.f_xx_bianma+"<div class='slide'></div></td>"
+					    				+"<td class='col'>"+element.f_xx_miaoshu+"<div class='slide'></div></td>"
+					    				+"<td class='col'>"+element.f_yy_bianma+"<div class='slide'></div></td>"
+					    				+"<td class='col'>"+element.f_yy_miaoshu+"<div class='slide'></div></td>"
+					    				+"<td class='col'>"+element.f_weihao+"<div class='slide'></div></td>"
+					    				+"<td class='col'>"+element.f_maintenance+"<div class='slide'></div></td>"
+					    				+"<td class='col'>"+element.f_maintenance+"<div class='slide'></div></td>"
+					    				+"<td class='col'>"+element.f_zr_category+"<div class='slide'></div></td>"
+				    				+"</tr>";
+								
+				    			});
+				    			
+				    			$("#faultInfo").append(faultInformation);
+			    			},
+			    			error:function(){alert("加载信息错误11 ")}
+			    		}) ; 
+			    		
+//				   for(var i=0;i<2;i++){
+//				   		var mytr = document.createElement("tr");
+//				   		for(var j=0;j<9;j++){
+//				   			var mytd = document.createElement("td")
+//				   			$(mytr).append(mytd);
+//				   		}
+//				   		$(".content").append(mytr)
+//				   }
+//				   myHeight += 2*$("tr").height();
+				   that.myHeight += 2*$("tr").height();
+				  
+					//生产
+					
+					
+				} 
+			})
+		}    
+    </script>
+	</body>
+</html>

@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.ibm.icu.impl.CalendarCache;
 import com.ibm.icu.math.BigDecimal;
 import com.jfinal.ext.route.ControllerBind;
@@ -130,5 +132,55 @@ public class FaultController extends BaseController{
 		renderJson(finalList);
 	}
 	
+	//
+	public void service(){
+		System.out.println("===============================");
+		
+		render("service.html");
+	}
+	public void findAllFaultInfo(){
+		List<Record> list=FaultModel.dao.findAllFaultInfo();
+		List<Record> newList=new ArrayList<>();
+		for(int i=0;i<list.size();i++){
+			Record record=list.get(i);
+		String f_xx_bianma=	record.getStr("f_xx_bianma");
+			JSONArray ja=(JSONArray) JSONObject.parse(f_xx_bianma);
+			for(int j=0;j<ja.size();j++){
+				String f_xx_bianmaSingle=(String) ja.get(j);
+				String f_yy_bianma=record.getStr("f_yy_bianma");
+					if(f_yy_bianma!=null&&f_yy_bianma.equals(f_xx_bianmaSingle)){
+						record.set("f_xx_bianma", f_xx_bianmaSingle);
+						newList.add(record);
+					}
+			
+			}
+			
+		}
+		renderJson(newList);
+	}
+	
+	public void findPageFaultInfo(){
+		int page=Integer.parseInt(getPara("page"));
+		int pageSize=Integer.parseInt(getPara("pageSize"));
+		String f_object=getPara("f_object");
+		List<Record> list=FaultModel.dao.findPageFaultInfo(page, pageSize, f_object);
+		List<Record> newList=new ArrayList<>();
+		for(int i=0;i<list.size();i++){
+			Record record=list.get(i);
+		String f_xx_bianma=	record.getStr("f_xx_bianma");
+			JSONArray ja=(JSONArray) JSONObject.parse(f_xx_bianma);
+			for(int j=0;j<ja.size();j++){
+				String f_xx_bianmaSingle=(String) ja.get(j);
+				String f_yy_bianma=record.getStr("f_yy_bianma");
+					if(f_yy_bianma!=null&&f_yy_bianma.equals(f_xx_bianmaSingle)){
+						record.set("f_xx_bianma", f_xx_bianmaSingle);
+						newList.add(record);
+					}
+			
+			}
+			
+		}
+		renderJson(newList);
+	}
 	
 }
