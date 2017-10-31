@@ -1,7 +1,11 @@
 
 package com.ulab.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
@@ -63,6 +67,45 @@ public class DbConfigModel extends Model<DbConfigModel> {
 			return config.getStr(columnName)==null?null:config.getStr(columnName).toLowerCase();
 		}
 		return null;
+	}
+	/**
+	 * 
+	 * @time   2017年10月28日 下午4:17:21
+	 * @author zuoqb
+	 * @todo   分区sql语句拼接
+	 */
+	public String getPartitionSql(BaseController c,String configName,String labCode,String shortTableName){
+		if(shortTableName==null||"null".equals(shortTableName)){
+			shortTableName="";
+		}
+		if(StringUtils.isNotBlank(shortTableName)){
+			shortTableName=shortTableName+".";
+		}
+		String partition="";
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+		String now=sdf.format(new Date());
+		Record config=c.getSessionAttr("config_db_"+configName);
+		if(config==null||!"1".equals(config.getStr("partition").trim())){
+			return partition;
+		}else{
+			String sql="select * from t_b_db_partition where lab_code='"+labCode+"' and config_name='"+configName+"' and del_flag=0";
+			Record r=Db.findFirst(sql);
+			if(r==null){
+				return partition;
+			}
+			if("0".equals(r.getStr("is_ptlabname").trim())){
+				//按照实验室编码分区
+				partition+=" and "+shortTableName+r.getStr("ptlabname_filed")+"='"+r.getStr("ptlabname_value")+"' ";
+			}
+			if("0".equals(r.getStr("is_pt").trim())){
+				//按年月日分区
+				partition+=" and "+shortTableName+"pt='"+now+"' ";
+			}
+			return partition;
+		}
+	}
+	public String getPartitionSql(BaseController c,String configName,String labCode){
+		return getPartitionSql(c, configName, labCode, null);
 	}
 	
 }

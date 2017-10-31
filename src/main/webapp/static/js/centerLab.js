@@ -427,19 +427,8 @@ var dataBase;
 }; */
 
 //加载实验室与台位对照关系 生刷选框
-function loadLabUnitInfoCenterTabAjax(inlandOrAbroad){
+function loadLabUnitInfoCenterTabAjax(type,inlandOrAbroad){
     var htmls="";
-    // var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li").removeClass("active");
-    // $mainNavLi.removeClass("active");
-    // $(thiselem).addClass("active");
-    // console.log("loadLabUnitInfoCenterTabAjax")
-    if(inlandOrAbroad==="0"){ // 国内
-        inlandTabShow();
-        console.log("内")
-    }else{ //国外
-        console.log("外");
-        abroadTabShow_center();
-    }
 
     $.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
 
@@ -448,6 +437,7 @@ function loadLabUnitInfoCenterTabAjax(inlandOrAbroad){
 			if(item.testUnitList.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testUnitList,function(ind,it){
+					
 					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
 				});
 				htmls+='</ul>';
@@ -458,35 +448,21 @@ function loadLabUnitInfoCenterTabAjax(inlandOrAbroad){
 			}
 		});
 		$("#lab_unit_selected_center").html(htmls);
-/*
-        $(".sheshi_tab_list #lab_unit_selected_center>li").click(function () {
-            $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
-            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
-            $(this).css('height','auto').siblings().css('height','1.5em');
-            $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-            $(this).find('.taiwei_hide').css('display','block');
-            // $('.sheshi_tab').removeClass('sheshi_tab_active');
-            // $('.sheshi_tab_lines').addClass('sheshi_tab_active')
-
-        });
-*/
         //选择台位
         $("#lab_unit_selected_center>li>a").click(function (e) {
-            $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
+            // $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
             $(this).parent().siblings().find('.taiwei_hide').css('display','none');
             $(this).next().toggle();
             e.stopPropagation()
         });
-
-        $('.taiwei_hide>li').click(function () {
-            $(".sheshi_tab").eq(1).trigger('click')
-            $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-        })
+        $(".sheshi_tab_list").find("ul:eq(0)>li:eq(0)>header").trigger("click");
+        // $("sheshi_tab_list").find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 	});
 }
-$(document).ready(function () {
-	//loadLabUnitInfoCenterTabAjax();
-});
+
+
+
+
 //获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
@@ -547,6 +523,18 @@ function resetDataCenterLab(){
 	myChart2 = echarts.init(document.getElementById('main2'));
 	myChart1.clear();
 	myChart2.clear();
+    myChart1.showLoading({
+        text : '数据正在接入...',
+        effect: 'whirling',
+        maskColor:"rgba(0,0,0,0)",
+        textColor:"#64ccff"
+    });
+    myChart2.showLoading({
+        text : '数据正在接入...',
+        effect: 'whirling',
+        maskColor:"rgba(0,0,0,0)",
+        textColor:"#64ccff"
+    });
 	$("#legend_ul").html('');
 	legendData=[];
 	legendNumData=[];
@@ -559,29 +547,6 @@ function resetDataCenterLab(){
 	interval_count1=0;
 	interval_count2=0;
 }
-//获取曲线具体数据
-/*function findSensorDataCenetrTabAjax2(labTypeCode,testUnitId){
-	myChart1= echarts.init(document.getElementById('main1'));
-	myChart2 = echarts.init(document.getElementById('main2'));
-	$.post(contextPath+"/lab/getJsonFile",{"fileName":"unit.json","testUnitId":testUnitId},function(data){
-		//console.log(eval("("+data+")"))
-		data=eval("("+data+")");
-		dataBase=data;
-		//根据传感器具体数据 生成图例
-	 	$.each(data.list,function(index,item){
-			totalLegendName.push(item.name);
-		});
-		legendData=dealBracket(totalLegendName);
-		randomLegend();
-		$("#center_sybh_id").html(data.sybh);
-	 	$("#center_ypbm_id").html(data.ybbh);
-	 	$("#center_cpxh_id").html(data.cpxh);
-		//showLegendData=legendData;//默认全选
-		//console.log(showLegendData)
-		createLegendHtmls();
-		createEcharts(true);
-	});
-}*/
 //温度取8个 其他全部展示
 function randomLegend(){
 	var num=0;

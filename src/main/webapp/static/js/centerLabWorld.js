@@ -95,18 +95,7 @@ var interval_count2World = 0;
 var mockxDataWorld = [];//模拟的x轴数据
 var intevalChartHadoop;
 
-//实验室文本信息
-var labInfos = [];
-labInfos[0] = "日本研发中心拥有冰箱检测实验室39个，测试台位290个，具备冰箱性能、结构、电子电器以及超前研发技术检测能力。<br>　　The Japan R&D Center has 39 refrigerator testing labs, 290 test stations, covering the testing capabilitiesof  refrigerator performance, structure, electronic and electrical appliances and advanced R&D technology."
-labInfos[1] = "Haier Thailand ACF have own testing laboratory，which can do the normal cooling capacity testing with our engineer. ACF also can develop new product with local parts."
-labInfos[2] = "3 main labs on Auckland site: Refrigeration Test Lab，Refrigeration Evaluation Lab，Laundry Evaluation Lab<br>　　2 main labs on Dunedin site: Cooking Evaluation Lab，Dishwashing Evaluation LabLab capacity including hundreds of testing items for both Compliance Testing & Development Testing based on advanced and reliable measurement system and skilled lab techs."
-//  实验室图片信息
-var labImgs = ["../static/img/labMain/Japan.jpg", "../static/img/labMain/Thailand.png", "../static/img/labMain/NewZealand.jpg"];
 
-//'#labName'    实验室标题名
-//'#labnameIcon'  实验室标题名按钮
-//'#secondName'  实验室名小标题
-var labname = ["日本研发中心", "泰国工业园数据中心", "新西兰研发中心"];
 var configName;
 var startTime;
 
@@ -115,60 +104,42 @@ var startTime;
 function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad) {
 	var dataCenter=dataCenterMap.get(type);
 	var $l3x3 = $("#l");
-    // var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li").removeClass("active");
-    // $mainNavLi.removeClass("active");
-    // $(thiselem).addClass("active");
 	configName=mConfigName;
 	//清除中海博睿定时器
 	window.clearInterval(intevalChart1);
 	window.clearInterval(intevalChartHadoop);
 
-    if(inlandOrAbroad==="0"){ // 国内
-        inlandTabShow_world();
-    }else{ //国外
-        abroadTabShow();
-    }
-
-
-    $(".labMain_cblt_tone_world").html( "<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
-    $(".labMain_cblt_ttwo_world img").attr("src", (dataCenter.img_content ==null?"../static/img/labMain/Thailand.jpg":dataCenter.img_content));
-    $("#labName_world").html(dataCenter.center_name);
-    $("#labnameIcon_world").html(dataCenter.center_name);
-    // $("#secondName_world").html(labname[type]);
     //生成下拉
 	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName},function(data){
-		var htmls="";
+		var htmls="<ul>";
 		$.each(data,function(index,item){
-			console.log(item)
-			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labcode+'</a>';
+			// console.log(item)
+			htmls+=' <li><header>'+item.labcode+'<span>∨</span></header>';
 			if(item.testunitlist.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testunitlist,function(ind,it){
-					console.log(it.istesting)
-					htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+item.labcode+'\",\"'+it.testunitid+'\")>台位：'+it.testunitname+'  ('+it.testunitstatus+')</li>';
+
+					if(it.istesting){
+						htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+item.labcode+'\",\"'+it.testunitid+'\")>台位：'+it.testunitname+'  ('+it.testunitstatus+')</li>';
+					}else{
+						htmls+='<li>台位：'+it.testunitname+'  ('+it.testunitstatus+')</li>';
+					}
 				});
 				htmls+='</ul>';
 			}
 			htmls+=' </li>';
-			if(index==1){
+			if(index==0){
+				// console.log(item.testunitlist)
 				findSensorTypeInfoHadoop(item.labcode,item.testunitlist[index].testunitid);
 			}
 		});
-		 
-		 $("#lab_unit_selected_center_world").html(htmls);
-	    $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
-	        $(".sheshi_tab").eq(1).trigger('click');
-	        $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
-	        $(this).css('height','auto').siblings().css('height','1.5em');
-	        $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-	        $(this).find('.taiwei_hide').css('display','block');
-	    });
+		htmls+='</ul>';
+        // alert("hadoop")
+		$(".quxian_li_"+type).append(htmls);
+        // $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>header").trigger("click");
+        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 
-	    $('.taiwei_hide>li').click(function () {
-	        $(".sheshi_tab").eq(1).trigger('click');
-	        $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-	    })
-		
+
 	});
 }
 //查询y轴信息
@@ -344,29 +315,12 @@ function timestampFormat(timestamp){
 function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
 	var dataCenter=dataCenterMap.get(type);
 	window.clearInterval(intevalChart1);
-    // var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
-    // $mainNavLi.removeClass("active");
-    // $(thiselem).addClass("active");
-    // console.log("$mainNavLi",$mainNavLi[0],"inlandOrAbroad",inlandOrAbroad)
-    if(inlandOrAbroad==="0"){ // 国内
-        inlandTabShow();
-    }else{ //国外
-        abroadTabShow();
-        // videoShow(id,url)
-        // videoShow(id,url)
-    }
-
-    $(".labMain_cblt_tone_world").html("<h3>基本介绍</h3>" + "<p style:'font-size:1.3em'>" + dataCenter.center_desc + "</p>");
-    $(".labMain_cblt_ttwo_world img").attr("src", dataCenter.img_content);
-    $("#labName_world").html(dataCenter.center_name);
-    $("#labnameIcon_world").html(dataCenter.center_name);
-    $("#secondName_world").html(dataCenter.center_name);
     var htmls = "";
 	// alert(dataCenter.id)
 
-    $.post(contextPath+"/lab/loadJsonProByDataCenterIdAjax",{"dataCenterId":dataCenter.id},function(da){
+    $.post(contextPath+"/lab/loadJsonProByDataCenterIdAjax",{"dataCenterId":type},function(da){
     	 // alert(da)
-    	$.each(da,function(index,item){
+    /*	$.each(da,function(index,item){
     		htmls += ' <li><span></span><a href="javascript:void(0);">'+item.pro_name+'</a>';
     		if(item.children!=null&&item.children.length>0){
     			htmls += '<ul class="taiwei_hide">';
@@ -378,53 +332,33 @@ function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
     			});
     		}
 	        htmls += ' </ul></li>';
-    	});
-    	$("#lab_unit_selected_center_world").html(htmls);
+    	});*/
+    	
+    	var htmls="<ul>";
+		$.each(da,function(index,item){
+			// console.log(item)
+			htmls+=' <li><header>'+item.pro_name+'<span>∨</span></header>';
+			if(item.children.length>0){
+				htmls+='<ul class="taiwei_hide">';
+				$.each(item.children,function(ind,it){
+					htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld(\"'+item.pro_code+'\",\"'+it.pro_code+'\")>'+it.pro_name+'</li>';
+					if(ind==1){
+						findSensorByLabCenetrTabAjaxWorld(item.pro_code,it.pro_code);
+					}
+				});
+				htmls+='</ul>';
+			}
+			htmls+=' </li>';
+		});
+		htmls+='</ul>';
+		console.log(htmls)
+		 
+		$(".quxian_li_"+type).append(htmls);
+		// alert("json")
+        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>header").trigger("click");
+        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 
-
-        $(".sheshi_tab_list #lab_unit_selected_center_world>li").click(function () {
-            $(".sheshi_tab").eq(1).trigger('click');
-            $(".sheshi_tab_list").find('.taiwei_hide').css('display','none');
-            $(this).css('height','auto').siblings().css('height','1.5em');
-            $(this).find('a').css('color',"66ffcc").siblings().css('color','#66ccff');
-            $(this).find('.taiwei_hide').css('display','block');
-        });
-
-        $('.taiwei_hide>li').click(function () {
-            $(".sheshi_tab").eq(1).trigger('click');
-            $(this).addClass('taiwei_hide_active').siblings().removeClass('taiwei_hide_active');
-        })
     });
-    //console.log(data)
-   /* if (type == 0) {
-        //日本
-        htmls += ' <li><span></span><a href="javascript:void(0);">Refrigeration TL</a>';
-        htmls += '<ul class="taiwei_hide">';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D4")>Position：P1（ON）</li>';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D5")>Position：P2（ON）</li>';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005","D6")>Position：P3（ON）</li>';
-        htmls += '</ul>';
-        htmls += ' </li>';
-        findSensorByLabCenetrTabAjaxWorld("HR20160830QDZBX005", "D4");
-    } else if (type == 1) {
-        //泰国
-        htmls += ' <li><span></span><a href="javascript:void(0);">ACF TL</a>';
-        htmls += '<ul class="taiwei_hide">';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20160407QDZKA001","2AB")>Position：P1（ON）</li>';
-        htmls += '</ul>';
-        htmls += ' </li>';
-        findSensorByLabCenetrTabAjaxWorld("HR20160407QDZKA001", "2AB");
-    } else {
-        //新西兰
-        htmls += ' <li><span></span><a href="javascript:void(0);">Refrigeration TL</a>';
-        htmls += '<ul class="taiwei_hide">';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B4")>Position：P1（ON）</li>';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B5")>Position：P2（ON）</li>';
-        htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001","B6")>Position：P3（ON）</li>';
-        htmls += '</ul>';
-        htmls += ' </li>';
-        findSensorByLabCenetrTabAjaxWorld("HR20170424QDZBX001", "B4");
-    }*/
 
     
 
@@ -435,6 +369,18 @@ function resetDataCenterLabWorld() {
     myChartWorld2 = echarts.init(document.getElementById('main2_world'));
     myChartWorld1.clear();
     myChartWorld2.clear();
+    myChartWorld1.showLoading({
+        text : '数据正在接入...',
+        effect: 'whirling',
+        maskColor:"rgba(0,0,0,0)",
+        textColor:"#64ccff"
+    });
+    myChartWorld2.showLoading({
+        text : '数据正在接入...',
+        effect: 'whirling',
+        maskColor:"rgba(0,0,0,0)",
+        textColor:"#64ccff"
+    });
     $("#legend_ul_world").html('');
     legendDataWorld = [];
     legendNumDataWorld = [];

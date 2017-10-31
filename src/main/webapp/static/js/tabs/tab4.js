@@ -12,6 +12,7 @@ function loadTab4Data(){
     //loadTab4JianData($(".tab4 .shujuWajue_left_top_list .active").attr("data"),$(".tab4 .shujuWajue_left_top_list .active").html());
     //Tom add start
     //加载工位数据信息
+    $("#tab4_jiance_xh_name").html("\""+$(".tab4 .shujuWajue_left_top_list .active").html()+"\"");
     console.log('初始化数据'+$("#station").find("option:selected").attr("data")+$("#station").find("option:selected").text())
     loadTab4JianData($("#station").find("option:selected").attr("data"),$("#station").find("option:selected").text());
     //Tom add end
@@ -19,7 +20,7 @@ function loadTab4Data(){
 //加载量产一致性保障 xhId:产品id  name：产品名称
 function loadTab4JianData(xhId,xName){
 	$.post(contextPath+'/lab/jianCeXhProForTab1Ajax',{"xhCode":xhId},function(xhPro){
-		$("#tab4_jiance_xh_name").html("\""+xName+"\"");
+		//$("#tab4_jiance_xh_name").html("\""+xName+"\"");
 		$("#tab4_jiance_xh_result").html("结论："+"过程稳定");
 		$("#tab4_jiance_xh_name2").html("\""+xName+"\"");
 		$("#tab4_jiance_xh_result2").html("cpk:"+xhPro.cpk+"</br>"+"结论："+xhPro.jielun);
@@ -230,11 +231,11 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		        left: 'center'
 		    },
 		    grid: {
-		        right: "13%",
+		        // right: "13%",
 		        bottom: "15%",
 		        left: "15%",
 		        top: "25%",
-				x2:"15%"
+				x2:"16%"
 		    },
 		    yAxis: {
 		        name: mTitle,
@@ -837,6 +838,7 @@ function tab4JianSelected(obj) {
 
     var id = $(obj).find("option.active").attr("data");
     var name = $(obj).find("option.active").text();
+    $("#tab4_jiance_xh_name").html("\""+name+"\"");
     console.log("-------------$('select').val():",$("select").val())
     // console.log("-------------id,selectOpt:",id,selectOpt[0])
     $.post(contextPath+'/lab/labGetStationAjax',{"id":id},function(data){

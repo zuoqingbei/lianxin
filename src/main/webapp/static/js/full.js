@@ -178,7 +178,7 @@ function getSelectLab($this) {
     $actLiPro.each(function () {
         mproductCode += $(this).attr("code") + ","
     });
-    $(this).parents = mproductCode.substr(0, mproductCode.length - 1);
+    // $(this).parents = mproductCode.substr(0, mproductCode.length - 1);
     mlabType = mlabType.substr(0, mlabType.length - 1);
     console.log("------------mproductCode,mlabType:",mproductCode,mlabType);
     if (mlabType == labType && mproductCode == productCode) {
@@ -305,6 +305,17 @@ function sphereRBscroll() {
     }
 }
 
+function popWindow() {
+    var $h2 = $(".fullScreen_map .sphere .mapArea h2");
+    $h2.click(function (e) {
+        $(this).siblings(".popWindow, .popWindowMask").show(300);
+        // e.stopPropagation();
+    });
+    $h2.siblings(".popWindowMask").click(function () {
+        $(this).hide(500).siblings(".popWindow").hide(500);;
+    })
+
+}
 $(function () {
    
     //调整字符云页面的文字大小
@@ -323,6 +334,9 @@ $(function () {
     navSelectA();
     //球形地图右下角的广告滚动
     sphereRBscroll();
+    //地球页面弹窗
+    popWindow();
+
 
     //开场视频已经移到full.html中去了
 

@@ -257,8 +257,10 @@ a, a:hover, a:focus {
 }
 
 .labMain_cblt_ttwo img {
-    width: 63em;
-    height: 93%;
+    width: 71em;
+    max-height: 44em;
+    margin-left: 1.5em;
+    margin-top: -.2em;
 }
 
 .labMain_cblt_bottom {

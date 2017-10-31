@@ -151,7 +151,7 @@ function getSelectLab($this) {
     $actLiPro.each(function () {
         mproductCode += $(this).attr("code") + ","
     });
-    $(this).parents = mproductCode.substr(0, mproductCode.length - 1);
+    // $(this).parents = mproductCode.substr(0, mproductCode.length - 1);
     mlabType = mlabType.substr(0, mlabType.length - 1);
     console.log("------------mproductCode,mlabType:",mproductCode,mlabType);
     if (mlabType == labType && mproductCode == productCode) {
@@ -291,7 +291,7 @@ function toLabData() {
     }
     $(".toLabData").click(function(){
         $(".lab").show().siblings("div").not("#l").hide();
-        console.log($(".lab .switchBox>ul.inland>li:eq(0)"));
+        // console.log($(".lab .switchBox>ul.inland>li:eq(0)"));
         $(".lab .switchBox>ul.inland>li:eq(0)").click();
     })
 }
