@@ -1,7 +1,3 @@
-/**
- * Sumpay.cn.
- * Copyright (c) 2007-2015 All Rights Reserved.
- */
 package com.ulab.config;
 
 import java.util.ArrayList;
