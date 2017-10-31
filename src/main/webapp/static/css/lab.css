@@ -310,6 +310,7 @@ li:not(.hasChildren).active {
     background-size: contain;
 }
 .monitoring .videoWait{
+    display: none;
     position: absolute;
     top: 8em;
     left: 4em;

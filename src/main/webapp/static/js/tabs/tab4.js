@@ -231,11 +231,11 @@ function scpDataForTab4(myChartIds,xhPro,type){
 		        left: 'center'
 		    },
 		    grid: {
-		        right: "13%",
+		        // right: "13%",
 		        bottom: "15%",
 		        left: "15%",
 		        top: "25%",
-				x2:"15%"
+				x2:"16%"
 		    },
 		    yAxis: {
 		        name: mTitle,

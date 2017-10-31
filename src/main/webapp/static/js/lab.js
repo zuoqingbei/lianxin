@@ -169,7 +169,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
         $.each(data, function (index, item) {
             var dataSource = item.data_source;
             dataCenterMap.put(item.id, item);
-            console.log(item.isshow_name)
+            // console.log(item.isshow_name)
             if (dataSource == "url") {
                 html += '<li  data-center-id="' + item.id + '"  class="toLabIframe quxian_li_' + item.id + '" data-url="' + item.souce_value + '"><header ' + createClickFuntion(item) + '>' + (item.isshow_name == 0 ? item.center_name : "") + '</header></li>';
             } else {
@@ -203,7 +203,6 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
                     $("#lab_unit_selected_center").find("li").eq(0).find("header").trigger("click");
                     $("#lab_unit_selected_center_world").find("li").find("header").eq(0).trigger("click");
                 }
-                // $("#lab_unit_selected_center_world").find("li").eq(0).find("header").eq(0).trigger("click");
             }
         });
         //自动触发第一个实验室的第一个台位

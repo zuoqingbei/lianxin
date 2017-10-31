@@ -147,7 +147,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad
 		htmls+='</ul>';
         // alert("hadoop")
 		$(".quxian_li_"+type).append(htmls);
-        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>header").trigger("click");
+        // $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>header").trigger("click");
         $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 
 

@@ -65,12 +65,25 @@
     float: left;
     width: 60%;
     background-color: transparent;
-    /*margin-top: 1%;*/
-
 }
-
+.shujuWajue_left_top_list > form label{
+    position: relative;
+}
+.shujuWajue_left_top_list > form label:after{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: .6em solid #bdecf8;
+    border-left: .5em solid transparent;
+    border-right: .5em solid transparent;
+    top: .35em;
+    right: -9.4em;
+}
 .shujuWajue_left_top_list select {
-    padding: 0.5% 1%;
+    width: 10em;
+    -webkit-appearance: none;
+    padding: 0.5% 5% 0.5% 1%;
     background-color: rgba(255, 255, 255, .2);
 }
 
