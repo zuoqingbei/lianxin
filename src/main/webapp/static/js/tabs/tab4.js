@@ -2,38 +2,40 @@
 /**
  * 右侧数据统计myChart14
  */
-function loadTab4Data(){
-	// alert("tab4重新加载")
+function loadTab4Data() {
+    // alert("tab4重新加载")
     // 共产 一致比重统计
-	communistGravityStatisticForTab4Ajax();
+    communistGravityStatisticForTab4Ajax();
     //根据类型 时间 统计共产 一致个月份数量
     communistStatisticForMonthForTab4Ajax();
     //直方图
     //loadTab4JianData($(".tab4 .shujuWajue_left_top_list .active").attr("data"),$(".tab4 .shujuWajue_left_top_list .active").html());
     //Tom add start
     //加载工位数据信息
-    $("#tab4_jiance_xh_name").html("\""+$(".tab4 .shujuWajue_left_top_list .active").html()+"\"");
-    console.log('初始化数据'+$("#station").find("option:selected").attr("data")+$("#station").find("option:selected").text())
-    loadTab4JianData($("#station").find("option:selected").attr("data"),$("#station").find("option:selected").text());
+    $("#tab4_jiance_xh_name").html("\"" + $(".tab4 .shujuWajue_left_top_list .active").html() + "\"");
+    console.log('初始化数据' + $("#station").find("option:selected").attr("data") + $("#station").find("option:selected").text())
+    loadTab4JianData($("#station").find("option:selected").attr("data"), $("#station").find("option:selected").text());
     //Tom add end
 }
+
 //加载量产一致性保障 xhId:产品id  name：产品名称
-function loadTab4JianData(xhId,xName){
-	$.post(contextPath+'/lab/jianCeXhProForTab1Ajax',{"xhCode":xhId},function(xhPro){
-		//$("#tab4_jiance_xh_name").html("\""+xName+"\"");
-		$("#tab4_jiance_xh_result").html("结论："+"过程稳定");
-		$("#tab4_jiance_xh_name2").html("\""+xName+"\"");
-		$("#tab4_jiance_xh_result2").html("cpk:"+xhPro.cpk+"</br>"+"结论："+xhPro.jielun);
-		//模块商质量水平分布
-		mkSqualityLevelForTab4(xhPro);
-		//SPC分析
-		scpDataForTab4("myChart15",xhPro,1);
-		scpDataForTab4("myChart15_2",xhPro,2);
-		//直方图
-		cpkDataForTab4(xhPro);
-	
-	});
+function loadTab4JianData(xhId, xName) {
+    $.post(contextPath + '/lab/jianCeXhProForTab1Ajax', {"xhCode": xhId}, function (xhPro) {
+        //$("#tab4_jiance_xh_name").html("\""+xName+"\"");
+        $("#tab4_jiance_xh_result").html("结论：" + "过程稳定");
+        $("#tab4_jiance_xh_name2").html("\"" + xName + "\"");
+        $("#tab4_jiance_xh_result2").html("cpk:" + xhPro.cpk + "</br>" + "结论：" + xhPro.jielun);
+        //模块商质量水平分布
+        mkSqualityLevelForTab4(xhPro);
+        //SPC分析
+        scpDataForTab4("myChart15", xhPro, 1);
+        scpDataForTab4("myChart15_2", xhPro, 2);
+        //直方图
+        cpkDataForTab4(xhPro);
+
+    });
 }
+
 //模块商质量水平分布 横条图
 /*
 function mkSqualityLevelForTab4(xhPro){
@@ -175,6 +177,7 @@ function mkSqualityLevelForTab4(xhPro){
 	});
 }
 */
+
 //获取最大值 最小值
 function getMaxMinForScpTab4(data, xhPro, type) {
     var result = [];
@@ -199,131 +202,140 @@ function getMaxMinForScpTab4(data, xhPro, type) {
     result.push(parseFloat(min) - 0.1);
     return result;
 }
+
 //SPC分析  xbar
-function scpDataForTab4(myChartIds,xhPro,type){
+function scpDataForTab4(myChartIds, xhPro, type) {
     //类型 1：样本平均值 2：样本标准差
     //xh_name--->gw_id
-	$.post(contextPath+'/lab/jianCeXbarForTab1Ajax',{"xhName":xhPro.gw_id,"type":type},function(data){
-		var maxAndMin=getMaxMinForScpTab4(data,xhPro,type);
-		var mTitle,mLcl,mValue,mUcl;
-		if(type==1){
-			mTitle="样本平均值";
-			mLcl=xhPro.jz_lcl;
-			mValue=xhPro.pj_value;
-			mUcl=xhPro.jz_ucl;
-		}else{
-			mTitle="样本标准差";
-			mLcl=xhPro.fc_lcl;
-			mValue=xhPro.fc_value;
-			mUcl=xhPro.fc_ucl;
-		}
-		var myChart15 = echarts.init(document.getElementById(myChartIds));
-		right_echarts.push(myChart15);
+    $.post(contextPath + '/lab/jianCeXbarForTab1Ajax', {"xhName": xhPro.gw_id, "type": type}, function (data) {
+        var maxAndMin = getMaxMinForScpTab4(data, xhPro, type);
+        var mTitle, mLcl, mValue, mUcl;
+        if (type == 1) {
+            mTitle = "样本平均值";
+            mLcl = xhPro.jz_lcl;
+            mValue = xhPro.pj_value;
+            mUcl = xhPro.jz_ucl;
+        } else {
+            mTitle = "样本标准差";
+            mLcl = xhPro.fc_lcl;
+            mValue = xhPro.fc_value;
+            mUcl = xhPro.fc_ucl;
+        }
+        console.log("------", mTitle, mLcl, mValue, mUcl)
+        var myChart15 = echarts.init(document.getElementById(myChartIds));
+        right_echarts.push(myChart15);
         myChart15.setOption(getLineEcharts());
         myChart15.setOption({
-		    color:["#ff9933"],
-		    textStyle:{
-		        fontSize:9*bodyScale
-		    },
-		    title: {
-		        show:false,
-		        text: 'Xbar 控制图',
-		        left: 'center'
-		    },
-		    grid: {
-		        // right: "13%",
-		        bottom: "15%",
-		        left: "15%",
-		        top: "25%",
-				x2:"16%"
-		    },
-		    yAxis: {
-		        name: mTitle,
+            color: ["#ff9933"],
+            textStyle: {
+                fontSize: 9 * bodyScale
+            },
+            title: {
+                show: false,
+                text: 'Xbar 控制图',
+                left: 'center'
+            },
+            grid: {
+                bottom: "15%",
+                left: "15%",
+                top: "25%",
+                x2: "16%"
+            },
+            yAxis: {
+                name: mTitle,
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
                 axisLabel: axisLabel,
-		        max: parseFloat(maxAndMin[0]),
-		        min: parseFloat(maxAndMin[1]),
-		        splitLine: {  //刻度线
-		            show: false
-		        },
-		    },
-		    xAxis: [
-		        {
-		            name: "",
+                axisLabel: {
+                    formatter: function (value, index) {
+                        return value.toFixed(1);
+                    }
+                },
+                max: parseFloat(maxAndMin[0]),
+                min: parseFloat(maxAndMin[1]),
+                splitLine: {  //刻度线
+                    show: false
+                },
+            },
+            xAxis: [
+                {
+                    name: "",
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-		            data: statisticRightLengend4(data)
-		        }
-		    ],
-		    visualMap: {
-		        show:false,
-		        top: 10,
-		        right: 10,
-		        pieces: [{
-		            gt:  parseFloat(mLcl),
-		            lte: parseFloat(mUcl),
-		            color: '#096'
-		        }],
+                    data: statisticRightLengend4(data)
+                }
+            ],
+            visualMap: {
+                show: false,
+                top: 10,
+                right: 10,
+                pieces: [{
+                    gt: parseFloat(mLcl),
+                    lte: parseFloat(mUcl),
+                    color: '#096'
+                }],
                 outOfRange: {
                     color: '#cc0033'
                 }
-		    },
-		    series: [
-		        {
-		            name: mTitle,
-		            type: 'line',
-		            lineStyle: {
-		                normal: {
+            },
+            series: [
+                {
+                    name: mTitle,
+                    type: 'line',
+                    lineStyle: {
+                        normal: {
                             // color:"#00e673",
-		                    width: 1*bodyScale
-		                }
-		            },
-                    itemStyle:{normal:{
-                        // borderColor:"#00e673"
-                        borderColor:function (params) {
-							console.log("...............................",params)
+                            width: 1 * bodyScale
                         }
-                    }},
-		            symbolSize: 3*bodyScale,
-		            data: tab4OrderRateSeriseData(data),
-		            markLine: {
-		                symbolSize:0,
-		                silent: true,
-		                label:{normal:{formatter:"{b}={c}"}},
-                        lineStyle:{
-                            normal:{
-                                type:"dashed",
-                                width:1*bodyScale
+                    },
+                    itemStyle: {
+                        normal: {
+                            // borderColor:"#00e673"
+                            borderColor: function (params) {
+                                console.log("...............................", params)
+                            }
+                        }
+                    },
+                    symbolSize: 3 * bodyScale,
+                    data: tab4OrderRateSeriseData(data),
+                    markLine: {
+                        symbolSize: 0,
+                        silent: true,
+                        label: {normal: {formatter: "{b}={c}"}},
+                        lineStyle: {
+                            normal: {
+                                type: "dashed",
+                                width: 1 * bodyScale
                             }
                         },
 
                         data: [{
-		                    name:"UCL",
-		                    yAxis: parseFloat(mUcl)
-		                },{
-		                    name:"x",
-		                    yAxis: parseFloat(mValue),
-                            lineStyle:{
-                                normal:{
-                                    color:"#439ef7"
+                            name: "UCL",
+                            yAxis: parseFloat(mUcl).toFixed(2)
+                        }, {
+                            name: "x",
+                            yAxis: parseFloat(mValue).toFixed(2),
+                            lineStyle: {
+                                normal: {
+                                    color: "#439ef7"
                                 }
                             }
 
                         }, {
-		                    name:"LCL",
-		                    yAxis: parseFloat(mLcl)
-		                }]
-		            }
-		        }
-		    ]
+                            name: "LCL",
+                            yAxis: parseFloat(mLcl).toFixed(2)
+                        }]
+                    }
+                }
+            ]
 
-		});
-		
-	});
-	
+        });
+
+    });
+
 }
+
 function statisticRightLengend4(data) {
     var legnend = [];
     $.each(data, function (index, item) {
@@ -332,6 +344,7 @@ function statisticRightLengend4(data) {
     });
     return legnend;
 }
+
 function tab4OrderRateSeriseData(data) {
     var mData = [];
     $.each(data, function (index, item) {
@@ -339,70 +352,90 @@ function tab4OrderRateSeriseData(data) {
     });
     return mData;
 }
+
 //直方图
 var tab4xhPro;
 var tab4CPKData;
 var rootlsl;
 var rootusl;
-function cpkDataForTab4(xhPro){
-    tab4xhPro=xhPro;
+
+function cpkDataForTab4(xhPro) {
+    tab4xhPro = xhPro;
     //xh_name--->gw_id
-	$.post(contextPath+'/lab/jianCeDataForTab1Ajax',{"xhCode":xhPro.gw_id},function(data){
-		tab4CPKData=data;
-		var mData=[];
-		var mData2=[];
-		$.each(data[0],function(index,item){
-			mData.push([parseFloat(item.wkq_num),parseFloat(xhPro.pj_value)]);
-			//mData2.push([parseFloat(item.wkq_num),parseFloat(item.gd_num_2)]);
-		});
-		/*$.each(data[1],function(index,item){
-			mData2.push([parseFloat(item.num),parseFloat(item.num)]);
-		});*/
-		//mHeightChartTab4.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
-		//mHeightChartTab4.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
-		mHeightChartTab4.options.xAxis[0].max=parseFloat(xhPro.lsl);
-		mHeightChartTab4.options.xAxis[0].min=parseFloat(xhPro.usl);
-		mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
-		/*mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));*/
-		mHeightChartTab4.xAxis[0].addPlotLine({
-			id:"plotline_id_1",
-            color:'#f93',            //线的颜色，定义为红色
-            dashStyle:'solid',//认是solid（实线），这里定义为长虚线
-            value:parseFloat(xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:1  ,               //标示线的宽度，2px
-            label:{
-                text:'LSL',  //标签的内容
-                verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+    $.post(contextPath + '/lab/jianCeDataForTab1Ajax', {"xhCode": xhPro.gw_id}, function (data) {
+        tab4CPKData = data;
+        var mData = [];
+        var mData2 = [];
+        $.each(data[0], function (index, item) {
+            mData.push([parseFloat(item.wkq_num), parseFloat(xhPro.pj_value)]);
+            //mData2.push([parseFloat(item.wkq_num),parseFloat(item.gd_num_2)]);
+        });
+        /*$.each(data[1],function(index,item){
+            mData2.push([parseFloat(item.num),parseFloat(item.num)]);
+        });*/
+        //mHeightChartTab4.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
+        //mHeightChartTab4.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
+        mHeightChartTab4.options.xAxis[0].max = parseFloat(xhPro.lsl).toFixed(2);
+        mHeightChartTab4.options.xAxis[0].min = parseFloat(xhPro.usl).toFixed(2);
+        mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
+        /*mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));*/
+        console.log("changdu: ",mHeightChartTab4.options.xAxis.length)
+        mHeightChartTab4.xAxis[0].addPlotLine({//最小值的界线
+            id: "plotline_id_1",
+            color: '#f93',            //线的颜色，定义为红色
+            dashStyle: 'solid',//认是solid（实线），这里定义为长虚线
+            value: parseFloat(xhPro.lsl).toFixed(2),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            width: 1,               //标示线的宽度，2px
+            label: {
+                text: 'LSL',  //标签的内容
+                verticalAlign: 'center',                //标签的水平位置，水平居左,默认是水平居中center
+                x: 5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
                 style: {
                     color: '#f93',
-                   /* fontWeight: 'bold',*/
-                    fontSize:12*bodyScale
-                } 
+                    /* fontWeight: 'bold',*/
+                    fontSize: 12 * bodyScale
+                }
             },
-            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            zIndex: 100,  //值越大，显示越向前，默认标示线显示在数据线之后
         });
-		mHeightChartTab4.xAxis[0].addPlotLine({
-			id:"plotline_id_2",
-            color:'#f93',            //线的颜色，定义为红色
-            dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
-            value:parseFloat(xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-            width:1  ,               //标示线的宽度，2px
-            label:{
-                text:'USL',//标签的内容
-                verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
-                x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+        mHeightChartTab4.xAxis[0].addPlotLine({//最大值的界线
+            id: "plotline_id_2",
+            color: '#f93',            //线的颜色，定义为红色
+            dashStyle: 'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
+            value: parseFloat(xhPro.usl).toFixed(2),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+            width: 1,               //标示线的宽度，2px
+            label: {
+                text: 'USL',//标签的内容
+                verticalAlign: 'center',                //标签的水平位置，水平居左,默认是水平居中center
+                x: 5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
                 style: {
                     color: '#f93',
                     /*fontWeight: 'bold',*/
-                    fontSize:12*bodyScale
+                    fontSize: 12 * bodyScale
                 }
             },
-            zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+            zIndex: 100,  //值越大，显示越向前，默认标示线显示在数据线之后
         });
-	});
+        mHeightChartTab4.xAxis.labels= {
+            formatter: function () {
+                /*var strVal = this.value + '';
+                if (strVal.indexOf('.') < 0) {
+                    return strVal + '.000';
+                } else {
+                    var arr = strVal.split('.');
+                    if (arr[1].length === 3) {
+                        return strVal;
+                    } else {
+                        return strVal + '0';
+                    }
+                }*/
+                return "88"
+            }
+        }
+    });
 
 }
+
 function histogramTab4(data, step) {
     var histo = {},
         x,
@@ -428,177 +461,202 @@ function histogramTab4(data, step) {
     });
     return arr;
 }
-var mHeightChartTab4=$('#myChart16').highcharts({
-	tooltip:{
+
+var mHeightChartTab4 = $('#myChart16').highcharts({
+    tooltip: {
         textStyle: {
-            fontSize: 10*bodyScale,
+            fontSize: 10 * bodyScale,
         },
-		formatter:function(p){
-			if(this.series.name=="概率密度"){
-				return false;
-			}else{
-				var h=this.point.x+"<br/>直方图："+this.point.y;
-				return h;
-			}
-		}
-	},
+        formatter: function (p) {
+            if (this.series.name === "概率密度") {
+                return false;
+            } else {
+                var h = this.point.x + "<br/>直方图：" + this.point.y;
+                return h;
+            }
+        }
+    },
     chart: {
         type: 'column',
         backgroundColor: 'rgba(0,0,0,0)',
         spacingBottom: 7 * bodyScale,
-        marginRight: 5*bodyScale,
+        marginRight: 5 * bodyScale,
     },
     credits: {
         enabled: false
     },
     exporting: {
-        enabled:false
+        enabled: false
     },
     title: {
         text: '',
     },
-    legend:{
-        enabled:false,
+    legend: {
+        enabled: false,
     },
     xAxis: {
         gridLineWidth: 0,
-        min:71,
-        max:77,
+        min: 71,
+        max: 77,
         plotLines: [],
         tickColor: "rgba(0,0,0,0)",
-        labels:{
-       	 	 y: 13*bodyScale,
-	       	 style: {
-	             /* fontWeight: 'bold',*/
-	             fontSize: 13* bodyScale,
-	             color:"#66ccff"
-	         }
-       }
+        labels: {//保证两位小数
+            formatter : function () {
+                var strVal = this.value + '';
+                if (strVal.indexOf('.') < 0) {
+                    return strVal + '.00';
+                } else {
+                    var arr = strVal.split('.');
+                    if (arr[1].length === 2) {
+                        return strVal;
+                    } else {
+                        return strVal + '0';
+                    }
+                }
+                // return "88"
+            },
+            y: 13 * bodyScale,
+            style: {
+                /* fontWeight: 'bold',*/
+                fontSize: 13 * bodyScale,
+                color: "#66ccff"
+            }
+        }
     },
     yAxis: [{
         title: {
             text: ''
         },
-        visible:false
+        visible: false
     }, {
         opposite: true,
         title: {
             text: ''
         },
-        visible:false,
+        visible: false,
     }],
     series: [{
         name: '直方图',
         type: 'column',
         data: [],
-        color:"#4397f7",
+        color: "#4397f7",
         pointPadding: 0,
         groupPadding: 0,
         pointPlacement: 'between',
-		borderColor:"rgba(0,0,0,0)"
+        borderColor: "rgba(0,0,0,0)"
     }]
 }).highcharts();
-function getCurrentYearAndDay(){
-	 var date=new Date;
-	 var year=date.getFullYear(); 
-	 var mydate = (year.toString()+getCurrentMonth());
-	 return mydate;
+
+function getCurrentYearAndDay() {
+    var date = new Date;
+    var year = date.getFullYear();
+    var mydate = (year.toString() + getCurrentMonth());
+    return mydate;
 }
-function getCurrentMonth(){
-	 var date=new Date;
-	 var year=date.getFullYear(); 
-	 var month=date.getMonth()+1;
-	 month =(month<10 ? "0"+month:month); 
-	 return month.toString();
+
+function getCurrentMonth() {
+    var date = new Date;
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" + month : month);
+    return month.toString();
 }
-function getMonthArray(){
-	var arr=[];
-	var date=new Date;
-	var year=date.getFullYear(); 
-	var month=date.getMonth()+1;
-	year=year.toString().substr(2,4);
-	for(var x=1;x<month+1;x++){
-		var  cu =(x<10 ? "0"+x:x); 
-		arr.push((year.toString()+"/"+cu.toString()))
-	}
-	return arr;
+
+function getMonthArray() {
+    var arr = [];
+    var date = new Date;
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    year = year.toString().substr(2, 4);
+    for (var x = 1; x < month + 1; x++) {
+        var cu = (x < 10 ? "0" + x : x);
+        arr.push((year.toString() + "/" + cu.toString()))
+    }
+    return arr;
 }
+
 //根据类型 时间 统计共产 一致个月份数量
-function communistStatisticForMonthForTab4Ajax(){
-	$.post(contextPath+'/lab/communistStatisticForMonthForTab1Ajax',{"startDate":"201601","endDate":"2016"+getCurrentMonth()},function(data){
-		var myChart18 = echarts.init(document.getElementById("myChart18"));
-		right_echarts.push(myChart18);
-		myChart18.setOption(getBarEcharts());
-		myChart18.setOption({
-		    color: ['#2b64f6', '#66ccff'],
-		    legend: {
-		        show: true,
-		        data: ['共产型号总数', '共产一致型号数'],
+function communistStatisticForMonthForTab4Ajax() {
+    $.post(contextPath + '/lab/communistStatisticForMonthForTab1Ajax', {
+        "startDate": "201601",
+        "endDate": "2016" + getCurrentMonth()
+    }, function (data) {
+        var myChart18 = echarts.init(document.getElementById("myChart18"));
+        right_echarts.push(myChart18);
+        myChart18.setOption(getBarEcharts());
+        myChart18.setOption({
+            color: ['#2b64f6', '#66ccff'],
+            legend: {
+                show: true,
+                data: ['共产型号总数', '共产一致型号数'],
                 textStyle: {
                     fontSize: 12 * bodyScale
                 },
                 itemHeight: 6 * bodyScale,
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
-				itemGap:10*bodyScale
-		    },
-		    grid: {
+                itemGap: 10 * bodyScale
+            },
+            grid: {
 //		            show:true,
-		        x: "10%",
-		        x2: "10%",
-		        y: '15%',
-		        y2: "10%"
-		    },
-		    yAxis: [
-		        {
-		            name: "数量",
+                x: "10%",
+                x2: "10%",
+                y: '15%',
+                y2: "10%"
+            },
+            yAxis: [
+                {
+                    name: "数量",
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-		            type: 'value',
-					scale:true
-		        }
-		    ],
-		    xAxis: [
-		        {
-		            name: "月份",
+                    type: 'value',
+                    scale: true
+                }
+            ],
+            xAxis: [
+                {
+                    name: "月份",
                     nameGap: nameGap,
                     nameTextStyle: nameTextStyle,
                     axisLabel: axisLabel,
-		            type: 'category',
-		            data: getMonthArray()
-		        }
-		    ],
-		    series: [{
-		        name: '共产型号总数',
-				type:'bar',
-		        // type: 'pictorialBar',
-		        label: labelSetting,
-		        // symbolRepeat: true,
-		        // symbolSize: ['80%', '60%'],
-		        // barCategoryGap: '40%',
-                barWidth:60,
+                    type: 'category',
+                    data: getMonthArray()
+                }
+            ],
+            series: [{
+                name: '共产型号总数',
+                type: 'bar',
+                // type: 'pictorialBar',
+                label: labelSetting,
+                // symbolRepeat: true,
+                // symbolSize: ['80%', '60%'],
+                // barCategoryGap: '40%',
+                barWidth: 60,
                 data: statisticRightSeriesTab4Data(data[0])
-		        // data: statisticRightSeriesTab4Data(data[0],bar_chip)
-		    }, {
-		        name: '共产一致型号数',
-                type:'bar',
+                // data: statisticRightSeriesTab4Data(data[0],bar_chip)
+            }, {
+                name: '共产一致型号数',
+                type: 'bar',
                 // type: 'pictorialBar',
                 // barGap: '10%',
-		        label: labelSetting,
-                barWidth:60,
-		        // symbolRepeat: true,
-		        // symbolSize: ['80%', '60%'],
+                label: labelSetting,
+                barWidth: 60,
+                // symbolRepeat: true,
+                // symbolSize: ['80%', '60%'],
                 data: statisticRightSeriesTab4Data(data[1])
-		        // data: statisticRightSeriesTab4Data(data[1],bar_chip)
-		    }]
-		});
-	})
+                // data: statisticRightSeriesTab4Data(data[1],bar_chip)
+            }]
+        });
+    })
 }
 
 // 共产 一致比重统计
 function communistGravityStatisticForTab4Ajax() {
-    $.post(contextPath + '/lab/communistGravityStatisticForTab1Ajax', {"startDate":"201601","endDate":"201612"}, function (data) {
-    	//console.log(data)
+    $.post(contextPath + '/lab/communistGravityStatisticForTab1Ajax', {
+        "startDate": "201601",
+        "endDate": "201612"
+    }, function (data) {
+        //console.log(data)
         var myChart17 = echarts.init(document.getElementById("myChart17"));
         right_echarts.push(myChart17);
         myChart17.setOption(getYuanhuan());
@@ -610,9 +668,9 @@ function communistGravityStatisticForTab4Ajax() {
                     position: 'center',
 //	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
                     formatter: function (params) {
-                    	var num=(parseInt(data.yz_num)/parseInt(data.gc_num)*100).toFixed(1);
-                        return num+"%";
-                    	// return data.yz_num;
+                        var num = (parseInt(data.yz_num) / parseInt(data.gc_num) * 100).toFixed(1);
+                        return num + "%";
+                        // return data.yz_num;
                     },
                     textStyle: {
                         fontSize: bodyScale * 24,
@@ -626,28 +684,28 @@ function communistGravityStatisticForTab4Ajax() {
             }
         };
         var labelTop2 = {
-                normal: {
-                    color: '#064f66',
-                    label: {
-                        show: true,
-                        position: 'center',
+            normal: {
+                color: '#064f66',
+                label: {
+                    show: true,
+                    position: 'center',
 //    	                模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。
-                        formatter: function (params) {
-                            var num=(100-(parseInt(data.yz_num)/parseInt(data.gc_num)*100)).toFixed(1);
-                            return num+"%";
-                        	// return (parseInt(data.gc_num)-parseInt(data.yz_num));
-                        },
-                        textStyle: {
-                            fontSize: bodyScale * 24,
-                            color: "#f90",
-                            baseline: 'bottom'
-                        }
+                    formatter: function (params) {
+                        var num = (100 - (parseInt(data.yz_num) / parseInt(data.gc_num) * 100)).toFixed(1);
+                        return num + "%";
+                        // return (parseInt(data.gc_num)-parseInt(data.yz_num));
                     },
-                    labelLine: {
-                        show: false
+                    textStyle: {
+                        fontSize: bodyScale * 24,
+                        color: "#f90",
+                        baseline: 'bottom'
                     }
+                },
+                labelLine: {
+                    show: false
                 }
-            };
+            }
+        };
         var labelLine = {
             normal: {
                 length2: 5 * bodyScale,
@@ -706,8 +764,12 @@ function communistGravityStatisticForTab4Ajax() {
                     radius: radius,
                     x: '0%', // for funnel
                     data: [
-                        {name: 'other', value:( (parseInt(data.gc_num)-parseInt(data.yz_num))/parseInt(data.gc_num)), itemStyle: labelTop1},
-                        {name: '共产一致占比', value: (data.yz_num/parseInt(data.gc_num)), itemStyle: labelBottom}
+                        {
+                            name: 'other',
+                            value: ( (parseInt(data.gc_num) - parseInt(data.yz_num)) / parseInt(data.gc_num)),
+                            itemStyle: labelTop1
+                        },
+                        {name: '共产一致占比', value: (data.yz_num / parseInt(data.gc_num)), itemStyle: labelBottom}
                     ]
                 },
                 {
@@ -720,111 +782,111 @@ function communistGravityStatisticForTab4Ajax() {
                         {name: 'other', value: data.yz_num, itemStyle: labelTop2},
                         {
                             name: '共产不一致占比',
-                            value: (parseInt(data.gc_num)-parseInt(data.yz_num)),
+                            value: (parseInt(data.gc_num) - parseInt(data.yz_num)),
                             itemStyle: labelBottom
                         }
                     ]
                 },
             ]
         });
-		/*
-		 myChart17.setOption({
-		 textStyle: {
-		 color: '#6cf',
-		 fontSize: "60%"
-		 },
-		 grid: {
-		 //	            show:true,
-		 //	         x: "25%",
-		 //	         x2: "15%",
-		 //	         y2: "12%"
-		 },
-		 series: [
-		 {
-		 type: 'pie',
-		 center: ['25%', '50%'],
-		 radius: radius,
-		 x: '0%', // for funnel
-		 data: [
-		 {name: 'other', value: allNum-num2, itemStyle: labelTop},
-		 {name: '共产一致占比', value: num2, itemStyle: labelBottom}
-		 ]
-		 },
-		 {
-		 type: 'pie',
-		 center: ['71.5%', '50%'],
-		 radius: radius,
-		 x: '20%', // for funnel
-		 itemStyle: labelFromatter,
-		 data: [
-		 {name:'other', value:allNum-num3, itemStyle : labelTop},
-		 {name: '共产不一致占比', value: num3, itemStyle: labelBottom}
-		 ]
-		 },
-		 ]
-		 });
-		 */
+        /*
+         myChart17.setOption({
+         textStyle: {
+         color: '#6cf',
+         fontSize: "60%"
+         },
+         grid: {
+         //	            show:true,
+         //	         x: "25%",
+         //	         x2: "15%",
+         //	         y2: "12%"
+         },
+         series: [
+         {
+         type: 'pie',
+         center: ['25%', '50%'],
+         radius: radius,
+         x: '0%', // for funnel
+         data: [
+         {name: 'other', value: allNum-num2, itemStyle: labelTop},
+         {name: '共产一致占比', value: num2, itemStyle: labelBottom}
+         ]
+         },
+         {
+         type: 'pie',
+         center: ['71.5%', '50%'],
+         radius: radius,
+         x: '20%', // for funnel
+         itemStyle: labelFromatter,
+         data: [
+         {name:'other', value:allNum-num3, itemStyle : labelTop},
+         {name: '共产不一致占比', value: num3, itemStyle: labelBottom}
+         ]
+         },
+         ]
+         });
+         */
 
 
-		/*
-		 myChart17.setOption({
-		 color: ['#66ccff', '#4397f7'],
-		 legend: {
-		 show: true,
-		 textStyle: {
-		 color: '#66ccff',
-		 fontSize: 10 * bodyScale,
-		 },
-		 orient: 'vertical',  //布局  纵向布局
-		 data: ['共产一致型号数', '共产不一致型号数'],
-		 itemWidth: 10,  //图例标记的图形宽度
-		 itemHeight: 2, //图例标记的图形高度
-		 },
-		 series: [
-		 {
-		 name: '',
-		 type: 'pie',
-		 radius: [0, '50%'],
-		 center: ['45%', '55%'],
-		 // roseType: 'radius',
-		 label: {
-		 normal: {
-		 show: true,
-		 position: "outside",
-		 formatter: "{d}%"
-		 },
-		 emphasis: {
-		 show: true
-		 }
-		 },
-		 lableLine: {
-		 normal: {
-		 show: false
-		 },
-		 emphasis: {
-		 show: true
-		 }
-		 },
-		 data: [
-		 {value: data.yz_num, name: '共产一致型号数'},
-		 {value: (parseInt(data.gc_num)-parseInt(data.yz_num)), name: '共产不一致型号数'}
-		 ]
-		 },
-		 ]
-		 });
-		 */
+        /*
+         myChart17.setOption({
+         color: ['#66ccff', '#4397f7'],
+         legend: {
+         show: true,
+         textStyle: {
+         color: '#66ccff',
+         fontSize: 10 * bodyScale,
+         },
+         orient: 'vertical',  //布局  纵向布局
+         data: ['共产一致型号数', '共产不一致型号数'],
+         itemWidth: 10,  //图例标记的图形宽度
+         itemHeight: 2, //图例标记的图形高度
+         },
+         series: [
+         {
+         name: '',
+         type: 'pie',
+         radius: [0, '50%'],
+         center: ['45%', '55%'],
+         // roseType: 'radius',
+         label: {
+         normal: {
+         show: true,
+         position: "outside",
+         formatter: "{d}%"
+         },
+         emphasis: {
+         show: true
+         }
+         },
+         lableLine: {
+         normal: {
+         show: false
+         },
+         emphasis: {
+         show: true
+         }
+         },
+         data: [
+         {value: data.yz_num, name: '共产一致型号数'},
+         {value: (parseInt(data.gc_num)-parseInt(data.yz_num)), name: '共产不一致型号数'}
+         ]
+         },
+         ]
+         });
+         */
     })
 }
 
-function statisticRightSeriesTab4Data(data,bar_chip){
-	var series=[];
-	$.each(data,function(index,item){
-		var obj=new Object();
-		obj.value=item.count;
-		obj.symbol=bar_chip;
-		series.push(obj);
-	});
-	return series;
+function statisticRightSeriesTab4Data(data, bar_chip) {
+    var series = [];
+    $.each(data, function (index, item) {
+        var obj = new Object();
+        obj.value = item.count;
+        obj.symbol = bar_chip;
+        series.push(obj);
+    });
+    return series;
 }
 
 //下拉菜单选择
@@ -832,41 +894,42 @@ function tab4JianSelected(obj) {
     // var id = $(obj).find("option:selected").attr("data");
     // var name = $(obj).find("option:selected").text();
     $("option").removeClass("active");
-    var selectOpt = $("option[value="+$("select").val()+"]");
+    var selectOpt = $("option[value=" + $("select").val() + "]");
     var selectedLabel = selectOpt.addClass("active").parent().attr("label");
-    $("option.showLabel").text(selectedLabel).prop("selected",true);
+    $("option.showLabel").text(selectedLabel).prop("selected", true);
 
     var id = $(obj).find("option.active").attr("data");
     var name = $(obj).find("option.active").text();
-    $("#tab4_jiance_xh_name").html("\""+name+"\"");
-    console.log("-------------$('select').val():",$("select").val())
+    $("#tab4_jiance_xh_name").html("\"" + name + "\"");
+    // console.log("-------------$('select').val():",$("select").val())
     // console.log("-------------id,selectOpt:",id,selectOpt[0])
-    $.post(contextPath+'/lab/labGetStationAjax',{"id":id},function(data){
+    $.post(contextPath + '/lab/labGetStationAjax', {"id": id}, function (data) {
         console.log(data);
         $("#station").html("");
-        for(var i = 0 ; i < data.length ; i++){
-            if(i==0){
-                var str = "<option class='showLabel active' data='"+data[i].id+"' value='"+data[i].name+"'>"+data[i].name+"</option>";
+        for (var i = 0; i < data.length; i++) {
+            if (i == 0) {
+                var str = "<option class='showLabel active' data='" + data[i].id + "' value='" + data[i].name + "'>" + data[i].name + "</option>";
                 $("#station").append(str);
-                loadTab4JianData(data[i].id,data[i].name);
-            }else{
-                var str = "<option class='showLabel' data='"+data[i].id+"' value='"+data[i].name+"'>"+data[i].name+"</option>";
+                loadTab4JianData(data[i].id, data[i].name);
+            } else {
+                var str = "<option class='showLabel' data='" + data[i].id + "' value='" + data[i].name + "'>" + data[i].name + "</option>";
                 $("#station").append(str);
             }
         }
-        
+
     });
     //loadTab4JianData(id,name);
 }
 
 //工位下拉菜单选择
-function tab4StationSelected(obj){
+function tab4StationSelected(obj) {
     var id = $(obj).find("option:selected").attr("data");
     var name = $(obj).find("option:selected").text();
-    console.log(id+name);
+    console.log(id + name);
     //工位变化
-    loadTab4JianData(id,name);
+    loadTab4JianData(id, name);
 }
+
 //模块商质量水平分布
 function mkSqualityLevelForTab4(xhPro) {
     var myChart14 = echarts.init(document.getElementById("myChart14"));
@@ -945,7 +1008,7 @@ function mkSqualityLevelForTab4(xhPro) {
                     show: true,
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:15*bodyScale
+                        fontSize: 15 * bodyScale
                     }
                 },
                 axisTick: {  //刻度值
@@ -957,16 +1020,16 @@ function mkSqualityLevelForTab4(xhPro) {
         xAxis: [
             {
                 type: 'value',
-				name:"\n\n模块商数量",
+                name: "\n\n模块商数量",
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
                 axisLabel: {
                     textStyle: {
                         color: '#66ccff',
-                        fontSize:15*bodyScale
+                        fontSize: 15 * bodyScale
 
                     }
-				},
+                },
                 splitLine: {  //刻度线
                     show: true,
                     lineStyle: {
