@@ -126,7 +126,7 @@ function createClickFuntionForDataCenter(item) {
     var htmls = "";
     var dataSource = item.data_source;
     //如果是在数据中心配置的为url则直接跳转，否则根据数据中心再去查询对应实验室level为3(单位/产品) 4（模块/整机）
-    if (dataSource == "url") {
+    if (dataSource === "url") {
         htmls += " onclick= intentsUrl('" + item.id + "')";
     } else {
         htmls += " onclick= loadAllDataCenterLabAjaxFunc('" + item.id + "') ";
@@ -233,59 +233,4 @@ function createClickFuntion(item) {
            htmls += " onclick= intentsUrl('" + item.id + "')";
        }*/
     return htmls;
-}
-
-//直接跳转第三方地址
-function intentsUrl(type, thiselem) {
-    var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
-    $mainNavLi.removeClass("active");
-    $(thiselem).addClass("active");
-    moduleMakersTabShow();
-    var dataCenter = dataCenterMap.get(type);
-    var url = dataCenter.souce_value;
-    $(".lab_content_r>.switchBox>div.item").eq(5).find("iframe").attr("src", url);
-    console.log("url", url)
-}
-
-var $lab_content_r = $(".lab_content_r");
-var borderUrl = "";
-
-function inlandTabShow() { //国内webservice
-    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
-    labNavAndItemShow();
-    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.centerCurves").show();
-}
-
-function inlandTabShow_world() {//国内Hadoop
-    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
-    labNavAndItemShow();
-    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.abroadCurves").show();
-}
-
-function abroadTabShow() {//国外Hadoop
-    $(".lab_content_r").css("background-image", "url(../static/img/lab/labTabBoardForeign_1.png)");
-    labNavAndItemShow();
-    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.abroadCurves").show();
-}
-
-function abroadTabShow_center() {//国外数据中心
-    $(".lab_content_r").css("background-image", "url(../static/img/lab/labTabBoardForeign_1.png)");
-    labNavAndItemShow();
-    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.centerCurves").show();
-}
-
-function moduleMakersTabShow() { //模块商
-    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoard_onlyOne.png");
-    labNavAndItemShow("moduleMakers");
-    $(".labSubNav>ul>li.moduleMakers").show();
-}
-
-function labNavAndItemShow(mark) {
-    $(".labSubNav>ul>li").hide();
-    if (mark === "moduleMakers") {
-        $(".lab_content_r>.switchBox>div.item").eq(5).show().siblings().hide();
-    } else {
-        $(".lab_content_r>.switchBox>div.item").eq(0).show().siblings().hide();
-
-    }
 }

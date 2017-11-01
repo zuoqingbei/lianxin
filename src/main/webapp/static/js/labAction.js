@@ -1,21 +1,71 @@
 var videoUlrInland = [
     // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8?time=New Date()"//本机
     "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8?time=New Date()",//体验馆2
-    // "http://10.130.96.113:6713/mag/hls/85d598e47ce4411c9196e965385e895d/0/live.m3u8?time=New Date()",//本机
-    // "http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8?time=New Date()",//室外北侧
-    // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
-    // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()"//CCTV
 ];
 var videoUlrAbroad = [
     // "http://10.130.96.113:6713/mag/hls/7329e487e5c84c41a1ba9040e89f7814/1/live.m3u8?time=New Date()",//泰国"RF-B"
     "http://10.130.96.65:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
-    // "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8?time=New Date()",//香港卫视
-    // "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8?time=New Date()",//CCTV
-    // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/0/live.m3u8?time=New Date()"//本机
 ];
 
-function loadingAnimate($videoParent) {
-    $videoParent.find(".videoWait").text("视频接入中 ").fadeIn(500, function () {
+//直接跳转第三方地址
+function intentsUrl(type, thiselem) {
+    var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
+    $mainNavLi.removeClass("active");
+    $(thiselem).addClass("active");
+    moduleMakersTabShow();
+    var dataCenter = dataCenterMap.get(type);
+    var url = dataCenter.souce_value;
+    $(".lab_content_r>.switchBox>div.item").eq(5).find("iframe").attr("src", url);
+    console.log("url", url)
+}
+
+var $lab_content_r = $(".lab_content_r");
+var borderUrl = "";
+
+function inlandTabShow() { //国内webservice
+    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
+    labNavAndItemShow();
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.centerCurves").show();
+}
+
+function inlandTabShow_world() {//国内Hadoop
+    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
+    labNavAndItemShow();
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.abroadCurves").show();
+}
+
+function abroadTabShow() {//国外Hadoop
+    $(".lab_content_r").css("background-image", "url(../static/img/lab/labTabBoardForeign_1.png)");
+    labNavAndItemShow();
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.abroadCurves").show();
+}
+
+function abroadTabShow_center() {//国外数据中心
+    $(".lab_content_r").css("background-image", "url(../static/img/lab/labTabBoardForeign_1.png)");
+    labNavAndItemShow();
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.centerCurves").show();
+}
+
+function moduleMakersTabShow() { //模块商
+    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoard_onlyOne.png");
+    labNavAndItemShow("moduleMakers");
+    $(".labSubNav>ul>li.moduleMakers").show();
+}
+
+function labNavAndItemShow(mark) {
+    $(".labSubNav>ul>li").hide();
+    if (mark === "moduleMakers") {
+        $(".lab_content_r>.switchBox>div.item").eq(5).show().siblings().hide();
+    } else {
+        $(".lab_content_r>.switchBox>div.item").eq(0).show().siblings().hide();
+
+    }
+}
+
+function loadingAnimate($videoParent) {//视频加载动画
+    console.log("调用加载动画")
+    // $videoParent.append("<div class='videoWait'>视频接入中</div>");
+    $videoParent.find(".videoWait").fadeIn(500, function () {
         var t = setTimeout(loadingOut, 8000);
         var loop;
         changeTxt();
@@ -44,11 +94,6 @@ function loadingAnimate($videoParent) {
 // 视频加载方法
 function videoShow(id, url, mainStream) {
     //mainStream 0-主码流，1-子码流
-
-
-    // window.clearTimeout(t1);//去掉定时器
-
-    // console.log("videoShow加载中。。。");
     var flashvars = {
         src: escape(url),
         plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
@@ -56,7 +101,6 @@ function videoShow(id, url, mainStream) {
         autoSwitchQuality: "true"
     };
     var params = {
-        // self-explained parameters
         allowFullScreen: true,
         allowScriptAccess: "always",
         quality: "low",
@@ -71,7 +115,6 @@ function videoShow(id, url, mainStream) {
 
 function loadSwf(id, flashvars, params, attrs, mainStream) {
     var $videoParent = $("#" + id).parent();
-    // console.log("$videoParent0",$videoParent[0])
     swfobject.embedSWF(
         // url to SMP player
         "../static/asserts/video/StrobeMediaPlayback.swf?time=New Date()",
@@ -105,7 +148,6 @@ function loadSwf(id, flashvars, params, attrs, mainStream) {
      */
 }
 
-
 $(function () {
     loadAllDataCenterAjax();
     //中心实验室顶上的“返回总状态”按钮
@@ -132,18 +174,6 @@ $(function () {
     //左侧菜单点击事件
     $(".labMainNav>.switchBox").on("click", "ul>li.noChildren, ul>li>ul>li", function () {
         prevIsLabUrl = false;
-
-        //初始化视频盒子
-        $(".monitoring.world").find(".bigVideoBox").html("<div id=\"bigVideoWorld\"></div>" +
-            "<div class=\"videoWait\">正在连接到实时监控。。。</div>");
-        $(".monitoring.world").find(".smallVideoBox").html("<div class=\"hideShow\"><span class=\"text\">点击隐藏</span><span class=\"icon\"></span></div>\n" +
-            "                                    <div id=\"smallVideoWorld\"></div>" +
-            "<div class=\"videoWait\">正在连接到实时监控。。。</div>");
-        $(".monitoring.webSocket").find(".bigVideoBox").html("<div id=\"bigVideoWS\"></div>" +
-            "<div class=\"videoWait\">正在连接到实时监控。。。</div>");
-        $(".monitoring.webSocket").find(".smallVideoBox:eq(0)").html("<div class=\"hideShow\"><span class=\"text\">点击隐藏</span><span class=\"icon\"></span></div>\n" +
-            "                                    <div id=\"smallVideoWS\"></div>" +
-            "<div class=\"videoWait\">正在连接到实时监控。。。</div>");
 
         var $li = $(".switchBox>ul>li.noChildren, .switchBox>ul>li>ul>li");
         $li.removeClass("active");
@@ -250,7 +280,7 @@ $(function () {
 
     var smallVideoID = ""; //画中画id，放在外面是因为每次加载视频会替换原来指定id的标签
     var bigVideoID = ""; //大视频id，放在外面是因为每次加载视频会替换原来指定id的标签
-    var prevTaiwei = null;
+    var $prevTaiwei = null;
 
     //台位点击事件
     $(".sheshi_tab_list").on("click", "ul>li>ul>li>ul>li", function () {
@@ -262,22 +292,14 @@ $(function () {
 
         // $(".sheshi_tab.sheshi_tab_lines").click();//自动切换到曲线显示
         //实时监测的画中画视频切换
-        if (!$(this).parent().is(prevTaiwei)) {//如果不是同一个实验室下的台位
-            // console.log("不同实验室")
-            prevTaiwei = $(this).parent();
+        if (!$(this).parent().is($prevTaiwei)) {//如果不是同一个实验室下的台位
+            $prevTaiwei = $(this).parent();
             var labCode = $(this).parent().prev().text();//暂时从这里获取，以后拼到属性中
             labCode = labCode.slice(0, labCode.length - 1);
 
             var $parentMonitoring = $(this).parents(".monitoring");
-            if ($parentMonitoring.find(".smallVideoBox").children("object").length === 0) {//还没有被加载过视频
-                smallVideoID = $parentMonitoring.find("div[id^=smallVideo]").attr("id");
+                smallVideoID = $parentMonitoring.find("[id^=smallVideo]").attr("id");
                 bigVideoID = $parentMonitoring.find(".bigVideoBox").children().attr("id");
-                console.log("还没有被加载过视频：", smallVideoID, bigVideoID);
-            } else {//加载过视频后重置id
-                $parentMonitoring.find(".smallVideoBox").append("<div id='" + smallVideoID + "'></div>").children("object").remove();
-                $parentMonitoring.find(".bigVideoBox").append("<div id='" + bigVideoID + "'></div>").children("object").remove();
-                console.log("重置id盒子：", smallVideoID, bigVideoID);
-            }
 
             $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
                 if (data) {
@@ -289,7 +311,6 @@ $(function () {
                 }
             })
         }
-
     });
     //链接型实验室点击和画中画切换
     $(".sheshi_tab_list").on("click", ".toLabIframe>header", function () {
