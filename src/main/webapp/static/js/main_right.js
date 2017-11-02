@@ -4578,9 +4578,9 @@ function resetCPK(){
 	$.each(tab4CPKData[0],function(index,item){
 		mData.push([parseFloat(item.wkq_num),parseFloat(tab4xhPro.pj_value)]);
 	});
-	mHeightChartTab4.options.xAxis[0].max=parseFloat(tab4xhPro.lsl);
-	mHeightChartTab4.options.xAxis[0].min=parseFloat(tab4xhPro.usl);
-	mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
+	mHeightChartTab4.options.xAxis[0].max=parseFloat(tab4xhPro.lsl)+2*rootScale;
+	mHeightChartTab4.options.xAxis[0].min=parseFloat(tab4xhPro.usl)-2*rootScale;
+	mHeightChartTab4.series[0].setData(histogramTab4(mData, rootScale)); // 更新 series
 	mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_1");
 	mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_2");
 	mHeightChartTab4.xAxis[0].addPlotLine({
