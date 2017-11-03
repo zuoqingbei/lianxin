@@ -78,11 +78,11 @@ public class DataCenterModel extends Model<CommunistModel>{
 	public List<Record> findDataCenterLab(String dataCenterId){
 		String sql="select * from t_b_data_center where parent_id='"+dataCenterId+"' and center_level=3 and del_flag=0 order by order_num";
 		List<Record> list=Db.find(sql);
-		/*for(Record center:list){
-			if("1".equals(center.getStr("haschildren"))){
-				center.set("children", findDataCenterByParentId(center.get("id")));
-			}
-		}*/
+		for(Record center:list){
+			List<Record> labs = LabCodeModel.dao
+					.findLabByDataCenterId(center.getStr("id"));
+			center.set("children", labs);
+		}
 		return list;
 	}
 }

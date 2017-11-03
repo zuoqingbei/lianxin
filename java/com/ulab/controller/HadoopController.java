@@ -22,13 +22,14 @@ public class HadoopController extends BaseController {
 	 * 
 	 * @time   2017年9月21日 上午9:48:36
 	 * @author zuoqb
-	 * @todo   查询所有实验室包含对应台位
+	 * @todo   查询实验室包含对应台位
 	 * @param  
 	 * @return_type   void
 	 */
 	public void unitInfo() {
 		String configName = getPara("configName");
-		List<Record> testUnitList = HadoopTestUnitInfo.dao.findAllLab(this,configName);
+		String labCode = getPara("labCode");
+		List<Record> testUnitList = HadoopTestUnitInfo.dao.findTestUnitListByLabCode(this, configName, labCode);
 		renderJson(testUnitList);
 	}
 	/**
