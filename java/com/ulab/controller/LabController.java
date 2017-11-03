@@ -27,6 +27,7 @@ import com.ulab.model.JianceProModel;
 import com.ulab.model.JsonPropertyModel;
 import com.ulab.model.LabAllData;
 import com.ulab.model.LabCarryModel;
+import com.ulab.model.LabCodeModel;
 import com.ulab.model.LabData;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
@@ -1157,7 +1158,7 @@ public class LabController extends BaseController {
 	 * @return_type void
 	 */
 	public void loadTopVideoByLabCodeAjax() {
-		String labCode = getPara("labCode", "lab111");
+		String labCode = getPara("labCode");
 		Record topVideo = LabVideoModel.dao.findTopVideoByLabCode(labCode);
 		if (topVideo == null) {
 			topVideo = new Record();
@@ -1175,10 +1176,24 @@ public class LabController extends BaseController {
 	 * @return_type void
 	 */
 	public void loadJsonProByDataCenterIdAjax() {
-		String dataCenterId = getPara("dataCenterId", "1");
+		String labCode = getPara("labCode");
 		List<Record> topVideo = JsonPropertyModel.dao
-				.findJsonProperty(dataCenterId);
+				.findJsonProperty(labCode);
 		renderJson(topVideo);
+    }
+	/**
+	 * 
+	 * @time   2017年11月3日 上午10:20:56
+	 * @author zuoqb
+	 * @todo   根据数据中心（三级ID）获取实验室信息
+	 * @param  
+	 * @return_type   void
+	 */
+	public void loadLabCodeByDataCenterIdAjax() {
+		String dataCenterId = getPara("dataCenterId");
+		List<Record> labs = LabCodeModel.dao
+				.findLabByDataCenterId(dataCenterId);
+		renderJson(labs);
     }
     public void hive(){
     	String sql=" select * from s_bxlab_orcl_talend_test_testmetadata where  ptlabname= 'chongqingxingshiAB' and pt='20171025'";

@@ -58,8 +58,9 @@ function echartsResize() {
 }
 
 
-var dataCenterMap = new Map();
-
+var dataCenterMap = new Map();//数据中心
+var labsMap = new Map();//实验室
+var labsHtmlsMap = new Map();//实验室HTMLS
 //查询全部数据中心数据（包含层级关系）
 function loadAllDataCenterAjax() {
     $.post(contextPath + "/lab/loadAllDataCenterAjax", {}, function (data) {
@@ -142,70 +143,59 @@ function setCenterLabHtmlDB(dataCenter) {
     $("#secondName_world").html(dataCenter.center_name);
 }
 
-//查询数据中心下实验室 level为3(单位/产品) 4（模块/整机）
+//查询数据中心下实验室 level为3(单位/产品)
 function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     var dataCenter = dataCenterMap.get(dataCenterId);
     var data_type = dataCenter.data_type;
     var data_source = dataCenter.data_source;
+    //判断出现那块DIV（国内 国外）
     if (data_type == 0) {
-        //alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
-        if (data_source == "db" || data_source == "json") {
-            setCenterLabHtmlDB(dataCenter);
-            inlandTabShow_world();
-        } else if (data_source == "webservice") {
+        if (data_source == "webservice") {
             inlandTabShow();
+        }else{
+        	 setCenterLabHtmlDB(dataCenter);
+             inlandTabShow_world();
         }
     } else {
-        //alert(data_source+"--"+data_type+"--"+dataCenter.center_name)
-        if (data_source == "db" || data_source == "json") {
-            setCenterLabHtmlDB(dataCenter);
-            abroadTabShow();
-        } else if (data_source == "webservice") {
+        if (data_source == "webservice") {
             abroadTabShow_center();
+        }else{
+        	 setCenterLabHtmlDB(dataCenter);
+             abroadTabShow();
         }
     }
+    //加载数据中心第三级
     $.post(contextPath + "/lab/loadAllDataCenterLabAjax", {"dataCenterId": dataCenterId}, function (data) {
         var html = '';
+        var firstLabCode="";
         $.each(data, function (index, item) {
             var dataSource = item.data_source;
             dataCenterMap.put(item.id, item);
-            // console.log(item.isshow_name)
             if (dataSource == "url") {
-                html += '<li  data-center-id="' + item.id + '"  class="toLabIframe quxian_li_' + item.id + '" data-url="' + item.souce_value + '"><header ' + createClickFuntion(item) + '>' + (item.isshow_name == 0 ? item.center_name : "") + '</header></li>';
+                html += '<li  data-center-id="' + item.id + '"  class="toLabIframe quxian_li_' + item.id + '" data-url="' + item.souce_value + '"><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header></li>';
             } else {
-                html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header ' + createClickFuntion(item) + '>' + (item.isshow_name == 0 ? item.center_name : "") + '</header></li>';
+            	//生成实验室
+            	html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header>';
+            	var labsHtmls="<ul>";
+        		$.each(item.children,function(ind,it){
+        			if(index==0&&ind==0){
+        				firstLabCode=it.lab_code;
+        			}
+        			var currentHtmls=' <li class="lab_code_'+it.lab_code+'">';
+        			var header='<header labcode="'+it.lab_code+'"  '+createClickFuntion(it)+'>'+it.lab_name+'<span>∨</span></header>';
+        			labsMap.put(it.id, it);
+        			labsHtmlsMap.put(it.id, header);
+        			labsHtmls=labsHtmls+currentHtmls+header+"</li>";
+        		});
+        		labsHtmls+='</ul>';
+        		html+=labsHtmls;
+        		html += '</li>';
+
             }
         });
         $("#lab_unit_selected_center").html(html);
         $("#lab_unit_selected_center_world").html(html);
-        /*
-                $(".sheshi_tab_list>ul>li.toLabIframe").on("click", function () {
-                    $(this).addClass("active");
-                    $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
-                    // videoShow("smallVideoInlandWeb", $(this).attr("data-url"));
-                    // videoShow("videoBoxInland", $(this).attr("data-url"));
-                    $("#lab_iframe_video").show();
-                    $("#lab_iframe_video").attr("src", $(this).attr("data-url"))
-                });
-        */
-        $.each(data, function (index, item) {
-            if (index == 0) {
-                var dataSource = item.data_source;
-                if (dataSource === "db") { //国外曲线
-                    window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(item.id, item.souce_value, item.data_type)
-                } else if (dataSource === "webservice") {
-                    //中海博睿
-                    loadLabUnitInfoCenterTabAjax(item.data_type);
-                } else if (dataSource === "json") {
-                    //新西兰 日本读取json文件 国外曲线
-                    window.parent.loadLabUnitInfoCenterTabAjaxWorld(item.id, item.data_type);
-                } else if (dataSource === "url") {
-                    $("#lab_unit_selected_center").find("li").eq(0).find("header").trigger("click");
-                    $("#lab_unit_selected_center_world").find("li").find("header").eq(0).trigger("click");
-                }
-            }
-        });
-        //自动触发第一个实验室的第一个台位
+        $(".lab_code_"+firstLabCode).find("header").trigger("click");
 
     });
 
@@ -221,16 +211,13 @@ function createClickFuntion(item) {
         // console.log("item",item)
     var dataSource = item.data_source;
     if (dataSource == "db") { //国外曲线
-        htmls += " onclick= loadLabUnitInfoCenterTabAjaxWorldHadoop('" + item.id + "','" + item.souce_value + "','" + item.data_type + "')"
+        htmls += " onclick= loadLabUnitInfoCenterTabAjaxWorldHadoop('" + item.id + "')"
     } else if (dataSource == "webservice") {
         //中海博睿
-        htmls += " onclick=loadLabUnitInfoCenterTabAjax('" + item.id + "','" + item.data_type + "') ";
+        htmls += " onclick=loadLabUnitInfoCenterTabAjax('" + item.id + "') ";
     } else if (dataSource == "json") {
         //新西兰 日本读取json文件 国外曲线
-        htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "','" + item.data_type + "') ";
+        htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "') ";
     }
-    /*else if (dataSource == "url") {
-           htmls += " onclick= intentsUrl('" + item.id + "')";
-       }*/
     return htmls;
 }

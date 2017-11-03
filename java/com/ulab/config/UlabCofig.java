@@ -112,13 +112,13 @@ public class UlabCofig extends JFinalConfig {
 
 		/**重庆实验室hive测试库信息设置Impala数据源  **/
 
-		DruidPlugin dsImpala = new DruidPlugin(this.getProperty("chongqing.url"), this.getProperty("chongqing.user"),
+		/*DruidPlugin dsImpala = new DruidPlugin(this.getProperty("chongqing.url"), this.getProperty("chongqing.user"),
 				"", this.getProperty("chongqing.driver"));
 		me.add(dsImpala);
 
 		ActiveRecordPlugin chongqingHive = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_QC_HIVE, dsImpala);
 		chongqingHive.setShowSql(true);
-		me.add(chongqingHive);
+		me.add(chongqingHive);*/
 		/**重庆实验室hive测试库信息 END**/
 
 		//定时器
