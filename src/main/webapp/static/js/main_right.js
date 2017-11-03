@@ -4724,12 +4724,6 @@ $(function () {
             //取标签名字
             var thisLabel = $(this).find("span.text").text();
             console.log("```````````````````thisLabel：",thisLabel);
-/*          //这个赋值没有起作用
-            if(thisLabel=="中海博睿"){
-            	thisLabel="中心实验室";
-            	alert('thisLabel=="中海博睿"')
-            }
-        */
             if(thisLabel!=labTypeCode){
             	labTypeCode=thisLabel;
             }
@@ -4742,13 +4736,10 @@ $(function () {
         	//再次点击同一个 返回全部数据
         	labTypeCode="";
         }
-        myChart32.resize();
         resetSizeRight();
         loadTab2Data();
         loadTab3Data();
         loadTab4Data();
-        /*resetSizeRight();*/
-
     })
 });
 

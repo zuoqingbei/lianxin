@@ -8,7 +8,7 @@ function dataToObject(data){
 	return item;
 }
 /**
- * 
+ *
  * [
     {name:'福州',value:95},
     {name:'太原',value:90},
@@ -93,7 +93,7 @@ function dataToArrayContinueArray(data){
 	return d;
 }
 /**
- * 
+ *
  * [
     [{name:'北京'},{name:'包头'}],
     [{name:'北京'},{name:'北海'}],
@@ -148,11 +148,11 @@ function isHasElementOne(arr, value) {
 		}
 	}
 	return -1;
-} 
+}
 
 
 /**
- * 
+ *
  *map3D
  */
 
@@ -208,7 +208,7 @@ function lineGeoCoord(data){
 }
 
 
-//---------------------------js和jquery扩展相关方法-----------------------------------------------------	
+//---------------------------js和jquery扩展相关方法-----------------------------------------------------
 /**
  * COMMON DHTML FUNCTIONS
  * These are handy functions I use all the time.
@@ -255,116 +255,116 @@ function removeEvent(obj, evType, fn, useCapture){
 
 
 
-function Map() {  
-    this.elements = new Array();  
-    //获取MAP元素个数  
-    this.size = function() {  
-        return this.elements.length;  
-    };  
-    //判断MAP是否为空  
-    this.isEmpty = function() {  
-        return (this.elements.length < 1);  
-    };  
-    //删除MAP所有元素  
-    this.clear = function() {  
-        this.elements = new Array();  
-    };  
-    //向MAP中增加元素（key, value)   
-    this.put = function(_key, _value) {  
-        this.elements.push( {  
-            key : _key,  
-            value : _value  
-        });  
-    };  
-    //删除指定KEY的元素，成功返回True，失败返回False  
-    this.remove = function(_key) {  
-        var bln = false;  
-        try {  
-            for (i = 0; i < this.elements.length; i++) {  
-                if (this.elements[i].key == _key) {  
-                    this.elements.splice(i, 1);  
-                    return true;  
-                }  
-            }  
-        } catch (e) {  
-            bln = false;  
-        }  
-        return bln;  
-    };  
-    //获取指定KEY的元素值VALUE，失败返回NULL  
-    this.get = function(_key) {  
-        try {  
-            for (i = 0; i < this.elements.length; i++) {  
-                if (this.elements[i].key == _key) {  
-                    return this.elements[i].value;  
-                }  
-            }  
-        } catch (e) {  
-            return null;  
-        }  
-    };  
-    //获取指定索引的元素（使用element.key，element.value获取KEY和VALUE），失败返回NULL  
-    this.element = function(_index) {  
-        if (_index < 0 || _index >= this.elements.length) {  
-            return null;  
-        }  
-        return this.elements[_index];  
-    };  
-    //判断MAP中是否含有指定KEY的元素  
-    this.containsKey = function(_key) {  
-        var bln = false;  
-        try {  
-            for (i = 0; i < this.elements.length; i++) {  
-                if (this.elements[i].key == _key) {  
-                    bln = true;  
-                }  
-            }  
-        } catch (e) {  
-            bln = false;  
-        }  
-        return bln;  
-    };  
-    //判断MAP中是否含有指定VALUE的元素  
-    this.containsValue = function(_value) {  
-        var bln = false;  
-        try {  
-            for (i = 0; i < this.elements.length; i++) {  
-                if (this.elements[i].value == _value) {  
-                    bln = true;  
-                }  
-            }  
-        } catch (e) {  
-            bln = false;  
-        }  
-        return bln;  
-    };  
-    //获取MAP中所有VALUE的数组（ARRAY）  
-    this.values = function() {  
-        var arr = new Array();  
-        for (i = 0; i < this.elements.length; i++) {  
-            arr.push(this.elements[i].value);  
-        }  
-        return arr;  
-    };  
-    //获取MAP中所有KEY的数组（ARRAY）  
-    this.keys = function() {  
-        var arr = new Array();  
-        for (i = 0; i < this.elements.length; i++) {  
-            arr.push(this.elements[i].key);  
-        }  
-        return arr;  
-    };  
-}  
+function Map() {
+    this.elements = new Array();
+    //获取MAP元素个数
+    this.size = function() {
+        return this.elements.length;
+    };
+    //判断MAP是否为空
+    this.isEmpty = function() {
+        return (this.elements.length < 1);
+    };
+    //删除MAP所有元素
+    this.clear = function() {
+        this.elements = new Array();
+    };
+    //向MAP中增加元素（key, value)
+    this.put = function(_key, _value) {
+        this.elements.push( {
+            key : _key,
+            value : _value
+        });
+    };
+    //删除指定KEY的元素，成功返回True，失败返回False
+    this.remove = function(_key) {
+        var bln = false;
+        try {
+            for (i = 0; i < this.elements.length; i++) {
+                if (this.elements[i].key == _key) {
+                    this.elements.splice(i, 1);
+                    return true;
+                }
+            }
+        } catch (e) {
+            bln = false;
+        }
+        return bln;
+    };
+    //获取指定KEY的元素值VALUE，失败返回NULL
+    this.get = function(_key) {
+        try {
+            for (i = 0; i < this.elements.length; i++) {
+                if (this.elements[i].key == _key) {
+                    return this.elements[i].value;
+                }
+            }
+        } catch (e) {
+            return null;
+        }
+    };
+    //获取指定索引的元素（使用element.key，element.value获取KEY和VALUE），失败返回NULL
+    this.element = function(_index) {
+        if (_index < 0 || _index >= this.elements.length) {
+            return null;
+        }
+        return this.elements[_index];
+    };
+    //判断MAP中是否含有指定KEY的元素
+    this.containsKey = function(_key) {
+        var bln = false;
+        try {
+            for (i = 0; i < this.elements.length; i++) {
+                if (this.elements[i].key == _key) {
+                    bln = true;
+                }
+            }
+        } catch (e) {
+            bln = false;
+        }
+        return bln;
+    };
+    //判断MAP中是否含有指定VALUE的元素
+    this.containsValue = function(_value) {
+        var bln = false;
+        try {
+            for (i = 0; i < this.elements.length; i++) {
+                if (this.elements[i].value == _value) {
+                    bln = true;
+                }
+            }
+        } catch (e) {
+            bln = false;
+        }
+        return bln;
+    };
+    //获取MAP中所有VALUE的数组（ARRAY）
+    this.values = function() {
+        var arr = new Array();
+        for (i = 0; i < this.elements.length; i++) {
+            arr.push(this.elements[i].value);
+        }
+        return arr;
+    };
+    //获取MAP中所有KEY的数组（ARRAY）
+    this.keys = function() {
+        var arr = new Array();
+        for (i = 0; i < this.elements.length; i++) {
+            arr.push(this.elements[i].key);
+        }
+        return arr;
+    };
+}
 
 //判断是否引入某个JS、css
 function isIncludeJSCSS(name){
     var js= /js$/i.test(name);
     var es=document.getElementsByTagName(js?'script':'link');
-    for(var i=0;i<es.length;i++) 
+    for(var i=0;i<es.length;i++)
     if(es[i][js?'src':'href'].indexOf(name)!=-1)return true;
     return false;
-}	
-	
+}
+
 //引入没有引入的JS、css
 function importJSCSS(name){
 	if(!isIncludeJSCSS(name)){
@@ -377,9 +377,9 @@ function importJSCSS(name){
 	}
 }
 
-	
-	
-	
+
+
+
 /**
  * Code below taken from - http://www.evolt.org/article/document_body_doctype_switching_and_more/17/30655/
  *
@@ -390,16 +390,16 @@ function importJSCSS(name){
 function getViewportHeight() {
 	if (window.innerHeight!=window.undefined) return window.innerHeight;
 	if (document.compatMode=='CSS1Compat') return document.documentElement.clientHeight;
-	if (document.body) return document.body.clientHeight; 
+	if (document.body) return document.body.clientHeight;
 
-	return window.undefined; 
+	return window.undefined;
 }
 function getViewportWidth() {
 	var offset = 17;
 	var width = null;
-	if (window.innerWidth!=window.undefined) return window.innerWidth; 
-	if (document.compatMode=='CSS1Compat') return document.documentElement.clientWidth; 
-	if (document.body) return document.body.clientWidth; 
+	if (window.innerWidth!=window.undefined) return window.innerWidth;
+	if (document.compatMode=='CSS1Compat') return document.documentElement.clientWidth;
+	if (document.body) return document.body.clientWidth;
 }
 
 /**
@@ -436,35 +436,35 @@ function getScrollLeft() {
 	}
 }
 
-String.prototype.startWith=function(str){  
-    if(str==null||str==""||this.length==0||str.length>this.length)  
-      return false;  
-    if(this.substr(0,str.length)==str)  
-      return true;  
-    else  
-      return false;  
-    return true;  
-}  
-String.prototype.endWith=function(str){  
-    if(str==null||str==""||this.length==0||str.length>this.length)  
-      return false;  
-    if(this.substring(this.length-str.length)==str)  
-      return true;  
-    else  
-      return false;  
-    return true;  
-}  
+String.prototype.startWith=function(str){
+    if(str==null||str==""||this.length==0||str.length>this.length)
+      return false;
+    if(this.substr(0,str.length)==str)
+      return true;
+    else
+      return false;
+    return true;
+}
+String.prototype.endWith=function(str){
+    if(str==null||str==""||this.length==0||str.length>this.length)
+      return false;
+    if(this.substring(this.length-str.length)==str)
+      return true;
+    else
+      return false;
+    return true;
+}
 
-Date.prototype.Format = function (fmt) { //author: meizz 
+Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
-        "M+": this.getMonth() + 1, //月份 
-        "d+": this.getDate(), //日 
-        "h+": this.getHours(), //小时 
-        "H+": this.getHours(), //小时 
-        "m+": this.getMinutes(), //分 
-        "s+": this.getSeconds(), //秒 
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-        "S": this.getMilliseconds() //毫秒 
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "H+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
@@ -514,7 +514,7 @@ function cookie(name, value, options) {
 }
 
 //-------------------------------表单属性变成url字段，没用 了直接用jquery 的serialize-------------------
-//获取指定form中的所有的<input>对象    
+//获取指定form中的所有的<input>对象
 function getElements(formId) {
 	var form = document.getElementById(formId);
 	if (form == null)
@@ -525,14 +525,14 @@ function getElements(formId) {
 		elements.push(tagElements[j]);
 	}
 	var tagElementsSelect = form.getElementsByTagName('select');
-	
+
 	for (var i = 0; i < tagElementsSelect.length; i++) {
 		elements.push(tagElementsSelect[i]);
 	}
 	return elements;
 }
 
-//获取单个input中的【name,value】数组  
+//获取单个input中的【name,value】数组
 function inputSelector(element) {
 	if (element.checked)
 		return [ element.name, element.value ];
@@ -554,7 +554,7 @@ function input(element) {
 	return false;
 }
 
-//组合URL  
+//组合URL
 function serializeElement(element) {
 	var method = element.tagName.toLowerCase();
 	var parameter = input(element);
@@ -574,7 +574,7 @@ function serializeElement(element) {
 	}
 }
 
-//组合多个URL  
+//组合多个URL
 function serializeElements(elements) {
 	var queryComponents = new Array();
 	for (var i = 0; i < elements.length; i++) {
@@ -586,10 +586,10 @@ function serializeElements(elements) {
 }
 
 
-//调用方法     
+//调用方法
 function serializeForm(formId) {
 	var form = document.getElementById(formId);
-	
+
 	if (form == null)
 		return "";
 	var elements = getElements(formId);
@@ -603,8 +603,8 @@ function serializeForm(formId) {
 }
 
 
-	
-//--------------------------------------------------公用插件区-----------------------------------	
+
+//--------------------------------------------------公用插件区-----------------------------------
 /**
  * 用js筛选页面里面的内容,比如table中,tr太多,要筛选tr中第一列名字叫李磊的人,并只把符合条件的tr显示出来
  * 可调用此方法
@@ -646,39 +646,39 @@ function common_filterHtml(searchContent,parentTagSelector,bodySelector){
  * <a  class="imgPreview2" show-img-src="priview.jpg"  onclick="select(\''+theme.ID+'\')">
  * common_imgPreview(".imgPreview2",-50,50,150,180);
  * @param selector		要对那个元素进行显示
- * @param mouseX		距离鼠标偏移多少X距离显示  
+ * @param mouseX		距离鼠标偏移多少X距离显示
  * @param mouseY		距离鼠标偏移多少Y距离显示
  * @param imgWidth		图片显示宽度
  * @param mouseY		图片显示高度
  */
 function common_imgPreview(selector,mouseX,mouseY,imgWidth,imgHeight){
-	//保存鼠标位置坐标  
-    var x=mouseX;//距离鼠标偏移多少X距离显示  
+	//保存鼠标位置坐标
+    var x=mouseX;//距离鼠标偏移多少X距离显示
     var y=mouseY;//距离鼠标偏移多少Y距离显示
     var width=imgWidth;  //图片显示宽度
     var height=imgHeight;//图片显示高度
-    //注册图片的鼠标移动事件  
-    $(selector).mouseover(function(e){  
-        //把图片的title属性值保存起来  
-        this.myTitle=this.title?this.title:'';  
-        this.title=""  
-        //放大后图片上的提示信息  
-        var imgTitle=this.myTitle ? "<br/>"+this.myTitle:"";  
-        //创建一个现实大图片的DIV  
-        var tooltip = "<div id='imgPreviewtooltip' style='position: absolute;'  ><img src='"+$(this).attr("show-img-src") 
-        +"'  style='width: "+width+"px;height: "+height+"px;'  />"+imgTitle+"</div>";  
-        //将创建的DIV添加到窗体中去  
-        $('body').append(tooltip);  
-        //设置显示出来的图片的位置  
-        $('#imgPreviewtooltip').css({"top":(e.pageY+y)+"px",  "left":(e.pageX+x)+"px"}).show();  
-        //鼠标移出事件  
-    }).mouseout(function(){  
-        //设回title值  
-        this.title=this.myTitle;  
-        $('#imgPreviewtooltip').remove();  
-   }).mousemove(function(e){  
-        $('#imgPreviewtooltip') .css({   "top":(e.pageY+y)+"px",  "left":(e.pageX+x)+"px"});       
-   });  
+    //注册图片的鼠标移动事件
+    $(selector).mouseover(function(e){
+        //把图片的title属性值保存起来
+        this.myTitle=this.title?this.title:'';
+        this.title=""
+        //放大后图片上的提示信息
+        var imgTitle=this.myTitle ? "<br/>"+this.myTitle:"";
+        //创建一个现实大图片的DIV
+        var tooltip = "<div id='imgPreviewtooltip' style='position: absolute;'  ><img src='"+$(this).attr("show-img-src")
+        +"'  style='width: "+width+"px;height: "+height+"px;'  />"+imgTitle+"</div>";
+        //将创建的DIV添加到窗体中去
+        $('body').append(tooltip);
+        //设置显示出来的图片的位置
+        $('#imgPreviewtooltip').css({"top":(e.pageY+y)+"px",  "left":(e.pageX+x)+"px"}).show();
+        //鼠标移出事件
+    }).mouseout(function(){
+        //设回title值
+        this.title=this.myTitle;
+        $('#imgPreviewtooltip').remove();
+   }).mousemove(function(e){
+        $('#imgPreviewtooltip') .css({   "top":(e.pageY+y)+"px",  "left":(e.pageX+x)+"px"});
+   });
 }
 
 //input type=file选择图片文件的时候,预览图片文件
@@ -690,7 +690,7 @@ function common_fileToImg(inputObj,imgId){
 	$("#"+imgId).attr("src",dataURL);
 }
 
-//根据身份证号码识别用户出生日期   年龄   性别  
+//根据身份证号码识别用户出生日期   年龄   性别
 //num   1  出生日期   2  性别   3 年龄
 function common_idCard_info(UserCard,num){
 	   if(num==1){
@@ -698,7 +698,7 @@ function common_idCard_info(UserCard,num){
 	       birth=UserCard.substring(6, 10) + "-" + UserCard.substring(10, 12) + "-" + UserCard.substring(12, 14);
 	    return birth;
 	   }
-	   
+
 	   if(num==2){
 	       //获取性别
 	       if (parseInt(UserCard.substr(16, 1)) % 2 == 1) {
@@ -709,7 +709,7 @@ function common_idCard_info(UserCard,num){
 	     return "1";
 	       }
 	   }
-	   
+
 	   if(num==3){
 	        //获取年龄
 	        var myDate = new Date();
@@ -808,71 +808,71 @@ function getDictLabel(data, value, defaultValue){
 
 /**
  * input/textarea  输入最大字数，显示剩余多少字数 每次输入一个文字，可输入一次递减。
- * 
- * 此方法绑定在input,textarea的onfocus事件上，参数分别人：this, maxlength,显示剩余字数的span的id.  
+ *
+ * 此方法绑定在input,textarea的onfocus事件上，参数分别人：this, maxlength,显示剩余字数的span的id.
  * @param target     文本框对象
  * @param maxlength   最大输入 字数
  * @param counterId
  * @param counterId
  */
-function fed_inputMaxLength(target,maxlength,counterId,MaxFunc){  
-    if($(target).attr('fed_max_length')==null){  
-        $(target).attr('fed_max_length',maxlength);  
-        var counter = $('#'+counterId);  
-        if ($.browser.msie) { //IE浏览器  
-            $(target).unbind("propertychange").bind("propertychange", function(e) {  
-                e.preventDefault();  
-                textareaMaxProc1(target, maxlength);  
-                counter.html(maxlength-$(target).val().length);  
-            });  
-            target.attachEvent("onpropertychange", function(e) {  
-                //e.preventDefault();  
-                textareaMaxProc1(target, maxlength);  
-                counter.html(maxlength-$(target).val().length);  
-            });  
-            
-        }else { //ff浏览器  
-            target.addEventListener("input",function(e) {  
-                e.preventDefault();  
-                textareaMaxProc1(target, maxlength);  
-                counter.html(maxlength-$(target).val().length);  
-            },false);   
-        }  
-        $('target').unbind("keypress").bind("keypress", function(event) {  
-            var code;  
-            if(typeof event.charCode =="number" ){ //charCode只在keypress事件后才包含值，此时keyCode可能有值也可能没有，Ie没有charCode属性。  
-                code = event.charCode;  
-            }else{  
-                code = event.keyCode;  
-            }  
-            if(code > 9 && !event.ctrlKey && $(target).val().length>=maxlength){  
-                event.preventDefault();  
-            }else if(event.ctrlKey && $(target).val().length>=maxlength && code==118){  
-                event.preventDefault();  
-            }  
-        });  
-    }  
-}  
-  
-   
-function textareaMaxProc1(textArea, total){  
-    var max;  
-    max=total;  
-      
-    if($(textArea).val().length > max){  
-        $(textArea).val($(textArea).val().substring(0,max));  
-    }  
-}  
+function fed_inputMaxLength(target,maxlength,counterId,MaxFunc){
+    if($(target).attr('fed_max_length')==null){
+        $(target).attr('fed_max_length',maxlength);
+        var counter = $('#'+counterId);
+        if ($.browser.msie) { //IE浏览器
+            $(target).unbind("propertychange").bind("propertychange", function(e) {
+                e.preventDefault();
+                textareaMaxProc1(target, maxlength);
+                counter.html(maxlength-$(target).val().length);
+            });
+            target.attachEvent("onpropertychange", function(e) {
+                //e.preventDefault();
+                textareaMaxProc1(target, maxlength);
+                counter.html(maxlength-$(target).val().length);
+            });
+
+        }else { //ff浏览器
+            target.addEventListener("input",function(e) {
+                e.preventDefault();
+                textareaMaxProc1(target, maxlength);
+                counter.html(maxlength-$(target).val().length);
+            },false);
+        }
+        $('target').unbind("keypress").bind("keypress", function(event) {
+            var code;
+            if(typeof event.charCode =="number" ){ //charCode只在keypress事件后才包含值，此时keyCode可能有值也可能没有，Ie没有charCode属性。
+                code = event.charCode;
+            }else{
+                code = event.keyCode;
+            }
+            if(code > 9 && !event.ctrlKey && $(target).val().length>=maxlength){
+                event.preventDefault();
+            }else if(event.ctrlKey && $(target).val().length>=maxlength && code==118){
+                event.preventDefault();
+            }
+        });
+    }
+}
+
+
+function textareaMaxProc1(textArea, total){
+    var max;
+    max=total;
+
+    if($(textArea).val().length > max){
+        $(textArea).val($(textArea).val().substring(0,max));
+    }
+}
 
 //判断是否引入某个JS、css
 function isIncludeJSCSS(name){
     var js= /js$/i.test(name);
     var es=document.getElementsByTagName(js?'script':'link');
-    for(var i=0;i<es.length;i++) 
+    for(var i=0;i<es.length;i++)
     if(es[i][js?'src':'href'].indexOf(name)!=-1)return true;
     return false;
-}	
-	
+}
+
 //引入没有引入的JS、css
 function importJSCSS(name){
 	if(!isIncludeJSCSS(name)){
