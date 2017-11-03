@@ -31,4 +31,15 @@ public class JianCeModel extends Model<JianCeModel> {
 		sb.append(" select * from  t_b_jiance where GW_CODE='"+xhCode+"' order by to_number(id)  ");
 		return Db.find(sb.toString());
 	}
+	/***
+	 * 获取最大值和最小值
+	 * @author Tom
+	 * @param xhCode
+	 * @return
+	 */
+	public List<Record> findProviderDicMaxMinByPid(String xhCode){
+		StringBuffer sb=new StringBuffer();
+		sb.append("SELECT min(to_number(t.WKQ_NUM)) min,max(to_number(t.WKQ_NUM)) max FROM T_B_JIANCE t WHERE t.GW_CODE='"+xhCode+"'");
+		return Db.find(sb.toString());
+	}
 }

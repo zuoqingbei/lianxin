@@ -613,6 +613,14 @@ public class LabController extends BaseController {
 	public void jianCeDataForTab1Ajax() {
 		String xhCode = getPara("xhCode", "");// 型号
 		List<Record> list = JianCeModel.dao.findProviderDicByPid(xhCode);
+		//获取最大值和最小值，并计算出刻度值
+		List<Record> minMax = JianCeModel.dao.findProviderDicMaxMinByPid(xhCode);
+		double min = Double.parseDouble(minMax.get(0).get("min").toString());
+		double max = Double.parseDouble(minMax.get(0).get("max").toString());
+		double scale = (max - min)/12;
+		Record r = new Record();
+		r.set("scale", scale);
+		minMax.add(r);
 		/*
 		 * String redis_key=Constants.JIANC_EPRO_SESSION+xhCode; Record
 		 * pro=getSessionAttr(redis_key); if(pro==null){
@@ -628,6 +636,7 @@ public class LabController extends BaseController {
 		// List<Record> gaussian=gaussian(xhCode);
 		List<List<Record>> re = new ArrayList<List<Record>>();
 		re.add(list);
+		re.add(minMax);
 		// re.add(gaussian);
 		renderJson(re);
 	}

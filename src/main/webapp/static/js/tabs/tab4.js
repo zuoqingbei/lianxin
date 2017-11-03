@@ -359,6 +359,7 @@ var tab4xhPro;
 var tab4CPKData;
 var rootlsl;
 var rootusl;
+var rootScale;
 
 function cpkDataForTab4(xhPro) {
     tab4xhPro = xhPro;
@@ -376,9 +377,10 @@ function cpkDataForTab4(xhPro) {
         });*/
         //mHeightChartTab4.options.xAxis[0].plotLines[0].value=parseFloat(xhPro.lsl);
         //mHeightChartTab4.options.xAxis[0].plotLines[1].value=parseFloat(xhPro.usl);
-        mHeightChartTab4.options.xAxis[0].max = parseFloat(xhPro.lsl).toFixed(2);
-        mHeightChartTab4.options.xAxis[0].min = parseFloat(xhPro.usl).toFixed(2);
-        mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
+        rootScale = data[1][1].scale;
+        mHeightChartTab4.options.xAxis[0].max = parseFloat(xhPro.lsl).toFixed(2)+2*rootScale;
+        mHeightChartTab4.options.xAxis[0].min = parseFloat(xhPro.usl).toFixed(2)-2*rootScale;
+        mHeightChartTab4.series[0].setData(histogramTab4(mData, rootScale)); // 更新 series
         /*mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));*/
         console.log("changdu: ",mHeightChartTab4.options.xAxis.length)
         mHeightChartTab4.xAxis[0].addPlotLine({//最小值的界线
