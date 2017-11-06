@@ -53,8 +53,6 @@ function echartsResize() {
     chartfour.resize();
     chartfive.resize();
     chartsix.resize();
-    // myChart1.resize();
-    // myChart2.resize();
 }
 
 
@@ -111,7 +109,7 @@ function createDataCenterHtml(data, dataType) {
                 $.each(item.children, function (index, cItem) {
                     dataCenterMap.put(cItem.id, cItem);
                     htmls += '<li data-centerid="' + cItem.id + '" ';
-                    htmls += createClickFuntionForDataCenter(cItem) + " >" + cItem.center_name + '</li>';
+                    htmls += createClickFuntionForDataCenter(cItem) + " ><span class='icon'></span> " + cItem.center_name + '</li>';
                 });
                 htmls += '</ul></li>';
             }
