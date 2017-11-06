@@ -44,4 +44,12 @@ public class Constants {
 	 */
 	public static final String CONFIGNAME_QC_HIVE = "chongqinghive";//重庆实验室
 	
+	/**
+	 * 胶南热水器数据库（与表T_B_DB_CONFIG中config_name对应 不要随便改）
+	 */
+	public static final String CONFIGNAME_JNRSQ = "jnrsq";//胶南热水器数据库
+	/**
+	 * 中海博睿整机数据库（与表T_B_DB_CONFIG中config_name对应 不要随便改）
+	 */
+	public static final String CONFIGNAME_ZHBRZJ = "zhbrzj";//中海博睿整机数据库
 }
