@@ -65,6 +65,7 @@ function loadAllDataCenterAjax() {
         // console.log(data)
         $(".inland").html(createDataCenterHtml(data, 0));
         $(".abroad").html(createDataCenterHtml(data, 1));
+        $(".inland>li:eq(0)").trigger("click");
         //alert(dataCenterMap.get("1"));
     });
 }
@@ -148,7 +149,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     var data_type = dataCenter.data_type;
     var data_source = dataCenter.data_source;
     //判断出现那块DIV（国内 国外）
-    if (data_type == 0) {
+   /* if (data_type == 0) {
         if (data_source == "webservice") {
             // inlandTabShow();
         } else {
@@ -162,7 +163,8 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
             setCenterLabHtmlDB(parentDataCenter);
             // abroadTabShow();
         }
-    }
+    }*/
+    setCenterLabHtmlDB(dataCenter);
     //加载数据中心第三级
     $.post(contextPath + "/lab/loadAllDataCenterLabAjax", {"dataCenterId": dataCenterId}, function (data) {
         var html = '';
