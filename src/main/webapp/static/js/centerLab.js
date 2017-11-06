@@ -1,4 +1,5 @@
 // 数据分析
+console.log("bodyScale-",bodyScale);
 //左
 var chartone = echarts.init(document
     .getElementById("echart_one"));
@@ -371,8 +372,8 @@ var colorData=['#eaff56','#bce672','#ff461f','#70f3ff','#e9e7ef','#fff143','#c9d
                '#93ca76','#bbc8e6'];//图例颜色 需手工扩充
 var myChart1;
 var myChart2;
-myChart1= echarts.init(document.getElementById('main1_world'));
-myChart2 = echarts.init(document.getElementById('main2_world'));
+myChart1= echarts.init(document.getElementById('main1'));
+myChart2 = echarts.init(document.getElementById('main2'));
 var xData;//x轴坐标数据--对应时间
 var legendData=[];//需要把全部图例放入里面 保证名称不同
 var legendNumData=[];
@@ -426,10 +427,7 @@ var dataBase;
 }; */
 
 //加载实验室与台位对照关系 生刷选框
-function loadLabUnitInfoCenterTabAjax(type){
-	var labs=labsMap.get(type);
-	var labCode=labs.lab_code;
-	configName=labs.souce_value;
+function loadLabUnitInfoCenterTabAjax(type,inlandOrAbroad){
     var htmls="";
 
     $.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
@@ -449,18 +447,15 @@ function loadLabUnitInfoCenterTabAjax(type){
 				findSensorByLabCenetrTabAjax(item.labCode,item.url,item.testUnitList[index].testUnitId);
 			}
 		});
-		//$("#lab_unit_selected_center").html(htmls);
-        $(".lab_code_"+labCode).html(htmls);
-        $(".lab_code_"+labCode).find("header").attr("onclick","");
-        $(".lab_code_"+labCode).find("ul>li:eq(0)").click();
+		$("#lab_unit_selected_center").html(htmls);
         //选择台位
-        $(".lab_code_"+labCode+">li>a").click(function (e) {
+        $("#lab_unit_selected_center>li>a").click(function (e) {
             // $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
             $(this).parent().siblings().find('.taiwei_hide').css('display','none');
             $(this).next().toggle();
             e.stopPropagation()
         });
-       // $(".sheshi_tab_list").find("ul:eq(0)>li:eq(0)>header").trigger("click");
+        $(".sheshi_tab_list").find("ul:eq(0)>li:eq(0)>header").trigger("click");
         // $("sheshi_tab_list").find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 	});
 }
@@ -498,7 +493,7 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		}
 		myChart1.clear();
 		myChart2.clear();
-		$("#legend_ul_world").html('');
+		$("#legend_ul").html('');
 		//console.log(data)
 		data=eval("("+data+")");
 		dataBase=data;
@@ -509,10 +504,10 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		});
 		legendData=dealBracket(totalLegendName);
 		randomLegend();
-		$("#center_sybh_id_world").html(data.sybh);
-	 	$("#center_ypbm_id_world").html(data.ybbh);
-	 	$("#center_cpxh_id_world").html(data.cpxh);
-	 	$("#center_testPro_id_world").html(data.testUnitStatus);
+		$("#center_sybh_id").html(data.sybh);
+	 	$("#center_ypbm_id").html(data.ybbh);
+	 	$("#center_cpxh_id").html(data.cpxh);
+	 	$("#center_testPro_id").html(data.testUnitStatus);
 		//showLegendData=legendData;//默认全选
 		//console.log(showLegendData)
 		createLegendHtmls();
@@ -524,8 +519,8 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 	});
 }
 function resetDataCenterLab(){
-	myChart1= echarts.init(document.getElementById('main1_world'));
-	myChart2 = echarts.init(document.getElementById('main2_world'));
+	myChart1= echarts.init(document.getElementById('main1'));
+	myChart2 = echarts.init(document.getElementById('main2'));
 	myChart1.clear();
 	myChart2.clear();
     myChart1.showLoading({
@@ -540,7 +535,7 @@ function resetDataCenterLab(){
         maskColor:"rgba(0,0,0,0)",
         textColor:"#64ccff"
     });
-	$("#legend_ul_world").html('');
+	$("#legend_ul").html('');
 	legendData=[];
 	legendNumData=[];
 	showLegendData=[];//需要展示图例 自定义
@@ -600,7 +595,7 @@ function createLegendHtmls() {
 		}
 
     }
-    $("#legend_ul_world").html(htmls);
+    $("#legend_ul").html(htmls);
 }
 //处理线series
 function dealSeriesData(){
