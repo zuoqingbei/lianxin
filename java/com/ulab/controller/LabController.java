@@ -1195,8 +1195,4 @@ public class LabController extends BaseController {
 				.findLabByDataCenterId(dataCenterId);
 		renderJson(labs);
     }
-    public void hive(){
-    	String sql=" select * from s_bxlab_orcl_talend_test_testmetadata where  ptlabname= 'chongqingxingshiAB' and pt='20171025'";
-		renderJson(Db.use(com.ulab.core.Constants.CONFIGNAME_QC_HIVE).find(sql));
-    }
 }

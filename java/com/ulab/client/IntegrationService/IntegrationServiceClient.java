@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.chainsaw.Main;
 
 import com.ulab.client.webServiceRerigerator.ArrayOfTestMetadata;
 import com.ulab.client.webServiceRerigerator.ArrayOfTestProdInfoItem;
@@ -289,5 +290,8 @@ public class IntegrationServiceClient {
         format.setMinimumFractionDigits(2);// 设置小数位
         return format.format(rate);
 	}
-
+	public static void main(String[] args) {
+		IntegrationServiceClient client = new IntegrationServiceClient();
+		List<LabData> labDataList = client.searchLabData();
+	}
 }

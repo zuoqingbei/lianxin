@@ -146,6 +146,7 @@ function setCenterLabHtmlDB(dataCenter) {
 //查询数据中心下实验室 level为3(单位/产品)
 function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     var dataCenter = dataCenterMap.get(dataCenterId);
+    var parentDataCenter = dataCenterMap.get(dataCenter.parent_id);
     var data_type = dataCenter.data_type;
     var data_source = dataCenter.data_source;
     //判断出现那块DIV（国内 国外）
@@ -153,14 +154,14 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
         if (data_source == "webservice") {
             // inlandTabShow();
         } else {
-            setCenterLabHtmlDB(dataCenter);
+            setCenterLabHtmlDB(parentDataCenter);
             // inlandTabShow_world();
         }
     } else {
         if (data_source == "webservice") {
             // abroadTabShow();
         } else {
-            setCenterLabHtmlDB(dataCenter);
+            setCenterLabHtmlDB(parentDataCenter);
             // abroadTabShow();
         }
     }

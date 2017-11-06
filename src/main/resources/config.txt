@@ -30,9 +30,9 @@ zhbrzj.user = Haier_DBReader
 zhbrzj.password= Haier2017
 
 # 重庆实验室hive测试库信息
-#chongqing.driver=com.cloudera.impala.jdbc41.Driver
-#chongqing.url=jdbc:impala://10.138.8.211:10000/db_hive_ulab;AuthMech=0
-chongqing.driver=org.apache.hive.jdbc.HiveDriver
-chongqing.url =jdbc:hive2://10.138.8.211:10000/db_hive_ulab
-chongqing.user =hdfs
-chongqing.password=
+#hive.driver=com.cloudera.impala.jdbc41.Driver
+#hive.url=jdbc:impala://10.138.8.211:10000/db_hive_ulab;AuthMech=0
+hive.driver=org.apache.hive.jdbc.HiveDriver
+hive.url =jdbc:hive2://10.138.8.211:10000/db_hive_ulab
+hive.user =hdfs
+hive.password=
