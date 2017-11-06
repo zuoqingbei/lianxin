@@ -131,6 +131,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
         //$(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 		$(".lab_code_"+labCode).html(htmls);
 		$(".lab_code_"+labCode).find("header").attr("onclick","");
+        $(".lab_code_"+labCode).find("ul>li:eq(0)").click();
 	});
 }
 //查询y轴信息
@@ -318,12 +319,14 @@ function loadLabUnitInfoCenterTabAjaxWorld(type) {
 			htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld(\"'+labCode+'\",\"'+item.pro_code+'\",\"'+item.file_name+'\")>'+item.pro_name+'</li>';
 			if(index==0){
 				findSensorByLabCenetrTabAjaxWorld(labCode,item.pro_code,item.file_name);
+
 			}
 		});
 		htmls+='</ul>';
 		 
 		$(".lab_code_"+labCode).html(htmls);
 		$(".lab_code_"+labCode).find("header").attr("onclick","");
+        $(".lab_code_"+labCode).find("ul>li:eq(0)").click();
     });
 
     

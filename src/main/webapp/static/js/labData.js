@@ -53,8 +53,8 @@ function echartsResize() {
     chartfour.resize();
     chartfive.resize();
     chartsix.resize();
-    myChart1.resize();
-    myChart2.resize();
+    // myChart1.resize();
+    // myChart2.resize();
 }
 
 
@@ -128,7 +128,7 @@ function createClickFuntionForDataCenter(item) {
     var dataSource = item.data_source;
     //如果是在数据中心配置的为url则直接跳转，否则根据数据中心再去查询对应实验室level为3(单位/产品) 4（模块/整机）
     if (dataSource === "url") {
-        htmls += " onclick= intentsUrl('" + item.id + "')";
+        htmls += " data-urltype =" + item.id + " ";
     } else {
         htmls += " onclick= loadAllDataCenterLabAjaxFunc('" + item.id + "') ";
     }
@@ -151,51 +151,51 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     //判断出现那块DIV（国内 国外）
     if (data_type == 0) {
         if (data_source == "webservice") {
-            inlandTabShow();
-        }else{
-        	 setCenterLabHtmlDB(dataCenter);
-             inlandTabShow_world();
+            // inlandTabShow();
+        } else {
+            setCenterLabHtmlDB(dataCenter);
+            // inlandTabShow_world();
         }
     } else {
         if (data_source == "webservice") {
-            abroadTabShow_center();
-        }else{
-        	 setCenterLabHtmlDB(dataCenter);
-             abroadTabShow();
+            // abroadTabShow();
+        } else {
+            setCenterLabHtmlDB(dataCenter);
+            // abroadTabShow();
         }
     }
     //加载数据中心第三级
     $.post(contextPath + "/lab/loadAllDataCenterLabAjax", {"dataCenterId": dataCenterId}, function (data) {
         var html = '';
-        var firstLabCode="";
+        var firstLabCode = "";
         $.each(data, function (index, item) {
             var dataSource = item.data_source;
             dataCenterMap.put(item.id, item);
             if (dataSource == "url") {
                 html += '<li  data-center-id="' + item.id + '"  class="toLabIframe quxian_li_' + item.id + '" data-url="' + item.souce_value + '"><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header></li>';
             } else {
-            	//生成实验室
-            	html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header>';
-            	var labsHtmls="<ul>";
-        		$.each(item.children,function(ind,it){
-        			if(index==0&&ind==0){
-        				firstLabCode=it.lab_code;
-        			}
-        			var currentHtmls=' <li class="lab_code_'+it.lab_code+'">';
-        			var header='<header labcode="'+it.lab_code+'"  '+createClickFuntion(it)+'>'+it.lab_name+'<span>∨</span></header>';
-        			labsMap.put(it.id, it);
-        			labsHtmlsMap.put(it.id, header);
-        			labsHtmls=labsHtmls+currentHtmls+header+"</li>";
-        		});
-        		labsHtmls+='</ul>';
-        		html+=labsHtmls;
-        		html += '</li>';
+                //生成实验室
+                html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header>';
+                var labsHtmls = "<ul>";
+                $.each(item.children, function (ind, it) {
+                    if (index == 0 && ind == 0) {
+                        firstLabCode = it.lab_code;
+                    }
+                    var currentHtmls = ' <li class="lab_code_' + it.lab_code + '">';
+                    var header = '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∨</span></header>';
+                    labsMap.put(it.id, it);
+                    labsHtmlsMap.put(it.id, header);
+                    labsHtmls = labsHtmls + currentHtmls + header + "</li>";
+                });
+                labsHtmls += '</ul>';
+                html += labsHtmls;
+                html += '</li>';
 
             }
         });
         $("#lab_unit_selected_center").html(html);
         $("#lab_unit_selected_center_world").html(html);
-        $(".lab_code_"+firstLabCode).find("header").trigger("click");
+        $(".lab_code_" + firstLabCode).find("header").trigger("click");
 
     });
 

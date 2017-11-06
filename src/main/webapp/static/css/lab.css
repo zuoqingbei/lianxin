@@ -204,7 +204,7 @@ li:not(.hasChildren).active {
 /*右侧tab标签*/
 @media all {
     .lab_content_r {
-        background-image: url("../img/lab/labTabBoardInland_1.png");
+        background-image: url("../img/lab/labTabBoardInland_4.png");
         background-size: 100% 100%;
     }
 
@@ -238,7 +238,7 @@ li:not(.hasChildren).active {
         height: 100%;
     }
 
-    .lab_content_r > .switchBox > div.item:not(:nth-of-type(1)) {
+    .lab_content_r > .switchBox > div.item:not(:nth-of-type(4)) {
         display: none;
     }
 
@@ -249,6 +249,10 @@ li:not(.hasChildren).active {
 }
 
 /*视频监控页面*/
+.monitoring .sheshi_tab.disabled {
+    filter: grayscale(100%) brightness(80%);
+    cursor: not-allowed;
+}
 .monitoring .bigVideoBox {
     padding: 1em;
     height: 45em;

@@ -1,69 +1,29 @@
-var videoUlrInland = [
-    // "http://192.168.1.168:6713/mag/hls/9d5be58b608c48fc8e71d09509b89ba9/1/live.m3u8?time=New Date()"//本机
-    "http://10.130.96.65:6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8?time=New Date()",//体验馆2
-];
-var videoUlrAbroad = [
-    // "http://10.130.96.113:6713/mag/hls/7329e487e5c84c41a1ba9040e89f7814/1/live.m3u8?time=New Date()",//泰国"RF-B"
-    "http://10.130.96.65:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8?time=New Date()",//泰国"IPdome"
-];
+var $lab_content_r = $(".lab_content_r");//国内外右边的大框
+var $monitoring = $lab_content_r.find(".monitoring");//曲线监控页
+var $sheshi_tab_list = $monitoring.find(".sheshi_tab_list");//曲线左侧的台位列表
+var $prevTaiwei = null;
+var videoUrlMain = "";
+var prevIsLabUrl = false;//主菜单的URL类型
 
-//直接跳转第三方地址
-function intentsUrl(type, thiselem) {
-    var $mainNavLi = $(".labMainNav>.switchBox>ul>li.noChildren, .labMainNav>.switchBox>ul>li>ul>li");
-    $mainNavLi.removeClass("active");
-    $(thiselem).addClass("active");
-    moduleMakersTabShow();
-    var dataCenter = dataCenterMap.get(type);
-    var url = dataCenter.souce_value;
-    $(".lab_content_r>.switchBox>div.item").eq(5).find("iframe").attr("src", url);
+function inlandTabShow() { //国内
+    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_4.png)");
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.curves").show();
+}
+
+function abroadTabShow() {//国外
+    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardForeign_2.png)");
+    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.curves").show();
+}
+
+function moduleMakersShow(url) {//模块商
+    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoard_onlyOne.png");
+    $(".labSubNav>ul>li").hide().eq(4).addClass("active").show().siblings().removeClass("active").hide();
+    $lab_content_r.find(".switchBox>div.item.moduleMakers").children("iframe").attr("src",url).parent().show().siblings().hide();
     console.log("url", url)
 }
-
-var $lab_content_r = $(".lab_content_r");
-var borderUrl = "";
-
-function inlandTabShow() { //国内webservice
-    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
-    labNavAndItemShow();
-    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.centerCurves").show();
-}
-
-function inlandTabShow_world() {//国内Hadoop
-    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
-    labNavAndItemShow();
-    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.abroadCurves").show();
-}
-
-function abroadTabShow() {//国外Hadoop
-    $(".lab_content_r").css("background-image", "url(../static/img/lab/labTabBoardForeign_1.png)");
-    labNavAndItemShow();
-    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.abroadCurves").show();
-}
-
-function abroadTabShow_center() {//国外数据中心
-    $(".lab_content_r").css("background-image", "url(../static/img/lab/labTabBoardForeign_1.png)");
-    labNavAndItemShow();
-    $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.centerCurves").show();
-}
-
-function moduleMakersTabShow() { //模块商
-    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoard_onlyOne.png");
-    labNavAndItemShow("moduleMakers");
-    $(".labSubNav>ul>li.moduleMakers").show();
-}
-
-function labNavAndItemShow(mark) {
-    $(".labSubNav>ul>li").hide();
-    if (mark === "moduleMakers") {
-        $(".lab_content_r>.switchBox>div.item").eq(5).show().siblings().hide();
-    } else {
-        $(".lab_content_r>.switchBox>div.item").eq(0).show().siblings().hide();
-
-    }
-}
-
-function loadingAnimate($videoParent) {//视频加载动画
-    console.log("调用加载动画")
+//视频加载动画
+function loadingAnimate($videoParent) {
+    console.log("调用加载动画");
     // $videoParent.append("<div class='videoWait'>视频接入中</div>");
     $videoParent.find(".videoWait").fadeIn(500, function () {
         var t = setTimeout(loadingOut, 8000);
@@ -153,46 +113,42 @@ $(function () {
     //中心实验室顶上的“返回总状态”按钮
     $(".btn-totalStatus").click(function () {
         $("#r").show().siblings(".lab").hide();
-
         resetSizeRight();
     });
 
     //国内外切换
     var $navHeadLi = $(".labMainNav>header>ul>li");
-    $navHeadLi.click(function () {
+    $navHeadLi.click(function () { //这里需要按钮，主菜单，子菜单，内容4部分都有变化
         $navHeadLi.removeClass("active");
         $(this).addClass("active");
         $(".labMainNav>.switchBox>ul:eq(" + $(this).index() + ")").show().siblings().hide();
-        var borderUrl = "";
+        $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
+
         if ($(this).index() === 0) { //国内
             inlandTabShow();
         } else {                    //国外
             abroadTabShow();
         }
+        $(".lab_content_r>.switchBox>div.item").eq(3).show().siblings().hide();
     });
 
     //左侧菜单点击事件
     $(".labMainNav>.switchBox").on("click", "ul>li.noChildren, ul>li>ul>li", function () {
         prevIsLabUrl = false;
 
-        var $li = $(".switchBox>ul>li.noChildren, .switchBox>ul>li>ul>li");
-        $li.removeClass("active");
+        $(".labMainNav>.switchBox ul>li").removeClass("active");
         $(this).addClass("active");
-        var $thisElem = $(this);
-        if ($thisElem.attr("onclick").indexOf("intentsUrl") > -1) {
-            $(".labSubNav>ul>li:last").addClass("active").siblings().removeClass("active");
-        } else {
-            $(".labSubNav>ul>li:first").addClass("active").siblings().removeClass("active");
-        }
-    });
 
-    //非模块商的列表
-    var $inlandLiNoModuleMakers = $(".labMainNav>.switchBox>ul>li.noChildren:not(.moduleMakers), .labMainNav>.switchBox>ul>li>ul>li");
-    $inlandLiNoModuleMakers.click(function () {
-        if ($(this).parents(".inland").length > 0) {
-            inlandTabShow();
-        } else {
-            abroadTabShow();
+        if ($(this).data("urltype")) {//url类型
+            var moduleMakersUrl = dataCenterMap.get($(this).data("urltype")+'').souce_value;
+            moduleMakersShow(moduleMakersUrl);
+        }else{
+
+            if($(this).parents("ul.inland")[0]){//从url类型跳回到国内其他列表
+                $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
+                $lab_content_r.find(".switchBox>div.item.moduleMakers").hide().siblings(".monitoring").show();
+                inlandTabShow();
+            }
         }
     });
 
@@ -208,12 +164,6 @@ $(function () {
         }
     });
 
-    //模块商
-    var $moduleMakerLi = $(".labMainNav>.switchBox>ul>li.moduleMakersInland,.labMainNav>.switchBox>ul>li.moduleMakersAbroad");
-    $moduleMakerLi.click(function () {
-        moduleMakersTabShow();
-    });
-
     //頂部子菜单点击事件
     var subNavLi = $(".labSubNav>ul>li");
     subNavLi.click(function () {
@@ -223,10 +173,8 @@ $(function () {
 
         //边框变换
         if ($(".labMainNav>header>ul>li:eq(0)").hasClass("active")) {//国内
-            if ($(this).index() < 3) {
+            if ($(this).index() < 4) {
                 borderUrl = borderUrl.replace(/_[1-4]/, "_" + ($(this).index() + 1));
-            } else {
-                borderUrl = borderUrl.replace(/_[1-4]/, "_4");
             }
         } else {//国外
             if ($(this).index() < 1) {
@@ -244,19 +192,18 @@ $(function () {
         }
     });
 
-    var prevIsLabUrl = false;
     //实时监测中的视频和曲线切换
     $(".sheshi_tab").click(function () {
+        if($(this).hasClass("disabled")){
+            return;
+        }
         var index = $(this).index();
         $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
         $(this).parents(".monitoring").find(".shishi_right>.item").eq(index).show().siblings().hide();
 
-        if (index === 0) {//大视频页
-            $(".smallVideoBox").hide(500);
-            $(".bigVideoBox").show(500);
-        } else {//小视频页
-            $(".bigVideoBox").hide(500);
-            $(".smallVideoBox").show(500);
+        if (index === 0) {//大视频页面
+            videoShow("bigVideo", videoUrlMain, 0);
+        } else {//小视频页面
             if (prevIsLabUrl) {
                 $(this).parents(".monitoring").find(".shishi_right>.item").eq(2).show().siblings().hide();
             }
@@ -278,53 +225,64 @@ $(function () {
         }
     });
 
-    var smallVideoID = ""; //画中画id，放在外面是因为每次加载视频会替换原来指定id的标签
-    var bigVideoID = ""; //大视频id，放在外面是因为每次加载视频会替换原来指定id的标签
-    var $prevTaiwei = null;
 
     //台位点击事件
-    $(".sheshi_tab_list").on("click", "ul>li>ul>li>ul>li", function () {
+    $sheshi_tab_list.on("click", "ul>li>ul>li>ul>li", function () {
+        var curveBox = $monitoring.find(".shishi_right").children(".item.curve");
+        if(curveBox.is(":hidden")){//曲线没有显示
+            curveBox.show().siblings().hide();
+        }
         echartsResizeWorld();
-        var $taiweiList = $(".sheshi_tab_list>ul>li>ul>li>ul>li");
-        $taiweiList.removeClass("active");
+        $(".sheshi_tab_list>ul>li>ul>li>ul>li").removeClass("active");
         $(".sheshi_tab_list>ul>li.toLabIframe.active").removeClass("active");
         $(this).addClass("active");
-
-        // $(".sheshi_tab.sheshi_tab_lines").click();//自动切换到曲线显示
+        //自动切换到曲线显示
+        $(".sheshi_tab.sheshi_tab_lines").click();
         //实时监测的画中画视频切换
         if (!$(this).parent().is($prevTaiwei)) {//如果不是同一个实验室下的台位
             $prevTaiwei = $(this).parent();
-            var labCode = $(this).parent().prev().text();//暂时从这里获取，以后拼到属性中
-            labCode = labCode.slice(0, labCode.length - 1);
-
+            var labCode = $(this).parent().prev().attr("labcode");//获取實驗室編碼
             var $parentMonitoring = $(this).parents(".monitoring");
-                smallVideoID = $parentMonitoring.find("[id^=smallVideo]").attr("id");
-                bigVideoID = $parentMonitoring.find(".bigVideoBox").children().attr("id");
 
-            $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
-                if (data) {
-                    var videoUrlMain = data.videl_url.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
-                    var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
-                    console.log("-------data.videl_url", data.videl_url, "smallVideoID", smallVideoID, "bigVideoID", bigVideoID);
-                    videoShow(smallVideoID, videoUrlSub, 1);
-                    videoShow(bigVideoID, videoUrlMain, 0);
-                }
-            })
+            videoUrlAjax(labCode);
         }
     });
     //链接型实验室点击和画中画切换
-    $(".sheshi_tab_list").on("click", ".toLabIframe>header", function () {
+    $sheshi_tab_list.on("click", ".toLabIframe>header", function () {
         prevIsLabUrl = true;
         $(".sheshi_tab_list>ul>li>ul>li>ul>li").removeClass("active");
         $(this).addClass("active");
-        $(this).parents(".monitoring").find(".shishi_right>.item.iframe").show().siblings().hide();
-        $(this).parents(".monitoring").find(".shishi_right>.item.iframe")
-            .find(".smallVideoBox").children("div:eq(1)").attr("id", "smallVideoWSWeb");
         var webUrl = $(this).parent().data("url");
-        $(this).parents(".monitoring").find(".shishi_right>.item.iframe>iframe").attr("src", webUrl);
-        videoShow("smallVideoWSWeb", videoUlrInland[0].replace("/0/live.m3u8", "/1/live.m3u8"), 1);
-        videoShow("bigVideoWS", videoUlrInland[0].replace("/1/live.m3u8", "/0/live.m3u8"), 0)
-    })
+        console.log("webUrl", webUrl);
+        $monitoring.find(".shishi_right>.item.iframe").children("iframe").attr("src", webUrl)
+            .parent().show().siblings().hide();
+
+        var labCode = $(this).parent().data("center-id");
+            videoUrlAjax(labCode, "toUrl")
+    });
+
+    //获取视频地址的ajax
+    function videoUrlAjax(labCode, toUrl) {
+        $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
+            var videoUrl = data.videl_url;
+            if (videoUrl) {
+                console.log("-------data.videl_url", videoUrl,"toUrl",toUrl);
+                videoUrlMain = videoUrl.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
+                var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
+                $(".smallVideoBox").show();
+                $(".sheshi_tab:eq(0)").removeClass("disabled");
+                if(toUrl){
+                    videoShow("smallVideoWeb", videoUrlSub, 1);
+                }else{
+                    videoShow("smallVideo", videoUrlSub, 1);
+                }
+            }else{
+                $(".sheshi_tab:eq(0)").addClass("disabled");
+                $(".smallVideoBox").hide();
+            }
+        })
+
+    }
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
     initfour();//及时率

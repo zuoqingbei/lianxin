@@ -222,7 +222,7 @@ function scpDataForTab4(myChartIds, xhPro, type) {
             mValue = xhPro.fc_value;
             mUcl = xhPro.fc_ucl;
         }
-        console.log("------", mTitle, mLcl, mValue, mUcl)
+        // console.log("------", mTitle, mLcl, mValue, mUcl)
         var myChart15 = echarts.init(document.getElementById(myChartIds));
         right_echarts.push(myChart15);
         myChart15.setOption(getLineEcharts());
@@ -382,7 +382,7 @@ function cpkDataForTab4(xhPro) {
         mHeightChartTab4.options.xAxis[0].min = parseFloat(xhPro.usl).toFixed(2)-2*rootScale;
         mHeightChartTab4.series[0].setData(histogramTab4(mData, rootScale)); // 更新 series
         /*mHeightChartTab4.series[1].setData(histogramTab4(mData2, 0.3));*/
-        console.log("changdu: ",mHeightChartTab4.options.xAxis.length)
+        // console.log("changdu: ",mHeightChartTab4.options.xAxis.length)
         mHeightChartTab4.xAxis[0].addPlotLine({//最小值的界线
             id: "plotline_id_1",
             color: '#f93',            //线的颜色，定义为红色

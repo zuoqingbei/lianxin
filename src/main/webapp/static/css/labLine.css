@@ -90,8 +90,7 @@
     height: 81%;
     width: 66%;
     overflow-x: hidden;
-    margin: 0 auto;
-    margin-top: 3%;
+    margin: 3% auto 0;
     background: url(../img/labMain/dropmenu.png) no-repeat;
     background-size: 100% 100%;
 
@@ -101,13 +100,15 @@
     width: 100%;
     height: 100%;
     padding-top: 10%;
-    padding-left: 1em;
+    padding-left: .5em;;
 }
 
 .sheshi_tab_list > ul header:hover {
     text-decoration: underline;
 }
-
+.sheshi_tab_list > ul header.active{
+    color: #00e673;
+}
 .sheshi_tab_list > ul li header > span {
     display: inline-block;
     padding-left: 1em;
@@ -127,6 +128,9 @@
 
 .sheshi_tab_list > ul > li > ul > li > header {
     font-size: 1.1em;
+}
+.sheshi_tab_list > ul > li > ul > li > ul {
+    padding-left: 1.2em;
 }
 
 .sheshi_tab_list > ul > li.toLabIframe.active,
