@@ -176,21 +176,26 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
                 html += '<li  data-center-id="' + item.id + '"  class="toLabIframe quxian_li_' + item.id + '" data-url="' + item.souce_value + '"><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header></li>';
             } else {
                 //生成实验室
-                html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header>';
-                var labsHtmls = "<ul>";
-                $.each(item.children, function (ind, it) {
-                    if (index == 0 && ind == 0) {
-                        firstLabCode = it.lab_code;
-                    }
-                    var currentHtmls = ' <li class="lab_code_' + it.lab_code + '">';
-                    var header = '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∨</span></header>';
-                    labsMap.put(it.id, it);
-                    labsHtmlsMap.put(it.id, header);
-                    labsHtmls = labsHtmls + currentHtmls + header + "</li>";
-                });
-                labsHtmls += '</ul>';
-                html += labsHtmls;
-                html += '</li>';
+            	if(item.data_source=="webservice"){
+            		html += '<li class="quxian_li_' + item.id + '" '+ createClickFuntion(item)+' data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header>';
+            		html += '</li>';
+            	}else{
+            		html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header>';
+            		var labsHtmls = "<ul>";
+            		$.each(item.children, function (ind, it) {
+            			if (index == 0 && ind == 0) {
+            				firstLabCode = it.lab_code;
+            			}
+            			var currentHtmls = ' <li class="lab_code_' + it.lab_code + '">';
+            			var header = '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∨</span></header>';
+            			labsMap.put(it.id, it);
+            			labsHtmlsMap.put(it.id, header);
+            			labsHtmls = labsHtmls + currentHtmls + header + "</li>";
+            		});
+            		labsHtmls += '</ul>';
+            		html += labsHtmls;
+            		html += '</li>';
+            	}
 
             }
         });

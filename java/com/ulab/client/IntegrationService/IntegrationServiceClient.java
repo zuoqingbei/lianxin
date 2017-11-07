@@ -293,5 +293,6 @@ public class IntegrationServiceClient {
 	public static void main(String[] args) {
 		IntegrationServiceClient client = new IntegrationServiceClient();
 		List<LabData> labDataList = client.searchLabData();
+		System.out.println(labDataList);
 	}
 }

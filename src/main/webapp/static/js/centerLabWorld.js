@@ -121,10 +121,10 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
 			}else{
 				htmls+='<li>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}
-			if(index==0){
+		/*	if(index==0){
 				// console.log(item.testunitlist)
 				findSensorTypeInfoHadoop(labCode,item.testunitid);
-			}
+			}*/
 		});
 		htmls+='</ul>';
 		//$(".quxian_li_"+type).append(htmls);
@@ -317,10 +317,10 @@ function loadLabUnitInfoCenterTabAjaxWorld(type) {
 		$.each(data,function(index,item){
 			// console.log(item)
 			htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld(\"'+labCode+'\",\"'+item.pro_code+'\",\"'+item.file_name+'\")>'+item.pro_name+'</li>';
-			if(index==0){
+			/*if(index==0){
 				findSensorByLabCenetrTabAjaxWorld(labCode,item.pro_code,item.file_name);
 
-			}
+			}*/
 		});
 		htmls+='</ul>';
 		 

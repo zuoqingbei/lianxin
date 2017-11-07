@@ -427,41 +427,35 @@ var dataBase;
 
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjax(type){
-	var labs=labsMap.get(type);
-	var labCode=labs.lab_code;
-	configName=labs.souce_value;
     var htmls="";
 
     $.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
 
+    	htmls+="<ul>";
         $.each(data,function(index,item){
-			htmls+=' <li><span></span><a href="javascript:void(0);">'+item.labName+'</a>';
+        	htmls+=' <li><span></span><header>'+item.labName+'</header>';
 			if(item.testUnitList.length>0){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testUnitList,function(ind,it){
-					
-					htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
+					if(it.testUnitStatus=="停测"){
+						htmls+='<li>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
+					}else{
+						htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
+					}
 				});
 				htmls+='</ul>';
 			}
 			htmls+=' </li>';
-			if(index==1){
+			/*if(index==1){
 				findSensorByLabCenetrTabAjax(item.labCode,item.url,item.testUnitList[index].testUnitId);
-			}
+			}*/
 		});
+        htmls+="</ul>";
 		//$("#lab_unit_selected_center").html(htmls);
-        $(".lab_code_"+labCode).html(htmls);
-        $(".lab_code_"+labCode).find("header").attr("onclick","");
-        $(".lab_code_"+labCode).find("ul>li:eq(0)").click();
-        //选择台位
-        $(".lab_code_"+labCode+">li>a").click(function (e) {
-            // $(".sheshi_tab").eq(1).click(); //为了让这个按钮变绿
-            $(this).parent().siblings().find('.taiwei_hide').css('display','none');
-            $(this).next().toggle();
-            e.stopPropagation()
-        });
-       // $(".sheshi_tab_list").find("ul:eq(0)>li:eq(0)>header").trigger("click");
-        // $("sheshi_tab_list").find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
+        $(".quxian_li_"+type).append(htmls);
+        $(".quxian_li_"+type).attr("onclick","");
+        $(".quxian_li_"+type).find("ul>li>header:eq(0)").click();
+        $(".quxian_li_"+type).find("ul>li>ul>li:eq(0)").click();
 	});
 }
 
