@@ -132,7 +132,7 @@ $(function () {
         $(".lab_content_r>.switchBox>div.item").eq(3).show().siblings().hide();
     });
 
-    //左侧菜单点击事件
+    //左侧菜单数据中心点击事件
     $(".labMainNav>.switchBox").on("click", "ul>li.noChildren, ul>li>ul>li", function () {
         prevIsLabUrl = false;
 
@@ -143,12 +143,15 @@ $(function () {
             var moduleMakersUrl = dataCenterMap.get($(this).data("urltype")+'').souce_value;
             moduleMakersShow(moduleMakersUrl);
         }else{
-
+            $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
+            $lab_content_r.find(".switchBox>div.item.monitoring").show().siblings().hide();
             if($(this).parents("ul.inland")[0]){//从url类型跳回到国内其他列表
-                $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
-                $lab_content_r.find(".switchBox>div.item.moduleMakers").hide().siblings(".monitoring").show();
                 inlandTabShow();
+            }else{
+                abroadTabShow();
             }
+
+
         }
     });
 

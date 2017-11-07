@@ -171,8 +171,12 @@ li:not(.hasChildren).active {
         margin-right: 1em;
         width: 1em;
         height: 1em;
-        background-image: url(../img/ico/line_qt.png);
+        background-image: url(../img/ico/line_yf.png);
         background-size: contain;
+    }
+    .labMainNav > .switchBox > ul > li > ul > li:hover>span.icon,
+    .labMainNav > .switchBox > ul > li > ul > li.active>span.icon{
+        filter: hue-rotate(-45deg);
     }
     .labMainNav > .switchBox > ul.inland > li:nth-of-type(2) > ul > li:nth-of-type(1)>span.icon{
         background-image: url(../img/ico/line_bl.png);
