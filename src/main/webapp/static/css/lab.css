@@ -203,9 +203,9 @@ li:not(.hasChildren).active {
         font-weight: bold;
     }
 
-    .labMainNav > .switchBox > ul > li > header.fold > span {
-        /*top: -.2em;*/
-    }
+/*    .labMainNav > .switchBox > ul > li > header.fold > span {
+        !*top: -.2em;*!
+    }*/
 
     .labMainNav > .switchBox > ul > li.noChildren:hover,
     .labMainNav > .switchBox > ul > li > ul > li:hover {

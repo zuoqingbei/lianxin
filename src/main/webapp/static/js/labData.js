@@ -177,10 +177,10 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
             } else {
                 //生成实验室
             	if(item.data_source=="webservice"){
-            		html += '<li class="quxian_li_' + item.id + '" '+ createClickFuntion(item)+' data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header>';
+            		html += '<li class="quxian_li_' + item.id + '" '+ createClickFuntion(item)+' data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '<span>∨</span></header>';
             		html += '</li>';
             	}else{
-            		html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header>';
+            		html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '<span>∨</span></header>';
             		var labsHtmls = "<ul>";
             		$.each(item.children, function (ind, it) {
             			if (index == 0 && ind == 0) {
@@ -189,7 +189,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
             			var currentHtmls = ' <li class="lab_code_' + it.lab_code + '">';
             			var header = '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∨</span></header>';
             			labsMap.put(it.id, it);
-            			labsHtmlsMap.put(it.id, header);
+            			labsHtmlsMap.put(it.id, '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∧</span></header>');
             			labsHtmls = labsHtmls + currentHtmls + header + "</li>";
             		});
             		labsHtmls += '</ul>';

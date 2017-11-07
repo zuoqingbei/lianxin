@@ -18,9 +18,10 @@ function abroadTabShow() {//国外
 function moduleMakersShow(url) {//模块商
     $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoard_onlyOne.png");
     $(".labSubNav>ul>li").hide().eq(4).addClass("active").show().siblings().removeClass("active").hide();
-    $lab_content_r.find(".switchBox>div.item.moduleMakers").children("iframe").attr("src",url).parent().show().siblings().hide();
+    $lab_content_r.find(".switchBox>div.item.moduleMakers").children("iframe").attr("src", url).parent().show().siblings().hide();
     console.log("url", url)
 }
+
 //视频加载动画
 function loadingAnimate($videoParent) {
     console.log("调用加载动画");
@@ -40,7 +41,7 @@ function loadingAnimate($videoParent) {
             if (counter === 3) {
                 counter = 0;
                 $videoParent.find(".videoWait").text("视频接入中 ");
-            }else{
+            } else {
                 counter++;
                 $videoParent.find(".videoWait").append("。")
             }
@@ -140,14 +141,14 @@ $(function () {
         $(this).addClass("active");
 
         if ($(this).data("urltype")) {//url类型
-            var moduleMakersUrl = dataCenterMap.get($(this).data("urltype")+'').souce_value;
+            var moduleMakersUrl = dataCenterMap.get($(this).data("urltype") + '').souce_value;
             moduleMakersShow(moduleMakersUrl);
-        }else{
+        } else {
             $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
             $lab_content_r.find(".switchBox>div.item.monitoring").show().siblings().hide();
-            if($(this).parents("ul.inland")[0]){//从url类型跳回到国内其他列表
+            if ($(this).parents("ul.inland")[0]) {//从url类型跳回到国内其他列表
                 inlandTabShow();
-            }else{
+            } else {
                 abroadTabShow();
             }
 
@@ -155,16 +156,22 @@ $(function () {
         }
     });
 
-    //主菜单二级菜单的折叠与展开
+    //菜单的折叠与展开
     $(".switchBox").on("click", "ul>li>header", function () {
-
+        // console.log("---ul>li>header",$(this)[0]);
         if ($(this).next().is(":visible")) {
-            $(this).next("ul").hide();
-            $(this).removeClass("fold").children("span").text("∨");
+            // console.log("ul:visible")
+            $(this).children("span").text("∨").parent().next("ul").hide(200);
         } else {
-            $(this).next("ul").show();
-            $(this).addClass("fold").children("span").text("∧");
+            // console.log("ul:hidden")
+            $(this).children("span").text("∧").parent().next("ul").show(200);
+            if ($(this).next("ul").length > 0) {
+                // console.log("有ul")
+                $(this).next("ul").children("li:eq(0)").click();
+            }
         }
+        $(this).parent().siblings().children("ul").hide()
+            .prev("header").children("span").text("∨");
     });
 
     //頂部子菜单点击事件
@@ -197,7 +204,7 @@ $(function () {
 
     //实时监测中的视频和曲线切换
     $(".sheshi_tab").click(function () {
-        if($(this).hasClass("disabled")){
+        if ($(this).hasClass("disabled")) {
             return;
         }
         var index = $(this).index();
@@ -231,9 +238,11 @@ $(function () {
 
     //台位点击事件
     $sheshi_tab_list.on("click", "ul>li>ul>li>ul>li", function () {
-        var curveBox = $monitoring.find(".shishi_right").children(".item.curve");
-        if(curveBox.is(":hidden")){//曲线没有显示
-            curveBox.show().siblings().hide();
+        prevIsLabUrl = false;
+        var $curveBox = $monitoring.find(".shishi_right").children(".item.curve");
+        if ($curveBox.is(":hidden")) {//曲线没有显示
+            console.log("$curveBox", $curveBox[0])
+            $curveBox.show().siblings().hide();
         }
         echartsResizeWorld();
         $(".sheshi_tab_list>ul>li>ul>li>ul>li").removeClass("active");
@@ -246,7 +255,6 @@ $(function () {
             $prevTaiwei = $(this).parent();
             var labCode = $(this).parent().prev().attr("labcode");//获取實驗室編碼
             var $parentMonitoring = $(this).parents(".monitoring");
-
             videoUrlAjax(labCode);
         }
     });
@@ -261,7 +269,7 @@ $(function () {
             .parent().show().siblings().hide();
 
         var labCode = $(this).parent().data("center-id");
-            videoUrlAjax(labCode, "toUrl")
+        videoUrlAjax(labCode, "toUrl")
     });
 
     //获取视频地址的ajax
@@ -269,23 +277,24 @@ $(function () {
         $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
             var videoUrl = data.videl_url;
             if (videoUrl) {
-                console.log("-------data.videl_url", videoUrl,"toUrl",toUrl);
+                console.log("-------data.videl_url", videoUrl, "toUrl", toUrl);
                 videoUrlMain = videoUrl.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
                 var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
                 $(".smallVideoBox").show();
                 $(".sheshi_tab:eq(0)").removeClass("disabled");
-                if(toUrl){
+                if (toUrl) {
                     videoShow("smallVideoWeb", videoUrlSub, 1);
-                }else{
+                } else {
                     videoShow("smallVideo", videoUrlSub, 1);
                 }
-            }else{
+            } else {
                 $(".sheshi_tab:eq(0)").addClass("disabled");
                 $(".smallVideoBox").hide();
             }
         })
 
     }
+
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
     initfour();//及时率

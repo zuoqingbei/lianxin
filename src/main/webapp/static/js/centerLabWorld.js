@@ -113,6 +113,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
     //生成下拉
 	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName,"labCode":labCode},function(data){
 		var htmls=labsHtmlsMap.get(type);
+		console.log(".......拼ul之前的HTML",htmls)
 		htmls+="<ul>";
 		$.each(data,function(index,item){
 			// console.log(item)
