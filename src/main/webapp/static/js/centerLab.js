@@ -427,6 +427,8 @@ var dataBase;
 
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjax(type){
+	var labs=labsMap.get(type);
+	var labCode=labs.lab_code;
     var htmls="";
 
     $.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
@@ -451,11 +453,15 @@ function loadLabUnitInfoCenterTabAjax(type){
 			}*/
 		});
         htmls+="</ul>";
-		//$("#lab_unit_selected_center").html(htmls);
-        $(".quxian_li_"+type).append(htmls);
+        $(".lab_code_"+labCode+"_"+type).append(htmls);
+        $(".lab_code_"+labCode+"_"+type).attr("onclick","");
+        $(".lab_code_"+labCode+"_"+type).find("ul>li>header:eq(0)").click();
+        $(".lab_code_"+labCode+"_"+type).find("ul>li>ul>li:eq(0)").click();
+        
+       /* $(".quxian_li_"+type).append(htmls);
         $(".quxian_li_"+type).attr("onclick","");
         $(".quxian_li_"+type).find("ul>li>header:eq(0)").click();
-        $(".quxian_li_"+type).find("ul>li>ul>li:eq(0)").click();
+        $(".quxian_li_"+type).find("ul>li>ul>li:eq(0)").click();*/
 	});
 }
 

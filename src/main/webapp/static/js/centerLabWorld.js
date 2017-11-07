@@ -130,9 +130,9 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
 		htmls+='</ul>';
 		//$(".quxian_li_"+type).append(htmls);
         //$(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
-		$(".lab_code_"+labCode).html(htmls);
-		$(".lab_code_"+labCode).find("header").attr("onclick","");
-        $(".lab_code_"+labCode).find("ul>li:eq(0)").click();
+		$(".lab_code_"+labCode+"_"+type).html(htmls);
+		$(".lab_code_"+labCode+"_"+type).find("header").attr("onclick","");
+        $(".lab_code_"+labCode+"_"+type).find("ul>li:eq(0)").click();
 	});
 }
 //查询y轴信息
@@ -325,9 +325,9 @@ function loadLabUnitInfoCenterTabAjaxWorld(type) {
 		});
 		htmls+='</ul>';
 		 
-		$(".lab_code_"+labCode).html(htmls);
-		$(".lab_code_"+labCode).find("header").attr("onclick","");
-        $(".lab_code_"+labCode).find("ul>li:eq(0)").click();
+		$(".lab_code_"+labCode+"_"+type).html(htmls);
+		$(".lab_code_"+labCode+"_"+type).find("header").attr("onclick","");
+        $(".lab_code_"+labCode+"_"+type).find("ul>li:eq(0)").click();
     });
 
     

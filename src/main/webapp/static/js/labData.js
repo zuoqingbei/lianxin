@@ -184,13 +184,47 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
             		var labsHtmls = "<ul>";
             		$.each(item.children, function (ind, it) {
             			if (index == 0 && ind == 0) {
-            				firstLabCode = it.lab_code;
+            				firstLabCode = it.lab_code+"_"+it.id;
             			}
-            			var currentHtmls = ' <li class="lab_code_' + it.lab_code + '">';
-            			var header = '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∨</span></header>';
-            			labsMap.put(it.id, it);
-            			labsHtmlsMap.put(it.id, '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∧</span></header>');
-            			labsHtmls = labsHtmls + currentHtmls + header + "</li>";
+            			if(it.data_source!="webservice"){
+            				var currentHtmls = ' <li class="lab_code_' + it.lab_code + '_'+it.id;
+            				var header = '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name ;
+            				if(it.data_source=="url"){
+            					currentHtmls+=' toLabIframe " data-url="'+it.souce_value+'">';
+            					header+='</header>';
+            				}else{
+            					currentHtmls+=' ">';
+            					header+= '<span>∨</span></header>';
+            				}
+            				labsMap.put(it.id, it);
+            				labsHtmlsMap.put(it.id, '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∧</span></header>');
+            				//如果是中海博睿 不拼接header
+            				labsHtmls = labsHtmls + currentHtmls + header + "</li>";
+            			}else if(it.data_source=="webservice"){
+            				//直接获取webservice实验室信息
+            				var htmls="";
+            				 $.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
+
+         				        $.each(data,function(index,item){
+         				        	htmls+=' <li><header>'+item.labName+'<span>∨</span></header>';
+         							if(item.testUnitList.length>0){
+         								htmls+='<ul class="taiwei_hide">';
+         								$.each(item.testUnitList,function(ind,it){
+         									if(it.testUnitStatus=="停测"){
+         										htmls+='<li>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
+         									}else{
+         										htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
+         									}
+         								});
+         								htmls+='</ul>';
+         							}
+         							htmls+=' </li>';
+         						});
+         				        $(".quxian_li_"+item.id).find("ul:eq(0)").append(htmls);
+         				 });
+            				
+            				///
+            			}
             		});
             		labsHtmls += '</ul>';
             		html += labsHtmls;
