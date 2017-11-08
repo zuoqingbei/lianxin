@@ -206,6 +206,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
             				 $.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
 
          				        $.each(data,function(index,item){
+                                    item.labName = item.labName.replace("（","(").replace("）",")").replace("、","/");
          				        	htmls+=' <li><header>'+item.labName+'<span>∨</span></header>';
          							if(item.testUnitList.length>0){
          								htmls+='<ul class="taiwei_hide">';

@@ -235,7 +235,6 @@ $(function () {
         }
     });
 
-
     //台位点击事件
     $sheshi_tab_list.on("click", "ul>li>ul>li>ul>li", function () {
         prevIsLabUrl = false;
@@ -246,7 +245,7 @@ $(function () {
         }
         echartsResizeWorld();
         $(".sheshi_tab_list>ul>li>ul>li>ul>li").removeClass("active");
-        $(".sheshi_tab_list>ul>li.toLabIframe.active").removeClass("active");
+        $(".sheshi_tab_list>ul>li>ul>li.toLabIframe>header").removeClass("active");
         $(this).addClass("active");
         //自动切换到曲线显示
         $(".sheshi_tab.sheshi_tab_lines").click();
@@ -258,6 +257,7 @@ $(function () {
             videoUrlAjax(labCode);
         }
     });
+
     //链接型实验室点击和画中画切换
     $sheshi_tab_list.on("click", ".toLabIframe>header", function () {
         prevIsLabUrl = true;

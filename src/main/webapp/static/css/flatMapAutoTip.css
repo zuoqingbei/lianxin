@@ -40,6 +40,12 @@ body{
     padding-top: 0.5em;
     padding-bottom: 0.5em;
 }
+.echart_tip > .echart_content>h4{
+    margin:0.5em 0;
+}
+.echart_tip > .echart_content>img{
+    width:60%;
+}
 .echart_tip.bottom >.echart_content {
     bottom: -3.4em;
 }
