@@ -28,10 +28,13 @@ public class DeviceUseAnalysisModel extends Model<DeviceUseAnalysisModel> {
 	/*
 	 * 根据是商品使用表所关联的商品sn查询该商品的使用状况
 	 */
-	public Record getDeviceUseAnalysisByDeviceSncode(String device_info_sncode){
-		String sql="select * from phm_device_use_analysis where device_info_sncode="+device_info_sncode;
+	public List<Record> getDeviceUseAnalysisByDeviceSncode(String device_info_sncode){
+		String sql=
+		"select analy.DESCRIPTION,analy.STATUS,analy.IMAGEURL from PHM_DEVICE_INFO info ,PHM_DEVICE_USE_ANALYSIS analy"+ 
+		"  where analy.DEVICE_INFO_SNCODE=INFO.SNCODE and analy.DEVICE_INFO_SNCODE=" +device_info_sncode;
 		List<Record>list=Db.find(sql);
-		return list.size()>0?list.get(0):null;
+		return list;
 	}
 	
 }
+

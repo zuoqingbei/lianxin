@@ -138,6 +138,7 @@ public class UlabCofig extends JFinalConfig {
 
 		/**重庆实验室hive测试库信息设置Impala数据源  **/
 
+
 		DruidPlugin dsImpala = new DruidPlugin(this.getProperty("hive.url"), this.getProperty("hive.user"),
 				"", this.getProperty("hive.driver"));
 		me.add(dsImpala);
