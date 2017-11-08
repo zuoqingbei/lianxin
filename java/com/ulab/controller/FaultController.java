@@ -134,7 +134,6 @@ public class FaultController extends BaseController{
 	
 	//
 	public void service(){
-		System.out.println("===============================");
 		
 		render("service.html");
 	}

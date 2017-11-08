@@ -119,7 +119,7 @@ where age > ?", 18);
  * @author chen xin 
  */
 		public List<Record> findPageFaultInfo(int page,int pageSize,String f_object){
-			String sql="select fault.num,f_id,f_object,F_XX_BIANMA,F_XX_MIAOSHU,faultInfo.F_YY_BIANMA,faultInfo.F_YY_MIAOSHU,faultInfo.F_WEIHAO,faultInfo.F_MAINTENANCE,faultInfo.F_ZR_CATEGORY,F_DATE,faultInfo.F_QUYU,faultInfo.F_GONGMAO,F_SB_NAME,F_SB_NUMBER,product_id from "
+			String sql="select fault.num,f_id,f_object,F_XX_BIANMA,F_XX_MIAOSHU,faultInfo.F_YY_BIANMA,faultInfo.F_YY_MIAOSHU,faultInfo.F_WEIHAO,faultInfo.F_MAINTENANCE,faultInfo.F_ZR_CATEGORY,F_DATE,F_SB_NAME,F_SB_NUMBER,product_id from "
 					+ "(select"
 					+ " rownum num, f_id,f_object,F_XX_BIANMA,F_XX_MIAOSHU,F_YY_BIANMA,F_YY_MIAOSHU,F_WEIHAO,F_MAINTENANCE,F_ZR_CATEGORY,F_DATE,F_QUYU,F_GONGMAO,F_SB_NAME,F_SB_NUMBER,product_id from PHM_FAULT where rownum<="+page*pageSize+") fault"
 					+ " inner join PHM_FAULT_LOSTINFO faultInfo on fault.F_YY_BIANMA=faultInfo.F_YY_BIANMA"

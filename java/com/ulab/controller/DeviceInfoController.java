@@ -5,7 +5,7 @@ package com.ulab.controller;
 import java.util.List;
 //import java.util.Map;
 //import java.util.Random;
-
+import java.util.Map;
 
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
@@ -36,5 +36,18 @@ public class DeviceInfoController extends BaseController {
 		Record record=DeviceInfoModel.dao.findDeviceInfoById(sn);
 		renderJson(record);
 	}
-
+	//转发到strategy.html
+	public void strategy(){
+		render("strategy.html");
+	}
+	/**
+	 * @author chenxin
+	 * @return List<List<Record>>
+	 * 根据status分别查询处四种状态的集合
+	 */
+	public void findDeviceInfoStatusGroup(){
+		Map<String,List<Record>>mp=DeviceInfoModel.dao.findDeviceInfoStatusGroup();
+		renderJson(mp);
+		
+	}
 }

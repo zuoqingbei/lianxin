@@ -26,13 +26,19 @@ import com.ulab.util.SqlUtil;
 /**
  * @author chen xin
  */
-@ControllerBind(controllerKey = "/deviceUseAnalysis", viewPath = "/phm")
+@ControllerBind(controllerKey = "/deviceStatus", viewPath = "/phm")
 public class DeviceStatusController extends BaseController {
 	//跟据商品实时状态表所关联的phm_device_info sn查询该商品使用信息
 	public void getDeviceStatusByDeviceSncode(){
-		String device_info_sncode=getPara("device_info_sncode");
-		Record record=DeviceStatusModel.dao.getDeviceStatusByDeviceSncode(device_info_sncode);
+		String sncode=getPara("sncode");
+		Record record=DeviceStatusModel.dao.getDeviceStatusByHttp(sncode);
 		renderJson(record);
+	}
+	
+	//转到实时状态页面
+	public void status() {
+		render("status.html");
+		
 	}
 
 }
