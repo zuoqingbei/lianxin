@@ -109,16 +109,43 @@ public class UlabCofig extends JFinalConfig {
 		thailandARP.setShowSql(true);
 		me.add(jzhektARP);
 		/**胶州海尔空调数据库END**/
+		
+		/**胶南热水器数据库START**/
+		DruidPlugin jnrsq = new DruidPlugin(this.getProperty("jnrsq.url"), this.getProperty("jnrsq.user"),
+				this.getProperty("jnrsq.password"), getProperty("jnrsq.driver"));
+		jnrsq.setInitialSize(5);
+		jnrsq.setMaxActive(5);
+		jnrsq.setMinIdle(3);
+		me.add(jnrsq);
+		ActiveRecordPlugin jnrsqARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_JNRSQ, jnrsq);
+		jnrsqARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
+		jnrsqARP.setShowSql(true);
+		me.add(jnrsqARP);
+		/**胶南热水器数据库END**/
+		
+		/**中海博睿整机数据库START**/
+		DruidPlugin zhbrzj = new DruidPlugin(this.getProperty("zhbrzj.url"), this.getProperty("zhbrzj.user"),
+				this.getProperty("zhbrzj.password"), getProperty("zhbrzj.driver"));
+		jnrsq.setInitialSize(5);
+		jnrsq.setMaxActive(5);
+		jnrsq.setMinIdle(3);
+		me.add(zhbrzj);
+		ActiveRecordPlugin zhbrzjARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_ZHBRZJ, zhbrzj);
+		zhbrzjARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
+		zhbrzjARP.setShowSql(true);
+		me.add(zhbrzjARP);
+		/**中海博睿整机数据库END**/
 
 		/**重庆实验室hive测试库信息设置Impala数据源  **/
 
-//		DruidPlugin dsImpala = new DruidPlugin(this.getProperty("chongqing.url"), this.getProperty("chongqing.user"),
-//				"", this.getProperty("chongqing.driver"));
-//		me.add(dsImpala);
-//
-//		ActiveRecordPlugin chongqingHive = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_QC_HIVE, dsImpala);
-//		chongqingHive.setShowSql(true);
-//		me.add(chongqingHive);
+
+		DruidPlugin dsImpala = new DruidPlugin(this.getProperty("hive.url"), this.getProperty("hive.user"),
+				"", this.getProperty("hive.driver"));
+		me.add(dsImpala);
+
+		ActiveRecordPlugin hive = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_HIVE, dsImpala);
+		hive.setShowSql(true);
+		me.add(hive);
 		/**重庆实验室hive测试库信息 END**/
 
 		//定时器
@@ -142,6 +169,6 @@ public class UlabCofig extends JFinalConfig {
 	//main方法启动 需要放开pom中jetty-server的注释，并改beetl.properties中RESOURCE.root= /src/main/webapp
 	public static void main(String[] args) {
 		PathKit.setWebRootPath("src/main/webapp/");
-		JFinal.start("src/main/webapp", 8090, "/hlht", 5);
+		JFinal.start("src/main/webapp", 8080, "/hlht", 5);
 	}
 }

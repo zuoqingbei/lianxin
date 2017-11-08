@@ -4521,6 +4521,21 @@ function refreshHeightChart(){
 	        plotLines: [],
 	        tickColor: "rgba(0,0,0,0)",
 	        labels:{
+                //保证两位小数
+                formatter : function () {
+                    var strVal = this.value + '';
+                    if (strVal.indexOf('.') < 0) {
+                        return strVal + '.00';
+                    } else {
+                        var arr = strVal.split('.');
+                        if (arr[1].length === 2) {
+                            return strVal;
+                        } else {
+                            return strVal + '0';
+                        }
+                    }
+                    // return "88"
+                },
 	       	 	 y: 13*bodyScale,
 		       	 style: {
 		             /* fontWeight: 'bold',*/
@@ -4563,9 +4578,9 @@ function resetCPK(){
 	$.each(tab4CPKData[0],function(index,item){
 		mData.push([parseFloat(item.wkq_num),parseFloat(tab4xhPro.pj_value)]);
 	});
-	mHeightChartTab4.options.xAxis[0].max=parseFloat(tab4xhPro.lsl);
-	mHeightChartTab4.options.xAxis[0].min=parseFloat(tab4xhPro.usl);
-	mHeightChartTab4.series[0].setData(histogramTab4(mData, 0.3)); // 更新 series
+	mHeightChartTab4.options.xAxis[0].max=parseFloat(tab4xhPro.lsl)+2*rootScale;
+	mHeightChartTab4.options.xAxis[0].min=parseFloat(tab4xhPro.usl)-2*rootScale;
+	mHeightChartTab4.series[0].setData(histogramTab4(mData, rootScale)); // 更新 series
 	mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_1");
 	mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_2");
 	mHeightChartTab4.xAxis[0].addPlotLine({
@@ -4575,6 +4590,21 @@ function resetCPK(){
         value:parseFloat(tab4xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
         width:1  ,               //标示线的宽度，2px
         label:{
+            //保证两位小数
+            formatter : function () {
+                var strVal = this.value + '';
+                if (strVal.indexOf('.') < 0) {
+                    return strVal + '.00';
+                } else {
+                    var arr = strVal.split('.');
+                    if (arr[1].length === 2) {
+                        return strVal;
+                    } else {
+                        return strVal + '0';
+                    }
+                }
+                // return "88"
+            },
             text:'LSL',  //标签的内容
             verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
             x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
@@ -4593,6 +4623,21 @@ function resetCPK(){
         value:parseFloat(tab4xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
         width:1  ,               //标示线的宽度，2px
         label:{
+            //保证两位小数
+            formatter : function () {
+                var strVal = this.value + '';
+                if (strVal.indexOf('.') < 0) {
+                    return strVal + '.00';
+                } else {
+                    var arr = strVal.split('.');
+                    if (arr[1].length === 2) {
+                        return strVal;
+                    } else {
+                        return strVal + '0';
+                    }
+                }
+                // return "88"
+            },
             text:'USL',//标签的内容
             verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
             x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px

@@ -1,3 +1,4 @@
+
 package com.ulab.controller;
 
 //import java.util.ArrayList;
@@ -42,3 +43,4 @@ public class DeviceStatusController extends BaseController {
 	}
 
 }
+

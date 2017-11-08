@@ -1,4 +1,5 @@
 
+
 var Service = {
 	bodyScale:$(window).height()/595,
 	init:function(){
@@ -346,5 +347,6 @@ var Service = {
 		
 	}
 }
+
 
 Service.init();

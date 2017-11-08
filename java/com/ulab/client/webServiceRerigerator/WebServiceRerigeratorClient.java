@@ -45,7 +45,7 @@ public class WebServiceRerigeratorClient {
 			String flag = getLabFlag(testProdInfoItems, labCode);
 			//获取当前台位在测订单
 			TestMetadata testMetadata = new TestMetadata();
-			ArrayOfTestMetadata testMetadatas = port.getMetaData(labCode, 1, flag);
+			ArrayOfTestMetadata testMetadatas = port.getMetaData(labCode, 1, "2016/5/3 16:19:10"+flag);
 			if(null != testMetadatas && null != testMetadatas.getTestMetadata()){
 				for(TestMetadata testMetadata1 : testMetadatas.getTestMetadata()){
 					if(testMetadata1.getTestUnitId() == testUnitId){

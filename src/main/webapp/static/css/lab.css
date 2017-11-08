@@ -164,14 +164,48 @@ li:not(.hasChildren).active {
         position: absolute;
         right: 4em;
     }
-
+    .labMainNav > .switchBox > ul > li > ul > li>span.icon { /*小图标*/
+        display: inline-block;
+        position: relative;
+        top: 0.16em;
+        margin-right: 1em;
+        width: 1em;
+        height: 1em;
+        background-image: url(../img/ico/line_yf.png);
+        background-size: contain;
+    }
+    .labMainNav > .switchBox > ul > li > ul > li:hover>span.icon,
+    .labMainNav > .switchBox > ul > li > ul > li.active>span.icon{
+        filter: hue-rotate(-45deg);
+    }
+    .labMainNav > .switchBox > ul.inland > li:nth-of-type(2) > ul > li:nth-of-type(1)>span.icon{
+        background-image: url(../img/ico/line_bl.png);
+    }
+    .labMainNav > .switchBox > ul.inland > li:nth-of-type(2) > ul > li:nth-of-type(2)>span.icon{
+        background-image: url(../img/ico/line_xd.png);
+    }
+    .labMainNav > .switchBox > ul.inland > li:nth-of-type(2) > ul > li:nth-of-type(3)>span.icon{
+        background-image: url(../img/ico/line_jk.png);
+    }
+    .labMainNav > .switchBox > ul.inland > li:nth-of-type(2) > ul > li:nth-of-type(4)>span.icon{
+        background-image: url(../img/ico/line_sk.png);
+    }
+    .labMainNav > .switchBox > ul.inland > li:nth-of-type(2) > ul > li:nth-of-type(5)>span.icon{
+        background-image: url(../img/ico/line_cd.png);
+    }
+    .labMainNav > .switchBox > ul.inland > li:nth-of-type(2) > ul > li:nth-of-type(6)>span.icon{
+        background-image: url(../img/ico/line_rsq.png);
+    }
+    .labMainNav > .switchBox > ul.inland > li:nth-of-type(2) > ul > li:nth-of-type(7)>span.icon{
+        background-image: url(../img/ico/line_qt.png);
+    }
     .labMainNav > .switchBox > ul > li > header:hover > span {
         font-weight: bold;
     }
 
-    .labMainNav > .switchBox > ul > li > header.fold > span {
-        /*top: -.2em;*/
-    }
+/*    .labMainNav > .switchBox > ul > li > header.fold > span {
+        !*top: -.2em;*!
+    }*/
 
     .labMainNav > .switchBox > ul > li.noChildren:hover,
     .labMainNav > .switchBox > ul > li > ul > li:hover {
@@ -204,7 +238,7 @@ li:not(.hasChildren).active {
 /*右侧tab标签*/
 @media all {
     .lab_content_r {
-        background-image: url("../img/lab/labTabBoardInland_1.png");
+        background-image: url("../img/lab/labTabBoardInland_4.png");
         background-size: 100% 100%;
     }
 
@@ -238,7 +272,7 @@ li:not(.hasChildren).active {
         height: 100%;
     }
 
-    .lab_content_r > .switchBox > div.item:not(:nth-of-type(1)) {
+    .lab_content_r > .switchBox > div.item:not(:nth-of-type(4)) {
         display: none;
     }
 
@@ -249,6 +283,10 @@ li:not(.hasChildren).active {
 }
 
 /*视频监控页面*/
+.monitoring .sheshi_tab.disabled {
+    filter: grayscale(100%) brightness(80%);
+    cursor: not-allowed;
+}
 .monitoring .bigVideoBox {
     padding: 1em;
     height: 45em;

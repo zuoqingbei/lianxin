@@ -125,3 +125,4 @@ public class DeviceStatusModel extends Model<DeviceStatusModel> {
 		
 		
 	}
+

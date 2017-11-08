@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.chainsaw.Main;
 
 import com.ulab.client.webServiceRerigerator.ArrayOfTestMetadata;
 import com.ulab.client.webServiceRerigerator.ArrayOfTestProdInfoItem;
@@ -100,7 +101,7 @@ public class IntegrationServiceClient {
 				labSingleData.setFinishOrderCount(stopProcessOrderNum);
 				finishOrderCount = finishOrderCount + stopProcessOrderNum;
 				//在测订单
-				ArrayOfTestMetadata testMetadatas = port2.getMetaData(labCode, 1, flag);
+				ArrayOfTestMetadata testMetadatas = port2.getMetaData(labCode, 1, "2016/5/3 16:19:10"+flag);
 				//实验室状态
 				String labStatus;
 				if(null != testMetadatas && null != testMetadatas.getTestMetadata() && testMetadatas.getTestMetadata().size() > 0){
@@ -213,7 +214,7 @@ public class IntegrationServiceClient {
 				ArrayOfTestProdInfoItem testProdInfoItems = port2.getTestProdInfoItemByLabCode(labCode);
 				String flag = getLabFlag(testProdInfoItems, labCode);
 				//在测订单
-				ArrayOfTestMetadata testMetadatas = port2.getMetaData(labCode, 1, flag);
+				ArrayOfTestMetadata testMetadatas = port2.getMetaData(labCode, 1, "2016/5/3 16:19:10"+flag);
 				//在测台位列表
 				List<Integer> processingUnits = new ArrayList<Integer>();
 				if(null != testMetadatas && null != testMetadatas.getTestMetadata() && testMetadatas.getTestMetadata().size() > 0){
@@ -289,5 +290,9 @@ public class IntegrationServiceClient {
         format.setMinimumFractionDigits(2);// 设置小数位
         return format.format(rate);
 	}
-
+	public static void main(String[] args) {
+		IntegrationServiceClient client = new IntegrationServiceClient();
+		List<LabData> labDataList = client.searchLabData();
+		System.out.println(labDataList);
+	}
 }

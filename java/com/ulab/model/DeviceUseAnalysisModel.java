@@ -37,3 +37,4 @@ public class DeviceUseAnalysisModel extends Model<DeviceUseAnalysisModel> {
 	}
 	
 }
+

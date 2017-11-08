@@ -101,45 +101,38 @@ var startTime;
 
 
 //加载实验室与台位对照关系 生刷选框
-function loadLabUnitInfoCenterTabAjaxWorldHadoop(type,mConfigName,inlandOrAbroad) {
-	var dataCenter=dataCenterMap.get(type);
+function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
+	var labs=labsMap.get(type);
+	var labCode=labs.lab_code;
 	var $l3x3 = $("#l");
-	configName=mConfigName;
+	configName=labs.souce_value;
 	//清除中海博睿定时器
 	window.clearInterval(intevalChart1);
 	window.clearInterval(intevalChartHadoop);
 
     //生成下拉
-	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName},function(data){
-		var htmls="<ul>";
+	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName,"labCode":labCode},function(data){
+		var htmls=labsHtmlsMap.get(type);
+		//console.log(".......拼ul之前的HTML",htmls)
+		htmls+="<ul>";
 		$.each(data,function(index,item){
 			// console.log(item)
-			htmls+=' <li><header>'+item.labcode+'<span>∨</span></header>';
-			if(item.testunitlist.length>0){
-				htmls+='<ul class="taiwei_hide">';
-				$.each(item.testunitlist,function(ind,it){
-
-					if(it.istesting){
-						htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+item.labcode+'\",\"'+it.testunitid+'\")>台位：'+it.testunitname+'  ('+it.testunitstatus+')</li>';
-					}else{
-						htmls+='<li>台位：'+it.testunitname+'  ('+it.testunitstatus+')</li>';
-					}
-				});
-				htmls+='</ul>';
+			if(item.istesting){
+				htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
+			}else{
+				htmls+='<li >台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}
-			htmls+=' </li>';
-			if(index==0){
+		/*	if(index==0){
 				// console.log(item.testunitlist)
-				findSensorTypeInfoHadoop(item.labcode,item.testunitlist[index].testunitid);
-			}
+				findSensorTypeInfoHadoop(labCode,item.testunitid);
+			}*/
 		});
 		htmls+='</ul>';
-        // alert("hadoop")
-		$(".quxian_li_"+type).append(htmls);
-        // $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>header").trigger("click");
-        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
-
-
+		//$(".quxian_li_"+type).append(htmls);
+        //$(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
+		$(".lab_code_"+labCode+"_"+type).html(htmls);
+		$(".lab_code_"+labCode+"_"+type).find("header").attr("onclick","");
+        $(".lab_code_"+labCode+"_"+type).find("ul>li:eq(0)").click();
 	});
 }
 //查询y轴信息
@@ -171,8 +164,10 @@ function findTestDataHadoop(labCode, testUnitId) {
         if (data == "") {
             return;
         }
-        myChartWorld1.clear();
-        myChartWorld2.clear();
+    	myChart1.clear();
+		myChart2.clear();
+		myChartWorld1.clear();
+	    myChartWorld2.clear();
         $("#legend_ul_world").html('');
         dataBase=data;
         //根据传感器具体数据 生成图例
@@ -197,6 +192,8 @@ function findTestDataHadoop(labCode, testUnitId) {
         createEchartsWorld(true);
         //因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
 		intevalChartHadoop=setInterval("intervalChangeDataHadoop()", 30000);
+		myChartWorld1.hideLoading();
+	    myChartWorld2.hideLoading();
     });
 }
 function intervalChangeDataHadoop() {
@@ -312,52 +309,27 @@ function timestampFormat(timestamp){
 
 
 //加载实验室与台位对照关系 生刷选框
-function loadLabUnitInfoCenterTabAjaxWorld(type,inlandOrAbroad) {
-	var dataCenter=dataCenterMap.get(type);
+function loadLabUnitInfoCenterTabAjaxWorld(type) {
+	var labs=labsMap.get(type);
+	var labCode=labs.lab_code;
 	window.clearInterval(intevalChart1);
     var htmls = "";
-	// alert(dataCenter.id)
-
-    $.post(contextPath+"/lab/loadJsonProByDataCenterIdAjax",{"dataCenterId":type},function(da){
-    	 // alert(da)
-    /*	$.each(da,function(index,item){
-    		htmls += ' <li><span></span><a href="javascript:void(0);">'+item.pro_name+'</a>';
-    		if(item.children!=null&&item.children.length>0){
-    			htmls += '<ul class="taiwei_hide">';
-    			$.each(item.children,function(ind,it){
-    				if(ind==0){
-    					 findSensorByLabCenetrTabAjaxWorld(item.pro_code, it.pro_code);
-    				}
-    				 htmls += '<li onclick=findSensorByLabCenetrTabAjaxWorld("'+item.pro_code+'","'+it.pro_code+'") this >'+it.pro_name+'</li>';
-    			});
-    		}
-	        htmls += ' </ul></li>';
-    	});*/
-    	
-    	var htmls="<ul>";
-		$.each(da,function(index,item){
+    $.post(contextPath+"/lab/loadJsonProByDataCenterIdAjax",{"labCode":labCode},function(data){
+    	var htmls=labsHtmlsMap.get(type);
+		htmls+="<ul>";
+		$.each(data,function(index,item){
 			// console.log(item)
-			htmls+=' <li><header>'+item.pro_name+'<span>∨</span></header>';
-			if(item.children.length>0){
-				htmls+='<ul class="taiwei_hide">';
-				$.each(item.children,function(ind,it){
-					htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld(\"'+item.pro_code+'\",\"'+it.pro_code+'\")>'+it.pro_name+'</li>';
-					if(ind==1){
-						findSensorByLabCenetrTabAjaxWorld(item.pro_code,it.pro_code);
-					}
-				});
-				htmls+='</ul>';
-			}
-			htmls+=' </li>';
+			htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld(\"'+labCode+'\",\"'+item.pro_code+'\",\"'+item.file_name+'\")>'+item.pro_name+'</li>';
+			/*if(index==0){
+				findSensorByLabCenetrTabAjaxWorld(labCode,item.pro_code,item.file_name);
+
+			}*/
 		});
 		htmls+='</ul>';
-		console.log(htmls)
 		 
-		$(".quxian_li_"+type).append(htmls);
-		// alert("json")
-        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>header").trigger("click");
-        $(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
-
+		$(".lab_code_"+labCode+"_"+type).html(htmls);
+		$(".lab_code_"+labCode+"_"+type).find("header").attr("onclick","");
+        $(".lab_code_"+labCode+"_"+type).find("ul>li:eq(0)").click();
     });
 
     
@@ -395,20 +367,9 @@ function resetDataCenterLabWorld() {
 }
 
 //获取传感器信息 用于生成y轴
-function findSensorByLabCenetrTabAjaxWorld(labTypeCode, testUnitId, thisElem) {
+function findSensorByLabCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
     resetDataCenterLabWorld();
     currentDataWorld = mSensor;
-    console.log("labTypeCode",labTypeCode)
-    $.post(contextPath+'/lab/loadTopVideoByLabCodeAjax?labCode='+labTypeCode,function(data){
-        var currentUrl = data.videl_url;
-        if($(thisElem).parents(".monitoring").index === 3){ //国内
-            videoShow("smallVideoInland",currentUrl)
-            console.log("smallVideoInland");
-        }else{
-            videoShow("smallVideoAbroad",currentUrl)
-            console.log("smallVideoAbroad");
-        }
-    });
     //根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
     $.each(mSensor, function (index, item) {
         if (index < 4) {
@@ -418,14 +379,13 @@ function findSensorByLabCenetrTabAjaxWorld(labTypeCode, testUnitId, thisElem) {
         }
     });
     //获取曲线具体数据
-    //findSensorDataCenetrTabAjax2(labTypeCode,testUnitId);
-    findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId);
+    findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName);
 }
 
-function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId) {
+function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
     mlabTypeCode = labTypeCode;
     mtestUnitId = testUnitId;
-    $.post(contextPath + "/lab/getJsonFile", {"fileName": labTypeCode + "-" + testUnitId + ".json"}, function (data) {
+    $.post(contextPath + "/lab/getJsonFile", {"fileName": fileName}, function (data) {
         data = eval("(" + data + ")");
         if (data == "") {
             //alert("暂未开测");
@@ -456,7 +416,8 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId) {
         createLegendHtmlsWorld();
         createEchartsWorld(true);
         //因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
-
+        myChartWorld1.hideLoading();
+        myChartWorld2.hideLoading();
     });
 }
 function randomLegendWorld() {

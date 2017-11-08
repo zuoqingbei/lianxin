@@ -27,6 +27,7 @@ import com.ulab.model.JianceProModel;
 import com.ulab.model.JsonPropertyModel;
 import com.ulab.model.LabAllData;
 import com.ulab.model.LabCarryModel;
+import com.ulab.model.LabCodeModel;
 import com.ulab.model.LabData;
 import com.ulab.model.LabDataResultModel;
 import com.ulab.model.LabMapModel;
@@ -612,6 +613,14 @@ public class LabController extends BaseController {
 	public void jianCeDataForTab1Ajax() {
 		String xhCode = getPara("xhCode", "");// 型号
 		List<Record> list = JianCeModel.dao.findProviderDicByPid(xhCode);
+		//获取最大值和最小值，并计算出刻度值
+		List<Record> minMax = JianCeModel.dao.findProviderDicMaxMinByPid(xhCode);
+		double min = Double.parseDouble(minMax.get(0).get("min").toString());
+		double max = Double.parseDouble(minMax.get(0).get("max").toString());
+		double scale = (max - min)/12;
+		Record r = new Record();
+		r.set("scale", scale);
+		minMax.add(r);
 		/*
 		 * String redis_key=Constants.JIANC_EPRO_SESSION+xhCode; Record
 		 * pro=getSessionAttr(redis_key); if(pro==null){
@@ -627,6 +636,7 @@ public class LabController extends BaseController {
 		// List<Record> gaussian=gaussian(xhCode);
 		List<List<Record>> re = new ArrayList<List<Record>>();
 		re.add(list);
+		re.add(minMax);
 		// re.add(gaussian);
 		renderJson(re);
 	}
@@ -938,25 +948,7 @@ public class LabController extends BaseController {
 		String labTypeCode = getPara("labTypeCode", "");
 		String url = getPara("url", "");
 		String testUnitId = getPara("testUnitId", "");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String fileName = sdf.format(new Date()) + "-" + labTypeCode + "-"
-				+ testUnitId;
-		String path = getWebRootPath() + "/src/main/webapp/static/data/"
-				+ fileName;
 		String data = "";
-		/*
-		 * if(JsonUtils.judeFileExists(path)){ //直接读取json文件
-		 * data=JsonUtils.readJson(path); }else{ WebServiceRerigeratorClient
-		 * client = new WebServiceRerigeratorClient(); LabTestUnit labTestUnit =
-		 * client.searchRealTimeData(labTypeCode, url,
-		 * Integer.valueOf(testUnitId));
-		 * System.out.println(labTestUnit.getRealTimeData());
-		 * if(labTestUnit!=null
-		 * &&StringUtils.isNotBlank(labTestUnit.getRealTimeData())){
-		 * JsonUtils.writeJson(getWebRootPath()+"/src/main/webapp/static/data/",
-		 * labTestUnit.getRealTimeData(), fileName);
-		 * data=labTestUnit.getRealTimeData(); } }
-		 */
 		WebServiceRerigeratorClient client = new WebServiceRerigeratorClient();
 		String interval = getPara("interval", "3");
 		LabTestUnit labTestUnit = client.searchRealTimeData(labTypeCode, url,
@@ -1148,7 +1140,7 @@ public class LabController extends BaseController {
 	 * @return_type void
 	 */
 	public void loadTopVideoByLabCodeAjax() {
-		String labCode = getPara("labCode", "lab111");
+		String labCode = getPara("labCode");
 		Record topVideo = LabVideoModel.dao.findTopVideoByLabCode(labCode);
 		if (topVideo == null) {
 			topVideo = new Record();
@@ -1166,13 +1158,23 @@ public class LabController extends BaseController {
 	 * @return_type void
 	 */
 	public void loadJsonProByDataCenterIdAjax() {
-		String dataCenterId = getPara("dataCenterId", "1");
+		String labCode = getPara("labCode");
 		List<Record> topVideo = JsonPropertyModel.dao
-				.findJsonProperty(dataCenterId);
+				.findJsonProperty(labCode);
 		renderJson(topVideo);
     }
-    public void hive(){
-    	String sql=" select * from s_bxlab_orcl_talend_test_testmetadata where  ptlabname= 'chongqingxingshiAB' and pt='20171025'";
-		renderJson(Db.use(com.ulab.core.Constants.CONFIGNAME_QC_HIVE).find(sql));
+	/**
+	 * 
+	 * @time   2017年11月3日 上午10:20:56
+	 * @author zuoqb
+	 * @todo   根据数据中心（三级ID）获取实验室信息
+	 * @param  
+	 * @return_type   void
+	 */
+	public void loadLabCodeByDataCenterIdAjax() {
+		String dataCenterId = getPara("dataCenterId");
+		List<Record> labs = LabCodeModel.dao
+				.findLabByDataCenterId(dataCenterId);
+		renderJson(labs);
     }
 }
