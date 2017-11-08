@@ -24,7 +24,7 @@ function moduleMakersShow(url) {//模块商
 
 //视频加载动画
 function loadingAnimate($videoParent) {
-    console.log("调用加载动画");
+    // console.log("调用加载动画");
     // $videoParent.append("<div class='videoWait'>视频接入中</div>");
     $videoParent.find(".videoWait").fadeIn(500, function () {
         var t = setTimeout(loadingOut, 8000);
@@ -240,7 +240,7 @@ $(function () {
         prevIsLabUrl = false;
         var $curveBox = $monitoring.find(".shishi_right").children(".item.curve");
         if ($curveBox.is(":hidden")) {//曲线没有显示
-            console.log("$curveBox", $curveBox[0])
+            // console.log("$curveBox", $curveBox[0])
             $curveBox.show().siblings().hide();
         }
         echartsResizeWorld();
@@ -277,7 +277,7 @@ $(function () {
         $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
             var videoUrl = data.videl_url;
             if (videoUrl) {
-                console.log("-------data.videl_url", videoUrl, "toUrl", toUrl);
+                // console.log("-------data.videl_url", videoUrl, "toUrl", toUrl);
                 videoUrlMain = videoUrl.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
                 var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
                 $(".smallVideoBox").show();

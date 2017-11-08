@@ -24,7 +24,25 @@ function tipResize() {
 }
 
 $(function () {
-    tipResize()
+    tipResize();
+    $("body").on("click","#echartTips .echart_content>a",function () {
+        var centerId = $(this).data("centerid");
+        var $centerList = $('.lab .lab_content_l .switchBox>ul>li.noChildren,.lab .lab_content_l .switchBox>ul>li>ul>li', parent.document);
+        $centerList.each(function(index,elem){
+            if($(elem).data("centerid") === centerId){
+                var $headerBtn = $(elem).parents(".switchBox").prev().find("ul>li");
+                if($(elem).parents(".inland").length>0){
+                    $headerBtn.eq(0).click();
+                }else{
+                    $headerBtn.eq(1).click();
+                }
+                $(elem).click();
+                return false;
+            }
+        });
+
+    });
+
 });
 
 function getGeoArr(data) {
@@ -481,8 +499,11 @@ function stopNewsShown($el) {
     // animation-play-state: paused
 }
 
-/*拼提示框的标签*/
+/**
+ * 拼提示框的标签
+ * */
 function getTopicHtml(currentPoint) {
+    // console.log("currentPoint",currentPoint)
     var city = "";
     if (currentPoint.name) {
         city = currentPoint.name;
@@ -493,7 +514,8 @@ function getTopicHtml(currentPoint) {
     var title = currentPoint.title;
     var id = currentPoint.id;
     var url = "";
-    var imgUrl = "../static/img/labMain/Thailand.jpg";
+    var centerId = currentPoint.centerId;
+    var imgUrl = currentPoint.imgUrl;
     /*if((value=="0"&&title=="青岛")||title==undefined){
     	return "";
     }*/
@@ -502,7 +524,7 @@ function getTopicHtml(currentPoint) {
         '   <h4 style="">' + title + '</h4>' +
         '   <div>实验室数量：' + value + '</div>' +
         '   <img src="'+ imgUrl +'" alt="实验室图片">' +
-        '   <a title="' + title + '" data-country="' + country + '"  href="#" target="_blank" >进入实验室 →</a>' +
+        '   <a data-centerId="'+centerId+'" href="javascript:void(0);">进入实验室 →</a>' +
         '</div>' +
         '<div class="echart_tip_arrow">' +
         '   <div class="echart_tip_line"></div>' +
