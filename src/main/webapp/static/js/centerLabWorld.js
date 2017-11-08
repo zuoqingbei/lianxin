@@ -113,14 +113,14 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
     //生成下拉
 	$.post(contextPath+'/hadoop/unitInfo',{"configName":configName,"labCode":labCode},function(data){
 		var htmls=labsHtmlsMap.get(type);
-		console.log(".......拼ul之前的HTML",htmls)
+		//console.log(".......拼ul之前的HTML",htmls)
 		htmls+="<ul>";
 		$.each(data,function(index,item){
 			// console.log(item)
 			if(item.istesting){
-				htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+it.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
+				htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}else{
-				htmls+='<li>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
+				htmls+='<li >台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}
 		/*	if(index==0){
 				// console.log(item.testunitlist)
@@ -164,8 +164,10 @@ function findTestDataHadoop(labCode, testUnitId) {
         if (data == "") {
             return;
         }
-        myChartWorld1.clear();
-        myChartWorld2.clear();
+    	myChart1.clear();
+		myChart2.clear();
+		myChartWorld1.clear();
+	    myChartWorld2.clear();
         $("#legend_ul_world").html('');
         dataBase=data;
         //根据传感器具体数据 生成图例

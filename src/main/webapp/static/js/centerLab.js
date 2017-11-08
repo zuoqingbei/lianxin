@@ -426,7 +426,7 @@ var dataBase;
 }; */
 
 //加载实验室与台位对照关系 生刷选框
-function loadLabUnitInfoCenterTabAjax(type){
+/*function loadLabUnitInfoCenterTabAjax(type){
 	var labs=labsMap.get(type);
 	var labCode=labs.lab_code;
     var htmls="";
@@ -440,7 +440,7 @@ function loadLabUnitInfoCenterTabAjax(type){
 				htmls+='<ul class="taiwei_hide">';
 				$.each(item.testUnitList,function(ind,it){
 					if(it.testUnitStatus=="停测"){
-						htmls+='<li>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
+						htmls+='<li  onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
 					}else{
 						htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
 					}
@@ -448,9 +448,9 @@ function loadLabUnitInfoCenterTabAjax(type){
 				htmls+='</ul>';
 			}
 			htmls+=' </li>';
-			/*if(index==1){
+			if(index==1){
 				findSensorByLabCenetrTabAjax(item.labCode,item.url,item.testUnitList[index].testUnitId);
-			}*/
+			}
 		});
         htmls+="</ul>";
         $(".lab_code_"+labCode+"_"+type).append(htmls);
@@ -458,13 +458,13 @@ function loadLabUnitInfoCenterTabAjax(type){
         $(".lab_code_"+labCode+"_"+type).find("ul>li>header:eq(0)").click();
         $(".lab_code_"+labCode+"_"+type).find("ul>li>ul>li:eq(0)").click();
         
-       /* $(".quxian_li_"+type).append(htmls);
+        $(".quxian_li_"+type).append(htmls);
         $(".quxian_li_"+type).attr("onclick","");
         $(".quxian_li_"+type).find("ul>li>header:eq(0)").click();
-        $(".quxian_li_"+type).find("ul>li>ul>li:eq(0)").click();*/
+        $(".quxian_li_"+type).find("ul>li>ul>li:eq(0)").click();
 	});
 }
-
+*/
 
 
 
@@ -498,6 +498,8 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		}
 		myChart1.clear();
 		myChart2.clear();
+		myChartWorld1.clear();
+	    myChartWorld2.clear();
 		$("#legend_ul_world").html('');
 		//console.log(data)
 		data=eval("("+data+")");
@@ -521,6 +523,9 @@ function findSensorDataCenetrTabAjax(labTypeCode,url,testUnitId){
 		window.clearInterval(intevalChart1);
 		//console.log(intevalChart1)
 		intevalChart1=setInterval("intervalChangeData()", 30000);
+		myChart1.hideLoading();
+		myChart2.hideLoading();
+	    
 	});
 }
 function resetDataCenterLab(){

@@ -211,7 +211,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
          								htmls+='<ul class="taiwei_hide">';
          								$.each(item.testUnitList,function(ind,it){
          									if(it.testUnitStatus=="停测"){
-         										htmls+='<li>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
+         										htmls+='<li >台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
          									}else{
          										htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
          									}
