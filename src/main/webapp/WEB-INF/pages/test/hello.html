@@ -56,6 +56,7 @@
     <div class="pic">8</div>
     <div class="pic">8</div>
     <div class="pic">8</div>
+    <div class="pic">8</div>
 </div>
 <div class="videoBox">
     <button class="close">返回</button>
@@ -78,7 +79,7 @@
     <button>IPdome</button>
     <button>RF-IN</button>
     <button>香港卫视</button>
-    <button>cctv</button>
+    <button>CCTV</button>
     <hr>
     <button id="mask">盖住</button>
 </div>
@@ -86,17 +87,14 @@
 <script>
     function loadSwf(url) {
 
-//        $("#player").remove();
-//        $("body").append('<div id="player">');
         var flashvars = {
-            src: escape(url),
+            src: escape(url + "?time=" + new Date()),
             // url to OSMF HLS Plugin
             plugin_m3u8: "../static/test/HLSProviderOSMF.swf",
             autoPlay: "true",
             autoSwitchQuality: "true",
         };
         var params = {
-            // self-explained parameters
 //        play: true,
             allowFullScreen: true,
             allowScriptAccess: "always",
@@ -215,9 +213,9 @@
         "http://10.130.96.65:6713/mag/hls/8d366d48f61e44df92fe1f79fb4b1e17/1/live.m3u8",//RF-D
         "http://10.130.96.65:6713/mag/hls/4c00e3f243a5464798a54d6fdd57cc82/1/live.m3u8",//IPdome
         "http://10.130.96.65:6713/mag/hls/e7f6b53231484bca9ff3fd7a7dc820a5/1/live.m3u8",//RF-IN
-        "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8",//香港卫视
-        "http://111.13.42.8/PLTV/88888888/224/3221225851/index.m3u8"//cctv
 
+        "http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8",//香港卫视
+        "http://120.87.4.70/PLTV/88888894/224/3221225499/index.m3u8"
     ];
     $(function () {
         loadSwf(videoUrls[0]);
@@ -246,11 +244,5 @@
     });
 
 </script>
-<param name="flashvars"
-       value="src=http%3A//10.130.96.65%3A6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8&amp;plugin_m3u8=../static/test/HLSProviderOSMF.swf&amp;autoPlay=true&amp;autoSwitchQuality=true">
-<param name="flashvars"
-       value="src=http%3A//10.130.96.65%3A6713/mag/hls/3e158a568dd84c2890d095a25517f78b/1/live.m3u8&amp;plugin_m3u8=../static/test/HLSProviderOSMF.swf&amp;autoPlay=true&amp;autoSwitchQuality=true">
-<param name="flashvars"
-       value="src=undefined&amp;plugin_m3u8=../static/test/HLSProviderOSMF.swf&amp;autoPlay=true&amp;autoSwitchQuality=true">
 </body>
 </html>

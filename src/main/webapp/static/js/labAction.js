@@ -6,9 +6,9 @@ var videoUrlMain = "";
 var prevIsLabUrl = false;//主菜单的URL类型
 
 function inlandTabShow(mark) { //国内
-    if(mark === "zhonghaiborui"){
+    if (mark === "zhonghaiborui") {
         $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
-    }else{
+    } else {
         $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_4.png)");
     }
     $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.curves").show();
@@ -31,7 +31,7 @@ function loadingAnimate($videoParent) {
     // console.log("调用加载动画");
     // $videoParent.append("<div class='videoWait'>视频接入中</div>");
     $videoParent.find(".videoWait").fadeIn(500, function () {
-        var t = setTimeout(loadingOut, 8000);
+        var t = setTimeout(loadingOut, 7000);
         var loop;
         changeTxt();
 
@@ -60,11 +60,17 @@ function loadingAnimate($videoParent) {
 function videoShow(id, url, mainStream) {
     //mainStream 0-主码流，1-子码流
     var flashvars = {
-        src: escape(url),
-        plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
-        autoPlay: "true",
-        autoSwitchQuality: "true"
-    };
+        src: escape(url + "?time=" + new Date()),
+
+    plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
+        autoPlay
+:
+    "true",
+        autoSwitchQuality
+:
+    "true"
+}
+    ;
     var params = {
         allowFullScreen: true,
         allowScriptAccess: "always",
@@ -152,11 +158,11 @@ $(function () {
             $lab_content_r.find(".switchBox>div.item.monitoring").show().siblings().hide();
 
             if ($(this).parents("ul.inland")[0]) {//从url类型跳回到国内其他列表
-                if($(this).data("centerid") === 1){
+                if ($(this).data("centerid") === 1) {
                     $(".labSubNav>ul>li").hide().eq(0).addClass("active").siblings().removeClass("active");
                     $lab_content_r.find(".switchBox>div.item.labHome").show().siblings().hide();
                     inlandTabShow("zhonghaiborui");
-                }else{
+                } else {
                     inlandTabShow();
                 }
             } else {
@@ -286,7 +292,7 @@ $(function () {
     function videoUrlAjax(labCode, toUrl) {
         $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
             var videoUrl = data.videl_url;
-            console.log("---labCode",labCode,"videoUrl:",videoUrl);
+            console.log("---labCode", labCode, "videoUrl:", videoUrl);
             if (videoUrl) {
                 videoUrlMain = videoUrl.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
                 var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
