@@ -288,7 +288,6 @@ var myFlatMap = echarts.init($('.mapFlat')[0]);
 
 /*平面地图上点击各个国家的点，右侧切换到对应的实验室页面*/
 var $l3x3 = $("#l", parent.document);
-
 /*
 $("#echartTips").on("click", ".echart_tip_head", function () {
     var CountryName = $(this).parent().prev().find("a").attr("data-country");
@@ -325,14 +324,13 @@ function curvesSwitch(CountryName) {
             break;
         case ('泰国'):
             //window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-            window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1, "thailand");
+            window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1,"thailand");
             break;
         default:
             console.log("暂无该国家实验室信息")
     }
-    console.log("国家名:", CountryName)
+    console.log("国家名:",CountryName)
 }
-
 var showTopicIndex = 0;
 /**
  * echartTips内的提示元素
@@ -493,20 +491,18 @@ function getTopicHtml(currentPoint) {
     var title = currentPoint.title;
     var id = currentPoint.id;
     var url = "";
-    var imgUrl = "../static/img/labMain/Thailand.jpg";
     /*if((value=="0"&&title=="青岛")||title==undefined){
     	return "";
     }*/
     return $('<div class="echart_tip">' +
         '<div class="dialog_title echart_content">' +
-        '   <h4 style="">' + title + '</h4>' +
-        '   <div>实验室数量：' + value + '</div>' +
-        '   <img src="'+ imgUrl +'" alt="实验室图片">' +
-        '   <a title="' + title + '" data-country="' + country + '"  href="#" target="_blank" >进入实验室 →</a>' +
+        '<a title="' + title + '" data-country="' + country + '"  href="#" target="_blank" >' +
+        '<span style="">' + title + '</span>' +
+        '</a>实验室数量：' + value +
         '</div>' +
         '<div class="echart_tip_arrow">' +
-        '   <div class="echart_tip_line"></div>' +
-        '   <div class="echart_tip_head"></div>' +
+        '<div class="echart_tip_line"></div>' +
+        '<div class="echart_tip_head"></div>' +
         '</div>' +
         '</div>');
 }

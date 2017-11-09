@@ -71,7 +71,7 @@
 	position: absolute;
 	left:4%;top:3.5%;
 }
- /*瑙嗗浘瀹藉拰楂樺繀椤绘槸鐩掑瓙姣忎釜闈㈠楂樹笌font-size鐨別m鍊肩殑涔樼Н锛�.box鐨勫楂樺繀椤绘槸100%锛屾墠鑳戒娇鐩掑瓙鏃嬭浆鐨勪腑蹇冨湪鍑犱綍涓績*/
+ /*视图宽和高必须是盒子每个面宽高与font-size的em值的乘积，.box的宽高必须是100%，才能使盒子旋转的中心在几何中心*/
         .view {
             margin-top: 3em;
             perspective: 72em;
@@ -84,7 +84,7 @@
             position: relative;
             width: 100%;
             height: 100%;
-            transform-style: preserve-3d; /*杩欏彞寰堥噸瑕�*/
+            transform-style: preserve-3d; /*这句很重要*/
             transition: all 1s ease;
             transform: rotateX(-10deg) rotateY(10deg) rotateZ(0deg);
         }
@@ -118,8 +118,8 @@
 		    transform: translateZ(-4em) translateY(10em) translateX(-2em) scaleX(.36) scaleY(.36) rotateY(180deg);
 		    background: url(../images/status/compressor.gif) no-repeat;
 		}
-        /*3D鏃嬭浆涓紝姝ｆ柟鍚戞槸X鍓嶉潰鍚戜笂锛孻鏄墠闈㈠悜鍙筹紝Z鏄《閮ㄥ悜鍙筹紝
-        鎹㈠彞璇濊锛屽氨鏄疿鍚戝彸锛孻鍚戜笅锛孼鍚戝锛屼粠姝ｆ柟鍚戝線閲岀湅锛岄『鏃堕拡涓烘鍚戞棆杞�*/
+        /*3D旋转中，正方向是X前面向上，Y是前面向右，Z是顶部向右，
+        换句话说，就是X向右，Y向下，Z向外，从正方向往里看，顺时针为正向旋转*/
         .box_front {
             transform: translateZ(4em);
             background: url(../images/status/fridge_f.png) no-repeat;
@@ -259,7 +259,7 @@
 .leftBtn {
 	background:url(../images/status/toLeft.png) no-repeat 100% 100%;
 	background-size: 100% 100%;
-	margin-left:4%;
+	margin-left:6%;
 }
 .leftBtn:hover {
 	background:url(../images/status/hoverLeft.png) no-repeat 100% 100%;
@@ -305,12 +305,12 @@
 	float:left;
 }
 .leftStates .jtState {
-	width:18.5%;
+	width:13.5%;
 	height:48%;
 	background:url(../images/status/border.png) no-repeat 100% 100%;
 	background-size: 100% 100%;
 	float:left;
-	margin-left:1.5%;
+	margin-left:3%;
 	overflow: hidden;
 	position: relative;
 }
@@ -348,7 +348,7 @@
 }
 .state-box-contain {
 	height:87%;
-	width:77.5%;
+	width:98.5%;
 	overflow: hidden;
 	float:left;
 	position: relative;
@@ -359,6 +359,33 @@
 	left:0;top:0;
     transition: left 1.5s ease;	
     position: absolute;
+}
+
+.bxDoor {
+	width:90%;
+	height:76%;
+	margin:1% auto;
+}
+.bxDoor .bxImgLeft {
+	/*background: #dd0;*/
+	float:left;
+	width:60%;
+	height:95%;
+	margin-top:3%;
+	margin-left: 1%;
+}
+.bxDoor .bxImgLeft img{
+	display: block;
+	height:95%;width:95%;
+	margin:1% auto;
+}
+.bxDoor .bxTxt{
+	float:left;
+	font-size: 0.5em;
+	width:37%;
+	height:95%;
+	margin-top:3%;
+	padding:28% 1%;
 }
 
 
@@ -403,7 +430,7 @@
 	margin-top:13%;
 }
 
-/****************************************浣跨敤鍒嗘瀽****************************************/
+/****************************************使用分析****************************************/
 
 .syfxBox {
 	display: none;
@@ -412,7 +439,7 @@
 	float: left;
 }
 .syfxBox .problemBox {
-	width:48%;
+	width:32%;
 	height:46%;
 	float:left;
 	background: url(../images/status/syfx-border.png) no-repeat 100% 100%;
@@ -420,7 +447,7 @@
 }
 
 .syfxBox .margleft {
-	margin-left:3%;
+	margin-left:2%;
 }
 .syfxBox .margtop {
 	margin-top:2%;
@@ -449,8 +476,8 @@
 	margin:0 auto;
 	margin-top:1%;
 	color:#fff;
-	font-size: 1em;
-	line-height:1.5em;
+	font-size: .8em;
+	line-height:2.1em;
 	text-align: center;
 }
 
@@ -468,7 +495,14 @@
 	width:100%;
 	height:100%;
 }
-
+/****************************************状态趋势****************************************/
+.ztqsBox {
+	display: none;
+	width: 95%;
+	height:98%;
+	margin-left: 4%;
+}
+/*
 .bottomState .rightBx {
 	width:22.5%;
 	height:87%;
@@ -487,10 +521,10 @@
 	margin-left:27%;
 	color:#fff;
 }
-.rightBx #player{
+.rightBx #player {
 	width:83%;
 	height:81%;
 	/*background: #64ccff;*/
 	margin-left:13%;
 	margin-top:3%;
-}
+}*/
