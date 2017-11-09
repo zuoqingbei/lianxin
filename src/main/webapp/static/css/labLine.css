@@ -65,7 +65,7 @@
 
 .sheshi_tab {
     margin: 0 auto;
-    width: 58%;
+    width: 68%;
     height: 6%;
     margin-top: 5%;
     background: url("../img/labMain/border-blue.png") no-repeat;
@@ -88,7 +88,7 @@
 
 .sheshi_tab_list {
     height: 81%;
-    width: 66%;
+    width: 68%;
     overflow-x: hidden;
     margin: 3% auto 0;
     background: url(../img/labMain/dropmenu.png) no-repeat;
@@ -111,7 +111,7 @@
 }
 .sheshi_tab_list > ul li header > span {
     display: inline-block;
-    padding-left: 1em;
+    padding-left: .6em;
 }
 
 .sheshi_tab_list > ul > li {
