@@ -223,12 +223,12 @@ h3{
 /*donghua*/
 
 .rotatebox {
-	animation: circleRotated 1s ease-in-out 1s;
+	animation: circleRotated 1.5s ease-in-out 1s;
 }
-.rotatebox:hover{
-	transform: rotate(360deg);
+/*.rotatebox:hover{
+	transform: rotate(180deg);
 	
-}
+}*/
 
 @keyframes circleRotated{
 	from{transform: rotate(0deg)}
