@@ -24,26 +24,7 @@ function tipResize() {
 }
 
 $(function () {
-    tipResize();
-    //从地图提示框内直接打开实验室曲线
-    $("body").on("click","#echartTips .echart_content>a",function () {
-        var centerId = $(this).data("centerid");
-        var $centerList = $('.lab .lab_content_l .switchBox>ul>li.noChildren,.lab .lab_content_l .switchBox>ul>li>ul>li', parent.document);
-        $centerList.each(function(index,elem){
-            if($(elem).data("centerid") === centerId){
-                var $headerBtn = $(elem).parents(".switchBox").prev().find("ul>li");
-                if($(elem).parents(".inland").length>0){
-                    $headerBtn.eq(0).click();
-                }else{
-                    $headerBtn.eq(1).click();
-                }
-                $(elem).click();
-                return false;
-            }
-        });
-
-    });
-
+    tipResize()
 });
 
 function getGeoArr(data) {
@@ -307,7 +288,6 @@ var myFlatMap = echarts.init($('.mapFlat')[0]);
 
 /*平面地图上点击各个国家的点，右侧切换到对应的实验室页面*/
 var $l3x3 = $("#l", parent.document);
-
 /*
 $("#echartTips").on("click", ".echart_tip_head", function () {
     var CountryName = $(this).parent().prev().find("a").attr("data-country");
@@ -344,14 +324,13 @@ function curvesSwitch(CountryName) {
             break;
         case ('泰国'):
             //window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-            window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1, "thailand");
+            window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1,"thailand");
             break;
         default:
             console.log("暂无该国家实验室信息")
     }
-    console.log("国家名:", CountryName)
+    console.log("国家名:",CountryName)
 }
-
 var showTopicIndex = 0;
 /**
  * echartTips内的提示元素
@@ -500,11 +479,8 @@ function stopNewsShown($el) {
     // animation-play-state: paused
 }
 
-/**
- * 拼提示框的标签
- * */
+/*拼提示框的标签*/
 function getTopicHtml(currentPoint) {
-    // console.log("currentPoint",currentPoint)
     var city = "";
     if (currentPoint.name) {
         city = currentPoint.name;
@@ -515,21 +491,18 @@ function getTopicHtml(currentPoint) {
     var title = currentPoint.title;
     var id = currentPoint.id;
     var url = "";
-    var centerId = currentPoint.centerId;
-    var imgUrl = currentPoint.imgUrl;
     /*if((value=="0"&&title=="青岛")||title==undefined){
     	return "";
     }*/
     return $('<div class="echart_tip">' +
         '<div class="dialog_title echart_content">' +
-        '   <h4 style="">' + title + '</h4>' +
-        '   <div>实验室数量：' + value + '</div>' +
-        '   <img src="'+ imgUrl +'" alt="实验室图片">' +
-        '   <a data-centerId="'+centerId+'" href="javascript:void(0);">进入实验室 →</a>' +
+        '<a title="' + title + '" data-country="' + country + '"  href="#" target="_blank" >' +
+        '<span style="">' + title + '</span>' +
+        '</a>实验室数量：' + value +
         '</div>' +
         '<div class="echart_tip_arrow">' +
-        '   <div class="echart_tip_line"></div>' +
-        '   <div class="echart_tip_head"></div>' +
+        '<div class="echart_tip_line"></div>' +
+        '<div class="echart_tip_head"></div>' +
         '</div>' +
         '</div>');
 }

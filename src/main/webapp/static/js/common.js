@@ -1,4 +1,3 @@
-//{name:'福州',value:95}
 function dataToObject(data){
 	var item = new Object();
 	item.name=data.name;

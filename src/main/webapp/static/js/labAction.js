@@ -5,8 +5,12 @@ var $prevTaiwei = null;
 var videoUrlMain = "";
 var prevIsLabUrl = false;//主菜单的URL类型
 
-function inlandTabShow() { //国内
-    $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_4.png)");
+function inlandTabShow(mark) { //国内
+    if(mark === "zhonghaiborui"){
+        $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
+    }else{
+        $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_4.png)");
+    }
     $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.curves").show();
 }
 
@@ -35,7 +39,7 @@ function loadingAnimate($videoParent) {
             $videoParent.find(".videoWait").fadeOut(3000, clearTimeout(loop));
         }
 
-        var counter = 0
+        var counter = 0;
 
         function changeTxt() {
             if (counter === 3) {
@@ -146,13 +150,18 @@ $(function () {
         } else {
             $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
             $lab_content_r.find(".switchBox>div.item.monitoring").show().siblings().hide();
+
             if ($(this).parents("ul.inland")[0]) {//从url类型跳回到国内其他列表
-                inlandTabShow();
+                if($(this).data("centerid") === 1){
+                    $(".labSubNav>ul>li").hide().eq(0).addClass("active").siblings().removeClass("active");
+                    $lab_content_r.find(".switchBox>div.item.labHome").show().siblings().hide();
+                    inlandTabShow("zhonghaiborui");
+                }else{
+                    inlandTabShow();
+                }
             } else {
                 abroadTabShow();
             }
-
-
         }
     });
 
@@ -253,6 +262,7 @@ $(function () {
         if (!$(this).parent().is($prevTaiwei)) {//如果不是同一个实验室下的台位
             $prevTaiwei = $(this).parent();
             var labCode = $(this).parent().prev().attr("labcode");//获取實驗室編碼
+            // labCode.showVal();
             var $parentMonitoring = $(this).parents(".monitoring");
             videoUrlAjax(labCode);
         }
@@ -268,7 +278,7 @@ $(function () {
         $monitoring.find(".shishi_right>.item.iframe").children("iframe").attr("src", webUrl)
             .parent().show().siblings().hide();
 
-        var labCode = $(this).parent().data("center-id");
+        var labCode = $(this).attr("labcode");
         videoUrlAjax(labCode, "toUrl")
     });
 
@@ -276,8 +286,8 @@ $(function () {
     function videoUrlAjax(labCode, toUrl) {
         $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
             var videoUrl = data.videl_url;
+            console.log("---labCode",labCode,"videoUrl:",videoUrl);
             if (videoUrl) {
-                // console.log("-------data.videl_url", videoUrl, "toUrl", toUrl);
                 videoUrlMain = videoUrl.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
                 var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
                 $(".smallVideoBox").show();
@@ -292,7 +302,6 @@ $(function () {
                 $(".smallVideoBox").hide();
             }
         })
-
     }
 
     // 数据分析中的合格率、及时率、满意度
