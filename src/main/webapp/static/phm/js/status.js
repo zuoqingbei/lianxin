@@ -10,50 +10,12 @@ var Status = {
 		that.liquidMove([["liquid1",100,0,40,"℃"],["liquid2",100,0,10,"℃"],["liquid3",100,0,20,"℃"],["liquid4",100,0,60,"℃"],["liquid5",100,0,30,"℃"],["liquid6",100,10,80,"℃"]]);
 		this.pageChanged();
 		this.tabChanges();
-		this.watchControl();
 	},
-	watchControl:function(){
-		//debugger;
-		var flashvars = {
-	        src: escape("http://192.168.1.168:6713/mag/hls/e99850d9e8fa40c88dd87bc184cd432a/1/live.m3u8"),
-	        // url to OSMF HLS Plugin  /hlht/static/phm/asserts/js/jquery-2.2.4.js       
-	        //plugin_m3u8: "http://www.the5fire.com/static/demos/swf/HLSProviderOSMF.swf",
-	        plugin_m3u8: "${contextPath}/static/phm/asserts/js/HLSProviderOSMF.swf",
-	        autoPlay : "true",
-	        autoSwitchQuality : "true",
-	    };
-	    var params = {
-	        // self-explained parameters
-	//        play: true,
-	        allowFullScreen: true,
-	        allowScriptAccess: "always",
-	        quality:"low",
-	        bgcolor: "#000000"
-	    };
-	    var attrs = {
-	        name: "player"
-	    };
-	    
-	    
-	    loadSwf();
-		function loadSwf() {
-			console.log("123========================================");
-		    swfobject.embedSWF(
-		        // url to SMP player
-		        "${contextPath}/static/phm/asserts/js/StrobeMediaPlayback.swf",
-		        // div id where player will be place
-		        "player",
-		        // width, height
-		        "800", "485",
-		        // minimum flash player version required
-		        "27.0",
-		        // other parameters
-		        null,
-		        flashvars,
-		        params,
-		        attrs
-		    )
-		}
+	delayIframe:function(param){
+		//延迟加载iframe标签
+		setTimeout(function(){
+			$(".ztqsBox").html('<iframe src="http://47.95.109.158/#/product/"+param width="100%" height="100%"></iframe>');
+		},1000);
 	},
 	tabChanges:function(){
 		//syfxBox   leftStates
@@ -69,10 +31,12 @@ var Status = {
 			//切换内容
 			$(".leftStates").css("display","none");
 			$(".syfxBox").css("display","block");
-			
+			$(".ztqsBox").css("display","none");
 		
-			
-			
+			//改变宽度
+			$(".state-box").css("width","200%");
+			//显示左右按钮
+			$(".fyBtn").css("visibility","visible");
 		});
 		$(".sszt").click(function(){
 			//所有nav去掉active样式
@@ -86,7 +50,35 @@ var Status = {
 			//切换内容
 			$(".leftStates").css("display","block");
 			$(".syfxBox").css("display","none");
-		})
+			$(".ztqsBox").css("display","none");
+			//改变宽度
+			$(".state-box").css("width","200%");
+			//显示左右按钮
+			$(".fyBtn").css("visibility","visible");
+		});
+		$(".ztqs").click(function(){
+			//所有nav去掉active样式
+			var navs = $(".tnav");
+			for(var nav of navs){
+				$(nav).removeClass("navActive")
+			}
+			//给点击的nav加active样式
+			$(this).addClass("navActive")
+			
+			//切换内容
+			$(".leftStates").css("display","none");
+			$(".syfxBox").css("display","none");
+			$(".ztqsBox").css("display","block");
+			
+			//改变宽度
+			$(".state-box").css("width","100%");
+			//别的tab页面在第二页的时候点进来确保能显示
+			$(".state-box").css({"left":"0"});
+			
+			//隐藏左右按钮
+			$(".fyBtn").css("visibility","hidden");
+		
+		});
 	},
 
 	liquidMove:function(arr){
