@@ -1,25 +1,10 @@
-//{name:'福州',value:95}
 function dataToObject(data){
 	var item = new Object();
 	item.name=data.name;
 	item.value=data.value;
 	return item;
 }
-/**
- * 
- * [
-    {name:'福州',value:95},
-    {name:'太原',value:90},
-    {name:'长春',value:80},
-    {name:'重庆',value:70},
-    {name:'西安',value:60},
-    {name:'成都',value:50},
-    {name:'常州',value:40},
-    {name:'北京',value:30},
-    {name:'北海',value:20},
-    {name:'海口',value:10}
-]
- */
+
 function dataToArray(data){
 	//console.log(data.clist)
 	var d = new Array();
@@ -42,10 +27,20 @@ function jsonToArray(data){
 	        name: '青岛研发中心',
 	        value: 168,
             country:"中国"
-	    }
+	    };
 	d.push(p);
 	for(var x=0;x<data.length;x++){
 		var obj=data[x];
+
+		//先写死试试
+		if(!obj.imgUrl){
+            obj.imgUrl = "../static/img/labMain/Thailand.jpg";
+		}
+        if(!obj.centerId){
+            obj.centerId = "9";
+		}
+
+
 		var e=  {
 	        lng:obj.lng,
 	        lat: obj.lat,
@@ -56,27 +51,16 @@ function jsonToArray(data){
 	        url: '',
 	        name: obj.name,
 	        value: obj.num,
-			country:obj.country
+			country:obj.country,
+			imgUrl:obj.imgUrl,
+			centerId:obj.centerId
 
 	    }
 		d.push(e);
 	}
 	return d;
 }
-/**
- * [
-    [{name:'广州'},{name:'福州',value:95}],
-    [{name:'广州'},{name:'太原',value:90}],
-    [{name:'广州'},{name:'长春',value:80}],
-    [{name:'广州'},{name:'重庆',value:70}],
-    [{name:'广州'},{name:'西安',value:60}],
-    [{name:'广州'},{name:'成都',value:50}],
-    [{name:'广州'},{name:'常州',value:40}],
-    [{name:'广州'},{name:'北京',value:30}],
-    [{name:'广州'},{name:'北海',value:20}],
-    [{name:'广州'},{name:'海口',value:10}]
-]
- */
+
 function dataToArrayContinueArray(data){
 	var d = new Array();
 	for(var x=0;x<data.length;x++){
@@ -90,14 +74,7 @@ function dataToArrayContinueArray(data){
 	}
 	return d;
 }
-/**
- * 
- * [
-    [{name:'北京'},{name:'包头'}],
-    [{name:'北京'},{name:'北海'}],
-    [{name:'北京'},{name:'广州'}]
-	]
- */
+
 function dataToArrayAll(data){
 	var d = new Array();
 	for(var i=0;i<data.length;i++){
@@ -115,14 +92,7 @@ function dataToArrayAll(data){
 	}
 	return d;
 }
-/**
- * 经纬度
- * {
-	'上海': [121.4648,31.2891],
-	'东莞': [113.8953,22.901],
-	'东营': [118.7073,37.5513]
-    }
- */
+
 function geoCoord(data){
 	var r='{';
 	for(var i=0;i<data.length;i++){
