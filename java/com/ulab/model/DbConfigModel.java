@@ -68,13 +68,21 @@ public class DbConfigModel extends Model<DbConfigModel> {
 		}
 		return null;
 	}
+	public boolean isPartition(BaseController c,String configName){
+		Record config=c.getSessionAttr("config_db_"+configName);
+		if(config==null||"1".equals(config.getStr("partition").trim())){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	/**
 	 * 
 	 * @time   2017年10月28日 下午4:17:21
 	 * @author zuoqb
 	 * @todo   分区sql语句拼接
 	 */
-	public String getPartitionSql(BaseController c,String configName,String labCode,String shortTableName){
+	public String getPartitionSql(BaseController c,String configName,String labCode,String shortTableName,boolean needPt){
 		if(shortTableName==null||"null".equals(shortTableName)){
 			shortTableName="";
 		}
@@ -84,8 +92,7 @@ public class DbConfigModel extends Model<DbConfigModel> {
 		String partition="";
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 		String now=sdf.format(new Date());
-		Record config=c.getSessionAttr("config_db_"+configName);
-		if(config==null||!"1".equals(config.getStr("partition").trim())){
+		if(!isPartition(c, configName)){
 			return partition;
 		}else{
 			String sql="select * from t_b_db_partition where lab_code='"+labCode+"' and config_name='"+configName+"' and del_flag=0";
@@ -93,19 +100,22 @@ public class DbConfigModel extends Model<DbConfigModel> {
 			if(r==null){
 				return partition;
 			}
-			if("0".equals(r.getStr("is_ptlabname").trim())){
+			if("0".equals(r.getStr("is_ptlabname").trim())&&StringUtils.isNotBlank(r.getStr("ptlabname_value"))){
 				//按照实验室编码分区
 				partition+=" and "+shortTableName+r.getStr("ptlabname_filed")+"='"+r.getStr("ptlabname_value")+"' ";
 			}
-			if("0".equals(r.getStr("is_pt").trim())){
+			if(needPt&&"0".equals(r.getStr("is_pt").trim())){
 				//按年月日分区
 				partition+=" and "+shortTableName+"pt='"+now+"' ";
 			}
 			return partition;
 		}
 	}
+	public String getPartitionSql(BaseController c,String configName,String labCode,boolean needPt){
+		return getPartitionSql(c, configName, labCode, null,needPt);
+	}
 	public String getPartitionSql(BaseController c,String configName,String labCode){
-		return getPartitionSql(c, configName, labCode, null);
+		return getPartitionSql(c, configName, labCode, null,true);
 	}
 	
 }

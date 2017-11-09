@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.jfinal.kit.JsonKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.core.BaseController;
@@ -73,6 +74,19 @@ public class HadoopTestData {
 		}
 		return Db.use(configName).find(sql);
 	}
+	
+	public List<Record> findHiveDataByTestIdentification(BaseController c,String configName,String testIdentification,Float startHowLong,Float endHowLong,List<Record> sensorInfoList,String labCode){
+		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTDATA);
+		String sql="select howlong ,sensorvalue ";
+		sql+=" from "+tableName+" where primarykey='"+testIdentification+"'  "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
+		if(startHowLong!=null){
+			sql+=" and howlong > "+startHowLong;
+		}
+		if(endHowLong!=null){
+			sql+=" and howlong < "+endHowLong;
+		}
+		return Db.use(configName).find(sql);
+	}
 	/**
 	 * 
 	 * @time   2017年9月21日 上午9:07:02
@@ -88,14 +102,19 @@ public class HadoopTestData {
 	 */
 	public Record findTestData(BaseController c,String configName,String labCode,String testUnitId,String startTime,Float interval){
 		Record finalTestData=new Record();
-		Record metaData=HadoopTestMetadata.dao.findLastTestMetadata(c,configName, labCode, testUnitId);
+		Record metaData=null;
+		if(configName.indexOf("hive")!=-1){
+			metaData=HadoopTestMetadata.dao.findHiveLastTestMetadata(c,configName, labCode, testUnitId);
+		}else{
+			metaData=HadoopTestMetadata.dao.findLastTestMetadata(c,configName, labCode, testUnitId);
+		}
 		if(metaData!=null){
 			String testIdentification=metaData.getStr("testidentification");//实验编号
 			//获取当前台位实时曲线
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date testBeginTime = null;//开始测试时间
 			Date now = new Date();
-			boolean isOpt=true;
+			boolean isOpt=false;
 			long distance =0;
 				try {
 						
@@ -127,8 +146,14 @@ public class HadoopTestData {
 			float f2 = (now.getTime() - testBeginTime.getTime())/60000f;//已经测试时长 分钟
 			float startHowLong = f2 - interval> 0 ? f2-interval : 0;
 			float endHowLong=startHowLong+interval;
-			joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData,labCode);
+			if(configName.indexOf("hive")!=-1){
+				joinHiveTestData(c, configName, startHowLong, endHowLong, finalTestData, metaData, labCode);
+				//hive数据库不能使用testidentification查询测试数据，需要使用primarykey（开测时间+测试单元 例如2017-08-1213:50:3222     ）
+			}else{
+				joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData,labCode);
+			}
 		}
+		System.out.println(JsonKit.toJson(finalTestData));
 		return finalTestData;
 	}
 	/** 
@@ -237,6 +262,70 @@ public class HadoopTestData {
 			}
 			finalTestData.set("list", dataList);
 		}
+	}
+	private void joinHiveTestData(BaseController c,String configName, Float startHowLong, Float endHowLong, Record finalTestData,
+			Record metaData,String labCode) {
+		if(metaData!=null){
+			/**
+			 * sybh:'实验编号',
+				ybbh:'样品编号',
+				cpxh:'产品型号',
+				testUnitStatus:试验项目
+				
+			 */
+			String testIdentification=""+metaData.get("primarykey");//实验编号
+			finalTestData.set("sybh",testIdentification);
+			finalTestData.set("ybbh", metaData.get("sample_code"));
+			finalTestData.set("cpxh", metaData.get("productmodel"));
+			finalTestData.set("testunitstatus", metaData.get("testitemname"));
+			//step2 :查询传感器信息
+			List<Record> sensorInfoList=HadoopSensorInfo.dao.findHiveSensorInfoByTestIdentification(c,configName, testIdentification,labCode);
+			//step3 查询具体数据
+			List<Record> allTestData=findHiveDataByTestIdentification(c,configName, testIdentification, startHowLong, endHowLong,sensorInfoList,labCode);
+			//step3 拼接结构 
+			/**
+			 *  {	name:'1:温度(℃)',
+		    	data:[{name:'1月',value:'-55'},
+		    	{name:'2月',value:'60'},
+		    	{name:'3月',value:'447'} ]
+		      }
+			 */
+			List<Record> dataList=new ArrayList<Record>();
+			for(Record sensorInfo:sensorInfoList){
+				Record mData=new Record();
+				mData.set("name", sensorInfo.get("legend"));
+				List<Record> data=new ArrayList<Record>();
+				for(Record testData:allTestData){
+					Record innerData=new Record();
+					innerData.set("name", Float.parseFloat(testData.get("howlong")+"")/60);
+					//传感器数据，跟sensorinfo中的sensorId对应
+					innerData.set("value", dealSensorvalue(testData, sensorInfo));
+					data.add(innerData);
+				}
+				mData.set("data", data);
+				dataList.add(mData);
+			}
+			finalTestData.set("list", dataList);
+		}
+	}
+	public String dealSensorvalue(Record testData,Record sensorInfo){
+		String value="";
+		String sensorid=sensorInfo.getStr("sensorid");
+		String all=testData.get("sensorvalue");
+		if(StringUtils.isNotBlank(all)){
+			String[] arr=all.split("@");
+			for(String s:arr){
+				if(s.startsWith(sensorid+":")){
+					value=s.replaceAll(sensorid+":", "");
+					if(value=="N"){
+						value="0";
+					}
+					break;
+				}
+			}
+		}
+		return value;
+		
 	}
 	public Record findTestData(BaseController c,String configName,String labCode,String testUnitId,Float endHowLong){
 		return this.findTestData(c,configName, labCode, testUnitId, "", endHowLong);

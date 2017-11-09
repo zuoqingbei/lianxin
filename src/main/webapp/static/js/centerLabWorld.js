@@ -116,11 +116,11 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
 		//console.log(".......拼ul之前的HTML",htmls)
 		htmls+="<ul>";
 		$.each(data,function(index,item){
-			// console.log(item)
+			 console.log(item)
 			if(item.istesting){
 				htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}else{
-				htmls+='<li >台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
+				htmls+='<li  onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}
 		/*	if(index==0){
 				// console.log(item.testunitlist)

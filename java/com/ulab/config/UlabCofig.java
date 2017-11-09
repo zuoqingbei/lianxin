@@ -138,13 +138,13 @@ public class UlabCofig extends JFinalConfig {
 
 		/**重庆实验室hive测试库信息设置Impala数据源  **/
 
-		/*DruidPlugin dsImpala = new DruidPlugin(this.getProperty("hive.url"), this.getProperty("hive.user"),
+		DruidPlugin dsImpala = new DruidPlugin(this.getProperty("hive.url"), this.getProperty("hive.user"),
 				"", this.getProperty("hive.driver"));
 		me.add(dsImpala);
 
 		ActiveRecordPlugin hive = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_HIVE, dsImpala);
 		hive.setShowSql(true);
-		me.add(hive);*/
+		me.add(hive);
 		/**重庆实验室hive测试库信息 END**/
 
 		//定时器
