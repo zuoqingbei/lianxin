@@ -114,13 +114,13 @@ public class HadoopTestData {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date testBeginTime = null;//开始测试时间
 			Date now = new Date();
-			boolean isOpt=false;
+			boolean isOpt=true;
 			long distance =0;
 				try {
 						
 						testBeginTime = sdf.parse(metaData.get("testbegintime")+"");//开始测试时间
 						System.out.println("testBeginTime="+sdf.format(testBeginTime));
-						if(isOpt){
+						if(isOpt&&configName.indexOf("hive")==-1){
 							Double maxHowLong=getMaxHowLong(c,configName, testIdentification,labCode);//目前测试数据中最大时间
 							System.out.println("maxHowLong="+maxHowLong);
 							Date realEndDate=new Date(testBeginTime.getTime()+ Math.round(maxHowLong)*60*1000);//实际结算时间
@@ -274,6 +274,7 @@ public class HadoopTestData {
 				
 			 */
 			String testIdentification=""+metaData.get("primarykey");//实验编号
+			testIdentification=testIdentification.trim().replaceAll(" ", "");
 			finalTestData.set("sybh",testIdentification);
 			finalTestData.set("ybbh", metaData.get("sample_code"));
 			finalTestData.set("cpxh", metaData.get("productmodel"));
