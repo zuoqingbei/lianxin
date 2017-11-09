@@ -25,6 +25,7 @@ function tipResize() {
 
 $(function () {
     tipResize();
+    //从地图提示框内直接打开实验室曲线
     $("body").on("click","#echartTips .echart_content>a",function () {
         var centerId = $(this).data("centerid");
         var $centerList = $('.lab .lab_content_l .switchBox>ul>li.noChildren,.lab .lab_content_l .switchBox>ul>li>ul>li', parent.document);
