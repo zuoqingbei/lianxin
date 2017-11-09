@@ -17,10 +17,22 @@ jzhekt.url = jdbc:sqlserver://10.130.96.107:1433;databaseName=Haier_Interconnect
 jzhekt.user = Haier_DBReader
 jzhekt.password= Haier2017
 
+#胶南热水器数据库 SQL Server 2008R2
+jnrsq.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver  
+jnrsq.url = jdbc:sqlserver://10.130.96.107:1433;databaseName=Haier_Interconnection_JNHERB_2017
+jnrsq.user = Haier_DBReader
+jnrsq.password= Haier2017
+
+#中海博睿整机数据库 SQL Server 2008R2
+zhbrzj.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver  
+zhbrzj.url = jdbc:sqlserver://10.130.96.107:1433;databaseName=Haier_Interconnection_ZHBR_2017
+zhbrzj.user = Haier_DBReader
+zhbrzj.password= Haier2017
+
 # 重庆实验室hive测试库信息
-#chongqing.driver=com.cloudera.impala.jdbc41.Driver
-#chongqing.url=jdbc:impala://10.138.8.211:10000/db_hive_ulab;AuthMech=0
-chongqing.driver=org.apache.hive.jdbc.HiveDriver
-chongqing.url =jdbc:hive2://10.138.8.211:10000/db_hive_ulab
-chongqing.user =hdfs
-chongqing.password=
+#hive.driver=com.cloudera.impala.jdbc41.Driver
+#hive.url=jdbc:impala://10.138.8.211:10000/db_hive_ulab;AuthMech=0
+hive.driver=org.apache.hive.jdbc.HiveDriver
+hive.url =jdbc:hive2://10.138.8.211:10000/db_hive_ulab
+hive.user =hdfs
+hive.password=

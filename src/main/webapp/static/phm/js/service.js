@@ -1,4 +1,5 @@
 
+
 var Service = {
 	bodyScale:$(window).height()/595,
 	init:function(){
@@ -104,7 +105,7 @@ var Service = {
 							fontSize:16*that.bodyScale
 						},
 					/*	icon:'image://../images/page2/icon.png'*/
-						icon:'/hlht/static/phm/images/page2/icon.png'
+						icon:'../static/phm/images/page2/icon.png'
 					}]
 			},
 		    tooltip: {
@@ -346,5 +347,6 @@ var Service = {
 		
 	}
 }
+
 
 Service.init();

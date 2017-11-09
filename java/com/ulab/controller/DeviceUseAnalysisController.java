@@ -29,7 +29,7 @@ public class DeviceUseAnalysisController extends BaseController {
 	//跟据商品使用分析表所关联的phm_device_info sn查询该商品使用信息
 	public void getDeviceUseAnalysisByDeviceSncode(){
 		String device_info_sncode=getPara("device_info_sncode");
-		Record record=DeviceUseAnalysisModel.dao.getDeviceUseAnalysisByDeviceSncode(device_info_sncode);
+		List<Record> record=DeviceUseAnalysisModel.dao.getDeviceUseAnalysisByDeviceSncode(device_info_sncode);
 		renderJson(record);
 	}
 
