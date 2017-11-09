@@ -469,12 +469,31 @@
 					guage.setOption(option);
 				
 			}
-			
+			var sortArr=["T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","U1","U2","R1"];
+			function sort(monitorConf){
+				var result=[];
+				var other=[];
+				for(var x=0;x<sortArr.length;x++){
+					$.each(monitorConf,function(index,item){
+						if(item.feature==sortArr[x]){
+							result.push(item);
+							return true ;
+						};
+					});
+				};
+				
+				$.each(monitorConf,function(index,item){
+					if(sortArr.indexOf(item.feature)==-1){
+						other.push(item);
+						return true ;
+					};
+				});
+				return result.concat(other);
+			}
 			/* ********************************************************************************* */
 			<!--实时状态初始化  -->
 			function timeStatus(){
 				var times=0;
-				console.log("66666");
 				if(sncode==""||sncode==undefined){
 					return;
 				}
@@ -483,12 +502,13 @@
 					url:"http://47.95.109.158/api/yzd/product/"+sncode,
 					type:"get",
 					success:function(data){
+						console.log(data.monitorConf)
+						data.monitorConf=sort(data.monitorConf);
 						$("#firstPage").html("");
 						$("#secondPage").html("");
 						//debugger;
 						var location=data.location;
 						var info=data.info;
-						console.log(info);
 						var S14=info['S14'];
 						
 						var monitorConf=data.monitorConf;
@@ -556,13 +576,13 @@
 										/* $("#analysisFirstPage").html(first);
 										$("#analysisSecondPage").html(second); */
 										continue;}
-								if(!max){
+								if(!max&&max!="0"){
 									type="text";
 									label="最大值数据缺失";
-								}else if(!min){
+								}else if(!min&&min!="0"){
 									type="text";
 									label="最小值数据缺失";
-								}else if(!actualStatus){
+								}else if(!actualStatus&&actualStatus!="0"){
 									type="text";
 									label="实际值数据缺失";
 								}
@@ -674,13 +694,13 @@
 											/* $("#analysisFirstPage").html(first);
 											$("#analysisSecondPage").html(second); */
 											continue;}
-									 if(!max){
+										if(!max&&max!="0"){
 											type="text";
 											label="最大值数据缺失";
-										}else if(!min){
+										}else if(!min&&min!="0"){
 											type="text";
 											label="最小值数据缺失";
-										}else if(!actualStatus){
+										}else if(!actualStatus&&actualStatus!="0"){
 											type="text";
 											label="实际值数据缺失";
 										}
@@ -1086,9 +1106,9 @@
 						setTimeout(function(){
 							mapChina(serious,general,light,good,arr,geoCoord);
 						},1000);
-						setInterval(function(){
+						 setInterval(function(){
 							timeStatus();
-						},3000);
+						},3000); 
 						
 					},
 				//	error:function(){alert("加载 地图信息错误 ");}
