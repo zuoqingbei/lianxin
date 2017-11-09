@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="PHW" content="phw二期"/>
+		<title>实时状态</title>
+		
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/status.css" />
+		
+		<script>
+		 	window.onload = function(){
+		        /*屏幕描述
+				         一共 7x3 个屏幕，每一块屏幕是1360x768，
+				         总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
+				
+		        var pageH = $(window).height();
+		        var pageW = pageH * 16 * 7 / (9 * 3);
+		        var bodyScale = pageH / 595;
+		        var bodyFontSize = bodyScale * 100 + "%";
+		        if (pageH > 2300) { // 如果是大屏幕(2304)
+		            pageW -= 47
+		        }
+		        function pageResize() {
+		            $("body").css("font-size", bodyFontSize);
+		            $("#content").css("width", pageW);
+		            $(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
+		            console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+		        }
+		        pageResize()
+	       }
+   		</script>
+	</head>
+	<body>
+		<div id="content">
+			<!--head-->
+			<div id="head">
+				<h1>
+					<a href="${contextPath}/fault/service">
+						<img src="../static/phm/images/status/logo_haier_bold.png" alt="" />
+					</a>
+				</h1>
+				<h2>基于物联网+大数据的最佳体验</h2>
+			</div>
+			<!--bottom-->
+			<div id="bottom">
+				<!--bottom left-->
+				<div class="map-mod">
+					<div id="myMap" style="width:100%;height:100%"></div>
+				</div>
+				<!--bottom bxbox-->
+				<div class="bxbox">
+					<div class="circle"></div>
+					<div class="light"></div>
+					<div class="piontline"></div>
+					<div class="view center-block mybx">
+			            <div class="box">
+			                <div class="box_front"><strong></strong></div>
+			                <div class="box_back"><strong></strong></div>
+			                <div class="box_top"><strong></strong></div>
+			                <div class="box_bottom"><strong>底部</strong></div>
+			                <div class="box_left"><strong></strong></div>
+			                <div class="box_right"><strong></strong></div>
+			                <div class="box_compressor"><strong></strong></div>
+			                <div class="box_compressor addon"><strong></strong></div>
+			            </div>
+			        </div>
+					<div class="bxinfo">
+						<div class="xinghao infobox">
+							<p class="txt1">型号：</p>
+							<p class="txt2" id="sncode">WD347T8948</p>
+						</div>
+						<div class="start infobox">
+							<p class="txt1">启用时间：</p>
+							<p class="txt2">2017-10-27</p>
+						</div>
+						<div class="address infobox">
+							<p class="txt1">地址：</p>
+							<p class="txt2" id="address">青岛市崂山区海尔路1号海尔信息产业园</p>
+						</div>
+						<div class="state infobox">
+							<p class="txt1">健康状态：</p>
+							<p class="txt2" id="status">良好</p>
+						</div>
+						<div class="time infobox">
+							<p class="txt1">运行总时长：</p>
+							<p class="txt2">179h</p>
+						</div>
+					</div>
+				</div>
+				<!--bottom right-->
+				<div class="statusBox">
+					<div class="leftBtn fyBtn"></div>
+					<div class="rightBtn fyBtn"></div>
+					<div class="titleBox">
+						<div class="tnav syfx" onclick="useAnalysis()">使用分析</div>
+						<div class="tnav sszt navActive" onclick="timeStatus()">实时状态</div>
+						<div class="tnav ztqs">状态趋势</div>
+						<div class="tnav gzzd">故障诊断</div>
+						<div class="tnav gzyc">故障预测</div>
+					</div>
+					<div class="bottomState">
+						<div class="state-box-contain">
+							<div class="state-box">
+								<!--实时状态-->
+								<div class="leftStates" id="firstPage">
+									<!-- <div class="jtState">
+										<p class="stateTxt">壳体11</p>
+										<div class="myState"></div>
+										<div class="track">
+											<div class="liquid liquid1"></div>
+										</div>
+										<div class="max">100</div>
+									    <div class="mid">50</div>
+									    <div class="min">0</div>
+									    <div class="tempTxt">10℃</div>
+									</div>
+									<div class="jtState">
+										<p class="stateTxt">蒸发器入口</p>
+										<div class="myState"></div>
+										<div class="track">
+											<div class="liquid liquid2"></div>
+										</div>
+										<div class="max">100</div>
+									    <div class="mid">50</div>
+									    <div class="min">0</div>
+									    <div class="tempTxt">40℃</div>
+									</div>
+									<div class="jtState">
+										<p class="stateTxt">蒸发器出口</p>
+										<div class="myState"></div>
+										<div class="track">
+											<div class="liquid liquid3"></div>
+										</div>
+										<div class="max">100</div>
+									    <div class="mid">50</div>
+									    <div class="min">0</div>
+									    <div class="tempTxt">40℃</div>
+									</div>
+									<div class="jtState">
+										<p class="stateTxt">冷凝器入口</p>
+										<div class="myState"></div>
+										<div class="track">
+											<div class="liquid liquid4"></div>
+										</div>
+										<div class="max">100</div>
+									    <div class="mid">50</div>
+									    <div class="min">0</div>
+									    <div class="tempTxt">40℃</div>
+									</div>
+									<div class="jtState">
+										<p class="stateTxt">冷凝器出口</p>
+										<div class="myState"></div>
+										<div class="track">
+											<div class="liquid liquid5"></div>
+										</div>
+										<div class="max">100</div>
+									    <div class="mid">50</div>
+									    <div class="min">0</div>
+									    <div class="tempTxt">40℃</div>
+									</div>
+									<div class="jtState mt1">
+										<p class="stateTxt">环境</p>
+										<div class="myState"></div>
+										<div class="track">
+											<div class="liquid liquid6"></div>
+										</div>
+										<div class="max">100</div>
+									    <div class="mid">50</div>
+									    <div class="min">0</div>
+									    <div class="tempTxt">40℃</div>
+									</div>
+									<div class="jtState mt1">
+										<p class="stateTxt">转速</p>
+										<div class="canvBox">
+											<div id="zsCanvas" style="width:100%;height:100%"></div>
+										</div>
+									</div>
+									<div class="jtState mt1">
+										<p class="stateTxt">排气压力</p>
+										<div class="canvBox">
+											<div id="pqylCanvas" style="width:100%;height:100%"></div>
+										</div>
+									</div>
+									<div class="jtState mt1">
+										<p class="stateTxt">加速度</p>
+										<div class="canvBox">
+											<div id="jsdCanvas" style="width:100%;height:100%"></div>
+										</div>
+									</div>
+									<div class="jtState mt1">
+										<p class="stateTxt">制冷量</p>
+										<div class="canvBox">
+											<div id="zllCanvas" style="width:100%;height:100%"></div>
+										</div>
+									</div> -->
+								</div>
+								<div class="leftStates" id="secondPage">
+									<!-- <div class="jtState">
+										<p class="stateTxt">冷凝器入口</p>
+										<div class="myState"></div>
+										<div class="track">
+											<div class="liquid liquid4"></div>
+										</div>
+										<div class="max">100</div>
+									    <div class="mid">50</div>
+									    <div class="min">0</div>
+									    <div class="tempTxt">40℃</div>
+									</div>
+									<div class="jtState">
+										<p class="stateTxt">冷凝器出口</p>
+										<div class="myState"></div>
+										<div class="track">
+											<div class="liquid liquid5"></div>
+										</div>
+										<div class="max">100</div>
+									    <div class="mid">50</div>
+									    <div class="min">0</div>
+									    <div class="tempTxt">40℃</div>
+									</div>
+									<div class="jtState">
+										<p class="stateTxt">环境</p>
+										<div class="myState"></div>
+										<div class="track">
+											<div class="liquid liquid6"></div>
+										</div>
+										<div class="max">100</div>
+									    <div class="mid">50</div>
+									    <div class="min">0</div>
+									    <div class="tempTxt">40℃</div>
+									</div> -->
+								</div>
+								
+								<!--使用分析-->
+								<div class="syfxBox" id="analysisFirstPage">
+									<!-- <div class="problemBox ">
+										<div class="imgBox">
+											<img src="../static/phm/images/status/kgmfs.jpg" alt="" />
+										</div>
+										<div class="rightInfo">
+											<h6>开关门频繁</h6>
+											<p>当前程度：</p>
+											<p>严重</p>
+										</div>
+									</div>
+									<div class="problemBox margleft">
+										<div class="imgBox">
+											<img src="../static/phm/images/status/kmsjgc.png" alt="" />
+										</div>
+										<div class="rightInfo">
+											<h6>开门时间过长</h6>
+											<p>当前程度：</p>
+											<p>轻微</p>
+										</div>
+									</div>
+									<div class="problemBox margtop">
+										<div class="imgBox">
+											<img src="../static/phm/images/status/fzgd.png" alt="" />
+										</div>
+										<div class="rightInfo">
+											<h6>负载过大</h6>
+											<p>当前程度：</p>
+											<p>中等</p>
+										</div>
+									</div>
+									<div class="problemBox margleft margtop">
+										<div class="imgBox">
+											<img src="../static/phm/images/status/ajsjgd.jpg" alt="" />
+										</div>
+										<div class="rightInfo">
+											<h6>按键时间过短</h6>
+											<p>当前程度：</p>
+											<p>良好</p>
+										</div>
+									</div> -->
+								</div>
+								
+								<div class="syfxBox" id="analysisSecondPage">
+									<!-- <div class="problemBox ">
+										<div class="imgBox">
+											<img src="../static/phm/images/status/ajsjgd.jpg" alt="" />
+										</div>
+										<div class="rightInfo">
+											<h6>按键时间过短</h6>
+											<p>当前程度：</p>
+											<p>良好</p>
+										</div>
+									</div> -->
+								</div>
+							</div>
+						</div>
+						<div class="rightBx">
+								<p class="stateTxt">实时拍摄画面</p>
+								<div class="video" id="player">
+									<!-- <video id="video" width="100%" height="100%" autoplay loop style="object-fit: fill;" >
+										<source  src="" type="video/mp4"></source>
+										<source id="video" src="${contextPath}/static/phm/asserts/video/3theA.mp4" type="video/mp4"></source>
+									</video> -->
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<script src="${contextPath}/static/phm/asserts/echarts/echarts-all-2.2.7.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js"  type="text/javascript" charset="utf-8"></script>
+		<script src="${contextPath}/static/phm/asserts/js/swfobject.js"  type="text/javascript" charset="utf-8"></script>
+		
+		<script src="${contextPath}/static/phm/js/status.js" type="text/javascript" charset="utf-8"></script>
+	
+	<!--陈新   -->
+		<!--实时状态  -->
+			<script type="text/javascript" charset="utf-8">
+			var sncode="";//定义sncode 
+			
+			var bodyScale=$(window).height()/595;
+			var that=this;
+			<!--**********************转速 初始化***************************************   -->
+				function speedometer(value,times,max,min,title,label){
+					var zs = echarts.init(document.getElementById("zsCanvas"+times));
+					var zsOption={
+
+							title:{
+								text:label,
+								x:40*bodyScale,
+								y:70*bodyScale,
+								textStyle:{
+									color:'#64ccff',
+									fontSize:13*bodyScale
+								}
+							},
+//							 tooltip : {
+//						        formatter: "{a} <br/>{b} : {c}"
+//						    },
+						    series : [
+						        {
+						            name:title,
+						            type:'gauge',
+						            detail : {formatter:'{value}',
+						            	textStyle:{
+						            		color:'#64ccff',
+						            		fontSize:15*bodyScale,
+						            		fontWeight:600,
+						            	}
+						            },
+						            data:[{value: value}],
+						          itemStyle:{
+						          	color:'#64ccff'
+						          },
+						          startAngle:200,
+						          endAngle:-20,
+						          min:min,
+						          max:max,
+						          //radius:"[2%,75%]",
+						          radius:["80%","100%"],
+						          center:["50%","60%"],
+						          axisLine:{
+						          	show:true,
+						            lineStyle:{
+						            	color:'#64ccff',
+						              width:15*bodyScale
+						            }
+						          },
+						          axisLabel:{
+						          	textStyle:{
+						          		color:'#fff'
+						          	}
+						          },
+						          splitLine:{
+						          	length:bodyScale,
+						          	lineStyle:{
+						          		color:'#64ccff',
+						          		width:2*bodyScale
+						          	}
+						          },
+						          axisTick:{
+						          	show:false
+						          },
+						          pointer:{
+						          	length:40*bodyScale,
+						            width:5*bodyScale,
+						            color:'#dd0'
+						          },
+						          title:{
+						          	show:true,
+						          	
+						          }
+						        }
+						    ]
+						
+					}
+					
+					zs.setOption(zsOption);
+				}
+			/* **********************************仪表初始化 **************************************  */
+				function gauge(value,times,max,min,title,label,percent){
+					var guage = echarts.init(document.getElementById("Canvas"+times));
+					var option={
+					title:{
+						text:label,
+						x:40*bodyScale,
+						y:50*bodyScale,
+						textStyle:{
+							color:'#64ccff',
+							fontSize:13*bodyScale
+						}
+					},
+					 tooltip : {
+				        formatter: "{a} <br/>{b} : {c}"
+				    },
+				    series : [
+				        {
+				            name:title,
+				            type:'gauge',
+				            detail : {formatter:'{value}',
+				            	textStyle:{
+				            		color:'#64ccff',
+				            		fontSize:15*bodyScale,
+				            		fontWeight:600,
+				            	},
+				            	offsetCenter:[0,'-5%']
+				            },
+				            data:[{value: value}],
+				          itemStyle:{
+				          	color:'#64ccff'
+				          },
+				          startAngle:180,
+				          endAngle:0,
+				          min:min,
+				          max:max,
+				          //radius:"[2%,75%]",
+				          radius:["80%","100%"],
+				          center:["50%","60%"],
+				          axisLine:{
+				          	show:true,
+				            lineStyle:{
+				            	color:[
+				            		[percent,'#64ccff'],
+				            		[1,'#0a5365']
+				            	],
+				              width:15*bodyScale
+				            }
+				          },
+				          splitLine:{
+				          	show:false
+				          },
+				          axisTick:{
+				          	show:false
+				          },
+				          axisLabel:{
+				          	show:false
+				          },
+				          pointer:{
+				          	length:0,
+				            width:0,
+				            color:'#dd0'
+				          },
+				          title:{
+				          	show:true,
+				          	
+				          }
+				        }
+				    ]
+				
+					}
+					guage.setOption(option);
+				
+			}
+			
+			/* ********************************************************************************* */
+			<!--实时状态初始化  -->
+			function timeStatus(){
+				var times=0;
+				if(sncode==""||sncode==undefined){
+					return;
+				}
+				$.ajax({
+					url:"http://localhost:8088/api/yzd/product/"+sncode,
+					type:"get",
+					success:function(data){
+						$("#firstPage").html("");
+						$("#secondPage").html("");
+						//debugger;
+						var location=data.location;
+						var info=data.info;
+						
+						var monitorConf=data.monitorConf;
+							for( var index in monitorConf){
+								var monitorConfSingle=monitorConf[index];
+								var param=monitorConfSingle.param;
+								var title="";
+								var label="";
+								var max="";
+								var min="";
+								var actualStatus="";
+								var type=monitorConfSingle.type;
+								var feature=monitorConfSingle.feature;
+									 actualStatus=info[feature];
+								var charts="";
+								if(param==undefined){
+									max=5;
+									min=1;
+									title="未知";
+									actualStatus=3;
+									label="未发现";
+								}else{
+									 title=param.title;
+									 label=param.label;
+									 max=param.max;
+									 min=param.min;
+								}
+							/* 	var type=monitorConfSingle.type;
+								var feature=monitorConfSingle.feature;
+									 actualStatus=info[feature];
+								var charts=""; */
+							var changeClass="";
+								if(times%10>4){
+									changeClass="mt1";
+								}
+								if(type=="thermometer"){
+									times+=1;
+									charts+=
+									"<div class='jtState "+changeClass+"'>"+
+										"<p class='stateTxt'>"+title+"</p>"+
+										"<div class='myState'></div>"+
+										"<div class='track'>"+
+											"<div class='liquid liquid"+times+"'></div>"+
+										"</div>"+
+										"<div class='max'>"+max+"</div>"+
+									    "<div class='mid'></div>"+
+									    "<div class='min'>"+min+"</div>"+
+									    "<div class='tempTxt'>"+actualStatus+"</div>"+
+									"</div>";
+									var myarr=new Array();
+									
+									
+									
+									if(times>10){
+										$("#secondPage").append(charts);
+									}else{
+										$("#firstPage").append(charts);
+									}
+									if(actualStatus==undefined){actualStatus=(max+min)/2;}
+									if(actualStatus<min){min=actualStatus-4;}
+									 myarr[0]=["liquid"+times,max,min,actualStatus,"℃"];
+									 Status.liquidMove(myarr);
+								}else if(type=="speedometer"){
+									//debugger;
+									times+=1;
+									charts+=
+										"<div class='jtState "+changeClass+"'>"+
+											"<p class='stateTxt'>"+title+"</p>"+
+											"<div class='canvBox'>"+
+												"<div id='zsCanvas"+times+"' style='width:100%;height:100%'></div>"+
+											"</div>"+
+										"</div>";
+									if(times>10){
+										$("#secondPage").append(charts);
+									}else{
+										$("#firstPage").append(charts);
+									}
+									speedometer(actualStatus,times,max,min,title,label);
+								}else if(type=="gauge"){
+									times+=1;
+									charts+=
+										"<div class='jtState "+changeClass+"'>"+
+											"<p class='stateTxt'>"+title+"</p>"+
+											"<div class='canvBox'>"+
+												"<div id='Canvas"+times+"' style='width:100%;height:100%'></div>"+
+											"</div>"+
+										
+										"</div>";
+									if(times>10){
+										$("#secondPage").append(charts);
+									}else{
+										$("#firstPage").append(charts);
+									}
+									
+									var percent=(actualStatus-min)/(max-min);
+									gauge(actualStatus,times,max,min,title,label,percent);
+									
+								}else if(type=="text"){
+									title=param.title;
+									label=param.label
+									times+=1;
+									charts+=
+										"<div class='jtState "+changeClass+"'>"+
+											"<p style='margin-left:17%;' class='stateTxt'>"+title+"</p>"+
+											
+										    "<div style='margin-top: 14%;'><span style='margin:-8% 9%;display:block;'>"+label+"</span></div>"+
+										"</div>";
+									if(times>10){
+										$("#secondPage").append(charts);
+									}else{
+										$("#firstPage").append(charts);
+									}
+								}
+	
+							}
+						
+	
+					},
+					error:function(){alert("加载错误");}
+				
+				});
+				//Status.liquidMove(myarr);
+				
+			}
+			/**********************************使用分析 **************************************************/
+			function useAnalysis(){
+				if(sncode==""){
+					return;
+				}
+					$.ajax({
+						url:"${contextPath}/deviceUseAnalysis/getDeviceUseAnalysisByDeviceSncode",
+						type:"get",
+						data:{'device_info_sncode':sncode},
+						success:function(data){
+							var f=1;
+								var first="";var second="";
+							$.each(data,function(index,element){
+								if(f%4==1){
+									
+									var content=
+									"<div class='problemBox '>"+
+										"<div class='imgBox'>"+
+											"<img src='${contextPath}/static/phm/images/"+element.imageurl+"' alt='' />"+
+										"</div>"+
+										"<div class='rightInfo'>"+
+											"<h6>"+element.description+"</h6>"+
+											"<p>当前程度：</p>"+
+											"<p>"+element.status+"</p>"+
+										"</div>"+
+									"</div>";
+									if(f>4){
+										second+=content;
+									}else{
+										first+=content;
+									}
+									f+=1;
+								}else if(f%4==2){
+									var content=
+										"<div class='problemBox margleft'>"+
+											"<div class='imgBox '>"+
+												"<img src='${contextPath}/static/phm/images/"+element.imageurl+"' alt='' />"+
+											"</div>"+
+											"<div class='rightInfo'>"+
+												"<h6>"+element.description+"</h6>"+
+												"<p>当前程度：</p>"+
+												"<p>"+element.status+"</p>"+
+											"</div>"+
+										"</div>";
+									if(f>4){
+										second+=content;
+									}else{
+										first+=content;
+									}
+									f+=1;
+								}else if(f%4==3){
+									var content=
+										"<div class='problemBox margtop'>"+
+											"<div class='imgBox '>"+
+												"<img src='${contextPath}/static/phm/images/"+element.imageurl+"' alt='' />"+
+											"</div>"+
+											"<div class='rightInfo'>"+
+												"<h6>"+element.description+"</h6>"+
+												"<p>当前程度：</p>"+
+												"<p>"+element.status+"</p>"+
+											"</div>"+
+										"</div>";
+									if(f>4){
+										second+=content;
+									}else{
+										first+=content;
+									}
+									f+=1;
+								}else if(f%4==0){
+									var content=
+										"<div class='problemBox margleft margtop'>"+
+											"<div class='imgBox '>"+
+												"<img src='${contextPath}/static/phm/images/"+element.imageurl+"' alt='' />"+
+											"</div>"+
+											"<div class='rightInfo'>"+
+												"<h6>"+element.description+"</h6>"+
+												"<p>当前程度：</p>"+
+												"<p>"+element.status+"</p>"+
+											"</div>"+
+										"</div>";
+									if(f>4){
+										second+=content;
+									}else{
+										first+=content;
+									}
+									f+=1;
+								}
+								
+								
+							});
+							$("#analysisFirstPage").html(first);
+							$("#analysisSecondPage").html(second);
+						},
+						error:function(){alert("加载错误 ");}
+						
+						
+						
+					});
+				
+				
+				
+			}
+			/***********************************地图 *******************************************************/
+		function mapChina(serious,general,light,good,arr,geoCoord){
+				var myMapCharts = echarts.init(document.getElementById("myMap"));
+				var mapChartsOptions = {
+					dataRange: {
+				        min : 1,
+				        max : 125,
+				        precision:0,
+				        itemWidth:20*bodyScale,
+						itemHeight:10*bodyScale,
+				        calculable : true,//不可拖动
+				        padding:10*bodyScale,
+				        color: ['aqua','lime', 'yellow','orange','#ff3333'],
+				        textStyle:{
+				            color:'#fff',
+				            fontSize:13*bodyScale
+				        }
+				    },
+				    tooltip: {
+				         show: false, //不显示提示标签
+			            formatter: '{b}', //提示标签格式
+			            backgroundColor:"#ff7f50",//提示标签背景颜色
+			            textStyle:{
+			            	color:"#fff",
+				        	fontSize:16*bodyScale
+			            } //提示标签字体颜色
+			        },
+					series : [
+				        {
+				            name: '全国',
+				            type: 'map',
+				            mapType: 'china',
+				            clickable:false,
+				         /* 	geoCoord: {
+				                '上海': ["121.4648","31.2891"],
+				                '基准': ["156","48"],
+				                address
+						 },  */
+							geoCoord:geoCoord,
+				            itemStyle: {
+				                normal: {
+				                	color:'#0091d1',
+				                    borderWidth: 1.5*bodyScale,//区域边框宽度
+				                    borderColor: '#000619',//区域边框颜色
+				                    areaColor:'#0091d0',//区域颜色
+				                },
+				                emphasis: {
+//				                    color:"#00e673",
+				                }
+			           	 	},
+				            data:[],
+				            markLine : {
+				                smooth:true,
+				                smoothness:0,
+				                symbol:['circle','none'],
+				                symbolSize:[10*that.bodyScale,10*that.bodyScale],
+				                effect : {
+				                    show: true,
+				                    scaleSize: 1,
+				                    period: 15,//运动周期
+				                    color: '#fff',
+				                    shadowBlur: 10
+				                },
+				                itemStyle : {
+				                    normal: {
+				                        borderWidth:1*that.bodyScale,
+				                        lineStyle: {
+				                            type: 'solid',
+				                            color:'#64ccff',
+				                            shadowBlur: 10
+				                        }
+				                    }
+				                },
+				            	 data : arr
+				            },
+				        },
+				        {
+				            name: '良好',
+				            type: 'map',
+				            mapType: 'china',
+				            data:[],
+				            markPoint : {
+				                symbol:'circle',
+			            		symbolSize:5*bodyScale,
+				                effect : {
+				                    show: true,
+				                    shadowBlur : 0,
+				                    period:5
+				                },
+				                itemStyle:{
+				                    normal:{
+				                    	color:'lime',
+				                        label:{show:false}
+				                    },
+				                    emphasis: {
+				                        label:{position:'top'}
+				                    }
+				                },
+/* 				                data :[{image: "asserts/video/3theA.mp4", sncode: "7", address: "上海", kind: "上海", name: "良好", sncode:"7",coord: [121, 31]}]
+ */				                data:good
+				            }
+				            
+				        },
+				        {
+				            name: '一般',
+				            type: 'map',
+				            mapType: 'china',
+				            data:[],
+				            markPoint : {
+				                symbol:'circle',
+			            		symbolSize:5*bodyScale,
+				                effect : {
+				                    show: true,
+				                    shadowBlur : 0,
+				                    period:5
+				                },
+				                itemStyle:{
+				                    normal:{
+				                    	color:'#00ffff',
+				                        label:{show:false}
+				                    },
+				                    emphasis: {
+				                        label:{position:'top'}
+				                    }
+				                },
+				                data :general
+				            }
+				        } ,
+				        
+				        {
+				            name: '轻微',
+				            type: 'map',
+				            mapType: 'china',
+				            data:[],
+				            markPoint : {
+				                symbol:'circle',
+			            		symbolSize:5*bodyScale,
+				                effect : {
+				                    show: true,
+				                    shadowBlur : 0,
+				                    period:5
+				                },
+				                itemStyle:{
+				                    normal:{
+				                    	color:'#990033',
+				                        label:{show:false}
+				                    },
+				                    emphasis: {
+				                        label:{position:'top'}
+				                    }
+				                },
+				                data :light
+				            }
+				        } ,
+				        {
+				            name: '严重',
+				            type: 'map',
+				            mapType: 'china',
+				            data:[],
+				            markPoint : {
+				                symbol:'circle',
+			            		symbolSize:5*bodyScale,
+				                effect : {
+				                    show: true,
+				                    shadowBlur : 0,
+				                    period:5
+				                },
+				                itemStyle:{
+				                    normal:{
+				                    	color:'red',
+				                        label:{show:false}
+				                    },
+				                    emphasis: {
+				                        label:{position:'top'}
+				                    }
+				                },
+				                data :serious
+				            }
+				        } 
+				        
+				        
+				    ]
+				}
+				myMapCharts.setOption(mapChartsOptions);
+			
+				
+				myMapCharts.on('click',function(param){
+					var tempSncode=sncode;
+					sncode=param.data.sncode;
+					var name = param.data.name;
+					$("#sncode").html(sncode);
+					$("#address").html(name);
+					$("#status").html(param.data.status);
+					 arr=[ [{name:name},{name:'基线'}] ];
+					
+				
+					$("#firstPage").html("");
+					$("#secondPage").html("");
+					$("#analysisFirstPage").html("");
+					$("#analysisSecondPage").html("");
+					useAnalysis();//更新使用分析
+					timeStatus();//更新实时状态
+					mapChartsOptions.series[0].markLine.data=arr;
+					myMapCharts.clear();
+					myMapCharts.setOption(mapChartsOptions);
+					
+		              	/**********************/	
+				});
+			
+			}
+			/*********************************************************************************/
+			$(function(){
+				//setTimeout(function(){
+				//	mapChina()
+			//	},2000);
+				$.ajax({
+					url:"${contextPath}/deviceInfo/findDeviceInfoStatusGroup",
+					type:"get",
+					success:function(data){
+						var serious=new Array();
+						var general=new Array();
+						var light=new Array();
+						var good=new Array();
+						 serious=data.serious;
+						 general=data.general;
+						 light=data.light;
+						 good=data.good;
+						var geoCoord={'基线':["140","32"]};
+						var address=data.address;
+						for(var i=0;i<address.length;i++){
+							var obj=address[i];
+							for(var j in obj){
+								geoCoord[j]=obj[j];
+							}
+						}
+						 var arr=[[]];
+						 if(good.length>0){
+							 arr=[ [{name:good[0].name},{name:'基线'}] ];
+						 }else if(light.length>0){
+							 arr=[ [{name:light[0].name},{name:'基线'}] ];
+						 }else if(general.length>0){
+							 arr=[ [{name:general[0].name},{name:'基线'}] ];
+						 }else if(serious.length>0){
+							 arr=[ [{name:serious[0].name},{name:'基线'}] ];
+						 }
+					 	sncode=good[0].sncode;
+						$("#sncode").html(sncode);
+						$("#address").html(good[0].name);
+						$("#status").html(good[0].status);
+						//document.getElementById("video").src="${contextPath}/static/phm/"+good[0].image;
+					
+						//var arr=[ [{name:good[0].name},{name:'基线'}] ];
+ 
+						useAnalysis();//更新使用分析
+						timeStatus();//更新实时状态 
+						setTimeout(function(){
+							mapChina(serious,general,light,good,arr,geoCoord);
+						},1000);
+						
+					},
+					error:function(){alert("加载 地图信息错误 ");}
+					
+					
+				})
+			});
+			//function markLineOption
+		</script>
+	</body>
+</html>
