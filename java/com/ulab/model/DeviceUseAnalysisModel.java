@@ -31,7 +31,7 @@ public class DeviceUseAnalysisModel extends Model<DeviceUseAnalysisModel> {
 	public List<Record> getDeviceUseAnalysisByDeviceSncode(String device_info_sncode){
 		String sql=
 		"select analy.DESCRIPTION,analy.STATUS,analy.IMAGEURL from PHM_DEVICE_INFO info ,PHM_DEVICE_USE_ANALYSIS analy"+ 
-		"  where analy.DEVICE_INFO_SNCODE=INFO.SNCODE and analy.DEVICE_INFO_SNCODE='" +device_info_sncode+"'";
+		"  where analy.DEVICE_INFO_SNCODE=INFO.SNCODE and analy.DEVICE_INFO_SNCODE=" +device_info_sncode;
 		List<Record>list=Db.find(sql);
 		return list;
 	}

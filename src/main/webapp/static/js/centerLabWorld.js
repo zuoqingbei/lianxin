@@ -453,6 +453,7 @@ function dealSeriesDataWorld() {
         if (checked) {
             var topIndex = isHasElementOne(topParamWorld, dealUnit(currentName));
             var bottomIndex = isHasElementOne(bottomParamWorld, dealUnit(currentName));
+            
             if (topIndex > -1 || bottomIndex > -1) {
                 if (topIndex > -1 && isHasElementOne(showlegendDataWorld, dealBracketForObj(currentName)) > -1) {
                     //展示在上半部分
@@ -521,8 +522,8 @@ function joinSeriseWorld(data, name, index, colorIndex) {
             dataArr.push(value);
             xDataWorld.push(parseInt(parseFloat(data[x].name) * 60));
         }
-    }
-    ;
+    };
+    console.log(data.length+"---endStart="+endStart+"---startTime="+startTime)
     //模拟空白x轴
     mockXdataMethodWorld(endStart);
     //console.log(dataArr)
@@ -577,6 +578,7 @@ function joinSeriseOtherWorld(data, name, colorIndex) {
 }
 //模拟空白x轴
 function mockXdataMethodWorld(endStart) {
+	
     mockXdataWorld = [];
     //模拟空白x轴
     for (var x = 1; x < 90; x++) {
@@ -635,7 +637,7 @@ function checkBoxValesWorld() { //jquery获取复选框值
     return chk_value;
 }
 function getChartsWorld1() {
-
+console.log(xDataWorld[xDataWorld.length-1])
     option_world = {
         tooltip: {
             trigger: 'axis',
