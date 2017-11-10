@@ -325,7 +325,9 @@
 				var secondPg;
 				var thirdPg;
 				var fourPg;
-				if(displayFlag%2==1){
+				thirdPg="firstPage";
+				fourPg="secondPage";
+		/* 		if(displayFlag%2==1){
 					firstPg="firstPage";
 					secondPg="secondPage";
 					thirdPg="thirdPage";
@@ -339,7 +341,7 @@
 					thirdPg="firstPage";
 					fourPg="secondPage";
 					displayFlag+=1;
-				}
+				} */
 					$("#"+secondPg).after("<div class='leftStates' id='"+thirdPg+"' style='display:block;'></div>");
 					$("#"+thirdPg).after("<div class='leftStates' id='"+fourPg+"' style='display:block;'></div>");
 				$.ajax({
@@ -347,9 +349,9 @@
 					url:"http://47.95.109.158/api/yzd/product/"+sncode,
 					type:"get",
 					success:function(data){
-						console.log(data.monitorConf)
+					//	console.log(data.monitorConf)
 						data.monitorConf=sort(data.monitorConf);
-						console.log(data.monitorConf);
+						//console.log(data.monitorConf);
 						
 						//debugger;
 						var location=data.location;
@@ -379,7 +381,7 @@
 									//S14=1;
 									if(!S14){
 										var image=
-											"<div class='jtState mt1'>"+
+											"<div id='bx' class='jtState mt1'>"+
 											"<p style='margin-left:17%;' class='stateTxt'>冰箱开关门</p>"+
 											
 										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>开关门缺失数据</span></div>"+
@@ -387,7 +389,7 @@
 										$("#"+thirdPg).append(image);
 									}else if(S14=="0"){
 										var image=
-											"<div class='jtState mt1'>"+
+											"<div id='bx' class='jtState mt1'>"+
 												"<p class='stateTxt'>冰箱开关门</p>"+
 												"<div class='bxDoor'>"+
 													"<div class='bxImgLeft'>"+
@@ -399,7 +401,7 @@
 										$("#"+thirdPg).append(image);
 									}else if(S14=="1"){
 										var image=
-											"<div class='jtState mt1'>"+
+											"<div id='bx' class='jtState mt1'>"+
 												"<p class='stateTxt'>冰箱开关门</p>"+
 												"<div class='bxDoor'>"+
 													"<div class='bxImgLeft'>"+
@@ -439,7 +441,7 @@
 								if(type=="thermometer"){
 									times+=1;
 									charts+=
-									"<div class='jtState "+changeClass+"'>"+
+									"<div id='thermometer"+times+"' class='jtState "+changeClass+"'>"+
 										"<p class='stateTxt'>"+title+"</p>"+
 										"<div class='myState'></div>"+
 										"<div class='track'>"+
@@ -466,12 +468,12 @@
 								}if(type=="speedometer"){
 									//debugger;
 									times+=1;
-									var num=Math.random()*100;
+								//	var num=Math.random()*100;
 									charts+=
-										"<div class='jtState "+changeClass+"'>"+
+										"<div id='speedometer"+times+"' class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='canvBox'>"+
-												"<div id='zsCanvas"+num+"' style='width:100%;height:100%'></div>"+
+												"<div id='zsCanvas"+times+"' style='width:100%;height:100%'></div>"+
 											"</div>"+
 										"</div>";
 									if(times>12){
@@ -479,15 +481,15 @@
 									}else{
 										$("#"+thirdPg).append(charts);
 									}
-									speedometer(actualStatus,num,max,min,title,label);
+									speedometer(actualStatus,times,max,min,title,label);
 								}else if(type=="gauge"){
 									times+=1;
-									var num=Math.random()*100;
+									//var num=Math.random()*100;
 									charts+=
-										"<div class='jtState "+changeClass+"'>"+
+										"<div id='gauge"+times+"' class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='canvBox'>"+
-												"<div id='Canvas"+num+"' style='width:100%;height:100%'></div>"+
+												"<div id='Canvas"+times+"' style='width:100%;height:100%'></div>"+
 											"</div>"+
 										
 										"</div>";
@@ -498,13 +500,13 @@
 									}
 									
 									var percent=(actualStatus-min)/(max-min);
-									gauge(actualStatus,num,max,min,title,label,percent);
+									gauge(actualStatus,times,max,min,title,label,percent);
 									
 								}else if(type=="text"){
 									
 									times+=1;
 									charts+=
-										"<div class='jtState "+changeClass+"'>"+
+										"<div id='cxtx"+times+"' class='jtState "+changeClass+"'>"+
 											"<p style='margin-left:17%;' class='stateTxt'>"+title+"</p>"+
 											
 										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>"+label+"</span></div>"+
@@ -519,8 +521,8 @@
 								// $("#"+firstPg).remove();
 							//$("#"+secondPg).remove();
 								//setTimeout(function(){
-									 $("#"+firstPg).remove();
-									$("#"+secondPg).remove();
+									// $("#"+firstPg).remove();
+								///	$("#"+secondPg).remove();
 									//$("#"+thirdPg).css("display","block");
 								//	$("#"+fourPg).css("display","block");
 							//	},1000);
@@ -865,7 +867,8 @@
 							mapChina(serious,general,light,good,arr,geoCoord);
 						},1000);
 						 setInterval(function(){
-							timeStatus();
+							//timeStatus();
+							updateStatus();
 						},3000); 
 						
 					},
@@ -874,7 +877,197 @@
 					
 				})
 			});
-		
+			/*********************定时更新 实时状态 ****************************/
+		function updateStatus(){
+				var times=0;
+			$.ajax({
+				//url:"http://localhost:8088/api/yzd/product/"+sncode,
+				url:"http://47.95.109.158/api/yzd/product/"+sncode,
+				type:"get",
+				success:function(data){
+				//	console.log(data.monitorConf)
+					data.monitorConf=sort(data.monitorConf);
+				//	console.log(data.monitorConf);
+					
+					//debugger;
+					var location=data.location;
+					var info=data.info;
+					var S14=info['S14'];
+					
+					var monitorConf=data.monitorConf;
+						for( var index in monitorConf){
+							//debugger;
+							var monitorConfSingle=monitorConf[index];
+							var param=monitorConfSingle.param;
+							var title="";
+							var label="";
+							var max="";
+							var min="";
+							var actualStatus="";
+							var type=monitorConfSingle.type;
+							var feature=monitorConfSingle.feature;
+								 actualStatus=info[feature];
+							var charts="";
+						
+								 title=param.title;
+								 label=param.label;
+								 max=param.max;
+								 min=param.min;
+							if(times==6){
+								//S14=1;
+								if(!S14){
+									
+									var image=
+										//"<div id='bx' class='jtState mt1'>"+
+										"<p style='margin-left:17%;' class='stateTxt'>冰箱开关门</p>"+
+										
+									    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>开关门缺失数据</span></div>";
+									//"</div>";
+									$("#bx").html(image);
+									//$("#"+thirdPg).append(image);
+								}else if(S14=="0"){
+									var image=
+										//"<div id='bx' class='jtState mt1'>"+
+											"<p class='stateTxt'>冰箱开关门</p>"+
+											"<div class='bxDoor'>"+
+												"<div class='bxImgLeft'>"+
+													"<img src='${contextPath}/static/phm/images/status/bxClose.png' alt='' />"+
+												"</div>"+
+												"<p class='bxTxt'>当前状态:<br /><span>关门</span></p>";
+											"</div>"+
+										//"</div>";
+										$("#bx").html(image);
+									//$("#"+thirdPg).append(image);
+								}else if(S14=="1"){
+									var image=
+										//"<div id='bx' class='jtState mt1'>"+
+											"<p class='stateTxt'>冰箱开关门</p>"+
+											"<div class='bxDoor'>"+
+												"<div class='bxImgLeft'>"+
+													"<img src='${contextPath}/static/phm/images/status/bxOpen.png' alt='' />"+
+												"</div>"+
+												"<p class='bxTxt'>当前状态:<br /><span>开门</span></p>";
+											"</div>"+
+									//	"</div>";
+								//	$("#"+thirdPg).append(image);
+											$("#bx").html(image);
+								}
+								times+=1;
+							}
+						/* 	var type=monitorConfSingle.type;
+							var feature=monitorConfSingle.feature;
+								 actualStatus=info[feature];
+							var charts=""; */
+							//if(times>0){debugger;}
+							//if(!max||!min||!actualStatus)
+								if(times>23){
+									/* $("#analysisFirstPage").html(first);
+									$("#analysisSecondPage").html(second); */
+									continue;}
+							if(!max&&max!="0"){
+								type="text";
+								label="最大值数据缺失";
+							}else if(!min&&min!="0"){
+								type="text";
+								label="最小值数据缺失";
+							}else if(!actualStatus&&actualStatus!="0"){
+								type="text";
+								label="实际值数据缺失";
+							}
+						var changeClass="";
+							if(times%12>5){
+								changeClass="mt1";
+							}
+							if(type=="thermometer"){
+								times+=1;
+								charts+=
+								//"<div id='thermometer"+times+"' class='jtState "+changeClass+"'>"+
+									"<p class='stateTxt'>"+title+"</p>"+
+									"<div class='myState'></div>"+
+									"<div class='track'>"+
+										"<div class='liquid liquid"+times+"'></div>"+
+									"</div>"+
+									"<div class='max'>"+max+"</div>"+
+								    "<div class='mid'></div>"+
+								    "<div class='min'>"+min+"</div>"+
+								    "<div class='tempTxt'>"+actualStatus+"</div>";
+								//"</div>";
+								var myarr=new Array();
+								
+								$("#thermometer"+times).html(charts);
+								
+							/* 	if(times>12){
+									$("#"+fourPg).append(charts);
+								}else{
+									$("#"+thirdPg).append(charts);
+								} */
+								//if(actualStatus==undefined){actualStatus=(max+min)/2;}
+								//if(actualStatus<min){min=actualStatus-4;}
+								 myarr[0]=["liquid"+times,max,min,actualStatus,"℃"];
+								 Status.liquidMove(myarr);
+							}if(type=="speedometer"){
+								//debugger;
+								times+=1;
+								//var num=Math.random()*100;
+								charts+=
+									//"<div id='speedometer"+times+"' class='jtState "+changeClass+"'>"+
+										"<p class='stateTxt'>"+title+"</p>"+
+										"<div class='canvBox'>"+
+											"<div id='zsCanvas"+times+"' style='width:100%;height:100%'></div>"+
+										"</div>";
+									//"</div>";
+							/* 	if(times>12){
+									$("#"+fourPg).append(charts);
+								}else{
+									$("#"+thirdPg).append(charts);
+								} */
+								$("#speedometer"+times).html(charts);
+								speedometer(actualStatus,times,max,min,title,label);
+							}else if(type=="gauge"){
+								times+=1;
+								//var num=Math.random()*100;
+								charts+=
+									//"<div id='gauge"+times+"' class='jtState "+changeClass+"'>"+
+										"<p class='stateTxt'>"+title+"</p>"+
+										"<div class='canvBox'>"+
+											"<div id='Canvas"+times+"' style='width:100%;height:100%'></div>"+
+										"</div>";
+									
+									//"</div>";
+							/* 	if(times>12){
+									$("#"+fourPg).append(charts);
+								}else{
+									$("#"+thirdPg).append(charts);
+								} */
+								$("#gauge"+times).html(charts);
+								var percent=(actualStatus-min)/(max-min);
+								gauge(actualStatus,times,max,min,title,label,percent);
+								
+							}else if(type=="text"){
+								
+								times+=1;
+								charts+=
+									//"<div id='cxtx"+times+"' class='jtState "+changeClass+"'>"+
+										"<p style='margin-left:17%;' class='stateTxt'>"+title+"</p>"+
+										
+									    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>"+label+"</span></div>";
+									//"</div>";
+								/* if(times>12){
+									$("#"+fourPg).append(charts);
+								}else{
+									$("#"+thirdPg).append(charts);
+								} */
+								$("#cxtx"+times).html(charts);
+							}
+						}
+						
+					/*****************************************************************************************************/	
+						
+				},
+				//error:function(){alert("实时加载错误");}
+			
+			});
+		}
 		</script>
 	</body>
 </html>
