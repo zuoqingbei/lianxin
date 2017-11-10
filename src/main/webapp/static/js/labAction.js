@@ -33,23 +33,31 @@ function loadingAnimate($videoParent) {
     $videoParent.find(".videoWait").fadeIn(500, function () {
         var t = setTimeout(loadingOut, 7000);
         var loop;
+        var counter = 0;
+        var waitText = "视频接入中";
         changeTxt();
 
         function loadingOut() {
-            $videoParent.find(".videoWait").fadeOut(3000, clearTimeout(loop));
+            $videoParent.find(".videoWait").fadeOut(3000,function () {
+                //如果把清除定时器放在回到函数的位置，则不会起作用
+                clearTimeout(loop)
+            });
         }
 
-        var counter = 0;
 
         function changeTxt() {
             if (counter === 3) {
                 counter = 0;
-                $videoParent.find(".videoWait").text("视频接入中 ");
+                $videoParent.find(".videoWait").text("视频接入中");
             } else {
                 counter++;
-                $videoParent.find(".videoWait").append("。")
+                var point = " ";
+                for (var i = 0; i < counter; i++) {
+                    point += "。";
+                }
+                $videoParent.find(".videoWait").text(waitText + point);
             }
-            loop = setTimeout(changeTxt, 1000);
+            loop = setTimeout(changeTxt, 1500);
 
         }
     });
@@ -60,16 +68,14 @@ function loadingAnimate($videoParent) {
 function videoShow(id, url, mainStream) {
     //mainStream 0-主码流，1-子码流
     var flashvars = {
-        src: escape(url + "?time=" + new Date()),
+            src: escape(url + "?time=" + new Date()),
 
-    plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
-        autoPlay
-:
-    "true",
-        autoSwitchQuality
-:
-    "true"
-}
+            plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
+            autoPlay:
+                "true",
+            autoSwitchQuality:
+                "true"
+        }
     ;
     var params = {
         allowFullScreen: true,
@@ -183,12 +189,12 @@ $(function () {
 
     //菜单的折叠与展开
     $(".switchBox").on("click", "ul>li>header", function () {
-/*
-        if($(this).attr("labcode")){
-            var labCode = $(this).attr("labcode");//获取實驗室編碼
-            videoUrlAjax(labCode);
-        }
-*/
+        /*
+                if($(this).attr("labcode")){
+                    var labCode = $(this).attr("labcode");//获取實驗室編碼
+                    videoUrlAjax(labCode);
+                }
+        */
         // console.log("---ul>li>header",$(this)[0]);
         if ($(this).next().is(":visible")) {
             // console.log("ul:visible")
