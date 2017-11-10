@@ -154,18 +154,28 @@ $(function () {
             var moduleMakersUrl = dataCenterMap.get($(this).data("urltype") + '').souce_value;
             moduleMakersShow(moduleMakersUrl);
         } else {
+            console.log("---非URL数据中心");
             $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
             $lab_content_r.find(".switchBox>div.item.monitoring").show().siblings().hide();
 
             if ($(this).parents("ul.inland")[0]) {//从url类型跳回到国内其他列表
                 if ($(this).data("centerid") === 1) {
+                    console.log("---中海")
                     $(".labSubNav>ul>li").hide().eq(0).addClass("active").siblings().removeClass("active");
                     $lab_content_r.find(".switchBox>div.item.labHome").show().siblings().hide();
                     inlandTabShow("zhonghaiborui");
                 } else {
+                    console.log("---国内非中海")
                     inlandTabShow();
+                    //只依靠台位来切换曲线不行，万一读不出来台位就一直显示体验馆，而且之前如果显示视频也不会自动隐藏
+                    var $curveBox = $monitoring.find(".shishi_right").children(".item.curve");
+                    if ($curveBox.is(":hidden")) {//曲线没有显示
+                        $curveBox.show().siblings().hide();
+                    }
+                    $(".smallVideoBox").hide();
                 }
             } else {
+                console.log("---国外")
                 abroadTabShow();
             }
         }
@@ -173,6 +183,12 @@ $(function () {
 
     //菜单的折叠与展开
     $(".switchBox").on("click", "ul>li>header", function () {
+/*
+        if($(this).attr("labcode")){
+            var labCode = $(this).attr("labcode");//获取實驗室編碼
+            videoUrlAjax(labCode);
+        }
+*/
         // console.log("---ul>li>header",$(this)[0]);
         if ($(this).next().is(":visible")) {
             // console.log("ul:visible")
@@ -255,7 +271,6 @@ $(function () {
         prevIsLabUrl = false;
         var $curveBox = $monitoring.find(".shishi_right").children(".item.curve");
         if ($curveBox.is(":hidden")) {//曲线没有显示
-            // console.log("$curveBox", $curveBox[0])
             $curveBox.show().siblings().hide();
         }
         echartsResizeWorld();
@@ -268,7 +283,6 @@ $(function () {
         if (!$(this).parent().is($prevTaiwei)) {//如果不是同一个实验室下的台位
             $prevTaiwei = $(this).parent();
             var labCode = $(this).parent().prev().attr("labcode");//获取實驗室編碼
-            // labCode.showVal();
             var $parentMonitoring = $(this).parents(".monitoring");
             videoUrlAjax(labCode);
         }
