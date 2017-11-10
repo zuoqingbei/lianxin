@@ -38,7 +38,7 @@
 			<div id="head">
 				<h1>
 					<a href="${contextPath}/fault/service">
-						<img src="../static/phm/images/status/logo_haier_bold.png" alt="" />
+						<img src="${contextPath}/static/phm/images/status/logo_haier_bold.png" alt="" />
 					</a>
 				</h1>
 				<h2>基于物联网+大数据的最佳体验</h2>
@@ -104,192 +104,15 @@
 						<div class="state-box-contain">
 							<div class="state-box">
 								<!--实时状态-->
-								<div class="leftStates" id="thirdPage"></div>
-								<div class="leftStates" id="fourPage"></div>
-								<div class="leftStates" id="firstPage" style="display:none;">
-									<!-- <div class="jtState">
-										<p class="stateTxt">壳体11</p>
-										<div class="myState"></div>
-										<div class="track">
-											<div class="liquid liquid1"></div>
-										</div>
-										<div class="max">100</div>
-									    <div class="mid">50</div>
-									    <div class="min">0</div>
-									    <div class="tempTxt">10℃</div>
-									</div>
-									<div class="jtState">
-										<p class="stateTxt">蒸发器入口</p>
-										<div class="myState"></div>
-										<div class="track">
-											<div class="liquid liquid2"></div>
-										</div>
-										<div class="max">100</div>
-									    <div class="mid">50</div>
-									    <div class="min">0</div>
-									    <div class="tempTxt">40℃</div>
-									</div>
-									<div class="jtState">
-										<p class="stateTxt">蒸发器出口</p>
-										<div class="myState"></div>
-										<div class="track">
-											<div class="liquid liquid3"></div>
-										</div>
-										<div class="max">100</div>
-									    <div class="mid">50</div>
-									    <div class="min">0</div>
-									    <div class="tempTxt">40℃</div>
-									</div>
-									<div class="jtState">
-										<p class="stateTxt">冷凝器入口</p>
-										<div class="myState"></div>
-										<div class="track">
-											<div class="liquid liquid4"></div>
-										</div>
-										<div class="max">100</div>
-									    <div class="mid">50</div>
-									    <div class="min">0</div>
-									    <div class="tempTxt">40℃</div>
-									</div>
-									<div class="jtState">
-										<p class="stateTxt">冷凝器出口</p>
-										<div class="myState"></div>
-										<div class="track">
-											<div class="liquid liquid5"></div>
-										</div>
-										<div class="max">100</div>
-									    <div class="mid">50</div>
-									    <div class="min">0</div>
-									    <div class="tempTxt">40℃</div>
-									</div>
-									<div class="jtState mt1">
-										<p class="stateTxt">环境</p>
-										<div class="myState"></div>
-										<div class="track">
-											<div class="liquid liquid6"></div>
-										</div>
-										<div class="max">100</div>
-									    <div class="mid">50</div>
-									    <div class="min">0</div>
-									    <div class="tempTxt">40℃</div>
-									</div>
-									<div class="jtState mt1">
-										<p class="stateTxt">转速</p>
-										<div class="canvBox">
-											<div id="zsCanvas" style="width:100%;height:100%"></div>
-										</div>
-									</div>
-									<div class="jtState mt1">
-										<p class="stateTxt">排气压力</p>
-										<div class="canvBox">
-											<div id="pqylCanvas" style="width:100%;height:100%"></div>
-										</div>
-									</div>
-									<div class="jtState mt1">
-										<p class="stateTxt">加速度</p>
-										<div class="canvBox">
-											<div id="jsdCanvas" style="width:100%;height:100%"></div>
-										</div>
-									</div>
-									<div class="jtState mt1">
-										<p class="stateTxt">制冷量</p>
-										<div class="canvBox">
-											<div id="zllCanvas" style="width:100%;height:100%"></div>
-										</div>
-									</div> -->
-								</div>
-								<div class="leftStates" id="secondPage" style="display:none;">
-									<!-- <div class="jtState">
-										<p class="stateTxt">冷凝器入口</p>
-										<div class="myState"></div>
-										<div class="track">
-											<div class="liquid liquid4"></div>
-										</div>
-										<div class="max">100</div>
-									    <div class="mid">50</div>
-									    <div class="min">0</div>
-									    <div class="tempTxt">40℃</div>
-									</div>
-									<div class="jtState">
-										<p class="stateTxt">冷凝器出口</p>
-										<div class="myState"></div>
-										<div class="track">
-											<div class="liquid liquid5"></div>
-										</div>
-										<div class="max">100</div>
-									    <div class="mid">50</div>
-									    <div class="min">0</div>
-									    <div class="tempTxt">40℃</div>
-									</div>
-									<div class="jtState">
-										<p class="stateTxt">环境</p>
-										<div class="myState"></div>
-										<div class="track">
-											<div class="liquid liquid6"></div>
-										</div>
-										<div class="max">100</div>
-									    <div class="mid">50</div>
-									    <div class="min">0</div>
-									    <div class="tempTxt">40℃</div>
-									</div> -->
-								</div>
-								
+								<div class="leftStates" id="firstPage"></div>
+								<div class="leftStates" id="secondPage"></div>
+								<!-- <div class="leftStates" id="thirdPage" style="display:none;"></div>
+								<div class="leftStates" id="fourPage" style="display:none;"></div> -->
+									
 								<!--使用分析-->
-								<div class="syfxBox" id="analysisFirstPage">
-									<!-- <div class="problemBox ">
-										<div class="imgBox">
-											<img src="../static/phm/images/status/kgmfs.jpg" alt="" />
-										</div>
-										<div class="rightInfo">
-											<h6>开关门频繁</h6>
-											<p>当前程度：</p>
-											<p>严重</p>
-										</div>
-									</div>
-									<div class="problemBox margleft">
-										<div class="imgBox">
-											<img src="../static/phm/images/status/kmsjgc.png" alt="" />
-										</div>
-										<div class="rightInfo">
-											<h6>开门时间过长</h6>
-											<p>当前程度：</p>
-											<p>轻微</p>
-										</div>
-									</div>
-									<div class="problemBox margtop">
-										<div class="imgBox">
-											<img src="../static/phm/images/status/fzgd.png" alt="" />
-										</div>
-										<div class="rightInfo">
-											<h6>负载过大</h6>
-											<p>当前程度：</p>
-											<p>中等</p>
-										</div>
-									</div>
-									<div class="problemBox margleft margtop">
-										<div class="imgBox">
-											<img src="../static/phm/images/status/ajsjgd.jpg" alt="" />
-										</div>
-										<div class="rightInfo">
-											<h6>按键时间过短</h6>
-											<p>当前程度：</p>
-											<p>良好</p>
-										</div>
-									</div> -->
-								</div>
+								<div class="syfxBox" id="analysisFirstPage"></div>
 								
-								<div class="syfxBox" id="analysisSecondPage">
-									<!-- <div class="problemBox ">
-										<div class="imgBox">
-											<img src="../static/phm/images/status/ajsjgd.jpg" alt="" />
-										</div>
-										<div class="rightInfo">
-											<h6>按键时间过短</h6>
-											<p>当前程度：</p>
-											<p>良好</p>
-										</div>
-									</div> -->
-								</div>
+								<div class="syfxBox" id="analysisSecondPage"></div>
 								
 								<!--状态趋势-->
 								<div class="ztqsBox">
@@ -492,11 +315,33 @@
 			}
 			/* ********************************************************************************* */
 			<!--实时状态初始化  -->
+			var displayFlag=1;//作为两者切换的标志
 			function timeStatus(){
 				var times=0;
 				if(sncode==""||sncode==undefined){
 					return;
 				}
+				var firstPg;
+				var secondPg;
+				var thirdPg;
+				var fourPg;
+				if(displayFlag%2==1){
+					firstPg="firstPage";
+					secondPg="secondPage";
+					thirdPg="thirdPage";
+					fourPg="fourPage";
+				//	$("#"+secondPg).after("<div class='leftStates' id='"+thirdPg+"' style='display:block;'></div>");
+			//	$("#"+thirdPg).after("<div class='leftStates' id='"+fourPg+"' style='display:block;'></div>");
+					displayFlag+=1;
+				}else{
+					firstPg="thirdPage";
+					secondPg="fourPage";
+					thirdPg="firstPage";
+					fourPg="secondPage";
+					displayFlag+=1;
+				}
+					$("#"+secondPg).after("<div class='leftStates' id='"+thirdPg+"' style='display:block;'></div>");
+					$("#"+thirdPg).after("<div class='leftStates' id='"+fourPg+"' style='display:block;'></div>");
 				$.ajax({
 					//url:"http://localhost:8088/api/yzd/product/"+sncode,
 					url:"http://47.95.109.158/api/yzd/product/"+sncode,
@@ -504,8 +349,8 @@
 					success:function(data){
 						console.log(data.monitorConf)
 						data.monitorConf=sort(data.monitorConf);
-						$("#firstPage").html("");
-						$("#secondPage").html("");
+						console.log(data.monitorConf);
+						
 						//debugger;
 						var location=data.location;
 						var info=data.info;
@@ -513,6 +358,7 @@
 						
 						var monitorConf=data.monitorConf;
 							for( var index in monitorConf){
+								//debugger;
 								var monitorConfSingle=monitorConf[index];
 								var param=monitorConfSingle.param;
 								var title="";
@@ -538,7 +384,7 @@
 											
 										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>开关门缺失数据</span></div>"+
 										"</div>";
-										$("#firstPage").append(image);
+										$("#"+thirdPg).append(image);
 									}else if(S14=="0"){
 										var image=
 											"<div class='jtState mt1'>"+
@@ -550,7 +396,7 @@
 													"<p class='bxTxt'>当前状态:<br /><span>关门</span></p>"+
 												"</div>"+
 											"</div>";
-										$("#firstPage").append(image);
+										$("#"+thirdPg).append(image);
 									}else if(S14=="1"){
 										var image=
 											"<div class='jtState mt1'>"+
@@ -562,7 +408,7 @@
 													"<p class='bxTxt'>当前状态:<br /><span>开门</span></p>"+
 												"</div>"+
 											"</div>";
-										$("#firstPage").append(image);
+										$("#"+thirdPg).append(image);
 									}
 									times+=1;
 								}
@@ -609,139 +455,50 @@
 									
 									
 									if(times>12){
-										$("#secondPage").append(charts);
+										$("#"+fourPg).append(charts);
 									}else{
-										$("#firstPage").append(charts);
+										$("#"+thirdPg).append(charts);
 									}
 									if(actualStatus==undefined){actualStatus=(max+min)/2;}
 									if(actualStatus<min){min=actualStatus-4;}
 									 myarr[0]=["liquid"+times,max,min,actualStatus,"℃"];
 									 Status.liquidMove(myarr);
-								}else if(type=="text"){
-									
+								}if(type=="speedometer"){
+									//debugger;
 									times+=1;
-									charts+=
-										"<div class='jtState "+changeClass+"'>"+
-											"<p style='margin-left:17%;' class='stateTxt'>"+title+"</p>"+
-											
-										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>"+label+"</span></div>"+
-										"</div>";
-									if(times>12){
-										$("#secondPage").append(charts);
-									}else{
-										$("#firstPage").append(charts);
-									}
-								}
-								
-							}
-						/*****************************************************************************************************/	
-							for( var index in monitorConf){
-								var monitorConfSingle=monitorConf[index];
-								var param=monitorConfSingle.param;
-								var title="";
-								var label="";
-								var max="";
-								var min="";
-								var actualStatus="";
-								var type=monitorConfSingle.type;
-								var feature=monitorConfSingle.feature;
-									 actualStatus=info[feature];
-								var charts="";
-							
-									 title=param.title;
-									 label=param.label;
-									 max=param.max;
-									 min=param.min;
-								/**************************************/
-									 if(times==6){
-										//S14=1;
-										if(!S14){
-											var image=
-												"<div class='jtState mt1'>"+
-												"<p style='margin-left:17%;' class='stateTxt'>冰箱开关门</p>"+
-												
-											    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>开关门缺失</span></div>"+
-											"</div>";
-											$("#firstPage").append(image);
-										}else if(S14=="0"){
-											var image=
-												"<div class='jtState mt1'>"+
-													"<p class='stateTxt'>冰箱开关门</p>"+
-													"<div class='bxDoor'>"+
-														"<div class='bxImgLeft'>"+
-															"<img src='${contextPath}/static/phm/images/status/bxClose.png' alt='' />"+
-														"</div>"+
-														"<p class='bxTxt'>当前状态:<br /><span>关门</span></p>"+
-													"</div>"+
-												"</div>";
-											$("#firstPage").append(image);
-										}else if(S14=="1"){
-											var image=
-												"<div class='jtState mt1'>"+
-													"<p class='stateTxt'>冰箱开关门</p>"+
-													"<div class='bxDoor'>"+
-														"<div class='bxImgLeft'>"+
-															"<img src='${contextPath}/static/phm/images/status/bxOpen.png' alt='' />"+
-														"</div>"+
-														"<p class='bxTxt'>当前状态:<br /><span>开门</span></p>"+
-													"</div>"+
-												"</div>";
-											$("#firstPage").append(image);
-										}
-										times+=1;
-									}
-									 if(times>23){
-											/* $("#analysisFirstPage").html(first);
-											$("#analysisSecondPage").html(second); */
-											continue;}
-										if(!max&&max!="0"){
-											type="text";
-											label="最大值数据缺失";
-										}else if(!min&&min!="0"){
-											type="text";
-											label="最小值数据缺失";
-										}else if(!actualStatus&&actualStatus!="0"){
-											type="text";
-											label="实际值数据缺失";
-										}
-							var changeClass="";
-								if(times%12>5){
-									changeClass="mt1";
-								}
-								 if(type=="speedometer"){
-									
-									times+=1;
+									var num=Math.random()*100;
 									charts+=
 										"<div class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='canvBox'>"+
-												"<div id='zsCanvas"+times+"' style='width:100%;height:100%'></div>"+
+												"<div id='zsCanvas"+num+"' style='width:100%;height:100%'></div>"+
 											"</div>"+
 										"</div>";
 									if(times>12){
-										$("#secondPage").append(charts);
+										$("#"+fourPg).append(charts);
 									}else{
-										$("#firstPage").append(charts);
+										$("#"+thirdPg).append(charts);
 									}
-									speedometer(actualStatus,times,max,min,title,label);
+									speedometer(actualStatus,num,max,min,title,label);
 								}else if(type=="gauge"){
 									times+=1;
+									var num=Math.random()*100;
 									charts+=
 										"<div class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='canvBox'>"+
-												"<div id='Canvas"+times+"' style='width:100%;height:100%'></div>"+
+												"<div id='Canvas"+num+"' style='width:100%;height:100%'></div>"+
 											"</div>"+
 										
 										"</div>";
 									if(times>12){
-										$("#secondPage").append(charts);
+										$("#"+fourPg).append(charts);
 									}else{
-										$("#firstPage").append(charts);
+										$("#"+thirdPg).append(charts);
 									}
 									
 									var percent=(actualStatus-min)/(max-min);
-									gauge(actualStatus,times,max,min,title,label,percent);
+									gauge(actualStatus,num,max,min,title,label,percent);
 									
 								}else if(type=="text"){
 									
@@ -753,24 +510,26 @@
 										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>"+label+"</span></div>"+
 										"</div>";
 									if(times>12){
-										$("#secondPage").append(charts);
+										$("#"+fourPg).append(charts);
 									}else{
-										$("#firstPage").append(charts);
+										$("#"+thirdPg).append(charts);
 									}
 								}
-	
 							}
-						/*******/
-						//	<div class="leftStates" id="thirdPage"></div>
-						//	<div class="leftStates" id="fourPage"></div>
-							$("#thirdPage").html($("#firstPage").html());
-							$("#fourPage").html($("#secondPage").html());
-	
+								// $("#"+firstPg).remove();
+							//$("#"+secondPg).remove();
+								//setTimeout(function(){
+									 $("#"+firstPg).remove();
+									$("#"+secondPg).remove();
+									//$("#"+thirdPg).css("display","block");
+								//	$("#"+fourPg).css("display","block");
+							//	},1000);
+						/*****************************************************************************************************/	
+							
 					},
 					//error:function(){alert("实时加载错误");}
 				
 				});
-				//Status.liquidMove(myarr);
 				
 			}
 			/**********************************使用分析 **************************************************/
@@ -926,8 +685,7 @@
 				                        label:{position:'top'}
 				                    }
 				                },
-/* 				                data :[{image: "asserts/video/3theA.mp4", sncode: "7", address: "上海", kind: "上海", name: "良好", sncode:"7",coord: [121, 31]}]
- */				                data:good
+				                data:good
 				            }
 				            
 				        },
@@ -1013,7 +771,7 @@
 				}
 				myMapCharts.setOption(mapChartsOptions);
 			
-				
+				/*******************地图点击事件 下 *****************************/
 				myMapCharts.on('click',function(param){
 					
 					var tempSncode=sncode;
@@ -1053,9 +811,9 @@
 					//改变宽度
 					$(".state-box").css("width","200%");	
 				});
-			
+				/*******************地图点击事件 上面  *****************************/
 			}
-			/*********************************************************************************/
+			/***********************************初始化 加载设备信息 并进行默认选中**********************************************/
 			$(function(){
 				//setTimeout(function(){
 				//	mapChina()
@@ -1116,7 +874,6 @@
 					
 				})
 			});
-			//function markLineOption
 		
 		</script>
 	</body>

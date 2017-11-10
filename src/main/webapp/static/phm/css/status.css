@@ -325,7 +325,8 @@
 	background-size: 100% 100%;
 	text-align: center;
 	margin-top:5%;
-	line-height: 1.7em;
+	font-size: 0.8em;
+	line-height: 2.1em;
 }
 .leftStates .jtState .myState {
 	position: absolute;
@@ -357,7 +358,7 @@
 	height:100%;
 	width:200%;
 	left:0;top:0;
-    transition: left 1.5s ease;	
+    transition: left .5s ease;	
     position: absolute;
 }
 

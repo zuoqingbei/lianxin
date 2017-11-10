@@ -6,7 +6,7 @@ var Status = {
 		setTimeout(function(){
 		//	that.mapCharts();
 		//	that.stateCharts();
-		},2000)
+		},0)
 		that.liquidMove([["liquid1",100,0,40,"℃"],["liquid2",100,0,10,"℃"],["liquid3",100,0,20,"℃"],["liquid4",100,0,60,"℃"],["liquid5",100,0,30,"℃"],["liquid6",100,10,80,"℃"]]);
 		this.pageChanged();
 		this.tabChanges();
@@ -14,7 +14,7 @@ var Status = {
 	delayIframe:function(param){
 		//延迟加载iframe标签
 		setTimeout(function(){
-			$(".ztqsBox").html('<iframe src="http://47.95.109.158/#/product/"+param width="100%" height="100%"></iframe>');
+			$(".ztqsBox").html("<iframe src='http://47.95.109.158/#/product/"+param+"' width='100%' height='100%'></iframe>");
 		},1000);
 	},
 	tabChanges:function(){
