@@ -91,11 +91,11 @@
 				</div>
 				<!--bottom right-->
 				<div class="statusBox">
-					<div class="leftBtn fyBtn" ></div>
-					<div class="rightBtn fyBtn" ></div>
+					<div class="leftBtn fyBtn" onclick="pageLeft()" id="pageLeft"></div>
+					<div class="rightBtn fyBtn" onclick="pageRight()" id="pageRight"></div>
 					<div class="titleBox">
 						<div class="tnav syfx" onclick="useAnalysis()">使用分析</div>
-						<div class="tnav sszt navActive" onclick="timeStatus()">实时状态</div>
+						<div class="tnav sszt navActive" onclick="timeStatusChange()">实时状态</div>
 						<div class="tnav ztqs">状态趋势</div>
 						<div class="tnav gzzd">故障诊断</div>
 						<div class="tnav gzyc">故障预测</div>
@@ -105,7 +105,7 @@
 							<div class="state-box">
 								<!--实时状态-->
 								<div class="leftStates" id="firstPage"></div>
-								<div class="leftStates" id="secondPage"></div>
+							    <div class="leftStates" id="secondPage"></div>
 								<!-- <div class="leftStates" id="thirdPage" style="display:none;"></div>
 								<div class="leftStates" id="fourPage" style="display:none;"></div> -->
 									
@@ -130,7 +130,7 @@
 		
 		<script src="${contextPath}/static/phm/asserts/echarts/echarts-all-2.2.7.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js"  type="text/javascript" charset="utf-8"></script>
-		<script src="${contextPath}/static/phm/asserts/js/swfobject.js"  type="text/javascript" charset="utf-8"></script>
+		<!-- <script src="${contextPath}/static/phm/asserts/js/swfobject.js"  type="text/javascript" charset="utf-8"></script> -->
 		
 		<script src="${contextPath}/static/phm/js/status.js" type="text/javascript" charset="utf-8"></script>
 	
@@ -292,7 +292,8 @@
 					guage.setOption(option);
 				
 			}
-			var sortArr=["T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","U1","U2","R1"];
+			//var sortArr=["T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","U1","U2","R1"];
+			var sortArr=["T1","U1","R1","S1","V1","E1","S2","S9","S12","S17","S16"];
 			function sort(monitorConf){
 				var result=[];
 				var other=[];
@@ -313,44 +314,27 @@
 				});
 				return result.concat(other);
 			}
+		
+			
+			
 			/* ********************************************************************************* */
 			<!--实时状态初始化  -->
-			var displayFlag=1;//作为两者切换的标志
 			function timeStatus(){
 				var times=0;
+				 pageNo=1;//记录第几页
+				 pagnum=0;//记录该更新 哪一部分
 				if(sncode==""||sncode==undefined){
 					return;
 				}
-				var firstPg;
-				var secondPg;
-				var thirdPg;
-				var fourPg;
-				thirdPg="firstPage";
-				fourPg="secondPage";
-		/* 		if(displayFlag%2==1){
-					firstPg="firstPage";
-					secondPg="secondPage";
-					thirdPg="thirdPage";
-					fourPg="fourPage";
-				//	$("#"+secondPg).after("<div class='leftStates' id='"+thirdPg+"' style='display:block;'></div>");
-			//	$("#"+thirdPg).after("<div class='leftStates' id='"+fourPg+"' style='display:block;'></div>");
-					displayFlag+=1;
-				}else{
-					firstPg="thirdPage";
-					secondPg="fourPage";
-					thirdPg="firstPage";
-					fourPg="secondPage";
-					displayFlag+=1;
-				} */
-					$("#"+secondPg).after("<div class='leftStates' id='"+thirdPg+"' style='display:block;'></div>");
-					$("#"+thirdPg).after("<div class='leftStates' id='"+fourPg+"' style='display:block;'></div>");
+				
 				$.ajax({
 					//url:"http://localhost:8088/api/yzd/product/"+sncode,
 					url:"http://47.95.109.158/api/yzd/product/"+sncode,
 					type:"get",
 					success:function(data){
-					//	console.log(data.monitorConf)
+						console.log(data.monitorConf)
 						data.monitorConf=sort(data.monitorConf);
+						dataLength=data.monitorConf.length;
 						//console.log(data.monitorConf);
 						
 						//debugger;
@@ -359,6 +343,7 @@
 						var S14=info['S14'];
 						
 						var monitorConf=data.monitorConf;
+						
 							for( var index in monitorConf){
 								//debugger;
 								var monitorConfSingle=monitorConf[index];
@@ -377,19 +362,20 @@
 									 label=param.label;
 									 max=param.max;
 									 min=param.min;
-								if(times==6){
+								if(times==6&&pageNo==1){
 									//S14=1;
+									times+=1;
 									if(!S14){
 										var image=
-											"<div id='bx' class='jtState mt1'>"+
+											"<div id='cx"+times+"'  class='jtState mt1'>"+
 											"<p style='margin-left:17%;' class='stateTxt'>冰箱开关门</p>"+
 											
 										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>开关门缺失数据</span></div>"+
 										"</div>";
-										$("#"+thirdPg).append(image);
+										$("#firstPage").append(image);
 									}else if(S14=="0"){
 										var image=
-											"<div id='bx' class='jtState mt1'>"+
+											"<div id='cx"+times+"'  class='jtState mt1'>"+
 												"<p class='stateTxt'>冰箱开关门</p>"+
 												"<div class='bxDoor'>"+
 													"<div class='bxImgLeft'>"+
@@ -398,10 +384,10 @@
 													"<p class='bxTxt'>当前状态:<br /><span>关门</span></p>"+
 												"</div>"+
 											"</div>";
-										$("#"+thirdPg).append(image);
+										$("#firstPage").append(image);
 									}else if(S14=="1"){
 										var image=
-											"<div id='bx' class='jtState mt1'>"+
+											"<div id='cx"+times+"'  class='jtState mt1'>"+
 												"<p class='stateTxt'>冰箱开关门</p>"+
 												"<div class='bxDoor'>"+
 													"<div class='bxImgLeft'>"+
@@ -410,19 +396,11 @@
 													"<p class='bxTxt'>当前状态:<br /><span>开门</span></p>"+
 												"</div>"+
 											"</div>";
-										$("#"+thirdPg).append(image);
+										$("#firstPage").append(image);
 									}
-									times+=1;
+									
 								}
-							/* 	var type=monitorConfSingle.type;
-								var feature=monitorConfSingle.feature;
-									 actualStatus=info[feature];
-								var charts=""; */
-								//if(times>0){debugger;}
-								//if(!max||!min||!actualStatus)
 									if(times>23){
-										/* $("#analysisFirstPage").html(first);
-										$("#analysisSecondPage").html(second); */
 										continue;}
 								if(!max&&max!="0"){
 									type="text";
@@ -441,7 +419,7 @@
 								if(type=="thermometer"){
 									times+=1;
 									charts+=
-									"<div id='thermometer"+times+"' class='jtState "+changeClass+"'>"+
+									"<div id='cx"+times+"' class='jtState "+changeClass+"'>"+
 										"<p class='stateTxt'>"+title+"</p>"+
 										"<div class='myState'></div>"+
 										"<div class='track'>"+
@@ -457,9 +435,9 @@
 									
 									
 									if(times>12){
-										$("#"+fourPg).append(charts);
+										$("#secondPage").append(charts);
 									}else{
-										$("#"+thirdPg).append(charts);
+										$("#firstPage").append(charts);
 									}
 									if(actualStatus==undefined){actualStatus=(max+min)/2;}
 									if(actualStatus<min){min=actualStatus-4;}
@@ -468,25 +446,23 @@
 								}if(type=="speedometer"){
 									//debugger;
 									times+=1;
-								//	var num=Math.random()*100;
 									charts+=
-										"<div id='speedometer"+times+"' class='jtState "+changeClass+"'>"+
+										"<div id='cx"+times+"' class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='canvBox'>"+
 												"<div id='zsCanvas"+times+"' style='width:100%;height:100%'></div>"+
 											"</div>"+
 										"</div>";
 									if(times>12){
-										$("#"+fourPg).append(charts);
+										$("#secondPage").append(charts);
 									}else{
-										$("#"+thirdPg).append(charts);
+										$("#firstPage").append(charts);
 									}
 									speedometer(actualStatus,times,max,min,title,label);
 								}else if(type=="gauge"){
 									times+=1;
-									//var num=Math.random()*100;
 									charts+=
-										"<div id='gauge"+times+"' class='jtState "+changeClass+"'>"+
+										"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='canvBox'>"+
 												"<div id='Canvas"+times+"' style='width:100%;height:100%'></div>"+
@@ -494,9 +470,9 @@
 										
 										"</div>";
 									if(times>12){
-										$("#"+fourPg).append(charts);
+										$("#secondPage").append(charts);
 									}else{
-										$("#"+thirdPg).append(charts);
+										$("#firstPage").append(charts);
 									}
 									
 									var percent=(actualStatus-min)/(max-min);
@@ -506,30 +482,23 @@
 									
 									times+=1;
 									charts+=
-										"<div id='cxtx"+times+"' class='jtState "+changeClass+"'>"+
+										"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 											"<p style='margin-left:17%;' class='stateTxt'>"+title+"</p>"+
 											
 										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>"+label+"</span></div>"+
 										"</div>";
 									if(times>12){
-										$("#"+fourPg).append(charts);
+										$("#secondPage").append(charts);
 									}else{
-										$("#"+thirdPg).append(charts);
+										$("#firstPage").append(charts);
 									}
 								}
 							}
-								// $("#"+firstPg).remove();
-							//$("#"+secondPg).remove();
-								//setTimeout(function(){
-									// $("#"+firstPg).remove();
-								///	$("#"+secondPg).remove();
-									//$("#"+thirdPg).css("display","block");
-								//	$("#"+fourPg).css("display","block");
-							//	},1000);
+							
 						/*****************************************************************************************************/	
 							
 					},
-					//error:function(){alert("实时加载错误");}
+					error:function(){alert("实时加载错误");}
 				
 				});
 				
@@ -580,7 +549,7 @@
 							$("#analysisFirstPage").html(first);
 							$("#analysisSecondPage").html(second);
 						},
-						//error:function(){alert("使用分析加载错误 ");}
+						error:function(){alert("使用分析加载错误 ");}
 						
 						
 						
@@ -812,6 +781,14 @@
 					$(".ztqsBox").css("display","none");
 					//改变宽度
 					$(".state-box").css("width","200%");	
+					/************************重新加载冰箱信息框的动画**********************/
+					$(".bxinfo").hide();
+					$(".infobox").hide();
+					$(".bxinfo").show(500,function(){
+						//$(".infobox").hide();
+						$(".infobox").show(500);
+					});
+					
 				});
 				/*******************地图点击事件 上面  *****************************/
 			}
@@ -865,14 +842,14 @@
 						timeStatus();//更新实时状态 
 						setTimeout(function(){
 							mapChina(serious,general,light,good,arr,geoCoord);
-						},1000);
+						},0);
 						 setInterval(function(){
 							//timeStatus();
 							updateStatus();
 						},3000); 
 						
 					},
-				//	error:function(){alert("加载 地图信息错误 ");}
+					error:function(){alert("加载 地图信息错误 ");}
 					
 					
 				})
@@ -880,21 +857,35 @@
 			/*********************定时更新 实时状态 ****************************/
 		function updateStatus(){
 				var times=0;
+				var length;//根据截取的数据长度 在后面判断要不要清空 对应的 数据 
+				if(pagnum!=undefined){
+					times=times+pagnum;
+				}
 			$.ajax({
 				//url:"http://localhost:8088/api/yzd/product/"+sncode,
 				url:"http://47.95.109.158/api/yzd/product/"+sncode,
 				type:"get",
 				success:function(data){
-				//	console.log(data.monitorConf)
+					console.log(data.monitorConf)
 					data.monitorConf=sort(data.monitorConf);
-				//	console.log(data.monitorConf);
-					
-					//debugger;
+					console.log(data.monitorConf);
 					var location=data.location;
 					var info=data.info;
 					var S14=info['S14'];
-					
-					var monitorConf=data.monitorConf;
+				
+					var monitorConf1=data.monitorConf;
+					console.log(monitorConf);
+					var start =(pageNo-1)*12;//截取数据开始位子,由于加了一张开关门要-1
+					var end=pageNo*12-1;//截取数据结束位子
+					if(pageNo!=1){
+						start=start-1;
+					}
+					var monitorConf=monitorConf1.slice(start,end);
+					length=monitorConf.length;
+					if(length==0){
+						return;
+					}
+					//console.log(monitorConf);
 						for( var index in monitorConf){
 							//debugger;
 							var monitorConfSingle=monitorConf[index];
@@ -913,21 +904,22 @@
 								 label=param.label;
 								 max=param.max;
 								 min=param.min;
-							if(times==6){
+							if(times==6&&pageNo==1){
+								times+=1;
 								//S14=1;
 								if(!S14){
 									
 									var image=
-										//"<div id='bx' class='jtState mt1'>"+
+										//"<div id='cx"+times+"' class='jtState mt1'>"+
 										"<p style='margin-left:17%;' class='stateTxt'>冰箱开关门</p>"+
 										
 									    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>开关门缺失数据</span></div>";
 									//"</div>";
-									$("#bx").html(image);
+									$("#cx"+times).html(image);
 									//$("#"+thirdPg).append(image);
 								}else if(S14=="0"){
 									var image=
-										//"<div id='bx' class='jtState mt1'>"+
+										//"<div id='cx"+times+"' class='jtState mt1'>"+
 											"<p class='stateTxt'>冰箱开关门</p>"+
 											"<div class='bxDoor'>"+
 												"<div class='bxImgLeft'>"+
@@ -936,11 +928,11 @@
 												"<p class='bxTxt'>当前状态:<br /><span>关门</span></p>";
 											"</div>"+
 										//"</div>";
-										$("#bx").html(image);
+										$("#cx"+times).html(image);
 									//$("#"+thirdPg).append(image);
 								}else if(S14=="1"){
 									var image=
-										//"<div id='bx' class='jtState mt1'>"+
+										//"<div id='cx"+times+"' class='jtState mt1'>"+
 											"<p class='stateTxt'>冰箱开关门</p>"+
 											"<div class='bxDoor'>"+
 												"<div class='bxImgLeft'>"+
@@ -950,20 +942,11 @@
 											"</div>"+
 									//	"</div>";
 								//	$("#"+thirdPg).append(image);
-											$("#bx").html(image);
+											$("#cx"+times).html(image);
 								}
-								times+=1;
+								
 							}
-						/* 	var type=monitorConfSingle.type;
-							var feature=monitorConfSingle.feature;
-								 actualStatus=info[feature];
-							var charts=""; */
-							//if(times>0){debugger;}
-							//if(!max||!min||!actualStatus)
-								if(times>23){
-									/* $("#analysisFirstPage").html(first);
-									$("#analysisSecondPage").html(second); */
-									continue;}
+						
 							if(!max&&max!="0"){
 								type="text";
 								label="最大值数据缺失";
@@ -981,7 +964,7 @@
 							if(type=="thermometer"){
 								times+=1;
 								charts+=
-								//"<div id='thermometer"+times+"' class='jtState "+changeClass+"'>"+
+								//"<div id='cx"+times+"' class='jtState "+changeClass+"'>"+
 									"<p class='stateTxt'>"+title+"</p>"+
 									"<div class='myState'></div>"+
 									"<div class='track'>"+
@@ -994,52 +977,36 @@
 								//"</div>";
 								var myarr=new Array();
 								
-								$("#thermometer"+times).html(charts);
+								$("#cx"+times).html(charts);
 								
-							/* 	if(times>12){
-									$("#"+fourPg).append(charts);
-								}else{
-									$("#"+thirdPg).append(charts);
-								} */
-								//if(actualStatus==undefined){actualStatus=(max+min)/2;}
-								//if(actualStatus<min){min=actualStatus-4;}
+							
 								 myarr[0]=["liquid"+times,max,min,actualStatus,"℃"];
 								 Status.liquidMove(myarr);
 							}if(type=="speedometer"){
 								//debugger;
 								times+=1;
-								//var num=Math.random()*100;
 								charts+=
-									//"<div id='speedometer"+times+"' class='jtState "+changeClass+"'>"+
+									//"<div id='cx"+times+"' class='jtState "+changeClass+"'>"+
 										"<p class='stateTxt'>"+title+"</p>"+
 										"<div class='canvBox'>"+
 											"<div id='zsCanvas"+times+"' style='width:100%;height:100%'></div>"+
 										"</div>";
 									//"</div>";
-							/* 	if(times>12){
-									$("#"+fourPg).append(charts);
-								}else{
-									$("#"+thirdPg).append(charts);
-								} */
-								$("#speedometer"+times).html(charts);
+						
+								$("#cx"+times).html(charts);
 								speedometer(actualStatus,times,max,min,title,label);
 							}else if(type=="gauge"){
 								times+=1;
-								//var num=Math.random()*100;
 								charts+=
-									//"<div id='gauge"+times+"' class='jtState "+changeClass+"'>"+
+									//"<div id='cx"+times+"' class='jtState "+changeClass+"'>"+
 										"<p class='stateTxt'>"+title+"</p>"+
 										"<div class='canvBox'>"+
 											"<div id='Canvas"+times+"' style='width:100%;height:100%'></div>"+
 										"</div>";
 									
 									//"</div>";
-							/* 	if(times>12){
-									$("#"+fourPg).append(charts);
-								}else{
-									$("#"+thirdPg).append(charts);
-								} */
-								$("#gauge"+times).html(charts);
+							
+								$("#cx"+times).html(charts);
 								var percent=(actualStatus-min)/(max-min);
 								gauge(actualStatus,times,max,min,title,label,percent);
 								
@@ -1047,27 +1014,66 @@
 								
 								times+=1;
 								charts+=
-									//"<div id='cxtx"+times+"' class='jtState "+changeClass+"'>"+
+									//"<div id='cx"+times+"' class='jtState "+changeClass+"'>"+
 										"<p style='margin-left:17%;' class='stateTxt'>"+title+"</p>"+
 										
 									    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>"+label+"</span></div>";
 									//"</div>";
-								/* if(times>12){
-									$("#"+fourPg).append(charts);
-								}else{
-									$("#"+thirdPg).append(charts);
-								} */
-								$("#cxtx"+times).html(charts);
+						
+								$("#cx"+times).html(charts);
 							}
 						}
-						
+							var t=0;
+							if(pagnum==12){
+								t=24;
+							}else{
+								t=12;
+							}
+							for (var i=times;i<t;){
+								i++;
+								$("#cx"+i).html("");
+								
+							}
 					/*****************************************************************************************************/	
 						
 				},
-				//error:function(){alert("实时加载错误");}
+				error:function(){alert("实时加载错误");}
 			
 			});
+			//debugger;
+			
 		}
+			/********************下面是实时状态分页处理 **********************************/
+			var pageNo=1;//记录第几页
+			var dataLength=0;//传入数据长度 
+			var pagnum;//记录该更新 哪一部分
+			function pageRight(){
+				var p=pageNo*12;
+				var l=dataLength+1;//由于加了一张开关门图片
+				if(p>l){
+					pageNo=pageNo-1;
+					return;
+				}
+				pageNo+=1;
+				pagnum=12;
+				updateStatus();
+			}
+			
+			function pageLeft(){
+				pageNo=pageNo-1;
+				if(pageNo<1){
+					pageNo=1;
+					return;
+				}
+				pagnum=0;
+				updateStatus();
+				
+			}
+			function timeStatusChange(){
+				 pageNo=1;//记录第几页
+				 pagnum=0;//记录该更新 哪一部分
+				updateStatus();
+			}
 		</script>
 	</body>
 </html>
