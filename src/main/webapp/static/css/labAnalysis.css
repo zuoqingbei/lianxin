@@ -40,7 +40,7 @@
 
 .la_data_left {
     flex: 1;
-    background: url(../img/labMain/border-short.png) 0 0 no-repeat;
+    background: url(../img/labAnalysis/border-short.png) 0 0 no-repeat;
     background-size: 100% 100%;
     height: 100%;
 
@@ -50,7 +50,7 @@
     flex: 4;
     height: 100%;
     margin-left: 1%;
-    background: url(../img/labMain/border-long.png) 0 0 no-repeat;
+    background: url(../img/labAnalysis/border-long.png) 0 0 no-repeat;
     background-size: 100% 100%;
 
 }
