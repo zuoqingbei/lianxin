@@ -33,6 +33,7 @@
         margin-top: -1em;
         margin-left: 2em;
         margin-right: 1em;
+        /*text-align: right;*/
     }
 
     .lab_content_r > .labSubNav {
@@ -329,7 +330,8 @@ li:not(.hasChildren).active {
 }
 .monitoring .shishi_right .smallVideoBox>.hideShow{
     width: 10em;
-    margin-left: 4em;
+    text-align: right;
+    margin-left: 9em;
     padding: .1em .5em;
     cursor: pointer;
     box-shadow: 0 0 2em 1em rgba(0,0,0,.6);

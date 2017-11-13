@@ -27,4 +27,10 @@ public class LabCodeModel extends Model<LabCodeModel> {
 		sb.append(" select * from t_b_lab_code where data_center_id='"+dataCenterId+"' and del_flag=0 order by order_num  ");
 		return Db.find(sb.toString());
 	}
+	
+	public Record findLabByCode(String labCode){
+		StringBuffer sb=new StringBuffer();
+		sb.append(" select * from t_b_lab_code where lab_code='"+labCode+"' and del_flag=0   ");
+		return Db.findFirst(sb.toString());
+	}
 }

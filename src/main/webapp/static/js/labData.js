@@ -170,6 +170,10 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
         var html = '';
         var firstLabCode = "";
         $.each(data, function (index, item) {
+        	myChartWorld1.clear();
+        	myChartWorld2.clear();
+        	myChart1.clear();
+        	myChart2.clear();
             var dataSource = item.data_source;
             dataCenterMap.put(item.id, item);
             if (dataSource == "url") {
