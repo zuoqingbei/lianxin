@@ -37,6 +37,9 @@ var Status = {
 			$(".state-box").css("width","200%");
 			//显示左右按钮
 			$(".fyBtn").css("visibility","visible");
+			//别的tab页面在第二页的时候点进来确保能显示
+			$(".state-box").css({"left":"0"});
+			//$(".state-box").css({"left":"-100%"});
 		});
 		$(".sszt").click(function(){
 			//所有nav去掉active样式
@@ -55,6 +58,8 @@ var Status = {
 			$(".state-box").css("width","200%");
 			//显示左右按钮
 			$(".fyBtn").css("visibility","visible");
+			//别的tab页面在第二页的时候点进来确保能显示
+			$(".state-box").css({"left":"0"});
 		});
 		$(".ztqs").click(function(){
 			//所有nav去掉active样式
