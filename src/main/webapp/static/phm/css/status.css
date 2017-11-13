@@ -115,33 +115,33 @@
 		    transform: translateZ(-3.9em) translateY(10em) translateX(-2em) scaleX(.36) scaleY(.36) rotateY(180deg);
 		}
 		.box_compressor {
-		    transform: translateZ(-4em) translateY(10em) translateX(-2em) scaleX(.36) scaleY(.36) rotateY(180deg);
+		    transform: translateZ(-4.6em) translateY(10em) translateX(-2em) scaleX(.36) scaleY(.36) rotateY(180deg);
 		    background: url(../images/status/compressor.gif) no-repeat;
 		}
         /*3D旋转中，正方向是X前面向上，Y是前面向右，Z是顶部向右，
         换句话说，就是X向右，Y向下，Z向外，从正方向往里看，顺时针为正向旋转*/
         .box_front {
-            transform: translateZ(4em);
+            transform: translateZ(4.5em);
             background: url(../images/status/fridge_f.png) no-repeat;
         }
 
         .box_left {
-            transform: translateX(-4em) rotateY(90deg);
+            transform: translateX(-4.5em) rotateY(90deg);
             background: url(../images/status/fridge_lr.png) no-repeat;
         }
 
         .box_right {
-            transform: translateX(4em) rotateY(90deg);
+            transform: translateX(4.5em) rotateY(90deg);
             background: url(../images/status/fridge_lr.png) no-repeat;
         }
 
         .box_back {
-            transform: translateZ(-4em) rotateY(180deg);
+            transform: translateZ(-4.5em) rotateY(180deg);
             background: url(../images/status/fridge_b.png) no-repeat;
         }
 
         .box_top {
-            transform: translateY(-4em) rotateX(90deg);
+            transform: translateY(-4.5em) rotateX(90deg);
             background-color: rgba(255, 255, 255, .9);
         }
 
@@ -217,12 +217,26 @@
 }
 .bxbox .bxinfo {
 	position: absolute;
-	left:58%;top:21%;
-	width:31%;height:58%;
-	background: url(../images/status/infobg.png) no-repeat 100% 100%;
-	background-size: 100% 100%;
+	left:58%;
+	width:31%;
+	top:21%;
+	height:58%;
+	background: url(../images/status/infobg.png) no-repeat 100% 50%;
 	padding:4%;
+	animation: bxHeight 1s ease ;
+	background-size: 100% 100%;
 }
+/*冰箱信息高度变化动画*/
+@keyframes bxHeight{
+	0%{
+		background-size: 100% 0%;
+	}
+	100%{
+		background-size: 100% 100%;
+	}
+}
+
+
 .txt1 {
 	color:#fff;
 	font-weight: 100;
@@ -525,7 +539,7 @@
 .rightBx #player {
 	width:83%;
 	height:81%;
-	/*background: #64ccff;*/
+	background: #64ccff;
 	margin-left:13%;
 	margin-top:3%;
 }*/

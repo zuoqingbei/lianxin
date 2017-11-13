@@ -13,8 +13,9 @@ var Status = {
 	},
 	delayIframe:function(param){
 		//延迟加载iframe标签
+		//console.log(param+"==================");
 		setTimeout(function(){
-			$(".ztqsBox").html("<iframe src='http://47.95.109.158/#/product/"+param+"' width='100%' height='100%'></iframe>");
+		//	$(".ztqsBox").html("<iframe src='http://47.95.109.158/#/product/"+param+"' width='100%' height='100%'></iframe>");
 		},1000);
 	},
 	tabChanges:function(){
@@ -37,6 +38,9 @@ var Status = {
 			$(".state-box").css("width","200%");
 			//显示左右按钮
 			$(".fyBtn").css("visibility","visible");
+			//别的tab页面在第二页的时候点进来确保能显示
+			$(".state-box").css({"left":"0"});
+			//$(".state-box").css({"left":"-100%"});
 		});
 		$(".sszt").click(function(){
 			//所有nav去掉active样式
@@ -55,6 +59,8 @@ var Status = {
 			$(".state-box").css("width","200%");
 			//显示左右按钮
 			$(".fyBtn").css("visibility","visible");
+			//别的tab页面在第二页的时候点进来确保能显示
+			$(".state-box").css({"left":"0"});
 		});
 		$(".ztqs").click(function(){
 			//所有nav去掉active样式
@@ -111,16 +117,16 @@ var Status = {
 	       }
 	},
 	pageChanged:function(){
-		console.log("123454545")
+		//console.log("123454545")
 		
 		var that = this;
 		//只有实时状态有分页
 		$(".leftBtn").click(function(){
-			console.log("123")
+			//console.log("123")
 			$(".state-box").css({"left":"0"});
 		})
 		$(".rightBtn").click(function(){
-			console.log("456")
+			//console.log("456")
 			$(".state-box").css({"left":"-100%"});
 		})
 		
