@@ -391,6 +391,7 @@ var dataBase;
 
 //获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){
+	loadingAnimate($("#main1_world").parent().find(".loadingAnimation"),"数据正在接入");
 	$.post(contextPath+"/lab/findSensorByLabCenetrTabAjax",{"labTypeCode":labTypeCode,"testUnitId":testUnitId},function(data){
 		resetDataCenterLab();
 		currentData=data;

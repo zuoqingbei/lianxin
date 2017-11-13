@@ -139,7 +139,6 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
 function findSensorTypeInfoHadoop(labCode,testUnitId){
 	window.clearInterval(intevalChartHadoop);
 	$.post(contextPath+"/hadoop/sensorTypeInfo",{"configName":configName,"labCode":labCode},function(data){
-        loadingAnimateOut("curve", 500);
 	    resetDataCenterLabWorld();
 		currentDataWorld=data;
 		//console.log(data)
@@ -162,7 +161,8 @@ function findTestDataHadoop(labCode, testUnitId) {
     startTime=parseInt(new Date().getTime()/1000); // 当前时间戳
     console.log(timestampFormat(startTime))
     $.post(contextPath + "/hadoop/testData", {"configName":configName,"labCode":labCode,"startTime":timestampFormat(startTime),"testUnitId":testUnitId}, function (data) {
-        if (data == "") {
+    	loadingAnimateOut("curve", 500);
+    	if (data == "") {
             return;
         }
     	myChart1.clear();
