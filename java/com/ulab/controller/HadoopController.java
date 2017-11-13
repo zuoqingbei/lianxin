@@ -64,7 +64,7 @@ public class HadoopController extends BaseController {
 		Record lab=LabCodeModel.dao.findLabByCode(labCode);
 		if(lab!=null){
 			//如果是中海博睿 整机模块 则需要把时间差距加大 否则没有数据
-			if("49".equals(lab.getStr("data_center_id"))||"51".equals(lab.getStr("data_center_id"))){
+			if("46".equals(lab.getStr("data_center_id"))||"51".equals(lab.getStr("data_center_id"))){
 				interval=300*60+"";
 			}
 		}

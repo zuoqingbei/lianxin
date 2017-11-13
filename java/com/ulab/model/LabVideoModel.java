@@ -27,7 +27,7 @@ public class LabVideoModel extends Model<CommunistModel>{
 	public List<Record> findVideosByDataCenterId(String dataCenterId){
 		List<Record> list=findLabsByDataCenterId(dataCenterId);
 		for(Record video:list){
-			video.set("videos", findVideosByLabCode(dataCenterId,video.getStr("lab_code")));
+			video.set("videos", findVideosByLabCode(video.getStr("lab_code")));
 		}
 		return list;
 		
@@ -39,8 +39,8 @@ public class LabVideoModel extends Model<CommunistModel>{
 	 * @author zuoqb
 	 * @todo   根据实验室编码查询监控
 	 */
-	public List<Record> findVideosByLabCode(String dataCenterId,String labCode){
-		String sql="select * from t_b_lab_video where data_center_id='"+dataCenterId+"' and lab_code='"+labCode+"' and del_flag=0 and show_flag=0 order by order_num";
+	public List<Record> findVideosByLabCode(String labCode){
+		String sql="select * from t_b_lab_video where  lab_code='"+labCode+"' and del_flag=0 and show_flag=0 order by order_num";
 		List<Record> list=Db.find(sql);
 		return list;
 	}
@@ -51,7 +51,7 @@ public class LabVideoModel extends Model<CommunistModel>{
 	 * @todo   根据数据中心查询实验室列表
 	 */
 	public List<Record> findLabsByDataCenterId(String dataCenterId){
-		String sql="select distinct v.lab_code,lab.lab_name,lab.order_num from t_b_lab_video v left join t_b_lab_code lab on lab.lab_code=v.lab_code where v.data_center_id='"+dataCenterId+"'and lab.del_flag=0  and v.del_flag=0 and v.show_flag=0 order by lab.order_num";
+		String sql="select distinct v.lab_code,lab.lab_name,lab.order_num from t_b_lab_video v left join t_b_lab_code lab on lab.lab_code=v.lab_code where lab.data_center_id in(select id from t_b_data_center where parent_id='"+dataCenterId+"' and center_level=3) and lab.del_flag=0  and v.del_flag=0 and v.show_flag=0 order by lab.order_num";
 		List<Record> list=Db.find(sql);
 		return list;
 	}
