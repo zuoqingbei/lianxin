@@ -65,35 +65,8 @@ function createArrData(productCode, labType) {
                     return [p[0] + 100, p[1] + 100];
                 },
                 padding: [0, 0, 0, 0],
-                //            width: 207,
-                //            height: 110,
-                //            backgroundColor: 'rgba(13,43,67,0.7)',
-                //            borderColor: 'rgba(31,120,214,1)',
                 // params : 数组内容同模板变量，
                 formatter: function (param) {
-                    // console.log("------------------param:",param)
-                    /*                    var CountryName = param.name;
-                                        var $l3x3 = $("#l", parent.document);
-                                        $l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
-                                        $l3x3.find(".legend-bottom li").removeClass('active');
-                                        parent.bgImgOff($l3x3.find(".legend-bottom li"));
-                                        console.log("show",CountryName);
-
-                                        switch (CountryName) {
-
-                                            case '日本研发中心':
-                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-                                                break;
-                                            case '新西兰研发中心':
-                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
-                                                break;
-                                            case '泰国模块中心':
-                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-                                                break;
-                                            default:
-                                            console.log("暂无该国家实验室信息")
-                                        }
-                    */
                     //在这里是第一步
                     $elList = [];
                     //提示框的内容清空
@@ -214,7 +187,8 @@ function seriesData(data) {
                 show: true,
                 type: 'scale',//圈圈
                 loop: true,
-                shadowBlur: 0
+                shadowBlur: 0,
+                period:30
             },
             itemStyle: {
                 normal: {label: {show: false}},
@@ -230,7 +204,7 @@ function seriesData(data) {
             effect: {
                 show: true,
                 scaleSize: 1,
-                period: 5 * bodyScale,
+                period: 30 ,
                 color: '#ff0',
                 shadowBlur: 10 * bodyScale
             },

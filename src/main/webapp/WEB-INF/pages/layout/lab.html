@@ -1,4 +1,11 @@
 <link rel="stylesheet" href="../static/css/lab.css">
+<link rel="stylesheet" href="../static/css/labMain.css">
+
+<link rel="stylesheet" href="../static/css/labAnalysis.css">
+<link rel="stylesheet" href="../static/css/labOprateState.css">
+<link rel="stylesheet" href="../static/css/labCurve.css">
+<link rel="stylesheet" href="../static/css/centerLab.css">
+
 <div class="lab" style="display: none;">
     <!--頂部標題-->
     <div class="lab_head">
@@ -29,7 +36,6 @@
                     <li class="labHome">中心介绍</li>
                     <li class="status">运营状态</li>
                     <li class="analysis">数据分析</li>
-                    <!--<li class="centerCurves">实时监测</li>-->
                     <li class="curves active">实时监测</li>
                     <li class="moduleMakers" style="display: none">实时数据</li>
                 </ul>
@@ -40,8 +46,6 @@
                     <div class="labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show">
                         <div class="labMain_cbl_one">
                             <div class="labMain_cblt_tone labMain_cblt_tone_world">
-                                <!--<h3>基本介绍</h3>-->
-                             
                             </div>
                             <!--labMain_cblt_tone-->
                             <div class="labMain_cblt_ttwo labMain_cblt_ttwo_world"><img
@@ -251,7 +255,7 @@
                             <div class="item video" hidden>
                                 <div class="bigVideoBox">
                                     <div id="bigVideo"></div>
-                                    <div class="videoWait">视频接入中</div>
+                                    <div class="loadingAnimation">视频接入中</div>
                                 </div>
                             </div>
                             <div class="item curve">
@@ -265,7 +269,9 @@
                                 </div>
                                 <div class="sheshi_right_left">
                                     <div id="main1_world"></div>
+                                    <div class="loadingAnimation">数据接入中</div>
                                     <div id="main2_world"></div>
+                                    <div class="loadingAnimation">数据接入中</div>
                                     <div class="message_box">
                                         <div>该台位未开测</div>
                                     </div>
@@ -278,7 +284,7 @@
                                 <div class="smallVideoBox">
                                     <div class="hideShow"><span class="text">点击隐藏</span><span class="icon"></span></div>
                                     <div id="smallVideo"></div>
-                                    <div class="videoWait">视频接入中</div>
+                                    <div class="loadingAnimation">视频接入中</div>
                                 </div>
                                 
                             </div>
@@ -287,7 +293,7 @@
                                 <div class="smallVideoBox">
                                     <div class="hideShow"><span class="text">点击隐藏</span><span class="icon"></span></div>
                                     <div id="smallVideoWeb"></div>
-                                    <div class="videoWait">视频接入中</div>
+                                    <div class="loadingAnimation">视频接入中</div>
                                 </div>
                                 <iframe id="lab_iframe_video" src=""></iframe>
                             </div>
@@ -304,8 +310,55 @@
     </div>
 </div>
 
-
+<script>
+    $(document).ready(function (e) {
+        resetDataCenterLabWorld();
+        $(".labMain_cbr_tab").click(function () {
+//            $(this).addClass("active_right").siblings().removeClass("active_right");
+            // 3. 获取到当前菜单的索引号
+            var index = $(this).index() + 1;
+            // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
+            //.selected display:flex
+            $(".labMain_content_country .labMain_cb_left:eq(" + index + ")").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
+            labCurveResize();
+        });
+    });
+    function labCurveResize() {
+        myChartWorld1.resize();
+        myChartWorld2.resize();
+        myChart1.resize();
+        myChart2.resize();
+    }
+</script>
 <script src="../static/js/centerLab.js"></script>
+<script src="../static/js/centerLabWorld.js"></script>
 <script src="../static/js/labData.js"></script>
 <script src="../static/js/labAction.js"></script>
 <script src="../static/asserts/video/swfobject.js?time=New Date()"></script>
+<!--来自centerlabWorld,待整理-->
+
+<script>
+    $(function () {
+        //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
+        var $labMain_ct_btn = $(".labMain_content_country .labMain_ct_btn");
+        $labMain_ct_btn.eq(0).hover(function () {
+            $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus_active.png)")
+        }, function () {
+            $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus.png)")
+        }).click(function () {
+            $(".labMain_content_country").hide();
+            $("#r").show();
+            var $li = $(".left3x3").find(".flat-footer .legend ul.legend-bottom li");
+            $li.removeClass("active").each(function () {
+                bgImgOff($(this))
+            })
+        });
+        $labMain_ct_btn.eq(1).hover(function () {
+            $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home_active.png)")
+        }, function () {
+            $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home.png)")
+        }).click(function () {
+            $(".zhbr_lab").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
+        })
+    })
+</script>

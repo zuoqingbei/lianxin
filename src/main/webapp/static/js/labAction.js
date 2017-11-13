@@ -4,7 +4,8 @@ var $sheshi_tab_list = $monitoring.find(".sheshi_tab_list");//曲线左侧的台
 var $prevTaiwei = null;
 var videoUrlMain = "";
 var prevIsLabUrl = false;//主菜单的URL类型
-
+var loadingAnimateVideoLoop = null;
+var loadingAnimateCurveLoop = null;
 function inlandTabShow(mark) { //国内
     if (mark === "zhonghaiborui") {
         $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
@@ -27,41 +28,66 @@ function moduleMakersShow(url) {//模块商
 }
 
 //视频加载动画
-function loadingAnimate($videoParent) {
-    // console.log("调用加载动画");
-    // $videoParent.append("<div class='videoWait'>视频接入中</div>");
-    $videoParent.find(".videoWait").fadeIn(500, function () {
-        var t = setTimeout(loadingOut, 7000);
-        var loop;
+function loadingAnimate(thisElem,text,time) {
+    // console.log("thisElem---",thisElem[0]);
+    thisElem.fadeIn(200, function () {
+        // var loadingAnimateLoop;
         var counter = 0;
-        var waitText = "视频接入中";
-        changeTxt();
+        if(time){
+            clearTimeout(loadingAnimateVideoLoop);
+            clearTimeout(loadingAnimateFadeOut);
+            // console.log("```loadingAnimateFadeOut")
+            var loadingAnimateFadeOut = setTimeout(function (loadingAnimateFadeOut) {
+                console.log("自动loadingAnimateFadeOut")
+                    thisElem.fadeOut(3000,function () {
+                        //如果把清除定时器直接放在回调函数的位置，则不会起作用
+                        clearTimeout(loadingAnimateVideoLoop);
+                        clearTimeout(loadingAnimateFadeOut);
+                    });
+                    // console.log("`````loadingAnimateFadeOut")
 
-        function loadingOut() {
-            $videoParent.find(".videoWait").fadeOut(3000,function () {
-                //如果把清除定时器放在回到函数的位置，则不会起作用
-                clearTimeout(loop)
-            });
+            }, time);
+        }else{
+            clearTimeout(loadingAnimateCurveLoop);
         }
+        changeTxt();
 
 
         function changeTxt() {
+            // clearTimeout(loadingAnimateLoop);
             if (counter === 3) {
                 counter = 0;
-                $videoParent.find(".videoWait").text("视频接入中");
+                thisElem.text(text);
             } else {
                 counter++;
                 var point = " ";
                 for (var i = 0; i < counter; i++) {
                     point += "。";
                 }
-                $videoParent.find(".videoWait").text(waitText + point);
+                thisElem.text(text + point);
             }
-            loop = setTimeout(changeTxt, 1500);
+            if(time){
+                loadingAnimateVideoLoop = setTimeout(changeTxt, 2000);
+            }else{
+                loadingAnimateCurveLoop = setTimeout(changeTxt, 1000);
+            }
+            // console.log("changeTxt()");
 
         }
     });
 
+}
+//视频加载动画淡出
+function loadingAnimateOut(type, time) {
+    console.log("调用loadingAnimateOut")
+    if(type === "curve"){
+        console.log("曲线调用loadingAnimateOut")
+        $(".item.curve .loadingAnimation").fadeOut(time,function () {
+            clearTimeout(loadingAnimateCurveLoop);
+        })
+    }else{
+        console.log("非曲线调用loadingAnimateOut")
+        }
 }
 
 // 视频加载方法
@@ -86,11 +112,7 @@ function videoShow(id, url, mainStream) {
     var attrs = {
         name: "player"
     };
-    loadSwf(id, flashvars, params, attrs, mainStream);
 
-}
-
-function loadSwf(id, flashvars, params, attrs, mainStream) {
     var $videoParent = $("#" + id).parent();
     swfobject.embedSWF(
         // url to SMP player
@@ -99,7 +121,7 @@ function loadSwf(id, flashvars, params, attrs, mainStream) {
         id,
         // width, height
         // 根据主子码流选择尺寸比例
-        mainStream ? "56%" : "100%",
+        mainStream ? "100%" : "100%",
         mainStream ? "80%" : "96%",
         // minimum flash player version required
         "27",
@@ -109,7 +131,7 @@ function loadSwf(id, flashvars, params, attrs, mainStream) {
         params,
         attrs,
         function () {
-            loadingAnimate($videoParent);
+            loadingAnimate($videoParent.find(".loadingAnimation"),"视频接入中",8000);
         }
     )
     /*    swfobject.embedSWF()的五个必须参数和四个可选参数：
@@ -160,18 +182,18 @@ $(function () {
             var moduleMakersUrl = dataCenterMap.get($(this).data("urltype") + '').souce_value;
             moduleMakersShow(moduleMakersUrl);
         } else {
-            console.log("---非URL数据中心");
+            // console.log("---非URL数据中心");
             $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
             $lab_content_r.find(".switchBox>div.item.monitoring").show().siblings().hide();
 
             if ($(this).parents("ul.inland")[0]) {//从url类型跳回到国内其他列表
                 if ($(this).data("centerid") === 1) {
-                    console.log("---中海")
+                    // console.log("---中海")
                     $(".labSubNav>ul>li").hide().eq(0).addClass("active").siblings().removeClass("active");
                     $lab_content_r.find(".switchBox>div.item.labHome").show().siblings().hide();
                     inlandTabShow("zhonghaiborui");
                 } else {
-                    console.log("---国内非中海")
+                    // console.log("---国内非中海")
                     inlandTabShow();
                     //只依靠台位来切换曲线不行，万一读不出来台位就一直显示体验馆，而且之前如果显示视频也不会自动隐藏
                     var $curveBox = $monitoring.find(".shishi_right").children(".item.curve");
@@ -179,9 +201,10 @@ $(function () {
                         $curveBox.show().siblings().hide();
                     }
                     $(".smallVideoBox").hide();
+                    labCurveResize();
                 }
             } else {
-                console.log("---国外")
+                // console.log("---国外")
                 abroadTabShow();
             }
         }
@@ -235,7 +258,7 @@ $(function () {
         echartsResize();
 
         if ($(this).text().indexOf("实时监测") > -1) {
-            echartsResizeWorld();
+            labCurveResize();
         }
     });
 
@@ -254,7 +277,7 @@ $(function () {
             if (prevIsLabUrl) {
                 $(this).parents(".monitoring").find(".shishi_right>.item").eq(2).show().siblings().hide();
             }
-            echartsResizeWorld();
+            labCurveResize();
         }
     });
 
@@ -279,7 +302,7 @@ $(function () {
         if ($curveBox.is(":hidden")) {//曲线没有显示
             $curveBox.show().siblings().hide();
         }
-        echartsResizeWorld();
+        labCurveResize();
         $(".sheshi_tab_list>ul>li>ul>li>ul>li").removeClass("active");
         $(".sheshi_tab_list>ul>li>ul>li.toLabIframe>header").removeClass("active");
         $(this).addClass("active");
@@ -300,7 +323,7 @@ $(function () {
         $(".sheshi_tab_list>ul>li>ul>li>ul>li").removeClass("active");
         $(this).addClass("active");
         var webUrl = $(this).parent().data("url");
-        console.log("webUrl", webUrl);
+        // console.log("webUrl", webUrl);
         $monitoring.find(".shishi_right>.item.iframe").children("iframe").attr("src", webUrl)
             .parent().show().siblings().hide();
 
