@@ -120,7 +120,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
 			if(item.istesting){
 				htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}else{
-				htmls+='<li>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
+				htmls+='<li  onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}
 		/*	if(index==0){
 				// console.log(item.testunitlist)

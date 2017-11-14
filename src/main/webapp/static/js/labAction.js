@@ -212,21 +212,12 @@ $(function () {
 
     //菜单的折叠与展开
     $(".switchBox").on("click", "ul>li>header", function () {
-        /*
-                if($(this).attr("labcode")){
-                    var labCode = $(this).attr("labcode");//获取實驗室編碼
-                    videoUrlAjax(labCode);
-                }
-        */
-        // console.log("---ul>li>header",$(this)[0]);
         if ($(this).next().is(":visible")) {
             // console.log("ul:visible")
             $(this).children("span").text("∨").parent().next("ul").hide(200);
         } else {
-            // console.log("ul:hidden")
             $(this).children("span").text("∧").parent().next("ul").show(200);
             if ($(this).next("ul").length > 0) {
-                // console.log("有ul")
                 $(this).next("ul").children("li:eq(0)").click();
             }
         }
