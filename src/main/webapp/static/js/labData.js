@@ -141,7 +141,36 @@ function setCenterLabHtmlDB(dataCenter) {
     $("#labnameIcon_world").html(dataCenter.center_name);
     $("#secondName_world").html(dataCenter.center_name);
 }
+//获取数据中心的视频列表
+function loadVideosByDataCenterAjax(dataCenterId) {
+    $.post(contextPath + "/lab/loadVideosByDataCenterAjax/?dataCenterId=" + dataCenterId, function (data) {
+        var centerDataVideoArray = [];
+        var html = "";
+        // console.log(data);
+        if (data) {
+            $(".sheshi_tab.centerVideo").removeClass("disabled");
+            for (var i = 0; i < data.length; i++) {
+                for (var j = 0; j < data[i].videos.length; j++) {
+                    var obj = {};
+                    obj.videoName = data[i].videos[j].show_title;
+                    obj.videoUrl = data[i].videos[j].videl_url;
+                    centerDataVideoArray.push(obj)
+                }
+            }
+            // console.log("centerDataVideoArray", centerDataVideoArray);
+            if (centerDataVideoArray) {
+                for (var i = 0; i < centerDataVideoArray.length; i++) {
+                    html += "<li data-videourl=" + centerDataVideoArray[i].videoUrl + " >" + centerDataVideoArray[i].videoName + "</li>"
+                }
+            }
+            // console.log(html)
+            $(".centerVideoList>ul").html(html)
+        }else{
+            $(".sheshi_tab.centerVideo").addClass("disabled")
+        }
+    });
 
+}
 //查询数据中心下实验室 level为3(单位/产品)
 function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     var dataCenter = dataCenterMap.get(dataCenterId);

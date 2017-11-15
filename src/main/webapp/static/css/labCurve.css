@@ -13,6 +13,7 @@
     width: 20%;
     float: left;
     text-align: center;
+    overflow-y: auto;
 }
 
 .shishi_right {
@@ -62,7 +63,12 @@
 .shishi_right_show {
     display: block;
 }
-
+.shishi_left>div{
+    margin-top: 1em;
+}
+.shishi_left>div:nth-of-type(even){
+    margin-top: .4em;
+}
 .sheshi_tab {
     margin: 0 auto;
     width: 68%;
@@ -81,8 +87,26 @@
     background-size: 100% 100%;
 }
 
+.centerVideoList{
+    /*position: absolute;*/
+    left: 3.4em;
+    top: 4em;
+    margin: 0 auto;
+    padding: 1em 2em;
+    width: 13em;
+    font-size: 1.1em;
+    text-align: left;
+    border-style: solid;
+    border-image: url(../img/labMain/dropmenu.png) 60 / 1.6em;
+}
+.centerVideoList li{
+    line-height: 1.5em;
+}
+.centerVideoList li:hover{
+    text-decoration: underline;
+}
 .sheshi_tab_list {
-    height: 81%;
+    height: 31em;
     width: 68%;
     overflow-x: hidden;
     margin: 3% auto 0;
