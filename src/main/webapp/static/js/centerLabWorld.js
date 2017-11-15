@@ -120,7 +120,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
 			if(item.istesting){
 				htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}else{
-				htmls+='<li  onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
+				htmls+='<li>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}
 		/*	if(index==0){
 				// console.log(item.testunitlist)
@@ -139,7 +139,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
 function findSensorTypeInfoHadoop(labCode,testUnitId){
 	window.clearInterval(intevalChartHadoop);
 	$.post(contextPath+"/hadoop/sensorTypeInfo",{"configName":configName,"labCode":labCode},function(data){
-		resetDataCenterLabWorld();
+	    resetDataCenterLabWorld();
 		currentDataWorld=data;
 		//console.log(data)
 		//根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
@@ -161,7 +161,8 @@ function findTestDataHadoop(labCode, testUnitId) {
     startTime=parseInt(new Date().getTime()/1000); // 当前时间戳
     console.log(timestampFormat(startTime))
     $.post(contextPath + "/hadoop/testData", {"configName":configName,"labCode":labCode,"startTime":timestampFormat(startTime),"testUnitId":testUnitId}, function (data) {
-        if (data == "") {
+    	loadingAnimateOut("curve", 500);
+    	if (data == "") {
             return;
         }
     	myChart1.clear();
@@ -341,18 +342,26 @@ function resetDataCenterLabWorld() {
     myChartWorld2 = echarts.init(document.getElementById('main2_world'));
     myChartWorld1.clear();
     myChartWorld2.clear();
-    myChartWorld1.showLoading({
+    loadingAnimate($("#main1_world").parent().find(".loadingAnimation"),"数据正在接入");
+/*    myChartWorld1.showLoading({
         text : '数据正在接入...',
         effect: 'whirling',
         maskColor:"rgba(0,0,0,0)",
-        textColor:"#64ccff"
+        textColor:"#64ccff",
+        textStyle:{
+            color:"0f0",
+            fontSize:120
+        }
     });
     myChartWorld2.showLoading({
         text : '数据正在接入...',
         effect: 'whirling',
         maskColor:"rgba(0,0,0,0)",
-        textColor:"#64ccff"
-    });
+        textColor:"#64ccff",
+        textStyle : {
+            fontSize : 200
+        }
+    });*/
     $("#legend_ul_world").html('');
     legendDataWorld = [];
     legendNumDataWorld = [];
@@ -386,6 +395,7 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
     mlabTypeCode = labTypeCode;
     mtestUnitId = testUnitId;
     $.post(contextPath + "/lab/getJsonFile", {"fileName": fileName}, function (data) {
+        loadingAnimateOut("curve", 500);
         data = eval("(" + data + ")");
         if (data == "") {
             //alert("暂未开测");
@@ -416,8 +426,10 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
         createLegendHtmlsWorld();
         createEchartsWorld(true);
         //因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
-        myChartWorld1.hideLoading();
-        myChartWorld2.hideLoading();
+
+        // myChartWorld1.hideLoading();
+        // myChartWorld2.hideLoading();
+        loadingAnimateOut();
     });
 }
 function randomLegendWorld() {
@@ -637,7 +649,7 @@ function checkBoxValesWorld() { //jquery获取复选框值
     return chk_value;
 }
 function getChartsWorld1() {
-console.log(xDataWorld[xDataWorld.length-1])
+// console.log(xDataWorld[xDataWorld.length-1])
     option_world = {
         tooltip: {
             trigger: 'axis',
@@ -853,33 +865,6 @@ console.log(xDataWorld[xDataWorld.length-1])
     myChartWorld1.setOption({
         series: getAnimation(seriesTopDataWorld)
     });
-    // intevalChart1=setInterval("intervalChangeData()", 60000);
-    /* setInterval(function () {
-     var preStart=myChartWorld1.getOption().dataZoom[0].start;
-     var preEnd=myChartWorld1.getOption().dataZoom[0].end;
-     myChartWorld1.setOption({
-     dataZoom: [{
-     start: parseFloat(interval_count1World),
-     end:5+parseFloat(interval_count1World)
-     }, {
-     type: 'inside'
-     }],
-     });
-     if(parseFloat(preEnd)>99.9){
-     interval_count1World=0;
-     myChartWorld1.setOption({
-     dataZoom: [{
-     start: 0,
-     end:5
-     }, {
-     type: 'inside'
-     }],
-     });
-     }else{
-     interval_count1World=parseFloat(interval_count1World)+0.01;
-     }
-     //console.log("myChartWorld1---"+preStart+"--"+preEnd)
-     },30000);*/
 }
 
 function getChartsWorld2() {
@@ -889,6 +874,9 @@ function getChartsWorld2() {
             trigger: 'axis',
             axisPointer: {
                 type: 'cross'
+            },
+            textStyle: {
+                fontSize: 10*bodyScale,
             },
             showDelay: 0             // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
         },
@@ -921,7 +909,6 @@ function getChartsWorld2() {
                 },
                 axisLabel: {
                     show: true,
-                    // rotate: 30,
                     textStyle: {
                         color: '#fff',
                         fontSize: 12 * bodyScale
@@ -942,21 +929,13 @@ function getChartsWorld2() {
                 name: "V"+"　　　",
                 max: 300,
                 min: 0,
-                /* max:currentDataWorld[4].highvalue,
-                 min:currentDataWorld[4].lowvalue,*/
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
-                /*      min: 0,
-                 max: 100, */
                 position: 'left',
                 offset: 40 * bodyScale,
                 axisLabel: {
                     formatter: function (params, index) {
-                        //console.log(params+"--"+index+"--"+typeof(params))
-                        /* if(index==7){
-                         return ""
-                         } */
                         return params;
                     },
                     textStyle: {
@@ -1024,21 +1003,13 @@ function getChartsWorld2() {
             {
                 type: 'value',
                 name: "　　　"+"W",
-                /* max:currentDataWorld[6].highvalue,
-                 min:currentDataWorld[6].lowvalue,*/
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
-                /*      min: 0,
-                 max: 100, */
                 position: 'right',
                 offset: 10 * bodyScale,
                 axisLabel: {
                     formatter: function (params, index) {
-                        //console.log(params+"--"+index+"--"+typeof(params))
-                        /* if(index==7){
-                         return ""
-                         } */
                         return params;
                     },
                     textStyle: {
@@ -1068,8 +1039,6 @@ function getChartsWorld2() {
             {
                 type: 'value',
                 name: "　　　"+"kW·h",
-                /* max:currentDataWorld[7].highvalue,
-                 min:currentDataWorld[7].lowvalue,*/
                 nameGap: nameGap,
                 nameTextStyle: nameTextStyle,
                 nameLocation: 'start',
@@ -1112,52 +1081,6 @@ function getChartsWorld2() {
     myChartWorld2.setOption({
         series: getAnimation(seriesBottomDataWorld)
     });
-    /* myChartWorld2.setOption({
-     series:getAnimation(seriesBottomDataWorld)
-     });
-     setInterval(function () {
-     for(var i=0; i<seriesBottomDataWorld.length;i++){
-     seriesBottomDataWorld[i].data.shift();
-     seriesBottomDataWorld[i].data.push(parseInt(Math.random() * 30));
-     }
-     var month = xDataWorld.shift();
-     xDataWorld.push(month)
-
-     myChartWorld2.setOption({
-     xAxis:[
-     {data:xDataWorld}],
-     series: seriesBottomDataWorld,
-     });
-     // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~seriesBottomDataWorld: ", seriesBottomDataWorld[0].data)
-     // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xDataWorld: ", xDataWorld)
-     }, 2000);*/
-    /* setInterval(function () {
-     var preStart=myChartWorld2.getOption().dataZoom[0].start;
-     var preEnd=myChartWorld2.getOption().dataZoom[0].end;
-     myChartWorld2.setOption({
-     dataZoom: [{
-     start:parseFloat(interval_count2World),
-     end:5+parseFloat(interval_count2World)
-     }, {
-     type: 'inside'
-     }],
-     });
-     if(parseFloat(preEnd)>99.9){
-     interval_count2World=0;
-     myChartWorld1.setOption({
-     dataZoom: [{
-     start: 0,
-     end:5
-     }, {
-     type: 'inside'
-     }],
-     });
-     }else{
-     interval_count2World=parseFloat(interval_count2World)+0.01;
-     }
-
-     //console.log("myChartWorld2---"+preStart+"--"+preEnd)
-     },30000);*/
 
 }
 

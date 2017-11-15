@@ -33,12 +33,12 @@ function jsonToArray(data){
 		var obj=data[x];
 
 		//先写死试试
-		if(!obj.imgUrl){
+		/*if(!obj.imgUrl){
             obj.imgUrl = "../static/img/labMain/Thailand.jpg";
 		}
         if(!obj.centerId){
             obj.centerId = "9";
-		}
+		}*/
 
 
 		var e=  {
@@ -52,8 +52,8 @@ function jsonToArray(data){
 	        name: obj.name,
 	        value: obj.num,
 			country:obj.country,
-			imgUrl:obj.imgUrl,
-			centerId:obj.centerId
+			imgUrl:obj.img_content,
+			centerId:obj.data_center_id
 
 	    }
 		d.push(e);

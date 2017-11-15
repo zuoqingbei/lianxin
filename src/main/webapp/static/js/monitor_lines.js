@@ -28,7 +28,7 @@ function dataToArray(data){
     }
     return d;
 }
-function jsonToArray(data){
+/*function jsonToArray(data){
     //console.log(data.clist)
     var d = new Array();
     var p=  {
@@ -59,7 +59,7 @@ function jsonToArray(data){
         d.push(e);
     }
     return d;
-}
+}*/
 /**
  * [
  [{name:'广州'},{name:'福州',value:95}],

@@ -277,10 +277,19 @@ li:not(.hasChildren).active {
         display: none;
     }
 
+    .lab_content_r > .switchBox > div.item.labHome .labMain_cbl_one {
+        flex: 1;
+        margin: 0.1% 1em 0.5% 1em;
+        display: flex;
+        flex-direction: row;
+        height: 98%;
+    }
+
     .lab_content_r > .switchBox > div.item > iframe {
         height: 100%;
         background-color: #fff;
     }
+
 }
 
 /*视频监控页面*/
@@ -323,16 +332,15 @@ li:not(.hasChildren).active {
 
 .monitoring .shishi_right .smallVideoBox{
     position: absolute;
-    width: 34.4em;
+    width: 19.2em;
     height: 19.5em;
     top: -.0em;
     left: 1em;
 }
 .monitoring .shishi_right .smallVideoBox>.hideShow{
-    width: 10em;
+    width: 100%;
     text-align: right;
-    margin-left: 9em;
-    padding: .1em .5em;
+    padding: .2em 0;
     cursor: pointer;
     box-shadow: 0 0 2em 1em rgba(0,0,0,.6);
 }
@@ -349,14 +357,21 @@ li:not(.hasChildren).active {
     background-image: url(../img/lab/close.png);
     background-size: contain;
 }
-.monitoring .videoWait{
-    display: none;
+.monitoring .loadingAnimation{
     position: absolute;
-    top: 8em;
-    left: 4em;
+     display: none;
+    left: 39%;
+    top: 45%;
+    /*偏移不用百分比是防止整句话移动*/
+    transform: translateX(-5em);
+    font-size: 1.6em;
 }
-.monitoring .bigVideoBox .videoWait{
-    left: 27em;
-    top: 13em;
-    font-size: 1.4em;
+.monitoring .smallVideoBox>.loadingAnimation{
+    font-size: 1em;
+}
+
+.monitoring .bigVideoBox .loadingAnimation{
+    /*left: 27em;*/
+    /*top: 13em;*/
+    /*font-size: 1.4em;*/
 }
