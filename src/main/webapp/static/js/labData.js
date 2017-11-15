@@ -141,36 +141,44 @@ function setCenterLabHtmlDB(dataCenter) {
     $("#labnameIcon_world").html(dataCenter.center_name);
     $("#secondName_world").html(dataCenter.center_name);
 }
+
 //获取数据中心的视频列表
 function loadVideosByDataCenterAjax(dataCenterId) {
     $.post(contextPath + "/lab/loadVideosByDataCenterAjax/?dataCenterId=" + dataCenterId, function (data) {
         var centerDataVideoArray = [];
         var html = "";
-        // console.log(data);
-        if (data) {
+        // console.log("获取数据中心的视频列表", data);
+        if (data.length > 0) {
             $(".sheshi_tab.centerVideo").removeClass("disabled");
+            /* 从数据中心获取各个实验室的视频
+                        for (var i = 0; i < data.length; i++) {
+                            for (var j = 0; j < data[i].videos.length; j++) {
+                                var obj = {};
+                                obj.videoName = data[i].videos[j].show_title;
+                                obj.videoUrl = data[i].videos[j].videl_url;
+                                centerDataVideoArray.push(obj)
+                            }
+                        }
+                        // console.log("centerDataVideoArray", centerDataVideoArray);
+                        if (centerDataVideoArray) {
+                            for (var i = 0; i < centerDataVideoArray.length; i++) {
+                                html += "<li data-videourl=" + centerDataVideoArray[i].videoUrl + " >" + centerDataVideoArray[i].videoName + "</li>"
+                            }
+                        }
+            */
             for (var i = 0; i < data.length; i++) {
-                for (var j = 0; j < data[i].videos.length; j++) {
-                    var obj = {};
-                    obj.videoName = data[i].videos[j].show_title;
-                    obj.videoUrl = data[i].videos[j].videl_url;
-                    centerDataVideoArray.push(obj)
-                }
-            }
-            // console.log("centerDataVideoArray", centerDataVideoArray);
-            if (centerDataVideoArray) {
-                for (var i = 0; i < centerDataVideoArray.length; i++) {
-                    html += "<li data-videourl=" + centerDataVideoArray[i].videoUrl + " >" + centerDataVideoArray[i].videoName + "</li>"
-                }
+                // console.log(data[i].videl_url);
+                html += "<li data-videourl=" + data[i].videl_url + " >" + data[i].show_title + "</li>"
             }
             // console.log(html)
             $(".centerVideoList>ul").html(html)
-        }else{
+        } else {
             $(".sheshi_tab.centerVideo").addClass("disabled")
         }
     });
 
 }
+
 //查询数据中心下实验室 level为3(单位/产品)
 function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     var dataCenter = dataCenterMap.get(dataCenterId);
@@ -178,92 +186,92 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     var data_type = dataCenter.data_type;
     var data_source = dataCenter.data_source;
     //判断出现那块DIV（国内 国外）
-   /* if (data_type == 0) {
-        if (data_source == "webservice") {
-            // inlandTabShow();
-        } else {
-            setCenterLabHtmlDB(parentDataCenter);
-            // inlandTabShow_world();
-        }
-    } else {
-        if (data_source == "webservice") {
-            // abroadTabShow();
-        } else {
-            setCenterLabHtmlDB(parentDataCenter);
-            // abroadTabShow();
-        }
-    }*/
+    /* if (data_type == 0) {
+         if (data_source == "webservice") {
+             // inlandTabShow();
+         } else {
+             setCenterLabHtmlDB(parentDataCenter);
+             // inlandTabShow_world();
+         }
+     } else {
+         if (data_source == "webservice") {
+             // abroadTabShow();
+         } else {
+             setCenterLabHtmlDB(parentDataCenter);
+             // abroadTabShow();
+         }
+     }*/
     setCenterLabHtmlDB(dataCenter);
     //加载数据中心第三级
     $.post(contextPath + "/lab/loadAllDataCenterLabAjax", {"dataCenterId": dataCenterId}, function (data) {
         var html = '';
         var firstLabCode = "";
         $.each(data, function (index, item) {
-        	myChartWorld1.clear();
-        	myChartWorld2.clear();
-        	myChart1.clear();
-        	myChart2.clear();
+            myChartWorld1.clear();
+            myChartWorld2.clear();
+            myChart1.clear();
+            myChart2.clear();
             var dataSource = item.data_source;
             dataCenterMap.put(item.id, item);
             if (dataSource == "url") {
                 html += '<li  data-center-id="' + item.id + '"  class="toLabIframe quxian_li_' + item.id + '" data-url="' + item.souce_value + '"><header>' + (item.isshow_name == 0 ? item.center_name : "") + '</header></li>';
             } else {
                 //生成实验室
-            	if(item.data_source=="webservice"){
-            		html += '<li class="quxian_li_' + item.id + '" '+ createClickFuntion(item)+' data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '<span>∨</span></header>';
-            		html += '</li>';
-            	}else{
-            		html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '<span>∨</span></header>';
-            		var labsHtmls = "<ul>";
-            		$.each(item.children, function (ind, it) {
-            			if (index == 0 && ind == 0) {
-            				firstLabCode = it.lab_code+"_"+it.id;
-            			}
-            			if(it.data_source!="webservice"){
-            				var currentHtmls = ' <li class="lab_code_' + it.lab_code + '_'+it.id;
-            				var header = '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name ;
-            				if(it.data_source=="url"){
-            					currentHtmls+=' toLabIframe " data-url="'+it.souce_value+'">';
-            					header+='</header>';
-            				}else{
-            					currentHtmls+=' ">';
-            					header+= '<span>∨</span></header>';
-            				}
-            				labsMap.put(it.id, it);
-            				labsHtmlsMap.put(it.id, '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∧</span></header>');
-            				//如果是中海博睿 不拼接header
-            				labsHtmls = labsHtmls + currentHtmls + header + "</li>";
-            			}else if(it.data_source=="webservice"){
-            				//直接获取webservice实验室信息
-            				var htmls="";
-            				 $.post(contextPath+'/lab/loadLabUnitInfoCenterTabAjax',{},function(data){
+                if (item.data_source == "webservice") {
+                    html += '<li class="quxian_li_' + item.id + '" ' + createClickFuntion(item) + ' data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '<span>∨</span></header>';
+                    html += '</li>';
+                } else {
+                    html += '<li class="quxian_li_' + item.id + '" data-center-id="' + item.id + '"  ><header>' + (item.isshow_name == 0 ? item.center_name : "") + '<span>∨</span></header>';
+                    var labsHtmls = "<ul>";
+                    $.each(item.children, function (ind, it) {
+                        if (index == 0 && ind == 0) {
+                            firstLabCode = it.lab_code + "_" + it.id;
+                        }
+                        if (it.data_source != "webservice") {
+                            var currentHtmls = ' <li class="lab_code_' + it.lab_code + '_' + it.id;
+                            var header = '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name;
+                            if (it.data_source == "url") {
+                                currentHtmls += ' toLabIframe " data-url="' + it.souce_value + '">';
+                                header += '</header>';
+                            } else {
+                                currentHtmls += ' ">';
+                                header += '<span>∨</span></header>';
+                            }
+                            labsMap.put(it.id, it);
+                            labsHtmlsMap.put(it.id, '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∧</span></header>');
+                            //如果是中海博睿 不拼接header
+                            labsHtmls = labsHtmls + currentHtmls + header + "</li>";
+                        } else if (it.data_source == "webservice") {
+                            //直接获取webservice实验室信息
+                            var htmls = "";
+                            $.post(contextPath + '/lab/loadLabUnitInfoCenterTabAjax', {}, function (data) {
 
-         				        $.each(data,function(index,item){
-                                    item.labName = item.labName.replace("（","(").replace("）",")").replace("、","/");
-         				        	htmls+=' <li><header>'+item.labName+'<span>∨</span></header>';
-         							if(item.testUnitList.length>0){
-         								htmls+='<ul class="taiwei_hide">';
-         								$.each(item.testUnitList,function(ind,it){
-         									if(it.testUnitStatus=="停测"){
-         										htmls+='<li >台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
-         									}else{
-         										htmls+='<li onclick=findSensorByLabCenetrTabAjax(\"'+item.labCode+'\",\"'+item.url+'\",\"'+it.testUnitId+'\")>台位：'+it.testUnitName+'  ('+it.testUnitStatus+')</li>';
-         									}
-         								});
-         								htmls+='</ul>';
-         							}
-         							htmls+=' </li>';
-         						});
-         				        $(".quxian_li_"+item.id).find("ul:eq(0)").append(htmls);
-         				 });
-            				
-            				///
-            			}
-            		});
-            		labsHtmls += '</ul>';
-            		html += labsHtmls;
-            		html += '</li>';
-            	}
+                                $.each(data, function (index, item) {
+                                    item.labName = item.labName.replace("（", "(").replace("）", ")").replace("、", "/");
+                                    htmls += ' <li><header>' + item.labName + '<span>∨</span></header>';
+                                    if (item.testUnitList.length > 0) {
+                                        htmls += '<ul class="taiwei_hide">';
+                                        $.each(item.testUnitList, function (ind, it) {
+                                            if (it.testUnitStatus == "停测") {
+                                                htmls += '<li >台位：' + it.testUnitName + '  (' + it.testUnitStatus + ')</li>';
+                                            } else {
+                                                htmls += '<li onclick=findSensorByLabCenetrTabAjax(\"' + item.labCode + '\",\"' + item.url + '\",\"' + it.testUnitId + '\")>台位：' + it.testUnitName + '  (' + it.testUnitStatus + ')</li>';
+                                            }
+                                        });
+                                        htmls += '</ul>';
+                                    }
+                                    htmls += ' </li>';
+                                });
+                                $(".quxian_li_" + item.id).find("ul:eq(0)").append(htmls);
+                            });
+
+                            ///
+                        }
+                    });
+                    labsHtmls += '</ul>';
+                    html += labsHtmls;
+                    html += '</li>';
+                }
 
             }
         });

@@ -14,7 +14,7 @@ function loadTab4Data() {
     //Tom add start
     //加载工位数据信息
     $("#tab4_jiance_xh_name").html("\"" + $(".tab4 .shujuWajue_left_top_list .active").html() + "\"");
-    console.log('初始化数据' + $("#station").find("option:selected").attr("data") + $("#station").find("option:selected").text())
+    // console.log('初始化数据' + $("#station").find("option:selected").attr("data") + $("#station").find("option:selected").text())
     loadTab4JianData($("#station").find("option:selected").attr("data"), $("#station").find("option:selected").text());
     //Tom add end
 }

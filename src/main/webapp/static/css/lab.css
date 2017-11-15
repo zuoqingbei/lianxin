@@ -367,11 +367,13 @@ li:not(.hasChildren).active {
     font-size: 1.6em;
 }
 .monitoring .smallVideoBox>.loadingAnimation{
+    left: 10em;
+    top: 8em;
     font-size: 1em;
 }
 
 .monitoring .bigVideoBox .loadingAnimation{
-    /*left: 27em;*/
-    /*top: 13em;*/
-    /*font-size: 1.4em;*/
+    left: 30em;
+    top: 12em;
+    font-size: 1.4em;
 }

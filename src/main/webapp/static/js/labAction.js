@@ -29,9 +29,9 @@ function moduleMakersShow(url) {//模块商
 }
 
 //视频加载动画
-function loadingAnimate(thisElem, text, time) {
+function loadingAnimate($thisElem, text, time) {
     // console.log("thisElem---",thisElem[0]);
-    thisElem.fadeIn(200, function () {
+    $thisElem.fadeIn(200, function () {
         // var loadingAnimateLoop;
         var counter = 0;
         if (time) {
@@ -39,8 +39,8 @@ function loadingAnimate(thisElem, text, time) {
             clearTimeout(loadingAnimateFadeOut);
             // console.log("```loadingAnimateFadeOut")
             var loadingAnimateFadeOut = setTimeout(function (loadingAnimateFadeOut) {
-                console.log("自动loadingAnimateFadeOut");
-                thisElem.fadeOut(3000, function () {
+                // console.log("自动loadingAnimateFadeOut");
+                $thisElem.fadeOut(3000, function () {
                     //如果把清除定时器直接放在回调函数的位置，则不会起作用
                     clearTimeout(loadingAnimateVideoLoop);
                     clearTimeout(loadingAnimateFadeOut);
@@ -58,17 +58,17 @@ function loadingAnimate(thisElem, text, time) {
             // clearTimeout(loadingAnimateLoop);
             if (counter === 3) {
                 counter = 0;
-                thisElem.text(text);
+                $thisElem.text(text);
             } else {
                 counter++;
                 var point = " ";
                 for (var i = 0; i < counter; i++) {
                     point += "。";
                 }
-                thisElem.text(text + point);
+                $thisElem.text(text + point);
             }
             if (time) {
-                loadingAnimateVideoLoop = setTimeout(changeTxt, 2000);
+                loadingAnimateVideoLoop = setTimeout(changeTxt, 1500);
             } else {
                 loadingAnimateCurveLoop = setTimeout(changeTxt, 1000);
             }
@@ -81,14 +81,14 @@ function loadingAnimate(thisElem, text, time) {
 
 //视频加载动画淡出
 function loadingAnimateOut(type, time) {
-    console.log("调用loadingAnimateOut");
+    // console.log("调用loadingAnimateOut");
     if (type === "curve") {
-        console.log("曲线调用loadingAnimateOut");
-        $(".item.curve .loadingAnimation").fadeOut(time, function () {
+        // console.log("曲线调用loadingAnimateOut");
+        $(".item.curve>.sheshi_right_left>.loadingAnimation").fadeOut(time, function () {
             clearTimeout(loadingAnimateCurveLoop);
         })
     } else {
-        console.log("非曲线调用loadingAnimateOut")
+        // console.log("非曲线调用loadingAnimateOut")
     }
 }
 
@@ -123,7 +123,7 @@ function videoShow(id, url, mainStream) {
         id,
         // width, height
         // 根据主子码流选择尺寸比例
-        mainStream ? "100%" : "100%",
+        "100%",
         mainStream ? "80%" : "96%",
         // minimum flash player version required
         "27",
@@ -271,16 +271,22 @@ $(function () {
     //实时监测-视频地址选择
     $(".centerVideoList>ul").on("click","li",function () {
         $(this).addClass("active").siblings().removeClass("active");
-       var videoUrl = $(this).data("videourl");
+       var videoUrl = $(this).data("videourl").replace("/1/live.m3u8", "/0/live.m3u8");
        console.log("videoUrl",videoUrl);
        videoShow("bigVideo",videoUrl,0);
-        $(".shishi_right>.item.video").show().siblings().hide();
+       $(".shishi_right>.item.video").show().siblings().hide();
     });
     //实时监测-实时数据按钮
     $(".sheshi_tab.sheshi_tab_lines").click(function () {
         $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
         if($(this).next().is(":hidden")){
             $(this).next().show().siblings(".centerVideoList").hide();
+        }
+        if(prevIsLabUrl){
+            $(".shishi_right").children(".item.iframe").show().siblings().hide();
+        }else{
+            $(".shishi_right").children(".item.curve").show().siblings().hide();
+
         }
     });
     //链接型实验室点击和画中画切换
@@ -336,7 +342,7 @@ $(function () {
     function videoUrlAjax(labCode, toUrl) {
         $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
             var videoUrl = data.videl_url;
-            console.log("---labCode", labCode, "videoUrl:", videoUrl);
+            // console.log("---labCode", labCode, "videoUrl:", videoUrl);
             if (videoUrl) {
                 videoUrlMain = videoUrl.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
                 var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
