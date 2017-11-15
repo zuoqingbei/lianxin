@@ -1125,7 +1125,7 @@ public class LabController extends BaseController {
 	 * @todo 查询监控数据
 	 */
 	public void loadVideosByDataCenterAjax() {
-		String dataCenterId = getPara("dataCenterId", "1");
+		String dataCenterId = getPara("dataCenterId");
 		List<Record> videoList = LabVideoModel.dao
 				.findVideosByDataCenterId(dataCenterId);
 		renderJson(videoList);

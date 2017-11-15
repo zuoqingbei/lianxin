@@ -25,10 +25,8 @@ public class LabVideoModel extends Model<CommunistModel>{
 	 * @return_type   List<Record>
 	 */
 	public List<Record> findVideosByDataCenterId(String dataCenterId){
-		List<Record> list=findLabsByDataCenterId(dataCenterId);
-		for(Record video:list){
-			video.set("videos", findVideosByLabCode(video.getStr("lab_code")));
-		}
+		String sql="select * from t_b_lab_video where  data_center_id='"+dataCenterId+"' and del_flag=0 and show_flag=0 order by order_num";
+		List<Record> list=Db.find(sql);
 		return list;
 		
 	}
@@ -44,17 +42,7 @@ public class LabVideoModel extends Model<CommunistModel>{
 		List<Record> list=Db.find(sql);
 		return list;
 	}
-	/**
-	 * 
-	 * @time   2017年10月19日 上午5:56:17
-	 * @author zuoqb
-	 * @todo   根据数据中心查询实验室列表
-	 */
-	public List<Record> findLabsByDataCenterId(String dataCenterId){
-		String sql="select distinct v.lab_code,lab.lab_name,lab.order_num from t_b_lab_video v left join t_b_lab_code lab on lab.lab_code=v.lab_code where lab.data_center_id in(select id from t_b_data_center where parent_id='"+dataCenterId+"' and center_level=3) and lab.del_flag=0  and v.del_flag=0 and v.show_flag=0 order by lab.order_num";
-		List<Record> list=Db.find(sql);
-		return list;
-	}
+
 	/**
 	 * 
 	 * @time   2017年10月19日 上午6:25:12
