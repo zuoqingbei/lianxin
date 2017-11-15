@@ -19,6 +19,7 @@ var Status = {
 		},1000);
 	},
 	tabChanges:function(){
+		var that = this;
 		//syfxBox   leftStates
 		$(".syfx").click(function(){
 			//所有nav去掉active样式
@@ -40,7 +41,6 @@ var Status = {
 			$(".fyBtn").css("visibility","visible");
 			//别的tab页面在第二页的时候点进来确保能显示
 			$(".state-box").css({"left":"0"});
-			//$(".state-box").css({"left":"-100%"});
 		});
 		$(".sszt").click(function(){
 			//所有nav去掉active样式
@@ -55,6 +55,9 @@ var Status = {
 			$(".leftStates").css("display","block");
 			$(".syfxBox").css("display","none");
 			$(".ztqsBox").css("display","none");
+			$(".gzzdBox").css("display","none");
+			$(".gzycBox").css("display","none");
+			
 			//改变宽度
 			$(".state-box").css("width","200%");
 			//显示左右按钮
@@ -75,15 +78,57 @@ var Status = {
 			$(".leftStates").css("display","none");
 			$(".syfxBox").css("display","none");
 			$(".ztqsBox").css("display","block");
+			$(".gzzdBox").css("display","none");
+			$(".gzycBox").css("display","none");
 			
 			//改变宽度
 			$(".state-box").css("width","100%");
+			
+			
 			//别的tab页面在第二页的时候点进来确保能显示
 			$(".state-box").css({"left":"0"});
 			
 			//隐藏左右按钮
 			$(".fyBtn").css("visibility","hidden");
-		
+			
+			//调用echarts函数
+			if(that.t1) {
+				//如果有定时器，先清除定时器
+				clearInterval(that.t1);
+			}
+			that.ztqsCharts();
+		});
+		//点击故障诊断
+		$(".gzzd").click(function(){
+			//所有nav去掉active样式
+			var navs = $(".tnav");
+			for(var nav of navs){
+				$(nav).removeClass("navActive");
+			}
+			//给点击的nav加active样式
+			$(this).addClass("navActive");
+			//切换内容
+			$(".leftStates").css("display","none");
+			$(".syfxBox").css("display","none");
+			$(".ztqsBox").css("display","none");
+			$(".gzzdBox").css("display","block");
+			$(".gzycBox").css("display","none");
+		});
+		//点击故障预测
+		$(".gzyc").click(function(){
+			//所有nav去掉active样式
+			var navs = $(".tnav");
+			for(var nav of navs){
+				$(nav).removeClass("navActive");
+			}
+			//给点击的nav加active样式
+			$(this).addClass("navActive");
+			//切换内容
+			$(".leftStates").css("display","none");
+			$(".syfxBox").css("display","none");
+			$(".ztqsBox").css("display","none");
+			$(".gzzdBox").css("display","none");
+			$(".gzycBox").css("display","block");
 		});
 	},
 
@@ -120,14 +165,23 @@ var Status = {
 		//console.log("123454545")
 		
 		var that = this;
-		//只有实时状态有分页
+		
 		$(".leftBtn").click(function(){
-			//console.log("123")
-			$(".state-box").css({"left":"0"});
+			if($(".syfxBox").css("display") == 'block'){
+				
+				$(".state-box").css({"left":"0"});
+			}else if($(".leftStates").css("display") == 'block'){
+				//改变数据
+				//console.log("改变数据")
+			}
 		})
 		$(".rightBtn").click(function(){
-			//console.log("456")
-			$(".state-box").css({"left":"-100%"});
+			if($(".syfxBox").css("display") == 'block'){
+				$(".state-box").css({"left":"-100%"});
+				
+			}else if($(".leftStates").css("display") == 'block'){
+				//改变数据
+			}
 		})
 		
 	},
@@ -344,12 +398,13 @@ var Status = {
 		          	show:true,
 		            lineStyle:{
 		            	color:'#64ccff',
-		              width:15*that.bodyScale
+		              width:12*that.bodyScale
 		            }
 		          },
 		          axisLabel:{
 		          	textStyle:{
-		          		color:'#fff'
+		          		color:'#fff',
+		          		fontSize:5*that.bodyScale,
 		          	}
 		          },
 		          splitLine:{
@@ -584,6 +639,139 @@ var Status = {
 		pqyl.setOption(pqylOptions);
 		jsd.setOption(jsdOptions);
 		zll.setOption(zllOptions);
+	},
+	ztqsCharts:function(){
+		var that = this;
+		//返回一个随机data形式的数组
+		function randomData() {
+		    now = new Date(+now + 10 *oneDay);
+		    value = value +Math.random() - 0.48 ;
+
+			return [
+				now, Math.round(value)
+			]
+		    
+		}
+		var ztqsDom = echarts.init(document.getElementById("ztqsCanvas"));
+		var data = [];
+		var value = Math.random() * 30;
+		var now = +new Date(2010,1,1);
+		var oneDay = 24 * 3600 * 1000;
+		
+		
+		//初始化的时候的data
+		for (var i = 0; i < 500; i++) {
+		    data.push(randomData());
+		}
+		
+		
+		var ztqsOptions = {
+				color:['#64ccff'],
+		      tooltip : {
+		        trigger: 'axis',
+		        axisPointer:{
+		            show: true,
+		            type : 'cross',
+		            lineStyle: {
+		                type : 'dashed',
+		                width : 10*that.bodyScale
+		            }
+		        },
+		        textStyle:{
+		        	color:'#fff',
+		        	fontSize:13*that.bodyScale
+		        },
+		        formatter : function (params) {
+		            return params.seriesName + ' : [ '
+		                   + new Date(+params.value[0]).toLocaleString()+ ', ' 
+		                   + params.value[1] + ' ]';
+		        }
+		    },
+		    legend: {
+		        data:['数据1'],
+		        textStyle:{
+		        	color:'#66ccff'
+		        },
+		    },
+		    xAxis : [
+		        {
+		            type: 'time',
+		            axisLabel:{
+		            	textStyle:{
+		             		color:'#fff',
+		             		fontSize:13*that.bodyScale
+		             	}
+		            },
+		            splitLine:{
+		            	show:false
+		            },
+		            axisLine: {
+		                lineStyle: {
+		                    color: '#66ccff'
+		                }
+		            },
+		        }
+		    ],
+		    yAxis : [
+		        {
+		            type: 'value',
+		            axisLine: {
+		                lineStyle: {
+		                    color: '#66ccff',
+		             	
+		                }
+		            },
+		             axisLabel:{
+		             	textStyle:{
+		             		color:'#fff',
+	             			fontSize:13*that.bodyScale
+		             	}
+		            },
+		             splitLine:{
+		            	show:false
+		            },
+		            min:0,
+		            max:50
+		        }
+		    ],
+		    series : [
+		        {
+		            name:'数据1',
+		            type:'line',
+//		            data:[
+//		                [new Date('2010-1-1'), 10], [new Date(), 7]
+//		            ],
+					data:data,
+					itemStyle:{
+						normal:{
+							lineStyle:{
+								color:'#64ccff'
+							}
+						}
+					}
+		           
+		        },
+		        
+		    ]
+		};
+		
+		 ztqsDom.setOption(ztqsOptions);
+		
+		this.t1 = setInterval(function () {
+		
+		    for (var i = 0; i < 2; i++) {
+		        data.shift();
+		        data.push(randomData());
+		    }
+//			console.log(data)
+		    ztqsDom.setOption({
+		        series: [{
+		            data: data
+		        }]
+		    });
+		}, 1000);
+		
+		
 	},
 }
 

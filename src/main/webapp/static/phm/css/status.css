@@ -115,7 +115,7 @@
 		    transform: translateZ(-3.9em) translateY(10em) translateX(-2em) scaleX(.36) scaleY(.36) rotateY(180deg);
 		}
 		.box_compressor {
-		    transform: translateZ(-4.6em) translateY(10em) translateX(-2em) scaleX(.36) scaleY(.36) rotateY(180deg);
+		    transform: translateZ(-4.8em) translateY(10em) translateX(-2em) scaleX(.36) scaleY(.36) rotateY(180deg);
 		    background: url(../images/status/compressor.gif) no-repeat;
 		}
         /*3D旋转中，正方向是X前面向上，Y是前面向右，Z是顶部向右，
@@ -383,16 +383,24 @@
 }
 .bxDoor .bxImgLeft {
 	/*background: #dd0;*/
-	float:left;
 	width:60%;
 	height:95%;
 	margin-top:3%;
-	margin-left: 1%;
+	margin-left: 22%;
 }
 .bxDoor .bxImgLeft img{
-	display: block;
-	height:95%;width:95%;
-	margin:1% auto;
+	float:left;
+	height:47%;width:47%;
+	margin:0 auto;
+}
+.bxDoor .bxImgLeft img:nth-child(3),.bxDoor .bxImgLeft img:nth-child(4) {
+	width:94%;
+}
+.bxDoor .bxImgLeft img:nth-child(3) {
+	height:25%;
+}
+.bxDoor .bxImgLeft img:nth-child(4) {
+	height:28%;
 }
 .bxDoor .bxTxt{
 	float:left;
@@ -443,6 +451,22 @@
 	height:60%;
 	margin:0 auto;
 	margin-top:13%;
+}
+
+.jtState .myImgBox {
+	width:50%;
+	height:60%;
+	margin:4% auto;
+}
+.jtState .myImgBox img {
+	display: block;
+	width: 100%;
+	height:100%;
+}
+.jtState .txtInfo {
+	width: 100%;
+	font-size: .8em;
+	text-align: center;
 }
 
 /****************************************使用分析****************************************/
@@ -517,29 +541,23 @@
 	height:98%;
 	margin-left: 4%;
 }
-/*
-.bottomState .rightBx {
-	width:22.5%;
-	height:87%;
-	float:left;
-	background:url(../images/status/psbg.png) no-repeat 90% 10%;
-	background-size: 90% 98%;
-}
-.rightBx .stateTxt {
-	width:60%;
-	height:9%;
-	background:url(../images/status/tborder.png) no-repeat 100% 100%;
-	background-size: 100% 100%;
+/****************************************故障诊断****************************************/
+.gzzdBox {
+	display: none;
+	width: 95%;
+	height:98%;
+	margin-left: 4%;
+	color: #fff;
 	text-align: center;
-	margin-top:5%;
-	line-height: 2.2em;
-	margin-left:27%;
-	color:#fff;
+	line-height: 98%;
 }
-.rightBx #player {
-	width:83%;
-	height:81%;
-	background: #64ccff;
-	margin-left:13%;
-	margin-top:3%;
-}*/
+/****************************************故障预测****************************************/
+.gzycBox {
+	display: none;
+	width: 95%;
+	height:98%;
+	margin-left: 4%;
+	color: #fff;
+	text-align: center;
+	line-height: 98%;
+}

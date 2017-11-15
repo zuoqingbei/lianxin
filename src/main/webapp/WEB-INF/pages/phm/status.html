@@ -9,28 +9,7 @@
 		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
 		<link rel="stylesheet" href="${contextPath}/static/phm/css/status.css" />
 		
-		<script>
-		 	window.onload = function(){
-		        /*屏幕描述
-				         一共 7x3 个屏幕，每一块屏幕是1360x768，
-				         总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
-				
-		        var pageH = $(window).height();
-		        var pageW = pageH * 16 * 7 / (9 * 3);
-		        var bodyScale = pageH / 595;
-		        var bodyFontSize = bodyScale * 100 + "%";
-		        if (pageH > 2300) { // 如果是大屏幕(2304)
-		            pageW -= 47
-		        }
-		        function pageResize() {
-		            $("body").css("font-size", bodyFontSize);
-		            $("#content").css("width", pageW);
-		            $(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
-		            console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
-		        }
-		        pageResize()
-	       }
-   		</script>
+		
 	</head>
 	<body>
 		<div id="content">
@@ -105,7 +84,7 @@
 							<div class="state-box">
 								<!--实时状态-->
 								<div class="leftStates" id="firstPage"></div>
-							    <div class="leftStates" id="secondPage"></div>
+							   <!--  <div class="leftStates" id="secondPage"></div> -->
 								<!-- <div class="leftStates" id="thirdPage" style="display:none;"></div>
 								<div class="leftStates" id="fourPage" style="display:none;"></div> -->
 									
@@ -116,7 +95,16 @@
 								
 								<!--状态趋势-->
 								<div class="ztqsBox">
-									<!--<iframe src="http://47.95.109.158/#/product/20171026BX001" width="100%" height="100%"></iframe>-->
+									<!-- <iframe src="http://47.95.109.158/#/product/20171026BX001" width="100%" height="100%"></iframe> -->
+									<div id="ztqsCanvas" style="width:100%;height:100%"></div>
+								</div>
+								<!--故障诊断-->
+								<div class="gzzdBox">
+									故障诊断页面暂无内容
+								</div>
+								<!--故障预测-->
+								<div class="gzycBox">
+									故障预测页面暂无内容
 								</div>
 							</div>
 						</div>
@@ -131,6 +119,26 @@
 		<script src="${contextPath}/static/phm/asserts/echarts/echarts-all-2.2.7.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js"  type="text/javascript" charset="utf-8"></script>
 		
+		<script>
+		        /*屏幕描述
+				         一共 7x3 个屏幕，每一块屏幕是1360x768，
+				         总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
+				
+		        var pageH = $(window).height();
+		        var pageW = pageH * 16 * 7 / (9 * 3);
+		        var bodyScale = pageH / 595;
+		        var bodyFontSize = bodyScale * 100 + "%";
+		        if (pageH > 2300) { // 如果是大屏幕(2304)
+		            pageW -= 47
+		        }
+		        function pageResize() {
+		            $("body").css("font-size", bodyFontSize);
+		            $("#content").css("width", pageW);
+		            $(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
+		            console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+		        }
+		        pageResize()
+   		</script>
 		<script src="${contextPath}/static/phm/js/status.js" type="text/javascript" charset="utf-8"></script>
 	
 	<!--陈新   -->
@@ -183,12 +191,13 @@
 						          	show:true,
 						            lineStyle:{
 						            	color:'#64ccff',
-						              width:15*bodyScale
+						              width:14*bodyScale
 						            }
 						          },
 						          axisLabel:{
 						          	textStyle:{
-						          		color:'#fff'
+						          		color:'#fff',
+						          		fontSize:7*that.bodyScale,
 						          	}
 						          },
 						          splitLine:{
@@ -333,16 +342,20 @@
 			/* ********************************************************************************* */
 			<!--实时状态初始化  -->
 			function timeStatus(){
+				
+				idFlage=idFlage+pagnum;
 				var times=0;
-				 pageNo=1;//记录第几页
-				 pagnum=0;//记录该更新 哪一部分
+				if(idFlage>1000){idFlage=0;}
+				times=times+idFlage;
+				// pageNo=1;//记录第几页
+				// pagnum=0;//记录该更新 哪一部分pagnum
 				if(sncode==""||sncode==undefined){
 					return;
 				}
 				
 				$.ajax({
-					//url:"http://localhost:8088/api/yzd/product/"+sncode,
-					url:"http://47.95.109.158/api/yzd/product/"+sncode,
+					url:"http://localhost:8088/api/yzd/product/"+sncode,
+					//url:"http://47.95.109.158/api/yzd/product/"+sncode,
 					type:"get",
 					success:function(data){
 						//console.log(data.monitorConf)
@@ -357,9 +370,14 @@
 						var S15=info['S15'];
 						var S16=info['S16'];
 						var S17=info['S17'];
-						
 						var monitorConf=data.monitorConf;
+						var start =(pageNo-1)*pagnum;//截取数据开始位子,由于加了一张开关门要-1
+						var end=start+pagnum-1;//截取数据结束位子
+						if(pageNo!=1){
+							start=start-1;
+						}
 						
+						 monitorConf=monitorConf.slice(start,end);
 							for( var index in monitorConf){
 								//debugger;
 								var monitorConfSingle=monitorConf[index];
@@ -378,7 +396,8 @@
 									 label=param.label;
 									 max=param.max;
 									 min=param.min;
-								if(times==6&&pageNo==1){
+								 var t1=6+idFlage;
+								if(times==t1&&pageNo==1){
 									//S14=1;
 									times+=1;
 									
@@ -392,25 +411,34 @@
 										$("#firstPage").append(image);
 									}else{
 										var image14="";var image15="";var image16="";var image17="";
+										var image14url;var image15url;var image16url;var image17url;
 										if(S14==0){
 											image14="冷藏室左门关闭";
+											image14url="leftClose.png";
 										}else if(S14==1){
 											image14="冷藏室左门开启";
+											image14url="leftOpen.png";
 										}
 										if(S15==0){
 											image14="冷藏室右门关闭";
+											image15url="rightClose.png";
 										}else if(S15==1){
 											image15="冷藏室右门开启";
+											image15url="rightOpen.png";
 										}
 										if(S16==0){
 											image16="冷冻室上门关闭";
+											image16url="upClose.png";
 										}else if(S14==1){
 											image16="冷冻室上门开启";
+											image16url="upOpen.png";
 										}
 										if(S17==0){
 											image17="冷冻室下门关闭";
+											image17url="downClose.png";
 										}else if(S17==1){
 											image17="冷冻室下门开启";
+											image17url="downOpen.png";
 										}
 										
 										var image=
@@ -418,9 +446,11 @@
 												"<p class='stateTxt'>冰箱开关门</p>"+
 												"<div class='bxDoor'>"+
 													"<div class='bxImgLeft'>"+
-														"<img src='${contextPath}/static/phm/images/status/bxClose.png' alt='' />"+
+														"<img src='${contextPath}/static/phm/images/status/"+image14url+"' alt='' />"+
+														"<img src='${contextPath}/static/phm/images/status/"+image15url+"' alt='' />"+
+														"<img src='${contextPath}/static/phm/images/status/"+image16url+"' alt='' />"+
+														"<img src='${contextPath}/static/phm/images/status/"+image17url+"' alt='' />"+
 													"</div>"+
-													"<p class='bxTxt'>当前状态:<br /><span>"+image14+image15+image16+image17+"</span></p>"+
 												"</div>"+
 											"</div>";
 										$("#firstPage").append(image);
@@ -430,7 +460,7 @@
 								var changeClass="";
 								/**************处理状态 ****************/
 								if(type=="text"&&nowInfo.indexOf(feature)!=-1){
-									if(times%12>5){
+									if(times%pagnum>5){
 										changeClass="mt1";
 									}
 									times+=1;var value="";
@@ -438,7 +468,6 @@
 									var statusValue=info[feature];//获取当前传入状态值 
 									//debugger; 
 									//console.log(infoArray);
-									if(infoArray==undefined){debugger;}
 									for(var i=0;i<infoArray.length;i++){
 										var v=infoArray[i];
 										if(v.key==statusValue){
@@ -450,18 +479,12 @@
 									var charts=
 										"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
-											"<div class='bxDoor'>"+
-												"<div class='bxImgLeft'>"+
-													"<img src='' alt='图片' />"+
-												"</div>"+
-												"<p class='bxTxt'>当前状态:<br /><span>"+value+"</span></p>"+
+											"<div class='lcsLight myImgBox' >"+
+												"<img src='${contextPath}/static/phm/images/status/S11open.jpg' alt='图片' />"+
 											"</div>"+
+											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>"+
 										"</div>";
-									if(times>12){
-										$("#secondPage").append(charts);
-									}else{
 										$("#firstPage").append(charts);
-									}
 									//debugger;
 									continue;
 								}else if(!max&&max!="0"){
@@ -476,7 +499,7 @@
 								}
 									
 						//	var changeClass="";
-								if(times%12>5){
+								if(times%pagnum>5){//用于判断是否进入第二 行 并添加margin-top
 									changeClass="mt1";
 								}
 								if(type=="thermometer"){
@@ -497,17 +520,13 @@
 									
 									
 									
-									if(times>12){
-										$("#secondPage").append(charts);
-									}else{
 										$("#firstPage").append(charts);
-									}
 									if(actualStatus==undefined){actualStatus=(max+min)/2;}
 									if(actualStatus<min){min=actualStatus-4;}
 									 myarr[0]=["liquid"+times,max,min,actualStatus,"℃"];
 									 Status.liquidMove(myarr);
 								}if(type=="speedometer"){
-									//debugger;
+									
 									times+=1;
 									charts+=
 										"<div id='cx"+times+"' class='jtState "+changeClass+"'>"+
@@ -516,11 +535,7 @@
 												"<div id='zsCanvas"+times+"' style='width:100%;height:100%'></div>"+
 											"</div>"+
 										"</div>";
-									if(times>12){
-										$("#secondPage").append(charts);
-									}else{
 										$("#firstPage").append(charts);
-									}
 									speedometer(actualStatus,times,max,min,title,label);
 								}else if(type=="gauge"){
 									times+=1;
@@ -532,11 +547,7 @@
 											"</div>"+
 										
 										"</div>";
-									if(times>12){
-										$("#secondPage").append(charts);
-									}else{
 										$("#firstPage").append(charts);
-									}
 									
 									var percent=(actualStatus-min)/(max-min);
 									gauge(actualStatus,times,max,min,title,label,percent);
@@ -550,11 +561,7 @@
 											
 										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>"+label+"</span></div>"+
 										"</div>";
-									if(times>12){
-										$("#secondPage").append(charts);
-									}else{
 										$("#firstPage").append(charts);
-									}
 								}
 							}
 							
@@ -583,7 +590,7 @@
 								 if(f%3!=1){
 									 margleft="margleft";
 								 }
-								 if(f%6>3){
+								 if(f%6>3||(f%6==0&&f>3)){
 									 margtop="margtop";
 								 }
 									var content=
@@ -593,8 +600,8 @@
 											"</div>"+
 											"<div class='rightInfo'>"+
 												"<h6>"+element.description+"</h6>"+
-												"<p>当前程度：</p>"+
-												"<p>"+element.status+"</p>"+
+												/* "<p>当前程度：</p>"+
+												"<p>"+element.status+"</p>"+ */
 											"</div>"+
 										"</div>";
 									if(f>6){
@@ -816,12 +823,13 @@
 					$("#status").html(param.data.status);
 					 arr=[ [{name:name},{name:'基线'}] ];
 					
-					$("#firstPage").html("");
-					$("#secondPage").html("");
+				
 					 $(".state-box").css({"left":"0"});
 					$("#analysisFirstPage").html("");
 					$("#analysisSecondPage").html("");
 					useAnalysis();//更新使用分析
+					$("#firstPage").html("");
+					pageNo=1;//将实时状态分页置为第一页
 					timeStatus();//更新实时状态
 					mapChartsOptions.series[0].markLine.data=arr;
 					myMapCharts.clear();
@@ -920,14 +928,12 @@
 			});
 			/*********************定时更新 实时状态 ****************************/
 		function updateStatus(){
-				var times=0;
+				var times=idFlage;
 				var length;//根据截取的数据长度 在后面判断要不要清空 对应的 数据 
-				if(pagnum!=undefined){
-					times=times+pagnum;
-				}
+			
 			$.ajax({
-				//url:"http://localhost:8088/api/yzd/product/"+sncode,
-				url:"http://47.95.109.158/api/yzd/product/"+sncode,
+				url:"http://localhost:8088/api/yzd/product/"+sncode,
+				//url:"http://47.95.109.158/api/yzd/product/"+sncode,
 				type:"get",
 				success:function(data){
 					//console.log(data.monitorConf)
@@ -939,11 +945,11 @@
 					var S15=info['S15'];
 					var S16=info['S16'];
 					var S17=info['S17'];
-				
+					//debugger;
 					var monitorConf1=data.monitorConf;
 					//console.log(monitorConf);
-					var start =(pageNo-1)*12;//截取数据开始位子,由于加了一张开关门要-1
-					var end=pageNo*12-1;//截取数据结束位子
+					var start =(pageNo-1)*pagnum;//截取数据开始位子,由于加了一张开关门要-1
+					var end=start+pagnum-1;//截取数据结束位子
 					if(pageNo!=1){
 						start=start-1;
 					}
@@ -971,7 +977,8 @@
 								 label=param.label;
 								 max=param.max;
 								 min=param.min;
-								 if(times==6&&pageNo==1){
+								 var t1=6+idFlage;
+								 if(times==t1&&pageNo==1){
 										//S14=1;
 										times+=1;
 										//debugger;
@@ -986,25 +993,34 @@
 											$("#cx"+times).html(image);
 										}else{
 											var image14="";var image15="";var image16="";var image17="";
+											var image14url;var image15url;var image16url;var image17url;
 											if(S14==0){
 												image14="冷藏室左门关闭";
+												image14url="leftClose.png";
 											}else if(S14==1){
 												image14="冷藏室左门开启";
+												image14url="leftOpen.png";
 											}
 											if(S15==0){
 												image14="冷藏室右门关闭";
+												image15url="rightClose.png";
 											}else if(S15==1){
 												image15="冷藏室右门开启";
+												image15url="rightOpen.png";
 											}
 											if(S16==0){
 												image16="冷冻室上门关闭";
+												image16url="upClose.png";
 											}else if(S14==1){
 												image16="冷冻室上门开启";
+												image16url="upOpen.png";
 											}
 											if(S17==0){
 												image17="冷冻室下门关闭";
+												image17url="downClose.png";
 											}else if(S17==1){
 												image17="冷冻室下门开启";
+												image17url="downOpen.png";
 											}
 											
 											var image=
@@ -1012,9 +1028,11 @@
 													"<p class='stateTxt'>冰箱开关门</p>"+
 													"<div class='bxDoor'>"+
 														"<div class='bxImgLeft'>"+
-															"<img src='${contextPath}/static/phm/images/status/bxClose.png' alt='' />"+
+														"<img src='${contextPath}/static/phm/images/status/"+image14url+"' alt='' />"+
+														"<img src='${contextPath}/static/phm/images/status/"+image15url+"' alt='' />"+
+														"<img src='${contextPath}/static/phm/images/status/"+image16url+"' alt='' />"+
+														"<img src='${contextPath}/static/phm/images/status/"+image17url+"' alt='' />"+
 														"</div>"+
-														"<p class='bxTxt'>当前状态:<br /><span>"+image14+image15+image16+image17+"</span></p>"+
 													"</div>";
 												//"</div>";
 												$("#cx"+times).html(image);
@@ -1024,7 +1042,7 @@
 							var changeClass="";
 							/**************处理状态 ****************/
 							if(type=="text"&&nowInfo.indexOf(feature)!=-1){
-								if(times%12>5){
+								if(times%pagnum>5){
 									changeClass="mt1";
 								}
 								times+=1;var value="";
@@ -1032,7 +1050,6 @@
 								var statusValue=info[feature];//获取当前传入状态值 
 								//debugger; 
 							//	console.log(infoArray);
-								if(infoArray==undefined){debugger;}
 								for(var i=0;i<infoArray.length;i++){
 									var v=infoArray[i];
 									if(v.key==statusValue){
@@ -1044,12 +1061,11 @@
 								var charts=
 									//"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 										"<p class='stateTxt'>"+title+"</p>"+
-										"<div class='bxDoor'>"+
-											"<div class='bxImgLeft'>"+
-												"<img src='' alt='图片' />"+
+											"<div class='lcsLight myImgBox'>"+
+												"<img src='${contextPath}/static/phm/images/status/S11open.jpg' alt='图片' />"+
 											"</div>"+
-											"<p class='bxTxt'>当前状态:<br /><span>"+value+"</span></p>"+
-										"</div>";
+											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>";
+										
 									//"</div>";
 									$("#cx"+times).html(charts);
 								//debugger;
@@ -1065,7 +1081,7 @@
 								label="实际值数据缺失";
 							}
 						
-							if(times%12>5){
+							if(times%pagnum>5){
 								changeClass="mt1";
 							}
 							if(type=="thermometer"){
@@ -1130,17 +1146,8 @@
 								$("#cx"+times).html(charts);
 							}
 						}
-							var t=0;
-							if(pagnum==12){
-								t=24;
-							}else{
-								t=12;
-							}
-							for (var i=times;i<t;){
-								i++;
-								$("#cx"+i).html("");
-								
-							}
+						
+						
 					/*****************************************************************************************************/	
 						
 				},
@@ -1152,43 +1159,33 @@
 		}
 			/********************下面是实时状态分页处理 **********************************/
 			var pageNo=1;//记录第几页
-			var dataLength=0;//传入数据长度 
-			var pagnum;//记录该更新 哪一部分
+			var dataLength=0;//传入数据有多少
+			var pagnum=12;//每页多少个
+			var idFlage=pagnum;//防止实时状态id唯一
 			function pageRight(){
-				var p=pageNo*12;
+				var p=pageNo*pagnum;
 				var l=dataLength+1;//由于加了一张开关门图片
-				if(p>l){
-					pageNo=pageNo-1;
+				if(p>=l){
 					return;
 				}
 				pageNo+=1;
-				pagnum=12;
-				updateStatus();
+				$("#firstPage").html("");
+				timeStatus();
 			}
 			
 			function pageLeft(){
-				clearInterval(timer);
 				pageNo=pageNo-1;
 				if(pageNo<1){
 					pageNo=1;
 					return;
 				}
-				pagnum=0;
-				updateStatus();
-				timer=setInterval(function(){
-					//timeStatus();
-					updateStatus();
-				},3000); 
+				$("#firstPage").html("");
+				timeStatus();
 			}
 			function timeStatusChange(){
-				clearInterval(timer);
 				 pageNo=1;//记录第几页
-				 pagnum=0;//记录该更新 哪一部分
-				updateStatus();
-				timer=setInterval(function(){
-					//timeStatus();
-					updateStatus();
-				},3000); 
+				 $("#firstPage").html("");
+				 timeStatus();
 			}
 			/**************************定义 接口数据对照关系 *********************************************************/
 			var nowInfo=["M1","M2","S1","S2","S3","S4","S5","S6","S7","S8","S9","S10","S11","S12","S13"];
