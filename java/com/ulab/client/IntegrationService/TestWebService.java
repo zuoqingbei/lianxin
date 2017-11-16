@@ -61,7 +61,7 @@ public class TestWebService {
 //		for(LabSingleData labSingleData : labAllData.getLabSingleDataList()){
 //			System.out.println(ToStringBuilder.reflectionToString(labSingleData));
 //		}
-		List<LabData> list = client.searchLabData();
+		List<LabData> list = client.searchLabConnect();
 		for(LabData labData : list){
 			System.out.println(ToStringBuilder.reflectionToString(labData));
 			for(LabTestUnit labTestUnit : labData.getTestUnitList()){

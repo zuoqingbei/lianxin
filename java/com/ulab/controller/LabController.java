@@ -882,12 +882,23 @@ public class LabController extends BaseController {
 	 * @param
 	 * @return_type void
 	 */
-	public void loadLabUnitInfoCenterTabAjax() {
+	/*public void loadLabUnitInfoCenterTabAjax() {
 		IntegrationServiceClient client = new IntegrationServiceClient();
 		List<LabData> labDataList = client.searchLabData();
 		renderJson(labDataList);
+	}*/
+	public void loadLabSearchLabConnectAjax() {
+		IntegrationServiceClient client = new IntegrationServiceClient();
+		List<LabData> labDataList = client.searchLabConnect();
+		renderJson(labDataList);
 	}
-
+	public void loadSearchLabDataByConnectUrlAjax() {
+		IntegrationServiceClient client = new IntegrationServiceClient();
+		String labCode=getPara("labCode");
+		String url=getPara("url");
+		List<LabTestUnit> labDataList = client.searchLabDataByConnectUrl(labCode,url);
+		renderJson(labDataList);
+	}
 	/**
 	 * 
 	 * @time 2017年5月26日 下午2:13:12

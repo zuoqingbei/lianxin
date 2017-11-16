@@ -186,6 +186,83 @@ public class IntegrationServiceClient {
 		labAllData.setLabSingleDataList(labSingleDataList);
 		return labAllData;
 	}
+	/**
+	 * @Title: searchLabData
+	 * @Description: 查询实验室
+	 * @return    设定文件
+	 * @return List<LabData>    返回类型
+	 * @throws
+	 */
+	public List<LabData> searchLabConnect() {
+		List<LabData> labDataList = new ArrayList<LabData>();
+		Service service = new Service();
+		ServicePortType port = service.getServiceHttpPort();
+		ArrayOfConnInfo connInfos = port.getConnInfoAll();
+		for(ConnInfo connInfo : connInfos.getConnInfo()){			
+			String labCode = connInfo.getLabCode();			
+			if(!connInfo.getUrl().startsWith("http")) continue;
+			LabData labData = new LabData();
+			labData.setLabCode(labCode);
+			labData.setLabName(connInfo.getWsName());
+			labData.setUrl(connInfo.getUrl());
+			labDataList.add(labData);
+		}
+			
+		return labDataList;
+		
+	}
+	/**
+	 * 
+	 * @time   2017年11月16日 下午12:57:37
+	 * @author zuoqb
+	 * @todo   查询台位
+	 * @param  @param labCode
+	 * @param  @param url
+	 * @param  @return
+	 * @return_type   List<LabTestUnit>
+	 */
+	public List<LabTestUnit> searchLabDataByConnectUrl(String labCode,String url) {
+		List<LabTestUnit> labTestUnitList = new ArrayList<LabTestUnit>();
+		try {
+			com.ulab.client.webServiceRerigerator.Service service2 = new com.ulab.client.webServiceRerigerator.Service(new URL(url));
+			com.ulab.client.webServiceRerigerator.ServicePortType port2 = service2.getServiceHttpPort();
+			//录入条目
+			ArrayOfTestProdInfoItem testProdInfoItems = port2.getTestProdInfoItemByLabCode(labCode);
+			String flag = getLabFlag(testProdInfoItems, labCode);
+			//在测订单
+			ArrayOfTestMetadata testMetadatas = port2.getMetaData(labCode, 1, "2016/5/3 16:19:10"+flag);
+			//在测台位列表
+			List<Integer> processingUnits = new ArrayList<Integer>();
+			if(null != testMetadatas && null != testMetadatas.getTestMetadata() && testMetadatas.getTestMetadata().size() > 0){
+				for(TestMetadata testMetadata : testMetadatas.getTestMetadata()){
+					if(!(processingUnits.contains(testMetadata.getTestUnitId()))){
+						processingUnits.add(testMetadata.getTestUnitId());
+					}				
+				}
+			}
+			//台位明细
+			ArrayOfTestUnitInfo testUnitInfos = port2.getTestUnitInfo(labCode);				
+			for(TestUnitInfo testUnitInfo : testUnitInfos.getTestUnitInfo()){
+				LabTestUnit labTestUnit = new LabTestUnit();
+				labTestUnit.setTestUnitId(testUnitInfo.getTestUnitId());
+				labTestUnit.setTestUnitName(testUnitInfo.getTestUnitName());
+				String testUnitStatus = "";
+				if(processingUnits.contains(testUnitInfo.getTestUnitId())){
+					testUnitStatus = "在用";
+				} else {
+					testUnitStatus = "停测";
+				}
+				labTestUnit.setTestUnitStatus(testUnitStatus);
+				labTestUnitList.add(labTestUnit);
+			}
+		} catch (Exception e) {
+			java.util.logging.Logger.getLogger(Service.class.getName())
+            .log(java.util.logging.Level.INFO, 
+                 "Can not initialize the default wsdl from {0}", url);
+		}
+		return labTestUnitList;
+		
+	}
 
 	/**
 	 * @Title: searchLabData
@@ -194,7 +271,7 @@ public class IntegrationServiceClient {
 	 * @return List<LabData>    返回类型
 	 * @throws
 	 */
-	public List<LabData> searchLabData() {
+	/*public List<LabData> searchLabData() {
 		List<LabData> labDataList = new ArrayList<LabData>();
 		Service service = new Service();
 		ServicePortType port = service.getServiceHttpPort();
@@ -242,7 +319,7 @@ public class IntegrationServiceClient {
 				}
 			labData.setTestUnitList(labTestUnitList);
 			labDataList.add(labData);
-			} catch (MalformedURLException e) {
+			} catch (Exception e) {
 				java.util.logging.Logger.getLogger(Service.class.getName())
                 .log(java.util.logging.Level.INFO, 
                      "Can not initialize the default wsdl from {0}", connInfo.getUrl());
@@ -251,7 +328,7 @@ public class IntegrationServiceClient {
 			
 		return labDataList;
 		
-	}
+	}*/
 	
 	/**
 	 * @Title: getLabFlag
@@ -290,9 +367,9 @@ public class IntegrationServiceClient {
         format.setMinimumFractionDigits(2);// 设置小数位
         return format.format(rate);
 	}
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		IntegrationServiceClient client = new IntegrationServiceClient();
 		List<LabData> labDataList = client.searchLabData();
 		System.out.println(labDataList);
-	}
+	}*/
 }

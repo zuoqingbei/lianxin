@@ -132,9 +132,7 @@ public class FaultController extends BaseController{
 		renderJson(finalList);
 	}
 	
-	//
 	public void service(){
-		
 		render("service.html");
 	}
 	public void findAllFaultInfo(){
