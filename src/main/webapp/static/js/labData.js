@@ -244,12 +244,12 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
                         } else if (it.data_source == "webservice") {
                             //直接获取webservice实验室信息
                             var htmls = "";
-                            $.post(contextPath + '/lab/loadLabUnitInfoCenterTabAjax', {}, function (data) {
-
+                            $.post(contextPath + '/lab/loadLabSearchLabConnectAjax', {}, function (data) {
                                 $.each(data, function (index, item) {
                                     item.labName = item.labName.replace("（", "(").replace("）", ")").replace("、", "/");
-                                    htmls += ' <li><header>' + item.labName + '<span>∨</span></header>';
-                                    if (item.testUnitList.length > 0) {
+                                    htmls += ' <li class="lab_code_' + item.labCode+'"><header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("'+item.labCode+'","'+item.url+'")>' + item.labName + '<span>∨</span></header>';
+                                    labsHtmlsMap.put(item.labCode, '<header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("'+item.labCode+'","'+item.url+'")>' + item.labName + '<span>∧</span></header>');
+                                    /* if (item.testUnitList.length > 0) {
                                         htmls += '<ul class="taiwei_hide">';
                                         $.each(item.testUnitList, function (ind, it) {
                                             if (it.testUnitStatus == "停测") {
@@ -259,7 +259,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
                                             }
                                         });
                                         htmls += '</ul>';
-                                    }
+                                    }*/
                                     htmls += ' </li>';
                                 });
                                 $(".quxian_li_" + item.id).find("ul:eq(0)").append(htmls);
@@ -296,7 +296,7 @@ function createClickFuntion(item) {
         htmls += " onclick= loadLabUnitInfoCenterTabAjaxWorldHadoop('" + item.id + "')"
     } else if (dataSource == "webservice") {
         //中海博睿
-        htmls += " onclick=loadLabUnitInfoCenterTabAjax('" + item.id + "') ";
+       // htmls += " onclick=loadLabUnitInfoAjaxZhbr('" + item.id + "') ";
     } else if (dataSource == "json") {
         //新西兰 日本读取json文件 国外曲线
         htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "') ";

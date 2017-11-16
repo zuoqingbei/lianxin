@@ -387,7 +387,30 @@ var interval_count1=0;
 var interval_count2=0;
 var mockXdata=[];//模拟的x轴数据
 var dataBase;
-
+//加载实验室与台位对照关系 生刷选框
+function loadLabUnitInfoAjaxZhbr(labCode,url) {
+	//清除中海博睿定时器
+	window.clearInterval(intevalChart1);
+	window.clearInterval(intevalChartHadoop);
+    //生成台位下拉
+	$.post(contextPath+'/lab/loadSearchLabDataByConnectUrlAjax',{"labCode":labCode,"url":url},function(data){
+		var htmls=labsHtmlsMap.get(labCode);
+		 htmls += '<ul>';
+         $.each(data, function (ind, it) {
+             if (it.testUnitStatus == "停测") {
+                 htmls += '<li >台位：' + it.testUnitName + '  (' + it.testUnitStatus + ')</li>';
+             } else {
+                 htmls += '<li onclick=findSensorByLabCenetrTabAjax(\"' + labCode + '\",\"' + url + '\",\"' + it.testUnitId + '\")>台位：' + it.testUnitName + '  (' + it.testUnitStatus + ')</li>';
+             }
+         });
+         htmls += '</ul>';
+		//$(".quxian_li_"+type).append(htmls);
+        //$(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
+		$(".lab_code_"+labCode).html(htmls);
+		$(".lab_code_"+labCode).find("header").attr("onclick","");
+        $(".lab_code_"+labCode).find("ul>li:eq(0)").click();
+	});
+}
 
 //获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjax(labTypeCode,url,testUnitId){

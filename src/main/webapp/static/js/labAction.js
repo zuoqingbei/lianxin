@@ -301,6 +301,8 @@ $(function () {
 
         var labCode = $(this).attr("labcode");
         videoUrlAjax(labCode, "toUrl")
+        window.clearInterval(intevalChart1);
+    	window.clearInterval(intevalChartHadoop);
     });
 
     //台位点击事件
