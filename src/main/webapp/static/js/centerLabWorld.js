@@ -118,7 +118,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
 		$.each(data,function(index,item){
 			 // console.log(item)
 			if(item.istesting){
-				htmls+='<li onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
+				htmls+='<li class="istesting" onclick=findSensorTypeInfoHadoop(\"'+labCode+'\",\"'+item.testunitid+'\")>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}else{
 				htmls+='<li>台位：'+item.testunitname+'  ('+item.testunitstatus+')</li>';
 			}
@@ -132,7 +132,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
         //$(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 		$(".lab_code_"+labCode+"_"+type).html(htmls);
 		$(".lab_code_"+labCode+"_"+type).find("header").attr("onclick","");
-        $(".lab_code_"+labCode+"_"+type).find("ul>li:eq(0)").click();
+        $(".lab_code_"+labCode+"_"+type).find("ul>li[class='istesting']:eq(0)").click();
 	});
 }
 //查询y轴信息
@@ -320,7 +320,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type) {
 		htmls+="<ul>";
 		$.each(data,function(index,item){
 			// console.log(item)
-			htmls+='<li onclick=findSensorByLabCenetrTabAjaxWorld(\"'+labCode+'\",\"'+item.pro_code+'\",\"'+item.file_name+'\")>'+item.pro_name+'</li>';
+			htmls+='<li class="istesting" onclick=findSensorByLabCenetrTabAjaxWorld(\"'+labCode+'\",\"'+item.pro_code+'\",\"'+item.file_name+'\")>'+item.pro_name+'</li>';
 			/*if(index==0){
 				findSensorByLabCenetrTabAjaxWorld(labCode,item.pro_code,item.file_name);
 
@@ -330,7 +330,7 @@ function loadLabUnitInfoCenterTabAjaxWorld(type) {
 		 
 		$(".lab_code_"+labCode+"_"+type).html(htmls);
 		$(".lab_code_"+labCode+"_"+type).find("header").attr("onclick","");
-        $(".lab_code_"+labCode+"_"+type).find("ul>li:eq(0)").click();
+        $(".lab_code_"+labCode+"_"+type).find("ul>li[class='istesting']:eq(0)").click();
     });
 
     

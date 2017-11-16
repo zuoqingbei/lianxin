@@ -400,7 +400,7 @@ function loadLabUnitInfoAjaxZhbr(labCode,url) {
              if (it.testUnitStatus == "停测") {
                  htmls += '<li >台位：' + it.testUnitName + '  (' + it.testUnitStatus + ')</li>';
              } else {
-                 htmls += '<li onclick=findSensorByLabCenetrTabAjax(\"' + labCode + '\",\"' + url + '\",\"' + it.testUnitId + '\")>台位：' + it.testUnitName + '  (' + it.testUnitStatus + ')</li>';
+                 htmls += '<li class="istesting" onclick=findSensorByLabCenetrTabAjax(\"' + labCode + '\",\"' + url + '\",\"' + it.testUnitId + '\")>台位：' + it.testUnitName + '  (' + it.testUnitStatus + ')</li>';
              }
          });
          htmls += '</ul>';
@@ -408,7 +408,7 @@ function loadLabUnitInfoAjaxZhbr(labCode,url) {
         //$(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
 		$(".lab_code_"+labCode).html(htmls);
 		$(".lab_code_"+labCode).find("header").attr("onclick","");
-        $(".lab_code_"+labCode).find("ul>li:eq(0)").click();
+        $(".lab_code_"+labCode).find("ul>li[class='istesting']:eq(0)").click();
 	});
 }
 

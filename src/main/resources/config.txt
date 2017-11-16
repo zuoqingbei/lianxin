@@ -29,6 +29,12 @@ zhbrzj.url = jdbc:sqlserver://10.130.96.107:1433;databaseName=Haier_Interconnect
 zhbrzj.user = Haier_DBReader
 zhbrzj.password= Haier2017
 
+#胶南洗涤数据库 SQL Server 2008R2
+jnxd.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver  
+jnxd.url = jdbc:sqlserver://10.130.96.107:1433;databaseName=Haier_Interconnection_JNXYJ_2017
+jnxd.user = Haier_DBReader
+jnxd.password= Haier2017
+
 # 重庆实验室hive测试库信息
 #hive.driver=com.cloudera.impala.jdbc41.Driver
 #hive.url=jdbc:impala://10.138.8.211:10000/db_hive_ulab;AuthMech=0

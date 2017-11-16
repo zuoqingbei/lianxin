@@ -135,6 +135,19 @@ public class UlabCofig extends JFinalConfig {
 		zhbrzjARP.setShowSql(true);
 		me.add(zhbrzjARP);
 		/**中海博睿整机数据库END**/
+		
+		/**胶南洗涤数据库START**/
+		DruidPlugin jnxd = new DruidPlugin(this.getProperty("jnxd.url"), this.getProperty("jnxd.user"),
+				this.getProperty("jnxd.password"), getProperty("jnxd.driver"));
+		jnxd.setInitialSize(5);
+		jnxd.setMaxActive(5);
+		jnxd.setMinIdle(3);
+		me.add(jnxd);
+		ActiveRecordPlugin jnxdARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_JNXD, jnxd);
+		jnxdARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
+		jnxdARP.setShowSql(true);
+		me.add(jnxdARP);
+		/**胶南洗涤数据库END**/
 
 		/**重庆实验室hive测试库信息设置Impala数据源  **/
 

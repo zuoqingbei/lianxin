@@ -887,11 +887,27 @@ public class LabController extends BaseController {
 		List<LabData> labDataList = client.searchLabData();
 		renderJson(labDataList);
 	}*/
+	/**
+	 * 
+	 * @time   2017年11月16日 下午1:41:53
+	 * @author zuoqb
+	 * @todo   获取中海博睿实验室
+	 * @param  
+	 * @return_type   void
+	 */
 	public void loadLabSearchLabConnectAjax() {
 		IntegrationServiceClient client = new IntegrationServiceClient();
 		List<LabData> labDataList = client.searchLabConnect();
 		renderJson(labDataList);
 	}
+	/**
+	 * 
+	 * @time   2017年11月16日 下午1:42:07
+	 * @author zuoqb
+	 * @todo  根据实验室编码和url获取中海博睿台位信息
+	 * @param  
+	 * @return_type   void
+	 */
 	public void loadSearchLabDataByConnectUrlAjax() {
 		IntegrationServiceClient client = new IntegrationServiceClient();
 		String labCode=getPara("labCode");
