@@ -302,7 +302,13 @@ li:not(.hasChildren).active {
     height: 45em;
     overflow: auto;
 }
-
+.monitoring .bigVideoBox > #bigVideo > iframe{
+    height: 42em;
+}
+#smallVideoWeb > iframe,
+#smallVideo > iframe{
+    height: 11em;
+}
 .monitoring .bigVideoBox > div > div {
     display: inline-block;
     outline: 1px dotted darkgray;
