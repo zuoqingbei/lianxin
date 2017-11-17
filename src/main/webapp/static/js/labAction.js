@@ -273,7 +273,8 @@ $(function () {
         $(this).addClass("active").siblings().removeClass("active");
        var videoUrl = $(this).data("videourl").replace("/1/live.m3u8", "/0/live.m3u8");
        console.log("videoUrl",videoUrl);
-       videoShow("bigVideo",videoUrl,0);
+       // videoShow("bigVideo",videoUrl,0);
+        $("#bigVideo").children("iframe").attr("src",videoUrl);
        $(".shishi_right>.item.video").show().siblings().hide();
     });
     //实时监测-实时数据按钮
@@ -351,9 +352,11 @@ $(function () {
                 $(".smallVideoBox").show();
                 $(".sheshi_tab:eq(0)").removeClass("disabled");
                 if (toUrl) {
-                    videoShow("smallVideoWeb", videoUrlSub, 1);
+                    // videoShow("smallVideoWeb", videoUrlSub, 1);
+                    $("#smallVideoWeb").children("iframe").attr("src",videoUrl)
                 } else {
-                    videoShow("smallVideo", videoUrlSub, 1);
+                    // videoShow("smallVideo", videoUrlSub, 1);
+                    $("#smallVideo").children("iframe").attr("src",videoUrl)
                 }
             } else {
                 // $(".sheshi_tab:eq(0)").addClass("disabled");
