@@ -148,9 +148,12 @@
 			
 			var bodyScale=$(window).height()/595;
 			var that=this;
+			var optionArray=[];
 			<!--**********************转速 初始化***************************************   -->
-				function speedometer(value,times,max,min,title,label){
-					var zs = echarts.init(document.getElementById("zsCanvas"+times));
+				function speedometer(zs,value,times,max,min,title,label){
+					if(!zs){
+					 zs = echarts.init(document.getElementById("zsCanvas"+times));
+					}
 					var zsOption={
 
 							title:{
@@ -223,13 +226,15 @@
 						    ]
 						
 					}
-					
-					zs.setOption(zsOption);
+					zs.setOption(zsOption,true);
+					optionArray[times]=zs;
 				}
 			/* **********************************仪表初始化 **************************************  */
-				function gauge(value,times,max,min,title,label,percent){
-					var guage = echarts.init(document.getElementById("Canvas"+times));
-					var option={
+				function gauge(zs,value,times,max,min,title,label,percent){
+				if(!zs){
+					 zs = echarts.init(document.getElementById("Canvas"+times));
+				}
+					var zsOption={
 					title:{
 						text:label,
 						x:40*bodyScale,
@@ -297,7 +302,8 @@
 				    ]
 				
 					}
-					guage.setOption(option);
+					zs.setOption(zsOption,true);
+					optionArray[times]=zs;
 				
 			}
 			//var sortArr=["T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","U1","U2","R1"];
@@ -342,7 +348,7 @@
 			/* ********************************************************************************* */
 			<!--实时状态初始化  -->
 			function timeStatus(){
-				
+				optionArray=[];
 				idFlage=idFlage+pagnum;
 				var times=0;
 				if(idFlage>1000){idFlage=0;}
@@ -536,7 +542,8 @@
 											"</div>"+
 										"</div>";
 										$("#firstPage").append(charts);
-									speedometer(actualStatus,times,max,min,title,label);
+										var zs;
+									speedometer(zs,actualStatus,times,max,min,title,label);
 								}else if(type=="gauge"){
 									times+=1;
 									charts+=
@@ -550,7 +557,8 @@
 										$("#firstPage").append(charts);
 									
 									var percent=(actualStatus-min)/(max-min);
-									gauge(actualStatus,times,max,min,title,label,percent);
+									var zs;
+									gauge(zs,actualStatus,times,max,min,title,label,percent);
 									
 								}else if(type=="text"){
 									
@@ -916,7 +924,6 @@
 							mapChina(serious,general,light,good,arr,geoCoord);
 						},0);
 						timer=setInterval(function(){
-							//timeStatus();
 							updateStatus();
 						},3000); 
 						
@@ -992,34 +999,25 @@
 										//	"</div>";
 											$("#cx"+times).html(image);
 										}else{
-											var image14="";var image15="";var image16="";var image17="";
 											var image14url;var image15url;var image16url;var image17url;
 											if(S14==0){
-												image14="冷藏室左门关闭";
 												image14url="leftClose.png";
 											}else if(S14==1){
-												image14="冷藏室左门开启";
 												image14url="leftOpen.png";
 											}
 											if(S15==0){
-												image14="冷藏室右门关闭";
 												image15url="rightClose.png";
 											}else if(S15==1){
-												image15="冷藏室右门开启";
 												image15url="rightOpen.png";
 											}
 											if(S16==0){
-												image16="冷冻室上门关闭";
 												image16url="upClose.png";
 											}else if(S14==1){
-												image16="冷冻室上门开启";
 												image16url="upOpen.png";
 											}
 											if(S17==0){
-												image17="冷冻室下门关闭";
 												image17url="downClose.png";
 											}else if(S17==1){
-												image17="冷冻室下门开启";
 												image17url="downOpen.png";
 											}
 											
@@ -1115,9 +1113,14 @@
 											"<div id='zsCanvas"+times+"' style='width:100%;height:100%'></div>"+
 										"</div>";
 									//"</div>";
-						
-								$("#cx"+times).html(charts);
-								speedometer(actualStatus,times,max,min,title,label);
+						//	var option=optionArray[times].zsOption;
+							console.log(optionArray);
+						//	 option.series[0].data[0].value =(Math.random()*10).toFixed(2);
+							 var zs =optionArray[times];
+							// zs.setOption(option, true);
+							//	$("#cx"+times).html(charts);
+							actualStatus=(Math.random()*10).toFixed(2);
+								speedometer(zs,actualStatus,times,max,min,title,label);
 							}else if(type=="gauge"){
 								times+=1;
 								charts+=
@@ -1129,9 +1132,11 @@
 									
 									//"</div>";
 							
-								$("#cx"+times).html(charts);
+							//	$("#cx"+times).html(charts);
+							 var zs =optionArray[times];
+							 actualStatus=(Math.random()*10).toFixed(2);
 								var percent=(actualStatus-min)/(max-min);
-								gauge(actualStatus,times,max,min,title,label,percent);
+								gauge(zs,actualStatus,times,max,min,title,label,percent);
 								
 							}else if(type=="text"){
 								
