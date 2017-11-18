@@ -81,7 +81,7 @@ function labAreaSpread(){
 
 //产线维度实验室数量统计
 function proLineStatis(){
-	var linkNum=[174,60,115,19,23,7,0];
+	var linkNum=[181,74,131,20,37,9,0];
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"product_code","labType":labType,"sort":"asc"},function(data){
 		var nums=[];
 		$(".pro_line").html("");
@@ -817,7 +817,7 @@ function labLinkStatis(){
 	$.post(contextPath+'/lab/labLinkAjax',{},function(data){
 		//$("#link_lab_all_count").html(data.all_num);
 		// $("#linked_status_num").html(data.link_num);
-		$(".lab_all_count_link").html(398);
+		$(".lab_all_count_link").html(452);
 		$("#link_status_rate").html(data.link_rate);
 	})
 }
