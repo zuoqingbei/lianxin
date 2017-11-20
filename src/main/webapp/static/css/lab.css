@@ -285,9 +285,16 @@ li:not(.hasChildren).active {
         height: 98%;
     }
 
-    .lab_content_r > .switchBox > div.item > iframe {
-        height: 100%;
+    .lab_content_r > .switchBox > .item.moduleMakers > iframe {
+        margin: 0 1%;
+        /*width: 98%;*/
+        /*height: 99%;*/
+        width: 1140px;
+        height: 490px;
+        transform: scale(1);
         background-color: #fff;
+        transform-origin: 0 0;
+
     }
 
 }
