@@ -285,9 +285,16 @@ li:not(.hasChildren).active {
         height: 98%;
     }
 
-    .lab_content_r > .switchBox > div.item > iframe {
-        height: 100%;
+    .lab_content_r > .switchBox > .item.moduleMakers > iframe {
+        margin: 0 1%;
+        /*width: 98%;*/
+        /*height: 99%;*/
+        width: 1140px;
+        height: 490px;
+        transform: scale(1);
         background-color: #fff;
+        transform-origin: 0 0;
+
     }
 
 }
@@ -348,6 +355,7 @@ li:not(.hasChildren).active {
     text-align: right;
     padding: .2em 0;
     cursor: pointer;
+    background: rgba(0,0,0,.7);
     box-shadow: 0 0 2em 1em rgba(0,0,0,.6);
 }
 .monitoring .shishi_right .smallVideoBox>object{
@@ -374,7 +382,7 @@ li:not(.hasChildren).active {
 }
 .monitoring .smallVideoBox>.loadingAnimation{
     left: 10em;
-    top: 8em;
+    top: 6em;
     font-size: 1em;
 }
 

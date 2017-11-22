@@ -24,26 +24,7 @@ function tipResize() {
 }
 
 $(function () {
-    tipResize();
-    //从地图提示框内直接打开实验室曲线
-    $("body").on("click","#echartTips .echart_content>a",function () {
-        var centerId = $(this).data("centerid");
-        var $centerList = $('.lab .lab_content_l .switchBox>ul>li.noChildren,.lab .lab_content_l .switchBox>ul>li>ul>li', parent.document);
-        $centerList.each(function(index,elem){
-            if($(elem).data("centerid") === centerId){
-                var $headerBtn = $(elem).parents(".switchBox").prev().find("ul>li");
-                if($(elem).parents(".inland").length>0){
-                    $headerBtn.eq(0).click();
-                }else{
-                    $headerBtn.eq(1).click();
-                }
-                $(elem).click();
-                return false;
-            }
-        });
-
-    });
-
+    tipResize()
 });
 
 function getGeoArr(data) {
@@ -84,35 +65,8 @@ function createArrData(productCode, labType) {
                     return [p[0] + 100, p[1] + 100];
                 },
                 padding: [0, 0, 0, 0],
-                //            width: 207,
-                //            height: 110,
-                //            backgroundColor: 'rgba(13,43,67,0.7)',
-                //            borderColor: 'rgba(31,120,214,1)',
                 // params : 数组内容同模板变量，
                 formatter: function (param) {
-                    // console.log("------------------param:",param)
-                    /*                    var CountryName = param.name;
-                                        var $l3x3 = $("#l", parent.document);
-                                        $l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
-                                        $l3x3.find(".legend-bottom li").removeClass('active');
-                                        parent.bgImgOff($l3x3.find(".legend-bottom li"));
-                                        console.log("show",CountryName);
-
-                                        switch (CountryName) {
-
-                                            case '日本研发中心':
-                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-                                                break;
-                                            case '新西兰研发中心':
-                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
-                                                break;
-                                            case '泰国模块中心':
-                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-                                                break;
-                                            default:
-                                            console.log("暂无该国家实验室信息")
-                                        }
-                    */
                     //在这里是第一步
                     $elList = [];
                     //提示框的内容清空
@@ -233,7 +187,8 @@ function seriesData(data) {
                 show: true,
                 type: 'scale',//圈圈
                 loop: true,
-                shadowBlur: 0
+                shadowBlur: 0,
+                period: 30
             },
             itemStyle: {
                 normal: {label: {show: false}},
@@ -249,7 +204,7 @@ function seriesData(data) {
             effect: {
                 show: true,
                 scaleSize: 1,
-                period: 5 * bodyScale,
+                period: 30,
                 color: '#ff0',
                 shadowBlur: 10 * bodyScale
             },
@@ -500,11 +455,8 @@ function stopNewsShown($el) {
     // animation-play-state: paused
 }
 
-/**
- * 拼提示框的标签
- * */
+/*拼提示框的标签*/
 function getTopicHtml(currentPoint) {
-    // console.log("currentPoint",currentPoint)
     var city = "";
     if (currentPoint.name) {
         city = currentPoint.name;
@@ -515,21 +467,18 @@ function getTopicHtml(currentPoint) {
     var title = currentPoint.title;
     var id = currentPoint.id;
     var url = "";
-    var centerId = currentPoint.centerId;
-    var imgUrl = currentPoint.imgUrl;
     /*if((value=="0"&&title=="青岛")||title==undefined){
     	return "";
     }*/
     return $('<div class="echart_tip">' +
         '<div class="dialog_title echart_content">' +
-        '   <h4 style="">' + title + '</h4>' +
-        '   <div>实验室数量：' + value + '</div>' +
-        '   <img src="'+ imgUrl +'" alt="实验室图片">' +
-        '   <a data-centerId="'+centerId+'" href="javascript:void(0);">进入实验室 →</a>' +
+        '<a title="' + title + '" data-country="' + country + '"  href="#" target="_blank" >' +
+        '<span style="">' + title + '</span>' +
+        '</a>实验室数量：' + value +
         '</div>' +
         '<div class="echart_tip_arrow">' +
-        '   <div class="echart_tip_line"></div>' +
-        '   <div class="echart_tip_head"></div>' +
+        '<div class="echart_tip_line"></div>' +
+        '<div class="echart_tip_head"></div>' +
         '</div>' +
         '</div>');
 }

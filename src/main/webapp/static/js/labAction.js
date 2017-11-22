@@ -89,7 +89,10 @@ function loadingAnimateOut(type, time) {
             clearTimeout(loadingAnimateCurveLoop);
         })
     } else {
-        // console.log("非曲线调用loadingAnimateOut")
+        console.log("视频调用loadingAnimateOut");
+        $monitoring.find(".bigVideoBox>.loadingAnimation,.smallVideoBox>.loadingAnimation").fadeOut(time, function () {
+            clearTimeout(loadingAnimateVideoLoop);
+        })
     }
 }
 
@@ -134,7 +137,7 @@ function videoShow(id, url, mainStream) {
         params,
         attrs,
         function () {
-            loadingAnimate($videoParent.find(".loadingAnimation"), "视频接入中", 8000);
+            // loadingAnimate($videoParent.find(".loadingAnimation"), "视频接入中", 8000);
         }
     )
     /*    swfobject.embedSWF()的五个必须参数和四个可选参数：
@@ -151,13 +154,13 @@ function videoShow(id, url, mainStream) {
 }
 
 $(function () {
+
     loadAllDataCenterAjax();
     //中心实验室顶上的“返回总状态”按钮
     $(".btn-totalStatus").click(function () {
         $("#r").show().siblings(".lab").hide();
         resetSizeRight();
     });
-
     //国内外切换
     var $navHeadLi = $(".labMainNav>header>ul>li");
     $navHeadLi.click(function () { //这里需要按钮，主菜单，子菜单，内容4部分都有变化
@@ -210,6 +213,7 @@ $(function () {
                 // console.log("---国外")
                 abroadTabShow();
             }
+            $(".sheshi_tab_lines").click();
             //获取数据中心的视频列表
             loadVideosByDataCenterAjax(dataCenterId);
         }
@@ -275,6 +279,8 @@ $(function () {
        var videoUrl = $(this).data("videourl").replace("/1/live.m3u8", "/0/live.m3u8");
        console.log("videoUrl",videoUrl);
        // videoShow("bigVideo",videoUrl,0);
+        loadingAnimate($(".shishi_right").find(".bigVideoBox>.loadingAnimation"), "视频接入中", 6000);
+        // loadingAnimate($(".shishi_right").find(".bigVideoBox>.loadingAnimation"), "视频接入中");
         $("#bigVideo").children("iframe").attr("src",videoUrl);
        $(".shishi_right>.item.video").show().siblings().hide();
     });
@@ -359,12 +365,17 @@ $(function () {
                     // videoShow("smallVideo", videoUrlSub, 1);
                     $("#smallVideo").children("iframe").attr("src",videoUrl)
                 }
+                loadingAnimate($(".shishi_right").find(".smallVideoBox>.loadingAnimation"), "视频接入中", 7000);
+
             } else {
                 // $(".sheshi_tab:eq(0)").addClass("disabled");
                 $(".smallVideoBox").hide();
             }
         })
     }
+
+    console.log("bodyScale",bodyScale)
+    $(".item.moduleMakers>iframe").css("transform","scale("+ bodyScale*.93 +")");
 
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
