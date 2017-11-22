@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="PHW" content="phm二期" />
+		<title>全球冰箱健康度</title>
+		
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/health.css" />
+	</head>
+	<body>
+		<div id="content">
+			<!--head-->
+			<div id="head">
+				<h1>
+					<a href="service.html">
+						<img src="${contextPath}/static/phm/images/health/logo_haier_bold.png" alt="" />
+					</a>
+				</h1>
+				<h2>基于物联网+大数据的用户最佳体验</h2>
+			</div>
+			<!--centerdata-->
+			<div id="centerData">
+				<div class="dataBox ml">
+					<span>全部</span>
+					<p>686788</p>
+				</div>
+				<div class="dataBox">
+					<span>冰箱</span>
+					<p>686788</p>
+				</div>
+				<div class="dataBox">
+					<span>商空</span>
+					<p>686788</p>
+				</div>
+				<div class="dataBox">
+					<span>洗衣机</span>
+					<p>6788</p>
+				</div>
+				<div class="dataBox">
+					<span>冷柜</span>
+					<p>686788</p>
+				</div>
+				<div class="dataBox">
+					<span>家空</span>
+					<p>686788</p>
+				</div>
+			</div>
+			<!--bottom-->
+			<div id="bottom">
+				<!--===============leftMod===================-->
+				<div class="leftMod">
+					<div class="picMod bxzxl">
+						<h3>冰箱在线率</h3>
+						<div class="echartsbox">
+							<div id="bxzxl" style="height:100%;width:100%"></div>
+						</div>
+					</div>
+					<div class="picMod jkd">
+						<h3>健康度</h3>
+						<div class="echartsbox">
+							<div id="jkd" style="height:100%;width:100%"></div>
+						</div>
+					</div>
+					<div class="picMod jkfb">
+						<h3>健康分布</h3>
+						<div class="echartsbox">
+							<div id="jkfb" style="height:100%;width:100%"></div>
+						</div>
+					</div>
+				</div>
+				<!--===============centerMod===================-->
+				<div class="centerMod">
+					<div id="map" style="height: 100%;width: 100%;"></div>
+				</div>
+				<!--===============rightMod===================-->
+				<div class="rightMod">
+					<div class="leftpart">
+						<div class="blcpqk">
+							<h4>不良产品情况</h4>
+							<div class="picBox">
+								<div id="blcpqk" style="width:100%;height: 100%;"></div>
+							</div>
+						</div>
+						<div class="jkddb">
+							<h5>健康度对比</h5>
+							<div class="picBox1">
+								<div id="jkddb" style="width:100%;height: 100%;"></div>
+							</div>
+						</div>
+					</div>
+					<div class="rightpart">	
+						<div class="zdyc">
+							<h5>诊断预测</h5>
+							<div class="picBox1">
+								<div id="zdyc" style="width:100%;height: 100%;"></div>
+							</div>
+						</div>
+						<div class="ydqk">
+							<h5>应对情况</h5>
+							<div class="picBox1">
+								<div id="ydqk" style="width:100%;height: 100%;"></div>
+							</div>
+						</div>
+						<div class="zlqs">
+							<h5>质量趋势</h5>
+							<div class="picBox1">
+								<div id="zlqs" style="width:100%;height: 100%;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
+		<script src="${contextPath}/static/phm/asserts/echarts/echarts-all-2.2.7.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+				/*屏幕描述
+				         一共 7x3 个屏幕，每一块屏幕是1360x768，
+				         总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
+
+				var pageH = $(window).height();
+				var pageW = pageH * 16 * 7 / (9 * 3);
+				var bodyScale = pageH / 595;
+				var bodyFontSize = bodyScale * 100 + "%";
+				if(pageH > 2300) { // 如果是大屏幕(2304)
+					pageW -= 47;
+				}
+
+				function pageResize() {
+					$("body").css("font-size", bodyFontSize);
+					$("#content").css("width", pageW);
+					$(".fullScreen_map").css("width", pageW); //全屏页面是绝对定位,宽度100%只能取自屏幕
+					console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:" + pageW + " \nbody字号：" + bodyFontSize)
+				}
+				pageResize()
+		</script>
+		<script src="${contextPath}/static/phm/js/health.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>
