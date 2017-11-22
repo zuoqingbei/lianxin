@@ -1,5 +1,7 @@
 package com.ulab.model;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,7 +11,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-@TableBind(tableName="phm_fault" ,pkName="f_id")
+//@TableBind(tableName="phm_fault" ,pkName="f_id")
+@TableBind(tableName="phm_fault2" ,pkName="id")
 public class FaultModel extends Model<FaultModel> {
 
 	private static final long serialVersionUID = 1L;
@@ -80,53 +83,81 @@ where age > ?", 18);
  * @return
  * @author chen xin
  */
+//	public List<Record> findAllFaultInfo(){
+//		String sql="select"
+//	+ " f_id,f_object,F_XX_BIANMA,F_XX_MIAOSHU,F_YY_BIANMA,F_YY_MIAOSHU,F_WEIHAO,F_MAINTENANCE,F_ZR_CATEGORY,F_DATE,F_QUYU,F_GONGMAO,F_SB_NAME,F_SB_NUMBER,product_id from PHM_FAULT ";
+//		return Db.find(sql);
+//	}
 	public List<Record> findAllFaultInfo(){
 		String sql="select"
-	+ " f_id,f_object,F_XX_BIANMA,F_XX_MIAOSHU,F_YY_BIANMA,F_YY_MIAOSHU,F_WEIHAO,F_MAINTENANCE,F_ZR_CATEGORY,F_DATE,F_QUYU,F_GONGMAO,F_SB_NAME,F_SB_NUMBER,product_id from PHM_FAULT ";
+				+ " *  from PHM_FAULT2 ";
 		return Db.find(sql);
 	}
 	
-/**
- * 插入phm_fault
- * @author chen xin
- */
-		public void insertFault(String id,String f_object,String f_xx_bianma,String f_xx_miaoshu,String f_yy_bianma,String f_yy_miaoshu,String f_weihao,String f_maintenance,String f_zr_category,String f_date, String f_quyu,String f_gongmao,String f_sb_number,String sn,String product_id){
-	/*		String sql="insert into phm_fault "
-	+ "(f_id,f_object,f_xx_bianma,f_xx_miaoshu,f_yy_bianma,f_yy_miaoshu,f_weihao,f_maintenance,f_zr_category,f_date,f_quyu,f_gongmao,f_sb_number,f_sb_name)"
-	+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";*/
-			String sql="insert into phm_fault "
-					+ "(f_id,f_object,f_xx_bianma,f_xx_miaoshu,f_yy_bianma,f_yy_miaoshu,f_weihao,f_maintenance,f_zr_category,f_date,f_quyu,f_gongmao,f_sb_number,f_sb_name,product_id)"
-					+ "values('"+id+"','"+f_object+"','"+f_xx_bianma+"','"+f_xx_miaoshu+"','"+f_yy_bianma+"','"+f_yy_miaoshu+"','"+f_weihao+"','"+f_maintenance+"','"+f_zr_category+"',TO_DATE('"+f_date+"','yyyy-MM-dd HH24:mi:ss')"+",'"+f_quyu+"','"+f_gongmao+"','"+f_sb_number+"','"+sn+"','"+product_id+"')";
-			Db.update(sql);
-		}
-/**
- * 更新phm_fault 根据id
- * @author chen xin
- */
-		public void updateFault(String id,String f_object,String f_xx_bianma,String f_xx_miaoshu,String f_yy_bianma,String f_yy_miaoshu,String f_weihao,String f_maintenance,String f_zr_category,String f_date, String f_quyu,String f_gongmao,String f_sb_number,String sn,String product_id){
-		/*	String sql="update phm_fault"
-		+ "  set f_object=?,f_xx_bianma=?,f_xx_miaoshu=?,f_yy_bianma=?,f_yy_miaoshu=?,f_weihao=?,f_maintenance=?,f_zr_category=?,f_date=?,f_quyu=?,f_gongmao=?,f_sb_number=?,f_sb_name=? where f_id="+id;
-		*/	
-			String sql="update phm_fault"
-					+ "  set f_object='"+f_object+"',f_xx_bianma='"+f_xx_bianma+"',f_xx_miaoshu='"+f_xx_miaoshu+"',f_yy_bianma='"+f_yy_bianma+"',f_yy_miaoshu='"+f_yy_miaoshu+"',f_weihao='"+f_weihao+"',f_maintenance='"+f_maintenance+"',f_zr_category='"+f_zr_category+"',f_date=TO_DATE('"+f_date+"','yyyy-MM-dd HH24:mi:ss'),f_quyu='"+f_quyu+"',f_gongmao='"+f_gongmao+"',f_sb_number='"+f_sb_number+"',f_sb_name='"+f_sb_number+"' where f_id='"+id+"' and product_id='"+product_id+"'";
-				
-			Db.update(sql);
-		}
+
+
 /**
  * 分页查询phm_fault
  * @param pageStart
  * @param pageSize
  * @author chen xin 
  */
-		public List<Record> findPageFaultInfo(int page,int pageSize,String f_object){
-			String sql="select fault.num,f_id,f_object,F_XX_BIANMA,F_XX_MIAOSHU,faultInfo.F_YY_BIANMA,faultInfo.F_YY_MIAOSHU,faultInfo.F_WEIHAO,faultInfo.F_MAINTENANCE,faultInfo.F_ZR_CATEGORY,F_DATE,F_SB_NAME,F_SB_NUMBER,product_id from "
-					+ "(select"
-					+ " rownum num, f_id,f_object,F_XX_BIANMA,F_XX_MIAOSHU,F_YY_BIANMA,F_YY_MIAOSHU,F_WEIHAO,F_MAINTENANCE,F_ZR_CATEGORY,F_DATE,F_QUYU,F_GONGMAO,F_SB_NAME,F_SB_NUMBER,product_id from PHM_FAULT where rownum<="+page*pageSize+") fault"
-					+ " inner join PHM_FAULT_LOSTINFO faultInfo on fault.F_YY_BIANMA=faultInfo.F_YY_BIANMA"
-					+ " where fault.num>"+((page-1)<0?0:(page-1))*pageSize;
-			if(StringUtils.isNoneBlank(f_object)){
-				sql+="and f_object='"+f_object+"'";
+		public List<Record> findPageFaultInfo(int page,int pageSize,String fault_name){
+			String sql="select * from (	select ROWNUM num,fault.* from PHM_FAULT2 fault where ROWNUM<="+page*pageSize+") where num >"+((page-1)<0?0:(page-1))*pageSize;
+			if(StringUtils.isNoneBlank(fault_name)){
+				sql+="and fault_name='"+fault_name+"'";
 			}
 			return Db.find(sql);
 		}
+	/**
+	 * 删除 phm_fault2
+	 * @author chen xin 
+	 * @param sncode
+	 */		
+		public void deleteFaultBySncode(String sncode) {
+			String sql="delete from phm_fault2 where sncode='"+sncode+"'";
+			Db.update(sql);
+		}
+		/**
+		 * 添加   phm_fault
+		 * @author chen xin 
+		 * @param sncode
+		 */	
+		public void  addFault(List<String>sqlList) {
+			
+			Db.batch(sqlList, sqlList.size());
+		}
+		/**
+		 * 根据日期查询  phm_fault
+		 * @author chen xin 
+		 * @param 
+		 * TO_DATE('"+f_date+"','yyyy-MM-dd HH24:mi:ss')
+		 */	
+		public Integer deviceByDate(String startTime,String endTime,String fault_name ){
+			String sql="select count(sncode) num from phm_fault2 where 1=1";
+			if(StringUtils.isNotBlank(startTime)) {
+				sql+=" and fault_time>TO_DATE('"+startTime+"','yyyy-MM-dd HH24:mi:ss')";
+			}
+			if(StringUtils.isNotBlank(endTime)) {
+				sql+=" and fault_time<=TO_DATE('"+endTime+"','yyyy-MM-dd HH24:mi:ss')";
+				
+			}
+			if(StringUtils.isNotBlank(fault_name)) {
+				sql+=" and fault_name='"+fault_name+"'";
+			}
+			
+			
+		
+			Object obj=	Db.queryColumn(sql);
+				String s=obj.toString();
+//				int num=Db.queryInt(sql);
+//				List<Record> list=Db.find(sql);
+//				Record record=list.get(0);
+//				Double num=record.get("num");
+				//String num=record.getStr("num");//record.getInt("num");直接转报异常java.math.BigDecimal cannot be cast to java.lang.Integer
+				
+			return Integer.parseInt(s);
+			
+		}
+		
 }
