@@ -8,13 +8,6 @@ body{
     z-index: 1500
 }
 
-.echart_tip {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 1;
-}
-
 .echart_tip.fade_out {
     transition-delay: 2s;
     opacity: 0;
@@ -34,20 +27,54 @@ body{
     -o-transition: opacity 1000ms;
 }
 
-.echart_tip > .echart_content{ /*所有提示框内的文本*/
-    color:#ffffff;
-    background-color: rgba(0,0,0,.6);
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+.echart_tip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 1;
 }
-.echart_tip > .echart_content>h4{
-    margin:0.5em 0 0.1em;
-}
-.echart_tip > .echart_content>img{
-    width:60%;
-}
-.echart_tip > .echart_content>a:hover{
 
+.echart_tip > .echart_content { /*所有提示框内的文本*/
+    width: 15em;
+    color: #ffffff;
+    background-color: rgba(155, 191, 255, 0.33);
+    border: .05em solid #2DCFFE;
+    box-shadow: 0 0 1.5em 0.5em rgba(255, 255, 255, .24) inset;
+}
+
+.echart_tip > .echart_content > * {
+    display: inline-block;
+
+}
+
+.echart_tip > .echart_content > img {
+    margin: .24em;
+    padding: .8em;
+    width: 3.6em;
+    height: 3.6em;
+    border-radius: 50%;
+    vertical-align: top;
+    background: url("../../static/img/flatMapImgRoundBorder.png") -.4em;
+    background-size: 115% 115%;
+}
+
+.echart_tip > .echart_content > .textBox > h4 {
+    margin: 1.5em 0 0.05em;
+    font-size: .8em;
+}
+.echart_tip > .echart_content > .textBox > .title,
+.echart_tip > .echart_content > .textBox > .a{
+    font-size: .6em;
+}
+.echart_tip > .echart_content > .textBox > a{
+    display: inline-block;
+    margin-left: -.3em;
+    padding: 0.5em 1em .8em;
+    transform: translateX(-14%) scale(.7);
+    color: #fff;
+    text-decoration: none;
+    background: url("../../static/img/flatMapToLab.png");
+    background-size: 100% 100%;
 }
 .echart_tip.bottom >.echart_content {
     bottom: -3.4em;
