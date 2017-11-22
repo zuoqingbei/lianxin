@@ -274,7 +274,7 @@ public class HadoopTestData {
 				
 			 */
 			String testIdentification=""+metaData.get("primarykey");//实验编号
-			testIdentification=testIdentification.trim().replaceAll(" ", "");
+			testIdentification=testIdentification.replaceAll(" ", "");
 			finalTestData.set("sybh",testIdentification);
 			finalTestData.set("ybbh", metaData.get("sample_code"));
 			finalTestData.set("cpxh", metaData.get("productmodel"));
