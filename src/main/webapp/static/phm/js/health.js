@@ -2,13 +2,13 @@
 var Health = {
 	bodyScale:$(window).height()/595,
 	init:function(){
-		this.circleEcharts();
+		//this.circleEcharts();
 		this.mapEcharts();
-		this.blEcharts();
+	//	this.blEcharts();
 		this.jkEcharts();
-		this.zdEcharts();
+	//	this.zdEcharts();
 		this.ydEcharts();
-		this.zlEcharts();
+	//	this.zlEcharts();
 	},
 	circleEcharts:function(){
 		var that = this;
@@ -308,7 +308,7 @@ var Health = {
 	},
 	blEcharts:function(){
 		var that = this;
-		var blcpqk = echarts.init(document.getElementById("blcpqk"));
+		this.blcpqk = echarts.init(document.getElementById("blcpqk"));
 		var blcpqkOptions = {
 			color:["#5ed1ff"],
 			 grid: {
@@ -321,9 +321,9 @@ var Health = {
 		    },
 			yAxis:{
 				type:'value',
-				max:1000,
-				min:0,
-				splitNumber:4,
+				//max:1000,
+				//min:0,
+				//splitNumber:4,
 				axisLine:{
 					show:false
 				},
@@ -344,9 +344,9 @@ var Health = {
 			},
 			xAxis:{
 				type:'value',
-				max:8,
-				min:1,
-				splitNumber:7,
+				//max:8,
+				//min:1,
+				//splitNumber:7,
 				axisLine:{
 					show:false
 				},
@@ -369,7 +369,7 @@ var Health = {
 			]
 		}
 		
-		blcpqk.setOption(blcpqkOptions);
+		this.blcpqk.setOption(blcpqkOptions);
 	},
 	jkEcharts:function(){
 		var that = this;
