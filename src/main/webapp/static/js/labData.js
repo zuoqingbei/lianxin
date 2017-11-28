@@ -168,7 +168,9 @@ function loadVideosByDataCenterAjax(dataCenterId) {
             */
             for (var i = 0; i < data.length; i++) {
                 // console.log(data[i].videl_url);
-                html += "<li data-videourl=" + data[i].videl_url + " >" + data[i].show_title + "</li>"
+                http://10.130.96.65:10800/play.html?channel=8
+                var localVideo = data[i].videl_url.replace("10.130.96.65","127.0.0.1");
+                html += "<li data-videourl=" + localVideo + " >" + data[i].show_title + "</li>"
             }
             // console.log(html)
             $(".centerVideoList>ul").html(html)
