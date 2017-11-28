@@ -16,11 +16,11 @@
 			<!--head-->
 			<div id="head">
 				<h1>
-					<a href="${contextPath}/fault/service">
+					<a href="${contextPath}/health/health">
 						<img src="${contextPath}/static/phm/images/status/logo_haier_bold.png" alt="" />
 					</a>
 				</h1>
-				<h2>基于物联网+大数据的最佳体验</h2>
+				<h2>基于物联网+大数据的用户最佳体验</h2>
 			</div>
 			<!--bottom-->
 			<div id="bottom">
@@ -183,6 +183,8 @@
 						          itemStyle:{
 						          	color:'#64ccff'
 						          },
+						          /* startAngle:200,
+						          endAngle:-20, */
 						          startAngle:200,
 						          endAngle:-20,
 						          min:min,
@@ -263,8 +265,8 @@
 				          itemStyle:{
 				          	color:'#64ccff'
 				          },
-				          startAngle:180,
-				          endAngle:0,
+				          startAngle:200,
+				          endAngle:-20,
 				          min:min,
 				          max:max,
 				          //radius:"[2%,75%]",
@@ -309,6 +311,7 @@
 			//var sortArr=["T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","U1","U2","R1"];
 			var sortArr=["T1","U1","R1","I1","V1","E1","M1","S1","S2","S3","S4"];
 			function sort(monitorConf){
+				monitorConf=sortType(monitorConf);//将温度计往前排 初公要求
 				var result=[];
 				var other=[];
 				for(var x=0;x<sortArr.length;x++){
@@ -343,7 +346,21 @@
 				return monitorConf;
 			
 		}
+		/********************************/
+			function sortType(monitorConf){//将温度计往前排
+			var thermometer=[];
+			var other=[];
+				for (var i=0;i<monitorConf.length;i++){
+						var monitorConfSingle=monitorConf[i];
+						if(monitorConfSingle.type=="thermometer"){
+							thermometer.push(monitorConfSingle);
+						}else{
+							other.push(monitorConfSingle);
+						}
+				}
+				return thermometer.concat(other);
 			
+		}
 			
 			/* ********************************************************************************* */
 			<!--实时状态初始化  -->
@@ -384,6 +401,7 @@
 						}
 						
 						 monitorConf=monitorConf.slice(start,end);
+						
 							for( var index in monitorConf){
 								//debugger;
 								var monitorConfSingle=monitorConf[index];
@@ -532,7 +550,7 @@
 									 myarr[0]=["liquid"+times,max,min,actualStatus,"℃"];
 									 Status.liquidMove(myarr);
 								}if(type=="speedometer"){
-									
+									debugger;
 									times+=1;
 									charts+=
 										"<div id='cx"+times+"' class='jtState "+changeClass+"'>"+
@@ -545,6 +563,7 @@
 										var zs;
 									speedometer(zs,actualStatus,times,max,min,title,label);
 								}else if(type=="gauge"){
+									debugger;
 									times+=1;
 									charts+=
 										"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
@@ -953,14 +972,15 @@
 					var S16=info['S16'];
 					var S17=info['S17'];
 					//debugger;
-					var monitorConf1=data.monitorConf;
+					var monitorConf=data.monitorConf;
 					//console.log(monitorConf);
 					var start =(pageNo-1)*pagnum;//截取数据开始位子,由于加了一张开关门要-1
 					var end=start+pagnum-1;//截取数据结束位子
 					if(pageNo!=1){
 						start=start-1;
 					}
-					var monitorConf=monitorConf1.slice(start,end);
+					 monitorConf=monitorConf.slice(start,end);
+					
 					length=monitorConf.length;
 					if(length==0){
 						return;
@@ -1119,7 +1139,7 @@
 							 var zs =optionArray[times];
 							// zs.setOption(option, true);
 							//	$("#cx"+times).html(charts);
-							actualStatus=(Math.random()*10).toFixed(2);
+							//actualStatus=(Math.random()*10).toFixed(2);
 								speedometer(zs,actualStatus,times,max,min,title,label);
 							}else if(type=="gauge"){
 								times+=1;
@@ -1134,7 +1154,7 @@
 							
 							//	$("#cx"+times).html(charts);
 							 var zs =optionArray[times];
-							 actualStatus=(Math.random()*10).toFixed(2);
+							// actualStatus=(Math.random()*10).toFixed(2);
 								var percent=(actualStatus-min)/(max-min);
 								gauge(zs,actualStatus,times,max,min,title,label,percent);
 								

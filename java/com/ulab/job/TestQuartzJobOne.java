@@ -34,89 +34,52 @@ public class TestQuartzJobOne implements Job {
 		 System.out.println("我是定时任务 job one " + new Date());
 		 synchronized(TestQuartzJobOne.class){
 			 
-			 monitorDevice();
+			 Device();
 		 }
 	}
 	
-	/**
-	 * 实时监控、设备指标
-	 */
-	public void monitorDevice(){
+	/*********************************************************/
+	private void Device() {
 		List<Record> list=PhmDeviceInfoModel.dao.getAllDevice();
 		List<Record> FaultList=FaultModel.dao.findAllFaultInfo();
-		Map<String,List<String>> doubleId=new HashMap<>();
-		//将product_id作为key,f_id 的list集合作为value
-		//先将Record中的id 的column集合取出
-		for(int i=0;i<FaultList.size();i++ ){
+		List<String> sncodeList=new ArrayList<>();
+		for(int i=0;i<FaultList.size();i++) {//遍历先有的 错误表中的已存在的sncode
 			Record record=FaultList.get(i);
-//			doubleId.put(record.getStr("product_id"), record.getStr("f_id"));
-			String product_id=record.getStr("product_id");
-			String f_id=record.getStr("f_id");
-				if(!doubleId.containsKey(product_id))
-				doubleId.put(product_id, new ArrayList<String>());
-				doubleId.get(product_id).add(f_id);
+			sncodeList.add(record.getStr("sncode"));
+		}
+		for(int i=0;i<list.size();i++) {
+			String sn=list.get(i).getStr("SNCODE");
+			String info=HttpClientUtil.sendGetRequest("http://localhost:8088/api/yzd/product/"+sn+"/diagnosisResult","UTF-8");
+			JSONArray jsonArray=(JSONArray) JSONObject.parse(info);
+			if(sncodeList.contains(sn)) {
+				FaultModel.dao.deleteFaultBySncode(sn);
+			}else {
+				sncodeList.add(sn);
+			}
+			List<String>sqlList=new ArrayList<>();
+			for(int j=0;j<jsonArray.size();j++) {
+				Map mp=(Map) jsonArray.get(j);
+				String time=(String) mp.get("time");//故障发生时间
+				String name=(String) mp.get("fault");//故障名字
+				JSONArray advice=(JSONArray) mp.get("advice");
+				String adviceString=""; //TO_DATE('"+f_date+"','yyyy-MM-dd HH24:mi:ss')
+				 for(int k=0;k<advice.size();k++) {
+					 if(k==0) {
+						 adviceString+=advice.get(k);
+					 }else {
+						 adviceString+=","+advice.get(k);
+					 }
+				 }                    
+				String sql="insert into phm_fault2 (sncode,fault_name,fault_repair,fault_time)values('"+sn+"','"+name+"','"+adviceString+"',TO_DATE('"+time+"','yyyy-MM-dd HH24:mi:ss'))";
+				sqlList.add(sql);
+			}
+			FaultModel.dao.addFault(sqlList);
 			
 		}
-		 for(Record record:list){
-			 String s=HttpClientUtil.sendGetRequest("http://localhost:8088/api/yzd/product/"+record.getStr("SNCODE")+"/diagnosisResult","UTF-8");
-//			 Object obj= JSONObject.parse(s); 
-			 JSONArray jsonObject=(JSONArray) JSONObject.parse(s);
-			 for(int i=0;i<jsonObject.size();i++){
-				 Map mp=(Map) jsonObject.get(i);
-				 String sn=(String) mp.get("sn");//设备代号
-				 String product_id=(String) mp.get("_id");//产品id
-				 String f_sb_number=(String) mp.get("productType");//设备型号
-				 JSONArray failureMeta=  (JSONArray) mp.get("failureMeta");
-				 String fault_date=(String) mp.get("time");//故障出现时间
-				 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-				 	
-				 Date fdate=null;
-				try {
-					fdate = sdf.parse(fault_date);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String  f_date= sdf2.format(fdate);
-			
-				 String f_xx_bianma=(String) (mp.get("code").toString());//故障现象编码
-				 	for(int j=0;j<failureMeta.size();j++){
-				 		Map failureSingle=(Map) failureMeta.get(j);
-				 		String id=(String) failureSingle.get("_id");//故障ID
-				 		String f_yy_bianma=(String) failureSingle.get("fmCode");//故障编号（故障原因编码）
-				 		String f_xx_miaoshu=(String) failureSingle.get("name");//故障现象描述
-				 		JSONArray part=(JSONArray) failureSingle.get("part");
-//				 		[{"code":"A-1","name":"组成1"}]
-				 		String f_object="";
-				 		if(part.size()>0){
-				 			f_object=(String) ((Map)part.get(0)).get("name");
-				 		}
-//				 		String f_object=(String) part.get("name");//故障对象
-				 		if(doubleId.containsKey(product_id)){
-				 			if(doubleId.get(product_id).contains(id)){
-				 				FaultModel.dao.updateFault(id,f_object,f_xx_bianma,f_xx_miaoshu,f_yy_bianma,"故障原因描述","尾号","维修措施","责任类别",f_date,"故障出现大区域","故障所属工贸",f_sb_number,sn,product_id);
-				 			}else{
-				 				FaultModel.dao.insertFault(id,f_object,f_xx_bianma,f_xx_miaoshu,f_yy_bianma,"故障原因描述","尾号","维修措施","责任类别",f_date,"故障出现大区域","故障所属工贸",f_sb_number,sn,product_id);
-				 				doubleId.get(product_id).add(id);
-				 			}
-				 		}else{
-				 			doubleId.put(product_id, new ArrayList<String>());
-				 			FaultModel.dao.insertFault(id,f_object,f_xx_bianma,f_xx_miaoshu,f_yy_bianma,"故障原因描述","尾号","维修措施","责任类别",f_date,"故障出现大区域","故障所属工贸",f_sb_number,sn,product_id);
-			 				doubleId.get(product_id).add(id);
-				 		}
-				 		/*if(FaultIdList.contains(id)){
-				 			FaultModel.dao.updateFault(id,f_object,f_xx_bianma,f_xx_miaoshu,f_yy_bianma,"故障原因描述","尾号","维修措施","责任类别",f_date,"故障出现大区域","故障所属工贸",f_sb_number,sn);
-				 		}else{
-				 			FaultModel.dao.insertFault(id,f_object,f_xx_bianma,f_xx_miaoshu,f_yy_bianma,"故障原因描述","尾号","维修措施","责任类别",f_date,"故障出现大区域","故障所属工贸",f_sb_number,sn);
-				 			FaultIdList.add(id);
-				 		}*/
-				 	}
-				 
-				 
-			 }
-			 
-		 }
+		
+		
 	}
+	
+	
 
 }

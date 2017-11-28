@@ -7,7 +7,7 @@ var Service = {
 		setTimeout(function(){
 			that.echartsMap();
 			that.echartsArea();
-			that.echartsTime();
+			//that.echartsTime();
 			
 		},100)
 //		this.scrollWatch()
