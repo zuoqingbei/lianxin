@@ -376,6 +376,8 @@ var $echartTips = $('.echartTips');
 function addNewsElem(news) {
     var $el = getTopicHtml(news);
 
+
+
     var divideLeft = $echart.width() / 2,
         divideTop = $echart.height() / 2;
 
@@ -505,7 +507,7 @@ function stopNewsShown($el) {
  * 拼提示框的标签
  * */
 function getTopicHtml(currentPoint) {
-    // console.log("currentPoint",currentPoint)
+    console.log("currentPoint",currentPoint)
     var city = "";
     if (currentPoint.name) {
         city = currentPoint.name;

@@ -374,6 +374,7 @@ $(function () {
                     console.log("---解决视频自动播放");
                     setTimeout(function () { //删除辅助的视频
                         $(".forceVideoJSplaying").remove();
+                        videoJsIsPlayed = true;
                     }, 10000);
                 }
                 $smallVideo.children("iframe:eq(0)").attr("src", videoUrl);
