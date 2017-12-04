@@ -44,11 +44,11 @@ body{
 
 .echart_tip > .echart_content > * {
     display: inline-block;
-
+    text-align: left;
 }
 
 .echart_tip > .echart_content > img {
-    margin: .24em;
+    margin: .24em .24em 0;
     padding: .8em;
     width: 3.6em;
     height: 3.6em;
@@ -61,19 +61,34 @@ body{
 .echart_tip > .echart_content > .textBox > h4 {
     margin: 1.5em 0 0.05em;
     font-size: .8em;
+    font-weight: normal;
 }
-.echart_tip > .echart_content > .textBox > .title,
-.echart_tip > .echart_content > .textBox > .a{
+.echart_tip > .echart_content > .textBox > .title{
     font-size: .6em;
 }
+.echart_tip > .echart_content > .textBox > .labNumber{
+    font-size: .7em;
+}
+
 .echart_tip > .echart_content > .textBox > a{
+    font-size: .8em;
     display: inline-block;
     margin-left: -.3em;
-    padding: 0.5em 1em .8em;
-    transform: translateX(-14%) scale(.7);
+    padding: .8em 2em .9em;
+    transform: translate(-14%,-14%) scale(.7);
     color: #fff;
     text-decoration: none;
     background: url("../../static/img/flatMapToLab.png");
+    background-size: 100% 100%;
+}
+.echart_tip > .echart_content > .textBox > a:after{
+    content: " ";
+    position: relative;
+    top: .2em;
+    display: inline-block;
+    width: .8em;
+    height: .8em;
+    background: url(../../static/img/flatMapToLabArrow.png);
     background-size: 100% 100%;
 }
 .echart_tip.bottom >.echart_content {
@@ -112,13 +127,13 @@ body{
     border-bottom: 0.15em #fff solid;
     color: #fff;
     /*padding-left: 0.8em;*/
-    padding-bottom: 0.3125em;
+    /*padding-bottom: 0.3125em;*/
     position: absolute;
     width: 12em;
     /*font-size: 2em;*/
     text-align: center;
     z-index: 10;
-    text-shadow: 0.143em 0.143em 0.143em rgba(0, 0, 0, 0.9);
+    text-shadow: 0.143em 0.143em 0.143em rgba(0, 0, 0, 0.5);
 }
 
 .dialog_title > a {

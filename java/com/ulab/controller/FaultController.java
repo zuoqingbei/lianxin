@@ -131,53 +131,47 @@ public class FaultController extends BaseController{
 		}
 		renderJson(finalList);
 	}
-	
+	//转发到service页面
 	public void service(){
 		render("service.html");
 	}
-	public void findAllFaultInfo(){
-		List<Record> list=FaultModel.dao.findAllFaultInfo();
-		List<Record> newList=new ArrayList<>();
-		for(int i=0;i<list.size();i++){
-			Record record=list.get(i);
-		String f_xx_bianma=	record.getStr("f_xx_bianma");
-			JSONArray ja=(JSONArray) JSONObject.parse(f_xx_bianma);
-			for(int j=0;j<ja.size();j++){
-				String f_xx_bianmaSingle=(String) ja.get(j);
-				String f_yy_bianma=record.getStr("f_yy_bianma");
-					if(f_yy_bianma!=null&&f_yy_bianma.equals(f_xx_bianmaSingle)){
-						record.set("f_xx_bianma", f_xx_bianmaSingle);
-						newList.add(record);
-					}
-			
-			}
-			
-		}
-		renderJson(newList);
-	}
-	
+
+	/*
+	 * @author chen xin
+	 * 根据传入的page pageSize 查询设备信息
+	 */
 	public void findPageFaultInfo(){
 		int page=Integer.parseInt(getPara("page"));
 		int pageSize=Integer.parseInt(getPara("pageSize"));
-		String f_object=getPara("f_object");
-		List<Record> list=FaultModel.dao.findPageFaultInfo(page, pageSize, f_object);
-		List<Record> newList=new ArrayList<>();
-		for(int i=0;i<list.size();i++){
-			Record record=list.get(i);
-		String f_xx_bianma=	record.getStr("f_xx_bianma");
-			JSONArray ja=(JSONArray) JSONObject.parse(f_xx_bianma);
-			for(int j=0;j<ja.size();j++){
-				String f_xx_bianmaSingle=(String) ja.get(j);
-				String f_yy_bianma=record.getStr("f_yy_bianma");
-					if(f_yy_bianma!=null&&f_yy_bianma.equals(f_xx_bianmaSingle)){
-						record.set("f_xx_bianma", f_xx_bianmaSingle);
-						newList.add(record);
-					}
-			
-			}
-			
-		}
-		renderJson(newList);
+		String fault_name=getPara("fault_name");
+		List<Record> list=FaultModel.dao.findPageFaultInfo(page, pageSize, fault_name);
+		
+		renderJson(list);
 	}
-	
+	/*
+	 * @ahthor chen xin
+	 * 根据传入的 fault_name 进行 筛选查询 
+	 * 注意 此时的fault_name是故障现象 
+	 */
+	public void findDeviceInfoByDate() {
+		String fault_name=getPara("fault_name");
+		int[] months= {1,3,6,12,12*2,12*3};//3年以上未添加
+		List<Integer> data=new ArrayList<>();
+		for(int i=0;i<months.length;i++) {
+			Date nowDate=new Date();
+			Calendar calendar=Calendar.getInstance();
+			calendar.setTime(nowDate);
+			calendar.add(Calendar.MONTH, -months[i]);//将月份相减到指定月份
+			Date start=calendar.getTime();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String startTime=sdf.format(start);
+			String endTime=sdf.format(nowDate);
+			Integer num=FaultModel.dao.deviceByDate(startTime, endTime, fault_name);
+			data.add(num);
+		}
+		Integer num=FaultModel.dao.deviceByDate("", "", fault_name);//查询所有的 这里指3年以上
+		data.add(num);
+		renderJson(data);
+		
+	}
 }

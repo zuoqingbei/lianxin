@@ -6,6 +6,7 @@ var videoUrlMain = "";
 var prevIsLabUrl = false;//主菜单的URL类型
 var loadingAnimateVideoLoop = null;
 var loadingAnimateCurveLoop = null;
+var videoJsIsPlayed = false;
 
 function inlandTabShow(mark) { //国内
     if (mark === "zhonghaiborui") {
@@ -46,7 +47,6 @@ function loadingAnimate($thisElem, text, time) {
                     clearTimeout(loadingAnimateFadeOut);
                 });
                 // console.log("`````loadingAnimateFadeOut")
-
             }, time);
         } else {
             clearTimeout(loadingAnimateCurveLoop);
@@ -81,7 +81,7 @@ function loadingAnimate($thisElem, text, time) {
 
 //视频加载动画淡出
 function loadingAnimateOut(type, time) {
-	//alert(type)
+    //alert(type)
     // console.log("调用loadingAnimateOut");
     if (type === "curve") {
         // console.log("曲线调用loadingAnimateOut");
@@ -268,31 +268,31 @@ $(function () {
             return;
         }
         $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
-        if($(this).next().is(":hidden")){
+        if ($(this).next().is(":hidden")) {
             $(this).next().show().siblings(".sheshi_tab_list").hide();
             $(this).next().find("ul>li:first").click();
         }
     });
     //实时监测-视频地址选择
-    $(".centerVideoList>ul").on("click","li",function () {
+    $(".centerVideoList>ul").on("click", "li", function () {
         $(this).addClass("active").siblings().removeClass("active");
-       var videoUrl = $(this).data("videourl").replace("/1/live.m3u8", "/0/live.m3u8");
-       console.log("videoUrl",videoUrl);
-       // videoShow("bigVideo",videoUrl,0);
-        loadingAnimate($(".shishi_right").find(".bigVideoBox>.loadingAnimation"), "视频接入中", 6000);
+        var videoUrl = $(this).data("videourl").replace("/1/live.m3u8", "/0/live.m3u8");
+        console.log("videoUrl", videoUrl);
+        // videoShow("bigVideo",videoUrl,0);
+        loadingAnimate($(".shishi_right").find(".bigVideoBox>.loadingAnimation"), "视频接入中", 4000);
         // loadingAnimate($(".shishi_right").find(".bigVideoBox>.loadingAnimation"), "视频接入中");
-        $("#bigVideo").children("iframe").attr("src",videoUrl);
-       $(".shishi_right>.item.video").show().siblings().hide();
+        $("#bigVideo").children("iframe").attr("src", videoUrl);
+        $(".shishi_right>.item.video").show().siblings().hide();
     });
     //实时监测-实时数据按钮
     $(".sheshi_tab.sheshi_tab_lines").click(function () {
         $(this).addClass("sheshi_tab_active").siblings().removeClass("sheshi_tab_active");
-        if($(this).next().is(":hidden")){
+        if ($(this).next().is(":hidden")) {
             $(this).next().show().siblings(".centerVideoList").hide();
         }
-        if(prevIsLabUrl){
+        if (prevIsLabUrl) {
             $(".shishi_right").children(".item.iframe").show().siblings().hide();
-        }else{
+        } else {
             $(".shishi_right").children(".item.curve").show().siblings().hide();
 
         }
@@ -308,9 +308,9 @@ $(function () {
             .parent().show().siblings().hide();
 
         var labCode = $(this).attr("labcode");
-        videoUrlAjax(labCode, "toUrl")
+        videoUrlAjax(labCode, "toUrl");
         window.clearInterval(intevalChart1);
-    	window.clearInterval(intevalChartHadoop);
+        window.clearInterval(intevalChartHadoop);
     });
 
     //台位点击事件
@@ -351,31 +351,42 @@ $(function () {
     //获取小视频地址的ajax
     function videoUrlAjax(labCode, toUrl) {
         $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
-            var videoUrl = data.videl_url;
+            var videoUrl = data.videl_url.replace("10.130.96.65", "127.0.0.1");
             // console.log("---labCode", labCode, "videoUrl:", videoUrl);
             if (videoUrl) {
-                videoUrlMain = videoUrl.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
-                var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
+                // videoUrlMain = videoUrl.replace("/1/live.m3u8", "/0/live.m3u8");//切换成主码流
+                // var videoUrlSub = videoUrlMain.replace("/0/live.m3u8", "/1/live.m3u8");//切换成子码流
                 $(".smallVideoBox").show();
                 $(".sheshi_tab:eq(0)").removeClass("disabled");
+                var forceVideoJSplayingHtml = "                                    <iframe class=\"forceVideoJSplaying\" src=\"http://127.0.0.1:10800/play.html?channel=128\" style=\"position: absolute; width: 550px; height: 300px; opacity: 0.1; z-index: -1;\" ></iframe>\n"
+                var $smallVideo = "";
                 if (toUrl) {
-                    // videoShow("smallVideoWeb", videoUrlSub, 1);
-                    $("#smallVideoWeb").children("iframe").attr("src",videoUrl)
+                    $smallVideo = $("#smallVideoWeb");
                 } else {
-                    // videoShow("smallVideo", videoUrlSub, 1);
-                    $("#smallVideo").children("iframe").attr("src",videoUrl)
+                    $smallVideo = $("#smallVideo");
                 }
+                /*
+                * 这里解决videoJS跨域时对尺寸大小的限制造成视频不能正常播放的问题
+                * Cross-origin plugin content from http://127.0.0.1:10800/adminlte-2.3.6/plugins/video-js-5.19.2/video-js-fixed.swf must have a visible size larger than 400 x 300 pixels, or it will be blocked. Invisible content is always blocked.
+                * 从http://127.0.0.1:10800 adminlte-2.3.6跨源插件内容/插件/ video-js-5.19.2 / video-js-fixed。swf必须有一个大于400 x 300像素的可见大小，否则它将被阻塞。不可见的内容总是被阻塞。
+                * */
+                if (!videoJsIsPlayed && ($smallVideo.width() < 560 || $smallVideo.height() < 300)) {
+                    console.log("---解决视频自动播放");
+                    setTimeout(function () { //删除辅助的视频
+                        $(".forceVideoJSplaying").remove();
+                        videoJsIsPlayed = true;
+                    }, 10000);
+                }
+                $smallVideo.children("iframe:eq(0)").attr("src", videoUrl);
                 loadingAnimate($(".shishi_right").find(".smallVideoBox>.loadingAnimation"), "视频接入中", 7000);
-
             } else {
-                // $(".sheshi_tab:eq(0)").addClass("disabled");
                 $(".smallVideoBox").hide();
             }
         })
     }
 
-    console.log("bodyScale",bodyScale)
-    $(".item.moduleMakers>iframe").css("transform","scale("+ bodyScale*.93 +")");
+    console.log("bodyScale", bodyScale);
+    $(".item.moduleMakers>iframe").css("transform", "scale(" + bodyScale * .93 + ")");
 
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率

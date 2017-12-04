@@ -26,7 +26,7 @@ function tipResize() {
 $(function () {
     tipResize();
     //从地图提示框内直接打开实验室曲线
-    $("body").on("click","#echartTips .echart_content>a",function () {
+    $("body").on("click","#echartTips .echart_content>.textBox>a",function () {
         var centerId = $(this).data("centerid");
         var $centerList = $('.lab .lab_content_l .switchBox>ul>li.noChildren,.lab .lab_content_l .switchBox>ul>li>ul>li', parent.document);
         $centerList.each(function(index,elem){
@@ -376,6 +376,8 @@ var $echartTips = $('.echartTips');
 function addNewsElem(news) {
     var $el = getTopicHtml(news);
 
+
+
     var divideLeft = $echart.width() / 2,
         divideTop = $echart.height() / 2;
 
@@ -505,7 +507,7 @@ function stopNewsShown($el) {
  * 拼提示框的标签
  * */
 function getTopicHtml(currentPoint) {
-    // console.log("currentPoint",currentPoint)
+    console.log("currentPoint",currentPoint)
     var city = "";
     if (currentPoint.name) {
         city = currentPoint.name;
@@ -526,8 +528,8 @@ function getTopicHtml(currentPoint) {
         '   <img src="'+ imgUrl +'" alt="实验室图片">' +
         '   <div class="textBox">'  +
             '   <h4 style="">' + title + '</h4>' +
-            '   <div>实验室数量：' + value + '</div>' +
-            '   <a data-centerId="'+centerId+'" href="javascript:void(0);">进入实验室 →</a>' +
+            '   <div class="labNumber">实验室数量：' + value + '</div>' +
+            '   <a data-centerId="'+centerId+'" href="javascript:void(0);">进入实验室&nbsp;</a>' +
         '   </div>' +
         '</div>' +
         '<div class="echart_tip_arrow">' +
