@@ -27,7 +27,7 @@
 				<!--bottom left-->
 				<div class="map-mod">
 					<div class="mapTitle">
-						<a href="${contextPath}/health/health">全球冰箱分布</a>
+						<a href="${contextPath}/phm/health">全球冰箱分布</a>
 					</div>
 					<div id="myMap" style="width:100%;height:100%"></div>
 				</div>
@@ -615,7 +615,7 @@
 					return;
 				}
 					$.ajax({
-						url:"${contextPath}/deviceUseAnalysis/getDeviceUseAnalysisByDeviceSncode",
+						url:"${contextPath}/data/getDeviceUseAnalysisByDeviceSncode",
 						type:"get",
 						data:{'device_info_sncode':sncode},
 						success:function(data){
@@ -907,7 +907,7 @@
 			//	},2000);
 				
 				$.ajax({
-					url:"${contextPath}/deviceInfo/findDeviceInfoStatusGroup",
+					url:"${contextPath}/data/findDeviceInfoStatusGroup",
 					type:"get",
 					success:function(data){
 						var serious=new Array();

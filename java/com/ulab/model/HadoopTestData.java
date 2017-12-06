@@ -274,13 +274,13 @@ public class HadoopTestData {
 				
 			 */
 			String testIdentification=""+metaData.get("primarykey");//实验编号
-			testIdentification=testIdentification.replaceAll(" ", "");
 			finalTestData.set("sybh",testIdentification);
 			finalTestData.set("ybbh", metaData.get("sample_code"));
 			finalTestData.set("cpxh", metaData.get("productmodel"));
 			finalTestData.set("testunitstatus", metaData.get("testitemname"));
 			//step2 :查询传感器信息
 			List<Record> sensorInfoList=HadoopSensorInfo.dao.findHiveSensorInfoByTestIdentification(c,configName, testIdentification,labCode);
+			//testIdentification="2017-09-0413:38:4641          ";
 			//step3 查询具体数据
 			List<Record> allTestData=findHiveDataByTestIdentification(c,configName, testIdentification, startHowLong, endHowLong,sensorInfoList,labCode);
 			//step3 拼接结构 

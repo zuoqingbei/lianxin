@@ -423,7 +423,6 @@ function stopNewsShown($el) {
  * 拼提示框的标签
  * */
 function getTopicHtml(currentPoint) {
-    // console.log("currentPoint",currentPoint)
     var city = "";
     if (currentPoint.name) {
         city = currentPoint.name;

@@ -53,7 +53,7 @@
 									<p>全球用户大数据中心</p>
 									<img src="${contextPath}/static/phm/images/strategy/yh.png" alt="" />
 								</div>
-								<div class="itright it">
+								<div class="itright it" onclick="intentUlab()">
 									<p>全球检测大数据中心</p>
 									<img src="${contextPath}/static/phm/images/strategy/jc.png" alt="" />
 								</div>
@@ -107,7 +107,7 @@
 				</div>
 				<!--bottom right-->
 				<div class="period">
-					<h4><a href="${contextPath}/deviceStatus/status" style="color:#64ccff;width:100%;display:block">PHM智能自诊断</a></h4>
+					<h4><a href="${contextPath}/phm/status" style="color:#64ccff;width:100%;display:block">PHM智能自诊断</a></h4>
 					<div class="modebox">
 						<div class="leftmode mode">
 							<h5>模块诊断预测模型</h5>
@@ -149,7 +149,10 @@
 		            $(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
 		            console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
 		        }
-		        pageResize()
+		        pageResize();
+		        function intentUlab(){
+		        	window.location.href="${contextPath}/lab/index";
+		        }
    		</script>
 		<script src="${contextPath}/static/phm/js/strategy.js" type="text/javascript" charset="utf-8"></script>
 	</body>
