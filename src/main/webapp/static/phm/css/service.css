@@ -119,6 +119,7 @@ table{
 	margin:1% auto;
 	font-size: 0.8em;
 	overflow: scroll;
+	table-layout: fixed;
 }
 table  thead{
 	display: block;
@@ -129,6 +130,12 @@ table tbody{
 	height: 92%;
 	width:100%;
 }
+table tbody tr:first-child td {
+	width:1%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
 table tr {
 	height:2em;
 }
@@ -137,22 +144,22 @@ table tr th,table tr td{
 }
 
 table tr th {
-	font-weight:600;
+	font-weight:500;
 }
 
-/*瀹氫箟婊氬姩鏉″楂樺強鑳屾櫙锛屽楂樺垎鍒搴旀í绔栨粴鍔ㄦ潯鐨勫昂瀵�*/
+/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
 .content::-webkit-scrollbar{
     width: 1%;
     height: 16%;
     background-color: #000511;
 }
-/*瀹氫箟婊氬姩鏉＄殑杞ㄩ亾锛屽唴闃村奖鍙婂渾瑙�*/
+/*定义滚动条的轨道，内阴影及圆角*/
 .content::-webkit-scrollbar-track{
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     border-radius: 10px;
     background-color: #000511;
 }
-/*瀹氫箟婊戝潡锛屽唴闃村奖鍙婂渾瑙�*/
+/*定义滑块，内阴影及圆角*/
 .content::-webkit-scrollbar-thumb{
     /*width: 10px;*/
     height: 2%;
@@ -259,5 +266,4 @@ table td {
 	  /*background: rgba(25, 1, 21, 0.8);*/
 	  /*padding: 0 1.5rem;*/
 	  border:solid .1em #66CCFF;
-
 	}

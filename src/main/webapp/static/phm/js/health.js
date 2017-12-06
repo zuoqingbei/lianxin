@@ -2,7 +2,7 @@
 var Health = {
 	bodyScale:$(window).height()/595,
 	init:function(){
-		//this.circleEcharts();
+		this.circleEcharts();
 		this.mapEcharts();
 	//	this.blEcharts();
 		this.jkEcharts();
@@ -12,9 +12,9 @@ var Health = {
 	},
 	circleEcharts:function(){
 		var that = this;
-		var bxzxl = echarts.init(document.getElementById("bxzxl"));
-		var jkd = echarts.init(document.getElementById("jkd"));
-		var jkfb = echarts.init(document.getElementById("jkfb"));
+		this.bxzxl = echarts.init(document.getElementById("bxzxl"));
+		this.jkd = echarts.init(document.getElementById("jkd"));
+		this.jkfb = echarts.init(document.getElementById("jkfb"));
 		
 		var bxzxlOptions = {
 			color:["hsl(222,76%,52%)","#00c8fc"],
@@ -59,7 +59,7 @@ var Health = {
 							},
 						}
 					},
-					data:[{value:15,name:"在线"},{value:11.79,name:"离线"}],
+					data:[/*{value:15,name:"在线"},{value:11.79,name:"离线"}*/],
 					center:["50%","50%"],//圆心坐标
 					radius:[0,"75%"],//内半径，外半径
 					roseType:'radius',
@@ -68,7 +68,7 @@ var Health = {
 		}
 		
 		var jkdOptions = {
-			color:["#44f4cd","#105364"],
+			color:["#66ccff","#0066ff"],
 			series:[
 				{
 					type:'pie',
@@ -77,7 +77,7 @@ var Health = {
 						normal:{
 							//color:"#dd0",
 							label:{
-								show:true,
+								show:false,
 								formatter: "{d}%" ,
 								textStyle:{
 										color:"#64ccff",
@@ -106,7 +106,7 @@ var Health = {
 							},
 						}
 					},
-					data:[{
+					data:[/*{
 						value:59,name:"良好"
 						},
 						{
@@ -120,7 +120,7 @@ var Health = {
 							}
 							
 						}
-					}],
+					}*/],
 					center:["50%","50%"],//圆心坐标
 					radius:["50%","75%"],//内半径，外半径
 					//roseType:'radius',
@@ -159,7 +159,7 @@ var Health = {
 							},
 						}
 					},
-					data:[{value:17,name:"v1"},{value:16,name:"v2"},{value:15,name:"v3"},{value:14,name:"v4"},{value:13,name:"v5"},{value:12,name:"v6"},{value:11,name:"v7"}],
+					data:[],
 					center:["50%","50%"],//圆心坐标
 					radius:[0,"75%"],//内半径，外半径
 					roseType:'radius',
@@ -168,9 +168,9 @@ var Health = {
 			
 		}
 		
-		bxzxl.setOption(bxzxlOptions);
-		jkd.setOption(jkdOptions);
-		jkfb.setOption(jkfbOptions);
+		this.bxzxl.setOption(bxzxlOptions);
+		this.jkd.setOption(jkdOptions);
+		this.jkfb.setOption(jkfbOptions);
 	},
 	mapEcharts:function(){
 		var that = this;

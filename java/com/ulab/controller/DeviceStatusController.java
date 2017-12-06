@@ -14,6 +14,8 @@ public class DeviceStatusController extends BaseController {
 	public void status() {
 		render("status.html");
 	}
-
+	public void lightEffect() {
+		render("lightEffect.html");
+	}
 }
 
