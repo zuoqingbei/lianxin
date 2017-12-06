@@ -1,76 +1,49 @@
 package com.ulab.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-//@TableBind(tableName="phm_fault" ,pkName="f_id")
-@TableBind(tableName="phm_fault2" ,pkName="id")
+import com.ulab.util.HttpClientUtil;
+@TableBind(tableName="phm_fault" ,pkName="id")
 public class FaultModel extends Model<FaultModel> {
 
 	private static final long serialVersionUID = 1L;
 	public static final FaultModel dao=new FaultModel();
 	/**
 	 * 查询左侧数据表格中字段的故障的信息
-	 * Page<User> userPage = User.dao.paginate(1, 10, "select *", "from user 
-where age > ?", 18);
 	 * @return
 	 */
 	public Page<Record> ShowFault(int pageNumber,int pageSize){
 		return  Db.paginate(pageNumber, pageSize, "select c.f_id,c.f_object,c.f_xx_bianma,c.f_xx_miaoshu,c.f_yy_bianma,c.f_yy_miaoshu,c.f_weihao,c.f_maintenance,c.f_zr_category", "from phm_fault c");
 	}
-	/**
-	 * 查询工贸
-	 */
-	public List<Record> showFaultGongmao(String fObject,String fQuyu){
-		StringBuffer sb=new StringBuffer();
-		sb.append("select f_gongmao as name,COUNT(f_gongmao) as count from phm_fault where 1=1 "); 
-		if(StringUtils.isNotBlank(fObject)){
-			sb.append(" and f_object='"+fObject+"'");
-		}
-		if(StringUtils.isNotBlank(fQuyu)){
-			sb.append(" and f_quyu='"+fQuyu+"'");
-		}
-		sb.append("group by f_gongmao");
-		return Db.find(sb.toString());
-	}
-	/**
-	 * 各区域压缩机备件需求
-	 * @return
-	 */
-	public List<Record> showFaultQuyu(String fObject){
-		StringBuffer sb=new StringBuffer();
-		sb.append("select f_quyu as name,COUNT(f_quyu) as count from phm_fault where 1=1 ");
-		if(StringUtils.isNotBlank(fObject)){
-			sb.append(" and f_object='"+fObject+"'");
-		}
-		sb.append(" group by f_quyu");
-		return Db.find(sb.toString());
-	}
+	
 	/**
 	 * 不同时间段压缩机的需求
 	 * @param month
 	 * @return
 	 */
 	public  List<Record>findFaultDemand(String fObject){
-//		StringBuffer sb=new StringBuffer();
-//		sb.append("select f_date,sum(f_object) from phm_fault where  sysdate-f_date="+month+"  group by f_date ");
 		String sql="";
-				sql+="SELECT c.name,count(1) as count from (SELECT to_char(A .datetime,'yyyy-mm') as name,(COUNT(a.datetime)) count FROM(SELECT F_DATE AS datetime FROM PHM_FAULT WHERE 1=1";
-				if(StringUtils.isNotBlank(fObject)){
-					sql+=" and f_object='"+fObject+"'";
-				}
-				sql+="	) A GROUP BY	to_char(A .datetime,'yyyy-mm') ORDER BY  to_char(A .datetime,'yyyy-mm') desc ) c  LEFT JOIN ( SELECT	F_DATE AS datetime	FROM	PHM_FAULT WHERE 1=1";
-				if(StringUtils.isNotBlank(fObject)){
-					sql+=" and f_object='"+fObject+"'";
-				}
-				sql+=" ) b ON c .name<= to_char(b.datetime,'yyyy-mm')";
-				sql+=" GROUP BY c.name ORDER by c.name desc";
+		sql+="select c.name,count(1) as count from (select to_char(a .datetime,'yyyy-mm') as name,(count(a.datetime)) count from(select f_date as datetime from phm_fault where 1=1";
+		if(StringUtils.isNotBlank(fObject)){
+			sql+=" and f_object='"+fObject+"'";
+		}
+		sql+="	) a group by	to_char(a .datetime,'yyyy-mm') order by  to_char(a .datetime,'yyyy-mm') desc ) c  left join ( select	f_date as datetime	from	phm_fault where 1=1";
+		if(StringUtils.isNotBlank(fObject)){
+			sql+=" and f_object='"+fObject+"'";
+		}
+		sql+=" ) b ON c .name<= to_char(b.datetime,'yyyy-mm')";
+		sql+=" group by c.name order by c.name desc";
 		return Db.find(sql);
 	}
 /**
@@ -79,8 +52,7 @@ where age > ?", 18);
  * @author chen xin
  */
 	public List<Record> findAllFaultInfo(){
-		String sql="select"
-				+ " *  from PHM_FAULT2 ";
+		String sql="select  *  from phm_fault ";
 		return Db.find(sql);
 	}
 	
@@ -92,20 +64,20 @@ where age > ?", 18);
  * @param pageSize
  * @author chen xin 
  */
-		public List<Record> findPageFaultInfo(int page,int pageSize,String fault_name){
-			String sql="select * from (	select ROWNUM num,fault.* from PHM_FAULT2 fault where ROWNUM<="+page*pageSize+") where num >"+((page-1)<0?0:(page-1))*pageSize;
-			if(StringUtils.isNoneBlank(fault_name)){
-				sql+="and fault_name='"+fault_name+"'";
-			}
-			return Db.find(sql);
+	public List<Record> findPageFaultInfo(int page,int pageSize,String fault_name){
+		String sql="select * from (	select rownum num,fault.* from phm_fault fault where rownum<="+page*pageSize+") where num >"+((page-1)<0?0:(page-1))*pageSize;
+		if(StringUtils.isNoneBlank(fault_name)){
+			sql+="and fault_name='"+fault_name+"'";
 		}
+		return Db.find(sql);
+	}
 	/**
-	 * 删除 phm_fault2
+	 * 删除 phm_fault
 	 * @author chen xin 
 	 * @param sncode
 	 */		
 		public void deleteFaultBySncode(String sncode) {
-			String sql="delete from phm_fault2 where sncode='"+sncode+"'";
+			String sql="delete from phm_fault where sncode='"+sncode+"'";
 			Db.update(sql);
 		}
 		/**
@@ -114,7 +86,6 @@ where age > ?", 18);
 		 * @param sncode
 		 */	
 		public void  addFault(List<String>sqlList) {
-			
 			Db.batch(sqlList, sqlList.size());
 		}
 		/**
@@ -124,30 +95,67 @@ where age > ?", 18);
 		 * TO_DATE('"+f_date+"','yyyy-MM-dd HH24:mi:ss')
 		 */	
 		public Integer deviceByDate(String startTime,String endTime,String fault_name ){
-			String sql="select count(sncode) num from phm_fault2 where 1=1";
+			String sql="select count(sncode) num from phm_fault where 1=1";
 			if(StringUtils.isNotBlank(startTime)) {
-				sql+=" and fault_time>TO_DATE('"+startTime+"','yyyy-MM-dd HH24:mi:ss')";
+				sql+=" and fault_time>to_date('"+startTime+"','yyyy-MM-dd HH24:mi:ss')";
 			}
 			if(StringUtils.isNotBlank(endTime)) {
-				sql+=" and fault_time<=TO_DATE('"+endTime+"','yyyy-MM-dd HH24:mi:ss')";
+				sql+=" and fault_time<=to_date('"+endTime+"','yyyy-MM-dd HH24:mi:ss')";
 				
 			}
 			if(StringUtils.isNotBlank(fault_name)) {
 				sql+=" and fault_name='"+fault_name+"'";
 			}
-			
-			
-		
 			Object obj=	Db.queryColumn(sql);
 				String s=obj.toString();
-//				int num=Db.queryInt(sql);
-//				List<Record> list=Db.find(sql);
-//				Record record=list.get(0);
-//				Double num=record.get("num");
-				//String num=record.getStr("num");//record.getInt("num");直接转报异常java.math.BigDecimal cannot be cast to java.lang.Integer
-				
 			return Integer.parseInt(s);
 			
 		}
+		/**
+		 * 
+		 * @time   2017年12月6日 下午2:59:56
+		 * @author zuoqb
+		 * @todo   定时任务更新设备故障信息数据
+		 * @return_type   void
+		 */
+	    @SuppressWarnings("rawtypes")
+		public void synchroFaultInfo() {
+			List<Record> list=PhmDeviceInfoModel.dao.getAllDevice();
+			List<Record> FaultList=FaultModel.dao.findAllFaultInfo();
+			List<String> sncodeList=new ArrayList<>();
+			for(int i=0;i<FaultList.size();i++) {//遍历先有的 错误表中的已存在的sncode
+				Record record=FaultList.get(i);
+				sncodeList.add(record.getStr("sncode"));
+			}
+			for(int i=0;i<list.size();i++) {
+				String sn=list.get(i).getStr("sncode");
+				String info=HttpClientUtil.sendGetRequest("http://localhost:8088/api/yzd/product/"+sn+"/diagnosisResult","UTF-8");
+				JSONArray jsonArray=(JSONArray) JSONObject.parse(info);
+				if(sncodeList.contains(sn)) {
+					FaultModel.dao.deleteFaultBySncode(sn);
+				}else {
+					sncodeList.add(sn);
+				}
+				List<String>sqlList=new ArrayList<>();
+				for(int j=0;j<jsonArray.size();j++) {
+					Map mp=(Map) jsonArray.get(j);
+					String time=(String) mp.get("time");//故障发生时间
+					String name=(String) mp.get("fault");//故障名字
+					JSONArray advice=(JSONArray) mp.get("advice");
+					String adviceString=""; //TO_DATE('"+f_date+"','yyyy-MM-dd HH24:mi:ss')
+					 for(int k=0;k<advice.size();k++) {
+						 if(k==0) {
+							 adviceString+=advice.get(k);
+						 }else {
+							 adviceString+=","+advice.get(k);
+						 }
+					 }                    
+					String sql="insert into phm_fault (sncode,fault_name,fault_repair,fault_time)values('"+sn+"','"+name+"','"+adviceString+"',TO_DATE('"+time+"','yyyy-MM-dd HH24:mi:ss'))";
+					sqlList.add(sql);
+				}
+				FaultModel.dao.addFault(sqlList);
+			}
+	    }
+			
 		
 }

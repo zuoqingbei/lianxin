@@ -3,8 +3,6 @@ package com.ulab.model;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
@@ -13,7 +11,7 @@ import com.jfinal.plugin.activerecord.Record;
  * 
  * @time   2017年5月19日 上午10:40:55
  * @author chen xin
- * @todo   
+ * @todo   使用分析
  */
 @TableBind(tableName = "phm_device_use_analysis",pkName="id")
 public class DeviceUseAnalysisModel extends Model<DeviceUseAnalysisModel> {
@@ -22,7 +20,6 @@ public class DeviceUseAnalysisModel extends Model<DeviceUseAnalysisModel> {
 	
 	public List<Record> getAllDeviceUseAnalysis(){
 		String sql="select * from phm_device_use_analysis";
-		
 		return Db.find(sql);
 	}
 	/*

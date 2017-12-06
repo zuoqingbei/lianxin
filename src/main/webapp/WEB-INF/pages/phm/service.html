@@ -19,7 +19,7 @@
 			<!--head-->
 			<div id="head">
 				<h1>
-					<a href="${contextPath}/deviceInfo/strategy">
+					<a href="${contextPath}/phm/index">
 						<img src="${contextPath}/static/phm/images/status/logo_haier_bold.png" alt="" />
 					</a>
 				</h1>
@@ -29,7 +29,7 @@
 			<!--bottom-->
 			<div id="bottom">
 				<div class="left-table">
-					<div class="title">压缩机故障详情</div>
+					<div class="title">故障详情</div>
 					
 					<div class="btnBox">
 
@@ -63,12 +63,12 @@
 				</div>
 				<!--right-bar1-->
 				<div class="right-bar1">
-					<p class="bar1-title">各区域压缩机备件需求</p>
+					<p class="bar1-title">各区域备件需求</p>
 					<div id="bar1" style="width:100%;height:100%"></div>
 				</div>
 				<!--right-bar2-->
 				<div class="right-bar2">
-					<p class="bar2-title">压缩机不同时段需求</p>
+					<p class="bar2-title">不同时段需求</p>
 					<div id="bar2" style="width:100%;height:100%"></div>
 				</div>
 			</div>
@@ -96,90 +96,46 @@
 		pageW -= 42
 		}
 		function pageResize() {
-		$("body").css("font-size", bodyFontSize);
-		$("#content").css("width", pageW);
-		$(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
-		console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+			$("body").css("font-size", bodyFontSize);
+			$("#content").css("width", pageW);
+			$(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
+			//console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
 		}
 		pageResize();
 		
 		var times=1;//用记录该加载第几页数据
 	    var f_object="";//查询条件对象
     	$(function(){
-		    	 	$.ajax({
-		    			type:"get",
-		    			url:"${contextPath}/fault/findPageFaultInfo",
-		    			data:{page:times,pageSize:"20",fault_name:f_object}, 
-		    			success:function(data){
-		    				var faultInformation="";
-			    			$.each(data,function(index,element){
-			    				/* faultInfo */
-			    				 // debugger; 
-			    				faultInformation+=
-			    				"<tr class='row'>"
-				    				+"<td class='col'>"+element.sncode+"<div class='slide'></div></td>"
-				    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-				    				+"<td class='col'>"+element.fault_name+"<div class='slide'></div></td>"
-				    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-				    				+"<td class='col'>暂无<div class='slide'></div></td>"
-				    				+"<td class='col'>暂无<div class='slide'></div></td>"
-				    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-				    				+"<td class='col'>"+element.fault_repair+"<div class='slide'></div></td>"
-				    				+"<td class='col'>暂无<div class='slide'></div></td>"
-			    				+"</tr>";
-							
-			    			});
-			    			
-			    			$("#faultInfo").html(faultInformation);
-		    				/* console.log(data); */
-		    			},
-		    			error:function(){alert("加载信息错误 ")}
-		    		}) ;
-		    	 	
-		    	 			
-		    	 	echartsTime();//加载 配件不同时段 需求 
-		    	 	/***************************************************************/
-    	
-    	})
-    	function showByFobject(obj){
-			//the Scroll to top
-			$(".content").scrollTop(0);
-			Service.init();
-    		console.log(Service.myHeight,35*bodyScale);
-    		Service.myHeight =  35*bodyScale;
-    		
-    		$(obj).siblings().removeClass("btnActive");
-    		if($(obj).hasClass("btnActive")){
-    			$(obj).removeClass("btnActive");
-    			f_object="";
-    			times=1;
-    		}else{
-    			$(obj).addClass("btnActive");
-    			f_object=obj.innerHTML;
-    			times=1;
-    		};
-    		console.log("点击times:",times);
-    		/* if($(obj).css("color")=='rgb(102, 204, 255)'){
-    			alert("111");
-    			//$(obj).removeClass(".optionsBtn");
-    			//$(obj).addClass(".btnActive");
-    			f_object=obj.innerHTML;
-    		}
-    		if($(obj).css("color")=='rgb(0, 230, 115)'){
-    			console.log(obj);
-    			$(obj).removeClass("btnActive");
-    			console.log($(obj).attr("class"));
-    			
-    			//$(obj).addClass(".optionsBtn");
-    			f_object="";
-    		} */
+    		getFaultInfo(true);	
+    	});
+    	var that;
+		window.onload=function(){
+			 that = this;
+			var myHeight = 35*that.bodyScale;
+			that.myHeight = 35*that.bodyScale;
+			$(".content").scroll(function(){
+				//滚动条到顶部的距离
+				 var totalheight = $(".content").scrollTop();
+				if (that.myHeight >totalheight) {
+					times+=1;
+					console.log("滑动times:",times);
+				   that.myHeight += 2*$("tr").height();
+			       getFaultInfo(false);	
+				} 
+			})
+		}   
+	    //获取故障详情信息
+	    function getFaultInfo(isRefreshRight){
+	    	//isRefreshRight--是否重新加载右侧数据
     		$.ajax({
     			type:"get",
-    			url:"${contextPath}/fault/findPageFaultInfo",
-    			 data:{page:times,pageSize:"20",fault_name:""}, 
+    			url:"${contextPath}/data/findPageFaultInfo",
+    			data:{page:times,pageSize:"20",fault_name:f_object}, 
     			success:function(data){
     				var faultInformation="";
 	    			$.each(data,function(index,element){
+	    				/* faultInfo */
+	    				 // debugger; 
 	    				faultInformation+=
 	    				"<tr class='row'>"
 		    				+"<td class='col'>"+element.sncode+"<div class='slide'></div></td>"
@@ -194,87 +150,48 @@
 	    				+"</tr>";
 					
 	    			});
-	    			
-	    			$("#faultInfo").html(faultInformation);
-	    			
-	    			echartsTime();//加载 配件不同时段 需求 可传入 参数 对象值 
+	    			if(isRefreshRight){
+	    				$("#faultInfo").html(faultInformation);
+	    			}else{
+	    				$("#faultInfo").append(faultInformation);
+	    			}
+    				/* console.log(data); */
     			},
     			error:function(){alert("加载信息错误 ")}
-    		}) ; 
+    		}) ;
+	    	if(isRefreshRight){
+	    		statisticsByDate();//加载 配件不同时段 需求 
+	    	};
+	    }
+	    //不同零件故障信息切换
+    	function showByFobject(obj){
+			//the Scroll to top
+			$(".content").scrollTop(0);
+			Service.init();
+    		Service.myHeight =  35*bodyScale;
+    		
+    		$(obj).siblings().removeClass("btnActive");
+    		if($(obj).hasClass("btnActive")){
+    			$(obj).removeClass("btnActive");
+    			f_object="";
+    			times=1;
+    		}else{
+    			$(obj).addClass("btnActive");
+    			f_object=obj.innerHTML;
+    			times=1;
+    		};
+    		getFaultInfo(true);
     		
     	}
-    	var that;
-		window.onload=function(){
-			//alert("222" +times);
-			 that = this;
-		//	console.log(that.bodyScale);
-			var myHeight = 35*that.bodyScale;
-			that.myHeight = 35*that.bodyScale;
-			
-			$(".content").scroll(function(){
-				//滚动条到顶部的距离
-				 var totalheight = $(".content").scrollTop();
-				// console.log(totalheight, that.myHeight	)
-//				 console.log(1)
-				if (that.myHeight >totalheight) {
-					// console.log(2)
-					//模拟生成tr
-					times+=1;
-					console.log("滑动times:",times);
-//					alert(myHeight);
-					$.ajax({
-			    			type:"get",
-			    			url:"findPageFaultInfo",
-			    			 data:{page:times,pageSize:"1",fault_name:f_object}, 
-			    			success:function(data){
-			    				var faultInformation="";
-				    			$.each(data,function(index,element){
-				    				faultInformation+=
-				    				"<tr class='row'>"
-					    				+"<td class='col'>"+element.sncode+"<div class='slide'></div></td>"
-					    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-					    				+"<td class='col'>"+element.fault_name+"<div class='slide'></div></td>"
-					    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-					    				+"<td class='col'>暂无<div class='slide'></div></td>"
-					    				+"<td class='col'>暂无<div class='slide'></div></td>"
-					    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-					    				+"<td class='col'>"+element.fault_repair+"<div class='slide'></div></td>"
-					    				+"<td class='col'>暂无<div class='slide'></div></td>"
-				    				+"</tr>";
-								
-				    			});
-				    			
-				    			$("#faultInfo").append(faultInformation);
-			    			},
-			    			error:function(){alert("加载信息错误11 ")}
-			    		}) ; 
-			    		
-//				   for(var i=0;i<2;i++){
-//				   		var mytr = document.createElement("tr");
-//				   		for(var j=0;j<9;j++){
-//				   			var mytd = document.createElement("td")
-//				   			$(mytr).append(mytd);
-//				   		}
-//				   		$(".content").append(mytr)
-//				   }
-//				   myHeight += 2*$("tr").height();
-				   that.myHeight += 2*$("tr").height();
-				  
-					//生产
-					
-					
-				} 
-			})
-		}    
 	/******************************************************************************/
-	function echartsTime(name){//根据时间 查询部件需求 参数为 配件对象值 
+   //根据时间 查询部件需求 参数为 配件对象值 
+	function statisticsByDate(){
 		$.ajax({
 				type:"get",
-				url:"${contextPath}/fault/findDeviceInfoByDate",
-				data:{},
+				url:"${contextPath}/data/findDeviceInfoByDate",
+				data:{"fault_name":f_object},
 				success:function(data){
 				var myTimeEcharts = echarts.init(document.getElementById("bar2"));
-		
 					var timeEchartsOptions = {
 						color: ['#00e96d'],
 					    tooltip : {
@@ -283,7 +200,7 @@
 					            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 					        },
 					        textStyle:{
-					        	fontSize:16*that.bodyScale
+					        	fontSize:16*bodyScale
 					        }
 					    },
 					    grid: {
@@ -305,7 +222,7 @@
 					            	show:'true',
 					            	rotate:-30,
 					            	textStyle:{
-					            		fontSize:16*that.bodyScale,
+					            		fontSize:16*bodyScale,
 					            		color:'#64ccff'
 					            	}
 					            },
@@ -320,10 +237,10 @@
 					            type : 'value',
 					            name:'需求量/台',
 					            nameLocation:'end',
-					             nameGap:18*that.bodyScale,//坐标轴名称与轴线之间的距离
+					             nameGap:18*bodyScale,//坐标轴名称与轴线之间的距离
 					             nameTextStyle:{
 					            	color:'#64ccff',
-					            	fontSize:16*that.bodyScale,
+					            	fontSize:16*bodyScale,
 					            },
 					           
 					            splitNumber:5,
@@ -331,7 +248,7 @@
 					            	show:'true',
 					            	textStyle:{
 					            		color:'#64ccff',
-					            		fontSize:16*that.bodyScale,
+					            		fontSize:16*bodyScale,
 					            	}
 					            },
 					            splitLine:{
@@ -343,10 +260,10 @@
 					    ],
 					    series : [
 					        {
-					            name:'各区域压缩机备件需求',
+					            name:'各区域'+f_object+'备件需求',
 					            type:'bar',
 			//		            barWidth: 30*that.bodyScale,
-					            barGap:50*that.bodyScale,
+					            barGap:50*bodyScale,
 					            cursor:'pointer',
 					            data:data,
 					            
