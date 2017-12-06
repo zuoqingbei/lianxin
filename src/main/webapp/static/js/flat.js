@@ -26,15 +26,15 @@ function tipResize() {
 $(function () {
     tipResize();
     //从地图提示框内直接打开实验室曲线
-    $("body").on("click","#echartTips .echart_content>.textBox>a",function () {
+    $("body").on("click", "#echartTips .echart_content>.textBox>a", function () {
         var centerId = $(this).data("centerid");
         var $centerList = $('.lab .lab_content_l .switchBox>ul>li.noChildren,.lab .lab_content_l .switchBox>ul>li>ul>li', parent.document);
-        $centerList.each(function(index,elem){
-            if($(elem).data("centerid") === centerId){
+        $centerList.each(function (index, elem) {
+            if ($(elem).data("centerid") === centerId) {
                 var $headerBtn = $(elem).parents(".switchBox").prev().find("ul>li");
-                if($(elem).parents(".inland").length>0){
+                if ($(elem).parents(".inland").length > 0) {
                     $headerBtn.eq(0).click();
-                }else{
+                } else {
                     $headerBtn.eq(1).click();
                 }
                 $(elem).click();
@@ -68,8 +68,26 @@ function createArrData(productCode, labType) {
         "labType": labType
     }, function (dataBase1) {
         mDataBase = jsonToArray(dataBase1);
+
+        //解决图片加载慢的问题
+        var imgs = [];
+        for (var item in dataBase1) {
+            var imgUrl = dataBase1[item].img_content;
+            if (imgUrl) {
+                imgs.push(imgUrl)
+            }
+        }
+        var imgHiddenHtml = "<div hidden class=''>";
+        for (var item in imgs) {
+            imgHiddenHtml += "<img src='" + imgs[item] + "'/>";
+        }
+        imgHiddenHtml += "</div>";
+        $("body").append(imgHiddenHtml);
+        // console.log("imgHiddenHtml", imgHiddenHtml);
+
         var option = {
             // backgroundColor: "rgba(255,0,0,0)",
+
             color: ['gold', 'aqua', 'lime'],
             calculable: false,
             tooltip: {
@@ -84,35 +102,9 @@ function createArrData(productCode, labType) {
                     return [p[0] + 100, p[1] + 100];
                 },
                 padding: [0, 0, 0, 0],
-                //            width: 207,
-                //            height: 110,
-                //            backgroundColor: 'rgba(13,43,67,0.7)',
-                //            borderColor: 'rgba(31,120,214,1)',
                 // params : 数组内容同模板变量，
                 formatter: function (param) {
-                    // console.log("------------------param:",param)
-                    /*                    var CountryName = param.name;
-                                        var $l3x3 = $("#l", parent.document);
-                                        $l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
-                                        $l3x3.find(".legend-bottom li").removeClass('active');
-                                        parent.bgImgOff($l3x3.find(".legend-bottom li"));
-                                        console.log("show",CountryName);
 
-                                        switch (CountryName) {
-
-                                            case '日本研发中心':
-                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-                                                break;
-                                            case '新西兰研发中心':
-                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
-                                                break;
-                                            case '泰国模块中心':
-                                                window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-                                                break;
-                                            default:
-                                            console.log("暂无该国家实验室信息")
-                                        }
-                    */
                     //在这里是第一步
                     $elList = [];
                     //提示框的内容清空
@@ -234,7 +226,7 @@ function seriesData(data) {
                 type: 'scale',//圈圈
                 loop: true,
                 shadowBlur: 0,
-                period:30
+                period: 30
             },
             itemStyle: {
                 normal: {label: {show: false}},
@@ -274,84 +266,9 @@ function seriesData(data) {
 
 // 基于准备好的dom，初始化echarts实例
 var myFlatMap = echarts.init($('.mapFlat')[0]);
-//调用父页面 获取数据
-//window.parent.selectActLi();
-
-// 处理点击事件打印国家名,这种写法有bug，即提示出来后那个圈圈就把可点击的国家位置堵在后面了，所以要给圈圈加点击事件。
-/*myFlatMap.on('click', function (params) {
-    var CountryName = params.name;
-    var $l3x3 = $("#l", parent.document);
-    $l3x3.siblings("#r,.labMain_content").hide().siblings(".labMain_content_country").show();
-    $l3x3.find(".legend-bottom li").removeClass('active');
-    parent.bgImgOff($l3x3.find(".legend-bottom li"));
-    // console.log("点击",CountryName);
-    switch (CountryName) {
-        case 'Japan':
-            // a.siblings("#r").hide();
-            // a.parent().find(".labMain_content_country").show();
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-            break;
-        case 'New Zealand':
-            // a.siblings("#r").hide();
-            // a.parent().find(".labMain_content_country").show();
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
-            break;
-        case 'Thailand':
-            // a.siblings("#r").hide();
-            // a.parent().find(".labMain_content_country").show();
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-            break;
-        default:
-            console.log("暂无该国家实验室信息")
-    }
-});*/
 
 /*平面地图上点击各个国家的点，右侧切换到对应的实验室页面*/
 var $l3x3 = $("#l", parent.document);
-
-/*
-$("#echartTips").on("click", ".echart_tip_head", function () {
-    var CountryName = $(this).parent().prev().find("a").attr("data-country");
-    $l3x3.siblings("#r,.lab").hide().siblings(".labMain_content_country").show();
-    $l3x3.find(".legend-bottom li").removeClass('active');
-    parent.bgImgOff($l3x3.find(".legend-bottom li"));
-    curvesSwitch(CountryName);
-/!*
-    switch (CountryName) {
-        case ('日本'):
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-            break;
-        case ('新西兰'):
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
-            break;
-        case ('泰国'):
-            //window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-	        window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1,"thailand");
-            break;
-        default:
-            console.log("暂无该国家实验室信息")
-    }
-*!/
-    console.log("国家名:",CountryName)
-});
-*/
-function curvesSwitch(CountryName) {
-    switch (CountryName) {
-        case ('日本'):
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(0);
-            break;
-        case ('新西兰'):
-            window.parent.loadLabUnitInfoCenterTabAjaxWorld(2);
-            break;
-        case ('泰国'):
-            //window.parent.loadLabUnitInfoCenterTabAjaxWorld(1);
-            window.parent.loadLabUnitInfoCenterTabAjaxWorldHadoop(1, "thailand");
-            break;
-        default:
-            console.log("暂无该国家实验室信息")
-    }
-    console.log("国家名:", CountryName)
-}
 
 var showTopicIndex = 0;
 /**
@@ -375,7 +292,6 @@ var $echartTips = $('.echartTips');
 
 function addNewsElem(news) {
     var $el = getTopicHtml(news);
-
 
 
     var divideLeft = $echart.width() / 2,
@@ -437,9 +353,9 @@ function addNewsElem(news) {
             startNewsShown();
         });
         return $el;
-        $el.click(function () {
+        /*$el.click(function () {
             alert()
-        })
+        })*/
     }
     return null;
 }
@@ -507,7 +423,7 @@ function stopNewsShown($el) {
  * 拼提示框的标签
  * */
 function getTopicHtml(currentPoint) {
-    console.log("currentPoint",currentPoint)
+    // console.log("currentPoint",currentPoint)
     var city = "";
     if (currentPoint.name) {
         city = currentPoint.name;
@@ -523,13 +439,15 @@ function getTopicHtml(currentPoint) {
     /*if((value=="0"&&title=="青岛")||title==undefined){
     	return "";
     }*/
-    return $('<div class="echart_tip">' +
+    console.log("centerId",centerId)
+    return $((centerId ? ' <div class="echart_tip">' : ' <div class="echart_tip noCenterData">') +
+    // return $(' <div class="echart_tip noCenterData">' +
         '<div class="dialog_title echart_content">' +
-        '   <img src="'+ imgUrl +'" alt="实验室图片">' +
-        '   <div class="textBox">'  +
-            '   <h4 style="">' + title + '</h4>' +
-            '   <div class="labNumber">实验室数量：' + value + '</div>' +
-            '   <a data-centerId="'+centerId+'" href="javascript:void(0);">进入实验室&nbsp;</a>' +
+        '   <img src="' + imgUrl + '" alt="默认图片">' +
+        '   <div class="textBox">' +
+        '   <h4 style="">' + title + '</h4>' +
+        '   <div class="labNumber">实验室数量：' + value + '</div>' +
+        '   <a data-centerId="' + centerId + '" href="javascript:void(0);">进入实验室&nbsp;</a>' +
         '   </div>' +
         '</div>' +
         '<div class="echart_tip_arrow">' +

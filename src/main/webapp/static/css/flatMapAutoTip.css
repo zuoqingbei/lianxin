@@ -91,6 +91,14 @@ body{
     background: url(../../static/img/flatMapToLabArrow.png);
     background-size: 100% 100%;
 }
+.echart_tip.noCenterData > .echart_content > .textBox > h4 {
+    margin-top: 2em;
+}
+.echart_tip.noCenterData > .echart_content > .textBox > a{
+    display: none;
+}
+
+
 .echart_tip.bottom >.echart_content {
     bottom: -3.4em;
 }

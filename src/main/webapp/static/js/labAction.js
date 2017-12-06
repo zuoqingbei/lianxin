@@ -1,4 +1,4 @@
-var $lab_content_r = $(".lab_content_r");//国内外右边的大框
+ var $lab_content_r = $(".lab_content_r");//国内外右边的大框
 var $monitoring = $lab_content_r.find(".monitoring");//曲线监控页
 var $sheshi_tab_list = $monitoring.find(".sheshi_tab_list");//曲线左侧的台位列表
 var $prevTaiwei = null;
@@ -375,7 +375,7 @@ $(function () {
                     setTimeout(function () { //删除辅助的视频
                         $(".forceVideoJSplaying").remove();
                         videoJsIsPlayed = true;
-                    }, 10000);
+                    }, 15000);
                 }
                 $smallVideo.children("iframe:eq(0)").attr("src", videoUrl);
                 loadingAnimate($(".shishi_right").find(".smallVideoBox>.loadingAnimation"), "视频接入中", 7000);
