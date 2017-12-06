@@ -43,13 +43,8 @@
 							<tr class="row">
 								<th class="col">对象<div class="slide"></div></th>
 								<th class="col">故障现象<div class="slide"></div></th>
-								<th class="col">故障现象<div class="slide"></div></th>
-								<th class="col">故障原因<div class="slide"></div></th>
-								<th class="col">故障原因<div class="slide"></div></th>
+								<th class="col">维修措施<div class="slide"></div></th>
 								<th class="col">位号<div class="slide"></div></th>
-								<th class="col">维修措施<div class="slide"></div></th>
-								<th class="col">维修措施<div class="slide"></div></th>
-								<th class="col">责任类别<div class="slide"></div></th>
 							</tr>
 						</thead>
 						<tbody class="content" id="faultInfo">
@@ -138,15 +133,10 @@
 	    				 // debugger; 
 	    				faultInformation+=
 	    				"<tr class='row'>"
-		    				+"<td class='col'>"+element.sncode+"<div class='slide'></div></td>"
-		    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
 		    				+"<td class='col'>"+element.fault_name+"<div class='slide'></div></td>"
-		    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-		    				+"<td class='col'>暂无<div class='slide'></div></td>"
-		    				+"<td class='col'>暂无<div class='slide'></div></td>"
-		    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
+		    				+"<td class='col'>"+element.fault_appearance+"<div class='slide'></div></td>"
 		    				+"<td class='col'>"+element.fault_repair+"<div class='slide'></div></td>"
-		    				+"<td class='col'>暂无<div class='slide'></div></td>"
+		    				+"<td class='col'>"+element.fault_seat_number+"<div class='slide'></div></td>"
 	    				+"</tr>";
 					
 	    			});
@@ -157,7 +147,9 @@
 	    			}
     				/* console.log(data); */
     			},
-    			error:function(){alert("加载信息错误 ")}
+    			error:function(){
+    				//alert("加载信息错误 ")
+    				}
     		}) ;
 	    	if(isRefreshRight){
 	    		statisticsByDate();//加载 配件不同时段 需求 
