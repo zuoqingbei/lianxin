@@ -1,6 +1,8 @@
 
 var Status = {
 	bodyScale:$(window).height()/595,
+	x1:0,
+	x2:90,
 	init:function(){
 		var that = this;
 		setTimeout(function(){
@@ -10,13 +12,106 @@ var Status = {
 		that.liquidMove([["liquid1",100,0,40,"℃"],["liquid2",100,0,10,"℃"],["liquid3",100,0,20,"℃"],["liquid4",100,0,60,"℃"],["liquid5",100,0,30,"℃"],["liquid6",100,10,80,"℃"]]);
 		this.pageChanged();
 		this.tabChanges();
+//		this.lightEffect();
+		this.delayLoadiframe();
+		this.lightRotate();
 	},
-	delayIframe:function(param){
-		//延迟加载iframe标签
-		//console.log(param+"==================");
+	delayLoadiframe:function(){
 		setTimeout(function(){
-		//	$(".ztqsBox").html("<iframe src='http://47.95.109.158/#/product/"+param+"' width='100%' height='100%'></iframe>");
+			$("#light-if").attr("src","lightEffect");
 		},1000);
+	},
+	lightRotate:function(){
+		var that = this;
+		setInterval(function(){
+			that.x1 += 1;
+			that.x2 += 1;
+			$(".light1").css("transform","rotateY("+that.x1+"deg)");
+			$(".light2").css("transform","rotateY("+that.x2+"deg)");
+		},10);
+		
+	},
+	lightEffect:function(){
+		 var $container = $("#container"),
+	        $can = $("canvas#circleBox");
+	    $container.css("transform", "rotateX(60deg) scale("+this.bodyScale+")");
+	    var w, h;
+	    $can.attr("width", w = $container.outerWidth());
+	    $can.attr("height", h = $container.outerHeight());
+	    console.log(w, h);
+	    var color = "#fff";
+	    var ctx = $can[0].getContext("2d");
+	    var t1;
+
+	    ctx.lineWidth = 2;//每个细圈的线宽
+	    var fps = 11;//帧频
+	    var circleNum = 3;//多少组圆圈,也会影响速度
+	    var r = 20; //起始半径
+	    var vr = 2;//变化速率
+	    var circleDelay = (w/2-r)*(1000/fps)/(vr)/circleNum -(0-vr*12);//每组圆圈的延迟, 括号内减数用来微调首尾衔接
+	    var circles = [];
+//	    console.log("circleDelay：",circleDelay,"计算周期：",w*(1000/fps)/(2*vr));
+
+	    function Circle() {}
+	    Circle.prototype = {
+	        init: function () {
+	                this.r = r; //半径
+	                this.vr = vr ;//放大速率人
+	                this.a = 1;//透明度
+	                this.vaOuter = .93;//消失变化率
+	                this.vaInner = .85;//每个圈内部拖尾变化率
+	                this.circleStrokeNum = 20;//每组圈数,和线宽共同影响厚度
+
+	        },
+	        draw: function () {//绘制一组圆圈
+	            for (var i = 0; i < this.circleStrokeNum; i++) {
+	                ctx.strokeStyle = "rgba(70,255,120," + this.a*Math.pow(this.vaInner, i) + ")";
+	                ctx.beginPath();
+	                var r = (this.r - i > 0) ? this.r - i : 0;
+	                ctx.arc(w / 2, h / 2, r, 0, Math.PI * 2 );
+	                ctx.stroke();
+	            }
+	            this.update();
+
+	        },
+
+	        update: function () {//更新圆圈大小
+	            if (this.r < w/2) {
+	                this.r += this.vr;
+	                if (this.r > (w / 3)) {
+	                    this.a *= this.vaOuter;
+	                }
+	            } else {
+	                this.init();
+//	                console.log("时间差：",new Date()-t1);
+	            }
+	        }
+	    };
+
+
+	    function circleByCircle() {
+	        for (var i = 0; i < circleNum; i++) {
+	            setTimeout(function () {
+	                var circle = new Circle();
+	                circle.init();
+	                circles.push(circle);
+	            }, circleDelay * i)
+	        }
+	        t1 = new Date();
+	        setInterval(function () {
+	            ctx.clearRect(0, 0, w, h);
+//	            console.log("------清除画布");
+	            for (var j = 0; j < circles.length; j++) {
+	                circles[j].draw();
+	            }
+	        }, 1000/fps)
+	    }
+	    circleByCircle();
+	    /*$(function () {
+	        circleByCircle();
+
+	    })*/
+
 	},
 	tabChanges:function(){
 		var that = this;

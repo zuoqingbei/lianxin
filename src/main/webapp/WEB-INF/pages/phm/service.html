@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<meta name="PHW" content="phw二期"/>
+		<meta name="PHM" content="phm二期"/>
 		<title></title><!-- ${contextPath}/static/phm/css/common.css -->
 		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
 		<link rel="stylesheet" href="${contextPath}/static/phm/css/service.css" />
@@ -106,11 +106,10 @@
 		var times=1;//用记录该加载第几页数据
 	    var f_object="";//查询条件对象
     	$(function(){
-    		
 		    	 	$.ajax({
 		    			type:"get",
 		    			url:"${contextPath}/fault/findPageFaultInfo",
-		    			 data:{page:times,pageSize:"20",fault_name:f_object}, 
+		    			data:{page:times,pageSize:"20",fault_name:f_object}, 
 		    			success:function(data){
 		    				var faultInformation="";
 			    			$.each(data,function(index,element){
@@ -142,69 +141,69 @@
 		    	 	/***************************************************************/
     	
     	})
-									    	function showByFobject(obj){
-												//the Scroll to top
-												$(".content").scrollTop(0);
-												Service.init();
-									    		console.log(Service.myHeight,35*bodyScale);
-									    		Service.myHeight =  35*bodyScale;
-									    		
-									    		$(obj).siblings().removeClass("btnActive");
-									    		if($(obj).hasClass("btnActive")){
-									    			$(obj).removeClass("btnActive");
-									    			f_object="";
-									    			times=1;
-									    		}else{
-									    			$(obj).addClass("btnActive");
-									    			f_object=obj.innerHTML;
-									    			times=1;
-									    		};
-									    		console.log("点击times:",times);
-									    		/* if($(obj).css("color")=='rgb(102, 204, 255)'){
-									    			alert("111");
-									    			//$(obj).removeClass(".optionsBtn");
-									    			//$(obj).addClass(".btnActive");
-									    			f_object=obj.innerHTML;
-									    		}
-									    		if($(obj).css("color")=='rgb(0, 230, 115)'){
-									    			console.log(obj);
-									    			$(obj).removeClass("btnActive");
-									    			console.log($(obj).attr("class"));
-									    			
-									    			//$(obj).addClass(".optionsBtn");
-									    			f_object="";
-									    		} */
-									    		$.ajax({
-									    			type:"get",
-									    			url:"${contextPath}/fault/findPageFaultInfo",
-									    			 data:{page:times,pageSize:"20",fault_name:""}, 
-									    			success:function(data){
-									    				var faultInformation="";
-										    			$.each(data,function(index,element){
-										    				faultInformation+=
-										    				"<tr class='row'>"
-											    				+"<td class='col'>"+element.sncode+"<div class='slide'></div></td>"
-											    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-											    				+"<td class='col'>"+element.fault_name+"<div class='slide'></div></td>"
-											    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-											    				+"<td class='col'>暂无<div class='slide'></div></td>"
-											    				+"<td class='col'>暂无<div class='slide'></div></td>"
-											    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
-											    				+"<td class='col'>"+element.fault_repair+"<div class='slide'></div></td>"
-											    				+"<td class='col'>暂无<div class='slide'></div></td>"
-										    				+"</tr>";
-														
-										    			});
-										    			
-										    			$("#faultInfo").html(faultInformation);
-										    			
-										    			echartsTime();//加载 配件不同时段 需求 可传入 参数 对象值 
-									    			},
-									    			error:function(){alert("加载信息错误 ")}
-									    		}) ; 
-									    		
-									    	}
-    	var that
+    	function showByFobject(obj){
+			//the Scroll to top
+			$(".content").scrollTop(0);
+			Service.init();
+    		console.log(Service.myHeight,35*bodyScale);
+    		Service.myHeight =  35*bodyScale;
+    		
+    		$(obj).siblings().removeClass("btnActive");
+    		if($(obj).hasClass("btnActive")){
+    			$(obj).removeClass("btnActive");
+    			f_object="";
+    			times=1;
+    		}else{
+    			$(obj).addClass("btnActive");
+    			f_object=obj.innerHTML;
+    			times=1;
+    		};
+    		console.log("点击times:",times);
+    		/* if($(obj).css("color")=='rgb(102, 204, 255)'){
+    			alert("111");
+    			//$(obj).removeClass(".optionsBtn");
+    			//$(obj).addClass(".btnActive");
+    			f_object=obj.innerHTML;
+    		}
+    		if($(obj).css("color")=='rgb(0, 230, 115)'){
+    			console.log(obj);
+    			$(obj).removeClass("btnActive");
+    			console.log($(obj).attr("class"));
+    			
+    			//$(obj).addClass(".optionsBtn");
+    			f_object="";
+    		} */
+    		$.ajax({
+    			type:"get",
+    			url:"${contextPath}/fault/findPageFaultInfo",
+    			 data:{page:times,pageSize:"20",fault_name:""}, 
+    			success:function(data){
+    				var faultInformation="";
+	    			$.each(data,function(index,element){
+	    				faultInformation+=
+	    				"<tr class='row'>"
+		    				+"<td class='col'>"+element.sncode+"<div class='slide'></div></td>"
+		    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
+		    				+"<td class='col'>"+element.fault_name+"<div class='slide'></div></td>"
+		    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
+		    				+"<td class='col'>暂无<div class='slide'></div></td>"
+		    				+"<td class='col'>暂无<div class='slide'></div></td>"
+		    				+"<td class='col'>暂无编码<div class='slide'></div></td>"
+		    				+"<td class='col'>"+element.fault_repair+"<div class='slide'></div></td>"
+		    				+"<td class='col'>暂无<div class='slide'></div></td>"
+	    				+"</tr>";
+					
+	    			});
+	    			
+	    			$("#faultInfo").html(faultInformation);
+	    			
+	    			echartsTime();//加载 配件不同时段 需求 可传入 参数 对象值 
+    			},
+    			error:function(){alert("加载信息错误 ")}
+    		}) ; 
+    		
+    	}
+    	var that;
 		window.onload=function(){
 			//alert("222" +times);
 			 that = this;

@@ -42,7 +42,7 @@
 /*=============================center==============================*/
 @font-face {
 	font-family:"DS-DIGIB";
-	src: url("DS-DIGIB.ttf");
+	src: url("DS-DIGIB.TTF");
 }
 #centerData {
 	height:13%;
@@ -73,11 +73,11 @@
 	width: 69%;
 	height: 100%;
 	text-align: right;
-    line-height: 2.2em;
-    font-size: 1.3em;
-    font-family:DS-DIGIB;
-    color:#ff9f30;
-    letter-spacing: 1em;
+    line-height: 1.9em;
+    font-size: 1.6em;
+    font-family: DS-DIGIB;
+    color: #ff9f30;
+    letter-spacing: .7em;
     background: url(../images/health/number.png) no-repeat 0% 13%;
     background-size: 95% 90%;
 }
@@ -181,10 +181,10 @@ h5 {
 }
 .rightpart .zdyc,.ydqk,.zlqs {
 	width:96%;
-	height:30%;
+	height:29%;
 	background: url(../images/health/right2.png) no-repeat 100% 100%;
 	background-size: 100% 100%;
-	margin-top:1%;
+	margin-top:1.5%;
 	margin-left: 2%;
 }
 .rightpart .picBox1 {
