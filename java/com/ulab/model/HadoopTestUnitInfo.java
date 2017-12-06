@@ -124,7 +124,7 @@ public class HadoopTestUnitInfo {
 				unit.set("istesting", r.get("istesting"));
 				unit.set("testIdentification", r.get("testIdentification"));
 			}*/
-			if(unit.get("istesting")!=null&&StringUtils.isNotBlank(unit.get("istesting")+"")&&unit.getBoolean("istesting")){
+			if(unit.get("istesting")!=null&&StringUtils.isNotBlank(unit.get("istesting")+"")&&("true".equals(unit.get("istesting")+"")||"1".equals(unit.get("istesting")+""))){
 				unit.set("testunitstatus", "在测");
 			}else{
 				unit.set("testunitstatus", "停测");

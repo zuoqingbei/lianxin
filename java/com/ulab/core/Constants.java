@@ -52,6 +52,7 @@ public class Constants {
 	 * 胶南洗涤数据库（与表T_B_DB_CONFIG中config_name对应 不要随便改）
 	 */
 	public static final String CONFIGNAME_JNXD = "jnxd";//胶南洗涤数据库
+	public static final String CONFIGNAME_RUSSIA = "russia";//俄罗斯数据库
 	/**
 	 * 中海博睿整机数据库（与表T_B_DB_CONFIG中config_name对应 不要随便改）
 	 */

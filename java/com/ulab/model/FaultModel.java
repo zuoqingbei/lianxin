@@ -1,7 +1,5 @@
 package com.ulab.model;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,9 +22,6 @@ where age > ?", 18);
 	 * @return
 	 */
 	public Page<Record> ShowFault(int pageNumber,int pageSize){
-//		StringBuffer sb=new StringBuffer();
-//		sb.append("select c.f_id,c.f_object,c.f_xx_bianma,c.f_xx_miaoshu,c.f_yy_bianma,c.f_yy_miaoshu,c.f_weihao,c.f_maintenance,c.f_zr_category from phm_fault c");
-//		
 		return  Db.paginate(pageNumber, pageSize, "select c.f_id,c.f_object,c.f_xx_bianma,c.f_xx_miaoshu,c.f_yy_bianma,c.f_yy_miaoshu,c.f_weihao,c.f_maintenance,c.f_zr_category", "from phm_fault c");
 	}
 	/**
@@ -83,11 +78,6 @@ where age > ?", 18);
  * @return
  * @author chen xin
  */
-//	public List<Record> findAllFaultInfo(){
-//		String sql="select"
-//	+ " f_id,f_object,F_XX_BIANMA,F_XX_MIAOSHU,F_YY_BIANMA,F_YY_MIAOSHU,F_WEIHAO,F_MAINTENANCE,F_ZR_CATEGORY,F_DATE,F_QUYU,F_GONGMAO,F_SB_NAME,F_SB_NUMBER,product_id from PHM_FAULT ";
-//		return Db.find(sql);
-//	}
 	public List<Record> findAllFaultInfo(){
 		String sql="select"
 				+ " *  from PHM_FAULT2 ";

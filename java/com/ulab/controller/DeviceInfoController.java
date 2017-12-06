@@ -1,18 +1,11 @@
 package com.ulab.controller;
 
-//import java.util.ArrayList;
-//import java.util.HashMap;
 import java.util.List;
-//import java.util.Map;
-//import java.util.Random;
 import java.util.Map;
-
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.core.BaseController;
 import com.ulab.model.DeviceInfoModel;
-//import com.ulab.model.LabModel;
-//import com.ulab.util.JsonUtils;
 
 /**
  * @author chen xin
@@ -30,7 +23,7 @@ public class DeviceInfoController extends BaseController {
 		Record record=DeviceInfoModel.dao.findDeviceInfoById(sn);
 		renderJson(record);
 	}
-	//转发到strategy.html
+	//转发到strategy.html 系统首页
 	public void strategy(){
 		render("strategy.html");
 	}
@@ -42,6 +35,5 @@ public class DeviceInfoController extends BaseController {
 	public void findDeviceInfoStatusGroup(){
 		Map<String,List<Record>>mp=DeviceInfoModel.dao.findDeviceInfoStatusGroup();
 		renderJson(mp);
-		
 	}
 }

@@ -39,7 +39,7 @@ public class TestQuartzJobOne implements Job {
 	}
 	
 	/*********************************************************/
-	private void Device() {
+    public static void Device() {
 		List<Record> list=PhmDeviceInfoModel.dao.getAllDevice();
 		List<Record> FaultList=FaultModel.dao.findAllFaultInfo();
 		List<String> sncodeList=new ArrayList<>();

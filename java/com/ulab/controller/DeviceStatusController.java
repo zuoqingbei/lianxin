@@ -6,6 +6,7 @@ import com.ulab.core.BaseController;
 
 /**
  * @author chen xin
+ * 实时状态
  */
 @ControllerBind(controllerKey = "/deviceStatus", viewPath = "/phm")
 public class DeviceStatusController extends BaseController {

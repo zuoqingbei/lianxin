@@ -148,6 +148,21 @@ public class UlabCofig extends JFinalConfig {
 		jnxdARP.setShowSql(true);
 		me.add(jnxdARP);
 		/**胶南洗涤数据库END**/
+		
+		
+		/**俄罗斯数据库START**/
+		DruidPlugin russia = new DruidPlugin(this.getProperty("russia.url"), this.getProperty("russia.user"),
+				this.getProperty("russia.password"), getProperty("russia.driver"));
+		russia.setInitialSize(5);
+		russia.setMaxActive(5);
+		russia.setMinIdle(3);
+		me.add(russia);
+		ActiveRecordPlugin russiaARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_RUSSIA, russia);
+		russiaARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
+		russiaARP.setShowSql(true);
+		me.add(russiaARP);
+		/**俄罗斯数据库END**/
+		
 
 		/**重庆实验室hive测试库信息设置Impala数据源  **/
 
