@@ -445,7 +445,7 @@ function getTopicHtml(currentPoint) {
         '   <img src="' + imgUrl + '" alt="默认图片">' +
         '   <div class="textBox">' +
         '   <h4 style="">' + title + '</h4>' +
-        '   <div class="labNumber">实验室数量：' + value + '</div>' +
+        '   <div class="labNumber">共 ' + value + ' 家实验室</div>' +
         '   <a data-centerId="' + centerId + '" href="javascript:void(0);">进入实验室&nbsp;</a>' +
         '   </div>' +
         '</div>' +

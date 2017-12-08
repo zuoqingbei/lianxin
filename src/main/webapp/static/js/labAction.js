@@ -1,4 +1,4 @@
- var $lab_content_r = $(".lab_content_r");//国内外右边的大框
+var $lab_content_r = $(".lab_content_r");//国内外右边的大框
 var $monitoring = $lab_content_r.find(".monitoring");//曲线监控页
 var $sheshi_tab_list = $monitoring.find(".sheshi_tab_list");//曲线左侧的台位列表
 var $prevTaiwei = null;
@@ -154,6 +154,7 @@ function videoShow(id, url, mainStream) {
 }
 
 $(function () {
+    smallVideoMove();
 
     loadAllDataCenterAjax();
     //中心实验室顶上的“返回总状态”按钮
@@ -335,16 +336,16 @@ $(function () {
         }
     });
     //画中画的视频隐藏显示
-    $(".smallVideoBox").on("click", ".hideShow", function () {
-        var $video = $(this).next();
+    $(".smallVideoBox").on("click", ".hideShow>span", function () {
+        var $video = $(this).parent().next();
         if ($video.is(":visible")) {
             $video.hide();
-            $(this).children(".text").text("点击显示监控");
-            $(this).children(".icon").css("background-image", "url(../static/img/lab/browse.png)")
+            $(this).parent().children(".text").text("点击显示监控");
+            $(this).parent().children(".icon").css("background-image", "url(../static/img/lab/browse.png)")
         } else {
             $video.show();
-            $(this).children(".text").text("点击隐藏");
-            $(this).children(".icon").css("background-image", "url(../static/img/lab/close.png)")
+            $(this).parent().children(".text").text("点击隐藏");
+            $(this).parent().children(".icon").css("background-image", "url(../static/img/lab/close.png)")
         }
     });
 
@@ -388,6 +389,7 @@ $(function () {
     console.log("bodyScale", bodyScale);
     $(".item.moduleMakers>iframe").css("transform", "scale(" + bodyScale * .93 + ")");
 
+
     // 数据分析中的合格率、及时率、满意度
     initThree();//合格率
     initfour();//及时率
@@ -395,3 +397,48 @@ $(function () {
 
     labAllForCenterLabAjax();
 });
+
+function smallVideoMove() {
+    var $smallVideoBox = $(".smallVideoBox");
+    $smallVideoBox.mousedown(function (ev) {
+        var parent = $(this).parent()[0];
+        var smallVideoBox = this;
+        var distanceX = ev.clientX - this.offsetLeft;
+        var distanceY = ev.clientY - this.offsetTop;
+        var maxLeft = parent.offsetWidth - smallVideoBox.offsetWidth;
+        var maxTop = parent.offsetHeight - smallVideoBox.offsetHeight;
+        // document.onmousemove = function (ev) {
+        // $smallVideoBox[0].style.left = ev.
+        //             document.onmousemove = function (ev) {
+        document.onmousemove = function (ev) {
+            console.log("鼠标坐标：",ev.clientX,ev.clientY);
+            console.log("距离：",distanceX,distanceY);
+            smallVideoBox.style.left = ev.clientX - distanceX + "px";
+            smallVideoBox.style.top = ev.clientY - distanceY + "px";
+
+            if(parseInt(smallVideoBox.style.left.slice(0,-2))<0){
+                smallVideoBox.style.left =0
+            }
+            if(parseInt(smallVideoBox.style.top.slice(0,-2))<0){
+                smallVideoBox.style.top =0
+            }
+            if(parseInt(smallVideoBox.style.left.slice(0,-2))>maxLeft){
+                smallVideoBox.style.left =maxLeft+"px";
+            }
+            if(parseInt(smallVideoBox.style.top.slice(0,-2))>maxTop){
+                smallVideoBox.style.top =maxTop+"px";
+            }
+            console.log("smallVideoBox",smallVideoBox)
+            console.log("maxLeft",maxLeft,"maxTop",maxTop)
+        };
+        document.onmouseup = function () {
+            document.onmousemove = null;
+            document.onmouseup = null;
+        }
+        $(".item.iframe")[0].onmouseleave = function () {
+            document.onmousemove = null;
+            document.onmouseup = null;
+        }
+    })
+
+}
