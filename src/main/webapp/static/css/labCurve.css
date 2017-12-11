@@ -33,7 +33,9 @@
 .shishi_right > div > iframe {
     height: 100%;
 }
-
+.shishi_right >.item.iframe{
+    position: relative;
+}
 .sheshi_right_top {
     height: 8%;
     width: 100%;
