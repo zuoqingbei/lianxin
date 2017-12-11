@@ -139,11 +139,12 @@ table tbody tr:first-child td {
 table tr {
 	height:2em;
 }
-table tr th,table tr td{
-	width:1%;
+table tr td{
+	width:23%;
 }
 
 table tr th {
+	width:1%;
 	font-weight:500;
 }
 

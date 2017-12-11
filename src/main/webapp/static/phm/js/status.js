@@ -736,136 +736,178 @@ var Status = {
 		zll.setOption(zllOptions);
 	},
 	ztqsCharts:function(){
+		/*状态趋势tab页*/
 		var that = this;
-		//返回一个随机data形式的数组
-		function randomData() {
-		    now = new Date(+now + 10 *oneDay);
-		    value = value +Math.random() - 0.48 ;
-
-			return [
-				now, Math.round(value)
-			]
-		    
-		}
+		
 		var ztqsDom = echarts.init(document.getElementById("ztqsCanvas"));
-		var data = [];
-		var value = Math.random() * 30;
-		var now = +new Date(2010,1,1);
-		var oneDay = 24 * 3600 * 1000;
+		var color = ["#64ccff","#54c6e7","#dd0617","#3f6e84","#5544fa","#122ffc","#ee554a","#ade56a","#e4820f","#f85a64"];
+		var xtxt;
+		var axisData = [];
+		function returnAxisData(){
+			xtxt = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+			return xtxt;
+		}
 		
-		
-		//初始化的时候的data
-		for (var i = 0; i < 500; i++) {
-		    data.push(randomData());
+		//初始化x轴坐标
+		for (var i = 0; i <10; i++) {
+		    axisData.push(returnAxisData());
 		}
 		
 		
-		var ztqsOptions = {
-				color:['#64ccff'],
-		      tooltip : {
-		        trigger: 'axis',
-		        axisPointer:{
-		            show: true,
-		            type : 'cross',
-		            lineStyle: {
-		                type : 'dashed',
-		                width : 10*that.bodyScale
-		            }
-		        },
-		        textStyle:{
-		        	color:'#fff',
-		        	fontSize:13*that.bodyScale
-		        },
-		        formatter : function (params) {
-		            return params.seriesName + ' : [ '
-		                   + new Date(+params.value[0]).toLocaleString()+ ', ' 
-		                   + params.value[1] + ' ]';
-		        }
-		    },
-		    legend: {
-		        data:['数据1'],
-		        textStyle:{
-		        	color:'#66ccff'
-		        },
-		    },
-		    xAxis : [
-		        {
-		            type: 'time',
-		            axisLabel:{
-		            	textStyle:{
-		             		color:'#fff',
-		             		fontSize:13*that.bodyScale
-		             	}
-		            },
-		            splitLine:{
-		            	show:false
-		            },
-		            axisLine: {
-		                lineStyle: {
-		                    color: '#66ccff'
-		                }
-		            },
-		        }
-		    ],
-		    yAxis : [
-		        {
-		            type: 'value',
-		            axisLine: {
-		                lineStyle: {
-		                    color: '#66ccff',
-		             	
-		                }
-		            },
-		             axisLabel:{
-		             	textStyle:{
-		             		color:'#fff',
-	             			fontSize:13*that.bodyScale
-		             	}
-		            },
-		             splitLine:{
-		            	show:false
-		            },
-		            min:0,
-		            max:50
-		        }
-		    ],
-		    series : [
-		        {
-		            name:'数据1',
-		            type:'line',
-//		            data:[
-//		                [new Date('2010-1-1'), 10], [new Date(), 7]
-//		            ],
-					data:data,
-					itemStyle:{
-						normal:{
-							lineStyle:{
-								color:'#64ccff'
-							}
+		var ztqsOptions = {};
+		ztqsDom.showLoading();
+		$.ajax({
+			url:"http://localhost:8088/api/yzd/product/"+sncode,
+			
+			type:"get",
+			success:function(res){
+				//console.log(res.info)
+				var legendData = [];//用来存放温度的键的数组，也就是图例的数据
+				var data = [];//用来存放温度的值的数组
+				var lineArr = [];//用来存放每条线的数组
+				var seriesArr = [];//用来存放series的数组
+				var colorArr = [];//用来存放每条线的颜色数组
+				
+				//遍历对象info的键
+				var n = 0;
+				for(var Key in res.info) {
+					
+					//判断Key是否含有T，是的话就是温度
+					if(Key.indexOf("T") != -1 && Key.length <5) {
+						legendData.push({name:Key,textStyle:{color:color[n]}});
+						data.push(res["info"][Key]);
+						n++;
+					}
+				}
+				//console.log(legendData)
+				//console.log(data)
+				
+				var indicatorArr =  res.monitorConf;//用来存放数据指标的数组
+				for(var i=0;i<legendData.length;i++){
+					//遍历提示数据的长度，来改变提示值，例如：t1冷藏室温度
+					for(var k=0;k<indicatorArr.length;k++){
+						if(indicatorArr[k].feature == legendData[i].name){
+							var str = indicatorArr[k]["param"]["title"];
+							//console.log("执行了")
+							legendData[i].name += str;
 						}
 					}
-		           
-		        },
-		        
-		    ]
-		};
-		
-		 ztqsDom.setOption(ztqsOptions);
-		
-		this.t1 = setInterval(function () {
-		
-		    for (var i = 0; i < 2; i++) {
-		        data.shift();
-		        data.push(randomData());
-		    }
-//			console.log(data)
-		    ztqsDom.setOption({
-		        series: [{
-		            data: data
-		        }]
-		    });
-		}, 1000);
-		
+					
+					//遍历提示数据的长度，来生成series的数组
+					lineArr = [];
+					for(var j=0;j<10;j++){
+						//每条线要显示几个点
+						lineArr.push(data[i]);
+					}
+					colorArr.push(color[i]);
+					seriesArr.push({
+						name:legendData[i].name,
+						type:'line',
+						data:lineArr,
+						itemStyle:{
+							normal:{
+								lineStyle:{
+									color:colorArr[i],
+									width:2*that.bodyScale
+								}
+							}
+						}
+					})
+				}
+				
+				
+				ztqsDom.hideLoading();
+				ztqsDom.setOption({
+					color:['#64ccff'],
+					 grid:{
+					 	borderWidth:0,
+					 	x:105*that.bodyScale,
+					 	y:55*that.bodyScale,
+					 	x2:25*that.bodyScale,
+					 	y2:35*that.bodyScale,
+					 },
+				     tooltip : {
+				        trigger: 'axis',
+				        axisPointer:{
+				            show: true,
+				            type : 'cross',
+				            lineStyle: {
+				                type : 'dashed',
+				                width : 10*that.bodyScale
+				            }
+				        },
+				        textStyle:{
+				        	color:'#fff',
+				        	fontSize:13*that.bodyScale
+				        },
+				       /* formatter : function (params) {
+				        	console.log(params)
+				        	var sname = "";
+				        	
+				            for(var i=0;i<params.length;i++){
+				            	if(params[i]["0"] == legendData[i]["name"]){
+				            		console.log(params[i]["0"],legendData[i]["name"])
+				            		sname = params[i]["0"];
+				            	}
+				            }
+				            return sname;
+				        }*/
+				    },
+				    legend: {
+				        data:legendData,
+				        textStyle:{
+				        	fontSize:10*that.bodyScale,
+				        },
+				        itemWidth:13*that.bodyScale,
+				        itemHeight:13*that.bodyScale
+				    },
+				    xAxis : [
+				        {
+				            type: 'category',
+				            axisLabel:{
+				            	textStyle:{
+				             		color:'#fff',
+				             		fontSize:13*that.bodyScale
+				             	}
+				            },
+				            splitLine:{
+				            	show:false
+				            },
+				            axisLine: {
+				                lineStyle: {
+				                    color: '#66ccff',
+				                    width:2*that.bodyScale,
+				                }
+				            },
+				            data:axisData
+				        }
+				    ],
+				    yAxis : [
+				        {
+				            type: 'value',
+				            axisLine: {
+				                lineStyle: {
+				                    color: '#66ccff',
+				                    width:2*that.bodyScale,
+				                }
+				            },
+				             axisLabel:{
+				             	textStyle:{
+				             		color:'#fff',
+			             			fontSize:13*that.bodyScale
+				             	}
+				            },
+				             splitLine:{
+				            	show:false
+				            },
+				            //min:0,
+				            //max:50
+				        }
+				    ],
+				    series : seriesArr
+				});
+			}
+		});
 		
 	},
 }
