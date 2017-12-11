@@ -509,37 +509,38 @@
 	float: left;
 }
 .syfxBox .problemBox {
-	width:32%;
+	width:48%;
 	height:46%;
+	margin: 0 1% 1%;
 	float:left;
 	background: url(../images/status/syfx-border.png) no-repeat 100% 100%;
 	background-size: 100% 100%;
 }
 
 .syfxBox .margleft {
-	margin-left:2%;
-}
+/* 	margin-left:2%;
+ */}
 .syfxBox .margtop {
-	margin-top:2%;
-}
+/* 	margin-top:2%;
+ */}
 
 .problemBox .imgBox {
 	float:left;
-	width:63%;
+	width:48%;
 	height:85%;
 	margin-left: 3%;
 	margin-top:3%;
 }
 .problemBox .rightInfo {
 	float:left;
-	width:28%;
+	width:43%;
 	height:85%;
 	margin-left: 3%;
 	margin-top:3%;
 }
 
 .problemBox .rightInfo h6{
-	width:90%;
+	width:50%;
 	height:17%;
 	background:url(../images/status/tborder.png) no-repeat 100% 100%;
 	background-size: 100% 100%;
@@ -554,7 +555,7 @@
 .problemBox .rightInfo p {
 	margin-top:3%;
 	padding-left:6%;
-	font-size: .8em;
+	font-size: .7em;
 }
 .problemBox .rightInfo p:first-of-type {
 	margin-top:6%;

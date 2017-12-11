@@ -11,7 +11,7 @@ Target Server Type    : ORACLE
 Target Server Version : 110200
 File Encoding         : 65001
 
-Date: 2017-11-16 09:39:15
+Date: 2017-12-11 09:30:08
 */
 
 
@@ -58,6 +58,8 @@ COMMENT ON COLUMN "LHJX01"."T_B_LAB_CODE"."DEL_FLAG" IS '删除标志位0 正常
 -- ----------------------------
 INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('77', '57', 'USLABKT', 'Air conditioners', '空调', '美国空调', '0', '0', 'json', null, '1', '0');
 INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('78', '58', 'USLABBX', 'AP-5 Thermal', '冰箱', '美国冰箱', '0', '0', 'json', null, '1', '0');
+INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('83', '29', 'RUSBXX001', '冰箱性能室', '冰箱', '俄罗斯园区', '0', '0', 'db', 'russia', '2', '0');
+INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('84', '29', 'RUSBXC001', '冰箱抽样室', '冰箱', '俄罗斯园区', '0', '0', 'db', 'russia', '1', '0');
 INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('1', '4', 'JZKTC001', '抽样室(性能)', '空调', '胶州园区', '0', '0', 'db', 'jzkt', '1', '0');
 INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('2', '4', 'JZKTC002', '抽样室(安全)', '空调', '胶州园区', '0', '0', 'db', 'jzkt', '2', '0');
 INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('3', '48', 'JZKTC003', '抽样室(性能)', '空调', '胶州园区', '0', '0', 'db', 'jzkt', '1', '0');
@@ -133,6 +135,10 @@ INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('73', '56', 'SDBXC002', '抽样2室'
 INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('74', '56', 'SDBXC003', '抽样3室', '冷柜', '佛山冷柜', '0', '0', 'db', 'chongqinghive', '12', '0');
 INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('75', '56', 'SDBXC004', '抽样4室', '冷柜', '佛山冷柜', '0', '0', 'db', 'chongqinghive', '13', '0');
 INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('76', '56', 'SDBXC005', '抽样5室', '冷柜', '佛山冷柜', '0', '0', 'db', 'chongqinghive', '14', '0');
+INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('79', '35', 'JNHERXYJ1', '性能', '洗涤', '胶南园区', '0', '0', 'db', 'jnxd', '1', '0');
+INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('80', '35', 'JNHERXYJ1', '安全', '洗涤', '胶南园区', '0', '0', 'db', 'jnxd', '2', '0');
+INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('81', '35', 'JNHERXYJ2', '高低温', '洗涤', '胶南园区', '0', '0', 'db', 'jnxd', '3', '0');
+INSERT INTO "LHJX01"."T_B_LAB_CODE" VALUES ('82', '35', 'JNHERXYJ1', '燃气实验室', '洗涤', '胶南园区', '0', '0', 'db', 'jnxd', '4', '0');
 
 -- ----------------------------
 -- Indexes structure for table T_B_LAB_CODE

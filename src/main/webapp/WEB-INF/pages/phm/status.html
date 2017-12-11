@@ -144,7 +144,7 @@
 		            $("body").css("font-size", bodyFontSize);
 		            $("#content").css("width", pageW);
 		            $(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
-		            console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+		           // console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
 		        }
 		        pageResize()
    		</script>
@@ -610,23 +610,29 @@
 				
 			}
 			/**********************************使用分析 **************************************************/
+			var useAnalysisPageSize=4;
 			function useAnalysis(){
 				if(sncode==""){
 					return;
 				}
 					$.ajax({
 						url:"${contextPath}/data/getDeviceUseAnalysisByDeviceSncode",
-						type:"get",
+						type:"post",
 						data:{'device_info_sncode':sncode},
 						success:function(data){
 							var f=1;
-								var first="";var second="";
-								var margleft=""; var margtop="";
+							var first="";var second="";
+							var margleft=""; var margtop="";
+							if(data.length<=useAnalysisPageSize){
+								hidePageBtn();
+							}else{
+								showPageBtn();
+							}
 							$.each(data,function(index,element){
-								 if(f%3!=1){
+								 if(f%2!=1){
 									 margleft="margleft";
 								 }
-								 if(f%6>3||(f%6==0&&f>3)){
+								 if(f%useAnalysisPageSize>2||(f%useAnalysisPageSize==0&&f>2)){
 									 margtop="margtop";
 								 }
 									var content=
@@ -635,12 +641,27 @@
 												"<img src='${contextPath}/static/phm/images/"+element.imageurl+"' alt='' />"+
 											"</div>"+
 											"<div class='rightInfo'>"+
-												"<h6>"+element.description+"</h6>"+
-												/* "<p>当前程度：</p>"+
-												"<p>"+element.status+"</p>"+ */
-											"</div>"+
-										"</div>";
-									if(f>6){
+												"<h6>"+element.title+"</h6>";
+									if(element.desc1!=""&&element.desc1!=null){
+										content+="<p>"+element.desc1+"</p>";
+									}
+									if(element.desc2!=""&&element.desc2!=null){
+										content+="<p>"+element.desc2+"</p>";
+									}
+									if(element.desc3!=""&&element.desc3!=null){
+										content+="<p>"+element.desc3+"</p>";
+									}
+									if(element.desc4!=""&&element.desc4!=null){
+										content+="<p>"+element.desc4+"</p>";
+									}
+									if(element.result1!=""&&element.result1!=null){
+										content+="<p>分析："+element.result1+"</p>";
+									}
+									if(element.result2!=""&&element.result2!=null){
+										content+="<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+element.result2+"</p>";
+									}
+									content+="</div></div>";
+									if(f>useAnalysisPageSize){
 										second+=content;
 									}else{
 										first+=content;
@@ -946,7 +967,7 @@
 					
 						//var arr=[ [{name:good[0].name},{name:'基线'}] ];
  
-						useAnalysis();//更新使用分析
+						//useAnalysis();//更新使用分析
 						timeStatus();//更新实时状态 
 						setTimeout(function(){
 							mapChina(serious,general,light,good,arr,geoCoord);
@@ -1217,9 +1238,19 @@
 				timeStatus();
 			}
 			function timeStatusChange(){
+				 showPageBtn();
 				 pageNo=1;//记录第几页
 				 $("#firstPage").html("");
 				 timeStatus();
+			}
+			//显示下一页按钮
+			function showPageBtn(){
+				$("#pageLeft").css("visibility","visible");
+				$("#pageRight").css("visibility","visible");
+			}
+			function hidePageBtn(){
+				$("#pageLeft").css("visibility","hidden");
+				$("#pageRight").css("visibility","hidden");
 			}
 			/**************************定义 接口数据对照关系 *********************************************************/
 			var nowInfo=["M1","M2","S1","S2","S3","S4","S5","S6","S7","S8","S9","S10","S11","S12","S13"];

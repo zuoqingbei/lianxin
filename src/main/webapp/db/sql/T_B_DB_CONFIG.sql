@@ -11,7 +11,7 @@ Target Server Type    : ORACLE
 Target Server Version : 110200
 File Encoding         : 65001
 
-Date: 2017-11-16 09:30:37
+Date: 2017-12-11 09:29:43
 */
 
 
@@ -49,7 +49,9 @@ COMMENT ON COLUMN "LHJX01"."T_B_DB_CONFIG"."PARTITION" IS '是否使用了分区
 INSERT INTO "LHJX01"."T_B_DB_CONFIG" VALUES ('3', 'chongqinghive', 'db_hive_ulab.s_bxlab_orcl_talend_test_testmetadata', 'db_hive_ulab.s_bxlab_orcl_talend_test_sensorinfo', 'db_hive_ulab.s_bxlab_orcl_talend_test_testunitinfo', 'db_hive_ulab.s_bxlab_orcl_talend_test_sensortypeinfo', 'db_hive_ulab.s_bxlab_orcl_talend_test_testdata', '1 ');
 INSERT INTO "LHJX01"."T_B_DB_CONFIG" VALUES ('4', 'jnrsq', 'Tb_TestMetadata', 'tb_sensorinfo', 'Tb_TestUnitInfo', 'Tb_SensorTypeInfo', 'Tb_Testdata', '0 ');
 INSERT INTO "LHJX01"."T_B_DB_CONFIG" VALUES ('5', 'zhbrzj', 'Tb_TestMetadata', 'tb_sensorinfo', 'Tb_TestUnitInfo', 'Tb_SensorTypeInfo', 'Tb_Testdata', '0 ');
+INSERT INTO "LHJX01"."T_B_DB_CONFIG" VALUES ('7', 'russia', 'Tb_TestMetadata', 'tb_sensorinfo', 'Tb_TestUnitInfo', 'Tb_SensorTypeInfo', 'Tb_Testdata', '0 ');
 INSERT INTO "LHJX01"."T_B_DB_CONFIG" VALUES ('1', 'thailand', 'Tb_TestMetadata', 'tb_sensorinfo', 'Tb_TestUnitInfo', 'Tb_SensorTypeInfo', 'Tb_Testdata', '0 ');
+INSERT INTO "LHJX01"."T_B_DB_CONFIG" VALUES ('6', 'jnxd', 'Tb_TestMetadata', 'tb_sensorinfo', 'Tb_TestUnitInfo', 'Tb_SensorTypeInfo', 'Tb_Testdata', '0 ');
 INSERT INTO "LHJX01"."T_B_DB_CONFIG" VALUES ('2', 'jzkt', 'Tb_TestMetadata', 'tb_sensorinfo', 'Tb_TestUnitInfo', 'Tb_SensorTypeInfo', 'Tb_Testdata', '0 ');
 
 -- ----------------------------
