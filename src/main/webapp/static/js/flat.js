@@ -25,22 +25,21 @@ function tipResize() {
 
 $(function () {
     tipResize();
+
     //从地图提示框内直接打开实验室曲线
     $("body").on("click", "#echartTips .echart_content>.textBox>a", function () {
         var centerId = $(this).data("centerid");
-        var $centerList = $('.lab .lab_content_l .switchBox>ul>li.noChildren,.lab .lab_content_l .switchBox>ul>li>ul>li', parent.document);
-        $centerList.each(function (index, elem) {
-            if ($(elem).data("centerid") === centerId) {
-                var $headerBtn = $(elem).parents(".switchBox").prev().find("ul>li");
-                if ($(elem).parents(".inland").length > 0) {
-                    $headerBtn.eq(0).click();
-                } else {
-                    $headerBtn.eq(1).click();
-                }
-                $(elem).click();
-                return false;
-            }
-        });
+
+        if($(".fullScreen_map",parent.document).length>0){//如果是从地图全屏的提示框进入，则需跳转并在url上挂参。
+            var url = location.href.slice(0,location.href.lastIndexOf("/"))+"/full?toLabData&centerId="+centerId;
+            console.log("大屏",url);
+            parent.location.href = url;
+        }else{
+            $(".toLabData",parent.document).click();
+            parent.toCenterLab(centerId);
+        }
+
+
 
     });
 
@@ -242,7 +241,7 @@ function seriesData(data) {
             effect: {
                 show: true,
                 scaleSize: 1,
-                period: 5 * bodyScale,
+                period: 25 * bodyScale,
                 color: '#ff0',
                 shadowBlur: 10 * bodyScale
             },
@@ -435,14 +434,12 @@ function getTopicHtml(currentPoint) {
     var url = "";
     var centerId = currentPoint.centerId;
     var imgUrl = currentPoint.imgUrl;
-    /*if((value=="0"&&title=="青岛")||title==undefined){
-    	return "";
-    }*/
-    console.log("centerId",centerId)
+    console.log("imgUrl",imgUrl)
+
     return $((centerId ? ' <div class="echart_tip">' : ' <div class="echart_tip noCenterData">') +
-    // return $(' <div class="echart_tip noCenterData">' +
         '<div class="dialog_title echart_content">' +
-        '   <img src="' + imgUrl + '" alt="默认图片">' +
+        //下面设置了没有图片时的默认显示
+        '   <img src="' + (imgUrl||'../static/img/labMain/RussiaCenter.jpg') + '" alt="默认图片">' +
         '   <div class="textBox">' +
         '   <h4 style="">' + title + '</h4>' +
         '   <div class="labNumber">共 ' + value + ' 家实验室</div>' +

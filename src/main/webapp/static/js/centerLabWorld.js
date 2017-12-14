@@ -535,7 +535,7 @@ function joinSeriseWorld(data, name, index, colorIndex) {
             xDataWorld.push(parseInt(parseFloat(data[x].name) * 60));
         }
     };
-    console.log(data.length+"---endStart="+endStart+"---startTime="+startTime)
+    // console.log(data.length+"---endStart="+endStart+"---startTime="+startTime)
     //模拟空白x轴
     mockXdataMethodWorld(endStart);
     //console.log(dataArr)

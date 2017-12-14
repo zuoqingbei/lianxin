@@ -66,7 +66,9 @@ function loadAllDataCenterAjax() {
         $(".inland").html(createDataCenterHtml(data, 0));
         $(".abroad").html(createDataCenterHtml(data, 1));
         $(".inland>li:eq(0)").trigger("click");
-        //alert(dataCenterMap.get("1"));
+
+        //右四屏切换到数据中心
+        toLabData();
     });
 }
 
