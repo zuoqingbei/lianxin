@@ -191,24 +191,12 @@ function navSelectA() {//这里会触发地图中要加载的数据
             selectActLi($(this));
         }
     });
-    //点击中海博睿切换右边页面上
-/*
-    var $flatBottomSwitchLi = $("#l.left3x3").find(".flat-footer ul.legend-bottom li");
-    $flatBottomSwitchLi.find("a").click(function () {
-        if($(this).text() ==="中海博睿"){
-            $(".lab").show().siblings("div").not("#l").hide();
-
-        }
-    })
-*/
 }
 //地球右上角区域的数字样式
 function sphereRTnumberShow(n) {
     for (var k = 0; k < $(".sphere-right-top .chartBorder ul").length; k++) {
         // console.log("~~~~~~~~~~~~~~~~~~~",$(".sphere-right-top .chartBorder ul").length,n)
         for (var j = 0; j < n.length; j++) {
-
-
             var $flatLTnumber = $(".sphere-right-top .chartBorder ul").eq(k).find("li").eq(j).find(".allnum");
             var str = n[j] + "";
             var newStr = "";
@@ -280,14 +268,37 @@ function sphereRBscroll() {
         })
     }
 }
+//从平面地图的提示框打开实验室
+function toCenterLab(centerId) {
+    var $centerList = $('.lab .lab_content_l .switchBox>ul>li.noChildren,.lab .lab_content_l .switchBox>ul>li>ul>li');
+        $centerList.each(function (index, elem) {
+        if ($(elem).data("centerid") === centerId) {
+            var $headerBtn = $(elem).parents(".switchBox").prev().find("ul>li");
+            if ($(elem).parents(".inland").length > 0) {
+                $headerBtn.eq(0).click();
+            } else {
+                $headerBtn.eq(1).click();
+            }
+            setTimeout(function () {//如果不延迟则不能完全实现模拟的点击效果，原因不明
+                $(elem).click();
+            },600);
 
-//打开实验室数据中心按钮
+            return false;
+        }
+    });
+}
+
+//打开实验室数据中心页面，在数据中心列表加载完后调用
 function toLabData() {
     var url = window.location.href;
     // console.log(url);
     if(url.indexOf("toLabData")>-1){
         $(".lab").show().siblings("div").not("#l").hide();
-
+    }
+    if(url.indexOf("centerId")>-1){
+        var centerId = parseInt(url.slice(url.lastIndexOf("=")+1)) ;
+        //打开具体某个数据中心
+        toCenterLab(centerId);
     }
     $(".toLabData").click(function(){
         $(".lab").show().siblings("div").not("#l").hide();
@@ -317,8 +328,8 @@ $(function () {
     navSelectA();
     //球形地图右下角的广告滚动
     sphereRBscroll();
-    //打开实验室数据中心按钮
-    toLabData();
+    //打开实验室数据中心按钮,不能写在这里，因为执行时可能数据中心列表还未加载完
+    // toLabData();
     // $(".fullScreen_map .sphere-left-bottom iframe")[0].contentWindow.run(300);
 
     // $("#iframe.map")[0].contentWindow.createArrData(productCode, labType);
