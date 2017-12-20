@@ -104,7 +104,7 @@
 }
  /*视图宽和高必须是盒子每个面宽高与font-size的em值的乘积，.box的宽高必须是100%，才能使盒子旋转的中心在几何中心*/
         .view {
-            margin-top: 3em;
+            margin-top: 2em;
             perspective: 72em;
             width: 16em;
             height: 16em;
@@ -137,7 +137,7 @@
         }
 
         div.box_front, div.box_back, div.box_left, div.box_right {
-            height: 16em;
+            height: 18em;
         }
 		
 		
