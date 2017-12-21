@@ -15,6 +15,195 @@ var Status = {
 //		this.lightEffect();
 		this.delayLoadiframe();
 		this.lightRotate();
+		
+	},
+	smycEcharts:function(){
+		/**
+		 * 寿命预测函数
+		 */
+		function getMyDate(str){  
+			/*
+			 * 毫秒数转化成固定格式
+			 */
+            var oDate = new Date(str),  
+            oYear = oDate.getFullYear(),  
+            oMonth = oDate.getMonth()+1,  
+            oDay = oDate.getDate(),  
+            oHour = oDate.getHours(),  
+            oMin = oDate.getMinutes(),  
+            oSen = oDate.getSeconds(),  
+            oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) +':'+ getzf(oMin) +':'+getzf(oSen);//最后拼接时间  
+            return oTime;  
+        };  
+        //补0操作  
+        function getzf(num){  
+            if(parseInt(num) < 10){  
+                num = '0'+num;  
+            }  
+            return num;  
+        }  
+		var that = this;
+		var smycDom = echarts.init(document.getElementById("smycCanvas"));
+		smycDom.showLoading();
+		$.ajax({
+			url:"http://10.138.87.129/api/yzd/20171026BX007/prognostics",
+			type:"get",
+			success:function(res){
+				smycDom.hideLoading();
+				console.log(res);
+				
+				var eol = getMyDate(+res[0]["eol"]);//预测 失效时间
+				if(eol<0){
+					$(".totalInfo").html("设备正常，不需要预测！");
+					return;
+				}
+				$(".itemf").find("span").html(eol);
+				
+				
+				//计算剩余寿命
+				var time = +res[0]["eol"] - new Date();//剩余毫秒数
+				if(time<0){
+					$(".items").find("span").html("已经失效！");
+				}else{
+					time = new Date(time).getDate();//剩余天数
+					$(".items").find("span").html(time);
+				}
+					
+				
+				//echarts
+				var title = res[0]["id"]; 
+				var dataArr = res[0]["input"];
+				var xArr = [];//存放x值
+				var yArr = [];//存放y值
+				var disablePointer = [[eol,0]];
+				for(var i=0;i<dataArr.length;i++){
+					dataArr[i][0] = getMyDate(dataArr[i][0]);
+					//dataArr[i][2] = 100*that.bodyScale;
+					xArr.push(dataArr[i][0]);
+					yArr.push(dataArr[i][1]);
+				}
+				//dataArr.push([eol,0]);//将失效时间放入数组中
+				xArr.push(eol);
+				yArr.push(0);
+				console.log(dataArr)
+				var smycEchartOptions = {
+					color:["#fff"],
+					title:{
+						show:true,
+						text:title+"寿命预测图",
+						x:"center",
+						textStyle:{
+							color:"#fff",
+							//fontSize:25*that.bodySize,
+						}
+					},
+					 grid:{
+					 	borderWidth:0,
+					 	x:55*that.bodyScale,
+					 	y:55*that.bodyScale,
+					 	x2:25*that.bodyScale,
+					 	y2:35*that.bodyScale,
+					},
+					legend:{
+						show:true,
+						data:[{name:"分布点"},{name:"预测曲线"},{name:"失效点"}],
+						textStyle:{
+							color:"#fff",
+							fontSize:13*that.bodyScale,
+						},
+						x:"right",
+						orient:"vertical",
+					},
+					tooltip:{
+						formatter:"{a}:{c}",
+						//hideDelay:1000,
+						axisPointer:{
+							type:"line",
+							lineStyle:{
+								color:"#fff",
+								type:"dashed",
+								width:2*that.bodyScale,
+							},
+						}
+					},
+					xAxis:[{
+						type:"category",
+						data:xArr,
+						axisLine:{
+							show:false
+						},
+						axisLabel:{
+							textStyle:{
+								color:"#fff",
+								fontSize:13*that.bodyScale,
+							},
+							interval:0,
+						},
+						splitLine:{
+							show:false,
+						}
+					}],
+					yAxis:[{
+						type:"value",
+						splitLine:{
+							show:false,
+						},
+						axisLine:{
+							show:false
+						},
+						axisLabel:{
+							textStyle:{
+								color:"#fff",
+								fontSize:13*that.bodyScale,
+							},
+							interval:0,
+						},
+					}],
+					series:[
+					  {
+						type:"scatter",
+						data:dataArr,
+						name:"分布点",
+						itemStyle:{
+			        	   normal:{
+			        		   color:"#0f0",
+			        	   }
+			           }
+					  },
+					  {
+							type:"scatter",
+							data:disablePointer,
+							name:"失效点",
+							itemStyle:{
+				        	   normal:{
+				        		   color:"#ff0",
+				        	   }
+				           }
+						  },
+					  {
+						  type:"line",
+						  name:"预测曲线",
+						  	symbol:'none',  //这句就是去掉点的  
+				           type:'line',  
+				           smooth:true,  //这句就是让曲线变平滑的  
+				           stack: '总量',  
+				           data:yArr,
+				           itemStyle:{
+				        	   normal:{
+				        		   color:"#d00",
+				        		   lineStyle:{
+				        			   width:2*that.bodyScale,
+				        		   }
+				        	   }
+				           }
+					  }
+					],
+				}
+				
+				smycDom.setOption(smycEchartOptions);
+			}
+			
+		})
 	},
 	delayLoadiframe:function(){
 		setTimeout(function(){
@@ -208,9 +397,20 @@ var Status = {
 			$(".ztqsBox").css("display","none");
 			$(".gzzdBox").css("display","block");
 			$(".gzycBox").css("display","none");
+			//改变宽度
+			$(".state-box").css("width","100%");
+			
+			
+			//别的tab页面在第二页的时候点进来确保能显示
+			$(".state-box").css({"left":"0"});
+			
+			//隐藏左右按钮
+			$(".fyBtn").css("visibility","hidden");
 		});
 		//点击故障预测
 		$(".gzyc").click(function(){
+		
+			
 			//所有nav去掉active样式
 			var navs = $(".tnav");
 			for(var nav of navs){
@@ -224,6 +424,18 @@ var Status = {
 			$(".ztqsBox").css("display","none");
 			$(".gzzdBox").css("display","none");
 			$(".gzycBox").css("display","block");
+			//改变宽度
+			$(".state-box").css("width","100%");
+			
+			
+			//别的tab页面在第二页的时候点进来确保能显示
+			$(".state-box").css({"left":"0"});
+			
+			//隐藏左右按钮
+			$(".fyBtn").css("visibility","hidden");
+			
+			
+			that.smycEcharts();
 		});
 	},
 
@@ -757,7 +969,7 @@ var Status = {
 		var ztqsOptions = {};
 		ztqsDom.showLoading();
 		$.ajax({
-			url:"http://localhost:8088/api/yzd/product/"+sncode,
+			url:"http://10.138.87.129/api/yzd/product/"+sncode,
 			
 			type:"get",
 			success:function(res){

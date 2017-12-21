@@ -113,7 +113,15 @@
 								</div>
 								<!--故障预测-->
 								<div class="gzycBox">
-									故障预测页面暂无内容
+									<div class="totalInfo">
+										<p class="titleintro">综合预测信息</p>
+										<p class="item itemf">预测失效时间：<span></span></p>
+										<p class="item items">预测剩余寿命：<span></span></p>
+										<div class="smycBox">
+											<div id="smycCanvas" style="width:100%;height:100%"></div>
+										</div>
+									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -988,8 +996,8 @@
 				var length;//根据截取的数据长度 在后面判断要不要清空 对应的 数据 
 			
 			$.ajax({
-				url:"http://localhost:8088/api/yzd/product/"+sncode,
-				//url:"http://47.95.109.158/api/yzd/product/"+sncode,
+				//url:"http://localhost:8088/api/yzd/product/"+sncode,
+				url:"http://10.138.87.129/api/yzd/product/"+sncode,
 				type:"get",
 				success:function(data){
 					//console.log(data.monitorConf)
