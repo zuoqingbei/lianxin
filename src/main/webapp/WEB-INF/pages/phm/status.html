@@ -326,7 +326,7 @@
 				
 			}
 			//var sortArr=["T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","U1","U2","R1"];
-			var sortArr=["T1","U1","R1","I1","V1","E1","M1","S1","S2","S3","S4"];
+			var sortArr=["T1","T2","T4","U1","I2","I1","S1","S2","S3","S4"];
 			function sort(monitorConf){
 				monitorConf=sortType(monitorConf);//将温度计往前排 初公要求
 				var result=[];
@@ -521,7 +521,7 @@
 										"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='lcsLight myImgBox' >"+
-												"<img src='${contextPath}/static/phm/images/status/S11open.jpg' alt='图片' />"+
+												"<img src='${contextPath}/static/phm/images/status/img"+times+".jpg' alt='图片' />"+
 											"</div>"+
 											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>"+
 										"</div>";
@@ -1113,12 +1113,13 @@
 										break;
 									}
 								}
-							
+								console.log(times)
+								//var imgArr = ["img33.jpg","img34.jpg","img33.jpg","img33.jpg"]
 								var charts=
 									//"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 										"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='lcsLight myImgBox'>"+
-												"<img src='${contextPath}/static/phm/images/status/S11open.jpg' alt='图片' />"+
+												"<img src='${contextPath}/static/phm/images/status/img"+times+".jpg' alt='图片' />"+
 											"</div>"+
 											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>";
 										
