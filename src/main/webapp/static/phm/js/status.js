@@ -52,12 +52,13 @@ var Status = {
 				smycDom.hideLoading();
 				console.log(res);
 				
+				var computeTime = getMyDate(+res[0]["time"]);//预测 计算时间
 				var eol = getMyDate(+res[0]["eol"]);//预测 失效时间
 				if(eol<0){
 					$(".totalInfo").html("设备正常，不需要预测！");
 					return;
 				}
-				$(".itemf").find("span").html(eol);
+				$(".itemf").find("span").html(computeTime);
 				
 				
 				//计算剩余寿命
@@ -75,17 +76,32 @@ var Status = {
 				var dataArr = res[0]["input"];
 				var xArr = [];//存放x值
 				var yArr = [];//存放y值
-				var disablePointer = [[eol,0]];
+				var disablePointer = [[eol,0,5*that.bodyScale]];
 				for(var i=0;i<dataArr.length;i++){
 					dataArr[i][0] = getMyDate(dataArr[i][0]);
-					//dataArr[i][2] = 100*that.bodyScale;
+					dataArr[i][2] = 5*that.bodyScale;
 					xArr.push(dataArr[i][0]);
 					yArr.push(dataArr[i][1]);
 				}
 				//dataArr.push([eol,0]);//将失效时间放入数组中
+				console.log(dataArr);
 				xArr.push(eol);
+				const len = xArr.length;
+				
+				//插入计算时间点
+				for(var i=0;i<len;i++){
+					console.log(new Date(xArr[i]).getTime())
+					if(new Date(xArr[i]).getTime()<new Date(computeTime).getTime() && new Date(xArr[i+1]).getTime()>new Date(computeTime).getTime()){
+						xArr.splice(i+1,0,computeTime);
+					}else {
+						if(i=len-1){
+							xArr.push(computeTime);
+						}
+					}
+				}
+				
 				yArr.push(0);
-				console.log(dataArr)
+				//console.log(dataArr)
 				var smycEchartOptions = {
 					color:["#fff"],
 					title:{
@@ -93,8 +109,8 @@ var Status = {
 						text:title+"寿命预测图",
 						x:"center",
 						textStyle:{
-							color:"#fff",
-							//fontSize:25*that.bodySize,
+							color:"#64ccff",
+							fontSize:18*that.bodyScale,
 						}
 					},
 					 grid:{
@@ -113,6 +129,7 @@ var Status = {
 						},
 						x:"right",
 						orient:"vertical",
+						itemGap:15*that.bodyScale,
 					},
 					tooltip:{
 						formatter:"{a}:{c}",
@@ -164,6 +181,10 @@ var Status = {
 						type:"scatter",
 						data:dataArr,
 						name:"分布点",
+						symbolSize: function (value){
+							//console.log(value)
+			                return Math.round(value[2]);
+			            },
 						itemStyle:{
 			        	   normal:{
 			        		   color:"#0f0",
@@ -174,6 +195,10 @@ var Status = {
 							type:"scatter",
 							data:disablePointer,
 							name:"失效点",
+							symbolSize: function (value){
+								//console.log(value)
+				                return Math.round(value[2]);
+				            },
 							itemStyle:{
 				        	   normal:{
 				        		   color:"#ff0",
@@ -192,7 +217,7 @@ var Status = {
 				        	   normal:{
 				        		   color:"#d00",
 				        		   lineStyle:{
-				        			   width:2*that.bodyScale,
+				        			   width:1.8*that.bodyScale,
 				        		   }
 				        	   }
 				           }
@@ -208,7 +233,12 @@ var Status = {
 	delayLoadiframe:function(){
 		setTimeout(function(){
 			$("#light-if").attr("src","lightEffect");
+			$(".gzzdBox").html('<iframe src="http://10.138.87.129" width="100%" height="100%" frameborder="0" id="gzzdIframe"></iframe>')
 		},1000);
+	},
+	delayLoadgzzd:function(){
+		//加载故障预测iframe
+		$(".gzzdBox").html('<iframe src="http://10.138.87.129" width="100%" height="100%" frameborder="0" id="gzzdIframe"></iframe>')
 	},
 	lightRotate:function(){
 		var that = this;
@@ -350,6 +380,9 @@ var Status = {
 			$(".state-box").css({"left":"0"});
 		});
 		$(".ztqs").click(function(){
+			if(that.t2){
+				clearInterval(that.t2);
+			}
 			//所有nav去掉active样式
 			var navs = $(".tnav");
 			for(var nav of navs){
@@ -406,6 +439,8 @@ var Status = {
 			
 			//隐藏左右按钮
 			$(".fyBtn").css("visibility","hidden");
+			
+			that.delayLoadgzzd();
 		});
 		//点击故障预测
 		$(".gzyc").click(function(){
@@ -968,159 +1003,218 @@ var Status = {
 		
 		var ztqsOptions = {};
 		ztqsDom.showLoading();
-		$.ajax({
-			url:"http://10.138.87.129/api/yzd/product/"+sncode,
-			
-			type:"get",
-			success:function(res){
-				//console.log(res.info)
-				var legendData = [];//用来存放温度的键的数组，也就是图例的数据
-				var data = [];//用来存放温度的值的数组
-				var lineArr = [];//用来存放每条线的数组
-				var seriesArr = [];//用来存放series的数组
-				var colorArr = [];//用来存放每条线的颜色数组
+		
+			$.ajax({
+				url:"http://10.138.87.129/api/yzd/product/"+sncode,
 				
-				//遍历对象info的键
-				var n = 0;
-				for(var Key in res.info) {
+				type:"get",
+				success:function(res){
+					//console.log(res.info)
+					that.legendData = [];//用来存放温度的键的数组，也就是图例的数据
+					that.data = [];//用来存放温度的值的数组
+					var lineArr = [];//用来存放每条线的数组
+					that.seriesArr = [];//用来存放series的数组
+					that.colorArr = [];//用来存放每条线的颜色数组
 					
-					//判断Key是否含有T，是的话就是温度
-					if(Key.indexOf("T") != -1 && Key.length <5) {
-						legendData.push({name:Key,textStyle:{color:color[n]}});
-						data.push(res["info"][Key]);
-						n++;
-					}
-				}
-				//console.log(legendData)
-				//console.log(data)
-				
-				var indicatorArr =  res.monitorConf;//用来存放数据指标的数组
-				for(var i=0;i<legendData.length;i++){
-					//遍历提示数据的长度，来改变提示值，例如：t1冷藏室温度
-					for(var k=0;k<indicatorArr.length;k++){
-						if(indicatorArr[k].feature == legendData[i].name){
-							var str = indicatorArr[k]["param"]["title"];
-							//console.log("执行了")
-							legendData[i].name += str;
+					//遍历对象info的键
+					var n = 0;
+					for(var Key in res.info) {
+						
+						//判断Key是否含有T，是的话就是温度
+						if(Key.indexOf("T") != -1 && Key.length <5) {
+							that.legendData.push({name:Key,textStyle:{color:color[n]}});
+							that.data.push(res["info"][Key]);
+							n++;
 						}
 					}
 					
-					//遍历提示数据的长度，来生成series的数组
-					lineArr = [];
-					for(var j=0;j<10;j++){
-						//每条线要显示几个点
-						lineArr.push(data[i]);
-					}
-					colorArr.push(color[i]);
-					seriesArr.push({
-						name:legendData[i].name,
-						type:'line',
-						data:lineArr,
-						itemStyle:{
-							normal:{
-								lineStyle:{
-									color:colorArr[i],
-									width:2*that.bodyScale
-								}
+					var indicatorArr =  res.monitorConf;//用来存放数据指标的数组
+					for(var i=0;i<that.legendData.length;i++){
+						//遍历提示数据的长度，来改变提示值，例如：t1冷藏室温度
+						for(var k=0;k<indicatorArr.length;k++){
+							if(indicatorArr[k].feature == that.legendData[i].name){
+								var str = indicatorArr[k]["param"]["title"];
+								//console.log("执行了")
+								that.legendData[i].name += str;
 							}
 						}
-					})
+						
+						//遍历提示数据的长度，来生成series的数组
+						that.lineArr = [];
+						for(var j=0;j<10;j++){
+							//每条线要显示几个点
+							that.lineArr.push(that.data[i]);
+						}
+						that.colorArr.push(color[i]);
+						that.seriesArr.push({
+							name:that.legendData[i].name,
+							type:'line',
+							data:that.lineArr,
+							itemStyle:{
+								normal:{
+									lineStyle:{
+										color:that.colorArr[i],
+										width:2*that.bodyScale
+									}
+								}
+							}
+						})
+					}
+					
+					
+					ztqsDom.hideLoading();
+					
+					
+					ztqsDom.setOption({
+						color:['#64ccff'],
+						 grid:{
+						 	borderWidth:0,
+						 	x:105*that.bodyScale,
+						 	y:55*that.bodyScale,
+						 	x2:25*that.bodyScale,
+						 	y2:35*that.bodyScale,
+						 },
+					     tooltip : {
+					        trigger: 'axis',
+					        axisPointer:{
+					            show: true,
+					            type : 'cross',
+					            lineStyle: {
+					                type : 'dashed',
+					                width : 10*that.bodyScale
+					            }
+					        },
+					        textStyle:{
+					        	color:'#fff',
+					        	fontSize:13*that.bodyScale
+					        },
+					       /* formatter : function (params) {
+					        	console.log(params)
+					        	var sname = "";
+					        	
+					            for(var i=0;i<params.length;i++){
+					            	if(params[i]["0"] == legendData[i]["name"]){
+					            		console.log(params[i]["0"],legendData[i]["name"])
+					            		sname = params[i]["0"];
+					            	}
+					            }
+					            return sname;
+					        }*/
+					    },
+					    legend: {
+					        data:that.legendData,
+					        textStyle:{
+					        	fontSize:10*that.bodyScale,
+					        },
+					        itemWidth:13*that.bodyScale,
+					        itemHeight:13*that.bodyScale
+					    },
+					    xAxis : [
+					        {
+					            type: 'category',
+					            axisLabel:{
+					            	textStyle:{
+					             		color:'#fff',
+					             		fontSize:13*that.bodyScale
+					             	}
+					            },
+					            splitLine:{
+					            	show:false
+					            },
+					            axisLine: {
+					                lineStyle: {
+					                    color: '#66ccff',
+					                    width:2*that.bodyScale,
+					                }
+					            },
+					            data:axisData
+					        }
+					    ],
+					    yAxis : [
+					        {
+					            type: 'value',
+					            axisLine: {
+					                lineStyle: {
+					                    color: '#66ccff',
+					                    width:2*that.bodyScale,
+					                }
+					            },
+					             axisLabel:{
+					             	textStyle:{
+					             		color:'#fff',
+				             			fontSize:13*that.bodyScale
+					             	}
+					            },
+					             splitLine:{
+					            	show:false
+					            },
+					            //min:0,
+					            //max:50
+					        }
+					    ],
+					    series : that.seriesArr
+					});
 				}
+			});
+		that.t2 = setInterval(function(){
 				
 				
-				ztqsDom.hideLoading();
-				ztqsDom.setOption({
-					color:['#64ccff'],
-					 grid:{
-					 	borderWidth:0,
-					 	x:105*that.bodyScale,
-					 	y:55*that.bodyScale,
-					 	x2:25*that.bodyScale,
-					 	y2:35*that.bodyScale,
-					 },
-				     tooltip : {
-				        trigger: 'axis',
-				        axisPointer:{
-				            show: true,
-				            type : 'cross',
-				            lineStyle: {
-				                type : 'dashed',
-				                width : 10*that.bodyScale
-				            }
-				        },
-				        textStyle:{
-				        	color:'#fff',
-				        	fontSize:13*that.bodyScale
-				        },
-				       /* formatter : function (params) {
-				        	console.log(params)
-				        	var sname = "";
-				        	
-				            for(var i=0;i<params.length;i++){
-				            	if(params[i]["0"] == legendData[i]["name"]){
-				            		console.log(params[i]["0"],legendData[i]["name"])
-				            		sname = params[i]["0"];
-				            	}
-				            }
-				            return sname;
-				        }*/
-				    },
-				    legend: {
-				        data:legendData,
-				        textStyle:{
-				        	fontSize:10*that.bodyScale,
-				        },
-				        itemWidth:13*that.bodyScale,
-				        itemHeight:13*that.bodyScale
-				    },
-				    xAxis : [
-				        {
-				            type: 'category',
-				            axisLabel:{
-				            	textStyle:{
-				             		color:'#fff',
-				             		fontSize:13*that.bodyScale
-				             	}
-				            },
-				            splitLine:{
-				            	show:false
-				            },
-				            axisLine: {
-				                lineStyle: {
-				                    color: '#66ccff',
-				                    width:2*that.bodyScale,
-				                }
-				            },
-				            data:axisData
-				        }
-				    ],
-				    yAxis : [
-				        {
-				            type: 'value',
-				            axisLine: {
-				                lineStyle: {
-				                    color: '#66ccff',
-				                    width:2*that.bodyScale,
-				                }
-				            },
-				             axisLabel:{
-				             	textStyle:{
-				             		color:'#fff',
-			             			fontSize:13*that.bodyScale
-				             	}
-				            },
-				             splitLine:{
-				            	show:false
-				            },
-				            //min:0,
-				            //max:50
-				        }
-				    ],
-				    series : seriesArr
+				//更新x轴的标签
+			    axisData.push(new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
+			    axisData.shift();
+			    //更新线的值
+
+				$.ajax({
+					url:"http://10.138.87.129/api/yzd/product/"+sncode,
+					type:"get",
+					success:function(res){
+						//console.log(res)
+						that.data = [];
+						that.seriesArr = [];
+						//遍历对象info的键
+						//var n = 0;
+						for(var Key in res.info) {
+							
+							//判断Key是否含有T，是的话就是温度
+							if(Key.indexOf("T") != -1 && Key.length <5) {
+								//legendData.push({name:Key,textStyle:{color:color[n]}});
+								that.data.push(res["info"][Key]);
+								//that.data.shift();
+								//n++;
+							}
+						}
+						//console.log(that.data)
+						
+						for(var i=0;i<10;i++){
+							that.lineArr = [];
+							for(var k=0;k<10;k++){
+								that.lineArr.push(that.data[i]);
+							}
+							that.seriesArr.push({
+								name:that.legendData[i].name,
+								type:'line',
+								data:that.lineArr,
+								itemStyle:{
+									normal:{
+										lineStyle:{
+											color:that.colorArr[i],
+											width:2*that.bodyScale
+										}
+									}
+								}
+							})
+						}
+						//console.log(that.seriesArr)
+					}
 				});
-			}
-		});
-		
+				
+			    ztqsDom.setOption({
+			    	xAxis:[{
+			    		data:axisData,
+			    	}],
+			    	series : that.seriesArr
+			    })
+		},1000);
 	},
 }
 

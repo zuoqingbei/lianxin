@@ -109,13 +109,13 @@
 								</div>
 								<!--故障诊断-->
 								<div class="gzzdBox">
-									故障诊断页面暂无内容
+									
 								</div>
 								<!--故障预测-->
 								<div class="gzycBox">
 									<div class="totalInfo">
 										<p class="titleintro">综合预测信息</p>
-										<p class="item itemf">预测失效时间：<span></span></p>
+										<p class="item itemf">预测计算时间：<span></span></p>
 										<p class="item items">预测剩余寿命：<span></span></p>
 										<div class="smycBox">
 											<div id="smycCanvas" style="width:100%;height:100%"></div>
@@ -378,10 +378,39 @@
 				return thermometer.concat(other);
 			
 		}
+			function contains(arr, obj) {  
+			    var i = arr.length;  
+			    while (i--) {  
+			        if (arr[i] === obj) {  
+			            return true;  
+			        }  
+			    }  
+			    return false;  
+			}  
+		function getPicIndex(times){
+			var indexImg=0;
+			var arr=[32,33,34,35];
+			for(var x=0;x<arr.length;x++){
+				if((times-arr[x])%11==0){
+					indexImg=arr[x];
+					break;
+				}
+			}
+			if(indexImg==0){
+				indexImg=times;
+			}
+		/* 	if(!contains(arr,indexImg)){
+				indexImg=arr[0];
+			} */
+			return indexImg;
+			
+		}
 			
 			/* ********************************************************************************* */
 			<!--实时状态初始化  -->
 			function timeStatus(){
+				times=0;
+				idFlage=pagnum;
 				optionArray=[];
 				idFlage=idFlage+pagnum;
 				var times=0;
@@ -516,12 +545,12 @@
 											break;
 										}
 									}
-								
+									
 									var charts=
 										"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='lcsLight myImgBox' >"+
-												"<img src='${contextPath}/static/phm/images/status/img"+times+".jpg' alt='图片' />"+
+												"<img src='${contextPath}/static/phm/images/status/img"+getPicIndex(times)+".jpg' alt='图片' />"+
 											"</div>"+
 											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>"+
 										"</div>";
@@ -1113,13 +1142,13 @@
 										break;
 									}
 								}
-								console.log(times)
+								//console.log(times)
 								//var imgArr = ["img33.jpg","img34.jpg","img33.jpg","img33.jpg"]
 								var charts=
 									//"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 										"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='lcsLight myImgBox'>"+
-												"<img src='${contextPath}/static/phm/images/status/img"+times+".jpg' alt='图片' />"+
+												"<img src='${contextPath}/static/phm/images/status/img"+getPicIndex(times)+".jpg' alt='图片' />"+
 											"</div>"+
 											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>";
 										
