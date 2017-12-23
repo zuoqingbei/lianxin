@@ -105,8 +105,8 @@ public class UlabCofig extends JFinalConfig {
 		jzhekt.setMinIdle(3);
 		me.add(jzhekt);
 		ActiveRecordPlugin jzhektARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_JZKT, jzhekt);
-		thailandARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
-		thailandARP.setShowSql(true);
+		jzhektARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
+		jzhektARP.setShowSql(true);
 		me.add(jzhektARP);
 		/**胶州海尔空调数据库END**/
 		
