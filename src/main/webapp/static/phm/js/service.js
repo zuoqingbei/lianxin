@@ -16,6 +16,7 @@ var Service = {
 	clickSelected:function(){
 	
 	},
+	
 	myHeight:35*this.bodyScale,
 //	scrollWatch:function(){
 //		var that = this;
@@ -283,7 +284,7 @@ var Service = {
 		    xAxis : [
 		        {
 		            type : 'category',
-		            data : ['一个月', '三个月', '半年', '一年', '两年', '三年', '三年以上'],
+		            data : ['华中', '华东', '华北', '华南', '西南', '西北', '东北'],
 		            axisTick: {
 		                alignWithLabel: true
 		            },
@@ -305,7 +306,7 @@ var Service = {
 		    yAxis : [
 		        {
 		            type : 'value',
-		            name:'需求量/台',
+		            name:'服务站数量/个',
 		            nameLocation:'end',
 		             nameGap:18*that.bodyScale,//坐标轴名称与轴线之间的距离
 		             nameTextStyle:{
@@ -331,7 +332,7 @@ var Service = {
 		    ],
 		    series : [
 		        {
-		            name:'各区域压缩机备件需求',
+		            name:'服务站能力匹配',
 		            type:'bar',
 //		            barWidth: 30*that.bodyScale,
 		            barGap:50*that.bodyScale,

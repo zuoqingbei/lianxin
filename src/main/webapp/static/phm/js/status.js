@@ -21,6 +21,7 @@ var Status = {
 		/**
 		 * 寿命预测函数
 		 */
+		console.log(sncode)
 		function getMyDate(str){  
 			/*
 			 * 毫秒数转化成固定格式
@@ -46,11 +47,11 @@ var Status = {
 		var smycDom = echarts.init(document.getElementById("smycCanvas"));
 		smycDom.showLoading();
 		$.ajax({
-			url:"http://10.138.87.129/api/yzd/20171026BX007/prognostics",
+			url:"http://10.138.87.129/api/yzd/"+sncode+"/prognostics",
 			type:"get",
 			success:function(res){
 				smycDom.hideLoading();
-				console.log(res);
+				//console.log(res);
 				
 				var computeTime = getMyDate(+res[0]["time"]);//预测 计算时间
 				var eol = getMyDate(+res[0]["eol"]);//预测 失效时间
@@ -84,13 +85,13 @@ var Status = {
 					yArr.push(dataArr[i][1]);
 				}
 				//dataArr.push([eol,0]);//将失效时间放入数组中
-				console.log(dataArr);
+				//console.log(dataArr);
 				xArr.push(eol);
 				const len = xArr.length;
 				
 				//插入计算时间点
 				for(var i=0;i<len;i++){
-					console.log(new Date(xArr[i]).getTime())
+					//console.log(new Date(xArr[i]).getTime())
 					if(new Date(xArr[i]).getTime()<new Date(computeTime).getTime() && new Date(xArr[i+1]).getTime()>new Date(computeTime).getTime()){
 						xArr.splice(i+1,0,computeTime);
 					}else {
@@ -257,7 +258,7 @@ var Status = {
 	    var w, h;
 	    $can.attr("width", w = $container.outerWidth());
 	    $can.attr("height", h = $container.outerHeight());
-	    console.log(w, h);
+	   //q console.log(w, h);
 	    var color = "#fff";
 	    var ctx = $can[0].getContext("2d");
 	    var t1;
@@ -302,7 +303,7 @@ var Status = {
 	                }
 	            } else {
 	                this.init();
-//	                console.log("时间差：",new Date()-t1);
+//	              //  console.log("时间差：",new Date()-t1);
 	            }
 	        }
 	    };
@@ -1009,26 +1010,29 @@ var Status = {
 				
 				type:"get",
 				success:function(res){
-					//console.log(res.info)
+					//console.log(res)
 					that.legendData = [];//用来存放温度的键的数组，也就是图例的数据
 					that.data = [];//用来存放温度的值的数组
 					var lineArr = [];//用来存放每条线的数组
 					that.seriesArr = [];//用来存放series的数组
 					that.colorArr = [];//用来存放每条线的颜色数组
+					that.morenSelected = [];//用来存放除了 T1 冷藏室温度 之外的name值，
+					that.falseArr = [];
 					
 					//遍历对象info的键
 					var n = 0;
 					for(var Key in res.info) {
 						
-						//判断Key是否含有T，是的话就是温度
-						if(Key.indexOf("T") != -1 && Key.length <5) {
-							that.legendData.push({name:Key,textStyle:{color:color[n]}});
+						//判断Key是否含有T，是的话就是温度/////去掉T5 T6 加上电流电压
+						if(Key.indexOf("T") != -1 && Key.length <5 && Key != "T5" && Key != "T6" || Key == "U1" || Key == "I1") {
+							that.legendData.push({name:Key});
 							that.data.push(res["info"][Key]);
 							n++;
 						}
 					}
 					
 					var indicatorArr =  res.monitorConf;//用来存放数据指标的数组
+					that.lineArr=[[],[],[],[],[],[],[],[],[],[]];
 					for(var i=0;i<that.legendData.length;i++){
 						//遍历提示数据的长度，来改变提示值，例如：t1冷藏室温度
 						for(var k=0;k<indicatorArr.length;k++){
@@ -1040,16 +1044,21 @@ var Status = {
 						}
 						
 						//遍历提示数据的长度，来生成series的数组
-						that.lineArr = [];
+						
 						for(var j=0;j<10;j++){
 							//每条线要显示几个点
-							that.lineArr.push(that.data[i]);
+							that.lineArr[i].push(that.data[i]);
 						}
+						//记录每条线的数组
+						//console.log(that.legendData)
+						
+						
 						that.colorArr.push(color[i]);
 						that.seriesArr.push({
 							name:that.legendData[i].name,
 							type:'line',
-							data:that.lineArr,
+							data:that.lineArr[i],
+							//visible:false,
 							itemStyle:{
 								normal:{
 									lineStyle:{
@@ -1060,13 +1069,40 @@ var Status = {
 							}
 						})
 					}
+					//console.log(that.legendData)
+					//删除T1
+					for(var i=0;i<that.legendData.length;i++){
+						if(that.legendData[i]["name"] != "T1冷藏室温度"){
+							//console.log(111)
+							that.morenSelected.push(that.legendData[i]["name"]);
+						}
+					}
+					console.log(that.morenSelected)
+					//整理成想要的格式
+					for(var i=0;i<that.morenSelected.length;i++){
+						that.falseArr.push(false);
+					}
+					console.log(that.falseArr)
+					function  object(list,values){
+					       var result={};
+					       for(var i=0;i<list.length;i++){
+					            if(values){
+					                 result[list[i]]=values[i];
+					            }else{
+					                 result[list[i][0]]=list[i][1];
+					            }
+					       }
+					       return result;  
+					}  
+					that.mywant = object(that.morenSelected,that.falseArr);
+					console.log(that.mywant);
 					
 					
 					ztqsDom.hideLoading();
 					
 					
 					ztqsDom.setOption({
-						color:['#64ccff'],
+						color:color,
 						 grid:{
 						 	borderWidth:0,
 						 	x:105*that.bodyScale,
@@ -1105,9 +1141,11 @@ var Status = {
 					        data:that.legendData,
 					        textStyle:{
 					        	fontSize:10*that.bodyScale,
+					        	color:"#00e970",
 					        },
 					        itemWidth:13*that.bodyScale,
-					        itemHeight:13*that.bodyScale
+					        itemHeight:13*that.bodyScale,
+					        selected:that.mywant
 					    },
 					    xAxis : [
 					        {
@@ -1139,6 +1177,8 @@ var Status = {
 					                    width:2*that.bodyScale,
 					                }
 					            },
+					            precision: 2, 
+					            scale:true,
 					             axisLabel:{
 					             	textStyle:{
 					             		color:'#fff',
@@ -1176,7 +1216,7 @@ var Status = {
 						for(var Key in res.info) {
 							
 							//判断Key是否含有T，是的话就是温度
-							if(Key.indexOf("T") != -1 && Key.length <5) {
+							if(Key.indexOf("T") != -1 && Key.length <5 && Key != "T5" && Key != "T6" || Key == "U1" || Key == "I1") {
 								//legendData.push({name:Key,textStyle:{color:color[n]}});
 								that.data.push(res["info"][Key]);
 								//that.data.shift();
@@ -1186,14 +1226,15 @@ var Status = {
 						//console.log(that.data)
 						
 						for(var i=0;i<10;i++){
-							that.lineArr = [];
-							for(var k=0;k<10;k++){
-								that.lineArr.push(that.data[i]);
-							}
+							
+								that.lineArr[i].push(that.data[i]);
+								that.lineArr[i].shift();
+							
+							
 							that.seriesArr.push({
 								name:that.legendData[i].name,
 								type:'line',
-								data:that.lineArr,
+								data:that.lineArr[i],
 								itemStyle:{
 									normal:{
 										lineStyle:{

@@ -56,16 +56,31 @@
 				<div class="center-map">
 					<div id="myMap" style="width:100%;height:100%"></div>
 				</div>
-				<!--right-bar1-->
-				<div class="right-bar1">
-					<p class="bar1-title">各区域备件需求</p>
-					<div id="bar1" style="width:100%;height:100%"></div>
+				<div class="right-mode">
+					<div class="sbox">
+						<select >
+							<option>一个月</option>
+							<option>三个月</option>
+							<option>半年</option>
+							<option>一年</option>
+							<option>两年</option>
+							<option>三年</option>
+							<option>三年以上</option>
+						</select>
+					</div>
+					<!--right-bar1-->
+					<div class="right-bar1">
+						<p class="bar1-title">各区域备件需求</p>
+						<div id="bar1" style="width:100%;height:100%"></div>
+					</div>
+					<!--right-bar2-->
+					<div class="right-bar2">
+						<p class="bar2-title">服务站能力匹配</p>
+						<div id="bar2" style="width:100%;height:100%"></div>
+					</div>
+					<div style="clear:both;"></div>
 				</div>
-				<!--right-bar2-->
-				<div class="right-bar2">
-					<p class="bar2-title">不同时段需求</p>
-					<div id="bar2" style="width:100%;height:100%"></div>
-				</div>
+				
 			</div>
 		</div>
 		
@@ -205,7 +220,7 @@
 					    xAxis : [
 					        {
 					            type : 'category',
-					            data : ['一个月', '三个月', '半年', '一年', '两年', '三年', '三年以上'],
+					            data : ['华中', '华东', '华北', '华南', '西南', '西北', '东北'],
 					            axisTick: {
 					                alignWithLabel: true
 					            },
@@ -227,7 +242,7 @@
 					    yAxis : [
 					        {
 					            type : 'value',
-					            name:'需求量/台',
+					            name:'服务站数量/个',
 					            nameLocation:'end',
 					             nameGap:18*bodyScale,//坐标轴名称与轴线之间的距离
 					             nameTextStyle:{
@@ -252,7 +267,7 @@
 					    ],
 					    series : [
 					        {
-					            name:'各区域'+f_object+'备件需求',
+					            name:'服务站数量',
 					            type:'bar',
 			//		            barWidth: 30*that.bodyScale,
 					            barGap:50*bodyScale,
@@ -269,7 +284,20 @@
 			}
 		})
 	}
-			
+	
+	function selectEvent(){
+		console.log("die")
+		$("select").change(function(){
+			console.log("dianjile")
+			statisticsByDate();
+			Service.echartsArea();
+		})
+	}
+	
+	
+	
+	
+	selectEvent();		
     </script>
 	</body>
 </html>

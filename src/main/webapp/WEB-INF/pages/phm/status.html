@@ -16,7 +16,7 @@
 			<!--head-->
 			<div id="head">
 				<h1>
-					<a href="#">
+					<a href="${contextPath}/phm/index">
 						<img src="${contextPath}/static/phm/images/status/logo_haier_bold.png" alt="" />
 					</a>
 				</h1>
@@ -171,11 +171,18 @@
 					if(!zs){
 					 zs = echarts.init(document.getElementById("zsCanvas"+times));
 					}
+				//	console.log(times)
+					var unit = "";//单位
+					if(times == 28){
+						unit = "V";
+					}else {
+						unit = "A";
+					}
 					var zsOption={
 
 							title:{
 								text:label,
-								x:40*bodyScale,
+								x:62*bodyScale,
 								y:70*bodyScale,
 								textStyle:{
 									color:'#64ccff',
@@ -189,14 +196,15 @@
 						        {
 						            name:title,
 						            type:'gauge',
-						            detail : {formatter:'{value}',
+						            detail : {
+						            	formatter:'{value}'+" " +unit,
 						            	textStyle:{
 						            		color:'#64ccff',
 						            		fontSize:15*bodyScale,
 						            		fontWeight:600,
 						            	}
 						            },
-						            data:[{value: value}],
+						           data:[{value: value}],
 						          itemStyle:{
 						          	color:'#64ccff'
 						          },
@@ -326,7 +334,7 @@
 				
 			}
 			//var sortArr=["T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","U1","U2","R1"];
-			var sortArr=["T1","T2","T4","U1","I2","I1","S1","S2","S3","S4"];
+			var sortArr=["T1","T2","T4","U1","I2","I1","S1","S2","S3","S4","S5"];
 			function sort(monitorConf){
 				monitorConf=sortType(monitorConf);//将温度计往前排 初公要求
 				var result=[];
@@ -421,6 +429,12 @@
 				if(sncode==""||sncode==undefined){
 					return;
 				}
+			
+				//根据机器型号跳转到对应的iframe
+				$(".gzzd").click(function(){
+					$("#gzzdIframe").attr("src","http://10.138.87.129/#/product/"+sncode);
+				});
+				
 				
 				$.ajax({
 					//url:"http://localhost:8088/api/yzd/product/"+sncode,
