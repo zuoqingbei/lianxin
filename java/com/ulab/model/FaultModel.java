@@ -2,19 +2,15 @@ package com.ulab.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.ulab.util.HttpClientUtil;
-import com.ulab.util.UUIDTool;
+import com.ulab.util.PhmThrendClient;
 @TableBind(tableName="phm_fault" ,pkName="id")
 public class FaultModel extends Model<FaultModel> {
 
@@ -119,7 +115,6 @@ public class FaultModel extends Model<FaultModel> {
 		 * @todo   定时任务更新设备故障信息数据
 		 * @return_type   void
 		 */
-	    @SuppressWarnings("rawtypes")
 		public void synchroFaultInfo() {
 			List<Record> list=PhmDeviceInfoModel.dao.getAllDevice();
 			List<Record> FaultList=FaultModel.dao.findAllFaultInfo();
@@ -130,46 +125,8 @@ public class FaultModel extends Model<FaultModel> {
 			}
 			for(int i=0;i<list.size();i++) {
 				String sn=list.get(i).getStr("sncode");
-				String info=HttpClientUtil.sendGetRequest("http://localhost:8088/api/yzd/product/"+sn+"/diagnosisResult","UTF-8");
-				JSONArray jsonArray=(JSONArray) JSONObject.parse(info);
-				List<String>sqlList=new ArrayList<>();
-				for(int j=0;j<jsonArray.size();j++) {
-					Map mp=(Map) jsonArray.get(j);
-					String cSn=(String) mp.get("sn");//故障编码
-					if(cSn.equals(sn)){
-						FaultModel.dao.deleteFaultBySncode(sn);
-						String time=(String) mp.get("time");//故障发生时间
-						String faultAppearance=(String) mp.get("fault");//故障现象
-						JSONArray advice=(JSONArray) mp.get("advice");
-						String adviceIdString=""; //维修措施Id
-						String adviceString=""; //维修措施
-						//维修措施 目前放到一个字段上 后期可根据需要修改
-						for(int k=0;k<advice.size();k++) {
-							JSONObject adv=(JSONObject) advice.get(k);
-							String advId=(String) adv.get("id");//维修指导ID
-							String advZd=(String) adv.get("advice");//维修指导
-							if(k==0) {
-								adviceIdString+=advId;
-								adviceString+=advZd;
-							}else {
-								adviceIdString+=","+advId;
-								adviceString+=","+advZd;
-							}
-						} 
-						//零件
-						JSONArray isolatedList=(JSONArray) mp.get("isolatedList");
-						for(int k=0;k<isolatedList.size();k++) {
-							//
-							JSONObject o=(JSONObject) isolatedList.get(k);
-							String[] data=o.get("name").toString().split(":");//位号：零件名称
-							String sql="insert into phm_fault (id,sncode,fault_name,fault_repair,fault_repair_id,fault_time,fault_appearance,fault_seat_number)values('"+UUIDTool.getUUID()+"','"+sn+"','"+data[1].trim()+"','"+adviceString+"','"+adviceIdString+"',TO_DATE('"+time+"','yyyy-MM-dd HH24:mi:ss'),'"+faultAppearance+"','"+data[0].trim()+"')";
-							sqlList.add(sql);
-						} 
-					}
-				}
-				if(sqlList!=null&&sqlList.size()>0){
-					FaultModel.dao.addFault(sqlList);
-				}
+				Thread rthread = new Thread(new PhmThrendClient(sn));
+				rthread.start();
 			}
 	    }
 			
