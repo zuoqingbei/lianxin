@@ -434,7 +434,7 @@ function getTopicHtml(currentPoint) {
     var url = "";
     var centerId = currentPoint.centerId;
     var imgUrl = currentPoint.imgUrl;
-    console.log("imgUrl",imgUrl)
+    // console.log("imgUrl",imgUrl)
 
     return $((centerId ? ' <div class="echart_tip">' : ' <div class="echart_tip noCenterData">') +
         '<div class="dialog_title echart_content">' +

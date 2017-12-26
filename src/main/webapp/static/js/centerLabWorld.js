@@ -254,12 +254,15 @@ function dealIntervalSeriesDataWorld(mData){
 	intervalSeriesTopDataWorld=[];
 	intervalSeriesBottomDataWorld=[];
 	//处理图例中数变化
-	for(var i=0;i<mData.list.length;i++){
-		var cM=mData.list[i];
-		if(cM.data!=null&&cM.data.length>0){
-			legendNumDataWorld[i]=cM.data[cM.data.length-1].value+increaseBracketForObj(cM.name);
-		}
-	};
+    if(mData.list){
+        for(var i=0;i<mData.list.length;i++){
+            var cM=mData.list[i];
+            if(cM.data!=null&&cM.data.length>0){
+                legendNumDataWorld[i]=cM.data[cM.data.length-1].value+increaseBracketForObj(cM.name);
+            }
+        };
+    }
+
 	for(var x=0;x<totalLegendNameWorld.length;x++){
 		var currentName=totalLegendNameWorld[x];
 		var data=[];
@@ -395,41 +398,43 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
     mlabTypeCode = labTypeCode;
     mtestUnitId = testUnitId;
     $.post(contextPath + "/lab/getJsonFile", {"fileName": fileName}, function (data) {
-        loadingAnimateOut("curve", 500);
-        data = eval("(" + data + ")");
-        if (data == "") {
-            //alert("暂未开测");
-            return;
-        }
-        myChartWorld1.clear();
-        myChartWorld2.clear();
-        $("#legend_ul_world").html('');
-        dataBase=data;
-        //根据传感器具体数据 生成图例
-        $.each(data.list, function (index, item) {
-            totalLegendNameWorld.push(item.name);
-            legendNumDataWorld.push(item.data[item.data.length - 1].value + increaseBracketForObj(item.name))
-        });
-        legendDataWorld = dealBracket(totalLegendNameWorld);
-        randomLegendWorld();
-        $("#center_sybh_id_world").html(data.sybh);
-        $("#center_ypbm_id_world").html(data.ybbh);
-        $("#center_cpxh_id_world").html(data.cpxh);
-        if(data.testPro!=""&&data.testPro!=undefined){
-        	 $("#center_testPro_id_world").parent("li").css("display","inline-block");
-        	 $("#center_testPro_id_world").html(data.testPro);
-        }else{
-        	 $("#center_testPro_id_world").parent("li").css("display","none");
-        }
-        //showlegendDataWorld=legendDataWorld;//默认全选
-        //console.log(showlegendDataWorld)
-        createLegendHtmlsWorld();
-        createEchartsWorld(true);
-        //因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
+        // loadingAnimateOut("curve", 500);
+        setTimeout(function () {
+            data = eval("(" + data + ")");
+            if (data == "") {
+                //alert("暂未开测");
+                return;
+            }
+            myChartWorld1.clear();
+            myChartWorld2.clear();
+            $("#legend_ul_world").html('');
+            dataBase=data;
+            //根据传感器具体数据 生成图例
+            $.each(data.list, function (index, item) {
+                totalLegendNameWorld.push(item.name);
+                legendNumDataWorld.push(item.data[item.data.length - 1].value + increaseBracketForObj(item.name))
+            });
+            legendDataWorld = dealBracket(totalLegendNameWorld);
+            randomLegendWorld();
+            $("#center_sybh_id_world").html(data.sybh);
+            $("#center_ypbm_id_world").html(data.ybbh);
+            $("#center_cpxh_id_world").html(data.cpxh);
+            if(data.testPro!=""&&data.testPro!=undefined){
+                $("#center_testPro_id_world").parent("li").css("display","inline-block");
+                $("#center_testPro_id_world").html(data.testPro);
+            }else{
+                $("#center_testPro_id_world").parent("li").css("display","none");
+            }
+            //showlegendDataWorld=legendDataWorld;//默认全选
+            //console.log(showlegendDataWorld)
+            createLegendHtmlsWorld();
+            createEchartsWorld(true);
+            //因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
 
-        // myChartWorld1.hideLoading();
-        // myChartWorld2.hideLoading();
-        loadingAnimateOut("curve", 500);
+            // myChartWorld1.hideLoading();
+            // myChartWorld2.hideLoading();
+            loadingAnimateOut("curve", 500);
+        },2000)
     });
 }
 function randomLegendWorld() {
@@ -526,7 +531,12 @@ function joinSeriseWorld(data, name, index, colorIndex) {
     var dataArr = [];
     xDataWorld = [];
     //获取最后时间
-    var endStart = parseFloat(data[data.length - 1].name) * 60;
+    var endStart;
+    if(data[data.length - 1]){
+        endStart = parseFloat(data[data.length - 1].name) * 60;
+    }else{
+        console.log(name+"data未取到数据")
+    }
     var startTime = parseInt(endStart) - 60 * 2;
     for (var x = 0; x < data.length; x++) {
         var value = data[x].value;
@@ -560,7 +570,13 @@ function joinSeriseWorld(data, name, index, colorIndex) {
 function joinSeriseOtherWorld(data, name, colorIndex) {
     var dataArr = [];
     xDataWorld = [];
-    var endStart = parseFloat(data[data.length - 1].name) * 60;
+    var endStart;
+    if(data[data.length - 1]){
+        endStart = parseFloat(data[data.length - 1].name) * 60;
+    }else{
+        console.log(name+"data未取到数据")
+    }
+
     var startTime = parseInt(endStart) - 60 * 2;
     for (var x = 0; x < data.length; x++) {
         var value = data[x].value;
@@ -702,7 +718,15 @@ function getChartsWorld1() {
                         color: '#66ccff'
                     }
                 },
-                data: xDataWorld.concat(mockXdataWorld)
+                // data: xDataWorld.concat(mockXdataWorld)
+                data: function () {
+                    if(xDataWorld){
+                        return xDataWorld.concat(mockXdataWorld);
+                    }else{
+                        return null;
+                    }
+
+                }
             }
         ],
         yAxis: [
