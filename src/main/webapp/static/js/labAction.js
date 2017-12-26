@@ -50,9 +50,9 @@ $(function () {
             $lab_content_r.find(".switchBox>div.item.monitoring").show().siblings().hide();
             var dataCenterId = $(this).data("centerid");
             var $curveBox = $monitoring.find(".shishi_right").children(".item.curve");
-            console.log("---$curveBox",$curveBox[0])
+            // console.log("---$curveBox",$curveBox[0])
             if ($(this).parents("ul.inland")[0]) {//从url类型跳回到国内其他列表
-                console.log("---国内")
+                console.log("---国内");
                 if (dataCenterId === 1) {
                     // console.log("---中海")
                     $(".labSubNav>ul>li").hide().eq(0).addClass("active").siblings().removeClass("active");
@@ -70,12 +70,11 @@ $(function () {
                     labCurveResize();
                 }
             } else {
-                console.log("---国外")
+                console.log("---国外");
                 abroadTabShow();
                 // if ($curveBox.is(":hidden")) {//曲线没有显示
-                    console.log("显示曲线")
                     $curveBox.show().siblings().hide();
-                console.log("---$curveBox",$curveBox[0])
+                // console.log("---$curveBox",$curveBox[0])
                 // }
                 $(".smallVideoBox").hide();
                 labCurveResize();
@@ -347,64 +346,6 @@ function loadingAnimateOut(type, time) {
         })
     }
 }
-
-// 视频加载方法
-function videoShow(id, url, mainStream) {
-    //mainStream 0-主码流，1-子码流
-    var flashvars = {
-            src: escape(url + "?time=" + new Date()),
-
-            plugin_m3u8: "../static/asserts/video/HLSProviderOSMF.swf",
-            autoPlay:
-                "true",
-            autoSwitchQuality:
-                "true"
-        }
-    ;
-    var params = {
-        allowFullScreen: true,
-        allowScriptAccess: "always",
-        quality: "low",
-        bgcolor: "#000000"
-    };
-    var attrs = {
-        name: "player"
-    };
-
-    var $videoParent = $("#" + id).parent();
-    swfobject.embedSWF(
-        // url to SMP player
-        "../static/asserts/video/StrobeMediaPlayback.swf?time=New Date()",
-        // div id where player will be place
-        id,
-        // width, height
-        // 根据主子码流选择尺寸比例
-        "100%",
-        mainStream ? "80%" : "96%",
-        // minimum flash player version required
-        "27",
-        // other parameters
-        null,
-        flashvars,
-        params,
-        attrs,
-        function () {
-            // loadingAnimate($videoParent.find(".loadingAnimation"), "视频接入中", 8000);
-        }
-    )
-    /*    swfobject.embedSWF()的五个必须参数和四个可选参数：
-    swfUrl（String，必须的）指定SWF的URL。
-    id（String，必须的）指定将会被Flash内容替换的HTML元素（包含你的替换内容）的id。
-    width（String，必须的）指定SWF的宽。
-    height（String，必须的）指定SWF的高。
-    version（String，必须的）指定你发布的SWF对应的Flash Player版本（格式为：major.minor.release）。
-    expressInstallSwfurl（String，可选的）指定express install SWF的URL并激活Adobe express install [ http://www.adobe.com/cfusion/knowledgebase/index.cfm?id=6a253b75 ]。
-    flashvars（String，可选的）用name:value对指定你的flashvars。
-    params（String，可选的）用name:value对指定你的嵌套object元素的params。
-    attributes（String，可选的）用name:value对指定object的属性。
-     */
-}
-
 
 //小视频拖动
 function smallVideoMove() {

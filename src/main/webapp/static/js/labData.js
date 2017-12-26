@@ -185,6 +185,8 @@ function loadVideosByDataCenterAjax(dataCenterId) {
 
 //查询数据中心下实验室 level为3(单位/产品)
 function loadAllDataCenterLabAjaxFunc(dataCenterId) {
+    console.log("loadAllDataCenterLabAjaxFunc",dataCenterId);
+
     var dataCenter = dataCenterMap.get(dataCenterId);
     var parentDataCenter = dataCenterMap.get(dataCenter.parent_id);
     var data_type = dataCenter.data_type;
@@ -208,6 +210,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     setCenterLabHtmlDB(dataCenter);
     //加载数据中心第三级
     $.post(contextPath + "/lab/loadAllDataCenterLabAjax", {"dataCenterId": dataCenterId}, function (data) {
+        console.log("查询level为3",data)
         var html = '';
         var firstLabCode = "";
         $.each(data, function (index, item) {
