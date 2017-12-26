@@ -1081,6 +1081,7 @@ public class LabController extends BaseController {
 	public void full() {
 		List<Record> labType = DicModel.dao.findDicByType("lab_type");
 		List<Record> productLine = DicModel.dao.findDicByType("line_type");
+		setAttr("toLabData", getPara("toLabData", ""));
 		setAttr("labType", labType);
 		setAttr("productLine", productLine);
 		setSessionAttr("labType", labType);

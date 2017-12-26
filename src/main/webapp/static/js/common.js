@@ -16,7 +16,7 @@ function dataToArray(data){
 function jsonToArray(data){
 	//console.log(data.clist)
 	var d = new Array();
-	var p=  {
+	/*var p=  {
 	        lng:120.355171,
 	        lat: 36.082981,
 	        litude:[120.355171,36.082981],
@@ -28,7 +28,7 @@ function jsonToArray(data){
 	        value: 168,
             country:"中国"
 	    };
-	d.push(p);
+	d.push(p);*/
 	for(var x=0;x<data.length;x++){
 		var obj=data[x];
 

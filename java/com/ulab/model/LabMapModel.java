@@ -29,7 +29,7 @@ public class LabMapModel extends Model<LabModel> {
     	String sql="";
     	sql+=" select m.lng,m.lat,m.short_name as title,m.name,lab.num,'' as datetime,m.location,m.lab_type,lab.country,c.img_content,m.data_center_id  from t_b_lab_map m left join t_b_data_center c on c.id=m.data_center_id inner join (";
     	sql+=" select belong_gl_code,count(1) as num,country from t_b_lab_info lab where "+sWhere+" group by lab.belong_gl_code,country ";
-    	sql+=" ) lab on lab.belong_gl_code=m.id ";
+    	sql+=" ) lab on lab.belong_gl_code=m.id where m.del_flag=0 and m.show_in_map=1 order by m.id ";
 		return Db.find(sql);
 	}
 	public List<Record> labShowFlatMap2(String sqlWhere){
