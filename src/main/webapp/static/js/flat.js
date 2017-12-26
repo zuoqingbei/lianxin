@@ -434,12 +434,12 @@ function getTopicHtml(currentPoint) {
     var url = "";
     var centerId = currentPoint.centerId;
     var imgUrl = currentPoint.imgUrl;
-    // console.log("imgUrl",imgUrl)
+    console.log("currentPoint.centerId",centerId);
 
     return $((centerId ? ' <div class="echart_tip">' : ' <div class="echart_tip noCenterData">') +
         '<div class="dialog_title echart_content">' +
         //下面设置了没有图片时的默认显示
-        '   <img src="' + (imgUrl||'../static/img/labMain/RussiaCenter.jpg') + '" alt="默认图片">' +
+        '   <img src="' + (imgUrl||'../static/img/labMain/labmain-1.png') + '" alt="默认图片">' +
         '   <div class="textBox">' +
         '   <h4 style="">' + title + '</h4>' +
         '   <div class="labNumber">共 ' + value + ' 家实验室</div>' +
