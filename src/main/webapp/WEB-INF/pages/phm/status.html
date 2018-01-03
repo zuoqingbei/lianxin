@@ -61,7 +61,7 @@
 						</div>
 						<div class="start infobox">
 							<p class="txt1">启用时间：</p>
-							<p class="txt2">2017-10-27</p>
+							<p class="txt2">2017-11-08</p>
 						</div>
 						<div class="address infobox">
 							<p class="txt1">地址：</p>
@@ -162,7 +162,7 @@
 		<!--实时状态  -->
 			<script type="text/javascript" charset="utf-8">
 			var sncode="";//定义sncode 
-			
+			var addId="http://10.138.87.129";
 			var bodyScale=$(window).height()/595;
 			var that=this;
 			var optionArray=[];
@@ -432,13 +432,13 @@
 			
 				//根据机器型号跳转到对应的iframe
 				$(".gzzd").click(function(){
-					$("#gzzdIframe").attr("src","http://10.138.87.129/#/product/"+sncode);
+					$("#gzzdIframe").attr("src",addId+"/#/product/"+sncode);
 				});
 				
 				
 				$.ajax({
 					//url:"http://localhost:8088/api/yzd/product/"+sncode,
-					url:"http://10.138.87.129/api/yzd/product/"+sncode,
+					url:addId+"/api/yzd/product/"+sncode,
 					type:"get",
 					success:function(data){
 						//console.log(data.monitorConf)
@@ -552,10 +552,15 @@
 									var statusValue=info[feature];//获取当前传入状态值 
 									//debugger; 
 									//console.log(infoArray);
+									if(feature=="M1"){
+										console.log(statusValue+"--"+feature)
+									}
+									var imgName;
 									for(var i=0;i<infoArray.length;i++){
 										var v=infoArray[i];
 										if(v.key==statusValue){
 											value=v.value;
+											imgName=v.img;
 											break;
 										}
 									}
@@ -564,7 +569,7 @@
 										"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='lcsLight myImgBox' >"+
-												"<img src='${contextPath}/static/phm/images/status/img"+getPicIndex(times)+".jpg' alt='图片' />"+
+												"<img src='${contextPath}/static/phm/images/status/"+imgName+"' alt='图片' />"+
 											"</div>"+
 											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>"+
 										"</div>";
@@ -1025,7 +1030,7 @@
 						},0);
 						timer=setInterval(function(){
 							updateStatus();
-						},3000); 
+						},3000);
 						
 					},
 				//	error:function(){alert("加载 地图信息错误 ");}
@@ -1040,7 +1045,7 @@
 			
 			$.ajax({
 				//url:"http://localhost:8088/api/yzd/product/"+sncode,
-				url:"http://10.138.87.129/api/yzd/product/"+sncode,
+				url:addId+"/api/yzd/product/"+sncode,
 				type:"get",
 				success:function(data){
 					//console.log(data.monitorConf)
@@ -1086,6 +1091,7 @@
 								 max=param.max;
 								 min=param.min;
 								 var t1=6+idFlage;
+								 //处理冰箱门
 								 if(times==t1&&pageNo==1){
 										//S14=1;
 										times+=1;
@@ -1149,20 +1155,20 @@
 								var statusValue=info[feature];//获取当前传入状态值 
 								//debugger; 
 							//	console.log(infoArray);
+							    var imgName;
 								for(var i=0;i<infoArray.length;i++){
 									var v=infoArray[i];
 									if(v.key==statusValue){
 										value=v.value;
+										imgName=v.img;
 										break;
 									}
 								}
-								//console.log(times)
-								//var imgArr = ["img33.jpg","img34.jpg","img33.jpg","img33.jpg"]
 								var charts=
 									//"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 										"<p class='stateTxt'>"+title+"</p>"+
 											"<div class='lcsLight myImgBox'>"+
-												"<img src='${contextPath}/static/phm/images/status/img"+getPicIndex(times)+".jpg' alt='图片' />"+
+												"<img src='${contextPath}/static/phm/images/status/"+imgName+"' alt='图片' />"+
 											"</div>"+
 											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>";
 										
@@ -1301,8 +1307,8 @@
 				$("#pageRight").css("visibility","visible");
 			}
 			function hidePageBtn(){
-				$("#pageLeft").css("visibility","hidden");
-				$("#pageRight").css("visibility","hidden");
+				//$("#pageLeft").css("visibility","hidden");
+				//$("#pageRight").css("visibility","hidden");
 			}
 			/**************************定义 接口数据对照关系 *********************************************************/
 			var nowInfo=["M1","M2","S1","S2","S3","S4","S5","S6","S7","S8","S9","S10","S11","S12","S13"];
@@ -1310,186 +1316,276 @@
 					  "M1": [
 						    {
 						      "key": "-1",
-						      "value": "正常模式"
+						      "value": "正常模式",
+						      "img":"gzms.png"
 						    },
 						    {
-						      "key": "0000",
-						      "value": "正常模式"
+						      "key": "00000000",
+						      "value": "工作模式",
+						      "img":"gzms.png"
 						    },
 						    {
-						      "key": "0001",
-						      "value": "预测测试模式"
+						      "key": "00010000",
+						      "value": "预测测试模式",
+						      "img":"gzms.png"
 						    },
 						    {
-						      "key": "0002",
-						      "value": "诊断测试模式"
+						      "key": "00020000",
+						      "value": "诊断测试模式",
+						      "img":"gzms.png"
 						    },
 						    {
 						      "key": "0003",
-						      "value": "假日模式"
+						      "value": "假日模式",
+						      "img":"gzms.png"
 						    }
 						  ],
-						  "S1": [
+						  "S1": [//冷藏风机
 						    {
 						      "key": "0000",
-						      "value": "停止"
+						      "value": "停止",
+						      "img":"fj_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "启动"
+						      "value": "启动",
+						      "img":"fj_open.png"
 						    }
 						  ],
 						  "S2": [
 						    {
 						      "key": "0000",
-						      "value": "冷藏关变温关"
+						      "value": "冷藏风门A关",
+						      "img":"fma_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "冷藏关变温开"
+						      "value": "冷藏风门A开",
+						      "img":"fma_open.png"
 						    },
 						    {
 						      "key": "0002",
-						      "value": "冷藏开变温关"
+						      "value": "冷藏风门A关",
+						      "img":"fma_close.png"
 						    },
 						    {
 						      "key": "0004",
-						      "value": "冷藏开变温开"
+						      "value": "冷藏风门A开",
+						      "img":"fma_open.png"
+						      
 						    }
 						  ],
 						  "S3": [
 						    {
 						      "key": "0000",
-						      "value": "冷藏关珍品关"
+						      "value": "冷藏风门B关",
+						      "img":"fmb_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "冷藏关珍品开"
+						      "value": "冷藏风门B开",
+						      "img":"fmb_open.png"
 						    },
 						    {
 						      "key": "0002",
-						      "value": "冷藏开珍品关"
+						      "value": "冷藏风门B关",
+						      "img":"fmb_close.png"
 						    },
 						    {
 						      "key": "0004",
-						      "value": "冷藏开珍品开"
+						      "value": "冷藏风门B开",
+						      "img":"fmb_open.png"
 						    }
 						  ],
-						  "S4": [
+						  "S4": [//冷藏除霜
 						    {
 						      "key": "0000",
-						      "value": "停止"
+						      "value": "停止",
+						      "img":"cx_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "启动"
+						      "value": "启动",
+						      "img":"cx_open.png"
 						    }
 						  ],
-						  "S5": [
+						  "S5": [//S5冷冻风机
 						    {
 						      "key": "0000",
-						      "value": "停止"
+						      "value": "停止",
+						      "img":"fj_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "启动"
+						      "value": "启动",
+						      "img":"fj_open.png"
 						    }
 						  ],
-						  "S6": [
+						  "S6": [//冷冻除霜
 						    {
 						      "key": "0000",
-						      "value": "停止"
+						      "value": "停止",
+						      "img":"cx_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "启动"
+						      "value": "启动",
+						      "img":"cx_open.png"
 						    }
 						  ],
-						  "S7": [
+						  "S7": [//冷藏电磁阀
 						    {
 						      "key": "0000",
-						      "value": "关闭"
+						      "value": "关闭",
+						      "img":"dcf_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "开启"
+						      "value": "开启",
+						      "img":"dcf_open.png"
 						    }
 						  ],
-						  "S8": [
+						  "S8": [//冷冻电磁阀
 						    {
 						      "key": "0000",
-						      "value": "关闭"
+						      "value": "关闭",
+						      "img":"dcf_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "开启"
+						      "value": "开启",
+						      "img":"dcf_open.png"
 						    }
 						  ],
-						  "S9": [
+						  "S9": [//S9竖梁加热丝
 						    {
 						      "key": "0000",
-						      "value": "关闭"
+						      "value": "关闭",
+						      "img":"jrs_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "开启"
+						      "value": "开启",
+						      "img":"jrs_open.png"
 						    }
 						  ],
-						  "S10": [
+						  "S10": [//珍品加热丝状
 						    {
 						      "key": "0000",
-						      "value": "关闭"
+						      "value": "关闭",
+						      "img":"jrs_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "开启"
+						      "value": "开启",
+						      "img":"jrs_open.png"
 						    }
 						  ],
-						  "S11": [
+						  "S11": [//冷藏室灯状态
 						    {
 						      "key": "0000",
-						      "value": "关闭"
+						      "value": "关闭",
+						      "img":"lcsd_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "开启"
+						      "value": "开启",
+						      "img":"lcsd_open.png"
 						    }
 						  ],
-						  "S12": [
+						  "S12": [//UV模块
 						    {
 						      "key": "0000",
-						      "value": "关闭"
+						      "value": "关闭",
+						      "img":"uv_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "开启"
+						      "value": "开启",
+						      "img":"uv_open.png"
 						    }
 						  ],
-						  "S13": [
+						  "S13": [//臭氧模块
 						    {
 						      "key": "0000",
-						      "value": "关闭"
+						      "value": "关闭",
+						      "img":"cy_close.png"
 						    },
 						    {
 						      "key": "0001",
-						      "value": "开启"
+						      "value": "开启",
+						      "img":"cy_open.png"
 						    }
 						  ],
 						  "M2": [
 						    {
 						      "key": "-1",
-						      "value": "正常模式"
+						      "value": "正常模式",
+						      "img":"gzms.png"
 						    },
 						    {
 						      "key": "0",
-						      "value": "正常模式"
+						      "value": "工作模式",
+						      "img":"gzms.png"
 						    },
 						    {
 						      "key": "3",
-						      "value": "假日模式"
+						      "value": "假日模式",
+						      "img":"gzms.png"
 						    }
 						  ]
 						}
+			
+			
+			
+
+			/* 名称		传感器编号		数据库代号		控制命令字
+			T1		冷藏室温度		T1			6DAA
+			T2		冷藏变温温度		T2
+			T3		冷藏急冷温度		T3
+			T4		冷冻温度		T4
+			T5		冷藏化霜温度		T5
+			T6		冷冻化霜温度		T6
+			T7		竖梁温度		T7
+			W1		湿度			W1
+			T8		冷藏蒸发器入口温度	T8
+			T9              冷冻蒸发器入口温度       T9
+			T10		压缩机出口温度		T10
+			U1		整机输入电压		U1
+			I1		整机输入电流		I1
+			I2		变频板输入电流		I2
+
+			M1		工作模式		M1			02
+			S1		冷藏风机状态		S1			03
+			S2		冷藏风门A状态		S2			04
+			S3		冷藏风门B状态		S3			05
+			S4		冷藏除霜状态		S4			06
+			S5		冷冻风机状态		S5			07
+			S6		冷冻除霜状态		S6			08
+			S7		冷藏电磁阀状态		S7			09
+			S8		冷冻电磁阀状态		S8			0A
+			V1		压缩机运转频率		V1			0B
+			S9		竖梁加热丝状态		S9			0C
+			S10		珍品加热丝状态		S10			0D
+			S11		冷藏室灯状态		S11			0E
+			S12		UV模块工作状态		S12			10
+			S13		臭氧模块工作状态	S13			11
+
+
+			S14		冷藏室左门状态		S14			12  13
+			S15		冷藏室右门状态		S15			14  15
+			S16		冷冻室上门状态		S16			16  17
+			S17		冷冻室下门状态		S17			18  19
+			V2		冷藏室温度设定值	V2			1A
+			V3		变温室功能设定值	V3			1B
+			V4		珍品功能设定值		V4 			1C
+			V5		冷冻室温度设定值	V5			1D
+			M2		运行模式设定值		M2			1E
+			E1		解锁按钮按键释放事件	E1			20
+
+
+					
+ */
 		</script>
 	</body>
 </html>

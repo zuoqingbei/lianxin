@@ -29,7 +29,7 @@
 			<!--bottom-->
 			<div id="bottom">
 				<div class="left-table">
-					<div class="title">故障详情</div>
+					<div class="title">诊断结果</div>
 					
 					<div class="btnBox">
 
@@ -43,8 +43,8 @@
 							<tr class="row">
 								<th class="col">对象<div class="slide"></div></th>
 								<th class="col">故障现象<div class="slide"></div></th>
+								<th class="col">失效原因<div class="slide"></div></th>
 								<th class="col">维修措施<div class="slide"></div></th>
-								<th class="col">位号<div class="slide"></div></th>
 							</tr>
 						</thead>
 						<tbody class="content" id="faultInfo">
@@ -150,8 +150,8 @@
 	    				"<tr class='row'>"
 		    				+"<td class='col'>"+element.fault_name+"<div class='slide'></div></td>"
 		    				+"<td title="+element.fault_appearance+" class='col'>"+(element.fault_appearance.length>16?element.fault_appearance.substr(0,16):element.fault_appearance)+"<div class='slide'></div></td>"
+		    				+"<td class='col'>"+(element.fault_resson==null?"":element.fault_resson)+"<div class='slide'></div></td>"
 		    				+"<td class='col'>"+(element.fault_repair==null?"":element.fault_repair)+"<div class='slide'></div></td>"
-		    				+"<td class='col'>"+element.fault_seat_number+"<div class='slide'></div></td>"
 	    				+"</tr>";
 					
 	    			});
