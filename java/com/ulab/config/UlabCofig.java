@@ -24,7 +24,6 @@ import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.OracleDialect;
-import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.ulab.core.BaseController;
 import com.ulab.util.HTMLTagSupportWrapper;
@@ -166,13 +165,13 @@ public class UlabCofig extends JFinalConfig {
 
 		/**重庆实验室hive测试库信息设置Impala数据源  **/
 
-	/*	DruidPlugin dsImpala = new DruidPlugin(this.getProperty("hive.url"), this.getProperty("hive.user"),
+		DruidPlugin dsImpala = new DruidPlugin(this.getProperty("hive.url"), this.getProperty("hive.user"),
 				"", this.getProperty("hive.driver"));
 		me.add(dsImpala);
 
 		ActiveRecordPlugin hive = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_HIVE, dsImpala);
 		hive.setShowSql(true);
-		me.add(hive);*/
+		me.add(hive);
 		/**重庆实验室hive测试库信息 END**/
 
 		//定时器
@@ -196,6 +195,6 @@ public class UlabCofig extends JFinalConfig {
 	//main方法启动 需要放开pom中jetty-server的注释，并改beetl.properties中RESOURCE.root= /src/main/webapp
 	public static void main(String[] args) {
 		PathKit.setWebRootPath("src/main/webapp/");
-		JFinal.start("src/main/webapp", 8088, "/hlht", 5);
+		JFinal.start("src/main/webapp", 8080, "/hlht", 5);
 	}
 }
