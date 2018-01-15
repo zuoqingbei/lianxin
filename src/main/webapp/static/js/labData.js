@@ -185,6 +185,7 @@ function loadVideosByDataCenterAjax(dataCenterId) {
 
 //查询数据中心下实验室 level为3(单位/产品)
 function loadAllDataCenterLabAjaxFunc(dataCenterId) {
+	$("#lab_unit_selected_center_world").html("");
     console.log("loadAllDataCenterLabAjaxFunc",dataCenterId);
 
     var dataCenter = dataCenterMap.get(dataCenterId);
