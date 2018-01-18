@@ -70,10 +70,6 @@ public class UlabCofig extends JFinalConfig {
 		//Ulab库
 		DruidPlugin dp = new DruidPlugin(this.getProperty("ulab.url"), this.getProperty("ulab.user"),
 				this.getProperty("ulab.password"), getProperty("ulab.driver"));
-		dp.setInitialSize(5);
-		dp.setMaxActive(5);
-		dp.setMinIdle(3);
-		dp.setValidationQuery("select 1 from dual");
 		me.add(dp);
 		arp = new AutoTableBindPlugin(dp);// 设置数据库方言
 		arp.setDialect(new OracleDialect());
@@ -85,9 +81,6 @@ public class UlabCofig extends JFinalConfig {
 		DruidPlugin druidPluginThailand = new DruidPlugin(this.getProperty("thailand.url"),
 				this.getProperty("thailand.user"), this.getProperty("thailand.password"),
 				getProperty("thailand.driver"));
-		druidPluginThailand.setInitialSize(5);
-		druidPluginThailand.setMaxActive(5);
-		druidPluginThailand.setMinIdle(3);
 		me.add(druidPluginThailand);
 		ActiveRecordPlugin thailandARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_THAILAND,
 				druidPluginThailand);
@@ -99,9 +92,6 @@ public class UlabCofig extends JFinalConfig {
 		/**胶州海尔空调数据库START**/
 		DruidPlugin jzhekt = new DruidPlugin(this.getProperty("jzhekt.url"), this.getProperty("jzhekt.user"),
 				this.getProperty("jzhekt.password"), getProperty("jzhekt.driver"));
-		jzhekt.setInitialSize(5);
-		jzhekt.setMaxActive(5);
-		jzhekt.setMinIdle(3);
 		me.add(jzhekt);
 		ActiveRecordPlugin jzhektARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_JZKT, jzhekt);
 		jzhektARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
@@ -112,9 +102,6 @@ public class UlabCofig extends JFinalConfig {
 		/**胶南热水器数据库START**/
 		DruidPlugin jnrsq = new DruidPlugin(this.getProperty("jnrsq.url"), this.getProperty("jnrsq.user"),
 				this.getProperty("jnrsq.password"), getProperty("jnrsq.driver"));
-		jnrsq.setInitialSize(5);
-		jnrsq.setMaxActive(5);
-		jnrsq.setMinIdle(3);
 		me.add(jnrsq);
 		ActiveRecordPlugin jnrsqARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_JNRSQ, jnrsq);
 		jnrsqARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
@@ -125,9 +112,6 @@ public class UlabCofig extends JFinalConfig {
 		/**中海博睿整机数据库START**/
 		DruidPlugin zhbrzj = new DruidPlugin(this.getProperty("zhbrzj.url"), this.getProperty("zhbrzj.user"),
 				this.getProperty("zhbrzj.password"), getProperty("zhbrzj.driver"));
-		jnrsq.setInitialSize(5);
-		jnrsq.setMaxActive(5);
-		jnrsq.setMinIdle(3);
 		me.add(zhbrzj);
 		ActiveRecordPlugin zhbrzjARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_ZHBRZJ, zhbrzj);
 		zhbrzjARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
@@ -138,9 +122,6 @@ public class UlabCofig extends JFinalConfig {
 		/**胶南洗涤数据库START**/
 		DruidPlugin jnxd = new DruidPlugin(this.getProperty("jnxd.url"), this.getProperty("jnxd.user"),
 				this.getProperty("jnxd.password"), getProperty("jnxd.driver"));
-		jnxd.setInitialSize(5);
-		jnxd.setMaxActive(5);
-		jnxd.setMinIdle(3);
 		me.add(jnxd);
 		ActiveRecordPlugin jnxdARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_JNXD, jnxd);
 		jnxdARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
@@ -152,9 +133,6 @@ public class UlabCofig extends JFinalConfig {
 		/**俄罗斯数据库START**/
 		DruidPlugin russia = new DruidPlugin(this.getProperty("russia.url"), this.getProperty("russia.user"),
 				this.getProperty("russia.password"), getProperty("russia.driver"));
-		russia.setInitialSize(5);
-		russia.setMaxActive(5);
-		russia.setMinIdle(3);
 		me.add(russia);
 		ActiveRecordPlugin russiaARP = new ActiveRecordPlugin(com.ulab.core.Constants.CONFIGNAME_RUSSIA, russia);
 		russiaARP.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写

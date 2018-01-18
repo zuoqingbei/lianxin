@@ -1154,8 +1154,12 @@ public class LabController extends BaseController {
 	 */
 	public void loadVideosByDataCenterAjax() {
 		String dataCenterId = getPara("dataCenterId");
-		List<Record> videoList = LabVideoModel.dao
-				.findVideosByDataCenterId(dataCenterId);
+		List<Record> videoList =getSessionAttr("list_dataCenterId_"+dataCenterId);
+		if(videoList==null||videoList.size()==0){
+			videoList = LabVideoModel.dao
+					.findVideosByDataCenterId(dataCenterId);
+			setSessionAttr("list_dataCenterId_"+dataCenterId, videoList);
+		}
 		renderJson(videoList);
 	}
 
@@ -1169,7 +1173,8 @@ public class LabController extends BaseController {
 	 */
 	public void loadTopVideoByLabCodeAjax() {
 		String labCode = getPara("labCode");
-		Record topVideo = LabVideoModel.dao.findTopVideoByLabCode(labCode);
+		Record topVideo =(Record) (getSessionAttr("record_code_"+labCode)==null? LabVideoModel.dao.findTopVideoByLabCode(labCode):getSessionAttr("record_code_"+labCode));
+		setSessionAttr("record_code_"+labCode, topVideo);
 		if (topVideo == null) {
 			topVideo = new Record();
 			topVideo.set("videl_url", "");

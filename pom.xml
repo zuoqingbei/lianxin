@@ -45,8 +45,6 @@
 			<artifactId>beetl-core</artifactId>
 			<version>2.1.4</version>
 		</dependency>
-		
-
 		<!-- 工具类 -->
 		
 		<dependency>

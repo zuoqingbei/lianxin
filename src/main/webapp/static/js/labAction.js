@@ -216,7 +216,7 @@ $(function () {
 
     //获取小视频地址的ajax
     function videoUrlAjax(labCode, toUrl) {
-        $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax/?labCode=" + labCode, function (data) {
+        $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax?labCode=" + labCode, function (data) {
             var videoUrl = data.videl_url.replace("10.130.96.65", "127.0.0.1");
             // console.log("---labCode", labCode, "videoUrl:", videoUrl);
             if (videoUrl) {
