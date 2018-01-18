@@ -709,10 +709,10 @@ public class LabController extends BaseController {
 	public void orderRateForCenterLabAjax() {
 		String startDate = getPara("startDate", dealStartTime());
 		String endDate = getPara("endDate", "");
-		endDate = dealEndTime(endDate);
+		//endDate = dealEndTime(endDate);
 		List<Record> list = OrderModel.dao.findOrderRateForMonth(startDate,
 				endDate);
-		dealTimeForLast(list, "name", "rate");
+		//dealTimeForLast(list, "name", "rate");
 		renderJson(list);
 	}
 
@@ -761,11 +761,11 @@ public class LabController extends BaseController {
 	public void satisfactionStatisForMonthForTab3Ajax() {
 		String startDate = getPara("startDate", dealStartTime());
 		String endDate = getPara("endDate", "");
-		endDate = dealEndTime(endDate);
+		//endDate = dealEndTime(endDate);
 		String labTypeCode = getPara("labTypeCode", "");
 		List<Record> list = SatisfactionModel.dao.satisfactionStatisForMonth(
 				startDate, endDate, labTypeCode);
-		list = dealTimeForLast(list, "name", "rate");
+		//list = dealTimeForLast(list, "name", "rate");
 		renderJson(list);
 	}
 
