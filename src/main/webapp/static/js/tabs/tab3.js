@@ -563,10 +563,43 @@ function findOrderMonthRateForProductAjax() {
 }
 //右-右-上 #7 折线图 用户满意度
 function satisfactionStatisForMonthForTab3Ajax() {
-    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {/*"startDate":"201601","endDate":"201705"*/}, function (data) {
+    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"startDate":"201701","endDate":"2017"+getCurrentMonth()}, function (data) {
     	var myChart7 = echarts.init(document.getElementById("myChart7"));
         right_echarts.push(myChart7);
+       
+        var mSer;
         myChart7.setOption(getLineEcharts());
+        if(getCurrentMonth()=="01"){
+        	myChart7.setOption(getBarEcharts());
+        	 mSer= {
+                     name: '满意度',
+                     type: 'bar',
+                     barWidth:60,
+                     label: labelSetting,
+                     lineStyle: {
+                         normal: {
+                             width: 1 * bodyScale
+                         }
+                     },
+                     symbol: 'circle',
+                     symbolSize: 3 * bodyScale,
+                     data: tab1OrderRateSeriseData(data)
+                 };
+        }else{
+        	 mSer= {
+                     name: '满意度',
+                     type: 'line',
+                     stack: '总量',
+                     lineStyle: {
+                         normal: {
+                             width: 1 * bodyScale
+                         }
+                     },
+                     symbol: 'circle',
+                     symbolSize: 3 * bodyScale,
+                     data: tab1OrderRateSeriseData(data)
+                 };
+        }
         myChart7.setOption({
             legend: {
                 show: false,
@@ -605,21 +638,7 @@ function satisfactionStatisForMonthForTab3Ajax() {
                     //data: last_year_month()
                 }
             ],
-            series: [
-                {
-                    name: '满意度',
-                    type: 'line',
-                    stack: '总量',
-                    lineStyle: {
-                        normal: {
-                            width: 1 * bodyScale
-                        }
-                    },
-                    symbol: 'circle',
-                    symbolSize: 3 * bodyScale,
-                    data: tab1OrderRateSeriseData(data)
-                }
-            ]
+            series: [mSer]
         });
     })
 }
@@ -802,7 +821,7 @@ function statistictab1LengendTime(data) {
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
-        name = name.substr(2, 2) + "/" + name.substr(4, name.length);
+        name =  name.substr(4, name.length);
         legnend.push(name);
     });
     return legnend;

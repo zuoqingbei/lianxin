@@ -100,7 +100,7 @@ function initone(mValue) {
 //近12个月用户满意度趋势图
 function inittwo() {
     $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"labTypeCode": "中海博睿",
-    	/*"startDate":"201606","endDate":"201706"*/}, function (data) {
+    	"startDate":"201701","endDate":"2017"+getCurrentMonth()}, function (data) {
         var resu = dealSatisfactionCenterLab(data);
         $("#satisfaction_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#satisfaction_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
@@ -143,6 +143,7 @@ function inittwo() {
                     name: "时间",
                     type: 'category',
                     data: centerLabOrderRateLengend(data),
+                    //data: ["01","02","03","04","05","06","07","08","09","10","11","12"],
                     //data:last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10
@@ -157,7 +158,7 @@ function inittwo() {
             },
             series: [
                 {
-                    barWidth:'50%',
+                	 barWidth:60,
                     // symbolSize: ['50%', '10%'],
                     data: centerLabOrderHgRate(data)
                 }
@@ -189,8 +190,8 @@ function last_year_month() {
 //近12个月一次合格率趋势图
 function initThree() {
     $.post(contextPath + '/lab/orderRateForCenterLabAjax', {
-        /*"startDate": "201601",
-        "endDate": "201612"*/
+        "startDate": "201601",
+        "endDate": "2016"+getCurrentMonth() 
     }, function (data) {
     	$.each(data,function(index,item){
     		var num=item.rate;
@@ -240,6 +241,7 @@ function initThree() {
                     name: "时间",
                     type: 'category',
                     data: centerLabOrderRateLengend(data),
+                    //data:  ["01","02","03","04","05","06","07","08","09","10","11","12"],
                     //data: last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10
@@ -260,7 +262,7 @@ function initThree() {
             },
             series: [
                 {
-                    barWidth:'50%',
+                	 barWidth:60,
                     // symbolSize: ['50%', '10%'],
                     data: centerLabOrderHgRate(data)
                 }
@@ -272,8 +274,8 @@ function initThree() {
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
         "labTypeCode": "中心实验室",
-      /*  "startDate": "201601",
-        "endDate": "201612"*/
+        "startDate": "201601",
+        "endDate": "2016"+getCurrentMonth()
     }, function (data) {
     	$.each(data,function(index,item){
     		var num=item.rate;
@@ -287,7 +289,32 @@ function initfour() {
         $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
         $("#order_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
         chartthree.setOption(initone(data[data.length-1].rate));
-        chartfour.setOption(getLineEcharts());
+        var mType="line";
+        
+        
+        var mSer;
+        if(getCurrentMonth()=="01"){
+        	chartfour.setOption(getBarEcharts());
+        	mSer={
+        			 barWidth:60,
+                    // symbolSize: ['50%', '10%'],
+                    data: centerLabRateData(data)
+                };
+        }else{
+        	chartfour.setOption(getLineEcharts());
+        	mSer={
+        	           
+                    // symbol: 'circle',
+                    stack: '总量',
+                    // areaStyle: {normal: {}},
+                    data: centerLabRateData(data),
+                    itemStyle: {
+                        normal: {
+                            color: "#ff6666"
+                        }
+                    }
+                };
+        }
         chartfour.setOption({
             textStyle: {
                 fontSize: bodyScale * 8
@@ -309,6 +336,7 @@ function initfour() {
                 {
                     name: '时间',
                     data: centerLabOrderRateLengend(data),
+                   // data: ["01","02","03","04","05","06","07","08","09","10","11","12"],
                     //data: last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10,
@@ -332,19 +360,7 @@ function initfour() {
                 }
             ],
             series: [
-                {
-                    name: '',
-                    type: 'line',
-                    // symbol: 'circle',
-                    stack: '总量',
-                    // areaStyle: {normal: {}},
-                    data: centerLabRateData(data),
-                    itemStyle: {
-                        normal: {
-                            color: "#ff6666"
-                        }
-                    }
-                }
+                     mSer
             ]
         });
     });
@@ -1429,7 +1445,7 @@ function centerLabOrderRateLengend(data) {
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
-        name = name.substr(2, 2) + "/" + name.substr(4, name.length);
+        name =  name.substr(4, name.length);
         legnend.push(name);
     });
     return legnend;
@@ -1438,10 +1454,19 @@ function centerLabOrderRateLengend(data) {
 function centerLabOrderHgRate(data) {
     var d = [];
     $.each(data, function (index, item) {
-        var it = {
-            value: item.rate,
-            // symbol: bar_chip
-        };
+       var it;
+        if(parseInt(item.name.substr(4,6))<=parseInt(getCurrentMonth())){
+        	//console.log(item.name.substr(4,6)+"--"+getCurrentMonth())
+        	 it = {
+        	            value: item.rate,
+        	            // symbol: bar_chip
+        	        };
+        }else{
+        	 it = {
+     	            value: 0,
+     	            // symbol: bar_chip
+     	        };
+        }
         d.push(it)
     })
     return d;
@@ -1449,8 +1474,12 @@ function centerLabOrderHgRate(data) {
 function centerLabRateData(data) {
     var indicatorDataTab3 = [];
     for (var i = 0; i < data.length; i++) {
-        var num = data[i].rate;
-        
+        var num ;
+        if(parseInt(data[i].name.substr(4,6))<=parseInt(getCurrentMonth())){
+        	num= data[i].rate;
+        }else{
+        	num=0;
+        }
         indicatorDataTab3.push(num);
     }
     return indicatorDataTab3;
@@ -1463,30 +1492,34 @@ function dealCenterLab(data) {
     var maxData = {month: 0, rate: 0};
     var minData = {month: 0, rate: 100};
     $.each(data, function (index, item) {
-        var cAllNum =0;
-        if(item.hasOwnProperty("all_count")){
-        	cAllNum=parseInt(item.all_count);
-        }
-        var cJsNum =0;
-        if(item.hasOwnProperty("js_count")){
-        	cJsNum=parseInt(item.js_count);
-        }
-        var cName = item.name;
-        var cRate = parseFloat(item.rate);
-        if (parseFloat(maxData.rate) < cRate) {
-            maxData.rate = cRate;
-            maxData.month = cName;
-        }
-        if (parseFloat(minData.rate) > cRate&&item.rate!=0) {
-            minData.rate = cRate;
-            minData.month = cName;
-        }
-        all_num += cAllNum;
-        js_num += cJsNum;
+    	if(parseInt(item.name.substr(4,6))<=parseInt(getCurrentMonth())){
+    		var cAllNum =0;
+    		if(item.hasOwnProperty("all_count")){
+    			cAllNum=parseInt(item.all_count);
+    		}
+    		var cJsNum =0;
+    		if(item.hasOwnProperty("js_count")){
+    			cJsNum=parseInt(item.js_count);
+    		}
+    		var cName = item.name;
+    		var cRate = parseFloat(item.rate);
+    		if (parseFloat(maxData.rate) < cRate) {
+    			maxData.rate = cRate;
+    			maxData.month = cName;
+    		}
+    		if (parseFloat(minData.rate) > cRate&&item.rate!=0) {
+    			minData.rate = cRate;
+    			minData.month = cName;
+    		}
+    		all_num += cAllNum;
+    		js_num += cJsNum;
+    	}
     });
     //计算整体平均值
     var allPingjun = parseFloat((parseInt(js_num) / parseInt(all_num)) * 100).toFixed(1);
     result.push(allPingjun);
+    maxData.month=maxData.month.substr(4,6);
+    minData.month=minData.month.substr(4,6);
     result.push(maxData);
     result.push(minData);
     return result;
@@ -1498,21 +1531,25 @@ function dealSatisfactionCenterLab(data) {
     var maxData = {month: 0, rate: 0};
     var minData = {month: 0, rate: 100};
     $.each(data, function (index, item) {
-        all_num = parseFloat(all_num) + parseFloat(item.rate);
-        var cName = item.name;
-        var cRate = parseFloat(item.rate);
-        if (parseFloat(maxData.rate) < cRate) {
-            maxData.rate = cRate;
-            maxData.month = cName;
-        }
-        if (parseFloat(minData.rate) > cRate&&item.rate!=0) {
-            minData.rate = cRate;
-            minData.month = cName;
-        }
+    	if(parseInt(item.name.substr(4,6))<=parseInt(getCurrentMonth())){
+    		all_num = parseFloat(all_num) + parseFloat(item.rate);
+    		var cName = item.name;
+    		var cRate = parseFloat(item.rate);
+    		if (parseFloat(maxData.rate) < cRate) {
+    			maxData.rate = cRate;
+    			maxData.month = cName;
+    		}
+    		if (parseFloat(minData.rate) > cRate&&item.rate!=0) {
+    			minData.rate = cRate;
+    			minData.month = cName;
+    		}
+    	}
     });
     //计算整体平均值
     var allPingjun = parseFloat(all_num / data.length).toFixed(1);
     result.push(allPingjun);
+    maxData.month=maxData.month.substr(4,6);
+    minData.month=minData.month.substr(4,6);
     result.push(maxData);
     result.push(minData);
     return result;
