@@ -357,7 +357,7 @@ public class LabController extends BaseController {
 		String labTypeCode = getPara("labTypeCode", "");
 		String startDate = getPara("startDate", dealStartTime());
 		String endDate = getPara("endDate", "");
-		endDate = dealEndTime(endDate);
+		//endDate = dealEndTime(endDate);
 		List<List<Record>> list = new ArrayList<List<Record>>();
 		List<Record> productLine = getSessionAttr("productLine");
 		if (productLine == null) {
@@ -366,7 +366,7 @@ public class LabController extends BaseController {
 		for (Record r : productLine) {
 			List<Record> data = OrderModel.dao.findOrderMonthRateForProduct(
 					startDate, endDate, r.get("id").toString(), labTypeCode);
-			data = dealTimeForLast(data, "name", "rate");
+			//data = dealTimeForLast(data, "name", "rate");
 			if (data != null && data.size() > 0) {
 				list.add(data);
 			}
@@ -826,7 +826,7 @@ public class LabController extends BaseController {
 	public void productLineAndMonthForTab3Ajax() {
 		String startDate = getPara("startDate", dealStartTime());
 		String endDate = getPara("endDate", "");
-		endDate = dealEndTime(endDate);
+		//endDate = dealEndTime(endDate);
 		String labTypeCode = getPara("labTypeCode", "");
 		List<List<Record>> list = new ArrayList<List<Record>>();
 		List<Record> productLine = getSessionAttr("productLine");
@@ -836,7 +836,7 @@ public class LabController extends BaseController {
 		for (Record r : productLine) {
 			List<Record> data = SatisfactionModel.dao.productLineAndMonth(
 					startDate, endDate, r.get("id").toString(), labTypeCode);
-			data = dealTimeForLast(data, "name", "rate");
+			//data = dealTimeForLast(data, "name", "rate");
 			if (data != null && data.size() > 0) {
 				list.add(data);
 			}
