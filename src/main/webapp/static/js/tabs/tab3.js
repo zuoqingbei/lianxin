@@ -5,16 +5,16 @@
 function loadTab3Data() {
     //左-左-下 #39 散点图 订单类别
     orderTypeAjax("myChart39", "整机", 30);
-    
+
     //左-中-上 #43 同心圆 一次合格率  整体统计
     findOrderPassForAllAjax();
-    
+
     //左-中-下 #41 折线图 一次合格率
     findOrderPassForProAjax("myChart41", "整机");
     //左-右-上 #44 同心圆 问题闭环率
     questionForMkZjTab3Ajax();
     //左-右-下 #42 折线图 问题闭环率
-    productLineForTab3Tab3Ajax("myChart42",0);
+    productLineForTab3Tab3Ajax("myChart42", 0);
 
     //右-左-上 #6 折线图 订单及时率
     findOrderYearRateForTab3();
@@ -50,12 +50,12 @@ function loadTab3Data() {
 }
 
 //左-左-下 #39 散点图 订单类别
-function orderTypeAjax(myChartIds, desName, divisor,obj) {
+function orderTypeAjax(myChartIds, desName, divisor, obj) {
     $.post(contextPath + '/lab/findOrderMonthTypeForProductAjax', {
         "labTypeCode": labTypeCode,
         "desName": desName
     }, function (res) {
-    	$(obj).addClass("active").siblings().removeClass("active");
+        $(obj).addClass("active").siblings().removeClass("active");
         var data = [];
         var yData = [];//产线
         var xData = [];//类型
@@ -174,8 +174,9 @@ function orderTypeAjax(myChartIds, desName, divisor,obj) {
 
     })
 }
+
 //左-中-上 #42 同心圆  统计当前以及同比 模块 整机问题闭环率tab3  type   0：整机 1：模块
-function productLineForTab3Tab3Ajax(myChartIds, type,obj) {
+function productLineForTab3Tab3Ajax(myChartIds, type, obj) {
     $.post(contextPath + '/lab/productLineForTab3Tab3Ajax', {
         "labTypeCode": labTypeCode,
         "type": type
@@ -252,14 +253,15 @@ function productLineForTab3Tab3Ajax(myChartIds, type,obj) {
         });
     });
 }
+
 //左-中-下 #41 #42 折线图 一次合格率 数据结果 整机 模'块
-function findOrderPassForProAjax(mychartIds, desName,obj) {
+function findOrderPassForProAjax(mychartIds, desName, obj) {
     $.post(contextPath + '/lab/findOrderPassForProAjax', {
         "labTypeCode": labTypeCode,
         "desName": desName,
         "name": "合格率"
     }, function (data) {
-    	$(obj).addClass("active").siblings().removeClass("active");
+        $(obj).addClass("active").siblings().removeClass("active");
         var myChart = echarts.init(document.getElementById(mychartIds));
         right_echarts.push(myChart);
         myChart.setOption(getAreaEcharts());
@@ -269,7 +271,7 @@ function findOrderPassForProAjax(mychartIds, desName,obj) {
                 data: [desName],
                 itemWidth: 6 * bodyScale, //图例标记的图形宽度
                 itemHeight: 6 * bodyScale, //图例标记的图形高度
-                itemGap:10*bodyScale
+                itemGap: 10 * bodyScale
             },
             grid: {
                 x: "5%",
@@ -326,49 +328,84 @@ function findOrderPassForProAjax(mychartIds, desName,obj) {
         });
     })
 }
-//根据当前月,取得历史月份集合(从当前月前推:历史)  
+
+//根据当前月,取得历史月份集合(从当前月前推:历史)
 
 function last_year_month() {
-	 var complDate = [];  
-	    var curDate = new Date();  
-	    var y = curDate.getFullYear();  
-	    var m = curDate.getMonth() + 1;  
-	    //第一次装入当前月(格式yyyy-mm)  
-	    complDate[0] = y.toString().substr(2, 2)+ "/" + (m.toString().length == 1 ? "0" + m : m);  
-	    m--;  
-	    //第一次已经装入,numMonth少计算一次  
-	    for (var i = 1; i < 12; i++, m--) {  
-	        if (m == 0) {  
-	            //到1月后,后推一年  
-	            y--;  
-	            m = 12; //再从12月往后推  
-	        }  
-	        complDate[i] = y.toString().substr(2, 2) +"/" + (m.toString().length == 1 ? "0" + m : m);  
-	    }  
-	return complDate.reverse();
+    var complDate = [];
+    var curDate = new Date();
+    var y = curDate.getFullYear();
+    var m = curDate.getMonth() + 1;
+    //第一次装入当前月(格式yyyy-mm)
+    complDate[0] = y.toString().substr(2, 2) + "/" + (m.toString().length == 1 ? "0" + m : m);
+    m--;
+    //第一次已经装入,numMonth少计算一次
+    for (var i = 1; i < 12; i++, m--) {
+        if (m == 0) {
+            //到1月后,后推一年
+            y--;
+            m = 12; //再从12月往后推
+        }
+        complDate[i] = y.toString().substr(2, 2) + "/" + (m.toString().length == 1 ? "0" + m : m);
+    }
+    return complDate.reverse();
 }
 
 //右-左-上 #6 折线图 订单及时率
 function findOrderYearRateForTab3() {
-/*	var myDate = new Date();
-	var year=myDate.getFullYear(); //获取完整的年份(4位,1970-????)
-	var month=myDate.getMonth(); //获取当前月份(0-11,0代表1月)
-	month=parseInt(month)-1;
-	var end=year+month;*/
+    /*	var myDate = new Date();
+        var year=myDate.getFullYear(); //获取完整的年份(4位,1970-????)
+        var month=myDate.getMonth(); //获取当前月份(0-11,0代表1月)
+        month=parseInt(month)-1;
+        var end=year+month;*/
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
-        /*"startDate": "201601",
-        "endDate": "201612"*/
+        "startDate": "201701",
+        "endDate": "2017" + getCurrentMonth()
     }, function (data) {
         var myChart6 = echarts.init(document.getElementById("myChart6"));
         right_echarts.push(myChart6);
+
+        var mSer;
         myChart6.setOption(getLineEcharts());
+        if (getCurrentMonth() === "01") {
+            myChart6.setOption(getBarEcharts());
+            mSer = {
+                name: '及时率',
+                type: 'bar',
+                barWidth: 60 * bodyScale,
+                label: labelSetting,
+                lineStyle: {
+                    normal: {
+                        width: 1 * bodyScale
+                    }
+                },
+                symbol: 'circle',
+                symbolSize: 3 * bodyScale,
+                data: tab1OrderRateSeriseDataNotTrue(data)
+            };
+        } else {
+            mSer = {
+                name: '及时率',
+                type: 'line',
+                stack: '总量',
+                lineStyle: {
+                    normal: {
+                        width: 1 * bodyScale
+                    }
+                },
+                symbol: 'circle',
+                symbolSize: 3 * bodyScale,
+                data: tab1OrderRateSeriseData(data)
+            };
+        }
+
         myChart6.setOption({
             legend: {
                 show: false,
                 data: ['及时率'],
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 6 * bodyScale, //图例标记的图形高度
-                itemGap:10*bodyScale
+                itemGap: 10 * bodyScale
             },
             grid: {
                 right: '15%',
@@ -397,24 +434,13 @@ function findOrderYearRateForTab3() {
                     //data: last_year_month()
                 }
             ],
-            series: [{
-                name: '及时率',
-                nameGap: nameGap,
-                type: 'line',
-                lineStyle: {
-                    normal: {
-                        width: 1 * bodyScale
-                    }
-                },
-                symbol: 'circle',
-                symbolSize: 3 * bodyScale,
-                //data: tab1OrderRateSeriseData(data)
-                data: tab1OrderRateSeriseDataNotTrue(data)
-            }]
+            series: [mSer]
 
         });
+
     })
 }
+
 //右-左-下-左 #45 雷达图 订单及时率同比变化 按照产线统计某年整体订单及时率  数据结果
 function findOrderYearRateForProductAjax() {
     $.post(contextPath + '/lab/findOrderYearRateForProductAjax', {"labTypeCode": labTypeCode}, function (data) {
@@ -432,12 +458,12 @@ function findOrderYearRateForProductAjax() {
                 bottom: '5%',
                 itemWidth: 10 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 2 * bodyScale, //图例标记的图形高度
-                itemGap:10*bodyScale,
+                itemGap: 10 * bodyScale,
                 textStyle: {    //图例文字的样式
                     color: '#66ccff',
                     fontSize: 12 * bodyScale
                 },
-                data: ['2016年', '2017年']
+                data: ['2017年', '2018年']
             },
 
             calculable: true,
@@ -478,7 +504,7 @@ function findOrderYearRateForProductAjax() {
                     data: [
                         {
                             value: tab3DataData(data, 0),
-                            name: '2016年',
+                            name: '2017年',
                             itemStyle: {
                                 normal: {
                                     color: '#66ffcc',
@@ -490,7 +516,7 @@ function findOrderYearRateForProductAjax() {
                         },
                         {
                             value: tab3DataData(data, 1),
-                            name: '2017年',
+                            name: '2018年',
                             itemStyle: {
                                 normal: {
                                     color: '#ff9933',
@@ -506,16 +532,26 @@ function findOrderYearRateForProductAjax() {
         });
     })
 }
+
 //右-左-下-右 #46 折线组图 订单及时率趋势变化  数据结果
 function findOrderMonthRateForProductAjax() {
     $.post(contextPath + '/lab/findOrderMonthRateForProductAjax', {
         "labTypeCode": labTypeCode,
-       /* "startDate": "201601",
-        "endDate": "201612"*/
+        "startDate": "201701",
+        "endDate": "2017" + getCurrentMonth()
     }, function (data) {
         var myChart46 = echarts.init(document.getElementById("myChart46"));
         right_echarts.push(myChart46);
         myChart46.setOption(getLineEcharts());
+        var mSer;
+        if (getCurrentMonth() === "01") {
+            myChart46.setOption(getTab3Serise());
+            console.log("------",getTab3SeriseBar(data))
+
+            mSer =getTab3SeriseBar(data);
+        } else {
+            mSer =getTab3Serise(data);
+        }
         myChart46.setOption({
             color: ['#66ccff', '#00e673', '#4397f7', '#ff9933', '#66ffcc', '#ffff99', '#ff6666'],
             legend: {
@@ -525,7 +561,7 @@ function findOrderMonthRateForProductAjax() {
                 data: tab3Lengend(data),
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 6 * bodyScale, //图例标记的图形高度
-                itemGap:8*bodyScale,
+                itemGap: 8 * bodyScale,
                 textStyle: {
                     fontSize: 12 * bodyScale
                 },
@@ -556,49 +592,53 @@ function findOrderMonthRateForProductAjax() {
                     max: 100
                 }
             ],
-            series: getTab3Serise(data)
-
-        });
+            series: mSer
+        })
     })
 }
+
 //右-右-上 #7 折线图 用户满意度
 function satisfactionStatisForMonthForTab3Ajax() {
-    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {"startDate":"201701","endDate":"2017"+getCurrentMonth()}, function (data) {
-    	var myChart7 = echarts.init(document.getElementById("myChart7"));
+    $.post(contextPath + '/lab/satisfactionStatisForMonthForTab3Ajax', {
+        "startDate": "201701",
+        "endDate": "2017" + getCurrentMonth()
+    }, function (data) {
+        var myChart7 = echarts.init(document.getElementById("myChart7"));
         right_echarts.push(myChart7);
-       
+
         var mSer;
         myChart7.setOption(getLineEcharts());
-        if(getCurrentMonth()=="01"){
-        	myChart7.setOption(getBarEcharts());
-        	 mSer= {
-                     name: '满意度',
-                     type: 'bar',
-                     barWidth:60,
-                     label: labelSetting,
-                     lineStyle: {
-                         normal: {
-                             width: 1 * bodyScale
-                         }
-                     },
-                     symbol: 'circle',
-                     symbolSize: 3 * bodyScale,
-                     data: tab1OrderRateSeriseData(data)
-                 };
-        }else{
-        	 mSer= {
-                     name: '满意度',
-                     type: 'line',
-                     stack: '总量',
-                     lineStyle: {
-                         normal: {
-                             width: 1 * bodyScale
-                         }
-                     },
-                     symbol: 'circle',
-                     symbolSize: 3 * bodyScale,
-                     data: tab1OrderRateSeriseData(data)
-                 };
+        console.log("----------chart7-ser-data:",tab1OrderRateSeriseData(data))
+        if (getCurrentMonth() === "01") {
+            myChart7.setOption(getBarEcharts());
+            mSer = {
+                name: '满意度',
+                type: 'bar',
+                barWidth: 60 * bodyScale,
+                label: labelSetting,
+                lineStyle: {
+                    normal: {
+                        width: 1 * bodyScale
+                    }
+                },
+                symbol: 'circle',
+                symbolSize: 3 * bodyScale,
+                data: tab1OrderRateSeriseData(data)
+            };
+        } else {
+            mSer = {
+                name: '满意度',
+                type: 'line',
+                stack: '总量',
+                lineStyle: {
+                    normal: {
+                        width: 1 * bodyScale
+                    }
+                },
+                symbol: 'circle',
+                symbolSize: 3 * bodyScale,
+                data: tab1OrderRateSeriseData(data)
+            };
         }
         myChart7.setOption({
             legend: {
@@ -606,7 +646,7 @@ function satisfactionStatisForMonthForTab3Ajax() {
                 data: ['整机', '模块'],
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 6 * bodyScale, //图例标记的图形高度
-                itemGap:10*bodyScale,
+                itemGap: 10 * bodyScale,
                 textStyle: {
                     fontSize: 12 * bodyScale
                 },
@@ -642,6 +682,7 @@ function satisfactionStatisForMonthForTab3Ajax() {
         });
     })
 }
+
 //右-右-下-左 #47 竖条组图 用户满意度同比变化 某一年分
 function satisfactionStatisForYearTab3Ajax2016() {
     $.post(contextPath + '/lab/satisfactionStatisForYearTab3Ajax', {
@@ -653,7 +694,7 @@ function satisfactionStatisForYearTab3Ajax2016() {
         $.each(data[0], function (index, item) {
             mData.push(item.product_name);
         });
-       // mData.reverse();
+        // mData.reverse();
         var myChart47 = echarts.init(document.getElementById("myChart47"));
         right_echarts.push(myChart47);
         // myChart47.setOption(getBarEcharts());
@@ -666,8 +707,8 @@ function satisfactionStatisForYearTab3Ajax2016() {
                 },
                 itemWidth: 6 * bodyScale,
                 itemHeight: 6 * bodyScale,
-                itemGap:10*bodyScale,
-                data: ['2016年', '2017年']
+                itemGap: 10 * bodyScale,
+                data: ['2017年', '2018年']
             },
             xAxis: [
                 {
@@ -725,17 +766,17 @@ function satisfactionStatisForYearTab3Ajax2016() {
             tooltip: {
                 trigger: 'axis',
                 textStyle: {
-                    fontSize: 10*bodyScale,
+                    fontSize: 10 * bodyScale,
                 }
             },
             series: [
                 {
-                    name: '2016年',
+                    name: '2017年',
                     type: "bar",
                     data: tab3RateData(data[0]),
                     barWidth: 7 * bodyScale
                 }, {
-                    name: '2017年',
+                    name: '2018年',
                     type: "bar",
                     data: tab3RateData(data[1]),
                     barWidth: 7 * bodyScale
@@ -744,10 +785,15 @@ function satisfactionStatisForYearTab3Ajax2016() {
         });
     })
 }
+
 //右-右-下-右 #49 折线组图 用户满意度趋势变化 到月数据统计
 function productLineAndMonthForTab3Ajax() {
-    $.post(contextPath + '/lab/productLineAndMonthForTab3Ajax', {"labTypeCode": labTypeCode/*,"startDate":"201606","endDate":"201705"*/}, function (data) {
-        var mData = [];
+    $.post(contextPath + '/lab/productLineAndMonthForTab3Ajax', {
+        "labTypeCode": labTypeCode,
+        "startDate": "201701",
+        "endDate": "2017" + getCurrentMonth()
+    }, function (data) {
+        /*var mData = [];
         var mSeries = [];
         $.each(data, function (index, item) {
             mData.push(item[0].product_name);
@@ -759,24 +805,33 @@ function productLineAndMonthForTab3Ajax() {
                         width: 1 * bodyScale
                     }
                 },
-                symbol:'circle',
+                symbol: 'circle',
                 symbolSize: 3 * bodyScale,
                 data: tab3RateData(item),
 
             };
             mSeries.push(it);
-        });
+        });*/
         var myChart49 = echarts.init(document.getElementById("myChart49"));
         right_echarts.push(myChart49);
         myChart49.setOption(getLineEcharts());
+        var mSer;
+        if (getCurrentMonth() === "01") {
+            myChart49.setOption(getTab3Serise());
+            console.log("------",getTab3SeriseBar(data))
+
+            mSer =getTab3SeriseBar(data);
+        } else {
+            mSer =getTab3Serise(data);
+        }
         myChart49.setOption({
             color: ['#66ccff', '#00e673', '#4397f7', '#ff9933', '#66ffcc', '#ffff99', '#ff6666'],
             legend: {
                 show: true,
-                data: mData,
+                data: tab3Lengend(data),
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
-                itemHeight: 6* bodyScale, //图例标记的图形高度
-                itemGap:8*bodyScale,
+                itemHeight: 6 * bodyScale, //图例标记的图形高度
+                itemGap: 8 * bodyScale,
                 textStyle: {
                     fontSize: 12 * bodyScale
                 },
@@ -810,7 +865,7 @@ function productLineAndMonthForTab3Ajax() {
                     interval: 4,
                 }
             ],
-            series: mSeries
+            series: mSer
 
         });
     })
@@ -821,11 +876,12 @@ function statistictab1LengendTime(data) {
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
-        name =  name.substr(4, name.length);
+        name = name.substr(4, name.length);
         legnend.push(name);
     });
     return legnend;
 }
+
 //data for 右-左-上 #6 折线图 订单及时率
 function tab1OrderRateSeriseData(data) {
     var mData = [];
@@ -834,18 +890,20 @@ function tab1OrderRateSeriseData(data) {
     });
     return mData;
 }
+
 function tab1OrderRateSeriseDataNotTrue(data) {
     var mData = [];
     $.each(data, function (index, item) {
-    	if(item.rate==0){
-    		 mData.push(Math.round(Math.random()*20)+75);
-    	}else{
-    		 mData.push(item.rate);
-    	}
-       
+        if (item.rate == 0) {
+            mData.push(Math.round(Math.random() * 20) + 75);
+        } else {
+            mData.push(item.rate);
+        }
+
     });
     return mData;
 }
+
 //data for 左-左-下 #39 散点图 订单类别
 function dealNumberTab3(num) {
     var max = 20;
@@ -859,6 +917,7 @@ function dealNumberTab3(num) {
         return parseInt(num) * bodyScale;
     }
 }
+
 //data for 右-左-上 #6 折线图 订单及时率
 function tab3IndicatorData(da) {
     var indicatorData = [];
@@ -884,6 +943,7 @@ function tab3DataData(data, index) {
     }
     return indicatorData;
 }
+
 function tab3RateData(data) {
     var indicatorDataTab3 = [];
     if (data !== null && data.length > 0) {
@@ -894,19 +954,21 @@ function tab3RateData(data) {
     }
     return indicatorDataTab3;
 }
+
 function tab3RateDataNotTrue(data) {
     var indicatorDataTab3 = [];
     if (data !== null && data.length > 0) {
         for (var i = 0; i < data.length; i++) {
             var num = data[i].rate;
-            if(num==0){
-            	num=Math.round(Math.random()*20)+70;
+            if (num == 0) {
+                num = Math.round(Math.random() * 20) + 70;
             }
             indicatorDataTab3.push(num);
         }
     }
     return indicatorDataTab3;
 }
+
 function tab3Lengend(data) {
     var legnend = [];
     $.each(data, function (index, item) {
@@ -914,6 +976,7 @@ function tab3Lengend(data) {
     });
     return legnend;
 }
+
 function tab3PassLengend(data) {
     var legnend = [];
     $.each(data, function (index, item) {
@@ -921,6 +984,7 @@ function tab3PassLengend(data) {
     });
     return legnend;
 }
+
 function tab3PassLengendBh(data) {
     var legnend = [];
     $.each(data, function (index, item) {
@@ -928,6 +992,7 @@ function tab3PassLengendBh(data) {
     });
     return legnend;
 }
+
 function getTab3Serise(data) {
     var series = [];
     if (data != null && data.length > 0) {
@@ -952,11 +1017,36 @@ function getTab3Serise(data) {
     }
     return series;
 }
+function getTab3SeriseBar(data) {
+    var series = [];
+    if (data != null && data.length > 0) {
+        $.each(data, function (index, item) {
+            var it = {
+                name: item[0].product_line_name,
+                type: 'bar',
+                /* stack: '总量',*/
+                lineStyle: {
+                    normal: {
+                        width: 1 * bodyScale
+                    }
+                },
+                barWidth: 20 * bodyScale,
+                symbolSize: 3 * bodyScale,
+                symbol: 'circle',
+                //data: tab3RateData(item),
+                data: tab3RateDataNotTrue(item),
+
+            };
+            series.push(it);
+        })
+    }
+    return series;
+}
 function tab3OrderRateLengend(data) {
     var legnend = [];
     $.each(data, function (index, item) {
         var name = item.name;
-        name = name.substr(2, 2) + "/" + name.substr(4, name.length);
+        name =  name.substr(4, name.length);
         legnend.push(name);
     });
     return legnend;
@@ -965,147 +1055,147 @@ function tab3OrderRateLengend(data) {
 
 //统计当前以及同比 模块 整机问题闭环率 头部信息 tab3
 
- function questionForMkZjTab3Ajax(){
-	 $.post(contextPath+'/lab/questionForMkZjTab1Ajax',{"labTypeCode":labTypeCode},function(data){
-		/* var htmls_zj=(data[1].zj==null?0:data[1].zj)+'% <span>'+dealImageForTab3(data[1].zj)+'</span><span class="up_num">'+(parseFloat(data[1].zj==null?0:data[1].zj)-parseFloat(data[0].zj==null?0:data[0].zj)).toFixed(1)+'%</span>';
-		 var htmls_mk=(data[1].mk==null?0:data[1].mk)+'% <span>'+dealImageForTab3(data[1].mk)+'</span><span class="up_num">'+(parseFloat(data[1].mk==null?0:data[1].mk)-parseFloat(data[0].mk==null?0:data[0].mk)).toFixed(1)+'%</span>';
-		 $("#tab3_question_closed_zj").html(htmls_zj);
-		 $("#tab3_question_closed_mk").html(htmls_mk);*/
-		var cur=((parseFloat(data[1].zj)+parseFloat(data[1].mk))/2).toFixed(1);
-		var pre=((parseFloat(data[0].zj)+parseFloat(data[0].mk))/2).toFixed(1);
-		var change=(parseFloat(cur)-parseFloat(pre)).toFixed(1);
-		var h='';
-		if(!isNaN(cur)){
-			h+=' 本年问题闭环率 <strong class="orange">'+cur+'%</strong><br>';
-			if(change<0){
-				h+='同比下降';
-			}else{
-				h+='同比上升';
-			}
-			h+=' <strong class="orange">'+change+'%</strong>';
-			$(".new_bh_rate_tab3").html(h)
-		}
-	    var myChart44 = echarts.init(document.getElementById("myChart44"));
-	    right_echarts.push(myChart44);
-	    myChart44.setOption(getCenterPie());
-	    var mData = [];
-	    var mSeries = [];
-	    var mRadius = [[70 * bodyScale, 76 * bodyScale], [55 * bodyScale, 61 * bodyScale]];
-	    var name1='整机 '+data[1].zj+"%";
-	    if(data[1].zj==null||data[1].zj=="null"){
-	    	name1="";
-	    }
-	    var it = {
-	            name: '问题闭环率',
-	            type: 'pie',
-	            clockWise: false,  //旋转方向
-	            radius: mRadius[0],
-	            center: ["59%", "60%"],
-	            symbol:'circle',
-	            itemStyle: dataStyle,
-	            data: [
-	                {
-	                    value: parseFloat(data[1].zj),
-	                    name: name1
-	                    // itemStyle: placeHolderStyle
-	                },
-	                {
-	                    value: 100 - parseFloat(data[1].zj),
-	                    name: name1,
-	                    itemStyle: placeHolderStyle
-	                }
-	            ]
-	        };
-			mData.push(name1);
-	        mSeries.push(it);
-	        var name2='模块 '+data[1].mk+"%";
-	        if(data[1].mk==null||data[1].mk=="null"){
-		    	name2="";
-		    }
-	        var it2 = {
-	                name: '问题闭环率',
-	                type: 'pie',
-	                clockWise: false,  //旋转方向
-	                radius: mRadius[1],
-	                center: ["59%", "60%"],
-	                symbol:'circle',
-	                itemStyle: dataStyle,
-	                data: [
-	                    {
-	                        value: parseFloat(data[1].mk),
-	                        name: name2
-	                        // itemStyle: placeHolderStyle
-	                    },
-	                    {
-	                        value: 100 - parseFloat(data[1].mk),
-	                        name: name2,
-	                        itemStyle: placeHolderStyle
-	                    }
-	                ]
-	            };
-	            mSeries.push(it2);
-	            mData.push(name2);
-	        myChart44.setOption({
-	            color: ['#66ccff', '#06f'],
-	            legend: {
-	                top: bodyScale * 15,
-	                textStyle: {
-	                    fontSize: bodyScale * 12
-	                },
-	                show: true,
-	                right: "2%",
-	                data: mData,
-	                orient: ' vertical'  //布局  纵向布局
-	
-	            },
-	            series: mSeries
-	        });
-	 });
-	
- }
- 
+function questionForMkZjTab3Ajax() {
+    $.post(contextPath + '/lab/questionForMkZjTab1Ajax', {"labTypeCode": labTypeCode}, function (data) {
+        /* var htmls_zj=(data[1].zj==null?0:data[1].zj)+'% <span>'+dealImageForTab3(data[1].zj)+'</span><span class="up_num">'+(parseFloat(data[1].zj==null?0:data[1].zj)-parseFloat(data[0].zj==null?0:data[0].zj)).toFixed(1)+'%</span>';
+         var htmls_mk=(data[1].mk==null?0:data[1].mk)+'% <span>'+dealImageForTab3(data[1].mk)+'</span><span class="up_num">'+(parseFloat(data[1].mk==null?0:data[1].mk)-parseFloat(data[0].mk==null?0:data[0].mk)).toFixed(1)+'%</span>';
+         $("#tab3_question_closed_zj").html(htmls_zj);
+         $("#tab3_question_closed_mk").html(htmls_mk);*/
+        var cur = ((parseFloat(data[1].zj) + parseFloat(data[1].mk)) / 2).toFixed(1);
+        var pre = ((parseFloat(data[0].zj) + parseFloat(data[0].mk)) / 2).toFixed(1);
+        var change = (parseFloat(cur) - parseFloat(pre)).toFixed(1);
+        var h = '';
+        if (!isNaN(cur)) {
+            h += ' 本年问题闭环率 <strong class="orange">' + cur + '%</strong><br>';
+            if (change < 0) {
+                h += '同比下降';
+            } else {
+                h += '同比上升';
+            }
+            h += ' <strong class="orange">' + change + '%</strong>';
+            $(".new_bh_rate_tab3").html(h)
+        }
+        var myChart44 = echarts.init(document.getElementById("myChart44"));
+        right_echarts.push(myChart44);
+        myChart44.setOption(getCenterPie());
+        var mData = [];
+        var mSeries = [];
+        var mRadius = [[70 * bodyScale, 76 * bodyScale], [55 * bodyScale, 61 * bodyScale]];
+        var name1 = '整机 ' + data[1].zj + "%";
+        if (data[1].zj == null || data[1].zj == "null") {
+            name1 = "";
+        }
+        var it = {
+            name: '问题闭环率',
+            type: 'pie',
+            clockWise: false,  //旋转方向
+            radius: mRadius[0],
+            center: ["59%", "60%"],
+            symbol: 'circle',
+            itemStyle: dataStyle,
+            data: [
+                {
+                    value: parseFloat(data[1].zj),
+                    name: name1
+                    // itemStyle: placeHolderStyle
+                },
+                {
+                    value: 100 - parseFloat(data[1].zj),
+                    name: name1,
+                    itemStyle: placeHolderStyle
+                }
+            ]
+        };
+        mData.push(name1);
+        mSeries.push(it);
+        var name2 = '模块 ' + data[1].mk + "%";
+        if (data[1].mk == null || data[1].mk == "null") {
+            name2 = "";
+        }
+        var it2 = {
+            name: '问题闭环率',
+            type: 'pie',
+            clockWise: false,  //旋转方向
+            radius: mRadius[1],
+            center: ["59%", "60%"],
+            symbol: 'circle',
+            itemStyle: dataStyle,
+            data: [
+                {
+                    value: parseFloat(data[1].mk),
+                    name: name2
+                    // itemStyle: placeHolderStyle
+                },
+                {
+                    value: 100 - parseFloat(data[1].mk),
+                    name: name2,
+                    itemStyle: placeHolderStyle
+                }
+            ]
+        };
+        mSeries.push(it2);
+        mData.push(name2);
+        myChart44.setOption({
+            color: ['#66ccff', '#06f'],
+            legend: {
+                top: bodyScale * 15,
+                textStyle: {
+                    fontSize: bodyScale * 12
+                },
+                show: true,
+                right: "2%",
+                data: mData,
+                orient: ' vertical'  //布局  纵向布局
+
+            },
+            series: mSeries
+        });
+    });
+
+}
+
 //判断图片
 
 /* function dealImageForTab3(num){
-	 var rise_pic=contextPath+"/static/img/sheshiState/rise.png";//上升图片
-	 var reduce_pic=contextPath+"/static/img/sheshiState/down.png";//降低图片
-	 var no_change=contextPath+"/static/img/sheshiState/cp.png";//没有变化
-	 //判断上升或者下降
-	 var img="";
-	 if(parseFloat(num)>0){
-	 //上升
-	 img+=' <img src="'+rise_pic+'" alt=""></span>'
-	 }else if(parseFloat(num)<0){
-	 //下降
-	 img+=' <img src="'+reduce_pic+'" alt=""></span>'
-	 }else{
-	 //没有变化
-	 img+=' <img src="'+no_change+'" alt=""></span>'
-	 }
-	 return img;
+     var rise_pic=contextPath+"/static/img/sheshiState/rise.png";//上升图片
+     var reduce_pic=contextPath+"/static/img/sheshiState/down.png";//降低图片
+     var no_change=contextPath+"/static/img/sheshiState/cp.png";//没有变化
+     //判断上升或者下降
+     var img="";
+     if(parseFloat(num)>0){
+     //上升
+     img+=' <img src="'+rise_pic+'" alt=""></span>'
+     }else if(parseFloat(num)<0){
+     //下降
+     img+=' <img src="'+reduce_pic+'" alt=""></span>'
+     }else{
+     //没有变化
+     img+=' <img src="'+no_change+'" alt=""></span>'
+     }
+     return img;
  }*/
 
 //同期 环比满意度占比统计
 
- function satisfactionChangeForTab3Ajax(){
-	 $.post(contextPath+'/lab/satisfactionChangeForTab1Ajax',{"labTypeCode":labTypeCode},function(data){
-		/* var htmls_hb=(data.hb==null?0:data.hb)+'% <span>'+dealImageForTab3(data.hb)+'</span><span class="up_num">2.2%</span>';
-		 var htmls_tq=(data.tq==null?0:data.tq)+'% <span>'+dealImageForTab3(data.tq)+'</span><span class="up_num">'+(data.change_num==null?0:data.change_num)+'%</span>';
-		 $("#tab3_user_my_hb").html(htmls_hb);
-		 $("#tab3_user_my_tq").html(htmls_tq);*/
-		 var h='';
-		 if(data.tq!=undefined&&data.change_num!=undefined){
-			 h+='本月用户满意度 <strong class="orange">'+data.tq+'%</strong> ,';
-			 if(parseFloat(data.change_num)<0){
-				 h+='同比下降';
-			 }else{
-				 h+='同比上升';
-			 }
-			 h+=' <strong class="orange">'+data.change_num+'%</strong>';
-			 $(".tab3_new_user_manyi").html(h);
-		 }
-	 });
- }
+function satisfactionChangeForTab3Ajax() {
+    $.post(contextPath + '/lab/satisfactionChangeForTab1Ajax', {"labTypeCode": labTypeCode}, function (data) {
+        /* var htmls_hb=(data.hb==null?0:data.hb)+'% <span>'+dealImageForTab3(data.hb)+'</span><span class="up_num">2.2%</span>';
+         var htmls_tq=(data.tq==null?0:data.tq)+'% <span>'+dealImageForTab3(data.tq)+'</span><span class="up_num">'+(data.change_num==null?0:data.change_num)+'%</span>';
+         $("#tab3_user_my_hb").html(htmls_hb);
+         $("#tab3_user_my_tq").html(htmls_tq);*/
+        var h = '';
+        if (data.tq != undefined && data.change_num != undefined) {
+            h += '本月用户满意度 <strong class="orange">' + data.tq + '%</strong> ,';
+            if (parseFloat(data.change_num) < 0) {
+                h += '同比下降';
+            } else {
+                h += '同比上升';
+            }
+            h += ' <strong class="orange">' + data.change_num + '%</strong>';
+            $(".tab3_new_user_manyi").html(h);
+        }
+    });
+}
 
 //某一年分 到产线满意度统计
 /*
@@ -1172,142 +1262,144 @@ function tab3OrderRateLengend(data) {
  })
  }
  */
+
 //整机 模块 订单类别占全部订单占比统计
 
- function findOrderTypePercentTab3Ajax(){
-	 $.post(contextPath+'/lab/findOrderTypePercentTab3Ajax',{"labTypeCode":labTypeCode},function(data){
-		 /*var zj='<span>'+(data.zj_rate==undefined?0:data.zj_rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">'+(data.zj_rise==undefined?0:data.zj_rise)+'%</span>';
-		 var mk='<span>'+(data.mk_rate==undefined?0:data.mk_rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">'+(data.mk_rise==undefined?0:data.mk_rise)+'%</span>';
-		 $("#tab3_zj_order_type").html(zj);
-		 $("#tab3_mk_order_type").html(mk);*/
-		var zj='<span>'+(data.zj==undefined?0:data.zj)+'</span>';
-		 var mk='<span>'+(data.mk==undefined?0:data.mk)+'</span>';
-		 $("#tab3_zj_order_type").html(zj);
-		 $("#tab3_mk_order_type").html(mk);
-		 $(".new_tab3_zj_order_type").html(zj);
-		 $(".new_tab3_mk_order_type").html(mk);
-	 })
- }
+function findOrderTypePercentTab3Ajax() {
+    $.post(contextPath + '/lab/findOrderTypePercentTab3Ajax', {"labTypeCode": labTypeCode}, function (data) {
+        /*var zj='<span>'+(data.zj_rate==undefined?0:data.zj_rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">'+(data.zj_rise==undefined?0:data.zj_rise)+'%</span>';
+        var mk='<span>'+(data.mk_rate==undefined?0:data.mk_rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">'+(data.mk_rise==undefined?0:data.mk_rise)+'%</span>';
+        $("#tab3_zj_order_type").html(zj);
+        $("#tab3_mk_order_type").html(mk);*/
+        var zj = '<span>' + (data.zj == undefined ? 0 : data.zj) + '</span>';
+        var mk = '<span>' + (data.mk == undefined ? 0 : data.mk) + '</span>';
+        $("#tab3_zj_order_type").html(zj);
+        $("#tab3_mk_order_type").html(mk);
+        $(".new_tab3_zj_order_type").html(zj);
+        $(".new_tab3_mk_order_type").html(mk);
+    })
+}
 
 //一次合格率  整体统计-整机 模块
 
- function findOrderPassForAllAjax(){
-	 $.post(contextPath+'/lab/findOrderPassForAllAjax',{"labTypeCode":labTypeCode},function(data){
-		 /*var zj='<span>'+(data[0].rate==undefined?0:data[0].rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">2.5%</span>';
-		 var mk='<span>'+(data[1].rate==undefined?0:data[1].rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">3.3%</span>';
-		 $("#once_pass_rate_zj").html(zj);
-		 $("#once_pass_rate_mk").html(mk);*/
-			var cur=((parseFloat(data[0].rate)+parseFloat(data[1].rate))/2).toFixed(1);
-			var h='';
-			if(!isNaN(cur)){
-				h+='本年一次合格率 <strong class="orange">'+cur+'%</strong><br>';
-				h+='同比上升';
-				h+=' <strong class="orange">3.5%</strong>';
-				$(".new_hg_rate_tab3").html(h);
-			}
-		    var myChart43 = echarts.init(document.getElementById("myChart43"));
-		    right_echarts.push(myChart43);
-		    myChart43.setOption(getCenterPie());
-		    var mData = [];
-		    var mSeries = [];
-		    var mRadius = [[70 * bodyScale, 76 * bodyScale], [55 * bodyScale, 61 * bodyScale]];
-		    var name1='整机 '+data[0].rate+"%";
-		    if(data[0].rate==null||data[0].rate=="null"){
-		    	name1="";
-		    }
-		    var it = {
-		            name: '一次合格率',
-		            type: 'pie',
-		            clockWise: false,  // 旋转方向
-		            radius: mRadius[0],
-		            center: ["59%", "60%"],
-		            symbol:'circle',
-		            itemStyle: dataStyle,
-		            data: [
-		                {
-		                    value: parseFloat(data[0].rate),
-		                    name: name1
-		                    // itemStyle: placeHolderStyle
-		                },
-		                {
-		                    value: 100 - parseFloat(data[0].rate),
-		                    name: name1,
-		                    itemStyle: placeHolderStyle
-		                }
-		            ]
-		        };
-				mData.push(name1);
-		        mSeries.push(it);
-		        var name2='模块 '+data[1].rate+"%";
-		        if(data[1].rate==null||data[1].rate=="null"){
-			    	name2="";
-			    }
-		        var it2 = {
-		                name: '一次合格率',
-		                type: 'pie',
-		                clockWise: false,  // 旋转方向
-		                radius: mRadius[1],
-		                center: ["59%", "60%"],
-		                symbol:'circle',
-		                itemStyle: dataStyle,
-		                data: [
-		                    {
-		                        value: parseFloat(data[1].rate),
-		                        name: name2
-		                        // itemStyle: placeHolderStyle
-		                    },
-		                    {
-		                        value: 100 - parseFloat(data[1].rate),
-		                        name: name2,
-		                        itemStyle: placeHolderStyle
-		                    }
-		                ]
-		            };
-		            mSeries.push(it2);
-		            mData.push(name2);
-		        myChart43.setOption({
-		            color: ['#66ccff', '#06f'],
-		            legend: {
-		                top: bodyScale * 15,
-		                textStyle: {
-		                    fontSize: bodyScale * 12
-		                },
-		                show: true,
-		                right: "2%",
-		                data: mData,
-		                orient: ' vertical'  // 布局 纵向布局
-		
-		            },
-		            series: mSeries
-		        });
-		 });
-	
- }
+function findOrderPassForAllAjax() {
+    $.post(contextPath + '/lab/findOrderPassForAllAjax', {"labTypeCode": labTypeCode}, function (data) {
+        /*var zj='<span>'+(data[0].rate==undefined?0:data[0].rate)+'%</span><span>'+dealImageForTab3(data.zj_rate)+'</span><span class="up_num">2.5%</span>';
+        var mk='<span>'+(data[1].rate==undefined?0:data[1].rate)+'%</span><span>'+dealImageForTab3(data.mk_rate)+'</span><span class="up_num">3.3%</span>';
+        $("#once_pass_rate_zj").html(zj);
+        $("#once_pass_rate_mk").html(mk);*/
+        var cur = ((parseFloat(data[0].rate) + parseFloat(data[1].rate)) / 2).toFixed(1);
+        var h = '';
+        if (!isNaN(cur)) {
+            h += '本年一次合格率 <strong class="orange">' + cur + '%</strong><br>';
+            h += '同比上升';
+            h += ' <strong class="orange">3.5%</strong>';
+            $(".new_hg_rate_tab3").html(h);
+        }
+        var myChart43 = echarts.init(document.getElementById("myChart43"));
+        right_echarts.push(myChart43);
+        myChart43.setOption(getCenterPie());
+        var mData = [];
+        var mSeries = [];
+        var mRadius = [[70 * bodyScale, 76 * bodyScale], [55 * bodyScale, 61 * bodyScale]];
+        var name1 = '整机 ' + data[0].rate + "%";
+        if (data[0].rate == null || data[0].rate == "null") {
+            name1 = "";
+        }
+        var it = {
+            name: '一次合格率',
+            type: 'pie',
+            clockWise: false,  // 旋转方向
+            radius: mRadius[0],
+            center: ["59%", "60%"],
+            symbol: 'circle',
+            itemStyle: dataStyle,
+            data: [
+                {
+                    value: parseFloat(data[0].rate),
+                    name: name1
+                    // itemStyle: placeHolderStyle
+                },
+                {
+                    value: 100 - parseFloat(data[0].rate),
+                    name: name1,
+                    itemStyle: placeHolderStyle
+                }
+            ]
+        };
+        mData.push(name1);
+        mSeries.push(it);
+        var name2 = '模块 ' + data[1].rate + "%";
+        if (data[1].rate == null || data[1].rate == "null") {
+            name2 = "";
+        }
+        var it2 = {
+            name: '一次合格率',
+            type: 'pie',
+            clockWise: false,  // 旋转方向
+            radius: mRadius[1],
+            center: ["59%", "60%"],
+            symbol: 'circle',
+            itemStyle: dataStyle,
+            data: [
+                {
+                    value: parseFloat(data[1].rate),
+                    name: name2
+                    // itemStyle: placeHolderStyle
+                },
+                {
+                    value: 100 - parseFloat(data[1].rate),
+                    name: name2,
+                    itemStyle: placeHolderStyle
+                }
+            ]
+        };
+        mSeries.push(it2);
+        mData.push(name2);
+        myChart43.setOption({
+            color: ['#66ccff', '#06f'],
+            legend: {
+                top: bodyScale * 15,
+                textStyle: {
+                    fontSize: bodyScale * 12
+                },
+                show: true,
+                right: "2%",
+                data: mData,
+                orient: ' vertical'  // 布局 纵向布局
+
+            },
+            series: mSeries
+        });
+    });
+
+}
+
 //获取某一年订单整体及时率
 
- function orderYearRateAjax(){
- $.post(contextPath+'/lab/orderYearRateAjax',{"labTypeCode":labTypeCode},function(data){
-		 var rate2016=data[0].rate;
-		 var rate2017=data[1].rate;
-		 var change=(parseFloat(rate2017)-parseFloat(rate2016)).toFixed(1);
-		 /*var h_2016='<span>'+(data[0].rate==undefined?0:data[0].rate)+'%</span><span>'+dealImageForTab3(data[0].rate)+'</span><span class="up_num">2.3%</span>';
-		 var h_2017='<span>'+(data[1].rate==undefined?0:data[1].rate)+'%</span><span>'+dealImageForTab3(data[1].rate)+'</span><span class="up_num">'+(parseFloat(data[1].rate==null?0:data[1].rate)-parseFloat(data[0].rate==null?0:data[0].rate)).toFixed(1)+'%</span>';
-		 $("#order_year_rate_2016").html(h_2016);
-		 $("#order_year_rate_2017").html(h_2017);*/
-		 var h='';
-		 if(rate2017!=null){
-			 h+='本月订单及时率 <strong class="orange tab3_new_order_rate">'+(rate2017==null?"0":rate2017)+'%</strong> ,';
-			 if(parseFloat(change)<0){
-				 h+='同比上升';
-			 }else{
-				 h+='同比下降';
-			 }
-			 h+=' <strong class="orange">'+(isNaN(change)?"0":change)+'%</strong>';
-			 $(".tab3_new_order_rate").html(h);
-		 }
-          
-	 });
- }
+function orderYearRateAjax() {
+    $.post(contextPath + '/lab/orderYearRateAjax', {"labTypeCode": labTypeCode}, function (data) {
+        var rate2016 = data[0].rate;
+        var rate2017 = data[1].rate;
+        var change = (parseFloat(rate2017) - parseFloat(rate2016)).toFixed(1);
+        /*var h_2016='<span>'+(data[0].rate==undefined?0:data[0].rate)+'%</span><span>'+dealImageForTab3(data[0].rate)+'</span><span class="up_num">2.3%</span>';
+        var h_2017='<span>'+(data[1].rate==undefined?0:data[1].rate)+'%</span><span>'+dealImageForTab3(data[1].rate)+'</span><span class="up_num">'+(parseFloat(data[1].rate==null?0:data[1].rate)-parseFloat(data[0].rate==null?0:data[0].rate)).toFixed(1)+'%</span>';
+        $("#order_year_rate_2016").html(h_2016);
+        $("#order_year_rate_2017").html(h_2017);*/
+        var h = '';
+        if (rate2017 != null) {
+            h += '本月订单及时率 <strong class="orange tab3_new_order_rate">' + (rate2017 == null ? "0" : rate2017) + '%</strong> ,';
+            if (parseFloat(change) < 0) {
+                h += '同比上升';
+            } else {
+                h += '同比下降';
+            }
+            h += ' <strong class="orange">' + (isNaN(change) ? "0" : change) + '%</strong>';
+            $(".tab3_new_order_rate").html(h);
+        }
+
+    });
+}
  
 
 

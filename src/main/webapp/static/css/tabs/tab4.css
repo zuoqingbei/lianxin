@@ -81,11 +81,19 @@
     right: -9.4em;
 }
 .shujuWajue_left_top_list select {
+    position: relative;/*这个定位目的是为了创建层叠上下文，来解决label伪元素小三角遮挡点击事件的问题*/
     width: 10em;
+    color: #4397f7;
     -webkit-appearance: none;
     padding: 0.5% 5% 0.5% 1%;
     background-color: rgba(255, 255, 255, .2);
 }
+/*
+.shujuWajue_left_top_list select optgroup{
+!*背景里去不掉的白色会闪一下*!
+    background: #010d24;
+}
+*/
 
 .shujuWajue_left_bottom {
     height: 66%;
