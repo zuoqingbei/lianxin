@@ -573,7 +573,8 @@ function getMonthArray() {
     year = year.toString().substr(2, 4);
     for (var x = 1; x < month + 1; x++) {
         var cu = (x < 10 ? "0" + x : x);
-        arr.push((year.toString() + "/" + cu.toString()))
+        // arr.push((year.toString() + "/" + cu.toString()))
+        arr.push(cu.toString())
     }
     return arr;
 }
