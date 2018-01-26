@@ -64,114 +64,118 @@ public class IntegrationServiceClient {
 			labSingleData.setLabName(connInfo.getWsName());
 			labSingleData.setUrl(connInfo.getUrl());
 			try {
-				com.ulab.client.webServiceRerigerator.Service service2 = new com.ulab.client.webServiceRerigerator.Service(new URL(connInfo.getUrl()));
-				com.ulab.client.webServiceRerigerator.ServicePortType port2 = service2.getServiceHttpPort();
-				ArrayOfTestUnitInfo testUnitInfos = port2.getTestUnitInfo(labCode);
-				//实验室总台位数
-				int testUnitAll = testUnitInfos.getTestUnitInfo().size();
-				labSingleData.setEquipmentCount(testUnitAll);
-				equipmentCount = equipmentCount + testUnitAll;
-				//录入条目
-				ArrayOfTestProdInfoItem testProdInfoItems = port2.getTestProdInfoItemByLabCode(labCode);
-				String flag = getLabFlag(testProdInfoItems, labCode);
-				
-				Calendar calendar =Calendar.getInstance();
-				Date now = calendar.getTime();
-				//获取当年第一天,统计已测订单
-				int year = calendar.get(Calendar.YEAR);
-				StringBuilder firstDaybBuilder = new StringBuilder();
-				firstDaybBuilder.append(year).append("-01-01 00:00:00").append(flag);
-				String firstDayFlag = firstDaybBuilder.toString();
-				//查询订单开始日期，统计负荷率,为避免漏数，前推3个月查询订单，然后筛选1个月内订单
-				calendar.add(Calendar.MONTH, -1);
-				Date orderStart1 = calendar.getTime();
-				calendar.add(Calendar.MONTH, -2);
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String orderStart2 = sdf.format(calendar.getTime());
-				String orderStartFlag = orderStart2 + flag;
-				int stopProcessOrderNum = 0;
-				int processingOrderNum = 0;
-				StringBuilder processingUnits = new StringBuilder();
-				int processingUnitNum = 0;
-				//当年已测订单
-				ArrayOfTestMetadata stopTestMetadatas = port2.getMetaData(labCode, 0, firstDayFlag);
-				if(null != stopTestMetadatas && null != stopTestMetadatas.getTestMetadata()){
-					stopProcessOrderNum = stopTestMetadatas.getTestMetadata().size();
-				}
-				labSingleData.setFinishOrderCount(stopProcessOrderNum);
-				finishOrderCount = finishOrderCount + stopProcessOrderNum;
-				//在测订单
-				ArrayOfTestMetadata testMetadatas = port2.getMetaData(labCode, 1, "2016/5/3 16:19:10"+flag);
-				//实验室状态
-				String labStatus;
-				if(null != testMetadatas && null != testMetadatas.getTestMetadata() && testMetadatas.getTestMetadata().size() > 0){
-					labStatus = "在用";
-					for(TestMetadata testMetadata : testMetadatas.getTestMetadata()){
-						processingOrderNum++;
-						if(!(processingUnits.toString().contains(testMetadata.getTestUnitId() + ","))){
-							processingUnits.append(testMetadata.getTestUnitId()).append(",");
-							processingUnitNum ++;
-						}				
+			 if(!"refrigeratorkekao02".equals(labCode)&&!"aircondition".equals(labCode)){
+					System.out.println(connInfo.getUrl());
+					com.ulab.client.webServiceRerigerator.Service service2 = new com.ulab.client.webServiceRerigerator.Service(new URL(connInfo.getUrl()));
+					com.ulab.client.webServiceRerigerator.ServicePortType port2 = service2.getServiceHttpPort();
+					ArrayOfTestUnitInfo testUnitInfos = port2.getTestUnitInfo(labCode);
+					//实验室总台位数
+					int testUnitAll = testUnitInfos.getTestUnitInfo().size();
+					labSingleData.setEquipmentCount(testUnitAll);
+					equipmentCount = equipmentCount + testUnitAll;
+					//录入条目
+					ArrayOfTestProdInfoItem testProdInfoItems = port2.getTestProdInfoItemByLabCode(labCode);
+					String flag = getLabFlag(testProdInfoItems, labCode);
+					
+					Calendar calendar =Calendar.getInstance();
+					Date now = calendar.getTime();
+					//获取当年第一天,统计已测订单
+					int year = calendar.get(Calendar.YEAR);
+					StringBuilder firstDaybBuilder = new StringBuilder();
+					firstDaybBuilder.append(year).append("-01-01 00:00:00").append(flag);
+					String firstDayFlag = firstDaybBuilder.toString();
+					//查询订单开始日期，统计负荷率,为避免漏数，前推3个月查询订单，然后筛选1个月内订单
+					calendar.add(Calendar.MONTH, -1);
+					Date orderStart1 = calendar.getTime();
+					calendar.add(Calendar.MONTH, -2);
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String orderStart2 = sdf.format(calendar.getTime());
+					String orderStartFlag = orderStart2 + flag;
+					int stopProcessOrderNum = 0;
+					int processingOrderNum = 0;
+					StringBuilder processingUnits = new StringBuilder();
+					int processingUnitNum = 0;
+					//当年已测订单
+					ArrayOfTestMetadata stopTestMetadatas = port2.getMetaData(labCode, 0, firstDayFlag);
+					if(null != stopTestMetadatas && null != stopTestMetadatas.getTestMetadata()){
+						stopProcessOrderNum = stopTestMetadatas.getTestMetadata().size();
 					}
-				}else {
-					labStatus = "停测";			
-				}
-				//月负荷率
-				ArrayOfTestMetadata allTestMetadatas = port2.getMetaData(labCode, -1, orderStartFlag);
-				long alltime = 0;
-				if(null != allTestMetadatas && null != allTestMetadatas.getTestMetadata() && allTestMetadatas.getTestMetadata().size() > 0){
-					for(TestMetadata testMetadata : allTestMetadatas.getTestMetadata()){
-						String testBeginTime = testMetadata.getTestBeginTime();
-						Date testBeginDate = sdf.parse(testBeginTime);
-						//已结束订单
-						if(testMetadata.getIsTesting() == 0){
-							String testEndTime = testMetadata.getTestEndTime();
-							if(StringUtils.isBlank(testEndTime)) continue;
-							Date testEndDate = sdf.parse(testEndTime);
-							if(testEndDate.after(orderStart1)){								
-								if(testBeginDate.after(orderStart1)){
-									alltime = alltime + (testEndDate.getTime() - testBeginDate.getTime());
-								}else {
-									alltime = alltime + (testEndDate.getTime() - orderStart1.getTime());
+					labSingleData.setFinishOrderCount(stopProcessOrderNum);
+					finishOrderCount = finishOrderCount + stopProcessOrderNum;
+					//在测订单
+					ArrayOfTestMetadata testMetadatas = port2.getMetaData(labCode, 1, "2016/5/3 16:19:10"+flag);
+					//实验室状态
+					String labStatus;
+					if(null != testMetadatas && null != testMetadatas.getTestMetadata() && testMetadatas.getTestMetadata().size() > 0){
+						labStatus = "在用";
+						for(TestMetadata testMetadata : testMetadatas.getTestMetadata()){
+							processingOrderNum++;
+							if(!(processingUnits.toString().contains(testMetadata.getTestUnitId() + ","))){
+								processingUnits.append(testMetadata.getTestUnitId()).append(",");
+								processingUnitNum ++;
+							}				
+						}
+					}else {
+						labStatus = "停测";			
+					}
+					//月负荷率
+					ArrayOfTestMetadata allTestMetadatas = port2.getMetaData(labCode, -1, orderStartFlag);
+					long alltime = 0;
+					if(null != allTestMetadatas && null != allTestMetadatas.getTestMetadata() && allTestMetadatas.getTestMetadata().size() > 0){
+						for(TestMetadata testMetadata : allTestMetadatas.getTestMetadata()){
+							String testBeginTime = testMetadata.getTestBeginTime();
+							Date testBeginDate = sdf.parse(testBeginTime);
+							//已结束订单
+							if(testMetadata.getIsTesting() == 0){
+								String testEndTime = testMetadata.getTestEndTime();
+								if(StringUtils.isBlank(testEndTime)) continue;
+								Date testEndDate = sdf.parse(testEndTime);
+								if(testEndDate.after(orderStart1)){								
+									if(testBeginDate.after(orderStart1)){
+										alltime = alltime + (testEndDate.getTime() - testBeginDate.getTime());
+									}else {
+										alltime = alltime + (testEndDate.getTime() - orderStart1.getTime());
+									}
 								}
-							}
-						} else {
-							//在测订单
-							if(testBeginDate.after(orderStart1)){
-								alltime = alltime + (now.getTime() - testBeginDate.getTime());
-							}else {
-								alltime = alltime + (now.getTime() - orderStart1.getTime());
+							} else {
+								//在测订单
+								if(testBeginDate.after(orderStart1)){
+									alltime = alltime + (now.getTime() - testBeginDate.getTime());
+								}else {
+									alltime = alltime + (now.getTime() - orderStart1.getTime());
+								}
 							}
 						}
 					}
-				}
-				float rate = (float)alltime/((now.getTime() - orderStart1.getTime()) * testUnitAll);
-				if(lowMonthRate == 0f){
-					lowMonthRate = rate;
-				} else {
-					if(rate < lowMonthRate){
+					float rate = (float)alltime/((now.getTime() - orderStart1.getTime()) * testUnitAll);
+					if(lowMonthRate == 0f){
 						lowMonthRate = rate;
+					} else {
+						if(rate < lowMonthRate){
+							lowMonthRate = rate;
+						}
 					}
-				}
-				if (highMonthRate == 0f) {
-					highMonthRate = rate;
-				} else {
-					if(rate > highMonthRate){
+					if (highMonthRate == 0f) {
 						highMonthRate = rate;
+					} else {
+						if(rate > highMonthRate){
+							highMonthRate = rate;
+						}
 					}
-				}
-				aveMonthRate = aveMonthRate + rate;
-				labSingleData.setMonthRate(getRate(rate));
-				labSingleData.setLabStatus(labStatus);
-				String testUnitStatus = processingUnitNum+"/"+testUnitAll;
-				labSingleData.setTestUnitStatus(testUnitStatus);
-				labSingleData.setTestingOrderCount(processingOrderNum);
-				testingOrderCount = testingOrderCount + processingOrderNum;
-				labSingleDataList.add(labSingleData);
+					aveMonthRate = aveMonthRate + rate;
+					labSingleData.setMonthRate(getRate(rate));
+					labSingleData.setLabStatus(labStatus);
+					String testUnitStatus = processingUnitNum+"/"+testUnitAll;
+					labSingleData.setTestUnitStatus(testUnitStatus);
+					labSingleData.setTestingOrderCount(processingOrderNum);
+					testingOrderCount = testingOrderCount + processingOrderNum;
+					labSingleDataList.add(labSingleData);
+			 }
 			} catch (MalformedURLException e) {
 				java.util.logging.Logger.getLogger(Service.class.getName())
                 .log(java.util.logging.Level.INFO, 
                      "Can not initialize the default wsdl from {0}", connInfo.getUrl());
+				e.printStackTrace();
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
