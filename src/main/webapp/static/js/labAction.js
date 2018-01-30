@@ -52,7 +52,7 @@ $(function () {
             var $curveBox = $monitoring.find(".shishi_right").children(".item.curve");
             // console.log("---$curveBox",$curveBox[0])
             if ($(this).parents("ul.inland")[0]) {//从url类型跳回到国内其他列表
-                console.log("---国内");
+                // console.log("---国内");
                 if (dataCenterId === 1) {
                     // console.log("---中海")
                     $(".labSubNav>ul>li").hide().eq(0).addClass("active").siblings().removeClass("active");
@@ -248,7 +248,7 @@ $(function () {
         })
     }
 
-    console.log("bodyScale", bodyScale);
+    // console.log("bodyScale", bodyScale);
     $(".item.moduleMakers>iframe").css("transform", "scale(" + bodyScale * .93 + ")");
 
 

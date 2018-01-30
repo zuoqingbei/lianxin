@@ -58,6 +58,19 @@ body{
     background-size: 115% 115%;
 }
 
+/*
+.echart_tip > .echart_content > img[src*="logo_pinyin"] {
+    margin: .24em .24em 0;
+    padding: .8em;
+    width: 3.6em;
+    height: 3.6em;
+    border-radius: 50%;
+    vertical-align: top;
+    background: url("../../static/img/flatMapImgRoundBorder.png") -.4em;
+    background-size: 115% 115%;
+}
+*/
+
 .echart_tip > .echart_content > .textBox > h4 {
     margin: 1.5em 0 0.05em;
     font-size: .8em;
