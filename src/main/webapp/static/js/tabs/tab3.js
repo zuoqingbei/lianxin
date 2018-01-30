@@ -1378,14 +1378,10 @@ function findOrderPassForAllAjax() {
 //获取某一年订单整体及时率
 
 function orderYearRateAjax() {
-    $.post(contextPath + '/lab/orderYearRateAjax', {"labTypeCode": labTypeCode}, function (data) {
+   /* $.post(contextPath + '/lab/orderYearRateAjax', {"labTypeCode": labTypeCode}, function (data) {
         var rate2016 = data[0].rate;
         var rate2017 = data[1].rate;
         var change = (parseFloat(rate2017) - parseFloat(rate2016)).toFixed(1);
-        /*var h_2016='<span>'+(data[0].rate==undefined?0:data[0].rate)+'%</span><span>'+dealImageForTab3(data[0].rate)+'</span><span class="up_num">2.3%</span>';
-        var h_2017='<span>'+(data[1].rate==undefined?0:data[1].rate)+'%</span><span>'+dealImageForTab3(data[1].rate)+'</span><span class="up_num">'+(parseFloat(data[1].rate==null?0:data[1].rate)-parseFloat(data[0].rate==null?0:data[0].rate)).toFixed(1)+'%</span>';
-        $("#order_year_rate_2016").html(h_2016);
-        $("#order_year_rate_2017").html(h_2017);*/
         var h = '';
         if (rate2017 != null) {
             h += '本月订单及时率 <strong class="orange tab3_new_order_rate">' + (rate2017 == null ? "0" : rate2017) + '%</strong> ,';
@@ -1398,7 +1394,28 @@ function orderYearRateAjax() {
             $(".tab3_new_order_rate").html(h);
         }
 
-    });
+    });*/
+	   $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
+	        "startDate": "2016"+getCurrentMonth(),
+	        "endDate": "2017" + getCurrentMonth()
+	    }, function (data) {
+	    	console.log(data)
+	    	var rate2016 =data[0].rate;
+	        var rate2017 = data[data.length-1].rate;
+	        var change = (parseFloat(rate2017) - parseFloat(rate2016)).toFixed(1);
+	        var h = '';
+	        if (rate2017 != null) {
+	            h += '本月订单及时率 <strong class="orange tab3_new_order_rate">' + (rate2017 == null ? "0" : rate2017) + '%</strong> ,';
+	            if (parseFloat(change) < 0) {
+	                h += '同比上升';
+	            } else {
+	                h += '同比下降';
+	            }
+	            h += ' <strong class="orange">' + (isNaN(change) ? "0" : change) + '%</strong>';
+	            $(".tab3_new_order_rate").html(h);
+	        }
+
+	    });
 }
  
 

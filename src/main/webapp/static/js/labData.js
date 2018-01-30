@@ -182,14 +182,14 @@ function loadVideosByDataCenterAjax(dataCenterId) {
     });
 
 }
-
+var mDataCenterId;
 //查询数据中心下实验室 level为3(单位/产品)
 function loadAllDataCenterLabAjaxFunc(dataCenterId) {
 	$("#lab_unit_selected_center_world").html("");
 	$("#legend_ul_world").html("");
 	myChartWorld1.clear();
 	myChartWorld2.clear();
-	
+	mDataCenterId=dataCenterId;
     console.log("loadAllDataCenterLabAjaxFunc",dataCenterId);
 
     var dataCenter = dataCenterMap.get(dataCenterId);
