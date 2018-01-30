@@ -11,9 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
-import com.ulab.aop.GlobalInterceptor;
+import com.ulab.aop.LoginInterceptor;
 import com.ulab.client.IntegrationService.IntegrationServiceClient;
 import com.ulab.client.webServiceRerigerator.WebServiceRerigeratorClient;
 import com.ulab.core.BaseController;
@@ -53,7 +52,7 @@ import com.ulab.util.SqlUtil;
  * @todo 测试类
  */
 @ControllerBind(controllerKey = "/lab", viewPath = "/lab")
-@Before({ GlobalInterceptor.class })
+@Before({ LoginInterceptor.class })
 public class LabController extends BaseController {
 	public void index() {
 		setAttr("fromPage", getPara("fromPage", ""));

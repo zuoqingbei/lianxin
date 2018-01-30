@@ -191,6 +191,8 @@ function findTestDataHadoop(labCode, testUnitId) {
         //console.log(showlegendDataWorld)
         createLegendHtmlsWorld();
         createEchartsWorld(true);
+        $("#legend_ul_world").find("li").last().find("input").trigger("click");
+        $("#legend_ul_world").find("li").last().find("input").trigger("click");
         //因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
 		//intevalChartHadoop=setInterval("intervalChangeDataHadoop()", 30000);
 		myChartWorld1.hideLoading();
@@ -380,6 +382,11 @@ function resetDataCenterLabWorld() {
 
 //获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
+	if(mDataCenterId=="12"){
+		mSensor[0].unit= '°F';
+	}else{
+		mSensor[0].unit= '℃';
+	}
     resetDataCenterLabWorld();
     currentDataWorld = mSensor;
     //根据实验室-台位-传感器对照表 生成y轴信息 最多8个轴 如果多于8 其余默认展示左下
@@ -430,7 +437,8 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
             createLegendHtmlsWorld();
             createEchartsWorld(true);
             //因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
-
+            $("#legend_ul_world").find("li").last().find("input").trigger("click");
+            $("#legend_ul_world").find("li").last().find("input").trigger("click");
             // myChartWorld1.hideLoading();
             // myChartWorld2.hideLoading();
             loadingAnimateOut("curve", 500);
@@ -732,7 +740,7 @@ function getChartsWorld1() {
         yAxis: [
             {
                 type: 'value',
-                name: "℃"+"　　　",
+                name: mSensor[0].unit+"　　　",
                 max: 90,
                 min: -30,
                 /*max:currentDataWorld[0].highvalue,

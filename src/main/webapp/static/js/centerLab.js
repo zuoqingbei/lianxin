@@ -274,9 +274,9 @@ function initThree() {
 //按照产线统计某年各月份详细订单及时率  数据结果 订单及时率 折线图
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
-        "labTypeCode": "中心实验室",
-        "startDate": "201601",
-        "endDate": "2016"+getCurrentMonth()
+      /*  "labTypeCode": "中心实验室",*/
+        "startDate": "201701",
+        "endDate": "2017"+getCurrentMonth()
     }, function (data) {
     	$.each(data,function(index,item){
     		var num=item.rate;
