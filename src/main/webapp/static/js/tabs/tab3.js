@@ -546,7 +546,7 @@ function findOrderMonthRateForProductAjax() {
         var mSer;
         if (getCurrentMonth() === "01") {
             myChart46.setOption(getTab3Serise());
-            // console.log("------",getTab3SeriseBar(data))
+            console.log("------",getTab3SeriseBar(data))
 
             mSer =getTab3SeriseBar(data);
         } else {
@@ -608,7 +608,7 @@ function satisfactionStatisForMonthForTab3Ajax() {
 
         var mSer;
         myChart7.setOption(getLineEcharts());
-        // console.log("----------chart7-ser-data:",tab1OrderRateSeriseData(data))
+        console.log("----------chart7-ser-data:",tab1OrderRateSeriseData(data))
         if (getCurrentMonth() === "01") {
             myChart7.setOption(getBarEcharts());
             mSer = {
@@ -818,7 +818,7 @@ function productLineAndMonthForTab3Ajax() {
         var mSer;
         if (getCurrentMonth() === "01") {
             myChart49.setOption(getTab3Serise());
-            // console.log("------",getTab3SeriseBar(data))
+            console.log("------",getTab3SeriseBar(data))
 
             mSer =getTab3SeriseBar(data);
         } else {

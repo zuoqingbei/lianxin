@@ -1,5 +1,6 @@
 
 package com.ulab.model;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -86,7 +87,13 @@ public class OrderModel extends Model<OrderModel> {
 		}
 		sb.append(" group by o. name order by o.name) b ");
 		sb.append(" on t .name = b.name ");
-		return Db.find(sb.toString());
+		try {
+			return Db.find(new String(sb.toString().getBytes(),"utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	/**
 	 * 
