@@ -191,16 +191,15 @@ function last_year_month() {
 function initThree() {
     $.post(contextPath + '/lab/orderRateForCenterLabAjax', {
         "startDate": "201601",
-        // "endDate": "2016"+getCurrentMonth()
-        "endDate": "201602"
+        "endDate": "2016"+getCurrentMonth() 
     }, function (data) {
-        console.log("---data",data)
     	$.each(data,function(index,item){
     		var num=item.rate;
     		if(num==0){
     			item.rate=(Math.random()*2+98).toFixed(1);
     		}
     	})
+        // console.log("---数据分析-近12个月的一次合格率")
         var resu = dealCenterLab(data);
         $("#hg_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#hg_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
@@ -335,7 +334,7 @@ function initfour() {
             },
             xAxis: [
                 {
-                    name: '时间',
+                    name: '月份',
                     data: centerLabOrderRateLengend(data),
                    // data: ["01","02","03","04","05","06","07","08","09","10","11","12"],
                     //data: last_year_month(),
@@ -1503,7 +1502,6 @@ function dealCenterLab(data) {
     			cJsNum=parseInt(item.js_count);
     		}
     		var cName = item.name;
-            console.log("-----------item",item)
     		var cRate = parseFloat(item.rate);
     		if (parseFloat(maxData.rate) < cRate) {
     			maxData.rate = cRate;
@@ -1520,9 +1518,8 @@ function dealCenterLab(data) {
     //计算整体平均值
     var allPingjun = parseFloat((parseInt(js_num) / parseInt(all_num)) * 100).toFixed(1);
     result.push(allPingjun);
-    console.log("-----------maxData",maxData)
-    maxData.month=(maxData.month+"").substr(4,6);
-    minData.month=(minData.month+"").substr(4,6);
+    maxData.month=maxData.month.substr(4,6);
+    minData.month=minData.month.substr(4,6);
     result.push(maxData);
     result.push(minData);
     return result;
