@@ -9,10 +9,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.plugin.activerecord.Record;
-import com.ulab.aop.LoginInterceptor;
 import com.ulab.client.IntegrationService.IntegrationServiceClient;
 import com.ulab.client.webServiceRerigerator.WebServiceRerigeratorClient;
 import com.ulab.core.BaseController;
@@ -21,6 +19,7 @@ import com.ulab.model.CommunistModel;
 import com.ulab.model.DataCenterModel;
 import com.ulab.model.DicModel;
 import com.ulab.model.EquipmentModel;
+import com.ulab.model.JSLModel;
 import com.ulab.model.JianCeModel;
 import com.ulab.model.JianceProModel;
 import com.ulab.model.JsonPropertyModel;
@@ -483,6 +482,12 @@ public class LabController extends BaseController {
 		endDate = dealEndTime(endDate);
 		renderJson(OrderModel.dao.findOrderMonthRateForAll(startDate, endDate,
 				plCode, labTypeCode));
+	}
+	public void findOrderYearRateForJSLAjax() {
+		String labName = getPara("labName", "");
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate", "");
+		renderJson(JSLModel.dao.findOrderMonthRateForAll(startDate, endDate,labName));
 	}
 
 	/**

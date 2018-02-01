@@ -4742,7 +4742,7 @@ $(function () {
         	//再次点击同一个 返回全部数据
         	labTypeCode="";
         }
-        myChart32.resize();
+        //myChart32.resize();
         resetSizeRight();
         loadTab2Data();
         loadTab3Data();

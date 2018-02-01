@@ -272,49 +272,24 @@ function initThree() {
 }
 //按照产线统计某年各月份详细订单及时率  数据结果 订单及时率 折线图
 function initfour() {
-    $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
-      /*  "labTypeCode": "中心实验室",*/
-        "startDate": "201701",
-        "endDate": "2017"+getCurrentMonth()
+    $.post(contextPath + '/lab/findOrderYearRateForJSLAjax', {
+    	   "labName": "中心实验室",
+        "startDate": "201801",
+        "endDate": "2018"+getCurrentMonth()
     }, function (data) {
-    	$.each(data,function(index,item){
+    /*	$.each(data,function(index,item){
     		var num=item.rate;
     		if(num==0){
     			item.rate=Math.round(Math.random()*15)+80;
     		}
-    	})
+    	})*/
         // console.log("---数据分析-近12个月的及时率")
-        var resu = dealCenterLab(data);
+        var resu = dealCenterLabJSL(data);
         $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
         $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
         $("#order_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
         chartthree.setOption(initone(data[data.length-1].rate));
-        var mType="line";
-        
-        
-        var mSer;
-        if(getCurrentMonth()=="01"){
-        	chartfour.setOption(getBarEcharts());
-        	mSer={
-        			 barWidth:60,
-                    // symbolSize: ['50%', '10%'],
-                    data: centerLabRateData(data)
-                };
-        }else{
-        	chartfour.setOption(getLineEcharts());
-        	mSer={
-        	           
-                    // symbol: 'circle',
-                    stack: '总量',
-                    // areaStyle: {normal: {}},
-                    data: centerLabRateData(data),
-                    itemStyle: {
-                        normal: {
-                            color: "#ff6666"
-                        }
-                    }
-                };
-        }
+        chartfour.setOption(getLineEcharts());
         chartfour.setOption({
             textStyle: {
                 fontSize: bodyScale * 8
@@ -336,7 +311,6 @@ function initfour() {
                 {
                     name: '月份',
                     data: centerLabOrderRateLengend(data),
-                   // data: ["01","02","03","04","05","06","07","08","09","10","11","12"],
                     //data: last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10,
@@ -360,11 +334,103 @@ function initfour() {
                 }
             ],
             series: [
-                     mSer
+                {
+                    name: '',
+                    type: 'line',
+                    // symbol: 'circle',
+                    stack: '总量',
+                    // areaStyle: {normal: {}},
+                    data: centerLabRateData(data),
+                    itemStyle: {
+                        normal: {
+                            color: "#ff6666"
+                        }
+                    }
+                }
             ]
         });
     });
 }
+/*function initfour() {
+    $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
+    	   "labTypeCode": "中心实验室",
+        "startDate": "201701",
+        "endDate": "2017"+getCurrentMonth()
+    }, function (data) {
+    	$.each(data,function(index,item){
+    		var num=item.rate;
+    		if(num==0){
+    			item.rate=Math.round(Math.random()*15)+80;
+    		}
+    	})
+        // console.log("---数据分析-近12个月的及时率")
+        var resu = dealCenterLab(data);
+        $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
+        $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
+        $("#order_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
+        chartthree.setOption(initone(data[data.length-1].rate));
+        chartfour.setOption(getLineEcharts());
+        chartfour.setOption({
+            textStyle: {
+                fontSize: bodyScale * 8
+            },
+            legend: {
+                show: false,
+                data: [''],
+                textStyle: {
+                    fontSize: bodyScale * 8
+                }
+            },
+            grid: {
+                x: "6%",
+                x2: "5%",
+                y: '23%',
+                y2: "25%"
+            },
+            xAxis: [
+                {
+                    name: '月份',
+                    data: centerLabOrderRateLengend(data),
+                    //data: last_year_month(),
+                    nameTextStyle: {
+                        fontSize: bodyScale * 10,
+                    },
+                    axisLabel :{
+                        margin: 8 * bodyScale,
+                        show: true,
+                        textStyle: {
+                            color: '#66ccff',
+                            fontSize:13*bodyScale
+                        }
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    name: "及时率/%",
+                    nameTextStyle: {
+                        fontSize: bodyScale * 10
+                    },
+                }
+            ],
+            series: [
+                {
+                    name: '',
+                    type: 'line',
+                    // symbol: 'circle',
+                    stack: '总量',
+                    // areaStyle: {normal: {}},
+                    data: centerLabRateData(data),
+                    itemStyle: {
+                        normal: {
+                            color: "#ff6666"
+                        }
+                    }
+                }
+            ]
+        });
+    });
+}*/
 
 //曲线
 var colorData=['#eaff56','#bce672','#ff461f','#70f3ff','#e9e7ef','#fff143','#c9dd22','#ff2d51',
@@ -1483,6 +1549,35 @@ function centerLabRateData(data) {
         indicatorDataTab3.push(num);
     }
     return indicatorDataTab3;
+}
+function dealCenterLabJSL(data) {
+    var result = [];
+    var allRate = 0;
+    var maxData = {month: 0, rate: 0};
+    var minData = {month: 0, rate: 100};
+    $.each(data, function (index, item) {
+    	if(parseInt(item.name.substr(4,6))<=parseInt(getCurrentMonth())){
+    		var cName = item.name;
+    		var cRate = parseFloat(item.rate);
+    		if (parseFloat(maxData.rate) < cRate) {
+    			maxData.rate = cRate;
+    			maxData.month = cName;
+    		}
+    		if (parseFloat(minData.rate) > cRate&&item.rate!=0) {
+    			minData.rate = cRate;
+    			minData.month = cName;
+    		}
+    		allRate+=cRate;
+    	}
+    });
+    //计算整体平均值
+    var allPingjun = parseFloat(allRate)/data.length.toFixed(1);
+    result.push(allPingjun);
+    maxData.month=maxData.month.substr(4,6);
+    minData.month=minData.month.substr(4,6);
+    result.push(maxData);
+    result.push(minData);
+    return result;
 }
 //获取平均 最高 最低数据
 function dealCenterLab(data) {

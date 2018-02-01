@@ -77,7 +77,10 @@ public class HadoopTestData {
 	
 	public List<Record> findHiveDataByTestIdentification(BaseController c,String configName,String testIdentification,Float startHowLong,Float endHowLong,List<Record> sensorInfoList,String labCode){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTDATA);
-		String sql="select howlong ,sensorvalue ";
+		String sql="select howlong  ";
+		for(Record sInfo:sensorInfoList ){
+			sql+=" , sensorvalue_"+sInfo.get("sensorid");
+		}
 		sql+=" from "+tableName+" where primarykey='"+testIdentification+"'  "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
 		if(startHowLong!=null){
 			sql+=" and howlong > "+startHowLong;

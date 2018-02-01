@@ -47,6 +47,15 @@ public class AdminController extends BaseController {
 		Page<UserModel> pager=UserModel.dao.pager(pageSize, pageNumber,this);
 		renderJson(pager);
 	}
+	public void userForm() {
+		UserModel model=new UserModel();
+		String id=getPara("id");
+		if(StringUtils.isNotBlank(id)){
+			model=UserModel.dao.findById(id);
+		}
+		setAttr("model", model);
+		render("userForm.html");
+	}
 	/**
 	 * 
 	 * @time   2018年1月30日 下午1:06:57
@@ -70,10 +79,18 @@ public class AdminController extends BaseController {
 			user.set("id", UUIDTool.getUUID());
 			user.set("create_date", sdf.format(new Date()));
 		}
-		user.set("name", name);
-		user.set("login_name", login_name);
-		user.set("pwd", MD5Util.getStringMD5(pwd));
-		user.set("forbid", forbid);
+		if(StringUtils.isNotBlank(name)){
+			user.set("name", name);
+		}
+		if(StringUtils.isNotBlank(login_name)){
+			user.set("login_name", login_name);		
+		}
+		if(StringUtils.isNotBlank(pwd)){
+			user.set("pwd", MD5Util.getStringMD5(pwd));
+		}
+		if(StringUtils.isNotBlank(forbid)){
+			user.set("forbid", forbid);
+		}
 		user.set("del_flag", del_flag);
 		if(StringUtils.isNotBlank(uid)){
 			user.update();

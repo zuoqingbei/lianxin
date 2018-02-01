@@ -18,7 +18,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="index.html" class="navbar-brand">Ulab数据管理平台</a>
+            <a href="${contextPath}/admin/mapList" class="navbar-brand">Ulab数据管理平台</a>
         </div>
         <!--小屏幕按钮和-->
         <div class="navbar-collapse collapse">
@@ -154,6 +154,7 @@
         tr+=' 操作 <span class="caret"></span></button>';
         tr+='<ul class="dropdown-menu"><li><a class="btn-edit" href="javascript:void(0);">编辑</a></li>';
         tr+='<li><a class="btn-del" href="javascript:void(0);">删除</a></li>';
+        tr+='<li><a class="btn-reset" href="javascript:void(0);">密码重置</a></li>';
         tr+='</ul></div></td>';
         tr+='</tr>';
         $("tbody").append(tr); 
@@ -202,7 +203,7 @@
             //先获取这一行的id
             var id = $(this).parents("tr").children(".index").attr("data");
             var name = $(this).parents("tr").children(".index").attr("name");
-            showConfirm(name,id)
+            showConfirm(name,id);
         });
         //编辑按钮添加响应事件
         $(".btn-edit").click(function () {
@@ -210,17 +211,36 @@
             var id = $(this).parents("tr").children(".index").attr("data");
             addUser(id);
         });
+        $(".btn-reset").click(function () {
+            //先获取这一行的id
+            var id = $(this).parents("tr").children(".index").attr("data");
+            var name = $(this).parents("tr").children(".index").attr("name");
+            showConfirmReset(name,id)
+        });
     };
     function showConfirm(name,id) {
-        var confirm = window.confirm("是否确认删除\""+name+"\"？数据删除后无法恢复!");
+        var confirm = window.confirm("是否确认删除\""+name+"\"？用户删除后无法恢复!");
         if(confirm===true){
         	delData(name,id);
         }
     };
+    function showConfirmReset(name,id) {
+        var confirm = window.confirm("是否确认重置账号\""+name+"\"登录密码吗？");
+        if(confirm===true){
+        	resetPwd(name,id);
+        }
+    };
+    function resetPwd(name,id){
+    	$.post("${contextPath}/admin/updateUser",{"uid":id,"del_flag":"0","pwd":"123456"},function(data){
+    		alert("用户\""+name+"\"密码重置成功!");
+    		//重新加载数据
+    		getUserListData();
+    	});
+    };
     //删除数据
     function delData(name,id){
-    	$.post("${contextPath}/admin/updateMap",{"id":id,"del_flag":"1"},function(data){
-    		alert("\""+name+"\"数据删除成功!");
+    	$.post("${contextPath}/admin/updateUser",{"uid":id,"del_flag":"1"},function(data){
+    		alert("用户\""+name+"\"删除成功!");
     		//重新加载数据
     		getUserListData();
     	});
@@ -232,7 +252,7 @@
          }
     };
     function addUser(id){
-    	var url="${contextPath}/admin/mapForm";
+    	var url="${contextPath}/admin/userForm";
     	if(id!=null&&id!=undefined){
     		url+="?id="+id;
     	};

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zn-CN">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ulab数据管理平台</title>
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/bootstrap.min-3.3.7-blue.css">
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/style.css">
+</head>
+<body id="flatMap_form">
+<!--导航-->
+<nav class="navbar navbar-default">
+    <!--小屏幕按钮和-->
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="${contextPath}/admin/mapList" class="navbar-brand">Ulab数据管理平台</a>
+        </div>
+        <!--小屏幕按钮和-->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="${contextPath}/admin/mapList"><span class="glyphicon glyphicon-home"></span>平面地图数据</a></li>
+                <li><a href="${contextPath}/admin/labInfoList"><span class="glyphicon glyphicon-home"></span>实验室明细</a></li>
+                <li class="active"><a href="${contextPath}/admin/userList"><span class="glyphicon glyphicon-home"></span>账号管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true">
+                        当前用户： ${user.name!}
+                    </a>
+                </li>
+                <li onclick="logout()"><a href="javascript:void(0);"><span class="glyphicon glyphicon-off"></span>退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--导航-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8" style="margin-left:16.5%">
+            <form action="/admin/updateUser" type="post">
+                <fieldset>
+                    <legend>用户信息新增/编辑:</legend>
+                    <div class="col-md-12">
+                       <input type="hidden" name="uid" value="${model.id!}">
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="name">用户名</label>
+                            <input class="form-control" id="name" name="name" value="${model.name!}"  placeholder="用户名称">
+                        </div>
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="login_name">登录名</label>
+                            <input class="form-control" id="login_name" name="login_name" value="${model.login_name!}"  placeholder="登陆名称">
+                        </div>
+						<div class="form-group"><strong class="required">*</strong>
+                            <label for="login_name">密    码</label>
+                            <input class="form-control" type="password" id="pwd" name="pwd"   placeholder="登录密码">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="show_in_map">禁止登陆</label>
+                            <select class="form-control" id="show_in_map" name="forbid">
+                            	##if(1==model.forbid){
+                            		<option value="1" selected>禁止登陆</option>
+                                	<option value="0" >允许登陆</option>
+                            	##}else{
+                                	<option value="1">禁止登陆</option>
+                                	<option value="0" selected>允许登陆</option>
+                            	##}
+                                
+                            </select>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="col-md-12 ">
+                        <div class="form-group">
+                            <input class="btn btn-success center-block" id="submit" type="submit" value="提交">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+var contextPath='${contextPath!}';
+function logout(){
+	 var confirm = window.confirm("是否确认退出系统？");
+    if(confirm===true){
+   	 $("form").attr("action","${contextPath}/login/logout").submit();
+    }
+};
+</script>
+<script src="${contextPath}/static/admin/js/jquery-2.2.4.js"></script>
+<script src="${contextPath}/static/admin/js/jquery.validate-1.15.1.js"></script>
+<script src="${contextPath}/static/admin/js/bootstrap.js"></script>
+<script src="${contextPath}/static/admin/js/userForm.js"></script>
+
+</body>
+</html>

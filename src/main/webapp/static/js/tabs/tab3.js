@@ -353,59 +353,21 @@ function last_year_month() {
 
 //右-左-上 #6 折线图 订单及时率
 function findOrderYearRateForTab3() {
-    /*	var myDate = new Date();
-        var year=myDate.getFullYear(); //获取完整的年份(4位,1970-????)
-        var month=myDate.getMonth(); //获取当前月份(0-11,0代表1月)
-        month=parseInt(month)-1;
-        var end=year+month;*/
-    $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
-        "startDate": "201701",
-        "endDate": "2017" + getCurrentMonth()
+    $.post(contextPath + '/lab/findOrderYearRateForJSLAjax', {
+    	"labName":"集团总数",
+        "startDate": "201801",
+        "endDate": "2018" + getCurrentMonth()
     }, function (data) {
         var myChart6 = echarts.init(document.getElementById("myChart6"));
         right_echarts.push(myChart6);
-
-        var mSer;
         myChart6.setOption(getLineEcharts());
-        if (getCurrentMonth() === "01") {
-            myChart6.setOption(getBarEcharts());
-            mSer = {
-                name: '及时率',
-                type: 'bar',
-                barWidth: 60 * bodyScale,
-                label: labelSetting,
-                lineStyle: {
-                    normal: {
-                        width: 1 * bodyScale
-                    }
-                },
-                symbol: 'circle',
-                symbolSize: 3 * bodyScale,
-                data: tab1OrderRateSeriseDataNotTrue(data)
-            };
-        } else {
-            mSer = {
-                name: '及时率',
-                type: 'line',
-                stack: '总量',
-                lineStyle: {
-                    normal: {
-                        width: 1 * bodyScale
-                    }
-                },
-                symbol: 'circle',
-                symbolSize: 3 * bodyScale,
-                data: tab1OrderRateSeriseData(data)
-            };
-        }
-
         myChart6.setOption({
             legend: {
                 show: false,
                 data: ['及时率'],
                 itemWidth: 6 * bodyScale,  //图例标记的图形宽度
                 itemHeight: 6 * bodyScale, //图例标记的图形高度
-                itemGap: 10 * bodyScale
+                itemGap:10*bodyScale
             },
             grid: {
                 right: '15%',
@@ -434,12 +396,85 @@ function findOrderYearRateForTab3() {
                     //data: last_year_month()
                 }
             ],
-            series: [mSer]
+            series: [{
+                name: '及时率',
+                nameGap: nameGap,
+                type: 'line',
+                lineStyle: {
+                    normal: {
+                        width: 1 * bodyScale
+                    }
+                },
+                symbol: 'circle',
+                symbolSize: 3 * bodyScale,
+                //data: tab1OrderRateSeriseData(data)
+                data: tab1OrderRateSeriseDataNotTrue(data)
+            }]
 
         });
-
     })
 }
+/*function findOrderYearRateForTab3() {
+    $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
+        "startDate": "201701",
+        "endDate": "2017" + getCurrentMonth()
+    }, function (data) {
+        var myChart6 = echarts.init(document.getElementById("myChart6"));
+        right_echarts.push(myChart6);
+        myChart6.setOption(getLineEcharts());
+        myChart6.setOption({
+            legend: {
+                show: false,
+                data: ['及时率'],
+                itemWidth: 6 * bodyScale,  //图例标记的图形宽度
+                itemHeight: 6 * bodyScale, //图例标记的图形高度
+                itemGap:10*bodyScale
+            },
+            grid: {
+                right: '15%',
+                bottom: '15%',
+                left: '12%',
+                top: '20%'
+            },
+
+            yAxis: {
+                name: '及时率/%',
+                nameGap: nameGap,
+                nameTextStyle: nameTextStyle,
+                axisLabel: axisLabel,
+                max: 100,
+                min: 0,
+                scale: true
+            },
+            xAxis: [
+                {
+                    boundaryGap: true,
+                    name: "月份",
+                    nameGap: nameGap,
+                    nameTextStyle: nameTextStyle,
+                    axisLabel: axisLabel,
+                    data: statistictab1LengendTime(data)
+                    //data: last_year_month()
+                }
+            ],
+            series: [{
+                name: '及时率',
+                nameGap: nameGap,
+                type: 'line',
+                lineStyle: {
+                    normal: {
+                        width: 1 * bodyScale
+                    }
+                },
+                symbol: 'circle',
+                symbolSize: 3 * bodyScale,
+                //data: tab1OrderRateSeriseData(data)
+                data: tab1OrderRateSeriseDataNotTrue(data)
+            }]
+
+        });
+    })
+}*/
 
 //右-左-下-左 #45 雷达图 订单及时率同比变化 按照产线统计某年整体订单及时率  数据结果
 function findOrderYearRateForProductAjax() {
@@ -608,7 +643,7 @@ function satisfactionStatisForMonthForTab3Ajax() {
 
         var mSer;
         myChart7.setOption(getLineEcharts());
-        console.log("----------chart7-ser-data:",tab1OrderRateSeriseData(data))
+        //console.log("----------chart7-ser-data:",tab1OrderRateSeriseData(data))
         if (getCurrentMonth() === "01") {
             myChart7.setOption(getBarEcharts());
             mSer = {
@@ -1395,18 +1430,24 @@ function orderYearRateAjax() {
         }
 
     });*/
-	   $.post(contextPath + '/lab/findOrderYearRateForTab1Ajax', {
-	        "startDate": "2016"+getCurrentMonth(),
-	        "endDate": "2017" + getCurrentMonth()
+	//findOrderYearRateForTab1Ajax
+	
+	if(labTypeCode==undefined){
+		labTypeCode="集团总数";
+	};
+	   $.post(contextPath + '/lab/findOrderYearRateForJSLAjax', {
+		   "labName":labTypeCode,
+	        "startDate": "2017"+getCurrentMonth(),
+	        "endDate": "2018" + getCurrentMonth()
 	    }, function (data) {
-	    	console.log(data)
+	    	//console.log(data)
 	    	var rate2016 =data[0].rate;
 	        var rate2017 = data[data.length-1].rate;
 	        var change = (parseFloat(rate2017) - parseFloat(rate2016)).toFixed(1);
 	        var h = '';
 	        if (rate2017 != null) {
-	            h += '本月订单及时率 <strong class="orange tab3_new_order_rate">' + (rate2017 == null ? "0" : rate2017) + '%</strong> ,';
-	            if (parseFloat(change) < 0) {
+	            h += '本月订单及时率 <strong class="orange tab3_new_order_rate">' + (rate2017 == null ? "0" : parseFloat(rate2017).toFixed(1)) + '%</strong> ,';
+	            if (parseFloat(change) > 0) {
 	                h += '同比上升';
 	            } else {
 	                h += '同比下降';
