@@ -36,8 +36,8 @@ public class JSLModel extends Model<JSLModel> {
 		}
 		sb.append("  order by o.name ");
 		try {
-			return Db.find(new String(sb.toString().getBytes(),"utf-8"));
-		} catch (UnsupportedEncodingException e) {
+			return Db.find(sb.toString());
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
