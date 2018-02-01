@@ -402,6 +402,10 @@ function findSensorByLabCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
 }
 
 function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
+	if(labTypeCode=="USLABXYJ"){
+		loadingAnimateOut("curve", 500);
+		return ;
+	}
     mlabTypeCode = labTypeCode;
     mtestUnitId = testUnitId;
     $.post(contextPath + "/lab/getJsonFile", {"fileName": fileName}, function (data) {

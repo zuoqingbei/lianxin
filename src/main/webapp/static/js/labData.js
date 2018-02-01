@@ -215,7 +215,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     setCenterLabHtmlDB(dataCenter);
     //加载数据中心第三级
     $.post(contextPath + "/lab/loadAllDataCenterLabAjax", {"dataCenterId": dataCenterId}, function (data) {
-        console.log("查询level为3",data)
+       // console.log("查询level为3",data)
         var html = '';
         var firstLabCode = "";
         $.each(data, function (index, item) {
@@ -302,7 +302,7 @@ function createClickFuntion(item) {
      * 数据源 db-直连数据库； url-第三方链接；
      webservice-连接webservice；json-读取json文件
      */
-        // console.log("item",item)
+         console.log("item",item)
     var dataSource = item.data_source;
     if (dataSource == "db") { //国外曲线
         htmls += " onclick= loadLabUnitInfoCenterTabAjaxWorldHadoop('" + item.id + "')"
