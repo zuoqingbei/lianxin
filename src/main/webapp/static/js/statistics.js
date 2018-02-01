@@ -817,7 +817,7 @@ function labLinkStatis(){
 	$.post(contextPath+'/lab/labLinkAjax',{},function(data){
 		//$("#link_lab_all_count").html(data.all_num);
 		// $("#linked_status_num").html(data.link_num);
-		$(".lab_all_count_link").html(452);
+		$(".lab_all_count_link").html(509);
 		$("#link_status_rate").html(data.link_rate);
 	})
 }

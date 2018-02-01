@@ -544,7 +544,7 @@ function labLinkStatis(){
 		// $("#linked_status_num").html(data.link_num);
 		$("#linked_status_num").html(369);
 		$("#link_status_rate").html(data.link_rate);*/
-		$(".lab_all_count_link").html(452);
+		$(".lab_all_count_link").html(509);
 		$("#link_status_rate").html(data.link_rate);
 	})
 }
