@@ -1,0 +1,109 @@
+body{
+    background: url("../img/bg.jpg") no-repeat center center;
+    background-size: 100% 100%;
+    min-width: 1200px;
+}
+.header{
+    text-align: center;
+    font-size: 1.5em;
+    padding: 0.5em;
+    color: #66ccff;
+}
+.xt_title{
+    width: 20em;
+    height: 23em;
+    position: fixed;
+    top: 5em;
+    right: 9.5em;
+    text-align: center;
+    font-size: 1.4em;
+    color: #333;
+}
+.box{
+    width: 20em;
+    height: 23em;
+    background: url("../img/login.png") no-repeat center center;
+    background-size:100% 100%;
+    position: fixed;
+    top:9.5em;
+    right:17em ;
+}
+.box-head{
+    text-align: center;
+    margin-top: 0.8em;
+    color: white;
+    font-size: 1.2em;
+}
+.input-box{
+   text-align: center;
+  margin-top:7.5em;
+}
+.input-box input{
+    padding: 0.7em 2em;
+    margin-bottom: 1em;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    box-shadow: 1px 1px 3px lightgray;
+    padding-left: 3em;
+    padding-right: 0;
+}
+#pwd{
+    margin-bottom: 0;
+}
+.username div{
+    width: 1.5em;
+    height: 1.5em;
+    display: block;
+    background: url("../img/name.png") no-repeat;
+    background-size:80% 80%;
+    position: absolute;
+    left: 3em;
+    margin: 0.4em 1em;
+}
+.pwd div{
+    width: 1.5em;
+    height:1.5em;
+    display: block;
+    background: url("../img/pwd.png") no-repeat;
+    background-size:80% 80%;
+    position: absolute;
+    left: 3em;
+    margin: 0.4em 1em;
+}
+.input-box div a{
+    font-size:0.7em;
+    color: #666;
+    display: inline-block;
+    position: absolute;
+    bottom: 10em;
+    right: 4.5em;
+
+}
+.error_ms{
+    width: 13em;
+    height: 1.2em;
+    margin: 0 auto;
+    margin-top: 0.3em;
+    color: red;
+    margin-left: 1em;
+    font-size: 0.8em;
+    display: none;
+}
+.input-box .submit{
+    padding: 0.2em 1em;
+    border-radius: 5px;
+    background-color: #66ccff;
+    border: none;
+    color: white;
+    margin-top:1em;
+    font-weight: 600;
+    font-size: 1.2em;
+    display: inline-block;
+}
+.foot{
+    position: absolute;
+    bottom: 5px;
+    left: 35%;
+    color: #333;
+    font-size: 12px;
+}

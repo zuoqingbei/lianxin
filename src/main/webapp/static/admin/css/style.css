@@ -1,0 +1,72 @@
+body {
+    font-family: '微软雅黑', sans-serif;
+}
+
+li a span.glyphicon {
+    margin-right: .6em;
+}
+.navbar{
+    margin-bottom: 0;
+}
+
+.page-header {
+    margin: 1em auto .5em;
+    padding-bottom: 0;
+}
+
+.page-header h2 {
+    font-size: 1.2em;
+    margin-bottom: .2em;
+}
+.search .panel{
+    margin-bottom: 10px;
+}
+.search .panel-heading{
+    padding: 6px 12px;
+}
+.search .form-group {
+    margin-right: 1em;
+}
+
+.search .form-group select,
+.search .form-group input {
+    width: 10em;
+}
+.search .form-group input#keyword{
+    width: 18em;
+}
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: initial;
+}
+
+.checkbox label {
+    margin-right: 1em;
+}
+
+.result {
+    margin-right: 2em;
+}
+
+output {
+    display: inline-block;
+}
+
+.form-group strong.required {
+    color: red;
+}
+
+label.error {
+    color: darkorange;
+}
+
+input[type=submit] {
+    margin-top: 1em;
+    width: 36%;
+}

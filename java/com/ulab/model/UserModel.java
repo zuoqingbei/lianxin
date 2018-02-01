@@ -3,9 +3,12 @@ package com.ulab.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
+import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
 import com.ulab.util.MD5Util;
 
@@ -74,8 +77,17 @@ public class UserModel extends Model<UserModel> {
 	 * @param  @return
 	 * @return_type   Page<UserModel>
 	 */
-	public Page<UserModel> paginates(Integer pageSize,Integer pageNumber){
-		Page<UserModel> pager = UserModel.dao.paginate(pageNumber, pageSize,"select *", "from T_B_USER where del_flag='"+Constants.DEL_FALG+"'");
+	public Page<UserModel> pager(Integer pageSize,Integer pageNumber,BaseController c ){
+		String fromSql= "from t_b_user where del_flag='"+Constants.DEL_FALG+"' ";
+		fromSql+=" ";
+		if(StringUtils.isNotBlank(c.getPara("name"))){
+			fromSql+=" and (name like '%"+c.getPara("name")+"%' or  login_name like '%"+c.getPara("name")+"%'  )";
+		}
+		if(StringUtils.isNotBlank(c.getPara("forbid"))){
+			fromSql+=" and forbid='"+c.getPara("forbid")+"' ";
+		}
+		fromSql+=" order by create_date desc ";
+		Page<UserModel> pager = UserModel.dao.paginate(pageNumber, pageSize,"select *",fromSql);
 		return pager;
 	}
 }

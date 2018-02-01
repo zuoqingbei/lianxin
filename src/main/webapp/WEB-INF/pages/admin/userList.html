@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zn-CN">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ulab数据管理平台</title>
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/bootstrap.min-3.3.7-blue.css">
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/style.css">
+</head>
+<body>
+<!--导航-->
+<nav class="navbar navbar-default">
+    <!--小屏幕按钮和-->
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="index.html" class="navbar-brand">Ulab数据管理平台</a>
+        </div>
+        <!--小屏幕按钮和-->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+               <li><a href="${contextPath}/admin/mapList"><span class="glyphicon glyphicon-home"></span>平面地图数据</a></li>
+               <li><a href="${contextPath}/admin/labInfoList"><span class="glyphicon glyphicon-home"></span>实验室明细</a></li>
+               <li class="active"><a href="${contextPath}/admin/userList"><span class="glyphicon glyphicon-home"></span>账号管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true"> 当前用户：
+                      ${user.name!}
+                    </a>
+                </li>
+                <li onclick="logout()"><a href="javascript:void(0);"><span class="glyphicon glyphicon-off"></span>退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--导航-->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h2>用户列表信息</h2>
+            </div>
+
+            <div class="search">
+                 <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">查询条件：</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-inline" action="" type="post">
+                                <div class="form-group">
+                                    <label for="username">用户名/登录名：</label>
+                                    <input class="form-control input-sm" id="username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="forbid">状态：</label>
+                                    <select class="form-control input-sm" id="forbid">
+                                         <option value="">全部</option>
+                                    	 <option value="0">允许登陆</option>
+                                    	 <option value="1">禁止登陆</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-success btn-sm pull-right" onclick="addUser()">新增</button>
+                                <button style="margin-right:2em;" type="button" class="btn btn-primary btn-sm pull-right" onclick="search()">搜索</button>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+            <br>
+            <table class="table table-condensed table-bordered table-striped table-hover">
+                <thead>
+	                <tr>
+	                    <th>序号</th>
+	                	<th>用户名</th>
+	                    <th>登录名</th>
+	                    <th>状态</th>
+	                    <th>时间</th>
+	                    <th>操作</th>
+	                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+			<!-- 分页 -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination pull-right pagination-ul" >
+                </ul>
+                <div class="pagination pull-right result">
+                </div>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script src="${contextPath}/static/admin/js/jquery-2.2.4.js"></script>
+<script src="${contextPath}/static/admin/js/bootstrap.js"></script>
+<script>
+	var pageNumber=1;
+	var pageSize=10;
+    $(function () {
+        getUserListData();
+    });
+    function getUserListData(){
+    	$.post("${contextPath}/admin/userData",
+    			{"pageNumber":pageNumber,
+    		     "pageSize":pageSize,
+    		     "name":$("#username").val(),
+    		     "forbid":$('#forbid option:selected').val()
+    		     },
+    			function(data){
+    		//生成分页
+    		createPagination(data);
+    		//情况表单
+    		$("tbody").html("");          
+    		$.each(data.list,function(index,item){
+    			createTrHTML(index,item);
+    		});
+    		//添加事件
+    		addEvent();
+    	});
+    };
+    //搜索
+    function search(){
+    	pageNumber=1;
+    	getUserListData();
+    };
+    //点击分页
+    function showData(nums){
+    	pageNumber=nums;
+    	getUserListData();
+    };
+    //生成单行数据
+    function createTrHTML(index,item){
+    	var tr='';
+    	tr+='<tr>';
+    	tr+='<td data="'+item.id+'" name="'+item.name+'" class="index">'+((pageNumber-1)*pageSize+index+1)+'</td>';
+    	tr+='<td>'+item.name+'</td>';
+    	tr+='<td>'+item.login_name+'</td>';
+    	tr+='<td>'+(item.forbid==1?"禁止登陆":"允许登陆")+'</td>';
+    	tr+='<td>'+(item.update_date==null?(item.create_date==null?"":item.create_date):item.update_date)+'</td>';
+    	tr+='<td><div role="presentation" class="dropdown">';
+        tr+='<button class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"';
+        tr+=' role="button" aria-haspopup="true" aria-expanded="false">';
+        tr+=' 操作 <span class="caret"></span></button>';
+        tr+='<ul class="dropdown-menu"><li><a class="btn-edit" href="javascript:void(0);">编辑</a></li>';
+        tr+='<li><a class="btn-del" href="javascript:void(0);">删除</a></li>';
+        tr+='</ul></div></td>';
+        tr+='</tr>';
+        $("tbody").append(tr); 
+    };
+  //生成分页
+    function createPagination(data){
+    	var pagination="";
+    	var startNum=parseInt(pageNumber)-3;
+    	var endNums=parseInt(pageNumber)+3;
+    	if(startNum<0){
+    		startNum=1;
+    	}
+    	if(endNums>parseInt(data.totalPage)){
+    		endNums=parseInt(data.totalPage)+1;
+    	}
+    	if(pageNumber==1){
+    		pagination+='<li><a href="javascript:void(0);"  aria-label="Previous"><span aria-hidden="true">&laquo;</span> </a> </li>';
+    	}else{
+    		pagination+='<li onclick=showData("'+(pageNumber-1)+'") ><a href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span> </a> </li>';
+    	};
+    	for(var x=startNum;x<endNums;x++){
+    		if(x>0){
+    			if(x==parseInt(pageNumber)){
+    				pagination+='<li class="active"><a href="javascript:void(0);"  onclick=showData("'+x+'")>'+x+'</a></li>';
+    			}else{
+    				pagination+='<li onclick=showData("'+x+'")><a href="javascript:void(0);"  >'+x+'</a></li>';
+    			}
+    		}
+    	};
+    	if(pageNumber==parseInt(data.totalPage)){
+    		pagination+='<li><a href="javascript:void(0);"  aria-label="Next"><span aria-hidden="true">&raquo;</span> </a> </li>';
+    	}else{
+    		pagination+='<li onclick=showData("'+(pageNumber+1)+'")><a href=""  aria-label="Next"><span aria-hidden="true">&raquo;</span> </a> </li>';
+    	};
+    	$(".pagination-ul").html(pagination);
+    	$(".result").html('查询结果：<output>'+data.totalRow+'</output>条/<output>共'+data.totalPage+'</output>页');
+    };
+    //添加事件
+    function addEvent(){
+    	 /*响应菜单点击后隐藏*/
+        $(".navbar-collapse a").click(function () {
+            $(".navbar-collapse").collapse("hide");
+        });
+        //删除按钮添加响应事件
+        $(".btn-del").click(function () {
+            //先获取这一行的id
+            var id = $(this).parents("tr").children(".index").attr("data");
+            var name = $(this).parents("tr").children(".index").attr("name");
+            showConfirm(name,id)
+        });
+        //编辑按钮添加响应事件
+        $(".btn-edit").click(function () {
+            //先获取这一行的id
+            var id = $(this).parents("tr").children(".index").attr("data");
+            addUser(id);
+        });
+    };
+    function showConfirm(name,id) {
+        var confirm = window.confirm("是否确认删除\""+name+"\"？数据删除后无法恢复!");
+        if(confirm===true){
+        	delData(name,id);
+        }
+    };
+    //删除数据
+    function delData(name,id){
+    	$.post("${contextPath}/admin/updateMap",{"id":id,"del_flag":"1"},function(data){
+    		alert("\""+name+"\"数据删除成功!");
+    		//重新加载数据
+    		getUserListData();
+    	});
+    };
+    function logout(){
+    	 var confirm = window.confirm("是否确认退出系统？");
+         if(confirm===true){
+        	 $("form").attr("action","${contextPath}/login/logout").submit();
+         }
+    };
+    function addUser(id){
+    	var url="${contextPath}/admin/mapForm";
+    	if(id!=null&&id!=undefined){
+    		url+="?id="+id;
+    	};
+    	//window.location.href=url;
+    	window.open(url);
+    }
+</script>
+</body>
+</html>

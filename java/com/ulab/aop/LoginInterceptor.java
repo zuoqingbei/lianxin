@@ -18,7 +18,7 @@ public class LoginInterceptor implements Interceptor{
 		UserModel user=c.getSessionAttr("user");
 		if(user==null){
 			//未登陆
-			c.redirect("/user/login");
+			c.redirect("/login");
 		}else{
 			ai.invoke();
 			

@@ -52,7 +52,7 @@ import com.ulab.util.SqlUtil;
  * @todo 测试类
  */
 @ControllerBind(controllerKey = "/lab", viewPath = "/lab")
-@Before({ LoginInterceptor.class })
+//@Before({ LoginInterceptor.class })
 public class LabController extends BaseController {
 	public void index() {
 		setAttr("fromPage", getPara("fromPage", ""));

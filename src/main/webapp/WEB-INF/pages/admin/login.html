@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>ULab后台管理系统</title>
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/common.css"/>
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/login.css">
+
+</head>
+<body>
+<div class="bac">
+    <div>
+        <div class="xt_title">ULab后台管理系统</div>
+        <div class="box">
+            <div class="box-head">用户登录</div>
+            <form action="${contextPath}/login/loginValidate">
+	            <div class="input-box">
+	                <div class="username">
+	                    <div></div>
+	                    <input type="text" name="name" value="${name!}zuo1" class="fs-login-username" id="name" placeholder="请输入用户名"/>
+	                </div>
+	                <div class="pwd">
+	                    <div></div>
+	                    <input type="password"  name="pwd" value="123456" class="fs-login-password" id="pwd" placeholder="请输入密码"/>
+	                </div>
+	                ##if(error!=""){
+	                	<div class="error_ms" style="display:block">${error!}</div>
+	                ##}else{
+	                	<div class="error_ms" style="display:none"></div>
+	                ##}
+	                <a id="fs-login-btn" onclick="submitMethod()" class="submit" expired="true">登录</a>
+	            </div>
+            </form>
+        </div>
+    </div>
+    <div class="foot">
+    </div>
+</div>
+
+</body>
+ <script src="${contextPath}/static/admin/asserts/js/jquery.js"></script> 
+<script src="${contextPath}/static/admin/asserts/js/bootstrap.min.js"></script>
+ <script>
+     function submitMethod(){
+    	 var name=$("#name").val();
+    	 var pwd=$("#pwd").val();
+    	 if(name==""){
+    		 showError("请输入用户名!");
+    		 return ;
+    	 }
+    	 if(pwd==""){
+    		 showError("请输入密码!");
+    		 return ;
+    	 }
+    	 $("form").submit();
+     };
+     function showError(msg){
+    	 $(".error_ms").html(msg);
+    	 $(".error_ms").css("display","block");
+     };
+     
+     function hideError(){
+    	 $(".error_ms").html("");
+    	 $(".error_ms").css("display","none");
+     };
+</script> 
+</html>

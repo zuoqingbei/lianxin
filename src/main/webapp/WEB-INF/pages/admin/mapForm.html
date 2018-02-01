@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zn-CN">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ulab数据管理平台</title>
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/bootstrap.min-3.3.7-blue.css">
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/style.css">
+</head>
+<body id="flatMap_form">
+<!--导航-->
+<nav class="navbar navbar-default">
+    <!--小屏幕按钮和-->
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="index.html" class="navbar-brand">Ulab数据管理平台</a>
+        </div>
+        <!--小屏幕按钮和-->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span>平面地图数据</a></li>
+                <li><a href=""><span class="glyphicon glyphicon-home"></span>实验室明细</a></li>
+                <li><a href=""><span class="glyphicon glyphicon-home"></span>账号管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true">
+                        当前用户： ${user.name!}
+                    </a>
+                </li>
+                <li onclick="logout()"><a href="javascript:void(0);"><span class="glyphicon glyphicon-off"></span>退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--导航-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/admin/updateMap" type="post">
+                <fieldset>
+                    <legend>实验室信息新增/编辑:</legend>
+                    <div class="col-md-6">
+                       <input type="hidden" name="id" value="${model.id!}">
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="name">名称</label>
+                            <input class="form-control" id="name" name="name" value="${model.name!}"  placeholder="实验室名称">
+                        </div>
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="short_name">简称</label>
+                            <input class="form-control" id="short_name" name="short_name" value="${model.short_name!}"  placeholder="实验室简称">
+                        </div>
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="location">地区</label>
+                            <input class="form-control" id="location" name="location" value="${model.location!}"  placeholder="实验室所在地区">
+                        </div>
+                        <div class="form-group">
+                            <label for="lab_type">类别</label>
+                            <select class="form-control" id="lab_type" name="lab_type">
+                                ##for(type in labTypes){
+                                   ##if(model.lab_type==type.name){
+                                   		<option value="${type.name!}" selected>${type.name!}</option>
+                                   ##}else{
+                                   		<option value="${type.name!}">${type.name!}</option>
+                                   ##}
+		                        ##}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                         <div class="form-group">
+                            <label for="data_center_id">数据中心</label>
+                            <select class="form-control" id="data_center_id" name="data_center_id">
+	                            ##for(p in dataCenters!){
+	                            	<optgroup label="${p.center_name!}">
+	                            	##for(c in p.children!){
+	                            	    ##if(c.id==model.data_center_id){
+	                            	   		 <option value="${c.id!}">${c.center_name!}</option>
+	                            	    ##}else{
+	                            	    	 <option value="${c.id!}" selected>${c.center_name!}</option>
+	                            	    ##}
+	                            	##}
+		                            </optgroup>
+	                            ##}
+	                        </select>
+                        </div>
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="lng">经度</label>
+                            <input class="form-control" id="lng" name="lng" value="${model.lng!}" placeholder="地理经度">
+                        </div>
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="lat">纬度</label>
+                            <input class="form-control" id="lat" name="lat" value="${model.lat!}" placeholder="地理纬度">
+                        </div>
+                       
+                        
+                        <div class="form-group">
+                            <label for="show_in_map">是否显示在地图</label>
+                            <select class="form-control" id="show_in_map" name="show_in_map">
+                            	##if(0==model.show_in_map){
+                            		<option value="1">是</option>
+                                	<option value="0" selected>否</option>
+                            	##}else{
+                            		<option value="1" selected>是</option>
+                                	<option value="0" >否</option>
+                            	##}
+                                
+                            </select>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="col-md-12 ">
+                        <div class="form-group">
+                            <input class="btn btn-success center-block" id="submit" type="submit" value="提交">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+var contextPath='${contextPath!}';
+function logout(){
+	 var confirm = window.confirm("是否确认退出系统？");
+    if(confirm===true){
+   	 $("form").attr("action","${contextPath}/login/logout").submit();
+    }
+};
+</script>
+<script src="${contextPath}/static/admin/js/jquery-2.2.4.js"></script>
+<script src="${contextPath}/static/admin/js/jquery.validate-1.15.1.js"></script>
+<script src="${contextPath}/static/admin/js/bootstrap.js"></script>
+<script src="${contextPath}/static/admin/js/main.js"></script>
+
+</body>
+</html>

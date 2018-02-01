@@ -13,7 +13,7 @@ import com.jfinal.plugin.activerecord.Record;
  * @todo   数据中心基础信息
  */
 @TableBind(tableName = "t_b_data_center",pkName="id")
-public class DataCenterModel extends Model<CommunistModel>{
+public class DataCenterModel extends Model<DataCenterModel>{
 	private static final long serialVersionUID = 1L;
 	public static final DataCenterModel dao = new DataCenterModel();
 	/**
