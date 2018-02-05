@@ -253,7 +253,8 @@ public class LabModel extends Model<LabModel> {
 		if(r!=null){
 			labCode=r.getStr("code");
 		}
-		labCode="lab"+(Integer.parseInt(labCode.replaceAll("lab", ""))+1);
+		labCode=labCode.replaceAll("Lab", "");
+		labCode="Lab"+(Integer.parseInt(labCode)+1);
 		return labCode;
 	}
 }

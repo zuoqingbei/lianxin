@@ -25,7 +25,7 @@ public class HadoopSensorInfo {
 	}
 	public List<Record> findHiveSensorInfoByTestIdentification(BaseController c,String configName,String testIdentification,String labCode){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.SENSORINFO);
-		String sql="select testidentification,testunitid,sensortypeid,sensorname,unit,totalsequenceno,selected,labcode,maxselect,minselect,sensorid from "+tableName+" where primarykey='"+testIdentification+"' and selected=1 "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
+		String sql="select testidentification,testunitid,sensortypeid,sensorname,unit,totalsequenceno,selected,labcode,maxselect,minselect,sensorid from "+tableName+" where trim(primarykey)='"+testIdentification.trim()+"' and selected=1 "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
 		List<Record> sensorInfo=Db.use(configName).find(sql);
 		for(Record sType:sensorInfo){
 			sType.set("legend", sType.get("sensorid")+":"+sType.get("sensorname")+"("+sType.get("unit")+")");

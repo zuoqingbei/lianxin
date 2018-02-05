@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zn-CN">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ulab数据管理平台</title>
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/bootstrap.min-3.3.7-blue.css">
+    <link rel="stylesheet" href="${contextPath}/static/admin/css/style.css">
+</head>
+<body id="flatMap_form">
+<!--导航-->
+<nav class="navbar navbar-default">
+    <!--小屏幕按钮和-->
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="index.html" class="navbar-brand">Ulab数据管理平台</a>
+        </div>
+        <!--小屏幕按钮和-->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+               <li><a href="${contextPath}/admin/mapList"><span class="glyphicon glyphicon-home"></span>平面地图数据</a></li>
+                <li class="active"><a href="${contextPath}/admin/labInfoList"><span class="glyphicon glyphicon-home"></span>实验室明细</a></li>
+                <li><a href="${contextPath}/admin/userList"><span class="glyphicon glyphicon-home"></span>账号管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true">
+                        当前用户：${user.name!}
+                    </a>
+                </li>
+                <li onclick="logout()"><a href="javascript:void(0);"><span class="glyphicon glyphicon-off"></span>退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--导航-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/admin/updateLabInfo" type="post">
+                <fieldset>
+                    <legend>实验室信息新增/编辑:</legend>
+                    <div class="col-md-6">
+                      <input id="labCode" name="labCode" value="${model.code!}" type="hidden">
+                      	##if(model.code!=null){
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="num">编码</label>
+                            <input class="form-control"  value="${model.code!}" placeholder="实验室编码"  disabled>
+                        </div>
+                      	##}else{
+                      		 <div class="form-group"><strong class="required">*</strong>
+                            <label for="num">编码</label>
+                            <input class="form-control"  value="系统生成" placeholder="实验室编码"  disabled>
+                        </div>
+                      	##}
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="name">名称</label>
+                            <input class="form-control" id="name" name="name"  value="${model.name!}"  placeholder="实验室名称">
+                        </div>
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="jc_name">检测37名称</label>
+                            <input class="form-control" id="jiance37_name" name="jiance37_name"  value="${model.jiance37_name!}"  placeholder="实验室检测37名称">
+                        </div>
+                         <div class="form-group">
+                            <label for="contents_type">所属大洲</label>
+                            <select class="form-control" id="continents" name="contents_type">
+                                <option value="亚洲">亚洲</option>
+                                <option value="非洲">非洲</option>
+                                <option value="北美洲">北美洲</option>
+                                <option value="欧洲">欧洲</option>
+                                <option value="大洋洲">大洋洲</option>
+                                <option value="南极洲">南极洲</option>
+                                <option value="南美洲">南美洲</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">国家</label><strong class="required">*</strong>
+                            <input class="form-control" id="country" name="country" value="${model.country!}"  placeholder="国家">
+                        </div>
+                         <div class="form-group">
+                            <label for="country">城市</label><strong class="required">*</strong>
+                            <input class="form-control" id="city" name="city" value="${model.city!}"  placeholder="城市">
+                        </div>
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="lng">经度</label>
+                            <input class="form-control" id="lng" name="lng" value="${model.lng!}" placeholder="地理经度">
+                        </div>
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="lat">纬度</label>
+                            <input class="form-control" id="lat" name="lat" value="${model.lat!}" placeholder="地理纬度">
+                        </div>
+
+                    </div>
+                    <input type="hidden" name="lab_type_name" id="lab_type_name" value="${model.lab_type_name!}">
+                    <div class="col-md-6">
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="lab_type_code">实验室类型</label>
+                            <select class="form-control" id="lab_type_code" name="lab_type_code">
+                                ##for(type in labTypes){
+                                   ##if(model.lab_type_code==type.id){
+                                   		<option value="${type.id!}" selected>${type.name!}</option>
+                                   ##}else{
+                                   		<option value="${type.id!}">${type.name!}</option>
+                                   ##}
+		                        ##}
+                            </select>
+                        </div>
+                         <input type="hidden" name="belong_gl_name" id="belong_gl_name" value="${model.belong_gl_name!}">
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="belong_gl_code">归类名称</label>
+                            <select class="form-control" id="belong_gl_code" name="belong_gl_code">
+                                  ##for(type in glTypes){
+                                   ##if(model.belong_gl_code==type.id){
+                                   		<option value="${type.id!}" selected>${type.name!}</option>
+                                   ##}else{
+                                   		<option value="${type.id!}">${type.name!}</option>
+                                   ##}
+		                        ##}
+                            </select>
+                        </div>
+                         <input type="hidden" name="properties_name" id="properties_name" value="${model.properties_name!}">
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="properties_code">性质分类</label>
+                            <select class="form-control" id="properties_code" name="properties_code">
+                                 ##for(type in propertiesType){
+                                   ##if(model.properties_code==type.id){
+                                   		<option value="${type.id!}" selected>${type.name!}</option>
+                                   ##}else{
+                                   		<option value="${type.id!}">${type.name!}</option>
+                                   ##}
+		                        ##}
+                            </select>
+                        </div>
+                        <input type="hidden" name="professional_name" id="professional_name" value="${model.professional_name!}">
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="professional_code">专业领域名称</label>
+                            <select class="form-control" id="professional_code" name="professional_code">
+                                 ##for(type in professionalType){
+                                   ##if(model.professional_code==type.id){
+                                   		<option value="${type.id!}" selected>${type.name!}</option>
+                                   ##}else{
+                                   		<option value="${type.id!}">${type.name!}</option>
+                                   ##}
+		                        ##}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="link_status">是否联通</label>
+                            <select class="form-control" id="link_status" name="link_status">
+                            	##if(1==model.link_status){
+                            		<option value="1" selected>已联通</option>
+                                	<option value="0" >未联通</option>
+                            	##}else{
+                            		<option value="1">已联通</option>
+                                	<option value="0" selected>未联通</option>
+                            		
+                            	##}
+                                
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="show_in_map">是否显示在地图</label>
+                            <select class="form-control" id="show_in_map" name="show_in_map">
+                            	##if(0==model.show_in_map){
+                            		<option value="1">是</option>
+                                	<option value="0" selected>否</option>
+                            	##}else{
+                            		<option value="1" selected>是</option>
+                                	<option value="0" >否</option>
+                            	##}
+                                
+                            </select>
+                        </div>
+                         <input type="hidden" name="product_name" id="product_name" >
+                          <input type="hidden" name="product_codes" id="product_codes" >
+                        <div class="form-group" id="product_code_div"><strong class="required">*</strong>
+                            <label for="product_code">产线类别</label>
+                            <br>
+                             ##for(type in productLines){
+                                  <label class="checkbox-inline">
+                                    ## var flag=false;
+                                     ##for(p in model.productList!){
+                                      ##if(p.id==type.id){
+                                      ## flag=true;
+                                      ##}
+                                     ##}
+                                      ##if(flag){
+                                      	<input type="checkbox" data="${type.name!}" name="product_code" value="${type.id!}" checked> ${type.name!}
+                                      ##}else{
+                                      <input type="checkbox" data="${type.name!}" name="product_code" value="${type.id!}"> ${type.name!}
+                                      ##}
+	                            </label>
+	                        ##}
+                           
+                        </div>
+                         <input type="hidden" name="carryTypeName" id="carryTypeName">
+                         <input type="hidden" name="carryTypeCodes" id="carryTypeCodes">
+                        <div class="form-group"><strong class="required">*</strong>
+                            <label for="lab_type">开展实验类别</label>
+                            <br>
+                             ##for(type in carryTypes){
+                                  <label class="checkbox-inline">
+                                    ## var flag=false;
+                                     ##for(p in model.labCarryList!){
+                                      ##if(p.carry_code==type.id){
+                                      ## flag=true;
+                                      ##}
+                                     ##}
+                                      ##if(flag){
+                                      	<input type="checkbox" data="${type.name!}" name="carryTypeCode" value="${type.id!}" checked> ${type.name!}
+                                      ##}else{
+                                      <input type="checkbox" data="${type.name!}" name="carryTypeCode" value="${type.id!}"> ${type.name!}
+                                      ##}
+	                            </label>
+	                        ##}
+                        </div>
+                    </div>
+                    <div class="col-md-12 ">
+                        <div class="form-group">
+                            <input class="btn btn-success center-block" id="submit" type="submit" value="提交">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+var contextPath='${contextPath!}';
+function logout(){
+	 var confirm = window.confirm("是否确认退出系统？");
+    if(confirm===true){
+   	 $("form").attr("action","${contextPath}/login/logout").submit();
+    }
+};
+</script>
+<script src="${contextPath}/static/admin/js/jquery-2.2.4.js"></script>
+<script src="${contextPath}/static/admin/js/jquery.validate-1.15.1.js"></script>
+<script src="${contextPath}/static/admin/js/bootstrap.js"></script>
+<script src="${contextPath}/static/admin/js/labInfoForm.js"></script>
+
+</body>
+</html>

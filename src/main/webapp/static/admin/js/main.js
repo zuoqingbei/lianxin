@@ -19,7 +19,7 @@ $(function () {
         	var param= $flatMap_form.serialize();
         	$.post(contextPath+"/admin/updateMap",param,function(data){
         		alert("修改成功!");
-        		window.location.reload();
+        		window.location.href=contextPath+"/admin/mapForm?id="+data.id;
         	});
         };
 

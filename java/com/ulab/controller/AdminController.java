@@ -76,7 +76,7 @@ public class AdminController extends BaseController {
 			user=UserModel.dao.findById(uid);
 			user.set("update_date", sdf.format(new Date()));
 		}else{
-			user.set("id", UUIDTool.getUUID());
+			user.set("id", UUIDTool.getOrderIdByUUId());
 			user.set("create_date", sdf.format(new Date()));
 		}
 		if(StringUtils.isNotBlank(name)){
@@ -184,7 +184,7 @@ public class AdminController extends BaseController {
 			model=LabMapModel.dao.findById(id);
 			model.set("update_date", sdf.format(new Date()));
 		}else{
-			model.set("id", UUIDTool.getUUID());
+			model.set("id", UUIDTool.getOrderIdByUUId());
 			model.set("create_date", sdf.format(new Date()));
 		}
 		if(StringUtils.isNotBlank(name)){
@@ -273,14 +273,14 @@ public class AdminController extends BaseController {
 		//产线
 		setAttr("productLines", DicModel.dao.findDicByType("line_type"));
 		//可开展实验类别
-		setAttr("productLines", DicModel.dao.findDicByType("carry_out_type"));
+		setAttr("carryTypes", DicModel.dao.findDicByType("carry_out_type"));
 		//性质
 		setAttr("propertiesType", DicModel.dao.findDicByType("properties_type"));
 		//专业领域
 		setAttr("professionalType", DicModel.dao.findDicByType("professional_type"));
 		
 		//查询数据中心下拉
-		List<Record> dataCenters=DataCenterModel.dao.findAllDataCenter();
+		/*List<Record> dataCenters=DataCenterModel.dao.findAllDataCenter();
 		for(Record center:dataCenters){
 			if("0".equals(center.getStr("haschildren"))){
 				//如果是中海博睿  模拟子类
@@ -289,7 +289,9 @@ public class AdminController extends BaseController {
 				center.set("children",c);
 			}
 		}
-		setAttr("dataCenters",dataCenters);
+		setAttr("dataCenters",dataCenters);*/
+		//归类
+		setAttr("glTypes", LabMapModel.dao.find("select * from t_b_lab_map where del_flag=0 "));
 		render("labInfoForm.html");
 	};
 	/**
@@ -321,7 +323,7 @@ public class AdminController extends BaseController {
 		String lab_type_name=getPara("lab_type_name");
 		String belong_gl_code=getPara("belong_gl_code");
 		String belong_gl_name=getPara("belong_gl_name");
-		String product_code=getPara("product_code");//逗号拼接
+		String product_code=getPara("product_codes");//逗号拼接
 		String product_name=getPara("product_name");//逗号拼接
 		String properties_code=getPara("properties_code");
 		String properties_name=getPara("properties_name");
@@ -335,7 +337,7 @@ public class AdminController extends BaseController {
 		String lat=getPara("lat");
 		String show_in_map=getPara("show_in_map","0");
 		String del_flag=getPara("del_flag","0");
-		String carryTypeCodes=getPara("carryTypeCode");//可开展实验类别
+		String carryTypeCodes=getPara("carryTypeCodes");//可开展实验类别
 		String carryTypeNames=getPara("carryTypeName");
 		boolean isInsert=false;
 		if(StringUtils.isNotBlank(labCode)){
@@ -352,7 +354,7 @@ public class AdminController extends BaseController {
 			String[] productNames=product_name.split(",");
 			for(int x=0;x<productCodes.length;x++){
 			    LabModel model=new LabModel();
-				model.set("id", UUIDTool.getUUID());
+				model.set("id", UUIDTool.getOrderIdByUUId());
 				model.set("code", labCode);
 				model.set("name", name);
 				model.set("jiance37_name", jiance37_name);
@@ -388,7 +390,7 @@ public class AdminController extends BaseController {
 			String[] names=carryTypeNames.split(",");
 			for(int x=0;x<codes.length;x++){
 				LabCarryModel carry=new LabCarryModel();
-				carry.set("id", UUIDTool.getUUID());
+				carry.set("id", UUIDTool.getOrderIdByUUId());
 				carry.set("lab_code",labCode);
 				carry.set("carry_code",codes[x]);
 				carry.set("carry_name",names[x]);
