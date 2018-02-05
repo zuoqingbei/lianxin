@@ -2,6 +2,7 @@
 package com.ulab.model;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -90,8 +91,11 @@ public class DbConfigModel extends Model<DbConfigModel> {
 			shortTableName=shortTableName+".";
 		}
 		String partition="";
+		Calendar cl=Calendar.getInstance();
+		int day = cl.get(Calendar.DATE);  
+        cl.set(Calendar.DATE, day-1);  
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-		String now=sdf.format(new Date());
+		String now=sdf.format(cl.getTime());
 		if(!isPartition(c, configName)){
 			return partition;
 		}else{

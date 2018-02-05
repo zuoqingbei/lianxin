@@ -75,19 +75,21 @@ public class HadoopTestData {
 		return Db.use(configName).find(sql);
 	}
 	
-	public List<Record> findHiveDataByTestIdentification(BaseController c,String configName,String testIdentification,Float startHowLong,Float endHowLong,List<Record> sensorInfoList,String labCode){
+	public List<Record> findHiveDataByTestIdentification(BaseController c,String configName,String testIdentification,
+			Float startHowLong,Float endHowLong,List<Record> sensorInfoList,String labCode,String testUnitId){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTDATA);
 		String sql="select howlong  ";
 		for(Record sInfo:sensorInfoList ){
 			sql+=" , sensorvalue_"+sInfo.get("sensorid");
 		}
-		sql+=" from "+tableName+" where primarykey='"+testIdentification+"'  "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
-		if(startHowLong!=null){
+		//sql+=" from "+tableName+" where primarykey='"+testIdentification+"'  "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
+		sql+=" from "+tableName+" where trim(primarykey)='"+testIdentification.trim()+"' and labcode='"+labCode+"' and testunitid='"+testUnitId+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode,false);
+		/*if(startHowLong!=null){
 			sql+=" and howlong > "+startHowLong;
 		}
 		if(endHowLong!=null){
 			sql+=" and howlong < "+endHowLong;
-		}
+		}*/
 		return Db.use(configName).find(sql);
 	}
 	/**
@@ -150,7 +152,7 @@ public class HadoopTestData {
 			float startHowLong = f2 - interval> 0 ? f2-interval : 0;
 			float endHowLong=startHowLong+interval;
 			if(configName.indexOf("hive")!=-1){
-				joinHiveTestData(c, configName, startHowLong, endHowLong, finalTestData, metaData, labCode);
+				joinHiveTestData(c, configName, startHowLong, endHowLong, finalTestData, metaData, labCode,testUnitId);
 				//hive数据库不能使用testidentification查询测试数据，需要使用primarykey（开测时间+测试单元 例如2017-08-1213:50:3222     ）
 			}else{
 				joinTestData(c,configName, startHowLong, endHowLong, finalTestData, metaData,labCode);
@@ -267,7 +269,7 @@ public class HadoopTestData {
 		}
 	}
 	private void joinHiveTestData(BaseController c,String configName, Float startHowLong, Float endHowLong, Record finalTestData,
-			Record metaData,String labCode) {
+			Record metaData,String labCode,String testUnitId) {
 		if(metaData!=null){
 			/**
 			 * sybh:'实验编号',
@@ -285,7 +287,8 @@ public class HadoopTestData {
 			List<Record> sensorInfoList=HadoopSensorInfo.dao.findHiveSensorInfoByTestIdentification(c,configName, testIdentification,labCode);
 			//testIdentification="2017-09-0413:38:4641          ";
 			//step3 查询具体数据
-			List<Record> allTestData=findHiveDataByTestIdentification(c,configName, testIdentification, startHowLong, endHowLong,sensorInfoList,labCode);
+			List<Record> allTestData=findHiveDataByTestIdentification(c,configName, testIdentification, startHowLong, 
+					endHowLong,sensorInfoList,labCode,testUnitId);
 			//step3 拼接结构 
 			/**
 			 *  {	name:'1:温度(℃)',
@@ -303,7 +306,8 @@ public class HadoopTestData {
 					Record innerData=new Record();
 					innerData.set("name", Float.parseFloat(testData.get("howlong")+"")/60);
 					//传感器数据，跟sensorinfo中的sensorId对应
-					innerData.set("value", dealSensorvalue(testData, sensorInfo));
+					//innerData.set("value", dealSensorvalue(testData, sensorInfo));
+					innerData.set("value", testData.get("sensorvalue_"+sensorInfo.get("sensorid")));
 					data.add(innerData);
 				}
 				mData.set("data", data);
@@ -314,8 +318,8 @@ public class HadoopTestData {
 	}
 	public String dealSensorvalue(Record testData,Record sensorInfo){
 		String value="";
-		String sensorid=sensorInfo.getStr("sensorid");
-		String all=testData.get("sensorvalue");
+		String sensorid=sensorInfo.get("sensorid")+"";
+		String all=testData.get("sensorvalue")+"";
 		if(StringUtils.isNotBlank(all)){
 			String[] arr=all.split("@");
 			for(String s:arr){
