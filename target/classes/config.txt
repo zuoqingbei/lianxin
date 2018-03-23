@@ -6,15 +6,15 @@ ulab.user = lhjx01
 ulab.password= Haier,1234
 
 #泰国实验室数据源 SQL Server 2008R2
-#thailand.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver  
-#thailand.url = jdbc:sqlserver://10.35.10.60:1433;databaseName=Haier_Interconnection_2017
-#thailand.user = Haier_TH_Reader
-#thailand.password= HaierTH123456
-
 thailand.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver  
-thailand.url = jdbc:sqlserver://10.130.96.107:1433;databaseName=Haier_Interconnection_Thailand_2017
-thailand.user = Haier_DBReader
-thailand.password= Haier2017
+thailand.url = jdbc:sqlserver://10.35.10.60:1433;databaseName=Haier_Interconnection_2017
+thailand.user = Haier_TH_Reader
+thailand.password= HaierTH123456
+
+#thailand.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver  
+#thailand.url = jdbc:sqlserver://10.130.96.107:1433;databaseName=Haier_Interconnection_Thailand_2017
+#thailand.user = Haier_DBReader
+#thailand.password= Haier2017
 
 #胶州海尔空调数据库 SQL Server 2008R2
 jzhekt.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver  
