@@ -1728,7 +1728,7 @@ var totalPage = 0;
 function labAllForCenterLabAjax() {
     $.post(contextPath + "/lab/labAllForCenterLabAjax", {}, function (data) {
         labAllInfoData = data;
-        // $("#lab_center_id_left_0").html(data.labCount);
+       /* // $("#lab_center_id_left_0").html(data.labCount);
         $("#lab_center_id_left_0").html(45);
         setProgressValue("lab_center_id_left_1", data.lowMonthRate);
         setProgressValue("lab_center_id_left_2", data.highMonthRate);
@@ -1748,7 +1748,7 @@ function labAllForCenterLabAjax() {
         $("#lab_center_id_left_9").html(data.testingOrderCount);
         $("#lab_center_id_left_10").html(0);
         //拼接实验室详情数据
-        joinLabDetailHtmls();
+        joinLabDetailHtmls();*/
     });
 }
 
