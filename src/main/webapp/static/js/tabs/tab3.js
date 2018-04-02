@@ -1433,7 +1433,8 @@ function orderYearRateAjax() {
 	//findOrderYearRateForTab1Ajax
 	
 	if(labTypeCode==undefined){
-		labTypeCode="集团总数";
+		//labTypeCode="集团总数";
+		labTypeCode="中心实验室";
 	};
 	   $.post(contextPath + '/lab/findOrderYearRateForJSLAjax', {
 		   "labName":labTypeCode,
