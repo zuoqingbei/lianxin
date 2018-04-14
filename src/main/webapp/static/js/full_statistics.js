@@ -80,13 +80,18 @@ function labAreaSpread(){
 
 //产线维度实验室数量统计
 function proLineStatis(){
-	var linkNum=[181,74,131,20,37,9,0];
+	var linkNum=[195,80,151,24,47,9,3];
+	var allNum=[215,126,165,33,74,22,29];
 	$.post(contextPath+'/lab/labStatisByFiledAjax',{field:"product_code","labType":labType,"sort":"asc"},function(data){
 		var nums=[];
 		$(".pro_line").html("");
-		$.each(data,function(index,item){
+		/*$.each(data,function(index,item){
             $(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number hlnum" style="color: transparent;margin-right: 4%">'+linkNum[index]+'</span><span class="number allnum" style="color: transparent;margin-right: 9%">'+item.count+'</span></li>');
             nums.push(item.count);
+		});*/
+		$.each(data,function(index,item){
+			$(".pro_line").append('<li><span class="icon"></span>'+item.name+'<span class="number hlnum" style="color: transparent;">'+linkNum[index]+'</span><span class="number allnum" style="color: transparent;">'+allNum[index]+'</span></li>');
+			nums.push(allNum[index]);
 		});
 		sphereRTnumberShow(nums);
 		sphereRTHlnumberShow(linkNum);
