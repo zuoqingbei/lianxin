@@ -184,7 +184,9 @@ h3{
 	width:100%;
 	position: relative;
 }
-
+.circleBox a{
+	color: #6cf;
+}
 .circleShow .info {
 	color:#fefefe;
 	font-size: 1.9em;

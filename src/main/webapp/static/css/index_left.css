@@ -128,6 +128,9 @@
     margin: .6% auto 0;
     padding: .5% 0 .3% 5%;
 }
+#l h1:nth-of-type(1) a{
+    color: #66CCFE;
+}
 #l h1:nth-of-type(2){
     font-size: 1.9em;
     /*padding-left: 2%;*/
@@ -155,12 +158,12 @@
 #l .btnGroup img{
     cursor:pointer;
     margin-right: 1em;
-    width:2.2em;
-    height: 2.2em;
+    width: 2.75em;
+    height: 2.75em;
 }
 #l .btnGroup [class$=btnTip]{
     position: absolute;
-    left: 0;
+    left: .5rem;
     top: -2em;
     color: lightblue;
     display: none;

@@ -40,6 +40,10 @@
 	margin-left:1%;
 	letter-spacing: 0.3em;
 }
+#head h2 a{
+	color:#6cf;
+}
+
 /*=============================bottom==============================*/
 #bottom{
 	height:76.5%;

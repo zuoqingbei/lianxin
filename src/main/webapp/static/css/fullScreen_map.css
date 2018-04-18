@@ -106,6 +106,9 @@
     padding: .5% 0 .3% 4.2%;
     letter-spacing: .25em;
 }
+#l.fullScreen_map h1:nth-of-type(1) a{
+    color: #66CCFE;
+}
 
 #l.fullScreen_map .btnGroup {
     margin-right: 30%;
