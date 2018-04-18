@@ -42,8 +42,7 @@ $(function () {
         $(this).addClass("active");
 
         if ($(this).data("urltype")) {//url类型
-            var moduleMakersUrl = dataCenterMap.get($(this).data("urltype") + '').souce_value;
-            moduleMakersShow(moduleMakersUrl);
+            moduleMakersShow(dataCenterMap.get($(this).data("urltype") + ''));
         } else {
             // console.log("---非URL数据中心");
             $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
@@ -273,11 +272,13 @@ function abroadTabShow() {//国外
     $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.curves").show();
 }
 
-function moduleMakersShow(url) {//模块商
+function moduleMakersShow(dataCenter) {//模块商
+	$("#secondName_world").html(dataCenter.center_name);
     $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoard_onlyOne.png");
     $(".labSubNav>ul>li").hide().eq(4).addClass("active").show().siblings().removeClass("active").hide();
-    $lab_content_r.find(".switchBox>div.item.moduleMakers").children("iframe").attr("src", url).parent().show().siblings().hide();
-    console.log("url", url)
+    $lab_content_r.find(".switchBox>div.item.moduleMakers").children("iframe").attr("src", dataCenter.souce_value).parent().show().siblings().hide();
+    console.log("url", dataCenter.souce_value)
+    setCenterLabHtmlDB(dataCenter);
 }
 
 //视频加载动画
