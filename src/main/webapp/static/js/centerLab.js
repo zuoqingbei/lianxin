@@ -285,7 +285,7 @@ function initfour() {
     	})*/
         // console.log("---数据分析-近12个月的及时率")
         var resu = dealCenterLabJSL(data);
-        $("#order_rate_center_lab_pj").html("平均:" + resu[0] + "%");
+        $("#order_rate_center_lab_pj").html("平均:" + resu[0].toFixed(1) + "%");
         $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
         $("#order_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
         chartthree.setOption(initone(data[data.length-1].rate));

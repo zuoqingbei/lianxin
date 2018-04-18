@@ -64,8 +64,9 @@ public class IntegrationServiceClient {
 			labSingleData.setLabName(connInfo.getWsName());
 			labSingleData.setUrl(connInfo.getUrl());
 			try {
-			 if(!"refrigeratorkekao02".equals(labCode)&&!"aircondition".equals(labCode)){
+			 if(!"A111101".equals(labCode)&&!"aircondition".equals(labCode)){
 					System.out.println(connInfo.getUrl());
+					System.out.println(labCode);
 					com.ulab.client.webServiceRerigerator.Service service2 = new com.ulab.client.webServiceRerigerator.Service(new URL(connInfo.getUrl()));
 					com.ulab.client.webServiceRerigerator.ServicePortType port2 = service2.getServiceHttpPort();
 					ArrayOfTestUnitInfo testUnitInfos = port2.getTestUnitInfo(labCode);
