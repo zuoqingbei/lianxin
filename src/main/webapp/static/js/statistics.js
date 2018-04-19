@@ -309,7 +309,8 @@ function labPropertiesStatis(){
                     nameTextStyle: nameTextStyle_l,
                     axisLabel: axisLabel_l,
 
-	                type: 'value',
+	                type: 'log',
+	                logBase:2,
                     axisTick: {  //刻度值
                         show: false,
                     },

@@ -296,7 +296,8 @@ function labPropertiesStatis(){
                     nameGap:  -25 * bodyScale,
                     nameTextStyle: nameTextStyle_full,
                     axisLabel: axisLabel_full,
-	                type: 'value',
+                    type: 'log',
+	                logBase:2,
                     axisTick: {  //刻度值
                         show: false
                     },
