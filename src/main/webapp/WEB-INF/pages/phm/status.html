@@ -561,12 +561,15 @@
 									if(feature=="M1"){
 										console.log(statusValue+"--"+feature)
 									}
-									var imgName;
+									var imgName=null;
 									for(var i=0;i<infoArray.length;i++){
+										
 										var v=infoArray[i];
-										if(v.key==statusValue){
+										if(v.key=="000"+statusValue){
+											console.log(infoArray[i],"000"+statusValue);
 											value=v.value;
 											imgName=v.img;
+											console.log(imgName);
 											break;
 										}
 									}
@@ -579,7 +582,8 @@
 											"</div>"+
 											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>"+
 										"</div>";
-										$("#firstPage").append(charts);
+										if (imgName!=null)
+											$("#firstPage").append(charts);
 									//debugger;
 									continue;
 								}else if(!max&&max!="0"){
@@ -1189,7 +1193,7 @@
 								var statusValue=info[feature];//获取当前传入状态值 
 								//debugger; 
 							//	console.log(infoArray);
-							    var imgName;
+							    var imgName=null;
 								for(var i=0;i<infoArray.length;i++){
 									var v=infoArray[i];
 									if(v.key==statusValue){
@@ -1207,7 +1211,8 @@
 											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>";
 										
 									//"</div>";
-									$("#cx"+times).html(charts);
+									if(imgName != null){
+										$("#cx"+times).html(charts);}
 								//debugger;
 								continue;
 							}else if(!max&&max!="0"){
