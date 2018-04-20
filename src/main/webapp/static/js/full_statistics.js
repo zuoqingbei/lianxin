@@ -415,7 +415,7 @@ function labLifeCycleStatis(){
 	                },
 	                // data: statisticLengend(data)
                     // data: ["p1", "p2", "p3", "p4", "p5"],
-                    data: ["对比\n试验", "新品\n调试", "新品\n确认", "小批\n验证", "年度\n型检"]
+                    data: ["P1\n对比\n试验", "P2\n新品\n调试", "P3\n新品\n确认", "P4\n小批\n验证", "P5\n年度\n型检"]
 
                 }
 	        ],
@@ -488,7 +488,7 @@ function labLifeCycleStatis(){
                     yAxisIndex: 0,
                     hoverAnimation:false,
                     // data: statisticSeriesDataData(data),
-                    data: [748,28,222,147,194],//领导要看，先写死
+                    data: [220,180,120,147,194],//领导要看，先写死
                     lineStyle:{
                         normal:{
                             width:2*bodyScale
@@ -521,7 +521,7 @@ function labLifeCycleStatis(){
 	                yAxisIndex: 1,
                     hoverAnimation:false,
 	                // data:[47.39, 202.33, 56.83,3.81, 168.01, 28.39, 7.59],
-                    data: [4739, 20233, 5683, 8591, 1799],//领导要看，先写死
+                    data: [4739, 5683, 20233, 8591, 1799],//领导要看，先写死
                     lineStyle:{
                         normal:{
                             width:2*bodyScale
