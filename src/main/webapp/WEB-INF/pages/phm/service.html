@@ -23,7 +23,7 @@
 						<img src="${contextPath}/static/phm/images/status/logo_haier_bold.png" alt="" />
 					</a>
 				</h1>
-				<h2><a href="${contextPath!}/phm" >基于物联网+大数据的用户最佳体验</a></h2>
+				<h2><a href="${contextPath!}/phm" >物联网时代的用户最佳体验模式</a></h2>
 			</div>
 			
 			<!--bottom-->
@@ -31,13 +31,13 @@
 				<div class="left-table">
 					<div class="title">诊断结果</div>
 					
-					<div class="btnBox">
+					<!-- <div class="btnBox">
 
 						<div class="optionsBtn" onclick="showByFobject(this)" >主控板</div>
 						<div class="optionsBtn" onclick="showByFobject(this)" >冷藏风机</div>
 						<div class="optionsBtn" onclick="showByFobject(this)">电磁阀</div>
 						
-					</div>
+					</div> -->
 					<table border="0" cellpadding="0" cellspacing="0" align="center">
 						<thead>
 							<tr class="row">
@@ -123,16 +123,16 @@
 			 that = this;
 			var myHeight = 35*that.bodyScale;
 			that.myHeight = 35*that.bodyScale;
-			$(".content").scroll(function(){
+			//$(".content").scroll(function(){
 				//滚动条到顶部的距离
-				 var totalheight = $(".content").scrollTop();
-				if (that.myHeight >totalheight) {
-					times+=1;
-					console.log("滑动times:",times);
-				   that.myHeight += 2*$("tr").height();
+				// var totalheight = $(".content").scrollTop();
+				//if (that.myHeight >totalheight) {
+				//	times+=1;
+				//	console.log("滑动times:",times);
+				 //  that.myHeight += 2*$("tr").height();
 			       getFaultInfo(false);	
-				} 
-			})
+				//} 
+			//})
 		}   
 	    //获取故障详情信息
 	    function getFaultInfo(isRefreshRight){
@@ -167,8 +167,10 @@
     				}
     		}) ;
 	    	if(isRefreshRight){
-	    		statisticsByDate();//加载 配件不同时段 需求 
+	    		//statisticsByDate();//加载 配件不同时段 需求 
 	    	};
+	    	
+	    	tableScroll();
 	    }
 	    //不同零件故障信息切换
     	function showByFobject(obj){
@@ -289,12 +291,22 @@
 		console.log("die")
 		$("select").change(function(){
 			console.log("dianjile")
-			statisticsByDate();
+			Service.echartsTime();
+			//statisticsByDate();
 			Service.echartsArea();
 		})
 	}
-	
-	
+	var t;
+	function tableScroll(){
+		var n=0;
+		  t = setInterval( function() {
+			  n+=1;
+	           $(".content").scrollTop(n);
+	          // console.log(n)
+	           if(n==860){n=0}
+	        }, 50);
+		  
+	}
 	
 	
 	selectEvent();		

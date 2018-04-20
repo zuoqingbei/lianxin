@@ -7,7 +7,7 @@ var Service = {
 		setTimeout(function(){
 			that.echartsMap();
 			that.echartsArea();
-			//that.echartsTime();
+			that.echartsTime();
 			
 		},100)
 //		this.scrollWatch()
@@ -83,17 +83,19 @@ var Service = {
 		var myMapCharts = echarts.init(document.getElementById("myMap"));
 		
 		var mapChartsOptions = {
-//			title:{
-//				show:true,
-//				text:"全国冰箱故障零件分布图",
-//				textStyle:{
-//					color:'#fffefe',
-//					fontSize:20*that.bodyScale,
-//					fontWeight:'normal',
-//					align:'center'
-//				}
-//			},
-			legend:{
+			title:{
+				show:true,
+				text:"诊断预测结果区域分布",
+				x:'center',
+				textStyle:{
+					color:'#fffefe',
+					fontSize:20*that.bodyScale,
+					fontWeight:'normal',
+					
+					padding:500
+				}
+			},
+			/*legend:{
 				x:'left',
 				y:'bottom',
 				itemWidth:10*that.bodyScale,
@@ -105,10 +107,10 @@ var Service = {
 							color:'#fffefe',
 							fontSize:16*that.bodyScale
 						},
-					/*	icon:'image://../images/page2/icon.png'*/
+						icon:'image://../images/page2/icon.png'
 						icon:'../static/phm/images/page2/icon.png'
 					}]
-			},
+			},*/
 		    tooltip: {
 	//          show: false //不显示提示标签
 	            formatter: '{b}', //提示标签格式
@@ -314,7 +316,7 @@ var Service = {
 		            	fontSize:16*that.bodyScale,
 		            },
 		            min:0,
-		            max:500,
+		            max:1000,
 		            splitNumber:5,
 		            axisLabel:{
 		            	show:'true',
@@ -337,7 +339,7 @@ var Service = {
 //		            barWidth: 30*that.bodyScale,
 		            barGap:50*that.bodyScale,
 		            cursor:'pointer',
-		            data:[200, 290, 130, 400, 410, 130, 270],
+		            data:[800, 890, 830, 300, 410, 330, 270],
 		            
 		        }
 		    ]

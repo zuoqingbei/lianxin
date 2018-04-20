@@ -69,16 +69,25 @@ var Health = {
 		
 		var jkdOptions = {
 			color:["#66ccff","#0066ff"],
+			tooltip:{
+				show:true,
+				formatter: "{d}%" ,
+				textStyle:{
+					color:"#fff",
+					fontSize:13*that.bodyScale
+				},
+			},
 			series:[
 				{
 					type:'pie',
 					name:'健康度',
+					avoidLabelOverlap: true,
 					itemStyle:{
 						normal:{
 							//color:"#dd0",
 							label:{
-								show:false,
-								formatter: "{d}%" ,
+								show:true,
+								formatter: "{c}:{d}%" ,
 								textStyle:{
 										color:"#64ccff",
 										fontSize:30*that.bodyScale,
@@ -147,7 +156,7 @@ var Health = {
 						normal:{
 							//color:"#dd0",
 							label:{
-								show:false,
+								show:true,
 							},
 							labelLine:{
 								show:false
@@ -178,7 +187,7 @@ var Health = {
 		var mapOptions = {
 			legend:{
 				show:true,
-				x:"right",
+				x:"15%",
 				y:"bottom",
 				itemWidth:10*that.bodyScale,
 				itemHeight:10*that.bodyScale,
@@ -192,7 +201,7 @@ var Health = {
 			},
 			dataRange: {
 		        min : 1,
-		        max : 125,
+		        max : 100,
 		        precision:0,
 		        itemWidth:20*that.bodyScale,
 				itemHeight:10*that.bodyScale,
@@ -214,6 +223,7 @@ var Health = {
 		    tooltip: {
 	//          show: false //不显示提示标签
 	            formatter: '{b}', //提示标签格式
+	          
 	            backgroundColor:"#ff7f50",//提示标签背景颜色
 	            textStyle:{
 	            	color:"#fff",
@@ -250,7 +260,7 @@ var Health = {
 		                    show: true,
 		                    shadowBlur : 0,
 		                    period:8,
-		                    color:"#c75821"
+		                    color:"#64ccff"
 		                },
 		                itemStyle:{
 		                    normal:{
@@ -340,6 +350,12 @@ var Health = {
 		    ]
 		}
 		mymap.setOption(mapOptions);
+		
+		mymap.on("click",function(params){
+			//if(params.dataIndex !== 0) {
+				window.location.href = "status";
+			//}
+		})
 	},
 	blEcharts:function(){
 		var that = this;

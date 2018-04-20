@@ -51,7 +51,7 @@ var Status = {
 			type:"get",
 			success:function(res){
 				smycDom.hideLoading();
-				//console.log(res);
+				console.log(res);
 				
 				var computeTime = getMyDate(+res[0]["time"]);//预测 计算时间
 				var eol = getMyDate(+res[0]["eol"]);//预测 失效时间
@@ -353,7 +353,7 @@ var Status = {
 			//改变宽度
 			$(".state-box").css("width","200%");
 			//显示左右按钮
-			$(".fyBtn").css("visibility","visible");
+			$(".fyBtn").css("visibility","hidden");
 			//别的tab页面在第二页的时候点进来确保能显示
 			$(".state-box").css({"left":"0"});
 		});
@@ -1072,7 +1072,7 @@ var Status = {
 					//console.log(that.legendData)
 					//删除T1
 					for(var i=0;i<that.legendData.length;i++){
-						if(that.legendData[i]["name"] != "T1冷藏室温度"){
+						if(that.legendData[i]["name"] != "U1整机输入电压"){
 							//console.log(111)
 							that.morenSelected.push(that.legendData[i]["name"]);
 						}
