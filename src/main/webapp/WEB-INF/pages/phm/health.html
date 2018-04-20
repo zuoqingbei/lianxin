@@ -18,7 +18,7 @@
 						<img src="${contextPath}/static/phm/images/health/logo_haier_bold.png" alt="" />
 					</a>
 				</h1>
-				<h2><a href="${contextPath!}/phm" >基于物联网+大数据的用户最佳体验</a></h2>
+				<h2><a href="${contextPath!}/phm" >物联网时代的用户最佳体验模式</a></h2>
 			</div>
 			<!--centerdata-->
 			<div id="centerData">
@@ -78,7 +78,7 @@
 				<div class="rightMod">
 					<div class="leftpart">
 						<div class="blcpqk">
-							<h4>不良产品情况</h4>
+							<h4>产品状态</h4>
 							<div class="picBox">
 								<div id="blcpqk" style="width:100%;height: 100%;"></div>
 							</div>
@@ -98,7 +98,7 @@
 							</div>
 						</div>
 						<div class="ydqk">
-							<h5><a href="${contextPath}/phm/service" style="color:#fff;display:block;width:100%;height:100%">应对情况</a></h5>
+							<h5>应对情况</h5>
 							<div class="picBox1">
 								<div id="ydqk" style="width:100%;height: 100%;"></div>
 							</div>
@@ -239,38 +239,47 @@
 				function health(healthPercent, unhealthPercent) {
 					Health.jkd.hideLoading();
 					Health.jkd.setOption({
+					/* 	grid: {
+					        x: '12%',//左
+					        y:"8%",//上
+					        x2: '15%',//右	
+					        y2:"27%",//下
+					        containLabel: true,
+					        borderWidth:0,
+					    }, */
 						color : [ "#44f4cd", "#105364" ],
+						avoidLabelOverlap: false,
 						series : [ {
 							type : 'pie',
 							name : '健康度',
 							center : [ "50%", "50%" ],//圆心坐标
-							radius : [ "50%", "75%" ],//内半径，外半径
+							radius : [ "50%", "70%" ],//内半径，外半径
 							itemStyle : {
 								normal : {
 									//color:"#dd0",
-									label : {
-										show : false,
-										formatter : "{d}%",
-										textStyle : {
-											color : "#64ccff",
-											fontSize : 30 * bodyScale,
-										},
-										position : 'center',
-										verticalAlign : "middle",
-										align : "center"
-
-									},
-									labelLine : {
-										show : false
-									}
-								},
-								emphasis : {
 									label : {
 										show : true,
 										formatter : "{d}%",
 										textStyle : {
 											color : "#64ccff",
-											fontSize : 30 * bodyScale,
+											fontSize : 13 * bodyScale,
+										},
+										position : 'outside',
+										/* verticalAlign : "middle", */
+										align : "center"
+
+									},
+									labelLine : {
+										show : true,
+									}
+								},
+								emphasis : {
+									label : {
+										show : false,
+										formatter : "{d}%",
+										textStyle : {
+											color : "#64ccff",
+											fontSize : 10 * bodyScale,
 										},
 									//position:'center',
 									//verticalAlign:"middle"
@@ -314,10 +323,14 @@
 								normal : {
 									//color:"#dd0",
 									label : {
-										show : false,
+										show : true,
+										textStyle : {
+											color : "#64ccff",
+											fontSize : 13 * bodyScale,
+										},
 									},
 									labelLine : {
-										show : false
+										show : true
 									}
 								},
 								emphasis : {

@@ -17,6 +17,229 @@ var Status = {
 		this.lightRotate();
 		
 	},
+	smycEchartsDemo:function(){
+//		demo上的寿命预测假数
+		var that = this;
+		function getMyDate(str){  
+			/*
+			 * 毫秒数转化成固定格式
+			 */
+            var oDate = new Date(str),  
+            oYear = oDate.getFullYear(),  
+            oMonth = oDate.getMonth()+1,  
+            oDay = oDate.getDate(),  
+            oHour = oDate.getHours(),  
+            oMin = oDate.getMinutes(),  
+            oSen = oDate.getSeconds(),  
+            oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) +':'+ getzf(oMin) +':'+getzf(oSen);//最后拼接时间  
+            return oTime;  
+        };  
+        //补0操作  
+        function getzf(num){  
+            if(parseInt(num) < 10){  
+                num = '0'+num;  
+            }  
+            return num;  
+        }  
+		var smyc = echarts.init(document.getElementById("smycCanvas"));
+		smyc.showLoading();
+		
+		$.ajax({
+			url:"/hlht/static/data/prog.json",
+			type:"get",
+			success:function(res){
+				console.log(typeof res);
+				smyc.hideLoading();
+				var computeTime = getMyDate(+res[0]["time"]);//预测 计算时间
+				var eol = getMyDate(new Date("2018-6-18").getTime()).split(" ")[0];//预测 失效时间
+				if(eol<0){
+					$(".totalInfo").html("Normal equipment does not need to be predicted！");
+					return;
+				}
+				$(".itemf").find("span").html(getMyDate(new Date().getTime()));
+				
+				
+				//计算剩余寿命
+				var time = new Date("2018-6-18").getTime() - new Date().getTime();//剩余毫秒数
+				if(time<0){
+					$(".items").find("span").html("Expired！");
+				}else{
+					time = Math.floor(new Date(time) /(24*3600*1000))+" days";//剩余天数
+					$(".items").find("span").html(time);
+				}
+					
+				
+				//echarts
+				var title = res[0]["id"]; 
+				var dataArr = JSON.parse(res)[0]["input"];
+				var dataArr2 = [[getMyDate(new Date().getTime()).split(" ")[0],40,5],[eol,0,5]];
+				console.log( res[0])
+
+				var xArr = [];//存放x值
+				var yArr = [];//存放y值
+				var disablePointer = [[eol,0,5*that.bodyScale]];
+				for(var i=0;i<dataArr.length;i++){
+					dataArr[i][0] = getMyDate(dataArr[i][0]).split(" ")[0];
+					dataArr[i][2] = 5*that.bodyScale;
+					xArr.push(dataArr[i][0].split(" ")[0]);
+					//console.log(dataArr[i][0].split(" ")[0])
+					yArr.push(dataArr[i][1]);
+				}
+				//dataArr.push([eol,0]);//将失效时间放入数组中
+				//console.log(dataArr);
+				xArr.push(eol);
+				const len = xArr.length;
+				
+				//插入计算时间点
+				for(var i=0;i<len;i++){
+					console.log(new Date(xArr[i]).getTime())
+					if(new Date(xArr[i]).getTime()<new Date(computeTime).getTime() && new Date(xArr[i+1]).getTime()>new Date(computeTime).getTime()){
+						xArr.splice(i+1,0,computeTime);
+						dataArr.push([getMyDate(new Date().getTime()).split(" ")[0],40,5])
+						
+					}else {
+						if(i=len-1){
+							xArr.push(computeTime);
+						}
+					}
+				}
+				
+				//yArr.push(0);
+				//console.log(dataArr)
+				var smycEchartOptions = {
+					color:["#64ccff"],
+					title:{
+						show:true,
+						text:"Life prediction diagram of refrigerant",
+						left:"40%",
+						padding:5,
+						textStyle:{
+							color:"#64ccff",
+							fontSize:18*that.bodyScale,
+						}
+					},
+					 grid:{
+					 	borderWidth:0,
+					 	x:55*that.bodyScale,
+					 	y:55*that.bodyScale,
+					 	x2:25*that.bodyScale,
+					 	y2:35*that.bodyScale,
+					},
+					legend:{
+						show:true,
+						data:[{name:"Distribution point"},{name:"Prediction Curve"},{name:"Failure point"}],
+						textStyle:{
+							color:"#64ccff",
+							fontSize:13*that.bodyScale,
+						},
+						x:"right",
+						orient:"vertical",
+						itemGap:15*that.bodyScale,
+//						width:100
+					},
+					xAxis:[{
+						type:"category",
+						data:xArr,
+						axisLine:{
+							show:false
+						},
+						axisLabel:{
+							textStyle:{
+								color:"#64ccff",
+								fontSize:13*that.bodyScale,
+							},
+							interval:1,
+						},
+						splitLine:{
+							show:false,
+						}
+					}],
+					yAxis:[{
+						type:"value",
+						splitLine:{
+							show:false,
+						},
+						axisLine:{
+							show:false
+						},
+						axisLabel:{
+							textStyle:{
+								color:"#64ccff",
+								fontSize:13*that.bodyScale,
+							},
+							interval:0,
+						},
+					}],
+					series:[
+					  {
+						type:"scatter",
+						data:dataArr,
+						name:"Distribution point",
+						symbolSize: function (value){
+							//console.log(value)
+			                return Math.round(value[2]);
+			            },
+						itemStyle:{
+			        	   normal:{
+			        		   color:"#0f0",
+			        	   }
+			           }
+					  },
+					  {
+							type:"scatter",
+							data:disablePointer,
+							name:"Failure point",
+							symbolSize: function (value){
+								//console.log(value)
+				                return Math.round(value[2]);
+				            },
+							itemStyle:{
+				        	   normal:{
+				        		   color:"#ff0",
+				        	   }
+				           }
+						},
+					  {
+						  type:"line",
+						  name:"Prediction Curve",
+						  	symbol:'none',  //这句就是去掉点的  
+				           smooth:true,  //这句就是让曲线变平滑的  
+				           stack: '总量',  
+				           data:yArr,
+				           itemStyle:{
+				        	   normal:{
+				        		   color:"#d00",
+				        		   lineStyle:{
+				        			   width:2.5*that.bodyScale,
+				        			   
+				        		   }
+				        	   }
+				           }
+					  },
+					  {
+						  type:"line",
+						  name:"Prediction Curve",
+						  	symbol:'none',  //这句就是去掉点的  
+				           stack: '总量',  
+				           data:[0,0,0,0,0,0,0],
+				           itemStyle:{
+				        	   normal:{
+				        		   color:"#d00",
+				        		   lineStyle:{
+				        			   width:1.8*that.bodyScale,
+				        			   type:"dashed"
+				        		   }
+				        	   }
+				           }
+					  },
+					],
+				}
+				
+				smyc.setOption(smycEchartOptions);
+			}
+			
+		})
+	},
 	smycEcharts:function(){
 		/**
 		 * 寿命预测函数
@@ -51,7 +274,7 @@ var Status = {
 			type:"get",
 			success:function(res){
 				smycDom.hideLoading();
-				//console.log(res);
+				console.log(res);
 				
 				var computeTime = getMyDate(+res[0]["time"]);//预测 计算时间
 				var eol = getMyDate(+res[0]["eol"]);//预测 失效时间
@@ -353,7 +576,7 @@ var Status = {
 			//改变宽度
 			$(".state-box").css("width","200%");
 			//显示左右按钮
-			$(".fyBtn").css("visibility","visible");
+			$(".fyBtn").css("visibility","hidden");
 			//别的tab页面在第二页的时候点进来确保能显示
 			$(".state-box").css({"left":"0"});
 		});
@@ -471,7 +694,8 @@ var Status = {
 			$(".fyBtn").css("visibility","hidden");
 			
 			
-			that.smycEcharts();
+			//that.smycEcharts();
+			that.smycEchartsDemo();
 		});
 	},
 
@@ -1072,7 +1296,7 @@ var Status = {
 					//console.log(that.legendData)
 					//删除T1
 					for(var i=0;i<that.legendData.length;i++){
-						if(that.legendData[i]["name"] != "T1冷藏室温度"){
+						if(that.legendData[i]["name"] != "U1整机输入电压"){
 							//console.log(111)
 							that.morenSelected.push(that.legendData[i]["name"]);
 						}

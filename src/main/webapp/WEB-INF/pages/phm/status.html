@@ -20,14 +20,14 @@
 						<img src="${contextPath}/static/phm/images/status/logo_haier_bold.png" alt="" />
 					</a>
 				</h1>
-				<h2><a href="${contextPath!}/phm" >基于物联网+大数据的用户最佳体验</a></h2>
+				<h2><a href="${contextPath!}/phm" >物联网时代的用户最佳体验模式</a></h2>
 			</div>
 			<!--bottom-->
 			<div id="bottom">
 				<!--bottom left-->
 				<div class="map-mod">
 					<div class="mapTitle">
-						<a href="${contextPath}/phm/health">全球冰箱分布</a>
+						全球冰箱分布
 					</div>
 					<div id="myMap" style="width:100%;height:100%"></div>
 				</div>
@@ -54,7 +54,7 @@
 			                <div class="box_compressor addon"><strong></strong></div>
 			            </div>
 			        </div>
-					<div class="bxinfo">
+					<a href="${contextPath!}/phm/service" style="color:#fff"><div class="bxinfo">
 						<div class="xinghao infobox">
 							<p class="txt1">型号：</p>
 							<p class="txt2" id="sncode">WD347T8948</p>
@@ -73,20 +73,22 @@
 						</div>
 						<div class="time infobox">
 							<p class="txt1">运行总时长：</p>
-							<p class="txt2">179h</p>
+							<p class="txt2">2840h</p>
 						</div>
 					</div>
-				</div>
+				</div></a>
 				<!--bottom right-->
 				<div class="statusBox">
 					<div class="leftBtn fyBtn" onclick="pageLeft()" id="pageLeft"></div>
 					<div class="rightBtn fyBtn" onclick="pageRight()" id="pageRight"></div>
 					<div class="titleBox">
-						<div class="tnav syfx" onclick="useAnalysis()">使用分析</div>
+						
 						<div class="tnav sszt navActive" onclick="timeStatusChange()">实时状态</div>
+						<div class="tnav syfx" onclick="useAnalysis()">使用分析</div>	
 						<div class="tnav ztqs">状态趋势</div>
-						<div class="tnav gzzd">故障诊断</div>
 						<div class="tnav gzyc">寿命预测</div>
+						<div class="tnav gzzd">故障诊断</div>
+						
 					</div>
 					<div class="bottomState">
 						<div class="state-box-contain">
@@ -689,10 +691,10 @@
 								showPageBtn();
 							}
 							$.each(data,function(index,element){
-								 if(f%2!=1){
+								 if(f%3!=1){
 									 margleft="margleft";
 								 }
-								 if(f%useAnalysisPageSize>2||(f%useAnalysisPageSize==0&&f>2)){
+								 if(f%useAnalysisPageSize>3||(f%useAnalysisPageSize==0&&f>3)){
 									 margtop="margtop";
 								 }
 									var content=
@@ -702,6 +704,8 @@
 											"</div>"+
 											"<div class='rightInfo'>"+
 												"<h6>"+element.title+"</h6>";
+									
+									
 									if(element.desc1!=""&&element.desc1!=null){
 										content+="<p>"+element.desc1+"</p>";
 									}
@@ -721,6 +725,28 @@
 										content+="<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+element.result2+"</p>";
 									}
 									content+="</div></div>";
+									
+									if(index == 1) {
+										content +=  "<div class='problemBox "+margleft+" "+margtop+"'>"+
+										"<div class='imgBox '>"+
+											"<img src='${contextPath}/static/phm/images/d2.jpg' alt='' style='width:50%;height:60%;margin:20% auto'/>"+
+										"</div>"+
+										"<div class='rightInfo'>"+
+											"<h6>整机输入电压</h6>"+
+										"</div></div>";
+										
+										
+									}
+									
+									if(index == 3) {
+										content +=  "<div class='problemBox "+margleft+" "+margtop+"'>"+
+										"<div class='imgBox '>"+
+											"<img src='${contextPath}/static/phm/images/d1.jpg' alt='' style='width:50%;height:60%;margin:20% auto'/>"+
+										"</div>"+
+										"<div class='rightInfo'>"+
+											"<h6>整机输入电流</h6>"+
+										"</div></div>";
+									}
 									if(f>useAnalysisPageSize){
 										second+=content;
 									}else{
@@ -730,9 +756,13 @@
 									margtop="";
 									f+=1;
 								
-								
+									
 								
 							});
+							
+							console.log(content);
+							
+							
 							$("#analysisFirstPage").html(first);
 							$("#analysisSecondPage").html(second);
 						},
@@ -751,7 +781,7 @@
 				var mapChartsOptions = {
 					dataRange: {
 				        min : 1,
-				        max : 125,
+				        max : 100,
 				        precision:0,
 				        itemWidth:20*bodyScale,
 						itemHeight:10*bodyScale,
@@ -799,7 +829,7 @@
 				            markLine : {
 				                smooth:true,
 				                smoothness:0,
-				                symbol:['circle','none'],
+				                symbol:['none','none'],
 				                symbolSize:[10*that.bodyScale,10*that.bodyScale],
 				                effect : {
 				                    show: true,
@@ -1009,7 +1039,7 @@
 						}
 						 var arr=[[]];
 						 if(good.length>0){
-							 arr=[ [{name:good[0].name},{name:'基线'}] ];
+							 arr=[ [{name:good[2].name},{name:'基线'}] ];
 						 }else if(light.length>0){
 							 arr=[ [{name:light[0].name},{name:'基线'}] ];
 						 }else if(general.length>0){
@@ -1017,7 +1047,7 @@
 						 }else if(serious.length>0){
 							 arr=[ [{name:serious[0].name},{name:'基线'}] ];
 						 }
-					 	sncode=good[0].sncode;
+					 	sncode=good[2].sncode;
 						$("#sncode").html(sncode);
 						$("#address").html(good[0].name);
 						$("#status").html(good[0].status);

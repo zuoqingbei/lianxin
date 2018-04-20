@@ -37,7 +37,7 @@
 	font-weight: 900;
 	font-size: 2.2em;
 	margin-top:1.1%;
-	margin-left:1%;
+	margin-left:2%;
 	letter-spacing: 0.3em;
 }
 #head h2 a{
@@ -118,9 +118,9 @@
 
 
 table{
-	width:98%;
-	height:68%;
-	margin:1% auto;
+	width: 98%;
+    height: 93%;
+    margin: 5% auto;
 	font-size: 0.8em;
 	overflow: scroll;
 	table-layout: fixed;
@@ -154,9 +154,9 @@ table tr th {
 
 /*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
 .content::-webkit-scrollbar{
-    width: 1%;
-    height: 16%;
-    background-color: #000511;
+    width: 0;
+    height: 96%;
+    background-color: #d00;
 }
 /*定义滚动条的轨道，内阴影及圆角*/
 .content::-webkit-scrollbar-track{
