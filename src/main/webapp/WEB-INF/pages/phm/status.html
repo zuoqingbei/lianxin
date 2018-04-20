@@ -729,7 +729,7 @@
 									if(index == 1) {
 										content +=  "<div class='problemBox "+margleft+" "+margtop+"'>"+
 										"<div class='imgBox '>"+
-											"<img src='${contextPath}/static/phm/images/d2.jpg' alt='' style='width:80%;margin:2% auto'/>"+
+											"<img src='${contextPath}/static/phm/images/d2.jpg' alt='' style='width:50%;height:60%;margin:20% auto'/>"+
 										"</div>"+
 										"<div class='rightInfo'>"+
 											"<h6>整机输入电压</h6>"+
@@ -741,7 +741,7 @@
 									if(index == 3) {
 										content +=  "<div class='problemBox "+margleft+" "+margtop+"'>"+
 										"<div class='imgBox '>"+
-											"<img src='${contextPath}/static/phm/images/d1.jpg' alt='' style='width:80%;margin:2% auto'/>"+
+											"<img src='${contextPath}/static/phm/images/d1.jpg' alt='' style='width:50%;height:60%;margin:20% auto'/>"+
 										"</div>"+
 										"<div class='rightInfo'>"+
 											"<h6>整机输入电流</h6>"+
@@ -1047,7 +1047,7 @@
 						 }else if(serious.length>0){
 							 arr=[ [{name:serious[0].name},{name:'基线'}] ];
 						 }
-					 	sncode=good[0].sncode;
+					 	sncode=good[2].sncode;
 						$("#sncode").html(sncode);
 						$("#address").html(good[0].name);
 						$("#status").html(good[0].status);
