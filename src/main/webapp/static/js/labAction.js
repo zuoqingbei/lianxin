@@ -57,6 +57,7 @@ $(function () {
                     $(".labSubNav>ul>li").hide().eq(0).addClass("active").siblings().removeClass("active");
                     $lab_content_r.find(".switchBox>div.item.labHome").show().siblings().hide();
                     inlandTabShow("zhonghaiborui");
+                    $(".labSubNav>ul>li").eq(1).click();
                 } else {
                     // console.log("---国内非中海")
                     inlandTabShow();

@@ -143,13 +143,14 @@ myChartFlatRT.setOption({
     grid: {
 //            show:true,
         x: "30%",
-        x2: "20%",
+        x2: "15%",
 //         y2: "12%"
     },
     xAxis: [
         {
             name: "数量",
-            type: 'value',
+//            type: 'value',
+            type: 'log',
             axisLabel: {
                 textStyle: {
                     color: "#66ccff",
@@ -174,8 +175,9 @@ myChartFlatRT.setOption({
     yAxis: [
         {
             name: "试验类别             ",
-            type: 'category',
-            data: ["运输", "用户体验", "EMC", "用户模拟", "安全", "可靠性", "性能"],
+//            type: 'category',
+            type: 'log',
+            data: ["运2输", "用户体验", "EMC", "用户模拟", "安全", "可靠性", "性能"],
             axisLabel: {
                 textStyle: {
                     color: "#66ccff",
