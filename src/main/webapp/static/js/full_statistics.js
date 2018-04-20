@@ -363,17 +363,21 @@ function labLifeCycleStatis(){
 	    myChartFlatLB_full.setOption({
 	        tooltip: {
 	            trigger: 'axis',
+/*
 	            axisPointer: {
 	                type: 'cross'
 	            },
+*/
+/*
 	            formatter: function(a){
 	            	var r=a[0].name+"</br>"
                     +a[0].seriesName+':'+a[0].value  +"</br>" ;
 	            	if(a.length>0){
-	            		r+=a[1].seriesName+':'+parseFloat(a[1].value)*100  +"</br>"  ;
+	            		r+=a[1].seriesName+':'+parseFloat(a[1].value)  +"</br>"  ;
 	            	}
                     return r;
                 },
+*/
 	        },
 	        grid: {
 	            left:"5%",
@@ -383,7 +387,7 @@ function labLifeCycleStatis(){
 				top:"15%"
 	        },
 	        legend: {
-	        	   data:['实验室数量','检测订单量(百)'],
+	        	   data:['实验室数量','检测订单量'],
 	               textStyle:{
 	                   fontSize: bodyScale*12
 	               },
@@ -410,8 +414,10 @@ function labLifeCycleStatis(){
 	                    show: false
 	                },
 	                // data: statisticLengend(data)
-                    data:["a","b","c","d","e","f","g"]
-	            }
+                    // data: ["p1", "p2", "p3", "p4", "p5"],
+                    data: ["对比\n试验", "新品\n调试", "新品\n确认", "小批\n验证", "年度\n型检"]
+
+                }
 	        ],
 	        yAxis: [
 	            {
@@ -422,7 +428,7 @@ function labLifeCycleStatis(){
                     },
                     nameGap:15,
 					min: 0,
-	                max: 500,
+	                // max: 500,
 	                axisLine: {
 	                    lineStyle: {
 	                        color: colors[0]
@@ -448,7 +454,7 @@ function labLifeCycleStatis(){
                     },
                     nameGap:15,
 	                 min: 0,
-	                 max: 500,
+	                 // max: 500,
 	                 position: 'right',
 	                 axisLine: {
 	                     lineStyle: {
@@ -479,9 +485,10 @@ function labLifeCycleStatis(){
                     name:'实验室数量',
 					symbol:"circle",
                     type:'line',
-                    yAxisIndex: 1,
+                    yAxisIndex: 0,
                     hoverAnimation:false,
-                    data: statisticSeriesDataData(data),
+                    // data: statisticSeriesDataData(data),
+                    data: [748,28,222,147,194],//领导要看，先写死
                     lineStyle:{
                         normal:{
                             width:2*bodyScale
@@ -508,12 +515,13 @@ function labLifeCycleStatis(){
                     },
                 },
 	            {
-	                name:'检测订单量(百)',
+	                name:'检测订单量',
                     symbol:"circle",
 	                type:'line',
 	                yAxisIndex: 1,
                     hoverAnimation:false,
-	                data:[47.39, 202.33, 56.83,3.81, 168.01, 28.39, 7.59],
+	                // data:[47.39, 202.33, 56.83,3.81, 168.01, 28.39, 7.59],
+                    data: [4739, 20233, 5683, 8591, 1799],//领导要看，先写死
                     lineStyle:{
                         normal:{
                             width:2*bodyScale

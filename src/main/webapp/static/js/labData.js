@@ -253,11 +253,11 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
                             labsHtmlsMap.put(it.id, '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∧</span></header>');
                             //如果是中海博睿 不拼接header
                             labsHtmls = labsHtmls + currentHtmls + header + "</li>";
-                        } else if (it.data_source == "webservice") {
+                        } else if (it.data_source == "webservice") { 
                             //直接获取webservice实验室信息
                             var htmls = "";
                             $.post(contextPath + '/lab/loadLabSearchLabConnectAjax', {}, function (data) {
-                                $.each(data, function (index, item) {
+                                $.each(data, function (index, item) { 
                                     item.labName = item.labName.replace("（", "(").replace("）", ")").replace("、", "/");
                                     htmls += ' <li class="lab_code_' + item.labCode+'"><header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("'+item.labCode+'","'+item.url+'")>' + item.labName + '<span>∨</span></header>';
                                     labsHtmlsMap.put(item.labCode, '<header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("'+item.labCode+'","'+item.url+'")>' + item.labName + '<span>∧</span></header>');
@@ -302,7 +302,7 @@ function createClickFuntion(item) {
      * 数据源 db-直连数据库； url-第三方链接；
      webservice-连接webservice；json-读取json文件
      */
-         console.log("item",item)
+         // console.log("item",item)
     var dataSource = item.data_source;
     if (dataSource == "db") { //国外曲线
         htmls += " onclick= loadLabUnitInfoCenterTabAjaxWorldHadoop('" + item.id + "')"

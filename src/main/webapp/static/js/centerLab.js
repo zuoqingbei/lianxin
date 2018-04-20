@@ -887,6 +887,7 @@ function getCharts1() {
                     }
                 },
                 symbolSize: 1 * bodyScale,
+                
             },
             {
                 type: 'value',
@@ -1657,7 +1658,8 @@ var totalPage=0;
 function labAllForCenterLabAjax(){
 	$.post(contextPath+"/lab/labAllForCenterLabAjax",{},function(data){
 		labAllInfoData=data;
-		$("#lab_center_id_left_0").html(data.labCount);
+		// $("#lab_center_id_left_0").html(data.labCount);
+		$("#lab_center_id_left_0").html(45);
 		setProgressValue("lab_center_id_left_1",data.lowMonthRate);
 		setProgressValue("lab_center_id_left_2",data.highMonthRate);
 		setProgressValue("lab_center_id_left_3",data.aveMonthRate);

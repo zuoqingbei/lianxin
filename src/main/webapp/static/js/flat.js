@@ -76,7 +76,7 @@ function createArrData(productCode, labType) {
                 imgs.push(imgUrl)
             }
         }
-        console.log("~~~~~~~~~~",imgs)
+        // console.log("~~~~~~~~~~",imgs)
         var imgHiddenHtml = "<div hidden class=''>";
         for (var item in imgs) {
             imgHiddenHtml += "<img src='" + imgs[item] + "'/>";

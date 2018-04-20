@@ -68,6 +68,8 @@ $(function () {
                     }
                     $(".smallVideoBox").hide();
                     labCurveResize();
+                    //非中海博睿的隐藏运营状态内容
+                    // $(".item.status .leftContent [class$=-body]").children().hide();
                 }
             } else {
                 console.log("---国外");

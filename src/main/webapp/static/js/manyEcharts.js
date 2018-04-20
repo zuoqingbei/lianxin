@@ -276,11 +276,14 @@ function getAreaEcharts() {
             fontSize: 9*bodyScale
         },
         color: ['#00e673', '#66ccff'],
+/*
         tooltip: {
             trigger: 'axis',
             axisPointer: {
+
                 type: 'cross',
                 label: {
+                    show:false,
                     backgroundColor: '#234f65'
                 }
             },
@@ -288,6 +291,7 @@ function getAreaEcharts() {
                 fontSize: 10*bodyScale
             }
         },
+*/
         legend: {
             // // right:0,  //图例组件离右边的距离
             // orient :' horizontal',  //布局  纵向布局
