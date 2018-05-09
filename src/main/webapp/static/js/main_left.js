@@ -317,7 +317,7 @@ $(function () {
     // wordCloud.window.resizeText(bodyScale);
 
     //切换地图显示区域及地图全屏
-    switchMapArea();
+    // switchMapArea();
     //切换地球和平面地图按钮的提示
     switchMapBtnTip();
     //切换生产线和实验室的列表显示
