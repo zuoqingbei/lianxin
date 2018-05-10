@@ -108,6 +108,7 @@
 
 /*头部样式*/
 #l header{
+    position: relative;
     text-align: center;
     background-image: url(../img/bg_title.png);
     background-size: 98% 80%;
@@ -139,10 +140,10 @@
 #l header .mainLogo{
     display: inline-block;
     position: absolute;
-    width: 6%;
-    height: 5%;
-    top: 1.8%;
-    left: 35%;
+    width: 5.6%;
+    height: 32%;
+    top: 16.8%;
+    left: 34.6%;
     background: url(../img/logo_haier.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;

@@ -1,29 +1,91 @@
 <head>
     <link rel="stylesheet" href="${contextPath!}/static/css/cover.css">
     <style>
-        header {
-            /* height: 10%; */
-            background: url(../../../static/img/labMain/labtitle_bg.png) no-repeat;
-            background-size: 100% 100%;
-            position: relative;
-        }
-        .lab_head h2 {
-            font-size: 2.6em;
-            letter-spacing: .05em;
-            color: #66CCFE;
-            text-align: center;
-            line-height: 2em;
-        }
+
     </style>
 </head>
 <div id="cover" style="display: flex;">
-    <header class="lab_head">
-        <h2 id="labName_world">检测中心</h2>
+    <header class="cover-head">
+        <h2><span class="bg"></span><span class="text"> 全球实验室运营状态实时监控</span><span class="bg"></span></h2>
+<!--
         <div class="btn-totalStatus">
             <div class="icon"></div>
             <span>返回总状态</span>
         </div>
+-->
     </header>
+    <section class="content">
+        <div class="top">
+            <div class="top-1">
+                <div class="box">
+                    <h4>实验室在线率</h4>
+                    <div class="number">97.5%
+                        <div class="level best">
+                            <span class="circle"></span>
+                            <span class="text">优</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="top-2">
+                <div class="box">
+                    <h4>设备完好率</h4>
+                    <div class="number">95.5%
+                        <div class="level good">
+                            <span class="circle"></span>
+                            <span class="text">良</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="top-3">
+                <div class="box">
+                    <h4>设备在线率</h4>
+                    <div class="number">92.5%
+                        <div class="level bad">
+                            <span class="circle"></span>
+                            <span class="text">差</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="bottom-1">
+                <div class="box">
+                    <h4>实验室在线率</h4>
+                    <div class="number">97.5%
+                        <div class="level best">
+                            <span class="circle"></span>
+                            <span class="text">优</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-2">
+                <div class="box">
+                    <h4>设备完好率</h4>
+                    <div class="number">95.5%
+                        <div class="level good">
+                            <span class="circle"></span>
+                            <span class="text">良</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-3">
+                <div class="box">
+                    <h4>设备在线率</h4>
+                    <div class="number">92.5%
+                        <div class="level bad">
+                            <span class="circle"></span>
+                            <span class="text">差</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 <script src="${contextPath!}/static/js/cover.js"></script>
 <script>

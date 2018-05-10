@@ -15,14 +15,14 @@
 <body>
 <div id="content" class="contai">
 
-<script>
-    
-/* background-img: url('${contextPath!}/static/img/bg-2.jpg') */
-    pageResize();
-</script>
+    <script>
 
-     ##layout("left180508.html", {}){
-	 ##}
+        /* background-img: url('${contextPath!}/static/img/bg-2.jpg') */
+        pageResize();
+    </script>
+
+    ##layout("left180508.html", {}){
+    ##}
 
 
     ##layout("cover.html", {}){
@@ -32,31 +32,28 @@
     ##}
 
 
-     ##layout("lab.html", {}){
-     ##}
+    ##layout("lab.html", {}){
+    ##}
 
- 
 
 </div>
 <audio id="clickSounds" hidden src="${contextPath!}/static/sounds/cha.wav">123</audio>
 <script>
-//点击鼠标的声音
-$(function(){
-	$("div,a,img").click(function(e){
-	    //这里可能产生点击冒泡，但不能直接阻止，因为会造成某些点击事件的失效。
+    //点击鼠标的声音
+    $(function () {
+        $("div,a,img").click(function (e) {
+            //这里可能产生点击冒泡，但不能直接阻止，因为会造成某些点击事件的失效。
 //		console.log($("#clickSounds")[0]);
 //		$("#clickSounds")[0].play();
 //        e.stopPropagation();//阻止冒泡
-	})
+        });
 
-})
-
-    $(function () {
         //这里是为了方便测试的模拟事件代码，正式使用时请蔽掉
         $("#l").find(".toLabData").click()
 //        $("#r .tab>ul>li:eq(2)").click();
 //        resetSizeRight();
-    	
+
+        $("#cover").show().siblings("#r,#lab").hide();
     })
 
 </script>
