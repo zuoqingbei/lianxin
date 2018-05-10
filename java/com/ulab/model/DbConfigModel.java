@@ -93,7 +93,7 @@ public class DbConfigModel extends Model<DbConfigModel> {
 		String partition="";
 		Calendar cl=Calendar.getInstance();
 		int day = cl.get(Calendar.DATE);  
-        cl.set(Calendar.DATE, day-1);  
+        cl.set(Calendar.DATE, day);  
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 		String now=sdf.format(cl.getTime());
 		if(!isPartition(c, configName)){

@@ -102,10 +102,10 @@ public class HadoopTestUnitInfo {
 			sql+=" select distinct t.labcode as labcode,t.testunitid as testunitid,t.testunitname as testunitname,t.englishname as englishname ,m.istesting as istesting ";
 			sql+=" from "+tableName+" t   ";
 			sql+=" left join (select t1.* from "+DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTMETADATA)+" t1 inner join(select  labcode,max(testbegintime) as testbegintime,testunitid ";
-			sql+=" from "+DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTMETADATA)+" where  labcode='"+labCode+"' " +DbConfigModel.dao.getPartitionSql(c, configName, labCode,false) ;
+			sql+=" from "+DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTMETADATA)+" where  labcode='"+labCode+"' " +DbConfigModel.dao.getPartitionSql(c, configName, labCode) ;
 			sql+=" group by labcode,testunitid) t2 on t1.labcode=t2.labcode and t1.testunitid=t2.testunitid and t1.testbegintime=t2.testbegintime ";
 			sql+=" ) m on m.labcode=t.labcode and t.testunitid=m.testunitid ";
-			sql+=" where t.labcode='"+labCode+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode,"t",false)+"   ";
+			sql+=" where t.labcode='"+labCode+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode,"t",true)+"   ";
 		}else{
 			sql+=" select distinct t.labcode as labcode,t.testunitid as testunitid,t.testunitname as testunitname,t.englishname as englishname ,m.istesting as istesting ";
 			sql+=" from "+tableName+" t   ";

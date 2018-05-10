@@ -26,7 +26,7 @@ public class HadoopSensorTypeInfo {
 	 */
 	public List<Record> findSensorTypeInfoByLabCode(BaseController c,String configName,String labCode){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.SENSORTYPEINFO);
-		String sql="select labcode,sensortypeid,sensortypename,highvalue,lowvalue,unit from "+tableName+" where labcode='"+labCode+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode,false)+" order by sensortypeid ";
+		String sql="select labcode,sensortypeid,sensortypename,highvalue,lowvalue,unit from "+tableName+" where labcode='"+labCode+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode,true)+" order by sensortypeid ";
 		List<Record> sensorTypeList=Db.use(configName).find(sql);
 		for(Record sType:sensorTypeList){
 			sType.set("legend", sType.get("sensortypeid")+":"+sType.get("sensortypename")+"("+sType.get("unit")+")");

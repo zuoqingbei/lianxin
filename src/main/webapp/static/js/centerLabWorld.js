@@ -194,7 +194,7 @@ function findTestDataHadoop(labCode, testUnitId) {
         $("#legend_ul_world").find("li").last().find("input").trigger("click");
         $("#legend_ul_world").find("li").last().find("input").trigger("click");
         //因为每个30s加载部分数据，所以在再次点击图例的时候，baseBase还是老数据  所以最好每隔一段时间 进行整体刷新
-		//intevalChartHadoop=setInterval("intervalChangeDataHadoop()", 30000);
+		intevalChartHadoop=setInterval("intervalChangeDataHadoop()", 30000);
 		myChartWorld1.hideLoading();
 	    myChartWorld2.hideLoading();
     });
