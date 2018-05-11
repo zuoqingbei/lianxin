@@ -59,7 +59,7 @@ public class HadoopTestMetadata {
 	}
 	public Record findHiveLastTestMetadata(BaseController c,String configName,String labCode,String testUnitId){
 		String tableName=DbConfigModel.dao.getTableNameByColumn(c,configName, Constants.TESTMETADATA);
-		String sql="select labcode,labname,testidentification,testunitid,testbegintime,testendtime,reportbegintime,reportendtime,istesting,reportno,productmodel,productcode,testitemname,testitemid,primarykey from "+tableName+"  where testunitid='"+testUnitId+"' and  labcode='"+labCode+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode,false)+" order by testbegintime desc  ";
+		String sql="select labcode,labname,testidentification,testunitid,testbegintime,testendtime,reportbegintime,reportendtime,istesting,reportno,productmodel,productcode,testitemname,testitemid,primarykey from "+tableName+"  where testunitid='"+testUnitId+"' and  labcode='"+labCode+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode)+" order by testbegintime desc  ";
 		return Db.use(configName).findFirst(sql);
 	}
 }

@@ -83,7 +83,7 @@ public class HadoopTestData {
 			sql+=" , sensorvalue_"+sInfo.get("sensorid");
 		}
 		//sql+=" from "+tableName+" where primarykey='"+testIdentification+"'  "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
-		sql+=" from "+tableName+" where trim(primarykey)='"+testIdentification.trim()+"' and labcode='"+labCode+"' and testunitid='"+testUnitId+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode,false);
+		sql+=" from "+tableName+" where trim(primarykey)='"+testIdentification.trim()+"' and labcode='"+labCode+"' and testunitid='"+testUnitId+"' "+DbConfigModel.dao.getPartitionSql(c, configName, labCode);
 		/*if(startHowLong!=null){
 			sql+=" and howlong > "+startHowLong;
 		}
