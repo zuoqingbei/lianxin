@@ -163,30 +163,34 @@
     transform: translateX(-50%);
     font-size: 2em;
 }
-#cover .deviceLoad>div>div>table{
+#cover .deviceLoad>div>div table{
     font-size: 1.75em;
     width: 100%;
 }
-#cover .deviceLoad>div>div>table tr:nth-of-type(even){
+#cover .deviceLoad>div>div tr:nth-child(even){
     background-color: rgba(54, 129, 179, 0.2)
 }
-#cover .deviceLoad>div>div>table tr:nth-of-type(odd){
+#cover .deviceLoad>div>div tr:nth-child(odd){
     background-color: rgba(35, 79, 101, 0.2)
 }
-#cover .deviceLoad>div>div>table td,
-#cover .deviceLoad>div>div>table th{
+#cover .deviceLoad>div>div table td,
+#cover .deviceLoad>div>div table th{
     padding: .8125em 1em;
     text-align: center;
 }
-#cover .deviceLoad>div>div>table th{
+#cover .deviceLoad>div>div table th{
     color: #fff;
     background-color: #184266;
 }
-#cover .deviceLoad>div>div>table .YoY{
+#cover .deviceLoad>div>div table .YoY{
     font-size: 1em;
 }
-#cover .deviceLoad>div>div>table .YoY:after{
+#cover .deviceLoad>div>div table .YoY:after{
     top: .9325em;
+}
+#cover .scrollBoard{
+    height: 37em;
+    overflow: hidden;
 }
 #cover table .barBox>.bar{
     display: block;
