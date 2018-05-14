@@ -237,36 +237,37 @@ function sphereRTHlnumberShow(n) {
 
     }
 }
+// 条目往上滚动效果
+function scrollVertical($scrollBoard,$ul1,$ul2,speed) {
+    $scrollBoard.css("height", $scrollBoard.width);
+    $ul2.html($ul1.html());
+    function Marquee() {
+        //scrollTop:溢出上边界的高度
+        //offsetHeight:元素包括border和padding的高度
+        //$scrollBoard这个高度一定要小，且不能用百分比
+        if ($ul2[0].offsetHeight <= $scrollBoard[0].scrollTop)
+            $scrollBoard[0].scrollTop -= $ul2[0].offsetHeight;
+        else {
+            // $scrollBoard[0].scrollTop++;
+            $scrollBoard[0].scrollTop += bodyScale*1.5;
+        }
+    }
+
+    var MyMar = setInterval(Marquee, speed);
+    $scrollBoard.hover(function () {
+        clearInterval(MyMar)
+    }, function () {
+        MyMar = setInterval(Marquee, speed);
+    })
+}
 
 //球形地图右下角的广告滚动
 function sphereRBscroll() {
     var speed = 100;
 
 //    scroll($(".fullScreen_map .scroll"),$(".fullScreen_map .scroll ul:first"),$(".fullScreen_map .scroll ul:last"),20);
-    scroll($(".left3x3 .scroll"),$(".left3x3 .scroll ul:first"),$(".left3x3 .scroll ul:last"),50);
+    scrollVertical($(".left3x3 .scroll"),$(".left3x3 .scroll ul:first"),$(".left3x3 .scroll ul:last"),80);
 
-    function scroll($scrollBoard,$ul1,$ul2,speed) {
-        $scrollBoard.css("height", $scrollBoard.width);
-        $ul2.html($ul1.html());
-        function Marquee() {
-            //scrollTop:溢出上边界的高度
-            //offsetHeight:元素包括border和padding的高度
-            //$scrollBoard这个高度一定要小，且不能用百分比
-            if ($ul2[0].offsetHeight <= $scrollBoard[0].scrollTop)
-                $scrollBoard[0].scrollTop -= $ul2[0].offsetHeight;
-            else {
-                // $scrollBoard[0].scrollTop++;
-                $scrollBoard[0].scrollTop += bodyScale;
-            }
-        }
-
-        var MyMar = setInterval(Marquee, speed);
-        $scrollBoard.hover(function () {
-            clearInterval(MyMar)
-        }, function () {
-            MyMar = setInterval(Marquee, speed);
-        })
-    }
 }
 //从平面地图的提示框打开实验室
 function toCenterLab(centerId) {
