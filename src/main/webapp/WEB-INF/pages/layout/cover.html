@@ -163,45 +163,9 @@
                             <th>当月负荷率</th>
                         </tr>
                         <tr>
-                            <td class="line">冰冷</td>
+                            <td class="name">冰冷</td>
                             <td class="type">整机</td>
-                            <td class="name">贵州冰箱噪音室</td>
-                            <td class="value">60%</td>
-                        </tr>
-                        <tr>
-                            <td class="line">冰冷</td>
-                            <td class="type">整机</td>
-                            <td class="name">贵州冰箱噪音室</td>
-                            <td class="value">60%</td>
-                        </tr>
-                        <tr>
-                            <td class="line">冰冷</td>
-                            <td class="type">整机</td>
-                            <td class="name">贵州冰箱噪音室</td>
-                            <td class="value">60%</td>
-                        </tr>
-                        <tr>
-                            <td class="line">冰冷</td>
-                            <td class="type">整机</td>
-                            <td class="name">贵州冰箱噪音室</td>
-                            <td class="value">60%</td>
-                        </tr>
-                        <tr>
-                            <td class="line">冰冷</td>
-                            <td class="type">整机</td>
-                            <td class="name">贵州冰箱噪音室</td>
-                            <td class="value">60%</td>
-                        </tr>
-                        <tr>
-                            <td class="line">冰冷</td>
-                            <td class="type">整机</td>
-                            <td class="name">贵州冰箱噪音室</td>
-                            <td class="value">60%</td>
-                        </tr>
-                        <tr>
-                            <td class="line">冰冷</td>
-                            <td class="type">整机</td>
-                            <td class="name">贵州冰箱噪音室</td>
+                            <td class="deviceName">贵州冰箱噪音室</td>
                             <td class="value">60%</td>
                         </tr>
                     </table>
@@ -213,61 +177,5 @@
 </div>
 <script src="${contextPath!}/static/js/cover.js"></script>
 <script>
-    var htmlSetViewAll = "";
-    $(function () {
-        var debug = true;
-        if (debug) {
-            var deviceLoadArr = [
-                {name: "检测中心"},
-                {name: "冰冷产线"},
-                {name: "检测中心3"},
-                {name: "检测中心4"},
-                {name: "检测中心5"},
-                {name: "检测中心6"},
-                {name: "检测中心7"},
-                {name: "检测中心8"}
-            ];
-            for (var i = 0; i < 8; i++) {
-                deviceLoadArr[i].value = (Math.random() * 10 + 90).toFixed(1) + "%";
-                deviceLoadArr[i].YoY = (Math.random() + 1).toFixed(1) + "%";
-                deviceLoadArr[i].sign = Math.random() - 0.5;
-            }
-            console.log("-----------", deviceLoadArr)
-        }
 
-        //设置设备负荷率
-        setViewAll(deviceLoadArr);
-        var $cover = $("#cover");
-        $cover.find(".top-3").click(function () {
-            $(".deviceLoad").show().siblings().hide();
-            loadData(htmlSetViewAll);
-        });
-        $cover.find(".deviceLoad>.btn-back").click(function () {
-            $(".statusCover").show().siblings().hide()
-        });
-
-
-    });
-
-    function setViewAll(deviceLoadArr) {
-
-        deviceLoadArr.forEach(function (item, index, array) {
-            var sign = Number(item.sign) > 0 ? "up" : "down";
-            htmlSetViewAll += '<tr><td class="name">'
-            + item.name + '</td><td class="barBox"><span class="bar"><span class="fill"></span></span></td><td class="value">'
-            + item.value + '</td><td class="YoY '
-
-            +sign+ '">同比：<span>'
-            + item.YoY + '</span></td> </tr>\n'
-        });
-        loadData(htmlSetViewAll);
-
-    }
-
-    function loadData(html) {
-        $(".viewAll").find("tbody").html(html)
-            .find(".fill").css("width", function () {
-            return $(this).parent().parent().next().text();
-        });
-    }
 </script>
