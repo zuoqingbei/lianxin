@@ -1102,10 +1102,14 @@ function questionForMkZjTab3Ajax() {
         var h = '';
         if (!isNaN(cur)) {
             h += ' 本年问题闭环率 <strong class="orange">' + cur + '%</strong><br>';
+            $(".bottom-3 .value").text(cur+"%");
+            $(".bottom-3 .YoY .value").text(change);
             if (change < 0) {
                 h += '同比下降';
+                $(".bottom-3 .YoY").addClass("down");
             } else {
                 h += '同比上升';
+                $(".bottom-3 .YoY").addClass("up");
             }
             h += ' <strong class="orange">' + change + '%</strong>';
             $(".new_bh_rate_tab3").html(h)
@@ -1448,9 +1452,14 @@ function orderYearRateAjax() {
 	        var h = '';
 	        if (rate2017 != null) {
 	            h += '本月订单及时率 <strong class="orange tab3_new_order_rate">' + (rate2017 == null ? "0" : parseFloat(rate2017).toFixed(1)) + '%</strong> ,';
+	            $(".bottom-2 .value").text(rate2017+"%");
+	            var html='';
+	            $(".bottom-2 .YoY .value").text(change);
 	            if (parseFloat(change) > 0) {
 	                h += '同比上升';
+	                $(".bottom-2 .YoY").addClass("up");
 	            } else {
+	            	$(".bottom-2 .YoY").addClass("down");
 	                h += '同比下降';
 	            }
 	            h += ' <strong class="orange">' + (isNaN(change) ? "0" : change) + '%</strong>';
