@@ -33,14 +33,9 @@ $(function () {
             deviceDetailLoadArr[i].value = (Math.random() * 20 + 60).toFixed(1) + "%";;
 
         }
-        console.log("-----------deviceLoadArr", deviceLoadArr);
-        console.log("-----------deviceDetailLoadArr", deviceDetailLoadArr)
+        // console.log("-----------deviceLoadArr", deviceLoadArr);
+        // console.log("-----------deviceDetailLoadArr", deviceDetailLoadArr)
     }
-    var arr = [1,2,3,4,5]
-    var arr2 = arr.concat()
-    arr2[2] = 5
-    console.log("~~~~~~~~~~~~",arr)
-    console.log("~~~~~~~~~~~~",arr2)
     //设置设备负荷率
     setViewAll(deviceLoadArr);
     setDeviceDetail(deviceDetailLoadArr);
