@@ -1319,6 +1319,7 @@ function findOrderTypePercentTab3Ajax() {
     })
 }
 
+
 //一次合格率  整体统计-整机 模块
 
 function findOrderPassForAllAjax() {
@@ -1467,6 +1468,7 @@ function orderYearRateAjax() {
 	        }
 
 	    });
+	
 }
  
 

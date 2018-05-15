@@ -49,14 +49,14 @@
                 <div class="bottom-1">
                     <div class="box">
                         <h4>在线检测订单量</h4>
-                        <div class="number">35432
+                        <div class="number"><span class='value'></span>
                             <div class="level best">
                                 <span class="circle"></span>
                                 <span class="text">优</span>
                             </div>
                         </div>
-                        <div class="YoY up">同比：
-                            <span class="value">235</span>%
+                        <div class="YoY">同比：
+                            <span class="value"></span>%
                         </div>
                     </div>
                 </div>
@@ -230,5 +230,23 @@
 </div>
 <script src="${contextPath!}/static/js/cover.js"></script>
 <script>
+incrementNumber();
+function incrementNumber(){
+	$.post(contextPath + '/lab/getDingdan', {}, function (data) {
+		var rateMax =data[0].num;
+        var rate = data[data.length-1].num;
+        var change = (parseFloat(rateMax) - parseFloat(rate)).toFixed(1);
+        var bilv=(change/parseFloat(rateMax)).toFixed(4)
+		$(".bottom-1 .value").text(rateMax);
+		 $(".bottom-1 .YoY .value").text(bilv*100);
+		 if (parseFloat(change) > 0) {
+            $(".bottom-1 .YoY").addClass("up");
+         } else {
+         	$(".bottom-1 .YoY").addClass("down");
+         }
+		setTimeout(incrementNumber,1000);
+	    
+	})
+}
 
 </script>
