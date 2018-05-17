@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>订单弹出页面</title>
+    <link rel="stylesheet" href="${contextPath!}/static/css/orderPopup.css">
+</head>
+<body>
+<header></header>
+<div id="container">
+    <nav class="left-nav">
+        <ul>
+            <li>
+                <a href="#">样品管理</a>
+            </li>
+            <li>
+                <a href="">订单管理</a>
+                <ul>
+                    <li><a href="">整机订单汇总</a></li>
+                    <li class="active"><a href="">订单视图查看</a></li>
+                    <li><a href="">整机订单修改要求</a></li>
+                    <li><a href="">整机订单查看</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="main">
+        <div class="list" hidden>
+            <div class="toCurve"></div>
+        </div>
+        <div class="curve">
+            <header>
+                <ul class="title">
+                    <li>实验室编号：<span id="center_sybh_id_world"></span></li>
+                    <li>Sample code：<span id="center_ypbm_id_world"></span></li>
+                    <li>型号：<span id="center_cpxh_id_world"></span></li>
+                    <li>测试项目：<span id="center_testPro_id_world"></span></li>
+                </ul>
+                <ul class="btnGroup">
+                    <li class="active">
+                        <button>S20180516002</button>
+                    </li>
+                    <li>
+                        <button>S20180516003</button>
+                    </li>
+                    <li>
+                        <button>S20180516004</button>
+                    </li>
+                </ul>
+            </header>
+            <div class="curveBox">
+                <!--<div class="loadingAnimation">数据接入中</div>-->
+                <div class="curveBox-l">
+                    <div id="main1_world"></div>
+                    <div id="main2_world"></div>
+                </div>
+                <div class="curveBox-r">
+                    <ul id="legend_ul_world">
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="placeholder">
+    <div id="echart_one"></div>
+    <div id="echart_two"></div>
+    <div id="echart_three"></div>
+    <div id="echart_four"></div>
+    <div id="echart_five"></div>
+    <div id="echart_six"></div>
+</div>
+<script>
+    var contextPath = '${contextPath!}';
+    var bodyScale = parent.bodyScale*.7;
+    function getCurrentMonth() {
+        var date = new Date;
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        month = (month < 10 ? "0" + month : month);
+        return month.toString();
+    }
+</script>
+<script src="${contextPath!}/static/asserts/echarts3.0/echarts.js"></script>
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/js/manyEcharts.js"></script>
+<script src="${contextPath!}/static/js/labData.js"></script>
+<script src="${contextPath!}/static/js/labAction.js"></script>
+<script src="${contextPath!}/static/js/centerLab.js"></script>
+<script src="${contextPath!}/static/js/centerLabWorld_3rd.js"></script>
+<!--<script src="${contextPath!}/static/js/orderPopup.js"></script>-->
+<script>
+    function getBarEcharts() {}
+    function getLineEcharts() {}
+
+
+    $(function () {
+
+        findSensorByLabCenetrTabAjaxWorld("USLABBX","P1","USLAB-B1.json");
+    })
+
+</script>
+
+</body>
+</html>

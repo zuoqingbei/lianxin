@@ -255,7 +255,12 @@ $(function () {
 
 
     // 数据分析中的合格率、及时率、满意度
-    initThree();//合格率
+    try{
+        initThree();//合格率
+    }catch (e) {
+        console.log(e.message)
+    }
+
     initfour();//及时率
     inittwo();//满意度
 

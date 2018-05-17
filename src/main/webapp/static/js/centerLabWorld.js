@@ -94,7 +94,7 @@ var interval_count1World = 0;
 var interval_count2World = 0;
 var mockxDataWorld = [];//模拟的x轴数据
 var intevalChartHadoop;
-
+var option_world;
 
 var configName;
 var startTime;
@@ -446,6 +446,8 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId,fileName) {
             // myChartWorld1.hideLoading();
             // myChartWorld2.hideLoading();
             loadingAnimateOut("curve", 500);
+            console.log(myChartWorld1.getOption())
+
         },2000)
     });
 }

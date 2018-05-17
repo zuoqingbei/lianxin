@@ -49,7 +49,10 @@
         });
 
         //这里是为了方便测试的模拟事件代码，正式使用时请蔽掉
-        $("#l").find(".toLabData").click()
+        setTimeout(function () {
+            $("#l").find(".toLabData").click()
+        },1000)
+
 //        $("#r .tab>ul>li:eq(2)").click();
 //        resetSizeRight();
 

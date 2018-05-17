@@ -169,6 +169,17 @@ span strong {
     color: white;
 }
 
-
+.orderPopup{
+    position: absolute;
+    width: 83em;
+    height: 46em;
+    left: 26em;
+    background-color: #fff;
+    box-shadow: 0 0 0.5em 1.5em rgba(0,0,0,.5);
+    z-index: 1;
+}
+.orderPopup>iframe{
+    height: 100%;
+}
 
 
