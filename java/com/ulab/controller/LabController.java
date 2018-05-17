@@ -416,6 +416,22 @@ public class LabController extends BaseController {
 		}
 		renderJson(data);
 	}
+	/**
+	 * 六个指数中的订单量动态变化-测试
+	 * @time   2018年5月15日 上午10:33:23
+	 * @author dsh
+	 * @todo   TODO
+	 * @param  
+	 * @return_type   void
+	 */
+	public void getDingdan() {
+		String labTypeCode = getPara("labTypeCode", "");
+		List<Record> data = OrderModel.dao.findDingdan(labTypeCode);
+		if (data == null) {
+			data = (List<Record>) new Record();
+		}
+		renderJson(data);
+	}
 
 	/**
 	 * 
