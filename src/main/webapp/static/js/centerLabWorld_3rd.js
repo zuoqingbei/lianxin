@@ -111,6 +111,7 @@ var com_yAxis = {
     },
     axisLabel: {   //坐标轴标签
         show: true,
+        margin:5*bodyScale,
         textStyle: {
             color: '#66ccff',
             fontSize: 12 * bodyScale
@@ -148,10 +149,10 @@ var com_opt = {
         // data: legendDataWorld
     },
     grid: {
-        x: '13%',
+        x: '14%',
         x2: '15%',
-        y: '17%',
-        y2: '4%'                  //下移负数 使两个图重叠
+        y: '15%',
+        y2: '4%'                  //下移使两个图重叠
     },
     xAxis:
 
@@ -163,9 +164,9 @@ var com_opt = {
                 }
             },
             axisLabel: {   //坐标轴标签
-                show: false,
+                show: true,
                 textStyle: {
-                    color: '#66ccff',
+                    color: '#6cf',
                     fontSize: 12 * bodyScale
                 }
             },
@@ -189,32 +190,100 @@ var com_opt = {
 
     yAxis: [
         $.extend({}, com_yAxis, {
-            name: mSensor[0].unit + "　　　",
+            name: mSensor[0].unit + "　",
             max: 90,
             min: -30,
             position: 'left',
-            offset: 40 * bodyScale,
+            offset: 40 * bodyScale
         }),
         $.extend({}, com_yAxis, {
-            name: "Hz" + "　　　",
+            name: "Hz" + "　",
             max: 100,
             min: 0,
             position: 'left',
-            offset: 10 * bodyScale,
+            offset: 10 * bodyScale
         }),
         $.extend({}, com_yAxis, {
-            name: "　　　" + "%",
+            name: "　" + "%",
+            max: 100,
+            min: 0,
             position: 'right',
-            offset: 10 * bodyScale,
+            offset: 10 * bodyScale
         }),
         $.extend({}, com_yAxis, {
-            name: "　　　" + "V",
+            name: "　" + "V",
+            max: 100,
+            min: 0,
             position: 'right',
-            offset: 40 * bodyScale,
+            offset: 40 * bodyScale
         })
     ],
 };
 
+// 加载曲线图表
+function getChartsWorld1() {
+    myChartWorld1.clear();
+    option_world = $.extend(true, {}, com_opt, {
+        xAxis: {
+            axisTick: {  //刻度值
+                show: false
+            },
+            axisLabel: {
+                show: false
+            }
+        },
+
+        series: seriesTopDataWorld
+    })
+    myChartWorld1.setOption(option_world);
+    echarts.connect([myChartWorld1, myChartWorld2]);
+    myChartWorld1.setOption({
+        series: getAnimation(seriesTopDataWorld)
+    });
+}
+// 加载曲线图表
+function getChartsWorld2() {
+
+    option2_world = $.extend(true, {}, com_opt, {
+        grid: {
+            y: '4%',
+            y2: "12%"
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: xDataWorld.concat(mockXdataWorld),
+
+            }
+        ],
+        yAxis:[
+            {
+                name: "V"+"　　",
+                max: 300,
+                min: 0,
+                nameLocation: 'start'
+            },{
+                name: "A"+"　　",
+                nameLocation: 'start'
+            },{
+                name: "　"+"W",
+                nameLocation: 'start'
+            },{
+                name: "　"+"kW·h",
+                nameLocation: 'start'
+            }
+        ],
+        series: seriesBottomDataWorld
+    })
+
+    myChartWorld2.clear();
+    myChartWorld2.setOption(option2_world,true);
+    echarts.connect([myChartWorld1, myChartWorld2]);
+    myChartWorld2.setOption({
+        series: getAnimation(seriesBottomDataWorld)
+    });
+
+}
 
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
@@ -238,14 +307,8 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
             } else {
                 htmls += '<li>台位：' + item.testunitname + '  (' + item.testunitstatus + ')</li>';
             }
-            /*	if(index==0){
-                    // console.log(item.testunitlist)
-                    findSensorTypeInfoHadoop(labCode,item.testunitid);
-                }*/
         });
         htmls += '</ul>';
-        //$(".quxian_li_"+type).append(htmls);
-        //$(".quxian_li_"+type).find("ul:eq(0)>li:eq(0)>ul>li:eq(0)").trigger("click");
         $(".lab_code_" + labCode + "_" + type).html(htmls);
         $(".lab_code_" + labCode + "_" + type).find("header").attr("onclick", "");
         $(".lab_code_" + labCode + "_" + type).find("ul>li[class='istesting']:eq(0)").click();
@@ -581,7 +644,7 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId, fileName) {
             // myChartWorld2.hideLoading();
             loadingAnimateOut("curve", 500);
 
-        }, 2000)
+        }, 1000)
     });
 }
 
@@ -782,12 +845,12 @@ function createEchartsWorld(isFirst, obj) {
         myChartWorld1.clear();
         myChartWorld2.clear();
         opt1.xAxis = [{data: xDataWorld.concat(mockXdataWorld)}];
+        $.extend(true,opt1,{data: xDataWorld.concat(mockXdataWorld)});
         opt1.series = seriesTopDataWorld;
         myChartWorld1.setOption(opt1);
 
         // opt2.xAxis = [{data: xDataWorld.concat(mockXdataWorld)}];
         $.extend(true,opt2,{data: xDataWorld.concat(mockXdataWorld)})
-
         opt2.series = seriesBottomDataWorld;
         myChartWorld2.setOption(opt2);
     }
@@ -821,496 +884,6 @@ function checkBoxValesWorld() { //jquery获取复选框值
         chk_value.push($(this).val());
     });
     return chk_value;
-}
-
-function getChartsWorld1() {
-// console.log(xDataWorld[xDataWorld.length-1])
-    myChartWorld1.clear();
-    /*
-        option_world = {
-            tooltip: {
-                trigger: 'axis',
-                textStyle: {
-                    fontSize: 10*bodyScale,
-                },
-                axisPointer: {
-                    type: 'cross'
-                },
-                showDelay: 0             // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
-            },
-            legend: {
-                show: false,
-                data: legendDataWorld
-            },
-            grid: {
-                x: '13%',
-                x2: '15%',
-                y: '10%',
-                y2: '5%'                  //下移负数 使两个图重叠
-            },
-            dataZoom: [{
-                start: 0,
-                end: 100,
-                show: false
-            }, {
-                type: 'inside'
-            }],
-            xAxis: [
-                {
-                    type: 'category',
-                    splitLine: {
-                        show: false
-                    },
-                    axisLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: false,
-                        // rotate: 30,
-                        textStyle: {
-                            color: '#66ccff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    axisTick: {
-                        show: false,
-                        alignWithLabel: true,
-                        lineStyle: {
-                            color: '#66ccff'
-                        }
-                    },
-                    // data: xDataWorld.concat(mockXdataWorld)
-                    data: function () {
-                        if(xDataWorld){
-                            return xDataWorld.concat(mockXdataWorld);
-                        }else{
-                            return null;
-                        }
-
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    name: mSensor[0].unit+"　　　",
-                    max: 90,
-                    min: -30,
-                    /!*max:currentDataWorld[0].highvalue,
-                     min:currentDataWorld[0].lowvalue,*!/
-                    nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
-                    position: 'left',
-                    offset: 40 * bodyScale,
-                    axisLine: { //坐标轴
-                        show: true
-                    },
-                    axisLabel: {   //坐标值
-                        show: true,
-                        textStyle: {
-                            color: '#66ccff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    splitLine: {  //刻度线
-                        show: true,
-                        lineStyle: {
-                            color: '#234f65'
-                        }
-                    },
-                    axisTick: {  //刻度值
-                        show: false,
-                    },
-                    lineStyle: {
-                        normal: {
-                            width: 0.5 * bodyScale
-                        }
-                    },
-                    symbolSize: 1 * bodyScale,
-                },
-                {
-                    type: 'value',
-                    name: "Hz"+"　　　",
-                    max: 100,
-                    min: 0,
-                    /!* max:currentDataWorld[1].highvalue,
-                     min:currentDataWorld[1].lowvalue,*!/
-                    nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
-                    position: 'left',
-                    offset: 10 * bodyScale,
-                    axisLabel: {
-                        formatter: '{value} ',
-                        show: true,
-                        textStyle: {
-                            color: '#66ccff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    axisLine: { //坐标轴
-                        show: true
-                    },
-                    splitLine: {  //刻度线
-                        show: true,
-                        lineStyle: {
-                            color: '#234f65'
-                        }
-                    },
-                    axisTick: {  //刻度值
-                        show: false,
-                    },
-                    lineStyle: {
-                        normal: {
-                            width: 0.5 * bodyScale
-                        }
-                    },
-                    symbolSize: 1 * bodyScale,
-                },
-                {
-                    type: 'value',
-                    name: "　　　"+"%",
-                    /!* max:currentDataWorld[2].highvalue,
-                     min:currentDataWorld[2].lowvalue,*!/
-                    nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
-                    position: 'right',
-                    offset: 10 * bodyScale,
-                    axisLabel: {
-                        formatter: '{value} ',
-                        show: true,
-                        textStyle: {
-                            color: '#66ccff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    axisLine: { //坐标轴
-                        show: false
-                    },
-                    splitLine: {  //刻度线
-                        show: true,
-                        lineStyle: {
-                            color: '#234f65'
-                        }
-                    },
-                    axisTick: {  //刻度值
-                        show: false,
-                    },
-                    lineStyle: {
-                        normal: {
-                            width: 0.5 * bodyScale
-                        }
-                    },
-                    symbolSize: 1 * bodyScale,
-
-                },
-                {
-                    type: 'value',
-                    name: "　　　"+"V",
-                    /!* max:currentDataWorld[3].highvalue,
-                     min:currentDataWorld[3].lowvalue,*!/
-                    nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
-                    position: 'right',
-                    offset: 40 * bodyScale,
-                    axisLabel: {
-                        formatter: '{value} ',
-                        show: true,
-                        textStyle: {
-                            color: '#66ccff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    axisLine: { //坐标轴
-                        show: false
-                    },
-                    splitLine: {  //刻度线
-                        show: true,
-                        lineStyle: {
-                            color: '#234f65'
-                        }
-                    },
-                    axisTick: {  //刻度值
-                        show: false,
-                    },
-                    lineStyle: {
-                        normal: {
-                            width: 0.5 * bodyScale
-                        }
-                    },
-                    symbolSize: 1 * bodyScale,
-
-                }
-
-            ],
-            series: seriesTopDataWorld
-        };
-    */
-    option_world = $.extend(true, {}, com_opt, {
-        xAxis: {
-            axisTick: {  //刻度值
-                show: false
-            },
-            axisLabel: {
-                show: false
-            }
-        },
-
-        series: seriesTopDataWorld
-    })
-    myChartWorld1.setOption(option_world);
-    echarts.connect([myChartWorld1, myChartWorld2]);
-    myChartWorld1.setOption({
-        series: getAnimation(seriesTopDataWorld)
-    });
-}
-
-function getChartsWorld2() {
-
-    /*
-        option2_world = {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross'
-                },
-                textStyle: {
-                    fontSize: 10*bodyScale,
-                },
-                showDelay: 0             // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
-            },
-            legend: {
-                show: false,
-                data: legendDataWorld
-            },
-            grid: {
-                x: '13%',
-                x2: '15%',
-                y: '5%',
-                y2: "15%"
-            },
-            dataZoom: [{
-                start: 0,
-                end: 100,
-                show: false
-            }, {
-                type: 'inside'
-            }],
-            xAxis: [
-                {
-                    type: 'category',
-                    data: xDataWorld.concat(mockXdataWorld),
-                    splitLine: {
-                        show: false
-                    },
-                    axisLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#fff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    axisTick: {
-                        show: true,
-                        alignWithLabel: true,
-                        lineStyle: {
-                            color: '#66ccff'
-                        }
-                    },
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    name: "V"+"　　　",
-                    max: 300,
-                    min: 0,
-                    nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
-                    nameLocation: 'start',
-                    position: 'left',
-                    offset: 40 * bodyScale,
-                    axisLabel: {
-                        formatter: function (params, index) {
-                            return params;
-                        },
-                        textStyle: {
-                            color: '#66ccff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    axisLine: { //坐标轴
-                        show: false
-                    },
-                    splitLine: {  //刻度线
-                        show: true,
-                        lineStyle: {
-                            color: '#234f65'
-                        }
-                    },
-                    axisTick: {  //刻度值
-                        show: false,
-                    },
-                    lineStyle: {
-                        normal: {
-                            width: 0.5 * bodyScale
-                        }
-                    },
-                    symbolSize: 1 * bodyScale,
-                },
-                {
-                    type: 'value',
-                    name: "A"+"　　　",
-                    /!* max:currentDataWorld[5].highvalue,
-                     min:currentDataWorld[5].lowvalue,*!/
-                    nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
-                    nameLocation: 'start',
-                    position: 'left',
-                    offset: 10 * bodyScale,
-
-                    axisLabel: {
-                        formatter: '{value} ',
-                        textStyle: {
-                            color: '#66ccff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    axisLine: { //坐标轴
-                        show: false
-                    },
-                    splitLine: {  //刻度线
-                        show: false,
-                        lineStyle: {
-                            color: '#234f65'
-                        }
-                    },
-                    axisTick: {  //刻度值
-                        show: false,
-                    },
-                    lineStyle: {
-                        normal: {
-                            width: 0.5 * bodyScale
-                        }
-                    },
-                    symbolSize: 1 * bodyScale,
-
-                },
-                {
-                    type: 'value',
-                    name: "　　　"+"W",
-                    nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
-                    nameLocation: 'start',
-                    position: 'right',
-                    offset: 10 * bodyScale,
-                    axisLabel: {
-                        formatter: function (params, index) {
-                            return params;
-                        },
-                        textStyle: {
-                            color: '#66ccff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    axisLine: { //坐标轴
-                        show: false
-                    },
-                    splitLine: {  //刻度线
-                        show: false,
-                        lineStyle: {
-                            color: '#234f65'
-                        }
-                    },
-                    axisTick: {  //刻度值
-                        show: false,
-                    },
-                    lineStyle: {
-                        normal: {
-                            width: 0.5 * bodyScale
-                        }
-                    },
-                    symbolSize: 1 * bodyScale,
-                },
-                {
-                    type: 'value',
-                    name: "　　　"+"kW·h",
-                    nameGap: nameGap,
-                    nameTextStyle: nameTextStyle,
-                    nameLocation: 'start',
-                    position: 'right',
-                    offset: 40 * bodyScale,
-                    axisLabel: {
-                        formatter: '{value} ',
-                        textStyle: {
-                            color: '#66ccff',
-                            fontSize: 12 * bodyScale
-                        }
-                    },
-                    axisLine: { //坐标轴
-                        show: false
-                    },
-                    splitLine: {  //刻度线
-                        show: false,
-                        lineStyle: {
-                            color: '#234f65'
-                        }
-                    },
-                    axisTick: {  //刻度值
-                        show: false,
-                    },
-                    lineStyle: {
-                        normal: {
-                            width: 0.5 * bodyScale
-                        }
-                    },
-
-                    symbolSize: 1 * bodyScale,
-                }
-            ],
-            series: seriesBottomDataWorld
-        };
-    */
-    // var myChartWorld2 = echarts.init($("#main2_world")[0])
-    option2_world = $.extend(true, {}, com_opt, {
-        grid: {
-            x: '13%',
-            x2: '15%',
-            y: '5%',
-            y2: "15%"
-        },
-        xAxis: [
-            {
-                type: 'category',
-                data: xDataWorld.concat(mockXdataWorld),
-
-            }
-        ],
-        series: seriesBottomDataWorld
-    })
-
-    myChartWorld2.clear();
-    myChartWorld2.setOption(option2_world,true);
-    console.log("--------",myChartWorld2.getOption())
-    myChartWorld2.setOption({
-        xAxis:{
-            axisLabel: {   //坐标轴标签
-                show: true,
-                textStyle: {
-                    color: '#f00',
-                    fontSize: 12 * bodyScale
-                }
-            },
-        }
-    });
-    console.log("--------",myChartWorld2.getOption())
-    echarts.connect([myChartWorld1, myChartWorld2]);
-    myChartWorld2.setOption({
-        series: getAnimation(seriesBottomDataWorld)
-    });
-
 }
 
 

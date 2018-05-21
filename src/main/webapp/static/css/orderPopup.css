@@ -12,6 +12,7 @@ html, body {
 body > * {
     /*display: flex;*/
     flex-direction: column;
+    background-color: #fff;
 }
 
 #container {
@@ -173,7 +174,7 @@ a {
     display: flex;
     flex: 3;
     flex-direction: column;
-    padding: 0 1rem 1rem;
+    padding: 0 0 1rem;
 }
 .curveBox-r{
     flex: 1;
@@ -188,6 +189,8 @@ a {
 #legend_ul_world{
     color:#4397f7;
     font-size: .625em;
+    max-height: 29em;
+    overflow: auto;
 }
 #legend_ul_world li>.colorBlock{
     display: inline-block;
@@ -196,8 +199,7 @@ a {
 }
 #legend_ul_world li>.name{
     display:  inline-block;
-    width: 5rem;
-
+    min-width: 5rem;
 }
 
 .placeholder,

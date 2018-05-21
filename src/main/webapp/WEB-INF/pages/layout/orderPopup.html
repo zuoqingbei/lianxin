@@ -15,7 +15,7 @@
             <li>
                 <a href="#">样品管理</a>
             </li>
-            <li>
+            <li class="show">
                 <a href="">订单管理</a>
                 <ul>
                     <li><a href="">整机订单汇总</a></li>
@@ -84,9 +84,32 @@
         month = (month < 10 ? "0" + month : month);
         return month.toString();
     }
+    function getBarEcharts() {}
+    function getLineEcharts() {}
+</script>
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script>
+    function leftNavAction() {
+        $(".left-nav>ul>li").click(function () {
+            $(this).toggleClass("show");
+            return false;
+        });
+        $(".left-nav>ul>li>ul>li").click(function () {
+            $(".left-nav>ul>li>ul>li").removeClass("active");
+            $(this).addClass("active");
+            return false;
+        });
+        $(".toCurve").click(function () {
+            $(".list").hide().siblings().show();
+        })
+    }
+
+    $(function () {
+        $("html").css("font-size",bodyScale*100+"%");
+        leftNavAction();
+    })
 </script>
 <script src="${contextPath!}/static/asserts/echarts3.0/echarts.js"></script>
-<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
 <script src="${contextPath!}/static/js/manyEcharts.js"></script>
 <script src="${contextPath!}/static/js/labData.js"></script>
 <script src="${contextPath!}/static/js/labAction.js"></script>
@@ -94,14 +117,14 @@
 <script src="${contextPath!}/static/js/centerLabWorld_3rd.js"></script>
 <!--<script src="${contextPath!}/static/js/orderPopup.js"></script>-->
 <script>
-    function getBarEcharts() {}
-    function getLineEcharts() {}
-
-
     $(function () {
-
         findSensorByLabCenetrTabAjaxWorld("USLABBX","P1","USLAB-B1.json");
-    })
+        $(".curve .btnGroup>li>button").click(function () {
+            $(this).parent().addClass("active").siblings().removeClass("active");
+            var index = $(this).parent().index();
+                findSensorByLabCenetrTabAjaxWorld("USLABBX", "P"+(index+1), "USLAB-B"+(index+1)+".json");
+        });
+    });
 
 </script>
 
