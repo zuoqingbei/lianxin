@@ -236,15 +236,15 @@ function incrementNumber(){
 		var rateMax =data[0].num;
         var rate = data[data.length-1].num;
         var change = (parseFloat(rateMax) - parseFloat(rate)).toFixed(1);
-        var bilv=(change/parseFloat(rateMax)).toFixed(4)
+        var bilv=(change*100/parseFloat(rateMax)).toFixed(4)
 		$(".bottom-1 .value").text(rateMax);
-		 $(".bottom-1 .YoY .value").text(bilv*100);
+		 $(".bottom-1 .YoY .value").text(bilv);
 		 if (parseFloat(change) > 0) {
             $(".bottom-1 .YoY").addClass("up");
          } else {
          	$(".bottom-1 .YoY").addClass("down");
          }
-		setTimeout(incrementNumber,1000);
+		setTimeout(incrementNumber,5000);
 	    
 	})
 }

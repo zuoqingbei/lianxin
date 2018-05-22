@@ -373,7 +373,7 @@ public class OrderModel extends Model<OrderModel> {
 	 */
 	public List<Record> findDingdan(String labTypeCode){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" insert into t_b_dingdan_data(temp1,temp2,temp3) (select max(temp1)+(dbms_random.value(0,1000)*1),1000,1 from t_b_dingdan_data)");
+		sb.append(" insert into t_b_dingdan_data(temp1,temp2,temp3) (select max(temp1)+(dbms_random.value(0,10)*1),10,1 from t_b_dingdan_data)");
 		Db.update(sb.toString());
 		String sql="select temp1 as num from (select temp1 from t_b_dingdan_data order by temp1 desc) where rownum<3";
 
