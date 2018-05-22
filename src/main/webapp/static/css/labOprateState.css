@@ -79,6 +79,7 @@
 
 [class$=-header] {
     margin-right: 1.2%;
+    /*padding-top: 3%;*/
     border: 1px solid #0cf;
 }
 
@@ -94,7 +95,10 @@
 
 [class$=-header] > div,
 [class$=-body] > div > div {
-    margin-bottom: 6%;
+    margin-bottom: 5%;
+}
+[class$=-header] > div{
+    margin-top: 5%;
 }
 
 [class$=-header] [class^=item] h5,
@@ -169,6 +173,36 @@ span strong {
     color: white;
 }
 
+.orderPopup{
+    position: absolute;
+    width: 84.5em;
+    height: 45em;
+    left: 26em;
+    padding-top: 2em;
+    z-index: 1;
+}
+.orderPopup>.close{
+    position: absolute;
+    right: .25em;
+    top: .5em;
+    width: 1em;
+    height: 1em;
+    border: .125rem solid #6cf;
+    border-radius: 50%;
+    background: url(../img/3rd/close.png) no-repeat;
+    background-size: contain;
+    opacity: .6;
+}
+.orderPopup>.close:hover{
+    filter:brightness(1.5);
+    opacity: 1;
+}
+.orderPopup>iframe{
+    height: 100%;
+    width: 97%;
+    box-shadow: 0 0 1em 1em rgba(0,0,0,.7);
+}
 
-
-
+.toOrderPopup{
+    cursor: pointer;
+}

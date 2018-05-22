@@ -1,0 +1,228 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+body > * {
+    /*display: flex;*/
+    flex-direction: column;
+    background-color: #fff;
+}
+
+#container {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+body > header {
+    height: 4rem;
+    background-image: url("../img/3rd/orderPopup_header.png");
+    background-size: 100% 100%;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+/*左侧菜单*/
+.left-nav {
+    width: 10rem;
+    padding-top: 2rem;
+    background-color: #343333;
+}
+
+.left-nav a {
+    position: relative;
+    display: block;
+    padding: .5rem 1rem .5rem 2.5rem;
+    color: #ddd;
+}
+.left-nav > ul > li > a{
+    font-size: .75rem;
+}
+.left-nav > ul > li > a:before,
+.left-nav > ul > li > a:after {
+    content: "";
+    position: absolute;
+    width: .75rem;
+    height: .75rem;
+    background-size: contain;
+    filter: brightness(2);
+}
+
+.left-nav > ul > li:nth-of-type(1n) > a:before {
+    background-image: url(../img/3rd/i_menu.png);
+    left: 1.25rem;
+    top: .875rem;
+}
+
+.left-nav > ul > li > a:after {
+    top: .875rem;
+    right: 1rem;
+    border: .125rem solid #fff;
+    transform: rotate(45deg) scale(.75);
+    border-right: none;
+    border-bottom: none;
+    transition: all 100ms;
+}
+
+.left-nav > ul > li > ul {
+    height: 0;
+    /*max-height: 0;*/
+    overflow: hidden;
+    transition: all 300ms;
+}
+
+.left-nav > ul > li.show > a:after {
+    top: .5rem;
+    transform: rotate(225deg) scale(.75);
+}
+
+.left-nav > ul > li.show > ul {
+    /*max-height: 100rem;*/
+    /*这个写法是临时的，目前css3还没有合适的办法实现从固定高度到auto的过渡，
+    原因跟计算模式有关，具体等后续版本来解决。实在不行可以用js先获取高度*/
+    height: 9rem;
+}
+
+.left-nav > ul > li > ul > li.active,
+.left-nav > ul > li > ul > li:hover {
+    transition: all 300ms;
+    background-color: #4397f7;
+}
+
+.left-nav > ul > li > ul > li > a {
+    font-size: .75rem;
+}
+
+.main {
+    flex: 1;
+}
+
+.main > * {
+    height: 100%;
+}
+
+.main > .list {
+    position: relative;
+    background-image: url("../img/3rd/orderPopup_list.jpg");
+    background-size: 100% 100%;
+}
+
+.toCurve {
+    position: absolute;
+    left: 52%;
+    top: 26%;
+    width: 11%;
+    height: 10%;
+    border: .125rem dashed rgba(255, 127, 0, .6);
+    cursor: pointer;
+}
+
+/*曲线头部*/
+.curve{
+    display: flex;
+    flex-direction: column;
+}
+
+.curve>header>ul.title{
+    font-size: .875rem;
+}
+.curve>header>ul{
+    margin: .5rem 1rem;
+}
+.curve>header>ul>li{
+    display: inline-block;
+    margin: 0 1rem;
+}
+.curve>header>ul.btnGroup>li{
+    margin: 0 .25rem;
+}
+.curve>header>ul>li:first-child{
+    margin-left: .5rem;
+}
+.curve>header>.btnGroup>li>button{
+    padding: .25rem .75rem;
+    color: #4397f7;
+    border: .125rem solid #4397f7;
+    border-radius: .25rem;
+    background-color:transparent;
+    cursor: pointer;
+}
+.curve>header>.btnGroup>li.active>button{
+    color: #fff;
+    background-color: #4397f7;
+
+}
+/*曲线内容*/
+.curveBox{
+    display: flex;
+    flex: 1;
+}
+.curveBox-l{
+    display: flex;
+    flex: 3;
+    flex-direction: column;
+    padding: 0 0 1rem;
+}
+.curveBox-r{
+    flex: 1;
+}
+.curveBox-l>*{
+    flex: 1;
+}
+.loadingAnimation{
+    position: absolute;
+}
+
+#legend_ul_world{
+    color:#4397f7;
+    font-size: .625em;
+    max-height: 29em;
+    overflow: auto;
+}
+#legend_ul_world li>.colorBlock{
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+}
+#legend_ul_world li>.name{
+    display:  inline-block;
+    min-width: 5rem;
+}
+
+.placeholder,
+.placeholder>div{
+    width: 0;
+    height: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

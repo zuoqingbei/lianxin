@@ -68,7 +68,12 @@ function loadAllDataCenterAjax() {
         $(".inland>li:eq(0)").trigger("click");
 
         //右四屏切换到数据中心
-        toLabData();
+        try {
+            toLabData();
+        }catch (e) {
+            console.log(e)
+        }
+
     });
 }
 
