@@ -113,7 +113,7 @@ var com_yAxis = {
         show: true,
         margin:5*bodyScale,
         textStyle: {
-            color: '#66ccff',
+            color: '#4397f7',
             fontSize: 12 * bodyScale
         }
     },
@@ -160,13 +160,13 @@ var com_opt = {
             type: 'category',
             axisLine: { //坐标轴线
                 lineStyle: {
-                    color: '#08d'
+                    color: '#4397f7'
                 }
             },
             axisLabel: {   //坐标轴标签
                 show: true,
                 textStyle: {
-                    color: '#6cf',
+                    color: '#4397f7',
                     fontSize: 12 * bodyScale
                 }
             },
@@ -175,17 +175,7 @@ var com_opt = {
             },
             axisTick: {  //刻度值
                 show: false
-            },
-/*
-            data: function () {
-                if (xDataWorld) {
-                    return xDataWorld.concat(mockXdataWorld);
-                } else {
-                    return null;
-                }
-
             }
-*/
         }],
 
     yAxis: [

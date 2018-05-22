@@ -22,7 +22,7 @@ body > * {
 }
 
 body > header {
-    height: 3.5rem;
+    height: 4rem;
     background-image: url("../img/3rd/orderPopup_header.png");
     background-size: 100% 100%;
 }
