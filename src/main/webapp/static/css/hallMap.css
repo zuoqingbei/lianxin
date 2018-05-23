@@ -1,0 +1,104 @@
+:root {
+    --themeColor: #6cf;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    color: var(--themeColor);
+    text-decoration: none;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: url("../../static/img/bg-2.jpg") no-repeat;
+    background-size: cover;
+}
+
+header {
+    position: relative;
+    height: 6rem;
+    text-align: center;
+    background: url(../img/bg_title.png) no-repeat;
+    background-position-x: 50%;
+    background-position-y: 1em;
+    background-size: 98% 80%;
+}
+
+h1 {
+    position: relative;
+    font-size: 2.5em;
+    letter-spacing: .05em;
+    line-height: 1.2em;
+    font-weight: normal;
+
+}
+
+h1:nth-of-type(1) {
+    margin: .6% auto 0;
+    padding: .5% 0 .3% 11%;
+    letter-spacing: 1rem;
+}
+
+h1:nth-of-type(2) {
+    font-size: 1.9em;
+    margin-top: 0;
+    padding-left: 2rem;
+}
+
+header .mainLogo {
+    display: inline-block;
+    position: absolute;
+    width: 6.6%;
+    height: 43%;
+    top: 12.8%;
+    left: 36.6%;
+    background: url(../img/logo_haier.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+#container {
+    display: flex;
+    height: calc(100% - 6rem);
+}
+
+.mapBox {
+    flex: 3;
+    overflow: hidden;
+}
+
+.textBox {
+    flex: 1;
+}
+
+.mapBox > iframe {
+    position: relative;
+    top: -2rem;
+    right: 2rem;
+    width: 100%;
+    height: 100%;
+}
+
+.text {
+    margin: 6rem 2rem 0 1rem;
+    padding: 2rem 1rem;
+    border: .125rem solid var(--themeColor);
+    font-size: 1.25rem;
+    letter-spacing: .25rem;
+    box-shadow: inset 0 0 2rem 0.25rem rgba(102, 204, 255,.2);
+
+}
+
+
+
+
+
+
+
+
+
+
