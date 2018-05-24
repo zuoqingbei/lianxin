@@ -26,6 +26,17 @@
 <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
 <!--<script src="${contextPath!}/static/js/main_left.js"></script>-->
 <script>
+    var pageH = $(window).height();
+    var pageW = $(window).width();
+    var bodyScale = pageW / 1366;
+    var htmlFontSize = bodyScale * 100 + "%";
+    pageResize();
+    function pageResize() {
+        $("html").css("font-size", htmlFontSize).css("height",pageW * 768 / 1366);
+
+        console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + htmlFontSize)
+    }
+
     function parentMethod(){//平面地图的数据加载
         var bodyScale = 1;
         // productCode, labType

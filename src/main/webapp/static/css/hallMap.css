@@ -3,6 +3,7 @@
 }
 
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
     color: var(--themeColor);
@@ -20,7 +21,8 @@ body {
 
 header {
     position: relative;
-    height: 6rem;
+    height: 6.5rem;
+    padding-top: 1%;
     text-align: center;
     background: url(../img/bg_title.png) no-repeat;
     background-position-x: 50%;
@@ -38,7 +40,7 @@ h1 {
 }
 
 h1:nth-of-type(1) {
-    margin: .6% auto 0;
+    margin: 0 auto;
     padding: .5% 0 .3% 11%;
     letter-spacing: 1rem;
 }
@@ -63,7 +65,7 @@ header .mainLogo {
 
 #container {
     display: flex;
-    height: calc(100% - 6rem);
+    height: calc(100% - 6.5rem);
 }
 
 .mapBox {
@@ -81,12 +83,14 @@ header .mainLogo {
     right: 2rem;
     width: 100%;
     height: 100%;
+    transform: translateY(5%) scaleY(1.08);
 }
 
 .text {
     margin: 6rem 2rem 0 1rem;
     padding: 2rem 1rem;
     border: .125rem solid var(--themeColor);
+    line-height: 2rem;
     font-size: 1.25rem;
     letter-spacing: .25rem;
     box-shadow: inset 0 0 2rem 0.25rem rgba(102, 204, 255,.2);

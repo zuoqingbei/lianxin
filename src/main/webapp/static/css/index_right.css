@@ -1,4 +1,18 @@
-
+#r .btn-back{
+    position: absolute;
+    right: 1em;
+    top: 1.25em;
+}
+#r .btn-back>.icon{
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    background: url("../img/3rd/home.png") no-repeat;
+    background-size: contain;
+}
+#r .btn-back>.icon:hover{
+    filter:brightness(2);
+}
 #r .tab {
     /*width: 100%;*/
     height: 8%;

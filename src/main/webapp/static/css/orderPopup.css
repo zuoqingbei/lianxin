@@ -135,7 +135,13 @@ a {
     display: flex;
     flex-direction: column;
 }
-
+.curve .close{
+    position: absolute;
+    top: 3.75rem;
+    right: .5rem;
+    font-size: 2rem;
+    cursor: pointer;
+}
 .curve>header>ul.title{
     font-size: .875rem;
 }
