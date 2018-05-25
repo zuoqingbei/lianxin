@@ -177,18 +177,19 @@ span strong {
     position: absolute;
     width: 84.5em;
     height: 45em;
-    left: 26em;
+    right: -3.75em;
     padding-top: 2em;
     z-index: 1;
 }
 .orderPopup>.close{
     position: absolute;
-    right: .25em;
+    right: 0.25em;
     top: .5em;
-    width: 1em;
-    height: 1em;
-    border: .125rem solid #6cf;
+    width: 2em;
+    height: 2em;
+    border: .125em solid #6cf;
     border-radius: 50%;
+    font-size: 1em;
     background: url(../img/3rd/close.png) no-repeat;
     background-size: contain;
     opacity: .6;
