@@ -371,11 +371,11 @@ public class OrderModel extends Model<OrderModel> {
 	 * @param  @return
 	 * @return_type   Record
 	 */
-	public List<Record> findDingdan(String labTypeCode){
+	public List<Record> findDingdan(String labTypeCode,String num){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" insert into t_b_dingdan_data(temp1,temp2,temp3) (select max(temp1)+(dbms_random.value(0,0.5)*1),0.5,1 from t_b_dingdan_data)");
+		sb.append(" insert into t_b_dingdan_data2(temp1,temp2,temp3)(select max(temp1)+"+num+",0,0 from t_b_dingdan_data2)");
 		Db.update(sb.toString());
-		String sql="select temp1 as num from (select temp1 from t_b_dingdan_data order by temp1 desc) where rownum<3";
+		String sql="select temp1 as num from (select temp1 from t_b_dingdan_data2 order by temp1 desc) where rownum<3";
 
 
 		return  Db.find(sql);

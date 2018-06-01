@@ -230,8 +230,83 @@
 </div>
 <script src="${contextPath!}/static/js/cover.js"></script>
 <script>
-incrementNumber();
-function incrementNumber(){
+var orderNums=19;//每分钟上限19个订单
+var dataSecond=[];
+var mInterval;
+var num=0;
+$(function(){
+	//alert(randomNumber(orderNums));
+	start();
+	//incrementNumber()
+});
+function start(){
+	createArr();
+	mInterval=setInterval(mIncreaseFunction,1000);
+}
+function incrementNumber(num){
+	$.post(contextPath + '/lab/getDingdan', {num:num}, function (data) {
+		var rateMax =data[0].num;
+        var rate = data[data.length-1].num;
+        var change = (parseFloat(rateMax) - parseFloat(rate)).toFixed(1);
+        var bilv=(change*100/parseFloat(rateMax)).toFixed(4)
+		$(".bottom-1 .value").text(rateMax);
+		 $(".bottom-1 .YoY .value").text(bilv);
+		 if (parseFloat(change) > 0) {
+            $(".bottom-1 .YoY").addClass("up");
+         } else {
+         	$(".bottom-1 .YoY").addClass("down");
+         }
+	    
+	})
+}
+function mIncreaseFunction(){
+	if(num<60){
+		/*  var pre=$(".bottom-1 .number .value").text();
+		 if(pre==NaN||pre=='NaN'){
+			 pre=0;
+		 }
+		 $(".bottom-1 .number .value").text(parseInt(pre)+parseInt(dataSecond[num]));
+		 $(".bottom-1 .YoY .value").text(3.5);
+		 if (parseFloat(change) > 0) {
+            $(".bottom-1 .YoY").addClass("up");
+         } else {
+         	$(".bottom-1 .YoY").addClass("down");
+         } */
+         if(parseInt(dataSecond[num])>0){
+        	 incrementNumber(parseInt(dataSecond[num]));
+         }
+		num++;
+	}else{
+		clearInterval(mInterval);
+		num=0;
+		start();
+	}
+};
+function createArr(){
+	dataSecond=[];
+	for(var x=0;x<60;x++){
+		dataSecond[x]=0;
+	};
+	for(var x=0;x<parseInt(randomNumber(orderNums));x++){
+		dealIndex();
+	}
+	console.log(dataSecond)
+} 
+function dealIndex(){
+	var x=parseInt(59*Math.random());
+	if(dataSecond[x]>0){
+		dealIndex();
+	}else{
+		dataSecond[x]=1;
+	}
+}
+function randomNumber(range){
+	range=parseInt(range);
+	var x=parseInt(range/10);
+	var y=parseInt(range)%10;
+	return parseInt(y*Math.random())+x*10;
+}
+/* function incrementNumber(){
 	$.post(contextPath + '/lab/getDingdan', {}, function (data) {
 		var rateMax =data[0].num;
         var rate = data[data.length-1].num;
@@ -244,9 +319,8 @@ function incrementNumber(){
          } else {
          	$(".bottom-1 .YoY").addClass("down");
          }
-		setTimeout(incrementNumber,1000);
 	    
 	})
-}
+} */
 
 </script>
