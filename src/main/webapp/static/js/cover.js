@@ -51,9 +51,9 @@ $(function () {
  *                 .sign    上升还是下降
  */
 function setViewAll(deviceLoadArr) {
-	console.log('=========88888888888888888==========',deviceLoadArr)
+	// console.log('=========88888888888888888==========',deviceLoadArr)
     deviceLoadArr.forEach(function (item, index, array) {
-    	console.log('==========',item)
+    	// console.log('==========',item)
         var sign = Number(item.sign) > 0 ? "up" : "down";
         htmlSetViewAll += '<tr><td class="name">'
             + item.name + '</td><td class="barBox"><span class="bar"><span class="fill"></span></span></td><td class="value">'
@@ -106,7 +106,7 @@ function equipmentStatisForPlForLab2Ajax(type) {
     		deviceLoadArr.push({name:item.product_name,value:item.dq+"%",YoY:item.change_num,sign:item.change_num});
     		
     	})
-    	console.log('===================',deviceLoadArr)
+    	// console.log('===================',deviceLoadArr)
     	setViewAll(deviceLoadArr);
     }
     	)}

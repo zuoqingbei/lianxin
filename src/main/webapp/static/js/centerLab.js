@@ -1961,7 +1961,7 @@ function runStatus() {
     labValStr.forEach(function (item, index) {
         labVal.push(item.trim().split("\t"))
     });
-    console.log("labVal", labVal);
+    // console.log("labVal", labVal);
     //行列互换
     let labValNew = Array(labVal[0].length);
     labValNew.fill(null).forEach(function (item, i, elem) {
@@ -1985,132 +1985,51 @@ function runStatus() {
     */
 
     console.log("labValNew", labVal);
-    let [bodyHTML, bodyHtml1, bodyHtml2, bodyHtml3] = ['', '', '', '',];
+    let [bodyHtml, bodyHtml1, bodyHtml2, bodyHtml3] = ['', '', '', ''];
+
+    function dataItem(itemName,indexLab) {
+        //遍历每个实验室的每条数据
+        let bodyInnerHTML = `<div><h4>${itemName}</h4>`;
+        labVal[indexLab].forEach(function (itemData, indexData) {
+            barShows.shift();
+            let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
+            console.log(labName[indexData])
+            bodyInnerHTML += `
+                <div class="item">
+                    <h5>${labName[indexData]}：</h5>
+                    ${barHtmlTmp}
+                    <span class="data">${itemData.trim()}</span>
+                </div> 
+            `;
+            if (indexData === 3) {
+                $(".l-top-body").append(bodyInnerHTML+"</div>");
+                headerHtml = "<div><h4>${itemName}</h4>";
+            } else if (indexData === 7) {
+                $(".l-mid-body").append(bodyInnerHTML+"</div>");
+                headerHtml = "<div><h4>${itemName}</h4>";
+            } else if (indexData === 11) {
+                $(".l-bottom-body").append(bodyInnerHTML+"</div>");
+            }
+        })
+    }
 
 
-/*
-    labName.forEach(function (itemName, indexLab) {
-        if(indexLab>4){
+    for(let i;i<5;i++){
+        dataItem(labName[i],i)
+        console.log(labName[i],i)
+    }
+    /*labName.forEach(function (itemName, indexLab) {
+        if (indexLab > 4) {
             return
         }
-        bodyHtml1+=`
-            <div class="l-top-body"><h4>${labName[indexLab]}</h4>
+        /!*bodyHtml += `
+            <div class="l-top-body"><h4>${itemName}</h4>
+                <div class="demo"></div>
+            </div>`*!/
+        dataItem(itemName,indexLab)
+    });*/
 
-            ${
-            labVal[indexLab].forEach(function (itemData, indexData) {
-                barShows.shift();
-                let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
-                rowHtml += `<div class="item1">
-                            <h5>${labVal[0]}</h5><span class="data">
-                            ${barHtmlTmp}
-                            ${labVal[indexLab][indexData]}</span>
-                    </div>
-                    `
-            })
-            }
-                
-
-                <div class="item2"><h5>台位负荷：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 96.6667%;"></div>
-                    </div>
-                    <span class="data">29/30</span></div>
-                <div class="item3"><h5>月负荷率：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 97%;"></div>
-                    </div>
-                    <span class="data">97%</span>
-                </div>
-            </div>
-           <div class="l-top-body-2"><h4>用水电器性能室</h4>
-                <div class="item1">
-                    <h5>实验室数量：<span></span></h5><span class="data">2</span>
-                </div>
-
-                <div class="item2"><h5>台位负荷：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 33.3333%;"></div>
-                    </div>
-                    <span class="data">3/9</span></div>
-                <div class="item3"><h5>月负荷率：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 44%;"></div>
-                    </div>
-                    <span class="data">44%</span>
-                </div>
-            </div>
-           <div class="l-top-body-3"><h4>暖通电器实验室</h4>
-                <div class="item1">
-                    <h5>实验室数量：<span></span></h5><span class="data">2</span>
-                </div>
-
-                <div class="item2"><h5>台位负荷：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
-                    </div>
-                    <span class="data">3/3</span></div>
-                <div class="item3"><h5>月负荷率：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
-                    </div>
-                    <span class="data">100%</span>
-                </div>
-            </div>
-           <div class="l-top-body-4"><h4>安规检测室</h4>
-                <div class="item1">
-                    <h5>实验室数量：<span></span></h5><span class="data">4</span>
-                </div>
-
-                <div class="item2"><h5>台位负荷：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
-                    </div>
-                    <span class="data">12/12</span></div>
-                <div class="item3"><h5>月负荷率：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 98%;"></div>
-                    </div>
-                    <span class="data">98%</span>
-                </div>
-            </div>
-           <div class="l-top-body-5"><h4>EMC实验室</h4>
-                <div class="item1">
-                    <h5>实验室数量：<span></span></h5><span class="data">3</span>
-                </div>
-
-                <div class="item2"><h5>台位负荷：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
-                    </div>
-                    <span class="data">11/11</span></div>
-                <div class="item3"><h5>月负荷率：<span></span></h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
-                    </div>
-                    <span class="data">100%</span>
-                </div>
-            </div>
-        `
-
-        bodyInnerHTML += `
-                <div class="item">
-                    <h5>${item.trim()}：</h5>
-                    ${barHtmlTmp}
-                    <span class="data">${centerVal[index].trim()}</span>
-                </div> `;
-        if (index === 3) {
-            $(".l-top-header").html(headerHtml);
-            headerHtml = "";
-        } else if (index === 7) {
-            $(".l-mid-header").html(headerHtml);
-            headerHtml = "";
-        } else if (index === 11) {
-            $(".l-bottom-header").html(headerHtml);
-        }
-    });
-*/
-
-    $(".l-top-body").html(bodyHtml1);
+    // $(".l-top-body").html(bodyHtml1);
 
 
 }
