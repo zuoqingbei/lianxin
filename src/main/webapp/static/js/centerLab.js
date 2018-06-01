@@ -1883,6 +1883,238 @@ function setProgressValue(ids, value) {
     $("#" + ids).find(".data").html(value + "%");
 }
 
+// 实验室状态
+// 中心总数据
+function runStatus() {
+    let centerName = `
+        实验室总数
+        负荷率最低
+        负荷率最高
+        平均负荷率
+        设备总数
+        当年故障数
+        当前完好数
+        当前完好率
+        已测订单数
+        在测订单数
+        待测订单数
+        及时率
+    `.split("\n").slice(1, -1);
+    let centerVal = `
+        57
+        44%
+        100%
+        92.70%
+        611
+        30
+        596
+        97.5%
+        18546
+        722
+        377
+        98.1%
+    `.split("\n").slice(1, -1);
+    let barHtml = `<div class="progress">
+                       <div class="progress-bar" role="progressbar"></div>
+                   </div>`;
+    let barShows = [1, 2, 3, 7, 11];
+    let headerHtml = "";
+    centerName.forEach(function (item, index) {
+        let barHtmlTmp = !(barShows.includes(index)) ? '' : barHtml;
+        headerHtml += `
+                <div class="item">
+                    <h5>${item.trim()}：</h5>
+                    ${barHtmlTmp}
+                    <span class="data">${centerVal[index].trim()}</span>
+                </div> `;
+        if (index === 3) {
+            $(".l-top-header").html(headerHtml);
+            headerHtml = "";
+        } else if (index === 7) {
+            $(".l-mid-header").html(headerHtml);
+            headerHtml = "";
+        } else if (index === 11) {
+            $(".l-bottom-header").html(headerHtml);
+        }
+    });
+
+    //下面是各实验室数据
+    let labName = centerName.concat().slice(1);
+    labName.splice(0, 3, '实验室数量', '当前台位负荷', '月负荷率');
+    //下面的字符串矩阵中，横向共14个数代表14个实验室，纵向11个对应11种数据
+    let labValStr = `
+        制冷器具性能室	用水电器性能室	暖通电器实验室	安规检测室	EMC实验室	噪声实验室	运输实验室	冰箱可靠性室	洗涤可靠性室	空调可靠性室	智能家电实验室	电气测试（T座）	系统测试（P座）	理化测试（S座）
+        5	2	2	4	3	2	3	8	2	5	1	10	5	5
+        29/30	3/9	3/3	12/12	11/11	2/2	11/11	142/150	28/32	82/100	6/10	156/165	73/82	65/65
+        97%	44%	100%	98%	100%	100%	100%	94.7%	87.5%	82.0%	97%	95%	96.30%	97%
+        85	140	3	12	16	2	11	8	3	5	10	165	82	69
+        6	2	0	1	0	0	9	0	0	0	0	5	3	4
+        83	138	3	12	16	2	11	8	3	5	10	160	80	65
+        97.6%	98.6%	100.0%	100.0%	100.0%	100.0%	100.0%	100.0%	100.0%	100.0%	100.0%	97.0%	97.6%	94.2%
+        179	47	130	577	677	363	61	76	148	55	15	1799	9869	4550
+        15	2	6	76	22	6	67	19	15	28	4	104	212	146
+        9	9	2	19	65	14	19	4	1	1	8	76	83	67
+        100.0%	98.2%	96.9%	98.50%	99.7%	100%	92.4%	97.9%	96.4%	95.5%	100%	99.1%	98.3%	99.0%
+    `.split("\n").slice(1, -1);
+
+    let labVal = [];
+    labValStr.forEach(function (item, index) {
+        labVal.push(item.trim().split("\t"))
+    });
+    console.log("labVal", labVal);
+    //行列互换
+    let labValNew = Array(labVal[0].length);
+    labValNew.fill(null).forEach(function (item, i, elem) {
+        labValNew[i] = [];
+    })
+    labVal.forEach(function (itemI, i) {
+        itemI.forEach(function (itemJ, j) {
+            labValNew[j][i] = itemJ;
+        })
+    });
+    labVal = labValNew;
+    /*
+        //这个不行
+        let labValNew = [];
+        labVal.forEach(function (itemI,i) {
+            labValNew[i] = [];
+            itemI.forEach(function (itemJ,j) {
+                labValNew[i][j]=labVal[j][i];
+            })
+        });
+    */
+
+    console.log("labValNew", labVal);
+    let [bodyHTML, bodyHtml1, bodyHtml2, bodyHtml3] = ['', '', '', '',];
+
+
+/*
+    labName.forEach(function (itemName, indexLab) {
+        if(indexLab>4){
+            return
+        }
+        bodyHtml1+=`
+            <div class="l-top-body"><h4>${labName[indexLab]}</h4>
+
+            ${
+            labVal[indexLab].forEach(function (itemData, indexData) {
+                barShows.shift();
+                let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
+                rowHtml += `<div class="item1">
+                            <h5>${labVal[0]}</h5><span class="data">
+                            ${barHtmlTmp}
+                            ${labVal[indexLab][indexData]}</span>
+                    </div>
+                    `
+            })
+            }
+                
+
+                <div class="item2"><h5>台位负荷：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 96.6667%;"></div>
+                    </div>
+                    <span class="data">29/30</span></div>
+                <div class="item3"><h5>月负荷率：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 97%;"></div>
+                    </div>
+                    <span class="data">97%</span>
+                </div>
+            </div>
+           <div class="l-top-body-2"><h4>用水电器性能室</h4>
+                <div class="item1">
+                    <h5>实验室数量：<span></span></h5><span class="data">2</span>
+                </div>
+
+                <div class="item2"><h5>台位负荷：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 33.3333%;"></div>
+                    </div>
+                    <span class="data">3/9</span></div>
+                <div class="item3"><h5>月负荷率：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 44%;"></div>
+                    </div>
+                    <span class="data">44%</span>
+                </div>
+            </div>
+           <div class="l-top-body-3"><h4>暖通电器实验室</h4>
+                <div class="item1">
+                    <h5>实验室数量：<span></span></h5><span class="data">2</span>
+                </div>
+
+                <div class="item2"><h5>台位负荷：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
+                    </div>
+                    <span class="data">3/3</span></div>
+                <div class="item3"><h5>月负荷率：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
+                    </div>
+                    <span class="data">100%</span>
+                </div>
+            </div>
+           <div class="l-top-body-4"><h4>安规检测室</h4>
+                <div class="item1">
+                    <h5>实验室数量：<span></span></h5><span class="data">4</span>
+                </div>
+
+                <div class="item2"><h5>台位负荷：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
+                    </div>
+                    <span class="data">12/12</span></div>
+                <div class="item3"><h5>月负荷率：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 98%;"></div>
+                    </div>
+                    <span class="data">98%</span>
+                </div>
+            </div>
+           <div class="l-top-body-5"><h4>EMC实验室</h4>
+                <div class="item1">
+                    <h5>实验室数量：<span></span></h5><span class="data">3</span>
+                </div>
+
+                <div class="item2"><h5>台位负荷：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
+                    </div>
+                    <span class="data">11/11</span></div>
+                <div class="item3"><h5>月负荷率：<span></span></h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 100%;"></div>
+                    </div>
+                    <span class="data">100%</span>
+                </div>
+            </div>
+        `
+
+        bodyInnerHTML += `
+                <div class="item">
+                    <h5>${item.trim()}：</h5>
+                    ${barHtmlTmp}
+                    <span class="data">${centerVal[index].trim()}</span>
+                </div> `;
+        if (index === 3) {
+            $(".l-top-header").html(headerHtml);
+            headerHtml = "";
+        } else if (index === 7) {
+            $(".l-mid-header").html(headerHtml);
+            headerHtml = "";
+        } else if (index === 11) {
+            $(".l-bottom-header").html(headerHtml);
+        }
+    });
+*/
+
+    $(".l-top-body").html(bodyHtml1);
+
+
+}
+
 
 //                            _ooOoo_
 //                           o8888888o

@@ -10,6 +10,8 @@ var videoJsIsPlayed = false;
 
 
 $(function () {
+    //实验室状态数据加载
+    runStatus();
     //实验室状态页面关闭订单弹窗
     $(".orderPopup>.close").click(function () {
         $(this).parent().removeClass("show")
@@ -17,8 +19,8 @@ $(function () {
     // 实验室状态页面的进度条
     $(".lab .item.status .progress-bar").css("width",function () {
         var text = $(this).parent().next().text();
-        if(text.indexOf("/")>0){
-            text = text.split("/")[0]/text.split("/")[1]*100 + "%";
+        if(text.indexOf("/")>0) {
+            text = text.split("/")[0] / text.split("/")[1] * 100 + "%";
         }
         return text;
     });
@@ -104,6 +106,7 @@ $(function () {
             //获取数据中心的视频列表
             loadVideosByDataCenterAjax(dataCenterId);
         }
+
     });
 
     //菜单的折叠与展开

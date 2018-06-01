@@ -171,6 +171,7 @@ span strong {
 .l-top-header, .l-mid-header, .l-bottom-header {
     border: 1px solid white;
     color: white;
+    width: 18.5em;
 }
 
 .orderPopup{
