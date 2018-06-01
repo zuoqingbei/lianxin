@@ -96,6 +96,7 @@ public class DbConfigModel extends Model<DbConfigModel> {
         cl.set(Calendar.DATE, day);  
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 		String now=sdf.format(cl.getTime());
+		//now="20180504";
 		if(!isPartition(c, configName)){
 			return partition;
 		}else{

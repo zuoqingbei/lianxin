@@ -426,7 +426,8 @@ public class LabController extends BaseController {
 	 */
 	public void getDingdan() {
 		String labTypeCode = getPara("labTypeCode", "");
-		List<Record> data = OrderModel.dao.findDingdan(labTypeCode);
+		String num= getPara("num", "0");
+		List<Record> data = OrderModel.dao.findDingdan(labTypeCode,num);
 		if (data == null) {
 			data = (List<Record>) new Record();
 		}
