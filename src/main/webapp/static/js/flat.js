@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2017/4/15 0015.
  */
-var bodyScale = parent.bodyScale;
+var bodyScale = parent.bodyScale || 1;
 var pageH = parent.pageH;
 var pageW = parent.pageW;
 
@@ -191,7 +191,12 @@ function seriesData(data) {
             },
             data: data
         },
-        geoCoord: getGeoArr(data)
+        // geoCoord: getGeoArr(data)
+        geoCoord: function () {
+            var t = getGeoArr(data);
+            console.log(t);
+            return t
+        }()
 
     };
     seriesData.push(item);

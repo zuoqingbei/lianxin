@@ -10,6 +10,25 @@ var videoJsIsPlayed = false;
 
 
 $(function () {
+    //实验室状态页面关闭订单弹窗
+    $(".orderPopup>.close").click(function () {
+        $(this).parent().removeClass("show")
+    });
+    // 实验室状态页面的进度条
+    $(".lab .item.status .progress-bar").css("width",function () {
+        var text = $(this).parent().next().text();
+        if(text.indexOf("/")>0){
+            text = text.split("/")[0]/text.split("/")[1]*100 + "%";
+        }
+        return text;
+    });
+    // 为了达到两端对齐的效果而添加空标签<span>
+    $(".lab .item.status [class^=item]>h5").append("<span></span>");
+    $(".toOrderPopup").click(function () {
+        $(".orderPopup").addClass("show")
+    });
+
+
     smallVideoMove();
 
     loadAllDataCenterAjax();
@@ -255,11 +274,16 @@ $(function () {
 
 
     // 数据分析中的合格率、及时率、满意度
-    initThree();//合格率
+    try{
+        initThree();//合格率
+    }catch (e) {
+        console.log(e.message)
+    }
+
     initfour();//及时率
     inittwo();//满意度
 
-    labAllForCenterLabAjax();
+    // labAllForCenterLabAjax();
 });
 function inlandTabShow(mark) { //国内
     if (mark === "zhonghaiborui") {

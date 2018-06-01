@@ -61,4 +61,12 @@ public class LayoutController extends BaseController {
 		render("fullScreen_map.html");
 	}
 
+	public void orderPopup() {
+		render("orderPopup.html");
+	}
+	
+	public void hallMap() {
+		render("hallMap.html");
+	}
+	
 }

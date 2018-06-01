@@ -11,7 +11,7 @@
 }
 
 #cover .cover-head h2 {
-    font-size: 2.6em;
+    font-size: 2.625em;
     letter-spacing: .05em;
     color: #66CCFE;
     text-align: center;
@@ -31,19 +31,25 @@
     background-image: url(../../static/img/3rd/cover_header_r.png);
 }
 
-#cover .content {
+#cover .switchBox {
     height: 90%;
+}
+#cover .statusCover {
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-#cover .content > * {
+#cover .statusCover > * {
     flex: 1;
     display: flex;
 }
-#cover .content > * >*{
+#cover .statusCover > * >*{
     display: flex;
     flex: 1;
+}
+.top-3{
+    cursor: pointer;
 }
 #cover .box {
     margin: 1.75em 2em;
@@ -73,7 +79,10 @@
     display: inline-block;
     width: 1em;
     height: 1em;
+    border-radius: 50%;
     background: url("../../static/img/3rd/level_green.png");
+    /*由于计算到像素的原因，使用背景色会让每层的圆边界看起来不够圆*/
+    /*background: radial-gradient(circle farthest-side at 50% 50%,rgba(0,230,115,1) 33%,rgba(0,230,115,.6) 35%,rgba(0,230,115,.6) 66%,rgba(0,230,115,.3) 68%,rgba(0,230,115,.3));*/
     background-size: 100% 100%;
 }
 #cover .box>.number>.level.good>.circle {
@@ -83,7 +92,8 @@
     background-image: url("../../static/img/3rd/level_red.png");
 }
 #cover .box>.number>.level.best{
-    color: #00e673;
+    color: rgba(0,230,115,1);
+
 }
 #cover .box>.number>.level.good{
     color: #ffec3d;
@@ -91,6 +101,152 @@
 #cover .box>.number>.level.bad{
     color: #ff4d4f;
 }
+#cover .bottom .box>h4{
+    margin-top: 2.25em;
+}
+#cover .bottom .box>.number{
+    margin-top: .375em;
+    margin-bottom: .25em;
+}
+#cover .YoY{
+    position: relative;
+    font-size: 2em;
+    text-align: center;
+}
+#cover .YoY:after{
+    content: "";
+    position: absolute;
+    top: .125em;
+    display: inline-block;
+    width: .5em;
+    height: 1em;
+    margin-left: .25em;
+    background-image: url("../../static/img/3rd/level_up.png");
+    background-size: 100% 100%;
+}
+#cover .YoY.down:after{
+    background-image: url("../../static/img/3rd/level_down.png");
+}
+
+#cover .deviceLoad{
+    display: flex;
+    height: 100%;
+}
+#cover .deviceLoad>.btn-back{
+    position: absolute;
+    left: 1.25em;
+    top: 1.75em;
+}
+#cover .deviceLoad>.btn-back>.icon{
+    display: block;
+    width: 2.5em;
+    height: 2.5em;
+    background-image: url(../img/3rd/back.png);
+    background-size: 100% 100%;
+}
+#cover .deviceLoad>div{
+    display: flex;
+    flex: 1;
+}
+#cover .deviceLoad>div>div{
+    position: relative;
+    width: 100%;
+    margin: 0 3em 2em 1em;
+    padding: 5.5em 2em 2em;
+    background-image: url("../img/3rd/deviceLoad_border.png");
+    background-size: 100% 100%;
+}
+#cover .deviceLoad>div>div>h4{
+    position: absolute;
+    left: 22%;
+    top: 1.3%;
+    transform: translateX(-50%);
+    font-size: 2em;
+}
+#cover .deviceLoad>div>div table{
+    font-size: 1.75em;
+    width: 100%;
+}
+#cover .deviceLoad>div>div tr:nth-child(even){
+    background-color: rgba(54, 129, 179, 0.2)
+}
+#cover .deviceLoad>div>div tr:nth-child(odd){
+    background-color: rgba(35, 79, 101, 0.2)
+}
+#cover .deviceLoad>div>div table td,
+#cover .deviceLoad>div>div table th{
+    padding: .8125em 1em;
+    text-align: center;
+}
+#cover .deviceLoad>div>div table th{
+    color: #fff;
+    background-color: #184266;
+}
+#cover .deviceLoad>div>div table .YoY{
+    font-size: 1em;
+}
+#cover .deviceLoad>div>div table .YoY:after{
+    top: .9325em;
+}
+#cover .scrollBoard{
+    height: 37em;
+    overflow: hidden;
+}
+#cover table .barBox>.bar{
+    display: block;
+    width: 10em;
+    height: .75em;
+    border-radius: .5em;
+    background-color: rgba(0,0,0,.8);
+}
+#cover table .barBox>.bar>.fill{
+    display: block;
+    position: relative;
+    top: 10%;
+    height: 80%;
+    width: 0;
+    border-radius: .5em;
+    transition: width 1s;
+}
+#cover table tr:nth-of-type(1) .fill{
+    background-color: #6cf;
+}
+#cover table tr:nth-of-type(2) .fill{
+    background-color: #ff7875;
+}
+#cover table tr:nth-of-type(3) .fill{
+    background-color: #ffc069;
+}
+#cover table tr:nth-of-type(4) .fill{
+    background-color: #d3f261;
+}
+#cover table tr:nth-of-type(5) .fill{
+    background-color: #5cdbd3;
+}
+#cover table tr:nth-of-type(6) .fill{
+    background-color: #b37feb;
+}
+#cover table tr:nth-of-type(7) .fill{
+    background-color: #ff85c0;
+}
+#cover table tr:nth-of-type(8) .fill{
+    background-color: #fff566;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
