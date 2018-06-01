@@ -65,4 +65,8 @@ public class LayoutController extends BaseController {
 		render("orderPopup.html");
 	}
 	
+	public void hallMap() {
+		render("hallMap.html");
+	}
+	
 }

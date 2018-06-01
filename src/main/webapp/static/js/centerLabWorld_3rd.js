@@ -569,6 +569,7 @@ function resetDataCenterLabWorld() {
 
 //获取传感器信息 用于生成y轴
 function findSensorByLabCenetrTabAjaxWorld(labTypeCode, testUnitId, fileName) {
+    console.log("findSensorByLabCenetrTabAjaxWorld")
     if (mDataCenterId == "12") {
         mSensor[0].unit = '°F';
     } else {
@@ -599,6 +600,7 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId, fileName) {
         // loadingAnimateOut("curve", 500);
         setTimeout(function () {
             data = eval("(" + data + ")");
+            console.log(data)
             if (data == "") {
                 //alert("暂未开测");
                 return;

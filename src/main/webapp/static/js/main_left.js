@@ -147,13 +147,11 @@ function getSelectLab($this) {
     });
     //产线
     var $actLiPro = $this.parents(".l").find(".legend .labLine .line").find("li.active");
-    console.log("------$actLiPro:" + $actLiPro.length)
     $actLiPro.each(function () {
         mproductCode += $(this).attr("code") + ","
     });
     // $(this).parents = mproductCode.substr(0, mproductCode.length - 1);
     mlabType = mlabType.substr(0, mlabType.length - 1);
-    console.log("------------mproductCode,mlabType:",mproductCode,mlabType);
     if (mlabType == labType && mproductCode == productCode) {
         changed = false;
     }
@@ -168,10 +166,14 @@ function reloadData(productCode, labType) {
     //console.log(echarts.init(document.getElementById('iframe').contentWindow.document.getElementById("mapFlat")))
     //document.getElementById('iframe').contentWindow.say()
     for (var k = 0; k < $("#iframeFlatMapL3x3").length; k++) {
-
         $("#iframeFlatMapL3x3").eq(k)[0].contentWindow.createArrData(productCode, labType);
     }
-    reloadLeftData();
+    try{
+        reloadLeftData();
+    }catch (e) {
+        console.log(e.message)
+    }
+
 }
 //点击a元素时
 function navSelectA() {//这里会触发地图中要加载的数据

@@ -30,8 +30,9 @@
         <div class="list">
             <div class="toCurve"></div>
         </div>
-        <div class="curve" hidden>
+        <div class="curve" style="display: none">
             <header>
+                <div class="close">×</div>
                 <ul class="title">
                     <li>实验室编号：<span id="center_sybh_id_world"></span></li>
                     <li>Sample code：<span id="center_ypbm_id_world"></span></li>
@@ -99,13 +100,10 @@
             $(this).addClass("active");
             return false;
         });
-        $(".toCurve").click(function () {
-            $(".list").hide().siblings().show();
-        })
     }
 
     $(function () {
-        $("html").css("font-size",bodyScale*100+"%");
+        $("html").css("font-size",bodyScale*16+"px");
         leftNavAction();
     })
 </script>
@@ -115,10 +113,16 @@
 <script src="${contextPath!}/static/js/labAction.js"></script>
 <script src="${contextPath!}/static/js/centerLab.js"></script>
 <script src="${contextPath!}/static/js/centerLabWorld_3rd.js"></script>
-<!--<script src="${contextPath!}/static/js/orderPopup.js"></script>-->
 <script>
     $(function () {
-        findSensorByLabCenetrTabAjaxWorld("USLABBX","P1","USLAB-B1.json");
+        $(".curve .close").click(function () {
+            $(".curve").hide().siblings().show();
+        });
+        $(".toCurve").click(function () {
+            $(".list").hide().siblings().show();
+            $(".curve .btnGroup>li>button:eq(0)").click()
+        });
+
         $(".curve .btnGroup>li>button").click(function () {
             $(this).parent().addClass("active").siblings().removeClass("active");
             var index = $(this).parent().index();
