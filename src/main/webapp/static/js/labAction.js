@@ -363,7 +363,6 @@ function loadingAnimate($thisElem, text, time) {
 
 //视频加载动画淡出
 function loadingAnimateOut(type, time) {
-    //alert(type)
     // console.log("调用loadingAnimateOut");
     if (type === "curve") {
         // console.log("曲线调用loadingAnimateOut");

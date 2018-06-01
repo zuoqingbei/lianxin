@@ -546,7 +546,6 @@ function findSensorDataCenetrTabAjax(labTypeCode, url, testUnitId) {
     }, function (data) {
         loadingAnimateOut("curve", 500);
         if (data == "") {
-            //alert("暂未开测");
             return;
         }
         myChart1.clear();
@@ -1921,6 +1920,7 @@ function runStatus() {
     let headerHtml = "";
     centerName.forEach(function (item, index) {
         let barHtmlTmp = !(barShows.includes(index)) ? '' : barHtml;
+        console.log(index,(barShows.includes(index)))
         headerHtml += `
                 <div class="item">
                     <h5>${item.trim()}：</h5>
@@ -1939,8 +1939,8 @@ function runStatus() {
     });
 
     //下面是各实验室数据
-    let labName = centerName.concat().slice(1);
-    labName.splice(0, 3, '实验室数量', '当前台位负荷', '月负荷率');
+    let labDataName = centerName.concat().slice(1);
+    labDataName.splice(0, 3, '实验室数量', '当前台位负荷', '月负荷率');
     //下面的字符串矩阵中，横向共14个数代表14个实验室，纵向11个对应11种数据
     let labValStr = `
         制冷器具性能室	用水电器性能室	暖通电器实验室	安规检测室	EMC实验室	噪声实验室	运输实验室	冰箱可靠性室	洗涤可靠性室	空调可靠性室	智能家电实验室	电气测试（T座）	系统测试（P座）	理化测试（S座）
@@ -1961,7 +1961,6 @@ function runStatus() {
     labValStr.forEach(function (item, index) {
         labVal.push(item.trim().split("\t"))
     });
-    // console.log("labVal", labVal);
     //行列互换
     let labValNew = Array(labVal[0].length);
     labValNew.fill(null).forEach(function (item, i, elem) {
@@ -1973,52 +1972,43 @@ function runStatus() {
         })
     });
     labVal = labValNew;
-    /*
-        //这个不行
-        let labValNew = [];
-        labVal.forEach(function (itemI,i) {
-            labValNew[i] = [];
-            itemI.forEach(function (itemJ,j) {
-                labValNew[i][j]=labVal[j][i];
-            })
-        });
-    */
 
     console.log("labValNew", labVal);
-    let [bodyHtml, bodyHtml1, bodyHtml2, bodyHtml3] = ['', '', '', ''];
-
-    function dataItem(itemName,indexLab) {
+    for(let i=0;i<5;i++){
+        dataItem(i)
+    }
+    barShows = [3, 7, 11];
+    function dataItem(indexLab) {
         //遍历每个实验室的每条数据
-        let bodyInnerHTML = `<div><h4>${itemName}</h4>`;
+        let labName = labVal[indexLab][0];
+        let bodyInnerHTML = `<div><h4>${labName}</h4>`;
         labVal[indexLab].forEach(function (itemData, indexData) {
-            barShows.shift();
-            let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
-            console.log(labName[indexData])
-            bodyInnerHTML += `
-                <div class="item">
-                    <h5>${labName[indexData]}：</h5>
-                    ${barHtmlTmp}
-                    <span class="data">${itemData.trim()}</span>
-                </div> 
-            `;
-            if (indexData === 3) {
-                $(".l-top-body").append(bodyInnerHTML+"</div>");
-                headerHtml = "<div><h4>${itemName}</h4>";
-            } else if (indexData === 7) {
-                $(".l-mid-body").append(bodyInnerHTML+"</div>");
-                headerHtml = "<div><h4>${itemName}</h4>";
-            } else if (indexData === 11) {
-                $(".l-bottom-body").append(bodyInnerHTML+"</div>");
+            if(indexData>0){
+                let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
+
+                console.log(indexData,barShows,barShows.includes(3))
+                bodyInnerHTML +=
+                    `<div class="item">
+                        <h5>${labDataName[indexData-1].trim()}：</h5>
+                        ${barHtmlTmp}
+                        <span class="data">${itemData.trim()}</span>
+                    </div>`;
+                if (indexData === 3) {
+                    $(".l-top-body").append(bodyInnerHTML+"</div>");
+                    bodyInnerHTML = `<div><h4>${labName}</h4>`;
+                } else if (indexData === 7) {
+                    $(".l-mid-body").append(bodyInnerHTML+"</div>");
+                    bodyInnerHTML = `<div><h4>${labName}</h4>`;
+                } else if (indexData === 11) {
+                    $(".l-bottom-body").append(bodyInnerHTML+"</div>");
+                }
             }
+
         })
     }
 
 
-    for(let i;i<5;i++){
-        dataItem(labName[i],i)
-        console.log(labName[i],i)
-    }
-    /*labName.forEach(function (itemName, indexLab) {
+    /*labDataName.forEach(function (itemName, indexLab) {
         if (indexLab > 4) {
             return
         }
