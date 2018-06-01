@@ -1,7 +1,11 @@
 var htmlSetViewAll = "";
 var htmlSetDetail = "";
+var labTypeCode;//实验室类型
+equipmentStatisForPlForLab2Ajax(2);
+
+
 $(function () {
-    var debug = true;
+    var debug = false;
     if (debug) {
         var deviceLoadArr  = [
             {name: "检测中心"},
@@ -22,7 +26,7 @@ $(function () {
         // console.log("-----------deviceLoadArr", deviceLoadArr);
     }
     //设置设备负荷率
-    setViewAll(deviceLoadArr);
+    //setViewAll(deviceLoadArr);
     var $cover = $("#cover");
     $cover.find(".top-3").click(function () {
         $(".deviceLoad").show().siblings().hide();
@@ -47,7 +51,9 @@ $(function () {
  *                 .sign    上升还是下降
  */
 function setViewAll(deviceLoadArr) {
+	console.log('=========88888888888888888==========',deviceLoadArr)
     deviceLoadArr.forEach(function (item, index, array) {
+    	console.log('==========',item)
         var sign = Number(item.sign) > 0 ? "up" : "down";
         htmlSetViewAll += '<tr><td class="name">'
             + item.name + '</td><td class="barBox"><span class="bar"><span class="fill"></span></span></td><td class="value">'
@@ -88,4 +94,19 @@ function loadData(html) {
         .find(".fill").css("width", function () {
         return $(this).parent().parent().next().text();
     });
+
 }
+function equipmentStatisForPlForLab2Ajax(type) {
+    $.post(contextPath + '/lab/equipmentStatisForPlForLab2Ajax', {
+        "type": type,
+        "labTypeCode": labTypeCode
+    }, function (data) {
+    	var deviceLoadArr=[];
+    	$.each(data,function(index,item){
+    		deviceLoadArr.push({name:item.product_name,value:item.dq+"%",YoY:item.change_num,sign:item.change_num});
+    		
+    	})
+    	console.log('===================',deviceLoadArr)
+    	setViewAll(deviceLoadArr);
+    }
+    	)}
