@@ -305,8 +305,9 @@ function toLabData() {
     }
     $(".toLabData").click(function(){
         $(".lab").show().siblings("div").not("#l").hide();
-        // console.log($(".lab .switchBox>ul.inland>li:eq(0)"));
+        //实验室切回国内的中海博睿
         $(".lab .switchBox>ul.inland>li:eq(0)").click();
+        $(".lab .labMainNav header>ul>li:eq(0)").click();
     })
 }
 

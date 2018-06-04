@@ -214,7 +214,10 @@ a {
     height: 0;
 }
 
-
+/*隐藏QQ浏览器默认的搜狗工具类造成的白条*/
+#whiteDiv{
+    display: none!important;
+}
 
 
 

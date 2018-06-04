@@ -12,24 +12,6 @@ var videoJsIsPlayed = false;
 $(function () {
     //实验室状态数据加载
     runStatus();
-    //实验室状态页面关闭订单弹窗
-    $(".orderPopup>.close").click(function () {
-        $(this).parent().removeClass("show")
-    });
-    // 实验室状态页面的进度条
-    $(".lab .item.status .progress-bar").css("width",function () {
-        var text = $(this).parent().next().text();
-        if(text.indexOf("/")>0) {
-            text = text.split("/")[0] / text.split("/")[1] * 100 + "%";
-        }
-        return text;
-    });
-    // 为了达到两端对齐的效果而添加空标签<span>
-    $(".lab .item.status [class^=item]>h5").append("<span></span>");
-    $(".toOrderPopup").click(function () {
-        $(".orderPopup").addClass("show")
-    });
-
 
     smallVideoMove();
 
@@ -45,14 +27,17 @@ $(function () {
         $navHeadLi.removeClass("active");
         $(this).addClass("active");
         $(".labMainNav>.switchBox>ul:eq(" + $(this).index() + ")").show().siblings().hide();
-        $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
+        // setTimeout(function () {
+        //     $(".labSubNav>ul>li").hide().eq(1).click();
+        // },100)
+        $(".labSubNav>ul>li").hide().eq(1).addClass("active").siblings().removeClass("active");
 
         if ($(this).index() === 0) { //国内
             inlandTabShow();
         } else {                    //国外
             abroadTabShow();
         }
-        $(".lab_content_r>.switchBox>div.item").eq(3).show().siblings().hide();
+        $(".lab_content_r>.switchBox>div.item").eq(1).show().siblings().hide();
     });
 
     //左侧菜单数据中心点击事件
@@ -65,22 +50,17 @@ $(function () {
         if ($(this).data("urltype")) {//url类型
             moduleMakersShow(dataCenterMap.get($(this).data("urltype") + ''));
         } else {
-            // console.log("---非URL数据中心");
             $(".labSubNav>ul>li").hide().eq(3).addClass("active").siblings().removeClass("active");
             $lab_content_r.find(".switchBox>div.item.monitoring").show().siblings().hide();
             var dataCenterId = $(this).data("centerid");
             var $curveBox = $monitoring.find(".shishi_right").children(".item.curve");
-            // console.log("---$curveBox",$curveBox[0])
             if ($(this).parents("ul.inland")[0]) {//从url类型跳回到国内其他列表
-                // console.log("---国内");
                 if (dataCenterId === 1) {
-                    // console.log("---中海")
                     $(".labSubNav>ul>li").hide().eq(0).addClass("active").siblings().removeClass("active");
                     $lab_content_r.find(".switchBox>div.item.labHome").show().siblings().hide();
                     inlandTabShow("zhonghaiborui");
                     $(".labSubNav>ul>li").eq(1).click();
                 } else {
-                    // console.log("---国内非中海")
                     inlandTabShow();
                     //只依靠台位来切换曲线不行，万一读不出来台位就一直显示体验馆，而且之前如果显示视频也不会自动隐藏
 
@@ -93,11 +73,9 @@ $(function () {
                     // $(".item.status .leftContent [class$=-body]").children().hide();
                 }
             } else {
-                console.log("---国外");
                 abroadTabShow();
                 // if ($curveBox.is(":hidden")) {//曲线没有显示
                     $curveBox.show().siblings().hide();
-                // console.log("---$curveBox",$curveBox[0])
                 // }
                 $(".smallVideoBox").hide();
                 labCurveResize();
@@ -130,6 +108,7 @@ $(function () {
         subNavLi.removeClass("active");
         $(this).addClass("active");
         var borderUrl = $lab_content_r.css("background-image");
+
 
         //边框变换
         if ($(".labMainNav>header>ul>li:eq(0)").hasClass("active")) {//国内
@@ -167,7 +146,6 @@ $(function () {
     $(".centerVideoList>ul").on("click", "li", function () {
         $(this).addClass("active").siblings().removeClass("active");
         var videoUrl = $(this).data("videourl").replace("/1/live.m3u8", "/0/live.m3u8");
-        console.log("videoUrl", videoUrl);
         // videoShow("bigVideo",videoUrl,0);
         loadingAnimate($(".shishi_right").find(".bigVideoBox>.loadingAnimation"), "视频接入中", 4000);
         // loadingAnimate($(".shishi_right").find(".bigVideoBox>.loadingAnimation"), "视频接入中");
@@ -292,7 +270,7 @@ function inlandTabShow(mark) { //国内
     if (mark === "zhonghaiborui") {
         $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_1.png)");
     } else {
-        $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_4.png)");
+        $lab_content_r.css("background-image", "url(../static/img/lab/labTabBoardInland_2.png)");
     }
     $(".labSubNav>ul>li.labHome,.labSubNav>ul>li.status,.labSubNav>ul>li.analysis,.labSubNav>ul>li.curves").show();
 }

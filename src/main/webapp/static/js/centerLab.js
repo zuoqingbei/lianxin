@@ -358,7 +358,7 @@ function initfour() {
                 ]
             });
         } catch (e) {
-            console.log(e.message)
+            // console.log(e.message)
         }
     });
 }
@@ -1869,7 +1869,7 @@ function joinTopHtmls(index, item) {
 }
 
 function labDetailInfo(labCode, url) {
-    console.log(labCode + "---" + url);
+    // console.log(labCode + "---" + url);
 }
 
 function setProgressValue(ids, value) {
@@ -1920,7 +1920,7 @@ function runStatus() {
     let headerHtml = "";
     centerName.forEach(function (item, index) {
         let barHtmlTmp = !(barShows.includes(index)) ? '' : barHtml;
-        console.log(index,(barShows.includes(index)))
+        // console.log(index,(barShows.includes(index)))
         headerHtml += `
                 <div class="item">
                     <h5>${item.trim()}：</h5>
@@ -1940,7 +1940,7 @@ function runStatus() {
 
     //下面是各实验室数据
     let labDataName = centerName.concat().slice(1);
-    labDataName.splice(0, 3, '实验室数量', '当前台位负荷', '月负荷率');
+    labDataName.splice(0, 3, '实验室数量', '在线台位', '月负荷率');
     //下面的字符串矩阵中，横向共14个数代表14个实验室，纵向11个对应11种数据
     let labValStr = `
         制冷器具性能室	用水电器性能室	暖通电器实验室	安规检测室	EMC实验室	噪声实验室	运输实验室	冰箱可靠性室	洗涤可靠性室	空调可靠性室	智能家电实验室	电气测试（T座）	系统测试（P座）	理化测试（S座）
@@ -1973,7 +1973,7 @@ function runStatus() {
     });
     labVal = labValNew;
 
-    console.log("labValNew", labVal);
+    // console.log("labValNew", labVal);
     for(let i=0;i<5;i++){
         dataItem(i)
     }
@@ -1986,7 +1986,7 @@ function runStatus() {
             if(indexData>0){
                 let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
 
-                console.log(indexData,barShows,barShows.includes(3))
+                // console.log(indexData,barShows,barShows.includes(3))
                 bodyInnerHTML +=
                     `<div class="item">
                         <h5>${labDataName[indexData-1].trim()}：</h5>
@@ -2007,19 +2007,31 @@ function runStatus() {
         })
     }
 
-
-    /*labDataName.forEach(function (itemName, indexLab) {
-        if (indexLab > 4) {
-            return
+    //实验室状态页面关闭订单弹窗
+    $(".orderPopup>.close").click(function () {
+        $(this).parent().removeClass("show")
+    });
+    // 实验室状态页面的进度条
+    $(".lab .item.status .progress-bar").css("width",function () {
+        var text = $(this).parent().next().text();
+        if(text.indexOf("/")>0) {
+            var str ="<strong>"+ text.slice(0,text.indexOf('/'))+"</strong>"+text.slice(text.indexOf('/'))
+            $(this).parent().next().html(str);
+            text = text.split("/")[0] / text.split("/")[1] * 100 + "%";
         }
-        /!*bodyHtml += `
-            <div class="l-top-body"><h4>${itemName}</h4>
-                <div class="demo"></div>
-            </div>`*!/
-        dataItem(itemName,indexLab)
-    });*/
+        return text;
+    });
+    // 为了达到两端对齐的效果而添加空标签<span>
+    $(".lab .item.status [class^=item]>h5").append("<span></span>");
 
-    // $(".l-top-body").html(bodyHtml1);
+    // 订单弹出页
+    $(".item.status .leftContent .l-bottom-body>div").eq(0).children().eq(4).addClass("toOrderPopup");
+    $(".toOrderPopup").click(function () {
+        $(".orderPopup").addClass("show")
+    });
+
+
+
 
 
 }

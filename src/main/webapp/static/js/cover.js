@@ -1,13 +1,17 @@
 var htmlSetViewAll = "";
 var htmlSetDetail = "";
 var labTypeCode;//实验室类型
+var debug = false;
+
+/*六个指标的绑数函数在tab2.js的equipmentTotalForLab1Ajax()里面*/
 equipmentStatisForPlForLab2Ajax(2);
 
-
 $(function () {
-    var debug = false;
+
+
+
     if (debug) {
-        var deviceLoadArr  = [
+        var deviceLoadArr = [
             {name: "检测中心"},
             {name: "冰冷产线"},
             {name: "检测中心3"},
@@ -39,7 +43,7 @@ $(function () {
     //滚动效果
     var coverScrollBoard = $("#cover .scrollBoard");
     coverScrollBoard.append(coverScrollBoard.find("table").clone());
-    scrollVertical(coverScrollBoard,coverScrollBoard.children("table").eq(0),coverScrollBoard.children("table").eq(1),40);
+    scrollVertical(coverScrollBoard, coverScrollBoard.children("table").eq(0), coverScrollBoard.children("table").eq(1), 40);
 });
 
 /**
@@ -51,19 +55,25 @@ $(function () {
  *                 .sign    上升还是下降
  */
 function setViewAll(deviceLoadArr) {
-	// console.log('=========88888888888888888==========',deviceLoadArr)
+    $.post(contextPath + '/lab/equipmentTotalForLab1Ajax', {}, function (data) {
+        htmlSetViewAll = '<tr><td class="name">'
+            + '检测中心' + '</td><td class="barBox"><span class="bar"><span class="fill"></span></span></td><td class="value">'
+            + data[2].rate + '</td><td class="YoY '
+            + sign + '">同比：<span>'
+            + item.YoY + '</span></td> </tr>\n'
+    })
     deviceLoadArr.forEach(function (item, index, array) {
-    	// console.log('==========',item)
         var sign = Number(item.sign) > 0 ? "up" : "down";
         htmlSetViewAll += '<tr><td class="name">'
             + item.name + '</td><td class="barBox"><span class="bar"><span class="fill"></span></span></td><td class="value">'
             + item.value + '</td><td class="YoY '
-            +sign+ '">同比：<span>'
+            + sign + '">同比：<span>'
             + item.YoY + '</span></td> </tr>\n'
     });
     loadData(htmlSetViewAll);
 
 }
+
 /*
 /!**
  * 设置设备负荷率低于80%的设备明细
@@ -96,17 +106,25 @@ function loadData(html) {
     });
 
 }
+
+/*获取7条产线的概况*/
 function equipmentStatisForPlForLab2Ajax(type) {
     $.post(contextPath + '/lab/equipmentStatisForPlForLab2Ajax', {
-        "type": type,
-        "labTypeCode": labTypeCode
-    }, function (data) {
-    	var deviceLoadArr=[];
-    	$.each(data,function(index,item){
-    		deviceLoadArr.push({name:item.product_name,value:item.dq+"%",YoY:item.change_num,sign:item.change_num});
-    		
-    	})
-    	// console.log('===================',deviceLoadArr)
-    	setViewAll(deviceLoadArr);
-    }
-    	)}
+            "type": type,
+            "labTypeCode": labTypeCode
+        }, function (data) {
+        console.log('===================',data)
+            var deviceLoadArr = [];
+            $.each(data, function (index, item) {
+                deviceLoadArr.push({
+                    name: item.product_name,
+                    value: item.dq + "%",
+                    YoY: item.change_num,
+                    sign: item.change_num
+                });
+
+            })
+            setViewAll(deviceLoadArr);
+        }
+    )
+}

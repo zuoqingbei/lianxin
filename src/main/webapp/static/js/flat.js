@@ -194,7 +194,7 @@ function seriesData(data) {
         // geoCoord: getGeoArr(data)
         geoCoord: function () {
             var t = getGeoArr(data);
-            console.log(t);
+            // console.log(t);
             return t
         }()
 
