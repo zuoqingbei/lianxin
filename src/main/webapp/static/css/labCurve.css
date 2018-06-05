@@ -263,3 +263,25 @@
     margin-top: 25%;
 }
 
+
+#legend_ul_world{
+    /*color:#4397f7;*/
+    font-size: .875em;
+    max-height: 29em;
+    overflow: auto;
+}
+#legend_ul_world li>.colorBlock{
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+}
+#legend_ul_world li>.name{
+    display:  inline-block;
+    min-width: 6rem;
+}
+
+.placeholder,
+.placeholder>div{
+    width: 0;
+    height: 0;
+}

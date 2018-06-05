@@ -1,8 +1,11 @@
+.lab .btn-back,
 #r .btn-back{
     position: absolute;
     right: 1em;
     top: 1.25em;
+    z-index: 1;
 }
+.lab .btn-back,
 #r .btn-back>.icon{
     display: inline-block;
     width: 3em;
@@ -10,6 +13,7 @@
     background: url("../img/3rd/home.png") no-repeat;
     background-size: contain;
 }
+.lab .btn-back,
 #r .btn-back>.icon:hover{
     filter:brightness(2);
 }

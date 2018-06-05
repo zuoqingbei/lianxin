@@ -42,7 +42,6 @@ function equipmentTotalForLab1Ajax() {
         $("#cover .top-1 .value").text(data[0].rate+"%");
         $("#cover .top-2 .value").text(data[1].rate+"%");
         $("#cover .top-3 .value").text(data[2].rate+"%");
-        console.log("----",data[2])
         right_echarts.push(myChart1);
         option = {
             tooltip: {

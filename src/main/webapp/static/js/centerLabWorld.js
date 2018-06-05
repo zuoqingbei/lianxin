@@ -641,11 +641,12 @@ function createEchartsWorld(isFirst, obj) {
         var opt2 = myChartWorld2.getOption();
         myChartWorld1.clear();
         myChartWorld2.clear();
-        opt1.xAxis = [{data: xDataWorld.concat(mockXdataWorld)}];
+        // opt1.xAxis = [{data: xDataWorld.concat(mockXdataWorld)}];
+        $.extend(true,opt1,{data: xDataWorld.concat(mockXdataWorld)});
         opt1.series = seriesTopDataWorld;
         myChartWorld1.setOption(opt1);
 
-        opt2.xAxis = [{data: xDataWorld.concat(mockXdataWorld)}];
+        $.extend(true,opt2,{data: xDataWorld.concat(mockXdataWorld)});
         opt2.series = seriesBottomDataWorld;
         myChartWorld2.setOption(opt2);
     }
@@ -655,13 +656,11 @@ function createLegendHtmlsWorld() {
     var htmls = '';
     var width = 10 * bodyScale + "px";
     for (var x = 0; x < legendDataWorld.length; x++) {
-        //如果是默认选择的 复选选中
-        if (isHasElementOne(showlegendDataWorld, legendDataWorld[x]) != -1) {
-            htmls += '<li style="width: 100%;display: inline-block"><input style="margin-right: 2%;margin-top: 0;float: left;width:' + width + ';height:' + width + '" type="checkbox" name="legendcheckbox_world" onclick="resetOptionsWorld(this)" value="' + legendDataWorld[x] + '" checked><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><span  style="color:#fff;display:inline-block;float: left;" name="' + legendDataWorld[x] + '">' + legendDataWorld[x] + '</span><span style="color: #66ccff;margin-left: 2%;float:left;">' + legendNumDataWorld[x] + '</span></li><br>'
-        } else {
-            htmls += '<li style="width: 100%;display: inline-block;"><input style="margin-right: 2%;margin-top: 0;float: left;width:' + width + ';height:' + width + '" type="checkbox" name="legendcheckbox_world" onclick="resetOptionsWorld(this)" value="' + legendDataWorld[x] + '" ><span style="background-color:' + colorData[x] + ';display: inline-block;width:1em;height: 1em;margin-right: 2%;float: left"></span><span  style="color:#fff;display:inline-block;float: left;" name="' + legendDataWorld[x] + '">' + legendDataWorld[x] + '</span><span style="color: #66ccff;margin-left: 2%;float:left;">' + legendNumDataWorld[x] + '</span></li><br>'
+        var isChecked = "";
+        if (isHasElementOne(showlegendDataWorld, legendDataWorld[x]) !== -1) {
+            isChecked = "checked";
         }
-
+        htmls += '<li><input type="checkbox" name="legendcheckbox_world" onclick="resetOptionsWorld(this)" value="' + legendDataWorld[x] + '" ' + isChecked + '><span class="colorBlock" style="background-color:' + colorData[x] + ';"></span><span class="name" name="' + legendDataWorld[x] + '">' + legendDataWorld[x] + '</span><span>' + legendNumDataWorld[x] + '</span></li>'
     }
     $("#legend_ul_world").html(htmls);
 }
