@@ -1,0 +1,100 @@
+:root{
+    --themeBlue: #00adef;
+}
+:root{
+    --themeColor: #369;
+}
+/*输入组框*/
+.inputGroup {
+    position: relative;
+    display: inline-block;
+    height: 10%;
+    width: 49%;
+}
+
+.inputGroup>.mySelect{
+    width: 40%;
+}
+/*下拉框样式*/
+@media all{
+    .mySelect {
+        position: relative;
+        display: inline-block;
+        top: -.15em;
+        width: 6rem;
+        text-align: left;
+        vertical-align: middle;
+        z-index: 5;
+    }
+
+    .mySelect .myOption {
+        cursor: pointer;
+        padding: .1em 2em .1em .5em;
+        white-space: nowrap;
+    }
+
+    .mySelect > .myOption.selected {
+        position: relative;
+        border: .1em solid var(--themeBlue);
+        border-radius: .2em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        height: 1.2em;
+        z-index: 5;
+        color:#fff;
+        font-size: 0.8em;
+    }
+
+    .mySelect.open > .myOption.selected,
+    .mySelect > .myOption.selected:hover {
+        box-shadow: 0 0 .3em var(--themeBlue);
+    }
+
+    .mySelect > .myOption.selected:active {
+        box-shadow: 0 0 .5em var(--themeBlue);
+    }
+
+    .mySelect > .myOption.selected > .icon {
+        display: inline-block;
+        position: absolute;
+        top: 0.4em;
+        right: .3em;
+        width: 1em;
+        height: .5em;
+        background: url(../images/system/i_arrow_down.png) 50% 40% no-repeat;
+        background-size: contain;
+    }
+
+    /*展开状态*/
+    .mySelect.open > .myOption.selected > .icon {
+        transform: rotate(180deg);
+    }
+
+    .mySelect > .myOptionBox {
+        position: absolute;
+        display: none;
+        margin-top: .3em;
+        padding: 0;
+        color: #fff;
+        min-width: 100%;
+        background: #004d7d;
+        border-radius: .2rem;
+        transition: all .5s ease;
+        z-index:100;
+        box-shadow: 0rem 0.2rem .2rem #1F547E;
+    }
+
+    .mySelect.open > .myOptionBox {
+        display: block;
+    }
+
+    .mySelect > .myOptionBox > .myOption.selected> span {
+        font-size: 0.1em;
+        color: red;
+        /*background-color: #00adef;*/
+    }
+
+    .mySelect > .myOptionBox > .myOption:hover {
+        background-color: #00adef;
+    }
+}

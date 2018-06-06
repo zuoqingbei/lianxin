@@ -12,7 +12,8 @@ import com.ulab.core.BaseController;
 public class PhmRenderController extends BaseController {
 	//系统首页
 	public void index(){
-		render("strategy.html");
+//		render("strategy.html");
+		render("index_sys.html");
 	}
 	//转到实时状态页面
 	public void status() {

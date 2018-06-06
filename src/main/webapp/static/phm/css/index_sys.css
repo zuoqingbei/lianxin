@@ -1,0 +1,263 @@
+#content {
+    background:url("../images/page2/bg-2.jpg") no-repeat 100% 100%;
+    background-size: 100% 100%;
+    width:100%;
+}
+/*=============================head==============================*/
+#head{
+    overflow: hidden;
+    height:15%;
+    width:100%;
+    background:url("../images/page2/title-bg.png") no-repeat 80% 100%;
+    background-size: 99% 90%;
+}
+#head h1{
+    float:left;
+    height:34%;
+    width:4%;
+    margin-left:33.5%;
+    margin-top:1.2%;
+}
+#head h1 a {
+    display: block;
+    height:100%;
+    width:100%;
+}
+
+#head h1 a img{
+    display:block;
+    height:100%;
+    width:100%;
+}
+
+#head h2{
+    float:left;
+    width:35%;
+    font-weight: 900;
+    font-size: 2.2em;
+    margin-top:1.1%;
+    margin-left:2%;
+    letter-spacing: 0.3em;
+}
+#head h2 a{
+    color:#6cf;
+}
+
+/*=============================center==============================*/
+@font-face {
+    font-family:"DS-DIGIB";
+    src: url("DS-DIGIB.TTF");
+}
+#centerData {
+    height:10%;
+    width:100%;
+}
+#centerData .dataBox {
+    width:11.5%;
+    height:65%;
+    background: url(../images/health/number-bg.png) no-repeat 100% 100%;
+    background-size: 100% 100%;
+    float:left;
+    margin-left:2%;
+    margin-top: .4%;
+}
+#centerData .ml {
+    margin-left: 11%;
+}
+#centerData .dataBox span {
+    display: inline-block;
+    width: 29%;
+    height: 100%;
+    text-align: center;
+    line-height: 2.2em;
+    font-size: 1.3em;
+}
+#centerData .dataBox p {
+    display: inline-block;
+    width: 69%;
+    height: 100%;
+    text-align: right;
+    line-height: 1.9em;
+    font-size: 1.6em;
+    font-family: DS-DIGIB;
+    color: #ff9f30;
+    letter-spacing: .7em;
+    background: url(../images/health/number.png) no-repeat 0% 13%;
+    background-size: 95% 90%;
+}
+/*==============================biaoti=============================*/
+#biaoti{
+    height: 10%;
+    width: 99%;
+    margin: 0 auto;
+}
+#biaoti>div{
+    height: 100%;
+}
+#biaoti .biaotiCotent{
+    position: relative;
+    width: 100%;
+    float: left;
+
+}
+#biaoti .biaotiPic{
+    position: relative;
+    height: 60%;
+    width: 100%;
+    margin: 0 auto;
+    vertical-align: middle;
+}
+#biaoti .biaotiCotent h3{
+    position: absolute;
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 80%;
+    vertical-align: middle;
+    font-size: 1.3em;
+    font-weight:bold;
+    top: 0.2em;
+}
+
+
+/*自预测*/
+#biaoti .bt_left{
+    position: relative;
+    width: 32%;
+}
+
+#biaoti .bt_left .biaotiPic{
+    width: 90%;
+    background: url("../images/system/biaoti1.png") no-repeat;
+    background-size: 100% 100%;
+    vertical-align: middle;
+}
+/*自诊断PHM技术*/
+#biaoti .bt_middle{
+    position: relative;
+    width: 44%;
+}
+#biaoti .bt_middle .biaotiPic{
+    width: 70%;
+    background: url("../images/system/biaoti1.png") no-repeat;
+    background-size: 100% 100%;
+}
+/*大数据*/
+#biaoti .bt_right {
+    position: relative;
+    width: 24%;
+}
+#biaoti .bt_right .biaotiPic{
+    width: 80%;
+    margin-left: 10%;
+    background: url("../images/system/biaoti2.png") no-repeat 0% 10%;
+    background-size: 100% 100%;
+}
+/*=============================bottom==============================*/
+#bottom {
+    width: 100%;
+    height:65%;
+}
+/*bottom 左侧部分*/
+#bottom .leftMod {
+    width:32%;
+    height:100%;
+    float: left;
+}
+#bottom .leftMod .chartBody{
+    width: 50%;
+    height: 50%;
+    float: left;
+}
+#bottom .leftMod .chartBody label{
+    display: inline-block;
+    height: 100%;
+    font-size:1em;
+}
+#bottom .leftMod .chartBody .mySelect>span:nth-child(1){
+    /*margin-left: 0.5em;*/
+    font-size: 1.3em;
+    color: #faad14;
+}
+#bottom .leftMod .chartBody .mySelect>span:nth-child(2){
+    margin-left: 0.2em;
+}
+#bottom .leftMod .chartContent{
+    height: 90%;
+}
+#bottom .leftMod .chartContent>div{
+    height: 100%;
+}
+/*bottom 中间部分*/
+#bottom .centerMod {
+    width: 46%;
+    height:100%;
+    float: left;
+}
+/*bottom 右侧部分*/
+#bottom .rightMod {
+    width:22%;
+    height:100%;
+    float:left;
+}
+#bottom .rightMod .rightModText{
+    width: 90%;
+    margin: 0 auto;
+    height: 15%;
+}
+#bottom .rightMod .rightModText span{
+    width: 100%;
+    display: inline-block;
+    vertical-align:middle;
+    text-align: center;
+}
+/*四个小图标*/
+#bottom .rightMod .rightModPic{
+    padding: 0 5%;
+    height: 85%;
+}
+.chartBody1{
+    width: 80%;
+    height: 100%;
+    padding: 0 10%;
+}
+.chartBody1>ul{
+    height: 100%;
+}
+.chartBody1>ul>li{
+    position: relative;
+    float: left;
+    height: 50%;
+    width: 50%;
+}
+.chartBody1 >ul>li .icon{
+    display: block;
+    width: 60%;
+    height: 70%;
+    margin: 5% 20%;
+}
+.chartBody1 >ul>li:nth-child(1) .icon{
+    background:url("../images/system/detection.png") no-repeat 0 10%;
+    background-size: contain;
+}
+.chartBody1 >ul>li:nth-child(2) .icon{
+    background:url("../images/system/factory.png") no-repeat;
+    background-size: contain;
+}
+.chartBody1 >ul>li:nth-child(3) .icon{
+    background:url("../images/system/development.png") no-repeat;
+    background-size: contain;
+}
+.chartBody1 >ul>li:nth-child(4) .icon{
+    background:url("../images/system/supplier.png") no-repeat;
+    background-size: contain;
+}
+.chartBody1 >ul>li:nth-child(1) .icon：hover{
+    cursor: pointer;
+}
+.chartBody1 >ul>li p{
+    text-align: center;
+}
+
+
+

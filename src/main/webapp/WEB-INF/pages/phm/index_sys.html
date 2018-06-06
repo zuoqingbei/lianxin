@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="PHM" content="phm二期" />
+		<title>documents</title>
+		
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/common180605.css" />
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/index_sys.css" />
+		<link rel="stylesheet" href="${contextPath}/static/phm/css/public.css" />
+		<style>
+
+		</style>
+	</head>
+	<body>
+		<div id="content">
+			<!--head-->
+			<div id="head">
+				<h1>
+					<a href="${contextPath}/phm/index">
+						<img src="${contextPath}/static/phm/images/health/logo_haier_bold.png" alt="" />
+					</a>
+				</h1>
+				<h2><a href="${contextPath!}/phm" >智慧云服务自诊断、自预测系统</a></h2>
+			</div>
+			<!--centerdata-->
+			<div id="centerData">
+				<div class="dataBox ml">
+					<span>全部</span>
+					<p id="total">686788</p>
+				</div>
+				<div class="dataBox">
+					<span>冰箱</span>
+					<p>686788</p>
+				</div>
+				<div class="dataBox">
+					<span>商空</span>
+					<p>686788</p>
+				</div>
+				<div class="dataBox">
+					<span>洗衣机</span>
+					<p>6788</p>
+				</div>
+				<div class="dataBox">
+					<span>冷柜</span>
+					<p>686788</p>
+				</div>
+				<div class="dataBox">
+					<span>家空</span>
+					<p>686788</p>
+				</div>
+            </div>
+			<!--biaoti-->
+			<div id="biaoti">
+				<div class="biaotiCotent bt_left">
+					<div class="biaotiPic">
+						<h3>自预测</h3>
+					</div>
+				</div>
+				<div class="biaotiCotent bt_middle">
+					<div class="biaotiPic">
+						<h3>自诊断PHM技术</h3>
+					</div>
+				</div>
+				<div class="biaotiCotent bt_right">
+					<div class="biaotiPic">
+						<h3>大数据</h3>
+					</div>
+				</div>
+			</div>
+			<!--bottom-->
+			<div id="bottom">
+				<!--===============leftMod===================-->
+				<div class="leftMod">
+					<div class="chartBody leftUp">
+						<div class="inputGroup" style="width: 100%;margin-left: 35%">
+							<label for="totalBootTimes0">共有用户:</label>
+							<div class="mySelect" id="totalBootTimes0">
+								<span>24456</span>
+							</div>
+						</div>
+						<div class="chartContent">
+							<div id="leftUp"></div>
+						</div>
+					</div>
+					<div class="chartBody rightUp">
+						<div class="chartContent">
+							<div id="rightUp"></div>
+						</div>
+					</div>
+					<div class="chartBody leftDown">
+						<div class="inputGroup">
+							<label for="jiaoyishichang" style="margin-left: 10%;">选择品类：</label>
+							<div class="mySelect" id="jiaoyishichang">
+								<div class="myOption selected"><span class="text"></span><span class="icon"></span> </div>
+								<ul class="myOptionBox">
+									<li class="myOption selected">品类A</li>
+									<li class="myOption">品类B</li>
+								</ul>
+							</div>
+						</div>
+						<div class="inputGroup">
+							<label for="totalBootTimes">累计开机次数:</label>
+							<div class="mySelect" id="totalBootTimes">
+								<span>12345</span><span><strong>次</strong></span>
+							</div>
+						</div>
+						<div class="chartContent">
+							<div id="leftDown"></div>
+						</div>
+					</div>
+					<div class="chartBody rightDown">
+						<div class="inputGroup" style="width:100%;margin-left: 20%">
+							<label for="totalBootTimes1">MFOP(无故障运行时间):</label>
+							<div class="mySelect" id="totalBootTimes1">
+								<span>23662</span><span><strong>小时</strong></span>
+							</div>
+						</div>
+						<div class="chartContent">
+							<div id="rightDown"></div>
+						</div>
+					</div>
+				</div>
+				<!--===============centerMod===================-->
+				<div class="centerMod">
+
+				</div>
+				<!--===============rightMod===================-->
+				<div class="rightMod">
+					<div class="rightModText">
+						<span>2亿用户数据，108个工厂数据，509个实验室</span>
+						<span>42个参数，建立124种故障模式集，10种预测模型</span>
+					</div>
+					<div class="rightModPic">
+						<div class="chartBody1">
+							<ul>
+								<li><a href="#"><i class="icon"></i></a><p>全球检测大数据数据中心</p></li>
+								<li><a href="#"><i class="icon"></i></a><p>全球工厂大数据中心</p></li>
+								<li><a href="#"><i class="icon"></i></a><p>全球研发大数据中心</p></li>
+								<li><a href="#"><i class="icon"></i></a><p>全球供应商数据中心</p></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
+		<script src="${contextPath}/static/phm/asserts/echarts/echarts-all-2.2.7.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="../../../static/phm/js/index_sys.js" type="text/javascript" charset="utf-8"></script>-->
+		<script>
+				/*屏幕描述
+				 一共 7x3 个屏幕，每一块屏幕是1360x768，
+				 总共的大小就是9520x2304，比预计像素少7x6=42个像素。
+				 */
+
+				var pageH = $(window).height();
+				var pageW = pageH * 16 * 7 / (9 * 3);
+				var bodyScale = pageH / 595;
+				var bodyFontSize = bodyScale * 100 + "%";
+				if(pageH > 2300) { // 如果是大屏幕(2304)
+					pageW -= 47;
+				}
+				function pageResize() {
+					$("body").css("font-size", bodyFontSize);
+					$("body").css("fontSize", bodyFontSize);
+					$("#content").css("width", pageW);
+					$(".fullScreen_map").css("width", pageW); //全屏页面是绝对定位,宽度100%只能取自屏幕
+					console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:" + pageW + " \nbody字号：" + bodyFontSize)
+				}
+				pageResize();
+		</script>
+
+
+	</body>
+</html>
+<script>
+    var allCharts = [];
+    var barWidth = 18 * bodyScale;
+    // 图二和图四 公共样式
+    var opts ={
+        grid: {
+            left: '10%',
+            right: '10%',
+            bottom: '10%',
+            top: '10%'
+        },
+        xAxis:{
+            axisLabel: {
+                show: true,
+                textStyle: {
+                    color: '#00adef',
+                    fontSize:13 * bodyScale
+                }
+            },
+            splitLine: { //去除分割线
+                show:false
+            },
+		},
+        yAxis:{
+            splitLine: {
+                lineStyle:{
+                    color:'#00adef'
+                }
+            },
+            axisLabel: {//坐标做字体
+                show: true,
+                textStyle: {
+                    color: '#00adef',
+                    fontSize:13 * bodyScale
+                }
+            },
+            nameTextStyle:{
+                color:'#00adef',
+                fontSize:13 * bodyScale
+            },
+            nameGap:100
+		}
+	}
+	//leftUp
+    $(function () {
+        var myChart1 = echarts.init($("#leftUp")[0]);
+        myChart1.setOption({
+			color: colors,
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: ['40%', '55%'],
+                    center: ['50%', '50%'],
+                    data: [
+                        {value: 325, name: '在线'},
+                        {value: 80, name: '离线'}
+                    ],
+                    itemStyle : {
+                        normal : {
+                            label : {//环形图外  文字样式
+                                textStyle : {
+                                    fontSize : 13 * bodyScale,
+                                }
+                            },
+
+                        }
+
+                    },
+
+                }
+            ]
+        });
+        //rightUp
+        var myChart2 = echarts.init($("#rightUp")[0]);
+        myChart2.setOption(opts);
+        myChart2.setOption({
+			legend:{
+
+                show:true,
+				 data:['在线','离线'],
+				textStyle:{
+                    color:'#00adef',
+					fontSize:11 * bodyScale
+				},
+				itemGap:60,//图例间距离
+			},
+            xAxis: {
+                type: 'category',
+                data: ['冰箱','商空','洗衣机','冷柜','家空']
+            },
+            yAxis: {
+                name: '台',
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '在线',
+                    type: 'bar',
+                    stack: '总量',
+                    barWidth: barWidth,
+                    itemStyle: {
+                        normal: {
+                            color: '#00adef'
+                        }
+                    },
+                    data: [45, 55, 75, 70,60]
+                },
+                {
+                    name: '离线',
+                    type: 'bar',
+                    stack: '总量',
+                    itemStyle: {
+                        normal: {
+                            color: '#ffd769'
+                        }
+                    },
+                    barWidth: 15,
+                    data: [10, 13, 15, 17, 15],
+                },
+
+            ]
+        });
+        //leftDown
+        var myChart3 = echarts.init($("#leftDown")[0]);
+        myChart3.setOption({
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: ['40%', '55%'],
+                    center: ['50%', '50%'],
+                    data: [
+                        {value: 325, name: '报警'},
+                        {value: 80, name: '预警'},
+                        {value: 80, name: '健康'},
+                        {value: 80, name: '处理中'}
+                    ],
+                    itemStyle : {
+                        normal : {
+                            label : {
+                                show : true,
+                                textStyle : {
+                                    fontSize : 13 * bodyScale,
+                                }
+                            },
+                        }
+                    },
+                }
+            ]
+        });
+        //rightDowm
+        var myChart4 = echarts.init($("#rightDown")[0]);
+        myChart4.setOption(opts);
+        myChart4.setOption({
+            xAxis: {
+                type: 'category',
+                data: ['上门纠偏','上门保养','维修更新','处理中'],
+            },
+            yAxis: {
+                name: '台',
+                type: 'value',
+            },
+            series: [
+                {
+                    name: '在线',
+                    type: 'bar',
+                    stack: '总量',
+                    barWidth: barWidth,
+                    itemStyle: {
+                        normal: {
+                            color: '#00adef'
+                        }
+                    },
+                    data: [45, 55, 75, 70]
+                }
+
+            ]
+        });
+        //本页所有图表
+         allCharts = [myChart1,myChart2,myChart3,myChart4];
+    });
+
+    var bodyScale = parent.bodyScale;
+    var colors = [
+        '#00adef',
+        '#faad14',
+        '#73d13d',
+        '#b37feb',
+        '#ff7875',
+        '#5cdbd3',
+        '#ff85c0',
+        '#ffd591',
+        '#eaff8f',
+        '#d3adf7',
+        '#91d5ff',
+        '#ffa39e',
+        '#87e8de',
+        '#ffadd2',
+        '#adc6ff',
+        '#fffb8f',
+        '#b7eb8f',
+        '#ffbb96',
+        '#d9f7be',
+        '#ffd6e7',
+    ];
+    //自定义下拉框功能
+    // 默认显示第一个
+    $(".mySelect>.myOption>.text").text(function () {
+        return $(this).parent().next(".myOptionBox").children(".myOption:eq(0)").text()
+    });
+    // 展开折叠
+    $(".mySelect>.myOption").click(function () {
+        var $mySelect = $(this).parent();
+        if($mySelect.hasClass("open")){
+            $mySelect.removeClass("open");
+        }else{
+            $mySelect.addClass("open").children(".myOptionBox").slideDown(180);
+        }
+        $(".mySelect").not($(this).parent()).removeClass("open")
+        return false;
+    });
+    // 选中选项
+    $(".myOptionBox>.myOption").click(function () {
+        $(this).addClass("selected").siblings().removeClass("selected")
+            .parent().slideUp()
+            .prev().children(".text").text($(this).text())
+            .parents(".mySelect").removeClass("open")
+    });
+
+    $(".output>.dropDown").click(function () {
+        $(this).next().toggle();
+        return false;
+    });
+
+    // 点击其他部位折叠下拉框以及打开的列表
+    $("body").click(function () {
+        $(".mySelect").removeClass("open");
+        /*白底页面的输出菜单折叠*/
+        $(".output").children("ul").hide();
+    });
+
+</script>
