@@ -15,6 +15,9 @@ public class PhmRenderController extends BaseController {
 //		render("strategy.html");
 		render("index_sys.html");
 	}
+	public void indexAnimation(){
+		render("indexAnimation.html");
+	}
 	//转到实时状态页面
 	public void status() {
 		render("status.html");
