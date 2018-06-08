@@ -1,0 +1,346 @@
+* {
+    box-sizing: border-box;
+    color: var(--blue);
+}
+
+:root {
+    --blue: #00adef;
+}
+
+/*布局*/
+html, body {
+    height: 100%;
+}
+
+body {
+    width: 84rem;
+    height: 36rem;
+    /*padding: 1rem;*/
+    background-color: #07151d;
+}
+
+.myContainer {
+    position: relative;
+    text-align: center;
+}
+
+.textPicBox {
+    display: inline-block;
+    width: 30%;
+    margin-left: 5%;
+    margin-right: 5%;
+    vertical-align: top;
+
+}
+
+.textPicBox:nth-of-type(2) {
+    width: 30rem;
+}
+
+.textPicBox img {
+    width: 100%;
+}
+
+.textPicBox .picBox {
+    position: relative;
+    height: 15rem;
+    background: url("../images/system/algorithm.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+/*光效动画*/
+.light .line {
+    position: absolute;
+    right: 0;
+    height: .375em;
+    width: 1em;
+    background: radial-gradient(ellipse farthest-side at 0 50%, var(--blue), rgba(0, 0, 0, 0));
+    animation-fill-mode: forwards;
+    opacity: 0;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    transform-origin: right center;
+}
+
+.light .line.animate {
+    animation-name: animate;
+}
+
+.light .line:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    width: .75em;
+    height: .75em;
+    background: radial-gradient(closest-side, white, var(--blue) 40%, rgba(0, 0, 0, 0));
+}
+
+@keyframes animate {
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    to {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+[class^=animationBox] {
+    position: absolute;
+}
+
+/*右边的光束*/
+.animationBox-right {
+    right: 0;
+    top: 5rem;
+    width: 12rem;
+}
+
+.animationBox-right .line:nth-of-type(1),
+.animationBox-right .line:nth-of-type(2) {
+    top: 0;
+    transform: rotate(-10deg);
+}
+
+.animationBox-right .line:nth-of-type(2) {
+    top: 2rem;
+}
+
+.animationBox-right .line:nth-of-type(3),
+.animationBox-right .line:nth-of-type(4) {
+    top: 8rem;
+    transform: rotate(10deg);
+}
+
+.animationBox-right .line:nth-of-type(4) {
+    top: 10rem;
+}
+
+/*中间的光束*/
+.animationBox-center {
+    left: 40%;
+    top: 13rem;
+    width: 12rem;
+    filter: hue-rotate(-90deg);
+}
+
+.animationBox-center .line {
+    transform: rotate(15deg);
+}
+
+/*左边的光束*/
+.animationBox-left {
+    left: 2rem;
+    top: 9rem;
+    width: 12rem;
+}
+
+.animationBox-left .line:nth-of-type(1) {
+    transform: rotate(10deg);
+}
+
+.animationBox-left .line:nth-of-type(2) {
+    top: 2rem;
+}
+
+.animationBox-left .line:nth-of-type(3) {
+    top: 4rem;
+    transform: rotate(-10deg);
+}
+
+/*智能算法*/
+.aiBox .line {
+    position: absolute;
+    right: 0;
+    width: 0;
+    height: .125rem;
+    background: yellow;
+    transition-property: all;
+    transition-duration: 1s;
+    transform-origin: 100% 0;
+}
+
+
+
+.aiBox .line.animate:before {
+    opacity: 1;
+}
+
+.aiBox .line:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    display: block;
+    width: .5rem;
+    height: .25rem;
+    transform: translate(-50%, -50%) skew(-65deg, 30deg);
+    background: linear-gradient(to right top, yellow 50%, rgba(0, 0, 0, 0) 50%);
+    opacity: 0;
+}
+
+.aiBox > div {
+    position: absolute;
+}
+
+/*第一步*/
+.aiBox1 {
+    right: 0;
+    width: 2rem;
+}
+.aiBox1 .line.animate {
+    width: 100%;
+}
+.aiBox1 .line:nth-of-type(1),
+.aiBox1 .line:nth-of-type(2),
+.aiBox1 .line:nth-of-type(3) {
+    right: 5.875rem;
+    top: 4.125rem;
+}
+
+.aiBox1 .line:nth-of-type(2),
+.aiBox2 .line:nth-of-type(2) {
+    top: 7rem;
+}
+
+.aiBox1 .line:nth-of-type(3) {
+    top: 10.75rem;
+}
+
+/*第二步*/
+.aiBox2 {
+    right: 10rem;
+    width: 2.5rem;
+}
+
+.aiBox2 .line:nth-of-type(1) {
+    top: 4.25rem;
+    transform: rotate(-45deg);
+}
+.aiBox2 .line.animate:nth-of-type(1) {
+    width: 3.5rem;
+
+}
+.aiBox2 .line:nth-of-type(2) {
+    transform: rotate(-9deg);
+}
+.aiBox2 .line.animate:nth-of-type(2) {
+    width: 100%;
+}
+.aiBox2 .line:nth-of-type(3) {
+    top: 10.75rem;
+    transform: rotate(40deg);
+}
+.aiBox2 .line.animate:nth-of-type(3) {
+    width: 3.5rem;
+}
+
+/*第三步*/
+.aiBox3 {
+    right: 14rem;
+}
+.aiBox3 .line {
+    top: 5rem;
+    transform: rotate(-90deg);
+}
+.aiBox3 .line.animate {
+    width: .875rem;
+}
+/*第四步*/
+.aiBox4 {
+    right: 15.25rem;
+}
+.aiBox4 .line {
+    top: 7.375rem;
+}
+.aiBox4 .line.animate {
+    width: 2.25rem;
+}
+
+/*第五步*/
+.aiBox5 {
+    right: 20.375rem;
+}
+.aiBox5 .line {
+    top: 7.375rem;
+}
+.aiBox5 .line.animate {
+    width: 2.5rem;
+}
+
+.aiBox .line.thin:nth-of-type(4),
+.aiBox .line:nth-of-type(5),
+.aiBox .line:nth-of-type(6) {
+    right: 9.875rem;
+}
+
+.aiBox .line:nth-of-type(4) {
+    transform: rotate(-45deg);
+}
+
+.aiBox .line:nth-of-type(6) {
+    transform: rotate(45deg);
+}
+
+.aiBox .line.animate:nth-of-type(4) {
+    /*width: 4.25rem;*/
+}
+
+.aiBox .line.animate:nth-of-type(5) {
+    /*width: 3rem;*/
+}
+
+.aiBox .line.animate:nth-of-type(6) {
+    /*width: 4.25rem;*/
+}
+
+.aiBox .line:nth-of-type(7) {
+    right: 14rem;
+    top: 5rem;
+    transform: rotate(-90deg);
+}
+
+.aiBox .line.animate:nth-of-type(7) {
+    /*width: 1.375rem;*/
+}
+
+.aiBox .line:nth-of-type(8) {
+    right: 15.125rem;
+    top: 7.5rem;
+}
+
+.aiBox .line.animate:nth-of-type(8) {
+
+}
+
+.aiBox .line:nth-of-type(9) {
+    right: 20.375rem;
+    top: 7.5rem;
+}
+
+.aiBox .line.animate:nth-of-type(9) {
+    /*width: 3rem;*/
+}
+
+/*
+        @keyframes animate {
+            0% {
+                width: 0;
+                opacity: 0;
+            }
+            30% {
+                opacity: 1;
+            }
+            to {
+                width: 100%;
+                opacity: 1;
+            }
+        }
+*/

@@ -3,270 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>首页动画</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            color: var(--blue);
-        }
-
-        :root {
-            --blue: #00adef;
-        }
-
-        /*布局*/
-        html, body {
-            height: 100%;
-        }
-
-        body {
-            width: 84rem;
-            height: 36rem;
-            /*padding: 1rem;*/
-            background-color: #07151d;
-        }
-
-        .myContainer {
-            position: relative;
-            text-align: center;
-        }
-
-        .textPicBox {
-            display: inline-block;
-            width: 30%;
-            margin-left: 5%;
-            margin-right: 5%;
-            vertical-align: top;
-
-        }
-
-        .textPicBox:nth-of-type(2) {
-            width: 30rem;
-        }
-
-        .textPicBox img {
-            width: 100%;
-        }
-
-        .textPicBox .picBox {
-            position: relative;
-            height: 15rem;
-            background: url("${contextPath}/static/phm/images/system/algorithm.png") no-repeat;
-            background-size: 100% 100%;
-        }
-
-        /*光效动画*/
-        .line {
-            position: relative;
-            height: .375em;
-            width: 1em;
-            background: radial-gradient(ellipse farthest-side at 100% 50%, var(--blue), rgba(0, 0, 0, 0));
-            /*animation-duration: 2s;*/
-            animation-fill-mode: forwards;
-            opacity: 0;
-        }
-
-        .lineTo.line {
-            animation-name: lineTo;
-        }
-
-        .line:after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translate(50%, -50%);
-            display: block;
-            width: .75em;
-            height: .75em;
-            background: radial-gradient(closest-side, white, var(--blue) 40%, rgba(0, 0, 0, 0));
-        }
-
-        @keyframes lineTo {
-            0% {
-                width: 0;
-                opacity: 0;
-            }
-            30% {
-                opacity: 1;
-            }
-            to {
-                width: 100%;
-                opacity: 1;
-
-            }
-        }
-
-        [class^=animationBox] {
-            position: absolute;
-        }
-
-        .lineBox {
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            transform-origin: left center;
-        }
-
-        /*右边的光束*/
-        .animationBox-right {
-            right: 0;
-            top: 6rem;
-            width: 12rem;
-        }
-
-        .animationBox-right .lineBox:nth-of-type(1),
-        .animationBox-right .lineBox:nth-of-type(2) {
-            transform: translateX(90%) rotate(170deg);
-        }
-
-        .animationBox-right .lineBox:nth-of-type(2) {
-            margin-bottom: 5rem;
-        }
-
-        .animationBox-right .lineBox:nth-of-type(3),
-        .animationBox-right .lineBox:nth-of-type(4) {
-            transform: translateX(90%) rotate(190deg);
-        }
-
-        /*中间的光束*/
-        .animationBox-center {
-            left: 40%;
-            top: 12rem;
-            width: 12rem;
-            height: 20rem;
-            filter: hue-rotate(-90deg);
-        }
-
-        .animationBox-center .lineBox {
-            transform: translateX(90%) rotate(195deg);
-        }
-
-        /*左边的光束*/
-        .animationBox-left {
-            left: 2rem;
-            top: 9rem;
-            width: 12rem;
-        }
-
-        .animationBox-left .lineBox:nth-of-type(1) {
-            transform: translateX(90%) rotate(190deg);
-        }
-
-        .animationBox-left .lineBox:nth-of-type(2) {
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-            transform: translateX(90%) rotate(180deg);
-        }
-
-        .animationBox-left .lineBox:nth-of-type(3) {
-            transform: translateX(90%) rotate(170deg);
-        }
-
-        /*智能算法*/
-        .lineThin {
-            position: absolute;
-            right: 0;
-            width: 0;
-            height: .125rem;
-            background: yellow;
-            transition-property: all;
-            transition-duration: 1s;
-            transform-origin: 100% 0;
-
-        }
-
-        .lineThin:nth-of-type(1),
-        .lineThin:nth-of-type(2),
-        .lineThin:nth-of-type(3),
-        .lineThin:nth-of-type(4) {
-            right: 5.875rem;
-            top: 4.125rem;
-        }
-
-        .lineThin.lineThinTo:nth-of-type(1),
-        .lineThin.lineThinTo:nth-of-type(2),
-        .lineThin.lineThinTo:nth-of-type(3),
-        .lineThin.lineThinTo:nth-of-type(5) {
-            width: 2.5rem;
-        }
-
-        .lineThin:nth-of-type(2),
-        .lineThin:nth-of-type(5) {
-            top: 7rem;
-        }
-
-        .lineThin:nth-of-type(3),
-        .lineThin:nth-of-type(6) {
-            top: 10.625rem;
-        }
-
-        .lineThin:nth-of-type(4),
-        .lineThin:nth-of-type(5),
-        .lineThin:nth-of-type(6) {
-            right: 9.875rem;
-        }
-        .lineThin:nth-of-type(4){
-            transform: rotate(-45deg);
-        }
-        .lineThin:nth-of-type(5){
-            transform: rotate(-9deg);
-        }
-
-        .lineThin:nth-of-type(6) {
-            transform: rotate(45deg);
-        }
-        .lineThin.lineThinTo:nth-of-type(4){
-            width: 4.25rem;
-        }
-        .lineThin.lineThinTo:nth-of-type(5){
-            width: 3rem;
-        }
-        .lineThin.lineThinTo:nth-of-type(6) {
-            width: 4.25rem;
-        }
-        .lineThin:nth-of-type(7) {
-            right: 14rem;
-            top: 5rem;
-            transform: rotate(-90deg);
-        }
-        .lineThin.lineThinTo:nth-of-type(7) {
-            width: 1.375rem;
-        }
-        .lineThin:nth-of-type(8) {
-            right: 15.125rem;
-            top: 7.5rem;
-        }
-        .lineThin.lineThinTo:nth-of-type(8) {
-            width: 2.875rem;
-        }
-        .lineThin:nth-of-type(9) {
-            right: 20.375rem;
-            top: 7.5rem;
-        }
-        .lineThin.lineThinTo:nth-of-type(9) {
-            width: 3rem;
-        }
-
-
-
-
-
-
-        /*
-                @keyframes lineThinTo {
-                    0% {
-                        width: 0;
-                        opacity: 0;
-                    }
-                    30% {
-                        opacity: 1;
-                    }
-                    to {
-                        width: 100%;
-                        opacity: 1;
-                    }
-                }
-        */
-    </style>
+    <link rel="stylesheet" href="${contextPath}/static/phm/css/indexAnimation.css">
 </head>
 <body>
 <div class="myContainer">
@@ -276,30 +13,39 @@
     </div>
     <div class="textPicBox">
         <h3>智能算法</h3>
-        <div class="picBox">
-            <div class="lineThin"></div>
-            <div class="lineThin"></div>
-            <div class="lineThin"></div>
+        <div class="picBox aiBox">
+            <div class="aiBox1">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="aiBox2">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="aiBox3">
+                <div class="line"></div>
 
-            <div class="lineThin"></div>
-            <div class="lineThin"></div>
-            <div class="lineThin"></div>
-
-            <div class="lineThin"></div>
-            <div class="lineThin"></div>
-            <div class="lineThin"></div>
+            </div>
+            <div class="aiBox4">
+                <div class="line"></div>
+            </div>
+            <div class="aiBox5">
+                <div class="line"></div>
+            </div>
         </div>
     </div>
-    <div class="animationBox-right">
+    <div class="animationBox-right light">
         <div class="line"></div>
         <div class="line"></div>
         <div class="line"></div>
         <div class="line"></div>
     </div>
-    <div class="animationBox-center">
+    <div class="animationBox-center light">
         <div class="line"></div>
     </div>
-    <div class="animationBox-left">
+    <div class="animationBox-left light">
         <div class="line"></div>
         <div class="line"></div>
         <div class="line"></div>
@@ -308,59 +54,76 @@
 <script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
 <script>
     // waiting代表动画前的等待时间
-    const animationArr = {
+    const lightObj = {
         "waiting": 0,
-        "animationBox-right": 2,
-        "waiting2": 2,
-        "animationBox-center": 2,
-        "waiting3": 1,
-        "animationBox-left": 2,
+        "animationBox-right": 1,
+        "waiting2": 3,
+        "animationBox-center": 1,
+        "waiting3": 0,
+        "animationBox-left": 1,
     };
-    const nameArr = Object.keys(animationArr);
+    const lightName = Object.keys(lightObj);
+    const aiObj = {
+        "waiting": .5,
+        "aiBox1": .5,
+        "aiBox2": .5,
+        "aiBox3": .5,
+        "aiBox4": .5,
+        "aiBox5": .5
+    };
+    const aiName = Object.keys(aiObj);
 
     $(function () {
-        $(".line").wrap("<div class='lineBox'></div>");
-        let animationNext;
-        start();
-        setTimeout(function () {
-            clear();
-            start();
-        }, 10000);
+        let animationNext1 = animationGen1();
+        let animationNext2 = animationGen2();
 
-        function clear() {//重置
-            $(".line").css("animation-duration", 0);
+        /*整体进度动画*/
+        start(animationNext1,lightObj);
+        /*智神经网络动画*/
+        start(animationNext2,aiObj);
+
+        function clear() {//循环前重置
+            $(".line").removeClass("animation", 0);
         }
 
-        function start() {//开始动画
-            animationNext = animationGen();
-            animationCtr(0);//开始
+        //开始动画
+        function start(animationNext,obj) {
+            animationCtr(0, animationNext,obj);
         }
 
-        function animationCtr(i) {
+        /*每一步动画的实现
+        *  @param {number} i 第几步动画
+        *  @param {fun} animationNext 传入本生成器
+        *  @param {obj} obj 时间和动画控制对象
+        * */
+        function animationCtr(i, animationNext,obj) {
+            let objName = Object.keys(obj);
             setTimeout(function () {
-                let $lineBox = animationNext.next().value;
-                if ($lineBox) {
-                    $lineBox.find(".line").addClass("lineTo").css("animation-duration", animationArr[nameArr[i + 1]] + "s");
+                let $line = animationNext.next(animationNext).value;
+                if ($line) {
+                    // console.log($line[0])
+                    $line.find(".line").addClass("animate").css("animation-duration", obj[objName[i + 1]] + "s");
+                    // console.log($line[0])
                 }
-            }, animationArr[nameArr[i]] * 1000);
+            }, obj[objName[i]] * 1000);
         }
 
-        function* animationGen() {
-            for (let i = 0; i < nameArr.length; i++) {
-                animationCtr(i);
-                yield $("." + nameArr[i]);
+        //生成器函数，让每一步动画等待执行完毕
+        function* animationGen1() {
+            for (let i = 0; i < lightName.length; i++) {
+                animationCtr(i, animationNext1,lightObj);
+                yield $("." + lightName[i]);
             }
         }
 
+        //神经网络 生成器函数，让每一步动画等待执行完毕
+        function* animationGen2() {
+            for (let i = 0; i < aiName.length; i++) {
+                animationCtr(i, animationNext2,aiObj);
+                yield $("." + aiName[i]);
+            }
+        }
     });
-
-    /*智能算法动画*/
-    setTimeout(function () {
-        $(function () {
-            $(".lineThin").addClass("lineThinTo")
-        })
-    },3000)
-
 
 
 </script>
