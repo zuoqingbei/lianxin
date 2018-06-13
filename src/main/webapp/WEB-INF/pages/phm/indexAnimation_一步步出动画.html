@@ -7,11 +7,11 @@
 </head>
 <body>
 <div class="myContainer">
-    <div class="textPicBox">
+    <div class="textPicBox" style="display: none;">
         <h3>整机诊断预测模型</h3>
         <img class="pic" src="${contextPath}/static/phm/images/strategy/mod_1.png" alt="整机诊断预测模型">
     </div>
-    <div class="textPicBox">
+    <div class="textPicBox" style="display: none;">
         <h3>通过大数据124类故障模式训练10种诊断预测模式</h3>
         <div class="picBox aiBox">
             <div class="aiBox1">
@@ -59,19 +59,17 @@
 <script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
 <script>
     // waiting代表动画前的等待时间
-    //整体光效动画时间
     const lightObj = {
         "waiting": 0,
         "animationBox-right": 1,
-        "waiting2": 5.5,
+        "waiting2": 6,
         "animationBox-center": 1,
-        "waiting3": .5,
+        "waiting3": 1,
         "animationBox-left": 1,
     };
     const lightName = Object.keys(lightObj);
-    //神经网络动画时间
     const aiObj = {
-        "waiting": .5,
+        "waiting": 1,
         "aiBox1": .25,
         "aiBox2": .25,
         "aiBox3": .25,
@@ -97,15 +95,20 @@
         function start(animationNext,obj) {
             animationCtr(0, animationNext,obj);
         }
+        setTimeout(function () {
+
+
+
+        },4500);
 
         function * ctr() {
-            // yield $(".textPicBox:eq(1)").fadeIn(250);
+            yield $(".textPicBox:eq(1)").fadeIn(250);
             yield $("video").parent().prev().css("transform","scale(0)");
             yield $("video")[0].play();
-            // yield $(".textPicBox:nth-of-type(1)").fadeIn(250);
+            yield $(".textPicBox:nth-of-type(1)").fadeIn(250);
         }
         let ctrNext = ctr();
-        let videoTimer = [1,2,1];
+        let videoTimer = [0,1,3,0.5,3.5];
         videoTimer.reduce(function (prev,cur) {
             let tempTime = prev+cur;
             setTimeout(function () {
@@ -149,17 +152,5 @@
 
 
 </script>
-<script id="shader-fs" type="x-shader/x-fragment">
-      varying highp vec2 vTextureCoord;
-
-      uniform sampler2D uSampler;
-
-      void main(void) {
-        highp vec4 texelColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-        highp float texelAlpha = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t - 0.5)).r;
-        gl_FragColor = vec4(texelColor.rgb, texelAlpha);
-      }
-    </script>
-
 </body>
 </html>

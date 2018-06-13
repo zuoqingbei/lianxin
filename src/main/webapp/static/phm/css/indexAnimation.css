@@ -32,9 +32,22 @@ body {
     vertical-align: top;
 
 }
+.textPicBox  h3{
+    margin-bottom: 6rem;
+}
 
+.textPicBox:nth-of-type(1) {
+    position: absolute;
+    left: 5rem;
+}
 .textPicBox:nth-of-type(2) {
     width: 30rem;
+    position: absolute;
+    right: 6rem;
+}
+.textPicBox:nth-of-type(2) h3 {
+    margin-bottom: 3rem;
+
 }
 
 .textPicBox img {
@@ -42,10 +55,17 @@ body {
 }
 
 .textPicBox .picBox {
+    transition: all 1s;
     position: relative;
+    transform-origin: 18rem -3rem;
+    left: -1rem;
+    top: 3rem;
     height: 15rem;
-    background: url("../images/system/algorithm.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../images/system/cnn.png") no-repeat;
+    /*下面两行是因为换图和原来的对不上而做的调整*/
+    background-size: 91% 84%;
+    background-position: 47% 47%;
+    opacity: .8;
 }
 
 /*光效动画*/
@@ -99,7 +119,7 @@ body {
 /*右边的光束*/
 .animationBox-right {
     right: 0;
-    top: 5rem;
+    top: 10rem;
     width: 12rem;
 }
 
@@ -131,14 +151,20 @@ body {
     filter: hue-rotate(-90deg);
 }
 
-.animationBox-center .line {
-    transform: rotate(15deg);
+.animationBox-center .line:nth-child(1) {
+    /*top: 2rem;*/
+}
+.animationBox-center .line:nth-child(2) {
+    top: 2rem;
+}
+.animationBox-center .line:nth-child(3) {
+    top: 4rem;
 }
 
 /*左边的光束*/
 .animationBox-left {
     left: 2rem;
-    top: 9rem;
+    top: 13rem;
     width: 12rem;
 }
 
@@ -329,18 +355,13 @@ body {
     /*width: 3rem;*/
 }
 
-/*
-        @keyframes animate {
-            0% {
-                width: 0;
-                opacity: 0;
-            }
-            30% {
-                opacity: 1;
-            }
-            to {
-                width: 100%;
-                opacity: 1;
-            }
-        }
-*/
+.videoBox{
+    position: absolute;
+    top: 5rem;
+    z-index: -1;
+    width: 28rem;
+}
+.videoBox>video{
+    width: 100%;
+    height: 100%;
+}
