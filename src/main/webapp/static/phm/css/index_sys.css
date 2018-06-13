@@ -193,6 +193,7 @@
     width: 46%;
     height:100%;
     float: left;
+    position: relative;
 }
 /*bottom 右侧部分*/
 #bottom .rightMod {
@@ -258,6 +259,33 @@
 .chartBody1 >ul>li p{
     text-align: center;
 }
+
+
+
+/*------------------------- 动画部分 --------------------------*/
+.centerMod>iframe{
+    position: absolute;
+    left: -8rem;
+    /*top: -4rem;*/
+    top: 0;
+    width: 83em;
+    height: 24em;
+    transform-origin: center top;
+    /* transform: scale(1.1,.8); */
+    border: none;
+    overflow: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>首页动画</title>
     <link rel="stylesheet" href="${contextPath}/static/phm/css/indexAnimation.css">
+    <script>
+
+    </script>
 </head>
 <body>
 <div class="myContainer">
@@ -58,10 +61,15 @@
 </div>
 <script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
 <script>
+    setTimeout(function () {
+        let bodyFontSize = parent.bodyFontSize;
+        $("html").css("font-size",bodyFontSize);
+    },300);
+
     // waiting代表动画前的等待时间
     //整体光效动画时间
     const lightObj = {
-        "waiting": 0,
+        "waiting": 1,
         "animationBox-right": 1,
         "waiting2": 5.5,
         "animationBox-center": 1,
@@ -71,7 +79,7 @@
     const lightName = Object.keys(lightObj);
     //神经网络动画时间
     const aiObj = {
-        "waiting": .5,
+        "waiting": 1.5,
         "aiBox1": .25,
         "aiBox2": .25,
         "aiBox3": .25,
@@ -80,86 +88,86 @@
     };
     const aiName = Object.keys(aiObj);
 
+    function clear() {//循环前重置
+        $("video")[0].load();
+        $("video").parent().prev().css("transform","scale(1)");
+        $(".line").removeClass("animate", 0);
+    }
     $(function () {
-        let animationNext1 = animationGen1();
-        let animationNext2 = animationGen2();
+        let allAnimate = function () {
+            clear();
+            let animationNext1 = animationGen1();
+            let animationNext2 = animationGen2();
 
-        /*整体进度动画*/
-        start(animationNext1,lightObj);
-        /*智神经网络动画*/
-        start(animationNext2,aiObj);
+            /*整体进度动画*/
+            start(animationNext1,lightObj);
+            /*智神经网络动画*/
+            start(animationNext2,aiObj);
 
-        function clear() {//循环前重置
-            $(".line").removeClass("animation", 0);
-        }
 
-        //开始动画
-        function start(animationNext,obj) {
-            animationCtr(0, animationNext,obj);
-        }
 
-        function * ctr() {
-            // yield $(".textPicBox:eq(1)").fadeIn(250);
-            yield $("video").parent().prev().css("transform","scale(0)");
-            yield $("video")[0].play();
-            // yield $(".textPicBox:nth-of-type(1)").fadeIn(250);
-        }
-        let ctrNext = ctr();
-        let videoTimer = [1,2,1];
-        videoTimer.reduce(function (prev,cur) {
-            let tempTime = prev+cur;
-            setTimeout(function () {
-                ctrNext.next();
+            //开始动画
+            function start(animationNext,obj) {
+                animationCtr(0, animationNext,obj);
+            }
 
-            },(tempTime)*1000)
-            return tempTime;
-        })
+            function * ctr() {
+                // yield $(".textPicBox:eq(1)").fadeIn(250);
+                yield $("video").parent().prev().css("transform","scale(0)");
+                yield $("video")[0].play();
+                // yield $(".textPicBox:nth-of-type(1)").fadeIn(250);
+            }
+            let ctrNext = ctr();
+            let videoTimer = [3,2,1];
+            videoTimer.reduce(function (prev,cur) {
+                let tempTime = prev+cur;
+                setTimeout(function () {
+                    ctrNext.next();
 
-        /*每一步动画的实现
-        *  @param {number} i 第几步动画
-        *  @param {fun} animationNext 传入本生成器
-        *  @param {obj} obj 时间和动画控制对象
-        * */
-        function animationCtr(i, animationNext,obj) {
-            let objName = Object.keys(obj);
-            setTimeout(function () {
-                let $line = animationNext.next(animationNext).value;
-                if ($line) {
-                    $line.find(".line").addClass("animate").css("animation-duration", obj[objName[i + 1]] + "s");
+                },(tempTime)*1000)
+                return tempTime;
+            })
+
+            /*每一步动画的实现
+            *  @param {number} i 第几步动画
+            *  @param {fun} animationNext 传入本生成器
+            *  @param {obj} obj 时间和动画控制对象
+            * */
+            function animationCtr(i, animationNext,obj) {
+                let objName = Object.keys(obj);
+                setTimeout(function () {
+                    let $line = animationNext.next(animationNext).value;
+                    if ($line) {
+                        $line.find(".line").addClass("animate").css("animation-duration", obj[objName[i + 1]] + "s");
+                    }
+                }, obj[objName[i]] * 1000);
+            }
+
+            //总流程，生成器函数，让每一步动画等待执行完毕
+            function* animationGen1() {
+                for (let i = 0; i < lightName.length; i++) {
+                    animationCtr(i, animationNext1,lightObj);
+                    yield $("." + lightName[i]);
                 }
-            }, obj[objName[i]] * 1000);
-        }
+            }
 
-        //总流程，生成器函数，让每一步动画等待执行完毕
-        function* animationGen1() {
-            for (let i = 0; i < lightName.length; i++) {
-                animationCtr(i, animationNext1,lightObj);
-                yield $("." + lightName[i]);
+            //神经网络，生成器函数，让每一步动画等待执行完毕
+            function* animationGen2() {
+                for (let i = 0; i < aiName.length; i++) {
+                    animationCtr(i, animationNext2,aiObj);
+                    yield $("." + aiName[i]);
+                }
             }
         }
 
-        //神经网络，生成器函数，让每一步动画等待执行完毕
-        function* animationGen2() {
-            for (let i = 0; i < aiName.length; i++) {
-                animationCtr(i, animationNext2,aiObj);
-                yield $("." + aiName[i]);
-            }
-        }
+        allAnimate();
+        setInterval(function () {
+            allAnimate();
+        },12000)
+
     });
 
 
 </script>
-<script id="shader-fs" type="x-shader/x-fragment">
-      varying highp vec2 vTextureCoord;
-
-      uniform sampler2D uSampler;
-
-      void main(void) {
-        highp vec4 texelColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-        highp float texelAlpha = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t - 0.5)).r;
-        gl_FragColor = vec4(texelColor.rgb, texelAlpha);
-      }
-    </script>
-
 </body>
 </html>
