@@ -1,11 +1,26 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" style="opacity: 0;">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>海尔全球实验室</title>
     <link rel="stylesheet" href="${contextPath!}/static/css/hallMap.css">
+    <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+    <script>
+        let [pageH, pageW] = [$(window).height(), $(window).width()];
+        let bodyScale = pageH / 637;
+        let htmlFontSize = bodyScale * 100 + "%";
+        $(function () {
+            pageResize();
+        });
+
+        function pageResize() {
+            $("html").css("font-size", htmlFontSize).css("opacity",1);
+            $("#myContainer").css("width", pageH * 16 / 9);
+            console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:" + pageW + " \nbody字号：" + htmlFontSize)
+        }
+    </script>
 </head>
 <body id="hallMap">
 <div id="myContainer">
@@ -15,44 +30,88 @@
         <h1>Haier Global Labs</h1>
     </header>
     <div id="container">
-        <div class="mapBox">
-            <iframe id="iframeFlat" src="${contextPath!}/lab/flatMap" frameborder="0"></iframe>
+        <div class="left">
+            <div class="left-top">
+                <div class="box">
+                    <h3>海尔全球实验室分布</h3>
+                </div>
+            </div>
+            <div class="left-bottom">
+                <div class="box">
+                    <h3>全流程测试指标监控(当月)</h3>
+                </div>
+            </div>
         </div>
-        <div class="textBox">
-            <div class="text">
-                <p>海尔全球拥有882个实验室，分布在10大研发中心和24个工业园区的108个工厂，覆盖了海尔50多类产品全生命周期的检测需求。
-                <p>海尔检测中心具备整机和模块6000多个项目的检测能力，并获得UL、VDE、TUV、JET等28个国际权威机构授权、数据互认，可提供全球市场准入认证测试。
+        <div class="mid">
+            <div class="mapBox">
+                <iframe id="iframeFlat" name="iframeFlat" src="${contextPath!}/lab/flatMap?hallMap"
+                        frameborder="0"></iframe>
+                <div class="flatMapCtr" style="">
+                    <div class="legend">
+                        <div class="legend-l">
+                            <div class="text">产线</div>
+                        </div>
+                        <div class="legend-m">
+
+                            <div class="text">
+                                <ul>
+                                    <li class="active"><a href>研发中心</a></li>
+                                    <li class="active"><a href>检测中心</a></li>
+                                    <li class=""><a href>制造工厂</a></li>
+                                    <li class="active"><a href>模块商</a></li>
+                                </ul>
+                                <ul>
+                                    <li><a href>冰冷</a></li>
+                                    <li><a href>洗涤</a></li>
+                                    <li><a href>家空</a></li>
+                                    <li><a href>商空</a></li>
+                                    <li><a href>热水器</a></li>
+                                    <li><a href>厨电</a></li>
+                                    <li><a href>其它</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="legend-r active">
+                            <div class="text">实验室</div>
+                        </div>
+                        <div class="legend-b">
+                            <div class="text">进入实验室 &gt;&gt;</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-top">
+                <div class="box">
+                    <h3>全球实验室互联</h3>
+                </div>
+            </div>
+            <div class="right-bottom">
+                <div class="box">
+                    <h3>实验室管理指标监控(当月)</h3>
+                </div>
             </div>
         </div>
     </div>
 
-</div>
-<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
-<!--<script src="${contextPath!}/static/js/main_left.js"></script>-->
-<script>
-    let [pageH, pageW] = [$(window).height(), $(window).width()];
-    let bodyScale = pageH / 637;
-    let htmlFontSize = bodyScale * 100 + "%";
-    pageResize();
-    // window.onresize = pageResize;
-    function pageResize() {
-        $("html").css("font-size", htmlFontSize);
-        $("#myContainer").css("width", pageH * 16 / 9)
-        console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:" + pageW + " \nbody字号：" + htmlFontSize)
-    }
+    <footer class="textBox">
+        <div class="text">
+            <p>海尔检测认证中心承接集团各产品60多类市场准入认证，覆盖87个国家，合作的30多家国际认证机构包括UL、VDE、TUV、SAA、SASO、JET 等认证，全部进行了实验室数据互认，无需跨出国门，便可以得到国际化的专业检测，以最快的速度、最经济的成本，满足全球各地产品认证的需求。
+        </div>
+    </footer>
 
+</div>
+<script>
     function parentMethod() {//平面地图的数据加载
         var bodyScale = 1;
-        // productCode, labType
-        $("#iframeFlat")[0].contentWindow.createArrData("21,22,23,24,25,26,27,21,22,23,24,25,26,27", "2,1,4,3,2,1,4,3");
-        // reloadLeftData();
+        // $("#iframeFlat")[0].contentWindow.createArrData("21,22,23,24,25,26,27", "2,1,4,3");
+        $("#iframeFlat")[0].contentWindow.createArrData("", "");
     }
 
-    function a() {
-        var tt = getGeoArr(data);
-        console.log(tt);
-        return tt;
-    }
+    $(function () {
+        $(window.frames["iframeFlat"].document).find("")
+    })
 </script>
 <script>
 

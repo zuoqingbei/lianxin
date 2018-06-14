@@ -9,6 +9,7 @@ var TIP_SETTIMEOUT_TIME = 2000;//静止显示的时间
 var TIP_SETINTERVAL_TIME = 4000;//每个提示的周期时长
 var stop = false;
 var timeId = null;
+var hallMap = (window.location.href.indexOf("hallMap") > 0);
 
 //使提示框和其中文字大小随屏幕自动伸缩
 function tipResize() {
@@ -30,15 +31,14 @@ $(function () {
     $("body").on("click", "#echartTips .echart_content>.textBox>a", function () {
         var centerId = $(this).data("centerid");
 
-        if($(".fullScreen_map",parent.document).length>0){//如果是从地图全屏的提示框进入，则需跳转并在url上挂参。
-            var url = location.href.slice(0,location.href.lastIndexOf("/"))+"/full?toLabData&centerId="+centerId;
-            console.log("大屏",url);
+        if ($(".fullScreen_map", parent.document).length > 0) {//如果是从地图全屏的提示框进入，则需跳转并在url上挂参。
+            var url = location.href.slice(0, location.href.lastIndexOf("/")) + "/full?toLabData&centerId=" + centerId;
+            console.log("大屏", url);
             parent.location.href = url;
-        }else{
-            $(".toLabData",parent.document).click();
+        } else {
+            $(".toLabData", parent.document).click();
             parent.toCenterLab(centerId);
         }
-
 
 
     });
@@ -161,18 +161,21 @@ function seriesData(data) {
                     }
                 }
             }
-        }, {
-            name: "Japan",
-            selected: true,
-        },
-            {
-                name: "New Zealand",
-                selected: true,
-            },
-            {
-                name: "Thailand",
-                selected: true,
-            }
+        }
+            /*
+                    }, {
+                        name: "Japan",
+                        selected: true,
+                    },
+                        {
+                            name: "New Zealand",
+                            selected: true,
+                        },
+                        {
+                            name: "Thailand",
+                            selected: true,
+                        }
+            */
         ],
         markPoint: {
             symbol: 'emptyCircle',
@@ -440,16 +443,18 @@ function getTopicHtml(currentPoint) {
     var url = "";
     var centerId = currentPoint.centerId;
     var imgUrl = currentPoint.imgUrl;
-   // console.log("currentPoint.centerId",centerId);
+    // console.log("currentPoint.centerId",centerId);
 
     return $((centerId ? ' <div class="echart_tip">' : ' <div class="echart_tip noCenterData">') +
         '<div class="dialog_title echart_content">' +
         //下面设置了没有图片时的默认显示
-        '   <img src="' + (imgUrl||'../static/img/ico/logo_pinyin.png') + '" alt="默认图片">' +
+        '   <img src="' + (imgUrl || '../static/img/ico/logo_pinyin.png') + '" alt="默认图片">' +
         '   <div class="textBox">' +
         '   <h4 style="">' + title + '</h4>' +
         '   <div class="labNumber">共 ' + value + ' 家实验室</div>' +
-        '   <a data-centerId="' + centerId + '" href="javascript:void(0);">进入实验室&nbsp;</a>' +
+        function () { //大厅里面不需要显示“进入实验室”按钮
+            return hallMap?'' : '   <a data-centerId="' + centerId + '" href="javascript:void(0);">进入实验室&nbsp;</a>'
+        }()+
         '   </div>' +
         '</div>' +
         '<div class="echart_tip_arrow">' +
