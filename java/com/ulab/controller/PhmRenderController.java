@@ -11,6 +11,10 @@ import com.ulab.core.BaseController;
 @ControllerBind(controllerKey = "/phm", viewPath = "/phm")
 public class PhmRenderController extends BaseController {
 	//系统首页
+	public void phm2(){
+//		render("strategy.html");
+		render("phm2.html");
+	}
 	public void index(){
 //		render("strategy.html");
 		render("index_sys.html");
