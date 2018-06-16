@@ -109,7 +109,7 @@ html,body{
 /* =============================左侧======================================= */
 .LeftContent{
     height: 100%;
-    width: 32%;
+    width: 36%;
     background:url("../images/system/bg1.png") no-repeat;
     background-size: 100% 100%;
 }
@@ -118,8 +118,12 @@ html,body{
     height: 30%;
     margin: 0 auto;
 }
-.currentState>div{
-    width: 33%;
+.currentState>div:nth-child(1){
+    width: 40%;
+    height: 100%;
+}
+.currentState>div:nth-child(2),.currentState>div:nth-child(3){
+    width: 30%;
     height: 100%;
 }
 .currentState_middle>div{
@@ -130,16 +134,22 @@ html,body{
     height: 100%;
     background-color: #000;
 }
-.currentState_box{
+.leftContentList .lists .listsUp{
+    height: 50%;
+    
+}
+.leftContentList .lists .listsMiddle,.leftContentList .lists .listsDown{
+    height: 25%;
+    /* background-color:red; */
+    /* background-color: #000; */
+}
+.imgbox{
     position: relative;
     height: 20%;
     width: 100%;
-    background-color: red;
-    background:url("../images/system/1.png") no-repeat;
-    background-size: 100% 100%;
-   
+    /* background-color: red;    */
 }
-.currentState_box span{
+.imgbox span{
     text-align: center;
 }
 
@@ -148,26 +158,61 @@ html,body{
     display: block;
 }
 .leftContentList{
-    width: 98%;
+    width: 92%;
     height: 60%;
     margin: 0 auto;
-    background-color: pink;
+    /* background-color: pink; */
 }
 .leftContentList .lists{
     width: 16.5%;
     height:100%;
-    background-color:red;
+    border-right: 1px solid #64ccff;
+    /* background-color:red; */
 }
-.leftContentList .lists .listsUp{
-    height: 50%;
+
+.imgboxContent{
+    position: relative;
+    height: 80%;
 }
-.leftContentList .lists .listsMiddle,.leftContentList .lists .listsDown{
-    height: 25%;
+.imgboxContent img{
+    position: relative;
+    top: 0.3em;
+    left: 50%;
+    margin-left: -10%;
+    width: 20%;
+    height: 70%;
+}
+.info{
+    width: 100%;
+    
+}
+.info p{
+    text-align: center;
+}
+.txt2,.txt4{
+    font-size: 0.5em;
+    text-align: center;
+    /* margin-bottom: 0.2em; */
+}
+.txt1{
+    font-size: 1.1em;
+    margin:0.3em 0;
+    /* color: red; */
+}
+.txt3, .txt5{
+    font-size: 1.2em;
+    color: orange;
+}
+.echarts{
+    height: 100%;
+}
+.echarts>div{
+    height: 100%;
 }
 /* ============================右侧======================================= */
 .RightContent{
     height: 100%;
-    width: 66%;
+    width: 62%;
     background:url("../images/system/bg2.png") no-repeat;
     background-size: 100% 100%;
 }
@@ -202,6 +247,7 @@ html,body{
 .ContentRightContent>div{
     height: 100%;
 }
+
 /* ======================================右侧 左边部分===================== */
 .rightMiddle{
     width: 68%;
