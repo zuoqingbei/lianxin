@@ -88,7 +88,7 @@ strong{
         background: url(../img/bg_title.png) no-repeat;
         background-position-x: 50%;
         background-position-y: 1em;
-        background-size: 98% 80%;
+        background-size: 98% 63%;
     }
 
     h1 {
@@ -109,19 +109,19 @@ strong{
     h1:nth-of-type(2) {
         font-size: 1.9em;
         margin-top: 0;
-        padding-left: 2rem;
+        padding-left: 1rem;
+        letter-spacing: initial;
     }
 
     header .mainLogo {
         display: inline-block;
         position: absolute;
-        width: 5em;
+        width: 5.5em;
         height: 2.5em;
         top: .75em;
-        left: 30em;
-        background: url(../img/logo_haier.png);
+        left: 29.5em;
+        background: url(../img/logo_haier.png) no-repeat;
         background-size: 100% 100%;
-        background-repeat: no-repeat;
     }
 
 }
@@ -265,8 +265,7 @@ strong{
         display: block;
     }
     .legend-m ul>li.active>a{
-        text-shadow: 0 0 .0625em;
-
+        /*text-shadow: 0 0 .0625em;*/
     }
     .legend-m ul>li>a:before{
         content: "";
@@ -278,6 +277,9 @@ strong{
         height: 1em;
         border-radius: 50%;
         background: radial-gradient(circle,#999,rgba(0,0,0,0))
+    }
+    .legend-m ul>li.active>a:before{
+        box-shadow: 0 0 0.0625em;
     }
     .legend{
         --c-lab1:#00e673;
@@ -358,7 +360,7 @@ strong{
 }
 .test table th,
 .test table td{
-    padding: .5rem .625rem;
+    padding: .5rem .75rem;
 }
 .test table td:nth-of-type(2),
 .test table td:nth-of-type(3){

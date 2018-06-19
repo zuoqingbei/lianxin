@@ -10,6 +10,12 @@ var TIP_SETINTERVAL_TIME = 4000;//每个提示的周期时长
 var stop = false;
 var timeId = null;
 var hallMap = (window.location.href.indexOf("hallMap") > 0);
+var labCodeColors = [
+    "#ffec3d",
+    "#00e673",
+    "#b37feb",
+    "#ff85c0",
+];
 
 //使提示框和其中文字大小随屏幕自动伸缩
 function tipResize() {
@@ -118,7 +124,7 @@ function createArrData(productCode, labType) {
             },
 
 
-            series: seriesData(mDataBase)
+            series: seriesData(mDataBase, labType)
         }
         myFlatMap.clear();
         startNewsShown();
@@ -128,16 +134,17 @@ function createArrData(productCode, labType) {
 
 }
 
-function seriesData(data) {
+function seriesData(data, labType) {
     var seriesData = [];
-    var item = {
+    var item;
+    // 绘制地图
+    item = {
         tooltip: {
             show: false
         },
         name: 'zy_hotpoint',
         type: 'map',
         roam: false,
-        // hoverable: false,
         mapType: 'world',
         mapLocation: {
             x: 'right',
@@ -162,113 +169,86 @@ function seriesData(data) {
                 }
             }
         }
-            /*
-                    }, {
-                        name: "Japan",
-                        selected: true,
-                    },
-                        {
-                            name: "New Zealand",
-                            selected: true,
-                        },
-                        {
-                            name: "Thailand",
-                            selected: true,
-                        }
-            */
         ],
-        markPoint: {
-            symbol: 'emptyCircle',
-            symbolSize: function (v) {
-                return 3 * bodyScale;
-            },
-            effect: {
-                show: true,
-                type: 'scale',//圈圈
-                loop: true,
-                shadowBlur: 0
-            },
-            itemStyle: {
-                normal: {label: {show: false}},
-                emphasis: {label: {show: false}}
-            },
-            data: data
-        },
-        // geoCoord: getGeoArr(data)
         geoCoord: function () {
             var t = getGeoArr(data);
-            // console.log(t);
+            console.log(t);
             return t
         }()
-
     };
     seriesData.push(item);
+    var dataItem = {};
+    var labArr = [];
+    if (labType && (labArr = labType.split(",")) > 0) {
+        labArr.forEach(function (item, index) {
+            dataItem = {
+                name: '',
+                type: 'map',
+                roam: false,
+                // hoverable: false,
+                mapType: 'world',
+                mapLocation: {
+                    x: 0,
+                    // y: "top"
+                },
+                data: [],
+                markPoint: {
+                    symbol: 'emptyCircle',
+                    symbolSize: function (v) {
+                        return 3 * bodyScale;
+                    },
+                    effect: {
+                        show: true,
+                        type: 'scale',//圈圈
+                        loop: true,
+                        shadowBlur: 1 * bodyScale,
+                        period: 20
+                    },
+                    itemStyle: {
+                        normal: {
+                            label: {show: false},
+                            color: labCodeColors[item - 1]
+                            // color:function () {
+                            //     console.log(data)
+                            //     return "red"
+                            // }()
+                        },
+                        emphasis: {label: {show: false}}
+                    },
+                    data: data
+                },
+                markLine: {
+                    smooth: true,
+                    tooltip: {
+                        show: false
+                    },
+                    symbolSize: 0,
+                    effect: {
+                        show: true,
+                        scaleSize: 1,
+                        period: 25 * bodyScale,
+                        color: labCodeColors[labType - 1],
+                        shadowBlur: 10 * bodyScale
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: labCodeColors[labType - 1],
+                            borderWidth: 1 * bodyScale,
+                            lineStyle: {
+                                type: 'solid',
+                                shadowBlur: 0
+                            }
+                        }
+                    },
+                    data: dataToArrayContinueArray(data)
 
-    item = {
-        name: '',
-        type: 'map',
-        roam: false,
-        // hoverable: false,
-        mapType: 'world',
-        mapLocation: {
-            x: 0,
-            // y: "top"
-        },
-        itemStyle: {
-            normal: {
-                borderColor: 'rgba(100,149,237,1)',
-                borderWidth: 0.5 * bodyScale,
-                areaStyle: {
-                    color: '#1b1b1b'
-                }
+                },
             }
-        },
-        data: [],
-        markPoint: {
-            symbol: 'emptyCircle',
-            symbolSize: function (v) {
-                return 6 * bodyScale;
-            },
-            effect: {
-                show: true,
-                type: 'scale',//圈圈
-                loop: true,
-                shadowBlur: 0,
-                period: 30
-            },
-            itemStyle: {
-                normal: {label: {show: false}},
-                emphasis: {label: {show: false}}
-            },
-            data: data
-        },
-        markLine: {
-            smooth: true,
-            tooltip: {
-                show: false
-            },
-            effect: {
-                show: true,
-                scaleSize: 1,
-                period: 25 * bodyScale,
-                color: '#ff0',
-                shadowBlur: 10 * bodyScale
-            },
-            itemStyle: {
-                normal: {
-                    color: "rgba(20,143,204,.7)",
-                    borderWidth: 1 * bodyScale,
-                    lineStyle: {
-                        type: 'solid',
-                        shadowBlur: 0
-                    }
-                }
-            },
-            data: dataToArrayContinueArray(data)
-        },
+            seriesData.push(dataItem);
+        })
     }
 
-    seriesData.push(item);
+
     return seriesData;
 }
 
@@ -453,8 +433,8 @@ function getTopicHtml(currentPoint) {
         '   <h4 style="">' + title + '</h4>' +
         '   <div class="labNumber">共 ' + value + ' 家实验室</div>' +
         function () { //大厅里面不需要显示“进入实验室”按钮
-            return hallMap?'' : '   <a data-centerId="' + centerId + '" href="javascript:void(0);">进入实验室&nbsp;</a>'
-        }()+
+            return hallMap ? '' : '   <a data-centerId="' + centerId + '" href="javascript:void(0);">进入实验室&nbsp;</a>'
+        }() +
         '   </div>' +
         '</div>' +
         '<div class="echart_tip_arrow">' +
