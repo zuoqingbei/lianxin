@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<meta name="PHM" content="phm二期" />
-		<title>documents</title>
+		<title>phm2</title>
 		
 		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
 		<link rel="stylesheet" href="${contextPath}/static/phm/css/phm2.css" />
@@ -38,14 +38,16 @@
 						<div class="currentState">
 							<div class="currentState_left fl">
 								<div class="currentState_leftTitle">
-									<div class="imgbox">
+                                    <div class="imgbox boxTitle1">
                                         <span>当前在线状态</span>
-                                    </div>
-                                    <!-- <span>累计接入量 <span>496440</span></span>
-                                    <span>累计运行时间 <p>434884994</p> <p>小时</p> </span>
-                                    <div class="imgbox">
+                                    </div>              
+                                    <ul>
+                                        <li>累计接入量: <a href="#">496440</a></li>
+                                        <li>累计运行时间:  <a href="#">434884994</a> <i>小时</i></li>
+                                    </ul>
+                                    <div class="imgbox boxTitle2">
                                             <span>在线机器健康运行时间</span>
-                                    </div> -->
+                                    </div> 
 								</div>
 							</div>
 							<div class="currentState_middle fl">
@@ -324,6 +326,7 @@
             ]
     }
     var list_bar ={
+        color:colors,
         grid: {
                 left: '5%',
                 right: '5%',
@@ -408,7 +411,7 @@
 		myChart2.setOption(opts);
         myChart2.setOption({
 			legend:{
-                top:15,
+                top:25,
                 show:true,
 				 data:['在线','离线'],
 				textStyle:{
@@ -445,7 +448,7 @@
                             color: '#00adef'
                         }
                     },
-                    data: [45, 55, 75, 70,60]
+                    data: [25, 45, 65, 60,50]
                 },
                 {
                     name: '离线',
@@ -514,7 +517,7 @@
                 }
             
         });
-        //list5
+    //list5
     var list5 = echarts.init($("#list-5")[0]);
 		list5.setOption(opts);
         list5.setOption(list_pie);
@@ -539,7 +542,7 @@
                 }
             
         });
-         //list7
+    //list7
     var list7 = echarts.init($("#list-7")[0]);
 		list7.setOption(opts);
         list7.setOption(list_pie);
@@ -564,7 +567,7 @@
                 }
             
         });
-        //list9
+    //list9
     var list9 = echarts.init($("#list-9")[0]);
 		list9.setOption(opts);
         list9.setOption(list_pie);
@@ -589,7 +592,7 @@
                 }
             
         });
-         //list11
+    //list11
     var list11 = echarts.init($("#list-11")[0]);
 		list11.setOption(opts);
         list11.setOption(list_pie);
@@ -617,23 +620,20 @@
 	var colors = [
         '#00adef',
         '#faad14',
-        '#73d13d',
-        '#b37feb',
-        '#ff7875',
         '#5cdbd3',
         '#ff85c0',
-        '#ffd591',
-        '#eaff8f',
-        '#d3adf7',
-        '#91d5ff',
-        '#ffa39e',
-        '#87e8de',
-        '#ffadd2',
-        '#adc6ff',
-        '#fffb8f',
-        '#b7eb8f',
-        '#ffbb96',
-        '#d9f7be',
-        '#ffd6e7',
+        // '#ffd591',
+        // '#eaff8f',
+        // '#d3adf7',
+        // '#91d5ff',
+        // '#ffa39e',
+        // '#87e8de',
+        // '#ffadd2',
+        // '#adc6ff',
+        // '#fffb8f',
+        // '#b7eb8f',
+        // '#ffbb96',
+        // '#d9f7be',
+        // '#ffd6e7',
     ];
 </script>
