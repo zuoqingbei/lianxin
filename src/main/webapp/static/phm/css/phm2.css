@@ -12,7 +12,10 @@ html,body{
     background-size: 100% 100%;
     width:100%;
 }
-
+/*消除浏览器中搜狗翻译的某些样式*/
+#compareOuter{
+    display: none!important;
+}
 /*=============================head==============================*/
 #head{
     overflow: hidden;

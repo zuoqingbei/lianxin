@@ -286,6 +286,13 @@ strong{
         --c-lab2:#ffec3d;
         --c-lab3:#b37feb;
         --c-lab4:#ff85c0;
+        --c-line1:#6fc;
+        --c-line2:#0af;
+        --c-line3:#01da92;
+        --c-line4:#0060ff;
+        --c-line5:#00a870;
+        --c-line6:#f93;
+        --c-line7:#f09;
     }
     .legend-m ul:first-of-type>li.active:nth-of-type(1)>a,
     .legend-m ul:first-of-type>li.active:nth-of-type(1)>a:before{
@@ -317,6 +324,20 @@ strong{
     }
 }
 
+
+.legend-m ul>li.active:nth-child(1){
+    color: var(--c-line1);
+}
+.legend-m ul>li.active:nth-child(2){
+    color: var(--c-line2);
+}
+.legend-m ul>li.active:nth-child(3){
+    color: var(--c-line3);
+}
+.legend-m ul>li.active:nth-child(4){
+    color: var(--c-line4);
+}
+。。。
 
 
 
