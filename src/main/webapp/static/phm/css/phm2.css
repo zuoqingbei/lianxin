@@ -251,8 +251,8 @@ html,body{
     /* color: red; */
 }
 .txt3, .txt5{
-    font-size: 1.2em;
-    color: orange;
+    font-size: 0.9em;
+    color:#ff9f30;
 }
 .echarts{
     height: 100%;
