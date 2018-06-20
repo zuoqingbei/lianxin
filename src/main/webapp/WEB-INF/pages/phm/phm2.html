@@ -200,17 +200,81 @@
 							<!-- 右侧 right -->
 								<div class="rightRight fr">
 									<div class="rightRightText">
-										<span>两亿用户数据,108个工厂数据,509个实验室,42类参数</span>
+										<span>全流程数据互联:两亿用户数据,108个工厂数据,727个实验室</span>
 									</div>
 									<div class="rightModPic">
-										<div class="chartBody1">
-											<ul>
-												<li><a href="#"><i class="icon"></i></a><p>全球检测大数据数据中心</p></li>
-												<li><a href="#"><i class="icon"></i></a><p>全球工厂大数据中心</p></li>
-												<li><a href="#"><i class="icon"></i></a><p>全球研发大数据中心</p></li>
-												<li><a href="#"><i class="icon"></i></a><p>全球供应商数据中心</p></li>
-											</ul>
-										</div>
+                                        <div class="rightPicContentBox">
+                                            <div></div>
+                                             <div class="rightPicContentUp">
+                                               
+                                               <div class="recordscenter">
+                                                   <div class="recordscenterTitle">
+                                                       <div class="biaoti">
+                                                            <p>检测中心</p>
+                                                       </div>
+                                                       <div class="myscroll news">
+                                                           <ul>
+                                                                <li> 中国CNAS</li><li> 中国CQC</li><li> 中国CHEARI</li><li> 中国CNAS</li><li> 中国CQC</li><li> 中国CHEARI</li>
+                                                           </ul>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                               <div class="recordscenter">
+                                                    <div class="recordscenterTitle">
+                                                        <div class="biaoti">
+                                                             <p>工厂中心</p>
+                                                        </div>
+                                                        <div class="myscroll news">
+                                                            <ul>
+                                                                    <li> 美国冰箱</li><li> 印度冰箱</li><li> 巴基斯坦冰箱</li><li> 美国冰箱</li><li> 印度冰箱</li><li> 巴基斯坦冰箱</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="recordscenter">
+                                                        <div class="recordscenterTitle">
+                                                            <div class="biaoti">
+                                                                 <p>终端用户</p>
+                                                            </div>
+                                                            <div class="myscroll news">
+                                                                <ul>
+                                                                    <li> 滚筒洗衣机</li><li> 冰箱</li><li> 空调</li><li> 滚筒洗衣机</li><li> 冰箱</li><li> 空调</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="recordscenter">
+                                                            <div class="recordscenterTitle">
+                                                                <div class="biaoti">
+                                                                     <p>研发中心</p>
+                                                                </div>
+                                                                <div class="myscroll news">
+                                                                    <ul>
+                                                                        <li> 中国青岛研发....</li><li> 中国上海研发....</li><li> 美国南卡莱纳......</li><li> 中国青岛研发....</li><li> 中国上海研发....</li><li> 美国南卡莱纳......</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="recordscenter">
+                                                                <div class="recordscenterTitle">
+                                                                    <div class="biaoti">
+                                                                         <p>供应商中心</p>
+                                                                    </div>
+                                                                    <div class="myscroll news">
+                                                                        <ul>
+                                                                                <li> 松下电机机电....</li><li> 镇江奇美化工....</li><li> 艾默生电器有......</li><li> 松下电机机电....</li><li> 镇江奇美化工....</li><li> 艾默生电器有......</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                            
+                                               <div class="recordscenter"></div>
+                                               <div class="recordscenter"></div>
+                                               <div class="recordscenter"></div>
+                                               <div class="recordscenter"></div>
+                                            </div>
+                                        </div>
+                                        
 									</div>
 								</div>
 						</div>
@@ -247,7 +311,71 @@
 		</script>
 	</body>
 </html>
+
 <script>
+
+//news 滚动 start 
+$(function(){
+$('.myscroll').myScroll({
+    speed: 30, //数值越大，速度越慢
+    rowHeight: 85 //li的高度
+});
+});
+// JavaScript Document
+(function($){
+$.fn.myScroll = function(options){
+//默认配置
+var defaults = {
+    speed:100,  //滚动速度,值越大速度越慢
+    rowHeight:60 //每行的高度
+};
+
+var opts = $.extend({}, defaults, options),intId = [];
+
+function marquee(obj, step){
+
+    obj.find("ul").animate({
+        marginTop: '-=1'
+    },0,function(){
+            var s = Math.abs(parseInt($(this).css("margin-top")));
+            if(s >= step){
+                $(this).find("li").slice(0, 1).appendTo($(this));
+                $(this).css("margin-top", 0);
+            }
+        });
+    }
+    
+    this.each(function(i){
+        var sh = opts["rowHeight"],speed = opts["speed"],_this = $(this);
+        intId[i] = setInterval(function(){
+            if(_this.find("ul").height()<=_this.height()){
+                clearInterval(intId[i]);
+            }else{
+                marquee(_this, sh);
+            }
+        }, speed);
+
+        _this.hover(function(){
+            clearInterval(intId[i]);
+        },function(){
+            intId[i] = setInterval(function(){
+                if(_this.find("ul").height()<=_this.height()){
+                    clearInterval(intId[i]);
+                }else{
+                    marquee(_this, sh);
+                }
+            }, speed);
+        });
+    
+    });
+
+}
+
+})(jQuery);
+
+// news滚动 end
+
+//左侧图表
 	var barWidth = 12 * bodyScale;
 	// 图二和图四 公共样式
     var opts ={
@@ -370,6 +498,7 @@
 		// 图标一
 		var myChart1 = echarts.init($("#currentState_m")[0]);
 		myChart1.setOption(opts);
+        myChart1.setOption(list_pie);
         myChart1.setOption({
             grid: {
                 left: '20%',
@@ -475,6 +604,8 @@
         list1.setOption(list_pie);
         list1.setOption({
             series : {
+                    
+    
                     data: [
                         {value: 60, name: '报警'},
                         {value:70,name:'健康'},
@@ -490,7 +621,11 @@
         list2.setOption({
             series: 
                 { 
-                    data: [0, 35, 20]
+                    data: [5, 35, 20],
+                    color:function(params){
+                        var colorList =['red','blue','yellow'];
+                        return colorList[params,dataIndex]
+                    }
                 }
             
         });
