@@ -122,8 +122,6 @@ function createArrData(productCode, labType) {
                     return '';
                 },
             },
-
-
             series: seriesData(mDataBase, labType)
         }
         myFlatMap.clear();
@@ -172,15 +170,17 @@ function seriesData(data, labType) {
         ],
         geoCoord: function () {
             var t = getGeoArr(data);
-            console.log(t);
+            // console.log(t);
             return t
         }()
     };
     seriesData.push(item);
     var dataItem = {};
     var labArr = [];
-    if (labType && (labArr = labType.split(",")) > 0) {
-        labArr.forEach(function (item, index) {
+    // console.log(labType)
+    // if (labType && (labArr = labType+"".split(",")) > 0) {
+        // labArr.forEach(function (item, index) {
+        // [1,2,3,4].forEach(function (item, index) {
             dataItem = {
                 name: '',
                 type: 'map',
@@ -207,11 +207,24 @@ function seriesData(data, labType) {
                     itemStyle: {
                         normal: {
                             label: {show: false},
-                            color: labCodeColors[item - 1]
-                            // color:function () {
-                            //     console.log(data)
-                            //     return "red"
-                            // }()
+                            color: function(params) {
+                                var color;
+                                switch (data[params.dataIndex].lab_type){
+                                    case "中海博睿":
+                                        color = labCodeColors[0];
+                                        break;
+                                    case "研发类":
+                                        color = labCodeColors[1];
+                                        break;
+                                    case "工厂类":
+                                        color = labCodeColors[2];
+                                        break;
+                                    case "模块商":
+                                        color = labCodeColors[3];
+                                        break;
+                                }
+                                return color;
+                            }
                         },
                         emphasis: {label: {show: false}}
                     },
@@ -232,7 +245,24 @@ function seriesData(data, labType) {
                     },
                     itemStyle: {
                         normal: {
-                            color: labCodeColors[labType - 1],
+                            color: function(params) {
+                                var color;
+                                switch (data[params.dataIndex].lab_type){
+                                    case "中海博睿":
+                                        color = labCodeColors[0];
+                                        break;
+                                    case "研发类":
+                                        color = labCodeColors[1];
+                                        break;
+                                    case "工厂类":
+                                        color = labCodeColors[2];
+                                        break;
+                                    case "模块商":
+                                        color = labCodeColors[3];
+                                        break;
+                                }
+                                return color;
+                            },
                             borderWidth: 1 * bodyScale,
                             lineStyle: {
                                 type: 'solid',
@@ -245,8 +275,8 @@ function seriesData(data, labType) {
                 },
             }
             seriesData.push(dataItem);
-        })
-    }
+        // })
+    // }
 
 
     return seriesData;

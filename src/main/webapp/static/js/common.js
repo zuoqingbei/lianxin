@@ -53,7 +53,8 @@ function jsonToArray(data){
 	        value: obj.num,
 			country:obj.country,
 			imgUrl:obj.img_content,
-			centerId:obj.data_center_id
+			centerId:obj.data_center_id,
+            lab_type:obj.lab_type
 
 	    }
 		d.push(e);

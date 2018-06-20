@@ -12,7 +12,10 @@ html,body{
     background-size: 100% 100%;
     width:100%;
 }
-
+/*消除浏览器中搜狗翻译的某些样式*/
+#compareOuter{
+    display: none!important;
+}
 /*=============================head==============================*/
 #head{
     overflow: hidden;
@@ -100,6 +103,7 @@ html,body{
     width: 100%;
     height: 85%;
     margin: 0 auto;
+    overflow: hidden;
 }
 #mainContent{
     width: 100%;
@@ -306,6 +310,7 @@ html,body{
 .rightMiddle>iframe{
     height: 100%;
     width: 100%;
+    transform: scale(1.2) translateY(10%);
 } 
 /* ======================================右侧 右边部分===================== */
 .rightRight{
