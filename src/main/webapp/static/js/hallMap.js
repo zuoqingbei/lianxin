@@ -1,40 +1,12 @@
-function parentMethod(lineCode,labCode) {//平面地图的数据加载
-    // $("#iframeFlat")[0].contentWindow.createArrData("21,22,23,24,25,26,27", "2,1,4,3");
-    $("#iframeFlat")[0].contentWindow.createArrData(lineCode, labCode);
-}
-// 激活
-function active($this){
-    $this.addClass("active").siblings().removeClass("active");
-}
+
+let labCode = "2,1,4",
+    lineCode = "21,22,23,24,25,26,27";
 $(function () {
-
-/*
     //设置产线和实验室的颜色
-    $(".legend-m ul:eq(0)>li").each(function (index,item) {
-        if($(this).hasClass("active")){}
-    })
-*/
+    addStyleForA();
 
-
-
-    let lineCode,labCode;
-    $(".legend-m ul:eq(0)>li").addClass("active").click(function () {
-        active($(this));
-        let labCode = $(this).index() + 1;
-        if (labCode === 1) {
-            labCode = 2;
-        } else if (labCode === 2) {
-            labCode = 1;
-        }
-        parentMethod(lineCode,labCode);
-        return false;
-    });
-    $(".legend-m ul:eq(1)>li").addClass("active").click(function () {
-        active($(this));
-        let lineCode = $(this).index() + 21;
-        parentMethod(lineCode,labCode);
-        return false;
-    });
+    // 点击导航中的A标签
+    clickNavA();
 
     // 实验室和产线的切换
     $(".legend>.btn").click(function () {
@@ -46,18 +18,84 @@ $(function () {
             $(".legend-m ul").css("top", "0");
             active($(".legend-m ul:eq(0)"));
         }
-    })
+        // 判断当前激活li元素个数来确定是否选中全选按钮
+        if($(".legend-m ul.active>li.active").length === 1){
+            $("#selectAll").prop("checked",false);
+        }else{
+            $("#selectAll").prop("checked",true);
+        }
+    });
     //全选
     $(".selectAll").click(function () {
-        $(".legend-m ul.active>li").addClass("active");
-        if($(this).index() ===0){
-            labCode = "2,1,3,4";
-        }else{
-            lineCode = "21,22,23,24,25,26,27";
+        if(!$(this).find("input").is(":checked")){
+            $("#selectAll").prop("checked",true);//不知为什么不能通过点击直接修改checked的状态
+            if ($(".legend-m ul.active").index() === 0) {
+                labCode = "2,1,4";
+            } else {
+                lineCode = "21,22,23,24,25,26,27";
+            }
+            $(".legend-m ul.active>li").addClass("active");
+            parentMethod(lineCode, labCode);
+            // console.log(lineCode, labCode);
         }
-        parentMethod(lineCode,labCode);
-
+        return false;
     })
 
 
 })
+
+//平面地图的数据加载
+function parentMethod(lineCode, labCode) {
+    // $("#iframeFlat")[0].contentWindow.createArrData("21,22,23,24,25,26,27", "2,1,4,3");
+    $("#iframeFlat")[0].contentWindow.createArrData(lineCode, labCode);
+}
+
+// 激活
+function active($this) {
+    $this.addClass("active").siblings().removeClass("active");
+}
+
+//设置产线和实验室的颜色
+function addStyleForA() {
+    let styleStr = '';
+    let l = $(".legend-m .text>ul:eq(0)>li").length;//第一个列表长度
+    $(".legend-m .text>ul>li").each(function (index, item) {
+        let [firstOrLast, labOrLine, n] = ['first', 'lab', index + 1];
+        if (index >= l) { // 遍历第二个列表
+            [firstOrLast, labOrLine, n] = ['last', 'line', index + 1 - l];
+        }
+        styleStr +=
+            `.legend-m ul:${firstOrLast}-of-type>li.active:nth-of-type(${n})>a,
+             .legend-m ul:${firstOrLast}-of-type>li.active:nth-of-type(${n})>a:before{
+                color: var(--c_${labOrLine}${n});
+                background: radial-gradient(circle,var(--c_${labOrLine}${n}),rgba(0,0,0,0));
+            }`
+    });
+    $("head").append(`<style>${styleStr}</style>`);
+}
+
+// 点击导航中的A标签
+function clickNavA() {
+    // 默认全部选中
+    $(".legend-m ul>li").addClass("active").find("a").click(function () {
+        let $parent = $(this).parent();
+        active($parent);
+        if($parent.parent().index() === 0){ //实验室
+            labCode = $(this).parent().index() + 1;
+            if (labCode === 1) {
+                labCode = 2;
+            } else if (labCode === 2) {
+                labCode = 1;
+            }else if(labCode === 3) {
+                labCode = 4;
+            }else if(labCode === 4) {
+                labCode = 3;
+            }
+        }else{ //产线
+            lineCode = $(this).parent().index() + 21;
+        }
+        $("#selectAll").prop("checked",false);
+        parentMethod(lineCode, labCode);
+        return false;
+    })
+}

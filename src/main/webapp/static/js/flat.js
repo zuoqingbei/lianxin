@@ -122,8 +122,6 @@ function createArrData(productCode, labType) {
                     return '';
                 },
             },
-
-
             series: seriesData(mDataBase, labType)
         }
         myFlatMap.clear();
@@ -179,7 +177,7 @@ function seriesData(data, labType) {
     seriesData.push(item);
     var dataItem = {};
     var labArr = [];
-    console.log(labType)
+    // console.log(labType)
     // if (labType && (labArr = labType+"".split(",")) > 0) {
         // labArr.forEach(function (item, index) {
         // [1,2,3,4].forEach(function (item, index) {
