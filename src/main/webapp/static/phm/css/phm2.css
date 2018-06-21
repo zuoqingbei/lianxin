@@ -1,6 +1,10 @@
+#compareOuter{
+    display: none!important;
+}
 html,body{
     height: 100%;
 }
+
 .fl{
     float: left;
 }
@@ -263,8 +267,6 @@ html,body{
 .txt2,.txt4{
     font-size: 0.5em;
     text-align: center;
-    
-    
 }
 .txt1{
     font-size: 0.7em;
