@@ -432,11 +432,11 @@ function marquee(obj, step){
                         {value: 325, name: '在线'},
                         {value: 80, name: '离线'}
                     ],
-                    itemStyle : {
+                    itemStyle:{
                         normal : {
                             label : {//环形图外  文字样式
                                 textStyle : {
-                                    fontSize : 13 * bodyScale,
+                                    fontSize : 10 * bodyScale,
                                 }
                             },
 
@@ -444,7 +444,8 @@ function marquee(obj, step){
 
                     },
 
-                }
+                },
+                
             ]
     }
     var list_bar ={
@@ -483,6 +484,8 @@ function marquee(obj, step){
                         }
                     }
                 }
+                
+                
 
             ]
     }
@@ -517,7 +520,7 @@ function marquee(obj, step){
                         normal : {
                             label : {//环形图外  文字样式
                                 textStyle : {
-                                    fontSize : 13 * bodyScale,
+                                    fontSize : 10 * bodyScale,
                                 }
                             },
 
@@ -602,12 +605,13 @@ function marquee(obj, step){
         list1.setOption({
             series : {
                     
-    
                     data: [
                         {value: 0, name: '报警'},
                         {value:70,name:'健康'},
                         {value: 0, name: '预警'}
-                    ]
+                    ],
+                
+                    
                 }
             
         });
