@@ -70,7 +70,7 @@
                                         <p class="txt2">自能产品累计接入数</p>
                                         <p class="txt3">38462</p>
                                         <p class="txt4">MFOP(无故障运行时间)</p>
-                                        <p class="txt5">1010781383 <span>小时</span> </p>
+                                        <p class="txt5">1,010,781,383 <span>小时</span> </p>
                                     </div>
                                 </div>
                                 <div class="listsMiddle echarts">
@@ -90,7 +90,7 @@
                                         <p class="txt2">自能产品累计接入数</p>
                                         <p class="txt3">38462</p>
                                         <p class="txt4">MFOP(无故障运行时间)</p>
-                                        <p class="txt5">1010781383 <span>小时</span> </p>
+                                        <p class="txt5">1,010,781,383 <span>小时</span> </p>
                                     </div>
                                 </div>
                                 <div class="listsMiddle echarts">
@@ -110,7 +110,7 @@
                                         <p class="txt2">自能产品累计接入数</p>
                                         <p class="txt3">38462</p>
                                         <p class="txt4">MFOP(无故障运行时间)</p>
-                                        <p class="txt5">1010781383 <span>小时</span> </p>
+                                        <p class="txt5">1,010,781,383 <span>小时</span> </p>
                                     </div>
                                 </div>
                                 <div class="listsMiddle echarts">
@@ -130,7 +130,7 @@
                                             <p class="txt2">自能产品累计接入数</p>
                                             <p class="txt3">38462</p>
                                             <p class="txt4">MFOP(无故障运行时间)</p>
-                                            <p class="txt5">1010781383 <span>小时</span></p>
+                                            <p class="txt5">1,010,781,383 <span>小时</span></p>
                                         </div>
                                     </div>
                                     <div class="listsMiddle echarts">
@@ -150,7 +150,7 @@
                                             <p class="txt2">自能产品累计接入数</p>
                                             <p class="txt3">38462</p>
                                             <p class="txt4">MFOP(无故障运行时间)</p>
-                                            <p class="txt5">1010781383 <span>小时</span> </p>
+                                            <p class="txt5">1,010,781,383 <span>小时</span> </p>
                                         </div>
                                     </div>
                                     <div class="listsMiddle echarts">
@@ -170,7 +170,7 @@
                                             <p class="txt2">自能产品累计接入数</p>
                                             <p class="txt3">38462</p>
                                             <p class="txt4">MFOP(无故障运行时间)</p>
-                                            <p class="txt5">1010781383 <span>小时</span></p>
+                                            <p class="txt5">1,010,781,383 <span>小时</span></p>
                                         </div>
                                     </div>
                                     <div class="listsMiddle echarts">
@@ -309,7 +309,7 @@
 //news 滚动 start 
 $(function(){
 $('.myscroll').myScroll({
-    speed: 30, //数值越大，速度越慢
+    speed: 10, //数值越大，速度越慢
     rowHeight: 85 //li的高度
 });
 });
@@ -421,7 +421,7 @@ function marquee(obj, step){
                 show:false,
             
             },
-			color: colors,
+			color: '#66ccff',
             series : [
                 {
                     name: '访问来源',
@@ -432,11 +432,11 @@ function marquee(obj, step){
                         {value: 325, name: '在线'},
                         {value: 80, name: '离线'}
                     ],
-                    itemStyle : {
+                    itemStyle:{
                         normal : {
                             label : {//环形图外  文字样式
                                 textStyle : {
-                                    fontSize : 13 * bodyScale,
+                                    fontSize : 10 * bodyScale,
                                 }
                             },
 
@@ -444,7 +444,8 @@ function marquee(obj, step){
 
                     },
 
-                }
+                },
+                
             ]
     }
     var list_bar ={
@@ -483,6 +484,8 @@ function marquee(obj, step){
                         }
                     }
                 }
+                
+                
 
             ]
     }
@@ -507,7 +510,7 @@ function marquee(obj, step){
                 {
                     name: '访问来源',
                     type: 'pie',
-                    radius: ['40%', '55%'],
+                    radius: ['30%', '40%'],
                     center: ['50%', '50%'],
                     data: [
                         {value: 325, name: '在线'},
@@ -517,7 +520,7 @@ function marquee(obj, step){
                         normal : {
                             label : {//环形图外  文字样式
                                 textStyle : {
-                                    fontSize : 13 * bodyScale,
+                                    fontSize : 10 * bodyScale,
                                 }
                             },
 
@@ -533,6 +536,12 @@ function marquee(obj, step){
 		var myChart2 = echarts.init($("#currentState_r")[0]);
 		myChart2.setOption(opts);
         myChart2.setOption({
+            grid: {
+                left: '15%',
+                right: '15%',
+                bottom: '25%',
+                top: '25%'
+            },
 			legend:{
                 top:25,
                 show:true,
@@ -592,17 +601,17 @@ function marquee(obj, step){
 
     //list1
     var list1 = echarts.init($("#list-1")[0]);
-		list1.setOption(opts);
         list1.setOption(list_pie);
         list1.setOption({
             series : {
                     
-    
                     data: [
-                        {value: 60, name: '报警'},
+                        {value: 0, name: '报警'},
                         {value:70,name:'健康'},
-                        {value: 80, name: '预警'}
-                    ]
+                        {value: 0, name: '预警'}
+                    ],
+                
+                    
                 }
             
         });
@@ -613,7 +622,7 @@ function marquee(obj, step){
         list2.setOption({
             series: 
                 { 
-                    data: [5, 35, 20],
+                    data: [0, 35, 20],
                     color:function(params){
                         var colorList =['red','blue','yellow'];
                         return colorList[params,dataIndex]
@@ -623,14 +632,14 @@ function marquee(obj, step){
         });
          //list3
     var list3 = echarts.init($("#list-3")[0]);
-		list3.setOption(opts);
+		// list3.setOption(opts);
         list3.setOption(list_pie);
         list3.setOption({
             series : {
                     data: [
-                        {value: 60, name: '报警'},
+                        {value: 0, name: '报警'},
                         {value:70,name:'健康'},
-                        {value: 80, name: '预警'}
+                        {value: 0, name: '预警'}
                     ]
                 }
             
@@ -642,20 +651,20 @@ function marquee(obj, step){
         list4.setOption({
             series: 
                 { 
-                    data: [5, 35, 20]
+                    data: [0, 35, 20]
                 }
             
         });
     //list5
     var list5 = echarts.init($("#list-5")[0]);
-		list5.setOption(opts);
+		// list5.setOption(opts);
         list5.setOption(list_pie);
         list5.setOption({
             series : {
                     data: [
-                        {value: 60, name: '报警'},
+                        {value: 0, name: '报警'},
                         {value:70,name:'健康'},
-                        {value: 80, name: '预警'}
+                        {value: 0, name: '预警'}
                     ]
                 }
             
@@ -673,14 +682,14 @@ function marquee(obj, step){
         });
     //list7
     var list7 = echarts.init($("#list-7")[0]);
-		list7.setOption(opts);
+		// list7.setOption(opts);
         list7.setOption(list_pie);
         list7.setOption({
             series : {
                     data: [
-                        {value: 60, name: '报警'},
+                        {value: 0, name: '报警'},
                         {value:70,name:'健康'},
-                        {value: 80, name: '预警'}
+                        {value: 0, name: '预警'}
                     ]
                 }
             
@@ -698,14 +707,14 @@ function marquee(obj, step){
         });
     //list9
     var list9 = echarts.init($("#list-9")[0]);
-		list9.setOption(opts);
+		// list9.setOption(opts);
         list9.setOption(list_pie);
         list9.setOption({
             series : {
                     data: [
-                        {value: 60, name: '报警'},
+                        {value: 0, name: '报警'},
                         {value:70,name:'健康'},
-                        {value: 80, name: '预警'}
+                        {value: 0, name: '预警'}
                     ]
                 }
             
@@ -723,14 +732,14 @@ function marquee(obj, step){
         });
     //list11
     var list11 = echarts.init($("#list-11")[0]);
-		list11.setOption(opts);
+		// list11.setOption(opts);
         list11.setOption(list_pie);
         list11.setOption({
             series : {
                     data: [
-                        {value: 60, name: '报警'},
+                        {value: 0, name: '报警'},
                         {value:70,name:'健康'},
-                        {value: 80, name: '预警'}
+                        {value: 0, name: '预警'}
                     ]
                 }
             
@@ -748,7 +757,7 @@ function marquee(obj, step){
         });
 	var colors = [
         '#00adef',
-        '#faad14',
+        '#809ba9',
         '#5cdbd3',
         '#ff85c0',
         // '#ffd591',

@@ -184,7 +184,7 @@ html,body{
     position: relative;
     left: 8%;
     list-style: none;
-    padding: 2% 0;
+    padding: 3% 0;
     font-size: 0.8em;
 }
 .currentState_leftTitle ul li a{
@@ -199,10 +199,13 @@ html,body{
 
 /* list 冰冷 洗涤 */
 .leftContentList .lists .listsUp{
-    height: 50%;
+    height: 45%;
     
 }
-.leftContentList .lists .listsMiddle,.leftContentList .lists .listsDown{
+.leftContentList .lists .listsMiddle{
+    height: 30%;
+}
+.leftContentList .lists .listsDown{
     height: 25%;
 }
 
@@ -233,8 +236,21 @@ html,body{
     margin-left: -0.6em;
     width: 1.2em;
     height: 1.5em;
+    background-size: contain;
+    padding-bottom: 0.2em;
+    
 }
-
+/* .imgboxContent img{
+    position: relative;
+    top: 0.3em;
+    left: 50%;
+    margin-left: -0.6em;
+    width: 1.2em;
+    height: 1.5em;
+    background-size: contain;
+    padding-bottom: 0.2em;
+    
+} */
 
 .info{
     width: 100%;
@@ -242,21 +258,26 @@ html,body{
 }
 .info p{
     text-align: center;
+    padding: 0.2em 0;
 }
 .txt2,.txt4{
     font-size: 0.5em;
     text-align: center;
-    /* margin-bottom: 0.2em; */
+    
+    
 }
 .txt1{
-    font-size: 0.8em;
-    /* margin:0.4em 0; */
+    font-size: 0.7em;
     padding: 0.4em 0;
     /* color: red; */
 }
 .txt3, .txt5{
-    font-size: 0.9em;
+    font-size: 0.8em;
     color:#ff9f30;
+    /* margin-bottom: 0.2em; */
+}
+.txt5 span{
+    font-size: 0.6em;
 }
 .echarts{
     height: 100%;
