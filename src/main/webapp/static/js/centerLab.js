@@ -2001,23 +2001,21 @@ function runStatus() {
         for (let i = (p - 1) * 5; i < p * 5; i++) {
             dataItem(i)
         }
+        setBarWidth()
     }
 
     barShows = [3, 7, 11];
 
     function dataItem(indexLab) {
-        let bodyInnerHTML;
         if(!labVal[indexLab]){
-            bodyInnerHTML = '<div>';
-            $(".l-top-body")
+            $(".item.status [class$=-body]").append("<div></div>")
         }else{
             //遍历每个实验室的每条数据
             let labName = labVal[indexLab][0];
-            bodyInnerHTML = `<div><h4>${labName}</h4>`;
+            let bodyInnerHTML = `<div><h4>${labName}</h4>`;
             labVal[indexLab].forEach(function (itemData, indexData) {
                 if (indexData > 0) {
                     let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
-
                     bodyInnerHTML +=
                         `<div class="item">
                         <h5>${labDataName[indexData - 1].trim()}：</h5>
@@ -2044,15 +2042,18 @@ function runStatus() {
         $(this).parent().removeClass("show")
     });
     // 实验室状态页面的进度条
-    $(".lab .item.status .progress-bar").css("width", function () {
-        var text = $(this).parent().next().text();
-        if (text.indexOf("/") > 0) {
-            var str = "<strong>" + text.slice(0, text.indexOf('/')) + "</strong>" + text.slice(text.indexOf('/'))
-            $(this).parent().next().html(str);
-            text = text.split("/")[0] / text.split("/")[1] * 100 + "%";
-        }
-        return text;
-    });
+    function setBarWidth(){
+        $(".lab .item.status .progress-bar").css("width", function () {
+            var text = $(this).parent().next().text();
+            if (text.indexOf("/") > 0) {
+                var str = "<strong>" + text.slice(0, text.indexOf('/')) + "</strong>" + text.slice(text.indexOf('/'))
+                $(this).parent().next().html(str);
+                text = text.split("/")[0] / text.split("/")[1] * 100 + "%";
+            }
+            return text;
+        });
+    }
+
     // 为了达到两端对齐的效果而添加空标签<span>
     $(".lab .item.status [class^=item]>h5").append("<span></span>");
 
