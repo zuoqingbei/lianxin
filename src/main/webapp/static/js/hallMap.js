@@ -2,6 +2,9 @@
 let labCode = "2,1,4",
     lineCode = "21,22,23,24,25,26,27";
 $(function () {
+
+    // 在7x3大屏上隱藏footer
+    styleIn7x3();
     //设置产线和实验室的颜色
     addStyleForA();
 
@@ -42,7 +45,17 @@ $(function () {
     })
 
 
-})
+});
+
+// 在7x3大屏上隱藏footer
+function styleIn7x3(){
+    let fromBigScreen7x3 = location.href.indexOf("bigScreen7x3")>-1;
+    console.log(fromBigScreen7x3)
+    if (fromBigScreen7x3){
+
+        $("#myContainer>footer p").hide();
+    }
+}
 
 //平面地图的数据加载
 function parentMethod(lineCode, labCode) {
@@ -59,7 +72,7 @@ function active($this) {
 function addStyleForA() {
     let styleStr = '';
     let l = $(".legend-m .text>ul:eq(0)>li").length;//第一个列表长度
-    $(".legend-m .text>ul>li").each(function (index, item) {
+    $(".legend-m .text>ul>li").each(function (index) {
         let [firstOrLast, labOrLine, n] = ['first', 'lab', index + 1];
         if (index >= l) { // 遍历第二个列表
             [firstOrLast, labOrLine, n] = ['last', 'line', index + 1 - l];
