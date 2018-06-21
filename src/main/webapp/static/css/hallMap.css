@@ -394,14 +394,10 @@ strong{
     transform: translate(-50%,-50%);
 }
 
-
-
-
-
-
 footer .text {
     margin: 0 auto;
     width: 59rem;
+    height: 4.75rem;
     padding-bottom: 1rem;
     text-align: justify;
     line-height: 1.25rem;

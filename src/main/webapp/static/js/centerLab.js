@@ -1963,48 +1963,78 @@ function runStatus() {
     });
     //行列互换
     let labValNew = Array(labVal[0].length);
-    labValNew.fill(null).forEach(function (item, i, elem) {
+    labValNew.fill(null).forEach(function (item, i) {
         labValNew[i] = [];
-    })
+    });
     labVal.forEach(function (itemI, i) {
         itemI.forEach(function (itemJ, j) {
             labValNew[j][i] = itemJ;
         })
     });
     labVal = labValNew;
+    // 翻页
+    let labNumbers = labVal.length;
+    let itemNumPerPage = 5;
+    let MaxPage = Math.floor(labNumbers/itemNumPerPage) +1;
 
-    // console.log("labValNew", labVal);
-    for(let i=0;i<5;i++){
-        dataItem(i)
+    let currentPage = 1;
+    pageTo(currentPage);
+    $(".pageBtn>span").click(function () {
+
+        if($(this).hasClass("pre")){
+            currentPage--;
+            if(currentPage<1){
+                currentPage = 1;
+                return false;
+            }
+        }else{
+            currentPage++;
+            if(currentPage > MaxPage){
+                currentPage = MaxPage;
+                return false;
+            }
+        }
+        pageTo(currentPage);
+    });
+    function pageTo(p) {
+        $(".item.status [class$=-body]").empty();
+        for (let i = (p - 1) * 5; i < p * 5; i++) {
+            dataItem(i)
+        }
+        setBarWidth()
     }
-    barShows = [3, 7, 11];
-    function dataItem(indexLab) {
-        //遍历每个实验室的每条数据
-        let labName = labVal[indexLab][0];
-        let bodyInnerHTML = `<div><h4>${labName}</h4>`;
-        labVal[indexLab].forEach(function (itemData, indexData) {
-            if(indexData>0){
-                let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
 
-                // console.log(indexData,barShows,barShows.includes(3))
-                bodyInnerHTML +=
-                    `<div class="item">
-                        <h5>${labDataName[indexData-1].trim()}：</h5>
+    barShows = [3, 7, 11];
+
+    function dataItem(indexLab) {
+        if(!labVal[indexLab]){
+            $(".item.status [class$=-body]").append("<div></div>")
+        }else{
+            //遍历每个实验室的每条数据
+            let labName = labVal[indexLab][0];
+            let bodyInnerHTML = `<div><h4>${labName}</h4>`;
+            labVal[indexLab].forEach(function (itemData, indexData) {
+                if (indexData > 0) {
+                    let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
+                    bodyInnerHTML +=
+                        `<div class="item">
+                        <h5>${labDataName[indexData - 1].trim()}：</h5>
                         ${barHtmlTmp}
                         <span class="data">${itemData.trim()}</span>
                     </div>`;
-                if (indexData === 3) {
-                    $(".l-top-body").append(bodyInnerHTML+"</div>");
-                    bodyInnerHTML = `<div><h4>${labName}</h4>`;
-                } else if (indexData === 7) {
-                    $(".l-mid-body").append(bodyInnerHTML+"</div>");
-                    bodyInnerHTML = `<div><h4>${labName}</h4>`;
-                } else if (indexData === 11) {
-                    $(".l-bottom-body").append(bodyInnerHTML+"</div>");
+                    if (indexData === 3) {
+                        $(".l-top-body").append(bodyInnerHTML + "</div>");
+                        bodyInnerHTML = `<div><h4>${labName}</h4>`;
+                    } else if (indexData === 7) {
+                        $(".l-mid-body").append(bodyInnerHTML + "</div>");
+                        bodyInnerHTML = `<div><h4>${labName}</h4>`;
+                    } else if (indexData === 11) {
+                        $(".l-bottom-body").append(bodyInnerHTML + "</div>");
+                    }
                 }
-            }
 
-        })
+            })
+        }
     }
 
     //实验室状态页面关闭订单弹窗
@@ -2012,15 +2042,18 @@ function runStatus() {
         $(this).parent().removeClass("show")
     });
     // 实验室状态页面的进度条
-    $(".lab .item.status .progress-bar").css("width",function () {
-        var text = $(this).parent().next().text();
-        if(text.indexOf("/")>0) {
-            var str ="<strong>"+ text.slice(0,text.indexOf('/'))+"</strong>"+text.slice(text.indexOf('/'))
-            $(this).parent().next().html(str);
-            text = text.split("/")[0] / text.split("/")[1] * 100 + "%";
-        }
-        return text;
-    });
+    function setBarWidth(){
+        $(".lab .item.status .progress-bar").css("width", function () {
+            var text = $(this).parent().next().text();
+            if (text.indexOf("/") > 0) {
+                var str = "<strong>" + text.slice(0, text.indexOf('/')) + "</strong>" + text.slice(text.indexOf('/'))
+                $(this).parent().next().html(str);
+                text = text.split("/")[0] / text.split("/")[1] * 100 + "%";
+            }
+            return text;
+        });
+    }
+
     // 为了达到两端对齐的效果而添加空标签<span>
     $(".lab .item.status [class^=item]>h5").append("<span></span>");
 
@@ -2029,9 +2062,6 @@ function runStatus() {
     $(".toOrderPopup").click(function () {
         $(".orderPopup").addClass("show")
     });
-
-
-
 
 
 }
