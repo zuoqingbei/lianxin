@@ -70,7 +70,7 @@ function getGeoArr(data) {
 function createArrData(productCode, labType) {
     $.post(contextPath + "/lab/labShowFlatMapAjax", {
         "productCode": productCode,
-        "labType": labType
+        "labType": labType?labType:"2,1,4"
     }, function (dataBase1) {
         mDataBase = jsonToArray(dataBase1);
 

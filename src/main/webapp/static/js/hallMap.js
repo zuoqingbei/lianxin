@@ -2,7 +2,7 @@
 let labCode = "2,1,4",
     lineCode = "21,22,23,24,25,26,27";
 $(function () {
-
+    // parentMethod(lineCode, labCode);
     // 在7x3大屏上隱藏footer
     styleIn7x3();
     //设置产线和实验室的颜色
