@@ -9,7 +9,8 @@ var TIP_SETTIMEOUT_TIME = 2000;//静止显示的时间
 var TIP_SETINTERVAL_TIME = 4000;//每个提示的周期时长
 var stop = false;
 var timeId = null;
-var hallMap = (window.location.href.indexOf("hallMap") > 0);
+var hallMap = (top.location.href.indexOf("hallMap") > 0);
+// console.log(top.location.href)
 var labCodeColors = [
     "#ffec3d",
     "#00e673",
@@ -38,8 +39,8 @@ $(function () {
         var centerId = $(this).data("centerid");
 
         if ($(".fullScreen_map", parent.document).length > 0) {//如果是从地图全屏的提示框进入，则需跳转并在url上挂参。
-            var url = location.href.slice(0, location.href.lastIndexOf("/")) + "/full?toLabData&centerId=" + centerId;
             console.log("大屏", url);
+            var url = location.href.slice(0, location.href.lastIndexOf("/")) + "/full?toLabData&centerId=" + centerId;
             parent.location.href = url;
         } else {
             $(".toLabData", parent.document).click();
@@ -195,14 +196,14 @@ function seriesData(data, labType) {
                 markPoint: {
                     symbol: 'emptyCircle',
                     symbolSize: function (v) {
-                        return 3 * bodyScale;
+                        return 4 * bodyScale;
                     },
                     effect: {
                         show: true,
                         type: 'scale',//圈圈
                         loop: true,
-                        shadowBlur: 1 * bodyScale,
-                        period: 20
+                        shadowBlur: 0.1 * bodyScale,
+                        period: 15
                     },
                     itemStyle: {
                         normal: {
@@ -245,20 +246,23 @@ function seriesData(data, labType) {
                     },
                     itemStyle: {
                         normal: {
+                            label:{
+                                show:false,
+                            },
                             color: function(params) {
                                 var color;
                                 switch (data[params.dataIndex].lab_type){
                                     case "中海博睿":
-                                        color = labCodeColors[0];
+                                        color = labCodeColors[0]+88;
                                         break;
                                     case "研发类":
-                                        color = labCodeColors[1];
+                                        color = labCodeColors[1]+88;
                                         break;
                                     case "工厂类":
-                                        color = labCodeColors[2];
+                                        color = labCodeColors[2]+88;
                                         break;
                                     case "模块商":
-                                        color = labCodeColors[3];
+                                        color = labCodeColors[3]+88;
                                         break;
                                 }
                                 return color;
@@ -268,7 +272,8 @@ function seriesData(data, labType) {
                                 type: 'solid',
                                 shadowBlur: 0
                             }
-                        }
+                        },
+
                     },
                     data: dataToArrayContinueArray(data)
 

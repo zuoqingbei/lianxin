@@ -1,498 +1,529 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<meta name="PHM" content="phm二期" />
-		<title>PHM首页</title>
-		
-		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
-		<link rel="stylesheet" href="${contextPath}/static/phm/css/phm2.css" />
-		<link rel="stylesheet" href="${contextPath}/static/phm/css/public.css" />
-		<style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta name="PHM" content="phm二期"/>
+    <title>PHM首页</title>
 
-		</style>
-	</head>
-	<body>
-		<div id="content">
-			<!--head-->
-			<div id="head">
-				<h1>
-					<a href="${contextPath}/phm/index">
-						<img src="${contextPath}/static/phm/images/health/logo_haier_bold.png" alt="" />
-					</a>
-				</h1>
-				<h2><a href="${contextPath!}/phm" >智慧云服务自诊断、自预测系统</a></h2>
-			</div>
-			<!--centerdata-->
-            <!-- main -->
-            <div id="main">
-                <div id="mainContent">
-					<!-- 左侧部分 -->
-                    <div class="LeftContent fl">
-                        <div class="mainTitle">
-                            <div class="mainTitleContent">
-                                <a style="color:#6cf;" href="${contextPath!}/phm/status">
-                                <span>自诊断自预测</span>
-                                </a>
+    <link rel="stylesheet" href="${contextPath}/static/phm/css/common.css"/>
+    <link rel="stylesheet" href="${contextPath}/static/phm/css/phm2.css"/>
+    <link rel="stylesheet" href="${contextPath}/static/phm/css/public.css"/>
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="content">
+    <!--head-->
+    <div id="head">
+        <h1>
+            <a href="${contextPath}/phm/index">
+                <img src="${contextPath}/static/phm/images/health/logo_haier_bold.png" alt=""/>
+            </a>
+        </h1>
+        <h2><a href="${contextPath!}/phm">智慧云服务自诊断、自预测系统</a></h2>
+    </div>
+    <!--centerdata-->
+    <!-- main -->
+    <div id="main">
+        <div id="mainContent">
+            <!-- 左侧部分 -->
+            <div class="LeftContent fl">
+                <div class="mainTitle">
+                    <div class="mainTitleContent">
+                        <a style="color:#6cf;" href="${contextPath!}/phm/status">
+                            <span>自诊断自预测</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="currentState">
+                    <div class="currentState_left fl">
+                        <div class="currentState_leftTitle">
+                            <div class="imgbox boxTitle1">
+                                <span>当前在线状态</span>
                             </div>
-						</div>
-						<div class="currentState">
-							<div class="currentState_left fl">
-								<div class="currentState_leftTitle">
-                                    <div class="imgbox boxTitle1">
-                                        <span>当前在线状态</span>
-                                    </div>              
-                                    <ul>
-                                        <li>累计接入量: <a href="#">496,440</a></li>
-                                        <li>累计运行时间:  <a href="#">434,884,994</a> <i>小时</i></li>
-                                    </ul>
-                                    <div class="imgbox boxTitle2">
-                                            <span>在线机器健康运行时间</span>
-                                    </div> 
-								</div>
-							</div>
-							<div class="currentState_middle fl">
-								    <div id="currentState_m"></div>
-							</div>
-							<div class="currentState_middle fl">
-								    <div id="currentState_r"></div>
-							</div>
+                            <ul>
+                                <li>累计接入量: <a href="#">496,440</a></li>
+                                <li>累计运行时间: <a href="#">434,884,994</a> <i>小时</i></li>
+                            </ul>
+                            <div class="imgbox boxTitle2">
+                                <span>在线机器健康运行时间</span>
+                            </div>
                         </div>
-                        <div class="leftContentList">
-                            <div class="lists fl">
-                                <div class="listsUp">
-                                    <div class="info">
-                                        <div class="imgboxContent">
-                                            <img src="${contextPath}/static/phm/images/system/ice-cold.png" alt=""/>
-                                        </div>
-                                        <p class="txt1">冰冷</p>
-                                        <p class="txt2">自能产品累计接入数</p>
-                                        <p class="txt3">38,462</p>
-                                        <p class="txt4">MFOP(无故障运行时间)</p>
-                                        <p class="txt5">1,010,781,383 <span>小时</span> </p>
-                                    </div>
+                    </div>
+                    <div class="currentState_middle fl">
+                        <div id="currentState_m"></div>
+                    </div>
+                    <div class="currentState_middle fl">
+                        <div id="currentState_r"></div>
+                    </div>
+                </div>
+                <div class="leftContentList">
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/ice-cold.png" alt=""/>
                                 </div>
-                                <div class="listsMiddle echarts">
-                                    <div id="list-1"></div>
-                                </div>
-                                <div class="listsDown echarts">
-                                    <div id="list-2"></div>
-                                </div>
+                                <p class="txt1">冰冷</p>
+                                <p class="txt2">自能产品累计接入数</p>
+                                <p class="txt3">38,462</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <p class="txt5">1,010,781,383 <span>小时</span></p>
                             </div>
-                            <div class="lists fl">
-                                <div class="listsUp">
-                                    <div class="info">
-                                        <div class="imgboxContent">
-                                            <img src="${contextPath}/static/phm/images/system/washing.png" alt=""/>
-                                        </div>
-                                        <p class="txt1">洗涤</p>
-                                        <p class="txt2">自能产品累计接入数</p>
-                                        <p class="txt3">32,364</p>
-                                        <p class="txt4">MFOP(无故障运行时间)</p>
-                                        <p class="txt5">283,508,604<span>小时</span> </p>
-                                    </div>
-                                </div>
-                                <div class="listsMiddle echarts">
-                                    <div id="list-3"></div>
-                                </div>
-                                <div class="listsDown echarts">
-                                    <div id="list-4"></div>
-                                </div>
-                            </div>
-                            <div class="lists fl">
-                                <div class="listsUp">
-                                    <div class="info">
-                                        <div class="imgboxContent">
-                                            <img src="${contextPath}/static/phm/images/system/jiakong.png" alt=""/>
-                                        </div>
-                                        <p class="txt1">家空</p>
-                                        <p class="txt2">自能产品累计接入数</p>
-                                        <p class="txt3">609,364</p>
-                                        <p class="txt4">MFOP(无故障运行时间)</p>
-                                        <p class="txt5">5,338,028,640<span>小时</span> </p>
-                                    </div>
-                                </div>
-                                <div class="listsMiddle echarts">
-                                    <div id="list-5"></div>
-                                </div>
-                                <div class="listsDown echarts">
-                                    <div id="list-6"></div>
-                                </div>
-                            </div>
-                            <div class="lists fl">
-                                    <div class="listsUp">
-                                        <div class="info">
-                                            <div class="imgboxContent">
-                                                <img src="${contextPath}/static/phm/images/system/shangkong.png" alt=""/>
-                                            </div>
-                                            <p class="txt1">商空</p>
-                                            <p class="txt2">自能产品累计接入数</p>
-                                            <p class="txt3">4,340</p>
-                                            <p class="txt4">MFOP(无故障运行时间)</p>
-                                            <p class="txt5">38,014,800<span>小时</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="listsMiddle echarts">
-                                        <div id="list-7"></div>
-                                    </div>
-                                    <div class="listsDown echarts">
-                                        <div id="list-8"></div>
-                                    </div>
-                            </div>
-                            <div class="lists fl">
-                                    <div class="listsUp">
-                                        <div class="info">
-                                            <div class="imgboxContent">
-                                                <img src="${contextPath}/static/phm/images/system/waterheater.png" alt=""/>
-                                            </div>
-                                            <p class="txt1">热水器</p>
-                                            <p class="txt2">自能产品累计接入数</p>
-                                            <p class="txt3">7,908</p>
-                                            <p class="txt4">MFOP(无故障运行时间)</p>
-                                            <p class="txt5">62,178,480<span>小时</span> </p>
-                                        </div>
-                                    </div>
-                                    <div class="listsMiddle echarts">
-                                        <div id="list-9"></div>
-                                    </div>
-                                    <div class="listsDown echarts">
-                                        <div id="list-10"></div>
-                                    </div>
-                            </div>
-                            <div class="lists fl">
-                                    <div class="listsUp">
-                                        <div class="info">
-                                            <div class="imgboxContent">
-                                                <img src="${contextPath}/static/phm/images/system/kitchen.png" alt=""/>
-                                            </div>
-                                            <p class="txt1">厨电</p>
-                                            <p class="txt2">自能产品累计接入数</p>
-                                            <p class="txt3">4,826</p>
-                                            <p class="txt4">MFOP(无故障运行时间)</p>
-                                            <p class="txt5">42,275,760 <span>小时</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="listsMiddle echarts">
-                                        <div id="list-11"></div>
-                                    </div>
-                                    <div class="listsDown echarts">
-                                        <div id="list-12"></div>
-                                    </div>
-                            </div>   
                         </div>
-					</div>
-					<!-- 右侧部分 -->
-                    <div class="RightContent fr">
-						<!-- 标题 -->
-                        <div class="mainTitle">
-                            <div class="mainTitleContent">
-                                <span>PHM技术:大数据+自训练模型</span> 
-							</div>
-						</div>
-					<!-- 右侧主体部分 -->
-						<div class="ContentRightContent">
-							<!-- 右侧  left -->
-								<div class="rightMiddle fl">
-									<iframe src="${contextPath}/phm/indexAnimation" style="border: none"></iframe>
-								</div>
-							<!-- 右侧 right -->
-								<div class="rightRight fr">
-									<div class="rightRightText">
-										<span>全流程数据互联:两亿用户数据,108个工厂数据,727个实验室</span>
-									</div>
-									<div class="rightModPic">
-                                        <div class="rightPicContentBox">
-                                            <div></div>
-                                             <div class="rightPicContentUp"> 
-                                               <div class="recordscenter">
-                                                   <div class="recordscenterTitle">
-                                                       <div class="biaoti">
-                                                            <p>检测中心</p>
-                                                       </div>
-                                                       <div class="myscroll news">
-                                                           <ul>
-                                                                <li> 中国CNAS</li><li> 中国CQC</li><li> 中国CHEARI</li><li> 中国CNAS</li><li> 中国CQC</li><li> 中国CHEARI</li>
-                                                           </ul>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                               <div class="recordscenter">
-                                                    <div class="recordscenterTitle">
-                                                        <div class="biaoti">
-                                                             <p>工厂中心</p>
-                                                        </div>
-                                                        <div class="myscroll news">
-                                                            <ul>
-                                                                    <li> 美国冰箱</li><li> 印度冰箱</li><li> 巴基斯坦冰箱</li><li> 美国冰箱</li><li> 印度冰箱</li><li> 巴基斯坦冰箱</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="recordscenter">
-                                                        <div class="recordscenterTitle">
-                                                            <div class="biaoti">
-                                                                 <p>终端用户</p>
-                                                            </div>
-                                                            <div class="myscroll news">
-                                                                <ul>
-                                                                    <li> 滚筒洗衣机</li><li> 冰箱</li><li> 空调</li><li> 滚筒洗衣机</li><li> 冰箱</li><li> 空调</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                                <div class="recordscenter">
-                                                            <div class="recordscenterTitle">
-                                                                <div class="biaoti">
-                                                                     <p>研发中心</p>
-                                                                </div>
-                                                                <div class="myscroll news">
-                                                                    <ul>
-                                                                        <li> 中国青岛研发....</li><li> 中国上海研发....</li><li> 美国南卡莱纳......</li><li> 中国青岛研发....</li><li> 中国上海研发....</li><li> 美国南卡莱纳......</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                </div>
-                                                <div class="recordscenter">
-                                                                <div class="recordscenterTitle">
-                                                                    <div class="biaoti">
-                                                                         <p>供应商中心</p>
-                                                                    </div>
-                                                                    <div class="myscroll news">
-                                                                        <ul>
-                                                                                <li> 松下电机机电....</li><li> 镇江奇美化工....</li><li> 艾默生电器有......</li><li> 松下电机机电....</li><li> 镇江奇美化工....</li><li> 艾默生电器有......</li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
-									</div>
-								</div>
-						</div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-1"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-2"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/washing.png" alt=""/>
+                                </div>
+                                <p class="txt1">洗涤</p>
+                                <p class="txt2">自能产品累计接入数</p>
+                                <p class="txt3">32,364</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <p class="txt5">283,508,604<span>小时</span></p>
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-3"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-4"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/jiakong.png" alt=""/>
+                                </div>
+                                <p class="txt1">家空</p>
+                                <p class="txt2">自能产品累计接入数</p>
+                                <p class="txt3">609,364</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <p class="txt5">5,338,028,640<span>小时</span></p>
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-5"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-6"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/shangkong.png" alt=""/>
+                                </div>
+                                <p class="txt1">商空</p>
+                                <p class="txt2">自能产品累计接入数</p>
+                                <p class="txt3">4,340</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <p class="txt5">38,014,800<span>小时</span></p>
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-7"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-8"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/waterheater.png" alt=""/>
+                                </div>
+                                <p class="txt1">热水器</p>
+                                <p class="txt2">自能产品累计接入数</p>
+                                <p class="txt3">7,908</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <p class="txt5">62,178,480<span>小时</span></p>
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-9"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-10"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/kitchen.png" alt=""/>
+                                </div>
+                                <p class="txt1">厨电</p>
+                                <p class="txt2">自能产品累计接入数</p>
+                                <p class="txt3">4,826</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <p class="txt5">42,275,760 <span>小时</span></p>
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-11"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-12"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-		</div>
-		
-		
-		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
-		<script src="${contextPath}/static/phm/asserts/echarts/echarts-4.0.min.js" type="text/javascript" charset="utf-8"></script>
-		<!--<script src="${contextPath}/static/phm/js/index_sys.js" type="text/javascript" charset="utf-8"></script>-->
-		<script>
-				/*屏幕描述
-				 一共 7x3 个屏幕，每一块屏幕是1360x768，
-				 总共的大小就是9520x2304，比预计像素少7x6=42个像素。
-				 */
-				
-				var pageH = $(window).height();
-				var pageW = pageH * 16 * 7 / (9 * 3);
-				var bodyScale = pageH / 595;
-				var bodyFontSize = bodyScale * 100 + "%";
-				if(pageH > 2300) { // 如果是大屏幕(2304)
-					pageW -= 47;
-				}
-				function pageResize() {
-					$("body").css("font-size", bodyFontSize);
-					$("body").css("fontSize", bodyFontSize);
-					$("#content").css("width", pageW);
-					$(".fullScreen_map").css("width", pageW); //全屏页面是绝对定位,宽度100%只能取自屏幕
-					console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:" + pageW + " \nbody字号：" + bodyFontSize)
-				}
-				pageResize();
-		</script>
-	</body>
+            <!-- 右侧部分 -->
+            <div class="RightContent fr">
+                <!-- 标题 -->
+                <div class="mainTitle">
+                    <div class="mainTitleContent">
+                        <span>PHM技术:大数据+自训练模型</span>
+                    </div>
+                </div>
+                <!-- 右侧主体部分 -->
+                <div class="ContentRightContent">
+                    <!-- 右侧  left -->
+                    <div class="rightMiddle fl">
+                        <iframe src="${contextPath}/phm/indexAnimation" style="border: none"></iframe>
+                    </div>
+                    <!-- 右侧 right -->
+                    <div class="rightRight fr">
+                        <div class="rightRightText">
+                            <span>全流程数据互联:两亿用户数据,108个工厂数据,727个实验室</span>
+                        </div>
+                        <div class="rightModPic">
+                            <div class="rightPicContentBox">
+                                <div></div>
+                                <div class="rightPicContentUp">
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>检测中心</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> 中国CNAS</li>
+                                                    <li> 中国CQC</li>
+                                                    <li> 中国CHEARI</li>
+                                                    <li> 中国CNAS</li>
+                                                    <li> 中国CQC</li>
+                                                    <li> 中国CHEARI</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>工厂中心</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> 美国冰箱</li>
+                                                    <li> 印度冰箱</li>
+                                                    <li> 巴基斯坦冰箱</li>
+                                                    <li> 美国冰箱</li>
+                                                    <li> 印度冰箱</li>
+                                                    <li> 巴基斯坦冰箱</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>终端用户</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> 滚筒洗衣机</li>
+                                                    <li> 冰箱</li>
+                                                    <li> 空调</li>
+                                                    <li> 滚筒洗衣机</li>
+                                                    <li> 冰箱</li>
+                                                    <li> 空调</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>研发中心</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> 中国青岛研发....</li>
+                                                    <li> 中国上海研发....</li>
+                                                    <li> 美国南卡莱纳......</li>
+                                                    <li> 中国青岛研发....</li>
+                                                    <li> 中国上海研发....</li>
+                                                    <li> 美国南卡莱纳......</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>供应商中心</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> 松下电机机电....</li>
+                                                    <li> 镇江奇美化工....</li>
+                                                    <li> 艾默生电器有......</li>
+                                                    <li> 松下电机机电....</li>
+                                                    <li> 镇江奇美化工....</li>
+                                                    <li> 艾默生电器有......</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
+<script src="${contextPath}/static/phm/asserts/echarts/echarts-4.0.min.js" type="text/javascript"
+        charset="utf-8"></script>
+<!--<script src="${contextPath}/static/phm/js/index_sys.js" type="text/javascript" charset="utf-8"></script>-->
+<script>
+    /*屏幕描述
+     一共 7x3 个屏幕，每一块屏幕是1360x768，
+     总共的大小就是9520x2304，比预计像素少7x6=42个像素。
+     */
+
+    var pageH = $(window).height();
+    var pageW = pageH * 16 * 7 / (9 * 3);
+    var bodyScale = pageH / 595;
+    var bodyFontSize = bodyScale * 100 + "%";
+    if (pageH > 2300) { // 如果是大屏幕(2304)
+        pageW -= 47;
+    }
+
+    function pageResize() {
+        $("body").css("font-size", bodyFontSize);
+        $("body").css("fontSize", bodyFontSize);
+        $("#content").css("width", pageW);
+        $(".fullScreen_map").css("width", pageW); //全屏页面是绝对定位,宽度100%只能取自屏幕
+        console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:" + pageW + " \nbody字号：" + bodyFontSize)
+    }
+
+    pageResize();
+</script>
+</body>
 </html>
 
 <script>
-
-//news 滚动 start 
-$(function(){
-$('.myscroll').myScroll({
-    speed: 20, //数值越大，速度越慢
-    rowHeight: 85 //li的高度
-});
-});
-// JavaScript Document
-(function($){
-$.fn.myScroll = function(options){
-//默认配置
-var defaults = {
-    speed:100,  //滚动速度,值越大速度越慢
-    rowHeight:60 //每行的高度
-};
-
-var opts = $.extend({}, defaults, options),intId = [];
-
-function marquee(obj, step){
-
-    obj.find("ul").animate({
-        marginTop: '-=1'
-    },0,function(){
-            var s = Math.abs(parseInt($(this).css("margin-top")));
-            if(s >= step){
-                $(this).find("li").slice(0, 1).appendTo($(this));
-                $(this).css("margin-top", 0);
-            }
-        });
-    }
-    
-    this.each(function(i){
-        var sh = opts["rowHeight"],speed = opts["speed"],_this = $(this);
-        intId[i] = setInterval(function(){
-            if(_this.find("ul").height()<=_this.height()){
-                clearInterval(intId[i]);
-            }else{
-                marquee(_this, sh);
-            }
-        }, speed);
-
-        _this.hover(function(){
-            clearInterval(intId[i]);
-        },function(){
-            intId[i] = setInterval(function(){
-                if(_this.find("ul").height()<=_this.height()){
-                    clearInterval(intId[i]);
-                }else{
-                    marquee(_this, sh);
-                }
-            }, speed);
-        });
-    
+    $(".rightPicContentBox").click(function () {
+        open("${contextPath}/lab/full",'_self')
     });
 
-}
+    //news 滚动 start
+    $(function () {
+        $('.myscroll').myScroll({
+            speed: 20, //数值越大，速度越慢
+            rowHeight: 85 //li的高度
+        });
+    });
+    // JavaScript Document
+    (function ($) {
+        $.fn.myScroll = function (options) {
+//默认配置
+            var defaults = {
+                speed: 100,  //滚动速度,值越大速度越慢
+                rowHeight: 60 //每行的高度
+            };
 
-})(jQuery);
+            var opts = $.extend({}, defaults, options), intId = [];
 
-// news滚动 end
+            function marquee(obj, step) {
 
-//左侧图表
-	var barWidth = 12 * bodyScale;
-	// 图二和图四 公共样式
-    var opts ={
+                obj.find("ul").animate({
+                    marginTop: '-=1'
+                }, 0, function () {
+                    var s = Math.abs(parseInt($(this).css("margin-top")));
+                    if (s >= step) {
+                        $(this).find("li").slice(0, 1).appendTo($(this));
+                        $(this).css("margin-top", 0);
+                    }
+                });
+            }
+
+            this.each(function (i) {
+                var sh = opts["rowHeight"], speed = opts["speed"], _this = $(this);
+                intId[i] = setInterval(function () {
+                    if (_this.find("ul").height() <= _this.height()) {
+                        clearInterval(intId[i]);
+                    } else {
+                        marquee(_this, sh);
+                    }
+                }, speed);
+
+                _this.hover(function () {
+                    clearInterval(intId[i]);
+                }, function () {
+                    intId[i] = setInterval(function () {
+                        if (_this.find("ul").height() <= _this.height()) {
+                            clearInterval(intId[i]);
+                        } else {
+                            marquee(_this, sh);
+                        }
+                    }, speed);
+                });
+
+            });
+
+        }
+
+    })(jQuery);
+
+    // news滚动 end
+
+    //左侧图表
+    var barWidth = 12 * bodyScale;
+    // 图二和图四 公共样式
+    var opts = {
         grid: {
             left: '20%',
             right: '20%',
             bottom: '20%',
             top: '20%'
         },
-        xAxis:{
+        xAxis: {
             axisLabel: {
                 show: true,
                 textStyle: {
                     color: '#00adef',
-                    fontSize:13 * bodyScale
+                    fontSize: 13 * bodyScale
                 }
             },
             splitLine: { //去除分割线
-                show:false
+                show: false
             },
-		},
-        yAxis:{
-            show:false,
+        },
+        yAxis: {
+            show: false,
             splitLine: {
-                lineStyle:{
-                    color:'#00adef'
+                lineStyle: {
+                    color: '#00adef'
                 }
             },
             axisLabel: {//坐标做字体
                 show: true,
                 textStyle: {
                     color: '#00adef',
-                    fontSize:13 * bodyScale
+                    fontSize: 13 * bodyScale
                 }
             },
-            nameTextStyle:{
-                color:'#00adef',
-                fontSize:13 * bodyScale
+            nameTextStyle: {
+                color: '#00adef',
+                fontSize: 13 * bodyScale
             },
-            nameGap:100
-		}
-	}
-    var list_pie ={
+            nameGap: 100
+        }
+    }
+    var list_pie = {
         grid: {
-                left: '20%',
-                right: '20%',
-                bottom: '20%',
-                top: '20%'
-            },
-            xAxis:{
-                show:false,
-            
-            },
-			color: '#66ccff',
-            series : [
-                {
-                    name: '访问来源',
-                    type: 'pie',
-                    radius: ['40%', '55%'],
-                    center: ['50%', '50%'],
-                    data: [
-                        {value: 325, name: '在线'},
-                        {value: 80, name: '离线'}
-                    ],
-                    itemStyle:{
-                        normal : {
-                            label : {//环形图外  文字样式
-                                textStyle : {
-                                    fontSize : 10 * bodyScale,
-                                }
-                            },
+            left: '20%',
+            right: '20%',
+            bottom: '20%',
+            top: '20%'
+        },
+        xAxis: {
+            show: false,
 
-                        }
+        },
+        color: '#66ccff',
+        series: [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: ['40%', '55%'],
+                center: ['50%', '50%'],
+                data: [
+                    {value: 325, name: '在线'},
+                    {value: 80, name: '离线'}
+                ],
+                itemStyle: {
+                    normal: {
+                        label: {//环形图外  文字样式
+                            textStyle: {
+                                fontSize: 10 * bodyScale,
+                            }
+                        },
 
-                    },
+                    }
 
                 },
-                
-            ]
+
+            },
+
+        ]
     }
-    var list_bar ={
-        color:colors,
+    var list_bar = {
+        color: colors,
         grid: {
-                left: '5%',
-                right: '5%',
-                bottom: '25%',
-                top: '5%'
+            left: '5%',
+            right: '5%',
+            bottom: '25%',
+            top: '5%'
+        },
+        xAxis: {
+            type: 'category',
+            data: ['在线纠偏', '上门保养', '维修更新'],
+            axisLabel: {
+                interval: 0,
+                show: 'true',
+                textStyle: {
+                    fontSize: 8 * bodyScale,
+                    color: '#64ccff'
+                }
             },
-            xAxis: {
-                type: 'category',
-                data: ['在线纠偏','上门保养','维修更新'],
-                axisLabel:{
-                        interval:0,
-                        show:'true',
-                        textStyle:{
-                            fontSize:8*bodyScale,
-                            color:'#64ccff'
-                        }
-                    },
-            },
-            yAxis: {
-                name: '台',
-                type: 'value'
-            },
-            series: [
-                {
-                    name: '在线',
-                    type: 'bar',
-                    stack: '总量',
-                    barWidth: barWidth,
-                    itemStyle: {
-                        normal: {
-                            color: '#00adef'
-                        }
+        },
+        yAxis: {
+            name: '台',
+            type: 'value'
+        },
+        series: [
+            {
+                name: '在线',
+                type: 'bar',
+                stack: '总量',
+                barWidth: barWidth,
+                itemStyle: {
+                    normal: {
+                        color: '#00adef'
                     }
                 }
-                
-                
+            }
 
-            ]
+
+        ]
     }
-	$(function(){
-		// 图标一
-		var myChart1 = echarts.init($("#currentState_m")[0]);
-		myChart1.setOption(opts);
+    $(function () {
+        // 图标一
+        var myChart1 = echarts.init($("#currentState_m")[0]);
+        myChart1.setOption(opts);
         myChart1.setOption(list_pie);
         myChart1.setOption({
             grid: {
@@ -501,12 +532,12 @@ function marquee(obj, step){
                 bottom: '20%',
                 top: '20%'
             },
-            xAxis:{
-                show:false,
-            
+            xAxis: {
+                show: false,
+
             },
-			color: colors,
-            series : [
+            color: colors,
+            series: [
                 {
                     name: '访问来源',
                     type: 'pie',
@@ -516,11 +547,11 @@ function marquee(obj, step){
                         {value: 325, name: '在线'},
                         {value: 80, name: '离线'}
                     ],
-                    itemStyle : {
-                        normal : {
-                            label : {//环形图外  文字样式
-                                textStyle : {
-                                    fontSize : 10 * bodyScale,
+                    itemStyle: {
+                        normal: {
+                            label: {//环形图外  文字样式
+                                textStyle: {
+                                    fontSize: 10 * bodyScale,
                                 }
                             },
 
@@ -532,9 +563,9 @@ function marquee(obj, step){
             ]
         });
 
-		//图标二
-		var myChart2 = echarts.init($("#currentState_r")[0]);
-		myChart2.setOption(opts);
+        //图标二
+        var myChart2 = echarts.init($("#currentState_r")[0]);
+        myChart2.setOption(opts);
         myChart2.setOption({
             grid: {
                 left: '15%',
@@ -542,28 +573,28 @@ function marquee(obj, step){
                 bottom: '25%',
                 top: '25%'
             },
-			legend:{
-                top:25,
-                show:true,
-				 data:['在线','离线'],
-				textStyle:{
-                    color:'#00adef',
-					fontSize:11 * bodyScale
-				},
-				itemGap:30,//图例间距离
-			},
+            legend: {
+                top: 25,
+                show: true,
+                data: ['在线', '离线'],
+                textStyle: {
+                    color: '#00adef',
+                    fontSize: 11 * bodyScale
+                },
+                itemGap: 30,//图例间距离
+            },
             xAxis: {
                 type: 'category',
-                data: ['冰箱','商空','洗衣机','冷柜','家空'],
-                axisLabel:{
-                        interval:0,
-                        show:'true',
-                        // rotate:-30,
-                        textStyle:{
-                            fontSize:10*bodyScale,
-                            color:'#64ccff'
-                        }
-                    },
+                data: ['冰箱', '商空', '洗衣机', '冷柜', '家空'],
+                axisLabel: {
+                    interval: 0,
+                    show: 'true',
+                    // rotate:-30,
+                    textStyle: {
+                        fontSize: 10 * bodyScale,
+                        color: '#64ccff'
+                    }
+                },
             },
             yAxis: {
                 name: '台',
@@ -580,7 +611,7 @@ function marquee(obj, step){
                             color: '#00adef'
                         }
                     },
-                    data: [25, 45, 65, 60,50]
+                    data: [25, 45, 65, 60, 50]
                 },
                 {
                     name: '离线',
@@ -597,165 +628,165 @@ function marquee(obj, step){
 
             ]
         });
-	})
+    })
 
     //list1
     var list1 = echarts.init($("#list-1")[0]);
-        list1.setOption(list_pie);
-        list1.setOption({
-            series : {
-                    
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ],
-                
-                    
-                }
-            
-        });
+    list1.setOption(list_pie);
+    list1.setOption({
+        series: {
+
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ],
+
+
+        }
+
+    });
     //list2 
-        var list2 = echarts.init($("#list-2")[0]);
-		list2.setOption(opts);
-        list2.setOption(list_bar);
-        list2.setOption({
-            series: 
-                { 
-                    data: [0, 35, 20],
-                    color:function(params){
-                        var colorList =['red','blue','yellow'];
-                        return colorList[params,dataIndex]
-                    }
+    var list2 = echarts.init($("#list-2")[0]);
+    list2.setOption(opts);
+    list2.setOption(list_bar);
+    list2.setOption({
+        series:
+            {
+                data: [0, 35, 20],
+                color: function (params) {
+                    var colorList = ['red', 'blue', 'yellow'];
+                    return colorList[params, dataIndex]
                 }
-            
-        });
-         //list3
+            }
+
+    });
+    //list3
     var list3 = echarts.init($("#list-3")[0]);
-		// list3.setOption(opts);
-        list3.setOption(list_pie);
-        list3.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    // list3.setOption(opts);
+    list3.setOption(list_pie);
+    list3.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list4
-        var list4 = echarts.init($("#list-4")[0]);
-		list4.setOption(opts);
-        list4.setOption(list_bar);
-        list4.setOption({
-            series: 
-                { 
-                    data: [0, 35, 20]
-                }
-            
-        });
+    var list4 = echarts.init($("#list-4")[0]);
+    list4.setOption(opts);
+    list4.setOption(list_bar);
+    list4.setOption({
+        series:
+            {
+                data: [0, 35, 20]
+            }
+
+    });
     //list5
     var list5 = echarts.init($("#list-5")[0]);
-		// list5.setOption(opts);
-        list5.setOption(list_pie);
-        list5.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    // list5.setOption(opts);
+    list5.setOption(list_pie);
+    list5.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list6
-        var list6 = echarts.init($("#list-6")[0]);
-		list6.setOption(opts);
-        list6.setOption(list_bar);
-        list6.setOption({
-            series: 
-                { 
-                    data: [0, 35, 20]
-                }
-            
-        });
+    var list6 = echarts.init($("#list-6")[0]);
+    list6.setOption(opts);
+    list6.setOption(list_bar);
+    list6.setOption({
+        series:
+            {
+                data: [0, 35, 20]
+            }
+
+    });
     //list7
     var list7 = echarts.init($("#list-7")[0]);
-		// list7.setOption(opts);
-        list7.setOption(list_pie);
-        list7.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    // list7.setOption(opts);
+    list7.setOption(list_pie);
+    list7.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list8
-        var list8 = echarts.init($("#list-8")[0]);
-		list8.setOption(opts);
-        list8.setOption(list_bar);
-        list8.setOption({
-            series: 
-                { 
-                    data: [0, 35, 20]
-                }
-            
-        });
+    var list8 = echarts.init($("#list-8")[0]);
+    list8.setOption(opts);
+    list8.setOption(list_bar);
+    list8.setOption({
+        series:
+            {
+                data: [0, 35, 20]
+            }
+
+    });
     //list9
     var list9 = echarts.init($("#list-9")[0]);
-		// list9.setOption(opts);
-        list9.setOption(list_pie);
-        list9.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    // list9.setOption(opts);
+    list9.setOption(list_pie);
+    list9.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list10
-        var list10 = echarts.init($("#list-10")[0]);
-		list10.setOption(opts);
-        list10.setOption(list_bar);
-        list10.setOption({
-            series: 
-                { 
-                    data: [0, 35, 20]
-                }
-            
-        });
+    var list10 = echarts.init($("#list-10")[0]);
+    list10.setOption(opts);
+    list10.setOption(list_bar);
+    list10.setOption({
+        series:
+            {
+                data: [0, 35, 20]
+            }
+
+    });
     //list11
     var list11 = echarts.init($("#list-11")[0]);
-		// list11.setOption(opts);
-        list11.setOption(list_pie);
-        list11.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    // list11.setOption(opts);
+    list11.setOption(list_pie);
+    list11.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list12
-        var list12 = echarts.init($("#list-12")[0]);
-		list12.setOption(opts);
-        list12.setOption(list_bar);
-        list12.setOption({
-            series: 
-                { 
-                    data: [0, 35, 20]
-                }
-            
-        });
-	var colors = [
+    var list12 = echarts.init($("#list-12")[0]);
+    list12.setOption(opts);
+    list12.setOption(list_bar);
+    list12.setOption({
+        series:
+            {
+                data: [0, 35, 20]
+            }
+
+    });
+    var colors = [
         '#00adef',
         '#809ba9',
         '#5cdbd3',
