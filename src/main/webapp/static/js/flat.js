@@ -259,7 +259,7 @@ function seriesData(data, labType) {
                                         color = labCodeColors[1]+88;
                                         break;
                                     case "工厂类":
-                                        color = labCodeColors[2]+88;
+                                        color = labCodeColors[3]+88;
                                         break;
                                     case "模块商":
                                         color = labCodeColors[3]+88;
