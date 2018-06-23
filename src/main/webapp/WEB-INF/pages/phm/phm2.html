@@ -326,10 +326,13 @@
 	</body>
 </html>
 <script>
+
     //通過右邊打開Ulab
+
   $(".rightPicContentBox").click(function () {
         open("${contextPath}/lab/full",'_self')
     });
+
 
     addSelf();
     function addSelf(){
@@ -354,12 +357,14 @@
 </script>
 <script>
  
+
 //news 滚动 start 
 $(function(){
-$('.myscroll').myScroll({
-    speed: 10, //数值越大，速度越慢
-    rowHeight: 74 //li的高度
-});
+	$('.myscroll').myScroll({
+	    speed: 10, //数值越大，速度越慢
+	    rowHeight: 74 //li的高度
+    });
+    
 });
 //myscroll 滚动字体超出部分隐藏
 $(".news ul li").each(function() {
@@ -369,11 +374,10 @@ $(".news ul li").each(function() {
             $(this).html($(this).html() + '...');
         }
     });
-//alert
-// $(".rightPicContentUp>div:nth-child(1)").click(function(){
-//     // window.location.href = "//www.j b51.net";
-//     window.location.href = "${contextPath}/phm/health";
-// })
+
+//
+
+
 //-----------------------------左侧  图表-----------------------
 //左侧图表
 	var barWidth = 12 * bodyScale;
