@@ -36,7 +36,9 @@ strong{
         margin: 0 auto;
         padding: 0 1rem;
     }
-
+    .styleIn7x3 #myContainer {
+        padding: 0;
+    }
     #container,
     #container > div {
         display: flex;
@@ -51,10 +53,13 @@ strong{
     }
 
     .left > div,
-        /*.mid>div,*/
     .right > div {
         flex: 1;
         padding: 1rem;
+    }
+    .styleIn7x3 .left > div,
+    .styleIn7x3 .right > div {
+        padding-top: 1.5rem;
     }
 
     .mid {
@@ -135,7 +140,7 @@ strong{
     flex: 3;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .textBox {
@@ -144,13 +149,15 @@ strong{
 
 .mapBox > iframe {
     position: relative;
-    flex: 3;
+    flex: 3.3;
     top: 0;
     right: 2rem;
     width: 100%;
-    transform: translateY(2%) scaleY(1);
+    /*transform: translateY(2%) scaleY(1);*/
 }
-
+.styleIn7x3 .mapBox > iframe {
+    flex: 4;
+}
 .mapBox > .flatMapCtr {
     flex: 1;
 }
@@ -162,17 +169,19 @@ strong{
         width: 28rem;
         height: 100%;
     }
-
+    .styleIn7x3 .flatMapCtr .legend {
+        top: 1rem;
+    }
     .legend-m {
-        height: 57%;
+        height: 4rem;
         background: url("../img/hallMap/bd_mapNav.png") no-repeat;
-        background-size: contain;
+        background-size: 100% 100%;
     }
 
     .legend-b {
         margin: 0 auto;
         width: 13em;
-        height: 24%;
+        height: 1.875em;
         background: url(../img/hallMap/bd_mapNav_b.png) 50% no-repeat;
         background-size: contain;
         cursor: pointer;
@@ -330,7 +339,7 @@ strong{
 /*全流程测试*/
 .test table{
     border-collapse: collapse;
-    margin: 1rem 0 0 .625rem;
+    margin: 1rem auto 0;
     text-align: center;
 }
 .test table thead{
@@ -355,7 +364,7 @@ strong{
 }
 /*互联数*/
 .interconnection table {
-    margin:  1rem .5rem .5rem 1rem;
+    margin:  1rem auto .5rem;
 }
 .interconnection table th{
     padding-bottom: .5rem;
@@ -372,15 +381,18 @@ strong{
 }
 
 /*实验室管理*/
+.management {
+    text-align: center;
+}
 .management ul{
-    margin: .9375rem 0 0 .75rem;
+    margin: .875rem auto .25rem;
 }
 .management ul>li{
     position: relative;
     display: inline-block;
     margin: .125rem .5rem;
-    width: 4.75rem;
-    height: 4.75rem;
+    width: 4.5rem;
+    height: 4.5rem;
     text-align: center;
     border-radius: 50%;
     border: .0625rem solid #66ccff88;

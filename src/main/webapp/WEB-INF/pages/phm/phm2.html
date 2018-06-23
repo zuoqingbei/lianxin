@@ -32,7 +32,7 @@
                     <div class="LeftContent fl">
                         <div class="mainTitle">
                             <div class="mainTitleContent">
-                                <a style="color:#6cf;" href="${contextPath!}/phm/health">
+                                <a style="color:#6cf;" href="${contextPath!}/phm/status">
                                 <span>自诊断自预测</span>
                                 </a>
                             </div>
@@ -326,6 +326,11 @@
 	</body>
 </html>
 <script>
+    //通過右邊打開Ulab
+  $(".rightPicContentBox").click(function () {
+        open("${contextPath}/lab/full",'_self')
+    });
+
     addSelf();
     function addSelf(){
         setTimeout(function () {
@@ -352,8 +357,8 @@
 //news 滚动 start 
 $(function(){
 $('.myscroll').myScroll({
-    speed: 30, //数值越大，速度越慢
-    rowHeight: 54 //li的高度
+    speed: 10, //数值越大，速度越慢
+    rowHeight: 74 //li的高度
 });
 });
 //myscroll 滚动字体超出部分隐藏
@@ -364,11 +369,11 @@ $(".news ul li").each(function() {
             $(this).html($(this).html() + '...');
         }
     });
-//右侧五个小图标弹出框
-$(".rightPicContentUp>div:nth-child(1)").click(function(){
-    // window.location.href = "//www.j b51.net";
-    window.location.href = "${contextPath}/phm/health";
-})
+//alert
+// $(".rightPicContentUp>div:nth-child(1)").click(function(){
+//     // window.location.href = "//www.j b51.net";
+//     window.location.href = "${contextPath}/phm/health";
+// })
 //-----------------------------左侧  图表-----------------------
 //左侧图表
 	var barWidth = 12 * bodyScale;

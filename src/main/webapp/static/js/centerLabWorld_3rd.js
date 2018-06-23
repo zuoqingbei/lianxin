@@ -1,4 +1,4 @@
-var mSensor = [
+let mSensor = [
     {
         'unit': '℃',
         'sensor_type_id': 1,
@@ -77,29 +77,29 @@ var mSensor = [
         'lowvalue': 0
     }
 ];
-var myChartWorld1;
-var myChartWorld2;
+let myChartWorld1;
+let myChartWorld2;
 
-var xDataWorld;//x轴坐标数据--对应时间
-var legendDataWorld = [];//需要把全部图例放入里面 保证名称不同
-var legendNumDataWorld = [];
-var showlegendDataWorld = [];//需要展示图例 自定义
-var seriesTopDataWorld = [];
-var seriesBottomDataWorld = [];
-var topParamWorld = [];//上方y参数单位
-var bottomParamWorld = [];//下方y轴单位
-var currentDataWorld;//当前传感器y信息数据 用于生成y轴
-var totalLegendNameWorld = [];//图例全称 包含单位 ['1:频率(Hz)','2:M1(℃)']
-var interval_count1World = 0;
-var interval_count2World = 0;
-var mockxDataWorld = [];//模拟的x轴数据
-var intevalChartHadoop;
-var option_world;
-var option2_world;
+let xDataWorld;//x轴坐标数据--对应时间
+let legendDataWorld = [];//需要把全部图例放入里面 保证名称不同
+let legendNumDataWorld = [];
+let showlegendDataWorld = [];//需要展示图例 自定义
+let seriesTopDataWorld = [];
+let seriesBottomDataWorld = [];
+let topParamWorld = [];//上方y参数单位
+let bottomParamWorld = [];//下方y轴单位
+let currentDataWorld;//当前传感器y信息数据 用于生成y轴
+let totalLegendNameWorld = [];//图例全称 包含单位 ['1:频率(Hz)','2:M1(℃)']
+let interval_count1World = 0;
+let interval_count2World = 0;
+let mockxDataWorld = [];//模拟的x轴数据
+let intevalChartHadoop;
+let option_world;
+let option2_world;
 
-var configName;
-var startTime;
-var com_yAxis = {
+let configName;
+let startTime;
+let com_yAxis = {
     type: 'value',
     nameGap: nameGap,
     nameTextStyle: nameTextStyle,
@@ -133,7 +133,7 @@ var com_yAxis = {
     },
     symbolSize: 1 * bodyScale
 };
-var com_opt = {
+let com_opt = {
     tooltip: {
         trigger: 'axis',
         textStyle: {
@@ -277,9 +277,9 @@ function getChartsWorld2() {
 
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
-    var labs = labsMap.get(type);
-    var labCode = labs.lab_code;
-    var $l3x3 = $("#l");
+    let labs = labsMap.get(type);
+    let labCode = labs.lab_code;
+    let $l3x3 = $("#l");
     configName = labs.souce_value;
     //清除中海博睿定时器
     window.clearInterval(intevalChart1);
@@ -287,7 +287,7 @@ function loadLabUnitInfoCenterTabAjaxWorldHadoop(type) {
 
     //生成下拉
     $.post(contextPath + '/hadoop/unitInfo', {"configName": configName, "labCode": labCode}, function (data) {
-        var htmls = labsHtmlsMap.get(type);
+        let htmls = labsHtmlsMap.get(type);
         //console.log(".......拼ul之前的HTML",htmls)
         htmls += "<ul>";
         $.each(data, function (index, item) {
@@ -379,7 +379,7 @@ function findTestDataHadoop(labCode, testUnitId) {
 function intervalChangeDataHadoop() {
     window.clearInterval(intevalChartHadoop);
     //console.log("----intevalChart1-----------"+intevalChart1)
-    var nt = new Date();//定义一个新时间
+    let nt = new Date();//定义一个新时间
     nt.setTime(startTime * 1000 + 1000 * 60 * 0.5);//设置新时间比旧时间多一分钟
     startTime = nt.getTime() / 1000;
     console.log(timestampFormat(startTime))
@@ -394,19 +394,19 @@ function intervalChangeDataHadoop() {
         dealIntervalSeriesDataWorld(data);
         createLegendHtmlsWorld();
         //上方处理
-        for (var i = 0; i < intervalSeriesTopDataWorld.length; i++) {
-            for (var x = 0; x < intervalSeriesTopDataWorld[i].length; x++) {
+        for (let i = 0; i < intervalSeriesTopDataWorld.length; i++) {
+            for (let x = 0; x < intervalSeriesTopDataWorld[i].length; x++) {
                 seriesTopDataWorld[i].data.shift();
                 seriesTopDataWorld[i].data.push(intervalSeriesTopDataWorld[i][x].value);
             }
         }
         //下方处理
-        for (var i = 0; i < intervalSeriesBottomDataWorld.length; i++) {
-            for (var x = 0; x < intervalSeriesBottomDataWorld[i].length; x++) {
+        for (let i = 0; i < intervalSeriesBottomDataWorld.length; i++) {
+            for (let x = 0; x < intervalSeriesBottomDataWorld[i].length; x++) {
                 if (i == 0) {
-                    var mIndex = isHasElementOne(xDataWorld, parseInt(parseFloat(intervalSeriesBottomDataWorld[i][x].name) * 60));
+                    let mIndex = isHasElementOne(xDataWorld, parseInt(parseFloat(intervalSeriesBottomDataWorld[i][x].name) * 60));
                     if (parseInt(mIndex) == -1) {
-                        var preData = xDataWorld.shift();
+                        let preData = xDataWorld.shift();
                         xDataWorld = removeReport(xDataWorld, preData);
                         xDataWorld.push(parseInt(parseFloat(intervalSeriesBottomDataWorld[i][x].name) * 60));
                     }
@@ -416,7 +416,7 @@ function intervalChangeDataHadoop() {
                 seriesBottomDataWorld[i].data.push(intervalSeriesBottomDataWorld[i][x].value);
             }
         }
-        var endStart = xDataWorld[xDataWorld.length - 1];
+        let endStart = xDataWorld[xDataWorld.length - 1];
         //模拟空白x轴
         mockXdataMethodWorld(endStart);
         myChartWorld1.setOption({
@@ -434,16 +434,16 @@ function intervalChangeDataHadoop() {
 }
 
 //处理线series 定时器使用
-var intervalSeriesTopDataWorld = [];
-var intervalSeriesBottomDataWorld = [];
+let intervalSeriesTopDataWorld = [];
+let intervalSeriesBottomDataWorld = [];
 
 function dealIntervalSeriesDataWorld(mData) {
     intervalSeriesTopDataWorld = [];
     intervalSeriesBottomDataWorld = [];
     //处理图例中数变化
     if (mData.list) {
-        for (var i = 0; i < mData.list.length; i++) {
-            var cM = mData.list[i];
+        for (let i = 0; i < mData.list.length; i++) {
+            let cM = mData.list[i];
             if (cM.data != null && cM.data.length > 0) {
                 legendNumDataWorld[i] = cM.data[cM.data.length - 1].value + increaseBracketForObj(cM.name);
             }
@@ -451,16 +451,16 @@ function dealIntervalSeriesDataWorld(mData) {
         ;
     }
 
-    for (var x = 0; x < totalLegendNameWorld.length; x++) {
-        var currentName = totalLegendNameWorld[x];
-        var data = [];
-        for (var i = 0; i < mData.list.length; i++) {
+    for (let x = 0; x < totalLegendNameWorld.length; x++) {
+        let currentName = totalLegendNameWorld[x];
+        let data = [];
+        for (let i = 0; i < mData.list.length; i++) {
             if (mData.list[i].name == currentName) {
                 data = mData.list[i].data;
             }
         }
         ;
-        var checked = false;
+        let checked = false;
         $('input[name="legendcheckbox_world"]:checked').each(function () {
             if ($(this).val() == dealBracketForObj(currentName)) {
                 checked = true;
@@ -468,8 +468,8 @@ function dealIntervalSeriesDataWorld(mData) {
             ;
         });
         if (checked) {
-            var topIndex = isHasElementOne(topParamWorld, dealUnit(currentName));
-            var bottomIndex = isHasElementOne(bottomParamWorld, dealUnit(currentName));
+            let topIndex = isHasElementOne(topParamWorld, dealUnit(currentName));
+            let bottomIndex = isHasElementOne(bottomParamWorld, dealUnit(currentName));
             if (topIndex > -1 || bottomIndex > -1) {
                 if (topIndex > -1 && isHasElementOne(showlegendDataWorld, dealBracketForObj(currentName)) > -1) {
                     //展示在上半部分
@@ -487,12 +487,12 @@ function dealIntervalSeriesDataWorld(mData) {
 };
 
 function timestampFormat(timestamp) {
-    var d = new Date(timestamp * 1000);    //根据时间戳生成的时间对象
-    var month = (d.getMonth() + 1);
+    let d = new Date(timestamp * 1000);    //根据时间戳生成的时间对象
+    let month = (d.getMonth() + 1);
     if (month < 9) {
         month = "0" + month;
     }
-    var date = (d.getFullYear()) + "-" +
+    let date = (d.getFullYear()) + "-" +
         month + "-" +
         (d.getDate()) + " " +
         (d.getHours()) + ":" +
@@ -504,12 +504,12 @@ function timestampFormat(timestamp) {
 
 //加载实验室与台位对照关系 生刷选框
 function loadLabUnitInfoCenterTabAjaxWorld(type) {
-    var labs = labsMap.get(type);
-    var labCode = labs.lab_code;
+    let labs = labsMap.get(type);
+    let labCode = labs.lab_code;
     window.clearInterval(intevalChart1);
-    var htmls = "";
+    let htmls = "";
     $.post(contextPath + "/lab/loadJsonProByDataCenterIdAjax", {"labCode": labCode}, function (data) {
-        var htmls = labsHtmlsMap.get(type);
+        let htmls = labsHtmlsMap.get(type);
         htmls += "<ul>";
         $.each(data, function (index, item) {
             // console.log(item)
@@ -641,7 +641,7 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId, fileName) {
 }
 
 function randomLegendWorld() {
-    var num = 0;
+    let num = 0;
     $.each(totalLegendNameWorld, function (index, item) {
         if (item.indexOf("℃") == -1) {
             showlegendDataWorld.push(dealBracketForObj(item));
@@ -655,16 +655,16 @@ function randomLegendWorld() {
 function dealSeriesDataWorld() {
     seriesTopDataWorld = [];
     seriesBottomDataWorld = [];
-    for (var x = 0; x < totalLegendNameWorld.length; x++) {
-        var currentName = totalLegendNameWorld[x];
-        var data = [];
-        for (var i = 0; i < dataBase.list.length; i++) {
+    for (let x = 0; x < totalLegendNameWorld.length; x++) {
+        let currentName = totalLegendNameWorld[x];
+        let data = [];
+        for (let i = 0; i < dataBase.list.length; i++) {
             if (dataBase.list[i].name == currentName) {
                 data = dataBase.list[i].data;
             }
         }
         ;
-        var checked = false;
+        let checked = false;
         $('input[name="legendcheckbox_world"]:checked').each(function () {
             if ($(this).val() == dealBracketForObj(currentName)) {
                 checked = true;
@@ -672,8 +672,8 @@ function dealSeriesDataWorld() {
             ;
         });
         if (checked) {
-            var topIndex = isHasElementOne(topParamWorld, dealUnit(currentName));
-            var bottomIndex = isHasElementOne(bottomParamWorld, dealUnit(currentName));
+            let topIndex = isHasElementOne(topParamWorld, dealUnit(currentName));
+            let bottomIndex = isHasElementOne(bottomParamWorld, dealUnit(currentName));
 
             if (topIndex > -1 || bottomIndex > -1) {
                 if (topIndex > -1 && isHasElementOne(showlegendDataWorld, dealBracketForObj(currentName)) > -1) {
@@ -697,25 +697,25 @@ function dealSeriesDataWorld() {
 function dealSeriesData2World(obj) {
     seriesTopDataWorld = [];
     seriesBottomDataWorld = [];
-    for (var x = 0; x < totalLegendNameWorld.length; x++) {
-        var currentName = totalLegendNameWorld[x];
-        var data = [];
+    for (let x = 0; x < totalLegendNameWorld.length; x++) {
+        let currentName = totalLegendNameWorld[x];
+        let data = [];
         //没有配置 默认画到左下
-        var checked = false;
+        let checked = false;
         $('input[name="legendcheckbox_world"]:checked').each(function () {
             if ($(this).val() == dealBracketForObj(currentName)) {
                 checked = true;
             }
             ;
         });
-        for (var i = 0; i < dataBase.list.length; i++) {
+        for (let i = 0; i < dataBase.list.length; i++) {
             if (dataBase.list[i].name == currentName) {
                 data = dataBase.list[i].data;
             }
         }
         ;
-        var topIndex = isHasElementOne(topParamWorld, dealUnit(currentName));
-        var bottomIndex = isHasElementOne(bottomParamWorld, dealUnit(currentName));
+        let topIndex = isHasElementOne(topParamWorld, dealUnit(currentName));
+        let bottomIndex = isHasElementOne(bottomParamWorld, dealUnit(currentName));
         if (checked) {
             if (topIndex > -1 || bottomIndex > -1) {
                 if (topIndex > -1 && isHasElementOne(showlegendDataWorld, dealBracketForObj(currentName)) > -1) {
@@ -733,18 +733,18 @@ function dealSeriesData2World(obj) {
 };
 
 function joinSeriseWorld(data, name, index, colorIndex) {
-    var dataArr = [];
+    let dataArr = [];
     xDataWorld = [];
     //获取最后时间
-    var endStart;
+    let endStart;
     if (data[data.length - 1]) {
         endStart = parseFloat(data[data.length - 1].name) * 60;
     } else {
         console.log(name + "data未取到数据")
     }
-    var startTime = parseInt(endStart) - 60 * 2;
-    for (var x = 0; x < data.length; x++) {
-        var value = data[x].value;
+    let startTime = parseInt(endStart) - 60 * 2;
+    for (let x = 0; x < data.length; x++) {
+        let value = data[x].value;
         if (value != "N" && startTime <= parseInt(parseFloat(data[x].name) * 60)) {
             dataArr.push(value);
             xDataWorld.push(parseInt(parseFloat(data[x].name) * 60));
@@ -755,7 +755,7 @@ function joinSeriseWorld(data, name, index, colorIndex) {
     //模拟空白x轴
     mockXdataMethodWorld(endStart);
     //console.log(dataArr)
-    var item = {
+    let item = {
         name: dealBracketForObj(name),
         symbol: 'none',  //这句就是去掉点的
         type: 'line',
@@ -775,18 +775,18 @@ function joinSeriseWorld(data, name, index, colorIndex) {
 }
 
 function joinSeriseOtherWorld(data, name, colorIndex) {
-    var dataArr = [];
+    let dataArr = [];
     xDataWorld = [];
-    var endStart;
+    let endStart;
     if (data[data.length - 1]) {
         endStart = parseFloat(data[data.length - 1].name) * 60;
     } else {
         console.log(name + "data未取到数据")
     }
 
-    var startTime = parseInt(endStart) - 60 * 2;
-    for (var x = 0; x < data.length; x++) {
-        var value = data[x].value;
+    let startTime = parseInt(endStart) - 60 * 2;
+    for (let x = 0; x < data.length; x++) {
+        let value = data[x].value;
         if (value != "N" && startTime <= parseInt(parseFloat(data[x].name) * 60)) {
             dataArr.push(value);
             xDataWorld.push(parseInt(parseFloat(data[x].name) * 60));
@@ -795,7 +795,7 @@ function joinSeriseOtherWorld(data, name, colorIndex) {
     ;
     //模拟空白x轴
     mockXdataMethodWorld(endStart);
-    var item = {
+    let item = {
         name: dealBracketForObj(name),
         symbol: 'none',  //这句就是去掉点的
         type: 'line',
@@ -817,8 +817,8 @@ function mockXdataMethodWorld(endStart) {
 
     mockXdataWorld = [];
     //模拟空白x轴
-    for (var x = 1; x < 90; x++) {
-        var value = parseInt((parseFloat(endStart) + x));
+    for (let x = 1; x < 90; x++) {
+        let value = parseInt((parseFloat(endStart) + x));
         mockXdataWorld.push(value);
     }
 }
@@ -832,8 +832,8 @@ function createEchartsWorld(isFirst, obj) {
     } else {
         //重绘线
         dealSeriesData2World(obj);
-        var opt1 = myChartWorld1.getOption();
-        var opt2 = myChartWorld2.getOption();
+        let opt1 = myChartWorld1.getOption();
+        let opt2 = myChartWorld2.getOption();
         myChartWorld1.clear();
         myChartWorld2.clear();
         opt1.xAxis = [{data: xDataWorld.concat(mockXdataWorld)}];
@@ -851,16 +851,17 @@ function createEchartsWorld(isFirst, obj) {
 
 //生成图例控制
 function createLegendHtmlsWorld() {
-    var htmls = '';
-    var width = 10 * bodyScale + "px";
-    for (var x = 0; x < legendDataWorld.length; x++) {
-        var isChecked = "";
+    let htmls = '';
+    let width = 10 * bodyScale + "px";
+    for (let x = 0; x < legendDataWorld.length; x++) {
+        let isChecked = "";
         if (isHasElementOne(showlegendDataWorld, legendDataWorld[x]) !== -1) {
             isChecked = "checked";
         }
         htmls += '<li><input type="checkbox" name="legendcheckbox_world" onclick="resetOptionsWorld(this)" value="' + legendDataWorld[x] + '" ' + isChecked + '><span class="colorBlock" style="background-color:' + colorData[x] + ';"></span><span class="name" name="' + legendDataWorld[x] + '">' + legendDataWorld[x] + '</span><span>' + legendNumDataWorld[x] + '</span></li>'
     }
-    $("#legend_ul_world").html(htmls);
+    // console.log($("#legend_ul_world").html(htmls).children())
+    $("#legend_ul_world").html(htmls).children().filter(":gt(15)").hide();
 }
 
 function resetOptionsWorld(obj) {
@@ -871,7 +872,7 @@ function resetOptionsWorld(obj) {
 }
 
 function checkBoxValesWorld() { //jquery获取复选框值
-    var chk_value = [];
+    let chk_value = [];
     $('input[name="legendcheckbox_world"]:checked').each(function () {
         chk_value.push($(this).val());
     });

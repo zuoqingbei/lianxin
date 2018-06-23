@@ -272,6 +272,9 @@ a {
     flex-direction: column;
     background: #34373e;
 }
+.curve>header{
+    padding-top: 1rem;
+}
 .curve .close{
     position: absolute;
     top: 3.75rem;

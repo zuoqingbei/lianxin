@@ -2,16 +2,46 @@
 let labCode = "2,1,4",
     lineCode = "21,22,23,24,25,26,27";
 $(function () {
-
+    // parentMethod(lineCode, labCode);
     // 在7x3大屏上隱藏footer
     styleIn7x3();
     //设置产线和实验室的颜色
     addStyleForA();
-
     // 点击导航中的A标签
     clickNavA();
-
     // 实验室和产线的切换
+    showLabLine();
+    //全选
+    selectAll();
+    // 进入实验室按钮
+    $(".legend .toLabData").click(function () {
+        $("#content>.lab",parent.document).show().siblings(":not(.fromHallMap)").hide()
+        //实验室切回国内的中海博睿
+        $(".lab .switchBox>ul.inland>li:eq(0)",parent.document).click();
+        $(".lab .labMainNav header>ul>li:eq(0)",parent.document).click();
+    })
+});
+
+//全选
+function selectAll(){
+    $(".selectAll").click(function () {
+        if(!$(this).find("input").is(":checked")){
+            $("#selectAll").prop("checked",true);//不知为什么不能通过点击直接修改checked的状态
+            if ($(".legend-m ul.active").index() === 0) {
+                labCode = "2,1,4";
+            } else {
+                lineCode = "21,22,23,24,25,26,27";
+            }
+            $(".legend-m ul.active>li").addClass("active");
+            parentMethod(lineCode, labCode);
+            // console.log(lineCode, labCode);
+        }
+        return false;
+    })
+}
+
+// 实验室和产线的切换
+function showLabLine(){
     $(".legend>.btn").click(function () {
         active($(this));
         if ($(this).index() === 0) {
@@ -28,31 +58,14 @@ $(function () {
             $("#selectAll").prop("checked",true);
         }
     });
-    //全选
-    $(".selectAll").click(function () {
-        if(!$(this).find("input").is(":checked")){
-            $("#selectAll").prop("checked",true);//不知为什么不能通过点击直接修改checked的状态
-            if ($(".legend-m ul.active").index() === 0) {
-                labCode = "2,1,4";
-            } else {
-                lineCode = "21,22,23,24,25,26,27";
-            }
-            $(".legend-m ul.active>li").addClass("active");
-            parentMethod(lineCode, labCode);
-            // console.log(lineCode, labCode);
-        }
-        return false;
-    })
-
-
-});
+}
 
 // 在7x3大屏上隱藏footer
 function styleIn7x3(){
     let fromBigScreen7x3 = location.href.indexOf("bigScreen7x3")>-1;
-    console.log(fromBigScreen7x3)
+    console.log(fromBigScreen7x3);
     if (fromBigScreen7x3){
-
+        $("body").addClass("styleIn7x3");
         $("#myContainer>footer p").hide();
     }
 }
