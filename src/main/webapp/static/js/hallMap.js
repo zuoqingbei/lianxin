@@ -16,6 +16,9 @@ $(function () {
     // 进入实验室按钮
     $(".legend .toLabData").click(function () {
         $("#content>.lab",parent.document).show().siblings(":not(.fromHallMap)").hide()
+        //实验室切回国内的中海博睿
+        $(".lab .switchBox>ul.inland>li:eq(0)",parent.document).click();
+        $(".lab .labMainNav header>ul>li:eq(0)",parent.document).click();
     })
 });
 
@@ -62,6 +65,7 @@ function styleIn7x3(){
     let fromBigScreen7x3 = location.href.indexOf("bigScreen7x3")>-1;
     console.log(fromBigScreen7x3);
     if (fromBigScreen7x3){
+        $("body").addClass("styleIn7x3");
         $("#myContainer>footer p").hide();
     }
 }

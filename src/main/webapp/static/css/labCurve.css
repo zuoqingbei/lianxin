@@ -267,7 +267,7 @@
 #legend_ul_world{
     /*color:#4397f7;*/
     font-size: .875em;
-    max-height: 29em;
+    max-height: 36em;
     overflow: auto;
 }
 #legend_ul_world li>.colorBlock{

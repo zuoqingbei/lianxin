@@ -2035,6 +2035,9 @@ function runStatus() {
 
             })
         }
+        if(indexLab === 0){//加订单弹出页的链接
+            $(".l-bottom-body>div:eq(0)>div:eq(3)").addClass("toOrderPopup");
+        }
     }
 
     //实验室状态页面关闭订单弹窗
@@ -2059,7 +2062,7 @@ function runStatus() {
 
     // 订单弹出页
     $(".item.status .leftContent .l-bottom-body>div").eq(0).children().eq(4).addClass("toOrderPopup");
-    $(".toOrderPopup").click(function () {
+    $(".item.status").on("click",".toOrderPopup",function () {
         $(".orderPopup").addClass("show")
     });
 

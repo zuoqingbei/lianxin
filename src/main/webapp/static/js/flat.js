@@ -147,6 +147,10 @@ function seriesData(data, labType) {
         mapType: 'world',
         mapLocation: {
             x: 'right',
+            height:"80%"
+        },
+        grid:{
+            bottom:"20%"
         },
         itemStyle: {
             normal: {
@@ -209,7 +213,8 @@ function seriesData(data, labType) {
                         normal: {
                             label: {show: false},
                             color: function(params) {
-                                var color;
+                                // return colorarr[params.dataIndex]
+                                let color;
                                 switch (data[params.dataIndex].lab_type){
                                     case "中海博睿":
                                         color = labCodeColors[0];
