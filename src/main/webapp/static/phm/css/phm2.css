@@ -145,7 +145,13 @@ html,body{
     height: 100%;
     /* background-color: red; */
 }
-
+.operationTime{
+    font-size: 1.1em;
+    color: #ff9f30;
+}
+.currentState_leftTitle span:last-child{
+    color: #ff9f30;
+}
 .boxTitle1{
     position: relative;
     width: 40%;
@@ -244,17 +250,6 @@ html,body{
     padding-bottom: 0.2em;
     
 }
-/* .imgboxContent img{
-    position: relative;
-    top: 0.3em;
-    left: 50%;
-    margin-left: -0.6em;
-    width: 1.2em;
-    height: 1.5em;
-    background-size: contain;
-    padding-bottom: 0.2em;
-    
-} */
 
 .info{
     width: 100%;
@@ -263,6 +258,13 @@ html,body{
 .info p{
     text-align: center;
     padding: 0.2em 0;
+}
+.timeNum{
+    text-align: center;
+}
+.xs{
+    font-size: 0.6em;
+    color:#ff9f30;
 }
 .txt2,.txt4{
     font-size: 0.5em;
@@ -277,9 +279,6 @@ html,body{
     font-size: 0.8em;
     color:#ff9f30;
     /* margin-bottom: 0.2em; */
-}
-.txt5 span{
-    font-size: 0.6em;
 }
 .echarts{
     height: 100%;
@@ -315,7 +314,7 @@ html,body{
     position: absolute;
     text-align: center;
     bottom: 15%;
-    font-size: 1.2em
+    font-size: 1.1em
     
 }
 .ContentRightContent{
@@ -374,6 +373,9 @@ html,body{
     background-size: 100% 100%;
     
 }
+.recordscenter{
+    background-color: red;
+}
 .rightPicContentBox>div:nth-child(1){
     height: 8%;
 }
@@ -381,14 +383,16 @@ html,body{
     height: 30%;
     width: 100%;
 }
+
 .rightPicContentUp>div:nth-child(1){
     position: absolute;
     width: 15%;
     height: 20%;
     top: -9%;
     left: -15%;
-    background:url("../images/system/gongchang.png") no-repeat;
+    background:url("../images/system/jiance.png") no-repeat;
     background-size: contain;
+    cursor: pointer;
 }
 .rightPicContentUp>div:nth-child(2){
     position: absolute;
@@ -398,6 +402,7 @@ html,body{
     right: -16%;
     background:url("../images/system/gongchang.png") no-repeat;
     background-size: contain;
+    cursor: pointer;
 }
 .rightPicContentUp>div:nth-child(3){
     position: absolute;
@@ -407,8 +412,9 @@ html,body{
     left: 50%;
     margin-left: -7.5%;
     margin-top: -6%;
-    background:url("../images/system/gongchang.png") no-repeat;
+    background:url("../images/system/yonghu.png") no-repeat;
     background-size: contain;
+    cursor: pointer;
 }
 .rightPicContentUp>div:nth-child(4){
     position: absolute;
@@ -416,8 +422,9 @@ html,body{
     height: 20%;
     top: 89%;
     left: -15%;
-    background:url("../images/system/gongchang.png") no-repeat;
+    background:url("../images/system/yanfa.png") no-repeat;
     background-size: contain;
+    cursor: pointer;
 }
 .rightPicContentUp>div:nth-child(5){
     position: absolute;
@@ -425,8 +432,9 @@ html,body{
     height: 20%;
     top: 89%;
     right: -15%;
-    background:url("../images/system/gongchang.png") no-repeat;
+    background:url("../images/system/gongyingshang.png") no-repeat;
     background-size: contain;
+    cursor: pointer;
 }
 .recordscenterTitle{
     position: relative;
@@ -451,18 +459,18 @@ html,body{
     background-size: 100% 100%;
     bottom: 0;
     width: 6em;
-    height: 5em;
+    height: 5.5em;
     /* background-color: blue; */
     overflow: hidden;
 
 }
 
 .recordscenterTitle .news ul li{
-    padding: 0.3em 0;
+    padding: 2px 0;
     width: 80%;
-    height: 60px;
-    line-height: 60px;
-    font-size: 0.8em;
+    height: 50px;
+    line-height: 50px;
+    font-size: 0.9em;
     white-space: nowrap;
     overflow: hidden;
     text-align: center;
