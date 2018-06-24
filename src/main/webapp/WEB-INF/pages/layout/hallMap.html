@@ -55,8 +55,8 @@
                             <th>通过率</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
+                        <tbody id="mine_tbody_order">
+                        <!-- <tr>
                             <td>研发调试</td>
                             <td>3576</td>
                             <td>68.3%</td>
@@ -75,7 +75,7 @@
                             <td>监督抽查</td>
                             <td>383</td>
                             <td>100%</td>
-                        </tr>
+                        </tr> -->
                         </tbody>
                     </table>
                 </div>
@@ -105,11 +105,13 @@
                                 <ul>
                                     <li><a href>冰冷</a></li>
                                     <li><a href>洗涤</a></li>
+                                   <!--  <li><a href>检测中心</a></li> -->
                                     <li><a href>家空</a></li>
                                     <li><a href>商空</a></li>
                                     <li><a href>热水器</a></li>
                                     <li><a href>厨电</a></li>
                                     <li><a href>其它</a></li>
+                                       
                                 </ul>
                             </div>
                         </div>
@@ -207,6 +209,96 @@
 
 </div>
 <script src="${contextPath!}/static/js/hallMap.js"></script>
+<script type="text/javascript">
+$(function(){
+	loadOrderNumsAjax();
+});
+function loadOrderNumsAjax() {
+    $.post("${contextPath!}/lab/orderNumsAjax", function (data) {
+       //console.log(data)
+       var htmls=[];
+       $.each(data,function(index,item){
+    	   htmls.push('<tr><td>'+item.name+'</td><td id="m_td_order_'+item.id+'">'+item.nums+'</td><td>'+item.rate+'%</td></tr>');
+       });
+   	   changeData(data);
+       $("#mine_tbody_order").html(htmls.join(''));
+       
+    });
 
+}
+function changeData(data){
+	if(judgeChange()){
+		//开启调度
+		mData=data;
+		setInterval(interValFun, parseInt(data[0].times));
+	}
+};
+var indexs=0;
+var mData;
+function interValFun(){
+	$.each(mData,function(index,item){
+		var arr=item.interval.split(",");
+		var change=arr[indexs%10];
+		if(parseInt(change)>0){
+			$("#m_td_order_"+item.id).html(parseInt($("#m_td_order_"+item.id).html())+parseInt(change));
+			//更新数据
+			updateOrderNumsAjax(item.id,change);
+		}
+	});
+	indexs++;
+}
+//更新数据
+function updateOrderNumsAjax(id,change) {
+    $.post("${contextPath!}/lab/updateOrderNumsAjax",{"change":change,"id":id}, function (data) {
+       console.log("更新成功");
+    });
+
+}
+//判断时间范围
+function time_range(beginTime, endTime, nowTime) {
+	var strb = beginTime.split(":");
+	if (strb.length != 2) {
+		return false;
+	}
+	var stre = endTime.split(":");
+	if (stre.length != 2) {
+		return false;
+	}
+
+	var strn = nowTime.split(":");
+	if (stre.length != 2) {
+		return false;
+	}
+	var b = new Date();
+	var e = new Date();
+	var n = new Date();
+
+	b.setHours(strb[0]);
+	b.setMinutes(strb[1]);
+	e.setHours(stre[0]);
+	e.setMinutes(stre[1]);
+	n.setHours(strn[0]);
+	n.setMinutes(strn[1]);
+
+	if (n.getTime() - b.getTime() > 0 && n.getTime() - e.getTime() < 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+//判断当前时间是否需要变化数字
+function judgeChange(){
+	var n = new Date ();
+	var now= n.getHours() + ":" + n.getMinutes();
+	if(time_range("00:00", "9:00",now)||time_range("12:30", "13:30",now)||time_range("17:00", "24:00",now)){
+		return false;
+	};
+	if(time_range("9:00", "12:30",now)||time_range("13:30", "17:00",now)){
+		return true;
+	};
+	
+};
+
+</script>
 </body>
 </html>
