@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -69,7 +70,7 @@
                                         </div>
                                         <p class="txt1">冰冷</p>
                                         <p class="txt2">自能产品累计接入数</p>
-                                        <p class="txt3">38462</p>
+                                        <p class="txt3 bl01">38462</p>
                                         <p class="txt4">MFOP(无故障运行时间)</p>
                                         <div class="timeNum">
                                             <span class="txt5">1010781383</span>
@@ -95,7 +96,7 @@
                                         </div>
                                         <p class="txt1">洗涤</p>
                                         <p class="txt2">自能产品累计接入数</p>
-                                        <p class="txt3">32364</p>
+                                        <p class="txt3 xd01">32364</p>
                                         <p class="txt4">MFOP(无故障运行时间)</p>
                                         <div class="timeNum">
                                             <span class="txt5">283508604 </span><span class="xs">小时</span>
@@ -118,7 +119,7 @@
                                         </div>
                                         <p class="txt1">家空</p>
                                         <p class="txt2">自能产品累计接入数</p>
-                                        <p class="txt3">609364</p>
+                                        <p class="txt3 jk01">609364</p>
                                         <p class="txt4">MFOP(无故障运行时间)</p>
                                         <div class="timeNum">
                                             <span class="txt5">5338028640 </span><span class="xs">小时</span>
@@ -141,7 +142,7 @@
                                             </div>
                                             <p class="txt1">商空</p>
                                             <p class="txt2">自能产品累计接入数</p>
-                                            <p class="txt3">4340</p>
+                                            <p class="txt3 jk01">4340</p>
                                             <p class="txt4">MFOP(无故障运行时间)</p>
                                             <div class="timeNum">
                                                 <span class="txt5">38014800</span><span class="xs">小时</span>
@@ -163,7 +164,7 @@
                                             </div>
                                             <p class="txt1">热水器</p>
                                             <p class="txt2">自能产品累计接入数</p>
-                                            <p class="txt3">7908</p>
+                                            <p class="txt3 rsq01">7908</p>
                                             <p class="txt4">MFOP(无故障运行时间)</p>
                                             <div class="timeNum">
                                                 <span class="txt5">62178480</span><span class="xs">小时</span>
@@ -186,7 +187,7 @@
                                             </div>
                                             <p class="txt1">厨电</p>
                                             <p class="txt2">自能产品累计接入数</p>
-                                            <p class="txt3">4826</p>
+                                            <p class="txt3 cd01">4826</p>
                                             <p class="txt4">MFOP(无故障运行时间)</p>
                                             <div class="timeNum">
                                                <span class="txt5">42275760</span><span class="xs">小时</span>
@@ -334,26 +335,31 @@
     });
 
 
-    addSelf();
-    function addSelf(){
-        setTimeout(function () {
-            $(".txt5").text(function () {
-                return Number($(this).text())+1
-            });
-            $(".txt3").text(function () {
-                return Number($(this).text())+3
-            });
-            
-            $(".LWAPPNum").text(function () {
-                return Number($(this).text())+18
-            });
-            $(".operationTime").text(function () {
-                return Number($(this).text())+6
-            });
-            
-            addSelf()
-        },3000)
-    }
+    //  addSelf();
+    //  listen_xd();
+    // function addSelf(){
+    //     setTimeout(function () {
+    //         $(".bl01").text(function () {
+    //             return Number($(this).text())+1
+    //         });        
+    //         addSelf()
+    //     },7000)
+    // }
+    // function listen_xd(){
+    //     setTimeout(function () {
+    //         $(".xd01").text(function () {
+    //             return Number($(this).text())+1
+    //         });        
+    //         listen_xd()
+    //     },9000)
+    // }
+
+
+     
+
+
+
+
 </script>
 <script>
  
@@ -365,7 +371,7 @@ $(function(){
 	},1000);
 	$('.myscroll').myScroll({
 	    speed: 10, //数值越大，速度越慢
-	    rowHeight: 74 //li的高度
+	    rowHeight: 30 //li的高度
     });
     
 });
@@ -635,14 +641,27 @@ $(".news ul li").each(function() {
 		list2.setOption(opts);
         list2.setOption(list_bar);
         list2.setOption({
-            series: 
-                { 
-                    data: [0, 35, 20],
-                    color:function(params){
-                        var colorList =['red','blue','yellow'];
-                        return colorList[params,dataIndex]
-                    }
+        series: [{
+      
+        data: [15, 35, 20],
+        //配置样式
+        itemStyle: {   
+            //通常情况下：
+            normal:{  
+　　　　　　　　　　　　//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                color: function (params){
+                    var colorList = ['red','#00adef','#00adef'];
+                    return colorList[params.dataIndex];
                 }
+            },
+            //鼠标悬停时：
+            emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+        },
+    }],
             
         });
          //list3
@@ -774,26 +793,13 @@ $(".news ul li").each(function() {
         '#00adef',
         '#809ba9',
         '#5cdbd3',
-        '#ff85c0',
-        // '#ffd591',
-        // '#eaff8f',
-        // '#d3adf7',
-        // '#91d5ff',
-        // '#ffa39e',
-        // '#87e8de',
-        // '#ffadd2',
-        // '#adc6ff',
-        // '#fffb8f',
-        // '#b7eb8f',
-        // '#ffbb96',
-        // '#d9f7be',
-        // '#ffd6e7',
+        '#ff85c0'
     ];
 	
 	
 	//实时状态
 	var addId="http://10.138.87.129";
-	<!--实时状态初始化  -->
+	//实时状态初始化 
 			function timeStatus(){
 				var sncode="20171026BX004";
 				$.ajax({
@@ -837,10 +843,10 @@ $(".news ul li").each(function() {
 										open=true;
 									}
 									if(open){
-										console.log("open",open);
+                                        console.log("open",open);
 									}else{
 										//关闭
-										console.log("close",open);
+										// console.log("close",open);
 									}
 								  	//console.log(image14+"--"+image15+"--"+image16+"--"+image17);
 								}
@@ -857,3 +863,4 @@ $(".news ul li").each(function() {
 	
 	
 </script>
+

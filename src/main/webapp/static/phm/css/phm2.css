@@ -469,9 +469,10 @@ html,body{
 .recordscenterTitle .news ul li{
     padding: 2px 0;
     width: 80%;
-    height: 50px;
-    line-height: 50px;
+    height: 30px;
+    line-height: 30px;
     font-size: 0.9em;
+    vertical-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-align: center;
