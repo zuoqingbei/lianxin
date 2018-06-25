@@ -15,11 +15,12 @@ $(function () {
     selectAll();
     // 进入实验室按钮
     $(".legend .toLabData").click(function () {
-        $("#content>.lab",parent.document).show().siblings(":not(.fromHallMap)").hide()
+        $("#content>.lab",parent.document).show().siblings(":not(.fromHallMap)").hide();
+        $(".orderPopup",parent.document).removeClass("show");
         //实验室切回国内的中海博睿
         $(".lab .switchBox>ul.inland>li:eq(0)",parent.document).click();
         $(".lab .labMainNav header>ul>li:eq(0)",parent.document).click();
-    })
+    });
 });
 
 //全选

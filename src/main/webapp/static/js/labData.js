@@ -70,7 +70,7 @@ function loadAllDataCenterAjax() {
         //右四屏切换到数据中心
         try {
             toLabData();
-        }catch (e) {
+        } catch (e) {
             console.log(e)
         }
 
@@ -82,46 +82,52 @@ function createDataCenterHtml(data, dataType) {
     var htmls = "";
     var cuNum = 0;
     $.each(data, function (index, item) {
-        if (item.data_type == dataType) {
-            var haschildren = false;
-            if (item.haschildren == 1) {
-                haschildren = true;
-            }
-            // console.log("item",item)
-            dataCenterMap.put(item.id, item);
-            if (!haschildren) {
-                htmls += '<li data-centerid="' + item.id + '" ';
-                if (cuNum == 0) {
-                    htmls += ' class=" noChildren active" ';
-                } else {
-                    htmls += ' class=" noChildren " ';
+        if (item.id !== '3') {//隐藏模块商
+            if (item.data_type == dataType) {
+                var haschildren = false;
+                if (item.haschildren == 1) {
+                    haschildren = true;
                 }
-                ;
-                cuNum++;
-                //创建li响应方法
-                htmls += createClickFuntionForDataCenter(item);
-                htmls += ' >' + item.center_name + '</li>';
-            } else {
-                htmls += '<li '
-                if (cuNum == 0) {
-                    htmls += ' class=" hasChildren active" >';
-                } else {
-                    htmls += ' class=" hasChildren " >';
-                }
-                ;
-                cuNum++;
-                // htmls+=' <header class="fold">'+item.center_name+'<span>︿</span></header> ';
-                htmls += ' <header class="fold">' + item.center_name + '<span>∧</span></header> ';
-                htmls += '<ul>';
+                // console.log("item",item)
                 dataCenterMap.put(item.id, item);
-                $.each(item.children, function (index, cItem) {
-                    dataCenterMap.put(cItem.id, cItem);
-                    htmls += '<li data-centerid="' + cItem.id + '" ';
-                    htmls += createClickFuntionForDataCenter(cItem) + " ><span class='icon'></span> " + cItem.center_name + '</li>';
-                });
-                htmls += '</ul></li>';
-            }
+                console.log(item.id)
+                if (!haschildren) {
+                    htmls += '<li data-centerid="' + item.id + '" ';
+                    if (cuNum == 0) {
+                        htmls += ' class=" noChildren active" ';
+                    } else {
+                        htmls += ' class=" noChildren " ';
+                    }
+                    ;
+                    cuNum++;
+                    //创建li响应方法
+                    htmls += createClickFuntionForDataCenter(item);
+                    htmls += ' >' + item.center_name + '</li>';
+                } else {
+                    htmls += '<li '
+                    if (cuNum == 0) {
+                        htmls += ' class=" hasChildren active" >';
+                    } else {
+                        htmls += ' class=" hasChildren " >';
+                    }
+                    cuNum++;
 
+                    // htmls+=' <header class="fold">'+item.center_name+'<span>︿</span></header> ';
+                    htmls += ' <header class="fold">' + item.center_name + '<span>∧</span></header> ';
+                    htmls += '<ul>';
+                    dataCenterMap.put(item.id, item);
+                    $.each(item.children, function (index, cItem) {
+
+                        dataCenterMap.put(cItem.id, cItem);
+                        if (cItem.id !== "3") {
+                            htmls += '<li data-centerid="' + cItem.id + '" ';
+                            htmls += createClickFuntionForDataCenter(cItem) + " ><span class='icon'></span> " + cItem.center_name + '</li>';
+                        }
+                    });
+                    htmls += '</ul></li>';
+                }
+
+            }
         }
     });
     return htmls;
@@ -176,7 +182,7 @@ function loadVideosByDataCenterAjax(dataCenterId) {
             for (var i = 0; i < data.length; i++) {
                 // console.log(data[i].videl_url);
                 http://10.130.96.65:10800/play.html?channel=8
-                var localVideo = data[i].videl_url.replace("10.130.96.65","127.0.0.1");
+                    var localVideo = data[i].videl_url.replace("10.130.96.65", "127.0.0.1");
                 html += "<li data-videourl=" + localVideo + " >" + data[i].show_title + "</li>"
             }
             // console.log(html)
@@ -187,15 +193,17 @@ function loadVideosByDataCenterAjax(dataCenterId) {
     });
 
 }
+
 var mDataCenterId;
+
 //查询数据中心下实验室 level为3(单位/产品)
 function loadAllDataCenterLabAjaxFunc(dataCenterId) {
-	$("#lab_unit_selected_center_world").html("");
-	$("#legend_ul_world").html("");
-	myChartWorld1.clear();
-	myChartWorld2.clear();
-	mDataCenterId=dataCenterId;
-    console.log("loadAllDataCenterLabAjaxFunc",dataCenterId);
+    $("#lab_unit_selected_center_world").html("");
+    $("#legend_ul_world").html("");
+    myChartWorld1.clear();
+    myChartWorld2.clear();
+    mDataCenterId = dataCenterId;
+    console.log("loadAllDataCenterLabAjaxFunc", dataCenterId);
 
     var dataCenter = dataCenterMap.get(dataCenterId);
     var parentDataCenter = dataCenterMap.get(dataCenter.parent_id);
@@ -220,7 +228,7 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     setCenterLabHtmlDB(dataCenter);
     //加载数据中心第三级
     $.post(contextPath + "/lab/loadAllDataCenterLabAjax", {"dataCenterId": dataCenterId}, function (data) {
-       // console.log("查询level为3",data)
+        // console.log("查询level为3",data)
         var html = '';
         var firstLabCode = "";
         $.each(data, function (index, item) {
@@ -258,14 +266,14 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
                             labsHtmlsMap.put(it.id, '<header labcode="' + it.lab_code + '"  ' + createClickFuntion(it) + '>' + it.lab_name + '<span>∧</span></header>');
                             //如果是中海博睿 不拼接header
                             labsHtmls = labsHtmls + currentHtmls + header + "</li>";
-                        } else if (it.data_source == "webservice") { 
+                        } else if (it.data_source == "webservice") {
                             //直接获取webservice实验室信息
                             var htmls = "";
                             $.post(contextPath + '/lab/loadLabSearchLabConnectAjax', {}, function (data) {
-                                $.each(data, function (index, item) { 
+                                $.each(data, function (index, item) {
                                     item.labName = item.labName.replace("（", "(").replace("）", ")").replace("、", "/");
-                                    htmls += ' <li class="lab_code_' + item.labCode+'"><header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("'+item.labCode+'","'+item.url+'")>' + item.labName + '<span>∨</span></header>';
-                                    labsHtmlsMap.put(item.labCode, '<header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("'+item.labCode+'","'+item.url+'")>' + item.labName + '<span>∧</span></header>');
+                                    htmls += ' <li class="lab_code_' + item.labCode + '"><header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("' + item.labCode + '","' + item.url + '")>' + item.labName + '<span>∨</span></header>';
+                                    labsHtmlsMap.put(item.labCode, '<header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("' + item.labCode + '","' + item.url + '")>' + item.labName + '<span>∧</span></header>');
                                     /* if (item.testUnitList.length > 0) {
                                         htmls += '<ul class="taiwei_hide">';
                                         $.each(item.testUnitList, function (ind, it) {
@@ -307,13 +315,13 @@ function createClickFuntion(item) {
      * 数据源 db-直连数据库； url-第三方链接；
      webservice-连接webservice；json-读取json文件
      */
-         // console.log("item",item)
+        // console.log("item",item)
     var dataSource = item.data_source;
     if (dataSource == "db") { //国外曲线
         htmls += " onclick= loadLabUnitInfoCenterTabAjaxWorldHadoop('" + item.id + "')"
     } else if (dataSource == "webservice") {
         //中海博睿
-       // htmls += " onclick=loadLabUnitInfoAjaxZhbr('" + item.id + "') ";
+        // htmls += " onclick=loadLabUnitInfoAjaxZhbr('" + item.id + "') ";
     } else if (dataSource == "json") {
         //新西兰 日本读取json文件 国外曲线
         htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "') ";
