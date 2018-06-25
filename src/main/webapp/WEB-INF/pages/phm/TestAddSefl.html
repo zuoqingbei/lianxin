@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>divDrag</title>
+</head>
+　　
+<body>
+　　　　
+<ul class="line">
+    <li id="bl">冰箱台数：<span class="number">38,462</span> 时间：<span class="time">1,010781383</span></li>
+    <li id="xd">洗衣机台数：<span class="number">32,364</span> 时间：<span class="time">283,508,460</span></li>
+</ul>
+
+<script src="../asserts/js/jquery-2.2.4.js"></script>
+<script>
+
+    let [numbers, times] = [[], []], //数量和时间基数
+        [refreshHz, counter] = [1000,0], //刷新率和计数器
+        addRate = [1 / 7, 1 / 9]; //增长率
+
+    $("ul.line>li").each(function () {
+        numbers.push(Number($(this).children(".number").text().replace(/,/g, "")));
+        times.push(Number($(this).children(".time").text().replace(/,/g, "")))
+    });
+
+    addSelf();
+    function addSelf() {
+        setTimeout(function () {
+            $("ul.line>li").each(function (index, $li) {
+                // 获取当前页面上的数据
+                let number = numbers[index];
+                let time = times[index];
+                // 设置新数据
+                number = number + (refreshHz / 1000) * addRate[index];
+                time = time + number / 3600;
+                numbers[index] = number;
+                times[index] = time;
+                $(this).children(".number").text(addSplit(Math.floor(number)));
+                $(this).children(".time").text(addSplit(Math.floor(time)));
+            });
+
+            counter++;
+            addSelf()
+        }, refreshHz)
+    }
+
+    function addSplit(oldText) {
+        oldText += "";
+        let counter = 0;
+        let newText = "";
+        let offset = oldText.length % 3;
+        for (let s of oldText) {
+            let split = (++counter % 3 === offset) ? "," : "";
+            newText += s + split;
+        }
+        return newText.slice(0, -1);
+    }
+</script>
+　　
+</body>
+</html>
