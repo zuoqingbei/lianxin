@@ -17,7 +17,7 @@ public class PhmRenderController extends BaseController {
 	}
 	public void index(){
 //		render("strategy.html");
-		render("phm2.html");
+		render("index.html");
 	}
 	public void indexAnimation(){
 		render("indexAnimation.html");
