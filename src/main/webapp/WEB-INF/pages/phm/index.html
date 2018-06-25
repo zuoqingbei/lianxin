@@ -370,8 +370,8 @@ $(function(){
 		timeStatus();
 	},1000);
 	$('.myscroll').myScroll({
-	    speed: 20, //数值越大，速度越慢
-	    rowHeight: 40 //li的高度
+	    speed: 30, //数值越大，速度越慢
+	    rowHeight: 32 //li的高度
     });
     
 });
@@ -383,8 +383,6 @@ $(".news ul li").each(function() {
             $(this).html($(this).html() + '...');
         }
     });
-
-//
 
 
 //-----------------------------左侧  图表-----------------------
@@ -488,10 +486,36 @@ $(".news ul li").each(function() {
                             color:'#64ccff'
                         }
                     },
+                //坐标轴 轴线隐藏
+                axisLine:{
+                        lineStyle:{
+                            color:'transparent'
+                            
+                        }
+                    },
+                    // splitLine:{
+                    //     show:false
+                    // }
             },
             yAxis: {
                 name: '台',
-                type: 'value'
+                type: 'value',
+                splitLine:{
+                        lineStyle:{
+                            color:'#0d2e52'
+                        }
+                },
+                // axisLabel:{
+                //     show:false,
+                      
+                // },
+                 //坐标轴颜色隐藏
+                 axisLine:{
+                        lineStyle:{
+                            color:'transparent'
+                            
+                        }
+                    },       
             },
             series: [
                 {
@@ -504,14 +528,11 @@ $(".news ul li").each(function() {
                             color: '#00adef'
                         }
                     }
-                }
-                
-                
-
+                }                              
             ]
     }
 	$(function(){
-		// 图标一
+		// 图标一  离线and在线pie
 		var myChart1 = echarts.init($("#currentState_m")[0]);
 		myChart1.setOption(opts);
         myChart1.setOption(list_pie);
@@ -553,9 +574,8 @@ $(".news ul li").each(function() {
             ]
         });
 
-		//图标二
+		//图标二  离线and在线bar
 		var myChart2 = echarts.init($("#currentState_r")[0]);
-		myChart2.setOption(opts);
         myChart2.setOption({
             grid: {
                 left: '15%',
@@ -577,18 +597,53 @@ $(".news ul li").each(function() {
                 type: 'category',
                 data: ['冰箱','商空','洗衣机','冷柜','家空'],
                 axisLabel:{
+                    //修改X轴上字体样式
                         interval:0,
                         show:'true',
                         // rotate:-30,
                         textStyle:{
                             fontSize:10*bodyScale,
                             color:'#64ccff'
-                        }
+                        },
+                    
                     },
+                    splitLine:{
+                        show:false
+                    }
+                
             },
             yAxis: {
                 name: '台',
-                type: 'value'
+                type: 'value',
+                //Y轴 坐标轴名称显示
+                nameTextStyle:{
+                    color:'#64ccff',
+                    fontSize:10*bodyScale,
+                },
+                //Y轴 坐标轴上的文字
+                axisLabel:{
+                        interval:0,
+                        show:true,
+                        textStyle:{
+                            fontSize:10*bodyScale,
+                            color:'#64ccff'
+                        }
+                    
+                    },
+                //坐标轴颜色隐藏
+                axisLine:{
+                        lineStyle:{
+                            color:'transparent'
+                            
+                        }
+                    },
+                //y轴虚线
+                splitLine:{
+                        lineStyle:{
+                            color:'#0d2e52'
+                        }
+                }
+                   
             },
             series: [
                 {
@@ -638,7 +693,6 @@ $(".news ul li").each(function() {
         });
     //list2 
         var list2 = echarts.init($("#list-2")[0]);
-		// list2.setOption(opts);
         list2.setOption(list_bar);
         list2.setOption({
             
@@ -667,7 +721,6 @@ $(".news ul li").each(function() {
         });
          //list3
     var list3 = echarts.init($("#list-3")[0]);
-		// list3.setOption(opts);
         list3.setOption(list_pie);
         list3.setOption({
             series : {
@@ -681,7 +734,6 @@ $(".news ul li").each(function() {
         });
     //list4
         var list4 = echarts.init($("#list-4")[0]);
-		list4.setOption(opts);
         list4.setOption(list_bar);
         list4.setOption({
             series: 
@@ -706,7 +758,6 @@ $(".news ul li").each(function() {
         });
     //list6
         var list6 = echarts.init($("#list-6")[0]);
-		list6.setOption(opts);
         list6.setOption(list_bar);
         list6.setOption({
             series: 
@@ -731,7 +782,6 @@ $(".news ul li").each(function() {
         });
     //list8
         var list8 = echarts.init($("#list-8")[0]);
-		list8.setOption(opts);
         list8.setOption(list_bar);
         list8.setOption({
             series: 
@@ -756,7 +806,6 @@ $(".news ul li").each(function() {
         });
     //list10
         var list10 = echarts.init($("#list-10")[0]);
-		list10.setOption(opts);
         list10.setOption(list_bar);
         list10.setOption({
             series: 
@@ -781,7 +830,6 @@ $(".news ul li").each(function() {
         });
     //list12
         var list12 = echarts.init($("#list-12")[0]);
-		list12.setOption(opts);
         list12.setOption(list_bar);
         list12.setOption({
             series: 
