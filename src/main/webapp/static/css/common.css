@@ -15,6 +15,10 @@ body, html {
     font-family: "Microsoft yahei", "微软雅黑", "Source Sans Pro", "Helvetica Neue", 'Helvetica', 'Arial', sans-serif;
     color: #64ccff;
 }
+body{
+    /*overflow: hidden;*/
+
+}
 fieldset, img {
     border: 0;
 }

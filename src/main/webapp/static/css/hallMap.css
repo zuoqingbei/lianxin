@@ -371,7 +371,7 @@ strong{
 }
 .interconnection table td:nth-of-type(2),
 .interconnection table td:nth-of-type(3){
-    padding: .25rem 0 .125rem 1rem;
+    padding: .25rem 0 .25rem 1rem;
     text-align: right;
     font-size: .875rem;
     letter-spacing: 0.375rem;

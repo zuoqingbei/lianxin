@@ -12,7 +12,7 @@ var timeId = null;
 var hallMap = (top.location.href.indexOf("hallMap") > 0);
 // console.log(top.location.href)
 var labCodeColors = [
-    "#ffec3d",
+    "#ff0",
     "#00e673",
     "#b37feb",
     "#ff85c0",
@@ -38,18 +38,17 @@ $(function () {
     $("body").on("click", "#echartTips .echart_content>.textBox>a", function () {
         var centerId = $(this).data("centerid");
 
-        if ($(".fullScreen_map", parent.document).length > 0) {//如果是从地图全屏的提示框进入，则需跳转并在url上挂参。
+        if ($(".fullScreen_map", top.document).length > 0) {//如果是从地图全屏的提示框进入，则需跳转并在url上挂参。
             console.log("大屏", url);
             var url = location.href.slice(0, location.href.lastIndexOf("/")) + "/full?toLabData&centerId=" + centerId;
-            parent.location.href = url;
+            parent.parent.location.href = url;
         } else {
-            $(".toLabData", parent.document).click();
-            parent.toCenterLab(centerId);
+            $(".toLabData", top.document).click();
+            parent.parent.toCenterLab(centerId);
         }
 
 
     });
-
 });
 
 function getGeoArr(data) {
@@ -200,7 +199,7 @@ function seriesData(data, labType) {
                 markPoint: {
                     symbol: 'emptyCircle',
                     symbolSize: function (v) {
-                        return 4 * bodyScale;
+                        return 5.5 * bodyScale;
                     },
                     effect: {
                         show: true,
@@ -473,7 +472,7 @@ function getTopicHtml(currentPoint) {
         '   <h4 style="">' + title + '</h4>' +
         '   <div class="labNumber">共 ' + value + ' 家实验室</div>' +
         function () { //大厅里面不需要显示“进入实验室”按钮
-            return hallMap ? '' : '   <a data-centerId="' + centerId + '" href="javascript:void(0);">进入实验室&nbsp;</a>'
+            return hallMap ? '' : '   <a class="toLab" data-centerId="' + centerId + '" href="javascript:void(0);">进入实验室&nbsp;</a>'
         }() +
         '   </div>' +
         '</div>' +
@@ -483,6 +482,7 @@ function getTopicHtml(currentPoint) {
         '</div>' +
         '</div>');
 }
+
 
 /**
  * 渐隐 elList的每一项
