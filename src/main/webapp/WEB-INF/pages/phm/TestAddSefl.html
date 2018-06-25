@@ -8,22 +8,24 @@
 <body>
 　　　　
 <ul class="line">
-    <li id="bl">冰箱台数：<span class="number">38,462</span> 时间：<span class="time">1,010781383</span></li>
+    <li id="bl">冰箱台数：<span class="number">38,462</span> 时间：<span class="time">1,010,781,383</span></li>
     <li id="xd">洗衣机台数：<span class="number">32,364</span> 时间：<span class="time">283,508,460</span></li>
+    <li id="xd">家空台数：<span class="number">609,364</span> 时间：<span class="time">5,338,208,640</span></li>
+
 </ul>
 
-<script src="../../../static/asserts/js/jquery-2.2.4.js"></script>
+<script src="http://www.jq22.com/jquery/jquery-2.1.1.js"></script>
 <script>
 
     let [numbers, times] = [[], []], //数量和时间基数
-        [refreshHz, counter] = [1000,0], //刷新率和计数器
-        addRate = [1 / 7, 1 / 9]; //增长率
+        [refreshHz, counter] = [5000,0], //刷新率和计数器
+        addRate = [1 / 7, 1 / 9,1 / 5]; //增长率
 
     $("ul.line>li").each(function () {
         numbers.push(Number($(this).children(".number").text().replace(/,/g, "")));
         times.push(Number($(this).children(".time").text().replace(/,/g, "")))
     });
-
+    console.log(numbers,times)
     addSelf();
     function addSelf() {
         setTimeout(function () {
@@ -39,8 +41,10 @@
                 $(this).children(".number").text(addSplit(Math.floor(number)));
                 $(this).children(".time").text(addSplit(Math.floor(time)));
             });
+
             counter++;
             addSelf()
+            console.log('5秒啦~~')
         }, refreshHz)
     }
 
