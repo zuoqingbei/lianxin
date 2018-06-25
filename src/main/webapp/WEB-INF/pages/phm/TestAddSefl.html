@@ -12,7 +12,7 @@
     <li id="xd">洗衣机台数：<span class="number">32,364</span> 时间：<span class="time">283,508,460</span></li>
 </ul>
 
-<script src="../asserts/js/jquery-2.2.4.js"></script>
+<script src="../../../static/asserts/js/jquery-2.2.4.js"></script>
 <script>
 
     let [numbers, times] = [[], []], //数量和时间基数
@@ -39,7 +39,6 @@
                 $(this).children(".number").text(addSplit(Math.floor(number)));
                 $(this).children(".time").text(addSplit(Math.floor(time)));
             });
-
             counter++;
             addSelf()
         }, refreshHz)
