@@ -35,6 +35,7 @@ import com.ulab.model.LabModel;
 import com.ulab.model.LabTestUnit;
 import com.ulab.model.LabVideoModel;
 import com.ulab.model.OrderModel;
+import com.ulab.model.OrderNumModel;
 import com.ulab.model.PersonModel;
 import com.ulab.model.ProviderDicModel;
 import com.ulab.model.QuestionClosedModel;
@@ -1233,4 +1234,44 @@ public class LabController extends BaseController {
 				.findLabByDataCenterId(dataCenterId);
 		renderJson(labs);
     }
+	/**
+	 * 
+	 * @time   2018年6月24日 下午3:49:27
+	 * @author zuoqb
+	 * @todo   全流程测试指标监控(月)
+	 * @param  
+	 * @return_type   void
+	 */
+	public void orderNumsAjax() {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+		String now=sdf.format(new Date());
+		List<OrderNumModel> orderNums = OrderNumModel.dao.findOrderNums();
+		for(OrderNumModel n:orderNums){
+			if(now.equals(n.getStr("last_time"))){
+				//上一次请求时间就是当前天 取变化后数据
+				n.put("nums", n.get("now_num"));
+			}else{
+				//更新
+				n.set("last_time", now).set("now_num", n.get("last_num")).update();
+				//当日第一次请求 获取基数
+				n.put("nums", n.get("order_no"));
+			}
+		}
+		renderJson(orderNums);
+	}
+	/**
+	 * 
+	 * @time   2018年6月24日 下午4:00:26
+	 * @author zuoqb
+	 * @todo   更新
+	 * @param  
+	 * @return_type   void
+	 */
+	public void updateOrderNumsAjax() {
+		String id=getPara("id");
+		String change=getPara("change");
+		OrderNumModel order=OrderNumModel.dao.findById(id);
+		order.set("now_num", Integer.parseInt(order.get("now_num")+"")+Integer.parseInt(change)).update();
+		renderJson(order);
+	}
 }
