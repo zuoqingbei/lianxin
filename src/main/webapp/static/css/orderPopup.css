@@ -161,6 +161,7 @@ a {
     color: #fff;
     background: #1e1e1e;
 }
+
 .list-body>.item>header{
     flex: 1.3;
     /*color: #777;*/
@@ -266,6 +267,19 @@ a {
     cursor: pointer;
 }
 
+.list-body> .pageBtn{
+    color: #fff;
+    text-align: right;
+    padding-top: .5rem;
+    padding-right: 1rem;
+}
+.list-body> .pageBtn button{
+    background: transparent;
+    color: #fff;
+    border: .125rem solid #aaa;
+    padding: .125rem .5rem;
+    cursor: pointer;
+}
 /*曲线头部*/
 .curve{
     display: flex;
