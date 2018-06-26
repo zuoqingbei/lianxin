@@ -33,9 +33,11 @@ body {
     vertical-align: top;
 
 }
-.textPicBox  h3{
+.textPicBox h3{
     font-weight: normal;
     margin-bottom: 2rem;
+    font-size: .85em;
+    color:#6cf!important;
 }
 
 .textPicBox:nth-of-type(1) {

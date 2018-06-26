@@ -14,7 +14,6 @@ $(function () {
     runStatus();
 
     smallVideoMove();
-
     loadAllDataCenterAjax();
     //中心实验室顶上的“返回总状态”按钮
     $(".btn-totalStatus").click(function () {

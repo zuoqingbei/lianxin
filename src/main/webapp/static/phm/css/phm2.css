@@ -38,13 +38,13 @@ html,body{
 }
 #head h1 a {
     display: block;
-    height:100%;
+    /* height:100%; */
     width:100%;
 }
 
 #head h1 a img{
     display:block;
-    height:100%;
+    /* height:100%; */
     width:100%;
 }
 
@@ -185,9 +185,8 @@ html,body{
 
 .imgbox{
     position: relative;
-    height: 20%;
+    height: 16%;
     width: 100%;
-    /* background:url("../images/system/currentStatus.png") no-repeat; */
 }
 
 .currentState_leftTitle ul li{
@@ -229,7 +228,7 @@ html,body{
 .leftContentList .lists{
     width: 16.5%;
     height:100%;
-    border-right: 1px solid #64ccff;
+    border-right: 1px solid #0d2e52;
     /* background-color:red; */
 }
 
@@ -239,6 +238,53 @@ html,body{
     height: 100%;
     margin: 0 auto;
 }
+/* 改动的地方 */
+.imgbox22{
+    position: relative;
+    width: 100%;
+    height: 2em;
+    margin: 0 auto;
+    /* background-color: red; */
+}
+.imgIcon{
+    position: absolute;
+    width: 18%;
+    height: 100%;
+    left: 50%;
+    margin-left: -9%;
+    background: 50% 50% no-repeat;
+    background-size: contain;
+    
+}
+.imgbox22 .bingleng{
+    background-image:url("../images/system/ice-cold.png");
+    
+}
+.imgbox22 .xidi{
+    background-image:url("../images/system/washing.png");
+}
+.imgbox22 .jiakong{
+    background-image:url("../images/system/jiakong.png");
+    background-size: 100% 80%;
+}
+.imgbox22 .shangkong{
+    background-image:url("../images/system/shangkong.png");
+}
+.imgbox22 .reshuiqi{
+    background-image:url("../images/system/waterheater.png");
+}
+.imgbox22 .chudian{
+    background-image:url("../images/system/kitchen.png");
+    background-size: 100% 80%;
+
+
+}
+
+
+
+
+
+
 .imgboxContent img{
     position: relative;
     top: 0.3em;
@@ -267,7 +313,7 @@ html,body{
     color:#ff9f30;
 }
 .txt2,.txt4{
-    font-size: 0.5em;
+    font-size: 0.6em;
     text-align: center;
 }
 .txt1{
@@ -468,9 +514,9 @@ html,body{
 
 .recordscenterTitle .news ul li{
     padding: 2px 0;
-    width: 80%;
-    height: 30px;
-    line-height: 30px;
+    width: 90%;
+    height: 45px;
+    line-height: 45px;
     font-size: 0.9em;
     vertical-align: center;
     white-space: nowrap;
