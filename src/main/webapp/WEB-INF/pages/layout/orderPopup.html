@@ -57,7 +57,8 @@
                 </ul>
             </div>
             <div class="list-body">
-                <div class="item"><!-- 1 -->
+                <!-- 1 -->
+                <div class="item">
                     <button class="evaluation">评价</button>
                     <header>
                         <h4>试验编号：</h4>
@@ -65,23 +66,24 @@
                         <h4>下单时间：</h4>
                         <div class="time"><time>2018-6-24  17:09</time></div>
                     </header>
+
                     <ul>
                         <li class="pass">
                             <h4>委托下单</h4>
                             <div class="name">吴贤栋</div>
                             <div class="tel">13210250532</div>
                         </li>
-                        <li class="pass">
+                        <li class="active ">
                             <h4>样品接收</h4>
                             <div class="name">李娜</div>
                             <div class="tel">0532-88934887</div>
                         </li>
-                        <li class="pass">
+                        <li class="">
                             <h4>任务分配</h4>
                             <div class="name"></div>
                             <div class="tel"></div>
                         </li>
-                        <li class="active toCurve">
+                        <li class="">
                             <h4>测试执行</h4>
                             <div class="name"></div>
                             <div class="tel"></div>
@@ -103,15 +105,111 @@
                         </li>
                     </ul>
                 </div>
+                <!-- 2 -->
+                <div class="item">
+                    <button class="evaluation">评价</button>
+                    <header>
+                        <h4>试验编号：</h4>
+                        <div class="serialNumber">HR20180622101A11001</div>
+                        <h4>下单时间：</h4>
+                        <div class="time"><time>2018-6-22  15:13</time></div>
+                    </header>
+
+                    <ul>
+                        <li class="pass">
+                            <h4>委托下单</h4>
+                            <div class="name">鲍业浩</div>
+                            <div class="tel">18562827528</div>
+                        </li>
+                        <li class="pass">
+                            <h4>样品接收</h4>
+                            <div class="name">李娜</div>
+                            <div class="tel">0532-88934887</div>
+                        </li>
+                        <li class="active">
+                            <h4>任务分配</h4>
+                            <div class="name">李娜</div>
+                            <div class="tel">0532-88934887</div>
+                        </li>
+                        <li class="">
+                            <h4>测试执行</h4>
+                            <div class="name"></div>
+                            <div class="tel"></div>
+                        </li>
+                        <li>
+                            <h4>报告审核</h4>
+                            <div class="name"></div>
+                            <div class="tel"></div>
+                        </li>
+                        <li>
+                            <h4>批准报告</h4>
+                            <div class="name"></div>
+                            <div class="tel"></div>
+                        </li>
+                        <li>
+                            <h4>结果评价</h4>
+                            <div class="name">鲍业浩</div>
+                            <div class="tel">18562827528</div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 3 -->
+                <div class="item">
+                    <button class="evaluation">评价</button>
+                    <header>
+                        <h4>试验编号：</h4>
+                        <div class="serialNumber">HR20180620101A11001</div>
+                        <h4>下单时间：</h4>
+                        <div class="time"><time>2018-6-20  15:13</time></div>
+                    </header>
+
+                    <ul>
+                        <li class="pass">
+                            <h4>委托下单</h4>
+                            <div class="name">曹东强</div>
+                            <div class="tel">13606345375</div>
+                        </li>
+                        <li class="pass">
+                            <h4>样品接收</h4>
+                            <div class="name">李娜</div>
+                            <div class="tel">0532-88934887</div>
+                        </li>
+                        <li class="pass">
+                            <h4>任务分配</h4>
+                            <div class="name">李娜</div>
+                            <div class="tel">0532-88934887</div>
+                        </li>
+                        <li class="active toCurve">
+                            <h4>测试执行</h4>
+                            <div class="name">董现娟</div>
+                            <div class="tel">0532-88934871</div>
+                        </li>
+                        <li>
+                            <h4>报告审核</h4>
+                            <div class="name"></div>
+                            <div class="tel"></div>
+                        </li>
+                        <li>
+                            <h4>批准报告</h4>
+                            <div class="name"></div>
+                            <div class="tel"></div>
+                        </li>
+                        <li>
+                            <h4>结果评价</h4>
+                            <div class="name">曹东强</div>
+                            <div class="tel">13606345375</div>
+                        </li>
+                    </ul>
+                </div>
 
             </div>
-            <!--<div class="toCurve"></div>-->
         </div>
         <div class="curve" style="display: none">
             <header>
                 <div class="close">×</div>
                 <ul class="title">
-                    <li>型号：C3FE837CMJ<span id="center_cpxh_id_world"></span></li>
+                    <!--<li>型号：C3FE837CMJ<span id="center_cpxh_id_world"></span></li>-->
+                    <li>型号：HT10TG31SW<span></span></li>
                     <!--<li>实验项目：耗电量<span id="center_sybh_id_world"></span></li>-->
                     <li>实验项目：耗电量<span></span></li>
                 </ul>
@@ -204,6 +302,10 @@
             var index = $(this).parent().index();
                 findSensorByLabCenetrTabAjaxWorld("USLABBX", "P"+(index+1), "USLAB-B"+(index+1)+".json");
         });
+
+
+
+
     });
 
 </script>

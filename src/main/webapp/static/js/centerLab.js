@@ -1908,10 +1908,10 @@ function runStatus() {
         30
         596
         97.5%
-        18546
-        722
-        377
-        98.1%
+        208
+        15
+        1
+        100.0%
     `.split("\n").slice(1, -1);
     let barHtml = `<div class="progress">
                        <div class="progress-bar" role="progressbar"></div>

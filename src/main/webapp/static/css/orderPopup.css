@@ -258,7 +258,7 @@ a {
 .toCurve:after {
     content: '';
     position: absolute;
-    left: -2.5rem;
+    left: -.25rem;
     top: -.5rem;
     width: 6rem;
     height: 5rem;
@@ -280,7 +280,11 @@ a {
     top: 3.75rem;
     right: .5rem;
     font-size: 2rem;
+    color: #ddd;
     cursor: pointer;
+}
+.curve .close:hover{
+    color: #fff;
 }
 .curve>header>ul.title{
     color: #fff;

@@ -12,7 +12,7 @@ var timeId = null;
 var hallMap = (top.location.href.indexOf("hallMap") > 0);
 // console.log(top.location.href)
 var labCodeColors = [
-    "#ff0",
+    "#f5222d",
     "#00e673",
     "#b37feb",
     "#ff85c0",
@@ -199,7 +199,7 @@ function seriesData(data, labType) {
                 markPoint: {
                     symbol: 'emptyCircle',
                     symbolSize: function (v) {
-                        return 5.5 * bodyScale;
+                        return 6.5 * bodyScale;
                     },
                     effect: {
                         show: true,
@@ -215,7 +215,8 @@ function seriesData(data, labType) {
                                 // return colorarr[params.dataIndex]
                                 let color;
                                 switch (data[params.dataIndex].lab_type){
-                                    case "中海博睿":
+                                    case "检测中心":
+                                        // color = "#fff";
                                         color = labCodeColors[0];
                                         break;
                                     case "研发类":
@@ -256,14 +257,14 @@ function seriesData(data, labType) {
                             color: function(params) {
                                 var color;
                                 switch (data[params.dataIndex].lab_type){
-                                    case "中海博睿":
+                                    case "检测中心":
                                         color = labCodeColors[0]+88;
                                         break;
                                     case "研发类":
                                         color = labCodeColors[1]+88;
                                         break;
                                     case "工厂类":
-                                        color = labCodeColors[3]+88;
+                                        color = labCodeColors[2]+88;
                                         break;
                                     case "模块商":
                                         color = labCodeColors[3]+88;
