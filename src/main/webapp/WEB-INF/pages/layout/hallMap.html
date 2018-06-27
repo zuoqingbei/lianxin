@@ -202,17 +202,17 @@ function loadOrderNumsAjax() {
        $.each(data,function(index,item){
     	   htmls.push('<tr><td>'+item.name+'</td><td id="m_td_order_'+item.id+'">'+item.nums+'</td><td>'+item.rate+'%</td></tr>');
        });
-   	   changeData(data);
+       mData=data;
+       setInterval(changeData, parseInt(data[0].times));
        $("#mine_tbody_order").html(htmls.join(''));
        
     });
 
 }
-function changeData(data){
+function changeData(){
 	if(judgeChange()){
 		//开启调度
-		mData=data;
-		setInterval(interValFun, parseInt(data[0].times));
+		interValFun();
 	}
 };
 var indexs=0;
@@ -222,7 +222,7 @@ function interValFun(){
 		var arr=item.interval.split(",");
 		var change=arr[indexs%10];
 		if(parseInt(change)>0){
-			$("#m_td_order_"+item.id).html(parseInt($("#m_td_order_"+item.id).html())+parseInt(change));
+			//$("#m_td_order_"+item.id).html(parseInt($("#m_td_order_"+item.id).html())+parseInt(change));
 			//更新数据
 			updateOrderNumsAjax(item.id,change);
 		}
@@ -233,6 +233,7 @@ function interValFun(){
 function updateOrderNumsAjax(id,change) {
     $.post("${contextPath!}/lab/updateOrderNumsAjax",{"change":change,"id":id}, function (data) {
        console.log("更新成功");
+       $("#m_td_order_"+id).html(data.now_num);
     });
 
 }
