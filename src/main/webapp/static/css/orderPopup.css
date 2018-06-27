@@ -263,7 +263,7 @@ a {
     top: -.5rem;
     width: 6rem;
     height: 5rem;
-    border: .125rem dashed orange;
+    /* border: .125rem dashed orange; */
     cursor: pointer;
 }
 
