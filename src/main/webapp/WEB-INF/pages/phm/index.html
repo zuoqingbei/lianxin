@@ -123,7 +123,7 @@
                                             <img src="${contextPath}/static/phm/images/system/jiakong.png" alt=""/>
                                         </div> -->
                                         <div class="imgbox22">
-                                                <div class="imgIcon jiakog"></div>
+                                                <div class="imgIcon jiakong"></div>
                                             </div>
                                         <p class="txt1">家空</p>
                                         <p class="txt2">智能产品累计接入数</p>
@@ -358,7 +358,7 @@ let [numbers, times] = [[], []], //数量和时间基数
         addRate = [1/7, 1/9,1/5,1/5,1/3,1/3]; //增长率
 
     $(".lists").each(function () {
-        console.log($(this)[0])
+        //console.log($(this)[0])
         numbers.push(Number($(this).find(".number").text().replace(/,/g, "")));
         times.push(Number($(this).find(".time").text().replace(/,/g, "")));
 
@@ -384,11 +384,11 @@ let [numbers, times] = [[], []], //数量和时间基数
             $(".listsContent .LWAPPNum").text(addSplit(Math.floor(numberSum)));
             timesSum = times[0] +times[1] +times[2] +times[3] +times[4] +times[5];
             $(".listsContent .operationTime").text(addSplit(Math.floor(timesSum)));
-            console.log(numbers[0])
+            //console.log(numbers[0])
             
             counter++;
             addSelf()
-            console.log('5秒啦~~')
+            //console.log('5秒啦~~')
         }, refreshHz)
     }
 
@@ -402,7 +402,7 @@ let [numbers, times] = [[], []], //数量和时间基数
             newText += s + split;
         }
         return newText.slice(0, -1);
-        console.log()
+        //console.log()
     }
     
     //==========================左侧计时器 end====================   
@@ -742,7 +742,7 @@ $(".news ul li").each(function() {
             
         series: [{
       
-        data: [0, 35, 20],
+        data: [0, 0, 0],
         //配置样式
         itemStyle: {   
             //通常情况下：
@@ -765,10 +765,14 @@ $(".news ul li").each(function() {
             
         });
         list2.on('click',function(params){
-            console.log(params.name);
+            //console.log(params.name);
             if(params.name==='在线纠偏'){
                 window.location.href='${contextPath}/phm/status'
             }
+            if(params.name==='在线纠偏'){
+                window.location.href='${contextPath}/phm/status'
+            }
+
         })
          //list3
     var list3 = echarts.init($("#list-3")[0]);
@@ -789,7 +793,7 @@ $(".news ul li").each(function() {
         list4.setOption({
             series: 
                 { 
-                    data: [0, 35, 20]
+                    data: [0, 0, 0]
                 }
             
         });
@@ -813,7 +817,7 @@ $(".news ul li").each(function() {
         list6.setOption({
             series: 
                 { 
-                    data: [0, 35, 20]
+                data: [0, 0, 0]
                 }
             
         });
@@ -837,7 +841,7 @@ $(".news ul li").each(function() {
         list8.setOption({
             series: 
                 { 
-                    data: [0, 35, 20]
+                data: [0, 0, 0]
                 }
             
         });
@@ -861,7 +865,7 @@ $(".news ul li").each(function() {
         list10.setOption({
             series: 
                 { 
-                    data: [0, 35, 20]
+                data: [0, 0, 0]
                 }
             
         });
@@ -885,7 +889,7 @@ $(".news ul li").each(function() {
         list12.setOption({
             series: 
                 { 
-                    data: [0, 35, 20]
+                data: [0, 0, 0]
                 }
             
         });
@@ -907,6 +911,7 @@ $(".news ul li").each(function() {
 					url:addId+"/api/yzd/product/"+sncode,
 					type:"get",
 					success:function(data){
+						console.log("-------data",data)
 						var info=data.info;
 						var S14=info['S14'];
 						var S15=info['S15'];
@@ -948,7 +953,7 @@ $(".news ul li").each(function() {
                                         list2.setOption({
                                             series: 
                                                 { 
-                                                    data: [16, 35, 20]
+                                                    data: [16, 0, 0]
                                                 }
                                             
                                         });
@@ -956,7 +961,7 @@ $(".news ul li").each(function() {
                                         list2.setOption({
                                             series: 
                                                 { 
-                                                    data: [0, 35, 20]
+                                                    data: [0, 0, 0]
                                                 }
                                             
                                         });

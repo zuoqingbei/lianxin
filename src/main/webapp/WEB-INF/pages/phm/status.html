@@ -57,19 +57,19 @@
 					<a href="${contextPath!}/phm/service" style="color:#fff"><div class="bxinfo">
 						<div class="xinghao infobox">
 							<p class="txt1">型号：</p>
-							<p class="txt2" id="sncode">WD347T8948</p>
+							<p class="txt2" id="sncode"></p>
 						</div>
 						<div class="start infobox">
 							<p class="txt1">启用时间：</p>
-							<p class="txt2">2017-11-08</p>
+							<p class="txt2"></p>
 						</div>
 						<div class="address infobox">
 							<p class="txt1">地址：</p>
-							<p class="txt2" id="address">青岛市崂山区海尔路1号海尔信息产业园</p>
+							<p class="txt2" id="address"></p>
 						</div>
 						<div class="state infobox">
 							<p class="txt1">健康状态：</p>
-							<p class="txt2" id="status">良好</p>
+							<p class="txt2" id="status"></p>
 						</div>
 						<div class="time infobox">
 							<p class="txt1">运行总时长：</p>
@@ -1034,6 +1034,7 @@
 						 light=data.light;
 						 good=data.good;
 						var geoCoord={'基线':["140","32"]};
+						console.log("-------",data)
 						var address=data.address;
 						for(var i=0;i<address.length;i++){
 							var obj=address[i];
@@ -1053,8 +1054,8 @@
 						 }
 					 	sncode=good[2].sncode;
 						$("#sncode").html(sncode);
-						$("#address").html(good[0].name);
-						$("#status").html(good[0].status);
+						$("#address").html(good[2].name);
+						$("#status").html(good[2].status);
 						
 						//Status.delayIframe(sncode);
 						//document.getElementById("video").src="${contextPath}/static/phm/"+good[0].image;
