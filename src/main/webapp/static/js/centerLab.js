@@ -1720,7 +1720,6 @@ function dealSatisfactionCenterLab(data) {
 var labAllInfoData;
 var currentPageNum = 1;
 var totalPage = 0;
-
 //获取实验室基本信息
 function labAllForCenterLabAjax() {
     $.post(contextPath + "/lab/labAllForCenterLabAjax", {}, function (data) {
@@ -2041,6 +2040,7 @@ function runStatus() {
             $(".l-bottom-body>div:eq(0)>div:eq(3)").addClass("toOrderPopup");
         }
     }
+    $(".data").wrapInner("<strong></strong>")
 
     //实验室状态页面关闭订单弹窗
     $(".orderPopup>.close").click(function () {

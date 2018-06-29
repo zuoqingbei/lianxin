@@ -201,8 +201,16 @@
                 htmls.push('<tr><td>'+item.name+'</td><td id="m_td_order_'+item.id+'"><strong>'+item.nums+'</strong></td><td><strong>'+item.rate+'%</strong></td></tr>');
             });
             //setInterval(changeData, parseInt(data[0].times));
-            $("#mine_tbody_order").html(htmls.join(''));
+            setTimeout(function () {
+                $("#mine_tbody_order").html(htmls.join(''));
+            },300)
 
+            $(".test td strong").each(function (index, item) {
+                $(this).fadeOut(200).fadeIn(300);
+            });
+            $(".management strong").each(function (index, item) {
+                $(this).fadeOut(300).fadeIn(200);
+            });
         });
 
     }
