@@ -30,10 +30,11 @@ $(function () {
         $(".test td:gt(0) strong").each(function (index, item) {
             $(this).fadeOut(300).fadeIn(200);
         });
-        console.log("-----mNum", mNum);
+        loadOrderNumsAjax();
+       /* console.log("-----mNum", mNum);
         if (mNum) {
             $("#m_td_order_" + cId).html(mNum)
-        }
+        }*/
     }, 5000)
 
 });
@@ -154,7 +155,7 @@ $(function () {
 });
 
 
-function changeData() {
+/*function changeData() {
     if (judgeChange()) {
         //开启调度
         interValFun();
@@ -221,10 +222,10 @@ function time_range(beginTime, endTime, nowTime) {
     } else {
         return false;
     }
-}
+}*/
 
 //判断当前时间是否需要变化数字
-function judgeChange() {
+/*function judgeChange() {
     var n = new Date();
     var now = n.getHours() + ":" + n.getMinutes();
     if (time_range("00:00", "9:00", now) || time_range("12:30", "13:30", now) || time_range("17:00", "24:00", now)) {
@@ -234,7 +235,7 @@ function judgeChange() {
         return true;
     }
 
-};
+};*/
 
 
 

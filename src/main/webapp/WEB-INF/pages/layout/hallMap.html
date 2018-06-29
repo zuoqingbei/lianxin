@@ -200,8 +200,7 @@
             $.each(data, function (index, item) {
                 htmls.push('<tr><td>'+item.name+'</td><td id="m_td_order_'+item.id+'"><strong>'+item.nums+'</strong></td><td><strong>'+item.rate+'%</strong></td></tr>');
             });
-            mData = data;
-            setInterval(changeData, parseInt(data[0].times));
+            //setInterval(changeData, parseInt(data[0].times));
             $("#mine_tbody_order").html(htmls.join(''));
 
         });
