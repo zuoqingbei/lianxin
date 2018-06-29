@@ -376,7 +376,7 @@ strong{
     margin:  1.5rem auto .5rem;
 }
 .styleIn7x3 .interconnection table {
-    margin:  1rem auto .5rem;
+    margin:  1rem auto 1.75rem;
 }
 
 .interconnection table th{
@@ -399,6 +399,9 @@ strong{
 }
 .management ul{
     margin: .875rem auto .25rem;
+}
+.styleIn7x3 .management ul{
+    margin: .5rem auto .25rem;
 }
 .management ul>li{
     position: relative;
