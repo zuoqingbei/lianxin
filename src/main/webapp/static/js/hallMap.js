@@ -24,10 +24,11 @@ $(function () {
     // 刷新动画
     setInterval(function () {
         $(".management strong").each(function (index, item) {
-            $(this).hide().show(100);
+            // $(this).fadeOut(100).slideDown(100);
+            $(this).fadeOut(300).fadeIn(200);
         });
         $(".test td:gt(0) strong").each(function (index, item) {
-            $(this).hide().show(100);
+            $(this).fadeOut(300).fadeIn(200);
         });
         console.log("-----mNum", mNum);
         if (mNum) {

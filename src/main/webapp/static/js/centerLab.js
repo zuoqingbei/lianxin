@@ -1995,6 +1995,8 @@ function runStatus() {
             }
         }
         pageTo(currentPage);
+        $(".data").wrapInner("<strong></strong>")
+
     });
     function pageTo(p) {
         $(".item.status [class$=-body]").empty();

@@ -56,7 +56,15 @@ strong{
     .right > div {
         flex: 1;
         padding: 1rem;
+        padding-top: 0;
     }
+    .styleIn7x3 .left > div,
+    .styleIn7x3 .right > div {
+        flex: 1;
+        padding: 1rem;
+        padding-top: auto;
+    }
+
     .styleIn7x3 .left > div,
     .styleIn7x3 .right > div {
         padding-top: 1.5rem;
@@ -75,12 +83,13 @@ strong{
 }
 
 .box h3 {
-    font-size: .875em;
+    position: relative;
+    font-size: .875rem;
     font-weight: normal;
     text-align: center;
+    line-height: 1.5rem;
     color: #fff;
-    position: relative;
-    top: .1875rem;
+    /*top: .1875rem;*/
 }
 
 /*header*/
@@ -364,8 +373,12 @@ strong{
 }
 /*互联数*/
 .interconnection table {
+    margin:  1.5rem auto .5rem;
+}
+.styleIn7x3 .interconnection table {
     margin:  1rem auto .5rem;
 }
+
 .interconnection table th{
     padding-bottom: .5rem;
 }
