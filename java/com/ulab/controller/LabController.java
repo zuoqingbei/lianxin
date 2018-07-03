@@ -1254,7 +1254,7 @@ public class LabController extends BaseController {
 				//更新
 				n.set("last_time", now).set("now_num", n.get("last_num")).update();
 				//当日第一次请求 获取基数
-				n.put("nums", n.get("order_no"));
+				n.put("nums", n.get("last_num"));
 			}
 		}
 		renderJson(orderNums);
