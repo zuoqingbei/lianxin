@@ -79,6 +79,8 @@ function styleIn7x3() {
     if (fromBigScreen7x3) {
         $("body").addClass("styleIn7x3");
         $("#myContainer>footer p").hide();
+        $("#myContainer>header>h1>a").text("全球实验室数据中心")
+            .parent().next().text("Haier U-lab Data Center")
     }
 }
 

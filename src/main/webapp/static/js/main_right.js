@@ -4743,10 +4743,10 @@ $(function () {
         	labTypeCode="";
         }
         //myChart32.resize();
-        resetSizeRight();
-        loadTab2Data();
-        loadTab3Data();
-        loadTab4Data();
+        // resetSizeRight();
+        // loadTab2Data();
+        // loadTab3Data();
+        // loadTab4Data();
         /*resetSizeRight();*/
 
     })

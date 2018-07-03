@@ -1,361 +1,390 @@
-
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<meta name="PHM" content="phm二期" />
-		<title>PHM首页</title>
-		
-		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
-		<link rel="stylesheet" href="${contextPath}/static/phm/css/phm2.css" />
-		<link rel="stylesheet" href="${contextPath}/static/phm/css/public.css" />
-		<style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta name="PHM" content="phm二期"/>
+    <title>PHM首页</title>
 
-		</style>
-	</head>
-	<body>
-		<div id="content">
-			<!--head-->
-			<div id="head">
-				<h1>
-					<a href="${contextPath}/phm/index">
-						<img src="${contextPath}/static/phm/images/health/logo_haier_bold.png" alt="" />
-					</a>
-				</h1>
-				<h2><a href="${contextPath!}/phm" >智慧云服务自诊断、自预测系统</a></h2>
-			</div>
-			<!--centerdata-->
-            <!-- main -->
-            <div id="main">
-                <div id="mainContent">
-					<!-- 左侧部分 -->
-                    <div class="LeftContent fl">
-                        <div class="mainTitle">
-                            <div class="mainTitleContent">
-                                <a style="color:#6cf;" href="${contextPath!}/phm/status">
-                                <span>自诊断自预测</span>
-                                </a>
-                            </div>
-						</div>
-						<div class="currentState">
-							<div class="currentState_left fl">
-								<div class="currentState_leftTitle">
-                                    <div class="imgbox boxTitle1">
-                                        <span>当前在线状态</span>
-                                    </div>              
-                                    <ul class="listsContent">
-                                        <li>累计接入数: <a href="#" class="LWAPPNum ">697,264</a></li>
-                                        <li>累计运行时间: <span class="operationTime">67,747,876,789 </span><span class="">小时</span></li>
-                                    </ul>
-                                    <div class="imgbox boxTitle2">
-                                            <span>在线机器健康运行时间</span>
-                                    </div> 
-								</div>
-							</div>
-							<div class="currentState_middle fl">
-								    <div id="currentState_m"></div>
-							</div>
-							<div class="currentState_middle fl">
-								    <div id="currentState_r"></div>
-							</div>
-                        </div>
-                        <div class="leftContentList">
-                            <div class="lists fl">
-                                <div class="listsUp">
-                                    <div class="info">
-                                        <!-- <div class="imgboxContent">
-                                            <img src="${contextPath}/static/phm/images/system/ice-cold.png" alt=""/>
-                                        </div> -->
-                                        <div class="imgbox22">
-                                            <div class="imgIcon bingleng"></div>
-                                        </div>
-                                        <p class="txt1">冰冷</p>
-                                        <p class="txt2">智能产品累计接入数</p>
-                                        <p class="txt3 number">38,462</p>
-                                        <p class="txt4">MFOP(无故障运行时间)</p>
-                                        <div class="timeNum">
-                                            <span class="txt5 time">1,010,781,383</span>
-                                            <span class="xs">小时</span>
-                                        </div>
-                                        
+    <link rel="stylesheet" href="${contextPath}/static/phm/css/common.css"/>
+    <link rel="stylesheet" href="${contextPath}/static/phm/css/phm2.css"/>
+    <link rel="stylesheet" href="${contextPath}/static/phm/css/public.css"/>
+    <style>
 
-                                        
-                                    </div>
-                                </div>
-                                <div class="listsMiddle echarts">
-                                    <div id="list-1"></div>
-                                </div>
-                                <div class="listsDown echarts">
-                                    <div id="list-2"></div>
-                                </div>
+    </style>
+</head>
+<body>
+<div id="content">
+    <!--head-->
+    <div id="head">
+        <h1>
+            <a href="${contextPath}/phm/index">
+                <img src="${contextPath}/static/phm/images/health/logo_haier_bold.png" alt=""/>
+            </a>
+        </h1>
+        <h2><a href="${contextPath!}/phm">智慧云服务自诊断、自预测系统</a></h2>
+    </div>
+    <!--centerdata-->
+    <!-- main -->
+    <div id="main">
+        <div id="mainContent">
+            <!-- 左侧部分 -->
+            <div class="LeftContent fl">
+                <div class="mainTitle">
+                    <div class="mainTitleContent">
+                        <a style="color:#6cf;" href="${contextPath!}/phm/status">
+                            <span>自诊断自预测</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="currentState">
+                    <div class="currentState_left fl">
+                        <div class="currentState_leftTitle">
+                            <div class="imgbox boxTitle1">
+                                <span>当前在线状态</span>
                             </div>
-                            <div class="lists fl">
-                                <div class="listsUp">
-                                    <div class="info">
-                                        <!-- <div class="imgboxContent">
-                                            <img src="${contextPath}/static/phm/images/system/washing.png" alt=""/>
-                                        </div> -->
-                                        <div class="imgbox22">
-                                                <div class="imgIcon xidi"></div>
-                                            </div>
-                                        <p class="txt1">洗涤</p>
-                                        <p class="txt2">智能产品累计接入数</p>
-                                        <p class="txt3 number">32,364</p>
-                                        <p class="txt4">MFOP(无故障运行时间)</p>
-                                        <div class="timeNum">
-                                            <span class="txt5 time">283,508,604 </span><span class="xs">小时</span>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="listsMiddle echarts">
-                                    <div id="list-3"></div>
-                                </div>
-                                <div class="listsDown echarts">
-                                    <div id="list-4"></div>
-                                </div>
+                            <ul class="listsContent">
+                                <li>累计接入数: <a href="#" class="LWAPPNum ">697,264</a></li>
+                                <li>累计运行时间: <span class="operationTime">67,747,876,789 </span><span class="">小时</span>
+                                </li>
+                            </ul>
+                            <div class="imgbox boxTitle2">
+                                <span>在线机器健康运行时间</span>
                             </div>
-                            <div class="lists fl">
-                                <div class="listsUp">
-                                    <div class="info">
-                                        <!-- <div class="imgboxContent">
-                                            <img src="${contextPath}/static/phm/images/system/jiakong.png" alt=""/>
-                                        </div> -->
-                                        <div class="imgbox22">
-                                                <div class="imgIcon jiakong"></div>
-                                            </div>
-                                        <p class="txt1">家空</p>
-                                        <p class="txt2">智能产品累计接入数</p>
-                                        <p class="txt3 number">609,364</p>
-                                        <p class="txt4">MFOP(无故障运行时间)</p>
-                                        <div class="timeNum">
-                                            <span class="txt5 time">5,338,028,640 </span><span class="xs">小时</span>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="listsMiddle echarts">
-                                    <div id="list-5"></div>
-                                </div>
-                                <div class="listsDown echarts">
-                                    <div id="list-6"></div>
-                                </div>
-                            </div>
-                            <div class="lists fl">
-                                    <div class="listsUp">
-                                        <div class="info">
-                                            <!-- <div class="imgboxContent">
-                                                <img src="${contextPath}/static/phm/images/system/shangkong.png" alt=""/>
-                                            </div> -->
-                                            <div class="imgbox22">
-                                                    <div class="imgIcon shangkong"></div>
-                                                </div>
-                                            <p class="txt1">商空</p>
-                                            <p class="txt2">智能产品累计接入数</p>
-                                            <p class="txt3 number">4,340</p>
-                                            <p class="txt4">MFOP(无故障运行时间)</p>
-                                            <div class="timeNum">
-                                                <span class="txt5 time">38,014,800</span><span class="xs">小时</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="listsMiddle echarts">
-                                        <div id="list-7"></div>
-                                    </div>
-                                    <div class="listsDown echarts">
-                                        <div id="list-8"></div>
-                                    </div>
-                            </div>
-                            <div class="lists fl">
-                                    <div class="listsUp">
-                                        <div class="info">
-                                            <!-- <div class="imgboxContent">
-                                                <img src="${contextPath}/static/phm/images/system/waterheater.png" alt=""/>
-                                            </div> -->
-                                            <div class="imgbox22">
-                                                    <div class="imgIcon reshuiqi"></div>
-                                                </div>
-                                            <p class="txt1">热水器</p>
-                                            <p class="txt2">智能产品累计接入数</p>
-                                            <p class="txt3 number">7,908</p>
-                                            <p class="txt4">MFOP(无故障运行时间)</p>
-                                            <div class="timeNum">
-                                                <span class="txt5 time">62,178,480</span><span class="xs">小时</span>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="listsMiddle echarts">
-                                        <div id="list-9"></div>
-                                    </div>
-                                    <div class="listsDown echarts">
-                                        <div id="list-10"></div>
-                                    </div>
-                            </div>
-                            <div class="lists fl">
-                                    <div class="listsUp">
-                                        <div class="info">
-                                            <!-- <div class="imgboxContent">
-                                                <img src="${contextPath}/static/phm/images/system/kitchen.png" alt=""/>
-                                            </div> -->
-                                            <div class="imgbox22">
-                                                    <div class="imgIcon chudian"></div>
-                                                </div>
-                                            <p class="txt1">厨电</p>
-                                            <p class="txt2">智能产品累计接入数</p>
-                                            <p class="txt3 number">4,826</p>
-                                            <p class="txt4">MFOP(无故障运行时间)</p>
-                                            <div class="timeNum">
-                                               <span class="txt5 time">42,275,760</span><span class="xs">小时</span>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="listsMiddle echarts">
-                                        <div id="list-11"></div>
-                                    </div>
-                                    <div class="listsDown echarts">
-                                        <div id="list-12"></div>
-                                    </div>
-                            </div>   
                         </div>
-					</div>
-					<!-- 右侧部分 -->
-                    <div class="RightContent fr">
-						<!-- 标题 -->
-                        <div class="mainTitle">
-                            <div class="mainTitleContent">
-                                <span>PHM技术:大数据+自训练模型</span> 
-							</div>
-						</div>
-					<!-- 右侧主体部分 -->
-						<div class="ContentRightContent">
-							<!-- 右侧  left -->
-								<div class="rightMiddle fl">
-									<iframe src="${contextPath}/phm/indexAnimation" style="border: none"></iframe>
-								</div>
-							<!-- 右侧 right -->
-								<div class="rightRight fr">
-									<div class="rightRightText">
-										<span>全流程数据互联:两亿用户数据,108个工厂数据,727个实验室</span>
-									</div>
-									<div class="rightModPic">
-                                        <div class="rightPicContentBox">
-                                            <div></div>
-                                             <div class="rightPicContentUp"> 
-                                               <div class="recordscenter">
-                                                   <div class="recordscenterTitle">
-                                                       <div class="biaoti">
-                                                            <p>检测中心</p>
-                                                       </div>
-                                                       <div class="myscroll news">
-                                                           <ul>
-                                                                <li> 中国CNAS</li><li> 中国CQC</li><li> 中国CHEARI</li><li> 中国CNAS</li><li> 中国CQC</li><li> 中国CHEARI</li>
-                                                           </ul>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                               <div class="recordscenter">
-                                                    <div class="recordscenterTitle">
-                                                        <div class="biaoti">
-                                                             <p>工厂中心</p>
-                                                        </div>
-                                                        <div class="myscroll news">
-                                                            <ul>
-                                                                    <li> 美国冰箱</li><li> 印度冰箱</li><li> 巴基斯坦冰箱</li><li> 美国冰箱</li><li> 印度冰箱</li><li> 巴基斯坦冰箱</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="recordscenter">
-                                                        <div class="recordscenterTitle">
-                                                            <div class="biaoti">
-                                                                 <p>终端用户</p>
-                                                            </div>
-                                                            <div class="myscroll news">
-                                                                <ul>
-                                                                    <li> 滚筒洗衣机</li><li> 冰箱</li><li> 空调</li><li> 滚筒洗衣机</li><li> 冰箱</li><li> 空调</li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                                <div class="recordscenter">
-                                                    <div class="recordscenterTitle">
-                                                        <div class="biaoti">
-                                                                <p>研发中心</p>
-                                                        </div>
-                                                        <div class="myscroll news">
-                                                            <ul>
-                                                                <li> 中国青岛研发....</li><li> 中国上海研发....</li><li> 美国南卡莱纳......</li><li> 中国青岛研发....</li><li> 中国上海研发....</li><li> 美国南卡莱纳......</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="recordscenter">
-                                                    <div class="recordscenterTitle">
-                                                        <div class="biaoti">
-                                                                <p>供应商中心</p>
-                                                        </div>
-                                                        <div class="myscroll news">
-                                                            <ul>
-                                                                    <li> 松下电机机电....</li><li> 镇江奇美化工....</li><li> 艾默生电器有......</li><li> 松下电机机电....</li><li> 镇江奇美化工....</li><li> 艾默生电器有......</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-									</div>
-								</div>
-						</div>
+                    </div>
+                    <div class="currentState_middle fl">
+                        <div id="currentState_m"></div>
+                    </div>
+                    <div class="currentState_middle fl">
+                        <div id="currentState_r"></div>
+                    </div>
+                </div>
+                <div class="leftContentList">
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <!-- <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/ice-cold.png" alt=""/>
+                                </div> -->
+                                <div class="imgbox22">
+                                    <div class="imgIcon bingleng"></div>
+                                </div>
+                                <p class="txt1">冰冷</p>
+                                <p class="txt2">智能产品累计接入数</p>
+                                <p class="txt3 number">38,462</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <div class="timeNum">
+                                    <span class="txt5 time">1,010,781,383</span>
+                                    <span class="xs">小时</span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-1"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-2"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <!-- <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/washing.png" alt=""/>
+                                </div> -->
+                                <div class="imgbox22">
+                                    <div class="imgIcon xidi"></div>
+                                </div>
+                                <p class="txt1">洗涤</p>
+                                <p class="txt2">智能产品累计接入数</p>
+                                <p class="txt3 number">32,364</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <div class="timeNum">
+                                    <span class="txt5 time">283,508,604 </span><span class="xs">小时</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-3"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-4"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <!-- <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/jiakong.png" alt=""/>
+                                </div> -->
+                                <div class="imgbox22">
+                                    <div class="imgIcon jiakong"></div>
+                                </div>
+                                <p class="txt1">家空</p>
+                                <p class="txt2">智能产品累计接入数</p>
+                                <p class="txt3 number">609,364</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <div class="timeNum">
+                                    <span class="txt5 time">5,338,028,640 </span><span class="xs">小时</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-5"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-6"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <!-- <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/shangkong.png" alt=""/>
+                                </div> -->
+                                <div class="imgbox22">
+                                    <div class="imgIcon shangkong"></div>
+                                </div>
+                                <p class="txt1">商空</p>
+                                <p class="txt2">智能产品累计接入数</p>
+                                <p class="txt3 number">4,340</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <div class="timeNum">
+                                    <span class="txt5 time">38,014,800</span><span class="xs">小时</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-7"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-8"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <!-- <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/waterheater.png" alt=""/>
+                                </div> -->
+                                <div class="imgbox22">
+                                    <div class="imgIcon reshuiqi"></div>
+                                </div>
+                                <p class="txt1">热水器</p>
+                                <p class="txt2">智能产品累计接入数</p>
+                                <p class="txt3 number">7,908</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <div class="timeNum">
+                                    <span class="txt5 time">62,178,480</span><span class="xs">小时</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-9"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-10"></div>
+                        </div>
+                    </div>
+                    <div class="lists fl">
+                        <div class="listsUp">
+                            <div class="info">
+                                <!-- <div class="imgboxContent">
+                                    <img src="${contextPath}/static/phm/images/system/kitchen.png" alt=""/>
+                                </div> -->
+                                <div class="imgbox22">
+                                    <div class="imgIcon chudian"></div>
+                                </div>
+                                <p class="txt1">厨电</p>
+                                <p class="txt2">智能产品累计接入数</p>
+                                <p class="txt3 number">4,826</p>
+                                <p class="txt4">MFOP(无故障运行时间)</p>
+                                <div class="timeNum">
+                                    <span class="txt5 time">42,275,760</span><span class="xs">小时</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="listsMiddle echarts">
+                            <div id="list-11"></div>
+                        </div>
+                        <div class="listsDown echarts">
+                            <div id="list-12"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-		</div>
-		
-		
-		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
-        <script src="${contextPath}/static/phm/asserts/echarts/echarts-4.0.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="${contextPath}/static/phm/js/myScroll.js"></script>
-		<script>
-				/*屏幕描述
-				 一共 7x3 个屏幕，每一块屏幕是1360x768，
-				 总共的大小就是9520x2304，比预计像素少7x6=42个像素。
-				 */
-				
-				var pageH = $(window).height();
-				var pageW = pageH * 16 * 7 / (9 * 3);
-				var bodyScale = pageH / 595;
-				var bodyFontSize = bodyScale * 100 + "%";
-				if(pageH > 2300) { // 如果是大屏幕(2304)
-					pageW -= 47;
-				}
-				function pageResize() {
-					$("body").css("font-size", bodyFontSize);
-					$("body").css("fontSize", bodyFontSize);
-					$("#content").css("width", pageW);
-					$(".fullScreen_map").css("width", pageW); //全屏页面是绝对定位,宽度100%只能取自屏幕
-					console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:" + pageW + " \nbody字号：" + bodyFontSize)
-				}
-				pageResize();
-		</script>
-	</body>
+            <!-- 右侧部分 -->
+            <div class="RightContent fr">
+                <!-- 标题 -->
+                <div class="mainTitle">
+                    <div class="mainTitleContent">
+                        <span>PHM技术:大数据+自训练模型</span>
+                    </div>
+                </div>
+                <!-- 右侧主体部分 -->
+                <div class="ContentRightContent">
+                    <!-- 右侧  left -->
+                    <div class="rightMiddle fl">
+                        <iframe src="${contextPath}/phm/indexAnimation" style="border: none"></iframe>
+                    </div>
+                    <!-- 右侧 right -->
+                    <div class="rightRight fr">
+                        <div class="rightRightText">
+                            <span>全流程数据互联:两亿用户数据,108个工厂数据,727个实验室</span>
+                        </div>
+                        <div class="rightModPic">
+                            <div class="rightPicContentBox">
+                                <div></div>
+                                <div class="rightPicContentUp">
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>检测中心</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> 中国CNAS</li>
+                                                    <li> 中国CQC</li>
+                                                    <li> 中国CHEARI</li>
+                                                    <li> 中国CNAS</li>
+                                                    <li> 中国CQC</li>
+                                                    <li> 中国CHEARI</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>工厂中心</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> 美国冰箱</li>
+                                                    <li> 印度冰箱</li>
+                                                    <li> 巴基斯坦冰箱</li>
+                                                    <li> 美国冰箱</li>
+                                                    <li> 印度冰箱</li>
+                                                    <li> 巴基斯坦冰箱</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>终端用户</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> GZ11052409373438</li>
+                                                    <li> BJ11052809942811</li>
+                                                    <li> QD11052809927426</li>
+                                                    <li> WH11052809912360</li>
+                                                    <li> QD11052809904507</li>
+                                                    <li> CQ11052809928966</li>
+                                                    <li> CD11053110479549</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>研发中心</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> 中国青岛研发....</li>
+                                                    <li> 中国上海研发....</li>
+                                                    <li> 美国南卡莱纳......</li>
+                                                    <li> 中国青岛研发....</li>
+                                                    <li> 中国上海研发....</li>
+                                                    <li> 美国南卡莱纳......</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="recordscenter">
+                                        <div class="recordscenterTitle">
+                                            <div class="biaoti">
+                                                <p>供应商中心</p>
+                                            </div>
+                                            <div class="myscroll news">
+                                                <ul>
+                                                    <li> 松下电机机电....</li>
+                                                    <li> 镇江奇美化工....</li>
+                                                    <li> 艾默生电器有......</li>
+                                                    <li> 松下电机机电....</li>
+                                                    <li> 镇江奇美化工....</li>
+                                                    <li> 艾默生电器有......</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js" type="text/javascript" charset="utf-8"></script>
+<script src="${contextPath}/static/phm/asserts/echarts/echarts-4.0.min.js" type="text/javascript"
+        charset="utf-8"></script>
+<script src="${contextPath}/static/phm/js/myScroll.js"></script>
+<script>
+    /*屏幕描述
+     一共 7x3 个屏幕，每一块屏幕是1360x768，
+     总共的大小就是9520x2304，比预计像素少7x6=42个像素。
+     */
+
+    var pageH = $(window).height();
+    var pageW = pageH * 16 * 7 / (9 * 3);
+    var bodyScale = pageH / 595;
+    var bodyFontSize = bodyScale * 100 + "%";
+    if (pageH > 2300) { // 如果是大屏幕(2304)
+        pageW -= 47;
+    }
+
+    function pageResize() {
+        $("body").css("font-size", bodyFontSize);
+        $("body").css("fontSize", bodyFontSize);
+        $("#content").css("width", pageW);
+        $(".fullScreen_map").css("width", pageW); //全屏页面是绝对定位,宽度100%只能取自屏幕
+        console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:" + pageW + " \nbody字号：" + bodyFontSize)
+    }
+
+    pageResize();
+</script>
+</body>
 </html>
 
 <script>
 
     //通過右邊打開Ulab
 
-  $(".rightPicContentBox").click(function () {
-        open("${contextPath}/lab/full",'_self')
+    $(".rightPicContentBox").click(function () {
+        open("${contextPath}/lab/full", '_self')
     });
 
-//=====================左侧计时器=========================
-    
-let [numbers, times] = [[], []], //数量和时间基数
-        [refreshHz, counter] = [5000,0], //刷新率和计数器
-        addRate = [1/7, 1/9,1/5,1/5,1/3,1/3]; //增长率
+    //=====================左侧计时器=========================
+
+    let [numbers, times] = [[], []], //数量和时间基数
+        [refreshHz, counter] = [5000, 0], //刷新率和计数器
+        addRate = [1 / 7, 1 / 9, 1 / 5, 1 / 5, 1 / 3, 1 / 3]; //增长率
 
     $(".lists").each(function () {
         //console.log($(this)[0])
@@ -363,12 +392,14 @@ let [numbers, times] = [[], []], //数量和时间基数
         times.push(Number($(this).find(".time").text().replace(/,/g, "")));
 
     });
-    // console.log(numbers,times)
+
+    // 模拟自增
     addSelf();
+
     function addSelf() {
         setTimeout(function () {
             $(".lists").each(function (index, $li) {
-                
+
                 // 获取当前页面上的数据
                 let number = numbers[index];
                 let time = times[index];
@@ -380,12 +411,12 @@ let [numbers, times] = [[], []], //数量和时间基数
                 $(this).find(".number").text(addSplit(Math.floor(number)));
                 $(this).find(".time").text(addSplit(Math.floor(time)));
             });
-             numberSum = numbers[0] +numbers[1] +numbers[2] +numbers[3] +numbers[4] +numbers[5];
+            numberSum = numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] + numbers[5];
             $(".listsContent .LWAPPNum").text(addSplit(Math.floor(numberSum)));
-            timesSum = times[0] +times[1] +times[2] +times[3] +times[4] +times[5];
+            timesSum = times[0] + times[1] + times[2] + times[3] + times[4] + times[5];
             $(".listsContent .operationTime").text(addSplit(Math.floor(timesSum)));
             //console.log(numbers[0])
-            
+
             counter++;
             addSelf()
             //console.log('5秒啦~~')
@@ -402,25 +433,24 @@ let [numbers, times] = [[], []], //数量和时间基数
             newText += s + split;
         }
         return newText.slice(0, -1);
-        //console.log()
     }
-    
+
     //==========================左侧计时器 end====================   
 
-//news 滚动 start 
-$(function(){
-	timer=setInterval(function(){
-		timeStatus();
-	},1000);
-	$('.myscroll').myScroll({
-	    speed: 30, //数值越大，速度越慢
-	    rowHeight: 55   //li的高度
+    //news 滚动 start
+    $(function () {
+        timer = setInterval(function () {
+            timeStatus();
+        }, 1000);
+        $('.myscroll').myScroll({
+            speed: 30, //数值越大，速度越慢
+            rowHeight: 55   //li的高度
+        });
+
     });
-    
-});
-//myscroll 滚动字体超出部分隐藏
-$(".news ul li").each(function() {
-        var maxwidth =6;//显示多少字符
+    //myscroll 滚动字体超出部分隐藏
+    $(".news ul li").each(function () {
+        var maxwidth = 6;//显示多少字符
         if ($(this).text().length > maxwidth) {
             $(this).text($(this).text().substring(0, maxwidth));
             $(this).html($(this).html() + '...');
@@ -428,156 +458,157 @@ $(".news ul li").each(function() {
     });
 
 
-//-----------------------------左侧  图表-----------------------
-//左侧图表
-	var barWidth = 12 * bodyScale;
-	//  公共样式
-    var opts ={
+    //-----------------------------左侧  图表-----------------------
+    //左侧图表
+    var barWidth = 12 * bodyScale;
+    //  公共样式
+    var opts = {
         grid: {
             left: '20%',
             right: '20%',
             bottom: '20%',
             top: '20%'
         },
-        xAxis:{
+        xAxis: {
             axisLabel: {
                 show: true,
                 textStyle: {
                     color: '#00adef',
-                    fontSize:13 * bodyScale
+                    fontSize: 13 * bodyScale
                 }
             },
             splitLine: { //去除分割线
-                show:false
+                show: false
             },
-		},
-        yAxis:{
-            show:false,
+        },
+        yAxis: {
+            show: false,
             splitLine: {
-                lineStyle:{
-                    color:'#00adef'
+                lineStyle: {
+                    color: '#00adef'
                 }
             },
             axisLabel: {//坐标做字体
                 show: true,
                 textStyle: {
                     color: '#00adef',
-                    fontSize:13 * bodyScale
+                    fontSize: 13 * bodyScale
                 }
             },
-            nameTextStyle:{
-                color:'#00adef',
-                fontSize:13 * bodyScale
+            nameTextStyle: {
+                color: '#00adef',
+                fontSize: 13 * bodyScale
             },
-            nameGap:100
-		}
-	}
-    var list_pie ={
-        grid: {
-                left: '20%',
-                right: '20%',
-                bottom: '20%',
-                top: '20%'
-            },
-            xAxis:{
-                show:false,
-            
-            },
-			color: '#66ccff',
-            series : [
-                {
-                    name: '访问来源',
-                    type: 'pie',
-                    radius: ['40%', '55%'],
-                    center: ['50%', '50%'],
-                    data: [
-                        {value: 325, name: '在线'},
-                        {value: 80, name: '离线'}
-                    ],
-                    itemStyle:{
-                        normal : {
-                            label : {//环形图外  文字样式
-                                textStyle : {
-                                    fontSize : 10 * bodyScale,
-                                }
-                            },
-
-                        }
-
-                    },
-
-                },
-                
-            ]
+            nameGap: 100
+        }
     }
-    var list_bar ={
-        color:colors,
+    var list_pie = {
         grid: {
-                left: '5%',
-                right: '5%',
-                bottom: '25%',
-                top: '5%'
-            },
-            xAxis: {
-                type: 'category',
-                data: ['在线纠偏','上门保养','维修更新'],
-                axisLabel:{
-                        interval:0,
-                        show:'true',
-                        textStyle:{
-                            fontSize:8*bodyScale,
-                            color:'#64ccff'
-                        }
-                    },
-                //坐标轴 轴线隐藏
-                axisLine:{
-                        lineStyle:{
-                            color:'transparent'
-                            
-                        }
-                    },
-                    // splitLine:{
-                    //     show:false
-                    // }
-            },
-            yAxis: {
-                name: '台',
-                type: 'value',
-                splitLine:{
-                        lineStyle:{
-                            color:'#0d2e52'
-                        }
-                },
-                // axisLabel:{
-                //     show:false,
-                      
-                // },
-                 //坐标轴颜色隐藏
-                 axisLine:{
-                        lineStyle:{
-                            color:'transparent'
-                            
-                        }
-                    },       
-            },
-            series: [
-                {
-                    name: '在线',
-                    type: 'bar',
-                    stack: '总量',
-                    barWidth: barWidth,
-                    itemStyle: {
-                        normal: {
-                            color: '#00adef'
-                        }
+            left: '20%',
+            right: '20%',
+            bottom: '20%',
+            top: '20%'
+        },
+        xAxis: {
+            show: false,
+
+        },
+        color: '#66ccff',
+        series: [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: ['40%', '55%'],
+                center: ['50%', '50%'],
+                data: [
+                    {value: 325, name: '在线'},
+                    {value: 80, name: '离线'}
+                ],
+                itemStyle: {
+                    normal: {
+                        label: {//环形图外  文字样式
+                            textStyle: {
+                                fontSize: 10 * bodyScale,
+                            }
+                        },
+
                     }
-                }                              
-            ]
+
+                },
+
+            },
+
+        ]
     }
-	$(function(){
-		// 图标一  离线and在线pie
-		var myChart1 = echarts.init($("#currentState_m")[0]);
-		myChart1.setOption(opts);
+    var list_bar = {
+        color: colors,
+        grid: {
+            left: '5%',
+            right: '5%',
+            bottom: '25%',
+            top: '5%'
+        },
+        xAxis: {
+            type: 'category',
+            data: ['在线纠偏', '上门保养', '维修更新'],
+            axisLabel: {
+                interval: 0,
+                show: 'true',
+                textStyle: {
+                    fontSize: 8 * bodyScale,
+                    color: '#64ccff'
+                }
+            },
+            //坐标轴 轴线隐藏
+            axisLine: {
+                lineStyle: {
+                    color: 'transparent'
+
+                }
+            },
+            // splitLine:{
+            //     show:false
+            // }
+        },
+        yAxis: {
+            name: '台',
+            type: 'value',
+            splitLine: {
+                lineStyle: {
+                    color: '#0d2e52'
+                }
+            },
+            max: 2,
+            // axisLabel:{
+            //     show:false,
+
+            // },
+            //坐标轴颜色隐藏
+            axisLine: {
+                lineStyle: {
+                    color: 'transparent'
+
+                }
+            },
+        },
+        series: [
+            {
+                name: '在线',
+                type: 'bar',
+                stack: '总量',
+                barWidth: barWidth,
+                itemStyle: {
+                    normal: {
+                        color: '#00adef'
+                    }
+                }
+            }
+        ]
+    }
+    $(function () {
+        // 图标一  离线and在线pie
+        var myChart1 = echarts.init($("#currentState_m")[0]);
+        myChart1.setOption(opts);
         myChart1.setOption(list_pie);
         myChart1.setOption({
             grid: {
@@ -586,12 +617,12 @@ $(".news ul li").each(function() {
                 bottom: '20%',
                 top: '20%'
             },
-            xAxis:{
-                show:false,
-            
+            xAxis: {
+                show: false,
+
             },
-			color: colors,
-            series : [
+            color: colors,
+            series: [
                 {
                     name: '访问来源',
                     type: 'pie',
@@ -601,11 +632,11 @@ $(".news ul li").each(function() {
                         {value: 325, name: '在线'},
                         {value: 80, name: '离线'}
                     ],
-                    itemStyle : {
-                        normal : {
-                            label : {//环形图外  文字样式
-                                textStyle : {
-                                    fontSize : 10 * bodyScale,
+                    itemStyle: {
+                        normal: {
+                            label: {//环形图外  文字样式
+                                textStyle: {
+                                    fontSize: 10 * bodyScale,
                                 }
                             },
 
@@ -617,8 +648,8 @@ $(".news ul li").each(function() {
             ]
         });
 
-		//图标二  离线and在线bar
-		var myChart2 = echarts.init($("#currentState_r")[0]);
+        //图标二  离线and在线bar
+        var myChart2 = echarts.init($("#currentState_r")[0]);
         myChart2.setOption({
             grid: {
                 left: '15%',
@@ -627,67 +658,67 @@ $(".news ul li").each(function() {
                 top: '25%'
             },
             color: colors,
-			legend:{
-                top:25,
-                show:true,
-				 data:['在线','离线'],
-				textStyle:{
-                    color:'#00adef',
-					fontSize:11 * bodyScale
-				},
-				itemGap:30,//图例间距离
-			},
+            legend: {
+                top: 25,
+                show: true,
+                data: ['在线', '离线'],
+                textStyle: {
+                    color: '#00adef',
+                    fontSize: 11 * bodyScale
+                },
+                itemGap: 30,//图例间距离
+            },
             xAxis: {
                 type: 'category',
-                data: ['冰箱','商空','洗衣机','冷柜','家空'],
-                axisLabel:{
+                data: ['冰箱', '商空', '洗衣机', '冷柜', '家空'],
+                axisLabel: {
                     //修改X轴上字体样式
-                        interval:0,
-                        show:'true',
-                        // rotate:-30,
-                        textStyle:{
-                            fontSize:10*bodyScale,
-                            color:'#64ccff'
-                        },
-                    
+                    interval: 0,
+                    show: 'true',
+                    // rotate:-30,
+                    textStyle: {
+                        fontSize: 10 * bodyScale,
+                        color: '#64ccff'
                     },
-                    splitLine:{
-                        show:false
-                    }
-                
+
+                },
+                splitLine: {
+                    show: false
+                }
+
             },
             yAxis: {
                 name: '台',
                 type: 'value',
                 //Y轴 坐标轴名称显示
-                nameTextStyle:{
-                    color:'#64ccff',
-                    fontSize:10*bodyScale,
+                nameTextStyle: {
+                    color: '#64ccff',
+                    fontSize: 10 * bodyScale,
                 },
                 //Y轴 坐标轴上的文字
-                axisLabel:{
-                        interval:0,
-                        show:true,
-                        textStyle:{
-                            fontSize:10*bodyScale,
-                            color:'#64ccff'
-                        }
-                    
-                    },
+                axisLabel: {
+                    interval: 0,
+                    show: true,
+                    textStyle: {
+                        fontSize: 10 * bodyScale,
+                        color: '#64ccff'
+                    }
+
+                },
                 //坐标轴颜色隐藏
-                axisLine:{
-                        lineStyle:{
-                            color:'transparent'
-                            
-                        }
-                    },
+                axisLine: {
+                    lineStyle: {
+                        color: 'transparent'
+
+                    }
+                },
                 //y轴虚线
-                splitLine:{
-                        lineStyle:{
-                            color:'#0d2e52'
-                        }
+                splitLine: {
+                    lineStyle: {
+                        color: '#0d2e52'
+                    }
                 }
-                   
+
             },
             series: [
                 {
@@ -700,7 +731,7 @@ $(".news ul li").each(function() {
                             color: '#00adef'
                         }
                     },
-                    data: [25, 45, 65, 60,50]
+                    data: [25, 45, 65, 60, 50]
                 },
                 {
                     name: '离线',
@@ -717,268 +748,238 @@ $(".news ul li").each(function() {
 
             ]
         });
-	})
+    })
 
+    var barLabel = {
+        show: true,
+        position: 'top'
+    };
+    var optOthers = {
+        series: {
+            label: barLabel,
+            data: [0, 0, 0]
+        }
+
+    }
     //list1
     var list1 = echarts.init($("#list-1")[0]);
-        list1.setOption(list_pie);
-        list1.setOption({
-            series : {
-                    
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ],
-                
-                    
-                }
-            
-        });
+    list1.setOption(list_pie);
+    list1.setOption({
+        series: {
+
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ],
+
+
+        }
+
+    });
     //list2 
-        var list2 = echarts.init($("#list-2")[0]);
-        list2.setOption(list_bar);
-        list2.setOption({
-            
+    var list2 = echarts.init($("#list-2")[0]);
+    list2.setOption(list_bar);
+    list2.setOption({
+
         series: [{
-      
-        data: [0, 0, 0],
-        //配置样式
-        itemStyle: {   
-            //通常情况下：
-            normal:{  
-　　　　　　　　　　　　//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-                color: function (params){
-                    var colorList = ['#ff4d4f','#00adef','#00adef'];
-                    return colorList[params.dataIndex];
-                }
-            },
-            //鼠标悬停时：
-            emphasis: {
+            label: barLabel,
+            data: [0, 0, 0],
+            //配置样式
+            itemStyle: {
+                //通常情况下：
+                normal: {
+                    //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                    color: function (params) {
+                        var colorList = ['#ff4d4f', '#00adef', '#ff4d4f'];
+                        return colorList[params.dataIndex];
+                    }
+                },
+                //鼠标悬停时：
+                emphasis: {
                     shadowBlur: 10,
                     shadowOffsetX: 0,
                     shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-        },
+                }
+            },
 
-    }],
-            
-        });
-        list2.on('click',function(params){
-            //console.log(params.name);
-            if(params.name==='在线纠偏'){
-                window.location.href='${contextPath}/phm/status'
-            }
-            if(params.name==='在线纠偏'){
-                window.location.href='${contextPath}/phm/status'
-            }
+        }],
 
-        })
-         //list3
+    });
+    list2.on('click', function (params) {
+        if (params.name === '在线纠偏' || params.name === '维修更新') {
+            window.location.href = '${contextPath}/phm/status'
+        }
+
+    });
+    //list3
     var list3 = echarts.init($("#list-3")[0]);
-        list3.setOption(list_pie);
-        list3.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    list3.setOption(list_pie);
+    list3.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list4
-        var list4 = echarts.init($("#list-4")[0]);
-        list4.setOption(list_bar);
-        list4.setOption({
-            series: 
-                { 
-                    data: [0, 0, 0]
-                }
-            
-        });
+    var list4 = echarts.init($("#list-4")[0]);
+    list4.setOption(list_bar);
+    list4.setOption(optOthers);
     //list5
     var list5 = echarts.init($("#list-5")[0]);
-		// list5.setOption(opts);
-        list5.setOption(list_pie);
-        list5.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    // list5.setOption(opts);
+    list5.setOption(list_pie);
+    list5.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list6
-        var list6 = echarts.init($("#list-6")[0]);
-        list6.setOption(list_bar);
-        list6.setOption({
-            series: 
-                { 
-                data: [0, 0, 0]
-                }
-            
-        });
+    var list6 = echarts.init($("#list-6")[0]);
+    list6.setOption(list_bar);
+    list6.setOption(optOthers);
     //list7
     var list7 = echarts.init($("#list-7")[0]);
-		// list7.setOption(opts);
-        list7.setOption(list_pie);
-        list7.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    // list7.setOption(opts);
+    list7.setOption(list_pie);
+    list7.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list8
-        var list8 = echarts.init($("#list-8")[0]);
-        list8.setOption(list_bar);
-        list8.setOption({
-            series: 
-                { 
-                data: [0, 0, 0]
-                }
-            
-        });
+    var list8 = echarts.init($("#list-8")[0]);
+    list8.setOption(list_bar);
+    list8.setOption(optOthers);
     //list9
     var list9 = echarts.init($("#list-9")[0]);
-		// list9.setOption(opts);
-        list9.setOption(list_pie);
-        list9.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    // list9.setOption(opts);
+    list9.setOption(list_pie);
+    list9.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list10
-        var list10 = echarts.init($("#list-10")[0]);
-        list10.setOption(list_bar);
-        list10.setOption({
-            series: 
-                { 
-                data: [0, 0, 0]
-                }
-            
-        });
+    var list10 = echarts.init($("#list-10")[0]);
+    list10.setOption(list_bar);
+    list10.setOption(optOthers);
     //list11
     var list11 = echarts.init($("#list-11")[0]);
-		// list11.setOption(opts);
-        list11.setOption(list_pie);
-        list11.setOption({
-            series : {
-                    data: [
-                        {value: 0, name: '报警'},
-                        {value:70,name:'健康'},
-                        {value: 0, name: '预警'}
-                    ]
-                }
-            
-        });
+    // list11.setOption(opts);
+    list11.setOption(list_pie);
+    list11.setOption({
+        series: {
+            data: [
+                {value: 0, name: '报警'},
+                {value: 70, name: '健康'},
+                {value: 0, name: '预警'}
+            ]
+        }
+
+    });
     //list12
-        var list12 = echarts.init($("#list-12")[0]);
-        list12.setOption(list_bar);
-        list12.setOption({
-            series: 
-                { 
-                data: [0, 0, 0]
-                }
-            
-        });
-	var colors = [
+    var list12 = echarts.init($("#list-12")[0]);
+    list12.setOption(list_bar);
+    list12.setOption(optOthers);
+    var colors = [
         '#00adef',
         '#809ba9',
         '#5cdbd3',
         '#ff85c0'
     ];
-	
-	
-	//实时状态
-	var addId="http://10.138.87.129";
-	//实时状态初始化 
-			function timeStatus(){
-				var sncode="20171026BX004";
-				$.ajax({
-					//url:"http://localhost:8088/api/yzd/product/"+sncode,
-					url:addId+"/api/yzd/product/"+sncode,
-					type:"get",
-					success:function(data){
-						console.log("-------data",data)
-						var info=data.info;
-						var S14=info['S14'];
-						var S15=info['S15'];
-						var S16=info['S16'];
-						var S17=info['S17'];
-						var monitorConf=data.monitorConf;
-						for( var index in monitorConf){
-							//debugger;
-							 if(S14||S15||S16||S17 ){
-								   var open=false;
-									var image14="";var image15="";var image16="";var image17="";
-									if(S14==0){
-										image14="冷藏室左门关闭";
-									}else if(S14==1){
-										image14="冷藏室左门开启";
-										open=true;
-									}
-									if(S15==0){
-										image14="冷藏室右门关闭";
-									}else if(S15==1){
-										image15="冷藏室右门开启";
-										open=true;
-									}
-									if(S16==0){
-										image16="冷冻室上门关闭";
-									}else if(S16==1){
-										image16="冷冻室上门开启";
-										open=true;
-									}
-									if(S17==0){
-										image17="冷冻室下门关闭";
-									}else if(S17==1){
-										image17="冷冻室下门开启";
-										open=true;
-									}
-									if(open){
-                                        // console.log("open",open);
-                                        // console.log(list2.getOption())
-                                        list2.setOption({
-                                            series: 
-                                                { 
-                                                    data: [16, 0, 0]
-                                                }
-                                            
-                                        });
-									}else{
-                                        list2.setOption({
-                                            series: 
-                                                { 
-                                                    data: [0, 0, 0]
-                                                }
-                                            
-                                        });
-									}
-								  	//console.log(image14+"--"+image15+"--"+image16+"--"+image17);
-								}
-						}
-							
-						/*****************************************************************************************************/	
-							
-					},
-				
-				});
-				
-			}
-	
-	
-	
+
+
+    //实时状态
+    var addId = "http://10.138.87.129";
+
+    //实时状态初始化
+    function timeStatus() {
+        var sncode = "20171026BX004";
+        $.ajax({
+            //url:"http://localhost:8088/api/yzd/product/"+sncode,
+            url: addId + "/api/yzd/product/" + sncode,
+            type: "get",
+            success: function (data) {
+                // console.log("-------data", data)
+                var info = data.info;
+                var S14 = info['S14'];
+                var S15 = info['S15'];
+                var S16 = info['S16'];
+                var S17 = info['S17'];
+                var failure = info['failure'];
+                // var failureNum = failure? 1: 0;
+                var monitorConf = data.monitorConf;
+                for (var index in monitorConf) {
+                    //debugger;
+                    if (S14 || S15 || S16 || S17) {
+                        var open = false;
+                        var image14 = "";
+                        var image15 = "";
+                        var image16 = "";
+                        var image17 = "";
+                        if (S14 == 0) {
+                            image14 = "冷藏室左门关闭";
+                        } else if (S14 == 1) {
+                            image14 = "冷藏室左门开启";
+                            open = true;
+                        }
+                        if (S15 == 0) {
+                            image14 = "冷藏室右门关闭";
+                        } else if (S15 == 1) {
+                            image15 = "冷藏室右门开启";
+                            open = true;
+                        }
+                        if (S16 == 0) {
+                            image16 = "冷冻室上门关闭";
+                        } else if (S16 == 1) {
+                            image16 = "冷冻室上门开启";
+                            open = true;
+                        }
+                        if (S17 == 0) {
+                            image17 = "冷冻室下门关闭";
+                        } else if (S17 == 1) {
+                            image17 = "冷冻室下门开启";
+                            open = true;
+                        }
+                        // open = 1;
+                        // failure = 1;
+                        list2.setOption({
+                            series: {
+                                data: [Number(open), 0, failure]
+                            }
+                        });
+                    }
+                }
+                // console.log(failure)
+                //failure 0-报警，1-解除报警
+                /*****************************************************************************************************/
+
+            },
+
+        });
+
+    }
+
+
 </script>
 

@@ -3,7 +3,7 @@
     $.fn.myScroll = function(options){
     //默认配置
     var defaults = {
-        speed:100,  //滚动速度,值越大速度越慢
+        speed:200,  //滚动速度,值越大速度越慢
         rowHeight:60 //每行的高度
     };
     
@@ -12,7 +12,7 @@
     function marquee(obj, step){
     
         obj.find("ul").animate({
-            marginTop: '-=1'
+            marginTop: '-=2'
         },0,function(){
                 var s = Math.abs(parseInt($(this).css("margin-top")));
                 if(s >= step){

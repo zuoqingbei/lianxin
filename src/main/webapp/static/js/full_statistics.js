@@ -6,23 +6,23 @@ var field="field";
 var labType="",productCode="";
 function reloadLeftData(){
 	 //实验室数量统计
-    labNumStatis();
+    // labNumStatis();
     //实验室总数及分布
-    proLineStatis();
+    // proLineStatis();
     //实验室区域数量统计：大洲 国家
-	labAreaSpread();
+    // labAreaSpread();
 	//按照实验室四大类统计数量
    // labTypeStatis();
 	//专业能力-实验室性质
-	labPropertiesStatis();
+	// labPropertiesStatis();
 	//实验目的--可开展实验类型 产品生命周期全流程测试
-	labLifeCycleStatis();
+	// labLifeCycleStatis();
 	//labCarouselInfo();
-	worldLabTypeStatis();
+	// worldLabTypeStatis();
 	//专业领域
-	professionalStatis();
+	// professionalStatis();
 	//联通数
-	labLinkStatis();
+	// labLinkStatis();
 }
 function reloadLeftData2(){
    //产线维度实验室数量统计

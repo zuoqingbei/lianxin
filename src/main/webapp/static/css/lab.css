@@ -239,7 +239,7 @@ li:not(.hasChildren).active {
 /*右侧tab标签*/
 @media all {
     .lab_content_r {
-        background-image: url("../img/lab/labTabBoardInland_4.png");
+        background-image: url("../img/lab/labTabBoardInland_2.png");
         background-size: 100% 100%;
     }
 
@@ -273,7 +273,7 @@ li:not(.hasChildren).active {
         height: 100%;
     }
 
-    .lab_content_r > .switchBox > div.item:not(:nth-of-type(4)) {
+    .lab_content_r > .switchBox > div.item:not(:nth-of-type(2)) {
         display: none;
     }
 
