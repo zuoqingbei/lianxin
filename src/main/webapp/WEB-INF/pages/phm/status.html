@@ -5,11 +5,11 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<meta name="PHM" content="phm二期"/>
 		<title>实时状态</title>
-		
+
 		<link rel="stylesheet" href="${contextPath}/static/phm/css/common.css" />
 		<link rel="stylesheet" href="${contextPath}/static/phm/css/status.css" />
-		
-		
+
+
 	</head>
 	<body>
 		<div id="content">
@@ -50,8 +50,8 @@
 			                <div class="box_bottom"><strong>底部</strong></div>
 			                <div class="box_left"><strong></strong></div>
 			                <div class="box_right"><strong></strong></div>
-			                <div class="box_compressor"><strong></strong></div>
-			                <div class="box_compressor addon"><strong></strong></div>
+			                <!--<div class="box_compressor"><strong></strong></div>-->
+			                <!--<div class="box_compressor addon"><strong></strong></div>-->
 			            </div>
 			        </div>
 					<a href="${contextPath!}/phm/service" style="color:#fff"><div class="bxinfo">
@@ -82,13 +82,13 @@
 					<div class="leftBtn fyBtn" onclick="pageLeft()" id="pageLeft"></div>
 					<div class="rightBtn fyBtn" onclick="pageRight()" id="pageRight"></div>
 					<div class="titleBox">
-						
+
 						<div class="tnav sszt navActive" onclick="timeStatusChange()">实时状态</div>
-						<div class="tnav syfx" onclick="useAnalysis()">使用分析</div>	
+						<div class="tnav syfx" onclick="useAnalysis()">使用分析</div>
 						<div class="tnav ztqs">状态趋势</div>
 						<div class="tnav gzyc">寿命预测</div>
 						<div class="tnav gzzd">故障诊断</div>
-						
+
 					</div>
 					<div class="bottomState">
 						<div class="state-box-contain">
@@ -98,12 +98,12 @@
 							   <!--  <div class="leftStates" id="secondPage"></div> -->
 								<!-- <div class="leftStates" id="thirdPage" style="display:none;"></div>
 								<div class="leftStates" id="fourPage" style="display:none;"></div> -->
-									
+
 								<!--使用分析-->
 								<div class="syfxBox" id="analysisFirstPage"></div>
-								
+
 								<div class="syfxBox" id="analysisSecondPage"></div>
-								
+
 								<!--状态趋势-->
 								<div class="ztqsBox">
 									<!-- <iframe src="http://47.95.109.158/#/product/20171026BX001" width="100%" height="100%"></iframe> -->
@@ -111,7 +111,7 @@
 								</div>
 								<!--故障诊断-->
 								<div class="gzzdBox">
-									
+
 								</div>
 								<!--故障预测-->
 								<div class="gzycBox">
@@ -123,26 +123,26 @@
 											<div id="smycCanvas" style="width:100%;height:100%"></div>
 										</div>
 									</div>
-									
+
 								</div>
 							</div>
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
 		</div>
-		
-		
-		
+
+
+
 		<script src="${contextPath}/static/phm/asserts/echarts/echarts-all-2.2.7.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="${contextPath}/static/phm/asserts/js/jquery-2.2.4.js"  type="text/javascript" charset="utf-8"></script>
-		
+
 		<script>
 		        /*屏幕描述
 				         一共 7x3 个屏幕，每一块屏幕是1360x768，
 				         总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
-				
+
 		        var pageH = $(window).height();
 		        var pageW = pageH * 16 * 7 / (9 * 3);
 		        var bodyScale = pageH / 595;
@@ -159,11 +159,85 @@
 		        pageResize()
    		</script>
 		<script src="${contextPath}/static/phm/js/status.js" type="text/javascript" charset="utf-8"></script>
-	
+
 	<!--陈新   -->
 		<!--实时状态  -->
 			<script type="text/javascript" charset="utf-8">
-			var sncode="";//定义sncode 
+                //实时状态初始化,用来控制冰箱开关门字体颜色
+				setInterval(function () {
+                    getDoorStatus();
+                },1000);
+                function getDoorStatus() {
+                    var sncode = "20171026BX004";
+                    //实时状态
+                    var addId = "http://10.138.87.129";
+                    $.ajax({
+                        //url:"http://localhost:8088/api/yzd/product/"+sncode,
+                        url: addId + "/api/yzd/product/" + sncode,
+                        type: "get",
+                        success: function (data) {
+                            console.log("-------data", data)
+                            var info = data.info;
+                            var S14 = info['S14'];
+                            var S15 = info['S15'];
+                            var S16 = info['S16'];
+                            var S17 = info['S17'];
+                            var failure = info['failure'];
+                            // var failureNum = failure? 1: 0;
+                            var monitorConf = data.monitorConf;
+                            for (var index in monitorConf) {
+                                //debugger;
+                                if (S14 || S15 || S16 || S17) {
+                                    var open = false;
+                                    var image14 = "";
+                                    var image15 = "";
+                                    var image16 = "";
+                                    var image17 = "";
+                                    if (S14 == 0) {
+                                        image14 = "冷藏室左门关闭";
+                                    } else if (S14 == 1) {
+                                        image14 = "冷藏室左门开启";
+                                        open = true;
+                                    }
+                                    if (S15 == 0) {
+                                        image14 = "冷藏室右门关闭";
+                                    } else if (S15 == 1) {
+                                        image15 = "冷藏室右门开启";
+                                        open = true;
+                                    }
+                                    if (S16 == 0) {
+                                        image16 = "冷冻室上门关闭";
+                                    } else if (S16 == 1) {
+                                        image16 = "冷冻室上门开启";
+                                        open = true;
+                                    }
+                                    if (S17 == 0) {
+                                        image17 = "冷冻室下门关闭";
+                                    } else if (S17 == 1) {
+                                        image17 = "冷冻室下门开启";
+                                        open = true;
+                                    }
+                                    // open = 1;
+                                    // failure = 1;
+                                    if(open){
+                                        $("p:contains('冰箱开关门')").addClass("colorRed")
+										console.log($("p:contains('冰箱开关门')")[0])
+									}
+                                }
+                            }
+                            // console.log(failure)
+                            //failure 0-报警，1-解除报警
+                            /*****************************************************************************************************/
+
+                        },
+
+                    });
+
+                }
+
+
+
+			var sncode="";//定义sncode
 			var addId="http://10.138.87.129";
 			var bodyScale=$(window).height()/595;
 			var that=this;
@@ -249,11 +323,11 @@
 						          },
 						          title:{
 						          	show:true,
-						          	
+
 						          }
 						        }
 						    ]
-						
+
 					}
 					zs.setOption(zsOption,true);
 					optionArray[times]=zs;
@@ -325,15 +399,15 @@
 				          },
 				          title:{
 				          	show:true,
-				          	
+
 				          }
 				        }
 				    ]
-				
+
 					}
 					zs.setOption(zsOption,true);
 					optionArray[times]=zs;
-				
+
 			}
 			//var sortArr=["T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","U1","U2","R1"];
 			var sortArr=["T1","T2","T4","U1","I2","I1",
@@ -353,7 +427,7 @@
 						};
 					});
 				};
-				
+
 				$.each(monitorConf,function(index,item){
 					if(sortArr.indexOf(item.feature)==-1){
 						other.push(item);
@@ -365,17 +439,17 @@
 			return removeDoorStatus(result.concat(other));
 			}
 		/*****************************************************************************************/
-			function removeDoorStatus(monitorConf){//因为把 冰箱的四个参数一起显示到了同一位置 ，所以要monitorConf删除 这些 信息 
+			function removeDoorStatus(monitorConf){//因为把 冰箱的四个参数一起显示到了同一位置 ，所以要monitorConf删除 这些 信息
 				for(var i=0;i<monitorConf.length;i++){
 					//if(monitorConf[i].feature=="S16"){debugger;}
 					if(monitorConf[i].feature=="S14"||monitorConf[i].feature=="S15"||monitorConf[i].feature=="S16"||monitorConf[i].feature=="S17"){
 						monitorConf.splice(i,1);
 						i=i-1;
 					}
-					
+
 				}
 				return monitorConf;
-			
+
 		}
 		/********************************/
 			function sortType(monitorConf){//将温度计往前排
@@ -390,17 +464,17 @@
 						}
 				}
 				return thermometer.concat(other);
-			
+
 		}
-			function contains(arr, obj) {  
-			    var i = arr.length;  
-			    while (i--) {  
-			        if (arr[i] === obj) {  
-			            return true;  
-			        }  
-			    }  
-			    return false;  
-			}  
+			function contains(arr, obj) {
+			    var i = arr.length;
+			    while (i--) {
+			        if (arr[i] === obj) {
+			            return true;
+			        }
+			    }
+			    return false;
+			}
 		function getPicIndex(times){
 			var indexImg=0;
 			var arr=[32,33,34,35];
@@ -417,9 +491,9 @@
 				indexImg=arr[0];
 			} */
 			return indexImg;
-			
+
 		}
-			
+
 			/* ********************************************************************************* */
 			<!--实时状态初始化  -->
 			function timeStatus(){
@@ -435,13 +509,13 @@
 				if(sncode==""||sncode==undefined){
 					return;
 				}
-			
+
 				//根据机器型号跳转到对应的iframe
 				$(".gzzd").click(function(){
 					$("#gzzdIframe").attr("src",addId+"/#/product/"+sncode);
 				});
-				
-				
+
+
 				$.ajax({
 					//url:"http://localhost:8088/api/yzd/product/"+sncode,
 					url:addId+"/api/yzd/product/"+sncode,
@@ -451,7 +525,7 @@
 						data.monitorConf=sort(data.monitorConf);
 					//	console.log(data.monitorConf);
 						dataLength=data.monitorConf.length;
-						
+
 						//debugger;
 						var location=data.location;
 						var info=data.info;
@@ -465,9 +539,9 @@
 						if(pageNo!=1){
 							start=start-1;
 						}
-						
+
 						 monitorConf=monitorConf.slice(start,end);
-						
+
 							for( var index in monitorConf){
 								//debugger;
 								var monitorConfSingle=monitorConf[index];
@@ -481,7 +555,7 @@
 								var feature=monitorConfSingle.feature;
 									 actualStatus=info[feature];
 								var charts="";
-							
+
 									 title=param.title;
 									 label=param.label;
 									 max=param.max;
@@ -490,12 +564,12 @@
 								if(times==t1&&pageNo==1){
 									//S14=1;
 									times+=1;
-									
+
 									if(!S14||!S15||!S16||!S17 ){
 										var image=
 											"<div id='cx"+times+"'  class='jtState mt1'>"+
 											"<p style='margin-left:17%;' class='stateTxt'>冰箱开关门</p>"+
-											
+
 										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>开关门缺失数据</span></div>"+
 										"</div>";
 										$("#firstPage").append(image);
@@ -530,7 +604,7 @@
 											image17="冷冻室下门开启";
 											image17url="downOpen.png";
 										}
-										
+
 										var image=
 											"<div id='cx"+times+"'  class='jtState mt1'>"+
 												"<p class='stateTxt'>冰箱开关门</p>"+
@@ -545,7 +619,7 @@
 											"</div>";
 										$("#firstPage").append(image);
 									}
-									
+
 								}
 								var changeClass="";
 								/**************处理状态 ****************/
@@ -555,25 +629,25 @@
 									}
 									times+=1;var value="";
 									var infoArray=statusInfo[feature];//获取对应的 数组对照信息
-									var statusValue=info[feature];//获取当前传入状态值 
-									//debugger; 
+									var statusValue=info[feature];//获取当前传入状态值
+									//debugger;
 									//console.log(infoArray);
 									if(feature=="M1"){
 										console.log(statusValue+"--"+feature)
 									}
 									var imgName=null;
 									for(var i=0;i<infoArray.length;i++){
-										
+
 										var v=infoArray[i];
 										if(v.key=="000"+statusValue){
 											// console.log(infoArray[i],"000"+statusValue);
 											value=v.value;
 											imgName=v.img;
-											console.log(imgName);
+											// console.log(imgName);
 											break;
 										}
 									}
-									
+
 									var charts=
 										"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 											"<p class='stateTxt'>"+title+"</p>"+
@@ -596,7 +670,7 @@
 									type="text";
 									label="实际值数据缺失";
 								}
-									
+
 						//	var changeClass="";
 								if(times%pagnum>5){//用于判断是否进入第二 行 并添加margin-top
 									changeClass="mt1";
@@ -616,9 +690,9 @@
 									    "<div class='tempTxt'>"+actualStatus+"</div>"+
 									"</div>";
 									var myarr=new Array();
-									
-									
-									
+
+
+
 										$("#firstPage").append(charts);
 									if(actualStatus==undefined){actualStatus=(max+min)/2;}
 									if(actualStatus<min){min=actualStatus-4;}
@@ -646,34 +720,34 @@
 											"<div class='canvBox'>"+
 												"<div id='Canvas"+times+"' style='width:100%;height:100%'></div>"+
 											"</div>"+
-										
+
 										"</div>";
 										$("#firstPage").append(charts);
-									
+
 									var percent=(actualStatus-min)/(max-min);
 									var zs;
 									gauge(zs,actualStatus,times,max,min,title,label,percent);
-									
+
 								}else if(type=="text"){
-									
+
 									times+=1;
 									charts+=
 										"<div id='cx"+times+"'  class='jtState "+changeClass+"'>"+
 											"<p style='margin-left:17%;' class='stateTxt'>"+title+"</p>"+
-											
+
 										    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>"+(label==undefined?"暂无数据":label)+"</span></div>"+
 										"</div>";
 										$("#firstPage").append(charts);
 								}
 							}
-							
-						/*****************************************************************************************************/	
-							
+
+						/*****************************************************************************************************/
+
 					},
 				//	error:function(){alert("实时加载错误");}
-				
+
 				});
-				
+
 			}
 			/**********************************使用分析 **************************************************/
 			var useAnalysisPageSize=4;
@@ -708,8 +782,8 @@
 											"</div>"+
 											"<div class='rightInfo'>"+
 												"<h6>"+element.title+"</h6>";
-									
-									
+
+
 									if(element.desc1!=""&&element.desc1!=null){
 										content+="<p>"+element.desc1+"</p>";
 									}
@@ -729,7 +803,7 @@
 										content+="<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+element.result2+"</p>";
 									}
 									content+="</div></div>";
-									
+
 									if(index == 1) {
 										content +=  "<div class='problemBox "+margleft+" "+margtop+"'>"+
 										"<div class='imgBox '>"+
@@ -738,10 +812,10 @@
 										"<div class='rightInfo'>"+
 											"<h6>整机输入电压</h6>"+
 										"</div></div>";
-										
-										
+
+
 									}
-									
+
 									if(index == 3) {
 										content +=  "<div class='problemBox "+margleft+" "+margtop+"'>"+
 										"<div class='imgBox '>"+
@@ -759,35 +833,32 @@
 									margleft="";
 									margtop="";
 									f+=1;
-								
-									
-								
+
+
+
 							});
-							
-							console.log(content);
-							
-							
+
+							// console.log(content);
+
+
 							$("#analysisFirstPage").html(first);
 							$("#analysisSecondPage").html(second);
 						},
 					//	error:function(){alert("使用分析加载错误 ");}
-						
-						
-						
+
+
+
 					});
-				
-				
-				
+
+
+
 			}
 			/***********************************地图 *******************************************************/
 		function mapChina(serious,general,light,good,arr,geoCoord){
 				var myMapCharts = echarts.init(document.getElementById("myMap"));
                 good = good.concat([
-                    // {name:'良好',x:120*that.bodyScale,y:100*that.bodyScale},
-                    // {name:'良好',x:370*that.bodyScale,y:186*that.bodyScale},
                     {name:'良好',x:350*that.bodyScale,y:170*that.bodyScale},
                     {name:'良好',x:350*that.bodyScale,y:180*that.bodyScale},
-                    {name:'良好',x:150*that.bodyScale,y:110*that.bodyScale},
                     {name:'良好',x:366*that.bodyScale,y:220*that.bodyScale},
                     {name:'良好',x:357*that.bodyScale,y:220*that.bodyScale},
                     {name:'良好',x:358*that.bodyScale,y:220*that.bodyScale},
@@ -807,16 +878,6 @@
                     {name:'良好',x:309*that.bodyScale,y:325*that.bodyScale},
                     {name:'良好',x:348*that.bodyScale,y:307*that.bodyScale},
                     {name:'良好',x:351*that.bodyScale,y:296*that.bodyScale},
-                    {name:'良好',x:230*that.bodyScale,y:296*that.bodyScale},
-                    {name:'良好',x:240*that.bodyScale,y:305*that.bodyScale},
-                    {name:'良好',x:210*that.bodyScale,y:325*that.bodyScale},
-                    {name:'良好',x:210*that.bodyScale,y:327*that.bodyScale},
-                    {name:'良好',x:197*that.bodyScale,y:307*that.bodyScale},
-                    {name:'良好',x:217*that.bodyScale,y:327*that.bodyScale},
-                    {name:'良好',x:219*that.bodyScale,y:323*that.bodyScale},
-                    {name:'良好',x:221*that.bodyScale,y:325*that.bodyScale},
-                    {name:'良好',x:241*that.bodyScale,y:319*that.bodyScale},
-                    {name:'良好',x:231*that.bodyScale,y:315*that.bodyScale},
                     {name:'良好',x:331*that.bodyScale,y:305*that.bodyScale},
                     {name:'良好',x:317*that.bodyScale,y:315*that.bodyScale},
                     {name:'良好',x:287*that.bodyScale,y:312*that.bodyScale},
@@ -828,7 +889,25 @@
                     {name:'良好',x:340*that.bodyScale,y:295*that.bodyScale},
                     {name:'良好',x:380*that.bodyScale,y:255*that.bodyScale},
                     {name:'良好',x:386*that.bodyScale,y:265*that.bodyScale},
-                    {name:'良好',x:386*that.bodyScale,y:278*that.bodyScale},
+                    {name:'良好',x:350*that.bodyScale,y:270*that.bodyScale},
+                    {name:'良好',x:330*that.bodyScale,y:240*that.bodyScale},
+                    {name:'良好',x:345*that.bodyScale,y:260*that.bodyScale},
+                    {name:'良好',x:369*that.bodyScale,y:250*that.bodyScale},
+                    {name:'良好',x:334*that.bodyScale,y:240*that.bodyScale},
+                    {name:'良好',x:347*that.bodyScale,y:235*that.bodyScale},
+                    {name:'良好',x:350*that.bodyScale,y:220*that.bodyScale},
+                    {name:'良好',x:350*that.bodyScale,y:230*that.bodyScale},
+                    {name:'良好',x:330*that.bodyScale,y:220*that.bodyScale},
+                    {name:'良好',x:370*that.bodyScale,y:240*that.bodyScale},
+                    {name:'良好',x:360*that.bodyScale,y:250*that.bodyScale},
+                    {name:'良好',x:350*that.bodyScale,y:260*that.bodyScale},
+                    {name:'良好',x:340*that.bodyScale,y:270*that.bodyScale},
+                    {name:'良好',x:320*that.bodyScale,y:280*that.bodyScale},
+                    {name:'良好',x:315*that.bodyScale,y:290*that.bodyScale},
+                    {name:'良好',x:360*that.bodyScale,y:290*that.bodyScale},
+                    {name:'良好',x:370*that.bodyScale,y:280*that.bodyScale},
+                    {name:'良好',x:370*that.bodyScale,y:275*that.bodyScale},
+                    {name:'良好',x:363*that.bodyScale,y:280*that.bodyScale},
                 ]);
 				console.log(good)
 				var mapChartsOptions = {
@@ -928,7 +1007,7 @@
 				                },
 				                data:good
 				            }
-				            
+
 				        },
 /*				        {
 				            name: '一般',
@@ -955,7 +1034,7 @@
 				                data :general
 				            }
 				        } ,
-				        
+
 				        {
 				            name: '轻微',
 				            type: 'map',
@@ -1005,13 +1084,13 @@
 				                },
 				                data :serious
 				            }
-				        } 
+				        }
 				        */
-				        
+
 				    ]
 				}
 				myMapCharts.setOption(mapChartsOptions);
-			
+
 				/*******************地图点击事件 下 *****************************/
 				myMapCharts.on('click',function(param){
 					if(!(param.data.name === '山东省青岛市海尔工业园')){
@@ -1025,8 +1104,8 @@
 					$("#address").html(name);
 					$("#status").html(param.data.status);
 					 arr=[ [{name:name},{name:'基线'}] ];
-					
-				
+
+
 					 $(".state-box").css({"left":"0"});
 					$("#analysisFirstPage").html("");
 					$("#analysisSecondPage").html("");
@@ -1037,24 +1116,24 @@
 					mapChartsOptions.series[0].markLine.data=arr;
 					myMapCharts.clear();
 					myMapCharts.setOption(mapChartsOptions);
-					
-		              	/**********************/	
-		              	
-		              	
-		              	
+
+		              	/**********************/
+
+
+
 					var navs = $(".tnav");
 					for(var nav of navs){
 						$(nav).removeClass("navActive");
 					}
 					//给点击的nav加active样式
 					$(".sszt").addClass("navActive");
-					
+
 					//切换内容
 					$(".leftStates").css("display","block");
 					$(".syfxBox").css("display","none");
 					$(".ztqsBox").css("display","none");
 					//改变宽度
-					$(".state-box").css("width","200%");	
+					$(".state-box").css("width","200%");
 					/************************重新加载冰箱信息框的动画**********************/
 					$(".bxinfo").hide();
 					$(".infobox").hide();
@@ -1066,12 +1145,12 @@
 				/*******************地图点击事件 上面  *****************************/
 			}
 			/***********************************初始化 加载设备信息 并进行默认选中**********************************************/
-			var timer;//定时器 
+			var timer;//定时器
 			$(function(){
 				//setTimeout(function(){
 				//	mapChina()
 			//	},2000);
-				
+
 				$.ajax({
 					url:"${contextPath}/data/findDeviceInfoStatusGroup",
 					type:"get",
@@ -1107,32 +1186,32 @@
 						$("#sncode").html(sncode);
 						$("#address").html(good[2].name);
 						$("#status").html(good[2].status);
-						
+
 						//Status.delayIframe(sncode);
 						//document.getElementById("video").src="${contextPath}/static/phm/"+good[0].image;
-					
+
 						//var arr=[ [{name:good[0].name},{name:'基线'}] ];
- 
+
 						//useAnalysis();//更新使用分析
-						timeStatus();//更新实时状态 
+						timeStatus();//更新实时状态
 						setTimeout(function(){
 							mapChina(serious,general,light,good,arr,geoCoord);
 						},0);
 						timer=setInterval(function(){
 							updateStatus();
 						},3000);
-						
+
 					},
 				//	error:function(){alert("加载 地图信息错误 ");}
-					
-					
+
+
 				})
 			});
 			/*********************定时更新 实时状态 ****************************/
 		function updateStatus(){
 				var times=idFlage;
-				var length;//根据截取的数据长度 在后面判断要不要清空 对应的 数据 
-			
+				var length;//根据截取的数据长度 在后面判断要不要清空 对应的 数据
+
 			$.ajax({
 				//url:"http://localhost:8088/api/yzd/product/"+sncode,
 				url:addId+"/api/yzd/product/"+sncode,
@@ -1156,7 +1235,7 @@
 						start=start-1;
 					}
 					 monitorConf=monitorConf.slice(start,end);
-					
+
 					length=monitorConf.length;
 					if(length==0){
 						return;
@@ -1175,7 +1254,7 @@
 							var feature=monitorConfSingle.feature;
 								 actualStatus=info[feature];
 							var charts="";
-						
+
 								 title=param.title;
 								 label=param.label;
 								 max=param.max;
@@ -1187,11 +1266,11 @@
 										times+=1;
 										//debugger;
 										if(!S14||!S15||!S16||!S17){
-											
+
 											var image=
 												//"<div id='cx"+times+"'  class='jtState mt1'>"+
 												"<p style='margin-left:17%;' class='stateTxt'>冰箱开关门</p>"+
-												
+
 											    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>开关门缺失数据</span></div>";
 										//	"</div>";
 											$("#cx"+times).html(image);
@@ -1217,7 +1296,7 @@
 											}else if(S17==1){
 												image17url="downOpen.png";
 											}
-											
+
 											var image=
 											//	"<div id='cx"+times+"'  class='jtState mt1'>"+
 													"<p class='stateTxt'>冰箱开关门</p>"+
@@ -1232,7 +1311,7 @@
 												//"</div>";
 												$("#cx"+times).html(image);
 										}
-										
+
 									}
 							var changeClass="";
 							/**************处理状态 ****************/
@@ -1242,8 +1321,8 @@
 								}
 								times+=1;var value="";
 								var infoArray=statusInfo[feature];//获取对应的 数组对照信息
-								var statusValue=info[feature];//获取当前传入状态值 
-								//debugger; 
+								var statusValue=info[feature];//获取当前传入状态值
+								//debugger;
 							//	console.log(infoArray);
 							    var imgName=null;
 								for(var i=0;i<infoArray.length;i++){
@@ -1261,7 +1340,7 @@
 												"<img src='${contextPath}/static/phm/images/status/"+imgName+"' alt='图片' />"+
 											"</div>"+
 											"<p class='txtInfo'>当前状态:<span>"+value+"</span></p>";
-										
+
 									//"</div>";
 									if(imgName != null){
 										$("#cx"+times).html(charts);}
@@ -1277,7 +1356,7 @@
 								type="text";
 								label="实际值数据缺失";
 							}
-						
+
 							if(times%pagnum>5){
 								changeClass="mt1";
 							}
@@ -1296,10 +1375,10 @@
 								    "<div class='tempTxt'>"+actualStatus+"</div>";
 								//"</div>";
 								var myarr=new Array();
-								
+
 								$("#cx"+times).html(charts);
-								
-							
+
+
 								 myarr[0]=["liquid"+times,max,min,actualStatus,"℃"];
 								 Status.liquidMove(myarr);
 							}if(type=="speedometer"){
@@ -1328,38 +1407,38 @@
 										"<div class='canvBox'>"+
 											"<div id='Canvas"+times+"' style='width:100%;height:100%'></div>"+
 										"</div>";
-									
+
 									//"</div>";
-							
+
 							//	$("#cx"+times).html(charts);
 							 var zs =optionArray[times];
 							// actualStatus=(Math.random()*10).toFixed(2);
 								var percent=(actualStatus-min)/(max-min);
 								gauge(zs,actualStatus,times,max,min,title,label,percent);
-								
+
 							}else if(type=="text"){
-								
+
 								times+=1;
 								charts+=
 									//"<div id='cx"+times+"' class='jtState "+changeClass+"'>"+
 										"<p style='margin-left:17%;' class='stateTxt'>"+title+"</p>"+
-										
+
 									    "<div style='margin-top: 14%;'><span style='margin:27% 16%;display:block;'>"+(label==undefined?"暂无数据":label)+"</span></div>";
 									//"</div>";
-						
+
 								$("#cx"+times).html(charts);
 							}
 						}
-						
-						
-					/*****************************************************************************************************/	
-						
+
+
+					/*****************************************************************************************************/
+
 				},
 			//	error:function(){alert("实时加载错误");}
-			
+
 			});
 			//debugger;
-			
+
 		}
 			/********************下面是实时状态分页处理 **********************************/
 			var pageNo=1;//记录第几页
@@ -1376,7 +1455,7 @@
 				$("#firstPage").html("");
 				timeStatus();
 			}
-			
+
 			function pageLeft(){
 				pageNo=pageNo-1;
 				if(pageNo<1){
@@ -1463,7 +1542,7 @@
 						      "key": "0004",
 						      "value": "冷藏风门A开",
 						      "img":"fma_open.png"
-						      
+
 						    }
 						  ],
 						  "S3": [
@@ -1626,9 +1705,9 @@
 						    }
 						  ]
 						}
-			
-			
-			
+
+
+
 
 			/* 名称		传感器编号		数据库代号		控制命令字
 			T1		冷藏室温度		T1			6DAA
@@ -1675,7 +1754,7 @@
 			E1		解锁按钮按键释放事件	E1			20
 
 
-					
+
  */
 		</script>
 	</body>
