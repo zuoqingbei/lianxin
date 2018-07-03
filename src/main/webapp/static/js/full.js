@@ -199,7 +199,7 @@ function reloadData(productCode, labType) {
 
         $("#iframeFlatMap").eq(k)[0].contentWindow.createArrData(productCode, labType);
     }
-    reloadLeftData();
+    // reloadLeftData();
 }
 //点击a元素时
 function navSelectA() {//这里会触发地图中要加载的数据

@@ -169,7 +169,7 @@ function reloadData(productCode, labType) {
         $("#iframeFlatMapL3x3").eq(k)[0].contentWindow.createArrData(productCode, labType);
     }
     try{
-        reloadLeftData();
+        // reloadLeftData();
     }catch (e) {
         console.log(e.message)
     }

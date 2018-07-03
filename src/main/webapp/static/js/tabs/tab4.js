@@ -931,7 +931,7 @@ function tab4StationSelected(obj) {
     var name = $(obj).find("option:selected").text();
     console.log(id + name);
     //工位变化
-    loadTab4JianData(id, name);
+    // loadTab4JianData(id, name);
 }
 
 //模块商质量水平分布

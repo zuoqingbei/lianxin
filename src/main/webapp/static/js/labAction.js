@@ -10,8 +10,6 @@ var videoJsIsPlayed = false;
 
 
 $(function () {
-    //实验室状态数据加载
-    runStatus();
 
     smallVideoMove();
     loadAllDataCenterAjax();
@@ -62,11 +60,12 @@ $(function () {
                 } else {
                     inlandTabShow();
                     //只依靠台位来切换曲线不行，万一读不出来台位就一直显示体验馆，而且之前如果显示视频也不会自动隐藏
-
+/*
                     if ($curveBox.is(":hidden")) {//曲线没有显示
                         $curveBox.show().siblings().hide();
                     }
-                    $(".smallVideoBox").hide();
+                    $(".smallVideoBox").hide();*/
+                    $(".labSubNav>ul>li").eq(3).click();
                     labCurveResize();
                     //非中海博睿的隐藏运营状态内容
                     // $(".item.status .leftContent [class$=-body]").children().hide();
@@ -263,7 +262,7 @@ $(function () {
     initfour();//及时率
     inittwo();//满意度
 
-    // labAllForCenterLabAjax();
+    labAllForCenterLabAjax();
 });
 function inlandTabShow(mark) { //国内
     if (mark === "zhonghaiborui") {

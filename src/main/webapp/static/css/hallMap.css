@@ -55,13 +55,10 @@ strong{
     .left > div,
     .right > div {
         flex: 1;
-        padding: 1rem;
-        padding-top: 0;
+        padding: 0 1rem 1rem;
     }
     .styleIn7x3 .left > div,
     .styleIn7x3 .right > div {
-        flex: 1;
-        padding: 1rem;
         padding-top: auto;
     }
 
@@ -119,6 +116,10 @@ strong{
         padding: .5% 0 .3% 2.5em;
         letter-spacing: .125em;
     }
+    .styleIn7x3 h1{
+        letter-spacing: .0625em;
+        font-size: 2.125em;
+    }
 
     h1:nth-of-type(2) {
         font-size: 1.9em;
@@ -137,7 +138,11 @@ strong{
         background: url(../img/logo_haier.png) no-repeat;
         background-size: 100% 100%;
     }
-
+    .styleIn7x3 header .mainLogo {
+        left: 28em;
+        width: 4.5em;
+        height: 2em;
+    }
 }
 
 #container {
@@ -160,9 +165,9 @@ strong{
     position: relative;
     flex: 3.3;
     top: 0;
-    right: 2rem;
+    right: 1.875rem;
     width: 100%;
-    /*transform: translateY(2%) scaleY(1);*/
+    transform: scale(1.08);
 }
 .styleIn7x3 .mapBox > iframe {
     flex: 4;
@@ -236,9 +241,13 @@ strong{
         position: relative;
         height: 1.25em;
         overflow: hidden;
-        top: 2.25em;
+        top: 2em;
+        font-size: .875em;
     }
-
+    .styleIn7x3 .legend-m>.text {
+        top: 2.25em;
+        font-size: .75rem;
+    }
     /*全选*/
     .legend-m>.selectAll{
         position: absolute;
@@ -335,6 +344,13 @@ strong{
     margin-right: 1rem;
     margin-top: 1.5rem;
 }
+.styleIn7x3 .distribution .totalNum>span{
+    margin-top: 1rem;
+}
+.styleIn7x3 .distribution ul{
+    margin-bottom: 1rem;
+}
+
 .distribution ul>li{
     list-style: none;
     margin: .5rem 2rem;
@@ -350,6 +366,9 @@ strong{
     border-collapse: collapse;
     margin: 1rem auto 0;
     text-align: center;
+}
+.styleIn7x3 .test table{
+    margin: 1rem auto .5rem;
 }
 .test table thead{
     background-color: #66ccff44;
@@ -376,7 +395,7 @@ strong{
     margin:  1.5rem auto .5rem;
 }
 .styleIn7x3 .interconnection table {
-    margin:  1rem auto 1.75rem;
+    margin:  1rem auto .75rem;
 }
 
 .interconnection table th{
@@ -384,13 +403,17 @@ strong{
 }
 .interconnection table td:nth-of-type(2),
 .interconnection table td:nth-of-type(3){
-    padding: .25rem 0 .25rem 1rem;
+    padding: .375rem 0 .25rem 1rem;
     text-align: right;
     font-size: .875rem;
     letter-spacing: 0.375rem;
     color: #f90;
     background: url(../img/hallMap/bg_interconnectionTd.png) 12% 50% no-repeat;
     background-size: 94% 80%;
+}
+.styleIn7x3 .interconnection table td:nth-of-type(2),
+.styleIn7x3 .interconnection table td:nth-of-type(3){
+    padding: .375rem 0 .375rem 1rem;
 }
 
 /*实验室管理*/
@@ -401,7 +424,7 @@ strong{
     margin: .875rem auto .25rem;
 }
 .styleIn7x3 .management ul{
-    margin: .5rem auto .25rem;
+    margin: .5rem auto;
 }
 .management ul>li{
     position: relative;

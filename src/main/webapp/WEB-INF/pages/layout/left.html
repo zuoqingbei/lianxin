@@ -204,8 +204,8 @@
     </div>
 
 
-<script src="${contextPath!}/static/js/statistics.js?time=New Date()"></script>
-<script src="${contextPath!}/static/js/main_left.js?time=New Date()"></script>
+<script src="${contextPath!}/static/js/statistics.js"></script>
+<script src="${contextPath!}/static/js/main_left.js"></script>
 <script>
     var myCharts = [];
     var myChartFlatRT;
@@ -225,7 +225,7 @@
         myChartFlatLB = echarts.init($("#l.left3x3").find(".flat-left-bottom .myChart")[0]);
         myCharts = [myChartFlatLT, myChartFlatRT, myChartFlatLB];
         //左侧平面地图及其他左侧数据
-        reloadLeftData();
+        // reloadLeftData();
 
     });
     function parentMethod(){//平面地图的数据加载

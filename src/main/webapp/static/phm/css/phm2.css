@@ -3,6 +3,7 @@
 }
 html,body{
     height: 100%;
+    background: rgba(14, 19, 39,1);
 }
 
 .fl{
@@ -513,10 +514,11 @@ html,body{
 }
 
 .recordscenterTitle .news ul li{
+    /*color:lime;*/
     padding: 2px 0;
     width: 90%;
-    height: 45px;
-    line-height: 45px;
+    height: 50px;
+    line-height: 50px;
     font-size: 0.9em;
     vertical-align: center;
     white-space: nowrap;

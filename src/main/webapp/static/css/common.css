@@ -119,11 +119,12 @@ h3 {
 }
 
 #mask {
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 999999;
+    z-index: 9;
     background-size: 100% 100%;
+    overflow: hidden;
 }
 
 video {
