@@ -660,7 +660,7 @@
             color: colors,
             legend: {
                 top: 25,
-                show: true,
+                show: false,
                 data: ['在线', '离线'],
                 textStyle: {
                     color: '#00adef',
@@ -670,7 +670,7 @@
             },
             xAxis: {
                 type: 'category',
-                data: ['冰箱', '商空', '洗衣机', '冷柜', '家空'],
+                data: ['冰冷', '洗涤', '家空','商空', '热水器', '厨电'],
                 axisLabel: {
                     //修改X轴上字体样式
                     interval: 0,
@@ -688,7 +688,7 @@
 
             },
             yAxis: {
-                name: '台',
+                name: '万台',
                 type: 'value',
                 //Y轴 坐标轴名称显示
                 nameTextStyle: {
@@ -731,7 +731,8 @@
                             color: '#00adef'
                         }
                     },
-                    data: [25, 45, 65, 60, 50]
+                    // data: [3.8, 3.2, 60.9, 0.43, 0.79,0.48]
+                    data: [38, 32, 609, 4.3, 7.9,4.8]
                 },
                 {
                     name: '离线',
@@ -743,9 +744,8 @@
                         }
                     },
                     barWidth: 15,
-                    data: [10, 13, 15, 17, 15],
+                    data: [0, 0, 0, 0, 0, 0],
                 },
-
             ]
         });
     })
