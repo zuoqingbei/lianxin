@@ -26,8 +26,8 @@ html,body{
     overflow: hidden;
     height:15%;
     width:99%;
-    background:url("../images/page2/title-bg.png") no-repeat 80% 100%;
-    background-size: 99% 90%;
+    background: url(../images/bg_header_phm.png) no-repeat 50% 60%;
+    background-size: 95% 60%;
     margin: 0 auto;
 }
 #head h1{

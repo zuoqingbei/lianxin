@@ -4,16 +4,20 @@
 	background-size: 100% 100%;
 	width:100%;
 }
-.colorRed{
-	color: red;
+p.colorRed{
+	color: #f5222d;
+}
+p.colorOrange{
+	color: #ff9f30;
 }
 /*=============================head==============================*/
 #head{
 	overflow: hidden;
-	height:18.5%;
-	width:100%;
-	background:url("../images/page2/title-bg.png") no-repeat 80% 100%;
-	background-size: 99% 90%;
+	height:15%;
+	width:99%;
+	background: url(../images/bg_header_phm.png) no-repeat 50% 60%;
+	background-size: 95% 60%;
+	margin: 0 auto;
 }
 #head h1{
 	float:left;
