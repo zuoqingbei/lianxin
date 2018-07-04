@@ -169,8 +169,10 @@
 <!--实时状态  -->
 <script type="text/javascript" charset="utf-8">
     var urlFrom = location.search;
+    // var c = 0;
     //实时状态初始化,用来控制冰箱开关门字体颜色
     setInterval(function () {
+        // c++;
         getDoorStatus();
     }, 1000);
 
@@ -190,17 +192,32 @@
                 var S17 = info['S17'];
                 var failure = info['failure'];
                 var open = S14 || S15 || S16 || S17;
-
-                open = true;
+                console.log(open)
+                /*open = true;
                 failure = true;
+                if(c>10){
+                    open = false;
+                    failure = false;
+                }*/
 
-                if (urlFrom === '?zaixianjiupian') {// 在线纠偏
-                    $("p:contains('冰箱开关门')").addClass("colorRed");
-                    $(".state>.txt2").text("异常").addClass("colorRed");
-                } else if (urlFrom === '?weixiugengxin') {// 上门保养
-                    $("p:contains('冷藏风机状态')").addClass("colorRed");
-                    $(".state>.txt2").text("异常").addClass("colorRed");
-                } else if (urlFrom === '?shangmenbaoyang') {// 维修更新
+                if ((urlFrom === '?zaixianjiupian')) {// 在线纠偏
+                    if(Number(open)){
+                        $("p:contains('冰箱开关门')").addClass("colorRed");
+                        $(".state>.txt2").text("异常").addClass("colorRed");
+                    }else{
+                        $("p:contains('冰箱开关门')").removeClass("colorRed");
+                        $(".state>.txt2").text("正常").removeClass("colorRed");
+                    }
+
+                } else if (urlFrom === '?weixiugengxin') {// 维修更新
+                    if(Number(failure)){
+                        $("p:contains('冷藏风机状态')").addClass("colorRed");
+                        $(".state>.txt2").text("异常").addClass("colorRed");
+                    }else{
+                        $("p:contains('冷藏风机状态')").removeClass("colorRed");
+                        $(".state>.txt2").text("正常").removeClass("colorRed");
+                    }
+                } else if (urlFrom === '?shangmenbaoyang') {// 上门保养
                     $("p:contains('冷藏室温度'), p:contains('冷冻温度')").addClass("colorOrange");
                     $(".state>.txt2").text("预警").addClass("colorOrange");
                 }
