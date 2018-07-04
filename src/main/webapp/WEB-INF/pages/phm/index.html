@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="${contextPath}/static/phm/css/phm2.css"/>
     <link rel="stylesheet" href="${contextPath}/static/phm/css/public.css"/>
     <style>
-
+        .LWAPPNum{
+    
+}
     </style>
 </head>
 <body>
@@ -34,7 +36,7 @@
                 <div class="mainTitle">
                     <div class="mainTitleContent">
                         <a style="color:#6cf;" href="${contextPath!}/phm/status">
-                            <span>自诊断自预测</span>
+                            <span>自反馈&emsp;&emsp;自诊断&emsp;&emsp;自预测</span>
                         </a>
                     </div>
                 </div>
@@ -45,7 +47,8 @@
                                 <span>当前在线状态</span>
                             </div>
                             <ul class="listsContent">
-                                <li>累计接入数: <a href="#" class="LWAPPNum ">697,264</a></li>
+                                <li>累计接入数:<span class="LWAPPNum" style="font-size: 1.1em;
+                                    color: #ff9f30;">697,264</span><span class="">台</span></li>
                                 <li>累计运行时间: <span class="operationTime">67,747,876,789 </span><span class="">小时</span>
                                 </li>
                             </ul>
@@ -62,32 +65,31 @@
                     </div>
                 </div>
                 <div class="leftContentList">
+                    
                     <div class="lists fl">
                         <div class="listsUp">
                             <div class="info">
                                 <!-- <div class="imgboxContent">
-                                    <img src="${contextPath}/static/phm/images/system/ice-cold.png" alt=""/>
+                                    <img src="${contextPath}/static/phm/images/system/kitchen.png" alt=""/>
                                 </div> -->
                                 <div class="imgbox22">
-                                    <div class="imgIcon bingleng"></div>
+                                    <div class="imgIcon chudian"></div>
                                 </div>
-                                <p class="txt1">冰冷</p>
+                                <p class="txt1">厨电</p>
                                 <p class="txt2">智能产品累计接入数</p>
-                                <p class="txt3 number">38,4621</p>
+                                <p class="txt3 number">4,826</p>
                                 <p class="txt4">MFOP(无故障运行时间)</p>
                                 <div class="timeNum">
-                                    <span class="txt5 time">1,010,781,383</span>
-                                    <span class="xs">小时</span>
+                                    <span class="txt5 time">42,275,760</span><span class="xs">小时</span>
                                 </div>
-
 
                             </div>
                         </div>
                         <div class="listsMiddle echarts">
-                            <div id="list-1"></div>
+                            <div id="list-11"></div>
                         </div>
                         <div class="listsDown echarts">
-                            <div id="list-2"></div>
+                            <div id="list-12"></div>
                         </div>
                     </div>
                     <div class="lists fl">
@@ -197,26 +199,28 @@
                         <div class="listsUp">
                             <div class="info">
                                 <!-- <div class="imgboxContent">
-                                    <img src="${contextPath}/static/phm/images/system/kitchen.png" alt=""/>
+                                    <img src="${contextPath}/static/phm/images/system/ice-cold.png" alt=""/>
                                 </div> -->
                                 <div class="imgbox22">
-                                    <div class="imgIcon chudian"></div>
+                                    <div class="imgIcon bingleng"></div>
                                 </div>
-                                <p class="txt1">厨电</p>
+                                <p class="txt1">冰冷</p>
                                 <p class="txt2">智能产品累计接入数</p>
-                                <p class="txt3 number">4,826</p>
+                                <p class="txt3 number">38,4621</p>
                                 <p class="txt4">MFOP(无故障运行时间)</p>
                                 <div class="timeNum">
-                                    <span class="txt5 time">42,275,760</span><span class="xs">小时</span>
+                                    <span class="txt5 time">1,010,781,383</span>
+                                    <span class="xs">小时</span>
                                 </div>
+
 
                             </div>
                         </div>
                         <div class="listsMiddle echarts">
-                            <div id="list-11"></div>
+                            <div id="list-1"></div>
                         </div>
                         <div class="listsDown echarts">
-                            <div id="list-12"></div>
+                            <div id="list-2"></div>
                         </div>
                     </div>
                 </div>
@@ -383,7 +387,7 @@
     //=====================左侧计时器=========================
 
     let [numbers, times] = [[], []], //数量和时间基数
-        [refreshHz, counter] = [5000, 0], //刷新率和计数器
+        [refreshHz, counter] = [1000, 0], //刷新率和计数器
         addRate = [1 / 7, 1 / 9, 1 / 5, 1 / 5, 1 / 3, 1 / 3]; //增长率
 
     $(".lists").each(function () {
@@ -644,7 +648,7 @@
             ]
         });
 
-        //图标二  离线and在线bar
+        //图标二  右侧冰冷
         var myChart2 = echarts.init($("#currentState_r")[0]);
         myChart2.setOption({
             grid: {
@@ -656,21 +660,23 @@
             color: colors,
             legend: {
                 top: 25,
-                show: false,
+                // show: false,
                 data: ['在线', '离线'],
                 textStyle: {
                     color: '#00adef',
                     fontSize: 11 * bodyScale
                 },
                 itemGap: 30,//图例间距离
-            },
+            },  
             xAxis: {
+                color:'#64ccff',
                 type: 'category',
-                data: ['冰冷', '洗涤', '家空','商空', '热水器', '厨电'],
+                data: ['厨电','洗涤', '家空','商空', '热水器', '冰冷'],
                 axisLabel: {
                     //修改X轴上字体样式
                     interval: 0,
                     show: 'true',
+                    color: '#64ccff',
                     // rotate:-30,
                     textStyle: {
                         fontSize: 10 * bodyScale,
@@ -678,14 +684,24 @@
                     },
 
                 },
+               
                 splitLine: {
                     show: false
-                }
+                },
+                axisTick:{
+                    show:false
+                },
+                axisLine:{
+                    lineStyle:{
+                        color:'transparent'
+                    }
+                },
 
             },
             yAxis: {
                 name: '万台',
-                type: 'value',
+                type: '',
+                logBase:2,
                 //Y轴 坐标轴名称显示
                 nameTextStyle: {
                     color: '#64ccff',
@@ -727,8 +743,8 @@
                             color: '#00adef'
                         }
                     },
-                    // data: [3.8, 3.2, 60.9, 0.43, 0.79,0.48]
-                    data: [38, 32, 609, 4.3, 7.9,4.8]
+                    data: [0.48, 3.2, 6.9, 0.43, 0.79,3.8]
+                    // data: [0.48, 3.2, 60.9, 4.3, 7.9,38.62]
                 },
                 {
                     name: '离线',
