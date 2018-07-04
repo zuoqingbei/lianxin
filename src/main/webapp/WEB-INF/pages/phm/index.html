@@ -791,7 +791,7 @@
                 normal: {
                     //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
                     color: function (params) {
-                        var colorList = ['#ff4d4f', '#00adef', '#ff4d4f'];
+                        var colorList = ['#ff4d4f', '#f29832', '#ff4d4f'];
                         return colorList[params.dataIndex];
                     }
                 },
@@ -965,7 +965,7 @@
                         // failure = 1;
                         list2.setOption({
                             series: {
-                                data: [Number(open), 0, failure]
+                                data: [Number(open), 1, failure]
                             }
                         });
                     }
