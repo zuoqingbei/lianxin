@@ -23,15 +23,35 @@ public class TestQuartzJobTwo implements Job {
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
 		 System.out.println("我是第二个定时任务 " + new Date());
+		 Date now=new Date();
+		 int index=now.getSeconds()/6;
+		 Calendar calendar = Calendar.getInstance();
+		 calendar.setTime(now);
+		 int minute=calendar.get(Calendar.MINUTE);
+		 int rate=(now.getSeconds()+minute*60)/6;
+		 List<OrderNumModel> list=OrderNumModel.dao.findOrderNums();
 		 if(isBelong()){
-			 Date now=new Date();
-			 int index=now.getSeconds()/6;
-			 System.out.println(now.getSeconds()+"---"+index);
-			 List<OrderNumModel> list=OrderNumModel.dao.findOrderNums();
 			 for(OrderNumModel order:list){
 				 int change=Integer.parseInt(order.getStr("interval").split(",")[index]);
+				 double rateChange=Double.parseDouble(order.getStr("rate_val").split(",")[rate]);
+				 if(rateChange!=0){
+					 System.out.println(now.getSeconds()+"---"+index);
+				 }
 				 if(change>0){
-					 order.set("now_num", Integer.parseInt(order.get("now_num")+"")+change).update();
+					 order.set("now_num", Integer.parseInt(order.get("now_num")+"")+change)
+					 .set("rate",(double)Math.round( (Double.parseDouble(order.get("rate")+"")+rateChange)*100)/100).update();
+				 }else {
+					 if(rateChange!=0){
+						 order.set("rate",(double)Math.round( (Double.parseDouble(order.get("rate")+"")+rateChange)*100)/100).update();
+					 }
+				 }
+			 }
+		 }else{
+			 //更新订单率
+			 for(OrderNumModel order:list){
+				 double rateChange=Double.parseDouble(order.getStr("rate_val").split(",")[rate]);
+				 if(rateChange!=0){
+					 order.set("rate",(double)Math.round( (Double.parseDouble(order.get("rate")+"")+rateChange)*100)/100).update();
 				 }
 			 }
 		 }
@@ -52,6 +72,11 @@ public class TestQuartzJobTwo implements Job {
 
 	    Boolean flag = belongCalendar(now, beginTime, endTime);
 	    return flag;
+	}
+	public static void main(String[] args) {
+		String s="0,.1,0,0,0,0,.1,0,0,0,0,0,-.1,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,.1,0,0,0,0,0,0,0,-.1,0,0,0,0,0,0,0,0,0,.1,0,0,0,0,-.1,0,0,0,0";
+		s=s.replaceAll(".1", "0.1").replaceAll("-.1", "-0.1");
+		System.out.println(s);
 	}
 
 
