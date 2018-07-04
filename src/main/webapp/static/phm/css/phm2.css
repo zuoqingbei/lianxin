@@ -146,10 +146,12 @@ html,body{
     height: 100%;
     /* background-color: red; */
 }
+
 .operationTime{
     font-size: 1.1em;
     color: #ff9f30;
 }
+
 .currentState_leftTitle span:last-child{
     color: #ff9f30;
 }
