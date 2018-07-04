@@ -803,8 +803,12 @@
 
     });
     list2.on('click', function (params) {
-        if (params.name === '在线纠偏' || params.name === '维修更新') {
-            window.location.href = '${contextPath}/phm/status'
+        if (params.name === '在线纠偏'){
+            window.location.href = '${contextPath}/phm/status?zaixianjiupian'
+        }else if( params.name === '上门保养') {
+            window.location.href = '${contextPath}/phm/status?shangmenbaoyang'
+        }else if( params.name === '维修更新'){
+            window.location.href = '${contextPath}/phm/status?weixiugengxin'
         }
 
     });
