@@ -32,8 +32,12 @@ public class TestQuartzJobTwo implements Job {
 		 List<OrderNumModel> list=OrderNumModel.dao.findOrderNums();
 		 if(isBelong()){
 			 for(OrderNumModel order:list){
+				 String[] arr=order.getStr("rate_val").split(",");
+				 if(rate>arr.length-1){
+					 rate=arr.length-1;
+				 }
 				 int change=Integer.parseInt(order.getStr("interval").split(",")[index]);
-				 double rateChange=Double.parseDouble(order.getStr("rate_val").split(",")[rate]);
+				 double rateChange=Double.parseDouble(arr[rate]);
 				 if(rateChange!=0){
 					 System.out.println(now.getSeconds()+"---"+index);
 				 }
@@ -49,7 +53,11 @@ public class TestQuartzJobTwo implements Job {
 		 }else{
 			 //更新订单率
 			 for(OrderNumModel order:list){
-				 double rateChange=Double.parseDouble(order.getStr("rate_val").split(",")[rate]);
+				 String[] arr=order.getStr("rate_val").split(",");
+				 if(rate>arr.length-1){
+					 rate=arr.length-1;
+				 }
+				 double rateChange=Double.parseDouble(arr[rate]);
 				 if(rateChange!=0){
 					 order.set("rate",(double)Math.round( (Double.parseDouble(order.get("rate")+"")+rateChange)*100)/100).update();
 				 }
