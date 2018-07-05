@@ -50,6 +50,7 @@ strong{
         flex: .8;
         display: flex;
         flex-direction: column;
+        padding-top: .5rem;
     }
 
     .left > div,
@@ -167,7 +168,7 @@ strong{
     top: 0;
     right: 1.875rem;
     width: 100%;
-    transform: scale(1.08);
+    transform: scale(1.14);
 }
 .styleIn7x3 .mapBox > iframe {
     flex: 4;
@@ -364,7 +365,7 @@ strong{
 /*全流程测试*/
 .test table{
     border-collapse: collapse;
-    margin: 1rem auto 0;
+    margin: 1.5rem auto 0;
     text-align: center;
 }
 .styleIn7x3 .test table{
@@ -403,7 +404,7 @@ strong{
 }
 .interconnection table td:nth-of-type(2),
 .interconnection table td:nth-of-type(3){
-    padding: .375rem 0 .25rem 1rem;
+    padding: .5rem 0 .25rem 1rem;
     text-align: right;
     font-size: .875rem;
     letter-spacing: 0.375rem;
@@ -421,7 +422,7 @@ strong{
     text-align: center;
 }
 .management ul{
-    margin: .875rem auto .25rem;
+    margin: 1.25rem auto .25rem;
 }
 .styleIn7x3 .management ul{
     margin: .5rem auto;
