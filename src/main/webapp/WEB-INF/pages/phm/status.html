@@ -169,7 +169,7 @@
 <!--实时状态  -->
 <script type="text/javascript" charset="utf-8">
     var urlFrom = location.search;
-    // var c = 0;
+    var c = 0;
     //实时状态初始化,用来控制冰箱开关门字体颜色
     setInterval(function () {
         // c++;
@@ -186,20 +186,22 @@
             type: "get",
             success: function (data) {
                 var info = data.info;
+                var S1 = info['S1'];//风机状态
                 var S14 = info['S14'];
                 var S15 = info['S15'];
+                // var S15 = "1";
                 var S16 = info['S16'];
                 var S17 = info['S17'];
                 var failure = info['failure'];
-                var open = S14 || S15 || S16 || S17;
-                console.log(open)
+                var open = Number(S14) || S15 || S16 || S17;
+                // console.log('0',0,open,Number(S14),S15)
                 /*open = true;
                 failure = true;
                 if(c>10){
                     open = false;
                     failure = false;
-                }*/
-
+                }
+            */
                 if ((urlFrom === '?zaixianjiupian')) {// 在线纠偏
                     if(Number(open)){
                         $("p:contains('冰箱开关门')").addClass("colorRed");
@@ -210,16 +212,25 @@
                     }
 
                 } else if (urlFrom === '?weixiugengxin') {// 维修更新
+                    console.log("冷藏风机状态",S1);//S1=1时开启
+                    var myoption = myMapCharts.getOption();
                     if(Number(failure)){
-                        $("p:contains('冷藏风机状态')").addClass("colorRed");
+                        if(!Number(S1)){
+                            $("p:contains('冷藏风机状态')").addClass("colorRed");
+                        }else{
+                            $("p:contains('冷藏风机状态')").removeClass("colorRed");
+                        }
                         $(".state>.txt2").text("异常").addClass("colorRed");
+                        myoption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#d00'}};
                     }else{
                         $("p:contains('冷藏风机状态')").removeClass("colorRed");
                         $(".state>.txt2").text("正常").removeClass("colorRed");
+                        myoption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#00ff00'}};
                     }
+                    myMapCharts.setOption(myoption)
                 } else if (urlFrom === '?shangmenbaoyang') {// 上门保养
                     $("p:contains('冷藏室温度'), p:contains('冷冻温度')").addClass("colorOrange");
-                    $(".state>.txt2").text("预警").addClass("colorOrange");
+                    $(".state>.txt2").text("正常(预警)").addClass("colorOrange");
                 }
                 // console.log(failure)
                 //failure 0-报警，1-解除报警
@@ -876,8 +887,9 @@
     }
 
     /***********************************地图 *******************************************************/
+    var myMapCharts;
     function mapChina(serious, general, light, good, arr, geoCoord) {
-        var myMapCharts = echarts.init(document.getElementById("myMap"));
+        myMapCharts = echarts.init(document.getElementById("myMap"));
         good = good.concat([
             {name: '良好', x: 350 * that.bodyScale, y: 170 * that.bodyScale},
             {name: '良好', x: 350 * that.bodyScale, y: 180 * that.bodyScale},
