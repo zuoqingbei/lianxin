@@ -89,7 +89,7 @@
                 <div class="tnav sszt navActive" onclick="timeStatusChange()">实时状态</div>
                 <div class="tnav syfx" onclick="useAnalysis()">使用分析</div>
                 <div class="tnav ztqs">状态趋势</div>
-                <!--<div class="tnav gzyc">寿命预测</div>-->
+                <div class="tnav gzyc">寿命预测</div>
                 <div class="tnav gzzd">故障诊断</div>
 
             </div>
@@ -97,7 +97,14 @@
                 <div class="state-box-contain">
                     <div class="state-box">
                         <!--实时状态-->
-                        <div class="leftStates" id="firstPage"></div>
+                        <div class="leftStates" id="firstPage">
+                        	<div class="myline line1"></div>
+                        	<div class="myline line2"></div>
+                        	<div class="myline line3"></div>
+                        	<div class="myline line4"></div>
+                        	<div class="myline line5"></div>
+                        	<div class="myline line6"></div>
+                        </div>
                         <!--  <div class="leftStates" id="secondPage"></div> -->
                         <!-- <div class="leftStates" id="thirdPage" style="display:none;"></div>
 								<div class="leftStates" id="fourPage" style="display:none;"></div> -->
@@ -118,14 +125,14 @@
                         </div>
                         <!--故障预测-->
                         <div class="gzycBox">
-                            <div class="totalInfo">
+                            <!-- <div class="totalInfo">
                                 <p class="titleintro">综合预测信息</p>
                                 <p class="item itemf">预测计算时间：<span></span></p>
                                 <p class="item items">预测剩余寿命：<span></span></p>
                                 <div class="smycBox">
                                     <div id="smycCanvas" style="width:100%;height:100%"></div>
                                 </div>
-                            </div>
+                            </div> -->
 
                         </div>
                     </div>
@@ -533,6 +540,9 @@
         //根据机器型号跳转到对应的iframe
         $(".gzzd").click(function () {
             $("#gzzdIframe").attr("src", addId + "/#/product/" + sncode);
+        });
+        $(".gzyc").click(function () {
+            $("#gzycIframe").attr("src", addId + "/#/product/" + sncode);
         });
 
 
@@ -1162,7 +1172,13 @@
             ]
         }
         myMapCharts.setOption(mapChartsOptions);
-
+        
+		/*  var myoption = myMapCharts.getOption();
+		
+         myoption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#d00'}};
+		 myoption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#00ff00'}};
+       
+		 myMapCharts.setOption(myoption) */
         /*******************地图点击事件 下 *****************************/
         myMapCharts.on('click', function (param) {
             if (!(param.data.name === '山东省青岛市海尔工业园')) {
@@ -1235,6 +1251,7 @@
                 general = data.general;
                 light = data.light;
                 good = data.good;
+                //console.log(good)
                 var geoCoord = {'基线': ["140", "32"]};
                 console.log("-------", data)
                 var address = data.address;
@@ -1258,7 +1275,7 @@
                 $("#sncode").html(sncode);
                 $("#address").html(good[2].name);
                 $("#status").html(good[2].status);
-
+				
                 //Status.delayIframe(sncode);
                 //document.getElementById("video").src="${contextPath}/static/phm/"+good[0].image;
 

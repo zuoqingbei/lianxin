@@ -457,12 +457,17 @@ var Status = {
 	delayLoadiframe:function(){
 		setTimeout(function(){
 			$("#light-if").attr("src","lightEffect");
-			$(".gzzdBox").html('<iframe src="http://10.138.87.129" width="100%" height="100%" frameborder="0" id="gzzdIframe"></iframe>')
+			$(".gzzdBox").html('<iframe src="http://10.138.87.129" width="100%" height="100%" frameborder="0" id="gzzdIframe"></iframe>');
+			$(".gzycBox").html('<iframe src="http://10.138.87.129" width="100%" height="100%" frameborder="0" id="gzycIframe"></iframe>');
 		},1000);
 	},
 	delayLoadgzzd:function(){
-		//加载故障预测iframe
+		//加载故障诊断iframe
 		$(".gzzdBox").html('<iframe src="http://10.138.87.129" width="100%" height="100%" frameborder="0" id="gzzdIframe"></iframe>')
+	},
+	delayLoadgzyc:function(){
+		//加载故障预测iframe
+		$(".gzycBox").html('<iframe src="http://10.138.87.129" width="100%" height="100%" frameborder="0" id="gzycIframe"></iframe>')
 	},
 	lightRotate:function(){
 		var that = this;
@@ -695,7 +700,8 @@ var Status = {
 			
 			
 			//that.smycEcharts();
-			that.smycEchartsDemo();
+			//that.smycEchartsDemo();
+			that.delayLoadgzyc();
 		});
 	},
 
