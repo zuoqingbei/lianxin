@@ -342,7 +342,7 @@ strong{
 .distribution .totalNum>span{
     display: inline-block;
     margin-right: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 }
 .styleIn7x3 .distribution .totalNum>span{
     margin-top: 1rem;
@@ -392,7 +392,7 @@ strong{
 }
 /*互联数*/
 .interconnection table {
-    margin:  1.5rem auto .5rem;
+    margin:  1rem auto .5rem;
 }
 .styleIn7x3 .interconnection table {
     margin:  1rem auto .75rem;

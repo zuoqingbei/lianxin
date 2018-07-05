@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
-    <meta name="PHM" content="phm二期"/>
+    <meta name="HIHM" content="HIHM二期"/>
     <title>实时状态</title>
 
     <link rel="stylesheet" href="${contextPath}/static/phm/css/common.css"/>
@@ -180,10 +180,10 @@
     //实时状态初始化,用来控制冰箱开关门字体颜色
     setInterval(function () {
         // c++;
-        getDoorStatus();
+        getStatus();
     }, 1000);
 
-    function getDoorStatus() {
+    function getStatus() {
         var sncode = "20171026BX004";
         //实时状态
         var addId = "http://10.138.87.129";
@@ -209,18 +209,20 @@
                     failure = false;
                 }
             */
+                var myOption = myMapCharts.getOption();
                 if ((urlFrom === '?zaixianjiupian')) {// 在线纠偏
                     if(Number(open)){
                         $("p:contains('冰箱开关门')").addClass("colorRed");
                         $(".state>.txt2").text("异常").addClass("colorRed");
+                        myOption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#d00'}};
                     }else{
                         $("p:contains('冰箱开关门')").removeClass("colorRed");
                         $(".state>.txt2").text("正常").removeClass("colorRed");
+                        myOption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#00ff00'}};
                     }
 
                 } else if (urlFrom === '?weixiugengxin') {// 维修更新
                     console.log("冷藏风机状态",S1);//S1=1时开启
-                    var myoption = myMapCharts.getOption();
                     if(Number(failure)){
                         if(!Number(S1)){
                             $("p:contains('冷藏风机状态')").addClass("colorRed");
@@ -228,17 +230,18 @@
                             $("p:contains('冷藏风机状态')").removeClass("colorRed");
                         }
                         $(".state>.txt2").text("异常").addClass("colorRed");
-                        myoption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#d00'}};
+                        myOption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#d00'}};
                     }else{
                         $("p:contains('冷藏风机状态')").removeClass("colorRed");
                         $(".state>.txt2").text("正常").removeClass("colorRed");
-                        myoption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#00ff00'}};
+                        myOption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#00ff00'}};
                     }
-                    myMapCharts.setOption(myoption)
                 } else if (urlFrom === '?shangmenbaoyang') {// 上门保养
                     $("p:contains('冷藏室温度'), p:contains('冷冻温度')").addClass("colorOrange");
                     $(".state>.txt2").text("正常(预警)").addClass("colorOrange");
+                    myOption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#ff9f30'}};
                 }
+                myMapCharts.setOption(myOption)
                 // console.log(failure)
                 //failure 0-报警，1-解除报警
                 /*****************************************************************************************************/
@@ -684,7 +687,7 @@
                                 break;
                             }
                         }
-
+                        console.log("-------",infoArray,imgName)
                         var charts =
                             "<div id='cx" + times + "'  class='jtState " + changeClass + "'>" +
                             "<p class='stateTxt'>" + title + "</p>" +
@@ -1288,7 +1291,7 @@
                 }, 0);
                 timer = setInterval(function () {
                     updateStatus();
-                }, 3000);
+                }, 1000);
 
             },
             //	error:function(){alert("加载 地图信息错误 ");}
@@ -1299,6 +1302,7 @@
 
     /*********************定时更新 实时状态 ****************************/
     function updateStatus() {
+        console.log('update')
         var times = idFlage;
         var length;//根据截取的数据长度 在后面判断要不要清空 对应的 数据
 
@@ -1419,11 +1423,24 @@
                         //debugger;
                         //	console.log(infoArray);
                         var imgName = null;
+/*
                         for (var i = 0; i < infoArray.length; i++) {
                             var v = infoArray[i];
                             if (v.key == statusValue) {
                                 value = v.value;
                                 imgName = v.img;
+                                break;
+                            }
+                        }
+*/
+                        for (var i = 0; i < infoArray.length; i++) {
+
+                            var v = infoArray[i];
+                            if (v.key == "000" + statusValue) {
+                                // console.log(infoArray[i],"000"+statusValue);
+                                value = v.value;
+                                imgName = v.img;
+                                // console.log(imgName);
                                 break;
                             }
                         }
@@ -1436,6 +1453,7 @@
                             "<p class='txtInfo'>当前状态:<span>" + value + "</span></p>";
 
                         //"</div>";
+                        // console.log("~~~~~~~~~~~~~~~~~",imgName,infoArray)
                         if (imgName != null) {
                             $("#cx" + times).html(charts);
                         }

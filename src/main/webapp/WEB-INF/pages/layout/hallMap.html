@@ -198,7 +198,8 @@
             //console.log(data)
             var htmls = [];
             $.each(data, function (index, item) {
-                htmls.push('<tr><td>'+item.name+'</td><td id="m_td_order_'+item.id+'"><strong>'+item.nums+'</strong></td><td><strong>'+item.rate+'%</strong></td></tr>');
+                // console.log(item.rate)
+                htmls.push('<tr><td>'+item.name+'</td><td id="m_td_order_'+item.id+'"><strong>'+item.nums+'</strong></td><td><strong>'+Number(item.rate).toFixed(1)+'%</strong></td></tr>');
             });
             //setInterval(changeData, parseInt(data[0].times));
             setTimeout(function () {
