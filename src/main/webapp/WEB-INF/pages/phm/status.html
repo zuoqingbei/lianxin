@@ -176,7 +176,7 @@
 <!--实时状态  -->
 <script type="text/javascript" charset="utf-8">
     var urlFrom = location.search;
-    var c = 0;
+    // var c = 0;
     //实时状态初始化,用来控制冰箱开关门字体颜色
     setInterval(function () {
         // c++;
@@ -202,13 +202,6 @@
                 var failure = info['failure'];
                 var open = Number(S14) || S15 || S16 || S17;
                 // console.log('0',0,open,Number(S14),S15)
-                /*open = true;
-                failure = true;
-                if(c>10){
-                    open = false;
-                    failure = false;
-                }
-            */
                 var myOption = myMapCharts.getOption();
                 if ((urlFrom === '?zaixianjiupian')) {// 在线纠偏
                     if(Number(open)){
@@ -220,7 +213,6 @@
                         $(".state>.txt2").text("正常").removeClass("colorRed");
                         myOption.series[1].markPoint.data[2].itemStyle = {normal:{color:'#00ff00'}};
                     }
-
                 } else if (urlFrom === '?weixiugengxin') {// 维修更新
                     console.log("冷藏风机状态",S1);//S1=1时开启
                     if(Number(failure)){
@@ -1423,6 +1415,8 @@
                         //debugger;
                         //	console.log(infoArray);
                         var imgName = null;
+
+                /*************  万恶的复制，就是下面的这种情况  **************/
 /*
                         for (var i = 0; i < infoArray.length; i++) {
                             var v = infoArray[i];

@@ -20,11 +20,10 @@ p.colorOrange{
 	margin: 0 auto;
 }
 #head h1{
-	float:left;
-	height:34%;
-	width:4%;
-	margin-left:33.5%;
-	margin-top:1.2%;
+	float: left;
+	width: 4%;
+	margin-left: 33.5%;
+	margin-top: 1.2%;
 }
 #head h1 a {
 	display: block;
@@ -44,7 +43,7 @@ p.colorOrange{
 	font-weight: 900;
 	font-size: 2.2em;
 	margin-top:1.1%;
-	margin-left:2%;
+	margin-left:1.5%;
 	letter-spacing: 0.3em;
 }
 #head h2 a{
@@ -631,29 +630,43 @@ p.colorOrange{
 .myline {
 	position:absolute;
 	height:0;
-	width:3em;
+	width:2em;
 	border-top:dotted 0.0625em;
-}
-
-.line1,.line4 {
-    top: 7.7em;
-    border-color:#d00;
-}
-.line2,.line5 {
-   
-     top: 8em;
-    border-color:#00e76d;
-}
-.line3,.line6 {   
-    top: 8.3em;
-     border-color:#66ccff;
+	z-index: 1;
 }
 .line1,.line2,.line3 {
 	left: 6em;
-	z-index: 1;
 }
 .line4,.line5,.line6 {
-	left:31.5em;
-	z-index: 1;
+	left:31.375em;
+}
+.line1,.line4 {
+	border-color:#d00;
+}
+.line2,.line5 {
+	border-color:#00e76d;
+}
+.line3,.line6 {
+	border-color:#66ccff;
+}
+
+
+.line1{
+	top:6.125em;
+}
+.line2{
+	top:7.125em;
+}
+.line3{
+	top:7.875em;
+}
+.line4{
+	top:6.25em;
+}
+.line5{
+	top:7.3em;
+}
+.line6{
+	top:8em;
 }
 
