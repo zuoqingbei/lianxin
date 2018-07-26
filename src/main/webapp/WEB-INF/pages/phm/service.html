@@ -149,7 +149,8 @@
 	    				faultInformation+=
 	    				"<tr class='row'>"
 		    				+"<td class='col'>"+element.fault_name+"<div class='slide'></div></td>"
-		    				+"<td title="+element.fault_appearance+" class='col'>"+(element.fault_appearance.length>16?element.fault_appearance.substr(0,16):element.fault_appearance)+"<div class='slide'></div></td>"
+		    				/* +"<td title="+element.fault_appearance+" class='col'>"+(element.fault_appearance.length>16?element.fault_appearance.substr(0,16):element.fault_appearance)+"<div class='slide'></div></td>" */
+		    				+"<td title="+element.fault_appearance+" class='col'>"+(element.fault_appearance==null?'':element.fault_appearance)+"<div class='slide'></div></td>"
 		    				+"<td class='col'>"+(element.fault_resson==null?"":element.fault_resson)+"<div class='slide'></div></td>"
 		    				+"<td class='col'>"+(element.fault_repair==null?"":element.fault_repair)+"<div class='slide'></div></td>"
 	    				+"</tr>";

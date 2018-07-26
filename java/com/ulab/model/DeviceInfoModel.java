@@ -16,7 +16,7 @@ import com.jfinal.plugin.activerecord.Record;
  * @author chen xin
  * @todo  
  */
-@TableBind(tableName = "phm_device_info",pkName="id")
+@TableBind(tableName = "phm_device_info",pkName="sncode")
 public class DeviceInfoModel extends Model<DeviceInfoModel> {
 	private static final long serialVersionUID = 4762813779629969917L;
 	public static final DeviceInfoModel dao = new DeviceInfoModel();

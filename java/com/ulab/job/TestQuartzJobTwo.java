@@ -31,6 +31,7 @@ public class TestQuartzJobTwo implements Job {
 		 int rate=(now.getSeconds()+minute*60)/6;
 		 List<OrderNumModel> list=OrderNumModel.dao.findOrderNums();
 		 if(isBelong()){
+			 System.out.println("rate---"+rate);
 			 for(OrderNumModel order:list){
 				 String[] arr=order.getStr("rate_val").split(",");
 				 if(rate>arr.length-1){
@@ -38,7 +39,9 @@ public class TestQuartzJobTwo implements Job {
 				 }
 				 int change=Integer.parseInt(order.getStr("interval").split(",")[index]);
 				 double rateChange=Double.parseDouble(arr[rate]);
-				 if(rateChange!=0){
+				 System.out.println("change-----"+rateChange+"----"+(Double.parseDouble(order.get("rate")+"")+rateChange));
+				 //rateChange=0.09d;
+				 if(rateChange!=0d){
 					 System.out.println(now.getSeconds()+"---"+index);
 				 }
 				 if(change>0){
