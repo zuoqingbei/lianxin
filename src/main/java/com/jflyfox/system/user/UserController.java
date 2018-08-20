@@ -138,7 +138,7 @@ public class UserController extends BaseProjectController {
 		String roleids = new UserSvc().getRoleids(userid);
 		setAttr("userid", userid);
 		setAttr("roleids", roleids);
-		// 根结点
+		// 根结点view
 		setAttr("list", list);
 		render(path + "auth.html");
 	}
