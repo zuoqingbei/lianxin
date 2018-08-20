@@ -19,8 +19,8 @@ package com.beetl.functions;
 import java.text.MessageFormat;
 import java.util.Date;
 
-import com.jflyfox.util.DateUtils;
-import com.jflyfox.util.StrUtils;
+import com.hailian.util.DateUtils;
+import com.hailian.util.StrUtils;
 
 /**
  * 字符串处理
