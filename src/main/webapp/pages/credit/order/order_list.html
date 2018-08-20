@@ -1,0 +1,101 @@
+<% 
+	var headContent = {
+	include("/pages/template/head.html"){}
+%>
+
+<script type="text/javascript">
+		
+	var oper;
+	jQuery(function($) {
+		// 页面方法
+		oper = {
+			width : 400,
+			height : 500,
+			form : document.form1,
+			list : function() {
+				var url = 'credit/order/list';
+				this.form.action = url;
+				this.form.submit();
+			},
+			view : function(id) {
+				var url = 'credit/order/view?id='+id;
+				var title = '查看订单';
+				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+			}
+		};
+		//显示Menu索引
+		showMenu('page_imagealbum');
+	});
+	
+	//分页
+	var paginator = function(page) {
+		oper.list();
+	};
+</script>
+
+<%
+};
+
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal" role="form">
+	<input type="hidden" name="form.orderColumn" value="${form.orderColumn!''}" />
+		<input type="hidden" name="form.orderAsc" value="${form.orderAsc!''}" />
+		<!-- 菜单 -->
+		<% include("/pages/template/menu.html"){} %>
+
+		<div class="tableSearch">
+			<%  //查询列表 %>
+			<div class="form-group">
+					<input class="form-control" type="text" name="customName" value="${customName!''}" 
+						placeholder="请输入名称" required='required' />
+			</div>
+			
+			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
+			 		<span class="glyphicon glyphicon-search"></span> 查 询
+			</button>
+		
+		</div>
+	<!-- 数据列表 -->
+	<table class="table">
+		<%  // 列表头部 %>
+		<% for(item in page.list){ %>
+				<tr>
+				<td>${itemLP.index }</td>
+				<td>
+					<% if(item.id=='2') { %>
+					隐藏
+					<%	} %>
+					<% if(item.id=='1') { %>
+					显示
+					<%	} %>
+				</td>  
+				<td>${item.id!}</td> 
+				<td title="${item.name!}">
+				<% if (strutil.length(item.name) > 25) { %>
+					${strutil.subStringTo(item.name, 0, 25)}...
+				<% 	} else { %>
+					${item.name}
+				<%  } %>
+				</td> 
+				<td>
+					<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 
+					<!-- <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a> -->
+				</td>
+				</tr>
+			<% } %>
+		</br>
+	</table>
+	<%include("/pages/includes/paginator.html"){} %>
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
