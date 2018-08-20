@@ -41,7 +41,6 @@ public class CommonController extends BaseProjectController {
 		if (siteFolderId != null && siteFolderId > 0) {
 			folderRoot = siteFolderId;
 		}
-
 		String folderStr = getPara();
 		Integer folderId = folderRoot;
 
