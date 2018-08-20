@@ -3,6 +3,7 @@ package com.hailian.modules.credit.order.controller;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.order.model.TbOrder;
+import com.hailian.modules.credit.order.service.OrderService;
 
 /**
  * 
@@ -16,7 +17,7 @@ public class OrderController extends BaseProjectController {
 
 	
 	public void view() {
-		TbOrder model = TbOrder.dao.getOrder(getPara("id"));
+		TbOrder model = OrderService.service.getOrder(getPara("id"));
 		setAttr("model", model);
 		render("/pages/credit/order/order_view.html");
 	}
