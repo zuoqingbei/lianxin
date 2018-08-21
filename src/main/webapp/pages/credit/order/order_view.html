@@ -9,7 +9,14 @@ var bodyContent = {
 	<!-- 数据列表 -->
 	<table class="table">
 		<%  // 列表头部 %>
-			${model.name!}
+			<tr>
+				<td>编码</td>
+				<td>${model.id!}</td>
+			</tr>
+			<tr>
+				<td>订单名称</td>
+				<td>${model.name}</td>
+			</tr>
 	</table>
 	
 	<div style="height: 50px;clear: both;">&nbsp;</div>
