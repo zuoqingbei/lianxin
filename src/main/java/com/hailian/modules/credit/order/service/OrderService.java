@@ -17,8 +17,8 @@ public class OrderService {
 	 * @author zuoqb
 	 * @return_type   TbOrder
 	 */
-	public TbOrder getOrder(String orderId) {
-		return TbOrder.dao.findById(orderId);
+	public TbOrder getOrder(String orderId,BaseProjectController c) {
+		return TbOrder.dao.findById(orderId,c);
 	}
 	/**
 	 * 

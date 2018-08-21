@@ -2,11 +2,8 @@ package com.hailian.modules.credit.order.controller;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.admin.image.model.TbImage;
 import com.hailian.modules.credit.order.model.TbOrder;
 import com.hailian.modules.credit.order.service.OrderService;
-import com.hailian.modules.credit.utils.DataAuthorUtils;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -42,7 +39,7 @@ public class OrderController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void view() {
-		TbOrder model = TbOrder.dao.getOrder(getPara("id"));
+		TbOrder model = TbOrder.dao.getOrder(getPara("id"),this);
 		setAttr("model", model);
 		render("/pages/credit/order/order_view.html");
 	}
