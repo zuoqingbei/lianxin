@@ -26,7 +26,7 @@ public class TbOrder extends BaseProjectModel<TbOrder> {
 	 * @author zuoqb
 	 * @return_type   TbOrder
 	 */
-	public TbOrder getOrder(String orderId) {
+	public TbOrder getOrder(String orderId,BaseProjectController c) {
 		return TbOrder.dao.findById(orderId);
 	}
 	/**
