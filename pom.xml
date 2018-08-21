@@ -79,28 +79,19 @@
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.alibaba</groupId>
-		    <artifactId>fastjson</artifactId>
-		    <version>1.2.28</version>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.28</version>
 		</dependency>
-	<!-- 	<dependency>
-			<groupId>com.jfinal</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>8.1.8</version>
-			<scope>provide</scope>
-		</dependency>
-		<dependency>
-		    <groupId>com.jfinal</groupId>
-		    <artifactId>jfinal-ext</artifactId>
-		    <version>3.1.4</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.jfinal</groupId> <artifactId>jetty-server</artifactId> <version>8.1.8</version> <scope>provide</scope> 
+			</dependency> <dependency> <groupId>com.jfinal</groupId> <artifactId>jfinal-ext</artifactId> <version>3.1.4</version> </dependency> -->
 		<dependency>
 			<groupId>de.ruedigermoeller</groupId>
 			<artifactId>fst</artifactId>
@@ -113,16 +104,16 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-		    <groupId>com.ibeetl</groupId>
-		    <artifactId>beetl</artifactId>
-		    <version>2.7.11</version>
+			<groupId>com.ibeetl</groupId>
+			<artifactId>beetl</artifactId>
+			<version>2.7.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr4-runtime</artifactId>
 			<version>4.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
@@ -145,24 +136,31 @@
 			<artifactId>aliyun-sdk-oss</artifactId>
 			<version>2.0.6</version>
 		</dependency>
-		
+
 		<!-- 数据库 -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.35</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<!-- 使用aliyun maven -->
 	<repositories>
-	  <repository>
-	    <id>aliyun</id>
-	    <name>aliyun</name>
-	    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-	  </repository>
+		<repository>
+			<id>aliyun</id>
+			<name>aliyun</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
+		</repository>
 	</repositories>
-  
+
 	<build>
 		<!-- 打包目录 -->
 		<directory>target</directory>
@@ -219,7 +217,7 @@
 				<configuration>
 					<port>80</port>
 					<path>/${project.artifactId}</path>
-                    <warSourceDirectory>${basedir}/target/${artifactId}</warSourceDirectory>
+					<warSourceDirectory>${basedir}/target/${artifactId}</warSourceDirectory>
 				</configuration>
 			</plugin>
 		</plugins>

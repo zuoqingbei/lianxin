@@ -42,7 +42,7 @@ public class OrderController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void view() {
-		TbOrder model = TbOrder.dao.getOrder(getPara("id"));
+		TbOrder model = TbOrder.dao.getOrder(getPara("id"),this);
 		setAttr("model", model);
 		render("/pages/credit/order/order_view.html");
 	}
