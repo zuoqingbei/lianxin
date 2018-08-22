@@ -20,6 +20,7 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal3.JFinal3BeetlRenderFactory;
 
 import com.beetl.functions.BeetlStrUtils;
+import com.feizhou.swagger.config.routes.SwaggerRoutes;
 import com.hailian.component.beelt.BeeltFunctions;
 import com.hailian.component.interceptor.CommonInterceptor;
 import com.hailian.component.interceptor.PageViewInterceptor;
@@ -117,6 +118,7 @@ public class BaseConfig extends JFinalConfig {
 		// 1.如果没用加入注解，必须以Controller结尾,自动截取前半部分为key
 		// 2.加入ControllerBind的 获取 key
 		me.add(new AutoBindRoutes());
+		me.add(new SwaggerRoutes());
 	}
 	
 	/**

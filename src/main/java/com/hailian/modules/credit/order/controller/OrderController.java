@@ -1,5 +1,6 @@
 package com.hailian.modules.credit.order.controller;
 
+import com.feizhou.swagger.annotation.ApiOperation;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.order.model.TbOrder;
@@ -22,6 +23,8 @@ public class OrderController extends BaseProjectController {
 	 * @author zuoqb
 	 * @return_type   void
 	 */
+	@ApiOperation(url = "/credit/order/list", tag = "index", 
+			httpMethod = "post", description = "测试")
 	public void list() {
 		int pageNumber=getParaToInt("pageNumber", 1);
 		int pageSize=getParaToInt("pageSize", 10);
