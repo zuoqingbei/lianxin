@@ -161,6 +161,7 @@ public class ImageController extends BaseProjectController {
 		}
 		
 		Integer userid = getSessionUser().getUserid();
+		
 		String now = getNow();
 		model.put("update_id", userid);
 		model.put("update_time", now);
