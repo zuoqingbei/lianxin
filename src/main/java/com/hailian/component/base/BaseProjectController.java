@@ -288,9 +288,26 @@ public abstract class BaseProjectController extends BaseController {
 		String fileUrl = "";
 		String projectStorePath = FileUploadUtils.getUploadPath(site, appendPath);
 		System.out.println("projectStorePath=========="+projectStorePath);
+		FileUploadBean uploadBean = new FileUploadService().uploadHandle(projectStorePath, uploadFile, getSessionUser()
+				.getUserid());
+		if (uploadBean != null) {
+			fileUrl = projectStorePath + File.separator + uploadBean.getName();
+		}
+		return FileUploadUtils.rebuild(fileUrl);
+	}
+	/**
+	 * 征信项目文件上传
+	* @author doushuihai  
+	* @date 2018年8月23日下午3:25:40  
+	* @TODO
+	 */
+	public String uploadCreditFileHandler(TbSite site, File uploadFile, String appendPath) {
+		String fileUrl = "";
+		String projectStorePath = FileUploadUtils.getUploadPath(site, appendPath);
+		System.out.println("projectStorePath=========="+projectStorePath);
 //		FileUploadBean uploadBean = new FileUploadService().uploadHandle(projectStorePath, uploadFile, getSessionUser()
 //				.getUserid());
-		FileUploadBean uploadBean = new FileUploadService().uploadHandle(projectStorePath, uploadFile, 1);
+		FileUploadBean uploadBean = new FileUploadService().uploadCreditFileHandle(projectStorePath, uploadFile, 1);
 		if (uploadBean != null) {
 			fileUrl = projectStorePath + File.separator + uploadBean.getName();
 		}

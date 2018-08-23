@@ -160,8 +160,8 @@ public class ImageController extends BaseProjectController {
 			model.setLinkurl(linkUrl.replace("\\", "/"));
 		}
 		
-//		Integer userid = getSessionUser().getUserid();
-		Integer userid=1;
+		Integer userid = getSessionUser().getUserid();
+		
 		String now = getNow();
 		model.put("update_id", userid);
 		model.put("update_time", now);

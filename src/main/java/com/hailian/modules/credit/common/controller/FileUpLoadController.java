@@ -34,25 +34,16 @@ import com.jfinal.upload.UploadFile;
 */
 @ControllerBind(controllerKey = "/admin/file")
 public class FileUpLoadController extends BaseProjectController {
-	public void index(){
-		render("xd/pages/06_02yuebaoshangchuan.html");
-	}
 	//文件上传
 	public void upload() {
 		TbSite site = getBackSite();
 		System.out.println("路径===================================："+FileUploadUtils.getUploadTmpPath(site));
 		UploadFile uploadFile = getFile("model.file_url");
+		
 		// 文件附件
 				if (uploadFile != null) {
-					String fileUrl = uploadHandler(site, uploadFile.getFile(), "image");
+					String fileUrl = uploadCreditFileHandler(site, uploadFile.getFile(), "File");
 				}
-		
-		
-
-
-	
-	
-		
 		renderMessage("保存成功");
 	} 
 	
