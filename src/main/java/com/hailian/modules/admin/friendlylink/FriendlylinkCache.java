@@ -57,13 +57,15 @@ public class FriendlylinkCache extends BaseService {
 	 * @return
 	 */
 	public static List<TbFriendlylink> getFriendlylinkList(int siteId) {
-		List<TbFriendlylink> list = cache.get(21 + "");
-
-		List<TbFriendlylink> newList = new ArrayList<TbFriendlylink>();
-		for (TbFriendlylink item : list) {
-			int tmpSiteId = item.getInt("site_id");
-			if (tmpSiteId <= 0 || tmpSiteId == siteId) {
-				newList.add(item);
+		List<TbFriendlylink> list = cache.get(siteId + "");
+		
+		List<TbFriendlylink> newList =  new ArrayList<TbFriendlylink>();
+		if(list!=null){
+			for (TbFriendlylink item : list) {
+				int tmpSiteId = item.getInt("site_id");
+				if (tmpSiteId <= 0 || tmpSiteId == siteId) {
+					newList.add(item);
+				}
 			}
 		}
 		return newList;
