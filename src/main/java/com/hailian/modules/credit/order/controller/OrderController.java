@@ -22,14 +22,12 @@ import com.jfinal.plugin.activerecord.Page;
 @Api( tag = "订单路由", description = "操作订单信息" )
 @ControllerBind(controllerKey = "/credit/order")
 public class OrderController extends BaseProjectController {
-
 	/**
 	 * @todo   订单列表
 	 * @time   2018年8月20日 下午7:10:02
 	 * @author zuoqb
 	 * @return_type   void
 	 */
-
 	public void list() {
 		int pageNumber = getParaToInt("pageNumber", 1);
 		int pageSize = getParaToInt("pageSize", 10);
