@@ -115,9 +115,11 @@ public class ArticleController extends BaseProjectController {
 
 	public void save() {
 		TbSite site = getBackSite();
-		UploadFile uploadImage = getFile("model.image_url", FileUploadUtils.getUploadTmpPath(site), FileUploadUtils.UPLOAD_MAX);
+		UploadFile uploadImage = getFile("model.image_url", FileUploadUtils.getUploadTmpPath(site),
+				FileUploadUtils.UPLOAD_MAX);
 
-		UploadFile uploadFile = getFile("model.file_url", FileUploadUtils.getUploadTmpPath(site), FileUploadUtils.UPLOAD_MAX);
+		UploadFile uploadFile = getFile("model.file_url", FileUploadUtils.getUploadTmpPath(site),
+				FileUploadUtils.UPLOAD_MAX);
 
 		Integer pid = getParaToInt();
 		TbArticle model = getModel(TbArticle.class);
@@ -191,7 +193,7 @@ public class ArticleController extends BaseProjectController {
 
 		super.render(path + "edit_content_ue.html");
 	}
-	
+
 	public void edit_content_textarea() {
 		TbArticle model = TbArticle.dao.findById(getParaToInt());
 		setAttr("model", model);
@@ -266,7 +268,7 @@ public class ArticleController extends BaseProjectController {
 			sql.whereEquals("status", model.getInt("status"));
 
 		}
-		
+
 		// 站点设置
 		int siteId = getSessionUser().getBackSiteId();
 		sql.append(" and site_id = " + siteId);

@@ -12,9 +12,9 @@ import com.jfinal.plugin.activerecord.Page;
  * @time   2018年8月20日 下午5:02:19
  * @author zuoqb
  */
+
 @ControllerBind(controllerKey = "/credit/order")
 public class OrderController extends BaseProjectController {
-
 
 	/**
 	 * @todo   订单列表
@@ -23,10 +23,10 @@ public class OrderController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void list() {
-		int pageNumber=getParaToInt("pageNumber", 1);
-		int pageSize=getParaToInt("pageSize", 10);
+		int pageNumber = getParaToInt("pageNumber", 1);
+		int pageSize = getParaToInt("pageSize", 10);
 		//分页查询
-		Page<TbOrder> pager = OrderService.service.pagerOrder(pageNumber,pageSize,getPara("customName"),this);
+		Page<TbOrder> pager = OrderService.service.pagerOrder(pageNumber, pageSize, getPara("customName"), this);
 		setAttr("page", pager);
 		keepPara();
 		render("/pages/credit/order/order_list.html");
@@ -39,7 +39,7 @@ public class OrderController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void view() {
-		TbOrder model = TbOrder.dao.getOrder(getPara("id"),this);
+		TbOrder model = TbOrder.dao.getOrder(getPara("id"), this);
 		setAttr("model", model);
 		render("/pages/credit/order/order_view.html");
 	}

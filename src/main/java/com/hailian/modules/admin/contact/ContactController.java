@@ -25,7 +25,7 @@ public class ContactController extends BaseProjectController {
 			sql.whereLike("name", model.getStr("name"));
 			sql.whereEquals("type", model.getStr("type"));
 		}
-		
+
 		// 排序
 		String orderBy = getBaseForm().getOrderBy();
 		if (StrUtils.isEmpty(orderBy)) {
@@ -55,12 +55,12 @@ public class ContactController extends BaseProjectController {
 
 	public void delete() {
 		TbContact model = new TbContact();
-		Integer userid= getSessionUser().getUserid();
+		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		model.deleteById(getParaToInt());
-		
+
 		list();
 	}
 
@@ -73,9 +73,8 @@ public class ContactController extends BaseProjectController {
 	public void save() {
 		Integer pid = getParaToInt();
 		TbContact model = getModel(TbContact.class);
-		
-		
-		Integer userid= getSessionUser().getUserid();
+
+		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.put("update_id", userid);
 		model.put("update_time", now);

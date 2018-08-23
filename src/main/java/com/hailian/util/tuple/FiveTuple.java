@@ -19,8 +19,7 @@ public class FiveTuple<A, B, C, D, E> extends FourTuple<A, B, C, D> {
 	}
 
 	public String toString() {
-		return "(" + first + ", " + second + ", " + third + ", " + fourth
-				+ ", " + fifth + ")";
+		return "(" + first + ", " + second + ", " + third + ", " + fourth + ", " + fifth + ")";
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class FiveTuple<A, B, C, D, E> extends FourTuple<A, B, C, D> {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int size() {
 		return 5;
@@ -61,7 +60,7 @@ public class FiveTuple<A, B, C, D, E> extends FourTuple<A, B, C, D> {
 
 	@Override
 	public Object[] toArray() {
-		return new Object[]{first, second, third, fourth, fifth};
+		return new Object[] { first, second, third, fourth, fifth };
 	}
 
 }

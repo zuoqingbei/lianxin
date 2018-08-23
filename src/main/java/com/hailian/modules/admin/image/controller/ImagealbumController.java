@@ -39,7 +39,7 @@ public class ImagealbumController extends BaseProjectController {
 		} else {
 			sql.append(" order by t.").append(orderBy);
 		}
-				
+
 		Page<TbImageAlbum> page = TbImageAlbum.dao.paginate(getPaginator(), "select t.*,f.name as parentName ", //
 				sql.toString().toString());
 
@@ -51,16 +51,16 @@ public class ImagealbumController extends BaseProjectController {
 
 	public void add() {
 		setAttr("selectParentFolder", selectParentFolder(0, 0));
-		
+
 		render(path + "add.html");
 	}
 
 	public void view() {
 		TbImageAlbum model = TbImageAlbum.dao.findById(getParaToInt());
-		
+
 		TbImageAlbum album = TbImageAlbum.dao.findById(model.getParentId());
 		model.put("parentName", album != null ? album.getName() : null);
-		
+
 		setAttr("model", model);
 		render(path + "view.html");
 	}
@@ -73,10 +73,10 @@ public class ImagealbumController extends BaseProjectController {
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		model.deleteById(getParaToInt());
-				
+
 		list();
 	}
-	
+
 	/**
 	 * Iframe删除
 	 * 
@@ -90,7 +90,7 @@ public class ImagealbumController extends BaseProjectController {
 			renderMessage("相册下存在图片，不能删除");
 			return;
 		}
-		
+
 		// 日志添加
 		TbImageAlbum model = new TbImageAlbum();
 		Integer userid = getSessionUser().getUserid();
@@ -98,24 +98,24 @@ public class ImagealbumController extends BaseProjectController {
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		model.deleteById(id);
-				
+
 		renderMessage("删除成功");
 	}
 
 	public void edit() {
 		TbImageAlbum model = TbImageAlbum.dao.findById(getParaToInt());
 		setAttr("model", model);
-		
+
 		// 下拉框
 		setAttr("selectParentFolder", selectParentFolder(model.getParentId(), model.getId()));
-				
+
 		render(path + "edit.html");
 	}
 
 	public void save() {
 		Integer pid = getParaToInt();
 		TbImageAlbum model = getModel(TbImageAlbum.class);
-		
+
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.put("update_id", userid);
@@ -130,7 +130,7 @@ public class ImagealbumController extends BaseProjectController {
 		}
 		renderMessage("保存成功");
 	}
-	
+
 	/**
 	 * 目录复选框
 	 * 

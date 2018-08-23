@@ -91,7 +91,7 @@ public class DESUtils {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	/**
 	 * 测试
 	 * 

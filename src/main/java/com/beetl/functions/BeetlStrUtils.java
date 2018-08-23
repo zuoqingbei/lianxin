@@ -28,7 +28,7 @@ import com.hailian.util.StrUtils;
  * @author flyfox 2012.08.08
  * @email 330627517@qq.com
  */
-public class BeetlStrUtils  extends StrUtils{
+public class BeetlStrUtils extends StrUtils {
 
 	/**
 	 * startWith

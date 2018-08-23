@@ -14,7 +14,7 @@ public class ApiConstant {
 	 * 否
 	 */
 	public static final int OPER_NO = 2;
-	
+
 	/**
 	 * 成功
 	 */

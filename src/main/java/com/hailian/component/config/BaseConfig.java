@@ -85,7 +85,7 @@ public class BaseConfig extends JFinalConfig {
 		me.setError403View(Config.getStr("PAGES.403"));
 		me.setError404View(Config.getStr("PAGES.404"));
 		me.setError500View(Config.getStr("PAGES.500"));
-		
+
 		// 开启日志
 		SqlReporter.setLog(true);
 
@@ -102,7 +102,7 @@ public class BaseConfig extends JFinalConfig {
 		groupTemplate.registerFunctionPackage("tempVideo", TemplateVideoService.class);
 
 	};
-	
+
 	/**
 	 * 配置路由
 	 */
@@ -113,7 +113,7 @@ public class BaseConfig extends JFinalConfig {
 		// 2.加入ControllerBind的 获取 key
 		me.add(new AutoBindRoutes());
 	}
-	
+
 	/**
 	 * 配置插件
 	 */
@@ -157,7 +157,7 @@ public class BaseConfig extends JFinalConfig {
 
 		new AutoBindModels(arp);
 	}
-	
+
 	@Override
 	public void configHandler(Handlers me) {
 		// Beelt
@@ -218,25 +218,24 @@ public class BaseConfig extends JFinalConfig {
 
 		// 初始化Cache为fst序列化
 		SerializerManage.add("fst", new FSTSerializer());
-		
+
 		// 设置序列化工具
 		String defaultKey = Config.getStr("CACHE.SERIALIZER.DEFAULT");
 		defaultKey = StrUtils.isEmpty(defaultKey) ? "java" : defaultKey;
 		SerializerManage.setDefaultKey(defaultKey);
 
-		
 		// 设置缓存
 		CacheManager.setCache(new ICacheManager() {
 
 			public Cache getCache() {
 				String cacheName = Config.getStr("CACHE.NAME");
-				cacheName = StrUtils.isEmpty(cacheName) ? "MemorySerializeCache" : cacheName; 
-				
+				cacheName = StrUtils.isEmpty(cacheName) ? "MemorySerializeCache" : cacheName;
+
 				if ("MemorySerializeCache".equals(cacheName)) {
 					return new MemorySerializeCache();
 				} else if ("MemoryCache".equals(cacheName)) {
 					return new MemoryCache();
-				}  else if ("RedisCache".equals(cacheName)) {
+				} else if ("RedisCache".equals(cacheName)) {
 					return new RedisCache();
 				} else {
 					throw new RuntimeException("####init cache error!");
@@ -251,18 +250,16 @@ public class BaseConfig extends JFinalConfig {
 		System.out.println("############系统停止完成##########");
 		System.out.println("##################################");
 	}
-	
 
 	/**
 	 * 配置模板
 	 */
 	public void configEngine(Engine engine) {
-		
+
 	}
-	
+
 	private boolean isDevMode() {
 		return Config.getToBoolean("CONSTANTS.DEV_MODE");
 	}
-
 
 }

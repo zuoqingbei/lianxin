@@ -17,7 +17,6 @@
 
 package com.hailian.util;
 
-
 /**
  * 常量类
  * 

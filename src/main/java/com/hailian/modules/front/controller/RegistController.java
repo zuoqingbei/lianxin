@@ -96,11 +96,11 @@ public class RegistController extends BaseProjectController {
 		TbSite site = getSessionSite().getModel();
 		user.set("back_site_id", 0);
 		user.set("create_site_id", site.getId());
-		
+
 		user.set("create_time", getNow());
 		user.set("create_id", 1);
 		user.save();
-		
+
 		UserCache.init(); // 设置缓存
 		setSessionUser(user); // 设置session
 		json.put("status", 1);// 成功

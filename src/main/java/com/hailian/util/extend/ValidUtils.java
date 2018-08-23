@@ -29,14 +29,16 @@ import java.util.regex.Pattern;
  */
 public class ValidUtils {
 
-	private static final char[] enChar = new char[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-	private static final char[] numChar = new char[]{'0','1','2','3','4','5','6','7','8','9'};
-	
+	private static final char[] enChar = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+			'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+			'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+	private static final char[] numChar = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
 	static {
 		Arrays.sort(enChar);
 		Arrays.sort(numChar);
 	}
-	
+
 	/**
 	 * 英文字母或者数字
 	 * 
@@ -53,7 +55,7 @@ public class ValidUtils {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 英文字母
 	 * 
@@ -70,7 +72,7 @@ public class ValidUtils {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 数字
 	 * 
@@ -87,7 +89,7 @@ public class ValidUtils {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 手机号验证
 	 * 

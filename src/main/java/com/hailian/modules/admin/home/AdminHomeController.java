@@ -23,13 +23,11 @@ public class AdminHomeController extends BaseProjectController {
 		}
 		setAttr("nowUser", user);
 
-		
 		// 最新文件
 		Page<TbArticle> articlePage = TbArticle.dao.paginate(new Paginator(1, 10), "select t.*,f.name as folderName " //
 				, " from tb_article t left join tb_folder f on f.id = t.folder_id " //
 						+ " where t.status = 1 and t.type in (11,12) " // 查询状态为显示，类型是预览和正常的文章
-						+ "  and f.site_id="+getBackSite().getId()
-						+ " order by t.update_time desc,t.id desc");
+						+ "  and f.site_id=" + getBackSite().getId() + " order by t.update_time desc,t.id desc");
 		setAttr("articles", articlePage.getList());
 
 		// 最新评论
@@ -44,13 +42,11 @@ public class AdminHomeController extends BaseProjectController {
 						+ " where 1 = 1 and userid != 1 order by userid desc ");
 		setAttr("users", userPage.getList());
 
-		
 		// 最新访问用户
 		Page<TbPageView> pageViewPage = TbPageView.dao.paginate(new Paginator(1, 10), "select t.*", //
 				" from tb_pageview t order by id desc ");
 		setAttr("pageViews", pageViewPage.getList());
-		
-		
+
 		render(path + "home.html");
 	}
 }

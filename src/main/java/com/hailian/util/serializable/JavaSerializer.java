@@ -25,10 +25,10 @@ import java.io.ObjectOutputStream;
 
 public class JavaSerializer implements Serializer {
 
-	public String name(){
+	public String name() {
 		return "java";
 	}
-	
+
 	public byte[] serialize(Object obj) throws IOException {
 		ObjectOutputStream oos = null;
 		try {
@@ -53,9 +53,9 @@ public class JavaSerializer implements Serializer {
 		try {
 			ByteArrayInputStream bais = new ByteArrayInputStream(bits);
 			ois = new ObjectInputStream(bais);
-			return (T)ois.readObject();
+			return (T) ois.readObject();
 		} catch (ClassNotFoundException e) {
-			throw new IOException("没有找到类型",e);
+			throw new IOException("没有找到类型", e);
 		} finally {
 			try {
 				if (ois != null)

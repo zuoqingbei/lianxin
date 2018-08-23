@@ -65,17 +65,14 @@ public class NumberUtils {
 		}
 		return value;
 	}
-	
-	
 
-	
 	/**
 	 * 将传入的字符串转成int型数据 . 遇到任何错误返回0
 	 * @param str 待解析的字符串
 	 * @return 解析结果 
 	 */
-	public static int parseInt(String str){
-		return parseInt(str ,0);
+	public static int parseInt(String str) {
+		return parseInt(str, 0);
 	}
 
 	/**
@@ -84,42 +81,45 @@ public class NumberUtils {
 	 * @param defaultValue 遇到错误时的替换数字 . 
 	 * @return 解析结果 
 	 */
-	public static int parseInt(String str ,int defaultValue){
-		try{
+	public static int parseInt(String str, int defaultValue) {
+		try {
 			defaultValue = Integer.parseInt(str);
-		} catch(Exception e){}
-		return defaultValue ;
+		} catch (Exception e) {
+		}
+		return defaultValue;
 	}
-	
+
 	/**
 	 * 将传入的字符串转成double型数据 . 遇到任何错误返回0
 	 * @param str 待解析的字符串
 	 * @return 解析结果 
 	 */
-	public static double parseDbl(String str){
-		return parseDbl(str ,0);
+	public static double parseDbl(String str) {
+		return parseDbl(str, 0);
 	}
+
 	/**
 	 * 将传入的字符串转成double型数据 . 遇到任何错误返回replaceWith
 	 * @param str 待解析的字符串
 	 * @param defaultValue 遇到错误时的替换数字 . 
 	 * @return 解析结果 
 	 */
-	public static double parseDbl(String str ,double defaultValue){
-		try{
+	public static double parseDbl(String str, double defaultValue) {
+		try {
 			defaultValue = Double.parseDouble(str);
-		} catch(Exception e){}
-		return defaultValue ;
+		} catch (Exception e) {
+		}
+		return defaultValue;
 	}
-	
+
 	public static float parseFloat(String str) {
 		return parseFloat(str, 0);
 	}
-	
-	public static float parseFloat(String str ,float b) {
-		try{
+
+	public static float parseFloat(String str, float b) {
+		try {
 			return Float.parseFloat(str);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return b;
 		}
 	}
@@ -134,6 +134,7 @@ public class NumberUtils {
 	public static long parseLong(String str) {
 		return parseLong(str, 0l);
 	}
+
 	/**
 	 * 遇到错误返回defaultValue
 	 * @author 王平
@@ -141,11 +142,12 @@ public class NumberUtils {
 	 * @param str
 	 * @return
 	 */
-	public static long parseLong(String str ,long defaultValue){
-		try{
+	public static long parseLong(String str, long defaultValue) {
+		try {
 			defaultValue = Long.parseLong(str);
-		} catch(Exception e){}
-		return defaultValue ;
+		} catch (Exception e) {
+		}
+		return defaultValue;
 	}
 
 }

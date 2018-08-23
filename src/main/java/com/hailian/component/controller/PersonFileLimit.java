@@ -34,9 +34,9 @@ public class PersonFileLimit {
 	 * 当前小时上传次数
 	 */
 	private AtomicLong nowHourCount = new AtomicLong(0);
-	
+
 	private String legal = OK;
-	
+
 	/**
 	 * 入库
 	 */
@@ -51,11 +51,11 @@ public class PersonFileLimit {
 		if (!OK.equals(legal)) {
 			return;
 		}
-		
+
 		String tmpDay = DateUtils.getNow("yyyyMMdd");
 		if (StrUtils.isEmpty(nowDay)) {
 			nowDay = tmpDay;
-		} else if(!tmpDay.equals(nowDay)){
+		} else if (!tmpDay.equals(nowDay)) {
 			nowDay = tmpDay;
 			nowDayCount.set(0); // 清0从算
 		}
@@ -63,11 +63,11 @@ public class PersonFileLimit {
 		if (nowDayCount.get() > nowDayMaxCount) {
 			legal = ERROR_NOWDAY;
 		}
-		
+
 		String tmpHour = DateUtils.getNow("yyyyMMddHH");
 		if (StrUtils.isEmpty(nowHour)) {
 			nowHour = tmpHour;
-		} else if(!tmpHour.equals(nowHour)){
+		} else if (!tmpHour.equals(nowHour)) {
 			nowHour = tmpHour;
 			nowHourCount.set(0); // 清0从算
 		}
@@ -75,7 +75,7 @@ public class PersonFileLimit {
 		if (nowHourCount.get() > nowHourMaxCount) {
 			legal = ERROR_NOWHOUR;
 		}
-		
+
 	}
 
 	public int getId() {

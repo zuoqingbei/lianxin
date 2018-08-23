@@ -90,8 +90,7 @@ public class JFlyFoxUtils {
 	public static final int MATERIAL_TYPE_VIDEO = 104; // 视频
 	public static final int MATERIAL_TYPE_OTHER = 105; // 其他
 	public static final int MATERIAL_TYPE_FOLDER = 106; // 栏目 
-	
-	
+
 	private static final DES3Utils des = new DES3Utils("flyoffox");
 
 	// admin:1RHFCLt64uOOViCTzgSaww== test:ldKI9edsQVM=
@@ -221,8 +220,8 @@ public class JFlyFoxUtils {
 
 		return StrUtils.isNotEmpty(path) // 空是首页
 				&& (path.startsWith("system/") // 系统管理
-				|| path.startsWith("admin/") // 后台管理
-				|| path.startsWith("report/") // 报表管理
+						|| path.startsWith("admin/") // 后台管理
+						|| path.startsWith("report/") // 报表管理
 				|| path.startsWith("demo/") // 演示地址
 				);
 	}

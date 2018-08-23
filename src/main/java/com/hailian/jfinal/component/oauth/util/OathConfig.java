@@ -19,7 +19,6 @@ package com.hailian.jfinal.component.oauth.util;
 
 import com.hailian.util.Config;
 
-
 /**
  * Oauth 授权
  */

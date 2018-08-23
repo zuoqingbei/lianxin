@@ -50,16 +50,16 @@ public class VideoalbumController extends BaseProjectController {
 
 	public void add() {
 		setAttr("selectParentAlbum", selectParentFolder(0, 0));
-		
+
 		render(path + "add.html");
 	}
 
 	public void view() {
 		TbVideoAlbum model = TbVideoAlbum.dao.findById(getParaToInt());
-		
+
 		TbVideoAlbum album = TbVideoAlbum.dao.findById(model.getParentId());
 		model.put("parentName", album != null ? album.getName() : null);
-		
+
 		setAttr("model", model);
 		render(path + "view.html");
 	}
@@ -72,7 +72,7 @@ public class VideoalbumController extends BaseProjectController {
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		model.deleteById(getParaToInt());
-				
+
 		list();
 	}
 
@@ -89,7 +89,7 @@ public class VideoalbumController extends BaseProjectController {
 			renderMessage("专辑下存在视频，不能删除");
 			return;
 		}
-		
+
 		// 日志添加
 		TbVideoAlbum model = new TbVideoAlbum();
 		Integer userid = getSessionUser().getUserid();
@@ -97,17 +97,17 @@ public class VideoalbumController extends BaseProjectController {
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		model.deleteById(id);
-				
+
 		renderMessage("删除成功");
 	}
-	
+
 	public void edit() {
 		TbVideoAlbum model = TbVideoAlbum.dao.findById(getParaToInt());
 		setAttr("model", model);
-		
+
 		// 下拉框
 		setAttr("selectParentAlbum", selectParentFolder(model.getParentId(), model.getId()));
-				
+
 		render(path + "edit.html");
 	}
 
@@ -129,7 +129,7 @@ public class VideoalbumController extends BaseProjectController {
 		}
 		renderMessage("保存成功");
 	}
-	
+
 	/**
 	 * 目录复选框
 	 * 

@@ -58,7 +58,7 @@ public abstract class BaseApiLogic implements IApiLogic {
 		} catch (Exception e) {
 			return new ApiResp(form).setCode(-1099).setMsg("认证异常");
 		}
-		
+
 		// 验证成功加入缓存，返回key
 		String key = RandomStrUtils.randomAlphabetic(6);
 		ApiCache.addCache(username, key);
@@ -77,23 +77,26 @@ public abstract class BaseApiLogic implements IApiLogic {
 		String apiUser = form.getApiUser();
 
 		if (StrUtils.isEmpty(apiUser)) {
-			return new ApiResp(form).setCode(ApiConstant.CODE_LOGIN_VALID_ERROR).setMsg(ApiConstant.MSG_LOGIN_VALID_ERROR);
+			return new ApiResp(form).setCode(ApiConstant.CODE_LOGIN_VALID_ERROR).setMsg(
+					ApiConstant.MSG_LOGIN_VALID_ERROR);
 		}
 
 		Object value = ApiCache.getCache(apiUser);
 		if (value == null) {
-			return new ApiResp(form).setCode(ApiConstant.CODE_LOGIN_VALID_ERROR).setMsg(ApiConstant.MSG_LOGIN_VALID_ERROR);
+			return new ApiResp(form).setCode(ApiConstant.CODE_LOGIN_VALID_ERROR).setMsg(
+					ApiConstant.MSG_LOGIN_VALID_ERROR);
 		}
-		
+
 		TreeMap<String, String> tree = form.getTreeMap();
 		String serverSign = ApiUtils.getSign(tree, String.valueOf(value));
 		if (!serverSign.equals(checkSum)) {
-			return new ApiResp(form).setCode(ApiConstant.CODE_CHECKSUM_VALID_ERROR).setMsg(ApiConstant.MSG_CHECKSUM_VALID_ERROR);
+			return new ApiResp(form).setCode(ApiConstant.CODE_CHECKSUM_VALID_ERROR).setMsg(
+					ApiConstant.MSG_CHECKSUM_VALID_ERROR);
 		}
-		
+
 		return new ApiResp(form);
 	}
-	
+
 	/**
 	 * 不需要验证的方法
 	 * 
