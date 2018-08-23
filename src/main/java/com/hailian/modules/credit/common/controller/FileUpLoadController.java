@@ -41,8 +41,11 @@ public class FileUpLoadController extends BaseProjectController {
 	public void upload() {
 		TbSite site = getBackSite();
 		System.out.println("路径===================================："+FileUploadUtils.getUploadTmpPath(site));
-		UploadFile uploadImage = getFile("model.file_url", FileUploadUtils.getUploadTmpPath(site), FileUploadUtils.UPLOAD_MAX);
-		
+		UploadFile uploadFile = getFile("model.file_url");
+		// 文件附件
+				if (uploadFile != null) {
+					String fileUrl = uploadHandler(site, uploadFile.getFile(), "image");
+				}
 		
 		
 

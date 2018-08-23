@@ -29,7 +29,7 @@ public class FrontInterceptor implements Interceptor {
 
 		Controller controller = ai.getController();
 		// 栏目，缓存
-		SessionSite site = null;
+		SessionSite site = new SessionSite();
 		if (controller instanceof BaseProjectController) {
 			site = ((BaseProjectController) controller).getSessionSite();
 		} else {

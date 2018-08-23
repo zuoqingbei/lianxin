@@ -287,8 +287,10 @@ public abstract class BaseProjectController extends BaseController {
 	public String uploadHandler(TbSite site, File uploadFile, String appendPath) {
 		String fileUrl = "";
 		String projectStorePath = FileUploadUtils.getUploadPath(site, appendPath);
-		FileUploadBean uploadBean = new FileUploadService().uploadHandle(projectStorePath, uploadFile, getSessionUser()
-				.getUserid());
+		System.out.println("projectStorePath=========="+projectStorePath);
+//		FileUploadBean uploadBean = new FileUploadService().uploadHandle(projectStorePath, uploadFile, getSessionUser()
+//				.getUserid());
+		FileUploadBean uploadBean = new FileUploadService().uploadHandle(projectStorePath, uploadFile, 1);
 		if (uploadBean != null) {
 			fileUrl = projectStorePath + File.separator + uploadBean.getName();
 		}
