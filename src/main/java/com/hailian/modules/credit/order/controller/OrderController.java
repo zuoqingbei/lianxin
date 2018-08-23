@@ -1,5 +1,4 @@
 package com.hailian.modules.credit.order.controller;
-
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -27,7 +26,14 @@ public class OrderController extends BaseProjectController {
 	 * @author zuoqb
 	 * @return_type   void
 	 */
-
+	@Params(value = { 
+			@Param(name = "pageNumber", description = "页码", required = false, dataType = "String"),
+			@Param(name = "pageSize", description = "每页条数", required = false, dataType = "String"),
+			@Param(name = "customName", description = "客户名称", required = false, dataType = "String")
+			})
+	
+	@ApiOperation(url = "/credit/order/list",httpMethod="get", 
+	description = "获取订单列表",response=TbOrder.class)
 	public void list() {
 		int pageNumber=getParaToInt("pageNumber", 1);
 		int pageSize=getParaToInt("pageSize", 10);
@@ -43,7 +49,8 @@ public class OrderController extends BaseProjectController {
 			@Param(name = "customName", description = "客户名称", required = false, dataType = "String")
 			})
 	
-	@ApiOperation(url = "/credit/order/listJson",httpMethod="get", description = "获取订单列表")
+	@ApiOperation(url = "/credit/order/listJson",httpMethod="get", 
+	description = "获取订单列表",response=Page.class)
 	public void listJson() {
 		int pageNumber=getParaToInt("pageNumber", 1);
 		int pageSize=getParaToInt("pageSize", 10);
