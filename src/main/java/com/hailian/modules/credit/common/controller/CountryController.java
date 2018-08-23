@@ -1,11 +1,9 @@
 package com.hailian.modules.credit.common.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.service.CountryService;
 /**
  * 国家地区

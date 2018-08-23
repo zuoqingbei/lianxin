@@ -20,6 +20,7 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal3.JFinal3BeetlRenderFactory;
 
 import com.beetl.functions.BeetlStrUtils;
+import com.feizhou.swagger.config.routes.SwaggerRoutes;
 import com.hailian.component.beelt.BeeltFunctions;
 import com.hailian.component.interceptor.CommonInterceptor;
 import com.hailian.component.interceptor.PageViewInterceptor;
@@ -55,9 +56,9 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
-import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.ContextPathHandler;
 import com.jfinal.ext.interceptor.SessionInViewInterceptor;
+import com.jfinal.i18n.I18nInterceptor;
 import com.jfinal.kit.PathKit;
 import com.jfinal.log.Log4jLogFactory;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
@@ -85,6 +86,10 @@ public class BaseConfig extends JFinalConfig {
 		me.setError403View(Config.getStr("PAGES.403"));
 		me.setError404View(Config.getStr("PAGES.404"));
 		me.setError500View(Config.getStr("PAGES.500"));
+		//配置国际化资源默认的basename
+		//url?_local=zh-CN/en_US,前台页面可以获取到配置文件里面的key值
+		me.setI18nDefaultBaseName("i18n");
+		me.setI18nDefaultLocale("zh_CN");
 		
 		// 开启日志
 		SqlReporter.setLog(true);
@@ -112,6 +117,7 @@ public class BaseConfig extends JFinalConfig {
 		// 1.如果没用加入注解，必须以Controller结尾,自动截取前半部分为key
 		// 2.加入ControllerBind的 获取 key
 		me.add(new AutoBindRoutes());
+		me.add(new SwaggerRoutes());
 	}
 	
 	/**
@@ -177,6 +183,8 @@ public class BaseConfig extends JFinalConfig {
 	 * 配置全局拦截器
 	 */
 	public void configInterceptor(Interceptors me) {
+		//国际化
+		 me.add(new I18nInterceptor());
 		// 异常拦截器，跳转到500页面
 		me.add(new ExceptionInterceptor());
 		// session model转换
@@ -197,6 +205,7 @@ public class BaseConfig extends JFinalConfig {
 		me.add(new SiteInterceptor());
 		// 公共属性
 		me.add(new CommonInterceptor());
+
 	}
 
 	/**
