@@ -29,18 +29,15 @@ public class UserController extends BaseProjectController {
 
 	public void list() {
 		SysUser model = getModelByAttr(SysUser.class);
-
 		SQLUtils sql = new SQLUtils(" from sys_user t " //
 				+ " left join sys_department d on d.id = t.departid " //
 				+ " where 1 = 1 and userid != 1 ");
-
 		if (model.getAttrValues().length != 0) {
 			sql.whereLike("username", model.getStr("username"));
 			sql.whereLike("realname", model.getStr("realname"));
 			sql.whereEquals("usertype", model.getInt("usertype"));
 			sql.whereEquals("departid", model.getInt("departid"));
 		}
-
 		// 排序
 		String orderBy = getBaseForm().getOrderBy();
 		if (StrUtils.isEmpty(orderBy)) {

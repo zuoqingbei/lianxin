@@ -3,6 +3,8 @@
 	include("/pages/template/head.html"){}
 %>
 
+<script type="text/javascript" src="resources/js/language.js"></script>
+<p>2、一日，鲁迅走在大街上，忽然一个男的拍了他的肩膀一下，说：“迅哥，你还记得我吗？”鲁迅想不起来，便问“你是？”那个男的说“你难道忘了啊，深蓝的天空中挂着一轮金黄的圆月，下面是海边的沙地，都种着一望无际的碧绿的西瓜。其间有一个十一二岁的少年，项带银圈，手捏一柄钢叉，向一匹猹尽力地刺去，那猹却将身一扭，反从他的胯下逃走了。”“闰土！你是闰土！”那个男的说“不，我是猹。”“那闰土呢”“闰土tmd上街卖瓜 被人用秤砣敲死了”</p>
 <script type="text/javascript">
 		
 	var oper;
@@ -42,8 +44,6 @@ var bodyContent = {
 	<input type="hidden" name="form.orderColumn" value="${form.orderColumn!''}" />
 		<input type="hidden" name="form.orderAsc" value="${form.orderAsc!''}" />
 		<!-- 菜单 -->
-		<% include("/pages/template/menu.html"){} %>
-
 		<div class="tableSearch">
 			<%  //查询列表 %>
 			<div class="form-group">
@@ -82,6 +82,7 @@ var bodyContent = {
 					<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 
 					<!-- <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a> -->
+					${_res.msg}
 				</td>
 				</tr>
 			<% } %>
@@ -92,9 +93,11 @@ var bodyContent = {
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
 		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+		
 	  </div>
 	</nav>
 </form>
+
 <%}; %>
 
 <% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
