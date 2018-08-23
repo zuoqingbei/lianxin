@@ -1,7 +1,9 @@
 package com.hailian.modules.credit.common.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -33,4 +35,18 @@ public class CountryService {
 		return CountryModel.dao.find(sql,params.toArray());
 	
 	}
+	public Map<Object, Object> CountrySelect(BaseProjectController c) {
+		String sql="select continent,continent_en from credit_country where del_flag=0 group by continent order by order_no";
+		List<CountryModel> continentList = CountryModel.dao.find(sql);
+		Map<Object,Object> map=new HashMap<Object, Object>();
+		for(CountryModel model:continentList){
+			List<Object> params=new ArrayList<Object>();
+			String innerSql="select name,name_en from credit_country where del_flag=0 and continent=? order by order_no";
+			params.add(model.get("continent"));
+			List<CountryModel> countrylist = CountryModel.dao.find(innerSql,params.toArray());
+			map.put(model, countrylist);
+		}
+		return map;
+	}
 }
+

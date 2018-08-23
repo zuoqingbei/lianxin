@@ -4,6 +4,7 @@ import java.io.File;
 import java.security.SecureRandom;
 
 import com.hailian.jfinal.base.BaseService;
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.system.config.ConfigCache;
 import com.hailian.system.file.model.FileUploadBean;
 import com.hailian.system.file.model.SysFileUpload;
@@ -71,7 +72,15 @@ public class FileUploadService extends BaseService {
 	public FileUploadBean uploadHandle(String projectStorePath, File uploadFile, int userid) {
 		return uploadHandle(projectStorePath, uploadFile, FileUploadConstants.BUSINESS_TYPE_RECORD, userid);
 	}
-
+	/**
+	 * 征信项目上传文件处理
+	* @author doushuihai  
+	* @date 2018年8月23日下午4:21:07  
+	* @TODO
+	 */
+	public FileUploadBean uploadCreditFileHandle(String projectStorePath, File uploadFile, int userid) {
+		return uploadCreditFileHandle(projectStorePath, uploadFile, FileUploadConstants.BUSINESS_TYPE_RECORD, userid);
+	}
 	/**
 	 * 上传文件处理
 	 * 
@@ -107,7 +116,32 @@ public class FileUploadService extends BaseService {
 		}
 		return bean;
 	}
+	/**
+	 * 征信项目文件上传处理
+	* @author doushuihai  
+	* @date 2018年8月23日下午4:23:42  
+	* @TODO
+	 */
+	public FileUploadBean uploadCreditFileHandle(String projectStorePath, File uploadFile, int businessType, int userid) {
+		FileUploadBean bean = null;
+		String webRootPath = FileUploadUtils.getRootPath() + "/";
+		String storePath = webRootPath + projectStorePath;
+		try {
+			// 文件重命名，避免中文保证唯一
+			bean = rename(storePath, uploadFile);
+			// 保存记录
+			if (!saveCreditFile(bean, businessType, userid)) {
+				log.error("FileUploadService uploadHandle save fail.");
+				return bean;
+			}
 
+			// 文件备份
+			getFileBackup().backup(bean);
+		} catch (Exception e) {
+			log.error("FileUploadService uploadHandle fail.", e);
+		}
+		return bean;
+	}
 	/**
 	 * 重命名
 	 * 
@@ -198,7 +232,28 @@ public class FileUploadService extends BaseService {
 		bean.setId(model.getId());
 		return flag;
 	}
-
+	public boolean saveCreditFile(FileUploadBean bean, int businessType, int userid) {
+		CreditUploadFileModel model2=new CreditUploadFileModel();
+		String now = DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
+		model2.set("name", bean.getName());
+		String factpath = FileUploadUtils.rebuild(bean.getFactpath());
+		model2.set("factpath", bean.getName());
+		String path = factpath.replace(FileUploadUtils.getRootPath(), "");
+		model2.set("url", path);
+		model2.set("ext", bean.getExt());
+		model2.set("originalname", bean.getOriginalName());
+		model2.set("type", bean.getType());
+		model2.set("size", bean.getSize());
+		model2.set("size", bean.getSize());
+		model2.set("update_date", now);
+		model2.set("update_by", userid);
+		model2.set("create_date", now);
+		model2.set("create_by", userid);
+		model2.save();
+		boolean flag = model2.save();
+		// 设置ID
+		return flag;
+	}
 	/**
 	 * 将File转换为FileUploadBean
 	 * 

@@ -214,7 +214,9 @@ public class JFlyFoxUtils {
 		// 后台不需要认证页面
 		if (path.startsWith("admin/login") //
 				|| path.startsWith("admin/logout") //
-				|| path.startsWith("admin/trans")) {
+				|| path.startsWith("admin/trans")
+				|| path.startsWith("admin/image")
+				|| path.startsWith("admin/file")) {
 			return false;
 		}
 
