@@ -8,6 +8,8 @@ import org.apache.commons.lang.StringUtils;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.modules.credit.order.model.CreditOrderInfo;
+import com.hailian.util.extend.UuidUtils;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 /**
  * 
@@ -18,7 +20,7 @@ import com.jfinal.plugin.activerecord.Page;
  */
 public class OrderInfoService {
 	//static使该service保证了单例,public可以使Controller方便调用该service
-	public static OrderService service= new OrderService();//名字都叫service，统一命名
+	public static OrderInfoService service= new OrderInfoService();//名字都叫service，统一命名
 	
 	/**
 	 * 
@@ -34,7 +36,8 @@ public class OrderInfoService {
 	
 	public CreditOrderInfo getOrder(String id,BaseProjectController c) {
 //		String authorSql=DataAuthorUtils.getAuthorByUser(c);//验证权限
-		return CreditOrderInfo.dao.findById(id);
+		CreditOrderInfo coi= CreditOrderInfo.dao.findFirst("select * from credit_order_info c  where c.del_flag='0' and c.id=?",id);
+		return coi;
 	}
 	/**
 	 * 
@@ -52,11 +55,11 @@ public class OrderInfoService {
 	public  Page<CreditOrderInfo> getOrders(int pageNumber,int pageSize,String customid,BaseProjectController c){
 //		String authorSql=DataAuthorUtils.getAuthorByUser(c);//验证权限
 		StringBuffer selectSql=new StringBuffer(" select * ");
-		StringBuffer fromSql=new StringBuffer(" from credit_order_info where 1=1 ");
+		StringBuffer fromSql=new StringBuffer(" from credit_order_info c where 1=1 and c.del_flag='0' ");
 		//参数集合
 		List<Object> params=new ArrayList<Object>();
 		if(StringUtils.isNotBlank(customid)){
-			fromSql.append(" and customid =? ");
+			fromSql.append(" and c.custom_id =? ");
 			params.add(customid);
 		}
 		CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pageSize),  selectSql.toString()
@@ -64,10 +67,55 @@ public class OrderInfoService {
 		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pageSize),  selectSql.toString()
 				,fromSql.toString(),params.toArray());
 	}
-	
-	public void addOrder(CreditOrderInfo coi) {
-		CreditOrderInfo.dao.save();
-		
+	/**
+	 * 
+	 * @time   2018年8月23日 下午3:02:57
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param coi
+	 * @param  @return
+	 * @return_type   Boolean
+	 * 添加订单
+	 */
+	public Boolean addOrder(CreditOrderInfo coi,BaseProjectController c) {
+		/*if(coi==null) {
+			return false;
+		}*/
+		String id= UuidUtils.getUUID();
+		coi.set("id",id);
+		coi.set("del_flag", "0");
+		Boolean flag=coi.save();
+		return flag;
 	}
+	/**
+	 * 
+	 * @time   2018年8月23日 下午3:45:09
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param coi
+	 * @return_type   void
+	 * 修改订单
+	 */
+	public Boolean modifyOrder(CreditOrderInfo coi,BaseProjectController c) {
+		Boolean flag=coi.update();
+		return flag;
+	}
+	/**
+	 * 
+	 * @time   2018年8月23日 下午3:45:40
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param coi
+	 * @return_type   void
+	 * 删除订单
+	 */
+	public Boolean deleteOrder(CreditOrderInfo coi,BaseProjectController c) {
+		coi.set("del_flag", "1");
+		Boolean flag=coi.update();
+		return flag;
+	}
+	/*public void deleteListOrder(List<CreditOrderInfo> list) {
+		Db.batchUpdate(list, 100);
+	}*/
 	
 }

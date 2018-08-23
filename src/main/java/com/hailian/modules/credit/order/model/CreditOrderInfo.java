@@ -19,7 +19,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	 */
 	private static final long serialVersionUID = 1L;
 	//
-	public static final CreditOrderInfo dao = new CreditOrderInfo().dao();//名字都叫dao，统一命名
+	public static final CreditOrderInfo dao = new CreditOrderInfo();//名字都叫dao，统一命名
 	
 
 }
