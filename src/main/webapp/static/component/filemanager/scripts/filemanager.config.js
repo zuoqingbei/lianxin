@@ -22,8 +22,8 @@
         "splitterMinWidth": 200,
         "dateFormat": "d M Y H:i",
         "serverRoot": true,
-        "fileRoot": "/jfinal_cms/",
-        "baseUrl": "http://127.0.0.1/jfinal_cms/",
+        "fileRoot": "/",
+        "baseUrl": "http://127.0.0.1/",
         "logger": false,
         "capabilities": ["select", "download", "rename", "delete", "replace"],
         "plugins": []
