@@ -14,6 +14,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.util.ImageModel;
 import com.hailian.component.util.ImageUtils;
 import com.hailian.jfinal.base.BaseController;
+import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.image.model.TbImage;
 import com.hailian.modules.admin.image.model.TbImageTags;
 import com.hailian.modules.admin.site.TbSite;
@@ -31,6 +32,7 @@ import com.jfinal.upload.UploadFile;
 * @date 2018年4月16日
 * 
 */
+@ControllerBind(controllerKey = "/admin/file")
 public class FileUpLoadController extends BaseProjectController {
 	public void index(){
 		render("xd/pages/06_02yuebaoshangchuan.html");
@@ -38,16 +40,10 @@ public class FileUpLoadController extends BaseProjectController {
 	//文件上传
 	public void upload() {
 		TbSite site = getBackSite();
+		System.out.println("路径===================================："+FileUploadUtils.getUploadTmpPath(site));
 		UploadFile uploadImage = getFile("model.file_url", FileUploadUtils.getUploadTmpPath(site), FileUploadUtils.UPLOAD_MAX);
 		
-		Integer pid = getParaToInt();
-		TbImage model = getModel(TbImage.class);
 		
-		// 图片附件
-		if (uploadImage != null) {
-			String fileUrl = uploadHandler(site, uploadImage.getFile(), "image");
-			model.set("image_url", fileUrl);
-		}
 		
 
 
