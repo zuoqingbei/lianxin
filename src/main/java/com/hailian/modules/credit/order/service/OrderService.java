@@ -12,7 +12,7 @@ import com.jfinal.plugin.activerecord.Page;
 public class OrderService {
 
 	public static OrderService service = new OrderService();//名字都叫service，统一命名
-
+       
 	/**
 	 * @todo   根据订单ID查询订单信息
 	 * @time   2018年8月20日 下午7:10:23

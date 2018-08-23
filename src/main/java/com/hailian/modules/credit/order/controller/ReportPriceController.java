@@ -7,25 +7,23 @@ import com.hailian.modules.credit.order.service.ReportPriceService;
 
 /**
 * @author dyc:
-* @version 2018年8月23日 下午3:17:51
-* @todo  报告价格
+* @version 2018年8月23日 下午5:29:22
+* @todo
 */
 @ControllerBind(controllerKey="/credit/price")
 public class ReportPriceController extends BaseProjectController{
-	/**
-	 * 
-	 * @time   2018年8月23日 下午3:32:00
-	 * @author dyc
-	 * @todo   TODO
-	 * @return_type   void
-	 */
 	
-	public  void  getOne(){
-		String id=getPara("id");
-		ReportPrice price=ReportPriceService.service.selectOne(id, this);
-		setAttr("priceone", price);
+/**
+ * 
+ * @time   2018年8月23日 下午5:39:02
+ * @author dyc
+ * @todo   根据id查询报告价格信息
+ * @return_type   void
+ */
+	public void getOne(){
+	    String id=getPara("id");
+		ReportPrice price=ReportPriceService.service.selectByid(id, this);
+		setAttr("getOne", price);
 	}
 	
-	
-  
 }

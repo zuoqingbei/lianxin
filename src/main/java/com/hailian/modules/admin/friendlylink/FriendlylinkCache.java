@@ -91,5 +91,4 @@ public class FriendlylinkCache extends BaseService {
 		}
 		return newList;
 	}
-
 }
