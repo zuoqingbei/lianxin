@@ -36,7 +36,7 @@ public class JFlyFoxCache {
 		// PV缓存绑定
 		PageViewCache.init();
 		// 友情链接缓存
-		//FriendlylinkCache.init();
+		FriendlylinkCache.init();
 		// URL KEY初始化
 		FolderService.initMenuKey();
 		// 日志配置初始化
