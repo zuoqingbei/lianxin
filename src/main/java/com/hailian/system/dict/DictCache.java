@@ -45,8 +45,25 @@ public class DictCache {
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
 		// detailSort
 		listDetail = SysDictDetail.dao.findByWhere(" order by detail_sort,detail_id");
+		
+		
+		
+		
+		//new SysDictDetail(detail.getInt("detail_id"));
+		
+		//listDetail.remove();
+		
 		for (SysDictDetail detail : listDetail) {
+				
+		//	System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"+listDetail.remove(detail.getInt("detail_id")));
+			
+			//System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC2C"+listDetail.size());
+			//System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"+detail);
+			
+			
 			dictMap.put(detail.getInt("detail_id"), detail);
+			
+			
 		}
 		cache.add("map", dictMap);
 	}
