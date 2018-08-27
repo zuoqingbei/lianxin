@@ -12,10 +12,10 @@ import com.jfinal.plugin.activerecord.Page;
 
 /**
 * @author dyc:
-* @version 2018年8月23日 下午5:29:22
+* @time 2018年8月23日 下午5:29:22
 * @todo
 */
-@Api(tag = "报告订单", description = "报告订单下拉框")
+@Api(tag = "报告价格", description = "报告价格下拉框")
 @ControllerBind(controllerKey = "/credit/price")
 public class ReportPriceController extends BaseProjectController {
 
@@ -62,5 +62,39 @@ public class ReportPriceController extends BaseProjectController {
 		setAttr("model", model);
 		render("/pages/system/dict/dict_list.html");
 
+	}
+
+	/**
+	 * 
+	 * @time   2018年8月24日 下午4:24:54
+	 * @author dyc
+	 * @todo   向报告价格表里新增信息
+	 * @return_type   void
+	 */
+	@ApiOperation(url = "/credit/price/addReport", httpMethod = "get", description = "报告价格表新增信息")
+	public void addReport() {
+		ReportPrice model = getModelByAttr(ReportPrice.class);
+		ReportPriceService.service.add(model);
+		setAttr("model", model);
+		list();
+	}
+	/**
+	 * 
+	 * @time   2018年8月27日 上午10:23:53
+	 * @author dyc
+	 * @todo   根据id删除报告价格表信息
+	 * @return_type   void
+	 */
+	@ApiOperation(url = "/credit/price/deleteReport", httpMethod = "get", description = "删除报告价格表里的信息")
+	public void deleteReport(){
+		String id=getPara("id");
+		if(ReportPriceService.service.updateDelFlagById(id)){
+			//success
+			//redirect("/credit/price/list");
+			renderText("success");
+		}else{
+			//redirect("/credit/price/list");
+			renderText("failure");
+		};	
 	}
 }

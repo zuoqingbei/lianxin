@@ -63,5 +63,7 @@ public class OrderController extends BaseProjectController {
 		setAttr("model", model);
 		render("/pages/credit/order/order_view.html");
 	}
+	
+	
 
 }
