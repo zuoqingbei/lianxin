@@ -1,4 +1,4 @@
-package com.hailian.modules.credit.order.service;
+package com.hailian.modules.admin.ordermanager.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
+import com.hailian.jfinal.component.db.SQLUtils;
+import com.hailian.modules.admin.ordermanager.controller.OrdermanagerController;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.util.extend.UuidUtils;
 import com.jfinal.plugin.activerecord.Db;
@@ -18,9 +20,9 @@ import com.jfinal.plugin.activerecord.Page;
  * @author yangdong
  * @todo   TODO
  */
-public class OrderInfoService {
+public class OrderManagerService {
 	//static使该service保证了单例,public可以使Controller方便调用该service
-	public static OrderInfoService service= new OrderInfoService();//名字都叫service，统一命名
+	public static OrderManagerService service= new OrderManagerService();//名字都叫service，统一命名
 	
 	/**
 	 * 
@@ -67,6 +69,7 @@ public class OrderInfoService {
 		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pageSize),  selectSql.toString()
 				,fromSql.toString(),params.toArray());
 	}
+	
 	/**
 	 * 
 	 * @time   2018年8月23日 下午3:02:57
@@ -109,13 +112,55 @@ public class OrderInfoService {
 	 * @return_type   void
 	 * 删除订单
 	 */
-	public Boolean deleteOrder(CreditOrderInfo coi,BaseProjectController c) {
-		coi.set("del_flag", "1");
-		Boolean flag=coi.update();
-		return flag;
+	public void deleteOrder(CreditOrderInfo coi,BaseProjectController c) {
+		coi.update();
+		
 	}
 	/*public void deleteListOrder(List<CreditOrderInfo> list) {
 		Db.batchUpdate(list, 100);
 	}*/
+	
+	public Page<CreditOrderInfo> getOrders(Paginator pageinator,CreditOrderInfo model, BaseProjectController c) {
+		// TODO Auto-generated method stub
+		SQLUtils sql = new SQLUtils(" from credit_order_info t " //
+				+ " where 1 = 1 and t.del_flag='0' ");
+		if (model.getAttrValues().length != 0) {
+			sql.whereLike("custom_id", model.getStr("custom_id"));
+			/*sql.whereLike("realname", model.getStr("realname"));
+			sql.whereEquals("usertype", model.getInt("usertype"));
+			sql.whereEquals("departid", model.getInt("departid"));*/
+		}
+		// 排序
+/*		String orderBy = getBaseForm().getOrderBy();
+		if (StrUtils.isEmpty(orderBy)) {
+			sql.append(" order by userid desc");
+		} else {
+			sql.append(" order by ").append(orderBy);
+		}*/
+		
+		Page<CreditOrderInfo> page = CreditOrderInfo.dao.paginate(pageinator, "select t.*", sql.toString()
+				.toString());
+		// 下拉框
+//		setAttr("departSelect", new DepartmentSvc().selectDepart(model.getInt("departid")));
+		return page;
+		
+	}
+	public CreditOrderInfo editOrder(String id,BaseProjectController c) {
+		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
+		
+		return coi;
+	}
+	public Boolean saveOrder(CreditOrderInfo model, BaseProjectController c) {
+		// TODO Auto-generated method stub
+		model.set("del_flag", "0");
+		model.set("num", "2");
+		Boolean flag=model.update();
+		return flag;
+	}
+	public CreditOrderInfo orderView(String id, BaseProjectController c) {
+		// TODO Auto-generated method stub
+		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
+		return coi;
+	}
 	
 }
