@@ -121,8 +121,8 @@ public class CommonController extends BaseProjectController {
 		String encryptPassword = JFlyFoxUtils.passwordEncrypt(password); // 加密
 		SysUser user = SysUser.dao.findFirstByWhere(" where username = ? and password = ? " //
 				+ " and usertype != " + JFlyFoxUtils.USER_TYPE_THIRD // 第三方的只能通过oauth登录
-				, username, encryptPassword);
-		
+		, username, encryptPassword);
+
 		if (user == null || user.getInt("userid") <= 0) {
 			setAttr("msg", "认证失败，请您重新输入。");
 			renderAuto(loginPage);

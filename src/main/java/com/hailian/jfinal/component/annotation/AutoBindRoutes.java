@@ -38,7 +38,7 @@ public class AutoBindRoutes extends Routes {
 
 	protected final Log logger = Log.getLog(getClass());
 
-	private List<Class<? extends Controller>> excludeClasses =  new ArrayList<Class<? extends Controller>>();
+	private List<Class<? extends Controller>> excludeClasses = new ArrayList<Class<? extends Controller>>();
 
 	private List<String> includeJars = new ArrayList<String>();
 
@@ -113,7 +113,7 @@ public class AutoBindRoutes extends Routes {
 					logger.debug("routes.add " + controller.getName() + " is suffix not " + suffix);
 					continue;
 				}
-				
+
 				this.add(controllerKey(controller), controller);
 				logger.debug("routes.add(" + controllerKey(controller) + ", " + controller.getName() + ")");
 			} else if (StrKit.isBlank(controllerBind.viewPath())) {

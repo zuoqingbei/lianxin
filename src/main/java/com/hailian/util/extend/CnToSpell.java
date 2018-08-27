@@ -28,7 +28,7 @@ import com.hailian.util.StrUtils;
  * 
  */
 public class CnToSpell {
-	
+
 	private static LinkedHashMap<String, Integer> spellMap = null;
 
 	static {

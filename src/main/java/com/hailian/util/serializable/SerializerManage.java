@@ -34,7 +34,7 @@ public class SerializerManage {
 	public static void setDefaultKey(String defaultKey) {
 		DEFAULT_KEY = defaultKey;
 	}
-	
+
 	/**
 	 * V3.1以前版本兼容
 	 * 
@@ -46,7 +46,7 @@ public class SerializerManage {
 	public static void add(String key, Serializer serializer) {
 		map.put(key, serializer);
 	}
-	
+
 	public static void add(Serializer serializer) {
 		map.put(serializer.name(), serializer);
 	}
@@ -54,7 +54,7 @@ public class SerializerManage {
 	public static Serializer get(String key) {
 		return map.get(key);
 	}
-	
+
 	public static Serializer getDefault() {
 		return map.get(DEFAULT_KEY);
 	}

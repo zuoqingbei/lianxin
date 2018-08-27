@@ -42,7 +42,7 @@ public class RedisCache implements Cache {
 	public void clear() {
 		client.hdelObjAll(this.name);
 	}
-	
+
 	public int size() {
 		return (int) client.hlenObj(this.name);
 	}
@@ -52,7 +52,7 @@ public class RedisCache implements Cache {
 		if (map.size() == 0) {
 			return null;
 		}
-		
+
 		return map.keySet();
 	}
 

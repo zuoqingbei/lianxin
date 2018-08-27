@@ -20,11 +20,11 @@ public class JFlyFoxCache {
 
 	public static void init() {
 		log.info("####缓存初始化开始......");
-		
+
 		if (cache == null) {
 			cache = CacheManager.get(cacheName);
 		}
-		
+
 		// 系统常量
 		JFlyFoxCache.updateCache();
 		// 数据字典

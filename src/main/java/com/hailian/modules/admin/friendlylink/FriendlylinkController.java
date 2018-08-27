@@ -19,13 +19,12 @@ public class FriendlylinkController extends BaseProjectController {
 	public void list() {
 		TbFriendlylink model = getModelByAttr(TbFriendlylink.class);
 
-		SQLUtils sql = new SQLUtils(" from tb_friendlylink t"
-				+ " left join tb_site s on s.id = t.site_id where 1=1 ");
+		SQLUtils sql = new SQLUtils(" from tb_friendlylink t" + " left join tb_site s on s.id = t.site_id where 1=1 ");
 		if (model.getAttrValues().length != 0) {
 			sql.setAlias("t");
 			sql.whereLike("name", model.getStr("name"));
 		}
-		
+
 		// 排序
 		String orderBy = getBaseForm().getOrderBy();
 		if (StrUtils.isEmpty(orderBy)) {
@@ -55,12 +54,12 @@ public class FriendlylinkController extends BaseProjectController {
 
 	public void delete() {
 		TbFriendlylink model = new TbFriendlylink();
-		Integer userid= getSessionUser().getUserid();
+		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		model.deleteById(getParaToInt());
-		
+
 		FriendlylinkCache.update();
 		list();
 	}
@@ -74,8 +73,8 @@ public class FriendlylinkController extends BaseProjectController {
 	public void save() {
 		Integer pid = getParaToInt();
 		TbFriendlylink model = getModel(TbFriendlylink.class);
-		
-		Integer userid= getSessionUser().getUserid();
+
+		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.put("update_id", userid);
 		model.put("update_time", now);

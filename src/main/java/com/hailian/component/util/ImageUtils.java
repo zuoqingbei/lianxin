@@ -21,7 +21,7 @@ public class ImageUtils {
 		long start = System.currentTimeMillis();
 		// ImageModel model = getIamge("D:\Downloads\SogouWP\Net\WallPaper\387162.jpg");
 		ImageModel model = getIamge("http://i11.tietuku.com/d354a14b308a1473.png");
-		
+
 		System.out.println(model.getName());
 		System.out.println(model.getExt());
 		System.out.println(model.getSize());
@@ -47,8 +47,8 @@ public class ImageUtils {
 			if (path.startsWith("http")) {
 				URL url = new URL(path);
 				URLConnection uc = url.openConnection();
-				sourceImg = ImageIO.read(uc.getInputStream()); 
-				
+				sourceImg = ImageIO.read(uc.getInputStream());
+
 				String file = url.getFile();
 				model.setName(file.replace("/", ""));
 				if (file.lastIndexOf(".") >= 0) {
@@ -58,7 +58,7 @@ public class ImageUtils {
 			} else {
 				File picture = new File(path);
 				sourceImg = ImageIO.read(new FileInputStream(picture));
-				
+
 				model.setName(picture.getName());
 				if (path.lastIndexOf(".") >= 0) {
 					model.setExt(path.substring(path.lastIndexOf(".") + 1));

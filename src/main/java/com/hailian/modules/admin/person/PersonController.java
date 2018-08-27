@@ -110,7 +110,7 @@ public class PersonController extends BaseProjectController {
 			return;
 		}
 
-		if (sessionUser.getInt("usertype")  != JFlyFoxUtils.USER_TYPE_ADMIN) {
+		if (sessionUser.getInt("usertype") != JFlyFoxUtils.USER_TYPE_ADMIN) {
 			json.put("msg", "没有权限重置密码！");
 			renderJson(json.toJSONString());
 			return;

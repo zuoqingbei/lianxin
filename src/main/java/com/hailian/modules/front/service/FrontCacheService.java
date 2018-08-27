@@ -24,7 +24,7 @@ public class FrontCacheService extends BaseService {
 	 * 2015年4月29日 下午4:37:40 flyfox 369191470@qq.com
 	 */
 	public void clearCache() {
-		 CacheManager.get(cacheName).clear();
+		CacheManager.get(cacheName).clear();
 	}
 
 	/**
@@ -172,7 +172,8 @@ public class FrontCacheService extends BaseService {
 				+ " where " + getPublicWhere() //
 				+ " and tf.site_id = ? " + " order by t.sort,t.create_time desc";
 		// 推荐文章列表
-		Page<TbArticle> articles = TbArticle.dao.paginateCache(cacheName, key, paginator, "select t.* ", fromSql, siteId);
+		Page<TbArticle> articles = TbArticle.dao.paginateCache(cacheName, key, paginator, "select t.* ", fromSql,
+				siteId);
 		return articles;
 	}
 
@@ -191,20 +192,21 @@ public class FrontCacheService extends BaseService {
 				+ " left join tb_folder tf on tf.id = t.folder_id " //
 				+ " where " + getPublicWhere() //
 				+ " and tf.site_id = ? ";
-		if (orderType==1) { // 默认
-			fromSql +=" order by t.sort,t.create_time desc";
-		} else if (orderType==2){ // 最新
-			fromSql +=" order by t.create_time desc";
-		} else if (orderType==3){ // 精品
-			fromSql +=" order by (t.count_comment*10+t.count_view) desc";
-		} else if (orderType==4){ // 待回复的
-			fromSql +=" and t.count_comment = 0 order by t.create_time desc";
+		if (orderType == 1) { // 默认
+			fromSql += " order by t.sort,t.create_time desc";
+		} else if (orderType == 2) { // 最新
+			fromSql += " order by t.create_time desc";
+		} else if (orderType == 3) { // 精品
+			fromSql += " order by (t.count_comment*10+t.count_view) desc";
+		} else if (orderType == 4) { // 待回复的
+			fromSql += " and t.count_comment = 0 order by t.create_time desc";
 		}
 		// 推荐文章列表
-		Page<TbArticle> articles = TbArticle.dao.paginateCache(cacheName, key, paginator, "select t.* ", fromSql, siteId);
+		Page<TbArticle> articles = TbArticle.dao.paginateCache(cacheName, key, paginator, "select t.* ", fromSql,
+				siteId);
 		return articles;
 	}
-	
+
 	/**
 	 * 返回对应文章列表
 	 * 

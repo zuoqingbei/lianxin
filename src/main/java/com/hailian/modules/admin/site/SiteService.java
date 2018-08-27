@@ -20,7 +20,7 @@ public class SiteService extends BaseService {
 	public int getDefaultId() {
 		return getDefaultSite().getId();
 	}
-	
+
 	public TbSite getDefaultSite() {
 		return TbSite.dao.findFirstCache(cacheName, "getDefaultSite" //
 				, "select * from tb_site where site_defalut = ?", SiteConstant.SITE_DEFAULT_YES);

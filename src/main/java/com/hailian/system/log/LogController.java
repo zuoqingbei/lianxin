@@ -19,7 +19,7 @@ public class LogController extends BaseProjectController {
 	public void index() {
 		list();
 	}
-	
+
 	public void list() {
 		SysLog model = getModelByAttr(SysLog.class);
 

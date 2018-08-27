@@ -10,7 +10,6 @@ import com.hailian.util.cache.Cache;
 import com.hailian.util.cache.CacheManager;
 import com.jfinal.log.Log;
 
-
 /**
  * 数据字典缓存
  * 
@@ -73,7 +72,7 @@ public class DictCache {
 	}
 
 	//////////////////////////jstl 标签/////////////////////////////
-	
+
 	/**
 	 * 获取下拉菜单
 	 * 
@@ -135,8 +134,7 @@ public class DictCache {
 		SysDictDetail dict = getCacheMap().get(key);
 		return dict == null ? null : dict.getStr("detail_code");
 	}
-	
-	
+
 	/**
 	 * 获取下拉菜单 code:value形式
 	 * 

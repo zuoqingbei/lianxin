@@ -65,7 +65,7 @@ public class TwoTuple<A, B> implements ITuple {
 
 	@Override
 	public Object[] toArray() {
-		return new Object[]{first, second};
+		return new Object[] { first, second };
 	}
 
 }

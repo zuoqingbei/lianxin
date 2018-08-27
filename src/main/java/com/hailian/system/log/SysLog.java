@@ -15,7 +15,7 @@ public class SysLog extends BaseProjectModel<SysLog> {
 	private static final long serialVersionUID = 1L;
 
 	private final static Log log = Log.getLog(SysLog.class);
-	
+
 	public static final SysLog dao = new SysLog();
 	/**
 	 * 表中文转换
@@ -25,7 +25,8 @@ public class SysLog extends BaseProjectModel<SysLog> {
 	public static void init() {
 		log.info("####日志配置初始化......");
 		tableMap.clear();
-		List<SysDictDetail> list = SysDictDetail.dao.findByWhere(" where dict_type = 'systemLog' order by detail_sort ");
+		List<SysDictDetail> list = SysDictDetail.dao
+				.findByWhere(" where dict_type = 'systemLog' order by detail_sort ");
 		for (SysDictDetail detail : list) {
 			tableMap.put(detail.getStr("detail_name"), detail.getStr("detail_code"));
 		}

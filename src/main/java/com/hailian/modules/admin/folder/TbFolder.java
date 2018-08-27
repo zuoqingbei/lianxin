@@ -42,7 +42,7 @@ public class TbFolder extends BaseProjectModel<TbFolder> {
 	public java.lang.Integer getId() {
 		return get(ID);
 	}
-	
+
 	public TbFolder setParentId(java.lang.Integer value) {
 		set(PARENT_ID, value);
 		return this;
@@ -60,7 +60,7 @@ public class TbFolder extends BaseProjectModel<TbFolder> {
 	public java.lang.String getName() {
 		return get(NAME);
 	}
-	
+
 	public TbFolder setKey(java.lang.String value) {
 		set(KEY, value);
 		return this;
@@ -132,7 +132,7 @@ public class TbFolder extends BaseProjectModel<TbFolder> {
 	public java.lang.Integer getMaterialType() {
 		return get(MATERIAL_TYPE);
 	}
-	
+
 	public TbFolder setSiteId(java.lang.Integer value) {
 		set(SITE_ID, value);
 		return this;
@@ -141,7 +141,7 @@ public class TbFolder extends BaseProjectModel<TbFolder> {
 	public java.lang.Integer getSiteId() {
 		return get(SITE_ID);
 	}
-	
+
 	public TbFolder setSeoTitle(java.lang.String value) {
 		set(SEO_TITLE, value);
 		return this;
@@ -150,7 +150,7 @@ public class TbFolder extends BaseProjectModel<TbFolder> {
 	public java.lang.String getSeoTitle() {
 		return get(SEO_TITLE);
 	}
-	
+
 	public TbFolder setSeoKeywords(java.lang.String value) {
 		set(SEO_KEYWORDS, value);
 		return this;
@@ -159,7 +159,7 @@ public class TbFolder extends BaseProjectModel<TbFolder> {
 	public java.lang.String getSeoKeywords() {
 		return get(SEO_KEYWORDS);
 	}
-	
+
 	public TbFolder setSeoDescription(java.lang.String value) {
 		set(SEO_DESCRIPTION, value);
 		return this;
@@ -168,7 +168,7 @@ public class TbFolder extends BaseProjectModel<TbFolder> {
 	public java.lang.String getSeoDescription() {
 		return get(SEO_DESCRIPTION);
 	}
-	
+
 	public TbFolder setUpdateTime(java.lang.String value) {
 		set(UPDATE_TIME, value);
 		return this;

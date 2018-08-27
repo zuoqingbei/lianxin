@@ -93,7 +93,7 @@ public class UserInterceptor implements Interceptor {
 		if (list == null) {
 			return false;
 		}
-		
+
 		for (SysMenu sysMenu : list) {
 			String url = sysMenu.getStr("url");
 			if (StrUtils.isEmpty(url)) {

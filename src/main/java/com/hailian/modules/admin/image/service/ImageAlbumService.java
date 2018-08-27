@@ -17,7 +17,7 @@ public class ImageAlbumService {
 	public TbImageAlbum getAlbum(Integer albumId) {
 		return TbImageAlbum.dao.findById(albumId);
 	}
-	
+
 	/**
 	 * 相册复选框
 	 * 

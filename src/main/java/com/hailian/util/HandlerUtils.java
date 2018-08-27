@@ -19,6 +19,7 @@ public class HandlerUtils {
 
 	private HandlerUtils() {
 	}
+
 	/**
 	 * 新增自定义获取model方法
 	 * 
@@ -130,7 +131,7 @@ public class HandlerUtils {
 			Class<?> _class = null;
 			Map<?, ?> map = request.getParameterMap();
 			String vTmp = null;
-			
+
 			for (int i = 0; i < methods.length; i++) {
 				Method aMethod = methods[i];
 				String name = aMethod.getName();
@@ -194,7 +195,7 @@ public class HandlerUtils {
 			}
 		}
 	}
-	
+
 	private static Object convert(Class<?> _class, String vTmp) {
 		if ((_class == Float.class || _class == Float.TYPE)) {
 			return NumberUtils.parseFloat(vTmp);
