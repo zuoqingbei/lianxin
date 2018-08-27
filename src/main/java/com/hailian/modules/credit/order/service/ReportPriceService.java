@@ -39,7 +39,6 @@ public class ReportPriceService {
 	 * @todo   分页查询订单
 	 * @return_type   Page<ReportPrice>
 	 */
-
 	public Page<ReportPrice> pagePrice(int pageNumber, int pageSize, String reporttype, BaseProjectController c) {
 		StringBuffer selectSql = new StringBuffer(" select * ");
 		StringBuffer fromSql = new StringBuffer(" from credit_report_price where 1=1 and del_flag=0  ");
