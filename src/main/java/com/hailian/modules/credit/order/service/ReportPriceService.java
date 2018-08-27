@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.modules.credit.order.model.ReportPrice;
+import com.hailian.modules.credit.order.model.TbOrder;
 import com.hailian.util.extend.UuidUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -40,18 +41,7 @@ public class ReportPriceService {
 	 * @return_type   Page<ReportPrice>
 	 */
 	public Page<ReportPrice> pagePrice(int pageNumber, int pageSize, String reporttype, BaseProjectController c) {
-		StringBuffer selectSql = new StringBuffer(" select * ");
-		StringBuffer fromSql = new StringBuffer(" from credit_report_price where 1=1 and del_flag=0  ");
-		List<Object> params = new ArrayList<Object>();
-		if (StringUtils.isNotBlank(reporttype)) {
-			fromSql.append("and report_type=?");
-			params.add(reporttype);
-		}
-
-		Page<ReportPrice> pricePage = ReportPrice.dao.paginate(new Paginator(pageNumber, pageSize),
-				selectSql.toString(), fromSql.toString(), params.toArray());
-
-		return pricePage;
+		return ReportPrice.dao.pagePrice(pageNumber, pageSize, reporttype, c);
 
 	}
 
@@ -64,7 +54,7 @@ public class ReportPriceService {
 	 * @return_type   void
 	 */
 	public ReportPrice add(ReportPrice reportprice) {
-		reportprice.set("id", UuidUtils.getUUID());
+		reportprice.set("id", 42);
 		reportprice.save();
 		return reportprice;
 	}

@@ -64,7 +64,18 @@ public class DictSvc extends BaseService {
 
 	public void deleteDetail(SysDictDetail model) {
 		model.deleteById(model.getInt("detail_id"));
+		//System.out.println("zzzzzzzzzzzzzzzzzzzzzzzzzzz"+model.getInt("detail_id"));
+		
 		DictCache.initDict();
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
