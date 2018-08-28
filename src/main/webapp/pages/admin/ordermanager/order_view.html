@@ -3,6 +3,7 @@ var headContent = {
 include("/pages/template/head.html"){}
 };
 %>
+<% var folderType = tempDict.getSysDictDetailByType('dataEntryType'); %>
 
 <script type="text/javascript">
 
@@ -44,11 +45,6 @@ var bodyContent = {
 	<table class="table">
 		<%  // 列表头部 %>
 		<tr>
-			<td>id</td>
-			<td><input class="form-control" type="text" name="model.id"
-					   value="${model.id}" valid="vtext" validname="登录名" /></td>
-		</tr>
-		<tr>
 			<td>订单号</td>
 			<td>${model.id}</td>
 		</tr>
@@ -56,6 +52,23 @@ var bodyContent = {
 			<td>订单日期</td>
 			<td>${model.receiver_date,dateFormat="yyyy-MM-dd"}</td>
 		</tr>
+		<tr>
+			<td>客户代码</td>
+			<td>${model.custom_id}</td>
+		</tr>
+		<tr>
+			<td>处理状态</td>
+			<td>${model.status}</td>
+		</tr>
+		<tr>
+			<td>国家</td>
+			<td>${model.country}</td>
+		</tr>
+		<tr>
+			<td>报告员</td>
+			<td>${model.userName}</td>
+		</tr>
+		<tr>
 		<!--
         <tr>
             <td>密码</td>

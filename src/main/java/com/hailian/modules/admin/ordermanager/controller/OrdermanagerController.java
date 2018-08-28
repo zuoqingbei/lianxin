@@ -17,6 +17,7 @@ import com.jfinal.plugin.activerecord.Page;
 @ControllerBind(controllerKey = "/admin/ordermanager")
 public class OrdermanagerController extends BaseProjectController{
 	private static final String path = "/pages/admin/ordermanager/order_";
+
 	/**
 	 * 
 	 * @time   2018年8月24日 下午6:16:22
@@ -52,8 +53,6 @@ public class OrdermanagerController extends BaseProjectController{
 		String orderBy = getBaseForm().getOrderBy();
 		SysUser user = (SysUser) getSessionUser();
 		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,orderBy,user, this);	
-		// 下拉框
-//		setAttr("departSelect", new DepartmentSvc().selectDepart(model.getInt("departid")));
 		setAttr("page", page);
 		setAttr("attr", model);
 		render(path + "list.html");
@@ -95,9 +94,11 @@ public class OrdermanagerController extends BaseProjectController{
 	public void edit() {
 		String id=getPara();
 		CreditOrderInfo coi=OrderManagerService.service.editOrder(id,this);
+		SysUser user = (SysUser) getSessionUser();
 		setAttr("model", coi);
-		renderJson(coi);
-//		render(path + "edit.html");
+		setAttr("user",user);
+//		renderJson(coi);
+		render(path + "edit.html");
 	}
 	/**
 	 * 
@@ -114,12 +115,9 @@ public class OrdermanagerController extends BaseProjectController{
 		})
 	public void save() {
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
-		Boolean flag=OrderManagerService.service.addOrder(model,this);
-		if(flag) {
-			renderMessage("保存成功");
-		}else {
-			renderMessage("保存失败");
-		}
+		String changeReason=getAttr("changeReason");
+		SysUser user = (SysUser) getSessionUser();
+		OrderManagerService.service.modifyOrder(model,changeReason,user,this);
 	}
 	/**
 	 * 
@@ -135,11 +133,11 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
 		})
 	public void view() {
-		String id=getPara();
+		String id=getPara("id");
 		CreditOrderInfo model=OrderManagerService.service.orderView(id,this);
 		setAttr("model", model);
-		renderJson(model);
-//		render(path + "view.html");
+//		renderJson(model);
+		render(path + "view.html");
 	}
 	/**
 	 * 

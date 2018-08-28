@@ -41,11 +41,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		SQLUtils sql=null;
 		String userid=user.get("userid").toString();
 				if((int)user.get("usertype")==1) {
-					 sql = new SQLUtils(" from credit_order_info t left join sys_user u on u.userid=t.reportor " //
+					 sql = new SQLUtils(" from credit_order_info t left join sys_user u on u.userid=t.create_by " //
 							+ " where 1 = 1 and t.del_flag='0' ");
 				}else {
 					 sql = new SQLUtils(" from credit_order_info t left join sys_user u on u.userid=t.reportor " //
-							+ " where 1 = 1 and t.del_flag='0' and t.reportor='"+userid+"'");
+							+ " where 1 = 1 and t.del_flag='0' and t.create_by='"+userid+"'");
 				}
 				
 				if (model.getAttrValues().length != 0) {
@@ -65,6 +65,14 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 						.toString());
 				
 				return page;
+	}
+
+	public CreditOrderInfo getOrder(String id, BaseProjectController c) {
+		// TODO Auto-generated method stub
+		SQLUtils sql=new SQLUtils("select t.*,u.username as userName from credit_order_info t left join sys_user u on u.userid=t.create_by "
+				+ "where 1 = 1 and t.del_flag='0' and t.id='"+id+"'");
+		CreditOrderInfo coi=dao.findFirst(sql.toString());
+		return coi;
 	}
 	
 

@@ -1,19 +1,25 @@
 package com.hailian.modules.admin.ordermanager.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.alibaba.fastjson.JSONArray;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.modules.admin.ordermanager.controller.OrdermanagerController;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.extend.UuidUtils;
+import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 /**
  * 
  * @className OrderInfoService.java
@@ -25,6 +31,7 @@ public class OrderManagerService {
 	//static使该service保证了单例,public可以使Controller方便调用该service
 	public static OrderManagerService service= new OrderManagerService();//名字都叫service，统一命名
 	private CreditOrderInfo dao=CreditOrderInfo.dao;
+	private CreditOrderHistory cohDao=CreditOrderHistory.dao;
 	
 	/**
 	 * 
@@ -40,7 +47,7 @@ public class OrderManagerService {
 	
 	public CreditOrderInfo getOrder(String id,BaseProjectController c) {
 //		String authorSql=DataAuthorUtils.getAuthorByUser(c);//验证权限
-		CreditOrderInfo coi= CreditOrderInfo.dao.findFirst("select * from credit_order_info c  where c.del_flag='0' and c.id=?",id);
+		CreditOrderInfo coi= dao.findFirst("select * from credit_order_info c  where c.del_flag='0' and c.id=?",id);
 		return coi;
 	}
 	/**
@@ -66,7 +73,7 @@ public class OrderManagerService {
 			fromSql.append(" and c.custom_id =? ");
 			params.add(customid);
 		}
-		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pageSize),  selectSql.toString()
+		return dao.paginate(new Paginator(pageNumber, pageSize),  selectSql.toString()
 				,fromSql.toString(),params.toArray());
 	}
 	
@@ -99,9 +106,26 @@ public class OrderManagerService {
 	 * @return_type   void
 	 * 修改订单
 	 */
-	public Boolean modifyOrder(CreditOrderInfo coi,BaseProjectController c) {
-		Boolean flag=coi.update();
-		return flag;
+	@Before(Tx.class)
+	public void modifyOrder(CreditOrderInfo coi,String changeReason,SysUser user,BaseProjectController c) {
+		
+		try {
+			coi.update();
+			coi=coi.findById();
+			cohDao.set("id", UuidUtils.getUUID())
+			.set("order_id", coi.get("id").toString())
+			.set("json",JSONArray.toJSONString(coi))
+			.set("change_reason", changeReason)
+			.set("remarks", "0")
+			.set("create_by", coi.get("create_by").toString())
+			.set("create_date", coi.get("receiver_date").toString())
+			.set("update_by", user.get("username").toString())
+			.set("update_date", new Date())
+			.set("del_flag", "0").save();
+		}catch(Exception e){
+			
+		}
+		
 	}
 	/**
 	 * 
@@ -129,10 +153,10 @@ public class OrderManagerService {
 		
 	}
 	public CreditOrderInfo editOrder(String id,BaseProjectController c) {
-		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
-		
+		CreditOrderInfo coi=dao.getOrder(id,c);
 		return coi;
 	}
+	
 	public Boolean saveOrder(CreditOrderInfo model, BaseProjectController c) {
 		// TODO Auto-generated method stub
 		model.set("del_flag", "0");
