@@ -72,6 +72,41 @@ public class FileUpLoadController extends BaseProjectController {
 			renderMessage("项目出现异常，上传失败！");
 		}
 	}
+	public void uploadMultipleFile(){
+		UploadFile uploadFile = getFile("model.file_url");//从前台获取文件
+		uploadFile.getContentType();
+		String business_type = getPara("business_type");
+		String business_id = getPara("business_id");
+		// 文件附件
+		try {
+			if (uploadFile != null) {
+				String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+				String fileName=DateUtils.getNow(DateUtils.YMDHMS);
+				boolean storeFile = FTP_UploadFileUtils.storeFile(fileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+				if(storeFile){
+					int dot = uploadFile.getOriginalFileName().lastIndexOf(".");
+					String ext="";
+					if (dot != -1) {
+						ext = uploadFile.getOriginalFileName().substring(dot + 1);
+					} else {
+						ext = "";
+					}
+					String factpath=storePath+"/"+fileName+"."+ext;
+					String url="http://"+ip+"/" + storePath+"/"+fileName+"."+ext;
+					Integer userid = getSessionUser().getUserid();
+					UploadFileService.service.save(uploadFile, factpath,url,business_type,business_id,fileName,userid);//记录上传信息
+					List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id, business_type,this);
+					renderJson(fileList);
+				}else{
+					renderMessage("上传失败！");
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			renderMessage("项目出现异常，上传失败！");
+		}
+	}
 	//文件预览
 	public void fileView() {
 		try {
