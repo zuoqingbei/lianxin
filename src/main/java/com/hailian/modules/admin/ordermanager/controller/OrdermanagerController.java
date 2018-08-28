@@ -1,5 +1,8 @@
 package com.hailian.modules.admin.ordermanager.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -10,6 +13,7 @@ import com.hailian.jfinal.base.SessionUser;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.model.creditReportType;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.system.user.SysUser;
 import com.jfinal.plugin.activerecord.Page;
@@ -71,7 +75,7 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
 		})
 	public void delete() {
-		String id=getPara();
+		String id=getPara("id");
 		CreditOrderInfo coi=CreditOrderInfo.dao;
 		coi.set("id",id);
 		coi.set("del_flag", "1");
@@ -92,11 +96,15 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
 		})
 	public void edit() {
-		String id=getPara();
+		String id=getPara("id");
 		CreditOrderInfo coi=OrderManagerService.service.editOrder(id,this);
 		SysUser user = (SysUser) getSessionUser();
+		List<creditReportType> reportType=OrderManagerService.service.getReportType();
+		List<String> reportLanguage=OrderManagerService.service.getReportLanguage();
 		setAttr("model", coi);
 		setAttr("user",user);
+		setAttr("reporttype",reportType);
+		setAttr("reportlanguage",reportLanguage);
 //		renderJson(coi);
 		render(path + "edit.html");
 	}

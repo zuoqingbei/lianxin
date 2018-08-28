@@ -1,23 +1,22 @@
 package com.hailian.modules.admin.ordermanager.service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
-import com.hailian.jfinal.component.db.SQLUtils;
-import com.hailian.modules.admin.ordermanager.controller.OrdermanagerController;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.model.creditReportType;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.extend.UuidUtils;
 import com.jfinal.aop.Before;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 /**
@@ -32,6 +31,8 @@ public class OrderManagerService {
 	public static OrderManagerService service= new OrderManagerService();//名字都叫service，统一命名
 	private CreditOrderInfo dao=CreditOrderInfo.dao;
 	private CreditOrderHistory cohDao=CreditOrderHistory.dao;
+	private creditReportType ctDao=creditReportType.dao;
+			
 	
 	/**
 	 * 
@@ -168,6 +169,15 @@ public class OrderManagerService {
 		// TODO Auto-generated method stub
 		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
 		return coi;
+	}
+	public List<creditReportType> getReportType() {
+		List<creditReportType> list=ctDao.getReportType();
+		
+		return list;
+	}
+	public List<String> getReportLanguage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

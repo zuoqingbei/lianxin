@@ -8,22 +8,19 @@ include("/pages/template/head.html"){}
 <script type="text/javascript">
     var oper = {
         save:function(id){
-            if(!validForm()) {
-                return false;
-            }
             id = id || '0';
             var url = 'admin/ordermanager/save?id='+id;
             form1.action = url;
             form1.submit();
             return true;
-        }
+        },
     sandbarChange:function(){
     	 var grade = document.getElementById("sandbar");
     	 var value=grade.options[grade.selectedIndex].value;
-    	 var url='credit/country/getCountrySelect?sandbar='+value;
+    	 var url='credit/country/getCountrySelect?attr.continent='+value;
     	 $.get(url, //这个是请求地址
     		 function(data) {
-    			  alert(data)
+    			  for(item in data)
     		 });
     	 
     }
@@ -56,7 +53,7 @@ var bodyContent = {
 		<tr>
 			<td>国家</td>
 			<td>
-				<select name="attr.country" class="form-control" valid="vselect" validname="部门">
+				<select name="attr.country" class="form-control" valid="vselect" validname="国家">
 					<option value="${model.country}" selected="selected">${model.country}</option>
 				</select>
 			</td>
@@ -77,11 +74,29 @@ var bodyContent = {
 			</td>
 		</tr>
 		<tr>
-		<tr>
-			<td>订单类型</td>
+			<td>速度</td>
 			<td>
-				<input class="form-control" type="text" name="attr.order_type"
-					   value="${model.username}" valid="vtext" validname="订单类型" />
+				<input class="form-control" type="text" name="attr.report_language"
+					   value="${model.report_language}" valid="vtext" validname="请选择速度" />
+			</td>
+		</tr>
+		<tr>
+			<td>报告用时</td>
+			<td>
+				<input class="form-control" type="text" name="attr.report_language"
+					   value="${model.report_language}" valid="vtext" validname="请选择国家,速度" />
+			</td>
+		</tr>
+		<tr>
+		<tr>
+			<td>报告类型</td>
+			<td>
+			 <select  name="attr.report_type" class="form-control" style="width: 200px;"onchange="oper.sandbarChange()">
+				<option value="1" selected="selected">登记报告</option>
+					<% for(item in reporttype){ %>
+						<option value=${item.id}>${item.name}</option>
+					<% } %>
+				</select> 
 			</td>
 		</tr>
 		<tr>
