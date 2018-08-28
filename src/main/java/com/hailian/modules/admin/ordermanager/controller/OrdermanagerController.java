@@ -6,10 +6,12 @@ import com.feizhou.swagger.annotation.Param;
 import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
+import com.hailian.jfinal.base.SessionUser;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
+import com.hailian.system.user.SysUser;
 import com.jfinal.plugin.activerecord.Page;
 @Api(tag = "订单菜单路由", description = "订单菜单")
 @ControllerBind(controllerKey = "/admin/ordermanager")
@@ -47,7 +49,11 @@ public class OrdermanagerController extends BaseProjectController{
 	public void list() {
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		Paginator pageinator=getPaginator();
-		Page<CreditOrderInfo> page=OrderManagerService.service.getOrders(pageinator,model, this);		
+		String orderBy = getBaseForm().getOrderBy();
+		SysUser user = (SysUser) getSessionUser();
+		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,orderBy,user, this);	
+		// 下拉框
+//		setAttr("departSelect", new DepartmentSvc().selectDepart(model.getInt("departid")));
 		setAttr("page", page);
 		setAttr("attr", model);
 		render(path + "list.html");
