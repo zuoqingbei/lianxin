@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * @email 330627517@qq.com
  */
 public class StrUtils {
-	
+
 	/**
 	 * 为空
 	 * 
@@ -50,7 +50,7 @@ public class StrUtils {
 	public static boolean isNotEmpty(String str) {
 		return !isEmpty(str);
 	}
-	
+
 	/**
 	 * 转大写
 	 * 
@@ -59,22 +59,21 @@ public class StrUtils {
 	 * @param instr
 	 * @return
 	 */
-    public static String toUpperCase(String instr) {
-        return instr == null ? instr : instr.toUpperCase();
-    }
-    
-    /**
-     * 转小写
-     * 
-     * 2013年9月8日 下午10:08:10
-     * flyfox 330627517@qq.com
-     * @param instr
-     * @return
-     */
-    public static String toLowerCase(String instr) {
-        return instr == null ? instr : instr.toLowerCase();
-    }
-    
+	public static String toUpperCase(String instr) {
+		return instr == null ? instr : instr.toUpperCase();
+	}
+
+	/**
+	 * 转小写
+	 * 
+	 * 2013年9月8日 下午10:08:10
+	 * flyfox 330627517@qq.com
+	 * @param instr
+	 * @return
+	 */
+	public static String toLowerCase(String instr) {
+		return instr == null ? instr : instr.toLowerCase();
+	}
 
 	/**
 	 * 首字母大写 ,其余不变
@@ -92,7 +91,7 @@ public class StrUtils {
 		String pre = String.valueOf(str.charAt(0));
 		return str.replaceFirst(pre, pre.toUpperCase());
 	}
-	
+
 	/**
 	 * 首字母小写 ,其余不变
 	 * 
@@ -109,7 +108,7 @@ public class StrUtils {
 		String pre = String.valueOf(str.charAt(0));
 		return str.replaceFirst(pre, pre.toLowerCase());
 	}
-	
+
 	/**
 	 * 不会抛NullPointerException 的trim() <br>
 	 * 传入null会返回null
@@ -120,7 +119,7 @@ public class StrUtils {
 	public static String trim(String str) {
 		return str == null ? null : str.trim();
 	}
-	
+
 	/**
 	 * 过滤 ;当instr==null时返回长度为0的""; <br>
 	 * 与 nvl(...)系的区别在于只处理null ,不处理长度为0的"";
@@ -143,7 +142,7 @@ public class StrUtils {
 	public static String nvl(String instr, String defaultValue) {
 		return instr == null || "".equals(instr) ? defaultValue : instr;
 	}
-	
+
 	/**
 	 * 比较 str1 和 str2 如果都是 null 或者 str1.equals(str2) 返回 true 表示一样 ;
 	 * 
@@ -192,8 +191,6 @@ public class StrUtils {
 		}
 		return a;
 	}
-
-
 
 	/**
 	 * 清除字符串中所有的空格 ,传入null返回null
@@ -298,6 +295,5 @@ public class StrUtils {
 		buf.append(text.substring(start));
 		return buf.toString();
 	}
-
 
 }

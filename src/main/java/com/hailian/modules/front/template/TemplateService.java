@@ -138,7 +138,7 @@ public class TemplateService extends BaseService {
 	public Page<TbArticle> articlePageSite(int pageNo, int pageSize, int siteId) {
 		return service.getArticleBySiteId(new Paginator(pageNo, pageSize), siteId);
 	}
-	
+
 	/**
 	 * 按照特定排序，返回文章列表
 	 * 

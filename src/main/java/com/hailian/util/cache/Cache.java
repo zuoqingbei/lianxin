@@ -62,7 +62,7 @@ public interface Cache {
 	 * @return
 	 */
 	public Object remove(String key);
-	
+
 	/**
 	 * 清楚所有数据
 	 * 
@@ -80,7 +80,7 @@ public interface Cache {
 	 * @return
 	 */
 	public int size();
-	
+
 	/**
 	 * 返回数据key列表
 	 * 
@@ -89,7 +89,7 @@ public interface Cache {
 	 * @return
 	 */
 	public Set<String> keys();
-	
+
 	/**
 	 * 返回数据缓存列表
 	 * 

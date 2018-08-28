@@ -65,7 +65,7 @@ public class ApiForm {
 		try {
 			params = this.p;
 			params = StrUtils.isEmpty(params) ? "" : params;
-			
+
 			boolean flag = ConfigCache.getValueToBoolean("API.PARAM.ENCRYPT"); // API参数是否加密
 			if (StrUtils.isNotEmpty(params) && flag) {
 				params = ApiUtils.decode(params);

@@ -30,16 +30,16 @@ import java.util.regex.Pattern;
  *
  */
 public class MusicInfo {
-	
-	private String path="";
-	private boolean isAnalysis=false;
+
+	private String path = "";
+	private boolean isAnalysis = false;
 	/**
 	 * 必须为"ID3"否则认为标签不存在
 	 * 3个字节
 	 */
-	private final int HEADER_SIZE=3;
+	private final int HEADER_SIZE = 3;
 	private byte[] header;
-	private String HEAHER_START="ID3";
+	private String HEAHER_START = "ID3";
 	/**
 	 * 版本号;ID3V2.3就记录03,ID3V2.4就记录04
 	 * 一个字节
@@ -70,16 +70,15 @@ public class MusicInfo {
 	 * +Size[2]*0x80
 	 * +Size[3]
 	 */
-	private int SIZE_SIZE=4;
+	private int SIZE_SIZE = 4;
 	private byte[] size;
 
 	private Map<String, FrameInfo> frameInfos;
-	private int LABEL_SIZE=10;
-
+	private int LABEL_SIZE = 10;
 
 	public MusicInfo() {
 		super();
-		frameInfos=new HashMap<String, FrameInfo>();
+		frameInfos = new HashMap<String, FrameInfo>();
 	}
 
 	public String getPath() {
@@ -146,9 +145,10 @@ public class MusicInfo {
 	 * 解析信息
 	 * @return 0表示成功   1表示不是mp3文件 2表示文件不存在
 	 */
-	public int parseMusic(){
+	public int parseMusic() {
 		return parseMusic("UTF-16");
 	}
+
 	/**
 	 * 解析信息
 	 * @param charset 编码方式
@@ -242,6 +242,7 @@ public class MusicInfo {
 		}
 
 	}
+
 	/**
 	 * 返回图片数据信息
 	 * 
@@ -249,39 +250,41 @@ public class MusicInfo {
 	 * 返回空值表示没有解析到图片
 	 * 
 	 */
-	public Map<String, byte[]> getImage(){
-		if(frameInfos==null)return null;
-		FrameInfo apicInfo=frameInfos.get("APIC");
-		if(apicInfo==null)return null;
+	public Map<String, byte[]> getImage() {
+		if (frameInfos == null)
+			return null;
+		FrameInfo apicInfo = frameInfos.get("APIC");
+		if (apicInfo == null)
+			return null;
 		/**
 		 * 图片数据
 		 */
-		byte[]apic=apicInfo.getContent();
+		byte[] apic = apicInfo.getContent();
 
-		boolean isMIMEComplte=false;
-		int i=0;
+		boolean isMIMEComplte = false;
+		int i = 0;
 		/**
 		 * 查找图片数据起始位置
 		 */
-		Map<String, byte[]>map=new HashMap<String, byte[]>();
-		for(;i<apic.length;i++){
+		Map<String, byte[]> map = new HashMap<String, byte[]>();
+		for (; i < apic.length; i++) {
 			/**
-		 * 寻找MIME结束位置
-		 */
+			* 寻找MIME结束位置
+			*/
 
-			if(!isMIMEComplte&apic[i]=='\0'){
-				byte[] mime=new String(apic, 0, i).getBytes();
+			if (!isMIMEComplte & apic[i] == '\0') {
+				byte[] mime = new String(apic, 0, i).getBytes();
 				map.put("mime", mime);
-				isMIMEComplte=!isMIMEComplte;
+				isMIMEComplte = !isMIMEComplte;
 			}
-	/**
-		 *寻找图片数据存储其实位置
-		 */
+			/**
+				 *寻找图片数据存储其实位置
+				 */
 
-			if(apic[i]==((byte) 0xff)&&apic[i+1]==((byte) 0xd8)){
-				byte[] data=new byte[apic.length-i];
-				for(int j=0;j<data.length;j++){
-					data[j]=apic[i+j];
+			if (apic[i] == ((byte) 0xff) && apic[i + 1] == ((byte) 0xd8)) {
+				byte[] data = new byte[apic.length - i];
+				for (int j = 0; j < data.length; j++) {
+					data[j] = apic[i + j];
 				}
 				map.put("data", data);
 				return map;
@@ -290,25 +293,31 @@ public class MusicInfo {
 		}
 		return null;
 	}
-	public String getTitle(String charset){
-		if(frameInfos==null)return null;
-		FrameInfo titleInfo=frameInfos.get("TIT2");
-		if(titleInfo==null)return null;
+
+	public String getTitle(String charset) {
+		if (frameInfos == null)
+			return null;
+		FrameInfo titleInfo = frameInfos.get("TIT2");
+		if (titleInfo == null)
+			return null;
 		try {
-			String title=new String(titleInfo.getContent(), charset);
+			String title = new String(titleInfo.getContent(), charset);
 			return title;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	public String getTitle(){
+
+	public String getTitle() {
 		return getTitle("UTF-16");
 	}
-	public String getPerformer(String charset){
-		if(frameInfos==null)return null;
-		FrameInfo performerInfo=frameInfos.get("TPE1");
-		if(performerInfo == null)
+
+	public String getPerformer(String charset) {
+		if (frameInfos == null)
+			return null;
+		FrameInfo performerInfo = frameInfos.get("TPE1");
+		if (performerInfo == null)
 			return null;
 		try {
 			String performer = new String(performerInfo.getContent(), charset);

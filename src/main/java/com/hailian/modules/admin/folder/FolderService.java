@@ -40,7 +40,7 @@ public class FolderService extends BaseService {
 	}
 
 	private final static String urlkeyCacheName = "JFlyFoxUtils";
-	private static Cache urlkeyCache ;
+	private static Cache urlkeyCache;
 
 	public static void initMenuKey() {
 		log.info("####目录Key初始化......");
@@ -69,7 +69,7 @@ public class FolderService extends BaseService {
 	public static String getMenu(String key) {
 		return (urlkeyCache.get(key) == null) ? key : urlkeyCache.get(key).toString();
 	}
-	
+
 	/**
 	 * 通过URLKey获取ID
 	 * 

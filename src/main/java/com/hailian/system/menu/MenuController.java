@@ -20,7 +20,7 @@ public class MenuController extends BaseProjectController {
 	public void index() {
 		list();
 	}
-	
+
 	public void list() {
 		SysMenu model = getModelByAttr(SysMenu.class);
 
@@ -30,7 +30,7 @@ public class MenuController extends BaseProjectController {
 			// 查询条件
 			sql.whereLike("name", model.getStr("name"));
 		}
-		
+
 		// 排序
 		String orderBy = getBaseForm().getOrderBy();
 		if (StrUtils.isEmpty(orderBy)) {

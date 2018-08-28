@@ -26,7 +26,7 @@ public class RoleController extends BaseProjectController {
 	public void index() {
 		list();
 	}
-	
+
 	public void list() {
 		SysRole model = getModelByAttr(SysRole.class);
 
@@ -36,7 +36,7 @@ public class RoleController extends BaseProjectController {
 			// 查询条件
 			sql.whereLike("name", model.getStr("name"));
 		}
-		
+
 		// 排序
 		String orderBy = getBaseForm().getOrderBy();
 		if (StrUtils.isEmpty(orderBy)) {
@@ -78,9 +78,9 @@ public class RoleController extends BaseProjectController {
 
 		// 删除授权
 		Db.update("delete from sys_role_menu where roleid = ? ", roleid);
-		
+
 		model.deleteById(roleid);
-		
+
 		list();
 	}
 

@@ -59,7 +59,7 @@ public class FrontAlbumVideoController extends BaseProjectController {
 		String tags = Db.findFirst("select group_concat(tagname) tags " //
 				+ " from tb_video_tags where video_id = ? order by id", video.getId()).getStr("tags");
 		setAttr("tags", tags);
-				
+
 		setAttr("paginator", getPaginator());
 
 		// seo：title优化

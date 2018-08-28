@@ -52,10 +52,10 @@ public class ModelKit {
 		if (!(length % 2 == 0)) {
 			throw new RuntimeException("attrsAndValues length must be even number");
 		}
-		
+
 		for (int i = 0; i < length; i = i + 2) {
 			Object attr = attrsAndValues[i];
-			
+
 			if (!(attr instanceof String)) {
 				throw new RuntimeException("the odd number of attrsAndValues  must be String");
 			}

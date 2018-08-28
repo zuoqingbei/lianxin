@@ -38,7 +38,7 @@ public class Config {
 	static {
 		setConfigMap();
 	}
-	
+
 	public static String getStr(String key) {
 		if (configMap.size() < 0) {
 			return null;
@@ -55,7 +55,7 @@ public class Config {
 		String val = getStr(key);
 		return NumberUtils.parseLong(val);
 	}
-	
+
 	public static double getToDbl(String key) {
 		String val = getStr(key);
 		return NumberUtils.parseDbl(val);
@@ -70,7 +70,6 @@ public class Config {
 		}
 	}
 
-	
 	/**
 	 * 修改目录，配置重构
 	 * 
@@ -78,18 +77,18 @@ public class Config {
 	 * flyfox 330627517@qq.com
 	 * @param configPath
 	 */
-	public static void rebuild(String configPath){
+	public static void rebuild(String configPath) {
 		Config.configPath = configPath;
 		rebuild();
 	}
-	
+
 	/**
 	 * 配置重构
 	 * 
 	 * 2016年6月2日 下午3:27:13
 	 * flyfox 330627517@qq.com
 	 */
-	public static void rebuild(){
+	public static void rebuild() {
 		setConfigMap();
 	}
 
@@ -98,12 +97,12 @@ public class Config {
 			System.out.println(key + "=" + configMap.get(key));
 		}
 	}
-	
+
 	private static void setConfigMap() {
 		String filePath = classPath + configPath;
 		filePath = PathUtils.rebuild(filePath);
 		List<String> list = findFiles(filePath);
-		
+
 		Map<String, String> tmpConfigMap = new HashMap<String, String>();
 		for (String configName : list) {
 			Properties props = getProperties(filePath + configName);
@@ -119,7 +118,7 @@ public class Config {
 				}
 			}
 		}
-		
+
 		Config.configMap = tmpConfigMap;
 	}
 

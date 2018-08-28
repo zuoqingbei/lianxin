@@ -17,7 +17,6 @@
 
 package com.hailian.util.encrypt;
 
-
 /**
  * 
  * md5 类实现了RSA Data Security, Inc.在提交给IETF 的RFC1321中的MD5 message-digest 算法。
@@ -365,7 +364,7 @@ public class Md5Utils {
 		return md5;
 
 	}
-	
+
 	/**
 	 * 测试
 	 * 

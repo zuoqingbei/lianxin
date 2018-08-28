@@ -59,13 +59,13 @@ public class JedisClient {
 			pool = new JedisPool(config, host, port, poolTimeWait, password);
 		}
 	}
-	
+
 	public Long expire(String key, int seconds) {
 		try (Jedis jedis = pool.getResource()) {
 			return jedis.expire(key, seconds);
 		}
 	}
-	
+
 	public Long ttl(String key) {
 		try (Jedis jedis = pool.getResource()) {
 			return jedis.ttl(key);
@@ -113,13 +113,13 @@ public class JedisClient {
 			return jedis.setnx(key, "setnx") == 1;
 		}
 	}
-	
+
 	public long setnx(String key, String val) {
 		try (Jedis jedis = pool.getResource()) {
 			return jedis.setnx(key, val);
 		}
 	}
-	
+
 	public Long incr(String key) {
 		try (Jedis jedis = pool.getResource()) {
 			return jedis.incr(key);
@@ -218,7 +218,7 @@ public class JedisClient {
 			jedis.del(key);
 		}
 	}
-	
+
 	/**
 	 * 移除给定的key
 	 * 
@@ -235,13 +235,13 @@ public class JedisClient {
 			jedis.flushAll();
 		}
 	}
-	
+
 	public long dbSize() {
 		try (Jedis jedis = pool.getResource()) {
 			return jedis.dbSize();
 		}
 	}
-	
+
 	/**
 	 * 移除给定key的生存时间 将这个 key 从『易失的』(带生存时间 key )转换成『持久的』(一个不带生存时间、永不过期的 key )
 	 * 
@@ -316,7 +316,7 @@ public class JedisClient {
 			jedis.zadd(key, score, member);
 		}
 	}
-	
+
 	/**
 	 * 返回升序排名的用户名和分数的集合,即分数从最低到最高的排列，分数相等的两个member根据字典排序顺序返回。
 	 * 如果要获取降序排列，请使用Zrevrange接口。 start和stop的名次都是基于0的，也就是0是第一个元素，1是第二个元素，以此类推。
@@ -514,7 +514,6 @@ public class JedisClient {
 		}
 	}
 
-
 	/********************** hashmap *******************************/
 	public Map<String, String> hgetAll(String key) {
 		try (Jedis jedis = pool.getResource()) {
@@ -527,7 +526,7 @@ public class JedisClient {
 			return jedis.mget(keys);
 		}
 	}
-	
+
 	public String hget(String key, String field) {
 		try (Jedis jedis = pool.getResource()) {
 			return jedis.hget(key, field);
@@ -551,13 +550,13 @@ public class JedisClient {
 			return jedis.mget(keys);
 		}
 	}
-	
+
 	public Map<byte[], byte[]> hgetAll(byte[] key) {
 		try (Jedis jedis = pool.getResource()) {
 			return jedis.hgetAll(key);
 		}
 	}
-	
+
 	public byte[] hget(byte[] key, byte[] field) {
 		try (Jedis jedis = pool.getResource()) {
 			return jedis.hget(key, field);
@@ -575,7 +574,7 @@ public class JedisClient {
 			return jedis.hdel(key, field);
 		}
 	}
-	
+
 	///////////////////////// hashmap object //////////////////////////////
 	@SuppressWarnings("unchecked")
 	public <T> Map<String, T> hgetAllObj(String key) {
@@ -602,7 +601,7 @@ public class JedisClient {
 
 		return mapObj;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public <T> T hgetObj(String key, String field) {
 		byte[] vals = null;
@@ -634,7 +633,7 @@ public class JedisClient {
 		if (vals == null) {
 			return null;
 		}
-		
+
 		try (Jedis jedis = pool.getResource()) {
 			return jedis.hset(SafeEncoder.encode(key), SafeEncoder.encode(field), vals);
 		}
@@ -645,7 +644,7 @@ public class JedisClient {
 			return jedis.hdel(SafeEncoder.encode(key), SafeEncoder.encode(field));
 		}
 	}
-	
+
 	/**
 	 * 获取数量
 	 * 
@@ -656,7 +655,7 @@ public class JedisClient {
 			return jedis.hlen(SafeEncoder.encode(key));
 		}
 	}
-	
+
 	/**
 	 * 移除hashmap所有Key
 	 * 
@@ -667,5 +666,5 @@ public class JedisClient {
 			jedis.del(SafeEncoder.encode(key));
 		}
 	}
-	
+
 }

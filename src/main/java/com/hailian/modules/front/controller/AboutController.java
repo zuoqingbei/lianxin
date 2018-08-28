@@ -28,7 +28,7 @@ public class AboutController extends BaseProjectController {
 		Integer articleId = getParaToInt();
 
 		setAttr("folders_selected", JFlyFoxUtils.MENU_ABOUT);
-		
+
 		Page<TbArticle> pages = new FrontCacheService().getArticle(new Paginator(1, 100), JFlyFoxUtils.MENU_ABOUT);
 		setAttr("pages", pages);
 

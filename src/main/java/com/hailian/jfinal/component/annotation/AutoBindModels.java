@@ -109,7 +109,7 @@ public class AutoBindModels {
 			if (ModelBind == null || StrKit.isBlank(ModelBind.table())) {
 				continue;
 			}
-			
+
 			// all default ,so not null
 			if (StrKit.isBlank(ModelBind.configName()) || StrKit.isBlank(configName)) {
 				logger.error("routes.add is null");

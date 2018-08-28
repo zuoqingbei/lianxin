@@ -47,13 +47,13 @@ public class ImageController extends BaseProjectController {
 		} else {
 			sql.append(" order by ").append(orderBy);
 		}
-		
+
 		Page<TbImage> page = TbImage.dao.paginate(getPaginator(), "select t.* ", //
 				sql.toString().toString());
 
 		// 下拉框
 		setAttr("selectAlbum", new ImageAlbumService().selectAlbum(model.getAlbumId()));
-				
+
 		setAttr("page", page);
 		setAttr("attr", model);
 		render(path + "list.html");
@@ -66,19 +66,19 @@ public class ImageController extends BaseProjectController {
 
 		// 查询下拉框
 		setAttr("selectAlbum", new ImageAlbumService().selectAlbum(attr.getAlbumId()));
-		
+
 		render(path + "add.html");
 	}
 
 	public void view() {
 		TbImage model = TbImage.dao.findById(getParaToInt());
 		setAttr("model", model);
-		
+
 		// 设置标签
 		String tags = Db.findFirst("select group_concat(tagname) tags " //
 				+ " from tb_image_tags where image_id = ? order by id", model.getInt("id")).getStr("tags");
 		setAttr("tags", tags);
-		
+
 		render(path + "view.html");
 	}
 
@@ -90,10 +90,10 @@ public class ImageController extends BaseProjectController {
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		model.deleteById(getParaToInt());
-				
+
 		list();
 	}
-	
+
 	/**
 	 * Iframe删除
 	 * 
@@ -109,45 +109,46 @@ public class ImageController extends BaseProjectController {
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		model.deleteById(id);
-				
+
 		renderMessage("删除成功");
 	}
 
 	public void edit() {
 		TbImage model = TbImage.dao.findById(getParaToInt());
 		setAttr("model", model);
-		
+
 		// 查询下拉框
 		setAttr("selectAlbum", new ImageAlbumService().selectAlbum(model.getAlbumId()));
-				
+
 		// 设置标签
 		String tags = Db.findFirst("select group_concat(tagname) tags " //
 				+ " from tb_image_tags where image_id = ? order by id", model.getInt("id")).getStr("tags");
 		setAttr("tags", tags);
-				
+
 		render(path + "edit.html");
 	}
 
 	public void save() {
 		TbSite site = getBackSite();
-		UploadFile uploadImage = getFile("model.image_url", FileUploadUtils.getUploadTmpPath(site), FileUploadUtils.UPLOAD_MAX);
-		
+		UploadFile uploadImage = getFile("model.image_url", FileUploadUtils.getUploadTmpPath(site),
+				FileUploadUtils.UPLOAD_MAX);
+
 		Integer pid = getParaToInt();
 		TbImage model = getModel(TbImage.class);
-		
+
 		// 图片附件
 		if (uploadImage != null) {
 			String fileUrl = uploadHandler(site, uploadImage.getFile(), "image");
 			model.set("image_url", fileUrl);
 		}
-		
+
 		// 设置图片信息
 		if (StrUtils.isNotEmpty(model.getImageNetUrl())) {
 			ImageModel imageModel = ImageUtils.getIamge(model.getImageNetUrl());
 			model.setExt(imageModel.getExt());
 			model.setWidth(imageModel.getWidth() + "");
 			model.setHeight(imageModel.getHeight() + "");
-			
+
 			model.setLinkurl(model.getImageNetUrl());
 		} else if (StrUtils.isNotEmpty(model.getImageUrl())) {
 			ImageModel imageModel = ImageUtils
@@ -155,11 +156,11 @@ public class ImageController extends BaseProjectController {
 			model.setExt(imageModel.getExt());
 			model.setWidth(imageModel.getWidth() + "");
 			model.setHeight(imageModel.getHeight() + "");
-			
+
 			String linkUrl = getAttr("BASE_PATH") + model.getImageUrl();
 			model.setLinkurl(linkUrl.replace("\\", "/"));
 		}
-		
+
 		Integer userid = getSessionUser().getUserid();
 		
 		String now = getNow();
@@ -167,17 +168,16 @@ public class ImageController extends BaseProjectController {
 		model.put("update_time", now);
 		if (pid != null && pid > 0) { // 更新
 			model.update();
-			
+
 		} else { // 新增
 			model.remove("id");
 			model.put("create_id", userid);
 			model.put("create_time", now);
 			model.save();
 		}
-		
-		
+
 		// 保存tags
-		if (pid != null && pid > 0) { 
+		if (pid != null && pid > 0) {
 			Db.update(" delete from tb_image_tags where image_id = ?", model.getInt("id"));
 		}
 		String tags = getPara("tags");
@@ -201,7 +201,7 @@ public class ImageController extends BaseProjectController {
 
 			}
 		}
-		
+
 		renderMessage("保存成功");
 	}
 }

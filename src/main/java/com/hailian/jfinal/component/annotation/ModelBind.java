@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
 public @interface ModelBind {
-	
+
 	/**
 	 * 表名
 	 * 
@@ -44,7 +44,7 @@ public @interface ModelBind {
 	 * @return
 	 */
 	String key() default "id";
-	
+
 	/**
 	 * 数据库名称
 	 * 
@@ -52,5 +52,5 @@ public @interface ModelBind {
 	 * flyfox 330627517@qq.com
 	 * @return
 	 */
-	String configName()  default "main";
+	String configName() default "main";
 }

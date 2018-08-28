@@ -122,7 +122,7 @@ public class ApiUtils {
 		params = URLEncoder.encode(params, "utf-8");
 		return params;
 	}
-	
+
 	/**
 	 * 获取验证sign
 	 * 
@@ -140,7 +140,7 @@ public class ApiUtils {
 		}
 		// 待加密串
 		src.append("key=").append(key == null ? "" : key);
-		System.out.println("#####"+src.toString());
+		System.out.println("#####" + src.toString());
 		// 生成签名
 		String serverSign = new Md5Utils().getMD5(src.toString()).toUpperCase();
 		return serverSign;

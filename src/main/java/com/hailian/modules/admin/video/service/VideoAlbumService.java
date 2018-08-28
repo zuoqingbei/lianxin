@@ -17,7 +17,7 @@ public class VideoAlbumService {
 	public TbVideoAlbum getAlbum(Integer albumId) {
 		return TbVideoAlbum.dao.findById(albumId);
 	}
-	
+
 	/**
 	 * 专辑复选框
 	 * 

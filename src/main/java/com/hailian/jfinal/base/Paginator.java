@@ -18,7 +18,6 @@ package com.hailian.jfinal.base;
 
 import com.hailian.util.Constants;
 
-
 public class Paginator {
 
 	private int pageNo;

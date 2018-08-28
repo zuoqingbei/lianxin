@@ -20,7 +20,7 @@ public class ArticleService {
 				+ " from tb_tags where article_id = ? order by id", model.getInt("id")).getStr("tags");
 		return tags;
 	}
-	
+
 	/**
 	 * 复制文章
 	 * 

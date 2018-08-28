@@ -39,8 +39,8 @@ public class CommentService extends BaseService {
 	public void saveComment(SysUser user, TbComment comment) {
 		// 评论
 		// 删除标签
-//		String content = HtmlUtils.delHTMLTag(comment.getStr("content"));
-//		content = HtmlUtils.changeTag(content);
+		//		String content = HtmlUtils.delHTMLTag(comment.getStr("content"));
+		//		content = HtmlUtils.changeTag(content);
 		String content = JFlyFoxUtils.delScriptTag(comment.getStr("content"));
 
 		comment.put("content", content);

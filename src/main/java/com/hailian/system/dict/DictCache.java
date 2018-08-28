@@ -10,7 +10,6 @@ import com.hailian.util.cache.Cache;
 import com.hailian.util.cache.CacheManager;
 import com.jfinal.log.Log;
 
-
 /**
  * 数据字典缓存
  * 
@@ -73,7 +72,7 @@ public class DictCache {
 	}
 
 	//////////////////////////jstl 标签/////////////////////////////
-	
+
 	/**
 	 * 获取下拉菜单
 	 * 
@@ -102,6 +101,28 @@ public class DictCache {
 			}
 		}
 		return sb.toString();
+	}
+	/**
+	 * 
+	 * @todo  根据dict_type获取字典
+	 * @time   2018年8月27日 下午5:06:56
+	 * @author zuoqb
+	 * @params
+	 */
+	public static List<SysDictDetail> getSysDictDetailByType(String type){
+		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		Map<Integer, SysDictDetail> map = DictCache.getCacheMap();
+		if (map == null || map.size() <= 0) {
+			return null;
+		}
+		StringBuffer sb = new StringBuffer();
+		for (Integer key : map.keySet()) {
+			SysDictDetail dict = map.get(key);
+			if (dict.getStr("dict_type").equals(type)) {
+				listDetail.add(dict);
+			}
+		}
+		return listDetail;
 	}
 
 	/**
@@ -135,8 +156,7 @@ public class DictCache {
 		SysDictDetail dict = getCacheMap().get(key);
 		return dict == null ? null : dict.getStr("detail_code");
 	}
-	
-	
+
 	/**
 	 * 获取下拉菜单 code:value形式
 	 * 

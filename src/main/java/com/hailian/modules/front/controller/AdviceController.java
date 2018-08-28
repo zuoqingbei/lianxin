@@ -35,7 +35,7 @@ public class AdviceController extends BaseProjectController {
 		}
 
 		SysUser user = (SysUser) getSessionUser();
-		if (user==null) {
+		if (user == null) {
 			json.put("msg", "请先登录再填写意见反馈！");
 			renderJson(json.toJSONString());
 			return;

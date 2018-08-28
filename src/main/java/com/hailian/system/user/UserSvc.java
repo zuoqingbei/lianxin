@@ -27,7 +27,7 @@ public class UserSvc extends BaseService {
 	public List<SysMenu> getNoAuthMap(Map<Integer, List<SysMenu>> map) {
 		List<SysMenu> list = SysMenu.dao.findByWhere("");
 		List<SysMenu> returnList = new ArrayList<SysMenu>();
-		
+
 		List<Integer> idList = new ArrayList<Integer>();
 		for (Integer key : map.keySet()) {
 			List<SysMenu> childList = map.get(key);
@@ -36,16 +36,16 @@ public class UserSvc extends BaseService {
 			}
 			idList.add(key);
 		}
-		
+
 		for (SysMenu sysMenu : list) {
 			if (!idList.contains(sysMenu.getInt("id"))) {
 				returnList.add(sysMenu);
 			}
 		}
-		
+
 		return returnList;
 	}
-	
+
 	/**
 	 * 返回菜单权限
 	 * 

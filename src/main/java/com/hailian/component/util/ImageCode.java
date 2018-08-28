@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ImageCode extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Font mFont = new Font("Arial", Font.BOLD, 15); // 设置字体
 	private int lineWidth = 2; // 干扰线的长度=1.414*lineWidth
 	private int width = 60; // 定义图形大小

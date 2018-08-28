@@ -17,7 +17,7 @@ public class SiteConstant {
 	public static boolean isMultiSite() {
 		return ConfigCache.getValueToBoolean("SITE.MULTI.FLAG");
 	}
-	
+
 	/**
 	 * 获取模板路径
 	 * 
@@ -28,7 +28,7 @@ public class SiteConstant {
 	public static String getTemplatePath() {
 		return ConfigCache.getValue("SITE.TEMPLATE.PATH");
 	}
-	
+
 	/**
 	 * 获取session中站点列表
 	 * 
@@ -39,7 +39,7 @@ public class SiteConstant {
 	public static String getSessionSites() {
 		return ConfigCache.getValue("SITE.SESSION.SITES");
 	}
-	
+
 	/**
 	 * 获取用户session的站点
 	 * 

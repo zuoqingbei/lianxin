@@ -59,7 +59,7 @@ public class FrontAlbumImageController extends BaseProjectController {
 		String tags = Db.findFirst("select group_concat(tagname) tags " //
 				+ " from tb_image_tags where image_id = ? order by id", image.getId()).getStr("tags");
 		setAttr("tags", tags);
-				
+
 		setAttr("paginator", getPaginator());
 
 		// seo：title优化

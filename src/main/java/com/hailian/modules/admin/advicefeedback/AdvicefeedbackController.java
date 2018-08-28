@@ -58,12 +58,12 @@ public class AdvicefeedbackController extends BaseProjectController {
 
 	public void delete() {
 		TbAdviceFeedback model = new TbAdviceFeedback();
-		Integer userid= getSessionUser().getUserid();
+		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		model.deleteById(getParaToInt());
-		
+
 		list();
 	}
 

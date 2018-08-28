@@ -38,15 +38,15 @@ public class EhCache {
 		return this.cache.getKeys();
 	}
 
-	public Object get(Object key)  {
-			if (key == null)
-				return null;
-			else {
-				Element element = cache.get(key);
-				if (element != null)
-					return element.getObjectValue();
-			}
+	public Object get(Object key) {
+		if (key == null)
 			return null;
+		else {
+			Element element = cache.get(key);
+			if (element != null)
+				return element.getObjectValue();
+		}
+		return null;
 	}
 
 	public void update(Object key, Object value) {

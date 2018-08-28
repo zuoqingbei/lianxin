@@ -30,10 +30,10 @@ import com.hailian.jfinal.component.oauth.util.HttpKit;
 /**
  * Oauth 授权
  */
-public class Oauth implements Serializable{
+public class Oauth implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String clientId;
 	private String clientSecret;
 	private String redirectUri;

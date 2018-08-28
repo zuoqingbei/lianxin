@@ -25,10 +25,10 @@ public class ApiInterceptor implements Interceptor {
 		Controller controller = ai.getController();
 		String path = ai.getActionKey();
 		String para = controller.getPara();
-		
+
 		// 获取传递参数
 		ApiForm form = controller.getBean(ApiForm.class, null);
-		
+
 		// 开关
 		boolean flag = ConfigCache.getValueToBoolean("API.FLAG");
 		if (!flag) {
@@ -88,5 +88,5 @@ public class ApiInterceptor implements Interceptor {
 		}
 		return ip;
 	}
-	
+
 }

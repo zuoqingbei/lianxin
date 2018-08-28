@@ -112,7 +112,7 @@ public class TbSite extends BaseProjectModel<TbSite> {
 	public java.lang.Integer getSiteFolderId() {
 		return get(SITE_FOLDER_ID);
 	}
-	
+
 	public TbSite setSiteArticleId(java.lang.Integer value) {
 		set(SITE_ARTICLE_ID, value);
 		return this;
@@ -184,7 +184,7 @@ public class TbSite extends BaseProjectModel<TbSite> {
 	public java.lang.Integer getSiteDefalut() {
 		return get(SITE_DEFALUT);
 	}
-	
+
 	public TbSite setUpdateTime(java.lang.String value) {
 		set(UPDATE_TIME, value);
 		return this;
