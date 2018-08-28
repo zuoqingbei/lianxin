@@ -36,6 +36,7 @@ import com.hailian.jfinal.component.handler.HtmlHandler;
 import com.hailian.jfinal.component.interceptor.ExceptionInterceptor;
 import com.hailian.jfinal.component.interceptor.JflyfoxInterceptor;
 import com.hailian.jfinal.component.interceptor.SessionAttrInterceptor;
+import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateImageService;
 import com.hailian.modules.front.template.TemplateService;
 import com.hailian.modules.front.template.TemplateVideoService;
@@ -77,37 +78,28 @@ import com.jfinal.template.Engine;
 public class BaseConfig extends JFinalConfig {
 
 	private static final String CONFIG_WEB_ROOT = "{webroot}";
-
 	public void configConstant(Constants me) {
 		me.setDevMode(isDevMode());
-		me.setViewType(ViewType.JSP); // 设置视图类型为Jsp，否则默认为FreeMarker
+		me.setViewType(ViewType.JSP);
+		me.setFreeMarkerTemplateUpdateDelay(0);//html页面缓存时间为10分钟
+		//me.setViewType(ViewType.JSP); // 设置视图类型为Jsp，否则默认为FreeMarker
 		me.setLogFactory(new Log4jLogFactory());
 		me.setError401View(Config.getStr("PAGES.401"));
 		me.setError403View(Config.getStr("PAGES.403"));
 		me.setError404View(Config.getStr("PAGES.404"));
 		me.setError500View(Config.getStr("PAGES.500"));
+
 		//配置国际化资源默认的basename
 		//url?_local=zh-CN/en_US,前台页面可以获取到配置文件里面的key值
 		me.setI18nDefaultBaseName("i18n");
 		me.setI18nDefaultLocale("zh_CN");
-		
 		// 开启日志
 		SqlReporter.setLog(true);
-
-		JFinal3BeetlRenderFactory rf = new JFinal3BeetlRenderFactory();
-		rf.config();
-		me.setRenderFactory(rf);
-
-		// 获取GroupTemplate ,可以设置共享变量等操作
-		GroupTemplate groupTemplate = rf.groupTemplate;
-		groupTemplate.registerFunctionPackage("strutil", BeetlStrUtils.class);
-		groupTemplate.registerFunctionPackage("flyfox", BeeltFunctions.class);
-		groupTemplate.registerFunctionPackage("temp", TemplateService.class);
-		groupTemplate.registerFunctionPackage("tempImage", TemplateImageService.class);
-		groupTemplate.registerFunctionPackage("tempVideo", TemplateVideoService.class);
+		me.setMaxPostSize(104857600*5);
+		configDirective(me);
 
 	};
-	
+
 	/**
 	 * 配置路由
 	 */
@@ -119,7 +111,7 @@ public class BaseConfig extends JFinalConfig {
 		me.add(new AutoBindRoutes());
 		me.add(new SwaggerRoutes());
 	}
-	
+
 	/**
 	 * 配置插件
 	 */
@@ -163,7 +155,7 @@ public class BaseConfig extends JFinalConfig {
 
 		new AutoBindModels(arp);
 	}
-	
+
 	@Override
 	public void configHandler(Handlers me) {
 		// Beelt
@@ -227,25 +219,24 @@ public class BaseConfig extends JFinalConfig {
 
 		// 初始化Cache为fst序列化
 		SerializerManage.add("fst", new FSTSerializer());
-		
+
 		// 设置序列化工具
 		String defaultKey = Config.getStr("CACHE.SERIALIZER.DEFAULT");
 		defaultKey = StrUtils.isEmpty(defaultKey) ? "java" : defaultKey;
 		SerializerManage.setDefaultKey(defaultKey);
 
-		
 		// 设置缓存
 		CacheManager.setCache(new ICacheManager() {
 
 			public Cache getCache() {
 				String cacheName = Config.getStr("CACHE.NAME");
-				cacheName = StrUtils.isEmpty(cacheName) ? "MemorySerializeCache" : cacheName; 
-				
+				cacheName = StrUtils.isEmpty(cacheName) ? "MemorySerializeCache" : cacheName;
+
 				if ("MemorySerializeCache".equals(cacheName)) {
 					return new MemorySerializeCache();
 				} else if ("MemoryCache".equals(cacheName)) {
 					return new MemoryCache();
-				}  else if ("RedisCache".equals(cacheName)) {
+				} else if ("RedisCache".equals(cacheName)) {
 					return new RedisCache();
 				} else {
 					throw new RuntimeException("####init cache error!");
@@ -260,18 +251,37 @@ public class BaseConfig extends JFinalConfig {
 		System.out.println("############系统停止完成##########");
 		System.out.println("##################################");
 	}
-	
 
 	/**
 	 * 配置模板
 	 */
 	public void configEngine(Engine engine) {
-		
+
 	}
-	
+	/**
+	 * 
+	 * @todo  定义模板
+	 * @time   2018年8月27日 下午5:44:46
+	 * @author zuoqb
+	 * @params
+	 */
+	private void configDirective(Constants me) {
+		//站点标签------------------
+		//-----------------------核心服务-------------------------
+		// 获取GroupTemplate ,可以设置共享变量等操作
+		JFinal3BeetlRenderFactory rf = new JFinal3BeetlRenderFactory();
+		rf.config();
+		me.setRenderFactory(rf);
+		GroupTemplate groupTemplate = rf.groupTemplate;
+		groupTemplate.registerFunctionPackage("strutil", BeetlStrUtils.class);
+		groupTemplate.registerFunctionPackage("flyfox", BeeltFunctions.class);
+		groupTemplate.registerFunctionPackage("temp", TemplateService.class);
+		groupTemplate.registerFunctionPackage("tempImage", TemplateImageService.class);
+		groupTemplate.registerFunctionPackage("tempVideo", TemplateVideoService.class);
+		groupTemplate.registerFunctionPackage("tempDict", TemplateDictService.class);//字典模板
+	}
 	private boolean isDevMode() {
 		return Config.getToBoolean("CONSTANTS.DEV_MODE");
 	}
-
 
 }

@@ -73,7 +73,7 @@ public class ImageShowController extends BaseController {
 
 		// 下拉框
 		setAttr("album", new ImageAlbumService().getAlbum(model.getAlbumId()));
-		
+
 		setAttr("list", list);
 		setAttr("attr", model);
 		render(path + "edit.html");

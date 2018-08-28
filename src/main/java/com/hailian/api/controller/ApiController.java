@@ -24,7 +24,7 @@ public class ApiController extends BaseProjectController {
 	 */
 	public void index() {
 		ApiForm from = getForm();
-		
+
 		renderJson(new ApiResp(from).addData("notice", "api is ok!"));
 	}
 
@@ -35,7 +35,7 @@ public class ApiController extends BaseProjectController {
 	 */
 	public void debug() {
 		ApiForm from = getForm();
-		
+
 		ApiUtils.DEBUG = !ApiUtils.DEBUG;
 		renderJson(new ApiResp(from).addData("debug", ApiUtils.DEBUG));
 	}
@@ -58,7 +58,7 @@ public class ApiController extends BaseProjectController {
 		ApiResp resp = service.action(from);
 		// 没有数据输出空
 		resp = resp == null ? new ApiResp(from) : resp;
-		
+
 		// 调试日志
 		if (ApiUtils.DEBUG) {
 			log.info("API DEBUG ACTION \n[from=" + from + "]" //

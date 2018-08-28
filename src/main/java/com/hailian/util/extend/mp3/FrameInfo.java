@@ -133,14 +133,14 @@ public class FrameInfo {
 	 * 值得一提的是winamp在保存和读取帧内容的时候会在内容前面加个'\0'，并把这个字节计算在帧内容的大小中。
 	 * 
 	 */
-	private byte[]flag;
+	private byte[] flag;
 
-	private byte[] content=null;
-	
+	private byte[] content = null;
+
 	public FrameInfo() {
 		super();
 	}
-	
+
 	public String getFrameId() {
 		return frameId;
 	}
@@ -160,6 +160,7 @@ public class FrameInfo {
 	public byte[] getFlag() {
 		return flag;
 	}
+
 	public void setFlag(byte[] flag) {
 		this.flag = flag;
 	}

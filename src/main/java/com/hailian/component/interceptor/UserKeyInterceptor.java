@@ -14,14 +14,13 @@ import com.jfinal.core.Controller;
  */
 public class UserKeyInterceptor implements Interceptor {
 
-
 	public void intercept(Invocation ai) {
 
 		Controller controller = ai.getController();
-		
+
 		// 如果没有，就设置一个
 		Object key = controller.getSessionAttr(JFlyFoxUtils.USER_KEY);
-		if (key==null) {
+		if (key == null) {
 			controller.setSessionAttr(JFlyFoxUtils.USER_KEY, UUID.randomUUID().toString());
 		}
 

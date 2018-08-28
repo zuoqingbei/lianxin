@@ -26,14 +26,14 @@ public class SessionUser<M extends Model<M>> extends BaseModel<M> {
 	public Integer getUserid() {
 		return getInt("userid") == null ? -1 : getInt("userid");
 	}
-	
+
 	public String getUserName() {
 		if (StrUtils.isNotEmpty(getStr("realname"))) {
-			return getStr("realname");	
+			return getStr("realname");
 		}
 		return getStr("username");
 	}
-	
+
 	public Integer getBackSiteId() {
 		return getInt("back_site_id");
 	}

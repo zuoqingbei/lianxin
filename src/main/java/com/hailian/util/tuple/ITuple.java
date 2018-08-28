@@ -11,11 +11,11 @@ public interface ITuple {
 	 * @return
 	 */
 	public int size();
-	
+
 	/**
 	 * 将元组中的数据按顺序放入数组中返回
 	 * @return
 	 */
 	public Object[] toArray();
-	
+
 }

@@ -50,7 +50,7 @@ public class FourTuple<A, B, C, D> extends ThreeTuple<A, B, C> {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int size() {
 		return 4;
@@ -58,7 +58,7 @@ public class FourTuple<A, B, C, D> extends ThreeTuple<A, B, C> {
 
 	@Override
 	public Object[] toArray() {
-		return new Object[]{first, second, third, fourth};
+		return new Object[] { first, second, third, fourth };
 	}
 
 }

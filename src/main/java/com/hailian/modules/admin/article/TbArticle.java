@@ -138,7 +138,7 @@ public class TbArticle extends BaseProjectModel<TbArticle> {
 	public java.lang.String getImageUrl() {
 		return get(IMAGE_URL);
 	}
-	
+
 	public TbArticle setImageNetUrl(java.lang.String value) {
 		set(IMAGE_NET_URL, value);
 		return this;

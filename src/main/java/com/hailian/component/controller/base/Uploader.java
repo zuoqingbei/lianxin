@@ -252,7 +252,7 @@ public class Uploader {
 			}
 
 		} catch (SizeLimitExceededException e) {
-			this.state = this.errorInfo.get("SIZE") + "(" + maxSize/1024 + "Kb)";
+			this.state = this.errorInfo.get("SIZE") + "(" + maxSize / 1024 + "Kb)";
 		} catch (Exception e) {
 			this.state = this.errorInfo.get("UNKNOWN");
 		}
@@ -266,7 +266,8 @@ public class Uploader {
 	 */
 	private String getName(String fileName) {
 		Random random = new Random();
-		return this.fileName = this.preFileName + "" + random.nextInt(10000) + System.currentTimeMillis() + this.getFileExt(fileName);
+		return this.fileName = this.preFileName + "" + random.nextInt(10000) + System.currentTimeMillis()
+				+ this.getFileExt(fileName);
 	}
 
 	/**

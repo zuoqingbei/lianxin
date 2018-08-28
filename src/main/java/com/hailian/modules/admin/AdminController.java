@@ -75,7 +75,7 @@ public class AdminController extends BaseProjectController {
 			render(loginPage);
 			return;
 		}
-		
+
 		String md5Password = "";
 		try {
 			String userPassword = user.get("password");
@@ -87,7 +87,7 @@ public class AdminController extends BaseProjectController {
 			render(loginPage);
 			return;
 		}
-		
+
 		if (!md5Password.equals(encryptPassword)) {
 			setAttr("msg", "认证错误，请您重新输入。");
 			render(loginPage);
@@ -99,7 +99,7 @@ public class AdminController extends BaseProjectController {
 			render(loginPage);
 			return;
 		}
-		
+
 		setSessionUser(user);
 
 		// 第一个页面跳转
@@ -169,7 +169,7 @@ public class AdminController extends BaseProjectController {
 		}
 		return tmpMainPage;
 	}
-	
+
 	/**
 	 * 登出
 	 * 

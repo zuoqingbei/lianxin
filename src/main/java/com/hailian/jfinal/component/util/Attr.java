@@ -19,7 +19,6 @@ package com.hailian.jfinal.component.util;
 
 import com.hailian.util.Config;
 
-
 public class Attr {
 
 	/**
@@ -36,7 +35,7 @@ public class Attr {
 	 * model前缀
 	 */
 	public static final String PAGE_MODEL_NAME = Config.getStr("ATTR.MODEL_NAME");
-	
+
 	/**
 	 * attr前缀
 	 */
@@ -46,7 +45,7 @@ public class Attr {
 	 * form前缀
 	 */
 	public static final String PAGE_FORM_NAME = Config.getStr("ATTR.FORM_NAME");
-	
+
 	/**
 	 * 手机用户路径前缀
 	 */

@@ -380,5 +380,5 @@ public class Base64 {
 	public byte[] encode(byte[] pArray) {
 		return (encodeBase64(pArray, false));
 	}
-	
+
 }

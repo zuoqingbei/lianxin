@@ -53,7 +53,7 @@ public class ThreeTuple<A, B, C> extends TwoTuple<A, B> {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int size() {
 		return 3;
@@ -61,7 +61,7 @@ public class ThreeTuple<A, B, C> extends TwoTuple<A, B> {
 
 	@Override
 	public Object[] toArray() {
-		return new Object[]{first, second, third};
+		return new Object[] { first, second, third };
 	}
 
 }

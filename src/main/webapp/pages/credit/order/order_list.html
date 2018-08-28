@@ -1,3 +1,5 @@
+<% var folderType = tempDict.getSysDictDetailByType('dataEntryType'); %>
+<% var sandbar = tempDict.getSysDictDetailByType('sandbar'); %>
 <% 
 	var headContent = {
 	include("/pages/template/head.html"){}
@@ -50,9 +52,18 @@ var bodyContent = {
 					<input class="form-control" type="text" name="customName" value="${customName!''}" 
 						placeholder="请输入名称" required='required' />
 			</div>
+			<div class="form-group">
+			   <label  class="control-label">类型</label>
+			   <select name="" class="form-control" style="width: 200px;">
+						<option value="">请选择</option>
+						 <% for(item in sandbar){ %>
+						 <option value="${item.detail_code}">${item.detail_name}</option>
+						  <% } %>
+				</select> 
+			</div>
 			
 			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
-			 		<span class="glyphicon glyphicon-search"></span> 查 询
+			 		<span class="glyphicon glyphicon-search"></span> 查询
 			</button>
 		
 		</div>

@@ -96,7 +96,8 @@ public class FolderrollpictureController extends BaseProjectController {
 
 	public void save() {
 		TbSite site = getBackSite();
-		UploadFile uploadImage = getFile("model.image_url", FileUploadUtils.getUploadTmpPath(site), FileUploadUtils.UPLOAD_MAX);
+		UploadFile uploadImage = getFile("model.image_url", FileUploadUtils.getUploadTmpPath(site),
+				FileUploadUtils.UPLOAD_MAX);
 
 		Integer pid = getParaToInt();
 		TbFolderRollPicture model = getModel(TbFolderRollPicture.class);

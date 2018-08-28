@@ -75,7 +75,7 @@ public class VideoController extends BaseProjectController {
 
 		render(path + "view.html");
 	}
-	
+
 	public void show() {
 		TbVideo model = TbVideo.dao.findById(getParaToInt());
 		setAttr("model", model);
@@ -130,17 +130,18 @@ public class VideoController extends BaseProjectController {
 
 	public void save() {
 		TbSite site = getBackSite();
-		UploadFile uploadVideo = getFile("model.video_url", FileUploadUtils.getUploadTmpPath(site), FileUploadUtils.UPLOAD_MAX);
-		
+		UploadFile uploadVideo = getFile("model.video_url", FileUploadUtils.getUploadTmpPath(site),
+				FileUploadUtils.UPLOAD_MAX);
+
 		Integer pid = getParaToInt();
 		TbVideo model = getModel(TbVideo.class);
-		
+
 		// 视频附件
 		if (uploadVideo != null) {
 			String fileUrl = uploadHandler(site, uploadVideo.getFile(), "video");
 			model.set("video_url", fileUrl);
 		}
-		
+
 		// 设置图片信息
 		if (StrUtils.isNotEmpty(model.getVideoNetUrl())) {
 			String file = model.getVideoNetUrl();
@@ -149,24 +150,23 @@ public class VideoController extends BaseProjectController {
 			String file = model.getVideoUrl();
 			model.setExt(file.substring(file.lastIndexOf(".") + 1));
 		}
-		
+
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.put("update_id", userid);
 		model.put("update_time", now);
 		if (pid != null && pid > 0) { // 更新
 			model.update();
-			
+
 		} else { // 新增
 			model.remove("id");
 			model.put("create_id", userid);
 			model.put("create_time", now);
 			model.save();
 		}
-		
-		
+
 		// 保存tags
-		if (pid != null && pid > 0) { 
+		if (pid != null && pid > 0) {
 			Db.update(" delete from tb_video_tags where video_id = ?", model.getInt("id"));
 		}
 		String tags = getPara("tags");
@@ -190,7 +190,7 @@ public class VideoController extends BaseProjectController {
 
 			}
 		}
-		
+
 		renderMessage("保存成功");
 	}
 }

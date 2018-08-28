@@ -39,7 +39,7 @@ public class CountryService {
 		List<Object> param=new ArrayList<Object>();
 		String sql="select continent,continent_en from credit_country where del_flag=0 and 1=1";
 		if(StringUtils.isNotBlank(continent)){
-			sql+=" and continent=?";
+			sql+=" and continent_en=?";
 			param.add(continent);
 		}
 		sql+=" group by continent order by order_no";

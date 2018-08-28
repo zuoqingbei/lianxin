@@ -19,7 +19,7 @@ public class FrontImageService extends BaseService {
 	 * 2015年4月29日 下午4:37:40 flyfox 369191470@qq.com
 	 */
 	public void clearCache() {
-		 CacheManager.get(cacheName).clear();
+		CacheManager.get(cacheName).clear();
 	}
 
 	/**

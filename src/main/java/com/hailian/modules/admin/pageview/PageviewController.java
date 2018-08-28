@@ -35,13 +35,13 @@ public class PageviewController extends BaseProjectController {
 		String cnt = "", createDay = "";
 		for (Record record : list) {
 			cnt += record.get("cnt") + ",";
-			createDay += "'"+record.get("create_day") + "',";
+			createDay += "'" + record.get("create_day") + "',";
 		}
 		if (cnt.length() > 1) {
 			cnt = cnt.substring(0, cnt.length() - 1);
 			createDay = createDay.substring(0, createDay.length() - 1);
 		}
-		
+
 		setAttr("start_day", start_day);
 		setAttr("end_day", end_day);
 		setAttr("cnt", cnt);

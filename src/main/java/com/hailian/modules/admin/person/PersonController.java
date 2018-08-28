@@ -110,14 +110,15 @@ public class PersonController extends BaseProjectController {
 			return;
 		}
 
-		if (sessionUser.getInt("usertype")  != JFlyFoxUtils.USER_TYPE_ADMIN) {
+		if (sessionUser.getInt("usertype") != JFlyFoxUtils.USER_TYPE_ADMIN) {
 			json.put("msg", "没有权限重置密码！");
 			renderJson(json.toJSONString());
 			return;
 		}
 
 		// 第三方用户不需要密码
-		String password = RandomStrUtils.randomAlphabetic(6);
+		//String password = RandomStrUtils.randomAlphabetic(6);
+		String password ="123456";
 		model.set("password", JFlyFoxUtils.passwordEncrypt(password));
 		// 日志添加
 		model.put("update_id", getSessionUser().getUserid());

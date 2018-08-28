@@ -78,7 +78,7 @@ public class BinaryUploader {
 				if (savePath.startsWith("/") && !savePath.startsWith(contextPath)) {
 					savePath = contextPath + savePath;
 				}
-				
+
 				storageState.putInfo("url", PathFormat.format(savePath));
 				storageState.putInfo("type", suffix);
 				storageState.putInfo("original", originFileName + suffix);

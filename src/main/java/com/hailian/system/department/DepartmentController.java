@@ -21,7 +21,7 @@ public class DepartmentController extends BaseProjectController {
 	public void index() {
 		list();
 	}
-	
+
 	public void list() {
 		SysDepartment model = getModelByAttr(SysDepartment.class);
 
@@ -58,17 +58,17 @@ public class DepartmentController extends BaseProjectController {
 		// 获取页面信息,设置目录传入
 		SysDepartment model = SysDepartment.dao.findById(getParaToInt());
 		setAttr("selectParentDepartments", new DepartmentSvc().selectDepart(model == null ? 0 : model.getId()));
-				
+
 		render(path + "add.html");
 	}
 
 	public void view() {
 		SysDepartment model = SysDepartment.dao.findById(getParaToInt());
 		setAttr("model", model);
-		
+
 		SysDepartment department = SysDepartment.dao.findById(model.getParentId());
 		model.put("parentName", department != null ? department.getName() : null);
-		
+
 		render(path + "view.html");
 	}
 
@@ -88,10 +88,10 @@ public class DepartmentController extends BaseProjectController {
 	public void edit() {
 		SysDepartment model = SysDepartment.dao.findById(getParaToInt());
 		setAttr("model", model);
-		
+
 		// 下拉框
 		setAttr("selectParentDepartments", new DepartmentSvc().selectDepart(model.getParentId(), model.getId()));
-				
+
 		render(path + "edit.html");
 	}
 

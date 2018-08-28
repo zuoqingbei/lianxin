@@ -9,6 +9,4 @@ import com.hailian.api.service.IApiLogic;
  */
 public class ApiV101Logic extends ApiV100Logic implements IApiLogic {
 
-	
-
 }

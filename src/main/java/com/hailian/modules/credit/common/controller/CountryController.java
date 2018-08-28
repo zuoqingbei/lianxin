@@ -30,11 +30,10 @@ public class CountryController extends BaseProjectController {
 	 */
 	@ApiOperation(url = "/credit/country/getCountrySelect",httpMethod="get", description = "获取国家地区下拉框")
 	@Params(value = { 
-			@Param(name = "continent", description = "大洲", required = false, dataType = "String"),
+			@Param(name = "attr.continent", description = "大洲", required = false, dataType = "String"),
 			})
 	public void getCountrySelect() throws UnsupportedEncodingException{
-		String continent=getPara("continent");
-		continent = URLDecoder.decode(continent,"UTF-8");
+		String continent=getPara("attr.continent");
 		System.out.println("=========="+continent);
 		Map<Object, Object> selectCountry = CountryService.service.CountrySelect(continent,this);
 		renderJson(selectCountry);

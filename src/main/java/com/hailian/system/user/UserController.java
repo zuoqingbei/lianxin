@@ -26,7 +26,7 @@ public class UserController extends BaseProjectController {
 	public void index() {
 		list();
 	}
-	
+
 	public void list() {
 		SysUser model = getModelByAttr(SysUser.class);
 		SQLUtils sql = new SQLUtils(" from sys_user t " //
@@ -45,7 +45,7 @@ public class UserController extends BaseProjectController {
 		} else {
 			sql.append(" order by ").append(orderBy);
 		}
-		
+
 		Page<SysUser> page = SysUser.dao.paginate(getPaginator(), "select t.*,d.name as departname ", sql.toString()
 				.toString());
 		// 下拉框

@@ -35,7 +35,7 @@ public class EhCacheProvider {
 		System.out.println(cache.get("123"));
 		provider.stop();
 	}
-	
+
 	private final static Log log = Log.getLog(EhCacheProvider.class);
 	private final static String CONFIG_XML = "/ehcache.xml";
 

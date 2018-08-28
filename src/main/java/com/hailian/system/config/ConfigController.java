@@ -15,7 +15,7 @@ import com.jfinal.plugin.activerecord.Page;
 public class ConfigController extends BaseController {
 
 	private static final String path = "/pages/system/config/config_";
-	
+
 	public void index() {
 		list();
 	}
@@ -24,8 +24,7 @@ public class ConfigController extends BaseController {
 		SysConfig model = getModelByAttr(SysConfig.class);
 		int operType = getParaToInt("oper_type", 1);
 
-		SQLUtils sql = new SQLUtils(" from sys_config t"
-				+ " left join sys_config t2 on t.type = t2.id where 1=1 ");
+		SQLUtils sql = new SQLUtils(" from sys_config t" + " left join sys_config t2 on t.type = t2.id where 1=1 ");
 		if (model.getAttrValues().length != 0) {
 			sql.setAlias("t");
 			sql.whereLike("name", model.getStr("name"));
@@ -90,7 +89,7 @@ public class ConfigController extends BaseController {
 	public void edit() {
 		int operType = getParaToInt("oper_type", 1);
 		SysConfig model = SysConfig.dao.findById(getParaToInt());
-		
+
 		setAttr("selectOption", new ConfigService().selectType(model.getType()));
 		setAttr("oper_type", operType);
 		setAttr("model", model);

@@ -58,7 +58,7 @@ public class DepartmentSvc extends BaseService {
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 递归树
 	 * 
@@ -88,7 +88,7 @@ public class DepartmentSvc extends BaseService {
 				sb.append(flag ? "selected" : "");
 				sb.append(">");
 				for (int i = 0; i < level; i++) {
-					if (i == (level -1)) {
+					if (i == (level - 1)) {
 						sb.append("&nbsp;|--");
 					} else {
 						sb.append("&nbsp;&nbsp;&nbsp;");
@@ -103,7 +103,7 @@ public class DepartmentSvc extends BaseService {
 
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 获取名称
 	 * 

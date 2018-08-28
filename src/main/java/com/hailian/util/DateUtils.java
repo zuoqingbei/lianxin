@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * flyfox 330627517@qq.com
  */
 public class DateUtils {
-	
+
 	public static final int SECOND = 1;
 	public static final int MINUTE_SECOND = 60 * SECOND;
 	public static final int HOUR_SECOND = 60 * MINUTE_SECOND;
@@ -54,7 +54,7 @@ public class DateUtils {
 	public static final String YMD = "yyyy-MM-dd";
 	/** 时间格式：HH:mm:ss */
 	public static final String HMS = "HH:mm:ss";
-	
+
 	/**
 	 * 默认的日期格式 .
 	 */
@@ -230,7 +230,7 @@ public class DateUtils {
 	public static Date getNowDate() {
 		return new Date(System.currentTimeMillis());
 	}
-	
+
 	/**
 	 * 获取当前时间字符串
 	 * 
@@ -241,7 +241,7 @@ public class DateUtils {
 	public static String getNow() {
 		return getNow(DEFAULT_REGEX);
 	}
-	
+
 	/**
 	 * 获取当前时间字符串
 	 * 
@@ -253,7 +253,7 @@ public class DateUtils {
 	public static String getNow(String regex) {
 		return format(getNowDate(), regex);
 	}
-	
+
 	/***
 	 * 获取指定时间所在天的开始时间
 	 * 

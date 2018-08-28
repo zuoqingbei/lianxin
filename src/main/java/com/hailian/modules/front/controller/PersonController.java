@@ -278,7 +278,7 @@ public class PersonController extends BaseProjectController {
 				renderJson(json.toJSONString());
 				return;
 			}
-			
+
 			model.update();
 		} else { // 新增
 			model.remove("id");
@@ -470,7 +470,8 @@ public class PersonController extends BaseProjectController {
 		}
 
 		// title展示
-		setAttr(JFlyFoxUtils.TITLE_ATTR, BeeltFunctions.getUserName(userid) + "的空间 - " + getAttr(JFlyFoxUtils.TITLE_ATTR));
+		setAttr(JFlyFoxUtils.TITLE_ATTR, BeeltFunctions.getUserName(userid) + "的空间 - "
+				+ getAttr(JFlyFoxUtils.TITLE_ATTR));
 
 		renderAuto(path + "view_person.html");
 

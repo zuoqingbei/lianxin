@@ -4,6 +4,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Table;
 
 /**
  * 数据字典
@@ -19,15 +20,15 @@ public class DictController extends BaseProjectController {
 	public void index() {
 		list();
 	}
-	
+
 	public void list() {
 		SysDictDetail attr = getModelByAttr(SysDictDetail.class);
-		StringBuffer sql = new StringBuffer(" from sys_dict_detail t,sys_dict d where t.dict_type = d.dict_type ");
+		StringBuffer sql = new StringBuffer(" from sys_dict_detail t,sys_dict d where t.dict_type = d.dict_type  and   t.del_flag=0");
 		String attrVal = attr.getStr("dict_type");
 		if (StrUtils.isNotEmpty(attrVal)) {
 			sql.append(" AND t.dict_type = '").append(attrVal).append("'");
 		}
-		
+
 		// 排序
 		String orderBy = getBaseForm().getOrderBy();
 		if (StrUtils.isEmpty(orderBy)) {
@@ -35,10 +36,10 @@ public class DictController extends BaseProjectController {
 		} else {
 			sql.append(" order by ").append(orderBy);
 		}
-		
+
 		Page<SysDictDetail> page = SysDictDetail.dao
 				.paginate(getPaginator(), "select t.*,d.dict_name ", sql.toString());
-
+		
 		// 下拉框
 		setAttr("optionList", svc.selectDictType(attr.getStr("dict_type")));
 		setAttr("attr", attr);
@@ -62,13 +63,20 @@ public class DictController extends BaseProjectController {
 	public void delete() {
 		// 日志添加
 		SysDictDetail model = new SysDictDetail();
+		
+				
 		Integer userid = getSessionUser().getUserid();
+
 		String now = getNow();
+		
+				
 		model.put("update_id", userid);
 		model.put("update_time", now);
-
 		model.set("detail_id", getParaToInt());
-		svc.deleteDetail(model);
+			
+		svc.updateDetail(model.set("del_flag", Integer.parseInt("1")));
+		//svc.deleteDetail(model);
+		
 		list();
 	}
 
