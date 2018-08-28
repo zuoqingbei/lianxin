@@ -2,6 +2,7 @@ package com.hailian.modules.credit.common.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 import java.util.Map;
 
 import com.feizhou.swagger.annotation.Api;
@@ -10,6 +11,7 @@ import com.feizhou.swagger.annotation.Param;
 import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.service.CountryService;
 /**
  * 国家地区
@@ -35,7 +37,7 @@ public class CountryController extends BaseProjectController {
 	public void getCountrySelect() throws UnsupportedEncodingException{
 		String continent=getPara("attr.continent");
 		System.out.println("=========="+continent);
-		Map<Object, Object> selectCountry = CountryService.service.CountrySelect(continent,this);
+		List<CountryModel> selectCountry = CountryService.service.CountrySelect(continent,this);
 		renderJson(selectCountry);
 	}
 
