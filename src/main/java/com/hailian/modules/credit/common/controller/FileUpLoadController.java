@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
@@ -19,6 +20,7 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.site.TbSite;
+import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.file.util.FileUploadUtils;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FTP_UploadFileUtils;
@@ -33,57 +35,59 @@ import com.jfinal.upload.UploadFile;
  */
 @ControllerBind(controllerKey = "/admin/file")
 public class FileUpLoadController extends BaseProjectController {
+	public static final int maxPostSize=5 * 1024 * 1024;
 	public static final String ip = "60.205.229.238";//ftp文件服务器 ip
 	public static final int port = 21;//ftp端口 默认21
 	public static final String userName = "test";//域用户名
 	public static final String password = "test";//域用户密码
 	public void uploadFile(){
-		UploadFile uploadFile = getFile("model.file_url");//从前台获取文件
-		uploadFile.getContentType();
 		String business_type = getPara("business_type");
 		String business_id = getPara("business_id");
 		// 文件附件
 		try {
-			if (uploadFile != null) {
-				String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
-				String fileName=DateUtils.getNow(DateUtils.YMDHMS);
-				boolean storeFile = FTP_UploadFileUtils.storeFile(fileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
-				if(storeFile){
-					int dot = uploadFile.getOriginalFileName().lastIndexOf(".");
-					String ext="";
-					if (dot != -1) {
-						ext = uploadFile.getOriginalFileName().substring(dot + 1);
-					} else {
-						ext = "";
-					}
-					String factpath=storePath+"/"+fileName+"."+ext;
-					String url="http://"+ip+"/" + storePath+"/"+fileName+"."+ext;
-					Integer userid = getSessionUser().getUserid();
-					UploadFileService.service.save(uploadFile, factpath,url,business_type,business_id,fileName,userid);//记录上传信息
-					List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id, business_type,this);
-					renderJson(fileList);
+			UploadFile uploadFile = getFile("file_url");//从前台获取文件
+			if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize) {
+				int dot = uploadFile.getOriginalFileName().lastIndexOf(".");
+				String ext="";
+				if (dot != -1) {
+					ext = uploadFile.getOriginalFileName().substring(dot + 1);
+				} else {
+					ext = "";
+				}
+				if(!FileTypeUtils.checkType(ext)){
+					renderJson("上传失败,文件类型必须为 doc,docx,xls,xlsx,pdf或者图片格式");
 				}else{
-					renderMessage("上传失败！");
+					String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+					String fileName=DateUtils.getNow(DateUtils.YMDHMS);
+					boolean storeFile = FTP_UploadFileUtils.storeFile(fileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+					if(storeFile){
+						String factpath=storePath+"/"+fileName+"."+ext;
+						String url="http://"+ip+"/" + storePath+"/"+fileName+"."+ext;
+						Integer userid = getSessionUser().getUserid();
+						UploadFileService.service.save(uploadFile, factpath,url,business_type,business_id,fileName,userid);//记录上传信息
+						List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id, business_type,this);
+						renderJson(fileList);
+					}else{
+						renderJson("上传失败,必须选择文件且文件大小不超过5M！");
+					}
 				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			renderMessage("项目出现异常，上传失败！");
+			renderJson("项目出现异常，上传失败！");
 		}
 	}
 	public void uploadMultipleFile(){
-		UploadFile uploadFile = getFile("model.file_url");//从前台获取文件
-		uploadFile.getContentType();
+		String mark="";
+		int failnumber=0;
 		String business_type = getPara("business_type");
 		String business_id = getPara("business_id");
 		// 文件附件
 		try {
-			if (uploadFile != null) {
-				String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
-				String fileName=DateUtils.getNow(DateUtils.YMDHMS);
-				boolean storeFile = FTP_UploadFileUtils.storeFile(fileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
-				if(storeFile){
+			List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+			for(UploadFile uploadFile:upFileList){
+				if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize) {
 					int dot = uploadFile.getOriginalFileName().lastIndexOf(".");
 					String ext="";
 					if (dot != -1) {
@@ -91,20 +95,32 @@ public class FileUpLoadController extends BaseProjectController {
 					} else {
 						ext = "";
 					}
-					String factpath=storePath+"/"+fileName+"."+ext;
-					String url="http://"+ip+"/" + storePath+"/"+fileName+"."+ext;
-					Integer userid = getSessionUser().getUserid();
-					UploadFileService.service.save(uploadFile, factpath,url,business_type,business_id,fileName,userid);//记录上传信息
-					List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id, business_type,this);
-					renderJson(fileList);
-				}else{
-					renderMessage("上传失败！");
+					if(!FileTypeUtils.checkType(ext)){
+						failnumber=failnumber+1;
+						mark+="上传失败,文件类型必须为 doc,docx,xls,xlsx,pdf或者图片格式";
+						renderJson("上传失败,文件类型必须为 doc,docx,xls,xlsx,pdf或者图片格式");
+					}else{
+						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+						String fileName=DateUtils.getNow(DateUtils.YMDHMS);
+						boolean storeFile = FTP_UploadFileUtils.storeFile(fileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						if(storeFile){
+							String factpath=storePath+"/"+fileName+"."+ext;
+							String url="http://"+ip+"/" + storePath+"/"+fileName+"."+ext;
+							Integer userid = getSessionUser().getUserid();
+							UploadFileService.service.save(uploadFile, factpath,url,business_type,business_id,fileName,userid);//记录上传信息
+							List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id, business_type,this);
+							renderJson(fileList);
+						}else{
+							renderJson("上传失败,必须选择文件且文件大小不超过5M！");
+						}
+					}
 				}
 			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			renderMessage("项目出现异常，上传失败！");
+			renderJson("项目出现异常，上传失败！");
 		}
 	}
 	//文件预览

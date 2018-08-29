@@ -37,8 +37,13 @@ public class CountryService {
 	}
 	public List<CountryModel> CountrySelect(String continent, BaseProjectController c) {
 		List<Object> params=new ArrayList<Object>();
-		String innerSql="select * from credit_country where del_flag=0 and continent_en=? order by order_no";
-		params.add(continent);
+		String innerSql="select * from credit_country where del_flag=0 ";
+		if(StringUtils.isNotBlank(continent)){
+			innerSql+=" and continent_en=?";
+			params.add(continent);
+		}
+		innerSql+=" order by order_no";
+		
 		List<CountryModel> countrylist = CountryModel.dao.find(innerSql,params.toArray());
 		return countrylist;
 	}
