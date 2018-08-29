@@ -1,4 +1,4 @@
-package com.hailian.modules.admin.ordermanager.model;
+package com.hailian.modules.credit.ordermanager.model;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
@@ -20,13 +20,20 @@ import com.jfinal.plugin.activerecord.Page;
 @ModelBind(table = "credit_order_info")//此标签用于模型与数据库表的连接
 public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	private String userName;
-
+	private String countryName;
 	public String getUserName() {
 		return get("userName");
 	}
 
 	public void setUserName(String userName) {
 		set("userName", userName);
+	}
+	public String getCountryName() {
+		return get("countryName");
+	}
+
+	public void setCountryName(String countryName) {
+		set("countryName", countryName);
 	}
 
 	/**
@@ -41,7 +48,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		SQLUtils sql=null;
 		String userid=user.get("userid").toString();
 				if((int)user.get("usertype")==1) {
-					 sql = new SQLUtils(" from credit_order_info t left join sys_user u on u.userid=t.create_by " //
+					 sql = new SQLUtils(" from credit_order_info t left join sys_user u on u.userid=t.create_by left join credit_country c on c.id=t.country " //
 							+ " where 1 = 1 and t.del_flag='0' ");
 				}else {
 					 sql = new SQLUtils(" from credit_order_info t left join sys_user u on u.userid=t.reportor " //
@@ -61,7 +68,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 				} else {
 					sql.append(" order by ").append(orderby);
 				}
-				Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.username as userName", sql.toString()
+				Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.username as userName,c.name as countryName", sql.toString()
 						.toString());
 				
 				return page;
@@ -69,7 +76,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 
 	public CreditOrderInfo getOrder(String id, BaseProjectController c) {
 		// TODO Auto-generated method stub
-		SQLUtils sql=new SQLUtils("select t.*,u.username as userName from credit_order_info t left join sys_user u on u.userid=t.create_by "
+		SQLUtils sql=new SQLUtils("select t.*,u.username as userName,c.name as countryName from credit_order_info t left join sys_user u on u.userid=t.create_by left join credit_country c on c.id=t.country  "
 				+ "where 1 = 1 and t.del_flag='0' and t.id='"+id+"'");
 		CreditOrderInfo coi=dao.findFirst(sql.toString());
 		return coi;

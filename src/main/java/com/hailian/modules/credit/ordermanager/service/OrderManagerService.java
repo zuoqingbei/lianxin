@@ -1,19 +1,19 @@
-package com.hailian.modules.admin.ordermanager.service;
+package com.hailian.modules.credit.ordermanager.service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-
 import com.alibaba.fastjson.JSONArray;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.admin.ordermanager.model.creditReportType;
+import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.modules.credit.ordermanager.model.CreditOrderHistory;
+import com.hailian.modules.credit.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.credit.ordermanager.model.CreditReportType;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.extend.UuidUtils;
 import com.jfinal.aop.Before;
@@ -31,9 +31,9 @@ public class OrderManagerService {
 	public static OrderManagerService service= new OrderManagerService();//名字都叫service，统一命名
 	private CreditOrderInfo dao=CreditOrderInfo.dao;
 	private CreditOrderHistory cohDao=CreditOrderHistory.dao;
-	private creditReportType ctDao=creditReportType.dao;
-			
-	
+	private CreditReportType ctDao=CreditReportType.dao;
+	private SysDictDetail sddDao=SysDictDetail.dao;		
+	private CountryModel cmDao=CountryModel.dao;
 	/**
 	 * 
 	 * @time   2018年8月23日 上午10:31:17
@@ -104,15 +104,16 @@ public class OrderManagerService {
 	 * @author yangdong
 	 * @todo   TODO
 	 * @param  @param coi
+	 * @throws Exception 
 	 * @return_type   void
 	 * 修改订单
 	 */
 	@Before(Tx.class)
-	public void modifyOrder(CreditOrderInfo coi,String changeReason,SysUser user,BaseProjectController c) {
+	public void modifyOrder(CreditOrderInfo coi,String changeReason,SysUser user,BaseProjectController c) throws Exception {
 		
 		try {
 			coi.update();
-			coi=coi.findById();
+			coi=coi.findById(coi.get("id").toString());
 			cohDao.set("id", UuidUtils.getUUID())
 			.set("order_id", coi.get("id").toString())
 			.set("json",JSONArray.toJSONString(coi))
@@ -123,8 +124,9 @@ public class OrderManagerService {
 			.set("update_by", user.get("username").toString())
 			.set("update_date", new Date())
 			.set("del_flag", "0").save();
-		}catch(Exception e){
 			
+		}catch(Exception e){
+			throw new Exception(e);
 		}
 		
 	}
@@ -170,14 +172,31 @@ public class OrderManagerService {
 		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
 		return coi;
 	}
-	public List<creditReportType> getReportType() {
-		List<creditReportType> list=ctDao.getReportType();
+	public List<CreditReportType> getReportType() {
+		List<CreditReportType> list=ctDao.getReportType();
 		
 		return list;
 	}
-	public List<String> getReportLanguage() {
+	public List<SysDictDetail> getReportLanguage() {
 		// TODO Auto-generated method stub
-		return null;
+		List<SysDictDetail> list=sddDao.getReportLanguage();
+		return list;
+	}
+	public List<CountryModel> getCountrys(String continent) {
+		List<CountryModel> country=cmDao.getCountrys(continent);
+		return country;
+	}
+	public List<SysDictDetail> getspeed(String dictType) {
+		List<SysDictDetail> speed=sddDao.getSpeed(dictType);
+		return speed;
+	}
+	public CountryModel getCountryType(String countryid) {
+		CountryModel cm=cmDao.findType(countryid);
+		return cm;
+	}
+	public List<SysDictDetail> getOrderType() {
+		List<SysDictDetail> list=sddDao.getReportType();
+		return list;
 	}
 	
 }

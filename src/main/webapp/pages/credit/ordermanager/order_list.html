@@ -12,27 +12,27 @@ include("/pages/template/head.html"){}
             height : 500,
             form : document.form1,
             list : function() {
-                var url = 'admin/ordermanager/list';
+                var url = 'credit/ordermanager/list';
                 this.form.action = url;
                 this.form.submit();
             },
             view : function(id) {
-                var url = 'admin/ordermanager/view/?id='+id;
+                var url = 'credit/ordermanager/view/?id='+id;
                 var title = '查看订单';
                 Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
             },
             add : function() {
-                var url = 'admin/ordermanager/add';
+                var url = 'credit/ordermanager/add';
                 var title = '添加订单';
                 Iframe(url, this.width, this.height, title);
             },
             edit : function(id) {
-                var url = 'admin/ordermanager/edit/?id='+id;
+                var url = 'credit/ordermanager/edit/?id='+id;
                 var title = '修改订单';
                 Iframe(url, this.width, this.height, title);
             },
             del : function(id) {
-                var url = 'admin/ordermanager/delete/?id='+id;
+                var url = 'credit/ordermanager/delete/?id='+id;
                 var title = '确认要删除该订单？';
                 Confirm(title, function() {
                     form1.action = url;
@@ -91,7 +91,7 @@ var bodyContent = {
 			<th>序号</th>
 			<%  // 列表头部 %>
 			<th name="id" class="sorting">订单号</th>
-			<th name="id" class="sorting">订单日期</th>
+			<th name="order_date" class="sorting">订单日期</th>
 			<th name="custom_id" class="sorting">客户代码</th>
 			<th name="status" class="sorting">处理状态</th>
 			<th name="country" class="sorting">国家</th>
@@ -108,7 +108,7 @@ var bodyContent = {
 			<td>${item.receiver_date,dateFormat="yyyy-MM-dd"}</td>
 			<td>${item.custom_id}</td>
 			<td>${item.status}</td>
-			<td>${item.country}</td>
+			<td>${item.countryName}</td>
 			<td>${item.userName}</td>
 
 			<td>
