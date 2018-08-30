@@ -49,12 +49,11 @@ public class ReportPriceService {
 	 * 
 	 * @time   2018年8月24日 下午4:14:43
 	 * @author dyc
-	 * @return 
-	 * @todo   TODO
+	 * @todo   向报告价格表新增信息
 	 * @return_type   void
 	 */
 	public ReportPrice add(ReportPrice reportprice) {
-		reportprice.set("id", 42);
+		reportprice.set("id", UuidUtils.getUUID());
 		reportprice.save();
 		return reportprice;
 	}

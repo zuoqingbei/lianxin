@@ -72,4 +72,16 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 		}
 		return false;
 	}
+	/**
+	 * 
+	 * @time   2018年8月30日 上午10:23:32
+	 * @author dyc
+	 * @todo   修改报告价格表信息
+	 * @return_type   boolean
+	 */
+	public boolean updateReport(ReportPrice reportPrice){
+		boolean flag=reportPrice.update();
+		return flag;
+		
+	}
 }
