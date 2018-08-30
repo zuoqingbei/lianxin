@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.modules.credit.common.model.CountryModel;
-import com.hailian.modules.credit.ordermanager.model.CreditReportType;
 
 @ModelBind(table = "sys_dict_detail", key = "detail_id")
 public class SysDictDetail extends BaseProjectModel<SysDictDetail> {

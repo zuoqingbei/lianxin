@@ -1,18 +1,17 @@
-package com.hailian.modules.credit.ordermanager.service;
+package com.hailian.modules.admin.ordermanager.service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.credit.common.model.CountryModel;
-import com.hailian.modules.credit.ordermanager.model.CreditOrderHistory;
-import com.hailian.modules.credit.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.credit.ordermanager.model.CreditReportType;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.extend.UuidUtils;
@@ -29,11 +28,6 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 public class OrderManagerService {
 	//static使该service保证了单例,public可以使Controller方便调用该service
 	public static OrderManagerService service= new OrderManagerService();//名字都叫service，统一命名
-	private CreditOrderInfo dao=CreditOrderInfo.dao;
-	private CreditOrderHistory cohDao=CreditOrderHistory.dao;
-	private CreditReportType ctDao=CreditReportType.dao;
-	private SysDictDetail sddDao=SysDictDetail.dao;		
-	private CountryModel cmDao=CountryModel.dao;
 	/**
 	 * 
 	 * @time   2018年8月23日 上午10:31:17
@@ -48,7 +42,7 @@ public class OrderManagerService {
 	
 	public CreditOrderInfo getOrder(String id,BaseProjectController c) {
 //		String authorSql=DataAuthorUtils.getAuthorByUser(c);//验证权限
-		CreditOrderInfo coi= dao.findFirst("select * from credit_order_info c  where c.del_flag='0' and c.id=?",id);
+		CreditOrderInfo coi= CreditOrderInfo.dao.findFirst("select * from credit_order_info c  where c.del_flag='0' and c.id=?",id);
 		return coi;
 	}
 	/**
@@ -74,7 +68,7 @@ public class OrderManagerService {
 			fromSql.append(" and c.custom_id =? ");
 			params.add(customid);
 		}
-		return dao.paginate(new Paginator(pageNumber, pageSize),  selectSql.toString()
+		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pageSize),  selectSql.toString()
 				,fromSql.toString(),params.toArray());
 	}
 	
@@ -114,7 +108,7 @@ public class OrderManagerService {
 		try {
 			coi.update();
 			coi=coi.findById(coi.get("id").toString());
-			cohDao.set("id", UuidUtils.getUUID())
+			CreditOrderHistory.dao.set("id", UuidUtils.getUUID())
 			.set("order_id", coi.get("id").toString())
 			.set("json",JSONArray.toJSONString(coi))
 			.set("change_reason", changeReason)
@@ -150,13 +144,13 @@ public class OrderManagerService {
 	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator,CreditOrderInfo model,String orderby,SysUser user, BaseProjectController c) {
 		
 		
-		Page<CreditOrderInfo> page = dao.getOrders(pageinator,model,orderby,user,c);
+		Page<CreditOrderInfo> page = CreditOrderInfo.dao.getOrders(pageinator,model,orderby,user,c);
 
 		return page;
 		
 	}
 	public CreditOrderInfo editOrder(String id,BaseProjectController c) {
-		CreditOrderInfo coi=dao.getOrder(id,c);
+		CreditOrderInfo coi=CreditOrderInfo.dao.getOrder(id,c);
 		return coi;
 	}
 	
@@ -173,29 +167,29 @@ public class OrderManagerService {
 		return coi;
 	}
 	public List<CreditReportType> getReportType() {
-		List<CreditReportType> list=ctDao.getReportType();
+		List<CreditReportType> list=CreditReportType.dao.getReportType();
 		
 		return list;
 	}
 	public List<SysDictDetail> getReportLanguage() {
 		// TODO Auto-generated method stub
-		List<SysDictDetail> list=sddDao.getReportLanguage();
+		List<SysDictDetail> list=SysDictDetail.dao.getReportLanguage();
 		return list;
 	}
 	public List<CountryModel> getCountrys(String continent) {
-		List<CountryModel> country=cmDao.getCountrys(continent);
+		List<CountryModel> country=CountryModel.dao.getCountrys(continent);
 		return country;
 	}
 	public List<SysDictDetail> getspeed(String dictType) {
-		List<SysDictDetail> speed=sddDao.getSpeed(dictType);
+		List<SysDictDetail> speed=SysDictDetail.dao.getSpeed(dictType);
 		return speed;
 	}
 	public CountryModel getCountryType(String countryid) {
-		CountryModel cm=cmDao.findType(countryid);
+		CountryModel cm=CountryModel.dao.findType(countryid);
 		return cm;
 	}
 	public List<SysDictDetail> getOrderType() {
-		List<SysDictDetail> list=sddDao.getReportType();
+		List<SysDictDetail> list=SysDictDetail.dao.getReportType();
 		return list;
 	}
 	

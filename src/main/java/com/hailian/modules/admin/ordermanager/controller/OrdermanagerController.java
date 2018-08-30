@@ -1,4 +1,4 @@
-package com.hailian.modules.credit.ordermanager.controller;
+package com.hailian.modules.admin.ordermanager.controller;
 
 import java.util.List;
 
@@ -9,17 +9,17 @@ import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditReportType;
+import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.common.model.CountryModel;
-import com.hailian.modules.credit.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.credit.ordermanager.model.CreditReportType;
-import com.hailian.modules.credit.ordermanager.service.OrderManagerService;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.jfinal.plugin.activerecord.Page;
 @Api(tag = "订单菜单路由", description = "订单菜单")
-@ControllerBind(controllerKey = "/credit/ordermanager")
+@ControllerBind(controllerKey = "/admin/ordermanager")
 public class OrdermanagerController extends BaseProjectController{
-	private static final String path = "/pages/credit/ordermanager/order_";
+	private static final String path = "/pages/admin/ordermanager/order_";
 
 	/**
 	 * 
@@ -29,7 +29,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/ordermanager",httpMethod="post", 
+	@ApiOperation(url = "/admin/ordermanager",httpMethod="post", 
 			description = "获取订单列表")
 	@Params(value = { 
 		@Param(name = "CreditOrderInfo", description = "订单信息", required = true, dataType = "Model"),
@@ -45,7 +45,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/ordermanager/list",httpMethod="post", 
+	@ApiOperation(url = "/admin/ordermanager/list",httpMethod="post", 
 			description = "获取订单列表")
 	@Params(value = { 
 		@Param(name = "CreditOrderInfo", description = "订单信息", required = true, dataType = "Model"),
@@ -68,7 +68,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/ordermanager/delete",httpMethod="post", 
+	@ApiOperation(url = "/admin/ordermanager/delete",httpMethod="post", 
 			description = "删除订单")
 	@Params(value = { 
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
@@ -89,7 +89,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/ordermanager/edit",httpMethod="get", 
+	@ApiOperation(url = "/admin/ordermanager/edit",httpMethod="get", 
 			description = "定位修改订单页面")
 	@Params(value = { 
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
@@ -132,7 +132,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/ordermanager/save",httpMethod="post", 
+	@ApiOperation(url = "/admin/ordermanager/save",httpMethod="post", 
 			description = "修改订单")
 	@Params(value = { 
 		@Param(name = "CreditOrderInfo", description = "订单", required = false, dataType = "Model"),
@@ -159,7 +159,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/ordermanager/view",httpMethod="post", 
+	@ApiOperation(url = "/admin/ordermanager/view",httpMethod="post", 
 			description = "修改订单")
 	@Params(value = { 
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),

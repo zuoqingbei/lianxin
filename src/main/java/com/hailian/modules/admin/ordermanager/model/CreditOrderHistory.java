@@ -1,4 +1,4 @@
-package com.hailian.modules.credit.ordermanager.model;
+package com.hailian.modules.admin.ordermanager.model;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ModelBind;

@@ -12,7 +12,7 @@ include("/pages/template/head.html"){}
                  return false;
              }
             id = id || '0';
-            var url = 'credit/ordermanager/save?id='+id;
+            var url = 'admin/ordermanager/save?id='+id;
             form1.action = url;
             form1.submit();
             return true;
@@ -20,7 +20,7 @@ include("/pages/template/head.html"){}
     sandbarChange:function(){
     	 var grade = document.getElementById("sandbar");
     	 var value=$("#sandbar").find("option:selected").attr("m-type");
-    	 var url='credit/country/getCountrySelect?attr.continent='+value;
+    	 var url='admin/country/getCountrySelect?attr.continent='+value;
     	 var html="";
     	 $.ajax({
     	        url:url,
@@ -54,7 +54,7 @@ include("/pages/template/head.html"){}
         	var value=$("#country").find("option:selected").attr("m-type");
         	 var html="";
         	 $.ajax({
-     	        url:'credit/ordermanager/getSpeed?countrytype='+value,
+     	        url:'admin/ordermanager/getSpeed?countrytype='+value,
      	        type:"get",
      	        dataType:"json",
      	        success: function(data) {
@@ -79,8 +79,15 @@ include("/pages/template/head.html"){}
         	var value=$("#speed").find("option:selected").attr("m-type");
         	$("#usetime").val(value)
         },
+      /*   textarea:function(){
+        	console.log("111")
+        	$("#remark").val("${model.remarks}");
+        	console.log("222")
+        }, */
+
     };
-//    oper.sandbarChange();
+//  oper.sandbarChange();
+//	oper.textarea();
 
 </script>
 
@@ -258,7 +265,7 @@ var bodyContent = {
 		<tr>
 			<td>其他细节</td>
 			<td>
-				<textarea class="form-control" type="text" name="attr.remarks" value="${model.remarks}"  autofocus>
+				<textarea class="form-control" type="text" name="attr.remarks"  id="remark" autofocus>${model.remarks}
 				</textarea>
 			</td>
 		</tr>

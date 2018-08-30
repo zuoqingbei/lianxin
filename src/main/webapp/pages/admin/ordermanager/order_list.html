@@ -12,27 +12,27 @@ include("/pages/template/head.html"){}
             height : 500,
             form : document.form1,
             list : function() {
-                var url = 'credit/ordermanager/list';
+                var url = 'admin/ordermanager/list';
                 this.form.action = url;
                 this.form.submit();
             },
             view : function(id) {
-                var url = 'credit/ordermanager/view/?id='+id;
+                var url = 'admin/ordermanager/view/?id='+id;
                 var title = '查看订单';
                 Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
             },
             add : function() {
-                var url = 'credit/ordermanager/add';
+                var url = 'admin/ordermanager/add';
                 var title = '添加订单';
                 Iframe(url, this.width, this.height, title);
             },
             edit : function(id) {
-                var url = 'credit/ordermanager/edit/?id='+id;
+                var url = 'admin/ordermanager/edit/?id='+id;
                 var title = '修改订单';
                 Iframe(url, this.width, this.height, title);
             },
             del : function(id) {
-                var url = 'credit/ordermanager/delete/?id='+id;
+                var url = 'admin/ordermanager/delete/?id='+id;
                 var title = '确认要删除该订单？';
                 Confirm(title, function() {
                     form1.action = url;
