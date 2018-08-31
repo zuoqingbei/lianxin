@@ -10,16 +10,8 @@ var headContent = {
 			if(!validForm()) {
 				return false;
 			}
-			
-			// 设置相册名称
-			$('[name="model.album_name"]').val($('[name="model.album_id"] option:selected').text())
-			
-			// 标签设置
-			var tags = $('.tags_content').text().replace(/，/g, ",");
-			$('[name="tags"]').val(tags);
-		
 			id = id || '0';
-			var url = 'admin/image/save/'+id;
+			var url = 'credit/file/uploadFile/'+id;
 			form1.action = url;
 			form1.submit();
 			return true;
@@ -65,68 +57,29 @@ var bodyContent = {
 <form name="form1" action="" method="post" class="form-horizontal"
 		enctype="multipart/form-data" role="form" >
 	<input type="hidden" name="model.id" value="${model.id}" />
-	<input class="form-control" type="hidden" name="model.album_name" value="${model.album_name }"  />
+	<!-- <input class="form-control" type="hidden" name="model.album_name" value="${model.album_name }"  /> -->
 	<table class="table">
 		<%  // 列表头部%>
 				<tr>
-					<td>相册</td>
-					<td>
-						<select name="model.album_id" class="form-control"  valid="vselect" validname="相册">
-						<option value="-1">--请选择--</option>
-						${selectAlbum }
-						</select>
-					</td>
-					<td>图片名称</td>
-					<td>
-					<input class="form-control" type="text" name="model.name" value="${model.name }"  valid="vtext" validname="图片名称" />
-					</td>
-				</tr>
-				<tr>
-					<td>图片
-						<% if(!strutil.isEmpty(model.image_url)||!strutil.isEmpty(model.image_net_url)){ %>
-							<a href="${flyfox.getImage(model)}" target="_blank" style="text-decoration:none;">
-								<img alt="图片" title="点击浏览" src="${flyfox.getImage(model)}" width="40" height="40">
-							</a>
-						<% } %></td>
+					<td>文件</td>
 					<td colspan="3">
-						<input type="text" class="form-control" name="model.image_net_url" 
-							value="${model.image_net_url}" placeholder="网络图片url" />
-						<input type="file" accept="image/*" class="form-control" name="model.image_url" />
+						<input type="file" accept="*" class="form-control" name="file_url" />
 					</td>
 				</tr>
 				<tr>
-					<td>排序</td>
+					<td>业务编码</td>
 					<td>
-					<input class="form-control" type="text" name="model.sort" value="${model.sort!'10' }"  valid='vnum' validname='排序'  />
+					<input class="form-control" type="text" name="model.business_id" value="${model.business_id}" />
 					</td>
-					<td>状态</td>
+					<td>业务类型</td>
 					<td>
-						<label class="radio-inline">
-						  <input type="radio" name="model.status" id="" value="1"  ${model.status!=2?"checked":"" } > 显示
-						</label>
-						<label class="radio-inline">
-						  <input type="radio" name="model.status" id="" value="2"  ${model.status==2?"checked":"" } > 隐藏
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<td>是否评论</td>
-					<td>
-						<label class="radio-inline">
-						  <input type="radio" name="model.is_comment" id="" value="1"  ${model.is_comment!=2?"checked":"" } > 是
-						</label>
-						<label class="radio-inline">
-						  <input type="radio" name="model.is_comment" id="" value="2"  ${model.is_comment==1?"checked":"" } > 否
-						</label>
-					</td>
-					<td>是否推荐</td>
-					<td>
-						<label class="radio-inline">
-						  <input type="radio" name="model.is_recommend" id="" value="1"  ${model.is_recommend==1?"checked":"" } > 是
-						</label>
-						<label class="radio-inline">
-						  <input type="radio" name="model.is_recommend" id="" value="2"  ${model.is_recommend!=1?"checked":"" } > 否
-						</label>
+						<div class="form-group">
+						<select name="model.business_type" class="form-control" >
+						<option value="-1">--选择业务类型--</option>
+						<option value="0" ${"model.business_type"==0?'selected':''}>订单附件</option>
+						<option value="1" ${"model.business_type"==1?'selected':''}>其他</option>
+						</select>
+						</div>
 					</td>
 				</tr>
 				<tr>
@@ -138,27 +91,19 @@ var bodyContent = {
 					<td>发布者</td>
 					<td>
 						<% if(model.id!0 > 0) { %>
-							<input class="form-control" type="text" name="model.publish_user" value="${model.publish_user}"  />
+							<input class="form-control" type="text" name="model.update_by" value="${model.update_by}"  />
 						<% } else { %>
-							<input class="form-control" type="text" name="model.publish_user" value="${session.session_user.realname!session.session_user.username }"  />
+							<input class="form-control" type="text" name="model.create_by" value="${session.session_user.realname!session.session_user.username }"  />
 						<% } %>
 					</td>
 				</tr>
 				<tr>
 					<td>备注</td>
 					<td colspan="3">
-					<textarea class="form-control" rows="2" cols="20" name="model.remark">${model.remark }</textarea>
+					<textarea class="form-control" rows="2" cols="20" name="model.remarks">${model.remarks}</textarea>
 					</td>
 				</tr>
 	</table>
-					
-	<div class="tags">
-		<input name="tags" type="hidden" value="${tags!''}" />
-		<div class="tags_label">标签</div>
-		<div contentEditable="true" class="tags_content">${tags!''}</div>
-		<div class="tags_remark">请使用逗号分隔不同标签，最多5个哦</div>
-	</div>
-				
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">

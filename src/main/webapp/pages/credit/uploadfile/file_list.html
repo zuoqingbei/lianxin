@@ -23,13 +23,13 @@
 				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 			},
 			add : function() {
-				var url = 'admin/image/add?model.album_id='+$('#album_id').val();
-				var title = '添加图片';
+				var url = 'credit/file/add';
+				var title = '上传文件';
 				Iframe(url, this.width, this.height, title);
 			},
 			edit : function(id) {
-				var url = 'admin/image/edit/'+id;
-				var title = '修改图片';
+				var url = 'credit/file/edit/'+id;
+				var title = '重新上传';
 				Iframe(url, this.width, this.height, title);
 			},
 			del : function(id) {
@@ -65,22 +65,22 @@ var bodyContent = {
 		<div class="tableSearch">
 			<%  //查询列表 %>
 			<div class="form-group">
-					<input class="form-control" type="text" name="attr.name" value="${attr.name!''}" 
+					<input class="form-control" type="text" name="attr.originalname" value="${attr.originalname!''}" 
 						placeholder="请输入名称" required='required' />
 			</div>
 			<div class="form-group">
 					<select name="attr.business_type" class="form-control" >
 					<option value="-1">--选择业务类型--</option>
-					<option value="1" ${attr.status==1?'selected':''}>订单附件</option>
-					<option value="2" ${attr.status==2?'selected':''}>其他</option>
+					<option value="0" ${"attr.business_type"==0?'selected':''}>订单附件</option>
+					<option value="1" ${"attr.business_type"==1?'selected':''}>其他</option>
 					</select>
 			</div>
 			<div class="form-group">
 					<select name="attr.ext" class="form-control" >
-					<option value="-1">--选择文件类型--</option>
-					<option value="1" }>doc文档</option>
-					<option value="2" }>excel表格</option>
-					<option value="3" }>pdf文档</option>
+					<option value="">--选择文件类型--</option>
+					<option value="1" >doc文档</option>
+					<option value="2" >excel表格</option>
+					<option value="3" >pdf文档</option>
 					</select>
 			</div>
 			
@@ -140,7 +140,7 @@ var bodyContent = {
 					<td>${item.update_date}</td> 
 				<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
-				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">重新上传</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
 				</td>
 				</tr>

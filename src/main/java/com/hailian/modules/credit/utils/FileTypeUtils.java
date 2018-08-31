@@ -9,12 +9,12 @@ public class FileTypeUtils {
 	public static boolean checkType(String ext){
 		boolean flag=false;
 		for (int i = 0; i < img.length; i++) {
-			if (img[i].equals(ext)) {
+			if (img[i].equalsIgnoreCase(ext)) {
 				flag=true;
 			}
 		}
 		for (int i = 0; i < document.length; i++) {
-			if (document[i].equals(ext)) {
+			if (document[i].equalsIgnoreCase(ext)) {
 				flag=true;
 			}
 		}

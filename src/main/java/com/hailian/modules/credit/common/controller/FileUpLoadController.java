@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
@@ -23,6 +24,7 @@ import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.image.model.TbImage;
+import com.hailian.modules.admin.image.service.ImageAlbumService;
 import com.hailian.modules.admin.site.TbSite;
 import com.hailian.modules.credit.order.model.TbOrder;
 import com.hailian.modules.credit.order.service.OrderService;
@@ -53,6 +55,7 @@ public class FileUpLoadController extends BaseProjectController {
 	public static final String userName = Config.getStr("FTP_userName");//域用户名
 	public static final String password = Config.getStr("FTP_password");//域用户密码
 	public void uploadFile(){
+		Integer pid = getParaToInt();
 		String business_type = getPara("business_type");
 		String business_id = getPara("business_id");
 		String markFile="";
@@ -73,7 +76,7 @@ public class FileUpLoadController extends BaseProjectController {
 			} else {
 				ext = "";
 			}
-			System.out.println(maxPostSize+"=====maxPostSize=====");
+			System.out.println(FileTypeUtils.checkType(ext)+"=====maxPostSize====="+ext);
 			if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
 				String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 				String now=DateUtils.getNow(DateUtils.YMDHMS);
@@ -83,8 +86,7 @@ public class FileUpLoadController extends BaseProjectController {
 				if(storeFile){
 					String factpath=storePath+"/"+FTPfileName;
 					String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
-//					Integer userid = getSessionUser().getUserid();
-					Integer userid = 7777;
+					Integer userid = getSessionUser().getUserid();
 					UploadFileService.service.save(uploadFile, factpath,url,business_type,business_id,fileName,userid);//记录上传信息
 				}else{
 					failnumber+=1;
@@ -107,6 +109,7 @@ public class FileUpLoadController extends BaseProjectController {
 			List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id, business_type,this);
 			map.put("fileList", fileList);
 			renderJson(map);
+			renderMessage(markFile);
 		}
 	}
 	public void uploadMultipleFile(){
@@ -202,17 +205,16 @@ public class FileUpLoadController extends BaseProjectController {
 		CreditUploadFileModel attr = getModelByAttr(CreditUploadFileModel.class);
 		StringBuffer sql = new StringBuffer(" from credit_upload_file where del_flag=0");
 		String type = attr.getStr("ext");//检索条件-文件类型
-//		String business_type = attr.getStr("business_type");//检索条件-报告类型
-		int business_type = attr.getInt("business_type");//检索条件-报告类型
+		Integer business_type = attr.getInt("business_type");//检索条件-报告类型
 		String originalname = attr.getStr("originalname");//检索条件-上传文件名
 		if (StrUtils.isNotEmpty(type)) {
 			sql.append(" and ext = '").append(type).append("'");
 		}
-		if (StrUtils.isNotEmpty(business_type+"")) {
-			sql.append(" and business_type = '").append(business_type).append("'");
+		if (business_type !=null && business_type>=0) {
+			sql.append(" and business_type = ").append(business_type);
 		}
 		if (StrUtils.isNotEmpty(originalname)) {
-			sql.append("and originalname = '").append(originalname).append("'");
+			sql.append(" and originalname = '").append(originalname).append("'");
 		}
 		Page<CreditUploadFileModel> page = CreditUploadFileModel.dao
 				.paginate(getPaginator(), "select *  ", sql.toString());
@@ -228,5 +230,19 @@ public class FileUpLoadController extends BaseProjectController {
 		setAttr("model", model);
 		render(path + "view.html");
 	}
+	public void add() {
+		// 获取页面信息,设置目录传入
+		CreditUploadFileModel attr = getModel(CreditUploadFileModel.class);
+		setAttr("model", attr);
+		// 查询下拉框
+		render(path + "add.html");
+	}
+	public void edit() {
+		TbImage model = TbImage.dao.findById(getParaToInt());
+		setAttr("model", model);
+		// 查询下拉框
+		render(path + "edit.html");
+	}
+	
 
 }
