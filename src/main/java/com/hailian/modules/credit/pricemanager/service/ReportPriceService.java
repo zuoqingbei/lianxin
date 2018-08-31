@@ -74,6 +74,7 @@ public class ReportPriceService {
 
 	public List<CreditReportType> getReportType() {
 		List<CreditReportType> list=CreditReportType.dao.getReportType();
+		
 		return list;
 	}
 
