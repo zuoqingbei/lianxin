@@ -15,7 +15,7 @@ public class CreditReportType extends BaseProjectModel<CreditReportType>{
 	public static final CreditReportType dao= new CreditReportType();
 	
 	public List<CreditReportType> getReportType() {
-		List<CreditReportType> list=dao.find("select t.id,t.name from credit_report_type t where"
+		List<CreditReportType> list=dao.find("select t.* from credit_report_type t where"
 				+ " t.del_flag='0' ");
 		return list;
 	}

@@ -1,4 +1,4 @@
-package com.hailian.modules.credit.order.model;
+package com.hailian.modules.credit.pricemanager.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,4 +72,5 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 		}
 		return false;
 	}
+
 }

@@ -17,10 +17,14 @@ include("/pages/template/head.html"){}
             form1.submit();
             return true;
         },
+        customChange:function(){
+        	var value=$("#customid").find("option:selected").attr("m-type");
+        	$("input[name='attr.create_by']").val(value);
+        },
     sandbarChange:function(){
     	 var grade = document.getElementById("sandbar");
     	 var value=$("#sandbar").find("option:selected").attr("m-type");
-    	 var url='admin/country/getCountrySelect?attr.continent='+value;
+    	 var url='credit/country/getCountrySelect?attr.continent='+value;
     	 var html="";
     	 $.ajax({
     	        url:url,
@@ -38,9 +42,8 @@ include("/pages/template/head.html"){}
     	        	 //option.val()
     	           });
     	           $("select[name='attr.country']").html(html);
-    	       /*     for(item in data){
-    	        	   console.log(data[item].name)
-    	           } */
+					oper.speedChange();
+    	           
     	        },
     	        error: function(XMLHttpRequest, textStatus, errorThrown) {
     	            alert(XMLHttpRequest.status);
@@ -61,9 +64,8 @@ include("/pages/template/head.html"){}
      	          for(index in data){
      	        	  html+="<option  m-type='"+data[index].detail_content+"' value='"+data[index].detail_id+"'>"+data[index].detail_name+"</option>"
      	          }
-     	         $("select[name='attr.speed']").html(html);
-     	        var value2=$("#speed").find("option:selected").attr("m-type");
-     	       $("#usetime").val(value2)
+     	         $("select[name='attr.speed']").html(html)
+     	       oper.usetimeChange();
      	         
      	        },
      	        error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -103,22 +105,33 @@ var bodyContent = {
 		<tr>
 			<td>客户id</td>
 			<td>
-				<input class="form-control" type="text" name="attr.custom_id"
-					   value="${model.custom_id}" valid="vtext" validname="客户id" />
+				<select id="customid" name="attr.continent" valid="vselect" class="form-control" validname="客户id" onchange="oper.customChange()">
+					
+					 <% for(item in customs){ %>
+							 	<% if(model==null){ %>
+							 	<option value="" selected="selected"></option>
+							 	<% } %>
+							 	<%if(model.custom_id==item.id){%>
+							 	 <option m-type="${item.name}" value="${item.id}" selected="selected">${item.id}</option>
+							 	<% }else{ %>
+							 		<option m-type="${item.name}"  value="${item.id}" >${item.id}</option>
+							  <% }} %>
+				</select>
 			</td>
 		</tr>
 		<tr>
 			<td>客户用户名</td>
 			<td>
 				<input class="form-control" type="text" name="attr.create_by"
-					   value="${model.create_by}" valid="vtext" validname="客户用户名" readonly="readonly"/>
+					   value="${model.create_by}" valid="vtext" validname="客户用户名" readonly="readonly"/>			
 			</td>
 		</tr>
 		<tr>
 			<td>接单日期</td>
 			<td>
-				<input class="form-control" type="text" name="attr.receiver_date"
-					   value="${model.receiver_date}" valid="vtext" validname="接单日期" />
+				<input type="text" name="attr.receiver_date" class="form-control" 
+					value="${model.receiver_date}" valid="vtext" validname="接单日期" 
+					 placeholder="接单日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
 			</td>
 		</tr>
 		<tr>
@@ -223,49 +236,54 @@ var bodyContent = {
 		<tr>
 			<td>报告用时</td>
 			<td>
+				<% if(model!=null){ %>
 				<input id="usetime" name="attr.user_time" class="form-control" valid="vtext" validname="报告用时" value="${model.user_time}" readonly="readonly">
+					<%}else{%>
+					<input id="usetime" name="attr.user_time" class="form-control" valid="vtext" validname="报告用时" value="5" readonly="readonly">
+					<%}%>
+				
 			</td>
 		</tr>
 		<tr>
 			<td>客户参考号</td>
 			<td>
-				<input class="form-control" type="text" name="attr.reference_num" value="${model.reference_num}"  />
+				<input class="form-control" type="text" name="attr.reference_num" value="${model.reference_num!''}"  />
 			</td>
 		</tr>
 		<tr>
 			<td>地址</td>
 			<td>
-				<input class="form-control" type="text" name="attr.address" value="${model.address}"  />
+				<input class="form-control" type="text" name="attr.address" value="${model.address!''}"  />
 			</td>
 		</tr>
 		<tr>
 			<td>电话</td>
 			<td>
-				<input class="form-control" type="text" name="attr.telphone" value="${model.telphone}"  />
+				<input class="form-control" type="text" name="attr.telphone" value="${model.telphone!''}"  />
 			</td>
 		</tr>
 		<tr>
 			<td>传真</td>
 			<td>
-				<input class="form-control" type="text" name="attr.fax" value="${model.fax}"  />
+				<input class="form-control" type="text" name="attr.fax" value="${model.fax!''}"  />
 			</td>
 		</tr>
 		<tr>
 			<td>联系人</td>
 			<td>
-				<input class="form-control" type="text" name="attr.contacts" value="${model.contacts}"  />
+				<input class="form-control" type="text" name="attr.contacts" value="${model.contacts!''}"  />
 			</td>
 		</tr>
 		<tr>
 			<td>Email</td>
 			<td>
-				<input class="form-control" type="text" name="attr.email" value="${model.email}"  />
+				<input class="form-control" type="text" name="attr.email" value="${model.email!''}"  />
 			</td>
 		</tr>
 		<tr>
 			<td>其他细节</td>
 			<td>
-				<textarea class="form-control" type="text" name="attr.remarks"  id="remark" autofocus>${model.remarks}
+				<textarea class="form-control" type="text" name="attr.remarks"  id="remark" autofocus>${model.remarks!""}
 				</textarea>
 			</td>
 		</tr>

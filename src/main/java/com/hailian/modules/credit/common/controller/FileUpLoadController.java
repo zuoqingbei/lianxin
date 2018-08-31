@@ -205,7 +205,9 @@ public class FileUpLoadController extends BaseProjectController {
 		CreditUploadFileModel attr = getModelByAttr(CreditUploadFileModel.class);
 		StringBuffer sql = new StringBuffer(" from credit_upload_file where del_flag=0");
 		String type = attr.getStr("ext");//检索条件-文件类型
+//		String business_type = attr.getStr("business_type");//检索条件-报告类型
 		Integer business_type = attr.getInt("business_type");//检索条件-报告类型
+//		String business_type="";
 		String originalname = attr.getStr("originalname");//检索条件-上传文件名
 		if (StrUtils.isNotEmpty(type)) {
 			sql.append(" and ext = '").append(type).append("'");
@@ -238,7 +240,7 @@ public class FileUpLoadController extends BaseProjectController {
 		render(path + "add.html");
 	}
 	public void edit() {
-		TbImage model = TbImage.dao.findById(getParaToInt());
+		CreditUploadFileModel model = CreditUploadFileModel.dao.findById(getParaToInt());
 		setAttr("model", model);
 		// 查询下拉框
 		render(path + "edit.html");

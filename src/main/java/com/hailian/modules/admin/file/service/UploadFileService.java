@@ -6,8 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.credit.order.model.TbOrder;
-import com.hailian.modules.credit.utils.GenerationSequenceUtil;
 import com.hailian.util.DateUtils;
 import com.jfinal.upload.UploadFile;
 
