@@ -31,7 +31,6 @@ public class ImageController extends BaseProjectController {
 
 	public void list() {
 		TbImage model = getModelByAttr(TbImage.class);
-
 		SQLUtils sql = new SQLUtils(" from tb_image t where 1=1 ");
 		if (model.getAttrValues().length != 0) {
 			sql.setAlias("t");
@@ -53,7 +52,6 @@ public class ImageController extends BaseProjectController {
 
 		// 下拉框
 		setAttr("selectAlbum", new ImageAlbumService().selectAlbum(model.getAlbumId()));
-
 		setAttr("page", page);
 		setAttr("attr", model);
 		render(path + "list.html");
