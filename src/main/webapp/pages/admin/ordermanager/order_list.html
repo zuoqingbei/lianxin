@@ -95,7 +95,7 @@ var bodyContent = {
 			<th name="custom_id" class="sorting">客户代码</th>
 			<th name="status" class="sorting">处理状态</th>
 			<th name="country" class="sorting">国家</th>
-			<th name="userName" class="sorting">报告员</th>
+			<th name="userName" class="sorting">创建者</th>
 			<th>操作</th>
 		</tr>
 		</thead>
@@ -109,7 +109,7 @@ var bodyContent = {
 			<td>${item.custom_id}</td>
 			<td>${item.status}</td>
 			<td>${item.countryName}</td>
-			<td>${item.userName}</td>
+			<td>${item.createName}</td>
 
 			<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a>
