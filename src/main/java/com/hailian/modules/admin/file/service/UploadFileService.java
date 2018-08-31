@@ -17,8 +17,6 @@ public class UploadFileService {
 		boolean flag=false;
 		CreditUploadFileModel model=new CreditUploadFileModel();//记录上传记录信息
 		String now = DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
-		String uuid=GenerationSequenceUtil.getUUID();
-		model.set("id", uuid);//生成随机数字作为表主键
 		model.set("name", fileName);
 		model.set("factpath", factpath);
 		model.set("url", url);

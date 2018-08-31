@@ -19,8 +19,10 @@ import org.apache.commons.net.ftp.FTPReply;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
+import com.hailian.modules.admin.image.model.TbImage;
 import com.hailian.modules.admin.site.TbSite;
 import com.hailian.modules.credit.order.model.TbOrder;
 import com.hailian.modules.credit.order.service.OrderService;
@@ -32,6 +34,7 @@ import com.hailian.util.DateUtils;
 import com.hailian.util.FTP_UploadFileUtils;
 import com.hailian.util.StrUtils;
 import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
@@ -70,6 +73,7 @@ public class FileUpLoadController extends BaseProjectController {
 			} else {
 				ext = "";
 			}
+			System.out.println(maxPostSize+"=====maxPostSize=====");
 			if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
 				String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 				String now=DateUtils.getNow(DateUtils.YMDHMS);
@@ -79,7 +83,8 @@ public class FileUpLoadController extends BaseProjectController {
 				if(storeFile){
 					String factpath=storePath+"/"+FTPfileName;
 					String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
-					Integer userid = getSessionUser().getUserid();
+//					Integer userid = getSessionUser().getUserid();
+					Integer userid = 7777;
 					UploadFileService.service.save(uploadFile, factpath,url,business_type,business_id,fileName,userid);//记录上传信息
 				}else{
 					failnumber+=1;
@@ -189,19 +194,21 @@ public class FileUpLoadController extends BaseProjectController {
 			e.printStackTrace();
 		}
 	}
+	
 	public void index() {
 		list();
 	}
 	public void list() {
 		CreditUploadFileModel attr = getModelByAttr(CreditUploadFileModel.class);
 		StringBuffer sql = new StringBuffer(" from credit_upload_file where del_flag=0");
-		String type = attr.getStr("type");//检索条件-文件类型
-		String business_type = attr.getStr("business_type");//检索条件-报告类型
+		String type = attr.getStr("ext");//检索条件-文件类型
+//		String business_type = attr.getStr("business_type");//检索条件-报告类型
+		int business_type = attr.getInt("business_type");//检索条件-报告类型
 		String originalname = attr.getStr("originalname");//检索条件-上传文件名
 		if (StrUtils.isNotEmpty(type)) {
-			sql.append(" and type = '").append(type).append("'");
+			sql.append(" and ext = '").append(type).append("'");
 		}
-		if (StrUtils.isNotEmpty(business_type)) {
+		if (StrUtils.isNotEmpty(business_type+"")) {
 			sql.append(" and business_type = '").append(business_type).append("'");
 		}
 		if (StrUtils.isNotEmpty(originalname)) {
@@ -211,10 +218,15 @@ public class FileUpLoadController extends BaseProjectController {
 				.paginate(getPaginator(), "select *  ", sql.toString());
 		
 		// 下拉框
-//		setAttr("optionList", svc.selectDictType(attr.getStr("dict_type")));
+//		setAttr("selectAlbum", svc.selectDictType(attr.getStr("dict_type")));
 		setAttr("attr", attr);
 		setAttr("page", page);
 		render(path + "list.html");
+	}
+	public void view() {
+		CreditUploadFileModel model = CreditUploadFileModel.dao.findById(getParaToInt());
+		setAttr("model", model);
+		render(path + "view.html");
 	}
 
 }
