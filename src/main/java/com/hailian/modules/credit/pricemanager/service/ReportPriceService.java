@@ -81,6 +81,7 @@ public class ReportPriceService {
 		StringBuffer sql = new StringBuffer(" from credit_report_price t where t.del_flag=0");
 		if (StrUtils.isNotEmpty(type)) {
 			sql.append(" AND t.report_type = '").append(type).append("'");
+
 		}
 		
 		return ReportPrice.dao.paginate(paginator, "select t.* ", sql.toString());
