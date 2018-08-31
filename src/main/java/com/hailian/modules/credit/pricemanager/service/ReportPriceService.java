@@ -1,4 +1,4 @@
-package com.hailian.modules.credit.order.service;
+package com.hailian.modules.credit.pricemanager.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
-import com.hailian.modules.credit.order.model.ReportPrice;
+import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.credit.order.model.TbOrder;
+import com.hailian.modules.credit.pricemanager.model.ReportPrice;
+import com.hailian.system.dict.SysDictDetail;
+import com.hailian.util.StrUtils;
 import com.hailian.util.extend.UuidUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -49,12 +52,11 @@ public class ReportPriceService {
 	 * 
 	 * @time   2018年8月24日 下午4:14:43
 	 * @author dyc
-	 * @return 
-	 * @todo   TODO
+	 * @todo   向报告价格表新增信息
 	 * @return_type   void
 	 */
 	public ReportPrice add(ReportPrice reportprice) {
-		reportprice.set("id", 42);
+		reportprice.set("price", 200);
 		reportprice.save();
 		return reportprice;
 	}
@@ -68,6 +70,20 @@ public class ReportPriceService {
 	 */
 	public boolean updateDelFlagById(String id) {
 		 return ReportPrice.dao.updateDelFlagById(id);
+	}
+
+	public List<CreditReportType> getReportType() {
+		List<CreditReportType> list=CreditReportType.dao.getReportType();
+		return list;
+	}
+
+	public Page<ReportPrice> getPage(Paginator paginator, String type, BaseProjectController c) {
+		StringBuffer sql = new StringBuffer(" from credit_report_price t where t.del_flag=0");
+		if (StrUtils.isNotEmpty(type)) {
+			sql.append(" AND t.report_type = '").append(type).append("'");
+		}
+		
+		return ReportPrice.dao.paginate(paginator, "select t.* ", sql.toString());
 	}
 
 }

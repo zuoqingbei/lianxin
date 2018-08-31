@@ -117,8 +117,7 @@ public class PersonController extends BaseProjectController {
 		}
 
 		// 第三方用户不需要密码
-		//String password = RandomStrUtils.randomAlphabetic(6);
-		String password ="123456";
+		String password = RandomStrUtils.randomAlphabetic(6);
 		model.set("password", JFlyFoxUtils.passwordEncrypt(password));
 		// 日志添加
 		model.put("update_id", getSessionUser().getUserid());

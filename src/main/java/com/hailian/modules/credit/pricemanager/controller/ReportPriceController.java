@@ -1,4 +1,6 @@
-package com.hailian.modules.credit.order.controller;
+package com.hailian.modules.credit.pricemanager.controller;
+
+import java.util.List;
 
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
@@ -6,8 +8,10 @@ import com.feizhou.swagger.annotation.Param;
 import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.credit.order.model.ReportPrice;
-import com.hailian.modules.credit.order.service.ReportPriceService;
+import com.hailian.modules.admin.ordermanager.model.CreditReportType;
+import com.hailian.modules.credit.pricemanager.model.ReportPrice;
+import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
+import com.hailian.system.dict.SysDictDetail;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -16,39 +20,51 @@ import com.jfinal.plugin.activerecord.Page;
 * @todo
 */
 @Api(tag = "报告价格", description = "报告价格下拉框")
-@ControllerBind(controllerKey = "/credit/price")
+@ControllerBind(controllerKey = "/credit/pricemanager")
 public class ReportPriceController extends BaseProjectController {
-
+	private static final String path = "/pages/credit/pricemanager/price_";
+	
+	public void index() {
+		list();
+	}
 	/**
 	 * 
 	 * @time   2018年8月23日 下午5:39:02
 	 * @author dyc
-	 * @todo   根据id查询报告价格信息
+	 * @todo   分页查询报告价格信息
 	 * @return_type   void
 	 */
-
-	public void list() {
-		int pageNumber = getParaToInt("pageNumber", 1);
-		int pageSize = getParaToInt("pageSize", 8);
-		Page<ReportPrice> page = ReportPriceService.service
-				.pagePrice(pageNumber, pageSize, getPara("reporttype"), this);
-		setAttr("pager", page);
-		keepPara();
-		render("/pages/system/dict/dict_list.html");
-	}
-
 	@Params(value = { @Param(name = "pageNumber", description = "页码", required = false, dataType = "String"),
 			@Param(name = "pageSize", description = "每页条数", required = false, dataType = "String"),
 			@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String") })
-	@ApiOperation(url = "/credit/price/listjson", httpMethod = "get", description = "获取报告价格列表")
-	public void listjson() {
+		@ApiOperation(url = "/credit/pricemanager/list", httpMethod = "get", description = "获取报告价格列表")
+	public void list() {
 		int pageNumber = getParaToInt("pageNumber", 1);
 		int pageSize = getParaToInt("pageSize", 5);
 		Page<ReportPrice> page = ReportPriceService.service
 				.pagePrice(pageNumber, pageSize, getPara("reporttype"), this);
-		renderJson(page);
-
+		ReportPrice attr = getModelByAttr(ReportPrice.class);
+		String type = attr.getStr("reporttype");
+		Page<ReportPrice> pager = ReportPriceService.service
+				.getPage(getPaginator(), type, this);
+		List<CreditReportType> reportType=ReportPriceService.service.getReportType();
+		setAttr("pager",pager);
+		setAttr("reporttype",reportType);
+		render(path+"list.html");
 	}
+
+//	@Params(value = { @Param(name = "pageNumber", description = "页码", required = false, dataType = "String"),
+//		@Param(name = "pageSize", description = "每页条数", required = false, dataType = "String"),
+//		@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String") })
+//	@ApiOperation(url = "/credit/pricemanager/listjson", httpMethod = "get", description = "获取报告价格列表")
+//	public void listjson() {
+//	int pageNumber = getParaToInt("pageNumber", 1);
+//	int pageSize = getParaToInt("pageSize", 5);
+//	Page<ReportPrice> page = ReportPriceService.service
+//		.pagePrice(pageNumber, pageSize, getPara("reporttype"), this);
+//	renderJson(page);
+//
+//	}
 
 	/**
 	 * 
@@ -71,7 +87,7 @@ public class ReportPriceController extends BaseProjectController {
 	 * @todo   向报告价格表里新增信息
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/price/addReport", httpMethod = "get", description = "报告价格表新增信息")
+	@ApiOperation(url = "/credit/pricemanager/addReport", httpMethod = "get", description = "报告价格表新增信息")
 	public void addReport() {
 		ReportPrice model = getModelByAttr(ReportPrice.class);
 		ReportPriceService.service.add(model);
@@ -85,7 +101,10 @@ public class ReportPriceController extends BaseProjectController {
 	 * @todo   根据id删除报告价格表信息
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/price/deleteReport", httpMethod = "get", description = "删除报告价格表里的信息")
+	@ApiOperation(url = "/credit/pricemanager/deleteReport", httpMethod = "get", description = "删除报告价格表里的信息")
+	@Params(value = {
+			@Param(name = "id", description = "id", required = false, dataType = "String"),
+			 })
 	public void deleteReport(){
 		String id=getPara("id");
 		if(ReportPriceService.service.updateDelFlagById(id)){

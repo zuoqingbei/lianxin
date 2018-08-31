@@ -36,7 +36,6 @@ import com.hailian.jfinal.component.handler.HtmlHandler;
 import com.hailian.jfinal.component.interceptor.ExceptionInterceptor;
 import com.hailian.jfinal.component.interceptor.JflyfoxInterceptor;
 import com.hailian.jfinal.component.interceptor.SessionAttrInterceptor;
-import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateImageService;
 import com.hailian.modules.front.template.TemplateService;
 import com.hailian.modules.front.template.TemplateVideoService;
@@ -78,11 +77,10 @@ import com.jfinal.template.Engine;
 public class BaseConfig extends JFinalConfig {
 
 	private static final String CONFIG_WEB_ROOT = "{webroot}";
+
 	public void configConstant(Constants me) {
 		me.setDevMode(isDevMode());
-		me.setViewType(ViewType.JSP);
-		me.setFreeMarkerTemplateUpdateDelay(0);//html页面缓存时间为10分钟
-		//me.setViewType(ViewType.JSP); // 设置视图类型为Jsp，否则默认为FreeMarker
+		me.setViewType(ViewType.JSP); // 设置视图类型为Jsp，否则默认为FreeMarker
 		me.setLogFactory(new Log4jLogFactory());
 		me.setError401View(Config.getStr("PAGES.401"));
 		me.setError403View(Config.getStr("PAGES.403"));
@@ -95,8 +93,18 @@ public class BaseConfig extends JFinalConfig {
 		me.setI18nDefaultLocale("zh_CN");
 		// 开启日志
 		SqlReporter.setLog(true);
-		me.setMaxPostSize(104857600*5);
-		configDirective(me);
+
+		JFinal3BeetlRenderFactory rf = new JFinal3BeetlRenderFactory();
+		rf.config();
+		me.setRenderFactory(rf);
+
+		// 获取GroupTemplate ,可以设置共享变量等操作
+		GroupTemplate groupTemplate = rf.groupTemplate;
+		groupTemplate.registerFunctionPackage("strutil", BeetlStrUtils.class);
+		groupTemplate.registerFunctionPackage("flyfox", BeeltFunctions.class);
+		groupTemplate.registerFunctionPackage("temp", TemplateService.class);
+		groupTemplate.registerFunctionPackage("tempImage", TemplateImageService.class);
+		groupTemplate.registerFunctionPackage("tempVideo", TemplateVideoService.class);
 
 	};
 
@@ -258,28 +266,7 @@ public class BaseConfig extends JFinalConfig {
 	public void configEngine(Engine engine) {
 
 	}
-	/**
-	 * 
-	 * @todo  定义模板
-	 * @time   2018年8月27日 下午5:44:46
-	 * @author zuoqb
-	 * @params
-	 */
-	private void configDirective(Constants me) {
-		//站点标签------------------
-		//-----------------------核心服务-------------------------
-		// 获取GroupTemplate ,可以设置共享变量等操作
-		JFinal3BeetlRenderFactory rf = new JFinal3BeetlRenderFactory();
-		rf.config();
-		me.setRenderFactory(rf);
-		GroupTemplate groupTemplate = rf.groupTemplate;
-		groupTemplate.registerFunctionPackage("strutil", BeetlStrUtils.class);
-		groupTemplate.registerFunctionPackage("flyfox", BeeltFunctions.class);
-		groupTemplate.registerFunctionPackage("temp", TemplateService.class);
-		groupTemplate.registerFunctionPackage("tempImage", TemplateImageService.class);
-		groupTemplate.registerFunctionPackage("tempVideo", TemplateVideoService.class);
-		groupTemplate.registerFunctionPackage("tempDict", TemplateDictService.class);//字典模板
-	}
+
 	private boolean isDevMode() {
 		return Config.getToBoolean("CONSTANTS.DEV_MODE");
 	}

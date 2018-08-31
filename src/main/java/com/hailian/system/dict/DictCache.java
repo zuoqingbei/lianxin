@@ -102,28 +102,6 @@ public class DictCache {
 		}
 		return sb.toString();
 	}
-	/**
-	 * 
-	 * @todo  根据dict_type获取字典
-	 * @time   2018年8月27日 下午5:06:56
-	 * @author zuoqb
-	 * @params
-	 */
-	public static List<SysDictDetail> getSysDictDetailByType(String type){
-		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
-		Map<Integer, SysDictDetail> map = DictCache.getCacheMap();
-		if (map == null || map.size() <= 0) {
-			return null;
-		}
-		StringBuffer sb = new StringBuffer();
-		for (Integer key : map.keySet()) {
-			SysDictDetail dict = map.get(key);
-			if (dict.getStr("dict_type").equals(type)) {
-				listDetail.add(dict);
-			}
-		}
-		return listDetail;
-	}
 
 	/**
 	 * 获取Value值

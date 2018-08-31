@@ -21,13 +21,11 @@ import com.hailian.jfinal.base.BaseController;
 import com.hailian.jfinal.base.SessionUser;
 import com.hailian.jfinal.component.util.Attr;
 import com.hailian.modules.admin.article.ArticleConstant;
-import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.folder.FolderService;
 import com.hailian.modules.admin.site.SessionSite;
 import com.hailian.modules.admin.site.SiteConstant;
 import com.hailian.modules.admin.site.SiteService;
 import com.hailian.modules.admin.site.TbSite;
-import com.hailian.modules.credit.utils.GenerationSequenceUtil;
 import com.hailian.system.file.model.FileUploadBean;
 import com.hailian.system.file.service.FileUploadService;
 import com.hailian.system.file.util.FileUploadUtils;
@@ -35,7 +33,6 @@ import com.hailian.system.log.SysLog;
 import com.hailian.system.menu.SysMenu;
 import com.hailian.system.user.SysUser;
 import com.hailian.system.user.UserSvc;
-import com.hailian.util.DateUtils;
 import com.hailian.util.NumberUtils;
 import com.hailian.util.StrUtils;
 import com.hailian.util.cache.Cache;
@@ -290,6 +287,7 @@ public abstract class BaseProjectController extends BaseController {
 	public String uploadHandler(TbSite site, File uploadFile, String appendPath) {
 		String fileUrl = "";
 		String projectStorePath = FileUploadUtils.getUploadPath(site, appendPath);
+		System.out.println("projectStorePath=========="+projectStorePath);
 		FileUploadBean uploadBean = new FileUploadService().uploadHandle(projectStorePath, uploadFile, getSessionUser()
 				.getUserid());
 		if (uploadBean != null) {
@@ -297,5 +295,22 @@ public abstract class BaseProjectController extends BaseController {
 		}
 		return FileUploadUtils.rebuild(fileUrl);
 	}
-
+	/**
+	 * 征信项目文件上传
+	* @author doushuihai  
+	* @date 2018年8月23日下午3:25:40  
+	* @TODO
+	 */
+	public String uploadCreditFileHandler(TbSite site, File uploadFile, String appendPath) {
+		String fileUrl = "";
+		String projectStorePath = FileUploadUtils.getUploadPath(site, appendPath);
+		System.out.println("projectStorePath=========="+projectStorePath);
+//		FileUploadBean uploadBean = new FileUploadService().uploadHandle(projectStorePath, uploadFile, getSessionUser()
+//				.getUserid());
+		FileUploadBean uploadBean = new FileUploadService().uploadCreditFileHandle(projectStorePath, uploadFile, 1);
+		if (uploadBean != null) {
+			fileUrl = projectStorePath + File.separator + uploadBean.getName();
+		}
+		return FileUploadUtils.rebuild(fileUrl);
+	}
 }
