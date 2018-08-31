@@ -9,6 +9,7 @@ import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
@@ -16,6 +17,14 @@ import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.jfinal.plugin.activerecord.Page;
+/**
+ * 
+ * @className OrdermanagerController.java
+ * @time   2018年8月31日 下午3:41:17
+ * @author yangdong
+ * @todo   TODO
+ * 订单管理
+ */
 @Api(tag = "订单菜单路由", description = "订单菜单")
 @ControllerBind(controllerKey = "/admin/ordermanager")
 public class OrdermanagerController extends BaseProjectController{
@@ -74,12 +83,20 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
 		})
 	public void delete() {
-		String id=getPara("id");
-		CreditOrderInfo coi=CreditOrderInfo.dao;
-		coi.set("id",id);
-		coi.set("del_flag", "1");
-		OrderManagerService.service.deleteOrder(coi, this);
-		render(path + "list.html");
+	
+		try {
+			int id=getParaToInt("id");
+			CreditOrderInfo coi=CreditOrderInfo.dao;
+			coi.set("id",id);
+			coi.set("del_flag", "1");
+			OrderManagerService.service.deleteOrder(coi, this);
+			renderMessage("删除成功");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			renderMessage("删除失败");
+		}
+		
 	}
 	/**
 	 * 
@@ -88,6 +105,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @todo   TODO
 	 * @param  
 	 * @return_type   void
+	 * 转到订单修改页面
 	 */
 	@ApiOperation(url = "/admin/ordermanager/edit",httpMethod="get", 
 			description = "定位修改订单页面")
@@ -95,28 +113,31 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
 		})
 	public void edit() {
-		String id=getPara("id");
+		int id=getParaToInt("id");
 		CreditOrderInfo coi=OrderManagerService.service.editOrder(id,this);
 		String continent=coi.get("continent").toString();
 		String countryid=coi.get("country").toString();
+//		String createBy=coi.getStr("custom_id");
 		CountryModel cm=OrderManagerService.service.getCountryType(countryid);
 		String type=cm.get("type");
 		SysUser user = (SysUser) getSessionUser();
+		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		List<CreditReportType> reportType=OrderManagerService.service.getReportType();
-		List<SysDictDetail> orderType=OrderManagerService.service.getOrderType();
-		List<SysDictDetail> reportLanguage=OrderManagerService.service.getReportLanguage();
+		List<SysDictDetail> orderType=OrderManagerService.service.getDictByType("ordertype");
+		List<SysDictDetail> reportLanguage=OrderManagerService.service.getDictByType("reportlanguage");
 		List<CountryModel> country=OrderManagerService.service.getCountrys(continent);
 		List<SysDictDetail> speed=null;
 		if("0".equals(type)) {
 			//国外
-			speed=OrderManagerService.service.getspeed("interreportsspeed");
+			speed=OrderManagerService.service.getDictByType("interreportsspeed");
 		}else {
 			//国内
-			speed=OrderManagerService.service.getspeed("exterreportsspeed");
+			speed=OrderManagerService.service.getDictByType("exterreportsspeed");
 		}
 		
 		setAttr("model", coi);
 		setAttr("user",user);
+		setAttr("customs",customs);
 		setAttr("reporttype",reportType);
 		setAttr("reportlanguage",reportLanguage);
 		setAttr("country",country);
@@ -131,6 +152,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @todo   TODO
 	 * @param  
 	 * @return_type   void
+	 * 修改订单
 	 */
 	@ApiOperation(url = "/admin/ordermanager/save",httpMethod="post", 
 			description = "修改订单")
@@ -138,13 +160,11 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "CreditOrderInfo", description = "订单", required = false, dataType = "Model"),
 		})
 	public void save() {
-		String id=getPara("id").toString();
+		int id=getParaToInt("id");
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
-		model.set("id", id);
-		String changeReason=getAttr("changeReason");
 		SysUser user = (SysUser) getSessionUser();
 		try {
-			OrderManagerService.service.modifyOrder(model,changeReason,user,this);
+			OrderManagerService.service.modifyOrder(id,model,user,this);
 			renderMessage("保存成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -158,15 +178,16 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @todo   TODO
 	 * @param  
 	 * @return_type   void
+	 * 根据传入id的不同来区分修改添加
 	 */
 	@ApiOperation(url = "/admin/ordermanager/view",httpMethod="post", 
-			description = "修改订单")
+			description = "查看订单")
 	@Params(value = { 
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
 		})
 	public void view() {
-		String id=getPara("id");
-		CreditOrderInfo model=OrderManagerService.service.orderView(id,this);
+		int id=getParaToInt("id");
+		CreditOrderInfo model=OrderManagerService.service.editOrder(id,this);
 		setAttr("model", model);
 //		renderJson(model);
 		render(path + "view.html");
@@ -178,29 +199,46 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @todo   TODO
 	 * @param  
 	 * @return_type   void
+	 * 转到添加页面
 	 */
+	@ApiOperation(url = "/admin/ordermanager/view",httpMethod="post", 
+			description = "查看订单")
 	public void add() {
+		List<CreditReportType> reportType=OrderManagerService.service.getReportType();
+		List<SysDictDetail> orderType=OrderManagerService.service.getDictByType("ordertype");
+		List<SysDictDetail> reportLanguage=OrderManagerService.service.getDictByType("reportlanguage");
+		SysUser user = (SysUser) getSessionUser();
+		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
+		//默认国内
+		List<SysDictDetail> speed=OrderManagerService.service.getDictByType("orderspeed");
+		setAttr("user",user);
+		setAttr("reporttype",reportType);
+		setAttr("reportlanguage",reportLanguage);
+		setAttr("customs",customs);
+		setAttr("ordertype",orderType);
+		setAttr("speed",speed);
 		render(path + "add.html");
 	}
-	public void addOrder() {
-		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
-		Boolean flag=OrderManagerService.service.saveOrder(model,this);
-		if(flag) {
-			renderMessage("订单创建成功");
-		}else {
-			renderMessage("订单创建失败");
-		}
-	}
+	/**
+	 * 
+	 * @time   2018年8月31日 下午3:28:55
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  
+	 * @return_type   void
+	 * 获取速度
+	 */
+	@ApiOperation(url = "/admin/ordermanager/view",httpMethod="post", 
+	description = "查看订单")
+	@Params(value = { 
+	@Param(name = "countrytype", description = "国家类型", required = false, dataType = "String"),
+	})
 	public void getSpeed() {
 		String type=getPara("countrytype").toString();
 		List<SysDictDetail> speed=null;
-		if("0".equals(type)) {
-			//国外
-			speed=OrderManagerService.service.getspeed("interreportsspeed");
-		}else {
-			//国内
-			speed=OrderManagerService.service.getspeed("exterreportsspeed");
-		}
+
+			speed=OrderManagerService.service.getDictByType("orderspeed");
+
 		renderJson(speed);
 	}
 	

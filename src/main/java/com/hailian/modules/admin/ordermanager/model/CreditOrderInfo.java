@@ -1,5 +1,10 @@
 package com.hailian.modules.admin.ordermanager.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
@@ -19,14 +24,18 @@ import com.jfinal.plugin.activerecord.Page;
  */
 @ModelBind(table = "credit_order_info")//此标签用于模型与数据库表的连接
 public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
-	private String userName;
+	//客户姓名
+	private String customName;
+	//国家
 	private String countryName;
-	public String getUserName() {
+	//订单创建者的username
+	private String createName;
+	public String getCustomName() {
 		return get("userName");
 	}
 
-	public void setUserName(String userName) {
-		set("userName", userName);
+	public void setCustomName(String customName) {
+		set("customName", customName);
 	}
 	public String getCountryName() {
 		return get("countryName");
@@ -35,6 +44,12 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	public void setCountryName(String countryName) {
 		set("countryName", countryName);
 	}
+	public String getcreateName() {
+		return get("createName");
+	}
+	public void setCreateName(String createName) {
+		set("createName", createName);
+	}
 
 	/**
 	 * 
@@ -42,44 +57,74 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	private static final long serialVersionUID = 1L;
 	//
 	public static final CreditOrderInfo dao = new CreditOrderInfo();//名字都叫dao，统一命名
-	
+	/**
+	 * 
+	 * @time   2018年8月31日 下午2:21:15
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param pageinator
+	 * @param  @param model
+	 * @param  @param orderby
+	 * @param  @param user
+	 * @param  @param c
+	 * @param  @return
+	 * @return_type   Page<CreditOrderInfo>
+	 */
 	public Page<CreditOrderInfo> getOrders(Paginator pageinator,CreditOrderInfo model,String orderby,SysUser user,BaseProjectController c) {
 		// TODO Auto-generated method stub
-		SQLUtils sql=null;
+		StringBuffer sql=null;
 		String userid=user.get("userid").toString();
+		String custom_id=model.getStr("custom_id");
+		String id=model.getStr("id");
+		List<Object> params = new ArrayList<Object>();
 				if((int)user.get("usertype")==1) {
-					 sql = new SQLUtils(" from credit_order_info t left join sys_user u on u.userid=t.create_by left join credit_country c on c.id=t.country " //
+					 sql = new StringBuffer(" from credit_order_info t "
+					 		+ "left join credit_custom_info u on u.id=t.custom_id "
+					 		+ "left join credit_country c on c.id=t.country "
+					 		+ "left join sys_user s on s.userid=t.create_by " 
 							+ " where 1 = 1 and t.del_flag='0' ");
 				}else {
-					 sql = new SQLUtils(" from credit_order_info t left join sys_user u on u.userid=t.reportor " //
-							+ " where 1 = 1 and t.del_flag='0' and t.create_by='"+userid+"'");
+					 sql = new StringBuffer(" from credit_order_info t "
+					 		+ "left join credit_custom_info u on u.id=t.custom_id"
+					 		+ " left join credit_country c on c.id=t.country"
+					 		+ "left join sys_user s on s.userid=t.create_by "
+							+ " where 1 = 1 and t.del_flag='0'");
+					 sql.append(" and t.create_by=?");
+					 params.add(userid);
 				}
-				
-				if (model.getAttrValues().length != 0) {
-					sql.whereEquals("custom_id", model.getStr("custom_id"));
-					/*sql.whereLike("realname", model.getStr("realname"));
-					sql.whereEquals("usertype", model.getInt("usertype"));*/
-					sql.whereEquals("id", model.getStr("id"));
+
+					
+				if (StringUtils.isNotBlank(custom_id)) {
+					sql.append(" and t.custom_id=?");
+					params.add(custom_id);
 				}
-				// 排序
-		//		String orderBy = getBaseForm().getOrderBy();
+				if(StringUtils.isNotBlank(id)) {
+					sql.append(" and t.id=?");
+					params.add(id);
+				}
 				if (StrUtils.isEmpty(orderby)) {
 					sql.append(" order by t.id desc");
 				} else {
 					sql.append(" order by ").append(orderby);
 				}
-				Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.username as userName,c.name as countryName", sql.toString()
-						.toString());
+				Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.name as customName,c.name as countryName,s.username as createName", sql.toString(),params.toArray());
 				
 				return page;
 	}
+	/**
+	 * 
+	 * @time   2018年8月31日 下午2:40:47
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param id
+	 * @param  @param c
+	 * @param  @return
+	 * @return_type   CreditOrderInfo
+	 */
+	public CreditOrderInfo getOrder(int id, BaseProjectController c) {
 
-	public CreditOrderInfo getOrder(String id, BaseProjectController c) {
-		// TODO Auto-generated method stub
-		SQLUtils sql=new SQLUtils("select t.*,u.username as userName,c.name as countryName from credit_order_info t left join sys_user u on u.userid=t.create_by left join credit_country c on c.id=t.country  "
-				+ "where 1 = 1 and t.del_flag='0' and t.id='"+id+"'");
-		CreditOrderInfo coi=dao.findFirst(sql.toString());
-		return coi;
+		return dao.findFirst("select t.*,u.name as userName,c.name as countryName from credit_order_info t left join credit_custom_info u on u.id=t.custom_id left join credit_country c on c.id=t.country  "
+				+ "where 1 = 1 and t.del_flag='0' and t.id=?", id);
 	}
 	
 

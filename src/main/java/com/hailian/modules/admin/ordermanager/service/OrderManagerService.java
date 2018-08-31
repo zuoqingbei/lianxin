@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
+import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditReportType;
@@ -28,70 +29,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 public class OrderManagerService {
 	//static使该service保证了单例,public可以使Controller方便调用该service
 	public static OrderManagerService service= new OrderManagerService();//名字都叫service，统一命名
-	/**
-	 * 
-	 * @time   2018年8月23日 上午10:31:17
-	 * @author yangdong
-	 * @todo   TODO
-	 * @param  @param id
-	 * @param  @param c
-	 * @param  @return
-	 * @return_type   CreditOrderInfo
-	 * 根据id获取订单
-	 */
-	
-	public CreditOrderInfo getOrder(String id,BaseProjectController c) {
-//		String authorSql=DataAuthorUtils.getAuthorByUser(c);//验证权限
-		CreditOrderInfo coi= CreditOrderInfo.dao.findFirst("select * from credit_order_info c  where c.del_flag='0' and c.id=?",id);
-		return coi;
-	}
-	/**
-	 * 
-	 * @time   2018年8月23日 上午10:32:20
-	 * @author yangdong
-	 * @todo   TODO
-	 * @param  @param pageNumber
-	 * @param  @param pageSize
-	 * @param  @param customid
-	 * @param  @param c
-	 * @param  @return
-	 * @return_type   Page<CreditOrderInfo>
-	 * 根据客户id获取订单并分页
-	 */
-	public  Page<CreditOrderInfo> getOrdersService(int pageNumber,int pageSize,String customid,BaseProjectController c){
-//		String authorSql=DataAuthorUtils.getAuthorByUser(c);//验证权限
-		StringBuffer selectSql=new StringBuffer(" select * ");
-		StringBuffer fromSql=new StringBuffer(" from credit_order_info c where 1=1 and c.del_flag='0' ");
-		//参数集合
-		List<Object> params=new ArrayList<Object>();
-		if(StringUtils.isNotBlank(customid)){
-			fromSql.append(" and c.custom_id =? ");
-			params.add(customid);
-		}
-		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pageSize),  selectSql.toString()
-				,fromSql.toString(),params.toArray());
-	}
-	
-	/**
-	 * 
-	 * @time   2018年8月23日 下午3:02:57
-	 * @author yangdong
-	 * @todo   TODO
-	 * @param  @param coi
-	 * @param  @return
-	 * @return_type   Boolean
-	 * 添加订单
-	 */
-	public Boolean addOrder(CreditOrderInfo coi,BaseProjectController c) {
-		/*if(coi==null) {
-			return false;
-		}*/
-		String id= UuidUtils.getUUID();
-		coi.set("id",id);
-		coi.set("del_flag", "0");
-		Boolean flag=coi.save();
-		return flag;
-	}
+
 	/**
 	 * 
 	 * @time   2018年8月23日 下午3:45:09
@@ -100,18 +38,24 @@ public class OrderManagerService {
 	 * @param  @param coi
 	 * @throws Exception 
 	 * @return_type   void
-	 * 修改订单
+	 * 修改订单/添加订单
 	 */
 	@Before(Tx.class)
-	public void modifyOrder(CreditOrderInfo coi,String changeReason,SysUser user,BaseProjectController c) throws Exception {
+	public void modifyOrder(int id,CreditOrderInfo coi,SysUser user,BaseProjectController c) throws Exception {
 		
 		try {
-			coi.update();
-			coi=coi.findById(coi.get("id").toString());
-			CreditOrderHistory.dao.set("id", UuidUtils.getUUID())
-			.set("order_id", coi.get("id").toString())
+			if(id!=0) {
+				coi.set("id", id);
+				coi.update();
+			}else {
+				coi.save();
+			}
+			
+			coi=coi.findById(id);
+			CreditOrderHistory.dao
+			.set("order_id", coi.getStr("id"))
 			.set("json",JSONArray.toJSONString(coi))
-			.set("change_reason", changeReason)
+			.set("change_reason", coi.getStr("remarks"))
 			.set("remarks", "0")
 			.set("create_by", coi.get("create_by").toString())
 			.set("create_date", coi.get("receiver_date").toString())
@@ -130,67 +74,115 @@ public class OrderManagerService {
 	 * @author yangdong
 	 * @todo   TODO
 	 * @param  @param coi
+	 * @throws Exception 
 	 * @return_type   void
 	 * 删除订单
 	 */
-	public void deleteOrder(CreditOrderInfo coi,BaseProjectController c) {
-		coi.update();
+	public void deleteOrder(CreditOrderInfo coi,BaseProjectController c) throws Exception {
+		try {
+			coi.update();
+		}catch(Exception e) {
+			throw new Exception(e);
+		}
+		
 		
 	}
-	/*public void deleteListOrder(List<CreditOrderInfo> list) {
-		Db.batchUpdate(list, 100);
-	}*/
-	
+	/**
+	 * 
+	 * @time   2018年8月31日 上午11:48:13
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param pageinator
+	 * @param  @param model
+	 * @param  @param orderby
+	 * @param  @param user
+	 * @param  @param c
+	 * @param  @return
+	 * @return_type   Page<CreditOrderInfo>
+	 * 获取订单列表并分页
+	 */
 	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator,CreditOrderInfo model,String orderby,SysUser user, BaseProjectController c) {
 		
 		
-		Page<CreditOrderInfo> page = CreditOrderInfo.dao.getOrders(pageinator,model,orderby,user,c);
+		return CreditOrderInfo.dao.getOrders(pageinator,model,orderby,user,c);
 
-		return page;
-		
-	}
-	public CreditOrderInfo editOrder(String id,BaseProjectController c) {
-		CreditOrderInfo coi=CreditOrderInfo.dao.getOrder(id,c);
-		return coi;
-	}
 	
-	public Boolean saveOrder(CreditOrderInfo model, BaseProjectController c) {
-		// TODO Auto-generated method stub
-		model.set("del_flag", "0");
-		model.set("num", "2");
-		Boolean flag=model.update();
-		return flag;
 	}
-	public CreditOrderInfo orderView(String id, BaseProjectController c) {
-		// TODO Auto-generated method stub
-		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
-		return coi;
+	/**
+	 * 
+	 * @time   2018年8月31日 上午11:48:21
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param id
+	 * @param  @param c
+	 * @param  @return
+	 * @return_type   CreditOrderInfo
+	 * 根据id获取订单
+	 */
+	public CreditOrderInfo editOrder(int id,BaseProjectController c) {
+
+		return CreditOrderInfo.dao.getOrder(id,c);
 	}
+
+	/**
+	 * 
+	 * @time   2018年8月31日 上午11:48:41
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @return
+	 * @return_type   List<CreditReportType>
+	 */
 	public List<CreditReportType> getReportType() {
-		List<CreditReportType> list=CreditReportType.dao.getReportType();
-		
-		return list;
+
+		return CreditReportType.dao.getReportType();
 	}
-	public List<SysDictDetail> getReportLanguage() {
-		// TODO Auto-generated method stub
-		List<SysDictDetail> list=SysDictDetail.dao.getReportLanguage();
-		return list;
+	/**
+	 * 
+	 * @time   2018年8月31日 上午11:48:50
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param dictType
+	 * @param  @return
+	 * @return_type   List<SysDictDetail>
+	 */
+	public List<SysDictDetail> getDictByType(String dictType) {
+		return SysDictDetail.dao.getDictByType(dictType);
 	}
+	/**
+	 * 
+	 * @time   2018年8月31日 上午11:48:55
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param continent
+	 * @param  @return
+	 * @return_type   List<CountryModel>
+	 */
 	public List<CountryModel> getCountrys(String continent) {
-		List<CountryModel> country=CountryModel.dao.getCountrys(continent);
-		return country;
+		
+		return CountryModel.dao.getCountrys(continent);
 	}
-	public List<SysDictDetail> getspeed(String dictType) {
-		List<SysDictDetail> speed=SysDictDetail.dao.getSpeed(dictType);
-		return speed;
-	}
+	/**
+	 * 
+	 * @time   2018年8月31日 上午11:49:00
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param countryid
+	 * @param  @return
+	 * @return_type   CountryModel
+	 */
 	public CountryModel getCountryType(String countryid) {
-		CountryModel cm=CountryModel.dao.findType(countryid);
-		return cm;
+		return CountryModel.dao.findType(countryid);
 	}
-	public List<SysDictDetail> getOrderType() {
-		List<SysDictDetail> list=SysDictDetail.dao.getReportType();
-		return list;
+	/**
+	 * 
+	 * @time   2018年8月31日 上午11:49:04
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @return
+	 * @return_type   List<CreditCustomInfo>
+	 */
+	public List<CreditCustomInfo> getCreater() {
+		return CreditCustomInfo.dao.findcustoms();
 	}
 	
 }
