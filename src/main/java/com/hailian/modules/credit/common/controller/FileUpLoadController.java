@@ -33,7 +33,7 @@ import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.file.util.FileUploadUtils;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
-import com.hailian.util.FTP_UploadFileUtils;
+import com.hailian.util.FtpUploadFileUtils;
 import com.hailian.util.StrUtils;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
@@ -82,7 +82,7 @@ public class FileUpLoadController extends BaseProjectController {
 				String now=DateUtils.getNow(DateUtils.YMDHMS);
 				String FTPfileName=originalFileName+now+"."+ext;
 				String fileName=originalFileName+now;
-				boolean storeFile = FTP_UploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+				boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
 				if(storeFile){
 					String factpath=storePath+"/"+FTPfileName;
 					String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
@@ -137,7 +137,7 @@ public class FileUpLoadController extends BaseProjectController {
 					String now=DateUtils.getNow(DateUtils.YMDHMS);
 					String FTPfileName=originalFileName+now+"."+ext;
 					String fileName=originalFileName+now;
-					boolean storeFile = FTP_UploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+					boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
 					if(storeFile){
 						String factpath=storePath+"/"+FTPfileName;
 						String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
