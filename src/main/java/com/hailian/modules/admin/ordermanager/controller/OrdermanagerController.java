@@ -1,5 +1,7 @@
 package com.hailian.modules.admin.ordermanager.controller;
 
+import java.util.List;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -7,14 +9,18 @@ import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
+import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.system.dict.SysDictDetail;
+import com.hailian.system.user.SysUser;
 import com.jfinal.plugin.activerecord.Page;
 @Api(tag = "订单菜单路由", description = "订单菜单")
 @ControllerBind(controllerKey = "/admin/ordermanager")
 public class OrdermanagerController extends BaseProjectController{
 	private static final String path = "/pages/admin/ordermanager/order_";
+
 	/**
 	 * 
 	 * @time   2018年8月24日 下午6:16:22
@@ -47,7 +53,9 @@ public class OrdermanagerController extends BaseProjectController{
 	public void list() {
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		Paginator pageinator=getPaginator();
-		Page<CreditOrderInfo> page=OrderManagerService.service.getOrders(pageinator,model, this);		
+		String orderBy = getBaseForm().getOrderBy();
+		SysUser user = (SysUser) getSessionUser();
+		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,orderBy,user, this);	
 		setAttr("page", page);
 		setAttr("attr", model);
 		render(path + "list.html");
@@ -66,12 +74,12 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
 		})
 	public void delete() {
-		String id=getPara();
+		String id=getPara("id");
 		CreditOrderInfo coi=CreditOrderInfo.dao;
 		coi.set("id",id);
 		coi.set("del_flag", "1");
 		OrderManagerService.service.deleteOrder(coi, this);
-		list();
+		render(path + "list.html");
 	}
 	/**
 	 * 
@@ -87,11 +95,34 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
 		})
 	public void edit() {
-		String id=getPara();
+		String id=getPara("id");
 		CreditOrderInfo coi=OrderManagerService.service.editOrder(id,this);
+		String continent=coi.get("continent").toString();
+		String countryid=coi.get("country").toString();
+		CountryModel cm=OrderManagerService.service.getCountryType(countryid);
+		String type=cm.get("type");
+		SysUser user = (SysUser) getSessionUser();
+		List<CreditReportType> reportType=OrderManagerService.service.getReportType();
+		List<SysDictDetail> orderType=OrderManagerService.service.getOrderType();
+		List<SysDictDetail> reportLanguage=OrderManagerService.service.getReportLanguage();
+		List<CountryModel> country=OrderManagerService.service.getCountrys(continent);
+		List<SysDictDetail> speed=null;
+		if("0".equals(type)) {
+			//国外
+			speed=OrderManagerService.service.getspeed("interreportsspeed");
+		}else {
+			//国内
+			speed=OrderManagerService.service.getspeed("exterreportsspeed");
+		}
+		
 		setAttr("model", coi);
-		renderJson(coi);
-//		render(path + "edit.html");
+		setAttr("user",user);
+		setAttr("reporttype",reportType);
+		setAttr("reportlanguage",reportLanguage);
+		setAttr("country",country);
+		setAttr("speed",speed);
+		setAttr("ordertype",orderType);
+		render(path + "edit.html");
 	}
 	/**
 	 * 
@@ -107,11 +138,16 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "CreditOrderInfo", description = "订单", required = false, dataType = "Model"),
 		})
 	public void save() {
+		String id=getPara("id").toString();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
-		Boolean flag=OrderManagerService.service.addOrder(model,this);
-		if(flag) {
+		model.set("id", id);
+		String changeReason=getAttr("changeReason");
+		SysUser user = (SysUser) getSessionUser();
+		try {
+			OrderManagerService.service.modifyOrder(model,changeReason,user,this);
 			renderMessage("保存成功");
-		}else {
+		} catch (Exception e) {
+			e.printStackTrace();
 			renderMessage("保存失败");
 		}
 	}
@@ -129,11 +165,11 @@ public class OrdermanagerController extends BaseProjectController{
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
 		})
 	public void view() {
-		String id=getPara();
+		String id=getPara("id");
 		CreditOrderInfo model=OrderManagerService.service.orderView(id,this);
 		setAttr("model", model);
-		renderJson(model);
-//		render(path + "view.html");
+//		renderJson(model);
+		render(path + "view.html");
 	}
 	/**
 	 * 
@@ -154,6 +190,18 @@ public class OrdermanagerController extends BaseProjectController{
 		}else {
 			renderMessage("订单创建失败");
 		}
+	}
+	public void getSpeed() {
+		String type=getPara("countrytype").toString();
+		List<SysDictDetail> speed=null;
+		if("0".equals(type)) {
+			//国外
+			speed=OrderManagerService.service.getspeed("interreportsspeed");
+		}else {
+			//国内
+			speed=OrderManagerService.service.getspeed("exterreportsspeed");
+		}
+		renderJson(speed);
 	}
 	
 }
