@@ -77,39 +77,39 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		String custom_id=model.getStr("custom_id");
 		String id=model.getStr("id");
 		List<Object> params = new ArrayList<Object>();
-				if((int)user.get("usertype")==1) {
-					 sql = new StringBuffer(" from credit_order_info t "
-					 		+ "left join credit_custom_info u on u.id=t.custom_id "
-					 		+ "left join credit_country c on c.id=t.country "
-					 		+ "left join sys_user s on s.userid=t.create_by " 
-							+ " where 1 = 1 and t.del_flag='0' ");
-				}else {
-					 sql = new StringBuffer(" from credit_order_info t "
-					 		+ "left join credit_custom_info u on u.id=t.custom_id"
-					 		+ " left join credit_country c on c.id=t.country"
-					 		+ "left join sys_user s on s.userid=t.create_by "
-							+ " where 1 = 1 and t.del_flag='0'");
-					 sql.append(" and t.create_by=?");
-					 params.add(userid);
-				}
+		if((int)user.get("usertype")==1) {
+			 sql = new StringBuffer(" from credit_order_info t "
+			 		+ "left join credit_custom_info u on u.id=t.custom_id "
+			 		+ "left join credit_country c on c.id=t.country "
+			 		+ "left join sys_user s on s.userid=t.create_by " 
+					+ " where 1 = 1 and t.del_flag='0' ");
+		}else {
+			 sql = new StringBuffer(" from credit_order_info t "
+			 		+ "left join credit_custom_info u on u.id=t.custom_id"
+			 		+ " left join credit_country c on c.id=t.country"
+			 		+ "left join sys_user s on s.userid=t.create_by "
+					+ " where 1 = 1 and t.del_flag='0'");
+			 sql.append(" and t.create_by=?");
+			 params.add(userid);
+		}
 
-					
-				if (StringUtils.isNotBlank(custom_id)) {
-					sql.append(" and t.custom_id=?");
-					params.add(custom_id);
-				}
-				if(StringUtils.isNotBlank(id)) {
-					sql.append(" and t.id=?");
-					params.add(id);
-				}
-				if (StrUtils.isEmpty(orderby)) {
-					sql.append(" order by t.id desc");
-				} else {
-					sql.append(" order by ").append(orderby);
-				}
-				Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.name as customName,c.name as countryName,s.username as createName", sql.toString(),params.toArray());
-				
-				return page;
+			
+		if (StringUtils.isNotBlank(custom_id)) {
+			sql.append(" and t.custom_id=?");
+			params.add(custom_id);
+		}
+		if(StringUtils.isNotBlank(id)) {
+			sql.append(" and t.id=?");
+			params.add(id);
+		}
+		if (StrUtils.isEmpty(orderby)) {
+			sql.append(" order by t.id desc");
+		} else {
+			sql.append(" order by ").append(orderby);
+		}
+		Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.name as customName,c.name as countryName,s.username as createName", sql.toString(),params.toArray());
+		
+		return page;
 	}
 	/**
 	 * 

@@ -1,3 +1,4 @@
+<% var language = tempDict.getSysDictDetailByType('language'); %>
 <% 
 	var headContent = {
 	include("/pages/template/head.html"){}
@@ -70,9 +71,13 @@ var bodyContent = {
 			</div>
 			<div class="form-group">
 					<select name="attr.business_type" class="form-control" >
-					<option value="-1">--选择业务类型--</option>
+					<option value="">--选择文件类型--</option>
+					 <% for(item in language){ %>
+					 	<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
+					  <% } %>
+					<!-- <option value="-1">--选择业务类型--</option>
 					<option value="0" ${"attr.business_type"==0?'selected':''}>订单附件</option>
-					<option value="1" ${"attr.business_type"==1?'selected':''}>其他</option>
+					<option value="1" ${"attr.business_type"==1?'selected':''}>其他</option> -->
 					</select>
 			</div>
 			<div class="form-group">
