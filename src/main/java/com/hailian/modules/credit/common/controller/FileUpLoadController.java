@@ -3,8 +3,6 @@ package com.hailian.modules.credit.common.controller;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -13,30 +11,16 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
-
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
-import com.hailian.modules.admin.image.model.TbImage;
-import com.hailian.modules.admin.image.service.ImageAlbumService;
-import com.hailian.modules.admin.site.TbSite;
-import com.hailian.modules.credit.order.model.TbOrder;
-import com.hailian.modules.credit.order.service.OrderService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
-import com.hailian.system.dict.SysDictDetail;
-import com.hailian.system.file.util.FileUploadUtils;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
 import com.hailian.util.StrUtils;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
@@ -76,7 +60,6 @@ public class FileUpLoadController extends BaseProjectController {
 			} else {
 				ext = "";
 			}
-			System.out.println(FileTypeUtils.checkType(ext)+"=====maxPostSize====="+ext);
 			if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
 				String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 				String now=DateUtils.getNow(DateUtils.YMDHMS);
