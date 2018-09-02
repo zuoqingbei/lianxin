@@ -79,7 +79,7 @@ public class ReportPriceService {
 	}
 
 	public Page<ReportPrice> getPage(Paginator paginator, String type, BaseProjectController c) {
-		StringBuffer sql = new StringBuffer(" from credit_report_price t where t.del_flag=0");
+		StringBuffer sql = new StringBuffer("select* from credit_report_price t where t.del_flag=0");
 		if (StrUtils.isNotEmpty(type)) {
 			sql.append(" AND t.report_type = '").append(type).append("'");
 
