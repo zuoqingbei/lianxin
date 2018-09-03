@@ -18,4 +18,5 @@ public class CreditUploadFileModel extends BaseProjectModel<CreditUploadFileMode
 		return dao.find(sql, params.toArray());
 	}
 
+
 }

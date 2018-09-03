@@ -1,9 +1,11 @@
+<% var upload_busType = tempDict.getSysDictDetailByType('upload_busType'); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
 	include("/pages/template/head.html"){}
 %>
 <% include("/pages/includes/my97.html"){} %>
+
 <script type="text/javascript">
 	var oper = {
 		save:function(id){
@@ -57,7 +59,6 @@ var bodyContent = {
 <form name="form1" action="" method="post" class="form-horizontal"
 		enctype="multipart/form-data" role="form" >
 	<input type="hidden" name="model.id" value="${model.id}" />
-	<!-- <input class="form-control" type="hidden" name="model.album_name" value="${model.album_name }"  /> -->
 	<table class="table">
 		<%  // 列表头部%>
 				<tr>
@@ -74,19 +75,35 @@ var bodyContent = {
 					<td>业务类型</td>
 					<td>
 						<div class="form-group">
-						<select name="model.business_type" class="form-control" >
-						<option value="-1">--选择业务类型--</option>
-						<option value="0" ${"model.business_type"==0?'selected':''}>订单附件</option>
-						<option value="1" ${"model.business_type"==1?'selected':''}>其他</option>
+						<!-- <select name="model.business_type" class="form-control" >
+						<option value="">--请选择--</option>
+						 <% for(item in upload_busType){ %>
+						 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
+						  <% } %>
+						</select> -->
+						<% if(model.id!0 > 0) { %>
+						<input type="hidden" name="model.business_type" value="${model.business_type}" />
+						<select  disabled="disabled" class="form-control" >
+							<% for(item in upload_busType){ %>
+						 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
+						  	<% } %>
 						</select>
+						<% } else { %>
+						<select name="model.business_type" class="form-control" >
+						<option value="">--请选择--</option>
+						 <% for(item in upload_busType){ %>
+						 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
+						  <% } %>
+						</select>
+						<% } %>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>发布时间</td>
 					<td>
-					<input class="form-control" type="text" name="model.publish_time" 
-						value="${model.publish_time!flyfox.getNow() }"   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  />
+					<input class="form-control" type="text" name="model.update_date" 
+						value="${model.update_date!flyfox.getNow() }"   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  />
 					</td>
 					<td>发布者</td>
 					<td>
