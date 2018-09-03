@@ -22,4 +22,5 @@ public class ArchivesWhilteService {
 		Page<ArchivesWhilteModel> page = ArchivesWhilteModel.dao.getPage(paginator,custom_id,report_id,c);
 		return page;
 	}
+	
 }

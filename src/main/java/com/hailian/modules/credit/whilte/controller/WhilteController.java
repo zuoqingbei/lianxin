@@ -3,6 +3,7 @@ package com.hailian.modules.credit.whilte.controller;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.modules.credit.whilte.service.ArchivesWhilteService;
 import com.jfinal.plugin.activerecord.Page;
@@ -68,6 +69,19 @@ public class WhilteController extends BaseProjectController{
 		setAttr("model", model);
 		// 查询下拉框
 		render(path + "edit.html");
+	}
+	/**
+	 * 删除
+	* @author doushuihai  
+	* @date 2018年9月3日下午2:53:44  
+	* @TODO
+	 */
+	public void delete() {
+		// 日志添加
+		Integer id = getParaToInt();
+		Integer userid = getSessionUser().getUserid();
+		UploadFileService.service.delete(id,userid);//记录上传信息
+		list();
 	}
 /*	public void add() {
 		String dictType = getPara("dict_type");
