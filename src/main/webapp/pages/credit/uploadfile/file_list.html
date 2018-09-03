@@ -66,22 +66,41 @@ var bodyContent = {
 
 		<div class="tableSearch">
 			<%  //查询列表 %>
+			文件名称：
 			<div class="form-group">
 					<input class="form-control" type="text" name="attr.originalname" value="${attr.originalname!''}" 
 						placeholder="请输入名称" required='required' />
 			</div>
 			<div class="form-group">
+					业务类型：
 					<select name="attr.business_type" class="form-control" >
-					 <% for(item in upload_busType){ %>
+					<!--  <% for(item in upload_busType){ %>
 					 	<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
-					  <% } %>
+					 <% } %> -->
+					<% for(item in upload_busType){ %>
+						 	<% if((attr.business_type+"")==(item.detail_id+"")){ %>
+							 	<option  m-type="${item.detail_name_en}" selected="selected" value="${item.detail_id}">${item.detail_name}</option>
+							<% }else{ %>
+								<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
+							<%}%>
+						 	
+					<% } %>
 					</select>
 			</div>
 			<div class="form-group">
+					上传文档类型：
 					<select name="attr.ext_id" class="form-control" >
-					 <% for(item in uploadFileTtype){ %>
+					 <!-- <% for(item in uploadFileTtype){ %>
 					 	<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
-					  <% } %>
+					  <% } %> -->
+					  <% for(item in uploadFileTtype){ %>
+						 	<% if((attr.ext_id+"")==(item.detail_id+"")){ %>
+							 	<option  m-type="${item.detail_name_en}" selected="selected" value="${item.detail_id}">${item.detail_name}</option>
+							<% }else{ %>
+								<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
+							<%}%>
+						 	
+					<% } %>
 					</select>
 			</div>
 			
