@@ -26,7 +26,14 @@ public class TemplateDictService extends BaseService {
 	 */
 	public List<SysDictDetail> getSysDictDetailByType(String type) {
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
-		listDetail=DictCache.getSysDictDetailByType(type);
+		SysDictDetail allDict=new SysDictDetail();
+		allDict.set("detail_id", "");
+		allDict.set("dict_type",type);
+		allDict.set("detail_name","全部");
+		allDict.set("detail_name_en", "ALL");
+		allDict.set("detail_code", "");
+		listDetail.add(allDict);
+		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		return listDetail;
 	}
 
