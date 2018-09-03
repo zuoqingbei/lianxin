@@ -46,7 +46,7 @@ public class TemplateDictService extends BaseService {
 	 * @author zuoqb
 	 * @params
 	 */
-	public String getSysDictDetailSelect(String type,String selectedId) {
+	public String getSysDictDetailString(String type,Object selectedId) {
 		StringBuffer sb=new StringBuffer();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
 		SysDictDetail allDict=new SysDictDetail();
@@ -58,7 +58,7 @@ public class TemplateDictService extends BaseService {
 		listDetail.add(allDict);
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
-			if(StringUtils.isNotBlank(selectedId)&&selectedId.equals(detail.get("detail_id").toString())){
+			if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
 				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 			}else{
 				sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
