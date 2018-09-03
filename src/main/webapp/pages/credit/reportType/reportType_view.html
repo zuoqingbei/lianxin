@@ -1,0 +1,48 @@
+<% 
+var headContent = {
+	include("/pages/template/head.html"){}
+};
+
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal" role="form">
+	<!-- 数据列表 -->
+	<table class="table">
+		<%  // 列表头部 %>
+			<tr>
+				<td>信用报告名称</td>
+				<td>${model.name!''}</td>
+			</tr>
+			<tr>
+				<td>报告英文名称</td>
+				<td>${model.name_en!''}</td>
+			</tr>
+			<tr>
+				<td>报告繁体名称</td>
+				<td>${model.name_trad!''}</td>
+			</tr>
+			<tr>
+				<td>模板路径</td>
+				<td>${model.tpl_path!''}</td>
+			</tr>
+			<!-- <tr>
+				<td>排序</td>
+				<td>${model.order_no!''}</td>
+			</tr> -->
+			<tr>
+				<td>备注</td>
+				<td>${model.remarks!''}</td>
+			</tr>
+	</table>
+	
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
