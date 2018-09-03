@@ -138,16 +138,16 @@ var bodyContent = {
 					<td>发布者</td>
 					<td>
 						<% if(model.id!0 > 0) { %>
-							<input class="form-control" type="text" name="model.publish_user" value="${model.publish_user}"  />
+							<input class="form-control" type="text" name="model.update_by" value="${model.update_by}"  />
 						<% } else { %>
-							<input class="form-control" type="text" name="model.publish_user" value="${session.session_user.realname!session.session_user.username }"  />
+							<input class="form-control" type="text" name="model.update_by" value="${session.session_user.realname!session.session_user.username }"  />
 						<% } %>
 					</td>
 				</tr>
 				<tr>
 					<td>备注</td>
 					<td colspan="3">
-					<textarea class="form-control" rows="2" cols="20" name="model.remark">${model.remark }</textarea>
+					<textarea class="form-control" rows="2" cols="20" name="model.remark">${model.remark}</textarea>
 					</td>
 				</tr>
 	</table>

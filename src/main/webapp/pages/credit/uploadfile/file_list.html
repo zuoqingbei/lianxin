@@ -1,0 +1,159 @@
+<% var upload_busType = tempDict.getSysDictDetailByType('upload_busType'); %>
+<% var uploadFileTtype = tempDict.getSysDictDetailByType('uploadFileTtype'); %>
+<% 
+	var headContent = {
+	include("/pages/template/head.html"){}
+%>
+
+<script type="text/javascript">
+		
+	var oper;
+	jQuery(function($) {
+		// 页面方法
+		oper = {
+			width : 800,
+			height : 500,
+			form : document.form1,
+			list : function() {
+				var url = 'credit/file/list';
+				this.form.action = url;
+				this.form.submit();
+			},
+			view : function(id) {
+				var url = 'credit/file/view/'+id;
+				var title = '查看图片';
+				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+			},
+			add : function() {
+				var url = 'credit/file/add';
+				var title = '上传文件';
+				Iframe(url, this.width, this.height, title);
+			},
+			edit : function(id) {
+				var url = 'credit/file/edit/'+id;
+				var title = '重新上传';
+				Iframe(url, this.width, this.height, title);
+			},
+			del : function(id) {
+				var url = 'credit/file/delete/'+id;
+				var title = '确认要删除该图片信息？';
+				Confirm(title, function() {
+					form1.action = url;
+					form1.submit();
+				});
+			}
+		};
+		//显示Menu索引
+		showMenu('page_image');
+	});
+	
+	//分页
+	var paginator = function(page) {
+		oper.list();
+	};
+</script>
+
+<%
+};
+
+var bodyContent = {
+%>
+	<form name="form1" action="" method="post"  class="form-inline" role="form">
+		<input type="hidden" name="form.orderColumn" value="${form.orderColumn!''}" />
+		<input type="hidden" name="form.orderAsc" value="${form.orderAsc!''}" />
+		<!-- 菜单 -->
+		<% include("/pages/template/menu.html"){} %>
+
+		<div class="tableSearch">
+			<%  //查询列表 %>
+			<div class="form-group">
+					<input class="form-control" type="text" name="attr.originalname" value="${attr.originalname!''}" 
+						placeholder="请输入名称" required='required' />
+			</div>
+			<div class="form-group">
+					<select name="attr.business_type" class="form-control" >
+					<option value="">--请选择--</option>
+					 <% for(item in upload_busType){ %>
+					 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
+					  <% } %>
+					</select>
+			</div>
+			<div class="form-group">
+					<select name="attr.ext_id" class="form-control" >
+					<option value="">--请选择--</option>
+					 <% for(item in uploadFileTtype){ %>
+					 	<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
+					  <% } %>
+					</select>
+			</div>
+			
+			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
+			 		<span class="glyphicon glyphicon-search"></span> 查 询
+			</button>
+			<button type="button" class="btn btn-default" onclick="resetForm();">
+			 		<span class="glyphicon glyphicon-refresh"></span> 重 置
+			</button>
+			<button type="button" class="btn btn-default" onclick="oper.add();">
+			 		<span class="glyphicon glyphicon-plus"></span> 新 增
+			</button>
+		</div>
+		
+		<!-- 数据列表 -->
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<%  // 列表头部 %>
+					<th name="originalname" class="sorting">文件名称</th> 
+					<th name="ext" class="sorting">文件类型</th> 
+					<th name="size" class="sorting">文件大小</th> 
+					<th name="business_type" class="sorting">业务类型</th> 
+					<th name="business_id" class="sorting">业务编码</th> 
+					<th name="remarks" class="sorting">说明</th> 
+					<th name="update_by" class="sorting">上传人</th> 
+					<th name="update_date" class="sorting">上传时间</th> 
+ 					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<% for(item in page.list){ %>
+				<tr>
+				<td>${itemLP.index }</td>
+					<%  // 列表内容 %>
+					<td>${item.originalname}</td> 
+					<td>${item.ext}</td> 
+					<td>
+						${item.size}字节
+					</td> 
+					<td>
+					<% if(item.business_type==0) { %>
+					订单附件
+					<%	} %>
+					<% if(item.business_type==1) { %>
+					其他
+					<%	} %>
+					</td>  
+					<td>
+					${item.business_id}
+					</td>  
+					<td>
+					${item.remarks}
+					</td> 
+					<td>${item.update_by}</td> 
+					<td>${item.update_date}</td> 
+				<td>
+				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">重新上传</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
+				</td>
+				</tr>
+			<% } %>
+			</tbody>
+		</table>
+		<%include("/pages/includes/paginator.html"){} %>
+	</form>
+<%}; %>
+
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>

@@ -39,9 +39,10 @@ public class DictController extends BaseProjectController {
 
 		Page<SysDictDetail> page = SysDictDetail.dao
 				.paginate(getPaginator(), "select t.*,d.dict_name ", sql.toString());
-		
+		String selectDictType = svc.selectDictType(attr.getStr("dict_type"));
+		System.out.println(selectDictType);
 		// 下拉框
-		setAttr("optionList", svc.selectDictType(attr.getStr("dict_type")));
+		setAttr("optionList", selectDictType);
 		setAttr("attr", attr);
 		setAttr("page", page);
 		render(path + "list.html");

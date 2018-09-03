@@ -11,7 +11,6 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
-import com.hailian.system.dict.SysDictDetail;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -39,32 +38,17 @@ public class ReportPriceController extends BaseProjectController {
 			@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String") })
 		@ApiOperation(url = "/credit/pricemanager/list", httpMethod = "get", description = "获取报告价格列表")
 	public void list() {
-		int pageNumber = getParaToInt("pageNumber", 1);
-		int pageSize = getParaToInt("pageSize", 5);
-		Page<ReportPrice> page = ReportPriceService.service
-				.pagePrice(pageNumber, pageSize, getPara("reporttype"), this);
 		ReportPrice attr = getModelByAttr(ReportPrice.class);
 		String type = attr.getStr("reporttype");
 		Page<ReportPrice> pager = ReportPriceService.service
-				.getPage(getPaginator(), type, this);
+				.getPage(getPaginator(), type,this);
 		List<CreditReportType> reportType=ReportPriceService.service.getReportType();
-		setAttr("pager",pager);
+		setAttr("page",pager);
 		setAttr("reporttype",reportType);
 		render(path+"list.html");
 	}
 
-//	@Params(value = { @Param(name = "pageNumber", description = "页码", required = false, dataType = "String"),
-//		@Param(name = "pageSize", description = "每页条数", required = false, dataType = "String"),
-//		@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String") })
-//	@ApiOperation(url = "/credit/pricemanager/listjson", httpMethod = "get", description = "获取报告价格列表")
-//	public void listjson() {
-//	int pageNumber = getParaToInt("pageNumber", 1);
-//	int pageSize = getParaToInt("pageSize", 5);
-//	Page<ReportPrice> page = ReportPriceService.service
-//		.pagePrice(pageNumber, pageSize, getPara("reporttype"), this);
-//	renderJson(page);
-//
-//	}
+
 
 	/**
 	 * 

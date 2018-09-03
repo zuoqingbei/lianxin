@@ -1,0 +1,137 @@
+<% var upload_busType = tempDict.getSysDictDetailByType('upload_busType'); %>
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<% include("/pages/includes/my97.html"){} %>
+
+<script type="text/javascript">
+	var oper = {
+		save:function(id){
+			if(!validForm()) {
+				return false;
+			}
+			id = id || '0';
+			var url = 'credit/file/uploadFile/'+id;
+			form1.action = url;
+			form1.submit();
+			return true;
+		}	
+	};
+</script>
+
+<style>
+.tags {
+	line-height: 22px;
+	height: 22px;
+	border-top: 1px solid rgb(210, 210, 210);
+}
+
+.tags .tags_label {
+	float: left;
+	margin-right: 20px;
+	margin-left: 5px;
+	padding: 5px 1px 1px 3px;
+}
+
+.tags .tags_content {
+	float: left;
+	width: 500px;
+	margin: 5px 5px 0 0;
+	padding: 1px;
+	border: 1px solid #ccc;
+	background: #fff;
+	vertical-align: middle;
+}
+
+.tags .tags_remark {
+	padding: 5px 1px 1px 3px;
+	color: #999999;
+	font-size: 12px;
+	z-index: 10000;
+}
+</style>
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+		enctype="multipart/form-data" role="form" >
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>文件</td>
+					<td colspan="3">
+						<input type="file" accept="*" class="form-control" name="file_url" />
+					</td>
+				</tr>
+				<tr>
+					<td>业务编码</td>
+					<td>
+					<input class="form-control" type="text" name="model.business_id" value="${model.business_id}" />
+					</td>
+					<td>业务类型</td>
+					<td>
+						<div class="form-group">
+						<!-- <select name="model.business_type" class="form-control" >
+						<option value="">--请选择--</option>
+						 <% for(item in upload_busType){ %>
+						 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
+						  <% } %>
+						</select> -->
+						<% if(model.id!0 > 0) { %>
+						<input type="hidden" name="model.business_type" value="${model.business_type}" />
+						<select  disabled="disabled" class="form-control" >
+							<% for(item in upload_busType){ %>
+						 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
+						  	<% } %>
+						</select>
+						<% } else { %>
+						<select name="model.business_type" class="form-control" >
+						<option value="">--请选择--</option>
+						 <% for(item in upload_busType){ %>
+						 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
+						  <% } %>
+						</select>
+						<% } %>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>发布时间</td>
+					<td>
+					<input class="form-control" type="text" name="model.update_date" 
+						value="${model.update_date!flyfox.getNow() }"   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  />
+					</td>
+					<td>发布者</td>
+					<td>
+						<% if(model.id!0 > 0) { %>
+							<input class="form-control" type="text" name="model.update_by" value="${model.update_by}"  />
+						<% } else { %>
+							<input class="form-control" type="text" name="model.create_by" value="${session.session_user.realname!session.session_user.username }"  />
+						<% } %>
+					</td>
+				</tr>
+				<tr>
+					<td>备注</td>
+					<td colspan="3">
+					<textarea class="form-control" rows="2" cols="20" name="model.remarks">${model.remarks}</textarea>
+					</td>
+				</tr>
+	</table>
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%}
+DIRECTIVE SAFE_OUTPUT_CLOSE; 
+%>

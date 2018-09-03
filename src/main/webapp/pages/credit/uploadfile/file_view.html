@@ -1,0 +1,69 @@
+<% 
+var headContent = {
+	include("/pages/template/head.html"){}
+};
+
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal" role="form">
+	<!-- 数据列表 -->
+	<table class="table">
+		<%  // 列表头部 %>
+			<tr>
+				<td>文件名称</td>
+				<td>${model.originalname}</td>
+			</tr>
+			<tr>
+				<td>文件</td>
+				<td colspan="3">
+					<% if(!strutil.isEmpty(model.url)){ %>
+						<a href="${model.url}" target="_blank" style="text-decoration:none;">
+							<img alt="文件" title="点击浏览" src="" width="40" height="40">
+						</a>
+					<% } %>
+				</td>
+			</tr>
+			<tr>
+				<td>链接地址</td>
+				<td colspan="5">
+				<input type="text" class="form-control" value="${model.url}">
+				</td>
+			</tr>
+			<tr>
+				<td>文件类型</td>
+				<td>${model.ext}</td>
+				<td>文件大小</td>
+				<td>${model.size}字节</td>
+			</tr>
+			<tr>
+				<td>创建时间</td>
+				<td>${model.create_date}</td>
+				<td>上传人</td>
+				<td>${model.create_by}</td>
+				<td>修改时间</td>
+				<td>${model.update_date}</td>
+				<td>修改人</td>
+				<td>${model.update_by}</td>
+			</tr>
+			<tr>
+				<td>备注</td>
+				<td title="${model.remarks}" colspan="3">
+				<% if (strutil.length(model.remarks) > 25) { %>
+					${strutil.subStringTo(model.remarks, 0, 25)}...
+				<% 	} else { %>
+					${model.remarks}
+				<%  } %>
+			</td> 
+	</table>
+	
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
