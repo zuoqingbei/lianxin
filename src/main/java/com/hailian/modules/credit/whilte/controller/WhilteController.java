@@ -80,7 +80,7 @@ public class WhilteController extends BaseProjectController{
 		// 日志添加
 		Integer id = getParaToInt();
 		Integer userid = getSessionUser().getUserid();
-		UploadFileService.service.delete(id,userid);//记录上传信息
+		ArchivesWhilteService.service.delete(id,userid);//记录上传信息
 		list();
 	}
 /*	public void add() {

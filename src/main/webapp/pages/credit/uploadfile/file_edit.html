@@ -75,37 +75,26 @@ var bodyContent = {
 					<td>业务类型</td>
 					<td>
 						<div class="form-group">
-						<!-- <select name="model.business_type" class="form-control" >
-						<option value="">--请选择--</option>
-						 <% for(item in upload_busType){ %>
-						 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
-						  <% } %>
-						</select> -->
-						<% if(model.id!0 > 0) { %>
-						<input type="hidden" name="model.business_type" value="${model.business_type}" />
-						<select  disabled="disabled" class="form-control" >
-							<% for(item in upload_busType){ %>
-						 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
-						  	<% } %>
-						</select>
-						<% } else { %>
 						<select name="model.business_type" class="form-control" >
-						<option value="">--请选择--</option>
 						 <% for(item in upload_busType){ %>
-						 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
+						 	<% if((model.business_type+"")==(item.detail_id+"")){ %>
+							 	<option  m-type="${item.detail_name_en}" selected="selected" value="${item.detail_id}">${item.detail_name}</option>
+							<% }else{ %>
+								<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
+							<%}%>
+						 	
 						  <% } %>
 						</select>
-						<% } %>
 						</div>
 					</td>
 				</tr>
 				<tr>
-					<td>发布时间</td>
+					<td>上传时间</td>
 					<td>
 					<input class="form-control" type="text" name="model.update_date" 
 						value="${model.update_date!flyfox.getNow() }"   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  />
 					</td>
-					<td>发布者</td>
+					<td>上传人</td>
 					<td>
 						<% if(model.id!0 > 0) { %>
 							<input class="form-control" type="text" name="model.update_by" value="${model.update_by}"  />

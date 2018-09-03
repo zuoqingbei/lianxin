@@ -36,7 +36,7 @@ public class FileTypeUtils {
 		String flag="";
 		for (int i = 0; i < img.length; i++) {
 			if (img[i].equalsIgnoreCase(ext)) {
-				flag="img";
+				flag="picture";
 			}
 		}
 		for (int i = 0; i < document1.length; i++) {

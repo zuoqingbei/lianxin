@@ -10,6 +10,8 @@ import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.util.DateUtils;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 /**
  * 白名单model层
@@ -42,5 +44,21 @@ public class ArchivesWhilteModel extends BaseProjectModel<ArchivesWhilteModel> {
 		Page<ArchivesWhilteModel> page = ArchivesWhilteModel.dao
 				.paginate(paginator, "select * ", sql.toString(),params.toArray());
 		return page;
+	}
+	/**
+	 * 逻辑删除
+	* @author doushuihai  
+	* @date 2018年9月3日下午2:59:58  
+	* @TODO
+	 */
+	public void delete(Integer id, Integer userid) {
+		String now = DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
+		String sql="update credit_archives_whilte set del_flag=1,update_by=?,update_date=? where id=?";
+		List<Object> params=new ArrayList<Object>();
+		params.add(userid);
+		params.add(now);
+		params.add(id);
+		Db.update(sql,params.toArray());
+		
 	}
 }
