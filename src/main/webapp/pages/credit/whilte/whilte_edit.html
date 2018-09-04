@@ -1,18 +1,19 @@
+<% var upload_busType = tempDict.getSysDictDetailByType('upload_busType'); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
 	include("/pages/template/head.html"){}
 %>
+<% include("/pages/includes/my97.html"){} %>
+
 <script type="text/javascript">
 	var oper = {
 		save:function(id){
 			if(!validForm()) {
 				return false;
 			}
-			console.log(id);
-			id = id;
-			console.log(id);
-			var url = 'credit/reportType/save?id='+id;
+			id = id || '0';
+			var url = 'credit/whilte/save/'+id;
 			form1.action = url;
 			form1.submit();
 			return true;
@@ -20,55 +21,69 @@ var headContent = {
 	};
 </script>
 
+<style>
+.tags {
+	line-height: 22px;
+	height: 22px;
+	border-top: 1px solid rgb(210, 210, 210);
+}
+
+.tags .tags_label {
+	float: left;
+	margin-right: 20px;
+	margin-left: 5px;
+	padding: 5px 1px 1px 3px;
+}
+
+.tags .tags_content {
+	float: left;
+	width: 500px;
+	margin: 5px 5px 0 0;
+	padding: 1px;
+	border: 1px solid #ccc;
+	background: #fff;
+	vertical-align: middle;
+}
+
+.tags .tags_remark {
+	padding: 5px 1px 1px 3px;
+	color: #999999;
+	font-size: 12px;
+	z-index: 10000;
+}
+</style>
 <%
 };
 var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal"
-		role="form" >
+		 role="form" >
 	<input type="hidden" name="model.id" value="${model.id}" />
 	<table class="table">
 		<%  // 列表头部%>
 				<tr>
-					<td>报告名称</td>
+					<td>客户编号</td>
 					<td>
-					<input class="form-control" type="text" name="model.name" value="${model.name }"  valid='vtext' validname='报告名称'  />
+						<input class="form-control" type="text" name="model.custom_id" value="${model.custom_id}" />
 					</td>
 				</tr>
 				<tr>
-					<td>报告英文名称</td>
+					<td>报告类型</td>
 					<td>
-					<input class="form-control" type="text" name="model.name_en" value="${model.name_en }"   validname='报告英文名称'  />
+					<input class="form-control" type="text" name="model.report_id" value="${model.report_id}" />
+					</td>
+					<td>是否在用</td>
+					<td>
+					<input class="form-control" type="text" name="model.used" value="${model.used}" />
 					</td>
 				</tr>
-				
-				<tr>
-					<td>报告繁体名称</td>
-					<td>
-					<input class="form-control" type="text" name="model.name_trad" value="${model.name_trad }"    />
-					</td>
-				</tr>
-				<tr>
-					<td>报告路径</td>
-					<td>
-					<input class="form-control" type="text" name="model.tpl_path" valid='vtext' validname='报告路径' value="${model.tpl_path }"  />
-					</td>
-				</tr>
-				
-				<tr>
-					<td>排序</td>
-					<td>
-					<input class="form-control" type="text" name="model.order_no" valid='vnum_y' validname='排序' value="${model.order_no }"  />
-					</td>
-				</tr> 
 				<tr>
 					<td>备注</td>
-					<td>
-					<textarea class="form-control" type="text" name="model.remarks" >${model.remarks }</textarea>
+					<td colspan="3">
+					<textarea class="form-control" rows="2" cols="20" name="model.remarks">${model.remarks}</textarea>
 					</td>
 				</tr>
 	</table>
-	
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">

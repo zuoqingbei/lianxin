@@ -9,6 +9,7 @@ import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditReportLanguage;
@@ -121,25 +122,14 @@ public class OrdermanagerController extends BaseProjectController{
 		int id=getParaToInt("id");
 		CreditOrderInfo coi=OrderManagerService.service.editOrder(id,this);
 		String continent=coi.get("continent").toString();
-//		String countryid=coi.get("country").toString();
-//		String createBy=coi.getStr("custom_id");
-//		CountryModel cm=OrderManagerService.service.getCountryType(countryid);
-//		String type=cm.get("type");
 		SysUser user = (SysUser) getSessionUser();
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		List<CreditReportType> reportType=OrderManagerService.service.getReportType();
 		List<SysDictDetail> orderType=OrderManagerService.service.getDictByType("ordertype");
 		List<SysDictDetail> reportLanguage=OrderManagerService.service.getDictByType("language");
 		List<CountryModel> country=OrderManagerService.service.getCountrys(continent);
-		List<SysDictDetail> speed=null;
-//		if("0".equals(type)) {
-			//国外
-			speed=OrderManagerService.service.getDictByType("orderspeed");
-//		}else {
-			//国内
-//			speed=OrderManagerService.service.getDictByType("exterreportsspeed");
-//		}
-		
+		List<SysDictDetail> speed=OrderManagerService.service.getDictByType("orderspeed");
+		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
 		setAttr("model", coi);
 		setAttr("user",user);
 		setAttr("customs",customs);
@@ -148,6 +138,7 @@ public class OrdermanagerController extends BaseProjectController{
 		setAttr("country",country);
 		setAttr("speed",speed);
 		setAttr("ordertype",orderType);
+		setAttr("company",company);
 		render(path + "edit.html");
 	}
 	/**
@@ -218,14 +209,16 @@ public class OrdermanagerController extends BaseProjectController{
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		//默认国内
 		List<SysDictDetail> speed=OrderManagerService.service.getDictByType("orderspeed");
-		List<CountryModel> country=OrderManagerService.service.getCountrys("157");
+//		List<CountryModel> country=OrderManagerService.service.getCountrys("");
+		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
 		setAttr("user",user);
 		setAttr("reporttype",reportType);
 		setAttr("reportlanguage",language);
 		setAttr("customs",customs);
 		setAttr("ordertype",orderType);
 		setAttr("speed",speed);
-		setAttr("country",country);
+//		setAttr("country",country);
+		setAttr("company",company);
 		render(path + "add.html");
 	}
 	/**
@@ -283,10 +276,24 @@ public class OrdermanagerController extends BaseProjectController{
 		renderJson(price);
 
 	}
+	/**
+	 * 
+	 * @time   2018年9月4日 下午2:13:00
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  
+	 * @return_type   void
+	 */
 	public void getLanguage() {
 		String countryType=getPara("countrytype", "");
 		String reporttype=getPara("reporttype", "");
 		List<CreditReportLanguage> language=OrderManagerService.service.getLanguage(countryType,reporttype);
+		renderJson(language);
+	}
+	
+	public void getCompany() {
+		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
+		renderJson(company);
 	}
 	
 }

@@ -104,8 +104,8 @@ var bodyContent = {
 			<th name="s.username" class="sorting">创建者</th>
 <!-- 			<th name="orderspeed" class="sorting">来单公司名称</th>
 			<th name="orderspeed" class="sorting">来单公司英文名称</th> -->
-			<th name="t.company" class="sorting">公司名称</th>
-			<th name="t.company_en" class="sorting">公司英文名称</th>
+			<th name="c2.name" class="sorting">公司名称</th>
+			<th name="c2.name_en" class="sorting">公司英文名称</th>
 			<th name="t.receiver_date" class="sorting">接单日期</th>
 			<th name="t.end_date" class="sorting">完成日期</th>
 			<th name="t.update_date" class="sorting">实际完成日期</th> 
@@ -128,15 +128,34 @@ var bodyContent = {
 			<td>${item.reportSpeed}</td>
 			<td>${item.reference_num}</td>
 			<td>${item.email}</td>
-			<td>${item.status}</td>
+			<td>
+			<%if(item.status=='0'){%>
+				提交订单
+			<%}%>
+			<%if(item.status=='1'){%>
+				订单分配
+			<%}%>
+			<%if(item.status=='2'){%>
+				处理中
+			<%}%>
+			<%if(item.status=='3'){%>
+				按照流程处理完毕
+			<%}%>
+			<%if(item.status=='4'){%>
+				订单取消
+			<%}%>
+			<%if(item.status=='5'){%>
+				有相同报告,订单结束
+			<%}%>
+			</td>
 			<td>${item.createName}</td>
 			<!-- <td>${item.company}</td>
 			<td>${item.company_en}</td> -->
-			<td>${item.company_by_report}</td>
-			<td>${item.right_company_name_en}</td>
+			<td>${item.companyName}</td>
+			<td>${item.englishName}</td>
 			<td>${item.receiver_date,dateFormat="yyyy-MM-dd"}</td>
 			<td>${item.end_date,dateFormat="yyyy-MM-dd"}</td>
-			<td>${item.receiver_date,dateFormat="yyyy-MM-dd"}</td>
+			<td>${item.update_date,dateFormat="yyyy-MM-dd"}</td>
 			<td>${item.orderType}</td>
 			
 

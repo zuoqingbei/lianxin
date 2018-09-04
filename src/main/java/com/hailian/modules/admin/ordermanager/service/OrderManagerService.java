@@ -7,6 +7,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSONArray;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
@@ -72,8 +73,8 @@ public class OrderManagerService {
 		try {
 			if (id != 0) {
 				CreditOrderInfo coi = CreditOrderInfo.dao.findById(id);
-				
-				CreditOrderHistory.dao.set("order_id", coi.get("id").toString())
+				CreditOrderHistory his=new CreditOrderHistory();
+				his.set("order_id", coi.get("id").toString())
 					.set("json", JSONArray.toJSONString(coi))
 					.set("change_reason", coi.getStr("remarks")).set("remarks", "0")
 					.set("create_by", coi.get("create_by").toString())
@@ -220,6 +221,11 @@ public class OrderManagerService {
 	public List<CreditReportLanguage> getLanguage(String countryType, String reporttype) {
 		// TODO Auto-generated method stub
 		return CreditReportLanguage.dao.getLanguage(countryType,reporttype);
+	}
+
+	public List<CreditCompanyInfo> getCompany() {
+		
+		return CreditCompanyInfo.dao.getCompany();
 	}
 
 }

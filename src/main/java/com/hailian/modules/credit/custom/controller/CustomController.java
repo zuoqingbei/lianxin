@@ -1,21 +1,13 @@
-package com.hailian.modules.credit.whilte.controller;
+package com.hailian.modules.credit.custom.controller;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.admin.file.service.UploadFileService;
-import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
-import com.hailian.modules.credit.whilte.service.ArchivesWhilteService;
+import com.hailian.modules.credit.custom.model.CustomInfoModel;
+import com.hailian.modules.credit.custom.service.CustomService;
 import com.jfinal.plugin.activerecord.Page;
-/**
- * 白名单维护接口
-* @author doushuihai  
-* @date 2018年9月3日下午2:32:56  
-* @TODO
- */
-@ControllerBind(controllerKey = "/credit/whilte")
-public class WhilteController extends BaseProjectController{
-	private static final String path = "/pages/credit/whilte/whilte_";
+@ControllerBind(controllerKey = "/credit/custom")
+public class CustomController extends BaseProjectController {
+	private static final String path = "/pages/credit/custom/custom_";
 	public void index() {
 		list();
 	}
@@ -26,45 +18,45 @@ public class WhilteController extends BaseProjectController{
 	* @TODO
 	 */
 	public void list() {
-		ArchivesWhilteModel attr = getModelByAttr(ArchivesWhilteModel.class);
+		CustomInfoModel attr = getModelByAttr(CustomInfoModel.class);
 		String custom_id = attr.getStr("custom_id");
 		String report_id = attr.getStr("report_id");
-		Page<ArchivesWhilteModel> page = ArchivesWhilteService.service.getPage(getPaginator(),custom_id,report_id,this);
+		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),custom_id,report_id,this);
 		setAttr("page",page);
 		render(path+"list.html");
 	}
 	/**
 	 * 查看
 	* @author doushuihai  
-	* @date 2018年9月3日下午2:37:33  
+	* @date 2018年9月4日下午2:45:16  
 	* @TODO
 	 */
 	public void view() {
-		ArchivesWhilteModel item = ArchivesWhilteModel.dao.findById(getParaToInt());
+		CustomInfoModel item = CustomInfoModel.dao.findById(getParaToInt());
 		setAttr("item", item);
 		render(path + "view.html");
 	}
 	/**
 	 * 新增跳转
 	* @author doushuihai  
-	* @date 2018年9月3日下午2:40:00  
+	* @date 2018年9月4日下午2:45:28  
 	* @TODO
 	 */
 	public void add() {
 		// 获取页面信息,设置目录传入
-		ArchivesWhilteModel attr = getModel(ArchivesWhilteModel.class);
+		CustomInfoModel attr = getModel(CustomInfoModel.class);
 		setAttr("model", attr);
 		render(path + "add.html");
 	}
 	/**
 	 * 编辑跳转
 	* @author doushuihai  
-	* @date 2018年9月3日下午2:45:58  
+	* @date 2018年9月4日下午2:45:44  
 	* @TODO
 	 */
 	public void edit() {
 		Integer paraToInt = getParaToInt();
-		ArchivesWhilteModel model = ArchivesWhilteModel.dao.findById(paraToInt);
+		CustomInfoModel model = CustomInfoModel.dao.findById(paraToInt);
 		setAttr("model", model);
 		// 查询下拉框
 		render(path + "edit.html");
@@ -72,21 +64,26 @@ public class WhilteController extends BaseProjectController{
 	/**
 	 * 删除
 	* @author doushuihai  
-	* @date 2018年9月3日下午2:53:44  
+	* @date 2018年9月4日下午2:46:04  
 	* @TODO
 	 */
 	public void delete() {
 		// 日志添加
 		Integer id = getParaToInt();
 		Integer userid = getSessionUser().getUserid();
-		ArchivesWhilteService.service.delete(id,userid);//记录上传信息
+		CustomService.service.delete(id,userid);//记录上传信息
 		list();
 	}
+	/**
+	 * 保存
+	* @author doushuihai  
+	* @date 2018年9月4日下午3:00:29  
+	* @TODO
+	 */
 	public void save() {
 		Integer pid = getParaToInt();
-
 		// 日志添加
-		ArchivesWhilteModel model = getModel(ArchivesWhilteModel.class);
+		CustomInfoModel model = getModel(CustomInfoModel.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.put("update_id", userid);
