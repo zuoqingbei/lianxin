@@ -56,7 +56,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 	 */
 	public void delete(Integer id, Integer userid) {
 		String now = DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
-		String sql="update credit_archives_whilte set del_flag=1,update_by=?,update_date=? where id=?";
+		String sql="update credit_custom_info set del_flag=1,update_by=?,update_date=? where id=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(userid);
 		params.add(now);
