@@ -25,13 +25,17 @@ var bodyContent = {
 				<td>模板路径</td>
 				<td>${model.tpl_path!''}</td>
 			</tr>
-			<!-- <tr>
+			<tr>
 				<td>排序</td>
 				<td>${model.order_no!''}</td>
-			</tr> -->
+			</tr> 
 			<tr>
 				<td>备注</td>
 				<td>${model.remarks!''}</td>
+			</tr>
+			<tr>
+				<td>创建日期</td>
+				<td >${model.create_date,dateFormat="yyyy-MM-dd HH:mm:ss"}</td>
 			</tr>
 	</table>
 	

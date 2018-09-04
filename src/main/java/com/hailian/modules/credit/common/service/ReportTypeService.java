@@ -31,7 +31,7 @@ public class ReportTypeService {
 	 * @author lzg
 	 * @return_type   Page<ReportTypeModel>
 	 */
-	public Page<ReportTypeModel> pagerOrder(int pageNumber, int pagerSize, String keyWord ,String orderBy, BaseProjectController c) {
-		return ReportTypeModel.dao.pagerReportType(pageNumber, pagerSize, keyWord , orderBy, c);
+	public Page<ReportTypeModel> pagerOrder(int pageNumber, int pagerSize, String keyWord ,String orderBy,String searchType, BaseProjectController c) {
+		return ReportTypeModel.dao.pagerReportType(pageNumber, pagerSize, keyWord , orderBy,searchType, c);
 	}
 }
