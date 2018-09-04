@@ -90,6 +90,7 @@
 				<th name="t.tpl_path" class="sorting">报告路径</th>
 				<th name="u.realname" class="sorting">创建人</th>
 				<th name="t.remarks" class="sorting">备注</th>
+				<th name="t.create_date" class="sorting">创建日期</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -108,9 +109,6 @@
 				<td title="${item.name!}"><% if (strutil.length(item.name) >
 					25) { %> ${strutil.subStringTo(item.name, 0, 25)}... <% } else { %>
 					${item.name} <% } %></td>
-
-
-
 				<td title="${item.name_en!}"><% if
 					(strutil.length(item.name_en) > 25) { %>
 					${strutil.subStringTo(item.name_en, 0, 25)}... <% } else { %>
@@ -139,6 +137,8 @@
 					(strutil.length(item.remarks) > 25) { %>
 					${strutil.subStringTo(item.remarks, 0, 25)}... <% } else { %>
 					${item.remarks} <% } %></td>
+					
+				<td title="${item.create_date!}">${item.create_date,dateFormat="yyyy-MM-dd HH:mm:ss"}</td>	
 		<td><a href="javascript:void(0);" class="btn btn-sm btn-success"
 			onclick="oper.view(${item.id});">查看</a> <a href="javascript:void(0);"
 			class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>

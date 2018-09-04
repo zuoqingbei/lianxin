@@ -32,6 +32,7 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 		columnnNames.add("name_trad");
 		columnnNames.add("tpl_path");
 		columnnNames.add("remarks");
+		columnnNames.add("create_date");
 	}
 	
 	/**
@@ -69,6 +70,9 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 		if (StringUtil.isNotEmpty(keyWord)) {
 			fromSql.append(" and ");
 			for (int i = 0; i < columnnNames.size(); i++) {
+				if("create_date".equals(columnnNames.get(i))){
+					continue;
+				}
 				if(i!=0){
 					fromSql.append(" || ");
 				}
