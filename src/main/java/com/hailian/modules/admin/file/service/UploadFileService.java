@@ -47,7 +47,7 @@ public class UploadFileService {
 		if(StringUtils.isNotBlank(type)){
 			for(SysDictDetail dict:diclist){
 				if(type.equals(dict.getStr("detail_code"))){
-					model.set("ext_id", dict.get("id"));//数据字典相关参数
+					model.set("ext_id", dict.get("detail_id"));//数据字典相关参数
 					break;
 				}
 			}
