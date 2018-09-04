@@ -1,7 +1,7 @@
 ﻿
 <% var orderspeed = tempDict.getSysDictDetailString('orderspeed',attr.order_speed !); %>
 <% var ordertype = tempDict.getSysDictDetailString('ordertype',attr.order_type !); %>
-<% var country = tempDict.getSysDictDetailString('country',attr.country_type !); %>
+<% var countrytype = tempDict.getSysDictDetailString('country',attr.country_type !); %>
 <% var usabled = tempDict.getSysDictDetailString('usabled',attr.usabled !); %>
 ﻿<% 
 	var headContent = {
@@ -27,26 +27,22 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 		},
 		add : function() {
-			var url = 'credit/pricemanager/addReport;
+			var url = 'credit/pricemanager/addReport';
 			var title = '添加报告价格信息';
 			Iframe(url, this.width, this.height, title);
 		},
 		edit : function(id) {
-			var url = 'credit/pricemanager/edit/'+id + '?dict_type='+form1["attr.dict_type"].value;
+			var url = 'credit/pricemanager/edit/'+id 
 			var title = '修改报告价格';
 			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
-			var url = 'credit/pricemanager/delete/'+id;
+			var url = '/credit/pricemanager/deleteReport'+id;
 			var title = '确认要删除该报告价格信息？';
 			Confirm(title, function() {
 				form1.action = url;
 				form1.submit();
 			});
-		}
-		,edit_dict : function(){
-			var url = 'credit/pricemanager/edit_dict/'+$('[name="attr.dict_type"]').val();
-			Iframe(url,350,250,'类型操作');
 		}
 	};
 	//显示Menu索引
@@ -75,7 +71,12 @@ var bodyContent = {
 		   <select name="attr.report_type" class="form-control" style="width: 200px;">
 				<option value="" >请选择</option>
 							 <% for(item in reporttype){ %>
-							 	<option  value="${item.id}">${item.name}</option>
+							 	<% if((attr.report_type+"")==(item.id+"")){ %>
+							 		<option selected="selected"  value="${item.id}">${item.name}</option>
+							 	<% }else{ %>
+							 		<option  value="${item.id}">${item.name}</option>
+							 	<% } %>
+							 	
 							  <% } %>
 							  
 			</select> 
@@ -89,22 +90,21 @@ var bodyContent = {
 		<div class="form-group">
 		   <label  class="control-label">订单类型</label>
 		   <select name="attr.order_type" class="form-control" style="width: 200px;">
-						${ordertype}
+						${ordertype!}
 			</select> 
 		</div>
 		<div class="form-group">
 		   <label  class="control-label">国家</label>
-		   <select name="attr.country" class="form-control" style="width: 200px;">
-						${country}
+		      <select name="attr.country_type" class="form-control" style="width: 200px;">
+						${countrytype!}
 			</select> 
 		</div>
 				<div class="form-group">
 		   <label  class="control-label">是否启用</label>
 		   <select name="attr.usabled" class="form-control" style="width: 200px;">
-					${usabled}
+					${usabled!}
 			</select> 
 		</div>
-		
 		<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
 		 		<span class="glyphicon glyphicon-search"></span> 查询
 		</button>
@@ -119,7 +119,6 @@ var bodyContent = {
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
-			
 				<th name="t.id" class="sorting">序号</th>
 				<th name="os.detail_name" class="sorting">报告速度</th>
 
@@ -127,13 +126,11 @@ var bodyContent = {
 				<th name="ot.detail_name" class="sorting">订单类型</th>
 				<th name="c.name" class="sorting">国家</th>			
 				<th name="t.points" class="sorting">点数</th>
-			
 				<th name="t.price" class="sorting">价格</th>
 				<th name="t.currency" class="sorting">币种</th>
 				<th name="t.usabled" class="sorting">是否禁用</th>
-				<th name="t.del_flag" class="sorting">是否删除</th>
 				<th name="t.create_date" class="sorting">创建日期</th>
-				<th name="t.update_by" class="sorting">修改人</th>
+				<th name="t.update_by" class="sorting">创建人</th>
 				<th name="t.update_date" class="sorting">修改时间</th>
 				<th>操作</th>
 			</tr>
@@ -141,27 +138,22 @@ var bodyContent = {
 		<tbody>
 		<% for(item in page.list) { %>
 			<tr>
-				
 				<td>${item.id}</td>
 				<td>${item.orderSpeed}</td>	
 				<td>${item.reportType}</td>
-				<!-- startl -->	
 				<td>${item.orderType}</td>
 				<td>${item.countryName}</td>
-			
 				<td>${item.points}</td>
 				<td>${item.price}</td>
 				<td>${item.currency}</td>
-				<td>${item.usabled}</td>
-				<td>${item.del_flag}</td>
+				<td>${item.usabledName}</td>
 				<td>${item.credate_date}</td>
 				<td>${item.realname}</td>   
 				<td>${item.update_date}</td>
-				<!-- endl -->
 				<td>
-					<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
-					<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.detail_id});">修改</a> 
-					<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.detail_id});">删除</a></td>
+					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.view(${item.id});">查看</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.id});">修改</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.id});">删除</a></td>
 				</td>
 			</tr>
 		<% } %>

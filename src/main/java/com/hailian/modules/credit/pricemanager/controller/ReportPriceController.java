@@ -9,6 +9,7 @@ import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditReportType;
+import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
 import com.hailian.system.dict.SysDictDetail;
@@ -38,17 +39,14 @@ public class ReportPriceController extends BaseProjectController {
 	@ApiOperation(url = "/credit/pricemanager/list", httpMethod = "get", description = "获取报告价格列表")
 	public void list() {
 		ReportPrice attr = getModelByAttr(ReportPrice.class);
-		String type = attr.getStr("reportType");
-		String speed = attr.getStr("orderSpeed");
-		String order = attr.getStr("orderType");
-		String country = attr.getStr("countryType");
-		String usable = attr.getStr("usabled");
 		String orderBy = getBaseForm().getOrderBy();
-		Page<ReportPrice> pager = ReportPriceService.service.getPage(getPaginator(), speed, order, country, usable,
+		Page<ReportPrice> pager = ReportPriceService.service.getPage(getPaginator(), attr,
 				orderBy, this);
 		List<CreditReportType> reportType = ReportPriceService.service.getReportType("");
 		setAttr("page", pager);
 		setAttr("reporttype", reportType);
+		setAttr("attr", attr);
+		keepPara();
 		render(path + "list.html");
 	}
 //
