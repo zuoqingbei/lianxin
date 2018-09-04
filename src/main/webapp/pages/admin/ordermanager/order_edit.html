@@ -14,6 +14,9 @@ include("/pages/template/head.html"){}
                  return false;
              }
             id = id || '0';
+
+            alert( $("select[name='attr.country']").val())
+            
             var url = 'admin/ordermanager/save?id='+id;
             form1.action = url;
             form1.submit();
@@ -21,7 +24,8 @@ include("/pages/template/head.html"){}
         },
         customChange:function(){
         	var value=$("#customid").find("option:selected").attr("m-type");
-        	$("input[name='attr.create_by']").val(value);
+        	alert(value)
+        	$("input[name='customName']").val(value);
         },
     sandbarChange:function(){
     	 var grade = document.getElementById("sandbar");
@@ -34,8 +38,8 @@ include("/pages/template/head.html"){}
     	        dataType:"json",
     	        success: function(data) {
     	           $.each(data,function(index,item){
-    	        	   console.log(index);
-    	        	   console.log(item);
+/*     	        	   console.log(index);
+    	        	   console.log(item); */
    					 if(item.id='${model.country}'){
    						 html+=("<option selected='selected' m-type='"+item.type+"' value='"+item.id+"'>"+item.name+"</option>");
    					 }else{
@@ -45,7 +49,8 @@ include("/pages/template/head.html"){}
     	        	 //option.val()
     	           });
     	           $("select[name='attr.country']").html(html);
-					oper.speedChange();
+    	           
+					oper.countryChange();
     	           
     	        },
     	        error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -56,40 +61,96 @@ include("/pages/template/head.html"){}
     	    })
     	 
     },
-        speedChange:function(){
-        	var value=$("#country").find("option:selected").attr("m-type");
-        	 var html="";
-        	 $.ajax({
-     	        url:'admin/ordermanager/getSpeed?countrytype='+value,
-     	        type:"get",
-     	        dataType:"json",
-     	        success: function(data) {
-     	          for(index in data){
-     	        	  html+="<option  m-type='"+data[index].detail_content+"' value='"+data[index].detail_id+"'>"+data[index].detail_name+"</option>"
-     	          }
-     	         $("select[name='attr.speed']").html(html)
-     	       oper.usetimeChange();
-     	         
-     	        },
-     	        error: function(XMLHttpRequest, textStatus, errorThrown) {
-     	            alert(XMLHttpRequest.status);
-     	            alert(XMLHttpRequest.readyState);
-     	            alert(textStatus);
-     	        },
-     	    })
-        	
-        },
-        
-        usetimeChange:function(){
-        	var value=$("#speed").find("option:selected").attr("m-type");
-        	$("#usetime").val(value)
-        },
-      /*   textarea:function(){
-        	console.log("111")
-        	$("#remark").val("${model.remarks}");
-        	console.log("222")
-        }, */
-
+    countryChange:function(){
+    	//查询用时
+    	oper.usetimeChange();
+    	//查询费用
+    	oper.priceChange();
+    	//查询语言
+    	oper.languageChange()
+    },
+    reportTypeChange:function(){
+    	//查询用时
+    	oper.usetimeChange();
+    	//查询费用
+    	oper.priceChange();
+    	//查询语言
+    	oper.languageChange()
+    },
+    speedChange:function(){
+    	//查询用时
+    	oper.usetimeChange();
+    	//查询费用
+    	oper.priceChange();
+    },
+    usetimeChange:function(){
+    	var value1=$("#country").find("option:selected").val();
+    	var value2=$("#speed").find("option:selected").val();
+    	var value3=$("#reporttype").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	  if(data!=null){
+		        		  $("#usetime").val(data.use_time)
+		        		  $("#usertimeid").val(data.id)
+		        	  }  
+		        },
+		        error: function(XMLHttpRequest, textStatus, errorThrown) {
+		            alert(XMLHttpRequest.status);
+		            alert(XMLHttpRequest.readyState);
+		            alert(textStatus);
+		        },
+		    });
+    },
+    priceChange:function(){
+    	var value1=$("#country").find("option:selected").val();
+    	var value2=$("#speed").find("option:selected").val();
+    	var value3=$("#reporttype").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"admin/ordermanager/getPrice?countrytype="+value1+"&speed="+value2+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	  if(data!=null){
+		        		  $("#usetime").val(data.price)
+		        		  $("#usertimeid").val(data.id)
+		        	  }
+		        	
+		          },
+		        error: function(XMLHttpRequest, textStatus, errorThrown) {
+		            alert(XMLHttpRequest.status);
+		            alert(XMLHttpRequest.readyState);
+		            alert(textStatus);
+		        },
+		    });
+    }
+    languageChange:function(){
+    	var value1=$("#country").find("option:selected").val();
+    	var value3=$("#reporttype").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"admin/ordermanager/getLanguage?countrytype="+value1+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	if(data!=null){
+		        		for(item in data){
+		        			html+="<option  value='"+data[item].language_id+"'>"+data[item].languageName+"</option>";
+		        		}
+		        	}
+		        	$("select[name='report_language']").html(html);
+		          },
+		        error: function(XMLHttpRequest, textStatus, errorThrown) {
+		            alert(XMLHttpRequest.status);
+		            alert(XMLHttpRequest.readyState);
+		            alert(textStatus);
+		        },
+		    });
+    }
     };
 //  oper.sandbarChange();
 //	oper.textarea();
@@ -108,30 +169,41 @@ var bodyContent = {
 		<tr>
 			<td>客户ID</td>
 			<td>
-				<select id="customid" name="attr.continent" valid="vselect" class="form-control" validname="客户id" onchange="oper.customChange()">
-					
+				<select id="customid" name="attr.custom_id" valid="vselect" class="form-control" validname="客户id" onchange="oper.customChange()">
+					<% if(model==null){ %>
+						<option value="">请选择</option>
+						<%}%>
 					 <% for(item in customs){ %>
 							 	<% if(model==null){ %>
-							 	<option value="" selected="selected"></option>
-							 	<% } %>
+							 	<option m-type="${item.name}"  value="${item.id}" >${item.id}</option>
+							 	<% }else{ %>
+							 	
 							 	<%if(model.custom_id==item.id){%>
-							 	 <option m-type="${item.name}" value="${item.id}" selected="selected">${item.id}</option>
+							 	 <option m-type="${model.customName}" value="${model.custom_id}" selected="selected">${model.custom_id}</option>
 							 	<% }else{ %>
 							 		<option m-type="${item.name}"  value="${item.id}" >${item.id}</option>
-							  <% }} %>
+							  <% }} }%>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td>客户用户名</td>
 			<td>
-				<input class="form-control" type="text" name="attr.create_by"
-					   value="${model.create_by}" valid="vtext" validname="客户用户名" readonly="readonly"/>			
+				<input class="form-control" type="text" name="customName"
+					   value="${model.customName}" valid="vtext" validname="客户用户名" readonly="readonly"/>			
+			</td>
+		</tr>
+		<tr>
+			<td>接单日期</td>
+			<td>
+				<input type="text" name="attr.receiver_date" class="form-control" 
+					value="${model.receiver_date}" valid="vtext" validname="接单日期" 
+					 placeholder="接单日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
 			</td>
 		</tr>
 			<tr>
-			<td>地区</td>
-			<td>
+				<td>地区</td>
+				<td>
 	
 				   <select id="sandbar" name="attr.continent" valid="vselect" class="form-control" onchange="oper.sandbarChange()">
 							 <% for(item in sandbar){ %>
@@ -148,7 +220,7 @@ var bodyContent = {
 		<tr>
 			<td>国家</td>
 			<td>
-				<select id="country" name="attr.country"  class="form-control" valid="vselect" validname="国家"onchange="oper.speedChange()">
+				<select id="country" name="attr.country"  class="form-control" valid="vselect" validname="国家" onchange="oper.countryChange()">
 					<% for(item in country){ %>
 							 	<% if(model.country==(item.id+"")){ %>
 							 	 <option selected="selected" m-type="${item.type}" value="${item.id}">${item.name}</option>
@@ -159,20 +231,13 @@ var bodyContent = {
 				</select>
 			</td>
 		</tr>
-		<tr>
-			<td>接单日期</td>
-			<td>
-				<input type="text" name="attr.receiver_date" class="form-control" 
-					value="${model.receiver_date}" valid="vtext" validname="接单日期" 
-					 placeholder="接单日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
-			</td>
-		</tr>
+		
 	
 		
 		<tr>
 			<td>报告类型</td>
 			<td>
-			 <select  name="attr.report_type" valid="vselect" class="form-control" style="width: 200px;">
+			 <select id="reporttype" name="attr.report_type" valid="vselect" validname="报告类型" class="form-control" onchange="oper.reportTypeChange()">
 					<% for(item in reporttype){ %>
 						<% if(model.report_type==(item.id+"")){ %>
 								<option value="${item.id}" selected="selected">${item.name}</option>
@@ -182,6 +247,45 @@ var bodyContent = {
 						
 					<% } %>
 				</select> 
+			</td>
+		</tr>
+		<tr>
+			<td>速度</td>
+			<td>
+				<select id="speed" name="attr.speed" class="form-control" valid="vselect" validname="速度"onchange="oper.speedChange()">
+					<% for(item in speed){ %>
+							 	<% if(model.speed==(item.detail_id+"")){ %>
+							 	 <option selected="selected" m-type="${item.detail_content}" value="${item.detail_id}">${item.detail_name}</option>
+							 	<% }else{ %>
+							 	 <option m-type="${item.detail_content}" value="${item.detail_id}">${item.detail_name}</option>
+							 	<% } %>
+							  <% } %>
+				</select>
+			</td>
+		</tr>
+			<tr>
+			<td>报告用时</td>
+			<td>
+				<% if(model!=null){ %>
+				<input id="usetime" name="attr.user_time" class="form-control" valid="vtext" validname="报告用时" value="${model.user_time}" readonly="readonly">
+				<input id="" name="attr.user_time_id" class="form-control"  value="${model.user_time_id}" type="hidden">
+					<%}else{%>
+					<input id="usetime" name="attr.user_time" class="form-control" valid="vtext" validname="报告用时" value="0" readonly="readonly">
+					<input id="usertimeid" name="attr.user_time_id" class="form-control" value="" type="hidden">
+					<%}%>
+				
+			</td>
+		</tr>
+		<tr>
+			<td>费用</td>
+			<td>
+				<% if(model!=null){ %>
+				<input id="price" name="price" class="form-control" valid="vtext" validname="报告费用" value="${model.price}" readonly="readonly">
+				<input id="priceid" name="attr.price_id" class="form-control" valid="vtext" validname="报告费用" value="${model.price_id}" type="hidden">
+					<%}else{%>
+					<input id="price" name="price" class="form-control" valid="vtext" validname="报告用时" value="0" readonly="readonly">
+					<input id="priceid" name="attr.price_id" class="form-control" valid="vtext" validname="报告费用" value="" type="hidden">
+					<%}%>			
 			</td>
 		</tr>
 		
@@ -205,12 +309,11 @@ var bodyContent = {
 		<tr>
 			<td>报告语言</td>
 			<td>
-			 <select  name="attr.report_language" valid="vselect" class="form-control" style="width: 200px;">
-					<% for(item in reportlanguage){ %>
-						<% if(model.report_language==(item.detail_id+"")){ %>
-								<option value=${item.detail_id} selected="selected">${item.detail_name}</option>
+			 <select id="reportlanguage"  name="attr.report_language" valid="vselect" class="form-control" style="width: 200px;">
+						<% if(model==null){ %>
+								<option value="" selected="selected"></option>
 							 	<% }else{ %>
-							 	 <option value=${item.detail_id}>${item.detail_name}</option>
+							 	 <option value=${model.report_language}>${model.reportLanguage}</option>
 							 	<% } %>
 						
 					<% } %>
@@ -223,35 +326,38 @@ var bodyContent = {
 				<input class="form-control" type="text" name="attr.company" valid="vtext" validname="公司名称" value="${model.company}"  />
 			</td>
 		</tr>
+		
+	
 		<tr>
-			<td>速度</td>
+			<td>到期日</td>
 			<td>
-				<select id="speed" name="attr.speed" class="form-control" valid="vselect" validname="速度"onchange="oper.usetimeChange()">
-					<% for(item in speed){ %>
-							 	<% if(model.speed==(item.detail_id+"")){ %>
-							 	 <option selected="selected" m-type="${item.detail_content}" value="${item.detail_id}">${item.detail_name}</option>
-							 	<% }else{ %>
-							 	 <option m-type="${item.detail_content}" value="${item.detail_id}">${item.detail_name}</option>
-							 	<% } %>
-							  <% } %>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>报告用时</td>
-			<td>
-				<% if(model!=null){ %>
-				<input id="usetime" name="attr.user_time" class="form-control" valid="vtext" validname="报告用时" value="${model.user_time}" readonly="readonly">
-					<%}else{%>
-					<input id="usetime" name="attr.user_time" class="form-control" valid="vtext" validname="报告用时" value="5" readonly="readonly">
-					<%}%>
+				<input id="usetime" name="" class="form-control" value="${model.user_time}" readonly="readonly">
 				
 			</td>
 		</tr>
+		
 		<tr>
 			<td>客户参考号</td>
 			<td>
 				<input class="form-control" type="text" name="attr.reference_num" value="${model.reference_num!''}"  />
+			</td>
+		</tr>
+		<tr>
+			<td>公司id</td>
+			<td>
+				<input class="form-control" type="text" name="" value=""  />
+			</td>
+		</tr>
+		<tr>
+			<td>公司名称</td>
+			<td>
+				<input class="form-control" type="text" name="" value=""  />
+			</td>
+		</tr>
+		<tr>
+			<td>公司中文名</td>
+			<td>
+				<input class="form-control" type="text" name="" value=""  />
 			</td>
 		</tr>
 		<tr>
@@ -297,7 +403,12 @@ var bodyContent = {
 				<input class="form-control" type="file" name="" value=""  />
 			</td>
 		</tr>
-		<input name="attr.update_by" type="hidden" value="${user.username}">
+		<input name="attr.update_by" type="hidden" value="${user.userid}">
+		<% if(model==null || model.create_by==null){ %>
+			<input name="attr.create_by" type="hidden" value="${user.userid}">
+		<%}else{%>
+			<input name="attr.create_by" type="hidden" value="${model.create_by}">
+		<%}%>
 		<input name="attr.update_date" type="hidden" value="">
 	</table>
 
