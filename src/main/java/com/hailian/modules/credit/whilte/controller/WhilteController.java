@@ -94,7 +94,7 @@ public class WhilteController extends BaseProjectController{
 		if (pid != null && pid > 0) { // 更新
 			model.update();
 		} else { // 新增
-			model.remove("detail_id");
+			model.remove("id");
 			model.put("create_by", userid);
 			model.put("create_date", now);
 			model.save();
