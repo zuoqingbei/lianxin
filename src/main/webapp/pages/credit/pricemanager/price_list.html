@@ -1,3 +1,8 @@
+﻿
+<% var orderspeed = tempDict.getSysDictDetailByType('orderspeed'); %>
+<% var ordertype = tempDict.getSysDictDetailByType('ordertype'); %>
+<% var country = tempDict.getSysDictDetailByType('country'); %>
+<% var usabled = tempDict.getSysDictDetailByType('usabled'); %>
 ﻿<% 
 	var headContent = {
 	include("/pages/template/head.html"){}
@@ -17,38 +22,37 @@ jQuery(function($) {
 			this.form.submit();
 		},
 		view : function(id) {
-			var url = 'system/dict/view/'+id;
-			var title = '查看数据字典';
+			var url = 'credit/pricemanager/view/'+id;
+			var title = '查看报告价格';
 			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 		},
 		add : function() {
-			var url = 'system/dict/add?dict_type='+form1["attr.dict_type"].value;
+			var url = 'credit/pricemanager/addReport?dict_type='+form1["attr.dict_type"].value;
 				
 			
-			var title = '添加数据字典';
+			var title = '添加报告价格';
 			Iframe(url, this.width, this.height, title);
 		},
 		edit : function(id) {
-			var url = 'system/dict/edit/'+id + '?dict_type='+form1["attr.dict_type"].value;
-			var title = '修改数据字典';
-			Iframe(url, this.width, this.height, title);
+			var url = 'credit/pricemanager/edit/'+id + '?dict_type='+form1["attr.dict_type"].value;
+			var title = '修改报告价格';
+			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
-			var url = 'system/dict/delete/'+id;
-			var title = '确认要删除该数据字典信息？';
+			var url = 'credit/pricemanager/delete/'+id;
+			var title = '确认要删除该报告价格信息？';
 			Confirm(title, function() {
 				form1.action = url;
 				form1.submit();
 			});
 		}
 		,edit_dict : function(){
-			var url = 'system/dict/edit_dict/'+$('[name="attr.dict_type"]').val();
+			var url = 'credit/pricemanager/edit_dict/'+$('[name="attr.dict_type"]').val();
 			Iframe(url,350,250,'类型操作');
 		}
 	};
 	//显示Menu索引
-	showMenu('page_system');
-	showMenu('page_dict');
+	showMenu('page_reportprice');
 });
 
 //分页
@@ -77,6 +81,43 @@ var bodyContent = {
 							  <% } %>
 			</select> 
 		</div>
+		<div class="form-group">
+		   <label  class="control-label">报告速度</label>
+		   <select name="attr.orderspeed" class="form-control" style="width: 200px;">
+						<option value="" ></option>
+							 <% for(item in orderspeed){ %>
+							 	<option  value="${item.id}">${item.detail_name}</option>
+							  <% } %>
+			</select> 
+		</div>
+		<div class="form-group">
+		   <label  class="control-label">订单类型</label>
+		   <select name="attr.ordertype" class="form-control" style="width: 200px;">
+						<option value="" ></option>
+							 <% for(item in ordertype){ %>
+							 	<option  value="${item.id}">${item.detail_name}</option>
+							  <% } %>
+			</select> 
+		</div>
+		<div class="form-group">
+		   <label  class="control-label">国家</label>
+		   <select name="attr.country" class="form-control" style="width: 200px;">
+						<option value="" ></option>
+							 <% for(item in country){ %>
+							 	<option  value="${item.id}">${item.detail_name}</option>
+							  <% } %>
+			</select> 
+		</div>
+				<div class="form-group">
+		   <label  class="control-label">是否启用</label>
+		   <select name="attr.usable" class="form-control" style="width: 200px;">
+						<option value="" ></option>
+							 <% for(item in usabled){ %>
+							 	<option  value="${item.id}">${item.usabled}</option>
+							  <% } %>
+			</select> 
+		</div>
+		
 		<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
 		 		<span class="glyphicon glyphicon-search"></span> 查询
 		</button>
@@ -86,27 +127,28 @@ var bodyContent = {
 		<button type="button" class="btn btn-default" onclick="oper.add();">
 		 		<span class="glyphicon glyphicon-plus"></span> 新 增
 		</button>	
-		<button type="button" class="btn btn-default" onclick="oper.edit_dict();">
-		 		<span class="glyphicon glyphicon-edit"></span> 操作类型
-		</button>
 	</div>
-	
-	<!-- 数据列表 -->
+<!-- 数据列表 -->
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
 			
-				<th name="id" class="sorting">序号</th>
-				<th name="report_type" class="sorting">报告类型</th>
-				<th name="order_speed" class="sorting">报告速度</th>
-				<!-- startl -->				
-				<th name="country_type" class="sorting">国家</th>
-					<th name="order_type" class="sorting">订单类型</th>
-				<!-- endl -->
-				<th name="usabled" class="sorting">是否禁用</th>
-				<th name="del_flag" class="sorting">是否删除</th>
-				<th name="update_by" class="sorting">修改人</th>
-				<th name="update_date" class="sorting">修改时间</th>
+				<th name="t.id" class="sorting">序号</th>
+				<th name="t.order_speed" class="sorting">报告速度</th>
+
+				<th name="t.name_en" class="sorting">报告类型</th>
+				<th name="t.order_type" class="sorting">订单类型</th>
+				<th name="c.country" class="sorting">国家</th>			
+		
+				<th name="t.points" class="sorting">点数</th>
+			
+				<th name="t.price" class="sorting">价格</th>
+				<th name="t.currency" class="sorting">币种</th>
+				<th name="t.usabled" class="sorting">是否禁用</th>
+				<th name="t.del_flag" class="sorting">是否删除</th>
+				<th name="t.create_date" class="sorting">创建日期</th>
+				<th name="t.update_by" class="sorting">修改人</th>
+				<th name="t.update_date" class="sorting">修改时间</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -115,16 +157,19 @@ var bodyContent = {
 			<tr>
 				
 				<td>${item.id}</td>
-								
-				<td>${item.order_type}</td>
+				<td>${item.orderSpeed}</td>	
+				<td>${item.reportType}</td>
 				<!-- startl -->	
-				<td>${item.order_speed}</td>
-				
-				<td>${item.report_type}</td>
-				<td>${item.country_type}</td>
+				<td>${item.orderType}</td>
+				<td>${item.countryName}</td>
+			
+				<td>${item.points}</td>
+				<td>${item.price}</td>
+				<td>${item.currency}</td>
 				<td>${item.usabled}</td>
 				<td>${item.del_flag}</td>
-				<td>${item.update_by}</td>   
+				<td>${item.credate_date}</td>
+				<td>${item.realname}</td>   
 				<td>${item.update_date}</td>
 				<!-- endl -->
 				<td>
@@ -144,3 +189,4 @@ var bodyContent = {
 
 <% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
 <%} %>
+

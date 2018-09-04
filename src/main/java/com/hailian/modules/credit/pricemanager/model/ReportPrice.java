@@ -21,6 +21,51 @@ import com.jfinal.plugin.activerecord.Page;
 public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	private static final long serialVersionUID = 1L;
 	public static final ReportPrice dao = new ReportPrice();
+	private String orderType;
+	private String orderSpeed;
+	private String reportType;
+	private String countryName;
+	private String realname;
+
+	public String getOrderType() {
+		return get("orderType");
+	}
+
+	public void setOrderType(String orderType) {
+		set("orderType", orderType);
+	}
+
+	public String getOrderSpeed() {
+		return get("orderSpeed");
+	}
+
+	public void setOrderSpeed(String orderSpeed) {
+		set("orderSpeed", orderSpeed);
+	}
+
+	public String getReportType() {
+		return get("reportType");
+	}
+
+	public void setReportType(String reportType) {
+		set("reportType", reportType);
+	}
+
+	public String getCountryName() {
+		return get("countryName");
+	}
+
+	public void setCountryName(String countryName) {
+		set("countryName", countryName);
+	}
+
+	public String getRealname() {
+		return get("realname");
+	}
+
+	public void setRealname(String realname) {
+		set("realname", realname);
+	}
 
 	/**
 	 * 

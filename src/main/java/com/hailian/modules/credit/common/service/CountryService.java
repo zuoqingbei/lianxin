@@ -35,8 +35,18 @@ public class CountryService {
 		return CountryModel.dao.find(sql,params.toArray());
 	
 	}
-	public Map<Object, Object> CountrySelect(BaseProjectController c) {
-		String sql="select continent,continent_en from credit_country where del_flag=0 group by continent order by order_no";
+	public List<CountryModel> CountrySelect(String content,BaseProjectController c) {
+		List<Object> params=new ArrayList<Object>();
+			StringBuffer sql=new StringBuffer("select * from credit_country where del_flag=0  ");
+			if(StringUtils.isNotBlank(content)) {
+				sql.append(" and continent_en=? order by order_no");
+				params.add(content);
+			}else {
+				sql.append("  order by continent, order_no");
+			}
+			
+		return  CountryModel.dao.find(sql.toString(),params.toArray());
+		/*String sql="select * from credit_country where del_flag=0 group by continent order by order_no";
 		List<CountryModel> continentList = CountryModel.dao.find(sql);
 		Map<Object,Object> map=new HashMap<Object, Object>();
 		for(CountryModel model:continentList){
@@ -46,7 +56,7 @@ public class CountryService {
 			List<CountryModel> countrylist = CountryModel.dao.find(innerSql,params.toArray());
 			map.put(model, countrylist);
 		}
-		return map;
+		return map;*/
 	}
 }
 

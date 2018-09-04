@@ -116,24 +116,24 @@ public class OrdermanagerController extends BaseProjectController{
 		int id=getParaToInt("id");
 		CreditOrderInfo coi=OrderManagerService.service.editOrder(id,this);
 		String continent=coi.get("continent").toString();
-		String countryid=coi.get("country").toString();
+//		String countryid=coi.get("country").toString();
 //		String createBy=coi.getStr("custom_id");
-		CountryModel cm=OrderManagerService.service.getCountryType(countryid);
-		String type=cm.get("type");
+//		CountryModel cm=OrderManagerService.service.getCountryType(countryid);
+//		String type=cm.get("type");
 		SysUser user = (SysUser) getSessionUser();
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		List<CreditReportType> reportType=OrderManagerService.service.getReportType();
 		List<SysDictDetail> orderType=OrderManagerService.service.getDictByType("ordertype");
-		List<SysDictDetail> reportLanguage=OrderManagerService.service.getDictByType("reportlanguage");
+		List<SysDictDetail> reportLanguage=OrderManagerService.service.getDictByType("language");
 		List<CountryModel> country=OrderManagerService.service.getCountrys(continent);
 		List<SysDictDetail> speed=null;
-		if("0".equals(type)) {
+//		if("0".equals(type)) {
 			//国外
-			speed=OrderManagerService.service.getDictByType("interreportsspeed");
-		}else {
+			speed=OrderManagerService.service.getDictByType("reportsspeed");
+//		}else {
 			//国内
-			speed=OrderManagerService.service.getDictByType("exterreportsspeed");
-		}
+//			speed=OrderManagerService.service.getDictByType("exterreportsspeed");
+//		}
 		
 		setAttr("model", coi);
 		setAttr("user",user);
@@ -206,17 +206,19 @@ public class OrdermanagerController extends BaseProjectController{
 	public void add() {
 		List<CreditReportType> reportType=OrderManagerService.service.getReportType();
 		List<SysDictDetail> orderType=OrderManagerService.service.getDictByType("ordertype");
-		List<SysDictDetail> reportLanguage=OrderManagerService.service.getDictByType("reportlanguage");
+		List<SysDictDetail> language=OrderManagerService.service.getDictByType("language");
 		SysUser user = (SysUser) getSessionUser();
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		//默认国内
 		List<SysDictDetail> speed=OrderManagerService.service.getDictByType("orderspeed");
+		List<CountryModel> country=OrderManagerService.service.getCountrys("157");
 		setAttr("user",user);
 		setAttr("reporttype",reportType);
-		setAttr("reportlanguage",reportLanguage);
+		setAttr("reportlanguage",language);
 		setAttr("customs",customs);
 		setAttr("ordertype",orderType);
 		setAttr("speed",speed);
+		setAttr("country",country);
 		render(path + "add.html");
 	}
 	/**
