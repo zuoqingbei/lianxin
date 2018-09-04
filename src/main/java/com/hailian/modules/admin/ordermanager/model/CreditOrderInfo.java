@@ -121,6 +121,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		sql.append(" from credit_order_info t ");
 		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
 		sql.append(" left join credit_country c on c.id=t.country ");
+		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
 		sql.append(" left join sys_user s on s.userid=t.create_by ");
 		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
 		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
