@@ -152,7 +152,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if(!c.isAdmin(c.getSessionUser())){
 			sql.append(" and t.create_by=? ");
-			params.add(c.getSessionUser().getUserid());//传入的参数
+			params.add(c.getSessionUser().getUserid());
 		}
 
 		if (StringUtils.isNotBlank(custom_id)) {
