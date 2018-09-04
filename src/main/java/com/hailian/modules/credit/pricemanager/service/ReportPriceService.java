@@ -56,7 +56,6 @@ public class ReportPriceService {
 	 * @return_type   void
 	 */
 	public ReportPrice add(ReportPrice reportprice) {
-//		reportprice.set("price", 200);
 		reportprice.save();
 		return reportprice;
 	}
@@ -71,18 +70,15 @@ public class ReportPriceService {
 	public boolean updateDelFlagById(String id) {
 		return ReportPrice.dao.updateDelFlagById(id);
 	}
-/**
- * 
- * @time   2018年9月3日 下午5:19:25
- * @author dyc
- * @todo   报告类型下拉框
- * @return_type   List<CreditReportType>
- */
+
+	/**
+	 * 
+	 * @time   2018年9月3日 下午5:19:25
+	 * @author dyc
+	 * @todo   报告类型下拉框
+	 * @return_type   List<CreditReportType>
+	 */
 	public List<CreditReportType> getReportType(String type) {
-		StringBuffer sql = new StringBuffer("from credit_report_type r where r.del_flag=0");
-		if (StringUtils.isNotEmpty(type)) {
-			sql.append(" AND r.report_type = '").append(type).append("'");
-		}
 		List<CreditReportType> list = CreditReportType.dao.getReportType();
 
 		return list;
@@ -95,35 +91,50 @@ public class ReportPriceService {
 	 * @todo   向前台页面展示数据
 	 * @return_type   Page<ReportPrice>
 	 */
-	public Page<ReportPrice> getPage(Paginator paginator, String speed, String order, String country, String usable,
-			BaseProjectController c) {
-		StringBuffer sql = new StringBuffer(" from  credit_report_price t "
-				+ " LEFT JOIN sys_dict_detail ot on ot.detail_id=t.order_type "
-				+ " LEFT JOIN sys_dict_detail os on os.detail_id=t.order_speed"
-				+ " LEFT JOIN credit_report_type rt on rt.id=t.report_type"
-				+ " LEFT JOIN credit_country c on c.id=t.country_type"
-				+ " LEFT JOIN sys_user u on u.userid=t.create_by"
-				+ " where t.del_flag=0 and ot.del_flag=0 and os.del_flag=0 and rt.del_flag=0 and c.del_flag=0");
-
-		if (StringUtils.isNotEmpty(speed)) {
-			sql.append(" AND t.order_speed = '").append(speed).append("'");
-			if (StringUtils.isNotEmpty(order)) {
-				sql.append(" AND t.order_type = '").append(order).append("'");
-				if (StringUtils.isNotEmpty(country)) {
-					sql.append(" AND t.country_type = '").append(country).append("'");
-					if (StringUtils.isNotEmpty(usable)) {
-						sql.append(" AND t.usabled = '").append(usable).append("'");
-
-					}
-
-				}
-			}
+	public Page<ReportPrice> getPage(Paginator paginator, ReportPrice attr, String orderby, BaseProjectController c) {
+		StringBuffer sql = new StringBuffer(" from  credit_report_price t ");
+		sql.append("  LEFT JOIN sys_dict_detail ot on ot.detail_id=t.order_type  ");
+		sql.append("   LEFT JOIN sys_dict_detail os on os.detail_id=t.order_speed");
+		sql.append("   LEFT JOIN credit_report_type rt on rt.id=t.report_type");
+		sql.append("   LEFT JOIN sys_dict_detail c on c.detail_id=t.country_type");
+		sql.append("   LEFT JOIN sys_user u on u.userid=t.create_by");
+		sql.append("   LEFT JOIN sys_dict_detail detail on t.usabled=detail.detail_id");
+		sql.append("   where t.del_flag=0 and ot.del_flag=0 and os.del_flag=0 and rt.del_flag=0 and c.del_flag=0");
+		List<Object> params = new ArrayList<Object>();
+		String reportType = attr.getStr("report_type");
+		String speed = attr.getStr("order_speed");
+		String order = attr.getStr("order_type");
+		String country = attr.getStr("country_type");
+		String usable = attr.getStr("usabled");
+		if (StringUtils.isNotEmpty(reportType)) {
+			sql.append(" AND t.report_type = ?");
+			params.add(reportType);
 		}
-
+		if (StringUtils.isNotEmpty(speed)) {
+			sql.append(" AND t.order_speed = ?");
+			params.add(speed);
+		}
+		if (StringUtils.isNotEmpty(order)) {
+			sql.append(" AND t.order_type = ?");
+			params.add(order);
+		}
+		if (StringUtils.isNotEmpty(country)) {
+			sql.append(" AND t.country_type = ?");
+			params.add(country);
+		}
+		if (StringUtils.isNotEmpty(usable)) {
+			sql.append(" AND t.usabled = ?");
+			params.add(usable);
+		}
+		if (StrUtils.isEmpty(orderby)) {
+			sql.append(" order by t.create_date desc");
+		} else {
+			sql.append(" order by ").append(orderby);
+		}
 		return ReportPrice.dao
 				.paginate(
 						paginator,
-						"select os.detail_name as orderSpeed,rt.`name` as reportType,ot.detail_name as orderType,c.`name` as countryName,u.realname, t.*",
-						sql.toString());
+						"select os.detail_name as orderSpeed,rt.`name` as reportType,ot.detail_name as orderType,c.detail_name as countryName,u.realname,detail.detail_name as usabledName, t.*",
+						sql.toString(), params.toArray());
 	}
 }

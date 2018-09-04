@@ -26,6 +26,15 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	private String reportType;
 	private String countryName;
 	private String realname;
+	private String usabledName;
+
+	public String getUsabledName() {
+		return get("usabledName");
+	}
+
+	public void setUsabledName(String usabledName) {
+		set("usabledName",usabledName);
+	}
 
 	public String getOrderType() {
 		return get("orderType");

@@ -6,11 +6,14 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
+import com.hailian.jfinal.base.Paginator;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.DateUtils;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
 public class UploadFileService {
@@ -77,5 +80,17 @@ public class UploadFileService {
 		params.add(id);
 		Db.update(sql,params.toArray());
 	}
+	/**
+	 * 列表展示
+	* @author doushuihai  
+	* @date 2018年9月3日下午2:31:12  
+	* @TODO
+	 */
 
+	public Page<CreditUploadFileModel> getPage(Paginator paginator, CreditUploadFileModel attr, String orderBy,
+			BaseProjectController c) {
+		// TODO Auto-generated method stub
+		Page<CreditUploadFileModel> page = CreditUploadFileModel.dao.getPage(paginator,attr,orderBy,c);
+		return page;
+	}
 }
