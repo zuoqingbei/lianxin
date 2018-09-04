@@ -290,7 +290,14 @@ public class OrdermanagerController extends BaseProjectController{
 		List<CreditReportLanguage> language=OrderManagerService.service.getLanguage(countryType,reporttype);
 		renderJson(language);
 	}
-	
+	/**
+	 * 
+	 * @time   2018年9月4日 下午6:17:41
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  
+	 * @return_type   void
+	 */
 	public void getCompany() {
 		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
 		renderJson(company);
