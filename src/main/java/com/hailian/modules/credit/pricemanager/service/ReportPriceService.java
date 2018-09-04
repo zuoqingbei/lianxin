@@ -79,10 +79,6 @@ public class ReportPriceService {
  * @return_type   List<CreditReportType>
  */
 	public List<CreditReportType> getReportType(String type) {
-		StringBuffer sql = new StringBuffer("from credit_report_type r where r.del_flag=0");
-		if (StringUtils.isNotEmpty(type)) {
-			sql.append(" AND r.report_type = '").append(type).append("'");
-		}
 		List<CreditReportType> list = CreditReportType.dao.getReportType();
 
 		return list;
@@ -95,35 +91,41 @@ public class ReportPriceService {
 	 * @todo   向前台页面展示数据
 	 * @return_type   Page<ReportPrice>
 	 */
-	public Page<ReportPrice> getPage(Paginator paginator, String speed, String order, String country, String usable,
+	public Page<ReportPrice> getPage(Paginator paginator, String speed, String order, String country, String usable,String orderby,
 			BaseProjectController c) {
-		StringBuffer sql = new StringBuffer(" from  credit_report_price t "
-				+ " LEFT JOIN sys_dict_detail ot on ot.detail_id=t.order_type "
-				+ " LEFT JOIN sys_dict_detail os on os.detail_id=t.order_speed"
-				+ " LEFT JOIN credit_report_type rt on rt.id=t.report_type"
-				+ " LEFT JOIN credit_country c on c.id=t.country_type"
-				+ " LEFT JOIN sys_user u on u.userid=t.create_by"
-				+ " where t.del_flag=0 and ot.del_flag=0 and os.del_flag=0 and rt.del_flag=0 and c.del_flag=0");
-
+		StringBuffer sql = new StringBuffer(" from  credit_report_price t ");
+				sql.append( "  LEFT JOIN sys_dict_detail ot on ot.detail_id=t.order_type  ");
+				sql.append("   LEFT JOIN sys_dict_detail os on os.detail_id=t.order_speed");
+				sql.append("   LEFT JOIN credit_report_type rt on rt.id=t.report_type") ;
+				sql.append("   LEFT JOIN credit_country c on c.id=t.country_type") ;
+				sql.append("   LEFT JOIN sys_user u on u.userid=t.create_by") ;
+			    sql.append("   where t.del_flag=0 and ot.del_flag=0 and os.del_flag=0 and rt.del_flag=0 and c.del_flag=0");
+		List<String> params=new ArrayList<String>();
 		if (StringUtils.isNotEmpty(speed)) {
-			sql.append(" AND t.order_speed = '").append(speed).append("'");
-			if (StringUtils.isNotEmpty(order)) {
-				sql.append(" AND t.order_type = '").append(order).append("'");
-				if (StringUtils.isNotEmpty(country)) {
-					sql.append(" AND t.country_type = '").append(country).append("'");
-					if (StringUtils.isNotEmpty(usable)) {
-						sql.append(" AND t.usabled = '").append(usable).append("'");
-
-					}
-
-				}
-			}
+			sql.append(" AND t.order_speed = ?");
+			params.add(speed);
 		}
-
+		if (StringUtils.isNotEmpty(order)) {
+			sql.append(" AND t.order_type = ?");
+			params.add(order);
+			}
+		if (StringUtils.isNotEmpty(country)) {
+			sql.append(" AND t.country_type = ?");
+			params.add(country);
+		}
+		if (StringUtils.isNotEmpty(usable)) {
+				sql.append(" AND t.usabled = ?");
+				params.add(usable);
+			}
+		if (StrUtils.isEmpty(orderby)) {
+			sql.append(" order by t.id desc");
+		} else {
+			sql.append(" order by ").append(orderby);
+		}
 		return ReportPrice.dao
 				.paginate(
 						paginator,
 						"select os.detail_name as orderSpeed,rt.`name` as reportType,ot.detail_name as orderType,c.`name` as countryName,u.realname, t.*",
-						sql.toString());
+						sql.toString(),params.toArray());
 	}
 }

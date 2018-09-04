@@ -1,8 +1,8 @@
 ﻿
-<% var orderspeed = tempDict.getSysDictDetailByType('orderspeed'); %>
-<% var ordertype = tempDict.getSysDictDetailByType('ordertype'); %>
-<% var country = tempDict.getSysDictDetailByType('country'); %>
-<% var usabled = tempDict.getSysDictDetailByType('usabled'); %>
+<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',attr.order_speed !); %>
+<% var ordertype = tempDict.getSysDictDetailString('ordertype',attr.order_type !); %>
+<% var country = tempDict.getSysDictDetailString('country',attr.country_type !); %>
+<% var usabled = tempDict.getSysDictDetailString('usabled',attr.usabled !); %>
 ﻿<% 
 	var headContent = {
 	include("/pages/template/head.html"){}
@@ -27,10 +27,8 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 		},
 		add : function() {
-			var url = 'credit/pricemanager/addReport?dict_type='+form1["attr.dict_type"].value;
-				
-			
-			var title = '添加报告价格';
+			var url = 'credit/pricemanager/addReport;
+			var title = '添加报告价格信息';
 			Iframe(url, this.width, this.height, title);
 		},
 		edit : function(id) {
@@ -74,47 +72,36 @@ var bodyContent = {
 	<div class="tableSearch">
 		<div class="form-group">
 		   <label  class="control-label">报告类型</label>
-		   <select name="attr.reporttype" class="form-control" style="width: 200px;">
-						<option value="" >请选择</option>
+		   <select name="attr.report_type" class="form-control" style="width: 200px;">
+				<option value="" >请选择</option>
 							 <% for(item in reporttype){ %>
 							 	<option  value="${item.id}">${item.name}</option>
 							  <% } %>
+							  
 			</select> 
 		</div>
 		<div class="form-group">
 		   <label  class="control-label">报告速度</label>
-		   <select name="attr.orderspeed" class="form-control" style="width: 200px;">
-						<option value="" ></option>
-							 <% for(item in orderspeed){ %>
-							 	<option  value="${item.id}">${item.detail_name}</option>
-							  <% } %>
+		   <select name="attr.order_speed" class="form-control" style="width: 200px;">
+		            ${orderspeed!}
 			</select> 
 		</div>
 		<div class="form-group">
 		   <label  class="control-label">订单类型</label>
-		   <select name="attr.ordertype" class="form-control" style="width: 200px;">
-						<option value="" ></option>
-							 <% for(item in ordertype){ %>
-							 	<option  value="${item.id}">${item.detail_name}</option>
-							  <% } %>
+		   <select name="attr.order_type" class="form-control" style="width: 200px;">
+						${ordertype}
 			</select> 
 		</div>
 		<div class="form-group">
 		   <label  class="control-label">国家</label>
 		   <select name="attr.country" class="form-control" style="width: 200px;">
-						<option value="" ></option>
-							 <% for(item in country){ %>
-							 	<option  value="${item.id}">${item.detail_name}</option>
-							  <% } %>
+						${country}
 			</select> 
 		</div>
 				<div class="form-group">
 		   <label  class="control-label">是否启用</label>
-		   <select name="attr.usable" class="form-control" style="width: 200px;">
-						<option value="" ></option>
-							 <% for(item in usabled){ %>
-							 	<option  value="${item.id}">${item.usabled}</option>
-							  <% } %>
+		   <select name="attr.usabled" class="form-control" style="width: 200px;">
+					${usabled}
 			</select> 
 		</div>
 		
@@ -134,12 +121,11 @@ var bodyContent = {
 			<tr>
 			
 				<th name="t.id" class="sorting">序号</th>
-				<th name="t.order_speed" class="sorting">报告速度</th>
+				<th name="os.detail_name" class="sorting">报告速度</th>
 
-				<th name="t.name_en" class="sorting">报告类型</th>
-				<th name="t.order_type" class="sorting">订单类型</th>
-				<th name="c.country" class="sorting">国家</th>			
-		
+				<th name="rt.name" class="sorting">报告类型</th>
+				<th name="ot.detail_name" class="sorting">订单类型</th>
+				<th name="c.name" class="sorting">国家</th>			
 				<th name="t.points" class="sorting">点数</th>
 			
 				<th name="t.price" class="sorting">价格</th>
@@ -173,7 +159,7 @@ var bodyContent = {
 				<td>${item.update_date}</td>
 				<!-- endl -->
 				<td>
-					<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.detail_id});">查看</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.detail_id});">修改</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.detail_id});">删除</a></td>
 				</td>
