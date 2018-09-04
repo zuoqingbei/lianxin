@@ -3,8 +3,6 @@ package com.hailian.modules.front.template;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.hailian.jfinal.base.BaseService;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
@@ -28,13 +26,7 @@ public class TemplateDictService extends BaseService {
 	 */
 	public List<SysDictDetail> getSysDictDetailByType(String type) {
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
-		SysDictDetail allDict=new SysDictDetail();
-		allDict.set("detail_id", "");
-		allDict.set("dict_type",type);
-		allDict.set("detail_name","全部");
-		allDict.set("detail_name_en", "ALL");
-		allDict.set("detail_code", "");
-		listDetail.add(allDict);
+		listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		return listDetail;
 	}
@@ -49,13 +41,7 @@ public class TemplateDictService extends BaseService {
 	public String getSysDictDetailString(String type,Object selectedId) {
 		StringBuffer sb=new StringBuffer();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
-		SysDictDetail allDict=new SysDictDetail();
-		allDict.set("detail_id", "");
-		allDict.set("dict_type",type);
-		allDict.set("detail_name","全部");
-		allDict.set("detail_name_en", "ALL");
-		allDict.set("detail_code", "");
-		listDetail.add(allDict);
+		listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
 			if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
@@ -66,6 +52,22 @@ public class TemplateDictService extends BaseService {
 			
 		}
 		return sb.toString();
+	}
+	/**
+	 * 
+	 * @todo   获取全部默认字典
+	 * @time   2018年9月3日 下午7:12:53
+	 * @author zuoqb
+	 * @params
+	 */
+	protected SysDictDetail getDefaultDictDetail(String type) {
+		SysDictDetail allDict=new SysDictDetail();
+		allDict.set("detail_id", "");
+		allDict.set("dict_type",type);
+		allDict.set("detail_name","全部");
+		allDict.set("detail_name_en", "ALL");
+		allDict.set("detail_code", "");
+		return allDict;
 	}
 
 	
