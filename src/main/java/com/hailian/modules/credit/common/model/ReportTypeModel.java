@@ -32,6 +32,7 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 		columnnNames.add("name_trad");
 		columnnNames.add("tpl_path");
 		columnnNames.add("remarks");
+		columnnNames.add("order_no");
 		columnnNames.add("create_date");
 	}
 	
