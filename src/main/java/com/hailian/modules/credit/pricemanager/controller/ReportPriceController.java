@@ -40,8 +40,7 @@ public class ReportPriceController extends BaseProjectController {
 	public void list() {
 		ReportPrice attr = getModelByAttr(ReportPrice.class);
 		String orderBy = getBaseForm().getOrderBy();
-		Page<ReportPrice> pager = ReportPriceService.service.getPage(getPaginator(), attr,
-				orderBy, this);
+		Page<ReportPrice> pager = ReportPriceService.service.getPage(getPaginator(), attr, orderBy, this);
 		List<CreditReportType> reportType = ReportPriceService.service.getReportType("");
 		setAttr("page", pager);
 		setAttr("reporttype", reportType);
@@ -49,20 +48,21 @@ public class ReportPriceController extends BaseProjectController {
 		keepPara();
 		render(path + "list.html");
 	}
-//
-//	/**
-//	 * 
-//	 * @time   2018年8月23日 下午7:35:55
-//	 * @author dyc
-//	 * @todo   单条报告价格查询
-//	 * @return_type   void
-//	 */
-//	public void getOne() {
-//		ReportPrice model = ReportPrice.dao.findById(getPara("id"), this);
-//		setAttr("model", model);
-//		render(path + "list.html");
-//
-//	}
+
+	//
+	//	/**
+	//	 * 
+	//	 * @time   2018年8月23日 下午7:35:55
+	//	 * @author dyc
+	//	 * @todo   单条报告价格查询
+	//	 * @return_type   void
+	//	 */
+	//	public void getOne() {
+	//		ReportPrice model = ReportPrice.dao.findById(getPara("id"), this);
+	//		setAttr("model", model);
+	//		render(path + "list.html");
+	//
+	//	}
 	/**
 	 * 
 	 * @time   2018年9月4日 下午2:27:20
@@ -70,11 +70,11 @@ public class ReportPriceController extends BaseProjectController {
 	 * @todo   单条查看报告价格信息
 	 * @return_type   void
 	 */
-	public void view(){
-		ReportPrice model=ReportPrice.dao.findById(getParaToInt());
+	public void view() {
+		ReportPrice model = ReportPrice.dao.findById(getParaToInt());
 		setAttr("model", model);
 		render(path + "view.html");
-		
+
 	}
 
 	/**
