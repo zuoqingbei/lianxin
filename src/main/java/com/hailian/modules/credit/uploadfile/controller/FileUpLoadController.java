@@ -1,10 +1,8 @@
-package com.hailian.modules.credit.common.controller;
+package com.hailian.modules.credit.uploadfile.controller;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -13,24 +11,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
-
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.image.model.TbImage;
-import com.hailian.modules.admin.image.service.ImageAlbumService;
-import com.hailian.modules.admin.site.TbSite;
-import com.hailian.modules.credit.order.model.TbOrder;
-import com.hailian.modules.credit.order.service.OrderService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
-import com.hailian.system.dict.SysDictDetail;
-import com.hailian.system.file.util.FileUploadUtils;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
@@ -41,7 +27,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
 /**
- * 文件上传
+ * 文件上传维护
 * @author doushuihai  
 * @date 2018年8月27日上午11:36:12  
 * @TODO
@@ -49,53 +35,69 @@ import com.jfinal.upload.UploadFile;
 @ControllerBind(controllerKey = "/credit/file")
 public class FileUpLoadController extends BaseProjectController {
 	private static final String path = "/pages/credit/uploadfile/file_";
-	public static final int maxPostSize=Config.getToInt("FTP_maxPostSize");
-	public static final String ip = Config.getStr("FTP_ip");//ftp文件服务器 ip
-	public static final int port = Config.getToInt("FTP_port");//ftp端口 默认21
-	public static final String userName = Config.getStr("FTP_userName");//域用户名
-	public static final String password = Config.getStr("FTP_password");//域用户密码
+	public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
+	public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
+	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
+	public static final String userName = Config.getStr("ftp_userName");//域用户名
+	public static final String password = Config.getStr("ftp_password");//域用户密码
+	/**
+	 * 单文件上传
+	* @author doushuihai  
+	* @date 2018年9月3日上午9:24:46  
+	* @TODO
+	 */
 	public void uploadFile(){
 		Integer pid = getParaToInt();
-		String business_type = getPara("business_type");
-		String business_id = getPara("business_id");
+		CreditUploadFileModel model = null;
+		String business_id = null;
+		Integer business_type = null;//检索条件-报告类型
 		String markFile="";
 		int failnumber=0;
 		int size=0;
+		String originalFileName=null;
+		String ext="";
 		// 文件附件
 		try {
 			UploadFile uploadFile = getFile("file_url");//从前台获取文件
 			if(uploadFile != null){
 				size=1;
-			}
-			int dot = uploadFile.getOriginalFileName().lastIndexOf(".");
-			String ext="";
-			String originalFileName=uploadFile.getOriginalFileName();
-			if (dot != -1) {
-				originalFileName=originalFileName.substring(0, dot);
-				ext = uploadFile.getOriginalFileName().substring(dot + 1);
-			} else {
-				ext = "";
-			}
-			System.out.println(FileTypeUtils.checkType(ext)+"=====maxPostSize====="+ext);
-			if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
-				String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
-				String now=DateUtils.getNow(DateUtils.YMDHMS);
-				String FTPfileName=originalFileName+now+"."+ext;
-				String fileName=originalFileName+now;
-				boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
-				if(storeFile){
-					String factpath=storePath+"/"+FTPfileName;
-					String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
-					Integer userid = getSessionUser().getUserid();
-					UploadFileService.service.save(uploadFile, factpath,url,business_type,business_id,fileName,userid);//记录上传信息
+				int dot = uploadFile.getOriginalFileName().lastIndexOf(".");
+				
+				originalFileName=uploadFile.getOriginalFileName();
+				if (dot != -1) {
+					originalFileName=originalFileName.substring(0, dot);
+					ext = uploadFile.getOriginalFileName().substring(dot + 1);
+				} else {
+					ext = "";
+				}
+				model = getModel(CreditUploadFileModel.class);
+				business_id = model.get("business_id");
+				business_type = model.getInt("business_type");//检索条件-报告类型
+				
+				if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+					String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+					String now=DateUtils.getNow(DateUtils.YMDHMS);
+					String FTPfileName=originalFileName+now+"."+ext;
+					String fileName=originalFileName+now;
+					boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+					if(storeFile){
+						String factpath=storePath+"/"+FTPfileName;
+						String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+						Integer userid = getSessionUser().getUserid();
+						UploadFileService.service.save(pid,uploadFile, factpath,url,model,fileName,userid);//记录上传信息
+					}else{
+						failnumber+=1;
+						markFile+=uploadFile.getOriginalFileName()+"上传失败!";
+					}
 				}else{
 					failnumber+=1;
-					markFile+=uploadFile.getOriginalFileName()+"上传失败!";
+					markFile+=uploadFile.getOriginalFileName()+"上传失败，文件不符合要求!";
 				}
 			}else{
-				failnumber+=1;
-				markFile+=uploadFile.getOriginalFileName()+"上传失败，文件不符合要求!";
+				markFile+="上传文件不能为空";
+				renderMessage(markFile);
 			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,43 +118,51 @@ public class FileUpLoadController extends BaseProjectController {
 		String markFile="";
 		int failnumber=0;
 		int size=0;
-		String business_type = getPara("business_type");
-		String business_id = getPara("business_id");
+		String business_id = null;
+		Integer business_type = null;//检索条件-报告类型
+		Integer pid = getParaToInt();
+		
 		// 文件附件
 		try {
 			List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 			size=upFileList.size();
-			for(UploadFile uploadFile:upFileList){
-				String originalFileName=uploadFile.getOriginalFileName();
-				int dot = originalFileName.lastIndexOf(".");
-				String ext="";
-				if (dot != -1) {
-					originalFileName=originalFileName.substring(0, dot);
-					ext = originalFileName.substring(dot + 1);
-				} else {
-					ext = "";
-				}
-				if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
-					String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
-					String now=DateUtils.getNow(DateUtils.YMDHMS);
-					String FTPfileName=originalFileName+now+"."+ext;
-					String fileName=originalFileName+now;
-					boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
-					if(storeFile){
-						String factpath=storePath+"/"+FTPfileName;
-						String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
-						Integer userid = getSessionUser().getUserid();
-						UploadFileService.service.save(uploadFile, factpath,url,business_type,business_id,fileName,userid);//记录上传信息
-						
+			if(size>0){
+				for(UploadFile uploadFile:upFileList){
+					String originalFileName=uploadFile.getOriginalFileName();
+					int dot = originalFileName.lastIndexOf(".");
+					String ext="";
+					if (dot != -1) {
+						originalFileName=originalFileName.substring(0, dot);
+						ext = originalFileName.substring(dot + 1);
+					} else {
+						ext = "";
+					}
+					CreditUploadFileModel model = getModelByAttr(CreditUploadFileModel.class);
+					business_type = model.getInt("business_type");
+					business_id = model.getStr("business_id");
+					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+						String now=DateUtils.getNow(DateUtils.YMDHMS);
+						String FTPfileName=originalFileName+now+"."+ext;
+						String fileName=originalFileName+now;
+						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						if(storeFile){
+							String factpath=storePath+"/"+FTPfileName;
+							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+							Integer userid = getSessionUser().getUserid();
+							UploadFileService.service.save(pid,uploadFile, factpath,url,model,fileName,userid);//记录上传信息
+							
+						}else{
+							failnumber+=1;
+							markFile+=uploadFile.getOriginalFileName()+"上传失败!";
+						}
 					}else{
 						failnumber+=1;
 						markFile+=uploadFile.getOriginalFileName()+"上传失败!";
 					}
-				}else{
-					failnumber+=1;
-					markFile+=uploadFile.getOriginalFileName()+"上传失败!";
 				}
 			}
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 			markFile+="项目出现异常，上传失败！";
@@ -201,22 +211,33 @@ public class FileUpLoadController extends BaseProjectController {
 	public void index() {
 		list();
 	}
+	/**
+	 * 列表展示
+	* @author doushuihai  
+	* @date 2018年9月3日上午9:23:16  
+	* @TODO
+	 */
 	public void list() {
 		CreditUploadFileModel attr = getModelByAttr(CreditUploadFileModel.class);
 		StringBuffer sql = new StringBuffer(" from credit_upload_file where del_flag=0");
-		String type = attr.getStr("ext");//检索条件-文件类型
-//		String business_type = attr.getStr("business_type");//检索条件-报告类型
+		String type = attr.getStr("ext_id");//检索条件-文件类型
 		Integer business_type = attr.getInt("business_type");//检索条件-报告类型
-//		String business_type="";
 		String originalname = attr.getStr("originalname");//检索条件-上传文件名
 		if (StrUtils.isNotEmpty(type)) {
-			sql.append(" and ext = '").append(type).append("'");
+			sql.append(" and ext_id = '").append(type).append("'");
 		}
 		if (business_type !=null && business_type>=0) {
 			sql.append(" and business_type = ").append(business_type);
 		}
 		if (StrUtils.isNotEmpty(originalname)) {
-			sql.append(" and originalname = '").append(originalname).append("'");
+			sql.append(" and originalname like '%").append(originalname).append("%'");
+		}
+		// 排序
+		String orderBy = getBaseForm().getOrderBy();
+		if (StrUtils.isEmpty(orderBy)) {
+			sql.append(" order by update_date desc");
+		} else {
+			sql.append(" order by ").append(orderBy);
 		}
 		Page<CreditUploadFileModel> page = CreditUploadFileModel.dao
 				.paginate(getPaginator(), "select *  ", sql.toString());
@@ -232,6 +253,12 @@ public class FileUpLoadController extends BaseProjectController {
 		setAttr("model", model);
 		render(path + "view.html");
 	}
+	/**
+	 * 新增
+	* @author doushuihai  
+	* @date 2018年9月3日上午9:22:55  
+	* @TODO
+	 */
 	public void add() {
 		// 获取页面信息,设置目录传入
 		CreditUploadFileModel attr = getModel(CreditUploadFileModel.class);
@@ -239,12 +266,32 @@ public class FileUpLoadController extends BaseProjectController {
 		// 查询下拉框
 		render(path + "add.html");
 	}
+	/**
+	 * 编辑
+	* @author doushuihai  
+	* @date 2018年9月3日上午9:22:18  
+	* @TODO
+	 */
 	public void edit() {
-		CreditUploadFileModel model = CreditUploadFileModel.dao.findById(getParaToInt());
+		Integer paraToInt = getParaToInt();
+		System.out.println("************"+paraToInt);
+		CreditUploadFileModel model = CreditUploadFileModel.dao.findById(paraToInt);
 		setAttr("model", model);
 		// 查询下拉框
 		render(path + "edit.html");
 	}
-	
+	/**
+	 * 删除
+	* @author doushuihai  
+	* @date 2018年9月3日上午9:22:36  
+	* @TODO
+	 */
+	public void delete() {
+		// 日志添加
+		Integer id = getParaToInt();
+		Integer userid = getSessionUser().getUserid();
+		UploadFileService.service.delete(id,userid);//记录上传信息
+		list();
+	}
 
 }

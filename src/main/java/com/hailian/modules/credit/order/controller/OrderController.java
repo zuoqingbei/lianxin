@@ -36,8 +36,6 @@ public class OrderController extends BaseProjectController {
 			})
 	
 
-	@ApiOperation(url = "/credit/order/list",httpMethod="get", 
-	description = "获取订单列表",response=TbOrder.class)
 	public void list() {
 		int pageNumber = getParaToInt("pageNumber", 1);
 		int pageSize = getParaToInt("pageSize", 10);
