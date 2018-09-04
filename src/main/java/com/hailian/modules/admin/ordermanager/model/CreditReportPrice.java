@@ -24,7 +24,7 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 	
 	public static final CreditReportPrice dao = new CreditReportPrice();//名字都叫dao，统一命名
 
-	public CreditReportPrice getTime(String countryType, String speed, String reporttype) {
+	public CreditReportPrice getPrice(String countryType, String speed, String reporttype) {
 		// TODO Auto-generated method stub
 			List<String> params=new ArrayList<String>();
 			StringBuffer sql=new StringBuffer("select t.* from credit_report_price t where t.del_flag='0' ");
@@ -43,5 +43,6 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 			
 			return CreditReportPrice.dao.findFirst(sql.toString(),params.toArray());
 		}
+
 	}
 

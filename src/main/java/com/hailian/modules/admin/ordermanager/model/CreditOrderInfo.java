@@ -135,6 +135,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 					 sql = new StringBuffer(" from credit_order_info t "
 					 		+ "left join credit_custom_info u on u.id=t.custom_id  "
 					 		+ "left join credit_country c on c.id=t.country "
+					 		+ "left join credit_report_price c1 on c1.id=t.price_id "
 					 		+ "left join sys_user s on s.userid=t.create_by "
 					 		+ "left join sys_dict_detail s2  on s2.detail_id=t.continent "
 					 		+ "left join credit_report_type s3  on s3.id=t.report_type "
@@ -177,20 +178,23 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	 * @return_type   CreditOrderInfo
 	 */
 	public CreditOrderInfo getOrder(int id, BaseProjectController c) {
+		StringBuffer sql=new StringBuffer();
+		sql.append("select t.*,u.name as customName,c.name as countryName,s.username as createName,");
+		sql.append("s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,");
+		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price from credit_order_info t ");
+		sql.append("left join credit_custom_info u on u.id=t.custom_id ");
+		sql.append("left join credit_country c on c.id=t.country  ");
+		sql.append("left join credit_report_price c1 on c1.id=t.price_id ");
+		sql.append("left join sys_user s on s.userid=t.create_by ");
+		sql.append("left join sys_dict_detail s2  on s2.detail_id=t.continent ");
+		sql.append("left join credit_report_type s3  on s3.id=t.report_type ");
+		sql.append("left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
+		sql.append("left join sys_dict_detail s5  on s5.detail_id=t.speed ");
+		sql.append("left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append("where 1 = 1 and t.del_flag='0' and t.id=?");
+		
 
-		return dao.findFirst("select t.*,u.name as customName,c.name as countryName,s.username as createName,"
-				+ "s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-				+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price from credit_order_info t "
-				+ "left join credit_custom_info u on u.id=t.custom_id "
-				+ "left join credit_country c on c.id=t.country  "
-				+ "left join credit_report_price c1 on c1.id=t.price_id "
-				+ "left join sys_user s on s.userid=t.create_by "
-				+ "left join sys_dict_detail s2  on s2.detail_id=t.continent "
-				+ "left join credit_report_type s3  on s3.id=t.report_type "
-				+ "left join sys_dict_detail s4  on s4.detail_id=t.report_language "
-				+ "left join sys_dict_detail s5  on s5.detail_id=t.speed "
-				+ "left join sys_dict_detail s6  on s6.detail_id=t.order_type "
-				+ "where 1 = 1 and t.del_flag='0' and t.id=?", id);
+		return dao.findFirst(sql.toString(), id);
 	}
 	
 

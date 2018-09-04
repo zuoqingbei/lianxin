@@ -216,7 +216,7 @@ public class OrderManagerService {
 
 	public CreditReportPrice getPrice(String countryType, String speed, String reporttype) {
 		// TODO Auto-generated method stub
-		return CreditReportPrice.dao.getTime(countryType,speed,reporttype);
+		return CreditReportPrice.dao.getPrice(countryType,speed,reporttype);
 	}
 
 	public List<CreditReportLanguage> getLanguage(String countryType, String reporttype) {

@@ -94,7 +94,7 @@ var bodyContent = {
 			<th name="t.custom_id" class="sorting">客户ID</th>
 			<th name="u.name" class="sorting">客戶用戶名</th>
 			<th name="s2.detail_name" class="sorting">地区</th>
-			<th name="country" class="sorting">国家</th>
+			<th name="c.name" class="sorting">国家</th>
 			<th name="s3.name" class="sorting">报告类型</th>
 			<th name="s4.detail_name" class="sorting">报告语言</th>
 			<th name="s5.detail_name" class="sorting">报告速度</th>
@@ -135,8 +135,8 @@ var bodyContent = {
 			<td>${item.company_by_report}</td>
 			<td>${item.right_company_name_en}</td>
 			<td>${item.receiver_date,dateFormat="yyyy-MM-dd"}</td>
-			<!-- <td>${item.receiver_date,dateFormat="yyyy-MM-dd"}</td>
-			<td>${item.receiver_date,dateFormat="yyyy-MM-dd"}</td> -->
+			<td>${item.end_date,dateFormat="yyyy-MM-dd"}</td>
+			<td>${item.receiver_date,dateFormat="yyyy-MM-dd"}</td>
 			<td>${item.orderType}</td>
 			
 
