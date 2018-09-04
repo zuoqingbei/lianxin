@@ -11,13 +11,44 @@ var oper = {
 			return false;
 		}
 		id = id || '0';
-		var url = 'credit/pricemanager/save/'+id;
+		var url = 'credit/pricemanager/'+id;
 		form1.action = url;
 		form1.submit();
 		return true;
 	}	
 };
 </script>
+<style>
+.tags {
+	line-height: 22px;
+	height: 22px;
+	border-top: 1px solid rgb(210, 210, 210);
+}
+
+.tags .tags_label {
+	float: left;
+	margin-right: 20px;
+	margin-left: 5px;
+	padding: 5px 1px 1px 3px;
+}
+
+.tags .tags_content {
+	float: left;
+	width: 500px;
+	margin: 5px 5px 0 0;
+	padding: 1px;
+	border: 1px solid #ccc;
+	background: #fff;
+	vertical-align: middle;
+}
+
+.tags .tags_remark {
+	padding: 5px 1px 1px 3px;
+	color: #999999;
+	font-size: 12px;
+	z-index: 10000;
+}
+</style>
 
 <%
 };
@@ -28,58 +59,47 @@ var bodyContent = {
 	<!-- 数据列表 -->
 	<table class="table">
 		<tr>
-			<td>报告类型</td>
-			<td>
-			<% if(item.detail_id!0 > 0) { %>
-			<input type="hidden" name="model.dict_type" value="${item.dict_type}" />
-			<select disabled="disabled"  class="form-control" >
-				${optionList }
-			</select>
-			<% } else { %>
-			<select name="model.dict_type"  class="form-control" >
-				${optionList }
-			</select>
-			<% } %>
-			</td>
+			<td>报告速度</td>
+			<td><input type="text" name="model.order_speed" class="form-control" 
+			 value="${item.order_speed}" /></td>
 		</tr>
 		<tr>
-			<td>报告速度</td>
-			<td><input type="text" name="model.detail_name" class="form-control" 
-				value="${item.detail_name}" /></td>
+			<td>报告类型</td>
+			<td><input type="text" name="model.report_type" class="form-control" 
+				value="${item.report_type}" /></td>
 		</tr>
 		<tr>
 			<td>国家</td>
-			<td><input type="text" name="model.detail_code" class="form-control" 
-				value="${item.detail_code}" /></td>
+			<td><input type="text" name="model.country_type" class="form-control" 
+				value="${item.country_type}" /></td>
 		</tr>
 		<tr>
 			<td>订单类型</td>
-			<td><input type="text" name="model.detail_sort" class="form-control" 
-				value="${strutil.nvl(item.detail_sort,'0')}" /></td>
+			<td><input type="text" name="model.order_type" class="form-control" 
+				value="${item.order_type}" /></td>
 		</tr>
-		<!-- start -->
 		<tr>
 			<td>报告点数</td>
-			<td><input type="text" name="model.detail_name_en" class="form-control" 
-				value="${strutil.nvl(item.detail_name_en,'0')}" /></td>
+			<td><input type="text" name="model.points" class="form-control" 
+				value="${item.points}" /></td>
 		</tr>
 		
 		<tr>
 			<td>报告价格</td>
-			<td><input type="text" name="model.detail_type" class="form-control" 
-				value="${strutil.nvl(item.detail_type,'0')}" /></td>
+			<td><input type="text" name="model.price" class="form-control" 
+				value="${item.points}"/></td>
 		</tr>
 		<tr>
 			<td>币种</td>
-			<td><input type="text" name="model.detail_state" class="form-control" 
-				value="${strutil.nvl(item.detail_state,'0')}" /></td>
+			<td><input type="text" name="model.currency" class="form-control" 
+				value="${item.currency}"/></td>
 		</tr>
 		<!-- end -->
 	</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
-	  		<button class="btn btn-primary" onclick="oper.save(${item.detail_id});return false;">确定</button>
+	  		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">确定</button>
 			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
 	  </div>
 	</nav>
