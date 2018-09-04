@@ -1,0 +1,85 @@
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+	var oper = {
+		save:function(id){
+			if(!validForm()) {
+				return false;
+			}
+			console.log(id);
+			id = id;
+			console.log(id);
+			var url = 'credit/reportType/save?id='+id;
+			form1.action = url;
+			form1.submit();
+			return true;
+		}	
+	};
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+		role="form" >
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>报告名称</td>
+					<td>
+					<input class="form-control" type="text" name="model.name" value="${model.name }"  valid='vtext' validname='报告名称'  />
+					</td>
+				</tr>
+				<tr>
+					<td>报告英文名称</td>
+					<td>
+					<input class="form-control" type="text" name="model.name_en" value="${model.name_en }"   validname='报告英文名称'  />
+					</td>
+				</tr>
+				
+				<tr>
+					<td>报告繁体名称</td>
+					<td>
+					<input class="form-control" type="text" name="model.name_trad" value="${model.name_trad }"    />
+					</td>
+				</tr>
+				<tr>
+					<td>报告路径</td>
+					<td>
+					<input class="form-control" type="text" name="model.tpl_path" valid='vtext' validname='报告路径' value="${model.tpl_path }"  />
+					</td>
+				</tr>
+				
+				<!-- <tr>
+					<td>排序</td>
+					<td>
+					<input class="form-control" type="text" name="model.order_no" value="${model.order_no }"  />
+					</td>
+				</tr> -->
+				<tr>
+					<td>备注</td>
+					<td>
+					<textarea class="form-control" type="text" name="model.remarks" >${model.remarks }</textarea>
+					</td>
+				</tr>
+	</table>
+	
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%}
+DIRECTIVE SAFE_OUTPUT_CLOSE; 
+%>

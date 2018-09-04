@@ -9,7 +9,6 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;

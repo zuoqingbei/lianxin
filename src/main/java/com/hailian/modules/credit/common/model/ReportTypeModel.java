@@ -1,0 +1,91 @@
+package com.hailian.modules.credit.common.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.feizhou.swagger.utils.StringUtil;
+import com.hailian.component.base.BaseProjectController;
+import com.hailian.component.base.BaseProjectModel;
+import com.hailian.jfinal.base.Paginator;
+import com.hailian.jfinal.component.annotation.ModelBind;
+import com.hailian.modules.admin.foldernotice.FoldernoticeController;
+import com.hailian.modules.credit.utils.DataAuthorUtils;
+import com.hailian.util.StrUtils;
+import com.jfinal.plugin.activerecord.Page;
+import com.mchange.v1.db.sql.ConnectionUtils;
+
+/**
+ * @todo 报告类型持久层处理
+ * @author lzg
+ * @time 2018/09/03 9:50
+ */
+@ModelBind(table = "credit_report_type")
+public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
+	private static final long serialVersionUID = 1L;
+	public static final ReportTypeModel dao = new ReportTypeModel();//名字都叫dao，统一命名
+	private static List<String> columnnNames = new ArrayList<>();
+	static{
+		columnnNames.add("name");
+		columnnNames.add("name_en");
+		columnnNames.add("name_trad");
+		columnnNames.add("tpl_path");
+		columnnNames.add("remarks");
+	}
+	
+	/**
+	 * @todo   根据Id查询报告类型
+	 * @time   2018年9月3日 上午9:10:00
+	 * @author lzg
+	 * @return_type   ReportTypeModel
+	 */
+	public ReportTypeModel getReportType(String orderId, BaseProjectController c) {
+		return ReportTypeModel.dao.findById(orderId);
+	}
+	
+	
+	/*public ReportTypeModel getReportTypeByAttrName(String reportName, BaseProjectController c) {
+		//参数集合
+		List<Object> paras = new ArrayList<Object>();
+		if (StringUtils.isNotBlank(reportName)) {
+				paras.add(reportName);
+			}
+		return ReportTypeModel.dao.findByWhereAndColumns("where ", "name", paras.toArray());
+	}*/
+	/**
+	 * @todo   分页查询报告类型
+	 * @time   2018年9月3日 上午9:10:00
+	 * @author lzg
+	 * @params pageNumber：当前页码 pagerSize：每页条数 reportName：报告名称  BaseProjectController-当前controller  必须传 以后做数据权限使用
+	 */
+
+	public Page<ReportTypeModel> pagerReportType(int pageNumber, int pagerSize, String keyWord,String orderBy,BaseProjectController c) {
+		String authorSql = DataAuthorUtils.getAuthorByUser(c);
+		StringBuffer selectSql = new StringBuffer(" select *,u.realname ");
+		StringBuffer fromSql = new StringBuffer(" from credit_report_type t LEFT JOIN sys_user u ON u.userid = t.create_by WHERE del_flag=0 ");
+		//参数集合
+		List<String> params = new ArrayList<String>();
+		if (StringUtil.isNotEmpty(keyWord)) {
+			fromSql.append(" and ");
+			for (int i = 0; i < columnnNames.size(); i++) {
+				if(i!=0){
+					fromSql.append(" || ");
+				}
+				fromSql.append(columnnNames.get(i)+" like concat('%',?,'%')");
+				params.add(keyWord);//传入的参数
+			}
+			
+		}
+		//排序
+		if (StrUtils.isEmpty(orderBy)) {
+			fromSql.append(" order by t.id desc");
+		} else {
+			fromSql.append(" order by ").append(orderBy);
+		}
+		
+		Page<ReportTypeModel> reportTypePage = ReportTypeModel.dao.paginate(new Paginator(pageNumber, pagerSize), selectSql.toString(),
+				fromSql.toString(), params.toArray());
+		return reportTypePage;
+	}
+}

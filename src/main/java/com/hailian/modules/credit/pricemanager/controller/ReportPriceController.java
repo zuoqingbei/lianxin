@@ -11,6 +11,7 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
+import com.hailian.system.dict.SysDictDetail;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -22,10 +23,11 @@ import com.jfinal.plugin.activerecord.Page;
 @ControllerBind(controllerKey = "/credit/pricemanager")
 public class ReportPriceController extends BaseProjectController {
 	private static final String path = "/pages/credit/pricemanager/price_";
-	
+
 	public void index() {
 		list();
 	}
+
 	/**
 	 * 
 	 * @time   2018年8月23日 下午5:39:02
@@ -33,22 +35,20 @@ public class ReportPriceController extends BaseProjectController {
 	 * @todo   分页查询报告价格信息
 	 * @return_type   void
 	 */
-	@Params(value = { @Param(name = "pageNumber", description = "页码", required = false, dataType = "String"),
-			@Param(name = "pageSize", description = "每页条数", required = false, dataType = "String"),
-			@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String") })
-		@ApiOperation(url = "/credit/pricemanager/list", httpMethod = "get", description = "获取报告价格列表")
+	@ApiOperation(url = "/credit/pricemanager/list", httpMethod = "get", description = "获取报告价格列表")
 	public void list() {
 		ReportPrice attr = getModelByAttr(ReportPrice.class);
-		String type = attr.getStr("reporttype");
-		Page<ReportPrice> pager = ReportPriceService.service
-				.getPage(getPaginator(), type,this);
-		List<CreditReportType> reportType=ReportPriceService.service.getReportType();
-		setAttr("page",pager);
-		setAttr("reporttype",reportType);
-		render(path+"list.html");
+		String type = attr.getStr("reportType");
+        String speed=attr.getStr("orderSpeed");
+	    String order=attr.getStr("orderType");
+	    String country=attr.getStr("countryType");
+	    String usable=attr.getStr("usabled");
+		Page<ReportPrice> pager = ReportPriceService.service.getPage(getPaginator(), speed,order,country, usable, this);
+        List<CreditReportType> reportType = ReportPriceService.service.getReportType("");
+		setAttr("page", pager);
+        setAttr("reporttype", reportType);
+		render(path + "list.html");
 	}
-
-
 
 	/**
 	 * 
@@ -76,8 +76,16 @@ public class ReportPriceController extends BaseProjectController {
 		ReportPrice model = getModelByAttr(ReportPrice.class);
 		ReportPriceService.service.add(model);
 		setAttr("model", model);
-		list();
+	    render(path+"add.html");
 	}
+	public void edit(){
+		ReportPrice model = getModelByAttr(ReportPrice.class);
+		ReportPrice item=ReportPrice.dao.findById(getParaToInt());
+		setAttr("model", model);
+		
+		
+	}
+
 	/**
 	 * 
 	 * @time   2018年8月27日 上午10:23:53
@@ -86,18 +94,17 @@ public class ReportPriceController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	@ApiOperation(url = "/credit/pricemanager/deleteReport", httpMethod = "get", description = "删除报告价格表里的信息")
-	@Params(value = {
-			@Param(name = "id", description = "id", required = false, dataType = "String"),
-			 })
-	public void deleteReport(){
-		String id=getPara("id");
-		if(ReportPriceService.service.updateDelFlagById(id)){
+	@Params(value = { @Param(name = "id", description = "id", required = false, dataType = "String"), })
+	public void deleteReport() {
+		String id = getPara("id");
+		if (ReportPriceService.service.updateDelFlagById(id)) {
 			//success
 			//redirect("/credit/price/list");
 			renderText("success");
-		}else{
+		} else {
 			//redirect("/credit/price/list");
 			renderText("failure");
-		};	
+		}
+		;
 	}
 }
