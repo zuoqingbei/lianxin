@@ -1,5 +1,7 @@
 package com.hailian.modules.credit.common.service;
 
+import java.util.List;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.jfinal.plugin.activerecord.Page;
@@ -29,7 +31,7 @@ public class ReportTypeService {
 	 * @author lzg
 	 * @return_type   Page<ReportTypeModel>
 	 */
-	public Page<ReportTypeModel> pagerOrder(int pageNumber, int pagerSize, String reportName , BaseProjectController c) {
-		return ReportTypeModel.dao.pagerReportType(pageNumber, pagerSize, reportName , c);
+	public Page<ReportTypeModel> pagerOrder(int pageNumber, int pagerSize, String keyWord ,String orderBy, BaseProjectController c) {
+		return ReportTypeModel.dao.pagerReportType(pageNumber, pagerSize, keyWord , orderBy, c);
 	}
 }

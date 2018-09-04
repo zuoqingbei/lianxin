@@ -1,9 +1,15 @@
 package com.hailian.modules.credit.common.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
 import com.feizhou.swagger.annotation.Params;
+import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
@@ -30,8 +36,10 @@ public class ReportTypeController extends BaseProjectController {
 	public void list() {
 		int pageNumber = getParaToInt("pageNo", 1);
 		int pageSize = getParaToInt("pageSize", 10);
+		//从表单获取排序语句
+		String orderBy = getBaseForm().getOrderBy();
 		//分页查询
-		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("reportName"), this);
+		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, this);
 		setAttr("page", pager);
 		keepPara();
 		render(path+"list.html");
@@ -46,10 +54,12 @@ public class ReportTypeController extends BaseProjectController {
 	@ApiOperation(url = "/credit/reportType/listJson",httpMethod="get", 
 	description = "获取报告类型列表",response=Page.class)
 	public void listJson() {
-		int pageNumber=getParaToInt("pageNumber", 1);
-		int pageSize=getParaToInt("pageSize", 10);
+		int pageNumber = getParaToInt("pageNo", 1);
+		int pageSize = getParaToInt("pageSize", 10);
+		//从表单获取排序语句
+		String orderBy = getBaseForm().getOrderBy();
 		//分页查询
-		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber,pageSize,getPara("reportName"),this);
+		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, this);
 		renderJson(pager);
 	}
 
