@@ -1,10 +1,9 @@
-<% var upload_busType = tempDict.getSysDictDetailByType('upload_busType'); %>
-<% var uploadFileTtype = tempDict.getSysDictDetailByType('uploadFileTtype'); %>
+<% var upload_busType = tempDict.getSysDictDetailString('upload_busType',attr.business_type!); %>
+<% var uploadFileTtype = tempDict.getSysDictDetailString('uploadFileTtype',attr.ext_id!); %>
 <% 
 	var headContent = {
 	include("/pages/template/head.html"){}
 %>
-
 <script type="text/javascript">
 		
 	var oper;
@@ -44,7 +43,7 @@
 			}
 		};
 		//显示Menu索引
-		showMenu('page_image');
+		showMenu('page_uploadfile');
 	});
 	
 	//分页
@@ -66,24 +65,21 @@ var bodyContent = {
 
 		<div class="tableSearch">
 			<%  //查询列表 %>
+			文件名称：
 			<div class="form-group">
 					<input class="form-control" type="text" name="attr.originalname" value="${attr.originalname!''}" 
 						placeholder="请输入名称" required='required' />
 			</div>
 			<div class="form-group">
+					业务类型：
 					<select name="attr.business_type" class="form-control" >
-					<option value="">--请选择--</option>
-					 <% for(item in upload_busType){ %>
-					 	<option  m-type="${item.detail_name_en}" value="${item.detail_code}">${item.detail_name}</option>
-					  <% } %>
+					${upload_busType!}
 					</select>
 			</div>
 			<div class="form-group">
+					上传文档类型：
 					<select name="attr.ext_id" class="form-control" >
-					<option value="">--请选择--</option>
-					 <% for(item in uploadFileTtype){ %>
-					 	<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
-					  <% } %>
+					 ${uploadFileTtype!}
 					</select>
 			</div>
 			
@@ -126,12 +122,7 @@ var bodyContent = {
 						${item.size}字节
 					</td> 
 					<td>
-					<% if(item.business_type==0) { %>
-					订单附件
-					<%	} %>
-					<% if(item.business_type==1) { %>
-					其他
-					<%	} %>
+				
 					</td>  
 					<td>
 					${item.business_id}

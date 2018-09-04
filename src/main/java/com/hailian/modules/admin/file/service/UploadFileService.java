@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.DateUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
@@ -42,17 +43,14 @@ public class UploadFileService {
 		model.set("update_date", now);
 		model.set("update_by", userid);
 		String type = FileTypeUtils.getType(fileExt);
-		if("word".equals(type)){
-			model.set("ext_id", "258");//数据字典相关参数
-		}
-		if("excel".equals(type)){
-			model.set("ext_id", "259");
-		}
-		if("pdf".equals(type)){
-			model.set("ext_id", "260");
-		}
-		if("img".equals(type)){
-			model.set("ext_id", "257");
+		List<SysDictDetail> diclist=SysDictDetail.dao.getDictByType("uploadFileTtype");
+		if(StringUtils.isNotBlank(type)){
+			for(SysDictDetail dict:diclist){
+				if(type.equals(dict.getStr("detail_code"))){
+					model.set("ext_id", dict.get("detail_id"));//数据字典相关参数
+					break;
+				}
+			}
 		}
 		if (pid != null && pid > 0) { // 更新
 			model.set("id", pid);
@@ -66,7 +64,7 @@ public class UploadFileService {
 		}
 		return flag;
 	}
-	public List<CreditUploadFileModel> getByBusIdAndBusType(String business_id,String business_type,BaseProjectController c) {
+	public List<CreditUploadFileModel> getByBusIdAndBusType(String business_id,Integer business_type,BaseProjectController c) {
 		return CreditUploadFileModel.dao.getByBusIdAndBusType(business_id,business_type,c);
 	}
 	public void delete(Integer id, Integer userid) {

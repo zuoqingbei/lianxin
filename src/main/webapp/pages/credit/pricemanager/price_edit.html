@@ -11,7 +11,7 @@ var oper = {
 			return false;
 		}
 		id = id || '0';
-		var url = 'system/dict/save/'+id;
+		var url = 'credit/pricemanager/save/'+id;
 		form1.action = url;
 		form1.submit();
 		return true;
@@ -28,7 +28,7 @@ var bodyContent = {
 	<!-- 数据列表 -->
 	<table class="table">
 		<tr>
-			<td>类型</td>
+			<td>报告类型</td>
 			<td>
 			<% if(item.detail_id!0 > 0) { %>
 			<input type="hidden" name="model.dict_type" value="${item.dict_type}" />
@@ -43,92 +43,44 @@ var bodyContent = {
 			</td>
 		</tr>
 		<tr>
-			<td>名称</td>
+			<td>报告速度</td>
 			<td><input type="text" name="model.detail_name" class="form-control" 
 				value="${item.detail_name}" /></td>
 		</tr>
 		<tr>
-			<td>编号</td>
+			<td>国家</td>
 			<td><input type="text" name="model.detail_code" class="form-control" 
 				value="${item.detail_code}" /></td>
 		</tr>
 		<tr>
-			<td>排序号</td>
+			<td>订单类型</td>
 			<td><input type="text" name="model.detail_sort" class="form-control" 
 				value="${strutil.nvl(item.detail_sort,'0')}" /></td>
 		</tr>
-		
 		<!-- start -->
-		
 		<tr>
-			<td>详情名英文</td>
+			<td>报告点数</td>
 			<td><input type="text" name="model.detail_name_en" class="form-control" 
 				value="${strutil.nvl(item.detail_name_en,'0')}" /></td>
 		</tr>
 		
 		<tr>
-			<td>详情类型</td>
+			<td>报告价格</td>
 			<td><input type="text" name="model.detail_type" class="form-control" 
 				value="${strutil.nvl(item.detail_type,'0')}" /></td>
 		</tr>
-		
-		
 		<tr>
-			<td>详情状态</td>
+			<td>币种</td>
 			<td><input type="text" name="model.detail_state" class="form-control" 
 				value="${strutil.nvl(item.detail_state,'0')}" /></td>
 		</tr>
-		
-		<tr>
-			<td>详情内容</td>
-			<td><input type="text" name="model.detail_content" class="form-control" 
-				value="${strutil.nvl(item.detail_content,'0')}" /></td>
-		</tr>
-		
-		<tr>
-			<td>详情标记</td>
-			<td><input type="text" name="model.detail_remark" class="form-control" 
-				value="${strutil.nvl(item.detail_remark,'0')}" /></td>
-		</tr>
-		
-		<tr>
-			<td>创建日期</td>
-			<td><input type="text" name="model.create_time" class="form-control" 
-				value="${strutil.nvl(item.create_time,'0')}" /></td>
-		</tr>
-		
-		<tr>
-			<td>编号</td>
-			<td><input type="text" name="model.detail_code" class="form-control" 
-				value="${strutil.nvl(item.detail_code,'0')}" /></td>
-		</tr>
-		
-		<tr>
-			<td>排序号</td>
-			<td><input type="text" name="model.detail_sort" class="form-control" 
-				value="${strutil.nvl(item.detail_sort,'0')}" /></td>
-		</tr>
-		
-		
-		
-		
-		
-		
 		<!-- end -->
-		
-		<tr>
-			<td></td>
-			<td>
-			
-			</td>
-		</tr>
 	</table>
-	
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
-	  		<button class="btn btn-primary" onclick="oper.save(${item.detail_id});return false;">保存</button>
-			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  		<button class="btn btn-primary" onclick="oper.save(${item.detail_id});return false;">确定</button>
+			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
 	  </div>
 	</nav>
 </form>
