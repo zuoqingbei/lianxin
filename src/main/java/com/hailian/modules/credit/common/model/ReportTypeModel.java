@@ -3,18 +3,14 @@ package com.hailian.modules.credit.common.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.modules.admin.foldernotice.FoldernoticeController;
 import com.hailian.modules.credit.utils.DataAuthorUtils;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;
-import com.mchange.v1.db.sql.ConnectionUtils;
 
 /**
  * @todo 报告类型持久层处理
@@ -101,5 +97,14 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 		Page<ReportTypeModel> reportTypePage = ReportTypeModel.dao.paginate(new Paginator(pageNumber, pagerSize), selectSql.toString(),
 				fromSql.toString(), params.toArray());
 		return reportTypePage;
+	}
+	/**
+	 * @todo   获取全部报告类型
+	 * @time   2018年9月4日 下午7:17:02
+	 * @author zuoqb
+	 * @params
+	 */
+	public List<ReportTypeModel> getReportType() {
+		return dao.find("select t.* from credit_report_type t where t.del_flag='0' order by order_no ");
 	}
 }

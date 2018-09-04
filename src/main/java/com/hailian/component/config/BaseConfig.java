@@ -38,6 +38,7 @@ import com.hailian.jfinal.component.interceptor.JflyfoxInterceptor;
 import com.hailian.jfinal.component.interceptor.SessionAttrInterceptor;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateImageService;
+import com.hailian.modules.front.template.TemplateReportTypeService;
 import com.hailian.modules.front.template.TemplateService;
 import com.hailian.modules.front.template.TemplateVideoService;
 import com.hailian.system.user.UserInterceptor;
@@ -279,6 +280,7 @@ public class BaseConfig extends JFinalConfig {
 		groupTemplate.registerFunctionPackage("tempImage", TemplateImageService.class);
 		groupTemplate.registerFunctionPackage("tempVideo", TemplateVideoService.class);
 		groupTemplate.registerFunctionPackage("tempDict", TemplateDictService.class);//字典模板
+		groupTemplate.registerFunctionPackage("reportType", TemplateReportTypeService.class);//报告类型模板
 	}
 	private boolean isDevMode() {
 		return Config.getToBoolean("CONSTANTS.DEV_MODE");

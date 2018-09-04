@@ -3,6 +3,7 @@
 <% var ordertype = tempDict.getSysDictDetailString('ordertype',attr.order_type !); %>
 <% var countrytype = tempDict.getSysDictDetailString('country',attr.country_type !); %>
 <% var usabled = tempDict.getSysDictDetailString('usabled',attr.usabled !); %>
+<% var reportType = reportType.getReportTypeString(attr.report_type!); %>
 ﻿<% 
 	var headContent = {
 	include("/pages/template/head.html"){}
@@ -56,11 +57,7 @@ var paginator = function(page) {
 
 </script>
 
-<%
-};
-
-var bodyContent = {
-%>
+<% }; var bodyContent = { %>
 <form name="form1" action="" method="post" class="form-inline" role="form">
 	<!-- 菜单 -->
 	<% include("/pages/template/menu.html"){} %>
@@ -69,17 +66,8 @@ var bodyContent = {
 		<div class="form-group">
 		   <label  class="control-label">报告类型</label>
 		   <select name="attr.report_type" class="form-control" style="width: 200px;">
-				<option value="" >请选择</option>
-							 <% for(item in reporttype){ %>
-							 	<% if((attr.report_type+"")==(item.id+"")){ %>
-							 		<option selected="selected"  value="${item.id}">${item.name}</option>
-							 	<% }else{ %>
-							 		<option  value="${item.id}">${item.name}</option>
-							 	<% } %>
-							 	
-							  <% } %>
-							  
-			</select> 
+				${reportType!}
+		  </select> 
 		</div>
 		<div class="form-group">
 		   <label  class="control-label">报告速度</label>

@@ -8,11 +8,9 @@ import com.feizhou.swagger.annotation.Param;
 import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
-import com.hailian.system.dict.SysDictDetail;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -41,7 +39,7 @@ public class ReportPriceController extends BaseProjectController {
 		ReportPrice attr = getModelByAttr(ReportPrice.class);
 		String orderBy = getBaseForm().getOrderBy();
 		Page<ReportPrice> pager = ReportPriceService.service.getPage(getPaginator(), attr, orderBy, this);
-		List<CreditReportType> reportType = ReportPriceService.service.getReportType("");
+		List<ReportTypeModel> reportType = ReportPriceService.service.getReportType(null);
 		setAttr("page", pager);
 		setAttr("reporttype", reportType);
 		setAttr("attr", attr);

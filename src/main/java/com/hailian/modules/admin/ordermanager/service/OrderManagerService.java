@@ -1,6 +1,5 @@
 package com.hailian.modules.admin.ordermanager.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,9 +12,9 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditReportLanguage;
 import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
-import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.jfinal.plugin.activerecord.Page;
@@ -151,9 +150,9 @@ public class OrderManagerService {
 	 * @param  @return
 	 * @return_type   List<CreditReportType>
 	 */
-	public List<CreditReportType> getReportType() {
+	public List<ReportTypeModel> getReportType() {
 
-		return CreditReportType.dao.getReportType();
+		return ReportTypeModel.dao.getReportType();
 	}
 
 	/**
