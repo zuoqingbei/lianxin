@@ -38,8 +38,13 @@ public class ReportTypeController extends BaseProjectController {
 		int pageSize = getParaToInt("pageSize", 10);
 		//从表单获取排序语句
 		String orderBy = getBaseForm().getOrderBy();
+		//模糊搜索或者精确搜索
+		String searchType = getPara("searchType");
+		if(!"1".equals(searchType)){
+				searchType ="0";
+		}
 		//分页查询
-		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, this);
+		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, searchType, this);
 		setAttr("page", pager);
 		keepPara();
 		render(path+"list.html");
@@ -58,8 +63,13 @@ public class ReportTypeController extends BaseProjectController {
 		int pageSize = getParaToInt("pageSize", 10);
 		//从表单获取排序语句
 		String orderBy = getBaseForm().getOrderBy();
+		//模糊搜索或者精确搜索
+		String searchType = getPara("searchType");
+		if(!"1".equals(searchType)){
+			searchType ="0";
+		}
 		//分页查询
-		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, this);
+		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, searchType, this);
 		renderJson(pager);
 	}
 

@@ -60,7 +60,10 @@
 
 	<div class="tableSearch">
 		<% //查询列表 %>
-		检索内容
+		<select name="searchType" class="form-control form-group" style="width: 110px;font-size: 10px;">
+					<option value="0">模糊搜索</option>
+					<option value="1">精确搜索</option>
+		</select>
 		<div class="form-group">
 			<input class="form-control" type="text" name="keyWord"
 				value="${keyWord!''}" placeholder="请输入关键字" required='required' />
