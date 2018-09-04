@@ -14,28 +14,28 @@
 			height : 500,
 			form : document.form1,
 			list : function() {
-				var url = 'credit/file/list';
+				var url = 'credit/custom/list';
 				this.form.action = url;
 				this.form.submit();
 			},
 			view : function(id) {
-				var url = 'credit/file/view/'+id;
-				var title = '查看图片';
+				var url = 'credit/custom/view/'+id;
+				var title = '查看';
 				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 			},
 			add : function() {
-				var url = 'credit/file/add';
-				var title = '上传文件';
+				var url = 'credit/custom/add';
+				var title = '新增';
 				Iframe(url, this.width, this.height, title);
 			},
 			edit : function(id) {
-				var url = 'credit/file/edit/'+id;
-				var title = '重新上传';
+				var url = 'credit/custom/edit/'+id;
+				var title = '修改';
 				Iframe(url, this.width, this.height, title);
 			},
 			del : function(id) {
-				var url = 'credit/file/delete/'+id;
-				var title = '确认要删除该图片信息？';
+				var url = 'credit/custom/delete/'+id;
+				var title = '确定要删除吗？';
 				Confirm(title, function() {
 					form1.action = url;
 					form1.submit();
@@ -43,7 +43,7 @@
 			}
 		};
 		//显示Menu索引
-		showMenu('page_uploadfile');
+		showMenu('page_custom_Manager');
 	});
 	
 	//分页
@@ -65,24 +65,17 @@ var bodyContent = {
 
 		<div class="tableSearch">
 			<%  //查询列表 %>
-			文件名称：
+			姓名：
 			<div class="form-group">
-					<input class="form-control" type="text" name="attr.originalname" value="${attr.originalname!''}" 
-						placeholder="请输入名称" required='required' />
+					<input class="form-control" type="text" name="attr.name" value="${attr.name!''}" 
+						placeholder="请输入客户姓名" required='required' />
 			</div>
 			<div class="form-group">
-					业务类型：
-					<select name="attr.business_type" class="form-control" >
+					报告类型：
+					<select name="attr.telphone" class="form-control" >
 					${upload_busType!}
 					</select>
 			</div>
-			<div class="form-group">
-					上传文档类型：
-					<select name="attr.ext_id" class="form-control" >
-					 ${uploadFileTtype!}
-					</select>
-			</div>
-			
 			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
 			 		<span class="glyphicon glyphicon-search"></span> 查 询
 			</button>
@@ -100,14 +93,17 @@ var bodyContent = {
 				<tr>
 					<th>序号</th>
 					<%  // 列表头部 %>
-					<th name="originalname" class="sorting">文件名称</th> 
-					<th name="ext" class="sorting">文件类型</th> 
-					<th name="size" class="sorting">文件大小</th> 
-					<th name="business_type" class="sorting">业务类型</th> 
-					<th name="business_id" class="sorting">业务编码</th> 
-					<th name="remarks" class="sorting">说明</th> 
-					<th name="update_by" class="sorting">上传人</th> 
-					<th name="update_date" class="sorting">上传时间</th> 
+					<th name="name" class="sorting">客户名称</th> 
+					<th name="contacts" class="sorting">联系人全称</th> 
+					<th name="contacts_short_name" class="sorting">联系人简称</th> 
+					<th name="company" class="sorting">公司名称</th> 
+					<th name="address" class="sorting">地址</th> 
+					<th name="telphone" class="sorting">电话</th> 
+					<th name="email" class="sorting">邮箱</th> 
+					<th name="fax" class="sorting">传真</th>
+					<th name="country" class="sorting">客户所属国家</th>  
+					<th name="usabled" class="sorting">是否可用</th> 
+					<th name="is_old_customer" class="sorting">是否为老用户</th> 
  					<th>操作</th>
 				</tr>
 			</thead>
@@ -116,25 +112,26 @@ var bodyContent = {
 				<tr>
 				<td>${itemLP.index }</td>
 					<%  // 列表内容 %>
-					<td>${item.originalname}</td> 
-					<td>${item.ext}</td> 
+					<td>${item.name}</td> 
+					<td>${item.contacts}</td> 
 					<td>
-						${item.size}字节
+						${item.contacts_short_name}
 					</td> 
 					<td>
-						${item.busName}
+						${item.company_id}
 					</td>  
 					<td>
-					${item.business_id}
+					${item.address}
 					</td>  
-					<td>
-					${item.remarks}
-					</td> 
-					<td>${item.update_by}</td> 
-					<td>${item.update_date,dateFormat="yyyy-MM-dd"}</td> 
+					<td>${item.telphone}</td>
+					<td>${item.email}</td>
+					<td>${item.fax}</td>
+					<td>${item.country}</td>
+					<td>${item.usabled}</td>
+					<td>${item.is_old_customer}</td>
 				<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
-				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">重新上传</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
 				</td>
 				</tr>

@@ -17,6 +17,8 @@ import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.image.model.TbImage;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
+import com.hailian.modules.credit.whilte.service.ArchivesWhilteService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
@@ -219,31 +221,9 @@ public class FileUpLoadController extends BaseProjectController {
 	 */
 	public void list() {
 		CreditUploadFileModel attr = getModelByAttr(CreditUploadFileModel.class);
-		StringBuffer sql = new StringBuffer(" from credit_upload_file where del_flag=0");
-		String type = attr.getStr("ext_id");//检索条件-文件类型
-		Integer business_type = attr.getInt("business_type");//检索条件-报告类型
-		String originalname = attr.getStr("originalname");//检索条件-上传文件名
-		if (StrUtils.isNotEmpty(type)) {
-			sql.append(" and ext_id = '").append(type).append("'");
-		}
-		if (business_type !=null && business_type>=0) {
-			sql.append(" and business_type = ").append(business_type);
-		}
-		if (StrUtils.isNotEmpty(originalname)) {
-			sql.append(" and originalname like '%").append(originalname).append("%'");
-		}
 		// 排序
 		String orderBy = getBaseForm().getOrderBy();
-		if (StrUtils.isEmpty(orderBy)) {
-			sql.append(" order by update_date desc");
-		} else {
-			sql.append(" order by ").append(orderBy);
-		}
-		Page<CreditUploadFileModel> page = CreditUploadFileModel.dao
-				.paginate(getPaginator(), "select *  ", sql.toString());
-		
-		// 下拉框
-//		setAttr("selectAlbum", svc.selectDictType(attr.getStr("dict_type")));
+		Page<CreditUploadFileModel> page = UploadFileService.service.getPage(getPaginator(),attr,orderBy,this);
 		setAttr("attr", attr);
 		setAttr("page", page);
 		render(path + "list.html");
@@ -274,7 +254,6 @@ public class FileUpLoadController extends BaseProjectController {
 	 */
 	public void edit() {
 		Integer paraToInt = getParaToInt();
-		System.out.println("************"+paraToInt);
 		CreditUploadFileModel model = CreditUploadFileModel.dao.findById(paraToInt);
 		setAttr("model", model);
 		// 查询下拉框
