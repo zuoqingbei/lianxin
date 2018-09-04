@@ -30,8 +30,21 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	private String countryName;
 	//订单创建者的username
 	private String createName;
+	//地区
+	private String continentName;
+	//报告类型
+	private String reportType;
+	//报告语言
+	private String reportLanguage;
+	//报告速度
+	private String reportSpeed;
+	//订单来源
+	private String orderType;
+	//订单价格
+	private String  price;
+	
 	public String getCustomName() {
-		return get("userName");
+		return get("customName");
 	}
 
 	public void setCustomName(String customName) {
@@ -44,11 +57,41 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	public void setCountryName(String countryName) {
 		set("countryName", countryName);
 	}
-	public String getcreateName() {
+	public String getCreateName() {
 		return get("createName");
 	}
 	public void setCreateName(String createName) {
 		set("createName", createName);
+	}
+	public String getContinentName() {
+		return get("continentName");
+	}
+	public void setContinentName(String continentName) {
+		set("continentName", continentName);
+	}
+	public String getReportType() {
+		return get("reportType");
+	}
+	public void setReportType(String reportType) {
+		set("reportType", reportType);
+	}
+	public String getReportLanguage() {
+		return get("reportLanguage");
+	}
+	public void setReportLanguage(String reportLanguage) {
+		set("reportLanguage", reportLanguage);
+	}
+	public String getOrderType() {
+		return get("orderType");
+	}
+	public void setOrderType(String orderType) {
+		set("orderType", orderType);
+	}
+	public String getPrice() {
+		return get("price");
+	}
+	public void setPrice(String price) {
+		set("price", price);
 	}
 
 	/**
@@ -81,13 +124,24 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 					 sql = new StringBuffer(" from credit_order_info t "
 					 		+ "left join credit_custom_info u on u.id=t.custom_id "
 					 		+ "left join credit_country c on c.id=t.country "
+					 		+ "left join credit_report_price c1 on c1.id=t.price_id "
 					 		+ "left join sys_user s on s.userid=t.create_by " 
+					 		+ "left join sys_dict_detail s2  on s2.detail_id=t.continent "
+					 		+ "left join credit_report_type s3  on s3.id=t.report_type "
+					 		+ "left join sys_dict_detail s4  on s4.detail_id=t.report_language "
+					 		+ "left join sys_dict_detail s5  on s5.detail_id=t.speed "
+					 		+ "left join sys_dict_detail s6  on s6.detail_id=t.order_type "
 							+ " where 1 = 1 and t.del_flag='0' ");
 				}else {
 					 sql = new StringBuffer(" from credit_order_info t "
-					 		+ "left join credit_custom_info u on u.id=t.custom_id"
-					 		+ " left join credit_country c on c.id=t.country"
+					 		+ "left join credit_custom_info u on u.id=t.custom_id  "
+					 		+ "left join credit_country c on c.id=t.country "
 					 		+ "left join sys_user s on s.userid=t.create_by "
+					 		+ "left join sys_dict_detail s2  on s2.detail_id=t.continent "
+					 		+ "left join credit_report_type s3  on s3.id=t.report_type "
+					 		+ "left join sys_dict_detail s4  on s4.detail_id=t.report_language "
+					 		+ "left join sys_dict_detail s5  on s5.detail_id=t.speed "
+					 		+ "left join sys_dict_detail s6  on s6.detail_id=t.order_type "
 							+ " where 1 = 1 and t.del_flag='0'");
 					 sql.append(" and t.create_by=?");
 					 params.add(userid);
@@ -107,7 +161,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 				} else {
 					sql.append(" order by ").append(orderby);
 				}
-				Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.name as customName,c.name as countryName,s.username as createName", sql.toString(),params.toArray());
+				Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.name as customName,c.name as countryName,s.username as createName"
+						+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
+						+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price ", sql.toString(),params.toArray());
 				
 				return page;
 	}
@@ -123,7 +179,18 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	 */
 	public CreditOrderInfo getOrder(int id, BaseProjectController c) {
 
-		return dao.findFirst("select t.*,u.name as userName,c.name as countryName from credit_order_info t left join credit_custom_info u on u.id=t.custom_id left join credit_country c on c.id=t.country  "
+		return dao.findFirst("select t.*,u.name as customName,c.name as countryName,s.username as createName,"
+				+ "s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
+				+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price from credit_order_info t "
+				+ "left join credit_custom_info u on u.id=t.custom_id "
+				+ "left join credit_country c on c.id=t.country  "
+				+ "left join credit_report_price c1 on c1.id=t.price_id "
+				+ "left join sys_user s on s.userid=t.create_by "
+				+ "left join sys_dict_detail s2  on s2.detail_id=t.continent "
+				+ "left join credit_report_type s3  on s3.id=t.report_type "
+				+ "left join sys_dict_detail s4  on s4.detail_id=t.report_language "
+				+ "left join sys_dict_detail s5  on s5.detail_id=t.speed "
+				+ "left join sys_dict_detail s6  on s6.detail_id=t.order_type "
 				+ "where 1 = 1 and t.del_flag='0' and t.id=?", id);
 	}
 	
