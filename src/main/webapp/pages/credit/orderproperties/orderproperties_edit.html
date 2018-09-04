@@ -1,0 +1,72 @@
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+	var oper = {
+		save:function(id){
+			if(!validForm()) {
+				return false;
+			}
+			id = id;
+			var url = 'credit/orderproperties/save?detail_id='+id;
+			form1.action = url;
+			form1.submit();
+			return true;
+		}	
+	};
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+		role="form" >
+	<input type="hidden" name="model.detail_id" value="${model.detail_id}" />
+	<input type="hidden" name="model.dict_type" value="${dictType!''}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>${title!}名称</td>
+					<td>
+					<input class="form-control" type="text" name="model.detail_name" value="${model.detail_name }"  valid='vtext' validname='名称'  />
+					</td>
+				</tr>
+				<tr>
+					<td>${title!}英文名称</td>
+					<td>
+					<input class="form-control" type="text" name="model.detail_name_en" value="${model.detail_name_en }"   validname='英文名称'  />
+					</td>
+				</tr>
+				
+				<tr>
+					<td>${title!}排序</td>
+					<td>
+					<input class="form-control" type="text" name="model.detail_sort" valid='vnum_y' validname='排序' value="${model.detail_sort }"  />
+					</td>
+				</tr>
+				
+				<tr>
+					<td>${title!}备注</td>
+					<td>
+					<textarea class="form-control" type="text" name="model.detail_remark" >${model.detail_remark }</textarea>
+					</td>
+				</tr>
+	</table>
+	
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-primary" onclick="oper.save(${model.detail_id!'0'});return false;">保 存</button>
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%}
+DIRECTIVE SAFE_OUTPUT_CLOSE; 
+%>

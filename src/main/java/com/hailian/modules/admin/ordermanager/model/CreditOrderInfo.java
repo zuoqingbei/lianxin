@@ -1,3 +1,4 @@
+
 package com.hailian.modules.admin.ordermanager.model;
 
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;
@@ -30,8 +30,40 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	private String countryName;
 	//订单创建者的username
 	private String createName;
+	//地区
+	private String continentName;
+	//报告类型
+	private String reportType;
+	//报告语言
+	private String reportLanguage;
+	//报告速度
+	private String reportSpeed;
+	//订单来源
+	private String orderType;
+	//订单价格
+	private String  price;
+	//公司名称
+	private String companyName;
+	//公司英文名称
+	private String englishName;
+	
+	public String getenglishName() {
+		return get("englishName");
+	}
+
+	public void setenglishName(String englishName) {
+		set("englishName", englishName);
+	}
+	
+	public String getcompanyName() {
+		return get("companyName");
+	}
+
+	public void setcompanyName(String companyName) {
+		set("companyName", companyName);
+	}
 	public String getCustomName() {
-		return get("userName");
+		return get("customName");
 	}
 
 	public void setCustomName(String customName) {
@@ -44,11 +76,41 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	public void setCountryName(String countryName) {
 		set("countryName", countryName);
 	}
-	public String getcreateName() {
+	public String getCreateName() {
 		return get("createName");
 	}
 	public void setCreateName(String createName) {
 		set("createName", createName);
+	}
+	public String getContinentName() {
+		return get("continentName");
+	}
+	public void setContinentName(String continentName) {
+		set("continentName", continentName);
+	}
+	public String getReportType() {
+		return get("reportType");
+	}
+	public void setReportType(String reportType) {
+		set("reportType", reportType);
+	}
+	public String getReportLanguage() {
+		return get("reportLanguage");
+	}
+	public void setReportLanguage(String reportLanguage) {
+		set("reportLanguage", reportLanguage);
+	}
+	public String getOrderType() {
+		return get("orderType");
+	}
+	public void setOrderType(String orderType) {
+		set("orderType", orderType);
+	}
+	public String getPrice() {
+		return get("price");
+	}
+	public void setPrice(String price) {
+		set("price", price);
 	}
 
 	/**
@@ -71,29 +133,28 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	 * @return_type   Page<CreditOrderInfo>
 	 */
 	public Page<CreditOrderInfo> getOrders(Paginator pageinator,CreditOrderInfo model,String orderby,SysUser user,BaseProjectController c) {
-		// TODO Auto-generated method stub
-		StringBuffer sql=null;
+		StringBuffer sql = new StringBuffer();
 		String userid=user.get("userid").toString();
 		String custom_id=model.getStr("custom_id");
 		String id=model.getStr("id");
 		List<Object> params = new ArrayList<Object>();
-		if((int)user.get("usertype")==1) {
-			 sql = new StringBuffer(" from credit_order_info t "
-			 		+ "left join credit_custom_info u on u.id=t.custom_id "
-			 		+ "left join credit_country c on c.id=t.country "
-			 		+ "left join sys_user s on s.userid=t.create_by " 
-					+ " where 1 = 1 and t.del_flag='0' ");
-		}else {
-			 sql = new StringBuffer(" from credit_order_info t "
-			 		+ "left join credit_custom_info u on u.id=t.custom_id"
-			 		+ " left join credit_country c on c.id=t.country"
-			 		+ "left join sys_user s on s.userid=t.create_by "
-					+ " where 1 = 1 and t.del_flag='0'");
-			 sql.append(" and t.create_by=?");
-			 params.add(userid);
+		sql.append(" from credit_order_info t ");
+		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
+		sql.append(" left join credit_country c on c.id=t.country ");
+		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
+		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
+		sql.append(" left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
+		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
+		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
+		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
+		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		if(!c.isAdmin(c.getSessionUser())){
+			sql.append(" and t.create_by=? ");
+			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
 
-			
 		if (StringUtils.isNotBlank(custom_id)) {
 			sql.append(" and t.custom_id=?");
 			params.add(custom_id);
@@ -107,7 +168,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		} else {
 			sql.append(" order by ").append(orderby);
 		}
-		Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.name as customName,c.name as countryName,s.username as createName", sql.toString(),params.toArray());
+		Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.name as customName,c.name as countryName,s.username as createName"
+				+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
+				+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price,c2.name as companyName,c2.name_en as englishName ", sql.toString(),params.toArray());
 		
 		return page;
 	}
@@ -123,8 +186,22 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	 */
 	public CreditOrderInfo getOrder(int id, BaseProjectController c) {
 
-		return dao.findFirst("select t.*,u.name as userName,c.name as countryName from credit_order_info t left join credit_custom_info u on u.id=t.custom_id left join credit_country c on c.id=t.country  "
-				+ "where 1 = 1 and t.del_flag='0' and t.id=?", id);
+		StringBuffer sql=new StringBuffer();
+		sql.append("select t.*,u.name as customName,c.name as countryName,s.username as createName,");
+		sql.append("s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,");
+		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price, c2.name as companyName,c2.name_en as englishName  from credit_order_info t ");
+		sql.append("left join credit_custom_info u on u.id=t.custom_id ");
+		sql.append("left join credit_country c on c.id=t.country  ");
+		sql.append("left join credit_report_price c1 on c1.id=t.price_id ");
+		sql.append(" left join credit_company_info c2 on c2.id=t.company_id ");
+		sql.append("left join sys_user s on s.userid=t.create_by ");
+		sql.append("left join sys_dict_detail s2  on s2.detail_id=t.continent ");
+		sql.append("left join credit_report_type s3  on s3.id=t.report_type ");
+		sql.append("left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
+		sql.append("left join sys_dict_detail s5  on s5.detail_id=t.speed ");
+		sql.append("left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append("where 1 = 1 and t.del_flag='0' and t.id=?");
+		return dao.findFirst(sql.toString(),id);
 	}
 	
 
