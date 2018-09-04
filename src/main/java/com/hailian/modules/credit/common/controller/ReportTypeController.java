@@ -28,22 +28,6 @@ import com.jfinal.plugin.activerecord.Page;
 @ControllerBind(controllerKey = "/credit/reportType")
 public class ReportTypeController extends BaseProjectController {
 	private static final String path = "/pages/credit/reportType/reportType_";
-	@Params(value = { 
-			@Param(name = "pageNo", description = "页码", required = false, dataType = "String"),
-			@Param(name = "pageSize", description = "每页条数", required = false, dataType = "String"),
-			@Param(name = "reportName", description = "报告名称(模糊匹配)", required = false, dataType = "String")
-			})
-	public void list() {
-		int pageNumber = getParaToInt("pageNo", 1);
-		int pageSize = getParaToInt("pageSize", 10);
-		//从表单获取排序语句
-		String orderBy = getBaseForm().getOrderBy();
-		//分页查询
-		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, this);
-		setAttr("page", pager);
-		keepPara();
-		render(path+"list.html");
-	}
 	
 	/**
 	 * @todo   报告类型列表集
@@ -51,6 +35,34 @@ public class ReportTypeController extends BaseProjectController {
 	 * @author lzg
 	 * @return_type   void
 	 */
+	public void list() {
+		int pageNumber = getParaToInt("pageNo", 1);
+		int pageSize = getParaToInt("pageSize", 10);
+		//从表单获取排序语句
+		String orderBy = getBaseForm().getOrderBy();
+		//模糊搜索或者精确搜索
+		String searchType = getPara("searchType");
+		if(!"1".equals(searchType)){
+				searchType ="0";
+		}
+		//分页查询
+		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, searchType, this);
+		setAttr("page", pager);
+		keepPara();
+		render(path+"list.html");
+	}
+	
+	/**
+	 * @todo   报告类型列表
+	 * @time   2018年9月3日 上午9:10:00
+	 * @author lzg
+	 * @return_type   json
+	 */
+	@Params(value = { 
+			@Param(name = "pageNo", description = "页码", required = false, dataType = "String"),
+			@Param(name = "pageSize", description = "每页条数", required = false, dataType = "String"),
+			@Param(name = "reportName", description = "报告名称(模糊匹配)", required = false, dataType = "String")
+			})
 	@ApiOperation(url = "/credit/reportType/listJson",httpMethod="get", 
 	description = "获取报告类型列表",response=Page.class)
 	public void listJson() {
@@ -58,14 +70,22 @@ public class ReportTypeController extends BaseProjectController {
 		int pageSize = getParaToInt("pageSize", 10);
 		//从表单获取排序语句
 		String orderBy = getBaseForm().getOrderBy();
+		//模糊搜索或者精确搜索
+		String searchType = getPara("searchType");
+		if(!"1".equals(searchType)){
+			searchType ="0";
+		}
 		//分页查询
-		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, this);
+		Page<ReportTypeModel> pager = ReportTypeService.service.pagerOrder(pageNumber, pageSize, getPara("keyWord"), orderBy, searchType, this);
 		renderJson(pager);
 	}
-
-	@Params(value = { 
-			@Param(name = "id", description = "id", required = true, dataType = "int"),
-			})
+	
+	/**
+	 * @todo   查看单个报告类型
+	 * @time   2018年9月3日 下午1:30:00
+	 * @author lzg
+	 * @return_type   void
+	 */
 	public void view() {
 		ReportTypeModel model = ReportTypeModel.dao.getReportType(getPara("id"), this);
 		setAttr("model", model);
@@ -76,9 +96,12 @@ public class ReportTypeController extends BaseProjectController {
 		render(path + "add.html");
 	}
 	
-	@Params(value = { 
-			@Param(name = "id", description = "id", required = true, dataType = "int"),
-			})
+	/**
+	 * @todo   删除单条报告类型
+	 * @time   2018年9月4日 上午9:10:00
+	 * @author lzg
+	 * @return_type   void
+	 */
 	public void del() {
 		ReportTypeModel model = getModel(ReportTypeModel.class);
 		Integer userid = getSessionUser().getUserid();
@@ -92,23 +115,24 @@ public class ReportTypeController extends BaseProjectController {
 		list();
 	}
 	
-	@Params(value = { 
-			@Param(name = "id", description = "id", required = true, dataType = "int"),
-			})
+	/**
+	 * @todo   跳转到修改报告类型页面
+	 * @time   2018年9月3日 上午9:10:00
+	 * @author lzg
+	 * @return_type   void
+	 */
 	public void edit() {
 		ReportTypeModel model = ReportTypeModel.dao.findById(getParaToInt("id"));
 		setAttr("model", model);
 		render(path + "edit.html");
 	}
 	
-	@Params(value = { 
-			@Param(name = "id", description = "id", required = true, dataType = "int"),
-			@Param(name = "name", description = "报告名称", required = true, dataType = "String"),
-			@Param(name = "name_en", description = "报告英文名称", required = true, dataType = "String"),
-			@Param(name = "name_trad", description = "报告繁体名称", required = true, dataType = "String"),
-			@Param(name = "tpl_path", description = "报告路径", required = true, dataType = "String"),
-			@Param(name = "remarks", description = "备注", required = true, dataType = "String"),
-			})
+	/**
+	 * @todo   修改或增加功能
+	 * @time   2018年9月4日 下午4:30:00
+	 * @author lzg
+	 * @return_type   void
+	 */
 	public void save() {
 		Integer pid = getParaToInt("id");
 		ReportTypeModel model = getModel(ReportTypeModel.class);

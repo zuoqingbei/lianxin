@@ -32,6 +32,8 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 		columnnNames.add("name_trad");
 		columnnNames.add("tpl_path");
 		columnnNames.add("remarks");
+		columnnNames.add("order_no");
+		columnnNames.add("create_date");
 	}
 	
 	/**
@@ -60,26 +62,38 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 	 * @params pageNumber：当前页码 pagerSize：每页条数 reportName：报告名称  BaseProjectController-当前controller  必须传 以后做数据权限使用
 	 */
 
-	public Page<ReportTypeModel> pagerReportType(int pageNumber, int pagerSize, String keyWord,String orderBy,BaseProjectController c) {
+	public Page<ReportTypeModel> pagerReportType(int pageNumber, int pagerSize, String keyWord,String orderBy,String searchType,BaseProjectController c) {
 		String authorSql = DataAuthorUtils.getAuthorByUser(c);
 		StringBuffer selectSql = new StringBuffer(" select *,u.realname ");
 		StringBuffer fromSql = new StringBuffer(" from credit_report_type t LEFT JOIN sys_user u ON u.userid = t.create_by WHERE del_flag=0 ");
 		//参数集合
-		List<String> params = new ArrayList<String>();
+		List<Object> params = new ArrayList<Object>();
 		if (StringUtil.isNotEmpty(keyWord)) {
 			fromSql.append(" and ");
 			for (int i = 0; i < columnnNames.size(); i++) {
+				if("create_date".equals(columnnNames.get(i))){
+					continue;
+				}
 				if(i!=0){
 					fromSql.append(" || ");
 				}
-				fromSql.append(columnnNames.get(i)+" like concat('%',?,'%')");
+				//搜索类型
+				if("0".equals(searchType)){
+					fromSql.append(columnnNames.get(i)+" like concat('%',?,'%')");
+				}else{
+					fromSql.append(columnnNames.get(i)+" = ? ");
+				}
 				params.add(keyWord);//传入的参数
 			}
-			
+		}
+		//权限区分
+		if(!c.isAdmin(c.getSessionUser())){
+			fromSql.append(" and t.create_by=? ");
+			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
-			fromSql.append(" order by t.id desc");
+			fromSql.append(" order by t.create_date desc");
 		} else {
 			fromSql.append(" order by ").append(orderBy);
 		}

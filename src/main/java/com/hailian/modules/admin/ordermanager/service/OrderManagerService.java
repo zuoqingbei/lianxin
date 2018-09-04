@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
@@ -19,7 +18,6 @@ import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
-import com.hailian.util.extend.UuidUtils;
 import com.jfinal.plugin.activerecord.Page;
 
 /**

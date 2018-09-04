@@ -10,32 +10,21 @@ var bodyContent = {
 	<table class="table">
 		<%  // 列表头部 %>
 			<tr>
-				<td>信用报告名称</td>
-				<td>${model.name!''}</td>
+				<td>${title!}名称</td>
+				<td>${model.detail_name!''}</td>
 			</tr>
 			<tr>
-				<td>报告英文名称</td>
-				<td>${model.name_en!''}</td>
+				<td>${title!}英文名称</td>
+				<td>${model.detail_name_en!''}</td>
+			</tr>
+		
+			<tr>
+				<td>${title!}排序</td>
+				<td>${model.detail_sort!''}</td>
 			</tr>
 			<tr>
-				<td>报告繁体名称</td>
-				<td>${model.name_trad!''}</td>
-			</tr>
-			<tr>
-				<td>模板路径</td>
-				<td>${model.tpl_path!''}</td>
-			</tr>
-			<tr>
-				<td>排序</td>
-				<td>${model.order_no!''}</td>
-			</tr> 
-			<tr>
-				<td>备注</td>
-				<td>${model.remarks!''}</td>
-			</tr>
-			<tr>
-				<td>创建日期</td>
-				<td >${model.create_date,dateFormat="yyyy-MM-dd HH:mm:ss"}</td>
+				<td>${title!}备注</td>
+				<td>${model.detail_remark!''}</td>
 			</tr>
 	</table>
 	
