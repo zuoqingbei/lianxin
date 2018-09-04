@@ -34,8 +34,9 @@ public class CreditReportLanguage extends BaseProjectModel<CreditReportLanguage>
 	public List<CreditReportLanguage> getLanguage(String countryType, String reporttype) {
 		
 		List<String> params=new ArrayList<String>();
-		StringBuffer sql=new StringBuffer("select t.*,s.detail_name as languageName from credit_report_language t where t.del_flag='0' "
-				+ "left join sys_dict_detail s on s.detail_id=t.language_id");
+		StringBuffer sql=new StringBuffer();
+		sql.append(" select t.*,s.detail_name as languageName from credit_report_language t where t.del_flag='0' ");
+		sql.append(" left join sys_dict_detail s on s.detail_id=t.language_id ");
 		if (StringUtils.isNotBlank(countryType)) {
 			sql.append(" and t.country_type=?");
 			params.add(countryType);

@@ -27,7 +27,7 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 	public CreditReportPrice getTime(String countryType, String speed, String reporttype) {
 		// TODO Auto-generated method stub
 			List<String> params=new ArrayList<String>();
-			StringBuffer sql=new StringBuffer("select t.* from credit_report_price t where t.del_flag='0' ");
+			StringBuffer sql=new StringBuffer(" select t.* from credit_report_price t where t.del_flag='0' ");
 			if (StringUtils.isNotBlank(countryType)) {
 				sql.append(" and t.country_type=?");
 				params.add(countryType);
