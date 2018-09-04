@@ -1,5 +1,7 @@
 package com.hailian.modules.admin.ordermanager.model;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 	public CreditReportPrice getPrice(String countryType, String speed, String reporttype) {
 		// TODO Auto-generated method stub
 			List<String> params=new ArrayList<String>();
-			StringBuffer sql=new StringBuffer("select t.* from credit_report_price t where t.del_flag='0' ");
+			StringBuffer sql=new StringBuffer(" select t.* from credit_report_price t where t.del_flag='0' ");
 			if (StringUtils.isNotBlank(countryType)) {
 				sql.append(" and t.country_type=?");
 				params.add(countryType);
@@ -43,6 +45,5 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 			
 			return CreditReportPrice.dao.findFirst(sql.toString(),params.toArray());
 		}
-
 	}
 

@@ -29,8 +29,7 @@ public class CreditCustomInfo  extends BaseProjectModel<CreditCustomInfo>{
 	 * 获取客户列表
 	 */
 	public List<CreditCustomInfo> findcustoms() {
-		List<CreditCustomInfo> list=dao.find("select t.* from credit_custom_info t "
-				+ "where t.del_flag=? order by id", "0");
+		List<CreditCustomInfo> list=dao.find("select t.* from credit_custom_info t where t.del_flag=? order by id ", "0");
 		return list;
 	}
 

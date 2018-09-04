@@ -25,17 +25,17 @@ public class CreditReportUsetime  extends BaseProjectModel<CreditReportUsetime>{
 	
 	public  CreditReportUsetime getTime(String countryType, String speed, String reporttype) {
 		List<String> params=new ArrayList<String>();
-		StringBuffer sql=new StringBuffer("select t.* from credit_report_usetime t where t.del_flag='0' ");
+		StringBuffer sql=new StringBuffer(" select t.* from credit_report_usetime t where t.del_flag='0' ");
 		if (StringUtils.isNotBlank(countryType)) {
-			sql.append(" and t.country_type=?");
+			sql.append(" and t.country_type=? ");
 			params.add(countryType);
 		}
 		if (StringUtils.isNotBlank(speed)) {
-			sql.append(" and t.report_speed=?");
+			sql.append(" and t.report_speed=? ");
 			params.add(speed);
 		}
 		if (StringUtils.isNotBlank(reporttype)) {
-			sql.append(" and t.report_id=?");
+			sql.append(" and t.report_id=? ");
 			params.add(reporttype);
 		}
 		
