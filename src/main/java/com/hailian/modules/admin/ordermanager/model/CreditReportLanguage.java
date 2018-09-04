@@ -35,14 +35,15 @@ public class CreditReportLanguage extends BaseProjectModel<CreditReportLanguage>
 		
 		List<String> params=new ArrayList<String>();
 		StringBuffer sql=new StringBuffer();
-		sql.append(" select t.*,s.detail_name as languageName from credit_report_language t where t.del_flag='0' ");
+		sql.append(" select t.*,s.detail_name as languageName from credit_report_language t  ");
 		sql.append(" left join sys_dict_detail s on s.detail_id=t.language_id ");
+		sql.append("where t.del_flag='0'");
 		if (StringUtils.isNotBlank(countryType)) {
-			sql.append(" and t.country_type=?");
+			sql.append(" and t.country_id=?");
 			params.add(countryType);
 		}
 		if (StringUtils.isNotBlank(reporttype)) {
-			sql.append(" and t.report_type=?");
+			sql.append(" and t.report_id=?");
 			params.add(reporttype);
 		}
 		

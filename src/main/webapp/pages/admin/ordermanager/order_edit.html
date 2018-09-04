@@ -15,16 +15,21 @@ include("/pages/template/head.html"){}
              }
             id = id || '0';
 
-            alert( $("select[name='attr.country']").val())
+//            alert( $("select[name='attr.country']").val())
             
             var url = 'admin/ordermanager/save?id='+id;
             form1.action = url;
             form1.submit();
             return true;
         },
-        customChange:function(){
+        findCompany:function(){
+ 	         var value= $("#companyid").find("option:selected").attr("m-type");
+ 	         var value1= $("#companyid").find("option:selected").attr("m-type1");
+ 	         $("#companyname").val(value);
+			$("#englishname").val(value1);
+        },
+    customChange:function(){
         	var value=$("#customid").find("option:selected").attr("m-type");
-        	alert(value)
         	$("input[name='customName']").val(value);
         },
     sandbarChange:function(){
@@ -62,6 +67,8 @@ include("/pages/template/head.html"){}
     	 
     },
     countryChange:function(){
+    	//默认选择第一个国家
+    	 $("select[name='attr.country'] option:first").attr('selected','selected')
     	//查询用时
     	oper.usetimeChange();
     	//查询费用
@@ -84,7 +91,7 @@ include("/pages/template/head.html"){}
     	oper.priceChange();
     },
     usetimeChange:function(){
-    	var value1=$("#country").find("option:selected").val();
+    	var value1=$("#country").find("option:selected").attr("m-type");
     	var value2=$("#speed").find("option:selected").val();
     	var value3=$("#reporttype").find("option:selected").val();
    	 	var html="";
@@ -96,6 +103,19 @@ include("/pages/template/head.html"){}
 		        	  if(data!=null){
 		        		  $("#usetime").val(data.use_time)
 		        		  $("#usertimeid").val(data.id)
+		        		  var time=Math.ceil(data.use_time/24);
+		        		  var date=new Date($("#receivedate").val())
+		        		     var year = date.getFullYear();
+		        		     var month =(date.getMonth() + 1).toString();
+		        		     var day = (date.getDate()+time).toString();
+		        		     if (month.length == 1) {
+		        		         month = "0" + month;
+		        		     }
+		        		     if (day.length == 1) {
+		        		         day = "0" + day;
+		        		     }
+		        		     dateTime = year +"-"+ month +"-"+  day;
+		        		     $("#enddate").val(dateTime)
 		        	  }  
 		        },
 		        error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -106,7 +126,7 @@ include("/pages/template/head.html"){}
 		    });
     },
     priceChange:function(){
-    	var value1=$("#country").find("option:selected").val();
+    	var value1=$("#country").find("option:selected").attr("m-type");
     	var value2=$("#speed").find("option:selected").val();
     	var value3=$("#reporttype").find("option:selected").val();
    	 	var html="";
@@ -116,8 +136,8 @@ include("/pages/template/head.html"){}
 		        dataType:"json",
 		        success: function(data) {
 		        	  if(data!=null){
-		        		  $("#usetime").val(data.price)
-		        		  $("#usertimeid").val(data.id)
+		        		  $("#price").val(data.price)
+		        		  $("#priceid").val(data.id)
 		        	  }
 		        	
 		          },
@@ -127,9 +147,9 @@ include("/pages/template/head.html"){}
 		            alert(textStatus);
 		        },
 		    });
-    }
+    },
     languageChange:function(){
-    	var value1=$("#country").find("option:selected").val();
+    	var value1=$("#country").find("option:selected").attr("m-type");
     	var value3=$("#reporttype").find("option:selected").val();
    	 	var html="";
 	   	 $.ajax({
@@ -142,7 +162,7 @@ include("/pages/template/head.html"){}
 		        			html+="<option  value='"+data[item].language_id+"'>"+data[item].languageName+"</option>";
 		        		}
 		        	}
-		        	$("select[name='report_language']").html(html);
+		        	$("select[name='attr.report_language']").html(html);
 		          },
 		        error: function(XMLHttpRequest, textStatus, errorThrown) {
 		            alert(XMLHttpRequest.status);
@@ -196,7 +216,7 @@ var bodyContent = {
 		<tr>
 			<td>接单日期</td>
 			<td>
-				<input type="text" name="attr.receiver_date" class="form-control" 
+				<input id="receivedate" type="text" name="attr.receiver_date" class="form-control" 
 					value="${model.receiver_date}" valid="vtext" validname="接单日期" 
 					 placeholder="接单日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
 			</td>
@@ -220,6 +240,7 @@ var bodyContent = {
 		<tr>
 			<td>国家</td>
 			<td>
+				<% if(model!=null){%>
 				<select id="country" name="attr.country"  class="form-control" valid="vselect" validname="国家" onchange="oper.countryChange()">
 					<% for(item in country){ %>
 							 	<% if(model.country==(item.id+"")){ %>
@@ -229,6 +250,10 @@ var bodyContent = {
 							 	<% } %>
 							  <% } %>
 				</select>
+				<%}else{%>
+				<select id="country" name="attr.country"  class="form-control" valid="vselect" validname="国家" onchange="oper.countryChange()">
+				</select>
+				<%}%>
 			</td>
 		</tr>
 		
@@ -284,7 +309,7 @@ var bodyContent = {
 				<input id="priceid" name="attr.price_id" class="form-control" valid="vtext" validname="报告费用" value="${model.price_id}" type="hidden">
 					<%}else{%>
 					<input id="price" name="price" class="form-control" valid="vtext" validname="报告用时" value="0" readonly="readonly">
-					<input id="priceid" name="attr.price_id" class="form-control" valid="vtext" validname="报告费用" value="" type="hidden">
+					<input id="priceid" name="attr.price_id" class="form-control" valid="vtext" validname="报告费用" value="0" type="hidden">
 					<%}%>			
 			</td>
 		</tr>
@@ -315,24 +340,57 @@ var bodyContent = {
 							 	<% }else{ %>
 							 	 <option value=${model.report_language}>${model.reportLanguage}</option>
 							 	<% } %>
-						
-					<% } %>
 				</select> 
 			</td>
 		</tr>
 		<tr>
-			<td>公司名称</td>
+			<td>公司id</td>
 			<td>
-				<input class="form-control" type="text" name="attr.company" valid="vtext" validname="公司名称" value="${model.company}"  />
+				<%if(model==null){%>
+				<select id="companyid" class="form-control"  name="attr.company_id" valid="vtext" validname="公司ID" onchange='oper.findCompany()'>
+				<option selected="selected" value="" >请选择</option>
+				<%for(item in company){%>
+					<option  m-type="${item.name}" m-type1="${item.name_en}" value="${item.id}" >${item.id}</option>
+				<%}%>
+				</select>
+					<%}else{ %>
+					
+					<select id="companyid" class="form-control"  name="attr.company_id" valid="vtext" validname="公司ID" onchange='oper.findCompany()'>
+					<%for(item in company){%>
+					<%if(item.id==model.company_id){%>
+						<option m-type="${item.name}" m-type1="${item.name_en}" selected="selected" value="${item.id}" >${item.id}</option>
+					<%}else{%>
+						<option  m-type="${item.name}" m-type1="${item.name_en}"  value="${item.id}" >${item.id}</option>
+						<%}}%>
+						<%}%>
+				</select>
 			</td>
 		</tr>
-		
+			<tr>
+			<td>公司名称</td>
+			<td>
+				<% if(model!=null){ %>
+				<input id="companyname" class="form-control" type="text" valid="vtext" validname="公司名称" value="${model.companyName}"  readonly="readonly"/>
+				<% }else{ %>
+				<input id="companyname" class="form-control" type="text"  valid="vtext" validname="公司名称" value=""  readonly="readonly"/>
+				<%}%>
+			</td>
+		</tr>
+		<tr>
+			<td>公司英文名</td>
+			<td>
+				<% if(model!=null){ %>
+				<input id="englishname" class="form-control" type="text" valid="vtext" validname="公司英文名" value="${model.englishName}"  readonly="readonly"/>
+				<% }else{ %>
+				<input id="englishname" class="form-control" type="text"  valid="vtext" validname="公司英文名" value=""  readonly="readonly"/>
+				<%}%>
+			</td>
+		</tr>
 	
 		<tr>
 			<td>到期日</td>
 			<td>
-				<input id="usetime" name="" class="form-control" value="${model.user_time}" readonly="readonly">
-				
+				<input id="enddate" name="attr.end_date" class="form-control" value="${model.end_date}" readonly="readonly">	
 			</td>
 		</tr>
 		
@@ -342,24 +400,7 @@ var bodyContent = {
 				<input class="form-control" type="text" name="attr.reference_num" value="${model.reference_num!''}"  />
 			</td>
 		</tr>
-		<tr>
-			<td>公司id</td>
-			<td>
-				<input class="form-control" type="text" name="" value=""  />
-			</td>
-		</tr>
-		<tr>
-			<td>公司名称</td>
-			<td>
-				<input class="form-control" type="text" name="" value=""  />
-			</td>
-		</tr>
-		<tr>
-			<td>公司中文名</td>
-			<td>
-				<input class="form-control" type="text" name="" value=""  />
-			</td>
-		</tr>
+	
 		<tr>
 			<td>地址</td>
 			<td>
@@ -410,6 +451,7 @@ var bodyContent = {
 			<input name="attr.create_by" type="hidden" value="${model.create_by}">
 		<%}%>
 		<input name="attr.update_date" type="hidden" value="">
+		<input name="attr.status" type="hidden" value="0">
 	</table>
 
 	<div style="height: 50px;clear: both;">&nbsp;</div>

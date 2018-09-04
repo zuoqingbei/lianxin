@@ -42,7 +42,26 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	private String orderType;
 	//订单价格
 	private String  price;
+	//公司名称
+	private String companyName;
+	//公司英文名称
+	private String englishName;
 	
+	public String getenglishName() {
+		return get("englishName");
+	}
+
+	public void setenglishName(String englishName) {
+		set("englishName", englishName);
+	}
+	
+	public String getcompanyName() {
+		return get("companyName");
+	}
+
+	public void setcompanyName(String companyName) {
+		set("companyName", companyName);
+	}
 	public String getCustomName() {
 		return get("customName");
 	}
@@ -123,6 +142,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
 		sql.append(" left join credit_country c on c.id=t.country ");
 		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
+		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
 		sql.append(" left join sys_user s on s.userid=t.create_by ");
 		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
 		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
@@ -130,10 +150,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
-		if((int)user.get("usertype")!=1) {
-			 sql.append(" and t.create_by=?");
-			 params.add(userid);
+		if(!c.isAdmin(c.getSessionUser())){
+			sql.append(" and t.create_by=? ");
+			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
+
 		if (StringUtils.isNotBlank(custom_id)) {
 			sql.append(" and t.custom_id=?");
 			params.add(custom_id);
@@ -149,7 +170,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		}
 		Page<CreditOrderInfo> page=CreditOrderInfo.dao.paginate(pageinator, "select t.*,u.name as customName,c.name as countryName,s.username as createName"
 				+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-				+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price ", sql.toString(),params.toArray());
+				+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price,c2.name as companyName,c2.name_en as englishName ", sql.toString(),params.toArray());
 		
 		return page;
 	}
@@ -168,10 +189,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		StringBuffer sql=new StringBuffer();
 		sql.append("select t.*,u.name as customName,c.name as countryName,s.username as createName,");
 		sql.append("s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,");
-		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price from credit_order_info t ");
+		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price, c2.name as companyName,c2.name_en as englishName  from credit_order_info t ");
 		sql.append("left join credit_custom_info u on u.id=t.custom_id ");
 		sql.append("left join credit_country c on c.id=t.country  ");
 		sql.append("left join credit_report_price c1 on c1.id=t.price_id ");
+		sql.append(" left join credit_company_info c2 on c2.id=t.company_id ");
 		sql.append("left join sys_user s on s.userid=t.create_by ");
 		sql.append("left join sys_dict_detail s2  on s2.detail_id=t.continent ");
 		sql.append("left join credit_report_type s3  on s3.id=t.report_type ");
@@ -179,7 +201,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		sql.append("left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append("left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append("where 1 = 1 and t.del_flag='0' and t.id=?");
-		return dao.findById(sql.toString(),id);
+		return dao.findFirst(sql.toString(),id);
 	}
 	
 
