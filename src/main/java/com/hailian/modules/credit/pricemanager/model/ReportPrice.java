@@ -125,9 +125,4 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 		}
 		return false;
 	}
-	public List<ReportPrice> getSpeed() {
-	List<ReportPrice> list=dao.find("select t.* from credit_report_price t where t.del_flag='0' order by order_no ");
-	return list;
-}
-	
 }

@@ -52,7 +52,7 @@ public class ReportPriceService {
 	 * @return_type   void
 	 */
 	public ReportPrice add(ReportPrice reportprice) {
-		reportprice.save();
+//		reportprice.save();
 		return reportprice;
 	}
 

@@ -27,7 +27,7 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 		},
 		add : function() {
-			var url = 'credit/pricemanager/addReport';
+			var url = 'credit/pricemanager/add/';
 			var title = '添加报告价格信息';
 			Iframe(url, this.width, this.height, title);
 		},
@@ -37,7 +37,7 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
-			var url = '/credit/pricemanager/deleteReport'+id;
+			var url = '/credit/pricemanager/delete/'+id;
 			var title = '确认要删除该报告价格信息？';
 			Confirm(title, function() {
 				form1.action = url;
