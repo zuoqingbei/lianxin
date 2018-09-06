@@ -32,7 +32,8 @@ public class ReportPriceService {
 	 * @return_type   ReportPrice
 	 */
 
-	public ReportPrice selectById(String id, BaseProjectController c) {
+	public ReportPrice selectById(int id, BaseProjectController c) {
+
 		return ReportPrice.dao.findById(id, c);
 	}
 
@@ -56,7 +57,6 @@ public class ReportPriceService {
 	 * @return_type   void
 	 */
 	public ReportPrice add(ReportPrice reportprice) {
-		reportprice.save();
 		return reportprice;
 	}
 
@@ -136,5 +136,10 @@ public class ReportPriceService {
 						paginator,
 						"select os.detail_name as orderSpeed,rt.`name` as reportType,ot.detail_name as orderType,c.detail_name as countryName,u.realname,detail.detail_name as usabledName, t.*",
 						sql.toString(), params.toArray());
+	}
+	public List<ReportPrice> getSpeed(String speed) {
+		List<ReportPrice> list = ReportPrice.dao.getSpeed();
+
+		return list;
 	}
 }

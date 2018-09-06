@@ -18,26 +18,26 @@ jQuery(function($) {
 		form : document.form1,
 		list : function() {
 			var url = 'credit/pricemanager/list';
-			this.form.action = url;
+			this.form.action = url;R
 			this.form.submit();
 		},
 		view : function(id) {
 			var url = 'credit/pricemanager/view/'+id;
-			var title = '查看报告价格';
+			var title = '单条查看报告价格';
 			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 		},
 		add : function() {
-			var url = 'credit/pricemanager/addReport';
+			var url = 'credit/pricemanager/addReport/';
 			var title = '添加报告价格信息';
 			Iframe(url, this.width, this.height, title);
 		},
 		edit : function(id) {
-			var url = 'credit/pricemanager/edit/'+id 
+			var url = 'credit/pricemanager/editReport/'+id 
 			var title = '修改报告价格';
 			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
-			var url = '/credit/pricemanager/deleteReport'+id;
+			var url = '/credit/pricemanager/deleteReport/'+id;
 			var title = '确认要删除该报告价格信息？';
 			Confirm(title, function() {
 				form1.action = url;
@@ -64,7 +64,6 @@ var bodyContent = {
 <form name="form1" action="" method="post" class="form-inline" role="form">
 	<!-- 菜单 -->
 	<% include("/pages/template/menu.html"){} %>
-	
 	<div class="tableSearch">
 		<div class="form-group">
 		   <label  class="control-label">报告类型</label>
@@ -76,7 +75,6 @@ var bodyContent = {
 							 	<% }else{ %>
 							 		<option  value="${item.id}">${item.name}</option>
 							 	<% } %>
-							 	
 							  <% } %>
 							  
 			</select> 
@@ -124,7 +122,7 @@ var bodyContent = {
 
 				<th name="rt.name" class="sorting">报告类型</th>
 				<th name="ot.detail_name" class="sorting">订单类型</th>
-				<th name="c.name" class="sorting">国家</th>			
+				<th name="c.detail_name " class="sorting">国家</th>			
 				<th name="t.points" class="sorting">点数</th>
 				<th name="t.price" class="sorting">价格</th>
 				<th name="t.currency" class="sorting">币种</th>
