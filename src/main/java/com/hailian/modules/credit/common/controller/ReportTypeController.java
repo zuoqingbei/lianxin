@@ -105,6 +105,7 @@ public class ReportTypeController extends BaseProjectController {
 		model.set("update_date", now);
 		model.set("del_flag", 1);
 		model.update();
+		
 		list();
 	}
 	
