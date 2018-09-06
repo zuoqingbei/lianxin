@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
-import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -84,7 +83,7 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	 * @return_type   ReportPrice
 	 */
 
-	public ReportPrice selectId(String id) {
+	public ReportPrice selectId(String id,BaseProjectController c) {
 		return ReportPrice.dao.findById(id);
 	}
 
@@ -126,5 +125,9 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 		}
 		return false;
 	}
-
+	public List<ReportPrice> getSpeed() {
+	List<ReportPrice> list=dao.find("select t.* from credit_report_price t where t.del_flag='0' order by order_no ");
+	return list;
+}
+	
 }

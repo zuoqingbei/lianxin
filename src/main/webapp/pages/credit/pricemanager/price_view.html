@@ -8,6 +8,10 @@ var bodyContent = {
 <form name="form1" action="" method="post" class="form-horizontal">
 	<!-- 数据列表 -->
 		<table class="table">
+		<tr>
+				<td>序号</td>
+				<td>${model.id}</td>
+			</tr>
 			<tr>
 				<td>报告类型</td>
 				<td>${model.report_type}</td>
@@ -36,6 +40,23 @@ var bodyContent = {
 				<td>币种</td>
 				<td>${model.currency}</td>
 			</tr>
+			<tr>
+				<td>是否禁用</td>
+				<td>${model.usabled}</td>
+			</tr>
+			<tr>
+				<td>创建日期</td>
+				<td>${model.create_date}</td>
+			</tr>
+				<tr>
+				<td>创建人</td>
+				<td>${model.create_by}</td>
+			</tr>
+				<tr>
+				<td>修改时间</td>
+				<td>${model.update_date}</td>
+			</tr>
+
 		</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">

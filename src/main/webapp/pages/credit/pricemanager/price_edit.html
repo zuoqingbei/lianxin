@@ -1,3 +1,8 @@
+<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.order_speed !); %>
+<% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type !); %>
+<% var countrytype = tempDict.getSysDictDetailString('country',model.country_type !); %>
+<% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled !); %>
+<% var reportType = reportType.getReportTypeString(model.report_type!); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -11,11 +16,12 @@ var oper = {
 			return false;
 		}
 		id = id || '0';
-		var url = 'credit/pricemanager/'+id;
+		var url = 'credit/pricemanager/save/'+id;
 		form1.action = url;
 		form1.submit();
 		return true;
 	}	
+	
 };
 </script>
 <style>
@@ -55,46 +61,74 @@ var oper = {
 var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal">
-	<input type="hidden" name="model.detail_id" value="${item.detail_id}" />
+	<input type="hidden" value="${item.detail_id}" />
 	<!-- 数据列表 -->
 	<table class="table">
+	<tr>
+			<td>版本</td>
+			 <td><input type="text" name="model.versions" class="form-control" 
+				value="标准版"/></td>	
+		</tr>
 		<tr>
 			<td>报告速度</td>
-			<td><input type="text" name="model.order_speed" class="form-control" 
-			 value="${item.order_speed}" /></td>
+			<td>
+			  <select name="model.order_speed" class="form-control" style="width: 200px;">
+					${orderspeed!}
+				</select> 
+			</td>
 		</tr>
 		<tr>
 			<td>报告类型</td>
-			<td><input type="text" name="model.report_type" class="form-control" 
-				value="${item.report_type}" /></td>
+			 <td> 
+				 <select name="model.report_type" class="form-control" style="width: 200px;">
+							${reportType!}
+				</select> 
+			</td>
 		</tr>
 		<tr>
 			<td>国家</td>
-			<td><input type="text" name="model.country_type" class="form-control" 
-				value="${item.country_type}" /></td>
+			<td><select name="model.country_type" class="form-control" style="width: 200px;">
+						${countrytype!}
+			</select> </td>
 		</tr>
 		<tr>
 			<td>订单类型</td>
-			<td><input type="text" name="model.order_type" class="form-control" 
-				value="${item.order_type}" /></td>
+			<td>  <select name="model.order_type" class="form-control" style="width: 200px;">
+						${ordertype!}
+			</select> </td>
 		</tr>
 		<tr>
 			<td>报告点数</td>
 			<td><input type="text" name="model.points" class="form-control" 
-				value="${item.points}" /></td>
+				value="${model.points!}" /></td>
 		</tr>
 		
 		<tr>
 			<td>报告价格</td>
 			<td><input type="text" name="model.price" class="form-control" 
-				value="${item.points}"/></td>
+				value="${model.price!}"/></td>
 		</tr>
 		<tr>
 			<td>币种</td>
 			<td><input type="text" name="model.currency" class="form-control" 
-				value="${item.currency}"/></td>
+				value="${model.currency!}"/></td>
 		</tr>
-		<!-- end -->
+		<tr>
+			<td>是否禁用</td>
+			<td> <select name="model.usabled" class="form-control" style="width: 200px;">
+					${usabled!}
+			</select></td>
+		</tr>
+				<tr>
+			<td>创建日期</td>
+			<td><input type="text" name="model.create_date" class="form-control" 
+				value="${model.create_date}" validname="创建日期" 
+					 placeholder="创建日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/></td>
+	</tr>
+			</tr>
+			<tr>
+			
+		</tr>
 	</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
