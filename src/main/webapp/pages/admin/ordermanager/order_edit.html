@@ -1,4 +1,8 @@
-<% var sandbar = tempDict.getSysDictDetailByType('sandbar'); %>
+<% var sandbar = tempDict.getSysDictDetailString('sandbar',model.continent); %>
+<% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type); %>
+<% var language = tempDict.getSysDictDetailString('language',model.report_language); %>
+<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
+<% var reportType = reportType.getReportTypeString("ordertype"); %>
 <%
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -34,7 +38,7 @@ include("/pages/template/head.html"){}
         },
     sandbarChange:function(){
     	 var grade = document.getElementById("sandbar");
-    	 var value=$("#sandbar").find("option:selected").attr("m-type");
+    	 var value=$("#sandbar").find("option:selected").attr("m-english");
     	 var url='credit/country/getCountrySelect?attr.continent='+value;
     	 var html="";
     	 $.ajax({
@@ -226,13 +230,7 @@ var bodyContent = {
 				<td>
 	
 				   <select id="sandbar" name="attr.continent" valid="vselect" class="form-control" onchange="oper.sandbarChange()">
-							 <% for(item in sandbar){ %>
-							 	<% if(model.continent==(item.detail_id+"")){ %>
-							 	 <option selected="selected" m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
-							 	<% }else{ %>
-							 	 <option m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
-							 	<% } %>
-							  <% } %>
+							${sandbar!}
 					</select> 
 			
 			</td>
@@ -263,27 +261,14 @@ var bodyContent = {
 			<td>报告类型</td>
 			<td>
 			 <select id="reporttype" name="attr.report_type" valid="vselect" validname="报告类型" class="form-control" onchange="oper.reportTypeChange()">
-					<% for(item in reporttype){ %>
-						<% if(model.report_type==(item.id+"")){ %>
-								<option value="${item.id}" selected="selected">${item.name}</option>
-							 	<% }else{ %>
-							 	 <option value="${item.id}">${item.name}</option>
-							 	<% } %>
-					<% } %>
-				</select> 
+				${reportType!}
 			</td>
 		</tr>
 		<tr>
 			<td>速度</td>
 			<td>
 				<select id="speed" name="attr.speed" class="form-control" valid="vselect" validname="速度"onchange="oper.speedChange()">
-					<% for(item in speed){ %>
-							 	<% if(model.speed==(item.detail_id+"")){ %>
-							 	 <option selected="selected" m-type="${item.detail_content}" value="${item.detail_id}">${item.detail_name}</option>
-							 	<% }else{ %>
-							 	 <option m-type="${item.detail_content}" value="${item.detail_id}">${item.detail_name}</option>
-							 	<% } %>
-							  <% } %>
+					${orderspeed!}
 				</select>
 			</td>
 		</tr>
@@ -317,13 +302,7 @@ var bodyContent = {
 			<td>订单类型</td>
 			<td>
 				<select class="form-control" valid="vselect" style="width: 200px;" name="attr.order_type">
-					<% for(item in ordertype){ %>
-						<% if(model.order_type==(item.detail_id+"")){ %>
-						<option value="${item.detail_id}" selected="selected">${item.detail_name}</option>
-						<% }else{ %>
-						 <option value="${item.detail_id}">${item.detail_name}</option>
-						 <% } %>
-					<% } %>
+					${ordertype!}
 				</select>
 					 
 			</td>
@@ -334,11 +313,7 @@ var bodyContent = {
 			<td>报告语言</td>
 			<td>
 			 <select id="reportlanguage"  name="attr.report_language" valid="vselect" class="form-control" style="width: 200px;">
-						<% if(model==null){ %>
-								<option value="" selected="selected"></option>
-							 	<% }else{ %>
-							 	 <option value=${model.report_language}>${model.reportLanguage}</option>
-							 	<% } %>
+						${language!}
 				</select> 
 			</td>
 		</tr>

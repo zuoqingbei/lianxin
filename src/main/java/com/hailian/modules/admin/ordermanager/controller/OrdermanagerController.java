@@ -1,7 +1,6 @@
 package com.hailian.modules.admin.ordermanager.controller;
 
 import java.util.List;
-
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -14,10 +13,10 @@ import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditReportLanguage;
 import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
-import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.jfinal.aop.Before;
@@ -98,7 +97,6 @@ public class OrdermanagerController extends BaseProjectController{
 			OrderManagerService.service.deleteOrder(coi, this);
 			renderMessage("删除成功");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			renderMessage("删除失败");
 		}
@@ -124,20 +122,12 @@ public class OrdermanagerController extends BaseProjectController{
 		String continent=coi.get("continent").toString();
 		SysUser user = (SysUser) getSessionUser();
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
-		List<CreditReportType> reportType=OrderManagerService.service.getReportType();
-		List<SysDictDetail> orderType=OrderManagerService.service.getDictByType("ordertype");
-		List<SysDictDetail> reportLanguage=OrderManagerService.service.getDictByType("language");
 		List<CountryModel> country=OrderManagerService.service.getCountrys(continent);
-		List<SysDictDetail> speed=OrderManagerService.service.getDictByType("orderspeed");
 		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
 		setAttr("model", coi);
 		setAttr("user",user);
 		setAttr("customs",customs);
-		setAttr("reporttype",reportType);
-		setAttr("reportlanguage",reportLanguage);
 		setAttr("country",country);
-		setAttr("speed",speed);
-		setAttr("ordertype",orderType);
 		setAttr("company",company);
 		render(path + "edit.html");
 	}
@@ -187,7 +177,6 @@ public class OrdermanagerController extends BaseProjectController{
 		int id=getParaToInt("id");
 		CreditOrderInfo model=OrderManagerService.service.editOrder(id,this);
 		setAttr("model", model);
-//		renderJson(model);
 		render(path + "view.html");
 	}
 	/**
@@ -202,23 +191,14 @@ public class OrdermanagerController extends BaseProjectController{
 	@ApiOperation(url = "/admin/ordermanager/view",httpMethod="post", 
 			description = "查看订单")
 	public void add() {
-		List<CreditReportType> reportType=OrderManagerService.service.getReportType();
-		List<SysDictDetail> orderType=OrderManagerService.service.getDictByType("ordertype");
-		List<SysDictDetail> language=OrderManagerService.service.getDictByType("language");
 		SysUser user = (SysUser) getSessionUser();
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		//默认国内
-		List<SysDictDetail> speed=OrderManagerService.service.getDictByType("orderspeed");
-//		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
 		setAttr("user",user);
-		setAttr("reporttype",reportType);
-		setAttr("reportlanguage",language);
 		setAttr("customs",customs);
-		setAttr("ordertype",orderType);
-		setAttr("speed",speed);
-//		setAttr("country",country);
 		setAttr("company",company);
+		setAttr("model",new CreditOrderInfo());
 		render(path + "add.html");
 	}
 	/**
@@ -238,9 +218,7 @@ public class OrdermanagerController extends BaseProjectController{
 	public void getSpeed() {
 		String type=getPara("countrytype").toString();
 		List<SysDictDetail> speed=null;
-
-			speed=OrderManagerService.service.getDictByType("orderspeed");
-
+		speed=OrderManagerService.service.getDictByType("orderspeed");
 		renderJson(speed);
 	}
 	/**

@@ -8,11 +8,9 @@ import com.feizhou.swagger.annotation.Param;
 import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
-import com.hailian.system.dict.SysDictDetail;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -33,7 +31,7 @@ public class ReportPriceController extends BaseProjectController {
 	 * 
 	 * @time   2018年8月23日 下午5:39:02
 	 * @author dyc
-	 * @todo   列表展示
+	 * @todo   分页查询报告价格信息
 	 * @return_type   void
 	 */
 	@ApiOperation(url = "/credit/pricemanager/list", httpMethod = "get", description = "获取报告价格列表")
@@ -41,7 +39,7 @@ public class ReportPriceController extends BaseProjectController {
 		ReportPrice attr = getModelByAttr(ReportPrice.class);
 		String orderBy = getBaseForm().getOrderBy();
 		Page<ReportPrice> pager = ReportPriceService.service.getPage(getPaginator(), attr, orderBy, this);
-		List<CreditReportType> reportType = ReportPriceService.service.getReportType("");
+		List<ReportTypeModel> reportType = ReportPriceService.service.getReportType(null);
 		setAttr("page", pager);
 		setAttr("reporttype", reportType);
 		setAttr("attr", attr);
@@ -49,30 +47,29 @@ public class ReportPriceController extends BaseProjectController {
 		render(path + "list.html");
 	}
 
+	//
 	//	/**
-	//		 * 
-	//		 * @time   2018年8月23日 下午7:35:55
-	//		 * @author dyc
-	//		 * @todo   单条报告价格查询
-	//	     * @return_type   void
-	//		 */
-	//		public void getOne() {
-	//			ReportPrice model = ReportPrice.dao.findById(getPara("id"), this);
-	//			setAttr("model", model);
-	//			render(path + "list.html");
-	//	
-	//		}
+	//	 * 
+	//	 * @time   2018年8月23日 下午7:35:55
+	//	 * @author dyc
+	//	 * @todo   单条报告价格查询
+	//	 * @return_type   void
+	//	 */
+	//	public void getOne() {
+	//		ReportPrice model = ReportPrice.dao.findById(getPara("id"), this);
+	//		setAttr("model", model);
+	//		render(path + "list.html");
+	//
+	//	}
 	/**
 	 * 
 	 * @time   2018年9月4日 下午2:27:20
 	 * @author dyc
-	 * @todo   查看单个报告价格信息
+	 * @todo   单条查看报告价格信息
 	 * @return_type   void
 	 */
 	public void view() {
-//		int id = getParaToInt();
-//		ReportPrice model = ReportPriceService.service.selectById(id, this);
-		ReportPrice model=ReportPrice.dao.selectId(getPara("id"),this);
+		ReportPrice model = ReportPrice.dao.findById(getParaToInt());
 		setAttr("model", model);
 		render(path + "view.html");
 
@@ -82,15 +79,14 @@ public class ReportPriceController extends BaseProjectController {
 	 * 
 	 * @time   2018年8月24日 下午4:24:54
 	 * @author dyc
-	 * @todo   转到添加页面
+	 * @todo   向报告价格表里新增信息
 	 * @return_type   void
 	 */
 	@ApiOperation(url = "/credit/pricemanager/addReport", httpMethod = "get", description = "报告价格表新增信息")
 	public void addReport() {
-		List<CreditReportType> reportType = ReportPriceService.service.getReportType("");
 		ReportPrice model = getModelByAttr(ReportPrice.class);
+		ReportPriceService.service.add(model);
 		setAttr("model", model);
-		setAttr("reporttype", reportType);
 		render(path + "add.html");
 	}
 
@@ -98,18 +94,14 @@ public class ReportPriceController extends BaseProjectController {
 	 * 
 	 * @time   2018年9月4日 下午1:44:44
 	 * @author dyc
-	 * @todo   转到修改页面
+	 * @todo   修改报告价格信息
 	 * @return_type   void
 	 */
 	@ApiOperation(url = "/credit/pricemanager/editReport", httpMethod = "get", description = "报告价格表新增信息")
-	public void editReport() {
-		List<ReportPrice> speed=ReportPriceService.service.getSpeed("");
-		List<CreditReportType> reportType = ReportPriceService.service.getReportType("");
-		System.out.println(getParaToInt("id"));
-		ReportPrice model =ReportPrice.dao.findById(getParaToInt("id"));
+	public void edit() {
+		Integer para = getParaToInt();
+		ReportPrice model = ReportPrice.dao.findById(para);
 		setAttr("model", model);
-		setAttr("reporttype", reportType);
-		setAttr("speed", speed);
 		render(path + "edit.html");
 
 	}
@@ -134,31 +126,5 @@ public class ReportPriceController extends BaseProjectController {
 			renderText("failure");
 		}
 		;
-	}
-
-	/**
-	 * 
-	 * @time   2018年9月5日 下午1:35:39
-	 * @author dyc
-	 * @todo   修改和增加报告价格信息
-	 * @return_type   void
-	 */
-	public void save() {
-		Integer id = getParaToInt("id");
-		ReportPrice model = getModel(ReportPrice.class);
-		Integer userid = getSessionUser().getUserid();
-		String now = getNow();
-		model.set("update_by", userid);
-		model.set("update_date", now);
-		if (id != null && id > 0) { // 更新
-			model.update();
-			renderMessage("修改成功");
-		} else { // 新增
-			model.remove("id");
-			model.set("create_by", userid);
-			model.set("create_date", now);
-			model.save();
-			renderMessage("保存成功");
-		}
 	}
 }

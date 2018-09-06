@@ -7,13 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
-import com.hailian.modules.admin.ordermanager.model.CreditReportType;
-import com.hailian.modules.credit.order.model.TbOrder;
+import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
-import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.StrUtils;
-import com.hailian.util.extend.UuidUtils;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -32,8 +28,7 @@ public class ReportPriceService {
 	 * @return_type   ReportPrice
 	 */
 
-	public ReportPrice selectById(int id, BaseProjectController c) {
-
+	public ReportPrice selectById(String id, BaseProjectController c) {
 		return ReportPrice.dao.findById(id, c);
 	}
 
@@ -57,6 +52,7 @@ public class ReportPriceService {
 	 * @return_type   void
 	 */
 	public ReportPrice add(ReportPrice reportprice) {
+		reportprice.save();
 		return reportprice;
 	}
 
@@ -78,9 +74,8 @@ public class ReportPriceService {
 	 * @todo   报告类型下拉框
 	 * @return_type   List<CreditReportType>
 	 */
-	public List<CreditReportType> getReportType(String type) {
-		List<CreditReportType> list = CreditReportType.dao.getReportType();
-
+	public List<ReportTypeModel> getReportType(String type) {
+		List<ReportTypeModel> list = ReportTypeModel.dao.getReportType();
 		return list;
 	}
 
@@ -136,10 +131,5 @@ public class ReportPriceService {
 						paginator,
 						"select os.detail_name as orderSpeed,rt.`name` as reportType,ot.detail_name as orderType,c.detail_name as countryName,u.realname,detail.detail_name as usabledName, t.*",
 						sql.toString(), params.toArray());
-	}
-	public List<ReportPrice> getSpeed(String speed) {
-		List<ReportPrice> list = ReportPrice.dao.getSpeed();
-
-		return list;
 	}
 }

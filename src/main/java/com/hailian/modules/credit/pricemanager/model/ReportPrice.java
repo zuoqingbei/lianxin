@@ -8,9 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
-import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.modules.admin.ordermanager.model.CreditReportType;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
