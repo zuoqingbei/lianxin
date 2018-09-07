@@ -131,4 +131,6 @@ public class ReportPriceService {
 						"select os.detail_name as orderSpeed,rt.`name` as reportType,ot.detail_name as orderType,c.detail_name as countryName,u.realname,detail.detail_name as usabledName, t.*",
 						sql.toString(), params.toArray());
 	}
-}
+	
+	}
+

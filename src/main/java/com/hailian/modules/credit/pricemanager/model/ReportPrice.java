@@ -16,18 +16,18 @@ import com.jfinal.plugin.activerecord.Page;
 * @time 2018年8月23日 下午4:41:58
 * @todo
 */
-@ModelBind(table = "credit_report_price",key = "id")
+@ModelBind(table = "credit_report_price", key = "id")
 public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	private static final long serialVersionUID = 1L;
 	public static final ReportPrice dao = new ReportPrice();
 	private static List<String> columnnNames = new ArrayList<>();
-	static{
+	static {
 		columnnNames.add("report_type");
 		columnnNames.add("order_speed");
 		columnnNames.add("order_type");
 		columnnNames.add("country_type");
 		columnnNames.add("usabled");
-	
+
 	}
 	private String orderType;
 	private String orderSpeed;
@@ -41,7 +41,7 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	}
 
 	public void setUsabledName(String usabledName) {
-		set("usabledName",usabledName);
+		set("usabledName", usabledName);
 	}
 
 	public String getOrderType() {
@@ -92,7 +92,7 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	 * @return_type   ReportPrice
 	 */
 
-	public ReportPrice selectId(String id,BaseProjectController c) {
+	public ReportPrice selectId(String id, BaseProjectController c) {
 		return ReportPrice.dao.findById(id);
 	}
 
@@ -127,10 +127,11 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	 * @return_type   boolean
 	 */
 	public boolean updateDelFlagById(Integer id) {
-		ReportPrice price =ReportPrice.dao.findById(id);
+		ReportPrice price = ReportPrice.dao.findById(id);
 		if (price != null) {
 			return price.set("del_flag", 1).update();
 		}
 		return false;
 	}
+	
 }
