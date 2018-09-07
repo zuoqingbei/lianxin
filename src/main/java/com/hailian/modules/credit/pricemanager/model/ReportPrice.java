@@ -16,10 +16,19 @@ import com.jfinal.plugin.activerecord.Page;
 * @time 2018年8月23日 下午4:41:58
 * @todo
 */
-@ModelBind(table = "credit_report_price")
+@ModelBind(table = "credit_report_price",key = "id")
 public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	private static final long serialVersionUID = 1L;
 	public static final ReportPrice dao = new ReportPrice();
+	private static List<String> columnnNames = new ArrayList<>();
+	static{
+		columnnNames.add("report_type");
+		columnnNames.add("order_speed");
+		columnnNames.add("order_type");
+		columnnNames.add("country_type");
+		columnnNames.add("usabled");
+	
+	}
 	private String orderType;
 	private String orderSpeed;
 	private String reportType;
@@ -117,9 +126,8 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	 * @todo   根据id删除报告价格信息
 	 * @return_type   boolean
 	 */
-	public boolean updateDelFlagById(String id) {
-		//ReportPrice price=ReportPrice.dao.findFirst("select * from credit_report_price where id="+id);
-		ReportPrice price = ReportPrice.dao.findById(id);
+	public boolean updateDelFlagById(Integer id) {
+		ReportPrice price =ReportPrice.dao.findById(id);
 		if (price != null) {
 			return price.set("del_flag", 1).update();
 		}

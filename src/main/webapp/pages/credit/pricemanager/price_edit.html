@@ -16,7 +16,7 @@ var oper = {
 			return false;
 		}
 		id = id || '0';
-		var url = 'credit/pricemanager/save/'+id;
+		var url = 'credit/pricemanager/save?id='+id;
 		form1.action = url;
 		form1.submit();
 		return true;
@@ -61,7 +61,7 @@ var oper = {
 var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal">
-	<input type="hidden" value="${item.detail_id}" />
+	<input type="hidden" name="model.id" value=" ${model.id}" />
 	<!-- 数据列表 -->
 	<table class="table">
 	<tr>
