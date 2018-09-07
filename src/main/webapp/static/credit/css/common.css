@@ -4,6 +4,7 @@
 /* ==================头部=================== */
 #container {
     position: relative;
+    height: calc(100% - 5.375rem);
 }
 
 header {
@@ -53,43 +54,30 @@ header {
 
 /*=================中间============================*/
 .nav-row {
-    height: 62.125rem;
+    /*height: 62.125rem;*/
+    padding: 0;
 }
-
+.bg-f {
+    background: #fff;
+}
 .menu1 .fa {
     margin-right: 1rem;
 }
 
 .main {
-    position: absolute;
-    top: 5.375rem;
-    right: 0;
     width: 100%;
-    height: 62.125rem;
     padding: 0;
-    background: #f1f2f6;
+    padding-top: .2rem;
 }
 /**表格*/
-#table thead {
+ .fixed-table-header {
     background:#fafafa;
 }
 .bootstrap-table {
     margin:0 2rem;
 }
-/*表格分页  下拉样式*/
-.dropup button {
-    background: #fff;
-    border:solid 1px #64ccff;
-}
-
-.dropdown-menu {
-    min-width: 5.5rem;
-}
-.dropdown-menu li a{
-    display: block;
-    color: #333;
-    text-align: center;
-}
-.dropdown-menu li a:hover{
-    background: #dedede;
+.table-content{
+	background: #f1f2f6;
+	padding:2.5rem!important;
+    overflow-y:auto;
 }

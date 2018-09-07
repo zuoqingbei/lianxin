@@ -74,9 +74,6 @@ public class LanguageModel extends BaseProjectModel<LanguageModel>{
 			fromSql.append(" order by ").append(orderBy);
 		}
 		String selectSqlStr = selectSql.toString();
-		if(selectSqlStr.contains("count(*)")){
-			selectSqlStr = selectSqlStr .split("order")[0];
-		}
 		return LanguageModel.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr ,fromSql.toString(), params.toArray());
 	}
 }
