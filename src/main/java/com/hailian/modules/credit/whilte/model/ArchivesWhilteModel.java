@@ -38,7 +38,7 @@ public class ArchivesWhilteModel extends BaseProjectModel<ArchivesWhilteModel> {
 		sqlbuffer.append("left join credit_custom_info t2 on t1.custom_id=t2.id ");
 		sqlbuffer.append("left join sys_user t4 on t4.userid = t1.create_by ");
 		sqlbuffer.append("left join sys_dict_detail t5 on t5.detail_id = t1.used ");
-		sqlbuffer.append("LEFT JOIN credit_report_type t3 on t1.report_id=t3.id where t1.del_flag=0 and t2.del_flag=0 and t4.del_flag=0 and t5.del_flag=0 and t3.del_flag=0");
+		sqlbuffer.append("LEFT JOIN credit_report_type t3 on t1.report_id=t3.id where t1.del_flag=0 and t2.del_flag=0 and t5.del_flag=0 and t3.del_flag=0");
 		if(StringUtils.isNotBlank(custom_id)){
 			sqlbuffer.append(" and t2.name like ? or t2.name_en=? ");
 			params.add('%'+custom_id+'%');
