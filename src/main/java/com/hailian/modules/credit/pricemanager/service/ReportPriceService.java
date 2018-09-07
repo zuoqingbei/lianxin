@@ -132,5 +132,10 @@ public class ReportPriceService {
 						sql.toString(), params.toArray());
 	}
 	
+	public ReportPrice getId(int id){
+		ReportPrice list=ReportPrice.dao.getId(id);
+		return list;
+		
+	}
 	}
 

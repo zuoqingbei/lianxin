@@ -133,5 +133,26 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 		}
 		return false;
 	}
+ public ReportPrice getId(int id){
+	 StringBuffer sql=new StringBuffer("select os.detail_name as orderSpeed,rt.`name` as reportType,ot.detail_name as orderType,c.detail_name as countryName,u.realname,detail.detail_name as usabledName, t.*");
+		sql.append(" from  credit_report_price t ");
+		sql.append("  LEFT JOIN sys_dict_detail ot on ot.detail_id=t.order_type  ");
+		sql.append("   LEFT JOIN sys_dict_detail os on os.detail_id=t.order_speed");
+		sql.append("   LEFT JOIN credit_report_type rt on rt.id=t.report_type");
+		sql.append("   LEFT JOIN sys_dict_detail c on c.detail_id=t.country_type");
+		sql.append("   LEFT JOIN sys_user u on u.userid=t.create_by");
+		sql.append("   LEFT JOIN sys_dict_detail detail on t.usabled=detail.detail_id");
+		sql.append("   where t.del_flag=0 and ot.del_flag=0 and os.del_flag=0 and rt.del_flag=0 and c.del_flag=0 and t.id=?");
+		List<Object> params=new ArrayList<Object>();
+		params.add(id);
+		
+		return (ReportPrice) ReportPrice.dao.find(sql.toString(), params.toArray());
+	    
+	    
+	    
+	  
+	 
+	 
+ }
 	
 }
