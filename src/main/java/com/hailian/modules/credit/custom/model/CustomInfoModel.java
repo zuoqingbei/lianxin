@@ -10,6 +10,7 @@ import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.hailian.util.DateUtils;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 /**
@@ -28,10 +29,12 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 	* @date 2018年9月3日下午2:30:06  
 	* @TODO
 	 */
-	public Page<CustomInfoModel> getPage(Paginator paginator, String custom_id, String report_id, BaseProjectController c) {
+	public Page<CustomInfoModel> getPage(Paginator paginator,String orderBy, String custom_id, String report_id, BaseProjectController c) {
 		// TODO Auto-generated method stub
 		List<Object> params=new ArrayList<Object>();
-		StringBuffer sql=new StringBuffer(" from credit_custom_info where 1=1 and del_flag=0 ");
+		StringBuffer sql=new StringBuffer(" from credit_custom_info t left join sys_dict_detail t2 on  t.usabled=t2.detail_id ");
+		sql.append(" left join sys_dict_detail t3 on t.is_old_customer=t3.detail_id ");
+		sql.append(" where 1=1 and t.del_flag=0 and t2.del_flag=0 and t3.del_flag=0 ");
 		if(StringUtils.isNotBlank(custom_id)){
 			sql.append(" and custom_id like ?");
 			params.add('%'+custom_id+'%');
@@ -44,8 +47,14 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
+		// 排序
+		if (StrUtils.isEmpty(orderBy)) {
+			sql.append(" order by t.create_date desc");
+		} else {
+			sql.append(" order by t.").append(orderBy);
+		}
 		Page<CustomInfoModel> page = CustomInfoModel.dao
-				.paginate(paginator, "select * ", sql.toString(),params.toArray());
+				.paginate(paginator, "select t.*,t2.detail_name as usableName,t3.detail_name as isOldCusName ", sql.toString(),params.toArray());
 		return page;
 	}
 	/**

@@ -1,4 +1,5 @@
-<% var usabled = tempDict.getSysDictDetailString('usabled',attr.ext_id!); %>
+<% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled!); %>
+<% var is_old_customer = tempDict.getSysDictDetailString('is_old_customer',model.is_old_customer!);%>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -105,6 +106,21 @@ var bodyContent = {
 					<td>国家</td>
 					<td>
 					<input class="form-control" type="text" name="model.country" value="${model.country}" />
+					</td>
+				</tr>
+				<tr>
+					<td>是否可用</td>
+					<td>
+					<select name="model.usabled" class="form-control" >
+					${usabled!}
+					</select>
+					<!-- <input class="form-control" type="text" name="model.usabled" value="${model.usabled}" /> -->
+					</td>
+					<td>是否为老用户</td>
+					<td>
+					<select name="model.is_old_customer" class="form-control" >
+					${is_old_customer!}
+					</select>
 					</td>
 				</tr>
 				<tr>

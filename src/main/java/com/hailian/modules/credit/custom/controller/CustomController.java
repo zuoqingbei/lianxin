@@ -21,7 +21,8 @@ public class CustomController extends BaseProjectController {
 		CustomInfoModel attr = getModelByAttr(CustomInfoModel.class);
 		String custom_id = attr.getStr("custom_id");
 		String report_id = attr.getStr("report_id");
-		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),custom_id,report_id,this);
+		String orderBy = getBaseForm().getOrderBy();
+		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),orderBy,custom_id,report_id,this);
 		setAttr("page",page);
 		render(path+"list.html");
 	}
