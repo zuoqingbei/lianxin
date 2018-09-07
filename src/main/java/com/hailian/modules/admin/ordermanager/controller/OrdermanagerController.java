@@ -34,7 +34,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 @ControllerBind(controllerKey = "/admin/ordermanager")
 public class OrdermanagerController extends BaseProjectController{
 	private static final String path = "/pages/admin/ordermanager/order_";
-
+	
 	/**
 	 * 
 	 * @time   2018年8月24日 下午6:16:22
@@ -69,7 +69,7 @@ public class OrdermanagerController extends BaseProjectController{
 		Paginator pageinator=getPaginator();
 		String orderBy = getBaseForm().getOrderBy();
 		SysUser user = (SysUser) getSessionUser();
-		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,orderBy,user, this);	
+		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,orderBy, this);	
 		setAttr("page", page);
 		setAttr("attr", model);
 		render(path + "list.html");
@@ -189,7 +189,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * 转到添加页面
 	 */
 	@ApiOperation(url = "/admin/ordermanager/view",httpMethod="post", 
-			description = "查看订单")
+			description = "增加订单")
 	public void add() {
 		SysUser user = (SysUser) getSessionUser();
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
@@ -230,6 +230,13 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @return_type   void
 	 * 获取订单时间
 	 */
+	@ApiOperation(url = "/admin/ordermanager/getTime",httpMethod="get", 
+			description = "返回所用时间")
+			@Params(value = { 
+			@Param(name = "countrytype", description = "国家类型", required = false, dataType = "String"),
+			@Param(name = "speed", description = "速度", required = false, dataType = "String"),
+			@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String")
+			})
 	public void getTime() {
 		String countryType=getPara("countrytype", "");
 		String speed=getPara("speed", "");
@@ -246,6 +253,13 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
+	@ApiOperation(url = "/admin/ordermanager/getPrice",httpMethod="get", 
+			description = "返回价格")
+			@Params(value = { 
+			@Param(name = "countrytype", description = "国家类型", required = false, dataType = "String"),
+			@Param(name = "speed", description = "速度", required = false, dataType = "String"),
+			@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String")
+			})
 	public void getPrice() {
 		String countryType=getPara("countrytype", "");
 		String speed=getPara("speed", "");
@@ -262,13 +276,28 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
+	@ApiOperation(url = "/admin/ordermanager/getPrice",httpMethod="get", 
+			description = "返回语言")
+			@Params(value = { 
+			@Param(name = "countrytype", description = "国家类型", required = false, dataType = "String"),
+			@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String")
+			})
 	public void getLanguage() {
 		String countryType=getPara("countrytype", "");
 		String reporttype=getPara("reporttype", "");
 		List<CreditReportLanguage> language=OrderManagerService.service.getLanguage(countryType,reporttype);
 		renderJson(language);
 	}
-	
+	/**
+	 * 
+	 * @time   2018年9月5日 上午9:08:44
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  
+	 * @return_type   void
+	 */
+	@ApiOperation(url = "/admin/ordermanager/getPrice",httpMethod="get", 
+			description = "返回公司")
 	public void getCompany() {
 		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
 		renderJson(company);

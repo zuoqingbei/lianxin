@@ -25,7 +25,17 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 	private static final long serialVersionUID = 1L;
 	
 	public static final CreditReportPrice dao = new CreditReportPrice();//名字都叫dao，统一命名
-
+	/**
+	 * 
+	 * @time   2018年9月5日 上午9:14:30
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param countryType
+	 * @param  @param speed
+	 * @param  @param reporttype
+	 * @param  @return
+	 * @return_type   CreditReportPrice
+	 */
 	public CreditReportPrice getPrice(String countryType, String speed, String reporttype) {
 		// TODO Auto-generated method stub
 			List<String> params=new ArrayList<String>();

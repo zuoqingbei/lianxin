@@ -1,4 +1,4 @@
-<% var upload_busType = tempDict.getSysDictDetailByType('upload_busType'); %>
+<% var upload_busType = tempDict.getSysDictDetailString('upload_busType',model.business_type !); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -76,14 +76,7 @@ var bodyContent = {
 					<td>
 						<div class="form-group">
 						<select name="model.business_type" class="form-control" >
-						 <% for(item in upload_busType){ %>
-						 	<% if((model.business_type+"")==(item.detail_id+"")){ %>
-							 	<option  m-type="${item.detail_name_en}" selected="selected" value="${item.detail_id}">${item.detail_name}</option>
-							<% }else{ %>
-								<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
-							<%}%>
-						 	
-						  <% } %>
+						 	${upload_busType!}
 						</select>
 						</div>
 					</td>

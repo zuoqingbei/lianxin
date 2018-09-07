@@ -30,7 +30,16 @@ public class CreditReportLanguage extends BaseProjectModel<CreditReportLanguage>
 	}
 	
 	public static final CreditReportLanguage dao= new CreditReportLanguage();
-
+	/**
+	 * 
+	 * @time   2018年9月5日 上午9:14:42
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param countryType
+	 * @param  @param reporttype
+	 * @param  @return
+	 * @return_type   List<CreditReportLanguage>
+	 */
 	public List<CreditReportLanguage> getLanguage(String countryType, String reporttype) {
 		
 		List<String> params=new ArrayList<String>();

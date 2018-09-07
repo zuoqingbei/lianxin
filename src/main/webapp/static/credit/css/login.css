@@ -1,0 +1,79 @@
+html,body {
+    min-height: 576px;
+}
+body {
+   
+    background: url("../imgs/login/bg_login.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+.container-fluid {
+    margin:0;
+}
+
+.right-box {
+    height: 100%;
+    background:rgba(255,255,255,0.85);
+    /* display: block!important; */
+}
+
+.logo-box {
+    width: 19rem;
+    min-height: 4.375rem;
+    max-height: 4.375rem;
+    margin-top: 6.25rem;
+    background: url('../imgs/login/i_logo.png') no-repeat;
+    background-size: contain;
+}
+
+.system-name {
+    margin-top: 6.375rem;
+    font-size: 2.3rem;
+    font-weight: bolder;
+    letter-spacing: .2em;
+}
+.input-group-addon {
+    top:0;
+    width: 4.714em;
+    background: #f5f8fd;
+    color: #abaeb3;
+    border: 1px solid #ccc;
+}
+/* 登录框input */
+.form-group {
+
+    width: 23.56rem;
+}
+.form-control {
+    height: 4.125rem;
+    border: 1px solid #ccc;
+    box-shadow: none;
+}
+.username {
+    margin-top: 7.5rem;
+}
+.password {
+    margin-top: 1.875rem;
+}
+
+.btn-login {
+    width: 100%;
+    height: 4.375rem;
+    margin-top: 3.75rem;
+    letter-spacing: .5em;
+    font-size: 1.625rem;
+    border-radius: 14px;
+}
+
+ .bottom-text {
+     margin-top: 18.75rem;
+     margin-bottom: 1.875rem;
+     font-size: 1.25rem;
+     color: #9ca6b2;
+     letter-spacing: .1em;
+ }
+ /*图标*/
+ .fa-user,.fa-lock {
+     font-size: 2rem;
+     color: #ccc;
+ }

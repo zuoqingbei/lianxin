@@ -1,0 +1,114 @@
+/*滚动条样式*/
+.left-nav::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+.left-nav::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2);
+}
+.left-nav::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}
+
+.nav-box,.logo-box {
+    padding: 0;
+}
+.nav-box {
+    height: 100%;
+    /* min-width: 15.625rem; */
+}
+
+.left-nav {
+    width: 100%;
+    height: 100%;
+    padding-top: 2rem;
+    background-color: #001528;
+    overflow: auto;
+}
+
+.left-nav li {
+    position: relative;
+}
+
+.left-nav a {
+    position: relative;
+    display: block;
+    padding: 1rem 1rem 1rem 2.75rem;
+    color: #fff;
+}
+
+.left-nav a ~ ul {
+    display: none;
+}
+
+.left-nav li.show>a ~ ul {
+    display: block;
+}
+
+.left-nav a:before,
+.left-nav a:after {
+    content: "";
+    position: absolute;
+    width: .875em;
+    height: .875em;
+    background-size: contain;
+}
+
+.left-nav a:before {
+    left: 1.25em;
+    top: 55%;
+    width: 1.125em;
+    height: 1.125em;
+    transform: translateY(-50%);
+    /* background: url(../imgs/login/i_logo.png) no-repeat; */
+    background-size: contain;
+}
+
+.left-nav li.hasChild > a:after {
+    top: 1.5em;
+    right: 3em;
+    border: .125em solid #fff;
+    transform: rotate(225deg) scale(.75);
+    border-right: none;
+    border-bottom: none;
+    transition: all 150ms;
+    font-size: .7em;
+}
+
+.left-nav li.show > a:after {
+    top: 1.7rem;
+    transform: rotate(45deg) scale(.75);
+}
+
+.left-nav li:not(.hasChild).active > a,
+.left-nav li:not(.hasChild):hover > a {
+    transition: all 200ms;
+    background-color: rgba(67, 151, 247, 0.3);
+}
+.left-nav li:not(.hasChild).active > a {
+    background-color:#2693fc;
+}
+
+
+
+.left-nav .menu1 {
+    font-size: 1.2rem;
+}
+
+
+.left-nav .menu2 {
+    padding-left: 3.75rem;
+    font-size: 1.275rem;
+}
+
+.left-nav .menu2:before {
+    left: 2.25rem;
+}
+
+
+
+

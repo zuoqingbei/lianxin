@@ -132,11 +132,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	 * @param  @return
 	 * @return_type   Page<CreditOrderInfo>
 	 */
-	public Page<CreditOrderInfo> getOrders(Paginator pageinator,CreditOrderInfo model,String orderby,SysUser user,BaseProjectController c) {
+	public Page<CreditOrderInfo> getOrders(Paginator pageinator,CreditOrderInfo model,String orderby,BaseProjectController c) {
 		StringBuffer sql = new StringBuffer();
-		String userid=user.get("userid").toString();
 		String custom_id=model.getStr("custom_id");
 		String id=model.getStr("id");
+		
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
 		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
