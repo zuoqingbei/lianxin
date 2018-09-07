@@ -52,7 +52,6 @@ public class ReportPriceService {
 	 * @return_type   void
 	 */
 	public ReportPrice add(ReportPrice reportprice) {
-//		reportprice.save();
 		return reportprice;
 	}
 
@@ -63,7 +62,7 @@ public class ReportPriceService {
 	 * @todo   根据id删除报告价格表信息
 	 * @return_type   ReportPrice
 	 */
-	public boolean updateDelFlagById(String id) {
+	public boolean updateDelFlagById(Integer id) {
 		return ReportPrice.dao.updateDelFlagById(id);
 	}
 
