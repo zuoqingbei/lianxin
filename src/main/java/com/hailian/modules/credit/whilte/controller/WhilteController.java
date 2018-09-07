@@ -1,9 +1,13 @@
 package com.hailian.modules.credit.whilte.controller;
 
+import java.util.List;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
+import com.hailian.modules.credit.common.model.ReportTypeModel;
+import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
 import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.modules.credit.whilte.service.ArchivesWhilteService;
 import com.jfinal.plugin.activerecord.Page;
@@ -29,8 +33,12 @@ public class WhilteController extends BaseProjectController{
 		ArchivesWhilteModel attr = getModelByAttr(ArchivesWhilteModel.class);
 		String custom_id = attr.getStr("custom_id");
 		String report_id = attr.getStr("report_id");
-		Page<ArchivesWhilteModel> page = ArchivesWhilteService.service.getPage(getPaginator(),custom_id,report_id,this);
+		String orderBy = getBaseForm().getOrderBy();
+		Page<ArchivesWhilteModel> page = ArchivesWhilteService.service.getPage(getPaginator(),orderBy,custom_id,report_id,this);
+		List<ReportTypeModel> reportType = ReportPriceService.service.getReportType(null);
+		setAttr("reporttype", reportType);
 		setAttr("page",page);
+		setAttr("attr",attr);
 		render(path+"list.html");
 	}
 	/**
@@ -65,6 +73,9 @@ public class WhilteController extends BaseProjectController{
 	public void edit() {
 		Integer paraToInt = getParaToInt();
 		ArchivesWhilteModel model = ArchivesWhilteModel.dao.findById(paraToInt);
+		List<ReportTypeModel> reportType = ReportPriceService.service.getReportType(null);
+		System.out.println(reportType+"====================================================");
+		setAttr("reporttype", reportType);
 		setAttr("model", model);
 		// 查询下拉框
 		render(path + "edit.html");
@@ -84,7 +95,6 @@ public class WhilteController extends BaseProjectController{
 	}
 	public void save() {
 		Integer pid = getParaToInt();
-
 		// 日志添加
 		ArchivesWhilteModel model = getModel(ArchivesWhilteModel.class);
 		Integer userid = getSessionUser().getUserid();

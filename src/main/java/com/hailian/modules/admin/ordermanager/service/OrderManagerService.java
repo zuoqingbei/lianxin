@@ -120,9 +120,9 @@ public class OrderManagerService {
 	 * 获取订单列表并分页
 	 */
 	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model, String orderby,
-			SysUser user, BaseProjectController c) {
+			 BaseProjectController c) {
 
-		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby, user, c);
+		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby, c);
 
 	}
 
@@ -206,22 +206,58 @@ public class OrderManagerService {
 	public List<CreditCustomInfo> getCreater() {
 		return CreditCustomInfo.dao.findcustoms();
 	}
-
+	/**
+	 * 
+	 * @time   2018年9月5日 上午9:13:16
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param countryType
+	 * @param  @param speed
+	 * @param  @param reporttype
+	 * @param  @return
+	 * @return_type   CreditReportUsetime
+	 */
 	public CreditReportUsetime getTime(String countryType, String speed, String reporttype) {
 		// TODO Auto-generated method stub
 		return CreditReportUsetime.dao.getTime(countryType,speed,reporttype);
 	}
-
+	/**
+	 * 
+	 * @time   2018年9月5日 上午9:13:27
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param countryType
+	 * @param  @param speed
+	 * @param  @param reporttype
+	 * @param  @return
+	 * @return_type   CreditReportPrice
+	 */
 	public CreditReportPrice getPrice(String countryType, String speed, String reporttype) {
 		// TODO Auto-generated method stub
 		return CreditReportPrice.dao.getPrice(countryType,speed,reporttype);
 	}
-
+	/**
+	 * 
+	 * @time   2018年9月5日 上午9:13:33
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param countryType
+	 * @param  @param reporttype
+	 * @param  @return
+	 * @return_type   List<CreditReportLanguage>
+	 */
 	public List<CreditReportLanguage> getLanguage(String countryType, String reporttype) {
 		// TODO Auto-generated method stub
 		return CreditReportLanguage.dao.getLanguage(countryType,reporttype);
 	}
-
+	/**
+	 * 
+	 * @time   2018年9月5日 上午9:13:45
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @return
+	 * @return_type   List<CreditCompanyInfo>
+	 */
 	public List<CreditCompanyInfo> getCompany() {
 		
 		return CreditCompanyInfo.dao.getCompany();

@@ -15,11 +15,12 @@ public class ArchivesWhilteService {
 	/**
 	 * 列表展示
 	* @author doushuihai  
+	 * @param orderBy 
 	* @date 2018年9月3日下午2:31:12  
 	* @TODO
 	 */
-	public Page<ArchivesWhilteModel> getPage(Paginator paginator, String custom_id, String report_id, BaseProjectController c){
-		Page<ArchivesWhilteModel> page = ArchivesWhilteModel.dao.getPage(paginator,custom_id,report_id,c);
+	public Page<ArchivesWhilteModel> getPage(Paginator paginator, String orderBy, String custom_id, String report_id, BaseProjectController c){
+		Page<ArchivesWhilteModel> page = ArchivesWhilteModel.dao.getPage(paginator,orderBy,custom_id,report_id,c);
 		return page;
 	}
 	public void delete(Integer id, Integer userid){

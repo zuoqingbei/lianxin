@@ -22,7 +22,17 @@ public class CreditReportUsetime  extends BaseProjectModel<CreditReportUsetime>{
 	 */
 	private static final long serialVersionUID = 1L;
 	public static final CreditReportUsetime dao = new CreditReportUsetime();//名字都叫dao，统一命名
-	
+	/**
+	 * 
+	 * @time   2018年9月5日 上午9:14:06
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param countryType
+	 * @param  @param speed
+	 * @param  @param reporttype
+	 * @param  @return
+	 * @return_type   CreditReportUsetime
+	 */
 	public  CreditReportUsetime getTime(String countryType, String speed, String reporttype) {
 		List<String> params=new ArrayList<String>();
 		StringBuffer sql=new StringBuffer(" select t.* from credit_report_usetime t where t.del_flag='0' ");
