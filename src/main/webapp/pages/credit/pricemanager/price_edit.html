@@ -99,12 +99,12 @@ var bodyContent = {
 		</tr>
 		<tr>
 			<td>报告点数</td>
-			<td><input type="text" name="model.points" class="form-control" 
+			<td><input type="text" name="model.points" class="form-control" valid='vnum_y' 
 				value="${model.points!}" /></td>
 		</tr>
 		<tr>
 			<td>报告价格</td>
-			<td><input type="text" name="model.price" class="form-control" 
+			<td><input type="text" name="model.price" class="form-control" valid='vnum_y' 
 				value="${model.price!}"/></td>
 		</tr>
 		<tr>
@@ -118,12 +118,6 @@ var bodyContent = {
 					${usabled!}
 			</select></td>
 		</tr>
-		<tr>
-			<td>创建日期</td>
-			<td><input type="text" name="model.create_date" class="form-control" 
-				value="${model.create_date}" validname="创建日期" 
-					 placeholder="创建日期"  readonly="readonly" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/></td>
-	</tr>
 </tr>
 	</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>

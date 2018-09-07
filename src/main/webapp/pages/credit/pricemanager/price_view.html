@@ -26,22 +26,16 @@ var bodyContent = {
 			<tr>
 			<td>报告类型</td>
 			 <td> 
-				 <select name="model.report_type" class="form-control" style="width: 200px;">
-							${reportType!}
-				</select> 
+			${model.orderSpeed!}
 			</td>
 		</tr>
 		<tr>
 			<td>订单类型</td>
-			<td>  <select name="model.order_type" class="form-control" style="width: 200px;">
-						${ordertype!}
-			</select> </td>
+			<td>${model.orderType!}</td>
 		</tr>
 				<tr>
 			<td>国家</td>
-			<td><select name="model.country_type" class="form-control" style="width: 200px;">
-						${countrytype!}
-			</select> </td>
+			<td>${model.countryName}</td>
 		</tr>
 			<tr>
 			<td>报告点数</td>
@@ -57,16 +51,8 @@ var bodyContent = {
 		</tr>
 		<tr>
 			<td>是否禁用</td>
-			<td> <select name="model.usabled" class="form-control" style="width: 200px;">
-					${usabled!}
-			</select></td>
+			<td> ${model.usabledName}</td>
 		</tr>
-			<tr>
-			<td>创建日期</td>
-			<td><input type="text" name="model.create_date" class="form-control" 
-				value="${model.create_date}" validname="创建日期" 
-					 placeholder="创建日期"  readonly="readonly"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/></td>
-	    </tr>
 		</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">

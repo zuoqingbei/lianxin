@@ -22,6 +22,7 @@ import com.jfinal.plugin.activerecord.Page;
 @ControllerBind(controllerKey = "/credit/pricemanager")
 public class ReportPriceController extends BaseProjectController {
 	private static final String path = "/pages/credit/pricemanager/price_";
+	private int id;
 
 	public void index() {
 		list();
@@ -65,11 +66,12 @@ public class ReportPriceController extends BaseProjectController {
 	 * 
 	 * @time   2018年9月4日 下午2:27:20
 	 * @author dyc
+	 * @param int id 
 	 * @todo   单条查看报告价格信息
 	 * @return_type   void
 	 */
 	public void view() {
-		ReportPrice model = ReportPrice.dao.findById(getParaToInt());
+		ReportPrice model = ReportPriceService.service.getId(id);
 		setAttr("model", model);
 		render(path + "view.html");
 
