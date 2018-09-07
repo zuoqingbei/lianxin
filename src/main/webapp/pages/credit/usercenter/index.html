@@ -6,25 +6,17 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-     <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
 
-   <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
-   <script src="${BASE_PATH }static/credit/assets/laydate/laydate.js"></script>
-   <script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
-   <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
-   <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
-   <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script>
-   
 
-  
 </head>
-<body>
 <body>
     <div class="container-fluid">
         <!-- 头部 -->
@@ -38,10 +30,10 @@
                 <!-- 个人信息 -->
                 <div class="user-order d-flex justify-content-between align-items-center">
                     <div class="user-info d-flex flex-column justify-content-center">
-                        <p class="regards mb-1">早安，<span>${session.session_user.realname}</span>，祝你开心每一天！</p>
+                        <p class="regards mb-1">早安，<span>王羽铭</span>，祝你开心每一天！</p>
                         <p class="job-title mt-2">
-                            <span>${user.roleName}</span>
-                            <span>${user.departName}</span>
+                            <span>前端程序员</span>
+                            <span>联信集团-软件部-前端</span>
                         </p>
                     </div>
                     <div class="order-info d-flex justify-content-center align-items-center ">
@@ -104,14 +96,14 @@
                                 <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
                                     <button type="button" id="btn_query" class="btn btn-primary">查询</button>
                                     <button type="button" id="btn_query" class="btn btn-light">重置</button>
-                                    <a id="zs"  role="button" data-toggle="collapse" href="#btnCollapse" aria-expanded="false"  aria-controls="btnCollapse">收起 <i class="fa fa-angle-up"></i></a>
+                                    <a  role="button" data-toggle="collapse" href="#btnCollapse" aria-expanded="false"  aria-controls="btnCollapse">收起 <i class="fa fa-angle-up"></i></a>
                                 </div>
                             </div>
                             
                         </div>
                         <table id="table"
                             data-toggle="table"
-                            data-url="./data.json"
+                            data-url=""
                             style="position: relative"
                         >
                         <div class="deal-state"> 
@@ -212,10 +204,9 @@
     <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
     <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
     <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-fixed-columns.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script> 
     <script src="${BASE_PATH }static/credit/js/common.js"></script>
-   <script src="${BASE_PATH }static/credit/js/index.js"></script> 
-</body>
+   <script src="${BASE_PATH }static/credit/js/index.js"></script>
 </body>
 </html>
     
