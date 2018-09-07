@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>联信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+     <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
+   <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
+
+   <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/laydate/laydate.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script>
+   
+
+  
+</head>
+<body>
+   
+<!-- 时间组件 -->
+<% include("/pages/includes/my97.html"){} %>
+    <!-- 菜单盒子 -->
+    <div id="container">
+		<% include("/pages/credit/common/menu.html"){} %>
+    </div>
+    <div class="main col-xs-10 col-sm-10 col-md-10 col-lg-10">
+  <iframe id="myIframe" src="/credit/home/list" style="width:100%;height:100%"  frameborder="0" >
+    
+    
+ </iframe>
+ </div>
+</body>
+</html>
+    

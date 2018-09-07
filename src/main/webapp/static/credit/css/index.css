@@ -1,0 +1,77 @@
+:root {
+
+    --fontColor:#808080;
+    --inputWidth:18.5rem;
+}
+/* 上面用户信息和订单统计 */
+.user-order {
+    height: 10rem;
+    box-shadow: 0 1px 5px 0 #ccc;
+    background: #fff;
+}
+
+.user-info {
+    padding-left: 2.625rem;
+}
+.regards {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+.job-title span:first-child {
+    padding-right: .5rem;
+    font-size: 1rem;
+    color: var(--fontColor);
+    line-height: 0;
+    border:solid #ccc;
+    border-width: 0 2px 0 0;
+}
+.job-title span:last-child {
+    padding-left: .5rem;
+    font-size: 1rem;
+    color: var(--fontColor);
+    line-height: 0;
+}
+
+.order-item span:first-child {
+    color: var(--fontColor);
+}
+
+.order-item span:last-child {
+    font-size: 1.8rem;
+}
+.order-item:nth-child(2) {
+    height: 2rem;
+    border:solid #ccc;
+    border-width: 0 2px 0 2px;
+}
+
+/* 表格 */
+
+.table-content {
+    height: 45.75rem;
+    background: #fff;
+}
+.search-input {
+    width: var(--inputWidth)!important;
+    color: var(--fontColor);
+}
+
+#formSearch .form-group {
+    margin-top: 1.5rem;
+}
+#formSearch .control-label {
+    /* width: 6.999rem; */
+    font-size: 1rem;
+    font-weight: 600;
+    justify-content: flex-end;
+   
+}
+#formSearch .form-control {
+    border-radius: 6px;
+}
+
+
+
+.right-btn {
+    width: 16.25rem;
+}
