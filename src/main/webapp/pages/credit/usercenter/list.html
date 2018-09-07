@@ -65,7 +65,10 @@
             },
         };
     });
-
+    //分页
+    var paginator = function(page) {
+        oper.list();
+    };
   	</script>
         <!-- 个人信息 -->
         <div class="user-order d-flex justify-content-between align-items-center">
@@ -129,7 +132,7 @@
                             </select>
                         </div>
                     </div>
-                </form>
+                
                 <div class="btn-row d-flex justify-content-between mt-4 mb-4">
                     <button role="button" class="btn btn-primary ml-5" onclick="oper.add()"><i class="fa fa-plus pr-2"></i>新增订单</button>
                     <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
@@ -138,9 +141,7 @@
                         <a id="zs" role="button" data-toggle="collapse" href="#btnCollapse" aria-expanded="false"  aria-controls="btnCollapse" onclick="oper.orderHidden()">收起 <i class="fa fa-angle-up"></i></a>
                     </div>
                 </div>
-                
-             </div>
-            <table id="table"  class="table table-striped table-bordered table-hover" data-classes="table table-no-bordered" data-toggle="table">
+                 <table id="table"  class="table table-striped table-bordered table-hover" data-classes="table table-no-bordered" data-toggle="table">
             	<thead>
 					<tr>
 						<th>序号</th>
@@ -196,4 +197,9 @@
 				<%}%>
 				</tbody>
 			</table>
+			<%include("/pages/includes/paginator.html"){} %>
+                  </form>
+             </div>
+           
+			
         </div>

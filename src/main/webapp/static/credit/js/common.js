@@ -10,7 +10,9 @@ let Public = {
          * 导入菜单组件
          */
         let _this = this
-        $('#container').load("/credit/common/menu #menu",function(){
+        $('header').load("./menu.html .head-row")
+
+        $('.nav-row').load("./menu.html .nav-box" ,function(){
             _this.menuEvent()
         })
     },
