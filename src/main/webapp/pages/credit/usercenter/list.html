@@ -1,0 +1,199 @@
+	<link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
+   <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
+
+   <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/laydate/laydate.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script>
+   	<script type="text/javascript">
+  	var flag=true;
+  	var oper;
+    jQuery(function($) {
+        // 页面方法
+        oper = {
+            width : 450,
+            height : 500,
+            form : document.form1,
+            list : function() {
+                var url = '/credit/home/list';
+                this.form.action = url;
+                this.form.submit();
+            
+            },
+            view : function(id) {
+                var url = 'credit/home/view/?id='+id;
+                var title = '查看订单';
+                Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+                $("#myIframe").src(url)
+            },
+            add : function() {
+                var url = 'admin/ordermanager/add';
+                var title = '添加订单';
+                Iframe(url, this.width, this.height, title);
+            },
+            edit : function(id) {
+                var url = 'admin/ordermanager/edit/?id='+id;
+                var title = '修改订单';
+                Iframe(url, this.width, this.height, title);
+            },
+            del : function(id) {
+                var url = 'admin/ordermanager/delete/?id='+id;
+                $.ajax({
+        	        url:url,
+        	        type:"get",
+        	    })
+               
+            },
+            orderHidden:function(){
+            	
+            	if(flag){
+            		$("#table tbody").hide();
+            		$("#zs").html('展开 <i class="fa fa-angle-up"></i>');
+            		flag=!flag
+            	}else{
+            		$("#table tbody").show();
+            		$("#zs").html('收起 <i class="fa fa-angle-up"></i>');
+            		flag=!flag
+            	}
+            },
+        };
+    });
+
+  	</script>
+        <!-- 个人信息 -->
+        <div class="user-order d-flex justify-content-between align-items-center">
+              <div class="user-info d-flex flex-column justify-content-center">
+                  <p class="regards mb-1">早安，<span>${session.session_user.realname}</span>，祝你开心每一天！</p>
+                  <p class="job-title mt-2">
+                      <span>${user.roleName}</span>
+                      <span>${user.departName}</span>
+                  </p>
+              </div>
+              <div class="order-info d-flex justify-content-center align-items-center ">
+                  <div class="order-item pl-5 pr-5 d-flex flex-column justify-content-center align-items-center">
+                      <span>核实中订单</span>
+                      <span>24</span>
+                  </div>
+                  <div class="order-item pl-5 pr-5 d-flex flex-column justify-content-center align-items-center">
+                      <span>查档中订单</span>
+                      <span>89</span>
+                  </div>
+                  <div class="order-item pl-5 pr-5 d-flex flex-column justify-content-center align-items-center">
+                      <span>质检中订单</span>
+                      <span>12</span>
+                  </div>
+              </div>
+        </div>
+        <!-- 表格 -->
+        <div class="table-content m-5 p-3">
+            <div class="form-box">
+                <form id="formSearch" class="form-inline" role="form">
+                     <div class="form-group row d-flex justify-content-around mb-4">
+                        <div class="input-group mt-2">
+                            <label class="control-label" for="txt_search_departmentname">公司名称：</label>
+                            <input name="companyName" type="text" class="form-control search-input" id="txt_search_departmentname" placeholder="请输入公司名称">
+                        </div>
+                        <div class="input-group mt-2">
+                            <label class="control-label" for="txt_search_companyEngName">订单公司名称：</label>
+                            <input name="customName" type="text" class="form-control search-input" id="txt_search_companyEngName" placeholder="请输入订单公司名称">
+                        </div>
+                        <div class="input-group mt-2">
+                            <label  class="control-label" for="txt_search_statu">到期日期：</label>
+                            <input name="attr.end_date" type="text" class="form-control search-input" id="dead_date" placeholder="请选择到期日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+                        </div>
+                    </div>
+                    <div id="btnCollapse" class="show row justify-content-around">
+                        <div class="input-group mt-2 ">
+                            <label class="control-label" for="txt_search_statu">客户：</label>
+                            <select name="attr.custom_id" class="form-control search-input">
+                                <option value="" disabled selected>请选择客户</option>
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <label class="control-label" for="txt_search_statu">代理：</label>
+                            <select class="form-control search-input" >
+                                    <option value="" disabled selected>请选择代理</option>
+                            </select>
+                        </div>
+                        <div class="input-group mt-2">
+                            <label class="control-label" for="txt_search_statu">国家：</label>
+                            <select name="attr.country_id" class="form-control search-input" >
+                                <option value="" disabled selected>请选择国家</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <div class="btn-row d-flex justify-content-between mt-4 mb-4">
+                    <button role="button" class="btn btn-primary ml-5" onclick="oper.add()"><i class="fa fa-plus pr-2"></i>新增订单</button>
+                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
+                        <button type="button" id="btn_query" class="btn btn-primary">查询</button>
+                        <button type="button" id="btn_query" class="btn btn-light">重置</button>
+                        <a id="zs" role="button" data-toggle="collapse" href="#btnCollapse" aria-expanded="false"  aria-controls="btnCollapse" onclick="oper.orderHidden()">收起 <i class="fa fa-angle-up"></i></a>
+                    </div>
+                </div>
+                
+             </div>
+            <table id="table"  class="table table-striped table-bordered table-hover" data-classes="table table-no-bordered" data-toggle="table">
+            	<thead>
+					<tr>
+						<th>序号</th>
+						<%  // 列表头部 %>
+						<th name="t.id" class="sorting">订单号</th>
+						<th name="t.receiver_date" class="sorting">订单日期</th>
+						<th name="t.update_date" class="sorting">到期日期</th>
+						<th name="t.custom_id" class="sorting">客户代码</th>
+						<th name="t.status" class="sorting">处理状态</th>
+						<th name="c2.name" class="sorting">订单公司名称</th>
+						<th name="c.name" class="sorting">国家</th>
+						<th name="s3.name" class="sorting">报告类型</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				<% for(item in page.list){ %>
+					<tr>
+						<td>${itemLP.index }</td>
+						<td>${item.id}</td>
+						<td>${item.receiver_date}</td>
+						<td>${item.update_date}</td>
+						<td>${item.custom_id}</td>
+						<td>
+							<%if(item.status=='0'){%>
+								提交订单
+							<%}%>
+							<%if(item.status=='1'){%>
+								订单分配
+							<%}%>
+							<%if(item.status=='2'){%>
+								处理中
+							<%}%>
+							<%if(item.status=='3'){%>
+								按照流程处理完毕
+							<%}%>
+							<%if(item.status=='4'){%>
+								订单取消
+							<%}%>
+							<%if(item.status=='5'){%>
+								有相同报告,订单结束
+							<%}%>
+						</td>
+						<td>${item.companyName}</td>
+						<td>${item.countryName}</td>
+						<td>${item.reportType}</td>
+						<td>
+							<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a>
+							<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>
+							<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
+						</td>
+					</tr>
+				<%}%>
+				</tbody>
+			</table>
+        </div>

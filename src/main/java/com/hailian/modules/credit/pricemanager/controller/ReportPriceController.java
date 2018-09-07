@@ -79,11 +79,10 @@ public class ReportPriceController extends BaseProjectController {
 	 * 
 	 * @time   2018年8月24日 下午4:24:54
 	 * @author dyc
-	 * @todo   向报告价格表里新增信息
+	 * @todo   转到新增页面
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/pricemanager/addReport", httpMethod = "get", description = "报告价格表新增信息")
-	public void addReport() {
+	public void add() {
 		ReportPrice model = getModelByAttr(ReportPrice.class);
 		ReportPriceService.service.add(model);
 		setAttr("model", model);
@@ -94,10 +93,9 @@ public class ReportPriceController extends BaseProjectController {
 	 * 
 	 * @time   2018年9月4日 下午1:44:44
 	 * @author dyc
-	 * @todo   修改报告价格信息
+	 * @todo   转到修改报告价格信息页面
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/pricemanager/editReport", httpMethod = "get", description = "报告价格表新增信息")
 	public void edit() {
 		Integer para = getParaToInt();
 		ReportPrice model = ReportPrice.dao.findById(para);
@@ -110,12 +108,10 @@ public class ReportPriceController extends BaseProjectController {
 	 * 
 	 * @time   2018年8月27日 上午10:23:53
 	 * @author dyc
-	 * @todo   根据id删除报告价格表信息
+	 * @todo   删除单条报告价格信息
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/credit/pricemanager/deleteReport", httpMethod = "get", description = "删除报告价格表里的信息")
-	@Params(value = { @Param(name = "id", description = "id", required = false, dataType = "String"), })
-	public void deleteReport() {
+	public void delete() {
 		String id = getPara("id");
 		if (ReportPriceService.service.updateDelFlagById(id)) {
 			//success
@@ -125,6 +121,32 @@ public class ReportPriceController extends BaseProjectController {
 			//redirect("/credit/price/list");
 			renderText("failure");
 		}
-		;
+
+	}
+
+	/**
+	 * 
+	 * @time   2018年9月6日 上午11:06:56
+	 * @author dyc
+	 * @todo   修改和增加功能
+	 * @return_type   void
+	 */
+	public void save() {
+		Integer id = getParaToInt("id");
+		ReportPrice model = getModel(ReportPrice.class);
+		Integer userid = getSessionUser().getUserid();
+		String now = getNow();
+		model.set("update_by", userid);
+		model.set("update_date", now);
+		if (id != null && id > 0) { // 更新
+			model.update();
+			renderMessage("修改成功");
+		} else { // 新增
+			model.remove("id");
+			model.set("create_by", userid);
+			model.set("create_date", now);
+			model.save();
+			renderMessage("保存成功");
+		}
 	}
 }

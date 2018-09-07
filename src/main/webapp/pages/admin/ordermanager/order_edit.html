@@ -60,6 +60,8 @@ include("/pages/template/head.html"){}
     	           $("select[name='attr.country']").html(html);
     	           
 					oper.countryChange();
+					oper.reportTypeChange();
+					oper.speedChange();
     	           
     	        },
     	        error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -81,6 +83,8 @@ include("/pages/template/head.html"){}
     	oper.languageChange()
     },
     reportTypeChange:function(){
+    	//默认选择第一个种类型
+   	 $("select[name='attr.report_type'] option:first").attr('selected','selected')
     	//查询用时
     	oper.usetimeChange();
     	//查询费用
@@ -89,10 +93,36 @@ include("/pages/template/head.html"){}
     	oper.languageChange()
     },
     speedChange:function(){
+    	//默认选择第一个种类型
+      	 $("select[name='attr.speed'] option:first").attr('selected','selected')
     	//查询用时
     	oper.usetimeChange();
     	//查询费用
     	oper.priceChange();
+    },
+    receiveTime:function(){
+    	oper.endTime();
+    },
+    endTime:function(){
+    	var value1=$("#usetime").val()
+    	var value2=$("#receivedate").val();
+    	if(value1!=null &&value1!=""&&value2!=null &&value2!=""){
+		  var time=Math.ceil(value1/24);
+		  var date=new Date(value2)
+		     var year = date.getFullYear();
+		     var month =(date.getMonth() + 1).toString();
+		     var day = (date.getDate()+time).toString();
+		     if(!isNaN(year) && !isNaN(month) && !isNaN(day)){
+		     if (month.length == 1) {
+		         month = "0" + month;
+		     }
+		     if (day.length == 1) {
+		         day = "0" + day;
+		     }
+		     dateTime = year +"-"+ month +"-"+  day;
+		     $("#enddate").val(dateTime)
+	  } 
+    	}
     },
     usetimeChange:function(){
     	var value1=$("#country").find("option:selected").attr("m-type");
@@ -107,20 +137,8 @@ include("/pages/template/head.html"){}
 		        	  if(data!=null){
 		        		  $("#usetime").val(data.use_time)
 		        		  $("#usertimeid").val(data.id)
-		        		  var time=Math.ceil(data.use_time/24);
-		        		  var date=new Date($("#receivedate").val())
-		        		     var year = date.getFullYear();
-		        		     var month =(date.getMonth() + 1).toString();
-		        		     var day = (date.getDate()+time).toString();
-		        		     if (month.length == 1) {
-		        		         month = "0" + month;
-		        		     }
-		        		     if (day.length == 1) {
-		        		         day = "0" + day;
-		        		     }
-		        		     dateTime = year +"-"+ month +"-"+  day;
-		        		     $("#enddate").val(dateTime)
-		        	  }  
+		       			  oper.endTime();
+		        }
 		        },
 		        error: function(XMLHttpRequest, textStatus, errorThrown) {
 		            alert(XMLHttpRequest.status);
@@ -194,14 +212,13 @@ var bodyContent = {
 			<td>客户ID</td>
 			<td>
 				<select id="customid" name="attr.custom_id" valid="vselect" class="form-control" validname="客户id" onchange="oper.customChange()">
-					<% if(model==null){ %>
+					<% if(model.custom_id==null || model.custom_id==""){ %>
 						<option value="">请选择</option>
-						<%}%>
 					 <% for(item in customs){ %>
-							 	<% if(model==null){ %>
 							 	<option m-type="${item.name}"  value="${item.id}" >${item.id}</option>
-							 	<% }else{ %>
-							 	
+							 	<% }%>
+							 	<%}else{ %>
+							 		<% for(item in customs){ %>
 							 	<%if(model.custom_id==item.id){%>
 							 	 <option m-type="${model.customName}" value="${model.custom_id}" selected="selected">${model.custom_id}</option>
 							 	<% }else{ %>
@@ -222,7 +239,7 @@ var bodyContent = {
 			<td>
 				<input id="receivedate" type="text" name="attr.receiver_date" class="form-control" 
 					value="${model.receiver_date}" valid="vtext" validname="接单日期" 
-					 placeholder="接单日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+					 placeholder="接单日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'}),oper. receiveTime() "  />
 			</td>
 		</tr>
 			<tr>
@@ -238,7 +255,7 @@ var bodyContent = {
 		<tr>
 			<td>国家</td>
 			<td>
-				<% if(model!=null){%>
+				<% if(model.country!=null || model.country!="" ){%>
 				<select id="country" name="attr.country"  class="form-control" valid="vselect" validname="国家" onchange="oper.countryChange()">
 					<% for(item in country){ %>
 							 	<% if(model.country==(item.id+"")){ %>
@@ -262,7 +279,6 @@ var bodyContent = {
 			<td>
 			 <select id="reporttype" name="attr.report_type" valid="vselect" validname="报告类型" class="form-control" onchange="oper.reportTypeChange()">
 				${reportType!}
-			</select> 
 			</td>
 		</tr>
 		<tr>
@@ -276,7 +292,7 @@ var bodyContent = {
 			<tr>
 			<td>报告用时</td>
 			<td>
-				<% if(model!=null){ %>
+				<% if(model.user_time!=null || model.user_time!=""){ %>
 				<input id="usetime" name="attr.user_time" class="form-control" valid="vtext" validname="报告用时" value="${model.user_time}" readonly="readonly">
 				<input id="" name="attr.user_time_id" class="form-control"  value="${model.user_time_id}" type="hidden">
 					<%}else{%>
@@ -289,7 +305,7 @@ var bodyContent = {
 		<tr>
 			<td>费用</td>
 			<td>
-				<% if(model!=null){ %>
+				<% if(model.price!=null || model.price!=""){ %>
 				<input id="price" name="price" class="form-control" valid="vtext" validname="报告费用" value="${model.price}" readonly="readonly">
 				<input id="priceid" name="attr.price_id" class="form-control" valid="vtext" validname="报告费用" value="${model.price_id}" type="hidden">
 					<%}else{%>
@@ -321,7 +337,7 @@ var bodyContent = {
 		<tr>
 			<td>公司id</td>
 			<td>
-				<%if(model==null){%>
+				<%if(model.company_id==null || model.company_id==""){%>
 				<select id="companyid" class="form-control"  name="attr.company_id" valid="vtext" validname="公司ID" onchange='oper.findCompany()'>
 				<option selected="selected" value="" >请选择</option>
 				<%for(item in company){%>
@@ -344,7 +360,7 @@ var bodyContent = {
 			<tr>
 			<td>公司名称</td>
 			<td>
-				<% if(model!=null){ %>
+				<% if(model.companyName!=null || model.companyName!=""){ %>
 				<input id="companyname" class="form-control" type="text" valid="vtext" validname="公司名称" value="${model.companyName}"  readonly="readonly"/>
 				<% }else{ %>
 				<input id="companyname" class="form-control" type="text"  valid="vtext" validname="公司名称" value=""  readonly="readonly"/>
@@ -354,7 +370,7 @@ var bodyContent = {
 		<tr>
 			<td>公司英文名</td>
 			<td>
-				<% if(model!=null){ %>
+				<% if(model.englishName!=null || model.englishName!=""){ %>
 				<input id="englishname" class="form-control" type="text" valid="vtext" validname="公司英文名" value="${model.englishName}"  readonly="readonly"/>
 				<% }else{ %>
 				<input id="englishname" class="form-control" type="text"  valid="vtext" validname="公司英文名" value=""  readonly="readonly"/>
@@ -365,7 +381,7 @@ var bodyContent = {
 		<tr>
 			<td>到期日</td>
 			<td>
-				<input id="enddate" name="attr.end_date" class="form-control" value="${model.end_date}" readonly="readonly">	
+				<input id="enddate" name="attr.end_date" class="form-control" value="${model.end_date!''}" readonly="readonly">	
 			</td>
 		</tr>
 		
@@ -420,7 +436,7 @@ var bodyContent = {
 			</td>
 		</tr>
 		<input name="attr.update_by" type="hidden" value="${user.userid}">
-		<% if(model==null || model.create_by==null){ %>
+		<% if( model.create_by==null || model.create_by==""){ %>
 			<input name="attr.create_by" type="hidden" value="${user.userid}">
 		<%}else{%>
 			<input name="attr.create_by" type="hidden" value="${model.create_by}">

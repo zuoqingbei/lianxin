@@ -1,0 +1,461 @@
+<% var sandbar = tempDict.getSysDictDetailString('sandbar',model.continent); %>
+<% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type); %>
+<% var language = tempDict.getSysDictDetailString('language',model.report_language); %>
+<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
+<% var reportType = reportType.getReportTypeString("ordertype"); %>
+<%
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+include("/pages/template/head.html"){}
+%>
+<script type="text/javascript" src="static/component/echarts/echarts-plain.js"></script>
+<!-- 时间组件 -->
+<% include("/pages/includes/my97.html"){} %>
+<script type="text/javascript">
+    var oper = {
+        save:function(id){
+        	 if(!validForm()) {
+                 return false;
+             }
+            id = id || '0';
+
+//            alert( $("select[name='attr.country']").val())
+            
+            var url = 'admin/ordermanager/save?id='+id;
+            form1.action = url;
+            form1.submit();
+            return true;
+        },
+        findCompany:function(){
+ 	         var value= $("#companyid").find("option:selected").attr("m-type");
+ 	         var value1= $("#companyid").find("option:selected").attr("m-type1");
+ 	         $("#companyname").val(value);
+			$("#englishname").val(value1);
+        },
+    customChange:function(){
+        	var value=$("#customid").find("option:selected").attr("m-type");
+        	$("input[name='customName']").val(value);
+        },
+    sandbarChange:function(){
+    	 var grade = document.getElementById("sandbar");
+    	 var value=$("#sandbar").find("option:selected").attr("m-english");
+    	 var url='credit/country/getCountrySelect?attr.continent='+value;
+    	 var html="";
+    	 $.ajax({
+    	        url:url,
+    	        type:"get",
+    	        dataType:"json",
+    	        success: function(data) {
+    	           $.each(data,function(index,item){
+/*     	        	   console.log(index);
+    	        	   console.log(item); */
+   					 if(item.id='${model.country}'){
+   						 html+=("<option selected='selected' m-type='"+item.type+"' value='"+item.id+"'>"+item.name+"</option>");
+   					 }else{
+   						html+=("<option  m-type='"+item.type+"' value='"+item.id+"'>"+item.name+"</option>");
+   					 };
+    	        	 // option.attr("m-type")   
+    	        	 //option.val()
+    	           });
+    	           $("select[name='attr.country']").html(html);
+    	           
+					oper.countryChange();
+					oper.reportTypeChange();
+					oper.speedChange();
+    	           
+    	        },
+    	        error: function(XMLHttpRequest, textStatus, errorThrown) {
+    	            alert(XMLHttpRequest.status);
+    	            alert(XMLHttpRequest.readyState);
+    	            alert(textStatus);
+    	        },
+    	    })
+    	 
+    },
+    countryChange:function(){
+    	//默认选择第一个国家
+    	 $("select[name='attr.country'] option:first").attr('selected','selected')
+    	//查询用时
+    	oper.usetimeChange();
+    	//查询费用
+    	oper.priceChange();
+    	//查询语言
+    	oper.languageChange()
+    },
+    reportTypeChange:function(){
+    	//默认选择第一个种类型
+   	 $("select[name='attr.report_type'] option:first").attr('selected','selected')
+    	//查询用时
+    	oper.usetimeChange();
+    	//查询费用
+    	oper.priceChange();
+    	//查询语言
+    	oper.languageChange()
+    },
+    speedChange:function(){
+    	//默认选择第一个种类型
+      	 $("select[name='attr.speed'] option:first").attr('selected','selected')
+    	//查询用时
+    	oper.usetimeChange();
+    	//查询费用
+    	oper.priceChange();
+    },
+    receiveTime:function(){
+    	oper.endTime();
+    },
+    endTime:function(){
+    	var value1=$("#usetime").val()
+    	var value2=$("#receivedate").val();
+    	if(value1!=null &&value1!=""&&value2!=null &&value2!=""){
+		  var time=Math.ceil(value1/24);
+		  var date=new Date(value2)
+		     var year = date.getFullYear();
+		     var month =(date.getMonth() + 1).toString();
+		     var day = (date.getDate()+time).toString();
+		     if(!isNaN(year) && !isNaN(month) && !isNaN(day)){
+		     if (month.length == 1) {
+		         month = "0" + month;
+		     }
+		     if (day.length == 1) {
+		         day = "0" + day;
+		     }
+		     dateTime = year +"-"+ month +"-"+  day;
+		     $("#enddate").val(dateTime)
+	  } 
+    	}
+    },
+    usetimeChange:function(){
+    	var value1=$("#country").find("option:selected").attr("m-type");
+    	var value2=$("#speed").find("option:selected").val();
+    	var value3=$("#reporttype").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	  if(data!=null){
+		        		  $("#usetime").val(data.use_time)
+		        		  $("#usertimeid").val(data.id)
+		       			  oper.endTime();
+		        }
+		        },
+		        error: function(XMLHttpRequest, textStatus, errorThrown) {
+		            alert(XMLHttpRequest.status);
+		            alert(XMLHttpRequest.readyState);
+		            alert(textStatus);
+		        },
+		    });
+    },
+    priceChange:function(){
+    	var value1=$("#country").find("option:selected").attr("m-type");
+    	var value2=$("#speed").find("option:selected").val();
+    	var value3=$("#reporttype").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"admin/ordermanager/getPrice?countrytype="+value1+"&speed="+value2+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	  if(data!=null){
+		        		  $("#price").val(data.price)
+		        		  $("#priceid").val(data.id)
+		        	  }
+		        	
+		          },
+		        error: function(XMLHttpRequest, textStatus, errorThrown) {
+		            alert(XMLHttpRequest.status);
+		            alert(XMLHttpRequest.readyState);
+		            alert(textStatus);
+		        },
+		    });
+    },
+    languageChange:function(){
+    	var value1=$("#country").find("option:selected").attr("m-type");
+    	var value3=$("#reporttype").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"admin/ordermanager/getLanguage?countrytype="+value1+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	if(data!=null){
+		        		for(item in data){
+		        			html+="<option  value='"+data[item].language_id+"'>"+data[item].languageName+"</option>";
+		        		}
+		        	}
+		        	$("select[name='attr.report_language']").html(html);
+		          },
+		        error: function(XMLHttpRequest, textStatus, errorThrown) {
+		            alert(XMLHttpRequest.status);
+		            alert(XMLHttpRequest.readyState);
+		            alert(textStatus);
+		        },
+		    });
+    }
+    };
+//  oper.sandbarChange();
+//	oper.textarea();
+
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+	  role="form" >
+
+	<table class="table">
+		<% // 列表头部 %>
+		<tr>
+			<td>客户ID</td>
+			<td>
+				<select id="customid" name="attr.custom_id" valid="vselect" class="form-control" validname="客户id" onchange="oper.customChange()">
+					<% if(model.custom_id==null || model.custom_id==""){ %>
+						<option value="">请选择</option>
+					 <% for(item in customs){ %>
+							 	<option m-type="${item.name}"  value="${item.id}" >${item.id}</option>
+							 	<% }%>
+							 	<%}else{ %>
+							 		<% for(item in customs){ %>
+							 	<%if(model.custom_id==item.id){%>
+							 	 <option m-type="${model.customName}" value="${model.custom_id}" selected="selected">${model.custom_id}</option>
+							 	<% }else{ %>
+							 		<option m-type="${item.name}"  value="${item.id}" >${item.id}</option>
+							  <% }} }%>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>客户用户名</td>
+			<td>
+				<input class="form-control" type="text" name="customName"
+					   value="${model.customName}" valid="vtext" validname="客户用户名" readonly="readonly"/>			
+			</td>
+		</tr>
+		<tr>
+			<td>接单日期</td>
+			<td>
+				<input id="receivedate" type="text" name="attr.receiver_date" class="form-control" 
+					value="${model.receiver_date}" valid="vtext" validname="接单日期" 
+					 placeholder="接单日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'}),oper. receiveTime() "  />
+			</td>
+		</tr>
+			<tr>
+				<td>地区</td>
+				<td>
+	
+				   <select id="sandbar" name="attr.continent" valid="vselect" class="form-control" onchange="oper.sandbarChange()">
+							${sandbar!}
+					</select> 
+			
+			</td>
+		</tr>
+		<tr>
+			<td>国家</td>
+			<td>
+				<% if(model.country!=null || model.country!="" ){%>
+				<select id="country" name="attr.country"  class="form-control" valid="vselect" validname="国家" onchange="oper.countryChange()">
+					<% for(item in country){ %>
+							 	<% if(model.country==(item.id+"")){ %>
+							 	 <option selected="selected" m-type="${item.type}" value="${item.id}">${item.name}</option>
+							 	<% }else{ %>
+							 	 <option m-type="${item.type}" value="${item.id}">${item.name}</option>
+							 	<% } %>
+							  <% } %>
+				</select>
+				<%}else{%>
+				<select id="country" name="attr.country"  class="form-control" valid="vselect" validname="国家" onchange="oper.countryChange()">
+				</select>
+				<%}%>
+			</td>
+		</tr>
+		
+	
+		
+		<tr>
+			<td>报告类型</td>
+			<td>
+			 <select id="reporttype" name="attr.report_type" valid="vselect" validname="报告类型" class="form-control" onchange="oper.reportTypeChange()">
+				${reportType!}
+			</select> 
+			</td>
+		</tr>
+		<tr>
+			<td>速度</td>
+			<td>
+				<select id="speed" name="attr.speed" class="form-control" valid="vselect" validname="速度"onchange="oper.speedChange()">
+					${orderspeed!}
+				</select>
+			</td>
+		</tr>
+			<tr>
+			<td>报告用时</td>
+			<td>
+				<% if(model.user_time!=null || model.user_time!=""){ %>
+				<input id="usetime" name="attr.user_time" class="form-control" valid="vtext" validname="报告用时" value="${model.user_time}" readonly="readonly">
+				<input id="" name="attr.user_time_id" class="form-control"  value="${model.user_time_id}" type="hidden">
+					<%}else{%>
+					<input id="usetime" name="attr.user_time" class="form-control" valid="vtext" validname="报告用时" value="0" readonly="readonly">
+					<input id="usertimeid" name="attr.user_time_id" class="form-control" value="" type="hidden">
+					<%}%>
+				
+			</td>
+		</tr>
+		<tr>
+			<td>费用</td>
+			<td>
+				<% if(model.price!=null || model.price!=""){ %>
+				<input id="price" name="price" class="form-control" valid="vtext" validname="报告费用" value="${model.price}" readonly="readonly">
+				<input id="priceid" name="attr.price_id" class="form-control" valid="vtext" validname="报告费用" value="${model.price_id}" type="hidden">
+					<%}else{%>
+					<input id="price" name="price" class="form-control" valid="vtext" validname="报告用时" value="0" readonly="readonly">
+					<input id="priceid" name="attr.price_id" class="form-control" valid="vtext" validname="报告费用" value="0" type="hidden">
+					<%}%>			
+			</td>
+		</tr>
+		
+		<tr>
+			<td>订单类型</td>
+			<td>
+				<select class="form-control" valid="vselect" style="width: 200px;" name="attr.order_type">
+					${ordertype!}
+				</select>
+					 
+			</td>
+		</tr>
+		
+		
+		<tr>
+			<td>报告语言</td>
+			<td>
+			 <select id="reportlanguage"  name="attr.report_language" valid="vselect" class="form-control" style="width: 200px;">
+						${language!}
+				</select> 
+			</td>
+		</tr>
+		<tr>
+			<td>公司id</td>
+			<td>
+				<%if(model.company_id==null || model.company_id==""){%>
+				<select id="companyid" class="form-control"  name="attr.company_id" valid="vtext" validname="公司ID" onchange='oper.findCompany()'>
+				<option selected="selected" value="" >请选择</option>
+				<%for(item in company){%>
+					<option  m-type="${item.name}" m-type1="${item.name_en}" value="${item.id}" >${item.id}</option>
+				<%}%>
+				</select>
+					<%}else{ %>
+					
+					<select id="companyid" class="form-control"  name="attr.company_id" valid="vtext" validname="公司ID" onchange='oper.findCompany()'>
+					<%for(item in company){%>
+					<%if(item.id==model.company_id){%>
+						<option m-type="${item.name}" m-type1="${item.name_en}" selected="selected" value="${item.id}" >${item.id}</option>
+					<%}else{%>
+						<option  m-type="${item.name}" m-type1="${item.name_en}"  value="${item.id}" >${item.id}</option>
+						<%}}%>
+						<%}%>
+				</select>
+			</td>
+		</tr>
+			<tr>
+			<td>公司名称</td>
+			<td>
+				<% if(model.companyName!=null || model.companyName!=""){ %>
+				<input id="companyname" class="form-control" type="text" valid="vtext" validname="公司名称" value="${model.companyName}"  readonly="readonly"/>
+				<% }else{ %>
+				<input id="companyname" class="form-control" type="text"  valid="vtext" validname="公司名称" value=""  readonly="readonly"/>
+				<%}%>
+			</td>
+		</tr>
+		<tr>
+			<td>公司英文名</td>
+			<td>
+				<% if(model.englishName!=null || model.englishName!=""){ %>
+				<input id="englishname" class="form-control" type="text" valid="vtext" validname="公司英文名" value="${model.englishName}"  readonly="readonly"/>
+				<% }else{ %>
+				<input id="englishname" class="form-control" type="text"  valid="vtext" validname="公司英文名" value=""  readonly="readonly"/>
+				<%}%>
+			</td>
+		</tr>
+	
+		<tr>
+			<td>到期日</td>
+			<td>
+				<input id="enddate" name="attr.end_date" class="form-control" value="${model.end_date!''}" readonly="readonly">	
+			</td>
+		</tr>
+		
+		<tr>
+			<td>客户参考号</td>
+			<td>
+				<input class="form-control" type="text" name="attr.reference_num" value="${model.reference_num!''}"  />
+			</td>
+		</tr>
+	
+		<tr>
+			<td>地址</td>
+			<td>
+				<input class="form-control" type="text" name="attr.address" value="${model.address!''}"  />
+			</td>
+		</tr>
+		<tr>
+			<td>电话</td>
+			<td>
+				<input class="form-control" type="text" name="attr.telphone" value="${model.telphone!''}"  />
+			</td>
+		</tr>
+		<tr>
+			<td>传真</td>
+			<td>
+				<input class="form-control" type="text" name="attr.fax" value="${model.fax!''}"  />
+			</td>
+		</tr>
+		<tr>
+			<td>联系人</td>
+			<td>
+				<input class="form-control" type="text" name="attr.contacts" value="${model.contacts!''}"  />
+			</td>
+		</tr>
+		<tr>
+			<td>Email</td>
+			<td>
+				<input class="form-control" type="text" name="attr.email" value="${model.email!''}"  />
+			</td>
+		</tr>
+		<tr>
+			<td>其他细节</td>
+			<td>
+				<textarea class="form-control" type="text" name="attr.remarks"  id="remark" autofocus>${model.remarks!""}
+				</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td>上传相关资料</td>
+			<td>
+				<input class="form-control" type="file" name="" value=""  />
+			</td>
+		</tr>
+		<input name="attr.update_by" type="hidden" value="${user.userid}">
+		<% if( model.create_by==null || model.create_by==""){ %>
+			<input name="attr.create_by" type="hidden" value="${user.userid}">
+		<%}else{%>
+			<input name="attr.create_by" type="hidden" value="${model.create_by}">
+		<%}%>
+		<input name="attr.update_date" type="hidden" value="">
+		<input name="attr.status" type="hidden" value="0">
+	</table>
+
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+			<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+		</div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+<%} %>

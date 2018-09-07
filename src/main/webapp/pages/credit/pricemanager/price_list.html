@@ -1,5 +1,4 @@
-﻿
-<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',attr.order_speed !); %>
+﻿<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',attr.order_speed !); %>
 <% var ordertype = tempDict.getSysDictDetailString('ordertype',attr.order_type !); %>
 <% var countrytype = tempDict.getSysDictDetailString('country',attr.country_type !); %>
 <% var usabled = tempDict.getSysDictDetailString('usabled',attr.usabled !); %>
@@ -14,8 +13,8 @@ var oper;
 jQuery(function($) {
 	// 页面方法
 	oper = {
-		width : 400,
-		height : 320,
+		width :800,
+		height : 620,
 		form : document.form1,
 		list : function() {
 			var url = 'credit/pricemanager/list';
@@ -28,7 +27,7 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 		},
 		add : function() {
-			var url = 'credit/pricemanager/addReport';
+			var url = 'credit/pricemanager/add/';
 			var title = '添加报告价格信息';
 			Iframe(url, this.width, this.height, title);
 		},
@@ -38,7 +37,7 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
-			var url = '/credit/pricemanager/deleteReport'+id;
+			var url = '/credit/pricemanager/delete/'+id;
 			var title = '确认要删除该报告价格信息？';
 			Confirm(title, function() {
 				form1.action = url;
@@ -112,7 +111,7 @@ var paginator = function(page) {
 
 				<th name="rt.name" class="sorting">报告类型</th>
 				<th name="ot.detail_name" class="sorting">订单类型</th>
-				<th name="c.name" class="sorting">国家</th>			
+				<th name="c.detail_name " class="sorting">国家</th>			
 				<th name="t.points" class="sorting">点数</th>
 				<th name="t.price" class="sorting">价格</th>
 				<th name="t.currency" class="sorting">币种</th>
