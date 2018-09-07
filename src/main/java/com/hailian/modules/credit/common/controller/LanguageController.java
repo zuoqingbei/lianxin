@@ -1,6 +1,7 @@
 package com.hailian.modules.credit.common.controller;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import com.feizhou.swagger.annotation.Api;
@@ -50,12 +51,13 @@ public class LanguageController extends BaseProjectController {
 		//获取前台关键词
 		List<Object> keywords = new LinkedList<>();
 		for (Object columnName : columnNames) {
-			if(StringUtil.isEmpty((String)columnName)){
+			if(StringUtil.isEmpty((String)getPara((String)columnName))){
 				keywords.add("");
 			}else{
-				keywords.add((String)columnName);
+				keywords.add(getPara((String)columnName));
 			}
 		}
+		
 		//分页查询
 		Page<LanguageModel> pager = LanguageModel.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType, this);
 		setAttr("page", pager);
@@ -70,8 +72,11 @@ public class LanguageController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void view() {
-		Page<LanguageModel> model = LanguageModel.dao.pagerOrder(1, 1, new ArrayList<>(),getPara("id"),searchById,this);
+		List<Object> keywords = new ArrayList<>();
+		keywords.add(getPara("id"));
+		LanguageModel model = LanguageModel.dao.pagerOrder(1, 1, keywords,"",searchById,this).getList().get(0);
 		setAttr("model", model);
+		keepPara();
 		render(PATH+"view.html");
 	}
 	
@@ -109,7 +114,7 @@ public class LanguageController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void edit() {
-		LanguageModel model = LanguageModel.dao.pagerOrder(1, 1, new ArrayList<>(),getPara("id"),searchById,this).getList().get(0);
+		LanguageModel model = LanguageModel.dao.findById(getPara("id"));
 		setAttr("model", model);
 		render(PATH + "edit.html");
 	}
