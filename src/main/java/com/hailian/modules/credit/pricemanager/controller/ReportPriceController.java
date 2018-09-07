@@ -84,7 +84,6 @@ public class ReportPriceController extends BaseProjectController {
 	 */
 	public void add() {
 		ReportPrice model = getModelByAttr(ReportPrice.class);
-		ReportPriceService.service.add(model);
 		setAttr("model", model);
 		render(path + "add.html");
 	}
@@ -112,15 +111,25 @@ public class ReportPriceController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void delete() {
-		String id = getPara("id");
+		Integer id = getParaToInt();
 		if (ReportPriceService.service.updateDelFlagById(id)) {
 			//success
 			//redirect("/credit/price/list");
-			renderText("success");
+			//			renderText("success");
+			list();
 		} else {
 			//redirect("/credit/price/list");
 			renderText("failure");
 		}
+		//		ReportPrice model = getModel(ReportPrice.class);
+		//		Integer userid = getSessionUser().getUserid();
+		//		String now = getNow();
+		//		model.set("id",getPara("id"));
+		//		model.set("update_by", userid);
+		//		model.set("update_date", now);
+		//		model.set("del_flag", 1);
+		//		model.update();
+		//		list();
 
 	}
 
