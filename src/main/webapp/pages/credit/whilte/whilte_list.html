@@ -1,5 +1,3 @@
-<% var upload_busType = tempDict.getSysDictDetailString('upload_busType',attr.business_type!); %>
-<% var uploadFileTtype = tempDict.getSysDictDetailString('uploadFileTtype',attr.ext_id!); %>
 <% 
 	var headContent = {
 	include("/pages/template/head.html"){}
@@ -65,16 +63,24 @@ var bodyContent = {
 
 		<div class="tableSearch">
 			<%  //查询列表 %>
-			客户编号：
+			客户名称：
 			<div class="form-group">
 					<input class="form-control" type="text" name="attr.custom_id" value="${attr.custom_id!''}" 
-						placeholder="请输入客户编号" required='required' />
+						placeholder="请输入客户名称" required='required' />
 			</div>
 			<div class="form-group">
 					报告类型：
-					<select name="attr.report_id" class="form-control" >
-					${upload_busType!}
-					</select>
+					<select name="attr.report_id" class="form-control" style="width: 200px;">
+									<option value="" >请选择</option>
+							 <% for(item in reporttype){ %>
+							 	<% if((attr.report_id+"")==(item.id+"")){ %>
+							 		<option selected="selected"  value="${item.id}">${item.name}</option>
+							 	<% }else{ %>
+							 		<option  value="${item.id}">${item.name}</option>
+							 	<% } %>
+							  <% } %>
+							  
+					</select> 
 			</div>
 			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
 			 		<span class="glyphicon glyphicon-search"></span> 查 询
@@ -93,11 +99,11 @@ var bodyContent = {
 				<tr>
 					<th>序号</th>
 					<%  // 列表头部 %>
-					<th name="custom_id" class="sorting">客户名称</th> 
-					<th name="report_id" class="sorting">报告类型</th> 
-					<th name="used" class="sorting">是否在用</th> 
-					<th name="create_by" class="sorting">创建人</th> 
-					<th name="create_date" class="sorting">创建时间</th> 
+					<th name="t1.custom_id" class="sorting">客户名称</th> 
+					<th name="t1.report_id" class="sorting">报告类型</th> 
+					<th name="t1.used" class="sorting">是否在用</th> 
+					<th name="t4.realname" class="sorting">创建人</th> 
+					<th name="t1.create_date" class="sorting">创建时间</th> 
  					<th>操作</th>
 				</tr>
 			</thead>
@@ -106,13 +112,14 @@ var bodyContent = {
 				<tr>
 				<td>${itemLP.index }</td>
 					<%  // 列表内容 %>
-					<td>${item.custom_id}</td> 
-					<td>${item.report_id}</td> 
+					<td>${item.cusName}</td> 
+					<td>${item.reportName}</td> 
+					
 					<td>
-						${item.used}
-					</td> 
+						${item.detail_name}
+					</td>
 					<td>
-						${item.create_by}
+						${item.realname}
 					</td>  
 					<td>
 					${item.create_date,dateFormat="yyyy-MM-dd"}
