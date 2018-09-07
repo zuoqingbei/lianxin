@@ -19,19 +19,29 @@ var bodyContent = {
 			</tr>
 		<tr>
 			<td>报告速度</td>
-		   <td>${model.orderSpeed!}</td>
+			<td>
+			${model.orderSpeed!}
+			</td>
 			</tr>
 			<tr>
 			<td>报告类型</td>
-			 <td> ${model.reportType}</td>
+			 <td> 
+				 <select name="model.report_type" class="form-control" style="width: 200px;">
+							${reportType!}
+				</select> 
+			</td>
 		</tr>
 		<tr>
 			<td>订单类型</td>
-			<td> ${orderType} </td>
+			<td>  <select name="model.order_type" class="form-control" style="width: 200px;">
+						${ordertype!}
+			</select> </td>
 		</tr>
-		<tr>
+				<tr>
 			<td>国家</td>
-			<td>${ countryName}</td>
+			<td><select name="model.country_type" class="form-control" style="width: 200px;">
+						${countrytype!}
+			</select> </td>
 		</tr>
 			<tr>
 			<td>报告点数</td>
@@ -47,7 +57,9 @@ var bodyContent = {
 		</tr>
 		<tr>
 			<td>是否禁用</td>
-			<td>${model.usabledName} </td>
+			<td> <select name="model.usabled" class="form-control" style="width: 200px;">
+					${usabled!}
+			</select></td>
 		</tr>
 			<tr>
 			<td>创建日期</td>

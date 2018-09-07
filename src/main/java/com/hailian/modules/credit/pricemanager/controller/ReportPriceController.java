@@ -69,8 +69,7 @@ public class ReportPriceController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void view() {
-		Integer id=getParaToInt();
-		ReportPrice model = (ReportPrice) ReportPriceService.service.getId(id);
+		ReportPrice model = ReportPrice.dao.findById(getParaToInt());
 		setAttr("model", model);
 		render(path + "view.html");
 

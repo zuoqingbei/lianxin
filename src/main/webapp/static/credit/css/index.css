@@ -45,12 +45,12 @@
     border-width: 0 2px 0 2px;
 }
 
-/* 表格 */
+/* 内容 */
 
 .table-content {
-    height: 45.75rem;
-    background: #fff;
+    height: calc(100% - 10.2rem);
 }
+
 .search-input {
     width: var(--inputWidth)!important;
     color: var(--fontColor);
@@ -70,8 +70,45 @@
     border-radius: 6px;
 }
 
-
+.fa-filter {
+    color: #aaa;
+    cursor: pointer;
+}
 
 .right-btn {
     width: 16.25rem;
+}
+.th-inner  {
+    position: relative;
+    overflow: visible!important;
+}
+#table .deal-state {
+    display: none!important;
+}
+.deal-state {
+    height: 18rem;
+    overflow-y: auto;
+    box-shadow: 0 0 1px 2px #ddd;
+    padding: 1rem;
+    background: #fff;
+    display: none;
+    z-index: 10;
+    /* transform: translate3d(394px, 318px, 0px)!important; */
+}
+.deal-state-show {
+    display: block;
+  
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+}
+.form-check-label {
+    margin-left: .5rem;
+}
+.enterFilter {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
 }

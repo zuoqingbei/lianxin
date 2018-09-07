@@ -44,7 +44,7 @@ public class HomeController extends BaseProjectController {
 		setAttr("page", page);
 		setAttr("attr", model);
 		setAttr("user",user2);
-		render(path + "list.html");
+		render(path + "index.html");
 	}
 	/**
 	 * 
@@ -69,3 +69,4 @@ public class HomeController extends BaseProjectController {
 	
 
 }
+
