@@ -50,7 +50,6 @@ public class WhilteController extends BaseProjectController{
 	* @TODO
 	 */
 	public void view() {
-		ArchivesWhilteModel item = ArchivesWhilteModel.dao.findById(getParaToInt());
 		ArchivesWhilteModel white = ArchivesWhilteService.service.getWhite(getParaToInt());
 		setAttr("item", white);
 		render(path + "view.html");

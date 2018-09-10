@@ -33,5 +33,9 @@ public class CustomService {
 		List<CustomInfoModel> custom = CustomInfoModel.dao.getCustom(id);
 		return custom;
 	}
+	public CustomInfoModel getCustomById(Integer id){
+		CustomInfoModel custom = CustomInfoModel.dao.getCustomById(id);
+		return custom;
+	}
 	
 }

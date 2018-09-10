@@ -1,5 +1,6 @@
 <% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled!); %>
 <% var is_old_customer = tempDict.getSysDictDetailString('is_old_customer',model.is_old_customer!);%>
+<% var country = tempDict.getSysDictDetailString('country',model.country!);%>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -80,8 +81,22 @@ var bodyContent = {
 				</tr>
 				<tr>
 					<td>公司名称</td>
-					<td>
+					<!-- <td>
 					<input class="form-control" type="text" name="model.company_id" value="${model.company_id}" />
+					</td> -->
+					<td>
+						<div class="form-group">
+						<select name="model.company_id" class="form-control" >
+						<option value="" >请选择</option>
+						 <% for(item in company){ %>
+						 	<% if((model.company_id+"")==(item.id+"")){ %>
+							 	<option  m-type="${item.name_en}" selected="selected" value="${item.id}">${item.name}</option>
+							<% }else{ %>
+								<option  m-type="${item.name_en}" value="${item.id}">${item.name}</option>
+							<%}%>
+						 <% } %>
+						</select>
+						</div>
 					</td>
 					<td>电话</td>
 					<td>
@@ -106,7 +121,9 @@ var bodyContent = {
 					</td>
 					<td>国家</td>
 					<td>
-					<input class="form-control" type="text" name="model.country" value="${model.country}" />
+					<select name="country" class="form-control" >
+					${country!}
+					</select>
 					</td>
 				</tr>
 				<tr>

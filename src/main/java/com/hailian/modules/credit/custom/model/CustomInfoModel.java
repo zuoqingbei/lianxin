@@ -10,6 +10,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
@@ -73,6 +74,10 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 				params.add(keyword);//传入的参数
 			}
 		}
+		if(!c.isAdmin(c.getSessionUser())){
+			sql.append(" and t.create_by=? ");
+			params.add(c.getSessionUser().getUserid());//传入的参数
+		}
 		// 排序
 		if (StrUtils.isEmpty(orderBy)) {
 			sql.append(" order by t.create_date desc");
@@ -109,6 +114,17 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 		}
 		List<CustomInfoModel> find = CustomInfoModel.dao.find(sql.toString(),params.toArray());
 		return find;
-		
+	}
+	public  CustomInfoModel getCustomById(Integer paraToInt) {
+		// TODO Auto-generated method stub
+		List<Object> params=new ArrayList<Object>();
+		StringBuffer sql=new StringBuffer("select t.*,t2.detail_name as usableName,t3.detail_name as isOldCusName,t4.name as companyName,t5.name as countryName from credit_custom_info t left join sys_dict_detail t2 on  t.usabled=t2.detail_id ");
+		sql.append(" left join sys_dict_detail t3 on t.is_old_customer=t3.detail_id ");
+		sql.append(" left join credit_company_info t4 on t.company_id=t4.id ");
+		sql.append(" left join credit_country t5 on t.country=t5.id ");
+		sql.append(" where 1=1 and t.del_flag=0 and t.id=?");
+		params.add(paraToInt);
+		CustomInfoModel findFirst = CustomInfoModel.dao.findFirst(sql.toString(),params.toArray());
+		return findFirst;
 	}
 }
