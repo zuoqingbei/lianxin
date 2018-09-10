@@ -33,6 +33,7 @@ public class JSLModel extends Model<JSLModel> {
 		sb.append(" and to_date(o.name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
 		if(StringUtils.isNotBlank(labName)){
 			sb.append(" and o.lab_name='"+labName+"'");
+			sb.append(" and o.DESC_NAME='及时率' ");
 		}
 		sb.append("  order by o.name ");
 		try {

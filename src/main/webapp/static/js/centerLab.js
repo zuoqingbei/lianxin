@@ -285,8 +285,8 @@ function initThree() {
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForJSLAjax', {
         "labName": "中心实验室",
-        "startDate": "201801",
-        "endDate": "2018" + getCurrentMonth()
+        "startDate": "201701",
+        "endDate": "2017" + getCurrentMonth()
     }, function (data) {
         /*	$.each(data,function(index,item){
                 var num=item.rate;
