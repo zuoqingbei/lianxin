@@ -1,0 +1,104 @@
+<% var countrytype = tempDict.getSysDictDetailString('country',model.country_type!); %>
+<% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled!); %>
+<% var reportSpeed = tempDict.getSysDictDetailString('orderspeed',model.report_speed!); %>
+<% var orderType = tempDict.getSysDictDetailString('ordertype',model.order_type!); %>
+<% var reportType = reportType.getReportTypeString(model.report_id!); %>
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+	var oper = {
+		save:function(id){
+			if(!validForm()) {
+				return false;
+			}
+			console.log(id);
+			id = id;
+			console.log(id);
+			var url = 'credit/reportTime/save?id='+id;
+			form1.action = url;
+			form1.submit();
+			return true;
+		}	
+	};
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+		role="form" >
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+		<tr>
+			<td style="text-align: left;">报告类型</td>
+			<td>
+				<select name="model.report_id" class="form-control" >
+						${reportType!}
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td style="text-align: left;">报告速度</td>
+			<td>				
+				<select name="model.report_speed" class="form-control" >
+						${reportSpeed!}
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td style="text-align: left;">国家</td>
+			<td>
+				<select name="model.country_type" class="form-control" >
+						${countrytype!}
+				</select>
+			</td>
+		</tr>
+	
+		<tr>
+			<td style="text-align: left;">订单类型</td>
+			<td>
+				<select name="model.order_type" class="form-control" >
+						${orderType!}
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>时间</td>
+			<td>
+				<input class="form-control" type="text" name="model.use_time" valid='vnum_y' validname='时间' value="${model.use_time!}"  />
+			</td>
+		</tr> 		
+		
+		<tr>
+			<td style="text-align: left;">是否禁用</td>
+			<td>
+				<select name="model.usabled" class="form-control" >
+						${usabled!}
+				</select>
+			</td>
+		</tr>
+		</select> 
+	</table>
+	
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%}
+DIRECTIVE SAFE_OUTPUT_CLOSE; 
+%>
