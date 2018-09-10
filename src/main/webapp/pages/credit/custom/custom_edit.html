@@ -83,10 +83,11 @@ var bodyContent = {
 					<td>
 					<input class="form-control" type="text" name="model.company_id" value="${model.company_id}" />
 					</td>
-					<td>地址</td>
+					<td>电话</td>
 					<td>
-					<input class="form-control" type="text" name="model.address" value="${model.address}" />
+					<input class="form-control" type="text" name="model.telphone" value="${model.telphone}" />
 					</td>
+					
 				</tr>
 				<tr>
 					<td>电话</td>
@@ -118,9 +119,16 @@ var bodyContent = {
 					</td>
 					<td>是否为老用户</td>
 					<td>
+					<!-- <input class="form-control" type="text" name="model.is_old_customer" value="${model.is_old_customer}" /> -->
 					<select name="model.is_old_customer" class="form-control" >
 					${is_old_customer!}
 					</select>
+					</td>
+				</tr>
+				<tr>
+					<td>地址</td>
+					<td colspan="3">
+					<textarea class="form-control" rows="1" cols="20" name="model.address">${model.address}</textarea>
 					</td>
 				</tr>
 				<tr>

@@ -1,3 +1,5 @@
+<% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled!); %>
+<% var is_old_customer = tempDict.getSysDictDetailString('is_old_customer',model.is_old_customer!);%>
 <% 
 	var headContent = {
 	include("/pages/template/head.html"){}
@@ -63,16 +65,10 @@ var bodyContent = {
 
 		<div class="tableSearch">
 			<%  //查询列表 %>
-			姓名：
+			搜索内容
 			<div class="form-group">
-					<input class="form-control" type="text" name="attr.name" value="${attr.name!''}" 
-						placeholder="请输入客户姓名" required='required' />
-			</div>
-			<div class="form-group">
-					报告类型：
-					<select name="attr.telphone" class="form-control" >
-					${upload_busType!}
-					</select>
+				<input class="form-control" type="text" name="keyword"
+					value="${keyWord!''}" placeholder="请输入关键字" required='required' />
 			</div>
 			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
 			 		<span class="glyphicon glyphicon-search"></span> 查 询
@@ -91,18 +87,18 @@ var bodyContent = {
 				<tr>
 					<th>序号</th>
 					<%  // 列表头部 %>
-					<th name="name" class="sorting">客户名称</th> 
-					<th name="contacts" class="sorting">联系人全称</th> 
-					<th name="contacts_short_name" class="sorting">联系人简称</th> 
-					<th name="reference_num" class="sorting">客户参考号</th> 
-					<th name="company" class="sorting">公司名称</th> 
-					<th name="address" class="sorting">地址</th> 
-					<th name="telphone" class="sorting">电话</th> 
-					<th name="email" class="sorting">邮箱</th> 
-					<th name="fax" class="sorting">传真</th>
-					<th name="country" class="sorting">客户所属国家</th>  
-					<th name="usabled" class="sorting">是否可用</th> 
-					<th name="is_old_customer" class="sorting">是否为老用户</th> 
+					<th name="t.name" class="sorting">客户名称</th> 
+					<th name="t.contacts" class="sorting">联系人全称</th> 
+					<th name="t.contacts_short_name" class="sorting">联系人简称</th> 
+					<th name="t.reference_num" class="sorting">客户参考号</th> 
+					<th name="t4.name" class="sorting">公司名称</th> 
+					<th name="t.address" class="sorting">地址</th> 
+					<th name="t.telphone" class="sorting">电话</th> 
+					<th name="t.email" class="sorting">邮箱</th> 
+					<th name="t.fax" class="sorting">传真</th>
+					<th name="t5.name" class="sorting">所属国家</th>  
+					<th name="t.usabled" class="sorting">是否可用</th> 
+					<th name="t.is_old_customer" class="sorting">是否为老用户</th> 
  					<th>操作</th>
 				</tr>
 			</thead>
@@ -118,17 +114,23 @@ var bodyContent = {
 					</td> 
 					<td>${item.reference_num}</td>
 					<td>
-						${item.company_id}
+						${item.companyName}
 					</td>  
 					<td>
-					${item.address}
+					<% if (strutil.length(item.address) >
+					15) { %> ${strutil.subStringTo(item.address, 0, 15)}... <% } else { %>
+					${item.address} <% } %>
 					</td>  
 					<td>${item.telphone}</td>
-					<td>${item.email}</td>
+					<td>
+					<% if (strutil.length(item.email) >
+					15) { %> ${strutil.subStringTo(item.email, 0, 15)}... <% } else { %>
+					${item.email} <% } %>
+					</td>
 					<td>${item.fax}</td>
-					<td>${item.country}</td>
-					<td>${item.usabled}</td>
-					<td>${item.is_old_customer}</td>
+					<td>${item.countryName}</td>
+					<td>${item.usableName}</td>
+					<td>${item.isOldCusName}</td>
 				<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 

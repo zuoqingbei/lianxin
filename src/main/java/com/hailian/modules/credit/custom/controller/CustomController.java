@@ -19,10 +19,9 @@ public class CustomController extends BaseProjectController {
 	 */
 	public void list() {
 		CustomInfoModel attr = getModelByAttr(CustomInfoModel.class);
-		String custom_id = attr.getStr("custom_id");
-		String report_id = attr.getStr("report_id");
+		String keyword = getPara("keyword");
 		String orderBy = getBaseForm().getOrderBy();
-		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),orderBy,custom_id,report_id,this);
+		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),orderBy,keyword,this);
 		setAttr("page",page);
 		render(path+"list.html");
 	}
@@ -82,7 +81,7 @@ public class CustomController extends BaseProjectController {
 	* @TODO
 	 */
 	public void save() {
-		Integer pid = getParaToInt();
+		Integer pid = getParaToInt("id");
 		// 日志添加
 		CustomInfoModel model = getModel(CustomInfoModel.class);
 		Integer userid = getSessionUser().getUserid();

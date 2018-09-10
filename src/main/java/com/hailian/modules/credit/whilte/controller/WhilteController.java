@@ -7,6 +7,8 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
+import com.hailian.modules.credit.custom.model.CustomInfoModel;
+import com.hailian.modules.credit.custom.service.CustomService;
 import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
 import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.modules.credit.whilte.service.ArchivesWhilteService;
@@ -49,7 +51,8 @@ public class WhilteController extends BaseProjectController{
 	 */
 	public void view() {
 		ArchivesWhilteModel item = ArchivesWhilteModel.dao.findById(getParaToInt());
-		setAttr("item", item);
+		ArchivesWhilteModel white = ArchivesWhilteService.service.getWhite(getParaToInt());
+		setAttr("item", white);
 		render(path + "view.html");
 	}
 	/**
@@ -62,6 +65,10 @@ public class WhilteController extends BaseProjectController{
 		// 获取页面信息,设置目录传入
 		ArchivesWhilteModel attr = getModel(ArchivesWhilteModel.class);
 		setAttr("model", attr);
+		List<ReportTypeModel> reportType = ReportPriceService.service.getReportType(null);
+		List<CustomInfoModel> custom = CustomService.service.getCustom(null);//获取所有用户信息一坐用户下拉框
+		setAttr("custom", custom);
+		setAttr("reporttype", reportType);
 		render(path + "add.html");
 	}
 	/**
@@ -74,8 +81,9 @@ public class WhilteController extends BaseProjectController{
 		Integer paraToInt = getParaToInt();
 		ArchivesWhilteModel model = ArchivesWhilteModel.dao.findById(paraToInt);
 		List<ReportTypeModel> reportType = ReportPriceService.service.getReportType(null);
-		System.out.println(reportType+"====================================================");
 		setAttr("reporttype", reportType);
+		List<CustomInfoModel> custom = CustomService.service.getCustom(null);//获取所有用户信息一坐用户下拉框
+		setAttr("custom", custom);
 		setAttr("model", model);
 		// 查询下拉框
 		render(path + "edit.html");

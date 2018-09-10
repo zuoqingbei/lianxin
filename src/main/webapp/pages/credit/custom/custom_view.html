@@ -1,3 +1,5 @@
+<% var usabled = tempDict.getSysDictDetailByType('usabled'); %>
+<% var is_old_customer = tempDict.getSysDictDetailByType('is_old_customer'); %>
 <% 
 var headContent = {
 	include("/pages/template/head.html"){}
@@ -41,9 +43,19 @@ var bodyContent = {
 			</tr>
 			<tr>
 				<td>是否可用</td>
-				<td>${item.usabled}</td>
+				<% for(it in usabled){ %>
+						 	<% if((item.usabled+"")==(it.detail_id+"")){ %>
+							 	<td>${it.detail_name}</td>
+							<% }else{ %>
+							<%}%>
+				<% } %>
 				<td>是否为老用户</td>
-				<td>${item.is_old_customer}</td>
+				<% for(it in is_old_customer){ %>
+						 	<% if((item.is_old_customer+"")==(it.detail_id+"")){ %>
+							 	<td>${it.detail_name}</td>
+							<% }else{ %>
+							<%}%>
+				<% } %>
 			</tr>
 			<tr>
 				<td>备注</td>
