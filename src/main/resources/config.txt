@@ -1,15 +1,17 @@
 devMode = true
 #Ulab数据源 Oracle
 ulab.driver=oracle.jdbc.driver.OracleDriver  
-#ulab.url = jdbc:oracle:thin:@10.138.8.233:1521:DBPRO
+
+#ulab.url = jdbc:oracle:thin:@10.138.87.46:1521:lhjx02
 #ulab.user = lhjx01
-#ulab.password= Haier,1234
-ulab.url = jdbc:oracle:thin:@10.138.87.46:1521:lhjx02
-ulab.user = lhjx01
-ulab.password= Hr,201703!
+#ulab.password= Hr,201703!
 #ulab.url =jdbc:oracle:thin:@10.138.23.219:1521:bdp
 #ulab.user =dbtest
 #ulab.password=dbtest
+
+ulab.url = jdbc:oracle:thin:@10.130.96.140:1521:ORCL
+ulab.user = ACCHONGQINGREFRIGERXSAB
+ulab.password= ouccs
 
 #泰国实验室数据源 SQL Server 2008R2
 thailand.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver  

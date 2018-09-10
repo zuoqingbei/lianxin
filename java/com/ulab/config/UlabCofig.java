@@ -215,8 +215,8 @@ public class UlabCofig extends JFinalConfig {
 			/**俄罗斯数据库END**/
 		}
 		
-		/*if(existConfig("hive")){
-			*//**重庆实验室hive测试库信息设置Impala数据源  **//*
+		if(existConfig("hive")){
+			/**重庆实验室hive测试库信息设置Impala数据源  **/
 			
 			DruidPlugin dsImpala = new DruidPlugin(this.getProperty("hive.url"), this.getProperty("hive.user"),
 					this.getProperty("hive.password"), this.getProperty("hive.driver"));
@@ -232,8 +232,8 @@ public class UlabCofig extends JFinalConfig {
 				System.err.println("重庆实验室hive数据库连接异常");
 				e.printStackTrace();
 			}
-			*//**重庆实验室hive测试库信息 END**//*
-		}*/
+			/**重庆实验室hive测试库信息 END**/
+		}
 		//定时器
 		QuartzPlugin quartzPlugin = new QuartzPlugin();
 		quartzPlugin.setJobs("quartz.properties");

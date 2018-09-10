@@ -43,10 +43,10 @@ public class DeviceInfoModel extends Model<DeviceInfoModel> {
 	 */
 	public Map<String,List<Record>> findDeviceInfoStatusGroup(){
 			HashMap<String,List<Record>>mp=new HashMap<>();
-			String sqlSerious="select status,sncode,dimension   y,longitude  x,image,address name,name kind from phm_device_info where status='严重'";
-			String sqlGeneral="select status,sncode,dimension   y,longitude  x,image,address name,name kind from phm_device_info where status='一般'";
-			String sqlSlight="select status,sncode,dimension   y,longitude  x,image,address name,name kind from phm_device_info where status='轻微'";
-			String sqlGood="select status,sncode,dimension     y,longitude  x,image,address name,name kind from phm_device_info where status='良好'";
+			String sqlSerious="select status,sncode,'dimension' as  y,longitude as x,image,address as name,name as kind from phm_device_info where status='严重'";
+			String sqlGeneral="select status,sncode,'dimension'  as y,longitude as x,image,address as name,name as kind from phm_device_info where status='一般'";
+			String sqlSlight="select status,sncode,'dimension' as  y,longitude  as x,image,address as name,name as kind from phm_device_info where status='轻微'";
+			String sqlGood="select status,sncode,'dimension'   as  y,longitude as  x,image,address as name,name as kind from phm_device_info where status='良好'";
 				List<Record> serious=Db.find(sqlSerious);
 				List<Record> general=Db.find(sqlGeneral);
 				List<Record> light=Db.find(sqlSlight);
