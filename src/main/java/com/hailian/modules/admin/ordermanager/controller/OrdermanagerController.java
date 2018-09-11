@@ -241,8 +241,8 @@ public class OrdermanagerController extends BaseProjectController{
 		String countryType=getPara("countrytype", "");
 		String speed=getPara("speed", "");
 		String reporttype=getPara("reporttype", "");
-		CreditReportUsetime usetime=OrderManagerService.service.getTime(countryType,speed,reporttype);
-			renderJson(usetime);
+		String orderType=getPara("ordertype", "");
+		renderJson(OrderManagerService.service.getTime(countryType,speed,reporttype,orderType));
 
 	}
 	/**
@@ -264,7 +264,8 @@ public class OrdermanagerController extends BaseProjectController{
 		String countryType=getPara("countrytype", "");
 		String speed=getPara("speed", "");
 		String reporttype=getPara("reporttype", "");
-		CreditReportPrice price=OrderManagerService.service.getPrice(countryType,speed,reporttype);
+		String orderType=getPara("orderType", "");
+		CreditReportPrice price=OrderManagerService.service.getPrice(countryType,speed,reporttype,orderType);
 		renderJson(price);
 
 	}

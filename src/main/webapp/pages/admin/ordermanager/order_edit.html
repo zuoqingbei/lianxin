@@ -39,39 +39,27 @@ include("/pages/template/head.html"){}
     sandbarChange:function(){
     	 var grade = document.getElementById("sandbar");
     	 var value=$("#sandbar").find("option:selected").attr("m-english");
-    	 var url='credit/country/getCountrySelect?attr.continent='+value;
     	 var html="";
-    	 $.ajax({
-    	        url:url,
-    	        type:"get",
-    	        dataType:"json",
-    	        success: function(data) {
-    	           $.each(data,function(index,item){
-/*     	        	   console.log(index);
-    	        	   console.log(item); */
-   					 if(item.id='${model.country}'){
-   						 html+=("<option selected='selected' m-type='"+item.type+"' value='"+item.id+"'>"+item.name+"</option>");
-   					 }else{
-   						html+=("<option  m-type='"+item.type+"' value='"+item.id+"'>"+item.name+"</option>");
-   					 };
-    	        	 // option.attr("m-type")   
-    	        	 //option.val()
-    	           });
-    	           $("select[name='attr.country']").html(html);
-    	           
+    	 $.post('credit/country/getCountrySelect',{"attr.continent":value},function(data){
+    		 console.log(data)
+    		  for(item in data){
+    			  console.log(item.id)
+					 if(item.id='${model.country}'){
+						 html+="<option selected='selected' m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";
+					 }else{
+						html+="<option  m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";
+					 };
+ 	        	
+ 	           };
+ 	           
+ 	           $("select[name='attr.country']").html(html);
+ 	           
 					oper.countryChange();
 					oper.reportTypeChange();
 					oper.speedChange();
-    	           
-    	        },
-    	        error: function(XMLHttpRequest, textStatus, errorThrown) {
-    	            alert(XMLHttpRequest.status);
-    	            alert(XMLHttpRequest.readyState);
-    	            alert(textStatus);
-    	        },
-    	    })
-    	 
-    },
+ 	           
+    	 }),
+    	
     countryChange:function(){
     	//默认选择第一个国家
     	 $("select[name='attr.country'] option:first").attr('selected','selected')
@@ -99,6 +87,15 @@ include("/pages/template/head.html"){}
     	oper.usetimeChange();
     	//查询费用
     	oper.priceChange();
+    },
+    orderTypeChange:function(){
+    //默认选择第一个种类型
+    $("select[name='attr.order_type'] option:first").attr('selected','selected')
+   	//查询用时
+   	oper.usetimeChange();
+   	//查询费用
+   	oper.priceChange();
+    	
     },
     receiveTime:function(){
     	oper.endTime();
@@ -289,7 +286,16 @@ var bodyContent = {
 				</select>
 			</td>
 		</tr>
-			<tr>
+		<tr>
+			<td>订单类型</td>
+			<td>
+				<select class="form-control" valid="vselect"  validname="订单类型" style="width: 200px;" name="attr.order_type" onchange="oper.orderTypeChange()">
+					${ordertype!}
+				</select>
+					 
+			</td>
+		</tr>
+		<tr>
 			<td>报告用时</td>
 			<td>
 				<% if(model.user_time!=null || model.user_time!=""){ %>
@@ -315,15 +321,7 @@ var bodyContent = {
 			</td>
 		</tr>
 		
-		<tr>
-			<td>订单类型</td>
-			<td>
-				<select class="form-control" valid="vselect" style="width: 200px;" name="attr.order_type">
-					${ordertype!}
-				</select>
-					 
-			</td>
-		</tr>
+	
 		
 		
 		<tr>

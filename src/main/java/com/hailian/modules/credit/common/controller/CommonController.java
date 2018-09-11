@@ -3,6 +3,8 @@ package com.hailian.modules.credit.common.controller;
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.credit.usercenter.service.HomeService;
+import com.hailian.system.user.SysUser;
 /**
  * 
  * @className CommonController.java
@@ -11,7 +13,7 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
  * @todo   TODO
  */
 @Api( tag = "公用", description = "公用" )
-@ControllerBind(controllerKey = "/credit/common")
+@ControllerBind(controllerKey = "/credit/front/common")
 public class CommonController extends BaseProjectController {
 private static final String path = "/pages/credit/common/";
 	/**
@@ -22,6 +24,8 @@ private static final String path = "/pages/credit/common/";
 	 * @return_type   void
 	 */
 	public void menu() {
+		SysUser user=HomeService.service.getUser(this);
+		setAttr("user",user);
 		render(path+"menu.html");
 	}
 
