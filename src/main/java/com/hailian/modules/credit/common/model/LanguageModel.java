@@ -64,7 +64,7 @@ public class LanguageModel extends BaseProjectModel<LanguageModel>{
 		}
 		//权限区分
 		if(!c.isAdmin(c.getSessionUser())){
-			fromSql.append(" and t.create_by=? ");
+			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
 		//排序

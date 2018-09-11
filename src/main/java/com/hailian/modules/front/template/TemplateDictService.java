@@ -44,13 +44,38 @@ public class TemplateDictService extends BaseService {
 		listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
-			if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
+			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
 				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 			}else{
 				if("ALL".equals(detail.getStr("detail_name_en"))){
 					sb.append("<option  selected='selected'  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 				}else{
 					sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+				}
+			}
+			
+		}
+		return sb.toString();
+	}
+	/**
+	 * @param type 根据dict_type获取字典
+	 * @param selectedId
+	 * @param showColumnName 所展示字段名
+	 * @return
+	 */
+	public String getSysDictDetailString(String type,Object selectedId,String showColumnName) {
+		StringBuffer sb=new StringBuffer();
+		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		listDetail.add(getDefaultDictDetail(type));
+		listDetail.addAll(DictCache.getSysDictDetailByType(type));
+		for(SysDictDetail detail:listDetail){
+			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
+				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(showColumnName)+"</option>");
+			}else{
+				if("ALL".equals(detail.getStr("detail_name_en"))){
+					sb.append("<option  selected='selected'  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(showColumnName)+"</option>");
+				}else{
+					sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(showColumnName)+"</option>");
 				}
 			}
 			

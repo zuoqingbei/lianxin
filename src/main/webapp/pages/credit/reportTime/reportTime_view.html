@@ -9,40 +9,39 @@ var bodyContent = {
 	<!-- 数据列表 -->
 	<table class="table">
 		<%  // 列表头部 %>
-			<tr>
-				<td>客户名称</td>
-				<td>${item.cusName}</td>
-			</tr>
+			
 			<tr>
 				<td>报告类型</td>
-				<td>${item.reportName}</td>
-				
+				<td>${model.reportType!''}</td>
 			</tr>
 			<tr>
-				<td>是否在用</td>
-				<td>${item.used}</td>
+				<td>报告速度</td>
+				<td>${model.reportSpeed!''}</td>
 			</tr>
 			<tr>
-				<td>创建时间</td>
-				<td>${item.create_date,dateFormat="yyyy-MM-dd"}</td>
-				<td>上传人</td>
-				<td>${item.createName}</td>
+				<td>国家</td>
+				<td>${model.countryType!''}</td>
+			</tr>
+			<tr>
+				<td>订单类型</td>
+				<td>${model.orderType!''}</td>
+			</tr>
+			<tr>
+				<td>时间<s>(单位小时)</s></td>
+				<td>${model.use_time!''}</td>
+			</tr>
+			<tr>
+				<td>是否启用</td>
+				<td>${model.usabled!''}</td>
 			</tr>
 			<tr>
 				<td>修改时间</td>
-				<td>${item.update_date,dateFormat="yyyy-MM-dd"}</td>
-				<td>修改人</td>
-				<td>${item.updateName}</td>
-			</tr>
+				<td>${model.update_date,dateFormat="yyyy-MM-dd HH:mm:ss"}</td>
+			</tr> 
 			<tr>
-				<td>备注</td>
-				<td title="${item.remarks}" colspan="3">
-				<% if (strutil.length(item.remarks) > 25) { %>
-					${strutil.subStringTo(item.remarks, 0, 25)}...
-				<% 	} else { %>
-					${item.remarks}
-				<%  } %>
-			</td> 
+				<td>创建人</td>
+				<td>${model.realname!''}</td>
+			</tr>
 	</table>
 	
 	<div style="height: 50px;clear: both;">&nbsp;</div>

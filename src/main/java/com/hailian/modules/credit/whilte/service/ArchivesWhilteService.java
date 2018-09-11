@@ -23,7 +23,18 @@ public class ArchivesWhilteService {
 		Page<ArchivesWhilteModel> page = ArchivesWhilteModel.dao.getPage(paginator,orderBy,custom_id,report_id,c);
 		return page;
 	}
+	/**
+	 * 逻辑删除
+	* @author doushuihai  
+	* @date 2018年9月7日下午6:12:58  
+	* @TODO
+	 */
 	public void delete(Integer id, Integer userid){
 		ArchivesWhilteModel.dao.delete(id,userid);
+	}
+	public ArchivesWhilteModel getWhite(Integer paraToInt) {
+		// TODO Auto-generated method stub
+		ArchivesWhilteModel whilte = ArchivesWhilteModel.dao.getWhilte(paraToInt);
+		return whilte;
 	}
 }

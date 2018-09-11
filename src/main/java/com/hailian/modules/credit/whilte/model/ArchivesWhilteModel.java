@@ -38,7 +38,7 @@ public class ArchivesWhilteModel extends BaseProjectModel<ArchivesWhilteModel> {
 		sqlbuffer.append("left join credit_custom_info t2 on t1.custom_id=t2.id ");
 		sqlbuffer.append("left join sys_user t4 on t4.userid = t1.create_by ");
 		sqlbuffer.append("left join sys_dict_detail t5 on t5.detail_id = t1.used ");
-		sqlbuffer.append("LEFT JOIN credit_report_type t3 on t1.report_id=t3.id where t1.del_flag=0 and t2.del_flag=0 and t5.del_flag=0 and t3.del_flag=0");
+		sqlbuffer.append("LEFT JOIN credit_report_type t3 on t1.report_id=t3.id where t1.del_flag=0 ");
 		if(StringUtils.isNotBlank(custom_id)){
 			sqlbuffer.append(" and t2.name like ? or t2.name_en=? ");
 			params.add('%'+custom_id+'%');
@@ -47,6 +47,10 @@ public class ArchivesWhilteModel extends BaseProjectModel<ArchivesWhilteModel> {
 		if(StringUtils.isNotBlank(report_id)){
 			sqlbuffer.append(" and t3.id = ?");
 			params.add(report_id);
+		}
+		if(!c.isAdmin(c.getSessionUser())){
+			sqlbuffer.append(" and t.create_by=? ");
+			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
 		// 排序
 		if (StrUtils.isEmpty(orderBy)) {
@@ -73,5 +77,24 @@ public class ArchivesWhilteModel extends BaseProjectModel<ArchivesWhilteModel> {
 		params.add(id);
 		Db.update(sql,params.toArray());
 		
+	}
+	/**
+	 * 根据id查询数据
+	* @author doushuihai  
+	* @date 2018年9月7日下午6:17:24  
+	* @TODO
+	 */
+	public ArchivesWhilteModel getWhilte(Integer paraToInt) {
+		// TODO Auto-generated method stub
+		String sql="select t.*,t2.name as cusName,t3.name as reportName,t4.realname as createName,t5.realname as updateName from credit_archives_whilte t ";
+		sql+=" left join credit_custom_info t2 on t.custom_id=t2.id ";
+		sql+=" left join credit_report_type t3 on t.report_id=t3.id ";
+		sql+=" left join sys_user t4 on t4.userid=t.create_by ";
+		sql+=" left join sys_user t5 on t5.userid=t.update_by ";
+		sql+=" where t.del_flag=0 and t.id=?";
+		List<Object> params=new ArrayList<Object>();
+		params.add(paraToInt);
+		ArchivesWhilteModel findFirst = ArchivesWhilteModel.dao.findFirst(sql,params.toArray());
+		return findFirst;
 	}
 }
