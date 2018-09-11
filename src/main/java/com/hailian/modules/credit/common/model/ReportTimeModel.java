@@ -23,9 +23,9 @@ public class ReportTimeModel extends BaseProjectModel<ReportTimeModel>{
 	public Page<ReportTimeModel> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,String searchType, BaseProjectController c) {
 		StringBuffer selectSql = new StringBuffer(" select c.*, ");
 		selectSql.append(" s1.name_en AS reportType, ");
-		selectSql.append(" s2.detail_name_en AS reportSpeed, ");
-		selectSql.append(" s3.detail_name_en AS countryType, ");
-		selectSql.append(" s4.detail_name_en AS orderType, ");
+		selectSql.append(" s2.detail_name AS reportSpeed, ");
+		selectSql.append(" s3.detail_name AS countryType, ");
+		selectSql.append(" s4.detail_name AS orderType, ");
 		selectSql.append(" s5.detail_name AS usabled, ");
 		selectSql.append(" u.realname AS realname ");
 		StringBuffer fromSql = new StringBuffer(" FROM credit_report_usetime c ");

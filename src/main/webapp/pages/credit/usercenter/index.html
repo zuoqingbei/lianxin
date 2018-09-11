@@ -6,14 +6,14 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
-   <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/pages/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/pages/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/pages/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
+    <link rel="stylesheet" href="/pages/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/pages/credit/css/reset.css">
+    <link rel="stylesheet" href="/pages/credit/css/common.css">
+    <link rel="stylesheet" href="/pages/credit/css/menu.css">
+   <link rel="stylesheet" href="/pages/credit/css/index.css">
 
 
 </head>
@@ -71,19 +71,19 @@
                                     </div>
                                 </div>
                                 <div id="btnCollapse" class="show row justify-content-around">
-                                    <div class="input-group mt-2 col-md-4">
+                                    <div class="input-group mt-2 col-md-4" id="client">
                                         <label class="control-label col-md-4" for="txt_search_statu">客户：</label>
                                         <select class="form-control search-input col-md-8">
                                             <option value="" disabled selected>请选择客户</option>
                                         </select>
                                     </div>
-                                    <div class="input-group mt-2 col-md-4">
+                                    <div class="input-group mt-2 col-md-4" id="proxy">
                                         <label class="control-label col-md-4" for="txt_search_statu">代理：</label>
                                         <select class="form-control search-input col-md-8" >
                                                 <option value="" disabled selected>请选择代理</option>
                                         </select>
                                     </div>
-                                    <div class="input-group mt-2 col-md-4">
+                                    <div class="input-group mt-2 col-md-4" id="country">
                                         <label class="control-label col-md-4" for="txt_search_statu">国家：</label>
                                         <select class="form-control search-input col-md-8" >
                                             <option value="" disabled selected>请选择国家</option>
@@ -92,10 +92,10 @@
                                 </div>
                             </form>
                             <div class="btn-row d-flex justify-content-between mt-4 mb-4">
-                                <button role="button" class="btn btn-primary ml-5"><i class="fa fa-plus pr-2"></i>新增订单</button>
+                                <a role="button" class="btn btn-primary ml-5 d-flex align-items-center" href="createOrder.html"><i class="fa fa-plus pr-2"></i>新增订单</a>
                                 <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
                                     <button type="button" id="btn_query" class="btn btn-primary">查询</button>
-                                    <button type="button" id="btn_query" class="btn btn-light">重置</button>
+                                    <button type="button" id="btn_reset" class="btn btn-light">重置</button>
                                     <a  role="button" data-toggle="collapse" href="#btnCollapse" aria-expanded="false"  aria-controls="btnCollapse">收起 <i class="fa fa-angle-up"></i></a>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                         </div>
                         <table id="table"
                             data-toggle="table"
-                            data-url=""
+                            data-url="./data.json"
                             style="position: relative"
                         >
                         <div class="deal-state"> 
@@ -198,15 +198,15 @@
             <footer></footer>
         </div>
     </div>
-    <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/laydate/laydate.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-fixed-columns.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script> 
-    <script src="${BASE_PATH }static/credit/js/common.js"></script>
-   <script src="${BASE_PATH }static/credit/js/index.js"></script>
+    <script src="/pages/credit/assets/jquery/jquery-2.1.0.js"></script>
+    <script src="/pages/credit/assets/laydate/laydate.js"></script>
+    <script src="/pages/credit/assets/popper/popper.min.js"></script>
+    <script src="/pages/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <script src="/pages/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
+    <script src="/pages/credit/assets/bootstrap-table/js/bootstrap-table-fixed-columns.js"></script>
+    <script src="/pages/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script> 
+    <script src="/pages/credit/js/common.js"></script>
+   <script src="/pages/credit/js/index.js"></script>
 </body>
 </html>
     
