@@ -49,7 +49,29 @@ let Index = {
 
       /**点击确定按钮 */
       $(".enterFilter").click(function(){
-
+			var checked=[];
+		    	 var checkchar=""
+		                 $("input[name='status']:checked").each(function(i){
+		                       checked[i] = $(this).val();
+		                       checkchar+=checked[i]+","
+		                 });
+		                 console.log(checkchar);
+		                 console.log($("#attr.custom_id").val+$("#attr.continent").val);
+		        		$.ajax({
+		        			type:"post",
+		        			url:"home/list",
+		        			data:{"attr.custom_id":$("#custom_id").find("option:selected").val(),
+		        				"attr.continent":$("#continent").find("option:selected").val(),
+		        				"attr.country":$("#country").find("option:selected").val(),
+		        				"attr.end_date":$("#dead_date").val(),
+		        				"attr.company_by_report":$("#company_by_report").val(),
+		        				"attr.right_company_name_en":$("#right_company_name_en").val(),
+		        				"status":checkchar},
+		        			 dataType:"json",
+		        			 success:function(data){
+		        			 	 $("#table").bootstrapTable("load",data)
+		        			 }
+		        		})
 
         /**发起ajax请求  获取表格数据*/
       })

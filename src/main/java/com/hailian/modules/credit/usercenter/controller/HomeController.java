@@ -16,6 +16,7 @@ import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
@@ -148,7 +149,7 @@ public class HomeController extends BaseProjectController {
 	 * @param  
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/admin/front/home/view",httpMethod="post", 
+	@ApiOperation(url = "/credit/front/home/view",httpMethod="post", 
 			description = "查看订单")
 	@Params(value = { 
 		@Param(name = "id", description = "订单id", required = true, dataType = "String"),
@@ -159,8 +160,31 @@ public class HomeController extends BaseProjectController {
 		setAttr("model", model);
 		render(path + "view.html");
 	}
+	/**
+	 * 创建订单
+	 * @time   2018年9月11日 上午10:18:10
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  
+	 * @return_type   void
+	 */
+	public void createOrder() {
+		CreditOrderInfo model=new CreditOrderInfo();
+		SysUser user = (SysUser) getSessionUser();
+		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
+		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
+		setAttr("user",user);
+		setAttr("customs",customs);
+		setAttr("company",company);
+		setAttr("model", model);
+		render(path + "create_order.html");
+	}
 
-	
+	public void getCustomName() {
+		String id=getPara("id");
+		CreditCustomInfo custom=OrderManagerService.service.getCreater(id);
+		renderJson(custom);
+	}
 
 }
 

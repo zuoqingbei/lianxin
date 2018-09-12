@@ -276,4 +276,10 @@ public class OrderManagerService {
 		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby,status, c);
 	}
 
+	public CreditCustomInfo getCreater(String id) {
+		// TODO Auto-generated method stub
+		
+		return CreditCustomInfo.dao.findById(id);
+	}
+
 }

@@ -98,7 +98,7 @@
                                 </div>
                             </form>
                             <div class="btn-row d-flex justify-content-between mt-4 mb-4">
-                                <a role="button" class="btn btn-primary ml-5 d-flex align-items-center" href="createOrder.html"><i class="fa fa-plus pr-2"></i>新增订单</a>
+                                <a role="button" class="btn btn-primary ml-5 d-flex align-items-center" href="/credit/front/home/createOrder"><i class="fa fa-plus pr-2"></i>新增订单</a>
                                 <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
                                     <button type="button" id="btn_query" class="btn btn-primary">查询</button>
                                     <button type="button" id="btn_reset" class="btn btn-light">重置</button>
@@ -193,7 +193,7 @@
                                     <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck20"> 
                                      <label class="form-check-label" for="defaultCheck20">整理退回补充</label>
                                 </div>
-                             <a href="javascript:;" role="button"  onclick="check()">确定</a></div>
+                             <a href="javascript:;" role="button"  class="enterFilter">确定</a></div>
                         </table>
                     </div>
                 </div>
@@ -254,35 +254,6 @@
 				console.log(data)
 				getCountry(data);
 			})	
-		}
-		function check(){
-		    /*   $(".enterFilter").click(function(){ */
-		       	 var checked=[];
-		    	 var checkchar=""
-		                 $("input[name='status']:checked").each(function(i){
-		                       checked[i] = $(this).val();
-		                       checkchar+=checked[i]+","
-		                 });
-		                 console.log(checkchar);
-		                 console.log($("#attr.custom_id").val+$("#attr.continent").val);
-		        		$.ajax({
-		        			type:"post",
-		        			url:"home/list",
-		        			data:{"attr.custom_id":$("#custom_id").find("option:selected").val(),
-		        				"attr.continent":$("#continent").find("option:selected").val(),
-		        				"attr.country":$("#country").find("option:selected").val(),
-		        				"attr.end_date":$("#dead_date").val(),
-		        				"attr.company_by_report":$("#company_by_report").val(),
-		        				"attr.right_company_name_en":$("#right_company_name_en").val(),
-		        				"status":checkchar},
-		        			 dataType:"json",
-		        			 success:function(data){
-		        			 	 $("#table").bootstrapTable("load",data)
-		        			 }
-		        		})
-
-		         /**发起ajax请求  获取表格数据*/
-		/*        }) */
 		}
 	</script>
 	
