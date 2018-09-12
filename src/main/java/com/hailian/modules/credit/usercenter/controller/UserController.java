@@ -1,6 +1,8 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 
+import javax.servlet.http.HttpSession;
+
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
@@ -36,7 +38,8 @@ public class UserController  extends BaseProjectController{
 			}
 			if(targetPwd.equals(realPwd)){
 				//设置包含权限信息的session
-				setSessionUser(user);
+				//setSessionUser(user);
+				setSessionAttr("user", user);
 				render(PATH+"index.html");
 			}else{
 				setAttr("isSuccess", "No");
