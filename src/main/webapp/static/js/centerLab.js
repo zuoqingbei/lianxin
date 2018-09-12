@@ -285,8 +285,8 @@ function initThree() {
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForJSLAjax', {
         "labName": "中心实验室",
-        "startDate": "201701",
-        "endDate": "2017" + getCurrentMonth()
+        "startDate": "201601",
+        "endDate": "2016" + getCurrentMonth()
     }, function (data) {
         /*	$.each(data,function(index,item){
                 var num=item.rate;
@@ -296,10 +296,10 @@ function initfour() {
             })*/
         // console.log("---数据分析-近12个月的及时率")
         var resu = dealCenterLabJSL(data);
-        $("#order_rate_center_lab_pj").html("平均:" + resu[0].toFixed(1) + "%");
-        $("#order_rate_center_lab_height").html("最高:" + resu[1].rate + "%(" + resu[1].month + "月)");
-        $("#order_rate_center_lab_low").html("最低:" + resu[2].rate + "%(" + resu[2].month + "月)");
-        chartthree.setOption(initone(data[data.length - 1].rate));
+        $("#order_rate_center_lab_pj").html("平均:" + (resu[0]*100).toFixed(1) + "%");
+        $("#order_rate_center_lab_height").html("最高:" + (resu[1].rate*100).toFixed(1) + "%(" + resu[1].month + "月)");
+        $("#order_rate_center_lab_low").html("最低:" + (resu[2].rate*100).toFixed(1) + "%(" + resu[2].month + "月)");
+        chartthree.setOption(initone((data[data.length - 1].rate*100).toFixed(1)));
         try {
             chartfour.setOption(getLineEcharts());
             chartfour.setOption({
@@ -352,7 +352,7 @@ function initfour() {
                         // symbol: 'circle',
                         stack: '总量',
                         // areaStyle: {normal: {}},
-                        data: centerLabRateData(data),
+                        data: centerLabRateData0912(data),
                         itemStyle: {
                             normal: {
                                 color: "#ff6666"
@@ -1604,7 +1604,19 @@ function centerLabOrderHgRate(data) {
     })
     return d;
 }
-
+function centerLabRateData0912(data) {
+    var indicatorDataTab3 = [];
+    for (var i = 0; i < data.length; i++) {
+        var num;
+        if (parseInt(data[i].name.substr(4, 6)) <= parseInt(getCurrentMonth())) {
+            num = data[i].rate2.toFixed(1);
+        } else {
+            num = 0;
+        }
+        indicatorDataTab3.push(num);
+    }
+    return indicatorDataTab3;
+}
 function centerLabRateData(data) {
     var indicatorDataTab3 = [];
     for (var i = 0; i < data.length; i++) {

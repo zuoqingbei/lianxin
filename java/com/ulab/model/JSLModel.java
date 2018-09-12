@@ -28,12 +28,13 @@ public class JSLModel extends Model<JSLModel> {
 	 */
 	public List<Record> findOrderMonthRateForAll(String startDate,String endDate,String labName){
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select	* ");
+		sb.append(" select	o.*,rate*100 as rate2 ");
 		sb.append(" from t_b_jsl o where 1=1 ");
 		sb.append(" and to_date(o.name,'yyyy-mm')  between to_date('"+startDate+"','yyyy-mm')  and to_date('"+endDate+"','yyyy-mm')  ");
 		if(StringUtils.isNotBlank(labName)){
 			sb.append(" and o.lab_name='"+labName+"'");
 			sb.append(" and o.DESC_NAME='及时率' ");
+			sb.append("and o.PRODUCT='洗涤' ");
 		}
 		sb.append("  order by o.name ");
 		try {

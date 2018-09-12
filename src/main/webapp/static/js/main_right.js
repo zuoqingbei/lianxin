@@ -4568,7 +4568,7 @@ function refreshHeightChart(){
 			borderColor:"rgba(0,0,0,0)"
 	    }]
 	}).highcharts();
-	setTimeout("resetCPK()",500);
+	//setTimeout("resetCPK()",500);
 	//cpkDataForTab4(tab4xhPro);
 	
 }

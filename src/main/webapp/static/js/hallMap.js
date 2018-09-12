@@ -24,12 +24,7 @@ $(function () {
     // 刷新动画
     setInterval(function () {
 
-        // $(".test td:gt(0) strong").each(function (index, item) {
         loadOrderNumsAjax();
-       /* console.log("-----mNum", mNum);
-        if (mNum) {
-            $("#m_td_order_" + cId).html(mNum)
-        }*/
     }, 5000)
 
 });

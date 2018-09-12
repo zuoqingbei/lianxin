@@ -13,7 +13,7 @@ import com.jfinal.plugin.activerecord.Record;
  * @author zuoqb
  * @todo   传感器
  */
-@TableBind(tableName = "lhjx_sensor_type")
+@TableBind(tableName = "t_b_sensor_type")
 public class SensorTypeModel extends Model<SensorTypeModel> {
 	private static final long serialVersionUID = 4762813779629969917L;
 	public static final SensorTypeModel dao = new SensorTypeModel();
@@ -28,8 +28,10 @@ public class SensorTypeModel extends Model<SensorTypeModel> {
 	 * @return_type   List<Record>
 	 */
 	public List<Record> findSensorByLab(String labTypeCode,String testUnitId){
+		labTypeCode="JNRSQC001";
+		testUnitId="1";
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select t.*,t.rowid,sort||':'||sensor_type_name||'('||unit||')' as legend from lhjx_sensor_type t where lab_code='"+labTypeCode+"' and test_unit_id='"+testUnitId+"' order by sort ");
+		sb.append(" select t.*,t.rowid,sort||':'||sensor_type_name||'('||unit||')' as legend from t_b_sensor_type t where lab_code='"+labTypeCode+"' and test_unit_id='"+testUnitId+"' order by sort ");
 		return Db.find(sb.toString());
 	}
 }
