@@ -198,7 +198,6 @@ public class BaseConfig extends JFinalConfig {
 		me.add(new SiteInterceptor());
 		// 公共属性
 		me.add(new CommonInterceptor());
-
 	}
 
 	/**

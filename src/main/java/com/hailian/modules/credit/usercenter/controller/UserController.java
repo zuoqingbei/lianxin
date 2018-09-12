@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.jfinal.component.util.Attr;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.encrypt.Md5Utils;
 import com.jfinal.kit.PropKit;
@@ -39,7 +40,7 @@ public class UserController  extends BaseProjectController{
 			if(targetPwd.equals(realPwd)){
 				//设置包含权限信息的session
 				setSessionUser(user);
-				setSessionAttr("user", user);
+				//setSessionAttr(Attr.SESSION_NAME, user);
 				render(PATH+"index.html");
 			}else{
 				setAttr("isSuccess", "No");
