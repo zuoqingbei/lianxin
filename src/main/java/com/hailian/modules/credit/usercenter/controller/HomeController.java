@@ -76,8 +76,7 @@ public class HomeController extends BaseProjectController {
 			}
 		}*/
 		
-		HttpServletRequest req=this.getRequest();
-		SysUser user=(SysUser)req.getSession().getAttribute("user");
+		SysUser user= (SysUser) getSessionUser();
 		String status =getPara("status");
 		if(StringUtils.isNotBlank(status)) {
 			status=status.substring(0, status.length()-1);
@@ -123,8 +122,7 @@ public class HomeController extends BaseProjectController {
 			description = "获取信息")
 	public void getMessage() {
 		
-		HttpServletRequest req=this.getRequest();
-		SysUser user=(SysUser)req.getSession().getAttribute("user");
+		SysUser user= (SysUser) getSessionUser();
 		List<SysDictDetail> continent=OrderManagerService.service.getDictByType("sandbar");
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
@@ -182,6 +180,27 @@ public class HomeController extends BaseProjectController {
 		setAttr("company",company);
 		setAttr("model", model);
 		render(path + "create_order.html");
+	}
+	/**
+	 * 
+	 * @time   2018年9月12日 下午5:33:20
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  
+	 * @return_type   void
+	 */
+	public void saveOrder() {
+		int id=getParaToInt("id");
+		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		SysUser user = (SysUser) getSessionUser();
+		try {
+			OrderManagerService.service.modifyOrder(id,model,user,this);
+			OrderManagerService.service.addOrderHistory(id, user);
+			render(path + "index.html");
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderMessage("保存失败");
+		}
 	}
 
 	public void getCustomName() {

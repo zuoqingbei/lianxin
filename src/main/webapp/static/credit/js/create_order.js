@@ -63,9 +63,10 @@ let
 					$(that).siblings(".errorInfo").hide();
 				}
 			});
+			alert(1)
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
-					
+				  $("#orderForm").submit();
 			}
 		},
 		formSave: function(){
@@ -92,7 +93,7 @@ let
 			/*表单提交*/
 			$("#btn_submit").click(Events.formSubmit);
 			/*表单保存*/
-			$("#btn_submit").click(Events.formSave);
+			$("#btn_save").click(Events.formSave);
         },
         // 画面初始化
         initialize: function () {

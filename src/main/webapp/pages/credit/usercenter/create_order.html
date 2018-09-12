@@ -44,7 +44,7 @@
 		    	</div>
 		    	<!--表单-->
 		    	<div class="table-content p-3">
-		    		<form id="orderForm" class="form-inline" action="" method="">
+		    		<form id="orderForm" class="form-inline" action="/credit/front/home/saveOrder" method="">
 		    			<div class="form-group row d-flex justify-content-end mb-4">
 		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
 		                    	<button type="button" id="btn_download" class="btn btn-primary"><i class="fa fa-download"></i>批量导入</button>
@@ -69,7 +69,7 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>接单日期：</label>
-		                        <input name="attr.receiver_date" type="text" class="form-control search-input col-md-8" id="client_order_date" disabled>
+		                        <input name="attr.receiver_date" value="" type="text" class="form-control search-input col-md-8" id="client_order_date" disabled>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>地区：</label>
@@ -82,7 +82,7 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>国家：</label>
-		                        <select name="attr.country" class="form-control search-input formSelect col-md-8" id="client_country">
+		                        <select name="attr.country" class="form-control search-input formSelect col-md-8" id="client_country" onchange="countrychange()">
 		                            <option value="0" disabled selected>请选择国家</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择国家</p>
@@ -105,8 +105,8 @@
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
-		                        <select name="attr.report_language" class="form-control search-input formSelect col-md-8" id="client_reportLanguage">
-
+		                        <select name="attr.report_language" class="form-control search-input formSelect col-md-8" id="client_reportLanguage" onchange="languagechange()">
+		                        
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告语言</p>
 		                    </div>
@@ -114,12 +114,12 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>公司名称：</label>
-		                        <input type="text" class="form-control search-input formInput col-md-8" id="client_departmentName" placeholder="请输入公司名称">
+		                        <input name="attr.right_company_name_en" type="text" class="form-control search-input formInput col-md-8" id="client_departmentName" placeholder="请输入公司名称">
 		                    	<p class="errorInfo col-md-8">请输入公司名称</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>速度：</label>
-		                        <select name="" class="form-control search-input formSelect col-md-8" id="client_speed">
+		                        <select name="attr.speed" class="form-control search-input formSelect col-md-8" id="client_speed" onchange="speedchange()">
 		                           ${orderspeed!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择速度</p>
@@ -128,7 +128,9 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">报告用时：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_reportTime" disabled>
+		                        <input name="attr.user_time" type="text" class="form-control search-input col-md-8" id="client_reportTime" disabled >
+		                       <input name="attr.user_time_id" type="hidden" class="form-control search-input col-md-8">
+		                        
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">客户参考号：</label>
@@ -192,11 +194,13 @@
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4 mt-5">
 		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4 myBtn">
-		                    	<button type="button" id="btn_submit" class="btn btn-primary btn-submit">提交</button>
+		                    	<button type="submit" id="btn_submit" class="btn btn-primary btn-submit">提交</button>
 		                    	<button type="button" id="btn_save" class="btn btn-light btn-save">保存</button>
 		                    </div>
 		                </div>
-		    			
+		    			<input name="attr.create_by" type="hidden" value="${user.userid}">
+		    			<input name="attr.status" type="hidden" value="0">
+		    			<input name="id" type="hidden" value="0">
 		    			<!--<input type="submit" value=""/>-->
 		    		</form>
 		    	</div>
@@ -229,16 +233,65 @@
  	           }
  	           
  	           $("select[name='attr.country']").html(html);
- 	           $("select[name='attr.country'] option:first").attr("selected","selected");
+ 	          countrychange();
+ 	         reportTypeChange();
     	 })
    		}
    	 	function reportTypeChange(){
-   	 		
+   	 		languagechange();
    	 	}
    	 	function ordertypechange(){
-   	 		
+   	 	usetime();
    	 	}
-   	 	function 
+   	 	function countrychange(){
+   	 	 $("select[name='attr.country'] option:first").attr("selected","selected");
+   	 		//查询用时
+   	    	usetime();
+   	    	//查询语言
+   	    	languagechange()
+   	 	}
+   	 	function languagechange(){
+   	 	var value1=  $("select[name='attr.country']").find("option:selected").attr("m-type");
+    	var value3=$("select[name='attr.report_type']").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"/admin/ordermanager/getLanguage?countrytype="+value1+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	console.log(data)
+		        	if(data!=null){
+		        		for(item in data){
+		        			html+="<option  value='"+data[item].language_id+"'>"+data[item].languageName+"</option>";
+		        		}
+		        	}
+		        	$("select[name='attr.report_language']").html(html);
+		          }
+		    });
+    	}
+   	 	
+   	 	function speedchange(){
+   	 		usetime();
+   	 	}
+   	 	function usetime(){
+   	 	var value1=$("select[name='attr.country']").find("option:selected").attr("m-type");
+    	var value2=$("select[name='attr.speed']").find("option:selected").val();
+    	var value3=$("select[name='attr.report_type']").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"/admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	console.log(data)
+		        	  if(data!=null){
+		        		  $("input[name='attr.user_time']").val(data.use_time)
+		        		  $("input[name='attr.user_time_id']").val(data.id)
+		        		  $("input[name='attr.receiver_date']").val($("input[name='attr.receiver_date']").val())
+		        }
+		        },
+		    });
+   	 	}
    </script>
 </body>	
 </html>
