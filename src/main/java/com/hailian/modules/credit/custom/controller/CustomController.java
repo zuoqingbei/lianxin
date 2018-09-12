@@ -1,7 +1,10 @@
 package com.hailian.modules.credit.custom.controller;
 
+import java.util.List;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.custom.service.CustomService;
 import com.jfinal.plugin.activerecord.Page;
@@ -19,9 +22,9 @@ public class CustomController extends BaseProjectController {
 	 */
 	public void list() {
 		CustomInfoModel attr = getModelByAttr(CustomInfoModel.class);
-		String custom_id = attr.getStr("custom_id");
-		String report_id = attr.getStr("report_id");
-		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),custom_id,report_id,this);
+		String keyword = getPara("keyword");
+		String orderBy = getBaseForm().getOrderBy();
+		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),orderBy,keyword,this);
 		setAttr("page",page);
 		render(path+"list.html");
 	}
@@ -32,7 +35,8 @@ public class CustomController extends BaseProjectController {
 	* @TODO
 	 */
 	public void view() {
-		CustomInfoModel item = CustomInfoModel.dao.findById(getParaToInt());
+//		CustomInfoModel item = CustomInfoModel.dao.findById(getParaToInt());
+		CustomInfoModel item=CustomInfoModel.dao.getCustomById(getParaToInt());
 		setAttr("item", item);
 		render(path + "view.html");
 	}
@@ -45,7 +49,9 @@ public class CustomController extends BaseProjectController {
 	public void add() {
 		// 获取页面信息,设置目录传入
 		CustomInfoModel attr = getModel(CustomInfoModel.class);
+		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
 		setAttr("model", attr);
+		setAttr("company", company);
 		render(path + "add.html");
 	}
 	/**
@@ -58,6 +64,8 @@ public class CustomController extends BaseProjectController {
 		Integer paraToInt = getParaToInt();
 		CustomInfoModel model = CustomInfoModel.dao.findById(paraToInt);
 		setAttr("model", model);
+		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
+		setAttr("company", company);
 		// 查询下拉框
 		render(path + "edit.html");
 	}
@@ -81,7 +89,7 @@ public class CustomController extends BaseProjectController {
 	* @TODO
 	 */
 	public void save() {
-		Integer pid = getParaToInt();
+		Integer pid = getParaToInt("id");
 		// 日志添加
 		CustomInfoModel model = getModel(CustomInfoModel.class);
 		Integer userid = getSessionUser().getUserid();

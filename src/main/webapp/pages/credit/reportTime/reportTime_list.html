@@ -1,0 +1,177 @@
+<% var countrytype = tempDict.getSysDictDetailString('country',country_id !); %>
+<% var usabled = tempDict.getSysDictDetailString('usabled',usabled!); %>
+<% var reportSpeed = tempDict.getSysDictDetailString('orderspeed',report_speed!); %>
+<% var orderType = tempDict.getSysDictDetailString('ordertype',order_type!); %>
+<% var reportType = reportType.getReportTypeString(report_id!); %>
+<% var headContent = { include("/pages/template/head.html"){} %>
+<script type="text/javascript">
+		
+	var oper;
+	jQuery(function($) {
+		// 页面方法
+		oper = {
+			width : 400,
+			height : 500,
+			form : document.form1,
+			list : function() {
+				var url = 'credit/reportTime/list';
+				this.form.action = url;
+				this.form.submit();
+			},
+			view : function(id) {
+				var url = 'credit/reportTime/view?id='+id;
+				var title = '查看详细信息';
+				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+			},
+			add : function() {
+				var url = 'credit/reportTime/add';
+				var title = '添加配置';
+				Iframe(url, this.width, this.height, title);
+			},
+			edit : function(id) {
+				var url = 'credit/reportTime/edit?id='+id;
+				var title = '修改配置';
+				Iframe(url, this.width, this.height, title);
+			},
+			del : function(id) {
+				var url = 'credit/reportTime/del?id='+id;
+				var title = '确认要删除该语言配置?';
+				Confirm(title, function() {
+					form1.action = url;
+					form1.submit();
+				});
+			}
+		};
+		//显示Menu索引
+        showMenu('page_reportTime_manager');
+	});
+	
+	//分页
+	var paginator = function(page) {
+		oper.list();
+	};
+</script>
+
+<% }; var bodyContent = { %>
+<form name="form1" action="" method="post" class="form-inline"
+	role="form">
+	<input type="hidden" name="form.orderColumn"
+		value="${form.orderColumn!''}" /> <input type="hidden"
+		name="form.orderAsc" value="${form.orderAsc!''}" />
+	<!-- 菜单 -->
+	<% include("/pages/template/menu.html"){} %>
+
+	<div class="tableSearch">
+		<% //查询列表 %>
+		<div class="form-group">
+		   <label  class="control-label">报告类型</label>
+		   <select name="report_id" class="form-control" style="width: 200px;">
+				${reportType!}
+		  </select> 
+		</div>
+		<div class="form-group">
+		   <label  class="control-label">报告速度</label>
+		   <select name="report_speed" class="form-control" style="width: 200px;">
+				${reportSpeed!}
+		  </select> 
+		</div>
+		<div class="form-group">
+		   <label  class="control-label">订单类型</label>
+		      <select name="order_type" class="form-control" style="width: 200px;">
+						${orderType!}
+			</select> 
+		</div>
+		<div class="form-group">
+			<input style="width: 200px;" class="form-control" valid='vnum_y' type="text" name="model.use_time"
+				value="${model.use_time!''}" placeholder="请输入时间" required='required' />
+		</div>
+		<div class="form-group">
+		   <label  class="control-label">是否启用</label>
+		   <select name="usabled" class="form-control" style="width: 200px;">
+					${usabled!}
+			</select> 
+		</div>
+		<button type="button" class="btn btn-default" onclick="oper.list();"
+			name="search">
+			<span class="glyphicon glyphicon-search"></span> 查 询
+		</button>
+		<button type="button" class="btn btn-default" onclick="resetForm();">
+			<span class="glyphicon glyphicon-refresh"></span> 重 置
+		</button>
+		<button type="button" class="btn btn-default" onclick="oper.add();">
+			<span class="glyphicon glyphicon-plus"></span> 新 增
+		</button>
+	</div>
+	<!-- 数据列表 -->
+	<table class="table table-striped table-bordered table-hover">
+		<thead>
+			<tr>
+				<th>序号</th> <% // 列表头部 %>
+				<th name="s1.name_en" class="sorting">报告类型</th>
+				<th name="s2.detail_name_en" class="sorting">报告速度</th>
+				<th name="s3.detail_name_en" class="sorting">国家</th>
+				<th name="s4.detail_name_en" class="sorting">订单类型</th>
+				<th name="c.use_time" class="sorting">时间</th>
+				<th name="s5.detail_name" class="sorting">是否禁用</th>
+				<th name="c.update_date" class="sorting">修改时间</th>
+				<th name="u.realname " class="sorting">修改人</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for(item in page.list){ %>
+			<tr>
+				<td>${itemLP.index }</td>
+				
+				<td title="${item.reportType!}"><% if
+					(strutil.length(item.reportType) > 25) { %>
+					${strutil.subStringTo(item.reportType, 0, 25)}... <% } else { %>
+					${item.reportType} <% } %></td>
+				
+				<td title="${item.reportSpeed!}"><% if (strutil.length(item.reportSpeed) >
+					25) { %> ${strutil.subStringTo(item.reportSpeed, 0, 25)}... <% } else { %>
+					${item.reportSpeed!} <% } %></td>
+
+				<td title="${item.countryType!}"><% if
+					(strutil.length(item.countryType) > 25) { %>
+					${strutil.subStringTo(item.countryType, 0, 25)}... <% } else { %>
+					${item.countryType!} <% } %></td>
+					
+				<td title="${item.orderType!}"><% if
+					(strutil.length(item.orderType) > 25) { %>
+					${strutil.subStringTo(item.orderType, 0, 25)}... <% } else { %>
+					${item.orderType!} <% } %></td>	
+					
+				
+				<td title="${item.use_time!}">
+					${item.use_time!} </td>
+					
+				<td title="${item.usabled!}"><% if
+					(strutil.length(item.usabled) > 25) { %>
+					${strutil.subStringTo(item.usabled, 0, 25)}... <% } else { %>
+					${item.usabled!} <% } %></td>
+					
+				<td title="${item.update_date!}">${item.update_date,dateFormat="yyyy-MM-dd  HH:mm:ss"}</td>
+				
+				<td title="${item.realname!}"><% if
+					(strutil.length(item.realname) > 25) { %>
+					${strutil.subStringTo(item.realname, 0, 25)}... <% } else { %>
+					${item.realname!} <% } %></td>	
+					
+		<td><a href="javascript:void(0);" class="btn btn-sm btn-success"
+			onclick="oper.view(${item.id});">查看</a> <a href="javascript:void(0);"
+			class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>
+			<a href="javascript:void(0);" class="btn btn-sm btn-danger"
+			onclick="oper.del(${item.id});">删除</a></td>
+		</tr>
+		<% } %>
+		</tbody>
+		</br>
+	</table>
+	<%include("/pages/includes/paginator.html"){} %>
+	</nav>
+</form>
+
+<%}; %> <%
+layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){
+%> <%} %>

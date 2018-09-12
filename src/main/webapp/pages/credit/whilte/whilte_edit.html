@@ -62,25 +62,36 @@ var bodyContent = {
 	<table class="table">
 		<%  // 列表头部%>
 				<tr>
-					<td>客户编号</td>
+					<td>客户名称</td>
 					<td>
-						<input class="form-control" type="text" name="model.custom_id" value="${model.custom_id}" />
+						<!-- <input class="form-control" type="text" name="model.custom_id" value="${model.custom_id}" /> -->
+						<div class="form-group">
+						<select name="model.custom_id" class="form-control" >
+						<option value="" >请选择客户</option>
+						 <% for(item in custom){ %>
+						 	<% if((model.custom_id+"")==(item.id+"")){ %>
+							 	<option  m-type="${item.name_en}" selected="selected" value="${item.id}">${item.name}</option>
+							<% }else{ %>
+								<option  m-type="${item.name_en}" value="${item.id}">${item.name}</option>
+							<%}%>
+						 <% } %>
+						</select>
+						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>报告类型</td>
-					<!-- <input class="form-control" type="text" name="model.report_id" value="${model.report_id}" /> -->
 					<td>
 						<div class="form-group">
 						<select name="model.report_id" class="form-control" >
+						<option value="" >请选择</option>
 						 <% for(item in reporttype){ %>
 						 	<% if((model.report_id+"")==(item.id+"")){ %>
 							 	<option  m-type="${item.name_en}" selected="selected" value="${item.id}">${item.name}</option>
 							<% }else{ %>
 								<option  m-type="${item.name_en}" value="${item.id}">${item.name}</option>
 							<%}%>
-						 	
-						  <% } %>
+						 <% } %>
 						</select>
 						</div>
 					</td>

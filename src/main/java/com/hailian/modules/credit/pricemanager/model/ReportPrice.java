@@ -168,7 +168,7 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 	 */
 	public Page<ReportPrice> getPage(Paginator paginator, ReportPrice attr, String orderby, BaseProjectController c) {
 		StringBuffer sql = new StringBuffer(" from  credit_report_price t ");
-		sql.append("  LEFT JOIN sys_dict_detail ot on ot.detail_id=t.order_type  ");
+		sql.append("   LEFT JOIN sys_dict_detail ot on ot.detail_id=t.order_type  ");
 		sql.append("   LEFT JOIN sys_dict_detail os on os.detail_id=t.order_speed");
 		sql.append("   LEFT JOIN credit_report_type rt on rt.id=t.report_type");
 		sql.append("   LEFT JOIN sys_dict_detail c on c.detail_id=t.country_type");
