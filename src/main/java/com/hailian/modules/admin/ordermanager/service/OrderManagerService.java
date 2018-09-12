@@ -271,9 +271,9 @@ public class OrderManagerService {
 	}
 
 	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model, String orderby,
-			String status,BaseProjectController c) {
+			String status,SysUser user) {
 		// TODO Auto-generated method stub
-		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby,status, c);
+		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby,status, user);
 	}
 
 	public CreditCustomInfo getCreater(String id) {

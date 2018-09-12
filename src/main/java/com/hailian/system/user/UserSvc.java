@@ -82,6 +82,45 @@ public class UserSvc extends BaseService {
 
 		return map;
 	}
+	/**
+	 * 
+	 * @time   2018年9月12日 下午2:44:08
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param user
+	 * @param  @return
+	 * @return_type   Map<Integer,List<SysMenu>>
+	 * 获取前台菜单
+	 */
+	public Map<Integer, List<SysMenu>> getQTMap(SysUser user) {
+		String menuids = "select menuid from sys_role_menu where roleid in"
+				+ " ( select roleid from sys_user_role where userid = ? )  group by menuid";
+		// 管理员
+		if (user.getInt("usertype") == 1) {
+			menuids = " select id from sys_menu where -1 != ? "; // 所有菜单
+		}
+
+		Integer userid = user.getUserid();
+		Map<Integer, List<SysMenu>> map = new HashMap<Integer, List<SysMenu>>();
+
+		String sql = " where status = 1 and parentid = ? " //
+				+ "and id in (" + menuids + ") order by sort ";
+		// 获取根目录
+		System.out.println(sql);
+		List<SysMenu> rootList = SysMenu.dao.findByWhere(sql, 46, userid);
+		if (rootList == null || rootList.size() == 0) {
+			return null;
+		}
+
+		map.put(0, rootList);
+		// 获取子目录
+		for (SysMenu sysMenu : rootList) {
+			List<SysMenu> list = SysMenu.dao.findByWhere(sql, sysMenu.getInt("id"), userid);
+			map.put(sysMenu.getInt("id"), list);
+		}
+
+		return map;
+	}
 
 	/**
 	 * 获取用户绑定的角色

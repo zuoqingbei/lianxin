@@ -38,7 +38,7 @@ public class UserController  extends BaseProjectController{
 			}
 			if(targetPwd.equals(realPwd)){
 				//设置包含权限信息的session
-				//setSessionUser(user);
+				setSessionUser(user);
 				setSessionAttr("user", user);
 				render(PATH+"index.html");
 			}else{

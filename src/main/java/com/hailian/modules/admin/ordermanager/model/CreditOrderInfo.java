@@ -276,7 +276,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 	}
 
 	public Page<CreditOrderInfo> getOrders(Paginator pageinator, CreditOrderInfo model, String orderby, String status,
-			BaseProjectController c) {
+			SysUser user) {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sql = new StringBuffer();
 		//客户id
@@ -309,9 +309,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
-		if(!c.isAdmin(c.getSessionUser())){
+		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
-			params.add(c.getSessionUser().getUserid());
+			params.add(user.getStr("usertype"));
 		}
 
 		if (StringUtils.isNotBlank(custom_id)) {

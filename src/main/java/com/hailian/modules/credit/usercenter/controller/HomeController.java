@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -75,14 +76,15 @@ public class HomeController extends BaseProjectController {
 			}
 		}*/
 		
-		
+		HttpServletRequest req=this.getRequest();
+		SysUser user=(SysUser)req.getSession().getAttribute("user");
 		String status =getPara("status");
 		if(StringUtils.isNotBlank(status)) {
 			status=status.substring(0, status.length()-1);
 		}
 		Paginator pageinator=getPaginator();
 		String orderBy = getBaseForm().getOrderBy();
-		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,orderBy,status, this);
+		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,orderBy,status, user);
 		int total=page.getList().size();
 		List<CreditOrderInfo> rows=page.getList();
 		for(int i=0;i<rows.size();i++) {
@@ -121,7 +123,8 @@ public class HomeController extends BaseProjectController {
 			description = "获取信息")
 	public void getMessage() {
 		
-		SysUser user=HomeService.service.getUser(this);
+		HttpServletRequest req=this.getRequest();
+		SysUser user=(SysUser)req.getSession().getAttribute("user");
 		List<SysDictDetail> continent=OrderManagerService.service.getDictByType("sandbar");
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();

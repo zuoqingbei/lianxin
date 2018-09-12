@@ -59,7 +59,7 @@ let Index = {
 		                 console.log($("#attr.custom_id").val+$("#attr.continent").val);
 		        		$.ajax({
 		        			type:"post",
-		        			url:"home/list",
+		        			url:"/credit/front/home/list",
 		        			data:{"attr.custom_id":$("#custom_id").find("option:selected").val(),
 		        				"attr.continent":$("#continent").find("option:selected").val(),
 		        				"attr.country":$("#country").find("option:selected").val(),
@@ -190,7 +190,7 @@ let Index = {
                 }
               
             ],
-            url : 'home/list', // 请求后台的URL（*）
+            url : '/credit/front/home/list', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',
