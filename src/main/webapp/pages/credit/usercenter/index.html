@@ -6,14 +6,14 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
-   <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/pages/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/pages/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/pages/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
+    <link rel="stylesheet" href="/pages/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/pages/credit/css/reset.css">
+    <link rel="stylesheet" href="/pages/credit/css/common.css">
+    <link rel="stylesheet" href="/pages/credit/css/menu.css">
+   <link rel="stylesheet" href="/pages/credit/css/index.css">
 
 </head>
 <body>
@@ -89,13 +89,16 @@
                                             <option value="" disabled selected>请选择地区</option>
                                         </select>
                                     </div>
+                                   </div>
+                                   
+                                  <div class="form-group row d-flex justify-content-around mb-4">
                                     <div class="input-group mt-2 col-md-4">
                                         <label class="control-label col-md-4" for="txt_search_statu">国家：</label>
                                         <select id="country" name="attr.country" class="form-control search-input col-md-8" >
                                             <option value="" disabled selected>请选择国家</option>
                                         </select>
-                                    </div>
-                                </div>
+                                	</div>
+                                 </div>
                             </form>
                             <div class="btn-row d-flex justify-content-between mt-4 mb-4">
                                 <a role="button" class="btn btn-primary ml-5 d-flex align-items-center" href="/credit/front/home/createOrder"><i class="fa fa-plus pr-2"></i>新增订单</a>
@@ -256,7 +259,6 @@
 			})	
 		}
 	</script>
-	
 </body>
 </html>
     

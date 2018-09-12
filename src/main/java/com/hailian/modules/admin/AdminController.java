@@ -31,7 +31,6 @@ public class AdminController extends BaseProjectController {
 		} else {
 			render(loginPage);
 		}
-
 	}
 
 	/**

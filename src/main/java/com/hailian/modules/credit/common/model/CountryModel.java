@@ -1,3 +1,4 @@
+
 package com.hailian.modules.credit.common.model;
 
 import java.util.ArrayList;
@@ -33,6 +34,6 @@ public class CountryModel extends BaseProjectModel<CountryModel> {
 		CountryModel cm=dao.findFirst("select t.type from credit_country t where t.id=? ", countryid);
 		return cm;
 	}
+}
 	
 
-}
