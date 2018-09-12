@@ -1,11 +1,10 @@
 package com.hailian.modules.credit.usercenter.controller;
 
-import java.util.List;
 
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.credit.usercenter.model.UserModel;
+import com.hailian.system.user.SysUser;
 import com.hailian.util.encrypt.Md5Utils;
 import com.jfinal.kit.PropKit;
 /**
@@ -15,7 +14,6 @@ import com.jfinal.kit.PropKit;
  * @todo   用户登录控制
  */
 
-
 @Api( tag = "用户登录控制", description = "用户登录控制" )
 @ControllerBind(controllerKey = "/credit/front/usercenter")
 public class UserController  extends BaseProjectController{
@@ -23,7 +21,7 @@ public class UserController  extends BaseProjectController{
 		private static final String SALT = PropKit.use("config.properties").get("salt");
 		//展示登录页
 		public void showLogin(){
-			render(PATH+"login.html");
+			render(PATH+"showLogin.html");
 		}
 		//登录
 		public void login(){
@@ -31,15 +29,18 @@ public class UserController  extends BaseProjectController{
 			String username = getPara("username");
 			String targetPwd = md5.getMD5(getPara("password")+SALT);
 			
-			List<UserModel> list = UserModel.dao.findByUserName(username);
+			SysUser user = SysUser.dao.findByUserName(username);
 			String realPwd = SALT;
-			if(list.size()!=0){
-				realPwd = list.get(0).get("password");
+			if(user!=null){
+				realPwd = user.get("password");
 			}
 			if(targetPwd.equals(realPwd)){
-				System.out.println("登录成功!");
+				//设置包含权限信息的session
+				setSessionUser(user);
+				render(PATH+"index.html");
 			}else{
-				System.out.println("登录失败!");
+				setAttr("isSuccess", "No");
+				render(PATH+"showLogin.html");
 			}
 		}
 		
