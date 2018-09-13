@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<% var sandbar = tempDict.getSysDictDetailString('sandbar',model.continent); %>
+<% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type); %>
+<% var language = tempDict.getSysDictDetailString('language',model.report_language); %>
+<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
+<% var reportType = reportType.getReportTypeString("ordertype"); %>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,12 +11,12 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" type="text/css" media="screen" href="/pages/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/pages/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/pages/credit/css/reset.css">
-    <link rel="stylesheet" href="/pages/credit/css/common.css">
-    <link rel="stylesheet" href="/pages/credit/css/menu.css">
-   	<link rel="stylesheet" href="/pages/credit/css/createOrder.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
+   	<link rel="stylesheet" href="${BASE_PATH }static/credit/css/create_order.css">
 </head>
 <body>
     <div class="container-fluid" id="menu">
@@ -39,7 +44,7 @@
 		    	</div>
 		    	<!--表单-->
 		    	<div class="table-content p-3">
-		    		<form id="orderForm" class="form-inline" action="" method="">
+		    		<form id="orderForm" class="form-inline" action="/credit/front/home/saveOrder" method="">
 		    			<div class="form-group row d-flex justify-content-end mb-4">
 		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
 		                    	<button type="button" id="btn_download" class="btn btn-primary"><i class="fa fa-download"></i>批量导入</button>
@@ -48,25 +53,28 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>客户ID：</label>
-		                        <select class="form-control search-input formSelect col-md-8" id="client_ID">
+		                        <select name="attr.custom_id" class="form-control search-input formSelect col-md-8" id="client_ID" onchange="customChange();">
 		                            <option value="0" disabled selected>请输入客户ID</option>
+		                            <%for(item in customs){%>
+		                             <option value="${item.id}" >${item.id}</option>
+		                             <%}%>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请输入客户ID</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">客户用户名：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_userNname" placeholder="请输入客户用户名">
+		                        <input name="customname" type="text" class="form-control search-input col-md-8" id="client_userNname" placeholder="请输入客户用户名">
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>接单日期：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_order_date" disabled>
+		                        <input name="attr.receiver_date" value="" type="text" class="form-control search-input col-md-8" id="client_order_date" disabled>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>地区：</label>
-		                        <select class="form-control search-input formSelect col-md-8" id="client_area">
-		                            <option value="0" disabled selected>请选择地区</option>
+		                        <select name="attr.continent" class="form-control search-input formSelect col-md-8" id="client_area" onchange="continentchange()">
+		                            ${sandbar!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择地区</p>
 		                    </div>
@@ -74,15 +82,15 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>国家：</label>
-		                        <select class="form-control search-input formSelect col-md-8" id="client_country">
+		                        <select name="attr.country" class="form-control search-input formSelect col-md-8" id="client_country" onchange="countrychange()">
 		                            <option value="0" disabled selected>请选择国家</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择国家</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告类型：</label>
-		                        <select class="form-control search-input formSelect col-md-8" id="client_reportType">
-		                            <option value="0" disabled selected>请选择报告类型</option>
+		                        <select name="attr.report_type" class="form-control search-input formSelect col-md-8" id="client_reportType" onchange="reportTypeChange();">
+		                             ${reportType!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告类型</p>
 		                    </div>
@@ -90,15 +98,15 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>订单类型：</label>
-		                        <select class="form-control search-input formSelect col-md-8" id="client_orderType">
-		                            <option value="0" disabled selected>请选择订单类型</option>
+		                        <select name="attr.order_type" class="form-control search-input formSelect col-md-8" id="client_orderType" onchange="ordertypechange();">
+		                           ${ordertype!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择订单类型</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
-		                        <select class="form-control search-input formSelect col-md-8" id="client_reportLanguage">
-		                            <option value="0" disabled selected>请选择报告语言</option>
+		                        <select name="attr.report_language" class="form-control search-input formSelect col-md-8" id="client_reportLanguage" onchange="languagechange()">
+		                        
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告语言</p>
 		                    </div>
@@ -106,13 +114,13 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>公司名称：</label>
-		                        <input type="text" class="form-control search-input formInput col-md-8" id="client_departmentName" placeholder="请输入公司名称">
+		                        <input name="attr.right_company_name_en" type="text" class="form-control search-input formInput col-md-8" id="client_departmentName" placeholder="请输入公司名称">
 		                    	<p class="errorInfo col-md-8">请输入公司名称</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>速度：</label>
-		                        <select class="form-control search-input formSelect col-md-8" id="client_speed">
-		                            <option value="0" disabled selected>请选择速度</option>
+		                        <select name="attr.speed" class="form-control search-input formSelect col-md-8" id="client_speed" onchange="speedchange()">
+		                           ${orderspeed!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择速度</p>
 		                    </div>
@@ -120,7 +128,9 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">报告用时：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_reportTime" disabled>
+		                        <input name="attr.user_time" type="text" class="form-control search-input col-md-8" id="client_reportTime" disabled >
+		                       <input name="attr.user_time_id" type="hidden" class="form-control search-input col-md-8">
+		                        
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">客户参考号：</label>
@@ -160,8 +170,11 @@
 		                        	<i class="fa fa-cloud-upload"></i>
 		                        	<p class="">请将上传的PDF、JPG、PNG、EXCEL、WORD文件拖至此处，大小不超过5M</p>
 								</div>
-								<div class="progress-box d-flex justify-content-around align-items-center">
-									<span class="filename">a.png</span>
+								<div class="progress-box" id="Close">
+									<div class="file-box">
+										<i class="fa fa-paperclip"></i>
+										<span class="filename">a.png</span>
+									</div>
 									<div class="progress">
 										<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
 									</div>     
@@ -181,11 +194,13 @@
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4 mt-5">
 		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4 myBtn">
-		                    	<button type="button" id="btn_submit" class="btn btn-primary btn-submit">提交</button>
+		                    	<button type="submit" id="btn_submit" class="btn btn-primary btn-submit">提交</button>
 		                    	<button type="button" id="btn_save" class="btn btn-light btn-save">保存</button>
 		                    </div>
 		                </div>
-		    			
+		    			<input name="attr.create_by" type="hidden" value="${user.userid}">
+		    			<input name="attr.status" type="hidden" value="0">
+		    			<input name="id" type="hidden" value="0">
 		    			<!--<input type="submit" value=""/>-->
 		    		</form>
 		    	</div>
@@ -195,10 +210,88 @@
     
     
    
-    <script src="/pages/credit/assets/jquery/jquery-2.1.0.js"></script>
-    <script src="/pages/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
-    <script src="/pages/credit/js/common.js"></script>
-    <script src="/pages/credit/js/createOrder.js"></script>
-   
-</body>
+    <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <script src="${BASE_PATH }static/credit/js/common.js"></script>
+    <script src="${BASE_PATH }static/credit/js/create_order.js"></script>
+   <script type="text/javascript">
+   		function customChange(){
+   			var value=$("#client_ID").find("option:selected").val();
+   			$.post("/credit/front/home/getCustomName",{"id":value},function(data){
+   				$("#client_userNname").val(data.name);
+   				$("#client_userNname").attr("disabled","disabled");
+   			})
+   		};
+   	 	function continentchange(){
+   			var value=$("#client_area").find("option:selected").attr("m-english");
+   			$("#client_area option:first").attr("disabled","disabled");
+   			var html="";
+       	 	$.post('/credit/country/getCountrySelect',{"attr.continent":value},function(data){
+    		 	console.log(data)
+    		  for(item in data){
+				html+="<option  m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";	        	
+ 	           }
+ 	           
+ 	           $("select[name='attr.country']").html(html);
+ 	          countrychange();
+ 	         reportTypeChange();
+    	 })
+   		}
+   	 	function reportTypeChange(){
+   	 		languagechange();
+   	 	}
+   	 	function ordertypechange(){
+   	 	usetime();
+   	 	}
+   	 	function countrychange(){
+   	 	 $("select[name='attr.country'] option:first").attr("selected","selected");
+   	 		//查询用时
+   	    	usetime();
+   	    	//查询语言
+   	    	languagechange()
+   	 	}
+   	 	function languagechange(){
+   	 	var value1=  $("select[name='attr.country']").find("option:selected").attr("m-type");
+    	var value3=$("select[name='attr.report_type']").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"/admin/ordermanager/getLanguage?countrytype="+value1+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	console.log(data)
+		        	if(data!=null){
+		        		for(item in data){
+		        			html+="<option  value='"+data[item].language_id+"'>"+data[item].languageName+"</option>";
+		        		}
+		        	}
+		        	$("select[name='attr.report_language']").html(html);
+		          }
+		    });
+    	}
+   	 	
+   	 	function speedchange(){
+   	 		usetime();
+   	 	}
+   	 	function usetime(){
+   	 	var value1=$("select[name='attr.country']").find("option:selected").attr("m-type");
+    	var value2=$("select[name='attr.speed']").find("option:selected").val();
+    	var value3=$("select[name='attr.report_type']").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"/admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	console.log(data)
+		        	  if(data!=null){
+		        		  $("input[name='attr.user_time']").val(data.use_time)
+		        		  $("input[name='attr.user_time_id']").val(data.id)
+		        		  $("input[name='attr.receiver_date']").val($("input[name='attr.receiver_date']").val())
+		        }
+		        },
+		    });
+   	 	}
+   </script>
+</body>	
 </html>

@@ -1,3 +1,4 @@
+
 package com.hailian.modules.credit.common.service;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class CountryService {
 	public List<CountryModel> CountrySelect(String content,BaseProjectController c) {
 		List<Object> params=new ArrayList<Object>();
 			StringBuffer sql=new StringBuffer("select * from credit_country where del_flag=0  ");
-			if(StringUtils.isNotBlank(content)) {
+			if(StringUtils.isNotBlank(content) && !"ALL".equals(content)) {
 				sql.append(" and continent_en=? order by order_no");
 				params.add(content);
 			}else {
