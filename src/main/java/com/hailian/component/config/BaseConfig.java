@@ -198,8 +198,6 @@ public class BaseConfig extends JFinalConfig {
 		me.add(new SiteInterceptor());
 		// 公共属性
 		me.add(new CommonInterceptor());
-		//主拦截
-		/*me.add(new CreditLoginInterceptor());*/
 	}
 
 	/**
