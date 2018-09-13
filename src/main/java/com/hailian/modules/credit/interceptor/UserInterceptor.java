@@ -31,8 +31,9 @@ public class UserInterceptor implements Filter {
     	 if(user==null && rq.getRequestURI().indexOf("showLogin")==-1 ){ 
 			 rp.sendRedirect("/credit/front/usercenter/showLogin");
 			 return;
-         } 
-    	 chain.doFilter(rq, rp);
+         }else{
+        	 chain.doFilter(rq, rp);
+         }
     } 
          
 
