@@ -66,7 +66,7 @@ var bodyContent = {
 				<tr>
 					<td>客户名称</td>
 					<td>
-						<input class="form-control" type="text" name="model.name" value="${model.name}" />
+						<input class="form-control" type="text" name="model.name" value="${model.name}" valid="vtext" validname="客户名称"/>
 					</td>
 				</tr>
 				<tr>
@@ -86,8 +86,8 @@ var bodyContent = {
 					</td> -->
 					<td>
 						<div class="form-group">
-						<select name="model.company_id" class="form-control" >
-						<option value="" >请选择</option>
+						<select name="model.company_id" class="form-control" valid="vselect" validname="公司名称">
+						<option value="-1" >请选择</option>
 						 <% for(item in company){ %>
 						 	<% if((model.company_id+"")==(item.id+"")){ %>
 							 	<option  m-type="${item.name_en}" selected="selected" value="${item.id}">${item.name}</option>
