@@ -10,7 +10,6 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
 import com.hailian.modules.credit.utils.FileTypeUtils;
-import com.jfinal.upload.UploadFile;
 /**
  * ftp文件上传
 * @author doushuihai  
@@ -157,6 +156,20 @@ public class FtpUploadFileUtils {
 			// 登出服务器
 			ftp.logout();
 		} catch (IOException e) {
+			try {
+				// 判断输入流是否存在
+				if (null != fis) {
+					// 关闭输入流
+					fis.close();
+				}
+				// 判断连接是否存在
+				if (ftp.isConnected()) {
+					// 断开连接
+					ftp.disconnect();
+				}
+			} catch (IOException e2) {
+				e2.printStackTrace();
+			}
 			e.printStackTrace();
 		} finally {
 			try {

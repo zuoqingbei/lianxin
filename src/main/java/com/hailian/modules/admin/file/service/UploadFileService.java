@@ -9,7 +9,6 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.credit.utils.FileTypeUtils;
-import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.DateUtils;
 import com.jfinal.plugin.activerecord.Db;

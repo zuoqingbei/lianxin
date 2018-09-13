@@ -7,6 +7,12 @@ let
 				$(this).css("color", "#495057");
 			} 
 		},
+		btn_download:function(){
+			/**点击批量上传 */
+			$("#btn_download").click(function(){
+				$("#upload_file").trigger('click')
+			})
+		},
 		emailAdd: function (obj){
             let tv = $(obj).val();
             let reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -105,7 +111,8 @@ let
         init: function () {
             Page.initialize();
             Page.initEvents();
-            Page.initValidator();
+			Page.initValidator();
+			Events.btn_download();
         }
 	};
 $(document).ready(function () {

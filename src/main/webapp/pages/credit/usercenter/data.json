@@ -4,7 +4,7 @@
     {
     "orderNum": 0,
     "orderDate": "Item 0",
-    "deadDate": "$0",
+    "deadDate": "1",
     "clientCode": "$0",
     "doState": "$0",
     "orderComName": "$0",
@@ -14,7 +14,7 @@
     {
         "orderNum": 0,
         "orderDate": "Item 0",
-        "deadDate": "$0",
+        "deadDate": "2",
         "clientCode": "$0",
         "doState": "$0",
         "orderComName": "$0",
@@ -24,7 +24,7 @@
     {
         "orderNum": 0,
         "orderDate": "Item 0",
-        "deadDate": "$0",
+        "deadDate": "3",
         "clientCode": "$0",
         "doState": "$0",
         "orderComName": "$0",

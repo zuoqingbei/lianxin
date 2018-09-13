@@ -1,23 +1,13 @@
-@charset "utf-8";
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
-color: #ccc!important; 
-} 
-input:-moz-placeholder, textarea:-moz-placeholder { 
-color: #ccc!important;
-} 
-input::-moz-placeholder, textarea::-moz-placeholder { 
-color: #ccc!important; 
-} 
-input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-color: #ccc!important;
-} 
+
+
 #orderForm select{
 	color:#ccc;
 }
 .create-order {
-    height: 6rem;
-    box-shadow: 0 1px 5px 0 #ccc;
+    height: 6.25rem;
+	box-shadow: 0px 1px 3px 1px #ccc;
     background: #fff;
+    margin-bottom: 0.4rem;
 }
 .user-info {
     padding-left: 2.625rem;
@@ -27,7 +17,7 @@ color: #ccc!important;
     font-weight: 600;
 }
 .table-content{
-	height: calc(100% - 6.2rem);
+	height: calc(100% - 6.65rem);
 }
 .table-content label{
 	font-size: 1rem;
@@ -111,4 +101,28 @@ color: #ccc!important;
 }
 #orderForm input.active, #orderForm select.active{
 	border-color:#f00;
+}
+
+/*进度条*/
+.progress-box {
+	position: absolute;
+	display: flex;
+	justify-content: space-around;
+	align-content: center;
+    left: 10rem;
+    top: 10.5rem;
+    width: 80%;
+}
+.progress {
+	width: 68%;
+}
+.close span{
+	box-shadow: none;
+}
+.filename {
+	color: #2592fc;
+}
+.fa-paperclip {
+	transform: rotateX(180deg);
+	color: #808080;
 }

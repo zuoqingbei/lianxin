@@ -36,7 +36,7 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 	 * @param  @return
 	 * @return_type   CreditReportPrice
 	 */
-	public CreditReportPrice getPrice(String countryType, String speed, String reporttype) {
+	public CreditReportPrice getPrice(String countryType, String speed, String reporttype,String orderType) {
 		// TODO Auto-generated method stub
 			List<String> params=new ArrayList<String>();
 			StringBuffer sql=new StringBuffer(" select t.* from credit_report_price t where t.del_flag='0' ");
@@ -51,6 +51,10 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 			if (StringUtils.isNotBlank(reporttype)) {
 				sql.append(" and t.report_type=?");
 				params.add(reporttype);
+			}
+			if (StringUtils.isNotBlank(orderType)) {
+				sql.append(" and t.report_type=?");
+				params.add(orderType);
 			}
 			
 			return CreditReportPrice.dao.findFirst(sql.toString(),params.toArray());

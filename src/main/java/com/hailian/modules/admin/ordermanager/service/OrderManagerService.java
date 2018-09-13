@@ -15,6 +15,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
 import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
+import com.hailian.modules.credit.usercenter.controller.HomeController;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.jfinal.plugin.activerecord.Page;
@@ -217,9 +218,9 @@ public class OrderManagerService {
 	 * @param  @return
 	 * @return_type   CreditReportUsetime
 	 */
-	public CreditReportUsetime getTime(String countryType, String speed, String reporttype) {
+	public CreditReportUsetime getTime(String countryType, String speed, String reporttype,String orderType) {
 		// TODO Auto-generated method stub
-		return CreditReportUsetime.dao.getTime(countryType,speed,reporttype);
+		return CreditReportUsetime.dao.getTime(countryType,speed,reporttype,orderType);
 	}
 	/**
 	 * 
@@ -232,9 +233,9 @@ public class OrderManagerService {
 	 * @param  @return
 	 * @return_type   CreditReportPrice
 	 */
-	public CreditReportPrice getPrice(String countryType, String speed, String reporttype) {
+	public CreditReportPrice getPrice(String countryType, String speed, String reporttype,String orderType) {
 		// TODO Auto-generated method stub
-		return CreditReportPrice.dao.getPrice(countryType,speed,reporttype);
+		return CreditReportPrice.dao.getPrice(countryType,speed,reporttype,orderType);
 	}
 	/**
 	 * 
@@ -261,6 +262,24 @@ public class OrderManagerService {
 	public List<CreditCompanyInfo> getCompany() {
 		
 		return CreditCompanyInfo.dao.getCompany();
+	}
+
+	public List<CreditOrderInfo> getOrdersService(CreditOrderInfo model, String orderby,
+			BaseProjectController c) {
+		
+		return CreditOrderInfo.dao.getOrders( model, orderby, c);
+	}
+
+	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model, String orderby,
+			String status,SysUser user) {
+		// TODO Auto-generated method stub
+		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby,status, user);
+	}
+
+	public CreditCustomInfo getCreater(String id) {
+		// TODO Auto-generated method stub
+		
+		return CreditCustomInfo.dao.findById(id);
 	}
 
 }
