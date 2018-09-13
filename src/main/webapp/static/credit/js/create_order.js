@@ -63,10 +63,14 @@ let
 					$(that).siblings(".errorInfo").hide();
 				}
 			});
-			alert(1)
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
-				  $("#orderForm").submit();
+				 if(validForm()) {
+               		 $("#orderForm").submit();
+             	}else{
+             		return false;
+             	}
+				 
 			}
 		},
 		formSave: function(){
