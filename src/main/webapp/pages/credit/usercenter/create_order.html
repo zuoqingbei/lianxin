@@ -53,7 +53,7 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>客户ID：</label>
-		                        <select name="attr.custom_id" class="form-control search-input formSelect col-md-8" id="client_ID" onchange="customChange();">
+		                        <select name="attr.custom_id" valid="vselect" validname="客户ID" class="form-control search-input formSelect col-md-8" id="client_ID" onchange="customChange();">
 		                            <option value="0" disabled selected>请输入客户ID</option>
 		                            <%for(item in customs){%>
 		                             <option value="${item.id}" >${item.id}</option>
@@ -69,11 +69,11 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>接单日期：</label>
-		                        <input name="attr.receiver_date" value="" type="text" class="form-control search-input col-md-8" id="client_order_date" disabled>
+		                        <input name="attr.receiver_date" valid="vselect" validname="接单日期" value="" type="text" class="form-control search-input col-md-8" id="client_order_date" disabled/>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>地区：</label>
-		                        <select name="attr.continent" class="form-control search-input formSelect col-md-8" id="client_area" onchange="continentchange()">
+		                        <select name="attr.continent" valid="vselect" validname="地区" class="form-control search-input formSelect col-md-8" id="client_area" onchange="continentchange()">
 		                            ${sandbar!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择地区</p>
@@ -82,14 +82,14 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>国家：</label>
-		                        <select name="attr.country" class="form-control search-input formSelect col-md-8" id="client_country" onchange="countrychange()">
+		                        <select name="attr.country" valid="vselect" validname="国家" class="form-control search-input formSelect col-md-8" id="client_country" onchange="countrychange()">
 		                            <option value="0" disabled selected>请选择国家</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择国家</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告类型：</label>
-		                        <select name="attr.report_type" class="form-control search-input formSelect col-md-8" id="client_reportType" onchange="reportTypeChange();">
+		                        <select name="attr.report_type" valid="vselect" validname="报告类型" class="form-control search-input formSelect col-md-8" id="client_reportType" onchange="reportTypeChange();">
 		                             ${reportType!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告类型</p>
@@ -98,14 +98,14 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>订单类型：</label>
-		                        <select name="attr.order_type" class="form-control search-input formSelect col-md-8" id="client_orderType" onchange="ordertypechange();">
+		                        <select name="attr.order_type" valid="vselect" validname="订单类型" class="form-control search-input formSelect col-md-8" id="client_orderType" onchange="ordertypechange();">
 		                           ${ordertype!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择订单类型</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
-		                        <select name="attr.report_language" class="form-control search-input formSelect col-md-8" id="client_reportLanguage" onchange="languagechange()">
+		                        <select name="attr.report_language" valid="vselect" validname="报告语言" class="form-control search-input formSelect col-md-8" id="client_reportLanguage" onchange="languagechange()">
 		                        
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告语言</p>
@@ -114,12 +114,12 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>公司名称：</label>
-		                        <input name="attr.right_company_name_en" type="text" class="form-control search-input formInput col-md-8" id="client_departmentName" placeholder="请输入公司名称">
+		                        <input name="attr.right_company_name_en" valid="vselect" validname="公司名称" type="text" class="form-control search-input formInput col-md-8" id="client_departmentName" placeholder="请输入公司名称">
 		                    	<p class="errorInfo col-md-8">请输入公司名称</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>速度：</label>
-		                        <select name="attr.speed" class="form-control search-input formSelect col-md-8" id="client_speed" onchange="speedchange()">
+		                        <select name="attr.speed" valid="vselect" validname="速度" class="form-control search-input formSelect col-md-8" id="client_speed" onchange="speedchange()">
 		                           ${orderspeed!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择速度</p>
@@ -194,13 +194,15 @@
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4 mt-5">
 		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4 myBtn">
-		                    	<button type="submit" id="btn_submit" class="btn btn-primary btn-submit">提交</button>
+		                    	<button type="button" id="btn_submit" class="btn btn-primary btn-submit">提交</button>
 		                    	<button type="button" id="btn_save" class="btn btn-light btn-save">保存</button>
 		                    </div>
 		                </div>
 		    			<input name="attr.create_by" type="hidden" value="${user.userid}">
 		    			<input name="attr.status" type="hidden" value="0">
 		    			<input name="id" type="hidden" value="0">
+		    			<input name="priceid" type="hidden" value="0">
+		    			
 		    			<!--<input type="submit" value=""/>-->
 		    		</form>
 		    	</div>
@@ -214,6 +216,7 @@
     <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
     <script src="${BASE_PATH }static/credit/js/common.js"></script>
     <script src="${BASE_PATH }static/credit/js/create_order.js"></script>
+    <script type="text/javascript" src="${BASE_PATH }static/common/valid.js"></script>
    <script type="text/javascript">
    		function customChange(){
    			var value=$("#client_ID").find("option:selected").val();
@@ -239,9 +242,12 @@
    		}
    	 	function reportTypeChange(){
    	 		languagechange();
+   	 		price()
+   	 		usetime()
    	 	}
    	 	function ordertypechange(){
    	 	usetime();
+   	 	price()
    	 	}
    	 	function countrychange(){
    	 	 $("select[name='attr.country'] option:first").attr("selected","selected");
@@ -249,6 +255,12 @@
    	    	usetime();
    	    	//查询语言
    	    	languagechange()
+   	    	price()
+   	 	}
+   	 	
+   	 	function speedchange(){
+   	 		usetime();
+   	 		price()
    	 	}
    	 	function languagechange(){
    	 	var value1=  $("select[name='attr.country']").find("option:selected").attr("m-type");
@@ -269,17 +281,15 @@
 		          }
 		    });
     	}
-   	 	
-   	 	function speedchange(){
-   	 		usetime();
-   	 	}
+
    	 	function usetime(){
    	 	var value1=$("select[name='attr.country']").find("option:selected").attr("m-type");
     	var value2=$("select[name='attr.speed']").find("option:selected").val();
     	var value3=$("select[name='attr.report_type']").find("option:selected").val();
+    	var value4=$("select[name='attr.order_type']").find("option:selected").val();
    	 	var html="";
 	   	 $.ajax({
-		        url:"/admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3,
+		        url:"/admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4,
 		        type:"get",
 		        dataType:"json",
 		        success: function(data) {
@@ -287,9 +297,29 @@
 		        	  if(data!=null){
 		        		  $("input[name='attr.user_time']").val(data.use_time)
 		        		  $("input[name='attr.user_time_id']").val(data.id)
-		        		  $("input[name='attr.receiver_date']").val($("input[name='attr.receiver_date']").val())
+		        		  var value=$("input[name='attr.receiver_date']").val()
+		        		  console.log(value)
+		        		  $("input[name='attr.receiver_date']").val(value)
 		        }
 		        },
+		    });
+   	 	}
+   	 	function price(){
+   	 	var value1=$("select[name='attr.country']").find("option:selected").attr("m-type");
+    	var value2=$("select[name='attr.speed']").find("option:selected").val();
+    	var value3=$("select[name='attr.report_type']").find("option:selected").val();
+    	var value4=$("select[name='attr.order_type']").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"admin/ordermanager/getPrice?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	  if(data!=null){
+		        		  $("#priceid").val(data.id)
+		        	  }
+		        	
+		          }
 		    });
    	 	}
    </script>

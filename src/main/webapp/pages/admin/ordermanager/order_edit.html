@@ -125,9 +125,10 @@ include("/pages/template/head.html"){}
     	var value1=$("#country").find("option:selected").attr("m-type");
     	var value2=$("#speed").find("option:selected").val();
     	var value3=$("#reporttype").find("option:selected").val();
+    	var value4=$("ordertype").find("option:selected").val();
    	 	var html="";
 	   	 $.ajax({
-		        url:"admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3,
+		        url:"admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4,
 		        type:"get",
 		        dataType:"json",
 		        success: function(data) {
@@ -136,21 +137,18 @@ include("/pages/template/head.html"){}
 		        		  $("#usertimeid").val(data.id)
 		       			  oper.endTime();
 		        }
-		        },
-		        error: function(XMLHttpRequest, textStatus, errorThrown) {
-		            alert(XMLHttpRequest.status);
-		            alert(XMLHttpRequest.readyState);
-		            alert(textStatus);
-		        },
+		        }
 		    });
     },
     priceChange:function(){
     	var value1=$("#country").find("option:selected").attr("m-type");
     	var value2=$("#speed").find("option:selected").val();
     	var value3=$("#reporttype").find("option:selected").val();
+    	var value4=$("ordertype").find("option:selected").val();
+    		
    	 	var html="";
 	   	 $.ajax({
-		        url:"admin/ordermanager/getPrice?countrytype="+value1+"&speed="+value2+"&reporttype="+value3,
+		        url:"admin/ordermanager/getPrice?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4,
 		        type:"get",
 		        dataType:"json",
 		        success: function(data) {
@@ -159,12 +157,7 @@ include("/pages/template/head.html"){}
 		        		  $("#priceid").val(data.id)
 		        	  }
 		        	
-		          },
-		        error: function(XMLHttpRequest, textStatus, errorThrown) {
-		            alert(XMLHttpRequest.status);
-		            alert(XMLHttpRequest.readyState);
-		            alert(textStatus);
-		        },
+		          }
 		    });
     },
     languageChange:function(){
@@ -182,12 +175,7 @@ include("/pages/template/head.html"){}
 		        		}
 		        	}
 		        	$("select[name='attr.report_language']").html(html);
-		          },
-		        error: function(XMLHttpRequest, textStatus, errorThrown) {
-		            alert(XMLHttpRequest.status);
-		            alert(XMLHttpRequest.readyState);
-		            alert(textStatus);
-		        },
+		          }
 		    });
     }
     };
@@ -289,7 +277,7 @@ var bodyContent = {
 		<tr>
 			<td>订单类型</td>
 			<td>
-				<select class="form-control" valid="vselect"  validname="订单类型" style="width: 200px;" name="attr.order_type" onchange="oper.orderTypeChange()">
+				<select id="ordertype" class="form-control" valid="vselect"  validname="订单类型" style="width: 200px;" name="attr.order_type" onchange="oper.orderTypeChange()">
 					${ordertype!}
 				</select>
 					 

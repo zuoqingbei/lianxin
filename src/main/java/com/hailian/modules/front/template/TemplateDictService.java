@@ -58,6 +58,48 @@ public class TemplateDictService extends BaseService {
 		return sb.toString();
 	}
 	/**
+	 * 根据dict_type获取字典,用于添加,无默认选项,无全部选项
+	 * @time   2018年9月13日 下午12:05:29
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param type
+	 * @param  @return
+	 * @return_type   String
+	 */
+	public String getSysDictDetailString(String type) {
+		StringBuffer sb=new StringBuffer();
+		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		listDetail.addAll(DictCache.getSysDictDetailByType(type));
+		for(SysDictDetail detail:listDetail){			
+			sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+		}
+		return sb.toString();
+	}
+	/**
+	 * 根据dict_type获取字典,用于添加,有默认选项,无全部选项
+	 * @time   2018年9月13日 下午12:08:26
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param type
+	 * @param  @param selectedId
+	 * @param  @return
+	 * @return_type   String
+	 */
+	public String getSysDictDetailString2(String type,Object selectedId) {
+		StringBuffer sb=new StringBuffer();
+		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		listDetail.addAll(DictCache.getSysDictDetailByType(type));
+		for(SysDictDetail detail:listDetail){
+			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
+				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+			}else{
+				sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+				}
+			}
+			
+		return sb.toString();
+	}
+	/**
 	 * @param type 根据dict_type获取字典
 	 * @param selectedId
 	 * @param showColumnName 所展示字段名

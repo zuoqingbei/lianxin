@@ -9,7 +9,7 @@
 	<welcome-file-list>
 		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
-	<!-- <filter> 
+	<filter> 
         <filter-name>userfilter</filter-name> 
         <filter-class> 
             com.hailian.modules.credit.interceptor.UserInterceptor
@@ -18,7 +18,7 @@
     <filter-mapping> 
         <filter-name>userfilter</filter-name> 
         <url-pattern>/credit/front/*</url-pattern> 
-    </filter-mapping>-->
+    </filter-mapping>
 	<filter>
 		<filter-name>jfinal</filter-name>
 		<filter-class>com.jfinal.core.JFinalFilter</filter-class>
