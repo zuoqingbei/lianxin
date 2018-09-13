@@ -18,9 +18,11 @@ public class UserInterceptor implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
-
 	}
-
+	
+	/**
+	 * 登录拦截器
+	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -35,7 +37,6 @@ public class UserInterceptor implements Filter {
         	 chain.doFilter(rq, rp);
          }
     } 
-         
 
 	@Override
 	public void destroy() {
