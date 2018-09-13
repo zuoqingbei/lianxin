@@ -24,12 +24,14 @@ public class UploadFileService {
 	* @date 2018年9月3日上午9:25:15  
 	* @TODO
 	 */
-	public boolean save(Integer pid,UploadFile uploadBean,String factpath,String url, CreditUploadFileModel model, String fileName, Integer userid){
+	public boolean save(Integer pid,UploadFile uploadBean,String factpath,String url,String pdfFactpath,String pdfUrl, CreditUploadFileModel model, String fileName, Integer userid){
 		boolean flag=false;
 		String now = DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
 		model.set("name", fileName);
 		model.set("factpath", factpath);
 		model.set("url", url);
+		model.set("view_path", pdfFactpath);
+		model.set("view_url", pdfUrl);
 		String originalName = uploadBean.getOriginalFileName();
 		String fileExt = null;
 		int dot = originalName.lastIndexOf(".");

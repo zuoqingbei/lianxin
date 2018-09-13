@@ -62,20 +62,20 @@ var bodyContent = {
 	<table class="table">
 		<%  // 列表头部%>
 				<tr>
-					<td>文件</td>
+					<td>上传文件</td>
 					<td colspan="3">
-						<input type="file" accept="*" class="form-control" name="file_url" />
+						<input type="file" accept="*" class="form-control" name="file_url" valid="vtext" validname="上传文件"/>
 					</td>
 				</tr>
 				<tr>
 					<td>业务编码</td>
 					<td>
-					<input class="form-control" type="text" name="model.business_id" value="${model.business_id}" />
+					<input class="form-control" type="text" name="model.business_id" value="${model.business_id}" valid="vtext" validname="业务编码"/>
 					</td>
 					<td>业务类型</td>
 					<td>
 						<div class="form-group">
-						<select name="model.business_type" class="form-control" >
+						<select name="model.business_type" class="form-control" valid="vselect" validname="业务类型">
 						 	${upload_busType!}
 						</select>
 						</div>
