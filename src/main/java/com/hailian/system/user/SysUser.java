@@ -16,6 +16,7 @@ public class SysUser extends SessionUser<SysUser> {
 	private String departName;
 	private String roleName;
 	
+	
 	public void setDepartName(String departName) {
 		set("departName",departName);
 	}
@@ -35,9 +36,9 @@ public class SysUser extends SessionUser<SysUser> {
 		sql.append("select u.* ,s.name as departName,s1.name as roleName from sys_user u ");
 		sql.append("left join sys_department s on u.departid=s.id ");
 		sql.append("left join sys_role s1 on u.usertype=s1.id ");
-		if(StringUtils.isNotBlank(c.getSessionUser().getStr("id"))) {
-			sql.append("where u.id=?");
-			params.add(c.getSessionUser().getStr("id"));
+		if(StringUtils.isNotBlank(c.getSessionUser().getStr("userid"))) {
+			sql.append("where u.userid=?");
+			params.add(c.getSessionUser().getStr("userid"));
 		}
 		return dao.findFirst(sql.toString(), params.toArray());
 	}

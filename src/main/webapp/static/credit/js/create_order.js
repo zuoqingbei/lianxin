@@ -7,6 +7,12 @@ let
 				$(this).css("color", "#495057");
 			} 
 		},
+		btn_download:function(){
+			/**点击批量上传 */
+			$("#btn_download").click(function(){
+				$("#upload_file").trigger('click')
+			})
+		},
 		emailAdd: function (obj){
             let tv = $(obj).val();
             let reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -59,13 +65,22 @@ let
 			});
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
-					
+				 if(validForm()) {
+               		 $("#orderForm").submit();
+             	}else{
+             		return false;
+             	}
+				 
 			}
 		},
 		formSave: function(){
 			
 		},
-		
+		closeProgress(){
+			$(".close").click(function(){
+				$("#Close").hide();
+			})
+		}
 	},
 /* 画面对象 */
 	Page = {
@@ -82,7 +97,7 @@ let
 			/*表单提交*/
 			$("#btn_submit").click(Events.formSubmit);
 			/*表单保存*/
-			$("#btn_submit").click(Events.formSave);
+			$("#btn_save").click(Events.formSave);
         },
         // 画面初始化
         initialize: function () {
@@ -105,7 +120,9 @@ let
         init: function () {
             Page.initialize();
             Page.initEvents();
-            Page.initValidator();
+			Page.initValidator();
+			Events.btn_download();
+			Events.closeProgress();
         }
 	};
 $(document).ready(function () {

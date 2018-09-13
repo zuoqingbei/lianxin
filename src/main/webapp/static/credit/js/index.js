@@ -6,6 +6,7 @@ let Index = {
         this.initReset();
         this.popperFilter();
         this.hideShowStyle();
+        this.searchEvent();
     },
     dateForm(){
         /**日期控件 */
@@ -48,9 +49,47 @@ let Index = {
 
       /**点击确定按钮 */
       $(".enterFilter").click(function(){
-        $('.deal-state').toggleClass("deal-state-show")
-        var value1 = $("#defaultCheck1").prop("checked")
-        console.log(value1)
+			var checked=[];
+		    	 var checkchar=""
+		                 $("input[name='status']:checked").each(function(i){
+		                       checked[i] = $(this).val();
+		                       checkchar+=checked[i]+","
+		                 });
+		                 console.log(checkchar);
+		                 console.log($("#attr.custom_id").val+$("#attr.continent").val);
+		        		$.ajax({
+		        			type:"post",
+		        			url:"/credit/front/home/list",
+		        			data:{"attr.custom_id":$("#custom_id").find("option:selected").val(),
+		        				"attr.continent":$("#continent").find("option:selected").val(),
+		        				"attr.country":$("#country").find("option:selected").val(),
+		        				"attr.end_date":$("#dead_date").val(),
+		        				"attr.company_by_report":$("#company_by_report").val(),
+		        				"attr.right_company_name_en":$("#right_company_name_en").val(),
+		        				"status":checkchar},
+		        			 dataType:"json",
+		        			 success:function(data){
+		        			 	 $("#table").bootstrapTable("load",data)
+		        			 }
+		        		})
+
+        /**发起ajax请求  获取表格数据*/
+      })
+    },
+    searchEvent(){
+
+      $("#btn_query").click(function(){
+       		$.ajax({
+       			type:"post",
+       			url:"/credit/front/home/list",
+       			data:$("#formSearch").serialize(),
+       			 dataType:"json",
+       			 success:function(data){
+       			 	 $("#table").bootstrapTable("load",data)
+       			 }
+       		})
+
+        /***发起ajax请求 获取表格数据*/
       })
     },
     hideShowStyle(){
@@ -74,43 +113,43 @@ let Index = {
             columns: [
                  {
                   title: '订单号',
-                  field: 'orderNum',
+                  field: 'id',
                   align: 'center',
                   valign: 'middle',
                 },{
-                  field: 'orderDate',
+                  field: 'receiver_date',
                   title: '订单日期',
                   sortable: true,
                   align: 'center'
                 }, {
-                  field: 'deadDate',
+                  field: 'end_date',
                   title: '到期日期',
                   sortable: true,
                   align: 'center',
                 }, {
                   title: '客户代码',
-                  field: 'clientCode',
+                  field: 'custom_id',
                   align: 'center',
                   valign: 'middle',
                 }, {
                   title: `处理状态 &nbsp;<i class="fa fa-filter"></i>`,
-                  field: 'doState',
+                  field: 'status',
                   align: 'center',
                   valign: 'middle',
                 
                 }, {
                   title: '订单公司名称',
-                  field: 'orderComName',
+                  field: 'companyName',
                   align: 'center',
                   valign: 'middle',
                 }, {
                   title: '国家',
-                  field: 'country',
+                  field: 'countryName',
                   align: 'center',
                   valign: 'middle',
-                }, {
+                }, /*{
                   title: '是否有财务信息',
-                  field: 'reportType',
+                  field: 'report_type',
                   align: 'center',
                   valign: 'middle',
                 }, {
@@ -118,12 +157,12 @@ let Index = {
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
-                }, {
+                },*/ {
                   title: '报告类型',
-                  field: 'reportType',
+                  field: 'report_type',
                   align: 'center',
                   valign: 'middle',
-                }, {
+                }, /*{
                   title: '报告员',
                   field: 'reportType',
                   align: 'center',
@@ -138,7 +177,7 @@ let Index = {
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
-                },{
+                },*/{
                   field: 'operate',
                   title: '操作',
                   align: 'center',
@@ -151,16 +190,25 @@ let Index = {
                 }
               
             ],
+            url : '/credit/front/home/list', // 请求后台的URL（*）
+            method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',
             pageNumber:1,
             pageSize:10,
-            pageList: [10 , 20],
+            pageList: [5,10 , 20],
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
             fixedColumns: true,
             fixedNumber: 1,
+            queryParamsType:'',
+            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
+              return {//这里的params是table提供的  
+                  pageNo: params.pageNumber,//从数据库第几条记录开始  
+                  recordsperpage: params.pageSize//找多少条  
+              };  
+          },  
           });
           // sometimes footer render error.
           setTimeout(() => {
