@@ -36,7 +36,6 @@ import com.hailian.jfinal.component.handler.HtmlHandler;
 import com.hailian.jfinal.component.interceptor.ExceptionInterceptor;
 import com.hailian.jfinal.component.interceptor.JflyfoxInterceptor;
 import com.hailian.jfinal.component.interceptor.SessionAttrInterceptor;
-import com.hailian.modules.credit.interceptor.CreditLoginInterceptor;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateImageService;
 import com.hailian.modules.front.template.TemplateReportTypeService;
