@@ -48,6 +48,8 @@ public class OrderManagerService {
 				coi.set("id", id);
 				coi.update();
 			} else {
+				Date date=new Date();
+				coi.set("receiver_date", date);
 				coi.save();
 			}
 

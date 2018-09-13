@@ -81,7 +81,7 @@ let Index = {
       $("#btn_query").click(function(){
        		$.ajax({
        			type:"post",
-       			url:"home/list",
+       			url:"/credit/front/home/list",
        			data:$("#formSearch").serialize(),
        			 dataType:"json",
        			 success:function(data){
