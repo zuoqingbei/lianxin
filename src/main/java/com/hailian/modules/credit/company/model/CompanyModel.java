@@ -27,6 +27,14 @@ public class CompanyModel extends BaseProjectModel<CompanyModel> {
 	private static final long serialVersionUID = 1L;
 	public static final CompanyModel dao = new CompanyModel();
 	private Page<CompanyModel> companyPage;
+	private static List<String> columnnNames = new ArrayList<>();
+	static{
+		columnnNames.add("name");
+		columnnNames.add("name_en");
+		columnnNames.add("registration_num");
+		columnnNames.add("credit_code");
+		
+	}
 
 	/**
 	 * 根据id获取公司
@@ -87,15 +95,12 @@ public class CompanyModel extends BaseProjectModel<CompanyModel> {
 	 * @todo   分页查询企业信息
 	 * @return_type   Page<CompanyModel>
 	 */
-	public Page<CompanyModel> pageCompany(int pageNumber, int pageSize, String orderBy, String companyName,
-			String companyNameEn, String registrationNum, String creditCode, String companyType, BaseProjectController c) {
+	public Page<CompanyModel> pageCompany(int pageNumber, int pageSize, String orderBy,
+		String companyName, String companyNameEn, String registrationNum, String creditCode, BaseProjectController c) {
 		StringBuffer selectSql = new StringBuffer(" select * ");
 		StringBuffer fromSql = new StringBuffer(" from credit_company_info t where 1=1 and t.del_flag=0  ");
 		List<Object> params = new ArrayList<Object>();
-		if (StringUtils.isNotBlank(companyType)) {
-			fromSql.append("and t.company_type=?");
-			params.add(companyType);
-		}
+
 		if (StringUtils.isNotBlank(companyName)) {
 			fromSql.append("and t.name  like concat('%',?,'%')  ");
 			params.add(companyName);

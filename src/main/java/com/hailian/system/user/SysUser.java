@@ -41,5 +41,18 @@ public class SysUser extends SessionUser<SysUser> {
 		}
 		return dao.findFirst(sql.toString(), params.toArray());
 	}
+	
+	/**
+	 * lzg
+	 * @param username
+	 * @return
+	 */
+	//根据用户名查找实体
+	public SysUser findByUserName(String username) {
+		List<Object> params = new ArrayList<>();
+		params.add(username);
+		return super.findFirstByWhere(" where username=?", params.toArray());
+	}
+	
 
 }
