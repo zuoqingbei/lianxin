@@ -1,6 +1,13 @@
 package com.hailian.modules.admin.ordermanager.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -19,8 +26,10 @@ import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.hailian.util.DateAddUtil;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 /**
  * 
@@ -227,6 +236,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @author yangdong
 	 * @todo   TODO
 	 * @param  
+	 * @throws ParseException 
 	 * @return_type   void
 	 * 获取订单时间
 	 */
@@ -237,12 +247,26 @@ public class OrdermanagerController extends BaseProjectController{
 			@Param(name = "speed", description = "速度", required = false, dataType = "String"),
 			@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String")
 			})
-	public void getTime() {
+	public void getTime() throws ParseException {
 		String countryType=getPara("countrytype", "");
 		String speed=getPara("speed", "");
 		String reporttype=getPara("reporttype", "");
 		String orderType=getPara("ordertype", "");
-		renderJson(OrderManagerService.service.getTime(countryType,speed,reporttype,orderType));
+		String receivedate=getPara("receivedate","");
+		CreditReportUsetime usetime=OrderManagerService.service.getTime(countryType,speed,reporttype,orderType);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar ca = Calendar.getInstance();
+		if(StringUtils.isNotBlank(receivedate)) {
+		ca.setTime(sdf.parse(receivedate));//设置接单时间
+		}
+		Calendar c = 
+				new DateAddUtil().addDateByWorkDay(ca,//当前时间
+						//需要用多少天
+						(int)Math.ceil(usetime.getInt("use_time")/24.0));
+		Record record=new Record();
+		record.set("usetime", usetime);
+		record.set("enddate", sdf.format(c.getTime()));
+		renderJson(record);
 
 	}
 	/**
