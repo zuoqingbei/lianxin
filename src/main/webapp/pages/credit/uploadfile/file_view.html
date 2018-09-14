@@ -5,6 +5,24 @@ var headContent = {
 
 var bodyContent = {
 %>
+<script type="text/javascript">
+	//文件下载
+	function downFile(str){
+		let $eleForm = $("<form method='get'></form>");
+		$eleForm.attr("action", str);
+		$(".container").append($eleForm);
+		//提交表单，实现下载
+		$eleForm.submit();
+	}
+	
+	//文件预览
+	function fileView(str,type){
+		console.log(str,"=======================")
+	    var url = "credit/commonFile/previewFileOnline?url="+str+"&type="+type;  
+	    window.open(url);
+	}
+	
+</script>
 <form name="form1" action="" method="post" class="form-horizontal" role="form">
 	<!-- 数据列表 -->
 	<table class="table">
@@ -15,13 +33,15 @@ var bodyContent = {
 			</tr>
 			<tr>
 				<td>文件</td>
-				<td colspan="3">
+				<td >
 					<% if(!strutil.isEmpty(model.url)){ %>
 						<a href="${model.url}" target="_blank" style="text-decoration:none;">
 							<img alt="文件" title="点击浏览" src="" width="40" height="40">
 						</a>
 					<% } %>
 				</td>
+				<td><span class="btn btn-sm btn-success" onclick="fileView(''+'${model.view_url}'+'',''+'${model.ext}'+'')">文件预览</span></td> 
+				<td><a class="btn btn-primary" href='${model.url}' download='${model.name}'>文件下载</a></td>   
 			</tr>
 			<tr>
 				<td>链接地址</td>
@@ -55,7 +75,8 @@ var bodyContent = {
 				<% 	} else { %>
 					${model.remarks}
 				<%  } %>
-			</td> 
+				</td> 
+			</tr>
 	</table>
 	
 	<div style="height: 50px;clear: both;">&nbsp;</div>
@@ -65,6 +86,7 @@ var bodyContent = {
 	  </div>
 	</nav>
 </form>
+
 <%}; %>
 
 <% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>

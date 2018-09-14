@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,16 +17,14 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
-import com.hailian.modules.admin.image.model.TbImage;
+import com.hailian.modules.admin.site.TbSite;
 import com.hailian.modules.credit.utils.FileTypeUtils;
-import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
-import com.hailian.modules.credit.whilte.service.ArchivesWhilteService;
+import com.hailian.modules.credit.utils.Office2PDF;
+import com.hailian.system.file.util.FileUploadUtils;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
-import com.hailian.util.StrUtils;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
@@ -49,6 +49,7 @@ public class FileUpLoadController extends BaseProjectController {
 	* @TODO
 	 */
 	public void uploadFile(){
+		List<File> ftpfileList=new ArrayList<File>();
 		Integer pid = getParaToInt();
 		CreditUploadFileModel model = null;
 		String business_id = null;
@@ -63,30 +64,34 @@ public class FileUpLoadController extends BaseProjectController {
 			UploadFile uploadFile = getFile("file_url");//从前台获取文件
 			if(uploadFile != null){
 				size=1;
-				int dot = uploadFile.getOriginalFileName().lastIndexOf(".");
-				
-				originalFileName=uploadFile.getOriginalFileName();
-				if (dot != -1) {
-					originalFileName=originalFileName.substring(0, dot);
-					ext = uploadFile.getOriginalFileName().substring(dot + 1);
-				} else {
-					ext = "";
-				}
+				ext=FileTypeUtils.getFileType(uploadFile.getOriginalFileName());
 				model = getModel(CreditUploadFileModel.class);
 				business_id = model.get("business_id");
 				business_type = model.getInt("business_type");//检索条件-报告类型
-				
 				if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
 					String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
-					String now=DateUtils.getNow(DateUtils.YMDHMS);
-					String FTPfileName=originalFileName+now+"."+ext;
+//					String now=DateUtils.getNow(DateUtils.YMDHMS);
+					String now=UUID.randomUUID().toString().replaceAll("-", "");
+					originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
+					String FTPfileName=now+"."+ext;
 					String fileName=originalFileName+now;
-					boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+					String pdf_FTPfileName="";
+					ftpfileList.add(uploadFile.getFile());
+					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
+						File pdf = toPdf(uploadFile);
+						pdf_FTPfileName=now+"."+"pdf";
+						ftpfileList.add(pdf);
+					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
+						pdf_FTPfileName=FTPfileName;
+					}
+					boolean storeFile = FtpUploadFileUtils.storeFtpFile(now,ftpfileList,storePath,ip,port,userName,password);//上传
 					if(storeFile){
 						String factpath=storePath+"/"+FTPfileName;
+						String pdfFactpath=storePath+"/"+pdf_FTPfileName;
 						String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+						String pdfUrl="http://"+ip+"/" + storePath+"/"+pdf_FTPfileName;
 						Integer userid = getSessionUser().getUserid();
-						UploadFileService.service.save(pid,uploadFile, factpath,url,model,fileName,userid);//记录上传信息
+						UploadFileService.service.save(pid,uploadFile, factpath,url,pdfFactpath,pdfUrl,model,fileName,userid);//记录上传信息
 					}else{
 						failnumber+=1;
 						markFile+=uploadFile.getOriginalFileName()+"上传失败!";
@@ -147,12 +152,12 @@ public class FileUpLoadController extends BaseProjectController {
 						String now=DateUtils.getNow(DateUtils.YMDHMS);
 						String FTPfileName=originalFileName+now+"."+ext;
 						String fileName=originalFileName+now;
-						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
-						if(storeFile){
+//						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						if(true){
 							String factpath=storePath+"/"+FTPfileName;
 							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
 							Integer userid = getSessionUser().getUserid();
-							UploadFileService.service.save(pid,uploadFile, factpath,url,model,fileName,userid);//记录上传信息
+//							UploadFileService.service.save(pid,uploadFile, factpath,url,model,fileName,userid);//记录上传信息
 							
 						}else{
 							failnumber+=1;
@@ -272,5 +277,13 @@ public class FileUpLoadController extends BaseProjectController {
 		UploadFileService.service.delete(id,userid);//记录上传信息
 		list();
 	}
-
+	public File toPdf(UploadFile uploadFile) throws Exception{
+		TbSite site = getBackSite();
+		String projectStorePath = FileUploadUtils.getUploadPath(site, "view");
+		String now=DateUtils.getNow(DateUtils.YMDHMS);
+		String type = FileTypeUtils.getFileType(uploadFile.getFileName());
+		String name = FileTypeUtils.getName(uploadFile.getFileName());
+		File convertFileToPdf = Office2PDF.convertFileToPdf(uploadFile.getFile(),name,type, projectStorePath);
+		return convertFileToPdf;
+	}
 }
