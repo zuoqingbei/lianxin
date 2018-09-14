@@ -57,4 +57,22 @@ public class FileTypeUtils {
 		return flag;
 		
 	}
+	public static String getFileType(String file){
+		String ext = file.substring(file.lastIndexOf(".") + 1);
+		return ext;
+		
+	}
+	public static String getName(String FileName){
+		String name = FileName.substring(0,FileName.lastIndexOf("."));
+		return name;
+	}
+	public static boolean isImg(String ext){
+		boolean flag=false;
+		for (int i = 0; i < img.length; i++) {
+			if (img[i].equalsIgnoreCase(ext)) {
+				flag=true;
+			}
+		}
+		return flag;
+	}
 }

@@ -106,7 +106,7 @@
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
 		                        <select name="attr.report_language" valid="vselect" validname="报告语言" class="form-control search-input formSelect col-md-8" id="client_reportLanguage" onchange="languagechange()">
-		                        
+		                        	 <option value="0" disabled selected>请选择语言</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告语言</p>
 		                    </div>
@@ -201,8 +201,8 @@
 		    			<input name="attr.create_by" type="hidden" value="${user.userid}">
 		    			<input name="attr.status" type="hidden" value="0">
 		    			<input name="id" type="hidden" value="0">
-		    			<input name="priceid" type="hidden" value="0">
-		    			
+		    			<input id="priceid" name="attr.price_id" type="hidden" value="0">
+		    			<input name="attr.source" type="hidden" value="0">
 		    			<!--<input type="submit" value=""/>-->
 		    		</form>
 		    	</div>
