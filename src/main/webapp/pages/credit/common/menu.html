@@ -42,8 +42,9 @@
                      	<% if(menu[item.id].~size > 0) { %>
 			
 					<li id="${item.urlkey}" role="presentation" class="hasChild">
-				    <a class="menu1" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-				      ${item.name}<span class="caret"></span>
+				    <a class="menu1"  href="#" role="button" >
+				    	<i class="fa fa-wpforms fa-fw"></i>
+				     	<span > ${item.name}</span>
 				    </a>
 				    <ul style="display: none;" role="menu">
 				<%  for(item2 in menu[item.id]) { %>
