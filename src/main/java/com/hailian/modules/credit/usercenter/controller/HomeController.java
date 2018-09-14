@@ -56,6 +56,7 @@ public class HomeController extends BaseProjectController {
 		@Param(name = "id", description = "订单id", required = false, dataType = "String"),
 		})
 	public void list(){
+		String uri = this.getRequest().getRequestURI();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		/*SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
 		String date=getPara("end_date","");
