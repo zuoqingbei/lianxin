@@ -1,5 +1,5 @@
-<% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled!); %>
-<% var send_type = tempDict.getSysDictDetailString('send_type',model.send_type!);%>
+<% var usabled = tempDict.getSysDictDetailString2('usabled',model.enabled!); %>
+<% var send_type = tempDict.getSysDictDetailString2('send_type',model.send_type!);%>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -65,7 +65,8 @@ var bodyContent = {
 				<tr>
 					<td>发送用户类型</td>
 					<td>
-					<select name="model.enabled" class="form-control" >
+					<select name="model.send_type" class="form-control" valid="vselect" validname="用户类型">
+					<option value="-1" >请选择用户类型</option>
 					${send_type!}
 					</select>
 					</td>
@@ -101,9 +102,12 @@ var bodyContent = {
 				<tr>
 					<td>是否启用</td>
 					<td>
-					<select name="model.enabled" class="form-control" >
+					
+					<select name="model.enabled" class="form-control" valid="vselect" validname="状态">
+					<option value="-1" >请选择</option>
 					${usabled!}
 					</select>
+					<!-- <input class="form-control" type="text" name="model.usabled" value="${model.usabled}" /> -->
 					</td>
 				</tr>
 	</table>

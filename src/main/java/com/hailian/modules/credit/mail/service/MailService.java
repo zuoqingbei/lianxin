@@ -29,6 +29,9 @@ public class MailService {
 	public void delete(Integer id, Integer userid){
 		MailModel.dao.delete(id,userid);
 	}
+	public void toEnabled(Integer id, Integer userid){
+		MailModel.dao.toEnabled(id, userid);
+	}
 	public List<MailModel> getCustom(Integer id){
 		List<MailModel> mail = MailModel.dao.getMail(id);
 		return mail;

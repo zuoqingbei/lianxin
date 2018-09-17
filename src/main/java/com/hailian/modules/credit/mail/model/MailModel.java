@@ -8,6 +8,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
@@ -48,8 +49,9 @@ public class MailModel extends BaseProjectModel<MailModel> {
 		// TODO Auto-generated method stub
 		List<Object> params=new ArrayList<Object>();
 		StringBuffer sql=new StringBuffer(" from credit_mail t ");
-		sql.append("left join sys_user t2 on t2.userid = t.create_by ");
-		sql.append("left join sys_dict_detail t3 on t3.detail_id = t.send_type");
+		sql.append(" left join sys_user t2 on t2.userid = t.create_by ");
+		sql.append(" left join sys_dict_detail t3 on t3.detail_id = t.send_type ");
+		sql.append(" left join sys_dict_detail t4 on t4.detail_id = t.enabled ");
 		sql.append(" where 1=1 and t.del_flag=0 ");
 		if(!c.isAdmin(c.getSessionUser())){
 			sql.append(" and t.create_by=? ");
@@ -70,7 +72,7 @@ public class MailModel extends BaseProjectModel<MailModel> {
 			sql.append(" order by ").append(orderBy);
 		}
 		Page<MailModel> page = MailModel.dao
-				.paginate(paginator, "select t.*,t2.realname,t3.detail_name", sql.toString(),params.toArray());
+				.paginate(paginator, "select t.*,t2.realname,t3.detail_name,t4.detail_name as enabledName", sql.toString(),params.toArray());
 		System.out.println(sql);
 		return page;
 	}
@@ -88,6 +90,30 @@ public class MailModel extends BaseProjectModel<MailModel> {
 		params.add(now);
 		params.add(id);
 		Db.update(sql,params.toArray());
+		
+	}
+	/**
+	 * 设置邮件禁用
+	* @author doushuihai  
+	* @date 2018年9月17日下午4:27:01  
+	* @TODO
+	 */
+	public void toEnabled(Integer id, Integer userid) {
+		int enabled = 0;
+		String now = DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
+		String sql="update credit_mail set enabled=?,update_by=?,update_date=? where mail_id=?";
+		List<Object> params=new ArrayList<Object>();
+		List<SysDictDetail> dictDetailList=SysDictDetail.dao.getDictByType("usabled");
+		for(SysDictDetail dictdetail:dictDetailList){
+			if("禁用".equals(dictdetail.getStr("detail_name"))){
+				enabled=dictdetail.getInt("detail_id");
+				params.add(enabled);
+				params.add(userid);
+				params.add(now);
+				params.add(id);
+				Db.update(sql,params.toArray());
+			}
+		}
 		
 	}
 	public List<MailModel> getMail(Integer id){
