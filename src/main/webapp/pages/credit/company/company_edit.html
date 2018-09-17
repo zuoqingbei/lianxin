@@ -1,0 +1,124 @@
+<% var currency = tempDict.getSysDictDetailString('currency',attr.currency !); %>
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+	include("/pages/includes/my97.html"){}
+%>
+<script type="text/javascript">
+var oper = {
+	save:function(id){
+		if(!validForm()) {
+			return false;
+		}
+		id = id || '0';
+		var url = 'credit/company/save?id='+id;
+		form1.action = url;
+		form1.submit();
+		return true;
+	}	
+	
+};
+</script>
+<style>
+.tags {
+	line-height: 22px;
+	height: 22px;
+	border-top: 1px solid rgb(210, 210, 210);
+}
+
+.tags .tags_label {
+	float: left;
+	margin-right: 20px;
+	margin-left: 5px;
+	padding: 5px 1px 1px 3px;
+}
+
+.tags .tags_content {
+	float: left;
+	width: 500px;
+	margin: 5px 5px 0 0;
+	padding: 1px;
+	border: 1px solid #ccc;
+	background: #fff;
+	vertical-align: middle;
+}
+
+.tags .tags_remark {
+	padding: 5px 1px 1px 3px;
+	color: #999999;
+	font-size: 12px;
+	z-index: 10000;
+}
+</style>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal">
+	<input type="hidden" name="model.id" value=" ${model.id}" />
+	<!-- 数据列表 -->
+	<table class="table">
+	<tr>
+			<td>企业中文名</td>
+			 <td><input type="text" name="model.name" class="form-control"  valid="vtext"
+				value="${model.name}"/></td>	
+		</tr>
+		<tr>
+			<td>企业英文名</td>
+			<td><input type="text" name="model.name_en" class="form-control"  valid="vtext"
+				value="${model.name_en}"/></td>
+		</tr>
+		<tr>
+			<td>注册号</td>
+			 <td> 
+				<input type="text" name="model.registration_num" class="form-control"  valid="vfloat"
+				value="${model.registration_num}"/></td>
+		</tr>
+		<tr>
+			<td>统一信用社信用代码</td>
+			<td> <input type="text" name="model.credit_code" class="form-control"  
+				value="${model.credit_code}"/> </td>
+		</tr>
+			<tr>
+			<td>企业类型</td>
+			<td><input type="text" name="model.company_type" class="form-control" 
+				value="${model.company_type}"/></td>
+		</tr>
+		<tr>
+			<td>法定代表人中文</td>
+			<td><input type="text" name="model.legal" class="form-control" 
+				value="${model.legal}" /></td>
+		</tr>
+		<tr>
+			<td>法定代表人英文</td>
+			<td><input type="text" name="model.legal_en" class="form-control" 
+				value="${model.legal_en}"/></td>
+		</tr>
+			<tr>
+			<td>注册资本</td>
+			<td><input type="text" name="model.registered_capital" class="form-control" valid='vnum_y' 
+				value="${model.registered_capital}"/></td>
+		</tr>
+		<tr>
+			<td>币种</td>
+			<td><input type="text" name="model.currency" class="form-control" 
+				value="${model.currency!}"/></td>
+		</tr>
+</tr>
+	</table>
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+	  		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">确定</button>
+			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+<%} %>
+

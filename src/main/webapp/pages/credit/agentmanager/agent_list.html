@@ -1,0 +1,114 @@
+﻿
+﻿<% 
+	var headContent = {
+	include("/pages/template/head.html"){}
+%>
+
+<script type="text/javascript">
+var oper;
+jQuery(function($) {
+	// 页面方法
+	oper = {
+		width :800,
+		height : 620,
+		form : document.form1,
+		list : function() {
+			var url = '/credit/agentmanager/list/';
+			this.form.action = url;
+			this.form.submit();
+		},
+		view : function(id) {
+			var url = '/credit/agentmanager/view/'+id;
+			var title = '查看代理信息';
+			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+		},
+		add : function() {
+			var url = '/credit/agentmanager/add/';
+			var title = '添加代理信息';
+			Iframe(url, this.width, this.height, title);
+		},
+		edit : function(id) {
+			var url = '/credit/agentmanager/edit/'+id 
+			var title = '修改代理信息';
+			Iframe(url, this.width, this.height, title); 
+		},
+		del : function(id) {
+			var url = '/credit/agentmanager/delete/'+id;
+			var title = '确认要删除该代理信息？';
+			Confirm(title, function() {
+				form1.action = url;
+				form1.submit();
+			});
+		}
+	};
+	//显示Menu索引
+	showMenu('page_agent');
+});
+
+//分页
+var paginator = function(page) {
+	oper.list();
+};
+
+</script>
+
+<% }; var bodyContent = { %>
+<form name="form1" action="" method="post" class="form-inline" role="form">
+	<!-- 菜单 -->
+	<% include("/pages/template/menu.html"){} %>
+	<div class="form-group">
+		 <td>搜索内容</td>	 
+		    <td><input class="form-control" type="text" name="keyWord"
+				value="${keyWord!''}" placeholder="请输入关键字" required='required' /></td>
+		</div>
+		<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
+		 		<span class="glyphicon glyphicon-search"></span> 查询
+		</button>
+		<button type="button" class="btn btn-default" onclick="resetForm();">
+		 		<span class="glyphicon glyphicon-refresh"></span> 重 置
+		</button>
+		<button type="button" class="btn btn-default" onclick="oper.add();">
+		 		<span class="glyphicon glyphicon-plus"></span> 新 增
+		</button>	
+	</div>
+<!-- 数据列表 -->
+	<table class="table table-striped table-bordered table-hover">
+		<thead>
+			<tr>
+				<th name="a.agent_id" class="sorting">代理编码</th>
+				<th name="a.agent_type" class="sorting">代理类型</th>
+				<th name="a.agent_name" class="sorting">代理名称</th>
+				<th name="a.postal_code" class="sorting">邮政编码</th>	
+				<th name="a.memo " class="sorting">备忘录</th>		
+				<th name="a.price" class="sorting">价格·</th>
+				<th name="a.currency" class="sorting">币种</th>
+				<th name="a.usabled" class="sorting">是否禁用</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% for(item in page.list) { %>
+			<tr>
+				<td>${item.agent_id}</td>
+				<td>${item.agentType}</td>	
+				<td>${item.agent_name}</td>
+				<td>${item.postal_code}</td>
+				<td>${item.memo}</td>
+				<td>${item.price}</td>
+				<td>${item.Currency}</td>
+				<td>${item.Usabled}</td>
+				<td>
+					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.view(${item.agent_id});">查看</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.agent_id});">修改</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.agent_id});">删除</a></td>
+				</td>
+			</tr>
+		<% } %>
+		</tbody>
+	</table>
+	<%include("/pages/includes/paginator.html"){} %>
+</form>
+<%}; %>
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
+
