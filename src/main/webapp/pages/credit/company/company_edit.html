@@ -1,4 +1,4 @@
-<% var currency = tempDict.getSysDictDetailString('currency',attr.currency !); %>
+<% var currency = tempDict.getSysDictDetailString2('currency',attr.currency !); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -103,8 +103,9 @@ var bodyContent = {
 		</tr>
 		<tr>
 			<td>币种</td>
-			<td><input type="text" name="model.currency" class="form-control" 
-				value="${model.currency!}"/></td>
+			<td><select name="model.currency" class="form-control" style="width: 200px;" >
+					${currency!}
+				</select></td>
 		</tr>
 </tr>
 	</table>

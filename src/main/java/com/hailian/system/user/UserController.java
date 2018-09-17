@@ -4,6 +4,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.util.JFlyFoxUtils;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.jfinal.component.db.SQLUtils;
+import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.system.department.DepartmentSvc;
 import com.hailian.system.role.SysRole;
 import com.hailian.util.StrUtils;
@@ -153,4 +154,22 @@ public class UserController extends BaseProjectController {
 		renderMessage("保存成功");
 	}
 
+	/**
+	 * 
+	 * @time   2018年9月17日 上午9:39:11
+	 * @author dyc
+	 * @todo   根据用户id修改订单状态
+	 * @return_type   void
+	 */
+	public void update() {
+		Integer id = getParaToInt();
+		Integer status = getParaToInt();
+		Integer result = ((UserSvc) UserSvc.service).updateStateById(id,status);
+		if (result != -1) {
+			list();
+		} else {
+			renderText("failure");
+		}
+
+	}
 }

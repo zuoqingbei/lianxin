@@ -97,9 +97,10 @@ public class CompanyModel extends BaseProjectModel<CompanyModel> {
 	 */
 	public Page<CompanyModel> pageCompany(int pageNumber, int pageSize, String orderBy,
 		String companyName, String companyNameEn, String registrationNum, String creditCode, BaseProjectController c) {
-		StringBuffer selectSql = new StringBuffer(" select c.detail_name as currency ,t.*");
-		StringBuffer fromSql = new StringBuffer("  from credit_company_info t ");
+		StringBuffer selectSql = new StringBuffer(" select c.detail_name as Currency ,t.*");
+		StringBuffer fromSql = new StringBuffer("  from credit_company_info t  ");
 		fromSql.append("	LEFT JOIN sys_dict_detail c on c.detail_id=t.currency");
+		fromSql.append(" where c.del_flag=0 and t.del_flag=0 ");
 		List<Object> params = new ArrayList<Object>();
 		if (StringUtils.isNotBlank(companyName)) {
 			fromSql.append("and t.name  like concat('%',?,'%')  ");
@@ -137,7 +138,9 @@ public class CompanyModel extends BaseProjectModel<CompanyModel> {
 	 * @return_type   CompanyModel
 	 */
 	public CompanyModel getOne(int id, BaseProjectController c) {
-		StringBuffer sql = new StringBuffer("select * from credit_company_info t where t.del_flag=0 and  t.id=?");
+		StringBuffer sql = new StringBuffer("select c.detail_name as Currency ,t.* from credit_company_info t ");
+		sql.append("  LEFT JOIN sys_dict_detail c on c.detail_id=t.currency");
+		sql.append(" where c.del_flag=0 and t.del_flag=0 and t.id=?");
 		List<Object> params = new ArrayList<Object>();
 		params.add(id);
 		return CompanyModel.dao.findFirst(sql.toString(), params.toArray());
