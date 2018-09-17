@@ -43,7 +43,7 @@ let Public = {
                 $leftNav.find("li").removeClass("active");
                 $(this).addClass("active")
             }
-            return false;
+  //          return false;
         });
     }
 }

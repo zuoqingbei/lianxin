@@ -30,7 +30,7 @@ public class UserInterceptor implements Filter {
          HttpServletResponse rp = (HttpServletResponse) response; 
          HttpSession session = rq.getSession(); 
          SysUser user = (SysUser) session.getAttribute(Attr.SESSION_NAME);
-    	 if(user==null && rq.getRequestURI().indexOf("showLogin")==-1 ){ 
+    	 if(user==null && rq.getRequestURI().indexOf("showLogin")==-1 && rq.getRequestURI().indexOf("login")==-1){ 
 			 rp.sendRedirect("/credit/front/usercenter/showLogin");
 			 return;
          }else{
