@@ -1,0 +1,135 @@
+<% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled!); %>
+<% var is_old_customer = tempDict.getSysDictDetailString('is_old_customer',model.is_old_customer!);%>
+<% 
+	var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+		
+	var oper;
+	jQuery(function($) {
+		// 页面方法
+		oper = {
+			width : 800,
+			height : 500,
+			form : document.form1,
+			list : function() {
+				var url = 'credit/mail/list';
+				this.form.action = url;
+				this.form.submit();
+			},
+			enabled : function(id) {
+				var url = 'credit/mail/enabled/'+id;
+				var title = '禁用';
+				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+			},
+			add : function() {
+				var url = 'credit/mail/add';
+				var title = '新增';
+				Iframe(url, this.width, this.height, title);
+			},
+			edit : function(id) {
+				var url = 'credit/mail/edit/'+id;
+				var title = '修改';
+				Iframe(url, this.width, this.height, title);
+			},
+			del : function(id) {
+				var url = 'credit/mail/delete/'+id;
+				var title = '确定要删除吗？';
+				Confirm(title, function() {
+					form1.action = url;
+					form1.submit();
+				});
+			}
+		};
+		//显示Menu索引
+		showMenu('page_mail');
+	});
+	
+	//分页
+	var paginator = function(page) {
+		oper.list();
+	};
+</script>
+
+<%
+};
+
+var bodyContent = {
+%>
+	<form name="form1" action="" method="post"  class="form-inline" role="form">
+		<input type="hidden" name="form.orderColumn" value="${form.orderColumn!''}" />
+		<input type="hidden" name="form.orderAsc" value="${form.orderAsc!''}" />
+		<!-- 菜单 -->
+		<% include("/pages/template/menu.html"){} %>
+
+		<div class="tableSearch">
+			<%  //查询列表 %>
+			模板名称
+			<div class="form-group">
+				<input class="form-control" type="text" name="keyword"
+					value="${keyWord!''}" placeholder="请输入模板名称" required='required' />
+			</div>
+			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
+			 		<span class="glyphicon glyphicon-search"></span> 查 询
+			</button>
+			<button type="button" class="btn btn-default" onclick="resetForm();">
+			 		<span class="glyphicon glyphicon-refresh"></span> 重 置
+			</button>
+			<button type="button" class="btn btn-default" onclick="oper.add();">
+			 		<span class="glyphicon glyphicon-plus"></span> 新 增
+			</button>
+		</div>
+		
+		<!-- 数据列表 -->
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<%  // 列表头部 %>
+					<th name="t.send_type" class="sorting">发送用户类型</th> 
+					<th name="t.module_name" class="sorting">模板名称</th> 
+					<th name="t.module_title" class="sorting">模板标题</th> 
+					<th name="t.module_id" class="sorting">模板标识</th> 
+					<th name="t.module_content" class="sorting">模板内容</th> 
+					<th name="t.create_date" class="sorting">创建时间</th>
+					<th name="t.enabled" class="sorting">状态</th> 
+ 					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<% for(item in page.list){ %>
+				<tr>
+				<td>${itemLP.index }</td>
+					<%  // 列表内容 %>
+					<td>${item.detail_name}</td> 
+					<td>${item.module_name}</td> 
+					<td>
+						${item.module_title}
+					</td> 
+					<td>${item.module_id}</td>
+					<td>
+						<% if (strutil.length(item.module_content) >
+					30) { %> ${strutil.subStringTo(item.module_content, 0, 30)}... <% } else { %>
+					${item.module_content} <% } %>
+					</td>  
+					<td>
+						${item.create_date}
+					</td>  
+					<td>${item.enabledName}</td>
+				<td>
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.mail_id});">修改</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.enabled(${item.mail_id});">禁用</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.mail_id});">删除</a>
+				</td>
+				</tr>
+			<% } %>
+			</tbody>
+		</table>
+		<%include("/pages/includes/paginator.html"){} %>
+	</form>
+<%}; %>
+
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
