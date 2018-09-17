@@ -97,10 +97,10 @@ public class CompanyModel extends BaseProjectModel<CompanyModel> {
 	 */
 	public Page<CompanyModel> pageCompany(int pageNumber, int pageSize, String orderBy,
 		String companyName, String companyNameEn, String registrationNum, String creditCode, BaseProjectController c) {
-		StringBuffer selectSql = new StringBuffer(" select * ");
-		StringBuffer fromSql = new StringBuffer(" from credit_company_info t where 1=1 and t.del_flag=0  ");
+		StringBuffer selectSql = new StringBuffer(" select c.detail_name as currency ,t.*");
+		StringBuffer fromSql = new StringBuffer("  from credit_company_info t ");
+		fromSql.append("	LEFT JOIN sys_dict_detail c on c.detail_id=t.currency");
 		List<Object> params = new ArrayList<Object>();
-
 		if (StringUtils.isNotBlank(companyName)) {
 			fromSql.append("and t.name  like concat('%',?,'%')  ");
 			params.add(companyName);
