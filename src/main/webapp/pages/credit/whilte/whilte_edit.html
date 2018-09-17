@@ -1,4 +1,4 @@
-<% var usabled = tempDict.getSysDictDetailByType('usabled'); %>
+<% var usabled = tempDict.getSysDictDetailString('usabled',model.used !); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -99,14 +99,8 @@ var bodyContent = {
 					<td>是否在用</td>
 					<td>
 					<!-- <input class="form-control" type="text" name="model.used" value="${model.used}" /> -->
-					<select name="model.used" class="form-control" >
-						<% for(item in usabled){ %>
-					 	<% if((model.used+"")==(item.detail_id+"")){ %>
-						 	<option  m-type="${item.detail_name_en}" selected="selected" value="${item.detail_id}">${item.detail_name}</option>
-						<% }else{ %>
-							<option  m-type="${item.detail_name_en}" value="${item.detail_id}">${item.detail_name}</option>
-						<%}%>
-					  <% } %>
+					<select name="model.used" class="form-control" valid="vselect" validname="是否在用">
+					  ${usabled!}
 					</select>
 					</td>
 				</tr>

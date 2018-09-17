@@ -6,6 +6,7 @@
  *@return boolean {验证成功返回true 验证失败返回false，并提示失败信息}
 */
 function validForm(flag){
+	alert(222);
 	var visible = '';
 	flag = flag || false;
 	if(flag) visible = ':visible';
@@ -32,7 +33,8 @@ function validForm(flag){
 		}else{
 			//处理下拉选择框
 			if(valids[0]=='vselect') {
-				if(that.val()=='-1')	_valid("必须选择","-1");
+				alert(that.val())
+				if(that.val()=='-1' || that.val()=="")	_valid("必须选择","-1");
 			}
 			//处理整数类型(vnum_n_0_31)
 			else if(valids[0]=='vnum') {
