@@ -6,7 +6,6 @@
  *@return boolean {验证成功返回true 验证失败返回false，并提示失败信息}
 */
 function validForm(flag){
-	alert(222);
 	var visible = '';
 	flag = flag || false;
 	if(flag) visible = ':visible';
