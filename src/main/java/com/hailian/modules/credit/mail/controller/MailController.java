@@ -39,7 +39,7 @@ public class MailController extends BaseProjectController {
 		if (pid != null && pid > 0) { // 更新
 			MailService.service.toEnabled(pid, userid);
 		}
-		renderMessage("禁用成功");
+		list();
 	}
 	/**
 	 * 新增跳转

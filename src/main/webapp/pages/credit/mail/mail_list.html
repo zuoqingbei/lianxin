@@ -20,8 +20,12 @@
 			},
 			enabled : function(id) {
 				var url = 'credit/mail/enabled/'+id;
-				var title = '禁用';
-				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+				var title = '确定要禁用吗？';
+				Confirm(title, function() {
+					form1.action = url;
+					form1.submit();
+				});
+
 			},
 			add : function() {
 				var url = 'credit/mail/add';
