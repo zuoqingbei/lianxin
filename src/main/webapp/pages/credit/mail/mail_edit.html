@@ -1,0 +1,171 @@
+<% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled!); %>
+<% var is_old_customer = tempDict.getSysDictDetailString('is_old_customer',model.is_old_customer!);%>
+<% var country = tempDict.getSysDictDetailString('country',model.country!);%>
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<% include("/pages/includes/my97.html"){} %>
+
+<script type="text/javascript">
+	var oper = {
+		save:function(id){
+			if(!validForm()) {
+				return false;
+			}
+			id = id || '0';
+			var url = 'credit/custom/save/'+id;
+			form1.action = url;
+			form1.submit();
+			return true;
+		}	
+	};
+</script>
+
+<style>
+.tags {
+	line-height: 22px;
+	height: 22px;
+	border-top: 1px solid rgb(210, 210, 210);
+}
+
+.tags .tags_label {
+	float: left;
+	margin-right: 20px;
+	margin-left: 5px;
+	padding: 5px 1px 1px 3px;
+}
+
+.tags .tags_content {
+	float: left;
+	width: 500px;
+	margin: 5px 5px 0 0;
+	padding: 1px;
+	border: 1px solid #ccc;
+	background: #fff;
+	vertical-align: middle;
+}
+
+.tags .tags_remark {
+	padding: 5px 1px 1px 3px;
+	color: #999999;
+	font-size: 12px;
+	z-index: 10000;
+}
+</style>
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+		 role="form" >
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>客户名称</td>
+					<td>
+						<input class="form-control" type="text" name="model.name" value="${model.name}" valid="vtext" validname="客户名称"/>
+					</td>
+				</tr>
+				<tr>
+					<td>联系人全称</td>
+					<td>
+					<input class="form-control" type="text" name="model.contacts" value="${model.contacts}" />
+					</td>
+					<td>联系人简称</td>
+					<td>
+					<input class="form-control" type="text" name="model.contacts_short_name" value="${model.contacts_short_name}" />
+					</td>
+				</tr>
+				<tr>
+					<td>公司名称</td>
+					<!-- <td>
+					<input class="form-control" type="text" name="model.company_id" value="${model.company_id}" />
+					</td> -->
+					<td>
+						<div class="form-group">
+						<select name="model.company_id" class="form-control" valid="vselect" validname="公司名称">
+						<option value="-1" >请选择</option>
+						 <% for(item in company){ %>
+						 	<% if((model.company_id+"")==(item.id+"")){ %>
+							 	<option  m-type="${item.name_en}" selected="selected" value="${item.id}">${item.name}</option>
+							<% }else{ %>
+								<option  m-type="${item.name_en}" value="${item.id}">${item.name}</option>
+							<%}%>
+						 <% } %>
+						</select>
+						</div>
+					</td>
+					<td>电话</td>
+					<td>
+					<input class="form-control" type="text" name="model.telphone" value="${model.telphone}" />
+					</td>
+					
+				</tr>
+				<tr>
+					<td>电话</td>
+					<td>
+					<input class="form-control" type="text" name="model.telphone" value="${model.telphone}" />
+					</td>
+					<td>email</td>
+					<td>
+					<input class="form-control" type="text" name="model.email" value="${model.email}" />
+					</td>
+				</tr>
+				<tr>
+					<td>传真</td>
+					<td>
+					<input class="form-control" type="text" name="model.fax" value="${model.fax}" />
+					</td>
+					<td>国家</td>
+					<td>
+					<select name="country" class="form-control" >
+					${country!}
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td>是否可用</td>
+					<td>
+					<select name="model.usabled" class="form-control" >
+					${usabled!}
+					</select>
+					<!-- <input class="form-control" type="text" name="model.usabled" value="${model.usabled}" /> -->
+					</td>
+					<td>是否为老用户</td>
+					<td>
+					<!-- <input class="form-control" type="text" name="model.is_old_customer" value="${model.is_old_customer}" /> -->
+					<select name="model.is_old_customer" class="form-control" >
+					${is_old_customer!}
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td>地址</td>
+					<td colspan="3">
+					<textarea class="form-control" rows="1" cols="20" name="model.address">${model.address}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>备注</td>
+					<td colspan="3">
+					<textarea class="form-control" rows="2" cols="20" name="model.remarks">${model.remarks}</textarea>
+					</td>
+				</tr>
+	</table>
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%}
+DIRECTIVE SAFE_OUTPUT_CLOSE; 
+%>
