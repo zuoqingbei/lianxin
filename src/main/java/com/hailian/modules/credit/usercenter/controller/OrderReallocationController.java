@@ -14,9 +14,9 @@ import com.jfinal.plugin.activerecord.Page;
 * todo 订单再分配
 */
 @Api(tag = "订单流程", description = "订单再分配")
-@ControllerBind(controllerKey = "/credit/front/home/")
+@ControllerBind(controllerKey = "/credit/front/orderReallocation")
 public class OrderReallocationController extends BaseProjectController{
-	private static final String PATH = "/pages/credit/orderReallocation/";
+	private static final String PATH = "/pages/credit/usercenter/";
 	//存储关键词字段名
 	private static List<Object> IsExistColumnList= new ArrayList<>();
 	//检索重复判断字段
@@ -44,7 +44,7 @@ public class OrderReallocationController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	
-	public void orderReallocation() {
+	public void list() {
 		int pageNumber = getParaToInt("pageNo", 1);
 		int pageSize = getParaToInt("pageSize", 10);
 		//从表单获取排序语句

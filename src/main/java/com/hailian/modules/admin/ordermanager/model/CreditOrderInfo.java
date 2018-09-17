@@ -369,7 +369,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 		selectSql.append(" u2.username AS translateUser,");
 		selectSql.append(" u3.username AS analyzeUser");
 		StringBuffer fromSql = new StringBuffer(" FROM credit_order_info c ");
-		fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country_id = s1.detail_id ");//国家
+		fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country = s1.detail_id ");//国家
 		fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
 		fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
 		fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
@@ -391,7 +391,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo>{
 			selectSql.append(" u2.username AS translateUser,");
 			selectSql.append(" u3.username AS analyzeUser,");
 			selectSql.append(" u4.username AS customId");
-			fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country_id = s1.detail_id ");//国家
+			fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country = s1.detail_id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
 			//比列表多展示的四个字段
 			fromSql.append(" LEFT JOIN sys_dict_detail s3 ON c.continent = s3.detail_id ");//地区
