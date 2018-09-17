@@ -18,23 +18,23 @@
 				this.form.action = url;
 				this.form.submit();
 			},
-			view : function(id) {
-				var url = 'credit/custom/view/'+id;
-				var title = '查看';
+			enabled : function(id) {
+				var url = 'credit/mail/enabled/'+id;
+				var title = '禁用';
 				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 			},
 			add : function() {
-				var url = 'credit/custom/add';
+				var url = 'credit/mail/add';
 				var title = '新增';
 				Iframe(url, this.width, this.height, title);
 			},
 			edit : function(id) {
-				var url = 'credit/custom/edit/'+id;
+				var url = 'credit/mail/edit/'+id;
 				var title = '修改';
 				Iframe(url, this.width, this.height, title);
 			},
 			del : function(id) {
-				var url = 'credit/custom/delete/'+id;
+				var url = 'credit/mail/delete/'+id;
 				var title = '确定要删除吗？';
 				Confirm(title, function() {
 					form1.action = url;
@@ -65,10 +65,10 @@ var bodyContent = {
 
 		<div class="tableSearch">
 			<%  //查询列表 %>
-			搜索内容
+			模板名称
 			<div class="form-group">
 				<input class="form-control" type="text" name="keyword"
-					value="${keyWord!''}" placeholder="请输入关键字" required='required' />
+					value="${keyWord!''}" placeholder="请输入模板名称" required='required' />
 			</div>
 			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
 			 		<span class="glyphicon glyphicon-search"></span> 查 询
@@ -102,7 +102,7 @@ var bodyContent = {
 				<tr>
 				<td>${itemLP.index }</td>
 					<%  // 列表内容 %>
-					<td>${item.send_type}</td> 
+					<td>${item.detail_name}</td> 
 					<td>${item.module_name}</td> 
 					<td>
 						${item.module_title}
@@ -110,7 +110,7 @@ var bodyContent = {
 					<td>${item.module_id}</td>
 					<td>
 						<% if (strutil.length(item.module_content) >
-					15) { %> ${strutil.subStringTo(item.module_content, 0, 15)}... <% } else { %>
+					30) { %> ${strutil.subStringTo(item.module_content, 0, 30)}... <% } else { %>
 					${item.module_content} <% } %>
 					</td>  
 					<td>
@@ -118,9 +118,9 @@ var bodyContent = {
 					</td>  
 					<td>${item.enabled}</td>
 				<td>
-				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
-				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 
-				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.mail_id});">修改</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.enabled(${item.mail_id});">禁用</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.mail_id});">删除</a>
 				</td>
 				</tr>
 			<% } %>

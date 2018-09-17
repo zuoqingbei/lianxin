@@ -49,24 +49,15 @@ public class MailModel extends BaseProjectModel<MailModel> {
 		List<Object> params=new ArrayList<Object>();
 		StringBuffer sql=new StringBuffer(" from credit_mail t ");
 		sql.append("left join sys_user t2 on t2.userid = t.create_by ");
+		sql.append("left join sys_dict_detail t3 on t3.detail_id = t.send_type");
 		sql.append(" where 1=1 and t.del_flag=0 ");
 		if(!c.isAdmin(c.getSessionUser())){
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
 		if (StringUtil.isNotEmpty(keyword)) {
-			sql.append(" and ");
-			for (int i = 0; i < columnnNames.size(); i++) {
-				if("create_date".equals(columnnNames.get(i))){
-					continue;
-				}
-				if(i!=0){
-					sql.append(" || ");
-				}
-				//搜索类型
-				sql.append(columnnNames.get(i)+" like concat('%',?,'%')");
-				params.add(keyword);//传入的参数
-			}
+			sql.append("and t.module_name like concat('%',?,'%')");
+			params.add(keyword);//传入的参数
 		}
 		if(!c.isAdmin(c.getSessionUser())){
 			sql.append(" and t.create_by=? ");
@@ -79,7 +70,7 @@ public class MailModel extends BaseProjectModel<MailModel> {
 			sql.append(" order by ").append(orderBy);
 		}
 		Page<MailModel> page = MailModel.dao
-				.paginate(paginator, "select t.*,t2.realname", sql.toString(),params.toArray());
+				.paginate(paginator, "select t.*,t2.realname,t3.detail_name", sql.toString(),params.toArray());
 		System.out.println(sql);
 		return page;
 	}

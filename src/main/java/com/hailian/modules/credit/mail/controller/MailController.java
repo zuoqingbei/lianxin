@@ -35,11 +35,19 @@ public class MailController extends BaseProjectController {
 	* @date 2018年9月4日下午2:45:16  
 	* @TODO
 	 */
-	public void view() {
-//		MailModel item = MailModel.dao.findById(getParaToInt());
-		MailModel item=MailModel.dao.getMailById(getParaToInt());
-		setAttr("item", item);
-		render(path + "view.html");
+	public void enabled() {
+		Integer pid = getParaToInt();
+		// 日志添加
+		MailModel model = getModel(MailModel.class);
+		Integer userid = getSessionUser().getUserid();
+		String now = getNow();
+		model.put("update_id", userid);
+		model.put("update_time", now);
+		model.put("enabled","111");
+		if (pid != null && pid > 0) { // 更新
+			model.update();
+		}
+		renderMessage("禁用成功");
 	}
 	/**
 	 * 新增跳转
@@ -50,9 +58,7 @@ public class MailController extends BaseProjectController {
 	public void add() {
 		// 获取页面信息,设置目录传入
 		MailModel attr = getModel(MailModel.class);
-		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
 		setAttr("model", attr);
-		setAttr("company", company);
 		render(path + "add.html");
 	}
 	/**
@@ -65,8 +71,6 @@ public class MailController extends BaseProjectController {
 		Integer paraToInt = getParaToInt();
 		MailModel model = MailModel.dao.findById(paraToInt);
 		setAttr("model", model);
-		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
-		setAttr("company", company);
 		// 查询下拉框
 		render(path + "edit.html");
 	}
@@ -90,7 +94,7 @@ public class MailController extends BaseProjectController {
 	* @TODO
 	 */
 	public void save() {
-		Integer pid = getParaToInt("id");
+		Integer pid = getParaToInt();
 		// 日志添加
 		MailModel model = getModel(MailModel.class);
 		Integer userid = getSessionUser().getUserid();
@@ -100,7 +104,7 @@ public class MailController extends BaseProjectController {
 		if (pid != null && pid > 0) { // 更新
 			model.update();
 		} else { // 新增
-			model.remove("detail_id");
+			model.remove("mail_id");
 			model.put("create_by", userid);
 			model.put("create_date", now);
 			model.save();
