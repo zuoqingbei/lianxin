@@ -14,7 +14,7 @@ import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 /**
- * 白名单model层
+ * 邮件model层
 * @author doushuihai  
 * @date 2018年9月3日上午11:48:31  
 * @TODO
@@ -23,22 +23,6 @@ import com.jfinal.plugin.activerecord.Page;
 public class MailModel extends BaseProjectModel<MailModel> {
 	private static final long serialVersionUID = 1L;
 	public static final MailModel dao = new MailModel();
-	private static List<String> columnnNames = new ArrayList<>();
-	static{
-		columnnNames.add("t.name");
-		columnnNames.add("t.name_en");
-		columnnNames.add("t.contacts");
-		columnnNames.add("t.contacts_short_name");
-		columnnNames.add("t.reference_num");
-		columnnNames.add("t.company_id");
-		columnnNames.add("t.address");
-		columnnNames.add("t.telphone");
-		columnnNames.add("t.email");
-		columnnNames.add("t.fax");
-		columnnNames.add("t.country");
-		columnnNames.add("t.remarks");
-		columnnNames.add("t.create_date");
-	}
 	/**
 	 * 列表展示
 	* @author doushuihai  
