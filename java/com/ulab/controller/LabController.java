@@ -1182,7 +1182,7 @@ public class LabController extends BaseController {
 		if(videoList==null||videoList.size()==0){
 			videoList = LabVideoModel.dao
 					.findVideosByDataCenterId(dataCenterId);
-			setSessionAttr("list_dataCenterId_"+dataCenterId, videoList);
+			//setSessionAttr("list_dataCenterId_"+dataCenterId, videoList);
 		}
 		renderJson(videoList);
 	}
