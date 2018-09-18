@@ -82,8 +82,14 @@ public class MailController extends BaseProjectController {
 		// 日志添加
 		Integer id = getParaToInt();
 		Integer userid = getSessionUser().getUserid();
-		MailService.service.delete(id,userid);//记录上传信息
-		list();
+		int result = MailService.service.delete(id,userid);//记录上传信息
+		if(result != -1){
+			setAttr("result", result);
+			list();
+		}else{
+			renderText("操作失败");
+		}
+		
 	}
 	/**
 	 * 保存
