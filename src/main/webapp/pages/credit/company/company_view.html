@@ -1,8 +1,4 @@
-<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.order_speed !); %>
-<% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type !); %>
-<% var countrytype = tempDict.getSysDictDetailString('country',model.country_type !); %>
-<% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled !); %>
-<% var reportType = reportType.getReportTypeString(model.report_type!); %>
+
 <% 
 var headContent = {
 	include("/pages/template/head.html"){}
@@ -18,41 +14,45 @@ var bodyContent = {
 				<td>${model.id}</td>
 			</tr>
 		<tr>
-			<td>报告速度</td>
+			<td>企业中文名称</td>
 			<td>
-			${model.orderSpeed!}
+			${model.name}
 			</td>
 			</tr>
 			<tr>
-			<td>报告类型</td>
+			<td>企业英文名称</td>
 			 <td> 
-			${model.reportType!}
+			${model.name_en}
 			</td>
 		</tr>
 		<tr>
-			<td>订单类型</td>
-			<td>${model.orderType!}</td>
+			<td>注册号</td>
+			<td>${model.registration_num}</td>
 		</tr>
 				<tr>
-			<td>国家</td>
-			<td>${model.countryName}</td>
+			<td>统一社会信用代码</td>
+			<td>${model.credit_code}</td>
 		</tr>
 			<tr>
-			<td>报告点数</td>
-			<td>${model.points}</td>
+			<td>企业类型</td>
+			<td>${model.company_type}</td>
 		</tr>
 			<tr>
-			<td>报告价格</td>
-			<td>${model.price}</td>
+			<td>法定代表人中文</td>
+			<td>${model.legal}</td>
+		</tr>
+			<tr>
+			<td>法定代表人英文</td>
+			<td>${model.legal_en}</td>
+		</tr>
+		<tr>
+			<td>注册资本</td>
+			<td> ${model.registered_capital}</td>
 		</tr>
 			<tr>
 			<td>币种</td>
-			<td>${model.currency}</td>
-		</tr>
-		<tr>
-			<td>是否禁用</td>
-			<td> ${model.usabledName}</td>
-		</tr>
+			<td> ${model.Currency}</td>
+
 		</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">

@@ -2,12 +2,11 @@ package com.hailian.system.user;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.SessionUser;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.jfinal.plugin.activerecord.Db;
 
 @ModelBind(table = "sys_user", key = "userid")
 public class SysUser extends SessionUser<SysUser> {
@@ -15,7 +14,6 @@ public class SysUser extends SessionUser<SysUser> {
 	private static final long serialVersionUID = 1L;
 	private String departName;
 	private String roleName;
-	
 	
 	public void setDepartName(String departName) {
 		set("departName",departName);
@@ -44,16 +42,35 @@ public class SysUser extends SessionUser<SysUser> {
 	}
 	
 	/**
-	 * lzg
-	 * @param username
-	 * @return
+	 * 根据用户名查找实体
+	 * @time   2018年9月17日 上午11:29:12
+	 * @author dyc
+	 * @todo   TODO
+	 * @return_type   SysUser
 	 */
-	//根据用户名查找实体
 	public SysUser findByUserName(String username) {
 		List<Object> params = new ArrayList<>();
 		params.add(username);
 		return super.findFirstByWhere(" where username=?", params.toArray());
 	}
 	
-
+	/**
+	 * 根据用户ID和参数修改状态
+	 * @time   2018年9月17日 上午11:28:05
+	 * @author dyc
+	 * @todo   TODO
+	 * @return_type   Integer
+	 */
+	public Integer updateStateById(Integer id,Integer status) {
+		StringBuffer sql = new StringBuffer("update sys_user set state=? ");
+		List<Object> params=new ArrayList<Object>();
+		if(null != status){
+			params.add(status);
+		}
+		sql.append("where userid=?");
+		if(null != id){
+			params.add(id);
+		}
+		return Db.update(sql.toString(),params.toArray());
+	}
 }

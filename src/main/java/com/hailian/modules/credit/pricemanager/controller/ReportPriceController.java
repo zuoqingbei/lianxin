@@ -18,7 +18,7 @@ import com.jfinal.plugin.activerecord.Page;
 * @time 2018年8月23日 下午5:29:22
 * @todo
 */
-@Api(tag = "报告价格", description = "报告价格下拉框")
+@Api(tag = "报告价格", description = "操作报告价格")
 @ControllerBind(controllerKey = "/credit/pricemanager")
 public class ReportPriceController extends BaseProjectController {
 	private static final String path = "/pages/credit/pricemanager/price_";
@@ -31,14 +31,14 @@ public class ReportPriceController extends BaseProjectController {
 	 * 
 	 * @time   2018年8月23日 下午5:39:02
 	 * @author dyc
-	 * @todo   分页查询报告价格信息
+	 * @todo   向前台页面展示数据
 	 * @return_type   void
 	 */
 	@ApiOperation(url = "/credit/pricemanager/list", httpMethod = "get", description = "获取报告价格列表")
 	public void list() {
 		ReportPrice attr = getModelByAttr(ReportPrice.class);
 		String orderBy = getBaseForm().getOrderBy();
-		Page<ReportPrice> pager = ReportPriceService.service.getPage(getPaginator(), attr, orderBy, this);
+		Page<ReportPrice> pager = ReportPrice.dao.getPage(getPaginator(), attr, orderBy, this);
 		List<ReportTypeModel> reportType = ReportPriceService.service.getReportType(null);
 		setAttr("page", pager);
 		setAttr("reporttype", reportType);
@@ -47,29 +47,17 @@ public class ReportPriceController extends BaseProjectController {
 		render(path + "list.html");
 	}
 
-	//
-	//	/**
-	//	 * 
-	//	 * @time   2018年8月23日 下午7:35:55
-	//	 * @author dyc
-	//	 * @todo   单条报告价格查询
-	//	 * @return_type   void
-	//	 */
-	//	public void getOne() {
-	//		ReportPrice model = ReportPrice.dao.findById(getPara("id"), this);
-	//		setAttr("model", model);
-	//		render(path + "list.html");
-	//
-	//	}
 	/**
 	 * 
 	 * @time   2018年9月4日 下午2:27:20
 	 * @author dyc
+	 * @param int id 
 	 * @todo   单条查看报告价格信息
 	 * @return_type   void
 	 */
 	public void view() {
-		ReportPrice model = ReportPrice.dao.findById(getParaToInt());
+		Integer id = getParaToInt();
+		ReportPrice model = ReportPriceService.service.getId(id, null);
 		setAttr("model", model);
 		render(path + "view.html");
 
@@ -113,23 +101,10 @@ public class ReportPriceController extends BaseProjectController {
 	public void delete() {
 		Integer id = getParaToInt();
 		if (ReportPriceService.service.updateDelFlagById(id)) {
-			//success
-			//redirect("/credit/price/list");
-			//			renderText("success");
 			list();
 		} else {
-			//redirect("/credit/price/list");
 			renderText("failure");
 		}
-		//		ReportPrice model = getModel(ReportPrice.class);
-		//		Integer userid = getSessionUser().getUserid();
-		//		String now = getNow();
-		//		model.set("id",getPara("id"));
-		//		model.set("update_by", userid);
-		//		model.set("update_date", now);
-		//		model.set("del_flag", 1);
-		//		model.update();
-		//		list();
 
 	}
 

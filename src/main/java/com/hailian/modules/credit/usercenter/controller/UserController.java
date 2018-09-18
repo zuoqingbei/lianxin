@@ -1,12 +1,9 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 
-import javax.servlet.http.HttpSession;
-
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.jfinal.component.util.Attr;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.encrypt.Md5Utils;
 import com.jfinal.kit.PropKit;
@@ -16,7 +13,6 @@ import com.jfinal.kit.PropKit;
  * @author lzg
  * @todo   用户登录控制
  */
-
 @Api( tag = "用户登录控制", description = "用户登录控制" )
 @ControllerBind(controllerKey = "/credit/front/usercenter")
 public class UserController  extends BaseProjectController{
