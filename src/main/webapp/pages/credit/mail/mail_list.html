@@ -20,8 +20,12 @@
 			},
 			enabled : function(id) {
 				var url = 'credit/mail/enabled/'+id;
-				var title = '禁用';
-				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+				var title = '确定要禁用吗？';
+				Confirm(title, function() {
+					form1.action = url;
+					form1.submit();
+				});
+
 			},
 			add : function() {
 				var url = 'credit/mail/add';
@@ -116,7 +120,7 @@ var bodyContent = {
 					<td>
 						${item.create_date}
 					</td>  
-					<td>${item.enabled}</td>
+					<td>${item.enabledName}</td>
 				<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.mail_id});">修改</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.enabled(${item.mail_id});">禁用</a> 

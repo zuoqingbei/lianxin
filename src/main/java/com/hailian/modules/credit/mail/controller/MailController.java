@@ -1,10 +1,7 @@
 package com.hailian.modules.credit.mail.controller;
 
-import java.util.List;
-
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.mail.model.MailModel;
 import com.hailian.modules.credit.mail.service.MailService;
 import com.jfinal.plugin.activerecord.Page;
@@ -30,7 +27,7 @@ public class MailController extends BaseProjectController {
 		render(path+"list.html");
 	}
 	/**
-	 * 查看
+	 * 设置邮件禁用
 	* @author doushuihai  
 	* @date 2018年9月4日下午2:45:16  
 	* @TODO
@@ -38,16 +35,11 @@ public class MailController extends BaseProjectController {
 	public void enabled() {
 		Integer pid = getParaToInt();
 		// 日志添加
-		MailModel model = getModel(MailModel.class);
 		Integer userid = getSessionUser().getUserid();
-		String now = getNow();
-		model.put("update_id", userid);
-		model.put("update_time", now);
-		model.put("enabled","111");
 		if (pid != null && pid > 0) { // 更新
-			model.update();
+			MailService.service.toEnabled(pid, userid);
 		}
-		renderMessage("禁用成功");
+		list();
 	}
 	/**
 	 * 新增跳转
