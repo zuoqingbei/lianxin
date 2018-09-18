@@ -160,6 +160,7 @@ public class UserController extends BaseProjectController {
 		Integer status = getParaToInt("status");
 		Integer result = SysUser.dao.updateStateById(id, status);
 		if (result != -1) {
+			setAttr("result", result);
 			list();
 		} else {
 			renderText("操作失败!");
