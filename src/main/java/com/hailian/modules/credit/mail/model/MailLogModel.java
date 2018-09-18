@@ -84,6 +84,20 @@ public class MailLogModel extends BaseProjectModel<MailLogModel> {
 		model.put("create_date", new Date());
 		return model.save();
 	}
-
+	public  MailModel getMailLogById(String paraToInt) {
+		List<Object> params=new ArrayList<Object>();
+		StringBuffer sql=new StringBuffer("select t.*,t2.realname,t3.detail_name,t4.module_id,t4.module_content");
+		sql.append(" from credit_mail_log t ");
+		sql.append(" left join sys_user t2 on t2.userid = t.user_code ");
+		sql.append(" left join sys_dict_detail t3 on t3.detail_id = t.send_result ");
+		sql.append(" left join credit_mail t4 on t4.mail_id = t.mail_id ");
+		sql.append(" where 1=1 and t.del_flag=0 ");
+		if (StringUtil.isNotEmpty(paraToInt)) {
+			sql.append(" and t.mail_log_id = ? ");
+			params.add(paraToInt);//传入的参数
+		}
+		MailModel findFirst = MailModel.dao.findFirst(sql.toString(),params.toArray());
+		return findFirst;
+	}
 }
 

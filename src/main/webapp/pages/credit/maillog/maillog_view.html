@@ -1,5 +1,3 @@
-<% var usabled = tempDict.getSysDictDetailByType('usabled'); %>
-<% var is_old_customer = tempDict.getSysDictDetailByType('is_old_customer'); %>
 <% 
 var headContent = {
 	include("/pages/template/head.html"){}
@@ -12,60 +10,9 @@ var bodyContent = {
 	<table class="table">
 		<%  // 列表头部 %>
 			<tr>
-				<td>客户名称</td>
-				<td>${item.name}</td>
+				<td>邮箱内容</td>
+				<td>${item.module_content}</td>
 			</tr>
-			<tr>
-				<td>联系人全称</td>
-				<td>${item.contacts}</td>
-			</tr>
-			<tr>
-				<td>联系人简称</td>
-				<td>${item.contacts_short_name}</td>
-			</tr>
-			<tr>
-				<td>公司名称</td>
-				<td>${item.companyName}</td>
-				<td>地址</td>
-				<td>${item.address}</td>
-			</tr>
-			<tr>
-				<td>电话</td>
-				<td>${item.telphone}</td>
-				<td>email</td>
-				<td>${item.email}</td>
-			</tr>
-			<tr>
-				<td>传真</td>
-				<td>${item.fax}</td>
-				<td>国家</td>
-				<td>${item.countryName}</td>
-			</tr>
-			<tr>
-				<td>是否可用</td>
-				<% for(it in usabled){ %>
-						 	<% if((item.usabled+"")==(it.detail_id+"")){ %>
-							 	<td>${it.detail_name}</td>
-							<% }else{ %>
-							<%}%>
-				<% } %>
-				<td>是否为老用户</td>
-				<% for(it in is_old_customer){ %>
-						 	<% if((item.is_old_customer+"")==(it.detail_id+"")){ %>
-							 	<td>${it.detail_name}</td>
-							<% }else{ %>
-							<%}%>
-				<% } %>
-			</tr>
-			<tr>
-				<td>备注</td>
-				<td title="${item.remarks}" colspan="3">
-				<% if (strutil.length(item.remarks) > 25) { %>
-					${strutil.subStringTo(item.remarks, 0, 25)}...
-				<% 	} else { %>
-					${item.remarks}
-				<%  } %>
-			</td> 
 	</table>
 	
 	<div style="height: 50px;clear: both;">&nbsp;</div>

@@ -3,6 +3,7 @@ package com.hailian.modules.credit.mail.service;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.modules.credit.mail.model.MailLogModel;
+import com.hailian.modules.credit.mail.model.MailModel;
 import com.jfinal.plugin.activerecord.Page;
 
 public class MailLogService {
@@ -30,5 +31,7 @@ public class MailLogService {
 		return MailLogModel.dao.save(userid, mail_address, copy_mail_address, mail_id, send_result);
 		
 	}
-	
+	public  MailModel getMailLogById(String paraToInt){
+		return MailLogModel.dao.getMailLogById(paraToInt);
+	}
 }

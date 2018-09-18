@@ -17,33 +17,17 @@
 				this.form.action = url;
 				this.form.submit();
 			},
-			enabled : function(id) {
-				var url = 'credit/maillog/enabled/'+id;
-				var title = '确定要禁用吗？';
-				Confirm(title, function() {
-					form1.action = url;
-					form1.submit();
-				});
-
-			},
-			add : function() {
-				var url = 'credit/maillog/add';
-				var title = '新增';
-				Iframe(url, this.width, this.height, title);
+			view : function(id) {
+				var url = 'credit/maillog/view/'+id;
+				var title = '查看邮件内容';
+				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 			},
 			edit : function(id) {
 				var url = 'credit/maillog/edit/'+id;
 				var title = '修改';
 				Iframe(url, this.width, this.height, title);
-			},
-			del : function(id) {
-				var url = 'credit/maillog/delete/'+id;
-				var title = '确定要删除吗？';
-				Confirm(title, function() {
-					form1.action = url;
-					form1.submit();
-				});
 			}
+			
 		};
 		//显示Menu索引
 		showMenu('page_maillog');
@@ -137,7 +121,7 @@ var bodyContent = {
 					</td> 
 				<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.mail_id});">重发</a> 
-				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.enabled(${item.mail_id});">邮件内容</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.view(${item.mail_id});">邮件内容</a> 
 				</td>
 				</tr>
 			<% } %>
