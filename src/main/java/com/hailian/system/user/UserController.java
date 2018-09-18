@@ -46,12 +46,10 @@ public class UserController extends BaseProjectController {
 		} else {
 			sql.append(" order by ").append(orderBy);
 		}
-
 		Page<SysUser> page = SysUser.dao.paginate(getPaginator(), "select t.*,d.name as departname ", sql.toString()
 				.toString());
 		// 下拉框
 		setAttr("departSelect", new DepartmentSvc().selectDepart(model.getInt("departid")));
-
 		setAttr("page", page);
 		setAttr("attr", model);
 		render(path + "list.html");
@@ -59,18 +57,15 @@ public class UserController extends BaseProjectController {
 
 	public void add() {
 		setAttr("departSelect", new DepartmentSvc().selectDepart(0));
-
 		render(path + "add.html");
 	}
 
 	public void view() {
 		SysUser model = SysUser.dao.findById(getParaToInt());
 		model.put("secretKey", new Md5Utils().getMD5(model.getStr("password")).toLowerCase());
-
 		// 部门名称
 		model.put("departname", new DepartmentSvc().getDepartName(model.getInt("departid")));
 		setAttr("model", model);
-
 		render(path + "view.html");
 	}
 
@@ -149,7 +144,6 @@ public class UserController extends BaseProjectController {
 	public void auth_save() {
 		int userid = getParaToInt("userid");
 		String roleids = getPara("roleids");
-
 		new UserSvc().saveAuth(userid, roleids, getSessionUser().getUserid());
 		renderMessage("保存成功");
 	}
@@ -162,14 +156,13 @@ public class UserController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void update() {
-		Integer id = getParaToInt();
-		Integer status = getParaToInt();
-		Integer result = ((UserSvc) UserSvc.service).updateStateById(id,status);
+		Integer id = getParaToInt("id");
+		Integer status = getParaToInt("status");
+		Integer result = SysUser.dao.updateStateById(id, status);
 		if (result != -1) {
 			list();
 		} else {
-			renderText("failure");
+			renderText("操作失败!");
 		}
-
 	}
 }

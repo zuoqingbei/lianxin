@@ -168,6 +168,13 @@ public class UserSvc extends BaseService {
 		}
 	}
 
+	/**
+	 * 根据用户ID和参数修改状态
+	 * @time   2018年9月17日 上午11:25:03
+	 * @author dyc
+	 * @todo   TODO
+	 * @return_type   Integer
+	 */
 	public Integer updateStateById(Integer id,Integer status) {
 		return SysUser.dao.updateStateById(id,status);
 	}

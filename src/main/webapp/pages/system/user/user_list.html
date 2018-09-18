@@ -39,8 +39,8 @@ include("/pages/template/head.html"){}
                     form1.submit();
                 });
             },
-            update : function(id) {
-                var url = 'system/user/update/'+id;
+            update : function(id,status) {
+                var url = 'system/user/update?id='+id+"&status="+status;
                 var title = '确认要修改该状态？';
                 Confirm(title, function() {
                     form1.action = url;
@@ -168,8 +168,8 @@ var bodyContent = {
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.userid});">修改</a>
 				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.userid});">删除</a>
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.auth(${item.userid});">授权</a>
-				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.update(${item.userid});">手动分配</a>
-				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.update(${item.userid});">暂停分配</a>
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.update(${item.userid},30);">手动分配</a>
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.update(${item.userid},40);">暂停分配</a>
 			</td>
 		</tr>
 		<% } %>

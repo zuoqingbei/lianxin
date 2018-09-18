@@ -62,16 +62,15 @@ public class SysUser extends SessionUser<SysUser> {
 	 * @return_type   Integer
 	 */
 	public Integer updateStateById(Integer id,Integer status) {
-		StringBuffer sql = new StringBuffer();
+		StringBuffer sql = new StringBuffer("update sys_user set state=? ");
 		List<Object> params=new ArrayList<Object>();
-		sql.append("update sys_user set status=? ");
 		if(null != status){
 			params.add(status);
 		}
-		sql.append("where user_id=?");
+		sql.append("where userid=?");
 		if(null != id){
 			params.add(id);
 		}
-		return Db.update(sql.toString(),params);
+		return Db.update(sql.toString(),params.toArray());
 	}
 }

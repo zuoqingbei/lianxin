@@ -159,7 +159,7 @@ let Index = {
                   valign: 'middle',
                 },*/ {
                   title: '报告类型',
-                  field: 'report_type',
+                  field: 'reportType',
                   align: 'center',
                   valign: 'middle',
                 }, /*{

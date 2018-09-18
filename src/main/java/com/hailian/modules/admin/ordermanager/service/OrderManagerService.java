@@ -1,5 +1,6 @@
 package com.hailian.modules.admin.ordermanager.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +50,13 @@ public class OrderManagerService {
 				coi.update();
 			} else {
 				Date date=new Date();
+				Calendar calendar = Calendar.getInstance();
+			    calendar.setTime(date);
+			    String year=String.valueOf(calendar.get(Calendar.YEAR));
+			    String month=String.valueOf(calendar.get(Calendar.MONTH));
 				coi.set("receiver_date", date);
+				coi.set("year", year);
+				coi.set("month", month);
 				coi.save();
 			}
 
