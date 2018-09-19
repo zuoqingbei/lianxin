@@ -1,3 +1,7 @@
+:root {
+    --errColor:#f5222d;
+}
+
 html,body {
     min-height: 576px;
 }
@@ -38,7 +42,13 @@ body {
     background: #f5f8fd;
     color: #abaeb3;
     border: 1px solid #ccc;
+    border-right: 0;
+    border-radius: 4px 0 0 4px;
 }
+.border-error {
+    border-color:var(--errColor)!important;
+}
+
 /* 登录框input */
 .form-group {
 
@@ -48,6 +58,10 @@ body {
     height: 4.125rem;
     border: 1px solid #ccc;
     box-shadow: none;
+    border-radius: 4px;
+}
+.form-control:focus {
+    border-color:none;
 }
 .username {
     margin-top: 7.5rem;
@@ -77,3 +91,31 @@ body {
      font-size: 2rem;
      color: #ccc;
  }
+
+ small {
+     padding-left: 1rem;
+     color: #d00;
+     display: none;
+     font-size: 100%;
+ }
+
+ .error-tip {
+     display: none;
+    height: 3rem;
+    background: #fff1f0;
+    line-height: 3rem;
+    border: solid 1px #d00;
+    border-radius: 4px;
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+    color: var(--errColor);
+ }
+.username,.password {
+    margin-bottom: .5rem;
+}
+ #username,#psw{
+     box-shadow: none;
+     transition: none;
+     
+ }
+ 

@@ -21,6 +21,7 @@ import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.hailian.util.cache.Cache;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -192,6 +193,7 @@ public class HomeController extends BaseProjectController {
 			OrderManagerService.service.modifyOrder(id,model,user,this);
 			OrderManagerService.service.addOrderHistory(id, user);
 			render(path + "index.html");
+			throw new Exception();
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderMessage("保存失败");

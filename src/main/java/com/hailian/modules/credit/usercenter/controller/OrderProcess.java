@@ -9,7 +9,9 @@ import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.credit.common.model.ReportTypeModel;
+import com.hailian.modules.credit.usercenter.model.ResultType;
+import com.hailian.modules.front.template.TemplateSysUserService;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.plugin.activerecord.Page;
 /**
 * @time   2018年9月14日 上午11:00:00
@@ -20,60 +22,67 @@ import com.jfinal.plugin.activerecord.Page;
 @ControllerBind(controllerKey = "/credit/front/orderProcess")
 public class OrderProcess extends BaseProjectController{
 	private static final String PATH = "/pages/credit/usercenter/";
-	//存储关键词字段名
-	private static List<Object> IsExistColumnList= new ArrayList<>();
-	//检索重复判断字段
-	public static List<Object> columnNames = new ArrayList<>();
-	//每种搜索类型需要对应的save参数
-	public static final Map<String,List<String>> TYPE_PARAMS = new HashMap<>();
-	//搜索类型
+	//每种搜索类型需要对应的关键词字段名
+	public static final Map<String,List<Object>> TYPE_KEY_COLUMN = new HashMap<>();
+	//每种搜索类型需要对应的前端属性名
+	public static final Map<String,List<Object>> WEB_PARAM_NAMES = new HashMap<>();
 	/**
 	 * 订单分配的搜索类型
 	 */
 	public static String orderAllocation = "-1";
-	public static List<String> orderAllocationParams =  new ArrayList<>();
-	static{
-		orderAllocationParams.add("");
-	}
+	public static LinkedList<Object> orderAllocationColumns = new LinkedList<>();
+	public static LinkedList<Object> orderAllocationParamNames = new LinkedList<>();
 	/**
 	 * 报告管理中的订单核实
 	 */
 	public static String orderVerifyOfReport = "-2";
-	public static List<String> orderVerifyOfReportParams =  new ArrayList<>();
-	static{
-		orderVerifyOfReportParams.add("");
-	}
+	public static LinkedList<Object> orderVerifyOfReportColumns = new LinkedList<>(); 
+	public static LinkedList<Object> orderVerifyOfReportParamNames = new LinkedList<>(); 
 	/**
 	 * 订单管理中的订单核实
 	 */
 	public static String orderVerifyOfOrder = "-3";
-	public static List<String> orderVerifyOfOrderParams =  new ArrayList<>();
+	public static LinkedList<Object> orderVerifyOfOrderColumns = new LinkedList<>();
+	public static LinkedList<Object> orderVerifyOfOrderParamNames = new LinkedList<>();
 	static{
-		orderVerifyOfOrderParams.add("");
+		orderAllocationColumns.add("u1.realname");
 	}
 	static{
-		TYPE_PARAMS.put(orderAllocation, orderAllocationParams);
-		TYPE_PARAMS.put(orderAllocation, orderVerifyOfReportParams);
-		TYPE_PARAMS.put(orderAllocation, orderVerifyOfOrderParams);
-		IsExistColumnList.add("report_id");
-		IsExistColumnList.add("report_speed");
-		IsExistColumnList.add("country_type");
-		IsExistColumnList.add("order_type");
+		orderAllocationParamNames.add("report_user");
 	}
-	
+	static{
+		TYPE_KEY_COLUMN.put(orderAllocation,orderAllocationColumns);
+		TYPE_KEY_COLUMN.put(orderVerifyOfReport,orderVerifyOfReportColumns);
+		TYPE_KEY_COLUMN.put(orderVerifyOfOrder,orderVerifyOfOrderColumns);
+	}
+	static{
+		WEB_PARAM_NAMES.put(orderAllocation, orderAllocationParamNames);
+		WEB_PARAM_NAMES.put(orderVerifyOfReport, orderVerifyOfReportParamNames);
+		WEB_PARAM_NAMES.put(orderVerifyOfOrder, orderVerifyOfOrderParamNames);
+	}
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
-		int pageNumber = getParaToInt("pageNo", 1);
-		int pageSize = getParaToInt("pageSize", 10);
+		int pageNumber = getParaToInt("pageNumber",1);
+		int pageSize = getParaToInt("pageSize",10);
 		//从表单获取排序语句
-		String orderBy = getBaseForm().getOrderBy();
+		String sortName = getPara("sortName");
+		String sortOrder = getPara("sortOrder");
+		String orderBy = "";
+		if(sortName!=null){
+			if(sortOrder!=null){
+				orderBy = sortName+" "+sortOrder;
+			}else{
+				orderBy = sortName+" desc";
+			}
+		}
 		//获取前台关键词
 		List<Object> keywords = new LinkedList<>();
-		for (Object columnName : columnNames) {
-			if(StringUtil.isEmpty((String)getPara((String)columnName))){
+		CreditOrderInfo model = getModel(CreditOrderInfo.class);
+		for (Object  columnName: WEB_PARAM_NAMES.get(searchType)) {
+			if(StringUtil.isEmpty((String) model.get((String) columnName))){
 				keywords.add("");
 			}else{
-				keywords.add(getPara((String)columnName));
+				keywords.add((String) model.get((String) columnName));
 			}
 		}
 		//分页查询
@@ -101,24 +110,37 @@ public class OrderProcess extends BaseProjectController{
 	 * @author lzg
 	 * @return_type   void
 	 */
-	public void reallocationList() {
-		//分页查询
-		Page<CreditOrderInfo> pager = PublicListMod(orderAllocation);
-		setAttr("page", pager);
-		keepPara();
+	public void showReallocation(){
 		render(PATH+"order_allocation.html");
 	}
 	
+	/**
+	 *获取订单数据
+	 */
+	public void reallocationJson() {
+		//分页查询
+		Page<CreditOrderInfo> pager = PublicListMod(orderAllocation);
+		List<CreditOrderInfo> rows = pager.getList();
+		TemplateSysUserService templete = new TemplateSysUserService();
+		for (CreditOrderInfo creditOrderInfo : rows) {
+			//templete.getSysUser(2, creditOrderInfo.get());
+		}
+		rows.get(0).put("aaa","222");
+		int totalRow = pager.getTotalRow();
+		ResultType resultType = new ResultType(totalRow,rows);
+		renderJson(resultType);
+	}
 	/**
 	 * @todo   订单分配查看单个订单信息
 	 * @time   2018年9月14日 下午1:30:00
 	 * @author lzg
 	 * @return_type   void
 	 */
-	public void reallocationView() {
+	public void reallocationViewJson() {
+		CreditOrderInfo model = getModel(CreditOrderInfo.class);
 		List<Object> keywords = new ArrayList<>();
 		keywords.add(getPara("id"));
-		CreditOrderInfo model = CreditOrderInfo.dao.pagerOrder(1, 1, keywords,"",orderAllocation+"id",this).getList().get(0);
+		CreditOrderInfo tarGerodel = CreditOrderInfo.dao.pagerOrder(1, 1, keywords,"",orderAllocation+"id",this).getList().get(0);
 		setAttr("model", model);
 		keepPara();
 		render(PATH+"view.html");

@@ -1,21 +1,9 @@
 
 
 #orderForm select{
-	color:#ccc;
+	color:#808080;
 }
-.create-order {
-    height: 6.25rem;
-	box-shadow: 0px 1px 3px 1px #ccc;
-    background: #fff;
-    margin-bottom: 0.4rem;
-}
-.user-info {
-    padding-left: 2.625rem;
-}
-.regards {
-    font-size: 1.5rem;
-    font-weight: 600;
-}
+
 .table-content{
 	height: calc(100% - 6.65rem);
 }
@@ -81,14 +69,7 @@
 #btn_download i{
 	margin-right:5px;
 }
-/*面包屑*/
-.breadcrumb{
-	padding:0;
-	background: none;
-}
-.breadcrumb-item a{
-	color:#999!important;
-}
+
 /*提示信息*/
 .errorInfo{
 	color:#F75760;

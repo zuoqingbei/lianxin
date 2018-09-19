@@ -1,3 +1,9 @@
+:root {
+    --fontColor:#808080;
+    --activeColor:#1890ff;
+    --inputWidthMD:21rem;/*中等input宽*/
+    --inputWidthsm:13.5rem;/*中等input宽*/
+}
 /*重置样式*/
 html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img {
     margin: 0;
@@ -8,12 +14,14 @@ html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, l
 ul, ol, li {
     list-style: none;
 }
-
+a {
+    color: #007bff;
+}
 a, u {
     text-decoration: none;
 }
 a:hover {
-    text-decoration: none;
+    color: var(--activeColor);
 }
 a:link {
     text-decoration: none;
@@ -29,7 +37,6 @@ input {
     outline: none;
 }
 
-input::input-placeholder{color:#808080!important;} 
 
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
 color: #808080!important; 
@@ -48,6 +55,7 @@ color: #808080!important;
 html,body {
    height: 100%;
    overflow: hidden;
+   min-width: 1000px;
 }
 
 
@@ -56,13 +64,18 @@ html,body {
     width: 100%;
     margin: 0;
 }
-
+label {
+    margin-bottom: 0;
+}
 .container-fluid {
     height: 100%;
     padding: 0;
 }
 .form-group {
     margin:0;
+}
+.form-control {
+    border-radius: 4px!important;
 }
 .btn {
     border:none;
@@ -96,8 +109,13 @@ label.col-md-4{
 	padding:0 5px;
 }
 .fixed-table-pagination .pagination a {
-    margin:0 2px;
+    margin:0 0.25rem;
     font-weight: 600;
+    border-radius: 4px;
+}
+.page-pre a{
+    color: #333!important;
+
 }
 .pagination>li>a, .pagination>li>span {
     position: relative;
@@ -105,21 +123,22 @@ label.col-md-4{
     padding: 6px 12px;
     margin-left: -1px;
     line-height: 1.42857143;
-    color: #428bca;
+    color: #808080;
     text-decoration: none;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid #e5e5e5;
 }
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
     z-index: 2;
     cursor: default;
-    color: #2592fc;
-    border:1.5px solid #2592fc;
+    color:var(--activeColor);
+    border:1.5px solid var(--activeColor);
+   
 }
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
     color: #fff;
     text-decoration: none;
-    background-color: #428bca;
+    background-color: var(--activeColor);
     outline: 0;
 }
 .dropdown-menu>li>a {
@@ -136,54 +155,191 @@ label.col-md-4{
     font-size: 1rem;
 }
 
+
 .fixed-table-header-columns, .fixed-table-body-columns {
     z-index: 999;
 }
+
+/*滚动条样式*/
+.fixed-table-body::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+.fixed-table-body::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    margin: 0 2.5rem;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: #c1c1c1;
+}
+.fixed-table-body::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    /* box-shadow: inset 0 0 5px rgba(0,0,0,0.2); */
+    border-radius: 0;
+    background: #fafafa;
+}
+
+.form-check-input {
+    margin-top: .1rem;
+}
+
+
+
  /***面板屑*/
  .breadcrumb {
      background: #fff;
  }
-
-/********************************媒体查询********************************/
-@media (min-width: 576px) { 
-    html {
-        font-size: 10.88px!important;
-    }
+ /*去掉表格左右便框*/
+ .bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td {
+    border-width: 1px 0;
+    border-color: #e5e5e5;
+ }
+ .bootstrap-table .table thead > tr > th {
+    border-width: 1px 0;
+ }
+ .fixed-table-container {
+     border:0;
+ }
+ .fixed-table-header table thead tr th {
+     border-top: 0;
+ }
+ #table tbody tr:first-child td {
+     border-top: 0;
+ }
+ .bootstrap-table .table > thead > tr > th {
+     border-bottom: 0;
+ }
+.fixed-table-body-columns {
+    top:41px!important;
+}
+ .fixed-table-header-columns table thead tr th {
+     border-top: 0;
+     background: #fafafa;
+ }
+ .fixed-table-body-columns table tbody tr:hover{
+     background: #e6f7ff;
+ }
+ #table tbody tr:hover {
+     background: #e6f7ff;
+ }
+ .table:not(.table-condensed) > tbody > tr > td {
+     color: var(--fontColor);
  }
 
-/* // Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) and (min-height:576px) { 
-    html {
-        font-size: 10.88px!important;
-    }
+/*modal*/
+.modal {
+    left: 16.66667%;
+}
+.modal-header {
+    min-height: 5rem;
+    padding: 0 1.875rem;
+}
+.modal-header .close {
+    padding-top: 1.575rem;
+}
+.modal-content {
+    min-height: 38.75rem;
+    overflow-y: auto;
+}
+.modal-dialog {
+    max-width: 90%!important;
+}
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-top: 1.575rem;
+}
+.modal-footer {
+    padding: 2rem;
+}
+.hover{
+    /* background-color: red !important */
+}
+/**表格排序*/
+.fixed-table-container thead th .both {
+    background:url('../imgs/order/both.png') 78% 50% no-repeat;
+    background-size: 8% 30%;
+}
+.fixed-table-container thead th .asc {
+    background:url('../imgs/order/asc.png') 78% 50% no-repeat;
+    background-size: 8% 30%;
+}
+.fixed-table-container thead th .desc {
+    background:url('../imgs/order/desc.png') 78% 50% no-repeat;
+    background-size: 8% 30%;
+}
+/**layui重置样式 */
+.layui-unselect.layui-form-select,.layui-form-select {
+    width: 66.6%!important;
+
+}
+.layui-input, .layui-select, .layui-textarea {
+    height: 2.4rem;
+    color: var(--fontColor);
+    flex: 1 1 auto;
+    border-radius: 4px!important;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid #ced4da;
+}
+.layui-unselect.layui-form-select {
+    height: 2.4rem;
+}
+.input-group {
+    height: 2.4rem;
+}
+.layui-anim.layui-anim-upbit {
+    top: auto;
+    transition: none!important;
+}
+.layui-form-select dl {
+    padding: 0;
+}
+.layui-form-select dl dd, .layui-form-select dl dt {
+    line-height: 1.5;
+    color: var(--fontColor);
+    background: #fff;
+    font-size: 1rem;
+}
+.layui-select-tips {
+    background: #e5e5e5!important;
+}
+.layui-form-select dl dd:hover {
+    background: var(--activeColor);
+    color: #fff!important;
+}
+.layui-this {
+    background: var(--activeColor)!important;
+    color: #fff!important;
 }
 
+/********************************媒体查询********************************/
+
 /* // Large devices (desktops, 992px and up) */
-@media (min-width: 992px) and (min-height:576px){ 
+@media (min-width: 992px){ 
     html {
-        font-size: 10.86px!important;
+        font-size: 8.27px!important;
     }
  }
 /* 
 // Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) and (min-height:576px) { 
+@media (min-width: 1200px) { 
     html {
-        font-size: 11px!important;
+        font-size: 10px!important;
     }
  }
 
- @media (min-width: 1440px) and (min-height:768px) { 
+ @media (min-width: 1440px) { 
     html {
-        font-size: 14.8px!important;
+        font-size: 12px!important;
     }
 }
 
-@media (min-width: 1600px) and (min-height:768px){ 
+@media (min-width: 1600px) { 
     html {
-        font-size: 16px!important;
+        font-size: 13.33px!important;
     }
 }
-@media (min-width: 1920px) and (min-height:960px){ 
+@media (min-width: 1920px) { 
     html {
         font-size: 16px!important;
     }
