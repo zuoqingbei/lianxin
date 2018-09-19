@@ -21,7 +21,6 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
-import com.hailian.modules.credit.usercenter.model.uploadResult;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
@@ -92,6 +91,8 @@ public class HomeController extends BaseProjectController {
 	public void list(){
 		String uri = this.getRequest().getRequestURI();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		String sortname=getPara("sortName");
+		String sortorder=getPara("sortOrder");
 		/*SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
 		String date=getPara("end_date","");
 		Date end_date=null;
@@ -111,9 +112,8 @@ public class HomeController extends BaseProjectController {
 			status=status.substring(0, status.length()-1);
 		}
 		Paginator pageinator=getPaginator();
-		String orderBy = getBaseForm().getOrderBy();
-		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,orderBy,status, user);
-		List<CreditOrderInfo> result=OrderManagerService.service.getOrdersService(model,orderBy,status, user);
+		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,status, user,sortname,sortorder);
+		List<CreditOrderInfo> result=OrderManagerService.service.getOrdersService(status,model, user);
 		int total= result.size();
 		List<CreditOrderInfo> rows=page.getList();
 		for(int i=0;i<rows.size();i++) {

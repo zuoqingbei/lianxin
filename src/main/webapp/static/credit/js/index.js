@@ -151,7 +151,7 @@ let Index = {
                 
                 }, {
                   title: '订单公司名称',
-                  field: 'right_company_name_en',
+                  field: 'englishName',
                   align: 'center',
                   valign: 'middle',
                 },{
@@ -226,13 +226,12 @@ let Index = {
             sortName:"receiver_date",
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
+            	console.log(params);
               return {//这里的params是table提供的  
                   pageNo: params.pageNumber,//页码
                   recordsperpage: params.pageSize,//每页多少条
-                  sort1: params.sortName1,//排序列名  
-                  sort2:params.sortName2,
-                  sortOrder: params.sortOrder //排位命令（desc，asc）
-                  
+                  sortName:params.sortName,
+                  sortOrder:params.sortOrder
               };  
           },  
           });

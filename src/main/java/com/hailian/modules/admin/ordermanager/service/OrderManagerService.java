@@ -283,10 +283,10 @@ public class OrderManagerService {
 		return CreditOrderInfo.dao.getOrders( model, orderby, c);
 	}
 
-	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model, String orderby,
-			String status,SysUser user) {
+	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model,
+			String status,SysUser user,String sortname,String sortorder) {
 		// TODO Auto-generated method stub
-		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby,status, user);
+		return CreditOrderInfo.dao.getOrders(pageinator, model, status, user,sortname,sortorder);
 	}
 
 	public CreditCustomInfo getCreater(String id) {
@@ -300,9 +300,9 @@ public class OrderManagerService {
 		return CreditOrderInfo.dao.findOrder(num);
 	}
 
-	public List<CreditOrderInfo> getOrdersService(CreditOrderInfo model, String orderby, String status, SysUser user) {
+	public List<CreditOrderInfo> getOrdersService( String status,CreditOrderInfo model,  SysUser user) {
 		
-		return CreditOrderInfo.dao.getOrders( model, orderby,status, user);
+		return CreditOrderInfo.dao.getOrders( status, model, user);
 	}
 
 }
