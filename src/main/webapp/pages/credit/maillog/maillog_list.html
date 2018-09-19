@@ -1,0 +1,136 @@
+<% var send_result = tempDict.getSysDictDetailString('send_result',attr.send_result!); %>
+<% 
+	var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+		
+	var oper;
+	jQuery(function($) {
+		// 页面方法
+		oper = {
+			width : 800,
+			height : 500,
+			form : document.form1,
+			list : function() {
+				var url = 'credit/maillog/list';
+				this.form.action = url;
+				this.form.submit();
+			},
+			view : function(id) {
+				var url = 'credit/maillog/view/'+id;
+				var title = '查看邮件内容';
+				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+			},
+			edit : function(id) {
+				var url = 'credit/maillog/edit/'+id;
+				var title = '修改';
+				Iframe(url, this.width, this.height, title);
+			}
+			
+		};
+		//显示Menu索引
+		showMenu('page_maillog');
+	});
+	
+	//分页
+	var paginator = function(page) {
+		oper.list();
+	};
+</script>
+
+<%
+};
+
+var bodyContent = {
+%>
+	<form name="form1" action="" method="post"  class="form-inline" role="form">
+		<input type="hidden" name="form.orderColumn" value="${form.orderColumn!''}" />
+		<input type="hidden" name="form.orderAsc" value="${form.orderAsc!''}" />
+		<!-- 菜单 -->
+		<% include("/pages/template/menu.html"){} %>
+
+		<div class="tableSearch">
+			<%  //查询列表 %>
+			模板标识
+			<div class="form-group">
+				<input class="form-control" type="text" name="module_id"
+					value="${module_id!''}" placeholder="请输入模板标识" required='required' />
+			</div>
+			ID
+			<div class="form-group">
+				<input class="form-control" type="text" name="mail_log_id"
+					value="${mail_log_id!''}" placeholder="请输入id" required='required' />
+			</div>
+			<div class="form-group">
+					发送结果：
+					<select name="attr.send_result" class="form-control" >
+					 ${send_result!}
+					</select>
+			</div>
+			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
+			 		<span class="glyphicon glyphicon-search"></span> 查 询
+			</button>
+			<button type="button" class="btn btn-default" onclick="resetForm();">
+			 		<span class="glyphicon glyphicon-refresh"></span> 重 置
+			</button>
+			<button type="button" class="btn btn-default" onclick="oper.add();">
+			 		<span class="glyphicon glyphicon-plus"></span> 新 增
+			</button>
+		</div>
+		
+		<!-- 数据列表 -->
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<%  // 列表头部 %>
+					<th name="t.mail_log_id" class="sorting">ID</th> 
+					<th name="t.user_code" class="sorting">用户名</th> 
+					<th name="t.mail_address" class="sorting">邮箱地址</th> 
+					<th name="t.copy_mail_address" class="sorting">抄送邮箱地址</th> 
+					<th name="t4.module_id" class="sorting">模板标识</th> 
+					<th name="t.send_time" class="sorting">发送时间</th>
+					<th name="t.remark" class="sorting">备注</th> 
+					<th name="t3.detail_name" class="sorting">发送结果</th>
+ 					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<% for(item in page.list){ %>
+				<tr>
+				<td>${item.mail_log_id}</td>
+					<%  // 列表内容 %>
+					<td>${item.realname}</td> 
+					<td>
+						${item.mail_address}
+					</td> 
+					<td>${item.copy_mail_address}</td>
+					<td>
+						${item.module_id}
+					</td>  
+					<td>
+						${item.send_time,dateFormat="yyyy-MM-dd"}
+					</td>  
+					<td>
+						<% if (strutil.length(item.remark) >
+						30) { %> ${strutil.subStringTo(item.remark, 0, 30)}... <% } else { %>
+						${item.remark} <% } %>
+					</td>
+					<td>
+						${item.detail_name}
+					</td> 
+				<td>
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.mail_id});">重发</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.view(${item.mail_id});">邮件内容</a> 
+				</td>
+				</tr>
+			<% } %>
+			</tbody>
+		</table>
+		<%include("/pages/includes/paginator.html"){} %>
+	</form>
+<%}; %>
+
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
