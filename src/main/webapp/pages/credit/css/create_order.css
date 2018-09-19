@@ -1,33 +1,11 @@
-@charset "utf-8";
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
-color: #ccc!important; 
-} 
-input:-moz-placeholder, textarea:-moz-placeholder { 
-color: #ccc!important;
-} 
-input::-moz-placeholder, textarea::-moz-placeholder { 
-color: #ccc!important; 
-} 
-input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-color: #ccc!important;
-} 
+
+
 #orderForm select{
-	color:#ccc;
+	color:#808080;
 }
-.create-order {
-    height: 6rem;
-    box-shadow: 0 1px 5px 0 #ccc;
-    background: #fff;
-}
-.user-info {
-    padding-left: 2.625rem;
-}
-.regards {
-    font-size: 1.5rem;
-    font-weight: 600;
-}
+
 .table-content{
-	height: calc(100% - 6.2rem);
+	height: calc(100% - 6.65rem);
 }
 .table-content label{
 	font-size: 1rem;
@@ -91,14 +69,7 @@ color: #ccc!important;
 #btn_download i{
 	margin-right:5px;
 }
-/*面包屑*/
-.breadcrumb{
-	padding:0;
-	background: none;
-}
-.breadcrumb-item a{
-	color:#999!important;
-}
+
 /*提示信息*/
 .errorInfo{
 	color:#F75760;
@@ -116,10 +87,23 @@ color: #ccc!important;
 /*进度条*/
 .progress-box {
 	position: absolute;
-    left: 7rem;
+	display: flex;
+	justify-content: space-around;
+	align-content: center;
+    left: 10rem;
     top: 10.5rem;
-    width: 75%;
+    width: 80%;
 }
 .progress {
-	width: 80%;
+	width: 68%;
+}
+.close span{
+	box-shadow: none;
+}
+.filename {
+	color: #2592fc;
+}
+.fa-paperclip {
+	transform: rotateX(180deg);
+	color: #808080;
 }

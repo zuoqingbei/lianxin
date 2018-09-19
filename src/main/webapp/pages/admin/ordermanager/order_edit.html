@@ -185,7 +185,7 @@ include("/pages/template/head.html"){}
 };
 var bodyContent = {
 %>
-<form name="form1" action="" method="post" class="form-horizontal"
+<form name="form1" action="" enctype="multipart/form-data" method="post" class="form-horizontal"
 	  role="form" >
 
 	<table class="table">
@@ -415,7 +415,11 @@ var bodyContent = {
 		<tr>
 			<td>上传相关资料</td>
 			<td>
-				<input class="form-control" type="file" name="" value=""  />
+				<input class="form-control" type="file" name="file_url" value=""  />
+				<input type="hidden" name="model.update_date" value="${flyfox.getNow()}"/>
+               	<input type="hidden" name="model.business_type" value="0" >	
+               	<input type="hidden" name="model.create_by" value="${user.userid}" >	                        	
+               	<input type="hidden" name="model.remarks" value="订单附件"/> 
 			</td>
 		</tr>
 		<input name="attr.update_by" type="hidden" value="${user.userid}">

@@ -1,10 +1,13 @@
 package com.hailian.modules.admin.ordermanager.controller;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -15,6 +18,8 @@ import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
@@ -24,13 +29,18 @@ import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
+import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.hailian.util.Config;
 import com.hailian.util.DateAddUtil;
+import com.hailian.util.DateUtils;
+import com.hailian.util.FtpUploadFileUtils;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 /**
  * 
  * @className OrdermanagerController.java
@@ -43,7 +53,12 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 @ControllerBind(controllerKey = "/admin/ordermanager")
 public class OrdermanagerController extends BaseProjectController{
 	private static final String path = "/pages/admin/ordermanager/order_";
-	
+	public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
+	public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
+	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
+	public static final String userName = Config.getStr("ftp_userName");//域用户名
+	public static final String password = Config.getStr("ftp_password");//域用户密码
+	private String num="";
 	/**
 	 * 
 	 * @time   2018年8月24日 下午6:16:22
@@ -156,17 +171,83 @@ public class OrdermanagerController extends BaseProjectController{
 		})
 	@Before(Tx.class)
 	public void save() {
+		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+		CreditUploadFileModel model1= new CreditUploadFileModel();
+		model1.set("business_type", "0");
+		model1.set("business_id", num);
+		int num1=0;
+		String message="";
+		int size=upFileList.size();
 		int id=getParaToInt("id");
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		SysUser user = (SysUser) getSessionUser();
-		try {
+		//按照规则生成编号
+		
+		model.set("num", num);
+		if(size >0){
+			try {
+				for(UploadFile uploadFile:upFileList){
+					String originalFile=uploadFile.getOriginalFileName();
+					int dot = originalFile.lastIndexOf(".");
+					String ext="";
+					String originalFileName=FileTypeUtils.getName(originalFile);
+					ext=FileTypeUtils.getFileType(originalFile);
+					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+						String now=DateUtils.getNow(DateUtils.YMDHMS);
+						String FTPfileName=originalFileName+now+"."+ext;
+						String fileName=originalFileName+now;
+						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						if(storeFile){
+							String factpath=storePath+"/"+FTPfileName;
+							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+							Integer userid = getSessionUser().getUserid();
+							model1.set("business_id", num);
+							UploadFileService.service.save(0,uploadFile, factpath,url,model1,fileName,userid);//记录上传信息
+						}else{
+							num1+=1;
+							message+=uploadFile.getOriginalFileName()+"上传失败!";
+							renderMessage(uploadFile.getOriginalFileName()+"上传失败!");
+							return;
+						}
+					}else{
+						num1+=1;
+						message+=uploadFile.getOriginalFileName()+"上传失败!";
+						renderMessage(uploadFile.getOriginalFileName()+"上传失败!");
+						return;
+					}
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+				return;
+			}
+		}
+		//保存订单
+		try {						
 			OrderManagerService.service.modifyOrder(id,model,user,this);
-			OrderManagerService.service.addOrderHistory(id, user);
-			renderMessage("保存成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderMessage("保存失败");
 		}
+		//查找保存的订单
+		CreditOrderInfo coi=OrderManagerService.service.find(num);
+		//生成日志
+		try {
+			OrderManagerService.service.addOrderHistory(id, user);
+		} catch (Exception e) {
+			//插入日志失败则删除订单
+			coi.set("del_flag", "1");
+			try {
+				OrderManagerService.service.deleteOrder(coi,this);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				renderMessage("请联系管理员手动删除id为"+model.get("id")+"的订单");
+			}
+			e.printStackTrace();
+			renderMessage("保存失败");
+			return;
+		}
+		renderMessage("保存成功");
 	}
 	/**
 	 * 
@@ -259,13 +340,24 @@ public class OrdermanagerController extends BaseProjectController{
 		if(StringUtils.isNotBlank(receivedate)) {
 		ca.setTime(sdf.parse(receivedate));//设置接单时间
 		}
+		int time;
+		if(usetime==null) {
+			 usetime=new CreditReportUsetime();
+			 time=0;
+		}else {
+			time=usetime.get("use_time");
+		}
 		Calendar c = 
 				new DateAddUtil().addDateByWorkDay(ca,//当前时间
 						//需要用多少天
-						(int)Math.ceil(usetime.getInt("use_time")/24.0));
+						(int)Math.ceil(time/24.0));
+		String enddate=sdf.format(c.getTime());
+		if(time==0) {
+			enddate="";
+		}
 		Record record=new Record();
 		record.set("usetime", usetime);
-		record.set("enddate", sdf.format(c.getTime()));
+		record.set("enddate", enddate);
 		renderJson(record);
 
 	}

@@ -1,5 +1,7 @@
 package com.hailian.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -63,6 +65,12 @@ public class DateAddUtil {
 		initHolidayList(year+"-4-5");//清明
 		initHolidayList(year+"-4-6");//清明
 		initHolidayList(year+"-4-7");//清明
+		//获取节假日,需要在能正常访问日历的网络中使用
+		/*List<ChinaDate> dateList = Main.getCurrentDateInfo();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		for(ChinaDate date: dateList){
+			initHolidayList(dateFormat.format(date.getSolarDate()));
+			}*/
 		
 	}
 	/**

@@ -94,13 +94,20 @@ let Index = {
     },
     hideShowStyle(){
       /**展开收起样式 */
-      $("#hideBtn").click(()=>{
+      $("#hideBtn").click((e)=>{
           if($('#hideBtn').text().trim() === '收起'){
+            $("#btnCollapse").css({'height':'0'})
             $('#hideBtn').html('展开 <i class="fa fa-angle-down"></i>')
+            $(".fixed-table-body").css({'height':'115%','transition':'height .1s'})
+            $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"11px",'transition':'all .1s'})
           }else if($('#hideBtn').text().trim() === '展开'){
+            $("#btnCollapse").css({'height':'3rem'})
             $('#hideBtn').html('收起 <i class="fa fa-angle-up"></i>')
+            $(".fixed-table-body").css({'height':'100%','transition':'height .1s'})
+             $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"8px",'transition':'all .1s'})
           }
       })
+
     },
     initTable(){
         
@@ -116,6 +123,11 @@ let Index = {
                   field: 'id',
                   align: 'center',
                   valign: 'middle',
+                  formatter:function(value,row,index){ 
+  
+                	var url = '<a href="#" style="color:blue" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
+                	return url; 
+              		} 
                 },{
                   field: 'receiver_date',
                   title: '订单日期',
@@ -139,6 +151,11 @@ let Index = {
                 
                 }, {
                   title: '订单公司名称',
+                  field: 'right_company_name_en',
+                  align: 'center',
+                  valign: 'middle',
+                },{
+                  title: '公司中文名称',
                   field: 'companyName',
                   align: 'center',
                   valign: 'middle',
@@ -177,7 +194,8 @@ let Index = {
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
-                },*/{
+                },*/
+                /*{
                   field: 'operate',
                   title: '操作',
                   align: 'center',
@@ -187,7 +205,7 @@ let Index = {
                     }
                   },
                   formatter: _this.operateFormatter
-                }
+                }*/
               
             ],
             url : '/credit/front/home/list', // 请求后台的URL（*）
@@ -203,10 +221,18 @@ let Index = {
             fixedColumns: true,
             fixedNumber: 1,
             queryParamsType:'',
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",
+            sortName:"receiver_date",
+            contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
               return {//这里的params是table提供的  
-                  pageNo: params.pageNumber,//从数据库第几条记录开始  
-                  recordsperpage: params.pageSize//找多少条  
+                  pageNo: params.pageNumber,//页码
+                  recordsperpage: params.pageSize,//每页多少条
+                  sort1: params.sortName1,//排序列名  
+                  sort2:params.sortName2,
+                  sortOrder: params.sortOrder //排位命令（desc，asc）
+                  
               };  
           },  
           });
@@ -214,11 +240,8 @@ let Index = {
           setTimeout(() => {
             $table.bootstrapTable('resetView');
           }, 200);
-      },
-      operateFormatter(){
-        /**操作按钮格式化 */
-        return '<a href="javascript:;" class="detail">详情</a>'
-      }       
+      }
+       
     }
 Index.init();
 
