@@ -155,7 +155,8 @@ public class OrderProcess extends BaseProjectController{
 		String now = getNow();
 		model.set("update_by",userid);
 		model.set("update_date", now);
-		model.set("status", 290);
+		//status='292'值状态为客户确认状态 ,其维护在字典表中
+		model.set("status", 292);
 		model.update();
 		reallocationJson();
 	}

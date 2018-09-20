@@ -565,8 +565,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
 			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
-			
-			fromSql.append(" where c.del_flag = 0 and status='290' ");
+			//status='291'值状态为订单分配状态 ,其维护在字典表中
+			fromSql.append(" where c.del_flag = 0 and status='291' ");
 		}
 		//关键词搜索
 		if (keywords!=null&&keywords.size()>0) {
