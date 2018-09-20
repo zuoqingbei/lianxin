@@ -214,6 +214,7 @@ let Allocation = {
                       $("#companyZHNames").html(row.companyZHNames);
                       $("#reporter_select").html(row.seleteStr);
                       $("#orderId").val(row.id);
+                      $("#num").val(row.num);
                       pageNumber = row.pageNumber;
                       console.log("pageNumber====="+pageNumber);
                       pageSize = row.pageSize;
