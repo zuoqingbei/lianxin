@@ -312,8 +312,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 
 	}
 	
-	public Page<CreditOrderInfo> getOrders(Paginator pageinator, CreditOrderInfo model, String orderby, String status,
-			SysUser user) {
+	public Page<CreditOrderInfo> getOrders(Paginator pageinator, CreditOrderInfo model,  String status,
+			SysUser user,String sortname,String sortorder) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sql = new StringBuffer();
 		//客户id
@@ -379,10 +379,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			sql.append(" and t.status in(?)");
 			params.add(status);
 		}
-		if (StrUtils.isEmpty(orderby)) {
-			sql.append(" order by t.id desc");
+		if (StringUtils.isNotBlank(sortname)) {
+			sql.append(" order by t." ).append(sortname).append("  "+sortorder);
 		} else {
-			sql.append(" order by ").append(orderby);
+			sql.append(" order by ").append(model.get("id")).append(" esc");
 		}
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
@@ -401,7 +401,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		return CreditOrderInfo.dao.findFirst(sql.toString(),num);
 	}
 
-	public List<CreditOrderInfo> getOrders(CreditOrderInfo model, String orderby, String status, SysUser user) {
+	public List<CreditOrderInfo> getOrders( String status,CreditOrderInfo model, SysUser user) {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sql = new StringBuffer();
 		//客户id
@@ -466,11 +466,6 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		if(StringUtils.isNotBlank(status)) {
 			sql.append(" and t.status in(?)");
 			params.add(status);
-		}
-		if (StrUtils.isEmpty(orderby)) {
-			sql.append(" order by t.id desc");
-		} else {
-			sql.append(" order by ").append(orderby);
 		}
 		return CreditOrderInfo.dao.find("select t.* "+sql.toString(),params.toArray());
 	}

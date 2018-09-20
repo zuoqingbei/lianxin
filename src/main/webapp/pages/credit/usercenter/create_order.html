@@ -118,7 +118,7 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6 layui-form">
 		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>公司：</label>
-                                        <select name="attr.company_id" class="search-input col-md-8 layui-input" lay-search="" ay-verify="" onchange="companychange()">
+                                        <select name="attr.company_id" class="search-input col-md-8 layui-input" lay-search="" ay-verify="" >
                                             <option value="0" disabled selected>请选择公司</option>
                                         </select>
 		                    	<p class="errorInfo col-md-8">请输入正确公司名称</p>
@@ -351,10 +351,10 @@
 					form.render(); //更新全部
 				});
    	 	}
-   	 	function companychange(){
+   	/*  	function companychange(){
    	 		$("input[name='attr.company_by_report']").val($("select[name='attr.company_id']").find("option:selected").attr(" m-type1"));
    	 		$("input[name='attr.right_company_name_en']").val($("select[name='attr.company_id']").find("option:selected").attr("m-type2"));
-   	 	}
+   	 	} */
    	 	/* function upload(){
    	 	 var file_obj = document.getElementById('upload_file').files[0];
    	 	var fd = new FormData();
