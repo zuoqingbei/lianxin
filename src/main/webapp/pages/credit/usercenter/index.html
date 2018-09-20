@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/pages/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
     <link rel="stylesheet" href="/pages/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
     <link rel="stylesheet" href="/pages/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/pages/credit/assets/animate/animate.css">
+    <link rel="stylesheet" href="/pages/credit/assets/layui/css/layui.css">
     <link rel="stylesheet" href="/pages/credit/css/reset.css">
     <link rel="stylesheet" href="/pages/credit/css/common.css">
     <link rel="stylesheet" href="/pages/credit/css/menu.css">
@@ -52,11 +54,11 @@
                     </div>
                 </div>
                 <!-- 表格 -->
-                <div class="table-content p-3">
+                <div class="table-content" style="overflow:hidden">
                     <div class="bg-f">
                         <div class="form-box">
-                            <form id="formSearch" class="form-inline" role="form">
-                                <div class="form-group row d-flex justify-content-around mb-4">
+                            <form id="formSearch" class="form-inline layui-form" role="form">
+                                <div class="form-group row d-flex  justify-content-around mb-4">
                                     <div class="input-group mt-2 col-md-4">
                                         <label class="control-label col-md-4" for="txt_search_departmentname">公司名称：</label>
                                         <input id="company_by_report" name="attr.company_by_report" type="text" class="form-control search-input col-md-8" id="txt_search_departmentname" placeholder="请输入公司名称">
@@ -73,31 +75,22 @@
                                 <div id="btnCollapse" class="show row justify-content-around">
                                     <div class="input-group mt-2 col-md-4" id="client">
                                         <label class="control-label col-md-4" for="txt_search_statu">客户：</label>
-                                        <select id="custom_id" name="attr.custom_id" class="form-control search-input col-md-8">
+                                        <select id="custom_id" name="attr.custom_id" class=" search-input col-md-8">
                                             <option value="" disabled selected>请选择客户</option>
                                         </select>
                                     </div>
                                     <div class="input-group mt-2 col-md-4" id="proxy">
                                         <label class="control-label col-md-4" for="txt_search_statu">代理：</label>
-                                        <select class="form-control search-input col-md-8" >
+                                        <select class=" search-input col-md-8" >
                                                 <option value="" disabled selected>请选择代理</option>
                                         </select>
                                     </div>
-                                    <div class="input-group mt-2 col-md-4">
-                                        <label class="control-label col-md-4" for="txt_search_statu">地区：</label>
-                                        <select id="continent" name="attr.continent" class="form-control search-input col-md-8" onchange="getCountry2()">
-                                            <option value="" disabled selected>请选择地区</option>
-                                        </select>
-                                    </div>
-                                   </div>
-                                   
-                                  <div class="form-group row d-flex justify-content-around mb-4">
-                                    <div class="input-group mt-2 col-md-4">
+                                    <div class="input-group mt-2 col-md-4" id="country">
                                         <label class="control-label col-md-4" for="txt_search_statu">国家：</label>
-                                        <select id="country" name="attr.country" class="form-control search-input col-md-8" >
+                                        <select name="attr.country" class="search-input col-md-8 layui-input" lay-search="" ay-verify="">
                                             <option value="" disabled selected>请选择国家</option>
                                         </select>
-                                	</div>
+                                    </div>
                                  </div>
                             </form>
                             <div class="btn-row d-flex justify-content-between mt-4 mb-4">
@@ -105,98 +98,117 @@
                                 <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
                                     <button type="button" id="btn_query" class="btn btn-primary">查询</button>
                                     <button type="button" id="btn_reset" class="btn btn-light">重置</button>
-                                    <a  role="button" data-toggle="collapse" href="#btnCollapse" aria-expanded="false"  aria-controls="btnCollapse">收起 <i class="fa fa-angle-up"></i></a>
+                                    <a id="hideBtn" role="button" href="javascript:;">收起 <i class="fa fa-angle-up"></i></a>
                                 </div>
                             </div>
                             
                         </div>
                         <table id="table"
                             data-toggle="table"
-                            data-url="./data.json"
                             style="position: relative"
                         >
                         <div class="deal-state"> 
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="4" class="form-check-input" id="defaultCheck1"> 
-                                     <label class="form-check-label" for="defaultCheck1">客户撤销</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck1"> 
+                                    <label class="form-check-label" for="defaultCheck1">订单分配</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="3" class="form-check-input" id="defaultCheck2"> 
-                                     <label class="form-check-label" for="defaultCheck2">确认完成</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck2"> 
+                                    <label class="form-check-label" for="defaultCheck2">客户确认</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="0" class="form-check-input" id="defaultCheck3"> 
-                                     <label class="form-check-label" for="defaultCheck3">新建订单</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck3"> 
+                                    <label class="form-check-label" for="defaultCheck3">报告制作</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck4"> 
-                                     <label class="form-check-label" for="defaultCheck4">代理完成</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck4"> 
+                                    <label class="form-check-label" for="defaultCheck4">报告完成</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck5"> 
-                                     <label class="form-check-label" for="defaultCheck5">代理补充</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck5"> 
+                                    <label class="form-check-label" for="defaultCheck5">代理中</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="1" class="form-check-input" id="defaultCheck6"> 
-                                     <label class="form-check-label" for="defaultCheck6">订单分配</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck6"> 
+                                    <label class="form-check-label" for="defaultCheck6">代理完成</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck7"> 
-                                     <label class="form-check-label" for="defaultCheck7">订单分配（重复可用）</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck7"> 
+                                    <label class="form-check-label" for="defaultCheck7">代理补充</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck8"> 
-                                     <label class="form-check-label" for="defaultCheck8">订单分配（重复更新）</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck8"> 
+                                    <label class="form-check-label" for="defaultCheck8">报告质检中</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck9"> 
-                                     <label class="form-check-label" for="defaultCheck9">检查合格</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck9"> 
+                                    <label class="form-check-label" for="defaultCheck9">报告质检不通过</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck10"> 
-                                     <label class="form-check-label" for="defaultCheck10">客户确认</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck10"> 
+                                    <label class="form-check-label" for="defaultCheck10">报告质检合格</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck11"> 
-                                     <label class="form-check-label" for="defaultCheck11">组确认</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck11"> 
+                                    <label class="form-check-label" for="defaultCheck11">分析制作</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck12"> 
-                                     <label class="form-check-label" for="defaultCheck12">客户内容已更新</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck12"> 
+                                    <label class="form-check-label" for="defaultCheck12">分析完成</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck13"> 
-                                     <label class="form-check-label" for="defaultCheck13">调档</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck13"> 
+                                    <label class="form-check-label" for="defaultCheck13">分析质检中</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck14"> 
-                                     <label class="form-check-label" for="defaultCheck14">报告完成</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck14"> 
+                                    <label class="form-check-label" for="defaultCheck14">分析质检不通过</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck15"> 
-                                     <label class="form-check-label" for="defaultCheck15">报告制作</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck15"> 
+                                    <label class="form-check-label" for="defaultCheck15">分析质检合格</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck16"> 
-                                     <label class="form-check-label" for="defaultCheck16">确认收到</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck16"> 
+                                    <label class="form-check-label" for="defaultCheck16">翻译制作</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck17"> 
-                                     <label class="form-check-label" for="defaultCheck17">查注册</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck17"> 
+                                    <label class="form-check-label" for="defaultCheck17">翻译完成</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck18"> 
-                                     <label class="form-check-label" for="defaultCheck18">整理完成</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck18"> 
+                                    <label class="form-check-label" for="defaultCheck18">翻译质检中</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck19"> 
-                                     <label class="form-check-label" for="defaultCheck19">整理报告</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck19"> 
+                                    <label class="form-check-label" for="defaultCheck19">翻译质检不通过</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" value="" class="form-check-input" id="defaultCheck20"> 
-                                     <label class="form-check-label" for="defaultCheck20">整理退回补充</label>
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck20"> 
+                                    <label class="form-check-label" for="defaultCheck20">翻译质检合格</label>
                                 </div>
-                             <a href="javascript:;" role="button"  class="enterFilter">确定</a></div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck21"> 
+                                    <label class="form-check-label" for="defaultCheck21">报告完成</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck22"> 
+                                    <label class="form-check-label" for="defaultCheck22">客户内容已更新</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck23"> 
+                                    <label class="form-check-label" for="defaultCheck23">客户撤销</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck24"> 
+                                    <label class="form-check-label" for="defaultCheck24">订单完成</label>
+                                </div>
+                                <div class="btn-group btn-filter d-flex justify-content-center mt-4">
+                                    <a href="javascript:;" role="button" class="enterFilter mr-4">确定</a>
+                                    <a href="javascript:;" role="button" class="resetrFilter">重置</a>
+                                </div>
+                            </div>
                         </table>
                     </div>
                 </div>
@@ -210,6 +222,7 @@
     </div>
    <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
     <script src="${BASE_PATH }static/credit/assets/laydate/laydate.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
     <script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
     <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
     <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
@@ -224,7 +237,6 @@
 				$("#role").html(data.user.roleName);
 				$("#dept").text(data.user.departName);
 				getCustoms(data.customs);
-				getContient(data.continent);
 				getCountry(data.country);
 			})	
 		});
@@ -235,14 +247,6 @@
 			}
 			$("select[name='attr.custom_id']").append(html);
 		};
-		function getContient(data){
-			var html=""
-			for(item in data){
-				html+="<option  value='"+data[item].detail_id+"'>"+data[item].detail_name+"</option>";
-			}
-			$("select[name='attr.continent']").append(html);
-			
-		};
 		function getCountry(data){
 			var html=""
 			html+=html+="<option  value=''>请选择</option>";
@@ -250,14 +254,19 @@
 					html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
 				}
 				$("select[name='attr.country']").html(html);
+				//重新渲染 否则option不能显示
+				layui.use('form', function(){
+					var form = layui.form;  
+					form.render(); //更新全部
+				});
+		
 		}
-		function getCountry2(){
-			var contient =$("select[name='attr.continent']").val();
-			$.get('/credit/front/home/getCountry?contient='+contient,function(data){
-				console.log(data)
-				getCountry(data);
-			})	
+		function orderinfo(id){
+			location.href="/credit/front/home/orderInfo?id="+id
 		}
+		
+		
+	
 	</script>
 </body>
 </html>

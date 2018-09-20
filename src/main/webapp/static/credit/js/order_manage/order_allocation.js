@@ -1,6 +1,11 @@
 let Allocation = {
     init(){
         /**初始化函数 */
+    	this.pageNumber = "";
+    	this.pageSize = "";
+    	this.sortName = "";
+    	this.sortOrder = "";
+    	this.reportt = "";
         this.initTable();
         this.searchEvent();
         this.popperFilter();
@@ -22,10 +27,35 @@ let Allocation = {
         $("#modal_submit").click(function(){
             let reporter = $("#reporter_select option:selected").val();
             let remarks = $("#remarks").val();
-            console.log(reporter,remarks);
+            let id = $("#orderId").val();
+            //console.log(reporter,remarks);
+            $.ajax({
+       			type:"post",
+       			url:"/credit/front/orderProcess/reallocationSave",
+       			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id,
+       			dataType:"json",
+       			success:function(data){
+       			//提交成功关闭模态窗
+       			 $(".modal-header .close").trigger("click");
+       			//回显
+       			console.log("提交成功,开始回显:"+data);
+       			 $.ajax({
+       				type:"post",
+           			url:"/credit/front/orderProcess/reallocationJson",
+           			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder,
+           			dataType:"json",
+           			success:function(obj){
+           				console.log("回显的数据:"+obj);
+           			 	 $("#table").bootstrapTable("load",obj)
+           			 }
+       			 })
+       			 
+       			console.log("回显完毕");
+       			}
+            	
+       		})
+       		
             
-            //提交成功关闭模态窗
-           $(".modal-header .close").trigger("click");
         })
     },
     popperFilter(){
@@ -170,7 +200,27 @@ let Allocation = {
                   align: 'center',
                   events: {
                     "click .detail":(e,value,row,index)=>{
-                      console.log(row)
+                      console.log(row);
+                      $("#custom_id").html(row.custom_id);
+                      $("#customId").html(row.customId);
+                      $("#receiver_date").html(row.receiver_date);
+                      $("#country").html(row.country);
+                      $("#reportType").html(row.reportType);
+                      $("#reportLanguage").html(row.reportLanguage);
+                      $("#companyNames").html(row.companyNames);
+                      $("#custom_id").html(row.custom_id);
+                      $("#speed").html(row.speed);
+                      $("#user_time").html(row.user_time);
+                      $("#companyZHNames").html(row.companyZHNames);
+                      $("#reporter_select").html(row.seleteStr);
+                      $("#orderId").val(row.id);
+                      pageNumber = row.pageNumber;
+                      console.log("pageNumber====="+pageNumber);
+                      pageSize = row.pageSize;
+                  	  sortName = row.sortName;
+                  	  sortOrder = row.sortOrder;
+                  	  reportt = row.report_userKey;
+                  	  console.log("report_userKey====="+row.report_userKey);
                     }
                   },
                   formatter: _this.operateFormatter

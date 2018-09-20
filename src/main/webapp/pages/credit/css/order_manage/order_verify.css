@@ -1,0 +1,56 @@
+
+
+
+/*附件*/
+
+.file-upload {
+    border-top: solid 1px #ddd;
+    padding-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+.uploadFile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 11.25rem;
+    height: 8.125rem;
+    border:dashed 1px #ebecf0;
+    border-radius: 6px;
+}
+.upload-over {
+    background: #fafafa;
+    border-style: solid;
+}
+.uploadFile  input {
+    cursor: pointer;
+}
+.uploadFile .close {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    z-index: 10;
+    color: #999;
+}
+.uploadFile img{
+    width: 2rem;
+}
+.uploadFile p {
+    color: var(--fontColor);
+}
+#upload_file {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.filename {
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0 2rem;
+}

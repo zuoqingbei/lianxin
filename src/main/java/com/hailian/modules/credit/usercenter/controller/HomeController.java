@@ -13,17 +13,24 @@ import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
-import com.hailian.system.dict.SysDictDetail;
+import com.hailian.modules.credit.usercenter.model.uploadResult;
+import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.cache.Cache;
+import com.hailian.util.Config;
+import com.hailian.util.DateUtils;
+import com.hailian.util.FtpUploadFileUtils;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.upload.UploadFile;
 
 /**
  * 
@@ -38,9 +45,36 @@ import com.jfinal.plugin.activerecord.Record;
 @ControllerBind(controllerKey = "/credit/front/home")
 public class HomeController extends BaseProjectController {
 	private static final String path = "/pages/credit/usercenter/";
+	public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
+	public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
+	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
+	public static final String userName = Config.getStr("ftp_userName");//域用户名
+	public static final String password = Config.getStr("ftp_password");//域用户密码
+	private String num="1";
 	public void index() {
 		render(path + "index.html");
 		
+	}
+	/**
+	 * 
+	 * @time   2018年9月17日 上午11:54:31
+	 * @author yangdong
+	 * @todo   TODO 获取详情页
+	 * @param  
+	 * @return_type   void
+	 */
+	public void orderInfo() {
+		//获取订单id
+		int id=getParaToInt("id");
+		//根据订单id获取订单信息
+		CreditOrderInfo order=OrderManagerService.service.editOrder(id,this);
+		//根据订单信息获取公司信息
+		CreditCompanyInfo company=OrderManagerService.service.getCompany(order.getInt("company_id"));
+		//绑定订单信息和公司信息
+		setAttr("order",order);
+		setAttr("company",company);
+		//转发页面
+		renderJson(company);
 	}
 	/**
 	 * 
@@ -80,7 +114,8 @@ public class HomeController extends BaseProjectController {
 		Paginator pageinator=getPaginator();
 		String orderBy = getBaseForm().getOrderBy();
 		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,orderBy,status, user);
-		int total=page.getList().size();
+		List<CreditOrderInfo> result=OrderManagerService.service.getOrdersService(model,orderBy,status, user);
+		int total= result.size();
 		List<CreditOrderInfo> rows=page.getList();
 		for(int i=0;i<rows.size();i++) {
 			
@@ -119,14 +154,14 @@ public class HomeController extends BaseProjectController {
 	public void getMessage() {
 		
 		SysUser user= (SysUser) getSessionUser();
-		List<SysDictDetail> continent=OrderManagerService.service.getDictByType("sandbar");
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
+		List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
 		Record record=new Record();
 		record.set("user", user);
-		record.set("continent", continent);
 		record.set("country", country);
 		record.set("customs", customs);
+		record.set("companys", companys);
 		renderJson(record);
 	}
 	@ApiOperation(url = "/credit/front/home/getCountry",httpMethod="post", 
@@ -181,25 +216,81 @@ public class HomeController extends BaseProjectController {
 	 * 
 	 * @time   2018年9月12日 下午5:33:20
 	 * @author yangdong
-	 * @todo   TODO
+	 * @todo   TODO 保存订单
 	 * @param  
+	 * @throws Exception 
 	 * @return_type   void
 	 */
-	public void saveOrder() {
-		int id=getParaToInt("id");
+	public void saveOrder() throws Exception {
+//		int id=getParaToInt("id");
+		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		model.set("num", num);
 		SysUser user = (SysUser) getSessionUser();
+		CreditUploadFileModel model1= new CreditUploadFileModel();
+		model1.set("business_type", "0");
+		model1.set("business_id", num);
+		int num1=0;
+		String message="";
+		int size=upFileList.size();
+		if(size >0){
+			try {
+				for(UploadFile uploadFile:upFileList){
+					String originalFile=uploadFile.getOriginalFileName();
+					int dot = originalFile.lastIndexOf(".");
+					String ext="";
+					String originalFileName=FileTypeUtils.getName(originalFile);
+					ext=FileTypeUtils.getFileType(originalFile);
+					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+						String now=DateUtils.getNow(DateUtils.YMDHMS);
+						String FTPfileName=originalFileName+now+"."+ext;
+						String fileName=originalFileName+now;
+						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						if(storeFile){
+							String factpath=storePath+"/"+FTPfileName;
+							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+							Integer userid = getSessionUser().getUserid();
+							model1.set("business_id", num);
+							UploadFileService.service.save(0,uploadFile, factpath,url,model1,fileName,userid);//记录上传信息
+						}else{
+							num1+=1;
+							message+=uploadFile.getOriginalFileName()+"上传失败!";
+							render(path + "index.html");
+							return;
+						}
+					}else{
+						num1+=1;
+						message+=uploadFile.getOriginalFileName()+"上传失败!";
+						render(path + "index.html");
+						return;
+					}
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+				render(path + "index.html");
+				return;
+			}
+		}
 		try {
-			OrderManagerService.service.modifyOrder(id,model,user,this);
-			OrderManagerService.service.addOrderHistory(id, user);
+			OrderManagerService.service.modifyOrder(0,model,user,this);
 			render(path + "index.html");
 			throw new Exception();
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderMessage("保存失败");
-		}
+			render(path + "index.html");
+		}		
 	}
-
+	
+	/**
+	 * 
+	 * @time   2018年9月17日 上午9:58:23
+	 * @author yangdong
+	 * @todo   TODO  根据客户id获取客户姓名
+	 * @param  
+	 * @return_type   void
+	 */
 	public void getCustomName() {
 		String id=getPara("id");
 		CreditCustomInfo custom=OrderManagerService.service.getCreater(id);

@@ -26,8 +26,9 @@ public class MailService {
 	* @date 2018年9月7日下午5:20:30  
 	* @TODO
 	 */
-	public void delete(Integer id, Integer userid){
-		MailModel.dao.delete(id,userid);
+	public int delete(Integer id, Integer userid){
+		int delete = MailModel.dao.delete(id,userid);
+		return delete;
 	}
 	public void toEnabled(Integer id, Integer userid){
 		MailModel.dao.toEnabled(id, userid);

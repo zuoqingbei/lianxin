@@ -1,0 +1,218 @@
+<%
+var headContent = {
+include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+	$(function(){
+		$.get('/credit/front/home/getMessage',function(data){
+			getCustoms(data.customs);
+			getContient(data.continent);
+			getCountry(data.country);
+		})
+	});
+	function getCustoms(data){
+		var html=""
+		for(item in data){
+			html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
+		}
+		$("select[name='attr.custom_id']").append(html);
+	};
+	function getContient(data){
+		var html=""
+		for(item in data){
+			html+="<option  value='"+data[item].detail_id+"'>"+data[item].detail_name+"</option>";
+		}
+		$("select[name='attr.continent']").append(html);
+		
+	};
+	function getCountry(data){
+		var html=""
+		html+=html+="<option  value=''>请选择国家</option>";
+			for(item in data){
+				html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
+			}
+			$("select[name='attr.country']").html(html);
+	}
+	function getCountry2(){
+		var contient =$("select[name='attr.continent']").val();
+		$.get('/credit/front/home/getCountry?contient='+contient,function(data){
+			console.log(data)
+			getCountry(data);
+		})	
+	}
+</script>
+<script type="text/javascript">
+    var oper;
+    jQuery(function($) {
+        // 页面方法
+        oper = {
+            width : 450,
+            height : 500,
+            form : document.form1,
+            list : function() {
+                var url = 'admin/ordermanager/list';
+                this.form.action = url;
+                this.form.submit();
+            },
+            view : function(id) {
+                var url = 'admin/ordermanager/view/?id='+id;
+                var title = '查看订单';
+                Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+            },
+            add : function() {
+                var url = 'admin/ordermanager/add';
+                var title = '添加订单';
+                Iframe(url, this.width, this.height, title);
+            },
+            edit : function(id) {
+                var url = 'admin/ordermanager/edit/?id='+id;
+                var title = '修改订单';
+                Iframe(url, this.width, this.height, title);
+            },
+            del : function(id) {
+                var url = 'admin/ordermanager/delete/?id='+id;
+                $.ajax({
+        	        url:url,
+        	        type:"get",
+        	    })
+               
+            },
+        };
+        //显示Menu索引
+        showMenu('page_admin');
+        showMenu('page_ordermanager');
+    });
+
+    //分页
+    var paginator = function(page) {
+        oper.list();
+    };
+
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post"  class="form-inline" role="form">
+	<!-- 菜单 -->
+	<% include("/pages/template/menu.html"){} %>
+
+	<div class="tableSearch">
+		<%  //查询列表 %>
+		<!-- <div class="form-group">
+			<input class="form-control" type="text" name="attr.id" value="${attr.id!''}"
+				   placeholder="请输入订单编号" required='required' />
+		</div>
+		 <div class="form-group">
+             <input  name="attr.company_by_report" type="text" class="form-control"
+              placeholder="请输入公司名称" required='required' />
+         </div>
+		<div class="form-group">
+             <input  name="attr.right_company_name_en" type="text" class="form-control" 
+              placeholder="请输入订单公司名称" required='required' />
+   		</div>
+   		 <div class="form-group" >
+	           <select  name="attr.custom_id" class="form-control">
+	               <option value="" disabled selected>请选择客户</option>
+	           </select>
+	      </div>
+	       <div class="form-group">
+	            <select  name="attr.continent" class="form-control" onchange="getCountry2()">
+	                <option value="" disabled selected>请选择地区</option>
+	            </select>
+	        </div>
+	        <div class="form-group">
+                <select name="attr.country" class="form-control" >
+                    <option value="" disabled selected>请选择国家</option>
+                </select>
+        	</div>
+		<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
+			<span class="glyphicon glyphicon-search"></span> 查 询
+		</button>
+		<button type="button" class="btn btn-default" onclick="resetForm();">
+			<span class="glyphicon glyphicon-refresh"></span> 重 置
+		</button>
+		<button type="button" class="btn btn-default" onclick="oper.add();">
+			<span class="glyphicon glyphicon-plus"></span> 新 增
+		</button>
+	</div>
+ -->
+ <div class="table-content p-3">
+		    		<form id="orderForm" class="form-inline" action="/credit/front/home/saveOrder" method="">
+		    			<div class="form-group row d-flex justify-content-end mb-4">
+		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
+		                    	<button type="button" id="btn_download" class="btn btn-primary"><i class="fa fa-download"></i>批量导入</button>
+		    				</div>
+	<!-- 数据列表 -->
+	<table class="table table-striped table-bordered table-hover">
+		<thead>
+		<tr>
+			<th>序号</th>
+			<%  // 列表头部 %>
+			<th name="t.id" class="sorting">订单ID</th>
+			<th name="t.receiver_date" class="sorting">接单日期</th>
+			<th name="t.end_date" class="sorting">完成日期</th>
+			<th name="t.custom_id" class="sorting">客户ID</th>
+			<th name="c2.name" class="sorting">公司名称</th>
+				<th name="s4.detail_name" class="sorting">报告语言</th>
+				 <th name="s5.detail_name" class="sorting">报告速度</th>
+					<th name="c.name" class="sorting">国家</th>
+						<th name="s3.name" class="sorting">报告类型</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<% for(item in page.list){ %>
+		<tr>
+			<td>${itemLP.index }</td>
+			<%  // 列表内容 %>
+			<td>${item.id}</td>
+			<td>${item.receiver_date,dateFormat="yyyy-MM-dd"}</td>
+			<td>${item.end_date,dateFormat="yyyy-MM-dd"}</td>
+			<td>${item.custom_id}</td>
+            <td>${item.companyName}</td>
+            <td>${item.reportLanguage}</td>
+            <td>${item.reportSpeed}</td>
+			<td>${item.countryName}</td>
+			<td>${item.reportType}</td>
+			<td>
+		<!-- 	<%if(item.status=='0'){%>
+				提交订单
+			<%}%>
+			<%if(item.status=='1'){%>
+				订单分配
+			<%}%>
+			<%if(item.status=='2'){%>
+				处理中
+			<%}%>
+			<%if(item.status=='3'){%>
+				按照流程处理完毕
+			<%}%>
+			<%if(item.status=='4'){%>
+				订单取消
+			<%}%>
+			<%if(item.status=='5'){%>
+				有相同报告,订单结束
+			<%}%>
+			</td>
+			<td>${item.createName}</td>
+			<!-- <td>${item.company}</td>
+			<td>${item.company_en}</td>
+			 -->
+			<td>
+				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">提交</a>
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">取消</a>
+				
+			</td>
+		</tr>
+		<% } %>
+		</tbody>
+	</table>
+	<%include("/pages/includes/paginator.html"){} %>
+</form>
+<%}; %>
+
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>

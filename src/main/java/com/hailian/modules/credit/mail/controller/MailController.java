@@ -5,6 +5,12 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.mail.model.MailModel;
 import com.hailian.modules.credit.mail.service.MailService;
 import com.jfinal.plugin.activerecord.Page;
+/**
+ * 邮件列表管理
+* @author doushuihai  
+* @date 2018年9月18日下午1:57:21  
+* @TODO
+ */
 @ControllerBind(controllerKey = "/credit/mail")
 public class MailController extends BaseProjectController {
 	private static final String path = "/pages/credit/mail/mail_";
@@ -76,8 +82,14 @@ public class MailController extends BaseProjectController {
 		// 日志添加
 		Integer id = getParaToInt();
 		Integer userid = getSessionUser().getUserid();
-		MailService.service.delete(id,userid);//记录上传信息
-		list();
+		int result = MailService.service.delete(id,userid);//记录上传信息
+		if(result != -1){
+			setAttr("result", result);
+			list();
+		}else{
+			renderText("操作失败");
+		}
+		
 	}
 	/**
 	 * 保存
@@ -91,7 +103,7 @@ public class MailController extends BaseProjectController {
 		MailModel model = getModel(MailModel.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-		model.put("update_id", userid);
+		model.put("update_by", userid);
 		model.put("update_time", now);
 		if (pid != null && pid > 0) { // 更新
 			model.update();

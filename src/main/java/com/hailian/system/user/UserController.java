@@ -4,6 +4,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.util.JFlyFoxUtils;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.jfinal.component.db.SQLUtils;
+import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.system.department.DepartmentSvc;
 import com.hailian.system.role.SysRole;
 import com.hailian.util.StrUtils;
@@ -45,12 +46,10 @@ public class UserController extends BaseProjectController {
 		} else {
 			sql.append(" order by ").append(orderBy);
 		}
-
 		Page<SysUser> page = SysUser.dao.paginate(getPaginator(), "select t.*,d.name as departname ", sql.toString()
 				.toString());
 		// 下拉框
 		setAttr("departSelect", new DepartmentSvc().selectDepart(model.getInt("departid")));
-
 		setAttr("page", page);
 		setAttr("attr", model);
 		render(path + "list.html");
@@ -58,18 +57,15 @@ public class UserController extends BaseProjectController {
 
 	public void add() {
 		setAttr("departSelect", new DepartmentSvc().selectDepart(0));
-
 		render(path + "add.html");
 	}
 
 	public void view() {
 		SysUser model = SysUser.dao.findById(getParaToInt());
 		model.put("secretKey", new Md5Utils().getMD5(model.getStr("password")).toLowerCase());
-
 		// 部门名称
 		model.put("departname", new DepartmentSvc().getDepartName(model.getInt("departid")));
 		setAttr("model", model);
-
 		render(path + "view.html");
 	}
 
@@ -148,9 +144,26 @@ public class UserController extends BaseProjectController {
 	public void auth_save() {
 		int userid = getParaToInt("userid");
 		String roleids = getPara("roleids");
-
 		new UserSvc().saveAuth(userid, roleids, getSessionUser().getUserid());
 		renderMessage("保存成功");
 	}
 
+	/**
+	 * 
+	 * @time   2018年9月17日 上午9:39:11
+	 * @author dyc
+	 * @todo   根据用户id修改订单状态
+	 * @return_type   void
+	 */
+	public void update() {
+		Integer id = getParaToInt("id");
+		Integer status = getParaToInt("status");
+		Integer result = SysUser.dao.updateStateById(id, status);
+		if (result != -1) {
+			setAttr("result", result);
+			list();
+		} else {
+			renderText("操作失败!");
+		}
+	}
 }

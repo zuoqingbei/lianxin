@@ -5,9 +5,11 @@
 }
 /* 上面用户信息和订单统计 */
 .user-order {
-    height: 10rem;
-    box-shadow: 0 1px 5px 0 #ccc;
+    height: 8rem;
+    box-shadow: 0 2px 5px 0 #dedede;
     background: #fff;
+    margin-bottom: .4rem;
+    
 }
 
 .user-info {
@@ -22,8 +24,8 @@
     font-size: 1rem;
     color: var(--fontColor);
     line-height: 0;
-    border:solid #ccc;
-    border-width: 0 2px 0 0;
+    border:solid #e5e5e5;
+    border-width: 0 1px 0 0;
 }
 .job-title span:last-child {
     padding-left: .5rem;
@@ -41,24 +43,25 @@
 }
 .order-item:nth-child(2) {
     height: 2rem;
-    border:solid #ccc;
-    border-width: 0 2px 0 2px;
+    border:solid #e5e5e5;
+    border-width: 0 1px 0 1px;
 }
 
 /* 内容 */
 
 .table-content {
-    height: calc(100% - 10.2rem);
+    height: calc(100% - 8.9rem);
 }
 
 .search-input {
     width: var(--inputWidth)!important;
     color: var(--fontColor);
 }
-
-#formSearch .form-group {
-    margin-top: 1.5rem;
+#formSearch {
+    padding-right: 6rem;
+    padding-top: 1.5rem;
 }
+
 #formSearch .control-label {
     /* width: 6.999rem; */
     font-size: 1rem;
@@ -70,14 +73,11 @@
     border-radius: 6px;
 }
 
-.fa-filter {
-    color: #aaa;
-    cursor: pointer;
-}
-
 .right-btn {
     width: 16.25rem;
+    margin-right: 6.9375rem!important;
 }
+/*过滤样式*/
 .th-inner  {
     position: relative;
     overflow: visible!important;
@@ -88,12 +88,11 @@
 .deal-state {
     height: 18rem;
     overflow-y: auto;
-    box-shadow: 0 0 1px 2px #ddd;
+    box-shadow: 0 0 5px 1px #ddd;
     padding: 1rem;
     background: #fff;
     display: none;
     z-index: 10;
-    /* transform: translate3d(394px, 318px, 0px)!important; */
 }
 .deal-state-show {
     display: block;
@@ -107,8 +106,13 @@
 .form-check-label {
     margin-left: .5rem;
 }
-.enterFilter {
-    display: block;
-    margin-top: 1rem;
-    text-align: center;
+
+.btn-row>.btn {
+    margin-left: 5rem!important;
+}
+
+#btnCollapse {
+    height:3rem;
+    overflow: hidden;
+    transition: all .2s;
 }

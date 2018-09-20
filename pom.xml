@@ -156,7 +156,13 @@
 			<artifactId>aliyun-sdk-oss</artifactId>
 			<version>2.0.6</version>
 		</dependency>
-
+		<!-- javamail邮件发送 -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.4</version>
+		</dependency>
+		<!-- javamail邮件发送 -->
 		<!-- 数据库 -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -203,6 +209,16 @@
       <artifactId>unoil</artifactId> 
       <version>3.0.1</version> 
     </dependency> 
+    <dependency>
+	 <groupId>org.apache.poi</groupId>
+	 <artifactId>poi</artifactId>
+	 <version>3.10-FINAL</version>
+		</dependency>
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-ooxml</artifactId>
+		<version>3.10-FINAL</version>
+		</dependency>
         <!-- <dependency>
 			<groupId>org.openoffice</groupId>
 			<artifactId>ridl</artifactId>

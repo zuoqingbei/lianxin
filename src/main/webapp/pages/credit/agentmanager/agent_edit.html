@@ -1,0 +1,124 @@
+<% var usabled = tempDict.getSysDictDetailString2('usabled',model.usabled ); %>
+<% var currency = tempDict.getSysDictDetailString2('currency',model.currency ); %>
+<% var agenttype = tempDict.getSysDictDetailString2('agenttype',model.agent_type ); %>
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+	include("/pages/includes/my97.html"){}
+%>
+<script type="text/javascript">
+var oper = {
+	save:function(id){
+		if(!validForm()) {
+			return false;
+		}
+		id = id || '0';
+		var url = 'credit/agentmanager/save?agent_id='+id;
+		form1.action = url;
+		form1.submit();
+		return true;
+	}	
+	
+};
+
+
+
+</script>
+<style>
+.tags {
+	line-height: 22px;
+	height: 22px;
+	border-top: 1px solid rgb(210, 210, 210);
+}
+
+.tags .tags_label {
+	float: left;
+	margin-right: 20px;
+	margin-left: 5px;
+	padding: 5px 1px 1px 3px;
+}
+
+.tags .tags_content {
+	float: left;
+	width: 500px;
+	margin: 5px 5px 0 0;
+	padding: 1px;
+	border: 1px solid #ccc;
+	background: #fff;
+	vertical-align: middle;
+}
+
+.tags .tags_remark {
+	padding: 5px 1px 1px 3px;
+	color: #999999;
+	font-size: 12px;
+	z-index: 10000;
+}
+</style>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal">
+	<input type="hidden" name="model.agent_id" value=" ${model.agent_id}" />
+	<!-- 数据列表 -->
+	<table class="table">
+	<tr>
+	<tr>
+			<td>代理类型</td>
+			 <td><select name="model.agent_type" class="form-control" style="width: 200px;">
+					${agenttype!}
+				</select></td>		
+		</tr>
+		<tr>
+			<td>代理名称</td>
+			<td><input type="text" name="model.agent_name" class="form-control"  valid="vtext"
+				value="${model.agent_name}"/></td>
+		</tr>
+		<tr>
+			<td>邮政编码</td>
+			 <td> 
+				<input type="text" name="model.postal_code" class="form-control"  
+				value="${model.postal_code}"/></td>
+		</tr>
+		<tr>
+			<td>备忘录</td>
+			<td> <input type="text" name="model.memo" class="form-control"  valid="vemail"
+				value="${model.memo}"/> </td>
+		</tr>
+			<tr>
+			<td>价格</td>
+			<td><input type="text" name="model.price" class="form-control price"  valid="vfloat_y"
+				value="${model.price}"/></td>
+		</tr>
+		<tr>
+			<td>币种</td>
+			<td><select name="model.currency" class="form-control" style="width: 200px;" >
+					${currency!}
+				</select></td>
+		</tr>
+		<tr>
+			<td>是否禁用</td>
+			<td><select name="model.usabled" class="form-control" style="width: 200px;" >
+					${usabled!}
+				</select></td>
+		</tr>
+		
+</tr>
+	</table>
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+	  		<button class="btn btn-primary save" onclick="oper.save(${model.agent_id!'0'});return false;">确定</button>
+			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+<%} %>
+

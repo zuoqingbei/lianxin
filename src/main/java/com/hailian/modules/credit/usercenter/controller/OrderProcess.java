@@ -1,5 +1,4 @@
 package com.hailian.modules.credit.usercenter.controller;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +10,6 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.front.template.TemplateSysUserService;
-import com.jfinal.kit.HttpKit;
 import com.jfinal.plugin.activerecord.Page;
 /**
 * @time   2018年9月14日 上午11:00:00
@@ -60,6 +58,7 @@ public class OrderProcess extends BaseProjectController{
 		WEB_PARAM_NAMES.put(orderVerifyOfReport, orderVerifyOfReportParamNames);
 		WEB_PARAM_NAMES.put(orderVerifyOfOrder, orderVerifyOfOrderParamNames);
 	}
+	
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
 		int pageNumber = getParaToInt("pageNumber",1);
@@ -68,12 +67,15 @@ public class OrderProcess extends BaseProjectController{
 		String sortName = getPara("sortName");
 		String sortOrder = getPara("sortOrder");
 		String orderBy = "";
-		if(sortName!=null){
+		if(!StringUtil.isEmpty(sortName)){
 			if(sortOrder!=null){
 				orderBy = sortName+" "+sortOrder;
 			}else{
-				orderBy = sortName+" desc";
+				sortOrder = "";
+				orderBy = sortName+" desc ";
 			}
+		}else{
+			sortName = "";
 		}
 		//获取前台关键词
 		List<Object> keywords = new LinkedList<>();
@@ -87,6 +89,16 @@ public class OrderProcess extends BaseProjectController{
 		}
 		//分页查询
 		Page<CreditOrderInfo> pager = CreditOrderInfo.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType, this);
+		//存入回显数据
+		for (CreditOrderInfo page : pager.getList()) {
+			for (int i = 0; i <  WEB_PARAM_NAMES.get(searchType).size(); i++) {
+				page.put((String)WEB_PARAM_NAMES.get(searchType).get(i)+"Key",keywords.get(i));
+			}
+			page.put("pageNumber",pageNumber);
+			page.put("pageSize",pageSize);
+			page.put("sortName",sortName);
+			page.put("sortOrder",sortOrder);
+		}
 		return pager;
 	}
 	
@@ -123,27 +135,12 @@ public class OrderProcess extends BaseProjectController{
 		List<CreditOrderInfo> rows = pager.getList();
 		TemplateSysUserService templete = new TemplateSysUserService();
 		for (CreditOrderInfo creditOrderInfo : rows) {
-			//templete.getSysUser(2, creditOrderInfo.get());
+			String seleteStr= templete.getSysUser(2, creditOrderInfo.get("report_user"));
+			creditOrderInfo.put("seleteStr",seleteStr);
 		}
-		rows.get(0).put("aaa","222");
 		int totalRow = pager.getTotalRow();
 		ResultType resultType = new ResultType(totalRow,rows);
 		renderJson(resultType);
-	}
-	/**
-	 * @todo   订单分配查看单个订单信息
-	 * @time   2018年9月14日 下午1:30:00
-	 * @author lzg
-	 * @return_type   void
-	 */
-	public void reallocationViewJson() {
-		CreditOrderInfo model = getModel(CreditOrderInfo.class);
-		List<Object> keywords = new ArrayList<>();
-		keywords.add(getPara("id"));
-		CreditOrderInfo tarGerodel = CreditOrderInfo.dao.pagerOrder(1, 1, keywords,"",orderAllocation+"id",this).getList().get(0);
-		setAttr("model", model);
-		keepPara();
-		render(PATH+"view.html");
 	}
 	
 	/**
@@ -152,14 +149,15 @@ public class OrderProcess extends BaseProjectController{
 	 * @author lzg
 	 * @return_type   void
 	 */
-	public void goReallocation() {
+	public void reallocationSave() {
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by",userid);
 		model.set("update_date", now);
+		model.set("status", 290);
 		model.update();
-		renderMessage("修改成功");
+		reallocationJson();
 	}
 	
 	

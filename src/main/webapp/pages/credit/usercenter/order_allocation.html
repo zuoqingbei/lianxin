@@ -180,74 +180,75 @@
                     </div>
                     <div class="modal-body">
                         <div class="order-detail mb-4">
-                            <div class="row mt-2 mb-2">
+                            <div class="row mt-2 mb-2" id="div1"> 
                                 <div class="col-md-4">
                                     <span>客户ID：</span>
-                                    <span>001354574</span>
+                                    <span id="custom_id">001354574</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span>客户用户名：</span>
-                                    <span>row</span>
+                                    <span id="customId">row</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span>接单日期：</span>
-                                    <span>2018-09-10</span>
+                                    <span id="customId">2018-09-10</span>
                                 </div>
                             </div>
-                            <div class="row mt-2 mb-2">
+                            <div class="row mt-2 mb-2" id="div2">
                                 <div class="col-md-4">
                                     <span>地区：</span>
-                                    <span>亚洲</span>
+                                    <span id="receiver_date">亚洲</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span>国家：</span>
-                                    <span>中国</span>
+                                    <span id="country">中国</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span>报告类型：</span>
-                                    <span>基本信用报告</span>
+                                    <span id="reportType">基本信用报告</span>
                                 </div>
                             </div>
-                            <div class="row mt-2 mb-2">
+                            <div class="row mt-2 mb-2" id="div3">
                                 <div class="col-md-4">
                                     <span>订单类型：</span>
-                                    <span>new</span>
+                                    <span id="orderType">new</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span>报告语言：</span>
-                                    <span>中文</span>
+                                    <span id="reportLanguage">中文</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span>订单公司名称：</span>
-                                    <span>北京小米科技有限公司</span>
+                                    <span id="companyNames">北京小米科技有限公司</span>
                                 </div>
                             </div>
-                            <div class="row mt-2 mb-2">
+                            <div class="row mt-2 mb-2" id="div4">
                                 <div class="col-md-4">
                                     <span>报告速度</span>
-                                    <span>普通</span>
+                                    <span id="speed">普通</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span>报告用时：</span>
-                                    <span>5天</span>
+                                    <span id="user_time">5天</span>小时
                                 </div>
                                 <div class="col-md-4">
                                     <span>公司中文名称：</span>
-                                    <span>北京小米科技有限公司</span>
+                                    <span id="companyZHNames">北京小米科技有限公司</span>
                                 </div>
+                                <input type="hidden" name="orderId" id="orderId">
                             </div>
                         </div>
                         <div class="order-form">
                             <div class="input-group align-items-center">
                                 <label class="control-label col-md-1">报告员：</label>
-                                <select name="model.report_user" id="reporter_select" class="form-control  col-md-3">
+                                <select name="reportUser" id="reporter_select" class="form-control  col-md-3">
                                     <option value="-1">--请选择--</option>
                                     ${reportUser!}
                                 </select>
                             </div>
                             <div class="input-group mt-3">
                                 <label class="control-label col-md-1">更新备注：</label>
-                               <textarea name="" id="remarks" cols="50" rows="6" class="col-md-4"></textarea>
+                               <textarea name="remarks" id="remarks" cols="50" rows="6" class="col-md-4"></textarea>
                             </div>
                         </div>
                     </div>
