@@ -18,8 +18,8 @@ import com.jfinal.plugin.activerecord.Page;
 */
 @Api(tag = "订单流程", description = "订单流程")
 @ControllerBind(controllerKey = "/credit/front/orderProcess")
-public class OrderProcess extends BaseProjectController{
-	private static final String PATH = "/pages/credit/usercenter/";
+public class OrderProcessController extends BaseProjectController{
+	private static final String PATH = "/pages/credit/usercenter/order_manage/";
 	//每种搜索类型需要对应的关键词字段名
 	public static final Map<String,List<Object>> TYPE_KEY_COLUMN = new HashMap<>();
 	//每种搜索类型需要对应的前端属性名

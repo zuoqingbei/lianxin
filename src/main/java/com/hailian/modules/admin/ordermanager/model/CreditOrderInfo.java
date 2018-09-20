@@ -20,7 +20,7 @@ import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.credit.common.controller.ReportTimeController;
 import com.hailian.modules.credit.common.model.ReportTimeModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
-import com.hailian.modules.credit.usercenter.controller.OrderProcess;
+import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
 
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
@@ -506,7 +506,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
 		//若搜索类型是通过id查询单条信息
-		if((OrderProcess.orderAllocation+"id").equals(searchType)){
+		if((OrderProcessController.orderAllocation+"id").equals(searchType)){
 			selectSql.append(" select c.*, ");
 			selectSql.append(" s1.detail_name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
@@ -536,7 +536,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSql.toString(),fromSql.toString(), keywords.toArray());
 		}
 		
-		if((OrderProcess.orderAllocation).equals(searchType)){
+		if((OrderProcessController.orderAllocation).equals(searchType)){
 			selectSql.append(" select c.*, ");
 			selectSql.append(" s1.detail_name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
@@ -570,7 +570,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		}
 		//关键词搜索
 		if (keywords!=null&&keywords.size()>0) {
-			List<Object> columnNames = OrderProcess.TYPE_KEY_COLUMN.get(searchType);
+			List<Object> columnNames = OrderProcessController.TYPE_KEY_COLUMN.get(searchType);
 			//搜索类型
 			String preStr = " like concat('%',?,'%') ";
 			//条件语句拼接
