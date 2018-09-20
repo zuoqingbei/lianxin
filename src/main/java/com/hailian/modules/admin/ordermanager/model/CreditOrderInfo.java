@@ -12,13 +12,10 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
-
 import com.hailian.modules.credit.common.controller.ReportTimeController;
 import com.hailian.modules.credit.common.model.ReportTimeModel;
 import com.hailian.modules.credit.usercenter.controller.OrderProcess;
-
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;
@@ -57,7 +54,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 	private String companyName;
 	//公司英文名称
 	private String englishName;
-
+	
 	public String getenglishName() {
 		return get("englishName");
 	}
@@ -306,7 +303,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		return list;
 
 	}
-	
+
 	public Page<CreditOrderInfo> getOrders(Paginator pageinator, CreditOrderInfo model, String orderby, String status,
 			SysUser user) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -390,27 +387,34 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		return page;
 	}
 
-
 	/**
 	 * 
 	 * @time   2018年9月18日 下午4:13:01
 	 * @author dyc
-	 * @todo   根据id查询单条订单信息
+	 * @todo   查询订单信息
 	 * @return_type   ReportPrice
 	 */
-	public CreditOrderInfo getId(int id, BaseProjectController c) {
-		StringBuffer sql = new StringBuffer(
-				"select c.name as countryName,s3.name as reportType,s4.detail_name as reportLanguage,s5.detail_name as reportSpeed,c2.name as companyName,t.*");
-		StringBuffer fromsql=new StringBuffer("from credit_order_info t ");
-		fromsql.append("left join sys_dict_detail s4  on s4.detail_id=t.report_language");
-		fromsql.append("left join credit_country c on c.id=t.country");
-		fromsql.append("left join credit_report_type s3  on s3.id=t.report_type");
-		fromsql.append("left join sys_dict_detail s5  on s5.detail_id=t.speed");
-		fromsql.append("left join credit_company_info c2 on c2.id=t.company_id");
-		fromsql.append("where t.id=?");
-		List<Object> params = new ArrayList<Object>();
-		params.add(id);
-		return (CreditOrderInfo) CreditOrderInfo.dao.findFirst(sql.toString()+fromsql.toString(), params.toArray());
+	public Page<CreditOrderInfo> selectOrder(Paginator pageinator, CreditOrderInfo model, String orderby,
+			BaseProjectController c) {
+		StringBuffer fromsql = new StringBuffer("from credit_order_info t ");
+		fromsql.append(" left join sys_dict_detail s4 on s4.detail_id=t.report_language");
+		fromsql.append(" left join credit_country c on c.id=t.country");
+		fromsql.append(" left join credit_report_type s3  on s3.id=t.report_type");
+		fromsql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed");
+		fromsql.append(" left join credit_company_info c2 on c2.id=t.company_id");
+		fromsql.append(" where 1=1 and t.del_flag=0 ");
+		//	   List<Object> params = new ArrayList<Object>();
+		if (StrUtils.isEmpty(orderby)) {
+			fromsql.append(" order by t.id desc");
+		} else {
+			fromsql.append(" order by ").append(orderby);
+		}
+		Page<CreditOrderInfo> page = CreditOrderInfo.dao
+				.paginate(
+						pageinator,
+						"select c.name as countryName,s3.name as reportType,s4.detail_name as reportLanguage,s5.detail_name as reportSpeed,c2.name as companyName,t.*",
+						fromsql.toString());
+		return page;
 
 	}
 
@@ -419,14 +423,15 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 	 * @author lzg
 	 * @time 2018/09/14下午 3:20
 	 */
-	public Page<CreditOrderInfo> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,String searchType, BaseProjectController c) {
-		
+	public Page<CreditOrderInfo> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,
+			String searchType, BaseProjectController c) {
+
 		StringBuffer selectSql = new StringBuffer();
 		StringBuffer fromSql = new StringBuffer();
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
 		//若搜索类型是通过id查询单条信息
-		if((OrderProcess.orderAllocation+"id").equals(searchType)){
+		if ((OrderProcess.orderAllocation + "id").equals(searchType)) {
 			selectSql.append(" select c.*, ");
 			selectSql.append(" s1.detail_name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
@@ -451,10 +456,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			fromSql.append(" LEFT JOIN sys_user u4 ON u4.userid = c.custom_id ");//客户
 			fromSql.append(" where c.del_flag = 0 ");
 			fromSql.append(" and c.id = ? ");
-			return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSql.toString(),fromSql.toString(), keywords.toArray());
+			return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSql.toString(),
+					fromSql.toString(), keywords.toArray());
 		}
-		
-		if((OrderProcess.orderAllocation).equals(searchType)){
+
+		if ((OrderProcess.orderAllocation).equals(searchType)) {
 			selectSql.append(" select c.*, ");
 			selectSql.append(" s1.detail_name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
@@ -470,32 +476,32 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			fromSql.append(" where c.del_flag = 0 ");
 		}
 		//若为其他搜索类型
-		if (keywords!=null&&keywords.size()>0) {
+		if (keywords != null && keywords.size() > 0) {
 			List<Object> columnNames = ReportTimeController.columnNames;
 			//搜索类型
 			String preStr = "";
-			if(ReportTimeController.fuzzySearch.equals(searchType)){
+			if (ReportTimeController.fuzzySearch.equals(searchType)) {
 				preStr = " like concat('%',?,'%') ";
-			}else{
+			} else {
 				preStr = " = ? ";
 			}
 			//条件语句拼接
 			for (int i = 0; i < columnNames.size(); i++) {
-				if("create_date".equals(columnNames.get(i))){
+				if ("create_date".equals(columnNames.get(i))) {
 					continue;
 				}
-				if(StringUtil.isEmpty((String)keywords.get(i))){
+				if (StringUtil.isEmpty((String) keywords.get(i))) {
 					continue;
 				}
 				fromSql.append(" and ");
 				//搜索类型
-				fromSql.append(columnNames.get(i)+preStr);
+				fromSql.append(columnNames.get(i) + preStr);
 				params.add(keywords.get(i));//传入的参数
 			}
-			
+
 		}
 		//权限区分
-		if(!c.isAdmin(c.getSessionUser())){
+		if (!c.isAdmin(c.getSessionUser())) {
 			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
@@ -506,9 +512,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			fromSql.append(" order by ").append(orderBy);
 		}
 		String selectSqlStr = selectSql.toString();
-		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr ,fromSql.toString(), params.toArray());
+		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr, fromSql.toString(),
+				params.toArray());
 	}
-	
-	
 
 }

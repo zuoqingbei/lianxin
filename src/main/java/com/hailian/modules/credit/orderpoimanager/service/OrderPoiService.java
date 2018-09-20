@@ -26,19 +26,19 @@ public class OrderPoiService {
 	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model, String orderby,
 			 BaseProjectController c) {
 
-		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby, c);
+		return CreditOrderInfo.dao.selectOrder(pageinator, model, orderby, c);
 
 	}
-	/**
-	 * 
-	 * @time   2018年9月18日 下午3:42:57
-	 * @author dyc
-	 * @todo   根据id查看订单信息
-	 * @return_type   ReportPrice
-	 */
-	public CreditOrderInfo getId(int id, BaseProjectController c) {
-		CreditOrderInfo creditOrderInfo = CreditOrderInfo.dao.getId(id, c);
-		return creditOrderInfo;
-
-	}
+//	/**
+//	 * 
+//	 * @time   2018年9月18日 下午3:42:57
+//	 * @author dyc
+//	 * @todo   根据id查看订单信息
+//	 * @return_type   ReportPrice
+//	 */
+//	public CreditOrderInfo getId(int orderId, BaseProjectController c) {
+//		CreditOrderInfo creditOrderInfo = CreditOrderInfo.dao.getId(orderId, c);
+//		return creditOrderInfo;
+//
+//	}
 }
