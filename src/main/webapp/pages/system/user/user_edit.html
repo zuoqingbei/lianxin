@@ -24,7 +24,7 @@ include("/pages/template/head.html"){}
 var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal"
-	  role="form" >
+	  role="form" enctype="multipart/form-data">
 	<input type="hidden" name="model.userid" value="${model.userid}" />
 	<% if(isEmpty(model.userid)) { %>
 	<input type="hidden" name="model.theme" value="flat" />
@@ -88,9 +88,9 @@ var bodyContent = {
 			</td>
 		</tr>
 		<tr>
-			<td>头像地址</td>
+			<td>上传头像</td>
 			<td>
-				<input class="form-control" type="text" name="model.title_url" value="${model.title_url}"  />
+				<input type="file" accept="image/*" class="form-control" name="model.title_url" />
 			</td>
 		</tr>
 		<tr>

@@ -86,11 +86,12 @@ public class ArchivesWhilteModel extends BaseProjectModel<ArchivesWhilteModel> {
 	 */
 	public ArchivesWhilteModel getWhilte(Integer paraToInt) {
 		// TODO Auto-generated method stub
-		String sql="select t.*,t2.name as cusName,t3.name as reportName,t4.realname as createName,t5.realname as updateName from credit_archives_whilte t ";
+		String sql="select t.*,t2.name as cusName,t3.name as reportName,t4.realname as createName,t5.realname as updateName,t6.detail_name from credit_archives_whilte t ";
 		sql+=" left join credit_custom_info t2 on t.custom_id=t2.id ";
 		sql+=" left join credit_report_type t3 on t.report_id=t3.id ";
 		sql+=" left join sys_user t4 on t4.userid=t.create_by ";
 		sql+=" left join sys_user t5 on t5.userid=t.update_by ";
+		sql+=" left join sys_dict_detail t6 on t6.detail_id=t.used ";
 		sql+=" where t.del_flag=0 and t.id=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(paraToInt);

@@ -106,14 +106,14 @@ public class WhilteController extends BaseProjectController{
 		ArchivesWhilteModel model = getModel(ArchivesWhilteModel.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-		model.put("update_id", userid);
-		model.put("update_time", now);
+		model.set("update_by", userid);
+		model.set("update_date", now);
 		if (pid != null && pid > 0) { // 更新
 			model.update();
 		} else { // 新增
 			model.remove("id");
-			model.put("create_by", userid);
-			model.put("create_date", now);
+			model.set("create_by", userid);
+			model.set("create_date", now);
 			model.save();
 		}
 		renderMessage("保存成功");
