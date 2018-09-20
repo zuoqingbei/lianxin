@@ -20,9 +20,9 @@ import com.jfinal.plugin.activerecord.Page;
 @ControllerBind(controllerKey = "/credit/reportTime")
 public class ReportTimeController extends BaseProjectController {
 	private static final String PATH = "/pages/credit/reportTime/reportTime_";
-	//存储关键词字段名
-	private static List<Object> IsExistColumnList= new ArrayList<>();
 	//检索重复判断字段
+	private static List<Object> IsExistColumnList= new ArrayList<>();
+	//存储关键词字段名
 	public static List<Object> columnNames = new ArrayList<>();
 	//搜索类型
 	public static String searchById = "-1";

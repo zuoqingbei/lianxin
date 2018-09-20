@@ -7,6 +7,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSONArray;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
+import com.hailian.modules.admin.ordermanager.controller.OrdermanagerController;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
@@ -272,6 +273,9 @@ public class OrderManagerService {
 		
 		return CreditCompanyInfo.dao.getCompany();
 	}
+	public CreditCompanyInfo getCompany(int id) {
+		return CreditCompanyInfo.dao.findById(id);
+	}
 
 	public List<CreditOrderInfo> getOrdersService(CreditOrderInfo model, String orderby,
 			BaseProjectController c) {
@@ -279,16 +283,26 @@ public class OrderManagerService {
 		return CreditOrderInfo.dao.getOrders( model, orderby, c);
 	}
 
-	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model, String orderby,
-			String status,SysUser user) {
+	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model,
+			String status,SysUser user,String sortname,String sortorder) {
 		// TODO Auto-generated method stub
-		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby,status, user);
+		return CreditOrderInfo.dao.getOrders(pageinator, model, status, user,sortname,sortorder);
 	}
 
 	public CreditCustomInfo getCreater(String id) {
 		// TODO Auto-generated method stub
 		
 		return CreditCustomInfo.dao.findById(id);
+	}
+
+	public CreditOrderInfo find(String num) {
+		
+		return CreditOrderInfo.dao.findOrder(num);
+	}
+
+	public List<CreditOrderInfo> getOrdersService( String status,CreditOrderInfo model,  SysUser user) {
+		
+		return CreditOrderInfo.dao.getOrders( status, model, user);
 	}
 
 }

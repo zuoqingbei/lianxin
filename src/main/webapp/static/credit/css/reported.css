@@ -2,22 +2,21 @@
 
     --fontColor:#808080;
     --activeColor:#2592fc;
+    --inputWidthMD:21rem;/*中等input宽*/
 }
-nav {
-    padding-left:1rem; 
-}
+
 .order-info {
     position: relative;
-    height: 19.125rem;
     background: #fff;
     box-shadow: 0 0 2px 0 #ccc;
 }
-.order-box {
-    padding-left: 2rem;
-}
+
 .order-num {
     font-size: 1.5rem;
     font-weight: 600;
+}
+.order-item-box {
+    margin-left: -15px;
 }
 .order-item span {
     color: var(--fontColor);
@@ -26,11 +25,7 @@ nav {
     font-weight: 900;
     color: #000;
 }
-.order-info .btn-group {
-    position: absolute;
-    bottom: 0;
-    left: 1.8rem;
-}
+
 .order-info .btn-group span {
     padding: 1.625rem 2.125rem;
     font-size: 1.25rem;
@@ -49,4 +44,16 @@ nav {
 }
 .company-info {
     min-height: 61.57rem;
+}
+
+label {
+    font-weight: 500;
+}
+.firm-info label {
+    font-size: 1rem;
+    color: var(--fontColor);
+}
+.firm-info .form-control {
+    width: var(--inputWidthMD);
+    border-radius: 6px;
 }

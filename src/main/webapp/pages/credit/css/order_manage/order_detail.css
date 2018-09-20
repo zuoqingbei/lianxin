@@ -1,0 +1,156 @@
+/*导航栏样式 start*/
+.detail_tab-bar{
+    height:12rem;
+}
+.tab_bar {
+   padding-left: 0;
+}
+.tab_bar li{
+    display: inline-block;
+    padding: 0 2rem 1.25rem 2rem;
+    font-size: 1.375rem;
+    color: var(--fontColor);
+    cursor: pointer;
+}
+.tab-active{
+    border-bottom: solid 3px var(--activeColor);
+    color: var(--activeColor) !important;
+    font-weight: 500;
+}
+/*导航栏样式 end*/
+
+/*内容展示 start*/
+.order-content{
+    padding: 1rem;
+}
+.l-title {
+    font-size: 1.25rem;
+    color: #191919;
+    font-weight: 600;
+    padding: 1.25rem 0 1.25rem 2rem;
+    border-bottom:solid 2px #e6e9ee;
+}
+/*重置公共样式*/
+.bg-f{
+    min-height: 0;
+}
+.company_report_name{
+    border-bottom: none;
+    padding-bottom: 0rem;
+}
+.change_record{
+    margin-top: 1.25rem;
+}
+.change_record_table{
+    padding: 0 2rem;
+}
+.table_summary .l-title{
+    background-color: rgb(250,250,250);
+    border: 1px solid #e6e6e6;
+}
+.table_summary_content{
+    border: 1px solid #e6e6e6;
+    padding: 1rem;
+}
+.table_summary_content p{
+    height: 2.5rem;
+    line-height: 2.5rem;
+}
+.shareholder_title{
+    margin-left: 2.25rem;
+    border-bottom: 0;
+    padding: 0.75rem 0;
+}
+.company_info{
+    font-size: 1.25rem;
+    color: #191919;
+    font-weight: 600;
+    padding: 0.75rem 0 0.75rem 2rem;
+}
+
+.downloadFile{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 11.25rem;
+    height: 8.125rem;
+    border:1px dashed #ebecf0;
+    border-radius: 6px;
+    margin-left: 1rem;
+}
+.order-yulan{
+    text-align: center;
+    width: 11.25rem;
+}
+/*流程进度*/
+.bar_box{
+    margin-top: 0.875rem;
+    color: rgb(153,153,153);
+}
+.bar_box span{
+    display: block;
+   /* width: 12.625rem;*/
+    padding: 1.5rem 0;
+    color: rgb(209,209,209);
+
+}
+.bar_box ul li{
+    display: inline-block;
+}
+.bar_box .bar-span-box{
+    margin-bottom: 1.875rem;
+}
+.bar_box .span_circle{
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 0.3125rem;
+    display: inline-block;
+    margin-right: 1.25rem;
+    padding: 0;
+    background-color: rgb(209,209,209);
+
+}
+.bar_box .span_bar{
+    width: 7.5rem;
+    height: 0.3rem;
+    display: inline-block;
+    vert-align: middle;
+    margin-right: 1.25rem;
+    padding: 0;
+    background-color: rgb(209,209,209);
+}
+.bar_box ul li span:first-of-type{
+    padding-top: 0;
+}
+
+.bar_box .span_active{
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 0.3125rem;
+    background-color:  var(--activeColor);
+    display: inline-block;
+    padding: 0;
+}
+.bar_box .bar_active{
+    width: 7.5rem;
+    height: 0.3rem;
+    background-color:  var(--activeColor);
+    display: inline-block;
+    padding: 0;
+}
+.bar_box .circle_active{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.75rem;
+    background: -webkit-radial-gradient(#2592fc, #4ACFFC, #E6E7FF); /* Safari 5.1 - 6.0 */
+    background: -o-radial-gradient(#2592fc, #4ACFFC, #E6E7FF); /* Opera 11.6 - 12.0 */
+    background: -moz-radial-gradient(#2592fc, #4ACFFC, #E6E7FF); /* Firefox 3.6 - 15 */
+    background: radial-gradient(#2592fc, #4ACFFC, #E6E7FF); /* 标准的语法 */
+    display: inline-block;
+}
+.bar_box .world_active{
+    color: black;
+    font-weight: 600;
+}
+/*内容展示 end*/

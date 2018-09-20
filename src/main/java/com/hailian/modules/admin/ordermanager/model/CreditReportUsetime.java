@@ -49,7 +49,7 @@ public class CreditReportUsetime  extends BaseProjectModel<CreditReportUsetime>{
 			params.add(reporttype);
 		}
 		if (StringUtils.isNotBlank(orderType)) {
-			sql.append(" and t.report_id=? ");
+			sql.append(" and t.order_type=? ");
 			params.add(orderType);
 		}
 		

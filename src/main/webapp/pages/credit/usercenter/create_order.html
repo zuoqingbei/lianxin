@@ -4,6 +4,8 @@
 <% var language = tempDict.getSysDictDetailString('language',model.report_language); %>
 <% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
 <% var reportType = reportType.getReportTypeString("ordertype"); %>
+<% var upload_busType = tempDict.getSysDictDetailString('upload_busType',model.business_type !); %>
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -13,6 +15,8 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/pages/credit/assets/animate/animate.css">
+    <link rel="stylesheet" href="/pages/credit/assets/layui/css/layui.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
@@ -44,7 +48,7 @@
 		    	</div>
 		    	<!--表单-->
 		    	<div class="table-content p-3">
-		    		<form id="orderForm" class="form-inline" action="/credit/front/home/saveOrder" method="">
+		    		<form id="orderForm" class="form-inline " enctype="multipart/form-data"   action="/credit/front/home/saveOrder" method="post">
 		    			<div class="form-group row d-flex justify-content-end mb-4">
 		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
 		                    	<button type="button" id="btn_download" class="btn btn-primary"><i class="fa fa-download"></i>批量导入</button>
@@ -69,7 +73,7 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>接单日期：</label>
-		                        <input name="attr.receiver_date" valid="vselect" validname="接单日期" value="" type="text" class="form-control search-input col-md-8" id="client_order_date" disabled/>
+		                        <input name="attr.receiver_date" valid="vselect" validname="接单日期"  type="text" class="form-control search-input col-md-8" id="client_order_date" disabled/>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>地区：</label>
@@ -83,7 +87,7 @@
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>国家：</label>
 		                        <select name="attr.country" valid="vselect" validname="国家" class="form-control search-input formSelect col-md-8" id="client_country" onchange="countrychange()">
-		                            <option value="0" disabled selected>请选择国家</option>
+		                            <option m-type="" value="0" disabled selected>请选择国家</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择国家</p>
 		                    </div>
@@ -112,10 +116,12 @@
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4">
-		                    <div class="input-group mt-2 col-md-6">
-		                        <label class="control-label col-md-4" for=""><span>*</span>公司名称：</label>
-		                        <input name="attr.right_company_name_en" valid="vselect" validname="公司名称" type="text" class="form-control search-input formInput col-md-8" id="client_departmentName" placeholder="请输入公司名称">
-		                    	<p class="errorInfo col-md-8">请输入公司名称</p>
+		                    <div class="input-group mt-2 col-md-6 layui-form">
+		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>公司：</label>
+                                        <select name="attr.company_id" class="search-input col-md-8 layui-input" lay-search="" ay-verify="" >
+                                            <option value="0" disabled selected>请选择公司</option>
+                                        </select>
+		                    	<p class="errorInfo col-md-8">请输入正确公司名称</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>速度：</label>
@@ -166,7 +172,7 @@
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">上传相关资料：</label>
 		                        <div class="form-control search-input uploadInformation col-md-8">
-		                        	<input type="file" name="" id="upload_file" value="" />
+		                        	<input type="file" name="file_url" id="upload_file" value=""/>                     	                     	
 		                        	<i class="fa fa-cloud-upload"></i>
 		                        	<p class="">请将上传的PDF、JPG、PNG、EXCEL、WORD文件拖至此处，大小不超过5M</p>
 								</div>
@@ -203,6 +209,9 @@
 		    			<input name="id" type="hidden" value="0">
 		    			<input id="priceid" name="attr.price_id" type="hidden" value="0">
 		    			<input name="attr.source" type="hidden" value="0">
+		    			<input name="attr.end_date" type="hidden" value="0">
+		    			<input name="attr.company_by_report" type="hidden" value="0">
+		    			<input name="attr.right_company_name_en" type="hidden" value="0">
 		    			<!--<input type="submit" value=""/>-->
 		    		</form>
 		    	</div>
@@ -214,10 +223,17 @@
    
     <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
     <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/laydate/laydate.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
     <script src="${BASE_PATH }static/credit/js/common.js"></script>
     <script src="${BASE_PATH }static/credit/js/create_order.js"></script>
     <script type="text/javascript" src="${BASE_PATH }static/common/valid.js"></script>
    <script type="text/javascript">
+   		$(function(){
+   			$.get('/credit/front/home/getMessage',function(data){
+   				getCompany(data.companys);
+			})	
+   		})
    		function customChange(){
    			var value=$("#client_ID").find("option:selected").val();
    			$.post("/credit/front/home/getCustomName",{"id":value},function(data){
@@ -274,7 +290,7 @@
 		        	console.log(data)
 		        	if(data!=null){
 		        		for(item in data){
-		        			html+="<option  value='"+data[item].language_id+"'>"+data[item].languageName+"</option>";
+		        			html+="<option value='"+data[item].language_id+"'>"+data[item].languageName+"</option>";
 		        		}
 		        	}
 		        	$("select[name='attr.report_language']").html(html);
@@ -287,19 +303,19 @@
     	var value2=$("select[name='attr.speed']").find("option:selected").val();
     	var value3=$("select[name='attr.report_type']").find("option:selected").val();
     	var value4=$("select[name='attr.order_type']").find("option:selected").val();
+    	var value5=$("#client_order_date").val();
+    	console.log(value5);
    	 	var html="";
 	   	 $.ajax({
-		        url:"/admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4,
+		        url:"/admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4+"&receivedate="+value5,
 		        type:"get",
 		        dataType:"json",
 		        success: function(data) {
 		        	console.log(data)
 		        	  if(data!=null){
-		        		  $("input[name='attr.user_time']").val(data.use_time)
-		        		  $("input[name='attr.user_time_id']").val(data.id)
-		        		  var value=$("input[name='attr.receiver_date']").val()
-		        		  console.log(value)
-		        		  $("input[name='attr.receiver_date']").val(value)
+		        		  $("input[name='attr.user_time']").val(data.usetime.use_time)
+		        		  $("input[name='attr.user_time_id']").val(data.usetime.id)
+						  $("input[name='attr.end_date']").val(data.enddate)
 		        }
 		        },
 		    });
@@ -311,7 +327,7 @@
     	var value4=$("select[name='attr.order_type']").find("option:selected").val();
    	 	var html="";
 	   	 $.ajax({
-		        url:"admin/ordermanager/getPrice?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4,
+		        url:"/admin/ordermanager/getPrice?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4,
 		        type:"get",
 		        dataType:"json",
 		        success: function(data) {
@@ -322,6 +338,42 @@
 		          }
 		    });
    	 	}
+   	 	function getCompany(data){
+   	 	var html=""
+				for(item in data){
+					html+="<option m-type2='"+data[item].name_en+"'  m-type1='"+data[item].name+"'  value='"+data[item].id+"'>"+data[item].name+"</option>";
+				}
+				$("select[name='attr.company_id']").append(html);	
+				console.log(html);
+				//重新渲染 否则option不能显示
+				layui.use('form', function(){
+					var form = layui.form;  
+					form.render(); //更新全部
+				});
+   	 	}
+   	/*  	function companychange(){
+   	 		$("input[name='attr.company_by_report']").val($("select[name='attr.company_id']").find("option:selected").attr(" m-type1"));
+   	 		$("input[name='attr.right_company_name_en']").val($("select[name='attr.company_id']").find("option:selected").attr("m-type2"));
+   	 	} */
+   	 	/* function upload(){
+   	 	 var file_obj = document.getElementById('upload_file').files[0];
+   	 	var fd = new FormData();
+        fd.append('upload_file',file_obj);
+   	 	 $.ajaxFileUpload({
+             url: '/credit/front/home/upload', 
+             type: 'post',
+             processData:false,  //tell jQuery not to process the data
+             contentType: false,  //tell jQuery not to set contentType	
+             dataType: 'json', //返回值类型，一般设置为json、application/json
+             data:fd
+             success: function (data) {
+                     alert(data.MarkFile);
+             },
+             error: function () {
+                 alert("错误：上传组件错误，请检察网络!");
+             }
+         });
+   	 	} */
    </script>
 </body>	
 </html>
