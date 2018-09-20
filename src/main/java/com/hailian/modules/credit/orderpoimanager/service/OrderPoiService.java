@@ -23,12 +23,7 @@ public class OrderPoiService {
 	 * @todo   分页查询订单
 	 * @return_type   Page<TbOrder>
 	 */
-	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model, String orderby,
-			 BaseProjectController c) {
 
-		return CreditOrderInfo.dao.selectOrder(pageinator, model, orderby, c);
-
-	}
 //	/**
 //	 * 
 //	 * @time   2018年9月18日 下午3:42:57

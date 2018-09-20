@@ -4,17 +4,40 @@
 let Public = {
     init(){
         this.importMenu();
+        this.initReset();
     }, 
     importMenu(){
         /**
          * 导入菜单组件
          */
         let _this = this
-        $('header').load("/credit/front/common/menu .head-row")
+       
+        if(location.pathname.indexOf('order_manage') !== -1){
+            $('header').load("/credit/front/common/menu .head-row",function(){
+                _this.logoutEvent();
+            })
+    
+            $('.nav-row').load("/credit/front/common/menu .nav-box" ,function(){
+                _this.menuEvent()
+            })
+        }else {
+            $('header').load("/credit/front/common/menu .head-row",function(){
+                _this.logoutEvent();
+            })
+    
+            $('.nav-row').load("/credit/front/common/menu .nav-box" ,function(){
+                _this.menuEvent()
+            })
 
-        $('.nav-row').load("/credit/front/common/menu .nav-box" ,function(){
-            _this.menuEvent()
-        })
+        }
+    },
+    initReset(){
+    	/**重置form表单**/
+    	const $btnReset = $('#btn_reset');
+    	$btnReset.on('click',function(){
+    		$("#formSearch input.search-input").val("");
+    		$("#formSearch select.search-input").val("");
+    	});
     },
     menuEvent(){
         /**
@@ -39,15 +62,34 @@ let Public = {
                         $(this).parent().toggleClass("show");
                     });
                 }
+                
             } else {
                 $leftNav.find("li").removeClass("active");
                 $(this).addClass("active")
             }
-  //          return false;
+
+           
+            // return false;
         });
+    },
+    logoutEvent(){
+      
+        $(".user-content").click(function(){
+           $(".logout").toggleClass("logout-show")
+        })
+
+        $(".logout").click(function(){
+            /**发送ajax请求 */
+            $(".logout").toggleClass("logout-show")
+
+        })
     }
+
 }
 
-Public.init();
+$(function(){
+
+    Public.init();
+})
 
 

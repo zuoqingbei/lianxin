@@ -90,7 +90,7 @@ let Index = {
             height: $(".table-content").height()/3*2,
             columns: [
                  {
-                  title: '订单号',
+                  title: '订单号111',
                   field: 'orderNum',
                   align: 'center',
                   valign: 'middle',
@@ -155,16 +155,6 @@ let Index = {
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
-                },{
-                  field: 'operate',
-                  title: '操作',
-                  align: 'center',
-                  events: {
-                    "click .detail":(e,value,row,index)=>{
-                      console.log(row)
-                    }
-                  },
-                  formatter: _this.operateFormatter
                 }
               
             ],

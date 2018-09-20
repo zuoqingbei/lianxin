@@ -17,7 +17,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class Main {
 	private static String latestVocationName="";
-	public String getVocationName(DomNodeList<HtmlElement> htmlElements, String date) throws ParseException{
+	public static String getVocationName(DomNodeList<HtmlElement> htmlElements, String date) throws ParseException{
 	String rst = "";
 	boolean pastTimeFlag = false;
 	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -78,11 +78,12 @@ public class Main {
 	}
 	return rst;
 	}
-	public List<ChinaDate> getCurrentDateInfo(){
+	
+	public static List<ChinaDate> getCurrentDateInfo(){
 	WebClient webClient = null;
 	List<ChinaDate> dateList = null;
 	try{
-	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	dateList = new ArrayList<ChinaDate>();
 	webClient = new WebClient();
 	HtmlPage page = webClient.getPage("http://hao.360.cn/rili/");
@@ -104,7 +105,7 @@ public class Main {
 	chinaDate.setSolarDate(dateFormat.parse(element.getAttribute("date")));
 	if(element.getAttribute("class").indexOf("vacation")!=-1){
 	chinaDate.setVacation(true);
-	chinaDate.setVacationName(this.getVocationName(htmlElements, element.getAttribute("date")));
+	chinaDate.setVacationName(getVocationName(htmlElements, element.getAttribute("date")));
 	}
 	if(element.getAttribute("class").indexOf("weekend")!=-1 && 
 	element.getAttribute("class").indexOf("last")==-1){
@@ -132,9 +133,10 @@ public class Main {
 	}
 	return dateList;
 	}
+	
 	public ChinaDate getTodayInfo(){
-	List<ChinaDate> dateList = this.getCurrentDateInfo();
-	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+	List<ChinaDate> dateList = getCurrentDateInfo();
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	for(ChinaDate date: dateList){
 	if(dateFormat.format(date.getSolarDate()).equals(dateFormat.format(new Date()))){
 	return date;
@@ -143,23 +145,11 @@ public class Main {
 	return new ChinaDate();
 	}
 	public static void main(String[] args) throws FailingHttpStatusCodeException, MalformedURLException, IOException, InterruptedException {
-	List<ChinaDate> dateList = new Main().getCurrentDateInfo();
-	ChinaDate today = new Main().getTodayInfo();
-	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-	System.out.println("本月详情：");
+	List<ChinaDate> dateList = getCurrentDateInfo();
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	for(ChinaDate date: dateList){
-	System.out.println(dateFormat.format(date.getSolarDate()) + " " + date.getVacationName());
+	System.out.println(dateFormat.format(date.getSolarDate()));
 	}
-	System.out.println("------------------------------------------------------------------------");
-	System.out.println("今日详情：");
-	System.out.println("日期：" + today.getSolarDate());
-	System.out.println("农历："+today.getLunar());
-	System.out.println("公历："+today.getSolar());
-	System.out.println("假期名："+today.getVacationName());
-	System.out.println("是否周六："+today.isSaturday());
-	System.out.println("是否周日："+today.isSunday());
-	System.out.println("是否休假："+today.isVacation());
-	System.out.println("是否工作日："+today.isWorkFlag());
-	System.out.println("已发生的最近一次假期:" + Main.latestVocationName);
+
 	}
 	}

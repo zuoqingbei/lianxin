@@ -1,7 +1,9 @@
 package com.hailian.modules.admin.ordermanager.model;
 
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,12 +14,18 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
+
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
+
 import com.hailian.modules.credit.common.controller.ReportTimeController;
 import com.hailian.modules.credit.common.model.ReportTimeModel;
-import com.hailian.modules.credit.usercenter.controller.OrderProcess;
+import com.hailian.modules.credit.common.model.ReportTypeModel;
+import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
+
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
+import com.jfinal.plugin.activerecord.Config;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -54,7 +62,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 	private String companyName;
 	//公司英文名称
 	private String englishName;
-	
+
 	public String getenglishName() {
 		return get("englishName");
 	}
@@ -303,9 +311,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		return list;
 
 	}
-
-	public Page<CreditOrderInfo> getOrders(Paginator pageinator, CreditOrderInfo model, String orderby, String status,
-			SysUser user) {
+	
+	public Page<CreditOrderInfo> getOrders(Paginator pageinator, CreditOrderInfo model,  String status,
+			SysUser user,String sortname,String sortorder) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sql = new StringBuffer();
 		//客户id
@@ -371,10 +379,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			sql.append(" and t.status in(?)");
 			params.add(status);
 		}
-		if (StrUtils.isEmpty(orderby)) {
-			sql.append(" order by t.id desc");
+		if (StringUtils.isNotBlank(sortname)) {
+			sql.append(" order by t." ).append(sortname).append("  "+sortorder);
 		} else {
-			sql.append(" order by ").append(orderby);
+			sql.append(" order by ").append(model.get("id")).append(" esc");
 		}
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
@@ -387,34 +395,102 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		return page;
 	}
 
+	public CreditOrderInfo findOrder(String num) {
+		StringBuffer sql=new StringBuffer();
+		sql.append("select * from credit_order_info t  where t.num=?");// TODO Auto-generated method stub
+		return CreditOrderInfo.dao.findFirst(sql.toString(),num);
+	}
+
+	public List<CreditOrderInfo> getOrders( String status,CreditOrderInfo model, SysUser user) {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		StringBuffer sql = new StringBuffer();
+		//客户id
+		String custom_id=model.getStr("custom_id");
+		//地区
+		String continent=model.getStr("continent");
+		//国家
+		String country=model.getStr("country");
+		//结束时间
+		Date end_date=model.get("end_date");
+		String date="";
+		if(end_date!=null) {
+		 date=sdf.format(end_date);
+		}
+		
+		//准确公司名称(经过翻译后的公司名称是中文)
+		String company_by_report=model.getStr("company_by_report");
+		//填写订单时输入的公司名称
+		String right_company_name_en=model.getStr("right_company_name_en");
+		List<Object> params = new ArrayList<Object>();
+		sql.append(" from credit_order_info t ");
+		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
+		sql.append(" left join credit_country c on c.id=t.country ");
+		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
+		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
+		sql.append(" left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
+		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
+		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
+		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
+		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		if(!"1".equals(user.getInt("usertype").toString())){
+			sql.append(" and t.create_by=? ");
+			params.add(user.getStr("usertype"));
+		}
+
+		if (StringUtils.isNotBlank(custom_id)) {
+			sql.append(" and t.custom_id=?");
+			params.add(custom_id);
+		}
+		if(StringUtils.isNotBlank(continent)) {
+			sql.append(" and t.continent=? ");
+			params.add(continent);
+		}
+		if(StringUtils.isNotBlank(country)) {
+			sql.append(" and t.country=?");
+			params.add(country);
+		}
+		if(StringUtils.isNotBlank(date)) {
+			sql.append(" and t.end_date=?");
+			params.add(date);
+		}
+		if(StringUtils.isNotBlank(company_by_report)) {
+			sql.append(" and t.company_by_report like concat('%',?,'%')");
+			params.add(company_by_report);
+		}
+		if(StringUtils.isNotBlank(right_company_name_en)) {
+			sql.append(" and t.right_company_name_en  like concat('%',?,'%')");
+			params.add(right_company_name_en);
+		}
+		if(StringUtils.isNotBlank(status)) {
+			sql.append(" and t.status in(?)");
+			params.add(status);
+		}
+		return CreditOrderInfo.dao.find("select t.* "+sql.toString(),params.toArray());
+	}
+	
+
 	/**
 	 * 
 	 * @time   2018年9月18日 下午4:13:01
 	 * @author dyc
-	 * @todo   查询订单信息
+	 * @todo   根据id查询单条订单信息
 	 * @return_type   ReportPrice
 	 */
-	public Page<CreditOrderInfo> selectOrder(Paginator pageinator, CreditOrderInfo model, String orderby,
-			BaseProjectController c) {
-		StringBuffer fromsql = new StringBuffer("from credit_order_info t ");
-		fromsql.append(" left join sys_dict_detail s4 on s4.detail_id=t.report_language");
-		fromsql.append(" left join credit_country c on c.id=t.country");
-		fromsql.append(" left join credit_report_type s3  on s3.id=t.report_type");
-		fromsql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed");
-		fromsql.append(" left join credit_company_info c2 on c2.id=t.company_id");
-		fromsql.append(" where 1=1 and t.del_flag=0 ");
-		//	   List<Object> params = new ArrayList<Object>();
-		if (StrUtils.isEmpty(orderby)) {
-			fromsql.append(" order by t.id desc");
-		} else {
-			fromsql.append(" order by ").append(orderby);
-		}
-		Page<CreditOrderInfo> page = CreditOrderInfo.dao
-				.paginate(
-						pageinator,
-						"select c.name as countryName,s3.name as reportType,s4.detail_name as reportLanguage,s5.detail_name as reportSpeed,c2.name as companyName,t.*",
-						fromsql.toString());
-		return page;
+	public CreditOrderInfo getId(int id, BaseProjectController c) {
+		StringBuffer sql = new StringBuffer(
+				"select c.name as countryName,s3.name as reportType,s4.detail_name as reportLanguage,s5.detail_name as reportSpeed,c2.name as companyName,t.*");
+		StringBuffer fromsql=new StringBuffer("from credit_order_info t ");
+		fromsql.append("left join sys_dict_detail s4  on s4.detail_id=t.report_language");
+		fromsql.append("left join credit_country c on c.id=t.country");
+		fromsql.append("left join credit_report_type s3  on s3.id=t.report_type");
+		fromsql.append("left join sys_dict_detail s5  on s5.detail_id=t.speed");
+		fromsql.append("left join credit_company_info c2 on c2.id=t.company_id");
+		fromsql.append("where t.id=?");
+		List<Object> params = new ArrayList<Object>();
+		params.add(id);
+		return (CreditOrderInfo) CreditOrderInfo.dao.findFirst(sql.toString()+fromsql.toString(), params.toArray());
 
 	}
 
@@ -423,15 +499,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 	 * @author lzg
 	 * @time 2018/09/14下午 3:20
 	 */
-	public Page<CreditOrderInfo> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,
-			String searchType, BaseProjectController c) {
-
+	public Page<CreditOrderInfo> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,String searchType, BaseProjectController c) {
 		StringBuffer selectSql = new StringBuffer();
 		StringBuffer fromSql = new StringBuffer();
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
-		//若搜索类型是通过id查询单条信息
-		if ((OrderProcess.orderAllocation + "id").equals(searchType)) {
 			selectSql.append(" select c.*, ");
 			selectSql.append(" s1.detail_name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
@@ -439,69 +511,58 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			selectSql.append(" s4.detail_name AS orderType, ");
 			selectSql.append(" s5.detail_name AS reportLanguage, ");
 			selectSql.append(" s6.detail_name AS speed, ");
-			selectSql.append(" u1.username AS reportUser,");
-			selectSql.append(" u2.username AS translateUser,");
-			selectSql.append(" u3.username AS analyzeUser,");
-			selectSql.append(" u4.username AS customId");
+			selectSql.append(" s7.detail_name AS statusName, ");
+			selectSql.append(" n.name AS companyZHNames, ");
+			selectSql.append(" n.name_en AS companyNames, ");
+			selectSql.append(" u1.realname AS reportUser,");
+			selectSql.append(" u2.realname AS translateUser,");
+			selectSql.append(" u3.realname AS analyzeUser,");
+			selectSql.append(" u4.name AS customId ");
 			fromSql.append(" FROM credit_order_info c ");
 			fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country = s1.detail_id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
+			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
+			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
+			fromSql.append(" LEFT JOIN sys_user u3 ON u3.userid = c.analyze_user ");//分析员
+			//以下属性为订单分配单个详情页展示内容
 			fromSql.append(" LEFT JOIN sys_dict_detail s3 ON c.continent = s3.detail_id ");//地区
 			fromSql.append(" LEFT JOIN sys_dict_detail s4 ON c.order_type = s4.detail_id ");//订单类型
 			fromSql.append(" LEFT JOIN sys_dict_detail s5 ON c.report_language = s5.detail_id ");//报告语言
 			fromSql.append(" LEFT JOIN sys_dict_detail s6 ON c.speed = s6.detail_id ");//报告速度
-			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
-			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
-			fromSql.append(" LEFT JOIN sys_user u3 ON u3.userid = c.analyze_user ");//分析员
-			fromSql.append(" LEFT JOIN sys_user u4 ON u4.userid = c.custom_id ");//客户
+			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
+			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
+			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
 			fromSql.append(" where c.del_flag = 0 ");
-			fromSql.append(" and c.id = ? ");
-			return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSql.toString(),
-					fromSql.toString(), keywords.toArray());
-		}
-
-		if ((OrderProcess.orderAllocation).equals(searchType)) {
-			selectSql.append(" select c.*, ");
-			selectSql.append(" s1.detail_name AS country, ");
-			selectSql.append(" s2.name AS reportType, ");
-			selectSql.append(" u1.username AS reportUser,");
-			selectSql.append(" u2.username AS translateUser,");
-			selectSql.append(" u3.username AS analyzeUser");
-			fromSql.append(" FROM credit_order_info c ");
-			fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country = s1.detail_id ");//国家
-			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
-			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
-			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
-			fromSql.append(" LEFT JOIN sys_user u3 ON u3.userid = c.analyze_user ");//分析员
-			fromSql.append(" where c.del_flag = 0 ");
-		}
-		//若为其他搜索类型
-		if (keywords != null && keywords.size() > 0) {
-			List<Object> columnNames = ReportTimeController.columnNames;
-			//搜索类型
-			String preStr = "";
-			if (ReportTimeController.fuzzySearch.equals(searchType)) {
-				preStr = " like concat('%',?,'%') ";
-			} else {
-				preStr = " = ? ";
+			if((OrderProcessController.orderAllocation).equals(searchType)){
+				//status='291'值状态为订单分配状态 ,其维护在字典表中
+				fromSql.append(" and status='291' ");
+			}else if((OrderProcessController.orderVerifyOfOrder).equals(searchType)){
+				//status='292'值状态为客户确认状态 ,其维护在字典表中
+				fromSql.append(" and status='292' ");
 			}
+			
+		//关键词搜索
+		if (keywords!=null&&keywords.size()>0) {
+			List<Object> columnNames = OrderProcessController.TYPE_KEY_COLUMN.get(searchType);
+			//搜索类型
+			String preStr = " like concat('%',?,'%') ";
 			//条件语句拼接
 			for (int i = 0; i < columnNames.size(); i++) {
-				if ("create_date".equals(columnNames.get(i))) {
+				if("create_date".equals(columnNames.get(i))){
 					continue;
 				}
-				if (StringUtil.isEmpty((String) keywords.get(i))) {
+				if(StringUtil.isEmpty((String)keywords.get(i))){
 					continue;
 				}
 				fromSql.append(" and ");
 				//搜索类型
-				fromSql.append(columnNames.get(i) + preStr);
+				fromSql.append(columnNames.get(i)+preStr);
 				params.add(keywords.get(i));//传入的参数
 			}
-
+			
 		}
 		//权限区分
-		if (!c.isAdmin(c.getSessionUser())) {
+		if(!c.isAdmin(c.getSessionUser())){
 			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
@@ -512,8 +573,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			fromSql.append(" order by ").append(orderBy);
 		}
 		String selectSqlStr = selectSql.toString();
-		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr, fromSql.toString(),
-				params.toArray());
+		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr ,fromSql.toString(), params.toArray());
 	}
+	
+	
 
 }

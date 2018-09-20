@@ -40,6 +40,7 @@ import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateImageService;
 import com.hailian.modules.front.template.TemplateReportTypeService;
 import com.hailian.modules.front.template.TemplateService;
+import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.modules.front.template.TemplateVideoService;
 import com.hailian.system.user.UserInterceptor;
 import com.hailian.util.Config;
@@ -280,6 +281,7 @@ public class BaseConfig extends JFinalConfig {
 		groupTemplate.registerFunctionPackage("tempVideo", TemplateVideoService.class);
 		groupTemplate.registerFunctionPackage("tempDict", TemplateDictService.class);//字典模板
 		groupTemplate.registerFunctionPackage("reportType", TemplateReportTypeService.class);//报告类型模板
+		groupTemplate.registerFunctionPackage("sysUser", TemplateSysUserService.class);//系统用户模板
 	}
 	private boolean isDevMode() {
 		return Config.getToBoolean("CONSTANTS.DEV_MODE");

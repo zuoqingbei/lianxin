@@ -13,6 +13,7 @@
 <% var jflyfox_theme = session.session_user.theme!'default'; %>
 <script type="text/javascript">
 	var jflyfox_theme = "${session.session_user.theme!'default' }";
+	
 </script>
 
 <!-- 弹出框 -->
@@ -39,3 +40,9 @@
 	include(theme_file){}
 	// 需要调整分页样式，文件管理样式
 %>
+<script type="text/javascript">
+	var result = "${result!}";
+	if(result == 1 && result != ''){
+		alert('操作成功');
+	}
+</script>
