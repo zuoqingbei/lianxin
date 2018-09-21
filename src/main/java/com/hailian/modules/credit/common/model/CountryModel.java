@@ -34,7 +34,7 @@ public class CountryModel extends BaseProjectModel<CountryModel> {
 	}
 	
 
-	public List<CountryModel> getCountrys(String continent) {
+	public static List<CountryModel> getCountrys(String continent) {
 		List<Object> params = new ArrayList<Object>();
 		StringBuffer sql = new StringBuffer();
 		sql.append("select t.* from credit_country t left join sys_dict_detail s on t.continent_en=s.detail_name_en where t.del_flag='0' ");
@@ -46,7 +46,18 @@ public class CountryModel extends BaseProjectModel<CountryModel> {
 		List<CountryModel> list = dao.find(sql.toString(), params.toArray());
 		return list;
 	}
+	public static List<CountryModel> getCountryByName(String name) {
+		List<Object> params = new ArrayList<Object>();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from credit_country where del_flag='0' ");
 
+		if (StringUtils.isNotBlank(name)) {
+			sql.append(" and name=?");
+			params.add(name);
+		}
+		List<CountryModel> list = dao.find(sql.toString(), params.toArray());
+		return list;
+	}
 	public CountryModel findType(String countryid) {
 		CountryModel cm = dao.findFirst("select t.type from credit_country t where t.id=? ", countryid);
 		return cm;

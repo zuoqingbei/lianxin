@@ -91,5 +91,37 @@ public class SysDictDetail extends BaseProjectModel<SysDictDetail> {
 				fromSql.toString(), params.toArray());
 		return sysDictDetailPage;
 	}
+	public static List<SysDictDetail> getDictDetailByContinent(String continent){
+		String sql="select * from sys_dict_detail where del_flag=0";
+		sql+=" and dict_type=? ";
+		sql+=" and detail_name=? ";
+		List<Object> params=new ArrayList<Object>();
+		params.add("continent");
+		params.add(continent);
+		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params);
+		return list;
+	}
+	public static List<SysDictDetail> getDictDetailByOrderType(String ordertype){
+		String sql="select * from sys_dict_detail where del_flag=0";
+		sql+=" and dict_type=? ";
+		sql+=" and detail_name=? ";
+		List<Object> params=new ArrayList<Object>();
+		params.add("ordertype");
+		params.add(ordertype);
+		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params);
+		return list;
+	}
+	public static List<SysDictDetail> getDictDetailByOrderSpeed(String orderspeed){
+		String sql="select * from sys_dict_detail where del_flag=0";
+		sql+=" and dict_type=? ";
+		sql+=" and detail_name=? ";
+		List<Object> params=new ArrayList<Object>();
+		params.add("orderspeed");
+		params.add(orderspeed);
+		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params);
+		return list;
+	}
+	
+	
 
 }
