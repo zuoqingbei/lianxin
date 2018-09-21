@@ -38,7 +38,7 @@ private static final String path = "/pages/credit/common/";
 		SysUser user= (SysUser) getSessionUser();//(SysUser)req.getSession().getAttribute("user");
 		
 		Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
-		System.out.println(map);
+//		System.out.println(map);
 		setAttr("user",user);
 		setAttr("menu", map);
 		render(path+"menu.html");

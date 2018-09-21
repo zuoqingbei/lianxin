@@ -1,0 +1,38 @@
+
+/*内容展示 start*/
+.order-detail{
+    padding-top: 0;
+}
+
+.change_record_table{
+    padding: 0 2rem;
+}
+
+
+.shareholder_title{
+    margin-left: 2.25rem;
+    border-bottom: 0;
+    padding: 1rem 0 0 0;
+}
+.invest_situation{
+    padding: 0;
+}
+
+h3.company_info{
+    padding-bottom: 0.5rem;
+}
+.table_summary_title{
+    margin-top: 2rem;
+}
+.change_record{
+    padding-top: 0;
+}
+.manage-info-box{
+    border: 1px solid #e6e6e6;
+    border-top: 0;
+    padding-top: 0.5rem;
+}
+
+/*内容展示 end*/
+
+

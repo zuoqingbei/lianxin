@@ -3,18 +3,19 @@
 
 let Public = {
     init(){
-        this.importMenu();
-    }, 
-    importMenu(){
-        /**
-         * 导入菜单组件
-         */
-        let _this = this
-        $('header').load("/credit/front/common/menu .head-row")
+        this.initReset();
+        this.menuEvent()
 
-        $('.nav-row').load("/credit/front/common/menu .nav-box" ,function(){
-            _this.menuEvent()
-        })
+        $("#main_content").load('/credit/front/home')
+    }, 
+  
+    initReset(){
+    	/**重置form表单**/
+    	const $btnReset = $('#btn_reset');
+    	$btnReset.on('click',function(){
+    		$("#formSearch input.search-input").val("");
+    		$("#formSearch select.search-input").val("");
+    	});
     },
     menuEvent(){
         /**
@@ -39,15 +40,57 @@ let Public = {
                         $(this).parent().toggleClass("show");
                     });
                 }
+                
             } else {
                 $leftNav.find("li").removeClass("active");
                 $(this).addClass("active")
+
+                let text = $(this).text().trim();
+                switch (text) {
+                    case '工作台':
+                        $("#main_content").load('/credit/front/home')
+                        break;
+                    case '新建订单':
+                        $("#main_content").load('/credit/front/home/createOrder')
+                        break;
+                    case '订单核实':
+                        $("#main_content").load('./order_manage/order_verify.html')
+                        break;
+                    case '订单查档':
+                        $("#main_content").load('./order_manage/order_filing.html')
+                        break;
+                    case '订单分配':
+                        $("#main_content").load('./order_manage/order_allocation.html')
+                        break;
+                    case '信息录入':
+                        $("#main_content").load('./report_pages/reported_basic_info.html')
+                        break;
+                
+                    default:
+                        break;
+                }
             }
-  //          return false;
+
+           
+             return false;
         });
+    },
+    logoutEvent(){
+      
+        $(".user-content").click(function(){
+           $(".logout").toggleClass("logout-show")
+        })
+
+        $(".logout").click(function(){
+            /**发送ajax请求 */
+            $(".logout").toggleClass("logout-show")
+
+        })
     }
+
 }
 
-Public.init();
+$(function(){
 
-
+    Public.init();
+})

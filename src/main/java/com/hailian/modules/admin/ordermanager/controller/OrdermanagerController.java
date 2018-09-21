@@ -58,7 +58,7 @@ public class OrdermanagerController extends BaseProjectController{
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
-	private String num="";
+	private String num=String.valueOf(OrderManagerService.service.getMaxId().get("id"));
 	/**
 	 * 
 	 * @time   2018年8月24日 下午6:16:22
@@ -182,7 +182,16 @@ public class OrdermanagerController extends BaseProjectController{
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		SysUser user = (SysUser) getSessionUser();
 		//按照规则生成编号
-		
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+		String date=sdf.format(new Date());
+		if(num.length()==1) {
+			num="000"+num;
+		}if(num.length()==2) {
+			num="00"+num;
+		}if(num.length()==3) {
+			num="0"+num;
+		}
+		num="00"+date+num;
 		model.set("num", num);
 		if(size >0){
 			try {
@@ -229,22 +238,12 @@ public class OrdermanagerController extends BaseProjectController{
 			e.printStackTrace();
 			renderMessage("保存失败");
 		}
-		//查找保存的订单
-		CreditOrderInfo coi=OrderManagerService.service.find(num);
 		//生成日志
 		try {
 			OrderManagerService.service.addOrderHistory(id, user);
 		} catch (Exception e) {
-			//插入日志失败则删除订单
-			coi.set("del_flag", "1");
-			try {
-				OrderManagerService.service.deleteOrder(coi,this);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				renderMessage("请联系管理员手动删除id为"+model.get("id")+"的订单");
-			}
 			e.printStackTrace();
-			renderMessage("保存失败");
+			renderMessage("日志插入失败");
 			return;
 		}
 		renderMessage("保存成功");
