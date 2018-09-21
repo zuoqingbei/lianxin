@@ -73,4 +73,20 @@ public class SysUser extends SessionUser<SysUser> {
 		}
 		return Db.update(sql.toString(),params.toArray());
 	}
+	
+	/**
+	 * 根据角色获取
+	 * @return
+	 */
+	public List<SysUser> getSysUserByRole(Object role) {
+		return dao.find("select c.* from sys_user c left join sys_user_role r on c.userid=r.userid where c.del_flag='0' and r.roleid='"+role+"' order by create_time desc  ");
+	}
+	
+	/**
+	 * 根据角色ID获取
+	 * @return
+	 */
+	public SysUser getSysUserById(Object userid) {
+		return dao.findFirst("select c.* from sys_user c where c.del_flag='0' and userid="+userid);
+	}
 }

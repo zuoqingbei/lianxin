@@ -26,6 +26,7 @@ import com.hailian.modules.credit.usercenter.service.HomeService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.hailian.util.cache.Cache;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
@@ -288,6 +289,7 @@ public class HomeController extends BaseProjectController {
 		try {
 			OrderManagerService.service.modifyOrder(0,model,user,this);
 			render(path + "index.html");
+			throw new Exception();
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderMessage("保存失败");

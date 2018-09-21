@@ -40,6 +40,10 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 		columnnNames.add("t.country");
 		columnnNames.add("t.remarks");
 		columnnNames.add("t.create_date");
+		columnnNames.add("t2.detail_name");
+		columnnNames.add("t3.detail_name");
+		columnnNames.add("t5.detail_name");
+		columnnNames.add("t4.name");
 	}
 	/**
 	 * 列表展示
@@ -53,7 +57,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 		StringBuffer sql=new StringBuffer(" from credit_custom_info t left join sys_dict_detail t2 on  t.usabled=t2.detail_id ");
 		sql.append(" left join sys_dict_detail t3 on t.is_old_customer=t3.detail_id ");
 		sql.append(" left join credit_company_info t4 on t.company_id=t4.id ");
-		sql.append(" left join credit_country t5 on t.country=t5.id ");
+		sql.append(" left join sys_dict_detail t5 on t.country=t5.detail_id ");
 		sql.append(" where 1=1 and t.del_flag=0 ");
 
 		if(!c.isAdmin(c.getSessionUser())){
@@ -70,8 +74,10 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 					sql.append(" || ");
 				}
 				//搜索类型
-				sql.append(columnnNames.get(i)+" like concat('%',?,'%')");
-				params.add(keyword);//传入的参数
+				sql.append(columnnNames.get(i)+" like binary ? ");
+				params.add('%'+keyword+'%');
+//				sql.append(columnnNames.get(i)+" like concat('%',?,'%')");
+//				params.add(keyword);//传入的参数
 			}
 		}
 		if(!c.isAdmin(c.getSessionUser())){
@@ -85,7 +91,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 			sql.append(" order by ").append(orderBy);
 		}
 		Page<CustomInfoModel> page = CustomInfoModel.dao
-				.paginate(paginator, "select t.*,t2.detail_name as usableName,t3.detail_name as isOldCusName,t4.name as companyName,t5.name as countryName ", sql.toString(),params.toArray());
+				.paginate(paginator, "select t.*,t2.detail_name as usableName,t3.detail_name as isOldCusName,t4.name as companyName,t5.detail_name as countryName ", sql.toString(),params.toArray());
 		System.out.println(sql);
 		return page;
 	}

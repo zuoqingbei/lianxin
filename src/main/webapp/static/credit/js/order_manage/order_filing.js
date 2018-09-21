@@ -229,7 +229,6 @@ let Filing = {
               return {//这里的params是table提供的  
                   offset: params.offset,//从数据库第几条记录开始  
                   limit: params.limit//找多少条  
-                  
               };  
           },  
           });

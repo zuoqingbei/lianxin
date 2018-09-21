@@ -3,6 +3,7 @@ package com.hailian.modules.admin.ordermanager.model;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,8 @@ import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.credit.common.controller.ReportTimeController;
 import com.hailian.modules.credit.common.model.ReportTimeModel;
-import com.hailian.modules.credit.usercenter.controller.OrderProcess;
+import com.hailian.modules.credit.common.model.ReportTypeModel;
+import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
 
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
@@ -521,13 +523,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 	 * @time 2018/09/14下午 3:20
 	 */
 	public Page<CreditOrderInfo> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,String searchType, BaseProjectController c) {
-		
 		StringBuffer selectSql = new StringBuffer();
 		StringBuffer fromSql = new StringBuffer();
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
-		//若搜索类型是通过id查询单条信息
-		if((OrderProcess.orderAllocation+"id").equals(searchType)){
 			selectSql.append(" select c.*, ");
 			selectSql.append(" s1.detail_name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
@@ -535,51 +534,41 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			selectSql.append(" s4.detail_name AS orderType, ");
 			selectSql.append(" s5.detail_name AS reportLanguage, ");
 			selectSql.append(" s6.detail_name AS speed, ");
-			selectSql.append(" u1.username AS reportUser,");
-			selectSql.append(" u2.username AS translateUser,");
-			selectSql.append(" u3.username AS analyzeUser,");
-			selectSql.append(" u4.username AS customId");
+			selectSql.append(" s7.detail_name AS statusName, ");
+			selectSql.append(" n.name AS companyZHNames, ");
+			selectSql.append(" n.name_en AS companyNames, ");
+			selectSql.append(" u1.realname AS reportUser,");
+			selectSql.append(" u2.realname AS translateUser,");
+			selectSql.append(" u3.realname AS analyzeUser,");
+			selectSql.append(" u4.name AS customId ");
 			fromSql.append(" FROM credit_order_info c ");
 			fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country = s1.detail_id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
+			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
+			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
+			fromSql.append(" LEFT JOIN sys_user u3 ON u3.userid = c.analyze_user ");//分析员
+			//以下属性为订单分配单个详情页展示内容
 			fromSql.append(" LEFT JOIN sys_dict_detail s3 ON c.continent = s3.detail_id ");//地区
 			fromSql.append(" LEFT JOIN sys_dict_detail s4 ON c.order_type = s4.detail_id ");//订单类型
 			fromSql.append(" LEFT JOIN sys_dict_detail s5 ON c.report_language = s5.detail_id ");//报告语言
 			fromSql.append(" LEFT JOIN sys_dict_detail s6 ON c.speed = s6.detail_id ");//报告速度
-			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
-			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
-			fromSql.append(" LEFT JOIN sys_user u3 ON u3.userid = c.analyze_user ");//分析员
-			fromSql.append(" LEFT JOIN sys_user u4 ON u4.userid = c.custom_id ");//客户
+			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
+			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
+			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
 			fromSql.append(" where c.del_flag = 0 ");
-			fromSql.append(" and c.id = ? ");
-			return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSql.toString(),fromSql.toString(), keywords.toArray());
-		}
-		
-		if((OrderProcess.orderAllocation).equals(searchType)){
-			selectSql.append(" select c.*, ");
-			selectSql.append(" s1.detail_name AS country, ");
-			selectSql.append(" s2.name AS reportType, ");
-			selectSql.append(" u1.username AS reportUser,");
-			selectSql.append(" u2.username AS translateUser,");
-			selectSql.append(" u3.username AS analyzeUser");
-			fromSql.append(" FROM credit_order_info c ");
-			fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country = s1.detail_id ");//国家
-			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
-			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
-			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
-			fromSql.append(" LEFT JOIN sys_user u3 ON u3.userid = c.analyze_user ");//分析员
-			fromSql.append(" where c.del_flag = 0 ");
-		}
-		//若为其他搜索类型
-		if (keywords!=null&&keywords.size()>0) {
-			List<Object> columnNames = ReportTimeController.columnNames;
-			//搜索类型
-			String preStr = "";
-			if(ReportTimeController.fuzzySearch.equals(searchType)){
-				preStr = " like concat('%',?,'%') ";
-			}else{
-				preStr = " = ? ";
+			if((OrderProcessController.orderAllocation).equals(searchType)){
+				//status='291'值状态为订单分配状态 ,其维护在字典表中
+				fromSql.append(" and status='291' ");
+			}else if((OrderProcessController.orderVerifyOfOrder).equals(searchType)){
+				//status='292'值状态为客户确认状态 ,其维护在字典表中
+				fromSql.append(" and status='292' ");
 			}
+			
+		//关键词搜索
+		if (keywords!=null&&keywords.size()>0) {
+			List<Object> columnNames = OrderProcessController.TYPE_KEY_COLUMN.get(searchType);
+			//搜索类型
+			String preStr = " like concat('%',?,'%') ";
 			//条件语句拼接
 			for (int i = 0; i < columnNames.size(); i++) {
 				if("create_date".equals(columnNames.get(i))){

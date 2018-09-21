@@ -10,19 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ConnectException;
-
 import org.apache.commons.io.FileUtils;
-
 import com.artofsolving.jodconverter.DefaultDocumentFormatRegistry;
 import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.DocumentFormat;
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.converter.StreamOpenOfficeDocumentConverter;
-import com.hailian.modules.admin.site.TbSite;
-import com.hailian.system.file.util.FileUploadUtils;
-import com.hailian.util.DateUtils;
-import com.jfinal.upload.UploadFile;
 
 
 
