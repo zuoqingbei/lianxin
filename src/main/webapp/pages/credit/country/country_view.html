@@ -1,0 +1,64 @@
+
+<% 
+var headContent = {
+	include("/pages/template/head.html"){}
+};
+
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal">
+	<!-- 数据列表 -->
+		<table class="table">
+		<tr>
+				<td>序号</td>
+				<td>${model.id}</td>
+			</tr>
+		<tr>
+			<td>地区中文</td>
+			<td>
+			${model.Continent!}
+			</td>
+			</tr>
+			<tr>
+			<td>地区英文</td>
+			 <td> 
+			${model.continent_en!}
+			</td>
+		</tr>
+		<tr>
+			<td>国家中文</td>
+			<td>${model.name!}</td>
+		</tr>
+				<tr>
+			<td>国家英文</td>
+			<td>${model.name_en}</td>
+		</tr>
+			<tr>
+			<td>电话区号</td>
+			<td>${model.tel_pre}</td>
+		</tr>
+			<tr>
+			<td>修改人</td>
+			<td>${model.update_by}</td>
+		</tr>
+			<tr>
+			<td>更新时间</td>
+			<td>${model.update_date}</td>
+		</tr>
+		<tr>
+			<td>是否禁用</td>
+			<td> ${model.usabledName}</td>
+		</tr>
+		</table>
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
+

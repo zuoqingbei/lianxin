@@ -12,25 +12,26 @@ import com.hailian.modules.credit.orderpoimanager.service.OrderPoiService;
 */
 public class MainExcel {
 	private static BaseProjectController c;
+	private static Object result;
 
 	public static void main(String[] args) {
 		String path = "C:\\Users\\Happy\\Desktop\\模板.xlsx";
         try {
-            List<List<String>> result = new ReadExcel().readXlsx(path);
-            System.out.println(result.size());
-            for (int i = 0; i < result.size(); i++) {
-                List<String> model = result.get(i);
-                String orderId = model.get(0);
-                OrderPoiService service=new OrderPoiService();
-				
+           List<List<String>> result = new ReadExcel().readXlsx(path); 
+           System.out.println(result.size());
+           for (int i = 0; i < result.size(); i++) {
+               List<String> model = result.get(i);
                 System.out.println("第一列:" + model.get(0));
                 System.out.println("第二列:" +  model.get(1));
                 System.out.println("第三列:" +  model.get(2));
                 System.out.println("第四列:" +  model.get(3));
                 System.out.println("第六列:" +  model.get(5));
-            }
+               
+           }
         } catch (Exception e) {
             e.printStackTrace();
         }
+  
 	}
+
 }

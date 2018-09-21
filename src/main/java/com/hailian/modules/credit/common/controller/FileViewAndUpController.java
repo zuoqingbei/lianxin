@@ -21,9 +21,9 @@ public class FileViewAndUpController extends BaseProjectController{
 		BufferedInputStream bis = null;
 		OutputStream os = null;
 		try {
-			String path = getPara("url");//网络图片地址
+			String path = getPara("url");//url地址
 			path=new String(getPara("url").getBytes("iso8859-1"),"utf-8");
-			String type = getPara("type");//网络图片地址
+			String type = getPara("type");//获取类型
 			response.reset(); // 非常重要
 			response.setContentType("text/html; charset=UTF-8");
 	        	if(!FileTypeUtils.isImg(type)){
