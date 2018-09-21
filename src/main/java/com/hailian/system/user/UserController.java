@@ -1,18 +1,28 @@
 package com.hailian.system.user;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.util.JFlyFoxUtils;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.jfinal.component.db.SQLUtils;
-import com.hailian.modules.credit.company.service.CompanyService;
+import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.department.DepartmentSvc;
 import com.hailian.system.role.SysRole;
+import com.hailian.util.Config;
+import com.hailian.util.DateUtils;
+import com.hailian.util.FtpUploadFileUtils;
 import com.hailian.util.StrUtils;
 import com.hailian.util.encrypt.Md5Utils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-
-import java.util.List;
+import com.jfinal.upload.UploadFile;
 
 /**
  * 用户管理
@@ -23,7 +33,11 @@ import java.util.List;
 public class UserController extends BaseProjectController {
 
 	private static final String path = "/pages/system/user/user_";
-
+	public static final String store = Config.getStr("ftp_store");//ftp文件服务器 root下存放目录
+	public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
+	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
+	public static final String userName = Config.getStr("ftp_userName");//域用户名
+	public static final String password = Config.getStr("ftp_password");//域用户密码
 	public void index() {
 		list();
 	}
@@ -96,14 +110,43 @@ public class UserController extends BaseProjectController {
 	}
 
 	public void save() {
+		String markFile="";
+		String title_url="";
+		List<File> filelist=new ArrayList<File>();
+		UploadFile uploadFile=getFile("model.title_url");
+		if(uploadFile != null){
+			String ext=FileTypeUtils.getFileType(uploadFile.getOriginalFileName());//获取上传文件类型
+			if(FileTypeUtils.isImg(ext)){
+				filelist.add(uploadFile.getFile());
+				String now=UUID.randomUUID().toString().replaceAll("-", "");
+				String storePath = store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+				try {
+					boolean storeFtpFile = FtpUploadFileUtils.storeFtpFile(now, filelist, storePath, ip, port, userName, password);
+					if(storeFtpFile){
+						String FTPfileName=now+"."+ext;
+						title_url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+					}
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					markFile+="出现未知异常，头像上传失败！";
+					renderMessage(markFile);
+				}
+			}
+			
+		}
+		
 		Integer pid = getParaToInt();
 		SysUser model = getModel(SysUser.class);
 
 		// 日志添加
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-		model.put("update_id", userid);
-		model.put("update_time", now);
+		model.set("update_id", userid);
+		model.set("update_time", now);
+		if(StringUtils.isNotBlank(title_url)){
+			model.set("title_url", title_url);
+		}
 		if (pid != null && pid > 0) { // 更新
 			model.update();
 		} else { // 新增
@@ -116,7 +159,7 @@ public class UserController extends BaseProjectController {
 			model.save();
 		}
 		UserCache.init();
-		renderMessage("保存成功");
+		renderMessage("保存成功"+markFile);
 	}
 
 	/**

@@ -89,19 +89,19 @@ public class CustomController extends BaseProjectController {
 	* @TODO
 	 */
 	public void save() {
-		Integer pid = getParaToInt("id");
+		Integer pid = getParaToInt();
 		// 日志添加
 		CustomInfoModel model = getModel(CustomInfoModel.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-		model.put("update_id", userid);
-		model.put("update_time", now);
+		model.set("update_by", userid);
+		model.set("update_date", now);
 		if (pid != null && pid > 0) { // 更新
 			model.update();
 		} else { // 新增
-			model.remove("detail_id");
-			model.put("create_by", userid);
-			model.put("create_date", now);
+			model.remove("id");
+			model.set("create_by", userid);
+			model.set("create_date", now);
 			model.save();
 		}
 		renderMessage("保存成功");
