@@ -1,5 +1,5 @@
-﻿<% var Continent = tempDict.getSysDictDetailString2('continent',attr.continent !); %>
-<% var usabledName = tempDict.getSysDictDetailString2('usabled',attr.usabled !); %>
+﻿<% var Continent = tempDict.getSysDictDetailString('continent',attr.continent !); %>
+<% var usabledName = tempDict.getSysDictDetailString('usabled',attr.usabled !); %>
 
 ﻿<% 
 	var headContent = {
@@ -15,28 +15,28 @@ jQuery(function($) {
 		height : 620,
 		form : document.form1,
 		list : function() {
-			var url = 'credit/country/list';
+			var url = '/credit/country/list';
 			this.form.action = url;
 			this.form.submit();
 		},
 		view : function(id) {
 			var url = '/credit/country/view/'+id;
-			var title = '查看报告价格';
+			var title = '查看国家信息';
 			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 		},
 		add : function() {
 			var url = '/credit/country/add/';
-			var title = '添加报告价格信息';
+			var title = '添加国家信息';
 			Iframe(url, this.width, this.height, title);
 		},
 		edit : function(id) {
 			var url = '/credit/country/edit/'+id 
-			var title = '修改报告价格';
+			var title = '修改国家信息';
 			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
 			var url = '/credit/country/delete/'+id;
-			var title = '确认要删除该报告价格信息？';
+			var title = '确认要删除该国家信息？';
 			Confirm(title, function() {
 				form1.action = url;
 				form1.submit();
