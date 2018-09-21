@@ -7,6 +7,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSONArray;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.ordermanager.controller.OrdermanagerController;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
@@ -20,6 +21,7 @@ import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.usercenter.controller.HomeController;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -303,6 +305,10 @@ public class OrderManagerService {
 	public List<CreditOrderInfo> getOrdersService( String status,CreditOrderInfo model,  SysUser user) {
 		
 		return CreditOrderInfo.dao.getOrders( status, model, user);
+	}
+
+	public CreditOrderInfo getMaxId() {
+		return CreditOrderInfo.dao.getMaxId();
 	}
 
 }

@@ -56,7 +56,6 @@ let Index = {
 		                       checkchar+=checked[i]+","
 		                 });
 		                 console.log(checkchar);
-		                 console.log($("#attr.custom_id").val+$("#attr.continent").val);
 		        		$.ajax({
 		        			type:"post",
 		        			url:"/credit/front/home/list",

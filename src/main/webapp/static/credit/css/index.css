@@ -50,7 +50,7 @@
 /* 内容 */
 
 .table-content {
-    height: calc(100% - 8.9rem);
+    height: calc(100% - 11rem);
 }
 
 .search-input {
@@ -106,19 +106,14 @@
 .form-check-label {
     margin-left: .5rem;
 }
-<<<<<<< HEAD
 
 .btn-row>.btn {
     margin-left: 5rem!important;
-=======
-.enterFilter {
-    display: block;
-    margin-top: 1rem;
-    text-align: center;
+<<<<<<< HEAD
 }
+
 #btnCollapse {
     height:3rem;
     overflow: hidden;
     transition: all .2s;
->>>>>>> branch 'deploy' of https://github.com/zuoqingbei/lianxin.git
 }

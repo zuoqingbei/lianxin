@@ -1,8 +1,9 @@
 :root {
     --fontColor:#808080;
     --activeColor:#1890ff;
-    --inputWidthMD:21rem;/*中等input宽*/
-    --inputWidthsm:13.5rem;/*中等input宽*/
+    --inputWidthMD:21rem;/*中等input宽 336px*/
+    --inputWidthsm:13.5rem;/*input宽  216px*/
+    --inputWidthlg:27.25rem;/*436px*/
 }
 /*重置样式*/
 html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img {
@@ -60,6 +61,10 @@ html,body {
 
 
 /*==============bootstraps重置样式==============*/
+.btn-disabled {
+    background: #ccc;
+    color: #fff;
+}
 .row {
     width: 100%;
     margin: 0;
@@ -79,8 +84,7 @@ label {
 }
 .btn {
     border:none;
-    padding: 0 1.375rem;
-    height: 2.2rem;
+    padding: .375rem 1.75rem;
     border-radius: 5px!important;
 }
 .btn-default {
@@ -206,6 +210,8 @@ label.col-md-4{
  }
  .bootstrap-table .table > thead > tr > th {
      border-bottom: 0;
+     border-top: 0;
+     background: #fafafa;
  }
 .fixed-table-body-columns {
     top:41px!important;
@@ -250,9 +256,7 @@ label.col-md-4{
 .modal-footer {
     padding: 2rem;
 }
-.hover{
-    /* background-color: red !important */
-}
+
 /**表格排序*/
 .fixed-table-container thead th .both {
     background:url('../imgs/order/both.png') 78% 50% no-repeat;
