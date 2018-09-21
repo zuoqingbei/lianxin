@@ -16,7 +16,7 @@ import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
 
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
-
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.credit.common.controller.ReportTimeController;
 import com.hailian.modules.credit.common.model.ReportTimeModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
@@ -26,6 +26,7 @@ import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -251,7 +252,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select t.*,u.name as customName,c.name as countryName,s.username as createName,");
 		sql.append("s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,");
-		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price, c2.name as companyName,c2.name_en as englishName  from credit_order_info t ");
+		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price, c2.name as companyName,c2.name_en as englishName,c3.use_time as usetime  from credit_order_info t ");
 		sql.append("left join credit_custom_info u on u.id=t.custom_id ");
 		sql.append("left join credit_country c on c.id=t.country  ");
 		sql.append("left join credit_report_price c1 on c1.id=t.price_id ");
@@ -262,6 +263,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		sql.append("left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
 		sql.append("left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append("left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append("left join credit_report_usetime c3 on c3.id= t.user_time_id ");
 		sql.append("where 1 = 1 and t.del_flag='0' and t.id=?");
 		return dao.findFirst(sql.toString(), id);
 	}
@@ -311,7 +313,20 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		return list;
 
 	}
-	
+	/**
+	 * 前台页面数据展示
+	 * @time   2018年9月19日 下午4:23:02
+	 * @author yangdong
+	 * @todo   TODO
+	 * @param  @param pageinator
+	 * @param  @param model
+	 * @param  @param status
+	 * @param  @param user
+	 * @param  @param sortname
+	 * @param  @param sortorder
+	 * @param  @return
+	 * @return_type   Page<CreditOrderInfo>
+	 */
 	public Page<CreditOrderInfo> getOrders(Paginator pageinator, CreditOrderInfo model,  String status,
 			SysUser user,String sortname,String sortorder) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -381,9 +396,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		}
 		if (StringUtils.isNotBlank(sortname)) {
 			sql.append(" order by t." ).append(sortname).append("  "+sortorder);
-		} else {
-			sql.append(" order by ").append(model.get("id")).append(" esc");
-		}
+		} 
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
 						pageinator,
@@ -400,7 +413,17 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		sql.append("select * from credit_order_info t  where t.num=?");// TODO Auto-generated method stub
 		return CreditOrderInfo.dao.findFirst(sql.toString(),num);
 	}
-
+	/**
+	 * 
+	 * @time   2018年9月19日 下午4:22:21
+	 * @author yangdong
+	 * @todo   TODO 前台页面数据展示
+	 * @param  @param status
+	 * @param  @param model
+	 * @param  @param user
+	 * @param  @return
+	 * @return_type   List<CreditOrderInfo>
+	 */
 	public List<CreditOrderInfo> getOrders( String status,CreditOrderInfo model, SysUser user) {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sql = new StringBuffer();
@@ -574,6 +597,18 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		}
 		String selectSqlStr = selectSql.toString();
 		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr ,fromSql.toString(), params.toArray());
+	}
+	/**
+	 * 
+	 * @time   2018年9月19日 下午4:21:33
+	 * @author yangdong
+	 * @todo   TODO 获取最大id
+	 * @param  @return
+	 * @return_type   CreditOrderInfo
+	 */
+	public CreditOrderInfo getMaxId() {
+		
+		return CreditOrderInfo.dao.findFirst("SELECT MAX(id) as id FROM credit_order_info");
 	}
 	
 	

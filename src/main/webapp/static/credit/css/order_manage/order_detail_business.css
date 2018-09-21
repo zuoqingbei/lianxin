@@ -1,0 +1,48 @@
+.company_info>span{
+    color:var(--activeColor) !important;
+    font-size: 2rem;
+}
+.credit_info{
+    padding: 0 2rem;
+}
+.credit_info>p{
+    line-height: 2rem;
+    color: var(--fontColor);
+}
+.credit_info p:first-of-type{
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+.order-detail .credit_info>p>span{
+    padding: 0 1rem 0 0;
+    width: 10rem;
+    display: inline-block;
+    text-align: left;
+    font-weight: 400;
+    color: var(--fontColor);
+}
+.shareholder_title{
+    border-bottom: 0;
+}
+.table_summary_content>.form-check>label{
+    width: 8rem;
+    display: inline-block;
+    text-align: left;
+    font-weight: 400;
+    color: var(--fontColor);
+}
+/*单选框样式重置 start*/
+.form-check{
+    display: inline-block;
+    width: 8rem;
+}
+.form-check-inline .form-check-input{
+    vertical-align: mathematical;
+}
+/*单选框样式重置 end*/
+.table_summary>p{
+    font-size: 1.125rem;
+    color: var(--fontColor);
+    line-height: 2rem;
+}

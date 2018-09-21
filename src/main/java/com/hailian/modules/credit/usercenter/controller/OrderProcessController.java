@@ -58,7 +58,6 @@ public class OrderProcessController extends BaseProjectController{
 		WEB_PARAM_NAMES.put(orderVerifyOfReport, orderVerifyOfReportParamNames);
 		WEB_PARAM_NAMES.put(orderVerifyOfOrder, orderVerifyOfOrderParamNames);
 	}
-	
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
 		int pageNumber = getParaToInt("pageNumber",1);
@@ -103,19 +102,17 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	
 	//修改或者删除功能公共雏形
-	private void PublicUpdateMod(List<String> paramList){
+	private void PublicUpdateMod(Map<String,Object> map){
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
-		for (String param : paramList) {
-			model.set(param,model.get(param));
-		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by",userid);
 		model.set("update_date", now);
+		for (String key : map.keySet()) {
+			model.set(key, map.get(key));
+		}
 		model.update();
-		renderMessage("修改成功");
 	}
-	
 	/**
 	 * @todo   展示订单分配页
 	 * @time   2018年9月14日 下午 14:38
@@ -125,13 +122,23 @@ public class OrderProcessController extends BaseProjectController{
 	public void showReallocation(){
 		render(PATH+"order_allocation.html");
 	}
-	
+	/**
+	 * @todo   展示订单管理下的订单核实页
+	 * @time   2018年9月120日 下午 13:30
+	 * @author lzg
+	 * @return_type   void
+	 */
+	public void showOrderVerifyOfOrders(){
+		render(PATH+"order_verify.html");
+	}
 	/**
 	 *获取订单数据
 	 */
 	public void reallocationJson() {
+		//获取查询类型
+		String searchType = (String) getRequest().getParameter("searchType");
 		//分页查询
-		Page<CreditOrderInfo> pager = PublicListMod(orderAllocation);
+		Page<CreditOrderInfo> pager = PublicListMod(searchType);
 		List<CreditOrderInfo> rows = pager.getList();
 		TemplateSysUserService templete = new TemplateSysUserService();
 		for (CreditOrderInfo creditOrderInfo : rows) {
@@ -144,37 +151,23 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	
 	/**
-	 * @todo   重新分配
-	 * @time   2018年9月14日 下午4:30:00
+	 * @todo   订单状态保存
+	 * @time   2018年9月20日 下午4:30:00
 	 * @author lzg
 	 * @return_type   void
 	 */
-	public void reallocationSave() {
-		CreditOrderInfo model = getModel(CreditOrderInfo.class);
-		Integer userid = getSessionUser().getUserid();
-		String now = getNow();
-		model.set("update_by",userid);
-		model.set("update_date", now);
-		//status='292'值状态为客户确认状态 ,其维护在字典表中
-		model.set("status", 292);
-		model.update();
+	public void statusSave() {
+		String code = (String) getRequest().getParameter("statusCode");
+		Map<String,Object> map = new HashMap<>();
+		map.put("status", code);
+		PublicUpdateMod(map);
 		reallocationJson();
 	}
-	
-	
 	/**
-	 * @todo   订单管理目录下的订单核实
-	 * @time   2018年9月14日 下午15:30:00
+	 * @todo   订单管理下的订单核实的保存
+	 * @time   2018年9月21日 上午9:21:00
 	 * @author lzg
 	 * @return_type   void
 	 */
-	public void VerifyOfOrderMannege() {
-		//分页查询
-		Page<CreditOrderInfo> pager = PublicListMod(orderVerifyOfOrder);
-		setAttr("page", pager);
-		keepPara();
-		render(PATH+"order_allocation.html");
-	}
-	
 	
 }
