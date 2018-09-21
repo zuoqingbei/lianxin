@@ -1,5 +1,6 @@
-:root {
+﻿:root {
     --fontColor:#808080;
+    --titleColor:#333333;
     --activeColor:#1890ff;
     --inputWidthMD:21rem;/*中等input宽*/
     --inputWidthsm:13.5rem;/*中等input宽*/
@@ -104,10 +105,11 @@ header {
     margin-top: -.5rem;
 }
 .nav-row {
+    height: 101%;
     padding: 0;
     top: -.5rem;
     left: -1px;
-    box-shadow: 2px 5px 10px 0px #666;
+    box-shadow: 2px 5px 10px 0 #666;
     z-index: 999;
 }
 
@@ -167,12 +169,10 @@ header {
 .main-title {
     font-size: 1.625rem;
     font-weight: 600;
-    padding: .75rem 0;
+    padding:0.75rem 0 1rem 0;
 }
-
-
 .table-content{
-	height: calc(100% - 9.45rem);
+	height: calc(100% - 7.8rem);
 }
 .search-input {
     width: var(--inputWidthsm)!important;
@@ -231,12 +231,70 @@ label {
     text-decoration: underline;
 }
 
+
+/*附件*/
+
+.file-upload {
+    border-top: solid 1px #ddd;
+    padding-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+.uploadFile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 11.25rem;
+    height: 8.125rem;
+    border:dashed 1px #ebecf0;
+    border-radius: 6px;
+}
+.upload-over {
+    background: #fafafa;
+    border-style: solid;
+}
+.uploadFile  input {
+    cursor: pointer;
+}
+.uploadFile .close {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    z-index: 10;
+    color: #999;
+}
+.uploadFile img{
+    width: 2rem;
+}
+.uploadFile p {
+    color: var(--fontColor);
+}
+#upload_file {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.filename {
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0 2rem;
+}
+.file-upload .form-control {
+    border-radius: 6px!important;
+}
+
+
 /*内容小标题*/
 .l-title {
     font-size: 1.25rem;
     color: #191919;
     font-weight: 600;
-    padding: 1.875rem 0;
-    padding-left: 1.875rem;
-    border-bottom:solid 2px #e6e9ee;
+    padding: 1rem 0 1rem 1.875rem;
+    border-bottom:solid 1px #e6e9ee;
 }

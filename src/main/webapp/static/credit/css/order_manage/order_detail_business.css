@@ -1,0 +1,27 @@
+.company_info>span{
+    color:var(--activeColor) !important;
+    font-size: 2rem;
+}
+.credit_info{
+    padding: 0 2rem;
+}
+.credit_info>p{
+    line-height: 2rem;
+    color: var(--fontColor);
+}
+.credit_info p:first-of-type{
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+.order-detail .credit_info>p>span{
+    padding: 0 1rem 0 0;
+    width: 10rem;
+    display: inline-block;
+    text-align: left;
+    font-weight: 400;
+    color: var(--fontColor);
+}
+.shareholder_title{
+    border-bottom: 0;
+}

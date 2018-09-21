@@ -31,8 +31,8 @@ let Allocation = {
             //console.log(reporter,remarks);
             $.ajax({
        			type:"post",
-       			url:"/credit/front/orderProcess/reallocationSave",
-       			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id,
+       			url:"/credit/front/orderProcess/statusSave",
+       			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id+"&statusCode=292"+"&searchType=-1",
        			dataType:"json",
        			success:function(data){
        			//提交成功关闭模态窗
@@ -42,7 +42,7 @@ let Allocation = {
        			 $.ajax({
        				type:"post",
            			url:"/credit/front/orderProcess/reallocationJson",
-           			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder,
+           			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
            			dataType:"json",
            			success:function(obj){
            				console.log("回显的数据:"+obj);
@@ -105,7 +105,7 @@ let Allocation = {
           $.ajax({
        			type:"post",
        			url:"/credit/front/orderProcess/reallocationJson",
-       			data:"model.report_user="+reporter,
+       			data:"model.report_user="+reporter+"&searchType=-1",
        			dataType:"json",
        			success:function(data){
        				console.log(data);
@@ -250,6 +250,7 @@ let Allocation = {
             	  pageSize: params.pageSize,//找多少条  
             	  sortName: params.sortName, 
             	  sortOrder: params.sortOrder,
+            	  searchType: "-1"
               };  
           },  
           });
