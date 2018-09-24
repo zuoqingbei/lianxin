@@ -25,3 +25,24 @@
 .shareholder_title{
     border-bottom: 0;
 }
+.table_summary_content>.form-check>label{
+    width: 8rem;
+    display: inline-block;
+    text-align: left;
+    font-weight: 400;
+    color: var(--fontColor);
+}
+/*单选框样式重置 start*/
+.form-check{
+    display: inline-block;
+    width: 8rem;
+}
+.form-check-inline .form-check-input{
+    vertical-align: mathematical;
+}
+/*单选框样式重置 end*/
+.table_summary>p{
+    font-size: 1.125rem;
+    color: var(--fontColor);
+    line-height: 2rem;
+}

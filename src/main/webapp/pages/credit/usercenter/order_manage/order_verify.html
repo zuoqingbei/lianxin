@@ -162,7 +162,7 @@
 	                    <div class="modal-header">
 		                    <h5 class="modal-title" id="exampleModalLongTitle">
 		                        <span>订单号：</span>
-		                        <span>0001288784932</span>
+		                        <span id="num">0001288784932</span>
 		                    </h5>
 		                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		                        <span aria-hidden="true">&times;</span>
@@ -225,7 +225,6 @@
 	                                    <span>公司中文名称：</span>
 	                                    <span id="companyZHNames">北京小米科技有限公司</span>
 	                                </div>
-	                                <input type="hidden" name="orderId" id="orderId">
 	                            	</div>
 	                       		 </div>
 	                        <div class="row mt-2 mb-2">
@@ -234,46 +233,48 @@
 	                                <span id="confirm_reason">对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
 	                            </div>
 	                        </div>
-
+						<form class="tableValue" action="/credit/front/orderProcess/verifyOfOrderMangerSave" class="form-inline " enctype="multipart/form-data" method="post">
 	                        <div class="file-upload">
 	                            <div class="row mt-3 mb-2 pl-4">
 	                                <div class="input-group col-md-4 align-items-center">
 	                                    <label class="control-label">名称：</label>
-	                                    <input type="text" class="form-control">
+	                                    <input name="model.verify_name" id="verify_name" type="text" class="form-control">
 	                                </div>
 	                                <div class="input-group col-md-4 align-items-center">
 	                                    <label class="control-label">联系人：</label>
-	                                    <input type="text" class="form-control">
+	                                    <input name="model.contacts"  id="contacts" type="text" class="form-control">
 	                                </div>
 	                                <div class="input-group col-md-4 align-items-center">
 	                                    <label class="control-label">联系方式：</label>
-	                                    <input type="text" class="form-control">
+	                                    <input  name="model.telphone" id="telphone" type="text" class="form-control">
 	                                </div>
 	                            </div>
 	                            <div class="row mt-4 mb-4 pl-4">
 	                                <div class="input-group col-md-6 align-items-center">
 	                                    <label class="control-label">地址：</label>
-	                                    <textarea type="text" class="form-control" style="height:5rem"></textarea>
+	                                    <textarea name="model.address" id="address" type="text" class="form-control" style="height:5rem"></textarea>
 	                                </div>
 	                                <div class="input-group col-md-6 align-items-center">
 	                                    <label class="control-label">备注：</label>
-	                                    <textarea type="text" class="form-control" style="height:5rem"></textarea>
+	                                    <textarea name="model.remarks" id="remarks" type="text" class="form-control" style="height:5rem"></textarea>
 	                                </div>
 	                            </div>
 	                            <label class="mt-3 ml-3">上传附件：</label>
 	                            <div class="uploadFile mt-3 mr-4 mb-5">
-	                                <input type="file" name="" id="upload_file" value="" class="file-input" />
+	                                <input type="file" name="Files_1" id="upload_file" value="" class="file-input" />
 	                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
 	                                <p class="mt-2">上传附件</p>
 	                            </div>
-	                           
-	                            
 	                        </div>
+	                        <input  name="model.id" id="orderId" type="hidden" value="">
+	                        <input  name="searchType"  type="hidden" value="-3">
+						
 	                    </div>
 	                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="modal_submit">提交</button>
+                        <button type="submit" class="btn btn-primary" id="modal_submit">提交</button>
                         <button type="button" class="btn btn-default" id="modal_save">保存</button>
                         <button type="button" class="btn btn-default" id="modal_cancel">取消订单</button>
+                        </form>
                     </div>
                 	</div>
                 </div>

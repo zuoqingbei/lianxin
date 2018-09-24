@@ -1,9 +1,21 @@
 
 
 #orderForm select{
-	color:#808080;
+	color:#ccc;
 }
-
+.create-order {
+    height: 6.25rem;
+	box-shadow: 0px 1px 3px 1px #ccc;
+    background: #fff;
+    margin-bottom: 0.4rem;
+}
+.user-info {
+    padding-left: 2.625rem;
+}
+.regards {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
 .table-content{
 	height: calc(100% - 6.65rem);
 }
@@ -69,7 +81,14 @@
 #btn_download i{
 	margin-right:5px;
 }
-
+/*面包屑*/
+.breadcrumb{
+	padding:0;
+	background: none;
+}
+.breadcrumb-item a{
+	color:#999!important;
+}
 /*提示信息*/
 .errorInfo{
 	color:#F75760;
@@ -106,4 +125,23 @@
 .fa-paperclip {
 	transform: rotateX(180deg);
 	color: #808080;
+}
+
+.table-modal-content {
+	height: 28rem;
+}
+
+.err-box {
+	display: none;
+	height: 8rem;
+	width: -webkit-fill-available;
+    background: #fff1f0;
+	border: solid 1px #ffa39e;
+	border-radius: 4px;
+	margin: 0 2rem;
+	padding: .5rem;
+	overflow-y: auto;
+}
+.err-box span {
+	color: #f5222d;
 }

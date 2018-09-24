@@ -69,7 +69,6 @@
     padding: 1rem 0 1rem 1rem;
 }
 .table_summary_content{
-    border: 1px solid #e6e6e6;
     padding: 1rem;
     color: var(--fontColor);
 }
@@ -187,4 +186,24 @@
 }
 .bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td{
     padding-left: 1.5rem;
+}
+/*圆环图样式*/
+.chartBox{
+    width: 100%;
+    height: 15rem;
+}
+/*给内容加边框 没有上边框*/
+.box_border{
+    border: 1px solid #e6e6e6;
+    border-top: 0;
+    font-weight: 400;
+}
+.box_border_all{
+    border: 1px solid #e6e6e6;
+    font-weight: 400;
+}
+/*备注信息*/
+.info_remark{
+    line-height: 2rem;
+    font-weight: 400;
 }
