@@ -215,11 +215,10 @@
 				</div>
 				<div class="modal-body">
 					<div class="table-modal-content">
-						<table id="tableOrder"
-							data-toggle="table"
+						<table id="tableOrder" data-toggle="table" style="position: relative">
 							
-							style="position: relative"
-						></table>
+							
+						</table>
 
 					</div>
 					<div class="err-box">
@@ -387,4 +386,23 @@
          });
    	 	} */
    </script>
+<script type="text/javascript">
+function piliangDingDan(){
+	 var html="";
+   	 $.ajax({
+	        url:"/credit/orderpoimanager/importExcel?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4+"&receivedate="+value5,
+	        type:"get",
+	        dataType:"json",
+	        success: function(data) {
+	        	console.log(data)
+	        	  if(data!=null){
+	        		  $("input[name='attr.user_time']").val(data.usetime.use_time)
+	        		  $("input[name='attr.user_time_id']").val(data.usetime.id)
+					  $("input[name='attr.end_date']").val(data.enddate)
+	        }
+	        },
+	    });
+	 	}
+
+</script>
 </html>
