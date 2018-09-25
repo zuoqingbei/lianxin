@@ -12,11 +12,29 @@ let
 			$("#btn_import").click(function(){
 				$("#more_upload").trigger("click");
 				$("#more_upload").on("change",()=>{
-					// console.log($("#more_upload")[0].files)
+					var formData = new FormData();
+					formData.append("pic",$("#more_upload")[0].files);
+					console.log(formData)
+					$.ajax({
+						type: "POST", // 数据提交类型
+						url: "upfile.php", // 发送地址
+						data: formData, //发送数据
+						async: true, // 是否异步
+						processData: false, //processData 默认为false，当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
+						contentType: false, //
+						success:(data)=>{
+							/**成功 */
+							$("#show_modal").trigger("click")
+							Page.initTable()
+							Events.modalInfoIsError();
+						},
+						error:()=>{
+							Public.message("info")
+						}
+					});
+					
 
-					$("#show_modal").trigger("click")
-					Page.initTable()
-					Events.modalInfoIsError();
+
 				})
 			})
 		},

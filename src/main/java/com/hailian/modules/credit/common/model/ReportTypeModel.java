@@ -3,6 +3,8 @@ package com.hailian.modules.credit.common.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
@@ -106,5 +108,14 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 	 */
 	public List<ReportTypeModel> getReportType() {
 		return dao.find("select t.* from credit_report_type t where t.del_flag='0' order by order_no ");
+	}
+	public static List<ReportTypeModel> getReportTypeByName(String name) {
+		String sql="select t.* from credit_report_type t where t.del_flag='0' ";
+		List<Object> params=new ArrayList<Object>();
+		if(StringUtils.isNotBlank(null)){
+			sql+=" and t.name=?";
+			params.add(name);
+		}
+		return dao.find(sql);
 	}
 }

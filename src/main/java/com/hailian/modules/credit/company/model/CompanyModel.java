@@ -54,7 +54,24 @@ public class CompanyModel extends BaseProjectModel<CompanyModel> {
 		return find;
 
 	}
+	/**
+	 * 根据公司名称查询公司
+	* @author doushuihai  
+	* @date 2018年9月21日下午3:21:30  
+	* @TODO
+	 */
+	public static List<CompanyModel> getCompanyByName(String name) {
+		StringBuffer sql = new StringBuffer("select * from credit_company_info where del_flag=0");
+		List<Object> params = new ArrayList<Object>();
+		if (StringUtils.isNotBlank(name)) {
+			sql.append(" and name=?");
+			params.add(name);
+		}
+		sql.append(" order by name desc");
+		List<CompanyModel> find = CompanyModel.dao.find(sql.toString(), params.toArray());
+		return find;
 
+	}
 	/**
 	 * 
 	 * @time   2018年9月10日 下午2:31:35
