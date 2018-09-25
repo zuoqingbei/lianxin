@@ -9,10 +9,31 @@ let
 		},
 		btn_download:function(){
 			/**点击批量上传 */
-			
+			/**点击批量上传 */
 			$("#btn_import").click(function(){
-				Page.initTable()
-				Events.modalInfoIsError();
+				$("#more_upload").trigger("click");
+				$("#more_upload").on("change",()=>{
+					var formData = new FormData();
+					formData.append("pic",$("#more_upload")[0].files);
+					console.log(formData)
+					$.ajax({
+						type: "POST", // 数据提交类型
+						url: "/credit/orderpoimanager/importExcel", // 发送地址
+						data: formData, //发送数据
+						async: true, // 是否异步
+						processData: false, //processData 默认为false，当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
+						contentType: false, //
+						success:(data)=>{
+							/**成功 */
+							$("#show_modal").trigger("click")
+							Page.initTable()
+							Events.modalInfoIsError();
+						},
+						error:()=>{
+							$("#failed").trigger("click")
+						}
+					});
+				})
 			})
 			
 		},

@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -52,6 +54,7 @@ public class OrderPoiController extends BaseProjectController {
 		String errormark="";
 		int errornum=0;
 		UploadFile upLoadFile = getFile("xxxx");
+		List<Object> list=new ArrayList<Object>();
 		List<CreditOrderInfo> orderList = new ArrayList<CreditOrderInfo>();
 		File file = upLoadFile.getFile();
 		FileInputStream fileIn = new FileInputStream(file);
@@ -107,7 +110,6 @@ public class OrderPoiController extends BaseProjectController {
 							List<SysDictDetail> continentList = SysDictDetail.dao.getDictDetailByContinent(continent);
 							
 							if(CollectionUtils.isEmpty(continentList)){
-								countryId = continentList.get(0).get("detail_id");
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第3列信息填写错误;";
 							}
@@ -170,7 +172,7 @@ public class OrderPoiController extends BaseProjectController {
 							List<CompanyModel> companyByName = CompanyModel.dao.getCompanyByName(name);
 							if(CollectionUtils.isEmpty(companyByName)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第7列信息填写错误";
+								errormark+=errornum+".第"+r+"行，第7列信息填写错误;";
 							}
 							order.set("company_by_report", name);
 						} else {
@@ -197,7 +199,12 @@ public class OrderPoiController extends BaseProjectController {
 				  }
 			  }
 		}
-		renderJson("orderList",orderList);
+		
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("errormark", errormark);
+		map.put("orderList", orderList);
+		System.out.println(orderList);
+		renderJson(map);
 	}
 	/**
 	 * 

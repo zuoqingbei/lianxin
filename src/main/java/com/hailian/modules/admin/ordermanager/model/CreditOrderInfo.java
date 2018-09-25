@@ -610,7 +610,15 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		
 		return CreditOrderInfo.dao.findFirst("SELECT MAX(id) as id FROM credit_order_info");
 	}
-	
+	/**
+	 * 获取做单量占比
+	* @author doushuihai  
+	* @date 2018年9月25日下午1:28:51  
+	* @TODO
+	 */
+	public void zuoDanZhanBi(){
+		String sql="";
+	}
 	
 
 }
