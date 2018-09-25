@@ -8,12 +8,18 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/animate/animate.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/layui/css/layui.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
+    
 </head>
 <body>
-         
+  <div class="container-fluid">
+     <header>     
         <div class="row head-row d-flex justify-content-between">
             <!-- logo -->
             <div class="head-logo-box d-flex justify-content-center align-items-center col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -31,8 +37,10 @@
                 </div>
             </div>
         </div>         
-       
-      
+       </header> 
+      <div id="container" class="row">
+            <!-- 左侧菜单 -->
+         <div class="nav-row col-md-2">
             <div class="nav-box">
              
                 <!-- 菜单 -->
@@ -40,20 +48,80 @@
                     <ul>
                      <% for(item in menu[0]) { %>
                      	<% if(menu[item.id].~size > 0) { %>
-			
+							<% if(item.name=="订单管理") { %>
 					<li id="${item.urlkey}" role="presentation" class="hasChild">
 				    <a class="menu1"  href="#" role="button" >
 				    	<i class="fa fa-wpforms fa-fw"></i>
 				     	<span > ${item.name}</span>
 				    </a>
 				    <ul style="display: none;" role="menu">
+				    		
 				<%  for(item2 in menu[item.id]) { %>
 					<li id="${item2.urlkey}"><a class="menu2" role="menuitem"  href="${item2.url}">${item2.name}</a></li>
 				<% } %>
 					</ul>
 		  		</li>
+		  		<%} if(item.name=="报告管理"){%>
+		  		<li id="${item.urlkey}" role="presentation" class="hasChild">
+				    <a class="menu1"  href="#" role="button" >
+				    	<i class="fa fa-leaf fa-fw"></i>
+				     	<span > ${item.name}</span>
+				    </a>
+				    <ul style="display: none;" role="menu">
+				    		
+				<%  for(item2 in menu[item.id]) { %>
+					<li id="${item2.urlkey}"><a class="menu2" role="menuitem"  href="${item2.url}">${item2.name}</a></li>
+				<% } %>
+					</ul>
+		  		</li>
+		  		<%}if(item.name=="统计信息"){%>
+		  		<li id="${item.urlkey}" role="presentation" class="hasChild">
+				    <a class="menu1"  href="#" role="button" >
+				    	<i class="fa fa-pie-chart fa-fw"></i>
+				     	<span > ${item.name}</span>
+				    </a>
+				    <ul style="display: none;" role="menu">
+				    		
+				<%  for(item2 in menu[item.id]) { %>
+					<li id="${item2.urlkey}"><a class="menu2" role="menuitem"  href="${item2.url}">${item2.name}</a></li>
+				<% } %>
+				</ul>
+		  		</li>
+		  		<% }if(item.name=="消息管理"){%>
+		  		<li id="${item.urlkey}" role="presentation" class="hasChild">
+				    <a class="menu1"  href="#" role="button" >
+				    	 <i class="fa fa-bell fa-fw"></i>
+				     	<span > ${item.name}</span>
+				    </a>
+				    <ul style="display: none;" role="menu">
+				    		
+				<%  for(item2 in menu[item.id]) { %>
+					<li id="${item2.urlkey}"><a class="menu2" role="menuitem"  href="${item2.url}">${item2.name}</a></li>
+				<% }%>
+				</ul>
+		  		</li>
+		  		<%} if(item.name=="设置"){%>
+		  		<li id="${item.urlkey}" role="presentation" class="hasChild">
+				    <a class="menu1"  href="#" role="button" >
+				    	 <i class="fa fa-cog fa-fw"></i>
+				     	<span > ${item.name}</span>
+				    </a>
+				    <ul style="display: none;" role="menu">
+				    		
+				<%  for(item2 in menu[item.id]) { %>
+					<li id="${item2.urlkey}"><a class="menu2" role="menuitem"  href="${item2.url}">${item2.name}</a></li>
+				<% }%>
+					</ul>
+		  		</li>
+		  		<%}%>
+		  		
 			<% } else { %>
-				<li id="${item.urlkey}"><a class="menu1" href="${item.url}">${item.name}</a></li>
+				<% if(item.name=="工作台"){%>
+					<li class="active" id="${item.urlkey}"><a class="menu1" href="${item.url}"><i class="fa fa-home fa-fw"></i>${item.name}</a></li>
+				<%}%>
+				<% if(item.name=="全部订单"){%>
+					<li id="${item.urlkey}"><a class="menu1" href="${item.url}"> <img src="../imgs/index/icons8-allm.png" alt="" class="menu-icon">${item.name}</a></li>
+				<%}%>
 			<% } %>
 		<% } %>
 <!--                         <li class="active">
@@ -127,13 +195,21 @@
                     </ul>
                 </div>
             </div>
+       </div>
+        <div class="col-md-10" id="main_content"></div>
+   </div> 
+</div>        
        
-        
-       
-
-    <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+	<script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/laydate/laydate.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
     <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script> 
     <script src="${BASE_PATH }static/credit/js/common.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-fixed-columns.js"></script>
+   <script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
     
 </body>
 </html>

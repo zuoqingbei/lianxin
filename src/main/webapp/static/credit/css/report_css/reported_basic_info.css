@@ -102,3 +102,9 @@ label {
 .btn-block:hover {
     color: var(--activeColor);
 }
+
+
+.attachment {
+    overflow: hidden;
+    margin-bottom: 6rem;
+}

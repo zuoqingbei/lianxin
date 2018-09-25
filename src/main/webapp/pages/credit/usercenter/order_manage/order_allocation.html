@@ -6,26 +6,13 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/animate/animate.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_allocation.css">
 </head>
-<body>
-    <div class="container-fluid">
-        <!-- 头部 -->
-        <header> </header>
-        <!-- 中间部分 -->
-        <div id="container" class="row">
-            <!-- 左侧菜单 -->
-            <div class="nav-row col-md-2"></div>
+  
+        <div id="container" class="row  animated fadeIn">
+          
             <!-- 内容 -->
-            <div class="main col-md-10">
+            <div class="main">
                <!--标题-->
 		    	<div class="main-header">
                     <ul class="breadcrumb">
@@ -243,7 +230,6 @@
                                 <label class="control-label col-md-1">报告员：</label>
                                 <select name="reportUser" id="reporter_select" class="form-control  col-md-3">
                                     <option value="-1">--请选择--</option>
-                                    ${reportUser!}
                                 </select>
                             </div>
                             <div class="input-group mt-3">
@@ -262,13 +248,7 @@
             <footer></footer>
         </div>
     </div>
-    <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-fixed-columns.js"></script>
-    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script> 
-    <script src="${BASE_PATH }static/credit/js/common.js"></script>
+          
     <script src="${BASE_PATH }static/credit/js/order_manage/order_allocation.js"></script>
-</body>
+
 </html>

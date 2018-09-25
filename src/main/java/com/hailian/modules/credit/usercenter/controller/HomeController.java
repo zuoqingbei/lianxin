@@ -17,16 +17,20 @@ import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
+import com.hailian.modules.credit.usercenter.service.HomeService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.cache.Cache;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.hailian.util.getOrderNum;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
@@ -49,7 +53,6 @@ public class HomeController extends BaseProjectController {
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
-	private String num="1";
 	public void index() {
 		render(path + "index.html");
 		
@@ -69,11 +72,19 @@ public class HomeController extends BaseProjectController {
 		CreditOrderInfo order=OrderManagerService.service.editOrder(id,this);
 		//根据订单信息获取公司信息
 		CreditCompanyInfo company=OrderManagerService.service.getCompany(order.getInt("company_id"));
+		//根据订单id获取历史记录信息
+		List<CreditOrderHistory> histroy=HomeService.service.getHistroy(String.valueOf(id));
+		//获取客户信息
+		CreditCustomInfo custom=OrderManagerService.service.getCreater(order.getStr("custom_id"));
+		//获取地区
+		SysDictDetail continent=HomeService.service.getContinent(order.getStr("continent"));
 		//绑定订单信息和公司信息
 		setAttr("order",order);
 		setAttr("company",company);
+		setAttr("histroy",histroy);
+		setAttr("custom",custom);
 		//转发页面
-		renderJson(company);
+		render(path+"order_detail.html");
 	}
 	/**
 	 * 
@@ -114,8 +125,8 @@ public class HomeController extends BaseProjectController {
 		}
 		Paginator pageinator=getPaginator();
 		Page<CreditOrderInfo> page=OrderManagerService.service.getOrdersService(pageinator,model,status, user,sortname,sortorder);
-		List<CreditOrderInfo> result=OrderManagerService.service.getOrdersService(status,model, user);
-		int total= result.size();
+//		List<CreditOrderInfo> result=OrderManagerService.service.getOrdersService(status,model, user);
+		int total= page.getTotalRow();
 		List<CreditOrderInfo> rows=page.getList();
 		for(int i=0;i<rows.size();i++) {
 			
@@ -222,9 +233,9 @@ public class HomeController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void saveOrder() throws Exception {
-//		int id=getParaToInt("id");
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		String num=new getOrderNum().getNumber();
 		model.set("num", num);
 		SysUser user = (SysUser) getSessionUser();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
@@ -256,18 +267,21 @@ public class HomeController extends BaseProjectController {
 						}else{
 							num1+=1;
 							message+=uploadFile.getOriginalFileName()+"上传失败!";
+							renderMessage(message);
 							render(path + "index.html");
 							return;
 						}
 					}else{
 						num1+=1;
 						message+=uploadFile.getOriginalFileName()+"上传失败!";
+						renderMessage(message);
 						render(path + "index.html");
 						return;
 					}
 				}
 			}catch(Exception e){
 				e.printStackTrace();
+				renderMessage(message);
 				render(path + "index.html");
 				return;
 			}

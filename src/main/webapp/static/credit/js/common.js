@@ -3,34 +3,12 @@
 
 let Public = {
     init(){
-        this.importMenu();
         this.initReset();
-    }, 
-    importMenu(){
-        /**
-         * 导入菜单组件
-         */
-        let _this = this
-       
-        if(location.pathname.indexOf('order_manage') !== -1){
-            $('header').load("/credit/front/common/menu .head-row",function(){
-                _this.logoutEvent();
-            })
-    
-            $('.nav-row').load("/credit/front/common/menu .nav-box" ,function(){
-                _this.menuEvent()
-            })
-        }else {
-            $('header').load("/credit/front/common/menu .head-row",function(){
-                _this.logoutEvent();
-            })
-    
-            $('.nav-row').load("/credit/front/common/menu .nav-box" ,function(){
-                _this.menuEvent()
-            })
+        this.menuEvent()
 
-        }
-    },
+        $("#main_content").load('/credit/front/home')
+    }, 
+  
     initReset(){
     	/**重置form表单**/
     	const $btnReset = $('#btn_reset');
@@ -66,10 +44,35 @@ let Public = {
             } else {
                 $leftNav.find("li").removeClass("active");
                 $(this).addClass("active")
+
+                let text = $(this).text().trim();
+                switch (text) {
+                    case '工作台':
+                        $("#main_content").load('/credit/front/home')
+                        break;
+                    case '新建订单':
+                        $("#main_content").load('/credit/front/home/createOrder')
+                        break;
+                    case '订单核实':
+                        $("#main_content").load('/credit/front/orderProcess/showOrderVerifyOfOrders')
+                        break;
+                    case '订单查档':
+                        $("#main_content").load('./order_manage/order_filing.html')
+                        break;
+                    case '订单分配':
+                        $("#main_content").load('/credit/front/orderProcess/showReallocation')
+                        break;
+                    case '信息录入':
+                        $("#main_content").load('./report_pages/reported_basic_info.html')
+                        break;
+                
+                    default:
+                        break;
+                }
             }
 
            
-            // return false;
+             return false;
         });
     },
     logoutEvent(){

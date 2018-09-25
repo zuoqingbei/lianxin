@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>联信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/animate/animate.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <header>     
+            <div class="row head-row d-flex justify-content-between">
+                <!-- logo -->
+                <div class="head-logo-box d-flex justify-content-center align-items-center col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                    <a href="#" >
+                        <div class="logo-content"></div>
+                    </a>
+                </div>
+                <div class="header-right-content d-flex justify-content-between align-items-center">
+                    <div class="message d-flex justify-content-center align-items-center">
+                        <i class="fa fa-bell-o"></i>
+                    </div>
+                    <div class="user-content d-flex align-items-center justify-content-start">
+                        <i class="fa fa-user-o"></i>
+                        <span>王羽铭</span>
+                    </div>
+                    <div class="logout animated fadeInDown">
+                        <div class="popover-arrow"></div>
+                        <i class="fa fa-power-off"></i>注销登录
+                    </div>
+                </div>
+            </div>         
+        </header> 
+        <div id="container" class="row">
+            <!-- 左侧菜单 -->
+            <div class="nav-row col-md-2">
+                <div class="nav-box">
+                    <!-- 菜单 -->
+                    <div class="left-nav">
+                        <ul>
+                            <li class="active">
+                                <a class="menu1" href="index.html">
+                                    <i class="fa fa-home fa-fw"></i>
+                                    <span>工作台</span>          
+                                </a>
+                            </li>
+                            <li class="">
+                                <a class="menu1" href="#">
+                                    <img src="../imgs/index/icons8-allm.png" alt="" class="menu-icon">
+                                    <span>全部订单</span>   
+                                </a>
+                            </li>
+                            <li class="hasChild">
+                                <a class="menu1" href="#">
+                                    <i class="fa fa-pencil-square-o fa-fw"></i>
+                                    <span>订单管理</span>  
+                                </a>
+                                <ul style="display: none;">
+                                    <li><a class="menu2" href="javascript:;">新建订单</a></li>
+                                    <li><a class="menu2" href="javascript:;">订单核实</a></li>
+                                    <li><a class="menu2" href="javascript:;">订单查档</a></li>
+                                    <li><a class="menu2" href="javascript:;">订单分配</a></li>
+                                </ul>
+                            </li>
+                            <li class="hasChild">
+                                <a class="menu1" href="#">
+                                    <img src="../imgs/index/icons8-report.png" alt="" class="menu-icon">
+                                    <span>报告管理</span> 
+                                </a>
+                                <ul style="display: none;">
+                                    <li><a class="menu2" href="javascript:;">信息录入</a></li>
+                                    <li><a class="menu2" href="javascript:;">报告质检</a></li>
+                                    <li><a class="menu2" href="javascript:;">订单核实</a></li>
+                                    <li><a class="menu2" href="javascript:;">订单查档</a></li>
+                                    <li><a class="menu2" href="javascript:;">递交报告</a></li>
+                                </ul>
+                            </li>
+                            <li class="hasChild">
+                                <a class="menu1" href="javascript:;">
+                                    <i class="fa fa-pie-chart fa-fw"></i>
+                                    <span>统计信息</span> 
+                                </a>
+                                <ul style="display: none;">
+                                    <li><a class="menu2" href="javascript:;">订单统计</a></li>
+                                    <li><a class="menu2" href="javascript:;">绩效</a></li>
+                                    <li><a class="menu2" href="javascript:;">结算</a></li>
+                                </ul>
+                            </li>
+                            <li class="hasChild">
+                                <a class="menu1" href="javascript:;">
+                                    <i class="fa fa-bell fa-fw"></i>
+                                    <span>消息管理</span> 
+                                </a>
+                                <ul style="display: none;">
+                                    <li><a class="menu2" href="javascript:;">我的消息</a></li>
+                                    <li><a class="menu2" href="javascript:;">操作日志</a></li>
+                                </ul>
+                            </li>
+                            <li class="hasChild">
+                                <a class="menu1" href="javascript:;">
+                                    <i class="fa fa-cog fa-fw"></i>
+                                    <span>设置</span> 
+                                </a>
+                                <ul style="display: none;">
+                                    <li><a class="menu2" href="javascript:;">修改密码</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-10" id="main_content"></div>
+        </div>
+    </div> 
+       
+
+    <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/laydate/laydate.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
+    <script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script> 
+    <script src="${BASE_PATH }static/credit/js/common.js"></script>
+    
+</body>
+</html>

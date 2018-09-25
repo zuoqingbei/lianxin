@@ -128,4 +128,20 @@ public class CountryController extends BaseProjectController {
 		setAttr("model", model);
 		render(path + "view.html");
 	}
+	/**
+	 * 
+	 * @time   2018年9月21日 上午9:24:08
+	 * @author dyc
+	 * @todo   根据id删除单条国家信息
+	 * @return_type   void
+	 */
+	public void delete(){
+		Integer id = getParaToInt();
+		if (CountryService.service.updateDelFlagById(id)) {
+			list();
+		} else {
+			renderText("failure");
+		}
+		
+	} 
 }

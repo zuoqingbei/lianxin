@@ -17,7 +17,9 @@
     font-weight: 600;
 }
 .table-content{
-	height: calc(100% - 6.65rem);
+	height: auto;
+	margin: 1.25rem;
+	background: #fff;
 }
 .table-content label{
 	font-size: 1rem;
@@ -31,7 +33,7 @@
 }
 #orderForm{
 	padding:1rem 8rem 1rem 1rem;
-	background: #fff;
+	/* background: #fff; */
 }
 #orderForm .form-control{
     border-radius: 4px;
@@ -63,6 +65,9 @@
     filter:Alpha(opacity=0);
     -moz-opacity:0; 
     opacity: 0;
+}
+.right-btn {
+	padding-right: 9rem;
 }
 .remark{
 	height:6rem!important;

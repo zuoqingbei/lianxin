@@ -8,7 +8,7 @@
 /* ==================头部=================== */
 #container {
     position: relative;
-    height: calc(100% - 2rem);
+    height: calc(100% - 2.9rem);
 }
 #main_content {
     padding: 0;
@@ -300,4 +300,14 @@ label {
     font-weight: 600;
     padding: 1rem 0 1rem 1.875rem;
     border-bottom:solid 1px #e6e9ee;
+}
+
+/*填报页面固定底部*/
+.fixed-btn-well {
+    height: 5rem;
+    width: 100%;
+    background: #fff;
+    bottom: 0;
+    right: 0;
+    box-shadow: 10px 0 10px 0 #e5e5e5;
 }
