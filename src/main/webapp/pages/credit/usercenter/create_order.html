@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<% var sandbar = tempDict.getSysDictDetailString('sandbar',model.continent); %>
+<% var sandbar = tempDict.getSysDictDetailString('continent',model.continent); %>
 <% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type); %>
 <% var language = tempDict.getSysDictDetailString('language',model.report_language); %>
 <% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
@@ -364,29 +364,6 @@
 					form.render(); //更新全部
 				});
    	 	}
-   	/*  	function companychange(){
-   	 		$("input[name='attr.company_by_report']").val($("select[name='attr.company_id']").find("option:selected").attr(" m-type1"));
-   	 		$("input[name='attr.right_company_name_en']").val($("select[name='attr.company_id']").find("option:selected").attr("m-type2"));
-   	 	} */
-   	 	/* function upload(){
-   	 	 var file_obj = document.getElementById('upload_file').files[0];
-   	 	var fd = new FormData();
-        fd.append('upload_file',file_obj);
-   	 	 $.ajaxFileUpload({
-             url: '/credit/front/home/upload', 
-             type: 'post',
-             processData:false,  //tell jQuery not to process the data
-             contentType: false,  //tell jQuery not to set contentType	
-             dataType: 'json', //返回值类型，一般设置为json、application/json
-             data:fd
-             success: function (data) {
-                     alert(data.MarkFile);
-             },
-             error: function () {
-                 alert("错误：上传组件错误，请检察网络!");
-             }
-         });
-   	 	} */
    </script>
 <script type="text/javascript">
 function piliangDingDan(){

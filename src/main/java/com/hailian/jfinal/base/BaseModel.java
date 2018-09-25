@@ -112,6 +112,7 @@ public class BaseModel<M extends Model<M>> extends Model<M> {
 	 */
 	public List<M> findByWhereAndColumns(String where, String columns, Object... paras) {
 		String sql = " select " + columns + " from " + getTable().getName() + " " + where;
+		System.out.println(sql);
 		return find(sql, paras);
 	}
 
