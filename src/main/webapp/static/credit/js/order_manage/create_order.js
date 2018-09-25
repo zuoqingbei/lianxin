@@ -9,12 +9,16 @@ let
 		},
 		btn_download:function(){
 			/**点击批量上传 */
-			
 			$("#btn_import").click(function(){
-				Page.initTable()
-				Events.modalInfoIsError();
+				$("#more_upload").trigger("click");
+				$("#more_upload").on("change",()=>{
+					// console.log($("#more_upload")[0].files)
+
+					$("#show_modal").trigger("click")
+					Page.initTable()
+					Events.modalInfoIsError();
+				})
 			})
-			
 		},
 		emailAdd: function (obj){
             let tv = $(obj).val();
@@ -68,12 +72,7 @@ let
 			});
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
-				 if(validForm()) {
-               		 $("#orderForm").submit();
-             	}else{
-             		return false;
-             	}
-				 
+					
 			}
 		},
 		formSave: function(){
@@ -112,7 +111,7 @@ let
 			/*表单提交*/
 			$("#btn_submit").click(Events.formSubmit);
 			/*表单保存*/
-			$("#btn_save").click(Events.formSave);
+			$("#btn_submit").click(Events.formSave);
         },
         // 画面初始化
         initialize: function () {
@@ -138,8 +137,8 @@ let
 			Page.initValidator();
 			Events.btn_download();
 			Events.closeProgress();
-        },
-        initTable(){
+		},
+		initTable(){
 			/**初始化表格 */
 			const $tableOrder = $('#tableOrder');
 
@@ -225,6 +224,7 @@ let
 				$tableOrder.bootstrapTable('resetView');
 			  }, 200);
 		  }
+		
 	};
 $(document).ready(function () {
     Page.init();

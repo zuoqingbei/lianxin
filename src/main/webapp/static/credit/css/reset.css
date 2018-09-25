@@ -260,15 +260,15 @@ label.col-md-4{
 /**表格排序*/
 .fixed-table-container thead th .both {
     background:url('../imgs/order/both.png') 78% 50% no-repeat;
-    background-size: 8% 30%;
+    background-size: 7% 30%;
 }
 .fixed-table-container thead th .asc {
     background:url('../imgs/order/asc.png') 78% 50% no-repeat;
-    background-size: 8% 30%;
+    background-size: 7% 30%;
 }
 .fixed-table-container thead th .desc {
     background:url('../imgs/order/desc.png') 78% 50% no-repeat;
-    background-size: 8% 30%;
+    background-size: 7% 30%;
 }
 /**layui重置样式 */
 .layui-unselect.layui-form-select,.layui-form-select {

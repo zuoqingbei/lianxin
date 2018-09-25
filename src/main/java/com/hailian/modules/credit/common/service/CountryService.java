@@ -89,4 +89,16 @@ public class CountryService {
 		return countryModel;
 
 	}
+
+	/**
+	 * 
+	 * @time   2018年9月21日 上午9:20:20
+	 * @author dyc
+	 * @todo   根据id删除单条国家信息
+	 * @return_type   boolean
+	 */
+	public boolean updateDelFlagById(Integer id) {
+
+		return CountryModel.dao.updateDelFlagById(id);
+	}
 }

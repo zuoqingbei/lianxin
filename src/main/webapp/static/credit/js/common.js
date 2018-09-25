@@ -60,7 +60,7 @@ let Public = {
                         $("#main_content").load('./order_manage/order_filing.html')
                         break;
                     case '订单分配':
-                        $("#main_content").load('./order_manage/order_allocation.html')
+                        $("#main_content").load('/credit/front/orderProcess/showReallocation')
                         break;
                     case '信息录入':
                         $("#main_content").load('./report_pages/reported_basic_info.html')

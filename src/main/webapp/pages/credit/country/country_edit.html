@@ -1,4 +1,5 @@
 <% var Continent = tempDict.getSysDictDetailString2('continent',attr.continent !); %>
+<% var usabledName = tempDict.getSysDictDetailString2('usabled',attr.usabled !); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -60,7 +61,6 @@ var bodyContent = {
 	<input type="hidden" name="model.id" value=" ${model.id}" />
 	<!-- 数据列表 -->
 	<table class="table">
-
 		<tr>
 			<td>地区</td>
 			<td>
@@ -83,6 +83,14 @@ var bodyContent = {
 			<td>电话区号</td>
 			<td><input type="text" name="model.tel_pre" class="form-control" 
 				value="${model.tel_pre!}" /></td>
+		</tr>
+		<tr>
+			<td>是否启用</td>
+			<td>
+			  <select name="model.usabled" class="form-control" style="width: 200px;">
+					${usabledName!}
+				</select>
+			</td>
 		</tr>
 </tr>
 	</table>

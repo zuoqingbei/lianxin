@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>联信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-table/css/bootstrap-table-fixed-columns.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/animate/animate.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/menu.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail_business.css">
+</head>
+<body>
+<div class="container-fluid">
+    <!-- 头部 -->
+  <!--  <header></header>-->
+    <!-- 中间部分 -->
+    <div id="container" class="row">
+        <!-- 左侧菜单 -->
+        <!--<div class="nav-row col-md-2"></div>-->
+        <!-- 内容 -->
+        <div class="main">
+            <!--标题-->
+            <div class="main-header detail_tab-bar">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:void(0);">订单管理</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <a>订单查档</a>
+                    </li>
+                </ul>
+                <p class="main-title mb-1 mt-1">订单号：<span>009234672516382136753</span></p>
+                <!-- 导航栏 -->
+                <ul class="tab_bar col-md-10">
+                    <li class="tab-active"><a href="#basic_info" class="tab-a-active">基本信息</a></li>
+                    <li><a href="#process">流程进度</a></li>
+                    <li><a href="#credit_report">信用报告</a></li>
+                    <li><a href="#operate_log">质检意见</a></li>
+                    <li><a href="#accessory">附件</a></li>
+                </ul>
+                <div class="state_box">
+                    <span>状态</span>
+                    <span>进行中</span>
+                </div>
+
+            </div>
+            <!-- 内容展示 -->
+            <div class="table-content">
+                <!-- 基本信息 -->
+                <div class="bg-f company-info">
+                    <a name="basic_info">
+                        <div class="l-title">
+                            基本信息
+                        </div>
+                        <div class="order-detail mb-4 order-content">
+                            <div class="row mt-2 mb-2">
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>客户ID：</span>
+                                        <span>001354574</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>客户用户名：</span>
+                                        <span>王彩军</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>接单日期：</span>
+                                        <span>2018-09-10</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>地区：</span>
+                                        <span>亚洲</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>报告语言：</span>
+                                        <span>中文</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>报告类型：</span>
+                                        <span>基本信用报告</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>订单类型：</span>
+                                        <span>new</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>报告用时：</span>
+                                        <span>5天</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>订单公司名称：</span>
+                                        <span>北京小米科技有限公司</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>国家：</span>
+                                        <span>中国</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>电话：</span>
+                                        <span>18888888888</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>公司中文名称：</span>
+                                        <span>北京小米科技有限公司</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>报告速度：</span>
+                                        <span>普通</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>E-mail：</span>
+                                        <span>88888888888@qq.com</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>客户参考号：</span>
+                                        <span>0076454727545</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>地址：</span>
+                                        <span>中国山东省青岛市崂山区海尔路</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>联系人：</span>
+                                        <span>王彩军</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>传真：</span>
+                                        <span>0532-888 888 88</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>录入报告时间：</span>
+                                        <span>2018-09-10</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>提交报告时间：</span>
+                                        <span>2018-09-10</span>
+                                    </div>
+
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-12">
+                                        <span>备注：</span>
+                                        <span class="info_remark">联信集团全称青岛联信商务咨询有限公司，成立于1997年，致力于专业化的信用资料及信用管理服务，是国内首家通过ISO9001认证的专业信用风险管理服务公司。除青岛总部外，联信集团在全国另设42家分公司，全国范围内涵盖近百家网点。 [1]  公司于1999年成为AMERICAN COLLECTORS ASSOCIATION（美国收帐协会）成员，2001年加入CREDITORS INTERNATIONAL（国际债权人协会）。</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- 流程进度 -->
+                <div class="bg-f company-info">
+                    <a name="process">
+                        <div class="l-title">
+                            流程进度
+                        </div>
+                        <div class="order-detail mb-4 order-content progress-box">
+                            <div class="row  mb-2">
+                                <!--进度条-->
+                                <div class="bar_box ml-3">
+                                    <ul>
+                                        <li>
+                                            <div class="bar-span-box d-flex align-items-center">
+                                                <span class="span_circle "></span>
+                                                <span class="span_bar "></span>
+                                            </div>
+                                            <span>录入新订单</span>
+                                            <span>李雨阳</span>
+                                            <span>2018-08-01</span>
+                                        </li>
+                                        <li>
+                                            <div class="bar-span-box d-flex align-items-center">
+                                                <span class="span_circle"></span>
+                                                <span class="span_bar"></span>
+                                            </div>
+                                            <span>录入新订单</span>
+                                            <span>李雨阳</span>
+                                            <span>2018-08-01</span>
+                                        </li>
+                                        <li>
+                                            <div class="bar-span-box d-flex align-items-center">
+                                                <span class="span_circle"></span>
+                                                <span class="span_bar"></span>
+                                            </div>
+                                            <span>录入新订单</span>
+                                            <span>李雨阳</span>
+                                            <span>2018-08-01</span>
+                                        </li>
+                                        <li>
+                                            <div class="bar-span-box d-flex align-items-center">
+                                                <span class="span_circle"></span>
+                                                <span class="span_bar"></span>
+                                            </div>
+                                            <span>录入新订单</span>
+                                            <span>李雨阳</span>
+                                            <span>2018-08-01</span>
+                                        </li>
+                                        <li>
+                                            <div class="bar-span-box d-flex align-items-center">
+                                                <span class="span_circle"></span>
+                                                <span class="span_bar"></span>
+                                            </div>
+                                            <span>录入新订单</span>
+                                            <span>李雨阳</span>
+                                            <span>2018-08-01</span>
+                                        </li>
+                                        <li>
+                                            <div class="bar-span-box d-flex align-items-center">
+                                                <span class="span_circle"></span>
+                                                <span class="span_bar"></span>
+                                            </div>
+                                            <span>录入新订单</span>
+                                            <span>李雨阳</span>
+                                            <span>2018-08-01</span>
+                                        </li>
+                                        <li>
+                                            <div class="bar-span-box d-flex align-items-center">
+                                                <span class="span_circle"></span>
+                                                <span class="span_bar"></span>
+                                            </div>
+                                            <span>录入新订单</span>
+                                            <span>李雨阳</span>
+                                            <span>2018-08-01</span>
+                                        </li>
+                                        <li>
+                                            <div class="bar-span-box d-flex align-items-center">
+                                                <span class="span_circle"></span>
+                                                <span class="span_bar"></span>
+                                            </div>
+                                            <span>录入新订单</span>
+                                            <span>李雨阳</span>
+                                            <span>2018-08-01</span>
+                                        </li>
+                                        <li>
+                                            <div class="bar-span-box d-flex align-items-center">
+                                                <span class="span_circle"></span>
+                                            </div>
+                                            <span>录入新订单</span>
+                                            <span>李雨阳</span>
+                                            <span>2018-08-01</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- 基本报告 -->
+                <div class="bg-f company-info">
+                    <a name="credit_report">
+                        <div class="l-title company_report_name">
+                            北京小米科技有限公司商业信息报告
+                        </div>
+                        <!--报告摘要-->
+                        <div class="l-title">
+                            报告摘要
+                        </div>
+                        <div class="order-detail">
+                            <div class="row">
+                                <div class="order-detail order-content">
+                                    <div class="row mt-2 mb-2">
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>公司名称：</span>
+                                                <span>青岛轮船装备制造有限公司</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>联系电话：</span>
+                                                <span>1567657675</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>统一社会信用代码：</span>
+                                                <span>67653678</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>英文名称：</span>
+                                                <span>GYGDDBNDCDK</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>传真号码：</span>
+                                                <span>473-678-762</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>负责人：</span>
+                                                <span>周水水</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>联信编码：</span>
+                                                <span>56352367267687XY</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>网址：</span>
+                                                <span>www.yiuiuoi.com</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>员工人数：</span>
+                                                <span>678</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>经营地址：</span>
+                                                <span>浙江丽水市</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>邮箱：</span>
+                                                <span>56767989@qq.com</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>行业代码：</span>
+                                                <span>21234</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>资产总额：</span>
+                                                <span>123,321,231,231,543</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>业务收入：</span>
+                                                <span>123,321,231,534</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>注册资本：</span>
+                                                <span>100,000,000,000</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-12">
+                                                <span>股东权益：</span>
+                                                <span>123,423,234,532</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-12">
+                                                <span>业务范围：</span>
+                                                <span class="info_remark">普通支吊架、垃圾给料机、钢结构件（除建筑构件）的制造，加工。</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--信用分析-->
+                        <div class="l-title">
+                            信用分析
+                        </div>
+                        <div class="order-detail">
+                            <div class="row">
+                                <div class="order-detail order-content">
+                                    <div class="row mt-2 mb-2">
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>付款情况：</span>
+                                                <span>较好</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>信用额度(建议)：</span>
+                                                <span>300,000</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>市场状况：</span>
+                                                <span>较好</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>财务状况：</span>
+                                                <span>较差</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>经营趋势：</span>
+                                                <span>较好</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>总体信用：</span>
+                                                <span>较好</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-12">
+                                                <span>汇率：</span>
+                                                <span>1美元=6.7540人民币（2017-07-19）</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="l-title change_record">
+                            信用等级
+                        </div>
+                        <div class="order-detail order-content">
+                            <h3 class="company_info">信用等级：<span>CA4</span>（见以下详情评估标准）</h3>
+                            <table id="table0"
+                                   data-toggle="table"
+                                   data-url="../data.json"
+                                   style="position: relative"
+                            >
+                            </table>
+                            <!--信用等级说明-->
+                            <div class="credit_info">
+                                <p>信用等级说明</p>
+                                <p>以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合 。进行评估的因素和它们在评估中所占的比重（%）</p>
+                                <p>如下所示：</p>
+                                <p><span>财务状况（40%）</span><span>股东背景（10%）</span><span>付款纪录（10%）</span></p>
+                                <p><span>信用历史（15%）</span><span> 市场趋势（10%）</span><span>经营规模（15%）</span></p>
+                                <p>如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款纪录”两项。</p>
+                                <p><span>使用缩写：</span><span>N/A - 不详</span><span>CNY - 人民币</span><span> SC - 目标公司 </span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- 注册信息-->
+                        <div class="l-title">
+                            注册信息
+                        </div>
+                        <div class="order-detail">
+                            <div class="row">
+                                <div class="order-detail order-content">
+                                    <div class="row mt-2 mb-2">
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>统一社会信用代码：</span>
+                                                <span>67653678</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>法人代表：</span>
+                                                <span>周水水</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>公司性质：</span>
+                                                <span>私人有限公司</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>成立日期：</span>
+                                                <span>2008-12-12</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>营业期限至：</span>
+                                                <span>2018-12-12</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>注册资本：</span>
+                                                <span>123,122,231,132</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>注册地址：</span>
+                                                <span>浙江丽水市</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>登记机关：</span>
+                                                <span>浙江丽水市</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>登记状态：</span>
+                                                <span>存续</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-12">
+                                                <span>经营范围：</span>
+                                                <span class="info_remark">普通支吊架、垃圾给料机、钢结构件（除建筑构件）的制造，加工。</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="l-title change_record">
+                            历史变更记录
+                        </div>
+                        <div class="order-detail order-content">
+                            <table id="table"
+                                   data-toggle="table"
+                                   data-url="../data.json"
+                                   style="position: relative"
+                            >
+                            </table>
+                            <div class="table_summary">
+                                <div class="l-title table_summary_title">
+                                    总结
+                                </div>
+                                <div class="table_summary_content box_border">
+                                    <p>经过多年在资信调查和应收账款管理方面的积累和发展，我们的服务水平在不断提高。</p>
+                                    <p>
+                                        因此，也赢得了不少著名的客户，如澳洲贸易委员会(Austrade)、美国收帐局(ABC)、霍尼韦尔(Honeywell)、伊藤忠，美国铝业，博士伦，柯达集团，山东外贸集团公司，轻骑集团等。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="l-title">
+                            股东及管理层背景
+                        </div>
+                        <div class="l-title shareholder_title">
+                            股东
+                        </div>
+                        <div class="order-detail order-content">
+                            <table id="table2"
+                                   data-toggle="table"
+                                   data-url="../data.json"
+                                   style="position: relative"
+                            >
+                            </table>
+                            <div class="credit_info invest-ratio-echarts">
+                                <p>信用等级说明</p>
+                                <!-- 圆环图-->
+                                <div class="chartBox" id="ec001_pie"></div>
+                            </div>
+
+                            <div class="table_summary">
+                                <div class="l-title">
+                                    北京小米科技有限责任公司
+                                </div>
+                                <div class="order-detail order-content box_border">
+                                    <h3 class="company_info">基本信息</h3>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>统一社会信用代码：</span>
+                                                <span>00135457487656</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>联系电话：</span>
+                                                <span>1856766556465</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>邮箱地址：</span>
+                                                <span>5367678798@qq.com</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>成立日期：</span>
+                                                <span>2002-06-12</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>传真号码：</span>
+                                                <span>123-67987821</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>网址：</span>
+                                                <span>http://www.lx.com</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>注册资本：</span>
+                                                <span>219,,232,321,132</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>注册地址：</span>
+                                                <span>杭州市西湖区</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>登记状态：</span>
+                                                <span>存续</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-12">
+                                                <span>经营范围：</span>
+                                                <span class="info_remark">企业管理咨询，财务管理咨询，市场调查；软件与网络的开发与维护。接受金融机构委托从事金融信息技术外包；接受金融机构委托从事金融业务流程外包；受银行委托提供信用卡逾期催告服务；信用卡业务缴费提醒服务；受银行委托代理.</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--投资情况-->
+                        <div class="l-title shareholder_title">
+                            投资情况
+                        </div>
+                        <div class="order-detail order-content">
+                            <table id="table3"
+                                   data-toggle="table"
+                                   data-url="../data.json"
+                                   style="position: relative"
+                            >
+                            </table>
+                            <div class="table_summary">
+                                <h3 class="company_info">管理层</h3>
+                                <div class="l-title">
+                                    周水水
+                                </div>
+                                <div class="order-detail mb-4 order-content box_border">
+                                    <div class="row mt-2 mb-2">
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>职位：</span>
+                                                <span>总经理</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>年龄：</span>
+                                                <span>64岁</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>传真号码：</span>
+                                                <span>123-67987821</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>身份证号：</span>
+                                                <span>37987676776362566</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>性别：</span>
+                                                <span>男</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>邮箱：</span>
+                                                <span>23343252@qq.com</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span>联系电话：</span>
+                                                <span>15655657253</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>工作经历：</span>
+                                                <span>现任目标公司总经理</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!--行业情况-->
+                <div class="bg-f company-info">
+                        <div class="l-title change_record">
+                            行业情况
+                        </div>
+                        <div class="order-detail order-content">
+                            <table id="table4"
+                                   data-toggle="table"
+                                   data-url="../data.json"
+                                   style="position: relative"
+                            >
+                            </table>
+                        </div>
+                </div>
+                <!--业务情况-->
+                <div class="bg-f company-info">
+                        <div class="l-title change_record">
+                            业务情况
+                        </div>
+                        <div class="order-detail order-content">
+                            <table id="table5"
+                                   data-toggle="table"
+                                   data-url="../data.json"
+                                   style="position: relative"
+                            >
+                            </table>
+                        </div>
+                </div>
+                <!--采购情况-->
+                <div class="bg-f company-info">
+                        <div class="l-title change_record">
+                            采购情况
+                        </div>
+                        <div class="order-detail order-content">
+                            <table id="table6"
+                                   data-toggle="table"
+                                   data-url="../data.json"
+                                   style="position: relative"
+                            >
+                            </table>
+                        </div>
+                </div>
+                <!--销售情况-->
+                <div class="bg-f company-info">
+                        <div class="l-title change_record">
+                            销售情况
+                        </div>
+                        <div class="order-detail order-content">
+                            <table id="table7"
+                                   data-toggle="table"
+                                   data-url="../data.json"
+                                   style="position: relative"
+                            >
+                            </table>
+                        </div>
+                </div>
+                <!--客户-->
+                <div class="bg-f company_info">
+                    <div class="table_summary">
+                        <div class="l-title table_summary_title">
+                            客户
+                        </div>
+                        <div class="table_summary_content box_border">
+                            <p class="info_remark">经过多年在资信调查和应收账款管理方面的积累和发展，我们的服务水平在不断提高。经过多年在资信调查和应收账款管理方面的积累和发展，我们的服务水平在不断提高经过多年在资信调查和应收账款管理方面的积累和发展，我们的服务水平在不断提高</p>
+                        </div>
+                    </div>
+                </div>
+                <!--供应商-->
+                <div class="bg-f company_info">
+                    <div class="table_summary">
+                        <h3 class="company_info">供应商</h3>
+                        <div class="order-detail mb-4 order-content box_border_all">
+                            <div class="row mt-2 mb-2">
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>供应商名称：</span>
+                                        <span>***有限公司</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>供应产品：</span>
+                                        <span>钢铁</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>联系电话：</span>
+                                        <span>123-67987821</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>合作时间：</span>
+                                        <span>平均水平</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>付款情况：</span>
+                                        <span>延迟</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>受访者职位：</span>
+                                        <span>公司员工</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>受访日期：</span>
+                                        <span>2017-09-11</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>受访者评书：</span>
+                                        <span>2017-09-11</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-detail mb-4 order-content box_border_all">
+                            <div class="row mt-2 mb-2">
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>供应商名称：</span>
+                                        <span>***有限公司</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>供应产品：</span>
+                                        <span>钢铁</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>联系电话：</span>
+                                        <span>123-67987821</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>合作时间：</span>
+                                        <span>平均水平</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>付款情况：</span>
+                                        <span>延迟</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>受访者职位：</span>
+                                        <span>公司员工</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>受访日期：</span>
+                                        <span>2017-09-11</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <span>受访者评书：</span>
+                                        <span>2017-09-11</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--商标和专利-->
+                <div class="bg-f company-info">
+                        <div class="l-title change_record">
+                            商标和专利
+                        </div>
+                        <div class="order-detail order-content">
+                            <table id="table8"
+                                   data-toggle="table"
+                                   data-url="../data.json"
+                                   style="position: relative"
+                            >
+                            </table>
+                        </div>
+                </div>
+                <!--荣誉-->
+                <div class="bg-f company_info">
+                    <div class="table_summary">
+                        <div class="l-title table_summary_title">
+                            荣誉
+                        </div>
+                        <div class="table_summary_content box_border">
+                            <p class="info_remark">经过多年在资信调查和应收账款管理方面的积累和发展，我们的服务水平在不断提高。经过多年在资信调查和应收账款管理方面的积累和发展，我们的服务水平在不断提高经过多年在资信调查和应收账款管理方面的积累和发展，我们的服务水平在不断提高</p>
+                        </div>
+                    </div>
+                </div>
+                <!--员工情况-->
+                <div class="bg-f company-info">
+                    <div class="order-detail order-content">
+                        <table id="table9"
+                               data-toggle="table"
+                               data-url="../data.json"
+                               style="position: relative"
+                        >
+                        </table>
+                    </div>
+                </div>
+                <!--地址-->
+                <div class="bg-f company-info">
+                    <div class="l-title change_record">
+                        商标和专利
+                    </div>
+                    <div class="order-detail order-content">
+                        <table id="table10"
+                               data-toggle="table"
+                               data-url="../data.json"
+                               style="position: relative"
+                        >
+                        </table>
+                    </div>
+                </div>
+                <!--付款情况-->
+                <div class="bg-f company-info">
+                    <div class="l-title change_record">
+                        付款情况
+                    </div>
+                    <div class="order-content">
+                        <div class="table_summary">
+                            <div class="l-title table_summary_title">
+                                总体评价
+                            </div>
+                            <div class="table_summary_content box_border">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        极好
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                                    <label class="form-check-label" for="exampleRadios2">
+                                        好
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
+                                    <label class="form-check-label" for="exampleRadios3">
+                                        一般
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4" value="option4">
+                                    <label class="form-check-label" for="exampleRadios4">
+                                        较差
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios5" value="option5">
+                                    <label class="form-check-label" for="exampleRadios5">
+                                        差
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios6" value="option6">
+                                    <label class="form-check-label" for="exampleRadios6">
+                                        尚无法评估
+                                    </label>
+                                </div>
+                            </div>
+                            <p class="ml-3">* 以上等级是根据该公司供货商的评价，拖欠记录和追讨记录综合得出的。</p>
+                        </div>
+                    </div>
+                    <div class="order-content">
+                        <div class="table_summary">
+                            <div class="l-title table_summary_title">
+                                拖欠记录
+                            </div>
+                            <div class="table_summary_content box_border">
+                                <p class="info_remark">无</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-content">
+                        <div class="table_summary">
+                            <div class="l-title table_summary_title">
+                                追讨记录
+                            </div>
+                            <div class="table_summary_content box_border">
+                                <p class="info_remark">无</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 附件-->
+                <div class="bg-f">
+                    <a name="accessory">
+                        <div class="l-title">
+                            附件
+                        </div>
+                        <div class="order-detail mb-4 order-content">
+                            <div class="uploadFile mt-3 mr-3 ml-3">
+                                <!--<input type="file" name="" id="upload_file" value="" class="file-input" />-->
+                                <img src="${BASE_PATH }static/credit/imgs/order/！.png"/>
+                                <p class="mt-2">暂无附件</p>
+                            </div>
+                            <div class="order-yulan  mt-3 ml-3"><a href="#">预览</a></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部 -->
+    <footer></footer>
+</div>
+</div>
+<script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+<script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-fixed-columns.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="${BASE_PATH }static/credit/js/common.js"></script>
+<script src="${BASE_PATH }static/credit/assets/echarts/echarts-4.1.0.rc2.min.js"></script>
+<script src="${BASE_PATH }static/credit/js/chartsCom.js"></script>
+<script src="${BASE_PATH }static/credit/js/order_manage/order_common.js"></script>
+<script src="${BASE_PATH }static/credit/js/order_manage/order_detail_business.js"></script>
+
+</body>
+</html>

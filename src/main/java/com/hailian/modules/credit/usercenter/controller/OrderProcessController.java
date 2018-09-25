@@ -7,10 +7,18 @@ import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.usercenter.model.ResultType;
+import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.front.template.TemplateSysUserService;
+import com.hailian.system.user.SysUser;
+import com.hailian.util.Config;
+import com.hailian.util.DateUtils;
+import com.hailian.util.FtpUploadFileUtils;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.upload.UploadFile;
 /**
 * @time   2018年9月14日 上午11:00:00
 * @author lzg
@@ -19,6 +27,13 @@ import com.jfinal.plugin.activerecord.Page;
 @Api(tag = "订单流程", description = "订单流程")
 @ControllerBind(controllerKey = "/credit/front/orderProcess")
 public class OrderProcessController extends BaseProjectController{
+	//文件服务器配置
+	public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
+	public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
+	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
+	public static final String userName = Config.getStr("ftp_userName");//域用户名
+	public static final String password = Config.getStr("ftp_password");//域用户密码
+	//页面公共路径
 	private static final String PATH = "/pages/credit/usercenter/order_manage/";
 	//每种搜索类型需要对应的关键词字段名
 	public static final Map<String,List<Object>> TYPE_KEY_COLUMN = new HashMap<>();
@@ -102,8 +117,11 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	
 	//修改或者删除功能公共雏形
-	private void PublicUpdateMod(Map<String,Object> map){
+	private CreditOrderInfo PublicUpdateMod(Map<String,Object> map){
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
+		String b = model.get("verify_name");
+		String a = getPara("verify_name");
+		String c = getAttr("verify_name");
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by",userid);
@@ -112,6 +130,7 @@ public class OrderProcessController extends BaseProjectController{
 			model.set(key, map.get(key));
 		}
 		model.update();
+		return model;
 	}
 	/**
 	 * @todo   展示订单分配页
@@ -154,14 +173,15 @@ public class OrderProcessController extends BaseProjectController{
 	 * @todo   订单状态保存
 	 * @time   2018年9月20日 下午4:30:00
 	 * @author lzg
-	 * @return_type   void
+	 * @return_type   订单编号
 	 */
-	public void statusSave() {
+	public String statusSave() {
 		String code = (String) getRequest().getParameter("statusCode");
 		Map<String,Object> map = new HashMap<>();
 		map.put("status", code);
-		PublicUpdateMod(map);
+		CreditOrderInfo model = PublicUpdateMod(map);
 		reallocationJson();
+		return model.get("num");
 	}
 	/**
 	 * @todo   订单管理下的订单核实的保存
@@ -169,5 +189,62 @@ public class OrderProcessController extends BaseProjectController{
 	 * @author lzg
 	 * @return_type   void
 	 */
+	public void verifyOfOrderMangerSave(){
+		String orderNum = getModel(CreditOrderInfo.class).get("id")+"";
+		uploadFile(orderNum);
+		statusSave();
+	}
+	
+	
+	
+	/**
+	 * 获取前台文件上传到文件服务器并将文件信息记录到文件实体表
+	 */
+	private void uploadFile(String orderNum){
+		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+		CreditUploadFileModel fileModel = new CreditUploadFileModel();
+		fileModel.set("business_type", "0");
+		fileModel.set("business_id",orderNum);
+		int size = upFileList.size();
+		if(size>0){
+			try {
+				for(UploadFile uploadFile:upFileList){
+					String originalFile = uploadFile.getOriginalFileName();
+					String ext = "";
+					//获取真实文件名
+					String originalFileName = FileTypeUtils.getName(originalFile);
+					//获取文件类型
+					ext = FileTypeUtils.getFileType(originalFile);
+					//错误返回json
+					String errorJson = "{uploadMessage:'"+uploadFile.getOriginalFileName()+"上传失败!"+"'},{uploadStatus:0}";
+					if (uploadFile!=null&&uploadFile.getFile().length()<=maxPostSize&&FileTypeUtils.checkType(ext)) {
+						//上传的文件在ftp服务器按日期分目录
+						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);
+						String now=DateUtils.getNow(DateUtils.YMDHMS);
+						//上传到服务器时的文件名
+						String FTPfileName = originalFileName + now + "." + ext;
+						String fileName = originalFileName + now;
+						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						if(storeFile){
+							String factpath = storePath + "/" + FTPfileName;
+							String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
+							Integer userid = getSessionUser().getUserid();
+							fileModel.set("business_id",orderNum);
+							//将上传信息维护进实体表
+							UploadFileService.service.save(0,uploadFile, factpath,url,fileModel,fileName,userid);
+						}else{
+							renderJson(errorJson);
+						}
+					}else{
+						renderJson(errorJson);
+					}
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+				renderJson("{uploadMessage:'"+"发生未知错误!"+"'},{uploadStatus:0}");
+			}
+		}
+	}
+	
 	
 }
