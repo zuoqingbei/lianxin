@@ -1,13 +1,9 @@
 let Verify = {
     init(){
         /**初始化函数 */
-    	this.pageNumber = "";
-    	this.pageSize = "";
-    	this.sortName = "";
-    	this.sortOrder = "";
         this.initTable();
         this.popperFilter();
-        //this.modalSubmit();
+        this.modalSubmit();
         this.toOrderDetail();
         this.fileEvent();
     },
@@ -80,7 +76,8 @@ let Verify = {
     modalSubmit(){
         /**模态框提交事件 */
         $("#modal_submit").click(function(){
-            $(".tableValue").submit();	
+           
+            
             //提交成功关闭模态窗
            $(".modal-header .close").trigger("click");
         })
@@ -210,40 +207,15 @@ let Verify = {
                   align: 'center',
                   events: {
                     "click .detail":(e,value,row,index)=>{
-                    	 console.log(row);
-                         $("#custom_id").html(row.custom_id);
-                         $("#customId").html(row.customId);
-                         $("#receiver_date").html(row.receiver_date);
-                         $("#country").html(row.country);
-                         $("#reportType").html(row.reportType);
-                         $("#reportLanguage").html(row.reportLanguage);
-                         $("#companyNames").html(row.companyNames);
-                         $("#custom_id").html(row.custom_id);
-                         $("#speed").html(row.speed);
-                         $("#user_time").html(row.user_time);
-                         $("#companyZHNames").html(row.companyZHNames);
-                         $("#reporter_select").html(row.seleteStr);
-                         $("#confirm_reason").html(row.confirm_reason);
-                         //console.log(row.id+"=====");
-                         $("#orderId").val(row.id);
-                         $("#num").html(row.num);
-                         $("#verify_name").html(row.verify_name);
-                         $("#remarks").html(row.remarks);
-                         $("#contacts").val(row.contacts);
-                         $("#telphone").val(row.telphone);
-                         $("#address").html(row.address);
-                         pageNumber = row.pageNumber;
-                         pageSize = row.pageSize;
-                     	  sortName = row.sortName;
-                     	  sortOrder = row.sortOrder;
+                      console.log(row)
                     }
                   },
                   formatter: _this.operateFormatter
                 }
               
             ],
-            url : '/credit/front/orderProcess/reallocationJson', // 请求后台的URL（*）
-            method : 'post', // 请求方式（*）post/get
+           // url : 'firmSoftTable.action', // 请求后台的URL（*）
+           // method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',
             pageNumber:1,
@@ -255,17 +227,14 @@ let Verify = {
             fixedColumns: true,
             fixedNumber: 1,
             queryParamsType:'',
-            queryParams: function (params){//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-                console.log(params)
-                return {//这里的params是table提供的  
-              	  pageNumber: params.pageNumber,//从数据库第几条记录开始  
-              	  pageSize: params.pageSize,//找多少条  
-              	  sortName: params.sortName, 
-              	  sortOrder: params.sortOrder,
-              	  searchType:-3
-                };  
-            },  
-            });
+            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
+              console.log(params)
+              return {//这里的params是table提供的  
+                  offset: params.offset,//从数据库第几条记录开始  
+                  limit: params.limit//找多少条  
+              };  
+          },  
+          });
           // sometimes footer render error.
           setTimeout(() => {
             $table.bootstrapTable('resetView');
