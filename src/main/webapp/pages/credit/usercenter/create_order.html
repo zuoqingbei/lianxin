@@ -219,7 +219,6 @@
 							
 							
 						</table>
-
 					</div>
 					<div class="err-box">
 						<span>1.拼写错误拼写错误拼写错误拼写错误</span>
@@ -390,16 +389,14 @@
 function piliangDingDan(){
 	 var html="";
    	 $.ajax({
-	        url:"/credit/orderpoimanager/importExcel?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4+"&receivedate="+value5,
-	        type:"get",
+	        url:"/credit/orderpoimanager/importExcel",
+	        type:"post",
 	        dataType:"json",
 	        success: function(data) {
 	        	console.log(data)
-	        	  if(data!=null){
-	        		  $("input[name='attr.user_time']").val(data.usetime.use_time)
-	        		  $("input[name='attr.user_time_id']").val(data.usetime.id)
-					  $("input[name='attr.end_date']").val(data.enddate)
-	        }
+	        	$.each(data,function(index,item){
+	        		
+	        	})
 	        },
 	    });
 	 	}

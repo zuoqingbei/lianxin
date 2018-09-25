@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
@@ -14,6 +15,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.hailian.component.base.BaseProjectController;
@@ -24,6 +26,7 @@ import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.jfinal.upload.UploadFile;
 
@@ -41,7 +44,7 @@ public class OrderPoiController extends BaseProjectController {
 	 * 
 	 * @time   2018年9月19日 上午10:42:31
 	 * @author dyc
-	 * @todo   向数据库中导入数据
+	 * @todo   解析订单表格获取数据
 	 * @return_type   void
 	 */
 	@ApiOperation(url = "/credit/orderpoimanager/importExcel", httpMethod = "POST")
@@ -195,5 +198,37 @@ public class OrderPoiController extends BaseProjectController {
 			  }
 		}
 		renderJson("orderList",orderList);
+	}
+	/**
+	 * 
+	* @author doushuihai  
+	* @date 2018年9月25日上午10:27:44  
+	* @TODO 数据库插入订单
+	 */
+	public void save() {
+		String msg="提交成功";
+		Integer size = getParaToInt();
+		List<CreditOrderInfo> list=new ArrayList<CreditOrderInfo>();
+		String now = getNow();
+		Integer userid = getSessionUser().getUserid();
+		try {
+			for (int i=0; i < size; i++) { 
+				CreditOrderInfo model = getModel(CreditOrderInfo.class, "model[" + i + "]"); // 循环获取多个model对象
+				model.set("create_by", userid);
+				model.set("create_date", now);
+				list.add(model);
+			}
+			for(CreditOrderInfo model:list){
+				boolean save = model.save();
+				if(save==false){
+					msg="提交失败";
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg="提交失败";
+			e.printStackTrace();
+		}
+		renderMessage(msg);
 	}
 }
