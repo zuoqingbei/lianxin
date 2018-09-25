@@ -204,6 +204,7 @@ let Allocation = {
                       $("#custom_id").html(row.custom_id);
                       $("#customId").html(row.customId);
                       $("#receiver_date").html(row.receiver_date);
+                      $("#continent").html(row.continent);
                       $("#country").html(row.country);
                       $("#reportType").html(row.reportType);
                       $("#reportLanguage").html(row.reportLanguage);
