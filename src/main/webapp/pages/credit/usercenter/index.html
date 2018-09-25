@@ -8,20 +8,20 @@
     <meta name="renderer" content="webkit">
    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
 
+
 </head>
 
-	
-         <div id="container" class="row">
-          
+        <div id="container" class="row  animated fadeIn">
+           
             <!-- 内容 -->
             <div class="main">
                 <!-- 个人信息 -->
                 <div class="user-order d-flex justify-content-between align-items-center">
                     <div class="user-info d-flex flex-column justify-content-center">
-                        <p class="regards mb-1">早安，<span id="name"></span>，祝你开心每一天！</p>
+                        <p class="regards mb-1">早安，<span>王羽铭</span>，祝你开心每一天！</p>
                         <p class="job-title mt-2">
-                            <span id="role"></span>
-                            <span id="dept"></span>
+                            <span>前端程序员</span>
+                            <span>联信集团-软件部-前端</span>
                         </p>
                     </div>
                     <div class="order-info d-flex justify-content-center align-items-center ">
@@ -44,150 +44,153 @@
                     <div class="bg-f">
                         <div class="form-box">
                             <form id="formSearch" class="form-inline layui-form" role="form">
-                                <div class="form-group row d-flex  justify-content-around mb-4">
+                                <div class="form-group row d-flex justify-content-around mb-4">
                                     <div class="input-group mt-2 col-md-4">
                                         <label class="control-label col-md-4" for="txt_search_departmentname">公司名称：</label>
-                                        <input id="company_by_report" name="attr.company_by_report" type="text" class="form-control search-input col-md-8" id="txt_search_departmentname" placeholder="请输入公司名称">
+                                        <input type="text" class="form-control search-input col-md-8" id="txt_search_departmentname" placeholder="请输入公司名称">
                                     </div>
                                     <div class="input-group mt-2 col-md-4">
                                         <label class="control-label col-md-4" for="txt_search_companyEngName">订单公司名称：</label>
-                                        <input id="right_company_name_en" name="attr.right_company_name_en" type="text" class="form-control search-input col-md-8" id="txt_search_companyEngName" placeholder="请输入订单公司名称">
-                            		</div>
+                                        <input type="text" class="form-control search-input col-md-8" id="txt_search_companyEngName" placeholder="请输入订单公司名称">
+                                    </div>
                                     <div class="input-group mt-2 col-md-4">
                                         <label class="control-label col-md-4" for="txt_search_statu">到期日期：</label>
-                                        <input name="attr.end_date" type="text" class="form-control search-input col-md-8" id="dead_date"   placeholder="请选择到期日期"">
+                                        <input type="text" class="form-control search-input col-md-8" id="dead_date" placeholder="请选择到期日期"">
                                     </div>
                                 </div>
                                 <div id="btnCollapse" class="show row justify-content-around">
-                                    <div class="input-group mt-2 col-md-4" id="client">
+                                    <div class="input-group mt-2 col-md-4 " id="client">
                                         <label class="control-label col-md-4" for="txt_search_statu">客户：</label>
-                                        <select id="custom_id" name="attr.custom_id" class=" search-input col-md-8">
+                                        <select class="search-input col-md-8 layui-input">
                                             <option value="" disabled selected>请选择客户</option>
+                                          
                                         </select>
                                     </div>
                                     <div class="input-group mt-2 col-md-4" id="proxy">
                                         <label class="control-label col-md-4" for="txt_search_statu">代理：</label>
-                                        <select class=" search-input col-md-8" >
-                                                <option value="" disabled selected>请选择代理</option>
+                                        <select class=" search-input col-md-8 layui-input" >
+                                            <option value="" disabled selected>请选择代理</option>
+                                              
                                         </select>
                                     </div>
                                     <div class="input-group mt-2 col-md-4" id="country">
                                         <label class="control-label col-md-4" for="txt_search_statu">国家：</label>
-                                        <select name="attr.country" class="search-input col-md-8 layui-input" lay-search="" ay-verify="">
+                                        <select class="search-input col-md-8 layui-input" lay-search="" ay-verify="">
                                             <option value="" disabled selected>请选择国家</option>
                                         </select>
                                     </div>
-                                 </div>
+                                </div>
                             </form>
                             <div class="btn-row d-flex justify-content-between mt-4 mb-4">
-                                <a id="addorder" role="button" class="btn btn-primary ml-5 d-flex align-items-center" href="/credit/front/home/createOrder"><i class="fa fa-plus pr-2"></i>新增订单</a>
+                                <a role="button" class="btn btn-primary ml-5 d-flex align-items-center" href="javascript:;"><i class="fa fa-plus pr-2"></i>新增订单</a>
                                 <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
-                                    <button type="button" id="btn_query" class="btn enterFilter btn-primary">查询</button>
+                                    <button type="button" id="btn_query" class="btn btn-primary">查询</button>
                                     <button type="button" id="btn_reset" class="btn btn-light">重置</button>
-                                    <a id="hideBtn" role="button" href="javascript:;">收起 <i class="fa fa-angle-up"></i></a>
+                                    <a  id="hideBtn" href="javascript:;">收起 <i class="fa fa-angle-up"></i></a>
                                 </div>
                             </div>
                             
                         </div>
                         <table id="table"
                             data-toggle="table"
+                            data-url="./data.json"
                             style="position: relative"
                         >
-                        <div class="deal-state"> 
+                            <div class="deal-state"> 
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck1"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck1"> 
                                     <label class="form-check-label" for="defaultCheck1">订单分配</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck2"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck2"> 
                                     <label class="form-check-label" for="defaultCheck2">客户确认</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck3"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck3"> 
                                     <label class="form-check-label" for="defaultCheck3">报告制作</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck4"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck4"> 
                                     <label class="form-check-label" for="defaultCheck4">报告完成</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck5"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck5"> 
                                     <label class="form-check-label" for="defaultCheck5">代理中</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck6"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck6"> 
                                     <label class="form-check-label" for="defaultCheck6">代理完成</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck7"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck7"> 
                                     <label class="form-check-label" for="defaultCheck7">代理补充</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck8"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck8"> 
                                     <label class="form-check-label" for="defaultCheck8">报告质检中</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck9"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck9"> 
                                     <label class="form-check-label" for="defaultCheck9">报告质检不通过</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck10"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck10"> 
                                     <label class="form-check-label" for="defaultCheck10">报告质检合格</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck11"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck11"> 
                                     <label class="form-check-label" for="defaultCheck11">分析制作</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck12"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck12"> 
                                     <label class="form-check-label" for="defaultCheck12">分析完成</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck13"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck13"> 
                                     <label class="form-check-label" for="defaultCheck13">分析质检中</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck14"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck14"> 
                                     <label class="form-check-label" for="defaultCheck14">分析质检不通过</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck15"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck15"> 
                                     <label class="form-check-label" for="defaultCheck15">分析质检合格</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck16"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck16"> 
                                     <label class="form-check-label" for="defaultCheck16">翻译制作</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck17"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck17"> 
                                     <label class="form-check-label" for="defaultCheck17">翻译完成</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck18"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck18"> 
                                     <label class="form-check-label" for="defaultCheck18">翻译质检中</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck19"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck19"> 
                                     <label class="form-check-label" for="defaultCheck19">翻译质检不通过</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck20"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck20"> 
                                     <label class="form-check-label" for="defaultCheck20">翻译质检合格</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck21"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck21"> 
                                     <label class="form-check-label" for="defaultCheck21">报告完成</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck22"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck22"> 
                                     <label class="form-check-label" for="defaultCheck22">客户内容已更新</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck23"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck23"> 
                                     <label class="form-check-label" for="defaultCheck23">客户撤销</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" name="status" class="form-check-input" id="defaultCheck24"> 
+                                    <input type="checkbox" class="form-check-input" id="defaultCheck24"> 
                                     <label class="form-check-label" for="defaultCheck24">订单完成</label>
                                 </div>
                                 <div class="btn-group btn-filter d-flex justify-content-center mt-4">
@@ -201,47 +204,8 @@
             </div>
 
         </div>
-     
-    <script src="${BASE_PATH }static/credit/js/index.js"></script>  
-	<script type="text/javascript">
-		$(function(){
-			$.get('/credit/front/home/getMessage',function(data){
-				$("#name").html(data.user.realname);
-				$("#role").html(data.user.roleName);
-				$("#dept").text(data.user.departName);
-				getCustoms(data.customs);
-				getCountry(data.country);
-			})	
-		});
-		function getCustoms(data){
-			console.log(data);
-			var html=""
-			for(item in data){
-				html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
-			}
-			$("select[name='attr.custom_id']").append(html);
-		};
-		function getCountry(data){
-			var html=""
-			html+=html+="<option  value=''>请选择</option>";
-				for(item in data){
-					html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
-				}
-				$("select[name='attr.country']").html(html);
-				//重新渲染 否则option不能显示
-				layui.use('form', function(){
-					var form = layui.form;  
-					form.render(); //更新全部
-				});
-		
-		}
-		function orderinfo(id){
-			location.href="/credit/front/home/orderInfo?id="+id
-		}
-		
-		
-	
-	</script>
+    
+   <script src="${BASE_PATH }static/credit/js/index.js"></script>
 </body>
 </html>
     

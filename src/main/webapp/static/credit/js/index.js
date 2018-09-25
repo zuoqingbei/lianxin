@@ -2,8 +2,7 @@
 let Index = {
     init(){
         this.initTable();
-        this.dateForm();
-        this.initReset();
+        this.dateForm(); 
         this.popperFilter();
         this.hideShowStyle();
         this.searchEvent();
@@ -13,15 +12,7 @@ let Index = {
         laydate.render({
             elem: '#dead_date'
         });
-    },
-    initReset(){
-    	/**重置form表单**/
-    	const $btnReset = $('.btn-light');
-    	$btnReset.on('click',function(){
-    		$("#formSearch input.search-input").val("");
-    		$("#formSearch select.search-input").val("");
-    	});
-    },
+    }, 
     popperFilter(){
       /**筛选图标事件 */
       var referenceElement = document.querySelector(".fa-filter");
@@ -74,19 +65,23 @@ let Index = {
 
         /**发起ajax请求  获取表格数据*/
       })
+
+      /**点击重置按钮 */
+      $(".resetrFilter").click(function(){
+        $('.form-check-input:checkbox').removeAttr('checked');
+      })
     },
     searchEvent(){
 
       $("#btn_query").click(function(){
-       		$.ajax({
-       			type:"post",
-       			url:"/credit/front/home/list",
-       			data:$("#formSearch").serialize(),
-       			 dataType:"json",
-       			 success:function(data){
-       			 	 $("#table").bootstrapTable("load",data)
-       			 }
-       		})
+        let companyName = $("#txt_search_departmentname").val();//公司名称
+        let orderCName = $("#txt_search_companyEngName").val();//订单公司名称
+        let deadDate = $("#dead_date").val();//到期日期
+        let client = $("#client option:selected").val();//客户
+        let proxy = $("#proxy option:selected").val();//代理
+        let country = $("#country option:selected").val();//国家
+
+        console.log(companyName,orderCName,deadDate,client,proxy,country)
 
         /***发起ajax请求 获取表格数据*/
       })
@@ -94,19 +89,18 @@ let Index = {
     hideShowStyle(){
       /**展开收起样式 */
       $("#hideBtn").click((e)=>{
-          if($('#hideBtn').text().trim() === '收起'){
-            $("#btnCollapse").css({'height':'0'})
-            $('#hideBtn').html('展开 <i class="fa fa-angle-down"></i>')
-            $(".fixed-table-body").css({'height':'115%','transition':'height .1s'})
-            $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"11px",'transition':'all .1s'})
-          }else if($('#hideBtn').text().trim() === '展开'){
-            $("#btnCollapse").css({'height':'3rem'})
-            $('#hideBtn').html('收起 <i class="fa fa-angle-up"></i>')
-            $(".fixed-table-body").css({'height':'100%','transition':'height .1s'})
-             $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"8px",'transition':'all .1s'})
-          }
-      })
-
+        if($('#hideBtn').text().trim() === '收起'){
+          $("#btnCollapse").css({'height':'0'})
+          $('#hideBtn').html('展开 <i class="fa fa-angle-down"></i>')
+          $(".fixed-table-body").css({'height':'115%','transition':'height .1s'})
+          $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"12px",'transition':'all .1s'})
+        }else if($('#hideBtn').text().trim() === '展开'){
+          $("#btnCollapse").css({'height':'3rem'})
+          $('#hideBtn').html('收起 <i class="fa fa-angle-up"></i>')
+          $(".fixed-table-body").css({'height':'100%','transition':'height .1s'})
+           $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"8px",'transition':'all .1s'})
+        }
+    })
     },
     initTable(){
         
@@ -119,53 +113,48 @@ let Index = {
             columns: [
                  {
                   title: '订单号',
-                  field: 'id',
+                  field: 'orderNum',
                   align: 'center',
                   valign: 'middle',
-                  formatter:function(value,row,index){ 
-  
-                	var url = '<a href="#" style="color:blue" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
-                	return url; 
-              		} 
                 },{
-                  field: 'receiver_date',
+                  field: 'orderDate',
                   title: '订单日期',
                   sortable: true,
                   align: 'center'
                 }, {
-                  field: 'end_date',
+                  field: 'deadDate',
                   title: '到期日期',
                   sortable: true,
                   align: 'center',
                 }, {
                   title: '客户代码',
-                  field: 'custom_id',
+                  field: 'clientCode',
                   align: 'center',
                   valign: 'middle',
                 }, {
-                  title: `处理状态 &nbsp;<i class="fa fa-filter"></i>`,
-                  field: 'status',
+                  title: `订单状态 &nbsp;<i class="fa fa-filter"></i>`,
+                  field: 'doState',
                   align: 'center',
                   valign: 'middle',
                 
                 }, {
                   title: '订单公司名称',
-                  field: 'englishName',
+                  field: 'orderComName',
                   align: 'center',
                   valign: 'middle',
-                },{
+                }, {
                   title: '公司中文名称',
-                  field: 'companyName',
+                  field: 'orderComName',
                   align: 'center',
                   valign: 'middle',
                 }, {
                   title: '国家',
-                  field: 'countryName',
+                  field: 'country',
                   align: 'center',
                   valign: 'middle',
-                }, /*{
+                }, {
                   title: '是否有财务信息',
-                  field: 'report_type',
+                  field: 'reportType',
                   align: 'center',
                   valign: 'middle',
                 }, {
@@ -173,12 +162,12 @@ let Index = {
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
-                },*/ {
+                }, {
                   title: '报告类型',
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
-                }, /*{
+                }, {
                   title: '报告员',
                   field: 'reportType',
                   align: 'center',
@@ -193,44 +182,26 @@ let Index = {
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
-                },*/
-                /*{
-                  field: 'operate',
-                  title: '操作',
-                  align: 'center',
-                  events: {
-                    "click .detail":(e,value,row,index)=>{
-                      console.log(row)
-                    }
-                  },
-                  formatter: _this.operateFormatter
-                }*/
-              
+                }
             ],
-            url : '/credit/front/home/list', // 请求后台的URL（*）
-            method : 'post', // 请求方式（*）post/get
+           // url : 'firmSoftTable.action', // 请求后台的URL（*）
+           // method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',
             pageNumber:1,
             pageSize:10,
-            pageList: [5,10 , 20],
+            pageList: [10 , 20],
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
             fixedColumns: true,
             fixedNumber: 1,
             queryParamsType:'',
-            sortable: true,                     //是否启用排序
-            sortOrder: "asc",
-            sortName:"receiver_date",
-            contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-            	console.log(params);
+              console.log(params)
               return {//这里的params是table提供的  
-                  pageNo: params.pageNumber,//页码
-                  recordsperpage: params.pageSize,//每页多少条
-                  sortName:params.sortName,
-                  sortOrder:params.sortOrder
+                  offset: params.offset,//从数据库第几条记录开始  
+                  limit: params.limit//找多少条  
               };  
           },  
           });
@@ -238,8 +209,11 @@ let Index = {
           setTimeout(() => {
             $table.bootstrapTable('resetView');
           }, 200);
-      }
-       
+      },
+      operateFormatter(){
+        /**操作按钮格式化 */
+        return '<a href="create_order.html" class="detail">详情</a>'
+      }       
     }
 Index.init();
 

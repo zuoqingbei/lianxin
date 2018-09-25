@@ -54,13 +54,13 @@ let Public = {
                         $("#main_content").load('/credit/front/home/createOrder')
                         break;
                     case '订单核实':
-                        $("#main_content").load('./order_manage/order_verify.html')
+                        $("#main_content").load('/credit/front/orderProcess/showOrderVerifyOfOrders')
                         break;
                     case '订单查档':
                         $("#main_content").load('./order_manage/order_filing.html')
                         break;
                     case '订单分配':
-                        $("#main_content").load('./order_manage/order_allocation.html')
+                        $("#main_content").load('/credit/front/orderProcess/showReallocation')
                         break;
                     case '信息录入':
                         $("#main_content").load('./report_pages/reported_basic_info.html')

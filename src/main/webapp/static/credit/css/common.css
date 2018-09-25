@@ -1,209 +1,313 @@
-﻿/*重置样式*/
-.table-content{
-    padding: 0 1.25rem;
-    margin-top: 1.25rem;
+﻿:root {
+    --fontColor:#808080;
+    --titleColor:#333333;
+    --activeColor:#1890ff;
+    --inputWidthMD:21rem;/*中等input宽*/
+    --inputWidthsm:13.5rem;/*中等input宽*/
 }
+/* ==================头部=================== */
 #container {
     position: relative;
-    height: calc(100% - 5rem);
+    height: calc(100% - 2.9rem);
 }
-.bootstrap-table {
-    margin: 1rem 2rem;
+#main_content {
+    padding: 0;
 }
-/*导航栏样式 start*/
-.detail_tab-bar{
+header {
+    width: 100%;
+    height: 5rem;
+    margin-bottom: .5rem;
+}
+.head-row {
+    height: 100%;
+    box-shadow: 0 1px 5px 0 #dedede;
+}
+.head-logo-box {
+    height: 100%;
+    background:#03223f;
+    left: -1px;
+    box-shadow: 1px 3px 11px 0px #666;
+    z-index: 999;
+}
+.logo-content {
+    width: 10.875rem;
+    height: 2.5rem;
+    background:url('../imgs/index/i_logo.png') no-repeat;
+    background-size: contain;
+}
+.header-right-content {
     position: relative;
+    width:16.125rem;
+    height: 100%;
+  
 }
-.tab_bar {
-    padding-left: 0;
+.message {
+    height: 100%;
+    width: 5.3125rem;
 }
-.tab_bar li{
-    display: inline-block;
-    font-size: 1.125rem;
-    color: var(--fontColor);
+.user-content {
+    height: 100%;
+    width: 6.8125rem;
+    margin-right: 4rem;
+    padding-left: 1.125rem;
     cursor: pointer;
 }
-.tab_bar li a{
+.user-content:hover {
+    color: var(--activeColor);
+}
+.user-content:hover .fa-user-o{
+    color: var(--activeColor);
+}
+.user-content .fa-user-o {
+    margin-right: .5rem;
+}
+.user-content span {
+    font-size: 1.1rem;
+}
+.fa-bell-o,.user-content .fa-user-o {
+    font-size: 1.5rem;
+    cursor: pointer;
     color: var(--fontColor);
-    display: inline-block;
-    padding: 0 2rem 0.75rem 2rem;
 }
-.tab-a-active{
-    color: var(--activeColor) !important;
-}
-.tab-active{
-    border-bottom: solid 3px var(--activeColor);
-    font-weight: 500;
-}
-.state_box{
+
+.logout {
+    display: none;
     position: absolute;
-    right: 2.5rem;
-    bottom: 1rem;
+    left: 6rem;
+    top: 4.75rem;
+    width: 6rem;
+    height: 2.8rem;
+    line-height: 2.8rem;
+    text-align: center;
+    z-index: 1;
+    background: #fff;
+    box-shadow: 0 0 1px 2px #eee;
+    cursor: pointer;
+    color: #808080;
+}
+.logout:hover{
+    box-shadow: 0 0 1px 1px var(--activeColor);
+    color: var(--activeColor);
+}
+.logout:hover .popover-arrow {
+    border-color:var(--activeColor);
+    border-width: 1px 0 0 1px;
+}
+.logout-show {
+    display: block;
+}
+.logout  i {
+    margin-right: .2rem;
+}
+/*=================中间============================*/
+.menu-icon {
+    display: inline-block;
+    width: 1.3rem;
+    margin-right: 1.2rem;
+    margin-top: -.5rem;
+}
+.nav-row {
+    height: 101%;
+    padding: 0;
+    top: -.5rem;
+    left: -1px;
+    box-shadow: 2px 5px 10px 0 #666;
+    z-index: 999;
+}
+
+.bg-f {
+    min-height: 100%;
+    _height:100%;
+    background: #fff;
+}
+.menu1 .fa {
+    margin-right: 1rem;
+}
+
+.main {
+    width: 100%;
+    padding: 0;
+    background: #f1f2f6;
+    overflow-y:auto;
+}
+/**表格*/
+/*表格上搜索框*/
+.table-search-input {
+    margin: 1.875rem 0;
+}
+ .fixed-table-header {
+    background:#fafafa;
+}
+.bootstrap-table {
+    margin:0 2rem;
+}
+.table-content{
+	background: #f1f2f6;
+    padding: 1.25rem;
+ 
+}
+
+
+/*漏斗*/
+.fa-filter {
+    color: #aaa;
+    cursor: pointer;
+}
+
+.main-header {
+    /* height: 6.25rem; */
+    padding-left: 2.5rem;
+    box-shadow: 6px 2px 2px 1px #e5e5e5;
+    background: #fff;
+    margin-bottom: 0.4rem;
+}
+.breadcrumb {
+    margin-bottom: 0;
+    padding: 1rem 0 0 0;
+}
+.breadcrumb  li a {
+    color: var(--fontColor);
+    font-size: 1.125rem;
+}
+.main-title {
     font-size: 1.625rem;
-    text-align: right;
-    color: rgb(26,26,26);
-}
-.state_box span{
-    display: block;
-
-}
-.state_box span:first-of-type{
-    margin-bottom: 1rem;
-    font-size: 1.125rem;
-    color: rgb(128,128,128);
-}
-/*导航栏样式 end*/
-
-/*内容展示 start*/
-.company_report_name{
-    border-bottom: none;
-    padding-bottom: 0rem;
-}
-.order-content{
-    padding: 1rem;
-}
-.company_info{
-    font-size: 1.25rem;
-    color: #191919;
     font-weight: 600;
-    padding: 1rem 0 1rem 1rem;
+    padding:0.75rem 0 1rem 0;
 }
-.table_summary_content{
-    padding: 1rem;
-    color: var(--fontColor);
+.table-content{
+	height: calc(100% - 7.8rem);
 }
-.table_summary_content p{
-    line-height: 2rem;
+.search-input {
+    width: var(--inputWidthsm)!important;
 }
-/*重置公共样式*/
-.bg-f{
-    min-height: 0;
-}
-.table_summary{
-    margin-top: 1rem;
-}
-.table_summary .l-title{
-    background-color: rgb(250,250,250);
-    border: 1px solid #e6e6e6;
-}
-/*流程进度 start*/
-.progress-box{
-    padding-top: 0;
-}
-.bar_box{
-    margin-top: 0.875rem;
-}
-.bar_box span{
-    display: block;
-    /* width: 12.625rem;*/
-    padding: 0.5rem 0;
-    color: var(--fontColor);
-
-}
-.bar_box ul li{
-    display: inline-block;
-    font-size: 1.125rem;
-}
-.bar_box .bar-span-box{
-    height: 3rem;
-    margin-bottom: 0.5rem;
-}
-.bar_box .span_circle{
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 0.3125rem;
-    display: inline-block;
-    margin-right: 1.25rem;
-    padding: 0;
-    background-color: rgb(209,209,209);
-}
-.bar_box .span_bar{
-    width: 7.3rem;
-    height: 0.3rem;
-    display: inline-block;
-    vert-align: middle;
-    margin-right: 1.25rem;
-    padding: 0;
-    background-color: rgb(209,209,209);
-}
-.bar_box ul li span:first-of-type{
-    padding-top: 0;
-}
-
-.bar_box .span_active{
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 0.3125rem;
-    background-color:  var(--activeColor);
-    display: inline-block;
-    padding: 0;
-    margin-right: 1.25rem;
-}
-.bar_box .bar_active{
-    width: 7.5rem;
-    height: 0.3rem;
-    background-color:  var(--activeColor);
-    display: inline-block;
-    padding: 0;
-    margin-right: 1.25rem;
-}
-.bar_box .circle_active{
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 0.75rem;
-    background: -webkit-radial-gradient(#2592fc, #C5E6FC, #E6E7FF); /* Safari 5.1 - 6.0 */
-    background: -o-radial-gradient(#2592fc, #C5E6FC, #E6E7FF); /* Opera 11.6 - 12.0 */
-    background: -moz-radial-gradient(#2592fc, #C5E6FC, #E6E7FF); /* Firefox 3.6 - 15 */
-    background: radial-gradient(#2592fc, #C5E6FC, #E6E7FF); /* 标准的语法 */
-    display: inline-block;
-    margin-right: 1.25rem;
-}
-.bar_box .world_active{
-    color:var(--titleColor);
+label {
     font-weight: 600;
 }
-/*流程进度 end*/
 
-/*附件样式*/
-.downloadFile{
+/*过滤样式*/
+.th-inner  {
+    position: relative;
+    overflow: visible!important;
+}
+#table .deal-state {
+    display: none!important;
+}
+.deal-state {
+    height: 18rem;
+    overflow-y: auto;
+    box-shadow: 0 0 5px 1px #ddd;
+    padding: 1rem;
+    background: #fff;
+    display: none;
+    z-index: 10;
+}
+.deal-state-show {
+    display: block;
+  
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+}
+.form-check-label {
+    margin-left: .5rem;
+}
+
+
+
+.order-detail  span:first-child {
+    color: #414141;
+    font-weight: 600;
+}
+.order-detail  span:last-child {
+    color: #818181;
+}
+
+
+/*table 第一列*/
+.fixed-table-body-columns table tbody tr {
+    color: var(--activeColor);
+    cursor: pointer;
+}
+.fixed-table-body-columns table tbody tr:hover {
+    text-decoration: underline;
+}
+
+
+/*附件*/
+
+.file-upload {
+    border-top: solid 1px #ddd;
+    padding-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+.uploadFile {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 11.25rem;
     height: 8.125rem;
-    border:1px dashed #ebecf0;
+    border:dashed 1px #ebecf0;
     border-radius: 6px;
-    margin-left: 1rem;
 }
-.order-yulan{
-    text-align: center;
-    width: 11.25rem;
+.upload-over {
+    background: #fafafa;
+    border-style: solid;
 }
-/*表格样式重置*/
-.fixed-table-container thead th .th-inner, .fixed-table-container tbody td .th-inner {
-    padding-left: 1.5rem;
+.uploadFile  input {
+    cursor: pointer;
 }
-.bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td{
-    padding-left: 1.5rem;
+.uploadFile .close {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    z-index: 10;
+    color: #999;
 }
-/*圆环图样式*/
-.chartBox{
+.uploadFile img{
+    width: 2rem;
+}
+.uploadFile p {
+    color: var(--fontColor);
+}
+#upload_file {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
-    height: 15rem;
+    height: 100%;
+    opacity: 0;
 }
-/*给内容加边框 没有上边框*/
-.box_border{
-    border: 1px solid #e6e6e6;
-    border-top: 0;
-    font-weight: 400;
+
+.filename {
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0 2rem;
 }
-.box_border_all{
-    border: 1px solid #e6e6e6;
-    font-weight: 400;
+.file-upload .form-control {
+    border-radius: 6px!important;
 }
-/*备注信息*/
-.info_remark{
-    line-height: 2rem;
-    font-weight: 400;
+
+
+/*内容小标题*/
+.l-title {
+    font-size: 1.25rem;
+    color: #191919;
+    font-weight: 600;
+    padding: 1rem 0 1rem 1.875rem;
+    border-bottom:solid 1px #e6e9ee;
+}
+
+/*填报页面固定底部*/
+.fixed-btn-well {
+    height: 5rem;
+    width: 100%;
+    background: #fff;
+    bottom: 0;
+    right: 0;
+    box-shadow: 10px 0 10px 0 #e5e5e5;
 }
