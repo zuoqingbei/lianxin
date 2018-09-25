@@ -8,28 +8,54 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 public class TransApi {	 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
          String body="条条道路通罗马";
-         String from="zh";
-         String to="en";
-         
-         String result=getResult(body,from,to);
+         String appid="20180817000195393";
+         String sign=appid+body+"1435660288"+"4YtrvyuJWnTOgWplWAQ8";
+         MessageDigest md5;
+ 		try {
+ 			md5 = MessageDigest.getInstance("MD5");
+ 			 md5.update((sign).getBytes("UTF-8"));
+ 	         byte b[] = md5.digest();
+ 	          
+ 	         int i;
+ 	         StringBuffer buf = new StringBuffer("");
+ 	          
+ 	         for(int offset=0; offset<b.length; offset++){
+ 	         	i = b[offset];
+ 	         	if(i<0){
+ 	         		i+=256;
+ 	         	}
+ 	         	if(i<16){
+ 	         		buf.append("0");
+ 	         	}
+ 	         	buf.append(Integer.toHexString(i));
+ 	         }
+ 	 	   
+ 	         sign = buf.toString();
+ 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+
+ 		} 
+ 		 String result=getResult(body,sign,appid);
          System.out.println("{"+result);
          String content="{"+result;
          String json=getDate(content);
          System.out.println(json);
 	}
 	//百度平台（翻译接口）相关数据
-	public static String getResult(String body,String from ,String to){
+	public static String getResult(String body,String sign,String appid){
 		String result="";
 		//拼接相关参数
-		String params="http://openapi.baidu.com/public/2.0/bmt/translate?client_id=cxE4PWzno4Zx13LAvHX7ND5j&q="+body+"&from="+from+"&to="+to;		
+		String params="http://api.fanyi.baidu.com/api/trans/vip/translate?q="+body+"from=auto&to=en"+"&appid="+appid+"&salt=1435660288&sign="+sign;		
 		 try {
 			URL url = new URL(params);
 			URLConnection connection = url.openConnection();  

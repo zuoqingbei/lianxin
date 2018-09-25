@@ -48,7 +48,7 @@
                 </ul>
                 <div class="state_box">
                     <span>状态</span>
-                    <span>进行中</span>
+                    <span>{order.status}</span>
                 </div>
 
             </div>
@@ -409,41 +409,41 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <span>邮箱地址：</span>
-                                                <span>5367678798@qq.com</span>
+                                                <span>${company.email}</span>
                                             </div>
                                         </div>
                                         <div class="row mt-2 mb-2">
                                             <div class="col-md-4">
                                                 <span>成立日期：</span>
-                                                <span>2002-06-12</span>
+                                                <span>${company.establishment_date}</span>
                                             </div>
                                             <div class="col-md-4">
                                                 <span>传真号码：</span>
-                                                <span>123-67987821</span>
+                                                <span>${company.fax}</span>
                                             </div>
                                             <div class="col-md-4">
                                                 <span>网址：</span>
-                                                <span>http://www.lx.com</span>
+                                                <span>${company.email}</span>
                                             </div>
                                         </div>
                                         <div class="row mt-2 mb-2">
                                             <div class="col-md-4">
                                                 <span>注册资本：</span>
-                                                <span>219,,232,321,132</span>
+                                                <span>${company.registered_capital}</span>
                                             </div>
                                             <div class="col-md-4">
                                                 <span>注册地址：</span>
-                                                <span>杭州市西湖区</span>
+                                                <span>${company.address}</span>
                                             </div>
                                             <div class="col-md-4">
                                                 <span>登记状态：</span>
-                                                <span>存续</span>
+                                                <span>${company.registration_status}</span>
                                             </div>
                                         </div>
                                         <div class="row mt-2 mb-2">
                                             <div class="col-md-12">
                                                 <span>经营范围：</span>
-                                                <span class="info_remark">企业管理咨询，财务管理咨询，市场调查；软件与网络的开发与维护。接受金融机构委托从事金融信息技术外包；接受金融机构委托从事金融业务流程外包；受银行委托提供信用卡逾期催告服务；信用卡业务缴费提醒服务；受银行委托代理.</span>
+                                                <span class="info_remark">${company.operation_scope}</span>
                                             </div>
 
                                         </div>

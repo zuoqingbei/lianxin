@@ -268,32 +268,28 @@ public class HomeController extends BaseProjectController {
 							num1+=1;
 							message+=uploadFile.getOriginalFileName()+"上传失败!";
 							renderMessage(message);
-							render(path + "index.html");
 							return;
 						}
 					}else{
 						num1+=1;
 						message+=uploadFile.getOriginalFileName()+"上传失败!";
 						renderMessage(message);
-						render(path + "index.html");
 						return;
 					}
 				}
 			}catch(Exception e){
 				e.printStackTrace();
-				renderMessage(message);
-				render(path + "index.html");
+				renderMessage("上传失败");
 				return;
 			}
 		}
 		try {
 			OrderManagerService.service.modifyOrder(0,model,user,this);
-			render(path + "index.html");
+			renderMessage("保存成功");
 			throw new Exception();
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderMessage("保存失败");
-			render(path + "index.html");
 		}		
 	}
 	
