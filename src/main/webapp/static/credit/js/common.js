@@ -54,7 +54,7 @@ let Public = {
                         $("#main_content").load('/credit/front/home/createOrder')
                         break;
                     case '订单核实':
-                        $("#main_content").load('./order_manage/order_verify.html')
+                        $("#main_content").load('/credit/front/orderProcess/showOrderVerifyOfOrders')
                         break;
                     case '订单查档':
                         $("#main_content").load('./order_manage/order_filing.html')
