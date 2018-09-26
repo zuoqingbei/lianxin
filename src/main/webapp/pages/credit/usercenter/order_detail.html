@@ -37,7 +37,7 @@
                         <a>订单查档</a>
                     </li>
                 </ul>
-                <p class="main-title">订单号：<span>009234672516382136753</span></p>
+                <p class="main-title">订单号：<span>${order.num}</span></p>
                 <!-- 导航栏 -->
                 <ul class="tab_bar col-md-10">
                     <li class="tab-active"><a href="#basic_info" class="tab-a-active">基本信息</a></li>
@@ -48,7 +48,7 @@
                 </ul>
                 <div class="state_box">
                     <span>状态</span>
-                    <span>{order.status}</span>
+                    <span>${order.status}</span>
                 </div>
 
             </div>
@@ -535,12 +535,26 @@
                         附件
                     </div>
                     <div class="order-detail mb-4 order-content">
-                        <div class="uploadFile mt-3 mr-3 ml-3">
-                            <!--<input type="file" name="" id="upload_file" value="" class="file-input" />-->
-                            <img src="${BASE_PATH }static/credit/imgs/order/！.png"/>
-                            <p class="mt-2">暂无附件</p>
-                        </div>
-                        <div class="order-yulan  mt-3 ml-3"><a href="#">预览</a></div>
+                       
+                            <%if(files==null){%>
+                            	 <div class="uploadFile mt-3 mr-3 ml-3">
+		                            <!--<input type="file" name="" id="upload_file" value="" class="file-input" />-->
+		                            <img src="${BASE_PATH }static/credit/imgs/order/！.png"/>
+	                            	<p class="mt-2">暂无附件</p>
+	                            </div>
+	                            <div class="order-yulan  mt-3 ml-3"><a href="#">预览</a></div>
+                            <%}else{%>	
+                            	<%for(item in files){%>
+                            		<div class="uploadFile mt-3 mr-3 ml-3">
+		                            <!--<input type="file" name="" id="upload_file" value="" class="file-input" />-->
+		                            <img src="${BASE_PATH }static/credit/imgs/order/！.png"/>
+	                            	<p class="mt-2">${item.name}</p>
+	                            </div>
+	                            <div class="order-yulan  mt-3 ml-3"><a href="#" onclick="view(''+'${item.view_url}'+'',''+'${item.ext}'+'')">预览</a></div>
+                            	<%}%>
+                            <%}%>
+                        
+                       
                     </div>
 
                 </div>
@@ -560,4 +574,11 @@
 <script src="${BASE_PATH }static/credit/js/common.js"></script>
 <script src="${BASE_PATH }static/credit/js/order_manage/order_common.js"></script>
 <script src="${BASE_PATH }static/credit/js/order_manage/order_detail.js"></script>
+
+<script type="text/javascript">
+	function view(str,type){
+		  var url = "/credit/commonFile/previewFileOnline?url="+str+"&type="+type;  
+		    window.open(url);
+	}
+</script>
 </body>

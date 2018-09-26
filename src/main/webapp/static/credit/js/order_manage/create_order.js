@@ -8,7 +8,6 @@ let
 			} 
 		},
 		btn_download:function(){
-			var jsondata='';
 			/**点击批量上传 */
 			$("#btn_import").click(function(){
 				$("#more_upload").trigger("click");
@@ -37,7 +36,7 @@ let
 							Events.modalInfoIsError();
 						},
 						error:()=>{
-							Public.message("info")
+//							Public.message("info")
 						}
 					});
 				})
@@ -186,58 +185,59 @@ let
 		initTable(){
 			/**初始化表格 */
 			const $tableOrder = $('#tableOrder');
-			let _this = this
+
 			$tableOrder.bootstrapTable({
 				height: $(".table-modal-content").height(),
 				columns: [
-					{
-					  field: 'custom_id',
-					  title: '客户ID',
-					  align: 'center'
-					}, {
-					  field: 'custom_id',
-					  title: '客户曾用名',
-					  align: 'center',
-					}, {
-					  title: '地区',
-					  field: 'continent',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '国家',
-					  field: 'country',
-					  align: 'center',
-					  valign: 'middle',
-					
-					}, {
-					  title: '报告类型',
-					  field: 'report_type',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '订单类型',
-					  field: 'order_type',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '报告语言',
-					  field: 'report_language',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '公司名称',
-					  field: 'company_by_report',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '速度',
-					  field: 'speed',
-					  align: 'center',
-					  valign: 'middle',
-					}
-				  
-				],
-				dataType:'json',
+							{
+							  field: 'custom_id',
+							  title: '客户ID',
+							  align: 'center'
+							}, {
+							  field: 'custom_id',
+							  title: '客户曾用名',
+							  align: 'center',
+							}, {
+							  title: '地区',
+							  field: 'continent',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '国家',
+							  field: 'country',
+							  align: 'center',
+							  valign: 'middle',
+							
+							}, {
+							  title: '报告类型',
+							  field: 'report_type',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '订单类型',
+							  field: 'order_type',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '报告语言',
+							  field: 'report_language',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '公司名称',
+							  field: 'company_by_report',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '速度',
+							  field: 'speed',
+							  align: 'center',
+							  valign: 'middle',
+							}
+						  
+						],
+			   // url : 'firmSoftTable.action', // 请求后台的URL（*）
+			   // method : 'post', // 请求方式（*）post/get
 				pagination: false, //分页
 				sidePagination: 'server',
 				pageNumber:1,
@@ -258,7 +258,6 @@ let
 				  };  
 			  },  
 			  });
-			
 			  // sometimes footer render error.
 			  setTimeout(() => {
 				$tableOrder.bootstrapTable('resetView');

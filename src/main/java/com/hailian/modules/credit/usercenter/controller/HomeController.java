@@ -3,6 +3,8 @@
 package com.hailian.modules.credit.usercenter.controller;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -25,7 +27,9 @@ import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.usercenter.service.HomeService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.system.menu.SysMenu;
 import com.hailian.system.user.SysUser;
+import com.hailian.system.user.UserSvc;
 import com.hailian.util.cache.Cache;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
@@ -57,6 +61,16 @@ public class HomeController extends BaseProjectController {
 		render(path + "index.html");
 		
 	}
+	public void menu() {
+		SysUser user= (SysUser) getSessionUser();
+		if(user==null||"".equals(user)) {
+			redirect("/credit/front/usercenter/login");
+		}
+		Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
+		setAttr("user",user);
+		setAttr("menu", map);
+		render("/pages/credit/common/menu.html");
+	}
 	/**
 	 * 
 	 * @time   2018年9月17日 上午11:54:31
@@ -70,6 +84,13 @@ public class HomeController extends BaseProjectController {
 		int id=getParaToInt("id");
 		//根据订单id获取订单信息
 		CreditOrderInfo order=OrderManagerService.service.editOrder(id,this);
+		//根据id获取num
+		String num=order.getStr("num");
+		//获取附件
+		List<CreditUploadFileModel> files=CreditUploadFileModel.dao.getFile(num);
+		if(files.size()==0) {
+			files=null;
+		}
 		//根据订单信息获取公司信息
 		CreditCompanyInfo company=OrderManagerService.service.getCompany(order.getInt("company_id"));
 		//根据订单id获取历史记录信息
@@ -83,6 +104,7 @@ public class HomeController extends BaseProjectController {
 		setAttr("company",company);
 		setAttr("histroy",histroy);
 		setAttr("custom",custom);
+		setAttr("files",files);
 		//转发页面
 		render(path+"order_detail.html");
 	}
@@ -104,20 +126,7 @@ public class HomeController extends BaseProjectController {
 		String uri = this.getRequest().getRequestURI();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		String sortname=getPara("sortName");
-		String sortorder=getPara("sortOrder");
-		/*SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
-		String date=getPara("end_date","");
-		Date end_date=null;
-		if(StringUtils.isNotBlank(date)) {
-			try {
-				end_date=sdf.parse(date);
-				model.set("end_date", end_date);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
-		
+		String sortorder=getPara("sortOrder");		
 		SysUser user= (SysUser) getSessionUser();
 		String status =getPara("status");
 		if(StringUtils.isNotBlank(status)) {
@@ -128,27 +137,6 @@ public class HomeController extends BaseProjectController {
 //		List<CreditOrderInfo> result=OrderManagerService.service.getOrdersService(status,model, user);
 		int total= page.getTotalRow();
 		List<CreditOrderInfo> rows=page.getList();
-		for(int i=0;i<rows.size();i++) {
-			
-			if("0".equals(rows.get(i).getStr("status"))) {
-				rows.get(i).set("status", "提交订单");
-			}
-			if("1".equals(rows.get(i).getStr("status"))) {
-				rows.get(i).set("status", "订单已分配");
-			}
-			if("2".equals(rows.get(i).getStr("status"))) {
-				rows.get(i).set("status", "处理中");
-			}
-			if("3".equals(rows.get(i).getStr("status"))) {
-				rows.get(i).set("status", "按照流程处理完毕");
-			}
-			if("4".equals(rows.get(i).getStr("status"))) {
-				rows.get(i).set("status", "订单取消");
-			}
-			if("5".equals(rows.get(i).getStr("status"))) {
-				rows.get(i).set("status", "有相同报告，订单结束");
-			}
-		}
 		ResultType resultType=new ResultType(total,rows);
 		renderJson(resultType);
 	}
@@ -254,8 +242,9 @@ public class HomeController extends BaseProjectController {
 					ext=FileTypeUtils.getFileType(originalFile);
 					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
 						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
-						String now=DateUtils.getNow(DateUtils.YMDHMS);
-						String FTPfileName=originalFileName+now+"."+ext;
+						String now=UUID.randomUUID().toString().replaceAll("-", "");
+						originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
+						String FTPfileName=now+"."+ext;
 						String fileName=originalFileName+now;
 						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
 						if(storeFile){
@@ -267,19 +256,23 @@ public class HomeController extends BaseProjectController {
 						}else{
 							num1+=1;
 							message+=uploadFile.getOriginalFileName()+"上传失败!";
-							renderMessage(message);
+							renderMessageByFailed("文件上传失败");
+							redirect("/credit/front/home/menu");
+							
 							return;
 						}
 					}else{
 						num1+=1;
 						message+=uploadFile.getOriginalFileName()+"上传失败!";
 						renderMessage(message);
+						redirect("/credit/front/home/menu");						
 						return;
 					}
 				}
 			}catch(Exception e){
 				e.printStackTrace();
 				renderMessage("上传失败");
+				redirect("/credit/front/home/menu");
 				return;
 			}
 		}
@@ -290,6 +283,8 @@ public class HomeController extends BaseProjectController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderMessage("保存失败");
+			redirect("/credit/front/home/menu");
+			
 		}		
 	}
 	

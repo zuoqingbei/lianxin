@@ -36,6 +36,7 @@ import com.hailian.util.Config;
 import com.hailian.util.DateAddUtil;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.hailian.util.getOrderNum;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -58,7 +59,6 @@ public class OrdermanagerController extends BaseProjectController{
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
-	private String num=String.valueOf(OrderManagerService.service.getMaxId().get("id"));
 	/**
 	 * 
 	 * @time   2018年8月24日 下午6:16:22
@@ -173,6 +173,7 @@ public class OrdermanagerController extends BaseProjectController{
 	public void save() {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		CreditUploadFileModel model1= new CreditUploadFileModel();
+		String num=new getOrderNum().getNumber();
 		model1.set("business_type", "0");
 		model1.set("business_id", num);
 		int num1=0;
@@ -184,14 +185,6 @@ public class OrdermanagerController extends BaseProjectController{
 		//按照规则生成编号
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 		String date=sdf.format(new Date());
-		if(num.length()==1) {
-			num="000"+num;
-		}if(num.length()==2) {
-			num="00"+num;
-		}if(num.length()==3) {
-			num="0"+num;
-		}
-		num="00"+date+num;
 		model.set("num", num);
 		if(size >0){
 			try {
@@ -203,15 +196,15 @@ public class OrdermanagerController extends BaseProjectController{
 					ext=FileTypeUtils.getFileType(originalFile);
 					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
 						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
-						String now=DateUtils.getNow(DateUtils.YMDHMS);
-						String FTPfileName=originalFileName+now+"."+ext;
+						String now=UUID.randomUUID().toString().replaceAll("-", "");
+						originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
+						String FTPfileName=now+"."+ext;
 						String fileName=originalFileName+now;
 						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
 						if(storeFile){
 							String factpath=storePath+"/"+FTPfileName;
 							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
 							Integer userid = getSessionUser().getUserid();
-							model1.set("business_id", num);
 							UploadFileService.service.save(0,uploadFile, factpath,url,model1,fileName,userid);//记录上传信息
 						}else{
 							num1+=1;

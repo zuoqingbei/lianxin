@@ -58,6 +58,21 @@ public class TemplateDictService extends BaseService {
 		return sb.toString();
 	}
 	/**
+	 * 
+	 * @time   2018年9月25日 下午6:23:14
+	 * @author yangdong
+	 * @todo   TODO 返回List
+	 * @param  @param type
+	 * @param  @return
+	 * @return_type   List<SysDictDetail>
+	 */
+	public List<SysDictDetail> getListSysDictDetail(String type) {
+		StringBuffer sb=new StringBuffer();
+		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		listDetail.addAll(DictCache.getSysDictDetailByType(type));
+		return listDetail;
+	}
+	/**
 	 * 根据dict_type获取字典,用于添加,无默认选项,无全部选项
 	 * @time   2018年9月13日 下午12:05:29
 	 * @author yangdong

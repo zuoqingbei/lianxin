@@ -205,7 +205,6 @@
 		    	</div>
 		    </div>
         </div>
-        
 		<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
@@ -219,12 +218,13 @@
 				</div>
 				<div class="modal-body">
 					<div class="table-modal-content">
-						<table id="tableOrder"  data-toggle="table"
-                               style="position: relative">
+						<table id="tableOrder" data-toggle="table" style="position: relative">
+							
+							
 						</table>
 					</div>
 					<div class="err-box">
-						<span></span>
+						<span>1.拼写错误拼写错误拼写错误拼写错误</span>
 					</div>	
 						
 					
@@ -366,14 +366,6 @@
    	 	}
    </script>
 <script type="text/javascript">
-var oper = {
-		save:function(){
-			var url = 'credit/orderpoimanager/importExcel';
-			form1.action = url;
-			form1.submit();
-			return true;
-		}	
-	};
 function piliangDingDan(){
 	 var html="";
    	 $.ajax({
