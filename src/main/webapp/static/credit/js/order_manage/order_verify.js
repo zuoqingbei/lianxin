@@ -85,28 +85,76 @@ let Verify = {
     },
     modalSubmit(){
         /**模态框提交事件 */
+    	console.log("模态框提交事件");
         $("#modal_submit").click(function(){
+        	console.log("点击提交");
         	$("#status").val("293");
-        	$(".tableValue").submit();	
+        	$(".tableValue").ajaxSubmit(function (data) {
+        		console.log("ajaxSubmit:"+data);
+            });
             //提交成功关闭模态窗
            $(".modal-header .close").trigger("click");
+           //回显
+          	console.log("提交成功,开始回显:");
+          	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
+          		$.ajax({
+          			type:"post",
+              		url:"/credit/front/orderProcess/reallocationJson",
+              		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+              		dataType:"json",
+              		success:function(obj){
+              				console.log("回显的数据:"+obj);
+              			 	$("#table").bootstrapTable("load",obj)
+              			 }
+          			}) 
         })
-       //回显
-       	console.log("提交成功,开始回显:");
-        this.pageNumber = params.pageNumber;
-        this.pageSize = params.pageSize;
-        this.sortName = params.sortName;
-        this.sortOrder = params.sortOrder;
-        $.ajax({
-			type:"post",
-   			url:"/credit/front/orderProcess/reallocationJson",
-   			data:"pageNumber="+this.pageNumber+"&pageSize="+this.pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
-   			dataType:"json",
-   			success:function(obj){
-   				console.log("回显的数据:"+obj);
-   			 	 $("#table").bootstrapTable("load",obj)
-   			 }
-			 })
+        
+         $("#modal_save").click(function(){
+        	console.log("点击保存");
+        	$("#status").val("292");
+        	$(".tableValue").ajaxSubmit(function (data) {
+        		console.log("ajaxSubmit:"+data);
+            });
+            //提交成功关闭模态窗
+           $(".modal-header .close").trigger("click");
+           //回显
+          	console.log("提交成功,开始回显:");
+          	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
+          		$.ajax({
+          			type:"post",
+              		url:"/credit/front/orderProcess/reallocationJson",
+              		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+              		dataType:"json",
+              		success:function(obj){
+              				console.log("回显的数据:"+obj);
+              			 	$("#table").bootstrapTable("load",obj)
+              			 }
+          			}) 
+        })
+        
+         $("#modal_cancel").click(function(){
+        	console.log("点击撤销");
+        	$("#status").val("313");
+        	$(".tableValue").ajaxSubmit(function (data) {
+        		console.log("ajaxSubmit:"+data);
+            });
+            //提交成功关闭模态窗
+           $(".modal-header .close").trigger("click");
+           //回显
+          	console.log("提交成功,开始回显:");
+          	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
+          		$.ajax({
+          			type:"post",
+              		url:"/credit/front/orderProcess/reallocationJson",
+              		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+              		dataType:"json",
+              		success:function(obj){
+              				console.log("回显的数据:"+obj);
+              			 	$("#table").bootstrapTable("load",obj)
+              			 }
+          			}) 
+        })
+      
         
     },
     popperFilter(){
@@ -262,9 +310,8 @@ let Verify = {
         pageNumber = row.pageNumber;
         console.log("pageNumber====="+pageNumber);
         pageSize = row.pageSize;
-    	  sortName = row.sortName;
-    	  sortOrder = row.sortOrder;
-    	  reportt = row.report_userKey;
+    	sortName = row.sortName;
+    	sortOrder = row.sortOrder;
     	  console.log("report_userKey====="+row.report_userKey);
       }
     },

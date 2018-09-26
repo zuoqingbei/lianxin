@@ -183,14 +183,7 @@ public class OrderProcessController extends BaseProjectController{
 		reallocationJson();
 		return model.get("num");
 	}
-	public String orderVerifySave() {
-		String code = (String) getRequest().getParameter("statusCode");
-		Map<String,Object> map = new HashMap<>();
-		map.put("status", code);
-		CreditOrderInfo model = PublicUpdateMod(map);
-		//renderMessage("保存成功");
-		return model.get("num");
-	}
+	
 	/**
 	 * @todo   订单管理下的订单核实的保存
 	 * @time   2018年9月21日 上午9:21:00
@@ -200,7 +193,7 @@ public class OrderProcessController extends BaseProjectController{
 	public void verifyOfOrderMangerSave(){
 		String orderNum = getModel(CreditOrderInfo.class).get("id")+"";
 		uploadFile(orderNum);
-		orderVerifySave();
+		statusSave();
 	}
 	
 	

@@ -39,6 +39,7 @@ body {
 .input-group-addon {
     top:0;
     width: 4.714em;
+    height: 4.125rem;
     background: #f5f8fd;
     color: #abaeb3;
     border: 1px solid #ccc;
@@ -116,6 +117,7 @@ body {
  #username,#psw{
      box-shadow: none;
      transition: none;
-     
+     border-top-left-radius: 0!important;
+     border-bottom-left-radius: 0!important;
  }
  
