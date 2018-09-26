@@ -47,10 +47,10 @@ public class UserController  extends BaseProjectController{
 				Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
 				setAttr("user",user);
 				setAttr("menu", map);
-				render("/pages/credit/common/menu.html");
+				redirect("/credit/front/home/menu");
 			}else{
 				setAttr("isSuccess", "No");
-				render(PATH+"showLogin.html");
+				redirect("/credit/front/usercenter/showLogin");
 			}
 		}
 		
