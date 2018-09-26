@@ -32,13 +32,16 @@
 		    	</div>
 		    	<!--表单-->
 		    	<div class="table-content p-3">
+		    		<div class="right-btn btn-group d-flex align-items-center justify-content-end">
+						<form action=""  enctype="multipart/form-data" id="form_File">
+							<input type="file" style="visibility: hidden" id="more_upload" >
+							<button id="show_modal" data-toggle="modal" data-target="#importModal" style="visibility:hidden"></button>
+							<button type="button" id="btn_import" class="btn btn-primary" ><i class="fa fa-download"></i>批量导入</button>
+							<button type="button" id="btn_download" class="btn btn-default ml-3">下载模板</button>
+						</form>
+					</div>
 		    		<form id="orderForm" class="form-inline " enctype="multipart/form-data"   action="/credit/front/home/saveOrder" method="post">
-		    			<div class="form-group row d-flex justify-content-end mb-4">
-		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
-		                    	<button type="button" id="btn_import" class="btn btn-primary"  data-toggle="modal" data-target="#importModal"><i class="fa fa-download"></i>批量导入</button>
-		                    	<button type="button" id="btn_download" class="btn btn-default ml-3">下载模板</button>
-		    				</div>
-		    			</div>
+		    			
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>客户ID：</label>
@@ -215,12 +218,10 @@
 				</div>
 				<div class="modal-body">
 					<div class="table-modal-content">
-						<table id="tableOrder"
-							data-toggle="table"
+						<table id="tableOrder" data-toggle="table" style="position: relative">
 							
-							style="position: relative"
-						></table>
-
+							
+						</table>
 					</div>
 					<div class="err-box">
 						<span>1.拼写错误拼写错误拼写错误拼写错误</span>
@@ -363,4 +364,21 @@
 				});
    	 	}
    </script>
+<script type="text/javascript">
+function piliangDingDan(){
+	 var html="";
+   	 $.ajax({
+	        url:"/credit/orderpoimanager/importExcel",
+	        type:"post",
+	        dataType:"json",
+	        success: function(data) {
+	        	console.log(data)
+	        	$.each(data,function(index,item){
+	        		
+	        	})
+	        },
+	    });
+	 	}
+
+</script>
 </html>
