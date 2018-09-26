@@ -90,11 +90,13 @@ let
 			});
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
-					
+				$("input[name='attr.status']").val("290");
+				$("#orderForm").submit();
 			}
 		},
 		formSave: function(){
-			
+			$("input[name='attr.status']").val("289");
+				$("#orderForm").submit();
 		},
 		closeProgress(){
 			$(".close").click(function(){
@@ -129,7 +131,7 @@ let
 			/*表单提交*/
 			$("#btn_submit").click(Events.formSubmit);
 			/*表单保存*/
-			$("#btn_submit").click(Events.formSave);
+			$("#btn_save").click(Events.formSave);
         },
         // 画面初始化
         initialize: function () {
