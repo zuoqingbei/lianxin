@@ -46,7 +46,7 @@ let Allocation = {
            			dataType:"json",
            			success:function(obj){
            				console.log("回显的数据:"+obj);
-           			 	 $("#table").bootstrapTable("load",obj)
+           			 	$("#table").bootstrapTable("load",obj)
            			 }
        			 })
        			 
