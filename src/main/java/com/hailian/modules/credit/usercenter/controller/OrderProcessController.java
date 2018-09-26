@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
@@ -13,12 +14,15 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.front.template.TemplateSysUserService;
-import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.jfinal.json.JFinalJson;
+import com.jfinal.json.Json;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
+
+import net.sf.json.JSONArray;
 /**
 * @time   2018年9月14日 上午11:00:00
 * @author lzg
@@ -143,12 +147,21 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	/**
 	 * @todo   展示订单管理下的订单核实页
-	 * @time   2018年9月120日 下午 13:30
+	 * @time   2018年9月12日 下午 13:30
 	 * @author lzg
 	 * @return_type   void
 	 */
 	public void showOrderVerifyOfOrders(){
 		render(PATH+"order_verify.html");
+	}
+	/**
+	 * @todo   展示订单查档页
+	 * @time   2018年9月26日 下午 13:30
+	 * @author lzg
+	 * @return_type   void
+	 */
+	public void showOrderFiling(){
+		render(PATH+"order_filing.html");
 	}
 	/**
 	 *获取订单数据
@@ -161,6 +174,7 @@ public class OrderProcessController extends BaseProjectController{
 		List<CreditOrderInfo> rows = pager.getList();
 		TemplateSysUserService templete = new TemplateSysUserService();
 		for (CreditOrderInfo creditOrderInfo : rows) {
+			//参数2代表角色id为2
 			String seleteStr= templete.getSysUser(2, creditOrderInfo.get("report_user"));
 			creditOrderInfo.put("seleteStr",seleteStr);
 		}
@@ -195,8 +209,6 @@ public class OrderProcessController extends BaseProjectController{
 		uploadFile(orderNum);
 		statusSave();
 	}
-	
-	
 	
 	/**
 	 * 获取前台文件上传到文件服务器并将文件信息记录到文件实体表
@@ -246,6 +258,8 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 	}
+	
+	
 	
 	
 }

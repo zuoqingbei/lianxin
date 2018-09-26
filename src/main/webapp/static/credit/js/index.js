@@ -89,17 +89,17 @@ let Index = {
     hideShowStyle(){
       /**展开收起样式 */
       $("#hideBtn").click((e)=>{
-        if($('#hideBtn').text().trim() === '收起'){
-          $("#btnCollapse").css({'height':'0'})
-          $('#hideBtn').html('展开 <i class="fa fa-angle-down"></i>')
-          $(".fixed-table-body").css({'height':'115%','transition':'height .1s'})
-          $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"12px",'transition':'all .1s'})
-        }else if($('#hideBtn').text().trim() === '展开'){
-          $("#btnCollapse").css({'height':'3rem'})
-          $('#hideBtn').html('收起 <i class="fa fa-angle-up"></i>')
-          $(".fixed-table-body").css({'height':'100%','transition':'height .1s'})
-           $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"8px",'transition':'all .1s'})
-        }
+		 if($('#hideBtn').text().trim() === '收起'){
+	         $("#btnCollapse").css({'height':'0',"overflow":'hidden'})
+	         $('#hideBtn').html('展开 <i class="fa fa-angle-down"></i>')
+	         $(".fixed-table-body").css({'height':'115%','transition':'all .1s'})
+	         $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"12px",'transition':'all .1s'})
+	        }else if($('#hideBtn').text().trim() === '展开'){
+	         $("#btnCollapse").css({'height':'3rem',"overflow":'visibility'})
+	         $('#hideBtn').html('收起 <i class="fa fa-angle-up"></i>')
+	         $(".fixed-table-body").css({'height':'100%','transition':'all .1s'})
+	         $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"8px",'transition':'all .1s'})
+	        }
     })
     },
     initTable(){

@@ -1,11 +1,6 @@
 let Login = {
     init(){
         /***初始化函数 */
-    	//$(".error-tip").hide();
-    	console.log($(".isSuccess").val());
-    	if($(".isSuccess").val()==='No'){
-    		$(".error-tip").show();/**展示提示信息*/
-    	}
         this.login();
     },
     login(){
@@ -20,7 +15,6 @@ let Login = {
                 $(".psdTip").hide()
                 $(".password span").removeClass("border-error")
                 $("#psw").removeClass("border-error")
-                return false;
             }else if(user && !psw) {
                 $(".userTip").hide()
                 $(".username span").removeClass("border-error")
@@ -28,7 +22,6 @@ let Login = {
                 $(".psdTip").show()
                 $(".password span").addClass("border-error")
                 $("#psw").addClass("border-error")
-                return false;
             }else if(user && psw) {
                 $(".userTip").hide()
                 $(".username span").removeClass("border-error")
@@ -37,12 +30,23 @@ let Login = {
                 $(".password span").removeClass("border-error")
                 $("#psw").removeClass("border-error")
 
-                
+                /**调用登录接口 */
 
+               // $(".error-tip").show();
+
+                /*$.ajax({
+                	url:"/credit/front/usercenter/login",
+                	data:$("meForm").serialize(),
+                	type:"json",
+                	success:function(data){
+                		
+                	}
+                });*/
             }
             
 
 
+          
         })
     },
   
