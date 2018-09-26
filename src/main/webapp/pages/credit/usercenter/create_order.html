@@ -157,14 +157,14 @@
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">上传相关资料：</label>
 		                        <div class="form-control search-input uploadInformation col-md-8">
-		                        	<input type="file" name="file_url" id="upload_file" value=""/>                     	                     	
+		                        	<input class="upload_file" type="file" name="file_url" id="upload_file" value=""/>                     	                     	
 		                        	<i class="fa fa-cloud-upload"></i>
 		                        	<p class="">请将上传的PDF、JPG、PNG、EXCEL、WORD文件拖至此处，大小不超过5M</p>
 								</div>
 								<div class="progress-box" id="Close">
 									<div class="file-box">
 										<i class="fa fa-paperclip"></i>
-										<span class="filename">a.png</span>
+										<span id="filename" class="filename">a.png</span>
 									</div>
 									<div class="progress">
 										<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
@@ -239,7 +239,6 @@
     
    
     <script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>
-    <script type="text/javascript" src="${BASE_PATH }static/common/valid.js"></script>
    <script type="text/javascript">
    		$(function(){
    			$.get('/credit/front/home/getMessage',function(data){
