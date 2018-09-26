@@ -35,11 +35,11 @@
 		    		<div class="right-btn btn-group d-flex align-items-center justify-content-end">
 						<form action=""  enctype="multipart/form-data" id="form_File">
 							<input type="file" style="visibility: hidden" id="more_upload" >
-							<button id="show_modal" data-toggle="modal" data-target="#importModal" style="visibility:hidden"></button>
 							<button type="button" id="btn_import" class="btn btn-primary" ><i class="fa fa-download"></i>批量导入</button>
 							<button type="button" id="btn_download" class="btn btn-default ml-3">下载模板</button>
 						</form>
 					</div>
+					<button id="show_modal" data-toggle="modal" data-target="#importModal" style="visibility:hidden"></button>
 		    		<form id="orderForm" class="form-inline " enctype="multipart/form-data"   action="/credit/front/home/saveOrder" method="post">
 		    			
 		    			<div class="form-group row d-flex justify-content-around mb-4">
@@ -205,6 +205,7 @@
 		    	</div>
 		    </div>
         </div>
+        
 		<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
@@ -218,13 +219,12 @@
 				</div>
 				<div class="modal-body">
 					<div class="table-modal-content">
-						<table id="tableOrder" data-toggle="table" style="position: relative">
-							
-							
+						<table id="tableOrder"  data-toggle="table"
+                               style="position: relative">
 						</table>
 					</div>
 					<div class="err-box">
-						<span>1.拼写错误拼写错误拼写错误拼写错误</span>
+						<span></span>
 					</div>	
 						
 					
@@ -366,6 +366,14 @@
    	 	}
    </script>
 <script type="text/javascript">
+var oper = {
+		save:function(){
+			var url = 'credit/orderpoimanager/importExcel';
+			form1.action = url;
+			form1.submit();
+			return true;
+		}	
+	};
 function piliangDingDan(){
 	 var html="";
    	 $.ajax({

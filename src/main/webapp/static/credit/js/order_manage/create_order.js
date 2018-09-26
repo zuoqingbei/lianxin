@@ -8,35 +8,62 @@ let
 			} 
 		},
 		btn_download:function(){
+			var jsondata='';
 			/**点击批量上传 */
 			$("#btn_import").click(function(){
 				$("#more_upload").trigger("click");
 				$("#more_upload").on("change",()=>{
-					var formData = new FormData();
-					formData.append("pic",$("#more_upload")[0].files);
+					var form = document.getElementById("form_File");//获取到form表单
+					var formData = new FormData(form);
+					formData.append("pic",$("#more_upload")[0].files[0]);
 					console.log(formData)
 					$.ajax({
 						type: "POST", // 数据提交类型
-						url: "upfile.php", // 发送地址
+						url: "/credit/orderpoimanager/importExcel", // 发送地址
 						data: formData, //发送数据
+						dataType:"json",
 						async: true, // 是否异步
 						processData: false, //processData 默认为false，当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
 						contentType: false, //
 						success:(data)=>{
 							/**成功 */
+							console.log(data.orderList)
+							console.log(data)
+							jsondata=data.orderList.rows;
 							$("#show_modal").trigger("click")
-							Page.initTable()
+							Page.initTable(data.orderList)
+							$("#tableOrder").bootstrapTable("load",data.orderList)
+							$(".err-box span").html(data.errormark)
 							Events.modalInfoIsError();
 						},
 						error:()=>{
 							Public.message("info")
 						}
 					});
-					
-
-
 				})
-			})
+			}),
+		
+	$("#modal_submit").click(function() {
+    $("#request-process-patent").html("正在提交数据，请勿关闭当前窗口...");
+	    $.ajax({
+	        type: "POST",
+	        url: "/credit/orderpoimanager/savedata",
+	        contentType: "application/json; charset=utf-8",
+	        data: JSON.stringify(jsondata),
+	        dataType: "json",
+	        success: function (message) {
+	            if (message > 0) {
+	                alert("请求已提交！我们会尽快与您取得联系");
+	            }
+	        },
+	        error: function (message) {
+	            $("#request-process-patent").html("提交数据失败！");
+	        }
+	    });
+	})	
+			
+			
+			
 		},
 		emailAdd: function (obj){
             let tv = $(obj).val();
@@ -159,26 +186,21 @@ let
 		initTable(){
 			/**初始化表格 */
 			const $tableOrder = $('#tableOrder');
-
+			let _this = this
 			$tableOrder.bootstrapTable({
 				height: $(".table-modal-content").height(),
 				columns: [
-					 {
-					  title: '序号',
-					  field: 'no',
-					  align: 'center',
-					  valign: 'middle',
-					},{
-					  field: 'client_id',
+					{
+					  field: 'custom_id',
 					  title: '客户ID',
 					  align: 'center'
 					}, {
-					  field: 'client_name',
+					  field: 'custom_id',
 					  title: '客户曾用名',
 					  align: 'center',
 					}, {
 					  title: '地区',
-					  field: 'region',
+					  field: 'continent',
 					  align: 'center',
 					  valign: 'middle',
 					}, {
@@ -199,12 +221,12 @@ let
 					  valign: 'middle',
 					}, {
 					  title: '报告语言',
-					  field: 'reprot_lan',
+					  field: 'report_language',
 					  align: 'center',
 					  valign: 'middle',
 					}, {
 					  title: '公司名称',
-					  field: 'firm_name',
+					  field: 'company_by_report',
 					  align: 'center',
 					  valign: 'middle',
 					}, {
@@ -215,9 +237,8 @@ let
 					}
 				  
 				],
-			   // url : 'firmSoftTable.action', // 请求后台的URL（*）
-			   // method : 'post', // 请求方式（*）post/get
-				pagination: true, //分页
+				dataType:'json',
+				pagination: false, //分页
 				sidePagination: 'server',
 				pageNumber:1,
 				pageSize:10,
@@ -237,6 +258,7 @@ let
 				  };  
 			  },  
 			  });
+			
 			  // sometimes footer render error.
 			  setTimeout(() => {
 				$tableOrder.bootstrapTable('resetView');

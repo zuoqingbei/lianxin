@@ -611,13 +611,25 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		return CreditOrderInfo.dao.findFirst("SELECT MAX(id) as id FROM credit_order_info");
 	}
 	/**
-	 * 获取做单量占比
+	 * 获取近三个月订单数量
 	* @author doushuihai  
+	 * @return 
 	* @date 2018年9月25日下午1:28:51  
 	* @TODO
 	 */
-	public void zuoDanZhanBi(){
-		String sql="";
+	public List<CreditOrderInfo> zuoDanZhanBi(){
+		String sql="select report_user,count(*) as dingdanZhanBi FROM credit_order_info where del_flag='0' and create_date between date_sub(now(),interval 3 month) and now() GROUP BY report_user ";
+		return CreditOrderInfo.dao.find(sql);
+	}
+	/**
+	 * 近三个月按时订单数
+	* @author doushuihai  
+	* @date 2018年9月25日下午3:02:15  
+	* @TODO
+	 */
+	public List<CreditOrderInfo> anShiDiJiao(){
+		String sql="select report_user,count(*) as anshidijiao FROM credit_order_info where del_flag='0' and submit_date<end_date and create_date between date_sub(now(),interval 3 month) and now() GROUP BY report_user ";
+		return CreditOrderInfo.dao.find(sql);
 	}
 	
 
