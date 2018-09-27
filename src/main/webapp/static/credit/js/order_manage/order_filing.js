@@ -26,15 +26,15 @@ let Filing = {
           filename = filename_qz_str + '.' +filetype
           let fileicon = '';
           if(filetype === 'doc' || filetype === 'docx') {
-            fileicon = '../../imgs/order/word.png'
+            fileicon = '/static/credit/imgs/order/word.png'
           }else if(filetype === 'xlsx' || filetype === 'xls') {
-            fileicon = '../../imgs/order/Excel.png'
+            fileicon = '/static/credit/imgs/order/Excel.png'
           }else if(filetype === 'png') {
-            fileicon = '../../imgs/order/PNG.png'
+            fileicon = '/static/credit/imgs/order/PNG.png'
           }else if(filetype === 'jpg') {
-            fileicon = '../../imgs/order/JPG.png'
+            fileicon = '/static/credit/imgs/order/JPG.png'
           }else if(filetype === 'pdf') {
-            fileicon = '../../imgs/order/PDF.png'
+            fileicon = '/static/credit/imgs/order/PDF.png'
           }
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
