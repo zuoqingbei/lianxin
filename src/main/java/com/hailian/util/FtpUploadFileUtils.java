@@ -36,8 +36,8 @@ public class FtpUploadFileUtils {
 				return result;
 			}
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
-//			ftp.enterLocalActiveMode();
-			ftp.enterLocalPassiveMode(); 
+			ftp.enterLocalActiveMode();
+//			ftp.enterLocalPassiveMode(); 
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
 			String s = "/"+storePath;
 			String[] dirs = s.split("/");
@@ -90,6 +90,7 @@ public class FtpUploadFileUtils {
 		}
 		return result;
 	}
+	
 	public static boolean storeFtpFile(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException {
 		FileInputStream fis = null;
 		boolean result = false;
