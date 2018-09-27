@@ -35,17 +35,17 @@
 		    		<div class="right-btn btn-group d-flex align-items-center justify-content-end">
 						<form action=""  enctype="multipart/form-data" id="form_File">
 							<input type="file" style="visibility: hidden" id="more_upload" >
-							<button id="show_modal" data-toggle="modal" data-target="#importModal" style="visibility:hidden"></button>
 							<button type="button" id="btn_import" class="btn btn-primary" ><i class="fa fa-download"></i>批量导入</button>
 							<button type="button" id="btn_download" class="btn btn-default ml-3">下载模板</button>
 						</form>
 					</div>
+					<button id="show_modal" data-toggle="modal" data-target="#importModal" style="visibility:hidden"></button>
 		    		<form id="orderForm" class="form-inline " enctype="multipart/form-data"   action="/credit/front/home/saveOrder" method="post">
 		    			
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>客户ID：</label>
-		                        <select name="attr.custom_id" valid="vselect" validname="客户ID" class="form-control search-input formSelect col-md-8" id="client_ID" onchange="customChange();">
+		                        <select name="attr.custom_id" valid="vselect" validname="客户ID" class="form-control  formSelect col-md-8" id="client_ID" onchange="customChange();">
 		                            <option value="0" disabled selected>请输入客户ID</option>
 		                            <%for(item in customs){%>
 		                             <option value="${item.id}" >${item.id}</option>
@@ -55,17 +55,17 @@
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">客户用户名：</label>
-		                        <input name="customname" type="text" class="form-control search-input col-md-8" id="client_userNname" placeholder="请输入客户用户名">
+		                        <input name="customname" type="text" class="form-control  col-md-8" id="client_userNname" placeholder="请输入客户用户名">
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>接单日期：</label>
-		                        <input name="attr.receiver_date" valid="vselect" validname="接单日期"  type="text" class="form-control search-input col-md-8" id="client_order_date" disabled/>
+		                        <input name="attr.receiver_date" valid="vselect" validname="接单日期"  type="text" class="form-control  col-md-8" id="client_order_date" disabled/>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>地区：</label>
-		                        <select name="attr.continent" valid="vselect" validname="地区" class="form-control search-input formSelect col-md-8" id="client_area" onchange="continentchange()">
+		                        <select name="attr.continent" valid="vselect" validname="地区" class="form-control  formSelect col-md-8" id="client_area" onchange="continentchange()">
 		                            ${sandbar!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择地区</p>
@@ -74,14 +74,14 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>国家：</label>
-		                        <select name="attr.country" valid="vselect" validname="国家" class="form-control search-input formSelect col-md-8" id="client_country" onchange="countrychange()">
+		                        <select name="attr.country" valid="vselect" validname="国家" class="form-control  formSelect col-md-8" id="client_country" onchange="countrychange()">
 		                            <option m-type="" value="0" disabled selected>请选择国家</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择国家</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告类型：</label>
-		                        <select name="attr.report_type" valid="vselect" validname="报告类型" class="form-control search-input formSelect col-md-8" id="client_reportType" onchange="reportTypeChange();">
+		                        <select name="attr.report_type" valid="vselect" validname="报告类型" class="form-control  formSelect col-md-8" id="client_reportType" onchange="reportTypeChange();">
 		                             ${reportType!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告类型</p>
@@ -90,14 +90,14 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>订单类型：</label>
-		                        <select name="attr.order_type" valid="vselect" validname="订单类型" class="form-control search-input formSelect col-md-8" id="client_orderType" onchange="ordertypechange();">
+		                        <select name="attr.order_type" valid="vselect" validname="订单类型" class="form-control  formSelect col-md-8" id="client_orderType" onchange="ordertypechange();">
 		                           ${ordertype!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择订单类型</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
-		                        <select name="attr.report_language" valid="vselect" validname="报告语言" class="form-control search-input formSelect col-md-8" id="client_reportLanguage" onchange="languagechange()">
+		                        <select name="attr.report_language" valid="vselect" validname="报告语言" class="form-control  formSelect col-md-8" id="client_reportLanguage" onchange="languagechange()">
 		                        	 <option value="0" disabled selected>请选择语言</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告语言</p>
@@ -106,14 +106,14 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6 layui-form">
 		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>公司：</label>
-                                        <select name="attr.company_id" class="search-input col-md-8 layui-input" lay-search="" ay-verify="" >
+                                        <select name="attr.company_id" class=" col-md-8 layui-input" lay-search="" ay-verify="" >
                                             <option value="0" disabled selected>请选择公司</option>
                                         </select>
 		                    	<p class="errorInfo col-md-8">请输入正确公司名称</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>速度：</label>
-		                        <select name="attr.speed" valid="vselect" validname="速度" class="form-control search-input formSelect col-md-8" id="client_speed" onchange="speedchange()">
+		                        <select name="attr.speed" valid="vselect" validname="速度" class="form-control  formSelect col-md-8" id="client_speed" onchange="speedchange()">
 		                           ${orderspeed!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择速度</p>
@@ -122,66 +122,54 @@
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">报告用时：</label>
-		                        <input name="attr.user_time" type="text" class="form-control search-input col-md-8" id="client_reportTime" readonly >
-		                       <input name="attr.user_time_id" type="hidden" class="form-control search-input col-md-8">
+		                        <input name="attr.user_time" type="text" class="form-control  col-md-8" id="client_reportTime" readonly >
+		                       <input name="attr.user_time_id" type="hidden" class="form-control  col-md-8">
 		                        
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">客户参考号：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_referenceNumber" placeholder="请输入客户参考号">
+		                        <input type="text" class="form-control  col-md-8" id="client_referenceNumber" placeholder="请输入客户参考号">
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">地址：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_address" placeholder="请输入地址">
+		                        <input type="text" class="form-control  col-md-8" id="client_address" placeholder="请输入地址">
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">电话：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_telephone" placeholder="请输入电话">
+		                        <input type="text" class="form-control  col-md-8" id="client_telephone" placeholder="请输入电话">
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">传真：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_fax" placeholder="请输入传真">
+		                        <input type="text" class="form-control  col-md-8" id="client_fax" placeholder="请输入传真">
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">联系人：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_contact" placeholder="请输入联系人">
+		                        <input type="text" class="form-control  col-md-8" id="client_contact" placeholder="请输入联系人">
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">Email：</label>
-		                        <input type="text" class="form-control search-input col-md-8" id="client_email" onblur="Events.emailAdd(this)" placeholder="请输入邮箱地址">
+		                        <input type="text" class="form-control  col-md-8" id="client_email" onblur="Events.emailAdd(this)" placeholder="请输入邮箱地址">
 		                    	<p class="errorInfo col-md-8">请输入正确格式</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">上传相关资料：</label>
-		                        <div class="form-control search-input uploadInformation col-md-8">
+		                        <div class="form-control  uploadInformation col-md-8">
 		                        	<input class="upload_file" type="file" name="file_url" id="upload_file" value=""/>                     	                     	
 		                        	<i class="fa fa-cloud-upload"></i>
 		                        	<p class="">请将上传的PDF、JPG、PNG、EXCEL、WORD文件拖至此处，大小不超过5M</p>
-								</div>
-								<div class="progress-box" id="Close">
-									<div class="file-box">
-										<i class="fa fa-paperclip"></i>
-										<span id="filename" class="filename">a.png</span>
-									</div>
-									<div class="progress">
-										<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
-									</div>     
-									<button type="button" class="close" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>            
 								</div>
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4 remarkLabel" for="">备注：</label>
-		                        <textarea class="form-control search-input remark col-md-8" name="" rows="" cols="" placeholder="请输入其他细节"></textarea>
+		                        <textarea class="form-control  remark col-md-8" name="" rows="" cols="" placeholder="请输入其他细节"></textarea>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                    </div>
@@ -240,6 +228,7 @@
     
    
     <script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>
+    <script type="text/javascript" src="${BASE_PATH }static/common/valid.js"></script>
    <script type="text/javascript">
    		$(function(){
    			$.get('/credit/front/home/getMessage',function(data){

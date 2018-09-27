@@ -1,16 +1,10 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 
-import java.util.List;
-import java.util.Map;
-
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.credit.common.controller.CommonController;
-import com.hailian.system.menu.SysMenu;
 import com.hailian.system.user.SysUser;
-import com.hailian.system.user.UserSvc;
 import com.hailian.util.encrypt.Md5Utils;
 import com.jfinal.kit.PropKit;
 /**
@@ -44,13 +38,12 @@ public class UserController  extends BaseProjectController{
 				setSessionUser(user);
 				//setSessionAttr(Attr.SESSION_NAME, user);
 				//render(PATH+"menu.html");
-				Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
-				setAttr("user",user);
-				setAttr("menu", map);
-				render("/pages/credit/common/menu.html");
+				//Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
+				//setAttr("user",user);
+				//setAttr("menu", map);
+				redirect("/credit/front/home/menu");
 			}else{
-				setAttr("isSuccess", "No");
-				render(PATH+"showLogin.html");
+				redirect("/credit/front/usercenter/showLogin");
 			}
 		}
 		

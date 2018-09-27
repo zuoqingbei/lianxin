@@ -311,3 +311,38 @@ label {
     right: 0;
     box-shadow: 10px 0 10px 0 #e5e5e5;
 }
+
+.fixed-backup {
+    position: absolute;
+    bottom: 7rem;
+    right: 5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--activeColor);
+    color: #fff;
+    font-size: 1.8rem;
+    display: none;
+    text-align:center;
+    line-height: 2.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.fixed-backup:hover {
+    background:#1890ee;
+}
+.all-tip {
+    display: none;
+    position: absolute;
+    top: 1.2rem;
+    left: 50%;
+    width: 11.25rem;
+    height: 2.8rem;
+    text-align: center;
+    line-height: 2.8rem;
+    box-shadow: 0 0 15px #ccc;
+    border-radius: 6px;
+}
+.all-tip img {
+    width: 1.5rem;
+    display: inline-block;
+}

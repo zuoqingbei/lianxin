@@ -1,5 +1,6 @@
 package com.hailian.modules.credit.orderpoimanager.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -27,9 +30,12 @@ import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
+import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.system.dict.SysDictDetail;
+import com.jfinal.json.FastJson;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.upload.UploadFile;
 
 /**
@@ -51,20 +57,21 @@ public class OrderPoiController extends BaseProjectController {
 	 */
 	@ApiOperation(url = "/credit/orderpoimanager/importExcel", httpMethod = "POST")
 	public void importExcel() throws IOException {
+		Integer userid = getSessionUser().getUserid();
 		String errormark="";
 		int errornum=0;
-		UploadFile upLoadFile = getFile("xxxx");
+		List<UploadFile> upLoadFile = getFiles();
 		List<Object> list=new ArrayList<Object>();
 		List<CreditOrderInfo> orderList = new ArrayList<CreditOrderInfo>();
-		File file = upLoadFile.getFile();
+		File file = upLoadFile.get(0).getFile();
 		FileInputStream fileIn = new FileInputStream(file);
 		//根据指定的文件输入流导入Excel从而产生Workbook对象
 		Workbook wb0 = null;
 		if (file != null) {
 			//根据指定的文件输入流导入Excel从而产生Workbook对象
-			if (FileTypeUtils.getFileType(upLoadFile.getOriginalFileName()).equals("xlsx")) {
+			if (FileTypeUtils.getFileType(upLoadFile.get(0).getOriginalFileName()).equals("xlsx")) {
 				wb0 = new XSSFWorkbook(fileIn);
-			} else if (FileTypeUtils.getFileType(upLoadFile.getOriginalFileName()).equals("xls")) {
+			} else if (FileTypeUtils.getFileType(upLoadFile.get(0).getOriginalFileName()).equals("xls")) {
 				wb0 = new HSSFWorkbook(new POIFSFileSystem(fileIn));
 			}
 			List<CountryModel> countrys = CountryModel.dao.getCountrys(null);
@@ -87,122 +94,161 @@ public class OrderPoiController extends BaseProjectController {
 					  if (row.getRowNum() < 1) {
 							continue;
 						}
-						if (row.getCell(0) != null) {
-							row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
-							String custom_id=row.getCell(0).getStringCellValue();
-							CustomInfoModel customById = CustomInfoModel.dao.getCustomById(Integer.parseInt(custom_id));
-							if(customById==null){
+						if (row.getCell(1) != null) {
+							row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+							String custom_id=row.getCell(1).getStringCellValue();
+							List<CustomInfoModel> customById = CustomInfoModel.dao.getCustom(Integer.parseInt(custom_id));
+							if(CollectionUtils.isEmpty(customById)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第1列信息填写错误;";
+								errormark+=errornum+".第"+r+"行，第B列信息填写错误;";
 							}
 							order.set("custom_id", custom_id);
 						}else{
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第1列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第B列信息漏填;";
 						}
-						if (row.getCell(1) != null) {
-							row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
-							order.set("email", row.getCell(1).getStringCellValue());
-						}
-						if (row.getCell(2) != null) {
-							row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
-							String continent = row.getCell(2).getStringCellValue();
+						
+						if (row.getCell(3) != null) {
+							row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+							String continent = row.getCell(3).getStringCellValue();
 							List<SysDictDetail> continentList = SysDictDetail.dao.getDictDetailByContinent(continent);
 							
 							if(CollectionUtils.isEmpty(continentList)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第3列信息填写错误;";
+								errormark+=errornum+".第"+r+"行，第D列信息填写错误;";
 							}
 							order.set("continent", continent);
 						}else{
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第3列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第D列信息漏填;";
 						}
-						if (row.getCell(3) != null) {
-							row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
-							String countryName = row.getCell(3).getStringCellValue();
+						if (row.getCell(4) != null) {
+							row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
+							String countryName = row.getCell(4).getStringCellValue();
 							List<CountryModel> countryByName = CountryModel.dao.getCountryByName(countryName);
 							if(CollectionUtils.isEmpty(countryByName)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第4列信息填写错误";
+								errormark+=errornum+".第"+r+"行，第F列信息填写错误;";
 							}
 							order.set("country", countryName);
 						}else{
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第4列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第F列信息漏填;";
 						}
-						if (row.getCell(4) != null) {
-							row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
-							String report_type = row.getCell(4).getStringCellValue();
+						if (row.getCell(5) != null) {
+							row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
+							String report_type = row.getCell(5).getStringCellValue();
 							List<ReportTypeModel> reportTypeByName = ReportTypeModel.dao.getReportTypeByName(report_type);
 							
 							if(CollectionUtils.isEmpty(reportTypeByName)){
 								reportId = reportTypeByName.get(0).get("id");
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第5列信息填写错误";
+								errormark+=errornum+".第"+r+"行，第G列信息填写错误;";
 							}
 							order.set("report_type", report_type);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第5列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第G列信息漏填;";
 
 						}
-						if (row.getCell(5) != null) {
-							row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
-							String order_type = row.getCell(5).getStringCellValue();
+						if (row.getCell(6) != null) {
+							row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
+							String order_type = row.getCell(6).getStringCellValue();
 							List<SysDictDetail> dictDetailByOrderType = SysDictDetail.dao.getDictDetailByOrderType(order_type);
 							if(CollectionUtils.isEmpty(dictDetailByOrderType)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第6列信息填写错误";
+								errormark+=errornum+".第"+r+"行，第H列信息填写错误；";
 							}
 							order.set("order_type", order_type);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第6列信息漏填;";
-						}
-						if (row.getCell(6) != null) {
-							row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
-							order.set("report_language", row.getCell(6).getStringCellValue());
-						} else {
-							renderText("报告语言不能为空");
+							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
 						}
 						if (row.getCell(7) != null) {
 							row.getCell(7).setCellType(Cell.CELL_TYPE_STRING);
-							String name = row.getCell(7).getStringCellValue();
+							order.set("report_language", row.getCell(7).getStringCellValue());
+						} else {
+							renderText("报告语言不能为空");
+						}
+						if (row.getCell(8) != null) {
+							row.getCell(8).setCellType(Cell.CELL_TYPE_STRING);
+							String name = row.getCell(8).getStringCellValue();
 							List<CompanyModel> companyByName = CompanyModel.dao.getCompanyByName(name);
 							if(CollectionUtils.isEmpty(companyByName)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第7列信息填写错误;";
+								errormark+=errornum+".第"+r+"行，第I列信息填写错误;";
 							}
 							order.set("company_by_report", name);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第7列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第I列信息漏填;";
 
 						}
-						if (row.getCell(8) != null) {
-							row.getCell(8).setCellType(Cell.CELL_TYPE_STRING);
-							String speed = row.getCell(8).getStringCellValue();
+						if (row.getCell(9) != null) {
+							row.getCell(9).setCellType(Cell.CELL_TYPE_STRING);
+							String speed = row.getCell(9).getStringCellValue();
 							List<SysDictDetail> dictDetailByOrderSpeed = SysDictDetail.dao.getDictDetailByOrderSpeed(speed);
 							if(CollectionUtils.isEmpty(dictDetailByOrderSpeed)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第8列信息填写错误";
+								errormark+=errornum+".第"+r+"行，第J列信息填写错误;";
 							}
 							order.set("speed", speed);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第7列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第J列信息漏填;";
 
 						}
+						if (row.getCell(10) != null) {
+							row.getCell(10).setCellType(Cell.CELL_TYPE_STRING);
+							String reference_num = row.getCell(10).getStringCellValue();
+							order.set("reference_num", reference_num);
+						} 
+						//地址
+						if (row.getCell(11) != null) {
+							row.getCell(11).setCellType(Cell.CELL_TYPE_STRING);
+							String address = row.getCell(11).getStringCellValue();
+							order.set("address", address);
+						} 
+						//电话
+						if (row.getCell(12) != null) {
+							row.getCell(12).setCellType(Cell.CELL_TYPE_STRING);
+							String telphone = row.getCell(12).getStringCellValue();
+							order.set("telphone", telphone);
+						} 
+						//传真
+						if (row.getCell(13) != null) {
+							row.getCell(13).setCellType(Cell.CELL_TYPE_STRING);
+							String fax = row.getCell(13).getStringCellValue();
+							order.set("fax", fax);
+						} 
+						//邮箱
+						if (row.getCell(14) != null) {
+							row.getCell(14).setCellType(Cell.CELL_TYPE_STRING);
+							String email = row.getCell(14).getStringCellValue();
+							order.set("email", email);
+						} 
+						//联系人
+						if (row.getCell(15) != null) {
+							row.getCell(15).setCellType(Cell.CELL_TYPE_STRING);
+							String contacts = row.getCell(15).getStringCellValue();
+							order.set("contacts", contacts);
+						} 
+						//其他细节
+						if (row.getCell(16) != null) {
+							row.getCell(16).setCellType(Cell.CELL_TYPE_STRING);
+							String remarks = row.getCell(16).getStringCellValue();
+							order.set("remarks", remarks);
+						} 
 						order.set("receiver_date", new Date());
 						orderList.add(order);
 				  }
 			  }
 		}
-		
+		int totalRow = orderList.size();
+		ResultType resultType = new ResultType(totalRow,orderList);
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("errormark", errormark);
-		map.put("orderList", orderList);
+		map.put("orderList", resultType);
 		System.out.println(orderList);
 		renderJson(map);
 	}
@@ -238,4 +284,25 @@ public class OrderPoiController extends BaseProjectController {
 		}
 		renderMessage(msg);
 	}
+	public void savedata() {
+		String msg="提交成功";
+		String jsonString = HttpKit.readData(getRequest());
+		CreditOrderInfo xxx = FastJson.getJson().parse(jsonString, CreditOrderInfo.class);
+		System.out.println(xxx);
+	}
+	public String readRequstJson(HttpServletRequest request) {
+		StringBuffer json = new StringBuffer();
+		String line = null;
+		try {
+		BufferedReader reader = request.getReader();
+		while ((line = reader.readLine()) != null) {
+		json.append(line);
+		}
+
+		} catch (Exception e) {
+		e.printStackTrace();
+		log.error(e.getMessage(), e);
+		}
+		return json.toString();
+		}
 }

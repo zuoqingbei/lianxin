@@ -11,6 +11,10 @@ html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, l
     padding: 0;
     font-family: "微软雅黑", sans-serif;
 }
+body {
+    line-height: 1.5;
+    font:1rem "微软雅黑", sans-serif;
+}
 
 ul, ol, li {
     list-style: none;
@@ -288,12 +292,12 @@ label.col-md-4{
 .layui-unselect.layui-form-select {
     height: 2.4rem;
 }
-.input-group {
-    height: 2.4rem;
-}
+
 .layui-anim.layui-anim-upbit {
     top: auto;
     transition: none!important;
+    z-index: 9999;
+    width: 2rem;
 }
 .layui-form-select dl {
     padding: 0;
