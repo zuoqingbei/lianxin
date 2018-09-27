@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -74,14 +75,15 @@ public class OrderPoiController extends BaseProjectController {
 			List<CountryModel> countrys = CountryModel.dao.getCountrys(null);
 			//获取Excel文档中的第一个表单
 			Sheet sht0 = wb0.getSheetAt(0);
+			
 			int totalRows=sht0.getPhysicalNumberOfRows();//获取表格行数
-			int rowNum=sht0.getLastRowNum();//获得总行数
+//			totalRows=sht0.getLastRowNum();//获得总行数
 			  for(int r=0;r<totalRows;r++){
 				  Row row = sht0.getRow(r);//获取每一行
-				  if(r==0){
+				  if(r==0 || null==row){
 					  continue;
 				  }
-				  if(r>0){
+				  if(r>0 && row!=null){
 					  CreditOrderInfo order = new CreditOrderInfo();
 					  CreditOrderInfo orderReal = new CreditOrderInfo();
 					  String countryId="";
