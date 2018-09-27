@@ -194,8 +194,8 @@ let
 							  title: '客户ID',
 							  align: 'center'
 							}, {
-							  field: 'custom_id',
-							  title: '客户曾用名',
+							  field: 'customerName',
+							  title: '客户用户名',
 							  align: 'center',
 							}, {
 							  title: '地区',
@@ -233,7 +233,44 @@ let
 							  field: 'speed',
 							  align: 'center',
 							  valign: 'middle',
+							},{
+							  title: '客户参考号',
+							  field: 'reference_num',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '地址',
+							  field: 'address',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '电话',
+							  field: 'telphone',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '传真',
+							  field: 'fax',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '邮箱',
+							  field: 'email',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '联系人',
+							  field: 'contacts',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '其他细节',
+							  field: 'remarks',
+							  align: 'center',
+							  valign: 'middle',
 							}
+							
+							
 						  
 						],
 			   // url : 'firmSoftTable.action', // 请求后台的URL（*）
