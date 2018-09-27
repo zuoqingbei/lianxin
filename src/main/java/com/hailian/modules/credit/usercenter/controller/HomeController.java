@@ -256,23 +256,23 @@ public class HomeController extends BaseProjectController {
 						}else{
 							num1+=1;
 							message+=uploadFile.getOriginalFileName()+"上传失败!";
-							renderMessageByFailed("文件上传失败");
-							redirect("/credit/front/home/menu");
+							renderMessageByFailed(message);
+//							redirect("/credit/front/home/menu");
 							
 							return;
 						}
 					}else{
 						num1+=1;
 						message+=uploadFile.getOriginalFileName()+"上传失败!";
-						renderMessage(message);
-						redirect("/credit/front/home/menu");						
+						renderMessageByFailed(message);
+//						redirect("/credit/front/home/menu");						
 						return;
 					}
 				}
 			}catch(Exception e){
 				e.printStackTrace();
-				renderMessage("上传失败");
-				redirect("/credit/front/home/menu");
+				renderMessageByFailed(message);
+//				redirect("/credit/front/home/menu");
 				return;
 			}
 		}
@@ -282,8 +282,8 @@ public class HomeController extends BaseProjectController {
 			throw new Exception();
 		} catch (Exception e) {
 			e.printStackTrace();
-			renderMessage("保存失败");
-			redirect("/credit/front/home/menu");
+			renderMessageByFailed(message);
+//			redirect("/credit/front/home/menu");
 			
 		}		
 	}
