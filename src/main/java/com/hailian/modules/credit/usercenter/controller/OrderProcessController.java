@@ -1,4 +1,6 @@
 package com.hailian.modules.credit.usercenter.controller;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,6 +63,10 @@ public class OrderProcessController extends BaseProjectController{
 	public static String orderVerifyOfOrder = "-3";
 	public static LinkedList<Object> orderVerifyOfOrderColumns = new LinkedList<>();
 	public static LinkedList<Object> orderVerifyOfOrderParamNames = new LinkedList<>();
+	/**
+	 * 订单管理中的订单查档
+	 */
+	public static String orderFilingOfOrder = "-4";
 	static{
 		orderAllocationColumns.add("u1.realname");
 	}
@@ -194,7 +200,6 @@ public class OrderProcessController extends BaseProjectController{
 		Map<String,Object> map = new HashMap<>();
 		map.put("status", code);
 		CreditOrderInfo model = PublicUpdateMod(map);
-		reallocationJson();
 		return model.get("num");
 	}
 	
@@ -206,38 +211,85 @@ public class OrderProcessController extends BaseProjectController{
 	 */
 	public void verifyOfOrderMangerSave(){
 		String orderNum = getModel(CreditOrderInfo.class).get("id")+"";
-		uploadFile(orderNum);
-		statusSave();
+		String resultJson = uploadFile(orderNum);
+		if(StringUtil.isEmpty(resultJson)){
+			statusSave();
+		}else{
+			renderJson(resultJson);
+		}
+		
 	}
 	
 	/**
 	 * 获取前台文件上传到文件服务器并将文件信息记录到文件实体表
+	 * return resultJson
 	 */
-	private void uploadFile(String orderNum){
+	private String uploadFile(String orderNum){
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+		List<File> files = new ArrayList<File>();
 		CreditUploadFileModel fileModel = new CreditUploadFileModel();
 		fileModel.set("business_type", "0");
 		fileModel.set("business_id",orderNum);
 		int size = upFileList.size();
 		if(size>0){
+			String now = DateUtils.getNow(DateUtils.YMDHMS);
+			//上传的文件在ftp服务器按日期分目录
+			String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);
 			try {
 				for(UploadFile uploadFile:upFileList){
+					//获取文件名
 					String originalFile = uploadFile.getOriginalFileName();
-					String ext = "";
-					//获取真实文件名
+					//根据文件后缀名判断文件类型
+					String ext = FileTypeUtils.getFileType(originalFile);
+					if(uploadFile.getFile().length()>maxPostSize){
+						return "{result:'上传的单个文件必须小于5兆!'}";
+					}/*else if(FileTypeUtils.checkType(ext)){
+						return "{result:'请检查上传文件的格式!'}";
+					}*/
+					files.add(uploadFile.getFile());
+				}
+				
+				boolean storeFile = FtpUploadFileUtils.storeFtpFile(now,files,storePath,ip,port,userName,password);
+				if(!storeFile){
+					return "{result:'文件上传出现异常!'}";
+				}
+				/*//获取真实文件名
+				String originalFileName = FileTypeUtils.getName(originalFile);
+				//上传到服务器时的文件名
+				String FTPfileName = originalFileName + now + "." + ext;
+				if(storeFile){
+					String factpath = storePath + "/" + FTPfileName;
+					String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
+					Integer userid = getSessionUser().getUserid();
+					fileModel.set("business_id",orderNum);
+					//将上传信息维护进实体表
+					UploadFileService.service.save(0,uploadFile, factpath,url,fileModel,fileName,userid);
+				}else{
+					renderJson(errorJson);
+				}*/
+			}catch(Exception e){
+				e.printStackTrace();
+				return "{result:'发生未知错误!'}";
+			}
+			
+		}
+		return "";
+				
+					/*//获取真实文件名
 					String originalFileName = FileTypeUtils.getName(originalFile);
 					//获取文件类型
-					ext = FileTypeUtils.getFileType(originalFile);
+					
 					//错误返回json
 					String errorJson = "{uploadMessage:'"+uploadFile.getOriginalFileName()+"上传失败!"+"'},{uploadStatus:0}";
-					if (uploadFile!=null&&uploadFile.getFile().length()<=maxPostSize&&FileTypeUtils.checkType(ext)) {
+					
 						//上传的文件在ftp服务器按日期分目录
 						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);
-						String now=DateUtils.getNow(DateUtils.YMDHMS);
+						
 						//上传到服务器时的文件名
 						String FTPfileName = originalFileName + now + "." + ext;
 						String fileName = originalFileName + now;
-						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						//boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						
 						if(storeFile){
 							String factpath = storePath + "/" + FTPfileName;
 							String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
@@ -251,15 +303,9 @@ public class OrderProcessController extends BaseProjectController{
 					}else{
 						renderJson(errorJson);
 					}
-				}
-			}catch(Exception e){
-				e.printStackTrace();
-				renderJson("{uploadMessage:'"+"发生未知错误!"+"'},{uploadStatus:0}");
-			}
-		}
+			*/
+			
 	}
-	
-	
 	
 	
 }
