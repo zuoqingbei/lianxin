@@ -61,9 +61,9 @@ let Index = {
 		        			 success:function(data){
 		        			 	 $("#table").bootstrapTable("load",data)
 		        			 }
-		        		})
+		        		});
 
-        /**发起ajax请求  获取表格数据*/
+       		getMessage();
       })
 
       /**点击重置按钮 */
@@ -113,7 +113,7 @@ let Index = {
             columns: [
                  {
                   title: '订单号',
-                  field: 'id',
+                  field: 'num',
                   align: 'center',
                   valign: 'middle',
                   formatter:function(value,row,index){ 
@@ -138,7 +138,7 @@ let Index = {
                   valign: 'middle',
                 }, {
                   title: `处理状态 &nbsp;<i class="fa fa-filter"></i>`,
-                  field: 'statusName',
+                  field: 'statuName',
                   align: 'center',
                   valign: 'middle',
                 

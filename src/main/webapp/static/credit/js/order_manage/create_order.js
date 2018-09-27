@@ -116,11 +116,13 @@ let
 			});
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
-					
+				$("input[name='attr.status']").val("290");
+				$("#orderForm").submit();	
 			}
 		},
 		formSave: function(){
-			
+			$("input[name='attr.status']").val("289");
+			$("#orderForm").submit();
 		},
 		closeProgress(){
 			$(".close").click(function(){

@@ -1,7 +1,9 @@
 
 
 package com.hailian.modules.credit.usercenter.controller;
+import java.io.File;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,11 +24,14 @@ import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
+import com.hailian.modules.admin.site.TbSite;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.usercenter.service.HomeService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.system.file.util.FileUploadUtils;
 import com.hailian.system.menu.SysMenu;
 import com.hailian.system.user.SysUser;
 import com.hailian.system.user.UserSvc;
@@ -58,7 +63,7 @@ public class HomeController extends BaseProjectController {
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
 	public void index() {
-		render(path + "index.html");
+		render(path+"index.html");
 		
 	}
 	public void menu() {
@@ -88,9 +93,9 @@ public class HomeController extends BaseProjectController {
 		String num=order.getStr("num");
 		//获取附件
 		List<CreditUploadFileModel> files=CreditUploadFileModel.dao.getFile(num);
-		if(files.size()==0) {
+		/*if(files.size()==0) {
 			files=null;
-		}
+		}*/
 		//根据订单信息获取公司信息
 		CreditCompanyInfo company=OrderManagerService.service.getCompany(order.getInt("company_id"));
 		//根据订单id获取历史记录信息
@@ -123,7 +128,6 @@ public class HomeController extends BaseProjectController {
 		@Param(name = "id", description = "订单id", required = false, dataType = "String"),
 		})
 	public void list(){
-		String uri = this.getRequest().getRequestURI();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		String sortname=getPara("sortName");
 		String sortorder=getPara("sortOrder");		
@@ -151,16 +155,34 @@ public class HomeController extends BaseProjectController {
 	@ApiOperation(url = "/credit/front/home/getMessage",httpMethod="post", 
 			description = "获取信息")
 	public void getMessage() {
-		
+		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		String status =getPara("status");
+		if(StringUtils.isNotBlank(status)) {
+			status=status.substring(0, status.length()-1);
+		}
 		SysUser user= (SysUser) getSessionUser();
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
+		//订单核实数量
+		int orderhs=OrderManagerService.service.getOrdersService("292",model,user,status);
+		//订单查档数量
+		int ordercd=OrderManagerService.service.getOrdersService("294",model,user,status);
+		//订单信息质检数量
+		int orderzj1=OrderManagerService.service.getOrdersService("298",model,user,status);
+		//分析质检
+		int orderzj2=OrderManagerService.service.getOrdersService("303",model,user,status);
+		//翻译质检
+		int orderzj3=OrderManagerService.service.getOrdersService("308",model,user,status);
+
 		Record record=new Record();
 		record.set("user", user);
 		record.set("country", country);
 		record.set("customs", customs);
 		record.set("companys", companys);
+		record.set("orderhs", orderhs);
+		record.set("ordercd", ordercd);
+		record.set("orderzj", orderzj1+orderzj2+orderzj3);
 		renderJson(record);
 	}
 	@ApiOperation(url = "/credit/front/home/getCountry",httpMethod="post", 
@@ -222,6 +244,7 @@ public class HomeController extends BaseProjectController {
 	 */
 	public void saveOrder() throws Exception {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+		List<File> ftpfileList=new ArrayList<File>();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		String num=new getOrderNum().getNumber();
 		model.set("num", num);
@@ -240,19 +263,32 @@ public class HomeController extends BaseProjectController {
 					String ext="";
 					String originalFileName=FileTypeUtils.getName(originalFile);
 					ext=FileTypeUtils.getFileType(originalFile);
+					
 					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
 						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 						String now=UUID.randomUUID().toString().replaceAll("-", "");
 						originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
 						String FTPfileName=now+"."+ext;
 						String fileName=originalFileName+now;
-						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						String pdf_FTPfileName="";
+						ftpfileList.add(uploadFile.getFile());
+						if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
+							File pdf = toPdf(uploadFile);
+							pdf_FTPfileName=now+"."+"pdf";
+							ftpfileList.add(pdf);
+						}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
+							pdf_FTPfileName=FTPfileName;
+						}
+						//String now,List<File> filelist,String storePath,String url,int port,String userName,String password
+						boolean storeFile = FtpUploadFileUtils.storeFtpFile(FTPfileName, ftpfileList,storePath,ip,port,userName,password);//上传
 						if(storeFile){
 							String factpath=storePath+"/"+FTPfileName;
+							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
 							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
 							Integer userid = getSessionUser().getUserid();
 							model1.set("business_id", num);
-							UploadFileService.service.save(0,uploadFile, factpath,url,model1,fileName,userid);//记录上传信息
+							String pdfUrl="http://"+ip+"/" + storePath+"/"+pdf_FTPfileName;
+							UploadFileService.service.save(0,uploadFile, factpath,url,pdfFactpath,pdfUrl,model1,fileName,userid);//记录上传信息
 						}else{
 							num1+=1;
 							message+=uploadFile.getOriginalFileName()+"上传失败!";
@@ -271,7 +307,7 @@ public class HomeController extends BaseProjectController {
 				}
 			}catch(Exception e){
 				e.printStackTrace();
-				renderMessageByFailed(message);
+				renderMessageByFailed("文件上传失败");
 //				redirect("/credit/front/home/menu");
 				return;
 			}
@@ -300,6 +336,16 @@ public class HomeController extends BaseProjectController {
 		String id=getPara("id");
 		CreditCustomInfo custom=OrderManagerService.service.getCreater(id);
 		renderJson(custom);
+	}
+	
+	public File toPdf(UploadFile uploadFile) throws Exception{
+		TbSite site = getBackSite();
+		String projectStorePath = FileUploadUtils.getUploadPath(site, "view");
+		String now=DateUtils.getNow(DateUtils.YMDHMS);
+		String type = FileTypeUtils.getFileType(uploadFile.getFileName());
+		String name = FileTypeUtils.getName(uploadFile.getFileName());
+		File convertFileToPdf = Office2PDF.convertFileToPdf(uploadFile.getFile(),name,type, projectStorePath);
+		return convertFileToPdf;
 	}
 
 }

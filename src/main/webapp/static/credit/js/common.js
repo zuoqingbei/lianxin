@@ -86,6 +86,16 @@ let Public = {
 
         })
     },
+    goToOrderDetail(id){
+    	//跳转订单详情
+    	$("#main_content").load('/credit/front/home/orderInfo?id='+id)
+    },
+    createOrder(){
+    	 $("#main_content").load('/credit/front/home/createOrder')
+    	  $(".fa fa-wpforms fa-fw").children("ul").slideUp(150, function () {
+                        $(".fa fa-wpforms fa-fw").parent().toggleClass("show");
+                    });
+    },
     gotop(){
         console.log($(".main"))
         $(".main").scroll(function(){

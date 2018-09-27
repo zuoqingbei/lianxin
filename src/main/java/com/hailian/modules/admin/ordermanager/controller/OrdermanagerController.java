@@ -27,10 +27,13 @@ import com.hailian.modules.admin.ordermanager.model.CreditReportLanguage;
 import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
 import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
+import com.hailian.modules.admin.site.TbSite;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.system.file.util.FileUploadUtils;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
 import com.hailian.util.DateAddUtil;
@@ -122,7 +125,7 @@ public class OrdermanagerController extends BaseProjectController{
 			renderMessage("删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
-			renderMessage("删除失败");
+			renderMessageByFailed("删除失败");
 		}
 		
 	}
@@ -172,6 +175,7 @@ public class OrdermanagerController extends BaseProjectController{
 	@Before(Tx.class)
 	public void save() {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+		List<File> ftpfileList=new ArrayList<File>();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
 		String num=new getOrderNum().getNumber();
 		model1.set("business_type", "0");
@@ -182,9 +186,6 @@ public class OrdermanagerController extends BaseProjectController{
 		int id=getParaToInt("id");
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		SysUser user = (SysUser) getSessionUser();
-		//按照规则生成编号
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-		String date=sdf.format(new Date());
 		model.set("num", num);
 		if(size >0){
 			try {
@@ -194,49 +195,71 @@ public class OrdermanagerController extends BaseProjectController{
 					String ext="";
 					String originalFileName=FileTypeUtils.getName(originalFile);
 					ext=FileTypeUtils.getFileType(originalFile);
+					
 					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
 						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 						String now=UUID.randomUUID().toString().replaceAll("-", "");
 						originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
 						String FTPfileName=now+"."+ext;
 						String fileName=originalFileName+now;
-						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						String pdf_FTPfileName="";
+						ftpfileList.add(uploadFile.getFile());
+						if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
+							File pdf = toPdf(uploadFile);
+							pdf_FTPfileName=now+"."+"pdf";
+							ftpfileList.add(pdf);
+						}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
+							pdf_FTPfileName=FTPfileName;
+						}
+						//String now,List<File> filelist,String storePath,String url,int port,String userName,String password
+						boolean storeFile = FtpUploadFileUtils.storeFtpFile(FTPfileName, ftpfileList,storePath,ip,port,userName,password);//上传
 						if(storeFile){
 							String factpath=storePath+"/"+FTPfileName;
+							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
 							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
 							Integer userid = getSessionUser().getUserid();
-							UploadFileService.service.save(0,uploadFile, factpath,url,model1,fileName,userid);//记录上传信息
+							model1.set("business_id", num);
+							String pdfUrl="http://"+ip+"/" + storePath+"/"+pdf_FTPfileName;
+							UploadFileService.service.save(0,uploadFile, factpath,url,pdfFactpath,pdfUrl,model1,fileName,userid);//记录上传信息
 						}else{
 							num1+=1;
 							message+=uploadFile.getOriginalFileName()+"上传失败!";
-							renderMessage(uploadFile.getOriginalFileName()+"上传失败!");
+							renderMessageByFailed(message);
+//							redirect("/credit/front/home/menu");
+							
 							return;
 						}
 					}else{
 						num1+=1;
 						message+=uploadFile.getOriginalFileName()+"上传失败!";
-						renderMessage(uploadFile.getOriginalFileName()+"上传失败!");
+						renderMessageByFailed(message);
+//						redirect("/credit/front/home/menu");						
 						return;
 					}
 				}
 			}catch(Exception e){
 				e.printStackTrace();
+				renderMessageByFailed("文件上传失败");
+//				redirect("/credit/front/home/menu");
 				return;
 			}
 		}
-		//保存订单
-		try {						
-			OrderManagerService.service.modifyOrder(id,model,user,this);
+		try {
+			OrderManagerService.service.modifyOrder(0,model,user,this);
+			renderMessage("保存成功");
+			throw new Exception();
 		} catch (Exception e) {
 			e.printStackTrace();
-			renderMessage("保存失败");
-		}
+			renderMessageByFailed(message);
+//			redirect("/credit/front/home/menu");
+			
+		}	
 		//生成日志
 		try {
 			OrderManagerService.service.addOrderHistory(id, user);
 		} catch (Exception e) {
 			e.printStackTrace();
-			renderMessage("日志插入失败");
+			renderMessageByFailed("日志插入失败");
 			return;
 		}
 		renderMessage("保存成功");
@@ -410,6 +433,16 @@ public class OrdermanagerController extends BaseProjectController{
 	public void getCompany() {
 		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
 		renderJson(company);
+	}
+	
+	public File toPdf(UploadFile uploadFile) throws Exception{
+		TbSite site = getBackSite();
+		String projectStorePath = FileUploadUtils.getUploadPath(site, "view");
+		String now=DateUtils.getNow(DateUtils.YMDHMS);
+		String type = FileTypeUtils.getFileType(uploadFile.getFileName());
+		String name = FileTypeUtils.getName(uploadFile.getFileName());
+		File convertFileToPdf = Office2PDF.convertFileToPdf(uploadFile.getFile(),name,type, projectStorePath);
+		return convertFileToPdf;
 	}
 	
 }

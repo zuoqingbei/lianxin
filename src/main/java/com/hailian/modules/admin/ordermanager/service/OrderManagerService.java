@@ -302,9 +302,9 @@ public class OrderManagerService {
 		return CreditOrderInfo.dao.findOrder(num);
 	}
 
-	public List<CreditOrderInfo> getOrdersService( String status,CreditOrderInfo model,  SysUser user) {
+	public int getOrdersService( String statu,CreditOrderInfo model,  SysUser user,String status) {
 		
-		return CreditOrderInfo.dao.getOrders( status, model, user);
+		return CreditOrderInfo.dao.getOrders( statu, model, user,status);
 	}
 
 	public CreditOrderInfo getMaxId() {
