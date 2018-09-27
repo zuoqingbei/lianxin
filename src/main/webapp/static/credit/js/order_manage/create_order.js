@@ -28,7 +28,7 @@ let
 							/**成功 */
 							console.log(data.orderList)
 							console.log(data)
-							jsondata=data.orderList.rows;
+							jsondata=data.orderListReal.rows;
 							$("#show_modal").trigger("click")
 							Page.initTable(data.orderList)
 							$("#tableOrder").bootstrapTable("load",data.orderList)
