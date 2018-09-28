@@ -1,6 +1,12 @@
 let Filing = {
     init(){
         /**初始化函数 */
+    	
+    	this.pageNumber = "";
+    	this.pageSize = "";
+    	this.sortName = "";
+    	this.sortOrder = "";
+    	this.orderFlag= 0;
         this.initTable();
         this.popperFilter();
         this.modalSubmit();
@@ -75,13 +81,68 @@ let Filing = {
     },
     modalSubmit(){
         /**模态框提交事件 */
-        $("#modal_submit").click(function(){
-           
-            
-            //提交成功关闭模态窗
-           $(".modal-header .close").trigger("click");
-        })
+        	 $("#modal_submit").click(function(){
+             	$("#status").val("298");
+             	$(".tableValue").ajaxSubmit( {
+             		success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
+                        // 此处可对 data 作相关处理
+                        //alert(JSON.stringify(data));
+             			 console.log(JSON.stringify(data));
+                        console.log(data.statusCode);
+                        if(data.statusCode===1){
+                        	 console.log("此处进入success状态2222222222");
+                        	Public.message("success",data.message);
+                        }else{
+                        	 console.log("此处进入error状态");
+                        	Public.message("error",data.message);
+                        }
+                        //Public.message(a,b)  a为info,success,error   b为接口返回的信息
+                        
+                    }, error: function(ret) {
+            			console.log(ret);
+            			console.log(ret.readyState);
+            			console.log(ret.responseText);
+            			console.log(ret.responseText.result);
+            			console.log("提交失败!");
+            		}
+                 });
+                 //提交成功关闭模态窗
+                $(".modal-header .close").trigger("click");
+                //回显
+               	console.log("提交成功,开始回显:");
+               //console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4");
+               		$.ajax({
+               			type:"post",
+                   		url:"/credit/front/orderProcess/listJson",
+                   		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
+                   		dataType:"json",
+                   		success:function(obj){
+                   				//console.log("回显的数据:"+JSON.stringify(obj.rows));
+                   			 	$("#table").bootstrapTable("load",obj);
+                   			 }
+               			}) 
+             })
+    	/*$("#modal_submit").click(function(){
+    		$(".tableValue").ajaxForm({
+        		dataType: "json"
+        		, success: function(data) {
+        			console.log(data);
+        			console.log("提交成功!");
+        			//提交成功关闭模态窗
+                    $(".modal-header .close").trigger("click");
+        		}
+        		, error: function(ret) {
+        			console.log(ret);
+        			console.log(ret.readyState);
+        			console.log(ret.responseText);
+        			console.log(ret.responseText.result);
+        			console.log("提交失败!");
+        		}
+        		});
+    	})*/
+    	
     },
+    
     popperFilter(){
         /**筛选图标事件 */
         var referenceElement = document.querySelector(".fa-filter");
@@ -244,7 +305,7 @@ let Filing = {
     }
 
   ],
-              url : '/credit/front/orderProcess/reallocationJson', // 请求后台的URL（*）
+              url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
               method : 'post', // 请求方式（*）post/get
               pagination: true, //分页
               sidePagination: 'server',
@@ -256,6 +317,7 @@ let Filing = {
               locales:'zh-CN',
               fixedColumns: true,
               fixedNumber: 1,
+              sortOrder: "desc",//排序方式
               queryParamsType:'',
               contentType:'application/x-www-form-urlencoded;charset=UTF-8',
               queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  

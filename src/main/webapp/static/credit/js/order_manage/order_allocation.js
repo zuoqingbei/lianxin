@@ -38,10 +38,10 @@ let Allocation = {
        			//提交成功关闭模态窗
        			 $(".modal-header .close").trigger("click");
        			//回显
-       			console.log("提交成功,开始回显:"+data);
+       			console.log("提交成功,开始回显:"+data.message);
        			 $.ajax({
        				type:"post",
-           			url:"/credit/front/orderProcess/reallocationJson",
+           			url:"/credit/front/orderProcess/listJson",
            			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
            			dataType:"json",
            			success:function(obj){
@@ -104,7 +104,7 @@ let Allocation = {
           /***发起ajax请求 获取表格数据*/
           $.ajax({
        			type:"post",
-       			url:"/credit/front/orderProcess/reallocationJson",
+       			url:"/credit/front/orderProcess/listJson",
        			data:"model.report_user="+reporter+"&searchType=-1",
        			dataType:"json",
        			success:function(data){
@@ -230,7 +230,7 @@ let Allocation = {
                 }
               
             ],
-            url : '/credit/front/orderProcess/reallocationJson', // 请求后台的URL（*）
+            url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',
