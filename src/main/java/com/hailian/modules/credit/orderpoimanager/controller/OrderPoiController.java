@@ -329,6 +329,7 @@ public class OrderPoiController extends BaseProjectController {
 			  int use_time=timemodel.getInt("use_time");
 			  model.set("create_by", userid);
 			  model.set("create_date", now);
+			  model.set("source", "1");//订单来源-批量导入
 			  model.set("receiver_date", now);
 			  model.set("user_time", use_time);
 			  model.set("user_time_id", user_time_id);
