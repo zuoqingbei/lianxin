@@ -197,12 +197,17 @@ public class OrderProcessController extends BaseProjectController{
 	 * @return_type   订单编号
 	 */
 	public String statusSave() {
+		try {
 		String code = (String) getRequest().getParameter("statusCode");
 		Map<String,Object> map = new HashMap<>();
 		map.put("status", code);
 		CreditOrderInfo model = PublicUpdateMod(map);
 		renderJson(new ResultType());
 		return model.get("num");
+		} catch (Exception e) {
+			renderJson(new ResultType(0,"发生未知错误!"));
+			return null;
+		}
 	}
 	
 	/**
@@ -212,10 +217,14 @@ public class OrderProcessController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	public void statusSaveWithFileUpLoad(){
-		String orderNum = getModel(CreditOrderInfo.class).get("id")+"";
-		ResultType result = uploadFile(orderNum);
-		statusSave();
-		renderJson(result);
+		try {
+			String orderNum = getModel(CreditOrderInfo.class).get("id")+"";
+			ResultType result = uploadFile(orderNum);
+			statusSave();
+			renderJson(result);
+		} catch (Exception e) {
+			renderJson(new ResultType(0,"发生未知错误!"));
+		}
 	}
 	
 	/**
@@ -270,7 +279,7 @@ public class OrderProcessController extends BaseProjectController{
 			}
 			
 		}
-		return new ResultType(1, "文件上传成功!");
+		return new ResultType();
 				
 					/*//获取真实文件名
 					String originalFileName = FileTypeUtils.getName(originalFile);

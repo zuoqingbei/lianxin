@@ -92,8 +92,16 @@ let Verify = {
         	$(".tableValue").ajaxSubmit({
         		success:function(data){
         			console.log("状态为成功,message:"+data.message);
+        			if(data.statusCode===1){
+                   	 console.log("此处进入success状态2222222222");
+                   	Public.message("success",data.message);
+                   }else{
+                   	 console.log("此处进入error状态");
+                   	Public.message("error",data.message);
+                   }
         		},error :function(data){
         			console.log("状态为失败,message:"+data.message);
+        			Public.message("error",data.message);
         		}
             });
             //提交成功关闭模态窗
@@ -116,8 +124,20 @@ let Verify = {
          $("#modal_save").click(function(){
         	console.log("点击保存");
         	$("#status").val("292");
-        	$(".tableValue").ajaxSubmit(function (data) {
-        		console.log("ajaxSubmit:"+data);
+        	$(".tableValue").ajaxSubmit({
+        		success:function(data){
+        			console.log("状态为成功,message:"+data.message);
+        			if(data.statusCode===1){
+                   	 console.log("此处进入success状态2222222222");
+                   	Public.message("success",data.message);
+                   }else{
+                   	 console.log("此处进入error状态");
+                   	Public.message("error",data.message);
+                   }
+        		},error :function(data){
+        			console.log("状态为失败,message:"+data.message);
+        			Public.message("error",data.message);
+        		}
             });
             //提交成功关闭模态窗
            $(".modal-header .close").trigger("click");
@@ -139,8 +159,20 @@ let Verify = {
          $("#modal_cancel").click(function(){
         	console.log("点击撤销");
         	$("#status").val("313");
-        	$(".tableValue").ajaxSubmit(function (data) {
-        		console.log("ajaxSubmit:"+data);
+        	$(".tableValue").ajaxSubmit({
+        		success:function(data){
+        			console.log("状态为成功,message:"+data.message);
+        			if(data.statusCode===1){
+                   	 console.log("此处进入success状态2222222222");
+                   	Public.message("success",data.message);
+                   }else{
+                   	 console.log("此处进入error状态");
+                   	Public.message("error",data.message);
+                   }
+        		},error :function(data){
+        			console.log("状态为失败,message:"+data.message);
+        			Public.message("error",data.message);
+        		}
             });
             //提交成功关闭模态窗
            $(".modal-header .close").trigger("click");

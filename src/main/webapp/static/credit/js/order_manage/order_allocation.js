@@ -37,6 +37,13 @@ let Allocation = {
        			success:function(data){
        			//提交成功关闭模态窗
        			 $(".modal-header .close").trigger("click");
+       			if(data.statusCode===1){
+                  	 console.log("此处进入success状态2222222222");
+                  	Public.message("success",data.message);
+                  }else{
+                  	 console.log("此处进入error状态");
+                  	Public.message("error",data.message);
+                  }
        			//回显
        			console.log("提交成功,开始回显:"+data.message);
        			 $.ajax({
