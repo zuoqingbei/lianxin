@@ -15,6 +15,7 @@ let Login = {
                 $(".psdTip").hide()
                 $(".password span").removeClass("border-error")
                 $("#psw").removeClass("border-error")
+                return false;
             }else if(user && !psw) {
                 $(".userTip").hide()
                 $(".username span").removeClass("border-error")
@@ -22,6 +23,7 @@ let Login = {
                 $(".psdTip").show()
                 $(".password span").addClass("border-error")
                 $("#psw").addClass("border-error")
+                return false;
             }else if(user && psw) {
                 $(".userTip").hide()
                 $(".username span").removeClass("border-error")
