@@ -73,13 +73,23 @@ let Public = {
 
         })
     },
+    goToOrderDetail(id){
+    	//跳转订单详情
+    	$("#main_content").load('/credit/front/home/orderInfo?id='+id)
+    },
+    createOrder(){
+    	 $("#main_content").load('/credit/front/home/createOrder')
+    },
+    goList(){
+    	 $("#main_content").load('/credit/front/home')
+    },
     goToCreateOrder(){
         /**跳转新建订单页面 */
-        $("#main_content").load('./order_manage/create_order.html');
+        $("#main_content").load('/credit/front/home/createOrder');
     },
     goToOrderDetail(){
         /**跳转订单详情页面 */
-        $("#main_content").load('./order_manage/order_detail.html');
+        $("#main_content").load('/credit/front/home/orderInfo?id='+id);
     },
     goToBasicInfoWrite(){
         /**跳转基本信息填报 */

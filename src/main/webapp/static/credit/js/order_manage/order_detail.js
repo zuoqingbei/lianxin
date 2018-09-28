@@ -269,11 +269,11 @@ let Filing = {
         $(this).parent(".uploadFile").html(`<span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
         /!*预览*!/
 
-    },*/
-
-        /*流程进度*/
-        this.step(2);
     },
+
+        	流程进度
+        this.step(2);
+    },*/
     initTable(){
         /**初始化表格 */
         const $table = $('#table');

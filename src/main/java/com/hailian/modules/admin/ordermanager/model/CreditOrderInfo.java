@@ -191,6 +191,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
@@ -214,11 +215,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			params.add(end_date);
 		}
 		if (StringUtils.isNotBlank(company_by_report)) {
-			sql.append(" and t.company_by_report like %?%");
+			sql.append(" and c2.name like %?%");
 			params.add(company_by_report);
 		}
 		if (StringUtils.isNotBlank(right_company_name_en)) {
-			sql.append(" and t.right_company_name_en like %?%");
+			sql.append(" and c2.name_en like %?%");
 			params.add(right_company_name_en);
 		}
 		if (StrUtils.isEmpty(orderby)) {
@@ -231,7 +232,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 						pageinator,
 						"select t.*,u.name as customName,c.name as countryName,s.username as createName"
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price,c2.name as companyName,c2.name_en as englishName ",
+								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName ",
 						sql.toString(), params.toArray());
 
 		return page;
@@ -252,7 +253,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select t.*,u.name as customName,c.name as countryName,s.username as createName,");
 		sql.append("s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,");
-		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price, c2.name as companyName,c2.name_en as englishName,c3.use_time as usetime  from credit_order_info t ");
+		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price, c2.name as companyName,c2.name_en as englishName,c3.use_time as usetime  from credit_order_info t ");
 		sql.append("left join credit_custom_info u on u.id=t.custom_id ");
 		sql.append("left join credit_country c on c.id=t.country  ");
 		sql.append("left join credit_report_price c1 on c1.id=t.price_id ");
@@ -264,6 +265,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		sql.append("left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append("left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append("left join credit_report_usetime c3 on c3.id= t.user_time_id ");
+		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
+		
 		sql.append("where 1 = 1 and t.del_flag='0' and t.id=?");
 		return dao.findFirst(sql.toString(), id);
 	}
@@ -285,6 +288,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
+
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
@@ -307,7 +312,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		List<CreditOrderInfo> list = CreditOrderInfo.dao
 				.find("select t.*,u.name as customName,c.name as countryName,s.username as createName"
 						+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-						+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price,c2.name as companyName,c2.name_en as englishName "
+						+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName "
 						+ sql.toString(), params.toArray());
 
 		return list;
@@ -360,6 +365,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
+
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
@@ -383,11 +390,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			params.add(date);
 		}
 		if (StringUtils.isNotBlank(company_by_report)) {
-			sql.append(" and t.company_by_report like concat('%',?,'%')");
+			sql.append(" and c2.name like concat('%',?,'%')");
 			params.add(company_by_report);
 		}
 		if (StringUtils.isNotBlank(right_company_name_en)) {
-			sql.append(" and t.right_company_name_en  like concat('%',?,'%')");
+			sql.append(" and c2.name_en  like concat('%',?,'%')");
 			params.add(right_company_name_en);
 		}
 		if (StringUtils.isNotBlank(status)) {
@@ -402,7 +409,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 						pageinator,
 						"select t.*,u.name as customName,c.name as countryName,s.username as createName"
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,c1.price as price,c2.name as companyName,c2.name_en as englishName ",
+								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName ",
 						sql.toString(), params.toArray());
 
 		return page;
@@ -417,27 +424,32 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 	 * 
 	 * @time   2018年9月19日 下午4:22:21
 	 * @author yangdong
-	 * @todo   TODO 前台页面数据展示
+	 * @todo   TODO 前台页面订单某种状态数量
 	 * @param  @param status
 	 * @param  @param model
 	 * @param  @param user
 	 * @param  @return
 	 * @return_type   List<CreditOrderInfo>
 	 */
-	public List<CreditOrderInfo> getOrders( String status,CreditOrderInfo model, SysUser user) {
+	public int getOrders( String statu,CreditOrderInfo model,SysUser user,String status) {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sql = new StringBuffer();
+		String custom_id=null;
+		String continent=null;
+		String country=null;
+		String date="";
+		if(model!=null) {
 		//客户id
-		String custom_id=model.getStr("custom_id");
+		 custom_id=model.getStr("custom_id");
 		//地区
-		String continent=model.getStr("continent");
+	     continent=model.getStr("continent");
 		//国家
-		String country=model.getStr("country");
+		country=model.getStr("country");
 		//结束时间
 		Date end_date=model.get("end_date");
-		String date="";
 		if(end_date!=null) {
 		 date=sdf.format(end_date);
+		}
 		}
 		
 		//准确公司名称(经过翻译后的公司名称是中文)
@@ -456,6 +468,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
+
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
@@ -479,18 +493,20 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			params.add(date);
 		}
 		if(StringUtils.isNotBlank(company_by_report)) {
-			sql.append(" and t.company_by_report like concat('%',?,'%')");
+			sql.append(" and c2.name like concat('%',?,'%')");
 			params.add(company_by_report);
 		}
 		if(StringUtils.isNotBlank(right_company_name_en)) {
-			sql.append(" and t.right_company_name_en  like concat('%',?,'%')");
+			sql.append(" and c2.name_en  like concat('%',?,'%')");
 			params.add(right_company_name_en);
 		}
-		if(StringUtils.isNotBlank(status)) {
+		if (StringUtils.isNotBlank(status)) {
 			sql.append(" and t.status in(?)");
 			params.add(status);
 		}
-		return CreditOrderInfo.dao.find("select t.* "+sql.toString(),params.toArray());
+		sql.append("and t.status =?");
+		params.add(statu);
+		return Db.queryNumber("select count(*) "+sql.toString(),params.toArray()).intValue();
 	}
 	
 

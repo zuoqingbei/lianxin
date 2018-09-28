@@ -3,6 +3,7 @@ package com.hailian.modules.credit.usercenter.controller;
 
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
+import com.hailian.component.util.JFlyFoxUtils;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.encrypt.Md5Utils;
@@ -26,10 +27,9 @@ public class UserController  extends BaseProjectController{
 		public void login(){
 			Md5Utils md5 = new Md5Utils();
 			String username = getPara("username");
-			String targetPwd = md5.getMD5(getPara("password")+SALT);
-			
+			String targetPwd = 	JFlyFoxUtils.passwordEncrypt(getPara("password"));
 			SysUser user = SysUser.dao.findByUserName(username);
-			String realPwd = SALT;
+			String realPwd = "-102156515141521232f297a57a5a743894a0e4a801fc3";
 			if(user!=null){
 				realPwd = user.get("password");
 			}
