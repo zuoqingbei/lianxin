@@ -67,7 +67,6 @@ public class CreditOrderInfoModel extends BaseProjectModel<CreditOrderInfoModel>
 		private String email;
 		private String contacts;
 		private String remarks;
-		
 
 		
 	
@@ -169,6 +168,9 @@ public class CreditOrderInfoModel extends BaseProjectModel<CreditOrderInfoModel>
 		public void setRemarks(String remarks) {
 			set("remarks", remarks);
 		}
+		
+		
+
 		/**
 		 * 
 		 */
