@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
@@ -35,6 +36,7 @@ import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.util.getOrderNum;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.upload.UploadFile;
 
@@ -218,7 +220,7 @@ public class OrderPoiController extends BaseProjectController {
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第I列信息填写错误;";
 							}else{
-								orderReal.set("speed", dictDetailByOrderSpeed.get(0).get("id"));
+								orderReal.set("speed", dictDetailByOrderSpeed.get(0).get("detail_id"));
 							}
 							order.set("speed", speed);
 						} else {
@@ -282,10 +284,18 @@ public class OrderPoiController extends BaseProjectController {
 		}
 		int totalRow = orderList.size();
 		int totalRow2 = orderListReal.size();
+		ResultType errorResult=null;
+		if(StringUtils.isNotBlank(errormark)){
+			errorResult=new ResultType(2, errormark);
+		}else{
+			errorResult=new ResultType();
+		}
+		
 		ResultType resultType = new ResultType(totalRow,orderList);
 		ResultType resultTypeReal = new ResultType(totalRow2,orderListReal);
 		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("errormark", errormark);
+		map.put("errormark", errorResult);
+//		map.put("errormark", errormark);
 		map.put("orderList", resultType);
 		map.put("orderListReal", resultTypeReal);
 		renderJson(map);
@@ -297,6 +307,7 @@ public class OrderPoiController extends BaseProjectController {
 	* @TODO
 	 */
 	public void savedata() {
+		boolean flag=true;
 		String msg="提交成功";
 		List<CreditOrderInfoModel> parseArray;
 		try {
@@ -305,32 +316,45 @@ public class OrderPoiController extends BaseProjectController {
 			String now = getNow();
 			Integer userid = getSessionUser().getUserid();
 			for(CreditOrderInfoModel model:parseArray){
-			  String countryType=model.getStr("type");
+			  String num = new getOrderNum().getNumber();
+			  model.set("num", num);
+			  String countryid=model.getStr("country");
+			  CountryModel countrymodel = CountryModel.dao.findType(countryid);
+			  String countryType =countrymodel.getStr("type");
 			  String speed=model.getStr("speed");
 			  String reporttype=model.getStr("report_type");
 			  String orderType=model.getStr("order_type");
 			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed, reporttype, orderType);
-			  String user_time_id=timemodel.getStr("id");
-			  String use_time=timemodel.getStr("use_time");
+			  int user_time_id=timemodel.getInt("id");
+			  int use_time=timemodel.getInt("use_time");
 			  model.set("create_by", userid);
 			  model.set("create_date", now);
 			  model.set("receiver_date", now);
 			  model.set("user_time", use_time);
 			  model.set("user_time_id", user_time_id);
 			  CreditReportPrice pricemodel = OrderManagerService.service.getPrice(countryType, speed, reporttype, orderType);
-			  String price_id=pricemodel.getStr("id");
+			  int price_id=pricemodel.getInt("id");
 			  model.set("price_id", price_id);
 			  boolean save = model.save();
 				if(save==false){
 					msg="提交失败";
+					flag=false;
 				}
 			 }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			msg="提交失败";
+			flag=false;
 		}
-		renderMessage(msg);
+		if(flag){
+			ResultType resultType = new ResultType();
+			renderJson(resultType);
+		}else{
+			ResultType resultType = new ResultType(2, msg);
+			renderJson(resultType);
+		}
+		
 	}
 	
 	
