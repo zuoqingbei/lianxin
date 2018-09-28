@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +28,6 @@ import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.admin.site.TbSite;
 import com.hailian.modules.credit.common.model.CountryModel;
-import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.system.dict.SysDictDetail;
@@ -39,7 +37,6 @@ import com.hailian.util.Config;
 import com.hailian.util.DateAddUtil;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
-import com.hailian.util.getOrderNum;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -177,7 +174,7 @@ public class OrdermanagerController extends BaseProjectController{
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		List<File> ftpfileList=new ArrayList<File>();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
-		String num=new getOrderNum().getNumber();
+		String num=CreditOrderInfo.dao.getNumber();
 		model1.set("business_type", "0");
 		model1.set("business_id", num);
 		int num1=0;

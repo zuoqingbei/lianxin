@@ -35,11 +35,9 @@ import com.hailian.system.file.util.FileUploadUtils;
 import com.hailian.system.menu.SysMenu;
 import com.hailian.system.user.SysUser;
 import com.hailian.system.user.UserSvc;
-import com.hailian.util.cache.Cache;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
-import com.hailian.util.getOrderNum;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
@@ -246,7 +244,7 @@ public class HomeController extends BaseProjectController {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		List<File> ftpfileList=new ArrayList<File>();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
-		String num=new getOrderNum().getNumber();
+		String num=CreditOrderInfo.dao.getNumber();
 		model.set("num", num);
 		SysUser user = (SysUser) getSessionUser();
 		CreditUploadFileModel model1= new CreditUploadFileModel();

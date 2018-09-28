@@ -36,7 +36,6 @@ import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
-import com.hailian.util.getOrderNum;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.upload.UploadFile;
 
@@ -316,7 +315,7 @@ public class OrderPoiController extends BaseProjectController {
 			String now = getNow();
 			Integer userid = getSessionUser().getUserid();
 			for(CreditOrderInfoModel model:parseArray){
-			  String num = new getOrderNum().getNumber();
+			  String num =CreditOrderInfo.dao.getNumber();
 			  model.set("num", num);
 			  String countryid=model.getStr("country");
 			  CountryModel countrymodel = CountryModel.dao.findType(countryid);

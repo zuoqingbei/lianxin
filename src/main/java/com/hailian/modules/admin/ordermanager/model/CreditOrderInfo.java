@@ -1,5 +1,6 @@
 package com.hailian.modules.admin.ordermanager.model;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
@@ -17,6 +19,7 @@ import com.hailian.jfinal.component.annotation.ModelBind;
 
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.common.controller.ReportTimeController;
 import com.hailian.modules.credit.common.model.ReportTimeModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
@@ -24,10 +27,13 @@ import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
 
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
+import com.jfinal.json.Json;
 import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
+
+import net.sf.json.JSON;
 
 /**
  * 
@@ -40,7 +46,7 @@ import com.jfinal.plugin.activerecord.Page;
  */
 @ModelBind(table = "credit_order_info")
 //此标签用于模型与数据库表的连接
-public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
+public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implements Serializable{
 	//客户姓名
 	private String customName;
 	//国家
@@ -625,8 +631,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 	 * @param  @return
 	 * @return_type   CreditOrderInfo
 	 */
-	public CreditOrderInfo getMaxId() {
-		
+	public CreditOrderInfo getMaxOrderId() {
 		return CreditOrderInfo.dao.findFirst("SELECT MAX(id) as id FROM credit_order_info");
 	}
 	/**
@@ -639,5 +644,22 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		String sql="select fullName,addedTime FROM credit_order_info t where t.del_flag=0 and receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
 	}
 	
-
+	public String getNumber() {
+		String num=String.valueOf(getMaxOrderId().getInt("id")+1);
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+		String date=sdf.format(new Date());
+		if(num.length()==1) {
+			num="000"+num;
+		}if(num.length()==2) {
+			num="00"+num;
+		}if(num.length()==3) {
+			num="0"+num;
+		}
+		return "00"+date+num;
+	}
+	public static void main(String[] args) {
+		CreditCompanyInfo c=new CreditCompanyInfo();
+		String json=Json.getJson().toJson(c);
+		System.out.println(json);
+	}
 }

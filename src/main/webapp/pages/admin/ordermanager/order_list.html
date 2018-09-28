@@ -182,26 +182,7 @@ var bodyContent = {
 			<td>${item.reportSpeed}</td>
 			<td>${item.reference_num}</td>
 			<td>${item.email}</td>
-			<td>
-			<%if(item.status=='0'){%>
-				提交订单
-			<%}%>
-			<%if(item.status=='1'){%>
-				订单分配
-			<%}%>
-			<%if(item.status=='2'){%>
-				处理中
-			<%}%>
-			<%if(item.status=='3'){%>
-				按照流程处理完毕
-			<%}%>
-			<%if(item.status=='4'){%>
-				订单取消
-			<%}%>
-			<%if(item.status=='5'){%>
-				有相同报告,订单结束
-			<%}%>
-			</td>
+			<td>${item.statuName}</td>
 			<td>${item.createName}</td>
 			<!-- <td>${item.company}</td>
 			<td>${item.company_en}</td> -->
