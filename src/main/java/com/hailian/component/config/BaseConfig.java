@@ -36,6 +36,7 @@ import com.hailian.jfinal.component.handler.HtmlHandler;
 import com.hailian.jfinal.component.interceptor.ExceptionInterceptor;
 import com.hailian.jfinal.component.interceptor.JflyfoxInterceptor;
 import com.hailian.jfinal.component.interceptor.SessionAttrInterceptor;
+import com.hailian.modules.admin.ordermanager.model.TemplateCompanyService;
 import com.hailian.modules.front.template.TemplateCustomService;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateImageService;
@@ -284,7 +285,7 @@ public class BaseConfig extends JFinalConfig {
 		groupTemplate.registerFunctionPackage("reportType", TemplateReportTypeService.class);//报告类型模板
 		groupTemplate.registerFunctionPackage("sysUser", TemplateSysUserService.class);//系统用户模板
 		groupTemplate.registerFunctionPackage("custom", TemplateCustomService.class);//系统客户模板
-		groupTemplate.registerFunctionPackage("company", TemplateCustomService.class);//系统客户模板
+		groupTemplate.registerFunctionPackage("company", TemplateCompanyService.class);//系统客户模板
 		
 	}
 	private boolean isDevMode() {
