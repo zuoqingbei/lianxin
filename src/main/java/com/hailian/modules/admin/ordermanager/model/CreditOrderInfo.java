@@ -636,7 +636,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 	* @TODO
 	 */
 	public void zuoDanZhanBi(){
-		String sql="";
+		String sql="select fullName,addedTime FROM credit_order_info t where t.del_flag=0 and receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
 	}
 	
 

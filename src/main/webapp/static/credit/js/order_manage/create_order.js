@@ -72,12 +72,20 @@ let
 	        error: function (message) {
 	            $("#request-process-patent").html("提交数据失败！");
 	        }
-	    });
-	})	
+	     });
+	   })	
 			
 			
 			
 		},
+		
+		download_mod(){
+			/**点击下载模板 */
+			$("#btn_download").click(()=>{
+				window.open("/static/credit/assets/files/order_mod.xls")
+			})
+		},
+		
 		emailAdd: function (obj){
             let tv = $(obj).val();
             let reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -221,6 +229,7 @@ let
 			Page.initValidator();
 			Events.btn_download();
 			Events.closeProgress();
+			Events.download_mod();
 		},
 		initTable(){
 			/**初始化表格 */
