@@ -4,7 +4,7 @@
 <% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
 <% var custom = custom.getCustomStringObject(model.custom_id); %>
 <% var reportType = reportType.getReportTypeString("ordertype"); %>
-<% var custom = custom.getCompanyStringObject(model.company_id); %>
+<% var company = company.getCompanyStringObject(model.company_id); %>
 
 <%
 DIRECTIVE SAFE_OUTPUT_OPEN;
@@ -312,23 +312,8 @@ var bodyContent = {
 		<tr>
 			<td>公司id</td>
 			<td>
-				<%if(model.company_id==null || model.company_id==""){%>
 				<select id="companyid" class="form-control"  name="attr.company_id" valid="vtext" validname="公司ID" onchange='oper.findCompany()'>
-				<option selected="selected" value="" >请选择</option>
-				<%for(item in company){%>
-					<option  m-type="${item.name}" m-type1="${item.name_en}" value="${item.id}" >${item.id}</option>
-				<%}%>
-				</select>
-					<%}else{ %>
-					
-					<select id="companyid" class="form-control"  name="attr.company_id" valid="vtext" validname="公司ID" onchange='oper.findCompany()'>
-					<%for(item in company){%>
-					<%if(item.id==model.company_id){%>
-						<option m-type="${item.name}" m-type1="${item.name_en}" selected="selected" value="${item.id}" >${item.id}</option>
-					<%}else{%>
-						<option  m-type="${item.name}" m-type1="${item.name_en}"  value="${item.id}" >${item.id}</option>
-						<%}}%>
-						<%}%>
+					${company!}
 				</select>
 			</td>
 		</tr>

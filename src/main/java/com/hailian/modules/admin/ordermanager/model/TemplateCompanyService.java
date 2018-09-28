@@ -15,7 +15,7 @@ public class TemplateCompanyService extends BaseService{
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
 				sb.append("<option selected='selected'  m-type1='"+detail.get("name")+"' m-type='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 			}else{
-				sb.append("<optionm-type1='"+detail.get("name")+"' m-type='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
+				sb.append("<option m-type1='"+detail.get("name")+"' m-type='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 				}
 			}
 			
