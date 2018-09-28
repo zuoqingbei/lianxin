@@ -18,6 +18,7 @@ import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.jfinal.json.Json;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -83,7 +84,7 @@ public class OrderManagerService {
 				CreditOrderInfo coi = CreditOrderInfo.dao.findById(id);
 				CreditOrderHistory his=new CreditOrderHistory();
 				String order_id=coi.get("id").toString();
-				String json=JSONObject.toJSONString(coi);
+				String json=Json.getJson().toJson(coi);
 				his.set("order_id", order_id);
 				his.set("json", json);
 				his.set("change_reason", coi.getStr("remarks")).set("remarks", "0");
@@ -306,8 +307,8 @@ public class OrderManagerService {
 		return CreditOrderInfo.dao.getOrders( statu, model, user,status);
 	}
 
-	public CreditOrderInfo getMaxId() {
-		return CreditOrderInfo.dao.getMaxId();
+	public CreditOrderInfo getMaxOrderId() {
+		return CreditOrderInfo.dao.getMaxOrderId();
 	}
 
 }
