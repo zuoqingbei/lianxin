@@ -292,8 +292,6 @@ public class HomeController extends BaseProjectController {
 						}else{
 							num1+=1;
 							message+=uploadFile.getOriginalFileName()+"上传失败!";
-							renderMessageByFailed(message);
-//							redirect("/credit/front/home/menu");
 							
 							return;
 						}

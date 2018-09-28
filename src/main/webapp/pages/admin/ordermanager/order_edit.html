@@ -201,7 +201,7 @@ var bodyContent = {
 							 	<% }%>
 							 	<%}else{ %>
 							 		<% for(item in customs){ %>
-							 	<%if(model.custom_id==item.id){%>
+							 	<%if(model.custom_id=='item.id'){%>
 							 	 <option m-type="${model.customName}" value="${model.custom_id}" selected="selected">${model.custom_id}</option>
 							 	<% }else{ %>
 							 		<option m-type="${item.name}"  value="${item.id}" >${item.id}</option>

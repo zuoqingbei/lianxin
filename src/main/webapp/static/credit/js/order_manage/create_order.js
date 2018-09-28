@@ -117,12 +117,25 @@ let
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
 				$("input[name='attr.status']").val("290");
-				$("#orderForm").submit();	
-			}
+				$("#btn_submit").click(function(){
+					$("#orderForm").ajaxSubmit({
+						success:function(data){
+							  if(data.statusCode===1){
+                        		Public.message("success",data.message);
+                       		 }else{
+                        		Public.message("error",data.message);
+                        }
+
+						},
+						error:function(data){
+							Public.message("error",data.message);
+						}
+					})
+				})
 		},
 		formSave: function(){
 			$("input[name='attr.status']").val("289");
-			$("#orderForm").submit();
+			$("#btn_submit").submit();
 		},
 		closeProgress(){
 			$(".close").click(function(){
