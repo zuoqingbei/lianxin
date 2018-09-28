@@ -53,7 +53,7 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 				params.add(reporttype);
 			}
 			if (StringUtils.isNotBlank(orderType)) {
-				sql.append(" and t.report_type=?");
+				sql.append(" and t.order_type=?");
 				params.add(orderType);
 			}
 			

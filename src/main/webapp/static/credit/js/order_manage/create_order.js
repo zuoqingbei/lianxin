@@ -26,14 +26,23 @@ let
 						contentType: false, //
 						success:(data)=>{
 							/**成功 */
-							console.log(data.orderList)
+							
 							console.log(data)
 							jsondata=data.orderListReal.rows;
 							$("#show_modal").trigger("click")
 							Page.initTable(data.orderList)
+							if(data.errormark.statusCode===2){
+								 $(".err-box span").html(data.errormark.message)
+								 $(".err-box").show()
+								 $("#modal_submit").addClass("btn-disabled disabled").removeClass("btn-primary")
+								
+				               }else{
+				            	 $(".err-box").hide()
+				   				 $("#modal_submit").removeClass("btn-disabled disabled").addClass("btn-primary")
+				               }
 							$("#tableOrder").bootstrapTable("load",data.orderList)
-							$(".err-box span").html(data.errormark)
-							Events.modalInfoIsError();
+//							$(".err-box span").html(data.errormark.message)
+							
 						},
 						error:()=>{
 //							Public.message("info")
@@ -43,17 +52,22 @@ let
 			}),
 		
 	$("#modal_submit").click(function() {
-    $("#request-process-patent").html("正在提交数据，请勿关闭当前窗口...");
+		if($(this).hasClass("disabled")) {
+			Public.message("error","提交数据有误，请检查数据");
+			return;
+		}
 	    $.ajax({
 	        type: "POST",
 	        url: "/credit/orderpoimanager/savedata",
 	        contentType: "application/json; charset=utf-8",
 	        data: JSON.stringify(jsondata),
 	        dataType: "json",
-	        success: function (message) {
-	            if (message > 0) {
-	                alert("请求已提交！我们会尽快与您取得联系");
-	            }
+	        success: function (data) {
+	        	if(data.statusCode===1){
+               	Public.message("success",data.message);
+               }else{
+               	Public.message("error",data.message);
+               }
 	        },
 	        error: function (message) {
 	            $("#request-process-patent").html("提交数据失败！");
@@ -163,19 +177,8 @@ let
 			$(".close").click(function(){
 				$("#Close").hide();
 			})
-		},
-		modalInfoIsError(){
-			/**模态窗列表是否有错误信息 */
-			let flag = true
-			if(flag){
-				/**有 */
-				 $(".err-box").show()
-				 $("#modal_submit").addClass("btn-disabled disabled").removeClass("btn-primary")
-			}else {
-				$(".err-box").hide()
-				$("#modal_submit").removeClass("btn-disabled disabled").addClass("btn-primary")
-			}
 		}
+		
 	},
 /* 画面对象 */
 	Page = {

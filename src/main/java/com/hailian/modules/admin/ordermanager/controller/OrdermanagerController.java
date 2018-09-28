@@ -245,24 +245,15 @@ public class OrdermanagerController extends BaseProjectController{
 			}
 		}
 		try {
-			OrderManagerService.service.modifyOrder(0,model,user,this);
+			OrderManagerService.service.modifyOrder(id,model,user,this);
+			OrderManagerService.service.addOrderHistory(id, user);
 			renderMessage("保存成功");
-			throw new Exception();
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderMessageByFailed(message);
 //			redirect("/credit/front/home/menu");
 			
 		}	
-		//生成日志
-		try {
-			OrderManagerService.service.addOrderHistory(id, user);
-		} catch (Exception e) {
-			e.printStackTrace();
-			renderMessageByFailed("日志插入失败");
-			return;
-		}
-		renderMessage("保存成功");
 	}
 	/**
 	 * 

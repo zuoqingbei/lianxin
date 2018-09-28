@@ -1,8 +1,11 @@
-<% var sandbar = tempDict.getSysDictDetailString('sandbar',model.continent); %>
+<% var sandbar = tempDict.getSysDictDetailString('continent',model.continent); %>
 <% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type); %>
 <% var language = tempDict.getSysDictDetailString('language',model.report_language); %>
 <% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
+<% var custom = custom.getCustomStringObject(model.custom_id); %>
 <% var reportType = reportType.getReportTypeString("ordertype"); %>
+<% var custom = custom.getCompanyStringObject(model.company_id); %>
+
 <%
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -194,18 +197,7 @@ var bodyContent = {
 			<td>客户ID</td>
 			<td>
 				<select id="customid" name="attr.custom_id" valid="vselect" class="form-control" validname="客户id" onchange="oper.customChange()">
-					<% if(model.custom_id==null || model.custom_id==""){ %>
-						<option value="">请选择</option>
-					 <% for(item in customs){ %>
-							 	<option m-type="${item.name}"  value="${item.id}" >${item.id}</option>
-							 	<% }%>
-							 	<%}else{ %>
-							 		<% for(item in customs){ %>
-							 	<%if(model.custom_id=='item.id'){%>
-							 	 <option m-type="${model.customName}" value="${model.custom_id}" selected="selected">${model.custom_id}</option>
-							 	<% }else{ %>
-							 		<option m-type="${item.name}"  value="${item.id}" >${item.id}</option>
-							  <% }} }%>
+				${custom!}
 				</select>
 			</td>
 		</tr>

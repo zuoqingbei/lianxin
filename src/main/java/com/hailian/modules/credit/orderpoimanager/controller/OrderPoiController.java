@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
@@ -25,6 +26,9 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
+import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
+import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
+import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
@@ -32,6 +36,7 @@ import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.util.getOrderNum;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.upload.UploadFile;
 
@@ -137,6 +142,7 @@ public class OrderPoiController extends BaseProjectController {
 								errormark+=errornum+".第"+r+"行，第D列信息填写错误;";
 							}else{
 								orderReal.set("country", countryByName.get(0).get("id"));
+								orderReal.put("type", countryByName.get(0).get("type"));
 							}
 							order.set("country", countryName);
 						}else{
@@ -197,7 +203,7 @@ public class OrderPoiController extends BaseProjectController {
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第H列信息填写错误;";
 							}else{
-								orderReal.set("report_language", companyByName.get(0).get("id"));
+								orderReal.set("company_by_report", companyByName.get(0).get("id"));
 							}
 							order.set("company_by_report", name);
 							
@@ -214,7 +220,7 @@ public class OrderPoiController extends BaseProjectController {
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第I列信息填写错误;";
 							}else{
-								orderReal.set("speed", dictDetailByOrderSpeed.get(0).get("id"));
+								orderReal.set("speed", dictDetailByOrderSpeed.get(0).get("detail_id"));
 							}
 							order.set("speed", speed);
 						} else {
@@ -278,13 +284,20 @@ public class OrderPoiController extends BaseProjectController {
 		}
 		int totalRow = orderList.size();
 		int totalRow2 = orderListReal.size();
+		ResultType errorResult=null;
+		if(StringUtils.isNotBlank(errormark)){
+			errorResult=new ResultType(2, errormark);
+		}else{
+			errorResult=new ResultType();
+		}
+		
 		ResultType resultType = new ResultType(totalRow,orderList);
 		ResultType resultTypeReal = new ResultType(totalRow2,orderListReal);
 		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("errormark", errormark);
+		map.put("errormark", errorResult);
+//		map.put("errormark", errormark);
 		map.put("orderList", resultType);
 		map.put("orderListReal", resultTypeReal);
-		System.out.println(orderList+"==========================&&&&&&&&&&=");
 		renderJson(map);
 	}
 	/**
@@ -294,6 +307,7 @@ public class OrderPoiController extends BaseProjectController {
 	* @TODO
 	 */
 	public void savedata() {
+		boolean flag=true;
 		String msg="提交成功";
 		List<CreditOrderInfoModel> parseArray;
 		try {
@@ -302,20 +316,45 @@ public class OrderPoiController extends BaseProjectController {
 			String now = getNow();
 			Integer userid = getSessionUser().getUserid();
 			for(CreditOrderInfoModel model:parseArray){
-				model.remove("customName");
-				 model.set("create_by", userid);
-				 model.set("create_date", now);
-				 boolean save = model.save();
-					if(save==false){
-						msg="提交失败";
-					}
+			  String num = new getOrderNum().getNumber();
+			  model.set("num", num);
+			  String countryid=model.getStr("country");
+			  CountryModel countrymodel = CountryModel.dao.findType(countryid);
+			  String countryType =countrymodel.getStr("type");
+			  String speed=model.getStr("speed");
+			  String reporttype=model.getStr("report_type");
+			  String orderType=model.getStr("order_type");
+			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed, reporttype, orderType);
+			  int user_time_id=timemodel.getInt("id");
+			  int use_time=timemodel.getInt("use_time");
+			  model.set("create_by", userid);
+			  model.set("create_date", now);
+			  model.set("receiver_date", now);
+			  model.set("user_time", use_time);
+			  model.set("user_time_id", user_time_id);
+			  CreditReportPrice pricemodel = OrderManagerService.service.getPrice(countryType, speed, reporttype, orderType);
+			  int price_id=pricemodel.getInt("id");
+			  model.set("price_id", price_id);
+			  boolean save = model.save();
+				if(save==false){
+					msg="提交失败";
+					flag=false;
+				}
 			 }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			msg="提交失败";
+			flag=false;
 		}
-		renderMessage(msg);
+		if(flag){
+			ResultType resultType = new ResultType();
+			renderJson(resultType);
+		}else{
+			ResultType resultType = new ResultType(2, msg);
+			renderJson(resultType);
+		}
+		
 	}
 	
 	
