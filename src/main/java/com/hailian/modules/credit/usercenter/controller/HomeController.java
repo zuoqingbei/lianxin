@@ -292,32 +292,33 @@ public class HomeController extends BaseProjectController {
 						}else{
 							num1+=1;
 							message+=uploadFile.getOriginalFileName()+"上传失败!";
-							
+							ResultType resultType=new ResultType(0,message);
+							renderJson(resultType);
 							return;
 						}
 					}else{
 						num1+=1;
 						message+=uploadFile.getOriginalFileName()+"上传失败!";
-						renderMessageByFailed(message);
-//						redirect("/credit/front/home/menu");						
+						ResultType resultType=new ResultType(0,message);
+						renderJson(resultType);						
 						return;
 					}
 				}
 			}catch(Exception e){
 				e.printStackTrace();
-				renderMessageByFailed("文件上传失败");
-//				redirect("/credit/front/home/menu");
+				ResultType resultType=new ResultType(0,"操作失败,请重新提交");
+				renderJson(resultType);
 				return;
 			}
 		}
 		try {
 			OrderManagerService.service.modifyOrder(0,model,user,this);
-			renderMessage("保存成功");
-			throw new Exception();
+			ResultType resultType=new ResultType(1,"操作成功");
+			renderJson(resultType);
 		} catch (Exception e) {
 			e.printStackTrace();
-			renderMessageByFailed(message);
-//			redirect("/credit/front/home/menu");
+			ResultType resultType=new ResultType(0,"操作失败,请重新提交");
+			renderJson(resultType);
 			
 		}		
 	}

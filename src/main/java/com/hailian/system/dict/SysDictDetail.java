@@ -107,7 +107,17 @@ public class SysDictDetail extends BaseProjectModel<SysDictDetail> {
 		sql+=" and detail_name=? ";
 		List<Object> params=new ArrayList<Object>();
 		params.add(ordertype);
-		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params);
+		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params.toArray());
+		return list;
+	}
+	public static List<SysDictDetail> getDictDetailBy(String ordertype,String dictType){
+		String sql="select * from sys_dict_detail where del_flag=0";
+		sql+=" and dict_type=? ";
+		sql+=" and detail_name=? ";
+		List<Object> params=new ArrayList<Object>();
+		params.add(dictType);
+		params.add(ordertype);
+		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params.toArray());
 		return list;
 	}
 	public static List<SysDictDetail> getDictDetailByOrderSpeed(String orderspeed){
@@ -116,7 +126,7 @@ public class SysDictDetail extends BaseProjectModel<SysDictDetail> {
 		sql+=" and detail_name=? ";
 		List<Object> params=new ArrayList<Object>();
 		params.add(orderspeed);
-		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params);
+		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params.toArray());
 		return list;
 	}
 	

@@ -28,7 +28,7 @@ let
 							/**成功 */
 							console.log(data.orderList)
 							console.log(data)
-							jsondata=data.orderList.rows;
+							jsondata=data.orderListReal.rows;
 							$("#show_modal").trigger("click")
 							Page.initTable(data.orderList)
 							$("#tableOrder").bootstrapTable("load",data.orderList)
@@ -120,22 +120,44 @@ let
 				$("#btn_submit").click(function(){
 					$("#orderForm").ajaxSubmit({
 						success:function(data){
+							console.log(JSON.stringify(data));
 							  if(data.statusCode===1){
                         		Public.message("success",data.message);
+                        		Public.goList();
                        		 }else{
                         		Public.message("error",data.message);
-                        }
+                        		Public.goList();
+                        	}
 
 						},
 						error:function(data){
 							Public.message("error",data.message);
+							Public.goList();
 						}
-					})
-				})
+					});
+				});
+			}
 		},
 		formSave: function(){
 			$("input[name='attr.status']").val("289");
-			$("#btn_submit").submit();
+				$("#btn_save").click(function(){
+					$("#orderForm").ajaxSubmit({
+						success:function(data){
+							  if(data.statusCode===1){
+                        		Public.message("success",data.message);
+                        		Public.goList();
+                       		 }else{
+                        		Public.message("error",data.message);
+                        		Public.goList();
+                        	 }
+
+						},
+						error:function(data){
+							Public.message("error",data.message);
+							Public.goList();
+						}
+					});
+				});
 		},
 		closeProgress(){
 			$(".close").click(function(){

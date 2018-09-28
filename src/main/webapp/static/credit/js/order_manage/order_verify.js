@@ -89,8 +89,12 @@ let Verify = {
         $("#modal_submit").click(function(){
         	console.log("点击提交");
         	$("#status").val("293");
-        	$(".tableValue").ajaxSubmit(function (data) {
-        		console.log("ajaxSubmit:"+data);
+        	$(".tableValue").ajaxSubmit({
+        		success:function(data){
+        			console.log("状态为成功,message:"+data.message);
+        		},error :function(data){
+        			console.log("状态为失败,message:"+data.message);
+        		}
             });
             //提交成功关闭模态窗
            $(".modal-header .close").trigger("click");
@@ -99,7 +103,7 @@ let Verify = {
           	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
           		$.ajax({
           			type:"post",
-              		url:"/credit/front/orderProcess/reallocationJson",
+              		url:"/credit/front/orderProcess/listJson",
               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
               		dataType:"json",
               		success:function(obj){
@@ -122,7 +126,7 @@ let Verify = {
           	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
           		$.ajax({
           			type:"post",
-              		url:"/credit/front/orderProcess/reallocationJson",
+              		url:"/credit/front/orderProcess/listJson",
               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
               		dataType:"json",
               		success:function(obj){
@@ -145,7 +149,7 @@ let Verify = {
           	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
           		$.ajax({
           			type:"post",
-              		url:"/credit/front/orderProcess/reallocationJson",
+              		url:"/credit/front/orderProcess/listJson",
               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
               		dataType:"json",
               		success:function(obj){
@@ -319,7 +323,7 @@ let Verify = {
   }
 
 ],
-            url : '/credit/front/orderProcess/reallocationJson', // 请求后台的URL（*）
+            url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',

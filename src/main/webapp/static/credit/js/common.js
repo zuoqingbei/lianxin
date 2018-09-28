@@ -92,9 +92,9 @@ let Public = {
     },
     createOrder(){
     	 $("#main_content").load('/credit/front/home/createOrder')
-    	  $(".fa fa-wpforms fa-fw").children("ul").slideUp(150, function () {
-                        $(".fa fa-wpforms fa-fw").parent().toggleClass("show");
-                    });
+    },
+    goList(){
+    	 $("#main_content").load('/credit/front/home')
     },
     gotop(){
         console.log($(".main"))

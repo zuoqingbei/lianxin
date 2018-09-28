@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -55,12 +54,11 @@ public class OrderPoiController extends BaseProjectController {
 	 */
 	@ApiOperation(url = "/credit/orderpoimanager/importExcel", httpMethod = "POST")
 	public void importExcel() throws IOException {
-		Integer userid = getSessionUser().getUserid();
 		String errormark="";
 		int errornum=0;
 		List<UploadFile> upLoadFile = getFiles();
-		List<Object> list=new ArrayList<Object>();
 		List<CreditOrderInfo> orderList = new ArrayList<CreditOrderInfo>();
+		List<CreditOrderInfo> orderListReal = new ArrayList<CreditOrderInfo>();
 		File file = upLoadFile.get(0).getFile();
 		FileInputStream fileIn = new FileInputStream(file);
 		//根据指定的文件输入流导入Excel从而产生Workbook对象
@@ -72,22 +70,28 @@ public class OrderPoiController extends BaseProjectController {
 			} else if (FileTypeUtils.getFileType(upLoadFile.get(0).getOriginalFileName()).equals("xls")) {
 				wb0 = new HSSFWorkbook(new POIFSFileSystem(fileIn));
 			}
-			List<CountryModel> countrys = CountryModel.dao.getCountrys(null);
 			//获取Excel文档中的第一个表单
 			Sheet sht0 = wb0.getSheetAt(0);
-			
 			int totalRows=sht0.getPhysicalNumberOfRows();//获取表格行数
-//			totalRows=sht0.getLastRowNum();//获得总行数
+			int coloumNum=sht0.getRow(0).getPhysicalNumberOfCells();
 			  for(int r=0;r<totalRows;r++){
 				  Row row = sht0.getRow(r);//获取每一行
 				  if(r==0 || null==row){
 					  continue;
 				  }
 				  if(r>0 && row!=null){
-					  CreditOrderInfo order = new CreditOrderInfo();
-					  CreditOrderInfo orderReal = new CreditOrderInfo();
-					  String countryId="";
-					  String reportId ="";
+					  boolean flag=false;//判断行数是否有有效数据
+					  for(int i=0;i<coloumNum;i++){
+						  if (row.getCell(i) != null) {
+							  flag=true;
+							  break;
+						  }
+					  }
+					  if(!flag){
+						  continue;
+					  }
+					  CreditOrderInfo order = new CreditOrderInfo();//向页面回显
+					  CreditOrderInfo orderReal = new CreditOrderInfo();//解析表格内容获取其对应编码对象
 					  if (row.getRowNum() < 1) {
 							continue;
 						}
@@ -98,6 +102,8 @@ public class OrderPoiController extends BaseProjectController {
 							if(CollectionUtils.isEmpty(customById)){
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第B列信息填写错误;";
+							}else{
+								orderReal.set("custom_id", customById.get(0).get("id"));
 							}
 							order.set("custom_id", custom_id);
 							order.put("customerName",customById.get(0).get("name"));
@@ -114,6 +120,8 @@ public class OrderPoiController extends BaseProjectController {
 							if(CollectionUtils.isEmpty(continentList)){
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第C列信息填写错误;";
+							}else{
+								orderReal.set("continent", continentList.get(0).get("detail_id"));
 							}
 							order.set("continent", continent);
 						}else{
@@ -127,6 +135,8 @@ public class OrderPoiController extends BaseProjectController {
 							if(CollectionUtils.isEmpty(countryByName)){
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第D列信息填写错误;";
+							}else{
+								orderReal.set("country", countryByName.get(0).get("id"));
 							}
 							order.set("country", countryName);
 						}else{
@@ -137,11 +147,11 @@ public class OrderPoiController extends BaseProjectController {
 							row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
 							String report_type = row.getCell(4).getStringCellValue();
 							List<ReportTypeModel> reportTypeByName = ReportTypeModel.dao.getReportTypeByName(report_type);
-							
 							if(CollectionUtils.isEmpty(reportTypeByName)){
-								reportId = reportTypeByName.get(0).get("id");
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第E列信息填写错误;";
+							}else{
+								orderReal.set("report_type", reportTypeByName.get(0).get("id"));
 							}
 							order.set("report_type", report_type);
 						} else {
@@ -156,6 +166,8 @@ public class OrderPoiController extends BaseProjectController {
 							if(CollectionUtils.isEmpty(dictDetailByOrderType)){
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第F列信息填写错误；";
+							}else{
+								orderReal.set("order_type", dictDetailByOrderType.get(0).get("detail_id"));
 							}
 							order.set("order_type", order_type);
 						} else {
@@ -164,9 +176,18 @@ public class OrderPoiController extends BaseProjectController {
 						}
 						if (row.getCell(6) != null) {
 							row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
-							order.set("report_language", row.getCell(6).getStringCellValue());
+							String report_language=row.getCell(6).getStringCellValue();
+							List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(report_language,"language");
+							if(CollectionUtils.isEmpty(dictDetailBy)){
+								errornum++;
+								errormark+=errornum+".第"+r+"行，第G列信息填写错误；";
+							}else{
+								orderReal.set("report_language", dictDetailBy.get(0).get("detail_id"));
+							}
+							order.set("report_language", report_language);
 						} else {
-							renderText("报告语言不能为空");
+							errornum++;
+							errormark+=errornum+".第"+r+"行，第G列信息漏填;";
 						}
 						if (row.getCell(7) != null) {
 							row.getCell(7).setCellType(Cell.CELL_TYPE_STRING);
@@ -175,8 +196,11 @@ public class OrderPoiController extends BaseProjectController {
 							if(CollectionUtils.isEmpty(companyByName)){
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第H列信息填写错误;";
+							}else{
+								orderReal.set("report_language", companyByName.get(0).get("id"));
 							}
 							order.set("company_by_report", name);
+							
 						} else {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
@@ -189,6 +213,8 @@ public class OrderPoiController extends BaseProjectController {
 							if(CollectionUtils.isEmpty(dictDetailByOrderSpeed)){
 								errornum++;
 								errormark+=errornum+".第"+r+"行，第I列信息填写错误;";
+							}else{
+								orderReal.set("speed", dictDetailByOrderSpeed.get(0).get("id"));
 							}
 							order.set("speed", speed);
 						} else {
@@ -200,54 +226,65 @@ public class OrderPoiController extends BaseProjectController {
 							row.getCell(9).setCellType(Cell.CELL_TYPE_STRING);
 							String reference_num = row.getCell(9).getStringCellValue();
 							order.set("reference_num", reference_num);
+							orderReal.set("reference_num", reference_num);
 						} 
 						//地址
 						if (row.getCell(10) != null) {
 							row.getCell(10).setCellType(Cell.CELL_TYPE_STRING);
 							String address = row.getCell(10).getStringCellValue();
 							order.set("address", address);
+							orderReal.set("address", address);
 						} 
 						//电话
 						if (row.getCell(11) != null) {
 							row.getCell(11).setCellType(Cell.CELL_TYPE_STRING);
 							String telphone = row.getCell(11).getStringCellValue();
 							order.set("telphone", telphone);
+							orderReal.set("telphone", telphone);
 						} 
 						//传真
 						if (row.getCell(12) != null) {
 							row.getCell(12).setCellType(Cell.CELL_TYPE_STRING);
 							String fax = row.getCell(12).getStringCellValue();
 							order.set("fax", fax);
+							orderReal.set("fax", fax);
 						} 
 						//邮箱
 						if (row.getCell(13) != null) {
 							row.getCell(13).setCellType(Cell.CELL_TYPE_STRING);
 							String email = row.getCell(13).getStringCellValue();
 							order.set("email", email);
+							orderReal.set("email", email);
 						} 
 						//联系人
 						if (row.getCell(14) != null) {
 							row.getCell(14).setCellType(Cell.CELL_TYPE_STRING);
 							String contacts = row.getCell(14).getStringCellValue();
 							order.set("contacts", contacts);
+							orderReal.set("contacts", contacts);
 						} 
 						//其他细节
 						if (row.getCell(15) != null) {
 							row.getCell(15).setCellType(Cell.CELL_TYPE_STRING);
 							String remarks = row.getCell(15).getStringCellValue();
 							order.set("remarks", remarks);
+							orderReal.set("remarks", remarks);
 						} 
 						order.set("receiver_date", new Date());
 						orderList.add(order);
+						orderListReal.add(orderReal);
 				  }
 			  }
 		}
 		int totalRow = orderList.size();
+		int totalRow2 = orderListReal.size();
 		ResultType resultType = new ResultType(totalRow,orderList);
+		ResultType resultTypeReal = new ResultType(totalRow2,orderListReal);
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("errormark", errormark);
 		map.put("orderList", resultType);
-		System.out.println(orderList);
+		map.put("orderListReal", resultTypeReal);
+		System.out.println(orderList+"==========================&&&&&&&&&&=");
 		renderJson(map);
 	}
 	/**
