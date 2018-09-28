@@ -562,6 +562,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 			}else if((OrderProcessController.orderVerifyOfOrder).equals(searchType)){
 				//status='292'值状态为客户确认状态 ,其维护在字典表中
 				fromSql.append(" and status='292' ");
+			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
+				//status='294'值状态为订单查档 ,其维护在字典表中
+				fromSql.append(" and status='294' ");
 			}
 			
 		//关键词搜索
@@ -591,7 +594,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
-			fromSql.append(" order by c.create_date desc");
+			fromSql.append(" order by c.receiver_date desc");
 		} else {
 			fromSql.append(" order by ").append(orderBy);
 		}
