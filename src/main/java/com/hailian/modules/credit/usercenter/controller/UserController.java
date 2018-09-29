@@ -1,10 +1,14 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 
+import java.util.HashMap;
+
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.util.JFlyFoxUtils;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.credit.usercenter.model.ResultType;
+import com.hailian.system.log.SysLog;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.encrypt.Md5Utils;
 import com.jfinal.kit.PropKit;
@@ -25,9 +29,14 @@ public class UserController  extends BaseProjectController{
 		}
 		//登录
 		public void login(){
-			Md5Utils md5 = new Md5Utils();
-			String username = getPara("username");
-			String targetPwd = 	JFlyFoxUtils.passwordEncrypt(getPara("password"));
+			//Md5Utils md5 = new Md5Utils();
+			String username = getRequest().getParameter("username");
+			String password = getRequest().getParameter("password");
+			if(username==null||password==null){
+				renderJson(new ResultType(0, "账号或者密码错误!"));
+				return;
+			}
+			String targetPwd = 	JFlyFoxUtils.passwordEncrypt(password);
 			SysUser user = SysUser.dao.findByUserName(username);
 			String realPwd = "-102156515141521232f297a57a5a743894a0e4a801fc3";
 			if(user!=null){
@@ -41,12 +50,22 @@ public class UserController  extends BaseProjectController{
 				//Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
 				//setAttr("user",user);
 				//setAttr("menu", map);
-				redirect("/credit/front/home/menu");
+				renderJson(new ResultType(1, "登录成功!"));
+				//redirect("/credit/front/home/menu");
 			}else{
-				redirect("/credit/front/usercenter/showLogin");
+				renderJson(new ResultType(0, "账号或者密码错误!"));
 			}
 		}
-		
+		/**
+		 * 登出2018-09-28
+		 */
+		public void logout() {
+			SysUser user = (SysUser) getSessionUser();
+			if (user != null) {
+				removeSessionUser();
+			}
+			redirect("/credit/front/usercenter/showLogin");
+		}
 		
 		
 		

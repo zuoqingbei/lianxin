@@ -32,7 +32,7 @@ let Public = {
         });
         //菜单点击
         $leftNav.find("li").click(function () {
-        	console.log($(this).find("a").attr("href"))
+        	
             if ($(this).hasClass("hasChild")) {
                 if ($(this).hasClass("show")) {
                     $(this).children("ul").slideUp(150, function () {
@@ -51,7 +51,7 @@ let Public = {
                 let id = $(this).attr("id");
                 let href = $(this).find("a").attr("href");
                 sessionStorage.setItem('menuId',id)
-                 $("#main_content").load(href,function(){
+                 $("#main_content").load(href?href:'/credit/front/home',function(){
                         _this.initReset();
                         _this.gotop()
                         sessionStorage.setItem('pageUrl',href)
@@ -86,10 +86,6 @@ let Public = {
     goToCreateOrder(){
         /**跳转新建订单页面 */
         $("#main_content").load('/credit/front/home/createOrder');
-    },
-    goToOrderDetail(){
-        /**跳转订单详情页面 */
-        $("#main_content").load('/credit/front/home/orderInfo?id='+id);
     },
     goToBasicInfoWrite(){
         /**跳转基本信息填报 */
