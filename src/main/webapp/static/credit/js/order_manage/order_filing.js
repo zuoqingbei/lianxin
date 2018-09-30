@@ -10,7 +10,6 @@ let Filing = {
         this.initTable();
         this.popperFilter();
         this.modalSubmit();
-        this.toOrderDetail();
         this.fileEvent();
     },
     fileEvent(){
@@ -70,14 +69,6 @@ let Filing = {
         }
       })
 
-    },
-    toOrderDetail(){
-        /**点击订单号跳转订单详情 */
-        $(".fixed-table-body-columns table tbody").click(function(e){
-            e = e || window.event;
-            let order_num = $(e.target).text();
-            window.location.href = 'order_detail.html?order_num='+order_num;
-        })
     },
     modalSubmit(){
         /**模态框提交事件 */
@@ -196,6 +187,9 @@ let Filing = {
       field: 'num',
       align: 'center',
       valign: 'middle',
+      formatter:function(value,row,index){ 
+      	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  '; 
+      } 
     },{
       field: 'receiver_date',
       title: '订单日期',

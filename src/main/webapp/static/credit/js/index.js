@@ -157,37 +157,40 @@ let Index = {
                   field: 'countryName',
                   align: 'center',
                   valign: 'middle',
-                }, /*{
+                }, 
+				{
                   title: '是否有财务信息',
-                  field: 'report_type',
+                  field: 'is_hava_finance',
                   align: 'center',
                   valign: 'middle',
                 }, {
                   title: '最近财务信息年份',
-                  field: 'reportType',
+                  field: 'last_fiscal_year',
                   align: 'center',
                   valign: 'middle',
-                },*/ {
+                },
+                {
                   title: '报告类型',
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
-                }, /*{
+                }, 
+				{
                   title: '报告员',
-                  field: 'reportType',
+                  field: 'reportName',
                   align: 'center',
                   valign: 'middle',
                 }, {
                   title: '翻译员',
-                  field: 'reportType',
+                  field: 'translateName',
                   align: 'center',
                   valign: 'middle',
                 }, {
                   title: '分析员',
-                  field: 'reportType',
+                  field: 'analyzeName',
                   align: 'center',
                   valign: 'middle',
-                },*/
+                },
                 /*{
                   field: 'operate',
                   title: '操作',
@@ -217,7 +220,7 @@ let Index = {
             fixedNumber: 1,
             queryParamsType:'',
             sortable: true,                     //是否启用排序
-            sortOrder: "asc",
+            sortOrder: "desc",
             sortName:"receiver_date",
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  

@@ -1,5 +1,5 @@
 :root {
-    --fontColor:#808080;
+    --fontColor:#666;
     --activeColor:#1890ff;
     --inputWidthMD:21rem;/*中等input宽 336px*/
     --inputWidthsm:13.5rem;/*input宽  216px*/
@@ -41,8 +41,12 @@ img {
 input {
     outline: none;
 }
-
-
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
 color: #808080!important; 
 } 
@@ -191,7 +195,7 @@ label.col-md-4{
 
 
 
- /***面板屑*/
+ /***面包屑*/
  .breadcrumb {
      background: #fff;
  }
@@ -199,6 +203,7 @@ label.col-md-4{
  .bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td {
     border-width: 1px 0;
     border-color: #e5e5e5;
+    white-space: nowrap;
  }
  .bootstrap-table .table thead > tr > th {
     border-width: 1px 0;
@@ -220,7 +225,7 @@ label.col-md-4{
 .fixed-table-body-columns {
     top:41px!important;
 }
- .fixed-table-header-columns table thead tr th {
+.fixed-table-header-columns table thead tr th {
      border-top: 0;
      background: #fafafa;
  }
@@ -243,7 +248,10 @@ label.col-md-4{
     padding: 0 1.875rem;
 }
 .modal-header .close {
-    padding-top: 1.575rem;
+    padding-top: 1.5rem;
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 400;
 }
 .modal-content {
     min-height: 38.75rem;
@@ -255,7 +263,7 @@ label.col-md-4{
 .modal-title {
     font-size: 1.5rem;
     font-weight: 600;
-    padding-top: 1.575rem;
+    padding-top: 1.7rem;
 }
 .modal-footer {
     padding: 2rem;

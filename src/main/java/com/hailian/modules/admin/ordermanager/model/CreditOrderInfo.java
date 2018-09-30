@@ -47,7 +47,7 @@ import net.sf.json.JSON;
 @ModelBind(table = "credit_order_info")
 //此标签用于模型与数据库表的连接
 public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implements Serializable{
-	//客户姓名
+	/*//客户姓名
 	private String customName;
 	//国家
 	private String countryName;
@@ -148,7 +148,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 
 	public void setPrice(String price) {
 		set("price", price);
-	}
+	}*/
 
 	/**
 	 * 
@@ -192,6 +192,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
 		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
 		sql.append(" left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
+		sql.append(" left join sys_user s9 on s9.userid=t.translate_user ");
+		sql.append(" left join sys_user s0 on s0.userid=t.analyze_user ");
 		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
 		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
 		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
@@ -236,9 +239,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
 						pageinator,
-						"select t.*,u.name as customName,c.name as countryName,s.username as createName"
+						"select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName ",
+								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,"
+								+ "c2.name as companyName,c2.name_en as englishName ",
 						sql.toString(), params.toArray());
 
 		return page;
@@ -257,7 +261,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	public CreditOrderInfo getOrder(int id, BaseProjectController c) {
 
 		StringBuffer sql = new StringBuffer();
-		sql.append("select t.*,u.name as customName,c.name as countryName,s.username as createName,");
+		sql.append("select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName,");
 		sql.append("s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,");
 		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price, c2.name as companyName,c2.name_en as englishName,c3.use_time as usetime  from credit_order_info t ");
 		sql.append("left join credit_custom_info u on u.id=t.custom_id ");
@@ -265,6 +269,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append("left join credit_report_price c1 on c1.id=t.price_id ");
 		sql.append(" left join credit_company_info c2 on c2.id=t.company_id ");
 		sql.append("left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
+		sql.append(" left join sys_user s9 on s9.userid=t.translate_user ");
+		sql.append(" left join sys_user s0 on s0.userid=t.analyze_user ");
 		sql.append("left join sys_dict_detail s2  on s2.detail_id=t.continent ");
 		sql.append("left join credit_report_type s3  on s3.id=t.report_type ");
 		sql.append("left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
@@ -289,6 +296,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
 		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
 		sql.append(" left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
+		sql.append(" left join sys_user s9 on s9.userid=t.translate_user ");
+		sql.append(" left join sys_user s0 on s0.userid=t.analyze_user ");
 		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
 		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
 		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
@@ -316,7 +326,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" order by ").append(orderby);
 		}
 		List<CreditOrderInfo> list = CreditOrderInfo.dao
-				.find("select t.*,u.name as customName,c.name as countryName,s.username as createName"
+				.find("select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 						+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
 						+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName "
 						+ sql.toString(), params.toArray());
@@ -366,6 +376,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
 		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
 		sql.append(" left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
+		sql.append(" left join sys_user s9 on s9.userid=t.translate_user ");
+		sql.append(" left join sys_user s0 on s0.userid=t.analyze_user ");
 		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
 		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
 		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
@@ -413,7 +426,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
 						pageinator,
-						"select t.*,u.name as customName,c.name as countryName,s.username as createName"
+						"select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
 								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName ",
 						sql.toString(), params.toArray());
@@ -469,6 +482,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
 		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
 		sql.append(" left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
+		sql.append(" left join sys_user s9 on s9.userid=t.translate_user ");
+		sql.append(" left join sys_user s0 on s0.userid=t.analyze_user ");
 		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
 		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
 		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
