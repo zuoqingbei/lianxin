@@ -41,16 +41,16 @@ public class Tess4JTest {
 //        System.out.println(result);
 //	}
 	
-	public static void main(String[] args) {
-		try {
-            File imageFile = new File("//Users//goufan//Desktop//ceshi.png");//图片位置
-            ITesseract instance = new Tesseract();  // JNA Interface Mapping
-            instance.setDatapath("//Users//goufan//git//jfinal_cms-master//target//tessdata");//设置tessdata位置
-            instance.setLanguage("osd");//选择字库文件（只需要文件名，不需要后缀名）
-            String result = instance.doOCR(imageFile);//开始识别
-            System.out.println("图片实际为：7588"+"\t图片识别结果为："+result);//打印图片内容
-        } catch (TesseractException e) {
-            e.printStackTrace();
-        }
-	}
+//	public static void main(String[] args) {
+//		try {
+//            File imageFile = new File("//Users//goufan//Desktop//ceshi.png");//图片位置
+//            ITesseract instance = new Tesseract();  // JNA Interface Mapping
+//            instance.setDatapath("//Users//goufan//Desktop//tessdata");//设置tessdata位置
+//            instance.setLanguage("osd");//选择字库文件（只需要文件名，不需要后缀名）
+//            String result = instance.doOCR(imageFile);//开始识别
+//            System.out.println("图片实际为：7588"+"\t图片识别结果为："+result);//打印图片内容
+//        } catch (TesseractException e) {
+//            e.printStackTrace();
+//        }
+//	}
 }
