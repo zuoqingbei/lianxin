@@ -613,15 +613,29 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> {
 		
 		return CreditOrderInfo.dao.findFirst("SELECT MAX(id) as id FROM credit_order_info");
 	}
+
 	/**
-	 * 获取做单量占比
+	 * 获取订单数量
 	* @author doushuihai  
 	* @date 2018年9月25日下午1:28:51  
 	* @TODO
 	 */
-	public void zuoDanZhanBi(){
-		String sql="select fullName,addedTime FROM credit_order_info t where t.del_flag=0 and receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
+	public void getOrderNum(){
+		String sql="select t.report_user,count(*) as orderNum FROM credit_order_info t where t.del_flag=0 and receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
 	}
-	
-
+	/**
+	 * 按时递交数
+	 */
+	public void getOnTimeSubmitOrderNum(){
+		String sql="select t.report_user,count(*) as orderNum FROM credit_order_info t where t.del_flag=0  and submit_date<=end_date and receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
+	}
+	/**
+	 * 通过订单编号查询分数
+	 */
+	public void getScore(){
+		String sql="select t.report_user,count(*) as orderNum FROM credit_order_info t where t.del_flag=0  and submit_date<=end_date and receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
+	}
+	public void getInDoingOrderNum(){
+		String sql="select * from credit_order_info where status='291' and del_flag=0";
+	}
 }
