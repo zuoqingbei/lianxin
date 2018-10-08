@@ -8,7 +8,7 @@ let Verify = {
         this.initTable();
         this.popperFilter();
         this.modalSubmit();
-        this.toOrderDetail();
+        //this.toOrderDetail();
         this.fileEvent();
     },
     fileEvent(){
@@ -36,15 +36,15 @@ let Verify = {
           filename = filename_qz_str + '.' +filetype
           let fileicon = '';
           if(filetype === 'doc' || filetype === 'docx') {
-            fileicon = '../../imgs/order/word.png'
+            fileicon = '/static/credit/imgs/order/word.png'
           }else if(filetype === 'xlsx' || filetype === 'xls') {
-            fileicon = '../../imgs/order/Excel.png'
+            fileicon = '/static/credit/imgs/order/Excel.png'
           }else if(filetype === 'png') {
-            fileicon = '../../imgs/order/PNG.png'
+            fileicon = '/static/credit/imgs/order/PNG.png'
           }else if(filetype === 'jpg') {
-            fileicon = '../../imgs/order/JPG.png'
+            fileicon = '/static/credit/imgs/order/JPG.png'
           }else if(filetype === 'pdf') {
-            fileicon = '../../imgs/order/PDF.png'
+            fileicon = '/static/credit/imgs/order/PDF.png'
           }
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
@@ -75,22 +75,34 @@ let Verify = {
       })
 
     },
-    toOrderDetail(){
-        /**点击订单号跳转订单详情 */
+   /* toOrderDetail(){
+        *//**点击订单号跳转订单详情 *//*
         $(".fixed-table-body-columns table tbody").click(function(e){
             e = e || window.event;
             let order_num = $(e.target).text();
             window.location.href = 'order_detail.html?order_num='+order_num;
         })
-    },
+    },*/
     modalSubmit(){
         /**模态框提交事件 */
     	console.log("模态框提交事件");
         $("#modal_submit").click(function(){
         	console.log("点击提交");
         	$("#status").val("293");
-        	$(".tableValue").ajaxSubmit(function (data) {
-        		console.log("ajaxSubmit:"+data);
+        	$(".tableValue").ajaxSubmit({
+        		success:function(data){
+        			console.log("状态为成功,message:"+data.message);
+        			if(data.statusCode===1){
+                   	 console.log("此处进入success状态2222222222");
+                   	Public.message("success",data.message);
+                   }else{
+                   	 console.log("此处进入error状态");
+                   	Public.message("error",data.message);
+                   }
+        		},error :function(data){
+        			console.log("状态为失败,message:"+data.message);
+        			Public.message("error",data.message);
+        		}
             });
             //提交成功关闭模态窗
            $(".modal-header .close").trigger("click");
@@ -99,7 +111,7 @@ let Verify = {
           	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
           		$.ajax({
           			type:"post",
-              		url:"/credit/front/orderProcess/reallocationJson",
+              		url:"/credit/front/orderProcess/listJson",
               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
               		dataType:"json",
               		success:function(obj){
@@ -112,8 +124,20 @@ let Verify = {
          $("#modal_save").click(function(){
         	console.log("点击保存");
         	$("#status").val("292");
-        	$(".tableValue").ajaxSubmit(function (data) {
-        		console.log("ajaxSubmit:"+data);
+        	$(".tableValue").ajaxSubmit({
+        		success:function(data){
+        			console.log("状态为成功,message:"+data.message);
+        			if(data.statusCode===1){
+                   	 console.log("此处进入success状态2222222222");
+                   	Public.message("success",data.message);
+                   }else{
+                   	 console.log("此处进入error状态");
+                   	Public.message("error",data.message);
+                   }
+        		},error :function(data){
+        			console.log("状态为失败,message:"+data.message);
+        			Public.message("error",data.message);
+        		}
             });
             //提交成功关闭模态窗
            $(".modal-header .close").trigger("click");
@@ -122,7 +146,7 @@ let Verify = {
           	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
           		$.ajax({
           			type:"post",
-              		url:"/credit/front/orderProcess/reallocationJson",
+              		url:"/credit/front/orderProcess/listJson",
               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
               		dataType:"json",
               		success:function(obj){
@@ -135,8 +159,20 @@ let Verify = {
          $("#modal_cancel").click(function(){
         	console.log("点击撤销");
         	$("#status").val("313");
-        	$(".tableValue").ajaxSubmit(function (data) {
-        		console.log("ajaxSubmit:"+data);
+        	$(".tableValue").ajaxSubmit({
+        		success:function(data){
+        			console.log("状态为成功,message:"+data.message);
+        			if(data.statusCode===1){
+                   	 console.log("此处进入success状态2222222222");
+                   	Public.message("success",data.message);
+                   }else{
+                   	 console.log("此处进入error状态");
+                   	Public.message("error",data.message);
+                   }
+        		},error :function(data){
+        			console.log("状态为失败,message:"+data.message);
+        			Public.message("error",data.message);
+        		}
             });
             //提交成功关闭模态窗
            $(".modal-header .close").trigger("click");
@@ -145,7 +181,7 @@ let Verify = {
           	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
           		$.ajax({
           			type:"post",
-              		url:"/credit/front/orderProcess/reallocationJson",
+              		url:"/credit/front/orderProcess/listJson",
               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
               		dataType:"json",
               		success:function(obj){
@@ -210,6 +246,9 @@ let Verify = {
     field: 'num',
     align: 'center',
     valign: 'middle',
+    formatter:function(value,row,index){ 
+    	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  '; 
+    } 
   },{
     field: 'receiver_date',
     title: '订单日期',
@@ -319,7 +358,7 @@ let Verify = {
   }
 
 ],
-            url : '/credit/front/orderProcess/reallocationJson', // 请求后台的URL（*）
+            url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',

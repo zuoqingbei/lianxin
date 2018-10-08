@@ -58,6 +58,21 @@ public class TemplateDictService extends BaseService {
 		return sb.toString();
 	}
 	/**
+	 * 
+	 * @time   2018年9月25日 下午6:23:14
+	 * @author yangdong
+	 * @todo   TODO 返回List
+	 * @param  @param type
+	 * @param  @return
+	 * @return_type   List<SysDictDetail>
+	 */
+	public List<SysDictDetail> getListSysDictDetail(String type) {
+		StringBuffer sb=new StringBuffer();
+		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		listDetail.addAll(DictCache.getSysDictDetailByType(type));
+		return listDetail;
+	}
+	/**
 	 * 根据dict_type获取字典,用于添加,无默认选项,无全部选项
 	 * @time   2018年9月13日 下午12:05:29
 	 * @author yangdong
@@ -133,11 +148,34 @@ public class TemplateDictService extends BaseService {
 	 */
 	protected SysDictDetail getDefaultDictDetail(String type) {
 		SysDictDetail allDict=new SysDictDetail();
-		allDict.set("detail_id", "");
-		allDict.set("dict_type",type);
-		allDict.set("detail_name","全部");
-		allDict.set("detail_name_en", "ALL");
-		allDict.set("detail_code", "");
+		if("continent".equals(type)) {
+			allDict.set("detail_id", "");
+			allDict.set("dict_type",type);
+			allDict.set("detail_name","请选择地区");
+			allDict.set("detail_name_en", "ALL");
+			allDict.set("detail_code", "");
+		}
+		if("ordertype".equals(type)) {
+			allDict.set("detail_id", "");
+			allDict.set("dict_type",type);
+			allDict.set("detail_name","请选择订单类型");
+			allDict.set("detail_name_en", "ALL");
+			allDict.set("detail_code", "");
+			}
+		if("language".equals(type)) {
+			allDict.set("detail_id", "");
+			allDict.set("dict_type",type);
+			allDict.set("detail_name","请选择语言");
+			allDict.set("detail_name_en", "ALL");
+			allDict.set("detail_code", "");
+			}
+		if("orderspeed".equals(type)) {
+			allDict.set("detail_id", "");
+			allDict.set("dict_type",type);
+			allDict.set("detail_name","请选择订单速度");
+			allDict.set("detail_name_en", "ALL");
+			allDict.set("detail_code", "");
+			}
 		return allDict;
 	}
 

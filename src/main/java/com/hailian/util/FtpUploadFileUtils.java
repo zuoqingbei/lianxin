@@ -36,8 +36,8 @@ public class FtpUploadFileUtils {
 				return result;
 			}
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
-//			ftp.enterLocalActiveMode();
-			ftp.enterLocalPassiveMode(); 
+			ftp.enterLocalActiveMode();
+//			ftp.enterLocalPassiveMode(); 
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
 			String s = "/"+storePath;
 			String[] dirs = s.split("/");
@@ -90,6 +90,7 @@ public class FtpUploadFileUtils {
 		}
 		return result;
 	}
+	
 	public static boolean storeFtpFile(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException {
 		FileInputStream fis = null;
 		boolean result = false;
@@ -138,7 +139,6 @@ public class FtpUploadFileUtils {
 			// 设置缓冲区大小
 			ftp.setBufferSize(3072);
 			// 上传文件
-			
 			for(File file:filelist){
 				fis = new FileInputStream(file);
 				String filename=file.getName();
@@ -146,7 +146,6 @@ public class FtpUploadFileUtils {
 				String name = FileTypeUtils.getName(filename);
 				String ftpName=now+"."+type;
 				result = ftp.storeFile(ftpName, fis);
-				
 			}
 			
 			// 关闭输入流
@@ -187,7 +186,7 @@ public class FtpUploadFileUtils {
 		}
 		return result;
 	}
-	public static boolean storeManyFtpFile(List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException {
+	public static boolean storeMoreFtpFile(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException {
 		FileInputStream fis = null;
 		boolean result = false;
 		FTPClient ftp = new FTPClient();
@@ -235,16 +234,13 @@ public class FtpUploadFileUtils {
 			// 设置缓冲区大小
 			ftp.setBufferSize(3072);
 			// 上传文件
-			
 			for(File file:filelist){
 				fis = new FileInputStream(file);
 				String filename=file.getName();
 				String type = FileTypeUtils.getFileType(filename);
 				String name = FileTypeUtils.getName(filename);
-				String now=DateUtils.getNow(DateUtils.YMDHMS);
 				String ftpName=name+now+"."+type;
 				result = ftp.storeFile(ftpName, fis);
-				
 			}
 			
 			// 关闭输入流

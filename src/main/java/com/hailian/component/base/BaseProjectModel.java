@@ -16,6 +16,8 @@
  */
 package com.hailian.component.base;
 
+import java.io.Serializable;
+
 import com.hailian.jfinal.base.BaseModel;
 import com.hailian.system.log.SysLog;
 import com.hailian.util.DateUtils;
@@ -28,7 +30,7 @@ import com.jfinal.plugin.activerecord.Model;
  * 
  * 2016年1月16日 下午4:57:39 flyfox 369191470@qq.com
  */
-public class BaseProjectModel<M extends Model<M>> extends BaseModel<M> {
+public class BaseProjectModel<M extends Model<M>> extends BaseModel<M> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

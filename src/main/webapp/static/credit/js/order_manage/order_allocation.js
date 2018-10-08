@@ -10,18 +10,8 @@ let Allocation = {
         this.searchEvent();
         this.popperFilter();
         this.modalSubmit();
-        this.toOrderDetail();
     },
-    toOrderDetail(){
-        /**点击订单号跳转订单详情 */
-        console.log($(".fixed-table-body-columns table tbody"));
-        
-        $(".fixed-table-body-columns table tbody").click(function(e){
-            e = e || window.event;
-            let order_num = $(e.target).text();
-            window.location.href = 'order_detail.html?order_num='+order_num;
-        })
-    },
+ 
     modalSubmit(){
         /**模态框提交事件 */
         $("#modal_submit").click(function(){
@@ -37,16 +27,23 @@ let Allocation = {
        			success:function(data){
        			//提交成功关闭模态窗
        			 $(".modal-header .close").trigger("click");
+       			if(data.statusCode===1){
+                  	 console.log("此处进入success状态2222222222");
+                  	Public.message("success",data.message);
+                  }else{
+                  	 console.log("此处进入error状态");
+                  	Public.message("error",data.message);
+                  }
        			//回显
-       			console.log("提交成功,开始回显:"+data);
+       			console.log("提交成功,开始回显:"+data.message);
        			 $.ajax({
        				type:"post",
-           			url:"/credit/front/orderProcess/reallocationJson",
+           			url:"/credit/front/orderProcess/listJson",
            			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
            			dataType:"json",
            			success:function(obj){
            				console.log("回显的数据:"+obj);
-           			 	 $("#table").bootstrapTable("load",obj)
+           			 	$("#table").bootstrapTable("load",obj)
            			 }
        			 })
        			 
@@ -104,7 +101,7 @@ let Allocation = {
           /***发起ajax请求 获取表格数据*/
           $.ajax({
        			type:"post",
-       			url:"/credit/front/orderProcess/reallocationJson",
+       			url:"/credit/front/orderProcess/listJson",
        			data:"model.report_user="+reporter+"&searchType=-1",
        			dataType:"json",
        			success:function(data){
@@ -128,6 +125,9 @@ let Allocation = {
                   field: 'num',
                   align: 'center',
                   valign: 'middle',
+                  formatter:function(value,row,index){ 
+                  	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  '; 
+                  } 
                 },{
                   field: 'receiver_date',
                   title: '订单日期',
@@ -151,12 +151,12 @@ let Allocation = {
                 
                 }, {
                   title: '订单公司名称',
-                  field: 'right_company_name_en',
+                  field: 'companyNames',
                   align: 'center',
                   valign: 'middle',
                 }, {
                   title: '公司中文名称',
-                  field: 'company_by_report',
+                  field: 'companyZHNames',
                   align: 'center',
                   valign: 'middle',
                 }, {
@@ -230,7 +230,7 @@ let Allocation = {
                 }
               
             ],
-            url : '/credit/front/orderProcess/reallocationJson', // 请求后台的URL（*）
+            url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',

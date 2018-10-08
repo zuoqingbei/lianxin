@@ -4,11 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
-import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.admin.ordermanager.controller.OrdermanagerController;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
@@ -18,10 +16,9 @@ import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
 import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
-import com.hailian.modules.credit.usercenter.controller.HomeController;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
-import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.json.Json;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -86,13 +83,16 @@ public class OrderManagerService {
 			if (id != 0) {
 				CreditOrderInfo coi = CreditOrderInfo.dao.findById(id);
 				CreditOrderHistory his=new CreditOrderHistory();
-				his.set("order_id", coi.get("id").toString())
-					.set("json", JSONArray.toJSONString(coi))
-					.set("change_reason", coi.getStr("remarks")).set("remarks", "0")
-					.set("create_by", coi.get("create_by").toString())
-					.set("create_date", coi.get("receiver_date").toString())
-					.set("update_by", user.get("username").toString()).set("update_date", new Date())
-					.set("del_flag", "0").save();
+				String order_id=coi.get("id").toString();
+				String json=Json.getJson().toJson(coi);
+				his.set("order_id", order_id);
+				his.set("json", json);
+				his.set("change_reason", coi.getStr("remarks")).set("remarks", "0");
+				his.set("create_by", coi.get("create_by").toString());
+				his.set("create_date", coi.get("receiver_date").toString());
+				his.set("update_by", user.get("username").toString()).set("update_date", new Date());
+				his.set("del_flag", "0");
+				his.save();
 			}
 		} catch (Exception e) {
 			throw new Exception(e);
@@ -302,13 +302,13 @@ public class OrderManagerService {
 		return CreditOrderInfo.dao.findOrder(num);
 	}
 
-	public List<CreditOrderInfo> getOrdersService( String status,CreditOrderInfo model,  SysUser user) {
+	public int getOrdersService( String statu,CreditOrderInfo model,  SysUser user,String status) {
 		
-		return CreditOrderInfo.dao.getOrders( status, model, user);
+		return CreditOrderInfo.dao.getOrders( statu, model, user,status);
 	}
 
-	public CreditOrderInfo getMaxId() {
-		return CreditOrderInfo.dao.getMaxId();
+	public CreditOrderInfo getMaxOrderId() {
+		return CreditOrderInfo.dao.getMaxOrderId();
 	}
 
 }

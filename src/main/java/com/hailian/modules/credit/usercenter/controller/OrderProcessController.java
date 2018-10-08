@@ -1,24 +1,25 @@
 package com.hailian.modules.credit.usercenter.controller;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.front.template.TemplateSysUserService;
-import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
-import com.hailian.util.FtpUploadFileUtils;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
+
 /**
 * @time   2018年9月14日 上午11:00:00
 * @author lzg
@@ -43,8 +44,8 @@ public class OrderProcessController extends BaseProjectController{
 	 * 订单分配的搜索类型
 	 */
 	public static String orderAllocation = "-1";
-	public static LinkedList<Object> orderAllocationColumns = new LinkedList<>();
-	public static LinkedList<Object> orderAllocationParamNames = new LinkedList<>();
+	public static LinkedList<Object> orderAllocationColumns = new LinkedList<>();//存储模糊搜索时后台sql对应字段
+	public static LinkedList<Object> orderAllocationParamNames = new LinkedList<>();//存储模糊搜索时前台对应参数名
 	/**
 	 * 报告管理中的订单核实
 	 */
@@ -57,6 +58,12 @@ public class OrderProcessController extends BaseProjectController{
 	public static String orderVerifyOfOrder = "-3";
 	public static LinkedList<Object> orderVerifyOfOrderColumns = new LinkedList<>();
 	public static LinkedList<Object> orderVerifyOfOrderParamNames = new LinkedList<>();
+	/**
+	 * 订单管理中的订单查档
+	 */
+	public static String orderFilingOfOrder = "-4";
+	public static LinkedList<Object> orderFilingOfOrderColumns = new LinkedList<>();
+	public static LinkedList<Object> orderFilingOfOrderParamNames = new LinkedList<>();
 	static{
 		orderAllocationColumns.add("u1.realname");
 	}
@@ -67,11 +74,13 @@ public class OrderProcessController extends BaseProjectController{
 		TYPE_KEY_COLUMN.put(orderAllocation,orderAllocationColumns);
 		TYPE_KEY_COLUMN.put(orderVerifyOfReport,orderVerifyOfReportColumns);
 		TYPE_KEY_COLUMN.put(orderVerifyOfOrder,orderVerifyOfOrderColumns);
+		TYPE_KEY_COLUMN.put(orderFilingOfOrder,orderFilingOfOrderColumns);
 	}
 	static{
 		WEB_PARAM_NAMES.put(orderAllocation, orderAllocationParamNames);
 		WEB_PARAM_NAMES.put(orderVerifyOfReport, orderVerifyOfReportParamNames);
 		WEB_PARAM_NAMES.put(orderVerifyOfOrder, orderVerifyOfOrderParamNames);
+		WEB_PARAM_NAMES.put(orderFilingOfOrder, orderFilingOfOrderParamNames);
 	}
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
@@ -143,7 +152,7 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	/**
 	 * @todo   展示订单管理下的订单核实页
-	 * @time   2018年9月120日 下午 13:30
+	 * @time   2018年9月12日 下午 13:30
 	 * @author lzg
 	 * @return_type   void
 	 */
@@ -151,18 +160,30 @@ public class OrderProcessController extends BaseProjectController{
 		render(PATH+"order_verify.html");
 	}
 	/**
+	 * @todo   展示订单查档页
+	 * @time   2018年9月26日 下午 13:30
+	 * @author lzg
+	 * @return_type   void
+	 */
+	public void showOrderFiling(){
+		render(PATH+"order_filing.html");
+	}
+	/**
 	 *获取订单数据
 	 */
-	public void reallocationJson() {
+	public void listJson() {
 		//获取查询类型
 		String searchType = (String) getRequest().getParameter("searchType");
 		//分页查询
 		Page<CreditOrderInfo> pager = PublicListMod(searchType);
 		List<CreditOrderInfo> rows = pager.getList();
 		TemplateSysUserService templete = new TemplateSysUserService();
-		for (CreditOrderInfo creditOrderInfo : rows) {
-			String seleteStr= templete.getSysUser(2, creditOrderInfo.get("report_user"));
-			creditOrderInfo.put("seleteStr",seleteStr);
+		if(searchType.equals(orderAllocation)){//若是搜索类型是订单分配
+			for (CreditOrderInfo creditOrderInfo : rows) {
+				//参数2代表角色id为2
+				String seleteStr= templete.getSysUser(2, creditOrderInfo.get("report_user"));
+				creditOrderInfo.put("seleteStr",seleteStr);
+			}
 		}
 		int totalRow = pager.getTotalRow();
 		ResultType resultType = new ResultType(totalRow,rows);
@@ -176,56 +197,105 @@ public class OrderProcessController extends BaseProjectController{
 	 * @return_type   订单编号
 	 */
 	public String statusSave() {
+		try {
 		String code = (String) getRequest().getParameter("statusCode");
 		Map<String,Object> map = new HashMap<>();
 		map.put("status", code);
 		CreditOrderInfo model = PublicUpdateMod(map);
-		reallocationJson();
+		renderJson(new ResultType());
 		return model.get("num");
+		} catch (Exception e) {
+			renderJson(new ResultType(0,"发生未知错误!"));
+			return null;
+		}
 	}
 	
 	/**
-	 * @todo   订单管理下的订单核实的保存
+	 * @todo   带有文件上传功能的保存功能
 	 * @time   2018年9月21日 上午9:21:00
 	 * @author lzg
 	 * @return_type   void
 	 */
-	public void verifyOfOrderMangerSave(){
-		String orderNum = getModel(CreditOrderInfo.class).get("id")+"";
-		uploadFile(orderNum);
-		statusSave();
+	public void statusSaveWithFileUpLoad(){
+		try {
+			String orderNum = getModel(CreditOrderInfo.class).get("id")+"";
+			ResultType result = uploadFile(orderNum);
+			statusSave();
+			renderJson(result);
+		} catch (Exception e) {
+			renderJson(new ResultType(0,"发生未知错误!"));
+		}
 	}
-	
-	
 	
 	/**
 	 * 获取前台文件上传到文件服务器并将文件信息记录到文件实体表
+	 * return resultJson
 	 */
-	private void uploadFile(String orderNum){
+	private ResultType uploadFile(String orderNum){
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+		List<File> files = new ArrayList<File>();
 		CreditUploadFileModel fileModel = new CreditUploadFileModel();
 		fileModel.set("business_type", "0");
 		fileModel.set("business_id",orderNum);
 		int size = upFileList.size();
 		if(size>0){
+			String now = DateUtils.getNow(DateUtils.YMDHMS);
+			//上传的文件在ftp服务器按日期分目录
+			String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);
 			try {
 				for(UploadFile uploadFile:upFileList){
+					//获取文件名
 					String originalFile = uploadFile.getOriginalFileName();
-					String ext = "";
-					//获取真实文件名
+					//根据文件后缀名判断文件类型
+					String ext = FileTypeUtils.getFileType(originalFile);
+					if(uploadFile.getFile().length()>maxPostSize){
+						return new ResultType(0, "上传的单个文件必须小于5兆");
+					}/*else if(FileTypeUtils.checkType(ext)){
+						return "{result:'请检查上传文件的格式!'}";
+					}*/
+					files.add(uploadFile.getFile());
+				}
+				/*boolean storeFile = FtpUploadFileUtils.storeFtpFile(now,files,storePath,ip,port,userName,password);
+				if(!storeFile){
+					return "{result:'文件上传出现异常!'}";
+				}*/
+				/*//获取真实文件名
+				String originalFileName = FileTypeUtils.getName(originalFile);
+				//上传到服务器时的文件名
+				String FTPfileName = originalFileName + now + "." + ext;
+				if(storeFile){
+					String factpath = storePath + "/" + FTPfileName;
+					String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
+					Integer userid = getSessionUser().getUserid();
+					fileModel.set("business_id",orderNum);
+					//将上传信息维护进实体表
+					UploadFileService.service.save(0,uploadFile, factpath,url,fileModel,fileName,userid);
+				}else{
+					renderJson(errorJson);
+				}*/
+			}catch(Exception e){
+				e.printStackTrace();
+				return new ResultType(0, "发生未知错误!");
+			}
+			
+		}
+		return new ResultType();
+				
+					/*//获取真实文件名
 					String originalFileName = FileTypeUtils.getName(originalFile);
 					//获取文件类型
-					ext = FileTypeUtils.getFileType(originalFile);
+					
 					//错误返回json
 					String errorJson = "{uploadMessage:'"+uploadFile.getOriginalFileName()+"上传失败!"+"'},{uploadStatus:0}";
-					if (uploadFile!=null&&uploadFile.getFile().length()<=maxPostSize&&FileTypeUtils.checkType(ext)) {
+					
 						//上传的文件在ftp服务器按日期分目录
 						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);
-						String now=DateUtils.getNow(DateUtils.YMDHMS);
+						
 						//上传到服务器时的文件名
 						String FTPfileName = originalFileName + now + "." + ext;
 						String fileName = originalFileName + now;
-						boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						//boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
+						
 						if(storeFile){
 							String factpath = storePath + "/" + FTPfileName;
 							String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
@@ -239,12 +309,8 @@ public class OrderProcessController extends BaseProjectController{
 					}else{
 						renderJson(errorJson);
 					}
-				}
-			}catch(Exception e){
-				e.printStackTrace();
-				renderJson("{uploadMessage:'"+"发生未知错误!"+"'},{uploadStatus:0}");
-			}
-		}
+			*/
+			
 	}
 	
 	

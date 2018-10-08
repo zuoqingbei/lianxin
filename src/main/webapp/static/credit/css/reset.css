@@ -1,5 +1,5 @@
 :root {
-    --fontColor:#808080;
+    --fontColor:#666;
     --activeColor:#1890ff;
     --inputWidthMD:21rem;/*中等input宽 336px*/
     --inputWidthsm:13.5rem;/*input宽  216px*/
@@ -10,6 +10,10 @@ html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, l
     margin: 0;
     padding: 0;
     font-family: "微软雅黑", sans-serif;
+}
+body {
+    line-height: 1.5;
+    font:1rem "微软雅黑", sans-serif;
 }
 
 ul, ol, li {
@@ -37,8 +41,12 @@ img {
 input {
     outline: none;
 }
-
-
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
 color: #808080!important; 
 } 
@@ -187,7 +195,7 @@ label.col-md-4{
 
 
 
- /***面板屑*/
+ /***面包屑*/
  .breadcrumb {
      background: #fff;
  }
@@ -195,6 +203,7 @@ label.col-md-4{
  .bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td {
     border-width: 1px 0;
     border-color: #e5e5e5;
+    white-space: nowrap;
  }
  .bootstrap-table .table thead > tr > th {
     border-width: 1px 0;
@@ -216,7 +225,7 @@ label.col-md-4{
 .fixed-table-body-columns {
     top:41px!important;
 }
- .fixed-table-header-columns table thead tr th {
+.fixed-table-header-columns table thead tr th {
      border-top: 0;
      background: #fafafa;
  }
@@ -239,7 +248,10 @@ label.col-md-4{
     padding: 0 1.875rem;
 }
 .modal-header .close {
-    padding-top: 1.575rem;
+    padding-top: 1.5rem;
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 400;
 }
 .modal-content {
     min-height: 38.75rem;
@@ -251,7 +263,7 @@ label.col-md-4{
 .modal-title {
     font-size: 1.5rem;
     font-weight: 600;
-    padding-top: 1.575rem;
+    padding-top: 1.7rem;
 }
 .modal-footer {
     padding: 2rem;
@@ -288,12 +300,12 @@ label.col-md-4{
 .layui-unselect.layui-form-select {
     height: 2.4rem;
 }
-.input-group {
-    height: 2.4rem;
-}
+
 .layui-anim.layui-anim-upbit {
     top: auto;
     transition: none!important;
+    z-index: 9999;
+    width: 2rem;
 }
 .layui-form-select dl {
     padding: 0;

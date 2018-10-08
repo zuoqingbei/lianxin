@@ -63,7 +63,7 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 	public Page<ReportTypeModel> pagerReportType(int pageNumber, int pagerSize, String keyWord,String orderBy,String searchType,BaseProjectController c) {
 		String authorSql = DataAuthorUtils.getAuthorByUser(c);
 		StringBuffer selectSql = new StringBuffer(" select *,u.realname ");
-		StringBuffer fromSql = new StringBuffer(" from credit_report_type t LEFT JOIN sys_user u ON u.userid = t.create_by WHERE del_flag=0 ");
+		StringBuffer fromSql = new StringBuffer(" from credit_report_type t LEFT JOIN sys_user u ON u.userid = t.create_by WHERE t.del_flag=0 ");
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
 		if (StringUtil.isNotEmpty(keyWord)) {

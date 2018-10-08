@@ -65,7 +65,7 @@ public class TemplateReportTypeService extends BaseService {
 	protected ReportTypeModel getDefaultReportTypeDetail() {
 		ReportTypeModel allDict=new ReportTypeModel();
 		allDict.set("id", "");
-		allDict.set("name","全部");
+		allDict.set("name","请选择");
 		allDict.set("name_en", "ALL");
 		return allDict;
 	}

@@ -12,32 +12,80 @@ let
 			$("#btn_import").click(function(){
 				$("#more_upload").trigger("click");
 				$("#more_upload").on("change",()=>{
-					var formData = new FormData();
-					formData.append("pic",$("#more_upload")[0].files);
+					var form = document.getElementById("form_File");//获取到form表单
+					var formData = new FormData(form);
+					formData.append("pic",$("#more_upload")[0].files[0]);
 					console.log(formData)
 					$.ajax({
 						type: "POST", // 数据提交类型
-						url: "upfile.php", // 发送地址
+						url: "/credit/orderpoimanager/importExcel", // 发送地址
 						data: formData, //发送数据
+						dataType:"json",
 						async: true, // 是否异步
 						processData: false, //processData 默认为false，当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
 						contentType: false, //
 						success:(data)=>{
 							/**成功 */
+							
+							console.log(data)
+							jsondata=data.orderListReal.rows;
 							$("#show_modal").trigger("click")
-							Page.initTable()
-							Events.modalInfoIsError();
+							Page.initTable(data.orderList)
+							if(data.errormark.statusCode===2){
+								 $(".err-box span").html(data.errormark.message)
+								 $(".err-box").show()
+								 $("#modal_submit").addClass("btn-disabled disabled").removeClass("btn-primary")
+								
+				               }else{
+				            	 $(".err-box").hide()
+				   				 $("#modal_submit").removeClass("btn-disabled disabled").addClass("btn-primary")
+				               }
+							$("#tableOrder").bootstrapTable("load",data.orderList)
+//							$(".err-box span").html(data.errormark.message)
+							
 						},
 						error:()=>{
-							Public.message("info")
+//							Public.message("info")
 						}
 					});
-					
-
-
 				})
+			}),
+		
+	$("#modal_submit").click(function() {
+		if($(this).hasClass("disabled")) {
+			Public.message("error","提交数据有误，请检查数据");
+			return;
+		}
+	    $.ajax({
+	        type: "POST",
+	        url: "/credit/orderpoimanager/savedata",
+	        contentType: "application/json; charset=utf-8",
+	        data: JSON.stringify(jsondata),
+	        dataType: "json",
+	        success: function (data) {
+	        	if(data.statusCode===1){
+               	Public.message("success",data.message);
+               }else{
+               	Public.message("error",data.message);
+               }
+	        },
+	        error: function (message) {
+	            $("#request-process-patent").html("提交数据失败！");
+	        }
+	     });
+	   })	
+			
+			
+			
+		},
+		
+		download_mod(){
+			/**点击下载模板 */
+			$("#btn_download").click(()=>{
+				window.open("/static/credit/assets/files/order_mod.xls")
 			})
 		},
+		
 		emailAdd: function (obj){
             let tv = $(obj).val();
             let reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -90,29 +138,55 @@ let
 			});
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
-					
+				$("input[name='attr.status']").val("290");
+				$("#btn_submit").click(function(){
+					$("#orderForm").ajaxSubmit({
+						success:function(data){
+							console.log(JSON.stringify(data));
+							  if(data.statusCode===1){
+                        		Public.message("success",data.message);
+                        		Public.goList();
+                       		 }else{
+                        		Public.message("error",data.message);
+                        		Public.goList();
+                        	}
+
+						},
+						error:function(data){
+							Public.message("error",data.message);
+							Public.goList();
+						}
+					});
+				});
 			}
 		},
 		formSave: function(){
-			
+			$("input[name='attr.status']").val("289");
+				$("#btn_save").click(function(){
+					$("#orderForm").ajaxSubmit({
+						success:function(data){
+							  if(data.statusCode===1){
+                        		Public.message("success",data.message);
+                        		Public.goList();
+                       		 }else{
+                        		Public.message("error",data.message);
+                        		Public.goList();
+                        	 }
+
+						},
+						error:function(data){
+							Public.message("error",data.message);
+							Public.goList();
+						}
+					});
+				});
 		},
 		closeProgress(){
 			$(".close").click(function(){
 				$("#Close").hide();
 			})
-		},
-		modalInfoIsError(){
-			/**模态窗列表是否有错误信息 */
-			let flag = true
-			if(flag){
-				/**有 */
-				 $(".err-box").show()
-				 $("#modal_submit").addClass("btn-disabled disabled").removeClass("btn-primary")
-			}else {
-				$(".err-box").hide()
-				$("#modal_submit").removeClass("btn-disabled disabled").addClass("btn-primary")
-			}
 		}
+		
 	},
 /* 画面对象 */
 	Page = {
@@ -155,6 +229,7 @@ let
 			Page.initValidator();
 			Events.btn_download();
 			Events.closeProgress();
+			Events.download_mod();
 		},
 		initTable(){
 			/**初始化表格 */
@@ -163,61 +238,93 @@ let
 			$tableOrder.bootstrapTable({
 				height: $(".table-modal-content").height(),
 				columns: [
-					 {
-					  title: '序号',
-					  field: 'no',
-					  align: 'center',
-					  valign: 'middle',
-					},{
-					  field: 'client_id',
-					  title: '客户ID',
-					  align: 'center'
-					}, {
-					  field: 'client_name',
-					  title: '客户曾用名',
-					  align: 'center',
-					}, {
-					  title: '地区',
-					  field: 'region',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '国家',
-					  field: 'country',
-					  align: 'center',
-					  valign: 'middle',
-					
-					}, {
-					  title: '报告类型',
-					  field: 'report_type',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '订单类型',
-					  field: 'order_type',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '报告语言',
-					  field: 'reprot_lan',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '公司名称',
-					  field: 'firm_name',
-					  align: 'center',
-					  valign: 'middle',
-					}, {
-					  title: '速度',
-					  field: 'speed',
-					  align: 'center',
-					  valign: 'middle',
-					}
-				  
-				],
+							{
+							  field: 'custom_id',
+							  title: '客户ID',
+							  align: 'center'
+							}, {
+							  field: 'customerName',
+							  title: '客户用户名',
+							  align: 'center',
+							}, {
+							  title: '地区',
+							  field: 'continent',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '国家',
+							  field: 'country',
+							  align: 'center',
+							  valign: 'middle',
+							
+							}, {
+							  title: '报告类型',
+							  field: 'report_type',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '订单类型',
+							  field: 'order_type',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '报告语言',
+							  field: 'report_language',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '公司名称',
+							  field: 'company_by_report',
+							  align: 'center',
+							  valign: 'middle',
+							}, {
+							  title: '速度',
+							  field: 'speed',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '客户参考号',
+							  field: 'reference_num',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '地址',
+							  field: 'address',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '电话',
+							  field: 'telphone',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '传真',
+							  field: 'fax',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '邮箱',
+							  field: 'email',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '联系人',
+							  field: 'contacts',
+							  align: 'center',
+							  valign: 'middle',
+							},{
+							  title: '其他细节',
+							  field: 'remarks',
+							  align: 'center',
+							  valign: 'middle',
+							}
+							
+							
+						  
+						],
 			   // url : 'firmSoftTable.action', // 请求后台的URL（*）
 			   // method : 'post', // 请求方式（*）post/get
-				pagination: true, //分页
+				pagination: false, //分页
 				sidePagination: 'server',
 				pageNumber:1,
 				pageSize:10,

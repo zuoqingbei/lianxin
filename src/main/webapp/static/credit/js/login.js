@@ -1,11 +1,7 @@
 let Login = {
     init(){
         /***初始化函数 */
-    	//$(".error-tip").hide();
-    	console.log($(".isSuccess").val());
-    	if($(".isSuccess").val()==='No'){
-    		$(".error-tip").show();/**展示提示信息*/
-    	}
+    	$(".error-tip").hide();
         this.login();
     },
     login(){
@@ -20,7 +16,6 @@ let Login = {
                 $(".psdTip").hide()
                 $(".password span").removeClass("border-error")
                 $("#psw").removeClass("border-error")
-                return false;
             }else if(user && !psw) {
                 $(".userTip").hide()
                 $(".username span").removeClass("border-error")
@@ -28,7 +23,6 @@ let Login = {
                 $(".psdTip").show()
                 $(".password span").addClass("border-error")
                 $("#psw").addClass("border-error")
-                return false;
             }else if(user && psw) {
                 $(".userTip").hide()
                 $(".username span").removeClass("border-error")
@@ -37,12 +31,30 @@ let Login = {
                 $(".password span").removeClass("border-error")
                 $("#psw").removeClass("border-error")
 
-                
-
+                /**调用登录接口 */
+                	console.log($("#meForm").serialize());
+                	$.ajax({
+                		type:"post",
+                    	url:"/credit/front/usercenter/login",
+                    	data:$("#meForm").serialize(),
+                    	contentType:"application/x-www-form-urlencoded",//(可以)
+                    	dataType:"json",
+                    	success:function(data){
+                    		console.log(data+"1313");
+                    		console.log(data);
+                    		if(data.statusCode===0){
+                    			$(".error-tip").show();
+                    		}else{
+                    			$(".error-tip").hide();
+                    			window.location.href = path+"credit/front/home/menu";
+                    		}
+                    	}
+                    });
             }
             
 
 
+          
         })
     },
   
