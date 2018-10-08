@@ -31,12 +31,13 @@ public class SysUser extends SessionUser<SysUser> {
 	public SysUser getUser(BaseProjectController c) {
 		StringBuffer sql=new StringBuffer();
 		List<Object> params=new ArrayList<Object>();
-		sql.append("select u.* ,s.name as departName,s1.name as roleName from sys_user u ");
+		sql.append("select u.* ,s.name as departName,s1.name as roleName,c.name as companyName from sys_user u ");
 		sql.append("left join sys_department s on u.departid=s.id ");
 		sql.append("left join sys_role s1 on u.usertype=s1.id ");
-		if(StringUtils.isNotBlank(c.getSessionUser().getStr("userid"))) {
+		sql.append("left join credit_company_info c on u.companyid=c.id ");
+		if(StringUtils.isNotBlank(String.valueOf(c.getSessionUser().get("userid")))) {
 			sql.append("where u.userid=?");
-			params.add(c.getSessionUser().getStr("userid"));
+			params.add(c.getSessionUser().get("userid"));
 		}
 		return dao.findFirst(sql.toString(), params.toArray());
 	}

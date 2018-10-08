@@ -158,7 +158,8 @@ public class HomeController extends BaseProjectController {
 		if(StringUtils.isNotBlank(status)) {
 			status=status.substring(0, status.length()-1);
 		}
-		SysUser user= (SysUser) getSessionUser();
+		SysUser user= SysUser.dao.getUser(this);
+		
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();

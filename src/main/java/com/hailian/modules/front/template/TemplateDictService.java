@@ -148,11 +148,34 @@ public class TemplateDictService extends BaseService {
 	 */
 	protected SysDictDetail getDefaultDictDetail(String type) {
 		SysDictDetail allDict=new SysDictDetail();
-		allDict.set("detail_id", "");
-		allDict.set("dict_type",type);
-		allDict.set("detail_name","全部");
-		allDict.set("detail_name_en", "ALL");
-		allDict.set("detail_code", "");
+		if("continent".equals(type)) {
+			allDict.set("detail_id", "");
+			allDict.set("dict_type",type);
+			allDict.set("detail_name","请选择地区");
+			allDict.set("detail_name_en", "ALL");
+			allDict.set("detail_code", "");
+		}
+		if("ordertype".equals(type)) {
+			allDict.set("detail_id", "");
+			allDict.set("dict_type",type);
+			allDict.set("detail_name","请选择订单类型");
+			allDict.set("detail_name_en", "ALL");
+			allDict.set("detail_code", "");
+			}
+		if("language".equals(type)) {
+			allDict.set("detail_id", "");
+			allDict.set("dict_type",type);
+			allDict.set("detail_name","请选择语言");
+			allDict.set("detail_name_en", "ALL");
+			allDict.set("detail_code", "");
+			}
+		if("orderspeed".equals(type)) {
+			allDict.set("detail_id", "");
+			allDict.set("dict_type",type);
+			allDict.set("detail_name","请选择订单速度");
+			allDict.set("detail_name_en", "ALL");
+			allDict.set("detail_code", "");
+			}
 		return allDict;
 	}
 
