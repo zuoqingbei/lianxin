@@ -32,7 +32,7 @@ let Public = {
         });
         //菜单点击
         $leftNav.find("li").click(function () {
-        	console.log($(this).find("a").attr("href"))
+        	
             if ($(this).hasClass("hasChild")) {
                 if ($(this).hasClass("show")) {
                     $(this).children("ul").slideUp(150, function () {
@@ -51,7 +51,7 @@ let Public = {
                 let id = $(this).attr("id");
                 let href = $(this).find("a").attr("href");
                 sessionStorage.setItem('menuId',id)
-                 $("#main_content").load(href,function(){
+                 $("#main_content").load(href?href:'/credit/front/home',function(){
                         _this.initReset();
                         _this.gotop()
                         sessionStorage.setItem('pageUrl',href)
@@ -73,13 +73,19 @@ let Public = {
 
         })
     },
+    goToOrderDetail(id){
+    	//跳转订单详情
+    	$("#main_content").load('/credit/front/home/orderInfo?id='+id)
+    },
+    createOrder(){
+    	 $("#main_content").load('/credit/front/home/createOrder')
+    },
+    goList(){
+    	 $("#main_content").load('/credit/front/home')
+    },
     goToCreateOrder(){
         /**跳转新建订单页面 */
-        $("#main_content").load('./order_manage/create_order.html');
-    },
-    goToOrderDetail(){
-        /**跳转订单详情页面 */
-        $("#main_content").load('./order_manage/order_detail.html');
+        $("#main_content").load('/credit/front/home/createOrder');
     },
     goToBasicInfoWrite(){
         /**跳转基本信息填报 */

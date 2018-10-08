@@ -138,11 +138,48 @@ let
 			});
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
-					
+				$("input[name='attr.status']").val("290");
+				$("#btn_submit").click(function(){
+					$("#orderForm").ajaxSubmit({
+						success:function(data){
+							console.log(JSON.stringify(data));
+							  if(data.statusCode===1){
+                        		Public.message("success",data.message);
+                        		Public.goList();
+                       		 }else{
+                        		Public.message("error",data.message);
+                        		Public.goList();
+                        	}
+
+						},
+						error:function(data){
+							Public.message("error",data.message);
+							Public.goList();
+						}
+					});
+				});
 			}
 		},
 		formSave: function(){
-			
+			$("input[name='attr.status']").val("289");
+				$("#btn_save").click(function(){
+					$("#orderForm").ajaxSubmit({
+						success:function(data){
+							  if(data.statusCode===1){
+                        		Public.message("success",data.message);
+                        		Public.goList();
+                       		 }else{
+                        		Public.message("error",data.message);
+                        		Public.goList();
+                        	 }
+
+						},
+						error:function(data){
+							Public.message("error",data.message);
+							Public.goList();
+						}
+					});
+				});
 		},
 		closeProgress(){
 			$(".close").click(function(){

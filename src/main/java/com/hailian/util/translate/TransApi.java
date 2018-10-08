@@ -10,15 +10,16 @@ import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 public class TransApi {	 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-         String body="条条道路通罗马";
+	public static String Trans(String q) {
          String appid="20180817000195393";
-         String sign=appid+body+"1435660288"+"4YtrvyuJWnTOgWplWAQ8";
+         String salt=String.valueOf(new Random().nextInt(100));
+         String sign=appid+q+salt+"4YtrvyuJWnTOgWplWAQ8";
          MessageDigest md5;
  		try {
  			md5 = MessageDigest.getInstance("MD5");
@@ -45,17 +46,16 @@ public class TransApi {
  			e.printStackTrace();
 
  		} 
- 		 String result=getResult(body,sign,appid);
-         System.out.println("{"+result);
+ 		 String result=getResult(q,sign,appid,salt);
          String content="{"+result;
          String json=getDate(content);
-         System.out.println(json);
+         return json;
 	}
 	//百度平台（翻译接口）相关数据
-	public static String getResult(String body,String sign,String appid){
+	public static String getResult(String q,String sign,String appid,String salt){
 		String result="";
 		//拼接相关参数
-		String params="http://api.fanyi.baidu.com/api/trans/vip/translate?q="+body+"from=auto&to=en"+"&appid="+appid+"&salt=1435660288&sign="+sign;		
+		String params="http://api.fanyi.baidu.com/api/trans/vip/translate?q="+q+"&from=auto&to=en"+"&appid="+appid+"&salt="+salt+"&sign="+sign;		
 		 try {
 			URL url = new URL(params);
 			URLConnection connection = url.openConnection();  

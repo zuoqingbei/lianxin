@@ -17,16 +17,10 @@
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
 </head>
-<body>
-<div class="container-fluid">
-    <!-- 头部 -->
-    <header> </header>
-    <!-- 中间部分 -->
-    <div id="container" class="row">
-        <!-- 左侧菜单 -->
-        <div class="nav-row col-md-2"></div>
-        <!-- 内容 -->
-        <div class="main col-md-10">
+
+    <div id="container" class="row animted fadeIn">
+       
+        <div class="main">
             <!--标题-->
             <div class="main-header detail_tab-bar">
                 <ul class="breadcrumb">
@@ -48,7 +42,7 @@
                 </ul>
                 <div class="state_box">
                     <span>状态</span>
-                    <span>${order.status}</span>
+                    <span>${order.statuName}</span>
                 </div>
 
             </div>
@@ -513,72 +507,62 @@
                         </div>
 
                 </div>
-                <!--质检意见-->
-                <div class="bg-f company-info">
-                    <a name="operate_log"> </a>
-                    <div class="l-title change_record">
-                        质检意见
-                    </div>
-                    <div class="order-detail order-content">
-                        <table id="table4"
-                               data-toggle="table"
-                               data-url="../data.json"
-                               style="position: relative"
-                        >
-                        </table>
-                    </div>
-                </div>
-                <!-- 附件-->
-                <div class="bg-f">
+               <!-- 附件-->
+                <div class="bg-f mt-4">
                     <a name="accessory"> </a>
-                    <div class="l-title change_record">
+                    <div class="l-title">
                         附件
                     </div>
                     <div class="order-detail mb-4 order-content">
-                       
-                            <%if(files==null){%>
-                            	 <div class="uploadFile mt-3 mr-3 ml-3">
+                       	<%for(item in files){%>
+                       		<%if(item==null){ %>
+                       			 <div class="uploadFile mt-3 mr-3 ml-3">
 		                            <!--<input type="file" name="" id="upload_file" value="" class="file-input" />-->
 		                            <img src="${BASE_PATH }static/credit/imgs/order/！.png"/>
 	                            	<p class="mt-2">暂无附件</p>
 	                            </div>
-	                            <div class="order-yulan  mt-3 ml-3"><a href="#">预览</a></div>
-                            <%}else{%>	
-                            	<%for(item in files){%>
-                            		<div class="uploadFile mt-3 mr-3 ml-3">
-		                            <!--<input type="file" name="" id="upload_file" value="" class="file-input" />-->
-		                            <img src="${BASE_PATH }static/credit/imgs/order/！.png"/>
-	                            	<p class="mt-2">${item.name}</p>
-	                            </div>
-	                            <div class="order-yulan  mt-3 ml-3"><a href="#" onclick="view(''+'${item.view_url}'+'',''+'${item.ext}'+'')">预览</a></div>
-                            	<%}%>
-                            <%}%>
+	                            <%}else{%>
+                          	<div class="uploadFile mt-3 mr-3 ml-3">
+	                            <!--<input type="file" name="" id="upload_file" value="" class="file-input" />-->
+	                            <img src="${BASE_PATH }static/credit/imgs/order/tan.png"/>
+	                           	<p class="mt-2">${item.name}</p>
+                            </div>
+                            <div class="order-yulan  mt-3 ml-3"><a href="#" onclick="view(''+'${item.view_url}'+'',''+'${item.ext}'+'')">预览</a></div>
+                            	<%}}%>
+
                         
                        
                     </div>
 
                 </div>
+             <!--质检意见-->
+                <div class="bg-f company-info mt-4 mb-4">
+                    <a name="operate_log"> </a>
+                    <div class="l-title">
+                        质检意见
+                    </div>
+                    <div class="order-detail order-content">
+                        <table id="table4"
+                               data-toggle="table"
+                             
+                               style="position: relative"
+                        >
+                        </table>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
-    <!-- 底部 -->
-    <footer></footer>
-</div>
-</div>
-<script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
-<script src="${BASE_PATH }static/credit/assets/popper/popper.min.js"></script>
-<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
-<script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table.js"></script>
-<script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-fixed-columns.js"></script>
-<script src="${BASE_PATH }static/credit/assets/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script>
-<script src="${BASE_PATH }static/credit/js/common.js"></script>
+
 <script src="${BASE_PATH }static/credit/js/order_manage/order_common.js"></script>
 <script src="${BASE_PATH }static/credit/js/order_manage/order_detail.js"></script>
 
 <script type="text/javascript">
+
 	function view(str,type){
 		  var url = "/credit/commonFile/previewFileOnline?url="+str+"&type="+type;  
 		    window.open(url);
 	}
 </script>
-</body>
+</html>

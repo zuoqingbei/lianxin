@@ -8,7 +8,7 @@ let Verify = {
         this.initTable();
         this.popperFilter();
         this.modalSubmit();
-        this.toOrderDetail();
+        //this.toOrderDetail();
         this.fileEvent();
     },
     fileEvent(){
@@ -75,14 +75,14 @@ let Verify = {
       })
 
     },
-    toOrderDetail(){
-        /**点击订单号跳转订单详情 */
+   /* toOrderDetail(){
+        *//**点击订单号跳转订单详情 *//*
         $(".fixed-table-body-columns table tbody").click(function(e){
             e = e || window.event;
             let order_num = $(e.target).text();
             window.location.href = 'order_detail.html?order_num='+order_num;
         })
-    },
+    },*/
     modalSubmit(){
         /**模态框提交事件 */
     	console.log("模态框提交事件");
@@ -246,6 +246,9 @@ let Verify = {
     field: 'num',
     align: 'center',
     valign: 'middle',
+    formatter:function(value,row,index){ 
+    	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  '; 
+    } 
   },{
     field: 'receiver_date',
     title: '订单日期',
