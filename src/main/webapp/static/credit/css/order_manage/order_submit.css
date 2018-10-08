@@ -1,0 +1,19 @@
+.file-upload textarea{
+    width: 28rem;
+    height: 10rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+.table-content #table tbody tr td:first-of-type {
+    color: var(--activeColor);
+    cursor: pointer;
+}
+.modal-body .file-upload .form-control{
+    vertical-align: top;
+    text-align: left;
+   display: inline-block;
+}
+.order_cancel .modal-body .file-upload textarea {
+    width: 74rem;
+}

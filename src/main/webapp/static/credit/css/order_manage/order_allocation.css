@@ -23,4 +23,13 @@ textarea {
     overflow-x: hidden;
     overflow-y: auto;
 }
-
+.table-content #table tbody tr td:first-of-type {
+    color: var(--activeColor);
+    cursor: pointer;
+}
+.table-search-input {
+    margin: 1.25rem 0 0 0;
+}
+.right-btn{
+    margin-top: 1.25rem;
+}

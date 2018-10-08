@@ -1,0 +1,7 @@
+.report-textarea-big {
+    width: 74rem;
+    height: 10rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+}

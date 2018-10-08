@@ -345,7 +345,12 @@ let Verify = {
         $("#telphone").val(row.telphone);
         $("#address").html(row.address);
         $("#remarks").html(row.remarks);
+        //文件回显
         
+       // $(".file-upload").html("");
+        for (var i in row.files){
+        	
+        }
         pageNumber = row.pageNumber;
         console.log("pageNumber====="+pageNumber);
         pageSize = row.pageSize;

@@ -118,7 +118,7 @@ let Index = {
                   valign: 'middle',
                   formatter:function(value,row,index){ 
   
-                	var url = '<a href="#" style="color:blue" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
+                	var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
                 	return url; 
               		} 
                 },{
