@@ -1,12 +1,16 @@
 package com.hailian.modules.admin.ordermanager.service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
+import com.hailian.modules.admin.ordermanager.controller.Reporter;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
@@ -310,5 +314,87 @@ public class OrderManagerService {
 	public CreditOrderInfo getMaxOrderId() {
 		return CreditOrderInfo.dao.getMaxOrderId();
 	}
-
+	/**
+	 * 根据报告员获取订单数量
+	* @author doushuihai  
+	 * @return 
+	* @date 2018年9月25日下午1:28:51  
+	* @TODO
+	 */
+	public CreditOrderInfo getOrderNum(int reportid){
+		return CreditOrderInfo.dao.getOrderNum(reportid);
+	}
+	/**
+	 * 根据报告员获取按时递交数
+	 * @return 
+	 */
+	public CreditOrderInfo getOnTimeSubmitOrderNum(int reportid){
+		return CreditOrderInfo.dao.getOnTimeSubmitOrderNum(reportid);
+	}
+	/**
+	 * 获取报告员质量占比
+	 * @return 
+	 * 
+	 */
+	public CreditOrderInfo getScore(int reportid){
+		return CreditOrderInfo.dao.getScore(reportid);
+	}
+	/**
+	 * 获取报告员报告数量占比
+	 * @return 
+	 * 
+	 */
+	public CreditOrderInfo getReportNum(int reportid){
+		return CreditOrderInfo.dao.getReportNum(reportid);
+	}
+	/**
+	 * 获取报告员当日在做单量
+	* @author doushuihai  
+	* @date 2018年10月9日上午9:57:52  
+	* @TODO
+	 */
+	public CreditOrderInfo getInDoingOrderNum(int reportid){
+		return CreditOrderInfo.dao.getInDoingOrderNum(reportid);
+	}
+	public String getReportIdtoOrder(){
+		System.out.println("==================================");
+		List<SysUser> reporterlist = SysUser.dao.getReporter();
+		List<Reporter> reporterList=new ArrayList<Reporter>();
+		for(SysUser report:reporterlist){
+			int reportid=report.get("userid");
+			double finalScore = getFinalScore(reportid);//报告员评分
+			long inDoingOrderNum = OrderManagerService.service.getInDoingOrderNum(reportid).get("inDoingOrderNum");
+			System.out.println(inDoingOrderNum);
+			Reporter reporter=new Reporter(reportid+"", finalScore, inDoingOrderNum);
+			reporterList.add(reporter);
+		}
+		Collections.sort(reporterList);//根据分配逻辑进行集合排序
+		System.out.println(reporterList);
+		String reportId=reporterList.get(0).getReportId();
+		return reportId;
+		
+	}
+	/**
+	 * 获取报告员评分
+	* @author doushuihai  
+	* @date 2018年10月9日上午9:30:41  
+	* @TODO
+	 */
+	private double getFinalScore(int reportid) {
+		Long orderNum = OrderManagerService.service.getOrderNum(reportid).get("orderNum");//订单数量
+		Long orderOnTimeNum =OrderManagerService.service.getOnTimeSubmitOrderNum(reportid).get("orderOnTimeNum");//根据报告员获取按时递交数
+		double submitNum=(orderOnTimeNum/orderNum)*0.1;//递交率占比
+		BigDecimal score =OrderManagerService.service.getScore(reportid).get("score"); //获取报告员质量占比
+		if(score==null){
+			score =new BigDecimal(0);
+		}
+		double scoreTo=score.doubleValue();
+		BigDecimal reportnum =OrderManagerService.service.getReportNum(reportid).get("reportnum");//报告数量占比
+		if(reportnum==null){
+			reportnum =new BigDecimal(0);
+		}
+		double reportnumTo=reportnum.doubleValue();
+		double finalScore=orderNum*0.5+submitNum+scoreTo+reportnumTo;
+		return finalScore;
+	}
 }

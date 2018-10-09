@@ -1,10 +1,12 @@
 package com.hailian.modules.admin.ordermanager.controller;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -433,4 +435,8 @@ public class OrdermanagerController extends BaseProjectController{
 		return convertFileToPdf;
 	}
 	
+	public String test(){
+		 String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
+		 return reportIdtoOrder;
+	}
 }

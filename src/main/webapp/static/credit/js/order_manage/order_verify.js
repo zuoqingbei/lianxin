@@ -239,7 +239,7 @@ let Verify = {
   
 
         $table.bootstrapTable({
-            height: $(".table-content").height()*25/26,
+            height: $(".table-content").height()*0.98,
             columns: [
 {
     title: '订单号',
@@ -345,7 +345,12 @@ let Verify = {
         $("#telphone").val(row.telphone);
         $("#address").html(row.address);
         $("#remarks").html(row.remarks);
+        //文件回显
         
+       // $(".file-upload").html("");
+        for (var i in row.files){
+        	
+        }
         pageNumber = row.pageNumber;
         console.log("pageNumber====="+pageNumber);
         pageSize = row.pageSize;
@@ -363,8 +368,8 @@ let Verify = {
             pagination: true, //分页
             sidePagination: 'server',
             pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],
+            pageSize:20,
+            pageList: [20 , 30],
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',

@@ -1,14 +1,7 @@
-﻿:root {
-    --fontColor:#808080;
-    --titleColor:#333333;
-    --activeColor:#1890ff;
-    --inputWidthMD:21rem;/*中等input宽*/
-    --inputWidthsm:13.5rem;/*中等input宽*/
-}
-/* ==================头部=================== */
+﻿/* ==================头部=================== */
 #container {
     position: relative;
-    height: calc(100% - 2.9rem);
+    height: calc(100% - 2.7rem);
 }
 #main_content {
     padding: 0;
@@ -84,6 +77,7 @@ header {
     box-shadow: 0 0 1px 2px #eee;
     cursor: pointer;
     color: #808080;
+    border-radius: 4px;
 }
 .logout:hover{
     box-shadow: 0 0 1px 1px var(--activeColor);
@@ -117,11 +111,11 @@ header {
 
 .bg-f {
     min-height: 100%;
-    _height:100%;
     background: #fff;
 }
 .menu1 .fa {
     margin-right: 1rem;
+    font-size: 1.4rem;
 }
 
 .main {
@@ -143,10 +137,13 @@ header {
 }
 .table-content{
 	background: #f1f2f6;
-    padding: 1.25rem;
+    padding: 0.85rem 1.25rem 1.25rem 1.25rem;
  
 }
 
+.fixed-table-pagination{
+    margin-top: 1rem;
+}
 
 /*漏斗*/
 .fa-filter {
@@ -175,7 +172,7 @@ header {
     padding:0.75rem 0 1rem 0;
 }
 .table-content{
-	height: calc(100% - 7.8rem);
+	height: calc(100% - 7.2rem);
 }
 .search-input {
     width: var(--inputWidthsm)!important;
@@ -203,7 +200,6 @@ label {
 }
 .deal-state-show {
     display: block;
-  
 }
 
 .form-check {
@@ -214,8 +210,6 @@ label {
     margin-left: .5rem;
 }
 
-
-
 .order-detail  span:first-child {
     color: #414141;
     font-weight: 600;
@@ -224,19 +218,16 @@ label {
     color: #818181;
 }
 
-
 /*table 第一列*/
-.fixed-table-body-columns table tbody tr {
+.bg-f .fixed-table-container .fixed-table-body-columns table tbody tr td{
     color: var(--activeColor);
     cursor: pointer;
 }
-.fixed-table-body-columns table tbody tr:hover {
-    text-decoration: underline;
+.bootstrap-table .fixed-table-header{
+    margin-right: 0 !important;
 }
 
-
 /*附件*/
-
 .file-upload {
     border-top: solid 1px #ddd;
     padding-top: 1rem;
@@ -288,9 +279,6 @@ label {
     margin-top: 1rem;
     padding: 0 2rem;
 }
-.file-upload .form-control {
-    border-radius: 6px!important;
-}
 
 
 /*内容小标题*/
@@ -335,14 +323,28 @@ label {
     position: absolute;
     top: 1.2rem;
     left: 50%;
-    width: 11.25rem;
+    padding: 0 .5rem;
+    background: #fff;
     height: 2.8rem;
     text-align: center;
     line-height: 2.8rem;
     box-shadow: 0 0 15px #ccc;
     border-radius: 6px;
+    z-index: 99999;
 }
 .all-tip img {
     width: 1.5rem;
     display: inline-block;
+}
+
+.tab-fixed {
+    z-index: 999;
+    width: 100%;
+    position: fixed;
+    top: 5rem;
+    background: #fff;
+    left: 16.6667%;
+    padding-left: 2.5rem;
+    border-top: solid 1px #e5e5e5;
+    box-shadow: 0px 2px 2px #e5e5e5;
 }

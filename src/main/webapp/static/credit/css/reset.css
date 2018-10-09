@@ -1,5 +1,6 @@
 :root {
     --fontColor:#666;
+    --fontTitleColor:#333;
     --activeColor:#1890ff;
     --inputWidthMD:21rem;/*中等input宽 336px*/
     --inputWidthsm:13.5rem;/*input宽  216px*/
@@ -50,6 +51,7 @@ input {
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
 color: #808080!important; 
 } 
+
 input:-moz-placeholder, textarea:-moz-placeholder { 
 color: #808080!important; 
 } 

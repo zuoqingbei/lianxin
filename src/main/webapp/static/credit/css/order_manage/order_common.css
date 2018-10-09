@@ -5,7 +5,7 @@
 }
 #container {
     position: relative;
-    height: calc(100% - 5rem);
+ /*   height: calc(100% - 5rem);*/
 }
 .bootstrap-table {
     margin: 1rem 2rem;
@@ -74,6 +74,7 @@
 }
 .table_summary_content p{
     line-height: 2rem;
+    font-size: 1rem;
 }
 /*重置公共样式*/
 .bg-f{
@@ -115,7 +116,9 @@
     display: inline-block;
     margin-right: 1.25rem;
     padding: 0;
-    background-color: rgb(209,209,209);
+ /*   background-color: rgb(209,209,209);*/
+    background: url("../../imgs/order/dot-gray.png") no-repeat;
+    background-size: 100% 100%;
 }
 .bar_box .span_bar{
     width: 7.3rem;
@@ -134,7 +137,9 @@
     width: 0.625rem;
     height: 0.625rem;
     border-radius: 0.3125rem;
-    background-color:  var(--activeColor);
+ /*   background-color:  var(--activeColor);*/
+    background: url("../../imgs/order/dot-blue.png") no-repeat;
+    background-size: 100% 100%;
     display: inline-block;
     padding: 0;
     margin-right: 1.25rem;
@@ -150,11 +155,13 @@
 .bar_box .circle_active{
     width: 1.5rem;
     height: 1.5rem;
-    border-radius: 0.75rem;
-    background: -webkit-radial-gradient(#2592fc, #C5E6FC, #E6E7FF); /* Safari 5.1 - 6.0 */
-    background: -o-radial-gradient(#2592fc, #C5E6FC, #E6E7FF); /* Opera 11.6 - 12.0 */
-    background: -moz-radial-gradient(#2592fc, #C5E6FC, #E6E7FF); /* Firefox 3.6 - 15 */
-    background: radial-gradient(#2592fc, #C5E6FC, #E6E7FF); /* 标准的语法 */
+   /* border-radius: 0.75rem;
+    background: -webkit-radial-gradient(#2592fc, #C5E6FC, #E6E7FF); !* Safari 5.1 - 6.0 *!
+    background: -o-radial-gradient(#2592fc, #C5E6FC, #E6E7FF); !* Opera 11.6 - 12.0 *!
+    background: -moz-radial-gradient(#2592fc, #C5E6FC, #E6E7FF); !* Firefox 3.6 - 15 *!
+    background: radial-gradient(#2592fc, #C5E6FC, #E6E7FF); !* 标准的语法 *!*/
+    background: url("../../imgs/order/dot-select.png") no-repeat;
+    background-size: 100% 100%;
     display: inline-block;
     margin-right: 1.25rem;
 }
@@ -188,7 +195,11 @@
     padding-left: 1.5rem;
 }
 /*圆环图样式*/
-.chartBox{
+.invest-ratio-echarts .chartBox{
+    width: 100%;
+    height: 15rem;
+}
+.invest-ratio-echarts .chartBox #ec001_pie{
     width: 100%;
     height: 15rem;
 }
@@ -201,9 +212,29 @@
 .box_border_all{
     border: 1px solid #e6e6e6;
     font-weight: 400;
+    font-size: 1rem;
 }
 /*备注信息*/
 .info_remark{
     line-height: 2rem;
     font-weight: 400;
+}
+.margin-bottom-none{
+    margin-bottom: 0 !important;
+}
+.report-textarea-big {
+    width: 74rem;
+    height: 10rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+.margin-top-none{
+    margin-top: 0 !important;
+}
+.padding-bottom-none{
+    padding-bottom: 0 !important;
+}
+.padding-top-none{
+    padding-top: 0 !important;
 }

@@ -19,13 +19,16 @@
     color: #000;
 }
 
-.order-info .btn-group span {
-    padding: 1.25rem 2.125rem;
+.order-info .tab-bar li {
     font-size: 1.25rem;
-    color: var(--fontColor);
     cursor: pointer;
 }
-.order-info .btn-group .tab-active {
+.order-info .tab-bar li a {
+    color: var(--fontColor);
+    padding: 1.25rem 2.125rem;
+    display: block;
+}
+.order-info .tab-bar .tab-active {
     color: var(--activeColor);
     font-weight: 500;
     border-bottom: solid 3px var(--activeColor);
@@ -44,13 +47,13 @@ label {
 }
 .firm-info label {
     font-size: 1rem;
-    color: var(--fontColor);
+    color: var(--fontTitleColor);
 }
 .firm-info .form-control {
     width: var(--inputWidthMD);
 }
 
-.table-content1,.table-content2,.table-content3,.table-content4,.table-content5 {
+.table-content1,.table-content2,.table-content3,.table-content4,.table-content5,.table-content6,.table-content7,.table-content9,.table-content10 {
     padding: 1.25rem 2rem;
 }
 .bootstrap-table {
@@ -89,7 +92,7 @@ label {
     width: var(--inputWidthlg)!important;
 }
 .control-label {
-    width: 7rem;
+    width: 10rem;
     justify-content: flex-end!important;
 }
 .operate a {
@@ -106,5 +109,55 @@ label {
 
 .attachment {
     overflow: hidden;
-    margin-bottom: 6rem;
+    margin-bottom: 2rem;
+}
+
+.bs-popover-top {
+    top: -30px!important;
+}
+.isDelete {
+    display: none;
+    z-index: 1;
+    position: absolute;
+    top: -10rem;
+    right: -6.5rem;
+    height: 8.3rem;
+    width: 16rem;
+    border-radius: 4px;
+    box-shadow: 0 0 9px #CCC;
+    background: #fff;
+    cursor: default;
+}
+.deleteShow {
+    display: block;
+}
+.isDelete>div {
+    text-align: center;
+    padding-top: 1.5rem;
+    color: var(--fontColor);
+    font-size: 1.25rem;
+}
+.isDelete img {
+    width: 1.5rem;
+    display: inline-block;
+    margin-right: .3rem;
+}
+.delete {
+    position: relative;
+}
+#popCancel {
+    margin-right: .8rem;
+}
+
+.fixed-table-body {
+    overflow: inherit;
+}
+
+.isDelete  .popover-arrow {
+    top: 7.9rem;
+    transform: rotate(225deg);
+}
+.bg-f .fixed-table-container .fixed-table-body-columns table tbody tr td {
+    color: var(--fontColor);
+    cursor: default;
 }

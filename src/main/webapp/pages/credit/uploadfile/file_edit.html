@@ -81,21 +81,7 @@ var bodyContent = {
 						</div>
 					</td>
 				</tr>
-				<tr>
-					<td>上传时间</td>
-					<td>
-					<input class="form-control" type="text" name="model.update_date" 
-						value="${model.update_date!flyfox.getNow() }"   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  />
-					</td>
-					<td>上传人</td>
-					<td>
-						<% if(model.id!0 > 0) { %>
-							<input class="form-control" type="text" name="model.update_by" value="${model.update_by}"  />
-						<% } else { %>
-							<input class="form-control" type="text" name="model.create_by" value="${session.session_user.realname!session.session_user.username }"  />
-						<% } %>
-					</td>
-				</tr>
+				
 				<tr>
 					<td>备注</td>
 					<td colspan="3">

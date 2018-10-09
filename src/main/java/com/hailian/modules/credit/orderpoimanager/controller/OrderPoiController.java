@@ -3,7 +3,9 @@ package com.hailian.modules.credit.orderpoimanager.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,7 @@ import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.util.DateAddUtil;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.upload.UploadFile;
 
@@ -312,7 +315,7 @@ public class OrderPoiController extends BaseProjectController {
 		try {
 			String jsonString = HttpKit.readData(getRequest());
 			parseArray = JSON.parseArray(jsonString, CreditOrderInfoModel.class);
-			String now = getNow();
+			Date now = new Date();
 			Integer userid = getSessionUser().getUserid();
 			for(CreditOrderInfoModel model:parseArray){
 			  String num =CreditOrderInfo.dao.getNumber();
@@ -324,17 +327,43 @@ public class OrderPoiController extends BaseProjectController {
 			  String reporttype=model.getStr("report_type");
 			  String orderType=model.getStr("order_type");
 			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed, reporttype, orderType);
-			  int user_time_id=timemodel.getInt("id");
-			  int use_time=timemodel.getInt("use_time");
+			  int user_time_id = 0;
+			  int use_time;
+			  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			  Calendar ca = Calendar.getInstance();
+		      ca.setTime(now);//设置接单时间
+				if(timemodel==null) {
+					timemodel=new CreditReportUsetime();
+					use_time=0;
+				}else {
+					user_time_id=timemodel.getInt("id");
+					use_time=timemodel.get("use_time");
+					model.set("user_time", use_time);
+					model.set("user_time_id", user_time_id);
+				}
+				Calendar c = 
+						new DateAddUtil().addDateByWorkDay(ca,//当前时间
+								//需要用多少天
+								(int)Math.ceil(use_time/24.0));
+				String enddate=sdf.format(c.getTime());
+				if(use_time==0) {
+					enddate=null;
+				}
+			  model.set("end_date", enddate);
 			  model.set("create_by", userid);
 			  model.set("create_date", now);
 			  model.set("source", "1");//订单来源-批量导入
 			  model.set("receiver_date", now);
-			  model.set("user_time", use_time);
-			  model.set("user_time_id", user_time_id);
 			  CreditReportPrice pricemodel = OrderManagerService.service.getPrice(countryType, speed, reporttype, orderType);
 			  int price_id=pricemodel.getInt("id");
 			  model.set("price_id", price_id);
+			  List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单提交","orderstate");
+			  if(dictDetailBy !=null){
+				  int status=dictDetailBy.get(0).getInt("detail_id");
+				  model.set("status", status);
+			  }
+			  String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();//根据自动分配规则获取该订单指定的报告员
+			  model.set("report_user", reportIdtoOrder);//自动分配订单
 			  boolean save = model.save();
 				if(save==false){
 					msg="提交失败";

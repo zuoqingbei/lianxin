@@ -26,7 +26,6 @@
     border-bottom: 0;
 }
 .table_summary_content>.form-check>label{
-    width: 8rem;
     display: inline-block;
     text-align: left;
     font-weight: 400;
@@ -38,11 +37,44 @@
     width: 8rem;
 }
 .form-check-inline .form-check-input{
-    vertical-align: mathematical;
+    position: relative;
+    top: 0.125rem;
 }
 /*单选框样式重置 end*/
 .table_summary>p{
     font-size: 1.125rem;
     color: var(--fontColor);
     line-height: 2rem;
+}
+.form-check-label {
+     margin-left:0;
+}
+.table-header{
+    line-height: 3rem;
+    background-color: #fafafa;
+    text-align: right;
+    padding-right: 5rem;
+}
+.table-header-center{
+    text-align: center;
+    border-bottom: 1px solid rgb(229,229,229);
+}
+.table-header-center>span,.table-sub-header>span,.table-header>span{
+    color: black !important;
+}
+.table-sub-header{
+    background-color: white;
+    border-bottom: 1px solid rgb(229,229,229);
+}
+.table-finance .bootstrap-table{
+    margin-top: 0;
+}
+.table-finance .bootstrap-table .table > thead > tr > th {
+    background: white;
+}
+.table-finance .bootstrap-table .fixed-table-header {
+    background: white;
+}
+.table_summary{
+    margin-top: 0;
 }
