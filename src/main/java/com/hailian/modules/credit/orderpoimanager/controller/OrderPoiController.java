@@ -347,7 +347,7 @@ public class OrderPoiController extends BaseProjectController {
 								(int)Math.ceil(use_time/24.0));
 				String enddate=sdf.format(c.getTime());
 				if(use_time==0) {
-					enddate="";
+					enddate=null;
 				}
 			  model.set("end_date", enddate);
 			  model.set("create_by", userid);
@@ -362,6 +362,8 @@ public class OrderPoiController extends BaseProjectController {
 				  int status=dictDetailBy.get(0).getInt("detail_id");
 				  model.set("status", status);
 			  }
+			  String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();//根据自动分配规则获取该订单指定的报告员
+			  model.set("report_user", reportIdtoOrder);//自动分配订单
 			  boolean save = model.save();
 				if(save==false){
 					msg="提交失败";

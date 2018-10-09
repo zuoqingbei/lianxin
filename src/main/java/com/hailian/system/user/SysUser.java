@@ -2,19 +2,22 @@ package com.hailian.system.user;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.SessionUser;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.jfinal.plugin.activerecord.Db;
 
 @ModelBind(table = "sys_user", key = "userid")
-public class SysUser extends SessionUser<SysUser> {
+public class SysUser extends SessionUser<SysUser>  {
 	
 	private static final long serialVersionUID = 1L;
 	private String departName;
 	private String roleName;
 	
+
 	public void setDepartName(String departName) {
 		set("departName",departName);
 	}
@@ -96,4 +99,24 @@ public class SysUser extends SessionUser<SysUser> {
 	public SysUser getSysUserById(Object userid) {
 		return dao.findFirst("select c.* from sys_user c where c.del_flag='0' and userid="+userid);
 	}
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
