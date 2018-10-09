@@ -20,7 +20,7 @@
 			},
 			view : function(id) {
 				var url = 'credit/file/view/'+id;
-				var title = '查看图片';
+				var title = '查看文件';
 				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 			},
 			add : function() {
@@ -106,7 +106,7 @@ var bodyContent = {
 					<th name="business_type" class="sorting">业务类型</th> 
 					<th name="business_id" class="sorting">业务编码</th> 
 					<th name="remarks" class="sorting">说明</th> 
-					<th name="update_by" class="sorting">上传人</th> 
+					<th name="t3.realname" class="sorting">上传人</th> 
 					<th name="update_date" class="sorting">上传时间</th> 
  					<th>操作</th>
 				</tr>
@@ -130,7 +130,7 @@ var bodyContent = {
 					<td>
 					${item.remarks}
 					</td> 
-					<td>${item.update_by}</td> 
+					<td>${item.realname}</td> 
 					<td>${item.update_date,dateFormat="yyyy-MM-dd"}</td> 
 				<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 

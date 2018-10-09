@@ -1,39 +1,23 @@
 package com.hailian.modules.admin.ordermanager.model;
 
 import java.io.Serializable;
-import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-
-import com.hailian.modules.credit.pricemanager.model.ReportPrice;
-import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
-import com.hailian.modules.credit.common.controller.ReportTimeController;
-import com.hailian.modules.credit.common.model.ReportTimeModel;
-import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
-
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
-import com.jfinal.json.Json;
-import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
-
-import net.sf.json.JSON;
 
 /**
  * 
@@ -656,16 +640,68 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	public CreditOrderInfo getMaxOrderId() {
 		return CreditOrderInfo.dao.findFirst("SELECT MAX(id) as id FROM credit_order_info");
 	}
+
 	/**
-	 * 获取做单量占比
+	 * 根据报告员获取做单量占比
 	* @author doushuihai  
+	 * @return 
 	* @date 2018年9月25日下午1:28:51  
 	* @TODO
 	 */
-	public void zuoDanZhanBi(){
-		String sql="select fullName,addedTime FROM credit_order_info t where t.del_flag=0 and receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
+	public CreditOrderInfo getOrderNum(int reportid){
+		List<Object> params=new ArrayList<Object>();
+		String sql="select count(*) as orderNum FROM credit_order_info t where t.report_user=? and  t.del_flag=0 and receiver_date between date_sub(now(),interval 3 month) and now()";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
 	}
-	
+	/**
+	 * 根据报告员获取按时递交数
+	 * @return 
+	 */
+	public CreditOrderInfo getOnTimeSubmitOrderNum(int reportid){
+		List<Object> params=new ArrayList<Object>();
+		String sql="select count(*) as orderOnTimeNum FROM credit_order_info t where t.report_user=? and t.del_flag=0  and submit_date<=end_date and receiver_date between date_sub(now(),interval 3 month) and now() ";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
+	}
+	/**
+	 * 获取报告员质量占比
+	 * @return 
+	 * 
+	 */
+	public CreditOrderInfo getScore(int reportid){
+		List<Object> params=new ArrayList<Object>();
+		String sql="select (100-sum(deduct_value)/count(report_id))*0.3 as score from credit_order_info t1 "
+				+ "left join credit_report t2 on t1.num = t2.order_num "
+				+ "left join credit_report_score t3 on t2.id = t3.report_id "
+				+ "where 1=1 and t1.report_user=? and t1.del_flag=0 and t1.receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
+	}
+	/**
+	 * 获取报告员报告数量占比
+	 * @return 
+	 * @return 
+	 * 
+	 */
+	public CreditOrderInfo getReportNum(int reportid){
+		List<Object> params=new ArrayList<Object>();
+		String sql="SELECT (a.type2*1+a.type3*1+a.type4*0.2+a.type5*0.15+a.type6*0.25)*0.1 as reportnum FROM(SELECT SUM(CASE WHEN report_type=1 THEN 1 ELSE 0 END) as type1,  SUM(CASE WHEN report_type=2 THEN 1 ELSE 0 END) as type2,  SUM(CASE WHEN report_type=3 THEN 1 ELSE 0 END) as type3,SUM(CASE WHEN report_type=4 THEN 1 ELSE 0 END) as type4,SUM(CASE WHEN report_type=5 THEN 1 ELSE 0 END) as type5,SUM(CASE WHEN report_type=6 THEN 1 ELSE 0 END) as type6 FROM credit_order_info where 1=1 and del_flag=0 and report_user=? ) a ;";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
+	}
+	/**
+	 * 报告员当日在做单量
+	* @author doushuihai  
+	* @date 2018年10月9日上午9:54:45  
+	* @TODO
+	 */
+	public CreditOrderInfo getInDoingOrderNum(int reportid){
+		List<Object> params=new ArrayList<Object>();
+		String sql="SELECT count(*) as inDoingOrderNum FROM credit_order_info t where t.del_flag=0 and t.report_user=? and to_days(t.receiver_date) = to_days(now())";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
+	}
 	public String getNumber() {
 		String num=String.valueOf(getMaxOrderId().getInt("id")+1);
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
@@ -679,9 +715,5 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}
 		return "00"+date+num;
 	}
-	public static void main(String[] args) {
-		CreditCompanyInfo c=new CreditCompanyInfo();
-		String json=Json.getJson().toJson(c);
-		System.out.println(json);
-	}
+	
 }
