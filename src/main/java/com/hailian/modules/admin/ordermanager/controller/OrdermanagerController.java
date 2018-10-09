@@ -396,7 +396,7 @@ public class OrdermanagerController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
-	@ApiOperation(url = "/admin/ordermanager/getPrice",httpMethod="get", 
+	@ApiOperation(url = "/admin/ordermanager/getLanguage",httpMethod="get", 
 			description = "返回语言")
 			@Params(value = { 
 			@Param(name = "countrytype", description = "国家类型", required = false, dataType = "String"),

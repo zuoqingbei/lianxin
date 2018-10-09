@@ -201,6 +201,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
@@ -242,7 +243,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 						"select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
 								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,"
-								+ "c2.name as companyName,c2.name_en as englishName ",
+								+ "c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime ",
 						sql.toString(), params.toArray());
 
 		return page;
@@ -279,7 +280,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append("left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append("left join credit_report_usetime c3 on c3.id= t.user_time_id ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
-		
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append("where 1 = 1 and t.del_flag='0' and t.id=?");
 		return dao.findFirst(sql.toString(), id);
 	}
@@ -305,7 +306,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
-
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
@@ -328,7 +329,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		List<CreditOrderInfo> list = CreditOrderInfo.dao
 				.find("select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 						+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-						+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName "
+						+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime  "
 						+ sql.toString(), params.toArray());
 
 		return list;
@@ -385,7 +386,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
-
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
@@ -428,7 +429,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 						pageinator,
 						"select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName ",
+								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime  ",
 						sql.toString(), params.toArray());
 
 		return page;
@@ -491,7 +492,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
-
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");

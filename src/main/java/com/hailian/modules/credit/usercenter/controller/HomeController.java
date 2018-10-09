@@ -64,15 +64,24 @@ public class HomeController extends BaseProjectController {
 		render(path+"index.html");
 		
 	}
+	public void allOrder() {
+		SysUser user= (SysUser) getSessionUser();
+		if(user==null||"".equals(user)) {
+			redirect("/credit/front/usercenter/login");
+		}else {
+			render(path+"all_orders.html");
+		}
+	}
 	public void menu() {
 		SysUser user= (SysUser) getSessionUser();
 		if(user==null||"".equals(user)) {
 			redirect("/credit/front/usercenter/login");
-		}
+		}else {
 		Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
 		setAttr("user",user);
 		setAttr("menu", map);
 		render("/pages/credit/common/menu.html");
+		}
 	}
 	/**
 	 * 
@@ -245,6 +254,8 @@ public class HomeController extends BaseProjectController {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		List<File> ftpfileList=new ArrayList<File>();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+/*		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
+		model.set("report_user", reportIdtoOrder);*/
 		String num=CreditOrderInfo.dao.getNumber();
 		model.set("num", num);
 		SysUser user = (SysUser) getSessionUser();
