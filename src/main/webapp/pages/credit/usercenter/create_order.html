@@ -3,7 +3,7 @@
 <% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type); %>
 <% var language = tempDict.getSysDictDetailString('language',model.report_language); %>
 <% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
-<% var reportType = reportType.getReportTypeString("ordertype"); %>
+<% var reportType = reportType.getReportTypeString(model.report_type); %>
 <% var upload_busType = tempDict.getSysDictDetailString('upload_busType',model.business_type !); %>
 
 <html>
