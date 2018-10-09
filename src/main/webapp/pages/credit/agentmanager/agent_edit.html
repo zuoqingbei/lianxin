@@ -1,6 +1,7 @@
 <% var usabled = tempDict.getSysDictDetailString2('usabled',model.usabled ); %>
 <% var currency = tempDict.getSysDictDetailString2('currency',model.currency ); %>
 <% var agenttype = tempDict.getSysDictDetailString2('agenttype',model.agent_type ); %>
+<% var speed = tempDict.getSysDictDetailString2('agentspeed',model.speed ); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -19,10 +20,7 @@ var oper = {
 		form1.submit();
 		return true;
 	}	
-	
 };
-
-
 
 </script>
 <style>
@@ -84,7 +82,13 @@ var bodyContent = {
 				value="${model.postal_code}"/></td>
 		</tr>
 		<tr>
-			<td>备忘录</td>
+			<td>代理用时</td>
+			 <td> 
+				<input type="text" name="model.proxy_time" class="form-control"  
+				value="${model.proxy_time}"/></td>
+		</tr>
+		<tr>
+			<td>邮箱</td>
 			<td> <input type="text" name="model.memo" class="form-control"  valid="vemail"
 				value="${model.memo}"/> </td>
 		</tr>
@@ -97,6 +101,12 @@ var bodyContent = {
 			<td>币种</td>
 			<td><select name="model.currency" class="form-control" style="width: 200px;" >
 					${currency!}
+				</select></td>
+		</tr>
+		<tr>
+			<td>速度</td>
+			<td><select name="model.speed" class="form-control" style="width: 200px;" >
+					${speed!}
 				</select></td>
 		</tr>
 		<tr>
