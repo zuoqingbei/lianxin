@@ -577,12 +577,15 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
 			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
+			//获取文件信息
+			fromSql.append(" LEFT JOIN credit_upload_file u5 ON u5.business_type = c.status and u5.business_id = c.num ");//文件表关联
+			
 			fromSql.append(" where c.del_flag = 0 ");
 			if((OrderProcessController.orderAllocation).equals(searchType)){
 				//status='291'值状态为订单分配状态 ,其维护在字典表中
 				fromSql.append(" and status='291' ");
 			}else if((OrderProcessController.orderVerifyOfOrder).equals(searchType)){
-				//status='292'值状态为客户确认状态 ,其维护在字典表中
+				//status='292'值状态为客户确认(订单核实)状态 ,其维护在字典表中
 				fromSql.append(" and status='292' ");
 			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
 				//status='294'值状态为订单查档 ,其维护在字典表中
@@ -616,9 +619,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
-			fromSql.append(" order by c.receiver_date desc");
+			fromSql.append(" order by c.ID desc,c.receiver_date desc");
 		} else {
-			fromSql.append(" order by ").append(orderBy);
+			fromSql.append(" order by c.ID desc,").append(orderBy);
 		}
 		String selectSqlStr = selectSql.toString();
 		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr ,fromSql.toString(), params.toArray());

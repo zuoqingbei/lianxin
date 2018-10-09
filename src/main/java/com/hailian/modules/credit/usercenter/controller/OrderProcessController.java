@@ -34,8 +34,12 @@ public class OrderProcessController extends BaseProjectController{
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
-	//页面公共路径
-	private static final String PATH = "/pages/credit/usercenter/order_manage/";
+	//订单管理菜单下公共路径
+	private static final String ORDER_MANAGE_PATH = "/pages/credit/usercenter/order_manage/";
+	//报告管理下菜单公共路径
+	private static final String REPORT_MANAGE_PATH = "/pages/credit/usercenter/report_pages/";
+	//正在开发页面路径
+	private static final String DEVELOPING_PATH = "/pages/credit/usercenter/developing.html";
 	//每种搜索类型需要对应的关键词字段名
 	public static final Map<String,List<Object>> TYPE_KEY_COLUMN = new HashMap<>();
 	//每种搜索类型需要对应的前端属性名
@@ -112,7 +116,7 @@ public class OrderProcessController extends BaseProjectController{
 		}
 		//分页查询
 		Page<CreditOrderInfo> pager = CreditOrderInfo.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType, this);
-		//存入回显数据
+		//插入回显数据
 		for (CreditOrderInfo page : pager.getList()) {
 			for (int i = 0; i <  WEB_PARAM_NAMES.get(searchType).size(); i++) {
 				page.put((String)WEB_PARAM_NAMES.get(searchType).get(i)+"Key",keywords.get(i));
@@ -121,6 +125,11 @@ public class OrderProcessController extends BaseProjectController{
 			page.put("pageSize",pageSize);
 			page.put("sortName",sortName);
 			page.put("sortOrder",sortOrder);
+			//插入文件信息
+			Integer orderId = page.get("id");
+			String status = page.get("status");
+			List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"", status, this);
+			page.put("files",files);
 		}
 		return pager;
 	}
@@ -148,7 +157,7 @@ public class OrderProcessController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	public void showReallocation(){
-		render(PATH+"order_allocation.html");
+		render(ORDER_MANAGE_PATH+"order_allocation.html");
 	}
 	/**
 	 * @todo   展示订单管理下的订单核实页
@@ -157,7 +166,7 @@ public class OrderProcessController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	public void showOrderVerifyOfOrders(){
-		render(PATH+"order_verify.html");
+		render(ORDER_MANAGE_PATH+"order_verify.html");
 	}
 	/**
 	 * @todo   展示订单查档页
@@ -166,7 +175,25 @@ public class OrderProcessController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	public void showOrderFiling(){
-		render(PATH+"order_filing.html");
+		render(ORDER_MANAGE_PATH+"order_filing.html");
+	}
+	/**
+	 * @todo   展示报告管理下的信息录入
+	 * @time   2018年9月29日 上午 11:02
+	 * @author lzg
+	 * @return_type   void
+	 */
+	public void showReportedBasicInfo(){
+		render(REPORT_MANAGE_PATH+"reported_basic_info.html");
+	}
+	/**
+	 * @todo   展示未开发的页数
+	 * @time   2018年10月8日 下午05:02
+	 * @author lzg
+	 * @return_type   void
+	 */
+	public void showUnderdevelopment(){
+		render(DEVELOPING_PATH);
 	}
 	/**
 	 *获取订单数据
@@ -181,7 +208,7 @@ public class OrderProcessController extends BaseProjectController{
 		if(searchType.equals(orderAllocation)){//若是搜索类型是订单分配
 			for (CreditOrderInfo creditOrderInfo : rows) {
 				//参数2代表角色id为2
-				String seleteStr= templete.getSysUser(2, creditOrderInfo.get("report_user"));
+				String seleteStr = templete.getSysUser(2, creditOrderInfo.get("report_user"));
 				creditOrderInfo.put("seleteStr",seleteStr);
 			}
 		}
@@ -226,7 +253,6 @@ public class OrderProcessController extends BaseProjectController{
 			renderJson(new ResultType(0,"发生未知错误!"));
 		}
 	}
-	
 	/**
 	 * 获取前台文件上传到文件服务器并将文件信息记录到文件实体表
 	 * return resultJson

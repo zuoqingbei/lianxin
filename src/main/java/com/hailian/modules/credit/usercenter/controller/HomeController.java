@@ -230,7 +230,7 @@ public class HomeController extends BaseProjectController {
 		setAttr("customs",customs);
 		setAttr("company",company);
 		setAttr("model", model);
-		render(path + "create_order.html");
+		render(path + "/order_manage/create_order.html");
 	}
 	/**
 	 * 

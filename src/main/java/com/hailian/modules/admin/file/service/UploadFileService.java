@@ -68,7 +68,7 @@ public class UploadFileService {
 		}
 		return flag;
 	}
-	public List<CreditUploadFileModel> getByBusIdAndBusType(String business_id,Integer business_type,BaseProjectController c) {
+	public List<CreditUploadFileModel> getByBusIdAndBusType(String business_id,String business_type,BaseProjectController c) {
 		return CreditUploadFileModel.dao.getByBusIdAndBusType(business_id,business_type,c);
 	}
 	public void delete(Integer id, Integer userid) {

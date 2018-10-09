@@ -18,8 +18,9 @@
 }
 .table-content{
 	height: auto;
-	margin: 1.25rem;
+	margin:1.25rem;
 	background: #fff;
+	padding-top: 0;
 }
 .table-content label{
 	font-size: 1rem;
@@ -34,6 +35,9 @@
 #orderForm{
 	padding:1rem 8rem 1rem 1rem;
 	/* background: #fff; */
+}
+#form_File{
+	margin-top: 1.25rem;
 }
 #orderForm .form-control{
     border-radius: 4px;
@@ -86,11 +90,7 @@
 #btn_download i{
 	margin-right:5px;
 }
-/*面包屑*/
-.breadcrumb{
-	padding:0;
-	background: none;
-}
+
 .breadcrumb-item a{
 	color:#999!important;
 }
@@ -149,4 +149,7 @@
 }
 .err-box span {
 	color: #f5222d;
+}
+.fa-download {
+	margin-right: .5rem;
 }

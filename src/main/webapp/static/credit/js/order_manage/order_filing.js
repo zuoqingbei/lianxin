@@ -180,7 +180,7 @@ let Filing = {
     
 
           $table.bootstrapTable({
-              height: $(".table-content").height()*25/26,
+              height: $(".table-content").height()*0.98,
               columns: [
   {
       title: '订单号',
@@ -304,8 +304,8 @@ let Filing = {
               pagination: true, //分页
               sidePagination: 'server',
               pageNumber:1,
-              pageSize:10,
-              pageList: [10 , 20],
+              pageSize:20,
+              pageList: [20 , 30],
               smartDisplay:false,
               iconsPrefix:'fa',
               locales:'zh-CN',
@@ -334,10 +334,12 @@ let Filing = {
               $table.bootstrapTable('resetView');
             }, 200);
         },
-      operateFormatter(){
-        /**操作按钮格式化 */
-        return '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter">上传附件</a>'
-      }       
+        operateFormatter(){
+            /**操作按钮格式化 */
+            return '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter" style="margin-right:.5rem">上传附件</a>' +
+                '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
+                '<a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter_allocation">代理分配</a>'
+          }             
 }
 
 

@@ -49,7 +49,8 @@ let Orderind = {
             $(this).siblings('li').find('a').removeClass('tab-a-active');
            /* 解决锚链接的偏移问题*/
             $("#container ").css('height',"calc(100% - 5.5rem)");
-            $(".main ").css('height',"calc(100% - 3rem)");
+            /*右侧主题部分*/
+            $(".main ").css('height',"calc(100% + 5.5rem)");
         })
     }
 

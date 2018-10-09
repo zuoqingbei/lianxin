@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>联信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/order_manage/order_verify.css">
+    <link rel="stylesheet" href="../css/order_manage/order_submit.css">
+</head>
+<div id="container" class="row  animated fadeIn">
+
+    <!-- 内容 -->
+    <div class="main">
+        <div class="main-header">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="javascript:;">订单管理</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a>全部订单</a>
+                </li>
+            </ul>
+            <p class="main-title">全部订单</p>
+
+        </div>
+        <!-- 表格 -->
+        <div class="table-content">
+            <div class="bg-f">
+                <div class="form-box">
+                    <form id="formSearch" class="form-inline layui-form" role="form">
+                        <div class="form-group row d-flex justify-content-around mb-3">
+                            <div class="input-group mt-2 col-md-4">
+                                <label class="control-label col-md-4" for="txt_search_departmentname">公司名称：</label>
+                                <input type="text" class="form-control search-input col-md-8" id="txt_search_departmentname" placeholder="请输入公司名称">
+                            </div>
+                            <div class="input-group mt-2 col-md-4">
+                                <label class="control-label col-md-4" for="txt_search_companyEngName">订单公司名称：</label>
+                                <input type="text" class="form-control search-input col-md-8" id="txt_search_companyEngName" placeholder="请输入订单公司名称">
+                            </div>
+                            <div class="input-group mt-2 col-md-4">
+                                <label class="control-label col-md-4" for="txt_search_date">到期日期：</label>
+                                <input type="text" class="form-control search-input col-md-8" id="txt_search_date" placeholder="请选择到期日期"">
+                            </div>
+                        </div>
+                        <div id="btnCollapse" class="show row justify-content-around">
+                            <div class="input-group mt-2 col-md-4 " id="client">
+                                <label class="control-label col-md-4" for="txt_search_cus">客户：</label>
+                                <select class="search-input col-md-8 layui-input" id="txt_search_cus">
+                                    <option value="" disabled selected>请选择客户</option>
+
+                                </select>
+                            </div>
+                            <div class="input-group mt-2 col-md-4" id="proxy">
+                                <label class="control-label col-md-4" for="txt_search_agency">代理：</label>
+                                <select class=" search-input col-md-8 layui-input" id="txt_search_agency">
+                                    <option value="" disabled selected>请选择代理</option>
+                                </select>
+                            </div>
+                            <div class="input-group mt-2 col-md-4" id="country">
+                                <label class="control-label col-md-4" for="txt_search_country">国家：</label>
+                                <select class="search-input col-md-8 layui-input" id="txt_search_country">
+                                    <option value="" disabled selected>请选择国家</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="btn-row d-flex justify-content-between mt-3 mb-3">
+                        <a role="button" class=" ml-5 d-flex align-items-center" href="javascript:;"></a>
+                        <div class="right-btn d-flex align-items-center justify-content-around mr-4">
+                            <button type="button" id="btn_query" class="btn btn-primary">查询</button>
+                            <button type="button" id="btn_reset" class="btn btn-light">重置</button>
+                            <a  id="hideBtn" href="javascript:;">收起 <i class="fa fa-angle-up"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+                <table id="table"
+                       data-toggle="table"
+                       data-url="./data.json"
+                       style="position: relative"
+                >
+                    <div class="deal-state">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">订单分配</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck2">
+                            <label class="form-check-label" for="defaultCheck2">客户确认</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck3">
+                            <label class="form-check-label" for="defaultCheck3">报告制作</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck4">
+                            <label class="form-check-label" for="defaultCheck4">报告完成</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck5">
+                            <label class="form-check-label" for="defaultCheck5">代理中</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck6">
+                            <label class="form-check-label" for="defaultCheck6">代理完成</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck7">
+                            <label class="form-check-label" for="defaultCheck7">代理补充</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck8">
+                            <label class="form-check-label" for="defaultCheck8">报告质检中</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck9">
+                            <label class="form-check-label" for="defaultCheck9">报告质检不通过</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck10">
+                            <label class="form-check-label" for="defaultCheck10">报告质检合格</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck11">
+                            <label class="form-check-label" for="defaultCheck11">分析制作</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck12">
+                            <label class="form-check-label" for="defaultCheck12">分析完成</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck13">
+                            <label class="form-check-label" for="defaultCheck13">分析质检中</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck14">
+                            <label class="form-check-label" for="defaultCheck14">分析质检不通过</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck15">
+                            <label class="form-check-label" for="defaultCheck15">分析质检合格</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck16">
+                            <label class="form-check-label" for="defaultCheck16">翻译制作</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck17">
+                            <label class="form-check-label" for="defaultCheck17">翻译完成</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck18">
+                            <label class="form-check-label" for="defaultCheck18">翻译质检中</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck19">
+                            <label class="form-check-label" for="defaultCheck19">翻译质检不通过</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck20">
+                            <label class="form-check-label" for="defaultCheck20">翻译质检合格</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck21">
+                            <label class="form-check-label" for="defaultCheck21">报告完成</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck22">
+                            <label class="form-check-label" for="defaultCheck22">客户内容已更新</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck23">
+                            <label class="form-check-label" for="defaultCheck23">客户撤销</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="defaultCheck24">
+                            <label class="form-check-label" for="defaultCheck24">订单完成</label>
+                        </div>
+                        <div class="btn-group btn-filter d-flex justify-content-center mt-3">
+                            <a href="javascript:;" role="button" class="enterFilter mr-4">确定</a>
+                            <a href="javascript:;" role="button" class="resetrFilter">重置</a>
+                        </div>
+                    </div>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Modal 订单撤销 -->
+<div class="modal fade order_cancel" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <span>订单号：</span>
+                    <span>0001288784932</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="order-detail mb-4">
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>客户ID：</span>
+                            <span>001354574</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>客户用户名：</span>
+                            <span>王彩军</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>接单日期：</span>
+                            <span>2018-09-10</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>地区：</span>
+                            <span>亚洲</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>国家：</span>
+                            <span>中国</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告类型：</span>
+                            <span>基本信用报告</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>订单类型：</span>
+                            <span>new</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告语言：</span>
+                            <span>中文</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>订单公司名称：</span>
+                            <span>北京小米科技有限公司</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>报告速度：</span>
+                            <span>普通</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告用时：</span>
+                            <span>5天</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>公司中文名称：</span>
+                            <span>北京小米科技有限公司</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-12 d-flex">
+                            <span style="width: 6.1rem">确认原因：</span>
+                            <span>对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <div class="row mt-3 mb-2">
+                        <div class="input-group col-md-12 align-items-top">
+                            <label class="control-label">撤销原因：</label>
+                            <!--<input type="text" class="form-control">-->
+                            <textarea name="" id="" cols="50" rows="10"></textarea>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal_submit">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal 内容更新-->
+<div class="modal fade order_cancel" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <span>订单号：</span>
+                    <span>0001288784932</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="order-detail mb-4">
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>客户ID：</span>
+                            <span>001354574</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>客户用户名：</span>
+                            <span>王彩军</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>接单日期：</span>
+                            <span>2018-09-10</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>地区：</span>
+                            <span>亚洲</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>国家：</span>
+                            <span>中国</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告类型：</span>
+                            <span>基本信用报告</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>订单类型：</span>
+                            <span>new</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告语言：</span>
+                            <span>中文</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>订单公司名称：</span>
+                            <span>北京小米科技有限公司</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>报告速度：</span>
+                            <span>普通</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告用时：</span>
+                            <span>5天</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>公司中文名称：</span>
+                            <span>北京小米科技有限公司</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-12 d-flex">
+                            <span style="width: 6.1rem">确认原因：</span>
+                            <span>对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <div class="row mt-3 mb-2">
+                        <div class="input-group col-md-12 align-items-top">
+                            <label class="control-label">更新原因：</label>
+                            <!--<input type="text" class="form-control">-->
+                            <textarea name="" id="" cols="50" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <label class="mt-3 ml-3">上传附件：</label>
+                    <div class="uploadFile mt-3 mr-4 mb-5">
+                        <input type="file" name="" id="upload_file" value="" class="file-input" />
+                        <div class="over-box">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                            <p class="mt-2">上传附件</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal_submit">确认更新</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/layui/layui.all.js"></script>
+<script src="../js/all_orders.js"></script>
+</body>
+</html>

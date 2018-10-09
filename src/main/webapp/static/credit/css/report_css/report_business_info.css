@@ -1,0 +1,38 @@
+
+#qy_K {
+  border-color: var(--activeColor);
+}
+.table-content8 {
+    padding: 0.25rem 2rem;
+}
+.s-title {
+    font-size: 1.125rem;
+    color: #323232;
+    margin:1rem;
+}
+.explain {
+    color: var(--fontColor);
+    margin: 1rem;
+}
+.table-content2  .row {
+    color: var(--fontColor);
+}
+.order-info .tab-bar .tab-active {
+    color: var(--activeColor);
+    font-weight: 500;
+    border-bottom: solid 3px var(--activeColor);
+}
+
+.thead-label {
+    display: inline-block;
+    width: 100%;
+    background: #fafafa;
+    padding: 8px;
+    border: solid 1px #e5e5e5;
+    border-bottom: 0;
+    font-weight: 600;
+}
+.rounded-0 {
+    border-radius: 0!important;
+    border-color: #e5e5e5;
+}

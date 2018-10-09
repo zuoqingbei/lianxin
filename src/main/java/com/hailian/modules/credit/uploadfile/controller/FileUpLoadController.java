@@ -115,7 +115,7 @@ public class FileUpLoadController extends BaseProjectController {
 			markFile+=successNum+"个文件上传成功";
 			Map<String,Object> map=new HashMap<String, Object>();
 			map.put("mark", markFile);
-			List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id, business_type,this);
+			List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id, business_type+"",this);
 			map.put("fileList", fileList);
 			renderJson(map);
 			renderMessage(markFile);
