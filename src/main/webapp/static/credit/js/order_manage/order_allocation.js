@@ -118,7 +118,7 @@ let Allocation = {
   
 
         $table.bootstrapTable({
-            height: $(".table-content").height()/7*6,
+            height: $(".table-content").height()*0.9,
             columns: [
                  {
                   title: '订单号',

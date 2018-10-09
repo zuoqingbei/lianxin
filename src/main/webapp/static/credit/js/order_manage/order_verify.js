@@ -239,7 +239,7 @@ let Verify = {
   
 
         $table.bootstrapTable({
-            height: $(".table-content").height()*25/26,
+            height: $(".table-content").height()*0.98,
             columns: [
 {
     title: '订单号',
