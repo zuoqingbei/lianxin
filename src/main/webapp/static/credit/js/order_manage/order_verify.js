@@ -368,8 +368,8 @@ let Verify = {
             pagination: true, //分页
             sidePagination: 'server',
             pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],
+            pageSize:20,
+            pageList: [20 , 30],
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
