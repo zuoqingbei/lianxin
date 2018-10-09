@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<% var sandbar = tempDict.getSysDictDetailString('continent',model.continent); %>
+<% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type); %>
+<% var language = tempDict.getSysDictDetailString('language',model.report_language); %>
+<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
+<% var reportType = reportType.getReportTypeString(model.report_type); %>
+<% var upload_busType = tempDict.getSysDictDetailString('upload_busType',model.business_type !); %>
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,20 +13,16 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-   
    	<link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/create_order.css">
 </head>
-
-   
-        <div id="container" class="row animated fadeIn">
-          
+<div id="container" class="row animated fadeIn">          
             <!-- 内容 -->
 		    <div class="main">
 		    	<!--标题-->
 		    	<div class="main-header">
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item">
-							<a href="index.html">首页</a>
+							<a href="/credit/front/home/menu">首页</a>
 						</li>
 						<li class="breadcrumb-item active">
 							<a>新建订单</a>
@@ -29,100 +32,107 @@
 		    	</div>
 		    	<!--表单-->
 		    	<div class="table-content">
-					<div class="right-btn btn-group d-flex align-items-center justify-content-end">
+		    		<div class="right-btn btn-group d-flex align-items-center justify-content-end">
 						<form action=""  enctype="multipart/form-data" id="form_File">
 							<input type="file" style="visibility: hidden" id="more_upload" >
-							<button id="show_modal" data-toggle="modal" data-target="#importModal" style="visibility:hidden"></button>
 							<button type="button" id="btn_import" class="btn btn-primary" ><i class="fa fa-download"></i>批量导入</button>
 							<button type="button" id="btn_download" class="btn btn-default ml-3">下载模板</button>
 						</form>
 					</div>
-		    		<form id="orderForm" class="form-inline" action="" method="">
-		    			<div class="form-group row d-flex justify-content-end mb-4">
-		    			</div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
+					
+					<button id="show_modal" data-toggle="modal" data-target="#importModal" style="display:none"></button>
+		    		<form id="orderForm" class="form-inline " enctype="multipart/form-data"   action="/credit/front/home/saveOrder" method="post">
+		    			
+		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>客户ID：</label>
-		                        <select class="form-control  formSelect col-md-8" id="client_ID">
+		                        <select name="attr.custom_id" valid="vselect" validname="客户ID" class="form-control  formSelect col-md-8" id="client_ID" onchange="customChange();">
 		                            <option value="0" disabled selected>请输入客户ID</option>
+		                            <%for(item in customs){%>
+		                             <option value="${item.id}" >${item.id}</option>
+		                             <%}%>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请输入客户ID</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">客户用户名：</label>
-		                        <input type="text" class="form-control  col-md-8" id="client_userNname" placeholder="请输入客户用户名">
+		                        <input name="customname" type="text" class="form-control  col-md-8" id="client_userNname" placeholder="请输入客户用户名">
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
-		                    <div class="input-group mt-2 col-md-6">
-		                        <label class="control-label col-md-4" for=""><span>*</span>接单日期：</label>
-		                        <input type="text" class="form-control  col-md-8" id="client_order_date" disabled>
-		                    </div>
-		                    <div class="input-group mt-2 col-md-6">
+		    			<div class="form-group row d-flex justify-content-around mb-3">
+		    			 <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>地区：</label>
-		                        <select class="form-control  formSelect col-md-8" id="client_area">
-		                            <option value="0" disabled selected>请选择地区</option>
+		                        <select name="attr.continent" valid="vselect" validname="地区" class="form-control  formSelect col-md-8" id="client_area" onchange="continentchange()">
+		                            ${sandbar!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择地区</p>
 		                    </div>
-		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
-		                    <div class="input-group mt-2 col-md-6">
+		                     <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>国家：</label>
-		                        <select class="form-control  formSelect col-md-8" id="client_country">
-		                            <option value="0" disabled selected>请选择国家</option>
+		                        <select name="attr.country" valid="vselect" validname="国家" class="form-control  formSelect col-md-8" id="client_country" onchange="countrychange()">
+		                            <option m-type="" value="0" disabled selected>请选择国家</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择国家</p>
 		                    </div>
+		                </div>
+		    			<div class="form-group row d-flex justify-content-around mb-3">
+		                    <div class="input-group mt-2 col-md-6">
+		                        <label class="control-label col-md-4" for=""><span>*</span>接单日期：</label>
+		                        <input name="attr.receiver_date" valid="vselect" validname="接单日期"  type="text" class="form-control  col-md-8" id="client_order_date" disabled/>
+		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告类型：</label>
-		                        <select class="form-control  formSelect col-md-8" id="client_reportType">
-		                            <option value="0" disabled selected>请选择报告类型</option>
+		                        <select name="attr.report_type" valid="vselect" validname="报告类型" class="form-control  formSelect col-md-8" id="client_reportType" onchange="reportTypeChange();">
+		                             ${reportType!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告类型</p>
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
+		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>订单类型：</label>
-		                        <select class="form-control  formSelect col-md-8" id="client_orderType">
-		                            <option value="0" disabled selected>请选择订单类型</option>
+		                        <select name="attr.order_type" valid="vselect" validname="订单类型" class="form-control  formSelect col-md-8" id="client_orderType" onchange="ordertypechange();">
+		                           ${ordertype!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择订单类型</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
-		                        <select class="form-control  formSelect col-md-8" id="client_reportLanguage">
-		                            <option value="0" disabled selected>请选择报告语言</option>
+		                        <select name="attr.report_language" valid="vselect" validname="报告语言" class="form-control  formSelect col-md-8" id="client_reportLanguage" onchange="languagechange()">
+		                        	 <option value="0" disabled selected>请选择语言</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告语言</p>
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
-		                    <div class="input-group mt-2 col-md-6">
-		                        <label class="control-label col-md-4" for=""><span>*</span>公司名称：</label>
-		                        <input type="text" class="form-control  formInput col-md-8" id="client_departmentName" placeholder="请输入公司名称">
-		                    	<p class="errorInfo col-md-8">请输入公司名称</p>
+		    			<div class="form-group row d-flex justify-content-around mb-3">
+		                    <div class="input-group mt-2 col-md-6 layui-form">
+		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>公司：</label>
+                                        <select name="attr.company_id" class=" col-md-8 layui-input" lay-search="" ay-verify="" >
+                                            <option value="0" disabled selected>请选择公司</option>
+                                        </select>
+		                    	<p class="errorInfo col-md-8">请输入正确公司名称</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>速度：</label>
-		                        <select class="form-control  formSelect col-md-8" id="client_speed">
-		                            <option value="0" disabled selected>请选择速度</option>
+		                        <select name="attr.speed" valid="vselect" validname="速度" class="form-control  formSelect col-md-8" id="client_speed" onchange="speedchange()">
+		                           ${orderspeed!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择速度</p>
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
+		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">报告用时：</label>
-		                        <input type="text" class="form-control  col-md-8" id="client_reportTime" disabled>
+		                        <input name="attr.user_time" type="text" class="form-control  col-md-8" id="client_reportTime" readonly >
+		                       <input name="attr.user_time_id" type="hidden" class="form-control  col-md-8">
+		                        
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">客户参考号：</label>
 		                        <input type="text" class="form-control  col-md-8" id="client_referenceNumber" placeholder="请输入客户参考号">
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
+		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">地址：</label>
 		                        <input type="text" class="form-control  col-md-8" id="client_address" placeholder="请输入地址">
@@ -132,7 +142,7 @@
 		                        <input type="text" class="form-control  col-md-8" id="client_telephone" placeholder="请输入电话">
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
+		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">传真：</label>
 		                        <input type="text" class="form-control  col-md-8" id="client_fax" placeholder="请输入传真">
@@ -142,7 +152,7 @@
 		                        <input type="text" class="form-control  col-md-8" id="client_contact" placeholder="请输入联系人">
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
+		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">Email：</label>
 		                        <input type="text" class="form-control  col-md-8" id="client_email" onblur="Events.emailAdd(this)" placeholder="请输入邮箱地址">
@@ -150,26 +160,14 @@
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">上传相关资料：</label>
-		                        <div class="form-control uploadInformation col-md-8">
-		                        	<input type="file" name="" id="upload_file" value="" />
+		                        <div class="form-control  uploadInformation col-md-8">
+		                        	<input class="upload_file" type="file" name="file_url" id="upload_file" value=""/>                     	                     	
 		                        	<i class="fa fa-cloud-upload"></i>
 		                        	<p class="">请将上传的PDF、JPG、PNG、EXCEL、WORD文件拖至此处，大小不超过5M</p>
 								</div>
-								<div class="progress-box" id="Close">
-									<div class="file-box">
-										<i class="fa fa-paperclip"></i>
-										<span class="filename">a.png</span>
-									</div>
-									<div class="progress">
-										<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
-									</div>     
-									<button type="button" class="close" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>            
-								</div>
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4">
+		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4 remarkLabel" for="">备注：</label>
 		                        <textarea class="form-control  remark col-md-8" name="" rows="" cols="" placeholder="请输入其他细节"></textarea>
@@ -177,20 +175,25 @@
 		                    <div class="input-group mt-2 col-md-6">
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-4 mt-5">
+		    			<div class="form-group row d-flex justify-content-around mb-3 mt-4">
 		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4 myBtn">
 		                    	<button type="button" id="btn_submit" class="btn btn-primary btn-submit">提交</button>
 		                    	<button type="button" id="btn_save" class="btn btn-light btn-save">保存</button>
 		                    </div>
 		                </div>
-		    			
+		    			<input name="attr.create_by" type="hidden" value="${user.userid}">
+		    			<input name="attr.status" type="hidden" value="0">
+		    			<input name="id" type="hidden" value="0">
+		    			<input id="priceid" name="attr.price_id" type="hidden" value="0">
+		    			<input name="attr.source" type="hidden" value="0">
+		    			<input name="attr.end_date" type="hidden" value="0">
+		    			<input name="attr.company_by_report" type="hidden" value="0">
+		    			<input name="attr.right_company_name_en" type="hidden" value="0">
 		    			<!--<input type="submit" value=""/>-->
 		    		</form>
 		    	</div>
-			</div>
-			
+		    </div>
         </div>
-		<!-- Modal -->
 		<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
@@ -204,15 +207,13 @@
 				</div>
 				<div class="modal-body">
 					<div class="table-modal-content">
-						<table id="tableOrder"
-							data-toggle="table"
-							data-url="./data.json"
-							style="position: relative"
-						></table>
-
+						<table id="tableOrder" data-toggle="table" style="position: relative">
+							
+							
+						</table>
 					</div>
 					<div class="err-box">
-						<span>1.拼写错误拼写错误拼写错误拼写错误</span>
+						<span></span>
 					</div>	
 						
 					
@@ -224,7 +225,150 @@
 			</div>
 			</div>
 		</div>
-  
-    <script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>
+    
+    
    
+    <script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>
+    <script type="text/javascript" src="${BASE_PATH }static/common/valid.js"></script>
+   <script type="text/javascript">
+   		$(function(){
+   			$.get('/credit/front/home/getMessage',function(data){
+   				getCompany(data.companys);
+			})	
+   		})
+   		function customChange(){
+   			var value=$("#client_ID").find("option:selected").val();
+   			$.post("/credit/front/home/getCustomName",{"id":value},function(data){
+   				$("#client_userNname").val(data.name);
+   				$("#client_userNname").attr("disabled","disabled");
+   			})
+   		};
+   	 	function continentchange(){
+   			var value=$("#client_area").find("option:selected").attr("m-english");
+   			$("#client_area option:first").attr("disabled","disabled");
+   			var html="";
+       	 	$.post('/credit/country/getCountrySelect',{"attr.continent":value},function(data){
+    		 	console.log(data)
+    		  for(item in data){
+				html+="<option  m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";	        	
+ 	           }
+ 	           
+ 	           $("select[name='attr.country']").html(html);
+ 	          countrychange();
+ 	         reportTypeChange();
+    	 })
+   		}
+   	 	function reportTypeChange(){
+   	 		languagechange();
+   	 		price()
+   	 		usetime()
+   	 	}
+   	 	function ordertypechange(){
+   	 	usetime();
+   	 	price()
+   	 	}
+   	 	function countrychange(){
+   	 	 $("select[name='attr.country'] option:first").attr("selected","selected");
+   	 		//查询用时
+   	    	usetime();
+   	    	//查询语言
+   	    	languagechange()
+   	    	price()
+   	 	}
+   	 	
+   	 	function speedchange(){
+   	 		usetime();
+   	 		price()
+   	 	}
+   	 	function languagechange(){
+   	 	var value1=  $("select[name='attr.country']").find("option:selected").attr("m-type");
+    	var value3=$("select[name='attr.report_type']").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"/admin/ordermanager/getLanguage?countrytype="+value1+"&reporttype="+value3,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	console.log(data)
+		        	if(data!=null){
+		        		for(item in data){
+		        			html+="<option value='"+data[item].language_id+"'>"+data[item].languageName+"</option>";
+		        		}
+		        	}
+		        	$("select[name='attr.report_language']").html(html);
+		          }
+		    });
+    	}
+
+   	 	function usetime(){
+   	 	var value1=$("select[name='attr.country']").find("option:selected").attr("m-type");
+    	var value2=$("select[name='attr.speed']").find("option:selected").val();
+    	var value3=$("select[name='attr.report_type']").find("option:selected").val();
+    	var value4=$("select[name='attr.order_type']").find("option:selected").val();
+    	var value5=$("#client_order_date").val();
+    	console.log(value5);
+   	 	var html="";
+	   	 $.ajax({
+		        url:"/admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4+"&receivedate="+value5,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	console.log(data)
+		        	  if(data!=null){
+		        		  $("input[name='attr.user_time']").val(data.usetime.use_time)
+		        		  $("input[name='attr.user_time_id']").val(data.usetime.id)
+						  $("input[name='attr.end_date']").val(data.enddate)
+		        }
+		        },
+		    });
+   	 	}
+   	 	function price(){
+   	 	var value1=$("select[name='attr.country']").find("option:selected").attr("m-type");
+    	var value2=$("select[name='attr.speed']").find("option:selected").val();
+    	var value3=$("select[name='attr.report_type']").find("option:selected").val();
+    	var value4=$("select[name='attr.order_type']").find("option:selected").val();
+   	 	var html="";
+	   	 $.ajax({
+		        url:"/admin/ordermanager/getPrice?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4,
+		        type:"get",
+		        dataType:"json",
+		        success: function(data) {
+		        	  if(data!=null){
+		        		  $("#priceid").val(data.id)
+		        	  }
+		        	
+		          }
+		    });
+   	 	}
+   	 	function getCompany(data){
+   	 	var html=""
+				for(item in data){
+					html+="<option m-type2='"+data[item].name_en+"'  m-type1='"+data[item].name+"'  value='"+data[item].id+"'>"+data[item].name+"</option>";
+				}
+				$("select[name='attr.company_id']").append(html);	
+				console.log(html);
+				//重新渲染 否则option不能显示
+				layui.use('form', function(){
+					var form = layui.form;  
+					form.render(); //更新全部
+				});
+   	 	}
+   </script>
+<script type="text/javascript">
+function piliangDingDan(){
+	 var html="";
+   	 $.ajax({
+	        url:"/credit/orderpoimanager/importExcel",
+	        type:"post",
+	        dataType:"json",
+	        success: function(data) {
+	        	console.log(data)
+	        	$.each(data,function(index,item){
+	        		
+	        	})
+	        },
+	    });
+	 	}
+
+</script>
 </html>
