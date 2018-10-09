@@ -8,8 +8,6 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.modules.credit.company.model.CompanyModel;
-import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -29,7 +27,6 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 		columnnNames.add("postal_code");
 		columnnNames.add("price");
 		columnnNames.add("c.detail_name");
-
 	}
 
 	/**
@@ -42,11 +39,12 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 	public Page<AgentModel> getAgent(Paginator paginator, int pageNumber, int pageSize, String orderBy, String keyWord,
 			String searchType, BaseProjectController c) {
 		StringBuffer selectsql = new StringBuffer(
-				"select  at.detail_name as agentType,c.detail_name as Currency,us.detail_name as Usabled,a.* ");
+				"select  sp.detail_name as Speed,at.detail_name as agentType,c.detail_name as Currency,us.detail_name as Usabled,a.* ");
 		StringBuffer fromsql = new StringBuffer(" from  credit_agent a ");
 		fromsql.append("   LEFT JOIN sys_dict_detail at on at.detail_id=a.agent_type ");
 		fromsql.append("   LEFT JOIN sys_dict_detail c on c.detail_id=a.currency");
 		fromsql.append("   LEFT JOIN sys_dict_detail us on us.detail_id=a.usabled");
+		fromsql.append("   LEFT JOIN sys_dict_detail sp on sp.detail_id=a.speed ");
 		fromsql.append("  where a.del_flag=0 and at.del_flag=0 and c.del_flag=0 and us.del_flag=0");
 		List<Object> params = new ArrayList<Object>();
 		if (StringUtil.isNotEmpty(keyWord)) {
@@ -71,7 +69,6 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 			fromsql.append(" order by a.create_date desc");
 		} else {
 			fromsql.append(" order by ").append(orderBy);
-
 		}
 		Page<AgentModel> agent = AgentModel.dao.paginate(new Paginator(), selectsql.toString(), fromsql.toString(),
 				params.toArray());
@@ -87,11 +84,12 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 	 */
 	public AgentModel getOne(int id, BaseProjectController c) {
 		StringBuffer selectsql = new StringBuffer(
-				"select  at.detail_name as agentType,c.detail_name as Currency,us.detail_name as Usabled,a.* ");
+				"select  sp.detail_name as Speed,at.detail_name as agentType,c.detail_name as Currency,us.detail_name as Usabled,a.* ");
 		StringBuffer fromsql = new StringBuffer(" from credit_agent a ");
 		fromsql.append("   LEFT JOIN sys_dict_detail at on at.detail_id=a.agent_type ");
 		fromsql.append("   LEFT JOIN sys_dict_detail c on c.detail_id=a.currency");
 		fromsql.append("   LEFT JOIN sys_dict_detail us on us.detail_id=a.usabled");
+		fromsql.append("   LEFT JOIN sys_dict_detail sp on sp.detail_id=a.speed");
 		fromsql.append("  where a.del_flag=0 and at.del_flag=0 and c.del_flag=0 and us.del_flag=0 and a.agent_id=?");
 		List<Object> params = new ArrayList<Object>();
 		params.add(id);
