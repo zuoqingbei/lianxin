@@ -606,6 +606,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
 				//status='294'值状态为订单查档 ,其维护在字典表中
 				fromSql.append(" and status='294' ");
+			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
+				//status='294'值状态为递交订单(翻译质检合格) ,其维护在字典表中
+				fromSql.append(" and status='310' ");
 			}
 			
 		//关键词搜索
@@ -635,9 +638,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
-			fromSql.append(" order by c.ID desc,c.receiver_date desc");
+			fromSql.append(" order by c.receiver_date desc,c.ID desc ");
 		} else {
-			fromSql.append(" order by c.ID desc,").append(orderBy);
+			fromSql.append(" order by ").append(orderBy).append(",c.ID desc,");
 		}
 		String selectSqlStr = selectSql.toString();
 		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr ,fromSql.toString(), params.toArray());

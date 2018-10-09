@@ -68,6 +68,12 @@ public class OrderProcessController extends BaseProjectController{
 	public static String orderFilingOfOrder = "-4";
 	public static LinkedList<Object> orderFilingOfOrderColumns = new LinkedList<>();
 	public static LinkedList<Object> orderFilingOfOrderParamNames = new LinkedList<>();
+	/**
+	 * 订单管理中的递交订单
+	 */
+	public static String orderSubmitOfOrder = "-5";
+	public static LinkedList<Object> orderSubmitOfOrderColumns = new LinkedList<>();
+	public static LinkedList<Object> orderSubmitOfOrderParamNames = new LinkedList<>();
 	static{
 		orderAllocationColumns.add("u1.realname");
 	}
@@ -79,12 +85,14 @@ public class OrderProcessController extends BaseProjectController{
 		TYPE_KEY_COLUMN.put(orderVerifyOfReport,orderVerifyOfReportColumns);
 		TYPE_KEY_COLUMN.put(orderVerifyOfOrder,orderVerifyOfOrderColumns);
 		TYPE_KEY_COLUMN.put(orderFilingOfOrder,orderFilingOfOrderColumns);
+		TYPE_KEY_COLUMN.put(orderSubmitOfOrder,orderSubmitOfOrderColumns);
 	}
 	static{
 		WEB_PARAM_NAMES.put(orderAllocation, orderAllocationParamNames);
 		WEB_PARAM_NAMES.put(orderVerifyOfReport, orderVerifyOfReportParamNames);
 		WEB_PARAM_NAMES.put(orderVerifyOfOrder, orderVerifyOfOrderParamNames);
 		WEB_PARAM_NAMES.put(orderFilingOfOrder, orderFilingOfOrderParamNames);
+		WEB_PARAM_NAMES.put(orderSubmitOfOrder, orderSubmitOfOrderParamNames);
 	}
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
@@ -196,6 +204,15 @@ public class OrderProcessController extends BaseProjectController{
 		render(DEVELOPING_PATH);
 	}
 	/**
+	 * @todo   展示递交报告
+	 * @time   2018年10月9日 上午11:24
+	 * @author lzg
+	 * @return_type   void
+	 */
+	public void showSubmitReport(){
+		render(ORDER_MANAGE_PATH+"order_submit.html");
+	}
+	/**
 	 *获取订单数据
 	 */
 	public void listJson() {
@@ -232,6 +249,7 @@ public class OrderProcessController extends BaseProjectController{
 		renderJson(new ResultType());
 		return model.get("num");
 		} catch (Exception e) {
+			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知错误!"));
 			return null;
 		}
