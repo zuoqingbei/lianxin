@@ -257,7 +257,7 @@
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>报告速度：</span>
-                            <span id="orderSpeed">普通</span>
+                            <span id="reportSpeed">普通</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告用时：</span>
@@ -274,13 +274,14 @@
                             <span>对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
                         </div>
                     </div>
+                    <input type="hidden" id="orderid">
                 </div>
                 <div class="file-upload">
                     <div class="row mt-3 mb-2">
                         <div class="input-group col-md-12 align-items-top">
                             <label class="control-label">撤销原因：</label>
                             <!--<input type="text" class="form-control">-->
-                            <textarea name="" id="" cols="50" rows="10"></textarea>
+                            <textarea name="" id="revoke_reason" cols="50" rows="10"></textarea>
                         </div>
 
 
@@ -289,7 +290,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="modal_submit">提交</button>
+                <button type="button" class="btn btn-primary" id="modal_submit" onclick="chexiao()">提交</button>
             </div>
         </div>
     </div>
@@ -301,7 +302,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">
                     <span>订单号：</span>
-                    <span>0001288784932</span>
+                    <span id="orderNum">0001288784932</span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -312,57 +313,57 @@
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>客户ID：</span>
-                            <span>001354574</span>
+                            <span id="customId1">001354574</span>
                         </div>
                         <div class="col-md-4">
                             <span>客户用户名：</span>
-                            <span>王彩军</span>
+                            <span id="customName1">王彩军</span>
                         </div>
                         <div class="col-md-4">
                             <span>接单日期：</span>
-                            <span>2018-09-10</span>
+                            <span id="receiveDate1">2018-09-10</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>地区：</span>
-                            <span>亚洲</span>
+                            <span id="area1">亚洲</span>
                         </div>
                         <div class="col-md-4">
                             <span>国家：</span>
-                            <span>中国</span>
+                            <span id="country2">中国</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告类型：</span>
-                            <span>基本信用报告</span>
+                            <span id="reportType1">基本信用报告</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>订单类型：</span>
-                            <span>new</span>
+                            <span id="orderType1">new</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告语言：</span>
-                            <span>中文</span>
+                            <span id="reportLanguage1">中文</span>
                         </div>
                         <div class="col-md-4">
                             <span>订单公司名称：</span>
-                            <span>北京小米科技有限公司</span>
+                            <span id="orderCompany1">北京小米科技有限公司</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>报告速度：</span>
-                            <span>普通</span>
+                            <span id="reportSpeed1">普通</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告用时：</span>
-                            <span>5天</span>
+                            <span id="useTime1">5天</span>
                         </div>
                         <div class="col-md-4">
                             <span>公司中文名称：</span>
-                            <span>北京小米科技有限公司</span>
+                            <span id="companyName1">北京小米科技有限公司</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
@@ -389,6 +390,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="orderid1">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="modal_submit">确认更新</button>
@@ -431,6 +433,32 @@ function getCountry(data){
 function orderinfo(id){
 	Public.goToOrderDetail(id)
 }
+/* 订单撤销 */
+function chexiao(){
+	$.ajax({
+		type:"post",
+		url:"/credit/front/home/cheXiao",
+		data:{
+			"id":$("#orderid").val(),
+			"revoke_reason":$("#revoke_reason").val(),
+			},
+		 dataType:"json",
+	        success: function (data) {
+	        	if(data.statusCode===1){
+               	Public.message("success",data.message);
+               	Public.goAll();
+               }else{
+               	Public.message("error",data.message);
+             	Public.goAll();
+               }
+	        },
+	        error: function (message) {
+	            $("#request-process-patent").html("提交数据失败！");
+	         	Public.goAll();
+	        }
+	});
+}
 </script>
+
 </body>
 </html>

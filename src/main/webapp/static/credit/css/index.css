@@ -1,15 +1,16 @@
-:root {
-
-    --fontColor:#808080;
-    --inputWidth:18.5rem;
+#container {
+    position: relative;
+    height: calc(100% - 2.7rem);
+}
+.main{
+    overflow: hidden;
 }
 /* 上面用户信息和订单统计 */
 .user-order {
-    height: 8rem;
+    height: 7rem;
     box-shadow: 0 2px 5px 0 #dedede;
     background: #fff;
     margin-bottom: .4rem;
-    
 }
 
 .user-info {
@@ -49,17 +50,17 @@
 
 /* 内容 */
 
-.table-content {
-    height: calc(100% - 11rem);
+.table-content #table tbody tr td:first-of-type {
+    color: var(--activeColor);
+    cursor: pointer;
 }
-
 .search-input {
     width: var(--inputWidth)!important;
     color: var(--fontColor);
 }
 #formSearch {
     padding-right: 6rem;
-    padding-top: 1.5rem;
+    padding-top: 1rem;
 }
 
 #formSearch .control-label {
@@ -108,7 +109,7 @@
 }
 
 .btn-row>.btn {
-    margin-left: 5rem!important;
+    margin-left: 10.5rem!important;
 }
 
 #btnCollapse {

@@ -226,6 +226,7 @@ let
 			Events.btn_download();
 			Events.closeProgress();
 			Events.download_mod();
+			Page.fileEvent();
 		},
 		initTable(){
 			/**初始化表格 */
@@ -344,7 +345,68 @@ let
 			  setTimeout(() => {
 				$tableOrder.bootstrapTable('resetView');
 			  }, 200);
-		  }
+		  },
+		   fileEvent(){
+            /**文件上传事件 */
+            $(".file-upload").on('change','.uploadFile .file-input',function(){
+                /**如果上传成功 */
+                let filename = $(this).val().replace("C:\\fakepath\\","");
+                let num = filename.split(".").length;
+                let filename_qz = []
+                for(let i=0;i<num-1;i++){
+                    filename_qz =  filename_qz.concat(filename.split(".")[i])
+                }
+                filename_qz_str = filename_qz.join('.')
+                if(filename_qz_str.length>4) {
+                    filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
+                }
+
+                let filetype = filename.split(".")[num-1];
+                filename = filename_qz_str + '.' +filetype
+                let fileicon = '';
+                if(filetype === 'doc' || filetype === 'docx') {
+                    fileicon = '../../imgs/order/word.png'
+                }else if(filetype === 'xlsx' || filetype === 'xls') {
+                    fileicon = '../../imgs/order/Excel.png'
+                }else if(filetype === 'png') {
+                    fileicon = '../../imgs/order/PNG.png'
+                }else if(filetype === 'jpg') {
+                    fileicon = '../../imgs/order/JPG.png'
+                }else if(filetype === 'pdf') {
+                    fileicon = '../../imgs/order/PDF.png'
+                }else {
+                    Public.message("info","不支持上传此种类型文件！")
+                    return
+                }
+                $(this).parent(".uploadFile").addClass("upload-over");
+                $(this).css("visibility","hidden");
+                $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
+                if($(".uploadFile").length>4) {
+                    return;
+                }
+                $(".file-upload").append(`<div class="uploadFile mr-3">
+                                        <input type="file" name="" id="upload_file" value="" class="file-input" />
+                                        <div class="over-box">
+                                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                                          <p class="mt-2">上传附件</p>
+                                        </div>
+                                    </div>`);
+            });
+
+            /**附件删除 */
+            $(".file-upload").on('click','.uploadFile .close',function(){
+                $(this).parents(".uploadFile").remove()
+
+                if($(".upload-over").length<5 && $("[class='uploadFile mr-3']").length<1 ){
+                    $(".file-upload").append(`<div class="uploadFile mr-3">
+                <input type="file" name="" id="upload_file" value="" class="file-input" />
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                <p class="mt-2">上传附件</p>
+            </div>`);
+                }
+            })
+
+        },
 		
 	};
 $(document).ready(function () {

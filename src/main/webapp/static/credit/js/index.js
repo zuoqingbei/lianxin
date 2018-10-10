@@ -109,7 +109,7 @@ let Index = {
   
 
         $table.bootstrapTable({
-            height: $(".table-content").height()/3*2,
+            height: $(".table-content").height()*0.75,
             columns: [
                  {
                   title: '订单号',
@@ -118,7 +118,7 @@ let Index = {
                   valign: 'middle',
                   formatter:function(value,row,index){ 
   
-                	var url = '<a href="#" style="color:blue" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
+                	var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
                 	return url; 
               		} 
                 },{
@@ -212,7 +212,7 @@ let Index = {
             sidePagination: 'server',
             pageNumber:1,
             pageSize:10,
-            pageList: [5,10 , 20],
+            pageList: [10 , 20],
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',

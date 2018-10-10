@@ -110,13 +110,13 @@ public class SysDictDetail extends BaseProjectModel<SysDictDetail> {
 		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params.toArray());
 		return list;
 	}
-	public static List<SysDictDetail> getDictDetailBy(String ordertype,String dictType){
+	public static List<SysDictDetail> getDictDetailBy(String detail_name,String dictType){
 		String sql="select * from sys_dict_detail where del_flag=0";
 		sql+=" and dict_type=? ";
 		sql+=" and detail_name=? ";
 		List<Object> params=new ArrayList<Object>();
 		params.add(dictType);
-		params.add(ordertype);
+		params.add(detail_name);
 		List<SysDictDetail> list = SysDictDetail.dao.find(sql, params.toArray());
 		return list;
 	}

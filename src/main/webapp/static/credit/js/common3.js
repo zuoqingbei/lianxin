@@ -1,16 +1,15 @@
-
 /**公共js部分 */
-
 
 let Public = {
     init(){
+        this.initReset();
         this.menuEvent()
         this.logoutEvent()
-      
+        // $("#main_content").load('./index.html')
+       $("#main_content").load('/credit/front/home')
     }, 
   
     initReset(){
-    	/**重置form表单**/
     	/**重置form表单**/
     	const $btnReset = $('#btn_reset');
     	$btnReset.on('click',function(){
@@ -32,7 +31,6 @@ let Public = {
         });
         //菜单点击
         $leftNav.find("li").click(function () {
-        	
             if ($(this).hasClass("hasChild")) {
                 if ($(this).hasClass("show")) {
                     $(this).children("ul").slideUp(150, function () {
@@ -47,27 +45,33 @@ let Public = {
             } else {
                 $leftNav.find("li").removeClass("active");
                 $(this).addClass("active")
-               
-                let id = $(this).attr("id");
-                let href = $(this).find("a").attr("href");/*.replace("/menu","")*/;
-//                console.log(id,href)
-               
-                sessionStorage.setItem('menuId',id);
-                 $("#main_content").load(href?href+"?from=commonjs":'/credit/front/orderProcess/showUnderdevelopment',function(response){
-                	 console.log(response)
-                	 	if("nologin"==response){
-	                	 $("#main_content").html("")
-                	 		window.location.href="/credit/front/usercenter/showLogin";
-                	 		return;
-                	 	}else{
-                	 		 _this.initReset();
-                             _this.gotop()
-                             sessionStorage.setItem('pageUrl',href)
-                	 	}
-                    })
-               
+
+                let text = $(this).text().trim();
+                switch (text) {
+		            case '工作台':
+		                $("#main_content").load('/credit/front/home')
+		                break;
+		            case '新建订单':
+		                $("#main_content").load('/credit/front/home/createOrder')
+		                break;
+		            case '订单核实':
+		                $("#main_content").load('/credit/front/orderProcess/showOrderVerifyOfOrders')
+		                break;
+		            case '订单查档':
+		                $("#main_content").load('/credit/front/orderProcess/showOrderFiling')
+		                break;
+		            case '订单分配':
+		                $("#main_content").load('/credit/front/orderProcess/showReallocation')
+		                break;
+		            case '信息录入':
+		                $("#main_content").load('./report_pages/reported_basic_info.html')
+		                break;
+		            default:
+		                break;
+                }
             }
 
+           
              return false;
         });
     },
@@ -81,27 +85,6 @@ let Public = {
             $(".logout").toggleClass("logout-show")
 
         })
-    },
-    goToOrderDetail(id){
-    	//跳转订单详情
-    	$("#main_content").load('/credit/front/home/orderInfo?id='+id)
-    },
-    createOrder(){
-    	 $("#main_content").load('/credit/front/home/createOrder')
-    },
-    goList(){
-    	 $("#main_content").load('/credit/front/home')
-    },
-    goAll(){
-    	 $("#main_content").load('/credit/front/home/allOrder')
-    },
-    goToCreateOrder(){
-        /**跳转新建订单页面 */
-        $("#main_content").load('/credit/front/home/createOrder');
-    },
-    goToBasicInfoWrite(){
-        /**跳转基本信息填报 */
-        $("#main_content").load('/credit/front/orderProcess/showReportedBasicInfo');
     },
     gotop(){
         console.log($(".main"))
@@ -119,7 +102,7 @@ let Public = {
         });
     },
     message(state,text){
-        let txt = text || '获取数据失败！'
+        let txt = text || ''
         if(state === 'info') {
             $(".info-tip").show();
             $(".info-text").html(txt)
@@ -146,16 +129,4 @@ let Public = {
 $(function(){
 
     Public.init();
-    window.onload = function(){
-        let id = sessionStorage.getItem('menuId')?sessionStorage.getItem('menuId'):$(".left-nav ul").children("li").eq(0).attr("id")
-        $("#main_content").load(sessionStorage.getItem('pageUrl')?sessionStorage.getItem('pageUrl'):'/credit/front/home')
-        $(".leftNav").find("li").removeClass("active");
-        $('#'+id).addClass("active");
-        if($('#'+id).parents("li").hasClass("hasChild")) {
-            $('#'+id).parents("li").toggleClass("show")
-            $('#'+id).parents("ul").show(200)
-           
-        }	
-    }
 })
-

@@ -1,0 +1,102 @@
+.stage{
+    margin-top:4rem;
+    margin-bottom: 6.5rem;
+}
+.stage ul>li{
+    position: relative;
+    margin-right: 3.375rem;
+    width: 38%;
+    height: .125rem;
+    font-size: 1.375rem;
+    background-color: #007bff;
+    counter-increment: myCounter;
+}
+.stage ul>li span.text{
+    position: absolute;
+    word-break: keep-all;
+    top: 2.25rem;
+    right: -1.75rem;
+    transform:translateX(50%);
+}
+.stage ul>li:first-child{
+    width: 0;
+}
+.stage ul>li:after{
+    content: counter(myCounter) ;
+    position: absolute;
+    display: inline-block;
+    right: -3rem;
+    transform: translateY(-50%);
+    line-height: 2.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: .125rem solid;
+    color: #fff;
+    background-color: #007bff;
+}
+.stage ul>li.active ~ li,
+.stage ul>li.active ~ li:after{
+    color: #ccc;
+    background-color: #ccc;
+}
+.stage ul>li.active ~ li{
+    color: #808080;
+}
+.stage ul>li.active ~ li:after{
+    background-color: transparent;
+}
+.inputGroup label,
+.inputGroup input{
+    font-size: 1.125rem;
+}
+.btn:not(:disabled):not(.disabled).active,
+.btn:not(:disabled):not(.disabled):active{
+    padding: .5rem 1rem;
+}
+.success .fa-check{
+    padding: .5rem;
+    font-size: 5rem;
+    border-radius: 50%;
+    border: .125rem solid;
+    color: #fff;
+    background-color: #58c22c;
+}
+.success .text{
+    font-size: 1.375rem;
+}
+.error-input {
+    border-color: #d00;
+}
+.error-text  {
+    display: none;
+    font-size: 1.125rem;
+    color: #d00;
+    margin-top: .4rem;
+    padding-left: .8rem;
+}
+.tip-text {
+    font-size: 1.125rem;
+    margin-top: .4rem;
+    padding-left: .8rem;
+    color: #808080;
+}
+.inputGroup{
+    overflow: hidden;
+}
+.step_top{
+    margin-bottom: 6rem;
+}
+.security_code{
+    margin-bottom: 2.25rem;
+}
+.changePassword{
+    margin-top: 5.6rem;
+}
+.success{
+    margin-top: 3.6rem;
+}
+.success .step_top{
+    margin-bottom: 9rem;
+}
+

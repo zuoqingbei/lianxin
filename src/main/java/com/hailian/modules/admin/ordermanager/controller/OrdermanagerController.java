@@ -1,10 +1,12 @@
 package com.hailian.modules.admin.ordermanager.controller;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -182,6 +184,8 @@ public class OrdermanagerController extends BaseProjectController{
 		int size=upFileList.size();
 		int id=getParaToInt("id");
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
+		model.set("report_user", reportIdtoOrder);
 		SysUser user = (SysUser) getSessionUser();
 		model.set("num", num);
 		if(size >0){
@@ -349,6 +353,7 @@ public class OrdermanagerController extends BaseProjectController{
 			 time=0;
 		}else {
 			time=usetime.get("use_time");
+			usetime.set("use_time", (int)Math.ceil(time/24.0));
 		}
 		Calendar c = 
 				new DateAddUtil().addDateByWorkDay(ca,//当前时间
@@ -358,6 +363,7 @@ public class OrdermanagerController extends BaseProjectController{
 		if(time==0) {
 			enddate="";
 		}
+		
 		Record record=new Record();
 		record.set("usetime", usetime);
 		record.set("enddate", enddate);
@@ -433,4 +439,8 @@ public class OrdermanagerController extends BaseProjectController{
 		return convertFileToPdf;
 	}
 	
+	public String test(){
+		 String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
+		 return reportIdtoOrder;
+	}
 }

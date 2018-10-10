@@ -196,10 +196,25 @@ let Index = {
                           $("#orderCompany").text(row.englishName);
                           $("#useTime").text(row.useTime);
                           $("#companyName").text(row.companyName);
+                          $("#reportSpeed").text(row.reportSpeed);
+                          $("#orderid").val(row.id);
                         
                         },
                         "click .order-update":(e,value,row,index)=>{
-                            /*Public.goToOrderUpdate()*/
+                          $("#orderNum").text(row.num);
+                          $("#customId1").text(row.custom_id);
+                          $("#customName1").text(row.customName);
+                          $("#receiveDate1").text(row.receiver_date);
+                          $("#area1").text(row.continentName);
+                          $("#country2").text(row.countryName);
+                          $("#reportType1").text(row.reportType);
+                          $("#orderType1").text(row.orderType);
+                          $("#reportLanguage1").text(row.reportLanguage);
+                          $("#orderCompany1").text(row.englishName);
+                          $("#useTime1").text(row.useTime);
+                          $("#companyName1").text(row.companyName);
+                          $("#reportSpeed1").text(row.reportSpeed);
+                          $("#orderid1").val(row.id);
                         }
                     },
                     formatter: _this.operateFormatter

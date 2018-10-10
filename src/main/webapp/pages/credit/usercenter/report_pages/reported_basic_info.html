@@ -6,7 +6,8 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="../css/report_css/reported_basic_info.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/report_css/reported_basic_info.css">
 </head>
   
         <div id="container" class="row  animated fadeIn">         
@@ -15,7 +16,7 @@
                    <!-- 面包屑 -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">报告录入</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:;" id="infoImport">报告录入</a></li>
                             <li class="breadcrumb-item active" aria-current="page">填报</li>
                         </ol>
                     </nav>
@@ -45,15 +46,16 @@
                         </div>
                        
                     </div>
-                    <div class="tab-group btn-group">
-                        <span class="tab-info tab-active">信息录入</span>
-                        <span class="tab-file">附件</span>
+                    <div class="tab-bar btn-group">
+                        <li class="tab-info"><a href="#info_anchor" class="tab-active">信息录入</a></li>
+                        <li class="tab-file"><a href="#file_anchor">附件</a></li>
                     </div>
                </div>
                <!-- 滚动内容 -->
                <div class="table-content">
                    <!-- 企业信息 -->
                     <div class="bg-f company-info">
+                        <a name="info_anchor"></a>
                         <div class="l-title">
                             企业注册信息
                         </div>
@@ -177,6 +179,7 @@
                     </div>
                     <!-- 附件 -->
                     <div class="bg-f mt-5 attachment">
+                        <a name="file_anchor"></a>
                         <div class="l-title change_record">
                             附件
                         </div>
@@ -184,7 +187,7 @@
                             <div class="this-items col-md-2 d-flex flex-column justify-content-center align-items-center my-5">
 
                                 <div class="uploadFile">
-                                    <img src="../../imgs/order/！.png"/>
+                                    <img src="${BASE_PATH }static/credit/${BASE_PATH }static/credit/imgs/order/！.png"/>
                                     <p class="mt-2">暂无附件</p>
                                 </div>
                                 <div class="order-yulan mt-3"><a href="#">预览</a></div>
@@ -366,7 +369,7 @@
 
 
    
-    <script src="../js/report_js/reported_basic_info.js"></script>
+    <script src="${BASE_PATH }static/credit/js/report_js/reported_basic_info.js"></script>
 
 </html>
     
