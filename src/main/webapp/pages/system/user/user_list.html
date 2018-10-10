@@ -126,6 +126,7 @@ var bodyContent = {
 			<th name="username" class="sorting">登陆名</th>
 			<th name="realname" class="sorting">真实姓名</th>
 			<th name="usertype" class="sorting">类型</th>
+			<th name="state" class="sorting">状态</th>
 			<th name="email" class="sorting">Email</th>
 			<th name="tel" class="sorting">手机号</th>
 			<th name="create_time" class="sorting">创建时间</th>
@@ -160,6 +161,17 @@ var bodyContent = {
 				其他用户
 				<%	} %>
 			</td>
+			<td>
+				<% if(item.state==10) { %>
+				正常
+				<%	} %>
+				<% if(item.state==30) { %>
+				手动分配
+				<%	} %>
+				<% if(item.usertype==40) { %>
+				暂停分配
+				<%	} %>
+			</td>
 			<td>${item.email}</td>
 			<td>${item.tel}</td>
 			<td>${item.create_time}</td>
@@ -169,6 +181,7 @@ var bodyContent = {
 				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.userid});">删除</a>
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.auth(${item.userid});">授权</a>
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.update(${item.userid},30);">手动分配</a>
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.update(${item.userid},10);">自动分配</a>
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.update(${item.userid},40);">暂停分配</a>
 			</td>
 		</tr>
