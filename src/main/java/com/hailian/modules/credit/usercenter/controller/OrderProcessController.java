@@ -1,16 +1,20 @@
 package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
@@ -95,67 +99,6 @@ public class OrderProcessController extends BaseProjectController{
 		WEB_PARAM_NAMES.put(orderFilingOfOrder, orderFilingOfOrderParamNames);
 		WEB_PARAM_NAMES.put(orderSubmitOfOrder, orderSubmitOfOrderParamNames);
 	}
-	//展示列表功能公共雏形
-	private Page<CreditOrderInfo> PublicListMod(String searchType){
-		int pageNumber = getParaToInt("pageNumber",1);
-		int pageSize = getParaToInt("pageSize",10);
-		//从表单获取排序语句
-		String sortName = getPara("sortName");
-		String sortOrder = getPara("sortOrder");
-		String orderBy = "";
-		if(!StringUtil.isEmpty(sortName)){
-			if(sortOrder!=null){
-				orderBy = sortName+" "+sortOrder;
-			}else{
-				sortOrder = "";
-				orderBy = sortName+" desc ";
-			}
-		}else{
-			sortName = "";
-		}
-		//获取前台关键词
-		List<Object> keywords = new LinkedList<>();
-		CreditOrderInfo model = getModel(CreditOrderInfo.class);
-		for (Object  columnName: WEB_PARAM_NAMES.get(searchType)) {
-			if(StringUtil.isEmpty((String) model.get((String) columnName))){
-				keywords.add("");
-			}else{
-				keywords.add((String) model.get((String) columnName));
-			}
-		}
-		//分页查询
-		Page<CreditOrderInfo> pager = CreditOrderInfo.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType, this);
-		//插入回显数据
-		for (CreditOrderInfo page : pager.getList()) {
-			for (int i = 0; i <  WEB_PARAM_NAMES.get(searchType).size(); i++) {
-				page.put((String)WEB_PARAM_NAMES.get(searchType).get(i)+"Key",keywords.get(i));
-			}
-			page.put("pageNumber",pageNumber);
-			page.put("pageSize",pageSize);
-			page.put("sortName",sortName);
-			page.put("sortOrder",sortOrder);
-			//插入文件信息
-			Integer orderId = page.get("id");
-			String status = page.get("status");
-			List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"", status, this);
-			page.put("files",files);
-		}
-		return pager;
-	}
-	
-	//修改或者删除功能公共雏形
-	private CreditOrderInfo PublicUpdateMod(Map<String,Object> map){
-		CreditOrderInfo model = getModel(CreditOrderInfo.class);
-		Integer userid = getSessionUser().getUserid();
-		String now = getNow();
-		model.set("update_by",userid);
-		model.set("update_date", now);
-		for (String key : map.keySet()) {
-			model.set(key, map.get(key));
-		}
-		model.update();
-		return model;
-	}
 	/**
 	 * @todo   展示订单分配页
 	 * @time   2018年9月14日 下午 14:38
@@ -210,6 +153,77 @@ public class OrderProcessController extends BaseProjectController{
 	public void showSubmitReport(){
 		render(ORDER_MANAGE_PATH+"order_submit.html");
 	}
+	//展示列表功能公共雏形
+	private Page<CreditOrderInfo> PublicListMod(String searchType){
+		int pageNumber = getParaToInt("pageNumber",1);
+		int pageSize = getParaToInt("pageSize",10);
+		//从表单获取排序语句
+		String sortName = getPara("sortName");
+		String sortOrder = getPara("sortOrder");
+		String orderBy = "";
+		if(!StringUtil.isEmpty(sortName)){
+			if(sortOrder!=null){
+				orderBy = sortName+" "+sortOrder;
+			}else{
+				sortOrder = "";
+				orderBy = sortName+" desc ";
+			}
+		}else{
+			sortName = "";
+		}
+		//获取前台关键词
+		List<Object> keywords = new LinkedList<>();
+		CreditOrderInfo model = getModel(CreditOrderInfo.class);
+		for (Object  columnName: WEB_PARAM_NAMES.get(searchType)) {
+			if(StringUtil.isEmpty((String) model.get((String) columnName))){
+				keywords.add("");
+			}else{
+				keywords.add((String) model.get((String) columnName));
+			}
+		}
+		//分页查询
+		Page<CreditOrderInfo> pager = CreditOrderInfo.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType, this);
+		//插入回显数据
+		for (CreditOrderInfo page : pager.getList()) {
+			for (int i = 0; i <  WEB_PARAM_NAMES.get(searchType).size(); i++) {
+				page.put((String)WEB_PARAM_NAMES.get(searchType).get(i)+"Key",keywords.get(i));
+			}
+			page.put("pageNumber",pageNumber);
+			page.put("pageSize",pageSize);
+			page.put("sortName",sortName);
+			page.put("sortOrder",sortOrder);
+			//插入文件信息
+			Integer orderId = page.get("id");
+			String status = page.get("status");
+			List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"", status, this);
+			page.put("files",files);
+		}
+		return pager;
+	}
+	
+	//修改或者删除功能公共雏形
+	/**
+	 * @param map
+	 * @return 包含旧状态码和新传入参数的实体
+	 */
+	private CreditOrderInfo PublicUpdateMod(Map<String,Object> map){
+		CreditOrderInfo model = getModel(CreditOrderInfo.class);
+		model = getModel(CreditOrderInfo.class);
+		String orderId = model.get("id")+"";
+		String oldStatus = model.findById(orderId).get("status");
+		Integer userid = getSessionUser().getUserid();
+		String now = getNow();
+		model.set("update_by",userid);
+		model.set("update_date", now);
+		if(map!=null){
+			for (String key : map.keySet()) {
+				model.set(key, map.get(key));
+			}
+		}
+		model.update();
+		return model.set("status", oldStatus);
+	}
+	
 	/**
 	 *获取订单数据
 	 */
@@ -238,21 +252,20 @@ public class OrderProcessController extends BaseProjectController{
 	 * @author lzg
 	 * @return_type   订单编号
 	 */
-	public String statusSave() {
+	public  CreditOrderInfo  statusSave() {
 		try {
 		String code = (String) getRequest().getParameter("statusCode");
 		Map<String,Object> map = new HashMap<>();
 		map.put("status", code);
-		CreditOrderInfo model = PublicUpdateMod(map);
+		CreditOrderInfo  model = PublicUpdateMod(map);
 		renderJson(new ResultType());
-		return model.get("num");
+		return model;
 		} catch (Exception e) {
 			e.printStackTrace();
-			renderJson(new ResultType(0,"发生未知错误!"));
+			renderJson(new ResultType(0,"订单状态更新失败!"));
 			return null;
 		}
 	}
-	
 	/**
 	 * @todo   带有文件上传功能的保存功能
 	 * @time   2018年9月21日 上午9:21:00
@@ -262,96 +275,109 @@ public class OrderProcessController extends BaseProjectController{
 	public void statusSaveWithFileUpLoad(){
 		try {
 			String orderNum = getModel(CreditOrderInfo.class).get("id")+"";
-			ResultType result = uploadFile(orderNum);
+			ResultType result = uploadFile(orderNum,"");
 			statusSave();
 			renderJson(result);
 		} catch (Exception e) {
 			renderJson(new ResultType(0,"发生未知错误!"));
 		}
+		
+		/*try {
+			//更新状态
+			CreditOrderInfo model = statusSave();
+			if(model==null){
+				renderJson(new ResultType(0,"订单状态更新失败!"));
+				return;
+			}
+			//获取订单id和状态
+			String orderId =model.get("id")+"";
+			String oldStatus = model.get("status")+"";
+			String status = model.findById(orderId).get("status")+"";
+			if(orderId==null||status==null||"".equals(orderId)||"".equals(status)){
+				renderJson(new ResultType(0,"订单编号和订单状态不能为空!"));
+			}
+			//上传文件
+			ResultType result = uploadFile(orderId,status);
+			if(result.getStatusCode()==0){
+				Map<String,Object> map = new HashMap<>();
+				map.put("status", oldStatus);
+				PublicUpdateMod(map);
+				renderJson(result);
+				return;
+			}
+		} catch (Exception e) {
+			renderJson(new ResultType(0,"发生未知错误!"));
+		}*/
 	}
 	/**
 	 * 获取前台文件上传到文件服务器并将文件信息记录到文件实体表
 	 * return resultJson
+	 * @param orderId status 
 	 */
-	private ResultType uploadFile(String orderNum){
+	private ResultType uploadFile(String orderId, String status){
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		List<File> files = new ArrayList<File>();
 		CreditUploadFileModel fileModel = new CreditUploadFileModel();
-		fileModel.set("business_type", "0");
-		fileModel.set("business_id",orderNum);
+		fileModel.set("business_type", status);
+		fileModel.set("business_id",orderId);
 		int size = upFileList.size();
 		if(size>0){
-			String now = DateUtils.getNow(DateUtils.YMDHMS);
+			long now = new Date().getTime();
 			//上传的文件在ftp服务器按日期分目录
 			String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);
 			try {
 				for(UploadFile uploadFile:upFileList){
-					//获取文件名
+					//获取真实文件名
 					String originalFile = uploadFile.getOriginalFileName();
 					//根据文件后缀名判断文件类型
 					String ext = FileTypeUtils.getFileType(originalFile);
+					//检查格式
+					if(!FileTypeUtils.checkType(ext)){
+						return new ResultType(0, "请检查 "+originalFile+" 的格式!");
+					}
+					//检查大小
 					if(uploadFile.getFile().length()>maxPostSize){
-						return new ResultType(0, "上传的单个文件必须小于5兆");
-					}/*else if(FileTypeUtils.checkType(ext)){
-						return "{result:'请检查上传文件的格式!'}";
-					}*/
+						return new ResultType(0, originalFile+" 必须小于5兆!");
+					}
 					files.add(uploadFile.getFile());
 				}
-				boolean storeFile = FtpUploadFileUtils.storeFtpFile(now,files,storePath,ip,port,userName,password);
+				boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",files,storePath,ip,port,userName,password);
 				if(!storeFile){
-					renderJson(new ResultType(0,"文件上传发生异常!"));
+					return new ResultType(0, "文件上传异常!");
 				}
-				/*//获取真实文件名
-				String originalFileName = FileTypeUtils.getName(originalFile);
-				//上传到服务器时的文件名
-				String FTPfileName = originalFileName + now + "." + ext;
-				if(storeFile){
-					String factpath = storePath + "/" + FTPfileName;
-					String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
-					Integer userid = getSessionUser().getUserid();
-					fileModel.set("business_id",orderNum);
-					//将上传信息维护进实体表
-					UploadFileService.service.save(0,uploadFile, factpath,url,fileModel,fileName,userid);
-				}else{
-					renderJson(errorJson);
-				}*/
+				//String ftpName=name+now+"."+type;
+				
+				//将文件信息保存到实体类
+				for (UploadFile uploadFile:upFileList) {
+					//获取真实文件名
+					String originalFile = uploadFile.getOriginalFileName();
+					//不带后缀的文件名
+					String originalFileName = FileTypeUtils.getName(originalFile);
+					//根据文件后缀名判断文件类型
+					String ext = FileTypeUtils.getFileType(originalFile);
+					//上传到服务器时的文件名
+					String FTPfileName = originalFileName + now + "." + ext;
+					if(storeFile){
+						String factpath = storePath + "/" + FTPfileName;
+						String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
+						Integer userid = getSessionUser().getUserid();
+						//将上传信息维护进实体表
+						UploadFileService.service.save(0,uploadFile, factpath,url,fileModel,originalFileName+now,userid);
+					}else{
+						return new ResultType(0, "实体保存异常!");
+					}
+				}
+				
+				
 			}catch(Exception e){
 				e.printStackTrace();
 				return new ResultType(0, "发生未知错误!");
 			}
-			
+			return new ResultType(1, "文件上传成功!");
+		}else{
+			return new ResultType(1, "操作成功!");
 		}
-		return new ResultType();
-				
-					/*//获取真实文件名
-					String originalFileName = FileTypeUtils.getName(originalFile);
-					//获取文件类型
-					
-					//错误返回json
-					String errorJson = "{uploadMessage:'"+uploadFile.getOriginalFileName()+"上传失败!"+"'},{uploadStatus:0}";
-					
-						//上传的文件在ftp服务器按日期分目录
-						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);
-						
-						//上传到服务器时的文件名
-						String FTPfileName = originalFileName + now + "." + ext;
-						String fileName = originalFileName + now;
-						//boolean storeFile = FtpUploadFileUtils.storeFile(FTPfileName, uploadFile.getFile(),storePath,ip,port,userName,password);//上传
-						
-						if(storeFile){
-							String factpath = storePath + "/" + FTPfileName;
-							String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
-							Integer userid = getSessionUser().getUserid();
-							fileModel.set("business_id",orderNum);
-							//将上传信息维护进实体表
-							UploadFileService.service.save(0,uploadFile, factpath,url,fileModel,fileName,userid);
-						}else{
-							renderJson(errorJson);
-						}
-					}else{
-						renderJson(errorJson);
-					}
-			*/
+		
 			
 	}
 	
