@@ -53,7 +53,7 @@ public class UserInterceptor implements Interceptor {
 		// SysUser.dao.findFirst("select * from sys_user where userid = 1");
 		// controller.setSessionAttr(Attr.SESSION_NAME, user);
 		// }
-		if (JFlyFoxUtils.isBack(tmpPath)) {
+		/*if (JFlyFoxUtils.isBack(tmpPath)) {
 			if (user == null || user.getUserid() <= 0) {
 				controller.redirect("/trans");
 				return;
@@ -72,7 +72,7 @@ public class UserInterceptor implements Interceptor {
 				return;
 			}
 
-		}
+		}*/
 
 		ai.invoke();
 	}
