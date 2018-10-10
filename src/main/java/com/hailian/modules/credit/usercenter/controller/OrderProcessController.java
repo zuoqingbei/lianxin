@@ -17,6 +17,7 @@ import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
+import com.hailian.util.FtpUploadFileUtils;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
@@ -68,6 +69,12 @@ public class OrderProcessController extends BaseProjectController{
 	public static String orderFilingOfOrder = "-4";
 	public static LinkedList<Object> orderFilingOfOrderColumns = new LinkedList<>();
 	public static LinkedList<Object> orderFilingOfOrderParamNames = new LinkedList<>();
+	/**
+	 * 订单管理中的递交订单
+	 */
+	public static String orderSubmitOfOrder = "-5";
+	public static LinkedList<Object> orderSubmitOfOrderColumns = new LinkedList<>();
+	public static LinkedList<Object> orderSubmitOfOrderParamNames = new LinkedList<>();
 	static{
 		orderAllocationColumns.add("u1.realname");
 	}
@@ -79,12 +86,14 @@ public class OrderProcessController extends BaseProjectController{
 		TYPE_KEY_COLUMN.put(orderVerifyOfReport,orderVerifyOfReportColumns);
 		TYPE_KEY_COLUMN.put(orderVerifyOfOrder,orderVerifyOfOrderColumns);
 		TYPE_KEY_COLUMN.put(orderFilingOfOrder,orderFilingOfOrderColumns);
+		TYPE_KEY_COLUMN.put(orderSubmitOfOrder,orderSubmitOfOrderColumns);
 	}
 	static{
 		WEB_PARAM_NAMES.put(orderAllocation, orderAllocationParamNames);
 		WEB_PARAM_NAMES.put(orderVerifyOfReport, orderVerifyOfReportParamNames);
 		WEB_PARAM_NAMES.put(orderVerifyOfOrder, orderVerifyOfOrderParamNames);
 		WEB_PARAM_NAMES.put(orderFilingOfOrder, orderFilingOfOrderParamNames);
+		WEB_PARAM_NAMES.put(orderSubmitOfOrder, orderSubmitOfOrderParamNames);
 	}
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
@@ -137,9 +146,6 @@ public class OrderProcessController extends BaseProjectController{
 	//修改或者删除功能公共雏形
 	private CreditOrderInfo PublicUpdateMod(Map<String,Object> map){
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
-		String b = model.get("verify_name");
-		String a = getPara("verify_name");
-		String c = getAttr("verify_name");
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by",userid);
@@ -196,6 +202,15 @@ public class OrderProcessController extends BaseProjectController{
 		render(DEVELOPING_PATH);
 	}
 	/**
+	 * @todo   展示递交报告
+	 * @time   2018年10月9日 上午11:24
+	 * @author lzg
+	 * @return_type   void
+	 */
+	public void showSubmitReport(){
+		render(ORDER_MANAGE_PATH+"order_submit.html");
+	}
+	/**
 	 *获取订单数据
 	 */
 	public void listJson() {
@@ -232,6 +247,7 @@ public class OrderProcessController extends BaseProjectController{
 		renderJson(new ResultType());
 		return model.get("num");
 		} catch (Exception e) {
+			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知错误!"));
 			return null;
 		}
@@ -281,10 +297,10 @@ public class OrderProcessController extends BaseProjectController{
 					}*/
 					files.add(uploadFile.getFile());
 				}
-				/*boolean storeFile = FtpUploadFileUtils.storeFtpFile(now,files,storePath,ip,port,userName,password);
+				boolean storeFile = FtpUploadFileUtils.storeFtpFile(now,files,storePath,ip,port,userName,password);
 				if(!storeFile){
-					return "{result:'文件上传出现异常!'}";
-				}*/
+					renderJson(new ResultType(0,"文件上传发生异常!"));
+				}
 				/*//获取真实文件名
 				String originalFileName = FileTypeUtils.getName(originalFile);
 				//上传到服务器时的文件名
