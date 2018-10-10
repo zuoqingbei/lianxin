@@ -388,7 +388,7 @@ public class HomeController extends BaseProjectController {
 		//更新订单信息
 		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
 		coi.set("update_reason", update_reason);
-		coi.update();
+		
 		//获取订单编号
 		String num=coi.get("num");
 		//保存上传文件
@@ -462,13 +462,26 @@ public class HomeController extends BaseProjectController {
 				return;
 			}
 		}
+		
 		}catch(Exception e) {
 			e.printStackTrace();
 			ResultType resultType=new ResultType(0,"操作失败,请重新提交");
 			renderJson(resultType);
 			return;
 		}
+		
 	}
+		try {
+			coi.update();
+			ResultType resultType=new ResultType(1,"操作成功");
+			renderJson(resultType);						
+			return;
+		}catch(Exception e) {
+			e.printStackTrace();
+			ResultType resultType=new ResultType(0,"操作失败,请重新提交");
+			renderJson(resultType);
+			return;
+		}
 		
 	}
 	

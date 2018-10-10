@@ -11,11 +11,11 @@ let opt_com = {
     color: colors,
     textStyle: {
         fontFamily: 'PingFang SC, microsoft yahei,微软雅黑, sans-serif',
-        fontSize: 10 * bodyScale
+        fontSize: 12 * bodyScale
     },
     legend: {
-        itemWidth: 7 * bodyScale,
-        itemHeight: 7 * bodyScale,
+        itemWidth: 10 * bodyScale,
+        itemHeight: 10 * bodyScale,
         textStyle: {
             fontSize: 10 * bodyScale,
         },
@@ -62,8 +62,8 @@ let opt_pie = $.extend(true, opt_com,
             {
                 name: '访问来源',
                 type: 'pie',
-                radius : '70%',
-                center: ['50%', '50%'],
+                radius : '80%',
+                center: ['50%', '52%'],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,

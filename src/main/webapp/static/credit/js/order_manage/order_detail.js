@@ -10,6 +10,24 @@ let Filing = {
         this.initTable4();
         /*文件预览*/
       /*  this.fileEvent();*/
+         /*出资比例环形图*/
+        this.initEchartsPie();
+    },
+     /*出资比例环形图*/
+    initEchartsPie(){
+        let ec001_pie = echarts.init($("#ec001_pie")[0]);
+        ec001_pie.clear();
+        ec001_pie.setOption(opt_pie);
+        ec001_pie.setOption({
+            series : [
+                {
+                    data:[
+                        {value:335, name:'直接访问'},
+                        {value:310, name:'邮件营销'}
+                    ],
+                }
+            ]
+        });
     },
     initTable(){
         /**初始化表格 */
