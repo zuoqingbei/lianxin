@@ -201,6 +201,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
@@ -242,7 +243,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 						"select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
 								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,"
-								+ "c2.name as companyName,c2.name_en as englishName ",
+								+ "c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime ",
 						sql.toString(), params.toArray());
 
 		return page;
@@ -279,7 +280,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append("left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append("left join credit_report_usetime c3 on c3.id= t.user_time_id ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
-		
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append("where 1 = 1 and t.del_flag='0' and t.id=?");
 		return dao.findFirst(sql.toString(), id);
 	}
@@ -305,7 +306,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
-
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
@@ -328,7 +329,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		List<CreditOrderInfo> list = CreditOrderInfo.dao
 				.find("select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 						+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-						+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName "
+						+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime  "
 						+ sql.toString(), params.toArray());
 
 		return list;
@@ -385,7 +386,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
-
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
@@ -428,7 +429,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 						pageinator,
 						"select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName ",
+								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime  ",
 						sql.toString(), params.toArray());
 
 		return page;
@@ -491,7 +492,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
-
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
@@ -677,6 +678,25 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	public CreditOrderInfo getOnTimeSubmitOrderNum(int reportid){
 		List<Object> params=new ArrayList<Object>();
 		String sql="select count(*) as orderOnTimeNum FROM credit_order_info t where t.report_user=? and t.del_flag=0  and submit_date<=end_date and receiver_date between date_sub(now(),interval 3 month) and now() ";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
+	}
+	public CreditOrderInfo getReportNumPart(int reportid){
+		List<Object> params=new ArrayList<Object>();
+//		String sql="SELECT (a.type2*1+a.type3*1+a.type4*0.2+a.type5*0.15+a.type6*0.25)*0.1 as reportnum FROM(SELECT SUM(CASE WHEN report_type=1 THEN 1 ELSE 0 END) as type1,  SUM(CASE WHEN report_type=2 THEN 1 ELSE 0 END) as type2,  SUM(CASE WHEN report_type=3 THEN 1 ELSE 0 END) as type3,SUM(CASE WHEN report_type=4 THEN 1 ELSE 0 END) as type4,SUM(CASE WHEN report_type=5 THEN 1 ELSE 0 END) as type5,SUM(CASE WHEN report_type=6 THEN 1 ELSE 0 END) as type6 FROM credit_order_info where 1=1 and del_flag=0 and report_user=? ) a ;";
+		String sql="SELECT a.type1 * 1 + a.type2 * 0.25 AS reportnum FROM(SELECT SUM(CASE WHEN report_type = 8 or report_type = 10 THEN 1 ELSE 0 END) AS type1,SUM(CASE WHEN report_type = 1 OR report_type = 7 OR report_type = 12 OR report_type = 13 OR report_type = 14 OR report_type = 15 THEN 1 ELSE 0 END ) AS type2 FROM credit_order_info WHERE 1 = 1 AND del_flag = 0 AND report_user = ? and receiver_date between date_sub(now(),interval 3 month) and now()) a;";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
+	}
+	/**
+	 * 获取报告员报告数量部分二
+	* @author doushuihai  
+	* @date 2018年10月9日下午5:51:10  
+	* @TODO
+	 */
+	public CreditOrderInfo getOrderPeportAbroad(int reportid){
+		List<Object> params=new ArrayList<Object>();
+		String sql="SELECT count(*) as orderPeportAbroad FROM credit_order_info t where t.del_flag=0 and t.report_user=? and t.country != 106 and t.receiver_date between date_sub(now(),interval 3 month) and now()";
 		params.add(reportid);
 		return dao.findFirst(sql, params.toArray());
 	}

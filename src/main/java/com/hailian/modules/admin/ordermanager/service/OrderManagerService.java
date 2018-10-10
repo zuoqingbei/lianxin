@@ -340,12 +340,19 @@ public class OrderManagerService {
 		return CreditOrderInfo.dao.getScore(reportid);
 	}
 	/**
-	 * 获取报告员报告数量占比
+	 * 获取报告员报告数量占比一
 	 * @return 
 	 * 
 	 */
-	public CreditOrderInfo getReportNum(int reportid){
-		return CreditOrderInfo.dao.getReportNum(reportid);
+	public CreditOrderInfo getReportNumPart(int reportid){
+		return CreditOrderInfo.dao.getReportNumPart(reportid);
+	}
+	/*
+	 * 获取报告员报告数量占比二
+	 */
+	public CreditOrderInfo getOrderPeportAbroad(int reportid){
+		return CreditOrderInfo.dao.getOrderPeportAbroad(reportid);
+		
 	}
 	/**
 	 * 获取报告员当日在做单量
@@ -389,12 +396,11 @@ public class OrderManagerService {
 			score =new BigDecimal(0);
 		}
 		double scoreTo=score.doubleValue();
-		BigDecimal reportnum =OrderManagerService.service.getReportNum(reportid).get("reportnum");//报告数量占比
-		if(reportnum==null){
-			reportnum =new BigDecimal(0);
-		}
-		double reportnumTo=reportnum.doubleValue();
-		double finalScore=orderNum*0.5+submitNum+scoreTo+reportnumTo;
+		BigDecimal reportnum1 =OrderManagerService.service.getReportNumPart(reportid).get("reportnum");//报告数量占比一
+		long reportnum2 = OrderManagerService.service.getOrderPeportAbroad(reportid).get("orderPeportAbroad");
+		BigDecimal reportnum2To = new BigDecimal(reportnum2);
+		double reportnum=reportnum1.add(reportnum2To).doubleValue();
+		double finalScore=orderNum*0.5+submitNum+scoreTo+reportnum;
 		return finalScore;
 	}
 }

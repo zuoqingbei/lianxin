@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<% var orderstatus = tempDict.getListSysDictDetail('orderstate'); %>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,9 +7,9 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/order_manage/order_verify.css">
-    <link rel="stylesheet" href="../css/order_manage/order_submit.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_verify.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_submit.css">
 </head>
 <div id="container" class="row  animated fadeIn">
 
@@ -48,7 +49,7 @@
                         <div id="btnCollapse" class="show row justify-content-around">
                             <div class="input-group mt-2 col-md-4 " id="client">
                                 <label class="control-label col-md-4" for="txt_search_cus">客户：</label>
-                                <select class="search-input col-md-8 layui-input" id="txt_search_cus">
+                                <select class="search-input col-md-8 layui-input" id="txt_search_cus"  name='attr.custom_id'>
                                     <option value="" disabled selected>请选择客户</option>
 
                                 </select>
@@ -61,7 +62,7 @@
                             </div>
                             <div class="input-group mt-2 col-md-4" id="country">
                                 <label class="control-label col-md-4" for="txt_search_country">国家：</label>
-                                <select class="search-input col-md-8 layui-input" id="txt_search_country">
+                                <select class="search-input col-md-8 layui-input" id="txt_search_country" name='attr.country'>
                                     <option value="" disabled selected>请选择国家</option>
                                 </select>
                             </div>
@@ -83,7 +84,13 @@
                        style="position: relative"
                 >
                     <div class="deal-state">
-                        <div class="form-check">
+                    	<%for(item in orderstatus){%>
+                       		 <div class="form-check">
+                                <input name="status" type="checkbox" class="form-check-input"  value="${item.detail_id}"> 
+                                <label class="form-check-label" for="defaultCheck1">${item.detail_name}</label>
+                           	</div>
+                         <%}%>
+<!--                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="defaultCheck1">
                             <label class="form-check-label" for="defaultCheck1">订单分配</label>
                         </div>
@@ -182,7 +189,7 @@
                         <div class="btn-group btn-filter d-flex justify-content-center mt-3">
                             <a href="javascript:;" role="button" class="enterFilter mr-4">确定</a>
                             <a href="javascript:;" role="button" class="resetrFilter">重置</a>
-                        </div>
+                        </div> -->
                     </div>
                 </table>
             </div>
@@ -207,58 +214,58 @@
                 <div class="order-detail mb-4">
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
-                            <span>客户ID：</span>
-                            <span>001354574</span>
+                            <span >客户ID：</span>
+                            <span id="customId">001354574</span>
                         </div>
                         <div class="col-md-4">
                             <span>客户用户名：</span>
-                            <span>王彩军</span>
+                            <span id="customName">王彩军</span>
                         </div>
                         <div class="col-md-4">
                             <span>接单日期：</span>
-                            <span>2018-09-10</span>
+                            <span id="receiveDate">2018-09-10</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>地区：</span>
-                            <span>亚洲</span>
+                            <span id="area">亚洲</span>
                         </div>
                         <div class="col-md-4">
                             <span>国家：</span>
-                            <span>中国</span>
+                            <span id="country1">中国</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告类型：</span>
-                            <span>基本信用报告</span>
+                            <span id="reportType">基本信用报告</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>订单类型：</span>
-                            <span>new</span>
+                            <span id="orderType">new</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告语言：</span>
-                            <span>中文</span>
+                            <span id="reportLanguage">中文</span>
                         </div>
                         <div class="col-md-4">
                             <span>订单公司名称：</span>
-                            <span>北京小米科技有限公司</span>
+                            <span id="orderCompany">北京小米科技有限公司</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>报告速度：</span>
-                            <span>普通</span>
+                            <span id="reportSpeed">普通</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告用时：</span>
-                            <span>5天</span>
+                            <span id="useTime">5天</span>
                         </div>
                         <div class="col-md-4">
                             <span>公司中文名称：</span>
-                            <span>北京小米科技有限公司</span>
+                            <span id="companyName">北京小米科技有限公司</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
@@ -267,13 +274,14 @@
                             <span>对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
                         </div>
                     </div>
+                    <input type="hidden" id="orderid">
                 </div>
                 <div class="file-upload">
                     <div class="row mt-3 mb-2">
                         <div class="input-group col-md-12 align-items-top">
                             <label class="control-label">撤销原因：</label>
                             <!--<input type="text" class="form-control">-->
-                            <textarea name="" id="" cols="50" rows="10"></textarea>
+                            <textarea name="" id="revoke_reason" cols="50" rows="10"></textarea>
                         </div>
 
 
@@ -282,7 +290,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="modal_submit">提交</button>
+                <button type="button" class="btn btn-primary" id="modal_submit" onclick="chexiao()">提交</button>
             </div>
         </div>
     </div>
@@ -294,7 +302,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">
                     <span>订单号：</span>
-                    <span>0001288784932</span>
+                    <span id="orderNum">0001288784932</span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -305,57 +313,57 @@
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>客户ID：</span>
-                            <span>001354574</span>
+                            <span id="customId1">001354574</span>
                         </div>
                         <div class="col-md-4">
                             <span>客户用户名：</span>
-                            <span>王彩军</span>
+                            <span id="customName1">王彩军</span>
                         </div>
                         <div class="col-md-4">
                             <span>接单日期：</span>
-                            <span>2018-09-10</span>
+                            <span id="receiveDate1">2018-09-10</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>地区：</span>
-                            <span>亚洲</span>
+                            <span id="area1">亚洲</span>
                         </div>
                         <div class="col-md-4">
                             <span>国家：</span>
-                            <span>中国</span>
+                            <span id="country2">中国</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告类型：</span>
-                            <span>基本信用报告</span>
+                            <span id="reportType1">基本信用报告</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>订单类型：</span>
-                            <span>new</span>
+                            <span id="orderType1">new</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告语言：</span>
-                            <span>中文</span>
+                            <span id="reportLanguage1">中文</span>
                         </div>
                         <div class="col-md-4">
                             <span>订单公司名称：</span>
-                            <span>北京小米科技有限公司</span>
+                            <span id="orderCompany1">北京小米科技有限公司</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-4">
                             <span>报告速度：</span>
-                            <span>普通</span>
+                            <span id="reportSpeed1">普通</span>
                         </div>
                         <div class="col-md-4">
                             <span>报告用时：</span>
-                            <span>5天</span>
+                            <span id="useTime1">5天</span>
                         </div>
                         <div class="col-md-4">
                             <span>公司中文名称：</span>
-                            <span>北京小米科技有限公司</span>
+                            <span id="companyName1">北京小米科技有限公司</span>
                         </div>
                     </div>
                     <div class="row mt-2 mb-2">
@@ -382,6 +390,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="orderid1">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="modal_submit">确认更新</button>
@@ -389,7 +398,67 @@
         </div>
     </div>
 </div>
-<script src="../assets/layui/layui.all.js"></script>
-<script src="../js/all_orders.js"></script>
+<script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
+<script src="${BASE_PATH }static/credit/js/all_orders.js"></script>
+<script type="text/javascript">
+$(function(){
+	$.get('/credit/front/home/getMessage',function(data){
+		getCustoms(data.customs);
+		getCountry(data.country);
+	})	
+});
+function getCustoms(data){
+	console.log(data);
+	var html=""
+	for(item in data){
+		html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
+	}
+	$("select[name='attr.custom_id']").append(html);
+};
+function getCountry(data){
+	var html=""
+	html+=html+="<option  value=''>请选择</option>";
+	
+		for(item in data){
+			html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
+		}
+		$("select[name='attr.country']").html(html);
+		//重新渲染 否则option不能显示
+		layui.use('form', function(){
+			var form = layui.form;  
+			form.render(); //更新全部
+		});
+
+}
+function orderinfo(id){
+	Public.goToOrderDetail(id)
+}
+/* 订单撤销 */
+function chexiao(){
+	$.ajax({
+		type:"post",
+		url:"/credit/front/home/cheXiao",
+		data:{
+			"id":$("#orderid").val(),
+			"revoke_reason":$("#revoke_reason").val(),
+			},
+		 dataType:"json",
+	        success: function (data) {
+	        	if(data.statusCode===1){
+               	Public.message("success",data.message);
+               	Public.goAll();
+               }else{
+               	Public.message("error",data.message);
+             	Public.goAll();
+               }
+	        },
+	        error: function (message) {
+	            $("#request-process-patent").html("提交数据失败！");
+	         	Public.goAll();
+	        }
+	});
+}
+</script>
+
 </body>
 </html>

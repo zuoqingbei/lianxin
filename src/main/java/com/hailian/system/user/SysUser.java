@@ -88,7 +88,7 @@ public class SysUser extends SessionUser<SysUser>  {
 		return dao.find(sql);
 	}
 	public List<SysUser> getReporter() {
-		String sql="select c.* from sys_user c left join sys_user_role r on c.userid=r.userid where c.del_flag='0' and r.roleid='2' order by create_time desc" ;
+		String sql="select c.* from sys_user c left join sys_user_role r on c.userid=r.userid where c.del_flag='0' and c.state='10' and r.roleid='2' order by create_time desc" ;
 		System.out.println(sql);
 		return dao.find(sql);
 	}

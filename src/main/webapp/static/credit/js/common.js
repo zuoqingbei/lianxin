@@ -92,6 +92,9 @@ let Public = {
     goList(){
     	 $("#main_content").load('/credit/front/home')
     },
+    goAll(){
+    	 $("#main_content").load('/credit/front/home/allOrder')
+    },
     goToCreateOrder(){
         /**跳转新建订单页面 */
         $("#main_content").load('/credit/front/home/createOrder');

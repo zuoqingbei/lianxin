@@ -202,8 +202,15 @@ public class OrderPoiController extends BaseProjectController {
 							String name = row.getCell(7).getStringCellValue();
 							List<CompanyModel> companyByName = CompanyModel.dao.getCompanyByName(name);
 							if(CollectionUtils.isEmpty(companyByName)){
-								errornum++;
-								errormark+=errornum+".第"+r+"行，第H列信息填写错误;";
+								CompanyModel model = getModel(CompanyModel.class);
+								String now = getNow();
+								Integer userid = getSessionUser().getUserid();
+								model.set("create_by", userid);
+								model.set("create_date", now);
+								model.set("name", name);
+								model.save();
+								List<CompanyModel> companyByName2 = CompanyModel.dao.getCompanyByName(name);
+								orderReal.set("company_by_report", companyByName2.get(0).get("id"));
 							}else{
 								orderReal.set("company_by_report", companyByName.get(0).get("id"));
 							}

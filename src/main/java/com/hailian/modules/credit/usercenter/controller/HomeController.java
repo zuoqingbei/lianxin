@@ -64,15 +64,24 @@ public class HomeController extends BaseProjectController {
 		render(path+"index.html");
 		
 	}
+	public void allOrder() {
+		SysUser user= (SysUser) getSessionUser();
+		if(user==null||"".equals(user)) {
+			redirect("/credit/front/usercenter/login");
+		}else {
+			render(path+"all_orders.html");
+		}
+	}
 	public void menu() {
 		SysUser user= (SysUser) getSessionUser();
 		if(user==null||"".equals(user)) {
 			redirect("/credit/front/usercenter/login");
-		}
+		}else {
 		Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
 		setAttr("user",user);
 		setAttr("menu", map);
 		render("/pages/credit/common/menu.html");
+		}
 	}
 	/**
 	 * 
@@ -245,6 +254,22 @@ public class HomeController extends BaseProjectController {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		List<File> ftpfileList=new ArrayList<File>();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		//获取订单公司名称
+		String right_company_name_en=model.get("right_company_name_en");
+		//判断该公司是否存在于公司库中
+		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
+		//如果公司不存在则在数据库中增加该公司的记录
+		if(company==null) {
+			company=new CreditCompanyInfo();
+			company.set("name_en", right_company_name_en);
+			company.save();
+			//获取新增公司
+			company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
+		}
+		//获取公司id
+		model.set("company_id", company.get("id"));
+		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
+		model.set("report_user", reportIdtoOrder);
 		String num=CreditOrderInfo.dao.getNumber();
 		model.set("num", num);
 		SysUser user = (SysUser) getSessionUser();
@@ -320,6 +345,33 @@ public class HomeController extends BaseProjectController {
 			renderJson(resultType);
 			
 		}		
+	}
+	/**
+	 * 
+	 * @time   2018年10月9日 下午4:24:03
+	 * @author yangdong
+	 * @todo   TODO 订单撤销
+	 * @param  
+	 * @return_type   void
+	 */
+	public void cheXiao() {
+		String id=getPara("id");
+		String revoke_reason=getPara("revoke_reason");
+		try {
+		//根据id查找订单
+		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
+		//更新订单
+		coi.set("status","313");
+		coi.set("revoke_reason", revoke_reason);
+		//保存订单
+		coi.update();
+		ResultType resultType=new ResultType(1,"操作成功");
+		renderJson(resultType);
+		}catch(Exception e) {
+			e.printStackTrace();
+			ResultType resultType=new ResultType(0,"操作失败,请重新提交");
+			renderJson(resultType);
+		}
 	}
 	
 	/**
