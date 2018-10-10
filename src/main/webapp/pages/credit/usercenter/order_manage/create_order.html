@@ -101,24 +101,19 @@
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
 		                        <select name="attr.report_language" valid="vselect" validname="报告语言" class="form-control  formSelect col-md-8" id="client_reportLanguage">
-		                        	 <option value="0" disabled selected>请选择语言</option>
-		                        	 <option value="1">中文简体</option>
-		                        	 <option value="2">中文繁体</option>
-		                        	 <option value="3">英文</option>
-		                        	 <option value="4">中文简体&英文</option>
-		                        	 <option value="5">中文繁体&英文</option>
+		                        	${language!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告语言</p>
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6 layui-form">
-		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>准确订单公司：</label>
-		                        	<input class=" col-md-8 layui-input" name="attr.right_company_name_en" type="text" value="">
+		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>订单公司名称：</label>
+		                        	<input class=" col-md-8 layui-input formInput" name="attr.right_company_name_en" type="text" value="">
                                        <!--  <select name="attr.company_id" class=" col-md-8 layui-input" lay-search="" ay-verify="" >
                                             <option value="0" disabled selected>请选择公司</option>
                                         </select> -->
-		                    	<p class="errorInfo col-md-8">请输入正确公司名称</p>
+		                    	<p class="errorInfo col-md-8">请输入订单公司名称</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>速度：</label>

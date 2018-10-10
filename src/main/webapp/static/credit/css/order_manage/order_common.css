@@ -1025,4 +1025,6 @@
 }
 .bg-f .font_w_600{
     font-weight: 600;
+    margin-left:1.25rem;
+    font-size: 1.25rem;
 }

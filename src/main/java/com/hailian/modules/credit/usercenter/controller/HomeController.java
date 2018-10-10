@@ -103,7 +103,12 @@ public class HomeController extends BaseProjectController {
 			files=null;
 		}*/
 		//根据订单信息获取公司信息
-		CreditCompanyInfo company=OrderManagerService.service.getCompany(order.getInt("company_id"));
+		Integer companyid=order.getInt("company_id");
+		if(companyid==null) {
+			renderMessage("未获取该公司id");
+			return;
+		}
+		CreditCompanyInfo company=OrderManagerService.service.getCompany(companyid);
 		//根据订单id获取历史记录信息
 		List<CreditOrderHistory> histroy=HomeService.service.getHistroy(String.valueOf(id));
 		//获取客户信息
@@ -123,7 +128,7 @@ public class HomeController extends BaseProjectController {
 	 * 
 	 * @time   2018年9月7日 下午3:54:46
 	 * @author yangdong
-	 * @todo   TODO
+	 * @todo   TODO7
 	 * @param  
 	 * @throws ParseException 
 	 * @return_type   void
