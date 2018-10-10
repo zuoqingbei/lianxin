@@ -100,8 +100,13 @@
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
-		                        <select name="attr.report_language" valid="vselect" validname="报告语言" class="form-control  formSelect col-md-8" id="client_reportLanguage" onchange="languagechange()">
+		                        <select name="attr.report_language" valid="vselect" validname="报告语言" class="form-control  formSelect col-md-8" id="client_reportLanguage">
 		                        	 <option value="0" disabled selected>请选择语言</option>
+		                        	 <option value="1">中文简体</option>
+		                        	 <option value="2">中文繁体</option>
+		                        	 <option value="3">英文</option>
+		                        	 <option value="4">中文简体&英文</option>
+		                        	 <option value="5">中文繁体&英文</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告语言</p>
 		                    </div>
@@ -263,7 +268,7 @@
     	 })
    		}
    	 	function reportTypeChange(){
-   	 		languagechange();
+   	 		//languagechange();
    	 		price()
    	 		usetime()
    	 	}
