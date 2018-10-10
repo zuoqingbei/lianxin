@@ -60,7 +60,6 @@ public class AgentController extends BaseProjectController {
 		AgentModel model = getModel(AgentModel.class);
 		setAttr("model", model);
 		render(path + "add.html");
-
 	}
 
 	/**
@@ -75,7 +74,6 @@ public class AgentController extends BaseProjectController {
 		AgentModel model = AgentModel.dao.findById(para);
 		setAttr("model", model);
 		render(path + "edit.html");
-
 	}
 
 	/**
@@ -88,7 +86,6 @@ public class AgentController extends BaseProjectController {
 	public void save() {
 		Integer id = getParaToInt("agent_id");
 		AgentModel model = getModel(AgentModel.class);
-		System.out.println(model.get("price"));
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		//		model.set("agent_id", id);
@@ -105,7 +102,6 @@ public class AgentController extends BaseProjectController {
 			model.save();
 			renderMessage("保存成功");
 		}
-
 	}
 
 	/**
@@ -120,7 +116,6 @@ public class AgentController extends BaseProjectController {
 		AgentModel model = AgentService.service.getOne(id, null);
 		setAttr("model", model);
 		render(path + "view.html");
-
 	}
 
 	/**
@@ -137,6 +132,5 @@ public class AgentController extends BaseProjectController {
 		} else {
 			renderText("failure");
 		}
-
 	}
 }

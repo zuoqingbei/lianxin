@@ -60,7 +60,8 @@ public class CreditUploadFileModel extends BaseProjectModel<CreditUploadFileMode
 	 */
 	public Page<CreditUploadFileModel> getPage(Paginator paginator, CreditUploadFileModel attr, String orderBy,
 			BaseProjectController c) {
-		StringBuffer sql = new StringBuffer(" from credit_upload_file t left join sys_dict_detail t2 on t.business_type=t2.detail_id where t.del_flag=0");
+		StringBuffer sql = new StringBuffer(" from credit_upload_file t left join sys_dict_detail t2 on t.business_type=t2.detail_id ");
+		sql.append("left join sys_user t3 on t3.userid = t.create_by where t.del_flag=0 ");
 		String type = attr.getStr("ext_id");//检索条件-文件类型
 		Integer business_type = attr.getInt("business_type");//检索条件-报告类型
 		String originalname = attr.getStr("originalname");//检索条件-上传文件名
@@ -88,7 +89,7 @@ public class CreditUploadFileModel extends BaseProjectModel<CreditUploadFileMode
 			sql.append(" order by t.").append(orderBy);
 		}
 		Page<CreditUploadFileModel> page = CreditUploadFileModel.dao
-				.paginate(paginator, "select t.*,t2.detail_name as busName ", sql.toString(),params.toArray());
+				.paginate(paginator, "select t.*,t2.detail_name as busName,t3.realname ", sql.toString(),params.toArray());
 		return page;
 	}
 

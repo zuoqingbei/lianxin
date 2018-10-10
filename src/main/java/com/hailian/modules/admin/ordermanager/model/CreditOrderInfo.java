@@ -677,14 +677,15 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		return dao.findFirst(sql, params.toArray());
 	}
 	/**
-	 * 获取报告员报告数量占比
+	 * 获取报告员报告数量部分一
 	 * @return 
 	 * @return 
 	 * 
 	 */
-	public CreditOrderInfo getReportNum(int reportid){
+	public CreditOrderInfo getReportNumPart(int reportid){
 		List<Object> params=new ArrayList<Object>();
-		String sql="SELECT (a.type2*1+a.type3*1+a.type4*0.2+a.type5*0.15+a.type6*0.25)*0.1 as reportnum FROM(SELECT SUM(CASE WHEN report_type=1 THEN 1 ELSE 0 END) as type1,  SUM(CASE WHEN report_type=2 THEN 1 ELSE 0 END) as type2,  SUM(CASE WHEN report_type=3 THEN 1 ELSE 0 END) as type3,SUM(CASE WHEN report_type=4 THEN 1 ELSE 0 END) as type4,SUM(CASE WHEN report_type=5 THEN 1 ELSE 0 END) as type5,SUM(CASE WHEN report_type=6 THEN 1 ELSE 0 END) as type6 FROM credit_order_info where 1=1 and del_flag=0 and report_user=? ) a ;";
+//		String sql="SELECT (a.type2*1+a.type3*1+a.type4*0.2+a.type5*0.15+a.type6*0.25)*0.1 as reportnum FROM(SELECT SUM(CASE WHEN report_type=1 THEN 1 ELSE 0 END) as type1,  SUM(CASE WHEN report_type=2 THEN 1 ELSE 0 END) as type2,  SUM(CASE WHEN report_type=3 THEN 1 ELSE 0 END) as type3,SUM(CASE WHEN report_type=4 THEN 1 ELSE 0 END) as type4,SUM(CASE WHEN report_type=5 THEN 1 ELSE 0 END) as type5,SUM(CASE WHEN report_type=6 THEN 1 ELSE 0 END) as type6 FROM credit_order_info where 1=1 and del_flag=0 and report_user=? ) a ;";
+		String sql="SELECT a.type1 * 1 + a.type2 * 0.25 AS reportnum FROM(SELECT SUM(CASE WHEN report_type = 8 or report_type = 10 THEN 1 ELSE 0 END) AS type1,SUM(CASE WHEN report_type = 1 OR report_type = 7 OR report_type = 12 OR report_type = 13 OR report_type = 14 OR report_type = 15 THEN 1 ELSE 0 END ) AS type2 FROM credit_order_info WHERE 1 = 1 AND del_flag = 0 AND report_user = ? and receiver_date between date_sub(now(),interval 3 month) and now()) a;";
 		params.add(reportid);
 		return dao.findFirst(sql, params.toArray());
 	}
@@ -697,6 +698,18 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	public CreditOrderInfo getInDoingOrderNum(int reportid){
 		List<Object> params=new ArrayList<Object>();
 		String sql="SELECT count(*) as inDoingOrderNum FROM credit_order_info t where t.del_flag=0 and t.report_user=? and to_days(t.receiver_date) = to_days(now())";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
+	}
+	/**
+	 * 获取报告员报告数量部分二
+	* @author doushuihai  
+	* @date 2018年10月9日下午5:51:10  
+	* @TODO
+	 */
+	public CreditOrderInfo getOrderPeportAbroad(int reportid){
+		List<Object> params=new ArrayList<Object>();
+		String sql="SELECT count(*) as orderPeportAbroad FROM credit_order_info t where t.del_flag=0 and t.report_user=? and t.country != 106 and t.receiver_date between date_sub(now(),interval 3 month) and now()";
 		params.add(reportid);
 		return dao.findFirst(sql, params.toArray());
 	}

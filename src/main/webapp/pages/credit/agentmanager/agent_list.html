@@ -79,10 +79,12 @@ var paginator = function(page) {
 				<th name="a.agent_id" class="sorting">代理编码</th>
 				<th name="a.agent_type" class="sorting">代理类型</th>
 				<th name="a.agent_name" class="sorting">代理名称</th>
-				<th name="a.postal_code" class="sorting">邮政编码</th>	
-				<th name="a.memo " class="sorting">备忘录</th>		
+				<th name="a.postal_code" class="sorting">邮政编码</th>
+				<th name="a.proxy_time" class="sorting">代理用时</th>
+				<th name="a.memo " class="sorting">邮箱</th>		
 				<th name="a.price" class="sorting">价格·</th>
 				<th name="a.currency" class="sorting">币种</th>
+				<th name="a.speed" class="sorting">速度</th>
 				<th name="a.usabled" class="sorting">是否禁用</th>
 				<th>操作</th>
 			</tr>
@@ -94,9 +96,11 @@ var paginator = function(page) {
 				<td>${item.agentType}</td>	
 				<td>${item.agent_name}</td>
 				<td>${item.postal_code}</td>
+				<td>${item.proxy_time}</td>
 				<td>${item.memo}</td>
 				<td>${item.price}</td>
 				<td>${item.Currency}</td>
+				<td>${item.Speed}</td>
 				<td>${item.Usabled}</td>
 				<td>
 					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.view(${item.agent_id});">查看</a> 
