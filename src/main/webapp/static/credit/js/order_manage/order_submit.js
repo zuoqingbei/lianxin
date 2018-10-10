@@ -24,7 +24,8 @@ let Verify = {
     modalSubmit(){
         $("#modal_submit").click(function(){
             let id = $("#orderId").val();
-            console.log("id");
+            console.log("id===="+id);
+            console.log("mail_associate_recipient:"+$("#mail_associate_recipient").val());
             $.ajax({
        			type:"post",
        			url:"/credit/front/orderProcess/statusSave",
