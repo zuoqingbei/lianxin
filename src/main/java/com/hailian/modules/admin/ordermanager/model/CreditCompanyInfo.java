@@ -25,4 +25,18 @@ public class CreditCompanyInfo extends BaseProjectModel<CreditCompanyInfo>{
 		
 		return dao.find("select * from credit_company_info order by id");
 	}
+	/**
+	 * 
+	 * @time   2018年10月9日 下午5:12:31
+	 * @author yangdong
+	 * @todo   TODO 根据准确公司英文名称查找公司
+	 * @param  @param right_company_name_en
+	 * @param  @return
+	 * @return_type   CreditCompanyInfo
+	 */
+	public CreditCompanyInfo findByENname(String right_company_name_en) {
+		// TODO Auto-generated method stub
+		String englishName=right_company_name_en.trim();
+		return dao.findFirst("select * from credit_company_info t where t.name_en=?",englishName);
+	}
 }
