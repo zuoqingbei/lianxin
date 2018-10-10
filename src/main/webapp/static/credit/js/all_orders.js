@@ -6,12 +6,77 @@ let Index = {
         this.popperFilter();
         this.hideShowStyle();
         this.searchEvent();
+        this.fileEvent();
     },
     dateForm(){
         /**日期控件 */
         laydate.render({
             elem: '#dead_date'
         });
+    },
+    fileEvent(){
+    	this.fileNum = 0;
+    	let that = this;
+    	$(".close").click(function(){
+    		that.fileNum = 0;
+    	});
+      /**文件上传事件 */
+      $(".file-upload").on('change','.uploadFile .file-input',function(){
+    	  that.fileNum = that.fileNum+1;
+          /**如果上传成功 */
+          let filename = $(this).val().replace("C:\\fakepath\\","");
+          let num = filename.split(".").length;
+          let filename_qz = []
+          for(let i=0;i<num-1;i++){  
+            filename_qz =  filename_qz.concat(filename.split(".")[i])
+          }
+          filename_qz_str = filename_qz.join('.')
+          if(filename_qz_str.length>4) {
+            filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
+          }
+          
+          let filetype = filename.split(".")[num-1];
+          filename = filename_qz_str + '.' +filetype
+          let fileicon = '';
+          if(filetype === 'doc' || filetype === 'docx') {
+            fileicon = '/static/credit/imgs/order/word.png'
+          }else if(filetype === 'xlsx' || filetype === 'xls') {
+            fileicon = '/static/credit/imgs/order/Excel.png'
+          }else if(filetype === 'png') {
+            fileicon = '/static/credit/imgs/order/PNG.png'
+          }else if(filetype === 'jpg') {
+            fileicon = '/static/credit/imgs/order/JPG.png'
+          }else if(filetype === 'pdf') {
+            fileicon = '/static/credit/imgs/order/PDF.png'
+          }
+          $(this).parent(".uploadFile").addClass("upload-over");
+          $(this).css("visibility","hidden")
+          $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
+          if($(".uploadFile").length>4) {
+            return;
+          }
+          $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+                                        <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
+                                        <div class="over-box">
+                                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                                          <p class="mt-2">上传附件</p>
+                                        </div>
+                                    </div>`);
+      });
+
+      /**附件删除 */
+      $(".file-upload").on('click','.uploadFile .close',function(){
+        $(this).parents(".uploadFile").remove()
+        
+        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4']").length<1 ){
+            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+                <input type="file" name="" id="upload_file" value="" class="file-input" />
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                <p class="mt-2">上传附件</p>
+            </div>`);
+        }
+      })
+
     },
     popperFilter(){
         /**筛选图标事件 */
@@ -43,7 +108,19 @@ let Index = {
             $('.deal-state').toggleClass("deal-state-show")
             var value1 = $("#defaultCheck1").prop("checked");
 
-            /**发起ajax请求  获取表格数据*/
+
+        })
+
+        /**点击重置按钮 */
+        $(".resetrFilter").click(function(){
+            $('.form-check-input:checkbox').removeAttr('checked');
+        })
+    },
+    searchEvent(){
+
+        $("#btn_query").click(function(){
+        	
+        	            /**发起ajax请求  获取表格数据*/
             var checked=[];
 		    	 var checkchar=""
 		                 $("input[name='status']:checked").each(function(i){
@@ -65,16 +142,7 @@ let Index = {
 		        			 	 $("#table").bootstrapTable("load",data)
 		        			 }
 		        		});
-        })
-
-        /**点击重置按钮 */
-        $(".resetrFilter").click(function(){
-            $('.form-check-input:checkbox').removeAttr('checked');
-        })
-    },
-    searchEvent(){
-
-        $("#btn_query").click(function(){
+		        		
             let companyName = $("#txt_search_departmentname").val();//公司名称
             let orderCName = $("#txt_search_companyEngName").val();//订单公司名称
             let deadDate = $("#txt_search_date").val();//到期日期
@@ -232,8 +300,8 @@ let Index = {
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
-            fixedColumns: true,
-            fixedNumber: 1,
+//            fixedColumns: true,
+//            fixedNumber: 1,
             queryParamsType:'',
             sortable: true,                     //是否启用排序
             sortOrder: "desc",

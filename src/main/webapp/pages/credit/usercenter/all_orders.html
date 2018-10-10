@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_verify.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_submit.css">
+    <style>
+    	#table tbody tr td:first-child {
+    		color:var(--fontColor)!important;
+    	}
+    </style>
 </head>
 <div id="container" class="row  animated fadeIn">
 
@@ -373,27 +378,30 @@
                         </div>
                     </div>
                 </div>
+                <form id="updateForm" enctype="multipart/form-data"   action="/credit/front/home/update" method="post">
                 <div class="file-upload">
                     <div class="row mt-3 mb-2">
                         <div class="input-group col-md-12 align-items-top">
                             <label class="control-label">更新原因：</label>
                             <!--<input type="text" class="form-control">-->
-                            <textarea name="" id="" cols="50" rows="10"></textarea>
+                            <textarea name="update_reason" id="" cols="50" rows="10"></textarea>
                         </div>
                     </div>
                     <label class="mt-3 ml-3">上传附件：</label>
                     <div class="uploadFile mt-3 mr-4 mb-5">
-                        <input type="file" name="" id="upload_file" value="" class="file-input" />
+                        <input type="file" name="file_url" id="upload_file" value="" class="file-input" />
                         <div class="over-box">
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
                             <p class="mt-2">上传附件</p>
                         </div>
                     </div>
                 </div>
-                <input type="hidden" id="orderid1">
+                 <input type="hidden" id="orderid1" name="orderid1">
+                </form>
+               
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="modal_submit">确认更新</button>
+                <button type="button" class="btn btn-primary" id="modal_submit" onclick="update()">确认更新</button>
             </div>
         </div>
     </div>
@@ -446,16 +454,36 @@ function chexiao(){
 	        success: function (data) {
 	        	if(data.statusCode===1){
                	Public.message("success",data.message);
-               	Public.goAll();
+               	//Public.goAll();
+               	$(".close").trigger("click")
                }else{
                	Public.message("error",data.message);
-             	Public.goAll();
+             	$(".close").trigger("click")
                }
 	        },
 	        error: function (message) {
 	            $("#request-process-patent").html("提交数据失败！");
 	         	Public.goAll();
 	        }
+	});
+}
+/*  订单更新*/
+function update(){
+	$("#updateForm").ajaxSubmit({
+		success:function(data){
+			  if(data.statusCode===1){
+        		Public.message("success",data.message);
+        		$(".close").trigger("click")
+       		 }else{
+        		Public.message("error",data.message);
+        		$(".close").trigger("click")
+        	 }
+
+		},
+		error:function(data){
+			Public.message("error",data.message);
+			$(".close").trigger("click")
+		}
 	});
 }
 </script>
