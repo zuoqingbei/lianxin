@@ -1,5 +1,4 @@
 
-
 package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
 import java.text.ParseException;
@@ -64,15 +63,24 @@ public class HomeController extends BaseProjectController {
 		render(path+"index.html");
 		
 	}
+	public void allOrder() {
+		SysUser user= (SysUser) getSessionUser();
+		if(user==null||"".equals(user)) {
+			redirect("/credit/front/usercenter/login");
+		}else {
+			render(path+"all_orders.html");
+		}
+	}
 	public void menu() {
 		SysUser user= (SysUser) getSessionUser();
 		if(user==null||"".equals(user)) {
 			redirect("/credit/front/usercenter/login");
-		}
+		}else {
 		Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
 		setAttr("user",user);
 		setAttr("menu", map);
 		render("/pages/credit/common/menu.html");
+		}
 	}
 	/**
 	 * 
@@ -109,7 +117,7 @@ public class HomeController extends BaseProjectController {
 		setAttr("custom",custom);
 		setAttr("files",files);
 		//转发页面
-		render(path+"order_detail.html");
+		render(path+"order_manage/order_detail.html");
 	}
 	/**
 	 * 
@@ -245,6 +253,22 @@ public class HomeController extends BaseProjectController {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		List<File> ftpfileList=new ArrayList<File>();
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		//获取订单公司名称
+		String right_company_name_en=model.get("right_company_name_en");
+		//判断该公司是否存在于公司库中
+		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
+		//如果公司不存在则在数据库中增加该公司的记录
+		if(company==null) {
+			company=new CreditCompanyInfo();
+			company.set("name_en", right_company_name_en);
+			company.save();
+			//获取新增公司
+			company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
+		}
+		//获取公司id
+		model.set("company_id", company.get("id"));
+		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
+		model.set("report_user", reportIdtoOrder);
 		String num=CreditOrderInfo.dao.getNumber();
 		model.set("num", num);
 		SysUser user = (SysUser) getSessionUser();
@@ -279,7 +303,7 @@ public class HomeController extends BaseProjectController {
 							pdf_FTPfileName=FTPfileName;
 						}
 						//String now,List<File> filelist,String storePath,String url,int port,String userName,String password
-						boolean storeFile = FtpUploadFileUtils.storeFtpFile(FTPfileName, ftpfileList,storePath,ip,port,userName,password);//上传
+						boolean storeFile = FtpUploadFileUtils.storeFtpFile(now, ftpfileList,storePath,ip,port,userName,password);//上传
 						if(storeFile){
 							String factpath=storePath+"/"+FTPfileName;
 							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
@@ -320,6 +344,132 @@ public class HomeController extends BaseProjectController {
 			renderJson(resultType);
 			
 		}		
+	}
+	/**
+	 * 
+	 * @time   2018年10月9日 下午4:24:03
+	 * @author yangdong
+	 * @todo   TODO 订单撤销
+	 * @param  
+	 * @return_type   void
+	 */
+	public void cheXiao() {
+		String id=getPara("id");
+		String revoke_reason=getPara("revoke_reason");
+		try {
+		//根据id查找订单
+		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
+		//更新订单
+		coi.set("status","313");
+		coi.set("revoke_reason", revoke_reason);
+		//保存订单
+		coi.update();
+		ResultType resultType=new ResultType(1,"操作成功");
+		renderJson(resultType);
+		}catch(Exception e) {
+			e.printStackTrace();
+			ResultType resultType=new ResultType(0,"操作失败,请重新提交");
+			renderJson(resultType);
+		}
+	}
+	/**
+	 * 
+	 * @time   2018年10月10日 上午10:54:29
+	 * @author yangdong
+	 * @todo   TODO 内容更新
+	 * @param  
+	 * @return_type   void
+	 */
+	public void update() {
+		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+		List<File> ftpfileList=new ArrayList<File>();
+		String id=getPara("orderid1");
+		String update_reason=getPara("update_reason");
+		//更新订单信息
+		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
+		coi.set("update_reason", update_reason);
+		coi.update();
+		//获取订单编号
+		String num=coi.get("num");
+		//保存上传文件
+		CreditUploadFileModel model= new CreditUploadFileModel();
+		model.set("business_type", "0");
+		model.set("business_id", num);
+		//记录失败次数
+		int num1=0;
+		//记录信息
+		String message="";
+		//上传文件个数
+		int size=upFileList.size();
+		//循环上传文件
+		if(size>0) {
+		try {
+		for(UploadFile uploadFile:upFileList){
+			//获取文件全名
+			String originalFile=uploadFile.getOriginalFileName();
+			//获取去除后缀名的文件名长度
+			int dot = originalFile.lastIndexOf(".");
+			//后缀名
+			String ext="";
+			//获取去除后缀名后的文件名
+			String originalFileName=FileTypeUtils.getName(originalFile);
+			//后缀名,文件类型
+			ext=FileTypeUtils.getFileType(originalFile);
+			
+			if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+				
+				String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+				//为文件取新名字(汉字名字预览出问题)
+				String now=UUID.randomUUID().toString().replaceAll("-", "");
+				//获取文件名(取出后缀)
+				originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
+				//文件储存时的名字
+				String FTPfileName=now+"."+ext;
+				//数据库记录文件名字
+				String fileName=originalFileName+now;
+				String pdf_FTPfileName="";
+				ftpfileList.add(uploadFile.getFile());
+				if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
+					File pdf = toPdf(uploadFile);
+					pdf_FTPfileName=now+"."+"pdf";
+					ftpfileList.add(pdf);
+				}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
+					pdf_FTPfileName=FTPfileName;
+				}
+				//String now,List<File> filelist,String storePath,String url,int port,String userName,String password
+				boolean storeFile = FtpUploadFileUtils.storeFtpFile(now, ftpfileList,storePath,ip,port,userName,password);//上传
+				if(storeFile){
+					//如果文件上传成功则添加数据库记录
+					String factpath=storePath+"/"+FTPfileName;
+					String pdfFactpath=storePath+"/"+pdf_FTPfileName;
+					String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+					Integer userid = getSessionUser().getUserid();
+					model.set("business_id", num);
+					String pdfUrl="http://"+ip+"/" + storePath+"/"+pdf_FTPfileName;
+					UploadFileService.service.save(0,uploadFile, factpath,url,pdfFactpath,pdfUrl,model,fileName,userid);//记录上传信息
+				}else{
+					num1+=1;
+					message+=uploadFile.getOriginalFileName()+"上传失败!";
+					ResultType resultType=new ResultType(0,message);
+					renderJson(resultType);
+					return;
+				}
+			}else{
+				num1+=1;
+				message+=uploadFile.getOriginalFileName()+"上传失败!";
+				ResultType resultType=new ResultType(0,message);
+				renderJson(resultType);						
+				return;
+			}
+		}
+		}catch(Exception e) {
+			e.printStackTrace();
+			ResultType resultType=new ResultType(0,"操作失败,请重新提交");
+			renderJson(resultType);
+			return;
+		}
+	}
+		
 	}
 	
 	/**

@@ -7,8 +7,8 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="../css/order_manage/order_verify.css">
-    <link rel="stylesheet" href="../css/order_manage/order_submit.css">
+    <link rel="stylesheet" href="${BASE_PATH}static/credit/css/order_manage/order_verify.css">
+    <link rel="stylesheet" href="${BASE_PATH}static/credit/css/order_manage/order_submit.css">
 </head>
 
 <div id="container" class="row  animated fadeIn">
@@ -148,87 +148,88 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">
-                    <span>订单号：</span>
-                    <span>0001288784932</span>
+                   <span>订单号：</span>
+                    <span id="num">0001288784932</span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-            </div>
-            <div class="modal-body">
-                <div class="order-detail mb-4">
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>客户ID：</span>
-                            <span>001354574</span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>客户用户名：</span>
-                            <span>王彩军</span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>接单日期：</span>
-                            <span>2018-09-10</span>
-                        </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>地区：</span>
-                            <span>亚洲</span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>国家：</span>
-                            <span>中国</span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>报告类型：</span>
-                            <span>基本信用报告</span>
-                        </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>订单类型：</span>
-                            <span>new</span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>报告语言：</span>
-                            <span>中文</span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>订单公司名称：</span>
-                            <span>北京小米科技有限公司</span>
-                        </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>报告速度：</span>
-                            <span>普通</span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>报告用时：</span>
-                            <span>5天</span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>公司中文名称：</span>
-                            <span>北京小米科技有限公司</span>
-                        </div>
-                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="order-detail mb-5">
+                        <div class="row mt-2 mb-2" id="div1"> 
+                                <div class="col-md-4">
+                                    <span>客户ID：</span>
+                                    <span id="custom_id">001354574</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>客户用户名：</span>
+                                    <span id="customId">row</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>接单日期：</span>
+                                    <span id="receiver_date">2018-09-10</span>
+                                </div>
+                            </div>
+                            <div class="row mt-2 mb-2" id="div2">
+                                <div class="col-md-4">
+                                    <span>地区：</span>
+                                    <span id="continent">亚洲</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>国家：</span>
+                                    <span id="country">中国</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>报告类型：</span>
+                                    <span id="reportType">基本信用报告</span>
+                                </div>
+                            </div>
+                            <div class="row mt-2 mb-2" id="div3">
+                                <div class="col-md-4">
+                                    <span>订单类型：</span>
+                                    <span id="orderType">new</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>报告语言：</span>
+                                    <span id="reportLanguage">中文</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>订单公司名称：</span>
+                                    <span id="companyNames">北京小米科技有限公司</span>
+                                </div>
+                            </div>
+                            <div class="row mt-2 mb-2" id="div4">
+                                <div class="col-md-4">
+                                    <span>报告速度</span>
+                                    <span id="speed">普通</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>报告用时：</span>
+                                    <span id="user_time">5天</span>小时
+                                </div>
+                                <div class="col-md-4">
+                                    <span>公司中文名称：</span>
+                                    <span id="companyZHNames">北京小米科技有限公司</span>
+                                </div>
+                            </div>
                     <div class="row mt-2 mb-2">
                         <div class="col-md-12 d-flex">
                             <span style="width: 6.1rem">确认原因：</span>
-                            <span>对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
+                            <span id="confirm_reason">对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
                         </div>
                     </div>
+                    <input type="hidden" id="orderId" value="-5555">
                 </div>
                 <div class="file-upload">
                     <div class="row mt-3 mb-2">
                         <div class="input-group col-md-6 align-items-top">
                             <label class="control-label">收件人邮箱：</label>
-                            <textarea name=""  cols="30" rows="10" class="form-control"></textarea>
+                            <textarea id="mail_receiver" name=""  cols="30" rows="10" class="form-control"></textarea>
                         </div>
                         <div class="input-group col-md-6 align-items-top">
                             <label class="control-label">抄送人邮箱：</label>
-                            <textarea name=""  cols="30" rows="10" class="form-control"></textarea>
+                            <textarea id="mail_associate_recipient" name=""  cols="30" rows="10" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>
@@ -240,6 +241,6 @@
     </div>
 </div>
 
-<script src="../js/order_manage/order_submit.js"></script>
+<script src="${BASE_PATH}static/credit/js/order_manage/order_submit.js"></script>
 
 </html>

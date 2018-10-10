@@ -397,8 +397,9 @@ public class OrderManagerService {
 		}
 		double scoreTo=score.doubleValue();
 		BigDecimal reportnum1 =OrderManagerService.service.getReportNumPart(reportid).get("reportnum");//报告数量占比一
-		BigDecimal reportnum2 = OrderManagerService.service.getOrderPeportAbroad(reportid).get("orderPeportAbroad");
-		double reportnum=reportnum1.add(reportnum2).doubleValue();
+		long reportnum2 = OrderManagerService.service.getOrderPeportAbroad(reportid).get("orderPeportAbroad");
+		BigDecimal reportnum2To = new BigDecimal(reportnum2);
+		double reportnum=reportnum1.add(reportnum2To).doubleValue();
 		double finalScore=orderNum*0.5+submitNum+scoreTo+reportnum;
 		return finalScore;
 	}

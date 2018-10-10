@@ -54,7 +54,7 @@ let Public = {
                
                 sessionStorage.setItem('menuId',id);
                  $("#main_content").load(href?href+"?from=commonjs":'/credit/front/orderProcess/showUnderdevelopment',function(response){
-                	 console.log(response)
+                	 //console.log(response)
                 	 	if("nologin"==response){
 	                	 $("#main_content").html("")
                 	 		window.location.href="/credit/front/usercenter/showLogin";
@@ -91,6 +91,9 @@ let Public = {
     },
     goList(){
     	 $("#main_content").load('/credit/front/home')
+    },
+    goAll(){
+    	 $("#main_content").load('/credit/front/home/allOrder')
     },
     goToCreateOrder(){
         /**跳转新建订单页面 */

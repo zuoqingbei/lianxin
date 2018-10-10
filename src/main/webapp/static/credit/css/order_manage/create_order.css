@@ -32,53 +32,8 @@
 	font-size: 1.2rem;
 	margin-right:0.3rem;
 }
-#orderForm{
-	padding:1rem 8rem 1rem 1rem;
-	/* background: #fff; */
-}
-#form_File{
-	margin-top: 1.25rem;
-}
-#orderForm .form-control{
-    border-radius: 4px;
-    letter-spacing: 1px;
-}
-#orderForm #client_order_date{
-	letter-spacing: 0;
-}
-#orderForm .form-control.uploadInformation{
-	text-align: center;
-	color:#ccc;
-	border:1px dashed;
-	height:10rem;    
-	position: absolute;
-    width: calc(66.666667% - 20px);
-    right: 15px;
-    left: calc(33.333333% + 5px);
-    letter-spacing: 0;
-}
-#orderForm .form-control.uploadInformation i{
-	font-size: 5rem;
-}
-#orderForm .form-control.uploadInformation input[type="file"]{
-	position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    filter:Alpha(opacity=0);
-    -moz-opacity:0; 
-    opacity: 0;
-}
 .right-btn {
 	padding-right: 9rem;
-}
-.remark{
-	height:6rem!important;
-}
-.remarkLabel{
-	display: inline-block!important;
-	text-align: right;
 }
 .myBtn{
 	margin-top: 1.5rem!important;
@@ -153,3 +108,18 @@
 .fa-download {
 	margin-right: .5rem;
 }
+
+/*附件*/
+.file-upload-box{
+	padding-left: 9.5rem;
+}
+.uploadFile img{
+	margin: 0 auto;
+}
+.file-upload{
+	border: none !important;
+}
+.uploadFile{
+	margin-left: 0.5rem;
+}
+

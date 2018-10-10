@@ -65,7 +65,7 @@ let Verify = {
       $(".file-upload").on('click','.uploadFile .close',function(){
         $(this).parents(".uploadFile").remove()
         
-        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4']").length<1 ){
+        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4 mb-5']").length<1 ){
             $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
                 <input type="file" name="" id="upload_file" value="" class="file-input" />
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
@@ -346,11 +346,54 @@ let Verify = {
         $("#address").html(row.address);
         $("#remarks").html(row.remarks);
         //文件回显
-        
+        console.log(row.files)
        // $(".file-upload").html("");
+        $(".upload-over").remove();
+        if(row.files.length === 0){return}
         for (var i in row.files){
-        	
+        	let filetype = row.files[i].ext
+        	let fileicon = ''
+        	if(filetype === 'doc' || filetype === 'docx') {
+	             fileicon = '/static/credit/imgs/order/word.png'
+	           }else if(filetype === 'XLSX' || filetype === 'XLS') {
+	             fileicon = '/static/credit/imgs/order/Excel.png'
+	           }else if(filetype === 'PNG') {
+	             fileicon = '/static/credit/imgs/order/PNG.png'
+	           }else if(filetype === 'JPG') {
+	             fileicon = '/static/credit/imgs/order/JPG.png'
+	           }else if(filetype === 'pdf') {
+	             fileicon = '/static/credit/imgs/order/PDF.png'
+	           }
+        	let fileArr = ''
+        	let filename = row.files[i].originalname
+    		let num = filename.split(".").length;
+            let filename_qz = []
+            for(let i=0;i<num;i++){  
+              filename_qz =  filename_qz.concat(filename.split(".")[i])
+            }
+            filename_qz_str = filename_qz.join('.')
+            if(filename_qz_str.length>4) {
+              filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
+            }
+            
+            filename = filename_qz_str + '.' +filetype
+        	fileArr += '<div class="uploadFile mt-3 mr-4 mb-5 upload-over" url="'+row.files[i].url+'" style="cursor:pointer">'+
+        				'<div class="over-box">'+
+	        				'<button type="button" class="close" aria-label="Close">'+
+	        					'<span aria-hidden="true">&times;</span>'+
+	        				 '</button>'+
+	        				'<img src="'+fileicon+'" />'+
+	        				 '<p class="filename">'+filename+'</p>'+
+        				 '</div>'+
+        				 '</div>'
+        				 
+           $(".uploadFile:not(.upload-over)").before(fileArr)
+           
+           $(".upload-over").click(function(){
+        	   window.open($(this).attr("url"))
+           })
         }
+        
         pageNumber = row.pageNumber;
         console.log("pageNumber====="+pageNumber);
         pageSize = row.pageSize;
@@ -368,8 +411,8 @@ let Verify = {
             pagination: true, //分页
             sidePagination: 'server',
             pageNumber:1,
-            pageSize:20,
-            pageList: [20 , 30],
+            pageSize:10,
+            pageList: [10,20,30],
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',

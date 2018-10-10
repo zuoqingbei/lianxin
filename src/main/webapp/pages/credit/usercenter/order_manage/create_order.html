@@ -14,6 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
    	<link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/create_order.css">
+   	<link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_filing.css">
+
 </head>
 <div id="container" class="row animated fadeIn">          
             <!-- 内容 -->
@@ -111,10 +113,11 @@
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6 layui-form">
-		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>公司：</label>
-                                        <select name="attr.company_id" class=" col-md-8 layui-input" lay-search="" ay-verify="" >
+		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>准确订单公司：</label>
+		                        	<input class=" col-md-8 layui-input" name="attr.right_company_name_en" type="text" value="">
+                                       <!--  <select name="attr.company_id" class=" col-md-8 layui-input" lay-search="" ay-verify="" >
                                             <option value="0" disabled selected>请选择公司</option>
-                                        </select>
+                                        </select> -->
 		                    	<p class="errorInfo col-md-8">请输入正确公司名称</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
@@ -157,28 +160,29 @@
 		                        <input type="text" class="form-control  col-md-8" id="client_contact" placeholder="请输入联系人">
 		                    </div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-3">
+		    			<div class="form-group row d-flex justify-content-around mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">Email：</label>
-		                        <input type="text" class="form-control  col-md-8" id="client_email" onblur="Events.emailAdd(this)" placeholder="请输入邮箱地址">
+		                        <input type="text" class="form-control search-input col-md-8" id="client_email" onblur="Events.emailAdd(this)" placeholder="请输入邮箱地址">
 		                    	<p class="errorInfo col-md-8">请输入正确格式</p>
 		                    </div>
-		                    <div class="input-group mt-2 col-md-6">
-		                        <label class="control-label col-md-4" for="">上传相关资料：</label>
-		                        <div class="form-control  uploadInformation col-md-8">
-		                        	<input class="upload_file" type="file" name="file_url" id="upload_file" value=""/>                     	                     	
-		                        	<i class="fa fa-cloud-upload"></i>
-		                        	<p class="">请将上传的PDF、JPG、PNG、EXCEL、WORD文件拖至此处，大小不超过5M</p>
-								</div>
-		                    </div>
+
+							<div class="input-group mt-2 col-md-6">
+								<label class="control-label col-md-4" for="">备注：</label>
+								<textarea class="form-control search-input  col-md-8"  name="" rows="1" cols="" placeholder="请输入其他细节"></textarea>
+							</div>
 		                </div>
-		    			<div class="form-group row d-flex justify-content-around mb-3">
-		                    <div class="input-group mt-2 col-md-6">
-		                        <label class="control-label col-md-4 remarkLabel" for="">备注：</label>
-		                        <textarea class="form-control  remark col-md-8" name="" rows="" cols="" placeholder="请输入其他细节"></textarea>
-		                    </div>
-		                    <div class="input-group mt-2 col-md-6">
-		                    </div>
+		    			<div class="form-group row d-flex mb-4 file-upload-box">
+							<div class="file-upload">
+								<label class=" ml-3">上传附件：</label>
+								<div class="uploadFile mr-3 mt-3">
+									<input type="file" name="file_url" id="upload_file" value="" class="file-input" />
+									<div class="over-box">
+										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+										<p class="mt-2">上传附件</p>
+									</div>
+								</div>
+							</div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around">
 		                    <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4 myBtn">
