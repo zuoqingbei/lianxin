@@ -9,7 +9,89 @@ let Filing = {
         /*质检意见*/
         this.initTable4();
         /*文件预览*/
-      /*  this.fileEvent();*/
+        this.fileEvent();
+         /*出资比例环形图*/
+        this.initEchartsPie();
+    },
+     /*出资比例环形图*/
+    initEchartsPie(){
+        let ec001_pie = echarts.init($("#ec001_pie")[0]);
+        ec001_pie.clear();
+        ec001_pie.setOption(opt_pie);
+        ec001_pie.setOption({
+            series : [
+                {
+                    data:[
+                        {value:335, name:'直接访问'},
+                        {value:310, name:'邮件营销'}
+                    ],
+                }
+            ]
+        });
+    },
+    fileEvent(){
+    	this.fileNum = 0;
+    	let that = this;
+    	$(".close").click(function(){
+    		that.fileNum = 0;
+    	});
+      /**文件上传事件 */
+      $(".file-upload").on('change','.uploadFile .file-input',function(){
+    	  that.fileNum = that.fileNum+1;
+          /**如果上传成功 */
+          let filename = $(this).val().replace("C:\\fakepath\\","");
+          let num = filename.split(".").length;
+          let filename_qz = []
+          for(let i=0;i<num-1;i++){  
+            filename_qz =  filename_qz.concat(filename.split(".")[i])
+          }
+          filename_qz_str = filename_qz.join('.')
+          if(filename_qz_str.length>4) {
+            filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
+          }
+          
+          let filetype = filename.split(".")[num-1];
+          filename = filename_qz_str + '.' +filetype
+          let fileicon = '';
+          if(filetype === 'doc' || filetype === 'docx') {
+            fileicon = '/static/credit/imgs/order/word.png'
+          }else if(filetype === 'xlsx' || filetype === 'xls') {
+            fileicon = '/static/credit/imgs/order/Excel.png'
+          }else if(filetype === 'png') {
+            fileicon = '/static/credit/imgs/order/PNG.png'
+          }else if(filetype === 'jpg') {
+            fileicon = '/static/credit/imgs/order/JPG.png'
+          }else if(filetype === 'pdf') {
+            fileicon = '/static/credit/imgs/order/PDF.png'
+          }
+          $(this).parent(".uploadFile").addClass("upload-over");
+          $(this).css("visibility","hidden")
+          $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
+          if($(".uploadFile").length>4) {
+            return;
+          }
+          $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+                                        <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
+                                        <div class="over-box">
+                                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                                          <p class="mt-2">上传附件</p>
+                                        </div>
+                                    </div>`);
+      });
+
+      /**附件删除 */
+      $(".file-upload").on('click','.uploadFile .close',function(){
+        $(this).parents(".uploadFile").remove()
+        
+        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4']").length<1 ){
+            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+                <input type="file" name="" id="upload_file" value="" class="file-input" />
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                <p class="mt-2">上传附件</p>
+            </div>`);
+        }
+      })
+
     },
     initTable(){
         /**初始化表格 */
@@ -235,45 +317,7 @@ let Filing = {
             $table.bootstrapTable('resetView');
         }, 200);
     },
-  /*  fileEvent(){
-        /!*文件预览事件*!/
-        /!*获取文件名称和地址*!/
-
-        /!*根据文件名称判断图片和文件名称展示形式*!/
-        let num = filename.split(".").length;
-        let filename_qz = []
-        for(let i=0;i<num-1;i++){
-            filename_qz =  filename_qz.concat(filename.split(".")[i])
-        }
-        /!*文件名称大于四个字时暂展示前两个字和后两个字，中间用...*!/
-        filename_qz_str = filename_qz.join('.')
-        if(filename_qz_str.length>4) {
-            filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
-        }
-        /!*根据文件类型判断背景图片*!/
-        let filetype = filename.split(".")[num-1];
-        filename = filename_qz_str + '.' +filetype
-        let fileicon = '';
-        if(filetype === 'doc' || filetype === 'docx') {
-            fileicon = '../../imgs/order/word.png'
-        }else if(filetype === 'xlsx') {
-            fileicon = '../../imgs/order/Excel.png'
-        }else if(filetype === 'png') {
-            fileicon = '../../imgs/order/PNG.png'
-        }else if(filetype === 'jpg') {
-            fileicon = '../../imgs/order/JPG.png'
-        }else if(filetype === 'pdf') {
-            fileicon = '../../imgs/order/PDF.png'
-        }
-        $(this).parent(".uploadFile").addClass("upload-over");
-        $(this).parent(".uploadFile").html(`<span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-        /!*预览*!/
-
-    },
-
-        	流程进度
-        this.step(2);
-    },*/
+ 
     initTable(){
         /**初始化表格 */
         const $table = $('#table');
@@ -498,41 +542,7 @@ let Filing = {
             $table.bootstrapTable('resetView');
         }, 200);
     },
-  /*  fileEvent(){
-        /!*文件预览事件*!/
-        /!*获取文件名称和地址*!/
-
-        /!*根据文件名称判断图片和文件名称展示形式*!/
-        let num = filename.split(".").length;
-        let filename_qz = []
-        for(let i=0;i<num-1;i++){
-            filename_qz =  filename_qz.concat(filename.split(".")[i])
-        }
-        /!*文件名称大于四个字时暂展示前两个字和后两个字，中间用...*!/
-        filename_qz_str = filename_qz.join('.')
-        if(filename_qz_str.length>4) {
-            filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
-        }
-        /!*根据文件类型判断背景图片*!/
-        let filetype = filename.split(".")[num-1];
-        filename = filename_qz_str + '.' +filetype
-        let fileicon = '';
-        if(filetype === 'doc' || filetype === 'docx') {
-            fileicon = '../../imgs/order/word.png'
-        }else if(filetype === 'xlsx') {
-            fileicon = '../../imgs/order/Excel.png'
-        }else if(filetype === 'png') {
-            fileicon = '../../imgs/order/PNG.png'
-        }else if(filetype === 'jpg') {
-            fileicon = '../../imgs/order/JPG.png'
-        }else if(filetype === 'pdf') {
-            fileicon = '../../imgs/order/PDF.png'
-        }
-        $(this).parent(".uploadFile").addClass("upload-over");
-        $(this).parent(".uploadFile").html(`<span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-        /!*预览*!/
-
-    },*/
+ 
 
     step(index){
         /*如果圆圈的索引 =index 高亮显示  .circle_active*/

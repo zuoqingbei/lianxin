@@ -61,6 +61,7 @@
 }
 #orderForm input.active, #orderForm select.active{
 	border-color:#f00;
+
 }
 
 /*进度条*/
