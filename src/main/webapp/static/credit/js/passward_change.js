@@ -5,6 +5,7 @@ let Password = {
         this.passwordChecked()
         this.passwordChecked2()
         this.passwordNext()
+        this.getUser()
     },
     checkedEmail(){
         /**验证邮箱格式 */
@@ -127,8 +128,13 @@ let Password = {
            	   Public.message("error",'修改没有成功，请稍后再试！')
               }
     	})
+    },
+    getUser(){
+        /**核实验证码 */
+    	$.post("/credit/sysuser/resetpassword/getUser",function(data){
+    		$("#account").val(data.message)
+    	})
     }
-    
 }
 
 
