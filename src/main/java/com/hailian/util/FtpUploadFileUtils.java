@@ -90,7 +90,7 @@ public class FtpUploadFileUtils {
 		}
 		return result;
 	}
-	
+	//单文件上传
 	public static boolean storeFtpFile(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException {
 		FileInputStream fis = null;
 		boolean result = false;
@@ -186,6 +186,7 @@ public class FtpUploadFileUtils {
 		}
 		return result;
 	}
+	//多文件上传
 	public static boolean storeMoreFtpFile(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException {
 		FileInputStream fis = null;
 		boolean result = false;

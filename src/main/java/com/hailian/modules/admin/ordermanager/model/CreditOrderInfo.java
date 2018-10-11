@@ -181,10 +181,18 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String country = model.getStr("country");
 		//结束时间
 		String end_date = model.getStr("end_date");
+		//代理
+		String agent_id=model.getStr("agent_id");
 		//准确公司名称(经过翻译后的公司名称是中文)
-		String company_by_report = model.getStr("company_by_report");
+		String company_by_report=model.getStr("company_by_report");
+		if(company_by_report!=null) {
+			company_by_report=company_by_report.trim();
+		}
 		//填写订单时输入的公司名称
-		String right_company_name_en = model.getStr("right_company_name_en");
+		String right_company_name_en=model.getStr("right_company_name_en");
+		if(right_company_name_en!=null) {
+			right_company_name_en=right_company_name_en.trim();
+		}
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
 		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
@@ -223,6 +231,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if (StringUtils.isNotBlank(end_date)) {
 			sql.append(" and t.end_date=?");
 			params.add(end_date);
+		}
+		if (StringUtils.isNotBlank(agent_id)) {
+			sql.append(" and t.agent_id=?");
+			params.add(agent_id);
 		}
 		if (StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like %?%");
@@ -359,6 +371,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String continent = model.getStr("continent");
 		//国家
 		String country = model.getStr("country");
+		//代理
+		String agent_id=model.getStr("agent_id");
 		//结束时间
 		Date end_date = model.get("end_date");
 		String date = "";
@@ -367,9 +381,15 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}
 
 		//准确公司名称(经过翻译后的公司名称是中文)
-		String company_by_report = model.getStr("company_by_report");
+		String company_by_report=model.getStr("company_by_report");
+		if(company_by_report!=null) {
+			company_by_report=company_by_report.trim();
+		}
 		//填写订单时输入的公司名称
-		String right_company_name_en = model.getStr("right_company_name_en");
+		String right_company_name_en=model.getStr("right_company_name_en");
+		if(right_company_name_en!=null) {
+			right_company_name_en=right_company_name_en.trim();
+		}
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
 		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
@@ -390,7 +410,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
-			params.add(user.getStr("usertype"));
+			params.add(user.get("userid").toString());
 		}
 
 		if (StringUtils.isNotBlank(custom_id)) {
@@ -409,13 +429,17 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.end_date=?");
 			params.add(date);
 		}
+		if (StringUtils.isNotBlank(agent_id)) {
+			sql.append(" and t.agent_id=?");
+			params.add(agent_id);
+		}
 		if (StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like concat('%',?,'%')");
-			params.add(company_by_report);
+			params.add(company_by_report.trim());
 		}
 		if (StringUtils.isNotBlank(right_company_name_en)) {
 			sql.append(" and c2.name_en  like concat('%',?,'%')");
-			params.add(right_company_name_en);
+			params.add(right_company_name_en.trim());
 		}
 		if (StringUtils.isNotBlank(status)) {
 			sql.append(" and t.status in(?)");
@@ -457,6 +481,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String custom_id=null;
 		String continent=null;
 		String country=null;
+		String agent_id="";
 		String date="";
 		if(model!=null) {
 		//客户id
@@ -467,6 +492,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		country=model.getStr("country");
 		//结束时间
 		Date end_date=model.get("end_date");
+		//代理
+		 agent_id=model.getStr("agent_id");
 		if(end_date!=null) {
 		 date=sdf.format(end_date);
 		}
@@ -474,8 +501,14 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		
 		//准确公司名称(经过翻译后的公司名称是中文)
 		String company_by_report=model.getStr("company_by_report");
+		if(company_by_report!=null) {
+			company_by_report=company_by_report.trim();
+		}
 		//填写订单时输入的公司名称
 		String right_company_name_en=model.getStr("right_company_name_en");
+		if(right_company_name_en!=null) {
+			right_company_name_en=right_company_name_en.trim();
+		}
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
 		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
@@ -496,7 +529,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
-			params.add(user.getStr("usertype"));
+			params.add(user.get("userid").toString());
 		}
 
 		if (StringUtils.isNotBlank(custom_id)) {
@@ -514,6 +547,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if(StringUtils.isNotBlank(date)) {
 			sql.append(" and t.end_date=?");
 			params.add(date);
+		}
+		if (StringUtils.isNotBlank(agent_id)) {
+			sql.append(" and t.agent_id=?");
+			params.add(agent_id);
 		}
 		if(StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like concat('%',?,'%')");
@@ -605,10 +642,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				//status='292'值状态为客户确认(订单核实)状态 ,其维护在字典表中
 				fromSql.append(" and status='292' ");
 			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
-				//status='294'值状态为订单查档 ,其维护在字典表中
-				fromSql.append(" and status='294' ");
+				//status='294'值状态为代理分配和订单查档(国外) ,其维护在字典表中
+				fromSql.append(" and status in('294','295') ");
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
-				//status='294'值状态为递交订单(翻译质检合格) ,其维护在字典表中
+				//status='310'值状态为递交订单(翻译质检合格) ,其维护在字典表中
 				fromSql.append(" and status='310' ");
 			}
 			

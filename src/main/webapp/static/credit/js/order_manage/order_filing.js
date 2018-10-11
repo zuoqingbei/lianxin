@@ -81,7 +81,7 @@ let Filing = {
              			 console.log(JSON.stringify(data));
                         console.log(data.statusCode);
                         if(data.statusCode===1){
-                        	 console.log("此处进入success状态2222222222");
+                        	 console.log("此处进入success状态,状态298");
                         	Public.message("success",data.message);
                         }else{
                         	 console.log("此处进入error状态");
@@ -101,7 +101,7 @@ let Filing = {
                 $(".modal-header .close").trigger("click");
                 //回显
                	console.log("提交成功,开始回显:");
-               //console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4");
+               console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4");
                		$.ajax({
                			type:"post",
                    		url:"/credit/front/orderProcess/listJson",
@@ -110,27 +110,11 @@ let Filing = {
                    		success:function(obj){
                    				//console.log("回显的数据:"+JSON.stringify(obj.rows));
                    			 	$("#table").bootstrapTable("load",obj);
+                   			 	console.log(obj);
+                   			 console.log("回显成功!");
                    			 }
                			}) 
              })
-    	/*$("#modal_submit").click(function(){
-    		$(".tableValue").ajaxForm({
-        		dataType: "json"
-        		, success: function(data) {
-        			console.log(data);
-        			console.log("提交成功!");
-        			//提交成功关闭模态窗
-                    $(".modal-header .close").trigger("click");
-        		}
-        		, error: function(ret) {
-        			console.log(ret);
-        			console.log(ret.readyState);
-        			console.log(ret.responseText);
-        			console.log(ret.responseText.result);
-        			console.log("提交失败!");
-        		}
-        		});
-    	})*/
     	
     },
     

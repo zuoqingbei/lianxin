@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<% var companyType = tempDict.getSysDictDetailString2('companyType','319'); %>
+1<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -71,7 +72,7 @@
                             <div class="form-group">
                                 <label for="qy_type" class="mb-2">公司性质</label>
                                 <select name="" id="qy_type" class="form-control">
-                                    <option value="" selected></option>
+                                   ${companyType!}
                                 </select>
                             </div>
                         </div>
