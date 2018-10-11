@@ -455,16 +455,17 @@ function chexiao(){
 	        success: function (data) {
 	        	if(data.statusCode===1){
                	Public.message("success",data.message);
-               	//Public.goAll();
-               	$(".close").trigger("click")
+                $("#exampleModalCenter1 .close").trigger("click")
+                loadtable();
                }else{
                	Public.message("error",data.message);
-             	$(".close").trigger("click")
+                $("#exampleModalCenter1 .close").trigger("click")
+                loadtable();
                }
 	        },
 	        error: function (message) {
 	            $("#request-process-patent").html("提交数据失败！");
-	         	Public.goAll();
+	            loadtable();
 	        }
 	});
 }
@@ -474,16 +475,19 @@ function update(){
 		success:function(data){
 			  if(data.statusCode===1){
         		Public.message("success",data.message);
-        		$(".close").trigger("click")
+        		 $("#exampleModalCenter2 .close").trigger("click")
+        		 loadtable();
        		 }else{
         		Public.message("error",data.message);
-        		$(".close").trigger("click")
+        		 $("#exampleModalCenter2 .close").trigger("click");  //手动关闭
+        		 loadtable();
         	 }
 
 		},
 		error:function(data){
 			Public.message("error",data.message);
 			$(".close").trigger("click")
+			loadtable();
 		}
 	});
 }
