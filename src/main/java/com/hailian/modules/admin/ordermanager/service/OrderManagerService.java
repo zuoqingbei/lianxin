@@ -390,7 +390,12 @@ public class OrderManagerService {
 	private double getFinalScore(int reportid) {
 		Long orderNum = OrderManagerService.service.getOrderNum(reportid).get("orderNum");//订单数量
 		Long orderOnTimeNum =OrderManagerService.service.getOnTimeSubmitOrderNum(reportid).get("orderOnTimeNum");//根据报告员获取按时递交数
-		double submitNum=(orderOnTimeNum/orderNum)*0.1;//递交率占比
+		double submitNum=0;
+		if(orderNum==0){
+			 submitNum=0;
+		}else{
+			 submitNum=(orderOnTimeNum/orderNum)*0.1;//递交率占比
+		}
 		BigDecimal score =OrderManagerService.service.getScore(reportid).get("score"); //获取报告员质量占比
 		if(score==null){
 			score =new BigDecimal(0);
