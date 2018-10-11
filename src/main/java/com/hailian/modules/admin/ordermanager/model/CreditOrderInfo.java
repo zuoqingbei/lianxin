@@ -642,10 +642,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				//status='292'值状态为客户确认(订单核实)状态 ,其维护在字典表中
 				fromSql.append(" and status='292' ");
 			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
-				//status='294'值状态为订单查档 ,其维护在字典表中
-				fromSql.append(" and status='294' ");
+				//status='294'值状态为代理分配和订单查档(国外) ,其维护在字典表中
+				fromSql.append(" and status in('294','295') ");
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
-				//status='294'值状态为递交订单(翻译质检合格) ,其维护在字典表中
+				//status='310'值状态为递交订单(翻译质检合格) ,其维护在字典表中
 				fromSql.append(" and status='310' ");
 			}
 			

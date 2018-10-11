@@ -85,6 +85,7 @@ let Verify = {
     },*/
     modalSubmit(){
         /**模态框提交事件 */
+    	let that = this
     	console.log("模态框提交事件");
         $("#modal_submit").click(function(){
         	console.log("点击提交");
@@ -116,7 +117,8 @@ let Verify = {
               		dataType:"json",
               		success:function(obj){
               				console.log("回显的数据:"+obj);
-              			 	$("#table").bootstrapTable("load",obj)
+              			 	$("#table").bootstrapTable("load",obj);
+              			 	console.log("回显成功!");
               			 }
           			}) 
         })
@@ -126,6 +128,8 @@ let Verify = {
         	$("#status").val("292");
         	$(".tableValue").ajaxSubmit({
         		success:function(data){
+        			
+        			location.reload()
         			console.log("状态为成功,message:"+data.message);
         			if(data.statusCode===1){
                    	 console.log("此处进入success状态2222222222");
@@ -151,7 +155,8 @@ let Verify = {
               		dataType:"json",
               		success:function(obj){
               				console.log("回显的数据:"+obj);
-              			 	$("#table").bootstrapTable("load",obj)
+              			 	$("#table").bootstrapTable("load",obj);
+              			 	console.log("回显成功!");
               			 }
           			}) 
         })
@@ -186,7 +191,8 @@ let Verify = {
               		dataType:"json",
               		success:function(obj){
               				console.log("回显的数据:"+obj);
-              			 	$("#table").bootstrapTable("load",obj)
+              			 	$("#table").bootstrapTable("load",obj);
+              			 	console.log("回显成功!");
               			 }
           			}) 
         })
@@ -351,15 +357,15 @@ let Verify = {
         $(".upload-over").remove();
         if(row.files.length === 0){return}
         for (var i in row.files){
-        	let filetype = row.files[i].ext
+        	let filetype = row.files[i].ext.toLowerCase()
         	let fileicon = ''
         	if(filetype === 'doc' || filetype === 'docx') {
 	             fileicon = '/static/credit/imgs/order/word.png'
-	           }else if(filetype === 'XLSX' || filetype === 'XLS') {
+	           }else if(filetype === 'xlsx' || filetype === 'xls') {
 	             fileicon = '/static/credit/imgs/order/Excel.png'
-	           }else if(filetype === 'PNG') {
+	           }else if(filetype === 'png') {
 	             fileicon = '/static/credit/imgs/order/PNG.png'
-	           }else if(filetype === 'JPG') {
+	           }else if(filetype === 'jpg') {
 	             fileicon = '/static/credit/imgs/order/JPG.png'
 	           }else if(filetype === 'pdf') {
 	             fileicon = '/static/credit/imgs/order/PDF.png'
@@ -389,8 +395,13 @@ let Verify = {
         				 
            $(".uploadFile:not(.upload-over)").before(fileArr)
            
-           $(".upload-over").click(function(){
+           $(".upload-over").click(function(e){
+        	   console.log($(e.target))
+        	   if($(e.target).parent().attr("class") === 'close') {
+        		   return
+        	   }
         	   window.open($(this).attr("url"))
+        	   
            })
         }
         
