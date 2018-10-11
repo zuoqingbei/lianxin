@@ -136,6 +136,7 @@ let Index = {
 		        				"attr.end_date":$("#txt_search_date").val(),
 		        				"attr.company_by_report":$("#txt_search_departmentname").val(),
 		        				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
+		        				"attr.agent_id":$("#txt_search_agency").find("option:selected").val(),
 		        				"status":checkchar},
 		        			 dataType:"json",
 		        			 success:function(data){

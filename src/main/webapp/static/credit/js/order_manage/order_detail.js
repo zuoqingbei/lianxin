@@ -9,7 +9,7 @@ let Filing = {
         /*质检意见*/
         this.initTable4();
         /*附件*/
-        this.fileJudge();
+        //this.fileJudge();
          /*出资比例环形图*/
         this.initEchartsPie();
     },

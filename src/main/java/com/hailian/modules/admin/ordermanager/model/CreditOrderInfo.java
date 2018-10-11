@@ -483,6 +483,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String country=null;
 		Integer agent_id=null;
 		String date="";
+		String company_by_report="";
+		String right_company_name_en="";
 		if(model!=null) {
 		//客户id
 		 custom_id=model.getStr("custom_id");
@@ -497,18 +499,18 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if(end_date!=null) {
 		 date=sdf.format(end_date);
 		}
-		}
-		
 		//准确公司名称(经过翻译后的公司名称是中文)
-		String company_by_report=model.getStr("company_by_report");
+		company_by_report=model.getStr("company_by_report");
 		if(company_by_report!=null) {
 			company_by_report=company_by_report.trim();
 		}
 		//填写订单时输入的公司名称
-		String right_company_name_en=model.getStr("right_company_name_en");
+		right_company_name_en=model.getStr("right_company_name_en");
 		if(right_company_name_en!=null) {
 			right_company_name_en=right_company_name_en.trim();
 		}
+		}
+		
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
 		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
