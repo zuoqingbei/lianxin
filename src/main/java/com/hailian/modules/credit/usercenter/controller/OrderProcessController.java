@@ -274,48 +274,36 @@ public class OrderProcessController extends BaseProjectController{
 	 */
 	public void statusSaveWithFileUpLoad(){
 		try {
-			String orderNum = getModel(CreditOrderInfo.class).get("id")+"";
-			ResultType result = uploadFile(orderNum,"");
-			statusSave();
-			renderJson(result);
+			//从前台获取文件
+			List<UploadFile>  upFileList = getFiles("Files");
+			//获取订单id和状态
+			CreditOrderInfo model = getModel(CreditOrderInfo.class);
+			String orderId =model.get("id")+"";
+			String oldStatus = model.findById(orderId).get("status")+"";
+			if(orderId==null||oldStatus==null||"".equals(orderId)||"".equals(oldStatus)){
+				renderJson(new ResultType(0,"订单编号和订单状态不能为空!"));
+				return;
+			}
+			//上传文件
+			ResultType result = uploadFile(orderId,oldStatus,upFileList);
+			if(result.getStatusCode()==0){
+				renderJson(result);
+			}else{
+				//更新状态
+				if(statusSave()==null){
+					renderJson(new ResultType(0,"订单状态更新失败!"));
+				}
+			}
 		} catch (Exception e) {
 			renderJson(new ResultType(0,"发生未知错误!"));
 		}
-		
-		/*try {
-			//更新状态
-			CreditOrderInfo model = statusSave();
-			if(model==null){
-				renderJson(new ResultType(0,"订单状态更新失败!"));
-				return;
-			}
-			//获取订单id和状态
-			String orderId =model.get("id")+"";
-			String oldStatus = model.get("status")+"";
-			String status = model.findById(orderId).get("status")+"";
-			if(orderId==null||status==null||"".equals(orderId)||"".equals(status)){
-				renderJson(new ResultType(0,"订单编号和订单状态不能为空!"));
-			}
-			//上传文件
-			ResultType result = uploadFile(orderId,status);
-			if(result.getStatusCode()==0){
-				Map<String,Object> map = new HashMap<>();
-				map.put("status", oldStatus);
-				PublicUpdateMod(map);
-				renderJson(result);
-				return;
-			}
-		} catch (Exception e) {
-			renderJson(new ResultType(0,"发生未知错误!"));
-		}*/
 	}
 	/**
 	 * 获取前台文件上传到文件服务器并将文件信息记录到文件实体表
 	 * return resultJson
 	 * @param orderId status 
 	 */
-	private ResultType uploadFile(String orderId, String status){
-		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+	private ResultType uploadFile(String orderId, String status,List<UploadFile> upFileList){
 		List<File> files = new ArrayList<File>();
 		CreditUploadFileModel fileModel = new CreditUploadFileModel();
 		fileModel.set("business_type", status);
