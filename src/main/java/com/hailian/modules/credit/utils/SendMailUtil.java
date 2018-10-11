@@ -58,7 +58,7 @@ public class SendMailUtil {
         //设置传输协议
         props.setProperty("mail.transport.protocol", "smtp");
         //设置发件人的SMTP服务器地址
-        props.setProperty("mail.smtp.host", "smtp.163.com");
+        props.setProperty("mail.smtp.host", "smtp.qq.com");
         //2、创建定义整个应用程序所需的环境信息的 Session 对象
         Session session = Session.getInstance(props);
         //设置调试信息在控制台打印出来
@@ -101,22 +101,28 @@ public class SendMailUtil {
          * MimeMessage.RecipientType.BCC：密送
          */
         msg.setRecipient(MimeMessage.RecipientType.TO,new InternetAddress(recipientAddress));
+        msg.addRecipients(MimeMessage.RecipientType.CC, InternetAddress.parse(senderAddress));
         //设置邮件主题
         msg.setSubject(title,"UTF-8");
+        StringBuffer messageText=new StringBuffer();//内容以html格式发送,防止被当成垃圾邮件
+        messageText.append(content);
+
         //设置邮件正文
-        msg.setContent(content, "text/html;charset=UTF-8");
+        msg.setContent(messageText.toString(), "text/html;charset=UTF-8");
         //设置邮件的发送时间,默认立即发送
         msg.setSentDate(new Date());
          
         return msg;
     }
     public static String sendMailCode(String recipientAddress) {
-    	String title="这是一封重置密码的验证码邮件";
+    	String title="这是一封邮件";
     	String code=getCode();
     	String content="您的验证码是:"+code+"。如果不是本人操作请忽略。";
+    	
 //    	new SendMailUtil("2530644578@qq.com", recipientAddress, "2530644578@qq.com", title, content, "typwolfiqocrecaf").sendMail();
     	try {
-			new SendMailUtil("dou_shai@163.com", recipientAddress, "dou_shai@163.com", "", code, "dsh1994").sendMail();
+    		new SendMailUtil("2530644578@qq.com", recipientAddress, "2530644578@qq.com", title, content, "typwolfiqocrecaf").sendMail();
+//			new SendMailUtil("dou_shai@163.com", recipientAddress, "dou_shai@163.com", title, code, "dsh1994").sendMail();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,7 +131,7 @@ public class SendMailUtil {
     	return code; 
     }
     public static void main(String[] args) throws Exception {
-    	sendMailCode("15269274025@163.com");
+    	sendMailCode("1241671759@qq.com");
 	}
     /**
      * 生成邮箱验证码

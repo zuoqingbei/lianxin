@@ -141,7 +141,13 @@ public class HomeController extends BaseProjectController {
 	public void list(){
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		String sortname=getPara("sortName");
-		String sortorder=getPara("sortOrder");		
+		if(!StringUtils.isNotBlank(sortname)) {
+			sortname="receiver_date";
+		}
+		String sortorder=getPara("sortOrder");
+		if(!StringUtils.isNotBlank(sortorder)) {
+			sortorder="desc";
+		}
 		SysUser user= (SysUser) getSessionUser();
 		String status =getPara("status");
 		if(StringUtils.isNotBlank(status)) {

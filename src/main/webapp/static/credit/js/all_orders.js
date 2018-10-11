@@ -120,29 +120,8 @@ let Index = {
 
         $("#btn_query").click(function(){
         	
-        	            /**发起ajax请求  获取表格数据*/
-            var checked=[];
-		    	 var checkchar=""
-		                 $("input[name='status']:checked").each(function(i){
-		                       checked[i] = $(this).val();
-		                       checkchar+=checked[i]+","
-		                 });
-		                 console.log(checkchar);
-		        		$.ajax({
-		        			type:"post",
-		        			url:"/credit/front/home/list",
-		        			data:{"attr.custom_id":$("#txt_search_cus").find("option:selected").val(),
-		        				"attr.country":$("#txt_search_country").find("option:selected").val(),
-		        				"attr.end_date":$("#txt_search_date").val(),
-		        				"attr.company_by_report":$("#txt_search_departmentname").val(),
-		        				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
-		        				"attr.agent_id":$("#txt_search_agency").find("option:selected").val(),
-		        				"status":checkchar},
-		        			 dataType:"json",
-		        			 success:function(data){
-		        			 	 $("#table").bootstrapTable("load",data)
-		        			 }
-		        		});
+        	/**发起ajax请求  获取表格数据*/
+           	loadtable();
 		        		
             let companyName = $("#txt_search_departmentname").val();//公司名称
             let orderCName = $("#txt_search_companyEngName").val();//订单公司名称
@@ -286,7 +265,7 @@ let Index = {
                           $("#companyName1").text(row.companyName);
                           $("#reportSpeed1").text(row.reportSpeed);
                           $("#orderid1").val(row.id);
-                          $("#update_reason").val(row.revoke_reason);
+                          $("#update_reason").val(row.update_reason);
                         }
                     },
                     formatter: _this.operateFormatter
@@ -334,7 +313,30 @@ let Index = {
     }
 }
 Index.init();
-
+function loadtable(){
+	var checked=[];
+	 var checkchar=""
+             $("input[name='status']:checked").each(function(i){
+                   checked[i] = $(this).val();
+                   checkchar+=checked[i]+","
+             });
+             console.log(checkchar);
+    		$.ajax({
+    			type:"post",
+    			url:"/credit/front/home/list",
+    			data:{"attr.custom_id":$("#txt_search_cus").find("option:selected").val(),
+    				"attr.country":$("#txt_search_country").find("option:selected").val(),
+    				"attr.end_date":$("#txt_search_date").val(),
+    				"attr.agent_id":$("#txt_search_agency").find("option:selected").val(),
+    				"attr.company_by_report":$("#txt_search_departmentname").val(),
+    				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
+    				"status":checkchar},
+    			 dataType:"json",
+    			 success:function(data){
+    			 	 $("#table").bootstrapTable("load",data)
+    			 }
+    		});
+}
 
 
 
