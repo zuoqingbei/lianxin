@@ -182,7 +182,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//结束时间
 		String end_date = model.getStr("end_date");
 		//代理
-		String agent_id=model.getStr("agent_id");
+		Integer agent_id=model.get("agent_id");
 		//准确公司名称(经过翻译后的公司名称是中文)
 		String company_by_report=model.getStr("company_by_report");
 		if(company_by_report!=null) {
@@ -210,7 +210,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -232,7 +232,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.end_date=?");
 			params.add(end_date);
 		}
-		if (StringUtils.isNotBlank(agent_id)) {
+		if (agent_id!=null) {
 			sql.append(" and t.agent_id=?");
 			params.add(agent_id);
 		}
@@ -293,7 +293,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append("left join credit_report_usetime c3 on c3.id= t.user_time_id ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append("where 1 = 1 and t.del_flag='0' and t.id=?");
+		sql.append("where 1 = 1 and t.del_flag='0' and t.id=? and t.company_id is not null ");
 		return dao.findFirst(sql.toString(), id);
 	}
 
@@ -319,7 +319,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -372,7 +372,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//国家
 		String country = model.getStr("country");
 		//代理
-		String agent_id=model.getStr("agent_id");
+		Integer agent_id=model.get("agent_id");
 		//结束时间
 		Date end_date = model.get("end_date");
 		String date = "";
@@ -407,7 +407,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
 			params.add(user.get("userid").toString());
@@ -429,7 +429,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.end_date=?");
 			params.add(date);
 		}
-		if (StringUtils.isNotBlank(agent_id)) {
+		if (agent_id!=null) {
 			sql.append(" and t.agent_id=?");
 			params.add(agent_id);
 		}
@@ -481,7 +481,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String custom_id=null;
 		String continent=null;
 		String country=null;
-		String agent_id="";
+		Integer agent_id=null;
 		String date="";
 		if(model!=null) {
 		//客户id
@@ -493,7 +493,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//结束时间
 		Date end_date=model.get("end_date");
 		//代理
-		 agent_id=model.getStr("agent_id");
+		 agent_id=model.get("agent_id");
 		if(end_date!=null) {
 		 date=sdf.format(end_date);
 		}
@@ -526,7 +526,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
 			params.add(user.get("userid").toString());
@@ -548,7 +548,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.end_date=?");
 			params.add(date);
 		}
-		if (StringUtils.isNotBlank(agent_id)) {
+		if (agent_id!=null) {
 			sql.append(" and t.agent_id=?");
 			params.add(agent_id);
 		}

@@ -54,6 +54,7 @@ let Index = {
 		        				"attr.continent":$("#continent").find("option:selected").val(),
 		        				"attr.country":$("#country").find("option:selected").val(),
 		        				"attr.end_date":$("#dead_date").val(),
+		        				"attr.agent_id":$("#agentId").find("option:selected").val(),
 		        				"attr.company_by_report":$("#txt_search_departmentname").val(),
 		        				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
 		        				"status":checkchar},
@@ -67,8 +68,9 @@ let Index = {
       })
 
       /**点击重置按钮 */
-      $(".resetrFilter").click(function(){
+      $("#btn_reset").click(function(){
         $('.form-check-input:checkbox').removeAttr('checked');
+        $("#formSearch div input").val("");
       })
     },
     searchEvent(){
