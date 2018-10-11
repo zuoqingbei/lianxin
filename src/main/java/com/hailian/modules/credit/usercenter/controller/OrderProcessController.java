@@ -127,15 +127,6 @@ public class OrderProcessController extends BaseProjectController{
 		render(ORDER_MANAGE_PATH+"order_filing.html");
 	}
 	/**
-	 * @todo   展示报告管理下的信息录入
-	 * @time   2018年9月29日 上午 11:02
-	 * @author lzg
-	 * @return_type   void
-	 */
-	public void showReportedBasicInfo(){
-		render(REPORT_MANAGE_PATH+"reported_basic_info.html");
-	}
-	/**
 	 * @todo   展示未开发的页数
 	 * @time   2018年10月8日 下午05:02
 	 * @author lzg
@@ -152,6 +143,24 @@ public class OrderProcessController extends BaseProjectController{
 	 */
 	public void showSubmitReport(){
 		render(ORDER_MANAGE_PATH+"order_submit.html");
+	}
+	/**
+	 * @todo   展示报告管理下的信息录入
+	 * @time   2018年10月11日 上午 11:02
+	 * @author lzg
+	 * @return_type   void
+	 */
+	public void showReportInfoImport(){
+		render(REPORT_MANAGE_PATH+"report_info_import.html");
+	}
+	/**
+	 * @todo   展示报告管理下的信息录入的填报详情页
+	 * @time   2018年9月29日 上午 11:02
+	 * @author lzg
+	 * @return_type   void
+	 */
+	public void showReportedBasicInfo(){
+		render(REPORT_MANAGE_PATH+"reported_basic_info.html");
 	}
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){

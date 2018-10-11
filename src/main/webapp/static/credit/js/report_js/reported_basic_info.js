@@ -1,5 +1,5 @@
 
-let Reported = {
+let BasicWrite = {
     init(){
         /**函数初始化 */
         this.dateForm(); 
@@ -10,6 +10,8 @@ let Reported = {
         this.addInvestmentRow();
         this.addManagementRow();
         this.tabChange();
+        this.goToInfoImport();
+        Public.tabFixed(".tab-bar",".main",120,90)
     },
     dateForm(){
         /**日期控件 */
@@ -28,20 +30,33 @@ let Reported = {
     },
     tabChange(){
         /**tab切换事件 */
-        $(".tab-group span").click(()=>{
-            $(this).addClass("tab-active").siblings().removeClass("tab-active")
+        $(".tab-bar li").click((e)=>{
+            $(e.target).addClass("tab-active").parents("li").siblings().children('a').removeClass("tab-active")
+
+            /* 解决锚链接的偏移问题*/
+            $("#container ").css('height',"calc(100% - 5.6rem)");
+            $(".main ").css('marginBottom',"-.6rem");
+        })
+    },
+    goToInfoImport(){
+        /**点击面包屑去信息录入列表 */
+        $("#infoImport").click(()=>{
+            Public.goToInfoImport()
         })
     },
     addRcordRow(){
         /**历史纪录新增或修改一行 */
         let _this = this
+        this.id = 0
         $("#record_modal_save").click(()=>{
+            _this.id++;
             let modal_record_date = $("#modal_record_date").val();
             let modal_change_items = $("#modal_change_items").val();
             let modal_change_font = $("#modal_change_font").val();
             let modal_change_back = $("#modal_change_back").val();
             
             let _data = {
+                id:_this.id,
                 date:modal_record_date?modal_record_date:'-',
                 change_item:modal_change_items?modal_change_items:'-',
                 change_font:modal_change_font?modal_change_font:'-',
@@ -54,7 +69,7 @@ let Reported = {
                     row:_data
                 })
             }else {
-
+                
                 $('#tableRecord').bootstrapTable('append', _data)
             }
         })
@@ -67,12 +82,15 @@ let Reported = {
     addShareholdersInfoRow(){
         /**股东信息新增一行或修改 */
         let _this = this
+        this.id_1 = 0
         $("#shareholders_info_modal_save").click(()=>{
+            this.id_1++;
             let name = $("#modal_shareholdersinfo_name").val();
             let country = $("#modal_shareholdersinfo_country").val();
             let money = $("#modal_shareholdersinfo_money").val();
             
             let _data = {
+                id:this.id_1,
                 name:name?name:'-',
                 country:country?country:'-',
                 money:money?money:'-'
@@ -97,7 +115,9 @@ let Reported = {
     addShareholdersDetailRow(){
         /**股东详情新增一行或修改 */
         let _this = this
+        this.id_2 = 0
         $("#shareholders_detail_modal_save").click(()=>{
+            this.id_2++; 
             let name = $("#modal_shareholdersdetail_name").val();
             let time = $("#modal_shareholdersdetail_time").val();
             let money = $("#modal_shareholdersdetail_money").val();
@@ -106,6 +126,7 @@ let Reported = {
             let email = $("#modal_shareholdersdetail_email").val();
             
             let _data = {
+                id:this.id_2,
                 name:name?name:'-',
                 create_time:time?time:'-',
                 create_money:money?money:'-',
@@ -133,10 +154,13 @@ let Reported = {
     addInvestmentRow(){
         /**出资情况新增一行或修改 */
         let _this = this
+        this.id_3 = 0
         $("#investment_modal_save").click(()=>{
+            this.id_3++;
             let name = $("#modal_investment_name").val();
             let money = $("#modal_investment_money").val();      
             let _data = {
+                id: this.id_3,
                 name:name?name:'-',
                 money:money?money:'-'
             }
@@ -160,7 +184,9 @@ let Reported = {
     addManagementRow(){
         /**管理层新增一行或修改 */
         let _this = this
+        this.id_4 = 0
         $("#management_modal_save").click(()=>{
+            this.id_4++;
             let name = $("#modal_management_name").val();
             let position = $("#modal_management_position").val();
             let id_card = $("#modal_management_id_card").val();
@@ -169,6 +195,7 @@ let Reported = {
             let email = $("#modal_management_email").val();
 
             let _data = {
+                id:this.id_4,
                 name:name?name:'-',
                 position:position?position:'-',
                 id_card:id_card?id_card:'-',
@@ -200,32 +227,27 @@ let Reported = {
         $tableRecord.bootstrapTable({
             height: $(".table-content1").height()/3*2,
             columns: [
-                 {
+               {
                   title: '日期',
                   field: 'date',
-                  align: 'center',
                   valign: 'middle',
                   width:'20%'
                 },{
                   field: 'change_item',
                   title: '变更项',
-                  align: 'center',
                   width:'20%'
                 }, {
                   field: 'change_font',
                   title: '变更前',
-                  align: 'center',
                   width:'20%'
                 }, {
                   title: '变更后',
                   field: 'change_back',
-                  align: 'center',
                   valign: 'middle',
                   width:'20%'
                 },{
                     field: 'operate',
                     title: '操作',
-                    align: 'center',
                     width:'20%',
                     events: {
                       "click .edit":(e,value,row,index)=>{
@@ -236,6 +258,29 @@ let Reported = {
                         $("#modal_change_items").val(change_item)
                         $("#modal_change_font").val(change_font)
                         $("#modal_change_back").val(change_back)
+                        
+                      },
+                      "click .delete":(e,value,row,index)=>{
+                          e.stopPropagation();
+                          $('.isDelete').removeClass("deleteShow")
+                          $(e.target).children(".isDelete").toggleClass("deleteShow")
+                          $(document).click(function(){
+                            $('.isDelete').removeClass("deleteShow")
+                          })
+                          $(e.target).children(".isDelete").click(function(e){
+                            e.stopPropagation();
+                          })
+
+                          $(".popCancel").click(function(){
+                            $('.isDelete').removeClass("deleteShow")
+                          })
+                          $(".popEnter").on('click', function(){
+                            $("#tableRecord").bootstrapTable("remove",{
+                                field:'id',
+                                values:[row.id]
+                            })
+                            $('.isDelete').removeClass("deleteShow")
+                          })
                         
                       }
                     },
@@ -248,16 +293,7 @@ let Reported = {
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
-            fixedColumns: true,
-            fixedNumber: 1,
-            queryParamsType:'',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-              console.log(params)
-              return {//这里的params是table提供的  
-                  offset: params.offset,//从数据库第几条记录开始  
-                  limit: params.limit//找多少条  
-              };   
-          }, 
+           
          
           });
 
@@ -266,24 +302,24 @@ let Reported = {
             $tableShareholdersInfo.bootstrapTable({
                 height: $(".table-content2").height()/3*2,
                 columns: [
-                    {
+                  {
                     title: '姓名',
                     field: 'name',
-                    align: 'center',
                     valign: 'middle',
+                    width:'25%',
                     editable:true
                     },{
                     field: 'country',
                     title: '国籍/国家',
-                    align: 'center'
+                    width:'25%',
                     }, {
                     field: 'money',
                     title: '出资比例(%)',
-                    align: 'center',
+                    width:'25%',
                     },{
                         field: 'operate',
                         title: '操作',
-                        align: 'center',
+                        width:'25%',
                         events: {
                         "click .edit":(e,value,row,index)=>{
                             _this.shareholdersInfoIndex = index
@@ -292,6 +328,29 @@ let Reported = {
                         $("#modal_shareholdersinfo_name").val(name)
                         $("#modal_shareholdersinfo_country").val(country)
                         $("#modal_shareholdersinfo_money").val(money)
+                        },
+                        "click .delete":(e,value,row,index)=>{
+                            e.stopPropagation();
+                            $('.isDelete').removeClass("deleteShow")
+                            $(e.target).children(".isDelete").toggleClass("deleteShow")
+                            $(document).click(function(){
+                              $('.isDelete').removeClass("deleteShow")
+                            })
+                            $(e.target).children(".isDelete").click(function(e){
+                              e.stopPropagation();
+                            })
+  
+                            $(".popCancel").click(function(){
+                              $('.isDelete').removeClass("deleteShow")
+                            })
+                            $(".popEnter").on('click', function(){
+                                $tableShareholdersInfo.bootstrapTable("remove",{
+                                  field:'id',
+                                  values:[row.id]
+                              })
+                              $('.isDelete').removeClass("deleteShow")
+                            })
+                          
                         }
                     },
                     formatter: _this.operateFormatterShareholdersInfo
@@ -303,16 +362,6 @@ let Reported = {
                 smartDisplay:false,
                 iconsPrefix:'fa',
                 locales:'zh-CN',
-                fixedColumns: true,
-                fixedNumber: 1,
-                queryParamsType:'',
-                queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-                console.log(params)
-                return {//这里的params是table提供的  
-                    offset: params.offset,//从数据库第几条记录开始  
-                    limit: params.limit//找多少条  
-                };   
-            }, 
             
             });
             /**股东详情表初始化 */
@@ -323,33 +372,33 @@ let Reported = {
                   {
                   title: '名称',
                   field: 'name',
-                  align: 'center',
+                  width :'14.2%',
                   valign: 'middle',
                   editable:true
                   },{
                   field: 'create_time',
                   title: '成立时间',
-                  align: 'center'
+                    width :'14.2%',
                   }, {
                   field: 'create_money',
                   title: '注册资金',
-                  align: 'center',
+                    width :'14.2%',
                   }, {
                     field: 'telephone',
                     title: '联系电话',
-                    align: 'center',
+                      width :'14.2%',
                 }, {
                     field: 'fax_no',
                     title: '传真号码',
-                    align: 'center',
+                      width :'14.2%',
                 }, {
                     field: 'email',
                     title: '邮箱地址',
-                    align: 'center',
+                      width :'14.2%',
                 },{
                     field: 'operate',
                     title: '操作',
-                    align: 'center',
+                      width :'14.2%',
                     events: {
                     "click .edit":(e,value,row,index)=>{
                         _this.shareholdersDetailIndex = index
@@ -361,6 +410,29 @@ let Reported = {
                     $("#modal_shareholdersdetail_tel").val(telephone)
                     $("#modal_shareholdersdetail_fax").val(fax_no)
                     $("#modal_shareholdersdetail_email").val(email)
+                    },
+                    "click .delete":(e,value,row,index)=>{
+                        e.stopPropagation();
+                        $('.isDelete').removeClass("deleteShow")
+                        $(e.target).children(".isDelete").toggleClass("deleteShow")
+                        $(document).click(function(){
+                          $('.isDelete').removeClass("deleteShow")
+                        })
+                        $(e.target).children(".isDelete").click(function(e){
+                          e.stopPropagation();
+                        })
+
+                        $(".popCancel").click(function(){
+                          $('.isDelete').removeClass("deleteShow")
+                        })
+                        $(".popEnter").on('click', function(){
+                            $tableShareholdersDetail.bootstrapTable("remove",{
+                              field:'id',
+                              values:[row.id]
+                          })
+                          $('.isDelete').removeClass("deleteShow")
+                        })
+                      
                     }
                 },
                 formatter: _this.operateFormatterShareholdersDetail
@@ -372,16 +444,6 @@ let Reported = {
               smartDisplay:false,
               iconsPrefix:'fa',
               locales:'zh-CN',
-              fixedColumns: true,
-              fixedNumber: 1,
-              queryParamsType:'',
-              queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-              console.log(params)
-              return {//这里的params是table提供的  
-                  offset: params.offset,//从数据库第几条记录开始  
-                  limit: params.limit//找多少条  
-              };   
-          }, 
           
           });
             /**投资情况表初始化 */
@@ -392,17 +454,17 @@ let Reported = {
                     {
                     title: '公司名称',
                     field: 'name',
-                    align: 'center',
+                    width :'33.3%',
                     valign: 'middle',
                     editable:true
                     },{
                     field: 'money',
                     title: '出资比例(%)',
-                    align: 'center'
+                    width :'33.3%',
                     },{
                       field: 'operate',
                       title: '操作',
-                      align: 'center',
+                      width :'33.3%',
                       events: {
                       "click .edit":(e,value,row,index)=>{
                           _this.investmentIndex = index
@@ -411,7 +473,30 @@ let Reported = {
                       $("#modal_investment_name").val(name)
                       $("#modal_investment_money").val(money)
                      
-                      }
+                      },
+                      "click .delete":(e,value,row,index)=>{
+                        e.stopPropagation();
+                        $('.isDelete').removeClass("deleteShow")
+                        $(e.target).children(".isDelete").toggleClass("deleteShow")
+                        $(document).click(function(){
+                          $('.isDelete').removeClass("deleteShow")
+                        })
+                        $(e.target).children(".isDelete").click(function(e){
+                          e.stopPropagation();
+                        })
+
+                        $(".popCancel").click(function(){
+                          $('.isDelete').removeClass("deleteShow")
+                        })
+                        $(".popEnter").on('click', function(){
+                            $tableInvestment.bootstrapTable("remove",{
+                              field:'id',
+                              values:[row.id]
+                          })
+                          $('.isDelete').removeClass("deleteShow")
+                        })
+                      
+                    }
                   },
                   formatter: _this.operateFormatterInvestment
                   }
@@ -421,17 +506,7 @@ let Reported = {
                 pagination: false, //分页
                 smartDisplay:false,
                 iconsPrefix:'fa',
-                locales:'zh-CN',
-                fixedColumns: true,
-                fixedNumber: 1,
-                queryParamsType:'',
-                queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-                console.log(params)
-                return {//这里的params是table提供的  
-                    offset: params.offset,//从数据库第几条记录开始  
-                    limit: params.limit//找多少条  
-                };   
-            }, 
+                locales:'zh-CN'            
             
             });
             /**管理层表初始化 */
@@ -442,33 +517,33 @@ let Reported = {
                   {
                   title: '姓名',
                   field: 'name',
-                  align: 'center',
+                    width :'14.2%',
                   valign: 'middle',
                   editable:true
                   },{
                   field: 'position',
                   title: '职务',
-                  align: 'center'
+                    width :'14.2%',
                   }, {
                   field: 'id_card',
                   title: '身份证号',
-                  align: 'center',
+                    width :'14.2%',
                   }, {
                     field: 'age',
                     title: '年龄',
-                    align: 'center',
+                      width :'14.2%',
                 }, {
                     field: 'tel',
                     title: '联系电话',
-                    align: 'center',
+                      width :'14.2%',
                 }, {
                     field: 'email',
                     title: '邮箱地址',
-                    align: 'center',
+                      width :'14.2%',
                 },{
                     field: 'operate',
                     title: '操作',
-                    align: 'center',
+                      width :'14.2%',
                     events: {
                     "click .edit":(e,value,row,index)=>{
                         _this.managementIndex = index
@@ -480,6 +555,29 @@ let Reported = {
                     $("#modal_management_age").val(age)
                     $("#modal_management_tel").val(tel)
                     $("#modal_management_email").val(email)
+                    },
+                    "click .delete":(e,value,row,index)=>{
+                        e.stopPropagation();
+                        $('.isDelete').removeClass("deleteShow")
+                        $(e.target).children(".isDelete").toggleClass("deleteShow")
+                        $(document).click(function(){
+                          $('.isDelete').removeClass("deleteShow")
+                        })
+                        $(e.target).children(".isDelete").click(function(e){
+                          e.stopPropagation();
+                        })
+
+                        $(".popCancel").click(function(){
+                          $('.isDelete').removeClass("deleteShow")
+                        })
+                        $(".popEnter").on('click', function(){
+                            $tableManagement.bootstrapTable("remove",{
+                              field:'id',
+                              values:[row.id]
+                          })
+                          $('.isDelete').removeClass("deleteShow")
+                        })
+                      
                     }
                 },
                 formatter: _this.operateFormatterManagement
@@ -491,40 +589,29 @@ let Reported = {
               smartDisplay:false,
               iconsPrefix:'fa',
               locales:'zh-CN',
-              fixedColumns: true,
-              fixedNumber: 1,
-              queryParamsType:'',
-              queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-              console.log(params)
-              return {//这里的params是table提供的  
-                  offset: params.offset,//从数据库第几条记录开始  
-                  limit: params.limit//找多少条  
-              };   
-          }, 
-          
           });
 
       },
       operateFormatterRecord(){
-        /**操作按钮格式化 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#recordModalCenter">编辑</a><a href="javascript:;" class="delete">删除</a></div>'
+        /**历史纪录 */
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#recordModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       },  
       operateFormatterShareholdersInfo(){
-        /**操作按钮格式化 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#shareholdersInfoModalCenter">编辑</a><a href="javascript:;" class="delete">删除</a></div>'
+        /**股东信息 */
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#shareholdersInfoModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       },
       operateFormatterShareholdersDetail(){
-        /**操作按钮格式化 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#shareholdersDetailModalCenter">编辑</a><a href="javascript:;" class="delete">删除</a></div>'
+        /**股东详情 */
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#shareholdersDetailModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       },    
       operateFormatterInvestment(){
-        /**操作按钮格式化 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#investmentModalCenter">编辑</a><a href="javascript:;" class="delete">删除</a></div>'
+        /**投资情况 */
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#investmentModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       },    
       operateFormatterManagement(){
-        /**操作按钮格式化 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#managementModalCenter">编辑</a><a href="javascript:;" class="delete">删除</a></div>'
+        /**管理层 */
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#managementModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       }    
 }
 
-Reported.init();
+BasicWrite.init();
