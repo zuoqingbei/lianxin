@@ -157,6 +157,17 @@ let Index = {
         $table.bootstrapTable({
             height: $(".table-content").height()*0.7,
             columns: [
+            	{
+                  title: '订单号',
+                  field: 'num',
+                  align: 'center',
+                  valign: 'middle',
+                  formatter:function(value,row,index){ 
+  
+                	var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
+                	return url; 
+              		}
+            	},
                 {
                   field: 'receiver_date',
                   title: '订单日期',
@@ -336,7 +347,10 @@ function loadtable(){
     			 	 $("#table").bootstrapTable("load",data)
     			 }
     		});
-}
+};
+function orderinfo(id){
+			Public.goToOrderDetail(id)
+		};
 
 
 

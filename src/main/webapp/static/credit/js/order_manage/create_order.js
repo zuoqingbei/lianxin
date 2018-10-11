@@ -158,7 +158,7 @@ let
 					});
 			}
 		},
-		formSave: function(){
+		/*formSave: function(){
 			$("input[name='attr.status']").val("289");
 					$("#orderForm").ajaxSubmit({
 						success:function(data){
@@ -176,7 +176,7 @@ let
 							Public.goList();
 						}
 					});
-		},
+		},*/
 		closeProgress(){
 			$(".close").click(function(){
 				$("#Close").hide();
