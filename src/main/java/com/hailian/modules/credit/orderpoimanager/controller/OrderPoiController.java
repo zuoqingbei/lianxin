@@ -364,7 +364,7 @@ public class OrderPoiController extends BaseProjectController {
 			  CreditReportPrice pricemodel = OrderManagerService.service.getPrice(countryType, speed, reporttype, orderType);
 			  int price_id=pricemodel.getInt("id");
 			  model.set("price_id", price_id);
-			  List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单提交","orderstate");
+			  List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单分配","orderstate");
 			  if(dictDetailBy !=null){
 				  int status=dictDetailBy.get(0).getInt("detail_id");
 				  model.set("status", status);
