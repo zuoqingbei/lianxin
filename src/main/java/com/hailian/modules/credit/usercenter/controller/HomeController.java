@@ -172,21 +172,20 @@ public class HomeController extends BaseProjectController {
 			status=status.substring(0, status.length()-1);
 		}
 		SysUser user= SysUser.dao.getUser(this);
-		
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
+		
 		//订单核实数量
-		int orderhs=OrderManagerService.service.getOrdersService("292",model,user,status);
+		int orderhs=OrderManagerService.service.getOrdersService("292",null,user,null);
 		//订单查档数量
-		int ordercd=OrderManagerService.service.getOrdersService("294",model,user,status);
+		int ordercd=OrderManagerService.service.getOrdersService("294",null,user,null);
 		//订单信息质检数量
-		int orderzj1=OrderManagerService.service.getOrdersService("298",model,user,status);
+		int orderzj1=OrderManagerService.service.getOrdersService("298",null,user,null);
 		//分析质检
-		int orderzj2=OrderManagerService.service.getOrdersService("303",model,user,status);
+		int orderzj2=OrderManagerService.service.getOrdersService("303",null,user,null);
 		//翻译质检
-		int orderzj3=OrderManagerService.service.getOrdersService("308",model,user,status);
-
+		int orderzj3=OrderManagerService.service.getOrdersService("308",null,user,null);
 		Record record=new Record();
 		record.set("user", user);
 		record.set("country", country);
@@ -393,7 +392,7 @@ public class HomeController extends BaseProjectController {
 		//更新订单信息
 		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
 		coi.set("update_reason", update_reason);
-		
+		coi.set("status", "312");
 		//获取订单编号
 		String num=coi.get("num");
 		//保存上传文件

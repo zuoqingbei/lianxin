@@ -136,6 +136,7 @@ let Index = {
 		        				"attr.end_date":$("#txt_search_date").val(),
 		        				"attr.company_by_report":$("#txt_search_departmentname").val(),
 		        				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
+		        				"attr.agent_id":$("#txt_search_agency").find("option:selected").val(),
 		        				"status":checkchar},
 		        			 dataType:"json",
 		        			 success:function(data){
@@ -266,6 +267,8 @@ let Index = {
                           $("#companyName").text(row.companyName);
                           $("#reportSpeed").text(row.reportSpeed);
                           $("#orderid").val(row.id);
+                          $("#orderNum1").text(row.num);
+                          $("#revoke_reason").val(row.revoke_reason);
                         
                         },
                         "click .order-update":(e,value,row,index)=>{
@@ -283,6 +286,7 @@ let Index = {
                           $("#companyName1").text(row.companyName);
                           $("#reportSpeed1").text(row.reportSpeed);
                           $("#orderid1").val(row.id);
+                          $("#update_reason").val(row.revoke_reason);
                         }
                     },
                     formatter: _this.operateFormatter
