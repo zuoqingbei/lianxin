@@ -69,7 +69,6 @@
     border-color: #d00;
 }
 .error-text  {
-    display: none;
     font-size: 1.125rem;
     color: #d00;
     margin-top: .4rem;

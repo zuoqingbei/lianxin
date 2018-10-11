@@ -18,6 +18,7 @@ let Password = {
             }else {
                 $("#email").removeClass("error-input")
                 $(".error-email").hide()
+                this.getMailCode(email);
 
             }
 
@@ -26,6 +27,7 @@ let Password = {
     },
     clickCodeNext(){
         /**验证码页面点击下一步 */
+    	let that = this
         $(".getCode .btn[type=submit]").click(function () {
             let email = $('#email').val()
             let code = $('#securityCode').val();
@@ -36,11 +38,11 @@ let Password = {
                 Public.message("info",'请输入验证码！')
                 return false;
             }
-
+            that.verifyMailCode(code);
+            
             /**验证 输入的验证码 */
 
-            $(".changePassword").show().siblings().hide();
-            $(".stage ul>li").eq(1).addClass('active').siblings().removeClass('active')
+           
             return false;
         });
     },
@@ -81,6 +83,7 @@ let Password = {
 
     },
     passwordNext(){
+    	let that = this
         /**密码下一步 */
         $(".changePassword .btn[type=submit]").click(function () {
             let psd = $('#password').val()
@@ -92,12 +95,40 @@ let Password = {
                 Public.message("info",'请再次输入验证码！')
                 return false;
             }
-
-            $(".success").show().siblings().hide();
-            $(".stage ul>li").eq(2).addClass('active').siblings().removeClass('active')
+            that.resetPassword(psd,psd2)//密码后台修改
+            
             return false;
         });
+    },
+    getMailCode(mail){
+        /**接收验证码 */
+    	$.post("/credit/sysuser/resetpassword/getMailCode",{recipientAddress:mail},function(data){
+    		alert(data)
+    	})
+    },
+    verifyMailCode(code){
+        /**核实验证码 */
+    	$.post("/credit/sysuser/resetpassword/verifyMailCode",{confirmCode:code},function(data){
+    		if(data.statusCode===1){
+    			 $(".changePassword").show().siblings().hide();
+                 $(".stage ul>li").eq(1).addClass('active').siblings().removeClass('active')
+               }else{
+            	   Public.message("error",'验证码不正确！')
+               }
+    	})
+    },
+    resetPassword(password,passwordConfirm){
+        /**接收验证码 */
+    	$.post("/credit/sysuser/resetpassword/reset",{password:password,passwordConfirm:passwordConfirm},function(data){
+    		if(data.statusCode===1){
+    			$(".success").show().siblings().hide();
+                $(".stage ul>li").eq(2).addClass('active').siblings().removeClass('active')
+              }else{
+           	   Public.message("error",'修改没有成功，请稍后再试！')
+              }
+    	})
     }
+    
 }
 
 

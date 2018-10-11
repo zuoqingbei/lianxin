@@ -70,7 +70,7 @@ public class ResetPassWordController extends BaseProjectController{
 			@Param(name = "passwordConfirm", description = "二次密码", required = false, dataType = "String")
 			})
 	@ApiOperation(url = "/credit/sysuser/resetpassword/resetPassword", httpMethod = "get", description = "修改密码")
-	public void resetPassword(){
+	public void reset(){
 		String password=getPara("password");
 		String passwordConfirm=getPara("passwordConfirm");
 		if(!password.equals(passwordConfirm)){
@@ -91,5 +91,8 @@ public class ResetPassWordController extends BaseProjectController{
 			}
 			
 		}
+	}
+	public static void main(String[] args) throws Exception {
+		String sendMailCode = SendMailUtil.sendMailCode("dou_shuihai@163.com");
 	}
 }

@@ -65,6 +65,7 @@ public class SendMailUtil {
         session.setDebug(true);
         //3、创建邮件的实例对象
         Message msg = getMimeMessage(session,title,content);
+        
         //4、根据session对象获取邮件传输对象Transport
         Transport transport = session.getTransport();
         //设置发件人的账户名和密码
@@ -89,6 +90,8 @@ public class SendMailUtil {
     public  MimeMessage getMimeMessage(Session session,String title,String content) throws Exception{
         //创建一封邮件的实例对象
         MimeMessage msg = new MimeMessage(session);
+      //防止成为垃圾邮件，披上outlook的马甲
+        msg.addHeader("X-Mailer","Microsoft Outlook Express 6.00.2900.2869");
         //设置发件人地址
         msg.setFrom(new InternetAddress(senderAddress));
         /**
@@ -107,11 +110,18 @@ public class SendMailUtil {
          
         return msg;
     }
-    public static String sendMailCode(String recipientAddress) throws Exception{
-    	String title="这是一封验证码邮件";
+    public static String sendMailCode(String recipientAddress) {
+    	String title="这是一封重置密码的验证码邮件";
     	String code=getCode();
     	String content="您的验证码是:"+code+"。如果不是本人操作请忽略。";
-    	new SendMailUtil("dou_shai@163.com", recipientAddress, "dou_shai@163.com", title, content, "dsh1994").sendMail();
+//    	new SendMailUtil("2530644578@qq.com", recipientAddress, "2530644578@qq.com", title, content, "typwolfiqocrecaf").sendMail();
+    	try {
+			new SendMailUtil("dou_shai@163.com", recipientAddress, "dou_shai@163.com", "", code, "dsh1994").sendMail();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return code;
+		}
     	return code; 
     }
     public static void main(String[] args) throws Exception {
