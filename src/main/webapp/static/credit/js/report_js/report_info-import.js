@@ -2,13 +2,12 @@ let Verify = {
     init(){
         /**初始化函数 */
         this.initTable();
-        this.toOrderDetail();
-        this.operateFormatter();
+//        this.operateFormatter();
         this.modalSubmit();
         this.popperFilter();
     },
 
- 
+   
     /**初始化表格 */
     initTable(){
         /**初始化表格 */
@@ -19,111 +18,142 @@ let Verify = {
         $table.bootstrapTable({
             height: $(".table-content").height()*0.98,
             columns: [
-                {
-                    title: '订单号',
-                    field: 'orderNum',
-                    align: 'center',
-                    valign: 'middle',
-                },{
-                    field: 'orderDate',
-                    title: '订单日期',
-                    sortable: true,
-                    align: 'center'
-                }, {
-                    field: 'deadDate',
-                    title: '到期日期',
-                    sortable: true,
-                    align: 'center',
-                }, {
-                    title: '客户代码',
-                    field: 'clientCode',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    title: `订单状态 &nbsp;<i class="fa fa-filter"></i>`,
-                    field: 'doState',
-                    align: 'center',
-                    valign: 'middle',
-
-                }, {
-                    title: '订单公司名称',
-                    field: 'orderComName',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    title: '公司中文名称',
-                    field: 'orderComName',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    title: '国家',
-                    field: 'country',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    title: '是否有财务信息',
-                    field: 'reportType',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    title: '最近财务信息年份',
-                    field: 'reportType',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    title: '报告类型',
-                    field: 'reportType',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    title: '报告员',
-                    field: 'reportType',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    title: '翻译员',
-                    field: 'reportType',
-                    align: 'center',
-                    valign: 'middle',
-                }, {
-                    title: '分析员',
-                    field: 'reportType',
-                    align: 'center',
-                    valign: 'middle',
-                },{
-                    field: 'operate',
-                    title: '操作',
-                    align: 'center',
-                    events: {
-                        "click .write":(e,value,row,index)=>{
-                            Public.goToBasicInfoWrite();
+                      {
+                          title: '订单号',
+                          field: 'num',
+                          align: 'center',
+                          valign: 'middle',
+                          formatter:function(value,row,index){ 
+                          	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  '; 
+                          } 
+                        },{
+                          field: 'receiver_date',
+                          title: '订单日期',
+                          sortable: true,
+                          align: 'center'
+                        }, {
+                          field: 'end_date',
+                          title: '到期日期',
+                          sortable: true,
+                          align: 'center',
+                        }, {
+                          title: '客户代码',
+                          field: 'custom_id',
+                          align: 'center',
+                          valign: 'middle',
+                        }, {
+                          title: `订单状态 &nbsp;<i class="fa fa-filter"></i>`,
+                          field: 'statusName',
+                          align: 'center',
+                          valign: 'middle',
+                        
+                        }, {
+                          title: '订单公司名称',
+                          field: 'companyNames',
+                          align: 'center',
+                          valign: 'middle',
+                        }, {
+                          title: '公司中文名称',
+                          field: 'companyZHNames',
+                          align: 'center',
+                          valign: 'middle',
+                        }, {
+                          title: '国家',
+                          field: 'country',
+                          align: 'center',
+                          valign: 'middle',
+                        }, {
+                          title: '是否有财务信息',
+                          field: 'is_hava_finance',
+                          align: 'center',
+                          valign: 'middle',
+                        }, {
+                          title: '最近财务信息年份',
+                          field: 'last_fiscal_year',
+                          align: 'center',
+                          valign: 'middle',
+                        }, {
+                          title: '报告类型',
+                          field: 'reportType',
+                          align: 'center',
+                          valign: 'middle',
+                        }, {
+                          title: '报告员',
+                          field: 'reportUser',
+                          align: 'center',
+                          valign: 'middle',
+                        }, {
+                          title: '翻译员',
+                          field: 'translateUser',
+                          align: 'center',
+                          valign: 'middle',
+                        }, {
+                          title: '分析员',
+                          field: 'analyzeUser',
+                          align: 'center',
+                          valign: 'middle',
+                        },{
+                          field: 'operate',
+                          title: '操作',
+                          align: 'center',
+                          events: {
+                            "click .write":(e,value,row,index)=>{
+                              console.log(row);
+                             /* $("#custom_id").html(row.custom_id);
+                              $("#customId").html(row.customId);
+                              $("#receiver_date").html(row.receiver_date);
+                              $("#continent").html(row.continent);
+                              $("#country").html(row.country);
+                              $("#reportType").html(row.reportType);
+                              $("#reportLanguage").html(row.reportLanguage);
+                              $("#companyNames").html(row.companyNames);
+                              $("#custom_id").html(row.custom_id);
+                              $("#speed").html(row.speed);
+                              $("#user_time").html(row.user_time);
+                              $("#companyZHNames").html(row.companyZHNames);
+                              $("#reporter_select").html(row.seleteStr);
+                              $("#orderId").val(row.id);
+                              $("#num").html(row.num);
+                              $("#remarks").val("");
+                              pageNumber = row.pageNumber;
+                              console.log("pageNumber====="+pageNumber);
+                              pageSize = row.pageSize;
+                          	  sortName = row.sortName;
+                          	  sortOrder = row.sortOrder;
+                          	  reportt = row.report_userKey;
+                          	  console.log("report_userKey====="+row.report_userKey);*/
+                          	  Public.goToBasicInfoWrite(row);
+                            }
+                          },
+                          formatter: _this.operateFormatter
                         }
-                    },
-                    formatter: _this.operateFormatter
-                }
-
-            ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
-            pagination: true, //分页
-            sidePagination: 'server',
-            pageNumber:1,
-            pageSize:20,
-            pageList: [20 , 30],
-            smartDisplay:false,
-            iconsPrefix:'fa',
-            locales:'zh-CN',
-            fixedColumns: true,
-            fixedNumber: 1,
-            queryParamsType:'',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
-                return {//这里的params是table提供的
-                    offset: params.offset,//从数据库第几条记录开始
-                    limit: params.limit//找多少条
-                };
-            },
-        });
+                      
+                    ],
+                    url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
+                    method : 'post', // 请求方式（*）post/get
+                    pagination: true, //分页
+                    sidePagination: 'server',
+                    pageNumber:1,
+                    pageSize:10,
+                    pageList: [10,20,30],
+                    smartDisplay:false,
+                    iconsPrefix:'fa',
+                    locales:'zh-CN',
+                    fixedColumns: true,
+                    fixedNumber: 1,
+                    queryParamsType:'',
+                    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+                    queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
+                      console.log(params)
+                      return {//这里的params是table提供的  
+                    	  pageNumber: params.pageNumber,//从数据库第几条记录开始  
+                    	  pageSize: params.pageSize,//找多少条  
+                    	  sortName: params.sortName, 
+                    	  sortOrder: params.sortOrder,
+                    	  searchType: "-1"
+                      };  
+                  },  
+                  });
         // sometimes footer render error.
         setTimeout(() => {
             $table.bootstrapTable('resetView');
@@ -132,14 +162,6 @@ let Verify = {
     /**操作按钮格式化 */
     operateFormatter(){
         return '<a href="javascript:;" class="write">填报</a>'
-    },
-    toOrderDetail(){
-        /**点击订单号跳转订单详情 */
-        $(".fixed-table-body-columns table tbody").click(function(e){
-            e = e || window.event;
-            let order_num = $(e.target).text();
-            window.location.href = 'order_detail.html?order_num='+order_num;
-        })
     },
     modalSubmit(){
         /**模态框提交事件 */

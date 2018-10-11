@@ -7,19 +7,10 @@ let Verify = {
     	this.sortOrder = "";
         this.initTable();
         this.modalSubmit();
-        this.toOrderDetail();
         this.operateFormatter();
         this.popperFilter();
     },
-    /**点击订单号跳转订单详情 */
-    toOrderDetail(){
-
-        $(".fixed-table-body-columns table tbody").click(function(e){
-            e = e || window.event;
-            let order_num = $(e.target).text();
-            window.location.href = 'order_detail.html?order_num='+order_num;
-        })
-    },
+  
     /**模态框提交事件 */
     modalSubmit(){
         $("#modal_submit").click(function(){
@@ -75,7 +66,9 @@ let Verify = {
                     align: 'center',
                     valign: 'middle',
                     formatter:function(value,row,index){ 
-                    	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  '; 
+                    	console.log('<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  ')
+                    	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  ';
+                    	
                     } 
                   },{
                     field: 'receiver_date',
