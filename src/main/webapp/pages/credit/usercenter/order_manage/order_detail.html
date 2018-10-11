@@ -499,18 +499,18 @@
                     <div class="order-detail mb-4 order-content">
                        	<%for(item in files){%>
                        		<%if(item==null){ %>
-                       			 <div class="uploadFile mt-3 mr-3 ml-3">
+                       			 <div class="uploadFile mt-3 mr-3 ml-3 ">
 		                            <!--<input type="file" name="" id="upload_file" value="" class="file-input" />-->
 		                            <img src="${BASE_PATH }static/credit/imgs/order/！.png"/>
 	                            	<p class="mt-2">暂无附件</p>
 	                            </div>
 	                            <%}else{%>
-                          	<div class="uploadFile mt-3 mr-3 ml-3">
+                          	<div class="uploadFile mt-3 mr-3 ml-3 ">
 	                            <!--<input type="file" name="" id="upload_file" value="" class="file-input" />-->
 	                            <img src="${BASE_PATH }static/credit/imgs/order/tan.png"/>
 	                           	<p class="mt-2">${item.name}</p>
                             </div>
-                            <div class="order-yulan  mt-3 ml-3"><a href="#" onclick="view(''+'${item.view_url}'+'',''+'${item.ext}'+'')">预览</a></div>
+                            <div class="order-yulan  mt-3 ml-3 "><a href="#" onclick="view(''+'${item.view_url}'+'',''+'${item.ext}'+'')">预览</a></div>
                             	<%}}%>
 
                         

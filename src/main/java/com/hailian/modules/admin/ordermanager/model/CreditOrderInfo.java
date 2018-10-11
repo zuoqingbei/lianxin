@@ -181,6 +181,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String country = model.getStr("country");
 		//结束时间
 		String end_date = model.getStr("end_date");
+		//代理
+		String agent_id=model.getStr("agent_id");
 		//准确公司名称(经过翻译后的公司名称是中文)
 		String company_by_report=model.getStr("company_by_report");
 		if(company_by_report!=null) {
@@ -229,6 +231,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if (StringUtils.isNotBlank(end_date)) {
 			sql.append(" and t.end_date=?");
 			params.add(end_date);
+		}
+		if (StringUtils.isNotBlank(agent_id)) {
+			sql.append(" and t.agent_id=?");
+			params.add(agent_id);
 		}
 		if (StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like %?%");
@@ -365,6 +371,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String continent = model.getStr("continent");
 		//国家
 		String country = model.getStr("country");
+		//代理
+		String agent_id=model.getStr("agent_id");
 		//结束时间
 		Date end_date = model.get("end_date");
 		String date = "";
@@ -402,7 +410,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
-			params.add(user.getStr("usertype"));
+			params.add(user.get("userid").toString());
 		}
 
 		if (StringUtils.isNotBlank(custom_id)) {
@@ -420,6 +428,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if (StringUtils.isNotBlank(date)) {
 			sql.append(" and t.end_date=?");
 			params.add(date);
+		}
+		if (StringUtils.isNotBlank(agent_id)) {
+			sql.append(" and t.agent_id=?");
+			params.add(agent_id);
 		}
 		if (StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like concat('%',?,'%')");
@@ -469,6 +481,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String custom_id=null;
 		String continent=null;
 		String country=null;
+		String agent_id="";
 		String date="";
 		if(model!=null) {
 		//客户id
@@ -479,6 +492,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		country=model.getStr("country");
 		//结束时间
 		Date end_date=model.get("end_date");
+		//代理
+		 agent_id=model.getStr("agent_id");
 		if(end_date!=null) {
 		 date=sdf.format(end_date);
 		}
@@ -514,7 +529,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
-			params.add(user.getStr("usertype"));
+			params.add(user.get("userid").toString());
 		}
 
 		if (StringUtils.isNotBlank(custom_id)) {
@@ -532,6 +547,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if(StringUtils.isNotBlank(date)) {
 			sql.append(" and t.end_date=?");
 			params.add(date);
+		}
+		if (StringUtils.isNotBlank(agent_id)) {
+			sql.append(" and t.agent_id=?");
+			params.add(agent_id);
 		}
 		if(StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like concat('%',?,'%')");
