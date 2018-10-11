@@ -390,14 +390,37 @@ public class OrderManagerService {
 	private double getFinalScore(int reportid) {
 		Long orderNum = OrderManagerService.service.getOrderNum(reportid).get("orderNum");//订单数量
 		Long orderOnTimeNum =OrderManagerService.service.getOnTimeSubmitOrderNum(reportid).get("orderOnTimeNum");//根据报告员获取按时递交数
-		double submitNum=(orderOnTimeNum/orderNum)*0.1;//递交率占比
-		BigDecimal score =OrderManagerService.service.getScore(reportid).get("score"); //获取报告员质量占比
+		double submitNum=0;
+		if(orderNum==0){
+			 submitNum=0;
+		}else{
+			 submitNum=(orderOnTimeNum/orderNum)*0.1;//递交率占比
+		}
+//		BigDecimal score =OrderManagerService.service.getScore(reportid).get("score"); //获取报告员质量占比
+		BigDecimal score = null;
+		CreditOrderInfo coreInfo = OrderManagerService.service.getScore(reportid);
+		if(coreInfo!=null){
+			score=coreInfo.get("score");
+		}
 		if(score==null){
-			score =new BigDecimal(0);
+			score=new BigDecimal(0);
 		}
 		double scoreTo=score.doubleValue();
-		BigDecimal reportnum1 =OrderManagerService.service.getReportNumPart(reportid).get("reportnum");//报告数量占比一
-		long reportnum2 = OrderManagerService.service.getOrderPeportAbroad(reportid).get("orderPeportAbroad");
+//		BigDecimal reportnum1 =OrderManagerService.service.getReportNumPart(reportid).get("reportnum");//报告数量占比一
+		BigDecimal reportnum1 = null;
+		CreditOrderInfo reportNumPart = OrderManagerService.service.getReportNumPart(reportid);
+		if(reportNumPart!=null){
+			reportnum1=reportNumPart.get("reportnum");
+		}
+		if(reportnum1==null){
+			reportnum1=new BigDecimal(0);
+		}
+//		long reportnum2 = OrderManagerService.service.getOrderPeportAbroad(reportid).get("orderPeportAbroad");//报告数量占比二
+		long reportnum2=0;
+		CreditOrderInfo orderPeportAbroad= OrderManagerService.service.getOrderPeportAbroad(reportid);
+		if(orderPeportAbroad!=null){
+			reportnum2=orderPeportAbroad.get("orderPeportAbroad");
+		}
 		BigDecimal reportnum2To = new BigDecimal(reportnum2);
 		double reportnum=reportnum1.add(reportnum2To).doubleValue();
 		double finalScore=orderNum*0.5+submitNum+scoreTo+reportnum;

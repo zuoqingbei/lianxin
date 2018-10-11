@@ -99,6 +99,14 @@ public class SysUser extends SessionUser<SysUser>  {
 	public SysUser getSysUserById(Object userid) {
 		return dao.findFirst("select c.* from sys_user c where c.del_flag='0' and userid="+userid);
 	}
+	public int updatePwdById(Object userid,String password) {
+		List<Object> params=new ArrayList<Object>();
+		String sql="update sys_user set password=? where userid=?";
+		params.add(password);
+		params.add(userid);
+		return Db.update(sql, params.toArray());
+		
+	}
 	
 	
 	
