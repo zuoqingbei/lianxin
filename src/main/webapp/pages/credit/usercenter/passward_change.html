@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
     
-    <link rel="stylesheet" href="../css/passward_change.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/passward_change.css">
 
 </head>
 
@@ -96,27 +96,27 @@
                             <div class="getCode">
                                 <form action="">
                                     <div class="form-group row mb-3">
-                                        <label class="col-sm-4 col-form-label text-right" for="account">账户：</label>
+                                        <label class="col-sm-3 col-form-label text-right" for="account">账户：</label>
                                         <div class="col-sm-4">
-                                            <input type="text"readonly class="form-control-plaintext" id="account" value="王铭羽">
+                                            <input type="text"readonly class="form-control-plaintext" id="account" >
                                         </div>
                                     </div>
                                     <div class="form-group row mb-3">
-                                        <label class="col-sm-4 col-form-label text-right" for="email">邮箱：</label>
+                                        <label class="col-sm-3 col-form-label text-right" for="email">邮箱：</label>
                                         <div class="col-sm-7">
                                             <input type="email" class="form-control" id="email" placeholder="请输入获取验证码的邮箱">
-                                            <p class="error-text error-email">请输入正确格式的邮箱</p>
+                                            <p class="error-text error-email" style="display:none">请输入正确格式的邮箱</p>
                                         </div>
                                     </div>
                                     <div class="form-group row security_code">
-                                        <div class="offset-md-4 col-sm-4">
+                                        <div class="offset-md-3 col-sm-4">
                                             <button class="btn btn-primary" id="btn_getCode">获取验证码</button>
                                         </div>
                                     </div>
                                     <div class="form-group row step_top">
-                                        <label class="col-sm-4 col-form-label text-right" for="securityCode">验证码：</label>
+                                        <label class="col-sm-3 col-form-label text-right" for="securityCode">验证码：</label>
                                         <div class="col-sm-7">
-                                            <input type="email" class="form-control" id="securityCode" placeholder="请输入验证码">
+                                            <input type="text" class="form-control" id="securityCode" placeholder="请输入验证码">
                                         </div>
                                     </div>
                                     <button class="btn btn-primary d-block m-auto btn-lg mt-3" type="submit">下一步</button>
@@ -125,18 +125,18 @@
                             <div style="display: none" class="changePassword">
                                 <form action="">
                                     <div class="form-group row mb-4">
-                                        <label class="col-sm-4 col-form-label text-right" for="password">新密码：</label>
+                                        <label class="col-sm-3 col-form-label text-right" for="password">新密码：</label>
                                         <div class="col-sm-7">
                                             <input type="password" class="form-control" id="password" placeholder="请输入新密码">
                                             <p class="tip-text">密码由6-16个字符组成，区分大小写</p>
-                                            <p class="error-text error-psd">请输入正确格式的密码，只能输入字母数字下划线</p>
+                                            <p class="error-text error-psd" style="display:none">请输入正确格式的密码，只能输入字母数字下划线</p>
                                         </div>
                                     </div>
                                     <div class="form-group row step_top">
-                                        <label class="col-sm-4 col-form-label text-right" for="password2">确认新密码：</label>
+                                        <label class="col-sm-3 col-form-label text-right" for="password2">确认新密码：</label>
                                         <div class="col-sm-7">
                                             <input type="password" class="form-control" id="password2" placeholder="请再次输入新密码">
-                                            <p class="error-text error-psd2">两次密码输入不一致！</p>
+                                            <p class="error-text error-psd2" style="display:none">两次密码输入不一致！</p>
                                         </div>
                                     </div>
                                     <button class="btn btn-primary d-block m-auto btn-lg" type="submit">下一步</button>
@@ -145,7 +145,7 @@
                             <div style="display: none" class="success">
                                 <div class="text-center"><i class="fa fa-check"></i></div>
                                 <div class="text text-center step_top">修改成功</div>
-                                <button class="btn btn-primary d-block m-auto btn-lg" type="submit">完成</button>
+                                <button class="btn btn-primary d-block m-auto btn-lg" type="submit" onclick="location='${BASE_PATH }credit/front/usercenter/logout'">完成</button>
                             </div>
                         </div>
                     </div>
@@ -155,6 +155,6 @@
         </div>
     </div>
  
-<script src="../js/passward_change.js"></script>
+<script src="${BASE_PATH }static/credit/js/passward_change.js"></script>
 
 </html>

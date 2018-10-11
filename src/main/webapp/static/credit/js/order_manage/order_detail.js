@@ -8,8 +8,8 @@ let Filing = {
         this.initTable3();
         /*质检意见*/
         this.initTable4();
-        /*文件预览*/
-        this.fileEvent();
+        /*附件*/
+        //this.fileJudge();
          /*出资比例环形图*/
         this.initEchartsPie();
     },
@@ -29,70 +29,60 @@ let Filing = {
             ]
         });
     },
-    fileEvent(){
-    	this.fileNum = 0;
-    	let that = this;
-    	$(".close").click(function(){
-    		that.fileNum = 0;
-    	});
-      /**文件上传事件 */
-      $(".file-upload").on('change','.uploadFile .file-input',function(){
-    	  that.fileNum = that.fileNum+1;
-          /**如果上传成功 */
-          let filename = $(this).val().replace("C:\\fakepath\\","");
-          let num = filename.split(".").length;
-          let filename_qz = []
-          for(let i=0;i<num-1;i++){  
-            filename_qz =  filename_qz.concat(filename.split(".")[i])
-          }
-          filename_qz_str = filename_qz.join('.')
-          if(filename_qz_str.length>4) {
-            filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
-          }
-          
-          let filetype = filename.split(".")[num-1];
-          filename = filename_qz_str + '.' +filetype
-          let fileicon = '';
-          if(filetype === 'doc' || filetype === 'docx') {
-            fileicon = '/static/credit/imgs/order/word.png'
-          }else if(filetype === 'xlsx' || filetype === 'xls') {
-            fileicon = '/static/credit/imgs/order/Excel.png'
-          }else if(filetype === 'png') {
-            fileicon = '/static/credit/imgs/order/PNG.png'
-          }else if(filetype === 'jpg') {
-            fileicon = '/static/credit/imgs/order/JPG.png'
-          }else if(filetype === 'pdf') {
-            fileicon = '/static/credit/imgs/order/PDF.png'
-          }
-          $(this).parent(".uploadFile").addClass("upload-over");
-          $(this).css("visibility","hidden")
-          $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-          if($(".uploadFile").length>4) {
-            return;
-          }
-          $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-                                        <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
-                                        <div class="over-box">
-                                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-                                          <p class="mt-2">上传附件</p>
-                                        </div>
-                                    </div>`);
-      });
-
-      /**附件删除 */
-      $(".file-upload").on('click','.uploadFile .close',function(){
-        $(this).parents(".uploadFile").remove()
-        
-        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4']").length<1 ){
-            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-                <input type="file" name="" id="upload_file" value="" class="file-input" />
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-                <p class="mt-2">上传附件</p>
-            </div>`);
+  
+     /*附件*/
+    fileJudge(){
+        let filename="";
+        let filetype="";
+        //let file_content=[];
+        let file_content=[{name:"出资比例环形图",type:"doc",url:""},{name:"出资比例环形图",type:"png",url:""},{name:"出资比例环形图",type:"pdf",url:""}];
+      /* 循环遍历文件数组
+         取出文件名称
+         对文件名称进行判断*/
+        for(var i=0;i<file_content.length;i++) {
+            filename = file_content[i].name;
+            filetype = file_content[i].type;
+            let num = filename.split("").length; //转化成数组后求文件名称的长度
+            /*如果文件名称大于四个字 截取前两个字和后两个字*/
+            if(num>4){
+                filename=filename.substr(0,2) + '..' + filename.substr(filename.length-2,2)+'.'+filetype;
+            }
+            //根据文件类型分配图片
+            let fileicon = '';
+            if(filetype === 'doc' || filetype === 'docx') {
+                fileicon = '../imgs/order/word.png'
+            }else if(filetype === 'xlsx' || filetype === 'xls') {
+                fileicon = '../imgs/order/Excel.png'
+            }else if(filetype === 'png') {
+                fileicon = '../imgs/order/PNG.png'
+            }else if(filetype === 'jpg') {
+                fileicon = '../imgs/order/JPG.png'
+            }else if(filetype === 'pdf') {
+                fileicon = '../imgs/order/PDF.png'
+            }else {
+                Public.message("info","不支持上传此种类型文件！");
+                return
+            }
+            /*写入新的文件名称*/
+            $(".accessory_box").append(` <div>
+                        <div class="uploadFile mt-3 mr-3 ml-3">
+                            <img src=${fileicon} />
+                            <p class="filename">${filename}</p>
+                        </div>
+                        <div class="order-yulan  mt-3 ml-3"><a href="#">预览</a></div></div>`);
         }
-      })
-
-    },
+        if(file_content.length==0){
+            $(".accessory_box").append(`  <div>
+                            <div class="uploadFile mt-3 mr-3 ml-3">
+                                <div class="over-box">
+                                    <img src="../imgs/order/！.png" class="m-auto"/>
+                                    <p class="mt-2">暂无附件</p>
+                                </div>
+                            </div>
+                            <div class="order-yulan  mt-3 ml-3 "><a href="#">预览</a></div>
+                        </div>`);
+        }
+        },
     initTable(){
         /**初始化表格 */
         const $table = $('#table');
@@ -317,7 +307,7 @@ let Filing = {
             $table.bootstrapTable('resetView');
         }, 200);
     },
- 
+  
     initTable(){
         /**初始化表格 */
         const $table = $('#table');

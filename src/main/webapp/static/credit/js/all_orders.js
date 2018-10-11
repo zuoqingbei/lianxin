@@ -120,28 +120,8 @@ let Index = {
 
         $("#btn_query").click(function(){
         	
-        	            /**发起ajax请求  获取表格数据*/
-            var checked=[];
-		    	 var checkchar=""
-		                 $("input[name='status']:checked").each(function(i){
-		                       checked[i] = $(this).val();
-		                       checkchar+=checked[i]+","
-		                 });
-		                 console.log(checkchar);
-		        		$.ajax({
-		        			type:"post",
-		        			url:"/credit/front/home/list",
-		        			data:{"attr.custom_id":$("#txt_search_cus").find("option:selected").val(),
-		        				"attr.country":$("#txt_search_country").find("option:selected").val(),
-		        				"attr.end_date":$("#txt_search_date").val(),
-		        				"attr.company_by_report":$("#txt_search_departmentname").val(),
-		        				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
-		        				"status":checkchar},
-		        			 dataType:"json",
-		        			 success:function(data){
-		        			 	 $("#table").bootstrapTable("load",data)
-		        			 }
-		        		});
+        	/**发起ajax请求  获取表格数据*/
+           	loadtable();
 		        		
             let companyName = $("#txt_search_departmentname").val();//公司名称
             let orderCName = $("#txt_search_companyEngName").val();//订单公司名称
@@ -177,6 +157,17 @@ let Index = {
         $table.bootstrapTable({
             height: $(".table-content").height()*0.7,
             columns: [
+            	{
+                  title: '订单号',
+                  field: 'num',
+                  align: 'center',
+                  valign: 'middle',
+                  formatter:function(value,row,index){ 
+  
+                	var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
+                	return url; 
+              		}
+            	},
                 {
                   field: 'receiver_date',
                   title: '订单日期',
@@ -266,6 +257,8 @@ let Index = {
                           $("#companyName").text(row.companyName);
                           $("#reportSpeed").text(row.reportSpeed);
                           $("#orderid").val(row.id);
+                          $("#orderNum1").text(row.num);
+                          $("#revoke_reason").val(row.revoke_reason);
                         
                         },
                         "click .order-update":(e,value,row,index)=>{
@@ -283,6 +276,7 @@ let Index = {
                           $("#companyName1").text(row.companyName);
                           $("#reportSpeed1").text(row.reportSpeed);
                           $("#orderid1").val(row.id);
+                          $("#update_reason").val(row.update_reason);
                         }
                     },
                     formatter: _this.operateFormatter
@@ -330,7 +324,33 @@ let Index = {
     }
 }
 Index.init();
-
+function loadtable(){
+	var checked=[];
+	 var checkchar=""
+             $("input[name='status']:checked").each(function(i){
+                   checked[i] = $(this).val();
+                   checkchar+=checked[i]+","
+             });
+             console.log(checkchar);
+    		$.ajax({
+    			type:"post",
+    			url:"/credit/front/home/list",
+    			data:{"attr.custom_id":$("#txt_search_cus").find("option:selected").val(),
+    				"attr.country":$("#txt_search_country").find("option:selected").val(),
+    				"attr.end_date":$("#txt_search_date").val(),
+    				"attr.agent_id":$("#txt_search_agency").find("option:selected").val(),
+    				"attr.company_by_report":$("#txt_search_departmentname").val(),
+    				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
+    				"status":checkchar},
+    			 dataType:"json",
+    			 success:function(data){
+    			 	 $("#table").bootstrapTable("load",data)
+    			 }
+    		});
+};
+function orderinfo(id){
+			Public.goToOrderDetail(id)
+		};
 
 
 

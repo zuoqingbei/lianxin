@@ -2,6 +2,7 @@ package com.hailian.modules.credit.utils;
 
 import java.util.Date;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -11,7 +12,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class SendMailText {
+public class SendMailUtil {
 //	 //发件人地址
 //    public static String senderAddress = "dou_shai@163.com";
 //    //收件人地址
@@ -35,7 +36,7 @@ public class SendMailText {
     public String content;
     //邮箱授权码
     public  String senderPassword;
-    public SendMailText(String senderAddress, String recipientAddress, String senderAccount, String title,
+    public SendMailUtil(String senderAddress, String recipientAddress, String senderAccount, String title,
 			String content, String senderPassword) {
 		super();
 		this.senderAddress = senderAddress;
@@ -46,8 +47,7 @@ public class SendMailText {
 		this.senderPassword = senderPassword;
 	}
 
-	//发件人账户密码
-//    public static String senderPassword = "iqtembchvsukeadi";
+
    
     
     public  void sendMail() throws Exception {
@@ -58,13 +58,14 @@ public class SendMailText {
         //设置传输协议
         props.setProperty("mail.transport.protocol", "smtp");
         //设置发件人的SMTP服务器地址
-        props.setProperty("mail.smtp.host", "smtp.163.com");
+        props.setProperty("mail.smtp.host", "smtp.qq.com");
         //2、创建定义整个应用程序所需的环境信息的 Session 对象
         Session session = Session.getInstance(props);
         //设置调试信息在控制台打印出来
         session.setDebug(true);
         //3、创建邮件的实例对象
         Message msg = getMimeMessage(session,title,content);
+        
         //4、根据session对象获取邮件传输对象Transport
         Transport transport = session.getTransport();
         //设置发件人的账户名和密码
@@ -89,6 +90,8 @@ public class SendMailText {
     public  MimeMessage getMimeMessage(Session session,String title,String content) throws Exception{
         //创建一封邮件的实例对象
         MimeMessage msg = new MimeMessage(session);
+      //防止成为垃圾邮件，披上outlook的马甲
+        msg.addHeader("X-Mailer","Microsoft Outlook Express 6.00.2900.2869");
         //设置发件人地址
         msg.setFrom(new InternetAddress(senderAddress));
         /**
@@ -98,13 +101,50 @@ public class SendMailText {
          * MimeMessage.RecipientType.BCC：密送
          */
         msg.setRecipient(MimeMessage.RecipientType.TO,new InternetAddress(recipientAddress));
+        msg.addRecipients(MimeMessage.RecipientType.CC, InternetAddress.parse(senderAddress));
         //设置邮件主题
         msg.setSubject(title,"UTF-8");
+        StringBuffer messageText=new StringBuffer();//内容以html格式发送,防止被当成垃圾邮件
+        messageText.append(content);
+
         //设置邮件正文
-        msg.setContent(content, "text/html;charset=UTF-8");
+        msg.setContent(messageText.toString(), "text/html;charset=UTF-8");
         //设置邮件的发送时间,默认立即发送
         msg.setSentDate(new Date());
          
         return msg;
+    }
+    public static String sendMailCode(String recipientAddress) {
+    	String title="这是一封邮件";
+    	String code=getCode();
+    	String content="您的验证码是:"+code+"。如果不是本人操作请忽略。";
+    	
+//    	new SendMailUtil("2530644578@qq.com", recipientAddress, "2530644578@qq.com", title, content, "typwolfiqocrecaf").sendMail();
+    	try {
+    		new SendMailUtil("2530644578@qq.com", recipientAddress, "2530644578@qq.com", title, content, "typwolfiqocrecaf").sendMail();
+//			new SendMailUtil("dou_shai@163.com", recipientAddress, "dou_shai@163.com", title, code, "dsh1994").sendMail();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return code;
+		}
+    	return code; 
+    }
+    public static void main(String[] args) throws Exception {
+    	sendMailCode("1241671759@qq.com");
+	}
+    /**
+     * 生成邮箱验证码
+    * @author doushuihai  
+    * @date 2018年10月10日上午11:03:44  
+    * @TODO
+     */
+    public static String getCode(){
+    	StringBuffer sb=new StringBuffer();
+    	Random random=new Random();
+    	for(int i=0;i<6;i++){
+    		sb.append(random.nextInt(10));
+    	}
+    	return sb.toString();
     }
 }

@@ -37,6 +37,7 @@ import com.hailian.jfinal.component.interceptor.ExceptionInterceptor;
 import com.hailian.jfinal.component.interceptor.JflyfoxInterceptor;
 import com.hailian.jfinal.component.interceptor.SessionAttrInterceptor;
 import com.hailian.modules.admin.ordermanager.model.TemplateCompanyService;
+import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.interceptor.CreditFrontUserInterceptor;
 import com.hailian.modules.front.template.TemplateCustomService;
 import com.hailian.modules.front.template.TemplateDictService;
@@ -289,6 +290,7 @@ public class BaseConfig extends JFinalConfig {
 		groupTemplate.registerFunctionPackage("sysUser", TemplateSysUserService.class);//系统用户模板
 		groupTemplate.registerFunctionPackage("custom", TemplateCustomService.class);//系统客户模板
 		groupTemplate.registerFunctionPackage("company", TemplateCompanyService.class);//系统客户模板
+		groupTemplate.registerFunctionPackage("agent", TemplateAgentService.class);//代理模板
 		
 	}
 	private boolean isDevMode() {

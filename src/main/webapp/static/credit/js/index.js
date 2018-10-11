@@ -40,35 +40,15 @@ let Index = {
 
       /**点击确定按钮 */
       $(".enterFilter").click(function(){
-			var checked=[];
-		    	 var checkchar=""
-		                 $("input[name='status']:checked").each(function(i){
-		                       checked[i] = $(this).val();
-		                       checkchar+=checked[i]+","
-		                 });
-		                 console.log(checkchar);
-		        		$.ajax({
-		        			type:"post",
-		        			url:"/credit/front/home/list",
-		        			data:{"attr.custom_id":$("#custom_id").find("option:selected").val(),
-		        				"attr.continent":$("#continent").find("option:selected").val(),
-		        				"attr.country":$("#country").find("option:selected").val(),
-		        				"attr.end_date":$("#dead_date").val(),
-		        				"attr.company_by_report":$("#txt_search_departmentname").val(),
-		        				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
-		        				"status":checkchar},
-		        			 dataType:"json",
-		        			 success:function(data){
-		        			 	 $("#table").bootstrapTable("load",data)
-		        			 }
-		        		});
-
+			
+			loadtable();
        		getMessage();
       })
 
       /**点击重置按钮 */
-      $(".resetrFilter").click(function(){
+      $("#btn_reset").click(function(){
         $('.form-check-input:checkbox').removeAttr('checked');
+        $("#formSearch div input").val("");
       })
     },
     searchEvent(){
@@ -245,6 +225,30 @@ let Index = {
     }
 Index.init();
 
-
+function loadtable(){
+	var checked=[];
+	 var checkchar=""
+             $("input[name='status']:checked").each(function(i){
+                   checked[i] = $(this).val();
+                   checkchar+=checked[i]+","
+             });
+             console.log(checkchar);
+    		$.ajax({
+    			type:"post",
+    			url:"/credit/front/home/list",
+    			data:{"attr.custom_id":$("#custom_id").find("option:selected").val(),
+    				"attr.continent":$("#continent").find("option:selected").val(),
+    				"attr.country":$("#country").find("option:selected").val(),
+    				"attr.end_date":$("#dead_date").val(),
+    				"attr.agent_id":$("#agentId").find("option:selected").val(),
+    				"attr.company_by_report":$("#txt_search_departmentname").val(),
+    				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
+    				"status":checkchar},
+    			 dataType:"json",
+    			 success:function(data){
+    			 	 $("#table").bootstrapTable("load",data)
+    			 }
+    		});
+}
 
 

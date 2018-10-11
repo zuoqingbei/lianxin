@@ -181,6 +181,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String country = model.getStr("country");
 		//结束时间
 		String end_date = model.getStr("end_date");
+		//代理
+		Integer agent_id=model.get("agent_id");
 		//准确公司名称(经过翻译后的公司名称是中文)
 		String company_by_report=model.getStr("company_by_report");
 		if(company_by_report!=null) {
@@ -208,7 +210,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -229,6 +231,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if (StringUtils.isNotBlank(end_date)) {
 			sql.append(" and t.end_date=?");
 			params.add(end_date);
+		}
+		if (agent_id!=null) {
+			sql.append(" and t.agent_id=?");
+			params.add(agent_id);
 		}
 		if (StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like %?%");
@@ -287,7 +293,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append("left join credit_report_usetime c3 on c3.id= t.user_time_id ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append("where 1 = 1 and t.del_flag='0' and t.id=?");
+		sql.append("where 1 = 1 and t.del_flag='0' and t.id=? and t.company_id is not null ");
 		return dao.findFirst(sql.toString(), id);
 	}
 
@@ -313,7 +319,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -365,6 +371,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String continent = model.getStr("continent");
 		//国家
 		String country = model.getStr("country");
+		//代理
+		Integer agent_id=model.get("agent_id");
 		//结束时间
 		Date end_date = model.get("end_date");
 		String date = "";
@@ -399,10 +407,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
-			params.add(user.getStr("usertype"));
+			params.add(user.get("userid").toString());
 		}
 
 		if (StringUtils.isNotBlank(custom_id)) {
@@ -420,6 +428,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if (StringUtils.isNotBlank(date)) {
 			sql.append(" and t.end_date=?");
 			params.add(date);
+		}
+		if (agent_id!=null) {
+			sql.append(" and t.agent_id=?");
+			params.add(agent_id);
 		}
 		if (StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like concat('%',?,'%')");
@@ -469,7 +481,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String custom_id=null;
 		String continent=null;
 		String country=null;
+		Integer agent_id=null;
 		String date="";
+		String company_by_report="";
+		String right_company_name_en="";
 		if(model!=null) {
 		//客户id
 		 custom_id=model.getStr("custom_id");
@@ -479,21 +494,23 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		country=model.getStr("country");
 		//结束时间
 		Date end_date=model.get("end_date");
+		//代理
+		 agent_id=model.get("agent_id");
 		if(end_date!=null) {
 		 date=sdf.format(end_date);
 		}
-		}
-		
 		//准确公司名称(经过翻译后的公司名称是中文)
-		String company_by_report=model.getStr("company_by_report");
+		company_by_report=model.getStr("company_by_report");
 		if(company_by_report!=null) {
 			company_by_report=company_by_report.trim();
 		}
 		//填写订单时输入的公司名称
-		String right_company_name_en=model.getStr("right_company_name_en");
+		right_company_name_en=model.getStr("right_company_name_en");
 		if(right_company_name_en!=null) {
 			right_company_name_en=right_company_name_en.trim();
 		}
+		}
+		
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
 		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
@@ -511,10 +528,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
-		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
-			params.add(user.getStr("usertype"));
+			params.add(user.get("userid").toString());
 		}
 
 		if (StringUtils.isNotBlank(custom_id)) {
@@ -532,6 +549,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if(StringUtils.isNotBlank(date)) {
 			sql.append(" and t.end_date=?");
 			params.add(date);
+		}
+		if (agent_id!=null) {
+			sql.append(" and t.agent_id=?");
+			params.add(agent_id);
 		}
 		if(StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like concat('%',?,'%')");
