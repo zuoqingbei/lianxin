@@ -35,6 +35,18 @@ public class TemplateAgentService extends BaseService{
 		}
 		return sb.toString();
 	}
+	public String getAgentIdString() {
+		StringBuffer sb=new StringBuffer();
+		List<AgentModel> listDetail =getAgent();
+		for(AgentModel detail:listDetail){
+				if("请选择代理".equals(detail.getStr("agent_name"))){
+					sb.append("<option selected='selected'  value='"+detail.get("agent_id")+"'>"+detail.get("agent_name")+"</option>");
+				}else{
+					sb.append("<option  value='"+detail.get("agent_id")+"'>"+detail.get("agent_id")+"</option>");
+				}			
+		}
+		return sb.toString();
+	}
 	/**
 	 * 
 	 * @todo   获取全部默认报告类型

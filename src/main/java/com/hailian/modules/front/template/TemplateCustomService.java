@@ -59,6 +59,34 @@ public class TemplateCustomService extends BaseService{
 			
 		return sb.toString();
 	}
+	/**
+	 * 
+	 * @time   2018年10月11日 下午4:18:56
+	 * @author yangdong
+	 * @todo   TODO 获取客户列表,如果有默认值则选择默认值,如果没有默认值就选择请选择客户id
+	 * @param  @param selectedId
+	 * @param  @return
+	 * @return_type   String
+	 */
+	public String getCustomIdStringObject (String selectedId) {
+		StringBuffer sb=new StringBuffer();
+		List<CreditCustomInfo> listCustom = new ArrayList<CreditCustomInfo>();
+		listCustom.addAll(CreditCustomInfo.dao.findcustoms());
+		listCustom.add(getDefaultCustomDetail());
+		for(CreditCustomInfo detail:listCustom){
+			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
+				sb.append("<option selected='selected' m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
+			}else{
+				if("请选择客户".equals(detail.getStr("name"))){
+				sb.append("<option selected='selected' m-type='' value=''>"+detail.get("name")+"</option>");
+				}else {
+				sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
+				}
+				}
+			}
+			
+		return sb.toString();
+	}
 	
 	protected CreditCustomInfo getDefaultCustomDetail() {
 		CreditCustomInfo allDict=new CreditCustomInfo();
