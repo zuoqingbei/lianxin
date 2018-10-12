@@ -10,6 +10,7 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.system.user.SysUser;
+import com.hailian.util.ehcache.EhCacheUtil;
 @Api(tag = "重置密码", description = "重置密码")
 @ControllerBind(controllerKey = "/credit/sysuser/resetpassword")
 public class ResetPassWordController extends BaseProjectController{
@@ -31,8 +32,10 @@ public class ResetPassWordController extends BaseProjectController{
 		
 		String recipientAddress = getPara("recipientAddress");
 		String sendMailCode = SendMailUtil.sendMailCode(recipientAddress);
-		
-		setSessionAttr("sendMailCode", sendMailCode);
+		Integer userid = getSessionUser().getUserid();
+		EhCacheUtil.init();
+		EhCacheUtil.put(EhCacheUtil.getKentrasoftCache(), userid+"", sendMailCode);
+//		setSessionAttr("sendMailCode", sendMailCode);
 		renderJson(sendMailCode);
 	}
 	/**
@@ -49,7 +52,8 @@ public class ResetPassWordController extends BaseProjectController{
 		boolean flag=false;
 		Integer userid = getSessionUser().getUserid();
 		
-		String trueCode=getSessionAttr("sendMailCode");
+//		String trueCode=getSessionAttr("sendMailCode");
+		String trueCode=EhCacheUtil.get(EhCacheUtil.getKentrasoftCache(), userid+"").toString();
 		String confirmCode=getPara("confirmCode");
 		if(confirmCode.equals(trueCode)){
 			flag=true;
