@@ -10,11 +10,7 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.system.user.SysUser;
-import com.hailian.util.ehcache.EhCache;
-import com.hailian.util.ehcache.EhCacheProvider;
-
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
+import com.hailian.util.ehcache.EhCacheUtil;
 @Api(tag = "重置密码", description = "重置密码")
 @ControllerBind(controllerKey = "/credit/sysuser/resetpassword")
 public class ResetPassWordController extends BaseProjectController{
@@ -33,15 +29,12 @@ public class ResetPassWordController extends BaseProjectController{
 			})
 	@ApiOperation(url = "/credit/sysuser/resetpassword/getMailCode", httpMethod = "get", description = "获取邮箱验证码")
 	public void getMailCode() throws Exception {
-		EhCacheProvider provider = new EhCacheProvider();
-		provider.start();
-		EhCache cache = provider.buildCache("session", true);
-		cache.put("123", "abc");
-		System.out.println(cache.get("123"));
-		provider.stop();
+		
 		String recipientAddress = getPara("recipientAddress");
 		String sendMailCode = SendMailUtil.sendMailCode(recipientAddress);
-		
+		Integer userid = getSessionUser().getUserid();
+		EhCacheUtil.init();
+		EhCacheUtil.put(EhCacheUtil.getKentrasoftCache(), userid+"", sendMailCode);
 //		setSessionAttr("sendMailCode", sendMailCode);
 		renderJson(sendMailCode);
 	}
@@ -58,12 +51,9 @@ public class ResetPassWordController extends BaseProjectController{
 	public void verifyMailCode(){
 		boolean flag=false;
 		Integer userid = getSessionUser().getUserid();
-		EhCacheProvider provider = new EhCacheProvider();
-		provider.start();
-		EhCache cache = provider.buildCache("session", true);
-		String trueCode = (String) cache.get(userid+"");
-		provider.stop();
+		
 //		String trueCode=getSessionAttr("sendMailCode");
+		String trueCode=EhCacheUtil.get(EhCacheUtil.getKentrasoftCache(), userid+"").toString();
 		String confirmCode=getPara("confirmCode");
 		if(confirmCode.equals(trueCode)){
 			flag=true;

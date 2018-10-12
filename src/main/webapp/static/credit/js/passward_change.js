@@ -20,7 +20,7 @@ let Password = {
                 $("#email").removeClass("error-input")
                 $(".error-email").hide()
                 this.getMailCode(email);
-
+                sendemail();
             }
 
             return false;
