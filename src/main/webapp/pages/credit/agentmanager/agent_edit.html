@@ -24,14 +24,15 @@ var oper = {
     sandbarChange:function(){
    	 var grade = document.getElementById("sandbar");
    	 var value=$("#sandbar").find("option:selected").val();
-   	 alert(value)
    	 var html="";
    	 $.post('credit/agentmanager/getCitySelect',{"attr.continent":value},function(data){
    		 console.log(data)
+   		  html+="<option value='-1' selected='selected'>请选择</option>"
    		  for(item in data){
    			  console.log(item.id)
+   			  		
 					 if(item.id='${model.city}'){
-						 html+="<option selected='selected' m-type='"+data[item].cid+"' value='"+data[item].cid+"'>"+data[item].city+"</option>";
+						 html+="<option  m-type='"+data[item].cid+"' value='"+data[item].cid+"'>"+data[item].city+"</option>";
 					 }else{
 						html+="<option  m-type='"+data[item].cid+"' value='"+data[item].cid+"'>"+data[item].city+"</option>";
 					 };
@@ -45,11 +46,20 @@ var oper = {
 	           
    	 })
    },
-
+   agentChange:function(){
+	   	 var agent = document.getElementById("agent");
+	   	 var value=$("#agent").find("option:selected").text();
+	   
+	   	 if(value=='国外'){
+	   		 $(".table tbody tr:last").hide()
+	   	 }else if(value=='国内'){
+	   		$(".table tbody tr:last").show()
+	   	 }
+	   },
    //国家发生变化
    countryChange:function(){
    	//默认选择第一个国家
-   	 $("select[name='model.city'] option:first").attr('selected','selected')
+   	 //$("select[name='model.city'] option:first").attr('selected','selected')
    	
    }
 };
@@ -98,7 +108,7 @@ var bodyContent = {
 	<tr>
 	<tr>
 			<td>代理类型</td>
-			 <td><select name="model.agent_type" class="form-control" style="width: 200px;">
+			 <td><select id="agent" name="model.agent_type" class="form-control" style="width: 200px;" onchange="oper.agentChange()">
 					${agenttype!}
 				</select></td>		
 		</tr>
@@ -172,7 +182,8 @@ var bodyContent = {
 				<td>城市</td>
 				<td>
 					<% if(model.city!=null || model.city!="" ){%>
-					<select id="city" name="model.city"  class="form-control" valid="vselect" validname="城市" onchange="oper.countryChange()">
+					<select id="city" name="model.city"  class="form-control"  onchange="oper.countryChange()">
+						<option value="-1" >请选择</option>
 						<% for(item in city){ %>
 								 	<% if(model.city==(item.cid+"")){ %>
 								 	 <option selected="selected" m-type="${item.cid}" value="${item.cid}">${item.city}</option>
