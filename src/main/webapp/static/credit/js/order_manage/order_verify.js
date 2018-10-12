@@ -52,7 +52,7 @@ let Verify = {
           if($(".uploadFile").length>4) {
             return;
           }
-          $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+          $(".file-upload").append(`<div class="uploadFile mt-3 mr-4 mb-5">
                                         <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
                                         <div class="over-box">
                                           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
@@ -62,16 +62,44 @@ let Verify = {
       });
 
       /**附件删除 */
-      $(".file-upload").on('click','.uploadFile .close',function(){
-        $(this).parents(".uploadFile").remove()
-        
-        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4 mb-5']").length<1 ){
-            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-                <input type="file" name="" id="upload_file" value="" class="file-input" />
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-                <p class="mt-2">上传附件</p>
-            </div>`);
-        }
+      $(".file-upload").on('click','.uploadFile .close',function(e){
+    	  if(!$(this).parents(".uploadFile").attr("fileId")) {
+    		  $(e.target).parents(".uploadFile").remove()
+	  	        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4 mb-5']").length<1 ){
+	  	            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+	  	                <input type="file" name="" id="upload_file" value="" class="file-input" />
+	  	                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+	  	                <p class="mt-2">上传附件</p>
+	  	            </div>`);
+	  	        }
+    		  return;
+    	  }
+    	 $.ajax({
+     			type:"post",
+         		url:"/credit/front/orderProcess/deleteFile",
+         		data:"model.id="+$(this).parents(".uploadFile").attr("fileId"),
+         		dataType:"json",
+         		success:function(obj){
+	         			$(e.target).parents(".uploadFile").remove()
+	        	        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4 mb-5']").length<1 ){
+	        	            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+	        	                <input type="file" name="" id="upload_file" value="" class="file-input" />
+	        	                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+	        	                <p class="mt-2">上传附件</p>
+	        	            </div>`);
+	        	        }
+         				$.ajax({
+	              			type:"post",
+	                  		url:"/credit/front/orderProcess/listJson",
+	                  		data:"pageNumber="+that.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+	                  		dataType:"json",
+	                  		success:function(obj){
+	                  				$("#table").bootstrapTable("load",obj);
+	                  			 }
+	              			}) 
+         			 }
+     	}) 
+       
       })
 
     },
@@ -108,29 +136,36 @@ let Verify = {
             //提交成功关闭模态窗
            $(".modal-header .close").trigger("click");
            //回显
-          	console.log("提交成功,开始回显:");
-          	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
-          		$.ajax({
-          			type:"post",
-              		url:"/credit/front/orderProcess/listJson",
-              		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
-              		dataType:"json",
-              		success:function(obj){
-              				console.log("回显的数据:"+obj);
-              			 	$("#table").bootstrapTable("load",obj);
-              			 	console.log("回显成功!");
-              			 }
-          			}) 
+	  		$.ajax({
+	  			type:"post",
+	      		url:"/credit/front/orderProcess/listJson",
+	      		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+	      		dataType:"json",
+	      		success:function(obj){
+	      				console.log("回显的数据:"+obj);
+	      			 	$("#table").bootstrapTable("load",obj);
+	      			 	console.log("回显成功!");
+	      			 }
+	  			}) 
         })
         
          $("#modal_save").click(function(){
-        	console.log("点击保存");
         	$("#status").val("292");
         	$(".tableValue").ajaxSubmit({
         		success:function(data){
-        			
-        			location.reload()
-        			console.log("状态为成功,message:"+data.message);
+        			 //提交成功关闭模态窗
+        	           $(".modal-header .close").trigger("click");
+        	           //加载表格数据
+        			 $.ajax({
+            				type:"post",
+                			url:"/credit/front/orderProcess/listJson",
+                			data:"pageNumber="+that.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+                			dataType:"json",
+                			success:function(obj){
+                				console.log("回显的数据:"+obj);
+                			 	$("#table").bootstrapTable("load",obj)
+                			 }
+            		 })
         			if(data.statusCode===1){
                    	 console.log("此处进入success状态2222222222");
                    	Public.message("success",data.message);
@@ -143,22 +178,8 @@ let Verify = {
         			Public.message("error",data.message);
         		}
             });
-            //提交成功关闭模态窗
-           $(".modal-header .close").trigger("click");
-           //回显
-          	console.log("提交成功,开始回显:");
-          	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
-          		$.ajax({
-          			type:"post",
-              		url:"/credit/front/orderProcess/listJson",
-              		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
-              		dataType:"json",
-              		success:function(obj){
-              				console.log("回显的数据:"+obj);
-              			 	$("#table").bootstrapTable("load",obj);
-              			 	console.log("回显成功!");
-              			 }
-          			}) 
+           
+          
         })
         
          $("#modal_cancel").click(function(){
@@ -383,7 +404,7 @@ let Verify = {
             }
             
             filename = filename_qz_str + '.' +filetype
-        	fileArr += '<div class="uploadFile mt-3 mr-4 mb-5 upload-over" url="'+row.files[i].url+'" style="cursor:pointer">'+
+        	fileArr += '<div class="uploadFile mt-3 mr-4 mb-5 upload-over" fileId="'+row.files[i].id+'" url="'+row.files[i].url+'" style="cursor:pointer">'+
         				'<div class="over-box">'+
 	        				'<button type="button" class="close" aria-label="Close">'+
 	        					'<span aria-hidden="true">&times;</span>'+
@@ -405,8 +426,7 @@ let Verify = {
            })
         }
         
-        pageNumber = row.pageNumber;
-        console.log("pageNumber====="+pageNumber);
+        _this.pageNumber = row.pageNumber;
         pageSize = row.pageSize;
     	sortName = row.sortName;
     	sortOrder = row.sortOrder;

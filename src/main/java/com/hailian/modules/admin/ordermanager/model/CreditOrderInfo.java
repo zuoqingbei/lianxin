@@ -663,6 +663,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
 				//status='310'值状态为递交订单(翻译质检合格) ,其维护在字典表中
 				fromSql.append(" and status='310' ");
+			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
+				//status='293'值状态为信息录入 ,其维护在字典表中
+				fromSql.append(" and status='293' ");
 			}
 			
 		//关键词搜索

@@ -377,6 +377,17 @@ public class OrderProcessController extends BaseProjectController{
 		
 			
 	}
+	/**
+	 * 根据文件id删除文件
+	 */
+	public void deleteFile(){
+		CreditUploadFileModel model = getModel(CreditUploadFileModel.class);
+		model.set("del_flag", "1");
+		model.update();
+		renderJson(new ResultType(1, "操作成功!"));
+	}
+	
 	
 	
 }
+

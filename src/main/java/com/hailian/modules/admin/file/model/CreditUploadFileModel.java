@@ -33,7 +33,7 @@ public class CreditUploadFileModel extends BaseProjectModel<CreditUploadFileMode
 	* @TODO
 	 */
 	public List<CreditUploadFileModel> getByBusIdAndBusType(String business_id,String status,BaseProjectController c){
-		String sql="select * from credit_upload_file where business_id=? and business_type=?";
+		String sql="select * from credit_upload_file where business_id=? and business_type=? and del_flag=0";
 		List<Object> params=new ArrayList<Object>();
 		params.add(business_id);
 		params.add(status);
