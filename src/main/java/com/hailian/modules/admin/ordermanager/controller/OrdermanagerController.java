@@ -2,6 +2,9 @@ package com.hailian.modules.admin.ordermanager.controller;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +43,8 @@ import com.hailian.util.DateAddUtil;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
 import com.jfinal.aop.Before;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.ICallback;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -176,7 +181,16 @@ public class OrdermanagerController extends BaseProjectController{
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		List<File> ftpfileList=new ArrayList<File>();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
-		String num=CreditOrderInfo.dao.getNumber();
+		Object num = Db.execute(new ICallback() {
+			@Override
+			public Object call(Connection conn) throws SQLException {
+			CallableStatement proc = conn.prepareCall("{call generate_orderNo('DD',8,?)}");
+			proc.registerOutParameter(1,java.sql.Types.VARCHAR);
+			proc.execute();
+			return proc.getObject(1);
+			}
+			});
+		num=num.toString();
 		model1.set("business_type", "0");
 		model1.set("business_id", num);
 		int num1=0;
