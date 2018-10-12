@@ -23,21 +23,22 @@ var oper = {
 	},
     sandbarChange:function(){
    	 var grade = document.getElementById("sandbar");
-   	 var value=$("#sandbar").find("option:selected").attr("m-english");
+   	 var value=$("#sandbar").find("option:selected").val();
+   	 alert(value)
    	 var html="";
-   	 $.post('credit/country/getCountrySelect',{"attr.continent":value},function(data){
+   	 $.post('credit/agentmanager/getCitySelect',{"attr.continent":value},function(data){
    		 console.log(data)
    		  for(item in data){
    			  console.log(item.id)
-					 if(item.id='${model.country}'){
-						 html+="<option selected='selected' m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";
+					 if(item.id='${model.city}'){
+						 html+="<option selected='selected' m-type='"+data[item].cid+"' value='"+data[item].cid+"'>"+data[item].city+"</option>";
 					 }else{
-						html+="<option  m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";
+						html+="<option  m-type='"+data[item].cid+"' value='"+data[item].cid+"'>"+data[item].city+"</option>";
 					 };
 	        	
 	           };
 	           
-	           $("select[name='attr.country']").html(html);
+	           $("select[name='model.city']").html(html);
 	           
 					oper.countryChange();
 					
@@ -49,12 +50,7 @@ var oper = {
    countryChange:function(){
    	//默认选择第一个国家
    	 $("select[name='model.city'] option:first").attr('selected','selected')
-   	//查询用时
-   	oper.usetimeChange();
-   	//查询费用
-   	oper.priceChange();
-   	//查询语言
-   	oper.languageChange()
+   	
    }
 };
 
@@ -161,7 +157,7 @@ var bodyContent = {
 				<td>省份</td>
 				<td>
 						<div class="form-group">
-						<select id="sandbar" name="model.province" class="form-control" valid="vselect" validname="省份" style="width: 200px;">
+						<select id="sandbar" name="model.province" class="form-control" valid="vselect" validname="省份" style="width: 200px;" onchange="oper.sandbarChange()">
 						<option value="-1" >请选择</option>
 						 <% for(item in province){ %>
 						 	<% if((model.province+"")==(item.pid+"")){ %>
@@ -177,7 +173,7 @@ var bodyContent = {
 				<td>
 					<% if(model.city!=null || model.city!="" ){%>
 					<select id="city" name="model.city"  class="form-control" valid="vselect" validname="城市" onchange="oper.countryChange()">
-						<% for(item in country){ %>
+						<% for(item in city){ %>
 								 	<% if(model.city==(item.cid+"")){ %>
 								 	 <option selected="selected" m-type="${item.cid}" value="${item.cid}">${item.city}</option>
 								 	<% }else{ %>
