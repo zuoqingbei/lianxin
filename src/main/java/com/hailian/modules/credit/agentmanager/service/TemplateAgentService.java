@@ -18,10 +18,11 @@ public class TemplateAgentService extends BaseService{
 	
 	/**
 	 * 
-	 * @todo  报告类型
-	 * @time   2018年8月27日 下午5:06:56
-	 * @author zuoqb
-	 * @params
+	 * @time   2018年10月12日 上午10:52:15
+	 * @author yangdong
+	 * @todo   TODO 选择代理名称,默认值是请选择代理
+	 * @param  @return
+	 * @return_type   String
 	 */
 	public String getAgentString() {
 		StringBuffer sb=new StringBuffer();
@@ -37,10 +38,31 @@ public class TemplateAgentService extends BaseService{
 	}
 	/**
 	 * 
-	 * @todo   获取全部默认报告类型
-	 * @time   2018年9月3日 下午7:12:53
-	 * @author zuoqb
-	 * @params
+	 * @time   2018年10月12日 上午10:52:39
+	 * @author yangdong
+	 * @todo   TODO 选择代理id,默认值是请选择代理
+	 * @param  @return
+	 * @return_type   String
+	 */
+	public String getAgentIdString() {
+		StringBuffer sb=new StringBuffer();
+		List<AgentModel> listDetail =getAgent();
+		for(AgentModel detail:listDetail){
+				if("请选择代理".equals(detail.getStr("agent_name"))){
+					sb.append("<option selected='selected'  value='"+detail.get("agent_id")+"'>"+detail.get("agent_name")+"</option>");
+				}else{
+					sb.append("<option  value='"+detail.get("agent_id")+"'>"+detail.get("agent_id")+"</option>");
+				}			
+		}
+		return sb.toString();
+	}
+	/**
+	 * 
+	 * @time   2018年10月12日 上午10:53:31
+	 * @author yangdong
+	 * @todo   TODO 添加代理默认项
+	 * @param  @return
+	 * @return_type   AgentModel
 	 */
 	protected AgentModel getDefaultAgentDetail() {
 		AgentModel allDict=new AgentModel();

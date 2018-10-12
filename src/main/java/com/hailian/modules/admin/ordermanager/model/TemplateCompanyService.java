@@ -42,18 +42,19 @@ public class TemplateCompanyService extends BaseService{
 		StringBuffer sb=new StringBuffer();
 		List<CreditCompanyInfo> listCompany = new ArrayList<CreditCompanyInfo>();
 		listCompany.addAll(CreditCompanyInfo.dao.getCompany());
-		listCompany.add(getDefaultCompany());
+		
 		for(CreditCompanyInfo detail:listCompany){
 			
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
 				sb.append("<option selected='selected'  m-type1='"+detail.get("name")+"' m-type='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 			}else{
+				listCompany.add(getDefaultCompany());
 				if("ALL".equals(detail.getStr("name"))){
 					sb.append("<option  selected='selected'  m-type1='' m-type=''  value=''>请选择公司id</option>");
-				}else{
-				sb.append("<option m-type1='"+detail.get("name")+"' m-type='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
-				}
+				}	
 			}
+			sb.append("<option m-type1='"+detail.get("name")+"' m-type='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
+
 		}
 			
 		return sb.toString();

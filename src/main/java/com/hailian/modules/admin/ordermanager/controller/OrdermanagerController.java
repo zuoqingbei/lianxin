@@ -213,7 +213,7 @@ public class OrdermanagerController extends BaseProjectController{
 							pdf_FTPfileName=FTPfileName;
 						}
 						//String now,List<File> filelist,String storePath,String url,int port,String userName,String password
-						boolean storeFile = FtpUploadFileUtils.storeFtpFile(FTPfileName, ftpfileList,storePath,ip,port,userName,password);//上传
+						boolean storeFile = FtpUploadFileUtils.storeFtpFile(now, ftpfileList,storePath,ip,port,userName,password);//上传
 						if(storeFile){
 							String factpath=storePath+"/"+FTPfileName;
 							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
@@ -338,10 +338,10 @@ public class OrdermanagerController extends BaseProjectController{
 	public void getTime() throws ParseException {
 		String countryType=getPara("countrytype", "");
 		String speed=getPara("speed", "");
-		String reporttype=getPara("reporttype", "");
-		String orderType=getPara("ordertype", "");
+		/*String reporttype=getPara("reporttype", "");
+		String orderType=getPara("ordertype", "");*/
 		String receivedate=getPara("receivedate","");
-		CreditReportUsetime usetime=OrderManagerService.service.getTime(countryType,speed,reporttype,orderType);
+		CreditReportUsetime usetime=OrderManagerService.service.getTime(countryType,speed/*,reporttype,orderType*/);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar ca = Calendar.getInstance();
 		if(StringUtils.isNotBlank(receivedate)) {

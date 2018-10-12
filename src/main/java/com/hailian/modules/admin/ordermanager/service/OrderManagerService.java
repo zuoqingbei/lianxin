@@ -234,9 +234,9 @@ public class OrderManagerService {
 	 * @param  @return
 	 * @return_type   CreditReportUsetime
 	 */
-	public CreditReportUsetime getTime(String countryType, String speed, String reporttype,String orderType) {
+	public CreditReportUsetime getTime(String countryType, String speed/*, String reporttype,String orderType*/) {
 		// TODO Auto-generated method stub
-		return CreditReportUsetime.dao.getTime(countryType,speed,reporttype,orderType);
+		return CreditReportUsetime.dao.getTime(countryType,speed/*,reporttype,orderType*/);
 	}
 	/**
 	 * 

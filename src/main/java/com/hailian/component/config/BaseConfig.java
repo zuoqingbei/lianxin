@@ -289,7 +289,7 @@ public class BaseConfig extends JFinalConfig {
 		groupTemplate.registerFunctionPackage("reportType", TemplateReportTypeService.class);//报告类型模板
 		groupTemplate.registerFunctionPackage("sysUser", TemplateSysUserService.class);//系统用户模板
 		groupTemplate.registerFunctionPackage("custom", TemplateCustomService.class);//系统客户模板
-		groupTemplate.registerFunctionPackage("company", TemplateCompanyService.class);//系统客户模板
+		groupTemplate.registerFunctionPackage("company", TemplateCompanyService.class);//系统公司模板
 		groupTemplate.registerFunctionPackage("agent", TemplateAgentService.class);//代理模板
 		
 	}

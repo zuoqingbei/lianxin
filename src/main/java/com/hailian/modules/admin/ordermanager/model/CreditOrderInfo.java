@@ -148,7 +148,15 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 
 	public void setPrice(String price) {
 		set("price", price);
-	}*/
+	}
+	public int getUseTime() {
+		return get("useTime");
+	}
+
+	public void setUseTime(int useTime) {
+		set("useTime", useTime);
+	}
+	*/
 
 	/**
 	 * 
@@ -211,6 +219,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null");
+		
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -276,7 +286,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		StringBuffer sql = new StringBuffer();
 		sql.append("select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName,");
 		sql.append("s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,");
-		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price, c2.name as companyName,c2.name_en as englishName,c3.use_time as usetime  from credit_order_info t ");
+		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price, c2.name as companyName,c2.name_en as englishName,c3.use_time as useTime  from credit_order_info t ");
 		sql.append("left join credit_custom_info u on u.id=t.custom_id ");
 		sql.append("left join credit_country c on c.id=t.country  ");
 		sql.append("left join credit_report_price c1 on c1.id=t.price_id ");
@@ -294,6 +304,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append("where 1 = 1 and t.del_flag='0' and t.id=? and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null");
 		return dao.findFirst(sql.toString(), id);
 	}
 
@@ -320,6 +331,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -408,6 +420,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
 			params.add(user.get("userid").toString());
@@ -529,6 +542,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
 			params.add(user.get("userid").toString());
@@ -649,6 +663,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
 				//status='310'值状态为递交订单(翻译质检合格) ,其维护在字典表中
 				fromSql.append(" and status='310' ");
+			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
+				//status='293'值状态为信息录入 ,其维护在字典表中
+				fromSql.append(" and status='293' ");
 			}
 			
 		//关键词搜索

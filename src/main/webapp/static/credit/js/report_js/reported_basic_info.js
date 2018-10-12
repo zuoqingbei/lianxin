@@ -12,6 +12,30 @@ let BasicWrite = {
         this.tabChange();
         this.goToInfoImport();
         Public.tabFixed(".tab-bar",".main",120,90)
+        let row = JSON.parse(localStorage.getItem("row"));
+        $("#custom_id").html(row.custom_id);
+        $("#customId").html(row.customId);
+        $("#receiver_date").html(row.receiver_date);
+        $("#continent").html(row.continent);
+        $("#country").html(row.country);
+        $("#reportType").html(row.reportType);
+        $("#reportLanguage").html(row.reportLanguage);
+        $("#companyNames").html(row.companyNames);
+        $("#custom_id").html(row.custom_id);
+        $("#speed").html(row.speed);
+        $("#user_time").html(row.user_time);
+        $("#companyZHNames").html(row.companyZHNames);
+        $("#reporter_select").html(row.seleteStr);
+        $("#orderId").val(row.id);
+        $("#num").html(row.num);
+        $("#end_date").html(row.end_date);
+        pageNumber = row.pageNumber;
+        console.log("pageNumber====="+pageNumber);
+        pageSize = row.pageSize;
+    	  sortName = row.sortName;
+    	  sortOrder = row.sortOrder;
+    	  reportt = row.report_userKey;
+    	  console.log("report_userKey====="+row.report_userKey);
     },
     dateForm(){
         /**日期控件 */
@@ -594,23 +618,23 @@ let BasicWrite = {
       },
       operateFormatterRecord(){
         /**历史纪录 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#recordModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#recordModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="/static/credit/imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       },  
       operateFormatterShareholdersInfo(){
         /**股东信息 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#shareholdersInfoModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#shareholdersInfoModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="/static/credit/imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       },
       operateFormatterShareholdersDetail(){
         /**股东详情 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#shareholdersDetailModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#shareholdersDetailModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="/static/credit/imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       },    
       operateFormatterInvestment(){
         /**投资情况 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#investmentModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#investmentModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="/static/credit/imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       },    
       operateFormatterManagement(){
         /**管理层 */
-        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#managementModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
+        return '<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#managementModalCenter">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="/static/credit/imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>'
       }    
 }
 

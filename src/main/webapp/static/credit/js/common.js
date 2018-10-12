@@ -83,6 +83,7 @@ let Public = {
         })
     },
     goToOrderDetail(id){
+    	console.log("开始订单详情页跳转")
     	//跳转订单详情
     	$("#main_content").load('/credit/front/home/orderInfo?id='+id)
     },
@@ -99,9 +100,27 @@ let Public = {
         /**跳转新建订单页面 */
         $("#main_content").load('/credit/front/home/createOrder');
     },
-    goToBasicInfoWrite(){
+    goToBasicInfoWrite(e){
         /**跳转基本信息填报 */
         $("#main_content").load('/credit/front/orderProcess/showReportedBasicInfo');
+        localStorage.setItem("row",JSON.stringify(e));
+    },
+    tabFixed(fixedEle,scrollEle,min,max){
+        /**
+         * 滚动之后固定tab函数
+         * fixedEle:固定的dom   string
+         * scrollEle:滚动的dom  string
+         * min:超出后固定   number
+         * max:小于取消固定 number
+         */
+        $(scrollEle).scroll(()=>{
+            let top =  $(scrollEle).scrollTop();
+            if(top > min) {
+                $(fixedEle).addClass("tab-fixed")
+            }else if(top < max) {
+                $(fixedEle).removeClass("tab-fixed")
+            }
+        })
     },
     gotop(){
         console.log($(".main"))

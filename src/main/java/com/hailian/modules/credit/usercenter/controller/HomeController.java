@@ -73,10 +73,13 @@ public class HomeController extends BaseProjectController {
 	}
 	public void menu() {
 		SysUser user= (SysUser) getSessionUser();
-		if(user==null||"".equals(user)) {
-			redirect("/credit/front/usercenter/login");
-		}else {
 		Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
+		if(user==null||"".equals(user) ) {
+			redirect("/credit/front/usercenter/login");
+		}
+		else if(map==null){
+			renderMessageByFailed("请分配角色");
+		}else {
 		setAttr("user",user);
 		setAttr("menu", map);
 		render("/pages/credit/common/menu.html");
@@ -95,6 +98,9 @@ public class HomeController extends BaseProjectController {
 		int id=getParaToInt("id");
 		//根据订单id获取订单信息
 		CreditOrderInfo order=OrderManagerService.service.editOrder(id,this);
+		int time=order.get("useTime");
+		int useTime=(int)Math.ceil(time/24.0);
+		order.put("useTime", useTime);
 		//根据id获取num
 		String num=order.getStr("num");
 		//获取附件

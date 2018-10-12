@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <% var orderstatus = tempDict.getListSysDictDetail('orderstate'); %>
-<% var agent = agent.getAgentString(); %>
+<% var agent = agent.getAgentIdString(); %>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -420,7 +420,7 @@ function getCustoms(data){
 	console.log(data);
 	var html=""
 	for(item in data){
-		html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
+		html+="<option  value='"+data[item].id+"'>"+data[item].id+"</option>";
 	}
 	$("select[name='attr.custom_id']").append(html);
 };
