@@ -147,7 +147,7 @@ public abstract class BaseProjectController extends BaseController {
 			// 注入菜单
 			setSessionAttr("menu", map);
 			// 不能访问的菜单
-			setSessionAttr("nomenu", new UserSvc().getNoAuthMap(map));
+//			setSessionAttr("nomenu", new UserSvc().getNoAuthMap(map));
 
 		}
 		return user;

@@ -23,9 +23,9 @@ public class TemplateCustomService extends BaseService{
 		listCustom.addAll(CreditCustomInfo.dao.findcustoms());
 		for(CreditCustomInfo detail:listCustom){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
-				sb.append("<option selected='selected' m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
+				sb.append("<option selected='selected' m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
 			}else{
-				sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
+				sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
 				}
 			}
 			
@@ -43,18 +43,17 @@ public class TemplateCustomService extends BaseService{
 	public String getCustomStringObject1 (String selectedId) {
 		StringBuffer sb=new StringBuffer();
 		List<CreditCustomInfo> listCustom = new ArrayList<CreditCustomInfo>();
-		listCustom.addAll(CreditCustomInfo.dao.findcustoms());
 		listCustom.add(getDefaultCustomDetail());
+		listCustom.addAll(CreditCustomInfo.dao.findcustoms());
 		for(CreditCustomInfo detail:listCustom){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
 				sb.append("<option selected='selected' m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 			}else{
 				if("请选择客户".equals(detail.getStr("name"))){
 				sb.append("<option selected='selected' m-type='' value=''>"+detail.get("name")+"</option>");
-				}else {
-				sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 				}
 				}
+			 sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 			}
 			
 		return sb.toString();
@@ -68,21 +67,21 @@ public class TemplateCustomService extends BaseService{
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public String getCustomIdStringObject (String selectedId) {
+	public String getCustomNameStringObject (String selectedId) {
 		StringBuffer sb=new StringBuffer();
 		List<CreditCustomInfo> listCustom = new ArrayList<CreditCustomInfo>();
-		listCustom.addAll(CreditCustomInfo.dao.findcustoms());
 		listCustom.add(getDefaultCustomDetail());
+		listCustom.addAll(CreditCustomInfo.dao.findcustoms());
 		for(CreditCustomInfo detail:listCustom){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
-				sb.append("<option selected='selected' m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
+				sb.append("<option selected='selected' m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
 			}else{
 				if("请选择客户".equals(detail.getStr("name"))){
 				sb.append("<option selected='selected' m-type='' value=''>"+detail.get("name")+"</option>");
-				}else {
-				sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
+				}				
 				}
-				}
+				sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
+
 			}
 			
 		return sb.toString();

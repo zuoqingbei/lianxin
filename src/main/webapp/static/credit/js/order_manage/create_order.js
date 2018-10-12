@@ -138,7 +138,7 @@ let
 			});
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
-				$("input[name='attr.status']").val("290");
+				$("input[name='attr.status']").val("291");
 					$("#orderForm").ajaxSubmit({
 						success:function(data){
 							console.log(JSON.stringify(data));

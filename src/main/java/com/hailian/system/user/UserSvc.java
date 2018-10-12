@@ -32,6 +32,7 @@ public class UserSvc extends BaseService {
 		List<SysMenu> returnList = new ArrayList<SysMenu>();
 
 		List<Integer> idList = new ArrayList<Integer>();
+		if(map!=null) {
 		for (Integer key : map.keySet()) {
 			List<SysMenu> childList = map.get(key);
 			for (SysMenu sysMenu : childList) {
@@ -39,7 +40,7 @@ public class UserSvc extends BaseService {
 			}
 			idList.add(key);
 		}
-
+		}
 		for (SysMenu sysMenu : list) {
 			if (!idList.contains(sysMenu.getInt("id"))) {
 				returnList.add(sysMenu);
@@ -62,13 +63,13 @@ public class UserSvc extends BaseService {
 				+ " ( select roleid from sys_user_role where userid = ? ) group by menuid";
 		// 管理员
 		if (user.getInt("usertype") == 1) {
-			menuids = " select id from sys_menu where -1 != ? "; // 所有菜单
+			menuids = " select id from sys_menu where -1 != ? and urlkey !='front_menu' "; // 所有菜单
 		}
 
 		Integer userid = user.getUserid();
 		Map<Integer, List<SysMenu>> map = new HashMap<Integer, List<SysMenu>>();
 
-		String sql = " where status = 1 and parentid = ? " //
+		String sql = " where status = 1 and parentid = ? and urlkey !='front_menu' " //
 				+ "and id in (" + menuids + ") order by sort ";
 		// 获取根目录
 		List<SysMenu> rootList = SysMenu.dao.findByWhere(sql, 0, userid);

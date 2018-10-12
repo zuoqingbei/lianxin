@@ -117,6 +117,11 @@ let Index = {
                   align: 'center',
                   valign: 'middle',
                 }, {
+                  title: '代理ID',
+                  field: 'agent_id',
+                  align: 'center',
+                  valign: 'middle',
+                },{
                   title: `处理状态 &nbsp;<i class="fa fa-filter"></i>`,
                   field: 'statuName',
                   align: 'center',
