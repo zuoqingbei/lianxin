@@ -7,6 +7,7 @@ import com.hailian.jfinal.base.BaseService;
 import com.hailian.modules.credit.agentmanager.model.AgentModel;
 
 public class TemplateAgentService extends BaseService{
+	public static TemplateAgentService templateagentservice=new TemplateAgentService();
 	
 	
 	public List<AgentModel> getAgent() {

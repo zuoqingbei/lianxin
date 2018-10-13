@@ -175,7 +175,7 @@ let Allocation = {
                   align: 'center',
                   valign: 'middle',
                 }, {
-                  title: '报告类型',
+                  title: '报告类型22',
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',

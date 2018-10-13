@@ -1,9 +1,11 @@
 package com.hailian.modules.credit.utils;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -14,43 +16,36 @@ import javax.mail.internet.MimeMessage;
 
 public class SendMailUtil {
 //	 //发件人地址
-//    public static String senderAddress = "dou_shai@163.com";
-//    //收件人地址
-//    public static String recipientAddress = "15269274025@163.com";
+    public static String SenderAddress = "2530644578@qq.com";
+
 //    //发件人账户名
-//    public static String senderAccount = "dou_shai@163.com";
-//    static String title="";
-//    static String content="";
+    public static String SenderAccount = "2530644578@qq.com";
+
 //    //发件人账户密码
-////    public static String senderPassword = "iqtembchvsukeadi";
-//    public static String senderPassword = "dsh1994";
-	 //发件人地址
-    public  String senderAddress;
+    public static String SenderPassword = "typwolfiqocrecaf";
+	
     //收件人地址
     public  String recipientAddress;
-    //发件人账户名
-    public  String senderAccount;
+    public  String recipientAddressCC;
     //邮件主题
     public String title;
     //邮件内容
     public String content;
-    //邮箱授权码
-    public  String senderPassword;
-    public SendMailUtil(String senderAddress, String recipientAddress, String senderAccount, String title,
-			String content, String senderPassword) {
-		super();
-		this.senderAddress = senderAddress;
-		this.recipientAddress = recipientAddress;
-		this.senderAccount = senderAccount;
-		this.title = title;
-		this.content = content;
-		this.senderPassword = senderPassword;
-	}
+    
+   
 
 
    
     
-    public  void sendMail() throws Exception {
+    public SendMailUtil(String recipientAddress, String recipientAddressCC, String title, String content) {
+		super();
+		this.recipientAddress = recipientAddress;
+		this.recipientAddressCC = recipientAddressCC;
+		this.title = title;
+		this.content = content;
+	}
+
+	public  void sendMail() throws Exception {
         //1、连接邮件服务器的参数配置
         Properties props = new Properties();
         //设置用户的认证方式
@@ -69,7 +64,7 @@ public class SendMailUtil {
         //4、根据session对象获取邮件传输对象Transport
         Transport transport = session.getTransport();
         //设置发件人的账户名和密码
-        transport.connect(senderAccount, senderPassword);
+        transport.connect(SenderAccount, SenderPassword);
         //发送邮件，并发送到所有收件人地址，message.getAllRecipients() 获取到的是在创建邮件对象时添加的所有收件人, 抄送人, 密送人
         transport.sendMessage(msg,msg.getAllRecipients());
          
@@ -93,15 +88,18 @@ public class SendMailUtil {
       //防止成为垃圾邮件，披上outlook的马甲
         msg.addHeader("X-Mailer","Microsoft Outlook Express 6.00.2900.2869");
         //设置发件人地址
-        msg.setFrom(new InternetAddress(senderAddress));
+        msg.setFrom(new InternetAddress(SenderAddress));
         /**
          * 设置收件人地址（可以增加多个收件人、抄送、密送），即下面这一行代码书写多行
          * MimeMessage.RecipientType.TO:发送
          * MimeMessage.RecipientType.CC：抄送
          * MimeMessage.RecipientType.BCC：密送
          */
-        msg.setRecipient(MimeMessage.RecipientType.TO,new InternetAddress(recipientAddress));
-        msg.addRecipients(MimeMessage.RecipientType.CC, InternetAddress.parse(senderAddress));
+        // 设置邮件接收方
+        Address[] internetAddressTo = new InternetAddress().parse(recipientAddress);
+//        msg.setRecipient(MimeMessage.RecipientType.TO,new InternetAddress(recipientAddress));
+        msg.setRecipients(MimeMessage.RecipientType.TO,internetAddressTo);
+        msg.addRecipients(MimeMessage.RecipientType.CC, InternetAddress.parse(SenderAddress));
         //设置邮件主题
         msg.setSubject(title,"UTF-8");
         StringBuffer messageText=new StringBuffer();//内容以html格式发送,防止被当成垃圾邮件
@@ -115,14 +113,13 @@ public class SendMailUtil {
         return msg;
     }
     public static String sendMailCode(String recipientAddress) {
-    	String title="这是一封邮件";
+    	String title="这是一封验证码邮件";
     	String code=getCode();
     	String content="您的验证码是:"+code+"。如果不是本人操作请忽略。";
     	
-//    	new SendMailUtil("2530644578@qq.com", recipientAddress, "2530644578@qq.com", title, content, "typwolfiqocrecaf").sendMail();
     	try {
-    		new SendMailUtil("2530644578@qq.com", recipientAddress, "2530644578@qq.com", title, content, "typwolfiqocrecaf").sendMail();
-//			new SendMailUtil("dou_shai@163.com", recipientAddress, "dou_shai@163.com", title, code, "dsh1994").sendMail();
+//    		new SendMailUtil("2530644578@qq.com", recipientAddress, "2530644578@qq.com", title, content, "typwolfiqocrecaf").sendMail();
+    		new SendMailUtil(recipientAddress, recipientAddress, title, content).sendMail();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,8 +127,11 @@ public class SendMailUtil {
 		}
     	return code; 
     }
+    public void toSendMail(List<String> recipientAddressTO,List<String> recipientAddressCC) throws Exception{
+//    	new SendMailUtil(SenderAddress, recipientAddress, SenderAddress, title, content, "typwolfiqocrecaf").sendMail();
+    }
     public static void main(String[] args) throws Exception {
-    	sendMailCode("1241671759@qq.com");
+    	sendMailCode("15269274025@163.com");
 	}
     /**
      * 生成邮箱验证码

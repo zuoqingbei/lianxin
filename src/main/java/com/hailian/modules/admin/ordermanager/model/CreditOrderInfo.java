@@ -461,6 +461,17 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append("select * from credit_order_info t  where t.num=?");// TODO Auto-generated method stub
 		return CreditOrderInfo.dao.findFirst(sql.toString(),num);
 	}
+	public CreditOrderInfo getOrderById(String id,BaseProjectController c) {
+		StringBuffer sql=new StringBuffer();
+		List<Object> params=new ArrayList<Object>();
+		sql.append("select * from credit_order_info t  where t.id=? ");// TODO Auto-generated method stub
+		params.add(id);
+		if(!c.isAdmin(c.getSessionUser())){
+			sql.append(" and t.create_by=? ");
+			params.add(c.getSessionUser().getUserid());//传入的参数
+		}
+		return CreditOrderInfo.dao.findFirst(sql.toString(),params.toArray());
+	}
 	/**
 	 * 
 	 * @time   2018年9月19日 下午4:22:21
