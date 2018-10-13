@@ -17,6 +17,7 @@ import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
+import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.order.model.TbOrder;
 import com.hailian.modules.credit.order.service.OrderService;
@@ -316,13 +317,18 @@ public class OrderProcessController extends BaseProjectController{
 				//查询代理类型
 				String seleteStr = TemplateAgentService.templateagentservice.getAgentIdString();
 				creditOrderInfo.put("seleteAgentStr",seleteStr);
+				
 			}
 		}
 		int totalRow = pager.getTotalRow();
 		ResultType resultType = new ResultType(totalRow,rows);
 		renderJson(resultType);
 	}
-	
+	public void getAgentCategory(){
+		String agentid = (String) getRequest().getParameter("agentid");
+		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(agentid);
+		renderJson(findAll);
+	}
 	/**
 	 * @todo   订单状态保存
 	 * @time   2018年9月20日 下午4:30:00

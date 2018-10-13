@@ -117,13 +117,14 @@ let Filing = {
              }),
              $("#modal_submit_allocation").click(function(){
                  let agentid = $("#agency_id option:selected").val();
+                 let agent_category = $("#agent_category option:selected").val();
                  let ismail = $("#entrust_email option:selected").val();
                  let id = $("#orderId2").val();
                  //console.log(reporter,remarks);
                  $.ajax({
             			type:"post",
             			url:"/credit/front/orderProcess/orderAgentSave",
-            			data:"model.agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&statusCode=292",
+            			data:"model.agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.agent_category="+agent_category,
             			dataType:"json",
             			success:function(data){
             			//提交成功关闭模态窗

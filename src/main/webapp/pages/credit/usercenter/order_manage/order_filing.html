@@ -311,9 +311,8 @@
                             <div class="row mt-3 mb-2">
                                 <div class="input-group col-md-6 align-items-center">
                                     <label class="control-label">代理ID：</label>
-                                    <select name="" id="agency_id" class="form-control  col-md-6">
-                                        <option value="1">111</option>
-                                        <option value="1">222</option>
+                                    <select name="" id="agency_id" class="form-control  col-md-6" onchange="agentchange()">
+                                       
                                     </select>
                                 </div>
                                 <div class="input-group col-md-6 align-items-center">
@@ -322,6 +321,12 @@
                                         <!--默认 是-->
                                         <option value="1" selected>是</option>
                                         <option value="-1">否</option>
+                                    </select>
+                                </div>
+                                <div class="input-group col-md-6 align-items-center">
+                                    <label class="control-label">代理类别：</label>
+                                    <select name="attr.agentcategory" id="agent_category" valid="vselect" validname="代理类别" class="form-control  col-md-6">
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -336,4 +341,22 @@
    
 
 </html>
+<<script type="text/javascript">
+function agentchange(){
+		var value=$("#agency_id").find("option:selected").val();
+		$("#agency_id option:first").attr("disabled","disabled");
+		var html="";
+		 html+="<option value='' selected='selected'>请选择</option>"
+	 	$.post('/credit/front/orderProcess/getAgentCategory',{"agentid":value},function(data){
+	 		
+	 	console.log(data)
+	  for(item in data){
+		html+="<option  m-type='"+data[item].id+"' value='"+data[item].agent_category+"'>"+data[item].categoryName+"</option>";	        	
+        }
+        
+        $("select[name='attr.agentcategory']").html(html);
+       
+ })
+	}
+</script>
  <script src="${BASE_PATH }static/credit/js/order_manage/order_filing.js"></script>
