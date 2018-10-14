@@ -28,7 +28,7 @@
     height: 100%;
     background-color: #001528;
     overflow: auto;
-    padding: 2rem 1rem 6rem 1rem;
+    padding: 2rem 0 6rem 0;
 }
 
 .left-nav li {
@@ -39,7 +39,7 @@
 .left-nav a {
     position: relative;
     display: block;
-    padding: 1rem ;
+    padding: 1rem 4rem;
     color: #bfc6cc;
 }
 
@@ -71,18 +71,18 @@
 }
 
 .left-nav li.hasChild > a:after {
-    top: 1.5em;
-    right: 1em;
+    top: 1.5rem;
+    right: 3em;
     border: .125em solid #fff;
     transform: rotate(225deg) scale(.75);
     border-right: none;
     border-bottom: none;
-    transition: all 150ms;
+    transition: all linear 100ms;
     font-size: .7em;
 }
 
 .left-nav li.show > a:after {
-    top: 1.7rem;
+    top: 1.5rem;
     transform: rotate(45deg) scale(.75);
 }
 
@@ -100,7 +100,7 @@
     font-size: 1.125rem;
 }
 .left-nav .menu2 {
-    padding-left: 4rem;
+    padding-left: 7rem;
     font-size: 1.125rem;
 }
 .left-nav .menu2:before {

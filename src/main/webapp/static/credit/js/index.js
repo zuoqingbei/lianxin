@@ -6,6 +6,8 @@ let Index = {
         this.popperFilter();
         this.hideShowStyle();
         this.searchEvent();
+        $(".left-nav ul li:first").addClass("active").siblings().removeClass("active");
+
     },
     dateForm(){
         /**日期控件 */
