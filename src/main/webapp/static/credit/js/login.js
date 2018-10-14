@@ -1,11 +1,11 @@
 let Login = {
     init(){
-        /***初始化函数 */
+        /** *初始化函数 */
     	$(".error-tip").hide();
         this.login();
     },
     login(){
-        /**是否为空验证 */
+        /** 是否为空验证 */
         $(".btn-login").click(function(){
             let user = $("#username").val();
             let psw = $("#psw").val();
@@ -31,13 +31,13 @@ let Login = {
                 $(".password span").removeClass("border-error")
                 $("#psw").removeClass("border-error")
 
-                /**调用登录接口 */
+                /** 调用登录接口 */
                 	console.log($("#meForm").serialize());
                 	$.ajax({
                 		type:"post",
                     	url:"/credit/front/usercenter/login",
                     	data:$("#meForm").serialize(),
-                    	contentType:"application/x-www-form-urlencoded",//(可以)
+                    	contentType:"application/x-www-form-urlencoded",// (可以)
                     	dataType:"json",
                     	success:function(data){
                     		console.log(data+"1313");
@@ -47,6 +47,12 @@ let Login = {
                     		}else{
                     			$(".error-tip").hide();
                     			window.location.href = path+"credit/front/home/menu";
+                    			$("#main_content").load("/credit/front/home");
+								  sessionStorage.setItem('pageUrl','/credit/front/home');
+								  sessionStorage.setItem('menuId',$(".left-nav ul li:first").attr("id"));
+ 								  $(".leftNav").find("li").removeClass("active");
+ 								  $("#work_console").addClass("active");
+ 								                      			
                     		}
                     	}
                     });
