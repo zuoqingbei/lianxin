@@ -64,9 +64,8 @@ var bodyContent = {
 				<tr>
 					<td>客户名称</td>
 					<td>
-						<!-- <input class="form-control" type="text" name="model.custom_id" value="${model.custom_id}" /> -->
 						<div class="form-group">
-						<select name="model.custom_id" class="form-control" valid="vselect" validname="客户">
+						<select name="model.custom_id" class="form-control" valid="vselect" validname="客户" style="width: 300px;">
 						<option value="-1" >请选择客户</option>
 						 <% for(item in custom){ %>
 						 	<% if((model.custom_id+"")==(item.id+"")){ %>
@@ -76,14 +75,13 @@ var bodyContent = {
 							<%}%>
 						 <% } %>
 						</select>
-						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>报告类型</td>
 					<td>
 						<div class="form-group">
-						<select name="model.report_id" class="form-control" valid="vselect" validname="报告类型">
+						<select name="model.report_id" class="form-control" valid="vselect" validname="报告类型" style="width: 200px;">
 						<option value="-1" >请选择</option>
 						 <% for(item in reporttype){ %>
 						 	<% if((model.report_id+"")==(item.id+"")){ %>
