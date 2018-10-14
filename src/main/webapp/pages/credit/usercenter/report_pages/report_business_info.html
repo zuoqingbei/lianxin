@@ -1,0 +1,1210 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>联信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${BASE_PATH}static/credit/css/order_manage/order_common.css">
+    <link rel="stylesheet" href="${BASE_PATH}static/credit/css/report_css/reported_basic_info.css">
+    <link rel="stylesheet" href="${BASE_PATH}static/credit/css/report_css/report_business_info.css">
+</head>
+  
+        <div id="container" class="row  animated fadeIn">         
+            <div class="main">
+               <div class="order-info main-header">
+                   <!-- 面包屑 -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:;" id="infoImport">报告录入</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">填报</li>
+                        </ol>
+                    </nav>
+                    <div class="order-box">
+                        <div class="order-num main-title">订单号：<span>0001288784932</span></div>
+                        <div class="order-item-box d-flex flex-wrap justify-content-start row pr-4">
+                            <div class="order-item col-md-4">
+                                <span class="fw">订单公司名称：</span>
+                                <span>北京小米科技有限公司</span>
+                            </div>
+                            <div class="order-item col-md-4">
+                                <span class="fw">公司中文名称：</span>
+                                <span>北京小米科技有限公司</span>
+                            </div> 
+                            <div class="order-item col-md-4">
+                                <span class="fw">报告类型：</span>
+                                <span>基本信用报告</span>
+                            </div>
+                            <div class="order-item col-md-4 mt-3">
+                                <span class="fw">接单日期：</span>
+                                <span>2018-09-06</span>
+                            </div>
+                            <div class="order-item col-md-4 mt-3">
+                                <span class="fw">到期日期：</span>
+                                <span>2018-09-15</span>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="tab-bar btn-group">
+                        <li class="tab-info"><a href="#info_anchor" class="tab-active">信息录入</a></li>
+                        <li class="tab-file"><a href="#file_anchor">附件</a></li>
+                    </div>
+               </div>
+               <!-- 滚动内容 -->
+               <div class="table-content">
+                   <!-- 报告摘要 -->
+                    <div class="bg-f report-zy">
+                        <a name="info_anchor"></a>
+                        <div class="l-title">
+                            报告摘要
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group">
+                                <label for="qy_code" class="mb-2">公司名称</label>
+                                <input type="text" class="form-control" id="qy_code" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_person" class="mb-2">联系电话</label>
+                                <input type="text" class="form-control" id="qy_person" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_type" class="mb-2">统一社会信用代码</label>
+                                <input type="text" class="form-control" id="qy_type" placeholder="">
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group ">
+                                <label for="qy_create" class="mb-2">英文名称</label>
+                                <input type="text" class="form-control" id="qy_create" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_date" class="mb-2">传真号码</label>
+                                <input type="text" class="form-control" id="qy_date" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_money" class="mb-2">负责人</label>
+                                <input name="" id="qy_money" class="form-control"></input>
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group ">
+                                <label for="qy_address" class="mb-2">联信编码</label>
+                                <input type="text" class="form-control" id="qy_address" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_office" class="mb-2">网址</label>
+                                <input type="text" class="form-control" id="qy_office" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_state" class="mb-2">员工人数</label>
+                                <input name="" id="qy_state" class="form-control"></input>
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group ">
+                                <label for="qy_a" class="mb-2">经营地址</label>
+                                <input type="text" class="form-control" id="qy_a" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_b" class="mb-2">邮箱</label>
+                                <input type="text" class="form-control" id="qy_b" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_c" class="mb-2">行业代码</label>
+                                <input name="" id="qy_c" class="form-control"></input>
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group ">
+                                <label for="qy_d" class="mb-2">资产总额</label>
+                                <input type="text" class="form-control" id="qy_d" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_e" class="mb-2">业务收入</label>
+                                <input type="text" class="form-control" id="qy_e" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_f" class="mb-2">注册资本</label>
+                                <input name="" id="qy_f" class="form-control"></input>
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-start">
+                                <div class="form-group"  style="width: 100%">
+                                    <label for="qy_state" class="mb-2">经营范围</label>
+                                    <textarea name="" id="qy_sale" class="form-control"  style="width: 100%;height: 6rem"></textarea>
+                                </div>
+                        </div>
+                        <div class="l-title mt-4">
+                            信用分析
+                        </div>
+                    <div class="mb-5" style="background:#fff">
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group ">
+                                <label for="qy_g" class="mb-2">付款情况</label>
+                                <input type="text" class="form-control" id="qy_g" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_h" class="mb-2">信用额度（建议）</label>
+                                <input type="text" class="form-control" id="qy_h" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_i" class="mb-2">市场状况</label>
+                                <input name="" id="qy_i" class="form-control"></input>
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group ">
+                                <label for="qy_g" class="mb-2">财务状况</label>
+                                <input type="text" class="form-control" id="qy_g" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_h" class="mb-2">经营趋势</label>
+                                <input type="text" class="form-control" id="qy_h" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_i" class="mb-2">总体信用</label>
+                                <input name="" id="qy_i" class="form-control"></input>
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group ">
+                                <label for="qy_j" class="mb-2">汇率</label>
+                                <input type="text" class="form-control" id="qy_j" placeholder=""">
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <!-- 信用等级 -->
+                    <div class="bg-f ">
+                        <div class="l-title">
+                            信用等级
+                        </div>
+                        <div class="form-group form-inline p-4 mx-3">
+                          <label for="qy_k">信用等级：</label>
+                          <input type="text" name="" id="qy_K" class="form-control" placeholder="" aria-describedby="helpId" >
+                          <span id="helpId" class="text-muted">（见以下详情评估标准）</span>
+                        </div>
+                        <div class="table-content9 pb-3" style="background:#fff">
+                            <table id="table1">
+                                <thead>
+                                    <tr>
+                                        <th data-field="rank">级别  </th>
+                                        <th data-field="money">建议信用额度</th>
+                                        <th data-field="comment">信用风险评估</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="s-title">信用等级说明</div>
+                            <p class="explain">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
+                            <p class="explain">如下所示：</p>
+                            <div class="row mb-2">
+                                <span class="col-sm-2">财务状况（40%）</span>
+                                <span class="col-sm-2">股东背景（10%）</span>
+                                <span class="col-sm-2">付款记录（10%）</span>
+                            </div>
+                            <div class="row">
+                                <span class="col-sm-2">信用历史（15%）</span>
+                                <span class="col-sm-2">市场趋势（10%）</span>
+                                <span class="col-sm-2">经营规模（15%）</span>
+                            </div>
+                            <p class="explain">如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款记录”两项。</p>
+                            <p class="explain">使用缩写：&emsp;&emsp;&emsp;N/A-不详&emsp;&emsp;&emsp;CNY-人民币&emsp;&emsp;&emsp;SC-目标公司</p>
+
+                        </div>  
+                    </div>
+                </div>
+                    <!-- 企业注册信息 --> 
+                    <div class="bg-f mt-4">
+                        <div class="l-title">
+                            企业注册信息
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group">
+                                <label for="qy_code" class="mb-2">统一社会信用代码</label>
+                                <input type="text" class="form-control" id="qy_code" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_person" class="mb-2">法人代表</label>
+                                <input type="text" class="form-control" id="qy_person" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_type" class="mb-2">公司性质</label>
+                                <select name="" id="qy_type" class="form-control">
+                                    <option value="" selected></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group ">
+                                <label for="qy_create" class="mb-2">成立日期</label>
+                                <input type="text" class="form-control" id="qy_aa" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_date" class="mb-2">营业期限至</label>
+                                <input type="text" class="form-control" id="qy_bb" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_money" class="mb-2">注册资本</label>
+                                <input name="" id="qy_money" class="form-control"></input>
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-between">
+                            <div class="form-group ">
+                                <label for="qy_address" class="mb-2">注册地址</label>
+                                <input type="text" class="form-control" id="qy_address" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_office" class="mb-2">登记机关</label>
+                                <input type="text" class="form-control" id="qy_office" placeholder=""">
+                            </div>
+                            <div class="form-group">
+                                <label for="qy_state" class="mb-2">登记状态</label>
+                                <input name="" id="qy_state" class="form-control"></input>
+                            </div>
+                        </div>
+                        <div class="firm-info mt-4 px-5 d-flex justify-content-start">
+                                <div class="form-group"  style="width: 100%">
+                                    <label for="qy_state" class="mb-2">经营范围</label>
+                                    <textarea name="" id="qy_sale" class="form-control"  style="width: 100%;height: 6rem"></textarea>
+                                </div>
+                        </div>
+                        <!-- 历史变更记录 -->
+                        <div class="l-title mt-4">
+                            历史变更记录
+                        </div>
+                        <div class="table-content1 mb-5" style="background:#fff">
+                            <table id="tableRecord"
+                                data-toggle="table"
+                                style="position: relative"
+                            >
+                            </table>
+                            <button class="btn btn-lg btn-block mb-5" type="button" id="add_record" data-toggle="modal" data-target="#recordModalCenter">+ 新增记录</button>
+                        </div>  
+                    </div>
+                    <div class="bg-f" style="margin-top:-1rem">
+                        <!-- 股东信息 -->
+                        <div class="l-title">
+                            股东信息
+                        </div>
+                        <div class="table-content2 " style="background:#fff">
+                                <table id="tableShareholdersInfo"
+                                data-toggle="table"
+                                style="position: relative"
+                                >
+                            </table>
+                            <button class="btn btn-lg btn-block" type="button" id="add_shareholders_info" data-toggle="modal" data-target="#shareholdersInfoModalCenter">+ 新增信息</button>
+                        </div>
+                         <!-- 股东详情 -->
+                        <div class="bg-f shareholders-detail">
+                            <div class="l-title">
+                                股东详情
+                            </div>
+                            <div class="table-content3" style="background:#fff">
+                                <table id="tableShareholdersDetail"
+                                    data-toggle="table"
+                                    style="position: relative"
+                                >
+                                </table>
+                                <button class="btn btn-lg btn-block" type="button" id="add_shareholders_detail" data-toggle="modal" data-target="#shareholdersDetailModalCenter">+ 新增股东详情</button>
+                            </div>  
+                        </div>  
+                         <!-- 投资情况 -->
+                         <div class="bg-f investment-situation">
+                            <div class="l-title">
+                                投资情况
+                            </div>
+                            <div class="table-content4" style="background:#fff">
+                                <table id="tableInvestment"
+                                    data-toggle="table"
+                                    style="position: relative"
+                                >
+                                </table>
+                                <button class="btn btn-lg btn-block" type="button" id="add_investment" data-toggle="modal" data-target="#investmentModalCenter">+ 新增投资情况</button>
+                            </div>  
+                        </div>
+                        <!-- 管理层 -->
+                    <div class="bg-f management">
+                        <div class="l-title">
+                            管理层
+                        </div>
+                        <div class="table-content5" style="background:#fff">
+                            <table id="tableManagement"
+                                data-toggle="table"
+                                style="position: relative"
+                            >
+                            </table>
+                            <button class="btn btn-lg btn-block mb-5" type="button" id="add_management" data-toggle="modal" data-target="#managementModalCenter">+ 新增管理层</button>
+                        </div>  
+                    </div>
+                </div>
+                <div class="bg-f mt-4">
+                    <!-- 行业信息 -->
+                    <div class="l-title">
+                        行业信息
+                    </div>
+                    <div class="table-content6" style="background:#fff">
+                        <table id="tableVocation"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block" type="button" id="add_vocation" data-toggle="modal" data-target="#vocationModalCenter">+ 新增行业信息</button>
+                    </div>  
+                    <!-- 业务情况 -->
+                    <div class="l-title">
+                        业务情况
+                    </div>
+                    <div class="table-content7" style="background:#fff">
+                        <table id="tableYw"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block" type="button" id="add_yw" data-toggle="modal" data-target="#ywModalCenter">+ 新增业务情况</button>
+                    </div>  
+                    <!-- 采购情况 -->
+                    <div class="l-title">
+                        采购情况
+                    </div>
+                    <div class="table-content9" style="background:#fff">
+                        <table id="tableCg"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block" type="button" id="add_cg" data-toggle="modal" data-target="#cgModalCenter">+ 新增采购情况</button>
+                    </div>  
+                    <!-- 销售情况 -->
+                    <div class="l-title">
+                        销售情况
+                    </div>
+                    <div class="table-content10" style="background:#fff">
+                        <table id="tableXs"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block" type="button" id="add_xs" data-toggle="modal" data-target="#xsModalCenter">+ 新增销售情况</button>
+                    </div>  
+                    <!-- 客户 -->
+                    <div class="table-content10 form-group" style="background:#fff">
+                        <label for="" class="thead-label">客户</label>
+                        <textarea name="" id="" rows="2" class="form-control rounded-0" placeholder="目标公司的主要客户为..."></textarea>
+                    </div>
+                     <!-- 供应商 -->
+                     <div class="l-title">
+                        供应商
+                    </div>
+                    <div class="table-content1" style="background:#fff">
+                        <table id="tableCorp"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block" type="button" id="add_corp" data-toggle="modal" data-target="#corpModalCenter">+ 新增供应商</button>
+                    </div>  
+                     <!-- 商标和专利 -->
+                     <div class="l-title">
+                        商标和专利
+                    </div>
+                    <div class="table-content1" style="background:#fff">
+                        <table id="tableLogo"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block" type="button" id="add_logo" data-toggle="modal" data-target="#logoModalCenter">+ 新增专利</button>
+                    </div>  
+                    <!-- 荣誉 -->
+                    <div class="table-content10 form-group" style="background:#fff">
+                        <label for="" class="thead-label">荣誉</label>
+                        <textarea name="" id="" rows="2" class="form-control rounded-0" placeholder="所获荣誉为..."></textarea>
+                    </div>
+                    <!-- 员工 -->
+                    <div class="table-content1" style="background:#fff">
+                        <table id="tableStaff"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block" type="button" id="add_logo" data-toggle="modal" data-target="#staffModalCenter">+ 新增员工</button>
+                    </div>  
+                     <!-- 地址 -->
+                     <div class="l-title">
+                            地址
+                    </div>
+                    <div class="table-content1" style="background:#fff">
+                        <table id="tableAddress"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block" type="button" id="add_address" data-toggle="modal" data-target="#addressModalCenter">+ 新增地址</button>
+                    </div> 
+                    <!-- 付款情况 -->
+                    <div class="l-title">
+                        付款情况
+                     </div> 
+                     <div class="table-content10 form-group" style="background:#fff">
+                        <label for="" class="thead-label">总体评价</label>
+                        <div class="radio-box">
+                            <div class="form-check form-check-inline mr-5">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                <label class="form-check-label mx-0" for="inlineRadio1">极好</label>
+                            </div>
+                            <div class="form-check form-check-inline mr-5">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                <label class="form-check-label mx-0" for="inlineRadio2">好</label>
+                            </div>
+                            <div class="form-check form-check-inline mr-5">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                <label class="form-check-label mx-0" for="inlineRadio3">一般</label>
+                            </div>
+                            <div class="form-check form-check-inline mr-5">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                <label class="form-check-label mx-0" for="inlineRadio4">较差</label>
+                            </div>
+                            <div class="form-check form-check-inline mr-5">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                <label class="form-check-label mx-0" for="inlineRadio5">差</label>
+                            </div>
+                            <div class="form-check form-check-inline mr-5">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option6">
+                                <label class="form-check-label mx-0" for="inlineRadio6">尚无法评估</label>
+                            </div>
+
+                        </div>
+                        <p class="pt-2 tip-p"> * 以上等级是根据该公司供货商的评价，拖欠记录和追讨记录综合得出的。</p>
+                    </div>
+                    <!-- 拖欠记录 -->
+                    <div class="table-content10 form-group" style="background:#fff">
+                        <label for="" class="thead-label">拖欠记录</label>
+                        <textarea name="" id="" rows="2" class="form-control rounded-0" placeholder="拖欠记录..."></textarea>
+                    </div>
+                    <!-- 追讨记录 -->
+                    <div class="table-content10 form-group" style="background:#fff">
+                        <label for="" class="thead-label">追讨记录</label>
+                        <textarea name="" id="" rows="2" class="form-control rounded-0" placeholder="追讨记录..."></textarea>
+                    </div>
+                      <!-- 关键财务项目 -->
+                      <div class="l-title">
+                        关键财务项目
+                     </div> 
+                     <div class="table-content1 moneyAbout pb-0">
+                         <div class="form-group form-inline unit py-2 justify-content-end">
+                             <label for="" class="form-label">单位：</label>
+                             <input type="text" placeholder="请输入币种" class="form-control mr-3">
+                             <select name="" id="" class="form-control">
+                                 <option value="" selected>请选择单位</option>
+                                 <option value="">个</option>
+                                 <option value="">千</option>
+                                 <option value="">万</option>
+                             </select>
+                         </div>
+                         <div class="row py-2" style="border-bottom: solid 1px #e5e5e5;">
+                            <span class="col-md-4"></span>
+                            <div class="col-md-4">
+                                <input type="text" id="date1" class="form-control m-auto" placeholder="请选择日期">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="date2" class="form-control m-auto" placeholder="请选择日期">
+                            </div>
+                         </div>
+                     </div>
+                     <div class="table-content1 pt-0" style="background:#fff">
+                        <table id="tableTotal"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        <thead>
+                            <tr>
+                                <th data-field="project" data-align="center" data-width="33.33%"></th>
+                                <th data-field="item1" data-align="center" data-width="33.33%"></th>
+                                <th data-field="item2" data-align="center" data-width="33.33%"></th>
+                            </tr>
+                        </thead>
+                        </table>
+                    </div>  
+                     <!-- 财务报表 -->
+                     <div class="l-title">
+                            财务报表
+                      </div>
+                      <div class="table-content1 moneyAbout pb-0">
+                        <div class="table-title">资产负债表</div>
+                        <div class="form-group form-inline unit py-2 justify-content-end">
+                            <label for="" class="form-label">单位：</label>
+                            <input type="text" placeholder="请输入币种" class="form-control mr-3">
+                            <select name="" id="" class="form-control">
+                                <option value="" selected>请选择单位</option>
+                                <option value="">个</option>
+                                <option value="">千</option>
+                                <option value="">万</option>
+                            </select>
+                        </div>
+                        <div class="row py-2" style="border-bottom: solid 1px #e5e5e5;">
+                            <span class="col-md-4"></span>
+                            <div class="col-md-4">
+                                <input type="text" id="date3" class="form-control m-auto" placeholder="请选择日期">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="date4" class="form-control m-auto" placeholder="请选择日期">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 流动资产 -->
+                    <div class="table-content1 pt-0" style="background:#fff">
+                        <table id="tableMoney1"
+                            data-toggle="table"
+                            data-show-footer="true"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_cw">+ 新增一行</button>
+                    </div>  
+                    <!-- 非流动资产 -->
+                    <div class="table-content1 pt-0" style="background:#fff">
+                        <table id="tableMoney2"
+                            data-toggle="table"
+                            data-show-footer="true"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_fld">+ 新增一行</button>
+                        <!-- 资产总额 -->
+                        <div class="row" style="background:#f5f5f5;padding: 8px">
+                            <div class="col-md-4 justify-content-center d-flex align-items-center" style="font-weight:900">资产总额</div>
+                            <div class="col-md-4">
+                                <input type="text" readonly class="form-control m-auto zczeItem1" style="width:9.75rem">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" readonly class="form-control m-auto zczeItem2" style="width:9.75rem">
+                            </div>
+                        </div>
+                    </div>  
+                     <!-- 流动负债 -->
+                     <div class="table-content1 pt-0" style="background:#fff">
+                        <table id="tableMoney3"
+                            data-toggle="table"
+                            data-show-footer="true"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_ldfz">+ 新增一行</button>
+                    </div>  
+                     <!-- 非流动负债 -->
+                     <div class="table-content1 pt-0" style="background:#fff">
+                        <table id="tableMoney4"
+                            data-toggle="table"
+                            data-show-footer="true"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_fldfz">+ 新增一行</button>
+                        <!-- 负债合计 -->
+                        <div class="row" style="background:#f5f5f5;padding: 8px">
+                            <div class="col-md-4 justify-content-center d-flex align-items-center" style="font-weight:900">负债合计</div>
+                            <div class="col-md-4">
+                                <input type="text" readonly class="form-control m-auto fzhjItem1" style="width:9.75rem">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" readonly class="form-control m-auto fzhjItem2" style="width:9.75rem">
+                            </div>
+                        </div>
+                    </div>  
+                    <!-- 所有者权益 -->
+                       <div class="table-content1 pt-0" style="background:#fff">
+                        <table id="tableMoney5"
+                            data-toggle="table"
+                            data-show-footer="true"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_ownqy">+ 新增一行</button>
+                        <!-- 负债及所有者权益 -->
+                        <div class="row" style="background:#f5f5f5;padding: 8px">
+                            <div class="col-md-4 justify-content-center d-flex align-items-center" style="font-weight:900">负债及所有者权益合计</div>
+                            <div class="col-md-4">
+                                <input type="text" readonly class="form-control m-auto fzsyzItem1" style="width:9.75rem">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" readonly class="form-control m-auto fzsyzItem2" style="width:9.75rem">
+                            </div>
+                        </div>
+                    </div> 
+                    <!-- 利润表 -->
+                    <div class="table-content1 moneyAbout pb-0">
+                        <div class="table-title">利润表</div>
+                        <div class="form-group form-inline unit py-2 justify-content-end">
+                            <label for="" class="form-label">单位：</label>
+                            <input type="text" placeholder="请输入币种" class="form-control mr-3">
+                            <select name="" id="" class="form-control">
+                                <option value="" selected>请选择单位</option>
+                                <option value="">个</option>
+                                <option value="">千</option>
+                                <option value="">万</option>
+                            </select>
+                        </div>
+                        <div class="row py-2" style="border-bottom: solid 1px #e5e5e5;">
+                            <span class="col-md-4"></span>
+                            <div class="col-md-4">
+                                <input type="text" id="date5" class="form-control m-auto" placeholder="请选择日期">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="date6" class="form-control m-auto" placeholder="请选择日期">
+                            </div>
+                        </div>
+                        <!-- 毛利润表 -->
+                        <table id="tableProfit1"
+                            data-toggle="table"
+                            data-show-footer="true"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_mlr">+ 新增一行</button>
+                        <!-- 营业利润 -->
+                        <table id="tableProfit2"
+                            data-toggle="table"
+                            data-show-footer="true"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_yylr">+ 新增一行</button>
+                        <!-- 税前利润 -->
+                        <table id="tableProfit3"
+                            data-toggle="table"
+                            data-show-footer="true"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_sqlr">+ 新增一行</button>
+                        <!-- 净利润 -->
+                        <table id="tableProfit4"
+                            data-toggle="table"
+                            data-show-footer="true"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_jlr">+ 新增一行</button>
+                    </div>
+                    <!-- 财务分析 -->
+                    <div class="l-title">
+                        财务分析
+                      </div>
+                    <div class="table-content1 moneyAbout pb-0">
+                        <div class="table-title">重要比率表</div>
+                        <div class="form-group form-inline unit py-2 justify-content-end">
+                            <label for="" class="form-label">单位：</label>
+                            <input type="text" placeholder="请输入币种" class="form-control mr-3">
+                            <select name="" id="" class="form-control">
+                                <option value="" selected>请选择单位</option>
+                                <option value="">个</option>
+                                <option value="">千</option>
+                                <option value="">万</option>
+                            </select>
+                        </div>
+                        <div class="row py-2" style="border-bottom: solid 1px #e5e5e5;">
+                            <span class="col-md-4"></span>
+                            <div class="col-md-4">
+                                <input type="text" id="date7" class="form-control m-auto" placeholder="请选择日期">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="date8" class="form-control m-auto" placeholder="请选择日期">
+                            </div>
+                        </div>
+                        <table id="tableProfit5"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block my-3" type="button" id="add_analyze">+ 新增一行</button>
+                    </div>
+                      <!-- 银行信息 -->
+                      <div class="l-title">
+                        银行信息
+                     </div> 
+                     <div class="table-content1" style="background:#fff">
+                        <table id="tableBank"
+                            data-toggle="table"
+                            style="position: relative"
+                        >
+                        </table>
+                        <button class="btn btn-lg btn-block" type="button" id="add_bank" data-toggle="modal" data-target="#bankModalCenter">+ 新增银行信息</button>
+                    </div> 
+                     <!-- 备注 -->
+                     <div class="table-content10 form-group" style="background:#fff">
+                        <label for="" class="thead-label">备注</label>
+                        <textarea name="" id="" rows="2" class="form-control rounded-0" placeholder="备注..."></textarea>
+                    </div> 
+                    <!-- 公共记录 -->
+                    <div class="l-title">
+                        公共记录
+                     </div> 
+                     <div class="table-content10 form-group" style="background:#fff">
+                        <label for="" class="thead-label">诉讼记录</label>
+                        <textarea name="" id="" rows="2" class="form-control rounded-0" placeholder="诉讼记录..."></textarea>
+                    </div> 
+                     <!-- 综述 -->
+                     <div class="l-title">
+                        综述
+                     </div> 
+                     <div class="table-content10 form-group" style="background:#fff">
+                        <textarea name="" id="" rows="2" class="form-control rounded-0"></textarea>
+                    </div>
+                </div>
+                    <!-- 附件 -->
+                    <div class="bg-f mt-5 attachment">
+                        <a name="file_anchor"></a>
+                        <div class="l-title change_record">
+                            附件
+                        </div>
+                        <div class="order-detail mb-4 order-content">
+                            <div class="this-items col-md-2 d-flex flex-column justify-content-center align-items-center my-5">
+
+                                <div class="uploadFile">
+                                    <img src="../../imgs/order/！.png"/>
+                                    <p class="mt-2">暂无附件</p>
+                                </div>
+                                <div class="order-yulan mt-3"><a href="#">预览</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fixed 底部 -->
+                    <div class="position-fixed fixed-btn-well d-flex justify-content-end align-items-center px-5">
+                        <button class="btn btn-default">保存</button>
+                        <button class="btn btn-primary ml-4">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--历史纪录 Modal -->
+<div class="modal fade" id="recordModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    历史变更记录
+</div>
+<div class="modal-body">
+    <div class="form-inline justify-content-center my-3">
+        <label for="" class="control-label" >日期：</label>
+        <input type="text" class="form-control" id="modal_record_date" >
+    </div>
+    <div class="form-inline justify-content-center my-3">
+        <label for="" class="control-label">变更项：</label>
+        <input type="text" class="form-control" id="modal_change_items">
+    </div>
+    <div class="form-inline justify-content-center my-3">
+        <label for="" class="control-label">变更前：</label>
+        <input type="text" class="form-control" id="modal_change_font">
+    </div>
+    <div class="form-inline justify-content-center my-3">
+        <label for="" class="control-label">变更后：</label>
+        <input type="text" class="form-control" id="modal_change_back">
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" id="record_modal_save" data-dismiss="modal">保存</button>
+    <button type="button" class="btn btn-default" id="record_modal_cancel" data-dismiss="modal">取消</button>
+</div>
+</div>
+</div>
+</div>
+<!--股东信息 Modal -->
+<div class="modal fade" id="shareholdersInfoModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    股东信息
+</div>
+<div class="modal-body">
+    <div class="form-inline justify-content-center my-3">
+        <label for="" class="control-label" >姓名：</label>
+        <input type="text" class="form-control" id="modal_shareholdersinfo_name" >
+    </div>
+    <div class="form-inline justify-content-center my-3">
+        <label for="" class="control-label">国家/国籍：</label>
+        <input type="text" class="form-control" id="modal_shareholdersinfo_country">
+    </div>
+    <div class="form-inline justify-content-center my-3">
+        <label for="" class="control-label">出资比例(%)：</label>
+        <input type="number" min="0" max="100" class="form-control" id="modal_shareholdersinfo_money">
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" id="shareholders_info_modal_save" data-dismiss="modal">保存</button>
+    <button type="button" class="btn btn-default" id="shareholders_info_nodal_cancel" data-dismiss="modal">取消</button>
+</div>
+</div>
+</div>
+</div>
+<!--股东详情 Modal -->
+<div class="modal fade" id="shareholdersDetailModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                股东详情
+            </div>
+            <div class="modal-body">
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label" >名称：</label>
+                    <input type="text" class="form-control" id="modal_shareholdersdetail_name" >
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">成立时间：</label>
+                    <input type="text" class="form-control" id="modal_shareholdersdetail_time">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">注册资金：</label>
+                    <input type="text" class="form-control" id="modal_shareholdersdetail_money">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">联系电话：</label>
+                    <input type="number" class="form-control" id="modal_shareholdersdetail_tel">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">传真号码：</label>
+                    <input type="number" class="form-control" id="modal_shareholdersdetail_fax">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">邮箱地址：</label>
+                    <input type="text" class="form-control" id="modal_shareholdersdetail_email">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="shareholders_detail_modal_save" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-default" id="shareholders_detail_nodal_cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+        </div>
+</div>
+<!--投资情况 Modal -->
+<div class="modal fade" id="investmentModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    投资情况
+</div>
+<div class="modal-body">
+    <div class="form-inline justify-content-center my-3">
+        <label for="" class="control-label" >公司名称：</label>
+        <input type="text" class="form-control" id="modal_investment_name" >
+    </div>
+    <div class="form-inline justify-content-center my-3">
+        <label for="" class="control-label">出资比例(%)：</label>
+        <input type="number" min="0" max="100" class="form-control" id="modal_investment_money">
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" id="investment_modal_save" data-dismiss="modal">保存</button>
+    <button type="button" class="btn btn-default" id="investment_nodal_cancel" data-dismiss="modal">取消</button>
+</div>
+</div>
+</div>
+</div>
+<!--管理层 Modal -->
+<div class="modal fade" id="managementModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+    <div class="modal-header">
+        管理层
+    </div>
+    <div class="modal-body">
+        <div class="form-inline justify-content-center my-3">
+            <label for="" class="control-label" >姓名：</label>
+            <input type="text" class="form-control" id="modal_management_name" >
+        </div>
+        <div class="form-inline justify-content-center my-3">
+            <label for="" class="control-label">职务：</label>
+            <input type="text" class="form-control" id="modal_management_position">
+        </div>
+        <div class="form-inline justify-content-center my-3">
+            <label for="" class="control-label">身份证号：</label>
+            <input type="number" class="form-control" id="modal_management_id_card">
+        </div>
+        <div class="form-inline justify-content-center my-3">
+            <label for="" class="control-label">年龄：</label>
+            <input type="text" class="form-control" id="modal_management_age">
+        </div>
+        <div class="form-inline justify-content-center my-3">
+            <label for="" class="control-label">联系电话：</label>
+            <input type="number" class="form-control" id="modal_management_tel">
+        </div>
+        <div class="form-inline justify-content-center my-3">
+            <label for="" class="control-label">邮箱地址：</label>
+            <input type="text" class="form-control" id="modal_management_email">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="management_modal_save" data-dismiss="modal">保存</button>
+        <button type="button" class="btn btn-default" id="management_nodal_cancel" data-dismiss="modal">取消</button>
+    </div>
+</div>
+</div>
+</div>
+<!--行业信息 Modal -->
+<div class="modal fade" id="vocationModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            行业信息
+        </div>
+        <div class="modal-body">
+            <div class="form-inline justify-content-center my-3">
+                <label for="" class="control-label" >行业代码：</label>
+                <input type="text" class="form-control" id="modal_vocation_code" >
+            </div>
+            <div class="form-inline justify-content-center my-3">
+                <label for="" class="control-label">行业名称：</label>
+                <input type="text" class="form-control" id="modal_vocation_name">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="vocation_modal_save" data-dismiss="modal">保存</button>
+            <button type="button" class="btn btn-default" id="vocation_nodal_cancel" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+    </div>
+</div>
+<!--业务情况 Modal -->
+<div class="modal fade" id="ywModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                业务情况
+            </div>
+            <div class="modal-body">
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label" >产品：</label>
+                    <input type="text" class="form-control" id="modal_yw_product" >
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">进口：</label>
+                    <input type="text" class="form-control" id="modal_yw_jk">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">出口：</label>
+                    <input type="text" class="form-control" id="modal_yw_ck">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">海关代码：</label>
+                    <input type="text" class="form-control" id="modal_yw_code">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="yw_modal_save" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-default" id="yw_nodal_cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--采购情况 Modal -->
+<div class="modal fade" id="cgModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                采购情况
+            </div>
+            <div class="modal-body">
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label" >国家：</label>
+                    <input type="text" class="form-control" id="modal_cg_country" >
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">百分比：</label>
+                    <input type="text" class="form-control" id="modal_cg_percent">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">结算方式：</label>
+                    <input type="text" class="form-control" id="modal_cg_js">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="cg_modal_save" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-default" id="cg_nodal_cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--销售情况 Modal -->
+<div class="modal fade" id="xsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                销售情况
+            </div>
+            <div class="modal-body">
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label" >国家：</label>
+                    <input type="text" class="form-control" id="modal_xs_country" >
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">百分比：</label>
+                    <input type="text" class="form-control" id="modal_xs_percent">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">结算方式：</label>
+                    <input type="text" class="form-control" id="modal_xs_js">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="xs_modal_save" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-default" id="xs_nodal_cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--供应商 Modal -->
+<div class="modal fade" id="corpModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                供应商
+            </div>
+            <div class="modal-body">
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label" >供应商名称：</label>
+                    <input type="text" class="form-control" id="modal_corp_name" >
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">供应产品：</label>
+                    <input type="text" class="form-control" id="modal_corp_pro">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">联系电话：</label>
+                    <input type="text" class="form-control" id="modal_corp_tel">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">合作时间：</label>
+                    <input type="text" class="form-control" id="modal_corp_time">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">付款情况：</label>
+                    <input type="text" class="form-control" id="modal_corp_case">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="corp_modal_save" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-default" id="corp_nodal_cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--商标和专利 Modal -->
+<div class="modal fade" id="logoModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                商标和专利
+            </div>
+            <div class="modal-body">
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label" >注册号：</label>
+                    <input type="text" class="form-control" id="modal_logo_num" >
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">注册日期：</label>
+                    <input type="text" class="form-control" id="modal_logo_date">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">商标图案名称：</label>
+                    <button type="button" class="form-control" id="modal_logo_icon">
+                        <span>点击上传图标</span>
+                        <input type="file" class="file-input">
+                    </button>
+                </div>
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="logo_modal_save" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-default" id="logo_nodal_cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--员工 Modal -->
+<div class="modal fade" id="staffModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                员工
+            </div>
+            <div class="modal-body">
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label" >员工人数：</label>
+                    <input type="text" class="form-control" id="modal_staff_num" >
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">主要职能部门：</label>
+                    <input type="text" class="form-control" id="modal_staff_section">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="staff_modal_save" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-default" id="staff_nodal_cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--地址 Modal -->
+<div class="modal fade" id="addressModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                地址
+            </div>
+            <div class="modal-body">
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label" >经营地址：</label>
+                    <input type="text" class="form-control" id="modal_address_ad" >
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">所有权：</label>
+                    <input type="text" class="form-control" id="modal_address_own">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">面积：</label>
+                    <input type="text" class="form-control" id="modal_address_area">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="address_modal_save" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-default" id="address_nodal_cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--银行信息 Modal -->
+<div class="modal fade" id="bankModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                银行信息
+            </div>
+            <div class="modal-body">
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label" >银行名称：</label>
+                    <input type="text" class="form-control" id="modal_bank_name" >
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">银行号码：</label>
+                    <input type="text" class="form-control" id="modal_bank_num">
+                </div>
+                <div class="form-inline justify-content-center my-3">
+                    <label for="" class="control-label">银行地址：</label>
+                    <input type="text" class="form-control" id="modal_bank_address">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="bank_modal_save" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-default" id="bank_nodal_cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+   
+    <script src="${BASE_PATH}static/credit/js/report_js/report_business_info.js"></script>
+
+</html>
+    

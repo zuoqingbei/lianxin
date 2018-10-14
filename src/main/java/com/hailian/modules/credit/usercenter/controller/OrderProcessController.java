@@ -167,9 +167,9 @@ public class OrderProcessController extends BaseProjectController{
 	 * @param  
 	 * @return_type   void
 	 */
-	/*public void showReportQuality(){
-		render(REPORT_MANAGE_PATH+"report_info_import.html");
-	}*/
+	public void showReportBusiness(){
+		render(REPORT_MANAGE_PATH+"report_business_info.html");
+	}
 	/**
 	 * 
 	 * @time   2018年10月14日 下午3:12:17
@@ -192,17 +192,6 @@ public class OrderProcessController extends BaseProjectController{
 	public void showshowOrderFiling(){
 		render(REPORT_MANAGE_PATH+"report_order_filing.html");
 	}
-	/**
-	 * 
-	 * @time   2018年10月14日 下午3:12:31
-	 * @author yangdong
-	 * @todo   展示报告管理下的递交报告
-	 * @param  
-	 * @return_type   void
-	 */
-	/*public void showReportSubmit(){
-		render(REPORT_MANAGE_PATH+"report_info_import.html");
-	}*/
 	
 	/**
 	 * @todo   展示报告管理下的信息录入的填报详情页

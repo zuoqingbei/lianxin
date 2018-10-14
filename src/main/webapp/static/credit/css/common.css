@@ -40,10 +40,11 @@ header {
 }
 .user-content {
     height: 100%;
-    width: 6.8125rem;
+    width: 10.8125rem;
     margin-right: 4rem;
     padding-left: 1.125rem;
     cursor: pointer;
+    
 }
 .user-content:hover {
     color: var(--activeColor);
@@ -56,6 +57,10 @@ header {
 }
 .user-content span {
     font-size: 1.1rem;
+    width: 6.8125rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .fa-bell-o,.user-content .fa-user-o {
     font-size: 1.5rem;
@@ -66,7 +71,7 @@ header {
 .logout {
     display: none;
     position: absolute;
-    left: 6rem;
+    left: 4rem;
     top: 4.75rem;
     width: 6rem;
     height: 2.8rem;
@@ -97,7 +102,7 @@ header {
 .menu-icon {
     display: inline-block;
     width: 1.3rem;
-    margin-right: 1.2rem;
+    margin-right: 1.4rem;
     margin-top: -.5rem;
 }
 .nav-row {
