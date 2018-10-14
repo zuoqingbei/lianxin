@@ -164,9 +164,8 @@ var bodyContent = {
 				</select></td>
 		</tr>
 		<tr>
-				<td>省份</td>
-				<td>
-						<div class="form-group">
+			<td>省份</td>
+						<td>
 						<select id="sandbar" name="model.province" class="form-control" valid="vselect" validname="省份" style="width: 200px;" onchange="oper.sandbarChange()">
 						<option value="-1" >请选择</option>
 						 <% for(item in province){ %>
@@ -177,8 +176,8 @@ var bodyContent = {
 							<%}%>
 						 <% } %>
 						</select>
+						</td>
 						</div>
-					</td>
 				<td>城市</td>
 				<td>
 					<% if(model.city!=null || model.city!="" ){%>
