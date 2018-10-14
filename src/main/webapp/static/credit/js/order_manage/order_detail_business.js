@@ -646,6 +646,9 @@ let Filing = {
               fileicon = '../../imgs/order/JPG.png'
           }else if(filetype === 'pdf') {
               fileicon = '../../imgs/order/PDF.png'
+          }else {
+            Public.message("info","不支持上传此种类型文件！")
+            return
           }
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).parent(".uploadFile").html(`<span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
