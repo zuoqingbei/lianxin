@@ -525,8 +525,8 @@ public class OrderProcessController extends BaseProjectController{
 		String companyHistoryJson = (String) getRequest().getParameter("companyHistory");
 		String companyZhuCeJson = (String) getRequest().getParameter("companyZhuCe");
 		//转化为model集合
-		List<BaseProjectModel<? extends CreditCompanyHis>>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
-		List<BaseProjectModel<? extends CreditCompanyInfo>> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
+		List<BaseProjectModel>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
+		List<BaseProjectModel> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
 		//更新操作
 		for (BaseProjectModel<? extends CreditCompanyHis>  baseProjectModel : companyHistoryModelList) {
 			baseProjectModel.remove("id")
@@ -550,10 +550,10 @@ public class OrderProcessController extends BaseProjectController{
 	 * @param model
 	 */
 	@SuppressWarnings("unchecked")
-	private   <T> List<BaseProjectModel<? extends T>> infoEntry(String jsonStr,String entryTypeParam){
+	private   <T> List<BaseProjectModel> infoEntry(String jsonStr,String entryTypeParam){
 		if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":"))
-			return new ArrayList<BaseProjectModel<? extends T>>();
-		List<BaseProjectModel<? extends T>> list = new ArrayList<BaseProjectModel<? extends T>>();
+			return new ArrayList<BaseProjectModel>();
+		List<BaseProjectModel> list = new ArrayList<BaseProjectModel>();
 		Map<String,String> map = new HashMap<>();
 		String jsonStr2 = jsonStr.replace("\"", "");
 		String[] jsonStr3 = jsonStr2.split("}");
@@ -574,12 +574,12 @@ public class OrderProcessController extends BaseProjectController{
 				//反射获取Class对象
 				@SuppressWarnings("rawtypes")
 				Class entryType = null;
-				BaseProjectModel<? extends T> model = null;
+				BaseProjectModel model = null;
 				try {
 					entryType = Class.forName(entryTypeParam);
 					try {
 						//根据Class对象创建实例
-						model = (BaseProjectModel<? extends T>) entryType.newInstance();
+						model = (BaseProjectModel) entryType.newInstance();
 					} catch (InstantiationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
