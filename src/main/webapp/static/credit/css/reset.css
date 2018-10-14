@@ -71,6 +71,9 @@ html,body {
 
 
 /*==============bootstraps重置样式==============*/
+table tbody tr:hover {
+    background: #e6f7ff!important;
+}
 .btn-disabled {
     background: #ccc;
     color: #fff;
@@ -325,8 +328,8 @@ label.col-md-4{
     background: var(--activeColor);
     color: #fff!important;
 }
-.layui-this {
-    background: var(--activeColor)!important;
+.layui-laydate .layui-this{
+    background-color: var(--activeColor)!important;
     color: #fff!important;
 }
 
