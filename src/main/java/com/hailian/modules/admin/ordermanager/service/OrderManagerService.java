@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.alibaba.fastjson.JSONObject;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.modules.admin.ordermanager.controller.Reporter;
@@ -53,14 +52,6 @@ public class OrderManagerService {
 				coi.set("id", id);
 				coi.update();
 			} else {
-				Date date=new Date();
-				Calendar calendar = Calendar.getInstance();
-			    calendar.setTime(date);
-			    String year=String.valueOf(calendar.get(Calendar.YEAR));
-			    String month=String.valueOf(calendar.get(Calendar.MONTH));
-				coi.set("receiver_date", date);
-				coi.set("year", year);
-				coi.set("month", month);
 				coi.save();
 			}
 
@@ -158,7 +149,10 @@ public class OrderManagerService {
 
 		return CreditOrderInfo.dao.getOrder(id, c);
 	}
+	public CreditOrderInfo getOrder(String id, BaseProjectController c) {
 
+		return CreditOrderInfo.dao.getOrderById(id,c);
+	}
 	/**
 	 * 
 	 * @time   2018年8月31日 上午11:48:41
@@ -234,9 +228,9 @@ public class OrderManagerService {
 	 * @param  @return
 	 * @return_type   CreditReportUsetime
 	 */
-	public CreditReportUsetime getTime(String countryType, String speed, String reporttype,String orderType) {
+	public CreditReportUsetime getTime(String countryType, String speed/*, String reporttype,String orderType*/) {
 		// TODO Auto-generated method stub
-		return CreditReportUsetime.dao.getTime(countryType,speed,reporttype,orderType);
+		return CreditReportUsetime.dao.getTime(countryType,speed/*,reporttype,orderType*/);
 	}
 	/**
 	 * 

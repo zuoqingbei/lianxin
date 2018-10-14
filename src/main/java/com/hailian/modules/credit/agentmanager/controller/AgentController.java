@@ -1,14 +1,22 @@
 package com.hailian.modules.credit.agentmanager.controller;
 
+import java.util.List;
+
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentModel;
 import com.hailian.modules.credit.agentmanager.service.AgentService;
+import com.hailian.modules.credit.city.model.CityModel;
+import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.modules.credit.common.service.CountryService;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
+import com.hailian.modules.credit.province.model.ProvinceModel;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -59,6 +67,9 @@ public class AgentController extends BaseProjectController {
 	public void add() {
 		AgentModel model = getModel(AgentModel.class);
 		setAttr("model", model);
+		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
+		setAttr("province", province);
+		
 		render(path + "add.html");
 	}
 
@@ -73,7 +84,19 @@ public class AgentController extends BaseProjectController {
 		Integer para = getParaToInt();
 		AgentModel model = AgentModel.dao.findById(para);
 		setAttr("model", model);
+		String pid=model.get("province");
+		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
+		List<CityModel> city = CityModel.dao.getCity("", pid, this);//获取省份下的城市
+		setAttr("city", city);
+		setAttr("province", province);
+		
 		render(path + "edit.html");
+	}
+	public void getCitySelect() {
+		String province = getPara("attr.continent", "");
+		List<CityModel> city = CityModel.dao.getCity("", province,this);
+		setAttr("city", city);
+		renderJson(city);
 	}
 
 	/**

@@ -33,7 +33,7 @@ public class CreditReportUsetime  extends BaseProjectModel<CreditReportUsetime>{
 	 * @param  @return
 	 * @return_type   CreditReportUsetime
 	 */
-	public  CreditReportUsetime getTime(String countryType, String speed, String reporttype,String orderType) {
+	public  CreditReportUsetime getTime(String countryType, String speed/*, String reporttype,String orderType*/) {
 		List<String> params=new ArrayList<String>();
 		StringBuffer sql=new StringBuffer(" select t.* from credit_report_usetime t where t.del_flag='0' ");
 		if (StringUtils.isNotBlank(countryType)) {
@@ -44,14 +44,14 @@ public class CreditReportUsetime  extends BaseProjectModel<CreditReportUsetime>{
 			sql.append(" and t.report_speed=? ");
 			params.add(speed);
 		}
-		if (StringUtils.isNotBlank(reporttype)) {
+		/*if (StringUtils.isNotBlank(reporttype)) {
 			sql.append(" and t.report_id=? ");
 			params.add(reporttype);
 		}
 		if (StringUtils.isNotBlank(orderType)) {
 			sql.append(" and t.order_type=? ");
 			params.add(orderType);
-		}
+		}*/
 		
 		return CreditReportUsetime.dao.findFirst(sql.toString(),params.toArray());
 	}

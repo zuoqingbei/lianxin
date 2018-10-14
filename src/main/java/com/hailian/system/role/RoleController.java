@@ -1,5 +1,6 @@
 package com.hailian.system.role;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,10 +120,19 @@ public class RoleController extends BaseProjectController {
 		MenuSvc svc = new MenuSvc();
 		// 获取根目录
 		List<SysMenu> rootList = svc.getListByParentid(0);
-		// 获取子目录
+		//二级目录
+		List<SysMenu> twoList=new ArrayList<SysMenu>();
+		// 获取根目录子目录
 		Map<Integer, List<SysMenu>> map = new HashMap<Integer, List<SysMenu>>();
+		Map<Integer, List<SysMenu>> map2 = new HashMap<Integer, List<SysMenu>>();
 		for (SysMenu sysMenu : rootList) {
+			twoList.addAll(svc.getListByParentid(sysMenu.getInt("id")));
 			map.put(sysMenu.getInt("id"), svc.getListByParentid(sysMenu.getInt("id")));
+			
+		}
+		//获取二级目录子目录
+		for(SysMenu sysMenu : twoList) {
+			map2.put(sysMenu.getInt("id"), svc.getListByParentid(sysMenu.getInt("id")));
 		}
 
 		String menus = new RoleSvc().getMemus(roleid);
@@ -132,13 +142,15 @@ public class RoleController extends BaseProjectController {
 		setAttr("rootList", rootList);
 		// 二级目录
 		setAttr("map", map);
+		//三及目录
+		setAttr("map2", map2);
 		render(path + "auth.html");
 	}
 
 	/**
 	 * 保存授权信息
 	 * 
-	 * 2015年4月28日 下午3:18:33 flyfox 369191470@qq.com
+	 * 2015年4月28日 下午3:18:33 flyfox 369191470@qq.com8
 	 */
 	public void auth_save() {
 		int roleid = getParaToInt("roleid");

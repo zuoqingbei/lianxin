@@ -96,7 +96,7 @@ function jqName(name,value){
  */
 function resetForm(){
 	$(".tableSearch input:not(.btn1)").val("");
-	$(".tableSearch select").val("-1");
+	$(".tableSearch select").val("");
 }
 
 function console_log(str){

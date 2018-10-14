@@ -80,7 +80,7 @@ var bodyContent = {
 				</li>
 			<% if(map[item.id].~size > 0) { %>
 				<%  for(item2 in map[item.id]) { %>
-				<li class="list-group-item">
+				<li class="list-group-item list-group-item-info">
 				  <div class="checkbox" style="padding-left: 20px;">
 				    <label>
 					  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -88,6 +88,18 @@ var bodyContent = {
 				    </label>
 				  </div>
 				</li>
+					<%if(map2[item2.id].~size > 0){%>
+						<%  for(item3 in map2[item2.id]) { %>
+							<li class="list-group-item">
+							  <div class="checkbox" style="padding-left: 40px;">
+							    <label>
+								  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							      <input type="checkbox" name="menu" id="menu_${item3.id}_${item2.id}" value="${item3.id}">&nbsp;&nbsp;&nbsp;&nbsp;${item3.name}
+							    </label>
+							  </div>
+							</li>
+						<%}%>	
+					<%}%>
 				<% } %>
 			<% } %>
 		<% } %>

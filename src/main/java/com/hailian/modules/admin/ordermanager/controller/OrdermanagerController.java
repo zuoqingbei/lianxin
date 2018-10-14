@@ -2,11 +2,15 @@ package com.hailian.modules.admin.ordermanager.controller;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +27,7 @@ import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditReportLanguage;
 import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
@@ -40,6 +45,8 @@ import com.hailian.util.DateAddUtil;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
 import com.jfinal.aop.Before;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.ICallback;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -175,8 +182,13 @@ public class OrdermanagerController extends BaseProjectController{
 	public void save() {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		List<File> ftpfileList=new ArrayList<File>();
+		String num = CreditOrderInfo.dao.getNumber();
+		Date date=new Date();
+		Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(date);
+	    String year=String.valueOf(calendar.get(Calendar.YEAR));
+	    String month=String.valueOf(calendar.get(Calendar.MONTH));
 		CreditUploadFileModel model1= new CreditUploadFileModel();
-		String num=CreditOrderInfo.dao.getNumber();
 		model1.set("business_type", "0");
 		model1.set("business_id", num);
 		int num1=0;
@@ -184,10 +196,24 @@ public class OrdermanagerController extends BaseProjectController{
 		int size=upFileList.size();
 		int id=getParaToInt("id");
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		model.set("num", num);
+		model.set("receiver_date", date);
+		model.set("year", year);
+		model.set("month", month);
 		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
 		model.set("report_user", reportIdtoOrder);
+		//获取订单记录
+		CreditOrderFlow cof=new CreditOrderFlow();
+		//订单号
+		cof.set("order_num", num);
+		//订单状态
+		cof.set("order_state", model.get("status"));
+		//操作人
+		cof.set("create_oper", model.get("create_by"));
+		//操作时间
+		cof.set("create_time", model.get("receiver_date"));
 		SysUser user = (SysUser) getSessionUser();
-		model.set("num", num);
+		
 		if(size >0){
 			try {
 				for(UploadFile uploadFile:upFileList){
@@ -213,7 +239,7 @@ public class OrdermanagerController extends BaseProjectController{
 							pdf_FTPfileName=FTPfileName;
 						}
 						//String now,List<File> filelist,String storePath,String url,int port,String userName,String password
-						boolean storeFile = FtpUploadFileUtils.storeFtpFile(FTPfileName, ftpfileList,storePath,ip,port,userName,password);//上传
+						boolean storeFile = FtpUploadFileUtils.storeFtpFile(now, ftpfileList,storePath,ip,port,userName,password);//上传
 						if(storeFile){
 							String factpath=storePath+"/"+FTPfileName;
 							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
@@ -247,6 +273,7 @@ public class OrdermanagerController extends BaseProjectController{
 		}
 		try {
 			OrderManagerService.service.modifyOrder(id,model,user,this);
+			cof.save();
 			OrderManagerService.service.addOrderHistory(id, user);
 			renderMessage("保存成功");
 		} catch (Exception e) {
@@ -338,10 +365,10 @@ public class OrdermanagerController extends BaseProjectController{
 	public void getTime() throws ParseException {
 		String countryType=getPara("countrytype", "");
 		String speed=getPara("speed", "");
-		String reporttype=getPara("reporttype", "");
-		String orderType=getPara("ordertype", "");
+		/*String reporttype=getPara("reporttype", "");
+		String orderType=getPara("ordertype", "");*/
 		String receivedate=getPara("receivedate","");
-		CreditReportUsetime usetime=OrderManagerService.service.getTime(countryType,speed,reporttype,orderType);
+		CreditReportUsetime usetime=OrderManagerService.service.getTime(countryType,speed/*,reporttype,orderType*/);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar ca = Calendar.getInstance();
 		if(StringUtils.isNotBlank(receivedate)) {

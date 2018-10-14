@@ -4,7 +4,7 @@
 <% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
 <% var custom = custom.getCustomStringObject1(model.custom_id); %>
 <% var reportType = reportType.getReportTypeString(model.report_type); %>
-<% var company = company.getCompanyStringObject(model.company_id); %>
+<% var company = company.getCompanyStringObject2(model.company_id); %>
 
 <%
 DIRECTIVE SAFE_OUTPUT_OPEN;
@@ -35,8 +35,14 @@ include("/pages/template/head.html"){}
         findCompany:function(){
  	         var value= $("#companyid").find("option:selected").attr("m-type");
  	         var value1= $("#companyid").find("option:selected").attr("m-type1");
- 	         $("#companyname").val(value);
-			$("#englishname").val(value1);
+ 	         if(value=="null"){
+ 	        	 value=""
+ 	         }
+ 	        if(value1=="null"){
+	        	 value1=""
+	         }
+ 	         $("#companyname").val(value1);
+			$("#englishname").val(value);
         },
         
         //客户id改变
@@ -318,22 +324,22 @@ var bodyContent = {
 			</td>
 		</tr>
 			<tr>
-			<td>公司名称</td>
+			<td>公司中文名称</td>
 			<td>
 				<% if(model.companyName!=null || model.companyName!=""){ %>
-				<input id="companyname" class="form-control" type="text" valid="vtext" validname="公司名称" value="${model.companyName}"  readonly="readonly"/>
+				<input id="companyname" class="form-control" type="text"  validname="公司中文名称" value="${model.companyName}"  readonly="readonly"/>
 				<% }else{ %>
-				<input id="companyname" class="form-control" type="text"  valid="vtext" validname="公司名称" value=""  readonly="readonly"/>
+				<input id="companyname" class="form-control" type="text"   validname="公司中文名称" value=""  readonly="readonly"/>
 				<%}%>
 			</td>
 		</tr>
 		<tr>
-			<td>公司英文名</td>
+			<td>订单公司名称</td>
 			<td>
 				<% if(model.englishName!=null || model.englishName!=""){ %>
-				<input id="englishname" class="form-control" type="text" valid="vtext" validname="公司英文名" value="${model.englishName}"  readonly="readonly"/>
+				<input id="englishname" class="form-control" type="text"  validname="订单公司名称" value="${model.englishName}"  readonly="readonly"/>
 				<% }else{ %>
-				<input id="englishname" class="form-control" type="text"  valid="vtext" validname="公司英文名" value=""  readonly="readonly"/>
+				<input id="englishname" class="form-control" type="text"   validname="订单公司名称" value=""  readonly="readonly"/>
 				<%}%>
 			</td>
 		</tr>

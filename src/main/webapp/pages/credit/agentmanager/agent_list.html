@@ -86,6 +86,9 @@ var paginator = function(page) {
 				<th name="a.currency" class="sorting">币种</th>
 				<th name="a.speed" class="sorting">速度</th>
 				<th name="a.usabled" class="sorting">是否禁用</th>
+				<th name="a.province" class="sorting">省份</th>
+				<th name="a.city" class="sorting">城市</th>
+				<th name="a.agent_category" class="sorting">代理类别</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -102,6 +105,9 @@ var paginator = function(page) {
 				<td>${item.Currency}</td>
 				<td>${item.Speed}</td>
 				<td>${item.Usabled}</td>
+				<td>${item.provinceName}</td>
+				<td>${item.cityName}</td>
+				<td>${item.agent_categoryName}</td>
 				<td>
 					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.view(${item.agent_id});">查看</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.agent_id});">修改</a> 

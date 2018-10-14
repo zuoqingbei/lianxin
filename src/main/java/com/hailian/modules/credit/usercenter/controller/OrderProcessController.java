@@ -6,13 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
@@ -22,17 +16,17 @@ import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
+import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
+import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
+import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
-import com.jfinal.json.FastJson;
-import com.jfinal.kit.HttpKit;
-import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
@@ -165,6 +159,40 @@ public class OrderProcessController extends BaseProjectController{
 		render(REPORT_MANAGE_PATH+"report_info_import.html");
 	}
 	/**
+	 * 
+	 * @time   2018年10月14日 下午3:12:08
+	 * @author yangdong
+	 * @todo   展示报告管理下的报告质检
+	 * @param  
+	 * @return_type   void
+	 */
+	public void showReportBusiness(){
+		render(REPORT_MANAGE_PATH+"report_business_info.html");
+	}
+	/**
+	 * 
+	 * @time   2018年10月14日 下午3:12:17
+	 * @author yangdong
+	 * @todo   展示报告管理下的订单核实
+	 * @param  
+	 * @return_type   void
+	 */
+	public void showOrderVerify(){
+		render(REPORT_MANAGE_PATH+"report_order_verify.html");
+	}
+	/**
+	 * 
+	 * @time   2018年10月14日 下午3:12:25
+	 * @author yangdong
+	 * @todo   展示报告管理下的订单查档
+	 * @param  
+	 * @return_type   void
+	 */
+	public void showshowOrderFiling(){
+		render(REPORT_MANAGE_PATH+"report_order_filing.html");
+	}
+	
+	/**
 	 * @todo   展示报告管理下的信息录入的填报详情页
 	 * @time   2018年9月29日 上午 11:02
 	 * @author lzg
@@ -243,9 +271,65 @@ public class OrderProcessController extends BaseProjectController{
 		model.update();
 		return model.set("status", oldStatus);
 	}
-	
+	/**
+	 * 代理分配
+	* @author doushuihai  
+	 * @throws Exception 
+	* @date 2018年10月13日下午7:29:46  
+	* @TODO
+	 */
+	private CreditOrderInfo PublicUpdateAgentMod(Map<String,Object> map,String ismail) throws Exception{
+		CreditOrderInfo model = getModel(CreditOrderInfo.class);
+		model = getModel(CreditOrderInfo.class);
+		String orderId = model.get("id")+"";
+		String oldStatus = model.findById(orderId).get("status");
+		Integer userid = getSessionUser().getUserid();
+		String now = getNow();
+		model.set("update_by",userid);
+		model.set("update_date", now);
+		if(map!=null){
+			for (String key : map.keySet()) {
+				model.set(key, map.get(key));
+			}
+		}
+		model.update();
+		if("1".equals(ismail)){
+			CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, this);
+			String mailaddr=order.get("mail_receiver");
+			String mailaddrRe=order.get("mail_associate_recipient");
+			if(StringUtils.isNotBlank(mailaddr) || StringUtils.isNotBlank(mailaddrRe)){
+				String title="New Order";
+				String content="Dear Sir/Madam,Good day!"
+								+"We would like to place an order for a complete credit report on the following company:"
+								+"Speed:" 
+								+"Ref No.:" 
+								+"Company name:" 
+								+"Address:" 
+								+"Country:" 
+								+"Register Number: "
+								+"Tel:"
+								+"Fax:"
+								+"E-mail:"
+								+"Contact person:"
+								+"Web-site:"
+								+"Bank:"
+								+"Special Note:"
+								+"Please confirm receiving this order."
+								+"Thank you.";
+				new SendMailUtil(mailaddr, mailaddrRe, title, content).sendMail();
+			}
+		}
+		
+		return model.set("status", oldStatus);
+	}
 	/**
 	 *获取订单数据
+	 */
+	/**
+	 *  update加入获取代理下拉框
+	* @author doushuihai  
+	* @date 2018年10月13日下午2:11:44  
+	* @TODO
 	 */
 	public void listJson() {
 		//获取查询类型
@@ -261,11 +345,23 @@ public class OrderProcessController extends BaseProjectController{
 				creditOrderInfo.put("seleteStr",seleteStr);
 			}
 		}
+		if(searchType.equals(orderFilingOfOrder)){//若是搜索类型是订单查档
+			for (CreditOrderInfo creditOrderInfo : rows) {
+				//查询代理类型
+				String seleteStr = TemplateAgentService.templateagentservice.getAgentIdString();
+				creditOrderInfo.put("seleteAgentStr",seleteStr);
+				
+			}
+		}
 		int totalRow = pager.getTotalRow();
 		ResultType resultType = new ResultType(totalRow,rows);
 		renderJson(resultType);
 	}
-	
+	public void getAgentCategory(){
+		String agentid = (String) getRequest().getParameter("agentid");
+		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(agentid);
+		renderJson(findAll);
+	}
 	/**
 	 * @todo   订单状态保存
 	 * @time   2018年9月20日 下午4:30:00
@@ -283,6 +379,25 @@ public class OrderProcessController extends BaseProjectController{
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"订单状态更新失败!"));
+			return null;
+		}
+	}
+	/**
+	 * 订单代理分配
+	* @author doushuihai  
+	* @date 2018年10月13日下午7:20:55  
+	* @TODO
+	 */
+	public  CreditOrderInfo  orderAgentSave() {
+		try {
+		String ismail = (String) getRequest().getParameter("ismail");
+		Map<String,Object> map = new HashMap<>();
+		CreditOrderInfo  model = PublicUpdateAgentMod(map,ismail);
+		renderJson(new ResultType());
+		return model;
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,"订单代理分配更新失败!"));
 			return null;
 		}
 	}

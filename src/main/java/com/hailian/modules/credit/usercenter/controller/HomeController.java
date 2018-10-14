@@ -1,8 +1,13 @@
 
 package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,6 +25,7 @@ import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
@@ -37,6 +43,8 @@ import com.hailian.system.user.UserSvc;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.ICallback;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
@@ -73,10 +81,13 @@ public class HomeController extends BaseProjectController {
 	}
 	public void menu() {
 		SysUser user= (SysUser) getSessionUser();
-		if(user==null||"".equals(user)) {
-			redirect("/credit/front/usercenter/login");
-		}else {
 		Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
+		if(user==null||"".equals(user) ) {
+			redirect("/credit/front/usercenter/login");
+		}
+		else if(map==null){
+			renderMessageByFailed("请分配角色");
+		}else {
 		setAttr("user",user);
 		setAttr("menu", map);
 		render("/pages/credit/common/menu.html");
@@ -95,6 +106,9 @@ public class HomeController extends BaseProjectController {
 		int id=getParaToInt("id");
 		//根据订单id获取订单信息
 		CreditOrderInfo order=OrderManagerService.service.editOrder(id,this);
+		int time=order.get("useTime");
+		int useTime=(int)Math.ceil(time/24.0);
+		order.put("useTime", useTime);
 		//根据id获取num
 		String num=order.getStr("num");
 		//获取附件
@@ -114,13 +128,20 @@ public class HomeController extends BaseProjectController {
 		//获取客户信息
 		CreditCustomInfo custom=OrderManagerService.service.getCreater(order.getStr("custom_id"));
 		//获取地区
-		SysDictDetail continent=HomeService.service.getContinent(order.getStr("continent"));
+//		SysDictDetail continent=HomeService.service.getContinent(order.getStr("continent"));
+		//获取订单记录表
+		List<CreditOrderFlow> cof=CreditOrderFlow.dao.findByNum(order.getStr("num"));
+		//获取国家类型
+		CountryModel country=CountryModel.dao.findById(order.getStr("country"));
+		String countryType=country.getStr("type");
+		//根据国家类型获取不同的订单节点列表
 		//绑定订单信息和公司信息
 		setAttr("order",order);
 		setAttr("company",company);
 		setAttr("histroy",histroy);
 		setAttr("custom",custom);
 		setAttr("files",files);
+		setAttr("orderrecord",cof);
 		//转发页面
 		render(path+"order_manage/order_detail.html");
 	}
@@ -262,7 +283,17 @@ public class HomeController extends BaseProjectController {
 	public void saveOrder() throws Exception {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		List<File> ftpfileList=new ArrayList<File>();
+		String num =CreditOrderInfo.dao.getNumber();
+		Date date=new Date();
+		Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(date);
+	    String year=String.valueOf(calendar.get(Calendar.YEAR));
+	    String month=String.valueOf(calendar.get(Calendar.MONTH));
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		model.set("num", num);
+		model.set("receiver_date", date);
+		model.set("year", year);
+		model.set("month", month);
 		//获取订单公司名称
 		String right_company_name_en=model.get("right_company_name_en");
 		//判断该公司是否存在于公司库中
@@ -279,8 +310,17 @@ public class HomeController extends BaseProjectController {
 		model.set("company_id", company.get("id"));
 		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
 		model.set("report_user", reportIdtoOrder);
-		String num=CreditOrderInfo.dao.getNumber();
-		model.set("num", num);
+		//获取订单记录
+		CreditOrderFlow cof=new CreditOrderFlow();
+		//订单号
+		cof.set("order_num", num);
+		//订单状态
+		cof.set("order_state", model.get("status"));
+		//操作人
+		cof.set("create_oper", model.get("create_by"));
+		//操作时间
+		cof.set("create_time", model.get("receiver_date"));
+		
 		SysUser user = (SysUser) getSessionUser();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
 		model1.set("business_type", "0");
@@ -339,21 +379,22 @@ public class HomeController extends BaseProjectController {
 				}
 			}catch(Exception e){
 				e.printStackTrace();
-				ResultType resultType=new ResultType(0,"操作失败,请重新提交");
+				ResultType resultType=new ResultType(0,"文件上传失败,请重新提交");
 				renderJson(resultType);
 				return;
 			}
 		}
 		try {
 			OrderManagerService.service.modifyOrder(0,model,user,this);
+			cof.save();
 			ResultType resultType=new ResultType(1,"操作成功");
 			renderJson(resultType);
 		} catch (Exception e) {
 			e.printStackTrace();
-			ResultType resultType=new ResultType(0,"操作失败,请重新提交");
+			ResultType resultType=new ResultType(0,"订单保存失败,请重新提交");
 			renderJson(resultType);
-			
-		}		
+			return;
+		}
 	}
 	/**
 	 * 

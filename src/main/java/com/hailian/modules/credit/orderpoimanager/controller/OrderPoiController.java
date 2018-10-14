@@ -210,9 +210,9 @@ public class OrderPoiController extends BaseProjectController {
 								model.set("name", name);
 								model.save();
 								List<CompanyModel> companyByName2 = CompanyModel.dao.getCompanyByName(name);
-								orderReal.set("company_by_report", companyByName2.get(0).get("id"));
+								orderReal.set("company_id", companyByName2.get(0).get("id"));
 							}else{
-								orderReal.set("company_by_report", companyByName.get(0).get("id"));
+								orderReal.set("company_id", companyByName.get(0).get("id"));
 							}
 							order.set("company_by_report", name);
 							
@@ -333,7 +333,7 @@ public class OrderPoiController extends BaseProjectController {
 			  String speed=model.getStr("speed");
 			  String reporttype=model.getStr("report_type");
 			  String orderType=model.getStr("order_type");
-			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed, reporttype, orderType);
+			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed/*, reporttype, orderType*/);
 			  int user_time_id = 0;
 			  int use_time;
 			  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -364,7 +364,7 @@ public class OrderPoiController extends BaseProjectController {
 			  CreditReportPrice pricemodel = OrderManagerService.service.getPrice(countryType, speed, reporttype, orderType);
 			  int price_id=pricemodel.getInt("id");
 			  model.set("price_id", price_id);
-			  List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单提交","orderstate");
+			  List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单分配","orderstate");
 			  if(dictDetailBy !=null){
 				  int status=dictDetailBy.get(0).getInt("detail_id");
 				  model.set("status", status);

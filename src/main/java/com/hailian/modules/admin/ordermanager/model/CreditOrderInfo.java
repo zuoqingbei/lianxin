@@ -1,39 +1,27 @@
 package com.hailian.modules.admin.ordermanager.model;
 
 import java.io.Serializable;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-
-import com.hailian.modules.credit.pricemanager.model.ReportPrice;
-import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
-import com.hailian.modules.credit.common.controller.ReportTimeController;
-import com.hailian.modules.credit.common.model.ReportTimeModel;
-import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
-
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
-import com.jfinal.json.Json;
-import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.ICallback;
 import com.jfinal.plugin.activerecord.Page;
-
-import net.sf.json.JSON;
 
 /**
  * 
@@ -148,7 +136,15 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 
 	public void setPrice(String price) {
 		set("price", price);
-	}*/
+	}
+	public int getUseTime() {
+		return get("useTime");
+	}
+
+	public void setUseTime(int useTime) {
+		set("useTime", useTime);
+	}
+	*/
 
 	/**
 	 * 
@@ -211,6 +207,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
+		
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -237,11 +235,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			params.add(agent_id);
 		}
 		if (StringUtils.isNotBlank(company_by_report)) {
-			sql.append(" and c2.name like %?%");
+			sql.append(" and c2.name like concat('%',?,'%')");
 			params.add(company_by_report);
 		}
 		if (StringUtils.isNotBlank(right_company_name_en)) {
-			sql.append(" and c2.name_en like %?%");
+			sql.append(" and c2.name_en like concat('%',?,'%')");
 			params.add(right_company_name_en);
 		}
 		if (StrUtils.isEmpty(orderby)) {
@@ -276,7 +274,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		StringBuffer sql = new StringBuffer();
 		sql.append("select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName,");
 		sql.append("s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,");
-		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price, c2.name as companyName,c2.name_en as englishName,c3.use_time as usetime  from credit_order_info t ");
+		sql.append("s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price, c2.name as companyName,c2.name_en as englishName,c3.use_time as useTime  from credit_order_info t ");
 		sql.append("left join credit_custom_info u on u.id=t.custom_id ");
 		sql.append("left join credit_country c on c.id=t.country  ");
 		sql.append("left join credit_report_price c1 on c1.id=t.price_id ");
@@ -294,6 +292,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append("where 1 = 1 and t.del_flag='0' and t.id=? and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
 		return dao.findFirst(sql.toString(), id);
 	}
 
@@ -320,6 +319,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -408,6 +408,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
 			params.add(user.get("userid").toString());
@@ -463,6 +464,17 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		StringBuffer sql=new StringBuffer();
 		sql.append("select * from credit_order_info t  where t.num=?");// TODO Auto-generated method stub
 		return CreditOrderInfo.dao.findFirst(sql.toString(),num);
+	}
+	public CreditOrderInfo getOrderById(String id,BaseProjectController c) {
+		StringBuffer sql=new StringBuffer();
+		List<Object> params=new ArrayList<Object>();
+		sql.append("select * from credit_order_info t  where t.id=? ");// TODO Auto-generated method stub
+		params.add(id);
+		if(!c.isAdmin(c.getSessionUser())){
+			sql.append(" and t.create_by=? ");
+			params.add(c.getSessionUser().getUserid());//传入的参数
+		}
+		return CreditOrderInfo.dao.findFirst(sql.toString(),params.toArray());
 	}
 	/**
 	 * 
@@ -529,6 +541,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
 			params.add(user.get("userid").toString());
@@ -781,17 +794,16 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		return dao.findFirst(sql, params.toArray());
 	}
 	public String getNumber() {
-		String num=String.valueOf(getMaxOrderId().getInt("id")+1);
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-		String date=sdf.format(new Date());
-		if(num.length()==1) {
-			num="000"+num;
-		}if(num.length()==2) {
-			num="00"+num;
-		}if(num.length()==3) {
-			num="0"+num;
-		}
-		return "00"+date+num;
+		Object num=Db.execute(new ICallback() {
+			@Override
+			public Object call(Connection conn) throws SQLException {
+			CallableStatement proc = conn.prepareCall("{call generate_orderNo('DD',8,?)}");
+			proc.registerOutParameter(1,java.sql.Types.VARCHAR);
+			proc.execute();
+			return proc.getObject(1);
+			}
+			});
+		return num.toString();
 	}
 	
 }
