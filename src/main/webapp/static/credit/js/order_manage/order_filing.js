@@ -40,7 +40,10 @@ let Filing = {
             fileicon = '/static/credit/imgs/order/JPG.png'
           }else if(filetype === 'pdf') {
             fileicon = '/static/credit/imgs/order/PDF.png'
-          }
+          }else {
+              Public.message("info","不支持上传此种类型文件！")
+              return
+            }
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
           $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
@@ -320,11 +323,24 @@ let Filing = {
         },
         operateFormatter(){
             /**操作按钮格式化 */
-            return '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter" style="margin-right:.5rem">上传附件</a>' +
-                '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
-                '<a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter_allocation">代理分配</a>'
+            return '<a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter_allocation">代理分配</a>' +
+                '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
+                '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter" style="margin-left:.5rem">上传附件</a>'
           }             
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Filing.init();

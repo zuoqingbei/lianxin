@@ -6,22 +6,33 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
+import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.jfinal.json.FastJson;
+import com.jfinal.kit.HttpKit;
+import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
@@ -374,18 +385,119 @@ public class OrderProcessController extends BaseProjectController{
 		}else{
 			return new ResultType(1, "操作成功!");
 		}
-		
-			
 	}
+	
 	/**
 	 * 根据文件id删除文件
 	 */
 	public void deleteFile(){
-		CreditUploadFileModel model = getModel(CreditUploadFileModel.class);
-		model.set("del_flag", "1");
-		model.update();
-		renderJson(new ResultType(1, "操作成功!"));
+		try {
+			CreditUploadFileModel model = getModel(CreditUploadFileModel.class);
+			model.set("del_flag", "1");
+			model.update();
+			renderJson(new ResultType(1, "操作成功!"));
+		} catch (Exception e) {
+			renderJson(new ResultType(0, "操作失败!"));
+		}
 	}
+	/**
+	 * 2018/10/12
+	 * lzg
+	 * 报告管理下的信息录入的填报页面的保存
+	 */
+	public void ReportedSave(){
+		//从前台获取companyHistory json数据
+		String companyHistoryJson = (String) getRequest().getParameter("companyHistory");
+		String companyZhuCeJson = (String) getRequest().getParameter("companyZhuCe");
+		//转化为model集合
+		List<BaseProjectModel<? extends CreditCompanyHis>>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
+		List<BaseProjectModel<? extends CreditCompanyInfo>> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
+		//更新操作
+		for (BaseProjectModel<? extends CreditCompanyHis>  baseProjectModel : companyHistoryModelList) {
+			baseProjectModel.remove("id")
+			.set("create_by",getSessionUser().getUserid())
+			.set("create_date", getNow())
+			.set("company_id", (String) getRequest().getParameter("companyId"))
+			.save();//历史变更记录保存
+		}
+		for (BaseProjectModel<? extends CreditCompanyInfo> baseProjectModel : companyZhuCeJsonModelList) {
+			baseProjectModel.update();//公司基本信息更新
+		}
+		//CreditCompanyInfo companyHistoryModel = getModel(CreditCompanyInfo.class);
+		
+		renderJson(new ResultType());
+	}
+	
+	/**
+	 * 把json数组分解放进model里 形如[{"a":b,"a1":b1},{"c":d,"a1":b1},{"e":f,"a1":b1}]
+	 * @param <T>
+	 * @param jsonStr
+	 * @param model
+	 */
+	@SuppressWarnings("unchecked")
+	private   <T> List<BaseProjectModel<? extends T>> infoEntry(String jsonStr,String entryTypeParam){
+		if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":"))
+			return new ArrayList<BaseProjectModel<? extends T>>();
+		List<BaseProjectModel<? extends T>> list = new ArrayList<BaseProjectModel<? extends T>>();
+		Map<String,String> map = new HashMap<>();
+		String jsonStr2 = jsonStr.replace("\"", "");
+		String[] jsonStr3 = jsonStr2.split("}");
+		if(jsonStr3!=null||"".equals(jsonStr3)){
+			for (String string : jsonStr3) {
+				if(string==null||"".equals(string.trim())||"]".equals(string.trim())){
+					continue;
+				}
+				String[] string4 = string.split(",");
+				for (String string2 : string4) {
+					if(string2==null||"".equals(string2)){
+						continue;
+					}
+					String string5 = string2.substring(string2.indexOf("{")+1,string2.indexOf(":"));
+					String string6 =  string2.substring(string2.indexOf(":")+1);
+					map.put(string5, string6);
+				}
+				//反射获取Class对象
+				@SuppressWarnings("rawtypes")
+				Class entryType = null;
+				BaseProjectModel<? extends T> model = null;
+				try {
+					entryType = Class.forName(entryTypeParam);
+					try {
+						//根据Class对象创建实例
+						model = (BaseProjectModel<? extends T>) entryType.newInstance();
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				for (String key : map.keySet()) {
+					System.out.println(key+":"+map.get(key));
+					model.set(key.trim(), map.get(key).trim());
+					model.set("update_by", getSessionUser().getUserid());
+					model.set("update_date", getNow());
+				}
+				list.add(model);
+				map.clear();
+			}
+			
+		}
+		return list;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
