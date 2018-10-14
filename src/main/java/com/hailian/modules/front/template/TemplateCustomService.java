@@ -51,9 +51,10 @@ public class TemplateCustomService extends BaseService{
 			}else{
 				if("请选择客户".equals(detail.getStr("name"))){
 				sb.append("<option selected='selected' m-type='' value=''>"+detail.get("name")+"</option>");
+				}else {
+					 sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 				}
 				}
-			 sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 			}
 			
 		return sb.toString();
@@ -78,9 +79,11 @@ public class TemplateCustomService extends BaseService{
 			}else{
 				if("请选择客户".equals(detail.getStr("name"))){
 				sb.append("<option selected='selected' m-type='' value=''>"+detail.get("name")+"</option>");
-				}				
+				}else {
+					sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
+
 				}
-				sb.append("<option m-type='"+detail.get("name")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
+				}
 
 			}
 			

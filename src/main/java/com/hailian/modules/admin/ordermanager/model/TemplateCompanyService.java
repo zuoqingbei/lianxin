@@ -41,6 +41,7 @@ public class TemplateCompanyService extends BaseService{
 	public String getCompanyStringObject2 (String selectedId) {
 		StringBuffer sb=new StringBuffer();
 		List<CreditCompanyInfo> listCompany = new ArrayList<CreditCompanyInfo>();
+		listCompany.add(getDefaultCompany());
 		listCompany.addAll(CreditCompanyInfo.dao.getCompany());
 		
 		for(CreditCompanyInfo detail:listCompany){
@@ -48,12 +49,13 @@ public class TemplateCompanyService extends BaseService{
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
 				sb.append("<option selected='selected'  m-type1='"+detail.get("name")+"' m-type='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 			}else{
-				listCompany.add(getDefaultCompany());
-				if("ALL".equals(detail.getStr("name"))){
-					sb.append("<option  selected='selected'  m-type1='' m-type=''  value=''>请选择公司id</option>");
-				}	
+				if("请选择公司id".equals(detail.getStr("name"))){
+					sb.append("<option  selected='selected'  m-type1='' m-type=''  value=''>"+detail.get("name")+"</option>");
+				}else {
+					sb.append("<option m-type1='"+detail.get("name")+"' m-type='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
+
+				}
 			}
-			sb.append("<option m-type1='"+detail.get("name")+"' m-type='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("id")+"</option>");
 
 		}
 			
@@ -62,7 +64,7 @@ public class TemplateCompanyService extends BaseService{
 	
 	public CreditCompanyInfo getDefaultCompany() {
 		CreditCompanyInfo company=new CreditCompanyInfo();
-		company.set("name", "All");
+		company.set("name", "请选择公司id");
 		company.set("name_en", "");
 		company.set("id", "");
 		return company;
