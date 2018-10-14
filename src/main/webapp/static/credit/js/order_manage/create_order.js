@@ -65,6 +65,7 @@ let
 	        success: function (data) {
 	        	if(data.statusCode===1){
                	Public.message("success",data.message);
+               	$("#importModal").find(".close").trigger("click")
                }else{
                	Public.message("error",data.message);
                }

@@ -104,7 +104,7 @@ let Password = {
     getMailCode(mail){
         /**接收验证码 */
     	$.post("/credit/sysuser/resetpassword/getMailCode",{recipientAddress:mail},function(data){
-    		alert(data)
+    		
     	})
     },
     verifyMailCode(code){

@@ -5,8 +5,10 @@ import java.util.List;
 
 
 
+
 import org.apache.commons.lang.StringUtils;
 
+import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ModelBind;
 
@@ -20,17 +22,18 @@ public class CityModel extends BaseProjectModel<CityModel>{
 	 * @author zuoqb
 	 * @params
 	 */
-	public List<CityModel> getCity(String cid,String pid) {
+	public List<CityModel> getCity(String cid,String pid,BaseProjectController c) {
 		List<Object> params=new ArrayList<Object>();
 		String sql="select t.* from credit_city t where 1=1  ";
 		if(StringUtils.isNotBlank(cid)){
-			sql+=" and and t.cid=? ";
+			sql+=" and  t.cid=? ";
 			params.add(cid);
 		}
 		if(StringUtils.isNotBlank(pid)){
-			sql+=" and and t.pid=? ";
+			sql+=" and t.pid=? ";
 			params.add(pid);
 		}
+		
 		sql+=" order by t.cid ";
 		return dao.find(sql, params.toArray());
 	}	

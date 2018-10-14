@@ -5,6 +5,8 @@ import java.util.List;
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentModel;
 import com.hailian.modules.credit.agentmanager.service.AgentService;
 import com.hailian.modules.credit.city.model.CityModel;
@@ -67,8 +69,7 @@ public class AgentController extends BaseProjectController {
 		setAttr("model", model);
 		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
 		setAttr("province", province);
-		List<CityModel> city = CityModel.dao.getCity("", "");
-		setAttr("city", city);
+		
 		render(path + "add.html");
 	}
 
@@ -83,16 +84,19 @@ public class AgentController extends BaseProjectController {
 		Integer para = getParaToInt();
 		AgentModel model = AgentModel.dao.findById(para);
 		setAttr("model", model);
+		String pid=model.get("province");
 		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
-		setAttr("province", province);
-		List<CityModel> city = CityModel.dao.getCity("", "");
+		List<CityModel> city = CityModel.dao.getCity("", pid, this);//获取省份下的城市
 		setAttr("city", city);
+		setAttr("province", province);
+		
 		render(path + "edit.html");
 	}
-	public void getCountrySelect() {
-		String content = getPara("attr.continent", "");
-		List<CountryModel> selectCountry = CountryService.service.CountrySelect(content, this);
-		renderJson(selectCountry);
+	public void getCitySelect() {
+		String province = getPara("attr.continent", "");
+		List<CityModel> city = CityModel.dao.getCity("", province,this);
+		setAttr("city", city);
+		renderJson(city);
 	}
 
 	/**

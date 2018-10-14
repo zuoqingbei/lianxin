@@ -149,7 +149,10 @@ public class OrderManagerService {
 
 		return CreditOrderInfo.dao.getOrder(id, c);
 	}
+	public CreditOrderInfo getOrder(String id, BaseProjectController c) {
 
+		return CreditOrderInfo.dao.getOrderById(id,c);
+	}
 	/**
 	 * 
 	 * @time   2018年8月31日 上午11:48:41

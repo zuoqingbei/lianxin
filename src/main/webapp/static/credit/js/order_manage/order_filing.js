@@ -114,6 +114,47 @@ let Filing = {
                    			 console.log("回显成功!");
                    			 }
                			}) 
+             }),
+             $("#modal_submit_allocation").click(function(){
+                 let agentid = $("#agency_id option:selected").val();
+                 let agent_category = $("#agent_category option:selected").val();
+                 let ismail = $("#entrust_email option:selected").val();
+                 let id = $("#orderId2").val();
+                 //console.log(reporter,remarks);
+                 $.ajax({
+            			type:"post",
+            			url:"/credit/front/orderProcess/orderAgentSave",
+            			data:"model.agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.agent_category="+agent_category,
+            			dataType:"json",
+            			success:function(data){
+            			//提交成功关闭模态窗
+            			 $(".modal-header .close").trigger("click");
+            			if(data.statusCode===1){
+                       	 console.log("此处进入success状态2222222222");
+                       	Public.message("success",data.message);
+                       }else{
+                       	 console.log("此处进入error状态");
+                       	Public.message("error",data.message);
+                       }
+            			//回显
+            			console.log("提交成功,开始回显:"+data.message);
+            			 $.ajax({
+            				type:"post",
+                			url:"/credit/front/orderProcess/listJson",
+                			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
+                			dataType:"json",
+                			success:function(obj){
+                				console.log("回显的数据:"+obj);
+                			 	$("#table").bootstrapTable("load",obj)
+                			 }
+            			 })
+            			 
+            			console.log("回显完毕");
+            			}
+                 	
+            		})
+            		
+                 
              })
     	
     },
@@ -251,7 +292,9 @@ let Filing = {
           $("#customId").html(row.customId);
           $("#receiver_date").html(row.receiver_date);
           $("#country").html(row.country);
+          $("#continent").html(row.continent);
           $("#reportType").html(row.reportType);
+          $("#orderType").html(row.orderType);
           $("#reportLanguage").html(row.reportLanguage);
           $("#companyNames").html(row.companyNames);
           $("#custom_id").html(row.custom_id);
@@ -260,7 +303,7 @@ let Filing = {
           $("#companyZHNames").html(row.companyZHNames);
           $("#reporter_select").html(row.seleteStr);
           $("#confirm_reason").html(row.confirm_reason);
-          $("#orderId").val(row.id);
+          $("#orderId2").val(row.id);
           $("#num").html(row.num);
           $("#remarks").val("");
           $(".tableValue")[0].reset();
@@ -277,7 +320,42 @@ let Filing = {
       	sortName = row.sortName;
       	sortOrder = row.sortOrder;
       	  console.log("report_userKey====="+row.report_userKey);
-        }
+        },
+        "click .dl":(e,value,row,index)=>{
+            console.log(row);
+            $("#custom_id2").html(row.custom_id);
+            $("#customId2").html(row.customId);
+            $("#receiver_date2").html(row.receiver_date);
+            $("#continent2").html(row.continent);
+            $("#country2").html(row.country);
+            $("#reportType2").html(row.reportType);
+            $("#orderType2").html(row.orderType);
+            $("#reportLanguage2").html(row.reportLanguage);
+            $("#companyNames2").html(row.companyNames);
+            $("#custom_id2").html(row.custom_id);
+            $("#speed2").html(row.speed);
+            $("#user_time2").html(row.user_time);
+            $("#companyZHNames2").html(row.companyZHNames);
+            $("#agency_id").html(row.seleteAgentStr);
+            $("#confirm_reason2").html(row.confirm_reason);
+            $("#orderId2").val(row.id);
+            $("#num2").html(row.num);
+            $("#remarks2").val("");
+            $(".tableValue")[0].reset();
+            
+            $("#verify_name2").val(row.verify_name);
+            $("#contacts2").val(row.contacts);
+            $("#telphone2").val(row.telphone);
+            $("#address2").html(row.address);
+            $("#remarks2").html(row.remarks);
+            
+            pageNumber = row.pageNumber;
+            console.log("pageNumber====="+pageNumber);
+            pageSize = row.pageSize;
+        	sortName = row.sortName;
+        	sortOrder = row.sortOrder;
+        	  console.log("report_userKey====="+row.report_userKey);
+          }
       },
       formatter: _this.operateFormatter
     }

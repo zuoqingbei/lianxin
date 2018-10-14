@@ -69,6 +69,10 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 				params.add(keyWord);//传入的参数
 			}
 		}
+		if(!c.isAdmin(c.getSessionUser())){
+			fromsql.append(" and a.create_by=? ");
+			params.add(c.getSessionUser().getUserid());//传入的参数
+		}
 		if (StrUtils.isEmpty(orderBy)) {
 			fromsql.append(" order by a.create_date desc");
 		} else {
