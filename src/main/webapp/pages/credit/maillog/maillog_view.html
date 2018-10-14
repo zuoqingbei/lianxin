@@ -11,7 +11,11 @@ var bodyContent = {
 		<%  // 列表头部 %>
 			<tr>
 				<td>邮箱内容</td>
-				<td>${item.module_content}</td>
+			</tr>
+			<tr>
+				<td>
+				<textarea class="form-control" rows="2" cols="20" name="model.remarks" readonly>${item.module_content}</textarea>
+				</td>
 			</tr>
 	</table>
 	
