@@ -1,6 +1,9 @@
 package com.hailian.modules.admin.ordermanager.model;
 
 import java.io.Serializable;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +20,7 @@ import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.ICallback;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -779,17 +783,16 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		return dao.findFirst(sql, params.toArray());
 	}
 	public String getNumber() {
-		String num=String.valueOf(getMaxOrderId().getInt("id")+1);
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-		String date=sdf.format(new Date());
-		if(num.length()==1) {
-			num="000"+num;
-		}if(num.length()==2) {
-			num="00"+num;
-		}if(num.length()==3) {
-			num="0"+num;
-		}
-		return "00"+date+num;
+		Object num=Db.execute(new ICallback() {
+			@Override
+			public Object call(Connection conn) throws SQLException {
+			CallableStatement proc = conn.prepareCall("{call generate_orderNo('DD',8,?)}");
+			proc.registerOutParameter(1,java.sql.Types.VARCHAR);
+			proc.execute();
+			return proc.getObject(1);
+			}
+			});
+		return num.toString();
 	}
 	
 }

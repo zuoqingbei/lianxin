@@ -154,6 +154,51 @@ public class OrderProcessController extends BaseProjectController{
 		render(REPORT_MANAGE_PATH+"report_info_import.html");
 	}
 	/**
+	 * 
+	 * @time   2018年10月14日 下午3:12:08
+	 * @author yangdong
+	 * @todo   展示报告管理下的报告质检
+	 * @param  
+	 * @return_type   void
+	 */
+	/*public void showReportQuality(){
+		render(REPORT_MANAGE_PATH+"report_info_import.html");
+	}*/
+	/**
+	 * 
+	 * @time   2018年10月14日 下午3:12:17
+	 * @author yangdong
+	 * @todo   展示报告管理下的订单核实
+	 * @param  
+	 * @return_type   void
+	 */
+	public void showOrderVerify(){
+		render(REPORT_MANAGE_PATH+"report_order_verify.html");
+	}
+	/**
+	 * 
+	 * @time   2018年10月14日 下午3:12:25
+	 * @author yangdong
+	 * @todo   展示报告管理下的订单查档
+	 * @param  
+	 * @return_type   void
+	 */
+	public void showshowOrderFiling(){
+		render(REPORT_MANAGE_PATH+"report_order_filing.html");
+	}
+	/**
+	 * 
+	 * @time   2018年10月14日 下午3:12:31
+	 * @author yangdong
+	 * @todo   展示报告管理下的递交报告
+	 * @param  
+	 * @return_type   void
+	 */
+	/*public void showReportSubmit(){
+		render(REPORT_MANAGE_PATH+"report_info_import.html");
+	}*/
+	
+	/**
 	 * @todo   展示报告管理下的信息录入的填报详情页
 	 * @time   2018年9月29日 上午 11:02
 	 * @author lzg

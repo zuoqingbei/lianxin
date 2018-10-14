@@ -52,14 +52,6 @@ public class OrderManagerService {
 				coi.set("id", id);
 				coi.update();
 			} else {
-				Date date=new Date();
-				Calendar calendar = Calendar.getInstance();
-			    calendar.setTime(date);
-			    String year=String.valueOf(calendar.get(Calendar.YEAR));
-			    String month=String.valueOf(calendar.get(Calendar.MONTH));
-				coi.set("receiver_date", date);
-				coi.set("year", year);
-				coi.set("month", month);
 				coi.save();
 			}
 
