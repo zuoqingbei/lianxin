@@ -390,7 +390,10 @@ let Verify = {
 	             fileicon = '/static/credit/imgs/order/JPG.png'
 	           }else if(filetype === 'pdf') {
 	             fileicon = '/static/credit/imgs/order/PDF.png'
-	           }
+	           }else {
+	               Public.message("info","不支持上传此种类型文件！")
+	               return
+	             }
         	let fileArr = ''
         	let filename = row.files[i].originalname
     		let num = filename.split(".").length;

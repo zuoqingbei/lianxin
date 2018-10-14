@@ -1,4 +1,4 @@
-<% var companyType = tempDict.getSysDictDetailString2('companyType','319'); %>
+<% var companyType = tempDict.getSysDictDetailString2('companyType','318'); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,37 +42,39 @@
                                 <span id="receiver_date">2018-09-06</span>
                             </div>
                             <div class="order-item col-md-4 mt-3">
-                                <span class="fw" id="end_date">到期日期：</span>
+                                <span class="fw" >到期日期：</span>
                                 <span id="end_date">2018-09-15</span>
                             </div>
                         </div>
-                       
                     </div>
                     <div class="tab-bar btn-group">
                         <li class="tab-info"><a href="#info_anchor" class="tab-active">信息录入</a></li>
                         <li class="tab-file"><a href="#file_anchor">附件</a></li>
                     </div>
                </div>
+            
                <!-- 滚动内容 -->
                <div class="table-content">
+               <form id="meForm" action="" method="post" >
+               		<input type="hidden" id="company_id" name="id" />
                    <!-- 企业信息 -->
                     <div class="bg-f company-info">
                         <a name="info_anchor"></a>
                         <div class="l-title">
-                            企业注册信息
+                            企业注册信息 
                         </div>
                         <div class="firm-info mt-4 px-5 d-flex justify-content-between">
                             <div class="form-group">
-                                <label for="qy_code" class="mb-2">统一社会信用代码</label>
-                                <input type="text" class="form-control" id="qy_code" placeholder="">
+                                <label for="qy_code" class="mb-2" >统一社会信用代码</label>
+                                <input id="credit_code" type="text" name="credit_code" class="form-control" id="qy_code" placeholder="">
                             </div>
                             <div class="form-group">
-                                <label for="qy_person" class="mb-2">法人代表</label>
-                                <input type="text" class="form-control" id="qy_person" placeholder="">
+                                <label for="qy_person" class="mb-2" >法人代表</label>
+                                <input type="text" name="legal" class="form-control" id="qy_person" placeholder="">
                             </div>
                             <div class="form-group">
                                 <label for="qy_type" class="mb-2">公司性质</label>
-                                <select name="" id="qy_type" class="form-control">
+                                <select name="company_type" id="qy_type" class="form-control">
                                    ${companyType!}
                                 </select>
                             </div>
@@ -80,38 +82,39 @@
                         <div class="firm-info mt-4 px-5 d-flex justify-content-between">
                             <div class="form-group ">
                                 <label for="qy_create" class="mb-2">成立日期</label>
-                                <input type="text" class="form-control" id="qy_create" placeholder=""">
+                                <input name="currency" type="text" class="form-control" id="qy_create" placeholder=""">
                             </div>
                             <div class="form-group">
                                 <label for="qy_date" class="mb-2">营业期限至</label>
-                                <input type="text" class="form-control" id="qy_date" placeholder=""">
+                                <input name="business_date_start" type="text" class="form-control" id="qy_date" placeholder=""">
                             </div>
                             <div class="form-group">
                                 <label for="qy_money" class="mb-2">注册资本</label>
-                                <input name="" id="qy_money" class="form-control"></input>
+                                <input name="registered_capital" id="qy_money" class="form-control"></input>
                             </div>
                         </div>
                         <div class="firm-info mt-4 px-5 d-flex justify-content-between">
                             <div class="form-group ">
                                 <label for="qy_address" class="mb-2">注册地址</label>
-                                <input type="text" class="form-control" id="qy_address" placeholder=""">
+                                <input name="address" type="text" class="form-control" id="qy_address" placeholder=""">
                             </div>
                             <div class="form-group">
                                 <label for="qy_office" class="mb-2">登记机关</label>
-                                <input type="text" class="form-control" id="qy_office" placeholder=""">
+                                <input name="registration_authority" type="text" class="form-control" id="qy_office" placeholder=""">
                             </div>
                             <div class="form-group">
                                 <label for="qy_state" class="mb-2">登记状态</label>
-                                <input name="" id="qy_state" class="form-control"></input>
+                                <input name="registration_status" id="qy_state" class="form-control"></input>
                             </div>
                         </div>
                         <div class="firm-info mt-4 px-5 d-flex justify-content-start">
                                 <div class="form-group"  style="width: 100%">
                                     <label for="qy_state" class="mb-2">经营范围</label>
-                                    <textarea name="" id="qy_sale" class="form-control"  style="width: 100%;height: 6rem"></textarea>
+                                    <textarea name="operation_scope" id="qy_sale" class="form-control"  style="width: 100%;height: 6rem"></textarea>
                                 </div>
                         </div>
                         <div class="l-title mt-4">
+                       </form>
                             历史变更记录
                         </div>
                         <div class="table-content1 mb-5" style="background:#fff">
@@ -198,8 +201,8 @@
                     </div>
                     <!-- fixed 底部 -->
                     <div class="position-fixed fixed-btn-well d-flex justify-content-end align-items-center px-5">
-                        <button class="btn btn-default">保存</button>
-                        <button class="btn btn-primary ml-4">提交</button>
+                        <button id="save" class="btn btn-default">保存</button>
+                        <button type="button" class="btn btn-primary ml-4">提交</button>
                     </div>
                 </div>
             </div>
@@ -230,7 +233,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="record_modal_save" data-dismiss="modal">保存</button>
+                <button  type="button" class="btn btn-primary" id="record_modal_save" data-dismiss="modal">保存</button>
                 <button type="button" class="btn btn-default" id="record_modal_cancel" data-dismiss="modal">取消</button>
             </div>
         </div>

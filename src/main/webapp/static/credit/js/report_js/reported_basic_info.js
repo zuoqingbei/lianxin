@@ -13,6 +13,7 @@ let BasicWrite = {
         this.goToInfoImport();
         Public.tabFixed(".tab-bar",".main",120,90)
         let row = JSON.parse(localStorage.getItem("row"));
+        //回显基本信息
         $("#custom_id").html(row.custom_id);
         $("#customId").html(row.customId);
         $("#receiver_date").html(row.receiver_date);
@@ -27,15 +28,56 @@ let BasicWrite = {
         $("#companyZHNames").html(row.companyZHNames);
         $("#reporter_select").html(row.seleteStr);
         $("#orderId").val(row.id);
+        $("#company_id").val(row.company_id);
         $("#num").html(row.num);
         $("#end_date").html(row.end_date);
-        pageNumber = row.pageNumber;
-        console.log("pageNumber====="+pageNumber);
-        pageSize = row.pageSize;
-    	  sortName = row.sortName;
-    	  sortOrder = row.sortOrder;
-    	  reportt = row.report_userKey;
-    	  console.log("report_userKey====="+row.report_userKey);
+        //回显文件
+        /*$.ajax({
+   			type:"post",
+   			url:"/credit/front/orderProcess/getFilesByOrderId",
+   			data:"orderId="+row.id,
+   			dataType:"json",
+   			success:function(data){
+   				console.log(data);
+   			 	 $().bootstrapTable("load",data)
+   			 }
+   		})*/
+        //将form序列化转化为json
+        function getFormData($form) {
+            var unindexed_array = $form.serializeArray();
+            var indexed_array = {};
+
+            $.map(unindexed_array, function (n, i) {
+              indexed_array[n['name']] = n['value'];
+            });
+
+            return indexed_array;
+        }
+        
+   		$("#save").on('click','',function(){
+   			console.log($("#tableRecord").bootstrapTable('getData'))
+   			console.log(JSON.stringify($("#tableRecord").bootstrapTable('getData')).replace("}]",""));//历史变更记录
+   			console.log(JSON.stringify($("#tableShareholdersInfo").bootstrapTable('getData')));//股东信息
+   			console.log(JSON.stringify($("#tableShareholdersDetail").bootstrapTable('getData')));//股东详情
+   			console.log(JSON.stringify($("#tableInvestment").bootstrapTable('getData')));//投资情况
+   			console.log(JSON.stringify($("#tableManagement").bootstrapTable('getData')));//管理层
+   			
+   			$.ajax({
+   	   			type:"post",
+   	   			url:"/credit/front/orderProcess/ReportedSave",
+   	   			data:"companyHistory="+(JSON.stringify($("#tableRecord").bootstrapTable('getData'))//公司历史数据
+   	   					+"&companyZhuCe=["+JSON.stringify(getFormData($("#meForm")))+"]"//公司注册信息数据
+   	   					+"&companyId="+row.company_id
+   	   					
+   	   					/*+"&"+$("#meForm").serialize()*/),
+   	   			dataType:"json",
+   	   			success:function(data){
+   	   				console.log(data);
+   	   			 	 $().bootstrapTable("load",data)
+   	   			 }
+   	   		})
+   		})
+   			
     },
     dateForm(){
         /**日期控件 */
@@ -257,7 +299,7 @@ let BasicWrite = {
                   valign: 'middle',
                   width:'20%'
                 },{
-                  field: 'change_item',
+                  field: 'change_items',
                   title: '变更项',
                   width:'20%'
                 }, {
@@ -613,6 +655,7 @@ let BasicWrite = {
               smartDisplay:false,
               iconsPrefix:'fa',
               locales:'zh-CN',
+              contentType:'application/x-www-form-urlencoded;charset=UTF-8'
           });
 
       },
