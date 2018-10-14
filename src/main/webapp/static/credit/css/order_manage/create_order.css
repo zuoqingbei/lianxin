@@ -21,6 +21,8 @@
 	margin:1.25rem;
 	background: #fff;
 	padding-top: 0;
+	overflow:hidden;
+	
 }
 .table-content label{
 	font-size: 1rem;
@@ -31,9 +33,12 @@
 	color:#f00;
 	font-size: 1.2rem;
 	margin-right:0.3rem;
+	
 }
 .right-btn {
 	padding-right: 9rem;
+	margin:2.5rem 0;
+	
 }
 .myBtn{
 	margin-top: 1.5rem!important;
