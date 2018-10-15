@@ -31,6 +31,17 @@ let BasicWrite = {
         $("#company_id").val(row.company_id);
         $("#num").html(row.num);
         $("#end_date").html(row.end_date);
+        //回显企业注册信息
+        $.ajax({
+   			type:"post",
+   			url:"/credit/front/orderProcess/getCompanyInfo",
+   			data:"orderId="+row.id,
+   			dataType:"json",
+   			success:function(data){
+   				console.log(data);
+   				console.log(JSON.stringify(data));
+   			 }
+   		})
         //回显文件
         /*$.ajax({
    			type:"post",

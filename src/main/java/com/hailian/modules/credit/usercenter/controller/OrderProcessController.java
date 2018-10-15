@@ -61,12 +61,6 @@ public class OrderProcessController extends BaseProjectController{
 	public static LinkedList<Object> orderAllocationColumns = new LinkedList<>();//存储模糊搜索时后台sql对应字段
 	public static LinkedList<Object> orderAllocationParamNames = new LinkedList<>();//存储模糊搜索时前台对应参数名
 	/**
-	 * 报告管理中的订单核实
-	 */
-	public static String orderVerifyOfReport = "-2";
-	public static LinkedList<Object> orderVerifyOfReportColumns = new LinkedList<>(); 
-	public static LinkedList<Object> orderVerifyOfReportParamNames = new LinkedList<>(); 
-	/**
 	 * 订单管理中的订单核实
 	 */
 	public static String orderVerifyOfOrder = "-3";
@@ -84,6 +78,18 @@ public class OrderProcessController extends BaseProjectController{
 	public static String orderSubmitOfOrder = "-5";
 	public static LinkedList<Object> orderSubmitOfOrderColumns = new LinkedList<>();
 	public static LinkedList<Object> orderSubmitOfOrderParamNames = new LinkedList<>();
+	/**
+	 * 报告管理中的订单核实
+	 */
+	public static String orderVerifyOfReport = "-2";
+	public static LinkedList<Object> orderVerifyOfReportColumns = new LinkedList<>(); 
+	public static LinkedList<Object> orderVerifyOfReportParamNames = new LinkedList<>(); 
+	/**
+	 * 报告管理中的信息录入
+	 */
+	public static String infoOfReport = "-6";
+	public static LinkedList<Object> infoOfReportColumns = new LinkedList<>();
+	public static LinkedList<Object>infoOfReportParamNames = new LinkedList<>();
 	static{
 		orderAllocationColumns.add("u1.realname");
 	}
@@ -96,6 +102,7 @@ public class OrderProcessController extends BaseProjectController{
 		TYPE_KEY_COLUMN.put(orderVerifyOfOrder,orderVerifyOfOrderColumns);
 		TYPE_KEY_COLUMN.put(orderFilingOfOrder,orderFilingOfOrderColumns);
 		TYPE_KEY_COLUMN.put(orderSubmitOfOrder,orderSubmitOfOrderColumns);
+		TYPE_KEY_COLUMN.put(infoOfReport,infoOfReportColumns);
 	}
 	static{
 		WEB_PARAM_NAMES.put(orderAllocation, orderAllocationParamNames);
@@ -103,6 +110,7 @@ public class OrderProcessController extends BaseProjectController{
 		WEB_PARAM_NAMES.put(orderVerifyOfOrder, orderVerifyOfOrderParamNames);
 		WEB_PARAM_NAMES.put(orderFilingOfOrder, orderFilingOfOrderParamNames);
 		WEB_PARAM_NAMES.put(orderSubmitOfOrder, orderSubmitOfOrderParamNames);
+		WEB_PARAM_NAMES.put(infoOfReport, infoOfReportParamNames);
 	}
 	/**
 	 * @todo   展示订单分配页
@@ -192,6 +200,9 @@ public class OrderProcessController extends BaseProjectController{
 		render(REPORT_MANAGE_PATH+"report_order_filing.html");
 	}
 	
+	public void getCompanyInfo(){
+		
+	}
 	/**
 	 * @todo   展示报告管理下的信息录入的填报详情页
 	 * @time   2018年9月29日 上午 11:02
@@ -354,6 +365,7 @@ public class OrderProcessController extends BaseProjectController{
 		ResultType resultType = new ResultType(totalRow,rows);
 		renderJson(resultType);
 	}
+	
 	public void getAgentCategory(){
 		String agentid = (String) getRequest().getParameter("agentid");
 		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(agentid);

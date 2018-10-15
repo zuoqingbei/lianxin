@@ -76,7 +76,7 @@ let Filing = {
     modalSubmit(){
         /**模态框提交事件 */
         	 $("#modal_submit").click(function(){
-             	$("#status").val("298");
+             	$("#status").val("296");
              	$(".tableValue").ajaxSubmit( {
              		success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
                         // 此处可对 data 作相关处理
@@ -84,7 +84,7 @@ let Filing = {
              			 console.log(JSON.stringify(data));
                         console.log(data.statusCode);
                         if(data.statusCode===1){
-                        	 console.log("此处进入success状态,状态298");
+                        	 console.log("此处进入success状态,状态296");
                         	Public.message("success",data.message);
                         }else{
                         	 console.log("此处进入error状态");
