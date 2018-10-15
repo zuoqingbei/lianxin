@@ -633,7 +633,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" u3.realname AS analyzeUser,");
 			selectSql.append(" u4.name AS customId ");
 			fromSql.append(" FROM credit_order_info c ");
-			fromSql.append(" LEFT JOIN credit_country s1 ON c.id = s1.id ");//国家
+			fromSql.append(" LEFT JOIN credit_country s1 ON c.country = s1.id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
 			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
 			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
@@ -658,7 +658,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				fromSql.append(" and status in ('292','293','291') ");
 			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
 				//代理分配和订单查档(国外) ,其维护在字典表中
-				fromSql.append(" and status in('295','294') and s1.id!='106' ");
+				fromSql.append(" and status in('295','294') and c.country!='106' ");
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
 				fromSql.append(" and status='300' ");

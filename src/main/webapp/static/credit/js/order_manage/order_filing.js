@@ -144,7 +144,7 @@ let Filing = {
             			 $.ajax({
             				type:"post",
                 			url:"/credit/front/orderProcess/listJson",
-                			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
+                			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
                 			dataType:"json",
                 			success:function(obj){
                 				console.log("回显的数据:"+obj);
