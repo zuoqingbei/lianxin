@@ -331,6 +331,11 @@ let Filing = {
             $("#receiver_date2").html(row.receiver_date);
             $("#continent2").html(row.continent);
             $("#country2").html(row.country);
+//            if(row.country=='中国大陆'){
+//   	   		 $("#mail").hide()
+//   	   	 	}else {
+//   	   		$("#mail").show()
+//   	   	 	}
             $("#reportType2").html(row.reportType);
             $("#orderType2").html(row.orderType);
             $("#reportLanguage2").html(row.reportLanguage);
