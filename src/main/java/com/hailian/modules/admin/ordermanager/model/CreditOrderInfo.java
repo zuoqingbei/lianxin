@@ -652,13 +652,13 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" where c.del_flag = 0 ");
 			if((OrderProcessController.orderAllocation).equals(searchType)){
 				//状态为订单分配状态 ,其维护在字典表中
-				fromSql.append(" and status='291' ");
+				fromSql.append(" and status='291' s1.id!='106' ");
 			}else if((OrderProcessController.orderVerifyOfOrder).equals(searchType)){
 				//客户确认(订单核实)状态 ,其维护在字典表中
 				fromSql.append(" and status in ('292','293','291') ");
 			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
 				//代理分配和订单查档(国外) ,其维护在字典表中
-				fromSql.append(" and status in('295','294') ");
+				fromSql.append(" and status in('295','294') and ");
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
 				fromSql.append(" and status='300' ");
