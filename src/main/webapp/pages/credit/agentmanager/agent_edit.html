@@ -60,14 +60,11 @@ var oper = {
    //国家发生变化
    initpage:function(){
 	   var value=${model.agent_type}
-	//   	alert(value)
 	   	 if(value=='264'){
-//	   		alert("国外")
 	   		console.log($(".table"))
 	   		 $(".table tbody tr:last").hide()
 	   		 $("#sandbar").removeAttr("valid")
 	   	 }else if(value=='263'){
-	   		alert("国内")
 	   		$(".table tbody tr:last").show()
 	   		$("#sandbar").attr("valid","vselect")
 	   	 }

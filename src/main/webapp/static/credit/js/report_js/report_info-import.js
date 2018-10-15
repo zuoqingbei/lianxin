@@ -150,7 +150,7 @@ let Verify = {
                     	  pageSize: params.pageSize,//找多少条  
                     	  sortName: params.sortName, 
                     	  sortOrder: params.sortOrder,
-                    	  searchType: "-1"
+                    	  searchType: "-6"
                       };  
                   },  
                   });

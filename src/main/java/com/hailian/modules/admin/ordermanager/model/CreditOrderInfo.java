@@ -651,20 +651,20 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			
 			fromSql.append(" where c.del_flag = 0 ");
 			if((OrderProcessController.orderAllocation).equals(searchType)){
-				//status='291'值状态为订单分配状态 ,其维护在字典表中
-				fromSql.append(" and status='291' ");
+				//状态为订单分配状态 ,其维护在字典表中
+				fromSql.append(" and status='291'  ");
 			}else if((OrderProcessController.orderVerifyOfOrder).equals(searchType)){
-				//status='292'值状态为客户确认(订单核实)状态 ,其维护在字典表中
-				fromSql.append(" and status='292' ");
+				//客户确认(订单核实)状态 ,其维护在字典表中
+				fromSql.append(" and status in ('292','293','291') ");
 			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
-				//status='294'值状态为代理分配和订单查档(国外) ,其维护在字典表中
-				fromSql.append(" and status in('294','295') ");
+				//代理分配和订单查档(国外) ,其维护在字典表中
+				fromSql.append(" and status in('295','294') and s1.id!='106' ");
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
-				//status='310'值状态为递交订单(翻译质检合格) ,其维护在字典表中
-				fromSql.append(" and status='310' ");
+				//状态为递交订单(翻译质检合格) ,其维护在字典表中
+				fromSql.append(" and status='300' ");
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
-				//status='293'值状态为信息录入 ,其维护在字典表中
-				fromSql.append(" and status='293' ");
+				//状态为信息录入 ,其维护在字典表中
+				fromSql.append(" and status in ('291','293') ");
 			}
 			
 		//关键词搜索
@@ -688,10 +688,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			
 		}
 		//权限区分
-		if(!c.isAdmin(c.getSessionUser())){
+		/*if(!c.isAdmin(c.getSessionUser())){
 			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
-		}
+		}*/
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
 			fromSql.append(" order by c.receiver_date desc,c.ID desc ");

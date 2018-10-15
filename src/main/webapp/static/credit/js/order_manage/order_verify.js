@@ -117,7 +117,7 @@ let Verify = {
     	console.log("模态框提交事件");
         $("#modal_submit").click(function(){
         	console.log("点击提交");
-        	$("#status").val("293");
+        	$("#status").val("292");
         	$(".tableValue").ajaxSubmit({
         		success:function(data){
         			console.log("状态为成功,message:"+data.message);
