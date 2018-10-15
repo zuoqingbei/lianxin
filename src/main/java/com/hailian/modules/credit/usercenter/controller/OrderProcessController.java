@@ -254,11 +254,9 @@ public class OrderProcessController extends BaseProjectController{
 	 * @param map
 	 * @return 包含旧状态码和新传入参数的实体
 	 */
-	private CreditOrderInfo PublicUpdateMod(Map<String,Object> map){
+	private void PublicUpdateMod(Map<String,Object> map){
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
 		model = getModel(CreditOrderInfo.class);
-		String orderId = model.get("id")+"";
-		String oldStatus = model.findById(orderId).get("status");
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by",userid);
@@ -269,7 +267,6 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		model.update();
-		return model.set("status", oldStatus);
 	}
 	/**
 	 * 代理分配
@@ -368,18 +365,18 @@ public class OrderProcessController extends BaseProjectController{
 	 * @author lzg
 	 * @return_type   订单编号
 	 */
-	public  CreditOrderInfo  statusSave() {
+	public  ResultType  statusSave() {
 		try {
 		String code = (String) getRequest().getParameter("statusCode");
 		Map<String,Object> map = new HashMap<>();
 		map.put("status", code);
-		CreditOrderInfo  model = PublicUpdateMod(map);
+		PublicUpdateMod(map);
 		renderJson(new ResultType());
-		return model;
+		return new ResultType();
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"订单状态更新失败!"));
-			return null;
+			return new ResultType(1,"");
 		}
 	}
 	/**
@@ -413,7 +410,7 @@ public class OrderProcessController extends BaseProjectController{
 			List<UploadFile>  upFileList = getFiles("Files");
 			//获取订单id和状态
 			CreditOrderInfo model = getModel(CreditOrderInfo.class);
-			String orderId =model.get("id")+"";
+			String orderId = model.get("id")+"";
 			String oldStatus = model.findById(orderId).get("status")+"";
 			if(orderId==null||oldStatus==null||"".equals(orderId)||"".equals(oldStatus)){
 				renderJson(new ResultType(0,"订单编号和订单状态不能为空!"));
@@ -425,11 +422,12 @@ public class OrderProcessController extends BaseProjectController{
 				renderJson(result);
 			}else{
 				//更新状态
-				if(statusSave()==null){
+				if(statusSave().getStatusCode()==0){
 					renderJson(new ResultType(0,"订单状态更新失败!"));
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知错误!"));
 		}
 	}
@@ -512,6 +510,7 @@ public class OrderProcessController extends BaseProjectController{
 			model.update();
 			renderJson(new ResultType(1, "操作成功!"));
 		} catch (Exception e) {
+			e.printStackTrace();
 			renderJson(new ResultType(0, "操作失败!"));
 		}
 	}
@@ -521,26 +520,34 @@ public class OrderProcessController extends BaseProjectController{
 	 * 报告管理下的信息录入的填报页面的保存
 	 */
 	public void ReportedSave(){
-		//从前台获取companyHistory json数据
+		try {
+		//从前台数据
 		String companyHistoryJson = (String) getRequest().getParameter("companyHistory");
 		String companyZhuCeJson = (String) getRequest().getParameter("companyZhuCe");
 		//转化为model集合
 		List<BaseProjectModel>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
 		List<BaseProjectModel> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
-		//更新操作
+		//历史变更记录保存
 		for (BaseProjectModel<? extends CreditCompanyHis>  baseProjectModel : companyHistoryModelList) {
 			baseProjectModel.remove("id")
 			.set("create_by",getSessionUser().getUserid())
 			.set("create_date", getNow())
 			.set("company_id", (String) getRequest().getParameter("companyId"))
-			.save();//历史变更记录保存
+			.save();
 		}
+		//公司基本信息更新
 		for (BaseProjectModel<? extends CreditCompanyInfo> baseProjectModel : companyZhuCeJsonModelList) {
-			baseProjectModel.update();//公司基本信息更新
+			baseProjectModel.update();
 		}
-		//CreditCompanyInfo companyHistoryModel = getModel(CreditCompanyInfo.class);
-		
-		renderJson(new ResultType());
+		//状态更新
+		if(statusSave().getStatusCode()==0){
+			throw new RuntimeException();
+		}
+		renderJson(new ResultType(1,"操作成功!"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,"参数错误!"));
+		}
 	}
 	
 	/**
@@ -548,9 +555,12 @@ public class OrderProcessController extends BaseProjectController{
 	 * @param <T>
 	 * @param jsonStr
 	 * @param model
+	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
 	@SuppressWarnings("unchecked")
-	private   <T> List<BaseProjectModel> infoEntry(String jsonStr,String entryTypeParam){
+	private   <T> List<BaseProjectModel> infoEntry(String jsonStr,String entryTypeParam) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 		if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":"))
 			return new ArrayList<BaseProjectModel>();
 		List<BaseProjectModel> list = new ArrayList<BaseProjectModel>();
@@ -575,23 +585,9 @@ public class OrderProcessController extends BaseProjectController{
 				@SuppressWarnings("rawtypes")
 				Class entryType = null;
 				BaseProjectModel model = null;
-				try {
 					entryType = Class.forName(entryTypeParam);
-					try {
 						//根据Class对象创建实例
 						model = (BaseProjectModel) entryType.newInstance();
-					} catch (InstantiationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
 				for (String key : map.keySet()) {
 					System.out.println(key+":"+map.get(key));
 					model.set(key.trim(), map.get(key).trim());

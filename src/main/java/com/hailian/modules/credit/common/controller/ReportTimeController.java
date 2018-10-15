@@ -32,7 +32,7 @@ public class ReportTimeController extends BaseProjectController {
 		columnNames.add("report_id");
 		columnNames.add("report_speed");
 		columnNames.add("order_type");
-		columnNames.add("time");
+		columnNames.add("use_time");
 		columnNames.add("usabled");
 		IsExistColumnList.add("report_id");
 		IsExistColumnList.add("report_speed");
