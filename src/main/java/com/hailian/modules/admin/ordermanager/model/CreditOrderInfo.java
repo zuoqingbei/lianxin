@@ -619,7 +619,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
 			selectSql.append(" select c.*, ");
-			selectSql.append(" s1.detail_name AS country, ");
+			selectSql.append(" s1.name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
 			selectSql.append(" s3.detail_name AS continent, ");
 			selectSql.append(" s4.detail_name AS orderType, ");
@@ -633,7 +633,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" u3.realname AS analyzeUser,");
 			selectSql.append(" u4.name AS customId ");
 			fromSql.append(" FROM credit_order_info c ");
-			fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country = s1.detail_id ");//国家
+			fromSql.append(" LEFT JOIN credit_country s1 ON c.country = s1.id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
 			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
 			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员

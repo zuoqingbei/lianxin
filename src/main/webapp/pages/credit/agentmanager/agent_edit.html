@@ -41,7 +41,7 @@ var oper = {
 	           
 	           $("select[name='model.city']").html(html);
 	           
-					oper.countryChange();
+					
 					
 	           
    	 })
@@ -49,21 +49,36 @@ var oper = {
    agentChange:function(){
 	   	 var agent = document.getElementById("agent");
 	   	 var value=$("#agent").find("option:selected").text();
-	   
 	   	 if(value=='国外'){
 	   		 $(".table tbody tr:last").hide()
+	   		 $("#sandbar").removeAttr("valid")
 	   	 }else if(value=='国内'){
 	   		$(".table tbody tr:last").show()
+	   		$("#sandbar").attr("valid","vselect")
 	   	 }
 	   },
    //国家发生变化
-   countryChange:function(){
+   initpage:function(){
+	   var value=${model.agent_type}
+	//   	alert(value)
+	   	 if(value=='264'){
+//	   		alert("国外")
+	   		console.log($(".table"))
+	   		 $(".table tbody tr:last").hide()
+	   		 $("#sandbar").removeAttr("valid")
+	   	 }else if(value=='263'){
+	   		alert("国内")
+	   		$(".table tbody tr:last").show()
+	   		$("#sandbar").attr("valid","vselect")
+	   	 }
    	//默认选择第一个国家
    	 //$("select[name='model.city'] option:first").attr('selected','selected')
    	
    }
 };
-
+$(function(){
+	oper.initpage();
+})	
 </script>
 <style>
 .tags {
@@ -166,7 +181,7 @@ var bodyContent = {
 		<tr>
 			<td>省份</td>
 						<td>
-						<select id="sandbar" name="model.province" class="form-control" valid="vselect" validname="省份" style="width: 200px;" onchange="oper.sandbarChange()">
+						<select id="sandbar" name="model.province" class="form-control"  style="width: 200px;" onchange="oper.sandbarChange()">
 						<option value="-1" >请选择</option>
 						 <% for(item in province){ %>
 						 	<% if((model.province+"")==(item.pid+"")){ %>

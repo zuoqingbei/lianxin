@@ -289,6 +289,7 @@ public class OrderProcessController extends BaseProjectController{
 				model.set(key, map.get(key));
 			}
 		}
+		model.set("status", "295");
 		model.update();
 		if("1".equals(ismail)){
 			CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, this);
