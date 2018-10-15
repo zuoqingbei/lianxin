@@ -199,7 +199,11 @@ public class OrderProcessController extends BaseProjectController{
 	public void showshowOrderFiling(){
 		render(REPORT_MANAGE_PATH+"report_order_filing.html");
 	}
-	
+	/**
+	 * 2018/10/15
+	 * lzg
+	 * 获取公司信息
+	 */
 	public void getCompanyInfo(){
 		
 	}
@@ -382,14 +386,18 @@ public class OrderProcessController extends BaseProjectController{
 		try {
 		String code = (String) getRequest().getParameter("statusCode");
 		Map<String,Object> map = new HashMap<>();
-		map.put("status", code);
+		if(code==null||"".equals(code.trim())){
+			map.put("status", null);
+		}else{
+			map.put("status", code);
+		}
 		PublicUpdateMod(map);
 		renderJson(new ResultType());
 		return new ResultType();
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"订单状态更新失败!"));
-			return new ResultType(1,"");
+			return new ResultType(0,"订单状态更新失败!");
 		}
 	}
 	/**
