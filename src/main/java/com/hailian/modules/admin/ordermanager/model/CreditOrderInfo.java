@@ -688,10 +688,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			
 		}
 		//权限区分
-		if(!c.isAdmin(c.getSessionUser())){
+		/*if(!c.isAdmin(c.getSessionUser())){
 			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
-		}
+		}*/
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
 			fromSql.append(" order by c.receiver_date desc,c.ID desc ");
