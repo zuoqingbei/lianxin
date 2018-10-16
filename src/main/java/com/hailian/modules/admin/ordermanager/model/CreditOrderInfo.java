@@ -657,8 +657,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				//客户确认(订单核实)状态 ,其维护在字典表中
 				fromSql.append(" and status in ('292','293','291') ");
 			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
-				//代理分配和订单查档(国外) ,其维护在字典表中
-				fromSql.append(" and status in('295','294') and s1.id!='106' ");
+				//代理分配和订单查档(国外) ,其维护在字典表中 中国大陆代码106
+				fromSql.append(" and status in('295','294') and c.country!='106' ");
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
 				fromSql.append(" and status='300' ");
