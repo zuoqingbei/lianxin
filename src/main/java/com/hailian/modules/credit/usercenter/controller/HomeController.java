@@ -114,6 +114,12 @@ public class HomeController extends BaseProjectController {
 		String num=order.getStr("num");
 		//获取附件
 		List<CreditUploadFileModel> files=CreditUploadFileModel.dao.getFile(num);
+		for(CreditUploadFileModel file:files) {
+			String view_url=file.get("view_url");
+			String url=file.get("url");
+			file.set("view_url", "http://"+ip+"/"+view_url);
+			file.set("url", "http://"+ip+"/"+url);	
+		}
 		/*if(files.size()==0) {
 			files=null;
 		}*/
@@ -483,9 +489,10 @@ public class HomeController extends BaseProjectController {
 				//数据库记录文件名字
 				String fileName=originalFileName+now;
 				String pdf_FTPfileName="";
+				File pdf=null;
 				ftpfileList.add(uploadFile.getFile());
 				if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
-					File pdf = toPdf(uploadFile);
+					 pdf = toPdf(uploadFile);
 					pdf_FTPfileName=now+"."+"pdf";
 					ftpfileList.add(pdf);
 				}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
@@ -493,14 +500,18 @@ public class HomeController extends BaseProjectController {
 				}
 				//String now,List<File> filelist,String storePath,String url,int port,String userName,String password
 				boolean storeFile = FtpUploadFileUtils.storeFtpFile(now, ftpfileList,storePath,ip,port,userName,password);//上传
+				
 				if(storeFile){
+					if(pdf!=null) {
+						pdf.delete();
+					}
 					//如果文件上传成功则添加数据库记录
 					String factpath=storePath+"/"+FTPfileName;
 					String pdfFactpath=storePath+"/"+pdf_FTPfileName;
-					String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+					String url= storePath+"/"+FTPfileName;
 					Integer userid = getSessionUser().getUserid();
 					model.set("business_id", num);
-					String pdfUrl="http://"+ip+"/" + storePath+"/"+pdf_FTPfileName;
+					String pdfUrl=storePath+"/"+pdf_FTPfileName;
 					UploadFileService.service.save(0,uploadFile, factpath,url,pdfFactpath,pdfUrl,model,fileName,userid);//记录上传信息
 				}else{
 					num1+=1;
