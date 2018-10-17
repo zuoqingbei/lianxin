@@ -1,67 +1,63 @@
 package com.hailian.util.http;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+
+import com.hailian.util.extend.HttpClientUtils;
+
+import net.sourceforge.tess4j.ITesseract;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 
 public class HttpTest {
-	public static void main(String[] args) {
-        // TODO Auto-generated method stub
-		String url="http://wsjs.saic.gov.cn/txnDetail.do?y7bRbp=qmMO3Lgy8ZceH5voom7vtF9rp7nDdH4IjVzYtskB_CXlhyBc5J0GS3jXLuJsMYxO3uiCank5I71bELGyIjMHoX_LSYS3kCAdcRVp0DFqjq0_ZDcM.fDmqY0XzmlrIlPNJ9R8V.RqpGKjlMe2.eEM5UdMWjb.SO6IxwFPMQCC8ajegQrC&c1K5tw0w6_=2loG94.Rm05pi1IMWp8gr3QGkwxdArXhxqBdEjach9ArqZhD3dcm0ZOhJ5bhp8IabV5Kv8vWzXO.7ByRNLp1LerUnExb3Y9KQGaEJ9MgafOqf2Bl6rzfTfKV5rWdS5oWDOTSRcRw6_oP.LIg0rSIQsV.uONn28W.tw6Eqw0UkAhp8jE.ptCZbxeDIw96redGKzNWJ.9SjGMNM6Le32XN5JlS91rDMK9O64nT3l9UPbIipc85v7ESDiNnOkP6rWHZR";
-        //1.使用默认的配置的httpclient
-        CloseableHttpClient client = HttpClients.createDefault();
-        //2.使用get方法
-        HttpGet httpGet = new HttpGet(url);
-        InputStream inputStream = null;
-        CloseableHttpResponse response = null;
+	public static void main(String[] args) throws TesseractException {
+		getVerifyCode();
+		File imageFile = new File("verifyCode.jpeg");//图片位置
+        ITesseract instance = new Tesseract();  // JNA Interface Mapping
+        instance.setDatapath("C:\\Users\\Administrator\\Desktop\\tessdata");//设置tessdata位置
+        instance.setLanguage("osd");//选择字库文件（只需要文件名，不需要后缀名）
+        String result = instance.doOCR(imageFile);//开始识别
+        System.out.println("图片验证码:"+result);
+		String searchCourtName = "全国法院（包含地方各级法院）";
+		String selectCourtId = "1";
+		String selectCourtArrange = "2";
+		String pname = "海尔集团";
+		String cardNum = "";
+		String j_captcha = result;
+		String captchaId = "366232f0348c442e9599cbd9f4235dd4";
+		HttpClientUtils.sendGet("http://zhixing.court.gov.cn/search/newsearch",
+				"searchCourtName="+searchCourtName+"&selectCourtId="+selectCourtId+
+				"&selectCourtArrange="+selectCourtArrange+"&pname="+pname+"&cardNum="+cardNum+
+				"&j_captcha="+j_captcha+"&captchaId="+captchaId);
+		
+    }
+	public static void getVerifyCode(){
+		HttpClient client = HttpClients.createDefault();//实例化httpclient
+		HttpGet getVerifyCode = new HttpGet("http://zhixing.court.gov.cn/search/captcha.do");//验证码get
+		FileOutputStream fileOutputStream = null;
+		HttpResponse response;
         try {
-            //3.执行请求，获取响应
-            response = client.execute(httpGet);
-            //看请求是否成功，这儿打印的是http状态码
-            System.out.println(response.getStatusLine().getStatusCode());
-            //4.获取响应的实体内容，就是我们所要抓取得网页内容
-            HttpEntity entity = response.getEntity();
-            //5.将其打印到控制台上面
-            //方法一：使用EntityUtils
-            if (entity != null) {
-                System.out.println(EntityUtils.toString(entity, "utf-8"));
-            }
-            EntityUtils.consume(entity);
-            //方法二  :使用inputStream
-           /* if (entity != null) {
-                inputStream = entity.getContent();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    System.out.println(line);
-                }
-            }*/
-        } catch (UnsupportedOperationException | IOException e) {
-            // TODO Auto-generated catch block
+            response = client.execute(getVerifyCode);//获取验证码
+            /*验证码写入文件,当前工程的根目录,保存为verifyCode.jped*/
+            fileOutputStream = new FileOutputStream(new File("verifyCode.jpg"));
+            response.getEntity().writeTo(fileOutputStream);
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            if (response != null) {
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+            try {
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-    }
+	}
 }
