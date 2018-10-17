@@ -35,7 +35,6 @@ public class OrderFlowConfController extends BaseProjectController{
 		CreditOrderFlowConf model = getModelByAttr(CreditOrderFlowConf.class);
 		Paginator pageinator=getPaginator();
 		String orderBy = getBaseForm().getOrderBy();
-		SysUser user = (SysUser) getSessionUser();
 		Page<CreditOrderFlowConf> page=CreditOrderFlowConf.dao.getOrderFlowConfs(pageinator,model,orderBy, this);	
 		setAttr("page", page);
 		setAttr("attr", model);
