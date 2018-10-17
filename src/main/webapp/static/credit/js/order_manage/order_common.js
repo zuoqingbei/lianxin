@@ -2,7 +2,7 @@ let Orderind = {
     init(){
         /**初始化函数 */
         /*流程进度 索引是从0开始的*/
-        this.step(0);
+ //       this.step(${size});
         /*头部tab切换*/
         this.tabActive();
     },

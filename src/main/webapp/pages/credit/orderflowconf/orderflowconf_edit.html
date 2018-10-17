@@ -1,0 +1,89 @@
+<% var flowState = tempDict.getSysDictDetailString2('orderstate',model.flow_state); %>
+<% var flowType = tempDict.getSysDictDetailString('country',model.type); %>
+<%
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+include("/pages/template/head.html"){}
+%>
+<script type="text/javascript" src="static/component/echarts/echarts-plain.js"></script>
+<!-- 时间组件 -->
+<% include("/pages/includes/my97.html"){} %>
+<script type="text/javascript">
+    var oper = {
+    	//提交	
+        save:function(id){
+        	 if(!validForm()) {
+                 return false;
+             }
+            id = id || '0';
+
+//            alert( $("select[name='attr.country']").val())
+            
+            var url = '/credit/orderflowconf/save?id='+id;
+            form1.action = url;
+            form1.submit();
+            return true;
+        },
+        flowTypeChange:function(){
+        	var value=$("#flowstate").find("option:selected").attr("m-detail-name");
+        	$("#flowname").val(value);
+        }
+
+    }
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action=""  method="post" class="form-horizontal"
+	  role="form" >
+
+	<table class="table">
+		<% // 列表头部 %>
+		<tr>
+			<td>流程类型</td>
+			<td>
+			<select id="flowtype" name="attr.type" valid="vselect" class="form-control" >
+				${flowType!}
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td>流程状态码</td>
+			<td>
+			<select id="flowstate" name="attr.flow_state" valid="vselect" class="form-control" onchange="oper.flowTypeChange()">
+				${flowState!}
+			</select>
+			</td>		
+		</tr>
+		<tr>
+			<td>流程名称</td>
+			<td>
+				<input id="flowname" name="attr.flow_name" class="form-control" valid="vtext" validname="流程名称" value="${model.flow_name}" readonly="readonly">
+			</td>				
+		</tr>
+		<tr>
+			<td >备注：</td>
+			<td>
+				<textarea name="attr.remarks" type="text" class="form-control" autofocus  name="attr.remarks" >
+					${model.remarks!""}
+				</textarea>
+			</td>
+		</tr>
+		
+	</table>
+
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+			<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+		</div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+<%} %>

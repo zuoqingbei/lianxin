@@ -207,7 +207,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
-		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null and t.status is not null ");
 		
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
@@ -292,7 +292,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append("where 1 = 1 and t.del_flag='0' and t.id=? and t.company_id is not null ");
-		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null and t.status is not null ");
 		return dao.findFirst(sql.toString(), id);
 	}
 
@@ -319,7 +319,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
-		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null and t.status is not null ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -408,7 +408,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
-		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null and t.status is not null ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
 			sql.append(" and t.create_by=? ");
 			params.add(user.get("userid").toString());
@@ -541,7 +541,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
-		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null ");
+		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null and t.status is not null ");
 		if(!"1".equals(user.getInt("usertype").toString())){
 			sql.append(" and t.create_by=? ");
 			params.add(user.get("userid").toString());

@@ -77,8 +77,9 @@ public class FileUpLoadController extends BaseProjectController {
 					String fileName=originalFileName+now;
 					String pdf_FTPfileName="";
 					ftpfileList.add(uploadFile.getFile());
+					File pdf=null;
 					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
-						File pdf = toPdf(uploadFile);
+						pdf = toPdf(uploadFile);
 						pdf_FTPfileName=now+"."+"pdf";
 						ftpfileList.add(pdf);
 					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
@@ -86,10 +87,13 @@ public class FileUpLoadController extends BaseProjectController {
 					}
 					boolean storeFile = FtpUploadFileUtils.storeFtpFile(now,ftpfileList,storePath,ip,port,userName,password);//上传
 					if(storeFile){
+						if(pdf!=null){
+							pdf.delete();
+						}
 						String factpath=storePath+"/"+FTPfileName;
 						String pdfFactpath=storePath+"/"+pdf_FTPfileName;
-						String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
-						String pdfUrl="http://"+ip+"/" + storePath+"/"+pdf_FTPfileName;
+						String url=storePath+"/"+FTPfileName;
+						String pdfUrl=storePath+"/"+pdf_FTPfileName;
 						Integer userid = getSessionUser().getUserid();
 						UploadFileService.service.save(pid,uploadFile, factpath,url,pdfFactpath,pdfUrl,model,fileName,userid);//记录上传信息
 					}else{
@@ -174,6 +178,10 @@ public class FileUpLoadController extends BaseProjectController {
 	}
 	public void view() {
 		CreditUploadFileModel model = CreditUploadFileModel.dao.findById(getParaToInt());
+		String view_url=model.get("view_url");
+		String url=model.get("url");
+		model.set("view_url", "http://"+ip+"/"+view_url);
+		model.set("url", "http://"+ip+"/"+url);
 		setAttr("model", model);
 		render(path + "view.html");
 	}
@@ -199,6 +207,10 @@ public class FileUpLoadController extends BaseProjectController {
 	public void edit() {
 		Integer paraToInt = getParaToInt();
 		CreditUploadFileModel model = CreditUploadFileModel.dao.findById(paraToInt);
+		String view_url=model.get("view_url");
+		String url=model.get("url");
+		model.set("view_url", "http://"+ip+"/"+view_url);
+		model.set("url", "http://"+ip+"/"+url);
 		setAttr("model", model);
 		// 查询下拉框
 		render(path + "edit.html");
