@@ -2,7 +2,7 @@
 <% var currency = tempDict.getSysDictDetailString2('currency',model.currency ); %>
 <% var agenttype = tempDict.getSysDictDetailString2('agenttype',model.agent_type ); %>
 <% var speed = tempDict.getSysDictDetailString2('agentspeed',model.speed ); %>
-<% var agent_category = tempDict.getSysDictDetailString2('agentcategory',model.agent_category ); %>
+<% var agent_category = tempDict.getSysDictDetailCheckboxString('agentcategory',model.agentCategoryList,'9' ); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -29,19 +29,16 @@ var oper = {
    		 console.log(data)
    		  html+="<option value='-1' selected='selected'>请选择</option>"
    		  for(item in data){
-   			  console.log(item.id)
-   			  		
-					 if(item.id='${model.city}'){
+					 if(item.cid='${model.city}'){
 						 html+="<option  m-type='"+data[item].cid+"' value='"+data[item].cid+"'>"+data[item].city+"</option>";
 					 }else{
 						html+="<option  m-type='"+data[item].cid+"' value='"+data[item].cid+"'>"+data[item].city+"</option>";
 					 };
 	        	
 	           };
-	           
 	           $("select[name='model.city']").html(html);
 	           
-					oper.countryChange();
+					
 					
 	           
    	 })
@@ -49,21 +46,35 @@ var oper = {
    agentChange:function(){
 	   	 var agent = document.getElementById("agent");
 	   	 var value=$("#agent").find("option:selected").text();
-	   
 	   	 if(value=='国外'){
 	   		 $(".table tbody tr:last").hide()
+	   		 $("#sandbar").removeAttr("valid")
 	   	 }else if(value=='国内'){
 	   		$(".table tbody tr:last").show()
+	   		$("#sandbar").attr("valid","vselect")
 	   	 }
 	   },
-   //国家发生变化
-   countryChange:function(){
+   //省份发生变化
+   initpage:function(){
+	   var agent = $("#agent").find("option:selected").text();
+	   alert(agent)
+	   	 if(agent=='264'){
+	   		console.log($(".table"))
+	   		 $(".table tbody tr:last").hide()
+	   		 $("#sandbar").removeAttr("valid")
+	   	 }else if(agent=='263'){
+	   		$(".table tbody tr:last").show()
+	   		$("#sandbar").attr("valid","vselect")
+	   	 }
    	//默认选择第一个国家
    	 //$("select[name='model.city'] option:first").attr('selected','selected')
    	
    }
+	 
 };
-
+$(function(){
+	oper.agentChange();
+})	
 </script>
 <style>
 .tags {
@@ -108,65 +119,74 @@ var bodyContent = {
 	<tr>
 	<tr>
 			<td>代理类型</td>
-			 <td><select id="agent" name="model.agent_type" class="form-control" style="width: 200px;" onchange="oper.agentChange()">
+			 <td><select id="agent" name="model.agent_type" class="form-control" style="width: 200px;" onchange="oper.agentChange()" style="width: 200px;">
 					${agenttype!}
-				</select></td>		
+				</select>
+			</td>
+			
+		</tr>		
 		</tr>
+		
 		<tr>
 			<td>代理名称</td>
-			<td><input type="text" name="model.agent_name" class="form-control"  valid="vtext"
-				value="${model.agent_name}"/></td>
-		</tr>
-		<tr>
-			<td>邮政编码</td>
+			<td><input type="text" name="model.agent_name"  style="width: 200px;" class="form-control"  valid="vtext" validname="代理名称"
+				value="${model.agent_name}" />
+			</td>
+			
+			 <td>代理用时</td>
 			 <td> 
-				<input type="text" name="model.postal_code" class="form-control"  
-				value="${model.postal_code}"/></td>
-		</tr>
-		<tr>
-			<td>代理用时</td>
-			 <td> 
-				<input type="text" name="model.proxy_time" class="form-control"  
-				value="${model.proxy_time}"/></td>
+				<input type="text" name="model.proxy_time" class="form-control"  style="width: 200px;"
+				value="${model.proxy_time}"/>
+			</td>
+			
 		</tr>
 		<tr>
 			<td>邮箱</td>
-			<td> <input type="text" name="model.memo" class="form-control"  valid="vemail"
-				value="${model.memo}"/> </td>
-		</tr>
-			<tr>
+			<td> <input type="text" name="model.memo" class="form-control"  valid="vemail" style="width: 200px;"
+				value="${model.memo}"/> 
+			</td>
 			<td>价格</td>
-			<td><input type="text" name="model.price" class="form-control price"  valid="vfloat_y"
-				value="${model.price}"/></td>
+			<td><input type="text" name="model.price" class="form-control price"  valid="vfloat_y" style="width: 200px;" validname="价格"
+				value="${model.price}"/>
+			</td>
 		</tr>
+			
 		<tr>
 			<td>币种</td>
 			<td><select name="model.currency" class="form-control" style="width: 200px;" >
 					${currency!}
 				</select></td>
-		</tr>
-		<tr>
 			<td>速度</td>
 			<td><select name="model.speed" class="form-control" style="width: 200px;" >
 					${speed!}
-				</select></td>
+				</select>
+			</td>
 		</tr>
+	
 		<tr>
+			<td>邮政编码</td>
+			 <td> 
+				<input type="text" name="model.postal_code" class="form-control"  style="width: 200px;"
+				value="${model.postal_code}"/>
+			 </td>
 			<td>是否禁用</td>
 			<td><select name="model.usabled" class="form-control" style="width: 200px;" >
 					${usabled!}
 				</select></td>
+			
+			
 		</tr>
-		<tr>
+		
+		<tr rowspan="2">
 			<td>代理类别</td>
-			<td><select name="model.agent_category" class="form-control" style="width: 200px;" >
-					${agent_category!}
-				</select></td>
+			<td colspan="3" >
+			${agent_category!}
+			</td>
 		</tr>
 		<tr>
 			<td>省份</td>
 						<td>
-						<select id="sandbar" name="model.province" class="form-control" valid="vselect" validname="省份" style="width: 200px;" onchange="oper.sandbarChange()">
+						<select id="sandbar" name="model.province" class="form-control"   valid="vselect" validname="省份" onchange="oper.sandbarChange()" style="width: 200px;">
 						<option value="-1" >请选择</option>
 						 <% for(item in province){ %>
 						 	<% if((model.province+"")==(item.pid+"")){ %>
@@ -181,7 +201,7 @@ var bodyContent = {
 				<td>城市</td>
 				<td>
 					<% if(model.city!=null || model.city!="" ){%>
-					<select id="city" name="model.city"  class="form-control"  onchange="oper.countryChange()">
+					<select id="city" name="model.city"  class="form-control" style="width: 200px;" >
 						<option value="-1" >请选择</option>
 						<% for(item in city){ %>
 								 	<% if(model.city==(item.cid+"")){ %>
@@ -192,7 +212,7 @@ var bodyContent = {
 								  <% } %>
 					</select>
 					<%}else{%>
-					<select id="country" name="model.city"  class="form-control" valid="vselect" validname="城市" onchange="oper.countryChange()">
+					<select id="city" name="model.city"  class="form-control"  >
 					</select>
 					<%}%>
 				</td>

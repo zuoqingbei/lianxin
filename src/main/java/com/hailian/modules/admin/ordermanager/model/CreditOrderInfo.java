@@ -619,7 +619,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
 			selectSql.append(" select c.*, ");
-			selectSql.append(" s1.detail_name AS country, ");
+			selectSql.append(" s1.name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
 			selectSql.append(" s3.detail_name AS continent, ");
 			selectSql.append(" s4.detail_name AS orderType, ");
@@ -633,7 +633,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" u3.realname AS analyzeUser,");
 			selectSql.append(" u4.name AS customId ");
 			fromSql.append(" FROM credit_order_info c ");
-			fromSql.append(" LEFT JOIN sys_dict_detail s1 ON c.country = s1.detail_id ");//国家
+			fromSql.append(" LEFT JOIN credit_country s1 ON c.country = s1.id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
 			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
 			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
@@ -651,20 +651,20 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			
 			fromSql.append(" where c.del_flag = 0 ");
 			if((OrderProcessController.orderAllocation).equals(searchType)){
-				//status='291'值状态为订单分配状态 ,其维护在字典表中
-				fromSql.append(" and status='291' ");
+				//状态为订单分配状态 ,其维护在字典表中
+				fromSql.append(" and status='291'  ");
 			}else if((OrderProcessController.orderVerifyOfOrder).equals(searchType)){
-				//status='292'值状态为客户确认(订单核实)状态 ,其维护在字典表中
-				fromSql.append(" and status='292' ");
+				//客户确认(订单核实)状态 ,其维护在字典表中
+				fromSql.append(" and status in ('292','293','291') ");
 			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
-				//status='294'值状态为代理分配和订单查档(国外) ,其维护在字典表中
-				fromSql.append(" and status in('294','295') ");
+				//代理分配和订单查档(国外) ,其维护在字典表中 中国大陆代码106
+				fromSql.append(" and status in('295','294') and c.country!='106' ");
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
-				//status='310'值状态为递交订单(翻译质检合格) ,其维护在字典表中
-				fromSql.append(" and status='310' ");
+				//状态为递交订单(翻译质检合格) ,其维护在字典表中
+				fromSql.append(" and status='300' ");
 			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
-				//status='293'值状态为信息录入 ,其维护在字典表中
-				fromSql.append(" and status='293' ");
+				//状态为信息录入 ,其维护在字典表中
+				fromSql.append(" and status in ('291','293') ");
 			}
 			
 		//关键词搜索
@@ -688,10 +688,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			
 		}
 		//权限区分
-		if(!c.isAdmin(c.getSessionUser())){
+		/*if(!c.isAdmin(c.getSessionUser())){
 			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
-		}
+		}*/
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
 			fromSql.append(" order by c.receiver_date desc,c.ID desc ");

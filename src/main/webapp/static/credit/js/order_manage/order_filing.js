@@ -76,7 +76,7 @@ let Filing = {
     modalSubmit(){
         /**模态框提交事件 */
         	 $("#modal_submit").click(function(){
-             	$("#status").val("298");
+             	$("#status").val("296");
              	$(".tableValue").ajaxSubmit( {
              		success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
                         // 此处可对 data 作相关处理
@@ -84,7 +84,7 @@ let Filing = {
              			 console.log(JSON.stringify(data));
                         console.log(data.statusCode);
                         if(data.statusCode===1){
-                        	 console.log("此处进入success状态,状态298");
+                        	 console.log("此处进入success状态,状态296");
                         	Public.message("success",data.message);
                         }else{
                         	 console.log("此处进入error状态");
@@ -144,7 +144,7 @@ let Filing = {
             			 $.ajax({
             				type:"post",
                 			url:"/credit/front/orderProcess/listJson",
-                			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
+                			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
                 			dataType:"json",
                 			success:function(obj){
                 				console.log("回显的数据:"+obj);
@@ -331,6 +331,11 @@ let Filing = {
             $("#receiver_date2").html(row.receiver_date);
             $("#continent2").html(row.continent);
             $("#country2").html(row.country);
+            if(row.country=='中国大陆'){
+   	   		 $("#mail").hide()
+   	   	 	}else {
+   	   		$("#mail").show()
+   	   	 	}
             $("#reportType2").html(row.reportType);
             $("#orderType2").html(row.orderType);
             $("#reportLanguage2").html(row.reportLanguage);

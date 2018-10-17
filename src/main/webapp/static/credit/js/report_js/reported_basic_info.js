@@ -31,6 +31,17 @@ let BasicWrite = {
         $("#company_id").val(row.company_id);
         $("#num").html(row.num);
         $("#end_date").html(row.end_date);
+        //回显企业注册信息
+        $.ajax({
+   			type:"post",
+   			url:"/credit/front/orderProcess/getCompanyInfo",
+   			data:"orderId="+row.id,
+   			dataType:"json",
+   			success:function(data){
+   				console.log(data);
+   				console.log(JSON.stringify(data));
+   			 }
+   		})
         //回显文件
         /*$.ajax({
    			type:"post",
@@ -54,6 +65,38 @@ let BasicWrite = {
             return indexed_array;
         }
         
+        $("#submit").on('click','',function(){
+   			console.log($("#tableRecord").bootstrapTable('getData'))
+   			console.log(JSON.stringify($("#tableRecord").bootstrapTable('getData')).replace("}]",""));//历史变更记录
+   			console.log(JSON.stringify($("#tableShareholdersInfo").bootstrapTable('getData')));//股东信息
+   			console.log(JSON.stringify($("#tableShareholdersDetail").bootstrapTable('getData')));//股东详情
+   			console.log(JSON.stringify($("#tableInvestment").bootstrapTable('getData')));//投资情况
+   			console.log(JSON.stringify($("#tableManagement").bootstrapTable('getData')));//管理层
+   			//提交按钮
+	   		$.ajax({
+	   			type:"post",
+	   			url:"/credit/front/orderProcess/ReportedSave",
+	   			data:"companyHistory="+(JSON.stringify($("#tableRecord").bootstrapTable('getData'))//公司历史数据
+	   					+"&companyZhuCe=["+JSON.stringify(getFormData($("#meForm")))+"]"//公司注册信息数据
+	   					+"&companyId="+row.company_id//公司id
+	   					+"&statusCode="+294//信息录入状态码
+	   					+"&model.id="+row.id//订单id
+	   					/*+"&"+$("#meForm").serialize()*/),
+	   			dataType:"json",
+	   			success:function(data){
+	   			if(data.statusCode===1){
+             	 console.log("此处进入success状态2222222222");
+             	Public.message("success","提交成功!");
+             	 $("#main_content").load('/credit/front/orderProcess/showReportInfoImport');
+             }else{
+             	 console.log("此处进入error状态");
+             	Public.message("error",data.message);
+             }
+	   			 }
+	   		})
+   	   	
+   		})
+    	
    		$("#save").on('click','',function(){
    			console.log($("#tableRecord").bootstrapTable('getData'))
    			console.log(JSON.stringify($("#tableRecord").bootstrapTable('getData')).replace("}]",""));//历史变更记录
@@ -61,21 +104,29 @@ let BasicWrite = {
    			console.log(JSON.stringify($("#tableShareholdersDetail").bootstrapTable('getData')));//股东详情
    			console.log(JSON.stringify($("#tableInvestment").bootstrapTable('getData')));//投资情况
    			console.log(JSON.stringify($("#tableManagement").bootstrapTable('getData')));//管理层
-   			
+   			//保存按钮
    			$.ajax({
    	   			type:"post",
    	   			url:"/credit/front/orderProcess/ReportedSave",
    	   			data:"companyHistory="+(JSON.stringify($("#tableRecord").bootstrapTable('getData'))//公司历史数据
    	   					+"&companyZhuCe=["+JSON.stringify(getFormData($("#meForm")))+"]"//公司注册信息数据
-   	   					+"&companyId="+row.company_id
-   	   					
+   	   					+"&companyId="+row.company_id//公司id
+   	   					//+"&statusCode="+293//信息录入状态码
+   	   					+"&model.id="+row.id//订单id
    	   					/*+"&"+$("#meForm").serialize()*/),
    	   			dataType:"json",
    	   			success:function(data){
-   	   				console.log(data);
-   	   			 	 $().bootstrapTable("load",data)
+   	   			if(data.statusCode===1){
+                 	 console.log("此处进入success状态2222222222");
+                 	Public.message("success","保存成功!");
+                 	 $("#main_content").load('/credit/front/orderProcess/showReportInfoImport');
+                 }else{
+                 	 console.log("此处进入error状态");
+                 	Public.message("error",data.message);
+                 }
    	   			 }
    	   		})
+   	   	
    		})
    			
     },

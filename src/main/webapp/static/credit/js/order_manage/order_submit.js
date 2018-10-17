@@ -20,7 +20,7 @@ let Verify = {
             $.ajax({
        			type:"post",
        			url:"/credit/front/orderProcess/statusSave",
-       			data:"model.mail_receiver="+$("#mail_receiver").val()+"&model.mail_associate_recipient="+$("#mail_associate_recipient").val()+"&model.id="+id+"&statusCode=314"+"&searchType=-5",/*314订单完成状态*/
+       			data:"model.mail_receiver="+$("#mail_receiver").val()+"&model.mail_associate_recipient="+$("#mail_associate_recipient").val()+"&model.id="+id+"&statusCode=311"+"&searchType=-5",/*314订单完成状态*/
        			dataType:"json",
        			success:function(data){
        			//提交成功关闭模态窗

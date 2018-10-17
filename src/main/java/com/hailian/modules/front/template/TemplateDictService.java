@@ -120,6 +120,47 @@ public class TemplateDictService extends BaseService {
 		return sb.toString();
 	}
 	/**
+	 * 根据dict_type获取字典,用于添加,有默认选项,无全部选项 复选框
+	* @author doushuihai  
+	* @date 2018年10月15日下午3:13:34  
+	* @TODO
+	 */
+	public String getSysDictDetailCheckboxString(String type,List<Object> selectedId,String rowsize) {
+		StringBuffer sb=new StringBuffer();
+		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		listDetail.addAll(DictCache.getSysDictDetailByType(type));
+		System.out.println(selectedId);
+		int rowSize=9;
+		if(rowsize != null && !rowsize.equals("")){
+			rowSize = Integer.parseInt(rowsize);
+		}
+		
+		int temp=0;
+		for(SysDictDetail detail:listDetail){
+			temp++;
+			boolean isSelected=false;
+			for(Object selected:selectedId){
+				if(selected!=null&&selected.toString().equals(detail.get("detail_id").toString())){
+					isSelected=true;
+					break;
+				}
+			}
+			int i = temp%rowSize;
+			if(isSelected){
+				sb.append("<input type='checkbox' checked='checked' name='agent_category' m-detail-id='"+detail.get("detail_id")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"&nbsp;&nbsp;&nbsp;");
+				if(i==0){
+					sb.append("</br>");
+				}
+			}else{
+				sb.append("<input type='checkbox'  name='agent_category' m-detail-id='"+detail.get("detail_id")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"&nbsp;&nbsp;&nbsp;");
+				if(i==0){
+					sb.append("</br>");
+				}
+			}
+		}
+		return sb.toString();
+	}
+	/**
 	 * @param type 根据dict_type获取字典
 	 * @param selectedId
 	 * @param showColumnName 所展示字段名

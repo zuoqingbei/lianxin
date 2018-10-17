@@ -310,25 +310,26 @@
                         <div class="file-upload">
                             <div class="row mt-3 mb-2">
                                 <div class="input-group col-md-6 align-items-center">
-                                    <label class="control-label">代理ID：</label>
+                                    <label class="control-label col-md-4 text-right">代理ID：</label>
                                     <select name="" id="agency_id" class="form-control  col-md-6" onchange="agentchange()">
                                        
                                     </select>
                                 </div>
-                                <div class="input-group col-md-6 align-items-center">
-                                    <label class="control-label">是否发送委托邮件：</label>
-                                    <select name="" id="entrust_email" class="form-control  col-md-6">
-                                        <!--默认 是-->
-                                        <option value="1" selected>是</option>
-                                        <option value="-1">否</option>
-                                    </select>
-                                </div>
-                                <div class="input-group col-md-6 align-items-center">
-                                    <label class="control-label">代理类别：</label>
+                                <div class="input-group col-md-6 align-items-center mt-3">
+                                    <label class="control-label col-md-4 text-right">代理类别：</label>
                                     <select name="attr.agentcategory" id="agent_category" valid="vselect" validname="代理类别" class="form-control  col-md-6">
                                         
                                     </select>
                                 </div>
+                                <div class="input-group col-md-6 align-items-center" id="mail">
+                                    <label class="control-label col-md-4 text-right">是否发送委托邮件：</label>
+                                    <select name="" id="entrust_email" class="form-control  col-md-6">
+                                        <!--默认 是-->
+                                        <option value="1" >是</option>
+                                        <option value="-1" selected>否</option>
+                                    </select>
+                                </div>
+                               
                             </div>
                         </div>
                     </div>

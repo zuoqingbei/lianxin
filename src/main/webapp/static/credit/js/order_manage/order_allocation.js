@@ -22,7 +22,7 @@ let Allocation = {
             $.ajax({
        			type:"post",
        			url:"/credit/front/orderProcess/statusSave",
-       			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id+"&statusCode=292"+"&searchType=-1",
+       			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id+"&statusCode=293"+"&searchType=-1",
        			dataType:"json",
        			success:function(data){
        			//提交成功关闭模态窗

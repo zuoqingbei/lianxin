@@ -33,11 +33,14 @@ public class AgentCategoryModel extends BaseProjectModel<AgentCategoryModel> {
 	 */
 	public List<AgentCategoryModel> findAll(String agent_id) {
 		StringBuffer sb=new StringBuffer("select t.*,s1.detail_name as categoryName from credit_agent_category t ");
-		sb.append(" LEFT JOIN sys_dict_detail s1 ON t.agent_category = s1.detail_id ");//国家
-		sb.append(" where 1=1 ");//国家
+		sb.append(" LEFT JOIN sys_dict_detail s1 ON t.agent_category = s1.detail_id ");
+		sb.append(" where 1=1 ");
 		List<Object> params=new ArrayList<Object>();
+		if(StringUtils.isNotBlank(agent_id)){
 			sb.append(" and t.agent_id=?");
 			params.add(agent_id);
+		}
+		sb.append(" order by t.id ");
 		
 		return AgentCategoryModel.dao.find(sb.toString(), params.toArray());
 	}
