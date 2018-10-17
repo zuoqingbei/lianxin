@@ -61,15 +61,15 @@ var bodyContent = {
 	<div class="tableSearch">
 		<%  //查询列表 %>
 		<div class="form-group">
-			<input class="form-control" type="text" name="attr.id" value="${attr.type!''}"
+			<input class="form-control" type="text" name="attr.type" value="${attr.type!''}"
 				   placeholder="请输入国家类型" required='required' />
 		</div>
 		 <div class="form-group">
-             <input  name="attr.flow_state" type="text" class="form-control"
+             <input  name="attr.flow_state" type="text" class="form-control" value="${attr.flow_state!''}"
               placeholder="请输入订单状态代码" required='required' />
          </div>
 		<div class="form-group">
-             <input  name="attr.flow_name" type="text" class="form-control" 
+             <input  name="attr.flow_name" type="text" class="form-control"  value="${attr.flow_name!''}"
               placeholder="请输入订单状态名称" required='required' />
    		</div>
 		<button type="button" class="btn btn-default" onclick="oper.list();" name="search">

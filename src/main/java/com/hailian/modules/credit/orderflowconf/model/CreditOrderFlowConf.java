@@ -36,7 +36,7 @@ public class CreditOrderFlowConf extends BaseProjectModel<CreditOrderFlowConf> i
 		
 		StringBuffer sql = new StringBuffer();
 		//国家类型
-		String id = model.getStr("id");
+		String type = model.get("type");
 		//订单状态代码
 		String flow_state = model.getStr("flow_state");
 		//订单状态类型
@@ -53,9 +53,9 @@ public class CreditOrderFlowConf extends BaseProjectModel<CreditOrderFlowConf> i
 			params.add(c.getSessionUser().getUserid());
 		}
 
-		if (StringUtils.isNotBlank(id)) {
-			sql.append(" and t.id=?");
-			params.add(id);
+		if (StringUtils.isNotBlank(type)) {
+			sql.append(" and t.type=?");
+			params.add(type);
 		}
 		if (StringUtils.isNotBlank(flow_state)) {
 			sql.append(" and t.flow_state=?");

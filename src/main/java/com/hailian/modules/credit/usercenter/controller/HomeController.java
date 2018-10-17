@@ -207,7 +207,6 @@ public class HomeController extends BaseProjectController {
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
 		List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
-		
 		//订单核实数量
 		int orderhs=OrderManagerService.service.getOrdersService("292",null,user,null);
 		//订单查档数量
