@@ -31,6 +31,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.admin.site.TbSite;
 import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.modules.credit.orderflowconf.model.CreditOrderFlowConf;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.usercenter.service.HomeService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
@@ -131,17 +132,21 @@ public class HomeController extends BaseProjectController {
 //		SysDictDetail continent=HomeService.service.getContinent(order.getStr("continent"));
 		//获取订单记录表
 		List<CreditOrderFlow> cof=CreditOrderFlow.dao.findByNum(order.getStr("num"));
+		int size=cof.size();
 		//获取国家类型
 		CountryModel country=CountryModel.dao.findById(order.getStr("country"));
 		String countryType=country.getStr("type");
-		//根据国家类型获取不同的订单节点列表
+		//根据国家类型获取流程列表
+		List<CreditOrderFlowConf> cofc=CreditOrderFlowConf.dao.findByType(countryType);
 		//绑定订单信息和公司信息
 		setAttr("order",order);
 		setAttr("company",company);
 		setAttr("histroy",histroy);
 		setAttr("custom",custom);
 		setAttr("files",files);
-		setAttr("orderrecord",cof);
+		setAttr("cof",cof);
+		setAttr("cofc",cofc);
+		setAttr("size",size);
 		//转发页面
 		render(path+"order_manage/order_detail.html");
 	}

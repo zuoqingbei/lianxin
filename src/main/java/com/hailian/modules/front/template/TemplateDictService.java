@@ -91,7 +91,7 @@ public class TemplateDictService extends BaseService {
 		return sb.toString();
 	}
 	/**
-	 * 根据dict_type获取字典,用于添加,有默认选项,无全部选项
+	 * 根据dict_type获取字典,用于添加,有默认选项,展示id
 	 * @time   2018年9月13日 下午12:08:26
 	 * @author yangdong
 	 * @todo   TODO
@@ -103,15 +103,20 @@ public class TemplateDictService extends BaseService {
 	public String getSysDictDetailString2(String type,Object selectedId) {
 		StringBuffer sb=new StringBuffer();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
-				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+				sb.append("<option selected='selected' m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_id")+"</option>");
 			}else{
-				sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+				if("ALL".equals(detail.getStr("detail_name_en"))){
+					sb.append("<option  selected='selected'  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+				}else{
+					sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_id")+"</option>");
 				}
 			}
 			
+		}
 		return sb.toString();
 	}
 	/**

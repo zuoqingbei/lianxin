@@ -1,0 +1,83 @@
+<%
+var headContent = {
+include("/pages/template/head.html"){}
+};
+%>
+
+<script type="text/javascript">
+
+  
+</script>
+
+<%
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal" role="form">
+	<!-- 数据列表 -->
+	<table class="table">
+		<%  // 列表头部 %>
+		<tr>
+			<td>订单流程ID</td>
+			<td>${model.id}</td>
+		</tr>
+		<tr>
+			<td>流程类型</td>
+			<td>
+				${model.type}
+			</td>
+		</tr>
+		<tr>
+			<td>流程名称</td>
+			<td>
+				${model.flow_name}
+			</td>
+		</tr>
+		<tr>
+			<td>流程状态码</td>
+			<td>
+	   			${model.flow_state}
+			</td>
+		</tr>
+		<tr>
+			<td>创建者</td>
+			<td>
+	   			${model.createName}
+			</td>
+		</tr>
+		<tr>
+			<td>创建时间</td>
+			<td>
+	   			${model.create_date}
+			</td>
+		</tr>
+		<tr>
+			<td>更新者</td>
+			<td>
+	   			${model.updateName}
+			</td>
+		</tr>
+		<tr>
+			<td>更新时间</td>
+			<td>
+	   			${model.update_date}
+			</td>
+		</tr>
+		<tr>
+			<td>备注</td>
+			<td>
+	   			${model.remarks}
+			</td>
+		</tr>
+	</table>
+
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+			<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+		</div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>

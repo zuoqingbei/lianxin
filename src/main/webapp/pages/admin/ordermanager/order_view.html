@@ -99,26 +99,7 @@ var bodyContent = {
 		</tr>
 		<tr>
 			<td>处理状态</td>
-			<td>
-				<%if(model.status=='0'){%>
-					提交订单
-				<%}%>
-				<%if(model.status=='1'){%>
-					订单分配
-				<%}%>
-				<%if(model.status=='2'){%>
-					处理中
-				<%}%>
-				<%if(model.status=='3'){%>
-					按照流程处理完毕
-				<%}%>
-				<%if(model.status=='4'){%>
-					订单取消
-				<%}%>
-				<%if(model.status=='5'){%>
-					有相同报告,订单结束
-				<%}%>			
-		</td>
+			<td>${model.statuName}</td>
 		</tr>
 	</table>
 

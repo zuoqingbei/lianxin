@@ -175,86 +175,28 @@
                             <!--进度条-->
                             <div class="bar_box ml-3">
                                 <ul>
-                                   <li>
-                                       <div class="bar-span-box d-flex align-items-center" >
-                                           <span class="span_circle "></span>
-                                           <span class="span_bar "></span>
-                                       </div>
-                                       <span>录入新订单</span>
-                                       <span>${order.createName}</span>
-                                       <span>${order.receiver_date}</span>
-                                   </li>
-                                    <li>
-                                        <div class="bar-span-box d-flex align-items-center">
-                                            <span class="span_circle"></span>
-                                            <span class="span_bar"></span>
-                                        </div>
-                                        <span>录入新订单</span>
-                                        <span>李雨阳</span>
-                                        <span>2018-08-01</span>
-                                    </li>
-                                    <li>
-                                        <div class="bar-span-box d-flex align-items-center">
-                                            <span class="span_circle"></span>
-                                            <span class="span_bar"></span>
-                                        </div>
-                                        <span>录入新订单</span>
-                                        <span>李雨阳</span>
-                                        <span>2018-08-01</span>
-                                    </li>
-                                    <li>
-                                        <div class="bar-span-box d-flex align-items-center">
-                                            <span class="span_circle"></span>
-                                            <span class="span_bar"></span>
-                                        </div>
-                                        <span>录入新订单</span>
-                                        <span>李雨阳</span>
-                                        <span>2018-08-01</span>
-                                    </li>
-                                    <li>
-                                        <div class="bar-span-box d-flex align-items-center">
-                                            <span class="span_circle"></span>
-                                            <span class="span_bar"></span>
-                                        </div>
-                                        <span>录入新订单</span>
-                                        <span>李雨阳</span>
-                                        <span>2018-08-01</span>
-                                    </li>
-                                    <li>
-                                        <div class="bar-span-box d-flex align-items-center">
-                                            <span class="span_circle"></span>
-                                            <span class="span_bar"></span>
-                                        </div>
-                                        <span>录入新订单</span>
-                                        <span>李雨阳</span>
-                                        <span>2018-08-01</span>
-                                    </li>
-                                    <li>
-                                        <div class="bar-span-box d-flex align-items-center">
-                                            <span class="span_circle"></span>
-                                            <span class="span_bar"></span>
-                                        </div>
-                                        <span>录入新订单</span>
-                                        <span>李雨阳</span>
-                                        <span>2018-08-01</span>
-                                    </li>
-                                    <li>
-                                        <div class="bar-span-box d-flex align-items-center">
-                                            <span class="span_circle"></span>
-                                            <span class="span_bar"></span>
-                                        </div>
-                                        <span>录入新订单</span>
-                                        <span>李雨阳</span>
-                                        <span>2018-08-01</span>
-                                    </li>
-                                    <li>
-                                        <div class="bar-span-box d-flex align-items-center">
-                                            <span class="span_circle"></span>
-                                        </div>
-                                        <span>录入新订单</span>
-                                        <span>李雨阳</span>
-                                        <span>2018-08-01</span>
-                                    </li>
+                                	<%for(item in cofc){%>
+                                	   <% var flag=1;%>
+	                                   <li>
+	                                       <div class="bar-span-box d-flex align-items-center" >
+	                                           <span class="span_circle "></span>
+	                                           <span class="span_bar "></span>
+	                                       </div>
+	                                       <span>${item.flow_name}</span>
+	                                       <%for(item2 in cof){%>
+	                                       	 <%if(item.flow_state==item2.order_state){%> 
+	                                       	   <%flag=2;%>                                      	   		                                      
+		                                       <span>${item2.name}</span>
+		                                       <span>${item2.create_time}</span>
+		                                       <%break;%>
+												<%}%>
+		                                       <%}%>
+		                                       <%if(flag==1){%>
+		                                       	<span style="height:3.95rem;display:inline-block"></span>
+		                                       	<span style="height:3.7rem;display:inline-block"></span>
+		                                       	<%}%>
+	                                   </li>
+	                                   <%}%>
                                 </ul>
                             </div>
                         </div>
@@ -567,6 +509,43 @@
 	function view(str,type){
 		  var url = "/credit/commonFile/previewFileOnline?url="+str+"&type="+type;  
 		    window.open(url);
-	}
+	};
+	 function step(index){
+	        /*如果圆圈的索引 ==index 高亮显示  .circle_active*/
+	        /*如果圆圈的索引 <index 蓝色 span_active*/
+	        /*如果圆圈的索引 >index 灰色 span_circle*/
+	        /*如果横条的索引 <=index-1 蓝色*/
+	        /*如果横条的索引 >index-1  灰色*/
+	        /*如果字体的索引 ==index  黑色*/
+	        /*如果字体的索引 ！=index 灰色*/
+	        var circle_arr=$(".bar-span-box .span_circle");  //圆圈
+	        var bar_arr=$(".bar-span-box .span_bar");    //横条
+	        var world_arr=$(".bar_box>ul>li");     //字体
+	        var barIndex=index-1;
+	        for(var i=0;i<circle_arr.length;i++){
+	            $(circle_arr[i]).removeClass("circle_active").removeClass("span_active").removeClass("span_circle");
+	            $(bar_arr[i]).removeClass("bar_active").removeClass("span_circle");
+	            $(world_arr[i]).removeClass("world_active");
+	            /*判断圆圈*/
+	            if(i==index){
+	                $(circle_arr[i]).addClass("circle_active");
+	                /*判断字体*/
+	                $(world_arr[i]).children("span").addClass("world_active");
+	            }else if(i<index){
+	                $(circle_arr[i]).addClass("span_active");
+	            }else if(i>index){
+	                $(circle_arr[i]).addClass("span_circle");
+	            }
+	            /*判断横条*/
+	            if(barIndex>=0){
+	                if(i<=barIndex){
+	                    $(bar_arr[i]).addClass("bar_active")
+	                }else if(i>barIndex){
+	                    $(bar_arr[i]).addClass("span_circle");
+	                }
+	            }
+	        }
+	    };
+	    step(${size}-1);
 </script>
 </html>
