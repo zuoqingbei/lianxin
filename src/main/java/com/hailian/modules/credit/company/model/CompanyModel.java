@@ -117,7 +117,7 @@ public class CompanyModel extends BaseProjectModel<CompanyModel> {
 		StringBuffer selectSql = new StringBuffer(" select c.detail_name as Currency ,t.*");
 		StringBuffer fromSql = new StringBuffer("  from credit_company_info t  ");
 		fromSql.append("	LEFT JOIN sys_dict_detail c on c.detail_id=t.currency");
-		fromSql.append(" where c.del_flag=0 and t.del_flag=0 ");
+		fromSql.append(" where 1=1 and t.del_flag=0 ");
 		List<Object> params = new ArrayList<Object>();
 		if (StringUtils.isNotBlank(companyName)) {
 			fromSql.append("and t.name  like concat('%',?,'%')  ");
