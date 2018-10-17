@@ -1,4 +1,3 @@
-
 let BasicWrite = {
     init(){
         /**函数初始化 */
@@ -31,15 +30,28 @@ let BasicWrite = {
         $("#company_id").val(row.company_id);
         $("#num").html(row.num);
         $("#end_date").html(row.end_date);
+        console.log("companyId="+row.company_id)
+        window.cpi = row.company_id;
+        console.log("companyId=" +  window.cpi);
         //回显企业注册信息
         $.ajax({
    			type:"post",
    			url:"/credit/front/orderProcess/getCompanyInfo",
-   			data:"orderId="+row.id,
+   			data:"company_id="+row.company_id,
    			dataType:"json",
    			success:function(data){
    				console.log(data);
-   				console.log(JSON.stringify(data));
+   				$("#credit_code").val(data.credit_code);
+   				$("#qy_person").val(data.legal);
+   				$("#qy_type").val(data.company_type);
+   				$("#qy_create").val(data.establishment_date);
+   				$("#qy_type").val(data.company_type);
+   				$("#qy_date").val(data.business_date_end);
+   				$("#qy_money").val(data.registered_capital);
+   				$("#qy_address").val(data.address);
+   				$("#qy_office").val(data.registration_authority);
+   				$("#qy_state").val(data.registration_status);
+   				$("#qy_sale").val(data.operation_scope);
    			 }
    		})
         //回显文件
@@ -180,13 +192,11 @@ let BasicWrite = {
                 change_back:modal_change_back?modal_change_back:'-'
             }
             if(_this.recordIndex !== undefined) {
-                
                 $('#tableRecord').bootstrapTable('updateRow', {
                     index:_this.recordIndex,
                     row:_data
                 })
             }else {
-                
                 $('#tableRecord').bootstrapTable('append', _data)
             }
         })
@@ -219,7 +229,6 @@ let BasicWrite = {
                     row:_data
                 })
             }else {
-
                 $('#tableShareholdersInfo').bootstrapTable('append', _data)
             }
         })
@@ -340,8 +349,31 @@ let BasicWrite = {
     initTable(){
         let _this = this
         /**历史纪录表初始化 */
+        
         const $tableRecord = $('#tableRecord');
         $tableRecord.bootstrapTable({
+        	url : '/credit/front/orderProcess/CompanyHisListJson', // 请求后台的URL（*）
+            method : 'post', // 请求方式（*）post/get
+            contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
+            	//let that = cpi;
+            	console.log("cpi"+ window.cpi);
+                return {
+              	 company_id : window.cpi
+                };  
+                //console.log(""+params)
+            },  
+            pagination: true, //分页
+            sidePagination: 'server',
+            pageNumber:1,
+            pageSize:10,
+            pageList: [10,20,30],
+            smartDisplay:false,
+            iconsPrefix:'fa',
+            locales:'zh-CN',
+            fixedColumns: true,
+            fixedNumber: 1,
+            queryParamsType:'',
             height: $(".table-content1").height()/3*2,
             columns: [
                {
@@ -375,7 +407,6 @@ let BasicWrite = {
                         $("#modal_change_items").val(change_item)
                         $("#modal_change_font").val(change_font)
                         $("#modal_change_back").val(change_back)
-                        
                       },
                       "click .delete":(e,value,row,index)=>{
                           e.stopPropagation();
@@ -407,8 +438,8 @@ let BasicWrite = {
            // url : 'firmSoftTable.action', // 请求后台的URL（*）
            // method : 'post', // 请求方式（*）post/get
             pagination: false, //分页
-            smartDisplay:false,
-            iconsPrefix:'fa',
+           // smartDisplay:false,
+           // iconsPrefix:'fa',
             locales:'zh-CN',
            
          
@@ -479,7 +510,6 @@ let BasicWrite = {
                 smartDisplay:false,
                 iconsPrefix:'fa',
                 locales:'zh-CN',
-            
             });
             /**股东详情表初始化 */
           const $tableShareholdersDetail = $('#tableShareholdersDetail');

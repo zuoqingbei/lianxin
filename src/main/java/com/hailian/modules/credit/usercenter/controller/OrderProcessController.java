@@ -20,6 +20,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
+import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.SendMailUtil;
@@ -57,39 +58,40 @@ public class OrderProcessController extends BaseProjectController{
 	/**
 	 * 订单分配的搜索类型
 	 */
-	public static String orderAllocation = "-1";
+	public static final String orderAllocation = "-1";
 	public static LinkedList<Object> orderAllocationColumns = new LinkedList<>();//存储模糊搜索时后台sql对应字段
 	public static LinkedList<Object> orderAllocationParamNames = new LinkedList<>();//存储模糊搜索时前台对应参数名
 	/**
 	 * 订单管理中的订单核实
 	 */
-	public static String orderVerifyOfOrder = "-3";
+	public static final String orderVerifyOfOrder = "-3";
 	public static LinkedList<Object> orderVerifyOfOrderColumns = new LinkedList<>();
 	public static LinkedList<Object> orderVerifyOfOrderParamNames = new LinkedList<>();
 	/**
 	 * 订单管理中的订单查档
 	 */
-	public static String orderFilingOfOrder = "-4";
+	public static final String orderFilingOfOrder = "-4";
 	public static LinkedList<Object> orderFilingOfOrderColumns = new LinkedList<>();
 	public static LinkedList<Object> orderFilingOfOrderParamNames = new LinkedList<>();
 	/**
 	 * 订单管理中的递交订单
 	 */
-	public static String orderSubmitOfOrder = "-5";
+	public static final String orderSubmitOfOrder = "-5";
 	public static LinkedList<Object> orderSubmitOfOrderColumns = new LinkedList<>();
 	public static LinkedList<Object> orderSubmitOfOrderParamNames = new LinkedList<>();
 	/**
 	 * 报告管理中的订单核实
 	 */
-	public static String orderVerifyOfReport = "-2";
+	public static final String orderVerifyOfReport = "-2";
 	public static LinkedList<Object> orderVerifyOfReportColumns = new LinkedList<>(); 
 	public static LinkedList<Object> orderVerifyOfReportParamNames = new LinkedList<>(); 
 	/**
 	 * 报告管理中的信息录入
 	 */
-	public static String infoOfReport = "-6";
+	public static final String infoOfReport = "-6";
 	public static LinkedList<Object> infoOfReportColumns = new LinkedList<>();
 	public static LinkedList<Object>infoOfReportParamNames = new LinkedList<>();
+	
 	static{
 		orderAllocationColumns.add("u1.realname");
 	}
@@ -200,12 +202,34 @@ public class OrderProcessController extends BaseProjectController{
 		render(REPORT_MANAGE_PATH+"report_order_filing.html");
 	}
 	/**
-	 * 2018/10/15
+	 * 2018/10/15 15:20
 	 * lzg
 	 * 获取公司信息
 	 */
 	public void getCompanyInfo(){
-		
+		String companyId = getPara("company_id");
+		CompanyModel model = getModel(CompanyModel.class);
+		model  = model.findById(companyId);
+		renderJson(model);
+	}
+	/**
+	 * 2018/10/15 16:20
+	 * lzg
+	 * 获取公司历史变更记录
+	 */
+	public void CompanyHisListJson(){
+		String companyId = getPara("company_id");
+		CreditCompanyHis model =  getModel(CreditCompanyHis.class);
+		List<CreditCompanyHis> rows = model.find("select * from credit_company_his where company_id="+companyId);
+		renderJson(new CompanyHisResultType(rows.size(), rows));
+	}
+	class CompanyHisResultType{
+		Integer total;
+		List<CreditCompanyHis> rows;
+		CompanyHisResultType(Integer total,List<CreditCompanyHis> rows){
+			this.total = total;
+			this.rows = rows;
+		}
 	}
 	/**
 	 * @todo   展示报告管理下的信息录入的填报详情页
@@ -271,6 +295,7 @@ public class OrderProcessController extends BaseProjectController{
 	 */
 	private void PublicUpdateMod(Map<String,Object> map){
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
+		model.removeNullValueAttrs();
 		model = getModel(CreditOrderInfo.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
@@ -351,14 +376,16 @@ public class OrderProcessController extends BaseProjectController{
 		Page<CreditOrderInfo> pager = PublicListMod(searchType);
 		List<CreditOrderInfo> rows = pager.getList();
 		TemplateSysUserService templete = new TemplateSysUserService();
-		if(searchType.equals(orderAllocation)){//若是搜索类型是订单分配
+		//若是搜索类型是订单分配做特殊处理
+		if(searchType.equals(orderAllocation)){
 			for (CreditOrderInfo creditOrderInfo : rows) {
 				//参数2代表角色id为2
 				String seleteStr = templete.getSysUser(2, creditOrderInfo.get("report_user"));
 				creditOrderInfo.put("seleteStr",seleteStr);
 			}
 		}
-		if(searchType.equals(orderFilingOfOrder)){//若是搜索类型是订单查档
+		//若是搜索类型是订单查档做特殊处理
+		if(searchType.equals(orderFilingOfOrder)){
 			for (CreditOrderInfo creditOrderInfo : rows) {
 				//查询代理类型
 				String seleteStr = TemplateAgentService.templateagentservice.getAgentIdString();
@@ -387,7 +414,7 @@ public class OrderProcessController extends BaseProjectController{
 		String code = (String) getRequest().getParameter("statusCode");
 		Map<String,Object> map = new HashMap<>();
 		if(code==null||"".equals(code.trim())){
-			map.put("status", null);
+			map = null;
 		}else{
 			map.put("status", code);
 		}

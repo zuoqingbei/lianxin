@@ -124,6 +124,20 @@ let Verify = {
         			if(data.statusCode===1){
                    	 console.log("此处进入success状态2222222222");
                    	Public.message("success",data.message);
+                    //提交成功关闭模态窗
+                    $(".modal-header .close").trigger("click");
+                    //回显
+         	  		$.ajax({
+         	  			type:"post",
+         	      		url:"/credit/front/orderProcess/listJson",
+         	      		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+         	      		dataType:"json",
+         	      		success:function(obj){
+         	      				console.log("回显的数据:"+obj);
+         	      			 	$("#table").bootstrapTable("load",obj);
+         	      			 	console.log("回显成功!");
+         	      			 }
+         	  			}) 
                    }else{
                    	 console.log("此处进入error状态");
                    	Public.message("error",data.message);
@@ -133,20 +147,7 @@ let Verify = {
         			Public.message("error",data.message);
         		}
             });
-            //提交成功关闭模态窗
-           $(".modal-header .close").trigger("click");
-           //回显
-	  		$.ajax({
-	  			type:"post",
-	      		url:"/credit/front/orderProcess/listJson",
-	      		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
-	      		dataType:"json",
-	      		success:function(obj){
-	      				console.log("回显的数据:"+obj);
-	      			 	$("#table").bootstrapTable("load",obj);
-	      			 	console.log("回显成功!");
-	      			 }
-	  			}) 
+           
         })
         
          $("#modal_save").click(function(){
@@ -372,6 +373,10 @@ let Verify = {
         $("#telphone").val(row.telphone);
         $("#address").html(row.address);
         $("#remarks").html(row.remarks);
+        pageNumber = row.pageNumber;
+        pageSize = row.pageSize;
+    	 sortName = row.sortName;
+    	  sortOrder = row.sortOrder;
         //文件回显
         console.log(row.files)
        // $(".file-upload").html("");
@@ -456,10 +461,10 @@ let Verify = {
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
               console.log(params)
-              this.pageNumber = params.pageNumber;
+              /*this.pageNumber = params.pageNumber;
               this.pageSize = params.pageSize;
               this.sortName = params.sortName;
-              this.sortOrder = params.sortOrder;
+              this.sortOrder = params.sortOrder;*/
               return {//这里的params是table提供的  
             	  pageNumber: params.pageNumber,//从数据库第几条记录开始  
             	  pageSize: params.pageSize,//找多少条  

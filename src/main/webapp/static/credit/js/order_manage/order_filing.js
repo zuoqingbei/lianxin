@@ -306,7 +306,7 @@ let Filing = {
           $("#companyZHNames").html(row.companyZHNames);
           $("#reporter_select").html(row.seleteStr);
           $("#confirm_reason").html(row.confirm_reason);
-          $("#orderId2").val(row.id);
+          $("#orderId").val(row.id);
           $("#num").html(row.num);
           $("#remarks").val("");
           $(".tableValue")[0].reset();
@@ -386,10 +386,10 @@ let Filing = {
               contentType:'application/x-www-form-urlencoded;charset=UTF-8',
               queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
                 console.log(params)
-                this.pageNumber = params.pageNumber;
+               /* this.pageNumber = params.pageNumber;
                 this.pageSize = params.pageSize;
                 this.sortName = params.sortName;
-                this.sortOrder = params.sortOrder;
+                this.sortOrder = params.sortOrder;*/
                 return {//这里的params是table提供的  
               	  pageNumber: params.pageNumber,//从数据库第几条记录开始  
               	  pageSize: params.pageSize,//找多少条  

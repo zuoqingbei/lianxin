@@ -650,23 +650,35 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN credit_upload_file u5 ON u5.business_type = c.status and u5.business_id = c.num ");//文件表关联
 			
 			fromSql.append(" where c.del_flag = 0 ");
-			if((OrderProcessController.orderAllocation).equals(searchType)){
+			switch (searchType) {
+			case OrderProcessController.orderAllocation:
 				//状态为订单分配状态 ,其维护在字典表中
 				fromSql.append(" and status='291'  ");
-			}else if((OrderProcessController.orderVerifyOfOrder).equals(searchType)){
+				break;
+			case OrderProcessController.orderVerifyOfOrder:
 				//客户确认(订单核实)状态 ,其维护在字典表中
 				fromSql.append(" and status in ('292','293','291') ");
-			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
+				break;
+			case OrderProcessController.orderFilingOfOrder:
 				//代理分配和订单查档(国外) ,其维护在字典表中 中国大陆代码106
 				fromSql.append(" and status in('295','294') and c.country!='106' ");
-			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
+				break;
+			case OrderProcessController.orderSubmitOfOrder:
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
 				fromSql.append(" and status='300' ");
-			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
+				break;
+			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
 				fromSql.append(" and status in ('291','293') ");
+				break;
+			case OrderProcessController.orderVerifyOfReport:
+				//状态为信息录入 ,其维护在字典表中
+				fromSql.append(" and status in ('291','293') ");
+				break;	
+			default:
+				fromSql.append(" and false ");
+				break;
 			}
-			
 		//关键词搜索
 		if (keywords!=null&&keywords.size()>0) {
 			List<Object> columnNames = OrderProcessController.TYPE_KEY_COLUMN.get(searchType);
