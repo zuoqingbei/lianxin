@@ -1,6 +1,7 @@
 
 let Index = {
     init(){
+
         this.initTable();
         this.dateForm(); 
         this.popperFilter();
@@ -16,6 +17,7 @@ let Index = {
         });
     }, 
     popperFilter(){
+    	let that=this;
       /**筛选图标事件 */
       var referenceElement = document.querySelector(".fa-filter");
       var onPopper = document.querySelector(".deal-state");
@@ -42,8 +44,27 @@ let Index = {
 
       /**点击确定按钮 */
       $(".enterFilter").click(function(){
-			
-			loadtable();
+			 that.checked=[];
+			 that.checkchar="";
+	     	$("input[name='status']:checked").each(function(i){
+	           that.checked[i] = $(this).val();
+	           that.checkchar+=that.checked[i]+","
+	     	});
+			$("#table").bootstrapTable("refresh",{
+				query:{
+				  pageNo: that.paramsObj.pageNumber,//页码
+                  recordsperpage:  that.paramsObj.pageSize,//每页多少条
+                  sortName: that.paramsObj.sortName,
+                  sortOrder: that.paramsObj.sortOrder,
+                  custom_id:$("#custom_id").find("option:selected").val(),
+                  country:$("#country").find("option:selected").val(),
+    			  end_date:$("#dead_date").val(),
+    			  agent_id:$("#agentId").find("option:selected").val(),
+    			  company_by_report:$("#txt_search_departmentname").val(),
+    			  right_company_name_en:$("#txt_search_companyEngName").val(),
+    			  status:that.checkchar
+				}
+			});
        		getMessage();
       })
 
@@ -54,7 +75,7 @@ let Index = {
       })
     },
     searchEvent(){
-
+		
       $("#btn_query").click(function(){
         let companyName = $("#txt_search_departmentname").val();//公司名称
         let orderCName = $("#txt_search_companyEngName").val();//订单公司名称
@@ -84,12 +105,18 @@ let Index = {
 	        }
     })
     },
+    paramsObj:null,
     initTable(){
-        
+    	let _this = this;
+    	 this.checked=[];
+		 this.checkchar="";
+     	$("input[name='status']:checked").each(function(i){
+           _this.checked[i] = $(this).val();
+           _this.checkchar+=_this.checked[i]+","
+     	});
         const $table = $('#table');
-        let _this = this
-  
-
+        
+        let custom_id=$("#custom_id").find("option:selected").val();
         $table.bootstrapTable({
             height: $(".table-content").height()*0.75,
             columns: [
@@ -212,11 +239,19 @@ let Index = {
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
             	console.log(params);
+            	_this.paramsObj = params
               return {//这里的params是table提供的  
                   pageNo: params.pageNumber,//页码
                   recordsperpage: params.pageSize,//每页多少条
                   sortName:params.sortName,
-                  sortOrder:params.sortOrder
+                  sortOrder:params.sortOrder,
+                  custom_id:$("#custom_id").find("option:selected").val(),
+                  country:$("#country").find("option:selected").val(),
+    			  end_date:$("#dead_date").val(),
+    			  agent_id:$("#agentId").find("option:selected").val(),
+    			  company_by_report:$("#txt_search_departmentname").val(),
+    			  right_company_name_en:$("#txt_search_companyEngName").val(),
+    			  status:_this.checkchar
               };  
             },
           });
@@ -225,7 +260,7 @@ let Index = {
             $table.bootstrapTable('resetView');
           }, 200);
       },
-      operateFormatter(){
+     operateFormatter(){
         /**操作按钮格式化 */
         return '<a href="create_order.html" class="detail">详情</a>'
       }       
@@ -250,6 +285,10 @@ function loadtable(){
     				"attr.agent_id":$("#agentId").find("option:selected").val(),
     				"attr.company_by_report":$("#txt_search_departmentname").val(),
     				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
+    				"pageNo":pageNumber,
+    				"recordsperpage":pageSize,
+    				"sortName":sortName,
+    				"sortOrder":sortOrder,
     				"status":checkchar},
     			 dataType:"json",
     			 success:function(data){

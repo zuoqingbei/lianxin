@@ -171,7 +171,25 @@ public class HomeController extends BaseProjectController {
 		@Param(name = "id", description = "订单id", required = false, dataType = "String"),
 		})
 	public void list(){
-		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		CreditOrderInfo model = new CreditOrderInfo();
+		if(StringUtils.isNotBlank(getPara("custom_id"))) {
+			model.set("custom_id", getPara("custom_id"));
+		}
+		if(StringUtils.isNotBlank(getPara("country"))) {
+			model.set("country", getPara("country"));
+		}
+		if(StringUtils.isNotBlank(getPara("end_date"))) {
+			model.set("end_date", getPara("end_date"));
+		}
+		if(StringUtils.isNotBlank(getPara("agent_id"))) {
+			model.set("agent_id", getPara("agent_id"));
+		}
+		if(StringUtils.isNotBlank(getPara("company_by_report"))) {
+			model.set("company_by_report", getPara("company_by_report"));
+		}
+		if(StringUtils.isNotBlank(getPara("right_company_name_en"))) {
+			model.set("right_company_name_en", getPara("right_company_name_en"));
+		}
 		String sortname=getPara("sortName");
 		if(!StringUtils.isNotBlank(sortname)) {
 			sortname="receiver_date";

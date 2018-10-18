@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -178,7 +176,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//结束时间
 		String end_date = model.getStr("end_date");
 		//代理
-		Integer agent_id=model.get("agent_id");
+		String agent_id=model.get("agent_id");
 		//准确公司名称(经过翻译后的公司名称是中文)
 		String company_by_report=model.getStr("company_by_report");
 		if(company_by_report!=null) {
@@ -363,7 +361,6 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	 */
 	public Page<CreditOrderInfo> getOrders(Paginator pageinator, CreditOrderInfo model,  String status,
 			SysUser user,String sortname,String sortorder) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sql = new StringBuffer();
 		//客户id
 		String custom_id = model.getStr("custom_id");
@@ -372,13 +369,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//国家
 		String country = model.getStr("country");
 		//代理
-		Integer agent_id=model.get("agent_id");
+		String agent_id=model.get("agent_id");
 		//结束时间
-		Date end_date = model.get("end_date");
-		String date = "";
-		if (end_date != null) {
-			date = sdf.format(end_date);
-		}
+		String end_date = model.get("end_date");
 
 		//准确公司名称(经过翻译后的公司名称是中文)
 		String company_by_report=model.getStr("company_by_report");
@@ -426,9 +419,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.country=?");
 			params.add(country);
 		}
-		if (StringUtils.isNotBlank(date)) {
+		if (StringUtils.isNotBlank(end_date)) {
 			sql.append(" and t.end_date=?");
-			params.add(date);
+			params.add(end_date);
 		}
 		if (agent_id!=null) {
 			sql.append(" and t.agent_id=?");
@@ -461,7 +454,6 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	}
 	public List<CreditOrderInfo> findAll( CreditOrderInfo model,  String status,
 			SysUser user,String sortname,String sortorder) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sql = new StringBuffer();
 		//客户id
 		String custom_id = model.getStr("custom_id");
@@ -470,13 +462,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//国家
 		String country = model.getStr("country");
 		//代理
-		Integer agent_id=model.get("agent_id");
+		String agent_id=model.get("agent_id");
 		//结束时间
-		Date end_date = model.get("end_date");
-		String date = "";
-		if (end_date != null) {
-			date = sdf.format(end_date);
-		}
+		String end_date = model.get("end_date");
 
 		//准确公司名称(经过翻译后的公司名称是中文)
 		String company_by_report=model.getStr("company_by_report");
@@ -529,9 +517,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.country=?");
 			params.add(country);
 		}
-		if (StringUtils.isNotBlank(date)) {
+		if (StringUtils.isNotBlank(end_date)) {
 			sql.append(" and t.end_date=?");
-			params.add(date);
+			params.add(end_date);
 		}
 		if (agent_id!=null) {
 			sql.append(" and t.agent_id=?");
@@ -584,13 +572,12 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	 * @return_type   List<CreditOrderInfo>
 	 */
 	public int getOrders( String statu,CreditOrderInfo model,SysUser user,String status) {
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sql = new StringBuffer();
 		String custom_id=null;
 		String continent=null;
 		String country=null;
 		Integer agent_id=null;
-		String date="";
+		String end_date="";
 		String company_by_report="";
 		String right_company_name_en="";
 		if(model!=null) {
@@ -601,12 +588,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//国家
 		country=model.getStr("country");
 		//结束时间
-		Date end_date=model.get("end_date");
+	    end_date=model.get("end_date");
 		//代理
 		 agent_id=model.get("agent_id");
-		if(end_date!=null) {
-		 date=sdf.format(end_date);
-		}
 		//准确公司名称(经过翻译后的公司名称是中文)
 		company_by_report=model.getStr("company_by_report");
 		if(company_by_report!=null) {
@@ -655,9 +639,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.country=?");
 			params.add(country);
 		}
-		if(StringUtils.isNotBlank(date)) {
+		if(StringUtils.isNotBlank(end_date)) {
 			sql.append(" and t.end_date=?");
-			params.add(date);
+			params.add(end_date);
 		}
 		if (agent_id!=null) {
 			sql.append(" and t.agent_id=?");
