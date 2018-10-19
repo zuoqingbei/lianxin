@@ -1,6 +1,7 @@
 package com.hailian.modules.credit.common.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -143,6 +144,24 @@ public class CountryModel extends BaseProjectModel<CountryModel> {
 		}
 
 		return false;
+	}
+	public List<CountryModel> findAll() {
+		String sql="select t.* from credit_country t where t.del_flag=0";
+		return dao.find(sql);
+	}
+	public List<CountryModel> findByIds(String ids) {
+		StringBuffer sql= new StringBuffer();
+		sql.append("select t.* from credit_country t where t.del_flag=0 and t.id in(");
+		if(StringUtils.isNotBlank(ids)) {
+			String[] s=ids.split(",");
+			for(String id:s) {
+				sql.append(id);
+				sql.append(",");
+			}
+			sql.deleteCharAt(sql.length()-1);
+			sql.append(")");
+		}
+		return dao.find(sql.toString());
 	}
 
 }

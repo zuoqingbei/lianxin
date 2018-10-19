@@ -232,7 +232,7 @@ public class OrdermanagerController extends BaseProjectController{
 						String pdf_FTPfileName="";
 						ftpfileList.add(uploadFile.getFile());
 						if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
-							File pdf = toPdf(uploadFile);
+							File pdf = Office2PDF.toPdf(uploadFile);;
 							pdf_FTPfileName=now+"."+"pdf";
 							ftpfileList.add(pdf);
 						}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
