@@ -118,18 +118,14 @@ public class SendMailUtil {
     	String content="您的验证码是:"+code+"。如果不是本人操作请忽略。";
     	
     	try {
-//    		new SendMailUtil("2530644578@qq.com", recipientAddress, "2530644578@qq.com", title, content, "typwolfiqocrecaf").sendMail();
     		new SendMailUtil(recipientAddress, recipientAddress, title, content).sendMail();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return code;
 		}
     	return code; 
     }
-    public void toSendMail(List<String> recipientAddressTO,List<String> recipientAddressCC) throws Exception{
-//    	new SendMailUtil(SenderAddress, recipientAddress, SenderAddress, title, content, "typwolfiqocrecaf").sendMail();
-    }
+
     public static void main(String[] args) throws Exception {
     	sendMailCode("15269274025@163.com");
 	}
