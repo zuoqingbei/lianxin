@@ -139,25 +139,20 @@ let Filing = {
                        	 console.log("此处进入error状态");
                        	Public.message("error",data.message);
                        }
-            			//回显
-            			console.log("提交成功,开始回显:"+data.message);
-            			 $.ajax({
-            				type:"post",
-                			url:"/credit/front/orderProcess/listJson",
-                			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
-                			dataType:"json",
-                			success:function(obj){
-                				console.log("回显的数据:"+obj);
-                			 	$("#table").bootstrapTable("load",obj)
-                			 }
-            			 })
-            			 
-            			console.log("回显完毕");
             			}
-                 	
             		})
-            		
-                 
+               $.ajax({
+               			type:"post",
+                   		url:"/credit/front/orderProcess/listJson",
+                   		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
+                   		dataType:"json",
+                   		success:function(obj){
+                   				//console.log("回显的数据:"+JSON.stringify(obj.rows));
+                   			 	$("#table").bootstrapTable("load",obj);
+                   			 	console.log(obj);
+                   			 console.log("回显成功7777777777777777777777777777777777777777777!");
+                   			 }
+               			})
              })
     	
     },
@@ -199,7 +194,7 @@ let Filing = {
         $(".resetrFilter").click(function(){
           $('.form-check-input:checkbox').removeAttr('checked');
         })
-      },
+      }, 
   
     initTable(){
           /**初始化表格 */

@@ -17,7 +17,11 @@ public class TemplateAgentService extends BaseService{
 		listDetail.addAll(AgentModel.dao.findAll());
 		return listDetail;
 	}
-	
+	public List<AgentModel> getAgentNoDefault() {
+		List<AgentModel> listDetail = new ArrayList<AgentModel>();
+		listDetail.addAll(AgentModel.dao.findAll());
+		return listDetail;
+	}
 	/**
 	 * 
 	 * @time   2018年10月12日 上午10:52:15
@@ -51,7 +55,7 @@ public class TemplateAgentService extends BaseService{
 		List<AgentModel> listDetail =getAgent();
 		for(AgentModel detail:listDetail){
 				if("请选择代理".equals(detail.getStr("agent_name"))){
-					sb.append("<option selected='selected'  value='"+detail.get("agent_id")+"'>"+detail.get("agent_name")+"</option>");
+					sb.append("<option selected='selected'  value=''>"+detail.get("agent_name")+"</option>");
 				}else{
 					sb.append("<option  value='"+detail.get("agent_id")+"'>"+detail.get("agent_id")+"</option>");
 				}			

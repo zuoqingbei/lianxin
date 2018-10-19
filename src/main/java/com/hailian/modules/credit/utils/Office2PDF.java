@@ -10,13 +10,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ConnectException;
+
 import org.apache.commons.io.FileUtils;
+
 import com.artofsolving.jodconverter.DefaultDocumentFormatRegistry;
 import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.DocumentFormat;
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.converter.StreamOpenOfficeDocumentConverter;
+import com.hailian.util.DateUtils;
+import com.jfinal.upload.UploadFile;
 
 
 
@@ -110,5 +114,11 @@ public class Office2PDF {
     	System.out.println(connection);
     	connection.disconnect();
 	}
-
+    public static File toPdf(UploadFile uploadFile) throws Exception{
+		String now=DateUtils.getNow(DateUtils.YMDHMS);
+		String type = FileTypeUtils.getFileType(uploadFile.getFileName());
+		String name = FileTypeUtils.getName(uploadFile.getFileName());
+		File convertFileToPdf = Office2PDF.convertFileToPdf(uploadFile.getFile(),name,type, "C:/tempFile");
+		return convertFileToPdf;
+	}
 }
