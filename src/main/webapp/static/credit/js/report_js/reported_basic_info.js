@@ -187,7 +187,7 @@ let BasicWrite = {
             let _data = {
                 id:_this.id,
                 date:modal_record_date?modal_record_date:'-',
-                change_item:modal_change_items?modal_change_items:'-',
+                change_items:modal_change_items?modal_change_items:'-',
                 change_font:modal_change_font?modal_change_font:'-',
                 change_back:modal_change_back?modal_change_back:'-'
             }
@@ -349,7 +349,7 @@ let BasicWrite = {
     initTable(){
         let _this = this
         /**历史纪录表初始化 */
-        
+       
         const $tableRecord = $('#tableRecord');
         $tableRecord.bootstrapTable({
         	url : '/credit/front/orderProcess/CompanyHisListJson', // 请求后台的URL（*）
@@ -402,9 +402,9 @@ let BasicWrite = {
                       "click .edit":(e,value,row,index)=>{
                           _this.recordIndex = index
                         //回显
-                        let {date,change_item,change_font,change_back} = row;
+                        let {date,change_items,change_font,change_back} = row;
                         $("#modal_record_date").val(date)
-                        $("#modal_change_items").val(change_item)
+                        $("#modal_change_items").val(change_items)
                         $("#modal_change_font").val(change_font)
                         $("#modal_change_back").val(change_back)
                       },

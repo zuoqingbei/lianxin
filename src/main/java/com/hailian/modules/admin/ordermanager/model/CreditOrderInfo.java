@@ -648,8 +648,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
 			//获取文件信息
 			fromSql.append(" LEFT JOIN credit_upload_file u5 ON u5.business_type = c.status and u5.business_id = c.num ");//文件表关联
-			
 			fromSql.append(" where c.del_flag = 0 ");
+			//权限语句
+			StringBuffer authority = new StringBuffer();
+			Integer userId = c.getSessionUser().getUserid();
 			switch (searchType) {
 			case OrderProcessController.orderAllocation:
 				//状态为订单分配状态 ,其维护在字典表中
@@ -670,13 +672,23 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
 				fromSql.append(" and status in ('291','293') ");
+				//权限归属:报告员,分析员,翻译员
+				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.translate_user= "+userId+")");
 				break;
 			case OrderProcessController.orderVerifyOfReport:
-				//状态为信息录入 ,其维护在字典表中
+				//状态为订单核实 ,其维护在字典表中
 				fromSql.append(" and status in ('291','293') ");
+				//权限归属:报告员,分析员,质检员
+				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")");
+				break;	
+			case OrderProcessController.orderFilingOfReport:
+				//状态为订单查档(国内) ,其维护在字典表中
+				fromSql.append(" and status in ('291','293') ");
+				//权限归属:质检员
+				authority.append(" and (c.IQC= "+userId+")");
 				break;	
 			default:
-				fromSql.append(" and false ");
+				fromSql.append("  and false ");
 				break;
 			}
 		//关键词搜索
@@ -704,6 +716,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}*/
+		if(!c.isAdmin(c.getSessionUser())){
+			fromSql.append(authority);
+		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
 			fromSql.append(" order by c.receiver_date desc,c.ID desc ");

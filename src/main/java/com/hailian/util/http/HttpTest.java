@@ -18,11 +18,11 @@ import net.sourceforge.tess4j.TesseractException;
 
 public class HttpTest {
 	public static void main(String[] args) throws TesseractException {
-		getVerifyCode();
-		File imageFile = new File("verifyCode.jpeg");//图片位置
+		//getVerifyCode();
+		File imageFile = new File("D:\\myWork\\lianxin\\QQ图片20181017143832.png");//图片位置
         ITesseract instance = new Tesseract();  // JNA Interface Mapping
         instance.setDatapath("C:\\Users\\Administrator\\Desktop\\tessdata");//设置tessdata位置
-        instance.setLanguage("osd");//选择字库文件（只需要文件名，不需要后缀名）
+        instance.setLanguage("eng");//选择字库文件（只需要文件名，不需要后缀名）
         String result = instance.doOCR(imageFile);//开始识别
         System.out.println("图片验证码:"+result);
 		String searchCourtName = "全国法院（包含地方各级法院）";
@@ -46,7 +46,7 @@ public class HttpTest {
         try {
             response = client.execute(getVerifyCode);//获取验证码
             /*验证码写入文件,当前工程的根目录,保存为verifyCode.jped*/
-            fileOutputStream = new FileOutputStream(new File("verifyCode.jpg"));
+            fileOutputStream = new FileOutputStream(new File("verifyCode.png"));
             response.getEntity().writeTo(fileOutputStream);
         } catch (ClientProtocolException e) {
             e.printStackTrace();

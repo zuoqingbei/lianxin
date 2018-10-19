@@ -1,11 +1,14 @@
 package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
@@ -21,6 +24,8 @@ import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.company.model.CompanyModel;
+import com.hailian.modules.credit.uploadfile.controller.FileUpLoadController;
+import com.hailian.modules.credit.usercenter.model.CompanyHisResultType;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.SendMailUtil;
@@ -28,6 +33,8 @@ import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
@@ -51,7 +58,7 @@ public class OrderProcessController extends BaseProjectController{
 	private static final String REPORT_MANAGE_PATH = "/pages/credit/usercenter/report_pages/";
 	//正在开发页面路径
 	private static final String DEVELOPING_PATH = "/pages/credit/usercenter/developing.html";
-	//每种搜索类型需要对应的关键词字段名
+	//每种搜索类型需要对应的sql关键词字段名
 	public static final Map<String,List<Object>> TYPE_KEY_COLUMN = new HashMap<>();
 	//每种搜索类型需要对应的前端属性名
 	public static final Map<String,List<Object>> WEB_PARAM_NAMES = new HashMap<>();
@@ -68,7 +75,7 @@ public class OrderProcessController extends BaseProjectController{
 	public static LinkedList<Object> orderVerifyOfOrderColumns = new LinkedList<>();
 	public static LinkedList<Object> orderVerifyOfOrderParamNames = new LinkedList<>();
 	/**
-	 * 订单管理中的订单查档
+	 * 订单管理中的订单查档(国外)
 	 */
 	public static final String orderFilingOfOrder = "-4";
 	public static LinkedList<Object> orderFilingOfOrderColumns = new LinkedList<>();
@@ -91,7 +98,12 @@ public class OrderProcessController extends BaseProjectController{
 	public static final String infoOfReport = "-6";
 	public static LinkedList<Object> infoOfReportColumns = new LinkedList<>();
 	public static LinkedList<Object>infoOfReportParamNames = new LinkedList<>();
-	
+	/**
+	 * 报告管理中的订单查档(国内)
+	 */
+	public static final String orderFilingOfReport = "-7";
+	public static LinkedList<Object> orderFilingOfReportColumns = new LinkedList<>();
+	public static LinkedList<Object> orderFilingOfReportParamNames = new LinkedList<>();
 	static{
 		orderAllocationColumns.add("u1.realname");
 	}
@@ -105,6 +117,7 @@ public class OrderProcessController extends BaseProjectController{
 		TYPE_KEY_COLUMN.put(orderFilingOfOrder,orderFilingOfOrderColumns);
 		TYPE_KEY_COLUMN.put(orderSubmitOfOrder,orderSubmitOfOrderColumns);
 		TYPE_KEY_COLUMN.put(infoOfReport,infoOfReportColumns);
+		TYPE_KEY_COLUMN.put(orderFilingOfReport,orderFilingOfReportColumns);
 	}
 	static{
 		WEB_PARAM_NAMES.put(orderAllocation, orderAllocationParamNames);
@@ -113,6 +126,7 @@ public class OrderProcessController extends BaseProjectController{
 		WEB_PARAM_NAMES.put(orderFilingOfOrder, orderFilingOfOrderParamNames);
 		WEB_PARAM_NAMES.put(orderSubmitOfOrder, orderSubmitOfOrderParamNames);
 		WEB_PARAM_NAMES.put(infoOfReport, infoOfReportParamNames);
+		WEB_PARAM_NAMES.put(orderFilingOfReport, orderFilingOfReportParamNames);
 	}
 	/**
 	 * @todo   展示订单分配页
@@ -220,16 +234,9 @@ public class OrderProcessController extends BaseProjectController{
 	public void CompanyHisListJson(){
 		String companyId = getPara("company_id");
 		CreditCompanyHis model =  getModel(CreditCompanyHis.class);
-		List<CreditCompanyHis> rows = model.find("select * from credit_company_his where company_id="+companyId);
-		renderJson(new CompanyHisResultType(rows.size(), rows));
-	}
-	class CompanyHisResultType{
-		Integer total;
-		List<CreditCompanyHis> rows;
-		CompanyHisResultType(Integer total,List<CreditCompanyHis> rows){
-			this.total = total;
-			this.rows = rows;
-		}
+		List<CreditCompanyHis> rows = model.find("select * from credit_company_his where company_id="+companyId+" and del_flag=0");
+		CompanyHisResultType c = new CompanyHisResultType(rows.size(), rows);
+		renderJson(c);
 	}
 	/**
 	 * @todo   展示报告管理下的信息录入的填报详情页
@@ -262,10 +269,10 @@ public class OrderProcessController extends BaseProjectController{
 		List<Object> keywords = new LinkedList<>();
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
 		for (Object  columnName: WEB_PARAM_NAMES.get(searchType)) {
-			if(StringUtil.isEmpty((String) model.get((String) columnName))){
+			if(StringUtil.isEmpty((String) getPara((String) columnName))){
 				keywords.add("");
 			}else{
-				keywords.add((String) model.get((String) columnName));
+				keywords.add((String) getPara((String) columnName));
 			}
 		}
 		//分页查询
@@ -394,7 +401,10 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		int totalRow = pager.getTotalRow();
-		ResultType resultType = new ResultType(totalRow,rows);
+		//若时搜索按钮
+		ResultType resultType = new ResultType();
+		resultType = new ResultType(totalRow,rows);
+		
 		renderJson(resultType);
 	}
 	
@@ -491,10 +501,12 @@ public class OrderProcessController extends BaseProjectController{
 		fileModel.set("business_id",orderId);
 		int size = upFileList.size();
 		if(size>0){
-			long now = new Date().getTime();
+			//long now = new Date().getTime();
+			String now = UUID.randomUUID().toString().replaceAll("-", "");
 			//上传的文件在ftp服务器按日期分目录
 			String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);
 			try {
+				List<String> pdfNameList = new LinkedList<>();
 				for(UploadFile uploadFile:upFileList){
 					//获取真实文件名
 					String originalFile = uploadFile.getOriginalFileName();
@@ -508,8 +520,26 @@ public class OrderProcessController extends BaseProjectController{
 					if(uploadFile.getFile().length()>maxPostSize){
 						return new ResultType(0, originalFile+" 必须小于5兆!");
 					}
-					files.add(uploadFile.getFile());
+					String originalFileName = FileTypeUtils.getName(uploadFile.getFile().getName());
+					String FTPfileName = now+"."+ext;
+					String fileName = originalFileName + now;
+					String pdf_FTPfileName = "";
+					FileUpLoadController fuc = new FileUpLoadController();
+					File pdf = null;
+					//如果上传文档不是pdf或者图片则转化为pdf，以作预览
+					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){
+						pdf = fuc.toPdf(uploadFile);
+						pdf_FTPfileName += now+"."+"pdf";
+						files.add(uploadFile.getFile());
+					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
+						pdf_FTPfileName = FTPfileName;
+					}
+					pdfNameList.add(pdf_FTPfileName);
+					pdf.delete();
+					
 				}
+			
+				//将文件上传到服务器
 				boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",files,storePath,ip,port,userName,password);
 				if(!storeFile){
 					return new ResultType(0, "文件上传异常!");
@@ -517,21 +547,26 @@ public class OrderProcessController extends BaseProjectController{
 				//String ftpName=name+now+"."+type;
 				
 				//将文件信息保存到实体类
-				for (UploadFile uploadFile:upFileList) {
+				for (int i=0;i<upFileList.size();i++) {
 					//获取真实文件名
-					String originalFile = uploadFile.getOriginalFileName();
+					String originalFile = upFileList.get(i).getOriginalFileName();
 					//不带后缀的文件名
 					String originalFileName = FileTypeUtils.getName(originalFile);
 					//根据文件后缀名判断文件类型
 					String ext = FileTypeUtils.getFileType(originalFile);
 					//上传到服务器时的文件名
 					String FTPfileName = originalFileName + now + "." + ext;
+					//String pdfFactpath=storePath+"/"+pdf_FTPfileName;
 					if(storeFile){
+						/*if(pdf!=null){
+							pdf.delete();
+						}*/
 						String factpath = storePath + "/" + FTPfileName;
-						String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
+						String ftpFactpath = storePath + "/" + pdfNameList.get(i);
+						//String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
 						Integer userid = getSessionUser().getUserid();
 						//将上传信息维护进实体表
-						UploadFileService.service.save(0,uploadFile, factpath,url,fileModel,originalFileName+now,userid);
+						UploadFileService.service.save(0,upFileList.get(i), factpath,factpath,ftpFactpath,ftpFactpath,fileModel,originalFileName+now,userid);
 					}else{
 						return new ResultType(0, "实体保存异常!");
 					}
@@ -570,19 +605,37 @@ public class OrderProcessController extends BaseProjectController{
 	public void ReportedSave(){
 		try {
 		//从前台数据
-		String companyHistoryJson = (String) getRequest().getParameter("companyHistory");
-		String companyZhuCeJson = (String) getRequest().getParameter("companyZhuCe");
+		String companyHistoryJson = getPara("companyHistory");
+		String companyZhuCeJson = getPara("companyZhuCe");
+		String companyId = getPara("companyId");
+		CreditCompanyHis modelCCH = getModel(CreditCompanyHis.class); 
+		final List<CreditCompanyHis> modelCCHList = modelCCH.find("select * from credit_company_his where company_id = "+companyId);
+
 		//转化为model集合
-		List<BaseProjectModel>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
+		final List<BaseProjectModel>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
 		List<BaseProjectModel> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
-		//历史变更记录保存
-		for (BaseProjectModel<? extends CreditCompanyHis>  baseProjectModel : companyHistoryModelList) {
-			baseProjectModel.remove("id")
-			.set("create_by",getSessionUser().getUserid())
-			.set("create_date", getNow())
-			.set("company_id", (String) getRequest().getParameter("companyId"))
-			.save();
-		}
+		
+		Db.tx(new IAtom(){
+			@Override
+			//在这里写要执行的操作，在执行的过程中如果有异常将回滚，如果return false 就也回滚
+			public boolean run() throws SQLException {
+				//保存前删除已有的记录
+				for (CreditCompanyHis baseProjectModel : modelCCHList) {
+					baseProjectModel.set("del_flag", "1");
+					baseProjectModel.update();
+				}
+				//历史变更记录保存
+				for (BaseProjectModel<? extends CreditCompanyHis>  baseProjectModel : companyHistoryModelList) {
+						baseProjectModel.remove("id")
+						.set("create_by",getSessionUser().getUserid())
+						.set("create_date", getNow())
+						.set("company_id", (String) getRequest().getParameter("companyId"))
+						.save();
+				}
+				return true;
+			}
+		});
+	
 		//公司基本信息更新
 		for (BaseProjectModel<? extends CreditCompanyInfo> baseProjectModel : companyZhuCeJsonModelList) {
 			baseProjectModel.update();
@@ -599,7 +652,7 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	
 	/**
-	 * 把json数组分解放进model里 形如[{"a":b,"a1":b1},{"c":d,"a1":b1},{"e":f,"a1":b1}]
+	 * 把 形如[{"a":b,"a1":b1},{"c":d,"a1":b1},{"e":f,"a1":b1}]的json数组分解放进model里
 	 * @param <T>
 	 * @param jsonStr
 	 * @param model
@@ -639,9 +692,9 @@ public class OrderProcessController extends BaseProjectController{
 				for (String key : map.keySet()) {
 					System.out.println(key+":"+map.get(key));
 					model.set(key.trim(), map.get(key).trim());
-					model.set("update_by", getSessionUser().getUserid());
-					model.set("update_date", getNow());
 				}
+				model.set("update_by", getSessionUser().getUserid());
+				model.set("update_date", getNow());
 				list.add(model);
 				map.clear();
 			}
