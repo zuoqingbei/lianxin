@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
@@ -361,9 +363,14 @@ public class OrderProcessController extends BaseProjectController{
 		if(searchType.equals(orderFilingOfOrder)){//若是搜索类型是订单查档
 			for (CreditOrderInfo creditOrderInfo : rows) {
 				//查询代理类型
-				String seleteStr = TemplateAgentService.templateagentservice.getAgentIdString();
+				String seleteStr = TemplateAgentService.templateagentservice.getAgentIdString(creditOrderInfo.get("agent_id"));
 				creditOrderInfo.put("seleteAgentStr",seleteStr);
-				
+				Object object = creditOrderInfo.get("agent_id");
+				Object object2 = creditOrderInfo.get("agent_category");
+				if(object2!=null){
+					String seleteAgentCateStr = TemplateAgentService.templateagentservice.getAgentCateString(creditOrderInfo.get("agent_id"),creditOrderInfo.get("agent_category"));
+					creditOrderInfo.put("seleteAgentCateStr",seleteAgentCateStr);
+				}
 			}
 		}
 		int totalRow = pager.getTotalRow();

@@ -312,13 +312,13 @@
                                 <div class="input-group col-md-6 align-items-center">
                                     <label class="control-label col-md-4 text-right">代理ID：</label>
                                     <select name="" id="agency_id" class="form-control  col-md-6" onchange="agentchange()">
-                                       
+                                       <option value="-1">--请选择--</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-6 align-items-center mt-3">
                                     <label class="control-label col-md-4 text-right">代理类别：</label>
                                     <select name="attr.agentcategory" id="agent_category" valid="vselect" validname="代理类别" class="form-control  col-md-6">
-                                        
+                                        <option value="-1">--请选择--</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-6 align-items-center" id="mail">
@@ -345,14 +345,13 @@
 <<script type="text/javascript">
 function agentchange(){
 		var value=$("#agency_id").find("option:selected").val();
-		$("#agency_id option:first").attr("disabled","disabled");
 		var html="";
 		 html+="<option value='' selected='selected'>请选择</option>"
 	 	$.post('/credit/front/orderProcess/getAgentCategory',{"agentid":value},function(data){
 	 		
 	 	console.log(data)
 	  for(item in data){
-		html+="<option  m-type='"+data[item].id+"' value='"+data[item].agent_category+"'>"+data[item].categoryName+"</option>";	        	
+	 	html+="<option  m-type='"+data[item].id+"' value='"+data[item].agent_category+"'>"+data[item].categoryName+"</option>";
         }
         
         $("select[name='attr.agentcategory']").html(html);

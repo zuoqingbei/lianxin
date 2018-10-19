@@ -706,6 +706,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" s5.detail_name AS reportLanguage, ");
 			selectSql.append(" s6.detail_name AS speed, ");
 			selectSql.append(" s7.detail_name AS statusName, ");
+			selectSql.append(" s8.detail_name AS agentcategoryName, ");
 			selectSql.append(" n.name AS companyZHNames, ");
 			selectSql.append(" n.name_en AS companyNames, ");
 			selectSql.append(" u1.realname AS reportUser,");
@@ -726,6 +727,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
 			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
+			//代理类别
+			fromSql.append(" LEFT JOIN sys_dict_detail s8 ON c.agent_category = s8.detail_id ");//地区
 			//获取文件信息
 			fromSql.append(" LEFT JOIN credit_upload_file u5 ON u5.business_type = c.status and u5.business_id = c.num ");//文件表关联
 			
