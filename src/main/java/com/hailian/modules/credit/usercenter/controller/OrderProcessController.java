@@ -614,7 +614,7 @@ public class OrderProcessController extends BaseProjectController{
 		//转化为model集合
 		final List<BaseProjectModel>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
 		List<BaseProjectModel> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
-		
+		//数据库事务
 		Db.tx(new IAtom(){
 			@Override
 			//在这里写要执行的操作，在执行的过程中如果有异常将回滚，如果return false 就也回滚
