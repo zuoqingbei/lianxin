@@ -137,11 +137,11 @@ public class HttpTest {
         try {
             CloseableHttpResponse response = httpClient.execute(get, context);
             try{
-                System.out.println(">>>>>>headers:");
+              /*  System.out.println(">>>>>>headers:");
                 Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
                 System.out.println(">>>>>>cookies:");
                 context.getCookieStore().getCookies().forEach(System.out::println);
-                cookieStore = (context.getCookieStore());
+                cookieStore = (context.getCookieStore());*/
             }
             finally {
                 response.close();
