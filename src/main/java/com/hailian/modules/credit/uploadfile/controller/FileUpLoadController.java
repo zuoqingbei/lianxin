@@ -79,7 +79,7 @@ public class FileUpLoadController extends BaseProjectController {
 					ftpfileList.add(uploadFile.getFile());
 					File pdf=null;
 					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
-						pdf = toPdf(uploadFile);
+						pdf = Office2PDF.toPdf(uploadFile);
 						pdf_FTPfileName=now+"."+"pdf";
 						ftpfileList.add(pdf);
 					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
@@ -228,13 +228,5 @@ public class FileUpLoadController extends BaseProjectController {
 		UploadFileService.service.delete(id,userid);//记录上传信息
 		list();
 	}
-	public File toPdf(UploadFile uploadFile) throws Exception{
-		TbSite site = getBackSite();
-		String projectStorePath = FileUploadUtils.getUploadPath(site, "view");
-		String now=DateUtils.getNow(DateUtils.YMDHMS);
-		String type = FileTypeUtils.getFileType(uploadFile.getFileName());
-		String name = FileTypeUtils.getName(uploadFile.getFileName());
-		File convertFileToPdf = Office2PDF.convertFileToPdf(uploadFile.getFile(),name,type, projectStorePath);
-		return convertFileToPdf;
-	}
+	
 }
