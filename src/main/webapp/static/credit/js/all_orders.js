@@ -79,6 +79,7 @@ let Index = {
 
     },
     popperFilter(){
+    	let that=this;
         /**筛选图标事件 */
         var referenceElement = document.querySelector(".fa-filter");
         var onPopper = document.querySelector(".deal-state");
@@ -117,11 +118,30 @@ let Index = {
         })
     },
     searchEvent(){
-
+		let that=this;
         $("#btn_query").click(function(){
-        	
+        	that.checked=[];
+			 that.checkchar="";
+	     	$("input[name='status']:checked").each(function(i){
+	           that.checked[i] = $(this).val();
+	           that.checkchar+=that.checked[i]+","
+	     	});
         	/**发起ajax请求  获取表格数据*/
-           	loadtable();
+           $("#table").bootstrapTable("refresh",{
+				query:{
+					pageNo: that.paramsObj.pageNumber,//页码
+                  recordsperpage:  that.paramsObj.pageSize,//每页多少条
+                  sortName: that.paramsObj.sortName,
+                  sortOrder: that.paramsObj.sortOrder,
+                  custom_id:$("#custom_id").find("option:selected").val(),
+                  country:$("#country").find("option:selected").val(),
+    			  end_date:$("#dead_date").val(),
+    			  agent_id:$("#agentId").find("option:selected").val(),
+    			  company_by_report:$("#txt_search_departmentname").val(),
+    			  right_company_name_en:$("#txt_search_companyEngName").val(),
+    			  status:that.checkchar
+				}
+			});
 		        		
             let companyName = $("#txt_search_departmentname").val();//公司名称
             let orderCName = $("#txt_search_companyEngName").val();//订单公司名称
@@ -152,8 +172,14 @@ let Index = {
         })
     },
     initTable(){
+    	let _this = this;
+    	 this.checked=[];
+		 this.checkchar="";
+     	$("input[name='status']:checked").each(function(i){
+           _this.checked[i] = $(this).val();
+           _this.checkchar+=_this.checked[i]+","
+     	});
         const $table = $('#table');
-        let _this = this
         $table.bootstrapTable({
             height: $(".table-content").height()*0.7,
             columns: [
@@ -295,12 +321,12 @@ let Index = {
             sidePagination: 'server',
             pageNumber:1,
             pageSize:10,
-            pageList: [5,10 , 20],
+            pageList: [10 , 20],
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
-//            fixedColumns: true,
-//            fixedNumber: 1,
+            fixedColumns: true,
+            fixedNumber: 1,
             queryParamsType:'',
             sortable: true,                     //是否启用排序
             sortOrder: "desc",
@@ -308,11 +334,19 @@ let Index = {
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
             	console.log(params);
+            	_this.paramsObj = params
               return {//这里的params是table提供的  
                   pageNo: params.pageNumber,//页码
                   recordsperpage: params.pageSize,//每页多少条
                   sortName:params.sortName,
-                  sortOrder:params.sortOrder
+                  sortOrder:params.sortOrder,
+                  custom_id:$("#txt_search_cus").find("option:selected").val(),
+                  country:$("#txt_search_country").find("option:selected").val(),
+    			  end_date:$("#txt_search_date").val(),
+    			  agent_id:$("#txt_search_agency").find("option:selected").val(),
+    			  company_by_report:$("#txt_search_departmentname").val(),
+    			  right_company_name_en:$("#txt_search_companyEngName").val(),
+    			  status:_this.checkchar
               };  
             },
         });
