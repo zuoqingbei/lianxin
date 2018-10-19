@@ -656,11 +656,15 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			params.add(right_company_name_en);
 		}
 		if (StringUtils.isNotBlank(status)) {
-			sql.append(" and t.status in(?)");
-			params.add(status);
+			sql.append(" and t.status in(");
+			String[] s=status.split(",");
+			for(String id:s) {
+				sql.append(id);
+				sql.append(",");
+			}
+			sql.deleteCharAt(sql.length()-1);
+			sql.append(")");
 		}
-		sql.append("and t.status =?");
-		params.add(statu);
 		return Db.queryNumber("select count(*) "+sql.toString(),params.toArray()).intValue();
 	}
 	
