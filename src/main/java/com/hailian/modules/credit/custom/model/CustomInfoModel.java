@@ -58,6 +58,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 		sql.append(" left join sys_dict_detail t3 on t.is_old_customer=t3.detail_id ");
 		sql.append(" left join credit_company_info t4 on t.company_id=t4.id ");
 		sql.append(" left join sys_dict_detail t5 on t.country=t5.detail_id ");
+		sql.append(" left join sys_dict_detail t6 on t.is_arrearage=t6.detail_id ");
 		sql.append(" where 1=1 and t.del_flag=0 ");
 
 		if(!c.isAdmin(c.getSessionUser())){
@@ -91,7 +92,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 			sql.append(" order by ").append(orderBy);
 		}
 		Page<CustomInfoModel> page = CustomInfoModel.dao
-				.paginate(paginator, "select t.*,t2.detail_name as usableName,t3.detail_name as isOldCusName,t4.name as companyName,t5.detail_name as countryName ", sql.toString(),params.toArray());
+				.paginate(paginator, "select t.*,t2.detail_name as usableName,t3.detail_name as isOldCusName,t4.name as companyName,t5.detail_name as countryName,t6.detail_name as is_arrearage ", sql.toString(),params.toArray());
 		System.out.println(sql);
 		return page;
 	}
