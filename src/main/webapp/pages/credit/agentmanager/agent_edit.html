@@ -102,10 +102,22 @@ var oper = {
    },
 	countryList:function(){
 		var html="";
+		var countrys=${countrys}
+		console.log(countrys)
 		$.get("/credit/country/getCountrySelect",function(data){
-			console.log(data);
 			for(item in data){
-				html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>"
+				var flag=1;
+				for(item2 in countrys){
+					if(data[item].id==countrys[item2].id){
+						console.log("itemid:"+data[item].id+","+"item2id:"+countrys[item2].id)
+						flag=2
+						html+="<option selected='selected'  value='"+data[item].id+"'>"+data[item].name+"</option>"
+						break;
+					}
+				}
+				if(flag==1){
+					html+="<option   value='"+data[item].id+"'>"+data[item].name+"</option>"
+				}
 			}
 			$("#country").html(html)
 		})
@@ -266,6 +278,7 @@ var bodyContent = {
 			<td>国家</td>
 			<td>
 				<select id="country"  name="country"  class="form-control" multiple="multiple" style="width: 200px;">
+				
 				</select>
 			</td>
 		</tr>
