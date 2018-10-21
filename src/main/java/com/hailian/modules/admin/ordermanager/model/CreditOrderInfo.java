@@ -656,11 +656,15 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			params.add(right_company_name_en);
 		}
 		if (StringUtils.isNotBlank(status)) {
-			sql.append(" and t.status in(?)");
-			params.add(status);
+			sql.append(" and t.status in(");
+			String[] s=status.split(",");
+			for(String id:s) {
+				sql.append(id);
+				sql.append(",");
+			}
+			sql.deleteCharAt(sql.length()-1);
+			sql.append(")");
 		}
-		sql.append("and t.status =?");
-		params.add(statu);
 		return Db.queryNumber("select count(*) "+sql.toString(),params.toArray()).intValue();
 	}
 	
@@ -706,6 +710,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" s5.detail_name AS reportLanguage, ");
 			selectSql.append(" s6.detail_name AS speed, ");
 			selectSql.append(" s7.detail_name AS statusName, ");
+			selectSql.append(" s8.detail_name AS agentcategoryName, ");
 			selectSql.append(" n.name AS companyZHNames, ");
 			selectSql.append(" n.name_en AS companyNames, ");
 			selectSql.append(" u1.realname AS reportUser,");
@@ -726,6 +731,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
 			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
+			//代理类别
+			fromSql.append(" LEFT JOIN sys_dict_detail s8 ON c.agent_category = s8.detail_id ");//地区
 			//获取文件信息
 			fromSql.append(" LEFT JOIN credit_upload_file u5 ON u5.business_type = c.status and u5.business_id = c.num ");//文件表关联
 			fromSql.append(" where c.del_flag = 0 ");
@@ -744,8 +751,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				break;
 			case OrderProcessController.orderFilingOfOrder:
 				//订单查档(国外) ,其维护在字典表中 中国大陆代码106
-				//294为信息录入完成
-				fromSql.append(" and status in('294') and c.country!='106' ");
+				//294为信息录入完成,295代理中
+				fromSql.append(" and status in('294','295') and c.country!='106' ");
 				break;
 			case OrderProcessController.orderSubmitOfOrder:
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
@@ -754,8 +761,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				break;
 			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
-				//291为订单分配,293为信息录入
-				fromSql.append(" and status in ('291','293') ");
+				//291为订单分配,293为信息录入，292客户确认
+				fromSql.append(" and status in ('291','292') ");
 				//权限归属:报告员,分析员,翻译员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.translate_user= "+userId+")");
 				break;
@@ -769,7 +776,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.orderFilingOfReport:
 				//状态为订单查档(国内) ,其维护在字典表中
 				//294为信息录入完成
-				fromSql.append(" and status in ('294') and c.country='106'");
+				fromSql.append(" and status in ('294','295') and c.country='106'");
 				//权限归属:质检员
 				authority.append(" and (c.IQC= "+userId+")");
 				break;	

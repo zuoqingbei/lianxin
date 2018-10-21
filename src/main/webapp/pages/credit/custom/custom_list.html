@@ -40,6 +40,16 @@
 					form1.action = url;
 					form1.submit();
 				});
+			},
+			pay : function(id) {
+				var url = 'credit/custom/pay/'+id;
+				var title = '充值 ';
+				Iframe(url, this.width, this.height, title);
+			},
+			charge : function(id) {
+				var url = 'credit/custom/charge/'+id;
+				var title = '扣款';
+				Iframe(url, this.width, this.height, title);
 			}
 		};
 		//显示Menu索引
@@ -96,10 +106,13 @@ var bodyContent = {
 					<th name="t.telphone" class="sorting">电话</th> 
 					<th name="t.email" class="sorting">邮箱</th> 
 					<th name="t.fax" class="sorting">传真</th>
+					<th name="t.account_count" class="sorting">当前账户点数</th>
+					<th name="t.money_updatetime" class="sorting">金额更新时间</th>
+					<th name="t.is_arrearage" class="sorting">是否可以欠费</th>
 					<th name="t5.name" class="sorting">所属国家(地区)</th>  
 					<th name="t.usabled" class="sorting">是否可用</th> 
 					<th name="t.is_old_customer" class="sorting">是否为老用户</th> 
- 					<th>操作</th>
+ 					<th width="300px" style="text-align: center;">操作</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -128,6 +141,9 @@ var bodyContent = {
 					${item.email} <% } %>
 					</td>
 					<td>${item.fax}</td>
+					<td>${item.account_count}</td>
+					<td>${item.money_updatetime}</td>
+					<td>${item.is_arrearage}</td>
 					<td>${item.countryName}</td>
 					<td>${item.usableName}</td>
 					<td>${item.isOldCusName}</td>
@@ -135,6 +151,11 @@ var bodyContent = {
 				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.pay(${item.id});">充值</a> 
+				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.charge(${item.id});">扣款</a> 
+				
+				
+				
 				</td>
 				</tr>
 			<% } %>

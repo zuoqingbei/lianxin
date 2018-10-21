@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.jsoup.helper.StringUtil;
+
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
@@ -20,6 +23,7 @@ import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
 import com.hailian.modules.credit.province.model.ProvinceModel;
+import com.jfinal.json.Json;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -55,6 +59,20 @@ public class AgentController extends BaseProjectController {
 		}
 		Page<AgentModel> pager = AgentService.service.getAgent(pageNumber, pageSize, orderBy, getPara("keyWord"),
 				searchType, this);
+		
+		for(AgentModel agent:pager.getList()) {
+			String country="";
+			Object cid=agent.get("country");
+			if(cid==null) {
+				continue;
+			}
+			List<CountryModel> list=CountryModel.dao.findByIds(cid.toString());
+			for(CountryModel cm:list) {
+				country+=cm.get("name").toString()+",";
+			}
+			country=country.substring(0, country.length()-1);
+			agent.set("country", country);
+		}
 		setAttr("page", pager);
 		setAttr("attr", attr);
 		render(path + "list.html");
@@ -91,7 +109,11 @@ public class AgentController extends BaseProjectController {
 	public void edit() {
 		Integer para = getParaToInt();
 		AgentModel model = AgentModel.dao.findById(para);
-		
+		List<CountryModel> countrys=null;
+		Object cid=model.get("country");
+		if(cid!=null) {
+		countrys=CountryModel.dao.findByIds(cid.toString());		
+		}
 		String pid=model.get("province");
 		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
 		List<AgentCategoryModel> agentCategoryList = AgentCategoryModel.dao.findAll(para+"");
@@ -106,6 +128,7 @@ public class AgentController extends BaseProjectController {
 		}
 		model.put("agentCategoryList", catelist);
 		setAttr("model", model);
+		setAttr("countrys", Json.getJson().toJson(countrys));
 		setAttr("agentCategoryList", agentCategoryList);
 		setAttr("province", province);
 		
@@ -128,8 +151,11 @@ public class AgentController extends BaseProjectController {
 	public void save() {
 		Integer id = getParaToInt("agent_id");
 		String[] category = getParaValues("agent_category");
-		
+		String country=StringUtils.join(getParaValues("country"), ",");
 		AgentModel model = getModel(AgentModel.class);
+		if(!StringUtil.isBlank(country)) {
+		model.set("country", country);
+		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		//		model.set("agent_id", id);
@@ -199,7 +225,19 @@ public class AgentController extends BaseProjectController {
 	public void view() {
 		Integer id = getParaToInt();
 		AgentModel model = AgentService.service.getOne(id, null);
+		List<CountryModel> countrys=null;
+		String cn="";
+		Object cid=model.get("country");
+		if(cid!=null) {
+		countrys=CountryModel.dao.findByIds(cid.toString());
+		for(CountryModel cm:countrys) {
+			cn+=cm.get("name")+",";
+		}
+		cn=cn.substring(0,cn.length()-1);
+		}
+		
 		setAttr("model", model);
+		setAttr("countrys", cn);
 		render(path + "view.html");
 	}
 

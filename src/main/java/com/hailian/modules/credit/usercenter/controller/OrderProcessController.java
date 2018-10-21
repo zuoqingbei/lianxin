@@ -2,13 +2,11 @@ package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import org.apache.commons.lang3.StringUtils;
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
@@ -24,7 +22,6 @@ import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.company.model.CompanyModel;
-import com.hailian.modules.credit.uploadfile.controller.FileUpLoadController;
 import com.hailian.modules.credit.usercenter.model.CompanyHisResultType;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
@@ -248,6 +245,7 @@ public class OrderProcessController extends BaseProjectController{
 	public void showReportedBasicInfo(){
 		render(REPORT_MANAGE_PATH+"reported_basic_info.html");
 	}
+	
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
 		int pageNumber = getParaToInt("pageNumber",1);
@@ -273,7 +271,7 @@ public class OrderProcessController extends BaseProjectController{
 			if(StringUtil.isEmpty((String) getPara((String) columnName))){
 				keywords.add("");
 			}else{
-				keywords.add((String) getPara((String) columnName));
+				keywords.add((String) getPara((String) columnName).trim());
 			}
 		}
 		//分页查询
@@ -291,6 +289,10 @@ public class OrderProcessController extends BaseProjectController{
 			Integer orderId = page.get("id");
 			String status = page.get("status");
 			List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"", status, this);
+			for (CreditUploadFileModel creditUploadFileModel : files) {
+				creditUploadFileModel.set("view_url","http://"+ ip+"/"+creditUploadFileModel.get("view_url"));
+				creditUploadFileModel.set("url","http://"+ ip+"/"+creditUploadFileModel.get("url"));
+			}
 			page.put("files",files);
 		}
 		return pager;
@@ -393,12 +395,17 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		//若是搜索类型是订单查档做特殊处理
-		if(searchType.equals(orderFilingOfOrder)){
+		if(searchType.equals(orderFilingOfOrder)||searchType.equals(orderFilingOfReport)){
 			for (CreditOrderInfo creditOrderInfo : rows) {
 				//查询代理类型
-				String seleteStr = TemplateAgentService.templateagentservice.getAgentIdString();
+				String seleteStr = TemplateAgentService.templateagentservice.getAgentIdString(creditOrderInfo.get("agent_id"));
 				creditOrderInfo.put("seleteAgentStr",seleteStr);
-				
+				Object object = creditOrderInfo.get("agent_id");
+				Object object2 = creditOrderInfo.get("agent_category");
+				if(object2!=null){
+					String seleteAgentCateStr = TemplateAgentService.templateagentservice.getAgentCateString(creditOrderInfo.get("agent_id"),creditOrderInfo.get("agent_category"));
+					creditOrderInfo.put("seleteAgentCateStr",seleteAgentCateStr);
+				}
 			}
 		}
 		int totalRow = pager.getTotalRow();

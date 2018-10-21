@@ -17,7 +17,7 @@
 		    	<div class="main-header">
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="javascript:;">订单管理</a>
+                            <a href="javascript:;">报告管理</a>
                         </li>
                         <li class="breadcrumb-item active">
                             <a>订单查档</a>
@@ -312,13 +312,13 @@
                                 <div class="input-group col-md-6 align-items-center">
                                     <label class="control-label col-md-4 text-right">代理ID：</label>
                                     <select name="" id="agency_id" class="form-control  col-md-6" onchange="agentchange()">
-                                       
+                                       <option value="-1">请选择</option>
                                     </select>
                                 </div>
                                 <div class="input-group col-md-6 align-items-center mt-3">
                                     <label class="control-label col-md-4 text-right">代理类别：</label>
                                     <select name="attr.agentcategory" id="agent_category" valid="vselect" validname="代理类别" class="form-control  col-md-6">
-                                        
+                                        <option value="-1">请选择</option>
                                     </select>
                                 </div>
                             </div>
@@ -336,9 +336,8 @@
 <<script type="text/javascript">
 function agentchange(){
 		var value=$("#agency_id").find("option:selected").val();
-		$("#agency_id option:first").attr("disabled","disabled");
 		var html="";
-		 html+="<option value='' selected='selected'>请选择</option>"
+		 html+="<option value='-1' selected='selected'>请选择</option>"
 	 	$.post('/credit/front/orderProcess/getAgentCategory',{"agentid":value},function(data){
 	 		
 	 	console.log(data)
@@ -351,4 +350,4 @@ function agentchange(){
  })
 	}
 </script>
- <script src="${BASE_PATH }static/credit/js/order_manage/order_filing.js"></script>
+ <script src="${BASE_PATH }static/credit/js/report_js/report_order_filing.js"></script>

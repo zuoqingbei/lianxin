@@ -123,7 +123,7 @@ let BasicWrite = {
    	   			data:"companyHistory="+(JSON.stringify($("#tableRecord").bootstrapTable('getData'))//公司历史数据
    	   					+"&companyZhuCe=["+JSON.stringify(getFormData($("#meForm")))+"]"//公司注册信息数据
    	   					+"&companyId="+row.company_id//公司id
-   	   					//+"&statusCode="+293//信息录入状态码
+   	   					+"&statusCode="+293//
    	   					+"&model.id="+row.id//订单id
    	   					/*+"&"+$("#meForm").serialize()*/),
    	   			dataType:"json",

@@ -62,7 +62,7 @@ let Verify = {
         })
         
         $("#modal_submit").click(function(){
-        	$("#status").val("29");
+        	$("#status").val("500");
             let remarks = $("#remarks").val();
             let id = $("#orderId").val();
             //console.log(reporter,remarks);

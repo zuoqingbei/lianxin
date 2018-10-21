@@ -3,15 +3,42 @@
 <% var agenttype = tempDict.getSysDictDetailString2('agenttype',model.agent_type ); %>
 <% var speed = tempDict.getSysDictDetailString2('agentspeed',model.speed ); %>
 <% var agent_category = tempDict.getSysDictDetailCheckboxString('agentcategory',model.agentCategoryList,'9' ); %>
+<% var country = country.getCountryString(); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
 	include("/pages/template/head.html"){}
 	include("/pages/includes/my97.html"){}
 %>
+<link href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/select2.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.8.0/popper.es5.min.js"></script> 
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap-select.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/defaults-zh_CN.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/select2.js"></script>
 <script type="text/javascript">
 var oper = {
 	save:function(id){
+		var value=$("#countryout").attr("class").trim();
+		var value1=$("#countryin").attr("class").trim();
+		console.log("value:"+value+","+"value1:"+value1)
+		if(value=="countryout"){
+			
+			$("#country").removeAttr("valid")
+		}else{
+			$("#country").attr("valid","vtext")
+		}
+		if(value1=="countryout"){
+			
+			$("#sandbar").removeAttr("valid")
+		}else{
+			$("#sandbar").attr("valid","vtext")
+		}
+		var value3=$("#country").select2({
+	        tags: true
+	    }).val();
+		console.log(value3);
 		if(!validForm()) {
 			return false;
 		}
@@ -47,11 +74,14 @@ var oper = {
 	   	 var agent = document.getElementById("agent");
 	   	 var value=$("#agent").find("option:selected").text();
 	   	 if(value=='国外'){
-	   		 $(".table tbody tr:last").hide()
+	   		 $("#countryin").addClass("countryout")
 	   		 $("#sandbar").removeAttr("valid")
+	   		 $("#countryout").removeClass("countryout")
+	   		 oper.countryList();
 	   	 }else if(value=='国内'){
-	   		$(".table tbody tr:last").show()
+	   		$("#countryin").removeClass("countryout")
 	   		$("#sandbar").attr("valid","vselect")
+	   		$("#countryout").addClass("countryout")
 	   	 }
 	   },
    //省份发生变化
@@ -69,11 +99,37 @@ var oper = {
    	//默认选择第一个国家
    	 //$("select[name='model.city'] option:first").attr('selected','selected')
    	
-   }
+   },
+	countryList:function(){
+		var html="";
+		var countrys=${countrys}
+		console.log(countrys)
+		$.get("/credit/country/getCountrySelect",function(data){
+			for(item in data){
+				var flag=1;
+				for(item2 in countrys){
+					if(data[item].id==countrys[item2].id){
+						console.log("itemid:"+data[item].id+","+"item2id:"+countrys[item2].id)
+						flag=2
+						html+="<option selected='selected'  value='"+data[item].id+"'>"+data[item].name+"</option>"
+						break;
+					}
+				}
+				if(flag==1){
+					html+="<option   value='"+data[item].id+"'>"+data[item].name+"</option>"
+				}
+			}
+			$("#country").html(html)
+		})
+		
+	}
 	 
 };
 $(function(){
 	oper.agentChange();
+	$("#country").select2({
+        tags: true
+    });
 })	
 </script>
 <style>
@@ -106,6 +162,9 @@ $(function(){
 	font-size: 12px;
 	z-index: 10000;
 }
+.countryout{
+	display:none;
+}
 </style>
 
 <%
@@ -117,7 +176,6 @@ var bodyContent = {
 	<!-- 数据列表 -->
 	<table class="table">
 	<tr>
-	<tr>
 			<td>代理类型</td>
 			 <td><select id="agent" name="model.agent_type" class="form-control" style="width: 200px;" onchange="oper.agentChange()" style="width: 200px;">
 					${agenttype!}
@@ -125,7 +183,6 @@ var bodyContent = {
 			</td>
 			
 		</tr>		
-		</tr>
 		
 		<tr>
 			<td>代理名称</td>
@@ -183,10 +240,10 @@ var bodyContent = {
 			${agent_category!}
 			</td>
 		</tr>
-		<tr>
+		<tr id="countryin" class="">
 			<td>省份</td>
 						<td>
-						<select id="sandbar" name="model.province" class="form-control"   valid="vselect" validname="省份" onchange="oper.sandbarChange()" style="width: 200px;">
+						<select id="sandbar" name="model.province" class="form-control"   valid="vselect" validname="省份不能为空" onchange="oper.sandbarChange()" style="width: 200px;">
 						<option value="-1" >请选择</option>
 						 <% for(item in province){ %>
 						 	<% if((model.province+"")==(item.pid+"")){ %>
@@ -201,7 +258,7 @@ var bodyContent = {
 				<td>城市</td>
 				<td>
 					<% if(model.city!=null || model.city!="" ){%>
-					<select id="city" name="model.city"  class="form-control" style="width: 200px;" >
+					<select id="city" name="model.city"  class="form-control"  style="width: 200px;" >
 						<option value="-1" >请选择</option>
 						<% for(item in city){ %>
 								 	<% if(model.city==(item.cid+"")){ %>
@@ -217,10 +274,18 @@ var bodyContent = {
 					<%}%>
 				</td>
 		</tr>
+		<tr id="countryout" class="">
+			<td>国家</td>
+			<td>
+				<select id="country"  name="country"  class="form-control" multiple="multiple" style="width: 200px;">
+				
+				</select>
+			</td>
+		</tr>
 		
 		
 		
-</tr>
+
 	</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">

@@ -151,7 +151,7 @@ let Verify = {
         })
         
          $("#modal_save").click(function(){
-        	$("#status").val("500");
+        	$("#status").val("");
         	$(".tableValue").ajaxSubmit({
         		success:function(data){
         			 //提交成功关闭模态窗

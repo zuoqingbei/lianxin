@@ -1,6 +1,7 @@
 <% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled!); %>
 <% var is_old_customer = tempDict.getSysDictDetailString('is_old_customer',model.is_old_customer!);%>
 <% var country = tempDict.getSysDictDetailString('country',model.country!);%>
+<% var isArrearage = tempDict.getSysDictDetailString('isArrearage',model.is_arrearage!); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -123,6 +124,18 @@ var bodyContent = {
 					<td>
 					<select name="model.country" class="form-control" >
 					${country!}
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td>当前账户点数</td>
+					<td>
+					<input class="form-control" type="text" name="model.account_count" value="${model.account_count}" />
+					</td>
+					<td>是否可以欠费</td>
+					<td>
+					<select name="model.is_arrearage" class="form-control" >
+					${isArrearage!}
 					</select>
 					</td>
 				</tr>
