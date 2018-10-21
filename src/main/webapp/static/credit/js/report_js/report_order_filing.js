@@ -139,25 +139,20 @@ let Filing = {
                        	 console.log("此处进入error状态");
                        	Public.message("error",data.message);
                        }
-            			//回显
-            			console.log("提交成功,开始回显:"+data.message);
-            			 $.ajax({
-            				type:"post",
-                			url:"/credit/front/orderProcess/listJson",
-                			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
-                			dataType:"json",
-                			success:function(obj){
-                				console.log("回显的数据:"+obj);
-                			 	$("#table").bootstrapTable("load",obj)
-                			 }
-            			 })
-            			 
-            			console.log("回显完毕");
             			}
-                 	
             		})
-            		
-                 
+               $.ajax({
+               			type:"post",
+                   		url:"/credit/front/orderProcess/listJson",
+                   		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
+                   		dataType:"json",
+                   		success:function(obj){
+                   				//console.log("回显的数据:"+JSON.stringify(obj.rows));
+                   			 	$("#table").bootstrapTable("load",obj);
+                   			 	console.log(obj);
+                   			 console.log("回显成功7777777777777777777777777777777777777777777!");
+                   			 }
+               			})
              })
     	
     },
@@ -199,7 +194,7 @@ let Filing = {
         $(".resetrFilter").click(function(){
           $('.form-check-input:checkbox').removeAttr('checked');
         })
-      },
+      }, 
   
     initTable(){
           /**初始化表格 */
@@ -331,11 +326,11 @@ let Filing = {
             $("#receiver_date2").html(row.receiver_date);
             $("#continent2").html(row.continent);
             $("#country2").html(row.country);
-//            if(row.country=='中国大陆'){
-//   	   		 $("#mail").hide()
-//   	   	 	}else {
-//   	   		$("#mail").show()
-//   	   	 	}
+            if(row.country=='中国大陆'){
+   	   		 $("#mail").hide()
+   	   	 	}else {
+   	   		$("#mail").show()
+   	   	 	}
             $("#reportType2").html(row.reportType);
             $("#orderType2").html(row.orderType);
             $("#reportLanguage2").html(row.reportLanguage);
@@ -404,10 +399,11 @@ let Filing = {
               $table.bootstrapTable('resetView');
             }, 200);
         },
-        operateFormatter(){ /**操作按钮格式化 */
-        return '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter_allocation" style="margin-right:.5rem">代理分配</a>' +
-            '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
-            '<a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter">上传附件</a>'
+        operateFormatter(){
+            /**操作按钮格式化 */
+            return '<a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter_allocation">代理分配</a>' +
+                '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
+                '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter" style="margin-left:.5rem">上传附件</a>'
           }             
 }
 

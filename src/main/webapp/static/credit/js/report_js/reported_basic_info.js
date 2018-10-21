@@ -77,6 +77,7 @@ let BasicWrite = {
             return indexed_array;
         }
         
+      //提交按钮
         $("#submit").on('click','',function(){
    			console.log($("#tableRecord").bootstrapTable('getData'))
    			console.log(JSON.stringify($("#tableRecord").bootstrapTable('getData')).replace("}]",""));//历史变更记录
@@ -84,7 +85,6 @@ let BasicWrite = {
    			console.log(JSON.stringify($("#tableShareholdersDetail").bootstrapTable('getData')));//股东详情
    			console.log(JSON.stringify($("#tableInvestment").bootstrapTable('getData')));//投资情况
    			console.log(JSON.stringify($("#tableManagement").bootstrapTable('getData')));//管理层
-   			//提交按钮
 	   		$.ajax({
 	   			type:"post",
 	   			url:"/credit/front/orderProcess/ReportedSave",
@@ -108,7 +108,7 @@ let BasicWrite = {
 	   		})
    	   	
    		})
-    	
+    	//保存按钮
    		$("#save").on('click','',function(){
    			console.log($("#tableRecord").bootstrapTable('getData'))
    			console.log(JSON.stringify($("#tableRecord").bootstrapTable('getData')).replace("}]",""));//历史变更记录

@@ -739,31 +739,37 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				break;
 			case OrderProcessController.orderVerifyOfOrder:
 				//客户确认(订单核实)状态 ,其维护在字典表中
-				fromSql.append(" and status in ('292','293','291') ");
+				//500为订单核实中
+				fromSql.append(" and status in ('500') ");
 				break;
 			case OrderProcessController.orderFilingOfOrder:
-				//代理分配和订单查档(国外) ,其维护在字典表中 中国大陆代码106
-				fromSql.append(" and status in('295','294') and c.country!='106' ");
+				//订单查档(国外) ,其维护在字典表中 中国大陆代码106
+				//294为信息录入完成
+				fromSql.append(" and status in('294') and c.country!='106' ");
 				break;
 			case OrderProcessController.orderSubmitOfOrder:
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
+				//300为信息质检合格
 				fromSql.append(" and status='300' ");
 				break;
 			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
+				//291为订单分配,293为信息录入
 				fromSql.append(" and status in ('291','293') ");
 				//权限归属:报告员,分析员,翻译员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.translate_user= "+userId+")");
 				break;
 			case OrderProcessController.orderVerifyOfReport:
 				//状态为订单核实 ,其维护在字典表中
-				fromSql.append(" and status in ('291','293') ");
+				//293为信息录入
+				fromSql.append(" and status in ('293') ");
 				//权限归属:报告员,分析员,质检员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")");
 				break;	
 			case OrderProcessController.orderFilingOfReport:
 				//状态为订单查档(国内) ,其维护在字典表中
-				fromSql.append(" and status in ('291','293') ");
+				//294为信息录入完成
+				fromSql.append(" and status in ('294') and c.country='106'");
 				//权限归属:质检员
 				authority.append(" and (c.IQC= "+userId+")");
 				break;	

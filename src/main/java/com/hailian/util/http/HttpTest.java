@@ -18,6 +18,7 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.CompactXmlSerializer;
@@ -52,11 +53,11 @@ public class HttpTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}//开始识别
-		String name = "162";
+		String name = "海尔集团";
 		String verifyCode = result;
 		//HttpClientUtils.sendGet("","");
 		try {
-			String url = URLEncoder.encode("sp=S&sp=S"+name+"&sp=S&sp=Ssearch&sp=S"+verifyCode,"UTF-8");
+			String url = URLEncoder.encode("sp=S&sp=S"+name+"&sp=S&sp=Ssearch&sp=S"+verifyCode,"utf-8");
 			System.out.println(getSource("http://iecms.mofcom.gov.cn/pages/corp/NewCMvCorpInfoTabList.html", url,cookieStore));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -70,15 +71,38 @@ public class HttpTest {
 	public static String getSource(String url,String param,CookieStore cookieStore) {
 	    String html = new String();
 	    HttpGet httpget = new HttpGet(url + "?" + param);     //创建Http请求实例，URL 如：https://cd.lianjia.com/
+	    System.out.println(url+"?"+param);
 	    // 模拟浏览器，避免被服务器拒绝，返回返回403 forbidden的错误信息
+	    
+	    httpget.setHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+	    httpget.setHeader("Accept-Encoding","gzip, deflate");
+	    httpget.setHeader("Accept-Language","zh-CN,zh;q=0.9");
+	    httpget.setHeader("Cache-Control","max-age=0");
+	    httpget.setHeader("Connection","keep-alive");
+	    httpget.setHeader("Content-type","charset=utf-8");
+	    httpget.setHeader("Host","iecms.mofcom.gov.cn");
 	    httpget.setHeader("User-Agent", 
-	    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
-
+	    	    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
+	    httpget.setHeader("Upgrade-Insecure-Requests","");
+	    //httpget.setHeader("Cookie","JSESSIONID=33B15355B17FC235ED70203880B08B3A");
+	    List<Cookie> cList = cookieStore.getCookies();
+	    for (Cookie cookie : cList) {
+			String name = cookie.getName();
+			String value = cookie.getValue();
+			System.out.println(name+":"+value);
+		}
+	    Cookie c = cList.get(0);
+	    
+	    httpget.setHeader("Cookie","JSESSIONID="+c.getValue());
+	    //Cookie: JSESSIONID=839A72094CAFB619207AEC31CDB5D66D
 	    CloseableHttpResponse response = null;
-	    CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
+	    CloseableHttpClient httpclient = HttpClients.createDefault();
+	   //CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
 	    try {
 	        response = httpclient.execute(httpget);
-	        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {     // 返回 200 表示成功
+	        System.out.println(response.getStatusLine().getStatusCode());
+	        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {  
+	        	System.out.println("22222222222222222222222");// 返回 200 表示成功
 	            html = EntityUtils.toString(response.getEntity(), "utf-8");     // 获取服务器响应实体的内容
 	        }
 	    } catch (IOException e) {
@@ -146,11 +170,11 @@ public class HttpTest {
         try {
             CloseableHttpResponse response = httpClient.execute(get, context);
             try{
-              /*  System.out.println(">>>>>>headers:");
+                System.out.println(">>>>>>headers:");
                 Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
                 System.out.println(">>>>>>cookies:");
                 context.getCookieStore().getCookies().forEach(System.out::println);
-                cookieStore = (context.getCookieStore());*/
+                cookieStore = (context.getCookieStore());
             }
             finally {
                 response.close();

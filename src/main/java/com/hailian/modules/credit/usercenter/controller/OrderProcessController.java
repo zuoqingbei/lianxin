@@ -28,6 +28,7 @@ import com.hailian.modules.credit.uploadfile.controller.FileUpLoadController;
 import com.hailian.modules.credit.usercenter.model.CompanyHisResultType;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.util.Config;
@@ -524,11 +525,10 @@ public class OrderProcessController extends BaseProjectController{
 					String FTPfileName = now+"."+ext;
 					String fileName = originalFileName + now;
 					String pdf_FTPfileName = "";
-					FileUpLoadController fuc = new FileUpLoadController();
 					File pdf = null;
 					//如果上传文档不是pdf或者图片则转化为pdf，以作预览
 					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){
-						pdf = fuc.toPdf(uploadFile);
+						pdf = Office2PDF.toPdf(uploadFile);
 						pdf_FTPfileName += now+"."+"pdf";
 						files.add(uploadFile.getFile());
 					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
