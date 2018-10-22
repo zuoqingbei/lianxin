@@ -119,7 +119,7 @@ let Filing = {
                			}) 
              }),
              $("#modal_submit_allocation").click(function(){
-        		  if($("#agency_id").val()==-1) {
+        		  if($("#agency_id").val()==-1 || $("#agency_id").val()=="") {
         	      		Public.message("error","请选择代理ID");
         	      	  return false;
         	      	  }else if($("#agent_category").val()==-1){
@@ -130,7 +130,7 @@ let Filing = {
                  let agentid = $("#agency_id option:selected").val();
                  let agent_category = $("#agent_category option:selected").val();
                  if(agentid=="" || agent_category==""){
-                	 Public.message("error","请选择代理id和代理类别");
+                	 Public.message("error","请选择代理ID和代理类别");
                 	 return;
                  }
                  
