@@ -245,6 +245,7 @@ public class FtpUploadFileUtils {
 			}
 			
 			// 关闭输入流
+			if(fis!=null)
 			fis.close();
 			// 登出服务器
 			ftp.logout();

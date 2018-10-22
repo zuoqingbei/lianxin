@@ -95,9 +95,9 @@ var paginator = function(page) {
 				<td>${item.detail_name}</td>
 				<td>${item.allocation_value}</td>	
 				<td>${item.create_by}</td>
-				<td>${item.create_date}</td>
+				<td>${item.create_date,dateFormat="yyyy-MM-dd HH:mm:ss"}</td>
 				<td>${item.update_by}</td>
-				<td>${item.update_date}</td>
+				<td>${item.update_date,dateFormat="yyyy-MM-dd HH:mm:ss"}</td>
 				<td>${item.remarks}</td>
 				<td>
 					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.view(${item.order_allocation_id});">查看</a> 
