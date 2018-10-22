@@ -537,11 +537,12 @@ public class OrderProcessController extends BaseProjectController{
 					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){
 						pdf = Office2PDF.toPdf(uploadFile);
 						pdf_FTPfileName += now+"."+"pdf";
-						files.add(uploadFile.getFile());
 					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
 						pdf_FTPfileName = FTPfileName;
 					}
+					files.add(uploadFile.getFile());
 					pdfNameList.add(pdf_FTPfileName);
+					if(pdf!=null)
 					pdf.delete();
 					
 				}
