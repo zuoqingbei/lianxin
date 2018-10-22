@@ -95,4 +95,28 @@ public class TemplateAgentService extends BaseService{
 		allDict.set("agent_name","请选择代理");
 		return allDict;
 	}
+	public String getAgentIdString(Object selectedId) {
+		StringBuffer sb=new StringBuffer();
+		List<AgentModel> listDetail =getAgentNoDefault();
+		for(AgentModel detail:listDetail){
+				if(selectedId!=null&&selectedId.toString().equals(detail.get("agent_id").toString())){
+					sb.append("<option selected='selected'  value='"+detail.get("agent_id")+"'>"+detail.get("agent_id")+"</option>");
+				}else{
+					sb.append("<option  value='"+detail.get("agent_id")+"'>"+detail.get("agent_id")+"</option>");
+				}			
+		}
+		return sb.toString();
+	}
+	public String getAgentCateString(Object selectedAgent,Object selectedAgentCate) {
+		StringBuffer sb=new StringBuffer();
+		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(selectedAgent.toString());
+		for(AgentCategoryModel detail:findAll){
+				if(selectedAgentCate!=null&&selectedAgentCate.toString().equals(detail.get("agent_category").toString())){
+					sb.append("<option selected='selected'  value='"+detail.get("agent_category")+"'>"+detail.get("categoryName")+"</option>");
+				}else{
+					sb.append("<option  value='"+detail.get("agent_category")+"'>"+detail.get("categoryName")+"</option>");
+				}			
+		}
+		return sb.toString();
+	}
 }

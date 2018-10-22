@@ -710,6 +710,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" s5.detail_name AS reportLanguage, ");
 			selectSql.append(" s6.detail_name AS speed, ");
 			selectSql.append(" s7.detail_name AS statusName, ");
+			selectSql.append(" s8.detail_name AS agentcategoryName, ");
 			selectSql.append(" n.name AS companyZHNames, ");
 			selectSql.append(" n.name_en AS companyNames, ");
 			selectSql.append(" u1.realname AS reportUser,");
@@ -730,27 +731,59 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
 			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
+			//代理类别
+			fromSql.append(" LEFT JOIN sys_dict_detail s8 ON c.agent_category = s8.detail_id ");//地区
 			//获取文件信息
 			fromSql.append(" LEFT JOIN credit_upload_file u5 ON u5.business_type = c.status and u5.business_id = c.num ");//文件表关联
-			
 			fromSql.append(" where c.del_flag = 0 ");
-			if((OrderProcessController.orderAllocation).equals(searchType)){
+			//权限语句
+			StringBuffer authority = new StringBuffer();
+			Integer userId = c.getSessionUser().getUserid();
+			switch (searchType) {
+			case OrderProcessController.orderAllocation:
 				//状态为订单分配状态 ,其维护在字典表中
 				fromSql.append(" and status='291'  ");
-			}else if((OrderProcessController.orderVerifyOfOrder).equals(searchType)){
+				break;
+			case OrderProcessController.orderVerifyOfOrder:
 				//客户确认(订单核实)状态 ,其维护在字典表中
-				fromSql.append(" and status in ('292','293','291') ");
-			}else if((OrderProcessController.orderFilingOfOrder).equals(searchType)){
-				//代理分配和订单查档(国外) ,其维护在字典表中 中国大陆代码106
-				fromSql.append(" and status in('295','294') and c.country!='106' ");
-			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
+				//500为订单核实中
+				fromSql.append(" and status in ('500') ");
+				break;
+			case OrderProcessController.orderFilingOfOrder:
+				//订单查档(国外) ,其维护在字典表中 中国大陆代码106
+				//294为信息录入完成,295代理中
+				fromSql.append(" and status in('294','295') and c.country!='106' ");
+				break;
+			case OrderProcessController.orderSubmitOfOrder:
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
+				//300为信息质检合格
 				fromSql.append(" and status='300' ");
-			}else if((OrderProcessController.orderSubmitOfOrder).equals(searchType)){
+				break;
+			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
-				fromSql.append(" and status in ('291','293') ");
+				//291为订单分配,293为信息录入，292客户确认
+				fromSql.append(" and status in ('291','292') ");
+				//权限归属:报告员,分析员,翻译员
+				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.translate_user= "+userId+")");
+				break;
+			case OrderProcessController.orderVerifyOfReport:
+				//状态为订单核实 ,其维护在字典表中
+				//293为信息录入
+				fromSql.append(" and status in ('293') ");
+				//权限归属:报告员,分析员,质检员
+				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")");
+				break;	
+			case OrderProcessController.orderFilingOfReport:
+				//状态为订单查档(国内) ,其维护在字典表中
+				//294为信息录入完成
+				fromSql.append(" and status in ('294','295') and c.country='106'");
+				//权限归属:质检员
+				authority.append(" and (c.IQC= "+userId+")");
+				break;	
+			default:
+				fromSql.append("  and false ");
+				break;
 			}
-			
 		//关键词搜索
 		if (keywords!=null&&keywords.size()>0) {
 			List<Object> columnNames = OrderProcessController.TYPE_KEY_COLUMN.get(searchType);
@@ -776,6 +809,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}*/
+		if(!c.isAdmin(c.getSessionUser())){
+			fromSql.append(authority);
+		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
 			fromSql.append(" order by c.receiver_date desc,c.ID desc ");
