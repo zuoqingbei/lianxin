@@ -24,7 +24,7 @@ public class CityModel extends BaseProjectModel<CityModel>{
 	 */
 	public List<CityModel> getCity(String cid,String pid,BaseProjectController c) {
 		List<Object> params=new ArrayList<Object>();
-		String sql="select t.* from credit_city t where 1=1  ";
+		String sql="select t.*,t.cid as codes from credit_city t where 1=1 ";
 		if(StringUtils.isNotBlank(cid)){
 			sql+=" and  t.cid=? ";
 			params.add(cid);

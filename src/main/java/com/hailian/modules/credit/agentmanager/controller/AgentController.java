@@ -8,6 +8,9 @@ import org.apache.commons.lang.StringUtils;
 import org.jsoup.helper.StringUtil;
 
 import com.feizhou.swagger.annotation.Api;
+import com.feizhou.swagger.annotation.ApiOperation;
+import com.feizhou.swagger.annotation.Param;
+import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
@@ -134,11 +137,16 @@ public class AgentController extends BaseProjectController {
 		
 		render(path + "edit.html");
 	}
+	
+	@ApiOperation(url = "/credit/agentmanager/getCitySelect",httpMethod="post", 
+			description = "查看订单")
+	@Params(value = { 
+		@Param(name = "attr.continent", description = "订单id", required = false, dataType = "String"),
+		})
 	public void getCitySelect() {
 		String province = getPara("attr.continent", "");
-		List<CityModel> city = CityModel.dao.getCity("", province,this);
-		setAttr("city", city);
-		renderJson(city);
+		List<CityModel> citys = CityModel.dao.getCity("", province,this);
+		renderJson(citys);
 	}
 
 	/**

@@ -52,23 +52,24 @@ var oper = {
    	 var grade = document.getElementById("sandbar");
    	 var value=$("#sandbar").find("option:selected").val();
    	 var html="";
-   	 $.post('credit/agentmanager/getCitySelect',{"attr.continent":value},function(data){
-   		 console.log(data)
-   		  html+="<option value='-1' selected='selected'>请选择</option>"
-   		  for(item in data){
-					 if(item.cid='${model.city}'){
-						 html+="<option  m-type='"+data[item].cid+"' value='"+data[item].cid+"'>"+data[item].city+"</option>";
+   	 $.ajax({
+   		 url:'credit/agentmanager/getCitySelect',
+   		data:{"attr.continent":value},
+   		dataType:"json",
+   		success:function(data){
+   			console.log(data)
+      		 console.log(${model.city});
+      		  html+="<option value='-1' >请选择</option>"
+      		  $.each(data,function(index,item){
+      			 if(item.codes=='${model.city}'){
+						 html+="<option selected='selected'  m-type='"+item.cid+"' value='"+item.cid+"'>"+item.city+"</option>";
 					 }else{
-						html+="<option  m-type='"+data[item].cid+"' value='"+data[item].cid+"'>"+data[item].city+"</option>";
+						html+="<option  m-type='"+item.cid+"' value='"+item.cid+"'>"+item.city+"</option>";
 					 };
-	        	
-	           };
-	           $("select[name='model.city']").html(html);
-	           
-					
-					
-	           
-   	 })
+      		  }); 
+   	           $("select[name='model.city']").html(html);
+   		}
+   	 });
    },
    agentChange:function(){
 	   	 var agent = document.getElementById("agent");
@@ -82,6 +83,7 @@ var oper = {
 	   		$("#countryin").removeClass("countryout")
 	   		$("#sandbar").attr("valid","vselect")
 	   		$("#countryout").addClass("countryout")
+	   		oper.sandbarChange();
 	   	 }
 	   },
    //省份发生变化
@@ -257,21 +259,8 @@ var bodyContent = {
 						</div>
 				<td>城市</td>
 				<td>
-					<% if(model.city!=null || model.city!="" ){%>
 					<select id="city" name="model.city"  class="form-control"  style="width: 200px;" >
-						<option value="-1" >请选择</option>
-						<% for(item in city){ %>
-								 	<% if(model.city==(item.cid+"")){ %>
-								 	 <option selected="selected" m-type="${item.cid}" value="${item.cid}">${item.city}</option>
-								 	<% }else{ %>
-								 	 <option m-type="${item.cid}" value="${item.cid}">${item.city}</option>
-								 	<% } %>
-								  <% } %>
 					</select>
-					<%}else{%>
-					<select id="city" name="model.city"  class="form-control"  >
-					</select>
-					<%}%>
 				</td>
 		</tr>
 		<tr id="countryout" class="">
