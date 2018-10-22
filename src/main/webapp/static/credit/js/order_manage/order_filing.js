@@ -76,7 +76,6 @@ let Filing = {
     modalSubmit(){
         /**模态框提交事件 */
         	 $("#modal_submit").click(function(){
-        		 alert()
              	$("#status").val("296");
              	$(".tableValue").ajaxSubmit( {
              		success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
@@ -120,6 +119,14 @@ let Filing = {
                			}) 
              }),
              $("#modal_submit_allocation").click(function(){
+        		  if($("#agency_id").val()==-1) {
+        	      		Public.message("error","请选择代理ID");
+        	      	  return false;
+        	      	  }else if($("#agent_category").val()==-1){
+        	      		Public.message("error","请选择代理类别");
+        	      	  return false;
+        	      	  }
+        		  
                  let agentid = $("#agency_id option:selected").val();
                  let agent_category = $("#agent_category option:selected").val();
                  if(agentid=="" || agent_category==""){
@@ -338,6 +345,7 @@ let Filing = {
           
         },
         "click .dl":(e,value,row,index)=>{
+        	 console.log(12222222333333);
             console.log(row);
             $("#custom_id2").html(row.custom_id);
             $("#customId2").html(row.customId);
@@ -403,10 +411,10 @@ let Filing = {
               contentType:'application/x-www-form-urlencoded;charset=UTF-8',
               queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
                 console.log(params)
-                this.pageNumber = params.pageNumber;
+               /* this.pageNumber = params.pageNumber;
                 this.pageSize = params.pageSize;
                 this.sortName = params.sortName;
-                this.sortOrder = params.sortOrder;
+                this.sortOrder = params.sortOrder;*/
                 return {//这里的params是table提供的  
               	  pageNumber: params.pageNumber,//从数据库第几条记录开始  
               	  pageSize: params.pageSize,//找多少条  

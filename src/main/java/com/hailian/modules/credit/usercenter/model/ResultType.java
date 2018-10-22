@@ -13,6 +13,33 @@ public class ResultType {
 	private String message;
 	private Integer total;
 	List<CreditOrderInfo> rows;
+	private Integer pageSize;
+	private Integer pageNumber;
+	
+	public ResultType(Integer total, List<CreditOrderInfo> rows, Integer pageSize,Integer pageNum) {
+		super();
+		this.total = total;
+		this.rows = rows;
+		this.pageSize = pageSize;
+		this.pageNumber = pageNum;
+	}
+	
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public Integer getPageNum() {
+		return pageNumber;
+	}
+
+	public void setPageNum(Integer pageNum) {
+		this.pageNumber = pageNum;
+	}
+
 	public ResultType(int total, List<CreditOrderInfo> rows) {
 		this.total=total;
 		this.rows=rows;
