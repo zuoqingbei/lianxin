@@ -14,8 +14,10 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.CompactXmlSerializer;
@@ -29,45 +31,49 @@ import net.sourceforge.tess4j.TesseractException;
 public class HttpTest {
 	
 	public static void main(String[] args) throws TesseractException {
-		getMofcomVerifyCode();
-//		CookieStore cookieStore = getCookie();
-//		List<Cookie> cookies = null;
-//		if(null != cookieStore){
-//			cookies = cookieStore.getCookies();
-//			for (int i = 0; i < cookies.size(); i++) {
-//				System.out.println("Local cookie: " + cookies.get(i));
-//			}
-//		}
-		File imageFile = new File("mofcomVerifyCode.jpg");//图片位置
-        ITesseract instance = new Tesseract();  // JNA Interface Mapping
-        instance.setDatapath("C:\\Users\\Administrator\\Desktop\\tessdata");//设置tessdata位置
-        instance.setLanguage("eng");//选择字库文件（只需要文件名，不需要后缀名）
-        String result = null;
-		try {
-			result = instance.doOCR(imageFile);
-			System.out.println("图片验证码:"+result);
-		} catch (TesseractException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}//开始识别
-		String name = "海尔集团";
-		String verifyCode = result;
-		//HttpClientUtils.sendGet("","");
-		System.out.println(getSource("http://iecms.mofcom.gov.cn/pages/corp/NewCMvCorpInfoTabList.html", "sp=S&sp=S"+name+"&sp=S&sp=Ssearch&sp=S"+verifyCode));
+		//getMofcomVerifyCode();
+		CookieStore cookieStore = getCookie();
+		List<Cookie> cookies = null;
+		String cookie = "";
+		if(null != cookieStore){
+			cookies = cookieStore.getCookies();
+			for (int i = 0; i < cookies.size(); i++) {
+				cookie = cookies.get(i).getName()+"="+cookies.get(i).getValue();
+				System.out.println("Local cookie: " + cookies.get(i));
+			}
+		}
+//		File imageFile = new File("mofcomVerifyCode.jpg");//图片位置
+//        ITesseract instance = new Tesseract();  // JNA Interface Mapping
+//        instance.setDatapath("C:\\Users\\Administrator\\Desktop\\tessdata");//设置tessdata位置
+//        instance.setLanguage("eng");//选择字库文件（只需要文件名，不需要后缀名）
+//        String result = null;
+//		try {
+//			result = instance.doOCR(imageFile);
+//			System.out.println("图片验证码:"+result);
+//		} catch (TesseractException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}//开始识别
+//		String name = "海尔集团";
+//		String verifyCode = result;
+//		HttpClientUtils.sendGet("","");
+		//HttpClientUtils.sendGet("http://iecms.mofcom.gov.cn/pages/corp/NewCMvCorpInfoTabList.html", "sp=S&sp=S"+name+"&sp=S&sp=Ssearch&sp=S"+verifyCode);
 		//HttpClientUtils.sendGet("http://wsjs.saic.gov.cn/txnS02.do", "y7bRbp=qmMEweVsmDl9_cN6OQYJvmxp_gbEk8.KgI.mouS16BABs9C4.A7NcK_F_zIxwkWtQHERRNxbxt8j469VFNXeZR4eMLZxKZkJiJ8sqy1gT5PRFQDP9hyeWue5nEOD1VxhiQeIt2mWemsaaD8_zKMPL_6BMVSiMeOe0vBRPh2SNDLS6GqX&c1K5tw0w6_=2d2XcxYZ7RcRNijUy8YPC6ahXg2of22SgU7RkwuP4m_o9um3vxueRoIrMYSXxpGJe3fnageWWOEiGpFVPs6sCfeCXX51Nrrf91urOx1zA9zOV7E.VZIjC5KgP6I4ov0Ga");
 		
     }
 	
-	public static String getSource(String url,String param) {
+	public static String getSource(String url,CookieStore cookieStore) {
 	    String html = new String();
-	    HttpGet httpget = new HttpGet(url + "?" + param);     //创建Http请求实例，URL 如：https://cd.lianjia.com/
+	    HttpGet httpget = new HttpGet("http://iecms.mofcom.gov.cn/pages/corp/NewCMvCorpInfoTabList.html?sp=S&sp=S海尔集团&sp=S&sp=Ssearch&sp=S5954");     //创建Http请求实例，URL 如：https://cd.lianjia.com/
 	    // 模拟浏览器，避免被服务器拒绝，返回返回403 forbidden的错误信息
 	    httpget.setHeader("User-Agent", 
 	    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
-
+	    //httpget.addHeader(new BasicHeader("Cookie", value));
 	    CloseableHttpResponse response = null;
-	    CloseableHttpClient httpclient = HttpClients.createDefault();   // 使用默认的HttpClient
+	    //CloseableHttpClient httpclient = HttpClients.createDefault();
+	    CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();   // 使用默认的HttpClient
 	    try {
+	    	
 	        response = httpclient.execute(httpget);
 	        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {     // 返回 200 表示成功
 	            html = EntityUtils.toString(response.getEntity(), "utf-8");     // 获取服务器响应实体的内容
@@ -131,9 +137,9 @@ public class HttpTest {
 	 */
 	public static CookieStore getCookie(){
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet get=new HttpGet("http://wsjs.saic.gov.cn/txnS02.do?locale=zh_CN&y7bRbP=KGllkAkMCeBMCeBMCuBePKpXwi13g6LNC87VouCucyOM");
+        HttpGet get=new HttpGet("http://iecms.mofcom.gov.cn/corpLogin.html");
         HttpClientContext context = HttpClientContext.create();
-        CookieStore cookieStore = null;
+        CookieStore cookieStore = new BasicCookieStore();
         try {
             CloseableHttpResponse response = httpClient.execute(get, context);
             try{
