@@ -129,6 +129,11 @@ let Filing = {
         		  
                  let agentid = $("#agency_id option:selected").val();
                  let agent_category = $("#agent_category option:selected").val();
+                 if(agentid=="" || agent_category==""){
+                	 Public.message("error","请选择代理id和代理类别");
+                	 return;
+                 }
+                 
                  let ismail = $("#entrust_email option:selected").val();
                  let id = $("#orderId2").val();
                  //console.log(reporter,remarks);
@@ -362,7 +367,7 @@ let Filing = {
             $("#companyZHNames2").html(row.companyZHNames);
             var selected=$("#agency_id").html()+row.seleteAgentStr;
             $("#agency_id").html(selected);
-            var selected2=$("#agent_category").html()+row.seleteAgentCateStr;
+            var selected2=row.seleteAgentCateStr;
             $("#agent_category").html(selected2);
             $("#confirm_reason2").html(row.confirm_reason);
             $("#orderId2").val(row.id);

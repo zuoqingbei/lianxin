@@ -144,9 +144,9 @@ public class HttpTest {
             CloseableHttpResponse response = httpClient.execute(get, context);
             try{
                 System.out.println(">>>>>>headers:");
-                Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
+//                Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
                 System.out.println(">>>>>>cookies:");
-                context.getCookieStore().getCookies().forEach(System.out::println);
+//                context.getCookieStore().getCookies().forEach(System.out::println);
                 cookieStore = (context.getCookieStore());
             }
             finally {
