@@ -32,6 +32,9 @@ public class AgentCategoryModel extends BaseProjectModel<AgentCategoryModel> {
 	* @TODO
 	 */
 	public List<AgentCategoryModel> findAll(String agent_id) {
+		if(StringUtils.isBlank(agent_id)){
+			return null;
+		}
 		StringBuffer sb=new StringBuffer("select t.*,s1.detail_name as categoryName from credit_agent_category t ");
 		sb.append(" LEFT JOIN sys_dict_detail s1 ON t.agent_category = s1.detail_id ");
 		sb.append(" where 1=1 ");
