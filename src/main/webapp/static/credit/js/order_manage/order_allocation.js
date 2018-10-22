@@ -1,4 +1,5 @@
 let Allocation = {
+		
     init(){
         /**初始化函数 */
     	this.pageNumber = "";
@@ -22,7 +23,7 @@ let Allocation = {
             $.ajax({
        			type:"post",
        			url:"/credit/front/orderProcess/statusSave",
-       			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id+"&statusCode=293"+"&searchType=-1",
+       			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id+"&statusCode="+"&searchType=-1",
        			dataType:"json",
        			success:function(data){
        			//提交成功关闭模态窗
@@ -39,10 +40,10 @@ let Allocation = {
        			 $.ajax({
        				type:"post",
            			url:"/credit/front/orderProcess/listJson",
-           			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
+           			data:"report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
            			dataType:"json",
            			success:function(obj){
-           				console.log("回显的数据:"+obj);
+           				console.log("回显的数据:"+JSON.stringify(obj));
            			 	$("#table").bootstrapTable("load",obj)
            			 }
        			 })
@@ -98,11 +99,13 @@ let Allocation = {
         $("#btn_query").click(function(){
           let reporter = $("#txt_search_reporter").val();//报告员
           console.log(reporter)
+          //跳转到第一页
+          $('#table').bootstrapTable('refreshOptions',{pageNumber:1});
           /***发起ajax请求 获取表格数据*/
           $.ajax({
        			type:"post",
        			url:"/credit/front/orderProcess/listJson",
-       			data:"model.report_user="+reporter+"&searchType=-1",
+       			data:"report_user="+reporter+"&searchType=-1"+"&pageSize="+window.aaa,
        			dataType:"json",
        			success:function(data){
        				console.log(data);
@@ -115,8 +118,6 @@ let Allocation = {
         /**初始化表格 */
         const $table = $('#table');
         let _this = this
-  
-
         $table.bootstrapTable({
             height: $(".table-content").height()*0.92,
             columns: [
@@ -175,7 +176,7 @@ let Allocation = {
                   align: 'center',
                   valign: 'middle',
                 }, {
-                  title: '报告类型22',
+                  title: '报告类型',
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
@@ -245,13 +246,14 @@ let Allocation = {
             queryParamsType:'',
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-              console.log(params)
+              window.aaa = params.pageSize;
               return {//这里的params是table提供的  
             	  pageNumber: params.pageNumber,//从数据库第几条记录开始  
             	  pageSize: params.pageSize,//找多少条  
             	  sortName: params.sortName, 
             	  sortOrder: params.sortOrder,
-            	  searchType: "-1"
+            	  report_user: $("#txt_search_reporter").val(),
+            	  searchType: "-1",
               };  
           },  
           });

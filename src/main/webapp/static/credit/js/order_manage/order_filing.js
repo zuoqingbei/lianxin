@@ -119,6 +119,14 @@ let Filing = {
                			}) 
              }),
              $("#modal_submit_allocation").click(function(){
+        		  if($("#agency_id").val()==-1) {
+        	      		Public.message("error","请选择代理ID");
+        	      	  return false;
+        	      	  }else if($("#agent_category").val()==-1){
+        	      		Public.message("error","请选择代理类别");
+        	      	  return false;
+        	      	  }
+        		  
                  let agentid = $("#agency_id option:selected").val();
                  let agent_category = $("#agent_category option:selected").val();
                  let ismail = $("#entrust_email option:selected").val();
@@ -135,29 +143,25 @@ let Filing = {
             			if(data.statusCode===1){
                        	 console.log("此处进入success状态2222222222");
                        	Public.message("success",data.message);
+                       	$.ajax({
+    	           			type:"post",
+    	               		url:"/credit/front/orderProcess/listJson",
+    	               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
+    	               		dataType:"json",
+    	               		success:function(obj){
+    	           			 	$("#table").bootstrapTable("load",obj);
+    	           			 	console.log(obj);
+    	           			 }
+    	       			})
+                      
+                       
                        }else{
                        	 console.log("此处进入error状态");
                        	Public.message("error",data.message);
                        }
-            			//回显
-            			console.log("提交成功,开始回显:"+data.message);
-            			 $.ajax({
-            				type:"post",
-                			url:"/credit/front/orderProcess/listJson",
-                			data:"model.report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
-                			dataType:"json",
-                			success:function(obj){
-                				console.log("回显的数据:"+obj);
-                			 	$("#table").bootstrapTable("load",obj)
-                			 }
-            			 })
-            			 
-            			console.log("回显完毕");
             			}
-                 	
             		})
-            		
-                 
+	    			
              })
     	
     },
@@ -199,14 +203,13 @@ let Filing = {
         $(".resetrFilter").click(function(){
           $('.form-check-input:checkbox').removeAttr('checked');
         })
-      },
+      }, 
   
     initTable(){
           /**初始化表格 */
           const $table = $('#table');
           let _this = this
-    
-
+        
           $table.bootstrapTable({
               height: $(".table-content").height()*0.98,
               columns: [
@@ -306,7 +309,8 @@ let Filing = {
           $("#companyZHNames").html(row.companyZHNames);
           $("#reporter_select").html(row.seleteStr);
           $("#confirm_reason").html(row.confirm_reason);
-          $("#orderId2").val(row.id);
+          $("#orderId").val(row.id);
+          $("#status").val(row.status);
           $("#num").html(row.num);
           $("#remarks").val("");
           $(".tableValue")[0].reset();
@@ -323,8 +327,20 @@ let Filing = {
       	sortName = row.sortName;
       	sortOrder = row.sortOrder;
       	  console.log("report_userKey====="+row.report_userKey);
+      	  $(".detail").removeAttr("data-toggle");
+      	  $(".detail").removeAttr("data-target");
+      	  var status=$("#status").val();
+      	  if("295"!=status) {
+      		Public.message("error","请先进行代理分配才可以上传附件");
+      	  }else {
+      		//data-toggle="modal" data-target="#exampleModalCenter" 
+      		  $(".detail").attr("data-toggle","modal");
+      		  $(".detail").attr("data-target","#exampleModalCenter");
+      	  }
+          
         },
         "click .dl":(e,value,row,index)=>{
+        	 console.log(12222222333333);
             console.log(row);
             $("#custom_id2").html(row.custom_id);
             $("#customId2").html(row.customId);
@@ -344,9 +360,13 @@ let Filing = {
             $("#speed2").html(row.speed);
             $("#user_time2").html(row.user_time);
             $("#companyZHNames2").html(row.companyZHNames);
-            $("#agency_id").html(row.seleteAgentStr);
+            var selected=$("#agency_id").html()+row.seleteAgentStr;
+            $("#agency_id").html(selected);
+            var selected2=$("#agent_category").html()+row.seleteAgentCateStr;
+            $("#agent_category").html(selected2);
             $("#confirm_reason2").html(row.confirm_reason);
             $("#orderId2").val(row.id);
+            $("#status").val(row.status);
             $("#num2").html(row.num);
             $("#remarks2").val("");
             $(".tableValue")[0].reset();
@@ -386,10 +406,10 @@ let Filing = {
               contentType:'application/x-www-form-urlencoded;charset=UTF-8',
               queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
                 console.log(params)
-                this.pageNumber = params.pageNumber;
+               /* this.pageNumber = params.pageNumber;
                 this.pageSize = params.pageSize;
                 this.sortName = params.sortName;
-                this.sortOrder = params.sortOrder;
+                this.sortOrder = params.sortOrder;*/
                 return {//这里的params是table提供的  
               	  pageNumber: params.pageNumber,//从数据库第几条记录开始  
               	  pageSize: params.pageSize,//找多少条  
@@ -408,7 +428,8 @@ let Filing = {
             /**操作按钮格式化 */
             return '<a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter_allocation">代理分配</a>' +
                 '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
-                '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter" style="margin-left:.5rem">上传附件</a>'
+                
+                '<a href="javascript:;" class="detail" style="margin-left:.5rem">上传附件</a>'
           }             
 }
 

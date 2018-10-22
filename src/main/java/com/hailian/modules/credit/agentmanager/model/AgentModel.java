@@ -40,7 +40,8 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 	public Page<AgentModel> getAgent(Paginator paginator, int pageNumber, int pageSize, String orderBy, String keyWord,
 			String searchType, BaseProjectController c) {
 		StringBuffer selectsql = new StringBuffer(
-				"select  t.credit_province as provinceName,t2.city as cityName,t3.detail_name as agent_categoryName,sp.detail_name as Speed,at.detail_name as agentType,c.detail_name as Currency,us.detail_name as Usabled,a.* ");
+				"select  t.credit_province as provinceName,t2.city as cityName,t3.detail_name as agent_categoryName,sp.detail_name as Speed,at.detail_name as agentType,c.detail_name as Currency,us.detail_name as Usabled,"
+				+"a.* ");
 		StringBuffer fromsql = new StringBuffer(" from  credit_agent a ");
 		fromsql.append("   LEFT JOIN sys_dict_detail at on at.detail_id=a.agent_type ");
 		fromsql.append("   LEFT JOIN sys_dict_detail c on c.detail_id=a.currency");
