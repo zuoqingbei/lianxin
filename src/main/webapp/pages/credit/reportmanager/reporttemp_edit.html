@@ -1,0 +1,292 @@
+<% var usabled = tempDict.getSysDictDetailString2('usabled',model.usabled ); %>
+<% var currency = tempDict.getSysDictDetailString2('currency',model.currency ); %>
+<% var agenttype = tempDict.getSysDictDetailString2('agenttype',model.agent_type ); %>
+<% var speed = tempDict.getSysDictDetailString2('agentspeed',model.speed ); %>
+<% var agent_category = tempDict.getSysDictDetailCheckboxString('agentcategory',model.agentCategoryList,'9' ); %>
+<% var country = country.getCountryString(); %>
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+	include("/pages/includes/my97.html"){}
+%>
+<link href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/select2.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.8.0/popper.es5.min.js"></script> 
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap-select.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/defaults-zh_CN.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/select2.js"></script>
+<script type="text/javascript">
+var oper = {
+	save:function(id){
+		var value=$("#countryout").attr("class").trim();
+		var value1=$("#countryin").attr("class").trim();
+		console.log("value:"+value+","+"value1:"+value1)
+		if(value=="countryout"){
+			
+			$("#country").removeAttr("valid")
+		}else{
+			$("#country").attr("valid","vtext")
+		}
+		if(value1=="countryout"){
+			
+			$("#sandbar").removeAttr("valid")
+		}else{
+			$("#sandbar").attr("valid","vtext")
+		}
+		var value3=$("#country").select2({
+	        tags: true
+	    }).val();
+		console.log(value3);
+		if(!validForm()) {
+			return false;
+		}
+		id = id || '0';
+		var url = 'credit/agentmanager/save?agent_id='+id;
+		form1.action = url;
+		form1.submit();
+		return true;
+	},
+    sandbarChange:function(){
+   	 var grade = document.getElementById("sandbar");
+   	 var value=$("#sandbar").find("option:selected").val();
+   	 var html="";
+   	 $.ajax({
+   		 url:'credit/agentmanager/getCitySelect',
+   		data:{"attr.continent":value},
+   		dataType:"json",
+   		success:function(data){
+   			console.log(data)
+      		 console.log(${model.city});
+      		  html+="<option value='-1' >请选择</option>"
+      		  $.each(data,function(index,item){
+      			 if(item.codes=='${model.city}'){
+						 html+="<option selected='selected'  m-type='"+item.cid+"' value='"+item.cid+"'>"+item.city+"</option>";
+					 }else{
+						html+="<option  m-type='"+item.cid+"' value='"+item.cid+"'>"+item.city+"</option>";
+					 };
+      		  }); 
+   	           $("select[name='model.city']").html(html);
+   		}
+   	 });
+   },
+   agentChange:function(){
+	   	 var agent = document.getElementById("agent");
+	   	 var value=$("#agent").find("option:selected").text();
+	   	 if(value=='国外'){
+	   		 $("#countryin").addClass("countryout")
+	   		 $("#sandbar").removeAttr("valid")
+	   		 $("#countryout").removeClass("countryout")
+	   		 oper.countryList();
+	   	 }else if(value=='国内'){
+	   		$("#countryin").removeClass("countryout")
+	   		$("#sandbar").attr("valid","vselect")
+	   		$("#countryout").addClass("countryout")
+	   		oper.sandbarChange();
+	   	 }
+	   },
+   //省份发生变化
+   initpage:function(){
+	   var agent = $("#agent").find("option:selected").text();
+	   alert(agent)
+	   	 if(agent=='264'){
+	   		console.log($(".table"))
+	   		 $(".table tbody tr:last").hide()
+	   		 $("#sandbar").removeAttr("valid")
+	   	 }else if(agent=='263'){
+	   		$(".table tbody tr:last").show()
+	   		$("#sandbar").attr("valid","vselect")
+	   	 }
+   	//默认选择第一个国家
+   	 //$("select[name='model.city'] option:first").attr('selected','selected')
+   	
+   },
+	countryList:function(){
+		var html="";
+		var countrys=${countrys}
+		console.log(countrys)
+		$.get("/credit/country/getCountrySelect",function(data){
+			for(item in data){
+				var flag=1;
+				for(item2 in countrys){
+					if(data[item].id==countrys[item2].id){
+						console.log("itemid:"+data[item].id+","+"item2id:"+countrys[item2].id)
+						flag=2
+						html+="<option selected='selected'  value='"+data[item].id+"'>"+data[item].name+"</option>"
+						break;
+					}
+				}
+				if(flag==1){
+					html+="<option   value='"+data[item].id+"'>"+data[item].name+"</option>"
+				}
+			}
+			$("#country").html(html)
+		})
+		
+	}
+	 
+};
+$(function(){
+	oper.agentChange();
+	$("#country").select2({
+        tags: true
+    });
+})	
+</script>
+<style>
+.tags {
+	line-height: 22px;
+	height: 22px;
+	border-top: 1px solid rgb(210, 210, 210);
+}
+
+.tags .tags_label {
+	float: left;
+	margin-right: 20px;
+	margin-left: 5px;
+	padding: 5px 1px 1px 3px;
+}
+
+.tags .tags_content {
+	float: left;
+	width: 500px;
+	margin: 5px 5px 0 0;
+	padding: 1px;
+	border: 1px solid #ccc;
+	background: #fff;
+	vertical-align: middle;
+}
+
+.tags .tags_remark {
+	padding: 5px 1px 1px 3px;
+	color: #999999;
+	font-size: 12px;
+	z-index: 10000;
+}
+.countryout{
+	display:none;
+}
+</style>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal">
+	<input type="hidden" name="model.agent_id" value=" ${model.agent_id}" />
+	<!-- 数据列表 -->
+	<table class="table">
+	<tr>
+			<td>代理类型</td>
+			 <td><select id="agent" name="model.agent_type" class="form-control" style="width: 200px;" onchange="oper.agentChange()" style="width: 200px;">
+					${agenttype!}
+				</select>
+			</td>
+			
+		</tr>		
+		
+		<tr>
+			<td>代理名称</td>
+			<td><input type="text" name="model.agent_name"  style="width: 200px;" class="form-control"  valid="vtext" validname="代理名称"
+				value="${model.agent_name}" />
+			</td>
+			
+			 <td>代理用时</td>
+			 <td> 
+				<input type="text" name="model.proxy_time" class="form-control"  style="width: 200px;"
+				value="${model.proxy_time}"/>
+			</td>
+			
+		</tr>
+		<tr>
+			<td>邮箱</td>
+			<td> <input type="text" name="model.memo" class="form-control"  valid="vemail" style="width: 200px;"
+				value="${model.memo}"/> 
+			</td>
+			<td>价格</td>
+			<td><input type="text" name="model.price" class="form-control price"  valid="vfloat_y" style="width: 200px;" validname="价格"
+				value="${model.price}"/>
+			</td>
+		</tr>
+			
+		<tr>
+			<td>币种</td>
+			<td><select name="model.currency" class="form-control" style="width: 200px;" >
+					${currency!}
+				</select></td>
+			<td>速度</td>
+			<td><select name="model.speed" class="form-control" style="width: 200px;" >
+					${speed!}
+				</select>
+			</td>
+		</tr>
+	
+		<tr>
+			<td>邮政编码</td>
+			 <td> 
+				<input type="text" name="model.postal_code" class="form-control"  style="width: 200px;"
+				value="${model.postal_code}"/>
+			 </td>
+			<td>是否禁用</td>
+			<td><select name="model.usabled" class="form-control" style="width: 200px;" >
+					${usabled!}
+				</select></td>
+			
+			
+		</tr>
+		
+		<tr rowspan="2">
+			<td>代理类别</td>
+			<td colspan="3" >
+			${agent_category!}
+			</td>
+		</tr>
+		<tr id="countryin" class="">
+			<td>省份</td>
+						<td>
+						<select id="sandbar" name="model.province" class="form-control"   valid="vselect" validname="省份不能为空" onchange="oper.sandbarChange()" style="width: 200px;">
+						<option value="-1" >请选择</option>
+						 <% for(item in province){ %>
+						 	<% if((model.province+"")==(item.pid+"")){ %>
+							 	<option  m-type="${item.credit_province}" selected="selected" value="${item.pid}">${item.credit_province}</option>
+							<% }else{ %>
+								<option  m-type="${item.credit_province}" value="${item.pid}">${item.credit_province}</option>
+							<%}%>
+						 <% } %>
+						</select>
+						</td>
+						</div>
+				<td>城市</td>
+				<td>
+					<select id="city" name="model.city"  class="form-control"  style="width: 200px;" >
+					</select>
+				</td>
+		</tr>
+		<tr id="countryout" class="">
+			<td>国家</td>
+			<td>
+				<select id="country"  name="country"  class="form-control" multiple="multiple" style="width: 200px;">
+				
+				</select>
+			</td>
+		</tr>
+		
+		
+		
+
+	</table>
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+	  		<button class="btn btn-primary save" onclick="oper.save(${model.agent_id!'0'});return false;">确定</button>
+			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+<%} %>
+
