@@ -210,7 +210,7 @@ public class OrderPoiController extends BaseProjectController {
 								model.set("name", name);
 								model.save();
 								List<CompanyModel> companyByName2 = CompanyModel.dao.getCompanyByName(name);
-								orderReal.set("company_id", companyByName2.get(0).get("id"));
+								orderReal.set("company_id", model.get("id"));
 							}else{
 								orderReal.set("company_id", companyByName.get(0).get("id"));
 							}
