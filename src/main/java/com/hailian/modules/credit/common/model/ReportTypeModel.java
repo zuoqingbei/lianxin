@@ -118,4 +118,6 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 		}
 		return dao.find(sql);
 	}
+
+
 }

@@ -1,9 +1,5 @@
-<% var usabled = tempDict.getSysDictDetailString2('usabled',model.usabled ); %>
-<% var currency = tempDict.getSysDictDetailString2('currency',model.currency ); %>
-<% var agenttype = tempDict.getSysDictDetailString2('agenttype',model.agent_type ); %>
-<% var speed = tempDict.getSysDictDetailString2('agentspeed',model.speed ); %>
-<% var agent_category = tempDict.getSysDictDetailCheckboxString('agentcategory',model.agentCategoryList,'9' ); %>
-<% var country = country.getCountryString(); %>
+<% var reportType = reportType.getReportTypeString(model.report_type!''); %>
+
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -20,30 +16,11 @@ var headContent = {
 <script type="text/javascript">
 var oper = {
 	save:function(id){
-		var value=$("#countryout").attr("class").trim();
-		var value1=$("#countryin").attr("class").trim();
-		console.log("value:"+value+","+"value1:"+value1)
-		if(value=="countryout"){
-			
-			$("#country").removeAttr("valid")
-		}else{
-			$("#country").attr("valid","vtext")
-		}
-		if(value1=="countryout"){
-			
-			$("#sandbar").removeAttr("valid")
-		}else{
-			$("#sandbar").attr("valid","vtext")
-		}
-		var value3=$("#country").select2({
-	        tags: true
-	    }).val();
-		console.log(value3);
 		if(!validForm()) {
 			return false;
 		}
 		id = id || '0';
-		var url = 'credit/agentmanager/save?agent_id='+id;
+		var url = '/credit/reporttempmanager/save?id='+id;
 		form1.action = url;
 		form1.submit();
 		return true;
@@ -178,9 +155,9 @@ var bodyContent = {
 	<!-- 数据列表 -->
 	<table class="table">
 	<tr>
-			<td>代理类型</td>
+			<td>报告类型</td>
 			 <td><select id="agent" name="model.agent_type" class="form-control" style="width: 200px;" onchange="oper.agentChange()" style="width: 200px;">
-					${agenttype!}
+					${reportType!}
 				</select>
 			</td>
 			
