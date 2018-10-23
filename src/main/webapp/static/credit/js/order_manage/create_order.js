@@ -33,11 +33,11 @@ let
 							Page.initTable(data.orderList)
 							if(data.errormark.statusCode===2){
 								 $(".err-box span").html(data.errormark.message)
-								 $(".err-box").show()
+								 $(".err-box").show();
 								 $("#modal_submit").addClass("btn-disabled disabled").removeClass("btn-primary")
 								
 				               }else{
-				            	 $(".err-box").hide()
+				            	 $(".err-box").hide();
 				   				 $("#modal_submit").removeClass("btn-disabled disabled").addClass("btn-primary")
 				               }
 							$("#tableOrder").bootstrapTable("load",data.orderList)

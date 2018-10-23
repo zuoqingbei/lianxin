@@ -814,7 +814,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
-			fromSql.append(" order by c.receiver_date desc,c.ID desc ");
+			fromSql.append(" order by c.create_date desc,c.ID desc ");
 		} else {
 			fromSql.append(" order by ").append(orderBy).append(",c.ID desc ");
 		}

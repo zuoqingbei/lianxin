@@ -45,7 +45,10 @@ let Verify = {
             fileicon = '/static/credit/imgs/order/JPG.png'
           }else if(filetype === 'pdf') {
             fileicon = '/static/credit/imgs/order/PDF.png'
-          }
+          }else {
+              Public.message("info","不支持上传此种类型文件！")
+              return
+            }
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
           $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
@@ -364,10 +367,12 @@ let Verify = {
         console.log(row.files) 	
        // $(".file-upload").html("");
         $(".upload-over").remove();
-        if(row.files.length === 0){return}
+        if(row.files.length === 0){$(".uploadFile:not(.upload-over)").show();return}
         if(row.files.length > 4) {
         
-        	$(".uploadFile:not(.upload-over)").remove();
+        	$(".uploadFile:not(.upload-over)").hide();
+        }else {
+        	$(".uploadFile:not(.upload-over)").show()
         }
         for (var i in row.files){
         	let filetype = row.files[i].ext.toLowerCase()
