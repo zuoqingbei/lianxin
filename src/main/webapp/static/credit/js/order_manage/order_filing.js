@@ -86,6 +86,23 @@ let Filing = {
                         if(data.statusCode===1){
                         	 console.log("此处进入success状态,状态296");
                         	Public.message("success",data.message);
+                        	   //提交成功关闭模态窗
+                            $(".modal-header .close").trigger("click");
+                            //回显
+                           	console.log("提交成功,开始回显:");
+                           console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4");
+                           		$.ajax({
+                           			type:"post",
+                               		url:"/credit/front/orderProcess/listJson",
+                               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
+                               		dataType:"json",
+                               		success:function(obj){
+                               				//console.log("回显的数据:"+JSON.stringify(obj.rows));
+                               			 	$("#table").bootstrapTable("load",obj);
+                               			 	console.log(obj);
+                               			 console.log("回显成功!");
+                               			 }
+                           			})
                         }else{
                         	 console.log("此处进入error状态");
                         	Public.message("error",data.message);
@@ -100,23 +117,7 @@ let Filing = {
             			console.log("提交失败!");
             		}
                  });
-                 //提交成功关闭模态窗
-                $(".modal-header .close").trigger("click");
-                //回显
-               	console.log("提交成功,开始回显:");
-               console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4");
-               		$.ajax({
-               			type:"post",
-                   		url:"/credit/front/orderProcess/listJson",
-                   		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
-                   		dataType:"json",
-                   		success:function(obj){
-                   				//console.log("回显的数据:"+JSON.stringify(obj.rows));
-                   			 	$("#table").bootstrapTable("load",obj);
-                   			 	console.log(obj);
-                   			 console.log("回显成功!");
-                   			 }
-               			}) 
+               
              }),
              $("#modal_submit_allocation").click(function(){
         		  if($("#agency_id").val()==-1 || $("#agency_id").val()=="") {
@@ -143,11 +144,12 @@ let Filing = {
             			data:"model.agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.agent_category="+agent_category,
             			dataType:"json",
             			success:function(data){
-            			//提交成功关闭模态窗
-            			 $(".modal-header .close").trigger("click");
+            			
             			if(data.statusCode===1){
                        	 console.log("此处进入success状态2222222222");
                        	Public.message("success",data.message);
+                      //提交成功关闭模态窗
+                       	$(".modal-header .close").trigger("click");
                        	$.ajax({
     	           			type:"post",
     	               		url:"/credit/front/orderProcess/listJson",
