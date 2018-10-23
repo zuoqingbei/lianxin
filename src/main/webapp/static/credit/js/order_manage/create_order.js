@@ -142,19 +142,19 @@ let
 				$("input[name='attr.status']").val("291");
 					$("#orderForm").ajaxSubmit({
 						success:function(data){
-							console.log(JSON.stringify(data));
+							//console.log(JSON.stringify(data));
 							  if(data.statusCode===1){
                         		Public.message("success",data.message);
-                        		Public.goList();
+                        		
                        		 }else{
                         		Public.message("error",data.message);
-                        		Public.goList();
+                        		
                         	}
 
 						},
 						error:function(data){
 							Public.message("error",data.message);
-							Public.goList();
+							
 						}
 					});
 			}

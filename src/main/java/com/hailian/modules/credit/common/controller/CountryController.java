@@ -41,6 +41,20 @@ public class CountryController extends BaseProjectController {
 		List<CountryModel> selectCountry = CountryService.service.CountrySelect(content, this);
 		renderJson(selectCountry);
 	}
+	/**
+	 * 
+	 * @time   2018年10月23日 上午11:12:19
+	 * @author yangdong
+	 * @todo   TODO根据地区id获取国家列表
+	 * @param  
+	 * @return_type   void
+	 */
+	@ApiOperation(url = "/credit/country/getCountrySelect2", httpMethod = "get", description = "获取国家地区下拉框")
+	public void getCountrySelect2() {
+		String content = getPara("attr.continent", "");
+		List<CountryModel> selectCountry = CountryService.service.CountrySelect(content);
+		renderJson(selectCountry);
+	}
 
 	/**
 	 * 

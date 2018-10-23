@@ -37,6 +37,7 @@ let Allocation = {
                   }
        			//回显
        			console.log("提交成功,开始回显:"+data.message);
+       			console.log("/credit/front/orderProcess/listJson");
        			 $.ajax({
        				type:"post",
            			 url : BASE_PATH+"credit/front/orderProcess/listJson",

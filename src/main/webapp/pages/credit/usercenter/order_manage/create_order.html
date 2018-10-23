@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <% var sandbar = tempDict.getSysDictDetailString('continent',model.continent); %>
-<% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type); %>
-<% var language = tempDict.getSysDictDetailString('language',model.report_language); %>
+<% var ordertype = tempDict.getSysDictDetailString('ordertype'); %>
+<% var language = tempDict.getSysDictDetailString('language'); %>
 <% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.speed); %>
-<% var reportType = reportType.getReportTypeString(model.report_type); %>
+<% var reportType = reportType.getReportTypeString2(model.report_type!''); %>
 <% var upload_busType = tempDict.getSysDictDetailString('upload_busType',model.business_type !); %>
 
 <html>
@@ -45,12 +45,12 @@
 					</div>
 					
 					<button id="show_modal" data-toggle="modal" data-target="#importModal" style="display:none"></button>
-		    		<form id="orderForm" class="form-inline " enctype="multipart/form-data"   action="/credit/front/home/saveOrder" method="post">
+		    		<form id="orderForm" class="form-inline layui-form " enctype="multipart/form-data"   action="/credit/front/home/saveOrder" method="post">
 		    			
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>客户ID：</label>
-		                        <select name="attr.custom_id" valid="vselect" validname="客户ID" class="form-control  formSelect col-md-8" id="client_ID" onchange="customChange();">
+		                        <select name="attr.custom_id" lay-filter="customChange" valid="vselect" validname="客户ID" class="search-input  col-md-8 layui-input" id="client_ID" >
 		                            <option value="0" disabled selected>请输入客户ID</option>
 		                            <%for(item in customs){%>
 		                             <option value="${item.id}" >${item.id}</option>
@@ -66,14 +66,14 @@
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		    			 <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>地区：</label>
-		                        <select name="attr.continent" valid="vselect" validname="地区" class="form-control  formSelect col-md-8" id="client_area" onchange="continentchange()">
+		                        <select name="attr.continent" lay-filter="continentchange" valid="vselect" validname="地区" class="search-input  col-md-8 layui-input" id="client_area" >
 		                            ${sandbar!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择地区</p>
 		                    </div>
 		                     <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>国家：</label>
-		                        <select name="attr.country" valid="vselect" validname="国家" class="form-control  formSelect col-md-8" id="client_country" onchange="countrychange()">
+		                        <select name="attr.country"  lay-filter="countrychange" valid="vselect" validname="国家" class=" col-md-8" lay-search="" ay-verify="" id="client_country">
 		                            <option m-type="" value="0" disabled selected>请选择国家</option>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择国家</p>
@@ -86,7 +86,7 @@
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告类型：</label>
-		                        <select name="attr.report_type" valid="vselect" validname="报告类型" class="form-control  formSelect col-md-8" id="client_reportType" onchange="reportTypeChange();">
+		                        <select name="attr.report_type" lay-filter="reportTypeChange" valid="vselect" validname="报告类型" class="search-input  col-md-8 layui-input" id="client_reportType" >
 		                             ${reportType!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告类型</p>
@@ -95,14 +95,14 @@
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>订单类型：</label>
-		                        <select name="attr.order_type" valid="vselect" validname="订单类型" class="form-control  formSelect col-md-8" id="client_orderType" onchange="ordertypechange();">
+		                        <select name="attr.order_type" lay-filter="ordertypechange" valid="vselect" validname="订单类型" class="search-input  col-md-8 layui-input" id="client_orderType" >
 		                           ${ordertype!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择订单类型</p>
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
-		                        <select name="attr.report_language" valid="vselect" validname="报告语言" class="form-control  formSelect col-md-8" id="client_reportLanguage">
+		                        <select name="attr.report_language"  valid="vselect" validname="报告语言" class="search-input  col-md-8 layui-input" id="client_reportLanguage">
 		                        	${language!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择报告语言</p>
@@ -119,7 +119,7 @@
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>速度：</label>
-		                        <select name="attr.speed" valid="vselect" validname="速度" class="form-control  formSelect col-md-8" id="client_speed" onchange="speedchange()">
+		                        <select name="attr.speed" lay-filter="speedchange" valid="vselect" validname="速度" class="search-input  col-md-8 layui-input" id="client_speed" >
 		                           ${orderspeed!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择速度</p>
@@ -233,37 +233,56 @@
 		</div>
     
     
-   
+    <script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
     <script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>
     <script type="text/javascript" src="${BASE_PATH }static/common/valid.js"></script>
    <script type="text/javascript">
+   
+	   layui.use('form', function(){
+			var form = layui.form;  
+			form.render(); //更新全部
+			form.on('select(customChange)',function(data){
+				$.post('/admin/ordermanager/getCustom',{"id":data.value},function(data1){
+					console.log(data1)
+	   			$("#client_userNname").val(data1.name);
+				$("#client_userNname").attr("disabled","disabled");
+	   		})
+			})
+			form.on('select(continentchange)',function(data){
+				var html="";
+	   			console.log(data.value)
+	   			$.post('/credit/country/getCountrySelect2',{"attr.continent":data.value},function(data){
+	    		 	console.log(data)
+	    		  for(item in data){
+					html+="<option  m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";	        	
+	 	           }
+	 	           
+	 	           $("select[name='attr.country']").html(html);
+		 	        
+				   form.render('select'); 
+		 	       
+	    	 })
+	 	          countrychange();
+	 	         reportTypeChange();
+		
+	   		})
+	   		form.on('select(countrychange)',function(data){
+	   			countrychange();
+	 	         reportTypeChange();
+	   		})
+	   		form.on('select(speedchange)',function(data){
+	   			usetime();
+	   	 		price();
+	   		})
+	   		
+		});
+	   
    		$(function(){
    			$.get('/credit/front/home/getMessage',function(data){
    				getCompany(data.companys);
 			})	
    		})
-   		function customChange(){
-   			var value=$("#client_ID").find("option:selected").val();
-   			$.post("/credit/front/home/getCustomName",{"id":value},function(data){
-   				$("#client_userNname").val(data.name);
-   				$("#client_userNname").attr("disabled","disabled");
-   			})
-   		};
-   	 	function continentchange(){
-   			var value=$("#client_area").find("option:selected").attr("m-english");
-   			$("#client_area option:first").attr("disabled","disabled");
-   			var html="";
-       	 	$.post('/credit/country/getCountrySelect',{"attr.continent":value},function(data){
-    		 	console.log(data)
-    		  for(item in data){
-				html+="<option  m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";	        	
- 	           }
- 	           
- 	           $("select[name='attr.country']").html(html);
- 	          countrychange();
- 	         reportTypeChange();
-    	 })
-   		}
+   		
    	 	function reportTypeChange(){
    	 		//languagechange();
    	 		price()
@@ -282,10 +301,10 @@
    	    	price()
    	 	}
    	 	
-   	 	function speedchange(){
+   /* 	 	function speedchange(){
    	 		usetime();
    	 		price()
-   	 	}
+   	 	} */
    	 	/* function languagechange(){
    	 	var value1=  $("select[name='attr.country']").find("option:selected").attr("m-type");
     	var value3=$("select[name='attr.report_type']").find("option:selected").val();
@@ -354,11 +373,9 @@
 				$("select[name='attr.company_id']").append(html);	
 				console.log(html);
 				//重新渲染 否则option不能显示
-				layui.use('form', function(){
-					var form = layui.form;  
-					form.render(); //更新全部
-				});
    	 	}
+   	 	
+   	
    </script>
 <script type="text/javascript">
 function piliangDingDan(){
@@ -375,6 +392,9 @@ function piliangDingDan(){
 	        },
 	    });
 	 	}
-
+layui.use('form', function(){
+		var form = layui.form;  
+		form.render(); //更新全部
+	});
 </script>
 </html>
