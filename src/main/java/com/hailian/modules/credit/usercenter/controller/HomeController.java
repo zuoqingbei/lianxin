@@ -413,6 +413,8 @@ public class HomeController extends BaseProjectController {
 			}
 		}
 		try {
+			Date date1=new Date();
+			model.set("create_date", date1);
 			OrderManagerService.service.modifyOrder(0,model,user,this);
 			cof.save();
 			ResultType resultType=new ResultType(1,"操作成功");

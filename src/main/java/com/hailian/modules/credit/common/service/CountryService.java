@@ -61,6 +61,18 @@ public class CountryService {
 		}
 		return map;*/
 	}
+	public List<CountryModel> CountrySelect(String id) {
+		List<Object> params = new ArrayList<Object>();
+		StringBuffer sql = new StringBuffer("select * from credit_country where del_flag=0  ");
+		if (StringUtils.isNotBlank(id) && !"ALL".equals(id)) {
+			sql.append(" and continent=? order by order_no");
+			params.add(id);
+		} else {
+			sql.append("  order by continent, order_no");
+		}
+
+		return CountryModel.dao.find(sql.toString(), params.toArray());
+	}
 
 	/**
 	 * 
