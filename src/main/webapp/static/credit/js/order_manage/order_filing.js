@@ -76,6 +76,8 @@ let Filing = {
     modalSubmit(){
         /**模态框提交事件 */
         	 $("#modal_submit").click(function(){
+        		 $(".upload-over").remove();
+        		 
              	$("#status").val("296");
              	$(".tableValue").ajaxSubmit( {
              		success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
