@@ -24,8 +24,8 @@ jQuery(function($) {
 			var title = '查看模板信息';
 			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 		},
-		add : function() {
-			var url = '/credit/reporttempmanager/add/';
+		add : function(id) {
+			var url = '/credit/reporttempmanager/add?id='+id;
 			var title = '添加模板信息';
 			Iframe(url, this.width, this.height, title);
 		},

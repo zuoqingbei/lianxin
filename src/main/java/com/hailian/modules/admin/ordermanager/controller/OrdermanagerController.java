@@ -456,6 +456,12 @@ public class OrdermanagerController extends BaseProjectController{
 		renderJson(company);
 	}
 	
+	public void getCustom() {
+		String id=getPara("id");
+		CreditCustomInfo cci=CreditCustomInfo.dao.findById(id);
+		renderJson(cci);
+	}
+	
 	public File toPdf(UploadFile uploadFile) throws Exception{
 		TbSite site = getBackSite();
 		String projectStorePath = FileUploadUtils.getUploadPath(site, "view");

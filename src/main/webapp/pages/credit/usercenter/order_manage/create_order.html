@@ -50,7 +50,7 @@
 		                        <select name="attr.custom_id" lay-filter="customChange" valid="vselect" validname="客户ID" class="search-input  col-md-8 layui-input" id="client_ID" >
 		                            <option value="0" disabled selected>请输入客户ID</option>
 		                            <%for(item in customs){%>
-		                             <option value="${item.name}" >${item.id}</option>
+		                             <option value="${item.id}" >${item.id}</option>
 		                             <%}%>
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请输入客户ID</p>
@@ -239,9 +239,12 @@
 			var form = layui.form;  
 			form.render(); //更新全部
 			form.on('select(customChange)',function(data){
-	   			$("#client_userNname").val(data.value);
+				$.post('/admin/ordermanager/getCustom',{"id":data.value},function(data1){
+					console.log(data1)
+	   			$("#client_userNname").val(data1.name);
 				$("#client_userNname").attr("disabled","disabled");
 	   		})
+			})
 			form.on('select(continentchange)',function(data){
 				var html="";
 	   			console.log(data.value)
