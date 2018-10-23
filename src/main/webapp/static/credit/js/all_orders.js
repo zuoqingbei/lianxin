@@ -115,6 +115,7 @@ let Index = {
         /**点击重置按钮 */
         $(".resetrFilter").click(function(){
             $('.form-check-input:checkbox').removeAttr('checked');
+            
         })
     },
     searchEvent(){
@@ -153,6 +154,12 @@ let Index = {
             console.log(companyName,orderCName,deadDate,client,proxy,country)
 
             /***发起ajax请求 获取表格数据*/
+             $("#btn_reset").click(function(){
+		        $("#formSearch div input").val("");
+		        $("#client option:first").prop("selected","selected")
+		        $("#proxy option:first").prop("selected","selected")
+		        $("#country option:first").prop("selected","selected")
+		      })
         })
     },
     hideShowStyle(){
