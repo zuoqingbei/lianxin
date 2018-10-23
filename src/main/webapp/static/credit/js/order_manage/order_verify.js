@@ -63,17 +63,6 @@ let Verify = {
 
       /**附件删除 */
       $(".file-upload").on('click','.uploadFile .close',function(e){
-    	  if(!$(this).parents(".uploadFile").attr("fileId")) {
-    		  $(e.target).parents(".uploadFile").remove()
-	  	        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4 mb-5']").length<1 ){
-	  	            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-	  	                <input type="file" name="" id="upload_file" value="" class="file-input" />
-	  	                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-	  	                <p class="mt-2">上传附件</p>
-	  	            </div>`);
-	  	        }
-    		  return;
-    	  }
     	 $.ajax({
      			type:"post",
          		url:"/credit/front/orderProcess/deleteFile",
@@ -82,11 +71,13 @@ let Verify = {
          		success:function(obj){
 	         			$(e.target).parents(".uploadFile").remove()
 	        	        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4 mb-5']").length<1 ){
-	        	            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-	        	                <input type="file" name="" id="upload_file" value="" class="file-input" />
-	        	                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-	        	                <p class="mt-2">上传附件</p>
-	        	            </div>`);
+	        	            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4 mb-5">
+	        	                <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
+        	                	  <div class="over-box">
+	        	                	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+	        	                	<p class="mt-2">上传附件</p>
+	        	                  </div>
+	        	                </div>`);
 	        	        }
          				$.ajax({
 	              			type:"post",
@@ -103,14 +94,6 @@ let Verify = {
       })
 
     },
-   /* toOrderDetail(){
-        *//**点击订单号跳转订单详情 *//*
-        $(".fixed-table-body-columns table tbody").click(function(e){
-            e = e || window.event;
-            let order_num = $(e.target).text();
-            window.location.href = 'order_detail.html?order_num='+order_num;
-        })
-    },*/
     modalSubmit(){
         /**模态框提交事件 */
     	let that = this
@@ -378,10 +361,14 @@ let Verify = {
     	 sortName = row.sortName;
     	  sortOrder = row.sortOrder;
         //文件回显
-        console.log(row.files)
+        console.log(row.files) 	
        // $(".file-upload").html("");
         $(".upload-over").remove();
         if(row.files.length === 0){return}
+        if(row.files.length > 4) {
+        
+        	$(".uploadFile:not(.upload-over)").remove();
+        }
         for (var i in row.files){
         	let filetype = row.files[i].ext.toLowerCase()
         	let fileicon = ''
@@ -395,10 +382,7 @@ let Verify = {
 	             fileicon = '/static/credit/imgs/order/JPG.png'
 	           }else if(filetype === 'pdf') {
 	             fileicon = '/static/credit/imgs/order/PDF.png'
-	           }else {
-	               Public.message("info","不支持上传此种类型文件！")
-	               return
-	             }
+	           }
         	let fileArr = ''
         	let filename = row.files[i].originalname
     		let num = filename.split(".").length;
@@ -421,8 +405,7 @@ let Verify = {
 	        				 '<p class="filename">'+filename+'</p>'+
         				 '</div>'+
         				 '</div>'
-        				 
-           $(".uploadFile:not(.upload-over)").before(fileArr)
+        $(".file-upload>label").after(fileArr)	 
            
            $(".upload-over").click(function(e){
         	   console.log($(e.target))
