@@ -1,0 +1,80 @@
+
+<% 
+var headContent = {
+	include("/pages/template/head.html"){}
+};
+
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal">
+	<!-- 数据列表 -->
+		<table class="table">
+		<tr>
+			<td>代理编码</td>
+			<td>${model.agent_id}</td>
+		</tr>
+		<tr>
+			<td>代理类型</td>
+			<td>${model.agentType}</td>
+		</tr>
+		<tr>
+			<td>代理名称</td>
+			<td> ${model.agent_name}</td>
+		</tr>
+		<tr>
+			<td>邮政编码</td>
+			<td>${model.postal_code}</td>
+		</tr>
+		<tr>
+			<td>代理用时</td>
+			<td>${model.proxy_time}</td>
+		</tr>
+		<tr>
+			<td>邮箱</td>
+			<td>${model.memo}</td>
+		</tr>
+		<tr>
+			<td>价格</td>
+			<td>${model.price}</td>
+		</tr>
+		<tr>
+			<td>币种</td>
+			<td>${model.Currency}</td>
+		</tr>
+		<tr>
+			<td>速度</td>
+			<td>${model.Speed}</td>
+		</tr>
+		<tr>
+			<td>是否禁用</td>
+			<td>${model.Usabled}</td>
+		</tr>
+		<tr>
+			<td>省份</td>
+			<td>${model.provinceName}</td>
+		</tr>
+		<tr>
+			<td>城市</td>
+			<td>${model.cityName}</td>
+		</tr>
+		<tr>
+			<td>国家</td>
+			<td>${countrys}</td>
+		</tr>
+		<tr>
+			<td>代理类别</td>
+			<td>${model.agent_category}</td>
+		</tr>
+		</table>
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%} %>
+

@@ -98,6 +98,7 @@ public class FtpUploadFileUtils {
 		ftp.setControlEncoding("UTF-8");
 		ftp.setPassiveNatWorkaround(true);
 		try {
+			ftp.setRemoteVerificationEnabled(false);
 			// 连接至服务器，端口默认为21时，可直接通过URL连接
 			ftp.connect(url, port);
 			// 登录服务器
