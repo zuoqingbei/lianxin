@@ -52,6 +52,14 @@ public class CreditUploadFileModel extends BaseProjectModel<CreditUploadFileMode
 		String sql="select * from credit_upload_file where business_id=?";
 		return dao.find(sql, business_id);
 	}
+	public CreditUploadFileModel getById(int id){
+		String sql="select t.*,t3.realname from credit_upload_file t";
+		sql+=" left join sys_user t3 on t3.userid = t.create_by ";
+		sql+=" where t.id=? and t.del_flag=0";
+		List<Object> params=new ArrayList<Object>();
+		params.add(id);
+		return dao.findFirst(sql, params.toArray());
+	}
 	/**
 	 * 列表分页展示
 	* @author doushuihai  

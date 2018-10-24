@@ -46,9 +46,9 @@ let Login = {
                     			$(".error-tip").show();
                     		}else{
                     			$(".error-tip").hide();
-                    			window.location.href = path+"credit/front/home/menu";
-                    			$("#main_content").load("/credit/front/home");
-								  sessionStorage.setItem('pageUrl','/credit/front/home');
+                    			window.location.href = BASE_PATH+"credit/front/home/menu";
+                    			$("#main_content").load(BASE_PATH+"credit/front/home");
+								  sessionStorage.setItem('pageUrl',BASE_PATH+'credit/front/home');
 								  sessionStorage.setItem('menuId',$(".left-nav ul li:first").attr("id"));
  								  $(".leftNav").find("li").removeClass("active");
  								  $("#work_console").addClass("active");

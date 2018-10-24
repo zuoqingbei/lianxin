@@ -27,7 +27,7 @@ let Verify = {
             //console.log(reporter,remarks);
             $.ajax({
        			type:"post",
-       			url:"/credit/front/orderProcess/statusSave",
+       			url:BASE_PATH+"credit/front/orderProcess/statusSave",
        			data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
        				+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
        				+"&searchType=-2&model.confirm_reason="+$("#cfr").val()
@@ -47,7 +47,7 @@ let Verify = {
        			console.log("提交成功,开始回显:"+data.message);
        			 $.ajax({
        				type:"post",
-           			url:"/credit/front/orderProcess/listJson",
+           			url:BASE_PATH+"credit/front/orderProcess/listJson",
            			data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-2",
            			dataType:"json",
            			success:function(obj){
@@ -68,7 +68,7 @@ let Verify = {
             //console.log(reporter,remarks);
             $.ajax({
        			type:"post",
-       			url:"/credit/front/orderProcess/statusSave",
+       			url:BASE_PATH+"credit/front/orderProcess/statusSave",
        			data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
    				+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
    				+"&searchType=-2&model.confirm_reason="+$("#cfr").val()
@@ -88,7 +88,7 @@ let Verify = {
        			console.log("提交成功,开始回显:"+data.message);
        			 $.ajax({
        				type:"post",
-           			url:"/credit/front/orderProcess/listJson",
+           			url:BASE_PATH+"credit/front/orderProcess/listJson",
            			data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-2",
            			dataType:"json",
            			success:function(obj){
@@ -263,7 +263,7 @@ let Verify = {
                 }
 
             ],
-            url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
+            url : BASE_PATH+'credit/front/orderProcess/listJson', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',

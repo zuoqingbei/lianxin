@@ -19,7 +19,7 @@ let Verify = {
             console.log("mail_associate_recipient:"+$("#mail_associate_recipient").val());
             $.ajax({
        			type:"post",
-       			url:"/credit/front/orderProcess/statusSave",
+       			url:BASE_PATH+"credit/front/orderProcess/statusSave",
        			data:"model.mail_receiver="+$("#mail_receiver").val()+"&model.mail_associate_recipient="+$("#mail_associate_recipient").val()+"&model.id="+id+"&statusCode=311"+"&searchType=-5",/*314订单完成状态*/
        			dataType:"json",
        			success:function(data){
@@ -36,7 +36,7 @@ let Verify = {
        			console.log("提交成功,开始回显:"+data.message);
        			 $.ajax({
        				type:"post",
-           			url:"/credit/front/orderProcess/listJson",
+           			url:BASE_PATH+"credit/front/orderProcess/listJson",
            			data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-5",
            			dataType:"json",
            			success:function(obj){
@@ -179,7 +179,7 @@ let Verify = {
                 }
 
             ],
-            url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
+            url : BASE_PATH+'credit/front/orderProcess/listJson', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',

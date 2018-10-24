@@ -209,6 +209,7 @@ label.col-md-4{
  .bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td {
     border-width: 1px 0;
     border-color: #e5e5e5;
+    white-space:nowrap;
  }
  .bootstrap-table .table thead > tr > th {
     border-width: 1px 0;

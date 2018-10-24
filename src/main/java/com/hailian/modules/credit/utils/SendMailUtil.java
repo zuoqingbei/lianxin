@@ -54,6 +54,12 @@ public class SendMailUtil {
         props.setProperty("mail.transport.protocol", "smtp");
         //设置发件人的SMTP服务器地址
         props.setProperty("mail.smtp.host", "smtp.qq.com");
+        
+        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.smtp.port", "465");
+        props.setProperty("mail.smtp.socketFactory.port", "465");
+
         //2、创建定义整个应用程序所需的环境信息的 Session 对象
         Session session = Session.getInstance(props);
         //设置调试信息在控制台打印出来

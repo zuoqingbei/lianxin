@@ -18,7 +18,7 @@ let
 					console.log(formData)
 					$.ajax({
 						type: "POST", // 数据提交类型
-						url: "/credit/orderpoimanager/importExcel", // 发送地址
+						url: BASE_PATH+"credit/orderpoimanager/importExcel", // 发送地址
 						data: formData, //发送数据
 						dataType:"json",
 						async: true, // 是否异步

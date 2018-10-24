@@ -107,7 +107,7 @@ let Filing = {
                console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-7");
                		$.ajax({
                			type:"post",
-                   		url:"/credit/front/orderProcess/listJson",
+                   		url:BASE_PATH+"credit/front/orderProcess/listJson",
                    		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-7",
                    		dataType:"json",
                    		success:function(obj){
@@ -134,7 +134,7 @@ let Filing = {
                  //console.log(reporter,remarks);
                  $.ajax({
             			type:"post",
-            			url:"/credit/front/orderProcess/orderAgentSave",
+            			url:BASE_PATH+"credit/front/orderProcess/orderAgentSave",
             			data:"model.agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.agent_category="+agent_category,
             			dataType:"json",
             			success:function(data){
@@ -145,7 +145,7 @@ let Filing = {
                        	Public.message("success",data.message);
                        	$.ajax({
     	           			type:"post",
-    	               		url:"/credit/front/orderProcess/listJson",
+    	               		url:BASE_PATH+"credit/front/orderProcess/listJson",
     	               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-7",
     	               		dataType:"json",
     	               		success:function(obj){
@@ -389,7 +389,7 @@ let Filing = {
     }
 
   ],
-              url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
+              url : BASE_PATH+'credit/front/orderProcess/listJson', // 请求后台的URL（*）
               method : 'post', // 请求方式（*）post/get
               pagination: true, //分页
               sidePagination: 'server',

@@ -440,7 +440,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			params.add(status);
 		}
 		if (StringUtils.isNotBlank(sortname)) {
-			sql.append(" order by t." ).append(sortname).append("  "+sortorder);
+			sql.append(" order by t." ).append("create_date").append("  "+sortorder);
 		} 
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
@@ -814,7 +814,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
-			fromSql.append(" order by c.receiver_date desc,c.ID desc ");
+			fromSql.append(" order by c.create_date desc,c.ID desc ");
 		} else {
 			fromSql.append(" order by ").append(orderBy).append(",c.ID desc ");
 		}

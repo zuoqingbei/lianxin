@@ -57,6 +57,32 @@ public class TemplateReportTypeService extends BaseService {
 	}
 	/**
 	 * 
+	 * @time   2018年10月23日 上午9:50:52
+	 * @author yangdong
+	 * @todo   TODO 默认选项为新订单
+	 * @param  @param selectedId
+	 * @param  @return
+	 * @return_type   String
+	 */
+	public String getReportTypeString2(Object selectedId) {
+		StringBuffer sb=new StringBuffer();
+		List<ReportTypeModel> listDetail = getReportType();
+		for(ReportTypeModel detail:listDetail){
+			if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
+				sb.append("<option selected='selected' m-detail-id='"+detail.get("id")+"' m-english='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
+			}else{
+				if("请选择报告类型".equals(detail.getStr("name"))){
+					sb.append("<option selected='selected' m-detail-id='"+detail.get("id")+"' m-english='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
+				}else{
+					sb.append("<option m-detail-id='"+detail.get("id")+"' m-english='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
+				}
+			}
+			
+		}
+		return sb.toString();
+	}
+	/**
+	 * 
 	 * @todo   获取全部默认报告类型
 	 * @time   2018年9月3日 下午7:12:53
 	 * @author zuoqb
