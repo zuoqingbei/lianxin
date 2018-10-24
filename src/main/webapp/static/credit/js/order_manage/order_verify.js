@@ -1,6 +1,6 @@
 let Verify = {
     init(){
-        /**初始化函数 */
+        /**初始化函数*** */
     	this.pageNumber = "";
     	this.pageSize = "";
     	this.sortName = "";
@@ -68,7 +68,7 @@ let Verify = {
       $(".file-upload").on('click','.uploadFile .close',function(e){
     	 $.ajax({
      			type:"post",
-         		url:"/credit/front/orderProcess/deleteFile",
+         		url:BASE_PATH+"credit/front/orderProcess/deleteFile",
          		data:"model.id="+$(this).parents(".uploadFile").attr("fileId"),
          		dataType:"json",
          		success:function(obj){
@@ -84,7 +84,7 @@ let Verify = {
 	        	        }
          				$.ajax({
 	              			type:"post",
-	                  		url:"/credit/front/orderProcess/listJson",
+	                  		url:BASE_PATH+"credit/front/orderProcess/listJson",
 	                  		data:"pageNumber="+that.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
 	                  		dataType:"json",
 	                  		success:function(obj){
@@ -115,7 +115,7 @@ let Verify = {
                     //回显
          	  		$.ajax({
          	  			type:"post",
-         	      		url:"/credit/front/orderProcess/listJson",
+         	      		url:BASE_PATH+"credit/front/orderProcess/listJson",
          	      		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
          	      		dataType:"json",
          	      		success:function(obj){
@@ -145,7 +145,7 @@ let Verify = {
         	           //加载表格数据
         			 $.ajax({
             				type:"post",
-                			url:"/credit/front/orderProcess/listJson",
+                			url:BASE_PATH+"credit/front/orderProcess/listJson",
                 			data:"pageNumber="+that.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
                 			dataType:"json",
                 			success:function(obj){
@@ -194,7 +194,7 @@ let Verify = {
           	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
           		$.ajax({
           			type:"post",
-              		url:"/credit/front/orderProcess/listJson",
+              		url:BASE_PATH+"credit/front/orderProcess/listJson",
               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
               		dataType:"json",
               		success:function(obj){
@@ -368,8 +368,9 @@ let Verify = {
        // $(".file-upload").html("");
         $(".upload-over").remove();
         if(row.files.length === 0){$(".uploadFile:not(.upload-over)").show();return}
+        console.log(row.files.length)
         if(row.files.length > 4) {
-        
+        	alert(1)
         	$(".uploadFile:not(.upload-over)").hide();
         }else {
         	$(".uploadFile:not(.upload-over)").show()
@@ -433,7 +434,7 @@ let Verify = {
   }
 
 ],
-            url : '/credit/front/orderProcess/listJson', // 请求后台的URL（*）
+            url : BASE_PATH+'credit/front/orderProcess/listJson', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
             sidePagination: 'server',

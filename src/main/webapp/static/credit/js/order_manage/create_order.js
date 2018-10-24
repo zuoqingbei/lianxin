@@ -18,7 +18,7 @@ let
 					console.log(formData)
 					$.ajax({
 						type: "POST", // 数据提交类型
-						url: "/credit/orderpoimanager/importExcel", // 发送地址
+						url: BASE_PATH+"credit/orderpoimanager/importExcel", // 发送地址
 						data: formData, //发送数据
 						dataType:"json",
 						async: true, // 是否异步
@@ -33,11 +33,11 @@ let
 							Page.initTable(data.orderList)
 							if(data.errormark.statusCode===2){
 								 $(".err-box span").html(data.errormark.message)
-								 $(".err-box").show();
+								 $(".err-box").show()
 								 $("#modal_submit").addClass("btn-disabled disabled").removeClass("btn-primary")
 								
 				               }else{
-				            	 $(".err-box").hide();
+				            	 $(".err-box").hide()
 				   				 $("#modal_submit").removeClass("btn-disabled disabled").addClass("btn-primary")
 				               }
 							$("#tableOrder").bootstrapTable("load",data.orderList)
@@ -142,19 +142,19 @@ let
 				$("input[name='attr.status']").val("291");
 					$("#orderForm").ajaxSubmit({
 						success:function(data){
-							//console.log(JSON.stringify(data));
+							console.log(JSON.stringify(data));
 							  if(data.statusCode===1){
                         		Public.message("success",data.message);
-                        		
+                        		Public.goList();
                        		 }else{
                         		Public.message("error",data.message);
-                        		
+                        		Public.goList();
                         	}
 
 						},
 						error:function(data){
 							Public.message("error",data.message);
-							
+							Public.goList();
 						}
 					});
 			}

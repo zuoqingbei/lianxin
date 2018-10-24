@@ -1,6 +1,7 @@
 let Allocation = {
-		
+	
     init(){
+    	console.log(BASE_PATH)
         /**初始化函数 */
     	this.pageNumber = "";
     	this.pageSize = "";
@@ -16,6 +17,8 @@ let Allocation = {
     modalSubmit(){
         /**模态框提交事件 */
         $("#modal_submit").click(function(){
+        	console.log("模态框提交事件:"+BASE_PATH);
+        	
             let reporter = $("#reporter_select option:selected").val();
             let remarks = $("#remarks").val();
             let id = $("#orderId").val();
