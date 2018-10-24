@@ -3,6 +3,7 @@ let BasicWrite = {
         /**函数初始化 */
         this.dateForm(); 
         this.initTable();
+        this.addressInit();
         this.addRcordRow();
         this.addShareholdersInfoRow();
         this.addShareholdersDetailRow();
@@ -141,6 +142,20 @@ let BasicWrite = {
    	   	
    		})
    			
+    },
+    addressInit(){
+        $("#qy_address").focus(function (e) {
+            SelCity(this,e);
+            let top = $("#qy_address").offset().top
+            $("#PoPy").css("top",top+30+"px")
+            $(".main").scroll(()=>{
+                let top = $("#qy_address").offset().top
+                $("#PoPy").css("top",top+30+"px")
+                if(top < 90) {
+                    $("#cColse").trigger("click")
+                }
+            })
+        });
     },
     dateForm(){
         /**日期控件 */

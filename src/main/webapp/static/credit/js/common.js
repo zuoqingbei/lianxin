@@ -30,6 +30,30 @@ let Public = {
                 $(this).parent().addClass("hasChild");
             }
         });
+      //菜单展开收缩
+        this.isSQ = false
+        $("#handleMenu").click(()=>{
+            if(!this.isSQ){
+                this.isSQ = !this.isSQ
+                //没被收起
+                $(".fixed-table-header>.table").css("width","99.9%")
+                $(".head-logo-box").removeClass("col-xs-2 col-sm-2 col-md-2 col-lg-2")
+                $("#main_content").css({"width":"99.9%"})
+                $(".nav-row").css({"width":"0.1%"})
+                $(".head-logo-box").css({"width":"0.1%"})
+                $(".nav-row").removeClass("col-md-2")
+                $("#main_content").removeClass("col-md-10")
+                $(".border-div").css({"background":"url(/static/credit/imgs/index/right_arrow.png) no-repeat","backgroundSize":"100% 100%"})
+            }else {
+                this.isSQ = !this.isSQ
+                //被收起
+                $(".nav-row").css("width","16.66%")
+                $("#main_content").css("width","83.33%")
+                $(".head-logo-box").css("width","16.66%")
+                $(".border-div").css({"background":"url(/static/credit/imgs/index/left_arrow.png) no-repeat","backgroundSize":"100% 100%"})
+                
+            }
+        })
         //菜单点击
         $leftNav.find("li").click(function () {
         	
