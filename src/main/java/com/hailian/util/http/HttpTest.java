@@ -53,7 +53,7 @@ public class HttpTest {
 		//图片识别
 		File imageFile = new File("mofcomVerifyCode.jpg");//图片位置
         ITesseract instance = new Tesseract();  // JNA Interface Mapping
-        instance.setDatapath("C:\\Users\\Administrator\\Desktop\\tessdata");//设置tessdata位置
+        instance.setDatapath("C:\\Users\\Administrator.USER-20170308NO\\Desktop\\tessdata");//设置tessdata位置
         instance.setLanguage("eng");//选择字库文件（只需要文件名，不需要后缀名）
         String verifyCode = null;
 		try {
@@ -65,7 +65,7 @@ public class HttpTest {
 			e.printStackTrace();
 		}
 		System.out.println("11111111111");
-		getSource("", cookieStore, verifyCode);
+		System.out.println(getSource("", cookieStore, verifyCode));
 		//HttpClientUtils.sendGet("http://iecms.mofcom.gov.cn/pages/corp/NewCMvCorpInfoTabList.html", "sp=S&sp=S"+name+"&sp=S&sp=Ssearch&sp=S"+verifyCode);
 		//HttpClientUtils.sendGet("http://wsjs.saic.gov.cn/txnS02.do", "y7bRbp=qmMEweVsmDl9_cN6OQYJvmxp_gbEk8.KgI.mouS16BABs9C4.A7NcK_F_zIxwkWtQHERRNxbxt8j469VFNXeZR4eMLZxKZkJiJ8sqy1gT5PRFQDP9hyeWue5nEOD1VxhiQeIt2mWemsaaD8_zKMPL_6BMVSiMeOe0vBRPh2SNDLS6GqX&c1K5tw0w6_=2d2XcxYZ7RcRNijUy8YPC6ahXg2of22SgU7RkwuP4m_o9um3vxueRoIrMYSXxpGJe3fnageWWOEiGpFVPs6sCfeCXX51Nrrf91urOx1zA9zOV7E.VZIjC5KgP6I4ov0Ga");
 		
@@ -91,18 +91,17 @@ public class HttpTest {
         postData.add(new BasicNameValuePair("identifyingCode", verifyCode));
 	    CloseableHttpResponse response = null;
 	    
-	    HttpClientBuilder builder = HttpClients.custom().setDefaultCookieStore(cookieStore)
-	            .disableAutomaticRetries() //关闭自动处理重定向
-	            .setRedirectStrategy(new LaxRedirectStrategy());//利用LaxRedirectStrategy处理POST重定向问题
+	    HttpClientBuilder builder = HttpClients.custom().setDefaultCookieStore(cookieStore);
 	    CloseableHttpClient httpclient = builder.build();
 	    //CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();   // 使用默认的HttpClient
 	    try {
 	    	httppost.setEntity(new UrlEncodedFormEntity(postData));//捆绑参数
 	        response = httpclient.execute(httppost);
-	        html = EntityUtils.toString(response.getEntity(), "utf-8");
-//	        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {     // 返回 200 表示成功
-//	            html = EntityUtils.toString(response.getEntity(), "utf-8");     // 获取服务器响应实体的内容
-//	        }
+	       // html = EntityUtils.toString(response.getEntity(), "utf-8");
+	        System.out.println(response.getAllHeaders());
+	        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {     // 返回 200 表示成功
+	            html = EntityUtils.toString(response.getEntity(), "utf-8");     // 获取服务器响应实体的内容
+	        }
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    } finally {
