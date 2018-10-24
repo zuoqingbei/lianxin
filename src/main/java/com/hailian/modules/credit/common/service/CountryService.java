@@ -65,10 +65,10 @@ public class CountryService {
 		List<Object> params = new ArrayList<Object>();
 		StringBuffer sql = new StringBuffer("select * from credit_country where del_flag=0  ");
 		if (StringUtils.isNotBlank(id) && !"ALL".equals(id)) {
-			sql.append(" and continent=? order by order_no");
+			sql.append(" and continent=? order by   scale DESC,CONVERT (`NAME` USING gbk) COLLATE gbk_chinese_ci ASC ");
 			params.add(id);
 		} else {
-			sql.append("  order by continent, order_no");
+			sql.append("  order by scale DESC,CONVERT (`NAME` USING gbk) COLLATE gbk_chinese_ci ASC ");
 		}
 
 		return CountryModel.dao.find(sql.toString(), params.toArray());

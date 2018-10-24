@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -318,6 +319,11 @@ public class HomeController extends BaseProjectController {
 	    String year=String.valueOf(calendar.get(Calendar.YEAR));
 	    String month=String.valueOf(calendar.get(Calendar.MONTH));
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		String countryId = model.get("country");
+		if(countryId!=null&&!"".equals(countryId)){
+			Db.update("update credit_country set `scale`=`scale`+1 where id="+countryId);
+		}
+		
 		model.set("num", num);
 		model.set("receiver_date", date);
 		model.set("year", year);
