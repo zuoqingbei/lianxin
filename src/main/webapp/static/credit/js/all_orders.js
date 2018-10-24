@@ -11,7 +11,7 @@ let Index = {
     dateForm(){
         /**日期控件 */
         laydate.render({
-            elem: '#dead_date'
+            elem: '#txt_search_date'
         });
     },
     fileEvent(){
