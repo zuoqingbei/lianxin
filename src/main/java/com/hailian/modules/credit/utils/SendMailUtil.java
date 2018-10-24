@@ -119,7 +119,7 @@ public class SendMailUtil {
         return msg;
     }
     public static String sendMailCode(String recipientAddress) {
-    	String title="这是一封验证码邮件";
+    	String title="这是一个重置密码的验证码";
     	String code=getCode();
     	String content="您的验证码是:"+code+"。如果不是本人操作请忽略。";
     	
@@ -133,7 +133,7 @@ public class SendMailUtil {
     }
 
     public static void main(String[] args) throws Exception {
-    	sendMailCode("15269274025@163.com");
+    	sendMailCode("dou_shai@163.com");
 	}
     /**
      * 生成邮箱验证码
