@@ -42,7 +42,7 @@ public class CreditFrontUserInterceptor implements Interceptor {
 	public boolean isPass(String url) {
 		boolean isPass = false;
 		for (String pass : PASS) {
-			if (pass.equals(url)) {
+			if (pass.contains(url)) {
 				isPass = true;
 				break;
 			}
