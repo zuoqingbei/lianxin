@@ -10,7 +10,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
-import com.hailian.modules.credit.reportmanager.model.CreditReportTempConf;
+import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.jfinal.plugin.activerecord.Page;
 /**
  * 
@@ -20,9 +20,9 @@ import com.jfinal.plugin.activerecord.Page;
  * @todo   TODO 报告模板管理
  */
 @Api(tag = "报告模板", description = "操作报告模板")
-@ControllerBind(controllerKey = "/credit/reporttempmanager")
-public class ReportTempConfController extends BaseProjectController{
-	private static final String path = "/pages/credit/reportmanager/reporttemp_";
+@ControllerBind(controllerKey = "/credit/reportmodulemanager")
+public class ReportModuleConfController extends BaseProjectController{
+	private static final String path = "/pages/credit/reportmanager/reportmodule_";
 	
 	public void index() {
 		list();
@@ -37,13 +37,13 @@ public class ReportTempConfController extends BaseProjectController{
 	 */
 	public void list() {
 		//接收查询条件
-		CreditReportTempConf temp=getModelByAttr(CreditReportTempConf.class);
+		CreditReportModuleConf temp=getModelByAttr(CreditReportModuleConf.class);
 		//获取分页对象
 		Paginator pageinator=getPaginator();
 		//查询数据集合
-		Page<CreditReportTempConf> page=CreditReportTempConf.dao.findTemps(temp,pageinator,this);
+		Page<CreditReportModuleConf> page=CreditReportModuleConf.dao.findTemps(temp,pageinator,this);
 		//获取全部磨板类型
-		List<CreditReportTempConf> crtf=CreditReportTempConf.dao.getAllTemp();
+		List<CreditReportModuleConf> crtf=CreditReportModuleConf.dao.getAllTemp();
 		setAttr("page",page);
 		setAttr("crtf",crtf);
 		setAttr("model",temp);
@@ -60,8 +60,8 @@ public class ReportTempConfController extends BaseProjectController{
 	public void add() {
 		String id=getPara("id").toString();
 		if(StringUtils.isNotBlank(id)) {
-			CreditReportTempConf model=CreditReportTempConf.dao.findById(id);
-			CreditReportTempConf model1=new CreditReportTempConf();
+			CreditReportModuleConf model=CreditReportModuleConf.dao.findById(id);
+			CreditReportModuleConf model1=new CreditReportModuleConf();
 			//区分一级菜单二级菜单三级菜单
 			String nodeType=model.getStr("node_type");
 			//新建一级目录
@@ -106,7 +106,7 @@ public class ReportTempConfController extends BaseProjectController{
 	public void edit() {
 		String id=getPara("id").toString();
 		if(StringUtils.isNotBlank(id)) {
-			CreditReportTempConf model=CreditReportTempConf.dao.findById(id);
+			CreditReportModuleConf model=CreditReportModuleConf.dao.findById(id);
 				setAttr("model",model);
 				render(path+"edit.html");
 		}
@@ -120,7 +120,7 @@ public class ReportTempConfController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	public void save2() {
-		CreditReportTempConf model=getModelByAttr(CreditReportTempConf.class);
+		CreditReportModuleConf model=getModelByAttr(CreditReportModuleConf.class);
 		model.set("update_date", new Date());
 		model.set("update", getSessionUser().getUserid());
 		/*if(model.get("report")) {
@@ -144,7 +144,7 @@ public class ReportTempConfController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	public void save() {
-		CreditReportTempConf model=getModelByAttr(CreditReportTempConf.class);
+		CreditReportModuleConf model=getModelByAttr(CreditReportModuleConf.class);
 		model.set("create_date", new Date());
 		/*if(model.get("report")) {
 			
@@ -160,7 +160,7 @@ public class ReportTempConfController extends BaseProjectController{
 		}
 	public void delete() {
 		String id=getPara("id").toString();
-		CreditReportTempConf model=CreditReportTempConf.dao.findById(id);
+		CreditReportModuleConf model=CreditReportModuleConf.dao.findById(id);
 		model.set("del_flag", "1");
 		try {
 			model.update();
