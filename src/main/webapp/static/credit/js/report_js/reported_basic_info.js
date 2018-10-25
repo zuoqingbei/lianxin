@@ -1,17 +1,20 @@
 let BasicWrite = {
     init(){
         /**函数初始化 */
+        Public.tabFixed(".tab-bar",".main",120,90)
+        let row = JSON.parse(localStorage.getItem("row"));
         this.dateForm(); 
-        this.initTable();
+        this.addressInit();
         this.addRcordRow();
+        this.tabChange();
+        this.goToInfoImport();
+        this.initTable(row.company_id);
         this.addShareholdersInfoRow();
         this.addShareholdersDetailRow();
         this.addInvestmentRow();
         this.addManagementRow();
-        this.tabChange();
-        this.goToInfoImport();
-        Public.tabFixed(".tab-bar",".main",120,90)
-        let row = JSON.parse(localStorage.getItem("row"));
+        console.log(" console.log(row):")
+        console.log(row)
         //回显基本信息
         $("#custom_id").html(row.custom_id);
         $("#customId").html(row.customId);
@@ -31,8 +34,7 @@ let BasicWrite = {
         $("#num").html(row.num);
         $("#end_date").html(row.end_date);
         console.log("companyId="+row.company_id)
-        window.cpi = row.company_id;
-        console.log("companyId=" +  window.cpi);
+      
         //回显企业注册信息
         $.ajax({
    			type:"post",
@@ -54,17 +56,73 @@ let BasicWrite = {
    				$("#qy_sale").val(data.operation_scope);
    			 }
    		})
+   		
         //回显文件
-        /*$.ajax({
+        $.ajax({
    			type:"post",
    			url:"/credit/front/orderProcess/getFilesByOrderId",
    			data:"orderId="+row.id,
    			dataType:"json",
    			success:function(data){
    				console.log(data);
-   			 	 $().bootstrapTable("load",data)
+   			 console.log(data.files) 	
+   	       $(".order-detail").html("");
+   	       
+   	        if(data.files.length === 0){$(".uploadFile:not(.upload-over)").show();return}
+   	        console.log(data.files.length)
+   	        /*if(data.files.length > 4) {
+   	        	alert(1)
+   	        	$(".uploadFile:not(.upload-over)").hide();
+   	        }else {*/
+   	        	$(".uploadFile:not(.upload-over)").show()
+   	        //}
+   	        for (var i in data.files){
+   	        	let filetype = data.files[i].ext.toLowerCase()
+   	        	let fileicon = ''
+   	        	if(filetype === 'doc' || filetype === 'docx') {
+   		             fileicon = '/static/credit/imgs/order/word.png'
+   		           }else if(filetype === 'xlsx' || filetype === 'xls') {
+   		             fileicon = '/static/credit/imgs/order/Excel.png'
+   		           }else if(filetype === 'png') {
+   		             fileicon = '/static/credit/imgs/order/PNG.png'
+   		           }else if(filetype === 'jpg') {
+   		             fileicon = '/static/credit/imgs/order/JPG.png'
+   		           }else if(filetype === 'pdf') {
+   		             fileicon = '/static/credit/imgs/order/PDF.png'
+   		           }
+   	        	let fileArr = ''
+   	        	let filename = data.files[i].originalname
+   	        	let all_name = filename + filetype
+   	    		let num = filename.split(".").length;
+   	            let filename_qz = []
+   	            for(let i=0;i<num;i++){  
+   	              filename_qz =  filename_qz.concat(filename.split(".")[i])
+   	            }
+   	            filename_qz_str = filename_qz.join('.')
+   	            if(filename_qz_str.length>4) {
+   	              filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
+   	            }
+   	            
+   	            filename = filename_qz_str + '.' +filetype
+   	        	fileArr += '<div class="uploadFile mt-3 mr-4 mb-5 upload-over" fileId="'+data.files[i].id+'" url="'+data.files[i].view_url+'" style="cursor:pointer">'+
+   	        				'<div class="over-box">'+
+   		        				'<img src="'+fileicon+'" class="m-auto"/>'+
+   		        				 '<p class="filename" title="'+all_name+'">'+filename+'</p>'+
+   	        				 '</div>'+
+   	        				 '</div>'
+   	        
+			  $(".order-detail").append(fileArr)	
+   	           $(".upload-over").click(function(e){
+   	        	   console.log($(e.target))
+   	        	   if($(e.target).parent().attr("class") === 'close') {
+   	        		   return
+   	        	   }
+   	        	   window.open($(this).attr("url"))
+   	        	   
+   	           })
+   	        }
    			 }
-   		})*/
+   		})
         //将form序列化转化为json
         function getFormData($form) {
             var unindexed_array = $form.serializeArray();
@@ -86,9 +144,13 @@ let BasicWrite = {
    			console.log(JSON.stringify($("#tableInvestment").bootstrapTable('getData')));//投资情况
    			console.log(JSON.stringify($("#tableManagement").bootstrapTable('getData')));//管理层
 	   		$.ajax({
-	   			type:"post",
-	   			url:BASE_PATH+"credit/front/orderProcess/ReportedSave",
-	   			data:"companyHistory="+(JSON.stringify($("#tableRecord").bootstrapTable('getData'))//公司历史数据
+	   			   type:"post",
+	   			   url:BASE_PATH+"credit/front/orderProcess/reportedSave",
+	   			   data: "companyHistory="+(JSON.stringify($("#tableRecord").bootstrapTable('getData'))//公司历史数据
+	   					+"&tableShareholdersInfo="+JSON.stringify($("#tableShareholdersInfo").bootstrapTable('getData'))
+	   					+"&tableShareholdersDetail="+JSON.stringify($("#tableShareholdersDetail").bootstrapTable('getData'))
+	   					+"&tableInvestment="+JSON.stringify($("#tableInvestment").bootstrapTable('getData'))
+	   					+"&tableManagement="+JSON.stringify($("#tableManagement").bootstrapTable('getData'))
 	   					+"&companyZhuCe=["+JSON.stringify(getFormData($("#meForm")))+"]"//公司注册信息数据
 	   					+"&companyId="+row.company_id//公司id
 	   					+"&statusCode="+294//信息录入状态码
@@ -119,8 +181,12 @@ let BasicWrite = {
    			//保存按钮
    			$.ajax({
    	   			type:"post",
-   	   			url:BASE_PATH+"credit/front/orderProcess/ReportedSave",
+   	   			url:BASE_PATH+"credit/front/orderProcess/reportedSave",
    	   			data:"companyHistory="+(JSON.stringify($("#tableRecord").bootstrapTable('getData'))//公司历史数据
+   	   				+"&tableShareholdersInfo="+JSON.stringify($("#tableShareholdersInfo").bootstrapTable('getData'))
+   					+"&tableShareholdersDetail="+JSON.stringify($("#tableShareholdersDetail").bootstrapTable('getData'))
+   					+"&tableInvestment="+JSON.stringify($("#tableInvestment").bootstrapTable('getData'))
+   					+"&tableManagement="+JSON.stringify($("#tableManagement").bootstrapTable('getData'))
    	   					+"&companyZhuCe=["+JSON.stringify(getFormData($("#meForm")))+"]"//公司注册信息数据
    	   					+"&companyId="+row.company_id//公司id
    	   					+"&statusCode="+293//
@@ -141,6 +207,20 @@ let BasicWrite = {
    	   	
    		})
    			
+    },
+    addressInit(){
+        $("#qy_address").focus(function (e) {
+            SelCity(this,e);
+            let top = $("#qy_address").offset().top
+            $("#PoPy").css("top",top+30+"px")
+            $(".main").scroll(()=>{
+                let top = $("#qy_address").offset().top
+                $("#PoPy").css("top",top+30+"px")
+                if(top < 90) {
+                    $("#cColse").trigger("click")
+                }
+            })
+        });
     },
     dateForm(){
         /**日期控件 */
@@ -346,24 +426,24 @@ let BasicWrite = {
             _this.managementIndex = undefined
         })
     },
-    initTable(){
+    initTable(cpi){
         let _this = this
         /**历史纪录表初始化 */
        
         const $tableRecord = $('#tableRecord');
         $tableRecord.bootstrapTable({
-        	url : BASE_PATH+'credit/front/orderProcess/CompanyHisListJson', // 请求后台的URL（*）
+        	url : BASE_PATH+'credit/front/orderProcess/reportedJson?flagStr=tableRecord', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
             	//let that = cpi;
-            	console.log("cpi"+ window.cpi);
+           
                 return {
-              	 company_id : window.cpi
+              	 company_id : cpi
                 };  
                 //console.log(""+params)
             },  
-            pagination: true, //分页
+            pagination: false, //分页
             sidePagination: 'server',
             pageNumber:1,
             pageSize:10,
@@ -448,7 +528,18 @@ let BasicWrite = {
           /**股东信息表初始化 */
           const $tableShareholdersInfo = $('#tableShareholdersInfo');
             $tableShareholdersInfo.bootstrapTable({
+            	url : BASE_PATH+'credit/front/orderProcess/reportedJson?flagStr=tableShareholdersInfo', // 请求后台的URL（*）
+                method : 'post', // 请求方式（*）post/get
+                contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+                queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
+                    return {
+                  	 company_id : cpi
+                    };  
+                },
                 height: $(".table-content2").height()/3*2,
+                pagination: false, //分页
+                sidePagination: 'server',
+               
                 columns: [
                   {
                     title: '姓名',
@@ -514,7 +605,16 @@ let BasicWrite = {
             /**股东详情表初始化 */
           const $tableShareholdersDetail = $('#tableShareholdersDetail');
           $tableShareholdersDetail.bootstrapTable({
+        	  url : BASE_PATH+'credit/front/orderProcess/reportedJson?flagStr=tableShareholdersDetail', // 请求后台的URL（*）
+              method : 'post', // 请求方式（*）post/get
+              contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+              queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
+                  return {
+                	 company_id :  cpi
+                  };  
+              },
               height: $(".table-content3").height()/3*2,
+              sidePagination: 'server',
               columns: [
                   {
                   title: '名称',
@@ -596,7 +696,16 @@ let BasicWrite = {
             /**投资情况表初始化 */
             const $tableInvestment = $('#tableInvestment');
             $tableInvestment.bootstrapTable({
+            	url : BASE_PATH+'credit/front/orderProcess/reportedJson?flagStr=tableInvestment', // 请求后台的URL（*）
+                method : 'post', // 请求方式（*）post/get
+                contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+                queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
+                    return {
+                  	 company_id :  cpi
+                    };  
+                },
                 height: $(".table-content4").height()/3*2,
+                sidePagination: 'server',
                 columns: [
                     {
                     title: '公司名称',
@@ -659,6 +768,15 @@ let BasicWrite = {
             /**管理层表初始化 */
           const $tableManagement = $('#tableManagement');
           $tableManagement.bootstrapTable({
+        	  url : BASE_PATH+'credit/front/orderProcess/reportedJson?flagStr=tableManagement', // 请求后台的URL（*）
+              method : 'post', // 请求方式（*）post/get
+              contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+              queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
+                  return {
+                	 company_id :  cpi
+                  };  
+              },
+              sidePagination: 'server',
               height: $(".table-content3").height()/3*2,
               columns: [
                   {

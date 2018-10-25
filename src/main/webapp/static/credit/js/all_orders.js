@@ -232,11 +232,13 @@ let Index = {
                   field: 'englishName',
                   align: 'center',
                   valign: 'middle',
+                  class:"wrap"
                 },{
                   title: '公司中文名称',
                   field: 'companyName',
                   align: 'center',
                   valign: 'middle',
+                  class:"wrap"
                 }, {
                   title: '国家',
                   field: 'countryName',
@@ -259,6 +261,7 @@ let Index = {
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
+                  class:"wrap"
                 }, 
 				{
                   title: '报告员',

@@ -159,11 +159,13 @@ let Allocation = {
                   field: 'companyNames',
                   align: 'center',
                   valign: 'middle',
+                  class:"wrap"
                 }, {
                   title: '公司中文名称',
                   field: 'companyZHNames',
                   align: 'center',
                   valign: 'middle',
+                  class:"wrap"
                 }, {
                   title: '国家',
                   field: 'country',
@@ -184,6 +186,7 @@ let Allocation = {
                   field: 'reportType',
                   align: 'center',
                   valign: 'middle',
+                  class:"wrap"
                 }, {
                   title: '报告员',
                   field: 'reportUser',

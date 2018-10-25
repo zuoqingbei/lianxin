@@ -43,12 +43,12 @@ public class TemplateReportTypeService extends BaseService {
 		List<ReportTypeModel> listDetail = getReportType();
 		for(ReportTypeModel detail:listDetail){
 			if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
-				sb.append("<option selected='selected' m-detail-id='"+detail.get("id")+"' m-english='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
+				sb.append("<option selected='selected' m-detail-name='"+detail.get("name")+"' m-english='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
 			}else{
 				if("ALL".equals(detail.getStr("name_en"))){
-					sb.append("<option selected='selected' m-detail-id='"+detail.get("id")+"' m-english='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
+					sb.append("<option selected='selected'  m-english='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
 				}else{
-					sb.append("<option m-detail-id='"+detail.get("id")+"' m-english='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
+					sb.append("<option m-detail-name='"+detail.get("name")+"' m-english='"+detail.get("name_en")+"' value='"+detail.get("id")+"'>"+detail.get("name")+"</option>");
 				}
 			}
 			
@@ -81,6 +81,7 @@ public class TemplateReportTypeService extends BaseService {
 		}
 		return sb.toString();
 	}
+	
 	/**
 	 * 
 	 * @todo   获取全部默认报告类型

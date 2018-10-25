@@ -1,5 +1,7 @@
 package com.hailian.modules.credit.resetpassword.controller;
 
+import org.apache.log4j.Logger;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -14,6 +16,7 @@ import com.hailian.util.ehcache.EhCacheUtil;
 @Api(tag = "重置密码", description = "重置密码")
 @ControllerBind(controllerKey = "/credit/sysuser/resetpassword")
 public class ResetPassWordController extends BaseProjectController{
+	private static Logger logger=Logger.getLogger(ResetPassWordController.class);
 	private static final String path = "/pages/credit/usercenter/";
 		public void index() {
 			render(path+"passward_change.html");
@@ -28,15 +31,24 @@ public class ResetPassWordController extends BaseProjectController{
 			@Param(name = "recipientAddress", description = "收件人邮箱", required = false, dataType = "String"),
 			})
 	@ApiOperation(url = "/credit/sysuser/resetpassword/getMailCode", httpMethod = "get", description = "获取邮箱验证码")
-	public void getMailCode() throws Exception {
+	public void getMailCode(){
 		
-		String recipientAddress = getPara("recipientAddress");
-		String sendMailCode = SendMailUtil.sendMailCode(recipientAddress);
-		Integer userid = getSessionUser().getUserid();
-		EhCacheUtil.init();
-		EhCacheUtil.put(EhCacheUtil.getKentrasoftCache(), userid+"", sendMailCode);
+		try {
+			String recipientAddress = getPara("recipientAddress");
+			String sendMailCode = SendMailUtil.sendMailCode(recipientAddress);
+			Integer userid = getSessionUser().getUserid();
+			System.out.println("校验验证码里用户："+userid);
+			EhCacheUtil.init();
+			EhCacheUtil.put(EhCacheUtil.getKentrasoftCache(), userid+"", sendMailCode);
+			System.out.println("====================");
 //		setSessionAttr("sendMailCode", sendMailCode);
-		renderJson(sendMailCode);
+			renderJson(sendMailCode);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("===========错误错误错误=========");
+			e.printStackTrace();
+			logger.error(e);
+		}
 	}
 	/**
 	 * 验证码校验
@@ -51,7 +63,8 @@ public class ResetPassWordController extends BaseProjectController{
 	public void verifyMailCode(){
 		boolean flag=false;
 		Integer userid = getSessionUser().getUserid();
-		
+		System.out.println("校验验证码里用户："+userid+"      校验的验证码：   "+EhCacheUtil.get(EhCacheUtil.getKentrasoftCache(), userid+""));
+		logger.error(userid);
 //		String trueCode=getSessionAttr("sendMailCode");
 		String trueCode=EhCacheUtil.get(EhCacheUtil.getKentrasoftCache(), userid+"").toString();
 		String confirmCode=getPara("confirmCode");

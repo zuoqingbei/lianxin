@@ -317,7 +317,7 @@ public class HomeController extends BaseProjectController {
 		Calendar calendar = Calendar.getInstance();
 	    calendar.setTime(date);
 	    String year=String.valueOf(calendar.get(Calendar.YEAR));
-	    String month=String.valueOf(calendar.get(Calendar.MONTH));
+	    String month=String.valueOf(calendar.get(Calendar.MONTH)+1);
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
 		String countryId = model.get("country");
 		if(countryId!=null&&!"".equals(countryId)){

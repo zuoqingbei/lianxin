@@ -1,3 +1,73 @@
-<% 
-	include("agent_edit.html"){}
-%>
+<% var reportType = reportType.getReportTypeString(''); %>
+<% DIRECTIVE SAFE_OUTPUT_OPEN; var headContent = {
+include("/pages/template/head.html"){} %>
+<script type="text/javascript">
+	var oper = {
+		save:function(){
+			if(!validForm()) {
+				return false;
+			}
+			var url = '/credit/reporttempmanager/save';
+			form1.action = url;
+			form1.submit();
+			return true;
+		},
+		reportchange:function(){
+			var value=$("select[name='attr.report']").find("option:selected").attr("m-detail-name");
+			console.log(value);
+			$("input[name='attr.temp_name']").val(value);
+		},
+	};
+</script>
+
+<% }; var bodyContent = { %>
+<form name="form1" action="" method="post" class="form-horizontal"
+	role="form">
+	<input type="hidden" name="model.id" value="${model.id}" />
+	<table class="table">
+		<% // 列表头部%>
+		
+		<%if(model1.node_type=='0'){%>
+			<tr>
+				<td style="text-align: right;">报告类型</td>
+				<td>
+					<select name="attr.report" class="form-control" valid="vselect" validname="请选择报告类型"
+					onchange="oper.reportchange()">
+						${reportType}
+					</select>
+					<input  value= '${model1.temp_name}' type="hidden" name="attr.temp_name" />
+					<input  value= '${model1.parent_temp}' type="hidden" name="attr.parent_temp" />
+					<input  value= '${model1.create}' type="hidden" name="attr.create" />
+					<input  value= '${model1.node_type}' type="hidden" name="attr.node_type" />				
+				</td>
+			</tr>
+		<%}else {%>
+			<tr>
+				<td style="text-align: right;">模板名称</td>
+				<td>
+					<input class="form-control" type="text" name="attr.temp_name"
+				value="" valid='vtext' validname='模板名称' />
+					<input  value= '${model1.parent_temp}' type="hidden" name="attr.parent_temp" />
+					<input  value= '${model1.create}' type="hidden" name="attr.create" />
+					<input  value= '${model1.node_type}' type="hidden" name="attr.node_type" />
+					<input  value= '${model1.report}' type="hidden" name="attr.report" />				
+				</td>
+			</tr>
+		<%}%>		
+		
+	</table>
+
+	<div style="height: 50px; clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container"
+			style="padding: 5px 0px 5px 0px; text-align: center;">
+			<button class="btn btn-primary"
+				onclick="oper.save();return false;">保 存</button>
+			<button class="btn btn-default" onclick="closeIframe();return false;">关
+				闭</button>
+		</div>
+	</nav>
+</form>
+<%}; %> <%
+layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){
+%> <%} DIRECTIVE SAFE_OUTPUT_CLOSE; %>

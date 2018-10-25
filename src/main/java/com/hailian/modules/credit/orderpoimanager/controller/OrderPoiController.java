@@ -111,9 +111,10 @@ public class OrderPoiController extends BaseProjectController {
 								errormark+=errornum+".第"+r+"行，第B列信息填写错误;";
 							}else{
 								orderReal.set("custom_id", customById.get(0).get("id"));
+								order.put("customerName",customById.get(0).get("name"));
 							}
 							order.set("custom_id", custom_id);
-							order.put("customerName",customById.get(0).get("name"));
+							
 						}else{
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第B列信息漏填;";
@@ -333,12 +334,16 @@ public class OrderPoiController extends BaseProjectController {
 			  String speed=model.getStr("speed");
 			  String reporttype=model.getStr("report_type");
 			  String orderType=model.getStr("order_type");
-			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed/*, reporttype, orderType*/);
+			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed, reporttype/*, orderType*/);
 			  int user_time_id = 0;
 			  int use_time;
 			  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			  Calendar ca = Calendar.getInstance();
 		      ca.setTime(now);//设置接单时间
+		      String year=String.valueOf(ca.get(Calendar.YEAR));
+			  String month=String.valueOf(ca.get(Calendar.MONTH)+1);
+			  model.set("year", year);
+			  model.set("month", month);
 				if(timemodel==null) {
 					timemodel=new CreditReportUsetime();
 					use_time=0;

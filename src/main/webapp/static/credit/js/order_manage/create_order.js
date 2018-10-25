@@ -244,6 +244,7 @@ let
 							  field: 'customerName',
 							  title: '客户用户名',
 							  align: 'center',
+							  class:"wrap"
 							}, {
 							  title: '地区',
 							  field: 'continent',
@@ -260,11 +261,13 @@ let
 							  field: 'report_type',
 							  align: 'center',
 							  valign: 'middle',
+							  class:"wrap"
 							}, {
 							  title: '订单类型',
 							  field: 'order_type',
 							  align: 'center',
 							  valign: 'middle',
+							  class:"wrap"
 							}, {
 							  title: '报告语言',
 							  field: 'report_language',
@@ -275,6 +278,7 @@ let
 							  field: 'company_by_report',
 							  align: 'center',
 							  valign: 'middle',
+							  class:"wrap"
 							}, {
 							  title: '速度',
 							  field: 'speed',
