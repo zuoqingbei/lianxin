@@ -364,6 +364,9 @@ public class OrdermanagerController extends BaseProjectController{
 			})
 	public void getTime() throws ParseException {
 		String countryType=getPara("countrytype", "");
+		if("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
+			countryType="148";
+		}
 		String speed=getPara("speed", "");
 		String reporttype=getPara("reporttype", "");
 		/*String orderType=getPara("ordertype", "");*/
