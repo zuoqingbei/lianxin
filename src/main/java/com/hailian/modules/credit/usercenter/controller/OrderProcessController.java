@@ -16,13 +16,16 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.company.model.CompanyModel;
-import com.hailian.modules.credit.usercenter.model.CompanyHisResultType;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
@@ -224,18 +227,7 @@ public class OrderProcessController extends BaseProjectController{
 		model  = model.findById(companyId);
 		renderJson(model);
 	}
-	/**
-	 * 2018/10/15 16:20
-	 * lzg
-	 * 获取公司历史变更记录
-	 */
-	public void CompanyHisListJson(){
-		String companyId = getPara("company_id");
-		CreditCompanyHis model =  getModel(CreditCompanyHis.class);
-		List<CreditCompanyHis> rows = model.find("select * from credit_company_his where company_id="+companyId+" and del_flag=0");
-		CompanyHisResultType c = new CompanyHisResultType(rows.size(), rows);
-		renderJson(c);
-	}
+	
 	/**
 	 * @todo   展示报告管理下的信息录入的填报详情页
 	 * @time   2018年9月29日 上午 11:02
@@ -465,6 +457,20 @@ public class OrderProcessController extends BaseProjectController{
 		}
 	}
 	/**
+	 * 通过订单id获取文件信息
+	 */
+	public void getFilesByOrderId(){
+		String orderId = getPara("orderId");
+		List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"" , this);
+		for (CreditUploadFileModel creditUploadFileModel : files) {
+			creditUploadFileModel.set("view_url","http://"+ ip+"/"+creditUploadFileModel.get("view_url"));
+			creditUploadFileModel.set("url","http://"+ ip+"/"+creditUploadFileModel.get("url"));
+		}
+		ResultType result = new ResultType();
+		result.setFiles(files);
+		renderJson(result);
+	}
+	/**
 	 * @todo   带有文件上传功能的保存功能
 	 * @time   2018年9月21日 上午9:21:00
 	 * @author lzg
@@ -503,7 +509,8 @@ public class OrderProcessController extends BaseProjectController{
 	 * @param orderId status 
 	 */
 	private ResultType uploadFile(String orderId, String status,List<UploadFile> upFileList){
-		List<File> files = new ArrayList<File>();
+		List<File> commonFiles = new ArrayList<File>();
+		List<File> pdfFiles = new ArrayList<File>();
 		CreditUploadFileModel fileModel = new CreditUploadFileModel();
 		fileModel.set("business_type", status);
 		fileModel.set("business_id",orderId);
@@ -528,28 +535,22 @@ public class OrderProcessController extends BaseProjectController{
 					if(uploadFile.getFile().length()>maxPostSize){
 						return new ResultType(0, originalFile+" 必须小于5兆!");
 					}
-					String originalFileName = FileTypeUtils.getName(uploadFile.getFile().getName());
-					String FTPfileName = now+"."+ext;
-					String fileName = originalFileName + now;
-					String pdf_FTPfileName = "";
 					File pdf = null;
 					//如果上传文档不是pdf或者图片则转化为pdf，以作预览
 					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){
 						pdf = Office2PDF.toPdf(uploadFile);
-						pdf_FTPfileName += now+"."+"pdf";
-					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
-						pdf_FTPfileName = FTPfileName;
 					}
-					files.add(uploadFile.getFile());
-					pdfNameList.add(pdf_FTPfileName);
+					commonFiles.add(uploadFile.getFile());
 					if(pdf!=null)
-					pdf.delete();
-					
+					pdfFiles.add(pdf);
 				}
-			
 				//将文件上传到服务器
-				boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",files,storePath,ip,port,userName,password);
-				if(!storeFile){
+				boolean storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+				boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",commonFiles,storePath,ip,port,userName,password);
+				if(!storePdfFile){
+					return new ResultType(0, "预览文件生成异常!");
+				}
+				if(!storeCommonFile){
 					return new ResultType(0, "文件上传异常!");
 				}
 				//String ftpName=name+now+"."+type;
@@ -564,26 +565,25 @@ public class OrderProcessController extends BaseProjectController{
 					String ext = FileTypeUtils.getFileType(originalFile);
 					//上传到服务器时的文件名
 					String FTPfileName = originalFileName + now + "." + ext;
+					String PDFfileName = originalFileName + now + "." + "pdf";
 					//String pdfFactpath=storePath+"/"+pdf_FTPfileName;
-					if(storeFile){
 						/*if(pdf!=null){
 							pdf.delete();
 						}*/
 						String factpath = storePath + "/" + FTPfileName;
-						String ftpFactpath = storePath + "/" + pdfNameList.get(i);
+						String ftpFactpath = storePath + "/" + PDFfileName;
 						//String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
 						Integer userid = getSessionUser().getUserid();
 						//将上传信息维护进实体表
 						UploadFileService.service.save(0,upFileList.get(i), factpath,factpath,ftpFactpath,ftpFactpath,fileModel,originalFileName+now,userid);
-					}else{
-						return new ResultType(0, "实体保存异常!");
-					}
 				}
 				
 				
 			}catch(Exception e){
 				e.printStackTrace();
 				return new ResultType(0, "发生未知错误!");
+			}finally {
+				pdfFiles.forEach((File pdf)->{pdf.delete();});
 			}
 			return new ResultType(1, "文件上传成功!");
 		}else{
@@ -606,21 +606,82 @@ public class OrderProcessController extends BaseProjectController{
 		}
 	}
 	/**
+	 * 2018/10/15 16:20  2018/10/24 16:20复更
+	 * lzg
+	 * 报告管理下的信息录入的填报页面的信息(除了企业注册信息信息)
+	 */
+	public void reportedJson(){
+		String companyId = getPara("company_id");
+		String flagStr = getPara("flagStr","");
+		List<Object> params = new ArrayList<>();
+		params.add(companyId);
+		List rows = null;
+		switch (flagStr) {
+		case  "tableRecord": 
+			CreditCompanyHis companyHis = getModel(CreditCompanyHis.class); 
+			rows = companyHis.find("select * from credit_company_his where company_id=? and del_flag=0",params.toArray());
+			break;
+		case  "tableShareholdersInfo":
+			CreditCompanyShareholder companyShareholder = getModel(CreditCompanyShareholder.class); 
+			rows = companyShareholder.find("select * from credit_company_shareholder where company_id=? and del_flag=0",params.toArray());
+			break;
+		case "tableShareholdersDetail":
+			CreditCompanyShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyShareholderDetail.class);
+			rows = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id=? and del_flag=0",params.toArray());
+			break;
+		case "tableInvestment":
+			CreditCompanyInvestment companyInvestment = getModel(CreditCompanyInvestment.class); 
+			rows = companyInvestment.find("select * from credit_company_investment where company_id=? and del_flag=0",params.toArray());
+			break;
+		case "tableManagement":
+			CreditCompanyManagement companyManagement = getModel(CreditCompanyManagement.class); 
+			rows = companyManagement.find("select * from credit_company_management where company_id=? and del_flag=0",params.toArray());
+			break;
+		default:
+			rows = new ArrayList<>();
+			break;
+		}
+		ResultType result = new ResultType();
+		result.setRows(rows);
+		renderJson(result);
+	}
+	
+	
+	/**
 	 * 2018/10/12
 	 * lzg
 	 * 报告管理下的信息录入的填报页面的保存
 	 */
-	public void ReportedSave(){
+	public void reportedSave(){
 		try {
-		//从前台数据
+		//从前台获取数据
 		String companyHistoryJson = getPara("companyHistory");
+		String tableShareholdersInfoJson = getPara("tableShareholdersInfo");
+		String tableShareholdersDetailJson = getPara("tableShareholdersDetail");
+		String tableInvestmentJson = getPara("tableInvestment");
+		String tableManagementJson = getPara("tableManagement");
 		String companyZhuCeJson = getPara("companyZhuCe");
 		String companyId = getPara("companyId");
-		CreditCompanyHis modelCCH = getModel(CreditCompanyHis.class); 
-		final List<CreditCompanyHis> modelCCHList = modelCCH.find("select * from credit_company_his where company_id = "+companyId);
-
+		String userId = getSessionUser().getUserid()+"";
+		String now = getNow();
+		//保存前获取已有数据
+		CreditCompanyHis companyHis = getModel(CreditCompanyHis.class); 
+		CreditCompanyInvestment companyInvestment = getModel(CreditCompanyInvestment.class); 
+		CreditCompanyManagement companyManagement = getModel(CreditCompanyManagement.class); 
+		CreditCompanyShareholder companyShareholder = getModel(CreditCompanyShareholder.class); 
+		CreditCompanyShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyShareholderDetail.class);
+		
+		final List<CreditCompanyHis> companyHisList = companyHis.find("select * from credit_company_his where company_id = "+companyId);
+		final List<CreditCompanyInvestment> companyInvestmentList = companyInvestment.find("select * from credit_company_investment where company_id = "+companyId);
+		final List<CreditCompanyManagement> companyManagementList = companyManagement.find("select * from credit_company_management where company_id = "+companyId);
+		final List<CreditCompanyShareholder> companyShareholderList = companyShareholder.find("select * from credit_company_shareholder where company_id = "+companyId);
+		final List<CreditCompanyShareholderDetail> companyShareholderDetailList = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id = "+companyId);
 		//转化为model集合
 		final List<BaseProjectModel>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
+		final List<BaseProjectModel>  CreditCompanyInvestmentList = infoEntry(tableInvestmentJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment");
+		final List<BaseProjectModel>  CreditCompanyManagementList = infoEntry(tableManagementJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement");
+		final List<BaseProjectModel>  CreditCompanyShareholderList = infoEntry(tableShareholdersInfoJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder");
+		final List<BaseProjectModel>  CreditCompanyShareholderDetailList = infoEntry(tableShareholdersDetailJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail");
 		List<BaseProjectModel> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
 		//数据库事务
 		Db.tx(new IAtom(){
@@ -628,18 +689,17 @@ public class OrderProcessController extends BaseProjectController{
 			//在这里写要执行的操作，在执行的过程中如果有异常将回滚，如果return false 就也回滚
 			public boolean run() throws SQLException {
 				//保存前删除已有的记录
-				for (CreditCompanyHis baseProjectModel : modelCCHList) {
-					baseProjectModel.set("del_flag", "1");
-					baseProjectModel.update();
-				}
-				//历史变更记录保存
-				for (BaseProjectModel<? extends CreditCompanyHis>  baseProjectModel : companyHistoryModelList) {
-						baseProjectModel.remove("id")
-						.set("create_by",getSessionUser().getUserid())
-						.set("create_date", getNow())
-						.set("company_id", (String) getRequest().getParameter("companyId"))
-						.save();
-				}
+				companyHisList.forEach( (CreditCompanyHis baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
+				companyInvestmentList.forEach( (CreditCompanyInvestment baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
+				companyManagementList.forEach( (CreditCompanyManagement baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
+				companyShareholderList.forEach( (CreditCompanyShareholder baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
+				companyShareholderDetailList.forEach( (CreditCompanyShareholderDetail baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
+				//保存操作
+				companyHistoryModelList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
+				CreditCompanyInvestmentList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
+				CreditCompanyManagementList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
+				CreditCompanyShareholderList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
+				CreditCompanyShareholderDetailList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
 				return true;
 			}
 		});
@@ -655,7 +715,7 @@ public class OrderProcessController extends BaseProjectController{
 		renderJson(new ResultType(1,"操作成功!"));
 		} catch (Exception e) {
 			e.printStackTrace();
-			renderJson(new ResultType(0,"参数错误!"));
+			renderJson(new ResultType(0,"请输入合乎规范的值!"));
 		}
 	}
 	

@@ -289,11 +289,13 @@ let Verify = {
     field: 'companyNames',
     align: 'center',
     valign: 'middle',
+    class:"wrap"
   }, {
     title: '公司中文名称',
     field: 'companyZHNames',
     align: 'center',
     valign: 'middle',
+    class:"wrap"
   }, {
     title: '国家',
     field: 'country',
@@ -314,6 +316,7 @@ let Verify = {
     field: 'reportType',
     align: 'center',
     valign: 'middle',
+    class:"wrap"
   }, {
     title: '报告员',
     field: 'reportUser',
@@ -391,6 +394,7 @@ let Verify = {
 	           }
         	let fileArr = ''
         	let filename = row.files[i].originalname
+        	let all_name = filename + filetype
     		let num = filename.split(".").length;
             let filename_qz = []
             for(let i=0;i<num;i++){  
@@ -408,7 +412,7 @@ let Verify = {
 	        					'<span aria-hidden="true">&times;</span>'+
 	        				 '</button>'+
 	        				'<img src="'+fileicon+'" />'+
-	        				 '<p class="filename">'+filename+'</p>'+
+	        				 '<p class="filename" title="'+all_name+'" >'+filename+'</p>'+
         				 '</div>'+
         				 '</div>'
         $(".file-upload>label").after(fileArr)	 
