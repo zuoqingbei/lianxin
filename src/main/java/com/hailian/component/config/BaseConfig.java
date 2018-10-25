@@ -40,7 +40,6 @@ import com.hailian.modules.admin.ordermanager.model.TemplateCompanyService;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.common.service.TemplateCountryService;
 import com.hailian.modules.credit.interceptor.CreditFrontUserInterceptor;
-import com.hailian.modules.credit.reportmanager.service.TemplateReportTempService;
 import com.hailian.modules.front.template.TemplateCustomService;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateImageService;
@@ -294,7 +293,7 @@ public class BaseConfig extends JFinalConfig {
 		groupTemplate.registerFunctionPackage("company", TemplateCompanyService.class);//系统公司模板
 		groupTemplate.registerFunctionPackage("agent", TemplateAgentService.class);//代理模板
 		groupTemplate.registerFunctionPackage("country", TemplateCountryService.class);//国家模板
-		groupTemplate.registerFunctionPackage("reportTemp", TemplateReportTempService.class);//国家模板
+	//	groupTemplate.registerFunctionPackage("reportTemp", TemplateReportTempService.class);//国家模板
 		
 	}
 	private boolean isDevMode() {
