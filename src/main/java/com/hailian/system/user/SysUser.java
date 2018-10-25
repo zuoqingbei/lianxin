@@ -87,6 +87,7 @@ public class SysUser extends SessionUser<SysUser>  {
 		System.out.println(sql);
 		return dao.find(sql);
 	}
+
 	public List<SysUser> getReporter() {
 		String sql="select c.* from sys_user c left join sys_user_role r on c.userid=r.userid where c.del_flag='0' and c.state='10' and r.roleid='2' order by create_time desc" ;
 		System.out.println(sql);
@@ -98,6 +99,21 @@ public class SysUser extends SessionUser<SysUser>  {
 	 */
 	public SysUser getSysUserById(Object userid) {
 		return dao.findFirst("select c.* from sys_user c where c.del_flag='0' and userid="+userid);
+	}
+	/**
+	 * 获取所有用户
+	* @author doushuihai  
+	* @date 2018年10月25日上午10:09:19  
+	* @TODO
+	 */
+	public List<SysUser> getSysUser(Object userid) {
+		String sql="select c.* from sys_user c where c.del_flag='0' ";
+		List<Object> params=new ArrayList<Object>();
+		if(userid != null){
+			sql+=" and userid="+userid;
+			params.add(userid);
+		}
+		return dao.find(sql,params.toArray());
 	}
 	public int updatePwdById(Object userid,String password) {
 		List<Object> params=new ArrayList<Object>();

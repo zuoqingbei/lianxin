@@ -3,6 +3,7 @@ let BasicWrite = {
         /**函数初始化 */
         this.dateForm(); 
         this.initTable();
+        this.addressInit();
         this.addRcordRow();
         this.addShareholdersInfoRow();
         this.addShareholdersDetailRow();
@@ -36,7 +37,7 @@ let BasicWrite = {
         //回显企业注册信息
         $.ajax({
    			type:"post",
-   			url:"/credit/front/orderProcess/getCompanyInfo",
+   			url:BASE_PATH+"credit/front/orderProcess/getCompanyInfo",
    			data:"company_id="+row.company_id,
    			dataType:"json",
    			success:function(data){
@@ -87,7 +88,7 @@ let BasicWrite = {
    			console.log(JSON.stringify($("#tableManagement").bootstrapTable('getData')));//管理层
 	   		$.ajax({
 	   			type:"post",
-	   			url:"/credit/front/orderProcess/ReportedSave",
+	   			url:BASE_PATH+"credit/front/orderProcess/ReportedSave",
 	   			data:"companyHistory="+(JSON.stringify($("#tableRecord").bootstrapTable('getData'))//公司历史数据
 	   					+"&companyZhuCe=["+JSON.stringify(getFormData($("#meForm")))+"]"//公司注册信息数据
 	   					+"&companyId="+row.company_id//公司id
@@ -119,7 +120,7 @@ let BasicWrite = {
    			//保存按钮
    			$.ajax({
    	   			type:"post",
-   	   			url:"/credit/front/orderProcess/ReportedSave",
+   	   			url:BASE_PATH+"credit/front/orderProcess/ReportedSave",
    	   			data:"companyHistory="+(JSON.stringify($("#tableRecord").bootstrapTable('getData'))//公司历史数据
    	   					+"&companyZhuCe=["+JSON.stringify(getFormData($("#meForm")))+"]"//公司注册信息数据
    	   					+"&companyId="+row.company_id//公司id
@@ -141,6 +142,20 @@ let BasicWrite = {
    	   	
    		})
    			
+    },
+    addressInit(){
+        $("#qy_address").focus(function (e) {
+            SelCity(this,e);
+            let top = $("#qy_address").offset().top
+            $("#PoPy").css("top",top+30+"px")
+            $(".main").scroll(()=>{
+                let top = $("#qy_address").offset().top
+                $("#PoPy").css("top",top+30+"px")
+                if(top < 90) {
+                    $("#cColse").trigger("click")
+                }
+            })
+        });
     },
     dateForm(){
         /**日期控件 */
@@ -352,7 +367,7 @@ let BasicWrite = {
        
         const $tableRecord = $('#tableRecord');
         $tableRecord.bootstrapTable({
-        	url : '/credit/front/orderProcess/CompanyHisListJson', // 请求后台的URL（*）
+        	url : BASE_PATH+'credit/front/orderProcess/CompanyHisListJson', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  

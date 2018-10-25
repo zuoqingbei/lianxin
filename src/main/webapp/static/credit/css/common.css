@@ -5,6 +5,7 @@
 }
 #main_content {
     padding: 0;
+    transition: width ease .5s;
 }
 header {
     width: 100%;
@@ -21,6 +22,7 @@ header {
     left: -1px;
     box-shadow: 1px 3px 11px 0px #666;
     z-index: 999;
+    transition: width ease .5s;
 }
 .logo-content {
     width: 10.875rem;
@@ -106,12 +108,14 @@ header {
     margin-top: -.5rem;
 }
 .nav-row {
+    position: relative;
     height: 101%;
     padding: 0;
     top: -.5rem;
     left: -1px;
     box-shadow: 2px 5px 10px 0 #666;
     z-index: 999;
+    transition: width ease .5s;
 }
 
 .bg-f {
@@ -352,4 +356,26 @@ label {
     padding-left: 2.5rem;
     border-top: solid 1px #e5e5e5;
     box-shadow: 0px 2px 2px #e5e5e5;
+}
+
+#handleMenu {
+    position: absolute;
+    right: -1.2rem;
+    top: calc(100%/2 - 10rem);
+    width: 1.2rem;
+    height: 4rem;
+    cursor: pointer;
+    background: #03223f;
+    border-radius: 0 4px 4px 0;
+}
+#handleMenu .border-div {
+    height: 1rem;
+    width: 100%;
+    background: url(../imgs/index/left_arrow.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.wrap {
+    width: 1rem!important;
+    white-space: normal!important;
 }

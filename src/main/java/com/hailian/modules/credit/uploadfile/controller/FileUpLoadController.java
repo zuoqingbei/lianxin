@@ -177,7 +177,7 @@ public class FileUpLoadController extends BaseProjectController {
 		render(path + "list.html");
 	}
 	public void view() {
-		CreditUploadFileModel model = CreditUploadFileModel.dao.findById(getParaToInt());
+		CreditUploadFileModel model = CreditUploadFileModel.dao.getById(getParaToInt());
 		String view_url=model.get("view_url");
 		String url=model.get("url");
 		model.set("view_url", "http://"+ip+"/"+view_url);

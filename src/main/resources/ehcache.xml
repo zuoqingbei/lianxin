@@ -2,7 +2,7 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 		xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false">  
    <!-- 设置磁盘持久化的位置 -->  
-    <diskStore path="E:/temp" />   
+    <diskStore path="C:/temp" />   
     <defaultCache maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />  
     <cache name="kentrasoftCache"  
            maxElementsInMemory="0"  

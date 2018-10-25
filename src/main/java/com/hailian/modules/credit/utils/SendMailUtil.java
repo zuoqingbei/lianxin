@@ -54,6 +54,12 @@ public class SendMailUtil {
         props.setProperty("mail.transport.protocol", "smtp");
         //设置发件人的SMTP服务器地址
         props.setProperty("mail.smtp.host", "smtp.qq.com");
+        
+        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.smtp.port", "465");
+        props.setProperty("mail.smtp.socketFactory.port", "465");
+
         //2、创建定义整个应用程序所需的环境信息的 Session 对象
         Session session = Session.getInstance(props);
         //设置调试信息在控制台打印出来
@@ -113,7 +119,7 @@ public class SendMailUtil {
         return msg;
     }
     public static String sendMailCode(String recipientAddress) {
-    	String title="这是一封验证码邮件";
+    	String title="这是一个重置密码的验证码";
     	String code=getCode();
     	String content="您的验证码是:"+code+"。如果不是本人操作请忽略。";
     	
@@ -127,7 +133,7 @@ public class SendMailUtil {
     }
 
     public static void main(String[] args) throws Exception {
-    	sendMailCode("15269274025@163.com");
+    	sendMailCode("dou_shai@163.com");
 	}
     /**
      * 生成邮箱验证码
