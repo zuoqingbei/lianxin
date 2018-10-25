@@ -37,8 +37,8 @@ public class CountryModel extends BaseProjectModel<CountryModel> {
 	public static List<CountryModel> getCountrys(String continent) {
 		List<Object> params = new ArrayList<Object>();
 		StringBuffer sql = new StringBuffer();
-		sql.append("select t.* from credit_country t left join sys_dict_detail s on t.continent_en=s.detail_name_en where t.del_flag='0' ");
-		//sql.append(" select t.* from credit_country t left join sys_dict_detail s on t.continent_en=s.detail_name_en where t.del_flag='0' ORDER BY scale DESC, CONVERT (`NAME` USING gbk) COLLATE gbk_chinese_ci ASC ");
+		//sql.append("select t.* from credit_country t left join sys_dict_detail s on t.continent_en=s.detail_name_en where t.del_flag='0' ");
+		sql.append(" select t.* from credit_country t left join sys_dict_detail s on t.continent_en=s.detail_name_en where t.del_flag='0' ORDER BY scale DESC, CONVERT (`NAME` USING gbk) COLLATE gbk_chinese_ci ASC ");
 		if (StringUtils.isNotBlank(continent)) {
 			sql.append(" and s.detail_id=?");
 			params.add(continent);
