@@ -277,6 +277,11 @@
 	   			usetime();
 	   	 		price();
 	   		})
+	   		form.on('select(reportTypeChange)',function(data){
+	   			usetime();
+	   	 		//price();
+	   		})
+	   		
 	   		
 		});
 	   
@@ -286,23 +291,23 @@
 			})	
    		})
    		
-   	 	function reportTypeChange(){
+   	 	/* function reportTypeChange(){
    	 		//languagechange();
    	 		price()
    	 		usetime()
-   	 	}
+   	 	} */
    	 	function ordertypechange(){
    	 	usetime();
    	 	price()
    	 	}
-   	 	function countrychange(){
+   	 	/* function countrychange(){
    	 	 $("select[name='attr.country'] option:first").attr("selected","selected");
    	 		//查询用时
    	    	usetime();
    	    	//查询语言
    	    	//languagechange()
    	    	price()
-   	 	}
+   	 	} */
    	 	
    /* 	 	function speedchange(){
    	 		usetime();

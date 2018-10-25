@@ -1,6 +1,7 @@
 package com.hailian.modules.credit.reportmanager.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -9,7 +10,6 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.jfinal.plugin.activerecord.Page;
 @ModelBind(table = "credit_report_temp_conf")
 public class CreditReportTempConf extends BaseProjectModel<CreditReportTempConf>{
@@ -67,6 +67,19 @@ public class CreditReportTempConf extends BaseProjectModel<CreditReportTempConf>
 	public List<CreditReportTempConf> getAllTemp() {
 		
 		 return dao.find("select t.* from credit_report_temp_conf t where t.del_flag='0'  ");
+	}
+	/**
+	 * 
+	 * @time   2018年10月25日 下午1:04:15
+	 * @author yangdong
+	 * @todo   TODO 根据报告类型和节点类型查找父模板
+	 * @param  @param report
+	 * @param  @return
+	 * @return_type   List<CreditReportTempConf>
+	 */
+	public List<CreditReportTempConf> findByReport(String report) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
