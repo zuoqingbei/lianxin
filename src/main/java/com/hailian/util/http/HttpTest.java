@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
@@ -22,6 +22,7 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.htmlcleaner.CleanerProperties;
@@ -90,18 +91,14 @@ public class HttpTest {
         postData.add(new BasicNameValuePair("identifyingCode", verifyCode));
 	    CloseableHttpResponse response = null;
 	    
-	    HttpClientBuilder builder = HttpClients.custom().setDefaultCookieStore(cookieStore);
-//	            .disableAutomaticRetries() //关闭自动处理重定向
-//	            .setRedirectStrategy(new LaxRedirectStrategy());//利用LaxRedirectStrategy处理POST重定向问题
+	    HttpClientBuilder builder = HttpClients.custom().setDefaultCookieStore(cookieStore)
+	            .disableAutomaticRetries() //关闭自动处理重定向
+	            .setRedirectStrategy(new LaxRedirectStrategy());//利用LaxRedirectStrategy处理POST重定向问题
 	    CloseableHttpClient httpclient = builder.build();
 	    //CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();   // 使用默认的HttpClient
 	    try {
 	    	httppost.setEntity(new UrlEncodedFormEntity(postData));//捆绑参数
 	        response = httpclient.execute(httppost);
-	        Header[] headers = response.getAllHeaders();
-	        for(int i=0;i<headers.length;i++) {
-	        System.out.println(headers[i].getName() +"=="+ headers[i].getValue());
-	        }
 	        html = EntityUtils.toString(response.getEntity(), "utf-8");
 //	        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {     // 返回 200 表示成功
 //	            html = EntityUtils.toString(response.getEntity(), "utf-8");     // 获取服务器响应实体的内容
