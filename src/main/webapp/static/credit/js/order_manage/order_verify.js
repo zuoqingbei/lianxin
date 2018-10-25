@@ -391,6 +391,7 @@ let Verify = {
 	           }
         	let fileArr = ''
         	let filename = row.files[i].originalname
+        	let all_name = filename + filetype
     		let num = filename.split(".").length;
             let filename_qz = []
             for(let i=0;i<num;i++){  
@@ -408,7 +409,7 @@ let Verify = {
 	        					'<span aria-hidden="true">&times;</span>'+
 	        				 '</button>'+
 	        				'<img src="'+fileicon+'" />'+
-	        				 '<p class="filename">'+filename+'</p>'+
+	        				 '<p class="filename" title="'+all_name+'" >'+filename+'</p>'+
         				 '</div>'+
         				 '</div>'
         $(".file-upload>label").after(fileArr)	 

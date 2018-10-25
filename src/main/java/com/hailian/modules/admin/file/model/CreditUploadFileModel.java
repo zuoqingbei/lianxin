@@ -39,6 +39,12 @@ public class CreditUploadFileModel extends BaseProjectModel<CreditUploadFileMode
 		params.add(status);
 		return dao.find(sql, params.toArray());
 	}
+	public List<CreditUploadFileModel> getByBusIdAndBusType(String business_id,BaseProjectController c){
+		String sql="select * from credit_upload_file where business_id=?  and del_flag=0";
+		List<Object> params=new ArrayList<Object>();
+		params.add(business_id);
+		return dao.find(sql, params.toArray());
+	}
 	/**
 	 * 
 	 * @time   2018年9月25日 下午2:21:22
