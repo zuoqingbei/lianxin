@@ -365,16 +365,18 @@ public class OrdermanagerController extends BaseProjectController{
 	public void getTime() throws ParseException {
 		String countryType=getPara("countrytype", "");
 		String speed=getPara("speed", "");
-		/*String reporttype=getPara("reporttype", "");
-		String orderType=getPara("ordertype", "");*/
+		String reporttype=getPara("reporttype", "");
+		/*String orderType=getPara("ordertype", "");*/
 		String receivedate=getPara("receivedate","");
-		CreditReportUsetime usetime=OrderManagerService.service.getTime(countryType,speed/*,reporttype,orderType*/);
+		CreditReportUsetime usetime=OrderManagerService.service.getTime(countryType,speed,reporttype/*,orderType*/);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar ca = Calendar.getInstance();
 		if(StringUtils.isNotBlank(receivedate)) {
 		ca.setTime(sdf.parse(receivedate));//设置接单时间
 		}
 		int time;
+		int days;
+		int hour;
 		if(usetime==null) {
 			 usetime=new CreditReportUsetime();
 			 time=0;
@@ -382,10 +384,17 @@ public class OrdermanagerController extends BaseProjectController{
 			time=usetime.get("use_time");
 			usetime.set("use_time", (int)Math.ceil(time/24.0));
 		}
+		ca.setTime(new Date());
+		hour = ca.get(Calendar.HOUR_OF_DAY);
+		if(hour<12) {
+			days=(int)Math.ceil(time/24.0);
+		}else {
+			days=(int)Math.ceil(time/24.0)+1;
+		}
 		Calendar c = 
 				new DateAddUtil().addDateByWorkDay(ca,//当前时间
 						//需要用多少天
-						(int)Math.ceil(time/24.0));
+						days);
 		String enddate=sdf.format(c.getTime());
 		if(time==0) {
 			enddate="";
