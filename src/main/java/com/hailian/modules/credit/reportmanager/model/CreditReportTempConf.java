@@ -78,8 +78,9 @@ public class CreditReportTempConf extends BaseProjectModel<CreditReportTempConf>
 	 * @return_type   List<CreditReportTempConf>
 	 */
 	public List<CreditReportTempConf> findByReport(String report) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql="select t.* from credit_report_temp_conf t where"
+				+ " t.del_flag=0 and t.parent_temp=? and t.report=? ";
+		return dao.find(sql, parent_temp,report);
 	}
 
 }
