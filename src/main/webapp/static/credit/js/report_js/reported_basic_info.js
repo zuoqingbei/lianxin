@@ -1,10 +1,10 @@
 let BasicWrite = {
     init(){
         /**函数初始化 */
-       
         Public.tabFixed(".tab-bar",".main",120,90)
         let row = JSON.parse(localStorage.getItem("row"));
         this.dateForm(); 
+        this.addressInit();
         this.addRcordRow();
         this.tabChange();
         this.goToInfoImport();
@@ -207,6 +207,20 @@ let BasicWrite = {
    	   	
    		})
    			
+    },
+    addressInit(){
+        $("#qy_address").focus(function (e) {
+            SelCity(this,e);
+            let top = $("#qy_address").offset().top
+            $("#PoPy").css("top",top+30+"px")
+            $(".main").scroll(()=>{
+                let top = $("#qy_address").offset().top
+                $("#PoPy").css("top",top+30+"px")
+                if(top < 90) {
+                    $("#cColse").trigger("click")
+                }
+            })
+        });
     },
     dateForm(){
         /**日期控件 */

@@ -509,7 +509,8 @@ public class OrderProcessController extends BaseProjectController{
 	 * @param orderId status 
 	 */
 	private ResultType uploadFile(String orderId, String status,List<UploadFile> upFileList){
-		List<File> files = new ArrayList<File>();
+		List<File> commonFiles = new ArrayList<File>();
+		List<File> pdfFiles = new ArrayList<File>();
 		CreditUploadFileModel fileModel = new CreditUploadFileModel();
 		fileModel.set("business_type", status);
 		fileModel.set("business_id",orderId);
@@ -534,28 +535,22 @@ public class OrderProcessController extends BaseProjectController{
 					if(uploadFile.getFile().length()>maxPostSize){
 						return new ResultType(0, originalFile+" 必须小于5兆!");
 					}
-					String originalFileName = FileTypeUtils.getName(uploadFile.getFile().getName());
-					String FTPfileName = now+"."+ext;
-					String fileName = originalFileName + now;
-					String pdf_FTPfileName = "";
 					File pdf = null;
 					//如果上传文档不是pdf或者图片则转化为pdf，以作预览
 					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){
 						pdf = Office2PDF.toPdf(uploadFile);
-						pdf_FTPfileName += now+"."+"pdf";
-					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
-						pdf_FTPfileName = FTPfileName;
 					}
-					files.add(uploadFile.getFile());
-					pdfNameList.add(pdf_FTPfileName);
+					commonFiles.add(uploadFile.getFile());
 					if(pdf!=null)
-					pdf.delete();
-					
+					pdfFiles.add(pdf);
 				}
-			
 				//将文件上传到服务器
-				boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",files,storePath,ip,port,userName,password);
-				if(!storeFile){
+				boolean storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+				boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",commonFiles,storePath,ip,port,userName,password);
+				if(!storePdfFile){
+					return new ResultType(0, "预览文件生成异常!");
+				}
+				if(!storeCommonFile){
 					return new ResultType(0, "文件上传异常!");
 				}
 				//String ftpName=name+now+"."+type;
@@ -570,26 +565,25 @@ public class OrderProcessController extends BaseProjectController{
 					String ext = FileTypeUtils.getFileType(originalFile);
 					//上传到服务器时的文件名
 					String FTPfileName = originalFileName + now + "." + ext;
+					String PDFfileName = originalFileName + now + "." + "pdf";
 					//String pdfFactpath=storePath+"/"+pdf_FTPfileName;
-					if(storeFile){
 						/*if(pdf!=null){
 							pdf.delete();
 						}*/
 						String factpath = storePath + "/" + FTPfileName;
-						String ftpFactpath = storePath + "/" + pdfNameList.get(i);
+						String ftpFactpath = storePath + "/" + PDFfileName;
 						//String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
 						Integer userid = getSessionUser().getUserid();
 						//将上传信息维护进实体表
 						UploadFileService.service.save(0,upFileList.get(i), factpath,factpath,ftpFactpath,ftpFactpath,fileModel,originalFileName+now,userid);
-					}else{
-						return new ResultType(0, "实体保存异常!");
-					}
 				}
 				
 				
 			}catch(Exception e){
 				e.printStackTrace();
 				return new ResultType(0, "发生未知错误!");
+			}finally {
+				pdfFiles.forEach((File pdf)->{pdf.delete();});
 			}
 			return new ResultType(1, "文件上传成功!");
 		}else{
