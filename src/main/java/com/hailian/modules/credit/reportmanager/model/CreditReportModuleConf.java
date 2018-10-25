@@ -1,7 +1,6 @@
 package com.hailian.modules.credit.reportmanager.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -12,14 +11,14 @@ import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.jfinal.plugin.activerecord.Page;
 @ModelBind(table = "credit_report_module_conf")
-public class CreditReportTempConf extends BaseProjectModel<CreditReportTempConf>{
+public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleConf>{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final CreditReportTempConf dao = new CreditReportTempConf();//名字都叫dao，统一命名
-	public Page<CreditReportTempConf> findTemps(CreditReportTempConf temp, Paginator pageinator,
+	public static final CreditReportModuleConf dao = new CreditReportModuleConf();//名字都叫dao，统一命名
+	public Page<CreditReportModuleConf> findTemps(CreditReportModuleConf temp, Paginator pageinator,
 			BaseProjectController c) {
 		StringBuffer sql = new StringBuffer();
 		//报告类型
@@ -51,7 +50,7 @@ public class CreditReportTempConf extends BaseProjectModel<CreditReportTempConf>
 			sql.append(" and t.create=?");
 			params.add(create);
 		}
-		Page<CreditReportTempConf> page = dao
+		Page<CreditReportModuleConf> page = dao
 				.paginate(
 						pageinator,
 						"select t.*,c.name as reportName,s.username as createName,"
@@ -59,12 +58,18 @@ public class CreditReportTempConf extends BaseProjectModel<CreditReportTempConf>
 						sql.toString(), params.toArray());
 		return page;
 	}
-	public List<CreditReportTempConf> findParentNodes(String parent_temp, String report) {
+	public List<CreditReportModuleConf> findParentNodes(String parent_temp, String report) {
 		String sql="select t.* from credit_report_module_conf t where"
 				+ " t.del_flag=0 and t.parent_temp=? and t.report=? ";
 		return dao.find(sql, parent_temp,report);
 	}
-	public List<CreditReportTempConf> getAllTemp() {
+	
+	public List<CreditReportModuleConf> findReportNodes(String report) {
+		String sql="select t.* from credit_report_module_conf t where"
+				+ " t.del_flag=0 and t.report=? ";
+		return dao.find(sql,report);
+	}
+	public List<CreditReportModuleConf> getAllTemp() {
 		
 		 return dao.find("select t.* from credit_report_module_conf t where t.del_flag='0'  ");
 	}
@@ -77,10 +82,10 @@ public class CreditReportTempConf extends BaseProjectModel<CreditReportTempConf>
 	 * @param  @return
 	 * @return_type   List<CreditReportTempConf>
 	 */
-	public List<CreditReportTempConf> findByReport(String report) {
+	public List<CreditReportModuleConf> findByReport(String report) {
 		String sql="select t.* from credit_report_module_conf t where"
 				+ " t.del_flag=0 and t.node_type=? and t.report=? ";
 		return dao.find(sql,"1" ,report);
 	}
-
+	
 }
