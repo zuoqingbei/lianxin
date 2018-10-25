@@ -1,5 +1,6 @@
 package com.hailian.modules.credit.reportmanager.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -52,7 +53,7 @@ public class ReportTempConfController extends BaseProjectController{
 	 * 
 	 * @time   2018年10月22日 下午4:13:22
 	 * @author yangdong
-	 * @todo   TODO 跳转到新增或者修改页面
+	 * @todo   TODO 跳转到新增模板页面
 	 * @param  
 	 * @return_type   void
 	 */
@@ -60,10 +61,113 @@ public class ReportTempConfController extends BaseProjectController{
 		String id=getPara("id").toString();
 		if(StringUtils.isNotBlank(id)) {
 			CreditReportTempConf model=CreditReportTempConf.dao.findById(id);
-			setAttr("model",model);
-			render(path+"edit.html");
-		}else {
-			render(path+"add.html");
+			CreditReportTempConf model1=new CreditReportTempConf();
+			//区分一级菜单二级菜单三级菜单
+			String nodeType=model.getStr("node_type");
+			//新建一级目录
+			if("0".equals(nodeType)) {
+
+				model1.set("node_type", "0");
+				model1.set("parent_temp", "999");
+				model1.set("create", getSessionUser().getUserid());
+				setAttr("model1",model1);
+				render(path+"add.html");
+				}		
+			if("1".equals(nodeType)) {
+
+				model1.set("node_type", "1");
+				model1.set("parent_temp", model.getStr("parent_temp"));
+				model1.set("create", getSessionUser().getUserid());
+				model1.set("report", model.getStr("report"));
+				setAttr("model1",model1);
+				render(path+"add.html");			
+				}
+			//三级目录
+			if("2".equals(nodeType)) {
+			
+				model1.set("node_type", "2");
+				model1.set("parent_temp", model.getStr("parent_temp"));
+				model1.set("create", getSessionUser().getUserid());
+				model1.set("report", model.getStr("report"));
+				setAttr("model1",model1);
+				render(path+"add.html");
+				}
+		
+		}
+	}
+	/**
+	 * 
+	 * @time   2018年10月25日 上午9:24:16
+	 * @author yangdong
+	 * @todo   TODO 跳转到修改模板页面
+	 * @param  
+	 * @return_type   void
+	 */
+	public void edit() {
+		String id=getPara("id").toString();
+		if(StringUtils.isNotBlank(id)) {
+			CreditReportTempConf model=CreditReportTempConf.dao.findById(id);
+				setAttr("model",model);
+				render(path+"edit.html");
+		}
+	}
+	/**
+	 * 
+	 * @time   2018年10月25日 上午9:28:17
+	 * @author yangdong
+	 * @todo   TODO 修改保存
+	 * @param  
+	 * @return_type   void
+	 */
+	public void save2() {
+		CreditReportTempConf model=getModelByAttr(CreditReportTempConf.class);
+		model.set("update_date", new Date());
+		model.set("update", getSessionUser().getUserid());
+		/*if(model.get("report")) {
+			
+		}*/
+		try {
+		model.update();
+		renderMessage("修改成功");
+		}catch(Exception e){
+		e.printStackTrace();
+		renderMessageByFailed("修改失败请重新修改");
+		}
+		
+		}
+	/**
+	 * 
+	 * @time   2018年10月23日 下午5:31:08
+	 * @author yangdong
+	 * @todo   TODO 新建模板
+	 * @param  
+	 * @return_type   void
+	 */
+	public void save() {
+		CreditReportTempConf model=getModelByAttr(CreditReportTempConf.class);
+		model.set("create_date", new Date());
+		/*if(model.get("report")) {
+			
+		}*/
+		try {
+		model.save();
+		renderMessage("创建成功");
+		}catch(Exception e){
+		e.printStackTrace();
+		renderMessageByFailed("创建失败请重新创建");
+		}
+		
+		}
+	public void delete() {
+		String id=getPara("id").toString();
+		CreditReportTempConf model=CreditReportTempConf.dao.findById(id);
+		model.set("del_flag", "1");
+		try {
+			model.update();
+			renderMessageByFailed("删除成功");
+		}catch(Exception e) {
+			e.printStackTrace();
+			renderMessageByFailed("删除失败");
 		}
 	}
 }

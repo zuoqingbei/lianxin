@@ -30,12 +30,12 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title);
 		},
 		edit : function(id) {
-			var url = '/credit/reporttempmanager/edit/'+id 
+			var url = '/credit/reporttempmanager/edit?id='+id 
 			var title = '修改模板信息';
 			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
-			var url = '/credit/reporttempmanager/delete/'+id;
+			var url = '/credit/reporttempmanager/delete?id='+id;
 			var title = '确认要删除该模板信息？';
 			Confirm(title, function() {
 				form1.action = url;
@@ -176,9 +176,6 @@ function loadReady() {
 		<button type="button" class="btn btn-default" onclick="resetForm();">
 		 		<span class="glyphicon glyphicon-refresh"></span> 重 置
 		</button>
-		<button type="button" class="btn btn-default" onclick="oper.add();">
-		 		<span class="glyphicon glyphicon-plus"></span> 新 增
-		</button>	
 <!-- 数据列表 -->
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
@@ -206,7 +203,6 @@ function loadReady() {
 				<td>${item.updateName}</td>
 				<td>${item.update_date}</td>
 				<td>
-					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.view(${item.id});">查看</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.id});">修改</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.id});">删除</a>
 				</td>
