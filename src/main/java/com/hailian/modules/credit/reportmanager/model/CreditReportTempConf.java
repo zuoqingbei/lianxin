@@ -11,7 +11,7 @@ import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.jfinal.plugin.activerecord.Page;
-@ModelBind(table = "credit_report_temp_conf")
+@ModelBind(table = "credit_report_module_conf")
 public class CreditReportTempConf extends BaseProjectModel<CreditReportTempConf>{
 
 	/**
