@@ -334,7 +334,7 @@ public class OrderPoiController extends BaseProjectController {
 			  String speed=model.getStr("speed");
 			  String reporttype=model.getStr("report_type");
 			  String orderType=model.getStr("order_type");
-			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed/*, reporttype, orderType*/);
+			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed, reporttype/*, orderType*/);
 			  int user_time_id = 0;
 			  int use_time;
 			  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
