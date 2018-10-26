@@ -265,13 +265,13 @@
 				   form.render('select'); 
 		 	       
 	    	 })
-	 	          countrychange();
-	 	         reportTypeChange();
+/* 	 	          countrychange();
+	 	         reportTypeChange(); */
 		
 	   		})
 	   		form.on('select(countrychange)',function(data){
-	   			countrychange();
-	 	         reportTypeChange();
+	   			usetime();
+	   			price()
 	   		})
 	   		form.on('select(speedchange)',function(data){
 	   			usetime();
@@ -291,23 +291,23 @@
 			})	
    		})
    		
-   	 	/* function reportTypeChange(){
+   	 	 function reportTypeChange(){
    	 		//languagechange();
    	 		price()
    	 		usetime()
-   	 	} */
+   	 	} 
    	 	function ordertypechange(){
    	 	usetime();
    	 	price()
    	 	}
-   	 	/* function countrychange(){
+   	 	 function countrychange(){
    	 	 $("select[name='attr.country'] option:first").attr("selected","selected");
    	 		//查询用时
    	    	usetime();
    	    	//查询语言
    	    	//languagechange()
    	    	price()
-   	 	} */
+   	 	} 
    	 	
    /* 	 	function speedchange(){
    	 		usetime();
