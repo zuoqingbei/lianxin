@@ -39,6 +39,7 @@ public class ModuleController extends BaseProjectController{
 			list.add(new ModuleJsonData(crmc.getStr("temp_name"),child));
 		}
 		Record record=new Record();
+		record.set("order", coi);
 		record.set("company", cci);
 		record.set("modules",list);
 		renderJson(record);
