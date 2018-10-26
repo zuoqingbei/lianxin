@@ -7,7 +7,7 @@ include("/pages/template/head.html"){} %>
 			if(!validForm()) {
 				return false;
 			}
-			var url = '/credit/reporttempmanager/save2?id='+id;
+			var url = '/credit/reportmodulemanager/save2?id='+id;
 			form1.action = url;
 			form1.submit();
 			return true;
@@ -17,12 +17,28 @@ include("/pages/template/head.html"){} %>
 			console.log(value);
 			$("input[name='attr.temp_name']").val(value);
 		},
+		reportchange2:function(){
+			var value=$("select[name='attr.report']").find("option:selected").val();
+			
+			 var html="";
+			$.post("/credit/reportmodulemanager/findParentModules",{"report":value},function(data){
+				for(item in data){
+					if(${model.id}==data[item].id){
+						html+="<option selected value='"+data[item].id+"'>"+data[item].temp_name+"</option>";
+					}else{
+						html+="<option  value='"+data[item].id+"'>"+data[item].temp_name+"</option>";
+					}
+					
+				}
+				$("select[name='attr.parent_temp']").html(html);
+			})
+		}
 	};
 </script>
 <script type="text/javascript">
-	$(function(){
-	
-	})
+$(function(){
+	oper.reportchange2();
+})
 </script>
 
 <% }; var bodyContent = { %>
@@ -70,11 +86,11 @@ include("/pages/template/head.html"){} %>
 					<input  value= '${model.id}' type="hidden" name="attr.id" />				
 				</td>
 			</tr>
-		<%}else if(model.node_type=='2'){%>	
+		<%}else{%>	
 			<tr>
 				<td style="text-align: right;">报告类型</td>
 				<td>
-					<select name="attr.report" class="form-control" valid="vselect" validname="请选择报告类型">
+					<select name="attr.report" class="form-control" onchange="oper.reportchange2();" valid="vselect" validname="请选择报告类型">
 						${reportType}
 					</select>				
 				</td>
@@ -83,7 +99,7 @@ include("/pages/template/head.html"){} %>
 				<td style="text-align: right;">父模板名称</td>
 				<td>
 					<select name="attr.parent_temp" class="form-control" valid="vselect" validname="请选择父模板名称">
-						${reportType}
+						
 					</select>				
 				</td>
 			</tr>
@@ -91,7 +107,7 @@ include("/pages/template/head.html"){} %>
 				<td style="text-align: right;">模板名称</td>
 				<td>
 					<input class="form-control" type="text" name="attr.temp_name"
-				value="" valid='vtext' validname='模板名称' />
+				value="${model.temp_name}" valid='vtext' validname='模板名称' />
 					<input  value= '${model.create}' type="hidden" name="attr.create" />
 					<input  value= '${model.node_type}' type="hidden" name="attr.node_type" />
 					<input  value= '${model.report}' type="hidden" name="attr.report" />

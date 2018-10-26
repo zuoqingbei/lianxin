@@ -23,13 +23,10 @@ public class ModuleController extends BaseProjectController{
 	public void list() {
 		String report=getPara("id");
 		List<CreditReportModuleConf> crmcs=CreditReportModuleConf.dao.findByReport(report);
-		ModuleJsonData data=new ModuleJsonData();
 		List<ModuleJsonData> list=new ArrayList<ModuleJsonData>();
 		for(CreditReportModuleConf crmc:crmcs) {
 			List<CreditReportModuleConf> child=CreditReportModuleConf.dao.findParentNodes(crmc.get("id").toString(),report);
-			data.setContents(child);
-			data.setTitle(crmc.getStr("temp_name"));
-			list.add(data);
+			list.add(new ModuleJsonData(crmc.getStr("temp_name"),child));
 		}
 		renderJson(list);
 	}
