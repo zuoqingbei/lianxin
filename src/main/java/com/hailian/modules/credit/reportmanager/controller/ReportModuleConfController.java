@@ -22,7 +22,7 @@ import com.jfinal.plugin.activerecord.Page;
 @Api(tag = "报告模板", description = "操作报告模板")
 @ControllerBind(controllerKey = "/credit/reportmodulemanager")
 public class ReportModuleConfController extends BaseProjectController{
-	private static final String path = "/pages/credit/reportmanager/reportmodule_";
+	private static final String path = "/pages/credit/reportmanager/reporttemp_";
 	
 	public void index() {
 		list();
@@ -59,13 +59,13 @@ public class ReportModuleConfController extends BaseProjectController{
 	 */
 	public void add() {
 		String id=getPara("id").toString();
-		if(StringUtils.isNotBlank(id)) {
+		CreditReportModuleConf model1=new CreditReportModuleConf();
+		if(!"0".equals(id)) {
 			CreditReportModuleConf model=CreditReportModuleConf.dao.findById(id);
-			CreditReportModuleConf model1=new CreditReportModuleConf();
 			//区分一级菜单二级菜单三级菜单
-			String nodeType=model.getStr("node_type");
+			String nodeType=model.getStr("node_type");			
 			//新建一级目录
-			if("0".equals(nodeType)) {
+			if("0".equals(nodeType.toString())) {
 
 				model1.set("node_type", "0");
 				model1.set("parent_temp", "999");
@@ -73,7 +73,7 @@ public class ReportModuleConfController extends BaseProjectController{
 				setAttr("model1",model1);
 				render(path+"add.html");
 				}		
-			if("1".equals(nodeType)) {
+			if("1".equals(nodeType.toString())) {
 
 				model1.set("node_type", "1");
 				model1.set("parent_temp", model.getStr("parent_temp"));
@@ -83,7 +83,7 @@ public class ReportModuleConfController extends BaseProjectController{
 				render(path+"add.html");			
 				}
 			//三级目录
-			if("2".equals(nodeType)) {
+			if("2".equals(nodeType.toString())) {
 			
 				model1.set("node_type", "2");
 				model1.set("parent_temp", model.getStr("parent_temp"));
@@ -93,7 +93,16 @@ public class ReportModuleConfController extends BaseProjectController{
 				render(path+"add.html");
 				}
 		
+		}else {
+			setAttr("model1",model1);
+			render(path+"add.html");
 		}
+	}
+	
+	public void findParentModules() {
+		String report=getPara("report");
+		List<CreditReportModuleConf> crmc=CreditReportModuleConf.dao.findByReport(report);
+		renderJson(crmc);
 	}
 	/**
 	 * 

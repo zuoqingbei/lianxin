@@ -145,16 +145,16 @@ let
 							console.log(JSON.stringify(data));
 							  if(data.statusCode===1){
                         		Public.message("success",data.message);
-                        		Public.goList();
+ //                       		Public.goList();
                        		 }else{
                         		Public.message("error",data.message);
-                        		Public.goList();
+//                        		Public.goList();
                         	}
 
 						},
 						error:function(data){
 							Public.message("error",data.message);
-							Public.goList();
+//							Public.goList();
 						}
 					});
 			}

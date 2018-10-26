@@ -60,7 +60,7 @@ include("/pages/template/head.html"){}
 	    		 console.log(data)
 	    		  for(item in data){
 	    			  console.log(item.id)
-						 if(item.id='${model.country}'){
+						 if(item.id=='${model.country}'){
 							 html+="<option selected='selected' m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";
 						 }else{
 							html+="<option  m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";

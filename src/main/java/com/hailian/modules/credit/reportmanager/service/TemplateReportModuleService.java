@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hailian.jfinal.base.BaseService;
-import com.hailian.modules.credit.agentmanager.model.AgentModel;
+import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 
 public class TemplateReportModuleService extends BaseService{
 	
-	public List<AgentModel> getAgent() {
-		List<AgentModel> listDetail = new ArrayList<AgentModel>();
+	public List<CreditReportModuleConf> getReportModule(String id) {
+		List<CreditReportModuleConf> listDetail = new ArrayList<CreditReportModuleConf>();
 		//listDetail.add(getDefaultAgentDetail());
-		listDetail.addAll(AgentModel.dao.findAll());
+		listDetail.addAll(CreditReportModuleConf.dao.findByReport(id));
 		return listDetail;
 	}
 
