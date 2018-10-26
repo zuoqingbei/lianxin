@@ -23,6 +23,16 @@ public class ModuleController extends BaseProjectController{
 	@Params(value = { 
 		@Param(name = "id", description = "报告id", required = false, dataType = "String"),
 		})
+	/**
+	 * 
+	 * @time   2018年10月26日 上午10:33:16
+	 * @author yangdong
+	 * @todo   TODO返回公司信息,订单信息,和模板信息,其中模板信息是由外层集合内层集合组成,外层集合modules是由多个ModuleJsonData对象组成,
+	 * ModuleJsonData对象是由一个父模板名称title和一个包含多个子模板的集合组成获取父模板名称data.modules[i].title获取子模板集合data.modules[i].contents
+	 * 获取某个子模板名称data.modules[i].contents[i].name
+	 * @param  
+	 * @return_type   void
+	 */
 	public void list() {
 		//订单id
 		String orederid=getPara("id");
