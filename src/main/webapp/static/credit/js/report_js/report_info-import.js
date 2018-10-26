@@ -99,8 +99,8 @@ let Verify = {
                           events: {
                             "click .write":(e,value,row,index)=>{
                               console.log(row);
-//                          	  Public.goToBasicInfoWrite(row);
-                              Public.goToReportConfig(row)
+                          	   Public.goToBasicInfoWrite(row);
+//                              Public.goToReportConfig(row)
                             }
                           },
                           formatter: _this.operateFormatter
