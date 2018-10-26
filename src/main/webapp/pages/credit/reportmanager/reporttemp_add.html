@@ -7,7 +7,7 @@ include("/pages/template/head.html"){} %>
 			if(!validForm()) {
 				return false;
 			}
-			var url = '/credit/reporttempmanager/save';
+			var url = '/credit/reportmodulemanager/save';
 			form1.action = url;
 			form1.submit();
 			return true;
@@ -17,13 +17,25 @@ include("/pages/template/head.html"){} %>
 			console.log(value);
 			$("input[name='attr.temp_name']").val(value);
 		},
+		typechange:function(){
+			var value=$("select[name='moduletype']").find("option:selected").val();
+			if(value==0){
+				$(".parent").attr("disabled","disabled").hidden()
+				$(".child").attr("disabled","disabled").hidden()
+				$(".report").removeAttr("disabled").show()
+			}else if(value==1){
+				
+			}else{
+				
+			}
+		}
 	};
 </script>
 
 <% }; var bodyContent = { %>
 <form name="form1" action="" method="post" class="form-horizontal"
 	role="form">
-	<input type="hidden" name="model.id" value="${model.id}" />
+	
 	<table class="table">
 		<% // 列表头部%>
 		
@@ -38,10 +50,10 @@ include("/pages/template/head.html"){} %>
 					<input  value= '${model1.temp_name}' type="hidden" name="attr.temp_name" />
 					<input  value= '${model1.parent_temp}' type="hidden" name="attr.parent_temp" />
 					<input  value= '${model1.create}' type="hidden" name="attr.create" />
-					<input  value= '${model1.node_type}' type="hidden" name="attr.node_type" />				
+					<input  value= '${model1.node_type}' type="hidden" name="attr.node_type" />
 				</td>
 			</tr>
-		<%}else {%>
+		<%}else if(model1.node_type=='1' || model1.node_type=='2'){%>
 			<tr>
 				<td style="text-align: right;">模板名称</td>
 				<td>
@@ -50,7 +62,79 @@ include("/pages/template/head.html"){} %>
 					<input  value= '${model1.parent_temp}' type="hidden" name="attr.parent_temp" />
 					<input  value= '${model1.create}' type="hidden" name="attr.create" />
 					<input  value= '${model1.node_type}' type="hidden" name="attr.node_type" />
-					<input  value= '${model1.report}' type="hidden" name="attr.report" />				
+					<input  value= '${model1.report}' type="hidden" name="attr.report" />
+				</td>
+			</tr>
+		<%}else{%>
+			<tr>
+				<td style="text-align: right;">模板类型</td>
+				<select name="moduletype" class="form-control" valid="vselect" validname="请选择模板类型"
+					onchange="oper.typechange()">
+						<option value="">请选择模板类型</option>
+						<option value="0">报告类型</option>
+						<option value="1">父模板</option>
+						<option value="2">子模板</option>
+					</select>
+			</tr>
+			<tr class="report">
+				<td style="text-align: right;">报告类型</td>
+				<td>
+					<select name="attr.report" onchange="" class="form-control" valid="vselect" validname="请选择报告类型">
+						${reportType}
+					</select>
+					<input  value= '' type="hidden" name="attr.temp_name" />
+					<input  value= '999' type="hidden" name="attr.parent_temp" />
+					<input  value= '0' type="hidden" name="attr.node_type" />			
+				</td>
+			</tr>
+			
+			<tr class="parent">
+				<td style="text-align: right;">报告类型</td>
+				<td>
+					<select name="attr.report" class="form-control" valid="vselect" validname="请选择报告类型">
+						${reportType}
+					</select>				
+				</td>
+			</tr>
+			<tr class="parent">
+				<td style="text-align: right;">父模板名称</td>
+				<td>
+					<input class="form-control" type="text" name="attr.temp_name"
+				value="" valid='vtext' validname='模板名称' />
+					<input  value= '${model.parent_temp}' type="hidden" name="attr.parent_temp" />
+					<input  value= '${model.create}' type="hidden" name="attr.create" />
+					<input  value= '${model.node_type}' type="hidden" name="attr.node_type" />
+					<input  value= '${model.report}' type="hidden" name="attr.report" />
+					<input  value= '${model.create_date}' type="hidden" name="attr.create_date" />
+					<input  value= '${model.id}' type="hidden" name="attr.id" />				
+				</td>
+			</tr>
+			<tr class="child">
+				<td style="text-align: right;">报告类型</td>
+				<td>
+					<select name="attr.report" class="form-control" onchange="oper.reportchange2();" valid="vselect" validname="请选择报告类型">
+						${reportType}
+					</select>				
+				</td>
+			</tr>
+			<tr class="child">
+				<td style="text-align: right;">父模板名称</td>
+				<td>
+					<select name="attr.parent_temp" class="form-control" valid="vselect" validname="请选择父模板名称">
+						
+					</select>				
+				</td>
+			</tr>
+			<tr class="child">
+				<td style="text-align: right;">模板名称</td>
+				<td>
+					<input class="form-control" type="text" name="attr.temp_name"
+				value="${model.temp_name}" valid='vtext' validname='模板名称' />
+					<input  value= '${model.create}' type="hidden" name="attr.create" />
+					<input  value= '${model.node_type}' type="hidden" name="attr.node_type" />
+					<input  value= '${model.report}' type="hidden" name="attr.report" />
+					<input  value= '${model.create_date}' type="hidden" name="attr.create_date" />
+					<input  value= '${model.id}' type="hidden" name="attr.id" />				
 				</td>
 			</tr>
 		<%}%>		
