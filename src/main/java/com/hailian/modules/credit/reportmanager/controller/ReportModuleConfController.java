@@ -77,7 +77,6 @@ public class ReportModuleConfController extends BaseProjectController{
 
 				model1.set("node_type", "1");
 				model1.set("parent_temp", model.getStr("parent_temp"));
-				model1.set("create", getSessionUser().getUserid());
 				model1.set("report", model.getStr("report"));
 				setAttr("model1",model1);
 				render(path+"add.html");			
@@ -87,7 +86,6 @@ public class ReportModuleConfController extends BaseProjectController{
 			
 				model1.set("node_type", "2");
 				model1.set("parent_temp", model.getStr("parent_temp"));
-				model1.set("create", getSessionUser().getUserid());
 				model1.set("report", model.getStr("report"));
 				setAttr("model1",model1);
 				render(path+"add.html");
@@ -155,6 +153,8 @@ public class ReportModuleConfController extends BaseProjectController{
 	public void save() {
 		CreditReportModuleConf model=getModelByAttr(CreditReportModuleConf.class);
 		model.set("create_date", new Date());
+		model.set("create", getSessionUser().getUserid());
+
 		/*if(model.get("report")) {
 			
 		}*/
@@ -170,6 +170,8 @@ public class ReportModuleConfController extends BaseProjectController{
 	public void delete() {
 		String id=getPara("id").toString();
 		CreditReportModuleConf model=CreditReportModuleConf.dao.findById(id);
+		model.set("update_date", new Date());
+		model.set("update", getSessionUser().getUserid());
 		model.set("del_flag", "1");
 		try {
 			model.update();
