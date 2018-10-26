@@ -129,6 +129,11 @@ let Public = {
         $("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportedBasicInfo');
         localStorage.setItem("row",JSON.stringify(e));
     },
+    goToReportConfig(param){
+    	/**跳转可配置的填报页面*/
+    	 $("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportedConfig');
+         localStorage.setItem("row",JSON.stringify(param));
+    },
     tabFixed(fixedEle,scrollEle,min,max){
         /**
          * 滚动之后固定tab函数

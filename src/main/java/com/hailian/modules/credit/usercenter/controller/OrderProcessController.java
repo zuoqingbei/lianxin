@@ -237,6 +237,15 @@ public class OrderProcessController extends BaseProjectController{
 	public void showReportedBasicInfo(){
 		render(REPORT_MANAGE_PATH+"reported_basic_info.html");
 	}
+	/**
+	 * @todo   展示报告管理下的可配置的填报页面
+	 * @time   2018年10月26日 上午 11:02
+	 * @author zc
+	 * @return_type   void
+	 */
+	public void showReportedConfig(){
+		render(REPORT_MANAGE_PATH+"report_config.html");
+	}
 	
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
