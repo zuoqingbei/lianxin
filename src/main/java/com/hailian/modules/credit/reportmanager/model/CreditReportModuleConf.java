@@ -1,6 +1,7 @@
 package com.hailian.modules.credit.reportmanager.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -84,8 +85,13 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 */
 	public List<CreditReportModuleConf> findByReport(String report) {
 		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.node_type=? and t.report=? ";
-		return dao.find(sql,"1" ,report);
+				+ " t.del_flag=0 and t.node_type=1 and t.report=? ";
+		return dao.find(sql,report);
+	}
+	public List<CreditReportModuleConf> findReportType() {
+		String sql="select t.* from credit_report_module_conf t where"
+				+ " t.del_flag=0 and t.parent_temp=999";
+		return dao.find(sql);
 	}
 	
 }

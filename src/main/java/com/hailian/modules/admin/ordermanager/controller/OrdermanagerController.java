@@ -402,7 +402,10 @@ public class OrdermanagerController extends BaseProjectController{
 		if(time==0) {
 			enddate="";
 		}
-		
+		if("148".equals(countryType)&&!("15".equals(reporttype) || "22".equals(reporttype))) {
+			ca.add(Calendar.DATE, days);
+			enddate=sdf.format(ca.getTime());
+		}
 		Record record=new Record();
 		record.set("usetime", usetime);
 		record.set("enddate", enddate);
