@@ -1,4 +1,5 @@
 <% var reportType = reportType.getReportTypeString(''); %>
+<% var reportType2 = module.getReportModuleString(''); %>
 <% DIRECTIVE SAFE_OUTPUT_OPEN; var headContent = {
 include("/pages/template/head.html"){} %>
 <script type="text/javascript">
@@ -7,7 +8,7 @@ include("/pages/template/head.html"){} %>
 			if(!validForm()) {
 				return false;
 			}
-			var url = '/credit/reporttempmanager/save';
+			var url = '/credit/reportmodulemanager/save';
 			form1.action = url;
 			form1.submit();
 			return true;
@@ -17,13 +18,100 @@ include("/pages/template/head.html"){} %>
 			console.log(value);
 			$("input[name='attr.temp_name']").val(value);
 		},
+		reportchange2:function(){
+			var value=$("select[name='attr.report']").find("option:selected").attr("m-id");	
+			$("input[name='attr.parent_temp']").val(value)
+			
+		},
+		reportchange3:function(){
+			var value=$("#report3").find("option:selected").val();
+			console.log(value)
+			var html="";
+			$.post("/credit/reportmodulemanager/findParentModules",{"report":value},function(data){
+				for(item in data){				
+					html+="<option  value='"+data[item].id+"'>"+data[item].temp_name+"</option>";				
+				}
+				$("select[name='attr.parent_temp']").html(html);
+				$("select[name='attr.parent_temp'] option:first").attr('selected','selected');
+				
+			})
+		},
+		typechange:function(){
+			var value=$("select[name='moduletype']").find("option:selected").val();
+			html=""
+			html2=""
+			html3=""
+			if(value=='0'){				
+				html+='<td style="text-align: right;">报告类型</td>'
+				html+='<td>'
+				html+='<select id="report" name="attr.report" onchange="oper.reportchange()" class="form-control" valid="vselect" validname="请选择报告类型" >'
+				html+="${reportType}"
+				html+='</select>'
+				html+='<input  value= "" type="hidden" name="attr.temp_name" />'
+				html+='<input  value= "999" type="hidden" name="attr.parent_temp" />'
+				html+='<input  value= "0" type="hidden" name="attr.node_type" />'
+				html+='</td>'
+				$(".add1").html(html)
+				$(".add2").html("")
+				$(".add3").html("")
+			}else if(value=='1'){
+				html+='<td style="text-align: right;">报告类型</td>'
+				html+='<td>'
+				html+='<select id="report2"name="attr.report" onchange="oper.reportchange2()" class="form-control"  >'
+				html+="${reportType2}"
+				html+='</select>'
+				html+='</td>'					
+				html2+='<td style="text-align: right;">父模板名称</td>'
+				html2+='<td>'
+				html2+='<input class="form-control" id="parent" type="text" name="attr.temp_name" value=""  />'
+				html2+='<input  value= "${model.parent_temp}" type="hidden" name="attr.parent_temp" />'
+				html2+='<input  value= "1" type="hidden" name="attr.node_type" />'
+				html2+='</td>'
+				$(".add1").html(html)
+				$(".add2").html(html2)
+				$(".add3").html("")
+				oper.reportchange2();
+			}else if(value=='2'){
+				html+='<td style="text-align: right;">报告类型</td>'
+				html+='<td>'
+				html+='<select id="report3" name="attr.report" class="form-control" onchange="oper.reportchange3();" >'
+				html+="${reportType2}"
+				html+='</select>'
+				html+='</td>'
+				html2+='<td style="text-align: right;">父模板名称</td>'
+				html2+='<td>'
+				html2+='<select id="parent2" name="attr.parent_temp" class="form-control" >'
+				html2+='</select>'
+				html2+='</td>'
+				html3+='<td style="text-align: right;">模板名称</td>'
+				html3+='<td>'
+				html3+='<input id="child" class="form-control" type="text" name="attr.temp_name"value="${model.temp_name}"  />'
+				html3+='<input  value= "2" type="hidden" name="attr.node_type" />'
+				html3+='</td>'
+				$(".add1").html(html)
+				$(".add2").html(html2)
+				$(".add3").html(html3)
+				oper.reportchange3();
+			}else{
+				$(".add1").html("")
+				$(".add2").html("")
+				$(".add3").html("")
+			}
+		},
 	};
+</script>
+<script type="text/javascript">
+	$(function(){
+		oper.typechange()
+		
+		
+	})
 </script>
 
 <% }; var bodyContent = { %>
 <form name="form1" action="" method="post" class="form-horizontal"
 	role="form">
-	<input type="hidden" name="model.id" value="${model.id}" />
+	
 	<table class="table">
 		<% // 列表头部%>
 		
@@ -37,23 +125,45 @@ include("/pages/template/head.html"){} %>
 					</select>
 					<input  value= '${model1.temp_name}' type="hidden" name="attr.temp_name" />
 					<input  value= '${model1.parent_temp}' type="hidden" name="attr.parent_temp" />
-					<input  value= '${model1.create}' type="hidden" name="attr.create" />
-					<input  value= '${model1.node_type}' type="hidden" name="attr.node_type" />				
+					<input  value= '${model1.node_type}' type="hidden" name="attr.node_type" />
 				</td>
 			</tr>
-		<%}else {%>
+		<%}else if(model1.node_type=='1' || model1.node_type=='2'){%>
 			<tr>
 				<td style="text-align: right;">模板名称</td>
 				<td>
 					<input class="form-control" type="text" name="attr.temp_name"
 				value="" valid='vtext' validname='模板名称' />
 					<input  value= '${model1.parent_temp}' type="hidden" name="attr.parent_temp" />
-					<input  value= '${model1.create}' type="hidden" name="attr.create" />
 					<input  value= '${model1.node_type}' type="hidden" name="attr.node_type" />
-					<input  value= '${model1.report}' type="hidden" name="attr.report" />				
+					<input  value= '${model1.report}' type="hidden" name="attr.report" />
 				</td>
 			</tr>
-		<%}%>		
+		<%}else{%>
+			<tr id="moduletype">
+				<td style="text-align: right;">模板类型</td>
+				<td>
+				<select name="moduletype" class="form-control" 
+					onchange="oper.typechange()">
+						<option value="">请选择模板类型</option>
+						<option value="0">报告类型</option>
+						<option value="1">父模板</option>
+						<option value="2">子模板</option>
+				</select>
+				</td>
+			</tr>
+			<%}%>
+			<tr class="add1" >
+				
+			</tr>
+			
+			<tr class="add2">
+				
+			</tr>
+			<tr class="add3" >
+				
+			</tr>
+				
 		
 	</table>
 
