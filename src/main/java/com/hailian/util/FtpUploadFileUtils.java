@@ -41,7 +41,7 @@ public class FtpUploadFileUtils {
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
 			String s = "/"+storePath;
 			String[] dirs = s.split("/");
-			ftp.changeWorkingDirectory("/");			
+			ftp.changeWorkingDirectory(s);			
 	            //按顺序检查目录是否存在，不存在则创建目录  
 	            for(int i=1; dirs!=null&&i<dirs.length; i++) {  
 	                if(!ftp.changeWorkingDirectory(dirs[i])) {  
@@ -95,7 +95,7 @@ public class FtpUploadFileUtils {
 		FileInputStream fis = null;
 		boolean result = false;
 		FTPClient ftp = new FTPClient();
-		ftp.setControlEncoding("UTF-8");
+		
 		ftp.setPassiveNatWorkaround(true);
 		try {
 			ftp.setRemoteVerificationEnabled(false);
@@ -111,30 +111,29 @@ public class FtpUploadFileUtils {
 				return result;
 			}
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
-			ftp.enterLocalActiveMode();
-//						ftp.enterLocalPassiveMode(); 
+//			ftp.enterLocalActiveMode();
+			ftp.setControlEncoding("UTF-8");
+			ftp.enterLocalPassiveMode(); 
+			ftp.setFileTransferMode(ftp.BINARY_FILE_TYPE);
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
 			String s = "/"+storePath;
 			String[] dirs = s.split("/");
 			ftp.changeWorkingDirectory("/");			
 	            //按顺序检查目录是否存在，不存在则创建目录  
-	            for(int i=1; dirs!=null&&i<dirs.length; i++) {  
-	                if(!ftp.changeWorkingDirectory(dirs[i])) {  
-	                    if(ftp.makeDirectory(dirs[i])) {  
-	                        if(!ftp.changeWorkingDirectory(dirs[i])) {  
-	                            return false;  
-	                        }  
-	                    }else {  
-	                        return false;                         
-	                    }  
-	                }  
-	            }  
+            for(int i=1; dirs!=null&&i<dirs.length; i++) {  
+                if(!ftp.changeWorkingDirectory(dirs[i])) {  
+                    if(ftp.makeDirectory(dirs[i])) {  
+                        if(!ftp.changeWorkingDirectory(dirs[i])) {  
+                            return false;  
+                        }  
+                    }else {  
+                        return false;                         
+                    }  
+                }  
+            }  
 			// 设置文件操作目录
-			ftp.changeWorkingDirectory(storePath);
-
-//			ftp.makeDirectory(storePath);
+			boolean changeWorkingDirectory = ftp.changeWorkingDirectory(s);
 			// 设置文件操作目录
-			ftp.changeWorkingDirectory(storePath);
 			// 设置文件类型，二进制
 			ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
 			// 设置缓冲区大小
@@ -146,7 +145,8 @@ public class FtpUploadFileUtils {
 				String type = FileTypeUtils.getFileType(filename);
 				String name = FileTypeUtils.getName(filename);
 				String ftpName=now+"."+type;
-				result = ftp.storeFile(ftpName, fis);
+//				result = ftp.storeFile(ftpName, fis);
+				result = ftp.storeFile(new String(ftpName.getBytes("UTF-8"),"iso-8859-1"), fis);
 			}
 			
 			// 关闭输入流
@@ -155,6 +155,7 @@ public class FtpUploadFileUtils {
 			ftp.logout();
 		} catch (IOException e) {
 			try {
+				e.printStackTrace();
 				// 判断输入流是否存在
 				if (null != fis) {
 					// 关闭输入流
