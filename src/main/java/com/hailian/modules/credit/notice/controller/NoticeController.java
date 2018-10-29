@@ -2,12 +2,16 @@ package com.hailian.modules.credit.notice.controller;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.hailian.component.base.BaseProjectController;
+import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.custom.service.CustomService;
 import com.hailian.modules.credit.notice.model.NoticeLogModel;
 import com.hailian.modules.credit.notice.model.NoticeModel;
 import com.hailian.modules.credit.notice.service.NoticeService;
+import com.hailian.modules.credit.resetpassword.controller.ResetPassWordController;
 import com.hailian.system.user.SysUser;
 /**
  * 公告
@@ -15,7 +19,13 @@ import com.hailian.system.user.SysUser;
 * @date 2018年10月24日下午5:13:52  
 * @TODO
  */
+@ControllerBind(controllerKey = "/credit/sysuser/notice")
 public class NoticeController extends BaseProjectController {
+	private static Logger logger=Logger.getLogger(ResetPassWordController.class);
+	private static final String path = "/pages/credit/notice/";
+		public void index() {
+			render(path+"msgManage.html");
+		}
 	
 	/**
 	 * 列表展示
