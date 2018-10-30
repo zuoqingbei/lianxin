@@ -24,35 +24,5 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 public class SSLClient{
-	private static HttpClient sslClient() {
-        try {
-            // 在调用SSL之前需要重写验证方法，取消检测SSL
-            X509TrustManager trustManager = new X509TrustManager() {
-                @Override public X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-                @Override public void checkClientTrusted(X509Certificate[] xcs, String str) {}
-                @Override public void checkServerTrusted(X509Certificate[] xcs, String str) {}
-            };
-            SSLContext ctx = SSLContext.getInstance(SSLConnectionSocketFactory.TLS);
-            ctx.init(null, new TrustManager[] { trustManager }, null);
-            SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(ctx, NoopHostnameVerifier.INSTANCE);
-            // 创建Registry
-            RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT)
-                    .setExpectContinueEnabled(Boolean.TRUE).setTargetPreferredAuthSchemes(Arrays.asList(AuthSchemes.NTLM,AuthSchemes.DIGEST))
-                    .setProxyPreferredAuthSchemes(Arrays.asList(AuthSchemes.BASIC)).build();
-            Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
-                    .register("http", PlainConnectionSocketFactory.INSTANCE)
-                    .register("https",socketFactory).build();
-            // 创建ConnectionManager，添加Connection配置信息
-            PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
-            CloseableHttpClient closeableHttpClient = HttpClients.custom().setConnectionManager(connectionManager)
-                    .setDefaultRequestConfig(requestConfig).build();
-            return closeableHttpClient;
-        } catch (KeyManagementException ex) {
-            throw new RuntimeException(ex);
-        } catch (NoSuchAlgorithmException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
+	
 }

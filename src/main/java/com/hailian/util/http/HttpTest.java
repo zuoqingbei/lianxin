@@ -404,6 +404,7 @@ public class HttpTest {
         HttpGet get=new HttpGet("http://zhixing.court.gov.cn/search/index_form.do");
         HttpClientContext context = HttpClientContext.create();
         CookieStore cookieStore = new BasicCookieStore();
+        FileOutputStream fileOutputStream = null;
         String html = "";
         try {
             CloseableHttpResponse response = httpClient.execute(get, context);
@@ -421,7 +422,11 @@ public class HttpTest {
                 String captchaId = src.substring(src.indexOf("="),src.indexOf("&"));
                 System.out.println("captchaId===="+captchaId);
                 System.out.println(Math.random());
-                //get = new HttpGet(uri)
+                get = new HttpGet("http://zhixing.court.gov.cn/search/captcha.do?captchaId="+captchaId+"&random="+Math.random());
+                response = httpClient.execute(get);//获取验证码
+                /*验证码写入文件,当前工程的根目录,保存为verifyCode.jpg*/
+                fileOutputStream = new FileOutputStream(new File("courtVerifyCode.jpg"));
+                response.getEntity().writeTo(fileOutputStream);
             }
             finally {
                 response.close();
