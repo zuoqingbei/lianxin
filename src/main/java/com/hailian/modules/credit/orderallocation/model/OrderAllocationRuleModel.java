@@ -54,7 +54,17 @@ public class OrderAllocationRuleModel extends BaseProjectModel<OrderAllocationRu
 		Page<OrderAllocationRuleModel> orderAllocation = OrderAllocationRuleModel.dao.paginate(new Paginator(), selectsql.toString(), fromsql.toString());
 		return orderAllocation;
 	}
-
+	public List<OrderAllocationRuleModel> getRuleList() {
+		StringBuffer selectsql = new StringBuffer(
+				"select a.*,s.detail_name ");
+		selectsql.append(" from credit_order_allocation_conf a ");
+		selectsql.append(" left join sys_dict_detail s on s.detail_id=a.order_allocation_id"); 
+		selectsql.append(" where a.del_flag=0 ");
+	
+		
+		List<OrderAllocationRuleModel> orderAllocation = OrderAllocationRuleModel.dao.find(selectsql.toString());
+		return orderAllocation;
+	}
     /**
      * 
     * @Description: 根据id查询

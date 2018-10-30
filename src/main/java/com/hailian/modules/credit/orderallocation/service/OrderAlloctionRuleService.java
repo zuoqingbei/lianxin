@@ -1,5 +1,6 @@
 package com.hailian.modules.credit.orderallocation.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.management.ObjectName;
@@ -31,7 +32,12 @@ public class OrderAlloctionRuleService {
 			BaseProjectController c) {
 		return OrderAllocationRuleModel.dao.getRule( orderBy, keyWord,  c);
 	}
-
+	/**
+	 * 获取分配规则
+	 */
+	public List<OrderAllocationRuleModel> getRuleList() {
+		return OrderAllocationRuleModel.dao.getRuleList();
+	}
 	/**
 	 * 
 	 * @time   2018年9月13日 上午11:35:40
