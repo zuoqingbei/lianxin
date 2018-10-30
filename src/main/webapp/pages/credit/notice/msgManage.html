@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>联信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="../css/order_manage/order_common.css">
+    <link rel="stylesheet" href="../css/order_manage/order_allocation.css">
+    <style>
+        .bg-f {
+            min-height: 0;
+            padding: 1rem;
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--fontColor);
+            font-size: 1.375rem;
+            padding: 0 2rem 1.5rem;
+        }
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active,
+        .nav-tabs .nav-link:focus,
+        .nav-tabs .nav-link:hover {
+            color: var(--activeColor);
+            border-color: transparent;
+            border-bottom: .25rem solid var(--activeColor);
+        }
+
+        .tab-content ul > li {
+            border-bottom: .125rem solid #eee;
+        }
+        .tab-content ul > li > h4 {
+            position: relative;
+            margin: 2rem 1.5rem 1rem;
+            font-size: 1.375rem;
+            font-weight: bold;
+            color: var(--fontColor);
+        }
+        .tab-content ul > li.unread > h4 {
+            color: var(--fontTitleColor);
+        }
+        .tab-content ul > li.unread > h4:before{
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -1rem;
+            width: .625rem;
+            height: .625rem;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            background-color: var(--activeColor);
+        }
+        .tab-content ul > li > p {
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+            font-size: 1.125rem;
+            color: var(--fontColor);
+        }
+        .buttonWrap{
+            flex: 1;
+        }
+        .pagination li{
+            margin: 0 .5rem;
+        }
+/*
+        .pagination>li>a,
+        .pagination>li>span{
+            font-size: 1.25rem;
+            color: var(--fontColor);
+        }
+*/
+    </style>
+</head>
+
+<div id="container" class="row  animated fadeIn">
+    <!-- 内容 -->
+    <div class="main">
+        <!--标题-->
+        <div class="main-header">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active">
+                    <a href="javascript:;">消息管理</a>
+                </li>
+            </ul>
+            <p class="main-title">消息管理</p>
+        </div>
+        <!-- 表格 -->
+        <div class="table-content">
+            <div class="bg-f">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-all"
+                           role="tab" aria-controls="nav-home" aria-selected="true">全部</a>
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-read"
+                           role="tab" aria-controls="nav-profile" aria-selected="false">已读</a>
+                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-unread"
+                           role="tab" aria-controls="nav-contact" aria-selected="false">未读</a>
+                        <div class="buttonWrap"><button class="btn btn-primary pull-right">全部标为已读</button></div>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <ul>
+                            <li class="unread">
+                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
+                                <p>
+                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
+                            </li>
+                            <li class="unread">
+                                <h4>【公告】团建文化</h4>
+                                <p>
+                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
+                            </li>
+                            <li>
+                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
+                                <p>
+                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
+                            </li>
+                            <li>
+                                <h4>【公告】团建文化</h4>
+                                <p>
+                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="nav-read" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <ul>
+                            <li>
+                                <h4>【公告】团建文化</h4>
+                                <p>
+                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
+                            </li>
+                            <li>
+                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
+                                <p>
+                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="nav-unread" role="tabpanel" aria-labelledby="nav-contact-tab">
+                        <ul>
+                            <li class="unread">
+                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
+                                <p>
+                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
+                            </li>
+                            <li class="unread">
+                                <h4>【公告】团建文化</h4>
+                                <p>
+                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
+                            </li>
+                           <li class="unread">
+                                <h4>【公告】团建文化</h4>
+                                <p>
+                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end my-4">
+                        <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

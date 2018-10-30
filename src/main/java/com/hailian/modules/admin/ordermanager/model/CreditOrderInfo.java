@@ -856,13 +856,21 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		params.add(reportid);
 		return dao.findFirst(sql, params.toArray());
 	}
+	/**
+	 * reportnum1商业信息/分析报告数量
+	 * reportnum2注册信息数量
+	* @author doushuihai  
+	* @date 2018年10月26日上午10:18:30  
+	* @TODO
+	 */
 	public CreditOrderInfo getReportNumPart(int reportid){
 		List<Object> params=new ArrayList<Object>();
 //		String sql="SELECT (a.type2*1+a.type3*1+a.type4*0.2+a.type5*0.15+a.type6*0.25)*0.1 as reportnum FROM(SELECT SUM(CASE WHEN report_type=1 THEN 1 ELSE 0 END) as type1,  SUM(CASE WHEN report_type=2 THEN 1 ELSE 0 END) as type2,  SUM(CASE WHEN report_type=3 THEN 1 ELSE 0 END) as type3,SUM(CASE WHEN report_type=4 THEN 1 ELSE 0 END) as type4,SUM(CASE WHEN report_type=5 THEN 1 ELSE 0 END) as type5,SUM(CASE WHEN report_type=6 THEN 1 ELSE 0 END) as type6 FROM credit_order_info where 1=1 and del_flag=0 and report_user=? ) a ;";
-		String sql="SELECT a.type1 * 1 + a.type2 * 0.25 AS reportnum FROM(SELECT SUM(CASE WHEN report_type = 8 or report_type = 10 THEN 1 ELSE 0 END) AS type1,SUM(CASE WHEN report_type = 1 OR report_type = 7 OR report_type = 12 OR report_type = 13 OR report_type = 14 OR report_type = 15 THEN 1 ELSE 0 END ) AS type2 FROM credit_order_info WHERE 1 = 1 AND del_flag = 0 AND report_user = ? and receiver_date between date_sub(now(),interval 3 month) and now()) a;";
+		String sql="SELECT a.type1  AS reportnum1, a.type2  AS reportnum2 FROM(SELECT SUM(CASE WHEN report_type = 8 or report_type = 10 THEN 1 ELSE 0 END) AS type1,SUM(CASE WHEN report_type = 1 OR report_type = 7 OR report_type = 12 OR report_type = 13 OR report_type = 14 OR report_type = 15 THEN 1 ELSE 0 END ) AS type2 FROM credit_order_info WHERE 1 = 1 AND del_flag = 0 AND report_user = ? and receiver_date between date_sub(now(),interval 3 month) and now()) a;";
 		params.add(reportid);
 		return dao.findFirst(sql, params.toArray());
 	}
+
 	/**
 	 * 获取报告员报告数量部分二
 	* @author doushuihai  
@@ -882,7 +890,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	 */
 	public CreditOrderInfo getScore(int reportid){
 		List<Object> params=new ArrayList<Object>();
-		String sql="select (100-sum(deduct_value)/count(report_id))*0.3 as score from credit_order_info t1 "
+		String sql="select (100-sum(deduct_value)/count(report_id)) as score from credit_order_info t1 "
 				+ "left join credit_report t2 on t1.num = t2.order_num "
 				+ "left join credit_report_score t3 on t2.id = t3.report_id "
 				+ "where 1=1 and t1.report_user=? and t1.del_flag=0 and t1.receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";

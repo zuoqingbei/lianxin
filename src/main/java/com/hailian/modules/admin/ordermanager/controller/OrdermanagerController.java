@@ -364,6 +364,9 @@ public class OrdermanagerController extends BaseProjectController{
 			})
 	public void getTime() throws ParseException {
 		String countryType=getPara("countrytype", "");
+		if("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
+			countryType="148";
+		}
 		String speed=getPara("speed", "");
 		String reporttype=getPara("reporttype", "");
 		/*String orderType=getPara("ordertype", "");*/
@@ -399,7 +402,10 @@ public class OrdermanagerController extends BaseProjectController{
 		if(time==0) {
 			enddate="";
 		}
-		
+		if("148".equals(countryType)&&!("15".equals(reporttype) || "22".equals(reporttype))) {
+			ca.add(Calendar.DATE, days);
+			enddate=sdf.format(ca.getTime());
+		}
 		Record record=new Record();
 		record.set("usetime", usetime);
 		record.set("enddate", enddate);
