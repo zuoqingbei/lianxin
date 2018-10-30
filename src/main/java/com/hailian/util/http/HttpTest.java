@@ -65,8 +65,7 @@ public class HttpTest {
 		//CookieStore cookieStore = getIcrisCookie();//获取香港查册网站cookie信息
 		//getIcrisUrl(cookieStore);//爬取香港查册网站
 		
-		CookieStore cookieStore = getCourtCookie();
-		//getCourtUrl(cookieStore);
+		getCourtUrl();
 		
     }
 	
@@ -396,10 +395,9 @@ public class HttpTest {
     }
 	
 	/**
-	 * 获取cookie
-	 * @return cookieStore
+	 * 爬取全国法院被执行人信息查询网站
 	 */
-	public static CookieStore getCourtCookie(){
+	public static void getCourtUrl(){
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet get=new HttpGet("http://zhixing.court.gov.cn/search/index_form.do");
         HttpClientContext context = HttpClientContext.create();
@@ -415,7 +413,7 @@ public class HttpTest {
                 context.getCookieStore().getCookies().forEach(System.out::println);
                 cookieStore = (context.getCookieStore());
                 html = EntityUtils.toString(response.getEntity(), "utf-8");
-                System.out.println(html);
+                //System.out.println(html);
                 Document doc = Jsoup.parse(html);
                 Elements ele = doc.select("#captchaImg");
                 String src = ele.attr("src");
@@ -423,10 +421,26 @@ public class HttpTest {
                 System.out.println("captchaId===="+captchaId);
                 System.out.println(Math.random());
                 get = new HttpGet("http://zhixing.court.gov.cn/search/captcha.do?captchaId="+captchaId+"&random="+Math.random());
+                httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
                 response = httpClient.execute(get);//获取验证码
                 /*验证码写入文件,当前工程的根目录,保存为verifyCode.jpg*/
                 fileOutputStream = new FileOutputStream(new File("courtVerifyCode.jpg"));
                 response.getEntity().writeTo(fileOutputStream);
+                Scanner input = new Scanner(System.in);
+                String verifyCode = input.nextLine();
+                HttpPost post = new HttpPost("http://zhixing.court.gov.cn/search/newsearch");
+                ArrayList<NameValuePair> postData = new ArrayList<NameValuePair>();
+        	    postData.add(new BasicNameValuePair("searchCourtName", "全国法院（包含地方各级法院）"));
+                postData.add(new BasicNameValuePair("selectCourtId", "0"));
+                postData.add(new BasicNameValuePair("selectCourtArrange", "1"));
+                postData.add(new BasicNameValuePair("pname", "海尔集团"));
+                postData.add(new BasicNameValuePair("cardNum", ""));
+                postData.add(new BasicNameValuePair("j_captcha", verifyCode));
+                postData.add(new BasicNameValuePair("captchaId", captchaId));
+                post.setEntity(new UrlEncodedFormEntity(postData,"utf-8"));//捆绑参数
+                response = httpClient.execute(post);
+                html = EntityUtils.toString(response.getEntity(), "utf-8");
+                System.out.println(html);
             }
             finally {
                 response.close();
@@ -440,43 +454,7 @@ public class HttpTest {
                 e.printStackTrace();
             }
         }
-        return cookieStore;
     }
-	
-	/**
-	 * 爬取全国法院被执行人信息查询网站
-	 */
-//	public static void getCourt(){
-//		CookieStore store = getCourtCookie();
-//		getCourtVerifyCode(store);
-////		File imageFile = new File("verifyCode.jpeg");//图片位置
-////        ITesseract instance = new Tesseract();  // JNA Interface Mapping
-////        instance.setDatapath("C:\\Users\\Administrator\\Desktop\\tessdata");//设置tessdata位置
-////        instance.setLanguage("osd");//选择字库文件（只需要文件名，不需要后缀名）
-////        String result = null;
-////		try {
-////			result = instance.doOCR(imageFile);
-////			System.out.println("图片验证码:"+result);
-////		} catch (TesseractException e) {
-////			// TODO Auto-generated catch block
-////			e.printStackTrace();
-////		}//开始识别
-//		Scanner input = new Scanner(System.in);
-//		String verifyCode = "";
-//		verifyCode = input.nextLine();
-//		input.close();
-//		String searchCourtName = "全国法院（包含地方各级法院）";
-//		String selectCourtId = "0";
-//		String selectCourtArrange = "1";
-//		String pname = "海尔集团";
-//		String cardNum = "";
-//		String j_captcha = verifyCode;
-//		String captchaId = "e1032fa9141e42288685fc15acbd4e49";
-//		HttpClientUtils.sendGet("http://zhixing.court.gov.cn/search/newsearch",
-//				"searchCourtName="+searchCourtName+"&selectCourtId="+selectCourtId+
-//				"&selectCourtArrange="+selectCourtArrange+"&pname="+pname+"&cardNum="+cardNum+
-//				"&j_captcha="+j_captcha+"&captchaId="+captchaId);
-//	}
 	
 	/**
 	 * 获取验证码（全国法院被执行人信息查询网站)
