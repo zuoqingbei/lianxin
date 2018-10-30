@@ -374,8 +374,16 @@ public class OrderPoiController extends BaseProjectController {
 				  int status=dictDetailBy.get(0).getInt("detail_id");
 				  model.set("status", status);
 			  }
-			  String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();//根据自动分配规则获取该订单指定的报告员
-			  model.set("report_user", reportIdtoOrder);//自动分配订单
+			  try {
+				String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();//根据自动分配规则获取该订单指定的报告员
+				  model.set("report_user", reportIdtoOrder);//自动分配订单
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				ResultType resultType = new ResultType(2, "请先设置分配规则，以便分配给报告员！");
+				renderJson(resultType);
+				return;
+			}
 			  boolean save = model.save();
 				if(save==false){
 					msg="提交失败";

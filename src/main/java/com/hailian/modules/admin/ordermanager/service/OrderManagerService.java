@@ -19,6 +19,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
 import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
+import com.hailian.modules.credit.orderallocation.service.OrderAlloctionRuleService;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.jfinal.json.Json;
@@ -361,6 +362,7 @@ public class OrderManagerService {
 		System.out.println("==================================");
 		List<SysUser> reporterlist = SysUser.dao.getReporter();
 		List<Reporter> reporterList=new ArrayList<Reporter>();
+		
 		for(SysUser report:reporterlist){
 			int reportid=report.get("userid");
 			double finalScore = getFinalScore(reportid);//报告员评分
@@ -382,13 +384,21 @@ public class OrderManagerService {
 	* @TODO
 	 */
 	private double getFinalScore(int reportid) {
+		//获取分配规则规定的比率
+		Float rate1 = OrderAlloctionRuleService.service.getOne(501, null).get("allocation_value");//做单量占比
+		Float rate2 = OrderAlloctionRuleService.service.getOne(589, null).get("allocation_value");//报告数量占比占比
+		Float rate3 = OrderAlloctionRuleService.service.getOne(502, null).get("allocation_value");//递交率占比
+		Float rate4 = OrderAlloctionRuleService.service.getOne(503, null).get("allocation_value");//质量占比
+		Float rate5 = OrderAlloctionRuleService.service.getOne(504, null).get("allocation_value");//商业信息/分析报告数量占比
+		Float rate6 = OrderAlloctionRuleService.service.getOne(506, null).get("allocation_value");//注册信息数量占比
+		Float rate7 = OrderAlloctionRuleService.service.getOne(505, null).get("allocation_value");//国外报告数量占比
 		Long orderNum = OrderManagerService.service.getOrderNum(reportid).get("orderNum");//订单数量
 		Long orderOnTimeNum =OrderManagerService.service.getOnTimeSubmitOrderNum(reportid).get("orderOnTimeNum");//根据报告员获取按时递交数
 		double submitNum=0;
 		if(orderNum==0){
 			 submitNum=0;
 		}else{
-			 submitNum=(orderOnTimeNum/orderNum)*0.1;//递交率占比
+			 submitNum=(orderOnTimeNum/orderNum);//递交率占比
 		}
 //		BigDecimal score =OrderManagerService.service.getScore(reportid).get("score"); //获取报告员质量占比
 		BigDecimal score = null;
@@ -402,22 +412,29 @@ public class OrderManagerService {
 		double scoreTo=score.doubleValue();
 //		BigDecimal reportnum1 =OrderManagerService.service.getReportNumPart(reportid).get("reportnum");//报告数量占比一
 		BigDecimal reportnum1 = null;
+		BigDecimal reportnum = null;
 		CreditOrderInfo reportNumPart = OrderManagerService.service.getReportNumPart(reportid);
 		if(reportNumPart!=null){
-			reportnum1=reportNumPart.get("reportnum");
+			reportnum=reportNumPart.get("reportnum1");//商业信息/分析报告数量
+			reportnum1=reportNumPart.get("reportnum2");//注册信息报告数量
 		}
-		if(reportnum1==null){
+		if(reportNumPart==null){
 			reportnum1=new BigDecimal(0);
+			reportnum=new BigDecimal(0);
 		}
+		long reportnumTo=reportnum.longValue();
+		long reportnum1To=reportnum1.longValue();
 //		long reportnum2 = OrderManagerService.service.getOrderPeportAbroad(reportid).get("orderPeportAbroad");//报告数量占比二
 		long reportnum2=0;
 		CreditOrderInfo orderPeportAbroad= OrderManagerService.service.getOrderPeportAbroad(reportid);
 		if(orderPeportAbroad!=null){
-			reportnum2=orderPeportAbroad.get("orderPeportAbroad");
+			reportnum2=orderPeportAbroad.get("orderPeportAbroad");//国外报告数量
 		}
+		//根据动态规则获取报告数量占比
 		BigDecimal reportnum2To = new BigDecimal(reportnum2);
-		double reportnum=reportnum1.add(reportnum2To).doubleValue();
-		double finalScore=orderNum*0.5+submitNum+scoreTo+reportnum;
+//		double reportnumAll=reportnum1.add(reportnum2To).doubleValue();
+		long reportnumAll=(long) (reportnumTo*rate5+reportnum1To*rate6+reportnum2*rate7);
+		double finalScore=orderNum*rate1+submitNum*rate3+scoreTo*rate4+reportnumAll*rate2;
 		return finalScore;
 	}
 }
