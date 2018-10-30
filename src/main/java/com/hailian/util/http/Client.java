@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -24,14 +25,8 @@ public class Client {
     HttpResponse response = null;
     String rawHtml;
     
-    public Client(String accout, String password) {
-        super();
-        this.accout = accout;
-        this.password = password;
-    }
- 
     public void login() {
-        HttpGet getLoginPage = new HttpGet("http://218.7.49.34/loginAction.do");//教务处登陆页面get
+        HttpGet getLoginPage = new HttpGet("http://iecms.mofcom.gov.cn/corpLogin.html");//教务处登陆页面get
         
         try {
             //打开教务处
@@ -46,20 +41,23 @@ public class Client {
             code = in.nextLine();
             in.close();
             
-            //设定post参数，和上图中的内容一致
             ArrayList<NameValuePair> postData = new ArrayList<NameValuePair>();
-            postData.add(new BasicNameValuePair("zjh1", ""));
-            postData.add(new BasicNameValuePair("tips", ""));
-            postData.add(new BasicNameValuePair("lx", ""));
-            postData.add(new BasicNameValuePair("eflag", ""));
-            postData.add(new BasicNameValuePair("fs", ""));
-            postData.add(new BasicNameValuePair("dzslh", ""));
-            postData.add(new BasicNameValuePair("zjh", accout));//学号
-            postData.add(new BasicNameValuePair("mm", password));//密码
-            postData.add(new BasicNameValuePair("v_yzm", code));//验证码
+    	    postData.add(new BasicNameValuePair("formids", "corpCode,corpNaCn,searcc,scCode,identifyingCode"));
+            postData.add(new BasicNameValuePair("session:", "T"));
+            postData.add(new BasicNameValuePair("updateParts", "listData"));
+            postData.add(new BasicNameValuePair("reservedids", "updateParts"));
+            postData.add(new BasicNameValuePair("submitmode", ""));
+            postData.add(new BasicNameValuePair("submitname", ""));
+            postData.add(new BasicNameValuePair("corpCode", ""));
+            postData.add(new BasicNameValuePair("corpNaCn", "海尔集团"));
+            postData.add(new BasicNameValuePair("searcc", "查  询"));
+            postData.add(new BasicNameValuePair("scCode", ""));
+            postData.add(new BasicNameValuePair("identifyingCode", code));
             
-            HttpPost post = new HttpPost("http://218.7.49.34/loginAction.do");//构建post对象
+            HttpPost post = new HttpPost("http://iecms.mofcom.gov.cn/corpLogin_listDate.html");//构建post对象
             post.setEntity(new UrlEncodedFormEntity(postData));//捆绑参数
+            post.setHeader("User-Agent", 
+            	    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
             response = client.execute(post);//执行登陆行为
             rawHtml = EntityUtils.toString(response.getEntity(), "utf-8");
             System.out.println(rawHtml);
@@ -72,13 +70,13 @@ public class Client {
     }
     
     void getVerifyingCode(HttpClient client) {
-        HttpGet getVerifyCode = new HttpGet("http://218.7.49.34/validateCodeAction.do");//验证码get
+        HttpGet getVerifyCode = new HttpGet("http://iecms.mofcom.gov.cn/IdentifyingCode");//验证码get
         FileOutputStream fileOutputStream = null;
         HttpResponse response;
         try {
             response = client.execute(getVerifyCode);//获取验证码
             /*验证码写入文件,当前工程的根目录,保存为verifyCode.jped*/
-            fileOutputStream = new FileOutputStream(new File("verifyCode.jpeg"));
+            fileOutputStream = new FileOutputStream(new File("verifyCode.jpg"));
             response.getEntity().writeTo(fileOutputStream);
         } catch (ClientProtocolException e) {
             e.printStackTrace();
