@@ -143,6 +143,9 @@ let BasicWrite = {
    			console.log(JSON.stringify($("#tableShareholdersDetail").bootstrapTable('getData')));//股东详情
    			console.log(JSON.stringify($("#tableInvestment").bootstrapTable('getData')));//投资情况
    			console.log(JSON.stringify($("#tableManagement").bootstrapTable('getData')));//管理层
+   			$("#harea").removeAttr("name");
+   			$("#hcity").removeAttr("name");
+   			$("#hproper").removeAttr("name");
 	   		$.ajax({
 	   			   type:"post",
 	   			   url:BASE_PATH+"credit/front/orderProcess/reportedSave",
@@ -178,6 +181,9 @@ let BasicWrite = {
    			console.log(JSON.stringify($("#tableShareholdersDetail").bootstrapTable('getData')));//股东详情
    			console.log(JSON.stringify($("#tableInvestment").bootstrapTable('getData')));//投资情况
    			console.log(JSON.stringify($("#tableManagement").bootstrapTable('getData')));//管理层
+   			$("#harea").removeAttr("name");
+   			$("#hcity").removeAttr("name");
+   			$("#hproper").removeAttr("name");
    			//保存按钮
    			$.ajax({
    	   			type:"post",
@@ -236,6 +242,48 @@ let BasicWrite = {
         laydate.render({
             elem: '#modal_shareholdersdetail_time'
         });
+        
+        //验证
+        $("#credit_code").blur(()=>{
+        	let val = $("#credit_code").val();
+        	alert(val)
+        	let reg = /^\d{18}$/
+        	if (!reg.test((val))) {
+        		
+        		$("#credit_code").siblings(".errorInfo").show()
+        		$("#credit_code").addClass("active")
+        		$("#credit_code").val("")
+        	}else {
+        		$("#credit_code").siblings(".errorInfo").hide()
+        		$("#credit_code").removeClass("active")
+        	}
+        })
+         $("#qy_person").blur(()=>{
+        	let val = $("#qy_person").val();
+        	let reg = /^[0-9]+.?[0-9]*$/
+        	if (reg.test((val))) {
+        		
+        		$("#qy_person").siblings(".errorInfo").show()
+        		$("#qy_person").addClass("active")
+        		$("#qy_person").val("")
+        	}else {
+        		$("#qy_person").siblings(".errorInfo").hide()
+        		$("#qy_person").removeClass("active")
+        	}
+        })
+        $("#qy_office").blur(()=>{
+        	let val = $("#qy_office").val();
+        	let reg = /^[0-9]+.?[0-9]*$/
+        		if (reg.test((val))) {
+        			
+        			$("#qy_office").siblings(".errorInfo").show()
+        			$("#qy_office").addClass("active")
+        			$("#qy_office").val("")
+        		}else {
+        			$("#qy_office").siblings(".errorInfo").hide()
+        			$("#qy_office").removeClass("active")
+        		}
+        })
     },
     tabChange(){
         /**tab切换事件 */
