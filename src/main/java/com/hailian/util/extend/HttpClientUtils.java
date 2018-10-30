@@ -63,6 +63,7 @@ public class HttpClientUtils {
 			for (String key : map.keySet()) {
 				System.out.println(key + "--->" + map.get(key));
 			}
+			System.out.println(conn.getContent());
 			// 定义BufferedReader输入流来读取URL的响应
 			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String line;
