@@ -98,66 +98,18 @@
                            role="tab" aria-controls="nav-profile" aria-selected="false">已读</a>
                         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-unread"
                            role="tab" aria-controls="nav-contact" aria-selected="false">未读</a>
-                        <div class="buttonWrap"><button class="btn btn-primary pull-right">全部标为已读</button></div>
+                        <div class="buttonWrap"><button class="btn btn-primary pull-right" id="toReadAll">全部标为已读</button></div>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <ul>
-                            <li class="unread">
-                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
-                                <p>
-                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
-                            </li>
-                            <li class="unread">
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                            <li>
-                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
-                                <p>
-                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
-                            </li>
-                            <li>
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                        </ul>
+                        
                     </div>
                     <div class="tab-pane fade" id="nav-read" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <ul>
-                            <li>
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                            <li>
-                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
-                                <p>
-                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
-                            </li>
-                        </ul>
+                       
                     </div>
                     <div class="tab-pane fade" id="nav-unread" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <ul>
-                            <li class="unread">
-                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
-                                <p>
-                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
-                            </li>
-                            <li class="unread">
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                           <li class="unread">
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                        </ul>
+                        
                     </div>
                 </div>
                 <nav aria-label="Page navigation example">
@@ -175,5 +127,55 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+agentchange('');
+function agentchange(status){
+	var html="";
+ 	$.post('/credit/sysuser/notice/list',{"status":status},function(data){
+	 	console.log(data)
+	 	let list = data.list
+	  	for(item in list){
+	 		html+=" <ul><li><h4>"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
+	    }
+	 	if(status === '') {
+	 		$("#nav-all").html(html)
+	 	}
+	 	if(status === '0') {
+	 		$("#nav-read").html(html)
+	 	}
+	 	if(status === '1') {
+	 		$("#nav-unread").html(html)
+	 	}
+	})
+}
+//全部公告
+$("#nav-home-tab").click(function(){
+	var status='';
+ 	agentchange(status)
+	
+})
+//已读公告
+$("#nav-profile-tab").click(function(){
+	var status='0';
+ 	agentchange(status)
+	
+})
+//已读公告
+$("#nav-contact-tab").click(function(){
+	var status='1';
+ 	agentchange(status)
+	
+})
+//已读公告
+$("#toReadAll").click(function(){
+	$.post('/credit/sysuser/notice/toReadAll',function(data){
+		if(data.statusCode===1){
+          	Public.message("success",data.message);
+		}else{
+			Public.message("error",data.message);
+		}
+	})
+	
+})
+</script>
 </html>
