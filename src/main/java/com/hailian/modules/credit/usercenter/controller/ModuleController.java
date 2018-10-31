@@ -38,6 +38,10 @@ public class ModuleController extends BaseProjectController{
 		String orederid=getPara("id");
 		//根据订单id获取订单信息
 		CreditOrderInfo coi=CreditOrderInfo.dao.findById(orederid);
+		if(coi==null) {
+			renderMessage("无此订单号");
+			return;
+		}
 		//根据订单信息获取公司信息
 		CreditCompanyInfo cci=CreditCompanyInfo.dao.findById(coi.get("company_id"));
 		//根据订单信息获取报告id

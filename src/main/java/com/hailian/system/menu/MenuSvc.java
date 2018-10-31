@@ -15,12 +15,12 @@ public class MenuSvc extends BaseService {
 	 * 获取根目录下拉框
 	 * 
 	 * 2015年4月28日 上午11:42:54 flyfox 369191470@qq.com
-	 * 
+	 *  
 	 * @param selected
 	 * @return
 	 */
 	public String selectMenu(Integer selected) {
-		List<SysMenu> list = SysMenu.dao.findByWhere(" where status = 1 and parentid = 0 order by sort ");
+		List<SysMenu> list = SysMenu.dao.findByWhere(" where status = 1  and parentid in(0,1,18,19,20,21,2228,36,37,46) order by sort ");
 		StringBuffer sb = new StringBuffer();
 		for (SysMenu menu : list) {
 			sb.append("<option value=\"");

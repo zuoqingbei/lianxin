@@ -20,7 +20,7 @@ jQuery(function($) {
 			this.form.submit();
 		},
 		view : function(id) {
-			var url = '/credit/reportmodulemanager/view/'+id;
+			var url = '/credit/reportmodulemanager/view?id='+id;
 			var title = '查看模板信息';
 			Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 		},
@@ -158,7 +158,7 @@ function loadReady() {
 	<!-- 菜单 -->
 	<% include("/pages/template/menu.html"){} %>
 	<div class="form-group">
-    	<select class="form-control"  name="attr.report">
+    	<select class="form-control"  name="attr.report_type">
     		${reportType!}
     	</select>
 	</div>
@@ -187,6 +187,8 @@ function loadReady() {
 				<th name="t1.parentTempName" class="sorting">父模板名称</th>
 				<th name="t.temp_name" class="sorting">模板名称</th>
 				<th name="c.reportName" class="sorting">报告类型</th>
+				<th name="t.field_type" class="sorting">字段类型</th>
+				<th name="t.length" class="sorting">字段长度</th>
 				<th name="s.createName" class="sorting">创建者</th>
 				<th name="t.create_date " class="sorting">创建时间</th>		
 				<th name="s1.updateName" class="sorting">更新者</th>
@@ -201,6 +203,8 @@ function loadReady() {
 				<td>${item.parentTempName}</td>	
 				<td>${item.temp_name}</td>
 				<td>${item.reportName}</td>
+				<td>${item.field_type}</td>
+				<td>${item.length}</td>
 				<td>${item.createName}</td>
 				<td>${item.create_date}</td>
 				<td>${item.updateName}</td>
@@ -208,6 +212,7 @@ function loadReady() {
 				<td>
 					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.id});">修改</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.id});">删除</a>
+					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.view(${item.id});">查看</a>
 				</td>
 			</tr>
 		<% } %>
