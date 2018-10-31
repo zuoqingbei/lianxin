@@ -11,6 +11,7 @@ import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Page;
 /**
  * 
@@ -98,7 +99,7 @@ public class ReportModuleConfController extends BaseProjectController{
 	}
 	
 	public void findParentModules() {
-		String report=getPara("report");
+		String report=getPara("report_type");
 		List<CreditReportModuleConf> crmc=CreditReportModuleConf.dao.findByReport(report);
 		renderJson(crmc);
 	}
@@ -154,10 +155,16 @@ public class ReportModuleConfController extends BaseProjectController{
 		CreditReportModuleConf model=getModelByAttr(CreditReportModuleConf.class);
 		model.set("create_date", new Date());
 		model.set("create", getSessionUser().getUserid());
+		//报告类型有英文名
+		if("0".equals(model.getStr("node_type"))) {
+			ReportTypeModel rm=ReportTypeModel.dao.findById(model.getStr("report_type"));
+			String temp_name_en=rm.getStr("name_en");
+			model.set("temp_name_en", temp_name_en);
+		}else {
+		String temp_name_en=TransApi.Trans(model.getStr("temp_name"));
+		model.set("temp_name_en", temp_name_en);
+		}
 
-		/*if(model.get("report")) {
-			
-		}*/
 		try {
 		model.save();
 		renderMessage("创建成功");
@@ -180,5 +187,12 @@ public class ReportModuleConfController extends BaseProjectController{
 			e.printStackTrace();
 			renderMessageByFailed("删除失败");
 		}
+	}
+	
+	public void view() {
+		String id=getPara("id").toString();
+		CreditReportModuleConf model=CreditReportModuleConf.dao.findReportModuleById(id);
+		setAttr("model",model);
+		render(path+"view.html");
 	}
 }

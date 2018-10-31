@@ -23,14 +23,14 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 			BaseProjectController c) {
 		StringBuffer sql = new StringBuffer();
 		//报告类型
-		String report = temp.getStr("report");
+		String report = temp.getStr("report_type");
 		//模板名称
 		String temp_name = temp.getStr("temp_name");
 		//创建者
 		String create = temp.getStr("create");
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_report_module_conf t ");
-		sql.append(" left join credit_report_type c on c.id=t.report ");
+		sql.append(" left join credit_report_type c on c.id=t.report_type ");
 		sql.append(" left join sys_user s on s.userid=t.create ");
 		sql.append(" left join sys_user s1 on s1.userid=t.update ");
 		sql.append(" left join credit_report_module_conf t1 on t1.id=t.parent_temp ");
@@ -40,7 +40,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 			params.add(c.getSessionUser().getUserid());
 		}
 		if (StringUtils.isNotBlank(report)) {
-			sql.append(" and t.report=?");
+			sql.append(" and t.report_type=?");
 			params.add(report);
 		}
 		if (StringUtils.isNotBlank(temp_name)) {
@@ -61,13 +61,13 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	}
 	public List<CreditReportModuleConf> findParentNodes(String parent_temp, String report) {
 		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.parent_temp=? and t.report=? ";
+				+ " t.del_flag=0 and t.parent_temp=? and t.report_type=? ";
 		return dao.find(sql, parent_temp,report);
 	}
 	
 	public List<CreditReportModuleConf> findReportNodes(String report) {
 		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.report=? ";
+				+ " t.del_flag=0 and t.report_type=? ";
 		return dao.find(sql,report);
 	}
 	public List<CreditReportModuleConf> getAllTemp() {
@@ -85,13 +85,24 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 */
 	public List<CreditReportModuleConf> findByReport(String report) {
 		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.node_type=1 and t.report=? ";
+				+ " t.del_flag=0 and t.node_type=1 and t.report_type=? ";
 		return dao.find(sql,report);
 	}
 	public List<CreditReportModuleConf> findReportType() {
 		String sql="select t.* from credit_report_module_conf t where"
 				+ " t.del_flag=0 and t.parent_temp=999";
 		return dao.find(sql);
+	}
+	public CreditReportModuleConf findReportModuleById(String id) {
+		StringBuffer sql = new StringBuffer();
+		sql.append(" from credit_report_module_conf t ");
+		sql.append(" left join credit_report_type c on c.id=t.report_type ");
+		sql.append(" left join sys_user s on s.userid=t.create ");
+		sql.append(" left join sys_user s1 on s1.userid=t.update ");
+		sql.append(" left join credit_report_module_conf t1 on t1.id=t.parent_temp ");
+		sql.append(" where t.del_flag=0 and 1=1 and t.id=?");
+		return dao.findFirst("select t.*,c.name as reportName,s.username as createName,s1.username as updateName"
+				+ ",t1.temp_name as parentTempName "+sql.toString(),id);
 	}
 	
 }

@@ -66,8 +66,26 @@ public class TemplateDictService extends BaseService {
 	 * @param  @return
 	 * @return_type   List<SysDictDetail>
 	 */
-	public List<SysDictDetail> getListSysDictDetail(String type) {
+	public String getListSysDictDetail4(String type,Object selectedId) {
 		StringBuffer sb=new StringBuffer();
+		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		listDetail.add(getDefaultDictDetail(type));
+		listDetail.addAll(DictCache.getSysDictDetailByType(type));
+		for(SysDictDetail detail:listDetail){
+			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
+				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_name")+"'>"+detail.get("detail_name")+"</option>");
+			}else{
+				if("ALL".equals(detail.getStr("detail_name_en"))){
+					sb.append("<option  selected='selected'  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value=''>"+detail.get("detail_name")+"</option>");
+				}else{
+					sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_name")+"'>"+detail.get("detail_name")+"</option>");
+				}
+			}
+			
+		}
+		return sb.toString();
+	}
+	public List<SysDictDetail> getListSysDictDetail(String type) {
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		return listDetail;
@@ -85,8 +103,13 @@ public class TemplateDictService extends BaseService {
 		StringBuffer sb=new StringBuffer();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
-		for(SysDictDetail detail:listDetail){			
-			sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+		for(SysDictDetail detail:listDetail){
+			if("普通".equals(detail.get("detail_name"))) {
+				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+
+			}else {
+				sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+			}
 		}
 		return sb.toString();
 	}

@@ -1,5 +1,6 @@
-<% var reportType = reportType.getReportTypeString(model.report!''); %>
-<% var reportType2 = module.getReportModuleString(model.report!''); %>
+<% var reportType = reportType.getReportTypeString(model.report_type!''); %>
+<% var reportType2 = module.getReportModuleString(model.report_type!''); %>
+<% var fieldType = tempDict.getListSysDictDetail4('fieldType',model.field_type); %>
 <% DIRECTIVE SAFE_OUTPUT_OPEN; var headContent = {
 include("/pages/template/head.html"){} %>
 <script type="text/javascript">
@@ -14,19 +15,19 @@ include("/pages/template/head.html"){} %>
 			return true;
 		},
 		reportchange:function(){
-			var value=$("select[name='attr.report']").find("option:selected").attr("m-detail-name");
+			var value=$("select[name='attr.report_type']").find("option:selected").attr("m-detail-name");
 			console.log(value);
 			$("input[name='attr.temp_name']").val(value);
 		},
 		reportchange2:function(){
-			var value=$("select[name='attr.report']").find("option:selected").attr("m-id");	
+			var value=$("select[name='attr.report_type']").find("option:selected").attr("m-id");	
 			$("input[name='attr.parent_temp']").val(value)
 		},		
 		reportchange3:function(){
-			var value=$("select[name='attr.report']").find("option:selected").val();
+			var value=$("select[name='attr.report_type']").find("option:selected").val();
 			var html="";
 			console.log(value)
-			$.post("/credit/reportmodulemanager/findParentModules",{"report":value},function(data){
+			$.post("/credit/reportmodulemanager/findParentModules",{"report_type":value},function(data){
 				console.log(data)
 				for(item in data){
 					if(${model.id}==data[item].id){
@@ -59,21 +60,26 @@ $(function(){
 			<tr>
 				<td style="text-align: right;">报告类型</td>
 				<td>
-					<select name="attr.report" class="form-control" valid="vselect" validname="请选择报告类型"
+					<select name="attr.report_type" class="form-control" valid="vselect" validname="请选择报告类型"
 					onchange="oper.reportchange()">
 						${reportType}
-					</select>
-					<input  value= '${model.temp_name}' type="hidden" name="attr.temp_name" />
-					<input  value= '${model.parent_temp}' type="hidden" name="attr.parent_temp" />
-					<input  value= '${model.node_type}' type="hidden" name="attr.node_type" />
-					<input  value= '${model.id}' type="hidden" name="attr.id" />				
+					</select>								
 				</td>
+				<td style="text-align: right;">报告英文名称</td>
+				<td>
+					<input class="form-control" type="text" name="attr.temp_name_en"
+				value="${model.temp_name_en}"  />									
+				</td>
+				<input  value= '${model.temp_name}' type="hidden" name="attr.temp_name" />
+				<input  value= '${model.parent_temp}' type="hidden" name="attr.parent_temp" />
+				<input  value= '${model.node_type}' type="hidden" name="attr.node_type" />
+				<input  value= '${model.id}' type="hidden" name="attr.id" />	
 			</tr>
 		<%}else if(model.node_type=='1'){%>
 			<tr>
 				<td style="text-align: right;">报告类型</td>
 				<td>
-					<select name="attr.report" class="form-control" valid="vselect" validname="请选择报告类型" onchange="oper.reportchange2()">
+					<select name="attr.report_type" class="form-control" valid="vselect" validname="请选择报告类型" onchange="oper.reportchange2()">
 						${reportType2}
 					</select>				
 				</td>
@@ -82,20 +88,26 @@ $(function(){
 				<td style="text-align: right;">父模板名称</td>
 				<td>
 					<input class="form-control" type="text" name="attr.temp_name"
-				value="${model.temp_name}" valid='vtext' validname='父模板名称' />
-					<input  value= '${model.parent_temp}' type="hidden" name="attr.parent_temp" />
-					<input  value= '${model.node_type}' type="hidden" name="attr.node_type" />
-					<input  value= '${model.id}' type="hidden" name="attr.id" />				
+				value="${model.temp_name}" valid='vtext' validname='父模板名称' />				
 				</td>
+				<td style="text-align: right;">父模板英文名称</td>
+				<td>
+					<input class="form-control" type="text" name="attr.temp_name_en"
+				value="${model.temp_name_en}"  />									
+				</td>
+				<input  value= '${model.parent_temp}' type="hidden" name="attr.parent_temp" />
+				<input  value= '${model.node_type}' type="hidden" name="attr.node_type" />
+				<input  value= '${model.id}' type="hidden" name="attr.id" />
 			</tr>
 		<%}else{%>	
 			<tr>
 				<td style="text-align: right;">报告类型</td>
 				<td>
-					<select name="attr.report" class="form-control" onchange="oper.reportchange3();" valid="vselect" validname="请选择报告类型">
+					<select name="attr.report_type" class="form-control" onchange="oper.reportchange3();" valid="vselect" validname="请选择报告类型">
 						${reportType2}
 					</select>				
 				</td>
+				
 			</tr>
 			<tr>
 				<td style="text-align: right;">父模板名称</td>
@@ -104,15 +116,34 @@ $(function(){
 						
 					</select>				
 				</td>
+				
 			</tr>
 			<tr>
 				<td style="text-align: right;">模板名称</td>
 				<td>
 					<input class="form-control" type="text" name="attr.temp_name"
-				value="${model.temp_name}" valid='vtext' validname='模板名称' />
-					<input  value= '${model.node_type}' type="hidden" name="attr.node_type" />
-					<input  value= '${model.id}' type="hidden" name="attr.id" />				
+				value="${model.temp_name}" valid='vtext' validname='模板名称' />									
 				</td>
+				<td style="text-align: right;">模板英文名称</td>
+				<td>
+					<input class="form-control" type="text" name="attr.temp_name_en"
+				value="${model.temp_name_en}"  />									
+				</td>
+				</tr>
+				<tr>
+				<td style="text-align: right;">模板字段类型</td>
+				<td>
+					<select name="attr.field_type" class="form-control" valid="vselect" validname="请选择字段类型">
+						${fieldType!}
+					</select>				
+				</td>
+				<td>模板字段长度</td>
+				<td>
+				<input class="form-control" type="text" name="attr.length"
+				value="${model.length}" valid='vtext' validname='字段长度' />
+				</td>
+				<input  value= '${model.node_type}' type="hidden" name="attr.node_type" />
+				<input  value= '${model.id}' type="hidden" name="attr.id" />
 			</tr>
 		<%}%>	
 		
