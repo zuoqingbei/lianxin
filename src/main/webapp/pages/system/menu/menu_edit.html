@@ -3,7 +3,15 @@ DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
 	include("/pages/template/head.html"){}
 %>
+<link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap-treeview.css" />
+<script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap-treeview.js"></script>
 <script type="text/javascript">
+	
+		
+	
 	var oper = {
 		save:function(id){
 			if(!validForm()) {
@@ -15,7 +23,55 @@ var headContent = {
 			form1.submit();
 			return true;
 		}	
+	};		
+	var tree = [
+		  {
+		    text: "Parent 1",
+		    nodes: [
+		      {
+		        text: "Child 1",
+		        nodes: [
+		          {
+		            text: "Grandchild 1"
+		          },
+		          {
+		            text: "Grandchild 2"
+		          }
+		        ]
+		      },
+		      {
+		        text: "Child 2"
+		      }
+		    ]
+		  },
+		  {
+		    text: "Parent 2"
+		  },
+		  {
+		    text: "Parent 3"
+		  },
+		  {
+		    text: "Parent 4"
+		  },
+		  {
+		    text: "Parent 5"
+		  }
+		];
+	function getTree() {
+	    
+	    return tree;
 	};
+	function getTrees(){
+		$("#tree").show();
+		$("#tree").treeview({
+			data:getTree(),
+			onNodeSelected: function(event, data){
+				console.log(data)
+				$("#treeshow").val(data.text);
+				$("#tree").hide();
+			}
+		});
+	}	
 </script>
 
 <%
@@ -25,11 +81,16 @@ var bodyContent = {
 <form name="form1" action="" method="post" class="form-horizontal"
 		role="form" >
 	<input type="hidden" name="model.id" value="${model.id}" />
+	<input id="treeshow" value=""  class="form-control" type="text" onclick="getTrees();">
+	<div id="tree" >
+	
+	</div>
 	<table class="table">
 		<%  // 列表头部%>
 				<tr>
 					<td>上级菜单</td>
 					<td>
+					
 					<select name="model.parentid" class="form-control"  valid='vselect' validname='类型' >
 						<option value="0" ${model.type==0?"selected":"" }>根目录</option>
 						${parentSelect}

@@ -383,10 +383,10 @@ public class HomeController extends BaseProjectController {
 						if(storeFile){
 							String factpath=storePath+"/"+FTPfileName;
 							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
-							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+							String url= storePath+"/"+FTPfileName;
 							Integer userid = getSessionUser().getUserid();
 							model1.set("business_id", num);
-							String pdfUrl="http://"+ip+"/" + storePath+"/"+pdf_FTPfileName;
+							String pdfUrl=storePath+"/"+pdf_FTPfileName;
 							UploadFileService.service.save(0,uploadFile, factpath,url,pdfFactpath,pdfUrl,model1,fileName,userid);//记录上传信息
 						}else{
 							num1+=1;
