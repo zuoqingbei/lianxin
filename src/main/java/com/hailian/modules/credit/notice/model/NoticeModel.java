@@ -80,7 +80,7 @@ public class NoticeModel extends BaseProjectModel<NoticeModel> {
 					params.add(userid);//传入的参数
 				}
 				// 排序
-				sql.append(" order by t.create_date desc");
+				sql.append(" order by t2.read_unread desc,t.create_date desc");
 				Page<NoticeModel> page = NoticeModel.dao
 						.paginate(paginator, "select t.*,t2.read_unread", sql.toString(),params.toArray());
 				return page;

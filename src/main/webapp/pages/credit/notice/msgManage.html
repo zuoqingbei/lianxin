@@ -6,8 +6,8 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="../css/order_manage/order_common.css">
-    <link rel="stylesheet" href="../css/order_manage/order_allocation.css">
+	
+	
     <style>
         .bg-f {
             min-height: 0;
@@ -34,7 +34,7 @@
         }
         .tab-content ul > li > h4 {
             position: relative;
-            margin: 2rem 1.5rem 1rem;
+            margin: 1rem 1.5rem 1rem;
             font-size: 1.375rem;
             font-weight: bold;
             color: var(--fontColor);
@@ -54,7 +54,6 @@
             background-color: var(--activeColor);
         }
         .tab-content ul > li > p {
-            margin-bottom: 2rem;
             padding-left: 2rem;
             font-size: 1.125rem;
             color: var(--fontColor);
@@ -65,6 +64,15 @@
         .pagination li{
             margin: 0 .5rem;
         }
+        #paginationBox{
+       	    display: flex;
+    		justify-content: flex-end;
+        }
+        .pagination {
+        	justify-content: flex-end;
+        	width: 38rem;
+        }
+        
 /*
         .pagination>li>a,
         .pagination>li>span{
@@ -80,11 +88,6 @@
     <div class="main">
         <!--标题-->
         <div class="main-header">
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item active">
-                    <a href="javascript:;">消息管理</a>
-                </li>
-            </ul>
             <p class="main-title">消息管理</p>
         </div>
         <!-- 表格 -->
@@ -112,41 +115,101 @@
                         
                     </div>
                 </div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-end my-4">
-                        <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                    </ul>
-                </nav>
+                 <div id="paginationBox" style="text-align: center"> <ul id="pageLimit"></ul> </div>
             </div>
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+<script src="${BASE_PATH }static/credit/js/bootstrap-paginator.min.js"></script>
+<script src="${BASE_PATH }static/credit/js/bootstrap-paginator.js"></script>
+
 <script type="text/javascript">
-agentchange('');
+	function initPag(tatolPages,status){
+		let tatol = tatolPages?tatolPages:1;
+		$('#pageLimit').bootstrapPaginator({
+		    currentPage: 1,
+		    //totalPages: {page.totalPage},
+			totalPages: tatol,
+		    size:"normal",
+		    bootstrapMajorVersion: 3,
+		    alignment:"right",
+		    numberOfPages:5,
+		    itemTexts: function (type, page, current) {
+		        switch (type) {
+		        case "first": return "首页";
+		        case "prev": return "上一页";
+		        case "next": return "下一页";
+		        case "last": return "末页";
+		        case "page": return page;
+		        }//默认显示的是第一页。
+		    },
+		        onPageClicked: function (event, originalEvent, type, page){//给每个页眉绑定一个事件，其实就是ajax请求，其中page变量为当前点击的页上的数字。
+		            $.ajax({
+		                url:'/credit/sysuser/notice/list',
+		                type:'POST',
+		                data:{'pageNo':page,'recordsperpage':6,'status':status},
+		                dataType:'JSON',
+		                success:function (data) {
+		                	var html="";
+		                	let list = data.list
+		                	console.log(list)
+		            	  	for(item in list){
+		            	  		if(list[item].read_unread=='1'){
+		            	  			html+=" <ul><li class='unread'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
+		            	  		}else{
+		            	  			html+=" <ul><li><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
+		            	  		}
+		            	 		
+		            	    }
+		            	 	if(status === '') {
+		            	 		$("#nav-all").html(html)
+		            	 	}
+		            	 	if(status === '0') {
+		            	 		$("#nav-read").html(html)
+		            	 	}
+		            	 	if(status === '1') {
+		            	 		$("#nav-unread").html(html)
+		            	 	}
+		                    }
+		            })
+		        }
+		});
+	}
+	
+</script>
+<script type="text/javascript">
+agentchange('')
 function agentchange(status){
 	var html="";
- 	$.post('/credit/sysuser/notice/list',{"status":status},function(data){
-	 	console.log(data)
-	 	let list = data.list
-	  	for(item in list){
-	 		html+=" <ul><li><h4>"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
-	    }
-	 	if(status === '') {
-	 		$("#nav-all").html(html)
-	 	}
-	 	if(status === '0') {
-	 		$("#nav-read").html(html)
-	 	}
-	 	if(status === '1') {
-	 		$("#nav-unread").html(html)
-	 	}
-	})
+	$.ajax({
+        url:'/credit/sysuser/notice/list',
+        type:'POST',
+        data:{'pageNo':1,'recordsperpage':6,'status':status},
+        dataType:'JSON',
+        success:function (data) {
+        	initPag(data.totalPage,status)
+        	var html="";
+        	let list = data.list
+        	console.log(list)
+    	  	for(item in list){
+    	  		if(list[item].read_unread=='1'){
+    	  			html+=" <ul><li class='unread'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
+    	  		}else{
+    	  			html+=" <ul><li><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
+    	  		}
+    	    }
+    	 	if(status === '') {
+    	 		$("#nav-all").html(html)
+    	 	}
+    	 	if(status === '0') {
+    	 		$("#nav-read").html(html)
+    	 	}
+    	 	if(status === '1') {
+    	 		$("#nav-unread").html(html)
+    	 	}
+            }
+    })
 }
 //全部公告
 $("#nav-home-tab").click(function(){

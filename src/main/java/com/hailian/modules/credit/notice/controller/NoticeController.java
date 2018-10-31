@@ -30,6 +30,10 @@ public class NoticeController extends BaseProjectController {
 	private static Logger logger=Logger.getLogger(ResetPassWordController.class);
 	private static final String path = "/pages/credit/notice/";
 		public void index() {
+			String status = getPara("status");
+			Integer userid = getSessionUser().getUserid();
+			Page<NoticeModel> page = NoticeService.service.getPage(getPaginator(),this,status,userid);
+			setAttr("page",page);
 			render(path+"msgManage.html");
 		}
 	
@@ -40,6 +44,7 @@ public class NoticeController extends BaseProjectController {
 	* @TODO
 	 */
 	public void list() {
+		Integer pageNo = getParaToInt("pageNo");
 		String status = getPara("status");
 		Integer userid = getSessionUser().getUserid();
 		Page<NoticeModel> page = NoticeService.service.getPage(getPaginator(),this,status,userid);
