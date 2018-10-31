@@ -1,3 +1,6 @@
+
+
+
 .layui-laydate .layui-this{
     background-color: var(--activeColor)!important;
     color: #fff!important;
@@ -167,7 +170,23 @@ label {
     color: var(--fontColor);
     cursor: default;
 }
+.firm-info .form-group {
+	position:relative;
+}
+/*提示信息*/
+.errorInfo {
+	color:#F75760;
+	position: absolute;
+	left:0;
+	text-align: left;
+	top:4.5rem;
+	padding:0 .75rem;
+	display: none;
+}
+.firm-info input.active, .firm-info select.active{
+	border-color:#f00;
 
+}
 
 
 #PoPy {background: #fff!important}
