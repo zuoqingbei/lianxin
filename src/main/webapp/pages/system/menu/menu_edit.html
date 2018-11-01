@@ -3,7 +3,15 @@ DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
 	include("/pages/template/head.html"){}
 %>
+<link rel="stylesheet" type="text/css" media="screen" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap-treeview.css" />
+<script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+<script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap-treeview.js"></script>
 <script type="text/javascript">
+	
+		
+	
 	var oper = {
 		save:function(id){
 			if(!validForm()) {
@@ -15,7 +23,507 @@ var headContent = {
 			form1.submit();
 			return true;
 		}	
+	};		
+	var tree = [
+		  {
+		    text: "Parent 1",
+		    nodes: [
+		      {
+		        text: "Child 1",
+		        nodes: [
+		          {
+		            text: "Grandchild 1"
+		          },
+		          {
+		            text: "Grandchild 2"
+		          }
+		        ]
+		      },
+		      {
+		        text: "Child 2"
+		      }
+		    ]
+		  },
+		  {
+		    text: "Parent 2"
+		  },
+		  {
+		    text: "Parent 3"
+		  },
+		  {
+		    text: "Parent 4"
+		  },
+		  {
+		    text: "Parent 5"
+		  }
+		];
+	var tree2=[{
+		"nodes": [{
+			"nodes": null,
+			"id": 2,
+			"text": "组织机构"
+		}, {
+			"nodes": null,
+			"id": 3,
+			"text": "用户管理"
+		}, {
+			"nodes": null,
+			"id": 4,
+			"text": "角色管理"
+		}, {
+			"nodes": null,
+			"id": 5,
+			"text": "菜单管理"
+		}, {
+			"nodes": null,
+			"id": 6,
+			"text": "数据字典"
+		}, {
+			"nodes": null,
+			"id": 14,
+			"text": "日志管理"
+		}, {
+			"nodes": null,
+			"id": 31,
+			"text": "参数配置"
+		}, {
+			"nodes": null,
+			"id": 38,
+			"text": "白名单"
+		}, {
+			"nodes": null,
+			"id": 39,
+			"text": "客户管理"
+		}, {
+			"nodes": null,
+			"id": 79,
+			"text": "代理管理"
+		}, {
+			"nodes": null,
+			"id": 93,
+			"text": "订单流程配置管理"
+		}, {
+			"nodes": null,
+			"id": 94,
+			"text": "订单分配规则"
+		}, {
+			"nodes": null,
+			"id": 95,
+			"text": "客户交易流水"
+		}],
+		"id": 1,
+		"text": "系统管理"
+	}, {
+		"nodes": [{
+			"nodes": null,
+			"id": 7,
+			"text": "联系人管理"
+		}, {
+			"nodes": null,
+			"id": 10,
+			"text": "友情链接"
+		}, {
+			"nodes": null,
+			"id": 11,
+			"text": "访问量统计"
+		}, {
+			"nodes": null,
+			"id": 13,
+			"text": "缓存更新"
+		}, {
+			"nodes": null,
+			"id": 30,
+			"text": "站点管理"
+		}, {
+			"nodes": null,
+			"id": 82,
+			"text": "邮件列表配置"
+		}, {
+			"nodes": null,
+			"id": 83,
+			"text": "邮件日志"
+		}],
+		"id": 20,
+		"text": "其他管理"
+	}, {
+		"nodes": null,
+		"id": 21,
+		"text": "后台首页"
+	}, {
+		"nodes": [{
+			"nodes": null,
+			"id": 23,
+			"text": "图片管理"
+		}, {
+			"nodes": null,
+			"id": 24,
+			"text": "相册管理"
+		}, {
+			"nodes": null,
+			"id": 25,
+			"text": "我的相册"
+		}, {
+			"nodes": null,
+			"id": 26,
+			"text": "视频专辑管理"
+		}, {
+			"nodes": null,
+			"id": 27,
+			"text": "视频管理"
+		}, {
+			"nodes": null,
+			"id": 33,
+			"text": "文件上传"
+		}],
+		"id": 22,
+		"text": "素材管理"
+	}, {
+		"nodes": [{
+			"nodes": null,
+			"id": 34,
+			"text": "报告价格"
+		}, {
+			"nodes": null,
+			"id": 35,
+			"text": "报告类型"
+		}, {
+			"nodes": null,
+			"id": 40,
+			"text": "速度配置"
+		}, {
+			"nodes": null,
+			"id": 41,
+			"text": "订单类型"
+		}, {
+			"nodes": null,
+			"id": 42,
+			"text": "语言类型"
+		}, {
+			"nodes": null,
+			"id": 43,
+			"text": "国家类型"
+		}, {
+			"nodes": null,
+			"id": 44,
+			"text": "语言配置"
+		}, {
+			"nodes": null,
+			"id": 45,
+			"text": "报告时间"
+		}, {
+			"nodes": null,
+			"id": 80,
+			"text": "企业信息"
+		}, {
+			"nodes": null,
+			"id": 84,
+			"text": "国家管理"
+		}, {
+			"nodes": null,
+			"id": 96,
+			"text": "报告模板"
+		}],
+		"id": 36,
+		"text": "报告配置中心"
+	}, {
+		"nodes": [{
+			"nodes": null,
+			"id": 32,
+			"text": "订单管理"
+		}],
+		"id": 37,
+		"text": "订单管理"
+	}, {
+		"nodes": [{
+			"nodes": null,
+			"id": 47,
+			"text": "工作台"
+		}, {
+			"nodes": null,
+			"id": 56,
+			"text": "全部订单"
+		}, {
+			"nodes": [{
+				"id": 67,
+				"text": "新建订单"
+			}, {
+				"id": 71,
+				"text": "递交订单"
+			}, {
+				"id": 81,
+				"text": "订单分配"
+			}, {
+				"id": 85,
+				"text": "订单核实"
+			}, {
+				"id": 86,
+				"text": "订单查档(国外)"
+			}, {
+				"id": 62,
+				"text": "订单统计"
+			}, {
+				"id": 63,
+				"text": "绩效"
+			}, {
+				"id": 64,
+				"text": "结算"
+			}, {
+				"id": 65,
+				"text": "我的消息"
+			}, {
+				"id": 66,
+				"text": "操作日志"
+			}, {
+				"id": 77,
+				"text": "修改密码"
+			}, {
+				"id": 89,
+				"text": "信息录入"
+			}, {
+				"id": 90,
+				"text": "报告质检"
+			}, {
+				"id": 91,
+				"text": "订单核实"
+			}, {
+				"id": 92,
+				"text": "订单查档(国内)"
+			}],
+			"id": 57,
+			"text": "订单管理"
+		}, {
+			"nodes": [{
+				"id": 67,
+				"text": "新建订单"
+			}, {
+				"id": 71,
+				"text": "递交订单"
+			}, {
+				"id": 81,
+				"text": "订单分配"
+			}, {
+				"id": 85,
+				"text": "订单核实"
+			}, {
+				"id": 86,
+				"text": "订单查档(国外)"
+			}, {
+				"id": 62,
+				"text": "订单统计"
+			}, {
+				"id": 63,
+				"text": "绩效"
+			}, {
+				"id": 64,
+				"text": "结算"
+			}, {
+				"id": 65,
+				"text": "我的消息"
+			}, {
+				"id": 66,
+				"text": "操作日志"
+			}, {
+				"id": 77,
+				"text": "修改密码"
+			}, {
+				"id": 89,
+				"text": "信息录入"
+			}, {
+				"id": 90,
+				"text": "报告质检"
+			}, {
+				"id": 91,
+				"text": "订单核实"
+			}, {
+				"id": 92,
+				"text": "订单查档(国内)"
+			}],
+			"id": 59,
+			"text": "统计信息"
+		}, {
+			"nodes": [{
+				"id": 67,
+				"text": "新建订单"
+			}, {
+				"id": 71,
+				"text": "递交订单"
+			}, {
+				"id": 81,
+				"text": "订单分配"
+			}, {
+				"id": 85,
+				"text": "订单核实"
+			}, {
+				"id": 86,
+				"text": "订单查档(国外)"
+			}, {
+				"id": 62,
+				"text": "订单统计"
+			}, {
+				"id": 63,
+				"text": "绩效"
+			}, {
+				"id": 64,
+				"text": "结算"
+			}, {
+				"id": 65,
+				"text": "我的消息"
+			}, {
+				"id": 66,
+				"text": "操作日志"
+			}, {
+				"id": 77,
+				"text": "修改密码"
+			}, {
+				"id": 89,
+				"text": "信息录入"
+			}, {
+				"id": 90,
+				"text": "报告质检"
+			}, {
+				"id": 91,
+				"text": "订单核实"
+			}, {
+				"id": 92,
+				"text": "订单查档(国内)"
+			}],
+			"id": 60,
+			"text": "消息管理"
+		}, {
+			"nodes": [{
+				"id": 67,
+				"text": "新建订单"
+			}, {
+				"id": 71,
+				"text": "递交订单"
+			}, {
+				"id": 81,
+				"text": "订单分配"
+			}, {
+				"id": 85,
+				"text": "订单核实"
+			}, {
+				"id": 86,
+				"text": "订单查档(国外)"
+			}, {
+				"id": 62,
+				"text": "订单统计"
+			}, {
+				"id": 63,
+				"text": "绩效"
+			}, {
+				"id": 64,
+				"text": "结算"
+			}, {
+				"id": 65,
+				"text": "我的消息"
+			}, {
+				"id": 66,
+				"text": "操作日志"
+			}, {
+				"id": 77,
+				"text": "修改密码"
+			}, {
+				"id": 89,
+				"text": "信息录入"
+			}, {
+				"id": 90,
+				"text": "报告质检"
+			}, {
+				"id": 91,
+				"text": "订单核实"
+			}, {
+				"id": 92,
+				"text": "订单查档(国内)"
+			}],
+			"id": 61,
+			"text": "设置"
+		}, {
+			"nodes": [{
+				"id": 67,
+				"text": "新建订单"
+			}, {
+				"id": 71,
+				"text": "递交订单"
+			}, {
+				"id": 81,
+				"text": "订单分配"
+			}, {
+				"id": 85,
+				"text": "订单核实"
+			}, {
+				"id": 86,
+				"text": "订单查档(国外)"
+			}, {
+				"id": 62,
+				"text": "订单统计"
+			}, {
+				"id": 63,
+				"text": "绩效"
+			}, {
+				"id": 64,
+				"text": "结算"
+			}, {
+				"id": 65,
+				"text": "我的消息"
+			}, {
+				"id": 66,
+				"text": "操作日志"
+			}, {
+				"id": 77,
+				"text": "修改密码"
+			}, {
+				"id": 89,
+				"text": "信息录入"
+			}, {
+				"id": 90,
+				"text": "报告质检"
+			}, {
+				"id": 91,
+				"text": "订单核实"
+			}, {
+				"id": 92,
+				"text": "订单查档(国内)"
+			}],
+			"id": 88,
+			"text": "报告管理"
+		}],
+		"id": 46,
+		"text": "前台菜单"
+	}]
+	function getTree() {
+		$("#tree").show(); 
+	      $.ajax({
+	    		  url:"/system/menu/add2",
+	    		  dataType:"json",
+	    		  success:function(data1){
+	    			  $("#tree").treeview({
+	    					data:data1,
+	    					levels:1,
+	    					
+	    				 	onNodeSelected: function(event, data){
+	    						console.log(data)
+	    						 $("#parentid").val(data.id);
+	    						$("#name").val(data.text);
+	    						$("#tree").hide(); 
+	    					} 
+	    				});
+	    		}
+	      })	   
 	};
+	/*function getTrees(){
+		console.log(getTree())
+		$("#tree").show();
+		 $("#tree").treeview({
+			data:getTree(),
+		 	onNodeSelected: function(event, data){
+				console.log(data)
+				 $("#parentid").val(data.parentid);
+				$("#name").val(data.name);
+				$("#tree").hide(); 
+			} 
+		});
+	}; */
 </script>
 
 <%
@@ -25,15 +533,17 @@ var bodyContent = {
 <form name="form1" action="" method="post" class="form-horizontal"
 		role="form" >
 	<input type="hidden" name="model.id" value="${model.id}" />
+	
 	<table class="table">
 		<%  // 列表头部%>
 				<tr>
 					<td>上级菜单</td>
 					<td>
-					<select name="model.parentid" class="form-control"  valid='vselect' validname='类型' >
-						<option value="0" ${model.type==0?"selected":"" }>根目录</option>
-						${parentSelect}
-					</select>
+						<input id="name" name="name" placeholder="请选择上级目录"  valid="vtext" validname="请选择上级目录" value="${model.parentname}"  class="form-control" type="text" onclick="getTree();">
+	 					<input id="parentid" valid="vtext" validname="请选择上级目录" name="model.parentid"  value="${model.parentid}"  class="form-control" type="hidden" >
+	 					<div id="tree" >
+		
+						</div>
 					</td>
 				</tr>
 				<tr>

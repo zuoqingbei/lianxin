@@ -10,62 +10,50 @@ var bodyContent = {
 	<!-- 数据列表 -->
 		<table class="table">
 		<tr>
-			<td>代理编码</td>
-			<td>${model.agent_id}</td>
+			<td>模板id</td>
+			<td>${model.id}</td>
 		</tr>
 		<tr>
-			<td>代理类型</td>
-			<td>${model.agentType}</td>
+			<td>父模板名称</td>
+			<td>${model.parentTempName}</td>
 		</tr>
 		<tr>
-			<td>代理名称</td>
-			<td> ${model.agent_name}</td>
+			<td>模板名称</td>
+			<td> ${model.temp_name}</td>
 		</tr>
 		<tr>
-			<td>邮政编码</td>
-			<td>${model.postal_code}</td>
-		</tr>
-		<tr>
-			<td>代理用时</td>
-			<td>${model.proxy_time}</td>
-		</tr>
-		<tr>
-			<td>邮箱</td>
-			<td>${model.memo}</td>
-		</tr>
-		<tr>
-			<td>价格</td>
-			<td>${model.price}</td>
-		</tr>
-		<tr>
-			<td>币种</td>
-			<td>${model.Currency}</td>
-		</tr>
-		<tr>
-			<td>速度</td>
-			<td>${model.Speed}</td>
-		</tr>
-		<tr>
-			<td>是否禁用</td>
-			<td>${model.Usabled}</td>
-		</tr>
-		<tr>
-			<td>省份</td>
+			<td>模板英文名</td>
 			<td>${model.provinceName}</td>
 		</tr>
 		<tr>
-			<td>城市</td>
-			<td>${model.cityName}</td>
+			<td>报告类型</td>
+			<td>${model.reportName}</td>
 		</tr>
 		<tr>
-			<td>国家</td>
-			<td>${countrys}</td>
+			<td>字段类型</td>
+			<td>${model.field_type}</td>
 		</tr>
 		<tr>
-			<td>代理类别</td>
-			<td>${model.agent_category}</td>
+			<td>字段长度</td>
+			<td>${model.length}</td>
 		</tr>
-		</table>
+		<tr>
+			<td>创建者</td>
+			<td>${model.createName}</td>
+		</tr>
+		<tr>
+			<td>创建时间</td>
+			<td>${model.create_date}</td>
+		</tr>
+		<tr>
+			<td>更新者</td>
+			<td>${model.updateName}</td>
+		</tr>
+		<tr>
+			<td>更新时间</td>
+			<td>${model.update_date}</td>
+		</tr>
+	</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">

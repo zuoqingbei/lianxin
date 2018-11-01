@@ -757,6 +757,9 @@ public class OrderProcessController extends BaseProjectController{
 					}
 					String string5 = string2.substring(string2.indexOf("{")+1,string2.indexOf(":"));
 					String string6 =  string2.substring(string2.indexOf(":")+1);
+					if("null".equals(string6)){
+						continue;
+					}
 					map.put(string5, string6);
 				}
 				//反射获取Class对象

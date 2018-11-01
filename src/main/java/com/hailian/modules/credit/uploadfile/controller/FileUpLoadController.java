@@ -42,6 +42,8 @@ public class FileUpLoadController extends BaseProjectController {
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
+	public static final String searver_port = Config.getStr("searver_port");//域用户密码
+	public static final String ftp_store = Config.getStr("ftp_store");//域用户密码
 	/**
 	 * 单文件上传
 	* @author doushuihai  
@@ -69,7 +71,7 @@ public class FileUpLoadController extends BaseProjectController {
 				business_id = model.get("business_id");
 				business_type = model.getInt("business_type");//检索条件-报告类型
 				if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
-					String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+					String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 //					String now=DateUtils.getNow(DateUtils.YMDHMS);
 					String now=UUID.randomUUID().toString().replaceAll("-", "");
 					originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
@@ -180,8 +182,8 @@ public class FileUpLoadController extends BaseProjectController {
 		CreditUploadFileModel model = CreditUploadFileModel.dao.getById(getParaToInt());
 		String view_url=model.get("view_url");
 		String url=model.get("url");
-		model.set("view_url", "http://"+ip+"/"+view_url);
-		model.set("url", "http://"+ip+"/"+url);
+		model.set("view_url", "http://"+ip+":"+searver_port+"/"+view_url);
+		model.set("url", "http://"+ip+":"+searver_port+"/"+url);
 		setAttr("model", model);
 		render(path + "view.html");
 	}
@@ -209,8 +211,8 @@ public class FileUpLoadController extends BaseProjectController {
 		CreditUploadFileModel model = CreditUploadFileModel.dao.findById(paraToInt);
 		String view_url=model.get("view_url");
 		String url=model.get("url");
-		model.set("view_url", "http://"+ip+"/"+view_url);
-		model.set("url", "http://"+ip+"/"+url);
+		model.set("view_url", "http://"+ip+":"+searver_port+"/"+view_url);
+		model.set("url", "http://"+ip+":"+searver_port+"/"+url);
 		setAttr("model", model);
 		// 查询下拉框
 		render(path + "edit.html");

@@ -1,10 +1,9 @@
+
+
+
 .layui-laydate .layui-this{
     background-color: var(--activeColor)!important;
     color: #fff!important;
-}
-.bg-f {
-	margin-bottom:2rem;
-	padding-bottom:1.5rem;
 }
 .main {
     margin-bottom: 5rem;
@@ -98,7 +97,7 @@ label {
     flex-direction: column;
     justify-content: center;
 }
-.modal-body input,.modal-body textarea {
+.modal-body input,.modal-body textarea,.modal-body select{
     width: var(--inputWidthlg)!important;
 }
 .control-label {
@@ -171,7 +170,23 @@ label {
     color: var(--fontColor);
     cursor: default;
 }
+.firm-info .form-group {
+	position:relative;
+}
+/*提示信息*/
+.errorInfo {
+	color:#F75760;
+	position: absolute;
+	left:0;
+	text-align: left;
+	top:4.5rem;
+	padding:0 .75rem;
+	display: none;
+}
+.firm-info input.active, .firm-info select.active{
+	border-color:#f00;
 
+}
 
 
 #PoPy {background: #fff!important}

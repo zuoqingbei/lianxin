@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>联信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+	
+	
+    <style>
+.bg-f {
+            min-height: 0;
+            padding: 1rem;
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--fontColor);
+            font-size: 1.375rem;
+            padding: 0 2rem 1.5rem;
+        }
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active,
+        .nav-tabs .nav-link:focus,
+        .nav-tabs .nav-link:hover {
+            color: var(--activeColor);
+            border-color: transparent;
+            border-bottom: .25rem solid var(--activeColor);
+        }
+        .tab-content ul{
+        margin-bottom: 0;
+        }
+    
+        .tab-content ul > li {
+            padding-left: 1.5rem;
+            border-bottom: .125rem solid #eee;
+            cursor: pointer;
+        }
+        .tab-content ul > li:hover{
+            background-color: #e6f7ff;
+        }
+        .tab-content ul > li > h4 {
+            position: relative;
+            margin-bottom:0;
+            padding: 1rem 0 1rem;
+            font-size: 1.375rem;
+            font-weight: bold;
+            color: var(--fontColor);
+        }
+
+        .tab-content ul > li.unread > h4 {
+            color: var(--fontTitleColor);
+        }
+
+        .tab-content ul > li.unread > h4:before {
+            content: '';
+            position: absolute;
+            top: 63%;
+            left: -1rem;
+            width: .625rem;
+            height: .625rem;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            background-color: var(--activeColor);
+        }
+
+        .tab-content ul > li > p {
+        	margin-bottom:0;
+            padding-bottom: 1rem;
+            padding-left: 2rem;
+            padding-right: 15rem;
+            font-size: 1.125rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            color: var(--fontColor);
+        }
+
+        .buttonWrap {
+            flex: 1;
+        }
+
+        .pagination li {
+            margin: 0 .5rem;
+        }
+
+      
+        .modal-footer{
+            justify-content: center;
+        }
+.pagination li{
+            margin: 0 .5rem;
+        }
+        #paginationBox{
+       	    display: flex;
+    		justify-content: flex-end;
+        }
+        .pagination {
+        	justify-content: flex-end;
+        	width: 38rem;
+        }
+    </style>
+</head>
+
+<div id="container" class="row  animated fadeIn">
+    <!-- 内容 -->
+    <div class="main">
+        <!--标题-->
+        <div class="main-header">
+            <p class="main-title">消息管理</p>
+        </div>
+        <!-- 表格 -->
+        <div class="table-content">
+            <div class="bg-f">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-all"
+                           role="tab" aria-controls="nav-home" aria-selected="true">全部</a>
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-read"
+                           role="tab" aria-controls="nav-profile" aria-selected="false">已读</a>
+                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-unread"
+                           role="tab" aria-controls="nav-contact" aria-selected="false">未读</a>
+                        <div class="buttonWrap"><button class="btn btn-primary pull-right" id="toReadAll">全部标为已读</button></div>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <ul></ul>
+                    </div>
+                    <div class="tab-pane fade" id="nav-read" role="tabpanel" aria-labelledby="nav-profile-tab">
+                       <ul></ul>
+                    </div>
+                    <div class="tab-pane fade" id="nav-unread" role="tabpanel" aria-labelledby="nav-contact-tab">
+                        <ul></ul>
+                    </div>
+                </div>
+                 <div id="paginationBox" style="text-align: center"> <ul id="pageLimit"></ul> </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="notice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-5"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${BASE_PATH }static/credit/js/bootstrap-paginator.min.js"></script>
+<script src="${BASE_PATH }static/credit/js/bootstrap-paginator.js"></script>
+
+<script type="text/javascript">
+	function initPag(tatolPages,status){
+		let tatol = tatolPages?tatolPages:1;
+		$('#pageLimit').bootstrapPaginator({
+		    currentPage: 1,
+		    //totalPages: {page.totalPage},
+			totalPages: tatol,
+		    size:"normal",
+		    bootstrapMajorVersion: 3,
+		    alignment:"right",
+		    numberOfPages:5,
+		    itemTexts: function (type, page, current) {
+		        switch (type) {
+		        case "first": return "首页";
+		        case "prev": return "上一页";
+		        case "next": return "下一页";
+		        case "last": return "末页";
+		        case "page": return page;
+		        }//默认显示的是第一页。
+		    },
+		        onPageClicked: function (event, originalEvent, type, page){//给每个页眉绑定一个事件，其实就是ajax请求，其中page变量为当前点击的页上的数字。
+		            $.ajax({
+		                url:'/credit/sysuser/notice/list',
+		                type:'POST',
+		                data:{'pageNo':page,'recordsperpage':6,'status':status},
+		                dataType:'JSON',
+		                success:function (data) {
+		                	var html="";	
+		                	let list = data.list
+		                	console.log(list)
+		            	  	for(item in list){
+		            	  		if(list[item].read_unread=='1'){
+		            	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+		            	  		}else{
+		            	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+		            	  			
+		            	  		}
+		            	 		
+		            	    }
+		                	
+		            	 	if(status === '') {
+		            	 		$("#nav-all ul").html(html)
+		            	 	}
+		            	 	if(status === '0') {
+		            	 		$("#nav-read ul").html(html)
+		            	 	}
+		            	 	if(status === '1') {
+		            	 		$("#nav-unread ul").html(html)
+		            	 	}
+		                }
+		            })
+		        }
+		});
+	}
+	
+</script>
+<script>
+$(function(){
+	// 打开弹窗
+	$("#nav-tabContent").on('click', 'li', function () {
+		let id=$(this).attr("id");
+		$.post('/credit/sysuser/notice/toReadAll',{noticeId:id},function(data){
+			if(data.statusCode===1){
+			}else{
+				Public.message("error",data.message);
+			}
+		})
+        let title = $(this).find('h4').html();
+        let content = $(this).find('p').html();
+        let $modal = $('#notice');
+        $modal.find('.modal-title').html(title);
+        $modal.find('.modal-body').html(content);
+        $modal.modal('show');
+        $("[aria-selected='true']").click();
+        
+    })
+})
+//初始化
+agentchange('')
+function agentchange(status){
+	var html="";
+	$.ajax({
+        url:'/credit/sysuser/notice/list',
+        type:'POST',
+        data:{'pageNo':1,'recordsperpage':6,'status':status},
+        dataType:'JSON',
+        success:function (data) {
+        	initPag(data.totalPage,status)
+        	var html="";
+        	let list = data.list
+        	console.log(list)
+    	  	for(item in list){
+    	  		if(list[item].read_unread=='1'){
+    	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+    	  		}else{
+    	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+    	  		}
+    	    }
+    	 	if(status === '') {
+    	 		$("#nav-all ul").html(html) 	                  	 	 	 						 	
+    	 	}
+    	 	if(status === '0') {
+    	 		$("#nav-read ul").html(html)
+    	 	}
+    	 	if(status === '1') {
+    	 		$("#nav-unread ul").html(html)
+    	 	}
+            }
+    })
+}
+//全部公告
+$("#nav-home-tab").click(function(){
+	var status='';
+ 	agentchange(status)
+	
+})
+//已读公告
+$("#nav-profile-tab").click(function(){
+	var status='0';
+ 	agentchange(status)
+	
+})
+//已读公告
+$("#nav-contact-tab").click(function(){
+	var status='1';
+ 	agentchange(status)
+})
+//标记全读
+$("#toReadAll").click(function(){
+	$.post('/credit/sysuser/notice/toReadAll',function(data){
+		if(data.statusCode===1){
+          	Public.message("success",data.message);
+		}else{
+			Public.message("error",data.message);
+		}
+	})
+	
+})
+</script>
+</html>

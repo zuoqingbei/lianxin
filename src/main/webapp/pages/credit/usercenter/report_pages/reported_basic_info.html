@@ -69,8 +69,8 @@
                         <div class="firm-info mt-4 px-5 d-flex justify-content-between">
                             <div class="form-group">
                                 <label for="qy_code" class="mb-2" >统一社会信用代码</label>
-                                <input id="credit_code" type="number" name="credit_code" class="form-control" id="qy_code" placeholder="">
-                           		<p class="errorInfo">统一社会信用代码必须为18位</p>
+                                <input id="credit_code" type="text" name="credit_code" class="form-control" id="qy_code" placeholder="">
+                           		<p class="errorInfo">统一社会信用代码为18位字母和数字</p>
                             </div>
                             <div class="form-group">
                                 <label for="qy_person" class="mb-2" >法人代表</label>
@@ -236,7 +236,17 @@
                 </div>
                 <div class="form-inline justify-content-center my-3">
                     <label for="" class="control-label">变更项：</label>
-                    <input type="text" class="form-control" id="modal_change_items">
+                    <select  class="form-control" id="modal_change_items">
+                    	<option selected="selected">企业名称</option>
+                    	<option>经营范围</option>
+                    	<option>注册资本</option>
+                    	<option>地址</option>
+                    	<option>法定代表人</option>
+                    	<option>公司类型</option>
+                    	<option>营业期限</option>
+                    	<option>股东与持股</option>
+                    	<option>注册号</option>
+                    </select>
                 </div>
                 <div class="form-inline justify-content-center my-3">
                     <label for="" class="control-label">变更前：</label>

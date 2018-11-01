@@ -3,17 +3,12 @@ package com.hailian.modules.credit.notice.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.modules.credit.custom.model.CustomInfoModel;
-import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.util.DateUtils;
-import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 /**
@@ -60,6 +55,35 @@ public class NoticeModel extends BaseProjectModel<NoticeModel> {
 		sql.append(" order by t.create_date desc ");
 		List<NoticeModel> find = NoticeModel.dao.find(sql.toString(),params.toArray());
 		return find;
+	}
+	/**
+	 * 公告展示
+	* @author doushuihai  
+	* @date 2018年10月30日上午10:54:31  
+	* @TODO
+	 */
+	public Page<NoticeModel> getPage(Paginator paginator, BaseProjectController c,String status,Integer userid) {
+				List<Object> params=new ArrayList<Object>();
+				StringBuffer sql=new StringBuffer(" from credit_notice t ");
+				sql.append(" left join credit_notice_log t2 on t.id=t2.notice_id ");
+				sql.append(" where 1=1 and t.del_flag=0 ");
+				if (StringUtil.isNotEmpty(status)) {
+					sql.append("and t2.read_unread = ? ");
+					params.add(status);//传入的参数
+				}
+				if(!c.isAdmin(c.getSessionUser())){
+					sql.append(" and t.create_by=? ");
+					params.add(userid);//传入的参数
+				}
+				if(StringUtil.isNotEmpty(userid+"")){
+					sql.append(" and t2.user_id=? ");
+					params.add(userid);//传入的参数
+				}
+				// 排序
+				sql.append(" order by t2.read_unread desc,t.create_date desc");
+				Page<NoticeModel> page = NoticeModel.dao
+						.paginate(paginator, "select t.*,t2.read_unread", sql.toString(),params.toArray());
+				return page;
 	}
 
 }
