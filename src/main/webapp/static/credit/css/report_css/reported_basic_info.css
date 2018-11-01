@@ -2,6 +2,10 @@
     background-color: var(--activeColor)!important;
     color: #fff!important;
 }
+.bg-f {
+	margin-bottom:2rem;
+	padding-bottom:1.5rem;
+}
 .main {
     margin-bottom: 5rem;
 }

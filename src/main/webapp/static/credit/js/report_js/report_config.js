@@ -1,7 +1,6 @@
 
 let ReportConfig = {
     init(){
-        this.initHeader();
         this.initContent();
         // this.transition()
     },
@@ -13,28 +12,34 @@ let ReportConfig = {
         }
        return JSON.stringify(newObj).replace(/\"/g,"").replace("{","").replace("}","").replace(/,/g,";")
     },
-    initHeader(){
-        /**初始化头部 */
-       
-    },
     initContent(){
         /**初始化内容 */
-        $.get("/credit/front/getmodule/list?id=1",(data)=>{
+    	let row = localStorage.getItem("row");
+    	let id = JSON.parse(row).id;
+        $.get("/credit/front/getmodule/list?id="+id,(data)=>{
             console.log(data)
+            let modules = data.modules;    
             let contentHtml = '' 
-            data.forEach((item,index) => {
-                if(item.contentType === 'form'){
-                    /**
-                     * 如果这是表单快
-                     */
-                    let title = item.title
-                    contentHtml += `<div class="l-title"></div>`
-                }else if(item.contentType === 'table'){
-
-                }
-                
-            });
-            console.log(contentHtml)
+            modules.forEach((item,index)=>{
+            	contentHtml +=  `<div class="bg-f"><div class="l-title">${item.title}</div>`
+            	let formArr = item.contents; 
+            	formArr.forEach((item,index)=>{
+            		if((index)%3 === 0){
+            			contentHtml += `<div class="firm-info mt-4 px-5 d-flex justify-content-between">`;
+            		}
+            		contentHtml += `<div class="form-group">
+					            		<label for="" class="mb-2">${item.temp_name}</label>
+					            		<input type="text" class="form-control" id="" placeholder="">
+				            		</div>`
+            		if(((index+1)%3 === 0 && index !==0) || !formArr[index+1]){
+            			contentHtml += `</div>`    
+            		}
+				            		
+				    console.log(index)
+            	}) 
+            	contentHtml += `</div>`
+            })
+            
             $(".table-content").html(contentHtml)
         })
     }

@@ -126,6 +126,7 @@ let Public = {
     },
     goToBasicInfoWrite(e){
         /**跳转基本信息填报 */
+    	this.gotop()
         $("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportedBasicInfo');
         localStorage.setItem("row",JSON.stringify(e));
     },
@@ -133,6 +134,7 @@ let Public = {
     	/**跳转可配置的填报页面*/
     	 $("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportedConfig');
          localStorage.setItem("row",JSON.stringify(param));
+         this.gotop()
     },
     tabFixed(fixedEle,scrollEle,min,max){
         /**
@@ -156,7 +158,7 @@ let Public = {
         $(".main").scroll(function(){
             // 滚动条距离顶部的距离 大于 200px时
             if($(".main").scrollTop() >= 200){
-                 $(".fixed-backup").fadeIn(500); // 开始淡入
+                 $(".fixed-backup").show(500); // 开始淡入
             } else{
                  $(".fixed-backup").fadeOut(500); // 如果小于等于 200 淡出
             }
