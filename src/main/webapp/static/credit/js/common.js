@@ -6,7 +6,8 @@ let Public = {
     init(){
         this.menuEvent()
         this.logoutEvent()
-      
+        
+     	
     }, 
   
     initReset(){
@@ -16,6 +17,12 @@ let Public = {
     	$btnReset.on('click',function(){
     		$("#formSearch input.search-input").val("");
     		$("#formSearch select.search-input").val("");
+    		layui.use('form', function(){
+			  var form = layui.form;
+			  
+			  //各种基于事件的操作，下面会有进一步介绍
+			  form.render('select');
+			});
     	});
     },
     menuEvent(){
@@ -191,7 +198,9 @@ $(function(){
     Public.init();
     window.onload = function(){
         let id = sessionStorage.getItem('menuId')?sessionStorage.getItem('menuId'):$(".left-nav ul").children("li").eq(0).attr("id")
-        $("#main_content").load(sessionStorage.getItem('pageUrl')?sessionStorage.getItem('pageUrl'):'/credit/front/home')
+        $("#main_content").load(sessionStorage.getItem('pageUrl')?sessionStorage.getItem('pageUrl'):'/credit/front/home',()=>{
+        	Public.initReset()
+        })
         $(".leftNav").find("li").removeClass("active");
         $('#'+id).addClass("active");
         if($('#'+id).parents("li").hasClass("hasChild")) {
