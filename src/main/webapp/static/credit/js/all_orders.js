@@ -194,7 +194,7 @@ let Index = {
                   title: '订单号',
                   field: 'num',
                   align: 'center',
-                  
+                  valign: 'middle',
                   formatter:function(value,row,index){ 
   
                 	var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
