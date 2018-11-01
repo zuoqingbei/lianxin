@@ -3,6 +3,7 @@ package com.hailian.modules.credit.notice.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.hailian.component.base.BaseProjectController;
@@ -103,10 +104,15 @@ public class NoticeController extends BaseProjectController {
 	* @TODO
 	 */
 	public void toReadAll(){
+		String noticeId = getPara("noticeId");
 		Integer userid = getSessionUser().getUserid();
 		String sql="update credit_notice_log set read_unread=0 where user_id=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(userid);
+		if(StringUtils.isNotBlank(noticeId)){
+			sql+=" and notice_id=?";
+			params.add(noticeId);
+		}
 		int update = Db.update(sql,params.toArray());
 		if(update<=0){
 			ResultType resultType = new ResultType(2,"操作失败");

@@ -9,7 +9,7 @@
 	
 	
     <style>
-        .bg-f {
+.bg-f {
             min-height: 0;
             padding: 1rem;
         }
@@ -28,24 +28,35 @@
             border-color: transparent;
             border-bottom: .25rem solid var(--activeColor);
         }
-
+        .tab-content ul{
+        margin-bottom: 0;
+        }
+    
         .tab-content ul > li {
+            padding-left: 1.5rem;
             border-bottom: .125rem solid #eee;
+            cursor: pointer;
+        }
+        .tab-content ul > li:hover{
+            background-color: #e6f7ff;
         }
         .tab-content ul > li > h4 {
             position: relative;
-            margin: 1rem 1.5rem 1rem;
+            margin-bottom:0;
+            padding: 1rem 0 1rem;
             font-size: 1.375rem;
             font-weight: bold;
             color: var(--fontColor);
         }
+
         .tab-content ul > li.unread > h4 {
             color: var(--fontTitleColor);
         }
-        .tab-content ul > li.unread > h4:before{
+
+        .tab-content ul > li.unread > h4:before {
             content: '';
             position: absolute;
-            top: 50%;
+            top: 63%;
             left: -1rem;
             width: .625rem;
             height: .625rem;
@@ -53,15 +64,32 @@
             transform: translateY(-50%);
             background-color: var(--activeColor);
         }
+
         .tab-content ul > li > p {
+        	margin-bottom:0;
+            padding-bottom: 1rem;
             padding-left: 2rem;
+            padding-right: 15rem;
             font-size: 1.125rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             color: var(--fontColor);
         }
-        .buttonWrap{
+
+        .buttonWrap {
             flex: 1;
         }
-        .pagination li{
+
+        .pagination li {
+            margin: 0 .5rem;
+        }
+
+      
+        .modal-footer{
+            justify-content: center;
+        }
+.pagination li{
             margin: 0 .5rem;
         }
         #paginationBox{
@@ -72,14 +100,6 @@
         	justify-content: flex-end;
         	width: 38rem;
         }
-        
-/*
-        .pagination>li>a,
-        .pagination>li>span{
-            font-size: 1.25rem;
-            color: var(--fontColor);
-        }
-*/
     </style>
 </head>
 
@@ -106,13 +126,13 @@
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-home-tab">
-                        
+                        <ul></ul>
                     </div>
                     <div class="tab-pane fade" id="nav-read" role="tabpanel" aria-labelledby="nav-profile-tab">
-                       
+                       <ul></ul>
                     </div>
                     <div class="tab-pane fade" id="nav-unread" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        
+                        <ul></ul>
                     </div>
                 </div>
                  <div id="paginationBox" style="text-align: center"> <ul id="pageLimit"></ul> </div>
@@ -120,7 +140,23 @@
         </div>
     </div>
 </div>
-<link rel="stylesheet" href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css">
+<!-- Modal -->
+<div class="modal fade" id="notice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-5"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="${BASE_PATH }static/credit/js/bootstrap-paginator.min.js"></script>
 <script src="${BASE_PATH }static/credit/js/bootstrap-paginator.js"></script>
 
@@ -151,34 +187,57 @@
 		                data:{'pageNo':page,'recordsperpage':6,'status':status},
 		                dataType:'JSON',
 		                success:function (data) {
-		                	var html="";
+		                	var html="";	
 		                	let list = data.list
 		                	console.log(list)
 		            	  	for(item in list){
 		            	  		if(list[item].read_unread=='1'){
-		            	  			html+=" <ul><li class='unread'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
+		            	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
 		            	  		}else{
-		            	  			html+=" <ul><li><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
+		            	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+		            	  			
 		            	  		}
 		            	 		
 		            	    }
+		                	
 		            	 	if(status === '') {
-		            	 		$("#nav-all").html(html)
+		            	 		$("#nav-all ul").html(html)
 		            	 	}
 		            	 	if(status === '0') {
-		            	 		$("#nav-read").html(html)
+		            	 		$("#nav-read ul").html(html)
 		            	 	}
 		            	 	if(status === '1') {
-		            	 		$("#nav-unread").html(html)
+		            	 		$("#nav-unread ul").html(html)
 		            	 	}
-		                    }
+		                }
 		            })
 		        }
 		});
 	}
 	
 </script>
-<script type="text/javascript">
+<script>
+$(function(){
+	// 打开弹窗
+	$("#nav-tabContent").on('click', 'li', function () {
+		let id=$(this).attr("id");
+		$.post('/credit/sysuser/notice/toReadAll',{noticeId:id},function(data){
+			if(data.statusCode===1){
+			}else{
+				Public.message("error",data.message);
+			}
+		})
+        let title = $(this).find('h4').html();
+        let content = $(this).find('p').html();
+        let $modal = $('#notice');
+        $modal.find('.modal-title').html(title);
+        $modal.find('.modal-body').html(content);
+        $modal.modal('show');
+        $("[aria-selected='true']").click();
+        
+    })
+})
+//初始化
 agentchange('')
 function agentchange(status){
 	var html="";
@@ -194,19 +253,19 @@ function agentchange(status){
         	console.log(list)
     	  	for(item in list){
     	  		if(list[item].read_unread=='1'){
-    	  			html+=" <ul><li class='unread'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
+    	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
     	  		}else{
-    	  			html+=" <ul><li><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</li></ui>"
+    	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
     	  		}
     	    }
     	 	if(status === '') {
-    	 		$("#nav-all").html(html)
+    	 		$("#nav-all ul").html(html) 	                  	 	 	 						 	
     	 	}
     	 	if(status === '0') {
-    	 		$("#nav-read").html(html)
+    	 		$("#nav-read ul").html(html)
     	 	}
     	 	if(status === '1') {
-    	 		$("#nav-unread").html(html)
+    	 		$("#nav-unread ul").html(html)
     	 	}
             }
     })
@@ -227,9 +286,8 @@ $("#nav-profile-tab").click(function(){
 $("#nav-contact-tab").click(function(){
 	var status='1';
  	agentchange(status)
-	
 })
-//已读公告
+//标记全读
 $("#toReadAll").click(function(){
 	$.post('/credit/sysuser/notice/toReadAll',function(data){
 		if(data.statusCode===1){
