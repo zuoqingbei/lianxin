@@ -242,7 +242,7 @@ let Index = {
             queryParamsType:'',
             sortable: true,                     //是否启用排序
             sortOrder: "desc",
-            sortName:"receiver_date",
+            sortName:"create_date",
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
             	console.log(params);
