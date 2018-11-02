@@ -440,9 +440,21 @@
                         附件
                     </div>
                     <div class="order-detail mb-4 order-content accessory_box">
-                       	<%for(item in files){%>
-                       		<%if(item==null){ %>
-                       			 <div class="uploadFile mt-3 mr-3 ml-3 ">
+                       
+                       		<%if(files.~size>0){ %>
+                       			<%for(item in files){%>
+                       			 <div>
+		                          	<div class="uploadFile mt-3 mr-3 ml-3 ">
+		                          		<div class="over-box">
+				                            <img src="${BASE_PATH }static/credit/imgs/order/PDF.png" class="m-auto""/>
+				                           	<p title='${item.originalname}.${item.ext}' class="mt-2">${item.originalname}.${item.ext}</p>
+			                           	</div>
+		                            </div>
+		                            <div class="order-yulan  mt-3 ml-3 "><a href="#" onclick="view(''+'${item.view_url}'+'',''+'${item.ext}'+'')">预览</a></div>
+                            	</div>
+                            	<%}%>
+	                            <%}else{%>
+	                            <div class="uploadFile mt-3 mr-3 ml-3 ">
 		                             <div>
 				                           <div class="uploadFile mt-3 mr-3 ml-3">
 				                               <div class="over-box">
@@ -452,18 +464,8 @@
 				                           </div>
                           			 	<div class="order-yulan  mt-3 ml-3 "><a href="#">预览</a></div>
                        				</div>
-	                            </div>
-	                            <%}else{%>
-	                            <div>
-                          	<div class="uploadFile mt-3 mr-3 ml-3 ">
-                          		<div class="over-box">
-		                            <img src="${BASE_PATH }static/credit/imgs/order/PDF.png" class="m-auto""/>
-		                           	<p title='${item.originalname}.${item.ext}' class="mt-2">${item.originalname}.${item.ext}</p>
-	                           	</div>
-                            </div>
-                            <div class="order-yulan  mt-3 ml-3 "><a href="#" onclick="view(''+'${item.view_url}'+'',''+'${item.ext}'+'')">预览</a></div>
-                            	</div>
-                            	<%}}%>                                        
+	                            </div>	                           
+                            	<%}%>                                        
                     </div>
                  	<!--    变化后的 -->
                     <!-- <div class="order-detail mb-4 order-content accessory_box">

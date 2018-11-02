@@ -61,8 +61,8 @@ public class HomeController extends BaseProjectController {
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
-	public static final String searver_port = Config.getStr("searver_port");//域用户密码
-	public static final String ftp_store = Config.getStr("ftp_store");//域用户密码
+	public static final String searver_port = Config.getStr("searver_port");//端口号
+	public static final String ftp_store = Config.getStr("ftp_store");//存储目录
 
 	public void index() {
 		render(path+"index.html");
@@ -188,7 +188,10 @@ public class HomeController extends BaseProjectController {
 		}
 		String sortname=getPara("sortName");
 		if(!StringUtils.isNotBlank(sortname)) {
-			sortname="receiver_date";
+			sortname="create_date";
+		}
+		if("receiver_date".equals(sortname)) {
+			sortname="create_date";
 		}
 		String sortorder=getPara("sortOrder");
 		if(!StringUtils.isNotBlank(sortorder)) {
