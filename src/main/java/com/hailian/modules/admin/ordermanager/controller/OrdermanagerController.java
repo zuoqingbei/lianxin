@@ -431,9 +431,12 @@ public class OrdermanagerController extends BaseProjectController{
 			})
 	public void getPrice() {
 		String countryType=getPara("countrytype", "");
+		if("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
+			countryType="148";
+		}
 		String speed=getPara("speed", "");
 		String reporttype=getPara("reporttype", "");
-		String orderType=getPara("orderType", "");
+		String orderType=getPara("ordertype", "");
 		CreditReportPrice price=OrderManagerService.service.getPrice(countryType,speed,reporttype,orderType);
 		renderJson(price);
 
