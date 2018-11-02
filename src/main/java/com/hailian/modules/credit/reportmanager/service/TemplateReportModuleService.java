@@ -21,9 +21,9 @@ public class TemplateReportModuleService extends BaseService{
 		List<CreditReportModuleConf> listDetail =getReportModule();
 		for(CreditReportModuleConf detail:listDetail){
 				if(report.equals(detail.getStr("report"))){
-					sb.append("<option selected='selected' m-id='"+detail.get("id")+"'  value='"+detail.get("report")+"'>"+detail.get("temp_name")+"</option>");
+					sb.append("<option selected='selected' m-id='"+detail.get("id")+"'  value='"+detail.get("report_type")+"'>"+detail.get("temp_name")+"</option>");
 				}else{
-					sb.append("<option m-id='"+detail.get("id")+"'  value='"+detail.get("report")+"'>"+detail.get("temp_name")+"</option>");
+					sb.append("<option m-id='"+detail.get("id")+"'  value='"+detail.get("report_type")+"'>"+detail.get("temp_name")+"</option>");
 				}			
 		}
 		return sb.toString();

@@ -6,10 +6,10 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="../css/order_manage/order_common.css">
-    <link rel="stylesheet" href="../css/order_manage/order_allocation.css">
+	
+	
     <style>
-        .bg-f {
+.bg-f {
             min-height: 0;
             padding: 1rem;
         }
@@ -28,24 +28,35 @@
             border-color: transparent;
             border-bottom: .25rem solid var(--activeColor);
         }
-
+        .tab-content ul{
+        margin-bottom: 0;
+        }
+    
         .tab-content ul > li {
+            padding-left: 1.5rem;
             border-bottom: .125rem solid #eee;
+            cursor: pointer;
+        }
+        .tab-content ul > li:hover{
+            background-color: #e6f7ff;
         }
         .tab-content ul > li > h4 {
             position: relative;
-            margin: 2rem 1.5rem 1rem;
+            margin-bottom:0;
+            padding: 1rem 0 1rem;
             font-size: 1.375rem;
             font-weight: bold;
             color: var(--fontColor);
         }
+
         .tab-content ul > li.unread > h4 {
             color: var(--fontTitleColor);
         }
-        .tab-content ul > li.unread > h4:before{
+
+        .tab-content ul > li.unread > h4:before {
             content: '';
             position: absolute;
-            top: 50%;
+            top: 63%;
             left: -1rem;
             width: .625rem;
             height: .625rem;
@@ -53,25 +64,42 @@
             transform: translateY(-50%);
             background-color: var(--activeColor);
         }
+
         .tab-content ul > li > p {
-            margin-bottom: 2rem;
+        	margin-bottom:0;
+            padding-bottom: 1rem;
             padding-left: 2rem;
+            padding-right: 15rem;
             font-size: 1.125rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             color: var(--fontColor);
         }
-        .buttonWrap{
+
+        .buttonWrap {
             flex: 1;
         }
-        .pagination li{
+
+        .pagination li {
             margin: 0 .5rem;
         }
-/*
-        .pagination>li>a,
-        .pagination>li>span{
-            font-size: 1.25rem;
-            color: var(--fontColor);
+
+      
+        .modal-footer{
+            justify-content: center;
         }
-*/
+.pagination li{
+            margin: 0 .5rem;
+        }
+        #paginationBox{
+       	    display: flex;
+    		justify-content: flex-end;
+        }
+        .pagination {
+        	justify-content: flex-end;
+        	width: 38rem;
+        }
     </style>
 </head>
 
@@ -80,11 +108,6 @@
     <div class="main">
         <!--标题-->
         <div class="main-header">
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item active">
-                    <a href="javascript:;">消息管理</a>
-                </li>
-            </ul>
             <p class="main-title">消息管理</p>
         </div>
         <!-- 表格 -->
@@ -98,82 +121,182 @@
                            role="tab" aria-controls="nav-profile" aria-selected="false">已读</a>
                         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-unread"
                            role="tab" aria-controls="nav-contact" aria-selected="false">未读</a>
-                        <div class="buttonWrap"><button class="btn btn-primary pull-right">全部标为已读</button></div>
+                        <div class="buttonWrap"><button class="btn btn-primary pull-right" id="toReadAll">全部标为已读</button></div>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <ul>
-                            <li class="unread">
-                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
-                                <p>
-                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
-                            </li>
-                            <li class="unread">
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                            <li>
-                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
-                                <p>
-                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
-                            </li>
-                            <li>
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                        </ul>
+                        <ul></ul>
                     </div>
                     <div class="tab-pane fade" id="nav-read" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <ul>
-                            <li>
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                            <li>
-                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
-                                <p>
-                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
-                            </li>
-                        </ul>
+                       <ul></ul>
                     </div>
                     <div class="tab-pane fade" id="nav-unread" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <ul>
-                            <li class="unread">
-                                <h4>【公告】祝大家团建玩的开心\(^o^)/~</h4>
-                                <p>
-                                    办公室聚餐在我们公司叫团建，是同事在紧张的工作之余，聚在一起沟通感情的聚会。在工作上的一些不愉快和压力都会得到某种程度上的释放。从这点考虑在没有重要的事情办公室聚餐的要去的。
-                            </li>
-                            <li class="unread">
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                           <li class="unread">
-                                <h4>【公告】团建文化</h4>
-                                <p>
-                                    前段时间那个阿里妹纸辞职管厕所的事件中，她直言阿里感动她的地方是她们的文化与团建，但是同样阿里给了她很大的压力。因内分泌失调“胖了20斤。所以站在公司的角度来考虑，办公室聚餐是为了缓解员工的情绪，安抚员工的心。所以办公室聚餐尽量不要推掉。</p>
-                            </li>
-                        </ul>
+                        <ul></ul>
                     </div>
                 </div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-end my-4">
-                        <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                    </ul>
-                </nav>
+                 <div id="paginationBox" style="text-align: center"> <ul id="pageLimit"></ul> </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="notice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-5"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${BASE_PATH }static/credit/js/bootstrap-paginator.min.js"></script>
+<script src="${BASE_PATH }static/credit/js/bootstrap-paginator.js"></script>
 
+<script type="text/javascript">
+	function initPag(tatolPages,status){
+		let tatol = tatolPages?tatolPages:1;
+		$('#pageLimit').bootstrapPaginator({
+		    currentPage: 1,
+		    //totalPages: {page.totalPage},
+			totalPages: tatol,
+		    size:"normal",
+		    bootstrapMajorVersion: 3,
+		    alignment:"right",
+		    numberOfPages:5,
+		    itemTexts: function (type, page, current) {
+		        switch (type) {
+		        case "first": return "首页";
+		        case "prev": return "上一页";
+		        case "next": return "下一页";
+		        case "last": return "末页";
+		        case "page": return page;
+		        }//默认显示的是第一页。
+		    },
+		        onPageClicked: function (event, originalEvent, type, page){//给每个页眉绑定一个事件，其实就是ajax请求，其中page变量为当前点击的页上的数字。
+		            $.ajax({
+		                url:'/credit/sysuser/notice/list',
+		                type:'POST',
+		                data:{'pageNo':page,'recordsperpage':6,'status':status},
+		                dataType:'JSON',
+		                success:function (data) {
+		                	var html="";	
+		                	let list = data.list
+		                	console.log(list)
+		            	  	for(item in list){
+		            	  		if(list[item].read_unread=='1'){
+		            	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+		            	  		}else{
+		            	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+		            	  			
+		            	  		}
+		            	 		
+		            	    }
+		                	
+		            	 	if(status === '') {
+		            	 		$("#nav-all ul").html(html)
+		            	 	}
+		            	 	if(status === '0') {
+		            	 		$("#nav-read ul").html(html)
+		            	 	}
+		            	 	if(status === '1') {
+		            	 		$("#nav-unread ul").html(html)
+		            	 	}
+		                }
+		            })
+		        }
+		});
+	}
+	
+</script>
+<script>
+$(function(){
+	// 打开弹窗
+	$("#nav-tabContent").on('click', 'li', function () {
+		let id=$(this).attr("id");
+		$.post('/credit/sysuser/notice/toReadAll',{noticeId:id},function(data){
+			if(data.statusCode===1){
+			}else{
+				Public.message("error",data.message);
+			}
+		})
+        let title = $(this).find('h4').html();
+        let content = $(this).find('p').html();
+        let $modal = $('#notice');
+        $modal.find('.modal-title').html(title);
+        $modal.find('.modal-body').html(content);
+        $modal.modal('show');
+        $("[aria-selected='true']").click();
+        
+    })
+})
+//初始化
+agentchange('')
+function agentchange(status){
+	var html="";
+	$.ajax({
+        url:'/credit/sysuser/notice/list',
+        type:'POST',
+        data:{'pageNo':1,'recordsperpage':6,'status':status},
+        dataType:'JSON',
+        success:function (data) {
+        	initPag(data.totalPage,status)
+        	var html="";
+        	let list = data.list
+        	console.log(list)
+    	  	for(item in list){
+    	  		if(list[item].read_unread=='1'){
+    	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+    	  		}else{
+    	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+    	  		}
+    	    }
+    	 	if(status === '') {
+    	 		$("#nav-all ul").html(html) 	                  	 	 	 						 	
+    	 	}
+    	 	if(status === '0') {
+    	 		$("#nav-read ul").html(html)
+    	 	}
+    	 	if(status === '1') {
+    	 		$("#nav-unread ul").html(html)
+    	 	}
+            }
+    })
+}
+//全部公告
+$("#nav-home-tab").click(function(){
+	var status='';
+ 	agentchange(status)
+	
+})
+//已读公告
+$("#nav-profile-tab").click(function(){
+	var status='0';
+ 	agentchange(status)
+	
+})
+//已读公告
+$("#nav-contact-tab").click(function(){
+	var status='1';
+ 	agentchange(status)
+})
+//标记全读
+$("#toReadAll").click(function(){
+	$.post('/credit/sysuser/notice/toReadAll',function(data){
+		if(data.statusCode===1){
+          	Public.message("success",data.message);
+		}else{
+			Public.message("error",data.message);
+		}
+	})
+	
+})
+</script>
 </html>

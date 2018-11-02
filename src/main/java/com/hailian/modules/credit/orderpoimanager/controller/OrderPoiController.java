@@ -102,9 +102,9 @@ public class OrderPoiController extends BaseProjectController {
 					  if (row.getRowNum() < 1) {
 							continue;
 						}
-						if (row.getCell(1) != null) {
-							row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
-							String custom_id=row.getCell(1).getStringCellValue();
+						if (row.getCell(0) != null) {
+							row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+							String custom_id=row.getCell(0).getStringCellValue();
 							List<CustomInfoModel> customById = CustomInfoModel.dao.getCustom(Integer.parseInt(custom_id));
 							if(CollectionUtils.isEmpty(customById)){
 								errornum++;
@@ -120,9 +120,9 @@ public class OrderPoiController extends BaseProjectController {
 							errormark+=errornum+".第"+r+"行，第B列信息漏填;";
 						}
 						
-						if (row.getCell(2) != null) {
-							row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
-							String continent = row.getCell(2).getStringCellValue();
+						if (row.getCell(1) != null) {
+							row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+							String continent = row.getCell(1).getStringCellValue();
 							List<SysDictDetail> continentList = SysDictDetail.dao.getDictDetailByContinent(continent);
 							
 							if(CollectionUtils.isEmpty(continentList)){
@@ -136,9 +136,9 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第C列信息漏填;";
 						}
-						if (row.getCell(3) != null) {
-							row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
-							String countryName = row.getCell(3).getStringCellValue();
+						if (row.getCell(2) != null) {
+							row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
+							String countryName = row.getCell(2).getStringCellValue();
 							List<CountryModel> countryByName = CountryModel.dao.getCountryByName(countryName);
 							if(CollectionUtils.isEmpty(countryByName)){
 								errornum++;
@@ -152,9 +152,9 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第D列信息漏填;";
 						}
-						if (row.getCell(4) != null) {
-							row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
-							String report_type = row.getCell(4).getStringCellValue();
+						if (row.getCell(3) != null) {
+							row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+							String report_type = row.getCell(3).getStringCellValue();
 							List<ReportTypeModel> reportTypeByName = ReportTypeModel.dao.getReportTypeByName(report_type);
 							if(CollectionUtils.isEmpty(reportTypeByName)){
 								errornum++;
@@ -168,9 +168,9 @@ public class OrderPoiController extends BaseProjectController {
 							errormark+=errornum+".第"+r+"行，第E列信息漏填;";
 
 						}
-						if (row.getCell(5) != null) {
-							row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
-							String order_type = row.getCell(5).getStringCellValue();
+						if (row.getCell(4) != null) {
+							row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
+							String order_type = row.getCell(4).getStringCellValue();
 							List<SysDictDetail> dictDetailByOrderType = SysDictDetail.dao.getDictDetailByOrderType(order_type);
 							if(CollectionUtils.isEmpty(dictDetailByOrderType)){
 								errornum++;
@@ -183,9 +183,9 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第F列信息漏填;";
 						}
-						if (row.getCell(6) != null) {
-							row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
-							String report_language=row.getCell(6).getStringCellValue();
+						if (row.getCell(5) != null) {
+							row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
+							String report_language=row.getCell(5).getStringCellValue();
 							List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(report_language,"language");
 							if(CollectionUtils.isEmpty(dictDetailBy)){
 								errornum++;
@@ -198,9 +198,9 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第G列信息漏填;";
 						}
-						if (row.getCell(7) != null) {
-							row.getCell(7).setCellType(Cell.CELL_TYPE_STRING);
-							String name = row.getCell(7).getStringCellValue();
+						if (row.getCell(6) != null) {
+							row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
+							String name = row.getCell(6).getStringCellValue();
 							List<CompanyModel> companyByName = CompanyModel.dao.getCompanyByName(name);
 							if(CollectionUtils.isEmpty(companyByName)){
 								CompanyModel model = getModel(CompanyModel.class);
@@ -222,9 +222,9 @@ public class OrderPoiController extends BaseProjectController {
 							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
 
 						}
-						if (row.getCell(8) != null) {
-							row.getCell(8).setCellType(Cell.CELL_TYPE_STRING);
-							String speed = row.getCell(8).getStringCellValue();
+						if (row.getCell(7) != null) {
+							row.getCell(7).setCellType(Cell.CELL_TYPE_STRING);
+							String speed = row.getCell(7).getStringCellValue();
 							List<SysDictDetail> dictDetailByOrderSpeed = SysDictDetail.dao.getDictDetailByOrderSpeed(speed);
 							if(CollectionUtils.isEmpty(dictDetailByOrderSpeed)){
 								errornum++;
@@ -238,51 +238,51 @@ public class OrderPoiController extends BaseProjectController {
 							errormark+=errornum+".第"+r+"行，第I列信息漏填;";
 
 						}
-						if (row.getCell(9) != null) {
-							row.getCell(9).setCellType(Cell.CELL_TYPE_STRING);
-							String reference_num = row.getCell(9).getStringCellValue();
+						if (row.getCell(8) != null) {
+							row.getCell(8).setCellType(Cell.CELL_TYPE_STRING);
+							String reference_num = row.getCell(8).getStringCellValue();
 							order.set("reference_num", reference_num);
 							orderReal.set("reference_num", reference_num);
 						} 
 						//地址
-						if (row.getCell(10) != null) {
-							row.getCell(10).setCellType(Cell.CELL_TYPE_STRING);
-							String address = row.getCell(10).getStringCellValue();
+						if (row.getCell(9) != null) {
+							row.getCell(9).setCellType(Cell.CELL_TYPE_STRING);
+							String address = row.getCell(9).getStringCellValue();
 							order.set("address", address);
 							orderReal.set("address", address);
 						} 
 						//电话
-						if (row.getCell(11) != null) {
-							row.getCell(11).setCellType(Cell.CELL_TYPE_STRING);
-							String telphone = row.getCell(11).getStringCellValue();
+						if (row.getCell(10) != null) {
+							row.getCell(10).setCellType(Cell.CELL_TYPE_STRING);
+							String telphone = row.getCell(10).getStringCellValue();
 							order.set("telphone", telphone);
 							orderReal.set("telphone", telphone);
 						} 
 						//传真
-						if (row.getCell(12) != null) {
-							row.getCell(12).setCellType(Cell.CELL_TYPE_STRING);
-							String fax = row.getCell(12).getStringCellValue();
+						if (row.getCell(11) != null) {
+							row.getCell(11).setCellType(Cell.CELL_TYPE_STRING);
+							String fax = row.getCell(11).getStringCellValue();
 							order.set("fax", fax);
 							orderReal.set("fax", fax);
 						} 
 						//邮箱
-						if (row.getCell(13) != null) {
-							row.getCell(13).setCellType(Cell.CELL_TYPE_STRING);
-							String email = row.getCell(13).getStringCellValue();
+						if (row.getCell(12) != null) {
+							row.getCell(12).setCellType(Cell.CELL_TYPE_STRING);
+							String email = row.getCell(12).getStringCellValue();
 							order.set("email", email);
 							orderReal.set("email", email);
 						} 
 						//联系人
-						if (row.getCell(14) != null) {
-							row.getCell(14).setCellType(Cell.CELL_TYPE_STRING);
-							String contacts = row.getCell(14).getStringCellValue();
+						if (row.getCell(13) != null) {
+							row.getCell(13).setCellType(Cell.CELL_TYPE_STRING);
+							String contacts = row.getCell(13).getStringCellValue();
 							order.set("contacts", contacts);
 							orderReal.set("contacts", contacts);
 						} 
 						//其他细节
-						if (row.getCell(15) != null) {
-							row.getCell(15).setCellType(Cell.CELL_TYPE_STRING);
-							String remarks = row.getCell(15).getStringCellValue();
+						if (row.getCell(14) != null) {
+							row.getCell(14).setCellType(Cell.CELL_TYPE_STRING);
+							String remarks = row.getCell(14).getStringCellValue();
 							order.set("remarks", remarks);
 							orderReal.set("remarks", remarks);
 						} 

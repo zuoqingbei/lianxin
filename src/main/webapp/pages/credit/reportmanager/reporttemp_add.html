@@ -1,5 +1,6 @@
 <% var reportType = reportType.getReportTypeString(''); %>
 <% var reportType2 = module.getReportModuleString(''); %>
+<% var fieldType = tempDict.getListSysDictDetail4('fieldType',''); %>
 <% DIRECTIVE SAFE_OUTPUT_OPEN; var headContent = {
 include("/pages/template/head.html"){} %>
 <script type="text/javascript">
@@ -14,12 +15,12 @@ include("/pages/template/head.html"){} %>
 			return true;
 		},
 		reportchange:function(){
-			var value=$("select[name='attr.report']").find("option:selected").attr("m-detail-name");
+			var value=$("select[name='attr.report_type']").find("option:selected").attr("m-detail-name");
 			console.log(value);
 			$("input[name='attr.temp_name']").val(value);
 		},
 		reportchange2:function(){
-			var value=$("select[name='attr.report']").find("option:selected").attr("m-id");	
+			var value=$("select[name='attr.report_type']").find("option:selected").attr("m-id");	
 			$("input[name='attr.parent_temp']").val(value)
 			
 		},
@@ -27,7 +28,7 @@ include("/pages/template/head.html"){} %>
 			var value=$("#report3").find("option:selected").val();
 			console.log(value)
 			var html="";
-			$.post("/credit/reportmodulemanager/findParentModules",{"report":value},function(data){
+			$.post("/credit/reportmodulemanager/findParentModules",{"report_type":value},function(data){
 				for(item in data){				
 					html+="<option  value='"+data[item].id+"'>"+data[item].temp_name+"</option>";				
 				}
@@ -44,7 +45,7 @@ include("/pages/template/head.html"){} %>
 			if(value=='0'){				
 				html+='<td style="text-align: right;">报告类型</td>'
 				html+='<td>'
-				html+='<select id="report" name="attr.report" onchange="oper.reportchange()" class="form-control" valid="vselect" validname="请选择报告类型" >'
+				html+='<select id="report" name="attr.report_type" onchange="oper.reportchange()" class="form-control" valid="vselect" validname="请选择报告类型" >'
 				html+="${reportType}"
 				html+='</select>'
 				html+='<input  value= "" type="hidden" name="attr.temp_name" />'
@@ -57,24 +58,24 @@ include("/pages/template/head.html"){} %>
 			}else if(value=='1'){
 				html+='<td style="text-align: right;">报告类型</td>'
 				html+='<td>'
-				html+='<select id="report2"name="attr.report" onchange="oper.reportchange2()" class="form-control"  >'
+				html+='<select id="report2"name="attr.report_type" onchange="oper.reportchange2()" class="form-control"  >'
 				html+="${reportType2}"
 				html+='</select>'
 				html+='</td>'					
 				html2+='<td style="text-align: right;">父模板名称</td>'
 				html2+='<td>'
 				html2+='<input class="form-control" id="parent" type="text" name="attr.temp_name" value=""  />'
-				html2+='<input  value= "${model.parent_temp}" type="hidden" name="attr.parent_temp" />'
+				html2+='<input   type="hidden" name="attr.parent_temp" />'
 				html2+='<input  value= "1" type="hidden" name="attr.node_type" />'
 				html2+='</td>'
 				$(".add1").html(html)
 				$(".add2").html(html2)
 				$(".add3").html("")
 				oper.reportchange2();
-			}else if(value=='2'){
+			}else if(value=='2'){				
 				html+='<td style="text-align: right;">报告类型</td>'
 				html+='<td>'
-				html+='<select id="report3" name="attr.report" class="form-control" onchange="oper.reportchange3();" >'
+				html+='<select id="report3" name="attr.report_type" class="form-control" onchange="oper.reportchange3();" >'
 				html+="${reportType2}"
 				html+='</select>'
 				html+='</td>'
@@ -87,6 +88,16 @@ include("/pages/template/head.html"){} %>
 				html3+='<td>'
 				html3+='<input id="child" class="form-control" type="text" name="attr.temp_name"value="${model.temp_name}"  />'
 				html3+='<input  value= "2" type="hidden" name="attr.node_type" />'
+				html3+='</td>'
+				html3+='<td style="text-align: right;">字段类型</td>'
+				html3+='<td>'
+				html3+='<select name="attr.field_type" class="form-control" valid="vselect" validname="请选择字段类型">'
+				html3+="${fieldType!}"
+				html3+='</select>'
+				html3+='</td>'
+				html3+='<td>字段长度</td>'
+				html3+='<td>'
+				html3+='<input class="form-control" type="text" name="attr.length"  valid="vtext" validname="字段长度" />'
 				html3+='</td>'
 				$(".add1").html(html)
 				$(".add2").html(html2)
@@ -119,7 +130,7 @@ include("/pages/template/head.html"){} %>
 			<tr>
 				<td style="text-align: right;">报告类型</td>
 				<td>
-					<select name="attr.report" class="form-control" valid="vselect" validname="请选择报告类型"
+					<select name="attr.report_type" class="form-control" valid="vselect" validname="请选择报告类型"
 					onchange="oper.reportchange()">
 						${reportType}
 					</select>
@@ -136,7 +147,7 @@ include("/pages/template/head.html"){} %>
 				value="" valid='vtext' validname='模板名称' />
 					<input  value= '${model1.parent_temp}' type="hidden" name="attr.parent_temp" />
 					<input  value= '${model1.node_type}' type="hidden" name="attr.node_type" />
-					<input  value= '${model1.report}' type="hidden" name="attr.report" />
+					<input  value= '${model1.report_type}' type="hidden" name="attr.report_type" />
 				</td>
 			</tr>
 		<%}else{%>

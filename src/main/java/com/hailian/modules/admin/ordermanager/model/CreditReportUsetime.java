@@ -37,7 +37,7 @@ public class CreditReportUsetime  extends BaseProjectModel<CreditReportUsetime>{
 		List<String> params=new ArrayList<String>();
 		StringBuffer sql=new StringBuffer(" select t.* from credit_report_usetime t where t.del_flag='0' ");
 		if(StringUtils.isNotBlank(reporttype)) {
-			if("15".equals(reporttype) || "22".equals(reporttype)) {
+			if("15".equals(reporttype) || "22".equals(reporttype)||"12".equals(reporttype)||"13".equals(reporttype)||"14".equals(reporttype)) {
 				countryType="";
 				sql.append(" and t.report_id=? ");
 				params.add(reporttype);

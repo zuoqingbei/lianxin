@@ -1,18 +1,25 @@
 package com.hailian.modules.credit.notice.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.custom.service.CustomService;
+import com.hailian.modules.credit.mail.model.MailModel;
+import com.hailian.modules.credit.mail.service.MailService;
 import com.hailian.modules.credit.notice.model.NoticeLogModel;
 import com.hailian.modules.credit.notice.model.NoticeModel;
 import com.hailian.modules.credit.notice.service.NoticeService;
 import com.hailian.modules.credit.resetpassword.controller.ResetPassWordController;
+import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.system.user.SysUser;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 /**
  * 公告
 * @author doushuihai  
@@ -24,6 +31,10 @@ public class NoticeController extends BaseProjectController {
 	private static Logger logger=Logger.getLogger(ResetPassWordController.class);
 	private static final String path = "/pages/credit/notice/";
 		public void index() {
+			String status = getPara("status");
+			Integer userid = getSessionUser().getUserid();
+			Page<NoticeModel> page = NoticeService.service.getPage(getPaginator(),this,status,userid);
+			setAttr("page",page);
 			render(path+"msgManage.html");
 		}
 	
@@ -34,8 +45,11 @@ public class NoticeController extends BaseProjectController {
 	* @TODO
 	 */
 	public void list() {
-		List<NoticeModel> noticeList = NoticeService.service.getNotice(null, this);
-		renderJson(noticeList);
+		Integer pageNo = getParaToInt("pageNo");
+		String status = getPara("status");
+		Integer userid = getSessionUser().getUserid();
+		Page<NoticeModel> page = NoticeService.service.getPage(getPaginator(),this,status,userid);
+		renderJson(page);
 	}
 
 	/**
@@ -82,6 +96,31 @@ public class NoticeController extends BaseProjectController {
 	public void view() {
 		List<NoticeModel> notice=NoticeModel.dao.getNotice(getParaToInt(),this);
 		renderJson(notice);
+	}
+	/**
+	 * 标记为已读
+	* @author doushuihai  
+	* @date 2018年10月30日下午2:30:47  
+	* @TODO
+	 */
+	public void toReadAll(){
+		String noticeId = getPara("noticeId");
+		Integer userid = getSessionUser().getUserid();
+		String sql="update credit_notice_log set read_unread=0 where user_id=?";
+		List<Object> params=new ArrayList<Object>();
+		params.add(userid);
+		if(StringUtils.isNotBlank(noticeId)){
+			sql+=" and notice_id=?";
+			params.add(noticeId);
+		}
+		int update = Db.update(sql,params.toArray());
+		if(update<=0){
+			ResultType resultType = new ResultType(2,"操作失败");
+			renderJson(resultType);
+		}else{
+			ResultType resultType = new ResultType(1,"标记成功");
+			renderJson(resultType);
+		}
 	}
 
 

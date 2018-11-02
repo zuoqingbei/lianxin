@@ -68,6 +68,8 @@ public class OrdermanagerController extends BaseProjectController{
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
+	public static final String searver_port = Config.getStr("searver_port");//端口号
+	public static final String ftp_store = Config.getStr("ftp_store");//存储目录
 	/**
 	 * 
 	 * @time   2018年8月24日 下午6:16:22
@@ -224,7 +226,7 @@ public class OrdermanagerController extends BaseProjectController{
 					ext=FileTypeUtils.getFileType(originalFile);
 					
 					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
-						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+						String storePath =ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 						String now=UUID.randomUUID().toString().replaceAll("-", "");
 						originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
 						String FTPfileName=now+"."+ext;
@@ -243,10 +245,10 @@ public class OrdermanagerController extends BaseProjectController{
 						if(storeFile){
 							String factpath=storePath+"/"+FTPfileName;
 							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
-							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+							String url= storePath+"/"+FTPfileName;
 							Integer userid = getSessionUser().getUserid();
 							model1.set("business_id", num);
-							String pdfUrl="http://"+ip+"/" + storePath+"/"+pdf_FTPfileName;
+							String pdfUrl=storePath+"/"+pdf_FTPfileName;
 							UploadFileService.service.save(0,uploadFile, factpath,url,pdfFactpath,pdfUrl,model1,fileName,userid);//记录上传信息
 						}else{
 							num1+=1;

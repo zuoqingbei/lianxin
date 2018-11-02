@@ -237,6 +237,15 @@ public class OrderProcessController extends BaseProjectController{
 	public void showReportedBasicInfo(){
 		render(REPORT_MANAGE_PATH+"reported_basic_info.html");
 	}
+	/**
+	 * @todo   展示报告管理下的可配置的填报页面
+	 * @time   2018年10月26日 上午 11:02
+	 * @author zc
+	 * @return_type   void
+	 */
+	public void showReportedConfig(){
+		render(REPORT_MANAGE_PATH+"report_config.html");
+	}
 	
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
@@ -748,6 +757,9 @@ public class OrderProcessController extends BaseProjectController{
 					}
 					String string5 = string2.substring(string2.indexOf("{")+1,string2.indexOf(":"));
 					String string6 =  string2.substring(string2.indexOf(":")+1);
+					if("null".equals(string6)){
+						continue;
+					}
 					map.put(string5, string6);
 				}
 				//反射获取Class对象
@@ -757,6 +769,7 @@ public class OrderProcessController extends BaseProjectController{
 					entryType = Class.forName(entryTypeParam);
 						//根据Class对象创建实例
 						model = (BaseProjectModel) entryType.newInstance();
+				System.out.println("\n\t\t\t\ttable:"+entryTypeParam.substring(entryTypeParam.lastIndexOf(".")+1)+"\n");
 				for (String key : map.keySet()) {
 					System.out.println(key+":"+map.get(key));
 					model.set(key.trim(), map.get(key).trim());

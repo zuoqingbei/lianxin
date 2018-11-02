@@ -388,9 +388,9 @@ public class HttpTest {
             CloseableHttpResponse response = httpClient.execute(get, context);
             try{
                 System.out.println(">>>>>>headers:");
-                Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
+                //Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
                 System.out.println(">>>>>>cookies:");
-                context.getCookieStore().getCookies().forEach(System.out::println);
+               // context.getCookieStore().getCookies().forEach(System.out::println);
                 cookieStore = (context.getCookieStore());
             }
             finally {
@@ -423,12 +423,12 @@ public class HttpTest {
             CloseableHttpResponse response = httpClient.execute(get, context);
             try{
                 System.out.println(">>>>>>headers:");
-                Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
+//                Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
                 System.out.println(">>>>>>cookies:");
-                context.getCookieStore().getCookies().forEach(System.out::println);
+//                context.getCookieStore().getCookies().forEach(System.out::println);
                 cookieStore = (context.getCookieStore());
                 html = EntityUtils.toString(response.getEntity(), "utf-8");
-                //System.out.println(html);
+                System.out.println(html);
                 Document doc = Jsoup.parse(html);
                 Elements ele = doc.select("#captchaImg");
                 String src = ele.attr("src");
@@ -441,7 +441,7 @@ public class HttpTest {
                 httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
                 response = httpClient.execute(get);//获取验证码
                 /*验证码写入文件,当前工程的根目录,保存为verifyCode.jpg*/
-                fileOutputStream = new FileOutputStream(new File("courtVerifyCode.jpg"));
+                fileOutputStream = new FileOutputStream(new File("courtVerifyCode.jpeg"));
                 response.getEntity().writeTo(fileOutputStream);
                 Scanner input = new Scanner(System.in);
                 String verifyCode = input.nextLine();

@@ -97,7 +97,7 @@ label {
     flex-direction: column;
     justify-content: center;
 }
-.modal-body input,.modal-body textarea {
+.modal-body input,.modal-body textarea,.modal-body select{
     width: var(--inputWidthlg)!important;
 }
 .control-label {

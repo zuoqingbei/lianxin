@@ -61,6 +61,9 @@ public class HomeController extends BaseProjectController {
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
+	public static final String searver_port = Config.getStr("searver_port");//端口号
+	public static final String ftp_store = Config.getStr("ftp_store");//存储目录
+
 	public void index() {
 		render(path+"index.html");
 		
@@ -110,8 +113,8 @@ public class HomeController extends BaseProjectController {
 		for(CreditUploadFileModel file:files) {
 			String view_url=file.get("view_url");
 			String url=file.get("url");
-			file.set("view_url", "http://"+ip+"/"+view_url);
-			file.set("url", "http://"+ip+"/"+url);	
+			file.set("view_url",  "http://"+ip+":"+searver_port+"/"+view_url);
+			file.set("url", "http://"+ip+":"+searver_port+"/"+url);	
 		}
 		/*if(files.size()==0) {
 			files=null;
@@ -185,7 +188,10 @@ public class HomeController extends BaseProjectController {
 		}
 		String sortname=getPara("sortName");
 		if(!StringUtils.isNotBlank(sortname)) {
-			sortname="receiver_date";
+			sortname="create_date";
+		}
+		if("receiver_date".equals(sortname)) {
+			sortname="create_date";
 		}
 		String sortorder=getPara("sortOrder");
 		if(!StringUtils.isNotBlank(sortorder)) {
@@ -364,7 +370,7 @@ public class HomeController extends BaseProjectController {
 					ext=FileTypeUtils.getFileType(originalFile);
 					
 					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
-						String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+						String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 						String now=UUID.randomUUID().toString().replaceAll("-", "");
 						originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
 						String FTPfileName=now+"."+ext;
@@ -383,10 +389,10 @@ public class HomeController extends BaseProjectController {
 						if(storeFile){
 							String factpath=storePath+"/"+FTPfileName;
 							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
-							String url="http://"+ip+"/" + storePath+"/"+FTPfileName;
+							String url= storePath+"/"+FTPfileName;
 							Integer userid = getSessionUser().getUserid();
 							model1.set("business_id", num);
-							String pdfUrl="http://"+ip+"/" + storePath+"/"+pdf_FTPfileName;
+							String pdfUrl=storePath+"/"+pdf_FTPfileName;
 							UploadFileService.service.save(0,uploadFile, factpath,url,pdfFactpath,pdfUrl,model1,fileName,userid);//记录上传信息
 						}else{
 							num1+=1;
@@ -497,7 +503,7 @@ public class HomeController extends BaseProjectController {
 			
 			if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
 				
-				String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+				String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 				//为文件取新名字(汉字名字预览出问题)
 				String now=UUID.randomUUID().toString().replaceAll("-", "");
 				//获取文件名(取出后缀)
@@ -582,6 +588,7 @@ public class HomeController extends BaseProjectController {
 		CreditCustomInfo custom=OrderManagerService.service.getCreater(id);
 		renderJson(custom);
 	}
+
 	
 
 }
