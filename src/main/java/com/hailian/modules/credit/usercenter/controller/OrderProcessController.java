@@ -769,6 +769,7 @@ public class OrderProcessController extends BaseProjectController{
 					entryType = Class.forName(entryTypeParam);
 						//根据Class对象创建实例
 						model = (BaseProjectModel) entryType.newInstance();
+				System.out.println("\n\t\t\t\ttable:"+entryTypeParam.substring(entryTypeParam.lastIndexOf(".")+1)+"\n");
 				for (String key : map.keySet()) {
 					System.out.println(key+":"+map.get(key));
 					model.set(key.trim(), map.get(key).trim());
