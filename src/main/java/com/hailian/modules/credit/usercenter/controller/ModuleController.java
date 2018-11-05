@@ -1,7 +1,10 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.apache.xalan.xsltc.compiler.util.ResultTreeType;
 
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
@@ -13,6 +16,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.model.ModuleJsonData;
+import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.jfinal.plugin.activerecord.Record;
 @Api( tag = "用户控制台", description = "用户控制台" )
 @ControllerBind(controllerKey = "/credit/front/getmodule")
@@ -35,29 +39,51 @@ public class ModuleController extends BaseProjectController{
 	 */
 	public void list() {
 		//订单id
-		String orederid=getPara("id");
+		String orederid = getPara("id");
 		//根据订单id获取订单信息
-		CreditOrderInfo coi=CreditOrderInfo.dao.findById(orederid);
+		CreditOrderInfo coi = CreditOrderInfo.dao.findById(orederid);
 		if(coi==null) {
-			renderMessage("无此订单号");
+			renderJson(new ResultType(0, "无此订单信息!"));
 			return;
 		}
 		//根据订单信息获取公司信息
-		CreditCompanyInfo cci=CreditCompanyInfo.dao.findById(coi.get("company_id"));
+		CreditCompanyInfo cci = CreditCompanyInfo.dao.findById(Arrays.asList(new String[]{coi.get("company_id")}));
 		//根据订单信息获取报告id
 		String report=coi.get("report_type");
-		List<CreditReportModuleConf> crmcs=CreditReportModuleConf.dao.findByReport(report);
-		List<ModuleJsonData> list=new ArrayList<ModuleJsonData>();
+		//找到当前报告类型下的父节点
+		List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(report);
+		List<ModuleJsonData> list = new ArrayList<ModuleJsonData>();
+		//获取默认模板
+		List<CreditReportModuleConf> defaultModule = CreditReportModuleConf.dao.getDefaultModule();
+		defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
 		for(CreditReportModuleConf crmc:crmcs) {
-			List<CreditReportModuleConf> child=CreditReportModuleConf.dao.findParentNodes(crmc.get("id").toString(),report);
-			list.add(new ModuleJsonData(crmc.getStr("temp_name"),child));
+			//找到当前父节点下的子节点
+			List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),report);
+			//移除无用字段
+			child.forEach((CreditReportModuleConf model)->{
+				List<CreditReportModuleConf> grandSon = CreditReportModuleConf.dao.findSon(model.get("id").toString(),report);
+				model.put("grandSon", grandSon);
+				model.removeNullValueAttrs().remove("del_flag");}
+					);
+			list.add(new ModuleJsonData(crmc.getStr("temp_name"),child,crmc.getStr("small_module_type")));
 		}
-		Record record=new Record();
-		record.set("order", coi);
-		record.set("company", cci);
+		Record record = new Record();
+		record.set("defaultModule",defaultModule);
 		record.set("modules",list);
 		renderJson(record);
 	}
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
