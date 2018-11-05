@@ -20,7 +20,7 @@ public class MenuSvc extends BaseService {
 	 * @return
 	 */
 	public String selectMenu(Integer selected) {
-		List<SysMenu> list = SysMenu.dao.findByWhere(" where status = 1  and parentid in(0,1,18,19,20,21,2228,36,37,46) order by sort ");
+		List<SysMenu> list = SysMenu.dao.findByWhere(" where status = 1  and parentid =0 order by sort ");
 		StringBuffer sb = new StringBuffer();
 		for (SysMenu menu : list) {
 			sb.append("<option value=\"");

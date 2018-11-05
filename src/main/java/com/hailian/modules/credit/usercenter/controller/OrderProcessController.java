@@ -20,6 +20,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
@@ -53,6 +54,8 @@ public class OrderProcessController extends BaseProjectController{
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
 	public static final String password = Config.getStr("ftp_password");//域用户密码
+	public static final String searverPort = Config.getStr("searver_port");//文件服务器端口
+	public static final String ftpStore = Config.getStr("ftp_store");//ftp文件夹
 	//订单管理菜单下公共路径
 	private static final String ORDER_MANAGE_PATH = "/pages/credit/usercenter/order_manage/";
 	//报告管理下菜单公共路径
@@ -237,6 +240,15 @@ public class OrderProcessController extends BaseProjectController{
 	public void showReportedBasicInfo(){
 		render(REPORT_MANAGE_PATH+"reported_basic_info.html");
 	}
+	/**
+	 * @todo   展示报告管理下的可配置的填报页面
+	 * @time   2018年10月26日 上午 11:02
+	 * @author zc
+	 * @return_type   void
+	 */
+	public void showReportedConfig(){
+		render(REPORT_MANAGE_PATH+"report_config.html");
+	}
 	
 	//展示列表功能公共雏形
 	private Page<CreditOrderInfo> PublicListMod(String searchType){
@@ -282,8 +294,8 @@ public class OrderProcessController extends BaseProjectController{
 			String status = page.get("status");
 			List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"", status, this);
 			for (CreditUploadFileModel creditUploadFileModel : files) {
-				creditUploadFileModel.set("view_url","http://"+ ip+"/"+creditUploadFileModel.get("view_url"));
-				creditUploadFileModel.set("url","http://"+ ip+"/"+creditUploadFileModel.get("url"));
+				creditUploadFileModel.set("view_url","http://"+ ip + ":" + searverPort+"/"+creditUploadFileModel.get("view_url"));
+				creditUploadFileModel.set("url","http://"+ ip + ":" + searverPort+"/"+creditUploadFileModel.get("url"));
 			}
 			page.put("files",files);
 		}
@@ -309,6 +321,17 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		model.update();
+		//获取订单记录对象
+		CreditOrderFlow cof = new CreditOrderFlow();
+		//订单号
+		cof.set("order_num", model.get("order_num"));
+		//订单状态
+		cof.set("order_state", model.get("status"));
+		//操作人
+		cof.set("create_oper", userid);
+		//操作时间
+		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
+		cof.save();
 	}
 	/**
 	 * 代理分配
@@ -333,6 +356,17 @@ public class OrderProcessController extends BaseProjectController{
 		}
 		model.set("status", "295");
 		model.update();
+		//获取订单记录对象
+		CreditOrderFlow cof = new CreditOrderFlow();
+		//订单号
+		cof.set("order_num", model.get("order_num"));
+		//订单状态
+		cof.set("order_state", model.get("status"));
+		//操作人
+		cof.set("create_oper", userid);
+		//操作时间
+		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));					
+		cof.save();
 		if("1".equals(ismail)){
 			CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, this);
 			String mailaddr=order.get("mail_receiver");
@@ -463,8 +497,8 @@ public class OrderProcessController extends BaseProjectController{
 		String orderId = getPara("orderId");
 		List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"" , this);
 		for (CreditUploadFileModel creditUploadFileModel : files) {
-			creditUploadFileModel.set("view_url","http://"+ ip+"/"+creditUploadFileModel.get("view_url"));
-			creditUploadFileModel.set("url","http://"+ ip+"/"+creditUploadFileModel.get("url"));
+			creditUploadFileModel.set("view_url","http://"+ searverPort+"/"+creditUploadFileModel.get("view_url"));
+			creditUploadFileModel.set("url","http://"+ searverPort+"/"+creditUploadFileModel.get("url"));
 		}
 		ResultType result = new ResultType();
 		result.setFiles(files);
@@ -519,7 +553,7 @@ public class OrderProcessController extends BaseProjectController{
 			//long now = new Date().getTime();
 			String now = UUID.randomUUID().toString().replaceAll("-", "");
 			//上传的文件在ftp服务器按日期分目录
-			String storePath = "zhengxin_File/"+DateUtils.getNow(DateUtils.YMD);
+			String storePath = ftpStore+DateUtils.getNow(DateUtils.YMD);
 			try {
 				List<String> pdfNameList = new LinkedList<>();
 				for(UploadFile uploadFile:upFileList){
@@ -760,6 +794,7 @@ public class OrderProcessController extends BaseProjectController{
 					entryType = Class.forName(entryTypeParam);
 						//根据Class对象创建实例
 						model = (BaseProjectModel) entryType.newInstance();
+				System.out.println("\n\t\t\t\ttable:"+entryTypeParam.substring(entryTypeParam.lastIndexOf(".")+1)+"\n");
 				for (String key : map.keySet()) {
 					System.out.println(key+":"+map.get(key));
 					model.set(key.trim(), map.get(key).trim());

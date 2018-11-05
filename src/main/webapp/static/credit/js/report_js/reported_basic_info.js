@@ -134,7 +134,7 @@ let BasicWrite = {
 
             return indexed_array;
         }
-        
+       
       //提交按钮
         $("#submit").on('click','',function(){
    			console.log($("#tableRecord").bootstrapTable('getData'))
@@ -231,23 +231,27 @@ let BasicWrite = {
     dateForm(){
         /**日期控件 */
         laydate.render({
-            elem: '#qy_create'
+            elem: '#qy_create',
+            format: 'yyyy年MM月dd日'
         });
         laydate.render({
-            elem: '#qy_date'
+            elem: '#qy_date',
+           format: 'yyyy年MM月dd日'
         });
         laydate.render({
-            elem: '#modal_record_date'
+            elem: '#modal_record_date',
+            format: 'yyyy年MM月dd日'
         });
         laydate.render({
-            elem: '#modal_shareholdersdetail_time'
+            elem: '#modal_shareholdersdetail_time',
+            format: 'yyyy年MM月dd日'
         });
         
         //验证
         $("#credit_code").blur(()=>{
         	let val = $("#credit_code").val();
-        	alert(val)
-        	let reg = /^\d{18}$/
+        	console.log(val)
+        	let reg = /^[a-zA-Z0-9]{18}$/
         	if (!reg.test((val))) {
         		
         		$("#credit_code").siblings(".errorInfo").show()
@@ -260,7 +264,7 @@ let BasicWrite = {
         })
          $("#qy_person").blur(()=>{
         	let val = $("#qy_person").val();
-        	let reg = /^[0-9]+.?[0-9]*$/
+        	let reg =  /^(?=.*\d.*\b)/
         	if (reg.test((val))) {
         		
         		$("#qy_person").siblings(".errorInfo").show()
@@ -273,7 +277,7 @@ let BasicWrite = {
         })
         $("#qy_office").blur(()=>{
         	let val = $("#qy_office").val();
-        	let reg = /^[0-9]+.?[0-9]*$/
+        	let reg = /^(?=.*\d.*\b)/
         		if (reg.test((val))) {
         			
         			$("#qy_office").siblings(".errorInfo").show()
@@ -308,7 +312,7 @@ let BasicWrite = {
         $("#record_modal_save").click(()=>{
             _this.id++;
             let modal_record_date = $("#modal_record_date").val();
-            let modal_change_items = $("#modal_change_items").val();
+            let modal_change_items = $("#modal_change_items").find("option:selected").text();
             let modal_change_font = $("#modal_change_font").val();
             let modal_change_back = $("#modal_change_back").val();
             

@@ -6,7 +6,8 @@ let Public = {
     init(){
         this.menuEvent()
         this.logoutEvent()
-      
+        
+     	
     }, 
   
     initReset(){
@@ -16,6 +17,12 @@ let Public = {
     	$btnReset.on('click',function(){
     		$("#formSearch input.search-input").val("");
     		$("#formSearch select.search-input").val("");
+    		layui.use('form', function(){
+			  var form = layui.form;
+			  
+			  //各种基于事件的操作，下面会有进一步介绍
+			  form.render('select');
+			});
     	});
     },
     menuEvent(){
@@ -126,8 +133,15 @@ let Public = {
     },
     goToBasicInfoWrite(e){
         /**跳转基本信息填报 */
+    	this.gotop()
         $("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportedBasicInfo');
         localStorage.setItem("row",JSON.stringify(e));
+    },
+    goToReportConfig(param){
+    	/**跳转可配置的填报页面*/
+    	 $("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportedConfig');
+         localStorage.setItem("row",JSON.stringify(param));
+         this.gotop()
     },
     tabFixed(fixedEle,scrollEle,min,max){
         /**
@@ -151,7 +165,7 @@ let Public = {
         $(".main").scroll(function(){
             // 滚动条距离顶部的距离 大于 200px时
             if($(".main").scrollTop() >= 200){
-                 $(".fixed-backup").fadeIn(500); // 开始淡入
+                 $(".fixed-backup").show(500); // 开始淡入
             } else{
                  $(".fixed-backup").fadeOut(500); // 如果小于等于 200 淡出
             }
@@ -191,7 +205,9 @@ $(function(){
     Public.init();
     window.onload = function(){
         let id = sessionStorage.getItem('menuId')?sessionStorage.getItem('menuId'):$(".left-nav ul").children("li").eq(0).attr("id")
-        $("#main_content").load(sessionStorage.getItem('pageUrl')?sessionStorage.getItem('pageUrl'):'/credit/front/home')
+        $("#main_content").load(sessionStorage.getItem('pageUrl')?sessionStorage.getItem('pageUrl'):'/credit/front/home',()=>{
+        	Public.initReset()
+        })
         $(".leftNav").find("li").removeClass("active");
         $('#'+id).addClass("active");
         if($('#'+id).parents("li").hasClass("hasChild")) {

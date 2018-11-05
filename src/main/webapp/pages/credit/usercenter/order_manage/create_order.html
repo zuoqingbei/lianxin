@@ -95,7 +95,7 @@
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>订单类型：</label>
-		                        <select name="attr.order_type" lay-filter="ordertypechange" valid="vselect" validname="订单类型" class="search-input  col-md-8 layui-input" id="client_orderType" >
+		                        <select name="attr.order_type" lay-filter="ordertypechange" valid="vselect" validname="订单类型" class="reste search-input  col-md-8 layui-input" id="client_orderType" >
 		                           ${ordertype!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择订单类型</p>
@@ -119,7 +119,7 @@
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for=""><span>*</span>速度：</label>
-		                        <select name="attr.speed" lay-filter="speedchange" valid="vselect" validname="速度" class="search-input  col-md-8 layui-input" id="client_speed" >
+		                        <select name="attr.speed" lay-filter="speedchange" valid="vselect" validname="速度" class="reste search-input  col-md-8 layui-input" id="client_speed" >
 		                           ${orderspeed!}
 		                        </select>
 		                    	<p class="errorInfo col-md-8">请选择速度</p>
@@ -134,33 +134,33 @@
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">客户参考号：</label>
-		                        <input name="attr.reference_num" type="text" class="form-control  col-md-8" id="client_referenceNumber" placeholder="请输入客户参考号">
+		                        <input name="attr.reference_num" type="text" class="reste form-control  col-md-8" id="client_referenceNumber" placeholder="请输入客户参考号">
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">地址：</label>
-		                        <input name="attr.address" type="text" class="form-control  col-md-8" id="client_address" placeholder="请输入地址">
+		                        <input name="attr.address" type="text" class="reste form-control  col-md-8" id="client_address" placeholder="请输入地址">
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">电话：</label>
-		                        <input name="attr.telphone" type="text" class="form-control  col-md-8" id="client_telephone" placeholder="请输入电话">
+		                        <input name="attr.telphone" type="text" class="reste form-control  col-md-8" id="client_telephone" placeholder="请输入电话">
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">传真：</label>
-		                        <input name="attr.fax" type="text" class="form-control  col-md-8" id="client_fax" placeholder="请输入传真">
+		                        <input name="attr.fax" type="text" class="reste form-control  col-md-8" id="client_fax" placeholder="请输入传真">
 		                    </div>
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">联系人：</label>
-		                        <input name="attr.contacts" type="text" class="form-control  col-md-8" id="client_contact" placeholder="请输入联系人">
+		                        <input name="attr.contacts" type="text" class="reste form-control  col-md-8" id="client_contact" placeholder="请输入联系人">
 		                    </div>
 		                </div>
 		    			<div class="form-group row d-flex justify-content-start mb-4">
 		                    <div class="input-group mt-2 col-md-6">
 		                        <label class="control-label col-md-4" for="">Email：</label>
-		                        <input name="attr.email" type="text" class="form-control search-input col-md-8" id="client_email" onblur="Events.emailAdd(this)" placeholder="请输入邮箱地址">
+		                        <input name="attr.email" type="text" class="reste form-control search-input col-md-8" id="client_email" onblur="Events.emailAdd(this)" placeholder="请输入邮箱地址">
 		                    	<p class="errorInfo col-md-8">请输入正确格式</p>
 		                    </div>
 
@@ -168,11 +168,11 @@
 		                <div class="form-group row d-flex justify-content-start mb-4">
 							<div class="input-group mt-2 col-md-12">
 								<label class="control-label col-md-2" for="">备注：</label>
-								<textarea name="attr.remarks" class="form-control search-input  col-md-10"  name="" rows="4" cols="" placeholder="请输入其他细节"></textarea>
+								<textarea name="attr.remarks" class="reste form-control search-input  col-md-10"  name="" rows="4" cols="" placeholder="请输入其他细节"></textarea>
 							</div>
 		               
 		                </div>
-		    			<div class="form-group row d-flex mb-4 file-upload-box">
+		    			<div class="reste form-group row d-flex mb-4 file-upload-box">
 							<div class="file-upload">
 								<label class=" ml-3">上传附件：</label>
 								<div class="uploadFile mr-3 mt-3">
@@ -265,8 +265,6 @@
 				   form.render('select'); 
 		 	       
 	    	 })
-/* 	 	          countrychange();
-	 	         reportTypeChange(); */
 		
 	   		})
 	   		form.on('select(countrychange)',function(data){
@@ -279,9 +277,11 @@
 	   		})
 	   		form.on('select(reportTypeChange)',function(data){
 	   			usetime();
-	   	 		//price();
+	   	 		price();
 	   		})
-	   		
+	   		form.on('select(ordertypechange)',function(data){
+	   	 		price();
+	   		})
 	   		
 		});
 	   
@@ -291,7 +291,7 @@
 			})	
    		})
    		
-   	 	 function reportTypeChange(){
+   	/*  	 function reportTypeChange(){
    	 		//languagechange();
    	 		price()
    	 		usetime()
@@ -299,15 +299,15 @@
    	 	function ordertypechange(){
    	 	usetime();
    	 	price()
-   	 	}
-   	 	 function countrychange(){
+   	 	} */
+   	 	/*  function countrychange(){
    	 	 $("select[name='attr.country'] option:first").attr("selected","selected");
    	 		//查询用时
    	    	usetime();
    	    	//查询语言
    	    	//languagechange()
    	    	price()
-   	 	} 
+   	 	}  */
    	 	
    /* 	 	function speedchange(){
    	 		usetime();
@@ -373,7 +373,7 @@
 		          }
 		    });
    	 	}
-   	 	function getCompany(data){
+   	/*  	function getCompany(data){
    	 	var html=""
 				for(item in data){
 					html+="<option m-type2='"+data[item].name_en+"'  m-type1='"+data[item].name+"'  value='"+data[item].id+"'>"+data[item].name+"</option>";
@@ -381,7 +381,7 @@
 				$("select[name='attr.company_id']").append(html);	
 				console.log(html);
 				//重新渲染 否则option不能显示
-   	 	}
+   	 	} */
    	 	
    	
    </script>

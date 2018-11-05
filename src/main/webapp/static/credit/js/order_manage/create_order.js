@@ -146,15 +146,18 @@ let
 							  if(data.statusCode===1){
                         		Public.message("success",data.message);
                         		//Public.goList();
+                        		reste();
                        		 }else{
                         		Public.message("error",data.message);
                         		//Public.goList();
+                        		reste();
                         	}
 
 						},
 						error:function(data){
 							Public.message("error",data.message);
 							//Public.goList();
+							reste();
 						}
 					});
 			}
@@ -216,7 +219,7 @@ let
         		if(day < 10){
         			day = '0' + day;
         		};
-        	todayDate = year + '-' + month + '-' + day;
+        	todayDate = year + '年' + month + '月' + day +'日';
         	$('#client_order_date').val(todayDate);
         	
         },
@@ -419,3 +422,14 @@ let
 $(document).ready(function () {
     Page.init();
 });
+ function reste(){
+ 	$(".upload-over").remove()
+ 	$(".reste").val("");
+    	
+	layui.use('form', function(){
+	  var form = layui.form;
+	  
+	  //各种基于事件的操作，下面会有进一步介绍
+	  form.render('select');
+	});
+ }
