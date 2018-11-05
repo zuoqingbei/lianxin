@@ -437,7 +437,7 @@ public class HttpTest {
                 System.out.println(Math.random());
                 get = new HttpGet("http://zhixing.court.gov.cn/search/captcha.do?captchaId="+captchaId+"&random="+Math.random());
                 get.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
-                System.out.println("http://zhixing.court.gov.cn/search/captcha.do?captchaId="+captchaId+"&random="+Math.random());
+                //System.out.println("http://zhixing.court.gov.cn/search/captcha.do?captchaId="+captchaId+"&random="+Math.random());
                 httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
                 response = httpClient.execute(get);//获取验证码
                 /*验证码写入文件,当前工程的根目录,保存为verifyCode.jpg*/

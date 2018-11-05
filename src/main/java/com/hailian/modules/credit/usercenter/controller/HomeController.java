@@ -138,6 +138,9 @@ public class HomeController extends BaseProjectController {
 		//获取国家类型
 		CountryModel country=CountryModel.dao.findById(order.getStr("country"));
 		String countryType=country.getStr("type");
+		if("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
+			countryType="148";
+		}
 		//根据国家类型获取流程列表
 		List<CreditOrderFlowConf> cofc=CreditOrderFlowConf.dao.findByType(countryType);
 		//绑定订单信息和公司信息
