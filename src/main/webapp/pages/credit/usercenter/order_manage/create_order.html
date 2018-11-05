@@ -265,8 +265,6 @@
 				   form.render('select'); 
 		 	       
 	    	 })
-/* 	 	          countrychange();
-	 	         reportTypeChange(); */
 		
 	   		})
 	   		form.on('select(countrychange)',function(data){
@@ -279,9 +277,11 @@
 	   		})
 	   		form.on('select(reportTypeChange)',function(data){
 	   			usetime();
-	   	 		//price();
+	   	 		price();
 	   		})
-	   		
+	   		form.on('select(ordertypechange)',function(data){
+	   	 		price();
+	   		})
 	   		
 		});
 	   
@@ -291,7 +291,7 @@
 			})	
    		})
    		
-   	 	 function reportTypeChange(){
+   	/*  	 function reportTypeChange(){
    	 		//languagechange();
    	 		price()
    	 		usetime()
@@ -299,15 +299,15 @@
    	 	function ordertypechange(){
    	 	usetime();
    	 	price()
-   	 	}
-   	 	 function countrychange(){
+   	 	} */
+   	 	/*  function countrychange(){
    	 	 $("select[name='attr.country'] option:first").attr("selected","selected");
    	 		//查询用时
    	    	usetime();
    	    	//查询语言
    	    	//languagechange()
    	    	price()
-   	 	} 
+   	 	}  */
    	 	
    /* 	 	function speedchange(){
    	 		usetime();
@@ -373,7 +373,7 @@
 		          }
 		    });
    	 	}
-   	 	function getCompany(data){
+   	/*  	function getCompany(data){
    	 	var html=""
 				for(item in data){
 					html+="<option m-type2='"+data[item].name_en+"'  m-type1='"+data[item].name+"'  value='"+data[item].id+"'>"+data[item].name+"</option>";
@@ -381,7 +381,7 @@
 				$("select[name='attr.company_id']").append(html);	
 				console.log(html);
 				//重新渲染 否则option不能显示
-   	 	}
+   	 	} */
    	 	
    	
    </script>
