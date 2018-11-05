@@ -13,8 +13,8 @@ let Verify = {
         /**初始化表格 */
         const $table = $('#table');
         let _this = this
-
-
+        	
+      
         $table.bootstrapTable({
             height: $(".table-content").height()*0.98,
             columns: [
@@ -130,16 +130,45 @@ let Verify = {
                     	  sortOrder: params.sortOrder,
                     	  searchType: "-6"
                       };  
-                  },  
+                    }, 
+                    onLoadSuccess:function(data){
+                    	console.log(data)
+                    	let rows = data.rows;
+                    	rows.forEach((item,index)=>{
+                    		if(!item.country || item.country.trim() !== '中国大陆'){
+                    			$(Array.from($(".recordName"))[index]).css({"color":"#ccc","cursor":"default"});
+                    			$(Array.from($(".recordName"))[index]).removeAttr("data-target")
+                    		}else {
+                    			$(Array.from($(".recordName"))[index]).css({"color":"#007bff","cursor":"pointer"});
+                    			$(Array.from($(".recordName"))[index]).addAttr("data-target")
+                    		}
+                    		
+                    		
+                    	})
+                    }
                   });
         // sometimes footer render error.
         setTimeout(() => {
             $table.bootstrapTable('resetView');
         }, 200);
+        
+        
+        /**
+         * 点击录入名称提交
+         */
+        $(".modal_submit").click(()=>{
+        	let val = $("#firmChineseName").val();
+        	if(!val){
+        		Public.message("error","公司中文名称不能为空")
+        	}else {
+        		/*调用接口*/
+        	}
+        })
+        
     },
     /**操作按钮格式化 */
     operateFormatter(){
-        return '<a href="javascript:;" class="recordName">录入名称</a><span style="margin-left:.5rem;color: #1890ff">|</span><a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>'
+        return '<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a><span style="margin-left:.5rem;color: #1890ff">|</span><a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>'
     },
     modalSubmit(){
         /**模态框提交事件 */
