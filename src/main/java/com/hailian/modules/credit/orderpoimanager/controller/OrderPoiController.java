@@ -108,7 +108,7 @@ public class OrderPoiController extends BaseProjectController {
 							List<CustomInfoModel> customById = CustomInfoModel.dao.getCustom(Integer.parseInt(custom_id));
 							if(CollectionUtils.isEmpty(customById)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第B列信息填写错误;";
+								errormark+=errornum+".第"+r+"行，第A列信息填写错误;";
 							}else{
 								orderReal.set("custom_id", customById.get(0).get("id"));
 								order.put("customerName",customById.get(0).get("name"));
@@ -117,7 +117,7 @@ public class OrderPoiController extends BaseProjectController {
 							
 						}else{
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第B列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第A列信息漏填;";
 						}
 						
 						if (row.getCell(1) != null) {
@@ -127,14 +127,14 @@ public class OrderPoiController extends BaseProjectController {
 							
 							if(CollectionUtils.isEmpty(continentList)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第C列信息填写错误;";
+								errormark+=errornum+".第"+r+"行，第B列信息填写错误;";
 							}else{
 								orderReal.set("continent", continentList.get(0).get("detail_id"));
 							}
 							order.set("continent", continent);
 						}else{
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第C列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第B列信息漏填;";
 						}
 						if (row.getCell(2) != null) {
 							row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
@@ -142,7 +142,7 @@ public class OrderPoiController extends BaseProjectController {
 							List<CountryModel> countryByName = CountryModel.dao.getCountryByName(countryName);
 							if(CollectionUtils.isEmpty(countryByName)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第D列信息填写错误;";
+								errormark+=errornum+".第"+r+"行，第C列信息填写错误;";
 							}else{
 								orderReal.set("country", countryByName.get(0).get("id"));
 								orderReal.put("type", countryByName.get(0).get("type"));
@@ -150,7 +150,7 @@ public class OrderPoiController extends BaseProjectController {
 							order.set("country", countryName);
 						}else{
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第D列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第C列信息漏填;";
 						}
 						if (row.getCell(3) != null) {
 							row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
@@ -158,14 +158,14 @@ public class OrderPoiController extends BaseProjectController {
 							List<ReportTypeModel> reportTypeByName = ReportTypeModel.dao.getReportTypeByName(report_type);
 							if(CollectionUtils.isEmpty(reportTypeByName)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第E列信息填写错误;";
+								errormark+=errornum+".第"+r+"行，第D列信息填写错误;";
 							}else{
 								orderReal.set("report_type", reportTypeByName.get(0).get("id"));
 							}
 							order.set("report_type", report_type);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第E列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第D列信息漏填;";
 
 						}
 						if (row.getCell(4) != null) {
@@ -174,14 +174,14 @@ public class OrderPoiController extends BaseProjectController {
 							List<SysDictDetail> dictDetailByOrderType = SysDictDetail.dao.getDictDetailByOrderType(order_type);
 							if(CollectionUtils.isEmpty(dictDetailByOrderType)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第F列信息填写错误；";
+								errormark+=errornum+".第"+r+"行，第E列信息填写错误；";
 							}else{
 								orderReal.set("order_type", dictDetailByOrderType.get(0).get("detail_id"));
 							}
 							order.set("order_type", order_type);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第F列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第E列信息漏填;";
 						}
 						if (row.getCell(5) != null) {
 							row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
@@ -189,14 +189,14 @@ public class OrderPoiController extends BaseProjectController {
 							List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(report_language,"language");
 							if(CollectionUtils.isEmpty(dictDetailBy)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第G列信息填写错误；";
+								errormark+=errornum+".第"+r+"行，第F列信息填写错误；";
 							}else{
 								orderReal.set("report_language", dictDetailBy.get(0).get("detail_id"));
 							}
 							order.set("report_language", report_language);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第G列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第F列信息漏填;";
 						}
 						if (row.getCell(6) != null) {
 							row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
@@ -219,7 +219,7 @@ public class OrderPoiController extends BaseProjectController {
 							
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第G列信息漏填;";
 
 						}
 						if (row.getCell(7) != null) {
@@ -235,7 +235,7 @@ public class OrderPoiController extends BaseProjectController {
 							order.set("speed", speed);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第I列信息漏填;";
+							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
 
 						}
 						if (row.getCell(8) != null) {
