@@ -85,7 +85,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 */
 	public List<CreditReportModuleConf> findByReport(String report) {
 		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.node_type=1 and t.report_type=? order by sort,id";
+				+ " t.del_flag=0 and t.node_level=1 and t.report_type=? order by sort,id";
 		return dao.find(sql,report);
 	}
 	public List<CreditReportModuleConf> findReportType() {

@@ -19,9 +19,8 @@ let ReportConfig = {
     	let id = JSON.parse(row).id;
         $.ajax({
         	type:"get",
-        	url:"http://192.168.50.92:8080/credit/front/getmodule/list",
+        	url:"/credit/front/getmodule/list",
         	data:{id},
-        	dataType:"jsonp",
         	success:(data)=>{
                 console.log(data)
                 let modules = data.modules;    
@@ -33,21 +32,52 @@ let ReportConfig = {
                 	contentHtml +=  `<div class="bg-f"><div class="l-title">${item.title}</div>`
                 	let formArr = item.contents; 
                 	formArr.forEach((item,index)=>{
-                		//判断input的类型
-                		let field_type = item.field_type
+                		//模块的类型
+                		let smallModileType = item.smallModileType
+                		switch(smallModileType) {
+                			case '0':
+                				let formGroup = ''
+                        		//判断input的类型
+                        		let field_type = item.field_type
+                        		if(!field_type) {
+                        			formGroup += `<div class="form-group">
+        						            		<label for="" class="mb-2">${item.temp_name}</label>
+        						            		<input type="text" class="form-control" id="" placeholder="">
+        						            		<p class="errorInfo">${item.error_msg}</p>
+        					            		</div>`
+                        		}else {
+                        			
+                        			switch(field_type) {
+                        				case 'number':
+                        					formGroup += `<div class="form-group">
+        								            		<label for="" class="mb-2">${item.temp_name}</label>
+        								            		<input type="number" class="form-control" id="" placeholder="">
+        								            		<p class="errorInfo">${item.error_msg}</p>
+        							            		</div>`
+                        					break;
+                        			}
+                        		}
+                        		
+                        		if((index)%3 === 0){
+                        			contentHtml += `<div class="firm-info mt-4 px-5 d-flex justify-content-between">`;
+                        		}
+                        		contentHtml += formGroup;
+                        		
+                        		if(((index+1)%3 === 0 && index !==0) || !formArr[index+1]){
+                        			contentHtml += `</div>`    
+                        		}
+                				
+                				
+                				break
+                			default:
+                				break;
+                		}
+                			
                 		
-                		if((index)%3 === 0){
-                			contentHtml += `<div class="firm-info mt-4 px-5 d-flex justify-content-between">`;
-                		}
-                		contentHtml += `<div class="form-group">
-    					            		<label for="" class="mb-2">${item.temp_name}</label>
-    					            		<input type="text" class="form-control" id="" placeholder="">
-    				            		</div>`
-                		if(((index+1)%3 === 0 && index !==0) || !formArr[index+1]){
-                			contentHtml += `</div>`    
-                		}
+                		
+                		
     				            		
-    				    console.log(index)
+    				  
                 	}) 
                 	contentHtml += `</div>`
                 })
