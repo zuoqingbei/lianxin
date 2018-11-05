@@ -182,6 +182,7 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 		if (StringUtils.isNotBlank(sortname)) {
 			sql+=" order by "+sortname+" "+sortorder;
 		}
+		
 		return OrderStatisticsModel.dao.find(sql);
 	}
    /**
