@@ -3,6 +3,7 @@ package com.hailian.modules.credit.usercenter.controller;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.front.template.TemplateDictService;
+import com.jfinal.plugin.activerecord.Record;
 @ControllerBind(controllerKey = "/credit/front/ReportGetData")
 public class ReportInfoGetDataController extends BaseProjectController implements ReportInfoGetDataInterface {
 	TemplateDictService template = new TemplateDictService();
@@ -18,9 +19,9 @@ public class ReportInfoGetDataController extends BaseProjectController implement
 
 	}
 
-	@Override
 	public void getSelete() {
-		template.getSysDictDetailString3(getPara("type"), getPara("selectedId"), getPara("disPalyCol"));
+	 String selectStr = template.getSysDictDetailString3(getPara("type"), getPara("selectedId"), getPara("disPalyCol"));
+	 renderJson(new Record().set("selectStr", selectStr));
 	}
 ///credit/front/ReportGetData?type=registration_status&selectedId=596&disPalyCol=registration_status
 }
