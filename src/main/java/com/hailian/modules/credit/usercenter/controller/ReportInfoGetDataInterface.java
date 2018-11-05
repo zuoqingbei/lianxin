@@ -15,9 +15,5 @@ public interface ReportInfoGetDataInterface {
 	 * @param selectedId
 	 * @param disPalyCol
 	 */
-	void getSelete(String type,Object selectedId,String disPalyCol);
-	/**
-	 * 获取静止的下拉选
-	 */
 	void getSelete();
 }

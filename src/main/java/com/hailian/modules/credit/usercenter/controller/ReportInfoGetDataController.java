@@ -1,0 +1,26 @@
+package com.hailian.modules.credit.usercenter.controller;
+
+import com.hailian.component.base.BaseProjectController;
+import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.front.template.TemplateDictService;
+@ControllerBind(controllerKey = "/credit/front/ReportGetData")
+public class ReportInfoGetDataController extends BaseProjectController implements ReportInfoGetDataInterface {
+	TemplateDictService template = new TemplateDictService();
+	@Override
+	public void getBootStrapTable() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void getForm() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void getSelete() {
+		template.getSysDictDetailString3(getPara("type"), getPara("selectedId"), getPara("disPalyCol"));
+	}
+///credit/front/ReportGetData?type=registration_status&selectedId=596&disPalyCol=registration_status
+}
