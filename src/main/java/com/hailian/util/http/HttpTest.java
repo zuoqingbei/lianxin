@@ -4,18 +4,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.KeyManagementException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -36,8 +32,6 @@ import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContextBuilder;
-import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -65,14 +59,34 @@ public class HttpTest {
 		//CookieStore cookieStore = getIcrisCookie();//获取香港查册网站cookie信息
 		//getIcrisUrl(cookieStore);//爬取香港查册网站
 		
-		getCourtUrl();
+		//getCourtUrl();//爬取全国法院被执行人信息查询网站
+		getSaicUrl();
 		
     }
 	
-	public static void getCourtUrl(CookieStore cookieStore){
+	public static void getSaicUrl(){
+		HttpGet get = new HttpGet("http://wsjs.saic.gov.cn/");
+		get.setHeader("User-Agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
+		get.addHeader("Host","wsjs.saic.gov.cn");
+		get.addHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+		get.addHeader("Accept-Encoding","gzip, deflate");
+		get.addHeader("Accept-Language","zh-CN,zh;q=0.9");
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+	        for(int i=0;i<headers.length;i++) {
+	        	System.out.println(headers[i].getName() +"=="+ headers[i].getValue());
+	        }
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			System.out.println(html);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 	}
-	
 	
 	
 	/**
@@ -374,9 +388,9 @@ public class HttpTest {
             CloseableHttpResponse response = httpClient.execute(get, context);
             try{
                 System.out.println(">>>>>>headers:");
-                Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
+                //Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
                 System.out.println(">>>>>>cookies:");
-                context.getCookieStore().getCookies().forEach(System.out::println);
+               // context.getCookieStore().getCookies().forEach(System.out::println);
                 cookieStore = (context.getCookieStore());
             }
             finally {
@@ -400,6 +414,7 @@ public class HttpTest {
 	public static void getCourtUrl(){
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet get=new HttpGet("http://zhixing.court.gov.cn/search/index_form.do");
+        get.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
         HttpClientContext context = HttpClientContext.create();
         CookieStore cookieStore = new BasicCookieStore();
         FileOutputStream fileOutputStream = null;
@@ -408,9 +423,9 @@ public class HttpTest {
             CloseableHttpResponse response = httpClient.execute(get, context);
             try{
                 System.out.println(">>>>>>headers:");
-                Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
+//                Arrays.stream(response.getAllHeaders()).forEach(System.out::println);
                 System.out.println(">>>>>>cookies:");
-                context.getCookieStore().getCookies().forEach(System.out::println);
+//                context.getCookieStore().getCookies().forEach(System.out::println);
                 cookieStore = (context.getCookieStore());
                 html = EntityUtils.toString(response.getEntity(), "utf-8");
                 System.out.println(html);
@@ -421,7 +436,8 @@ public class HttpTest {
                 System.out.println("captchaId===="+captchaId);
                 System.out.println(Math.random());
                 get = new HttpGet("http://zhixing.court.gov.cn/search/captcha.do?captchaId="+captchaId+"&random="+Math.random());
-                System.out.println("http://zhixing.court.gov.cn/search/captcha.do?captchaId="+captchaId+"&random="+Math.random());
+                get.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
+                //System.out.println("http://zhixing.court.gov.cn/search/captcha.do?captchaId="+captchaId+"&random="+Math.random());
                 httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
                 response = httpClient.execute(get);//获取验证码
                 /*验证码写入文件,当前工程的根目录,保存为verifyCode.jpg*/
@@ -430,6 +446,8 @@ public class HttpTest {
                 Scanner input = new Scanner(System.in);
                 String verifyCode = input.nextLine();
                 HttpPost post = new HttpPost("http://zhixing.court.gov.cn/search/newsearch");
+                post.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
+                post.addHeader("Referer", "http://zhixing.court.gov.cn/search/index_form.do");
                 ArrayList<NameValuePair> postData = new ArrayList<NameValuePair>();
         	    postData.add(new BasicNameValuePair("searchCourtName", "全国法院（包含地方各级法院）"));
                 postData.add(new BasicNameValuePair("selectCourtId", "0"));
@@ -440,6 +458,12 @@ public class HttpTest {
                 postData.add(new BasicNameValuePair("captchaId", captchaId));
                 post.setEntity(new UrlEncodedFormEntity(postData,"utf-8"));//捆绑参数
                 response = httpClient.execute(post);
+                html = EntityUtils.toString(response.getEntity(), "utf-8");
+                //System.out.println(html);
+                Document document = Jsoup.parse(html);
+                String id = document.getElementsByTag("a").attr("id");
+                get = new HttpGet("http://zhixing.court.gov.cn/search/newdetail?id="+id+"&j_captcha="+verifyCode+"&captchaId="+captchaId);
+                response = httpClient.execute(get);
                 html = EntityUtils.toString(response.getEntity(), "utf-8");
                 System.out.println(html);
             }

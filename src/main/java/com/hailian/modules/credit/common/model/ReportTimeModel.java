@@ -22,7 +22,7 @@ public class ReportTimeModel extends BaseProjectModel<ReportTimeModel>{
 	public static final ReportTimeModel dao = new ReportTimeModel();//名字都叫dao，统一命名
 	public Page<ReportTimeModel> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,String searchType, BaseProjectController c) {
 		StringBuffer selectSql = new StringBuffer(" select c.*, ");
-		selectSql.append(" s1.name_en AS reportType, ");
+		selectSql.append(" s1.name AS reportType, ");
 		selectSql.append(" s2.detail_name AS reportSpeed, ");
 		selectSql.append(" s3.detail_name AS countryType, ");
 		selectSql.append(" s4.detail_name AS orderType, ");
