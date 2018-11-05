@@ -122,7 +122,7 @@ let Verify = {
                     queryParamsType:'',
                     contentType:'application/x-www-form-urlencoded;charset=UTF-8',
                     queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-                      console.log(params)
+                      window.aaa = params.pageSize;
                       return {//这里的params是table提供的  
                     	  pageNumber: params.pageNumber,//从数据库第几条记录开始  
                     	  pageSize: params.pageSize,//找多少条  
@@ -162,6 +162,38 @@ let Verify = {
         		Public.message("error","公司中文名称不能为空")
         	}else {
         		/*调用接口*/
+        		$.ajax({
+           			type:"post",
+               		url:BASE_PATH+"credit/front/orderProcess/statusSave",
+               		data:"statusCode=595&isPa=yes&orderNum="+"&orderId=",
+               		dataType:"json",
+               		success:function(obj){
+               			if(data.statusCode===1){
+                         	Public.message("success",data.message);
+                         }else{
+                         	Public.message("error",data.message);
+                         	//跳转到第一页
+                            $('#table').bootstrapTable('refreshOptions',{pageNumber:1});
+                            /***发起ajax请求 获取表格数据*/
+                            $.ajax({
+                         			type:"post",
+                         			 url : BASE_PATH+"credit/front/orderProcess/listJson",
+                         			data:"report_user="+reporter+"&searchType=-1"+"&pageSize="+window.aaa,
+                         			dataType:"json",
+                         			success:function(data){
+                         				console.log(data);
+                         			 	 $("#table").bootstrapTable("load",data)
+                         			 }
+                         		})
+                         }
+               				if(obj.statusCode==1){
+               					$("#table").bootstrapTable("load",obj);
+               				}
+               				
+               			 	
+               			 }
+           			})
+        		
         	}
         })
         
