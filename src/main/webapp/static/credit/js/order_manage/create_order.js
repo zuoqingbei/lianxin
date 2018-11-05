@@ -224,7 +224,7 @@ let
         		if(day < 10){
         			day = '0' + day;
         		};
-        	todayDate = year + '-' + month + '-' + day;
+        	todayDate = year + '年' + month + '月' + day +'日';
         	$('#client_order_date').val(todayDate);
         	
         },

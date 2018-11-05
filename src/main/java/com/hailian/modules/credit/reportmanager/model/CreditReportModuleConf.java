@@ -59,7 +59,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 						sql.toString(), params.toArray());
 		return page;
 	}
-	public List<CreditReportModuleConf> findParentNodes(String parent_temp, String report) {
+	public List<CreditReportModuleConf> findSon(String parent_temp, String report) {
 		String sql="select t.* from credit_report_module_conf t where"
 				+ " t.del_flag=0 and t.parent_temp=? and t.report_type=? ";
 		return dao.find(sql, parent_temp,report);
@@ -85,12 +85,12 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 */
 	public List<CreditReportModuleConf> findByReport(String report) {
 		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.node_type=1 and t.report_type=? ";
+				+ " t.del_flag=0 and t.node_type=1 and t.report_type=? order by sort,id";
 		return dao.find(sql,report);
 	}
 	public List<CreditReportModuleConf> findReportType() {
 		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.parent_temp=999";
+				+ " t.del_flag=0 and t.parent_temp=999 order by sort,id";
 		return dao.find(sql);
 	}
 	public CreditReportModuleConf findReportModuleById(String id) {
@@ -100,9 +100,18 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 		sql.append(" left join sys_user s on s.userid=t.create ");
 		sql.append(" left join sys_user s1 on s1.userid=t.update ");
 		sql.append(" left join credit_report_module_conf t1 on t1.id=t.parent_temp ");
-		sql.append(" where t.del_flag=0 and 1=1 and t.id=?");
+		sql.append(" where t.del_flag=0 and 1=1 and t.id=? order by sort,id");
 		return dao.findFirst("select t.*,c.name as reportName,s.username as createName,s1.username as updateName"
 				+ ",t1.temp_name as parentTempName "+sql.toString(),id);
+	}
+	/**
+	 * 默认模块
+	 * @return
+	 */
+	public List<CreditReportModuleConf> getDefaultModule() {
+		String sql = "select t.* from credit_report_module_conf t where"
+				+ " t.del_flag=0 and t.small_module_type=-1 or parent_temp=-1 order by sort,id";
+		return dao.find(sql);
 	}
 	
 }
