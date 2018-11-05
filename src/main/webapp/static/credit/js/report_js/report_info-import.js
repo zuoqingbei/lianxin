@@ -99,9 +99,30 @@ let Verify = {
                           events: {
                             "click .write":(e,value,row,index)=>{
                               console.log(row);
-//                          	   Public.goToBasicInfoWrite(row);
+                              //Public.goToBasicInfoWrite(row);
                               Public.goToReportConfig(row)
-                            }
+                            },  "click .recordName":(e,value,row,index)=>{
+                                $("#custom_id").html(row.custom_id);
+                                $("#customId").html(row.customId);
+                                $("#receiver_date").html(row.receiver_date);
+                                $("#continent").html(row.continent);
+                                $("#country").html(row.country);
+                                $("#reportType").html(row.reportType);
+                                $("#reportLanguage").html(row.reportLanguage);
+                                $("#companyNames").html(row.companyNames);
+                                $("#custom_id").html(row.custom_id);
+                                $("#speed").html(row.speed);
+                                $("#user_time").html(row.user_time);
+                                $("#companyZHNames").html(row.companyZHNames);
+                                $("#reporter_select").html(row.seleteStr);
+                                $("#orderId").val(row.id);
+                                $("#num").html(row.num);
+                                $("#remarks").val("");
+                                pageNumber = row.pageNumber;
+                                pageSize = row.pageSize;
+                            	sortName = row.sortName;
+                            	sortOrder = row.sortOrder;
+                              }
                           },
                           formatter: _this.operateFormatter
                         }
