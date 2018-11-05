@@ -99,8 +99,8 @@ let Verify = {
                           events: {
                             "click .write":(e,value,row,index)=>{
                               console.log(row);
-                          	   Public.goToBasicInfoWrite(row);
-//                              Public.goToReportConfig(row)
+//                          	   Public.goToBasicInfoWrite(row);
+                              Public.goToReportConfig(row)
                             }
                           },
                           formatter: _this.operateFormatter
@@ -139,7 +139,7 @@ let Verify = {
     },
     /**操作按钮格式化 */
     operateFormatter(){
-        return '<a href="javascript:;" class="write">填报</a>'
+        return '<a href="javascript:;" class="recordName">录入名称</a><span style="margin-left:.5rem;color: #1890ff">|</span><a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>'
     },
     modalSubmit(){
         /**模态框提交事件 */

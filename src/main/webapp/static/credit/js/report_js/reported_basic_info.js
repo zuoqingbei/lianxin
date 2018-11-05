@@ -134,7 +134,7 @@ let BasicWrite = {
 
             return indexed_array;
         }
-        
+       
       //提交按钮
         $("#submit").on('click','',function(){
    			console.log($("#tableRecord").bootstrapTable('getData'))
