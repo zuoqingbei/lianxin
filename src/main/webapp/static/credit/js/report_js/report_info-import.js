@@ -138,9 +138,9 @@ let Verify = {
                     		if(!item.country || item.country.trim() !== '中国大陆'){
                     			$(Array.from($(".recordName"))[index]).css({"color":"#ccc","cursor":"default"});
                     			$(Array.from($(".recordName"))[index]).removeAttr("data-target")
-                    		}else {
+                    		}else if(!$(Array.from($(".recordName"))[index]).attr("data-target")){
                     			$(Array.from($(".recordName"))[index]).css({"color":"#007bff","cursor":"pointer"});
-                    			$(Array.from($(".recordName"))[index]).addAttr("data-target")
+                    			$(Array.from($(".recordName"))[index]).attr("data-target","#recordingName")
                     		}
                     		
                     		
