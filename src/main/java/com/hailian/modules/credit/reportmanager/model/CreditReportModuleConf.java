@@ -59,7 +59,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 						sql.toString(), params.toArray());
 		return page;
 	}
-	public List<CreditReportModuleConf> z(String parent_temp, String report) {
+	public List<CreditReportModuleConf> findSon(String parent_temp, String report) {
 		String sql="select t.* from credit_report_module_conf t where"
 				+ " t.del_flag=0 and t.parent_temp=? and t.report_type=? ";
 		return dao.find(sql, parent_temp,report);
