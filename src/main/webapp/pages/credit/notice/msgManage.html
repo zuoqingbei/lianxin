@@ -192,9 +192,9 @@
 		                	console.log(list)
 		            	  	for(item in list){
 		            	  		if(list[item].read_unread=='1'){
-		            	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+		            	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
 		            	  		}else{
-		            	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+		            	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
 		            	  			
 		            	  		}
 		            	 		
@@ -228,7 +228,7 @@ $(function(){
 			}
 		})
         let title = $(this).find('h4').html();
-        let content = $(this).find('p').html();
+        let content = $(this).find('section').html();
         let $modal = $('#notice');
         $modal.find('.modal-title').html(title);
         $modal.find('.modal-body').html(content);
@@ -253,9 +253,10 @@ function agentchange(status){
         	console.log(list)
     	  	for(item in list){
     	  		if(list[item].read_unread=='1'){
-    	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+    	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
     	  		}else{
-    	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><p>"+list[item].notice_content+"</p></li>"
+    	  			console.log(list[item].notice_content)
+    	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
     	  		}
     	    }
     	 	if(status === '') {

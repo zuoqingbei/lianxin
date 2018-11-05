@@ -145,7 +145,93 @@
         </div>
     </div>
 </div>
+<!-- Modal 录入名称 -->
+<div class="modal fade order_cancel" id="recordingName" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <span>订单号：</span>
+                    <span id="orderNum1">0001288784932</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="order-detail mb-4">
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span >客户ID：</span>
+                            <span id="customId">001354574</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>客户用户名：</span>
+                            <span id="customName">王彩军</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>接单日期：</span>
+                            <span id="receiveDate">2018-09-10</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>地区：</span>
+                            <span id="area">亚洲</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>国家：</span>
+                            <span id="country1">中国</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告类型：</span>
+                            <span id="reportType">基本信用报告</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>订单类型：</span>
+                            <span id="orderType">new</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告语言：</span>
+                            <span id="reportLanguage">中文</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>订单公司名称：</span>
+                            <span id="orderCompany">北京小米科技有限公司</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>报告速度：</span>
+                            <span id="reportSpeed">普通</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告用时：</span>
+                            <span id="useTime">5天</span>
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+                <div class="file-upload">
+                    <div class="row mt-3 mb-2">
+                        <div class="input-group col-md-6 align-items-top">
+                            <label class="control-label" id="firmChineseName">公司中文名称：</label>
+                            <input type="text" class="form-control">
+                           
+                        </div>
+                    </div>
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal_submit" >提交</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="${BASE_PATH}static/credit/js/report_js/report_info-import.js"></script>
 
 
