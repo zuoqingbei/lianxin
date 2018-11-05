@@ -59,5 +59,28 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 			
 			return CreditReportPrice.dao.findFirst(sql.toString(),params.toArray());
 		}
+	public CreditReportPrice getoldPrice(String countryid, String reporttype, String speed, Integer size) {
+		List<Object> params=new ArrayList<Object>();
+		StringBuffer sql=new StringBuffer(" select t.* from credit_report_price t where t.del_flag='0' and t.versions='老系统' ");
+		if (StringUtils.isNotBlank(countryid)) {
+			sql.append(" and t.country_id=?");
+			params.add(countryid);
+		}
+		if (StringUtils.isNotBlank(speed)) {
+			sql.append(" and t.order_speed=?");
+			params.add(speed);
+		}
+		if (StringUtils.isNotBlank(reporttype)) {
+			sql.append(" and t.report_type=?");
+			params.add(reporttype);
+		}
+		if (size!=null) {
+			sql.append(" and t.ordernums_range_start<=? and t.ordernums_range_end>=?");
+			params.add(size);
+			params.add(size);
+		}
+		
+		return CreditReportPrice.dao.findFirst(sql.toString(),params.toArray());
+	}
 	}
 

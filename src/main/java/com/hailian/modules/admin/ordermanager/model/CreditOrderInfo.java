@@ -933,5 +933,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			});
 		return num.toString();
 	}
+
+	public List<CreditOrderInfo> findByCustom(String customid,String fristday,String lastday) {
+		String sql="select t.id from credit_order_info t where t.custom_id=? and t.create_date>=? and t.create_date<=?";
+		return dao.find(sql,customid,fristday,lastday);
+	}
 	
 }

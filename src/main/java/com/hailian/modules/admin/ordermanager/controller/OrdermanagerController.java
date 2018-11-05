@@ -430,6 +430,7 @@ public class OrdermanagerController extends BaseProjectController{
 			@Param(name = "reporttype", description = "报告类型", required = false, dataType = "String")
 			})
 	public void getPrice() {
+		CreditReportPrice price=new CreditReportPrice();
 		String countryType=getPara("countrytype", "");
 		if("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
 			countryType="148";
@@ -437,7 +438,39 @@ public class OrdermanagerController extends BaseProjectController{
 		String speed=getPara("speed", "");
 		String reporttype=getPara("reporttype", "");
 		String orderType=getPara("ordertype", "");
-		CreditReportPrice price=OrderManagerService.service.getPrice(countryType,speed,reporttype,orderType);
+		String customid=getPara("customid","");
+		String countryid=getPara("countryid","");
+		
+		//根据客户id判断新老客户新老客户价格区分字段是versions=老系统
+		CreditCustomInfo cci=CreditCustomInfo.dao.findById(customid);
+		if("0".equals(cci.getStr("is_old_customer"))) {
+			//3种不同类型老客户
+			if("373".equals(customid)) {
+				//获取本月的第一天和最后一天
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				 Calendar c = Calendar.getInstance();    
+				 c.add(Calendar.MONTH, 0);
+				 c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天 
+				 String first = format.format(c.getTime());
+				 Calendar ca = Calendar.getInstance();    
+				 ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));  
+				 String last = format.format(ca.getTime());
+				//此客户依据每月订单量和国家决定订单价格
+				//求该客户的该月订单量
+				List<CreditOrderInfo> list=CreditOrderInfo.dao.findByCustom(customid,first,last);
+				Integer size=list.size();
+				price=CreditReportPrice.dao.getoldPrice( countryid,null,null,size);
+				
+			}else if("399".equals(customid)) {
+				//此客户依据国家决定订单价格
+				price=CreditReportPrice.dao.getoldPrice( countryid,null,null,null);
+			}else {
+				//此类客户依据国家,报告类型,和速度决定订单价格
+				price=CreditReportPrice.dao.getoldPrice( countryid,reporttype,speed,null);
+			}
+		}else {
+			price=OrderManagerService.service.getPrice(countryType,speed,reporttype,orderType);
+		}
 		renderJson(price);
 
 	}

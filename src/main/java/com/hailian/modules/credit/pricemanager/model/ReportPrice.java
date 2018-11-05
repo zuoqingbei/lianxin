@@ -152,7 +152,7 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 		sql.append("   LEFT JOIN sys_dict_detail c on c.detail_id=t.country_type");
 		sql.append("   LEFT JOIN sys_user u on u.userid=t.create_by");
 		sql.append("   LEFT JOIN sys_dict_detail detail on t.usabled=detail.detail_id");
-		sql.append("   where t.del_flag=0 and ot.del_flag=0 and os.del_flag=0 and rt.del_flag=0 and c.del_flag=0 and t.id=?");
+		sql.append("   where t.del_flag=0  and t.id=?");
 		List<Object> params = new ArrayList<Object>();
 		params.add(id);
 		return (ReportPrice) ReportPrice.dao.findFirst(sql.toString(), params.toArray());

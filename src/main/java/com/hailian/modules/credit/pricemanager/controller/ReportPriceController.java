@@ -43,8 +43,13 @@ public class ReportPriceController extends BaseProjectController {
 		setAttr("page", pager);
 		setAttr("reporttype", reportType);
 		setAttr("attr", attr);
-		keepPara();
+		//keepPara();
 		render(path + "list.html");
+	}
+	public void getVersion() {
+		String version=getPara("version");
+		setAttr("version",version);
+		renderJson(version);
 	}
 
 	/**
@@ -73,6 +78,7 @@ public class ReportPriceController extends BaseProjectController {
 	public void add() {
 		ReportPrice model = getModelByAttr(ReportPrice.class);
 		setAttr("model", model);
+		setAttr("version", "请选择版本");
 		render(path + "add.html");
 	}
 
