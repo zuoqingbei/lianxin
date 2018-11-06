@@ -2,7 +2,7 @@
 <% var currency = tempDict.getSysDictDetailString2('currency',model.currency ); %>
 <% var agenttype = tempDict.getSysDictDetailString2('agenttype',model.agent_type ); %>
 <% var speed = tempDict.getSysDictDetailString2('agentspeed',model.speed ); %>
-<% var agent_category = tempDict.getSysDictDetailCheckboxString('agentcategory',model.agentCategoryList,'9' ); %>
+<% var agent_category = tempDict.getSysDictDetailString2('agentcategory',model.agent_category ); %>
 <% var country = country.getCountryString(); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
@@ -20,13 +20,32 @@ var headContent = {
 <script type="text/javascript">
 var oper = {
 	save:function(id){
+		var value=$("#countryout").attr("class").trim();
+		var value1=$("#countryin").attr("class").trim();
+		console.log("value:"+value+","+"value1:"+value1)
+		if(value=="countryout"){
+			$("#country").removeAttr("valid")
+		}else{
+			$("#country").attr("valid","vtext")
+		}
+		if(value1=="countryout"){
+			
+			$("#sandbar").removeAttr("valid")
+		}else{
+			$("#sandbar").attr("valid","vtext")
+		}
+		var value3=$("#country").select2({
+	        tags: true
+	    }).val();
+		console.log(value3);
 		if(!validForm()) {
 			return false;
 		}
 		id = id || '0';
-		var url = 'credit/agentmanager/save?agent_id='+id;
+		var url = 'credit/agentmanager/savePrice?id='+id;
 		form1.action = url;
 		form1.submit();
+		
 		return true;
 	},
     sandbarChange:function(){
@@ -155,38 +174,91 @@ $(function(){
 var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal">
+	<input type="hidden" name="model.id" value=" ${model.id}" />
 	<input type="hidden" name="model.agent_id" value=" ${model.agent_id}" />
 	<!-- 数据列表 -->
 	<table class="table">
-	
-		
-		<tr>
-			<td>代理名称</td>
-			<td><input type="text" name="model.agent_name"  style="width: 200px;" class="form-control"  valid="vtext" validname="代理名称"
-				value="${model.agent_name}" />
+	<tr>
+			<td>代理类型</td>
+			 <td><select id="agent" name="model.agent_type" class="form-control" style="width: 200px;" onchange="oper.agentChange()" style="width: 200px;">
+					${agenttype!}
+				</select>
 			</td>
-			<td>邮箱</td>
-			<td> <input type="text" name="model.memo" class="form-control"  valid="vemail" style="width: 200px;"
-				value="${model.memo}"/> 
-			</td>
-		</tr>
-		<tr>
-			<td>邮政编码</td>
+			<td>代理用时</td>
 			 <td> 
-				<input type="text" name="model.postal_code" class="form-control"  style="width: 200px;"
-				value="${model.postal_code}"/>
+				<input type="text" name="model.proxy_time" class="form-control"  style="width: 200px;"
+				value="${model.proxy_time}"/>
 			 </td>
-			<td>是否禁用</td>
-			<td><select name="model.usabled" class="form-control" style="width: 200px;" >
-					${usabled!}
+			
+		</tr>		
+		<tr>
+			<td>价格</td>
+			<td><input type="text" name="model.price" class="form-control price"  valid="vfloat_y" style="width: 200px;" validname="价格"
+				value="${model.price}"/>
+			</td>
+			<td>币种</td>
+			<td><select name="model.currency" class="form-control" style="width: 200px;" >
+					${currency!}
 				</select>
 			</td>
 		</tr>
+			
+		<tr>
+			
+			<td>速度</td>
+			<td><select name="model.speed" class="form-control" style="width: 200px;" >
+					${speed!}
+				</select>
+			</td>
+		</tr>
+	
+		
+		
+		<tr rowspan="2">
+			<td>代理类别</td>
+			<td><select name="model.agent_category" class="form-control" style="width: 200px;" >
+					${agent_category!}
+				</select>
+			</td>
+		</tr>
+		<tr id="countryin" class="">
+			<td>省份</td>
+						<td>
+						<select id="sandbar" name="model.province" class="form-control"   valid="vselect" validname="省份不能为空" onchange="oper.sandbarChange()" style="width: 200px;">
+						<option value="-1" >请选择</option>
+						 <% for(item in province){ %>
+						 	<% if((model.province+"")==(item.pid+"")){ %>
+							 	<option  m-type="${item.credit_province}" selected="selected" value="${item.pid}">${item.credit_province}</option>
+							<% }else{ %>
+								<option  m-type="${item.credit_province}" value="${item.pid}">${item.credit_province}</option>
+							<%}%>
+						 <% } %>
+						</select>
+						</td>
+						</div>
+				<td>城市</td>
+				<td>
+					<select id="city" name="model.city"  class="form-control"  style="width: 200px;" >
+					</select>
+				</td>
+		</tr>
+		<tr id="countryout" class="">
+			<td>国家</td>
+			<td>
+				<select id="country"  name="model.country"  class="form-control" multiple="multiple" style="width: 200px;">
+				
+				</select>
+			</td>
+		</tr>
+		
+		
+		
+
 	</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
-	  		<button class="btn btn-primary save" onclick="oper.save(${model.agent_id!'0'});return false;">确定</button>
+	  		<button class="btn btn-primary save" onclick="oper.save(${model.id!'0'});return false;">确定</button>
 			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
 	  </div>
 	</nav>

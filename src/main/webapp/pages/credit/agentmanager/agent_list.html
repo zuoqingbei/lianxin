@@ -28,10 +28,13 @@ jQuery(function($) {
 			var title = '添加代理信息';
 			Iframe(url, this.width, this.height, title);
 		},
-		edit : function(id) {
+		editBasic : function(id) {
 			var url = '/credit/agentmanager/edit/'+id 
-			var title = '修改代理信息';
+			var title = '修改代理基本信息';
 			Iframe(url, this.width, this.height, title); 
+		},
+		edit : function(id) {
+			window.open('/credit/agentmanager/agentPriceList/'+id,"_blank"); 
 		},
 		del : function(id) {
 			var url = '/credit/agentmanager/delete/'+id;
@@ -78,19 +81,10 @@ var paginator = function(page) {
 			<tr>
 				<th>序号</th>
 				<th name="a.agent_id" class="sorting">代理编码</th>
-				<th name="a.agent_type" class="sorting">代理类型</th>
 				<th name="a.agent_name" class="sorting">代理名称</th>
 				<th name="a.postal_code" class="sorting">邮政编码</th>
-				<th name="a.proxy_time" class="sorting">代理用时</th>
 				<th name="a.memo " class="sorting">邮箱</th>		
-				<th name="a.price" class="sorting">价格·</th>
-				<th name="a.currency" class="sorting">币种</th>
-				<th name="a.speed" class="sorting">速度</th>
 				<th name="a.usabled" class="sorting">是否禁用</th>
-				<th name="a.country" class="sorting">国家</th>
-				<th name="a.province" class="sorting">省份</th>
-				<th name="a.city" class="sorting">城市</th>
-				<th name="a.agent_category" class="sorting">代理类别</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -99,30 +93,13 @@ var paginator = function(page) {
 			<tr>
 				<td>${itemLP.index }</td>
 				<td>${item.agent_id}</td>
-				<td>${item.agentType}</td>	
 				<td>${item.agent_name}</td>
 				<td>${item.postal_code}</td>
-				<td>${item.proxy_time}</td>
 				<td>${item.memo}</td>
-				<td>${item.price}</td>
-				<td>${item.Currency}</td>
-				<td>${item.Speed}</td>
 				<td>${item.Usabled}</td>
 				<td>
-					<% if (strutil.length(item.country) >
-					12) { %> ${strutil.subStringTo(item.country, 0, 12)}... <% } else { %>
-					${item.country} <% } %>
-				</td>
-				<td>${item.provinceName}</td>
-				<td>${item.cityName}</td>
-				<td>
-				<% if (strutil.length(item.agent_category) >
-					12) { %> ${strutil.subStringTo(item.agent_category, 0, 12)}... <% } else { %>
-					${item.agent_category} <% } %>
-				</td>
-				<td>
-					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.view(${item.agent_id});">查看</a> 
-					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.agent_id});">修改</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.editBasic(${item.agent_id});">修改代理基本信息</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.agent_id});">配置代理信息</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.agent_id});">删除</a>
 				</td>
 			</tr>

@@ -13,18 +13,13 @@ import com.feizhou.swagger.annotation.Param;
 import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.model.AgentModel;
+import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
+import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.agentmanager.service.AgentService;
 import com.hailian.modules.credit.city.model.CityModel;
 import com.hailian.modules.credit.common.model.CountryModel;
-import com.hailian.modules.credit.common.service.CountryService;
-import com.hailian.modules.credit.company.model.CompanyModel;
-import com.hailian.modules.credit.company.service.CompanyService;
-import com.hailian.modules.credit.pricemanager.model.ReportPrice;
-import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
 import com.hailian.modules.credit.province.model.ProvinceModel;
 import com.jfinal.json.Json;
 import com.jfinal.plugin.activerecord.Db;
@@ -262,6 +257,119 @@ public class AgentController extends BaseProjectController {
 			list();
 		} else {
 			renderText("failure");
+		}
+	}
+	/**
+	 * 代理价格
+	* @author doushuihai  
+	* @date 2018年11月5日下午2:10:53  
+	* @TODO
+	 */
+	public void agentPriceList() {
+		String id = getPara();
+		AgentPriceModel attr = getModelByAttr(AgentPriceModel.class);
+		String orderBy = getBaseForm().getOrderBy();
+		Page<AgentPriceModel> pager = AgentPriceService.service.getAgent(getPaginator(),orderBy,this,id);
+		for(AgentPriceModel agent:pager.getList()) {
+			String country="";
+			Object cid=agent.get("country");
+			if(cid==null) {
+				continue;
+			}
+			List<CountryModel> list=CountryModel.dao.findByIds(cid.toString());
+			for(CountryModel cm:list) {
+				country+=cm.get("name").toString()+",";
+			}
+			//country=country.substring(0, country.length()-1);
+			agent.set("country", country);
+		}
+		setAttr("page", pager);
+		setAttr("attr", attr);
+		render(path+"pricelist.html");
+	}
+	/**
+	 * 跳转到新增代理配置页面
+	* @author doushuihai  
+	* @date 2018年11月5日下午4:38:07  
+	* @TODO
+	 */
+	public void addPrice() {
+		Integer para = getParaToInt();
+		AgentPriceModel model = getModel(AgentPriceModel.class);
+		model.set("agent_id", para);
+		List<String> catelist=new ArrayList<String>();
+		model.put("agentCategoryList", catelist);
+		setAttr("model", model);
+		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
+		setAttr("province", province);
+		String pid=model.get("province");
+		List<CityModel> city = CityModel.dao.getCity("", pid, this);//获取省份下的城市
+		setAttr("city", city);
+		render(path + "priceadd.html");
+	}
+	/**
+	 * 跳转到修改代理配置页面
+	* @author doushuihai  
+	* @date 2018年11月5日下午4:39:28  
+	* @TODO
+	 */
+	public void editPrice() {
+		Integer para = getParaToInt();
+		AgentPriceModel model = AgentPriceModel.dao.getOne(para, this);
+		List<CountryModel> countrys=null;
+		Object cid=model.get("country");
+		if(cid!=null) {
+		countrys=CountryModel.dao.findByIds(cid.toString());		
+		}
+		String pid=model.get("province");
+		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
+		List<AgentCategoryModel> agentCategoryList = AgentCategoryModel.dao.findAll(para+"");
+		List<String> catelist=new ArrayList<String>();
+		if(agentCategoryList!=null){
+			for(AgentCategoryModel catemodel:agentCategoryList ){
+				String agent_category=catemodel.get("agent_category")+"";
+				catelist.add(agent_category);
+				
+			}
+			
+		}
+		model.put("agentCategoryList", catelist);
+		setAttr("model", model);
+		setAttr("countrys", Json.getJson().toJson(countrys));
+		setAttr("agentCategoryList", agentCategoryList);
+		setAttr("province", province);
+		
+		render(path + "priceedit.html");
+	}
+	/**
+	 * 保存代理配置
+	* @author doushuihai  
+	* @date 2018年11月5日下午4:59:18  
+	* @TODO
+	 */
+	public void savePrice() {
+		Integer id = getParaToInt("id");
+		AgentPriceModel model = getModel(AgentPriceModel.class);
+		Integer userid = getSessionUser().getUserid();
+		String now = getNow();
+		//		model.set("agent_id", id);
+		model.set("update_by", userid);
+		model.set("update_date", now);
+		if (id != null && id > 0) { // 更新
+			model.update();
+			renderMessage("修改成功");
+		} else { // 新增
+			model.remove("id");
+			model.set("create_by", userid);
+			model.set("create_date", now);
+			boolean save = model.save();
+			int agent_id=model.get("agent_id");
+			if(save){
+				renderMessage("保存成功");
+			}else{
+				renderMessage("保存失败");
+			}
+			
 		}
 	}
 }

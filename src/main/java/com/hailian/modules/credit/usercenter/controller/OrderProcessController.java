@@ -7,7 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
@@ -25,6 +27,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
+import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
@@ -445,6 +448,12 @@ public class OrderProcessController extends BaseProjectController{
 	public void getAgentCategory(){
 		String agentid = (String) getRequest().getParameter("agentid");
 		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(agentid);
+		renderJson(findAll);
+	}
+	public void getAgentCate(){
+		String agentid = (String) getRequest().getParameter("agentid");
+//		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(agentid);
+		List<AgentPriceModel> findAll = AgentPriceModel.dao.findAgentCateSelect(agentid);
 		renderJson(findAll);
 	}
 	/**
