@@ -93,8 +93,11 @@
                         <div class="form-box fr">
                             <div class="input-group mt-2" id="client">
                                 <label class="control-label col-md-4 mt-2" for="txt_search_statu">客户：</label>
-                                <select class="search-input col-md-8 layui-input" lay-search="" ay-verify="">
+                                <select id="customer" class="search-input col-md-8 layui-input" lay-search="" ay-verify="" name="customId">
                                     <option value="">全部客户</option>
+                                  <% for(cu in customer){ %>
+                                   <option value="${cu.id}">${cu.name}</option>
+                                  <% } %>  
                                 </select>
                             </div>
                         </div>
@@ -141,32 +144,10 @@
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
                             <ul class="swiper-slide">
-                                <li>
-                                    <div>员工一</div>
-                                    <div id="echarts_09_01" style="width: 100%;height:100%"></div>
-                                </li>
-                                <li>
-                                    <div>员工二</div>
-                                    <div id="echarts_09_02" style="width: 100%;height:100%"></div>
-                                </li>
-                                <li>
-                                    <div>员工一</div>
-                                    <div id="echarts_09_03" style="width: 100%;height:100%"></div>
-                                </li>
-                                <li>
-                                    <div>员工一</div>
-                                    <div id="echarts_09_04" style="width: 100%;height:100%"></div>
-                                </li>
-                                <li>
-                                    <div>员工一</div>
-                                    <div id="echarts_09_05" style="width: 100%;height:100%"></div>
-                                </li>
-                                <li>
-                                    <div>员工一</div>
-                                    <div id="echarts_09_06" style="width: 100%;height:100%"></div>
-                                </li>
+                               
                              </ul>
                             <ul class="swiper-slide">
+                            
                             </ul>
                         </div>
                         <!-- Add Arrows -->

@@ -9,18 +9,20 @@ let Filing = {
         this.initEcharts07();
         this.initEcharts08();
         this.initEcharts09_01();
-        this.initEcharts09_02();
-        this.initEcharts09_03();
-        this.initEcharts09_04();
-        this.initEcharts09_05();
-        this.initEcharts09_06();
         this.initEcharts10();
         this.dateForm1();
         this.dateForm2();
         this.initTable();
         this.btnClick();
+        this.selectChange();
     },
-   
+    selectChange(){
+	    $("#customer").on("change",()=>{
+	    	var customerId=$("#customer option:selected").val()
+	    	console.info(customerId);
+	    	this.initEcharts05(customerId);
+	    })
+    },
     btnClick(){
     	$(".btn-group").click((e)=>{
     		let id = $(e.target).parent(".btn-group").attr("id")
@@ -223,7 +225,16 @@ let Filing = {
     	})
     },
     /*订单分布图*/
-    initEcharts05() {
+    initEcharts05(customerId) {
+    	$.post("/credit/orderStatistic/Ordermap",{"customId":customerId},function(data){
+ 		   let arr=[];
+    		$.each(data,function(index,item){
+    		 arr.push({
+              name : item.country,
+              value : item.num
+           }); 
+    		});
+    	console.info(arr);
         let ec001_pie = echarts.init($("#echarts_05")[0]);
         ec001_pie.clear();
         //ec001_pie.setOption(opt_bar_horizon);
@@ -232,8 +243,9 @@ let Filing = {
                 trigger: 'item',
                 formatter: function (params) {
                     var value = (params.value + '').split('.');
-                    value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
-                        + '.' + value[1];
+                   /* value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
+                        + '.' + value[1];*/
+                    //return params.seriesName + '<br/>' + params.name;
                     return params.seriesName + '<br/>' + params.name + ' : ' + value;
                 }
             },
@@ -250,7 +262,7 @@ let Filing = {
             },*/
             visualMap: {
                 min: 0,
-                max: 1000,
+                max: 10,
                 // text:['High','Low'],
                 realtime: false,//拖拽时，是否实时更新
                 calculable: false,//是否显示数值
@@ -270,86 +282,190 @@ let Filing = {
                         areaColor:'#C8E6FF',
                         borderWidth:0
                     },
-                    data: [
-                        {name: 'Afghanistan', value: 28397.812},
-                        {name: 'Angola', value: 19549.124},
-                        {name: 'Albania', value: 3150.143},
-                        {name: 'United Arab Emirates', value: 8441.537},
-                        {name: 'Argentina', value: 40374.224},
-                        {name: 'Armenia', value: 2963.496},
-                        {name: 'French Southern and Antarctic Lands', value: 268.065},
-                        {name: 'Australia', value: 22404.488},
-                        {name: 'Austria', value: 8401.924},
-                        {name: 'Azerbaijan', value: 9094.718},
-                        {name: 'Burundi', value: 9232.753},
-                        {name: 'Belgium', value: 10941.288},
-                        {name: 'Benin', value: 9509.798},
-                        {name: 'Burkina Faso', value: 15540.284},
-                        {name: 'Bangladesh', value: 151125.475},
-                        {name: 'Bulgaria', value: 7389.175},
-                        {name: 'The Bahamas', value: 66402.316},
-                        {name: 'Bosnia and Herzegovina', value: 3845.929},
-                        {name: 'Belarus', value: 9491.07},
-                        {name: 'Belize', value: 308.595},
-                        {name: 'Bermuda', value: 64.951},
-                        {name: 'Bolivia', value: 716.939},
-                        {name: 'Brazil', value: 195210.154},
-                        {name: 'Mozambique', value: 23967.265},
-                        {name: 'Mauritania', value: 3609.42},
-                        {name: 'Malawi', value: 15013.694},
-                        {name: 'Malaysia', value: 28275.835},
-                        {name: 'Namibia', value: 2178.967},
-                        {name: 'New Caledonia', value: 246.379},
-                        {name: 'Niger', value: 15893.746},
-                        {name: 'Nigeria', value: 159707.78},
-                        {name: 'Nicaragua', value: 5822.209},
-                        {name: 'Netherlands', value: 16615.243},
-                        {name: 'Norway', value: 4891.251},
-                        {name: 'Nepal', value: 26846.016},
-                        {name: 'New Zealand', value: 4368.136},
-                        {name: 'Oman', value: 2802.768},
-                        {name: 'Pakistan', value: 173149.306},
-                        {name: 'Panama', value: 3678.128},
-                        {name: 'Peru', value: 29262.83},
-                        {name: 'Philippines', value: 93444.322},
-                        {name: 'Papua New Guinea', value: 6858.945},
-                        {name: 'Poland', value: 38198.754},
-                        {name: 'Puerto Rico', value: 3709.671},
-                        {name: 'North Korea', value: 1.468},
-                        {name: 'Portugal', value: 10589.792},
-                        {name: 'Paraguay', value: 6459.721},
-                        {name: 'Qatar', value: 1749.713},
-                        {name: 'Romania', value: 21861.476},
-                        {name: 'Russia', value: 21861.476},
-                        {name: 'Rwanda', value: 10836.732},
-                        {name: 'Western Sahara', value: 514.648},
-                        {name: 'Saudi Arabia', value: 27258.387},
-                        {name: 'Sudan', value: 35652.002},
-                        {name: 'South Sudan', value: 9940.929},
-                        {name: 'Senegal', value: 12950.564},
-                        {name: 'Solomon Islands', value: 526.447},
-                        {name: 'Sierra Leone', value: 5751.976},
-                        {name: 'El Salvador', value: 6218.195},
-                        {name: 'Somaliland', value: 9636.173},
-                        {name: 'Somalia', value: 9636.173},
-                        {name: 'Republic of Serbia', value: 3573.024},
-                        {name: 'Suriname', value: 524.96},
-                        {name: 'Slovakia', value: 5433.437},
-                        {name: 'Slovenia', value: 2054.232},
-                        {name: 'Sweden', value: 9382.297},
-                        {name: 'Swaziland', value: 1193.148},
-                        {name: 'Syria', value: 7830.534},
-                        {name: 'Chad', value: 11720.781},
-                        {name: 'Togo', value: 6306.014},
-                        {name: 'West Bank', value: 13.565},
-                        {name: 'Yemen', value: 22763.008},
-                        {name: 'South Africa', value: 51452.352},
-                        {name: 'Zambia', value: 13216.985},
-                        {name: 'Zimbabwe', value: 13076.978}
-                    ]
+                    data: arr,
+                    nameMap: {
+                        'Afghanistan': '阿富汗',
+                            'Angola': '安哥拉',
+                            'Albania': '阿尔巴尼亚',
+                            'United Arab Emirates': '阿联酋',
+                            'Argentina': '阿根廷',
+                            'Armenia': '亚美尼亚',
+                            'French Southern and Antarctic Lands': '法属南半球和南极领地',
+                            'Australia': '澳大利亚',
+                            'Austria': '奥地利',
+                            'Azerbaijan': '阿塞拜疆',
+                            'Burundi': '布隆迪',
+                            'Belgium': '比利时',
+                            'Benin': '贝宁',
+                            'Burkina Faso': '布基纳法索',
+                            'Bangladesh': '孟加拉国',
+                            'Bulgaria': '保加利亚',
+                            'The Bahamas': '巴哈马',
+                            'Bosnia and Herzegovina': '波斯尼亚和黑塞哥维那',
+                            'Belarus': '白俄罗斯',
+                            'Belize': '伯利兹',
+                            'Bermuda': '百慕大',
+                            'Bolivia': '玻利维亚',
+                            'Brazil': '巴西',
+                            'Brunei': '文莱',
+                            'Bhutan': '不丹',
+                            'Botswana': '博茨瓦纳',
+                            'Central African Republic': '中非共和国',
+                            'Canada': '加拿大',
+                            'Switzerland': '瑞士',
+                            'Chile': '智利',
+                            'China': '中国大陆',
+                            'Ivory Coast': '象牙海岸',
+                            'Cameroon': '喀麦隆',
+                            'Democratic Republic of the Congo': '刚果民主共和国',
+                            'Republic of the Congo': '刚果共和国',
+                            'Colombia': '哥伦比亚',
+                            'Costa Rica': '哥斯达黎加',
+                            'Cuba': '古巴',
+                            'Northern Cyprus': '北塞浦路斯',
+                            'Cyprus': '塞浦路斯',
+                            'Czech Republic': '捷克共和国',
+                            'Germany': '德国',
+                            'Djibouti': '吉布提',
+                            'Denmark': '丹麦',
+                            'Dominican Republic': '多明尼加共和国',
+                            'Algeria': '阿尔及利亚',
+                            'Ecuador': '厄瓜多尔',
+                            'Egypt': '埃及',
+                            'Eritrea': '厄立特里亚',
+                            'Spain': '西班牙',
+                            'Estonia': '爱沙尼亚',
+                            'Ethiopia': '埃塞俄比亚',
+                            'Finland': '芬兰',
+                            'Fiji': '斐',
+                            'Falkland Islands': '福克兰群岛',
+                            'France': '法国',
+                            'Gabon': '加蓬',
+                            'United Kingdom': '英国',
+                            'Georgia': '格鲁吉亚',
+                            'Ghana': '加纳',
+                            'Guinea': '几内亚',
+                            'Gambia': '冈比亚',
+                            'Guinea Bissau': '几内亚比绍',
+                            'Equatorial Guinea': '赤道几内亚',
+                            'Greece': '希腊',
+                            'Greenland': '格陵兰',
+                            'Guatemala': '危地马拉',
+                            'French Guiana': '法属圭亚那',
+                            'Guyana': '圭亚那',
+                            'Honduras': '洪都拉斯',
+                            'Croatia': '克罗地亚',
+                            'Haiti': '海地',
+                            'Hungary': '匈牙利',
+                            'Indonesia': '印尼',
+                            'India': '印度',
+                            'Ireland': '爱尔兰',
+                            'Iran': '伊朗',
+                            'Iraq': '伊拉克',
+                            'Iceland': '冰岛',
+                            'Israel': '以色列',
+                            'Italy': '意大利',
+                            'Jamaica': '牙买加',
+                            'Jordan': '约旦',
+                            'Japan': '日本',
+                            'Kazakhstan': '哈萨克斯坦',
+                            'Kenya': '肯尼亚',
+                            'Kyrgyzstan': '吉尔吉斯斯坦',
+                            'Cambodia': '柬埔寨',
+                            'South Korea': '韩国',
+                            'Kosovo': '科索沃',
+                            'Kuwait': '科威特',
+                            'Laos': '老挝',
+                            'Lebanon': '黎巴嫩',
+                            'Liberia': '利比里亚',
+                            'Libya': '利比亚',
+                            'Sri Lanka': '斯里兰卡',
+                            'Lesotho': '莱索托',
+                            'Lithuania': '立陶宛',
+                            'Luxembourg': '卢森堡',
+                            'Latvia': '拉脱维亚',
+                            'Morocco': '摩洛哥',
+                            'Moldova': '摩尔多瓦',
+                            'Madagascar': '马达加斯加',
+                            'Mexico': '墨西哥',
+                            'Macedonia': '马其顿',
+                            'Mali': '马里',
+                            'Myanmar': '缅甸',
+                            'Montenegro': '黑山',
+                            'Mongolia': '蒙古',
+                            'Mozambique': '莫桑比克',
+                            'Mauritania': '毛里塔尼亚',
+                            'Malawi': '马拉维',
+                            'Malaysia': '马来西亚',
+                            'Namibia': '纳米比亚',
+                            'New Caledonia': '新喀里多尼亚',
+                            'Niger': '尼日尔',
+                            'Nigeria': '尼日利亚',
+                            'Nicaragua': '尼加拉瓜',
+                            'Netherlands': '荷兰',
+                            'Norway': '挪威',
+                            'Nepal': '尼泊尔',
+                            'New Zealand': '新西兰',
+                            'Oman': '阿曼',
+                            'Pakistan': '巴基斯坦',
+                            'Panama': '巴拿马',
+                            'Peru': '秘鲁',
+                            'Philippines': '菲律宾',
+                            'Papua New Guinea': '巴布亚新几内亚',
+                            'Poland': '波兰',
+                            'Puerto Rico': '波多黎各',
+                            'North Korea': '北朝鲜',
+                            'Portugal': '葡萄牙',
+                            'Paraguay': '巴拉圭',
+                            'Qatar': '卡塔尔',
+                            'Romania': '罗马尼亚',
+                            'Russia': '俄罗斯',
+                            'Rwanda': '卢旺达',
+                            'Western Sahara': '西撒哈拉',
+                            'Saudi Arabia': '沙特阿拉伯',
+                            'Sudan': '苏丹',
+                            'South Sudan': '南苏丹',
+                            'Senegal': '塞内加尔',
+                            'Solomon Islands': '所罗门群岛',
+                            'Sierra Leone': '塞拉利昂',
+                            'El Salvador': '萨尔瓦多',
+                            'Somaliland': '索马里兰',
+                            'Somalia': '索马里',
+                            'Republic of Serbia': '塞尔维亚共和国',
+                            'Suriname': '苏里南',
+                            'Slovakia': '斯洛伐克',
+                            'Slovenia': '斯洛文尼亚',
+                            'Sweden': '瑞典',
+                            'Swaziland': '斯威士兰',
+                            'Syria': '叙利亚',
+                            'Chad': '乍得',
+                            'Togo': '多哥',
+                            'Thailand': '泰国',
+                            'Tajikistan': '塔吉克斯坦',
+                            'Turkmenistan': '土库曼斯坦',
+                            'East Timor': '东帝汶',
+                            'Trinidad and Tobago': '特里尼达和多巴哥',
+                            'Tunisia': '突尼斯',
+                            'Turkey': '土耳其',
+                            'United Republic of Tanzania': '坦桑尼亚联合共和国',
+                            'Uganda': '乌干达',
+                            'Ukraine': '乌克兰',
+                            'Uruguay': '乌拉圭',
+                            'United States': '美国',
+                            'Uzbekistan': '乌兹别克斯坦',
+                            'Venezuela': '委内瑞拉',
+                            'Vietnam': '越南',
+                            'Vanuatu': '瓦努阿图',
+                            'West Bank': '西岸',
+                            'Yemen': '也门',
+                            'South Africa': '南非',
+                            'Zambia': '赞比亚',
+                            'Zimbabwe': '津巴布韦'
+                    },
                 }
             ]
         });
+    	})
     },
     /*报告类型占比*/
     initEcharts06() {
@@ -520,101 +636,53 @@ let Filing = {
     	})
     },
     /*各员工延误率*/
+    
     initEcharts09_01() {
-        let ec001_pie = echarts.init($("#echarts_09_01")[0]);
-        ec001_pie.clear();
-        //ec001_pie.setOption(opt_liquidfill_series);
-        ec001_pie.setOption({
-            series: [{
-                type: 'liquidFill',
-                data: [0.7],
-                center: ['50%', '35%'],
-            }
-            ].map(function (item) {
-                return $.extend(true, {}, item, opt_liquidfill_series);
-            })
-        });
+    	$.post("/credit/orderStatistic/orderListintface",{"type":"6"},function(data){
+    		
+       		$.each(data,function(index,item){
+       			var xAxisData="";
+           		var seriesData=[];
+       			console.info(index+"kkkkkkkk"+item.num/100+"ppp"+item.name);
+       			xAxisData=item.name;
+       			seriesData.push(item.num/100);
+       			
+       			var html='<li><div id="echarts_09_'+index+'" style="width: 100%;height:100%"></div></li>'
+       			$('ul.swiper-slide').append(html);
+       			let ec001_pie = echarts.init($("#echarts_09_"+index)[0]);
+             ec001_pie.clear();
+             //ec001_pie.setOption(opt_liquidfill_series);
+             ec001_pie.setOption({
+            	 title: {
+                     text: xAxisData,
+                     textStyle: {
+                         fontSize: 12 * bodyScale,
+                         color: '#666'
+                     },
+                     left: '48%',
+                     top: '1%',
+                     textAlign: 'center',
+                     textBaseAlign: 'middle'
+                 },
+                 series: [{
+                     type: 'liquidFill',
+                     data: seriesData,
+                     center: ['50%', '57%'],
+                 }
+                 ].map(function (item) {
+                     return $.extend(true, {}, item, opt_liquidfill_series);
+                 })
+             });
+       		});
+    	})
+       
     },
-    initEcharts09_02() {
-        let ec001_pie = echarts.init($("#echarts_09_02")[0]);
-        ec001_pie.clear();
-        //ec001_pie.setOption(opt_liquidfill_series);
-        ec001_pie.setOption({
-            series: [{
-                type: 'liquidFill',
-                data: [0.7],
-                center: ['50%', '35%'],
-            }
-            ].map(function (item) {
-                return $.extend(true, {}, item, opt_liquidfill_series);
-            })
-        });
-    },
-    initEcharts09_03() {
-        let ec001_pie = echarts.init($("#echarts_09_03")[0]);
-        ec001_pie.clear();
-        //ec001_pie.setOption(opt_liquidfill_series);
-        ec001_pie.setOption({
-            series: [{
-                type: 'liquidFill',
-                data: [0.7],
-                center: ['50%', '35%'],
-            }
-            ].map(function (item) {
-                return $.extend(true, {}, item, opt_liquidfill_series);
-            })
-        });
-    },
-    initEcharts09_04() {
-        let ec001_pie = echarts.init($("#echarts_09_04")[0]);
-        ec001_pie.clear();
-        //ec001_pie.setOption(opt_liquidfill_series);
-        ec001_pie.setOption({
-            series: [{
-                type: 'liquidFill',
-                data: [0.7],
-                center: ['50%', '35%'],
-            }
-            ].map(function (item) {
-                return $.extend(true, {}, item, opt_liquidfill_series);
-            })
-        });
-    },
-    initEcharts09_05() {
-        let ec001_pie = echarts.init($("#echarts_09_05")[0]);
-        ec001_pie.clear();
-        //ec001_pie.setOption(opt_liquidfill_series);
-        ec001_pie.setOption({
-            series: [{
-                type: 'liquidFill',
-                data: [0.7],
-                center: ['50%', '35%'],
-            }
-            ].map(function (item) {
-                return $.extend(true, {}, item, opt_liquidfill_series);
-            })
-        });
-    },
-    initEcharts09_06() {
-        let ec001_pie = echarts.init($("#echarts_09_06")[0]);
-        ec001_pie.clear();
-        //ec001_pie.setOption(opt_liquidfill_series);
-        ec001_pie.setOption({
-            series: [{
-                type: 'liquidFill',
-                data: [0.7],
-                center: ['50%', '35%'],
-            }
-            ].map(function (item) {
-                return $.extend(true, {}, item, opt_liquidfill_series);
-            })
-        });
-    },
+   
     /*各员工当日情况*/
     initTable(data) {
     	var data=$("#dead_date1").val(); 
     	console.info(data);
-    	data.substring
+//    	data.substring
     	
         const $table = $('#table');
         let _this = this
@@ -636,8 +704,11 @@ let Filing = {
                     align: 'center',
                 }
             ],
-             url : '/credit/orderStatistic/customDay?time='+data, // 请求后台的URL（*）
+             url : '/credit/orderStatistic/customDay', // 请求后台的URL（*）
              method : 'get', // 请求方式（*）post/get
+             data:{
+            	 time:data
+             },
             pagination: false, //分页
             sidePagination: 'server',
             pageNumber: 1,
@@ -648,12 +719,14 @@ let Filing = {
             locales: 'zh-CN',
             fixedColumns: false,
             fixedNumber: 1,
-            queryParamsType: '',
+            queryParamsType: "",
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
                 console.log(params)
+                let time = $("#dead_date1").val();
                 return {//这里的params是table提供的
                 	sortName: params.sortName,//从数据库第几条记录开始
-                	sortOrder: params.sortOrder//找多少条
+                	sortOrder: params.sortOrder,
+                	time
                 };
             },
         });

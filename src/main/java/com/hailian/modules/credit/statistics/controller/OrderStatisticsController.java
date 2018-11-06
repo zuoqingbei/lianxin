@@ -11,6 +11,7 @@ import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
+import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.statistics.model.OrderStatisticsModel;
 import com.hailian.modules.credit.statistics.service.OrderStatisticsService;
 import com.hailian.modules.credit.usercenter.model.ResultType;
@@ -50,6 +51,8 @@ public class OrderStatisticsController extends BaseProjectController{
 	    setAttr("year", year.size());
 	    OrderStatisticsModel yearRate= OrderStatisticsService.service.getRatebyYear();
 	    setAttr("yearRate", yearRate);
+	    List<CustomInfoModel> customer=CustomInfoModel.dao.getAllcutomer();
+	    setAttr("customer", customer);
 	  
 	 render(path);
 	}
@@ -103,7 +106,7 @@ public class OrderStatisticsController extends BaseProjectController{
 	public void Ordermap(){
 		 String customId=getPara("customId");
 	List<OrderStatisticsModel> country =	   OrderStatisticsService.service.getCountry(customId);
-	 setAttr("country", country);
+	 renderJson(country);
 	}
 	/**
 	 * 
@@ -155,4 +158,5 @@ public class OrderStatisticsController extends BaseProjectController{
 	ResultType resultType=new ResultType(total,rows); 
 	renderJson(resultType);
 	}
+
 }
