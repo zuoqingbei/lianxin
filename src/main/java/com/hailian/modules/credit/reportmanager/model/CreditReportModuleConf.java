@@ -18,6 +18,8 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final long DefaultModule = -1L;
+	private static final long TabFixed = -2L;
 	public static final CreditReportModuleConf dao = new CreditReportModuleConf();//名字都叫dao，统一命名
 	public Page<CreditReportModuleConf> findTemps(CreditReportModuleConf temp, Paginator pageinator,
 			BaseProjectController c) {
@@ -105,13 +107,30 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 				+ ",t1.temp_name as parentTempName "+sql.toString(),id);
 	}
 	/**
+	 * Author:lzg
 	 * 默认模块
+	 * 依据small_module_type=-1
 	 * @return
 	 */
 	public List<CreditReportModuleConf> getDefaultModule() {
-		String sql = "select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.id=1 or parent_temp=1 order by sort,id";
-		return dao.find(sql);
+		String sql = "select a.*  from credit_report_module_conf a "
+					+ "where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=?) "
+					+ "or  small_module_type=? "
+					+ "order by sort,id";
+		return dao.find(sql,DefaultModule,DefaultModule);
+	}
+	/**
+	 * Author:lzg
+	 * 获取带锚点模板
+	 * 依据small_module_type=-2
+	 * @return
+	 */
+	public List<CreditReportModuleConf> getTabFixed() {
+		 String sql = "select a.*  from credit_report_module_conf a "
+					+ "where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=?) "
+					+ "or  small_module_type=? "
+					+ "order by sort,id";
+		return dao.find(sql,TabFixed,TabFixed);
 	}
 	
 }
