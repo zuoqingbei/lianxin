@@ -13,7 +13,8 @@ let Index = {
     dateForm(){
         /**日期控件 */
         laydate.render({
-            elem: '#dead_date'
+            elem: '#dead_date',
+            format: 'yyyy年MM月dd日'
         });
     }, 
     popperFilter(){
