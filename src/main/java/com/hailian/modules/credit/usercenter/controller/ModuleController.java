@@ -60,7 +60,7 @@ public class ModuleController extends BaseProjectController{
 		for(CreditReportModuleConf crmc:crmcs) {
 			//找到当前父节点下的子节点
 			List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),report);
-			list.add(new ModuleJsonData(crmc.getStr("temp_name"),child,crmc.getStr("small_module_type")));
+			list.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));
 		}
 		System.out.println("运行时间===================================="+(double)(new Date().getTime()-start));
 		
