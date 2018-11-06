@@ -92,12 +92,13 @@
     height: 100%;
     font-size: 1rem;
 }
-.total-order-top ul li div:first-of-type{
+/*.total-order-top ul li div:first-of-type{
     text-align: center;
     padding-top: 0.5rem;
-}
+}*/
 .swiper-button-next, .swiper-button-prev{
     height: 2.3rem;
+    top: 65%;
 }
 
 
