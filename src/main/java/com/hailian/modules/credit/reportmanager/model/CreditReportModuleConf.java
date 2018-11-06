@@ -90,7 +90,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	}
 	public List<CreditReportModuleConf> findReportType() {
 		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.parent_temp=999 order by sort,id";
+				+ " t.del_flag=0 and t.parent_temp=-9999999 order by sort,id";
 		return dao.find(sql);
 	}
 	public CreditReportModuleConf findReportModuleById(String id) {
@@ -110,7 +110,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 */
 	public List<CreditReportModuleConf> getDefaultModule() {
 		String sql = "select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.small_module_type=-1 or parent_temp=-1 order by sort,id";
+				+ " t.del_flag=0 and t.id=1 or parent_temp=1 order by sort,id";
 		return dao.find(sql);
 	}
 	

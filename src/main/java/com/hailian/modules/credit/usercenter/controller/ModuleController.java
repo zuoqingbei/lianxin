@@ -2,10 +2,8 @@ package com.hailian.modules.credit.usercenter.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-
-import org.apache.xalan.xsltc.compiler.util.ResultTreeType;
-
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -55,18 +53,20 @@ public class ModuleController extends BaseProjectController{
 		List<ModuleJsonData> list = new ArrayList<ModuleJsonData>();
 		//获取默认模板
 		List<CreditReportModuleConf> defaultModule = CreditReportModuleConf.dao.getDefaultModule();
-		defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
+		double start = new Date().getTime();
+		//defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
 		for(CreditReportModuleConf crmc:crmcs) {
 			//找到当前父节点下的子节点
 			List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),report);
 			//移除无用字段
-			child.forEach((CreditReportModuleConf model)->{
+			/*child.forEach((CreditReportModuleConf model)->{
 				List<CreditReportModuleConf> grandSon = CreditReportModuleConf.dao.findSon(model.get("id").toString(),report);
 				model.put("grandSon", grandSon);
 				model.removeNullValueAttrs().remove("del_flag");}
-					);
+					);*/
 			list.add(new ModuleJsonData(crmc.getStr("temp_name"),child,crmc.getStr("small_module_type")));
 		}
+		System.out.println("运行时间===================================="+(double)(new Date().getTime()-start));
 		Record record = new Record();
 		record.set("defaultModule",defaultModule);
 		record.set("modules",list);
