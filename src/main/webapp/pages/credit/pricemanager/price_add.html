@@ -60,17 +60,30 @@ var oper = {
 			//重置其他客户的数据
 			$(".othersonly input").val("")
 			$(".othersonly select").val("")
+			console.log($("select[name='model.order_speed']").find("option:selected").val())
+			console.log($("select[name='model.report_type']").find("option:selected").val())
 		}else if(value=="399"){
 			//399客户需要填写国家
 			$(".old").addClass("hide");
 			$(".custom399").removeClass("hide");
+			//重置其他客户的数据
 			$(".othersonly input").val("")
 			$(".othersonly select").val("")
-			$(".")
+			$(".only373 input").val("")
+			$(".only373 select").val("")
+			console.log($("select[name='model.order_speed']").find("option:selected").val())
+			console.log($("select[name='model.report_type']").find("option:selected").val())
+			console.log($("select[name='model.ordernums_range_start']").find("option:selected").val())
+			console.log($("input[name='model.ordernums_range_end']").val())
 		}else{
 			//其他客户需要填写国家,报告类型,速度
 			$(".old").addClass("hide");
 			$(".others").removeClass("hide");
+			//重置其他客户的数据
+			$(".only373 input").val("")
+			$(".only373 select").val("")
+			console.log($("select[name='model.ordernums_range_start']").find("option:selected").val())
+			console.log($("input[name='model.ordernums_range_end']").val())
 		}
 	},
 	startChange:function(){
@@ -181,7 +194,7 @@ var bodyContent = {
 	<tr class="old custom373 custom399 others">
 		<td>请选择国家</td>
 		<td>
-		<select name="model.country_type" class="form-control" style="width: 200px;">
+		<select name="model.country_id" class="form-control" style="width: 200px;">
 			${country!}
 		</select>
 		</td>

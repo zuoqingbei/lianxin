@@ -446,14 +446,15 @@ public class OrdermanagerController extends BaseProjectController{
 		if("0".equals(cci.getStr("is_old_customer"))) {
 			//3种不同类型老客户
 			if("373".equals(customid)) {
-				//获取本月的第一天和最后一天
+				//获取上月的第5天
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				 Calendar c = Calendar.getInstance();    
-				 c.add(Calendar.MONTH, 0);
-				 c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天 
+				 c.add(Calendar.MONTH, -1);//上月
+				 c.set(Calendar.DAY_OF_MONTH,5);//设置为5号,当前日期既为上月第5天 
 				 String first = format.format(c.getTime());
-				 Calendar ca = Calendar.getInstance();    
-				 ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));  
+				 Calendar ca = Calendar.getInstance();
+				 ca.add(Calendar.MONTH, 1);//本月
+				 ca.set(Calendar.DAY_OF_MONTH, 5);//本月5日  
 				 String last = format.format(ca.getTime());
 				//此客户依据每月订单量和国家决定订单价格
 				//求该客户的该月订单量

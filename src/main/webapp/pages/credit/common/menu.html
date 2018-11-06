@@ -53,12 +53,12 @@
                 <!-- 菜单 -->
                 <div class="left-nav">
                     <ul>
-                     <% for(item in menu[0]) { %>
+                    <% for(item in menu[0]) { %>
                      	<% if(menu[item.id].~size > 0) { %>
-							<% if(item.name=="订单管理") { %>
+							<% if(item.style!=null&&item.icon==null) { %>
 					<li id="${item.urlkey}" role="presentation" class="hasChild">
 				    <a class="menu1"  href="#" role="button" >
-				    	<i class="fa fa-wpforms fa-fw"></i>
+				    	<i class="${item.style}"></i>
 				     	<span > ${item.name}</span>
 				    </a>
 				    <ul style="display: none;" role="menu">
@@ -68,10 +68,10 @@
 				<% } %>
 					</ul>
 		  		</li>
-		  		<%} if(item.name=="报告管理"){%>
+		  		<%} if(item.icon!=null&&item.style==null){%>
 		  		<li id="${item.urlkey}" role="presentation" class="hasChild">
 				    <a class="menu1"  href="#" role="button" >
-				    	<img src="${BASE_PATH }static/credit/imgs/index/icons8-report.png" alt="" class="menu-icon">
+				    	<img src="${BASE_PATH }${item.icon}" alt="" class="menu-icon">
 				     	<span > ${item.name}</span>
 				    </a>
 				    <ul style="display: none;" role="menu">
@@ -79,55 +79,16 @@
 				<%  for(item2 in menu[item.id]) { %>
 					<li id="${item2.urlkey}"><a class="menu2" role="menuitem"  href="${item2.url}">${item2.name}</a></li>
 				<% } %>
-					</ul>
-		  		</li>
-		  		<%}if(item.name=="统计信息"){%>
-		  		<li id="${item.urlkey}" role="presentation" class="hasChild">
-				    <a class="menu1"  href="#" role="button" >
-				    	<i class="fa fa-pie-chart fa-fw"></i>
-				     	<span > ${item.name}</span>
-				    </a>
-				    <ul style="display: none;" role="menu">
-				    		
-				<%  for(item2 in menu[item.id]) { %>
-					<li id="${item2.urlkey}"><a class="menu2" role="menuitem"  href="${item2.url}">${item2.name}</a></li>
-				<% } %>
-				</ul>
-		  		</li>
-		  		<% }if(item.name=="消息管理"){%>
-		  		<li id="${item.urlkey}" role="presentation" class="hasChild">
-				    <a class="menu1"  href="#" role="button" >
-				    	 <i class="fa fa-bell fa-fw"></i>
-				     	<span > ${item.name}</span>
-				    </a>
-				    <ul style="display: none;" role="menu">
-				    		
-				<%  for(item2 in menu[item.id]) { %>
-					<li id="${item2.urlkey}"><a class="menu2" role="menuitem"  href="${item2.url}">${item2.name}</a></li>
-				<% }%>
-				</ul>
-		  		</li>
-		  		<%} if(item.name=="设置"){%>
-		  		<li id="${item.urlkey}" role="presentation" class="hasChild">
-				    <a class="menu1"  href="#" role="button" >
-				    	 <i class="fa fa-cog fa-fw"></i>
-				     	<span > ${item.name}</span>
-				    </a>
-				    <ul style="display: none;" role="menu">
-				    		
-				<%  for(item2 in menu[item.id]) { %>
-					<li id="${item2.urlkey}"><a class="menu2" role="menuitem"  href="${item2.url}">${item2.name}</a></li>
-				<% }%>
 					</ul>
 		  		</li>
 		  		<%}%>
 		  		
+		  		
 			<% } else { %>
-				<% if(item.name=="工作台"){%>
-					<li class="" id="${item.urlkey}"><a class="menu1" href="${item.url}"><i class="fa fa-home fa-fw"></i>${item.name}</a></li>
-				<%}%>
-				<% if(item.name=="全部订单"){%>
-					<li id="${item.urlkey}"><a class="menu1" href="${item.url}"> <img src="${BASE_PATH }static/credit/imgs/index/icons8-allm.png" alt="" class="menu-icon">${item.name}</a></li>
+				<% if(item.class!=null&&item.icon==null){%>
+					<li class="" id="${item.urlkey}"><a class="menu1" href="${item.url}"><i class="${item.style}"></i>${item.name}</a></li>
+				<%}else{%>
+					<li id="${item.urlkey}"><a class="menu1" href="${item.url}"> <img src="${BASE_PATH }${item.icon}" alt="" class="menu-icon">${item.name}</a></li>
 				<%}%>
 			<% } %>
 		<% } %>
