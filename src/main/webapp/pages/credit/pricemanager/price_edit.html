@@ -3,6 +3,8 @@
 <% var countrytype = tempDict.getSysDictDetailString('country',model.country_type !); %>
 <% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled !); %>
 <% var reportType = reportType.getReportTypeString(model.report_type!); %>
+<% var country = country.getCountryString(model.country_id !); %>
+
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -20,9 +22,12 @@ var oper = {
 		form1.action = url;
 		form1.submit();
 		return true;
-	}	
-	
+	}		
 };
+
+</script>
+<script type="text/javascript">
+console.log('${model.versions}');
 </script>
 <style>
 .tags {
@@ -66,9 +71,18 @@ var bodyContent = {
 	<table class="table">
 	<tr>
 			<td>版本</td>
-			 <td><input type="text" name="model.versions" class="form-control" 
-				value="标准版"/></td>	
-		</tr>
+			 <td>
+			 	<select  name="model.versions" class="form-control" >
+			 		<%if("标准版"==model.versions){%>
+			 			<option selected="selected" value="标准版">标准版</option>
+			 			<option  value="老系统">老系统</option>
+			 		<%}else{%>
+			 			<option selected="selected" value="老系统">老系统</option>
+			 			<option  value="标准版">标准版</option>
+			 		<%}%>
+			 	</select>
+			</td>	
+	</tr>
 		<tr>
 			<td>报告速度</td>
 			<td>
@@ -91,11 +105,21 @@ var bodyContent = {
 						${ordertype!}
 			</select> </td>
 		</tr>
-			<tr>
+		<tr>
+			<td>国家类型</td>
+			<td>
+				<select name="model.country_type" class="form-control" style="width: 200px;">
+							${countrytype!}
+				</select>
+			 </td>
+		</tr>
+		<tr>
 			<td>国家</td>
-			<td><select name="model.country_type" class="form-control" style="width: 200px;">
-						${countrytype!}
-			</select> </td>
+			<td>
+				<select name="model.country_id" class="form-control" style="width: 200px;">
+							${country!}
+				</select>
+			 </td>
 		</tr>
 		<tr>
 			<td>报告点数</td>

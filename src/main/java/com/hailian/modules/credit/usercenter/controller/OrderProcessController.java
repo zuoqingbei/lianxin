@@ -497,8 +497,8 @@ public class OrderProcessController extends BaseProjectController{
 		String orderId = getPara("orderId");
 		List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"" , this);
 		for (CreditUploadFileModel creditUploadFileModel : files) {
-			creditUploadFileModel.set("view_url","http://"+ searverPort+"/"+creditUploadFileModel.get("view_url"));
-			creditUploadFileModel.set("url","http://"+ searverPort+"/"+creditUploadFileModel.get("url"));
+			creditUploadFileModel.set("view_url","http://"+ ip + ":" + searverPort+"/"+creditUploadFileModel.get("view_url"));
+			creditUploadFileModel.set("url","http://"+ ip + ":" + searverPort+"/"+creditUploadFileModel.get("url"));
 		}
 		ResultType result = new ResultType();
 		result.setFiles(files);

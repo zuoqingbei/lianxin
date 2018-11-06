@@ -139,6 +139,11 @@ let
 			});
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
+				var value=$("#priceid").val();
+				if(value==0){
+					Public.message("error","未发现该报告价格,请联系管理员");
+					return;
+				}
 				$("input[name='attr.status']").val("291");
 					$("#orderForm").ajaxSubmit({
 						success:function(data){

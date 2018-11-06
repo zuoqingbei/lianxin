@@ -104,6 +104,18 @@ let ReportConfig = {
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 							            			break;
+							            		case 'select':
+							            			let url = BASE_PATH + item.data_source
+							            			$.get(url,(data)=>{
+							            				console.log(data)
+							            			})
+							            			formGroup += `<div class="form-group">
+										                                <label for="" class="mb-2">${item.temp_name}</label>
+										                                <select name="" id="" class="form-control">
+										                                    <option value="" selected></option>
+										                                </select>
+										                            </div>`
+							            			break;
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>

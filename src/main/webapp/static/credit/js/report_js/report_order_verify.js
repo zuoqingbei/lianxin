@@ -15,7 +15,7 @@ let Verify = {
         $(".fixed-table-body-columns table tbody").click(function(e){
             e = e || window.event;
             let order_num = $(e.target).text();
-            window.location.href = 'order_detail.html?order_num='+order_num;
+           // window.location.href = 'order_detail.html?order_num='+order_num;
         })
     },
     modalSubmit(){
@@ -154,7 +154,7 @@ let Verify = {
                     align: 'center',
                     valign: 'middle',
                     formatter:function(value,row,index){ 
-                    	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  '; 
+                    	return '<a href="javascript:;" style="color:#1890ff" onclick="orderinfo(' + row.id + ')">' + value + '</a>  '; 
                     } 
                   },{
                     field: 'receiver_date',
@@ -306,5 +306,8 @@ let Verify = {
     }
 };
 
-
+function orderinfo(id){
+			Public.goToOrderDetail(id)
+			return;
+		};
 Verify.init();
