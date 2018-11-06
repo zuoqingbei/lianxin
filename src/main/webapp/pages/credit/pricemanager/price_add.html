@@ -1,3 +1,283 @@
+<% var orderspeed = tempDict.getSysDictDetailString('orderspeed',model.order_speed !); %>
+<% var ordertype = tempDict.getSysDictDetailString('ordertype',model.order_type !); %>
+<% var countrytype = tempDict.getSysDictDetailString('country',model.country_type !); %>
+<% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled !); %>
+<% var reportType = reportType.getReportTypeString(model.report_type!); %>
+<% var country = country.getCountryString(); %>
+
 <% 
-	include("price_edit.html"){}
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+	include("/pages/includes/my97.html"){}
 %>
+<script type="text/javascript">
+var oper = {
+	save:function(id){
+		if(!validForm()) {
+			return false;
+		}
+		id = id || '0';
+		var url = 'credit/pricemanager/save?id='+id;
+		form1.action = url;
+		form1.submit();
+		return true;
+	},
+	
+	versionChange:function(){
+		var value=$("select[name='model.versions']").find("option:selected").val();
+		if(value=="标准版"){
+			//重置老版本输出
+			$(".old input").val("");
+    		$(".old select").val("");
+			//隐藏老版本
+			$(".old").addClass("hide");
+			$(".new").removeClass("hide")
+		}else if(value=="老系统"){
+			//重置新版本输出
+			$(".new input").val("");
+    		$(".new select").val("");
+			//隐藏新版本
+			$(".new").addClass("hide");
+			$(".old").removeClass("hide")
+		}else{
+			//隐藏新老版本
+			$(".old").addClass("hide");
+			$(".new").addClass("hide");
+			//重置新老版本输出
+			$(".new input").val("");
+    		$(".new select").val("");
+    		$(".old input").val("");
+    		$(".old select").val("");
+		}		
+	},
+	customChange:function(){
+		var value=$("select[name='custom']").find("option:selected").val();
+		if(value=="373"){
+			//373客户,需要填写每月订单上下限,国家
+			$(".old").addClass("hide");
+			$(".custom373").removeClass("hide");
+			//重置其他客户的数据
+			$(".othersonly input").val("")
+			$(".othersonly select").val("")
+			console.log($("select[name='model.order_speed']").find("option:selected").val())
+			console.log($("select[name='model.report_type']").find("option:selected").val())
+		}else if(value=="399"){
+			//399客户需要填写国家
+			$(".old").addClass("hide");
+			$(".custom399").removeClass("hide");
+			//重置其他客户的数据
+			$(".othersonly input").val("")
+			$(".othersonly select").val("")
+			$(".only373 input").val("")
+			$(".only373 select").val("")
+			console.log($("select[name='model.order_speed']").find("option:selected").val())
+			console.log($("select[name='model.report_type']").find("option:selected").val())
+			console.log($("select[name='model.ordernums_range_start']").find("option:selected").val())
+			console.log($("input[name='model.ordernums_range_end']").val())
+		}else{
+			//其他客户需要填写国家,报告类型,速度
+			$(".old").addClass("hide");
+			$(".others").removeClass("hide");
+			//重置其他客户的数据
+			$(".only373 input").val("")
+			$(".only373 select").val("")
+			console.log($("select[name='model.ordernums_range_start']").find("option:selected").val())
+			console.log($("input[name='model.ordernums_range_end']").val())
+		}
+	},
+	startChange:function(){
+		var value=$("select[name='model.ordernums_range_start']").find("option:selected").val();
+		if(value=="0"){
+			$("input[name='model.ordernums_range_end']").val(10);
+		}else if(value=="11"){
+			$("input[name='model.ordernums_range_end']").val(30);
+		}else if(value=="31"){
+			$("input[name='model.ordernums_range_end']").val(50);
+		}else if(value=="51"){
+			$("input[name='model.ordernums_range_end']").val(100);
+		}else if(value=="101"){
+			$("input[name='model.ordernums_range_end']").val(200);
+		}else if(value=="201"){
+			$("input[name='model.ordernums_range_end']").val(300);
+		}else if(value=="301"){
+			$("input[name='model.ordernums_range_end']").val(9999);
+		}
+		
+	}
+	
+};
+$(function(){
+	oper.versionChange();
+})
+</script>
+<style>
+.tags {
+	line-height: 22px;
+	height: 22px;
+	border-top: 1px solid rgb(210, 210, 210);
+}
+
+.tags .tags_label {
+	float: left;
+	margin-right: 20px;
+	margin-left: 5px;
+	padding: 5px 1px 1px 3px;
+}
+
+.tags .tags_content {
+	float: left;
+	width: 500px;
+	margin: 5px 5px 0 0;
+	padding: 1px;
+	border: 1px solid #ccc;
+	background: #fff;
+	vertical-align: middle;
+}
+
+.tags .tags_remark {
+	padding: 5px 1px 1px 3px;
+	color: #999999;
+	font-size: 12px;
+	z-index: 10000;
+}
+.hide{
+	display:none
+}
+</style>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal">
+	<input type="hidden" name="model.id" value=" ${model.id}" />
+	<!-- 数据列表 -->
+	<table class="table">
+	<tr>
+			<td>版本</td>
+			 <td>
+			 	<select onchange="oper.versionChange()"  name="model.versions" valid="vselect" validname="请选择版本" class="form-control" style="width: 200px;">
+			 		<option selected="selected" value="">请选择版本</option>
+			 		<option value="标准版">标准版</option>
+			 		<option value="老系统">老系统</option>
+			 	</select>
+			</td>	
+	</tr>
+	<tr class="old custom373 custom399 others">
+		<td>请选择客户类型</td>
+		<td>
+			  <select onchange="oper.customChange()" name="custom" class="form-control" style="width: 200px;">
+					<option selected="selected" value="">请选择客户类型</option>
+			 		<option value="373">373</option>
+			 		<option value="399">399</option>
+			 		<option value="-1">其他</option>	
+			  </select>
+		</td>
+	</tr>
+	<tr class="old custom373 only373">
+		<td>请选择每月订单下限</td>
+		<td>
+			<select onchange="oper.startChange()" name="model.ordernums_range_start" class="form-control" style="width: 200px;">
+					<option selected="selected" value="">请选择每月订单下限</option>
+					<option value="0">0</option>
+			 		<option value="11">11</option>
+			 		<option value="31">31</option>
+			 		<option value="51">51</option>
+			 		<option value="101">101</option>
+			 		<option value="201">201</option>
+			 		<option value="301">301</option>	
+			  </select>
+		</td>
+		<input type="hidden" vlue="" name="model.ordernums_range_end">
+	</tr>
+	<tr class="old custom373 custom399 others">
+		<td>请选择国家</td>
+		<td>
+		<select name="model.country_id" class="form-control" style="width: 200px;">
+			${country!}
+		</select>
+		</td>
+	</tr>
+	<tr class="old others othersonly">
+		<td>报告速度</td>
+			<td>
+			  <select name="model.order_speed" class="form-control" style="width: 200px;">
+					${orderspeed!}
+				</select>
+			</td>
+	</tr>
+	<tr class="old others othersonly">
+		<td>报告类型</td>
+			 <td> 
+				 <select name="model.report_type" class="form-control" style="width: 200px;">
+							${reportType!}
+				</select> 
+			</td>
+	</tr>
+		<tr class="new">
+			<td>报告速度</td>
+			<td>
+			  <select name="model.order_speed" class="form-control" style="width: 200px;">
+					${orderspeed!}
+				</select>
+			</td>
+		</tr>
+		<tr  class="new">
+			<td>报告类型</td>
+			 <td> 
+				 <select name="model.report_type" class="form-control" style="width: 200px;">
+							${reportType!}
+				</select> 
+			</td>
+		</tr>
+		<tr  class="new">
+			<td>订单类型</td>
+			<td>  <select name="model.order_type" class="form-control" style="width: 200px;">
+						${ordertype!}
+			</select> </td>
+		</tr>
+		<tr  class="new">
+			<td>国家</td>
+			<td><select name="model.country_type" class="form-control" style="width: 200px;">
+						${countrytype!}
+			</select> </td>
+		</tr>
+		<tr >
+			<td>报告点数</td>
+			<td><input type="text" name="model.points" class="form-control" valid='vnum_y' 
+				value="${model.points!}" /></td>
+		</tr>
+		<tr >
+			<td>报告价格</td>
+			<td><input type="text" name="model.price" class="form-control" valid='vnum_y' 
+				value="${model.price!}"/></td>
+		</tr  class="new">
+		<tr  >
+			<td>币种</td>
+			<td><input type="text" name="model.currency" class="form-control" 
+				value="${model.currency!}"/></td>
+		</tr>
+		<tr >
+			<td>是否禁用</td>
+			<td> <select name="model.usabled" class="form-control" style="width: 200px;">
+					${usabled!}
+			</select>
+			</td>
+		</tr>
+	</table>
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+	  		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">确定</button>
+			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+<%} %>
+
+

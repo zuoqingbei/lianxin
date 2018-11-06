@@ -9,13 +9,14 @@
 			var menus = $("#menus").val().split(",");
 			for(var i = 0 ; i < menus.length ; i++){
 				if(menus[i]!='') {
-					$("[id^='menu_"+menus[i]+"']").attr("checked","checked"); 
-					$("[id^='menu_"+menus[i]+"']").prop("checked","checked"); 
+					console.log(menus[i])
+					$("[id='menu_"+menus[i]+"']").attr("checked","checked"); 
+					$("[id='menu_"+menus[i]+"']").prop("checked","checked"); 
 				}
 			}
 			
 			// 复选框绑定点击事件
-			$("[id^='menu']").on("click",function(){
+		 	$("[id^='menu']").on("click",function(){
 				var arr = $(this).attr("id").split("_");
 				var parentid = arr[2];
 				var thisid = arr[1];
@@ -31,7 +32,7 @@
 					$("[id^='menu_"+ parentid +"_']").attr("checked",$(this).is(":checked")); 
 					$("[id^='menu_"+ parentid +"_']").prop("checked",$(this).is(":checked")); 
 				}
-			});
+			}); 
 			
 		});
 		
@@ -74,7 +75,7 @@ var bodyContent = {
 				<li class="list-group-item list-group-item-info">
 				  <div class="checkbox">
 				    <label>
-				      <input type="checkbox" name="menu" id="menu_${item.id}_0" value="${item.id}">&nbsp;&nbsp;&nbsp;&nbsp;${item.name}
+				      <input type="checkbox" name="menu" id="menu_${item.id}" value="${item.id}">&nbsp;&nbsp;&nbsp;&nbsp;${item.name}
 				    </label>
 				  </div>
 				</li>
@@ -84,7 +85,7 @@ var bodyContent = {
 				  <div class="checkbox" style="padding-left: 20px;">
 				    <label>
 					  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				      <input type="checkbox" name="menu" id="menu_${item2.id}_${item.id}" value="${item2.id}">&nbsp;&nbsp;&nbsp;&nbsp;${item2.name}
+				      <input type="checkbox" name="menu" id="menu_${item2.id}" value="${item2.id}">&nbsp;&nbsp;&nbsp;&nbsp;${item2.name}
 				    </label>
 				  </div>
 				</li>
@@ -94,7 +95,7 @@ var bodyContent = {
 							  <div class="checkbox" style="padding-left: 40px;">
 							    <label>
 								  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							      <input type="checkbox" name="menu" id="menu_${item3.id}_${item2.id}" value="${item3.id}">&nbsp;&nbsp;&nbsp;&nbsp;${item3.name}
+							      <input type="checkbox" name="menu" id="menu_${item3.id}" value="${item3.id}">&nbsp;&nbsp;&nbsp;&nbsp;${item3.name}
 							    </label>
 							  </div>
 							</li>

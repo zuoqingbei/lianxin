@@ -33,10 +33,10 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_report_module_conf t ");
 		sql.append(" left join credit_report_type c on c.id=t.report_type ");
-		sql.append(" left join sys_user s on s.userid=t.create ");
-		sql.append(" left join sys_user s1 on s1.userid=t.update ");
+		sql.append(" left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_user s1 on s1.userid=t.update_by ");
 		sql.append(" left join credit_report_module_conf t1 on t1.id=t.parent_temp ");
-		sql.append(" where t.del_flag=0 and 1=1 ");
+		sql.append(" where t.del_flag=0 and t.parent_temp is not null and t.parent_temp !='' and 1=1 ");
 		if (!c.isAdmin(c.getSessionUser())) {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());
@@ -50,7 +50,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 			params.add(temp_name);
 		}
 		if (StringUtils.isNotBlank(create)) {
-			sql.append(" and t.create=?");
+			sql.append(" and t.create_by=?");
 			params.add(create);
 		}
 		Page<CreditReportModuleConf> page = dao
@@ -99,8 +99,8 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 		StringBuffer sql = new StringBuffer();
 		sql.append(" from credit_report_module_conf t ");
 		sql.append(" left join credit_report_type c on c.id=t.report_type ");
-		sql.append(" left join sys_user s on s.userid=t.create ");
-		sql.append(" left join sys_user s1 on s1.userid=t.update ");
+		sql.append(" left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_user s1 on s1.userid=t.update_by ");
 		sql.append(" left join credit_report_module_conf t1 on t1.id=t.parent_temp ");
 		sql.append(" where t.del_flag=0 and 1=1 and t.id=? order by sort,id");
 		return dao.findFirst("select t.*,c.name as reportName,s.username as createName,s1.username as updateName"

@@ -101,9 +101,9 @@ public class UserSvc extends BaseService {
 		String menuids = "select menuid from sys_role_menu where roleid in"
 				+ " ( select roleid from sys_user_role where userid = ? )  group by menuid";
 		// 管理员
-		if (user.getInt("usertype") == 1) {
+		/*if (user.getInt("usertype") == 1) {
 			menuids = " select id from sys_menu where -1 != ? "; // 所有菜单
-		}
+		}*/
 
 		Integer userid = user.getUserid();
 		Map<Integer, List<SysMenu>> map = new HashMap<Integer, List<SysMenu>>();
