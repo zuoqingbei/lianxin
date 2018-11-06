@@ -126,11 +126,10 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 * @return
 	 */
 	public List<CreditReportModuleConf> getTabFixed() {
-		 String sql = "select a.*  from credit_report_module_conf a "
-					+ "where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=?) "
-					+ "or  small_module_type=? "
-					+ "order by sort,id";
-		return dao.find(sql,TabFixed,TabFixed);
+		 String sql = "select a.*  from credit_report_module_conf a where a.small_module_type=? ";
+			return dao.find(sql,TabFixed);
 	}
+		
+	
 	
 }

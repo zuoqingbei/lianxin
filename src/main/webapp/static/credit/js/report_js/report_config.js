@@ -72,7 +72,6 @@ let ReportConfig = {
     	})
     },
     initTable(){
-    	console.log(this.idArr,this.contentsArr)
         let _this = this
         
         this.idArr.forEach((item,index)=>{
@@ -174,7 +173,7 @@ let ReportConfig = {
                 	/**
                 	 * 循环模块
                 	 */
-                	contentHtml +=  `<div class="bg-f"><div class="l-title">${item.title}</div>`
+                	contentHtml +=  `<div class="bg-f"><div class="l-title">${item.title.temp_name}</div>`
                 	let formArr = item.contents; 
                 	//模块的类型
                 	let smallModileType = item.smallModileType
@@ -267,7 +266,7 @@ let ReportConfig = {
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-5 " type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}">+ 新增信息</button>
+				                				<button class="btn btn-lg btn-block mb-5 " type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}">+ ${item.place_hold}</button>
                 				</div>`
                 		
                 			break; 
