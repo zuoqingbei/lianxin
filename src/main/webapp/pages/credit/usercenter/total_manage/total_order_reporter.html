@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/total_manage/total_manage_common.css">
+</head>
+<body>
+<div id="container" class="row animated fadeIn">
+    <div class="main">
+        <div class="table-content">
+            <div class="row table-content-echarts mb-3">
+                <div class="col echart-box mr-3 ">
+                    <div class="echarts-top">
+                        <div class="echart-title">订单量趋势图</div>
+                        <div class="btn-group" role="group" aria-label="Basic example" id="orderTennder">
+                                <button type="button" class="btn btn_active">周</button>
+                                <button type="button" class="btn">月</button>
+                                <button type="button" class="btn">年</button>
+                        </div>
+                    </div>
+                    <div id="echarts_01" style="width: 100%;height:85%"></div>
+                </div>
+                <div class="col echart-box">
+                    <div class="echarts-top">
+                        <div class="echart-title">订单延误率</div>
+                        <div class="btn-group" role="group" aria-label="Basic example" id="orderDelay">
+                            <button type="button" class="btn btn_active">周</button>
+                            <button type="button" class="btn">月</button>
+                            <button type="button" class="btn">年</button>
+                        </div>
+                    </div>
+                    <div id="echarts_02" style="width: 100%;height:85%"></div>
+                </div>
+            </div>
+            <div class="row table-content-echarts">
+                <div class="col echart-box mr-3">
+                    <div class="echarts-top">
+                        <div class="echart-title">扣分情况</div>
+                    </div>
+                    <div id="echarts_03" style="width: 100%;height: 85%"></div>
+                </div>
+                <div class="col echart-box">
+                    <div class="echarts-top">
+                        <div class="echart-title">订单完成量趋势图</div>
+                        <div class="btn-group" role="group" aria-label="Basic example" id="orderFinished">
+                            <button type="button" class="btn btn_active">周</button>
+                            <button type="button" class="btn">月</button>
+                            <button type="button" class="btn">年</button>
+                        </div>
+                    </div>
+                    <div id="echarts_04" style="width: 100%;height: 85%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="${BASE_PATH }static/credit/js/total_manage/total_manage_reporter.js"></script>
+<script>
+    $(function () {
+        //周月年代的点击事件
+        let btns=$(".echarts-top .btn-group button");
+        for(var i=0;i<btns.length;i++){
+            btns[i].onclick=function () {
+                $(this).addClass("btn_active").siblings("button").removeClass("btn_active")
+            }
+
+
+        }
+    })
+</script>
+</html>

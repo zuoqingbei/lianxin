@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -134,7 +135,7 @@ public class HomeController extends BaseProjectController {
 //		SysDictDetail continent=HomeService.service.getContinent(order.getStr("continent"));
 		//获取订单记录表
 		List<CreditOrderFlow> cof=CreditOrderFlow.dao.findByNum(order.getStr("num"));
-		int size=cof.size();
+		int size=1;
 		//获取国家类型
 		CountryModel country=CountryModel.dao.findById(order.getStr("country"));
 		String countryType=country.getStr("type");
@@ -142,7 +143,28 @@ public class HomeController extends BaseProjectController {
 			countryType="148";
 		}
 		//根据国家类型获取流程列表
-		List<CreditOrderFlowConf> cofc=CreditOrderFlowConf.dao.findByType(countryType);
+		List<CreditOrderFlowConf> cofc=CreditOrderFlowConf.dao.findByType(countryType);		
+		List<Integer> length=new ArrayList<Integer>();
+		List<Integer> length2=new ArrayList<Integer>();
+		if(cof.size()>0) {
+			
+		for(CreditOrderFlowConf cofc2:cofc) {
+			length2.add(cofc2.getInt("id"));
+			for(CreditOrderFlow cof2:cof) {
+				if(cof2.getStr("order_state").equals(cofc2.getStr("flow_state"))) {
+					length.add(cofc2.getInt("id"));
+					break;
+				}
+			}
+		}
+		Collections.sort(length);
+		for(int i=0;i<length2.size();i++) {
+			if(length2.get(i)==length.get(length.size()-1)) {
+				size=i+1;
+			}
+				
+		}
+		}
 		//绑定订单信息和公司信息
 		setAttr("order",order);
 		setAttr("company",company);

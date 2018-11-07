@@ -342,7 +342,14 @@
     	console.log(value5);
    	 	var html="";
 	   	 $.ajax({
-		        url:"/admin/ordermanager/getTime?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4+"&receivedate="+value5,
+		        url:"/admin/ordermanager/getTime"
+		        data:{
+		        	"countrytype":value1,
+		        	"speed":value2,
+		        	"reporttype":value3,
+		        	"ordertype":value4,
+		        	"receivedate":value5,
+		        },	
 		        type:"get",
 		        dataType:"json",
 		        success: function(data) {
@@ -360,10 +367,21 @@
     	var value2=$("select[name='attr.speed']").find("option:selected").val();
     	var value3=$("select[name='attr.report_type']").find("option:selected").val();
     	var value4=$("select[name='attr.order_type']").find("option:selected").val();
+    	var value5=$("select[name='attr.custom_id']").find("option:selected").val();
+    	var value6=$("select[name='attr.country']").find("option:selected").val();
+    	
    	 	var html="";
 	   	 $.ajax({
-		        url:"/admin/ordermanager/getPrice?countrytype="+value1+"&speed="+value2+"&reporttype="+value3+"&ordertype="+value4,
-		        type:"get",
+		        url:"/admin/ordermanager/getPrice",
+		        data:{
+		        	"countrytype":value1,
+		        	"speed":value2,
+		        	"reporttype":value3,
+		        	"ordertype":value4,
+		        	"customid":value5,
+		        	"countryid":value6
+		        },		
+		        type:"post",
 		        dataType:"json",
 		        success: function(data) {
 		        	  if(data!=null){

@@ -139,6 +139,11 @@ let
 			});
 			//表单验证成功，请求后台接口
 			if(formSelect && formInput){
+				var value=$("#priceid").val();
+				if(value==0){
+					Public.message("error","未发现该报告价格,请联系管理员");
+					return;
+				}
 				$("input[name='attr.status']").val("291");
 					$("#orderForm").ajaxSubmit({
 						success:function(data){
@@ -219,7 +224,7 @@ let
         		if(day < 10){
         			day = '0' + day;
         		};
-        	todayDate = year + '-' + month + '-' + day;
+        	todayDate = year + '年' + month + '月' + day +'日';
         	$('#client_order_date').val(todayDate);
         	
         },

@@ -6,17 +6,18 @@ import java.util.List;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 
 public class ModuleJsonData {
-	String title="";
-	List<CreditReportModuleConf> contents=new ArrayList<CreditReportModuleConf>();
-	public ModuleJsonData(String title, List<CreditReportModuleConf> contents) {
-		this.title=title;
-		this.contents=contents;
-		
+	CreditReportModuleConf title = new CreditReportModuleConf();
+	List<CreditReportModuleConf> contents = new ArrayList<CreditReportModuleConf>();
+	String smallModileType = "";
+	@Override
+	public String toString() {
+		return "ModuleJsonData [title=" + title + ", contents=" + contents + ", smallModileType=" + smallModileType
+				+ "]";
 	}
-	public String getTitle() {
+	public CreditReportModuleConf getTitle() {
 		return title;
 	}
-	public void setTitle(String title) {
+	public void setTitle(CreditReportModuleConf title) {
 		this.title = title;
 	}
 	public List<CreditReportModuleConf> getContents() {
@@ -25,5 +26,18 @@ public class ModuleJsonData {
 	public void setContents(List<CreditReportModuleConf> contents) {
 		this.contents = contents;
 	}
+	public String getSmallModileType() {
+		return smallModileType;
+	}
+	public void setSmallModileType(String smallModileType) {
+		this.smallModileType = smallModileType;
+	}
+	public ModuleJsonData(CreditReportModuleConf title, List<CreditReportModuleConf> contents, String smallModileType) {
+		super();
+		this.title = title;
+		this.contents = contents;
+		this.smallModileType = smallModileType;
+	}
+	
 	
 }

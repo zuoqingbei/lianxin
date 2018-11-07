@@ -1,5 +1,5 @@
 ﻿<% var reportType = reportType.getReportTypeString(model.report_type!''); %>
-<% var sysUser = sysUser.getSysUser1('1',model.create!''); %>
+<% var sysUser = sysUser.getSysUser1('1',model.create_by!''); %>
 
 ﻿<% 
 	var headContent = {
@@ -163,7 +163,7 @@ function loadReady() {
     	</select>
 	</div>
 	 <div class="form-group" >
-          <select  name="attr.create" class="form-control">
+          <select  name="attr.create_by" class="form-control">
               ${sysUser!}
           </select>
 	  </div>

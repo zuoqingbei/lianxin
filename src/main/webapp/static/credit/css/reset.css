@@ -236,10 +236,10 @@ label.col-md-4{
      background: #fafafa;
  }
  .fixed-table-body-columns table tbody tr:hover{
-     background: #e6f7ff;
+     background: #e6f7ff!important;
  }
  #table tbody tr:hover {
-     background: #e6f7ff;
+     background: #e6f7ff!important;
  }
  .table:not(.table-condensed) > tbody > tr > td {
      color: var(--fontColor);

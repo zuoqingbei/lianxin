@@ -1,0 +1,104 @@
+.table-content{
+    height: 100%;
+    height: 100%;
+}
+.table-content-echarts{
+    height: calc(50% - 0.5rem);
+}
+.echart-box{
+    background-color: white;
+    height: 100%;
+}
+.echart-box>div.echart-box{
+    width: 100%;
+    height: 100%;
+}
+.echarts-top .echart-title{
+    font-size: 1.375rem;
+    font-weight: 600;
+    padding: 1rem 0;
+    display: inline-block;
+}
+.btn-group{
+    float: right;
+    margin: 1rem 0.5rem 0 0.5rem;
+}
+.btn{
+    padding: 0.2rem 0.5rem;
+    border-radius: 0 !important;
+    background-color: transparent;
+    border: 1px solid #C5C5C5;
+    color:var(--fontColor);
+}
+.btn_active{
+    font-weight: 600;
+    border: 1px solid var(--activeColor);
+    color:var(--activeColor);
+    box-shadow: 0 0 3px var(--activeColor);
+}
+.total-order-top{
+    height: 10.625rem;
+    font-size: 1.1125rem;
+}
+.total-order-top  .total-order-top-left{
+    width: 30%;
+    height: 100%;
+    display: inline-block;
+    text-align: left;
+}
+.total-order-top  .total-order-top-right{
+    width: 70%;
+    height: 100%;
+    display: inline-block;
+}
+.total-order-top-title{
+    padding: 1.5rem 0;
+}
+.total-order-top-num{
+    font-size: 2rem;
+    font-weight: 600;
+}
+.total-order-top-trend{
+    padding: 1.5rem 0;
+
+}
+.total-order-top-trend img{
+    width: 1.125rem;
+    height: 1rem;
+    display: inline-block;
+}
+.total-order-center{
+    height: 28.75rem;
+}
+.form-box{
+    display: inline-block;
+    width: 13rem;
+}
+.bootstrap-table{
+    margin: 0;
+}
+.control-label{
+    font-weight: 400;
+    text-align: right;
+}
+.total-order-top ul{
+    height: 75%;
+    width: 100%;
+    font-size: 0;
+}
+.total-order-top ul li{
+    display: inline-block;
+    width: 16.6%;
+    height: 100%;
+    font-size: 1rem;
+}
+/*.total-order-top ul li div:first-of-type{
+    text-align: center;
+    padding-top: 0.5rem;
+}*/
+.swiper-button-next, .swiper-button-prev{
+    height: 2.3rem;
+    top: 65%;
+}
+
+

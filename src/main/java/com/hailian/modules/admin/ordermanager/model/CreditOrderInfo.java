@@ -768,8 +768,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				break;
 			case OrderProcessController.orderVerifyOfReport:
 				//状态为订单核实 ,其维护在字典表中
-				//293为信息录入
-				fromSql.append(" and status in ('293') ");
+				//293为信息录入 595为系统查询中(爬虫中)
+				fromSql.append(" and status in ('293,595') ");
 				//权限归属:报告员,分析员,质检员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")");
 				break;	
@@ -932,6 +932,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			}
 			});
 		return num.toString();
+	}
+
+	public List<CreditOrderInfo> findByCustom(String customid,String fristday,String lastday) {
+		String sql="select t.id from credit_order_info t where t.custom_id=? and t.create_date>=? and t.create_date<=?";
+		return dao.find(sql,customid,fristday,lastday);
 	}
 	
 }

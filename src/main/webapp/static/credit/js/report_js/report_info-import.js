@@ -13,8 +13,8 @@ let Verify = {
         /**初始化表格 */
         const $table = $('#table');
         let _this = this
-
-
+        	
+      
         $table.bootstrapTable({
             height: $(".table-content").height()*0.98,
             columns: [
@@ -99,9 +99,32 @@ let Verify = {
                           events: {
                             "click .write":(e,value,row,index)=>{
                               console.log(row);
-                          	   Public.goToBasicInfoWrite(row);
-//                              Public.goToReportConfig(row)
-                            }
+                              //Public.goToBasicInfoWrite(row);
+                              Public.goToReportConfig(row)
+                            },  "click .recordName":(e,value,row,index)=>{
+                            	$("#orderType").html(row.orderType);
+                                $("#custom_id").html(row.custom_id);
+                                $("#customId").html(row.customId);
+                                $("#receiver_date").html(row.receiver_date);
+                                $("#continent").html(row.continent);
+                                $("#country").html(row.country);
+                                $("#reportType").html(row.reportType);
+                                $("#reportLanguage").html(row.reportLanguage);
+                                $("#companyNames").html(row.companyNames);
+                                $("#custom_id").html(row.custom_id);
+                                $("#speed").html(row.speed);
+                                $("#user_time").html(row.user_time);
+                                $("#companyZHNames").html(row.companyZHNames);
+                                $("#reporter_select").html(row.seleteStr);
+                                $("#orderId").val(row.id);
+                                $("#num").html(row.num);
+                                $("#remarks").val("");
+                                pageNumber = row.pageNumber;
+                                pageSize = row.pageSize;
+                            	  sortName = row.sortName;
+                            	  sortOrder = row.sortOrder;
+                            	  reportt = row.report_userKey;
+                              }
                           },
                           formatter: _this.operateFormatter
                         }
@@ -122,7 +145,7 @@ let Verify = {
                     queryParamsType:'',
                     contentType:'application/x-www-form-urlencoded;charset=UTF-8',
                     queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-                      console.log(params)
+                      window.aaa = params.pageSize;
                       return {//这里的params是table提供的  
                     	  pageNumber: params.pageNumber,//从数据库第几条记录开始  
                     	  pageSize: params.pageSize,//找多少条  
@@ -130,16 +153,77 @@ let Verify = {
                     	  sortOrder: params.sortOrder,
                     	  searchType: "-6"
                       };  
-                  },  
+                    }, 
+                    onLoadSuccess:function(data){
+                    	console.log(data)
+                    	let rows = data.rows;
+                    	rows.forEach((item,index)=>{
+                    		if(!item.country || item.country.trim() !== '中国大陆'){
+                    			$(Array.from($(".recordName"))[index]).css({"color":"#ccc","cursor":"default"});
+                    			$(Array.from($(".recordName"))[index]).removeAttr("data-target")
+                    		}else if(!$(Array.from($(".recordName"))[index]).attr("data-target")){
+                    			$(Array.from($(".recordName"))[index]).css({"color":"#007bff","cursor":"pointer"});
+                    			$(Array.from($(".recordName"))[index]).attr("data-target","#recordingName")
+                    		}
+                    		
+                    		
+                    	})
+                    }
                   });
         // sometimes footer render error.
         setTimeout(() => {
             $table.bootstrapTable('resetView');
         }, 200);
+        
+        
+        /**
+         * 点击录入名称提交
+         */
+        $(".modal_submit").click(()=>{
+        	let val = $("#firmChineseName").val();
+        	if(!val){
+        		Public.message("error","公司中文名称不能为空")
+        	}else {
+        		/*调用接口*/
+        		$.ajax({
+           			type:"post",
+               		url:BASE_PATH+"credit/front/orderProcess/statusSave",
+               		data:"statusCode=595&isPa=yes&orderNum="+"&orderId=",
+               		dataType:"json",
+               		success:function(obj){
+               			if(data.statusCode===1){
+                         	Public.message("success",data.message);
+                         }else{
+                         	Public.message("error",data.message);
+                         	//跳转到第一页
+                            $('#table').bootstrapTable('refreshOptions',{pageNumber:1});
+                            /***发起ajax请求 获取表格数据*/
+                            $.ajax({
+                         			type:"post",
+                         			 url : BASE_PATH+"credit/front/orderProcess/listJson",
+                         			data:"report_user="+reporter+"&searchType=-1"+"&pageSize="+window.aaa,
+                         			dataType:"json",
+                         			success:function(data){
+                         				console.log(data);
+                         			 	 $("#table").bootstrapTable("load",data)
+                         			 }
+                         		})
+                         }
+               				if(obj.statusCode==1){
+               					$("#table").bootstrapTable("load",obj);
+               				}
+               				
+               			 	
+               			 }
+           			})
+        		
+        	}
+        })
+        
     },
     /**操作按钮格式化 */
     operateFormatter(){
-        return '<a href="javascript:;" class="write">填报</a>'
+        return '<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a><span style="margin-left:.5rem;color: #1890ff">|</span><a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>'
     },
     modalSubmit(){
         /**模态框提交事件 */
