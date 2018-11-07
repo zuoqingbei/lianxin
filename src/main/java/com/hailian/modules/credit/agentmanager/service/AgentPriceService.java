@@ -52,4 +52,18 @@ public class AgentPriceService {
 	public boolean updateDelFlagById(Integer id) {
 		return AgentPriceModel.dao.updateDelFlagById(id);
 	}
+	/**
+	 * 根据代理id，省，市，代理类别获取代理价格
+	* @author doushuihai  
+	* @date 2018年11月7日下午1:57:44  
+	* @TODO
+	 */
+	public AgentPriceModel getAgentPrice(int pid,int cid,String agent_id,String agent_category) {
+		AgentPriceModel agentpricemodel = AgentPriceModel.dao.getAgentPrice(pid, cid,agent_id,agent_category,true);
+		if(agentpricemodel== null){
+			agentpricemodel = AgentPriceModel.dao.getAgentPrice(pid, cid,agent_id,agent_category,false);
+		}
+		return agentpricemodel;
+
+	}
 }

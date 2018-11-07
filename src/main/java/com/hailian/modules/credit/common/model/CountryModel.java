@@ -52,7 +52,8 @@ public class CountryModel extends BaseProjectModel<CountryModel> {
 		sql.append("select * from credit_country where del_flag='0' ");
 
 		if (StringUtils.isNotBlank(name)) {
-			sql.append(" and name=?");
+			sql.append(" and name=? or name_en=? ");
+			params.add(name);
 			params.add(name);
 		}
 		List<CountryModel> list = dao.find(sql.toString(), params.toArray());

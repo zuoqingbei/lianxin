@@ -106,7 +106,7 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 		
 		return AgentPriceModel.dao.find("select * from credit_agent t where t.del_flag=0");
 	}
-	public List<AgentPriceModel> findAgentCateSelect(String agent_id) {
+	public List<AgentPriceModel> findAgentCateSelect(String agent_id,boolean isCate) {
 		if(StringUtils.isBlank(agent_id)){
 			return null;
 		}
@@ -118,9 +118,45 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 			sb.append(" and t.agent_id=?");
 			params.add(agent_id);
 		}
-		sb.append(" group by t.agent_category ");
+		if(isCate){
+			sb.append(" group by t.agent_category ");
+		}
 		sb.append(" order by t.id ");
-		
 		return AgentPriceModel.dao.find(sb.toString(), params.toArray());
+	}
+	/**
+	 * 根据条件获取代理价格
+	 * isSpecial为true获取特例市代理价格，false获取普通代理价格
+	* @author doushuihai  
+	* @date 2018年11月7日下午2:05:22  
+	* @TODO
+	 */
+	public AgentPriceModel getAgentPrice(int pid,int cid,String agent_id,String agent_category,boolean isSpecial) {
+		StringBuffer sb=new StringBuffer("select t.* from credit_agent_price t ");
+		sb.append(" where 1=1 and t.del_flag=0 ");
+		List<Object> params=new ArrayList<Object>();
+		if(StringUtils.isNotBlank(agent_id)){
+			sb.append(" and t.agent_id=?");
+			params.add(agent_id);
+		}
+		if(StringUtils.isNotBlank(pid+"")){
+			sb.append(" and t.province=?");
+			params.add(pid);
+		}
+		if(!isSpecial){
+				sb.append(" and t.city is null or t.city=-1");
+		}
+		if(isSpecial){
+			if(StringUtils.isNotBlank(cid+"")){
+				sb.append(" and t.city=?");
+				params.add(cid);
+			}
+		}
+		if(StringUtils.isNotBlank(agent_category+"")){
+			sb.append(" and t.agent_category=?");
+			params.add(agent_category);
+		}
+		sb.append(" order by t.id ");
+		return AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
 	}
 }

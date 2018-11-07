@@ -129,13 +129,14 @@ let Filing = {
         		  
                  let agentid = $("#agency_id option:selected").val();
                  let agent_category = $("#agent_category option:selected").val();
-                 let ismail = $("#entrust_email option:selected").val();
                  let id = $("#orderId2").val();
+                 let companyid = $("#companyId2").val();
+                 let num = $("#num2").text();
                  //console.log(reporter,remarks);
                  $.ajax({
             			type:"post",
             			url:BASE_PATH+"credit/front/orderProcess/orderAgentSave",
-            			data:"model.agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.agent_category="+agent_category,
+            			data:"model.agent_id="+agentid+"&model.id="+id+"&model.agent_category="+agent_category+"&model.company_id="+companyid+"&model.num="+num,
             			dataType:"json",
             			success:function(data){
             			//提交成功关闭模态窗
@@ -363,12 +364,13 @@ let Filing = {
             $("#speed2").html(row.speed);
             $("#user_time2").html(row.user_time);
             $("#companyZHNames2").html(row.companyZHNames);
-            var selected=$("#agency_id").html()+row.seleteAgentStr;
+            var selected=$("#agency_id").html("<option value='-1'>请选择</option>")+row.seleteAgentStr;
             $("#agency_id").html(selected);
-            var selected2=$("#agent_category").html()+row.seleteAgentCateStr;
+            var selected2=$("#agent_category").html("<option value='-1'>请选择</option>")+row.seleteAgentCateStr;
             $("#agent_category").html(selected2);
             $("#confirm_reason2").html(row.confirm_reason);
             $("#orderId2").val(row.id);
+            $("#companyId2").val(row.company_id);
             $("#status").val(row.status);
             $("#num2").html(row.num);
             $("#remarks2").val("");

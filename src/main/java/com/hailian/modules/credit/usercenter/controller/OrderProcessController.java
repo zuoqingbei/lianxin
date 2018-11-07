@@ -28,8 +28,11 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
+import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
+import com.hailian.modules.credit.city.model.CityModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
+import com.hailian.modules.credit.province.model.ProvinceModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
@@ -357,12 +360,37 @@ public class OrderProcessController extends BaseProjectController{
 				model.set(key, map.get(key));
 			}
 		}
+		String companyid=model.get("company_id");
+		CompanyModel companymodel = CompanyModel.dao.findById(companyid);
+		String address=null;
+		if(companymodel != null){
+			address=companymodel.getStr("address");
+			if(StringUtils.isNotBlank(address)){
+				String[] strs=address.split("-");
+				String province=strs[0].toString();
+				String city=strs[1].toString();
+				ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
+				CityModel cityByName = CityModel.dao.getCityByName(city);
+				int pid = provinceByName.get("pid");
+				int cid = cityByName.get("cid");
+				String agent_id=model.get("agent_id");
+				String agent_category=model.get("agent_category");
+				if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
+					AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
+					if(agentPrice !=null){
+						model.set("agent_priceId", agentPrice.get("id"));
+					}
+				}
+				
+			}
+			
+		}
 		model.set("status", "295");
 		model.update();
 		//获取订单记录对象
 		CreditOrderFlow cof = new CreditOrderFlow();
 		//订单号
-		cof.set("order_num", model.get("order_num"));
+		cof.set("order_num", model.get("num"));
 		//订单状态
 		cof.set("order_state", model.get("status"));
 		//操作人
@@ -431,7 +459,7 @@ public class OrderProcessController extends BaseProjectController{
 				creditOrderInfo.put("seleteAgentStr",seleteStr);
 				Object object = creditOrderInfo.get("agent_id");
 				Object object2 = creditOrderInfo.get("agent_category");
-				if(object2!=null){
+				if(object!=null && !object.equals("")){
 					String seleteAgentCateStr = TemplateAgentService.templateagentservice.getAgentCateString(creditOrderInfo.get("agent_id"),creditOrderInfo.get("agent_category"));
 					creditOrderInfo.put("seleteAgentCateStr",seleteAgentCateStr);
 				}
@@ -453,7 +481,7 @@ public class OrderProcessController extends BaseProjectController{
 	public void getAgentCate(){
 		String agentid = (String) getRequest().getParameter("agentid");
 //		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(agentid);
-		List<AgentPriceModel> findAll = AgentPriceModel.dao.findAgentCateSelect(agentid);
+		List<AgentPriceModel> findAll = AgentPriceModel.dao.findAgentCateSelect(agentid,true);
 		renderJson(findAll);
 	}
 	/**
@@ -489,6 +517,7 @@ public class OrderProcessController extends BaseProjectController{
 	public  CreditOrderInfo  orderAgentSave() {
 		try {
 		String ismail = (String) getRequest().getParameter("ismail");
+		String companyId = (String) getRequest().getParameter("companyId");
 		Map<String,Object> map = new HashMap<>();
 		CreditOrderInfo  model = PublicUpdateAgentMod(map,ismail);
 		renderJson(new ResultType());
