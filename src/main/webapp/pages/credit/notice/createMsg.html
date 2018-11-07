@@ -104,9 +104,7 @@
        		success:function(data){
        			if(data.statusCode===1){
        				Public.message("success",data.message);
-                   setTimeout(function () {
-                       $('#submitSuccess').alert('close');
-                   },3000);
+       				location.reload(); 
        			}else{
        				Public.message("error",data.message);
        			}

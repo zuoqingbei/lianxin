@@ -30,4 +30,14 @@ public class ProvinceModel extends BaseProjectModel<ProvinceModel>{
 		sql+=" order by t.pid ";
 		return dao.find(sql, params.toArray());
 	}	
+	public ProvinceModel getProvinceByName(String name) {
+		List<Object> params=new ArrayList<Object>();
+		String sql="select t.* from credit_province t where 1=1 ";
+		if(StringUtils.isNotBlank(name)){
+			sql+=" and t.credit_province=? ";
+			params.add(name);
+		}
+		sql+=" order by t.pid ";
+		return dao.findFirst(sql, params.toArray());
+	}
 }

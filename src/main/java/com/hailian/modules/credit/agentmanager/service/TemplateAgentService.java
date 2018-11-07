@@ -6,6 +6,7 @@ import java.util.List;
 import com.hailian.jfinal.base.BaseService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.model.AgentModel;
+import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
 
 public class TemplateAgentService extends BaseService{
 	public static TemplateAgentService templateagentservice=new TemplateAgentService();
@@ -22,6 +23,7 @@ public class TemplateAgentService extends BaseService{
 		listDetail.addAll(AgentModel.dao.findAll());
 		return listDetail;
 	}
+
 	/**
 	 * 
 	 * @time   2018年10月12日 上午10:52:15
@@ -98,6 +100,7 @@ public class TemplateAgentService extends BaseService{
 	public String getAgentIdString(Object selectedId) {
 		StringBuffer sb=new StringBuffer();
 		List<AgentModel> listDetail =getAgentNoDefault();
+		sb.append("<option value='-1'>请选择</option>");
 		for(AgentModel detail:listDetail){
 				if(selectedId!=null&&selectedId.toString().equals(detail.get("agent_id").toString())){
 					sb.append("<option selected='selected'  value='"+detail.get("agent_id")+"'>"+detail.get("agent_id")+"</option>");
@@ -109,8 +112,9 @@ public class TemplateAgentService extends BaseService{
 	}
 	public String getAgentCateString(Object selectedAgent,Object selectedAgentCate) {
 		StringBuffer sb=new StringBuffer();
-		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(selectedAgent.toString());
-		for(AgentCategoryModel detail:findAll){
+//		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(selectedAgent.toString());
+		List<AgentPriceModel> findAll = AgentPriceModel.dao.findAgentCateSelect(selectedAgent.toString(),true);
+		for(AgentPriceModel detail:findAll){
 				if(selectedAgentCate!=null&&selectedAgentCate.toString().equals(detail.get("agent_category").toString())){
 					sb.append("<option selected='selected'  value='"+detail.get("agent_category")+"'>"+detail.get("categoryName")+"</option>");
 				}else{

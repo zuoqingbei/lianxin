@@ -37,4 +37,14 @@ public class CityModel extends BaseProjectModel<CityModel>{
 		sql+=" order by t.cid ";
 		return dao.find(sql, params.toArray());
 	}	
+	public CityModel getCityByName(String name) {
+		List<Object> params=new ArrayList<Object>();
+		String sql="select t.* from credit_city t where 1=1 ";
+		if(StringUtils.isNotBlank(name)){
+			sql+=" and  t.city=? ";
+			params.add(name);
+		}
+		sql+=" order by t.cid ";
+		return dao.findFirst(sql, params.toArray());
+	}	
 }
