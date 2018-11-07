@@ -54,15 +54,34 @@ public class HttpTest {
 	public static void main(String[] args) throws Exception {
 		
 		//getCustomsUrl();//爬取企业信息基本情况
-		//getSourceUrl();//爬取商务部业务系统网站
+		getSourceUrl();//爬取商务部业务系统网站
 		
 		//CookieStore cookieStore = getIcrisCookie();//获取香港查册网站cookie信息
 		//getIcrisUrl(cookieStore);//爬取香港查册网站
 		
 		//getCourtUrl();//爬取全国法院被执行人信息查询网站
-		getSaicUrl();
+		//getYjapi();
 		
     }
+	
+	public static void getYjapi(){
+		HttpGet get = new HttpGet("http://i.yjapi.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+	        for(int i=0;i<headers.length;i++) {
+	        	System.out.println(headers[i].getName() +"=="+ headers[i].getValue());
+	        }
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			System.out.println(html);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
 	
 	public static void getSaicUrl(){
 		HttpGet get = new HttpGet("http://wsjs.saic.gov.cn/");
