@@ -23,11 +23,9 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 	public static final AgentModel dao = new AgentModel();
 	private static List<String> columnnNames = new ArrayList<>();
 	static {
-		columnnNames.add("at.detail_name");
 		columnnNames.add("agent_name");
 		columnnNames.add("postal_code");
-		columnnNames.add("price");
-		columnnNames.add("c.detail_name");
+		
 	}
 
 	/**
@@ -40,17 +38,11 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 	public Page<AgentModel> getAgent(Paginator paginator, int pageNumber, int pageSize, String orderBy, String keyWord,
 			String searchType, BaseProjectController c) {
 		StringBuffer selectsql = new StringBuffer(
-				"select  t.credit_province as provinceName,t2.city as cityName,t3.detail_name as agent_categoryName,sp.detail_name as Speed,at.detail_name as agentType,c.detail_name as Currency,us.detail_name as Usabled,"
+				"select us.detail_name as Usabled,"
 				+"a.* ");
 		StringBuffer fromsql = new StringBuffer(" from  credit_agent a ");
-		fromsql.append("   LEFT JOIN sys_dict_detail at on at.detail_id=a.agent_type ");
-		fromsql.append("   LEFT JOIN sys_dict_detail c on c.detail_id=a.currency");
 		fromsql.append("   LEFT JOIN sys_dict_detail us on us.detail_id=a.usabled");
-		fromsql.append("   LEFT JOIN sys_dict_detail sp on sp.detail_id=a.speed ");
-		fromsql.append("   LEFT JOIN credit_province t on t.pid=a.province ");
-		fromsql.append("   LEFT JOIN credit_city t2 on t2.cid=a.city and t2.pid=a.province ");
-		fromsql.append("   LEFT JOIN sys_dict_detail t3 on t3.detail_id=a.agent_category ");
-		fromsql.append("  where a.del_flag=0 and at.del_flag=0 and c.del_flag=0 and us.del_flag=0");
+		fromsql.append("  where a.del_flag=0 ");
 		List<Object> params = new ArrayList<Object>();
 		if (StringUtil.isNotEmpty(keyWord)) {
 			fromsql.append(" and ");

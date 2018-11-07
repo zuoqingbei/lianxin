@@ -102,6 +102,7 @@ let Verify = {
                               //Public.goToBasicInfoWrite(row);
                               Public.goToReportConfig(row)
                             },  "click .recordName":(e,value,row,index)=>{
+                            	$("#orderType").html(row.orderType);
                                 $("#custom_id").html(row.custom_id);
                                 $("#customId").html(row.customId);
                                 $("#receiver_date").html(row.receiver_date);
@@ -120,8 +121,9 @@ let Verify = {
                                 $("#remarks").val("");
                                 pageNumber = row.pageNumber;
                                 pageSize = row.pageSize;
-                            	sortName = row.sortName;
-                            	sortOrder = row.sortOrder;
+                            	  sortName = row.sortName;
+                            	  sortOrder = row.sortOrder;
+                            	  reportt = row.report_userKey;
                               }
                           },
                           formatter: _this.operateFormatter
