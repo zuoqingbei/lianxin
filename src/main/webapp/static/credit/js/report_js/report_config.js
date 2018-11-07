@@ -245,10 +245,11 @@ let ReportConfig = {
     	let row = localStorage.getItem("row");
     	let _this = this
     	let id = JSON.parse(row).id;
+    	let reportType = JSON.parse(row).report_type
         $.ajax({
         	type:"get",
         	url:BASE_PATH + "credit/front/getmodule/list",
-        	data:{id},
+        	data:{id,reportType},
         	success:(data)=>{
                 console.log(data)
                 setTimeout(()=>{
