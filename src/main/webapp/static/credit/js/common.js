@@ -161,7 +161,6 @@ let Public = {
         })
     },
     gotop(){
-        console.log($(".main"))
         $(".main").scroll(function(){
             // 滚动条距离顶部的距离 大于 200px时
             if($(".main").scrollTop() >= 200){
