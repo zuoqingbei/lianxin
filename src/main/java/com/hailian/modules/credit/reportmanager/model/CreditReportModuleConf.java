@@ -112,12 +112,12 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 * 依据small_module_type=-1
 	 * @return
 	 */
-	public List<CreditReportModuleConf> getDefaultModule() {
-		String sql = "select a.*  from credit_report_module_conf a "
-					+ "where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=?) "
-					+ "or  small_module_type=? "
-					+ "order by sort,id";
-		return dao.find(sql,DefaultModule,DefaultModule);
+	public List<CreditReportModuleConf> getDefaultModule(String reportType) {
+		String sql = " select a.*  from credit_report_module_conf a "
+					+ " where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=?) "
+					+ " or  small_module_type=? and report_type=? "
+					+ " order by sort,id";
+		return dao.find(sql,DefaultModule,DefaultModule,reportType);
 	}
 	/**
 	 * Author:lzg
