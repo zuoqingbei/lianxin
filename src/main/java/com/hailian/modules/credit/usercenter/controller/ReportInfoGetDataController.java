@@ -17,7 +17,7 @@ public class ReportInfoGetDataController extends BaseProjectController implement
 		List<Object> params = new ArrayList<>();
 		List rows = null;
 		params.add(companyId);
-		//http://localhost:8080/credit/front/ReportGetData/getBootStrapTable/?companyId=24&tableName=credit_company_his&className=CreditCompanyHis
+		//http://localhost:8080/credit/front/ReportGetData/getBootStrapTable?companyId=24&tableName=credit_company_his&className=CreditCompanyHis
 		try {
 			Class<?> table = Class.forName("com.hailian.modules.admin.ordermanager.model."+getPara("className"));
 			BaseProjectModel model = (BaseProjectModel) table.newInstance();
