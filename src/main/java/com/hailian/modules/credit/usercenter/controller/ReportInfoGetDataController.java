@@ -6,23 +6,41 @@ import java.util.List;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.jfinal.plugin.activerecord.Record;
 @ControllerBind(controllerKey = "/credit/front/ReportGetData")
 public class ReportInfoGetDataController extends BaseProjectController implements ReportInfoGetDataInterface {
-	TemplateDictService template = new TemplateDictService();
+	private TemplateDictService template = new TemplateDictService();
+	
+	/**
+	 * 获取bootstraptable类型的数据
+	 * 链接形如: http://localhost:8080/credit/front/ReportGetData/getBootStrapTable?conf_id=18
+	 * company_id=24&report_type=1&tableName=credit_company_his&className=CreditCompanyHis
+	 */
 	public void getBootStrapTable() {
-		String companyId = getPara("companyId");
+		Record record = new Record();
 		String tableName = getPara("tableName","");
-		List<Object> params = new ArrayList<>();
+		String className = getPara("className");
+		String confId = getPara("conf_id","");
+		//解析实体获取required参数
+		CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
+		String getSource = confModel.getStr("get_source");
+		String[] requireds = getSource.split("\\*");
+		String[] required = requireds[1].split("\\$");
+		StringBuffer sqlSuf = new StringBuffer();
+		for (String str : required) {
+			sqlSuf.append(str.trim()+"="+getPara(str).trim()+" and ");
+		}
+		if(sqlSuf.length()<1){
+			renderJson(record.set("rows", null));
+			return;
+		}
 		List rows = null;
-		params.add(companyId);
-		//http://localhost:8080/credit/front/ReportGetData/getBootStrapTable?companyId=24&tableName=credit_company_his&className=CreditCompanyHis
 		try {
-			Class<?> table = Class.forName("com.hailian.modules.admin.ordermanager.model."+getPara("className"));
+			Class<?> table = Class.forName("com.hailian.modules.admin.ordermanager.model."+className);
 			BaseProjectModel model = (BaseProjectModel) table.newInstance();
-		 rows = model.find("select * from "+tableName+" where company_id=? and del_flag=0",params.toArray());
-		
+			rows = model.find("select * from "+tableName+" where del_flag=0 and "+sqlSuf+" 1=1");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e) {
@@ -30,7 +48,6 @@ public class ReportInfoGetDataController extends BaseProjectController implement
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		Record record = new Record();
 		renderJson(record.set("rows", rows));
 	}
 
