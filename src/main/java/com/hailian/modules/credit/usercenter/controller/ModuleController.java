@@ -54,7 +54,7 @@ public class ModuleController extends BaseProjectController{
 		//获取默认模板
 		List<CreditReportModuleConf> defaultModule = CreditReportModuleConf.dao.getDefaultModule(reportType);
 		//获取带锚点模板
-		List<CreditReportModuleConf> tabFixed = CreditReportModuleConf.dao.getTabFixed();
+		List<CreditReportModuleConf> tabFixed = CreditReportModuleConf.dao.getTabFixed(reportType);
 		double start = new Date().getTime();
 		//defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
 		for(CreditReportModuleConf crmc:crmcs) {

@@ -113,11 +113,16 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 * @return
 	 */
 	public List<CreditReportModuleConf> getDefaultModule(String reportType) {
+		List<Object> params = new ArrayList<>();
 		String sql = " select a.*  from credit_report_module_conf a "
-					+ " where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=? and report_type=? ) "
-					+ " or  small_module_type=? "
-					+ " and report_type=? order by sort,id";
-		return dao.find(sql,DefaultModule,reportType,DefaultModule,reportType);
+				+ " where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=? and report_type=? ) "
+				+ " or  small_module_type=? "
+				+ " and report_type=? order by sort,id ";
+		params.add(DefaultModule);
+		params.add(reportType);
+		params.add(DefaultModule);
+		params.add(reportType);
+		return dao.find(sql,params.toArray());
 	}
 	/**
 	 * Author:lzg
@@ -125,9 +130,12 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 * 依据small_module_type=-2
 	 * @return
 	 */
-	public List<CreditReportModuleConf> getTabFixed() {
-		 String sql = "select a.*  from credit_report_module_conf a where a.small_module_type=? ";
-			return dao.find(sql,TabFixed);
+	public List<CreditReportModuleConf> getTabFixed(String reportType) {
+		List<Object> params = new ArrayList<>();
+		String sql = "select a.*  from credit_report_module_conf a where a.small_module_type=? and report_type=? order by sort,id  ";
+		params.add(TabFixed);
+		params.add(reportType);
+		return dao.find(sql,params.toArray());
 	}
 		
 	
