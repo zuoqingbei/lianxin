@@ -118,6 +118,7 @@ let ReportConfig = {
             						$("#modal_change_font").val(change_font)
             						$("#modal_change_back").val(change_back)
             						
+            						
             					},
             					"click .delete":(e,value,row,index)=>{
             						e.stopPropagation();
@@ -134,11 +135,8 @@ let ReportConfig = {
             							$('.isDelete').removeClass("deleteShow")
             						})
             						$(".popEnter").on('click', function(){
-            							$("#tableRecord").bootstrapTable("remove",{
-            								field:'id',
-            								values:[row.id]
-            							})
-            							$('.isDelete').removeClass("deleteShow")
+            							//确定删除
+            							
             						})
             						
             					}
@@ -149,7 +147,8 @@ let ReportConfig = {
         		})
         		return arr
         	}
-        	
+        	let url = contents[index].get_source;
+        	console.log(url)
         	$table.bootstrapTable({
         		columns: columns(),
     			// url : 'firmSoftTable.action', // 请求后台的URL（*）
@@ -235,13 +234,24 @@ let ReportConfig = {
     	
     	$("#container").append(modalHtml)
     },
+    tabChange(){
+        /**tab切换事件 */
+    	$(".tab-bar li:eq(0) a").addClass("tab-active")
+        $(".tab-bar li").click((e)=>{
+            $(e.target).addClass("tab-active").parents("li").siblings().children('a').removeClass("tab-active")
+
+//            /* 解决锚链接的偏移问题*/
+//            $("#container ").css('height',"calc(100% - 5.6rem)");
+//            $(".main ").css('marginBottom',"-.6rem");
+        })
+    },
     initContent(){
     	
     	
         /**初始化内容 */
-    	this.idArr = []
-    	this.contentsArr = []
-    	this.title = []
+    	this.idArr = []    //存放table类型模块对应的index
+    	this.contentsArr = [] //存放table类型模块的contents
+    	this.title = [] //存放table类型模块的title
     	let row = localStorage.getItem("row");
     	let _this = this
     	let id = JSON.parse(row).id;
@@ -258,6 +268,7 @@ let ReportConfig = {
                 	_this.dateInit();
                 	_this.regChecked();
                 	_this.initTable();
+                	_this.tabChange();
                 },0)
                 /**
                  * 头部
@@ -295,7 +306,16 @@ let ReportConfig = {
                 headItem.forEach((item,index)=>{
                 	$(item).siblings("span").html(tempArr[index])
                 })
+                /**
+                 * tabFixed
+                 */
+                let tabFixed = data.tabFixed;
+                let tabFixedHtml = ''
+                tabFixed.forEach((item,index)=>{
+                	tabFixedHtml += `<li class="tab-info"><a href="#info_anchor">${item.temp_name}</a></li>`
+                })
                 
+                $(".tab-bar").html(tabFixedHtml)
                 /**
                  * 内容模块部分
                  */
@@ -309,7 +329,7 @@ let ReportConfig = {
                 	if(smallModileType === '-2') {
                 		return;
                 	}
-                	contentHtml +=  `<div class="bg-f pb-3"><div class="l-title">${item.title.temp_name}</div>`
+                	contentHtml +=  `<div class="bg-f pb-3 mb-3"><div class="l-title">${item.title.temp_name}</div>`
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
                 	//模块的类型
@@ -353,7 +373,7 @@ let ReportConfig = {
 									                                </div>`
 							            			break;
 							            		case 'select':
-							            			let url = BASE_PATH + item.data_source
+							            			let url = BASE_PATH + item.get_source
 							            			$.ajax({
 							            				type:'get',
 							            				url,
@@ -403,7 +423,7 @@ let ReportConfig = {
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-5 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}">+ ${btnText}</button>
+				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}">+ ${btnText}</button>
                 				</div>`
                 		
                 			break; 
