@@ -92,6 +92,7 @@ let ReportConfig = {
         this.idArr.forEach((item,index)=>{
         	const $table = $("#table"+item);
         	let contents = this.contentsArr[index]
+        	let titles = this.title
         	
         	function columns(){
         		let arr = []
@@ -147,15 +148,22 @@ let ReportConfig = {
         		})
         		return arr
         	}
-        	let url = contents[index].get_source;
-        	console.log(url)
+        	let urlTemp = titles[index].get_source;
+        	let conf_id = titles[index].id;
+        	if(!urlTemp){return}
+        	let url = BASE_PATH + 'credit/front' + urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+        	let rows = JSON.parse(localStorage.getItem("row"));
+        	tempParam.forEach((item,index)=>{
+//				 tempObj[item] = rows[item]
+				 url += `&${item}=${rows[item]}`
+			 })
         	$table.bootstrapTable({
         		columns: columns(),
-    			// url : 'firmSoftTable.action', // 请求后台的URL（*）
-    			// method : 'post', // 请求方式（*）post/get
+    			 url, // 请求后台的URL（*）
+			    method : 'post', // 请求方式（*）post/get
     			pagination: false, //分页
     			smartDisplay:false,
-    			iconsPrefix:'fa',
     			locales:'zh-CN',
         	});
         	
