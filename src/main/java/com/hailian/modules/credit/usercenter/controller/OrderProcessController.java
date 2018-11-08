@@ -14,6 +14,7 @@ import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
+import com.hailian.component.util.JFlyFoxUtils;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
@@ -683,10 +684,27 @@ public class OrderProcessController extends BaseProjectController{
 	 * 报告管理下的信息录入的填报页面的信息(除了企业注册信息信息)
 	 */
 	public void reportedJson(){
+		//JFlyFoxUtils.passwordEncrypt(password);
+		//com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail
 		String companyId = getPara("company_id");
 		String flagStr = getPara("flagStr","");
+		String tableName = getPara("tableName","");
 		List<Object> params = new ArrayList<>();
 		params.add(companyId);
+		
+		/*try {
+			Class<?> table = Class.forName("com.hailian.modules.admin.ordermanager.model."+getPara("className"));
+			BaseProjectModel model = (BaseProjectModel) table.newInstance();
+			model.find("select * from "+tableName+" where company_id=? and del_flag=0",params.toArray());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}*/
+		
+	
 		List rows = null;
 		switch (flagStr) {
 		case  "tableRecord": 
@@ -717,6 +735,8 @@ public class OrderProcessController extends BaseProjectController{
 		result.setRows(rows);
 		renderJson(result);
 	}
+	
+	
 	
 	
 	/**
