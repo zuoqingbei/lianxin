@@ -49,6 +49,7 @@ public class ReportInfoGetDataController extends BaseProjectController implement
 			e.printStackTrace();
 		}
 		renderJson(record.set("rows", rows));
+		renderJson(record.set("total", rows.size()));
 	}
 
 	@Override

@@ -94,10 +94,34 @@ let ReportConfig = {
         	let contents = this.contentsArr[index]
         	let titles = this.title
         	
-        	function columns(){
+        	let urlTemp = titles[index].get_source;
+        	let conf_id = titles[index].id;
+        	if(!urlTemp){return}
+        	let url = BASE_PATH  + urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+        	let rows = JSON.parse(localStorage.getItem("row"));
+        	tempParam.forEach((item,index)=>{
+//				 tempObj[item] = rows[item]
+				 url += `&${item}=${rows[item]}`
+			 })
+			 
+        	$table.bootstrapTable({
+        		columns: columns(index),
+    			 url:url, // 请求后台的URL（*）
+			    method : 'post', // 请求方式（*）post/get
+			    sidePagination: 'server',
+			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+    			pagination: false, //分页
+    			smartDisplay:true,
+    			locales:'zh-CN',
+        	});
+        
+        	
+        	function columns(i){
+        		_this.tempI = i
         		let arr = []
         		contents.forEach((ele,index)=>{
-        			if(item.temp_name !== '操作'){
+        			if(ele.temp_name !== '操作'){
         				arr.push({
         					title:ele.temp_name,
         					field: ele.column_name,
@@ -105,9 +129,10 @@ let ReportConfig = {
         				})
         				
         			}else {
+        				
         				arr.push({
         					title:ele.temp_name,
-        					field: ele.column_name,
+        					field: 'operate',
         					width:1/contents.length,
         					events: {
             					"click .edit":(e,value,row,index)=>{
@@ -142,31 +167,13 @@ let ReportConfig = {
             						
             					}
             				},
-            				formatter: _this.formatBtnArr[item]
+            				formatter: function(){return _this.formatBtnArr[_this.tempI]}
         				})
         			}
         		})
+        		
         		return arr
         	}
-        	let urlTemp = titles[index].get_source;
-        	let conf_id = titles[index].id;
-        	if(!urlTemp){return}
-        	let url = BASE_PATH + 'credit/front' + urlTemp.split("*")[0] + `&conf_id=${conf_id}`
-        	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
-        	let rows = JSON.parse(localStorage.getItem("row"));
-        	tempParam.forEach((item,index)=>{
-//				 tempObj[item] = rows[item]
-				 url += `&${item}=${rows[item]}`
-			 })
-        	$table.bootstrapTable({
-        		columns: columns(),
-    			 url, // 请求后台的URL（*）
-			    method : 'post', // 请求方式（*）post/get
-    			pagination: false, //分页
-    			smartDisplay:false,
-    			locales:'zh-CN',
-        	});
-        	
         })
     },
     initModal(){
@@ -221,7 +228,7 @@ let ReportConfig = {
     			
     			
     		})
-    		this.formatBtnArr.push('<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>')
+    		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>`)
     		modalHtml += `<div class="modal fade" id="modal${item}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
