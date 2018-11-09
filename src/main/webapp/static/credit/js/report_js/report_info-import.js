@@ -188,7 +188,7 @@ let Verify = {
         		$.ajax({
            			type:"post",
                		url:BASE_PATH+"credit/front/orderProcess/statusSave",
-               		data:"statusCode=595&isPa=yes&orderNum="+"&orderId=",
+               		data:"statusCode=595&isPa=yes&id="+$("#orderId").val()+"&companyZHName="+$("#companyZHName").val(),
                		dataType:"json",
                		success:function(obj){
                			if(data.statusCode===1){
@@ -201,7 +201,7 @@ let Verify = {
                             $.ajax({
                          			type:"post",
                          			 url : BASE_PATH+"credit/front/orderProcess/listJson",
-                         			data:"report_user="+reporter+"&searchType=-1"+"&pageSize="+window.aaa,
+                         			data:"searchType=-6"+"&pageSize="+window.aaa,
                          			dataType:"json",
                          			success:function(data){
                          				console.log(data);

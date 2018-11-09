@@ -23,6 +23,18 @@ let ReportConfig = {
     			format: 'yyyy年MM月dd日'
     		});
     	})
+    	
+    	//模态窗里面的时间控件初始化
+    	let modals = Array.from($(".modal"))
+    	let modalDates = Array.from($(".modal .modal-date input"))
+    	modals.forEach((item,index)=>{
+    		modalDates.forEach((item,index)=>{
+    			laydate.render({
+	    			elem: item,
+	    			format: 'yyyy年MM月dd日'
+	    		});
+    		})
+    	})
     },
     addressInit(){
     	/**
@@ -72,27 +84,29 @@ let ReportConfig = {
     	})
     },
     initTable(){
+    	/**
+    	 * 表格初始化
+    	 */
         let _this = this
         
         this.idArr.forEach((item,index)=>{
         	const $table = $("#table"+item);
         	let contents = this.contentsArr[index]
-        	console.log($table,contents)
         	
         	function columns(){
         		let arr = []
-        		contents.forEach((item,index)=>{
+        		contents.forEach((ele,index)=>{
         			if(item.temp_name !== '操作'){
         				arr.push({
-        					title:item.temp_name,
-        					field: item.column_name,
+        					title:ele.temp_name,
+        					field: ele.column_name,
         					width:1/contents.length
         				})
         				
         			}else {
         				arr.push({
-        					title:item.temp_name,
-        					field: item.column_name,
+        					title:ele.temp_name,
+        					field: ele.column_name,
         					width:1/contents.length,
         					events: {
             					"click .edit":(e,value,row,index)=>{
@@ -129,7 +143,7 @@ let ReportConfig = {
             						
             					}
             				},
-            				formatter: _this.operateFormatterRecord
+            				formatter: _this.formatBtnArr[item]
         				})
         			}
         		})
@@ -148,35 +162,157 @@ let ReportConfig = {
         	
         })
     },
+    initModal(){
+    	/**
+    	 * 初始化模态窗
+    	 */
+    	let modalHtml = ''
+    	let ids = this.idArr
+    	let contents = this.contentsArr;
+    	let titles = this.title
+    	//格式化按钮数组
+    	this.formatBtnArr = []
+    	ids.forEach((item,index)=>{
+    		let modalBody = ''
+    		contents[index].forEach((ele,index)=>{
+    			
+    			if(ele.temp_name === '操作') {
+    				return;
+    			}
+    			
+    			if(!ele.field_type) {
+    				modalBody += ` <div class="form-inline justify-content-center my-3">
+									<label for="" class="control-label" >${ele.temp_name}：</label>
+									<input type="text" class="form-control" id="" >
+	    						</div>`
+    			}
+    			switch(ele.field_type) {
+    				case 'date':
+    					modalBody += ` <div class="form-inline justify-content-center my-3 modal-date">
+						                    <label for="" class="control-label" >${ele.temp_name}：</label>
+						                    <input type="text" class="form-control" id="" >
+						                </div>`
+    					break;
+    				case 'number':
+    					modalBody += ` <div class="form-inline justify-content-center my-3">
+				    						<label for="" class="control-label" >${ele.temp_name}：</label>
+				    						<input type="number" class="form-control" id="" >
+    							</div>`
+    					break;
+    				case 'select':
+    					modalBody += ` <div class="form-inline justify-content-center my-3">
+				    					  <label for="" class="control-label" >${ele.temp_name}：</label>
+				    					  <select  class="form-control" id="">
+						                    	
+					                    </select>
+    								</div>`
+    					break;
+    				
+    				default:
+    					break;
+    			}
+    			
+    			
+    		})
+    		this.formatBtnArr.push('<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>')
+    		modalHtml += `<div class="modal fade" id="modal${item}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					    <div class="modal-dialog modal-dialog-centered" role="document">
+					        <div class="modal-content">
+					            <div class="modal-header">
+					              	${titles[index].temp_name}
+					            </div>
+					            <div class="modal-body">
+					                ${modalBody}
+					            </div>
+					            <div class="modal-footer">
+					                <button type="button" class="btn btn-primary" id="modal_save${item}" data-dismiss="modal">保存</button>
+					                <button type="button" class="btn btn-default" id="modal_cancel${item}" data-dismiss="modal">取消</button>
+					            </div>
+					        </div>
+					    </div>
+					</div>`
+    	})
+    	
+    	$("#container").append(modalHtml)
+    },
     initContent(){
+    	
+    	
         /**初始化内容 */
     	this.idArr = []
     	this.contentsArr = []
+    	this.title = []
     	let row = localStorage.getItem("row");
     	let _this = this
     	let id = JSON.parse(row).id;
+    	let reportType = JSON.parse(row).report_type
         $.ajax({
         	type:"get",
         	url:BASE_PATH + "credit/front/getmodule/list",
-        	data:{id},
+        	data:{id,reportType},
         	success:(data)=>{
                 console.log(data)
                 setTimeout(()=>{
                 	_this.addressInit();
+                	_this.initModal();
                 	_this.dateInit();
                 	_this.regChecked();
                 	_this.initTable();
                 },0)
+                /**
+                 * 头部
+                 */
+                let header = data.defaultModule;
+                let headerHtml = ''
+            	let temp = ''
+                header.forEach((item,index)=>{
+                	if(item.node_level === '1') {
+                		headerHtml += `<div class="order-num main-title">${item.temp_name}：<span id="num"></span></div>`
+                	}else {
+                		if(index < 4){
+                			temp += `<div class="order-item col-md-4">
+		                                <span class="fw"  >${item.temp_name}：</span>
+		                                <span id=""></span>
+		                            </div>`
+                		}else {
+                			temp += `<div class="order-item col-md-4 mt-3">
+		                                <span class="fw"  >${item.temp_name}：</span>
+		                                <span id=""></span>
+		                            </div>`
+                		}
+                	}
+                })
+                headerHtml += `<div class="order-item-box d-flex flex-wrap justify-content-start row pr-4">`
+            	headerHtml += 	temp;
+                headerHtml += `</div>`
+                $(".order-box").html(headerHtml)
+                //头部绑数
+                let row = JSON.parse(localStorage.getItem("row"))
+                $("#num").html(row.num)
+                let tempArr = [row.companyNames,row.companyZHNames,row.reportType,row.receiver_date,row.end_date]
+                let headItem = Array.from($(".fw"))
+                console.log(tempArr,headItem)
+                headItem.forEach((item,index)=>{
+                	$(item).siblings("span").html(tempArr[index])
+                })
+                
+                /**
+                 * 内容模块部分
+                 */
                 let modules = data.modules;    
                 let contentHtml = '' 
                 modules.forEach((item,index)=>{
                 	/**
                 	 * 循环模块
                 	 */
-                	contentHtml +=  `<div class="bg-f"><div class="l-title">${item.title.temp_name}</div>`
+                	let smallModileType = item.smallModileType
+                	if(smallModileType === '-2') {
+                		return;
+                	}
+                	contentHtml +=  `<div class="bg-f pb-3"><div class="l-title">${item.title.temp_name}</div>`
+                	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
                 	//模块的类型
-                	let smallModileType = item.smallModileType
                 	
                 	switch(smallModileType) {
                 		case '0':
@@ -260,13 +396,14 @@ let ReportConfig = {
                 		case '1':
                 			_this.idArr.push(index)
                 			_this.contentsArr.push(item.contents)
+                			_this.title.push(item.title)
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-5 " type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}">+ ${item.place_hold}</button>
+				                				<button class="btn btn-lg btn-block mb-5 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}">+ ${btnText}</button>
                 				</div>`
                 		
                 			break; 
