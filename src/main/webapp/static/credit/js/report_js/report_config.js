@@ -62,7 +62,7 @@ let ReportConfig = {
     	/**
     	 * 正则验证
     	 */
-    	$(".form-control").blur((e)=>{
+    	$(".firm-info .form-control").blur((e)=>{
     		let val = $(e.target).val();
     		let reg = $(e.target).attr("reg")
     		console.log(typeof reg)
@@ -101,7 +101,6 @@ let ReportConfig = {
         	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
         	let rows = JSON.parse(localStorage.getItem("row"));
         	tempParam.forEach((item,index)=>{
-//				 tempObj[item] = rows[item]
 				 url += `&${item}=${rows[item]}`
 			 })
 			 
@@ -471,7 +470,7 @@ let ReportConfig = {
     modalClean(){
     	this.idArr.forEach((item,index)=>{
     		//点击新增一条清空模态框中内容
-    		$("#modal"+item).click(()=>{
+    		$("#addBtn"+item).click(()=>{
     			this.isAdd = true
     			$("#modal"+item+" input").val("");
 		    	$("#modal"+item+" textarea").val("");
@@ -482,12 +481,17 @@ let ReportConfig = {
     		//点击模态框保存按钮，新增一条数据
     		$("#modal_save"+item).click(()=>{
     			let dataJson = []
+    			let dataJsonObj = {}
     			let formArr = Array.from($("#modal"+item).find(".form-inline"))
 				formArr.forEach((item,index)=>{
 					let id = $(item).children("label").siblings().attr("id");
-					dataJson.push(this.getFormData($('#'+id)))
+					let tempObj = this.getFormData($('#'+id));
+					for(let i in tempObj){
+						if(tempObj.hasOwnProperty(i))
+						dataJsonObj[i] = tempObj[i]
+					}
 				})
-    			
+    			dataJson.push(dataJsonObj)
     			
     			let urlTemp = this.title[index].alter_source
     			if(!urlTemp){return}
@@ -497,11 +501,20 @@ let ReportConfig = {
     				url += "&id="+1
     			}
             	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
-            	url += `&${tempParam[0]}=${dataJson}`
+            	let rows = JSON.parse(localStorage.getItem("row"));
+            	let paramObj = {}
+            	tempParam.forEach((item,index)=>{
+					 paramObj[item] = rows[item]
+    			 })
+            	console.log(dataJson)
+            	paramObj["dataJson"] = dataJson
             		
             	$.ajax({
             		url,
             		type:'post',
+            		dataType:'json',
+            		data:paramObj,
+            		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             		success:(data)=>{
             			console.log(data)
             		}
