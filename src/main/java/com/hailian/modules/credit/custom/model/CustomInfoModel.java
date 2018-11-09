@@ -134,4 +134,17 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 		CustomInfoModel findFirst = CustomInfoModel.dao.findFirst(sql.toString(),params.toArray());
 		return findFirst;
 	}
+	/**
+	 * 
+	* @Description: 查询所有客户
+	* @date 2018年11月6日 上午10:46:49
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public  List<CustomInfoModel> getAllcutomer(){
+		String sql="SELECT  id ,name  from credit_custom_info ";
+		return CustomInfoModel.dao.find(sql);
+				
+	}
 }

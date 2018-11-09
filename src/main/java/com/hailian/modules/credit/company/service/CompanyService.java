@@ -1,8 +1,16 @@
 package com.hailian.modules.credit.company.service;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import com.hailian.component.base.BaseProjectController;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
+import com.hailian.util.http.HttpTest;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.template.ext.directive.Str;
 
@@ -51,6 +59,120 @@ public class CompanyService {
 	public CompanyModel getOne(int id, BaseProjectController c) {
 		CompanyModel companyModel = CompanyModel.dao.getOne(id, c);
 		return companyModel;
-
+	}
+	/**
+	 * 调用第三方接口获取企业信息（json）解析并存放在企业相关信息表
+	* @author doushuihai  
+	* @date 2018年11月8日上午10:45:37  
+	* @TODO
+	 */
+	public void EnterpriseGrab(String companyId,String companyName,String reporttype){
+		JSONObject json = HttpTest.getYjapi(companyName);//获取api企业信息数据
+		String status = json.getString("Status"); //获取调用api接口的状态码
+		System.out.println(status);
+		//200调用成功并查到企业相关信息
+		if("200".equals(status)){
+			JSONObject jsonResulet = json.getJSONObject("Result");
+			//企业基本信息
+			String No = jsonResulet.getString("No"); //注册号
+			String CreditCode = jsonResulet.getString("CreditCode"); //统一信用社信用代码
+			System.out.println(CreditCode);
+			String EconKind = jsonResulet.getString("EconKind"); //企业类型
+			String OperName = jsonResulet.getString("OperName"); //法人名
+			String RegistCapi = jsonResulet.getString("RegistCapi"); //注册资本
+			String StartDate = jsonResulet.getString("StartDate"); //成立日期
+			String TermStart = jsonResulet.getString("TermStart"); //营业期限自
+			String TeamEnd = jsonResulet.getString("TeamEnd"); //营业期限至
+			String BelongOrg = jsonResulet.getString("BelongOrg"); //登记机关
+			String Address = jsonResulet.getString("Address"); //地址
+			String Province = jsonResulet.getString("Province"); //所在省
+			String Scope = jsonResulet.getString("Scope"); //经营范围
+			String Status = jsonResulet.getString("Status"); //登记状态
+			CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
+			companyinfoModel.set("registration_num", No);
+			companyinfoModel.set("company_type", EconKind);
+			companyinfoModel.set("credit_code", CreditCode);
+			companyinfoModel.set("legal", OperName);
+			companyinfoModel.set("registered_capital", RegistCapi);
+			companyinfoModel.set("establishment_date", StartDate);
+			companyinfoModel.set("business_date_start", TermStart);
+			companyinfoModel.set("business_date_end", TeamEnd);
+			companyinfoModel.set("registration_status", Status);
+			companyinfoModel.set("registration_authority", BelongOrg);
+			companyinfoModel.set("address", Address);
+			companyinfoModel.set("province", Province);
+			companyinfoModel.set("operation_scope", Scope);
+			companyinfoModel.set("id", companyId);
+			companyinfoModel.set("report_type", reporttype);
+			JSONObject ContactInfo = json.getJSONObject("Result").getJSONObject("ContactInfo");//联系信息
+			String PhoneNumber = ContactInfo.getString("PhoneNumber");//电话
+			String Email = ContactInfo.getString("Email");//邮箱
+			companyinfoModel.set("telphone", PhoneNumber);
+			companyinfoModel.set("email", Email);
+			
+			companyinfoModel.set("name", companyName);
+			companyinfoModel.update();
+			//股东信息
+			JSONArray partners = json.getJSONObject("Result").getJSONArray("Partners");
+			if(partners !=null && partners.size()>0){
+				CreditCompanyShareholder.dao.deleteBycomIdAndType(companyId, reporttype);//根据公司编码和报告类型删除记录
+				for(int i=0;i<partners.size();i++){
+					JSONObject partner = (JSONObject)partners.get(i);
+					String name = partner.getString("StockName");//股东
+					String StockPercent = partner.getString("StockPercent");//出资比例
+					CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
+					shareholderModel.set("name", name);
+					shareholderModel.set("money", StockPercent);
+					shareholderModel.set("company_id", companyId);
+					shareholderModel.set("report_type", reporttype);
+					shareholderModel.save();
+				}
+			}
+			//管理层
+			JSONArray Employees = json.getJSONObject("Result").getJSONArray("Employees");
+			if(Employees !=null && Employees.size()>0){
+				CreditCompanyManagement.dao.deleteBycomIdAndType(companyId, reporttype);//根据公司编码和报告类型删除记录
+				for(int i=0;i<Employees.size();i++){
+					JSONObject employee = (JSONObject)Employees.get(i);
+					//CreditCompanyManagement
+					String name = employee.getString("Name");//管理层姓名
+					String job = employee.getString("Job");//职位
+					CreditCompanyManagement managementModel = new CreditCompanyManagement();
+					managementModel.set("name", name);
+					managementModel.set("position", job);
+					managementModel.set("company_id", companyId);
+					managementModel.set("report_type", reporttype);
+					managementModel.save();
+				}
+			}
+			//分支机构
+			JSONArray Branches = json.getJSONObject("Result").getJSONArray("Branches");
+			if(Branches != null && Branches.size()>0){
+				for(int i=0;i<Branches.size();i++){
+					JSONObject branche = (JSONObject)Branches.get(i);//分支
+					String RegNo = branche.getString("RegNo");//注册号
+				}
+			}
+			//变更事项
+			JSONArray ChangeRecords = json.getJSONObject("Result").getJSONArray("ChangeRecords");
+			if(ChangeRecords != null && ChangeRecords.size()>0){
+				CreditCompanyHis.dao.deleteBycomIdAndType(companyId, reporttype);//根据公司编码和报告类型删除记录
+				for(int i=0;i<ChangeRecords.size();i++){
+					JSONObject changerecord = (JSONObject)ChangeRecords.get(i);
+					String ProjectName = changerecord.getString("ProjectName");//变更项
+					String BeforeContent = changerecord.getString("BeforeContent");//变更前
+					String AfterContent = changerecord.getString("AfterContent");//变更后
+					String ChangeDate = changerecord.getString("ChangeDate");//变更日期
+					CreditCompanyHis companyhisModel=new CreditCompanyHis();
+					companyhisModel.set("change_items", ProjectName);
+					companyhisModel.set("change_font", BeforeContent);
+					companyhisModel.set("change_back", AfterContent);
+					companyhisModel.set("date", ChangeDate);
+					companyhisModel.set("company_id", companyId);
+					companyhisModel.set("report_type", reporttype);
+					companyhisModel.save();
+				}
+			}
+		}
 	}
 }

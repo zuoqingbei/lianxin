@@ -350,7 +350,7 @@
 function agentchange(){
 		var value=$("#agency_id").find("option:selected").val();
 		var html="";
-		 html+="<option value='-1' selected='selected'>请选择</option>"
+		 html+="<option value='-1' selected='selected'></option>"
 	 	$.post('/credit/front/orderProcess/getAgentCategory',{"agentid":value},function(data){
 	 		
 	 	console.log(data)

@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-
+/**
+ * 0代表失败
+ * 1代表成功
+ */
 public class ResultType {
 	/**
 	 * 0代表失败

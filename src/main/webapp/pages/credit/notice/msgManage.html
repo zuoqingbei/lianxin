@@ -95,6 +95,8 @@
         #paginationBox{
        	    display: flex;
     		justify-content: flex-end;
+    		margin-top: 2rem;
+    		margin-bottom: 1rem;
         }
         .pagination {
         	justify-content: flex-end;
@@ -184,7 +186,7 @@
 		            $.ajax({
 		                url:'/credit/sysuser/notice/list',
 		                type:'POST',
-		                data:{'pageNo':page,'recordsperpage':6,'status':status},
+		                data:{'pageNo':page,'recordsperpage':10,'status':status},
 		                dataType:'JSON',
 		                success:function (data) {
 		                	var html="";	
@@ -244,7 +246,7 @@ function agentchange(status){
 	$.ajax({
         url:'/credit/sysuser/notice/list',
         type:'POST',
-        data:{'pageNo':1,'recordsperpage':6,'status':status},
+        data:{'pageNo':1,'recordsperpage':10,'status':status},
         dataType:'JSON',
         success:function (data) {
         	initPag(data.totalPage,status)

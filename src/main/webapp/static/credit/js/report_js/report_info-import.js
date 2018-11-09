@@ -102,6 +102,7 @@ let Verify = {
                               //Public.goToBasicInfoWrite(row);
                               Public.goToReportConfig(row)
                             },  "click .recordName":(e,value,row,index)=>{
+                            	$("#orderType").html(row.orderType);
                                 $("#custom_id").html(row.custom_id);
                                 $("#customId").html(row.customId);
                                 $("#receiver_date").html(row.receiver_date);
@@ -120,8 +121,9 @@ let Verify = {
                                 $("#remarks").val("");
                                 pageNumber = row.pageNumber;
                                 pageSize = row.pageSize;
-                            	sortName = row.sortName;
-                            	sortOrder = row.sortOrder;
+                            	  sortName = row.sortName;
+                            	  sortOrder = row.sortOrder;
+                            	  reportt = row.report_userKey;
                               }
                           },
                           formatter: _this.operateFormatter
@@ -186,7 +188,7 @@ let Verify = {
         		$.ajax({
            			type:"post",
                		url:BASE_PATH+"credit/front/orderProcess/statusSave",
-               		data:"statusCode=595&isPa=yes&orderNum="+"&orderId=",
+               		data:"statusCode=595&isPa=yes&id="+$("#orderId").val()+"&companyZHName="+$("#companyZHName").val(),
                		dataType:"json",
                		success:function(obj){
                			if(data.statusCode===1){
@@ -199,7 +201,7 @@ let Verify = {
                             $.ajax({
                          			type:"post",
                          			 url : BASE_PATH+"credit/front/orderProcess/listJson",
-                         			data:"report_user="+reporter+"&searchType=-1"+"&pageSize="+window.aaa,
+                         			data:"searchType=-6"+"&pageSize="+window.aaa,
                          			dataType:"json",
                          			success:function(data){
                          				console.log(data);

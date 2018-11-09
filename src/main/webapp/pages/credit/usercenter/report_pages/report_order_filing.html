@@ -308,6 +308,7 @@
                                     <span id="companyZHNames2">**</span>
                                 </div>
                                  <input type="hidden" name="orderId" id="orderId2">
+                                 <input type="hidden" name="companyId2" id="companyId2">
                             </div>
                     </div>
                         <div class="file-upload">
@@ -341,7 +342,7 @@ function agentchange(){
 		var value=$("#agency_id").find("option:selected").val();
 		var html="";
 		 html+="<option value='-1' selected='selected'>请选择</option>"
-	 	$.post('/credit/front/orderProcess/getAgentCategory',{"agentid":value},function(data){
+	 	$.post('/credit/front/orderProcess/getAgentCate',{"agentid":value},function(data){
 	 		
 	 	console.log(data)
 	  for(item in data){

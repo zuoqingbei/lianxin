@@ -115,9 +115,9 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 	public List<OrderStatisticsModel> getcountry(String customId){
 		String sql="";
 		if (StringUtils.isNotBlank(customId)) {
-			sql="select DISTINCT c.name as country from credit_order_info o LEFT JOIN credit_country c on o.country=c.id where  o.del_flag='0'o.custom_id='"+customId+"'";
+			sql="select  c.name as country,COUNT(o.id) as num from credit_order_info o inner JOIN credit_country c on o.country=c.id where  o.del_flag='0' and o.custom_id='"+customId+"' GROUP BY o.country";
 		}else {
-			sql="select DISTINCT c.name as country from credit_order_info o LEFT JOIN credit_country c on o.country=c.id where o.del_flag='0' ";
+			sql="select  c.name as country,COUNT(o.id) as num from credit_order_info o inner JOIN credit_country c on o.country=c.id where o.del_flag='0'  GROUP BY o.country ";
 		}
 		
 		return OrderStatisticsModel.dao.find(sql);
