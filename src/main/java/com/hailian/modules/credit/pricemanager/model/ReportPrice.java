@@ -175,7 +175,8 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 		sql.append("   LEFT JOIN sys_user u on u.userid=t.create_by");
 		sql.append("   LEFT JOIN credit_country cc on cc.id=t.country_id");
 		sql.append("   LEFT JOIN sys_dict_detail detail on t.usabled=detail.detail_id");
-		sql.append("   where t.del_flag=0 and ot.del_flag=0 and os.del_flag=0 and rt.del_flag=0 and c.del_flag=0");
+		sql.append("   LEFT JOIN sys_dict_detail detail2 on t.currency=detail2.detail_id");
+		sql.append("   where t.del_flag=0 ");
 		List<Object> params = new ArrayList<Object>();
 		String reportType = attr.getStr("report_type");
 		String speed = attr.getStr("order_speed");
@@ -210,7 +211,7 @@ public class ReportPrice extends BaseProjectModel<ReportPrice> {
 		return ReportPrice.dao
 				.paginate(
 						paginator,
-						"select cc.name as countryName, os.detail_name as orderSpeed,rt.`name` as reportType,ot.detail_name as orderType,c.detail_name as countryName,u.realname,detail.detail_name as usabledName, t.*",
+						"select detail2.detail_name as currencyName, cc.name as countryName2, os.detail_name as orderSpeed,rt.`name` as reportType,ot.detail_name as orderType,c.detail_name as countryName,u.realname,detail.detail_name as usabledName, t.*",
 						sql.toString(), params.toArray());
 	}
 

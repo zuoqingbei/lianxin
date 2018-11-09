@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.jfinal.plugin.activerecord.Db;
 /**
  * 
  * @className CreditOrderFlow.java
@@ -34,8 +35,13 @@ public class CreditOrderFlow extends BaseProjectModel<CreditOrderFlow> implement
 		sql.append("select t.*,s.detail_name as statuName,s1.realname as name from credit_order_flow t ");
 		sql.append(" left join sys_dict_detail s on s.detail_id=t.order_state ");
 		sql.append(" left join sys_user s1 on s1.userid=t.create_oper ");
-		sql.append(" where 1 = 1 and t.order_num=?"); 
+		sql.append(" where t.del_flag='0' and 1 = 1 and t.order_num=?"); 
 		return dao.find(sql.toString(), num);
+	}
+	public void del(String num) {
+		StringBuffer sql=new StringBuffer();
+		sql.append("update credit_order_flow set del_flag=1 where order_num=? and order_state!=291 ");
+		Db.update(sql.toString(),num);
 	}
 
 }
