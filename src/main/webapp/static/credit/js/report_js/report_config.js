@@ -106,7 +106,7 @@ let ReportConfig = {
 			 })
 			 
         	$table.bootstrapTable({
-        		columns: columns(index),
+        		columns: columns(index,item),
     			 url:url, // 请求后台的URL（*）
 			    method : 'post', // 请求方式（*）post/get
 			    sidePagination: 'server',
@@ -117,8 +117,9 @@ let ReportConfig = {
         	});
         
         	
-        	function columns(i){
+        	function columns(i,item){
         		_this.tempI = i
+        		_this.tempId = item
         		let arr = []
         		contents.forEach((ele,index)=>{
         			if(ele.temp_name !== '操作'){
@@ -136,14 +137,20 @@ let ReportConfig = {
         					width:1/contents.length,
         					events: {
             					"click .edit":(e,value,row,index)=>{
-            						_this.recordIndex = index
+            						console.log(value,row,index)
             						//回显
-            						let {date,change_item,change_font,change_back} = row;
-            						$("#modal_record_date").val(date)
-            						$("#modal_change_items").val(change_item)
-            						$("#modal_change_font").val(change_font)
-            						$("#modal_change_back").val(change_back)
-            						
+            						let formArr = Array.from($("#modal"+_this.tempId).find(".form-inline"))
+            						formArr.forEach((item,index)=>{
+            							let id = $(item).children("label").siblings().attr("id");
+            							if($("#"+id).is('select')) {
+            								//如果是select
+            								$("#"+id).find("option[text='"+row[id]+"']").attr("selected",true);
+            							}else {
+            								
+            								$("#"+id).val(row[id])
+            							}
+            						})
+     						
             						
             					},
             					"click .delete":(e,value,row,index)=>{
@@ -189,7 +196,6 @@ let ReportConfig = {
     	ids.forEach((item,index)=>{
     		let modalBody = ''
     		contents[index].forEach((ele,index)=>{
-    			
     			if(ele.temp_name === '操作') {
     				return;
     			}
@@ -197,29 +203,38 @@ let ReportConfig = {
     			if(!ele.field_type) {
     				modalBody += ` <div class="form-inline justify-content-center my-3">
 									<label for="" class="control-label" >${ele.temp_name}：</label>
-									<input type="text" class="form-control" id="" >
+									<input type="text" class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
 	    						</div>`
     			}
     			switch(ele.field_type) {
     				case 'date':
     					modalBody += ` <div class="form-inline justify-content-center my-3 modal-date">
 						                    <label for="" class="control-label" >${ele.temp_name}：</label>
-						                    <input type="text" class="form-control" id="" >
+						                    <input type="text" class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
 						                </div>`
     					break;
     				case 'number':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
 				    						<label for="" class="control-label" >${ele.temp_name}：</label>
-				    						<input type="number" class="form-control" id="" >
+				    						<input type="number" class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
     							</div>`
     					break;
     				case 'select':
-    					modalBody += ` <div class="form-inline justify-content-center my-3">
-				    					  <label for="" class="control-label" >${ele.temp_name}：</label>
-				    					  <select  class="form-control" id="">
-						                    	
-					                    </select>
-    								</div>`
+    					let url = BASE_PATH + ele.get_source
+            			$.ajax({
+            				type:'get',
+            				url,
+            				async:false,
+            				dataType:'json',
+            				success:(data)=>{
+            					modalBody += ` <div class="form-inline justify-content-center my-3">
+            						<label for="" class="control-label" >${ele.temp_name}：</label>
+            						<select  class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
+            							${data.selectStr}
+            						</select>
+            						</div>`
+            				}
+            			})
     					break;
     				
     				default:
@@ -228,7 +243,7 @@ let ReportConfig = {
     			
     			
     		})
-    		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>`)
+    		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="${BASE_PATH}static/credit/imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>`)
     		modalHtml += `<div class="modal fade" id="modal${item}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
@@ -284,6 +299,7 @@ let ReportConfig = {
                 	_this.regChecked();
                 	_this.initTable();
                 	_this.tabChange();
+                	_this.modalClean();
                 },0)
                 /**
                  * 头部
@@ -438,7 +454,7 @@ let ReportConfig = {
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}">+ ${btnText}</button>
+				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 				</div>`
                 		
                 			break; 
@@ -451,6 +467,58 @@ let ReportConfig = {
                 $(".table-content").html(contentHtml)
             }
         })
+    },
+    modalClean(){
+    	this.idArr.forEach((item,index)=>{
+    		//点击新增一条清空模态框中内容
+    		$("#modal"+item).click(()=>{
+    			this.isAdd = true
+    			$("#modal"+item+" input").val("");
+		    	$("#modal"+item+" textarea").val("");
+		    	 $("#modal"+item+" select").find("option:selected").attr("selected", false);
+			    $("#modal"+item+" select").find("option").first().attr("selected", true);
+    
+    		})
+    		//点击模态框保存按钮，新增一条数据
+    		$("#modal_save"+item).click(()=>{
+    			let dataJson = []
+    			let formArr = Array.from($("#modal"+item).find(".form-inline"))
+				formArr.forEach((item,index)=>{
+					let id = $(item).children("label").siblings().attr("id");
+					dataJson.push(this.getFormData($('#'+id)))
+				})
+    			
+    			
+    			let urlTemp = this.title[index].alter_source
+    			if(!urlTemp){return}
+    			let url = BASE_PATH  + urlTemp.split("*")[0] 
+    			if(!this.isAdd){
+    				//是修改保存
+    				url += "&id="+1
+    			}
+            	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+            	url += `&${tempParam[0]}=${dataJson}`
+            		
+            	$.ajax({
+            		url,
+            		type:'post',
+            		success:(data)=>{
+            			console.log(data)
+            		}
+            	})
+    		})
+    	})
+    },
+    getFormData(form) {
+    	//序列化
+        var unindexed_array = form.serializeArray();
+        var indexed_array = {};
+
+        $.map(unindexed_array, function (n, i) {
+          indexed_array[n['name']] = n['value'];
+        });
+
+        return indexed_array;
     }
 }
 
