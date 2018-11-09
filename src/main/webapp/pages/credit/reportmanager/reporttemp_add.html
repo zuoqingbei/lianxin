@@ -43,7 +43,7 @@ include("/pages/template/head.html"){} %>
 			html2=""
 			html3=""
 			if(value=='0'){				
-				html+='<td style="text-align: right;">报告类型</td>'
+				html+='<td style="text-align: right;">一级目录</td>'
 				html+='<td>'
 				html+='<select id="report" name="attr.report_type" onchange="oper.reportchange()" class="form-control" valid="vselect" validname="请选择报告类型" >'
 				html+="${reportType}"
@@ -56,13 +56,13 @@ include("/pages/template/head.html"){} %>
 				$(".add2").html("")
 				$(".add3").html("")
 			}else if(value=='1'){
-				html+='<td style="text-align: right;">报告类型</td>'
+				html+='<td style="text-align: right;">一级目录</td>'
 				html+='<td>'
 				html+='<select id="report2"name="attr.report_type" onchange="oper.reportchange2()" class="form-control"  >'
 				html+="${reportType2}"
 				html+='</select>'
 				html+='</td>'					
-				html2+='<td style="text-align: right;">父模板名称</td>'
+				html2+='<td style="text-align: right;">二级目录</td>'
 				html2+='<td>'
 				html2+='<input class="form-control" id="parent" type="text" name="attr.temp_name" value=""  />'
 				html2+='<input   type="hidden" name="attr.parent_temp" />'
@@ -73,13 +73,13 @@ include("/pages/template/head.html"){} %>
 				$(".add3").html("")
 				oper.reportchange2();
 			}else if(value=='2'){				
-				html+='<td style="text-align: right;">报告类型</td>'
+				html+='<td style="text-align: right;">一级目录</td>'
 				html+='<td>'
 				html+='<select id="report3" name="attr.report_type" class="form-control" onchange="oper.reportchange3();" >'
 				html+="${reportType2}"
 				html+='</select>'
 				html+='</td>'
-				html2+='<td style="text-align: right;">父模板名称</td>'
+				html2+='<td style="text-align: right;">二级目录</td>'
 				html2+='<td>'
 				html2+='<select id="parent2" name="attr.parent_temp" class="form-control" >'
 				html2+='</select>'
@@ -94,10 +94,6 @@ include("/pages/template/head.html"){} %>
 				html3+='<select name="attr.field_type" class="form-control" valid="vselect" validname="请选择字段类型">'
 				html3+="${fieldType!}"
 				html3+='</select>'
-				html3+='</td>'
-				html3+='<td>字段长度</td>'
-				html3+='<td>'
-				html3+='<input class="form-control" type="text" name="attr.length"  valid="vtext" validname="字段长度" />'
 				html3+='</td>'
 				$(".add1").html(html)
 				$(".add2").html(html2)
@@ -128,7 +124,7 @@ include("/pages/template/head.html"){} %>
 		
 		<%if(model1.node_level=='0'){%>
 			<tr>
-				<td style="text-align: right;">报告类型</td>
+				<td style="text-align: right;">一级目录</td>
 				<td>
 					<select name="attr.report_type" class="form-control" valid="vselect" validname="请选择报告类型"
 					onchange="oper.reportchange()">
@@ -141,7 +137,7 @@ include("/pages/template/head.html"){} %>
 			</tr>
 		<%}else if(model1.node_level=='1' || model1.node_level=='2'){%>
 			<tr>
-				<td style="text-align: right;">模板名称</td>
+				<td style="text-align: right;">二级目录</td>
 				<td>
 					<input class="form-control" type="text" name="attr.temp_name"
 				value="" valid='vtext' validname='模板名称' />

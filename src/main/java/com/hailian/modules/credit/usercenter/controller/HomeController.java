@@ -2,6 +2,7 @@
 package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -365,6 +366,7 @@ public class HomeController extends BaseProjectController {
 		}
 		//获取公司id
 		model.set("company_id", company.get("id"));
+		//获取报告员id
 		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
 		model.set("report_user", reportIdtoOrder);
 		//获取订单记录
@@ -495,16 +497,29 @@ public class HomeController extends BaseProjectController {
 		List<File> ftpfileList=new ArrayList<File>();
 		String id=getPara("orderid1");
 		String update_reason=getPara("update_reason");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		//更新订单信息
 		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
 		coi.set("update_reason", update_reason);
-		coi.set("status", "312");
+		coi.set("status", "293");
 		//获取订单编号
 		String num=coi.get("num");
 		//保存上传文件
 		CreditUploadFileModel model= new CreditUploadFileModel();
 		model.set("business_type", "0");
 		model.set("business_id", num);
+		
+		
+		//获取订单记录
+		CreditOrderFlow cof=new CreditOrderFlow();
+		//订单号
+		cof.set("order_num", num);
+		//订单状态
+		cof.set("order_state", "293");
+		//操作人
+		cof.set("create_oper", getSessionUser().getUserid());
+		//操作时间
+		cof.set("create_time", sdf.format(new Date()));
 		//记录失败次数
 		int num1=0;
 		//记录信息
@@ -587,7 +602,10 @@ public class HomeController extends BaseProjectController {
 		
 	}
 		try {
+			//内容更新会删除以前除了订单分配外的所有记录节点
+			CreditOrderFlow.dao.del(coi.getStr("num"));
 			coi.update();
+			cof.save();
 			ResultType resultType=new ResultType(1,"操作成功");
 			renderJson(resultType);						
 			return;
