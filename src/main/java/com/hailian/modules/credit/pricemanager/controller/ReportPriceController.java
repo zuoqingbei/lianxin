@@ -124,11 +124,15 @@ public class ReportPriceController extends BaseProjectController {
 	public void save() {
 		Integer id = getParaToInt("id");
 		ReportPrice model = getModel(ReportPrice.class);
+		if("老系统".equals(model.getStr("versions"))) {
+			model.set("order_speed", getPara("order_speed",""));
+			model.set("report_type", getPara("report_type",""));
+		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-		model.set("update_by", userid);
-		model.set("update_date", now);
 		if (id != null && id > 0) { // 更新
+			model.set("update_by", userid);
+			model.set("update_date", now);
 			model.update();
 			renderMessage("修改成功");
 		} else { // 新增

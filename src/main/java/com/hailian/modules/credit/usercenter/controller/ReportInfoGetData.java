@@ -90,11 +90,11 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					System.out.println(key+":"+map.get(key));
 					model.set(key.trim(), map.get(key).trim());
 				}
-				Integer userId = getSessionUser().getUserid();
+				Integer userId = 111;
 				String now = getNow();
 				model.set("update_by", userId);
 				model.set("update_date", now);
-				if(getPara("flag").equals("create")){
+				if("".equals(getPara("id"))||getPara("id")==null){
 					model.set("create_by", userId);
 					model.set("create_date", now);
 				}
@@ -103,9 +103,9 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			}
 			
 		}
-		if(getPara("flag").equals("create")){
+		if("".equals(getPara("id"))||getPara("id")==null){
 			Db.batchSave(list, list.size());
-		}else if(getPara("flag").equals("update")){
+		}else{
 			Db.batchUpdate(list, list.size());
 		}
 		return list;

@@ -101,7 +101,7 @@ $(function(){
 			</tr>
 		<%}else{%>	
 			<tr>
-				<td style="text-align: right;">报告类型</td>
+				<td style="text-align: right;">一级目录</td>
 				<td>
 					<select name="attr.report_type" class="form-control" onchange="oper.reportchange3();" valid="vselect" validname="请选择报告类型">
 						${reportType2}
@@ -110,7 +110,7 @@ $(function(){
 				
 			</tr>
 			<tr>
-				<td style="text-align: right;">父模板名称</td>
+				<td style="text-align: right;">二级目录</td>
 				<td>
 					<select name="attr.parent_temp" class="form-control" valid="vselect" validname="请选择父模板名称">
 						
@@ -124,23 +124,13 @@ $(function(){
 					<input class="form-control" type="text" name="attr.temp_name"
 				value="${model.temp_name}" valid='vtext' validname='模板名称' />									
 				</td>
-				<td style="text-align: right;">模板英文名称</td>
-				<td>
-					<input class="form-control" type="text" name="attr.temp_name_en"
-				value="${model.temp_name_en}"  />									
-				</td>
-				</tr>
+			</tr>
 				<tr>
 				<td style="text-align: right;">模板字段类型</td>
 				<td>
 					<select name="attr.field_type" class="form-control" valid="vselect" validname="请选择字段类型">
 						${fieldType!}
 					</select>				
-				</td>
-				<td>模板字段长度</td>
-				<td>
-				<input class="form-control" type="text" name="attr.length"
-				value="${model.length}" valid='vtext' validname='字段长度' />
 				</td>
 				<input  value= '${model.node_leve}' type="hidden" name="attr.node_leve" />
 				<input  value= '${model.id}' type="hidden" name="attr.id" />
