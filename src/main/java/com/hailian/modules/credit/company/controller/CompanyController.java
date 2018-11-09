@@ -134,5 +134,13 @@ public class CompanyController extends BaseProjectController {
 		setAttr("model", model);
 		render(path + "view.html");
 	}
-
+	/**
+	 * 测试
+	* @author doushuihai  
+	* @date 2018年11月9日下午2:47:08  
+	* @TODO
+	 */
+	public void dataImport(){
+		CompanyService.service.EnterpriseGrab("7777777", "北京小桔科技有限公司", "7");
+	}
 }
