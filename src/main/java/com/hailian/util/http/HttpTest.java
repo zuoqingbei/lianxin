@@ -9,9 +9,14 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -49,40 +54,41 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+
 public class HttpTest {
 	
 	public static void main(String[] args) throws Exception {
 		
 		//getCustomsUrl();//爬取企业信息基本情况
-		getSourceUrl();//爬取商务部业务系统网站
+		//getSourceUrl();//爬取商务部业务系统网站
 		
 		//CookieStore cookieStore = getIcrisCookie();//获取香港查册网站cookie信息
 		//getIcrisUrl(cookieStore);//爬取香港查册网站
 		
 		//getCourtUrl();//爬取全国法院被执行人信息查询网站
 		//getYjapi();
+		getYjapi("北京小桔科技有限公司");
 		
     }
-	
-	public static void getYjapi(){
-		HttpGet get = new HttpGet("http://i.yjapi.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
+	public static JSONObject getYjapi(String conpanyName){
+//		HttpGet get = new HttpGet("http://i.yjapi.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
+		HttpGet get = new HttpGet("http://dev.i.yjapi.com/ECIV4/GetDetailsByName?key=791f4eb3af844c53a6bba25f80f033b7&keyword="+conpanyName);//精确查询
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
+		JSONObject json=null;
 		try {
 			response = client.execute(get);
 			Header[] headers = response.getAllHeaders();
-	        for(int i=0;i<headers.length;i++) {
-	        	System.out.println(headers[i].getName() +"=="+ headers[i].getValue());
-	        }
 			html = EntityUtils.toString(response.getEntity(), "utf-8");
 			System.out.println(html);
+			json = JSONObject.fromObject(html);
+			return json;
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		return json;
 	}
-	
-	
 	public static void getSaicUrl(){
 		HttpGet get = new HttpGet("http://wsjs.saic.gov.cn/");
 		get.setHeader("User-Agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
