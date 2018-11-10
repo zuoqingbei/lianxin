@@ -43,6 +43,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 		model.set("update_by", userId);
 		model.set("update_date", now);
 		model.set("del_flag", 1);
+		model.update();
 	 };
 	/**
 	 * 把 形如[{"a":b,"a1":b1},{"c":d,"a1":b1},{"e":f,"a1":b1}]的json数组分解放进model里并保存

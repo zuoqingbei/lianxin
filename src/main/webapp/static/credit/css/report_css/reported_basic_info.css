@@ -189,6 +189,10 @@ label {
 	border-color:#f00;
 
 }
+.upload-over:hover {
+	border-color:var(--activeColor);
+	
+}
 
 
 
