@@ -84,7 +84,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			
 			for (Map<Object, Object> entry : entrys) {
 				for (Object key : entry.keySet()) {
-					model.set(((String)key).trim(), ((String)(entry.get(key))).trim());
+					model.set((""+key).trim(), (""+(entry.get(key))).trim());
 					model.set("update_by", userId);
 					model.set("update_date", now);
 					if(!exitsId){
@@ -214,12 +214,12 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 		for (Map<Object, Object> entry : selectInfoMap) {
 			for (Object key : entry.keySet()) {
 				//将字典id转化为汉字
-				String selectSource = ((String)key).trim();
-				String columnName = ((String)(entry.get(key))).trim();
+				String selectSource = (""+key).trim();
+				String columnName = (""+(entry.get(key))).trim();
 				String type = selectSource.substring(selectSource.indexOf("?type=")+6,selectSource.indexOf("$selectedId=")).trim();
 				String disPalyCol = selectSource.substring(selectSource.indexOf("$disPalyCol=")+12).trim();
 				for (BaseProjectModel model : rows) {
-					model.set(columnName, DictCache.getValueByCode(type, (String)model.get(columnName), disPalyCol));
+					model.put(columnName, DictCache.getValueByCode(type, model.get(columnName)+"", disPalyCol));
 				}
 			}
 		}

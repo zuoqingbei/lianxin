@@ -106,11 +106,14 @@ let ReportConfig = {
 			 let selectInfo = []
         	selectInfo.push(_this.selectInfoObj)
         	
-        	url += `&selectInfo=${JSON.stringify(selectInfo)}`
         	$table.bootstrapTable({
         		columns: columns(index,item),
     			 url:url, // 请求后台的URL（*）
 			    method : 'post', // 请求方式（*）post/get
+			    queryParams:function(param){
+			    	param.selectInfo = JSON.stringify(selectInfo)
+			    	return param
+			    },
 			    sidePagination: 'server',
 			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     			pagination: false, //分页

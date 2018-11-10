@@ -203,8 +203,8 @@ public class DictCache {
 		}
 		Map<Integer, SysDictDetail> map = getCacheMap();
 		for (SysDictDetail dict : map.values()) {
-			if (code.equals(dict.getStr("detail_id")) && type.equals(dict.getStr("dict_type"))) {
-				return dict.getStr(disPalyCol);
+			if (code.equals(""+dict.get("detail_id")) && type.equals(""+dict.get("dict_type"))) {
+				return dict.get(disPalyCol);
 			}
 		}
 		return null;
