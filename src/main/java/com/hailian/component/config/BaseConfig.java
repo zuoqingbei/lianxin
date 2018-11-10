@@ -206,7 +206,7 @@ public class BaseConfig extends JFinalConfig {
 		// 公共属性
 		me.add(new CommonInterceptor());
 		
-		//me.add(new CreditFrontUserInterceptor());
+		me.add(new CreditFrontUserInterceptor());
 	}
 
 	/**
