@@ -55,8 +55,11 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @throws IllegalAccessException
 	 */
 	<T> List<BaseProjectModel> infoEntry(String jsonStr,String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
-		if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":"))
+		//实体是否存在id
+		boolean exitsId = true; 
+		if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
 			return new ArrayList<BaseProjectModel>();
+		}
 		List<BaseProjectModel> list = new ArrayList<BaseProjectModel>();
 		Map<String,String> map = new HashMap<>();
 		String jsonStr2 = jsonStr.replace("\"", "");
@@ -86,15 +89,18 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 						//根据Class对象创建实例
 						model = (BaseProjectModel) entryType.newInstance();
 				System.out.println("\n\t\t\t\ttable:"+className.substring(className.lastIndexOf(".")+1)+"\n");
+				if("".equals(map.get("id"))||map.get("id")==null){
+					 exitsId = false;
+				}
 				for (String key : map.keySet()) {
 					System.out.println(key+":"+map.get(key));
 					model.set(key.trim(), map.get(key).trim());
 				}
-				Integer userId = 111;
+				Integer userId = getSessionUser().getUserid();
 				String now = getNow();
 				model.set("update_by", userId);
 				model.set("update_date", now);
-				if("".equals(getPara("id"))||getPara("id")==null){
+				if(!exitsId){
 					model.set("create_by", userId);
 					model.set("create_date", now);
 				}
@@ -103,7 +109,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			}
 			
 		}
-		if("".equals(getPara("id"))||getPara("id")==null){
+		if(!exitsId){
 			Db.batchSave(list, list.size());
 		}else{
 			Db.batchUpdate(list, list.size());
