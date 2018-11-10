@@ -197,14 +197,14 @@ public class DictCache {
 	 * @param code
 	 * @return
 	 */
-	public static String getValueByCode(String type, String code) {
+	public static String getValueByCode(String type, String code,String disPalyCol) {
 		if (type == null || code == null) {
 			return null;
 		}
 		Map<Integer, SysDictDetail> map = getCacheMap();
 		for (SysDictDetail dict : map.values()) {
-			if (code.equals(dict.getStr("detail_code")) && type.equals(dict.getStr("dict_type"))) {
-				return dict.getStr("detail_name");
+			if (code.equals(dict.getStr("detail_id")) && type.equals(dict.getStr("dict_type"))) {
+				return dict.getStr(disPalyCol);
 			}
 		}
 		return null;

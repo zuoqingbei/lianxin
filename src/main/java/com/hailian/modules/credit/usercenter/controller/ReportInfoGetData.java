@@ -116,5 +116,13 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 		}
 		return list;
 	}
-	  
+	
+	void dictIdToString(String selectSource,List<BaseProjectModel> rows){
+		//getSelete?type=company_history_change_item&selectedId=603&disPalyCol=detail_name
+		String type = selectSource.substring(selectSource.indexOf("?type="),selectSource.indexOf("&selectedId=")).trim();
+		String disPalyCol = selectSource.substring(selectSource.indexOf("&selectedId=")).trim();
+		for (BaseProjectModel model : rows) {
+			model.get("");
+		}
+	}
 }
