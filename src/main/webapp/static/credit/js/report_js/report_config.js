@@ -65,7 +65,6 @@ let ReportConfig = {
     	$(".firm-info .form-control").blur((e)=>{
     		let val = $(e.target).val();
     		let reg = $(e.target).attr("reg")
-    		console.log(typeof reg)
     		if(reg === 'null' || !reg) {
     			return;
     		}else {
@@ -97,7 +96,7 @@ let ReportConfig = {
         	let urlTemp = titles[index].get_source;
         	let conf_id = titles[index].id;
         	if(!urlTemp){return}
-        	let url = BASE_PATH  + urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	let url = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
         	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
         	let rows = JSON.parse(localStorage.getItem("row"));
         	tempParam.forEach((item,index)=>{
@@ -136,7 +135,8 @@ let ReportConfig = {
         					width:1/contents.length,
         					events: {
             					"click .edit":(e,value,row,index)=>{
-            						console.log(value,row,index)
+            						_this.isAdd = false
+            						_this.rowId = row.id
             						//回显
             						let formArr = Array.from($("#modal"+_this.tempId).find(".form-inline"))
             						formArr.forEach((item,index)=>{
@@ -149,8 +149,6 @@ let ReportConfig = {
             								$("#"+id).val(row[id])
             							}
             						})
-     						
-            						
             					},
             					"click .delete":(e,value,row,index)=>{
             						e.stopPropagation();
@@ -168,7 +166,24 @@ let ReportConfig = {
             						})
             						$(".popEnter").on('click', function(){
             							//确定删除
-            							
+            							let urlTemp = _this.title[_this.tempI]["remove_source"];
+            							let url = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp;
+            							$.ajax({
+            								url,
+            								type:'post',
+            								data:{
+            									id:row.id
+            								},
+            								success:(data)=>{
+            									if(data.statusCode === '1') {
+            										Public.message('success',data.message)
+            										//刷新数据
+            										_this.refreshTable($("#table"+_this.tempId));
+            									}else {
+            										Public.message('error',data.message)
+            									}
+            								}
+            							})
             						})
             						
             					}
@@ -219,7 +234,7 @@ let ReportConfig = {
     							</div>`
     					break;
     				case 'select':
-    					let url = BASE_PATH + ele.get_source
+    					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
             			$.ajax({
             				type:'get',
             				url,
@@ -332,7 +347,6 @@ let ReportConfig = {
                 $("#num").html(row.num)
                 let tempArr = [row.companyNames,row.companyZHNames,row.reportType,row.receiver_date,row.end_date]
                 let headItem = Array.from($(".fw"))
-                console.log(tempArr,headItem)
                 headItem.forEach((item,index)=>{
                 	$(item).siblings("span").html(tempArr[index])
                 })
@@ -403,7 +417,7 @@ let ReportConfig = {
 									                                </div>`
 							            			break;
 							            		case 'select':
-							            			let url = BASE_PATH + item.get_source
+							            			let url = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
 							            			$.ajax({
 							            				type:'get',
 							            				url,
@@ -495,10 +509,10 @@ let ReportConfig = {
     			
     			let urlTemp = this.title[index].alter_source
     			if(!urlTemp){return}
-    			let url = BASE_PATH  + urlTemp.split("*")[0] 
+    			let url = BASE_PATH  + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] 
     			if(!this.isAdd){
     				//是修改保存
-    				url += "&id="+1
+    				dataJsonObj["id"] = this.rowId
     			}
             	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
             	let rows = JSON.parse(localStorage.getItem("row"));
@@ -517,7 +531,7 @@ let ReportConfig = {
             		data:paramObj,
             		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             		success:(data)=>{
-            			if(data.message === "操作成功!") {
+            			if(data.statusCode === "1") {
             				Public.message("success",this.isAdd?'新增成功！':'修改成功！')
             				//刷新数据
             				this.refreshTable($("#table"+item));

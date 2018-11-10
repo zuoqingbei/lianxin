@@ -53,7 +53,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 	  * 2018/11/9 lzg
 	 * 删除bootStrapTable式的数据
 	  */
-	 void deleteOneEntry() {
+	  public void deleteOneEntry() {
 			try {
 				this.deleteOneEntry(PAKAGENAME_PRE+getPara("className"),getPara("id"));
 			} catch (ClassNotFoundException e) {
