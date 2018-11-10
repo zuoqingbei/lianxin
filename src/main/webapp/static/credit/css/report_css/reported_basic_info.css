@@ -91,7 +91,8 @@ label {
 }
 
 .btn {
-    padding: .375rem 1.75rem;
+    padding: .75rem 1.75rem;
+    font-size:1rem;
 }
 .modal-body {
     display: flex;

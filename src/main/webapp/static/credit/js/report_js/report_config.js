@@ -62,10 +62,9 @@ let ReportConfig = {
     	/**
     	 * 正则验证
     	 */
-    	$(".form-control").blur((e)=>{
+    	$(".firm-info .form-control").blur((e)=>{
     		let val = $(e.target).val();
     		let reg = $(e.target).attr("reg")
-    		console.log(typeof reg)
     		if(reg === 'null' || !reg) {
     			return;
     		}else {
@@ -92,11 +91,36 @@ let ReportConfig = {
         this.idArr.forEach((item,index)=>{
         	const $table = $("#table"+item);
         	let contents = this.contentsArr[index]
+        	let titles = this.title
         	
-        	function columns(){
+        	let urlTemp = titles[index].get_source;
+        	let conf_id = titles[index].id;
+        	if(!urlTemp){return}
+        	let url = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+        	let rows = JSON.parse(localStorage.getItem("row"));
+        	tempParam.forEach((item,index)=>{
+				 url += `&${item}=${rows[item]}`
+			 })
+			 
+        	$table.bootstrapTable({
+        		columns: columns(index,item),
+    			 url:url, // 请求后台的URL（*）
+			    method : 'post', // 请求方式（*）post/get
+			    sidePagination: 'server',
+			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+    			pagination: false, //分页
+    			smartDisplay:true,
+    			locales:'zh-CN',
+        	});
+        
+        	
+        	function columns(i,item){
+        		_this.tempI = i
+        		_this.tempId = item
         		let arr = []
         		contents.forEach((ele,index)=>{
-        			if(item.temp_name !== '操作'){
+        			if(ele.temp_name !== '操作'){
         				arr.push({
         					title:ele.temp_name,
         					field: ele.column_name,
@@ -104,20 +128,27 @@ let ReportConfig = {
         				})
         				
         			}else {
+        				
         				arr.push({
         					title:ele.temp_name,
-        					field: ele.column_name,
+        					field: 'operate',
         					width:1/contents.length,
         					events: {
             					"click .edit":(e,value,row,index)=>{
-            						_this.recordIndex = index
+            						_this.isAdd = false
+            						_this.rowId = row.id
             						//回显
-            						let {date,change_item,change_font,change_back} = row;
-            						$("#modal_record_date").val(date)
-            						$("#modal_change_items").val(change_item)
-            						$("#modal_change_font").val(change_font)
-            						$("#modal_change_back").val(change_back)
-            						
+            						let formArr = Array.from($("#modal"+_this.tempId).find(".form-inline"))
+            						formArr.forEach((item,index)=>{
+            							let id = $(item).children("label").siblings().attr("id");
+            							if($("#"+id).is('select')) {
+            								//如果是select
+            								$("#"+id).find("option[text='"+row[id]+"']").attr("selected",true);
+            							}else {
+            								
+            								$("#"+id).val(row[id])
+            							}
+            						})
             					},
             					"click .delete":(e,value,row,index)=>{
             						e.stopPropagation();
@@ -134,32 +165,36 @@ let ReportConfig = {
             							$('.isDelete').removeClass("deleteShow")
             						})
             						$(".popEnter").on('click', function(){
-            							$("#tableRecord").bootstrapTable("remove",{
-            								field:'id',
-            								values:[row.id]
+            							//确定删除
+            							let urlTemp = _this.title[_this.tempI]["remove_source"];
+            							let url = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp;
+            							$.ajax({
+            								url,
+            								type:'post',
+            								data:{
+            									id:row.id
+            								},
+            								success:(data)=>{
+            									if(data.statusCode === '1') {
+            										Public.message('success',data.message)
+            										//刷新数据
+            										_this.refreshTable($("#table"+_this.tempId));
+            									}else {
+            										Public.message('error',data.message)
+            									}
+            								}
             							})
-            							$('.isDelete').removeClass("deleteShow")
             						})
             						
             					}
             				},
-            				formatter: _this.formatBtnArr[item]
+            				formatter: function(){return _this.formatBtnArr[_this.tempI]}
         				})
         			}
         		})
+        		
         		return arr
         	}
-        	
-        	$table.bootstrapTable({
-        		columns: columns(),
-    			// url : 'firmSoftTable.action', // 请求后台的URL（*）
-    			// method : 'post', // 请求方式（*）post/get
-    			pagination: false, //分页
-    			smartDisplay:false,
-    			iconsPrefix:'fa',
-    			locales:'zh-CN',
-        	});
-        	
         })
     },
     initModal(){
@@ -175,7 +210,6 @@ let ReportConfig = {
     	ids.forEach((item,index)=>{
     		let modalBody = ''
     		contents[index].forEach((ele,index)=>{
-    			
     			if(ele.temp_name === '操作') {
     				return;
     			}
@@ -183,29 +217,38 @@ let ReportConfig = {
     			if(!ele.field_type) {
     				modalBody += ` <div class="form-inline justify-content-center my-3">
 									<label for="" class="control-label" >${ele.temp_name}：</label>
-									<input type="text" class="form-control" id="" >
+									<input type="text" class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
 	    						</div>`
     			}
     			switch(ele.field_type) {
     				case 'date':
     					modalBody += ` <div class="form-inline justify-content-center my-3 modal-date">
 						                    <label for="" class="control-label" >${ele.temp_name}：</label>
-						                    <input type="text" class="form-control" id="" >
+						                    <input type="text" class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
 						                </div>`
     					break;
     				case 'number':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
 				    						<label for="" class="control-label" >${ele.temp_name}：</label>
-				    						<input type="number" class="form-control" id="" >
+				    						<input type="number" class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
     							</div>`
     					break;
     				case 'select':
-    					modalBody += ` <div class="form-inline justify-content-center my-3">
-				    					  <label for="" class="control-label" >${ele.temp_name}：</label>
-				    					  <select  class="form-control" id="">
-						                    	
-					                    </select>
-    								</div>`
+    					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
+            			$.ajax({
+            				type:'get',
+            				url,
+            				async:false,
+            				dataType:'json',
+            				success:(data)=>{
+            					modalBody += ` <div class="form-inline justify-content-center my-3">
+            						<label for="" class="control-label" >${ele.temp_name}：</label>
+            						<select  class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
+            							${data.selectStr}
+            						</select>
+            						</div>`
+            				}
+            			})
     					break;
     				
     				default:
@@ -214,7 +257,7 @@ let ReportConfig = {
     			
     			
     		})
-    		this.formatBtnArr.push('<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>')
+    		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="${BASE_PATH}static/credit/imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>`)
     		modalHtml += `<div class="modal fade" id="modal${item}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
@@ -235,13 +278,24 @@ let ReportConfig = {
     	
     	$("#container").append(modalHtml)
     },
+    tabChange(){
+        /**tab切换事件 */
+    	$(".tab-bar li:eq(0) a").addClass("tab-active")
+        $(".tab-bar li").click((e)=>{
+            $(e.target).addClass("tab-active").parents("li").siblings().children('a').removeClass("tab-active")
+
+//            /* 解决锚链接的偏移问题*/
+//            $("#container ").css('height',"calc(100% - 5.6rem)");
+//            $(".main ").css('marginBottom',"-.6rem");
+        })
+    },
     initContent(){
     	
     	
         /**初始化内容 */
-    	this.idArr = []
-    	this.contentsArr = []
-    	this.title = []
+    	this.idArr = []    //存放table类型模块对应的index
+    	this.contentsArr = [] //存放table类型模块的contents
+    	this.title = [] //存放table类型模块的title
     	let row = localStorage.getItem("row");
     	let _this = this
     	let id = JSON.parse(row).id;
@@ -258,6 +312,8 @@ let ReportConfig = {
                 	_this.dateInit();
                 	_this.regChecked();
                 	_this.initTable();
+                	_this.tabChange();
+                	_this.modalClean();
                 },0)
                 /**
                  * 头部
@@ -291,11 +347,19 @@ let ReportConfig = {
                 $("#num").html(row.num)
                 let tempArr = [row.companyNames,row.companyZHNames,row.reportType,row.receiver_date,row.end_date]
                 let headItem = Array.from($(".fw"))
-                console.log(tempArr,headItem)
                 headItem.forEach((item,index)=>{
                 	$(item).siblings("span").html(tempArr[index])
                 })
+                /**
+                 * tabFixed
+                 */
+                let tabFixed = data.tabFixed;
+                let tabFixedHtml = ''
+                tabFixed.forEach((item,index)=>{
+                	tabFixedHtml += `<li class="tab-info"><a href="#info_anchor">${item.temp_name}</a></li>`
+                })
                 
+                $(".tab-bar").html(tabFixedHtml)
                 /**
                  * 内容模块部分
                  */
@@ -309,7 +373,7 @@ let ReportConfig = {
                 	if(smallModileType === '-2') {
                 		return;
                 	}
-                	contentHtml +=  `<div class="bg-f pb-3"><div class="l-title">${item.title.temp_name}</div>`
+                	contentHtml +=  `<div class="bg-f pb-3 mb-3"><div class="l-title">${item.title.temp_name}</div>`
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
                 	//模块的类型
@@ -353,7 +417,7 @@ let ReportConfig = {
 									                                </div>`
 							            			break;
 							            		case 'select':
-							            			let url = BASE_PATH + item.data_source
+							            			let url = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
 							            			$.ajax({
 							            				type:'get',
 							            				url,
@@ -403,7 +467,7 @@ let ReportConfig = {
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-5 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}">+ ${btnText}</button>
+				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 				</div>`
                 		
                 			break; 
@@ -416,6 +480,83 @@ let ReportConfig = {
                 $(".table-content").html(contentHtml)
             }
         })
+    },
+    modalClean(){
+    	this.idArr.forEach((item,index)=>{
+    		//点击新增一条清空模态框中内容
+    		$("#addBtn"+item).click(()=>{
+    			this.isAdd = true
+    			$("#modal"+item+" input").val("");
+		    	$("#modal"+item+" textarea").val("");
+		    	 $("#modal"+item+" select").find("option:selected").attr("selected", false);
+			    $("#modal"+item+" select").find("option").first().attr("selected", true);
+    
+    		})
+    		//点击模态框保存按钮，新增一条数据
+    		$("#modal_save"+item).click(()=>{
+    			let dataJson = []
+    			let dataJsonObj = {}
+    			let formArr = Array.from($("#modal"+item).find(".form-inline"))
+				formArr.forEach((item,index)=>{
+					let id = $(item).children("label").siblings().attr("id");
+					let tempObj = this.getFormData($('#'+id));
+					for(let i in tempObj){
+						if(tempObj.hasOwnProperty(i))
+						dataJsonObj[i] = tempObj[i]
+					}
+				})
+    			
+    			
+    			let urlTemp = this.title[index].alter_source
+    			if(!urlTemp){return}
+    			let url = BASE_PATH  + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] 
+    			if(!this.isAdd){
+    				//是修改保存
+    				dataJsonObj["id"] = this.rowId
+    			}
+            	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+            	let rows = JSON.parse(localStorage.getItem("row"));
+            	let paramObj = {}
+            	tempParam.forEach((item,index)=>{
+            		dataJsonObj[item] = rows[item]
+    			 })
+    			 dataJson.push(dataJsonObj)
+            	paramObj["dataJson"] = JSON.stringify(dataJson)
+            	
+            	//调用新增修改接口
+            	$.ajax({
+            		url,
+            		type:'post',
+            		dataType:'json',
+            		data:paramObj,
+            		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+            		success:(data)=>{
+            			if(data.statusCode === "1") {
+            				Public.message("success",this.isAdd?'新增成功！':'修改成功！')
+            				//刷新数据
+            				this.refreshTable($("#table"+item));
+            			}else {
+            				Public.message("error",data.message)
+            			}
+            		}
+            	})
+    		})
+    	})
+    },
+    refreshTable(ele){
+    	//刷新表格中的数据
+    	$(ele).bootstrapTable("refresh")
+    },
+    getFormData(form) {
+    	//序列化
+        var unindexed_array = form.serializeArray();
+        var indexed_array = {};
+
+        $.map(unindexed_array, function (n, i) {
+          indexed_array[n['name']] = n['value'];
+        });
+
+        return indexed_array;
     }
 }
 
