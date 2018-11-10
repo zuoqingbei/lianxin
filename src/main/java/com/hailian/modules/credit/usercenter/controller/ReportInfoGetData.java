@@ -209,20 +209,18 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @param rows
 	 * @param columnName
 	 */
-	static void dictIdToString(List<BaseProjectModel> rows,List<Map<Object,Object>>  selectInfoMap){
+	public static void dictIdToString(List<BaseProjectModel> rows,List<Map<Object,Object>>  selectInfoMap){
 		for (Map<Object, Object> entry : selectInfoMap) {
 			for (Object key : entry.keySet()) {
 				//将字典id转化为汉字
 				String selectSource = ((String)key).trim();
 				String columnName = ((String)(entry.get(key))).trim();
-				selectSource = "getSelete?type=company_history_change_item&selectedId=603&disPalyCol=detail_name";
-				String type = selectSource.substring(selectSource.indexOf("?type=")+6,selectSource.indexOf("&selectedId=")).trim();
-				String disPalyCol = selectSource.substring(selectSource.indexOf("&disPalyCol=")+12).trim();
+				String type = selectSource.substring(selectSource.indexOf("?type=")+6,selectSource.indexOf("$selectedId=")).trim();
+				String disPalyCol = selectSource.substring(selectSource.indexOf("$disPalyCol=")+12).trim();
 				for (BaseProjectModel model : rows) {
 					model.set(columnName, DictCache.getValueByCode(type, (String)model.get(columnName), disPalyCol));
 				}
 			}
 		}
-		
 	}
 }
