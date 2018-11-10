@@ -1,6 +1,8 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
@@ -19,12 +21,13 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 	  * 链接形如: http://localhost:8080/credit/front/ReportGetData/getBootStrapTable?conf_id=18
 	  * company_id=24&report_type=1&tableName=credit_company_his&className=CreditCompanyHis
 	 */
-	  public void getBootStrapTable() {
+	  @SuppressWarnings("unchecked")
+	public void getBootStrapTable() {
 		Record record = new Record();
 		String tableName = getPara("tableName","");
 		String className = getPara("className");
 		String confId = getPara("conf_id","");
-		
+		String selectInfo = getPara("selectInfo");
 		//解析实体获取required参数
 		CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
 		String getSource = confModel.getStr("get_source");
@@ -46,6 +49,9 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 			Class<?> table = Class.forName(PAKAGENAME_PRE+className);
 			BaseProjectModel model = (BaseProjectModel) table.newInstance();
 			rows = model.find("select * from "+tableName+" where del_flag=0 and "+sqlSuf+" 1=1");
+			//解析前端传入的字符串
+			List<Map<Object,Object>> selectInfoMap = parseJsonArray(selectInfo);
+			dictIdToString(rows,selectInfoMap);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"类文件未找到异常!"));
