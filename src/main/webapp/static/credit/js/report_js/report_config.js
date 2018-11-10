@@ -491,7 +491,7 @@ let ReportConfig = {
 						dataJsonObj[i] = tempObj[i]
 					}
 				})
-    			dataJson.push(dataJsonObj)
+    			
     			
     			let urlTemp = this.title[index].alter_source
     			if(!urlTemp){return}
@@ -504,11 +504,12 @@ let ReportConfig = {
             	let rows = JSON.parse(localStorage.getItem("row"));
             	let paramObj = {}
             	tempParam.forEach((item,index)=>{
-					 paramObj[item] = rows[item]
+            		dataJsonObj[item] = rows[item]
     			 })
-            	console.log(dataJson)
-            	paramObj["dataJson"] = dataJson
-            		
+    			 dataJson.push(dataJsonObj)
+            	paramObj["dataJson"] = JSON.stringify(dataJson)
+            	
+            	//调用新增修改接口
             	$.ajax({
             		url,
             		type:'post',
@@ -516,11 +517,21 @@ let ReportConfig = {
             		data:paramObj,
             		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             		success:(data)=>{
-            			console.log(data)
+            			if(data.message === "操作成功!") {
+            				Public.message("success",this.isAdd?'新增成功！':'修改成功！')
+            				//刷新数据
+            				this.refreshTable($("#table"+item));
+            			}else {
+            				Public.message("error",data.message)
+            			}
             		}
             	})
     		})
     	})
+    },
+    refreshTable(ele){
+    	//刷新表格中的数据
+    	$(ele).bootstrapTable("refresh")
     },
     getFormData(form) {
     	//序列化
