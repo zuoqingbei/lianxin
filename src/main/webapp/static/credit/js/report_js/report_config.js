@@ -103,6 +103,10 @@ let ReportConfig = {
 				 url += `&${item}=${this.rows[item]}`
 			 })
 			 
+			 let selectInfo = []
+        	selectInfo.push(_this.selectInfoObj)
+        	
+        	url += `&selectInfo=${JSON.stringify(selectInfo)}`
         	$table.bootstrapTable({
         		columns: columns(index,item),
     			 url:url, // 请求后台的URL（*）
@@ -113,11 +117,10 @@ let ReportConfig = {
     			smartDisplay:true,
     			locales:'zh-CN',
         	});
-        
         	
-        	function columns(i,item){
-        		_this.tempI = i
-        		_this.tempId = item
+        	
+        	function columns(tempI,tempId){
+        		
         		let arr = []
         		contents.forEach((ele,index)=>{
         			if(ele.temp_name !== '操作'){
@@ -128,7 +131,6 @@ let ReportConfig = {
         				})
         				
         			}else {
-        				
         				arr.push({
         					title:ele.temp_name,
         					field: 'operate',
@@ -138,7 +140,7 @@ let ReportConfig = {
             						_this.isAdd = false
             						_this.rowId = row.id
             						//回显
-            						let formArr = Array.from($("#modal"+_this.tempId).find(".form-inline"))
+            						let formArr = Array.from($("#modal"+tempId).find(".form-inline"))
             						formArr.forEach((item,index)=>{
             							let id = $(item).children("label").siblings().attr("id");
             							if($("#"+id).is('select')) {
@@ -166,7 +168,7 @@ let ReportConfig = {
             						})
             						$(".popEnter").on('click', function(){
             							//确定删除
-            							let urlTemp = _this.title[_this.tempI]["remove_source"];
+            							let urlTemp = _this.title[tempI]["remove_source"];
             							let url = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp;
             							$.ajax({
             								url,
@@ -178,7 +180,7 @@ let ReportConfig = {
             									if(data.statusCode === 1) {
             										Public.message('success',data.message)
             										//刷新数据
-            										_this.refreshTable($("#table"+_this.tempId));
+            										_this.refreshTable($("#table"+tempId));
             									}else {
             										Public.message('error',data.message)
             									}
@@ -188,7 +190,7 @@ let ReportConfig = {
             						
             					}
             				},
-            				formatter: function(){return _this.formatBtnArr[_this.tempI]}
+            				formatter: function(){return _this.formatBtnArr[tempI]}
         				})
         			}
         		})
@@ -201,6 +203,7 @@ let ReportConfig = {
     	/**
     	 * 初始化模态窗
     	 */
+    	let _this = this
     	let modalHtml = ''
     	let ids = this.idArr
     	let contents = this.contentsArr;
@@ -234,6 +237,9 @@ let ReportConfig = {
     							</div>`
     					break;
     				case 'select':
+    					if(!ele.get_source) {return}
+    					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
+    					_this.selectInfoObj[ele.get_source] = ele.column_name
     					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
             			$.ajax({
             				type:'get',
@@ -296,6 +302,7 @@ let ReportConfig = {
     	this.idArr = []    //存放table类型模块对应的index
     	this.contentsArr = [] //存放table类型模块的contents
     	this.title = [] //存放table类型模块的title
+    	this.selectInfoObj = {} //存放选择框信息传给后台
     	let row = localStorage.getItem("row");
     	let _this = this
     	let id = JSON.parse(row).id;
