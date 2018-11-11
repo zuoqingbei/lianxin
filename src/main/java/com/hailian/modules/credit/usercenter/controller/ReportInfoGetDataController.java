@@ -27,6 +27,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 		String tableName = getPara("tableName","");
 		String className = getPara("className");
 		String confId = getPara("conf_id","");
+		//获取关联字典表需要转义的下拉选
 		String selectInfo = getPara("selectInfo");
 		//解析实体获取required参数
 		CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
@@ -51,6 +52,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 			rows = model.find("select * from "+tableName+" where del_flag=0 and "+sqlSuf+" 1=1");
 			//解析前端传入的字符串
 			List<Map<Object,Object>> selectInfoMap = parseJsonArray(selectInfo);
+			//将id转化为字典表中对应的字符串
 			dictIdToString(rows,selectInfoMap);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

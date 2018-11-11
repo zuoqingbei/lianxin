@@ -711,8 +711,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" s6.detail_name AS speed, ");
 			selectSql.append(" s7.detail_name AS statusName, ");
 			selectSql.append(" s8.detail_name AS agentcategoryName, ");
-			selectSql.append(" n.name AS companyZHNames, ");
-			selectSql.append(" n.name_en AS companyNames, ");
+			selectSql.append(" c.company_by_report AS companyZHNames, ");
+			selectSql.append(" c.right_company_name_en AS companyNames, ");
 			selectSql.append(" u1.realname AS reportUser,");
 			selectSql.append(" u2.realname AS translateUser,");
 			selectSql.append(" u3.realname AS analyzeUser,");
@@ -762,14 +762,14 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
 				//291为订单分配,293为信息录入，292客户确认
-				fromSql.append(" and status in ('291','292') ");
+				fromSql.append(" and status in ('291','292','595') ");
 				//权限归属:报告员,分析员,翻译员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.translate_user= "+userId+")");
 				break;
 			case OrderProcessController.orderVerifyOfReport:
 				//状态为订单核实 ,其维护在字典表中
 				//293为信息录入 595为系统查询中(爬虫中)
-				fromSql.append(" and status in ('293,595') ");
+				fromSql.append(" and status in ('293') ");
 				//权限归属:报告员,分析员,质检员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")");
 				break;	
@@ -814,7 +814,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
-			fromSql.append(" order by c.create_date desc,c.ID desc ");
+			fromSql.append(" order by c.update_date desc,c.ID desc ");
 		} else {
 			fromSql.append(" order by ").append(orderBy).append(",c.ID desc ");
 		}
