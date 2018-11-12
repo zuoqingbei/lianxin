@@ -158,7 +158,7 @@ let Verify = {
                     	console.log(data)
                     	let rows = data.rows;
                     	rows.forEach((item,index)=>{
-                    		if(!item.country || item.country.trim() !== '中国大陆'){
+                    		if(!item.country || item.country.trim() !== '中国大陆' || item.companyZHNames){
                     			$(Array.from($(".recordName"))[index]).css({"color":"#ccc","cursor":"default"});
                     			$(Array.from($(".recordName"))[index]).removeAttr("data-target")
                     		}else if(!$(Array.from($(".recordName"))[index]).attr("data-target")){

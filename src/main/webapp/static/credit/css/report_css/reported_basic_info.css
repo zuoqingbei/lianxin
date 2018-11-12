@@ -91,7 +91,7 @@ label {
 }
 
 .btn {
-    padding: .75rem 1.75rem;
+    padding: .5rem 1.75rem;
     font-size:1rem;
 }
 .modal-body {
@@ -192,6 +192,9 @@ label {
 .upload-over:hover {
 	border-color:var(--activeColor);
 	
+}
+.l-title {
+	display:block;
 }
 
 
