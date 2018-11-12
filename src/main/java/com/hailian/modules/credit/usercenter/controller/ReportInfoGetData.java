@@ -26,6 +26,10 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 */
 	abstract void getForm();
 	/**
+	 * 保存或修改form的数据
+	 */
+	abstract void alterForm();
+	/**
 	 * 从字典表里获取下拉选
 	 * @param type
 	 * @param selectedId

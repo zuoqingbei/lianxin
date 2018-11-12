@@ -310,10 +310,6 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	
 	//修改或者删除功能公共雏形
-	/**
-	 * @param map
-	 * @return 包含旧状态码和新传入参数的实体
-	 */
 	private void PublicUpdateMod(Map<String,Object> map){
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
 		model.removeNullValueAttrs();
