@@ -241,9 +241,9 @@ let ReportConfig = {
     					break;
     				case 'select':
     					if(!ele.get_source) {return}
+    					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
     					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
     					_this.selectInfoObj[ele.get_source] = ele.column_name
-    					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
             			$.ajax({
             				type:'get',
             				url,
