@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.hailian.util.DateUtils;
 import com.jfinal.plugin.activerecord.Db;
 /**
  * 
@@ -43,5 +44,19 @@ public class CreditOrderFlow extends BaseProjectModel<CreditOrderFlow> implement
 		sql.append("update credit_order_flow set del_flag=1 where order_num=? and order_state!=291 ");
 		Db.update(sql.toString(),num);
 	}
-
+	/*public static void add() {
+		//获取订单记录对象
+		CreditOrderFlow cof = new CreditOrderFlow();
+		//订单号
+		cof.set("order_num", getPara("num"));
+		//订单状态
+		cof.set("order_state", getPara("statusCode"));
+		//操作人
+		cof.set("create_oper", userid);
+		//操作时间
+		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
+		//记录生成时间
+		cof.set("create_date", getNow());
+		cof.save();
+	}*/
 }

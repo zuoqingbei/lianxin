@@ -13,9 +13,6 @@ import com.jfinal.plugin.activerecord.Record;
 public class ReportInfoGetDataController  extends ReportInfoGetData {
 	  private TemplateDictService template = new TemplateDictService();
 	  private final static String PAKAGENAME_PRE = "com.hailian.modules.admin.ordermanager.model.";
-	  
-	  
-	  
 	 /**
 	  * 获取bootstraptable类型的数据
 	  * 链接形如: http://localhost:8080/credit/front/ReportGetData/getBootStrapTable?conf_id=18
@@ -50,10 +47,12 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 			Class<?> table = Class.forName(PAKAGENAME_PRE+className);
 			BaseProjectModel model = (BaseProjectModel) table.newInstance();
 			rows = model.find("select * from "+tableName+" where del_flag=0 and "+sqlSuf+" 1=1");
-			//解析前端传入的字符串
-			List<Map<Object,Object>> selectInfoMap = parseJsonArray(selectInfo);
-			//将id转化为字典表中对应的字符串
-			dictIdToString(rows,selectInfoMap);
+			if(!("".equals(selectInfo)||selectInfo==null)) {
+				//解析前端传入的字符串
+				List<Map<Object,Object>> selectInfoMap = parseJsonArray(selectInfo);
+				//将id转化为字典表中对应的字符串
+				dictIdToString(rows,selectInfoMap);
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"类文件未找到异常!"));
@@ -110,8 +109,13 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 		}
 	}
 	
+	/**
+	 * 获取form类型的数据
+	 * 2018/11/12 10:13 
+	 * lzg
+	 */
 	public void getForm() {
-		
+		getBootStrapTable();
 	}
 	
 	/**
@@ -120,6 +124,13 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 	public void getSelete() {
 	 String selectStr = template.getSysDictDetailString3(getPara("type"), getPara("selectedId"), getPara("disPalyCol"));
 	 renderJson(new Record().set("selectStr", selectStr));
+	}
+
+	/**
+	 * alterBootStrapTable
+	 */
+	public void alterForm() {
+		alterBootStrapTable();
 	}
 	
 	

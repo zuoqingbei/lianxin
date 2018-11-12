@@ -146,12 +146,15 @@ let ReportConfig = {
             						let formArr = Array.from($("#modal"+tempId).find(".form-inline"))
             						formArr.forEach((item,index)=>{
             							let id = $(item).children("label").siblings().attr("id");
+            							let anotherIdArr = id.split("_")
+            							anotherIdArr.pop();
+            							let anotherId = anotherIdArr.join('_')
             							if($("#"+id).is('select')) {
             								//如果是select
-            								$("#"+id).find("option[text='"+row[id]+"']").attr("selected",true);
+            								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
             							}else {
             								
-            								$("#"+id).val(row[id])
+            								$("#"+id).val(row[anotherId])
             							}
             						})
             					},
@@ -215,6 +218,7 @@ let ReportConfig = {
     	this.formatBtnArr = []
     	ids.forEach((item,index)=>{
     		let modalBody = ''
+			let myIndex = index;
     		contents[index].forEach((ele,index)=>{
     			if(ele.temp_name === '操作') {
     				return;
@@ -223,27 +227,27 @@ let ReportConfig = {
     			if(!ele.field_type) {
     				modalBody += ` <div class="form-inline justify-content-center my-3">
 									<label for="" class="control-label" >${ele.temp_name}：</label>
-									<input type="text" class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
+									<input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
 	    						</div>`
     			}
     			switch(ele.field_type) {
     				case 'date':
     					modalBody += ` <div class="form-inline justify-content-center my-3 modal-date">
 						                    <label for="" class="control-label" >${ele.temp_name}：</label>
-						                    <input type="text" class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
+						                    <input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
 						                </div>`
     					break;
     				case 'number':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
 				    						<label for="" class="control-label" >${ele.temp_name}：</label>
-				    						<input type="number" class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
+				    						<input type="number" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     							</div>`
     					break;
     				case 'select':
     					if(!ele.get_source) {return}
+    					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
     					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
     					_this.selectInfoObj[ele.get_source] = ele.column_name
-    					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
             			$.ajax({
             				type:'get',
             				url,
@@ -252,7 +256,7 @@ let ReportConfig = {
             				success:(data)=>{
             					modalBody += ` <div class="form-inline justify-content-center my-3">
             						<label for="" class="control-label" >${ele.temp_name}：</label>
-            						<select  class="form-control" id="${ele.column_name}" name="${ele.column_name}" >
+            						<select  class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
             							${data.selectStr}
             						</select>
             						</div>`
@@ -287,24 +291,54 @@ let ReportConfig = {
     	
     	$("#container").append(modalHtml)
     },
+    bindFormData(){
+    	/**
+    	 * 绑定表单数据
+    	 */
+    	let titles = this.formTitle;
+    	let formIndex = this.formIndex;
+    	formIndex.forEach((item,index)=>{
+    		let conf_id = titles[index].id;
+    		console.log(item.get_source)
+    		let getFormUrl = titles[index].get_source;
+    		if(!getFormUrl){return}
+			let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
+			
+        	let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
+        	let paramObj = {}
+        	tempParam.forEach((item,index)=>{
+        		paramObj[item] = this.rows[item]
+			 })
+			 paramObj["conf_id"] = conf_id
+    		$.ajax({
+    			url,
+    			type:'post',
+    			data:paramObj,
+    			success:(data)=>{
+    				console.log(data)
+    			}
+    		})
+    	})
+    	
+    },
     tabChange(){
         /**tab切换事件 */
     	$(".tab-bar li:eq(0) a").addClass("tab-active")
         $(".tab-bar li").click((e)=>{
             $(e.target).addClass("tab-active").parents("li").siblings().children('a').removeClass("tab-active")
 
-//            /* 解决锚链接的偏移问题*/
+            /* 解决锚链接的偏移问题*/
             $("#container ").css('height',"calc(100% - 5.6rem)");
             $(".main ").css('marginBottom',"-.6rem");
         })
     },
     initContent(){
-    	
-    	
         /**初始化内容 */
     	this.idArr = []    //存放table类型模块对应的index
+    	this.formIndex = [] //存放form类型模块对应的index
     	this.contentsArr = [] //存放table类型模块的contents
     	this.title = [] //存放table类型模块的title
+    	this.formTitle = [] //存放form类型模块的title
     	this.selectInfoObj = {} //存放选择框信息传给后台
     	let row = localStorage.getItem("row");
     	let _this = this
@@ -322,9 +356,10 @@ let ReportConfig = {
                 	_this.dateInit();
                 	_this.regChecked();
                 	_this.initTable();
+                	_this.bindFormData();
                 	_this.tabChange();
                 	_this.modalClean();
-                	  Public.tabFixed(".tab-bar",".main",120,90)
+            	    Public.tabFixed(".tab-bar",".main",120,90)
                 },0)
                 /**
                  * 头部
@@ -384,7 +419,7 @@ let ReportConfig = {
                 	if(smallModileType === '-2') {
                 		return;
                 	}
-                	contentHtml +=  `<div class="bg-f pb-3 mb-3"><div class="l-title" id="anchor${item.title.id}">${item.title.temp_name}</div>`
+                	contentHtml +=  `<div class="bg-f pb-3 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
                 	//模块的类型
@@ -392,6 +427,8 @@ let ReportConfig = {
                 	switch(smallModileType) {
                 		case '0':
                 			//表单类型
+                			_this.formTitle.push(item.title)
+                			_this.formIndex.push(index)
 		                	formArr.forEach((item,index)=>{
 		                		
 		                				let formGroup = ''
@@ -485,7 +522,14 @@ let ReportConfig = {
                 			break;
                 		case '2':
                 			//附件类型
-                			contentHtml += ` <div class="order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start"></div>`
+                			contentHtml += ` <div class="order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
+					                			 <div class="uploadFile mt-3 mr-3 ml-3">
+					                               <div class="over-box">
+					                                   <img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
+					                                   <p class="mt-2">暂无附件</p>
+					                               </div>
+					                           </div>
+				                			</div>`
                 			let url = item.title.get_source;
                 			url = BASE_PATH + url;
                 			$.ajax({
@@ -498,10 +542,13 @@ let ReportConfig = {
                 					if(data.statusCode === 1) {
                 						let files = data.files;
                 						
-                						  $(".order-detail").html("");
                 				   	       
-            				   	        if(data.files.length === 0){$(".uploadFile:not(.upload-over)").show();return}
-            				        	$(".uploadFile:not(.upload-over)").show()
+            				   	        if(data.files.length === 0){
+            				   	        	
+            				   	        	return
+            				   	        }
+            				   	        $(".order-detail").html("");
+//            				        	$(".uploadFile:not(.upload-over)").show()
             				   	        for (var i = 0;i<files.length; i++){
             				   	        	console.log(files[i].ext)
             				   	        	let filetype = files[i].ext.toLowerCase()
@@ -602,7 +649,6 @@ let ReportConfig = {
     			 })
     			 dataJson.push(dataJsonObj)
             	paramObj["dataJson"] = JSON.stringify(dataJson)
-            	
             	//调用新增修改接口
             	$.ajax({
             		url,
