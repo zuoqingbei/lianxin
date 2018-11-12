@@ -182,5 +182,23 @@ public class NoticeController extends BaseProjectController {
 		}//上传
 	}
 
+	/**
+	 * 
+	* @Description: 定时调取，当前是否有新消息未读
+	* @date 2018年11月12日 下午3:08:08
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public void getNoticenum(){
+		Integer userid = getSessionUser().getUserid();
+		String sql="select * from credit_notice n "
+				+ " LEFT JOIN credit_notice_log l on n.id=l.notice_id"
+				+ " where l.user_id='"+userid+"' and l.read_unread='1'";
+	List<NoticeModel> list=	NoticeModel.dao.find(sql);
+		
+			renderJson(list.size());
+			
+	}
 
 }
