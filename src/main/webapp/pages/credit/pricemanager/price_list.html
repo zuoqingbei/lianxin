@@ -107,14 +107,15 @@ var paginator = function(page) {
 		<thead>
 			<tr>
 				<th name="t.id" class="sorting">价格ID</th>
+				<th name="t.versions" class="sorting">价格版本</th>
 				<th name="os.detail_name" class="sorting">报告速度</th>
-
 				<th name="rt.name" class="sorting">报告类型</th>
 				<th name="ot.detail_name" class="sorting">订单类型</th>
-				<th name="c.detail_name " class="sorting">国家</th>			
+				<th name="c.detail_name " class="sorting">国家类型</th>
+				<th name="cc.name" class="sorting">国家名称</th>			
 				<th name="t.points" class="sorting">点数</th>
 				<th name="t.price" class="sorting">价格</th>
-				<th name="t.currency" class="sorting">币种</th>
+				<th name="detail2.detail_name" class="sorting">币种</th>
 				<th name="t.usabled" class="sorting">是否禁用</th>
 				<th name="t.create_date" class="sorting">创建日期</th>
 				<th name="t.update_by" class="sorting">创建人</th>
@@ -126,15 +127,17 @@ var paginator = function(page) {
 		<% for(item in page.list) { %>
 			<tr>
 				<td>${item.id}</td>
+				<td>${item.versions}</td>
 				<td>${item.orderSpeed}</td>	
 				<td>${item.reportType}</td>
 				<td>${item.orderType}</td>
 				<td>${item.countryName}</td>
+				<td>${item.countryName2}</td>
 				<td>${item.points}</td>
 				<td>${item.price}</td>
-				<td>${item.currency}</td>
+				<td>${item.currencyName}</td>
 				<td>${item.usabledName}</td>
-				<td>${item.credate_date}</td>
+				<td>${item.create_date}</td>
 				<td>${item.realname}</td>   
 				<td>${item.update_date}</td>
 				<td>

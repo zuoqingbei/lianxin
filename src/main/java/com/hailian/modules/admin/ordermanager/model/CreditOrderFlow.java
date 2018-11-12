@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.hailian.util.DateUtils;
+import com.jfinal.plugin.activerecord.Db;
 /**
  * 
  * @className CreditOrderFlow.java
@@ -34,8 +36,27 @@ public class CreditOrderFlow extends BaseProjectModel<CreditOrderFlow> implement
 		sql.append("select t.*,s.detail_name as statuName,s1.realname as name from credit_order_flow t ");
 		sql.append(" left join sys_dict_detail s on s.detail_id=t.order_state ");
 		sql.append(" left join sys_user s1 on s1.userid=t.create_oper ");
-		sql.append(" where 1 = 1 and t.order_num=?"); 
+		sql.append(" where t.del_flag='0' and 1 = 1 and t.order_num=?"); 
 		return dao.find(sql.toString(), num);
 	}
-
+	public void del(String num) {
+		StringBuffer sql=new StringBuffer();
+		sql.append("update credit_order_flow set del_flag=1 where order_num=? and order_state!=291 ");
+		Db.update(sql.toString(),num);
+	}
+	/*public static void add() {
+		//获取订单记录对象
+		CreditOrderFlow cof = new CreditOrderFlow();
+		//订单号
+		cof.set("order_num", getPara("num"));
+		//订单状态
+		cof.set("order_state", getPara("statusCode"));
+		//操作人
+		cof.set("create_oper", userid);
+		//操作时间
+		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
+		//记录生成时间
+		cof.set("create_date", getNow());
+		cof.save();
+	}*/
 }

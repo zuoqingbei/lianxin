@@ -10,6 +10,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ch.qos.logback.core.status.Status;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
@@ -26,6 +28,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDeta
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
@@ -33,6 +36,8 @@ import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.city.model.CityModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
+import com.hailian.modules.credit.notice.model.NoticeLogModel;
+import com.hailian.modules.credit.notice.model.NoticeModel;
 import com.hailian.modules.credit.province.model.ProvinceModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
@@ -310,10 +315,6 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	
 	//修改或者删除功能公共雏形
-	/**
-	 * @param map
-	 * @return 包含旧状态码和新传入参数的实体
-	 */
 	private void PublicUpdateMod(Map<String,Object> map){
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
 		model.removeNullValueAttrs();
@@ -331,13 +332,15 @@ public class OrderProcessController extends BaseProjectController{
 		//获取订单记录对象
 		CreditOrderFlow cof = new CreditOrderFlow();
 		//订单号
-		cof.set("order_num", model.get("order_num"));
+		cof.set("order_num", getPara("num"));
 		//订单状态
-		cof.set("order_state", model.get("status"));
+		cof.set("order_state", getPara("statusCode"));
 		//操作人
 		cof.set("create_oper", userid);
 		//操作时间
 		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
+		//记录生成时间
+		cof.set("create_date", getNow());
 		cof.save();
 	}
 	/**
@@ -492,6 +495,7 @@ public class OrderProcessController extends BaseProjectController{
 	 * @return_type   订单编号
 	 */
 	public  ResultType  statusSave() {
+		
 		try {
 		String code = (String) getRequest().getParameter("statusCode");
 		Map<String,Object> map = new HashMap<>();
@@ -501,6 +505,8 @@ public class OrderProcessController extends BaseProjectController{
 			map.put("status", code);
 		}
 		PublicUpdateMod(map);
+		//添加站内信，
+		addNoice(code);
 		renderJson(new ResultType());
 		return new ResultType();
 		} catch (Exception e) {
@@ -508,6 +514,54 @@ public class OrderProcessController extends BaseProjectController{
 			renderJson(new ResultType(0,"订单状态更新失败!"));
 			return new ResultType(0,"订单状态更新失败!");
 		}
+	}
+	
+	public  void  addNoice(String status){
+		//新增公告内容
+		NoticeModel model=new NoticeModel();
+		model.set("notice_title", "站内信");
+		model.set("notice_content", "站内信");
+		Integer userid = getSessionUser().getUserid();
+		String now = getNow();
+		model.set("create_by", userid);
+		model.set("create_date", now);
+		model.save();
+		//公告子表添加
+		CreditOrderInfoModel orderInfoModel=getModel(CreditOrderInfoModel.class);
+		NoticeLogModel logModel=new NoticeLogModel();
+		//订单核实，向客服发起
+		if (status!=null&&status.equals("500")) {
+			logModel.set("user_id", userid);
+		}
+		//102,396 国外订单填报完成 向客服发起
+		if (status!=null&&status.equals("314")) {
+			if (orderInfoModel.get("report_type").equals("21")
+			   ||orderInfoModel.get("report_type").equals("12")
+			   ||!orderInfoModel.get("country").equals("中国大陆")) {
+				logModel.set("user_id", userid);	
+			}
+			//除102,396 国外订单填报完成 向质检员发起
+			if (!orderInfoModel.get("report_type").equals("21")
+			   ||!orderInfoModel.get("report_type").equals("12")
+			   ||orderInfoModel.get("country").equals("中国大陆")) {
+				logModel.set("user_id", orderInfoModel.get("IQC"));
+			}
+		}
+		//新订单分配，查档完成，核实完成，报告退回，订单催问
+		if (status!=null&&(status.equals("291")
+			||status.equals("295")
+			||status.equals("292")||status.equals("299")
+			)) {
+	      logModel.set("user_id", orderInfoModel.get("report_user"));	
+		}
+		//订单查档 向质检员发起
+		if(status!=null&&status.equals("294")){
+			logModel.set("user_id", orderInfoModel.get("IQC"));
+		}
+		logModel.set("user_id", orderInfoModel.get(""));
+		logModel.set("notice_id", model.get("id"));
+		logModel.set("read_unread", "1");
+		logModel.save();
 	}
 	/**
 	 * 订单代理分配

@@ -139,9 +139,10 @@ let Public = {
     },
     goToReportConfig(param){
     	/**跳转可配置的填报页面*/
-    	 $("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportedConfig');
+    	 $("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportedConfig',()=>{
+    		 this.gotop()
+    	 });
          localStorage.setItem("row",JSON.stringify(param));
-         this.gotop()
     },
     tabFixed(fixedEle,scrollEle,min,max){
         /**
@@ -154,9 +155,15 @@ let Public = {
         $(scrollEle).scroll(()=>{
             let top =  $(scrollEle).scrollTop();
             if(top > min) {
+            	 if(this.isSQ === false){
+                     $(fixedEle).css("left","16.667%")
+                 }else {
+                     $(fixedEle).css("left","0")
+                 }
                 $(fixedEle).addClass("tab-fixed")
             }else if(top < max) {
                 $(fixedEle).removeClass("tab-fixed")
+                $(fixedEle).css("left","0")
             }
         })
     },

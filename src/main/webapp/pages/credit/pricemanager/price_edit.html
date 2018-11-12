@@ -4,7 +4,8 @@
 <% var usabled = tempDict.getSysDictDetailString('usabled',model.usabled !); %>
 <% var reportType = reportType.getReportTypeString(model.report_type!); %>
 <% var country = country.getCountryString(model.country_id !); %>
-
+<% var currency = tempDict.getSysDictDetailString('currency',model.currency!); %>
+model.currency
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -133,8 +134,11 @@ var bodyContent = {
 		</tr>
 		<tr>
 			<td>币种</td>
-			<td><input type="text" name="model.currency" class="form-control" 
-				value="${model.currency!}"/></td>
+			<td>
+				<select type="text" name="model.currency" class="form-control" >
+					${currency!}
+				</select>
+			</td>
 		</tr>
 		<tr>
 			<td>是否禁用</td>

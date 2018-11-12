@@ -114,7 +114,7 @@ let Verify = {
                                 $("#custom_id").html(row.custom_id);
                                 $("#speed").html(row.speed);
                                 $("#user_time").html(row.user_time);
-                                $("#companyZHNames").html(row.companyZHNames);
+                                $("#companyZHNames").val(row.companyZHNames);
                                 $("#reporter_select").html(row.seleteStr);
                                 $("#orderId").val(row.id);
                                 $("#num").html(row.num);
@@ -158,7 +158,7 @@ let Verify = {
                     	console.log(data)
                     	let rows = data.rows;
                     	rows.forEach((item,index)=>{
-                    		if(!item.country || item.country.trim() !== '中国大陆'){
+                    		if(!item.country || item.country.trim() !== '中国大陆' || item.companyZHNames){
                     			$(Array.from($(".recordName"))[index]).css({"color":"#ccc","cursor":"default"});
                     			$(Array.from($(".recordName"))[index]).removeAttr("data-target")
                     		}else if(!$(Array.from($(".recordName"))[index]).attr("data-target")){
@@ -179,8 +179,9 @@ let Verify = {
         /**
          * 点击录入名称提交
          */
-        $(".modal_submit").click(()=>{
-        	let val = $("#firmChineseName").val();
+        $("#modal_submit_allocation").click(()=>{
+        	console.log("点击录入名称提交")
+        	let val = $("#companyZHNames").val();
         	if(!val){
         		Public.message("error","公司中文名称不能为空")
         	}else {
@@ -188,31 +189,17 @@ let Verify = {
         		$.ajax({
            			type:"post",
                		url:BASE_PATH+"credit/front/orderProcess/statusSave",
-               		data:"statusCode=595&isPa=yes&id="+$("#orderId").val()+"&companyZHName="+$("#companyZHName").val(),
+               		data:"statusCode=595&isPa=yes&num="+$("#num").html()+"&model.id="+$("#orderId").val()+"&model.company_by_report="+$("#companyZHNames").val(),
                		dataType:"json",
                		success:function(obj){
-               			if(data.statusCode===1){
-                         	Public.message("success",data.message);
+               			if(obj.statusCode===1){
+                         	Public.message("success",obj.message);
+                         	
                          }else{
-                         	Public.message("error",data.message);
-                         	//跳转到第一页
-                            $('#table').bootstrapTable('refreshOptions',{pageNumber:1});
-                            /***发起ajax请求 获取表格数据*/
-                            $.ajax({
-                         			type:"post",
-                         			 url : BASE_PATH+"credit/front/orderProcess/listJson",
-                         			data:"searchType=-6"+"&pageSize="+window.aaa,
-                         			dataType:"json",
-                         			success:function(data){
-                         				console.log(data);
-                         			 	 $("#table").bootstrapTable("load",data)
-                         			 }
-                         		})
+                         	Public.message("error",obj.message);
                          }
-               				if(obj.statusCode==1){
-               					$("#table").bootstrapTable("load",obj);
-               				}
-               				
+               		  $(".modal-header .close").trigger("click");
+               			$("#table").bootstrapTable("refresh");
                			 	
                			 }
            			})

@@ -159,10 +159,10 @@ public class ReportModuleConfController extends BaseProjectController{
 		if("0".equals(model.getStr("node_leve"))) {
 			ReportTypeModel rm=ReportTypeModel.dao.findById(model.getStr("report_type"));
 			String temp_name_en=rm.getStr("name_en");
-			model.set("temp_name_en", temp_name_en);
+			//model.set("temp_name_en", temp_name_en);
 		}else {
 		String temp_name_en=TransApi.Trans(model.getStr("temp_name"));
-		model.set("temp_name_en", temp_name_en);
+		//model.set("temp_name_en", temp_name_en);
 		}
 
 		try {

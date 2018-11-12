@@ -1,6 +1,7 @@
 
 let ReportConfig = {
     init(){
+    	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
         // this.transition()
     },
@@ -62,10 +63,9 @@ let ReportConfig = {
     	/**
     	 * 正则验证
     	 */
-    	$(".form-control").blur((e)=>{
+    	$(".firm-info .form-control").blur((e)=>{
     		let val = $(e.target).val();
     		let reg = $(e.target).attr("reg")
-    		console.log(typeof reg)
     		if(reg === 'null' || !reg) {
     			return;
     		}else {
@@ -92,32 +92,71 @@ let ReportConfig = {
         this.idArr.forEach((item,index)=>{
         	const $table = $("#table"+item);
         	let contents = this.contentsArr[index]
+        	let titles = this.title
         	
-        	function columns(){
+        	let urlTemp = titles[index].get_source;
+        	let conf_id = titles[index].id;
+        	if(!urlTemp){return}
+        	let url = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+        	tempParam.forEach((item,index)=>{
+				 url += `&${item}=${this.rows[item]}`
+			 })
+			 
+			 let selectInfo = []
+        	selectInfo.push(_this.selectInfoObj)
+        	
+        	$table.bootstrapTable({
+        		columns: columns(index,item),
+    			 url:url, // 请求后台的URL（*）
+			    method : 'post', // 请求方式（*）post/get
+			    queryParams:function(param){
+			    	param.selectInfo = JSON.stringify(selectInfo)
+			    	return param
+			    },
+			    sidePagination: 'server',
+			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+    			pagination: false, //分页
+    			smartDisplay:true,
+    			locales:'zh-CN',
+        	});
+        	
+        	
+        	function columns(tempI,tempId){
+        		
         		let arr = []
         		contents.forEach((ele,index)=>{
-        			if(item.temp_name !== '操作'){
+        			if(ele.temp_name !== '操作'){
         				arr.push({
         					title:ele.temp_name,
         					field: ele.column_name,
-        					width:1/contents.length
+        					width:(1/contents.length)*100+'%'
         				})
         				
         			}else {
         				arr.push({
         					title:ele.temp_name,
-        					field: ele.column_name,
+        					field: 'operate',
         					width:1/contents.length,
         					events: {
             					"click .edit":(e,value,row,index)=>{
-            						_this.recordIndex = index
+            						_this.isAdd = false
+            						_this.rowId = row.id
             						//回显
-            						let {date,change_item,change_font,change_back} = row;
-            						$("#modal_record_date").val(date)
-            						$("#modal_change_items").val(change_item)
-            						$("#modal_change_font").val(change_font)
-            						$("#modal_change_back").val(change_back)
-            						
+            						let formArr = Array.from($("#modal"+tempId).find(".form-inline"))
+            						formArr.forEach((item,index)=>{
+            							let id = $(item).children("label").siblings().attr("id");
+            							let anotherIdArr = id.split("_")
+            							anotherIdArr.pop();
+            							let anotherId = anotherIdArr.join('_')
+            							if($("#"+id).is('select')) {
+            								//如果是select
+            								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
+            							}else {
+            								
+            								$("#"+id).val(row[anotherId])
+            							}
+            						})
             					},
             					"click .delete":(e,value,row,index)=>{
             						e.stopPropagation();
@@ -134,38 +173,43 @@ let ReportConfig = {
             							$('.isDelete').removeClass("deleteShow")
             						})
             						$(".popEnter").on('click', function(){
-            							$("#tableRecord").bootstrapTable("remove",{
-            								field:'id',
-            								values:[row.id]
+            							//确定删除
+            							let urlTemp = _this.title[tempI]["remove_source"];
+            							let url = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp;
+            							$.ajax({
+            								url,
+            								type:'post',
+            								data:{
+            									id:row.id
+            								},
+            								success:(data)=>{
+            									if(data.statusCode === 1) {
+            										Public.message('success',data.message)
+            										//刷新数据
+            										_this.refreshTable($("#table"+tempId));
+            									}else {
+            										Public.message('error',data.message)
+            									}
+            								}
             							})
-            							$('.isDelete').removeClass("deleteShow")
             						})
             						
             					}
             				},
-            				formatter: _this.formatBtnArr[item]
+            				formatter: function(){return _this.formatBtnArr[tempI]}
         				})
         			}
         		})
+        		
         		return arr
         	}
-        	
-        	$table.bootstrapTable({
-        		columns: columns(),
-    			// url : 'firmSoftTable.action', // 请求后台的URL（*）
-    			// method : 'post', // 请求方式（*）post/get
-    			pagination: false, //分页
-    			smartDisplay:false,
-    			iconsPrefix:'fa',
-    			locales:'zh-CN',
-        	});
-        	
         })
     },
     initModal(){
     	/**
     	 * 初始化模态窗
     	 */
+    	let _this = this
     	let modalHtml = ''
     	let ids = this.idArr
     	let contents = this.contentsArr;
@@ -174,8 +218,8 @@ let ReportConfig = {
     	this.formatBtnArr = []
     	ids.forEach((item,index)=>{
     		let modalBody = ''
+			let myIndex = index;
     		contents[index].forEach((ele,index)=>{
-    			
     			if(ele.temp_name === '操作') {
     				return;
     			}
@@ -183,29 +227,41 @@ let ReportConfig = {
     			if(!ele.field_type) {
     				modalBody += ` <div class="form-inline justify-content-center my-3">
 									<label for="" class="control-label" >${ele.temp_name}：</label>
-									<input type="text" class="form-control" id="" >
+									<input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
 	    						</div>`
     			}
     			switch(ele.field_type) {
     				case 'date':
     					modalBody += ` <div class="form-inline justify-content-center my-3 modal-date">
 						                    <label for="" class="control-label" >${ele.temp_name}：</label>
-						                    <input type="text" class="form-control" id="" >
+						                    <input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
 						                </div>`
     					break;
     				case 'number':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
 				    						<label for="" class="control-label" >${ele.temp_name}：</label>
-				    						<input type="number" class="form-control" id="" >
+				    						<input type="number" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     							</div>`
     					break;
     				case 'select':
-    					modalBody += ` <div class="form-inline justify-content-center my-3">
-				    					  <label for="" class="control-label" >${ele.temp_name}：</label>
-				    					  <select  class="form-control" id="">
-						                    	
-					                    </select>
-    								</div>`
+    					if(!ele.get_source) {return}
+    					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
+    					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
+    					_this.selectInfoObj[ele.get_source] = ele.column_name
+            			$.ajax({
+            				type:'get',
+            				url,
+            				async:false,
+            				dataType:'json',
+            				success:(data)=>{
+            					modalBody += ` <div class="form-inline justify-content-center my-3">
+            						<label for="" class="control-label" >${ele.temp_name}：</label>
+            						<select  class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+            							${data.selectStr}
+            						</select>
+            						</div>`
+            				}
+            			})
     					break;
     				
     				default:
@@ -214,7 +270,7 @@ let ReportConfig = {
     			
     			
     		})
-    		this.formatBtnArr.push('<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="../imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>')
+    		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="${BASE_PATH}static/credit/imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>`)
     		modalHtml += `<div class="modal fade" id="modal${item}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
@@ -235,13 +291,55 @@ let ReportConfig = {
     	
     	$("#container").append(modalHtml)
     },
+    bindFormData(){
+    	/**
+    	 * 绑定表单数据
+    	 */
+    	let titles = this.formTitle;
+    	let formIndex = this.formIndex;
+    	formIndex.forEach((item,index)=>{
+    		let conf_id = titles[index].id;
+    		console.log(item.get_source)
+    		let getFormUrl = titles[index].get_source;
+    		if(!getFormUrl){return}
+			let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
+			
+        	let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
+        	let paramObj = {}
+        	tempParam.forEach((item,index)=>{
+        		paramObj[item] = this.rows[item]
+			 })
+			 paramObj["conf_id"] = conf_id
+    		$.ajax({
+    			url,
+    			type:'post',
+    			data:paramObj,
+    			success:(data)=>{
+    				console.log(data)
+    			}
+    		})
+    	})
+    	
+    },
+    tabChange(){
+        /**tab切换事件 */
+    	$(".tab-bar li:eq(0) a").addClass("tab-active")
+        $(".tab-bar li").click((e)=>{
+            $(e.target).addClass("tab-active").parents("li").siblings().children('a').removeClass("tab-active")
+
+            /* 解决锚链接的偏移问题*/
+            $("#container ").css('height',"calc(100% - 5.6rem)");
+            $(".main ").css('marginBottom',"-.6rem");
+        })
+    },
     initContent(){
-    	
-    	
         /**初始化内容 */
-    	this.idArr = []
-    	this.contentsArr = []
-    	this.title = []
+    	this.idArr = []    //存放table类型模块对应的index
+    	this.formIndex = [] //存放form类型模块对应的index
+    	this.contentsArr = [] //存放table类型模块的contents
+    	this.title = [] //存放table类型模块的title
+    	this.formTitle = [] //存放form类型模块的title
+    	this.selectInfoObj = {} //存放选择框信息传给后台
     	let row = localStorage.getItem("row");
     	let _this = this
     	let id = JSON.parse(row).id;
@@ -258,6 +356,10 @@ let ReportConfig = {
                 	_this.dateInit();
                 	_this.regChecked();
                 	_this.initTable();
+                	_this.bindFormData();
+                	_this.tabChange();
+                	_this.modalClean();
+            	    Public.tabFixed(".tab-bar",".main",120,90)
                 },0)
                 /**
                  * 头部
@@ -291,25 +393,34 @@ let ReportConfig = {
                 $("#num").html(row.num)
                 let tempArr = [row.companyNames,row.companyZHNames,row.reportType,row.receiver_date,row.end_date]
                 let headItem = Array.from($(".fw"))
-                console.log(tempArr,headItem)
                 headItem.forEach((item,index)=>{
                 	$(item).siblings("span").html(tempArr[index])
                 })
+                /**
+                 * tabFixed
+                 */
+                let tabFixed = data.tabFixed;
+                let tabFixedHtml = ''
+                tabFixed.forEach((item,index)=>{
+                	tabFixedHtml += `<li class="tab-info"><a href="#anchor${item.anchor_id}">${item.temp_name}</a></li>`
+                })
                 
+                $(".tab-bar").html(tabFixedHtml)
                 /**
                  * 内容模块部分
                  */
                 let modules = data.modules;    
                 let contentHtml = '' 
+                let bottomBtn = ''
                 modules.forEach((item,index)=>{
                 	/**
                 	 * 循环模块
                 	 */
                 	let smallModileType = item.smallModileType
-                	if(smallModileType === '-2') {
+                	if(smallModileType === '-2' || smallModileType === '5') {
                 		return;
                 	}
-                	contentHtml +=  `<div class="bg-f pb-3"><div class="l-title">${item.title.temp_name}</div>`
+                	contentHtml +=  `<div class="bg-f pb-3 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
                 	//模块的类型
@@ -317,6 +428,9 @@ let ReportConfig = {
                 	switch(smallModileType) {
                 		case '0':
                 			//表单类型
+                			_this.formTitle.push(item.title)
+                			_this.formIndex.push(index)
+                			let ind = index
 		                	formArr.forEach((item,index)=>{
 		                		
 		                				let formGroup = ''
@@ -325,7 +439,7 @@ let ReportConfig = {
 		                        		if(!field_type) {
 		                        			formGroup += `<div class="form-group">
 		        						            		<label for="" class="mb-2">${item.temp_name}</label>
-		        						            		<input type="text" class="form-control" id="" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 		        						            		<p class="errorInfo">${item.error_msg}</p>
 		        					            		</div>`
 		                        		}else {
@@ -353,7 +467,7 @@ let ReportConfig = {
 									                                </div>`
 							            			break;
 							            		case 'select':
-							            			let url = BASE_PATH + item.data_source
+							            			let url = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
 							            			$.ajax({
 							            				type:'get',
 							            				url,
@@ -394,6 +508,7 @@ let ReportConfig = {
 		                	}) 
 		                	break;
                 		case '1':
+                			//table类型
                 			_this.idArr.push(index)
                 			_this.contentsArr.push(item.contents)
                 			_this.title.push(item.title)
@@ -403,10 +518,94 @@ let ReportConfig = {
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-5 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}">+ ${btnText}</button>
+				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 				</div>`
                 		
-                			break; 
+                			break;
+                		case '2':
+                			//附件类型
+                			contentHtml += ` <div class="order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
+					                			 <div class="uploadFile mt-3 mr-3 ml-3">
+					                               <div class="over-box">
+					                                   <img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
+					                                   <p class="mt-2">暂无附件</p>
+					                               </div>
+					                           </div>
+				                			</div>`
+                			let url = item.title.get_source;
+                			url = BASE_PATH + url;
+                			$.ajax({
+                				url,
+                				type:'post',
+                				data:{
+                					orderId:_this.rows.id
+                				},
+                				success:(data)=>{
+                					if(data.statusCode === 1) {
+                						let files = data.files;
+                						
+                				   	       
+            				   	        if(data.files.length === 0){
+            				   	        	
+            				   	        	return
+            				   	        }
+            				   	        $(".order-detail").html("");
+//            				        	$(".uploadFile:not(.upload-over)").show()
+            				   	        for (var i = 0;i<files.length; i++){
+            				   	        	console.log(files[i].ext)
+            				   	        	let filetype = files[i].ext.toLowerCase()
+            				   	        	let fileicon = ''
+            				   	        	if(filetype === 'doc' || filetype === 'docx') {
+            				   		             fileicon = '/static/credit/imgs/order/word.png'
+            				   		           }else if(filetype === 'xlsx' || filetype === 'xls') {
+            				   		             fileicon = '/static/credit/imgs/order/Excel.png'
+            				   		           }else if(filetype === 'png') {
+            				   		             fileicon = '/static/credit/imgs/order/PNG.png'
+            				   		           }else if(filetype === 'jpg') {
+            				   		             fileicon = '/static/credit/imgs/order/JPG.png'
+            				   		           }else if(filetype === 'pdf') {
+            				   		             fileicon = '/static/credit/imgs/order/PDF.png'
+            				   		           }
+            				   	        	let fileArr = ''
+            				   	        	let filename = data.files[i].originalname
+            				   	        	let all_name = filename + filetype
+            				   	    		let num = filename.split(".").length;
+            				   	            let filename_qz = []
+            				   	            for(let i=0;i<num;i++){  
+            				   	              filename_qz =  filename_qz.concat(filename.split(".")[i])
+            				   	            }
+            				   	            filename_qz_str = filename_qz.join('.')
+            				   	            if(filename_qz_str.length>4) {
+            				   	              filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
+            				   	            }
+            				   	            
+            				   	            filename = filename_qz_str + '.' +filetype
+            				   	        	fileArr += '<div class="uploadFile mt-3 mr-4 mb-5 upload-over" fileId="'+data.files[i].id+'" url="'+data.files[i].view_url+'" style="cursor:pointer">'+
+            				   	        				'<div class="over-box">'+
+            				   		        				'<img src="'+fileicon+'" class="m-auto"/>'+
+            				   		        				 '<p class="filename" title="'+all_name+'">'+filename+'</p>'+
+            				   	        				 '</div>'+
+            				   	        				 '</div>'
+            				   	        
+            							  $(".order-detail").append(fileArr)	
+            				   	           $(".upload-over").click(function(e){
+            				   	        	   console.log($(e.target))
+            				   	        	   if($(e.target).parent().attr("class") === 'close') {
+            				   	        		   return
+            				   	        	   }
+            				   	        	   window.open($(this).attr("url"))
+            				   	        	   
+            				   	           })
+            				   	        }
+	            					}
+                				}
+                			})
+                			break;
+                		case '5':
+                			/*固定底部的按钮组*/
+                			let className = item.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
+                			bottomBtn += `<button id=${item.title.column_name} class="${className}">${item.title.temp_name}</button>`
+                			break;
             			default:
             				break;
             		}
@@ -414,8 +613,84 @@ let ReportConfig = {
                 })
                 
                 $(".table-content").html(contentHtml)
+                $(".position-fixed").html(bottomBtn)
             }
         })
+    },
+    modalClean(){
+    	this.idArr.forEach((item,index)=>{
+    		//点击新增一条清空模态框中内容
+    		$("#addBtn"+item).click(()=>{
+    			this.isAdd = true
+    			$("#modal"+item+" input").val("");
+		    	$("#modal"+item+" textarea").val("");
+		    	 $("#modal"+item+" select").find("option:selected").attr("selected", false);
+			    $("#modal"+item+" select").find("option").first().attr("selected", true);
+    
+    		})
+    		//点击模态框保存按钮，新增一条数据
+    		$("#modal_save"+item).click(()=>{
+    			let dataJson = []
+    			let dataJsonObj = {}
+    			let formArr = Array.from($("#modal"+item).find(".form-inline"))
+				formArr.forEach((item,index)=>{
+					let id = $(item).children("label").siblings().attr("id");
+					let tempObj = this.getFormData($('#'+id));
+					for(let i in tempObj){
+						if(tempObj.hasOwnProperty(i))
+						dataJsonObj[i] = tempObj[i]
+					}
+				})
+    			
+    			
+    			let urlTemp = this.title[index].alter_source
+    			if(!urlTemp){return}
+    			let url = BASE_PATH  + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] 
+    			if(!this.isAdd){
+    				//是修改保存
+    				dataJsonObj["id"] = this.rowId
+    			}
+            	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+            	let paramObj = {}
+            	tempParam.forEach((item,index)=>{
+            		dataJsonObj[item] = this.rows[item]
+    			 })
+    			 dataJson.push(dataJsonObj)
+            	paramObj["dataJson"] = JSON.stringify(dataJson)
+            	//调用新增修改接口
+            	$.ajax({
+            		url,
+            		type:'post',
+            		dataType:'json',
+            		data:paramObj,
+            		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+            		success:(data)=>{
+            			if(data.statusCode === 1) {
+            				Public.message("success",this.isAdd?'新增成功！':'修改成功！')
+            				//刷新数据
+            				this.refreshTable($("#table"+item));
+            			}else {
+            				Public.message("error",data.message)
+            			}
+            		}
+            	})
+    		})
+    	})
+    },
+    refreshTable(ele){
+    	//刷新表格中的数据
+    	$(ele).bootstrapTable("refresh")
+    },
+    getFormData(form) {
+    	//序列化
+        var unindexed_array = form.serializeArray();
+        var indexed_array = {};
+
+        $.map(unindexed_array, function (n, i) {
+          indexed_array[n['name']] = n['value'];
+        });
+
+        return indexed_array;
     }
 }
 

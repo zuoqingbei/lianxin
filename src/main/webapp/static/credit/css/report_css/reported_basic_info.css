@@ -91,7 +91,8 @@ label {
 }
 
 .btn {
-    padding: .375rem 1.75rem;
+    padding: .5rem 1.75rem;
+    font-size:1rem;
 }
 .modal-body {
     display: flex;
@@ -187,6 +188,13 @@ label {
 .firm-info input.active, .firm-info select.active{
 	border-color:#f00;
 
+}
+.upload-over:hover {
+	border-color:var(--activeColor);
+	
+}
+.l-title {
+	display:block;
 }
 
 
