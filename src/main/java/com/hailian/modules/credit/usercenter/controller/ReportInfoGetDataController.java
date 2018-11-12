@@ -121,7 +121,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 	 * lzg
 	 */
 	public void getForm() {
-		getBootStrapTable(isCompanyMainTable());
+		getBootStrapTable();
 	}
 	
 	/**
@@ -137,6 +137,11 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 	 */
 	public void alterForm() {
 		alterBootStrapTable();
+	}
+
+
+	void getBootStrapTable() {
+		getBootStrapTable(isCompanyMainTable());
 	}
 
 

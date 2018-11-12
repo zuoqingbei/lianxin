@@ -16,7 +16,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	/**
 	 * 获取bootStrapTable式的数据
 	 */
-	abstract void getBootStrapTable(boolean isCompanyMainTable);
+	abstract void getBootStrapTable();
 	/**
 	 * 修改或者更新bootStrapTable式的数据
 	 */
