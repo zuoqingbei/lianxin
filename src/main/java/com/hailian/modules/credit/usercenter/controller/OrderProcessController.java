@@ -497,7 +497,7 @@ public class OrderProcessController extends BaseProjectController{
 			logModel.set("user_id", userid);
 			model.clear();
 			model.set("notice_title", "订单核实");
-			model.set("notice_content", info.get("companyName")+"公司信息需要您核实");
+			model.set("notice_content", info.get("right_company_name_en")+"公司信息需要您核实");
 		}
 		//102,396 国外订单填报完成 向客服发起
 		if (status!=null&&status.equals("314")) {
@@ -527,19 +527,19 @@ public class OrderProcessController extends BaseProjectController{
 		  model.set("notice_content", "您有一个新订单待处理");
 	      
 		}
-		if (status!=null||status.equals("295")) {
+		if (status!=null&&status.equals("295")) {
 			 logModel.set("user_id", info.get("report_user"));
 			 model.clear();
 		     model.set("notice_title", "查档完成");
-			 model.set("notice_content", "您查档的"+info.get("companyName")+"公司信息已查档完成");
+			 model.set("notice_content", "您查档的"+info.get("right_company_name_en")+"公司信息已查档完成");
 		}
-		if(status!=null||status.equals("292")){
+		if(status!=null&&status.equals("292")){
 			 logModel.set("user_id", info.get("report_user"));	
 			 model.clear();
 		      model.set("notice_title", "核实完成");
-			  model.set("notice_content", "您核实的"+info.get("companyName")+"公司信息已核实完成");
+			  model.set("notice_content", "您核实的"+info.get("right_company_name_en")+"公司信息已核实完成");
 		}
-		if (status!=null||status.equals("299")) {
+		if (status!=null&&status.equals("299")) {
 			 logModel.set("user_id", info.get("report_user"));
 			 model.clear();
 		      model.set("notice_title", "报告退回");
@@ -550,12 +550,11 @@ public class OrderProcessController extends BaseProjectController{
 			logModel.set("user_id", info.get("IQC"));
 			 model.clear();
 		      model.set("notice_title", "订单查档");
-			  model.set("notice_content", info.get("companyName")+"公司信息需要您查档");
+			  model.set("notice_content", info.get("right_company_name_en")+"公司信息需要您查档");
 		}
 		model.set("create_by", userid);
 		model.set("create_date", now);
 		model.save();
-		logModel.set("user_id", orderInfoModel.get(""));
 		logModel.set("notice_id", model.get("id"));
 		logModel.set("read_unread", "1");
 		logModel.save();
