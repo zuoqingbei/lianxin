@@ -44,7 +44,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 		//如果是公司主表,将company_id改为id
 		if(isCompanyMainTable) {
 			String sqlSuf2 = sqlSuf+"";
-			sqlSuf2.replace("company_id","id");
+			sqlSuf2 = sqlSuf2.replace("company_id","id");
 			sqlSuf = new StringBuffer(sqlSuf2);
 		}
 		List rows = null;
@@ -140,7 +140,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 	}
 
 
-	void getBootStrapTable() {
+	public void getBootStrapTable() {
 		getBootStrapTable(isCompanyMainTable());
 	}
 

@@ -299,25 +299,44 @@ let ReportConfig = {
     	let formIndex = this.formIndex;
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
-    		console.log(item.get_source)
     		let getFormUrl = titles[index].get_source;
     		if(!getFormUrl){return}
 			let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
-			
         	let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
         	let paramObj = {}
         	tempParam.forEach((item,index)=>{
         		paramObj[item] = this.rows[item]
 			 })
 			 paramObj["conf_id"] = conf_id
-    		$.ajax({
-    			url,
-    			type:'post',
-    			data:paramObj,
-    			success:(data)=>{
-    				console.log(data)
-    			}
-    		})
+			 let temp;
+			 $.ajax({
+	    			url,
+	    			type:'post',
+	    			async:false,
+	    			data:paramObj,
+	    			success:(data)=>{
+	    				temp = data
+	    			}
+	    		})
+			 
+			 let arr = Array.from($("#title"+item))
+			 arr.forEach((item,index)=>{
+				 let formArr = Array.from($(item).siblings().find(".form-control"))
+				 formArr.forEach((item,index)=>{
+					 let obj = temp.rows[0];
+    				let id = $(item).attr("id");
+    				let anotherIdArr = id.split("_")
+    				anotherIdArr.pop();
+    				let anotherId = anotherIdArr.join('_')
+    				if($(item).is('select')){
+    					//如果是select
+    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
+    				}else {
+    					$("#"+id).val(obj[anotherId])
+    				}
+				 })
+			 })
+    		
     	})
     	
     },
@@ -349,7 +368,6 @@ let ReportConfig = {
         	url:BASE_PATH + "credit/front/getmodule/list",
         	data:{id,reportType},
         	success:(data)=>{
-                console.log(data)
                 setTimeout(()=>{
                 	_this.addressInit();
                 	_this.initModal();
@@ -359,6 +377,7 @@ let ReportConfig = {
                 	_this.bindFormData();
                 	_this.tabChange();
                 	_this.modalClean();
+                	_this.bottomBtnEvent();
             	    Public.tabFixed(".tab-bar",".main",120,90)
                 },0)
                 /**
@@ -417,10 +436,9 @@ let ReportConfig = {
                 	 * 循环模块
                 	 */
                 	let smallModileType = item.smallModileType
-                	if(smallModileType === '-2' || smallModileType === '5') {
-                		return;
+                	if(smallModileType !== '-2' && smallModileType !== '5') {
+                		contentHtml +=  `<div class="bg-f pb-3 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}
-                	contentHtml +=  `<div class="bg-f pb-3 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
                 	//模块的类型
@@ -448,7 +466,7 @@ let ReportConfig = {
 		                        				case 'number':
 			                    						formGroup += `<div class="form-group">
 					                        							<label for="" class="mb-2">${item.temp_name}</label>
-					                        							<input type="number" class="form-control" id="" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+					                        							<input type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 					                        							<p class="errorInfo">${item.error_msg}</p>
 				                        							</div>`
 		                        					
@@ -456,14 +474,14 @@ let ReportConfig = {
 		                        				case 'date':
 		                        					formGroup += `<div class="form-group date-form">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
-												            		<input type="text" class="form-control" id="" placeholder="" name=${item.column_name}>
+												            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
 							            		case 'address':
 							            			formGroup += ` <div class="form-group address-form"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <input type="text" class="form-control"  style="width: 100%" name=${item.column_name}>
+									                                    <input type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
 									                                </div>`
 							            			break;
 							            		case 'select':
@@ -476,7 +494,7 @@ let ReportConfig = {
 							            				success:(data)=>{
 							            				formGroup += `<div class="form-group">
 										            					<label for="" class="mb-2">${item.temp_name}</label>
-										            					<select name=${item.column_name} id="" class="form-control">
+										            					<select name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
 										            						${data.selectStr}
 										            					</select>
 							            							</div>`
@@ -487,7 +505,7 @@ let ReportConfig = {
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <textarea class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name}></textarea>
+									                                    <textarea class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
 									                                </div>`
 									                break;
 		        							    default :
@@ -552,7 +570,6 @@ let ReportConfig = {
             				   	        $(".order-detail").html("");
 //            				        	$(".uploadFile:not(.upload-over)").show()
             				   	        for (var i = 0;i<files.length; i++){
-            				   	        	console.log(files[i].ext)
             				   	        	let filetype = files[i].ext.toLowerCase()
             				   	        	let fileicon = ''
             				   	        	if(filetype === 'doc' || filetype === 'docx') {
@@ -589,7 +606,6 @@ let ReportConfig = {
             				   	        
             							  $(".order-detail").append(fileArr)	
             				   	           $(".upload-over").click(function(e){
-            				   	        	   console.log($(e.target))
             				   	        	   if($(e.target).parent().attr("class") === 'close') {
             				   	        		   return
             				   	        	   }
@@ -602,7 +618,7 @@ let ReportConfig = {
                 			})
                 			break;
                 		case '5':
-                			/*固定底部的按钮组*/
+                			//固定底部的按钮组
                 			let className = item.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
                 			bottomBtn += `<button id=${item.title.column_name} class="${className}">${item.title.temp_name}</button>`
                 			break;
@@ -691,6 +707,54 @@ let ReportConfig = {
         });
 
         return indexed_array;
+    },
+    bottomBtnEvent(){
+    	/**
+    	 * 底部按钮点击事件
+    	 */
+    	let formTitles = this.formTitle;
+    	let formIndex = this.formIndex;
+    	let _this = this
+    	formIndex.forEach((item,index)=>{
+    		let alterSource = formTitles[index]["alter_source"];
+    		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
+        	let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
+        	let dataJson = []
+        	let dataJsonObj = {} 
+        	tempParam.forEach((item,index)=>{
+        		dataJsonObj[item] = this.rows[item]
+			 })
+    		$(".position-fixed").on("click","#save",(e)=>{
+    			 let arr = Array.from($("#title"+item))
+    			 arr.forEach((item,index)=>{
+    				 let formArr = Array.from($(item).siblings().find(".form-control"))
+    				 formArr.forEach((item,index)=>{
+        				let id = $(item).attr("id");
+        				let anotherIdArr = id.split("_")
+        				anotherIdArr.pop();
+        				let anotherId = anotherIdArr.join('_')
+        				let tempObj = _this.getFormData($('#'+id))
+        				for(let i in tempObj){
+    						if(tempObj.hasOwnProperty(i))
+    						dataJsonObj[i] = tempObj[i]
+    					}
+    				 })
+    				 
+    			 })
+    			 dataJson.push(dataJsonObj)
+    			 $.ajax({
+    				 url,
+    				 type:'post',
+    				 data:{
+    					 dataJson:JSON.stringify(dataJson)
+    				 },
+    				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+    				 success:(data)=>{
+    					 console.log(data)
+    				 }
+    			 })
+    		})
+    	})
     }
 }
 

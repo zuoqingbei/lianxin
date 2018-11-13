@@ -74,8 +74,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			@SuppressWarnings("rawtypes")
 			Class entryType = entryType = Class.forName(className);
 			BaseProjectModel model = null;
-		   //根据Class对象创建实例
-		    model = (BaseProjectModel) entryType.newInstance();
+		  
 			System.out.println("\n\t\t\t\ttable:"+className.substring(className.lastIndexOf(".")+1)+"\n");
 			
 			List<Map<Object, Object>> entrys = parseJsonArray(jsonStr);
@@ -85,16 +84,17 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
 				 exitsId = false;
 			}
-			
 			for (Map<Object, Object> entry : entrys) {
+				 //根据Class对象创建实例
+			    model = (BaseProjectModel) entryType.newInstance();
+				model.set("update_by", userId);
+				model.set("update_date", now);
+				if(!exitsId){
+					model.set("create_by", userId);
+					model.set("create_date", now);
+				}
 				for (Object key : entry.keySet()) {
 					model.set((""+key).trim(), (""+(entry.get(key))).trim());
-					model.set("update_by", userId);
-					model.set("update_date", now);
-					if(!exitsId){
-						model.set("create_by", userId);
-						model.set("create_date", now);
-					}
 				}
 				list.add(model);
 			}
