@@ -359,6 +359,8 @@ let ReportConfig = {
     	this.title = [] //存放table类型模块的title
     	this.formTitle = [] //存放form类型模块的title
     	this.selectInfoObj = {} //存放选择框信息传给后台
+    	this.saveStatusUrl = ''
+		this.submitStatusUrl = ''
     	let row = localStorage.getItem("row");
     	let _this = this
     	let id = JSON.parse(row).id;
@@ -619,6 +621,7 @@ let ReportConfig = {
                 			break;
                 		case '5':
                 			//固定底部的按钮组
+                			item.title.column_name === 'save'?_this.saveStatusUrl = item.title.alter_source:_this.submitStatusUrl = item.title.alter_source
                 			let className = item.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
                 			bottomBtn += `<button id=${item.title.column_name} class="${className}">${item.title.temp_name}</button>`
                 			break;
@@ -750,7 +753,24 @@ let ReportConfig = {
     				 },
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
-    					 console.log(data)
+    					 if(data.statusCode === 1) {
+    						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.saveStatusUrl + `&model.id=${_this.rows["id"]}&model.num=${_this.rows["num"]}`;
+    						 $.ajax({
+    							 url,
+    							 type:'post',
+    							 success:(data)=>{
+    								 if(data.statusCode === 1) {
+    									 Public.message("success",data.message)
+    									 Public.goToInfoImportPage();
+    									 
+    								 }else {
+    									 Public.message("error",data.message)
+    								 }
+    							 }
+    						 })
+    					 }else {
+    						 Public.message("error",data.message)
+    					 }
     				 }
     			 })
     		})

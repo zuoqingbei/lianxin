@@ -1,11 +1,13 @@
 package com.hailian.modules.admin.ordermanager.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.BaseController;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
 import com.hailian.util.DateUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
@@ -47,22 +49,16 @@ public class CreditOrderFlow extends BaseProjectModel<CreditOrderFlow> implement
 		Db.update(sql.toString(),num);
 	}
 	
-	public static void addOneEntry(BaseController c,Class<? extends CreditOrderInfo> class1) {
+	public static void addOneEntry(BaseController c,CreditOrderInfo model) {
 		//获取订单记录对象
 		CreditOrderFlow cof = new CreditOrderFlow();
-		Model model = null;
-		try {
-			model = (Model) class1.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
 		//订单号
-		model = model.findById(model.get("id"));
+		model = model.findById(Arrays.asList(new String[] {model.get("id")+""}).toArray());
 		cof.set("order_num", model.get("num"));
 		//订单状态
-		cof.set("order_state", model.get("statusCode"));
+		cof.set("order_state", model.get("status"));
 		//操作人
-		cof.set("create_oper", c.getSessionUser().get("id"));
+		cof.set("create_oper", c.getSessionUser().getUserid());
 		//操作时间
 		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
 		//记录生成时间

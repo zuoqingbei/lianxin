@@ -81,12 +81,12 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			if(entrys.size()<1){
 				return null;
 			}
-			if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
-				 exitsId = false;
-			}
+			
 			for (Map<Object, Object> entry : entrys) {
 				if(isCompanyMainTable()) {
-					entry.put("company_id","id");
+					String id = entry.get("company_id")+"";
+					entry.remove("company_id");
+					entry.put("id",id);
 				}
 				//根据Class对象创建实例
 			    model = (BaseProjectModel) entryType.newInstance();
@@ -96,11 +96,14 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					model.set("create_by", userId);
 					model.set("create_date", now);
 				}
-				
+				Map b = new HashMap<>();
 				for (Object key : entry.keySet()) {
 					model.set((""+key).trim(), (""+(entry.get(key))).trim());
 				}
 				list.add(model);
+			}
+			if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
+				 exitsId = false;
 			}
 			//批量执行
 			if(!exitsId){
