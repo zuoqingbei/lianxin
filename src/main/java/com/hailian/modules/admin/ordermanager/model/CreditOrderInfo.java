@@ -759,12 +759,12 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		StringBuffer sql = new StringBuffer(
 				"select c.name as countryName,s3.name as reportType,s4.detail_name as reportLanguage,s5.detail_name as reportSpeed,c2.name as companyName,t.*");
 		StringBuffer fromsql=new StringBuffer("from credit_order_info t ");
-		fromsql.append("left join sys_dict_detail s4  on s4.detail_id=t.report_language");
-		fromsql.append("left join credit_country c on c.id=t.country");
-		fromsql.append("left join credit_report_type s3  on s3.id=t.report_type");
-		fromsql.append("left join sys_dict_detail s5  on s5.detail_id=t.speed");
-		fromsql.append("left join credit_company_info c2 on c2.id=t.company_id");
-		fromsql.append("where t.id=?");
+		fromsql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language");
+		fromsql.append(" left join credit_country c on c.id=t.country");
+		fromsql.append(" left join credit_report_type s3  on s3.id=t.report_type");
+		fromsql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed");
+		fromsql.append(" left join credit_company_info c2 on c2.id=t.company_id");
+		fromsql.append(" where t.id=?");
 		List<Object> params = new ArrayList<Object>();
 		params.add(id);
 		return (CreditOrderInfo) CreditOrderInfo.dao.findFirst(sql.toString()+fromsql.toString(), params.toArray());

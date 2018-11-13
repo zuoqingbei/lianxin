@@ -331,7 +331,7 @@ public class OrderProcessController extends BaseProjectController{
 		}
 		model.update();
 		//增加跟踪记录
-		CreditOrderFlow.addOneEntry(this, model.getClass());
+		CreditOrderFlow.addOneEntry(this, model);
 	}
 	/**
 	 * 代理分配
@@ -491,46 +491,76 @@ public class OrderProcessController extends BaseProjectController{
 	public  void  addNoice(String status){
 		//新增公告内容
 		NoticeModel model=new NoticeModel();
-		model.set("notice_title", "站内信");
-		model.set("notice_content", "站内信");
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-		model.set("create_by", userid);
-		model.set("create_date", now);
-		model.save();
-		//公告子表添加
 		CreditOrderInfoModel orderInfoModel=getModel(CreditOrderInfoModel.class);
-		NoticeLogModel logModel=new NoticeLogModel();
+		//查订单
+        CreditOrderInfo info=	CreditOrderInfo.dao.getId(orderInfoModel.get("id"), null);
+        //公告子表添加
+        NoticeLogModel logModel=new NoticeLogModel();
 		//订单核实，向客服发起
 		if (status!=null&&status.equals("500")) {
 			logModel.set("user_id", userid);
+			model.clear();
+			model.set("notice_title", "订单核实");
+			model.set("notice_content", info.get("right_company_name_en")+"公司信息需要您核实");
 		}
 		//102,396 国外订单填报完成 向客服发起
 		if (status!=null&&status.equals("314")) {
-			if (orderInfoModel.get("report_type").equals("21")
-			   ||orderInfoModel.get("report_type").equals("12")
-			   ||!orderInfoModel.get("country").equals("中国大陆")) {
-				logModel.set("user_id", userid);	
+			if (info.get("report_type").equals("21")
+			   ||info.get("report_type").equals("12")
+			   ||!info.get("country").equals("中国大陆")) {
+				logModel.set("user_id", userid);
+				model.clear();
+				model.set("notice_title", "102,396 国外订单填报完成");
+				model.set("notice_content", "您有新的报告需要质检");
 			}
 			//除102,396 国外订单填报完成 向质检员发起
-			if (!orderInfoModel.get("report_type").equals("21")
-			   ||!orderInfoModel.get("report_type").equals("12")
-			   ||orderInfoModel.get("country").equals("中国大陆")) {
-				logModel.set("user_id", orderInfoModel.get("IQC"));
+			if (!info.get("report_type").equals("21")
+			   ||!info.get("report_type").equals("12")
+			   ||info.get("country").equals("中国大陆")) {
+				logModel.set("user_id", info.get("IQC"));
+				model.clear();
+				model.set("notice_title", "102,396 国外订单填报完成");
+				model.set("notice_content", "您有新的报告需要质检");
 			}
 		}
-		//新订单分配，查档完成，核实完成，报告退回，订单催问
-		if (status!=null&&(status.equals("291")
-			||status.equals("295")
-			||status.equals("292")||status.equals("299")
-			)) {
-	      logModel.set("user_id", orderInfoModel.get("report_user"));	
+		//新订单分配，查档完成，核实完成，报告退回，订单催问 向报告员
+		if (status!=null&&status.equals("291")) {
+	      logModel.set("user_id", info.get("report_user"));
+	      model.clear();
+	      model.set("notice_title", "新订单分配");
+		  model.set("notice_content", "您有一个新订单待处理");
+	      
+		}
+		if (status!=null&&status.equals("295")) {
+			 logModel.set("user_id", info.get("report_user"));
+			 model.clear();
+		     model.set("notice_title", "查档完成");
+			 model.set("notice_content", "您查档的"+info.get("right_company_name_en")+"公司信息已查档完成");
+		}
+		if(status!=null&&status.equals("292")){
+			 logModel.set("user_id", info.get("report_user"));	
+			 model.clear();
+		      model.set("notice_title", "核实完成");
+			  model.set("notice_content", "您核实的"+info.get("right_company_name_en")+"公司信息已核实完成");
+		}
+		if (status!=null&&status.equals("299")) {
+			 logModel.set("user_id", info.get("report_user"));
+			 model.clear();
+		      model.set("notice_title", "报告退回");
+			  model.set("notice_content", "您有报告被退回，请及时修改");
 		}
 		//订单查档 向质检员发起
 		if(status!=null&&status.equals("294")){
-			logModel.set("user_id", orderInfoModel.get("IQC"));
+			logModel.set("user_id", info.get("IQC"));
+			 model.clear();
+		      model.set("notice_title", "订单查档");
+			  model.set("notice_content", info.get("right_company_name_en")+"公司信息需要您查档");
 		}
-		logModel.set("user_id", orderInfoModel.get(""));
+		model.set("create_by", userid);
+		model.set("create_date", now);
+		model.save();
 		logModel.set("notice_id", model.get("id"));
 		logModel.set("read_unread", "1");
 		logModel.save();

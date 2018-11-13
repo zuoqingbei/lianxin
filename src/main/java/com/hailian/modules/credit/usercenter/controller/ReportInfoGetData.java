@@ -11,6 +11,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.system.dict.DictCache;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Model;
 
 public abstract class ReportInfoGetData extends BaseProjectController {
 	/**
@@ -74,29 +75,35 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			@SuppressWarnings("rawtypes")
 			Class entryType = entryType = Class.forName(className);
 			BaseProjectModel model = null;
-		   //根据Class对象创建实例
-		    model = (BaseProjectModel) entryType.newInstance();
 			System.out.println("\n\t\t\t\ttable:"+className.substring(className.lastIndexOf(".")+1)+"\n");
 			
 			List<Map<Object, Object>> entrys = parseJsonArray(jsonStr);
 			if(entrys.size()<1){
 				return null;
 			}
-			if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
-				 exitsId = false;
-			}
 			
 			for (Map<Object, Object> entry : entrys) {
+				if(isCompanyMainTable()) {
+					String id = entry.get("company_id")+"";
+					entry.remove("company_id");
+					entry.put("id",id);
+				}
+				//根据Class对象创建实例
+			    model = (BaseProjectModel) entryType.newInstance();
+			    model.set("update_by", userId);
+				model.set("update_date", now);
+				if(!exitsId){
+					model.set("create_by", userId);
+					model.set("create_date", now);
+				}
+				Map b = new HashMap<>();
 				for (Object key : entry.keySet()) {
 					model.set((""+key).trim(), (""+(entry.get(key))).trim());
-					model.set("update_by", userId);
-					model.set("update_date", now);
-					if(!exitsId){
-						model.set("create_by", userId);
-						model.set("create_date", now);
-					}
 				}
 				list.add(model);
+			}
+			if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
+				 exitsId = false;
 			}
 			//批量执行
 			if(!exitsId){
