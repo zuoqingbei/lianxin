@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -15,6 +19,7 @@ import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
@@ -437,6 +442,80 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}
 		if (StringUtils.isNotBlank(status)) {
 			sql.append(" and t.status in(?)");
+			params.add(status);
+		}
+		if (StringUtils.isNotBlank(sortname)) {
+			sql.append(" order by t." ).append("create_date").append("  "+sortorder);
+		} 
+		Page<CreditOrderInfo> page = CreditOrderInfo.dao
+				.paginate(
+						pageinator,
+						"select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
+								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
+								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime  ",
+						sql.toString(), params.toArray());
+
+		return page;
+	}
+	/*
+	 * 获取绩效订单页面
+	 */
+	public Page<CreditOrderInfo> getAchievementsOrders(Paginator pageinator, CreditOrderInfo model,String reportername,String time,
+			SysUser user,boolean isadmin,String sortname,String sortorder) throws ParseException {
+		StringBuffer sql = new StringBuffer();
+		String receiver_date1="";
+		String end_date1="";
+		//开始时间
+		if(StringUtils.isNotBlank(time)){
+			String[]  strs=time.split("-");
+			String receiver_date=strs[0].toString();
+			String end_date=strs[1].toString().replace(" ", "");
+			DateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+			Date parse = format.parse(receiver_date);
+			Date parse2 = format.parse(end_date);
+			receiver_date1 = new SimpleDateFormat("yyyy-MM-dd").format(parse);
+			end_date1 = new SimpleDateFormat("yyyy-MM-dd").format(parse2);
+		}
+		List<Object> params = new ArrayList<Object>();
+		sql.append(" from credit_order_info t ");
+		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
+		sql.append(" left join credit_country c on c.id=t.country ");
+		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
+		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
+		sql.append(" left join sys_user s on s.userid=t.create_by ");
+		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
+		sql.append(" left join sys_user s9 on s9.userid=t.translate_user ");
+		sql.append(" left join sys_user s0 on s0.userid=t.analyze_user ");
+		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
+		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
+		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
+		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
+		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
+		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
+		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
+		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		if (StringUtils.isNotBlank(end_date1)) {
+			sql.append(" and t.end_date<=?");
+			params.add(end_date1);
+		}
+		if (StringUtils.isNotBlank(receiver_date1)) {
+			sql.append(" and t.receiver_date>=?");
+			params.add(receiver_date1);
+		}
+		if(isadmin){
+			if(StringUtils.isNotBlank(reportername)){
+				sql.append(" and t.report_user=? ");
+				params.add(reportername);
+			}
+		}
+		if(!isadmin){
+			sql.append(" and t.report_user=?");
+			params.add(user.getUserid());
+		}
+		List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单完成","orderstate");
+		int status=dictDetailBy.get(0).get("detail_id");
+		if (StringUtils.isNotBlank(status+"")) {
+			sql.append(" and t.status = ?");
 			params.add(status);
 		}
 		if (StringUtils.isNotBlank(sortname)) {
