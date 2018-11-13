@@ -84,8 +84,6 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
 				 exitsId = false;
 			}
-			//根据Class对象创建实例
-		    model = (BaseProjectModel) entryType.newInstance();
 			for (Map<Object, Object> entry : entrys) {
 				if(isCompanyMainTable()) {
 					entry.put("company_id","id");
