@@ -315,6 +315,7 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	
 	//修改或者删除功能公共雏形
+	@SuppressWarnings("unused")
 	private void PublicUpdateMod(Map<String,Object> map){
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
 		model.removeNullValueAttrs();
@@ -329,19 +330,8 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		model.update();
-		//获取订单记录对象
-		CreditOrderFlow cof = new CreditOrderFlow();
-		//订单号
-		cof.set("order_num", getPara("num"));
-		//订单状态
-		cof.set("order_state", getPara("statusCode"));
-		//操作人
-		cof.set("create_oper", userid);
-		//操作时间
-		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
-		//记录生成时间
-		cof.set("create_date", getNow());
-		cof.save();
+		//增加跟踪记录
+		CreditOrderFlow.addOneEntry(this, model.getClass());
 	}
 	/**
 	 * 代理分配
