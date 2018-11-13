@@ -1,6 +1,7 @@
 package com.hailian.modules.admin.ordermanager.service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -289,7 +290,14 @@ public class OrderManagerService {
 		// TODO Auto-generated method stub
 		return CreditOrderInfo.dao.getOrders(pageinator, model, status, user,sortname,sortorder);
 	}
-
+	/*
+	 * 
+	 */
+	public Page<CreditOrderInfo> getAchievementsOrders(Paginator pageinator, CreditOrderInfo model,String reportername,String time,
+			SysUser user,boolean isadmin,String sortname,String sortorder) throws ParseException {
+		// TODO Auto-generated method stub
+		return CreditOrderInfo.dao.getAchievementsOrders(pageinator, model,reportername,time,user,isadmin,sortname,sortorder);
+	}
 	public CreditCustomInfo getCreater(String id) {
 		// TODO Auto-generated method stub
 		
