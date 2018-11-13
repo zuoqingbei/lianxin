@@ -132,6 +132,9 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 	* @TODO
 	 */
 	public AgentPriceModel getAgentPrice(int pid,int cid,String agent_id,String agent_category,boolean isSpecial) {
+		if(StringUtils.isEmpty(pid+"") || StringUtils.isEmpty(cid+"") || StringUtils.isEmpty(agent_id) || StringUtils.isEmpty(agent_category)){
+			return null;
+		}
 		StringBuffer sb=new StringBuffer("select t.* from credit_agent_price t ");
 		sb.append(" where 1=1 and t.del_flag=0 ");
 		List<Object> params=new ArrayList<Object>();
@@ -155,6 +158,28 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 		if(StringUtils.isNotBlank(agent_category+"")){
 			sb.append(" and t.agent_category=?");
 			params.add(agent_category);
+		}
+		sb.append(" order by t.id ");
+		return AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
+	}
+	public AgentPriceModel getAgentAbroadPrice(String agent_id,String country,String speed) {
+		if(StringUtils.isEmpty(agent_id) || StringUtils.isEmpty(country) || StringUtils.isEmpty(speed)){
+			return null;
+		}
+		StringBuffer sb=new StringBuffer("select t.* from credit_agent_price t ");
+		sb.append(" where 1=1 and t.del_flag=0 ");
+		List<Object> params=new ArrayList<Object>();
+		if(StringUtils.isNotBlank(agent_id)){
+			sb.append(" and t.agent_id=?");
+			params.add(agent_id);
+		}
+		if(StringUtils.isNotBlank(country)){
+			sb.append(" and t.country=?");
+			params.add(country);
+		}
+		if(StringUtils.isNotBlank(speed)){
+			sb.append(" and t.speed=?");
+			params.add(speed);
 		}
 		sb.append(" order by t.id ");
 		return AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());

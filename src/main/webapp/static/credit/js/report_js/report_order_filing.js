@@ -136,7 +136,7 @@ let Filing = {
                  $.ajax({
             			type:"post",
             			url:BASE_PATH+"credit/front/orderProcess/orderAgentSave",
-            			data:"agent_id="+agentid+"&model.id="+id+"&agent_category="+agent_category+"&company_id="+companyid+"&num="+num+"&statusCode="+"295",
+            			data:"agent_id="+agentid+"&model.id="+id+"&agent_category="+agent_category+"&company_id="+companyid+"&model.num="+num+"&model.statusCode="+"295",
             			dataType:"json",
             			success:function(data){
             			//提交成功关闭模态窗

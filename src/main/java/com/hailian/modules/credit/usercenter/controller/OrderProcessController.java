@@ -369,6 +369,13 @@ public class OrderProcessController extends BaseProjectController{
 		//操作时间
 		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));					
 		cof.save();
+		toSendMail(ismail, orderId);//代理分配发送邮件
+		return model.set("status", oldStatus);
+	}
+	/*
+	 * 代理分配发送邮件
+	 */
+	private void toSendMail(String ismail, String orderId) throws Exception {
 		if("1".equals(ismail)){
 			CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, this);
 			String mailaddr=order.get("mail_receiver");
@@ -395,7 +402,6 @@ public class OrderProcessController extends BaseProjectController{
 				new SendMailUtil(mailaddr, mailaddrRe, title, content).sendMail();
 			}
 		}
-		return model.set("status", oldStatus);
 	}
 	/**
 	 *获取订单数据
@@ -571,6 +577,41 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		PublicUpdateMod(map);
+		renderJson(new ResultType());
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,"订单代理分配更新失败!"));
+		}
+	}
+	/**
+	 * 订单代理分配国外
+	* @author doushuihai  
+	* @date 2018年10月13日下午7:20:55  
+	* @TODO
+	 */
+	public  void  orderAgentAbroadSave() {
+		try {
+		String code = (String) getRequest().getParameter("statusCode");
+		String orderId = (String) getRequest().getParameter("orderId");
+		Map<String,Object> map = new HashMap<>();
+		if(code==null||"".equals(code.trim())){
+			map = null;
+		}else{
+			map.put("status", code);
+		}
+		String ismail = (String) getRequest().getParameter("ismail");
+		String agent_id = (String) getRequest().getParameter("agent_id");
+		String country= (String) getRequest().getParameter("country");
+		String speed = (String) getRequest().getParameter("speed");
+		map.put("agent_id", agent_id);
+		if(true){
+			AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id, country,speed);
+			if(agentPrice !=null){
+					map.put("agent_priceId", agentPrice.get("id"));
+			}
+		}
+		PublicUpdateMod(map);
+		toSendMail(ismail, orderId);//代理分配发送邮件
 		renderJson(new ResultType());
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -66,4 +66,9 @@ public class AgentPriceService {
 		return agentpricemodel;
 
 	}
+	public AgentPriceModel getAgentAbroadPrice(String agent_id,String country,String speed) {
+		AgentPriceModel agentpricemodel = AgentPriceModel.dao.getAgentAbroadPrice(agent_id,country,speed);
+		return agentpricemodel;
+
+	}
 }

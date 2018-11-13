@@ -126,25 +126,17 @@ let Filing = {
         		  if($("#agency_id").val()==-1 || $("#agency_id").val()=="") {
         	      		Public.message("error","请选择代理ID");
         	      	  return false;
-        	      	  }else if($("#agent_category").val()==-1){
-        	      		Public.message("error","请选择代理类别");
-        	      	  return false;
         	      	  }
-        		  
                  let agentid = $("#agency_id option:selected").val();
-                 let agent_category = $("#agent_category option:selected").val();
-                 if(agentid=="" || agent_category==""){
-                	 Public.message("error","请选择代理ID和代理类别");
-                	 return;
-                 }
-                 
                  let ismail = $("#entrust_email option:selected").val();
                  let id = $("#orderId2").val();
+                 let num = $("#num2").text();
+                 alert(num)
                  //console.log(reporter,remarks);
                  $.ajax({
             			type:"post",
-            			url:BASE_PATH+"credit/front/orderProcess/orderAgentSave",
-            			data:"model.agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.agent_category="+agent_category,
+            			url:BASE_PATH+"credit/front/orderProcess/orderAgentAbroadSave",
+            			data:"agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.num="+num+"&statusCode="+"295"+"&orderId="+id,
             			dataType:"json",
             			success:function(data){
             			
@@ -375,8 +367,6 @@ let Filing = {
             $("#companyZHNames2").html(row.companyZHNames);
             var selected=$("#agency_id").html()+row.seleteAgentStr;
             $("#agency_id").html(selected);
-            var selected2=row.seleteAgentCateStr;
-            $("#agent_category").html(selected2);
             $("#confirm_reason2").html(row.confirm_reason);
             $("#orderId2").val(row.id);
             $("#status").val(row.status);
