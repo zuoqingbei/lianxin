@@ -331,7 +331,7 @@ public class OrderProcessController extends BaseProjectController{
 		}
 		model.update();
 		//增加跟踪记录
-		CreditOrderFlow.addOneEntry(this, model.getClass());
+		CreditOrderFlow.addOneEntry(this, model);
 	}
 	/**
 	 * 代理分配

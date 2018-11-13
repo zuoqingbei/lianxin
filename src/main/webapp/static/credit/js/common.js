@@ -133,9 +133,11 @@ let Public = {
     },
     goToBasicInfoWrite(e){
         /**跳转基本信息填报 */
-    	this.gotop()
         $("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportedBasicInfo');
         localStorage.setItem("row",JSON.stringify(e));
+    },
+    goToInfoImportPage(){
+    	$("#main_content").load(BASE_PATH+'/credit/front/orderProcess/showReportInfoImport');
     },
     goToReportConfig(param){
     	/**跳转可配置的填报页面*/
