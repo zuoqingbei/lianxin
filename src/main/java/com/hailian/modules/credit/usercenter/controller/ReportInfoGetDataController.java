@@ -13,12 +13,7 @@ import com.jfinal.plugin.activerecord.Record;
 public class ReportInfoGetDataController  extends ReportInfoGetData {
 	  private TemplateDictService template = new TemplateDictService();
 	  private final static String PAKAGENAME_PRE = "com.hailian.modules.admin.ordermanager.model.";
-	 /**
-	  * 获取bootstraptable类型的数据
-	  * 链接形如: http://localhost:8080/credit/front/ReportGetData/getBootStrapTable?conf_id=18
-	  * company_id=24&report_type=1&tableName=credit_company_his&className=CreditCompanyHis
-	 * @param isCompanyMainTable 
-	 */
+	 
 	  @SuppressWarnings("unchecked")
 	public void getBootStrapTable(boolean isCompanyMainTable) {
 		Record record = new Record();
@@ -44,7 +39,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 		//如果是公司主表,将company_id改为id
 		if(isCompanyMainTable) {
 			String sqlSuf2 = sqlSuf+"";
-			sqlSuf2.replace("company_id","id");
+			sqlSuf2 = sqlSuf2.replace("company_id","id");
 			sqlSuf = new StringBuffer(sqlSuf2);
 		}
 		List rows = null;
@@ -114,7 +109,6 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 			e.printStackTrace();
 		}
 	}
-	
 	/**
 	 * 获取form类型的数据
 	 * 2018/11/12 10:13 
@@ -139,8 +133,13 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 		alterBootStrapTable();
 	}
 
-
-	void getBootStrapTable() {
+	/**
+	  * 获取bootstraptable类型的数据
+	  * 链接形如: http://localhost:8080/credit/front/ReportGetData/getBootStrapTable?conf_id=18
+	  * company_id=24&report_type=1&tableName=credit_company_his&className=CreditCompanyHis
+	 * @param isCompanyMainTable 
+	 */
+	public void getBootStrapTable() {
 		getBootStrapTable(isCompanyMainTable());
 	}
 

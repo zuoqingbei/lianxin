@@ -88,7 +88,7 @@ public abstract class BaseController extends Controller {
 	 * 
 	 * @return
 	 */
-	protected String getNow() {
+	public String getNow() {
 		return DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
 	}
 
