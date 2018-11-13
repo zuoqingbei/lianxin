@@ -6,6 +6,7 @@ import java.util.List;
 import com.hailian.jfinal.base.BaseService;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.system.user.SysUser;
 
 /**
  * 
@@ -291,6 +292,7 @@ public class TemplateDictService extends BaseService {
 			
 		return allDict;
 	}
+	
 
 	
 }

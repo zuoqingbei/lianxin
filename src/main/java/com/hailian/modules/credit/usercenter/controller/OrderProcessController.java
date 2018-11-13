@@ -315,6 +315,7 @@ public class OrderProcessController extends BaseProjectController{
 	}
 	
 	//修改或者删除功能公共雏形
+	@SuppressWarnings("unused")
 	private void PublicUpdateMod(Map<String,Object> map){
 		CreditOrderInfo model = getModel(CreditOrderInfo.class);
 		model.removeNullValueAttrs();
@@ -329,19 +330,8 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		model.update();
-		//获取订单记录对象
-		CreditOrderFlow cof = new CreditOrderFlow();
-		//订单号
-		cof.set("order_num", getPara("num"));
-		//订单状态
-		cof.set("order_state", getPara("statusCode"));
-		//操作人
-		cof.set("create_oper", userid);
-		//操作时间
-		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
-		//记录生成时间
-		cof.set("create_date", getNow());
-		cof.save();
+		//增加跟踪记录
+		CreditOrderFlow.addOneEntry(this, model.getClass());
 	}
 	/**
 	 * 代理分配
@@ -365,30 +355,7 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		String companyid=model.get("company_id");
-		CompanyModel companymodel = CompanyModel.dao.findById(companyid);
-		String address=null;
-		if(companymodel != null){
-			address=companymodel.getStr("address");
-			if(StringUtils.isNotBlank(address)){
-				String[] strs=address.split("-");
-				String province=strs[0].toString();
-				String city=strs[1].toString();
-				ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
-				CityModel cityByName = CityModel.dao.getCityByName(city);
-				int pid = provinceByName.get("pid");
-				int cid = cityByName.get("cid");
-				String agent_id=model.get("agent_id");
-				String agent_category=model.get("agent_category");
-				if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
-					AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
-					if(agentPrice !=null){
-						model.set("agent_priceId", agentPrice.get("id"));
-					}
-				}
-				
-			}
-			
-		}
+	
 		model.set("status", "295");
 		model.update();
 		//获取订单记录对象
@@ -428,7 +395,6 @@ public class OrderProcessController extends BaseProjectController{
 				new SendMailUtil(mailaddr, mailaddrRe, title, content).sendMail();
 			}
 		}
-		
 		return model.set("status", oldStatus);
 	}
 	/**
@@ -595,23 +561,51 @@ public class OrderProcessController extends BaseProjectController{
 		logModel.save();
 	}
 	/**
-	 * 订单代理分配
+	 * 订单代理分配国内
 	* @author doushuihai  
 	* @date 2018年10月13日下午7:20:55  
 	* @TODO
 	 */
-	public  CreditOrderInfo  orderAgentSave() {
+	public  void  orderAgentSave() {
 		try {
-		String ismail = (String) getRequest().getParameter("ismail");
-		String companyId = (String) getRequest().getParameter("companyId");
+		String code = (String) getRequest().getParameter("statusCode");
 		Map<String,Object> map = new HashMap<>();
-		CreditOrderInfo  model = PublicUpdateAgentMod(map,ismail);
+		if(code==null||"".equals(code.trim())){
+			map = null;
+		}else{
+			map.put("status", code);
+		}
+		String ismail = (String) getRequest().getParameter("ismail");
+		String companyid = (String) getRequest().getParameter("company_id");
+		String agent_id = (String) getRequest().getParameter("agent_id");
+		map.put("agent_id", agent_id);
+		String agent_category = (String) getRequest().getParameter("agent_category");
+		map.put("agent_category", agent_category);
+		CompanyModel companymodel = CompanyModel.dao.findById(companyid);
+		String address=null;
+		if(companymodel != null){
+			address=companymodel.getStr("address");
+			if(StringUtils.isNotBlank(address)){
+				String[] strs=address.split("-");
+				String province=strs[0].toString();
+				String city=strs[1].toString();
+				ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
+				CityModel cityByName = CityModel.dao.getCityByName(city);
+				int pid = provinceByName.get("pid");
+				int cid = cityByName.get("cid");
+				if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
+					AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
+					if(agentPrice !=null){
+							map.put("agent_priceId", agentPrice.get("id"));
+					}
+				}
+			}
+		}
+		PublicUpdateMod(map);
 		renderJson(new ResultType());
-		return model;
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"订单代理分配更新失败!"));
-			return null;
 		}
 	}
 	/**

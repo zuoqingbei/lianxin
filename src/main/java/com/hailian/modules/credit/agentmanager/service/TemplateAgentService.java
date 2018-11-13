@@ -7,6 +7,7 @@ import com.hailian.jfinal.base.BaseService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.model.AgentModel;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
+import com.hailian.system.user.SysUser;
 
 public class TemplateAgentService extends BaseService{
 	public static TemplateAgentService templateagentservice=new TemplateAgentService();
@@ -64,6 +65,7 @@ public class TemplateAgentService extends BaseService{
 		}
 		return sb.toString();
 	}
+
 	/**
 	 * 代理类别
 	* @author doushuihai  

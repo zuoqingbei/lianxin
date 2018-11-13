@@ -411,12 +411,13 @@ let ReportConfig = {
                  */
                 let modules = data.modules;    
                 let contentHtml = '' 
+                let bottomBtn = ''
                 modules.forEach((item,index)=>{
                 	/**
                 	 * 循环模块
                 	 */
                 	let smallModileType = item.smallModileType
-                	if(smallModileType === '-2') {
+                	if(smallModileType === '-2' || smallModileType === '5') {
                 		return;
                 	}
                 	contentHtml +=  `<div class="bg-f pb-3 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
@@ -429,6 +430,7 @@ let ReportConfig = {
                 			//表单类型
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
+                			let ind = index
 		                	formArr.forEach((item,index)=>{
 		                		
 		                				let formGroup = ''
@@ -437,7 +439,7 @@ let ReportConfig = {
 		                        		if(!field_type) {
 		                        			formGroup += `<div class="form-group">
 		        						            		<label for="" class="mb-2">${item.temp_name}</label>
-		        						            		<input type="text" class="form-control" id="" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 		        						            		<p class="errorInfo">${item.error_msg}</p>
 		        					            		</div>`
 		                        		}else {
@@ -599,6 +601,11 @@ let ReportConfig = {
                 				}
                 			})
                 			break;
+                		case '5':
+                			/*固定底部的按钮组*/
+                			let className = item.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
+                			bottomBtn += `<button id=${item.title.column_name} class="${className}">${item.title.temp_name}</button>`
+                			break;
             			default:
             				break;
             		}
@@ -606,6 +613,7 @@ let ReportConfig = {
                 })
                 
                 $(".table-content").html(contentHtml)
+                $(".position-fixed").html(bottomBtn)
             }
         })
     },
