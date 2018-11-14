@@ -17,8 +17,6 @@ let Allocation = {
     modalSubmit(){
         /**模态框提交事件 */
         $("#modal_submit").click(function(){
-        	console.log("模态框提交事件:"+BASE_PATH);
-        	
             let reporter = $("#reporter_select option:selected").val();
             let remarks = $("#remarks").val();
             let id = $("#orderId").val();
@@ -32,27 +30,23 @@ let Allocation = {
        			//提交成功关闭模态窗
        			 $(".modal-header .close").trigger("click");
        			if(data.statusCode===1){
-                  	 console.log("此处进入success状态2222222222");
                   	Public.message("success",data.message);
                   }else{
-                  	 console.log("此处进入error状态");
                   	Public.message("error",data.message);
                   }
        			//回显
-       			console.log("提交成功,开始回显:"+data.message);
-       			console.log("/credit/front/orderProcess/listJson");
-       			 $.ajax({
-       				type:"post",
-           			 url : BASE_PATH+"credit/front/orderProcess/listJson",
-           			data:"report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
-           			dataType:"json",
-           			success:function(obj){
-           				console.log("回显的数据:"+JSON.stringify(obj));
-           			 	$("#table").bootstrapTable("load",obj)
-           			 }
-       			 })
+       			$("#table").bootstrapTable("refresh")
+//       			 $.ajax({
+//       				type:"post",
+//           			 url : BASE_PATH+"credit/front/orderProcess/listJson",
+//           			data:"report_user="+reportt+"&pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-1",
+//           			dataType:"json",
+//           			success:function(obj){
+//           				console.log("回显的数据:"+JSON.stringify(obj));
+//           			 	$("#table").bootstrapTable("load",obj)
+//           			 }
+//       			 })
        			 
-       			console.log("回显完毕");
        			}
             	
        		})
@@ -100,22 +94,14 @@ let Allocation = {
       },
     searchEvent(){
         /**搜索事件 */
-        $("#btn_query").click(function(){
+        $("#btn_query").unbind().click(function(){
           let reporter = $("#txt_search_reporter").val();//报告员
+          let orderNum = $("#txt_search_orderNum").val();//订单号
+          let firmName = $("#txt_search_firmName").val();//订单公司名称
           console.log(reporter)
           //跳转到第一页
           $('#table').bootstrapTable('refreshOptions',{pageNumber:1});
-          /***发起ajax请求 获取表格数据*/
-          $.ajax({
-       			type:"post",
-       			 url : BASE_PATH+"credit/front/orderProcess/listJson",
-       			data:"report_user="+reporter+"&searchType=-1"+"&pageSize="+window.aaa,
-       			dataType:"json",
-       			success:function(data){
-       				console.log(data);
-       			 	 $("#table").bootstrapTable("load",data)
-       			 }
-       		})
+
         })
       },
     initTable(){
@@ -260,6 +246,8 @@ let Allocation = {
             	  sortName: params.sortName, 
             	  sortOrder: params.sortOrder,
             	  report_user: $("#txt_search_reporter").val(),
+            	  num:$("#txt_search_orderNum").val(),
+            	  right_company_name_en:$("#txt_search_firmName").val(),
             	  searchType: "-1",
               };  
           },  
