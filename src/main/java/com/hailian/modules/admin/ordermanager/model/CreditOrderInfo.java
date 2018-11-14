@@ -467,14 +467,14 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String end_date1="";
 		//开始时间
 		if(StringUtils.isNotBlank(time)){
-			String[]  strs=time.split("-");
-			String receiver_date=strs[0].toString();
-			String end_date=strs[1].toString().replace(" ", "");
-			DateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+			String[]  strs=time.split("至");
+			receiver_date1=strs[0].toString();
+			end_date1=strs[1].toString().replace(" ", "");
+			/*DateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
 			Date parse = format.parse(receiver_date);
 			Date parse2 = format.parse(end_date);
 			receiver_date1 = new SimpleDateFormat("yyyy-MM-dd").format(parse);
-			end_date1 = new SimpleDateFormat("yyyy-MM-dd").format(parse2);
+			end_date1 = new SimpleDateFormat("yyyy-MM-dd").format(parse2);*/
 		}
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
