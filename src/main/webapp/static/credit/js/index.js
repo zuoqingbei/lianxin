@@ -13,8 +13,7 @@ let Index = {
     dateForm(){
         /**日期控件 */
         laydate.render({
-            elem: '#dead_date',
-            format: 'yyyy年MM月dd日'
+            elem: '#dead_date'
         });
     }, 
     popperFilter(){
@@ -226,8 +225,6 @@ let Index = {
                 }*/
               
             ],
-           // url : 'firmSoftTable.action', // 请求后台的URL（*）
-           // method : 'post', // 请求方式（*）post/get
              url : '/credit/front/home/list', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
@@ -262,6 +259,13 @@ let Index = {
     			  status:_this.checkchar
               };  
             },
+            onLoadSuccess:(data)=>{
+            	console.log(data)
+            	let rows = data.rows;
+            	rows.forEach((item,index)=>{
+            		let dead_time = item.end_date;//截止日期
+            	})
+            }
           });
           // sometimes footer render error.
           setTimeout(() => {
