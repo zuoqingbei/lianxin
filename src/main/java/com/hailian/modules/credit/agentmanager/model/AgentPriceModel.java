@@ -184,4 +184,25 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 		sb.append(" order by t.id ");
 		return AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
 	}
+	public AgentPriceModel getAgentAbroad(String country,String speed) {
+		if(StringUtils.isEmpty(country) || StringUtils.isEmpty(speed)){
+			return null;
+		}
+		StringBuffer sb=new StringBuffer("SELECT * FROM (");
+		sb.append("select cap.*,cap.price*cr.rate as pricenum from credit_agent_price cap left join credit_rate cr on cap.currency=cr.currency_a and cr.currency_b='274' ");
+		sb.append(" where 1=1 and cap.del_flag=0 ");
+		List<Object> params=new ArrayList<Object>();
+		if(StringUtils.isNotBlank(country)){
+			sb.append(" and cap.country=? ");
+			params.add(country);
+		}
+		if(StringUtils.isNotBlank(speed)){
+			sb.append(" and cap.speed=? ");
+			params.add(speed);
+		}
+		sb.append(" order by price asc,cap.proxy_time ASC ");
+		sb.append(" ) A LIMIT 0,1 ");
+		AgentPriceModel pricemodel = AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
+		return pricemodel;
+	}
 }

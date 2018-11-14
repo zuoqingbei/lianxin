@@ -635,7 +635,7 @@ public class OrderProcessController extends BaseProjectController{
 		String speed = (String) getRequest().getParameter("speed");
 		map.put("agent_id", agent_id);
 		if(true){
-			AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id, country,speed);
+			AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,country,speed);
 			if(agentPrice !=null){
 					map.put("agent_priceId", agentPrice.get("id"));
 			}

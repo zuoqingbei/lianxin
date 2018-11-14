@@ -781,7 +781,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		StringBuffer fromSql = new StringBuffer();
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
-			selectSql.append(" select c.*, ");
+			selectSql.append(" select c.*,c.speed as speedid,c.country as countryid, ");
 			selectSql.append(" s1.name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
 			selectSql.append(" s3.detail_name AS continent, ");

@@ -130,13 +130,15 @@ let Filing = {
                  let agentid = $("#agency_id option:selected").val();
                  let ismail = $("#entrust_email option:selected").val();
                  let id = $("#orderId2").val();
+                 let country = $("#countryid").val();
+                 let speed = $("#speedid").val();
                  let num = $("#num2").text();
-                 alert(num)
+                 alert(country)
                  //console.log(reporter,remarks);
                  $.ajax({
             			type:"post",
             			url:BASE_PATH+"credit/front/orderProcess/orderAgentAbroadSave",
-            			data:"agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.num="+num+"&statusCode="+"295"+"&orderId="+id,
+            			data:"agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.num="+num+"&statusCode="+"295"+"&orderId="+id+"&country="+country+"&speed="+speed,
             			dataType:"json",
             			success:function(data){
             			
@@ -369,6 +371,8 @@ let Filing = {
             $("#agency_id").html(selected);
             $("#confirm_reason2").html(row.confirm_reason);
             $("#orderId2").val(row.id);
+            $("#speedid").val(row.speedid);
+            $("#countryid").val(row.countryid);
             $("#status").val(row.status);
             $("#num2").html(row.num);
             $("#remarks2").val("");

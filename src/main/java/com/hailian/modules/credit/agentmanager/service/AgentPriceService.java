@@ -1,12 +1,12 @@
 package com.hailian.modules.credit.agentmanager.service;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
-import com.hailian.modules.credit.agentmanager.model.AgentModel;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
-import com.hailian.modules.credit.company.model.CompanyModel;
-import com.hailian.modules.credit.pricemanager.model.ReportPrice;
-import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
+import com.hailian.modules.credit.currencyrate.model.CurrencyRateModel;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -66,9 +66,18 @@ public class AgentPriceService {
 		return agentpricemodel;
 
 	}
+	/*
+	 * 国外人工代理分配根据代理id，国家，速度获取代理价格
+	 */
 	public AgentPriceModel getAgentAbroadPrice(String agent_id,String country,String speed) {
 		AgentPriceModel agentpricemodel = AgentPriceModel.dao.getAgentAbroadPrice(agent_id,country,speed);
 		return agentpricemodel;
-
+	}
+	/*
+	 * 获取国外代理自动分配满足条件的代理
+	 */
+	public AgentPriceModel getAgentAbroad(String country,String speed) {
+		AgentPriceModel agentAbroad = AgentPriceModel.dao.getAgentAbroad(country,speed);
+		return agentAbroad;
 	}
 }
