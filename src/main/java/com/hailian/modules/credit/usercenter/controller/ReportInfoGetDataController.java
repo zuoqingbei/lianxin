@@ -1,5 +1,6 @@
 package com.hailian.modules.credit.usercenter.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +14,6 @@ import com.jfinal.plugin.activerecord.Record;
 public class ReportInfoGetDataController  extends ReportInfoGetData {
 	  private TemplateDictService template = new TemplateDictService();
 	  private final static String PAKAGENAME_PRE = "com.hailian.modules.admin.ordermanager.model.";
-	 
-	
 	  /**
 		 * 获取form类型的数据
 		 * 2018/11/12 10:13 
@@ -67,7 +66,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 	 */
 	public void alterBootStrapTable() {
 		try {
-			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE+getPara("className"));
+			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE+getPara("className"),SimplifiedChinese);
 			renderJson(new ResultType(1,"操作成功!"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -88,11 +87,11 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 	 * @param isCompanyMainTable 
 	 */
 	public void getBootStrapTable() {
-		getBootStrapTable(isCompanyMainTable());
+		getBootStrapTable(isCompanyMainTable(),SimplifiedChinese);
 	}
 
 	  @SuppressWarnings("unchecked")
-		public void getBootStrapTable(boolean isCompanyMainTable) {
+		public void getBootStrapTable(boolean isCompanyMainTable,String sysLanguage) {
 			Record record = new Record();
 			String tableName = getPara("tableName","");
 			String className = getPara("className");
@@ -124,7 +123,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 			try {
 				Class<?> table = Class.forName(PAKAGENAME_PRE+className);
 				BaseProjectModel model = (BaseProjectModel) table.newInstance();
-				rows = model.find("select * from "+tableName+" where del_flag=0 and "+sqlSuf+" 1=1");
+				rows = model.find("select * from "+tableName+" where del_flag=0 and "+sqlSuf+" 1=1 and sys_language in(?) ",Arrays.asList(new String[] {sysLanguage}).toArray());
 				if(!("".equals(selectInfo)||selectInfo==null)) {
 					//解析前端传入的字符串
 					List<Map<Object,Object>> selectInfoMap = parseJsonArray(selectInfo);
