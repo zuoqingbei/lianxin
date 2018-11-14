@@ -81,10 +81,6 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 //				params.add(keyword);//传入的参数
 			}
 		}
-		if(!c.isAdmin(c.getSessionUser())){
-			sql.append(" and t.create_by=? ");
-			params.add(c.getSessionUser().getUserid());//传入的参数
-		}
 		// 排序
 		if (StrUtils.isEmpty(orderBy)) {
 			sql.append(" order by t.create_date desc");

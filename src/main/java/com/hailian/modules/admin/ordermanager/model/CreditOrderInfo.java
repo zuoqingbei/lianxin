@@ -781,7 +781,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		StringBuffer fromSql = new StringBuffer();
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
-			selectSql.append(" select c.*, ");
+			selectSql.append(" select c.*,c.speed as speedid,c.country as countryid, ");
 			selectSql.append(" s1.name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
 			selectSql.append(" s3.detail_name AS continent, ");
@@ -829,9 +829,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				fromSql.append(" and status in ('500') ");
 				break;
 			case OrderProcessController.orderFilingOfOrder:
-				//订单查档(国外) ,其维护在字典表中 中国大陆代码106
+				//订单查档(国外) ,其维护在字典表中 中国大陆代码106 只有韩国，新加坡，马来西亚需要人工分配，其余国家走自动分配
 				//294为信息录入完成,295代理中
-				fromSql.append(" and status in('294','295') and c.country!='106' ");
+				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
 				break;
 			case OrderProcessController.orderSubmitOfOrder:
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
