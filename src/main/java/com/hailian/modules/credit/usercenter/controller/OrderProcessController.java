@@ -122,9 +122,13 @@ public class OrderProcessController extends BaseProjectController{
 	public static LinkedList<Object> orderFilingOfReportParamNames = new LinkedList<>();
 	static{
 		orderAllocationColumns.add("u1.realname");
+		orderAllocationColumns.add("c.num");
+		orderAllocationColumns.add("c.right_company_name_en");
 	}
 	static{
 		orderAllocationParamNames.add("report_user");
+		orderAllocationParamNames.add("num");
+		orderAllocationParamNames.add("right_company_name_en");
 	}
 	static{
 		TYPE_KEY_COLUMN.put(orderAllocation,orderAllocationColumns);

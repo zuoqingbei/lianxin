@@ -170,40 +170,30 @@ let Verify = {
         })
         
          $("#modal_cancel").click(function(){
-        	console.log("点击撤销");
-        	$("#status").val("313");
-        	$(".tableValue").ajaxSubmit({
-        		success:function(data){
-        			console.log("状态为成功,message:"+data.message);
-        			if(data.statusCode===1){
-                   	 console.log("此处进入success状态2222222222");
-                   	Public.message("success",data.message);
-                   }else{
-                   	 console.log("此处进入error状态");
-                   	Public.message("error",data.message);
-                   }
-        		},error :function(data){
-        			console.log("状态为失败,message:"+data.message);
-        			Public.message("error",data.message);
-        		}
-            });
-            //提交成功关闭模态窗
-           $(".modal-header .close").trigger("click");
-           //回显
-          	console.log("提交成功,开始回显:");
-          	console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3");
-          		$.ajax({
-          			type:"post",
-              		url:BASE_PATH+"credit/front/orderProcess/listJson",
-              		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
-              		dataType:"json",
-              		success:function(obj){
-              				console.log("回显的数据:"+obj);
-              			 	$("#table").bootstrapTable("load",obj);
-              			 	console.log("回显成功!");
-              			 }
-          			}) 
-        })
+        	 //撤销313
+        	 let reason = $("#revoke_reason").val()
+        	 let id = $("#orderId1").val();
+             $.ajax({
+        			type:"post",
+        			 url : BASE_PATH+"credit/front/orderProcess/statusSave",
+        			data:"model.revoke_reason="+reason+"&model.id="+id+"&statusCode=313"+"&searchType=-1",
+        			dataType:"json",
+        			success:function(data){
+        			//提交成功关闭模态窗
+        			 $(".modal-header .close").trigger("click");
+	        			if(data.statusCode===1){
+	                   	Public.message("success",data.message);
+	                   }else{
+	                   	Public.message("error",data.message);
+	                   }
+	        			//回显
+	        			$("#table").bootstrapTable("refresh")
+        			}
+             	
+        		})
+        		
+             
+         })
       
         
     },
@@ -337,15 +327,40 @@ let Verify = {
     title: '操作',
     align: 'center',
     events: {
+    	"click .order-cancel":(e,value,row,index)=>{
+    	        $("#custom_id1").html(row.custom_id);
+    	        $("#customId1").html(row.customId);
+    	        $("#receiveDate1").html(row.receiver_date);
+    	        $("#area1").html(row.continent)
+    	        $("#country1").html(row.country);
+    	        $("#reportType1").html(row.reportType);
+    	        $("#reportLanguage1").html(row.reportLanguage);
+    	        $("#companyNames1").html(row.companyNames);
+    	        $("#speed1").html(row.speed);
+    	        $("#user_time1").html(row.user_time);
+    	        $("#companyZHNames1").html(row.companyZHNames);
+    	        $("#reporter_select1").html(row.seleteStr);
+    	        $("#confirm_reason1").html(row.confirm_reason);
+    	        $("#orderId1").val(row.id);
+    	        $("#num1").html(row.num);
+    	        $("#remarks1").val("");
+    	        $("#orderType1").html(row.orderType)
+    	        $("#contacts").val(row.contacts);
+    	        $("#telphone").val(row.telphone);
+    	        $("#address").html(row.address);
+    	        $("#remarks").html(row.remarks);
+    	},
       "click .detail":(e,value,row,index)=>{
         console.log(row);
         $("#custom_id").html(row.custom_id);
         $("#customId").html(row.customId);
         $("#receiver_date").html(row.receiver_date);
+        $("#continent").html(row.continent)
         $("#country").html(row.country);
         $("#reportType").html(row.reportType);
         $("#reportLanguage").html(row.reportLanguage);
         $("#companyNames").html(row.companyNames);
+        $("#orderType").html(row.orderType)
         $("#custom_id").html(row.custom_id);
         $("#speed").html(row.speed);
         $("#user_time").html(row.user_time);
@@ -474,7 +489,9 @@ let Verify = {
       },
       operateFormatter(){
         /**操作按钮格式化 */
-        return '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter">核实</a>'
+        return '<a href="javascript:;" class="detail"	style="margin-right:.5rem" data-toggle="modal" data-target="#exampleModalCenter">订单核实</a>'+
+        '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
+        '<a href="javacript:;" class="order-cancel"  data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a>' 
       }       
 }
 
