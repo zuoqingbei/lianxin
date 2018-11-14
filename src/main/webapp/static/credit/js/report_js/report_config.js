@@ -465,6 +465,13 @@ let ReportConfig = {
 		                        		}else {
 		                        			
 		                        			switch(field_type) {
+		                        				case 'text':
+		                        					formGroup += `<div class="form-group">
+	        						            		<label for="" class="mb-2">${item.temp_name}</label>
+	        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+	        						            		<p class="errorInfo">${item.error_msg}</p>
+	        					            		</div>`
+	                        						break;
 		                        				case 'number':
 			                    						formGroup += `<div class="form-group">
 					                        							<label for="" class="mb-2">${item.temp_name}</label>
@@ -625,6 +632,9 @@ let ReportConfig = {
                 			let className = item.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
                 			bottomBtn += `<button id=${item.title.column_name} class="${className}">${item.title.temp_name}</button>`
                 			break;
+                		case '6':
+                			//信用等级
+                			break;
             			default:
             				break;
             		}
@@ -648,7 +658,7 @@ let ReportConfig = {
     
     		})
     		//点击模态框保存按钮，新增一条数据
-    		$("#modal_save"+item).click(()=>{
+    		$("#modal_save"+item).unbind().click(()=>{
     			let dataJson = []
     			let dataJsonObj = {}
     			let formArr = Array.from($("#modal"+item).find(".form-inline"))
@@ -727,7 +737,9 @@ let ReportConfig = {
         	tempParam.forEach((item,index)=>{
         		dataJsonObj[item] = this.rows[item]
 			 })
+			 //点击保存按钮
     		$(".position-fixed").on("click","#save",(e)=>{
+    			$("#save").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
     				 let formArr = Array.from($(item).siblings().find(".form-control"))
@@ -753,8 +765,59 @@ let ReportConfig = {
     				 },
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
+    					 $("#save").removeClass("disabled")
     					 if(data.statusCode === 1) {
-    						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.saveStatusUrl + `&model.id=${_this.rows["id"]}&model.num=${_this.rows["num"]}`;
+    						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.saveStatusUrl + `&model.id=${_this.rows["id"]}`;
+    						 $.ajax({
+    							 url,
+    							 type:'post',
+    							 success:(data)=>{
+    								 if(data.statusCode === 1) {
+    									 Public.message("success",data.message)
+    									 Public.goToInfoImportPage();
+    									 
+    								 }else {
+    									 Public.message("error",data.message)
+    								 }
+    							 }
+    						 })
+    					 }else {
+    						 Public.message("error",data.message)
+    					 }
+    				 }
+    			 })
+    		})
+    			 //点击提交按钮
+    		$(".position-fixed").on("click","#commit",(e)=>{
+    			$("#commit").addClass("disabled")
+    			 let arr = Array.from($("#title"+item))
+    			 arr.forEach((item,index)=>{
+    				 let formArr = Array.from($(item).siblings().find(".form-control"))
+    				 formArr.forEach((item,index)=>{
+        				let id = $(item).attr("id");
+        				let anotherIdArr = id.split("_")
+        				anotherIdArr.pop();
+        				let anotherId = anotherIdArr.join('_')
+        				let tempObj = _this.getFormData($('#'+id))
+        				for(let i in tempObj){
+    						if(tempObj.hasOwnProperty(i))
+    						dataJsonObj[i] = tempObj[i]
+    					}
+    				 })
+    				 
+    			 })
+    			 dataJson.push(dataJsonObj)
+    			 $.ajax({
+    				 url,
+    				 type:'post',
+    				 data:{
+    					 dataJson:JSON.stringify(dataJson)
+    				 },
+    				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+    				 success:(data)=>{
+    					 $("#commit").removeClass("disabled")
+    					 if(data.statusCode === 1) {
+    						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `&model.id=${_this.rows["id"]}`;
     						 $.ajax({
     							 url,
     							 type:'post',
