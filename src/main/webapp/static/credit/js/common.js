@@ -6,7 +6,7 @@ let Public = {
     init(){
         this.menuEvent()
         this.logoutEvent()
-        
+        this.bellEvent()
      	
     }, 
   
@@ -24,6 +24,20 @@ let Public = {
 			  form.render('select');
 			});
     	});
+    },
+    bellEvent(){
+    	//绑定信息事件
+    	$.ajax({
+    		url:BASE_PATH + 'credit/sysuser/notice/getNoticenum',
+    		type:'get',
+    		success:(data)=>{
+    			$(".layui-badge").html(data)
+    		}
+    	})
+    	
+    	$(".message").click(()=>{
+    		$("#main_content").load(BASE_PATH+'credit/sysuser/notice')
+    	})
     },
     menuEvent(){
         /**
@@ -137,7 +151,7 @@ let Public = {
         localStorage.setItem("row",JSON.stringify(e));
     },
     goToInfoImportPage(){
-    	$("#main_content").load(BASE_PATH+'/credit/front/orderProcess/showReportInfoImport');
+    	$("#main_content").load(BASE_PATH+'credit/front/orderProcess/showReportInfoImport');
     },
     goToReportConfig(param){
     	/**跳转可配置的填报页面*/

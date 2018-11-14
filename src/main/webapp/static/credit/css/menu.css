@@ -127,5 +127,7 @@
     border-color: transparent;
     border-style: solid;
 }
-
+.message:hover i{
+	color:var(--activeColor);
+}
 

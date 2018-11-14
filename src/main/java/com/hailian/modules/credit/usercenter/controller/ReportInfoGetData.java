@@ -14,6 +14,18 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 
 public abstract class ReportInfoGetData extends BaseProjectController {
+  /**
+   * 简体中文
+   */
+  public final static String SimplifiedChinese = "612";
+  /**
+   * 繁体中文
+   */
+  public final static String traditionalChinese = "614";
+  /**
+   * 英文
+   */
+  public final static String English = "613";
 	/**
 	 * 获取bootStrapTable式的数据
 	 */
@@ -62,11 +74,13 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	 <T> List<BaseProjectModel> infoEntry(String jsonStr,String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+	 <T> List<BaseProjectModel> infoEntry(String jsonStr,String className,String sysLanguage) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 			Integer userId = getSessionUser().getUserid();
 			String now = getNow();
 			//实体是否存在id
-			boolean exitsId = true; 
+			boolean exitsId = true; ;
+			//是否是主表
+			boolean isMainTable = isCompanyMainTable();
 			if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
 				return new ArrayList<>();
 			}
@@ -78,12 +92,23 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			System.out.println("\n\t\t\t\ttable:"+className.substring(className.lastIndexOf(".")+1)+"\n");
 			
 			List<Map<Object, Object>> entrys = parseJsonArray(jsonStr);
+			
+			if(isMainTable) {
+				if("".equals(entrys.get(0).get("company_id"))||entrys.get(0).get("company_id")==null){
+					 exitsId = false;
+				}
+			}else {
+				if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
+					 exitsId = false;
+				}
+			}
+			
 			if(entrys.size()<1){
 				return null;
 			}
 			
 			for (Map<Object, Object> entry : entrys) {
-				if(isCompanyMainTable()) {
+				if(isMainTable) {
 					String id = entry.get("company_id")+"";
 					entry.remove("company_id");
 					entry.put("id",id);
@@ -92,6 +117,10 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			    model = (BaseProjectModel) entryType.newInstance();
 			    model.set("update_by", userId);
 				model.set("update_date", now);
+				
+				if(!("".equals(sysLanguage)||sysLanguage==null)) {
+					model.set("sys_language", Integer.parseInt(sysLanguage));
+				}
 				if(!exitsId){
 					model.set("create_by", userId);
 					model.set("create_date", now);
@@ -102,9 +131,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 				}
 				list.add(model);
 			}
-			if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
-				 exitsId = false;
-			}
+			
 			//批量执行
 			if(!exitsId){
 				Db.batchSave(list, list.size());

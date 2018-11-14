@@ -176,7 +176,7 @@
                             <div class="row mt-2 mb-2" id="div2">
                                 <div class="col-md-4">
                                     <span>地区：</span>
-                                    <span id="continent">亚洲</span>
+                                    <span id="continent"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <span>国家：</span>
@@ -190,7 +190,7 @@
                             <div class="row mt-2 mb-2" id="div3">
                                 <div class="col-md-4">
                                     <span>订单类型：</span>
-                                    <span id="orderType">new</span>
+                                    <span id="orderType"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <span>报告语言：</span>
@@ -257,20 +257,116 @@
                             </div>
                         </div>
                     </div>
-                    <input  name="model.id" id="orderId" type="hidden" value="">
+                    <input  name="model.id" id="orderId" type="hidden" >
 	                <input  name="searchType"  type="hidden" value="-3">
 	                <input  name="statusCode" id="status"  type="hidden" value="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="modal_submit">提交</button>
                     <button type="button" class="btn btn-default" id="modal_save">保存</button>
-                    <button type="button" class="btn btn-default" id="modal_cancel">取消订单</button>
                 </div>
                 </form>
             </div>
             </div>
         </div>
-           
+        <!-- Modal 订单撤销 -->
+<div class="modal fade order_cancel" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <span>订单号：</span>
+                    <span id="orderNum1">0001288784932</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="order-detail mb-4">
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span >客户ID：</span>
+                            <span id="custom_id1"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>客户用户名：</span>
+                            <span id="customId1"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>接单日期：</span>
+                            <span id="receiveDate1"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>地区：</span>
+                            <span id="area1"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>国家：</span>
+                            <span id="country1"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告类型：</span>
+                            <span id="reportType1"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>订单类型：</span>
+                            <span id="orderType1"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告语言：</span>
+                            <span id="reportLanguage1"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>订单公司名称：</span>
+                            <span id="companyNames1"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-4">
+                            <span>报告速度：</span>
+                            <span id="speed1"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告用时：</span>
+                            <span id="user_time1"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>公司中文名称：</span>
+                            <span id="companyZHNames1"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-12 d-flex">
+                            <span style="width: 6.1rem">确认原因：</span>
+                            <span id="confirm_reason1">对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
+                        </div>
+                    </div>
+                     <input  name="model.id" id="orderId1" type="hidden" >
+                </div>
+                <div class="file-upload">
+                    <div class="row mt-3 mb-2">
+                        <div class="input-group col-md-12 align-items-top">
+                            <label class="control-label">撤销原因：</label>
+                            <!--<input type="text" class="form-control">-->
+                            <textarea name="" id="revoke_reason" cols="50" rows="10"></textarea>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal_cancel" >确认撤销</button>
+            </div>
+        </div>
+    </div>
+</div>   
   
     <script src="${BASE_PATH }static/credit/js/order_manage/order_verify.js"></script>
  
