@@ -91,7 +91,11 @@ public class CurrencyRateController extends BaseProjectController {
 	public void save() {
 		Integer pid = getParaToInt();
 		// 日志添加
-		CustomInfoModel model = getModel(CustomInfoModel.class);
+		CurrencyRateModel model = getModel(CurrencyRateModel.class);
+		if(model.get("currency_a").equals(model.get("currency_b"))){
+			renderMessage("两个币种不能相同，请核对！");
+			return;
+		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by", userid);
