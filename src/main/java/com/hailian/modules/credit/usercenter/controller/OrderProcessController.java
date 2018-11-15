@@ -580,7 +580,7 @@ public class OrderProcessController extends BaseProjectController{
 	* @version V1.0
 	* @return
 	 */
-	public void askOrder(){
+	public ResultType askOrder(){
 		String status=getPara("status");
 		String id=getPara("id");
 		NoticeModel model=new NoticeModel();
@@ -608,7 +608,8 @@ public class OrderProcessController extends BaseProjectController{
 				logModel.set("notice_id", model.get("id"));
 				logModel.set("read_unread", "1");
 				logModel.save();
-				renderJson("success");
+				renderJson(new ResultType(1,"订单催问成功!"));
+				return new ResultType(1,"订单催问成功!");
 	}
 	/**
 	 * 订单代理分配国内
