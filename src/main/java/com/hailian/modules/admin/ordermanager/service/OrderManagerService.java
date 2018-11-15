@@ -308,11 +308,16 @@ public class OrderManagerService {
 	* @return
 	 * @throws ParseException 
 	 */
-	public Page<CreditOrderInfo> getSettleOrders(Paginator pageinator, CreditOrderInfo model,String customerId,String agentId,String time,
+	public Page<CreditOrderInfo> getSettleOrders(Paginator pageinator,String customerId,String agentId,String time,
 			String sortname,String sortorder) throws ParseException {
 	                
-		return CreditOrderInfo.dao.getSettleOrders(pageinator, model,customerId,agentId,time,sortname,sortorder);
+		return CreditOrderInfo.dao.getSettleOrders(pageinator, customerId,agentId,time,sortname,sortorder);
 	}
+	
+	public List<CreditOrderInfo> exportSettle(String customerId,String agentId,String time){
+		return CreditOrderInfo.dao.exportSettle(customerId, agentId, time);
+	}
+	
 	public CreditCustomInfo getCreater(String id) {
 		// TODO Auto-generated method stub
 		
