@@ -22,6 +22,6 @@
     animation: none;
 }
 
-.bootstrap-table .table-hover > tbody > tr.hover > td{
+.bootstrap-table .table-hover > tbody > tr.hover {
     background-color: #e6f7ff;
 }

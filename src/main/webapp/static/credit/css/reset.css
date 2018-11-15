@@ -71,9 +71,7 @@ html,body {
 
 
 /*==============bootstraps重置样式==============*/
-table tbody tr:hover {
-    background: #e6f7ff!important;
-}
+
 
 .btn-disabled {
     background: #ccc;
@@ -236,10 +234,10 @@ label.col-md-4{
      background: #fafafa;
  }
  .fixed-table-body-columns table tbody tr:hover{
-     background: #e6f7ff!important;
+     background: #e6f7ff;
  }
  #table tbody tr:hover {
-     background: #e6f7ff!important;
+     background: #e6f7ff;
  }
  .table:not(.table-condensed) > tbody > tr > td {
      color: var(--fontColor);

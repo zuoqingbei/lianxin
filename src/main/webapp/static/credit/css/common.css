@@ -377,5 +377,16 @@ label {
 
 .wrap {
     width: 1rem!important;
-    white-space: normal!important;
+    text-overflow:ellipsis;
+    overflow:hidden;
+}
+
+.order-dead {
+	background:#ffccc8!important;
+}
+.order-ing {
+	background:#b6eb8f!important;
+}
+.order-ask {
+	font-weight:900;
 }
