@@ -9,8 +9,8 @@
 	jQuery(function($) {
 		// 页面方法
 		oper = {
-			width : 800,
-			height : 500,
+			width : 600,
+			height : 250,
 			form : document.form1,
 			list : function() {
 				var url = 'credit/currencyrate/list';
@@ -18,7 +18,7 @@
 				this.form.submit();
 			},
 			add : function() {
-				var url = 'credit/custom/add';
+				var url = 'credit/currencyrate/add';
 				var title = '新增';
 				Iframe(url, this.width, this.height, title);
 			},
