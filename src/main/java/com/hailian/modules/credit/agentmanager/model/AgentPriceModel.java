@@ -132,6 +132,9 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 	* @TODO
 	 */
 	public AgentPriceModel getAgentPrice(int pid,int cid,String agent_id,String agent_category,boolean isSpecial) {
+		if(StringUtils.isEmpty(pid+"") || StringUtils.isEmpty(cid+"") || StringUtils.isEmpty(agent_id) || StringUtils.isEmpty(agent_category)){
+			return null;
+		}
 		StringBuffer sb=new StringBuffer("select t.* from credit_agent_price t ");
 		sb.append(" where 1=1 and t.del_flag=0 ");
 		List<Object> params=new ArrayList<Object>();
@@ -158,5 +161,48 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 		}
 		sb.append(" order by t.id ");
 		return AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
+	}
+	public AgentPriceModel getAgentAbroadPrice(String agent_id,String country,String speed) {
+		if(StringUtils.isEmpty(agent_id) || StringUtils.isEmpty(country) || StringUtils.isEmpty(speed)){
+			return null;
+		}
+		StringBuffer sb=new StringBuffer("select t.* from credit_agent_price t ");
+		sb.append(" where 1=1 and t.del_flag=0 ");
+		List<Object> params=new ArrayList<Object>();
+		if(StringUtils.isNotBlank(agent_id)){
+			sb.append(" and t.agent_id=?");
+			params.add(agent_id);
+		}
+		if(StringUtils.isNotBlank(country)){
+			sb.append(" and t.country=?");
+			params.add(country);
+		}
+		if(StringUtils.isNotBlank(speed)){
+			sb.append(" and t.speed=?");
+			params.add(speed);
+		}
+		sb.append(" order by t.id ");
+		return AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
+	}
+	public AgentPriceModel getAgentAbroad(String country,String speed) {
+		if(StringUtils.isEmpty(country) || StringUtils.isEmpty(speed)){
+			return null;
+		}
+		StringBuffer sb=new StringBuffer("SELECT * FROM (");
+		sb.append("select cap.*,cap.price*cr.rate as pricenum from credit_agent_price cap left join credit_rate cr on cap.currency=cr.currency_a and cr.currency_b='274' ");
+		sb.append(" where 1=1 and cap.del_flag=0 ");
+		List<Object> params=new ArrayList<Object>();
+		if(StringUtils.isNotBlank(country)){
+			sb.append(" and cap.country=? ");
+			params.add(country);
+		}
+		if(StringUtils.isNotBlank(speed)){
+			sb.append(" and cap.speed=? ");
+			params.add(speed);
+		}
+		sb.append(" order by price asc,cap.proxy_time ASC ");
+		sb.append(" ) A LIMIT 0,1 ");
+		AgentPriceModel pricemodel = AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
+		return pricemodel;
 	}
 }

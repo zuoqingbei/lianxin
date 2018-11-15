@@ -342,13 +342,13 @@
     	console.log(value5);
    	 	var html="";
 	   	 $.ajax({
-		        url:"/admin/ordermanager/getTime"
+		        url:"/admin/ordermanager/getTime",
 		        data:{
 		        	"countrytype":value1,
 		        	"speed":value2,
 		        	"reporttype":value3,
 		        	"ordertype":value4,
-		        	"receivedate":value5,
+		        	"receivedate":encodeURI(value5),
 		        },	
 		        type:"get",
 		        dataType:"json",

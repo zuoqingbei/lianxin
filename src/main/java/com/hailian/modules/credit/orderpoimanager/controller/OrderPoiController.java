@@ -31,6 +31,8 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
 import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
 import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
+import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
+import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
@@ -376,7 +378,7 @@ public class OrderPoiController extends BaseProjectController {
 			  }
 			  try {
 				String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();//根据自动分配规则获取该订单指定的报告员
-				  model.set("report_user", reportIdtoOrder);//自动分配订单
+				model.set("report_user", reportIdtoOrder);//自动分配订单
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -384,6 +386,17 @@ public class OrderPoiController extends BaseProjectController {
 				renderJson(resultType);
 				return;
 			}
+			  //国外代理自动分配 除韩国新加坡马来西亚
+			  if(!countryid.equals("106") && !countryid.equals("61") && !countryid.equals("62") && !countryid.equals("92")){
+				  //代理自动分配
+				  AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroad(countryid,speed);
+				  if(agentPrice!=null){
+					  model.set("agent_id", agentPrice.get("agent_id"));
+					  model.set("agent_priceId", agentPrice.get("id"));
+				  }
+			  }
+			 
+			
 			  boolean save = model.save();
 				if(save==false){
 					msg="提交失败";
