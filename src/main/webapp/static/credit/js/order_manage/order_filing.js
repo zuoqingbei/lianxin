@@ -167,6 +167,102 @@ let Filing = {
             		})
 	    			
              })
+             
+             
+             $("#modal_submit1").click(function(){
+             	console.log("点击提交");
+             	$("#status").val("292");
+             	$(".tableValue1").ajaxSubmit({
+             		success:function(data){
+             			console.log("状态为成功,message:"+data.message);
+             			if(data.statusCode===1){
+                        	 console.log("此处进入success状态2222222222");
+                        	Public.message("success",data.message);
+                         //提交成功关闭模态窗
+                         $(".modal-header .close").trigger("click");
+                         //回显
+              	  		$.ajax({
+              	  			type:"post",
+              	      		url:BASE_PATH+"credit/front/orderProcess/listJson",
+              	      		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+              	      		dataType:"json",
+              	      		success:function(obj){
+              	      				console.log("回显的数据:"+obj);
+              	      			 	$("#table").bootstrapTable("load",obj);
+              	      			 	console.log("回显成功!");
+              	      			 }
+              	  			}) 
+                        }else{
+                        	 console.log("此处进入error状态");
+                        	Public.message("error",data.message);
+                        }
+             		},error :function(data){
+             			console.log("状态为失败,message:"+data.message);
+             			Public.message("error",data.message);
+             		}
+                 });
+                
+             })
+             
+              $("#modal_save").click(function(){
+             	$("#status").val("");
+             	$(".tableValue").ajaxSubmit({
+             		success:function(data){
+             			 //提交成功关闭模态窗
+             	           $(".modal-header .close").trigger("click");
+             	           //加载表格数据
+             			 $.ajax({
+                 				type:"post",
+                     			url:BASE_PATH+"credit/front/orderProcess/listJson",
+                     			data:"pageNumber="+that.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+                     			dataType:"json",
+                     			success:function(obj){
+                     				console.log("回显的数据:"+obj);
+                     			 	$("#table").bootstrapTable("load",obj)
+                     			 }
+                 		 })
+             			if(data.statusCode===1){
+                        	 console.log("此处进入success状态2222222222");
+                        	Public.message("success",data.message);
+                        }else{
+                        	 console.log("此处进入error状态");
+                        	Public.message("error",data.message);
+                        }
+             		},error :function(data){
+             			console.log("状态为失败,message:"+data.message);
+             			Public.message("error",data.message);
+             		}
+                 });
+                
+               
+             })
+             
+              $("#modal_cancel").click(function(){
+             	 //撤销313
+             	 let reason = $("#revoke_reason").val()
+             	 let id = $("#orderId1").val();
+                  $.ajax({
+             			type:"post",
+             			 url : BASE_PATH+"credit/front/orderProcess/statusSave",
+             			data:"model.revoke_reason="+reason+"&model.id="+id+"&statusCode=313"+"&searchType=-1",
+             			dataType:"json",
+             			success:function(data){
+             			//提交成功关闭模态窗
+             			 $(".modal-header .close").trigger("click");
+     	        			if(data.statusCode===1){
+     	                   	Public.message("success",data.message);
+     	                   }else{
+     	                   	Public.message("error",data.message);
+     	                   }
+     	        			//回显
+     	        			$("#table").bootstrapTable("refresh")
+             			}
+                  	
+             		})
+             		
+                  
+              })
+           
     	
     },
     
@@ -215,9 +311,16 @@ let Filing = {
           let _this = this
         
           $table.bootstrapTable({
-              height: $(".table-content").height()*0.98,
+              height: $(".table-content").height()*0.9,
+              clickToSelect:true,
               columns: [
-  {
+	  {
+          checkbox: true,
+          visible: true,                  //是否显示复选框
+          filed:'state',
+          width: '18rem',
+      }, 
+	  {
       title: '订单号',
       field: 'num',
       align: 'center',
@@ -310,7 +413,6 @@ let Filing = {
           $("#orderType").html(row.orderType);
           $("#reportLanguage").html(row.reportLanguage);
           $("#companyNames").html(row.companyNames);
-          $("#custom_id").html(row.custom_id);
           $("#speed").html(row.speed);
           $("#user_time").html(row.user_time);
           $("#companyZHNames").html(row.companyZHNames);
@@ -390,7 +492,127 @@ let Filing = {
         	sortName = row.sortName;
         	sortOrder = row.sortOrder;
         	  console.log("report_userKey====="+row.report_userKey);
+          },
+          "click .order-cancel":(e,value,row,index)=>{
+  	        $("#custom_id1").html(row.custom_id);
+  	        $("#customId1").html(row.customId);
+  	        $("#receiveDate1").html(row.receiver_date);
+  	        $("#area1").html(row.continent)
+  	        $("#country1").html(row.country);
+  	        $("#reportType1").html(row.reportType);
+  	        $("#reportLanguage1").html(row.reportLanguage);
+  	        $("#companyNames1").html(row.companyNames);
+  	        $("#speed1").html(row.speed);
+  	        $("#user_time1").html(row.user_time);
+  	        $("#companyZHNames1").html(row.companyZHNames);
+  	        $("#reporter_select1").html(row.seleteStr);
+  	        $("#confirm_reason1").html(row.confirm_reason);
+  	        $("#orderId1").val(row.id);
+  	        $("#num1").html(row.num);
+  	        $("#remarks1").val("");
+  	        $("#orderType1").html(row.orderType)
+  	        $("#contacts").val(row.contacts);
+  	        $("#telphone").val(row.telphone);
+  	        $("#address").html(row.address);
+  	        $("#remarks").html(row.remarks);
+  	},
+    "click .order-hs":(e,value,row,index)=>{
+      console.log(row);
+      $("#custom_id4").html(row.custom_id);
+      $("#customId4").html(row.customId);
+      $("#receiver_date4").html(row.receiver_date);
+      $("#continent4").html(row.continent)
+      $("#country4").html(row.country);
+      $("#reportType4").html(row.reportType);
+      $("#reportLanguage4").html(row.reportLanguage);
+      $("#companyNames4").html(row.companyNames);
+      $("#orderType4").html(row.orderType)
+      $("#speed4").html(row.speed);
+      $("#user_time4").html(row.user_time);
+      $("#companyZHNames4").html(row.companyZHNames);
+      $("#reporter_select4").html(row.seleteStr);
+      $("#confirm_reason4").html(row.confirm_reason);
+      $("#orderId3").val(row.id);
+      $("#num4").html(row.num);
+      $("#remarks4").val("");
+      $(".tableValue4")[0].reset();
+      
+      $("#verify_name4").val(row.verify_name);
+      $("#contacts4").val(row.contacts);
+      $("#telphone4").val(row.telphone);
+      $("#address4").html(row.address);
+      $("#remarks4").html(row.remarks);
+      pageNumber = row.pageNumber;
+      pageSize = row.pageSize;
+  	 sortName = row.sortName;
+  	  sortOrder = row.sortOrder;
+      //文件回显
+      console.log(row.files) 	
+     // $(".file-upload").html("");
+      $(".upload-over").remove();
+      if(row.files.length === 0){$(".uploadFile:not(.upload-over)").show();return}
+      console.log(row.files.length)
+      if(row.files.length > 4) {
+      	alert(1)
+      	$(".uploadFile:not(.upload-over)").hide();
+      }else {
+      	$(".uploadFile:not(.upload-over)").show()
+      }
+      for (var i in row.files){
+      	let filetype = row.files[i].ext.toLowerCase()
+      	let fileicon = ''
+      	if(filetype === 'doc' || filetype === 'docx') {
+	             fileicon = '/static/credit/imgs/order/word.png'
+	           }else if(filetype === 'xlsx' || filetype === 'xls') {
+	             fileicon = '/static/credit/imgs/order/Excel.png'
+	           }else if(filetype === 'png') {
+	             fileicon = '/static/credit/imgs/order/PNG.png'
+	           }else if(filetype === 'jpg') {
+	             fileicon = '/static/credit/imgs/order/JPG.png'
+	           }else if(filetype === 'pdf') {
+	             fileicon = '/static/credit/imgs/order/PDF.png'
+	           }
+      	let fileArr = ''
+      	let filename = row.files[i].originalname
+      	let all_name = filename + filetype
+  		let num = filename.split(".").length;
+          let filename_qz = []
+          for(let i=0;i<num;i++){  
+            filename_qz =  filename_qz.concat(filename.split(".")[i])
           }
+          filename_qz_str = filename_qz.join('.')
+          if(filename_qz_str.length>4) {
+            filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
+          }
+          
+          filename = filename_qz_str + '.' +filetype
+      	fileArr += '<div class="uploadFile mt-3 mr-4 mb-5 upload-over" fileId="'+row.files[i].id+'" url="'+row.files[i].url+'" style="cursor:pointer">'+
+      				'<div class="over-box">'+
+	        				'<button type="button" class="close" aria-label="Close">'+
+	        					'<span aria-hidden="true">&times;</span>'+
+	        				 '</button>'+
+	        				'<img src="'+fileicon+'" />'+
+	        				 '<p class="filename" title="'+all_name+'" >'+filename+'</p>'+
+      				 '</div>'+
+      				 '</div>'
+      $(".file-upload>label").after(fileArr)	 
+         
+         $(".upload-over").click(function(e){
+      	   console.log($(e.target))
+      	   if($(e.target).parent().attr("class") === 'close') {
+      		   return
+      	   }
+      	   window.open($(this).attr("url"))
+      	   
+         })
+      }
+      
+      _this.pageNumber = row.pageNumber;
+      pageSize = row.pageSize;
+  	sortName = row.sortName;
+  	sortOrder = row.sortOrder;
+  	  console.log("report_userKey====="+row.report_userKey);
+    }
       },
       formatter: _this.operateFormatter
     }
@@ -406,8 +628,8 @@ let Filing = {
               smartDisplay:false,
               iconsPrefix:'fa',
               locales:'zh-CN',
-              fixedColumns: true,
-              fixedNumber: 1,
+              fixedColumns: false,
+              fixedNumber: 2,
               sortOrder: "desc",//排序方式
               queryParamsType:'',
               contentType:'application/x-www-form-urlencoded;charset=UTF-8',
@@ -425,6 +647,9 @@ let Filing = {
               	  searchType: "-4"
                 };  
             },  
+            onCheck:(row)=>{
+            	console.log(row)
+            }
             });
             // sometimes footer render error.
             setTimeout(() => {
@@ -436,9 +661,9 @@ let Filing = {
             return '<div><a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter_allocation">代理分配</a>' +
                 '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
                 '<a href="javascript:;" class="detail" style="margin-left:.5rem">上传附件</a></div>'+
-                '<div style="margin-top:.5rem"><a href="javascript:;" class="order-hs" data-toggle="modal" data-target="">订单核实</a>' +
+                '<div style="margin-top:.5rem"><a href="javascript:;" class="order-hs" data-toggle="modal" data-target="#exampleModalCenter2">订单核实</a>' +
                 '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
-                '<a href="javascript:;" class="order-cx" style="margin-left:.5rem" data-toggle="modal" data-target="">订单撤销</a></div>'
+                '<a href="javascript:;" class="order-cancel" style="margin-left:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a></div>'
           }             
 }
 

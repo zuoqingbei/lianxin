@@ -277,6 +277,12 @@ let Index = {
             			$("#table tr").eq(index+1).addClass("order-ing")
             			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ing")
             		}
+            		let isAsk = item.is_ask;
+            		if(isAsk === '1') {
+            			//已催问
+            			$("#table tr").eq(index+1).addClass("order-ask")
+            			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ask")
+            		}
             	})
             }
           });

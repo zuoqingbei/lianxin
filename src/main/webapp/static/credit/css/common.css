@@ -390,3 +390,7 @@ label {
 .order-ask {
 	font-weight:900;
 }
+.order-ask td {
+	color:#333!important;
+	
+}

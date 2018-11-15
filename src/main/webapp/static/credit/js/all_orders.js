@@ -330,6 +330,12 @@ let Index = {
                         		type:'post',
                         		success:(data)=>{
                         			console.log(data)
+                        			if(data.statusCode === 1) {
+                        				Public.message("success",data.message)
+                        				$table.bootstrapTable("refresh")
+                        			}else {
+                        				Public.message("error",data.message)
+                        			}
                         		}
                         	})
                         }
@@ -388,7 +394,7 @@ let Index = {
             			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ing")
             		}
             		let isAsk = item.is_ask;
-            		if(isAsk) {
+            		if(isAsk === '1') {
             			//已催问
             			$("#table tr").eq(index+1).addClass("order-ask")
             			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ask")
