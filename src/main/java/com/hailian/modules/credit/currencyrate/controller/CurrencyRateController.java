@@ -6,6 +6,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.currencyrate.model.CurrencyRateModel;
+import com.hailian.modules.credit.currencyrate.service.CurrencyRateService;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.custom.model.CustomTranFlowModel;
 import com.hailian.modules.credit.custom.service.CustomService;
@@ -24,11 +25,11 @@ public class CurrencyRateController extends BaseProjectController {
 	* @TODO
 	 */
 	public void list() {
-		CurrencyRateModel attr = getModelByAttr(CurrencyRateModel.class);
-		String keyword = getPara("keyword");
+		String currency_a = getPara("currency_a");
+		String currency_b = getPara("currency_b");
 		String orderBy = getBaseForm().getOrderBy();
-		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),orderBy,keyword,this);
-		setAttr("page",page);
+		Page<CurrencyRateModel> page2 = CurrencyRateService.service.getPage(getPaginator(), orderBy, currency_a,currency_b, this);
+		setAttr("page",page2);
 		render(path+"list.html");
 	}
 	/**
@@ -51,24 +52,20 @@ public class CurrencyRateController extends BaseProjectController {
 	 */
 	public void add() {
 		// 获取页面信息,设置目录传入
-		CustomInfoModel attr = getModel(CustomInfoModel.class);
-		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
+		CurrencyRateModel attr = getModel(CurrencyRateModel.class);
 		setAttr("model", attr);
-		setAttr("company", company);
 		render(path + "add.html");
 	}
 	/**
 	 * 编辑跳转
 	* @author doushuihai  
-	* @date 2018年9月4日下午2:45:44  
+	* @date 2018年11月15日下午4:00:20  
 	* @TODO
 	 */
 	public void edit() {
 		Integer paraToInt = getParaToInt();
-		CustomInfoModel model = CustomInfoModel.dao.findById(paraToInt);
+		CurrencyRateModel model = CurrencyRateModel.dao.findById(paraToInt);
 		setAttr("model", model);
-		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
-		setAttr("company", company);
 		// 查询下拉框
 		render(path + "edit.html");
 	}
@@ -94,7 +91,11 @@ public class CurrencyRateController extends BaseProjectController {
 	public void save() {
 		Integer pid = getParaToInt();
 		// 日志添加
-		CustomInfoModel model = getModel(CustomInfoModel.class);
+		CurrencyRateModel model = getModel(CurrencyRateModel.class);
+		if(model.get("currency_a").equals(model.get("currency_b"))){
+			renderMessage("两个币种不能相同，请核对！");
+			return;
+		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by", userid);

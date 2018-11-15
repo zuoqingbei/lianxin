@@ -95,18 +95,26 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 			Record record = new Record();
 			String tableName = getPara("tableName","");
 			String className = getPara("className");
+			String companyId = getPara("company_id");
 			String confId = getPara("conf_id","");
 			//获取关联字典表需要转义的下拉选
 			String selectInfo = getPara("selectInfo");
 			//解析实体获取required参数
 			CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
 			String getSource = confModel.getStr("get_source");
-			String[] requireds = getSource.split("\\*");
-			String[] required = requireds[1].split("\\$");
 			StringBuffer sqlSuf = new StringBuffer();
 			
-			for (String str : required) {
-				sqlSuf.append(str.trim()+"="+getPara(str).trim()+" and ");
+			if((!("".equals(getSource)||getSource==null))&&getSource.contains("*")) {
+				String[] requireds = getSource.split("\\*");
+				String[] required = requireds[1].split("\\$");
+				for (String str : required) {
+					sqlSuf.append(str.trim()+"="+getPara(str).trim()+" and ");
+				}
+			}else {
+				sqlSuf.append(" company_id="+companyId.trim()+" ");
+			}
+			if((tableName!=null&&tableName.contains("_dict"))){
+				sqlSuf.append(" 1=1 ");
 			}
 			if(sqlSuf.length()<1){
 				renderJson(record.set("rows", null));
@@ -123,7 +131,7 @@ public class ReportInfoGetDataController  extends ReportInfoGetData {
 			try {
 				Class<?> table = Class.forName(PAKAGENAME_PRE+className);
 				BaseProjectModel model = (BaseProjectModel) table.newInstance();
-				rows = model.find("select * from "+tableName+" where del_flag=0 and "+sqlSuf+" 1=1 and sys_language in(?) ",Arrays.asList(new String[] {sysLanguage}).toArray());
+				rows = model.find("select * from "+tableName+" where del_flag=0 and "+sqlSuf+" 1=1 and sys_language in(?)",Arrays.asList(new String[] {sysLanguage}).toArray());
 				if(!("".equals(selectInfo)||selectInfo==null)) {
 					//解析前端传入的字符串
 					List<Map<Object,Object>> selectInfoMap = parseJsonArray(selectInfo);

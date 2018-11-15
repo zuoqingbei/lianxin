@@ -2,11 +2,14 @@ package com.hailian.modules.admin.ordermanager.service;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
@@ -23,8 +26,10 @@ import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.orderallocation.service.OrderAlloctionRuleService;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.hailian.util.DateAddUtil;
 import com.jfinal.json.Json;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 /**
  * 
@@ -298,6 +303,26 @@ public class OrderManagerService {
 		// TODO Auto-generated method stub
 		return CreditOrderInfo.dao.getAchievementsOrders(pageinator, model,reportername,time,user,isadmin,sortname,sortorder);
 	}
+	
+	/**
+	 * 
+	* @Description: 订单结算
+	* @date 2018年11月14日 下午2:36:27
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 * @throws ParseException 
+	 */
+	public Page<CreditOrderInfo> getSettleOrders(Paginator pageinator,String customerId,String agentId,String time,
+			String sortname,String sortorder) throws ParseException {
+	                
+		return CreditOrderInfo.dao.getSettleOrders(pageinator, customerId,agentId,time,sortname,sortorder);
+	}
+	
+	public List<CreditOrderInfo> exportSettle(String customerId,String agentId,String time){
+		return CreditOrderInfo.dao.exportSettle(customerId, agentId, time);
+	}
+	
 	public CreditCustomInfo getCreater(String id) {
 		// TODO Auto-generated method stub
 		
@@ -444,5 +469,87 @@ public class OrderManagerService {
 		long reportnumAll=(long) (reportnumTo*rate5+reportnum1To*rate6+reportnum2*rate7);
 		double finalScore=orderNum*rate1+submitNum*rate3+scoreTo*rate4+reportnumAll*rate2;
 		return finalScore;
+	}
+	public Record getReportTime(String countryType,String speed,String reporttype,String receivedate) throws ParseException{
+		if("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
+			countryType="148";
+		}
+		CreditReportUsetime usetime=OrderManagerService.service.getTime(countryType,speed,reporttype/*,orderType*/);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar ca = Calendar.getInstance();
+		if(StringUtils.isNotBlank(receivedate)) {
+		ca.setTime(sdf.parse(receivedate));//设置接单时间
+		}
+		int time;
+		int days;
+		int hour;
+		if(usetime==null) {
+			 usetime=new CreditReportUsetime();
+			 time=0;
+		}else {
+			time=usetime.get("use_time");
+			usetime.set("use_time", (int)Math.ceil(time/24.0));
+		}
+		ca.setTime(new Date());
+		hour = ca.get(Calendar.HOUR_OF_DAY);
+		if(hour<12) {
+			days=(int)Math.ceil(time/24.0);
+		}else {
+			days=(int)Math.ceil(time/24.0)+1;
+		}
+		Calendar c = 
+				new DateAddUtil().addDateByWorkDay(ca,//当前时间
+						//需要用多少天
+						days);
+		String enddate=sdf.format(c.getTime());
+		if(time==0) {
+			enddate="";
+		}
+		if("148".equals(countryType)&&!("15".equals(reporttype) || "22".equals(reporttype))) {
+			ca.add(Calendar.DATE, days);
+			enddate=sdf.format(ca.getTime());
+		}
+		Record record=new Record();
+		record.set("usetime", usetime);
+		record.set("enddate", enddate);
+		return record;
+	}
+	public CreditReportPrice getOrderprice(String countryType,String speed,String reporttype,String orderType,String customid,String countryid){
+		CreditReportPrice price=new CreditReportPrice();
+		if("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
+			countryType="148";
+		}
+		//根据客户id判断新老客户新老客户价格区分字段是versions=老系统
+		CreditCustomInfo cci=CreditCustomInfo.dao.findById(customid);
+		if("0".equals(cci.getStr("is_old_customer"))) {
+			//3种不同类型老客户
+			if("373".equals(customid)) {
+				//获取上月的第5天
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				 Calendar c = Calendar.getInstance();    
+				 c.add(Calendar.MONTH, -1);//上月
+				 c.set(Calendar.DAY_OF_MONTH,5);//设置为5号,当前日期既为上月第5天 
+				 String first = format.format(c.getTime());
+				 Calendar ca = Calendar.getInstance();
+				 ca.add(Calendar.MONTH, 1);//本月
+				 ca.set(Calendar.DAY_OF_MONTH, 5);//本月5日  
+				 String last = format.format(ca.getTime());
+				//此客户依据每月订单量和国家决定订单价格
+				//求该客户的该月订单量
+				List<CreditOrderInfo> list=CreditOrderInfo.dao.findByCustom(customid,first,last);
+				Integer size=list.size();
+				price=CreditReportPrice.dao.getoldPrice( countryid,null,null,size);
+				
+			}else if("399".equals(customid)) {
+				//此客户依据国家决定订单价格
+				price=CreditReportPrice.dao.getoldPrice( countryid,null,null,null);
+			}else {
+				//此类客户依据国家,报告类型,和速度决定订单价格
+				price=CreditReportPrice.dao.getoldPrice( countryid,reporttype,speed,null);
+			}
+		}else {
+			price=OrderManagerService.service.getPrice(countryType,speed,reporttype,orderType);
+		}
+		return price;
 	}
 }

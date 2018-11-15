@@ -42,6 +42,7 @@ import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.DateAddUtil;
 import com.jfinal.kit.HttpKit;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 /**
@@ -210,10 +211,11 @@ public class OrderPoiController extends BaseProjectController {
 								Integer userid = getSessionUser().getUserid();
 								model.set("create_by", userid);
 								model.set("create_date", now);
-								model.set("name", name);
+								model.set("name_en", name);
 								model.save();
 								List<CompanyModel> companyByName2 = CompanyModel.dao.getCompanyByName(name);
 								orderReal.set("company_id", model.get("id"));
+								orderReal.set("right_company_name_en",name);
 							}else{
 								orderReal.set("company_id", companyByName.get(0).get("id"));
 							}
@@ -238,7 +240,13 @@ public class OrderPoiController extends BaseProjectController {
 						} else {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
-
+						}
+						//获取报告价格
+						CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(orderReal.get("type").toString(), orderReal.get("speed").toString(), orderReal.get("report_type").toString(), orderReal.get("order_type").toString(), orderReal.get("custom_id").toString(), orderReal.get("country").toString());
+						if(pricemodel!=null){
+							orderReal.set("price_id", pricemodel.get("id"));
+						}else{
+							errormark+=errornum+".第"+r+"行，此订单没有获取到报告价格，请联系管理员！;";
 						}
 						if (row.getCell(8) != null) {
 							row.getCell(8).setCellType(Cell.CELL_TYPE_STRING);
@@ -336,41 +344,31 @@ public class OrderPoiController extends BaseProjectController {
 			  String speed=model.getStr("speed");
 			  String reporttype=model.getStr("report_type");
 			  String orderType=model.getStr("order_type");
-			  CreditReportUsetime timemodel = OrderManagerService.service.getTime(countryType, speed, reporttype/*, orderType*/);
-			  int user_time_id = 0;
-			  int use_time;
 			  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			  Calendar ca = Calendar.getInstance();
-		      ca.setTime(now);//设置接单时间
-		      String year=String.valueOf(ca.get(Calendar.YEAR));
-			  String month=String.valueOf(ca.get(Calendar.MONTH)+1);
-			  model.set("year", year);
-			  model.set("month", month);
-				if(timemodel==null) {
-					timemodel=new CreditReportUsetime();
-					use_time=0;
-				}else {
-					user_time_id=timemodel.getInt("id");
-					use_time=timemodel.get("use_time");
-					model.set("user_time", use_time);
-					model.set("user_time_id", user_time_id);
-				}
-				Calendar c = 
-						new DateAddUtil().addDateByWorkDay(ca,//当前时间
-								//需要用多少天
-								(int)Math.ceil(use_time/24.0));
-				String enddate=sdf.format(c.getTime());
-				if(use_time==0) {
-					enddate=null;
-				}
+			  String date = sdf.format(new Date());
+			  Record reportTime = OrderManagerService.service.getReportTime(countryType, speed, reporttype, date);
+			  CreditReportUsetime reportUsetime=reportTime.get("usetime");
+			  String enddate = reportTime.get("enddate");
+			  String time=reportUsetime.get("use_time").toString();
+			  String user_time_id = reportUsetime.get("id").toString();
+			  model.set("user_time", time);
+			  model.set("user_time_id", user_time_id);
 			  model.set("end_date", enddate);
 			  model.set("create_by", userid);
 			  model.set("create_date", now);
 			  model.set("source", "1");//订单来源-批量导入
 			  model.set("receiver_date", now);
-			  CreditReportPrice pricemodel = OrderManagerService.service.getPrice(countryType, speed, reporttype, orderType);
-			  int price_id=pricemodel.getInt("id");
-			  model.set("price_id", price_id);
+			  /*
+			   * 获取报告价格
+			   */
+			  CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(countryType, speed, reporttype, orderType, model.getStr("custom_id"), countryid);
+			  if(pricemodel!=null){
+				  int price_id=pricemodel.getInt("id");
+				  model.set("price_id", price_id);
+			  }
+			 
+			  
+			  
 			  List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单分配","orderstate");
 			  if(dictDetailBy !=null){
 				  int status=dictDetailBy.get(0).getInt("detail_id");
@@ -393,6 +391,8 @@ public class OrderPoiController extends BaseProjectController {
 				  if(agentPrice!=null){
 					  model.set("agent_id", agentPrice.get("agent_id"));
 					  model.set("agent_priceId", agentPrice.get("id"));
+				  }else{
+					  msg="提交成功，但该订单没有找到合适的代理，请注意!";
 				  }
 			  }
 			 
@@ -410,8 +410,15 @@ public class OrderPoiController extends BaseProjectController {
 			flag=false;
 		}
 		if(flag){
-			ResultType resultType = new ResultType();
-			renderJson(resultType);
+			if(msg.equals("提交成功")){
+				ResultType resultType = new ResultType(1,msg);
+				renderJson(resultType);
+			}
+			if(msg.equals("提交成功，但订单没有找到合适的代理，请注意!")){
+				ResultType resultType = new ResultType(3,msg);
+				renderJson(resultType);
+			}
+			
 		}else{
 			ResultType resultType = new ResultType(2, msg);
 			renderJson(resultType);

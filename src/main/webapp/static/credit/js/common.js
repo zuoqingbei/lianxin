@@ -4,14 +4,17 @@
 
 let Public = {
     init(){
+    	let that = this
         this.menuEvent()
         this.logoutEvent()
-        this.bellEvent()
+        that.bellEvent()
+        setInterval(function(){
+        	that.bellEvent()
+        },30000)
      	
     }, 
   
     initReset(){
-    	/**重置form表单**/
     	/**重置form表单**/
     	const $btnReset = $('#btn_reset');
     	$btnReset.on('click',function(){
@@ -27,16 +30,22 @@ let Public = {
     },
     bellEvent(){
     	//绑定信息事件
-    	$.ajax({
-    		url:BASE_PATH + 'credit/sysuser/notice/getNoticenum',
-    		type:'get',
-    		success:(data)=>{
-    			$(".layui-badge").html(data)
-    		}
-    	})
+		$.ajax({
+			url:BASE_PATH + 'credit/sysuser/notice/getNoticenum',
+			type:'get',
+			success:(data)=>{
+				$(".layui-badge").html(data)
+			}
+		})
+    	
     	
     	$(".message").click(()=>{
-    		$("#main_content").load(BASE_PATH+'credit/sysuser/notice')
+            if($('#mynotice').parents("li").hasClass("hasChild")) {
+                $('#mynotice').parents("li").toggleClass("show")
+                $('#mynotice').parents("ul").show(200)
+               
+            }	
+    		$('#mynotice').trigger("click")
     	})
     },
     menuEvent(){
@@ -230,7 +239,7 @@ $(function(){
         $("#main_content").load(sessionStorage.getItem('pageUrl')?sessionStorage.getItem('pageUrl'):'/credit/front/home',()=>{
         	Public.initReset()
         })
-        $(".leftNav").find("li").removeClass("active");
+        $(".left-nav").find("li").removeClass("active");
         $('#'+id).addClass("active");
         if($('#'+id).parents("li").hasClass("hasChild")) {
             $('#'+id).parents("li").toggleClass("show")

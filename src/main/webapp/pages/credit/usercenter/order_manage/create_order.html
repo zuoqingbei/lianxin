@@ -348,7 +348,7 @@
 		        	"speed":value2,
 		        	"reporttype":value3,
 		        	"ordertype":value4,
-		        	"receivedate":value5,
+		        	"receivedate":encodeURI(value5),
 		        },	
 		        type:"get",
 		        dataType:"json",
@@ -384,6 +384,7 @@
 		        type:"post",
 		        dataType:"json",
 		        success: function(data) {
+		        	console.log(data)
 		        	  if(data!=null){
 		        		  $("#priceid").val(data.id)
 		        	  }
