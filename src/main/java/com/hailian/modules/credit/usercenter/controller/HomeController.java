@@ -28,6 +28,8 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
+import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
+import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.orderflowconf.model.CreditOrderFlowConf;
 import com.hailian.modules.credit.usercenter.model.ResultType;
@@ -369,6 +371,19 @@ public class HomeController extends BaseProjectController {
 		//获取报告员id
 		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
 		model.set("report_user", reportIdtoOrder);
+		//国外代理自动分配 除韩国新加坡马来西亚
+		boolean isNeedAgent=false;//是否需要自动分配
+		boolean isagent=false;//自动分配是否成功
+		if(!countryId.equals("106") && !countryId.equals("61") && !countryId.equals("62") && !countryId.equals("92")){
+			isNeedAgent=true;
+			  //代理自动分配
+			  AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroad(countryId,model.get("speed"));
+			  if(agentPrice!=null){
+				  model.set("agent_id", agentPrice.get("agent_id"));
+				  model.set("agent_priceId", agentPrice.get("id"));
+				  isagent=true;
+			  }
+		}
 		//获取订单记录
 		CreditOrderFlow cof=new CreditOrderFlow();
 		//订单号
@@ -448,8 +463,16 @@ public class HomeController extends BaseProjectController {
 			model.set("create_date", date1);
 			OrderManagerService.service.modifyOrder(0,model,user,this);
 			cof.save();
-			ResultType resultType=new ResultType(1,"操作成功");
-			renderJson(resultType);
+			if(!isNeedAgent){
+				ResultType resultType=new ResultType(1,"操作成功");
+				renderJson(resultType);
+			}else{
+				if(!isagent){
+					ResultType resultType=new ResultType(3,"提交成功，但该订单没有找到合适的代理，请注意!");
+					renderJson(resultType);
+				}
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			ResultType resultType=new ResultType(0,"订单保存失败,请重新提交");

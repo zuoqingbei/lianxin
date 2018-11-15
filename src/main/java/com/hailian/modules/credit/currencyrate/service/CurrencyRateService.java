@@ -13,8 +13,8 @@ public class CurrencyRateService {
 	/*
 	 * 汇率列表展示
 	 */
-	public Page<CurrencyRateModel> getPage(Paginator paginator,  String orderBy,String keyword,BaseProjectController c){
-		Page<CurrencyRateModel> page = CurrencyRateModel.dao.getPage(paginator,orderBy,keyword,c);
+	public Page<CurrencyRateModel> getPage(Paginator paginator,  String orderBy,String currency_a,String currency_b,BaseProjectController c){
+		Page<CurrencyRateModel> page = CurrencyRateModel.dao.getPage(paginator,orderBy,currency_a,currency_b,c);
 		return page;
 	}
 

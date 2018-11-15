@@ -64,7 +64,7 @@ public class CompanyModel extends BaseProjectModel<CompanyModel> {
 		StringBuffer sql = new StringBuffer("select * from credit_company_info where del_flag=0");
 		List<Object> params = new ArrayList<Object>();
 		if (StringUtils.isNotBlank(name)) {
-			sql.append(" and name=?");
+			sql.append(" and name_en=?");
 			params.add(name);
 		}
 		sql.append(" order by name desc");
