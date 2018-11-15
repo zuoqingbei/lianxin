@@ -320,7 +320,18 @@ let Index = {
                           $("#update_reason").val(row.update_reason);
                         },
                         "click .ask":(e,value,row,index)=>{
-                        	
+                        	let id = row.id;
+                        	$.ajax({
+                        		url:'/credit/front/orderProcess/addNoice',
+                        		data:{
+                        			status:'003',
+                        			id
+                        		},
+                        		type:'post',
+                        		success:(data)=>{
+                        			console.log(data)
+                        		}
+                        	})
                         }
                     },
                     formatter: _this.operateFormatter
@@ -369,7 +380,6 @@ let Index = {
             		let diffValue = now_time - dead_time; //差值
             		if(diffValue > 0) {
             			//已过期
-            			console.log(index)
             			$("#table tr").eq(index+1).addClass("order-dead")
             			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-dead")
             		}else if(diffValue === 0) {
