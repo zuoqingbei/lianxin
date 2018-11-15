@@ -657,9 +657,13 @@ let ReportConfig = {
                 							</div>`
             				let explainObj = item.contents[5];
                 			let explainUrl = explainObj.get_source;
+                			let conf_id = item.title.id;
                 			let returnData;
                 			$.ajax({
                 				url:BASE_PATH + 'credit/front/ReportGetData/' + explainUrl,
+                				data:{
+                					conf_id
+                				},
                 				async:false,
                 				type:'post',
                 				success:(data)=>{
