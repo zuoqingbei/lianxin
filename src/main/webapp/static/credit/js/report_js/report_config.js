@@ -657,13 +657,17 @@ let ReportConfig = {
                 							</div>`
             				let explainObj = item.contents[5];
                 			let explainUrl = explainObj.get_source;
+                			let tempParam = explainUrl.split("*")[1].split("$");//必要参数数组
+                        	let paramObj = {}
+                        	tempParam.forEach((item,index)=>{
+                        		paramObj[item] = this.rows[item]
+                			 })
                 			let conf_id = item.title.id;
+                        	paramObj["conf_id"] = conf_id
                 			let returnData;
                 			$.ajax({
-                				url:BASE_PATH + 'credit/front/ReportGetData/' + explainUrl,
-                				data:{
-                					conf_id
-                				},
+                				url:BASE_PATH + 'credit/front/ReportGetData/' + explainUrl.split("*")[0],
+                				data:paramObj,
                 				async:false,
                 				type:'post',
                 				success:(data)=>{
