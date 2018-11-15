@@ -531,6 +531,119 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 
 		return page;
 	}
+	
+	/**
+	 * 
+	* @Description: 订单结算页面
+	* @date 2018年11月14日 下午3:03:42
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 * @throws ParseException 
+	 */
+	public Page<CreditOrderInfo> getSettleOrders(Paginator pageinator,String customerId,String agentId,String time,
+		String sortname,String sortorder) throws ParseException {
+		StringBuffer sql = new StringBuffer();
+		String receiver_date1="";
+		String end_date1="";
+		//开始时间
+		if(StringUtils.isNotBlank(time)){
+			String[]  strs=time.split("至");
+			String receiver_date=strs[0].toString();
+			String end_date=strs[1].toString().replace(" ", "");
+		}
+		List<Object> params = new ArrayList<Object>();
+		sql.append(" from credit_order_info t ");
+		sql.append(" LEFT JOIN credit_company_info c on t.company_id=c.id ");
+		sql.append(" LEFT JOIN credit_agent_price a on t.agent_priceId=a.id ");
+		sql.append(" LEFT JOIN sys_dict_detail d on d.detail_id=a.currency");
+		sql.append(" LEFT JOIN credit_rate r on r.currency_a=a.currency and r.currency_b='274' ");
+		sql.append(" left join credit_report_price p on p.id=t.price_id ");
+		sql.append(" LEFT JOIN sys_dict_detail de on de.detail_id=p.currency");
+		sql.append(" LEFT JOIN credit_rate rr on rr.currency_a=p.currency and rr.currency_b='274' ");
+		sql.append(" where 1 = 1 and t.status ='314' and t.del_flag='0' ");
+		if (StringUtils.isNotBlank(end_date1)) {
+			sql.append(" and t.end_date<=?");
+			params.add(end_date1);
+		}
+		if (StringUtils.isNotBlank(receiver_date1)) {
+			sql.append(" and t.receiver_date>=?");
+			params.add(receiver_date1);
+		}
+		if (StringUtils.isNotBlank(customerId)) {
+			sql.append(" and t.custom_id=?");
+			params.add(customerId);
+		}
+		if (StringUtils.isNotBlank(agentId)) {
+			sql.append(" and t.agent_id=?");
+			params.add(agentId);
+		}
+		if (StringUtils.isNotBlank(sortname)) {
+			sql.append(" order by t." ).append(sortname).append("  "+sortorder);
+		} 
+		Page<CreditOrderInfo> page = CreditOrderInfo.dao
+				.paginate(
+						pageinator,
+						"SELECT t.id,t.num,t.end_date,t.receiver_date,t.custom_id,c.`name` as cname,c.name_en as ordername, "
+						+ "a.price as aprice,d.detail_name_en as acurrency,ROUND(r.rate,2) as agentrate , case when a.currency='274' then a.price ELSE ROUND(r.rate*a.price,2) end as rmb,"
+						+ "p.price as pprice,de.detail_name_en as acurrency,ROUND(rr.rate,2) as reprate, case when p.currency='274' then p.price ELSE rr.rate*p.price end as rmb2 ",
+						sql.toString(), params.toArray());
+
+		return page;
+	}
+	/**
+	 * 
+	* @Description: 
+	* @date 2018年11月15日 上午11:38:33
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public List<CreditOrderInfo> exportSettle(String customerId,String agentId,String time) {
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT t.num,t.end_date,t.receiver_date,t.custom_id,c.`name` as cname,c.name_en as ordername, "
+							+ "a.price as aprice,d.detail_name_en as acurrency ,p.price as pprise,de.detail_name_en as pcurrency");
+			String receiver_date1="";
+			String end_date1="";
+			//开始时间
+			if(StringUtils.isNotBlank(time)){
+				String[]  strs=time.split("至");
+				String receiver_date=strs[0].toString();
+				String end_date=strs[1].toString().replace(" ", "");
+			}
+			List<Object> params = new ArrayList<Object>();
+			sql.append(" from credit_order_info t ");
+			sql.append(" LEFT JOIN credit_company_info c on t.company_id=c.id ");
+			sql.append(" LEFT JOIN credit_agent_price a on t.agent_priceId=a.id ");
+			sql.append(" LEFT JOIN sys_dict_detail d on d.detail_id=a.currency");
+			sql.append(" LEFT JOIN credit_rate r on r.currency_a=a.currency and r.currency_b='274' ");
+			sql.append(" left join credit_report_price p on p.id=t.price_id ");
+			sql.append(" LEFT JOIN sys_dict_detail de on de.detail_id=p.currency");
+			sql.append(" LEFT JOIN credit_rate rr on rr.currency_a=p.currency and rr.currency_b='274' ");
+			sql.append(" where 1 = 1 and t.status ='314' and t.del_flag='0' ");
+			if (StringUtils.isNotBlank(end_date1)) {
+				sql.append(" and t.end_date<='"+end_date1+"'");
+			}
+			if (StringUtils.isNotBlank(receiver_date1)) {
+				sql.append(" and t.receiver_date>='"+receiver_date1+"'");
+			}
+			if (StringUtils.isNotBlank(customerId)) {
+				sql.append(" and t.custom_id='"+customerId+"'");
+
+			}
+			if (StringUtils.isNotBlank(agentId)) {
+				sql.append(" and t.agent_id='"+agentId+"'");
+				
+			}
+		   List<CreditOrderInfo> orderInfo=	CreditOrderInfo.dao.find(sql.toString());
+			return orderInfo;
+		}
+	
+	
+	
+	
+	
+	
 	public List<CreditOrderInfo> findAll( CreditOrderInfo model,  String status,
 			SysUser user,String sortname,String sortorder) {
 		StringBuffer sql = new StringBuffer();

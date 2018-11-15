@@ -1028,3 +1028,31 @@
     margin-left:1.25rem;
     font-size: 1.25rem;
 }
+
+
+.control-label {
+    width: auto;
+}
+.total{
+    margin: 0 2rem;
+    height: 4rem;
+    font-weight: normal;
+}
+.total>div{
+    line-height: 4rem;
+    font-size: 1.25rem;
+}
+.total strong{
+    font-size: 2rem;
+    margin: 0 .5rem;
+    color: var(--blue);
+}
+.unit{
+    font-size: 1.5rem;
+    color: var(--blue);
+}
+#selectedTotalNum{
+    margin: 0 .5rem;
+    font-size: 1.5rem;
+    color: var(--blue);
+}

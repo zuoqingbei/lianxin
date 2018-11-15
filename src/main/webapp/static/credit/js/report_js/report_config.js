@@ -634,6 +634,42 @@ let ReportConfig = {
                 			break;
                 		case '6':
                 			//信用等级
+                			let inputObj = item.contents[0]
+                			contentHtml += `<div class="form-group form-inline p-4 mx-3">
+					                          <label for="qy_k">${inputObj.temp_name}</label>
+					                          <input type="text" name="" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" >
+					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
+					                        </div>`
+                			
+                			let tableContents = []
+                			item.contents.forEach((item,index)=>{
+                				if(index > 0 && index < 5) {
+                					tableContents.push(item)
+                				}
+                			})
+                			_this.idArr.push(index)
+                			_this.contentsArr.push(tableContents)
+            				contentHtml += `<div class="table-content1" style="background:#fff">
+				                				<table id="table${index}"
+				                				style="position: relative"
+				                				>
+				                				</table>
+                							</div>`
+            				let explainObj = item.contents[5];
+                			let explainUrl = explainObj.get_source;
+                			let conf_id = item.title.id;
+                			let returnData;
+                			$.ajax({
+                				url:BASE_PATH + 'credit/front/ReportGetData/' + explainUrl,
+                				data:{
+                					conf_id
+                				},
+                				async:false,
+                				type:'post',
+                				success:(data)=>{
+                					console.log(data)
+                				}
+                			})
                 			break;
             			default:
             				break;

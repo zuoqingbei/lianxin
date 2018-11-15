@@ -318,13 +318,31 @@ let Index = {
                           $("#reportSpeed1").text(row.reportSpeed);
                           $("#orderid1").val(row.id);
                           $("#update_reason").val(row.update_reason);
+                        },
+                        "click .ask":(e,value,row,index)=>{
+                        	let id = row.id;
+                        	$.ajax({
+                        		url:'/credit/front/orderProcess/askOrder',
+                        		data:{
+                        			status:'003',
+                        			id
+                        		},
+                        		type:'post',
+                        		success:(data)=>{
+                        			console.log(data)
+                        			if(data.statusCode === 1) {
+                        				Public.message("success",data.message)
+                        				$table.bootstrapTable("refresh")
+                        			}else {
+                        				Public.message("error",data.message)
+                        			}
+                        		}
+                        	})
                         }
                     },
                     formatter: _this.operateFormatter
                 }
             ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
              url : '/credit/front/home/list', // 请求后台的URL（*）
             method : 'post', // 请求方式（*）post/get
             pagination: true, //分页
@@ -359,6 +377,30 @@ let Index = {
     			  status:_this.checkchar
               };  
             },
+            onLoadSuccess:(data)=>{
+            	console.log(data)
+            	let rows = data.rows;
+            	rows.forEach((item,index)=>{
+            		let dead_time = new Date(item.end_date).getTime();//截止日期
+            		let now_time = new Date(new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()).getTime();
+            		let diffValue = now_time - dead_time; //差值
+            		if(diffValue > 0) {
+            			//已过期
+            			$("#table tr").eq(index+1).addClass("order-dead")
+            			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-dead")
+            		}else if(diffValue === 0) {
+            			//今天过期
+            			$("#table tr").eq(index+1).addClass("order-ing")
+            			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ing")
+            		}
+            		let isAsk = item.is_ask;
+            		if(isAsk === '1') {
+            			//已催问
+            			$("#table tr").eq(index+1).addClass("order-ask")
+            			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ask")
+            		}
+            	})
+            }
         });
         // sometimes footer render error.
         setTimeout(() => {
@@ -367,9 +409,11 @@ let Index = {
     },
     operateFormatter(){
         /**操作按钮格式化 */
-        return '<a href="javacript:;" class="order-cancel" style="margin-right:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a>' +
-            '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
-            '<a href="javacript:;" class="order-update" data-toggle="modal" data-target="#exampleModalCenter2">内容更新</a>'
+        return '<a href="javacript:;" class="ask" style="margin-right:.5rem">催问</a>' +
+		        '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
+		        '<a href="javacript:;" class="order-cancel" style="margin-right:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a>' +
+		        '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
+		        '<a href="javacript:;" class="order-update" data-toggle="modal" data-target="#exampleModalCenter2">内容更新</a>'
     }
 }
 Index.init();

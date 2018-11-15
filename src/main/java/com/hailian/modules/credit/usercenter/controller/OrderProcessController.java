@@ -555,6 +555,7 @@ public class OrderProcessController extends BaseProjectController{
 		      model.set("notice_title", "报告退回");
 			  model.set("notice_content", "您有报告被退回，请及时修改");
 		}
+		
 		//订单查档 向质检员发起
 		if(status!=null&&status.equals("294")){
 			logModel.set("user_id", info.get("IQC"));
@@ -568,6 +569,47 @@ public class OrderProcessController extends BaseProjectController{
 		logModel.set("notice_id", model.get("id"));
 		logModel.set("read_unread", "1");
 		logModel.save();
+		
+	}
+	
+	/**
+	 * 
+	* @Description: 订单催问
+	* @date 2018年11月15日 上午9:45:40
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public ResultType askOrder(){
+		String status=getPara("status");
+		String id=getPara("id");
+		NoticeModel model=new NoticeModel();
+		Integer userid = getSessionUser().getUserid();
+		String now = getNow();
+		//查订单
+        CreditOrderInfo info=	CreditOrderInfo.dao.getId(Integer.parseInt(id), null);
+        //公告子表添加
+        NoticeLogModel logModel=new NoticeLogModel();
+		//是否催问过，催问后改变订单催问状态
+				if (status!=null&&status.equals("003")) {
+					 logModel.set("user_id", info.get("report_user"));
+					 model.clear();
+				     model.set("notice_title", "订单催问");
+					 model.set("notice_content", "您有订单催问，请及时处理。");
+					 //修改订单催问信息
+					 CreditOrderInfo orderInfo=new CreditOrderInfo();
+					 orderInfo.set("id",info.get("id") );
+					 orderInfo.set("is_ask", "1");
+					 orderInfo.update();
+				}
+				model.set("create_by", userid);
+				model.set("create_date", now);
+				model.save();
+				logModel.set("notice_id", model.get("id"));
+				logModel.set("read_unread", "1");
+				logModel.save();
+				renderJson(new ResultType(1,"订单催问成功!"));
+				return new ResultType(1,"订单催问成功!");
 	}
 	/**
 	 * 订单代理分配国内

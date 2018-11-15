@@ -263,7 +263,26 @@ let Index = {
             	console.log(data)
             	let rows = data.rows;
             	rows.forEach((item,index)=>{
-            		let dead_time = item.end_date;//截止日期
+            		let dead_time = new Date(item.end_date).getTime();//截止日期
+            		let now_time = new Date(new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()).getTime();
+            		let diffValue = now_time - dead_time; //差值
+            		console.log(diffValue)
+            		if(diffValue > 0) {
+            			//已过期
+            			console.log(index)
+            			$("#table tr").eq(index+1).addClass("order-dead")
+            			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-dead")
+            		}else if(diffValue === 0) {
+            			//今天过期
+            			$("#table tr").eq(index+1).addClass("order-ing")
+            			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ing")
+            		}
+            		let isAsk = item.is_ask;
+            		if(isAsk === '1') {
+            			//已催问
+            			$("#table tr").eq(index+1).addClass("order-ask")
+            			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ask")
+            		}
             	})
             }
           });

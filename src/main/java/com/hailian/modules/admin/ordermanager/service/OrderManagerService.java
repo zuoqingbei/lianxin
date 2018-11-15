@@ -303,6 +303,26 @@ public class OrderManagerService {
 		// TODO Auto-generated method stub
 		return CreditOrderInfo.dao.getAchievementsOrders(pageinator, model,reportername,time,user,isadmin,sortname,sortorder);
 	}
+	
+	/**
+	 * 
+	* @Description: 订单结算
+	* @date 2018年11月14日 下午2:36:27
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 * @throws ParseException 
+	 */
+	public Page<CreditOrderInfo> getSettleOrders(Paginator pageinator,String customerId,String agentId,String time,
+			String sortname,String sortorder) throws ParseException {
+	                
+		return CreditOrderInfo.dao.getSettleOrders(pageinator, customerId,agentId,time,sortname,sortorder);
+	}
+	
+	public List<CreditOrderInfo> exportSettle(String customerId,String agentId,String time){
+		return CreditOrderInfo.dao.exportSettle(customerId, agentId, time);
+	}
+	
 	public CreditCustomInfo getCreater(String id) {
 		// TODO Auto-generated method stub
 		
