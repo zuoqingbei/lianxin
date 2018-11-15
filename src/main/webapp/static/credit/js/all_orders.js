@@ -322,7 +322,7 @@ let Index = {
                         "click .ask":(e,value,row,index)=>{
                         	let id = row.id;
                         	$.ajax({
-                        		url:'/credit/front/orderProcess/addNoice',
+                        		url:'/credit/front/orderProcess/askOrder',
                         		data:{
                         			status:'003',
                         			id
