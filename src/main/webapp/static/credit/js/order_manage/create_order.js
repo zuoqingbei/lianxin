@@ -66,9 +66,12 @@ let
 	        	if(data.statusCode===1){
                	Public.message("success",data.message);
                	$("#importModal").find(".close").trigger("click")
-               }else{
+               }else if(data.statusCode===2){
                	Public.message("error",data.message);
-               }
+               }else if(data.statusCode===3){
+                  	Public.message("info",data.message);
+                   	$("#importModal").find(".close").trigger("click")
+                   }
 	        },
 	        error: function (message) {
 	            $("#request-process-patent").html("提交数据失败！");
@@ -152,7 +155,12 @@ let
                         		Public.message("success",data.message);
                         		//Public.goList();
                         		reste();
-                       		 }else{
+                       		 }else if(data.statusCode===3){
+                       			Public.message("info",data.message);
+                        		//Public.goList();
+                        		reste();
+                       		 }
+							  else{
                         		Public.message("error",data.message);
                         		//Public.goList();
                         		reste();

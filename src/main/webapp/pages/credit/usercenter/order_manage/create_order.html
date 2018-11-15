@@ -369,7 +369,6 @@
     	var value4=$("select[name='attr.order_type']").find("option:selected").val();
     	var value5=$("select[name='attr.custom_id']").find("option:selected").val();
     	var value6=$("select[name='attr.country']").find("option:selected").val();
-    	
    	 	var html="";
 	   	 $.ajax({
 		        url:"/admin/ordermanager/getPrice",
@@ -384,6 +383,7 @@
 		        type:"post",
 		        dataType:"json",
 		        success: function(data) {
+		        	console.log("==========",data)
 		        	  if(data!=null){
 		        		  $("#priceid").val(data.id)
 		        	  }

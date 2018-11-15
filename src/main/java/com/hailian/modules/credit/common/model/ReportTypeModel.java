@@ -109,14 +109,18 @@ public class ReportTypeModel  extends BaseProjectModel<ReportTypeModel>{
 	public List<ReportTypeModel> getReportType() {
 		return dao.find("select t.* from credit_report_type t where t.del_flag='0' order by order_no ");
 	}
+	/*
+	 * 根据报告类型名获取报告
+	 */
 	public static List<ReportTypeModel> getReportTypeByName(String name) {
 		String sql="select t.* from credit_report_type t where t.del_flag='0' ";
 		List<Object> params=new ArrayList<Object>();
-		if(StringUtils.isNotBlank(null)){
-			sql+=" and t.name=?";
+		if(StringUtils.isNotBlank(name)){
+			sql+=" and t.name=? or t.name_en=? ";
+			params.add(name);
 			params.add(name);
 		}
-		return dao.find(sql);
+		return ReportTypeModel.dao.find(sql,params.toArray());
 	}
 
 
