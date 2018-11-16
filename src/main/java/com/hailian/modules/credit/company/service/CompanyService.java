@@ -66,7 +66,7 @@ public class CompanyService {
 	* @date 2018年11月8日上午10:45:37  
 	* @TODO
 	 */
-	public void EnterpriseGrab(String companyId,String companyName,String reporttype){
+	public void enterpriseGrab(String companyId,String companyName,String reporttype){
 		JSONObject json = HttpTest.getYjapi(companyName);//获取api企业信息数据
 		String status = json.getString("Status"); //获取调用api接口的状态码
 		System.out.println(status);

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>联信</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css">
+    <!--<link rel="stylesheet" href="../css/report_css/reported_basic_info.css">-->
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/report_css/report_business_info.css">
+    <style>
+        .control-label {
+            width: auto;
+        }
+        .total{
+            margin: 0 2rem;
+            height: 4rem;
+            font-weight: normal;
+        }
+        .total>div{
+            line-height: 4rem;
+            font-size: 1.25rem;
+        }
+        .total strong{
+            font-size: 2rem;
+            margin: 0 .5rem;
+            color: var(--blue);
+        }
+        .unit{
+            font-size: 1.5rem;
+            color: var(--blue);
+        }
+        #selectedTotalNum{
+            margin: 0 .5rem;
+            font-size: 1.5rem;
+            color: var(--blue);
+        }
+
+    </style>
+</head>
+
+<div id="container" class="row animated fadeIn">
+    <div class="main">
+        <div class="main-header">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="javascript:;">订单管理</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a>结算统计</a>
+                </li>
+            </ul>
+            <p class="main-title">结算统计</p>
+        </div>
+        <!-- 表格 -->
+        <div class="table-content">
+            <div class="bg-f">
+                <div class="form-box pt-3">
+                    <form id="formSearch" class="form-inline layui-form" role="form" style="padding-right: 6rem">
+                        <div class="form-group row d-flex justify-content-around mb-2 pl-3">
+                            <div class="input-group mt-2 col-md-4 ">
+                                <label class="control-label" for="txt_search_reporter">客户ID：</label>
+                                <select class="form-control" name="customerId" id="txt_search_reporter">
+                                    <option value="">请选择客户ID</option>
+                                   <% for(item in customer) { %>
+                                   <option value="${item.id}">${item.id}</option>
+                                   <% } %>
+                                </select>
+                            </div>
+                            <div class="input-group mt-2 col-md-4">
+                                <label class="control-label" for="txt_search_reporter">代理ID：</label>
+                                <select class="form-control" name="agentId" id="txt_search">
+                                    <option value="">请选择代理ID</option>
+                                     <% for(item in agent) { %>
+                                   <option value="${item.agent_id}">${item.agent_id}</option>
+                                   <% } %>
+                                </select>
+                            </div>
+                            <div class="input-group mt-0 col-md-4 pl-0 pr-2">
+                                <label class="control-label col-md-3 px-0" for="time">时间：</label>
+                                <input type="text" autocomplete="false" class="layui-input search-input" id="time" name="time" placeholder="请选择日期范围">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="btn-row d-flex justify-content-between mt-3 mb-3 fr">
+                        <div class="right-btn btn-group d-flex align-items-center justify-content-around" style="padding-right: 6.25rem">
+                            <button type="button" id="btn_query" class="btn btn-primary mr-3">查询</button>
+                            <button type="button" id="btn_reset" class="btn btn-light mr-3">重置</button>
+                            <button type="button" id="btn_export" class="btn btn-primary px-3"><img
+                                    src="${BASE_PATH }static/credit/imgs/total_manage/export.png" style="width: 1rem;height: 1.2rem;display: inline-block;padding-bottom: 0.25rem;" class="mr-2"/>导出</button>
+                        </div>
+                    </div>
+                </div>
+                <table id="table"
+                       data-toggle="table"
+                       data-url="./data.json"
+                       style="position: relative"
+                >
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="${BASE_PATH }static/credit/js/total_manage/total_settle.js"></script>
+</html>
