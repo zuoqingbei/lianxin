@@ -9,8 +9,8 @@
 	jQuery(function($) {
 		// 页面方法
 		oper = {
-			width : 600,
-			height : 250,
+			width : 700,
+			height : 400,
 			form : document.form1,
 			list : function() {
 				var url = 'credit/currencyrate/list';
@@ -28,7 +28,7 @@
 				Iframe(url, this.width, this.height, title);
 			},
 			del : function(id) {
-				var url = 'credit/custom/delete/'+id;
+				var url = 'credit/currencyrate/delete/'+id;
 				var title = '确定要删除吗？';
 				Confirm(title, function() {
 					form1.action = url;
@@ -38,7 +38,7 @@
 			
 		};
 		//显示Menu索引
-		showMenu('page_custom_manager');
+		showMenu('page_currencyrate');
 	});
 	
 	//分页
@@ -93,6 +93,8 @@ var bodyContent = {
 					<th name="t.currency_a" class="sorting">币种</th> 
 					<th name="t.currency_b" class="sorting">目标币种</th> 
 					<th name="t.rate" class="sorting">汇率</th> 
+					<th name="t.update_by" class="sorting">更新人</th>
+					<th name="t.update_date" class="sorting">更新时间</th>
  					<th width="300px" style="text-align: center;">操作</th>
 				</tr>
 			</thead>
@@ -106,6 +108,12 @@ var bodyContent = {
 					<td>
 						${item.rate}
 					</td> 
+					<td>
+						${item.username}
+					</td>
+					<td>
+						${item.update_date,dateFormat="yyyy-MM-dd"}
+					</td>  
 				<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
