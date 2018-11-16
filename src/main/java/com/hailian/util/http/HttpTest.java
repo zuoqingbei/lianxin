@@ -68,6 +68,8 @@ public class HttpTest {
 		//getCourtUrl();//爬取全国法院被执行人信息查询网站
 		//getYjapi();
 		getYjapi("北京小桔科技有限公司");
+
+        
 		
     }
 	public static JSONObject getYjapi(String conpanyName){
