@@ -1,5 +1,5 @@
-<% var currency_a = tempDict.getSysDictDetailString('currency',model.currency_a!); %>
-<% var currency_b = tempDict.getSysDictDetailString('currency',model.currency_b!); %>
+<% var currency_a = tempDict.getSysDictDetailString('currency',model.currency_a!);%>
+<% var currency_b = tempDict.getSysDictDetailString('currency',model.currency_b!);%>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -14,7 +14,7 @@ var headContent = {
 				return false;
 			}
 			id = id || '0';
-			var url = 'credit/custom/save/'+id;
+			var url = 'credit/currencyrate/save/'+id;
 			form1.action = url;
 			form1.submit();
 			return true;
@@ -65,7 +65,7 @@ var bodyContent = {
 				<tr>
 					<td>币种</td>
 					<td>
-						<select name="model.currency_a" class="form-control" style="width: 200px;" >
+						<select name="model.currency_a" class="form-control" valid="vselect" validname="币种">
 							${currency_a!}
 						</select>
 					</td>
@@ -73,7 +73,7 @@ var bodyContent = {
 				<tr>
 					<td>目标币种</td>
 					<td>
-						<select name="model.currency_b" class="form-control" style="width: 200px;" >
+						<select name="model.currency_b" class="form-control" valid="vselect" validname="目标币种" >
 							${currency_b!}
 						</select>
 					</td>
@@ -81,7 +81,7 @@ var bodyContent = {
 				<tr>
 					<td>汇率</td>
 					<td>
-					<input class="form-control" type="text" name="model.rate" value="${model.rate}" />
+					<input class="form-control" type="text" name="model.rate" value="${model.rate}" valid="vtext" validname="目标币种"/>
 					</td>
 				
 				</tr>
