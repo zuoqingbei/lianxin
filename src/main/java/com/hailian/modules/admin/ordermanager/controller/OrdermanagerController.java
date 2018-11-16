@@ -477,10 +477,11 @@ public class OrdermanagerController extends BaseProjectController{
 		/*
 		 * 为防止测试时拦截,上线后删掉
 		 */
-		CreditReportPrice test=new CreditReportPrice();
-		test.set("id", 99);
-		//renderJson(price);
-		renderJson(test);
+//		CreditReportPrice test=new CreditReportPrice();
+//		test.set("id", 99);
+//		renderJson(test);
+		renderJson(price);
+		
 
 	}
 	/**

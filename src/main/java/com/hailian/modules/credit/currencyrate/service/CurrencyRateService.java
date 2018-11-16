@@ -19,15 +19,15 @@ public class CurrencyRateService {
 	}
 
 	public void delete(Integer id, Integer userid){
-		CustomInfoModel.dao.delete(id,userid);
+		CurrencyRateModel.dao.delete(id,userid);
 	}
 	public List<CustomInfoModel> getCustom(Integer id){
 		List<CustomInfoModel> custom = CustomInfoModel.dao.getCustom(id);
 		return custom;
 	}
-	public CustomInfoModel getCustomById(Integer id){
-		CustomInfoModel custom = CustomInfoModel.dao.getCustomById(id);
-		return custom;
+	public CurrencyRateModel getRateByA2B(String currency_a,String currency_b){
+		CurrencyRateModel rateModel = CurrencyRateModel.dao.getRateByA2B(currency_a,currency_b);
+		return rateModel;
 	}
 	
 }
