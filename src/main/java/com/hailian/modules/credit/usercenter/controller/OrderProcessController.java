@@ -31,6 +31,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
+import com.hailian.modules.credit.agentmanager.model.AgentModel;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
 import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
@@ -373,22 +374,23 @@ public class OrderProcessController extends BaseProjectController{
 		//操作时间
 		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));					
 		cof.save();
-		toSendMail(ismail, orderId);//代理分配发送邮件
+		toSendMail(ismail, orderId,model.get("agent_id"));//代理分配发送邮件
 		return model.set("status", oldStatus);
 	}
 	/*
 	 * 代理分配发送邮件
 	 */
-	private void toSendMail(String ismail, String orderId) throws Exception {
+	private void toSendMail(String ismail, String orderId,String agentId) throws Exception {
 		if("1".equals(ismail)){
 			CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, this);
-			String mailaddr=order.get("mail_receiver");
-			String mailaddrRe=order.get("mail_associate_recipient");
+		AgentModel agent=	AgentModel.dao.findById(agentId);
+			String mailaddr=agent.get("memo");
+			String mailaddrRe="";
 			if(StringUtils.isNotBlank(mailaddr) || StringUtils.isNotBlank(mailaddrRe)){
 				String title="New Order";
 				String content="Dear Sir/Madam,Good day!"
 								+"We would like to place an order for a complete credit report on the following company:"
-								+"Speed:" 
+								+"Speed:" +order.get("speed")+" "
 								+"Ref No.:" 
 								+"Company name:" 
 								+"Address:" 
@@ -687,13 +689,52 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		PublicUpdateMod(map);
-		toSendMail(ismail, orderId);//代理分配发送邮件
+		toSendMail(ismail, orderId,agent_id);//代理分配发送邮件
 		renderJson(new ResultType());
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"订单代理分配更新失败!"));
 		}
 	}
+	/**
+	 * 
+	* @Description: 批量分批
+	* @date 2018年11月15日 下午4:24:21
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public  void  orderbatchAgent() {
+		try {
+		String code = (String) getRequest().getParameter("statusCode");
+		String orderId = (String) getRequest().getParameter("orderId");
+		Map<String,Object> map = new HashMap<>();
+		if(code==null||"".equals(code.trim())){
+			map = null;
+		}else{
+			map.put("status", code);
+		}
+		String ismail = (String) getRequest().getParameter("ismail");
+		String agent_id = (String) getRequest().getParameter("agent_id");
+		map.put("agent_id", agent_id);
+        String ids[]=orderId.split(",");
+			for (String oid : ids) {
+		  CreditOrderInfo orderInfo=	CreditOrderInfo.dao.findById(oid);
+			AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,orderInfo.get("country"),orderInfo.get("speed"));
+			if(agentPrice !=null){
+					map.put("agent_priceId", agentPrice.get("id"));
+			}
+	     map.put("id", oid);
+		PublicUpdateMod(map);
+		toSendMail(ismail, orderId,agent_id);//代理分配发送邮件
+			}
+		renderJson(new ResultType());
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,"订单代理分配更新失败!"));
+		}
+	}
+	
 	/**
 	 * 通过订单id获取文件信息
 	 */
