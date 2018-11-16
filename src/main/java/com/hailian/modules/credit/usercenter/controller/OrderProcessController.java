@@ -24,7 +24,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
@@ -891,7 +891,7 @@ public class OrderProcessController extends BaseProjectController{
 	 */
 	public void reportedJson(){
 		//JFlyFoxUtils.passwordEncrypt(password);
-		//com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail
+		//com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail
 		String companyId = getPara("company_id");
 		String flagStr = getPara("flagStr","");
 		String tableName = getPara("tableName","");
@@ -922,7 +922,7 @@ public class OrderProcessController extends BaseProjectController{
 			rows = companyShareholder.find("select * from credit_company_shareholder where company_id=? and del_flag=0",params.toArray());
 			break;
 		case "tableShareholdersDetail":
-			CreditCompanyShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyShareholderDetail.class);
+			CreditCompanyLegalShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyLegalShareholderDetail.class);
 			rows = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id=? and del_flag=0",params.toArray());
 			break;
 		case "tableInvestment":
@@ -967,19 +967,19 @@ public class OrderProcessController extends BaseProjectController{
 		CreditCompanyInvestment companyInvestment = getModel(CreditCompanyInvestment.class); 
 		CreditCompanyManagement companyManagement = getModel(CreditCompanyManagement.class); 
 		CreditCompanyShareholder companyShareholder = getModel(CreditCompanyShareholder.class); 
-		CreditCompanyShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyShareholderDetail.class);
+		CreditCompanyLegalShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyLegalShareholderDetail.class);
 		
 		final List<CreditCompanyHis> companyHisList = companyHis.find("select * from credit_company_his where company_id = "+companyId);
 		final List<CreditCompanyInvestment> companyInvestmentList = companyInvestment.find("select * from credit_company_investment where company_id = "+companyId);
 		final List<CreditCompanyManagement> companyManagementList = companyManagement.find("select * from credit_company_management where company_id = "+companyId);
 		final List<CreditCompanyShareholder> companyShareholderList = companyShareholder.find("select * from credit_company_shareholder where company_id = "+companyId);
-		final List<CreditCompanyShareholderDetail> companyShareholderDetailList = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id = "+companyId);
+		final List<CreditCompanyLegalShareholderDetail> companyShareholderDetailList = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id = "+companyId);
 		//转化为model集合
 		final List<BaseProjectModel>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
 		final List<BaseProjectModel>  CreditCompanyInvestmentList = infoEntry(tableInvestmentJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment");
 		final List<BaseProjectModel>  CreditCompanyManagementList = infoEntry(tableManagementJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement");
 		final List<BaseProjectModel>  CreditCompanyShareholderList = infoEntry(tableShareholdersInfoJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder");
-		final List<BaseProjectModel>  CreditCompanyShareholderDetailList = infoEntry(tableShareholdersDetailJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail");
+		final List<BaseProjectModel>  CreditCompanyLegalShareholderDetailList = infoEntry(tableShareholdersDetailJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail");
 		List<BaseProjectModel> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
 		//数据库事务
 		Db.tx(new IAtom(){
@@ -991,13 +991,13 @@ public class OrderProcessController extends BaseProjectController{
 				companyInvestmentList.forEach( (CreditCompanyInvestment baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
 				companyManagementList.forEach( (CreditCompanyManagement baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
 				companyShareholderList.forEach( (CreditCompanyShareholder baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
-				companyShareholderDetailList.forEach( (CreditCompanyShareholderDetail baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
+				companyShareholderDetailList.forEach( (CreditCompanyLegalShareholderDetail baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
 				//保存操作
 				companyHistoryModelList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
 				CreditCompanyInvestmentList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
 				CreditCompanyManagementList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
 				CreditCompanyShareholderList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
-				CreditCompanyShareholderDetailList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
+				CreditCompanyLegalShareholderDetailList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
 				return true;
 			}
 		});
