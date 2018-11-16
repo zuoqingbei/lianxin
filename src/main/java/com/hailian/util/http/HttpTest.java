@@ -69,7 +69,7 @@ public class HttpTest {
 		//getYjapi();
 		getYjapi("北京小桔科技有限公司");
 
-        
+        //test
 		
     }
 	public static JSONObject getYjapi(String conpanyName){
