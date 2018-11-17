@@ -147,6 +147,8 @@ let
 					Public.message("error","未发现该报告价格,请联系管理员");
 					return;
 				}
+				//isTheSameCompany();
+				return;
 				$("input[name='attr.status']").val("291");
 					$("#orderForm").ajaxSubmit({
 						success:function(data){
@@ -446,3 +448,16 @@ $(document).ready(function () {
 	  form.render('select');
 	});
  }
+ function isTheSameCompany(){
+	 var companyname=$("#attr.right_company_name_en").val();
+	 alert(companyname)
+   	 $.ajax({
+	        url:"/credit/orderpoimanager/isTheSameCompany/companyname="+companyname,
+	        type:"post",
+	        dataType:"json",
+	        success: function(data) {
+	        	
+	        	
+	        },
+	    });
+}
