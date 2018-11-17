@@ -148,7 +148,7 @@ let
 					return;
 				}
 				//isTheSameCompany();
-				return;
+				//return;
 				$("input[name='attr.status']").val("291");
 					$("#orderForm").ajaxSubmit({
 						success:function(data){
