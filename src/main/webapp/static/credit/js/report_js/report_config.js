@@ -667,11 +667,13 @@ let ReportConfig = {
                 							</div>`
             				let explainObj = item.contents[5];
                 			let explainUrl = explainObj.get_source;
-                			let tempParam = explainUrl.split("*")[1].split("$");//必要参数数组
-                        	let paramObj = {}
-                        	tempParam.forEach((item,index)=>{
-                        		paramObj[item] = this.rows[item]
-                			 })
+                			let paramObj = {}
+                			if(explainUrl.split("*")[1]) {
+                				let tempParam = explainUrl.split("*")[1].split("$");//必要参数数组
+                				tempParam.forEach((item,index)=>{
+                					paramObj[item] = this.rows[item]
+                				})
+                			}
                 			let conf_id = item.title.id;
                         	paramObj["conf_id"] = conf_id
                 			let returnData;

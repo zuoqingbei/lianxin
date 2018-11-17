@@ -104,8 +104,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
 		String getSource = confModel.getStr("get_source");
 		StringBuffer sqlSuf = new StringBuffer();
-
-		if ((!("".equals(getSource) || getSource == null)) && getSource.contains("*")) {
+		
+		if ((tableName != null && tableName.contains("_dict"))) {
+			sqlSuf.append(" 1=1 and ");
+		}else if ((!("".equals(getSource) || getSource == null)) && getSource.contains("*")) {
 			String[] requireds = getSource.split("\\*");
 			String[] required = requireds[1].split("\\$");
 			for (String str : required) {
@@ -115,9 +117,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			sqlSuf.append(" company_id=" + companyId.trim() + " ");
 
 		}
-		if ((tableName != null && tableName.contains("_dict"))) {
-			sqlSuf.append(" 1=1 ");
-		}
+		
 		if (sqlSuf.length() < 1) {
 			renderJson(record.set("rows", null));
 			return;
