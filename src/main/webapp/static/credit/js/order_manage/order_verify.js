@@ -388,7 +388,6 @@ let Verify = {
         if(row.files.length === 0){$(".uploadFile:not(.upload-over)").show();return}
         console.log(row.files.length)
         if(row.files.length > 4) {
-        	alert(1)
         	$(".uploadFile:not(.upload-over)").hide();
         }else {
         	$(".uploadFile:not(.upload-over)").show()

@@ -88,6 +88,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese);
 	}
 
+
 	@SuppressWarnings("unchecked")
 	public void getBootStrapTable(boolean isCompanyMainTable, String sysLanguage) {
 		Record record = new Record();
@@ -112,6 +113,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			}
 		} else {
 			sqlSuf.append(" company_id=" + companyId.trim() + " ");
+
 		}
 		if ((tableName != null && tableName.contains("_dict"))) {
 			sqlSuf.append(" 1=1 ");
