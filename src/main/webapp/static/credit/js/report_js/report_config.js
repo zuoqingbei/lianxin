@@ -105,7 +105,6 @@ let ReportConfig = {
         	let urlTemp = titles[index].get_source;
         	let conf_id = titles[index].id;
         	if(!urlTemp){return}
-        	console.log(item)
         	let url = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
         	if(urlTemp.split("*")[1]){
         		let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
@@ -341,6 +340,7 @@ let ReportConfig = {
 	    		})
 			 
 			 let arr = Array.from($("#title"+item))
+			 console.log(temp)
 			 arr.forEach((item,index)=>{
 				 let formArr = Array.from($(item).siblings().find(".form-control"))
 				 formArr.forEach((item,index)=>{
