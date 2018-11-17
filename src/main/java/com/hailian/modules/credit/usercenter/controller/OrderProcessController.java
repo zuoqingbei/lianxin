@@ -24,13 +24,14 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
+import com.hailian.modules.credit.agentmanager.model.AgentModel;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
 import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
@@ -373,22 +374,23 @@ public class OrderProcessController extends BaseProjectController{
 		//操作时间
 		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));					
 		cof.save();
-		toSendMail(ismail, orderId);//代理分配发送邮件
+		toSendMail(ismail, orderId,model.get("agent_id"));//代理分配发送邮件
 		return model.set("status", oldStatus);
 	}
 	/*
 	 * 代理分配发送邮件
 	 */
-	private void toSendMail(String ismail, String orderId) throws Exception {
+	private void toSendMail(String ismail, String orderId,String agentId) throws Exception {
 		if("1".equals(ismail)){
 			CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, this);
-			String mailaddr=order.get("mail_receiver");
-			String mailaddrRe=order.get("mail_associate_recipient");
+		AgentModel agent=	AgentModel.dao.findById(agentId);
+			String mailaddr=agent.get("memo");
+			String mailaddrRe="";
 			if(StringUtils.isNotBlank(mailaddr) || StringUtils.isNotBlank(mailaddrRe)){
 				String title="New Order";
 				String content="Dear Sir/Madam,Good day!"
 								+"We would like to place an order for a complete credit report on the following company:"
-								+"Speed:" 
+								+"Speed:" +order.get("speed")+" "
 								+"Ref No.:" 
 								+"Company name:" 
 								+"Address:" 
@@ -687,13 +689,52 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		}
 		PublicUpdateMod(map);
-		toSendMail(ismail, orderId);//代理分配发送邮件
+		toSendMail(ismail, orderId,agent_id);//代理分配发送邮件
 		renderJson(new ResultType());
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"订单代理分配更新失败!"));
 		}
 	}
+	/**
+	 * 
+	* @Description: 批量分批
+	* @date 2018年11月15日 下午4:24:21
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public  void  orderbatchAgent() {
+		try {
+		String code = (String) getRequest().getParameter("statusCode");
+		String orderId = (String) getRequest().getParameter("orderId");
+		Map<String,Object> map = new HashMap<>();
+		if(code==null||"".equals(code.trim())){
+			map = null;
+		}else{
+			map.put("status", code);
+		}
+		String ismail = (String) getRequest().getParameter("ismail");
+		String agent_id = (String) getRequest().getParameter("agent_id");
+		map.put("agent_id", agent_id);
+        String ids[]=orderId.split(",");
+			for (String oid : ids) {
+		  CreditOrderInfo orderInfo=	CreditOrderInfo.dao.findById(oid);
+			AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,orderInfo.get("country"),orderInfo.get("speed"));
+			if(agentPrice !=null){
+					map.put("agent_priceId", agentPrice.get("id"));
+			}
+	     map.put("id", oid);
+		PublicUpdateMod(map);
+		toSendMail(ismail, orderId,agent_id);//代理分配发送邮件
+			}
+		renderJson(new ResultType());
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,"订单代理分配更新失败!"));
+		}
+	}
+	
 	/**
 	 * 通过订单id获取文件信息
 	 */
@@ -850,7 +891,7 @@ public class OrderProcessController extends BaseProjectController{
 	 */
 	public void reportedJson(){
 		//JFlyFoxUtils.passwordEncrypt(password);
-		//com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail
+		//com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail
 		String companyId = getPara("company_id");
 		String flagStr = getPara("flagStr","");
 		String tableName = getPara("tableName","");
@@ -881,7 +922,7 @@ public class OrderProcessController extends BaseProjectController{
 			rows = companyShareholder.find("select * from credit_company_shareholder where company_id=? and del_flag=0",params.toArray());
 			break;
 		case "tableShareholdersDetail":
-			CreditCompanyShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyShareholderDetail.class);
+			CreditCompanyLegalShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyLegalShareholderDetail.class);
 			rows = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id=? and del_flag=0",params.toArray());
 			break;
 		case "tableInvestment":
@@ -926,19 +967,19 @@ public class OrderProcessController extends BaseProjectController{
 		CreditCompanyInvestment companyInvestment = getModel(CreditCompanyInvestment.class); 
 		CreditCompanyManagement companyManagement = getModel(CreditCompanyManagement.class); 
 		CreditCompanyShareholder companyShareholder = getModel(CreditCompanyShareholder.class); 
-		CreditCompanyShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyShareholderDetail.class);
+		CreditCompanyLegalShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyLegalShareholderDetail.class);
 		
 		final List<CreditCompanyHis> companyHisList = companyHis.find("select * from credit_company_his where company_id = "+companyId);
 		final List<CreditCompanyInvestment> companyInvestmentList = companyInvestment.find("select * from credit_company_investment where company_id = "+companyId);
 		final List<CreditCompanyManagement> companyManagementList = companyManagement.find("select * from credit_company_management where company_id = "+companyId);
 		final List<CreditCompanyShareholder> companyShareholderList = companyShareholder.find("select * from credit_company_shareholder where company_id = "+companyId);
-		final List<CreditCompanyShareholderDetail> companyShareholderDetailList = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id = "+companyId);
+		final List<CreditCompanyLegalShareholderDetail> companyShareholderDetailList = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id = "+companyId);
 		//转化为model集合
 		final List<BaseProjectModel>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
 		final List<BaseProjectModel>  CreditCompanyInvestmentList = infoEntry(tableInvestmentJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment");
 		final List<BaseProjectModel>  CreditCompanyManagementList = infoEntry(tableManagementJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement");
 		final List<BaseProjectModel>  CreditCompanyShareholderList = infoEntry(tableShareholdersInfoJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder");
-		final List<BaseProjectModel>  CreditCompanyShareholderDetailList = infoEntry(tableShareholdersDetailJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholderDetail");
+		final List<BaseProjectModel>  CreditCompanyLegalShareholderDetailList = infoEntry(tableShareholdersDetailJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail");
 		List<BaseProjectModel> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
 		//数据库事务
 		Db.tx(new IAtom(){
@@ -950,13 +991,13 @@ public class OrderProcessController extends BaseProjectController{
 				companyInvestmentList.forEach( (CreditCompanyInvestment baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
 				companyManagementList.forEach( (CreditCompanyManagement baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
 				companyShareholderList.forEach( (CreditCompanyShareholder baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
-				companyShareholderDetailList.forEach( (CreditCompanyShareholderDetail baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
+				companyShareholderDetailList.forEach( (CreditCompanyLegalShareholderDetail baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
 				//保存操作
 				companyHistoryModelList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
 				CreditCompanyInvestmentList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
 				CreditCompanyManagementList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
 				CreditCompanyShareholderList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
-				CreditCompanyShareholderDetailList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
+				CreditCompanyLegalShareholderDetailList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
 				return true;
 			}
 		});

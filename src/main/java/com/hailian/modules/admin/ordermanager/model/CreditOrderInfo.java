@@ -548,9 +548,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String end_date1="";
 		//开始时间
 		if(StringUtils.isNotBlank(time)){
-			String[]  strs=time.split("至");
-			String receiver_date=strs[0].toString();
-			String end_date=strs[1].toString().replace(" ", "");
+			String[]  strs=time.split("~");
+			 receiver_date1=strs[0].toString();
+			 end_date1=strs[1].toString().replace(" ", "");
 		}
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
@@ -586,7 +586,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 						pageinator,
 						"SELECT t.id,t.num,t.end_date,t.receiver_date,t.custom_id,c.`name` as cname,c.name_en as ordername, "
 						+ "a.price as aprice,d.detail_name_en as acurrency,ROUND(r.rate,2) as agentrate , case when a.currency='274' then a.price ELSE ROUND(r.rate*a.price,2) end as rmb,"
-						+ "p.price as pprice,de.detail_name_en as acurrency,ROUND(rr.rate,2) as reprate, case when p.currency='274' then p.price ELSE rr.rate*p.price end as rmb2 ",
+						+ "p.price as pprice,de.detail_name_en as pcurrency,ROUND(rr.rate,2) as reprate, case when p.currency='274' then p.price ELSE ROUND(rr.rate*p.price,2) end as rmb2 ",
 						sql.toString(), params.toArray());
 
 		return page;
@@ -607,9 +607,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			String end_date1="";
 			//开始时间
 			if(StringUtils.isNotBlank(time)){
-				String[]  strs=time.split("至");
-				String receiver_date=strs[0].toString();
-				String end_date=strs[1].toString().replace(" ", "");
+				String[]  strs=time.split("~");
+				 receiver_date1=strs[0].toString();
+				 end_date1=strs[1].toString().replace(" ", "");
 			}
 			List<Object> params = new ArrayList<Object>();
 			sql.append(" from credit_order_info t ");

@@ -25,8 +25,8 @@ public class CreditCompanyManagement extends BaseProjectModel<CreditCompanyManag
 	* @date 2018年11月9日上午9:24:47  
 	* @TODO
 	 */
-	public void deleteBycomIdAndType(String companyid,String reporttype){
-		String sql="update credit_company_management set del_flag=1 where company_id=? and report_type=?";
+	public void deleteBycomIdAndLanguage(String companyid,String reporttype){
+		String sql="update credit_company_management set del_flag=1 where company_id=? and sys_language=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(companyid);
 		params.add(reporttype);

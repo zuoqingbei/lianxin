@@ -6,20 +6,13 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.feizhou.swagger.annotation.Api;
-import com.feizhou.swagger.annotation.ApiOperation;
-import com.feizhou.swagger.annotation.Param;
-import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
-import com.hailian.component.util.JFlyFoxUtils;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.usercenter.model.ResultType;
-import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.system.user.SysUser;
-import com.hailian.util.ehcache.EhCacheUtil;
 import com.jfinal.plugin.activerecord.Page;
 /**
  * 前台绩效

@@ -32,7 +32,7 @@ public class SettleController extends BaseController{
 	setAttr("customer", customer);
 	 List<AgentModel> agent=  AgentModel.dao.find("select agent_id from credit_agent");
 	setAttr("agent", agent);
-	render(path+"report_credit_settle.html");
+	render(path+"total_settle.html");
 	}
 	/**
 	 * 
@@ -60,6 +60,14 @@ public class SettleController extends BaseController{
 	}
 	
 	private SimpleDateFormat sdf=new SimpleDateFormat("yyyy.MM.dd");
+	/**
+	 * 
+	* @Description: 结算导出
+	* @date 2018年11月15日 下午5:02:15
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
 	public void SettleExport() {
 		String fileName="订单结算-"+sdf.format(new Date())+".xlsx";
 		String time = getPara("time");

@@ -68,11 +68,13 @@ public class HttpTest {
 		//getCourtUrl();//爬取全国法院被执行人信息查询网站
 		//getYjapi();
 		getYjapi("北京小桔科技有限公司");
+
+        //test
 		
     }
 	public static JSONObject getYjapi(String conpanyName){
 //		HttpGet get = new HttpGet("http://i.yjapi.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
-		HttpGet get = new HttpGet("http://dev.i.yjapi.com/ECIV4/GetDetailsByName?key=791f4eb3af844c53a6bba25f80f033b7&keyword="+conpanyName);//精确查询
+		HttpGet get = new HttpGet("http://i.yjapi.com/ECIV4/GetDetailsByName?key=791f4eb3af844c53a6bba25f80f033b7&keyword="+conpanyName);//精确查询
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
