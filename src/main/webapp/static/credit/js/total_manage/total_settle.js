@@ -212,6 +212,7 @@ let creditAnalysis = {
             	console.log(rows.rmb,oT.acount,rows.rmb2,oT.pcount);
             },
             onUncheck:(rows)=>{
+            	if(rows.reprate!=null&&rows.agentrate!=null){
             	oT.pcount -= rows.rmb2;
             	oT.acount -= rows.rmb;
             	oT.itemNum -= 1;
@@ -219,14 +220,15 @@ let creditAnalysis = {
             	$("#agent_commission").html(oT.acount.toFixed(2).replace("-",""))
             	$("#selectedTotalNum").text(oT.itemNum)
             	console.log(rows.rmb,oT.acount,rows.rmb2,oT.pcount);
+            	}
             },onCheckAll:(rows)=>{
             	 for(var i=0;i<rows.length;i++){
-            		 if(rows.reprate===null){
-                 		Public.message("info","请补全"+rows.pcname+"-人民币的汇率，方可结算")
+            		 if(rows[i].reprate===null){
+                 		Public.message("info","请补全"+rows[i].pcname+"-人民币的汇率，方可结算")
                  		return
                  	}
-                 	if(rows.agentrate===null){
-                 		Public.message("info","请补全 "+rows.acname+"-人民币的汇率，方可结算")
+                 	if(rows[i].agentrate===null){
+                 		Public.message("info","请补全 "+rows[i].acname+"-人民币的汇率，方可结算")
                  		return  
                  	}
             		  console.log(rows[i])
@@ -241,6 +243,7 @@ let creditAnalysis = {
             	
             },onUncheckAll:(rows)=>{
 	           	 for(var i=0;i<rows.length;i++){
+	           		 if(rows[i].reprate!=null&&rows[i].agentrate!=null){	 
 	       		  console.log(rows[i])
 	       		oT.pcount -= rows[i].rmb2;
 	          	oT.acount -= rows[i].rmb;
@@ -249,6 +252,7 @@ let creditAnalysis = {
 	          	$("#agent_commission").html(oT.acount.toFixed(2).replace("-",""))
 	          	$("#selectedTotalNum").text(oT.itemNum)
 	          	console.log(rows[i].rmb,oT.acount,rows[i].rmb2,oT.pcount);
+	           		 }
        		}
        },
   		onPageChange:()=>{
