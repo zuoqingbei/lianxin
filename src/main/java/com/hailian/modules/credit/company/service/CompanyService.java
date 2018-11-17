@@ -63,15 +63,18 @@ public class CompanyService {
 	/**
 	 * 调用第三方接口获取企业信息（json）解析并存放在企业相关信息表
 	* @author doushuihai  
+	 * @return 
 	* @date 2018年11月8日上午10:45:37  
 	* @TODO
 	 */
-	public void enterpriseGrab(String companyId,String companyName,String sys_language){
+	public boolean enterpriseGrab(String companyId,String companyName,String sys_language){
+		boolean flag=false;
 		JSONObject json = HttpTest.getYjapi(companyName);//获取api企业信息数据
 		String status = json.getString("Status"); //获取调用api接口的状态码
 		System.out.println(status);
 		//200调用成功并查到企业相关信息
 		if("200".equals(status)){
+			flag=false;
 			JSONObject jsonResulet = json.getJSONObject("Result");
 			//企业基本信息
 			String No = jsonResulet.getString("No"); //注册号
@@ -174,5 +177,6 @@ public class CompanyService {
 				}
 			}
 		}
+		return flag;
 	}
 }
