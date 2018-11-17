@@ -787,12 +787,12 @@ public class OrderProcessController extends BaseProjectController{
 	 * return resultJson
 	 * @param orderId status 
 	 */
-	private ResultType uploadFile(String orderId, String status,List<UploadFile> upFileList){
+	private ResultType uploadFile(String businessId, String businessType,List<UploadFile> upFileList){
 		List<File> commonFiles = new ArrayList<File>();
 		List<File> pdfFiles = new ArrayList<File>();
 		CreditUploadFileModel fileModel = new CreditUploadFileModel();
-		fileModel.set("business_type", status);
-		fileModel.set("business_id",orderId);
+		fileModel.set("business_type", businessType);
+		fileModel.set("business_id",businessId);
 		int size = upFileList.size();
 		if(size>0){
 			//long now = new Date().getTime();
