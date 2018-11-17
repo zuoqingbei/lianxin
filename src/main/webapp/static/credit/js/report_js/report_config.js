@@ -24,6 +24,15 @@ let ReportConfig = {
     			format: 'yyyy年MM月dd日'
     		});
     	})
+    	let dateScopeArr = Array.from($('.date-scope-form input'))
+    	dateScopeArr.forEach((item,index)=>{
+    		laydate.render({
+    			elem: item,
+    			format: 'yyyy年MM月dd日',
+    			range:true
+    		});
+    	})
+    	
     	
     	//模态窗里面的时间控件初始化
     	let modals = Array.from($(".modal"))
@@ -93,15 +102,17 @@ let ReportConfig = {
         	const $table = $("#table"+item);
         	let contents = this.contentsArr[index]
         	let titles = this.title
-        	
         	let urlTemp = titles[index].get_source;
         	let conf_id = titles[index].id;
         	if(!urlTemp){return}
+        	console.log(item)
         	let url = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
-        	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
-        	tempParam.forEach((item,index)=>{
-				 url += `&${item}=${this.rows[item]}`
-			 })
+        	if(urlTemp.split("*")[1]){
+        		let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+        		tempParam.forEach((item,index)=>{
+        			url += `&${item}=${this.rows[item]}`
+        		})
+        	}
 			 
 			 let selectInfo = []
         	selectInfo.push(_this.selectInfoObj)
@@ -310,6 +321,7 @@ let ReportConfig = {
     		let getFormUrl = titles[index].get_source;
     		if(!getFormUrl){return}
 			let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
+			console.log(url)
         	let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
         	let paramObj = {}
         	tempParam.forEach((item,index)=>{
@@ -325,6 +337,7 @@ let ReportConfig = {
 	    			success:(data)=>{
 	    				temp = data
 	    			}
+	    			
 	    		})
 			 
 			 let arr = Array.from($("#title"+item))
@@ -459,6 +472,7 @@ let ReportConfig = {
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
                 			let ind = index
+                			let rowNum = 0;//代表独占一行的input数量
 		                	formArr.forEach((item,index)=>{
 		                		
 		                				let formGroup = ''
@@ -495,6 +509,13 @@ let ReportConfig = {
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
+		                        				case 'date_scope':
+		                        					formGroup += `<div class="form-group date-scope-form">
+									            		<label for="" class="mb-2">${item.temp_name}</label>
+									            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+									            		<p class="errorInfo">${item.error_msg}</p>
+								            		</div>`
+		                        					break;
 							            		case 'address':
 							            			formGroup += ` <div class="form-group address-form"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
@@ -529,13 +550,17 @@ let ReportConfig = {
 		        							    	break;
 		                        			}
 		                        		}
+		                				if(formArr[index-1] && formArr[index-1]['field_type'] === 'address')  {
+		                					rowNum += 1
+		                				}
 		                        		
-		                        		if((index)%3 === 0 || !formArr[index+1]){
+		                        		if((index - rowNum)%3 === 0 || !formArr[index+1] || formArr[index-1]['field_type'] === 'address'){
 		                        			contentHtml += `<div class="firm-info mt-4 px-5 d-flex justify-content-between">`;
 		                        		}
 		                        		contentHtml += formGroup;
 		                        		
-		                        		if(((index+1)%3 === 0 && index !==0) || !formArr[index+2]){
+		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || !formArr[index+2] || formArr[index]['field_type'] === 'address'){
+		                        			
 		                        			contentHtml += `</div>`    
 		                        		}
 		                        		
@@ -646,7 +671,7 @@ let ReportConfig = {
                 			_this.formTitle.push(inputObj)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3">
 					                          <label >${inputObj.temp_name}</label>
-					                          <input type="text" name="" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" >
+					                          <input type="text" name="" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
 					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 					                        </div>`
                 			
@@ -696,7 +721,7 @@ let ReportConfig = {
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
                 			item.contents.forEach((item,index)=>{
-                				contentHtml += ` <div class="form-group mb-3 p-4" style="background:#fff">
+                				contentHtml += ` <div class="form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
 				                					<label for="" class="thead-label">${item.temp_name}</label>
 				                					<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
 			                					</div>`
