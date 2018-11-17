@@ -585,8 +585,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				.paginate(
 						pageinator,
 						"SELECT t.id,t.num,t.end_date,t.receiver_date,t.custom_id,c.`name` as cname,c.name_en as ordername, "
-						+ "a.price as aprice,d.detail_name_en as acurrency,ROUND(r.rate,2) as agentrate , case when a.currency='274' then a.price ELSE ROUND(r.rate*a.price,2) end as rmb,"
-						+ "p.price as pprice,de.detail_name_en as pcurrency,ROUND(rr.rate,2) as reprate, case when p.currency='274' then p.price ELSE ROUND(rr.rate*p.price,2) end as rmb2 ",
+						+ "a.price as aprice,d.detail_name_en as acurrency,d.detail_name as acname,ROUND(r.rate,2) as agentrate , case when a.currency='274' then a.price ELSE ROUND(r.rate*a.price,2) end as rmb,"
+						+ "p.price as pprice,de.detail_name_en as pcurrency,de.detail_name as pcname,ROUND(rr.rate,2) as reprate, case when p.currency='274' then p.price ELSE ROUND(rr.rate*p.price,2) end as rmb2 ",
 						sql.toString(), params.toArray());
 
 		return page;
