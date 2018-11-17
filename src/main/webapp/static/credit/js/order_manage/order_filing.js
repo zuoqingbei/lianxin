@@ -133,7 +133,6 @@ let Filing = {
                  let country = $("#countryid").val();
                  let speed = $("#speedid").val();
                  let num = $("#num2").text();
-                 alert(country)
                  //console.log(reporter,remarks);
                  $.ajax({
             			type:"post",

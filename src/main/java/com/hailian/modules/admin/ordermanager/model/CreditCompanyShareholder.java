@@ -19,11 +19,11 @@ public class CreditCompanyShareholder extends BaseProjectModel<CreditCompanyShar
 		params.add(reporttype);
 		return dao.findFirst(sql, params.toArray());
 	}
-	public void deleteBycomIdAndType(String companyid,String reporttype){
-		String sql="update credit_company_shareholder set del_flag=1 where company_id=? and report_type=?";
+	public void deleteBycomIdAndLanguage(String companyid,String sys_language){
+		String sql="update credit_company_shareholder set del_flag=1 where company_id=? and sys_language=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(companyid);
-		params.add(reporttype);
+		params.add(sys_language);
 		Db.update(sql, params.toArray());
 	}
 	

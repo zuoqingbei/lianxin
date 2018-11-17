@@ -63,15 +63,18 @@ public class CompanyService {
 	/**
 	 * 调用第三方接口获取企业信息（json）解析并存放在企业相关信息表
 	* @author doushuihai  
+	 * @return 
 	* @date 2018年11月8日上午10:45:37  
 	* @TODO
 	 */
-	public void enterpriseGrab(String companyId,String companyName,String reporttype){
+	public boolean enterpriseGrab(String companyId,String companyName,String sys_language){
+		boolean flag=false;
 		JSONObject json = HttpTest.getYjapi(companyName);//获取api企业信息数据
 		String status = json.getString("Status"); //获取调用api接口的状态码
 		System.out.println(status);
 		//200调用成功并查到企业相关信息
 		if("200".equals(status)){
+			flag=false;
 			JSONObject jsonResulet = json.getJSONObject("Result");
 			//企业基本信息
 			String No = jsonResulet.getString("No"); //注册号
@@ -103,7 +106,7 @@ public class CompanyService {
 			companyinfoModel.set("province", Province);
 			companyinfoModel.set("operation_scope", Scope);
 			companyinfoModel.set("id", companyId);
-			companyinfoModel.set("report_type", reporttype);
+			companyinfoModel.set("sys_language", sys_language);
 			JSONObject ContactInfo = json.getJSONObject("Result").getJSONObject("ContactInfo");//联系信息
 			String PhoneNumber = ContactInfo.getString("PhoneNumber");//电话
 			String Email = ContactInfo.getString("Email");//邮箱
@@ -115,7 +118,7 @@ public class CompanyService {
 			//股东信息
 			JSONArray partners = json.getJSONObject("Result").getJSONArray("Partners");
 			if(partners !=null && partners.size()>0){
-				CreditCompanyShareholder.dao.deleteBycomIdAndType(companyId, reporttype);//根据公司编码和报告类型删除记录
+				CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 				for(int i=0;i<partners.size();i++){
 					JSONObject partner = (JSONObject)partners.get(i);
 					String name = partner.getString("StockName");//股东
@@ -124,14 +127,14 @@ public class CompanyService {
 					shareholderModel.set("name", name);
 					shareholderModel.set("money", StockPercent);
 					shareholderModel.set("company_id", companyId);
-					shareholderModel.set("report_type", reporttype);
+					shareholderModel.set("sys_language", sys_language);
 					shareholderModel.save();
 				}
 			}
 			//管理层
 			JSONArray Employees = json.getJSONObject("Result").getJSONArray("Employees");
 			if(Employees !=null && Employees.size()>0){
-				CreditCompanyManagement.dao.deleteBycomIdAndType(companyId, reporttype);//根据公司编码和报告类型删除记录
+				CreditCompanyManagement.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 				for(int i=0;i<Employees.size();i++){
 					JSONObject employee = (JSONObject)Employees.get(i);
 					//CreditCompanyManagement
@@ -141,7 +144,7 @@ public class CompanyService {
 					managementModel.set("name", name);
 					managementModel.set("position", job);
 					managementModel.set("company_id", companyId);
-					managementModel.set("report_type", reporttype);
+					managementModel.set("sys_language", sys_language);
 					managementModel.save();
 				}
 			}
@@ -156,7 +159,7 @@ public class CompanyService {
 			//变更事项
 			JSONArray ChangeRecords = json.getJSONObject("Result").getJSONArray("ChangeRecords");
 			if(ChangeRecords != null && ChangeRecords.size()>0){
-				CreditCompanyHis.dao.deleteBycomIdAndType(companyId, reporttype);//根据公司编码和报告类型删除记录
+				CreditCompanyHis.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 				for(int i=0;i<ChangeRecords.size();i++){
 					JSONObject changerecord = (JSONObject)ChangeRecords.get(i);
 					String ProjectName = changerecord.getString("ProjectName");//变更项
@@ -169,10 +172,11 @@ public class CompanyService {
 					companyhisModel.set("change_back", AfterContent);
 					companyhisModel.set("date", ChangeDate);
 					companyhisModel.set("company_id", companyId);
-					companyhisModel.set("report_type", reporttype);
+					companyhisModel.set("sys_language", sys_language);
 					companyhisModel.save();
 				}
 			}
 		}
+		return flag;
 	}
 }

@@ -12,11 +12,11 @@ import com.jfinal.plugin.activerecord.Db;
 public class CreditCompanyHis extends BaseProjectModel<CreditCompanyHis> {
 	private static final long serialVersionUID = 1L;
 	public static final CreditCompanyHis dao = new CreditCompanyHis();//名字都叫dao，统一命名
-	public void deleteBycomIdAndType(String companyid,String reporttype){
-		String sql="update credit_company_his set del_flag=1 where company_id=? and report_type=?";
+	public void deleteBycomIdAndLanguage(String companyid,String sys_language){
+		String sql="update credit_company_his set del_flag=1 where company_id=? and sys_language=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(companyid);
-		params.add(reporttype);
+		params.add(sys_language);
 		Db.update(sql, params.toArray());
 	}
 	

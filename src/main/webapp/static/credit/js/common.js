@@ -39,7 +39,7 @@ let Public = {
 		})
     	
     	
-    	$(".message").click(()=>{
+    	$(".message").unbind().click(()=>{
             if($('#mynotice').parents("li").hasClass("hasChild")) {
                 $('#mynotice').parents("li").toggleClass("show")
                 $('#mynotice').parents("ul").show(200)

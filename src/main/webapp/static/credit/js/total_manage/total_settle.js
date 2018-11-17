@@ -12,8 +12,9 @@ let creditAnalysis = {
         this.initDateInput();
         this.selectItem();
         this.searchEvent();
-    //    this.reSet();
+        this.reSet();
         this.butExport();
+       
     },
     /**
      * 页面变量中设置勾选的数据
@@ -31,7 +32,7 @@ let creditAnalysis = {
         }
         $("#commission").text(this.selectMoney);
         $("#selectedTotalNum").text(this.selectNum);
-        // console.log('oT.selectedData', oT.selectedData, 'selectMoney', this.selectMoney,'当前页内容',oT.selectedData_thisPage)
+         console.log('oT.selectedData', oT.selectedData, 'selectMoney', this.selectMoney,'当前页内容',oT.selectedData_thisPage)
     },
     selectItem() {
         let oT = this;
@@ -40,7 +41,7 @@ let creditAnalysis = {
         $("[name=btSelectAll]").click(function () {
             oT.selectedData_thisPage = [];
             [oT.selectNum, oT.selectMoney] = [0, 0];
-            let $btSelectItems = $(this).parents('.bootstrap-table').find('.fixed-table-body-columns [name=btSelectItem]');
+            let $btSelectItems = $(this).parents('.bootstrap-table').find('.fixed-table-body [name=btSelectItem]');
             if ($(this).is(":checked")) {
                 $btSelectItems.prop('checked', true);
                 oT.selectAll = true;
@@ -61,7 +62,7 @@ let creditAnalysis = {
             if ($(this).is(":checked")) {//加
                 oT.selectedData_thisPage.push({
                     index,
-                    money: parseFloat($('#table tbody tr').eq(index).find('td').eq($('.fixed-table-header').find('[data-field = reportType]').index()).text())
+                    money: parseFloat($('#table tbody tr').eq(index).find('td').eq($('.fixed-table-body').find('[data-field = pprice]').index()).text())
                 });
             } else {//减
                 oT.selectedData_thisPage.forEach(function (item, thisIndex, array) {
@@ -97,9 +98,9 @@ let creditAnalysis = {
     },
     reSet(){
 		let that=this;
-		 $("#btn_reset").click(function(){
-			 $("#txt_search_reporter").empty(); 
-			 $("#txt_search").empty();
+		 $("#btn_resett").click(function(){
+			 document.getElementById("txt_search_reporter").options.selectedIndex = 0;  
+			 document.getElementById("txt_search").options.selectedIndex = 0; 
 			 $("#time").val("");
 			 
 		 })
@@ -168,6 +169,14 @@ let creditAnalysis = {
                 },{
                     title: '代理价格汇率',
                     field: 'agentrate',
+                    visible: false,
+                },{
+                    title: '报告价格人民币',
+                    field: 'rmb2',
+                    visible: false,
+                },{
+                    title: '代理价格人民币',
+                    field: 'rmb',
                     visible: false,
                 }
 
@@ -250,7 +259,7 @@ let creditAnalysis = {
     initDateInput() {
         laydate.render({
             elem: '#time'
-            , range:'至'
+            , range:'~'
         })
     }
 };
