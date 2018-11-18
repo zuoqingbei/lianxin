@@ -63,7 +63,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 */
 	public void alterBootStrapTable() {
 		try {
-			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE + getPara("className"), SimplifiedChinese);
+			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE + getPara("className"), SimplifiedChinese,isCompanyMainTable());
 			renderJson(new ResultType(1, "操作成功!"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -85,16 +85,18 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * @param isCompanyMainTable
 	 */
 	public void getBootStrapTable() {
-		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese);
+		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese,null);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public void getBootStrapTable(boolean isCompanyMainTable, String sysLanguage) {
+	public void getBootStrapTable(boolean isCompanyMainTable, String sysLanguage,String companyId) {
 		Record record = new Record();
 		String tableName = getPara("tableName", "");
 		String className = getPara("className");
-		String companyId = getPara("company_id");
+		if(companyId==null||"".equals(companyId)) {
+			 companyId = getPara("company_id","");
+		}
 		String confId = getPara("conf_id", "");
 		
 		// 获取关联字典表需要转义的下拉选
