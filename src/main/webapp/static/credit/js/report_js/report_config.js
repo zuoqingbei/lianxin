@@ -52,9 +52,7 @@ let ReportConfig = {
     	 */
     	let addArr = Array.from($('.address-form input'))
     	addArr.forEach((item,index)=>{
-    		
     		$(item).focus(function (e) {
- 
     			SelCity(this,e);
     			let top = $(item).offset().top
     			$("#PoPy").css("top",top+30+"px")
@@ -66,6 +64,26 @@ let ReportConfig = {
     				}
     			})
     		});
+    	})
+    	
+    	//模态窗里面的地址控件初始化
+    	let modals = Array.from($(".modal"))
+    	let modalAdd = Array.from($(".modal .modal-address input"))
+    	modals.forEach((item,index)=>{
+    		modalAdd.forEach((item,index)=>{
+    			$(item).focus(function (e) {
+        			SelCity(this,e);
+        			let top = $(item).offset().top
+        			$("#PoPy").css("top",top+30+"px")
+        			$(".main").scroll(()=>{
+        				let top = $(item).offset().top
+        				$("#PoPy").css("top",top+30+"px")
+        				if(top < 90) {
+        					$("#cColse").trigger("click")
+        				}
+        			})
+        		});
+    		})
     	})
     },
     regChecked(){
@@ -282,6 +300,12 @@ let ReportConfig = {
 						                    </button>
 						                </div>`
     					break;
+    				case 'address' :
+    					modalBody += ` <div class="form-inline justify-content-center my-3 modal-address">
+		                    <label for="" class="control-label" >${ele.temp_name}：</label>
+		                    <input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+		                </div>`
+    					break;
     				default:
     					break;
     			}
@@ -318,14 +342,15 @@ let ReportConfig = {
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
-    		if(!getFormUrl){return}
+    		if(getFormUrl === null){return}
 			let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
-			console.log(url)
-        	let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
-        	let paramObj = {}
-        	tempParam.forEach((item,index)=>{
-        		paramObj[item] = this.rows[item]
-			 })
+			let paramObj = {}
+			if(getFormUrl.split("*")[1]){
+				let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
+				tempParam.forEach((item,index)=>{
+					paramObj[item] = this.rows[item]
+				})
+			}
 			 paramObj["conf_id"] = conf_id
 			 let temp;
 			 $.ajax({
@@ -392,9 +417,9 @@ let ReportConfig = {
         	data:{id,reportType},
         	success:(data)=>{
                 setTimeout(()=>{
-                	_this.addressInit();
                 	_this.initModal();
                 	_this.dateInit();
+                	_this.addressInit();
                 	_this.regChecked();
                 	_this.initTable();
                 	_this.bindFormData();
@@ -523,6 +548,7 @@ let ReportConfig = {
 									                                </div>`
 							            			break;
 							            		case 'select':
+							            			if(item.get_source === null){return}
 							            			let url = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
 							            			$.ajax({
 							            				type:'get',
@@ -854,13 +880,17 @@ let ReportConfig = {
     	formIndex.forEach((item,index)=>{
     		console.log( formTitles[index])
     		let alterSource = formTitles[index]["alter_source"];
+    		if(alterSource === null){return}
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
-        	let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
-        	let dataJson = []
-        	let dataJsonObj = {} 
-        	tempParam.forEach((item,index)=>{
-        		dataJsonObj[item] = this.rows[item]
-			 })
+    		let dataJson = []
+    		let dataJsonObj = {} 
+    		if(alterSource.split("*")[1]) {
+    			
+    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
+    			tempParam.forEach((item,index)=>{
+    				dataJsonObj[item] = this.rows[item]
+    			})
+    		}
 			 //点击保存按钮
     		$(".position-fixed").on("click","#save",(e)=>{
     			$("#save").addClass("disabled")

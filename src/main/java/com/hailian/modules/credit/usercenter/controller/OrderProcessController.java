@@ -824,7 +824,10 @@ public class OrderProcessController extends BaseProjectController{
 					pdfFiles.add(pdf);
 				}
 				//将文件上传到服务器
-				boolean storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+				boolean storePdfFile = true;
+				if(pdfFiles.size()>0) {
+					  storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+				}
 				boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",commonFiles,storePath,ip,port,userName,password);
 				if(!storePdfFile){
 					return new ResultType(0, "预览文件生成异常!");
@@ -1068,7 +1071,6 @@ public class OrderProcessController extends BaseProjectController{
 				list.add(model);
 				map.clear();
 			}
-			
 		}
 		return list;
 	}
