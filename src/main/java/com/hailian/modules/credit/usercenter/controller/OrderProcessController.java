@@ -798,7 +798,7 @@ public class OrderProcessController extends BaseProjectController{
 			//long now = new Date().getTime();
 			String now = UUID.randomUUID().toString().replaceAll("-", "");
 			//上传的文件在ftp服务器按日期分目录
-			String storePath = ftpStore+DateUtils.getNow(DateUtils.YMD);
+			String storePath = ftpStore+"/"+DateUtils.getNow(DateUtils.YMD);
 			try {
 				List<String> pdfNameList = new LinkedList<>();
 				for(UploadFile uploadFile:upFileList){
