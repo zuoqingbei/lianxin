@@ -798,7 +798,7 @@ public class OrderProcessController extends BaseProjectController{
 			//long now = new Date().getTime();
 			String now = UUID.randomUUID().toString().replaceAll("-", "");
 			//上传的文件在ftp服务器按日期分目录
-			String storePath = ftpStore+DateUtils.getNow(DateUtils.YMD);
+			String storePath = ftpStore+"/"+DateUtils.getNow(DateUtils.YMD);
 			try {
 				List<String> pdfNameList = new LinkedList<>();
 				for(UploadFile uploadFile:upFileList){
@@ -840,14 +840,17 @@ public class OrderProcessController extends BaseProjectController{
 				//将文件信息保存到实体类
 				for (int i=0;i<upFileList.size();i++) {
 					//获取真实文件名
-					String originalFile = upFileList.get(i).getOriginalFileName();
+					String originalFile = upFileList.get(i).getFileName();
 					//不带后缀的文件名
 					String originalFileName = FileTypeUtils.getName(originalFile);
 					//根据文件后缀名判断文件类型
 					String ext = FileTypeUtils.getFileType(originalFile);
 					//上传到服务器时的文件名
 					String FTPfileName = originalFileName + now + "." + ext;
-					String PDFfileName = originalFileName + now + "." + "pdf";
+					String PDFfileName = originalFileName + now + "." + ext;
+					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
+						 PDFfileName = originalFileName + now + "." + "pdf";
+					}
 					//String pdfFactpath=storePath+"/"+pdf_FTPfileName;
 						/*if(pdf!=null){
 							pdf.delete();
