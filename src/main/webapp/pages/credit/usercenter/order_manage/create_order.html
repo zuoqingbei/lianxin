@@ -111,7 +111,7 @@
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6 layui-form">
 		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>订单公司名称：</label>
-		                        	<input class=" col-md-8 layui-input formInput" name="attr.right_company_name_en" type="text" value="">
+		                        	<input class=" col-md-8 layui-input formInput" id="attr.right_company_name_en" name="attr.right_company_name_en" type="text" value="">
                                        <!--  <select name="attr.company_id" class=" col-md-8 layui-input" lay-search="" ay-verify="" >
                                             <option value="0" disabled selected>请选择公司</option>
                                         </select> -->
@@ -194,6 +194,7 @@
 		    			<input name="attr.status" type="hidden" value="0">
 		    			<input name="id" type="hidden" value="0">
 		    			<input id="priceid" name="attr.price_id" type="hidden" value="0">
+		    			<input id="is_fastsubmit" name="attr.is_fastsubmit" type="hidden" value="-1">
 		    			<input name="attr.source" type="hidden" value="0">
 		    			<input name="attr.end_date" type="hidden" value="0">
 		    			<input name="attr.company_by_report" type="hidden" value="0">
@@ -234,7 +235,33 @@
 			</div>
 			</div>
 		</div>
-    
+    <!-- 检测到相同公司报告Modal -->
+  <button id="show_checked_modal" data-toggle="modal" data-target="#checkedModal" style="visibility:hidden"></button>
+  <div class="modal fade" id="checkedModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+	<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title m-auto d-flex" id="checkedModalLongTitle">
+				<img src="../../imgs/order/icons8-notice.png" alt="">
+				检测到相同公司报告
+			</h5>
+		</div>
+		<div class="modal-body">
+			<div class="text-center my-3 modal-label">报告时间：</div>
+			<div class="text-center my-3 modal-text">2018-10-17</div>
+			<div class="text-center my-3 modal-label">是否有财务信息：</div>
+			<div class="text-center my-3 modal-text">是</div>
+			<div class="text-center my-3 modal-label">最近财务报告时间：</div>
+			<div class="text-center my-3 modal-text">2017-10-17</div>
+			
+		</div>
+		<div class="modal-footer justify-content-center">
+			<button type="button" class="btn btn-default mr-4" id="modal_checked_submit" >递交订单</button>
+			<button type="button" class="btn btn-primary" id="modal_checked_create" >新建订单</button>
+		</div>
+	</div>
+	</div>
+</div>
     
     <script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
     <script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>
@@ -418,7 +445,7 @@ function piliangDingDan(){
 	        	})
 	        },
 	    });
-	 	}
+}
 layui.use('form', function(){
 		var form = layui.form;  
 		form.render(); //更新全部

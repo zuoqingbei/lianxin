@@ -94,7 +94,8 @@ public class CompanyService {
 			CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
 			companyinfoModel.set("registration_num", No);
 			companyinfoModel.set("company_type", EconKind);
-			companyinfoModel.set("credit_code", CreditCode);
+			companyinfoModel.set("register_code_type", "632");
+			companyinfoModel.set("register_codes", CreditCode);
 			companyinfoModel.set("legal", OperName);
 			companyinfoModel.set("registered_capital", RegistCapi);
 			companyinfoModel.set("establishment_date", StartDate);
