@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ch.qos.logback.core.status.Status;
+//import ch.qos.logback.core.status.Status;
 
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
