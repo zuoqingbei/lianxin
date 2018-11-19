@@ -62,6 +62,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 2018/11/8 lzg 修改或者新增bootStrapTable式的数据
 	 */
 	public void alterBootStrapTable() {
+		if("CreditCompanySubtables".equals(getPara("className"))) {
+			int a = 0;
+			a++;
+		}
 		try {
 			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE + getPara("className"), SimplifiedChinese,isCompanyMainTable());
 			renderJson(new ResultType(1, "操作成功!"));
