@@ -359,7 +359,7 @@ public class HomeController extends BaseProjectController {
 		//判断该公司是否存在于公司库中
 		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
 		//如果公司不存在则在数据库中增加该公司的记录
-		if(company==null) {
+		if(company==null){
 			company=new CreditCompanyInfo();
 			company.set("name_en", right_company_name_en);
 			company.save();
@@ -379,6 +379,7 @@ public class HomeController extends BaseProjectController {
 			  //代理自动分配
 			  AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroad(countryId,model.get("speed"));
 			  if(agentPrice!=null){
+				  model.set("status", "295");
 				  model.set("agent_id", agentPrice.get("agent_id"));
 				  model.set("agent_priceId", agentPrice.get("id"));
 				  isagent=true;

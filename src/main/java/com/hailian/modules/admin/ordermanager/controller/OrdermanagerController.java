@@ -37,6 +37,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditReportUsetime;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.admin.site.TbSite;
 import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.system.dict.SysDictDetail;
@@ -477,12 +478,27 @@ public class OrdermanagerController extends BaseProjectController{
 		/*
 		 * 为防止测试时拦截,上线后删掉
 		 */
-//		CreditReportPrice test=new CreditReportPrice();
-//		test.set("id", 99);
-//		renderJson(test);
-		renderJson(price);
+		CreditReportPrice test=new CreditReportPrice();
+		test.set("id", 99);
+		renderJson(test);
+		/*
+		 * 正式
+		 */
+//		renderJson(price);
 		
 
+	}
+	public void isTheSameCompany(){
+		String right_company_name_en=getPara("right_company_name_en");
+		//判断该公司是否存在于公司库中
+		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
+		if(company!=null){
+			ResultType resultType = new ResultType(1,"存在相同公司");
+			renderJson(resultType);
+		}else{
+			ResultType resultType = new ResultType(2,"不存在相同公司");
+			renderJson(resultType);
+		}
 	}
 	/**
 	 * 
