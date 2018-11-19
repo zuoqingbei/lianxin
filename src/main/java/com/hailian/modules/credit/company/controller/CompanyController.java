@@ -141,6 +141,6 @@ public class CompanyController extends BaseProjectController {
 	* @TODO
 	 */
 	public void dataImport(){
-		//CompanyService.service.EnterpriseGrab("7777777", "北京小桔科技有限公司", "7");
+		CompanyService.service.enterpriseGrab("7777777", "北京小桔科技有限公司", "7");
 	}
 }
