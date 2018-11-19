@@ -18,6 +18,7 @@ let ReportConfig = {
     	 * 日期初始化
     	 */
     	let dateArr = Array.from($('.date-form input'))
+    	console.log(dateArr)
     	dateArr.forEach((item,index)=>{
     		laydate.render({
     			elem: item,
@@ -295,7 +296,7 @@ let ReportConfig = {
     					modalBody += ` <div class="form-inline justify-content-center my-3">
 						                    <label for="" class="control-label">${ele.temp_name}：</label>
 						                    <button type="button" class="form-control" id="modal_logo_icon">
-						                        <span>${ele.place_hold}</span>
+						                        <span style="display:block;height:1.5rem">${ele.place_hold}</span>
 						                        <input type="file" class="file-input" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
 						                    </button>
 						                </div>`
@@ -339,10 +340,11 @@ let ReportConfig = {
     	 */
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
+    	console.log(titles,formIndex)
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
-    		if(getFormUrl === null){return}
+    		if(getFormUrl === null || getFormUrl === ''){return}
 			let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
 			let paramObj = {}
 			if(getFormUrl.split("*")[1]){
@@ -363,11 +365,21 @@ let ReportConfig = {
 	    			}
 	    			
 	    		})
-			 
 			 let arr = Array.from($("#title"+item))
-			 console.log(temp)
 			 arr.forEach((item,index)=>{
+				 if($(item).siblings(".radio-con").length !== 0) {
+					 //radio类型绑数
+					 if(temp.rows.length === 0){return}
+					 let obid = temp.rows[0].id;
+					 $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+					 let overall_rating =  temp.rows[0].overall_rating;
+					 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+					 
+					 $("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+					 return
+				 }
 				 let formArr = Array.from($(item).siblings().find(".form-control"))
+				 if(temp.rows.length === 0){return}
 				 formArr.forEach((item,index)=>{
 					 let obj = temp.rows[0];
     				let id = $(item).attr("id");
@@ -427,6 +439,13 @@ let ReportConfig = {
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
             	    Public.tabFixed(".tab-bar",".main",120,90)
+            	    
+            	    let firmArr = Array.from($(".firm-info"));
+            	    firmArr.forEach((item,index)=>{
+            	    	if($(item).children().length === 2) {
+            	    		$(item).addClass("abc")
+            	    	}
+            	    })
                 },0)
                 /**
                  * 头部
@@ -484,8 +503,8 @@ let ReportConfig = {
                 	 * 循环模块
                 	 */
                 	let smallModileType = item.smallModileType
-                	if(smallModileType !== '-2' && smallModileType !== '5' && item.title.temp_name !== null) {
-                		contentHtml +=  `<div class="bg-f pb-3 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                	if(smallModileType !== '-2' && smallModileType !== '5' && item.title.temp_name !== null && item.title.temp_name !== "") {
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
@@ -580,18 +599,17 @@ let ReportConfig = {
 		                					rowNum += 1
 		                				}
 		                        		
-		                        		if((index - rowNum)%3 === 0 || !formArr[index+1] || formArr[index-1]['field_type'] === 'address'){
+		                        		if((index - rowNum)%3 === 0  || formArr[index-1]['field_type'] === 'address' || formArr[index]['field_type'] === 'address' || formArr[index]['field_type'] === 'textarea'){
 		                        			contentHtml += `<div class="firm-info mt-4 px-5 d-flex justify-content-between">`;
 		                        		}
 		                        		contentHtml += formGroup;
 		                        		
-		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || !formArr[index+2] || formArr[index]['field_type'] === 'address'){
-		                        			
+		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || formArr[index]['field_type'] === 'address' || (formArr[index+1]&&formArr[index+1]['field_type'] === 'textarea')){
 		                        			contentHtml += `</div>`    
 		                        		}
 		                        		
-		                        	
 		                	}) 
+		                	contentHtml += `</div>`   
 		                	break;
                 		case '1':
                 			//table类型
@@ -695,6 +713,7 @@ let ReportConfig = {
                 			//信用等级
                 			let inputObj = item.contents[0]
                 			_this.formTitle.push(inputObj)
+                			_this.formIndex.push(index)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3">
 					                          <label >${inputObj.temp_name}</label>
 					                          <input type="text" name="" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
@@ -746,23 +765,35 @@ let ReportConfig = {
                 			//表格下面的无标题多行输入框 保存回显同表单模块
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
+                			let ot_item = item
                 			item.contents.forEach((item,index)=>{
-                				contentHtml += ` <div class="form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
-				                					<label for="" class="thead-label">${item.temp_name}</label>
-				                					<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
-			                					</div>`
+                				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
+                					contentHtml += ` <div class="form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
+                						<label for="" class="thead-label">${item.temp_name}</label>
+                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+            						</div>`
+                				}else{
+                					contentHtml += ` <div class="form-group mb-3 p-4" style="background:#fff">
+	                						<label for="" class="thead-label">${item.temp_name}</label>
+	                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+                						</div>`
+                				}
                 			})
                 			break;
                 		case '8':
                 			//radio类型 总体评价模块    保存回显同表单模块
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
-                			contentHtml += `<div class="table-content1 form-group" style="background:#fff">
+                			
+                			let str = item.contents[0].get_source;
+                			let this_item = item
+                			let strItem = str.split("&")
+                			contentHtml += `<div class="table-content1 form-group radio-con" style="background:#fff">
 					                        	<div class="radio-box">`
-                			item.contents.forEach((item,index)=>{
+                				strItem.forEach((item,index)=>{
                 				contentHtml += ` <div class="form-check form-check-inline mr-5">
-					                                <input class="form-check-input" type="radio" name="inlineRadio1" id="inlineRadio${index}" value=${item.id}>
-					                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.temp_name}</label>
+					                                <input class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+					                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
 					                            </div>`
                 			})
                 				
@@ -799,6 +830,7 @@ let ReportConfig = {
     		$("#addBtn"+item).click(()=>{
     			this.isAdd = true
     			$("#modal"+item+" input").val("");
+    			$("#modal"+item+" input").siblings("span").html("");
 		    	$("#modal"+item+" textarea").val("");
 		    	 $("#modal"+item+" select").find("option:selected").attr("selected", false);
 			    $("#modal"+item+" select").find("option").first().attr("selected", true);
@@ -811,6 +843,11 @@ let ReportConfig = {
     			let formArr = Array.from($("#modal"+item).find(".form-inline"))
 				formArr.forEach((item,index)=>{
 					let id = $(item).children("label").siblings().attr("id");
+					if($("#"+id).is("button")) {
+						let name = $('#'+$('#'+id).children("input").attr("id")).attr("name")
+						let val = $('#'+id).children("span").html()
+						dataJsonObj[name] = val
+					}
 					
 					//调用form格式化数据函数
 					let tempObj = this.getFormData($('#'+id));
@@ -876,11 +913,11 @@ let ReportConfig = {
     	 */
     	let formTitles = this.formTitle;
     	let formIndex = this.formIndex;
+    	console.log(formTitles,formIndex)
     	let _this = this
     	formIndex.forEach((item,index)=>{
-    		console.log( formTitles[index])
     		let alterSource = formTitles[index]["alter_source"];
-    		if(alterSource === null){return}
+    		if(alterSource === null || alterSource === ''){return}
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
     		let dataJson = []
     		let dataJsonObj = {} 
@@ -891,11 +928,22 @@ let ReportConfig = {
     				dataJsonObj[item] = this.rows[item]
     			})
     		}
+    		let this_item = item
 			 //点击保存按钮
-    		$(".position-fixed").on("click","#save",(e)=>{
+    		$(".position-fixed").unbind().on("click","#save",(e)=>{
     			$("#save").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
+    				 if($(item).siblings(".radio-con").length !== 0) {
+    					 //radio类型绑数
+    					 console.log(url,this_item)
+    					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
+    					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
+    					 let val = $('input[name='+radioName+']:checked').val();
+    					 dataJsonObj[radioName] = val
+    					 dataJsonObj["id"] = id
+    				 }
+    				 
     				 let formArr = Array.from($(item).siblings().find(".form-control"))
     				 formArr.forEach((item,index)=>{
         				let id = $(item).attr("id");
@@ -942,10 +990,19 @@ let ReportConfig = {
     			 })
     		})
     			 //点击提交按钮
-    		$(".position-fixed").on("click","#commit",(e)=>{
+    		$(".position-fixed").unbind().on("click","#commit",(e)=>{
     			$("#commit").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
+    				 if($(item).siblings(".radio-con").length !== 0) {
+    					 //radio类型绑数
+    					 console.log(url,this_item)
+    					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
+    					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
+    					 let val = $('input[name='+radioName+']:checked').val();
+    					 dataJsonObj[radioName] = val
+    					 dataJsonObj["id"] = id
+    				 }
     				 let formArr = Array.from($(item).siblings().find(".form-control"))
     				 formArr.forEach((item,index)=>{
         				let id = $(item).attr("id");
