@@ -212,7 +212,7 @@ public class OrderProcessController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	public void showReportBusiness(){
-		render(REPORT_MANAGE_PATH+"report_business_info.html");
+		render(REPORT_MANAGE_PATH+"report_quality_checking.html");
 	}
 	/**
 	 * 
