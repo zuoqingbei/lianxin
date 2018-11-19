@@ -339,10 +339,11 @@ let ReportConfig = {
     	 */
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
+    	console.log(titles,formIndex)
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
-    		if(getFormUrl === null){return}
+    		if(getFormUrl === null || getFormUrl === ''){return}
 			let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
 			let paramObj = {}
 			if(getFormUrl.split("*")[1]){
@@ -363,11 +364,21 @@ let ReportConfig = {
 	    			}
 	    			
 	    		})
-			 
 			 let arr = Array.from($("#title"+item))
-			 console.log(temp)
 			 arr.forEach((item,index)=>{
+				 if($(item).siblings(".radio-con").length !== 0) {
+					 //radio类型绑数
+					 if(temp.rows.length === 0){return}
+					 let obid = temp.rows[0].id;
+					 $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+					 let overall_rating =  temp.rows[0].overall_rating;
+					 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+					 
+					 $("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+					 return
+				 }
 				 let formArr = Array.from($(item).siblings().find(".form-control"))
+				console.log(temp)
 				 formArr.forEach((item,index)=>{
 					 let obj = temp.rows[0];
     				let id = $(item).attr("id");
@@ -427,6 +438,13 @@ let ReportConfig = {
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
             	    Public.tabFixed(".tab-bar",".main",120,90)
+            	    
+            	    let firmArr = Array.from($(".firm-info"));
+            	    firmArr.forEach((item,index)=>{
+            	    	if($(item).children().length === 2) {
+            	    		$(item).addClass("abc")
+            	    	}
+            	    })
                 },0)
                 /**
                  * 头部
@@ -580,18 +598,18 @@ let ReportConfig = {
 		                					rowNum += 1
 		                				}
 		                        		
-		                        		if((index - rowNum)%3 === 0 || !formArr[index+1] || formArr[index-1]['field_type'] === 'address'){
+		                        		if((index - rowNum)%3 === 0  || formArr[index-1]['field_type'] === 'address'){
 		                        			contentHtml += `<div class="firm-info mt-4 px-5 d-flex justify-content-between">`;
 		                        		}
 		                        		contentHtml += formGroup;
 		                        		
-		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || !formArr[index+2] || formArr[index]['field_type'] === 'address'){
+		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || formArr[index]['field_type'] === 'address'){
 		                        			
 		                        			contentHtml += `</div>`    
 		                        		}
 		                        		
-		                        	
 		                	}) 
+		                	contentHtml += `</div>`   
 		                	break;
                 		case '1':
                 			//table类型
@@ -695,6 +713,7 @@ let ReportConfig = {
                 			//信用等级
                 			let inputObj = item.contents[0]
                 			_this.formTitle.push(inputObj)
+                			_this.formIndex.push(index)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3">
 					                          <label >${inputObj.temp_name}</label>
 					                          <input type="text" name="" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
@@ -757,12 +776,16 @@ let ReportConfig = {
                 			//radio类型 总体评价模块    保存回显同表单模块
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
-                			contentHtml += `<div class="table-content1 form-group" style="background:#fff">
+                			
+                			let str = item.contents[0].get_source;
+                			let this_item = item
+                			let strItem = str.split("&")
+                			contentHtml += `<div class="table-content1 form-group radio-con" style="background:#fff">
 					                        	<div class="radio-box">`
-                			item.contents.forEach((item,index)=>{
+                				strItem.forEach((item,index)=>{
                 				contentHtml += ` <div class="form-check form-check-inline mr-5">
-					                                <input class="form-check-input" type="radio" name="inlineRadio1" id="inlineRadio${index}" value=${item.id}>
-					                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.temp_name}</label>
+					                                <input class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+					                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
 					                            </div>`
                 			})
                 				
@@ -876,11 +899,11 @@ let ReportConfig = {
     	 */
     	let formTitles = this.formTitle;
     	let formIndex = this.formIndex;
+    	console.log(formTitles,formIndex)
     	let _this = this
     	formIndex.forEach((item,index)=>{
-    		console.log( formTitles[index])
     		let alterSource = formTitles[index]["alter_source"];
-    		if(alterSource === null){return}
+    		if(alterSource === null || alterSource === ''){return}
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
     		let dataJson = []
     		let dataJsonObj = {} 
@@ -891,11 +914,22 @@ let ReportConfig = {
     				dataJsonObj[item] = this.rows[item]
     			})
     		}
+    		let this_item = item
 			 //点击保存按钮
     		$(".position-fixed").on("click","#save",(e)=>{
     			$("#save").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
+    				 if($(item).siblings(".radio-con").length !== 0) {
+    					 //radio类型绑数
+    					 console.log(url,this_item)
+    					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
+    					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
+    					 let val = $('input[name='+radioName+']:checked').val();
+    					 dataJsonObj[radioName] = val
+    					 dataJsonObj["id"] = id
+    				 }
+    				 
     				 let formArr = Array.from($(item).siblings().find(".form-control"))
     				 formArr.forEach((item,index)=>{
         				let id = $(item).attr("id");
