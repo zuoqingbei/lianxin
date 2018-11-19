@@ -212,7 +212,7 @@ public class OrderProcessController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	public void showReportBusiness(){
-		render(REPORT_MANAGE_PATH+"report_business_info.html");
+		render(REPORT_MANAGE_PATH+"report_quality_checking.html");
 	}
 	/**
 	 * 
@@ -787,18 +787,18 @@ public class OrderProcessController extends BaseProjectController{
 	 * return resultJson
 	 * @param orderId status 
 	 */
-	private ResultType uploadFile(String orderId, String status,List<UploadFile> upFileList){
+	private ResultType uploadFile(String businessId, String businessType,List<UploadFile> upFileList){
 		List<File> commonFiles = new ArrayList<File>();
 		List<File> pdfFiles = new ArrayList<File>();
 		CreditUploadFileModel fileModel = new CreditUploadFileModel();
-		fileModel.set("business_type", status);
-		fileModel.set("business_id",orderId);
+		fileModel.set("business_type", businessType);
+		fileModel.set("business_id",businessId);
 		int size = upFileList.size();
 		if(size>0){
 			//long now = new Date().getTime();
 			String now = UUID.randomUUID().toString().replaceAll("-", "");
 			//上传的文件在ftp服务器按日期分目录
-			String storePath = ftpStore+DateUtils.getNow(DateUtils.YMD);
+			String storePath = ftpStore+"/"+DateUtils.getNow(DateUtils.YMD);
 			try {
 				List<String> pdfNameList = new LinkedList<>();
 				for(UploadFile uploadFile:upFileList){
@@ -824,7 +824,10 @@ public class OrderProcessController extends BaseProjectController{
 					pdfFiles.add(pdf);
 				}
 				//将文件上传到服务器
-				boolean storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+				boolean storePdfFile = true;
+				if(pdfFiles.size()>0) {
+					  storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+				}
 				boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",commonFiles,storePath,ip,port,userName,password);
 				if(!storePdfFile){
 					return new ResultType(0, "预览文件生成异常!");
@@ -837,14 +840,17 @@ public class OrderProcessController extends BaseProjectController{
 				//将文件信息保存到实体类
 				for (int i=0;i<upFileList.size();i++) {
 					//获取真实文件名
-					String originalFile = upFileList.get(i).getOriginalFileName();
+					String originalFile = upFileList.get(i).getFileName();
 					//不带后缀的文件名
 					String originalFileName = FileTypeUtils.getName(originalFile);
 					//根据文件后缀名判断文件类型
 					String ext = FileTypeUtils.getFileType(originalFile);
 					//上传到服务器时的文件名
 					String FTPfileName = originalFileName + now + "." + ext;
-					String PDFfileName = originalFileName + now + "." + "pdf";
+					String PDFfileName = originalFileName + now + "." + ext;
+					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
+						 PDFfileName = originalFileName + now + "." + "pdf";
+					}
 					//String pdfFactpath=storePath+"/"+pdf_FTPfileName;
 						/*if(pdf!=null){
 							pdf.delete();
@@ -1068,7 +1074,6 @@ public class OrderProcessController extends BaseProjectController{
 				list.add(model);
 				map.clear();
 			}
-			
 		}
 		return list;
 	}

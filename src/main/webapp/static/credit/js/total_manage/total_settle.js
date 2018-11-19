@@ -10,70 +10,11 @@ let creditAnalysis = {
     init() {
         this.initTable();
         this.initDateInput();
-        this.selectItem();
+//        this.selectItem();
         this.searchEvent();
-    //    this.reSet();
+        this.reSet();
         this.butExport();
-    },
-    /**
-     * 页面变量中设置勾选的数据
-     */
-    setNumAfterChecked() {
-        let oT = this; //oT为outThis或者外部对象this
-        oT.selectedData.set(oT.pageNumber, oT.selectedData_thisPage);
-
-        for (let key of oT.selectedData.keys()) {
-            oT.selectNum += oT.selectedData.get(key).length;
-            oT.selectedData.get(key).forEach(function (item) {
-                if (!Number.isNaN(item.money))
-                    oT.selectMoney += item.money;
-            })
-        }
-        $("#commission").text(this.selectMoney);
-        $("#selectedTotalNum").text(this.selectNum);
-        // console.log('oT.selectedData', oT.selectedData, 'selectMoney', this.selectMoney,'当前页内容',oT.selectedData_thisPage)
-    },
-    selectItem() {
-        let oT = this;
-        // oT.selectedData_thisPage = [];
-        //全选
-        $("[name=btSelectAll]").click(function () {
-            oT.selectedData_thisPage = [];
-            [oT.selectNum, oT.selectMoney] = [0, 0];
-            let $btSelectItems = $(this).parents('.bootstrap-table').find('.fixed-table-body-columns [name=btSelectItem]');
-            if ($(this).is(":checked")) {
-                $btSelectItems.prop('checked', true);
-                oT.selectAll = true;
-            } else {
-                $btSelectItems.removeAttr('checked', false);
-                oT.selectAll = false;
-            }
-            $btSelectItems.change();
-            // oT.setNumAfterChecked(selectedData_thisPage);
-        }).css({
-            position: 'relative',
-            left: '.0625rem',
-            top: '.25rem'
-        });
-        $('.table-content').on('change', '[name=btSelectItem]', function () {
-            [oT.selectNum, oT.selectMoney] = [0, 0];
-            let index = $(this).parents("tr").index();
-            if ($(this).is(":checked")) {//加
-                oT.selectedData_thisPage.push({
-                    index,
-                    money: parseFloat($('#table tbody tr').eq(index).find('td').eq($('.fixed-table-header').find('[data-field = reportType]').index()).text())
-                });
-            } else {//减
-                oT.selectedData_thisPage.forEach(function (item, thisIndex, array) {
-                    if (item.index === index) {
-                        array.splice(thisIndex, 1);
-                    }
-                });
-            }
-            oT.setNumAfterChecked();
-
-
-        });
+       
     },
     
     searchEvent(){
@@ -97,9 +38,9 @@ let creditAnalysis = {
     },
     reSet(){
 		let that=this;
-		 $("#btn_reset").click(function(){
-			 $("#txt_search_reporter").empty(); 
-			 $("#txt_search").empty();
+		 $("#btn_resett").click(function(){
+			 document.getElementById("txt_search_reporter").options.selectedIndex = 0;  
+			 document.getElementById("txt_search").options.selectedIndex = 0; 
 			 $("#time").val("");
 			 
 		 })
@@ -118,14 +59,20 @@ let creditAnalysis = {
     },
     initTable() {
         let oT = this;
+        this.pcount = 0;//报告价格总
+        this.acount = 0;//代理价格总
+        this.itemNum = 0;//选择的数量
         const $table = $("#table");
         $table.bootstrapTable({
             height: $(".table-content").height() * 0.82,
+            clickToSelect:true,
+            responseHandler:responseHandler,
             columns: [
                 {
                     checkbox: true,
                     visible: true,                  //是否显示复选框
                     width: '18rem',
+                    field:'state'
                 }, {
                     title: '订单号',
                     field: 'num',
@@ -169,6 +116,14 @@ let creditAnalysis = {
                     title: '代理价格汇率',
                     field: 'agentrate',
                     visible: false,
+                },{
+                    title: '报告价格人民币',
+                    field: 'rmb2',
+                    visible: false,
+                },{
+                    title: '代理价格人民币',
+                    field: 'rmb',
+                    visible: false,
                 }
 
             ]/*.map(function (item,index) {
@@ -191,7 +146,7 @@ let creditAnalysis = {
             smartDisplay: false,
             iconsPrefix: 'fa',
             locales: 'zh-CN',
-            fixedColumns: true,
+            fixedColumns: false,
             fixedNumber: 1,
             queryParamsType: '',
             sortable: true,                     //是否启用排序
@@ -236,11 +191,117 @@ let creditAnalysis = {
                     $("#commission").text(oT.selectMoney);
                     $("#selectedTotalNum").text(oT.selectNum);
                 }
-                console.log('已选择的所有内容', oT.selectedData, '当前页内容',oT.selectedData)
+               // console.log('已选择的所有内容', oT.selectedData, '当前页内容',oT.selectedData)
                 // }
-            }
+            },
+            onCheck:(rows)=>{
+            	if(rows.reprate===null){
+            		Public.message("info","请补全"+rows.pcname+"-人民币的汇率，方可结算")
+            		return 
+            	}
+            	if(rows.agentrate===null){
+            		Public.message("info","请补全 "+rows.acname+"-人民币的汇率，方可结算")
+            		return 
+            	}
+            	oT.pcount += rows.rmb2;
+            	oT.acount += rows.rmb;
+            	oT.itemNum += 1;
+            	$("#commission").html(oT.pcount.toFixed(2));
+            	$("#agent_commission").html(oT.acount.toFixed(2).replace("-",""))
+            	$("#selectedTotalNum").text(oT.itemNum)
+            	console.log(rows.rmb,oT.acount,rows.rmb2,oT.pcount);
+            },
+            onUncheck:(rows)=>{
+            	if(rows.reprate!=null&&rows.agentrate!=null){
+            	oT.pcount -= rows.rmb2;
+            	oT.acount -= rows.rmb;
+            	oT.itemNum -= 1;
+            	$("#commission").html(oT.pcount.toFixed(2));
+            	$("#agent_commission").html(oT.acount.toFixed(2).replace("-",""))
+            	$("#selectedTotalNum").text(oT.itemNum)
+            	console.log(rows.rmb,oT.acount,rows.rmb2,oT.pcount);
+            	}
+            },onCheckAll:(rows)=>{
+            	 for(var i=0;i<rows.length;i++){
+            		 if(rows[i].reprate===null){
+                 		Public.message("info","请补全"+rows[i].pcname+"-人民币的汇率，方可结算")
+                 		return
+                 	}
+                 	if(rows[i].agentrate===null){
+                 		Public.message("info","请补全 "+rows[i].acname+"-人民币的汇率，方可结算")
+                 		return  
+                 	}
+            		  console.log(rows[i])
+            		  oT.pcount += rows[i].rmb2;
+                  	oT.acount += rows[i].rmb;
+                  	oT.itemNum += 1;
+                  	$("#commission").html(oT.pcount.toFixed(2));
+                  	$("#agent_commission").html(oT.acount.toFixed(2))
+                  	$("#selectedTotalNum").text(oT.itemNum)
+                  	console.log(rows[i].rmb,oT.acount,rows[i].rmb2,oT.pcount);
+            		}
+            	
+            },onUncheckAll:(rows)=>{
+	           	 for(var i=0;i<rows.length;i++){
+	           		 if(rows[i].reprate!=null&&rows[i].agentrate!=null){	 
+	       		  console.log(rows[i])
+	       		oT.pcount -= rows[i].rmb2;
+	          	oT.acount -= rows[i].rmb;
+	          	oT.itemNum -= 1;
+	          	$("#commission").html(oT.pcount.toFixed(2).replace("-",""));
+	          	$("#agent_commission").html(oT.acount.toFixed(2).replace("-",""))
+	          	$("#selectedTotalNum").text(oT.itemNum)
+	          	console.log(rows[i].rmb,oT.acount,rows[i].rmb2,oT.pcount);
+	           		 }
+       		}
+       },
+  		onPageChange:()=>{
+  			setTimeout(()=>{
+  				$("#commission").html(oT.pcount.toFixed(2));
+  				$("#agent_commission").html(oT.acount.toFixed(2))
+  				$("#selectedTotalNum").text(oT.itemNum)
+  				
+  			},200)
+   		},
+   		
+            	
+            	
         });
-
+      //选中事件操作数组
+    	var union = function(array,ids){
+    		$.each(ids, function (i, id) {
+    			if($.inArray(id,array)==-1){
+    				array[array.length] = id;
+    			}
+    	    	 });
+    	    	return array;
+    	};
+    	//取消选中事件操作数组
+        var difference = function(array,ids){
+    	    	$.each(ids, function (i, id) {
+    	    		 var index = $.inArray(id,array);
+    	    		 if(index!=-1){
+    	    			 array.splice(index, 1);
+    	    		 }
+    	    	 });
+    	    	return array;
+    	};
+        var selectionIds = [];	//保存选中ids
+        var _ = {"union":union,"difference":difference}
+        $table.on('check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table', function (e, rows) {
+	        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+	                 return row.id;
+	        });
+             func = $.inArray(e.type, ['check', 'check-all']) > -1 ? 'union' : 'difference';
+             selectionIds = _[func](selectionIds, ids);	
+        });
+        
+        function responseHandler(res) {
+  	      $.each(res.rows, function (i, row) {
+  	          row.state = $.inArray(row.id, selectionIds) != -1;	//判断当前行的数据id是否存在与选中的数组，存在则将多选框状态变为true
+  	      });
+  	      return res;
+        }
 
         // sometimes footer render error.
         setTimeout(() => {
@@ -250,7 +311,7 @@ let creditAnalysis = {
     initDateInput() {
         laydate.render({
             elem: '#time'
-            , range:'至'
+            , range:'~'
         })
     }
 };

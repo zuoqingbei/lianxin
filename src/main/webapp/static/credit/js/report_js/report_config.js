@@ -18,12 +18,22 @@ let ReportConfig = {
     	 * 日期初始化
     	 */
     	let dateArr = Array.from($('.date-form input'))
+    	console.log(dateArr)
     	dateArr.forEach((item,index)=>{
     		laydate.render({
     			elem: item,
     			format: 'yyyy年MM月dd日'
     		});
     	})
+    	let dateScopeArr = Array.from($('.date-scope-form input'))
+    	dateScopeArr.forEach((item,index)=>{
+    		laydate.render({
+    			elem: item,
+    			format: 'yyyy年MM月dd日',
+    			range:true
+    		});
+    	})
+    	
     	
     	//模态窗里面的时间控件初始化
     	let modals = Array.from($(".modal"))
@@ -43,9 +53,7 @@ let ReportConfig = {
     	 */
     	let addArr = Array.from($('.address-form input'))
     	addArr.forEach((item,index)=>{
-    		
     		$(item).focus(function (e) {
- 
     			SelCity(this,e);
     			let top = $(item).offset().top
     			$("#PoPy").css("top",top+30+"px")
@@ -57,6 +65,26 @@ let ReportConfig = {
     				}
     			})
     		});
+    	})
+    	
+    	//模态窗里面的地址控件初始化
+    	let modals = Array.from($(".modal"))
+    	let modalAdd = Array.from($(".modal .modal-address input"))
+    	modals.forEach((item,index)=>{
+    		modalAdd.forEach((item,index)=>{
+    			$(item).focus(function (e) {
+        			SelCity(this,e);
+        			let top = $(item).offset().top
+        			$("#PoPy").css("top",top+30+"px")
+        			$(".main").scroll(()=>{
+        				let top = $(item).offset().top
+        				$("#PoPy").css("top",top+30+"px")
+        				if(top < 90) {
+        					$("#cColse").trigger("click")
+        				}
+        			})
+        		});
+    		})
     	})
     },
     regChecked(){
@@ -93,15 +121,16 @@ let ReportConfig = {
         	const $table = $("#table"+item);
         	let contents = this.contentsArr[index]
         	let titles = this.title
-        	
         	let urlTemp = titles[index].get_source;
         	let conf_id = titles[index].id;
         	if(!urlTemp){return}
         	let url = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
-        	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
-        	tempParam.forEach((item,index)=>{
-				 url += `&${item}=${this.rows[item]}`
-			 })
+        	if(urlTemp.split("*")[1]){
+        		let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+        		tempParam.forEach((item,index)=>{
+        			url += `&${item}=${this.rows[item]}`
+        		})
+        	}
 			 
 			 let selectInfo = []
         	selectInfo.push(_this.selectInfoObj)
@@ -224,7 +253,7 @@ let ReportConfig = {
     				return;
     			}
     			
-    			if(!ele.field_type) {
+    			if(!ele.field_type || ele.field_type === 'text') {
     				modalBody += ` <div class="form-inline justify-content-center my-3">
 									<label for="" class="control-label" >${ele.temp_name}：</label>
 									<input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
@@ -263,7 +292,21 @@ let ReportConfig = {
             				}
             			})
     					break;
-    				
+    				case 'file':
+    					modalBody += ` <div class="form-inline justify-content-center my-3">
+						                    <label for="" class="control-label">${ele.temp_name}：</label>
+						                    <button type="button" class="form-control" id="modal_logo_icon">
+						                        <span style="display:block;height:1.5rem">${ele.place_hold}</span>
+						                        <input type="file" class="file-input" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+						                    </button>
+						                </div>`
+    					break;
+    				case 'address' :
+    					modalBody += ` <div class="form-inline justify-content-center my-3 modal-address">
+		                    <label for="" class="control-label" >${ele.temp_name}：</label>
+		                    <input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+		                </div>`
+    					break;
     				default:
     					break;
     			}
@@ -297,16 +340,19 @@ let ReportConfig = {
     	 */
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
+    	console.log(titles,formIndex)
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
-    		if(!getFormUrl){return}
+    		if(getFormUrl === null || getFormUrl === ''){return}
 			let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
-        	let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
-        	let paramObj = {}
-        	tempParam.forEach((item,index)=>{
-        		paramObj[item] = this.rows[item]
-			 })
+			let paramObj = {}
+			if(getFormUrl.split("*")[1]){
+				let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
+				tempParam.forEach((item,index)=>{
+					paramObj[item] = this.rows[item]
+				})
+			}
 			 paramObj["conf_id"] = conf_id
 			 let temp;
 			 $.ajax({
@@ -317,11 +363,23 @@ let ReportConfig = {
 	    			success:(data)=>{
 	    				temp = data
 	    			}
+	    			
 	    		})
-			 
 			 let arr = Array.from($("#title"+item))
 			 arr.forEach((item,index)=>{
+				 if($(item).siblings(".radio-con").length !== 0) {
+					 //radio类型绑数
+					 if(temp.rows.length === 0){return}
+					 let obid = temp.rows[0].id;
+					 $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+					 let overall_rating =  temp.rows[0].overall_rating;
+					 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+					 
+					 $("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+					 return
+				 }
 				 let formArr = Array.from($(item).siblings().find(".form-control"))
+				 if(temp.rows.length === 0){return}
 				 formArr.forEach((item,index)=>{
 					 let obj = temp.rows[0];
     				let id = $(item).attr("id");
@@ -371,9 +429,9 @@ let ReportConfig = {
         	data:{id,reportType},
         	success:(data)=>{
                 setTimeout(()=>{
-                	_this.addressInit();
                 	_this.initModal();
                 	_this.dateInit();
+                	_this.addressInit();
                 	_this.regChecked();
                 	_this.initTable();
                 	_this.bindFormData();
@@ -381,6 +439,13 @@ let ReportConfig = {
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
             	    Public.tabFixed(".tab-bar",".main",120,90)
+            	    
+            	    let firmArr = Array.from($(".firm-info"));
+            	    firmArr.forEach((item,index)=>{
+            	    	if($(item).children().length === 2) {
+            	    		$(item).addClass("abc")
+            	    	}
+            	    })
                 },0)
                 /**
                  * 头部
@@ -438,8 +503,8 @@ let ReportConfig = {
                 	 * 循环模块
                 	 */
                 	let smallModileType = item.smallModileType
-                	if(smallModileType !== '-2' && smallModileType !== '5') {
-                		contentHtml +=  `<div class="bg-f pb-3 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                	if(smallModileType !== '-2' && smallModileType !== '5' && item.title.temp_name !== null && item.title.temp_name !== "") {
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
@@ -451,6 +516,7 @@ let ReportConfig = {
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
                 			let ind = index
+                			let rowNum = 0;//代表独占一行的input数量
 		                	formArr.forEach((item,index)=>{
 		                		
 		                				let formGroup = ''
@@ -487,6 +553,13 @@ let ReportConfig = {
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
+		                        				case 'date_scope':
+		                        					formGroup += `<div class="form-group date-scope-form">
+									            		<label for="" class="mb-2">${item.temp_name}</label>
+									            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+									            		<p class="errorInfo">${item.error_msg}</p>
+								            		</div>`
+		                        					break;
 							            		case 'address':
 							            			formGroup += ` <div class="form-group address-form"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
@@ -494,6 +567,7 @@ let ReportConfig = {
 									                                </div>`
 							            			break;
 							            		case 'select':
+							            			if(item.get_source === null){return}
 							            			let url = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
 							            			$.ajax({
 							            				type:'get',
@@ -521,18 +595,21 @@ let ReportConfig = {
 		        							    	break;
 		                        			}
 		                        		}
+		                				if(formArr[index-1] && formArr[index-1]['field_type'] === 'address')  {
+		                					rowNum += 1
+		                				}
 		                        		
-		                        		if((index)%3 === 0 || !formArr[index+1]){
+		                        		if((index - rowNum)%3 === 0  || formArr[index-1]['field_type'] === 'address' || formArr[index]['field_type'] === 'address' || formArr[index]['field_type'] === 'textarea'){
 		                        			contentHtml += `<div class="firm-info mt-4 px-5 d-flex justify-content-between">`;
 		                        		}
 		                        		contentHtml += formGroup;
 		                        		
-		                        		if(((index+1)%3 === 0 && index !==0) || !formArr[index+2]){
+		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || formArr[index]['field_type'] === 'address' || (formArr[index+1]&&formArr[index+1]['field_type'] === 'textarea')){
 		                        			contentHtml += `</div>`    
 		                        		}
 		                        		
-		                        	
 		                	}) 
+		                	contentHtml += `</div>`   
 		                	break;
                 		case '1':
                 			//table类型
@@ -635,9 +712,11 @@ let ReportConfig = {
                 		case '6':
                 			//信用等级
                 			let inputObj = item.contents[0]
+                			_this.formTitle.push(inputObj)
+                			_this.formIndex.push(index)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3">
-					                          <label for="qy_k">${inputObj.temp_name}</label>
-					                          <input type="text" name="" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" >
+					                          <label >${inputObj.temp_name}</label>
+					                          <input type="text" name="" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
 					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 					                        </div>`
                 			
@@ -649,6 +728,7 @@ let ReportConfig = {
                 			})
                 			_this.idArr.push(index)
                 			_this.contentsArr.push(tableContents)
+                			_this.title.push(item.title)
             				contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				style="position: relative"
@@ -657,11 +737,13 @@ let ReportConfig = {
                 							</div>`
             				let explainObj = item.contents[5];
                 			let explainUrl = explainObj.get_source;
-                			let tempParam = explainUrl.split("*")[1].split("$");//必要参数数组
-                        	let paramObj = {}
-                        	tempParam.forEach((item,index)=>{
-                        		paramObj[item] = this.rows[item]
-                			 })
+                			let paramObj = {}
+                			if(explainUrl.split("*")[1]) {
+                				let tempParam = explainUrl.split("*")[1].split("$");//必要参数数组
+                				tempParam.forEach((item,index)=>{
+                					paramObj[item] = this.rows[item]
+                				})
+                			}
                 			let conf_id = item.title.id;
                         	paramObj["conf_id"] = conf_id
                 			let returnData;
@@ -672,8 +754,51 @@ let ReportConfig = {
                 				type:'post',
                 				success:(data)=>{
                 					console.log(data)
+                					returnData = data.rows
                 				}
                 			})
+                			returnData.forEach((item,index)=>{
+                				contentHtml += `<p class="m-3 ml-4">${item.describe}</p>`
+                			})
+                			break;
+                		case '7':
+                			//表格下面的无标题多行输入框 保存回显同表单模块
+                			_this.formTitle.push(item.title)
+                			_this.formIndex.push(index)
+                			let ot_item = item
+                			item.contents.forEach((item,index)=>{
+                				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
+                					contentHtml += ` <div class="form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
+                						<label for="" class="thead-label">${item.temp_name}</label>
+                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+            						</div>`
+                				}else{
+                					contentHtml += ` <div class="form-group mb-3 p-4" style="background:#fff">
+	                						<label for="" class="thead-label">${item.temp_name}</label>
+	                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+                						</div>`
+                				}
+                			})
+                			break;
+                		case '8':
+                			//radio类型 总体评价模块    保存回显同表单模块
+                			_this.formTitle.push(item.title)
+                			_this.formIndex.push(index)
+                			
+                			let str = item.contents[0].get_source;
+                			let this_item = item
+                			let strItem = str.split("&")
+                			contentHtml += `<div class="table-content1 form-group radio-con" style="background:#fff">
+					                        	<div class="radio-box">`
+                				strItem.forEach((item,index)=>{
+                				contentHtml += ` <div class="form-check form-check-inline mr-5">
+					                                <input class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+					                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
+					                            </div>`
+                			})
+                				
+                				
+            				contentHtml += `</div></div>`
                 			break;
             			default:
             				break;
@@ -687,11 +812,25 @@ let ReportConfig = {
         })
     },
     modalClean(){
+    	/**上传图标 */
+        $(".file-input").change(function(){
+            let filename = $(this).val().replace("C:\\fakepath\\","");
+            let num = filename.split(".").length;
+            let filetype = filename.split(".")[num-1];
+            if(filetype === 'jpg' || filetype === 'png' || filetype === 'pdf') {
+                $("#modal_logo_icon span").text(filename)
+            }else {
+                Public.message("info","上传文件格式错误！")
+            }
+            console.log(filetype)
+        })
+    	
     	this.idArr.forEach((item,index)=>{
     		//点击新增一条清空模态框中内容
     		$("#addBtn"+item).click(()=>{
     			this.isAdd = true
     			$("#modal"+item+" input").val("");
+    			$("#modal"+item+" input").siblings("span").html("");
 		    	$("#modal"+item+" textarea").val("");
 		    	 $("#modal"+item+" select").find("option:selected").attr("selected", false);
 			    $("#modal"+item+" select").find("option").first().attr("selected", true);
@@ -704,6 +843,13 @@ let ReportConfig = {
     			let formArr = Array.from($("#modal"+item).find(".form-inline"))
 				formArr.forEach((item,index)=>{
 					let id = $(item).children("label").siblings().attr("id");
+					if($("#"+id).is("button")) {
+						let name = $('#'+$('#'+id).children("input").attr("id")).attr("name")
+						let val = $('#'+id).children("span").html()
+						dataJsonObj[name] = val
+					}
+					
+					//调用form格式化数据函数
 					let tempObj = this.getFormData($('#'+id));
 					for(let i in tempObj){
 						if(tempObj.hasOwnProperty(i))
@@ -767,21 +913,37 @@ let ReportConfig = {
     	 */
     	let formTitles = this.formTitle;
     	let formIndex = this.formIndex;
+    	console.log(formTitles,formIndex)
     	let _this = this
     	formIndex.forEach((item,index)=>{
     		let alterSource = formTitles[index]["alter_source"];
+    		if(alterSource === null || alterSource === ''){return}
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
-        	let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
-        	let dataJson = []
-        	let dataJsonObj = {} 
-        	tempParam.forEach((item,index)=>{
-        		dataJsonObj[item] = this.rows[item]
-			 })
+    		let dataJson = []
+    		let dataJsonObj = {} 
+    		if(alterSource.split("*")[1]) {
+    			
+    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
+    			tempParam.forEach((item,index)=>{
+    				dataJsonObj[item] = this.rows[item]
+    			})
+    		}
+    		let this_item = item
 			 //点击保存按钮
-    		$(".position-fixed").on("click","#save",(e)=>{
+    		$(".position-fixed").unbind().on("click","#save",(e)=>{
     			$("#save").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
+    				 if($(item).siblings(".radio-con").length !== 0) {
+    					 //radio类型绑数
+    					 console.log(url,this_item)
+    					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
+    					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
+    					 let val = $('input[name='+radioName+']:checked').val();
+    					 dataJsonObj[radioName] = val
+    					 dataJsonObj["id"] = id
+    				 }
+    				 
     				 let formArr = Array.from($(item).siblings().find(".form-control"))
     				 formArr.forEach((item,index)=>{
         				let id = $(item).attr("id");
@@ -828,10 +990,19 @@ let ReportConfig = {
     			 })
     		})
     			 //点击提交按钮
-    		$(".position-fixed").on("click","#commit",(e)=>{
+    		$(".position-fixed").unbind().on("click","#commit",(e)=>{
     			$("#commit").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
+    				 if($(item).siblings(".radio-con").length !== 0) {
+    					 //radio类型绑数
+    					 console.log(url,this_item)
+    					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
+    					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
+    					 let val = $('input[name='+radioName+']:checked').val();
+    					 dataJsonObj[radioName] = val
+    					 dataJsonObj["id"] = id
+    				 }
     				 let formArr = Array.from($(item).siblings().find(".form-control"))
     				 formArr.forEach((item,index)=>{
         				let id = $(item).attr("id");

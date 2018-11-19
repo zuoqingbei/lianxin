@@ -26,13 +26,71 @@
 .thead-label {
     display: inline-block;
     width: 100%;
-    background: #fafafa;
-    padding: 8px;
-    border: solid 1px #e5e5e5;
+    background: #fff;
+    padding-bottom: 8px;
     border-bottom: 0;
     font-weight: 600;
 }
 .rounded-0 {
     border-radius: 0!important;
     border-color: #e5e5e5;
+}
+
+#modal_logo_icon {
+    padding: .375rem 0;
+    width: var(--inputWidthlg)!important;
+    position: relative;
+}
+.file-input {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top:0;
+    cursor: pointer;
+}
+.radio-box {
+    padding: 8px;
+    height: 4rem;
+    display: flex;
+    justify-content: flex-start;
+    border: solid 1px #e5e5e5;
+}
+.form-check-label,.tip-p {
+    color: var(--fontColor);
+}
+.unit {
+    padding-right:11.6%;
+    border-bottom: solid 1px #e5e5e5; 
+}
+.unit label {
+    color: #323232;
+    font-weight: 600;
+}
+.unit input,.unit select {
+    width: 9.75rem!important;
+}
+.moneyAbout input {
+    width: 9.75rem!important;    
+}
+#tableTotal .th-inner,#tableMoney1 .th-inner,#tableMoney2 .th-inner,#tableMoney3 .th-inner,#tableMoney4 .th-inner,#tableMoney5 .th-inner,#tableProfit1 .th-inner,#tableProfit2 .th-inner,#tableProfit3 .th-inner,#tableProfit4 .th-inner,#tableProfit5 .th-inner{
+    padding: 0;
+}
+.table-title {
+    padding: 8px;
+    background: #f5f5f5;
+    border-bottom: solid 1px #e5e5e5;
+    text-align: center;
+    font-weight: 900;
+}
+.fixed-table-footer {
+    font-weight: 600;
+    color: #000;
+    background: #f5f5f5;
+    border-top: 0;
+}
+#tableMoney1 tbody td,#tableMoney2 tbody td,#tableMoney3 tbody td,#tableMoney4 tbody td,#tableMoney5 tbody td,#tableProfit1 tbody td,#tableProfit2 tbody td,#tableProfit3 tbody td,#tableProfit4 tbody td,#tableProfit5 tbody td {
+    position: relative;
+}
+#tableMoney2 tbody tr:first-child,#tableMoney4 tbody tr:first-child {
+    border-top: solid 1px #e5e5e5;
 }
