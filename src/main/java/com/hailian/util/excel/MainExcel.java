@@ -15,7 +15,7 @@ public class MainExcel {
 	private static Object result;
 
 	public static void main(String[] args) {
-		String path = "C:\\Users\\Happy\\Desktop\\模板.xlsx";
+		String path = "H:\\14.xls";
         try {
            List<List<String>> result = new ReadExcel().readXlsx(path); 
            System.out.println(result.size());

@@ -2,7 +2,7 @@ package com.hailian.modules.credit.usercenter.controller.finance;
 
 import java.util.List;
 
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.jfinal.plugin.activerecord.Db;
 public class FinanceService {
 
@@ -10,9 +10,9 @@ public class FinanceService {
 	/**
 	 * 获取财务配置信息
 	 */
-	public static  List<CreditCompanyFinancialStatementsConf> getFinancialConfig() {
-		List<CreditCompanyFinancialStatementsConf> list = Db.query(" select * from credit_company_financial_statements_conf  ");
-		return list;
+	public static  List<Integer> getFinancialConfig() {
+		List<CreditCompanyFinancialDict> list =  CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_statements_conf");
+		return null;
 	}
 	
 	

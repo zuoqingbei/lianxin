@@ -103,7 +103,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String confId = getPara("conf_id", "");
 		
-		// 获取关联字典表需要转义的下拉选
+		/*// 获取关联字典表需要转义的下拉选
 		String selectInfo = getPara("selectInfo");
 		
 		// 解析实体获取required参数
@@ -159,10 +159,82 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		} catch (IllegalAccessException e) {
 			renderJson(new ResultType(0, "非法存取异常!"));
 			e.printStackTrace();
-		}
-		renderJson(record.set("rows", rows).set("total", rows.size()));
+		}*/
+
+        List rows = getTableData(isCompanyMainTable,sysLanguage,companyId,tableName,className,confId);
+		renderJson(record.set("rows", rows).set("total", rows!=null?rows.size():null));
 	}
 
-	
+    /**
+     * 反向映射数据
+     * @param isCompanyMainTable 是否是主表
+     * @param sysLanguage 语言
+     * @param companyId 公司id
+     * @param tableName 表名
+     * @param className 反向映射的类名
+     * @param confId 父节点id
+     * @return
+     */
+    public List getTableData(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId){
+        // 获取关联字典表需要转义的下拉选
+		String selectInfo = getPara("selectInfo");
+
+		// 解析实体获取required参数
+		CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
+		String getSource = confModel.getStr("get_source");
+		StringBuffer sqlSuf = new StringBuffer();
+
+		if ((tableName != null && tableName.contains("_dict"))) {
+			sqlSuf.append(" 1=1 and ");
+		}else if ((!("".equals(getSource) || getSource == null)) && getSource.contains("*")) {
+			String[] requireds = getSource.split("\\*");
+			String[] required = requireds[1].split("\\$");
+			for (String str : required) {
+				sqlSuf.append(str.trim() + "=" + getPara(str).trim() + " and ");
+			}
+		} else {
+			sqlSuf.append(" company_id=" + companyId.trim() + " ");
+
+		}
+
+		if (sqlSuf.length() < 1) {
+			//renderJson(record.set("rows", null));
+			return null;
+		}
+
+		// 如果是公司主表,将company_id改为id
+		if (isCompanyMainTable) {
+			String sqlSuf2 = sqlSuf + "";
+			sqlSuf2 = sqlSuf2.replace("company_id", "id");
+			sqlSuf = new StringBuffer(sqlSuf2);
+		}
+		List rows = null;
+		try {
+			Class<?> table = Class.forName(PAKAGENAME_PRE + className);
+			BaseProjectModel model = (BaseProjectModel) table.newInstance();
+			rows = model.find(
+					"select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 and sys_language in(?)",
+					Arrays.asList(new String[] { sysLanguage }).toArray());
+			if (!("".equals(selectInfo) || selectInfo == null)) {
+
+				// 解析前端传入的字符串
+				List<Map<Object, Object>> selectInfoMap = parseJsonArray(selectInfo);
+
+				// 将id转化为字典表中对应的字符串
+				dictIdToString(rows, selectInfoMap);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0, "类文件未找到异常!"));
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0, "实例化异常!"));
+		} catch (IllegalAccessException e) {
+			renderJson(new ResultType(0, "非法存取异常!"));
+			e.printStackTrace();
+		}
+        return rows;
+    }
+
 
 }
