@@ -159,4 +159,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		renderJson(record.set("rows", rows).set("total", rows.size()));
 	}
 
+	
+
 }
