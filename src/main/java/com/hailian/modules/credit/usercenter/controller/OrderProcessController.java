@@ -386,8 +386,7 @@ public class OrderProcessController extends BaseProjectController{
             CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, this);
             AgentModel agent=	AgentModel.dao.findById(agentId);
             String mailaddr=agent.get("memo");
-            String mailaddrRe="";
-            if(StringUtils.isNotBlank(mailaddr) || StringUtils.isNotBlank(mailaddrRe)){
+            if(StringUtils.isNotBlank(mailaddr)){
                 String title="New Order";
                 String content="Dear Sir/Madam,Good day!"
                         +"We would like to place an order for a complete credit report on the following company:"
@@ -406,7 +405,7 @@ public class OrderProcessController extends BaseProjectController{
                         +"Special Note:"
                         +"Please confirm receiving this order."
                         +"Thank you.";
-                new SendMailUtil(mailaddr, mailaddrRe, title, content).sendMail();
+                new SendMailUtil(mailaddr, "", title, content).sendMail();
             }
         }
     }
