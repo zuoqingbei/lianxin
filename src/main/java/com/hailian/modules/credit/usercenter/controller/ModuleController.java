@@ -39,7 +39,7 @@ public class ModuleController extends BaseProjectController{
 	 * @return_type   void
 	 */
 	public void list() {
-		com.hailian.modules.credit.usercenter.controller.finance.FinanceService.getFinancialConfig();
+	//	com.hailian.modules.credit.usercenter.controller.finance.FinanceService.getFinancialConfig();
 		//订单id
 		String orederid = getPara("id");
 		//获取报告类型
