@@ -396,7 +396,12 @@ let Filing = {
       field: 'analyzeUser',
       align: 'center',
       valign: 'middle',
-    },{
+    }, {
+        title: '是否分配',
+        field: 'status',
+        align: 'center',
+        valign: 'middle',
+      },{
       field: 'operate',
       title: '操作',
       align: 'center',
