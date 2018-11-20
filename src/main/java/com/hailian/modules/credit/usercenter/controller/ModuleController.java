@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -12,7 +13,9 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.model.DetailJsonData;
 import com.hailian.modules.credit.usercenter.model.ModuleJsonData;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.jfinal.plugin.activerecord.Record;
@@ -61,6 +64,45 @@ public class ModuleController extends BaseProjectController{
 			//找到当前父节点下的子节点
 			List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportType);
 			list.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));
+		}
+		System.out.println("运行时间===================================="+(double)(new Date().getTime()-start));
+		
+		Record record = new Record();
+		record.set("defaultModule",defaultModule);
+		record.set("modules",list);
+		record.set("tabFixed",tabFixed);
+		renderJson(record);
+	}
+	
+	
+	public void detail() {
+		//订单id
+		String orederid = getPara("id");
+		//获取报告类型
+		String reportType = getPara("reportType");
+		//获取当前页面是详情 还是质检
+		String  type  =  getPara("type");
+		//根据订单id获取订单信息
+		CreditOrderInfo coi = CreditOrderInfo.dao.findById(orederid);
+		if(coi==null) {
+			renderJson(new ResultType(0, "无此订单信息!"));
+			return;
+		}
+		//根据订单信息获取公司信息
+		CreditCompanyInfo cci = CreditCompanyInfo.dao.findById(Arrays.asList(new String[]{coi.get("company_id")}));
+		//根据当前页面类型（详情/质检）找到当前报告类型下的父节点
+		List<CreditReportDetailConf> crmcs = CreditReportDetailConf.dao.findByReport(reportType,type);
+		List<DetailJsonData> list = new ArrayList<DetailJsonData>();
+		//获取默认模板
+		List<CreditReportDetailConf> defaultModule = CreditReportDetailConf.dao.getDefaultModule(reportType);
+		//获取带锚点模板
+		List<CreditReportDetailConf> tabFixed = CreditReportDetailConf.dao.getTabFixed(reportType);
+		double start = new Date().getTime();
+		//defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
+		for(CreditReportDetailConf crmc:crmcs) {
+			//找到当前父节点下的子节点
+			List<CreditReportDetailConf> child = CreditReportDetailConf.dao.findSon(crmc.get("id").toString(),reportType,type);
+			list.add(new DetailJsonData(crmc,child,crmc.getStr("small_module_type")));
 		}
 		System.out.println("运行时间===================================="+(double)(new Date().getTime()-start));
 		
