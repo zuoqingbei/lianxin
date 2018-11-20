@@ -1,78 +1,25 @@
-package com.hailian.modules.credit.company.service;
+package com.hailian.util.http;
 
 import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.hailian.component.base.BaseProjectController;
+import org.apache.commons.collections.CollectionUtils;
+
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
-import com.hailian.modules.credit.company.model.CompanyModel;
-import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.system.dict.SysDictDetail;
-import com.hailian.util.http.HttpTest;
-import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.template.ext.directive.Str;
 
-/**
-* @author dyc:
-* @time 2018年9月10日 上午11:15:53
-* @todo  企业信息处理业务
-*/
-public class CompanyService {
-	public static CompanyService service = new CompanyService();
+public class Test {
 
-	/**
-	 * 
-	 * @time   2018年9月10日 下午5:32:12
-	 * @author dyc
-	 * @todo   删除单条企业信息
-	 * @return_type   boolean
-	 */
-	public boolean updateDelFlagById(Integer id) {
-
-		return CompanyModel.dao.updateDelFlagById(id);
-	}
-
-	/**
-	 * 
-	 * @time   2018年9月11日 上午9:58:27
-	 * @author dyc
-	 * @todo   分页查询企业信息
-	 * @return_type   Page<CompanyModel>
-	 */
-	public Page<CompanyModel> pageCompany(int pageNumber, int pageSize, String orderBy, String companyName,
-			String companyNameEn, String registrationNum, String creditCode,  BaseProjectController c) {
-		return CompanyModel.dao.pageCompany(pageNumber, pageSize, orderBy, companyName, companyNameEn, registrationNum,
-				creditCode,  c);
-
-	}
-
-	/**
-	 * 
-	 * @time   2018年9月11日 上午10:45:02
-	 * @author dyc
-	 * @todo   单条查看企业信息
-	 * @return_type   CompanyModel
-	 */
-
-	public CompanyModel getOne(int id, BaseProjectController c) {
-		CompanyModel companyModel = CompanyModel.dao.getOne(id, c);
-		return companyModel;
-	}
-	/**
-	 * 调用第三方接口获取企业信息（json）解析并存放在企业相关信息表
-	* @author doushuihai  
-	 * @return 
-	* @date 2018年11月8日上午10:45:37  
-	* @TODO
-	 */
-	public boolean enterpriseGrab(String companyId,String companyName,String sys_language){
+	public static void main(String[] args) {
+		String companyName="海尔集团公司";
+		String companyId="7777800";
+		String sys_language="612";
+		// TODO Auto-generated method stub
 		boolean flag=false;
 		JSONObject json = HttpTest.getYjapi(companyName);//获取api企业信息数据
 		String status = json.getString("Status"); //获取调用api接口的状态码
@@ -124,6 +71,7 @@ public class CompanyService {
 			String Email = ContactInfo.getString("Email");//邮箱
 			companyinfoModel.set("telphone", PhoneNumber);
 			companyinfoModel.set("email", Email);
+			companyinfoModel.set("name", companyName);
 			companyinfoModel.update();
 			//股东信息
 			JSONArray partners = json.getJSONObject("Result").getJSONArray("Partners");
@@ -150,13 +98,9 @@ public class CompanyService {
 					//CreditCompanyManagement
 					String name = employee.getString("Name");//管理层姓名
 					String job = employee.getString("Job");//职位
-					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
-					if(CollectionUtils.isNotEmpty(dictDetailBy)){
-						companyinfoModel.set("position", dictDetailBy.get(0).get("id"));
-					}
 					CreditCompanyManagement managementModel = new CreditCompanyManagement();
 					managementModel.set("name", name);
-//					managementModel.set("position", job);
+					managementModel.set("position", job);
 					managementModel.set("company_id", companyId);
 					managementModel.set("sys_language", sys_language);
 					managementModel.save();
@@ -191,7 +135,8 @@ public class CompanyService {
 				}
 			}
 		}
-		return flag;
+		System.out.println("777777777777777777777");
+
 	}
-	
+
 }
