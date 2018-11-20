@@ -604,7 +604,7 @@ let ReportConfig = {
 		                        		}
 		                        		contentHtml += formGroup;
 		                        		
-		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || formArr[index]['field_type'] === 'address' || (formArr[index+1]&&formArr[index+1]['field_type'] === 'textarea')){
+		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || formArr[index]['field_type'] === 'address' || (formArr[index+1]&&formArr[index+1]['field_type'] === 'textarea') || (formArr[index+1]&&formArr[index+1]['field_type'] === 'address') ||((formArr[index+1]&&formArr[index+1]['field_type'] === 'textarea') && formArr[index+2]&&formArr[index+2]['field_type'] === 'textarea')){
 		                        			contentHtml += `</div>`    
 		                        		}
 		                        		
@@ -928,7 +928,6 @@ let ReportConfig = {
     				dataJsonObj[item] = this.rows[item]
     			})
     		}
-    		let this_item = item
 			 //点击保存按钮
     		$(".position-fixed").unbind().on("click","#save",(e)=>{
     			$("#save").addClass("disabled")
@@ -936,7 +935,6 @@ let ReportConfig = {
     			 arr.forEach((item,index)=>{
     				 if($(item).siblings(".radio-con").length !== 0) {
     					 //radio类型绑数
-    					 console.log(url,this_item)
     					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
     					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
     					 let val = $('input[name='+radioName+']:checked').val();
@@ -959,6 +957,7 @@ let ReportConfig = {
     				 
     			 })
     			 dataJson.push(dataJsonObj)
+    			 console.log(JSON.stringify(dataJson))
     			 $.ajax({
     				 url,
     				 type:'post',
@@ -990,7 +989,7 @@ let ReportConfig = {
     			 })
     		})
     			 //点击提交按钮
-    		$(".position-fixed").unbind().on("click","#commit",(e)=>{
+    		$(".position-fixed").on("click","#commit",(e)=>{
     			$("#commit").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
