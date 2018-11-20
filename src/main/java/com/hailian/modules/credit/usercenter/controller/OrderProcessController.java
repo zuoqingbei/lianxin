@@ -1083,7 +1083,9 @@ public class OrderProcessController extends BaseProjectController{
         return list;
     }
 
-
+    public void test(){
+    	CompanyService.service.enterpriseGrab("7777800", "海尔集团公司", "612");
+    }
 
 
 
