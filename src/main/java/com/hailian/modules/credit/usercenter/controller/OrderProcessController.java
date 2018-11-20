@@ -488,7 +488,7 @@ public class OrderProcessController extends BaseProjectController{
             addNoice(code);
             //调用企查查接口
             if("595".equals(code)){
-                new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report"),"612");
+                new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report")," ");
             }
             renderJson(new ResultType());
             return new ResultType();
