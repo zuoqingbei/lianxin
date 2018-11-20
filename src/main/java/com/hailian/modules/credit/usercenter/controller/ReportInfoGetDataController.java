@@ -95,6 +95,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 
 	@SuppressWarnings("unchecked")
 	public void getBootStrapTable(boolean isCompanyMainTable, String sysLanguage,String companyId) {
+
 		Record record = new Record();
 		String tableName = getPara("tableName", "");
 		String className = getPara("className");
@@ -103,9 +104,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String confId = getPara("conf_id", "");
 		
-		/*// 获取关联字典表需要转义的下拉选
+		// 获取关联字典表需要转义的下拉选
 		String selectInfo = getPara("selectInfo");
-		
+
+		/*
 		// 解析实体获取required参数
 		CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
 		String getSource = confModel.getStr("get_source");
@@ -161,9 +163,24 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			e.printStackTrace();
 		}*/
 
-        List rows = getTableData(isCompanyMainTable,sysLanguage,companyId,tableName,className,confId);
+        List rows = getTableData(isCompanyMainTable,sysLanguage,companyId,tableName,className,confId,selectInfo);
 		renderJson(record.set("rows", rows).set("total", rows!=null?rows.size():null));
 	}
+
+    /**
+     * 反向映射数据
+     * @param sysLanguage
+     * @param companyId
+     * @param tableName
+     * @param className
+     * @param confId
+     * @param selectInfo
+     * @return
+     */
+    public List getTableData(String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
+        boolean isCompanyMainTable = tableName.equals("credit_company_info")||className.equals("CreditCompanyInfo");
+        return getTableData(isCompanyMainTable,sysLanguage,companyId,tableName,className,confId,selectInfo);
+    }
 
     /**
      * 反向映射数据
@@ -173,12 +190,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @param tableName 表名
      * @param className 反向映射的类名
      * @param confId 父节点id
+     * @param selectInfo  下拉框（把id转value）
      * @return
      */
-    public List getTableData(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId){
-        // 获取关联字典表需要转义的下拉选
-		String selectInfo = getPara("selectInfo");
-
+    public List getTableData(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
 		// 解析实体获取required参数
 		CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
 		String getSource = confModel.getStr("get_source");
@@ -190,7 +205,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			String[] requireds = getSource.split("\\*");
 			String[] required = requireds[1].split("\\$");
 			for (String str : required) {
-				sqlSuf.append(str.trim() + "=" + getPara(str).trim() + " and ");
+                if(str.equals("company_id")){
+                    sqlSuf.append(str.trim() + "=" + companyId + " and ");
+                }else{
+                    sqlSuf.append(str.trim() + "=" + getPara(str).trim() + " and ");
+                }
+
 			}
 		} else {
 			sqlSuf.append(" company_id=" + companyId.trim() + " ");

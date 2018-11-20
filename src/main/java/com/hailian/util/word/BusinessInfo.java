@@ -4,6 +4,7 @@ import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.RowRenderData;
 import com.deepoove.poi.data.TextRenderData;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.model.ModuleJsonData;
 import com.hailian.system.dict.DictCache;
 import com.jfinal.kit.PathKit;
@@ -34,6 +35,18 @@ public class BusinessInfo {
             List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(), reportType);
             list.add(new ModuleJsonData(crmc, child, crmc.getStr("small_module_type")));
 
+            String type = crmc.getStr("small_module_type");
+            if("1".equals(type)) {
+                String sysLanguage = "612";
+                String companyId = "77";
+                String tableName = "credit_company_info";
+                String className = "CreditCompanyInfo";
+                String confId = crmc.getInt("id") + "";
+                String selectInfo = "";
+                ReportInfoGetDataController report = new ReportInfoGetDataController();
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
+                System.out.println(rows.size());
+            }
         }
         //System.out.println("运行时间====================================" + (double) (new Date().getTime() - start));
 

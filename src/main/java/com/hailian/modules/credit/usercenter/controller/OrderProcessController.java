@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.hailian.modules.credit.company.service.CompanyService;
 import org.apache.commons.lang3.StringUtils;
 
 //import ch.qos.logback.core.status.Status;
@@ -485,6 +486,10 @@ public class OrderProcessController extends BaseProjectController{
             PublicUpdateMod(map);
             //添加站内信，
             addNoice(code);
+            //调用企查查接口
+            if("595".equals(code)){
+                new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report"),"612");
+            }
             renderJson(new ResultType());
             return new ResultType();
         } catch (Exception e) {
