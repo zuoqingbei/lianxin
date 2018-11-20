@@ -9,7 +9,11 @@
     <style>
     	.abc:after{
     		content: '';
-    		width: 22%;
+    		width: 25%;
+ 		}
+ 		.aaa:after {
+ 			content: '';
+    		width: 21%;
  		}
     </style>
 </head>
@@ -20,7 +24,7 @@
 			   <!-- 面包屑 -->
                  <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javascript:;" id="infoImport">报告录入</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:;" id="infoImport" onclick="Public.goToInfoImportPage()">报告录入</a></li>
                         <li class="breadcrumb-item active" aria-current="page">填报</li>
                     </ol>
                  </nav>

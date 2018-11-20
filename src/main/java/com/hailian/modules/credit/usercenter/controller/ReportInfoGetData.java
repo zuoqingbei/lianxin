@@ -50,6 +50,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 */
 	abstract void getSelete();
 	
+	
 	void deleteOneEntry(String className,String id) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 		Class entryType = null;
 		BaseProjectModel model = null;

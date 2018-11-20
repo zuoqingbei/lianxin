@@ -11,8 +11,6 @@ import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 public class TransApi {	 
