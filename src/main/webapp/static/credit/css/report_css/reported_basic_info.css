@@ -161,7 +161,6 @@ label {
 }
 
 .fixed-table-body {
-    overflow: inherit;
 }
 
 .isDelete  .popover-arrow {
