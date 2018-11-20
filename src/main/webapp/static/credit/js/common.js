@@ -142,6 +142,7 @@ let Public = {
     	console.log("开始订单详情页跳转")
     	//跳转订单详情
     	$("#main_content").load(BASE_PATH+'credit/front/home/orderInfo?id='+id)
+    	localStorage.setItem("row",JSON.stringify(param));
     },
     createOrder(){
     	 $("#main_content").load(BASE_PATH+'credit/front/home/createOrder')
