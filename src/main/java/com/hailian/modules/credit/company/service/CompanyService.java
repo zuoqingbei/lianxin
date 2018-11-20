@@ -1,5 +1,9 @@
 package com.hailian.modules.credit.company.service;
 
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -10,6 +14,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.http.HttpTest;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.template.ext.directive.Str;
@@ -101,7 +106,12 @@ public class CompanyService {
 			companyinfoModel.set("establishment_date", StartDate);
 			companyinfoModel.set("business_date_start", TermStart);
 			companyinfoModel.set("business_date_end", TeamEnd);
-			companyinfoModel.set("registration_status", Status);
+			List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");
+			if(CollectionUtils.isNotEmpty(dictDetailBy)){
+				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("id"));
+			}
+			
+			
 			companyinfoModel.set("registration_authority", BelongOrg);
 			companyinfoModel.set("address", Address);
 			companyinfoModel.set("province", Province);
