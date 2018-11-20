@@ -111,7 +111,7 @@
 		    			<div class="form-group row d-flex justify-content-around mb-3">
 		                    <div class="input-group mt-2 col-md-6 layui-form">
 		                        <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>订单公司名称：</label>
-		                        	<input class=" col-md-8 layui-input formInput" id="attr.right_company_name_en" name="attr.right_company_name_en" type="text" value="">
+		                        	<input class=" col-md-8 layui-input formInput" id="right_company_name_en" name="attr.right_company_name_en" type="text" value="">
                                        <!--  <select name="attr.company_id" class=" col-md-8 layui-input" lay-search="" ay-verify="" >
                                             <option value="0" disabled selected>请选择公司</option>
                                         </select> -->
@@ -194,7 +194,7 @@
 		    			<input name="attr.status" type="hidden" value="0">
 		    			<input name="id" type="hidden" value="0">
 		    			<input id="priceid" name="attr.price_id" type="hidden" value="0">
-		    			<input id="is_fastsubmit" name="attr.is_fastsubmit" type="hidden" value="-1">
+		    			<input id="is_fastsubmit" name="attr.is_fastsubmmit" type="hidden" value="-1">
 		    			<input name="attr.source" type="hidden" value="0">
 		    			<input name="attr.end_date" type="hidden" value="0">
 		    			<input name="attr.company_by_report" type="hidden" value="0">
@@ -225,6 +225,9 @@
 					<div class="err-box">
 						<span></span>
 					</div>	
+					<div class="tips-box">
+						<span></span>
+					</div>
 						
 					
 				</div>
@@ -242,17 +245,17 @@
 	<div class="modal-content">
 			<div class="modal-header">
 			<h5 class="modal-title m-auto d-flex" id="checkedModalLongTitle">
-				<img src="../../imgs/order/icons8-notice.png" alt="">
+				<img src="${BASE_PATH }static/credit/imgs/order/icons8-notice.png" alt="">
 				检测到相同公司报告
 			</h5>
 		</div>
 		<div class="modal-body">
 			<div class="text-center my-3 modal-label">报告时间：</div>
-			<div class="text-center my-3 modal-text">2018-10-17</div>
+			<div class="text-center my-3 modal-text" id="reporttime">*</div>
 			<div class="text-center my-3 modal-label">是否有财务信息：</div>
-			<div class="text-center my-3 modal-text">是</div>
+			<div class="text-center my-3 modal-text" id="isfinance">*</div>
 			<div class="text-center my-3 modal-label">最近财务报告时间：</div>
-			<div class="text-center my-3 modal-text">2017-10-17</div>
+			<div class="text-center my-3 modal-text" id="lastFiscalYear">*</div>
 			
 		</div>
 		<div class="modal-footer justify-content-center">

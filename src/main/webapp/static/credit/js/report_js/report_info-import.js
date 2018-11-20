@@ -119,6 +119,7 @@ let Verify = {
                                 $("#orderId").val(row.id);
                                 $("#num").html(row.num);
                                 $("#remarks").val("");
+                                $("#companyId").val(row.company_id);
                                 pageNumber = row.pageNumber;
                                 pageSize = row.pageSize;
                             	  sortName = row.sortName;
@@ -189,7 +190,7 @@ let Verify = {
         		$.ajax({
            			type:"post",
                		url:BASE_PATH+"credit/front/orderProcess/statusSave",
-               		data:"statusCode=595&isPa=yes&num="+$("#num").html()+"&model.id="+$("#orderId").val()+"&model.company_by_report="+$("#companyZHNames").val(),
+               		data:"statusCode=595&isPa=yes&num="+$("#num").html()+"&model.id="+$("#orderId").val()+"&model.company_by_report="+$("#companyZHNames").val()+"&companyId="+$("#companyId").val(),
                		dataType:"json",
                		success:function(obj){
                			if(obj.statusCode===1){

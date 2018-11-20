@@ -1,21 +1,19 @@
 package com.hailian.modules.admin.ordermanager.controller;
 
 import java.io.File;
-import java.math.BigDecimal;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.feizhou.swagger.annotation.Api;
@@ -48,8 +46,6 @@ import com.hailian.util.DateAddUtil;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
 import com.jfinal.aop.Before;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.ICallback;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -488,17 +484,38 @@ public class OrdermanagerController extends BaseProjectController{
 		
 
 	}
-	public void isTheSameCompany(){
-		String right_company_name_en=getPara("right_company_name_en");
+	/**
+	 * 查找以往是否有该订单公司的已完成订单
+	* @author doushuihai  
+	 * @throws UnsupportedEncodingException 
+	* @date 2018年11月18日下午5:55:29  
+	* @TODO
+	 */
+	public void isTheSameCompany() throws UnsupportedEncodingException{
+		String companyname=getPara("companyname");
+		String report_type=getPara("report_type");
+		companyname = URLDecoder.decode(companyname,"UTF-8");
 		//判断该公司是否存在于公司库中
-		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
+		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(companyname);
+		CreditOrderInfo theSameOrder=null;
 		if(company!=null){
-			ResultType resultType = new ResultType(1,"存在相同公司");
-			renderJson(resultType);
-		}else{
-			ResultType resultType = new ResultType(2,"不存在相同公司");
-			renderJson(resultType);
+			theSameOrder = OrderManagerService.service.isTheSameOrder(company.get("id")+"",report_type, this);
 		}
+		if(theSameOrder!=null){
+			Map<String,Object> map=new HashMap<String, Object>();
+			ResultType resultType = new ResultType(1,"检测到相同公司名称");
+			map.put("flag", resultType);
+			map.put("result", theSameOrder);
+			renderJson(map);
+		}else{
+			Map<String,Object> map=new HashMap<String, Object>();
+			ResultType resultType = new ResultType(2,"未检测到相同公司名称");
+			map.put("flag", resultType);
+			map.put("result", theSameOrder);
+			renderJson(map);
+		}
+		
+		
 	}
 	/**
 	 * 

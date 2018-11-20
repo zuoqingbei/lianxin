@@ -1,7 +1,14 @@
-
-
-#orderForm select{
+#orderForm{
+	padding-right: 6rem;
+}
+#orderForm select,input,textarea{
 	color:#ccc;
+}
+#orderForm input::-webkit-input-placeholder{
+	color:#ccc !important;
+}
+#orderForm textarea::-webkit-input-placeholder{
+	color:#ccc !important;
 }
 .create-order {
     height: 6.25rem;
@@ -21,8 +28,6 @@
 	margin:1.25rem;
 	background: #fff;
 	padding-top: 0;
-	overflow:hidden;
-	
 }
 .table-content label{
 	font-size: 1rem;
@@ -33,12 +38,9 @@
 	color:#f00;
 	font-size: 1.2rem;
 	margin-right:0.3rem;
-	
 }
 .right-btn {
 	padding-right: 9rem;
-	margin:2.5rem 0;
-	
 }
 .myBtn{
 	margin-top: 1.5rem!important;
@@ -66,7 +68,6 @@
 }
 #orderForm input.active, #orderForm select.active{
 	border-color:#f00;
-
 }
 
 /*进度条*/
@@ -111,21 +112,55 @@
 .err-box span {
 	color: #f5222d;
 }
+
+.tips-box {
+	display: none;
+	height: 8rem;
+	width: -webkit-fill-available;
+    background: #f6ffed;
+	border: solid 1px #95de64;
+	border-radius: 4px;
+	margin: 0 2rem;
+	padding: .5rem;
+	overflow-y: auto;
+}
+.tips-box span {
+	color: #52c41a;
+}
+
 .fa-download {
 	margin-right: .5rem;
 }
 
 /*附件*/
 .file-upload-box{
-	padding-left: 9.5rem;
+	padding-left: 8rem;
 }
 .uploadFile img{
 	margin: 0 auto;
 }
-.file-upload{
-	border: none !important;
-}
 .uploadFile{
 	margin-left: 0.5rem;
 }
+.file-upload{
+	border: none !important;
+}
 
+#checkedModal .modal-dialog.modal-dialog-centered {
+	max-width: 25%!important;
+}
+#checkedModalLongTitle {
+	padding-top: .7rem;
+	color: var(--activeColor);
+}
+#checkedModalLongTitle img {
+	width: 26px;
+	height: 26px;
+	margin-right: 1rem;
+}
+.modal-label {
+	font-weight: 600;
+}
+.modal-content {
+	min-height: auto;
+}
