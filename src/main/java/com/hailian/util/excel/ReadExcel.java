@@ -10,6 +10,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -62,18 +64,18 @@ public class ReadExcel {
 	        XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
 	        List<List<String>> result = new ArrayList<List<String>>();
 	        // 循环每一页，并处理当前循环页
-	        for (XSSFSheet xssfSheet : xssfWorkbook) {
+	        for (Sheet xssfSheet : xssfWorkbook) {
 	            if (xssfSheet == null) {
 	                continue;
 	            }
 	            // 处理当前页，循环读取每一行
 	            for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
-	                XSSFRow xssfRow = xssfSheet.getRow(rowNum);
+	                Row xssfRow = xssfSheet.getRow(rowNum);
 	                int minColIx = xssfRow.getFirstCellNum();
 	                int maxColIx = xssfRow.getLastCellNum();
 	                List<String> rowList = new ArrayList<String>();
 	                for (int colIx = minColIx; colIx < maxColIx; colIx++) {
-	                    XSSFCell cell = xssfRow.getCell(colIx);
+	                    Cell cell = xssfRow.getCell(colIx);
 	                    if (cell == null) {
 	                        continue;
 	                    }
