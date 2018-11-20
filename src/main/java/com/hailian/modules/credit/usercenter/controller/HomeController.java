@@ -356,6 +356,7 @@ public class HomeController extends BaseProjectController {
 		model.set("month", month);
 		//获取订单公司名称
 		String right_company_name_en=model.get("right_company_name_en");
+		
 		//判断该公司是否存在于公司库中
 		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
 		//如果公司不存在则在数据库中增加该公司的记录
@@ -364,10 +365,19 @@ public class HomeController extends BaseProjectController {
 			company.set("name_en", right_company_name_en);
 			company.save();
 			//获取新增公司
-			company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
+			//company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
 		}
 		//获取公司id
 		model.set("company_id", company.get("id"));
+		String is_fastsubmmit=model.get("is_fastsubmmit");
+		//判断该公司是否存在于公司库中
+		CreditOrderInfo theSameOrder=null;
+		//查询到有相同公司报告直接提交
+		if(is_fastsubmmit.equals("0")){
+			theSameOrder = OrderManagerService.service.getTheSameOrder(company.get("id")+"",company.get("report_type")+"", this);
+			model.set("is_fastsubmmit", theSameOrder.get("id"));
+			model.set("status", "311");
+		}
 		//获取报告员id
 		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
 		model.set("report_user", reportIdtoOrder);

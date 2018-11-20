@@ -15,7 +15,6 @@ let
 					var form = document.getElementById("form_File");//获取到form表单
 					var formData = new FormData(form);
 					formData.append("pic",$("#more_upload")[0].files[0]);
-					console.log(formData)
 					$.ajax({
 						type: "POST", // 数据提交类型
 						url: BASE_PATH+"credit/orderpoimanager/importExcel", // 发送地址
@@ -27,7 +26,6 @@ let
 						success:(data)=>{
 							/**成功 */
 							
-							console.log(data)
 							jsondata=data.orderListReal.rows;
 							$("#show_modal").trigger("click")
 							Page.initTable(data.orderList)
@@ -38,6 +36,16 @@ let
 								
 				               }else{
 				            	 $(".err-box").hide()
+				   				 $("#modal_submit").removeClass("btn-disabled disabled").addClass("btn-primary")
+				               }
+							if(data.isTheSameOrderMark.statusCode===2){
+								console.log(data.isTheSameOrderMark)
+								 $(".tips-box span").html(data.isTheSameOrderMark.message)
+								 $(".tips-box").show()
+								 $("#modal_submit").addClass("btn-disabled disabled").removeClass("btn-primary")
+								
+				               }else{
+				            	 $(".tips-box").hide()
 				   				 $("#modal_submit").removeClass("btn-disabled disabled").addClass("btn-primary")
 				               }
 							$("#tableOrder").bootstrapTable("load",data.orderList)
@@ -147,34 +155,8 @@ let
 					Public.message("error","未发现该报告价格,请联系管理员");
 					return;
 				}
-				//isTheSameCompany();
-				//return;
-				$("input[name='attr.status']").val("291");
-					$("#orderForm").ajaxSubmit({
-						success:function(data){
-							console.log(JSON.stringify(data));
-							  if(data.statusCode===1){
-                        		Public.message("success",data.message);
-                        		//Public.goList();
-                        		reste();
-                       		 }else if(data.statusCode===3){
-                       			Public.message("info",data.message);
-                        		//Public.goList();
-                        		reste();
-                       		 }
-							  else{
-                        		Public.message("error",data.message);
-                        		//Public.goList();
-                        		reste();
-                        	}
-
-						},
-						error:function(data){
-							Public.message("error",data.message);
-							//Public.goList();
-							reste();
-						}
-					});
+				isTheSameCompany();
+			
 			}
 		},
 		/*formSave: function(){
@@ -356,7 +338,6 @@ let
 				fixedNumber: 1,
 				queryParamsType:'',
 				queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-				  console.log(params)
 				  return {//这里的params是table提供的  
 					  offset: params.offset,//从数据库第几条记录开始  
 					  limit: params.limit//找多少条  
@@ -449,15 +430,65 @@ $(document).ready(function () {
 	});
  }
  function isTheSameCompany(){
-	 var companyname=$("#attr.right_company_name_en").val();
-	 alert(companyname)
+	 var companyname=$("#right_company_name_en").val();
+	 var report_type=$("select[name='attr.report_type']").find("option:selected").val();
    	 $.ajax({
-	        url:"/credit/orderpoimanager/isTheSameCompany/companyname="+companyname,
-	        type:"post",
+   		 	type: "get",
+   		 	contentType: "application/json; charset=utf-8",
+   		 	url:"/admin/ordermanager/isTheSameCompany",
+	        data:{
+	        	"companyname":encodeURI(companyname),
+	        	"report_type":report_type
+	        },	
 	        dataType:"json",
 	        success: function(data) {
-	        	
+	        	console.log(data)
+	        	alert(data.result.id)
+	        	if(data.flag.statusCode===1){
+	        		$("#reporttime").html(data.result.receiver_date);
+	        		$("#isfinance").html(data.result.is_hava_finance);
+	        		$("#lastFiscalYear").html(data.result.last_fiscal_year);
+	        		//弹出提示
+	        		$("#show_checked_modal").trigger("click")
+           		 }else{
+           			 return;
+            	 }
 	        	
 	        },
 	    });
 }
+ $("#modal_checked_submit").click(function(){
+		  $("#is_fastsubmit").val("0");
+		  tableSubmit();
+ })
+ $("#modal_checked_create").click(function(){
+		  $("#is_fastsubmit").val("-1");
+		  tableSubmit();
+ })
+  function tableSubmit(){
+		$("input[name='attr.status']").val("291");
+		$("#orderForm").ajaxSubmit({
+			success:function(data){
+				  if(data.statusCode===1){
+            		Public.message("success",data.message);
+            		//Public.goList();
+            		reste();
+           		 }else if(data.statusCode===3){
+           			Public.message("info",data.message);
+            		//Public.goList();
+            		reste();
+           		 }
+				  else{
+            		Public.message("error",data.message);
+            		//Public.goList();
+            		reste();
+            	}
+
+			},
+			error:function(data){
+				Public.message("error",data.message);
+				//Public.goList();
+				reste();
+			}
+		});
+ }
