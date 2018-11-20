@@ -111,8 +111,6 @@ public class CompanyService {
 			if(CollectionUtils.isNotEmpty(dictDetailBy)){
 				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("id"));
 			}
-			
-			
 			companyinfoModel.set("registration_authority", BelongOrg);
 			companyinfoModel.set("address", Address);
 			companyinfoModel.set("province", Province);
@@ -133,9 +131,11 @@ public class CompanyService {
 					JSONObject partner = (JSONObject)partners.get(i);
 					String name = partner.getString("StockName");//股东
 					String StockPercent = partner.getString("StockPercent");//出资比例
+					String ShouldCapi = partner.getString("ShouldCapi");//出资金额
 					CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
 					shareholderModel.set("name", name);
 					shareholderModel.set("money", StockPercent);
+					shareholderModel.set("contribution", ShouldCapi);
 					shareholderModel.set("company_id", companyId);
 					shareholderModel.set("sys_language", sys_language);
 					shareholderModel.save();
@@ -150,11 +150,11 @@ public class CompanyService {
 					//CreditCompanyManagement
 					String name = employee.getString("Name");//管理层姓名
 					String job = employee.getString("Job");//职位
+					CreditCompanyManagement managementModel = new CreditCompanyManagement();
 					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
 					if(CollectionUtils.isNotEmpty(dictDetailBy)){
-						companyinfoModel.set("position", dictDetailBy.get(0).get("id"));
+						managementModel.set("position", dictDetailBy.get(0).get("id"));
 					}
-					CreditCompanyManagement managementModel = new CreditCompanyManagement();
 					managementModel.set("name", name);
 //					managementModel.set("position", job);
 					managementModel.set("company_id", companyId);
@@ -162,14 +162,7 @@ public class CompanyService {
 					managementModel.save();
 				}
 			}
-			//分支机构
-			JSONArray Branches = json.getJSONObject("Result").getJSONArray("Branches");
-			if(Branches != null && Branches.size()>0){
-				for(int i=0;i<Branches.size();i++){
-					JSONObject branche = (JSONObject)Branches.get(i);//分支
-					String RegNo = branche.getString("RegNo");//注册号
-				}
-			}
+
 			//变更事项
 			JSONArray ChangeRecords = json.getJSONObject("Result").getJSONArray("ChangeRecords");
 			if(ChangeRecords != null && ChangeRecords.size()>0){
@@ -181,7 +174,10 @@ public class CompanyService {
 					String AfterContent = changerecord.getString("AfterContent");//变更后
 					String ChangeDate = changerecord.getString("ChangeDate");//变更日期
 					CreditCompanyHis companyhisModel=new CreditCompanyHis();
-					companyhisModel.set("change_items", ProjectName);
+					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(ProjectName,"company_history_change_item");
+					if(CollectionUtils.isNotEmpty(dictDetailBy)){
+						companyhisModel.set("change_items", dictDetailBy.get(0).get("id"));
+					}
 					companyhisModel.set("change_font", BeforeContent);
 					companyhisModel.set("change_back", AfterContent);
 					companyhisModel.set("date", ChangeDate);
