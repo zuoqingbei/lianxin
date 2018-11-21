@@ -103,7 +103,7 @@ label {
     width: var(--inputWidthlg)!important;
 }
 .control-label {
-    width: 10rem;
+    width: 11rem;
     justify-content: flex-end!important;
 }
 .operate a {
