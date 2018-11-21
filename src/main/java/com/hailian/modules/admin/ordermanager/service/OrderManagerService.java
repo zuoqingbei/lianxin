@@ -140,6 +140,24 @@ public class OrderManagerService {
 		return CreditOrderInfo.dao.getOrders(pageinator, model, orderby, c);
 
 	}
+	/**
+	 * 查找以往是否有该订单公司的已完成订单
+	* @author doushuihai  
+	* @date 2018年11月18日下午5:55:29  
+	* @TODO
+	 */
+	public CreditOrderInfo isTheSameOrder(String companyname,String report_type,BaseProjectController c){
+		return CreditOrderInfo.dao.isTheSameOrder(companyname,report_type, c);
+	}
+	/**
+	 * 查找以往是否有该订单公司的真正要引用的报告订单
+	* @author doushuihai  
+	* @date 2018年11月18日下午5:55:29  
+	* @TODO
+	 */
+	public CreditOrderInfo getTheSameOrder(String companyname,String report_type,BaseProjectController c){
+		return CreditOrderInfo.dao.getTheSameOrder(companyname,report_type,c);
+	}
 
 	/**
 	 * 

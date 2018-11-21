@@ -102,6 +102,45 @@
         	justify-content: flex-end;
         	width: 38rem;
         }
+        #menu{
+            width: 125px; 
+            overflow: hidden; /*隐藏溢出的元素*/
+            box-shadow: 0 1px 1px #888,1px 0 1px #ccc;
+            position: fixed; /*自定义菜单相对与body元素进行定位*/
+            text-align: center;
+            background: #fff;
+            display: none;
+        }
+        .menutop{
+            border-bottom: 1px solid #ccc;
+        }
+        .menutop li,.menudel{
+            width: 130px;
+            height: 25px;
+            line-height: 25px;
+            cursor: pointer;
+            margin: 2px 0;
+        }
+        .menutop li div{
+            display: inline-block;
+        }
+        .menutop li span{
+            float: left;
+        }
+        .menutop li img{
+            float: left;
+            margin-right: 2px;
+        }
+        .menutop li:hover,.menudel:hover{
+            background: #ddd;
+            transition: all .5s;
+        }
+        .tab-pane ul li img{
+            display: inline-block;
+            padding-left: 15px;
+            width: 31px;
+            height: 16px;
+        }
     </style>
 </head>
 
@@ -159,6 +198,32 @@
         </div>
     </div>
 </div>
+<!-- 自定义右键菜单 -->
+
+    <div id="menu">
+        <ul class="menutop">
+            <li>
+                <div><img src="${BASE_PATH }static/credit/imgs/messages/red.png" alt=""><span>红色</span></div>
+            </li>
+           
+            <li>
+                <div><img src="${BASE_PATH }static/credit/imgs/messages/yellow.png" alt=""><span>黄色</span></div>
+            </li>
+            <li>
+                <div><img src="${BASE_PATH }static/credit/imgs/messages/green.png" alt=""><span>绿色</span></div>
+            </li>
+            <li>
+                <div><img src="${BASE_PATH }static/credit/imgs/messages/blue.png" alt=""><span>蓝色</span></div>
+            </li>
+            <li>
+                <div><img src="${BASE_PATH }static/credit/imgs/messages/Violet.png" alt=""><span>紫色</span></div>
+            </li>
+            <li>
+                <div><img src="${BASE_PATH }static/credit/imgs/messages/gray.png" alt=""><span>灰色</span></div>
+            </li>
+        </ul>
+        <div class="menudel">删除</div>
+    </div>
 <script src="${BASE_PATH }static/credit/js/bootstrap-paginator.min.js"></script>
 <script src="${BASE_PATH }static/credit/js/bootstrap-paginator.js"></script>
 
@@ -238,6 +303,7 @@ $(function(){
         $("[aria-selected='true']").click();
         
     })
+    
 })
 //初始化
 agentchange('')
@@ -301,5 +367,53 @@ $("#toReadAll").click(function(){
 	})
 	
 })
+
+		// 修改右键菜单
+        window.oncontextmenu = function (e) {
+            //取消默认的浏览器自带右键
+            e.preventDefault();
+        }
+
+
+        var menu = document.querySelector("#menu");
+        var that;
+        $("body").on("contextmenu", ".tab-pane ul li", function (e) {
+            //根据事件对象中鼠标点击的位置，进行定位
+            menu.style.left = e.clientX + 'px';
+            menu.style.top = e.clientY + 'px';
+
+            //改变自定义菜单的宽，让它显示出来
+            menu.style.display = 'block';
+            that = this.firstElementChild;
+            console.log(that);
+        })
+
+
+        // 获取选择星标
+        $('.menutop li').click(function () {
+            if ($(that).find('img')) {
+                $(that).find('img').remove();
+                var star = $(this).find('img').clone(true);
+                console.log(star);
+                $(that).append(star);
+            } else {
+                var star = $(this).find('img').clone(true);
+                console.log(star);
+                $(that).append(star);
+            }
+        })
+        // 获取删除星标
+        $('.menudel').click(function () {
+            if ($(that).find('img')) {
+                $(that).find('img').remove();
+            }
+        })
+
+        //关闭右键菜单
+        window.onclick = function (e) {
+            //用户触发click事件就可以关闭了，因为绑定在window上，按事件冒泡处理，不会影响菜单的功能
+            menu.style.display = 'none';
+            return false;
+        }
 </script>
 </html>

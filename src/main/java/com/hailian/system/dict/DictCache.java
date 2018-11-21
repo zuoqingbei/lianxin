@@ -65,6 +65,8 @@ public class DictCache {
 			
 		}
 		cache.add("map", dictMap);
+		
+		
 	}
 
 	public static Map<Integer, SysDictDetail> getCacheMap() {

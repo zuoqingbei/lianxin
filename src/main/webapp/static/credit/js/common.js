@@ -74,6 +74,7 @@ let Public = {
                 $(".nav-row").removeClass("col-md-2")
                 $("#main_content").removeClass("col-md-10")
                 $(".border-div").css({"background":"url(/static/credit/imgs/index/right_arrow.png) no-repeat","backgroundSize":"100% 100%"})
+                $(".abc").addClass("aaa")
             }else {
                 this.isSQ = !this.isSQ
                 //被收起
@@ -81,7 +82,8 @@ let Public = {
                 $("#main_content").css("width","83.33%")
                 $(".head-logo-box").css("width","16.6%")
                 $(".border-div").css({"background":"url(/static/credit/imgs/index/left_arrow.png) no-repeat","backgroundSize":"100% 100%"})
-                
+                $(".abc").removeClass("aaa")
+    		
             }
         })
         //菜单点击
@@ -140,6 +142,7 @@ let Public = {
     	console.log("开始订单详情页跳转")
     	//跳转订单详情
     	$("#main_content").load(BASE_PATH+'credit/front/home/orderInfo?id='+id)
+    	localStorage.setItem("row",JSON.stringify(param));
     },
     createOrder(){
     	 $("#main_content").load(BASE_PATH+'credit/front/home/createOrder')

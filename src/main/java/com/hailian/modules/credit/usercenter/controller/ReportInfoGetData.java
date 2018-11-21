@@ -50,6 +50,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 */
 	abstract void getSelete();
 	
+	
 	void deleteOneEntry(String className,String id) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 		Class entryType = null;
 		BaseProjectModel model = null;
@@ -78,7 +79,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			Integer userId = getSessionUser().getUserid();
 			String now = getNow();
 			//实体是否存在id
-			boolean exitsId = true; ;
+			boolean exitsId = true; 
 			if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
 				return new ArrayList<>();
 			}

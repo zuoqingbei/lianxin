@@ -1,5 +1,9 @@
 package com.hailian.modules.credit.company.service;
 
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -10,6 +14,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.http.HttpTest;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.template.ext.directive.Str;
@@ -91,6 +96,7 @@ public class CompanyService {
 			String Province = jsonResulet.getString("Province"); //所在省
 			String Scope = jsonResulet.getString("Scope"); //经营范围
 			String Status = jsonResulet.getString("Status"); //登记状态
+			System.out.println(Status+"!!!!!!!!!1");
 			CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
 			companyinfoModel.set("registration_num", No);
 			companyinfoModel.set("company_type", EconKind);
@@ -101,7 +107,10 @@ public class CompanyService {
 			companyinfoModel.set("establishment_date", StartDate);
 			companyinfoModel.set("business_date_start", TermStart);
 			companyinfoModel.set("business_date_end", TeamEnd);
-			companyinfoModel.set("registration_status", Status);
+			List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");
+			if(CollectionUtils.isNotEmpty(dictDetailBy)){
+				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("id"));
+			}
 			companyinfoModel.set("registration_authority", BelongOrg);
 			companyinfoModel.set("address", Address);
 			companyinfoModel.set("province", Province);
@@ -113,8 +122,6 @@ public class CompanyService {
 			String Email = ContactInfo.getString("Email");//邮箱
 			companyinfoModel.set("telphone", PhoneNumber);
 			companyinfoModel.set("email", Email);
-			
-			companyinfoModel.set("name", companyName);
 			companyinfoModel.update();
 			//股东信息
 			JSONArray partners = json.getJSONObject("Result").getJSONArray("Partners");
@@ -124,9 +131,11 @@ public class CompanyService {
 					JSONObject partner = (JSONObject)partners.get(i);
 					String name = partner.getString("StockName");//股东
 					String StockPercent = partner.getString("StockPercent");//出资比例
+					String ShouldCapi = partner.getString("ShouldCapi");//出资金额
 					CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
 					shareholderModel.set("name", name);
 					shareholderModel.set("money", StockPercent);
+					shareholderModel.set("contribution", ShouldCapi);
 					shareholderModel.set("company_id", companyId);
 					shareholderModel.set("sys_language", sys_language);
 					shareholderModel.save();
@@ -142,21 +151,18 @@ public class CompanyService {
 					String name = employee.getString("Name");//管理层姓名
 					String job = employee.getString("Job");//职位
 					CreditCompanyManagement managementModel = new CreditCompanyManagement();
+					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
+					if(CollectionUtils.isNotEmpty(dictDetailBy)){
+						managementModel.set("position", dictDetailBy.get(0).get("id"));
+					}
 					managementModel.set("name", name);
-					managementModel.set("position", job);
+//					managementModel.set("position", job);
 					managementModel.set("company_id", companyId);
 					managementModel.set("sys_language", sys_language);
 					managementModel.save();
 				}
 			}
-			//分支机构
-			JSONArray Branches = json.getJSONObject("Result").getJSONArray("Branches");
-			if(Branches != null && Branches.size()>0){
-				for(int i=0;i<Branches.size();i++){
-					JSONObject branche = (JSONObject)Branches.get(i);//分支
-					String RegNo = branche.getString("RegNo");//注册号
-				}
-			}
+
 			//变更事项
 			JSONArray ChangeRecords = json.getJSONObject("Result").getJSONArray("ChangeRecords");
 			if(ChangeRecords != null && ChangeRecords.size()>0){
@@ -168,7 +174,10 @@ public class CompanyService {
 					String AfterContent = changerecord.getString("AfterContent");//变更后
 					String ChangeDate = changerecord.getString("ChangeDate");//变更日期
 					CreditCompanyHis companyhisModel=new CreditCompanyHis();
-					companyhisModel.set("change_items", ProjectName);
+					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(ProjectName,"company_history_change_item");
+					if(CollectionUtils.isNotEmpty(dictDetailBy)){
+						companyhisModel.set("change_items", dictDetailBy.get(0).get("id"));
+					}
 					companyhisModel.set("change_font", BeforeContent);
 					companyhisModel.set("change_back", AfterContent);
 					companyhisModel.set("date", ChangeDate);
@@ -180,4 +189,5 @@ public class CompanyService {
 		}
 		return flag;
 	}
+	
 }
