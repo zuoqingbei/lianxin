@@ -23,9 +23,9 @@ let Verify = {
                           field: 'num',
                           align: 'center',
                           valign: 'middle',
-                          formatter:function(value,row,index){ 
-                          	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  '; 
-                          } 
+                          formatter:function(value,row,index){
+                          	return `<a href="javascript:;" style="color:#1890ff" onclick='Public.goToOrderDetail(${row.id},${JSON.stringify(row)})'>${value}</a>`;
+                          }
                         },{
                           field: 'receiver_date',
                           title: '订单日期',
