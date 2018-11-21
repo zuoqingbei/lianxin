@@ -167,6 +167,16 @@ public class TemplateDictService extends BaseService {
 	public String getSysDictDetailString3(String type,Object selectedId,String disPalyCol) {
 		StringBuffer sb=new StringBuffer();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		if (type!=null&&"1".equals(type)) {
+			type="translate_quality";//翻译质检下拉选项
+			selectedId="642";
+		}else if(type!=null&&"2".equals(type)){
+			type="analyze_quality";//分析质检下拉选项
+			selectedId="652";
+		}else if(type!=null&&"3".equals(type)){
+			type="entering_quality";//填报质检下拉选项
+			selectedId="646";
+		}
 		//listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
@@ -179,6 +189,7 @@ public class TemplateDictService extends BaseService {
 		}
 		return sb.toString();
 	}
+
 	/**
 	 * 根据dict_type获取字典,用于添加,有默认选项,无全部选项 复选框
 	* @author doushuihai  

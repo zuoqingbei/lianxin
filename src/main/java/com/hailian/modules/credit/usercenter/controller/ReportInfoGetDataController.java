@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.front.template.TemplateDictService;
@@ -21,6 +22,17 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 */
 	public void getForm() {
 		getBootStrapTable();
+	}
+	/**
+	 * 
+	* @Description: 详情form
+	* @date 2018年11月20日 上午11:09:10
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public void getForms() {
+		getBootStrapTables();
 	}
 
 	/**
@@ -90,6 +102,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 */
 	public void getBootStrapTable() {
 		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese,null);
+	}
+	//详情
+	public void getBootStrapTables() {
+		getBootStrapTables(isCompanyMainTable(), SimplifiedChinese,null);
 	}
 
 
@@ -167,6 +183,20 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		renderJson(record.set("rows", rows).set("total", rows!=null?rows.size():null));
 	}
 
+   //详情模式
+	public void getBootStrapTables(boolean isCompanyMainTable, String sysLanguage,String companyId) {
+		Record record = new Record();
+		String tableName = getPara("tableName", "");
+		String className = getPara("className");
+		if(companyId==null||"".equals(companyId)) {
+			 companyId = getPara("company_id","");
+		}
+		String confId = getPara("conf_id", "");
+		 String orderId = getPara("orderId");
+		  List rows = getTableDatas(isCompanyMainTable,sysLanguage,companyId,tableName,className,confId,orderId);
+			renderJson(record.set("rows", rows).set("total", rows!=null?rows.size():null));
+		}
+
     /**
      * 反向映射数据
      * @param sysLanguage
@@ -182,6 +212,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         return getTableData(isCompanyMainTable,sysLanguage,companyId,tableName,className,confId,selectInfo);
     }
 
+
+      
+
+	
     /**
      * 反向映射数据
      * @param isCompanyMainTable 是否是主表
@@ -235,6 +269,40 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			rows = model.find(
 					"select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 and sys_language in(?)",
 					Arrays.asList(new String[] { sysLanguage }).toArray());
+			if (!("".equals(selectInfo) || selectInfo == null)) {
+
+				// 解析前端传入的字符串
+				List<Map<Object, Object>> selectInfoMap = parseJsonArray(selectInfo);
+
+				// 将id转化为字典表中对应的字符串
+				dictIdToString(rows, selectInfoMap);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0, "类文件未找到异常!"));
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0, "实例化异常!"));
+		} catch (IllegalAccessException e) {
+			renderJson(new ResultType(0, "非法存取异常!"));
+			e.printStackTrace();
+		}
+        return rows;
+    }
+    //详情
+    public List getTableDatas(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId,String orderId){
+        // 获取关联字典表需要转义的下拉选
+		String selectInfo = getPara("selectInfo");
+		List rows = null;
+		try {
+			Class<?> table = Class.forName(PAKAGENAME_PRE + className);
+			BaseProjectModel model = (BaseProjectModel) table.newInstance();
+			rows = model.find(
+					"select info.*,cu.`name` as name,de.detail_name as report_language  from credit_order_info  info "
+					+ " LEFT JOIN credit_custom_info cu on info.custom_id=cu.id "
+					+ " LEFT JOIN sys_dict_detail de on de.detail_id=info.report_language"
+					+ " where info.id=?",
+					orderId);
 			if (!("".equals(selectInfo) || selectInfo == null)) {
 
 				// 解析前端传入的字符串

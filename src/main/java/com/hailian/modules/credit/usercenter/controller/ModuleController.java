@@ -75,7 +75,14 @@ public class ModuleController extends BaseProjectController{
 		renderJson(record);
 	}
 	
-	
+	/**
+	 * 
+	* @Description: 报告详情
+	* @date 2018年11月20日 上午10:44:33
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
 	public void detail() {
 		//订单id
 		String orederid = getPara("id");
