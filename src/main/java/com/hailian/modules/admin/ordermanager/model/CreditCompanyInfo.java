@@ -37,6 +37,6 @@ public class CreditCompanyInfo extends BaseProjectModel<CreditCompanyInfo>{
 	public CreditCompanyInfo findByENname(String right_company_name_en) {
 		// TODO Auto-generated method stub
 		String englishName=right_company_name_en.trim();
-		return dao.findFirst("select * from credit_company_info t where t.name_en=? and t.del_flag=0",englishName);
+		return dao.findFirst("select * from credit_company_info t where t.name_en=? and t.del_flag=0 and t.sys_language=612",englishName);
 	}
 }

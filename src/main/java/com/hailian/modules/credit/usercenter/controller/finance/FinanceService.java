@@ -27,7 +27,7 @@ public class FinanceService {
 			return null;
 		}
 		ReportInfoGetDataController rgc = new ReportInfoGetDataController();
-		List<CreditCompanyFinancialStatementsConf> list = rgc.getTableData(false, sysLanguage, companyId, "credit_company_financial_statements_conf", "CreditCompanyFinancialStatementsConf", confId);
+		List<CreditCompanyFinancialStatementsConf> list = rgc.getTableData( sysLanguage, companyId, "credit_company_financial_statements_conf", "CreditCompanyFinancialStatementsConf", confId,"");
 		return list;
 	}
 	

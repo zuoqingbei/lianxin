@@ -26,6 +26,7 @@ import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
 import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
@@ -65,6 +66,8 @@ public class OrderPoiController extends BaseProjectController {
 	@ApiOperation(url = "/credit/orderpoimanager/importExcel", httpMethod = "POST")
 	public void importExcel() throws IOException {
 		String errormark="";
+		String isTheSameOrder="";
+		int isTheSameOrderNum=0;
 		int errornum=0;
 		List<UploadFile> upLoadFile = getFiles();
 		List<CreditOrderInfo> orderList = new ArrayList<CreditOrderInfo>();
@@ -204,8 +207,9 @@ public class OrderPoiController extends BaseProjectController {
 						if (row.getCell(6) != null) {
 							row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
 							String name = row.getCell(6).getStringCellValue();
-							List<CompanyModel> companyByName = CompanyModel.dao.getCompanyByName(name);
-							if(CollectionUtils.isEmpty(companyByName)){
+							CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(name);
+							//List<CompanyModel> companyByName = CompanyModel.dao.getCompanyByName(name);
+							if(company==null){
 								CompanyModel model = getModel(CompanyModel.class);
 								String now = getNow();
 								Integer userid = getSessionUser().getUserid();
@@ -213,11 +217,13 @@ public class OrderPoiController extends BaseProjectController {
 								model.set("create_date", now);
 								model.set("name_en", name);
 								model.save();
-								List<CompanyModel> companyByName2 = CompanyModel.dao.getCompanyByName(name);
+								
+								//List<CompanyModel> companyByName2 = CompanyModel.dao.getCompanyByName(name);
 								orderReal.set("company_id", model.get("id"));
 								orderReal.set("right_company_name_en",name);
 							}else{
-								orderReal.set("company_id", companyByName.get(0).get("id"));
+								orderReal.set("company_id", company.get("id"));
+								orderReal.set("right_company_name_en",name);
 							}
 							order.set("company_by_report", name);
 							
@@ -241,13 +247,23 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
 						}
-						//获取报告价格
-						CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(orderReal.get("type").toString(), orderReal.get("speed").toString(), orderReal.get("report_type").toString(), orderReal.get("order_type").toString(), orderReal.get("custom_id").toString(), orderReal.get("country").toString());
-						if(pricemodel!=null){
-							orderReal.set("price_id", pricemodel.get("id"));
-						}else{
-							errormark+=errornum+".第"+r+"行，此订单没有获取到报告价格，请联系管理员！;";
+						
+						//是否有相同报告
+						CreditOrderInfo theSameOrder = OrderManagerService.service.isTheSameOrder(orderReal.get("company_id")+"",orderReal.get("report_type")+"", this);
+						if(theSameOrder!=null){
+							isTheSameOrderNum++;
+							isTheSameOrder+=isTheSameOrderNum+".第"+r+"行，第G列监测到有相同企业名称;";
 						}
+						//获取报告价格
+						if(orderReal.get("type") != null && orderReal.get("speed")!=null && orderReal.get("report_type")!= null  && orderReal.get("order_type")!=null && orderReal.get("custom_id")!=null && orderReal.get("country")!=null){
+							CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(orderReal.get("type").toString(), orderReal.get("speed").toString(), orderReal.get("report_type").toString(), orderReal.get("order_type").toString(), orderReal.get("custom_id").toString(), orderReal.get("country").toString());
+							if(pricemodel!=null){
+								orderReal.set("price_id", pricemodel.get("id"));
+							}else{
+								errormark+=errornum+".第"+r+"行，此订单没有获取到报告价格，请联系管理员！;";
+							}
+						}
+						
 						if (row.getCell(8) != null) {
 							row.getCell(8).setCellType(Cell.CELL_TYPE_STRING);
 							String reference_num = row.getCell(8).getStringCellValue();
@@ -305,17 +321,23 @@ public class OrderPoiController extends BaseProjectController {
 		int totalRow = orderList.size();
 		int totalRow2 = orderListReal.size();
 		ResultType errorResult=null;
+		ResultType isTheSameOrderResult=null;
 		if(StringUtils.isNotBlank(errormark)){
 			errorResult=new ResultType(2, errormark);
 		}else{
 			errorResult=new ResultType();
+		}
+		if(StringUtils.isNotBlank(isTheSameOrder)){
+			isTheSameOrderResult=new ResultType(2, isTheSameOrder);
+		}else{
+			isTheSameOrderResult=new ResultType();
 		}
 		
 		ResultType resultType = new ResultType(totalRow,orderList);
 		ResultType resultTypeReal = new ResultType(totalRow2,orderListReal);
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("errormark", errorResult);
-//		map.put("errormark", errormark);
+		map.put("isTheSameOrderMark", isTheSameOrderResult);
 		map.put("orderList", resultType);
 		map.put("orderListReal", resultTypeReal);
 		renderJson(map);
@@ -356,16 +378,18 @@ public class OrderPoiController extends BaseProjectController {
 			  model.set("end_date", enddate);
 			  model.set("create_by", userid);
 			  model.set("create_date", now);
+			  model.set("update_by", userid);
+			  model.set("update_date", now);
 			  model.set("source", "1");//订单来源-批量导入
 			  model.set("receiver_date", now);
 			  /*
 			   * 获取报告价格
 			   */
-			  CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(countryType, speed, reporttype, orderType, model.getStr("custom_id"), countryid);
-			  if(pricemodel!=null){
-				  int price_id=pricemodel.getInt("id");
-				  model.set("price_id", price_id);
-			  }
+//			  CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(countryType, speed, reporttype, orderType, model.getStr("custom_id"), countryid);
+//			  if(pricemodel!=null){
+//				  int price_id=pricemodel.getInt("id");
+//				  model.set("price_id", price_id);
+//			  }
 			 
 			  
 			  

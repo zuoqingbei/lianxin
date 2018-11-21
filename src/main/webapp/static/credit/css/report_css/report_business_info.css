@@ -94,3 +94,11 @@
 #tableMoney2 tbody tr:first-child,#tableMoney4 tbody tr:first-child {
     border-top: solid 1px #e5e5e5;
 }
+#modal_delete .modal-content{
+	min-height:23rem;
+}
+
+#modal_delete .modal-dialog {
+	max-width: 40%!important;
+}
+

@@ -744,7 +744,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	public CreditOrderInfo getOrderById(String id,BaseProjectController c) {
 		StringBuffer sql=new StringBuffer();
 		List<Object> params=new ArrayList<Object>();
-		sql.append("select * from credit_order_info t  where t.id=? ");// TODO Auto-generated method stub
+		sql.append("select t.*,t2.detail_name as reportSpeed,c.name as countryname from credit_order_info t  where t.id=? ");// TODO Auto-generated method stub
+		sql.append(" left join sys_dict_detail t2  on s5.detail_id=t.speed ");
+		sql.append(" left join credit_country c on c.id=t.country ");
 		params.add(id);
 		if(!c.isAdmin(c.getSessionUser())){
 			sql.append(" and t.create_by=? ");
@@ -944,7 +946,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.orderFilingOfOrder:
 				//订单查档(国外) ,其维护在字典表中 中国大陆代码106 只有韩国，新加坡，马来西亚需要人工分配，其余国家走自动分配
 				//294为信息录入完成,295代理中
-				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
+				fromSql.append(" and status in('294','295') and c.country!='106' ");
+//				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
 				break;
 			case OrderProcessController.orderSubmitOfOrder:
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
@@ -1083,12 +1086,21 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	public CreditOrderInfo getScore(int reportid){
 		List<Object> params=new ArrayList<Object>();
 		String sql="select (100-sum(deduct_value)/count(report_id)) as score from credit_order_info t1 "
-				+ "left join credit_report t2 on t1.num = t2.order_num "
+				+ "left join credit_report t2 on t1.company_id = t2.id "
 				+ "left join credit_report_score t3 on t2.id = t3.report_id "
 				+ "where 1=1 and t1.report_user=? and t1.del_flag=0 and t1.receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
 		params.add(reportid);
 		return dao.findFirst(sql, params.toArray());
 	}
+	/*public CreditOrderInfo getScore(int reportid){
+		List<Object> params=new ArrayList<Object>();
+		String sql="select (100-sum(deduct_value)/count(report_id)) as score from credit_order_info t1 "
+				+ "left join credit_report t2 on t1.num = t2.order_num "
+				+ "left join credit_report_score t3 on t2.id = t3.report_id "
+				+ "where 1=1 and t1.report_user=? and t1.del_flag=0 and t1.receiver_date between date_sub(now(),interval 3 month) and now() group by report_user";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
+	}*/
 	/**
 	 * 获取报告员报告数量占比
 	 * @return 
@@ -1130,5 +1142,24 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String sql="select t.id from credit_order_info t where t.custom_id=? and t.create_date>=? and t.create_date<=?";
 		return dao.find(sql,customid,fristday,lastday);
 	}
-	
+	/**
+	 * 查找以往是否有该订单公司的已完成报告订单
+	* @author doushuihai  
+	* @date 2018年11月18日下午5:55:29  
+	* @TODO
+	 */
+	public CreditOrderInfo isTheSameOrder(String company_id,String report_type, BaseProjectController c) {
+		String sql="select t.* from credit_order_info t where t.company_id=? and t.report_type=? and t.del_flag=0 and t.status='311' order by t.receiver_date desc";
+		return dao.findFirst(sql,company_id,report_type);
+	}
+	/**
+	 * 查找以往是否有该订单公司的真正要引用的报告订单
+	* @author doushuihai  
+	* @date 2018年11月18日下午5:55:29  
+	* @TODO
+	 */
+	public CreditOrderInfo getTheSameOrder(String company_id,String report_type, BaseProjectController c) {
+		String sql="select t.* from credit_order_info t where t.company_id=? and t.report_type=? and t.del_flag=0 and t.status='311' and t.is_fastsubmmit='-1' order by t.receiver_date desc";
+		return dao.findFirst(sql,company_id,report_type);
+	}
 }
