@@ -247,6 +247,7 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
 						}
+						
 						//是否有相同报告
 						CreditOrderInfo theSameOrder = OrderManagerService.service.isTheSameOrder(orderReal.get("company_id")+"",orderReal.get("report_type")+"", this);
 						if(theSameOrder!=null){
@@ -377,6 +378,8 @@ public class OrderPoiController extends BaseProjectController {
 			  model.set("end_date", enddate);
 			  model.set("create_by", userid);
 			  model.set("create_date", now);
+			  model.set("update_by", userid);
+			  model.set("update_date", now);
 			  model.set("source", "1");//订单来源-批量导入
 			  model.set("receiver_date", now);
 			  /*

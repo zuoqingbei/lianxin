@@ -353,6 +353,7 @@ let ReportConfig = {
 	    			
 	    		})
 			 let arr = Array.from($("#title"+item))
+			 if(temp.rows === null){return}
 			 arr.forEach((item,index)=>{
 				 if($(item).siblings(".radio-con").length !== 0) {
 					 //radio类型绑数
@@ -807,6 +808,14 @@ let ReportConfig = {
                 				
             				contentHtml += `</div></div>`
                 			break;
+                		case '9':
+                			//浮动类型
+                			
+                			break;
+                		case '10':
+                			//财务模块
+                			
+                			break;
             			default:
             				break;
             		}
@@ -951,14 +960,14 @@ let ReportConfig = {
     					 //信用等级
     					 let name =$(item).next().find("input").attr("name")
     					 let val =$(item).next().find("input").val()
-    					 dataJsonObj[name] = val
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框
     					 let name =$(item).next().find("textarea").attr("name")
     					 let val =$(item).next().find("textarea").val()
     					  let id = $(item).next().find("textarea").attr("entityid")
     					  dataJsonObj["id"] = id
-    					 dataJsonObj[name] = val
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
     				 }else {
     					 let formArr = Array.from($(item).siblings().find(".form-control"))
     					 formArr.forEach((item,index)=>{
@@ -971,7 +980,7 @@ let ReportConfig = {
     						 dataJsonObj["id"] = entryid
     						 for(let i in tempObj){
     							 if(tempObj.hasOwnProperty(i))
-    								 dataJsonObj[i] = tempObj[i]
+    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
     						 }
     					 })
     				 }

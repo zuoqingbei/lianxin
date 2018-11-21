@@ -102,14 +102,22 @@ public class CompanyService {
 			companyinfoModel.set("company_type", EconKind);
 			companyinfoModel.set("register_code_type", "632");
 			companyinfoModel.set("register_codes", CreditCode);
-			companyinfoModel.set("legal", OperName);
+			companyinfoModel.set("principal", OperName);
 			companyinfoModel.set("registered_capital", RegistCapi);
+			int indexOf = RegistCapi.indexOf("万元人民币");
+			if(indexOf !=-1){
+				String replace = RegistCapi.replace("万元人民币", "0000");
+				companyinfoModel.set("registered_capital", replace);
+				companyinfoModel.set("currency","274");
+			}
+			
+			
 			companyinfoModel.set("establishment_date", StartDate);
 			companyinfoModel.set("business_date_start", TermStart);
 			companyinfoModel.set("business_date_end", TeamEnd);
 			List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");
 			if(CollectionUtils.isNotEmpty(dictDetailBy)){
-				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("id"));
+				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("detail_id"));
 			}
 			companyinfoModel.set("registration_authority", BelongOrg);
 			companyinfoModel.set("address", Address);
@@ -152,8 +160,8 @@ public class CompanyService {
 					String job = employee.getString("Job");//职位
 					CreditCompanyManagement managementModel = new CreditCompanyManagement();
 					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
-					if(CollectionUtils.isNotEmpty(dictDetailBy)){
-						managementModel.set("position", dictDetailBy.get(0).get("id"));
+					if(dictDetailBy2 !=null && CollectionUtils.isNotEmpty(dictDetailBy2)){
+						managementModel.set("position", dictDetailBy2.get(0).get("detail_id"));
 					}
 					managementModel.set("name", name);
 //					managementModel.set("position", job);
@@ -175,19 +183,22 @@ public class CompanyService {
 					String ChangeDate = changerecord.getString("ChangeDate");//变更日期
 					CreditCompanyHis companyhisModel=new CreditCompanyHis();
 					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(ProjectName,"company_history_change_item");
-					if(CollectionUtils.isNotEmpty(dictDetailBy)){
-						companyhisModel.set("change_items", dictDetailBy.get(0).get("id"));
+					if(dictDetailBy2 != null && CollectionUtils.isNotEmpty(dictDetailBy2)){
+						companyhisModel.set("change_items", dictDetailBy2.get(0).get("detail_id"));
+						companyhisModel.set("change_font", BeforeContent);
+						companyhisModel.set("change_back", AfterContent);
+						companyhisModel.set("date", ChangeDate);
+						companyhisModel.set("company_id", companyId);
+						companyhisModel.set("sys_language", sys_language);
+						companyhisModel.save();
 					}
-					companyhisModel.set("change_font", BeforeContent);
-					companyhisModel.set("change_back", AfterContent);
-					companyhisModel.set("date", ChangeDate);
-					companyhisModel.set("company_id", companyId);
-					companyhisModel.set("sys_language", sys_language);
-					companyhisModel.save();
+					
 				}
 			}
 		}
 		return flag;
 	}
-	
+	public static void main(String[] args) {
+		String s="185000万元人民币";
+	}
 }
