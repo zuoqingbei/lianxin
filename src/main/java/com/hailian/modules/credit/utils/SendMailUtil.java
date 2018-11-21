@@ -69,7 +69,8 @@ public class SendMailUtil {
 		this.fileURL = fileURL;
 	}
 
-	public  void sendMail() throws Exception {
+	public  boolean sendMail() throws Exception {
+		boolean result=false;
 		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
         Properties props = new Properties();
         props.setProperty("mail.smtp.socketFactory.class",
@@ -91,6 +92,8 @@ public class SendMailUtil {
         //3、创建邮件的实例对象
         Message msg = getMimeMessage(session,title,content,fileURL);
         Transport.send(msg);
+        result=true;
+        return result;
        
     }
 
