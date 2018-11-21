@@ -9,9 +9,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.hailian.modules.credit.company.service.CompanyService;
+
 import org.apache.commons.lang3.StringUtils;
 
 //import ch.qos.logback.core.status.Status;
+
 
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
@@ -38,6 +40,7 @@ import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.city.model.CityModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
+import com.hailian.modules.credit.mail.model.MailLogModel;
 import com.hailian.modules.credit.notice.model.NoticeLogModel;
 import com.hailian.modules.credit.notice.model.NoticeModel;
 import com.hailian.modules.credit.province.model.ProvinceModel;
@@ -386,27 +389,30 @@ public class OrderProcessController extends BaseProjectController{
             CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, this);
             AgentModel agent=	AgentModel.dao.findById(agentId);
             String mailaddr=agent.get("memo");
-            String mailaddrRe="";
-            if(StringUtils.isNotBlank(mailaddr) || StringUtils.isNotBlank(mailaddrRe)){
+            if(StringUtils.isNotBlank(mailaddr)){
                 String title="New Order";
                 String content="Dear Sir/Madam,Good day!"
                         +"We would like to place an order for a complete credit report on the following company:"
-                        +"Speed:" +order.get("speed")+" "
-                        +"Ref No.:"
-                        +"Company name:"
-                        +"Address:"
-                        +"Country:"
-                        +"Register Number: "
-                        +"Tel:"
-                        +"Fax:"
-                        +"E-mail:"
-                        +"Contact person:"
-                        +"Web-site:"
-                        +"Bank:"
-                        +"Special Note:"
+                        +"Speed:" +order.get("reportSpeed")+" "
+                        +"Ref No.:"+order.get("reference_num")+" "
+                        +"Company name:"+order.get("right_company_name_en")+" "
+                        +"Address:"+order.get("address")+" "
+                        +"Country:"+order.get("countryname")+" "
+                        +"Tel:"+order.get("telphone")+" "
+                        +"Fax:"+order.get("fax")+" "
+                        +"E-mail:"+order.get("email")+" "
+                        +"Special Note:"+order.get("remarks")+" "
                         +"Please confirm receiving this order."
                         +"Thank you.";
-                new SendMailUtil(mailaddr, mailaddrRe, title, content).sendMail();
+                boolean sendMail = new SendMailUtil(mailaddr, "", title, content).sendMail();
+                String send_result="";
+                if(sendMail){
+                	send_result="278";
+                }else{
+                	send_result="277";
+                }
+                Integer userid = getSessionUser().getUserid();
+                MailLogModel.dao.save(userid, mailaddr, "", "3", send_result);//邮件日志记录
             }
         }
     }

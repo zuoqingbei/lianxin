@@ -102,17 +102,23 @@ public class CompanyService {
 			companyinfoModel.set("company_type", EconKind);
 			companyinfoModel.set("register_code_type", "632");
 			companyinfoModel.set("register_codes", CreditCode);
-			companyinfoModel.set("legal", OperName);
+			companyinfoModel.set("principal", OperName);
 			companyinfoModel.set("registered_capital", RegistCapi);
+			int indexOf = RegistCapi.indexOf("万元人民币");
+			if(indexOf !=-1){
+				String replace = RegistCapi.replace("万元人民币", "0000");
+				companyinfoModel.set("registered_capital", replace);
+				companyinfoModel.set("currency","274");
+			}
+			
+			
 			companyinfoModel.set("establishment_date", StartDate);
 			companyinfoModel.set("business_date_start", TermStart);
 			companyinfoModel.set("business_date_end", TeamEnd);
 			List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");
 			if(CollectionUtils.isNotEmpty(dictDetailBy)){
-				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("id"));
+				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("detail_id"));
 			}
-			
-			
 			companyinfoModel.set("registration_authority", BelongOrg);
 			companyinfoModel.set("address", Address);
 			companyinfoModel.set("province", Province);
@@ -133,9 +139,11 @@ public class CompanyService {
 					JSONObject partner = (JSONObject)partners.get(i);
 					String name = partner.getString("StockName");//股东
 					String StockPercent = partner.getString("StockPercent");//出资比例
+					String ShouldCapi = partner.getString("ShouldCapi");//出资金额
 					CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
 					shareholderModel.set("name", name);
 					shareholderModel.set("money", StockPercent);
+					shareholderModel.set("contribution", ShouldCapi);
 					shareholderModel.set("company_id", companyId);
 					shareholderModel.set("sys_language", sys_language);
 					shareholderModel.save();
@@ -150,11 +158,11 @@ public class CompanyService {
 					//CreditCompanyManagement
 					String name = employee.getString("Name");//管理层姓名
 					String job = employee.getString("Job");//职位
-					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
-					if(CollectionUtils.isNotEmpty(dictDetailBy)){
-						companyinfoModel.set("position", dictDetailBy.get(0).get("id"));
-					}
 					CreditCompanyManagement managementModel = new CreditCompanyManagement();
+					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
+					if(dictDetailBy2 !=null && CollectionUtils.isNotEmpty(dictDetailBy2)){
+						managementModel.set("position", dictDetailBy2.get(0).get("detail_id"));
+					}
 					managementModel.set("name", name);
 //					managementModel.set("position", job);
 					managementModel.set("company_id", companyId);
@@ -162,14 +170,7 @@ public class CompanyService {
 					managementModel.save();
 				}
 			}
-			//分支机构
-			JSONArray Branches = json.getJSONObject("Result").getJSONArray("Branches");
-			if(Branches != null && Branches.size()>0){
-				for(int i=0;i<Branches.size();i++){
-					JSONObject branche = (JSONObject)Branches.get(i);//分支
-					String RegNo = branche.getString("RegNo");//注册号
-				}
-			}
+
 			//变更事项
 			JSONArray ChangeRecords = json.getJSONObject("Result").getJSONArray("ChangeRecords");
 			if(ChangeRecords != null && ChangeRecords.size()>0){
@@ -181,17 +182,23 @@ public class CompanyService {
 					String AfterContent = changerecord.getString("AfterContent");//变更后
 					String ChangeDate = changerecord.getString("ChangeDate");//变更日期
 					CreditCompanyHis companyhisModel=new CreditCompanyHis();
-					companyhisModel.set("change_items", ProjectName);
-					companyhisModel.set("change_font", BeforeContent);
-					companyhisModel.set("change_back", AfterContent);
-					companyhisModel.set("date", ChangeDate);
-					companyhisModel.set("company_id", companyId);
-					companyhisModel.set("sys_language", sys_language);
-					companyhisModel.save();
+					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(ProjectName,"company_history_change_item");
+					if(dictDetailBy2 != null && CollectionUtils.isNotEmpty(dictDetailBy2)){
+						companyhisModel.set("change_items", dictDetailBy2.get(0).get("detail_id"));
+						companyhisModel.set("change_font", BeforeContent);
+						companyhisModel.set("change_back", AfterContent);
+						companyhisModel.set("date", ChangeDate);
+						companyhisModel.set("company_id", companyId);
+						companyhisModel.set("sys_language", sys_language);
+						companyhisModel.save();
+					}
+					
 				}
 			}
 		}
 		return flag;
 	}
-	
+	public static void main(String[] args) {
+		String s="185000万元人民币";
+	}
 }

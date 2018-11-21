@@ -13,8 +13,6 @@ import java.util.Random;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.activation.URLDataSource;
-import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -22,6 +20,7 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -70,38 +69,32 @@ public class SendMailUtil {
 		this.fileURL = fileURL;
 	}
 
-	public  void sendMail() throws Exception {
-        //1、连接邮件服务器的参数配置
+	public  boolean sendMail() throws Exception {
+		boolean result=false;
+		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
         Properties props = new Properties();
-        //设置用户的认证方式
-        props.setProperty("mail.smtp.auth", "true");
-        //设置传输协议
-        props.setProperty("mail.transport.protocol", "smtp");
-        //设置发件人的SMTP服务器地址
-        props.setProperty("mail.smtp.host", "smtp.qq.com");
-        
-        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.setProperty("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.store.protocol", "smtp");
+        props.setProperty("mail.smtp.host", "smtp.qq.com");
         props.setProperty("mail.smtp.port", "465");
         props.setProperty("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.auth", "true");
+        Session session = Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(SenderAddress, SenderPassword);
+            }
+        });
 
-        //2、创建定义整个应用程序所需的环境信息的 Session 对象
-        Session session = Session.getInstance(props);
         //设置调试信息在控制台打印出来
         session.setDebug(true);
         //3、创建邮件的实例对象
-        Message msg = getMimeMessage(session,title,content);
-        
-        //4、根据session对象获取邮件传输对象Transport
-        Transport transport = session.getTransport();
-        //设置发件人的账户名和密码
-        transport.connect(SenderAccount, SenderPassword);
-        //发送邮件，并发送到所有收件人地址，message.getAllRecipients() 获取到的是在创建邮件对象时添加的所有收件人, 抄送人, 密送人
-        transport.sendMessage(msg,msg.getAllRecipients());
-        //如果只想发送给指定的人，可以如下写法
-        //transport.sendMessage(msg, new Address[]{new InternetAddress("xxx@qq.com")});
-        //5、关闭邮件连接
-        transport.close();
+        Message msg = getMimeMessage(session,title,content,fileURL);
+        Transport.send(msg);
+        result=true;
+        return result;
+       
     }
 
     /**
@@ -111,33 +104,63 @@ public class SendMailUtil {
      * @throws MessagingException
      * @throws AddressException
      */
-    public  MimeMessage getMimeMessage(Session session,String title,String content) throws Exception{
+    public  MimeMessage getMimeMessage(Session session,String title,String content,String fileURL) throws Exception{
         //创建一封邮件的实例对象
         MimeMessage msg = new MimeMessage(session);
-      //防止成为垃圾邮件，披上outlook的马甲
-        msg.addHeader("X-Mailer","Microsoft Outlook Express 6.00.2900.2869");
-        //设置发件人地址
-        msg.setFrom(new InternetAddress(SenderAddress));
-        /**
-         * 设置收件人地址（可以增加多个收件人、抄送、密送），即下面这一行代码书写多行
-         * MimeMessage.RecipientType.TO:发送
-         * MimeMessage.RecipientType.CC：抄送
-         * MimeMessage.RecipientType.BCC：密送
-         */
-        // 设置邮件接收方
-        Address[] internetAddressTo = new InternetAddress().parse(recipientAddress);
-//        msg.setRecipient(MimeMessage.RecipientType.TO,new InternetAddress(recipientAddress));
-        msg.setRecipients(MimeMessage.RecipientType.TO,internetAddressTo);
-        msg.addRecipients(MimeMessage.RecipientType.CC, InternetAddress.parse(SenderAddress));
-        //设置邮件主题
-        msg.setSubject(title,"UTF-8");
-        StringBuffer messageText=new StringBuffer();//内容以html格式发送,防止被当成垃圾邮件
-        messageText.append(content);
-
-        //设置邮件正文
-        msg.setContent(messageText.toString(), "text/html;charset=UTF-8");
-        //设置邮件的发送时间,默认立即发送
+        String nick=javax.mail.internet.MimeUtility.encodeText("联信集团"); 
+        msg.setFrom(new InternetAddress(SenderAddress, nick));
+        msg.setRecipients(Message.RecipientType.TO,
+                InternetAddress.parse(recipientAddress, false));
+        msg.addRecipients(Message.RecipientType.CC, InternetAddress.parse(SenderAddress));
+        msg.addRecipients(Message.RecipientType.CC, InternetAddress.parse(recipientAddressCC));
+        msg.setSubject(title);
         msg.setSentDate(new Date());
+        
+        MimeMultipart multipart = new MimeMultipart("mixed");
+        // 邮件内容，采用HTML格式
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.removeHeader("Content-Type");
+        messageBodyPart.removeHeader("Content-Transfer-Encoding");
+        messageBodyPart.addHeader("Content-Type", "text/html; charset=gbk");
+        messageBodyPart.addHeader("Content-Transfer-Encoding", "base64");
+        
+        messageBodyPart.setContent(content, "text/html;charset=GBK");
+        
+        
+        multipart.addBodyPart(messageBodyPart);
+        //内嵌图片
+        try {
+            //添加附件
+//            messageBodyPart=new MimeBodyPart();
+//            DataSource dataSource1=new FileDataSource("d:/aa.doc");
+//            dataHandler=new DataHandler(dataSource1);
+//            messageBodyPart.setDataHandler(dataHandler);
+//            messageBodyPart.setFileName(MimeUtility.encodeText(dataSource1.getName()));
+        	if(StringUtils.isNotBlank(fileURL)){
+        		 messageBodyPart=new MimeBodyPart();
+                 InputStream is=downLoadFromUrl(fileURL);
+                 //DataSource dataSource1=new FileDataSource("d:/aa.doc");
+                 DataSource dataSource1=new ByteArrayDataSource(is, "application/png");
+                 DataHandler dataHandler=new DataHandler(dataSource1);
+                 messageBodyPart.setDataHandler(dataHandler);
+                 String subStringB = fileURL.substring(fileURL.lastIndexOf("/")+1);
+//                 messageBodyPart.setFileName(MimeUtility.encodeText(subStringB));
+                 messageBodyPart.setFileName(MimeUtility.encodeText("图片.png"));
+                 
+                 multipart.addBodyPart(messageBodyPart);
+        	}
+           
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+      
+        
+        msg.setContent(multipart);
+        msg.saveChanges();
          
         return msg;
     }
@@ -145,7 +168,7 @@ public class SendMailUtil {
     
     
     
-    public static void sendEmail() throws UnsupportedEncodingException {
+    public  void sendEmail() throws Exception {
         try {
             Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
             Properties props = new Properties();
@@ -162,56 +185,7 @@ public class SendMailUtil {
                     return new PasswordAuthentication(SenderAddress, SenderPassword);
                 }
             });
-            MimeMessage msg = new MimeMessage(session);
-            String nick=javax.mail.internet.MimeUtility.encodeText("联信集团"); 
-            msg.setFrom(new InternetAddress(SenderAddress, nick));
-            msg.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(recipientAddress, false));
-            msg.setSubject(title);
-            msg.setSentDate(new Date());
-            
-            MimeMultipart multipart = new MimeMultipart("mixed");
-            // 邮件内容，采用HTML格式
-            MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.removeHeader("Content-Type");
-            messageBodyPart.removeHeader("Content-Transfer-Encoding");
-            messageBodyPart.addHeader("Content-Type", "text/html; charset=gbk");
-            messageBodyPart.addHeader("Content-Transfer-Encoding", "base64");
-            
-            messageBodyPart.setContent(content, "text/html;charset=GBK");
-            
-            
-            multipart.addBodyPart(messageBodyPart);
-            //内嵌图片
-            try {
-                //添加附件
-//                messageBodyPart=new MimeBodyPart();
-//                DataSource dataSource1=new FileDataSource("d:/aa.doc");
-//                dataHandler=new DataHandler(dataSource1);
-//                messageBodyPart.setDataHandler(dataHandler);
-//                messageBodyPart.setFileName(MimeUtility.encodeText(dataSource1.getName()));
-                messageBodyPart=new MimeBodyPart();
-                InputStream is=downLoadFromUrl(fileURL);
-                //DataSource dataSource1=new FileDataSource("d:/aa.doc");
-                DataSource dataSource1=new ByteArrayDataSource(is, "application/png");
-                DataHandler dataHandler=new DataHandler(dataSource1);
-                messageBodyPart.setDataHandler(dataHandler);
-                String subStringB = fileURL.substring(fileURL.lastIndexOf("/")+1);
-//                messageBodyPart.setFileName(MimeUtility.encodeText(subStringB));
-                messageBodyPart.setFileName(MimeUtility.encodeText("图片.png"));
-                
-                multipart.addBodyPart(messageBodyPart);
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-          
-            
-            msg.setContent(multipart);
-            msg.saveChanges();
+            Message msg = getMimeMessage(session,title,content,fileURL);
             Transport.send(msg);
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
@@ -236,7 +210,7 @@ public class SendMailUtil {
     	String content="您的验证码是:"+code+"。如果不是本人操作请忽略。";
     	
     	try {
-    		new SendMailUtil(recipientAddress, recipientAddress, title, content).sendMail();
+    		new SendMailUtil(recipientAddress, "", title, content).sendMail();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return code;
@@ -245,8 +219,8 @@ public class SendMailUtil {
     }
 
     public static void main(String[] args) throws Exception {
-//    	sendMailCode("dou_shai@163.com");
-    	new SendMailUtil("15269274025@163.com", "", "你好", "mycontent", "http://60.205.229.238:9980/zhengxin_File/2018-11-16/a444aa375f494c109d41d18023df7fa0.PNG").sendEmail();
+    	sendMailCode("dou_shai@163.com");
+    	//new SendMailUtil("15269274025@163.com", "", "你好", "mycontent", "http://60.205.229.238:9980/zhengxin_File/2018-11-16/a444aa375f494c109d41d18023df7fa0.PNG").sendEmail();
     	System.out.println("ok");
     	
 	}
