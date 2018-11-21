@@ -443,7 +443,6 @@ $(document).ready(function () {
 	        dataType:"json",
 	        success: function(data) {
 	        	console.log(data)
-	        	alert(data.result.id)
 	        	if(data.flag.statusCode===1){
 	        		$("#reporttime").html(data.result.receiver_date);
 	        		$("#isfinance").html(data.result.is_hava_finance);
@@ -451,8 +450,8 @@ $(document).ready(function () {
 	        		//弹出提示
 	        		$("#show_checked_modal").trigger("click")
            		 }else{
-           			 return;
-            	 }
+           			tableSubmit();
+           		 }
 	        	
 	        },
 	    });

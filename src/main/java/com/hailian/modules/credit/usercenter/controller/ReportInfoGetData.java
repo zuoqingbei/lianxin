@@ -79,7 +79,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			Integer userId = getSessionUser().getUserid();
 			String now = getNow();
 			//实体是否存在id
-			boolean exitsId = true; ;
+			boolean exitsId = true; 
 			if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
 				return new ArrayList<>();
 			}
