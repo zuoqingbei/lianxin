@@ -353,6 +353,7 @@ let ReportConfig = {
 	    			
 	    		})
 			 let arr = Array.from($("#title"+item))
+			 if(temp.rows === null){return}
 			 arr.forEach((item,index)=>{
 				 if($(item).siblings(".radio-con").length !== 0) {
 					 //radio类型绑数
@@ -806,6 +807,14 @@ let ReportConfig = {
                 				
                 				
             				contentHtml += `</div></div>`
+                			break;
+                		case '9':
+                			//浮动类型
+                			
+                			break;
+                		case '10':
+                			//财务模块
+                			
                 			break;
             			default:
             				break;
