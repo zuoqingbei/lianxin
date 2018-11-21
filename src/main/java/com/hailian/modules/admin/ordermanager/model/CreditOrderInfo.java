@@ -744,7 +744,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	public CreditOrderInfo getOrderById(String id,BaseProjectController c) {
 		StringBuffer sql=new StringBuffer();
 		List<Object> params=new ArrayList<Object>();
-		sql.append("select * from credit_order_info t  where t.id=? ");// TODO Auto-generated method stub
+		sql.append("select t.*,t2.detail_name as reportSpeed,c.name as countryname from credit_order_info t  where t.id=? ");// TODO Auto-generated method stub
+		sql.append(" left join sys_dict_detail t2  on s5.detail_id=t.speed ");
+		sql.append(" left join credit_country c on c.id=t.country ");
 		params.add(id);
 		if(!c.isAdmin(c.getSessionUser())){
 			sql.append(" and t.create_by=? ");
@@ -944,7 +946,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.orderFilingOfOrder:
 				//订单查档(国外) ,其维护在字典表中 中国大陆代码106 只有韩国，新加坡，马来西亚需要人工分配，其余国家走自动分配
 				//294为信息录入完成,295代理中
-				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
+				fromSql.append(" and status in('294','295') and c.country!='106' ");
+//				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
 				break;
 			case OrderProcessController.orderSubmitOfOrder:
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
