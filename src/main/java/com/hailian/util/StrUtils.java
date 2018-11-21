@@ -19,6 +19,8 @@ package com.hailian.util;
 
 import java.util.regex.Pattern;
 
+import com.feizhou.swagger.utils.StringUtil;
+
 /**
  * 字符串处理
  * 
@@ -38,7 +40,20 @@ public class StrUtils {
 	public static boolean isEmpty(String str) {
 		return str == null || "".equals(str);
 	}
-
+	/**
+	 * 2018/11/20
+	 * lzg
+	 * @param str
+	 * @return
+	 */
+	public static boolean isEmpty(String... str) {
+		for (int i = 0; i < str.length; i++) {
+			if(StringUtil.isEmpty(str[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
 	/**
 	 * 不为空
 	 * 

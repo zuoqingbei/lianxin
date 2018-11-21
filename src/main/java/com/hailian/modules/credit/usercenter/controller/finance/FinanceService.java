@@ -1,26 +1,88 @@
 package com.hailian.modules.credit.usercenter.controller.finance;
 
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.feizhou.swagger.utils.StringUtil;
+import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
+import com.hailian.modules.admin.ordermanager.model.CreditReditCompanyFinancialEntry;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 public class FinanceService {
 
 	
 	/**
 	 * 获取财务配置信息
 	 */
-	public static  List<Integer> getFinancialConfig() {
-		List<CreditCompanyFinancialDict> list =  CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_statements_conf");
-		return null;
+	public static  List<CreditCompanyFinancialStatementsConf> getFinancialConfig(String companyId,String sysLanguage,String confId) {
+		if(StrUtils.isEmpty(sysLanguage,companyId,confId)) {
+			return null;
+		}
+		ReportInfoGetDataController rgc = new ReportInfoGetDataController();
+		List<CreditCompanyFinancialStatementsConf> list = rgc.getTableData(false, sysLanguage, companyId, "credit_company_financial_statements_conf", "CreditCompanyFinancialStatementsConf", confId);
+		return list;
 	}
 	
 	
 	/**
-	 * 增加或者修改财务配置信息
+	 * 增加或者修改财务配置信息(只支持单挑增加或者修改)
+	 * @param jsonStr
+	 * @param sysLanguage
+	 * @param financialConfigId
+	 * @param userId
+	 * @param now
 	 */
-	public void alterFinancialConfig() {
-		// TODO Auto-generated method stub
+	public void alterFinancialConfig(String jsonStr, String sysLanguage,String userId,String now) {
+		//实体是否存在id
+		boolean exitsId = true; 
+		List<Map<Object, Object>> entrys = ReportInfoGetData.parseJsonArray(jsonStr);
+		if(entrys.size()!=1) {
+			return;
+		}
+		if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
+			 exitsId = false;
+		}
+		CreditCompanyFinancialStatementsConf model = new CreditCompanyFinancialStatementsConf();
+		
+	    model.set("update_by", userId);
+		model.set("update_date", now);
+		
+		if(!("".equals(sysLanguage)||sysLanguage==null)) {
+			model.set("sys_language", Integer.parseInt(sysLanguage));
+		}
+		
+		if(!exitsId){
+			model.set("create_by", userId);
+			model.set("create_date", now);
+		}
+		
+		for (Object key : entrys.get(0).keySet()) {
+			model.set((""+key).trim(), (""+(entrys.get(0).get(key))).trim());
+		}
+		
+		if(exitsId) {
+			model.update();
+		}else {
+			//如果是新增操作 
+			Db.tx(new IAtom(){
+				@Override
+				public boolean run() throws SQLException {
+					model.save();
+					String financialConfId = model.getSql("id");
+					addDictConfigToBeFinancialEntry(financialConfId,sysLanguage);
+					return true;
+				}
+			});
+			
+		}
 		
 	}
 
@@ -34,43 +96,47 @@ public class FinanceService {
 	}
 	
 	
+	
 	/**
-	 * 获取财务字典表信息(不包含合计项目)
+	 * 获取财务字典表信息 
 	 */
-	public void getFinancialDictExTotal() {
-		// TODO Auto-generated method stub
-		
+	public List<CreditCompanyFinancialDict> getFinancialDict(String sysLanguage) {
+		List<CreditCompanyFinancialDict> list = null;
+		if(ReportInfoGetData.English.equals(sysLanguage)) {
+			list = CreditCompanyFinancialDict.englishDict;
+		}else if(ReportInfoGetData.traditionalChinese.equals(sysLanguage)) {
+			list = CreditCompanyFinancialDict.chineseTraditionalDict;
+		}else {
+			list = CreditCompanyFinancialDict.simplifiedChineseDict;
+		}
+		return list;
 	}
 	
 	
 	/**
-	 * 获取财务字典表信息 (所有)
+	 * 从字典表获取数据里添加模板到实体表 
+	 * @param sysLanguage 系统语言
+	 * @param financialConfId 财务配置id
 	 */
-	public void getFinancialDict() {
-		// TODO Auto-generated method stub
+	public void addDictConfigToBeFinancialEntry(String financialConfId, String sysLanguage) {
+		String [] columnName = new String[] {
+				"item_name",
+				"parent_sector",
+				"son_sector",
+				
+		};
+		
+		CreditReditCompanyFinancialEntry entrymodel = new CreditReditCompanyFinancialEntry();
+		List<CreditCompanyFinancialDict> dictList = getFinancialDict(sysLanguage);
+		for (CreditCompanyFinancialDict dictModel : dictList) {
+			entrymodel.set("", "");
+		}
+		
+		
 		
 	}
 	
 	
-	
-	/**
-	 * 从字典表获取数据里添加模板到实体表(页面触发)
-	 */
-	public void addDictConfigToBeFinancialEntry() {
-		getFinancialDict();
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
-	/**
-	 * 从字典表获取数据里添加模板到实体表(excel上传触发)
-	 */
-	public void addDictConfigToBeFinancialEntryForUpload() {
-		getFinancialDictExTotal();
-		
-	}
 	
 	
 	
