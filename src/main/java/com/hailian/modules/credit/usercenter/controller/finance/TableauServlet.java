@@ -7,7 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+//import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class TableauServlet
  */
-@WebServlet("/TableauServlet")
+//@WebServlet("/TableauServlet")
 public class TableauServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String   WGSERVER = "172.16.2.93:80";//TableauSeaver 地址

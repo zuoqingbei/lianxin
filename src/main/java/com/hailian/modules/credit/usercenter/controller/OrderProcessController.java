@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.hailian.modules.credit.company.service.CompanyService;
 import org.apache.commons.lang3.StringUtils;
 
 //import ch.qos.logback.core.status.Status;
@@ -385,8 +386,7 @@ public class OrderProcessController extends BaseProjectController{
             CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, this);
             AgentModel agent=	AgentModel.dao.findById(agentId);
             String mailaddr=agent.get("memo");
-            String mailaddrRe="";
-            if(StringUtils.isNotBlank(mailaddr) || StringUtils.isNotBlank(mailaddrRe)){
+            if(StringUtils.isNotBlank(mailaddr)){
                 String title="New Order";
                 String content="Dear Sir/Madam,Good day!"
                         +"We would like to place an order for a complete credit report on the following company:"
@@ -405,7 +405,7 @@ public class OrderProcessController extends BaseProjectController{
                         +"Special Note:"
                         +"Please confirm receiving this order."
                         +"Thank you.";
-                new SendMailUtil(mailaddr, mailaddrRe, title, content).sendMail();
+                new SendMailUtil(mailaddr, "", title, content).sendMail();
             }
         }
     }
@@ -485,6 +485,10 @@ public class OrderProcessController extends BaseProjectController{
             PublicUpdateMod(map);
             //添加站内信，
             addNoice(code);
+            //调用企查查接口
+            if("595".equals(code)){
+                new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report"),"612");
+            }
             renderJson(new ResultType());
             return new ResultType();
         } catch (Exception e) {
@@ -1078,7 +1082,9 @@ public class OrderProcessController extends BaseProjectController{
         return list;
     }
 
-
+    public void test(){
+    	CompanyService.service.enterpriseGrab("7777800", "海尔集团公司", "612");
+    }
 
 
 

@@ -188,20 +188,7 @@ let ReportConfig = {
             						})
             					},
             					"click .delete":(e,value,row,index)=>{
-            						e.stopPropagation();
-            						$('.isDelete').removeClass("deleteShow")
-            						$(e.target).children(".isDelete").toggleClass("deleteShow")
-            						$(document).click(function(){
-            							$('.isDelete').removeClass("deleteShow")
-            						})
-            						$(e.target).children(".isDelete").click(function(e){
-            							e.stopPropagation();
-            						})
-            						
-            						$(".popCancel").click(function(){
-            							$('.isDelete').removeClass("deleteShow")
-            						})
-            						$(".popEnter").on('click', function(){
+            						$("#popEnter").on('click', function(){
             							//确定删除
             							let urlTemp = _this.title[tempI]["remove_source"];
             							let url = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp;
@@ -313,7 +300,7 @@ let ReportConfig = {
     			
     			
     		})
-    		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete">删除<div class="isDelete"><span class="popover-arrow"></span><div><img src="${BASE_PATH}static/credit/imgs/index/info.png" />是否要删除此行？</div><div><button class="btn btn-default popCancel" id="popCancel">取消</button><button class="btn btn-primary popEnter" id="popEnter">确定</button></div></div></a></div>`)
+    		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete" data-toggle="modal" data-target="#modal_delete">删除</a></div>`)
     		modalHtml += `<div class="modal fade" id="modal${item}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
@@ -378,14 +365,32 @@ let ReportConfig = {
 					 $("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
 					 return
 				 }
+				 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
+					 //信用等级
+					 let name =$(item).next().find("input").attr("name")
+					 $(item).next().find("input").val(temp.rows[0][name])
+					  return;
+				 }
+				 if($(item).next().hasClass("textarea-module")) {
+					 //无标题多行文本输入框
+					 if(temp.rows.length === 0){return}
+					 let obid = temp.rows[0].id;
+					 $(item).next().find("textarea").attr("entityid",obid)
+					 let name =$(item).next().find("textarea").attr("name")
+					 $(item).next().find("textarea").val(temp.rows[0][name])
+					 return;
+				 }
 				 let formArr = Array.from($(item).siblings().find(".form-control"))
 				 if(temp.rows.length === 0){return}
+				 //实体id
+				 let obid = temp.rows[0].id;
 				 formArr.forEach((item,index)=>{
 					 let obj = temp.rows[0];
     				let id = $(item).attr("id");
     				let anotherIdArr = id.split("_")
     				anotherIdArr.pop();
     				let anotherId = anotherIdArr.join('_')
+    				$("#"+id).attr("entryid",obid)
     				if($(item).is('select')){
     					//如果是select
     					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
@@ -503,7 +508,9 @@ let ReportConfig = {
                 	 * 循环模块
                 	 */
                 	let smallModileType = item.smallModileType
-                	if(smallModileType !== '-2' && smallModileType !== '5' && item.title.temp_name !== null && item.title.temp_name !== "") {
+                	if(item.title.temp_name === null || item.title.temp_name === "") {
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                	}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}
                 	let btnText = item.title.place_hold;
@@ -604,7 +611,7 @@ let ReportConfig = {
 		                        		}
 		                        		contentHtml += formGroup;
 		                        		
-		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || formArr[index]['field_type'] === 'address' || (formArr[index+1]&&formArr[index+1]['field_type'] === 'textarea')){
+		                        		if(((index+1 - rowNum)%3 === 0 && index !==0) || formArr[index]['field_type'] === 'address' || (formArr[index+1]&&formArr[index+1]['field_type'] === 'textarea') || (formArr[index+1]&&formArr[index+1]['field_type'] === 'address') ||((formArr[index+1]&&formArr[index+1]['field_type'] === 'textarea') && formArr[index+2]&&formArr[index+2]['field_type'] === 'textarea')){
 		                        			contentHtml += `</div>`    
 		                        		}
 		                        		
@@ -714,9 +721,9 @@ let ReportConfig = {
                 			let inputObj = item.contents[0]
                 			_this.formTitle.push(inputObj)
                 			_this.formIndex.push(index)
-                			contentHtml += `<div class="form-group form-inline p-4 mx-3">
+                			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
 					                          <label >${inputObj.temp_name}</label>
-					                          <input type="text" name="" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
+					                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
 					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 					                        </div>`
                 			
@@ -768,12 +775,12 @@ let ReportConfig = {
                 			let ot_item = item
                 			item.contents.forEach((item,index)=>{
                 				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
-                					contentHtml += ` <div class="form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
+                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
                 						<label for="" class="thead-label">${item.temp_name}</label>
                 						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
             						</div>`
                 				}else{
-                					contentHtml += ` <div class="form-group mb-3 p-4" style="background:#fff">
+                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
 	                						<label for="" class="thead-label">${item.temp_name}</label>
 	                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
                 						</div>`
@@ -832,7 +839,7 @@ let ReportConfig = {
     			$("#modal"+item+" input").val("");
     			$("#modal"+item+" input").siblings("span").html("");
 		    	$("#modal"+item+" textarea").val("");
-		    	 $("#modal"+item+" select").find("option:selected").attr("selected", false);
+	    	    $("#modal"+item+" select").find("option:selected").attr("selected", false);
 			    $("#modal"+item+" select").find("option").first().attr("selected", true);
     
     		})
@@ -928,34 +935,46 @@ let ReportConfig = {
     				dataJsonObj[item] = this.rows[item]
     			})
     		}
-    		let this_item = item
 			 //点击保存按钮
-    		$(".position-fixed").unbind().on("click","#save",(e)=>{
+    		$(".position-fixed").on("click","#save",(e)=>{
     			$("#save").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
     				 if($(item).siblings(".radio-con").length !== 0) {
     					 //radio类型绑数
-    					 console.log(url,this_item)
     					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
     					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
     					 let val = $('input[name='+radioName+']:checked').val();
     					 dataJsonObj[radioName] = val
     					 dataJsonObj["id"] = id
+    				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
+    					 //信用等级
+    					 let name =$(item).next().find("input").attr("name")
+    					 let val =$(item).next().find("input").val()
+    					 dataJsonObj[name] = val
+    				 }else if($(item).next().hasClass("textarea-module")) {
+    					 //无标题多行文本输入框
+    					 let name =$(item).next().find("textarea").attr("name")
+    					 let val =$(item).next().find("textarea").val()
+    					  let id = $(item).next().find("textarea").attr("entityid")
+    					  dataJsonObj["id"] = id
+    					 dataJsonObj[name] = val
+    				 }else {
+    					 let formArr = Array.from($(item).siblings().find(".form-control"))
+    					 formArr.forEach((item,index)=>{
+    						 let id = $(item).attr("id");
+    						 let anotherIdArr = id.split("_")
+    						 anotherIdArr.pop();
+    						 let anotherId = anotherIdArr.join('_')
+    						 let tempObj = _this.getFormData($('#'+id))
+    						 let entryid = $(item).attr("entryid")
+    						 dataJsonObj["id"] = entryid
+    						 for(let i in tempObj){
+    							 if(tempObj.hasOwnProperty(i))
+    								 dataJsonObj[i] = tempObj[i]
+    						 }
+    					 })
     				 }
-    				 
-    				 let formArr = Array.from($(item).siblings().find(".form-control"))
-    				 formArr.forEach((item,index)=>{
-        				let id = $(item).attr("id");
-        				let anotherIdArr = id.split("_")
-        				anotherIdArr.pop();
-        				let anotherId = anotherIdArr.join('_')
-        				let tempObj = _this.getFormData($('#'+id))
-        				for(let i in tempObj){
-    						if(tempObj.hasOwnProperty(i))
-    						dataJsonObj[i] = tempObj[i]
-    					}
-    				 })
     				 
     			 })
     			 dataJson.push(dataJsonObj)
@@ -968,7 +987,7 @@ let ReportConfig = {
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
     					 $("#save").removeClass("disabled")
-    					 if(data.statusCode === 1) {
+    					 if(data.statusCode === 1 && !formIndex[index+1]) {
     						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.saveStatusUrl + `&model.id=${_this.rows["id"]}`;
     						 $.ajax({
     							 url,
@@ -983,39 +1002,52 @@ let ReportConfig = {
     								 }
     							 }
     						 })
-    					 }else {
+    					 }else if(data.statusCode !== 1){
     						 Public.message("error",data.message)
     					 }
     				 }
     			 })
     		})
     			 //点击提交按钮
-    		$(".position-fixed").unbind().on("click","#commit",(e)=>{
+    		$(".position-fixed").on("click","#commit",(e)=>{
     			$("#commit").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
     				 if($(item).siblings(".radio-con").length !== 0) {
     					 //radio类型绑数
-    					 console.log(url,this_item)
     					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
     					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
     					 let val = $('input[name='+radioName+']:checked').val();
     					 dataJsonObj[radioName] = val
     					 dataJsonObj["id"] = id
+    				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
+    					 //信用等级
+    					 let name =$(item).next().find("input").attr("name")
+    					 let val =$(item).next().find("input").val()
+    					 dataJsonObj[name] = val
+    				 }else if($(item).next().hasClass("textarea-module")) {
+    					 //无标题多行文本输入框
+    					 let name =$(item).next().find("textarea").attr("name")
+    					 let val =$(item).next().find("textarea").val()
+    					 let id = $(item).next().find("textarea").attr("entityid")
+    					  dataJsonObj["id"] = id
+    					 dataJsonObj[name] = val
+    				 }else {
+    					 let formArr = Array.from($(item).siblings().find(".form-control"))
+    					 formArr.forEach((item,index)=>{
+    						 let id = $(item).attr("id");
+    						 let anotherIdArr = id.split("_")
+    						 anotherIdArr.pop();
+    						 let anotherId = anotherIdArr.join('_')
+    						 let tempObj = _this.getFormData($('#'+id))
+    						 let entryid = $(item).attr("entryid")
+    						 dataJsonObj["id"] = entryid
+    						 for(let i in tempObj){
+    							 if(tempObj.hasOwnProperty(i))
+    								 dataJsonObj[i] = tempObj[i]
+    						 }
+    					 })
     				 }
-    				 let formArr = Array.from($(item).siblings().find(".form-control"))
-    				 formArr.forEach((item,index)=>{
-        				let id = $(item).attr("id");
-        				let anotherIdArr = id.split("_")
-        				anotherIdArr.pop();
-        				let anotherId = anotherIdArr.join('_')
-        				let tempObj = _this.getFormData($('#'+id))
-        				for(let i in tempObj){
-    						if(tempObj.hasOwnProperty(i))
-    						dataJsonObj[i] = tempObj[i]
-    					}
-    				 })
-    				 
     			 })
     			 dataJson.push(dataJsonObj)
     			 $.ajax({
@@ -1027,7 +1059,7 @@ let ReportConfig = {
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
     					 $("#commit").removeClass("disabled")
-    					 if(data.statusCode === 1) {
+    					 if(data.statusCode === 1 && !formIndex[index+1]) {
     						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `&model.id=${_this.rows["id"]}`;
     						 $.ajax({
     							 url,
@@ -1037,12 +1069,12 @@ let ReportConfig = {
     									 Public.message("success",data.message)
     									 Public.goToInfoImportPage();
     									 
-    								 }else {
+    								 }else if(data.statusCode !== 1){
     									 Public.message("error",data.message)
     								 }
     							 }
     						 })
-    					 }else {
+    					 }else if(data.statusCode !== 1 ){
     						 Public.message("error",data.message)
     					 }
     				 }
