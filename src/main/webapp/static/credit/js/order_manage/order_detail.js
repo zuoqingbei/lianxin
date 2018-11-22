@@ -2,8 +2,8 @@ let OrderDetail = {
     init() {
         this.rows = JSON.parse(localStorage.getItem("row"));
         console.log('--rows', this.rows);
+        BASE_PATH += 'credit/front/';
         this.initContent();
-        BASE_PATH += 'credit/front/ReportGetData/';
         /*/!**初始化函数 *!/
         this.initTable();
        /!* 股东及管理层背景*!/
@@ -21,7 +21,7 @@ let OrderDetail = {
         let _this = this;
         let id = this.rows.id;
         let reportType = this.rows.report_type;
-        $.get(`${BASE_PATH}credit/front/getmodule/detail`,
+        $.get(`${BASE_PATH}getmodule/detail/`,
             {id, reportType, type: 0},
             (data) => {
                 setTimeout(() => {
@@ -38,7 +38,7 @@ let OrderDetail = {
     setContent() {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info"></div>');
         let $moduleTitle = $('<div class="l-title"></div>');
-        let getUrl = (item)=>{
+        let getUrl = (item) => {
             let urlArr = item.title.data_source.split("*");
             let url = '';
             urlArr.forEach((param, index) => {
@@ -52,15 +52,15 @@ let OrderDetail = {
                     }
                 }
             });
-            url += `&conf_id=${item.title.id}`;
+            url = `${BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
             return url;
         };
         this.data.modules.forEach((item) => {
+            // smallModileType数据类型：0-表单，1-表格，4-流程进度
             let smallModuleType = item.smallModileType;
             let $wrap = $moduleWrap.clone().append($moduleTitle.clone()
                 .attr('id', item.title.id).text(item.title.temp_name));
             switch (smallModuleType) {
-                //表单类型
                 case '0':
                     let formHtml = '';
                     item.contents.forEach((item) => {
@@ -75,7 +75,7 @@ let OrderDetail = {
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
-                    $.get(BASE_PATH + 'credit/front/ReportGetData/' + getUrl(item), (data) => {
+                    $.get(getUrl(item), (data) => {
                         if (data.rows) {
                             $wrap.find('[id]').each(function (index, item) {
                                 let id = $(this).attr('id');
@@ -84,7 +84,6 @@ let OrderDetail = {
                         }
                     });
                     break;
-                //表格类型
                 case '1':
                     let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
                     let columnNameArr = [];
@@ -93,31 +92,46 @@ let OrderDetail = {
                         columnNameArr.push(item.column_name);
                     });
                     // 绑数
-                    $.get(BASE_PATH + 'credit/front/ReportGetData/' + getUrl(item), (data) => {
+                    $.get(getUrl(item), (data) => {
                         if (data.rows) {
-                            console.log(BASE_PATH + 'credit/front/ReportGetData/' + getUrl(item), data.rows);
                             data.rows.forEach((row) => {
                                 let $tr = $('<tr></tr>');
-                                columnNameArr.forEach((columnName)=>{
+                                columnNameArr.forEach((columnName) => {
                                     $tr.append(`<td>${row[columnName]}</td>`)
                                 });
                                 $table.children('tbody').append($tr);
                             });
                             $wrap.append(`<div class="tabelBox p-4">${$table[0].outerHTML}</div>`);
-                        }else{
-                            console.error('没有rows数据！')
+                        } else {
+                            console.error('此表格没有返回数据！')
                         }
                     });
                     break;
+                case '4':
+                    let $ul = this.initProcess();
+                    // 绑数
+                    console.log('流程进度',getUrl(item));
+                    $.get(`${getUrl(item)}&order_num=${this.rows.num}`, (data) => {
+                        if (data) {
+                            // data.rows.forEach((row) => {
+                            //     let $tr = $('<tr></tr>');
+                            //     columnNameArr.forEach((columnName) => {
+                            //         $tr.append(`<td>${row[columnName]}</td>`)
+                            //     });
+                            //     $table.children('tbody').append($tr);
+                            // });
+                            // $wrap.append(`<div class="tabelBox p-4">${$table[0].outerHTML}</div>`);
+                        } else {
+                            console.error('此流程进度没有返回数据！')
+                        }
+                    });
+                    $wrap.append(`<div class="module-wrap bg-f company-info">
+                <div class="bar_box p-3 process">${$ul[0].outerHTML}</div></div>`);
+
             }
             $(".main .table-content").append($wrap);
 
         })
-        /*let tabsHtml = '';
-        this.data.tabFixed.forEach((item,index) =>{
-            tabsHtml += `<li><a href="#tab${index}">${item.temp_name}</a></li>`
-        });
-        $("#tabs").html(tabsHtml).children().eq(0).addClass('tab-active');*/
     },
     // 设置tabs标签
     setTabs() {
@@ -132,6 +146,21 @@ let OrderDetail = {
         $("#orderName").text(this.data.defaultModule[0].temp_name + " :")
         $("#orderNum").text(this.rows.num);
         $("#status").text(this.rows.statusName);
+    },
+    initProcess() {
+        let $li = $(`<li>
+                        <div class="bar-span-box d-flex align-items-center">
+                            <span class="span_circle"></span><span class="span_bar"></span>
+                        </div>
+                        <span>录入新订单</span>
+                    </li>`);
+        // let $ul = $(".process ul");
+        let $ul = $("<ul></ul>");
+        let names = ['录入新订单', '报告核实', '信息录入', '报告质检', '分析', '分析质检', '翻译', '翻译质检', '递交客户'];
+        for (let i = 0; i < 9; i++) {
+            $ul.append($li.clone().children('span').text(names[i]).append('<span>&nbsp;</span><span>&nbsp;</span>').end());
+        }
+        return $ul;
     },
     /*出资比例环形图*/
     initEchartsPie() {
@@ -210,510 +239,7 @@ let OrderDetail = {
 `);
         }
     },
-    initTable() {
-        /**初始化表格 */
-        const $table = $('#table');
-        let _this = this;
 
-
-        $table.bootstrapTable({
-            height: $(".order-content").height(),
-            columns: [
-                {
-                    field: 'orderDate',
-                    title: '日期',
-                    //: true,
-                    align: 'left',
-                    width: "25%"
-                }, {
-                    field: 'deadDate',
-                    title: '变更项',
-                    //sortable: true,
-                    align: 'left',
-                    width: "25%"
-                }, {
-                    title: '变更前',
-                    field: 'clientCode',
-                    align: 'left',
-                    width: "25%"
-                }, {
-                    title: `
-变更后
-`,
-                    field: 'doState',
-                    align: 'left',
-                    width: "25%"
-                },
-            ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
-            pagination: false, //分页
-            sidePagination: 'server',
-            /*pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],*/
-            smartDisplay: false,
-            iconsPrefix: 'fa',
-            locales: 'zh-CN',
-            //fixedColumns: true,   // 固定列
-            // fixedNumber: 1,
-            queryParamsType: '',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
-                return {//这里的params是table提供的
-                    offset: params.offset,//从数据库第几条记录开始
-                    limit: params.limit//找多少条
-                };
-            },
-        });
-        // sometimes footer render error.
-        setTimeout(() => {
-            $table.bootstrapTable('resetView');
-        }, 200);
-    },
-    initTable2() {
-        /**初始化表格 */
-        const $table = $('#table2');
-        let _this = this;
-
-
-        $table.bootstrapTable({
-            height: $(".order-content").height(),
-            columns: [
-                {
-                    field: 'orderDate',
-                    title: '姓名',
-                    //: true,
-                    align: 'left',
-                    width: '33.3333%'
-                }, {
-                    field: 'deadDate',
-                    title: '国籍/国家',
-                    //sortable: true,
-                    align: 'left',
-                    width: '33.3333%'
-                }, {
-                    title: '出资比例（%）',
-                    field: 'clientCode',
-                    align: 'left',
-                    width: '33.3333%'
-                }
-            ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
-            pagination: false, //分页
-            sidePagination: 'server',
-            /*pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],*/
-            smartDisplay: false,
-            iconsPrefix: 'fa',
-            locales: 'zh-CN',
-            //fixedColumns: true,   // 固定列
-            // fixedNumber: 1,
-            queryParamsType: '',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
-                return {//这里的params是table提供的
-                    offset: params.offset,//从数据库第几条记录开始
-                    limit: params.limit//找多少条
-                };
-            },
-        });
-        // sometimes footer render error.
-        setTimeout(() => {
-            $table.bootstrapTable('resetView');
-        }, 200);
-    },
-    initTable3() {
-        /**初始化表格 */
-        const $table = $('#table3');
-        let _this = this;
-
-
-        $table.bootstrapTable({
-            height: $(".order-content").height(),
-            columns: [
-                {
-                    field: 'orderDate',
-                    title: '公司名称',
-                    //: true,
-                    align: 'left',
-                    width: '50%'
-                }, {
-                    field: 'deadDate',
-                    title: '出资比例（%）',
-                    //sortable: true,
-                    align: 'left',
-                    width: '50%'
-                }
-            ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
-            pagination: false, //分页
-            sidePagination: 'server',
-            /*pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],*/
-            smartDisplay: false,
-            iconsPrefix: 'fa',
-            locales: 'zh-CN',
-            //fixedColumns: true,   // 固定列
-            // fixedNumber: 1,
-            queryParamsType: '',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
-                return {//这里的params是table提供的
-                    offset: params.offset,//从数据库第几条记录开始
-                    limit: params.limit//找多少条
-                };
-            },
-        });
-        // sometimes footer render error.
-        setTimeout(() => {
-            $table.bootstrapTable('resetView');
-        }, 200);
-    },
-    initTable4() {
-        /**初始化表格 */
-        const $table = $('#table4');
-        let _this = this;
-
-
-        $table.bootstrapTable({
-            height: $(".order-content").height(),
-            columns: [
-                {
-                    field: 'orderDate',
-                    title: '质检类型',
-                    //: true,
-                    align: 'left'
-                }, {
-                    field: 'deadDate',
-                    title: '操作人',
-                    //sortable: true,
-                    align: 'left',
-                }, {
-                    field: 'deadDate',
-                    title: '操作时间',
-                    //sortable: true,
-                    align: 'left',
-                }, {
-                    field: 'deadDate',
-                    title: '质检意见',
-                    //sortable: true,
-                    align: 'left',
-                }, {
-                    field: 'deadDate',
-                    title: '评分',
-                    //sortable: true,
-                    align: 'left',
-                }
-            ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
-            pagination: false, //分页
-            sidePagination: 'server',
-            /*pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],*/
-            smartDisplay: false,
-            iconsPrefix: 'fa',
-            locales: 'zh-CN',
-            //fixedColumns: true,   // 固定列
-            // fixedNumber: 1,
-            queryParamsType: '',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
-                return {//这里的params是table提供的
-                    offset: params.offset,//从数据库第几条记录开始
-                    limit: params.limit//找多少条
-                };
-            },
-        });
-        // sometimes footer render error.
-        setTimeout(() => {
-            $table.bootstrapTable('resetView');
-        }, 200);
-    },
-
-    initTable() {
-        /**初始化表格 */
-        const $table = $('#table');
-        let _this = this;
-
-
-        $table.bootstrapTable({
-            height: $(".order-content").height(),
-            columns: [
-                {
-                    field: 'orderDate',
-                    title: '日期',
-                    //: true,
-                    align: 'left',
-                    width: "25%"
-                }, {
-                    field: 'deadDate',
-                    title: '变更项',
-                    //sortable: true,
-                    align: 'left',
-                    width: "25%"
-                }, {
-                    title: '变更前',
-                    field: 'clientCode',
-                    align: 'left',
-                    width: "25%"
-                }, {
-                    title: `
-变更后`,
-                    field: 'doState',
-                    align: 'left',
-                    width: "25%"
-                },
-            ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
-            pagination: false, //分页
-            sidePagination: 'server',
-            /*pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],*/
-            smartDisplay: false,
-            iconsPrefix: 'fa',
-            locales: 'zh-CN',
-            //fixedColumns: true,   // 固定列
-            // fixedNumber: 1,
-            queryParamsType: '',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
-                return {//这里的params是table提供的
-                    offset: params.offset,//从数据库第几条记录开始
-                    limit: params.limit//找多少条
-                };
-            },
-        });
-        // sometimes footer render error.
-        setTimeout(() => {
-            $table.bootstrapTable('resetView');
-        }, 200);
-    },
-    initTable2() {
-        /**初始化表格 */
-        const $table = $('#table2');
-        let _this = this;
-
-
-        $table.bootstrapTable({
-            height: $(".order-content").height(),
-            columns: [
-                {
-                    field: 'orderDate',
-                    title: '姓名',
-                    //: true,
-                    align: 'left',
-                    width: '33.3333%'
-                }, {
-                    field: 'deadDate',
-                    title: '国籍/国家',
-                    //sortable: true,
-                    align: 'left',
-                    width: '33.3333%'
-                }, {
-                    title: '出资比例（%）',
-                    field: 'clientCode',
-                    align: 'left',
-                    width: '33.3333%'
-                }
-            ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
-            pagination: false, //分页
-            sidePagination: 'server',
-            /*pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],*/
-            smartDisplay: false,
-            iconsPrefix: 'fa',
-            locales: 'zh-CN',
-            //fixedColumns: true,   // 固定列
-            // fixedNumber: 1,
-            queryParamsType: '',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
-                return {//这里的params是table提供的
-                    offset: params.offset,//从数据库第几条记录开始
-                    limit: params.limit//找多少条
-                };
-            },
-        });
-        // sometimes footer render error.
-        setTimeout(() => {
-            $table.bootstrapTable('resetView');
-        }, 200);
-    },
-    initTable3() {
-        /**初始化表格 */
-        const $table = $('#table3');
-        let _this = this;
-
-
-        $table.bootstrapTable({
-            height: $(".order-content").height(),
-            columns: [
-                {
-                    field: 'orderDate',
-                    title: '公司名称',
-                    //: true,
-                    align: 'left',
-                    width: '50%'
-                }, {
-                    field: 'deadDate',
-                    title: '出资比例（%）',
-                    //sortable: true,
-                    align: 'left',
-                    width: '50%'
-                }
-            ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
-            pagination: false, //分页
-            sidePagination: 'server',
-            /*pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],*/
-            smartDisplay: false,
-            iconsPrefix: 'fa',
-            locales: 'zh-CN',
-            //fixedColumns: true,   // 固定列
-            // fixedNumber: 1,
-            queryParamsType: '',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
-                return {//这里的params是table提供的
-                    offset: params.offset,//从数据库第几条记录开始
-                    limit: params.limit//找多少条
-                };
-            },
-        });
-        // sometimes footer render error.
-        setTimeout(() => {
-            $table.bootstrapTable('resetView');
-        }, 200);
-    },
-    initTable4() {
-        /**初始化表格 */
-        const $table = $('#table4');
-        let _this = this;
-
-
-        $table.bootstrapTable({
-            height: $(".order-content").height(),
-            columns: [
-                {
-                    field: 'orderDate',
-                    title: '质检类型',
-                    //: true,
-                    align: 'left'
-                }, {
-                    field: 'deadDate',
-                    title: '操作人',
-                    //sortable: true,
-                    align: 'left',
-                }, {
-                    field: 'deadDate',
-                    title: '操作时间',
-                    //sortable: true,
-                    align: 'left',
-                }, {
-                    field: 'deadDate',
-                    title: '质检意见',
-                    //sortable: true,
-                    align: 'left',
-                }, {
-                    field: 'deadDate',
-                    title: '评分',
-                    //sortable: true,
-                    align: 'left',
-                }
-            ],
-            // url : 'firmSoftTable.action', // 请求后台的URL（*）
-            // method : 'post', // 请求方式（*）post/get
-            pagination: false, //分页
-            sidePagination: 'server',
-            /*pageNumber:1,
-            pageSize:10,
-            pageList: [10 , 20],*/
-            smartDisplay: false,
-            iconsPrefix: 'fa',
-            locales: 'zh-CN',
-            //fixedColumns: true,   // 固定列
-            // fixedNumber: 1,
-            queryParamsType: '',
-            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
-                return {//这里的params是table提供的
-                    offset: params.offset,//从数据库第几条记录开始
-                    limit: params.limit//找多少条
-                };
-            },
-        });
-        // sometimes footer render error.
-        setTimeout(() => {
-            $table.bootstrapTable('resetView');
-        }, 200);
-    },
-
-
-    step(index) {
-        /*如果圆圈的索引 =index 高亮显示  .circle_active*/
-        /*如果圆圈的索引 <index 蓝色 span_active*/
-        /*如果圆圈的索引 >index 灰色 span_circle*/
-        let circle_arr = $(".bar-span-box .span_circle");
-        let bar_arr = $(".bar-span-box .span_bar");
-        var world_arr = $(".bar_box>ul>li");
-        let barIndex = index - 1;
-        for (var i = 0; i < circle_arr.length; i++) {
-            $(circle_arr[i]).removeClass("circle_active").removeClass("span_active").removeClass("span_circle");
-            $(bar_arr[i]).removeClass("bar_active").removeClass("span_circle");
-            $(world_arr[i]).removeClass("world_active");
-            /*判断圆圈*/
-            if (i == index) {
-                $(circle_arr[i]).addClass("circle_active");
-                $(world_arr[i]).children("span").addClass("world_active");
-            } else if (i < index) {
-                $(circle_arr[i]).addClass("span_active");
-            } else if (i > index) {
-                $(circle_arr[i]).addClass("span_circle");
-            }
-            /*判断横条*/
-            if (barIndex >= 0) {
-                if (i <= barIndex) {
-                    $(bar_arr[i]).addClass("bar_active")
-                } else if (i > barIndex) {
-                    $(bar_arr[i]).addClass("span_circle")
-                }
-            }
-        }
-
-        /*
-
-                /!*如果横条的索引 <=index-1 蓝色*!/
-                /!*如果横条的索引 >index-1  灰色*!/
-                let bar_arr=$(".bar-span-box .span_bar").index();
-              /!*  $(".bar-span-box .span_bar").removeClass("span_active");*!/
-                $(".bar-span-box .span_bar").removeClass("span_circle");
-                if(bar_arr<=index-2){
-                  /!*  $(this).previousSibling(".span_bar").addClass("span_active");*!/
-                    $(this).addClass("span_active")
-                }else if(bar_arr>index-2){
-                  /!*  $(this).previousSibling(".span_bar").addClass("span_circle");*!/
-                    $(this).addClass("span_circle");
-                }
-        */
-
-        /*如果字体的索引 =index-1  黑色*/
-        /*如果字体的索引 ！=index-1 灰色*/
-    }
 }
 
 OrderDetail.init();

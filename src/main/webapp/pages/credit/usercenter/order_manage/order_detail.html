@@ -12,6 +12,12 @@
         table>thead{
             background-color: var(--bg-thead);
         }
+        table>thead>th{
+            min-width: 8rem;
+        }
+        .bar_box ul li:last-child .span_bar{
+            visibility: hidden;
+        }
     </style>
     <script type="text/javascript">
         var BASE_PATH = "${BASE_PATH }";
@@ -48,15 +54,42 @@
         <!-- 内容展示 -->
         <div class="table-content">
             <!-- 基本信息 -->
+            <!--<div class="module-wrap bg-f company-info">
+                <div class="bar_box p-3 process">
+                    <ul>
+
+                        &lt;!&ndash;<li>
+                            <div class="bar-span-box d-flex align-items-center">
+                                <span class="span_circle"></span><span class="span_bar"></span>
+                            </div>
+                            <span>报告核实</span><span></span><span></span>
+                        </li>
+                        <li>
+                            <div class="bar-span-box d-flex align-items-center">
+                                <span class="span_circle"></span><span class="span_bar"></span>
+                            </div>
+                            <span>信息录入</span>
+                        </li>
+                        <li>
+                            <div class="bar-span-box d-flex align-items-center">
+                                <span class="span_circle"></span><span class="span_bar"></span>
+                            </div>
+                            <span>报告质检</span><span></span><span></span>
+                        </li>&ndash;&gt;
+                    </ul>
+                </div>
+            </div>-->
+
             <!-- 流程进度 -->
-            <div class="module-wrap bg-f company-info">
+<!--
+            <div class="module-wrap bg-f company-info process">
                 <a name="process" class="target-fix"> </a>
                 <div class="l-title">
                     流程进度
                 </div>
                 <div class="order-detail mb-4 order-content progress-box">
                     <div class="row  mb-2">
-                        <!--进度条-->
+                        &lt;!&ndash;进度条&ndash;&gt;
                         <div class="bar_box ml-3">
                             <ul>
                                 <%for(item in cofc){%>
@@ -87,9 +120,10 @@
                 </div>
 
             </div>
+-->
             <!-- 基本报告 -->
             <!-- 附件-->
-            <div class="module-wrap bg-f mt-4">
+            <!--<div class="module-wrap bg-f mt-4">
                 <a name="accessory"> </a>
                 <div class="l-title">
                     附件
@@ -125,8 +159,8 @@
                     </div>
                     <%}%>
                 </div>
-                <!--    变化后的 -->
-                <!-- <div class="order-detail mb-4 order-content accessory_box">
+                &lt;!&ndash;    变化后的 &ndash;&gt;
+                &lt;!&ndash; <div class="order-detail mb-4 order-content accessory_box">
                   <div>
                        <div class="uploadFile mt-3 mr-3 ml-3">
                            <div class="over-box">
@@ -136,10 +170,10 @@
                        </div>
                        <div class="order-yulan  mt-3 ml-3 "><a href="#">预览</a></div>
                    </div>
-                </div> -->
+                </div> &ndash;&gt;
 
 
-            </div>
+            </div>-->
             <!--质检意见-->
             <div class="bg-f company-info mt-4 mb-4">
 
@@ -166,10 +200,10 @@
 
 <script type="text/javascript">
 
-    function view(str, type) {
+   /* function view(str, type) {
         var url = "/credit/commonFile/previewFileOnline?url=" + str + "&type=" + type;
         window.open(url);
-    };
+    };*/
 
     function step(index) {
         /*如果圆圈的索引 ==index 高亮显示  .circle_active*/
@@ -207,6 +241,23 @@
             }
         }
     };
-    step(${size}-1);
+    // step(${size}-1);
+
+    $(function () {
+        /*let $li = $(`<li>
+                        <div class="bar-span-box d-flex align-items-center">
+                            <span class="span_circle"></span><span class="span_bar"></span>
+                        </div>
+                        <span>录入新订单</span>
+                    </li>`);
+        let $ul = $(".process ul");
+        let names = ['录入新订单','报告核实','信息录入','报告质检','分析','分析质检','翻译','翻译质检','递交客户'];
+        for( let i=0;i<9;i++){
+            $ul.append($li.clone().children('span').text(names[i]).append('<span>&nbsp;</span><span>&nbsp;</span>').end());
+        }
+*/    })
+
+
+
 </script>
 </html>
