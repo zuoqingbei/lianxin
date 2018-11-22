@@ -15,9 +15,4 @@ public class CreditCompanyFinancialDict extends BaseProjectModel<CreditCompanyFi
 	public static List<CreditCompanyFinancialDict> simplifiedChineseDict;
 	public static List<CreditCompanyFinancialDict> chineseTraditionalDict;
 	public static List<CreditCompanyFinancialDict> englishDict;
-	public CreditCompanyFinancialDict() {
-		simplifiedChineseDict = dao.find("select * from credit_company_financial_dict where sys_language=612 order by sort_no,id");
-		englishDict = dao.find("select * from credit_company_financial_dict where sys_language=613 order by sort_no,id");
-		chineseTraditionalDict = dao.find("select * from credit_company_financial_dict where sys_language=614 order by sort_no,id");
-	}
 }

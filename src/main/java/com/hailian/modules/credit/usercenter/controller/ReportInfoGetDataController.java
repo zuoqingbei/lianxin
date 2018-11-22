@@ -1,15 +1,21 @@
 package com.hailian.modules.credit.usercenter.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.front.template.TemplateDictService;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Record;
 
 @ControllerBind(controllerKey = "/credit/front/ReportGetData")
@@ -323,6 +329,23 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
         return rows;
     }
+    
+	public void getFinanceExcelExport() {
+		String sysLanguage = getPara("sys_language");
+		if(StrUtils.isEmpty(sysLanguage)) {
+			renderJson(new ResultType(0,"参数错误!"));
+			return;
+		}
+		OutputStream ops = null;
+		HttpServletResponse response = this.getResponse();
+		try {
+			response.reset();
+			ops = response.getOutputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ExcelModule.exportExcel(response,ops, sysLanguage);
+	}
 
 
 }
