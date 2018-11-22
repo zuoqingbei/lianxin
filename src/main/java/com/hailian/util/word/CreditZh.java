@@ -67,11 +67,6 @@ public class CreditZh {
             String className = requireds.length > 0 ? requireds[0] : "";
             ReportInfoGetDataController report = new ReportInfoGetDataController();
 
-            //获取主表数据
-            CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
-            CreditCompanySubtables subtables = report.getSonTableInfo(companyId, sysLanguage);
-            //CreditCompanyFinancialEvaluation creditCompanyFinancialEvaluation =
-
             //1：表格
             if(tableType!=null&&!"".equals(tableType)) {
                 String selectInfo = "";
@@ -87,6 +82,7 @@ public class CreditZh {
 
             //2：主从表中的- 单个值
             for(CreditReportModuleConf conf : child){
+                String ci = conf.getInt("id") + "";
                 String s = conf.getStr("get_source");
                 if(s==null||"".equals(s)){
                     continue;
@@ -96,23 +92,29 @@ public class CreditZh {
                 if (t == null || "".equals(t)) {
                     continue;
                 }
+                String c = p.get("className");
+                String cn = c.split("\\*")[0];
                 //主表
                 if("credit_company_info".equals(t)){
                     String word_key = conf.get("word_key")+"";
                     if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        String v = companyInfo.get(word_key) + "";
-                        map.put(word_key, v);
+                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        if(rs!=null&&rs.size()>0){
+                            BaseProjectModel model = (BaseProjectModel)rs.get(0);
+                            String v = model.get(word_key) + "";
+                            map.put(word_key, v);
+                        }
                     }
-                }
-                if("credit_company_subtables".equals(t)){
+                }else{
                     String word_key = conf.get("word_key")+"";
                     if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        String v = subtables.get(word_key) + "";
-                        map.put(word_key, v);
+                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        if(rs!=null&&rs.size()>0){
+                            BaseProjectModel model = (BaseProjectModel)rs.get(0);
+                            String v = model.get(word_key) + "";
+                            map.put(word_key, v);
+                        }
                     }
-                }
-                if("credit_company_financial_evaluation".equals(t)){
-
                 }
             }
 
@@ -137,14 +139,7 @@ public class CreditZh {
                 }
             }
         }
-
-
-
-
         MainWord.buildWord(map, "h://word/_信用分析报告样本.docx", "h://3.docx");
-
-
-
     }
 
 

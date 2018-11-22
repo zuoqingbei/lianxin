@@ -49,7 +49,10 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @param disPalyCol
 	 */
 	abstract void getSelete();
-	
+	/**
+	 * 导出财务excel
+	 */
+	abstract void getFinanceExcelExport();
 	
 	void deleteOneEntry(String className,String id) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 		Class entryType = null;
@@ -168,12 +171,13 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					if("null".equals(string6)){
 						continue;
 					}
-					map.put(string5, string6);
+					map.put(string5.replace("锟斤拷锟斤拷之锟斤拷锟窖э拷锟", ":"), string6.replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷", ","));
 				}
 				list.add(map);
 				for (Object key : map.keySet()) {
 					System.out.println(key+":"+map.get(key));
 				}
+				
 			}
 		}
 		return list;

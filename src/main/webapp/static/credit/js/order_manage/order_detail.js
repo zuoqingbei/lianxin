@@ -1,8 +1,9 @@
 let OrderDetail = {
     init() {
         this.rows = JSON.parse(localStorage.getItem("row"));
-        console.log('--rows', this.rows)
+        console.log('--rows', this.rows);
         this.initContent();
+        BASE_PATH += 'credit/front/ReportGetData/';
         /*/!**初始化函数 *!/
         this.initTable();
        /!* 股东及管理层背景*!/
@@ -37,6 +38,23 @@ let OrderDetail = {
     setContent() {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info"></div>');
         let $moduleTitle = $('<div class="l-title"></div>');
+        let getUrl = (item)=>{
+            let urlArr = item.title.data_source.split("*");
+            let url = '';
+            urlArr.forEach((param, index) => {
+                if (index === 0) {
+                    url = param;
+                } else {
+                    if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
+                        url += `&${param}=${this.rows.id}`
+                    } else {
+                        url += `&${param}=${this.rows[param]}`
+                    }
+                }
+            });
+            url += `&conf_id=${item.title.id}`;
+            return url;
+        };
         this.data.modules.forEach((item) => {
             let smallModuleType = item.smallModileType;
             let $wrap = $moduleWrap.clone().append($moduleTitle.clone()
@@ -44,135 +62,52 @@ let OrderDetail = {
             switch (smallModuleType) {
                 //表单类型
                 case '0':
-                    let contentHtml = '';
+                    let formHtml = '';
                     item.contents.forEach((item) => {
-                        contentHtml += `
+                        formHtml += `
                             <div class="col-md-4 mt-2 mb-2">
                                 <span>${item.temp_name}：</span>
-                                <span id="${item.id}"></span>
+                                <span id="${item.column_name}"></span>
                             </div>`
                     });
                     $wrap.append(`
                         <div class="order-detail mb-4 order-content">
-                            <div class="row mt-2 mb-2">${contentHtml}</div>
+                            <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
-                    let urlArr = item.title.data_source.split("*");
-                    let url = '';
-                    urlArr.forEach((param,index) => {
-                        if(index===0){
-                            url = param;
-                        }else{
-                            if(param === 'orderId'){//这里的orderId对应rows的id，和填报配置中不一样
-                                url+=`&${param}=${this.rows.id}`
-                            }else{
-                                url+=`&${param}=${this.rows[param]}`
-                            }
+                    //绑数
+                    $.get(BASE_PATH + 'credit/front/ReportGetData/' + getUrl(item), (data) => {
+                        if (data.rows) {
+                            $wrap.find('[id]').each(function (index, item) {
+                                let id = $(this).attr('id');
+                                $(this).text(data.rows[0][id])
+                            })
                         }
                     });
-                    $.get(BASE_PATH + 'credit/front/ReportGetData/'+url, (data) => {
-                        console.log(BASE_PATH + 'credit/front/ReportGetData/'+url,data);
+                    break;
+                //表格类型
+                case '1':
+                    let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
+                    let columnNameArr = [];
+                    item.contents.forEach((item) => {
+                        $table.children('thead').append(`<th>${item.temp_name}</th>`);
+                        columnNameArr.push(item.column_name);
                     });
-
-
-                    /* formTitle.push(item.title)
-                     this.formIndex.push(index)
-                     let ind = index
-                     let rowNum = 0;//代表独占一行的input数量
-                     formArr.forEach((item, index) => {
-
-                         let formGroup = ''
-                         //判断input的类型
-                         let field_type = item.field_type
-                         if (!field_type) {
-                             formGroup += `<div class="form-group">
-                                                             <label for="" class="mb-2">${item.temp_name}</label>
-                                                             <input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
-                                                             <p class="errorInfo">${item.error_msg}</p>
-                                                         </div>`
-                         } else {
-
-                             switch (field_type) {
-                                 case 'text':
-                                     formGroup += `<div class="form-group">
-                                                         <label for="" class="mb-2">${item.temp_name}</label>
-                                                         <input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
-                                                         <p class="errorInfo">${item.error_msg}</p>
-                                                     </div>`
-                                     break;
-                                 case 'number':
-                                     formGroup += `<div class="form-group">
-                                                                         <label for="" class="mb-2">${item.temp_name}</label>
-                                                                         <input type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
-                                                                         <p class="errorInfo">${item.error_msg}</p>
-                                                                     </div>`
-
-                                     break;
-                                 case 'date':
-                                     formGroup += `<div class="form-group date-form">
-                                                                     <label for="" class="mb-2">${item.temp_name}</label>
-                                                                     <input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
-                                                                     <p class="errorInfo">${item.error_msg}</p>
-                                                                 </div>`
-                                     break;
-                                 case 'date_scope':
-                                     formGroup += `<div class="form-group date-scope-form">
-                                                         <label for="" class="mb-2">${item.temp_name}</label>
-                                                         <input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
-                                                         <p class="errorInfo">${item.error_msg}</p>
-                                                     </div>`
-                                     break;
-                                 case 'address':
-                                     formGroup += ` <div class="form-group address-form"  style="width: 100%">
-                                                                         <label  class="mb-2">${item.temp_name}</label>
-                                                                         <input type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
-                                                                     </div>`
-                                     break;
-                                 case 'select':
-                                     if (item.get_source === null) {
-                                         return
-                                     }
-                                     let url = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
-                                     $.ajax({
-                                         type: 'get',
-                                         url,
-                                         async: false,
-                                         dataType: 'json',
-                                         success: (data) => {
-                                             formGroup += `<div class="form-group">
-                                                                         <label for="" class="mb-2">${item.temp_name}</label>
-                                                                         <select name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
-                                                                             ${data.selectStr}
-                                                                         </select>
-                                                                     </div>`
-                                         }
-                                     })
-
-                                     break;
-                                 case 'textarea':
-                                     formGroup += `  <div class="form-group"  style="width: 100%">
-                                                                         <label  class="mb-2">${item.temp_name}</label>
-                                                                         <textarea class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
-                                                                     </div>`
-                                     break;
-                                 default :
-                                     break;
-                             }
-                         }
-                         if (formArr[index - 1] && formArr[index - 1]['field_type'] === 'address') {
-                             rowNum += 1
-                         }
-
-                         if ((index - rowNum) % 3 === 0 || formArr[index - 1]['field_type'] === 'address' || formArr[index]['field_type'] === 'address' || formArr[index]['field_type'] === 'textarea') {
-                             contentHtml += `<div class="firm-info mt-4 px-5 d-flex justify-content-between">`;
-                         }
-                         contentHtml += formGroup;
-
-                         if (((index + 1 - rowNum) % 3 === 0 && index !== 0) || formArr[index]['field_type'] === 'address' || (formArr[index + 1] && formArr[index + 1]['field_type'] === 'textarea') || (formArr[index + 1] && formArr[index + 1]['field_type'] === 'address') || ((formArr[index + 1] && formArr[index + 1]['field_type'] === 'textarea') && formArr[index + 2] && formArr[index + 2]['field_type'] === 'textarea')) {
-                             contentHtml += `</div>`
-                         }
-
-                     })
-                     contentHtml += `</div>`*/
+                    // 绑数
+                    $.get(BASE_PATH + 'credit/front/ReportGetData/' + getUrl(item), (data) => {
+                        if (data.rows) {
+                            console.log(BASE_PATH + 'credit/front/ReportGetData/' + getUrl(item), data.rows);
+                            data.rows.forEach((row) => {
+                                let $tr = $('<tr></tr>');
+                                columnNameArr.forEach((columnName)=>{
+                                    $tr.append(`<td>${row[columnName]}</td>`)
+                                });
+                                $table.children('tbody').append($tr);
+                            });
+                            $wrap.append(`<div class="tabelBox p-4">${$table[0].outerHTML}</div>`);
+                        }else{
+                            console.error('没有rows数据！')
+                        }
+                    });
                     break;
             }
             $(".main .table-content").append($wrap);

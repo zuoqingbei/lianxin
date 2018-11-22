@@ -99,7 +99,11 @@ public class CompanyService {
 			System.out.println(Status+"!!!!!!!!!1");
 			CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
 			companyinfoModel.set("registration_num", No);
-			companyinfoModel.set("company_type", EconKind);
+			
+			List<SysDictDetail> companytype = SysDictDetail.dao.getDictDetailBy(EconKind,"companyType");
+			if(companytype !=null && CollectionUtils.isNotEmpty(companytype)){
+				companyinfoModel.set("company_type", companytype.get(0).get("detail_id"));
+			}
 			companyinfoModel.set("register_code_type", "632");
 			companyinfoModel.set("register_codes", CreditCode);
 			companyinfoModel.set("principal", OperName);
@@ -111,12 +115,14 @@ public class CompanyService {
 				companyinfoModel.set("currency","274");
 			}
 			
-			
-			companyinfoModel.set("establishment_date", StartDate);
+			String replaceStartDate = StartDate.replace("00:00:00", "");
+			companyinfoModel.set("establishment_date", replaceStartDate);
 			companyinfoModel.set("business_date_start", TermStart);
-			companyinfoModel.set("business_date_end", TeamEnd);
+			String replaceTeamEnd = TeamEnd.replace("00:00:00", "");
+			companyinfoModel.set("business_date_end", replaceTeamEnd);
+			
 			List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");
-			if(CollectionUtils.isNotEmpty(dictDetailBy)){
+			if(CollectionUtils.isNotEmpty(dictDetailBy) && dictDetailBy!=null){
 				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("detail_id"));
 			}
 			companyinfoModel.set("registration_authority", BelongOrg);

@@ -7,27 +7,28 @@ import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
+import com.hailian.modules.admin.ordermanager.model.CreditReditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.jfinal.kit.PathKit;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 
+import java.awt.*;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 /**
  * 商业信息报告样本
  * Created by Thinkpad on 2018/11/17.
  */
 public class BusinessZh {
-
-    public static void main(String args[]) throws Exception{
-
-    }
-
-    public void getSonData(String sonTable,String companyId,String sysLanguage){
-        //获取主表数据
-        //CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
-    }
 
     public static void reportTable() {
         //报告类型
@@ -70,11 +71,6 @@ public class BusinessZh {
             String className = requireds.length > 0 ? requireds[0] : "";
             ReportInfoGetDataController report = new ReportInfoGetDataController();
 
-            //获取主表数据
-            CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
-
-            CreditCompanySubtables subtables = report.getSonTableInfo(companyId, sysLanguage);
-
             //1：表格
             if(tableType!=null&&!"".equals(tableType)) {
                 String selectInfo = "";
@@ -90,6 +86,7 @@ public class BusinessZh {
 
             //2：主从表中的- 单个值
             for(CreditReportModuleConf conf : child){
+                String ci = conf.getInt("id") + "";
                 String s = conf.getStr("get_source");
                 if(s==null||"".equals(s)){
                     continue;
@@ -99,19 +96,28 @@ public class BusinessZh {
                 if (t == null || "".equals(t)) {
                     continue;
                 }
+                String c = p.get("className");
+                String cn = c.split("\\*")[0];
                 //主表
                 if("credit_company_info".equals(t)){
                     String word_key = conf.get("word_key")+"";
                     if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        String v = companyInfo.get(word_key) + "";
-                        map.put(word_key, v);
+                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        if(rs!=null&&rs.size()>0){
+                            BaseProjectModel model = (BaseProjectModel)rs.get(0);
+                            String v = model.get(word_key) + "";
+                            map.put(word_key, v);
+                        }
                     }
-                }
-                if("credit_company_subtables".equals(t)){
+                }else{
                     String word_key = conf.get("word_key")+"";
                     if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        String v = subtables.get(word_key) + "";
-                        map.put(word_key, v);
+                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        if(rs!=null&&rs.size()>0){
+                            BaseProjectModel model = (BaseProjectModel)rs.get(0);
+                            String v = model.get(word_key) + "";
+                            map.put(word_key, v);
+                        }
                     }
                 }
             }
@@ -137,113 +143,80 @@ public class BusinessZh {
                 }
             }
 
-            /*
-            if ("报告摘要".equals(tempName)) {
+            //图形表
+            if("11".equals(moduleType)){
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("zhaiyao", table);
+                LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
+                List<LinkedHashMap<String,String>> datas = new ArrayList<LinkedHashMap<String,String>>();
+                //取列值
+                for(int i=0;i< child.size();i++) {
+                    CreditReportModuleConf module = child.get(i);
+                    String column_name = module.getStr("column_name");
+                    String temp_name = module.getStr("temp_name");
+                    cols.put(column_name,temp_name);
+                }
+                //取数据
+                for(int i=0;i< rows.size();i++){
+                    LinkedHashMap<String,String> row = new LinkedHashMap<String,String>();
+                    //取行
+                    BaseProjectModel model = (BaseProjectModel) rows.get(i);
+                    for(String column : cols.keySet()) {
+                        String value = model.get(column) != null ? model.get(column) + "" : "";
+                        row.put(column, value);
+                    }
+                    datas.add(row);
+                }
+                DefaultPieDataset pds = new DefaultPieDataset();
+                for(LinkedHashMap<String,String> m : datas){
+                    String[] keys = (String[]) m.keySet().toArray();
+                    pds.setValue(m.get(keys[0]), 100);
+                }
+                createPieChart(pds,"h:/pie.jpg");
             }
-
-            if ("信用分析".equals(tempName)) {
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("xinyongfenxi", table);
-            }
-
-            if ("企业注册信息".equals(tempName)) {
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("regist", table);
-            }
-            if ("历史变更记录".equals(tempName)) {
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableH(child, rows);
-                map.put("history", table);
-            }
-            if ("股东信息".equals(tempName)) {
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableH(child, rows);
-                map.put("partner", table);
-            }
-            if("法人股东详情".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("details", table);
-            }
-            if("投资情况".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableH(child, rows);
-                map.put("invest", table);
-            }
-            if("管理层".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("leader", table);
-            }
-            if("行业信息".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("hangyexinxi", table);
-            }
-            if("业务情况".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("yewu", table);
-            }
-            if("采购情况".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("caugou", table);
-            }
-            if("销售情况".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("sales", table);
-            }
-            if("供应商".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("gongyingshang", table);
-            }
-            if("商标和专利".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("zhuanli", table);
-            }
-
-            if("商标和专利".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("zhuanli", table);
-            }*/
         }
-
-
-
-
         MainWord.buildWord(map, "h://word/_商业信息报告样本.docx", "h://2.docx");
-
-
-
     }
 
+    public static void main(String[] args) {
+        DefaultPieDataset pds = new DefaultPieDataset();
+        pds.setValue("00点-04点", 100);
+        pds.setValue("04点-08点", 200);
+        pds.setValue("08点-12点", 300);
+        pds.setValue("12点-16点", 400);
+        pds.setValue("16点-20点", 500);
+        pds.setValue("20点-24点", 600);
+        String filePath = "h:/pie.jpg";
+        createPieChart(pds,filePath);
+    }
 
-
-
+    public static void createPieChart(DefaultPieDataset pds, String filePath) {
+        try {
+            // 分别是:显示图表的标题、需要提供对应图表的DateSet对象、是否显示图例、是否生成贴士以及是否生成URL链接
+            JFreeChart chart = ChartFactory.createPieChart("出资比例（%）", pds, true, false, true);
+            // 如果不使用Font,中文将显示不出来
+            Font font = new Font("宋体", Font.BOLD, 12);
+            // 设置图片标题的字体
+            chart.getTitle().setFont(font);
+            // 得到图块,准备设置标签的字体
+            PiePlot plot = (PiePlot) chart.getPlot();
+            // 设置标签字体
+            plot.setLabelFont(font);
+            //设置图例字体
+            chart.getLegend().setItemFont(font);
+            plot.setStartAngle(new Float(3.14f / 2f));
+            // 设置plot的前景色透明度
+            plot.setForegroundAlpha(0.7f);
+            // 设置plot的背景色透明度
+            plot.setBackgroundAlpha(0.0f);
+            // 设置标签生成器(默认{0})
+            // {0}:key {1}:value {2}:百分比 {3}:sum
+            plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}({1}占{2})"));
+            // 将内存中的图片写到本地硬盘
+            ChartUtilities.saveChartAsJPEG(new File(filePath), chart, 600, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
