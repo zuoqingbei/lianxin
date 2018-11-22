@@ -49,7 +49,10 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @param disPalyCol
 	 */
 	abstract void getSelete();
-	
+	/**
+	 * 导出财务excel
+	 */
+	abstract void getFinanceExcelExport();
 	
 	void deleteOneEntry(String className,String id) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 		Class entryType = null;

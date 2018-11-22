@@ -1,11 +1,12 @@
 package com.hailian.modules.credit.usercenter.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
@@ -13,8 +14,10 @@ import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.front.template.TemplateDictService;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Record;
 
 @ControllerBind(controllerKey = "/credit/front/ReportGetData")
@@ -337,6 +340,27 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
         return rows;
     }
+    
+    /**
+     * 根据语言参数下载财务模板
+     */
+	public void getFinanceExcelExport() {
+		String sysLanguage = getPara("sys_language");
+		if(StrUtils.isEmpty(sysLanguage)) {
+			renderJson(new ResultType(0,"参数错误!"));
+			return;
+		}
+		OutputStream ops = null;
+		HttpServletResponse response = this.getResponse();
+		try {
+			response.reset();
+			ops = response.getOutputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ExcelModule.exportExcel(response,ops, sysLanguage);
+	}
+	
   /**
    * 
   * @Description: 新增/查询质检意见表
