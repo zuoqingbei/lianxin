@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.model.ResultType;
@@ -101,7 +103,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * @param isCompanyMainTable
 	 */
 	public void getBootStrapTable() {
-		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese,null);
+		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese, null);
 	}
 	//详情
 	public void getBootStrapTables() {
@@ -324,5 +326,30 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         return rows;
     }
 
+    /**
+     * 查询主表数据
+     * @param companyId
+     * @param sysLanguage
+     * @return
+     */
+    public CreditCompanyInfo getCompanyInfo(String companyId,String sysLanguage){
+        List<CreditCompanyInfo> comList = CreditCompanyInfo.dao.find(
+                "select * from credit_company_info where del_flag=0 and id="+companyId+" and sys_language in(?)",
+                Arrays.asList(new String[]{sysLanguage}).toArray());
+        return (comList!=null && comList.size()>0)?comList.get(0):null;
+    }
+
+    /**
+     * 查询从表数据
+     * @param companyId
+     * @param sysLanguage
+     * @return
+     */
+    public CreditCompanySubtables getSonTableInfo(String companyId,String sysLanguage){
+        List<CreditCompanySubtables> comList = CreditCompanySubtables.dao.find(
+                "select * from credit_company_subtables where del_flag=0 and id="+companyId+" and sys_language in(?)",
+                Arrays.asList(new String[]{sysLanguage}).toArray());
+        return (comList!=null && comList.size()>0)?comList.get(0):null;
+    }
 
 }

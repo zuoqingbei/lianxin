@@ -32,7 +32,7 @@ public class CreditZh {
         //语言
         String sysLanguage = "612";
         //公司id
-        String companyId = "65"; //77基本  65商业
+        String companyId = "7777794"; //77基本  65商业  //7777794信用分析
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -69,8 +69,8 @@ public class CreditZh {
 
             //获取主表数据
             CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
-
             CreditCompanySubtables subtables = report.getSonTableInfo(companyId, sysLanguage);
+            //CreditCompanyFinancialEvaluation creditCompanyFinancialEvaluation =
 
             //1：表格
             if(tableType!=null&&!"".equals(tableType)) {
@@ -111,6 +111,9 @@ public class CreditZh {
                         map.put(word_key, v);
                     }
                 }
+                if("credit_company_financial_evaluation".equals(t)){
+
+                }
             }
 
             //7 输入框取数
@@ -133,107 +136,12 @@ public class CreditZh {
                     }
                 }
             }
-
-            /*
-            if ("报告摘要".equals(tempName)) {
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("zhaiyao", table);
-            }
-
-            if ("信用分析".equals(tempName)) {
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("xinyongfenxi", table);
-            }
-
-            if ("企业注册信息".equals(tempName)) {
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("regist", table);
-            }
-            if ("历史变更记录".equals(tempName)) {
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableH(child, rows);
-                map.put("history", table);
-            }
-            if ("股东信息".equals(tempName)) {
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableH(child, rows);
-                map.put("partner", table);
-            }
-            if("法人股东详情".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("details", table);
-            }
-            if("投资情况".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableH(child, rows);
-                map.put("invest", table);
-            }
-            if("管理层".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("leader", table);
-            }
-            if("行业信息".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("hangyexinxi", table);
-            }
-            if("业务情况".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("yewu", table);
-            }
-            if("采购情况".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("caugou", table);
-            }
-            if("销售情况".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("sales", table);
-            }
-            if("供应商".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("gongyingshang", table);
-            }
-            if("商标和专利".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("zhuanli", table);
-            }
-
-            if("商标和专利".equals(tempName)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-                map.put("zhuanli", table);
-            }*/
         }
 
 
 
 
-        MainWord.buildWord(map, "h://word/_商业信息报告样本.docx", "h://2.docx");
+        MainWord.buildWord(map, "h://word/_信用分析报告样本.docx", "h://3.docx");
 
 
 
