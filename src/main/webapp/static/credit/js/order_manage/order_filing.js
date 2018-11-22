@@ -6,11 +6,14 @@ let Filing = {
     	this.pageSize = "";
     	this.sortName = "";
     	this.sortOrder = "";
+    	this.num="";
+    	this.numarr=[];
     	this.orderFlag= 0;
         this.initTable();
         this.popperFilter();
-        this.modalSubmit();
+        this.modalSubmit(this.numarr);
         this.fileEvent();
+        this.select();
     },
     fileEvent(){
       /**文件上传事件 */
@@ -73,8 +76,9 @@ let Filing = {
       })
 
     },
-    modalSubmit(){
+    modalSubmit(numarr){
         /**模态框提交事件 */
+    	let _this = this
         	 $("#modal_submit").click(function(){
         		 $(".upload-over").remove();
         		 
@@ -92,11 +96,10 @@ let Filing = {
                             $(".modal-header .close").trigger("click");
                             //回显
                            	console.log("提交成功,开始回显:");
-                           console.log("pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4");
                            		$.ajax({
                            			type:"post",
                                		url:BASE_PATH+"credit/front/orderProcess/listJson",
-                               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
+                               		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
                                		dataType:"json",
                                		success:function(obj){
                                				//console.log("回显的数据:"+JSON.stringify(obj.rows));
@@ -133,11 +136,12 @@ let Filing = {
                  let country = $("#countryid").val();
                  let speed = $("#speedid").val();
                  let num = $("#num2").text();
-                 //console.log(reporter,remarks);
+                 let ids=this.numarr;
+                 console.log(ids);
                  $.ajax({
             			type:"post",
             			url:BASE_PATH+"credit/front/orderProcess/orderAgentAbroadSave",
-            			data:"agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.num="+num+"&statusCode="+"295"+"&orderId="+id+"&country="+country+"&speed="+speed,
+            			data:"agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.num="+num+"&statusCode="+"295"+"&orderId="+id+"&country="+country+"&speed="+speed+"&ids="+ids,
             			dataType:"json",
             			success:function(data){
             			
@@ -149,7 +153,7 @@ let Filing = {
                        	$.ajax({
     	           			type:"post",
     	               		url:BASE_PATH+"credit/front/orderProcess/listJson",
-    	               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
+    	               		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
     	               		dataType:"json",
     	               		success:function(obj){
     	           			 	$("#table").bootstrapTable("load",obj);
@@ -165,9 +169,55 @@ let Filing = {
             			}
             		})
 	    			
-             })
+             }),
              
-             
+             $("#modal_submit_allocation2").click(function(){
+            	 console.log(numarr);
+            	 console.log("分配事件:"+BASE_PATH);
+        		  if($("#agency_id").val()==-1 || $("#agency_id").val()=="") {
+        	      		Public.message("error","请选择代理ID");
+        	      	  return false;
+        	      	  }
+                 let agentid = $("#agency_id2 option:selected").val();
+                 let ismail = $("#entrust_email option:selected").val();
+                 let id = $("#orderId2").val();
+                 let country = $("#countryid").val();
+                 let speed = $("#speedid").val();
+                 let num = $("#num2").text();
+                 let ids=numarr;
+                 console.log(ids+"jjjj"+this.numarr);
+                 $.ajax({
+            			type:"post",
+            			url:BASE_PATH+"credit/front/orderProcess/orderAgentAbroadSave",
+            			data:"agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.num="+num+"&statusCode="+"295"+"&orderId="+id+"&country="+country+"&speed="+speed+"&ids="+ids,
+            			dataType:"json",
+            			success:function(data){
+            			
+            			if(data.statusCode===1){
+                       	 console.log("此处进入success状态2222222222");
+                       	Public.message("success",data.message);
+                      //提交成功关闭模态窗
+                       	$(".modal-header .close").trigger("click");
+                       	$.ajax({
+    	           			type:"post",
+    	               		url:BASE_PATH+"credit/front/orderProcess/listJson",
+    	               		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
+    	               		dataType:"json",
+    	               		success:function(obj){
+    	           			 	$("#table").bootstrapTable("load",obj);
+    	           			 $(".modal-header .close").trigger("click");
+    	           			 }
+    	       			})
+                      
+                       
+                       }else{
+                       	 console.log("此处进入error状态");
+                       	Public.message("error",data.message);
+                       }
+            			}
+            		})
+	    			
+             }),
              $("#modal_submit1").click(function(){
              	console.log("点击提交");
              	$("#status").val("292");
@@ -183,7 +233,7 @@ let Filing = {
               	  		$.ajax({
               	  			type:"post",
               	      		url:BASE_PATH+"credit/front/orderProcess/listJson",
-              	      		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
+              	      		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-3",
               	      		dataType:"json",
               	      		success:function(obj){
               	      				console.log("回显的数据:"+obj);
@@ -261,10 +311,32 @@ let Filing = {
              		
                   
               })
-           
+            
     	
     },
-    
+    select(){
+    	 
+        	  console.log("234324");
+               $.ajax({
+          			type:"get",
+          			 url : BASE_PATH+"credit/front/orderProcess/getAgent",
+          			dataType:"json",
+          			success:function(data){ 
+          				var html="";
+          				 html+="<option value='-1' selected='selected'>请选择</option>"
+          				for(item in data){
+          			 	html+="<option  m-type='"+data[item].agent_id+"' value='"+data[item].agent_id+"'>"+data[item].agent_id+"</option>";
+          	        }
+          	        
+          	        $("select[name='agent_id']").html(html);
+          	        }
+               	
+          		})
+          		
+               
+          
+       
+    },
     popperFilter(){
         /**筛选图标事件 */
         var referenceElement = document.querySelector(".fa-filter");
@@ -434,8 +506,7 @@ let Filing = {
           $("#address").html(row.address);
           $("#remarks").html(row.remarks);
           
-          pageNumber = row.pageNumber;
-          console.log("pageNumber====="+pageNumber);
+          _this.pageNumber = row.pageNumber;
           pageSize = row.pageSize;
       	sortName = row.sortName;
       	sortOrder = row.sortOrder;
@@ -490,8 +561,7 @@ let Filing = {
             $("#address2").html(row.address);
             $("#remarks2").html(row.remarks);
             
-            pageNumber = row.pageNumber;
-            console.log("pageNumber====="+pageNumber);
+            _this.pageNumber = row.pageNumber;
             pageSize = row.pageSize;
         	sortName = row.sortName;
         	sortOrder = row.sortOrder;
@@ -546,7 +616,7 @@ let Filing = {
       $("#telphone4").val(row.telphone);
       $("#address4").html(row.address);
       $("#remarks4").html(row.remarks);
-      pageNumber = row.pageNumber;
+      _this.pageNumber = row.pageNumber;
       pageSize = row.pageSize;
   	 sortName = row.sortName;
   	  sortOrder = row.sortOrder;
@@ -653,6 +723,25 @@ let Filing = {
             },  
             onCheck:(row)=>{
             	console.log(row)
+            	this.numarr.push(row.id)
+             //  this.numarr.split().join(",");
+            	console.log(this.numarr);
+            },
+            onUncheck:(rows)=>{
+            	let index =this.numarr.indexOf(rows.id)
+                this.numarr.splice(index,1);
+            	console.log(this.numarr);
+            },onCheckAll:(rows)=>{
+           	 for(var i=0;i<rows.length;i++){
+           		this.numarr.push(rows[i].id) 
+           		console.log(this.numarr);
+           	 }
+            },onUncheckAll:(rows)=>{
+	           	 for(var i=0;i<rows.length;i++){
+	           		let index =this.numarr.indexOf(rows[i].id)
+	                this.numarr.splice(index,1); 
+	           		console.log(this.numarr);
+	           	 }
             }
             });
             // sometimes footer render error.

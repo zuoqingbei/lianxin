@@ -441,6 +441,11 @@ public class OrderProcessController extends BaseProjectController{
         List<AgentPriceModel> findAll = AgentPriceModel.dao.findAgentCateSelect(agentid,true);
         renderJson(findAll);
     }
+    public void getAgent(){
+       
+        List<AgentModel> findAll = AgentModel.dao.find("select * from credit_agent where del_flag='0'");
+        renderJson(findAll);
+    }
     /**
      * @todo   订单状态保存
      * @time   2018年9月20日 下午4:30:00
@@ -613,6 +618,39 @@ public class OrderProcessController extends BaseProjectController{
             map.put("agent_id", agent_id);
             String agent_category = (String) getRequest().getParameter("agent_category");
             map.put("agent_category", agent_category);
+            if (StringUtils.isBlank(companyid)) {
+				//说明批量操作
+            String ids=	getPara("ids");
+            String [] orderId=	ids.split(",");
+            for (String oid : orderId) {
+				//查订单获取companyid
+           CreditOrderInfo info= 	CreditOrderInfo.dao.findById(oid);  
+           map.put("id", oid);
+           CompanyModel companymodel = CompanyModel.dao.findById(info.get("company_id"));
+           String address=null;
+           if(companymodel != null){
+               address=companymodel.getStr("address");
+               if(StringUtils.isNotBlank(address)){
+                   String[] strs=address.split("-");
+                   String province=strs[0].toString();
+                   String city=strs[1].toString();
+                   ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
+                   CityModel cityByName = CityModel.dao.getCityByName(city);
+                   int pid = provinceByName.get("pid");
+                   int cid = cityByName.get("cid");
+                   if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
+                       AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
+                       if(agentPrice !=null){
+                           map.put("agent_priceId", agentPrice.get("id"));
+                       }
+                   }
+               }
+           }
+           PublicUpdateMod(map);
+			
+			}
+			}else{
+            
             CompanyModel companymodel = CompanyModel.dao.findById(companyid);
             String address=null;
             if(companymodel != null){
@@ -634,6 +672,7 @@ public class OrderProcessController extends BaseProjectController{
                 }
             }
             PublicUpdateMod(map);
+			}
             renderJson(new ResultType());
         } catch (Exception e) {
             e.printStackTrace();
@@ -650,6 +689,7 @@ public class OrderProcessController extends BaseProjectController{
         try {
             String code = (String) getRequest().getParameter("statusCode");
             String orderId = (String) getRequest().getParameter("orderId");
+             String idS=  getPara("ids");
             Integer userid = getSessionUser().getUserid();
             Map<String,Object> map = new HashMap<>();
             if(code==null||"".equals(code.trim())){
@@ -662,14 +702,28 @@ public class OrderProcessController extends BaseProjectController{
             String country= (String) getRequest().getParameter("country");
             String speed = (String) getRequest().getParameter("speed");
             map.put("agent_id", agent_id);
-            if(true){
+           if (StringUtils.isBlank(country)&&StringUtils.isBlank(speed)) {
+        	   String ids[]=idS.split(",");
+               for (String oid : ids) {
+                   CreditOrderInfo orderInfo=	CreditOrderInfo.dao.findById(oid);
+                   AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,orderInfo.get("country"),orderInfo.get("speed"));
+                   if(agentPrice !=null){
+                       map.put("agent_priceId", agentPrice.get("id"));
+                   }
+                   map.put("id", oid);
+                   map.put("num", orderInfo.get("num"));
+                   PublicUpdateMod(map);
+                   MailService.service.toSendMail(ismail, orderId,agent_id,userid,this);//代理分配发送邮件
+               }
+		   }else {
                 AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,country,speed);
                 if(agentPrice !=null){
                     map.put("agent_priceId", agentPrice.get("id"));
                 }
-            }
+            
             PublicUpdateMod(map);
             MailService.service.toSendMail(ismail, orderId,agent_id,userid,this);//代理分配发送邮件
+		   }
             renderJson(new ResultType());
         } catch (Exception e) {
             e.printStackTrace();
