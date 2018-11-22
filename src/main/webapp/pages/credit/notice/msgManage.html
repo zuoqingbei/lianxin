@@ -141,7 +141,11 @@
             width: 31px;
             height: 16px;
         }
+        .modal-header>h5>img{
+        	display:none;
+        }
     </style>
+    
 </head>
 
 <div id="container" class="row  animated fadeIn">
@@ -256,12 +260,19 @@
 		                success:function (data) {
 		                	var html="";	
 		                	let list = data.list
-		                	console.log(list)
 		            	  	for(item in list){
 		            	  		if(list[item].read_unread=='1'){
-		            	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
+		            	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title;
+		            	  			if(list[item].label !==''){
+		            	  				html+="<img src='${BASE_PATH }static/credit/imgs/messages/"+list[item].label+"' alt=''>"
+		            	  			}
+		            	  			html+="</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
 		            	  		}else{
-		            	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
+		            	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title;
+		            	  			if(list[item].label !==''){
+		            	  				html+="<img src='${BASE_PATH }static/credit/imgs/messages/"+list[item].label+"' alt=''>"
+		            	  			}
+		            	  			html+="</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
 		            	  			
 		            	  		}
 		            	 		
@@ -320,11 +331,19 @@ function agentchange(status){
         	let list = data.list
         	console.log(list)
     	  	for(item in list){
-    	  		if(list[item].read_unread=='1'){
-    	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
+    	  		if(list[item].read_unread==='1'){
+    	  			html+=" <li class='unread' id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title;
+    	  			if(list[item].label !==''){
+    	  				html+="<img src='${BASE_PATH }static/credit/imgs/messages/"+list[item].label+"' alt=''>"
+    	  			}
+    	  			html+="</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
     	  		}else{
     	  			console.log(list[item].notice_content)
-    	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title+"</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
+    	  			html+=" <li id='"+list[item].id+"'><h4>"+"【公告】"+list[item].notice_title;
+    	  			if(list[item].label !==''){
+    	  				html+="<img src='${BASE_PATH }static/credit/imgs/messages/"+list[item].label+"' alt=''>"
+    	  			}
+    	  			html+="</h4><section style='display:none;'>"+list[item].notice_content+"</section></li>"
     	  		}
     	    }
     	 	if(status === '') {
@@ -336,7 +355,7 @@ function agentchange(status){
     	 	if(status === '1') {
     	 		$("#nav-unread ul").html(html)
     	 	}
-            }
+      }
     })
 }
 //全部公告
@@ -391,29 +410,41 @@ $("#toReadAll").click(function(){
 
         // 获取选择星标
         $('.menutop li').click(function () {
-            if ($(that).find('img')) {
-                $(that).find('img').remove();
-                var star = $(this).find('img').clone(true);
-                console.log(star);
-                $(that).append(star);
-            } else {
-                var star = $(this).find('img').clone(true);
-                console.log(star);
-                $(that).append(star);
-            }
+        	var index=$(this).index();
+        	var noticeId=$(that).parent().attr('id');
+        	console.log($(that).parent().attr('id'))
+            $(that).find('img').remove();
+            var star = $(this).find('img').clone(true);
+            $(that).append(star);
+            tolabel(index,noticeId)
+            
+            
+            
         })
         // 获取删除星标
         $('.menudel').click(function () {
             if ($(that).find('img')) {
                 $(that).find('img').remove();
+                var noticeId=$(that).parent().attr('id');
+                var index='';
+                tolabel(index,noticeId)
             }
         })
-
+		
         //关闭右键菜单
         window.onclick = function (e) {
             //用户触发click事件就可以关闭了，因为绑定在window上，按事件冒泡处理，不会影响菜单的功能
             menu.style.display = 'none';
             return false;
+        }
+        function tolabel(index,noticeId){
+        	$.post('/credit/sysuser/notice/label',{"labelId":index,"noticeId":noticeId},function(data){
+    			if(data.statusCode===1){
+    				
+    			}else{
+    				Public.message("error",data.message);
+    			}
+    		})
         }
 </script>
 </html>

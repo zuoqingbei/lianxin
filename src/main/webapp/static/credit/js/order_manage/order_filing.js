@@ -474,7 +474,7 @@ let Filing = {
             $("#user_time2").html(row.user_time);
             $("#companyZHNames2").html(row.companyZHNames);
             var selected=$("#agency_id").html()+row.seleteAgentStr;
-            $("#agency_id").html(selected);
+            $("#agency_id").html(row.seleteAgentStr);
             $("#confirm_reason2").html(row.confirm_reason);
             $("#orderId2").val(row.id);
             $("#speedid").val(row.speedid);

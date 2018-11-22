@@ -25,6 +25,7 @@ import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
@@ -477,6 +478,7 @@ public class HomeController extends BaseProjectController {
 			Date date1=new Date();
 			model.set("create_date", date1);
 			OrderManagerService.service.modifyOrder(0,model,user,this);
+			CreditOperationLog.dao.addOneEntry(this, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
 			cof.save();
 			if(!isNeedAgent){
 				ResultType resultType=new ResultType(1,"操作成功");
@@ -486,9 +488,7 @@ public class HomeController extends BaseProjectController {
 					ResultType resultType=new ResultType(3,"提交成功，但该订单没有找到合适的代理，请注意!");
 					renderJson(resultType);
 				}else{	//发送邮件
-					 
 							MailService.service.toSendMail("1", model.getStr("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
-							
 				}
 			}
 			
