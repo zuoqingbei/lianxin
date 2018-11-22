@@ -1,7 +1,12 @@
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
+import com.deepoove.poi.data.RowRenderData;
+import com.deepoove.poi.data.TextRenderData;
+import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.jfinal.kit.PathKit;
@@ -19,13 +24,18 @@ public class BusinessZh {
 
     }
 
+    public void getSonData(String sonTable,String companyId,String sysLanguage){
+        //获取主表数据
+        //CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
+    }
+
     public static void reportTable() {
         //报告类型
         String reportType = "8";
         //语言
         String sysLanguage = "612";
         //公司id
-        String companyId = "77";
+        String companyId = "65"; //77基本  65商业
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -60,6 +70,11 @@ public class BusinessZh {
             String className = requireds.length > 0 ? requireds[0] : "";
             ReportInfoGetDataController report = new ReportInfoGetDataController();
 
+            //获取主表数据
+            CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
+
+            CreditCompanySubtables subtables = report.getSonTableInfo(companyId, sysLanguage);
+
             //1：表格
             if(tableType!=null&&!"".equals(tableType)) {
                 String selectInfo = "";
@@ -68,16 +83,58 @@ public class BusinessZh {
                 if ("s".equals(tableType)) {
                     table = MainWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = MainWord.createTableS(child, rows);
+                    table = MainWord.createTableH(child, rows);
                 }
                 map.put(key, table);
             }
 
-            //信用等级
-            if("6".equals(moduleType)){
-                List rows = report.getTableData(true,sysLanguage, companyId, "credit_company_info", "CreditCompanyInfo", confId, "");
-                Map<String,String> result = MainWord.getSingleValue(child, rows);
-                map.put(key, result.get(key));
+            //2：主从表中的- 单个值
+            for(CreditReportModuleConf conf : child){
+                String s = conf.getStr("get_source");
+                if(s==null||"".equals(s)){
+                    continue;
+                }
+                Map<String, String> p = MainWord.parseUrl(s);
+                String t = p.get("tableName");
+                if (t == null || "".equals(t)) {
+                    continue;
+                }
+                //主表
+                if("credit_company_info".equals(t)){
+                    String word_key = conf.get("word_key")+"";
+                    if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
+                        String v = companyInfo.get(word_key) + "";
+                        map.put(word_key, v);
+                    }
+                }
+                if("credit_company_subtables".equals(t)){
+                    String word_key = conf.get("word_key")+"";
+                    if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
+                        String v = subtables.get(word_key) + "";
+                        map.put(word_key, v);
+                    }
+                }
+            }
+
+            //7 输入框取数
+            if("7".equals(moduleType)){
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
+                LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
+                //取列值
+                for(int i=0;i< child.size();i++) {
+                    CreditReportModuleConf module = child.get(i);
+                    String column_name = module.getStr("column_name");
+                    String temp_name = module.getStr("temp_name");
+                    cols.put(column_name,temp_name);
+                }
+                //取数据
+                for (int i = 0; i < rows.size(); i++) {
+                    BaseProjectModel model = (BaseProjectModel) rows.get(0);
+                    for(String column : cols.keySet()) {
+                        String value = model.get(column) != null ? model.get(column) + "" : "";
+                        map.put(column,value);
+                    }
+                }
             }
 
             /*
