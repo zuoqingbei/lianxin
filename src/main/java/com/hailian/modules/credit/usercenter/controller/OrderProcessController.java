@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 
 
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
@@ -29,6 +30,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail;
+import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
@@ -463,6 +465,7 @@ public class OrderProcessController extends BaseProjectController{
                 map.put("status", code);
             }
             PublicUpdateMod(map);
+            CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
             //添加站内信，
             addNoice(code);
             //调用企查查接口
@@ -804,6 +807,7 @@ public class OrderProcessController extends BaseProjectController{
             }
             //上传文件
             ResultType result = uploadFile(orderId,oldStatus,upFileList);
+            CreditOperationLog.dao.addOneEntry(this, null, "订单管理/订单核实/订单核实/提交","/credit/front/orderProcess/statusSaveWithFileUpLoad");//操作日志记录
             if(result.getStatusCode()==0){
                 renderJson(result);
             }else{
@@ -1113,9 +1117,7 @@ public class OrderProcessController extends BaseProjectController{
         return list;
     }
 
-    public void test(){
-    	CompanyService.service.enterpriseGrab("7777800", "海尔集团公司", "612");
-    }
+    
 
 
 
