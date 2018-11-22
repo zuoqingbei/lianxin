@@ -103,6 +103,12 @@ public class CompanyService {
 			List<SysDictDetail> companytype = SysDictDetail.dao.getDictDetailBy(EconKind,"companyType");
 			if(companytype !=null && CollectionUtils.isNotEmpty(companytype)){
 				companyinfoModel.set("company_type", companytype.get(0).get("detail_id"));
+			}else{
+				SysDictDetail detailmodel=new SysDictDetail();
+				detailmodel.set("dict_type", "companyType");
+				detailmodel.set("detail_name", "EconKind");
+				detailmodel.save();
+				companyinfoModel.set("company_type", detailmodel.get("detail_id"));
 			}
 			companyinfoModel.set("register_code_type", "632");
 			companyinfoModel.set("register_codes", CreditCode);
@@ -124,6 +130,12 @@ public class CompanyService {
 			List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");
 			if(CollectionUtils.isNotEmpty(dictDetailBy) && dictDetailBy!=null){
 				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("detail_id"));
+			}else{
+				SysDictDetail detailmodel=new SysDictDetail();
+				detailmodel.set("dict_type", "registration_status");
+				detailmodel.set("detail_name", "Status");
+				detailmodel.save();
+				companyinfoModel.set("registration_status", detailmodel.get("detail_id"));
 			}
 			companyinfoModel.set("registration_authority", BelongOrg);
 			companyinfoModel.set("address", Address);
@@ -168,9 +180,14 @@ public class CompanyService {
 					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
 					if(dictDetailBy2 !=null && CollectionUtils.isNotEmpty(dictDetailBy2)){
 						managementModel.set("position", dictDetailBy2.get(0).get("detail_id"));
+					}else{
+						SysDictDetail detailmodel=new SysDictDetail();
+						detailmodel.set("dict_type", "position");
+						detailmodel.set("detail_name", "job");
+						detailmodel.save();
+						companyinfoModel.set("position", detailmodel.get("detail_id"));
 					}
 					managementModel.set("name", name);
-//					managementModel.set("position", job);
 					managementModel.set("company_id", companyId);
 					managementModel.set("sys_language", sys_language);
 					managementModel.save();
@@ -203,8 +220,5 @@ public class CompanyService {
 			}
 		}
 		return flag;
-	}
-	public static void main(String[] args) {
-		String s="185000万元人民币";
 	}
 }

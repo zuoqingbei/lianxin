@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 
 
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
@@ -29,6 +30,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail;
+import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
@@ -441,6 +443,11 @@ public class OrderProcessController extends BaseProjectController{
         List<AgentPriceModel> findAll = AgentPriceModel.dao.findAgentCateSelect(agentid,true);
         renderJson(findAll);
     }
+    public void getAgent(){
+       
+        List<AgentModel> findAll = AgentModel.dao.find("select * from credit_agent where del_flag='0'");
+        renderJson(findAll);
+    }
     /**
      * @todo   订单状态保存
      * @time   2018年9月20日 下午4:30:00
@@ -458,6 +465,7 @@ public class OrderProcessController extends BaseProjectController{
                 map.put("status", code);
             }
             PublicUpdateMod(map);
+            CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
             //添加站内信，
             addNoice(code);
             //调用企查查接口
@@ -613,6 +621,39 @@ public class OrderProcessController extends BaseProjectController{
             map.put("agent_id", agent_id);
             String agent_category = (String) getRequest().getParameter("agent_category");
             map.put("agent_category", agent_category);
+            if (StringUtils.isBlank(companyid)) {
+				//说明批量操作
+            String ids=	getPara("ids");
+            String [] orderId=	ids.split(",");
+            for (String oid : orderId) {
+				//查订单获取companyid
+           CreditOrderInfo info= 	CreditOrderInfo.dao.findById(oid);  
+           map.put("id", oid);
+           CompanyModel companymodel = CompanyModel.dao.findById(info.get("company_id"));
+           String address=null;
+           if(companymodel != null){
+               address=companymodel.getStr("address");
+               if(StringUtils.isNotBlank(address)){
+                   String[] strs=address.split("-");
+                   String province=strs[0].toString();
+                   String city=strs[1].toString();
+                   ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
+                   CityModel cityByName = CityModel.dao.getCityByName(city);
+                   int pid = provinceByName.get("pid");
+                   int cid = cityByName.get("cid");
+                   if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
+                       AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
+                       if(agentPrice !=null){
+                           map.put("agent_priceId", agentPrice.get("id"));
+                       }
+                   }
+               }
+           }
+           PublicUpdateMod(map);
+			
+			}
+			}else{
+            
             CompanyModel companymodel = CompanyModel.dao.findById(companyid);
             String address=null;
             if(companymodel != null){
@@ -634,6 +675,7 @@ public class OrderProcessController extends BaseProjectController{
                 }
             }
             PublicUpdateMod(map);
+			}
             renderJson(new ResultType());
         } catch (Exception e) {
             e.printStackTrace();
@@ -650,6 +692,7 @@ public class OrderProcessController extends BaseProjectController{
         try {
             String code = (String) getRequest().getParameter("statusCode");
             String orderId = (String) getRequest().getParameter("orderId");
+             String idS=  getPara("ids");
             Integer userid = getSessionUser().getUserid();
             Map<String,Object> map = new HashMap<>();
             if(code==null||"".equals(code.trim())){
@@ -662,14 +705,28 @@ public class OrderProcessController extends BaseProjectController{
             String country= (String) getRequest().getParameter("country");
             String speed = (String) getRequest().getParameter("speed");
             map.put("agent_id", agent_id);
-            if(true){
+           if (StringUtils.isBlank(country)&&StringUtils.isBlank(speed)) {
+        	   String ids[]=idS.split(",");
+               for (String oid : ids) {
+                   CreditOrderInfo orderInfo=	CreditOrderInfo.dao.findById(oid);
+                   AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,orderInfo.get("country"),orderInfo.get("speed"));
+                   if(agentPrice !=null){
+                       map.put("agent_priceId", agentPrice.get("id"));
+                   }
+                   map.put("id", oid);
+                   map.put("num", orderInfo.get("num"));
+                   PublicUpdateMod(map);
+                   MailService.service.toSendMail(ismail, orderId,agent_id,userid,this);//代理分配发送邮件
+               }
+		   }else {
                 AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,country,speed);
                 if(agentPrice !=null){
                     map.put("agent_priceId", agentPrice.get("id"));
                 }
-            }
+            
             PublicUpdateMod(map);
             MailService.service.toSendMail(ismail, orderId,agent_id,userid,this);//代理分配发送邮件
+		   }
             renderJson(new ResultType());
         } catch (Exception e) {
             e.printStackTrace();
@@ -750,6 +807,7 @@ public class OrderProcessController extends BaseProjectController{
             }
             //上传文件
             ResultType result = uploadFile(orderId,oldStatus,upFileList);
+            CreditOperationLog.dao.addOneEntry(this, null, "订单管理/订单核实/订单核实/提交","/credit/front/orderProcess/statusSaveWithFileUpLoad");//操作日志记录
             if(result.getStatusCode()==0){
                 renderJson(result);
             }else{
@@ -1059,9 +1117,7 @@ public class OrderProcessController extends BaseProjectController{
         return list;
     }
 
-    public void test(){
-    	CompanyService.service.enterpriseGrab("7777800", "海尔集团公司", "612");
-    }
+    
 
 
 

@@ -142,6 +142,49 @@ public class NoticeController extends BaseProjectController {
 			renderJson(resultType);
 		}
 	}
+	/**
+	 * 星标
+	 */
+	public void label(){
+		String noticeId = getPara("noticeId");
+		String labelId = getPara("labelId");
+		if(labelId.equals("0")){
+			labelId="red.png";
+		}
+		if(labelId.equals("1")){
+			labelId="yellow.png";
+		}
+		if(labelId.equals("2")){
+			labelId="green.png";
+		}
+		if(labelId.equals("3")){
+			labelId="blue.png";
+		}
+		if(labelId.equals("4")){
+			labelId="Violet.png";
+		}
+		if(labelId.equals("5")){
+			labelId="gray.png";
+		}
+		
+		Integer userid = getSessionUser().getUserid();
+		String sql="update credit_notice_log set label=? where user_id=?";
+		List<Object> params=new ArrayList<Object>();
+		params.add(labelId);
+		params.add(userid);
+		if(StringUtils.isNotBlank(noticeId)){
+			sql+=" and notice_id=?";
+			params.add(noticeId);
+		}
+		int update = Db.update(sql,params.toArray());
+		if(update<=0){
+			ResultType resultType = new ResultType(2,"操作失败");
+			renderJson(resultType);
+		}else{
+			ResultType resultType = new ResultType(1,"标记成功");
+			renderJson(resultType);
+		}
+	}
 	public void releaseNotice() {
 		render(path+"createMsg.html");
 	}
