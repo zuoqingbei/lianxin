@@ -1,8 +1,9 @@
 let OrderDetail = {
     init() {
         this.rows = JSON.parse(localStorage.getItem("row"));
-        console.log('--rows', this.rows)
+        console.log('--rows', this.rows);
         this.initContent();
+        BASE_PATH += 'credit/front/ReportGetData/';
         /*/!**初始化函数 *!/
         this.initTable();
        /!* 股东及管理层背景*!/
@@ -37,6 +38,23 @@ let OrderDetail = {
     setContent() {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info"></div>');
         let $moduleTitle = $('<div class="l-title"></div>');
+        let getUrl = (item)=>{
+            let urlArr = item.title.data_source.split("*");
+            let url = '';
+            urlArr.forEach((param, index) => {
+                if (index === 0) {
+                    url = param;
+                } else {
+                    if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
+                        url += `&${param}=${this.rows.id}`
+                    } else {
+                        url += `&${param}=${this.rows[param]}`
+                    }
+                }
+            });
+            url += `&conf_id=${item.title.id}`;
+            return url;
+        };
         this.data.modules.forEach((item) => {
             let smallModuleType = item.smallModileType;
             let $wrap = $moduleWrap.clone().append($moduleTitle.clone()
@@ -44,9 +62,9 @@ let OrderDetail = {
             switch (smallModuleType) {
                 //表单类型
                 case '0':
-                    let contentHtml = '';
+                    let formHtml = '';
                     item.contents.forEach((item) => {
-                        contentHtml += `
+                        formHtml += `
                             <div class="col-md-4 mt-2 mb-2">
                                 <span>${item.temp_name}：</span>
                                 <span id="${item.column_name}"></span>
@@ -54,26 +72,11 @@ let OrderDetail = {
                     });
                     $wrap.append(`
                         <div class="order-detail mb-4 order-content">
-                            <div class="row mt-2 mb-2">${contentHtml}</div>
+                            <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
-                    let urlArr = item.title.data_source.split("*");
-                    let url = '';
-                    urlArr.forEach((param, index) => {
-                        if (index === 0) {
-                            url = param;
-                        } else {
-                            if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
-                                url += `&${param}=${this.rows.id}`
-                            } else {
-                                url += `&${param}=${this.rows[param]}`
-                            }
-                        }
-                    });
-                    url += `&conf_id=${item.title.id}`;
-                    $.get(BASE_PATH + 'credit/front/ReportGetData/' + url, (data) => {
+                    $.get(BASE_PATH + 'credit/front/ReportGetData/' + getUrl(item), (data) => {
                         if (data.rows) {
-                            console.log(BASE_PATH + 'credit/front/ReportGetData/' + url, data.rows[0]);
                             $wrap.find('[id]').each(function (index, item) {
                                 let id = $(this).attr('id');
                                 $(this).text(data.rows[0][id])
@@ -81,8 +84,30 @@ let OrderDetail = {
                         }
                     });
                     break;
+                //表格类型
                 case '1':
-
+                    let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
+                    let columnNameArr = [];
+                    item.contents.forEach((item) => {
+                        $table.children('thead').append(`<th>${item.temp_name}</th>`);
+                        columnNameArr.push(item.column_name);
+                    });
+                    // 绑数
+                    $.get(BASE_PATH + 'credit/front/ReportGetData/' + getUrl(item), (data) => {
+                        if (data.rows) {
+                            console.log(BASE_PATH + 'credit/front/ReportGetData/' + getUrl(item), data.rows);
+                            data.rows.forEach((row) => {
+                                let $tr = $('<tr></tr>');
+                                columnNameArr.forEach((columnName)=>{
+                                    $tr.append(`<td>${row[columnName]}</td>`)
+                                });
+                                $table.children('tbody').append($tr);
+                            });
+                            $wrap.append(`<div class="tabelBox p-4">${$table[0].outerHTML}</div>`);
+                        }else{
+                            console.error('没有rows数据！')
+                        }
+                    });
                     break;
             }
             $(".main .table-content").append($wrap);
