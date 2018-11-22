@@ -82,6 +82,7 @@ public class MailLogModel extends BaseProjectModel<MailLogModel> {
 		model.put("create_date", new Date());
 		model.put("update_by", userid.toString());
 		model.put("create_date", new Date());
+		model.put("send_time", new Date());
 		return model.save();
 	}
 	public  MailModel getMailLogById(String paraToInt) {

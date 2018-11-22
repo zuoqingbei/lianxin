@@ -744,9 +744,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	public CreditOrderInfo getOrderById(String id,BaseProjectController c) {
 		StringBuffer sql=new StringBuffer();
 		List<Object> params=new ArrayList<Object>();
-		sql.append("select t.*,t2.detail_name as reportSpeed,c.name as countryname from credit_order_info t  where t.id=? ");// TODO Auto-generated method stub
-		sql.append(" left join sys_dict_detail t2  on s5.detail_id=t.speed ");
+		sql.append("select t.*,t2.detail_name as reportSpeed,c.name as countryname from credit_order_info t  ");// TODO Auto-generated method stub
+		sql.append(" left join sys_dict_detail t2  on t2.detail_id=t.speed ");
 		sql.append(" left join credit_country c on c.id=t.country ");
+		sql.append(" where t.id=?  ");
 		params.add(id);
 		if(!c.isAdmin(c.getSessionUser())){
 			sql.append(" and t.create_by=? ");

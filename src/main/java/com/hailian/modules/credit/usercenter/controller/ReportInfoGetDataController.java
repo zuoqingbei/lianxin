@@ -5,11 +5,12 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.lang3.StringUtils;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
+import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
@@ -235,8 +236,16 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      */
     public List getTableData(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
 		// 解析实体获取required参数
-		CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
-		String getSource = confModel.getStr("get_source");
+      String type=	getPara("type");
+      String getSource="";
+    	if (type!=null) {
+			CreditReportDetailConf confModel=CreditReportDetailConf.dao.findById(confId);
+			 getSource = confModel.getStr("data_source");
+    	}else{
+			CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
+			 getSource = confModel.getStr("get_source");
+		}
+		
 		StringBuffer sqlSuf = new StringBuffer();
 
 		if ((tableName != null && tableName.contains("_dict"))) {
@@ -304,9 +313,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			Class<?> table = Class.forName(PAKAGENAME_PRE + className);
 			BaseProjectModel model = (BaseProjectModel) table.newInstance();
 			rows = model.find(
-					"select info.*,cu.`name` as name,de.detail_name as report_language  from credit_order_info  info "
+					"select info.*,cu.`name` as name,de.detail_name as report_language ,det.detail_name as country from credit_order_info  info "
 					+ " LEFT JOIN credit_custom_info cu on info.custom_id=cu.id "
 					+ " LEFT JOIN sys_dict_detail de on de.detail_id=info.report_language"
+					+ " LEFT JOIN sys_dict_detail det on det.detail_id=info.country"
 					+ " where info.id=?",
 					orderId);
 			if (!("".equals(selectInfo) || selectInfo == null)) {
@@ -330,6 +340,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         return rows;
     }
     
+    /**
+     * 根据语言参数下载财务模板
+     */
 	public void getFinanceExcelExport() {
 		String sysLanguage = getPara("sys_language");
 		if(StrUtils.isEmpty(sysLanguage)) {
@@ -346,6 +359,79 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		ExcelModule.exportExcel(response,ops, sysLanguage);
 	}
+	
+  /**
+   * 
+  * @Description: 新增/查询质检意见表
+  * @date 2018年11月21日 下午3:15:50
+  * @author: lxy
+  * @version V1.0
+  * @return
+   */
+    public void getOrsaveOpintion(){//质检意见新增
+    	Integer userId = getSessionUser().getUserid();
+		String now = getNow();
+      String orderId = 	getPara("orderId");
+      String id =   getPara("id"); 
+      String opintion =  getPara("quality_opinion");
+      String  type =   getPara("quality_type");
+      String reportType =  getPara("report_type");
+      String moduleId= getPara("report_module_id");
+      String grade= getPara("grade");
+   if (StringUtils.isBlank(id)) {
+	//id为空新增
+	   CreditQualityOpintion model= new CreditQualityOpintion();
+	   model.set("quality_opinion", opintion);
+	   model.set("quality_type", type);
+	   model.set("order_id", orderId);
+	   model.set("report_type", reportType);
+	   model.set("grade", grade);
+	   model.set("create_by", userId);
+	   model.set("create_date", now);
+	   model.set("update_by", userId);
+	   model.set("update_date", now);
+       model.save();
+   }else {
+	//查询
+	CreditQualityOpintion opintion2=   CreditQualityOpintion.dao.findFirst("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
+   renderJson(opintion2);
+    }
+      
+  }
 
-
+   /** 
+    * 
+   * @Description: 质检结果的查询与新增
+   * @date 2018年11月21日 下午3:30:55
+   * @author: lxy
+   * @version V1.0
+   * @return
+    */
+    public  void getOrsaveResult(){
+    	Integer userId = getSessionUser().getUserid();
+		String now = getNow();
+    	 String orderId = 	getPara("orderId");
+         String id =   getPara("id"); 
+         String result =  getPara("quality_result");
+         String  type =   getPara("quality_type");
+         String moduleId= getPara("report_module_id");
+         if (StringUtils.isBlank(id)) {
+			//新增
+        CreditQualityOpintion opintion2=   CreditQualityOpintion.dao.findFirst("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
+	   CreditQualityResult model=new CreditQualityResult();
+	   model.set("quality_result", result);
+	   model.set("parent_id", opintion2.get("id"));
+	   model.set("report_model_id", moduleId);
+	   model.set("create_by", userId);
+	   model.set("create_date", now);
+	   model.set("update_by", userId);
+	   model.set("update_date", now);
+       model.save();
+		}else {
+	List<CreditQualityResult>	results=	CreditQualityResult.dao.find("SELECT re.*  from credit_quality_result re "
+					+ " LEFT JOIN credit_quality_opintion o on o.id=re.parent_id "
+					+ " where o.order_id=? and o.quality_type=?  order BY re.report_model_id",orderId,type);
+		renderJson(results);
+		}
+    }
 }
