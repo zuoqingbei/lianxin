@@ -35,6 +35,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
+
 public class SendMailUtil {
 //	 //发件人地址
     public static String SenderAddress = "2530644578@qq.com";
@@ -178,7 +179,7 @@ public class SendMailUtil {
     
     
     
-    
+   
     public  boolean sendEmail() throws Exception  {
     	boolean result=false;
         try {
@@ -232,7 +233,6 @@ public class SendMailUtil {
 		}
     	return code; 
     }
-
     public static void main(String[] args) throws Exception {
     	//sendMailCode("dou_shai@163.com");
     	//new SendMailUtil("15269274025@163.com", "", "你好", "mycontent", "http://60.205.229.238:9980/zhengxin_File/2018-11-16/1a183ad043a64af0bde653aa718cd144.doc").sendEmail();
