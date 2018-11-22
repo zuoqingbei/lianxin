@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
@@ -409,5 +410,23 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 					+ " where o.order_id=? and o.quality_type=?  order BY re.report_model_id",orderId,type);
 		renderJson(results);
 		}
+    }
+    /**
+     * 
+    * @Description: 订单流程进度
+    * @date 2018年11月22日 上午10:34:09
+    * @author: lxy
+    * @version V1.0
+    * @return
+     */
+    public void getflow(){
+    String order_num=	getPara("order_num");
+     List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
+    		+ "LEFT JOIN sys_dict_detail d on d.detail_id=f.order_state "
+    		+ "LEFT JOIN sys_user u on u.userid=f.create_oper "
+    		+ "where  f.order_num=?",order_num);
+    renderJson(flows);
+    	
+    	
     }
 }
