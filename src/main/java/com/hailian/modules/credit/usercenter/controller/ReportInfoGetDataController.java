@@ -1,19 +1,23 @@
 package com.hailian.modules.credit.usercenter.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.front.template.TemplateDictService;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Record;
 
 @ControllerBind(controllerKey = "/credit/front/ReportGetData")
@@ -336,6 +340,27 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
         return rows;
     }
+    
+    /**
+     * 根据语言参数下载财务模板
+     */
+	public void getFinanceExcelExport() {
+		String sysLanguage = getPara("sys_language");
+		if(StrUtils.isEmpty(sysLanguage)) {
+			renderJson(new ResultType(0,"参数错误!"));
+			return;
+		}
+		OutputStream ops = null;
+		HttpServletResponse response = this.getResponse();
+		try {
+			response.reset();
+			ops = response.getOutputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ExcelModule.exportExcel(response,ops, sysLanguage);
+	}
+	
   /**
    * 
   * @Description: 新增/查询质检意见表
@@ -409,5 +434,23 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 					+ " where o.order_id=? and o.quality_type=?  order BY re.report_model_id",orderId,type);
 		renderJson(results);
 		}
+    }
+    /**
+     * 
+    * @Description: 订单流程进度
+    * @date 2018年11月22日 上午10:34:09
+    * @author: lxy
+    * @version V1.0
+    * @return
+     */
+    public void getflow(){
+    String order_num=	getPara("order_num");
+     List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
+    		+ "LEFT JOIN sys_dict_detail d on d.detail_id=f.order_state "
+    		+ "LEFT JOIN sys_user u on u.userid=f.create_oper "
+    		+ "where  f.order_num=?",order_num);
+    renderJson(flows);
+    	
+    	
     }
 }
