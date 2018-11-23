@@ -1,5 +1,7 @@
 
-
+#container {
+	height:100%;
+}
 
 .layui-laydate .layui-this{
     background-color: var(--activeColor)!important;

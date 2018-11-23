@@ -470,29 +470,13 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			String[]  strs=time.split("至");
 			receiver_date1=strs[0].toString();
 			end_date1=strs[1].toString().replace(" ", "");
-			/*DateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
-			Date parse = format.parse(receiver_date);
-			Date parse2 = format.parse(end_date);
-			receiver_date1 = new SimpleDateFormat("yyyy-MM-dd").format(parse);
-			end_date1 = new SimpleDateFormat("yyyy-MM-dd").format(parse2);*/
+			
 		}
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
 		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
-		sql.append(" left join credit_country c on c.id=t.country ");
-		sql.append(" left join credit_report_price c1 on c1.id=t.price_id ");
 		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
-		sql.append(" left join sys_user s on s.userid=t.create_by ");
 		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
-		sql.append(" left join sys_user s9 on s9.userid=t.translate_user ");
-		sql.append(" left join sys_user s0 on s0.userid=t.analyze_user ");
-		sql.append(" left join sys_dict_detail s2  on s2.detail_id=t.continent ");
-		sql.append(" left join credit_report_type s3  on s3.id=t.report_type ");
-		sql.append(" left join sys_dict_detail s4  on s4.detail_id=t.report_language ");
-		sql.append(" left join sys_dict_detail s5  on s5.detail_id=t.speed ");
-		sql.append(" left join sys_dict_detail s6  on s6.detail_id=t.order_type ");
-		sql.append(" LEFT JOIN sys_dict_detail s7 ON t.status = s7.detail_id ");
-		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (StringUtils.isNotBlank(end_date1)) {
 			sql.append(" and t.end_date<=?");
@@ -524,9 +508,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
 						pageinator,
-						"select t.*,u.name as customName,c.name as countryName,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
-								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
-								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime  ",
+						"select t.*,u.name as customName,s8.realname as reportName,"
+								+ "c2.name as companyName,c2.name_en as englishName",
 						sql.toString(), params.toArray());
 
 		return page;
@@ -1162,5 +1145,51 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	public CreditOrderInfo getTheSameOrder(String company_id,String report_type, BaseProjectController c) {
 		String sql="select t.* from credit_order_info t where t.company_id=? and t.report_type=? and t.del_flag=0 and t.status='311' and t.is_fastsubmmit='-1' order by t.receiver_date desc";
 		return dao.findFirst(sql,company_id,report_type);
+	}
+	public List<CreditOrderInfo> exportAchievements(String reportername,
+			String time, String userid, BaseProjectController c) {
+		StringBuffer sql = new StringBuffer();
+		String receiver_date1="";
+		String end_date1="";
+		//开始时间
+		if(StringUtils.isNotBlank(time)){
+			String[]  strs=time.split("至");
+			receiver_date1=strs[0].toString();
+			end_date1=strs[1].toString().replace(" ", "");
+		}
+		List<Object> params = new ArrayList<Object>();
+		sql.append("select t.*,u.name as customName,s8.realname as reportName,"
+								+ "c2.name as companyName,c2.name_en as englishName");
+		sql.append(" from credit_order_info t ");
+		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
+		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
+		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
+		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		if (StringUtils.isNotBlank(end_date1)) {
+			sql.append(" and t.end_date<=?");
+			params.add(end_date1);
+		}
+		if (StringUtils.isNotBlank(receiver_date1)) {
+			sql.append(" and t.receiver_date>=?");
+			params.add(receiver_date1);
+		}
+		if(StringUtils.isNotBlank(reportername)){
+			sql.append(" and t.report_user=? ");
+			params.add(reportername);
+		}
+		if(StringUtils.isNotBlank(userid+"")){
+			sql.append(" and t.report_user=?");
+			params.add(userid);
+		}
+		List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单完成","orderstate");
+		int status=dictDetailBy.get(0).get("detail_id");
+		if (StringUtils.isNotBlank(status+"")) {
+			sql.append(" and t.status = ?");
+			params.add(status);
+		}
+		sql.append(" order by t.create_date desc");
+		System.out.println(sql);
+		return dao.find(sql.toString(), params.toArray());
+			
 	}
 }

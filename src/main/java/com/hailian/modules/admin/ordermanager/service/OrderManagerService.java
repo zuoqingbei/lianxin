@@ -570,4 +570,10 @@ public class OrderManagerService {
 		}
 		return price;
 	}
+
+	public List<CreditOrderInfo> exportAchievements(String reportername,
+			String time, String userid,
+			BaseProjectController c) {
+		return CreditOrderInfo.dao.exportAchievements(reportername,time,userid,c);
+	}
 }

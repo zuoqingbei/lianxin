@@ -1,6 +1,9 @@
 package com.hailian.modules.credit.achievements.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -57,8 +60,44 @@ public class AchievementsController extends BaseProjectController{
 		/*
 		 * 获取系统用户
 		 */
-		List<SysUser> listDetail = SysUser.dao.getSysUser(null);
+		SysUser user= (SysUser) getSessionUser();
+		boolean isadmin=isAdmin(user);
+		Integer userid = getSessionUser().getUserid();
+		if(isadmin){
+			userid=null;
+		}
+		List<SysUser> listDetail = SysUser.dao.getSysUser(userid);
 		renderJson(listDetail);
+	}
+	private SimpleDateFormat sdf=new SimpleDateFormat("yyyy.MM.dd");
+	/**
+	 * @Description: 绩效导出
+	* @author: dsh 
+	* @date:  2018年11月23日
+	 */
+	public void AchievementsExport() {
+		String fileName="订单绩效-"+sdf.format(new Date())+".xlsx";
+		String time = getPara("time");
+		String reportername=getPara("reportername");
+		SysUser user= (SysUser) getSessionUser();
+		boolean isadmin=isAdmin(user);
+		String userid = getSessionUser().getUserid()+"";
+		if(isadmin){
+			userid="";
+		}
+	    List<CreditOrderInfo> infos  = OrderManagerService.service.exportAchievements(reportername,time,userid,this);
+	    com.hailian.util.AchievementsExport AchievementsExport=new com.hailian.util.AchievementsExport(infos);
+		 try {
+			 fileName=new String(fileName.getBytes("GBK"), "ISO-8859-1");
+			 AchievementsExport.doExport(getResponse(), fileName);
+		renderJson("导出成功");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			renderJson("导出失败");
+		}
+		
+		
 	}
 	
 }

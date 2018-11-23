@@ -6,12 +6,54 @@ let Filing = {
     	this.pageSize = "";
     	this.sortName = "";
     	this.sortOrder = "";
+    	this.num="";
+    	this.numarr=[];
     	this.orderFlag= 0;
         this.initTable();
         this.popperFilter();
-        this.modalSubmit();
+        this.modalSubmit(this.numarr);
         this.fileEvent();
+        this.select();
     },
+    
+    select(){
+   	 
+  	  console.log("234324");
+         $.ajax({
+    			type:"get",
+    			 url : BASE_PATH+"credit/front/orderProcess/getAgent",
+    			dataType:"json",
+    			success:function(data){ 
+    				var html="";
+    				 html+="<option value='-1' selected='selected'>请选择</option>"
+    				for(item in data){
+    			 	html+="<option  m-type='"+data[item].agent_id+"' value='"+data[item].agent_id+"'>"+data[item].agent_id+"</option>";
+    	        }
+    	        
+    	        $("select[name='agency_id2']").html(html);
+    	        }
+         	
+    		})
+    		console.log($("#agency_id2")[0]);
+          $("#agency_id2").on("change",()=>{
+	    	var agentId=$("#agency_id2 option:selected").val();
+	    	console.log($("#agency_id2")[0]);
+	    	var html="";
+		 html+="<option value='-1' selected='selected'>请选择</option>"
+	 	$.post('/credit/front/orderProcess/getAgentCate',{"agentid":agentId},function(data){
+	 		
+	 	console.log(data)
+	  for(item in data){
+		html+="<option  m-type='"+data[item].id+"' value='"+data[item].agent_category+"'>"+data[item].categoryName+"</option>";	        	
+        }
+        
+        $("select[name='attr.agentcategory']").html(html);
+       
+     })
+	    })
+    
+ 
+},
     fileEvent(){
       /**文件上传事件 */
       $(".file-upload").on('change','.uploadFile .file-input',function(){
@@ -73,7 +115,8 @@ let Filing = {
       })
 
     },
-    modalSubmit(){
+    modalSubmit(numarr){
+    	let _this = this
         /**模态框提交事件 */
         	 $("#modal_submit").click(function(){
              	$("#status").val("296");
@@ -108,7 +151,7 @@ let Filing = {
                		$.ajax({
                			type:"post",
                    		url:BASE_PATH+"credit/front/orderProcess/listJson",
-                   		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-7",
+                   		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-7",
                    		dataType:"json",
                    		success:function(obj){
                    				//console.log("回显的数据:"+JSON.stringify(obj.rows));
@@ -147,7 +190,7 @@ let Filing = {
                        	$.ajax({
     	           			type:"post",
     	               		url:BASE_PATH+"credit/front/orderProcess/listJson",
-    	               		data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-7",
+    	               		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-7",
     	               		dataType:"json",
     	               		success:function(obj){
     	           			 	$("#table").bootstrapTable("load",obj);
@@ -163,7 +206,57 @@ let Filing = {
             			}
             		})
 	    			
-             })
+             }), 
+             $("#modal_submit_allocation2").click(function(){
+               //	 alert($("#agent_category2").val());
+            	 if($("#agency_id2").val()==-1) {
+      	      		Public.message("error","请选择代理ID");
+      	      	  return false;
+      	      	  }else if($("#agent_category2").val()==-1){
+      	      		Public.message("error","请选择代理类别");
+      	      	  return false;
+      	      	  }
+         		  
+                  let agentid = $("#agency_id2 option:selected").val();
+                  let agent_category = $("#agent_category2 option:selected").val();
+                  let id = $("#orderId2").val();
+                  let companyid = $("#companyId2").val();
+                  let num = $("#num2").text();
+                  let ids=numarr;
+                  console.log(ids);
+                  //console.log(reporter,remarks);
+                  $.ajax({
+             			type:"post",
+             			url:BASE_PATH+"credit/front/orderProcess/orderAgentSave",
+             			data:"agent_id="+agentid+"&model.id="+id+"&agent_category="+agent_category+"&company_id="+companyid+"&model.num="+num+"&statusCode="+"295"+"&ids="+ids,
+             			dataType:"json",
+             			success:function(data){
+             			//提交成功关闭模态窗
+             			 $(".modal-header .close").trigger("click");
+             			if(data.statusCode===1){
+                        	 console.log("此处进入success状态2222222222");
+                        	Public.message("success",data.message);
+                        	$.ajax({
+     	           			type:"post",
+     	               		url:BASE_PATH+"credit/front/orderProcess/listJson",
+     	               		data:"pageNumber="+_this.pageNumber+"&pageSize="+_this.pageSize+"&sortName="+_this.sortName+"&sortOrder="+_this.sortOrder+"&searchType=-7",
+     	               		dataType:"json",
+     	               		success:function(obj){
+     	           			 	$("#table").bootstrapTable("load",obj);
+     	           			 $(".modal-header .close").trigger("click");
+     	           			 	console.log(obj,$(".modal-header .close")[0]);
+     	           			 }
+     	       			})
+                       
+                        
+                        }else{
+                        	 console.log("此处进入error状态");
+                        	Public.message("error",data.message);
+                        }
+             			}
+             		})
+ 	    			
+              })
     	
     },
     
@@ -213,7 +306,15 @@ let Filing = {
         
           $table.bootstrapTable({
               height: $(".table-content").height()*0.98,
+              clickToSelect:true,
+              maintainSelected:true,
               columns: [
+                        {
+                  checkbox: true,
+                  visible: true,                  //是否显示复选框
+                  filed:'state',
+                  width: '18rem',
+              }, 
   {
       title: '订单号',
       field: 'num',
@@ -331,7 +432,7 @@ let Filing = {
           $("#address").html(row.address);
           $("#remarks").html(row.remarks);
           
-          pageNumber = row.pageNumber;
+          _this.pageNumber = row.pageNumber;
           console.log("pageNumber====="+pageNumber);
           pageSize = row.pageSize;
       	sortName = row.sortName;
@@ -410,7 +511,7 @@ let Filing = {
               smartDisplay:false,
               iconsPrefix:'fa',
               locales:'zh-CN',
-              fixedColumns: true,
+              fixedColumns: false,
               fixedNumber: 1,
               sortOrder: "desc",//排序方式
               queryParamsType:'',
@@ -428,7 +529,29 @@ let Filing = {
               	  sortOrder: params.sortOrder,
               	  searchType: "-7"
                 };  
-            },  
+            }, 
+            onCheck:(row)=>{
+            	console.log(row)
+            	this.numarr.push(row.id)
+             //  this.numarr.split().join(",");
+            	console.log(this.numarr);
+            },
+            onUncheck:(rows)=>{
+            	let index =this.numarr.indexOf(rows.id)
+                this.numarr.splice(index,1);
+            	console.log(this.numarr);
+            },onCheckAll:(rows)=>{
+           	 for(var i=0;i<rows.length;i++){
+           		this.numarr.push(rows[i].id) 
+           		console.log(this.numarr);
+           	 }
+            },onUncheckAll:(rows)=>{
+	           	 for(var i=0;i<rows.length;i++){
+	           		let index =this.numarr.indexOf(rows[i].id)
+	                this.numarr.splice(index,1); 
+	           		console.log(this.numarr);
+	           	 }
+            }
             });
             // sometimes footer render error.
             setTimeout(() => {
@@ -441,7 +564,7 @@ let Filing = {
                 '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
                 
                 '<a href="javascript:;" class="detail" style="margin-left:.5rem">上传附件</a>'
-          }             
+          }
 }
 
 
