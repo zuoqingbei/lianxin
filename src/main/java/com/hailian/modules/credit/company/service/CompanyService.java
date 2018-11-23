@@ -14,6 +14,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
+import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.http.HttpTest;
 import com.jfinal.plugin.activerecord.Page;
@@ -96,7 +97,6 @@ public class CompanyService {
 			String Province = jsonResulet.getString("Province"); //所在省
 			String Scope = jsonResulet.getString("Scope"); //经营范围
 			String Status = jsonResulet.getString("Status"); //登记状态
-			System.out.println(Status+"!!!!!!!!!1");
 			CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
 			companyinfoModel.set("registration_num", No);
 			
@@ -106,7 +106,7 @@ public class CompanyService {
 			}else{
 				SysDictDetail detailmodel=new SysDictDetail();
 				detailmodel.set("dict_type", "companyType");
-				detailmodel.set("detail_name", "EconKind");
+				detailmodel.set("detail_name", EconKind);
 				detailmodel.save();
 				companyinfoModel.set("company_type", detailmodel.get("detail_id"));
 			}
@@ -133,7 +133,7 @@ public class CompanyService {
 			}else{
 				SysDictDetail detailmodel=new SysDictDetail();
 				detailmodel.set("dict_type", "registration_status");
-				detailmodel.set("detail_name", "Status");
+				detailmodel.set("detail_name", Status);
 				detailmodel.save();
 				companyinfoModel.set("registration_status", detailmodel.get("detail_id"));
 			}
@@ -183,7 +183,7 @@ public class CompanyService {
 					}else{
 						SysDictDetail detailmodel=new SysDictDetail();
 						detailmodel.set("dict_type", "position");
-						detailmodel.set("detail_name", "job");
+						detailmodel.set("detail_name", job);
 						detailmodel.save();
 						companyinfoModel.set("position", detailmodel.get("detail_id"));
 					}
@@ -219,6 +219,7 @@ public class CompanyService {
 				}
 			}
 		}
+		DictCache.initDict();//缓存刷新
 		return flag;
 	}
 }

@@ -1,4 +1,8 @@
-
+/**
+ * 模块
+ * 0 表单/1 表格/2 附件 / 5 固定底部的按钮/6 信用等级 /
+ * 7 单独小模块的多行输入框 / 8 radio类型 / 9 浮动类型 /10 财务模块 /11 对于填报页面是表格
+ */
 let ReportConfig = {
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
@@ -17,35 +21,43 @@ let ReportConfig = {
     	/**
     	 * 日期初始化
     	 */
-    	let dateArr = Array.from($('.date-form input'))
-    	console.log(dateArr)
-    	dateArr.forEach((item,index)=>{
-    		laydate.render({
-    			elem: item,
-    			format: 'yyyy年MM月dd日'
-    		});
-    	})
-    	let dateScopeArr = Array.from($('.date-scope-form input'))
-    	dateScopeArr.forEach((item,index)=>{
-    		laydate.render({
-    			elem: item,
-    			format: 'yyyy年MM月dd日',
-    			range:true
-    		});
-    	})
-    	
-    	
-    	//模态窗里面的时间控件初始化
-    	let modals = Array.from($(".modal"))
-    	let modalDates = Array.from($(".modal .modal-date input"))
-    	modals.forEach((item,index)=>{
-    		modalDates.forEach((item,index)=>{
-    			laydate.render({
-	    			elem: item,
-	    			format: 'yyyy年MM月dd日'
-	    		});
-    		})
-    	})
+    	layui.use('laydate', function(){
+    		  	const laydate = layui.laydate;
+		    	let dateArr = Array.from($('.date-form input'))
+		    	dateArr.forEach((item,index)=>{
+		    		laydate.render({
+		    			elem: item,
+		    			format: 'yyyy年MM月dd日'
+		    		});
+		    	})
+		    	let dateScopeArr = Array.from($('.date-scope-form input'))
+		    	dateScopeArr.forEach((item,index)=>{
+		    		laydate.render({
+		    			elem: item,
+		    			format: 'yyyy年MM月dd日',
+		    			range:true
+		    		});
+		    	})
+		    	let floatDateArr = Array.from($('.float-date'))
+		    	floatDateArr.forEach((item,index)=>{
+		    		laydate.render({
+		    			elem: item,
+		    			format: 'yyyy年MM月dd日'
+		    		});
+		    	})
+		    	
+		    	//模态窗里面的时间控件初始化
+		    	let modals = Array.from($(".modal"))
+		    	let modalDates = Array.from($(".modal .modal-date input"))
+		    	modals.forEach((item,index)=>{
+		    		modalDates.forEach((item,index)=>{
+		    			laydate.render({
+			    			elem: item,
+			    			format: 'yyyy年MM月dd日'
+			    		});
+		    		})
+		    	})
+    	});
     },
     addressInit(){
     	/**
@@ -381,6 +393,15 @@ let ReportConfig = {
 					 $(item).next().find("textarea").val(temp.rows[0][name])
 					 return;
 				 }
+				 if(($(item).next().find("input").hasClass("float-date"))) {
+					 //浮动非财务
+					 if(temp.rows.length === 0){return}
+					 let obid = temp.rows[0].id;
+					 $(item).next().find("input").attr("entityid",obid)
+					  let name =$(item).next().find("input").attr("name")
+					 $(item).next().find("input").val(temp.rows[0][name])
+					 return;
+				 }
 				 let formArr = Array.from($(item).siblings().find(".form-control"))
 				 if(temp.rows.length === 0){return}
 				 //实体id
@@ -415,14 +436,48 @@ let ReportConfig = {
             $(".main ").css('marginBottom',"-.6rem");
         })
     },
+    initFloat(){
+    	/**
+    	 * 初始化浮动模块
+    	 */
+    	let floatIndex = this.floatIndex;
+    	floatIndex.forEach((item,index)=>{
+    		let floatParentId = this.floatTitle[index]['float_parent'];//浮动的父节点id
+    		let titleId;
+    		this.entityTitle.forEach((item,i)=>{
+    			if(item.id === floatParentId ) {
+    				if(floatParentId !== 853) {
+    					//非财务模块浮动
+    					let html = this.notMoneyFloatHtml[index]
+    					$("#title"+i).after(html)
+    					this.formIndex.push(i)
+    					this.formTitle.push(this.floatTitle[index])
+    				}else {
+    					//财务模块浮动
+    					console.log(this.floatTitle[index],this.floatContents[index])
+    				}
+    				
+    			}
+    		})
+			
+    			
+    			
+    	})
+    	
+    },
     initContent(){
         /**初始化内容 */
+    	this.entityTitle = [] //存放小模块的实体title
     	this.idArr = []    //存放table类型模块对应的index
-    	this.formIndex = [] //存放form类型模块对应的index
     	this.contentsArr = [] //存放table类型模块的contents
     	this.title = [] //存放table类型模块的title
+    	this.formIndex = [] //存放form类型模块对应的index
     	this.formTitle = [] //存放form类型模块的title
+    	this.floatIndex = [] //存放float类型模块对应的index
+    	this.floatTitle = [] //存放float类型模块的title
+    	this.floatContents = [] //存放float类型模块的Contents
     	this.selectInfoObj = {} //存放选择框信息传给后台
+    	this.notMoneyFloatHtml = {} //存放非财务模块的浮动html
     	this.saveStatusUrl = ''
 		this.submitStatusUrl = ''
     	let row = localStorage.getItem("row");
@@ -436,10 +491,11 @@ let ReportConfig = {
         	success:(data)=>{
                 setTimeout(()=>{
                 	_this.initModal();
-                	_this.dateInit();
                 	_this.addressInit();
                 	_this.regChecked();
                 	_this.initTable();
+                	_this.initFloat();
+                	_this.dateInit();
                 	_this.bindFormData();
                 	_this.tabChange();
                 	_this.modalClean();
@@ -508,6 +564,7 @@ let ReportConfig = {
                 	/**
                 	 * 循环模块
                 	 */
+                	_this.entityTitle.push(item.title)
                 	let smallModileType = item.smallModileType
                 	if(item.title.temp_name === null || item.title.temp_name === "") {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
@@ -620,6 +677,21 @@ let ReportConfig = {
 		                	contentHtml += `</div>`   
 		                	break;
                 		case '1':
+                			//table类型
+                			_this.idArr.push(index)
+                			_this.contentsArr.push(item.contents)
+                			_this.title.push(item.title)
+                			contentHtml += `<div class="table-content1" style="background:#fff">
+				                				<table id="table${index}"
+				                				data-toggle="table"
+				                				style="position: relative"
+				                				>
+				                				</table>
+				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
+                				</div>`
+                		
+                			break;
+                		case '11':
                 			//table类型
                 			_this.idArr.push(index)
                 			_this.contentsArr.push(item.contents)
@@ -770,7 +842,7 @@ let ReportConfig = {
                 			})
                 			break;
                 		case '7':
-                			//表格下面的无标题多行输入框 保存回显同表单模块
+                			//单独小模块的多行输入框 保存回显同表单模块
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
                 			let ot_item = item
@@ -810,7 +882,16 @@ let ReportConfig = {
                 			break;
                 		case '9':
                 			//浮动类型
-                			
+                			_this.floatIndex.push(index)
+                			_this.floatTitle.push(item.title)
+                			_this.floatContents.push(item.contents)
+                			if(item.contents.length === 0) {
+                				//非财务模块的浮动
+                				_this.notMoneyFloatHtml[index] = `<div class="form-group form-inline p-4">
+					                          <label >${item.title.temp_name === null?'':item.title.temp_name}</label>
+					                          <input type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
+					                        </div>`
+                			}
                 			break;
                 		case '10':
                 			//财务模块
@@ -838,7 +919,6 @@ let ReportConfig = {
             }else {
                 Public.message("info","上传文件格式错误！")
             }
-            console.log(filetype)
         })
     	
     	this.idArr.forEach((item,index)=>{
@@ -968,6 +1048,13 @@ let ReportConfig = {
     					  let id = $(item).next().find("textarea").attr("entityid")
     					  dataJsonObj["id"] = id
     					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    				 }else if($(item).next().find("input").hasClass("float-date")){
+    					 //浮动非财务
+    					  let name =$(item).next().find("input").attr("name")
+    					  let val =$(item).next().find("input").val()
+    					  let id = $(item).next().find("input").attr("entityid")
+    					  dataJsonObj["id"] = id
+    					  dataJsonObj[name] = val
     				 }else {
     					 let formArr = Array.from($(item).siblings().find(".form-control"))
     					 formArr.forEach((item,index)=>{
@@ -1033,15 +1120,22 @@ let ReportConfig = {
     					 //信用等级
     					 let name =$(item).next().find("input").attr("name")
     					 let val =$(item).next().find("input").val()
-    					 dataJsonObj[name] = val
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框
     					 let name =$(item).next().find("textarea").attr("name")
     					 let val =$(item).next().find("textarea").val()
     					 let id = $(item).next().find("textarea").attr("entityid")
     					  dataJsonObj["id"] = id
-    					 dataJsonObj[name] = val
-    				 }else {
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    				 }else if($(item).next().find("input").hasClass("float-date")){
+    					 //浮动非财务
+	   					  let name =$(item).next().find("input").attr("name")
+	   					  let val =$(item).next().find("input").val()
+	   					  let id = $(item).next().find("input").attr("entityid")
+	   					  dataJsonObj["id"] = id
+	   					  dataJsonObj[name] = val
+	   				 }else {
     					 let formArr = Array.from($(item).siblings().find(".form-control"))
     					 formArr.forEach((item,index)=>{
     						 let id = $(item).attr("id");
@@ -1053,7 +1147,7 @@ let ReportConfig = {
     						 dataJsonObj["id"] = entryid
     						 for(let i in tempObj){
     							 if(tempObj.hasOwnProperty(i))
-    								 dataJsonObj[i] = tempObj[i]
+    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
     						 }
     					 })
     				 }
