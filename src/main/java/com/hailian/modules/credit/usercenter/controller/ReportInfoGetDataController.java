@@ -9,8 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
@@ -108,7 +111,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * @param isCompanyMainTable
 	 */
 	public void getBootStrapTable() {
-		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese,null);
+		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese, null);
 	}
 	//详情
 	public void getBootStrapTables() {
@@ -434,4 +437,48 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		renderJson(results);
 		}
     }
+    /**
+     * 
+    * @Description: 订单流程进度
+    * @date 2018年11月22日 上午10:34:09
+    * @author: lxy
+    * @version V1.0
+    * @return
+     */
+    public void getflow(){
+    String order_num=	getPara("num");
+     List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
+    		+ "LEFT JOIN sys_dict_detail d on d.detail_id=f.order_state "
+    		+ "LEFT JOIN sys_user u on u.userid=f.create_oper "
+    		+ "where  f.order_num=?",order_num);
+    renderJson(flows);
+    	
+    	
+    }
+    /**
+     * 查询主表数据
+     * @param companyId
+     * @param sysLanguage
+     * @return
+     */
+    public CreditCompanyInfo getCompanyInfo(String companyId,String sysLanguage){
+        List<CreditCompanyInfo> comList = CreditCompanyInfo.dao.find(
+                "select * from credit_company_info where del_flag=0 and id="+companyId+" and sys_language in(?)",
+                Arrays.asList(new String[]{sysLanguage}).toArray());
+        return (comList!=null && comList.size()>0)?comList.get(0):null;
+    }
+
+    /**
+     * 查询从表数据
+     * @param companyId
+     * @param sysLanguage
+     * @return
+     */
+    public CreditCompanySubtables getSonTableInfo(String companyId,String sysLanguage){
+        List<CreditCompanySubtables> comList = CreditCompanySubtables.dao.find(
+                "select * from credit_company_subtables where del_flag=0 and id="+companyId+" and sys_language in(?)",
+                Arrays.asList(new String[]{sysLanguage}).toArray());
+        return (comList!=null && comList.size()>0)?comList.get(0):null;
+    }
+
 }

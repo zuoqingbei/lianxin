@@ -1,34 +1,30 @@
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
-import com.deepoove.poi.data.RowRenderData;
-import com.deepoove.poi.data.TextRenderData;
-import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
-import com.hailian.modules.admin.ordermanager.model.CreditReditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.jfinal.kit.PathKit;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.DefaultPieDataset;
 
-import java.awt.*;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 
 /**
  * 商业信息报告样本
  * Created by Thinkpad on 2018/11/17.
  */
-public class BusinessZh {
+public class CreditZh {
+
+    public static void main(String args[]) throws Exception{
+
+    }
+
+    public void getSonData(String sonTable,String companyId,String sysLanguage){
+        //获取主表数据
+        //CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
+    }
 
     public static void reportTable() {
         //报告类型
@@ -36,7 +32,7 @@ public class BusinessZh {
         //语言
         String sysLanguage = "612";
         //公司id
-        String companyId = "65"; //77基本  65商业
+        String companyId = "7777794"; //77基本  65商业  //7777794信用分析
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -142,81 +138,12 @@ public class BusinessZh {
                     }
                 }
             }
-
-            //图形表
-            if("11".equals(moduleType)){
-                String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
-                List<LinkedHashMap<String,String>> datas = new ArrayList<LinkedHashMap<String,String>>();
-                //取列值
-                for(int i=0;i< child.size();i++) {
-                    CreditReportModuleConf module = child.get(i);
-                    String column_name = module.getStr("column_name");
-                    String temp_name = module.getStr("temp_name");
-                    cols.put(column_name,temp_name);
-                }
-                //取数据
-                for(int i=0;i< rows.size();i++){
-                    LinkedHashMap<String,String> row = new LinkedHashMap<String,String>();
-                    //取行
-                    BaseProjectModel model = (BaseProjectModel) rows.get(i);
-                    for(String column : cols.keySet()) {
-                        String value = model.get(column) != null ? model.get(column) + "" : "";
-                        row.put(column, value);
-                    }
-                    datas.add(row);
-                }
-                DefaultPieDataset pds = new DefaultPieDataset();
-                for(LinkedHashMap<String,String> m : datas){
-                    String[] keys = (String[]) m.keySet().toArray();
-                    pds.setValue(m.get(keys[0]), 100);
-                }
-                createPieChart(pds,"h:/pie.jpg");
-            }
         }
-        MainWord.buildWord(map, "h://word/_商业信息报告样本.docx", "h://2.docx");
+        MainWord.buildWord(map, "h://word/_信用分析报告样本.docx", "h://3.docx");
     }
 
-    public static void main(String[] args) {
-        DefaultPieDataset pds = new DefaultPieDataset();
-        pds.setValue("00点-04点", 100);
-        pds.setValue("04点-08点", 200);
-        pds.setValue("08点-12点", 300);
-        pds.setValue("12点-16点", 400);
-        pds.setValue("16点-20点", 500);
-        pds.setValue("20点-24点", 600);
-        String filePath = "h:/pie.jpg";
-        createPieChart(pds,filePath);
-    }
 
-    public static void createPieChart(DefaultPieDataset pds, String filePath) {
-        try {
-            // 分别是:显示图表的标题、需要提供对应图表的DateSet对象、是否显示图例、是否生成贴士以及是否生成URL链接
-            JFreeChart chart = ChartFactory.createPieChart("出资比例（%）", pds, true, false, true);
-            // 如果不使用Font,中文将显示不出来
-            Font font = new Font("宋体", Font.BOLD, 12);
-            // 设置图片标题的字体
-            chart.getTitle().setFont(font);
-            // 得到图块,准备设置标签的字体
-            PiePlot plot = (PiePlot) chart.getPlot();
-            // 设置标签字体
-            plot.setLabelFont(font);
-            //设置图例字体
-            chart.getLegend().setItemFont(font);
-            plot.setStartAngle(new Float(3.14f / 2f));
-            // 设置plot的前景色透明度
-            plot.setForegroundAlpha(0.7f);
-            // 设置plot的背景色透明度
-            plot.setBackgroundAlpha(0.0f);
-            // 设置标签生成器(默认{0})
-            // {0}:key {1}:value {2}:百分比 {3}:sum
-            plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}({1}占{2})"));
-            // 将内存中的图片写到本地硬盘
-            ChartUtilities.saveChartAsJPEG(new File(filePath), chart, 600, 300);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
+
 
 }

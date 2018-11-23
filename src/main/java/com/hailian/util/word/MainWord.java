@@ -168,6 +168,27 @@ public class MainWord {
         return new MiniTableRenderData(rowRenderData,rowsList);
     }
 
+    public static Map<String,String> getSingleValue(List<CreditReportModuleConf> child,List rows){
+        LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
+        Map<String,String> m = new HashMap<>();
+        //取列值
+        for(int i=0;i< child.size();i++) {
+            CreditReportModuleConf module = child.get(i);
+            String column_name = module.getStr("column_name");
+            String temp_name = module.getStr("temp_name");
+            cols.put(column_name,temp_name);
+        }
+        //取数据
+        for (int i = 0; i < rows.size(); i++) {
+            BaseProjectModel model = (BaseProjectModel) rows.get(0);
+            for(String column : cols.keySet()) {
+                String value = model.get(column) != null ? model.get(column) + "" : "";
+                m.put(column, value);
+            }
+        }
+        return m;
+    }
+
     /**
      * 解析url
      *

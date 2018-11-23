@@ -8,6 +8,17 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
+    <style>
+        table>thead{
+            background-color: var(--bg-thead);
+        }
+        table>thead>th{
+            min-width: 8rem;
+        }
+        .bar_box ul li:last-child .span_bar{
+            visibility: hidden;
+        }
+    </style>
     <script type="text/javascript">
         var BASE_PATH = "${BASE_PATH }";
     </script>
@@ -42,120 +53,36 @@
         </div>
         <!-- 内容展示 -->
         <div class="table-content">
-            <!--&lt;!&ndash; 基本信息 &ndash;&gt;
-            <div class="bg-f company-info">
-                <a name="basic_info"> </a>
-                <div class="l-title">
-                    基本信息
-                </div>
-                <div class="order-detail mb-4 order-content">
-                    <div class="row mt-2 mb-2">
-                        &lt;!&ndash;<div class="row mt-2 mb-2">&ndash;&gt;
-                            <div class="col-md-4 mt-2 mb-2">
-                                <span>客户ID：</span>
-                                <span>${custom.id}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>客户用户名：</span>
-                                <span>${custom.name}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>接单日期：</span>
-                                <span>${order.receiver_date}</span>
-                            </div>
-                        &lt;!&ndash;</div>&ndash;&gt;
-                        &lt;!&ndash;<div class="row mt-2 mb-2">&ndash;&gt;
-                            <div class="col-md-4">
-                                <span>地区：</span>
-                                <span>${order.continentName}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>报告语言：</span>
-                                <span>${order.reportLanguage}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>报告类型：</span>
-                                <span>${order.reportLanguage}</span>
-                            </div>
-                        &lt;!&ndash;</div>&ndash;&gt;
-                        &lt;!&ndash;<div class="row mt-2 mb-2">&ndash;&gt;
-                            <div class="col-md-4">
-                                <span>订单类型：</span>
-                                <span>${order.orderType}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>报告用时：</span>
-                                <span>${order.useTime}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>订单公司名称：</span>
-                                <span>${order.englishName}</span>
-                            </div>
-                        &lt;!&ndash;</div>&ndash;&gt;
-                        &lt;!&ndash;<div class="row mt-2 mb-2">&ndash;&gt;
-                            <div class="col-md-4">
-                                <span>国家：</span>
-                                <span>${order.countryName}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>电话：</span>
-                                <span>${order.telphone}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>公司中文名称：</span>
-                                <span>${order.companyName}</span>
-                            </div>
-                        &lt;!&ndash;</div>&ndash;&gt;
-                        &lt;!&ndash;<div class="row mt-2 mb-2">&ndash;&gt;
-                            <div class="col-md-4">
-                                <span>报告速度：</span>
-                                <span>${order.reportSpeed}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>E-mail：</span>
-                                <span>${order.email}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>客户参考号：</span>
-                                <span>${order.reference_num}</span>
-                            </div>
-                        &lt;!&ndash;</div>&ndash;&gt;
-                        &lt;!&ndash;<div class="row mt-2 mb-2">&ndash;&gt;
-                            <div class="col-md-4">
-                                <span>地址：</span>
-                                <span>${order.address}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>联系人：</span>
-                                <span>${order.contacts}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>传真：</span>
-                                <span>${order.fax}</span>
-                            </div>
-                        &lt;!&ndash;</div>&ndash;&gt;
-                        &lt;!&ndash;<div class="row mt-2 mb-2">&ndash;&gt;
-                            <div class="col-md-4">
-                                <span>录入报告时间：</span>
-                                <span>${order.receiver_date}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>提交报告时间：</span>
-                                <span>${order.update_date}</span>
-                            </div>
+            <!-- 基本信息 -->
+            <!--<div class="module-wrap bg-f company-info">
+                <div class="bar_box p-3 process">
+                    <ul>
 
-                        &lt;!&ndash;</div>&ndash;&gt;
-                        &lt;!&ndash;<div class="row mt-2 mb-2">&ndash;&gt;
-                            <div class="col-md-12">
-                                <span>备注：</span>
-                                <span class="info_remark">${order.remarks}</span>
+                        &lt;!&ndash;<li>
+                            <div class="bar-span-box d-flex align-items-center">
+                                <span class="span_circle"></span><span class="span_bar"></span>
                             </div>
-
-                        </div>
-                    </div>
+                            <span>报告核实</span><span></span><span></span>
+                        </li>
+                        <li>
+                            <div class="bar-span-box d-flex align-items-center">
+                                <span class="span_circle"></span><span class="span_bar"></span>
+                            </div>
+                            <span>信息录入</span>
+                        </li>
+                        <li>
+                            <div class="bar-span-box d-flex align-items-center">
+                                <span class="span_circle"></span><span class="span_bar"></span>
+                            </div>
+                            <span>报告质检</span><span></span><span></span>
+                        </li>&ndash;&gt;
+                    </ul>
                 </div>
-            &lt;!&ndash; 流程进度 &ndash;&gt;
-            <div class="module-wrap bg-f company-info">
+            </div>-->
+
+            <!-- 流程进度 -->
+<!--
+            <div class="module-wrap bg-f company-info process">
                 <a name="process" class="target-fix"> </a>
                 <div class="l-title">
                     流程进度
@@ -193,238 +120,10 @@
                 </div>
 
             </div>
-            &lt;!&ndash; 基本报告 &ndash;&gt;
-            <div class="module-wrap bg-f company-info">
-                <a id="88" name="credit_report"> </a>
-                <div class="l-title company_report_name">
-                    ${order.companyName}基本报告
-                </div>
-                <div class="l-title">
-                    注册信息
-                </div>
-                <div class="order-detail">
-                    <div class="row">
-                        <div class="order-detail order-content">
-                            <div class="row mt-2 mb-2">
-
-
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-4">
-                                        <span>统一社会信用代码：</span>
-                                        <span>${company.credit_code}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>法人代表：</span>
-                                        <span>${company.legal}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>公司性质：</span>
-                                        <span>${company.company_type}</span>
-                                    </div>
-                                </div>
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-4">
-                                        <span>成立日期：</span>
-                                        <span>${company.establishment_date}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>营业期限至：</span>
-                                        <span>${company.business_date_end}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>注册资本：</span>
-                                        <span>${company.registered_capital}</span>
-                                    </div>
-                                </div>
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-4">
-                                        <span>注册地址：</span>
-                                        <span>${company.address}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>登记机关：</span>
-                                        <span>${company.registration_authority}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>登记状态：</span>
-                                        <span>${company.registration_status}</span>
-                                    </div>
-                                </div>
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-12">
-                                        <span>经营范围：</span>
-                                        <span class="info_remark">${company.operation_scope}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="l-title change_record">
-                    历史变更记录
-                </div>
-                <div class="order-detail order-content">
-                    <table id="table"
-                           data-toggle="table"
-                           data-url=""
-                           style="position: relative"
-                    >
-                    </table>
-                    <div class="table_summary">
-                        <div class="l-title table_summary_title">
-                            总结
-                        </div>
-                        <div class="table_summary_content">
-                            <p>经过多年在资信调查和应收账款管理方面的积累和发展，我们的服务水平在不断提高。</p>
-                            <p>
-                                因此，也赢得了不少著名的客户，如澳洲贸易委员会(Austrade)、美国收帐局(ABC)、霍尼韦尔(Honeywell)、伊藤忠，美国铝业，博士伦，柯达集团，山东外贸集团公司，轻骑集团等。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="l-title">
-                    股东及管理层背景
-                </div>
-                <div class="l-title shareholder_title">
-                    股东
-                </div>
-                <div class="order-detail order-content">
-                    <table id="table2"
-                           data-toggle="table"
-                           data-url=""
-                           style="position: relative"
-                    >
-                    </table>
-                    <div class="credit_info invest-ratio-echarts">
-                        <p class="font_w_600">出资比例（%）</p>
-                        &lt;!&ndash; 圆环图&ndash;&gt;
-                        <div class="chartBox mb-3">
-                            <div id="ec001_pie" style="width: 90%;height: 15rem;"></div>
-                        </div>
-                    </div>
-                    <div class="table_summary">
-                        <div class="l-title table_summary_title">
-                            ${order.companyName}
-                        </div>
-                        <div class="order-detail order-content">
-                            <h3 class="company_info">基本信息</h3>
-                            <div class="row">
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-4">
-                                        <span>统一社会信用代码：</span>
-                                        <span>${company.credit_code}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>联系电话：</span>
-                                        <span>${company.telphone}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>邮箱地址：</span>
-                                        <span>${company.email}</span>
-                                    </div>
-                                </div>
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-4">
-                                        <span>成立日期：</span>
-                                        <span>${company.establishment_date}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>传真号码：</span>
-                                        <span>${company.fax}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>网址：</span>
-                                        <span>${company.email}</span>
-                                    </div>
-                                </div>
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-4">
-                                        <span>注册资本：</span>
-                                        <span>${company.registered_capital}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>注册地址：</span>
-                                        <span>${company.address}</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>登记状态：</span>
-                                        <span>${company.registration_status}</span>
-                                    </div>
-                                </div>
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-12">
-                                        <span>经营范围：</span>
-                                        <span class="info_remark">${company.operation_scope}</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                &lt;!&ndash;投资情况&ndash;&gt;
-                <div class="l-title shareholder_title invest_situation">
-                    投资情况
-                </div>
-                <div class="order-detail order-content">
-                    <table id="table3"
-                           data-toggle="table"
-                           data-url=""
-                           style="position: relative"
-                    >
-                    </table>
-                    <div class="table_summary">
-                        <h3 class="company_info mb-3">管理层</h3>
-                        <div class="l-title">
-                            周水水
-                        </div>
-                        <div class="order-detail  order-content manage-info-box">
-                            <div class="row">
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-4">
-                                        <span>职位：</span>
-                                        <span>总经理</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>年龄：</span>
-                                        <span>64岁</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>传真号码：</span>
-                                        <span>123-67987821</span>
-                                    </div>
-                                </div>
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-4">
-                                        <span>身份证号：</span>
-                                        <span>37987676776362566</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>性别：</span>
-                                        <span>男</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>邮箱：</span>
-                                        <span>23343252@qq.com</span>
-                                    </div>
-                                </div>
-                                <div class="row mt-2 mb-2">
-                                    <div class="col-md-4">
-                                        <span>联系电话：</span>
-                                        <span>15655657253</span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <span>工作经历：</span>
-                                        <span>现任目标公司总经理</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            &lt;!&ndash; 附件&ndash;&gt;
-            <div class="module-wrap bg-f mt-4">
+-->
+            <!-- 基本报告 -->
+            <!-- 附件-->
+            <!--<div class="module-wrap bg-f mt-4">
                 <a name="accessory"> </a>
                 <div class="l-title">
                     附件
@@ -474,9 +173,10 @@
                 </div> &ndash;&gt;
 
 
-            </div>
-            &lt;!&ndash;质检意见&ndash;&gt;
+            </div>-->
+            <!--质检意见-->
             <div class="bg-f company-info mt-4 mb-4">
+
                 <a name="operate_log"> </a>
                 <div class="l-title">
                     质检意见
@@ -489,7 +189,7 @@
                     >
                     </table>
                 </div>
-            </div>-->
+            </div>
 
         </div>
     </div>
@@ -500,10 +200,10 @@
 
 <script type="text/javascript">
 
-    function view(str, type) {
+   /* function view(str, type) {
         var url = "/credit/commonFile/previewFileOnline?url=" + str + "&type=" + type;
         window.open(url);
-    };
+    };*/
 
     function step(index) {
         /*如果圆圈的索引 ==index 高亮显示  .circle_active*/
@@ -541,6 +241,23 @@
             }
         }
     };
-    step(${size}-1);
+    // step(${size}-1);
+
+    $(function () {
+        /*let $li = $(`<li>
+                        <div class="bar-span-box d-flex align-items-center">
+                            <span class="span_circle"></span><span class="span_bar"></span>
+                        </div>
+                        <span>录入新订单</span>
+                    </li>`);
+        let $ul = $(".process ul");
+        let names = ['录入新订单','报告核实','信息录入','报告质检','分析','分析质检','翻译','翻译质检','递交客户'];
+        for( let i=0;i<9;i++){
+            $ul.append($li.clone().children('span').text(names[i]).append('<span>&nbsp;</span><span>&nbsp;</span>').end());
+        }
+*/    })
+
+
+
 </script>
 </html>
