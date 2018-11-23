@@ -2,22 +2,22 @@ let OrderDetail = {
     init() {
         this.rows = JSON.parse(localStorage.getItem("row"));
         console.log('--rows', this.rows);
-        BASE_PATH += 'credit/front/';
-        this.processNames = this.rows.country === '中国大陆'?
+        this.BASE_PATH = BASE_PATH + 'credit/front/';
+        this.processNames = this.rows.country === '中国大陆' ?
             ['订单分配', '信息录入', '订单核实', '订单查档', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成']
-            :['订单查档', '订单分配', '信息录入', '订单核实', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成'];
+            : ['订单查档', '订单分配', '信息录入', '订单核实', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成'];
         this.initContent();
 
         /*附件*/
-        this.fileJudge();
-         // /*出资比例环形图*/
+        // this.fileJudge();
+        // /*出资比例环形图*/
         // this.initEchartsPie();
     },
     initContent() {
         let _this = this;
         let id = this.rows.id;
         let reportType = this.rows.report_type;
-        $.get(`${BASE_PATH}getmodule/detail/`,
+        $.get(`${this.BASE_PATH}getmodule/detail/`,
             {id, reportType, type: 0},
             (data) => {
                 setTimeout(() => {
@@ -35,7 +35,11 @@ let OrderDetail = {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info mb-4"></div>');
         let $moduleTitle = $('<div class="l-title"></div>');
         let getUrl = (item) => {
+
             let urlArr = item.title.data_source.split("*");
+            if (urlArr[0] === '') {
+                return
+            }
             let url = '';
             urlArr.forEach((param, index) => {
                 if (index === 0) {
@@ -48,11 +52,11 @@ let OrderDetail = {
                     }
                 }
             });
-            url = `${BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
+            url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
             return url;
         };
         this.data.modules.forEach((item) => {
-            // smallModileType数据类型：0-表单，1-表格，4-流程进度
+            // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度
             let smallModuleType = item.smallModileType;
             let $wrap = $moduleWrap.clone().append($moduleTitle.clone()
                 .attr('id', item.title.id).text(item.title.temp_name));
@@ -67,7 +71,7 @@ let OrderDetail = {
                             </div>`
                     });
                     $wrap.append(`
-                        <div class="order-detail mb-4 order-content">
+                        <div class=" mb-4 order-content">
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
@@ -105,10 +109,14 @@ let OrderDetail = {
                         }
                     });
                     break;
+                case '2':
+                    let html = Public.fileConfig(item, this.rows);
+                    $wrap.append(`<div class="tabelBox p-4">${html}</div></div>`);
+                    // $wrap.append(`<div class="tabelBox p-4">1111111111111</div></div>`);
+                    console.log(html)
+                    break;
                 case '4':
                     let $ul = this.initProcess();
-                    // 绑数
-
                     $.get(`${getUrl(item)}&order_num=${this.rows.num}`, (data) => {
                         if (data) {
                             console.log('流程进度', getUrl(item), data);
@@ -129,7 +137,6 @@ let OrderDetail = {
                         $wrap.append(`<div class="module-wrap bg-f company-info">
                             <div class="bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
                     });
-
                     break;
             }
             $(".main .table-content").append($wrap);
