@@ -126,7 +126,7 @@
 -->
             <!-- 基本报告 -->
             <!-- 附件-->
-            <!--<div class="module-wrap bg-f mt-4">
+            <div class="module-wrap bg-f mt-4">
                 <a name="accessory"> </a>
                 <div class="l-title">
                     附件
@@ -162,8 +162,8 @@
                     </div>
                     <%}%>
                 </div>
-                &lt;!&ndash;    变化后的 &ndash;&gt;
-                &lt;!&ndash; <div class="order-detail mb-4 order-content accessory_box">
+                <!--    变化后的 -->
+                 <div class="order-detail mb-4 order-content accessory_box">
                   <div>
                        <div class="uploadFile mt-3 mr-3 ml-3">
                            <div class="over-box">
@@ -173,10 +173,10 @@
                        </div>
                        <div class="order-yulan  mt-3 ml-3 "><a href="#">预览</a></div>
                    </div>
-                </div> &ndash;&gt;
+                </div>
 
 
-            </div>-->
+            </div>
             <!--质检意见-->
             <div class="bg-f company-info mt-4 mb-4">
 
@@ -201,66 +201,15 @@
 <script src="${BASE_PATH }static/credit/js/order_manage/order_common.js"></script>
 <script src="${BASE_PATH }static/credit/js/order_manage/order_detail.js"></script>
 
-<script type="text/javascript">
+<script>
 
-   /* function view(str, type) {
-        var url = "/credit/commonFile/previewFileOnline?url=" + str + "&type=" + type;
-        window.open(url);
-    };*/
-
-    function step(index) {
-        /*如果圆圈的索引 ==index 高亮显示  .circle_active*/
-        /*如果圆圈的索引 <index 蓝色 span_active*/
-        /*如果圆圈的索引 >index 灰色 span_circle*/
-        /*如果横条的索引 <=index-1 蓝色*/
-        /*如果横条的索引 >index-1  灰色*/
-        /*如果字体的索引 ==index  黑色*/
-        /*如果字体的索引 ！=index 灰色*/
-        var circle_arr = $(".bar-span-box .span_circle");  //圆圈
-        var bar_arr = $(".bar-span-box .span_bar");    //横条
-        var world_arr = $(".bar_box>ul>li");     //字体
-        var barIndex = index - 1;
-        for (var i = 0; i < circle_arr.length; i++) {
-            $(circle_arr[i]).removeClass("circle_active").removeClass("span_active").removeClass("span_circle");
-            $(bar_arr[i]).removeClass("bar_active").removeClass("span_circle");
-            $(world_arr[i]).removeClass("world_active");
-            /*判断圆圈*/
-            if (i == index) {
-                $(circle_arr[i]).addClass("circle_active");
-                /*判断字体*/
-                $(world_arr[i]).children("span").addClass("world_active");
-            } else if (i < index) {
-                $(circle_arr[i]).addClass("span_active");
-            } else if (i > index) {
-                $(circle_arr[i]).addClass("span_circle");
-            }
-            /*判断横条*/
-            if (barIndex >= 0) {
-                if (i <= barIndex) {
-                    $(bar_arr[i]).addClass("bar_active")
-                } else if (i > barIndex) {
-                    $(bar_arr[i]).addClass("span_circle");
-                }
-            }
-        }
-    };
-    // step(${size}-1);
 
     $(function () {
-        /*let $li = $(`<li>
-                        <div class="bar-span-box d-flex align-items-center">
-                            <span class="span_circle"></span><span class="span_bar"></span>
-                        </div>
-                        <span>录入新订单</span>
-                    </li>`);
-        let $ul = $(".process ul");
-        let names = ['录入新订单','报告核实','信息录入','报告质检','分析','分析质检','翻译','翻译质检','递交客户'];
-        for( let i=0;i<9;i++){
-            $ul.append($li.clone().children('span').text(names[i]).append('<span>&nbsp;</span><span>&nbsp;</span>').end());
-        }
-*/    })
+
+    })
 
 
 
 </script>
+
 </html>
