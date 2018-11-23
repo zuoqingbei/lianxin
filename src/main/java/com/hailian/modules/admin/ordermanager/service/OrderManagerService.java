@@ -48,11 +48,12 @@ public class OrderManagerService {
 	 * @author yangdong
 	 * @todo   TODO
 	 * @param  @param coi
+	 * @return 
 	 * @throws Exception 
 	 * @return_type   void
 	 * 修改订单/添加订单
 	 */
-	public void modifyOrder(int id, CreditOrderInfo coi, SysUser user, BaseProjectController c) throws Exception {
+	public String modifyOrder(int id, CreditOrderInfo coi, SysUser user, BaseProjectController c) throws Exception {
 
 		try {
 			if (id != 0) {
@@ -60,7 +61,9 @@ public class OrderManagerService {
 				coi.update();
 			} else {
 				coi.save();
+				
 			}
+			return coi.get("id")+"";
 
 		} catch (Exception e) {
 			throw new Exception(e);
