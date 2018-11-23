@@ -352,7 +352,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		OutputStream ops = null;
 		HttpServletResponse response = this.getResponse();
 		try {
-			response.reset();
+			//response.reset();
 			ops = response.getOutputStream();
 		} catch (IOException e) {
 			e.printStackTrace();
