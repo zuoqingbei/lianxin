@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.system.dict.DictCache;
@@ -52,7 +54,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	/**
 	 * 导出财务excel
 	 */
-	abstract void getFinanceExcelExport();
+	abstract void getFinanceExcelExport( );
 	
 	void deleteOneEntry(String className,String id) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 		Class entryType = null;
