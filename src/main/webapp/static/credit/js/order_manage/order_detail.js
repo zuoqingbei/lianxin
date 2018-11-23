@@ -3,6 +3,10 @@ let OrderDetail = {
         this.rows = JSON.parse(localStorage.getItem("row"));
         console.log('--rows', this.rows);
         BASE_PATH += 'credit/front/';
+        // this.processNames = ['录入新订单', '报告核实', '信息录入', '报告质检', '分析', '分析质检', '翻译', '翻译质检', '递交客户'];
+        this.processNames = ['订单分配', '信息录入', '订单核实', '订单查档', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成'];
+
+
         this.initContent();
         /*/!**初始化函数 *!/
         this.initTable();
@@ -81,6 +85,8 @@ let OrderDetail = {
                                 let id = $(this).attr('id');
                                 $(this).text(data.rows[0][id])
                             })
+                        } else {
+                            console.warn(item.title.temp_name + '-表单-没有返回数据！')
                         }
                     });
                     break;
@@ -103,31 +109,36 @@ let OrderDetail = {
                             });
                             $wrap.append(`<div class="tabelBox p-4">${$table[0].outerHTML}</div>`);
                         } else {
-                            console.error('此表格没有返回数据！')
+                            console.warn(item.title.temp_name + '-表格-没有返回数据！')
                         }
                     });
                     break;
                 case '4':
                     let $ul = this.initProcess();
                     // 绑数
-                    console.log('流程进度',getUrl(item));
+
                     $.get(`${getUrl(item)}&order_num=${this.rows.num}`, (data) => {
                         if (data) {
-                            // data.rows.forEach((row) => {
-                            //     let $tr = $('<tr></tr>');
-                            //     columnNameArr.forEach((columnName) => {
-                            //         $tr.append(`<td>${row[columnName]}</td>`)
-                            //     });
-                            //     $table.children('tbody').append($tr);
-                            // });
-                            // $wrap.append(`<div class="tabelBox p-4">${$table[0].outerHTML}</div>`);
+                            console.log('流程进度', getUrl(item), data);
+                            this.processNames.forEach((name, index) => {
+                                data.forEach((item) => {
+                                    if (name === item.order_state) {
+                                        $ul.children('li').eq(index).addClass('active').children('span:eq(1)').text(item.create_oper)
+                                            .next('span').text(item.create_time)
+                                            .siblings('.bar-span-box').children('.span_bar').addClass('bar_active')
+                                            .end().children('.span_circle').addClass('span_active');
+                                    }
+                                })
+                            })
                         } else {
-                            console.error('此流程进度没有返回数据！')
+                            console.warn(item.title.temp_name + '-流程进度-没有返回数据！')
                         }
+                        $ul.find('.span_active:last').addClass('circle_active');
+                        $wrap.append(`<div class="module-wrap bg-f company-info">
+                            <div class="bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
                     });
-                    $wrap.append(`<div class="module-wrap bg-f company-info">
-                <div class="bar_box p-3 process">${$ul[0].outerHTML}</div></div>`);
 
+                    break;
             }
             $(".main .table-content").append($wrap);
 
@@ -150,15 +161,17 @@ let OrderDetail = {
     initProcess() {
         let $li = $(`<li>
                         <div class="bar-span-box d-flex align-items-center">
-                            <span class="span_circle"></span><span class="span_bar"></span>
+                            <span class="span_bar"></span><span class="span_circle"></span>
                         </div>
                         <span>录入新订单</span>
+                        <span>&nbsp;</span>
+                        <span>&nbsp;</span>
                     </li>`);
         // let $ul = $(".process ul");
         let $ul = $("<ul></ul>");
-        let names = ['录入新订单', '报告核实', '信息录入', '报告质检', '分析', '分析质检', '翻译', '翻译质检', '递交客户'];
+        // let names = ['录入新订单', '报告核实', '信息录入', '报告质检', '分析', '分析质检', '翻译', '翻译质检', '递交客户'];
         for (let i = 0; i < 9; i++) {
-            $ul.append($li.clone().children('span').text(names[i]).append('<span>&nbsp;</span><span>&nbsp;</span>').end());
+            $ul.append($li.clone().children('span:eq(0)').text(this.processNames[i]).end());
         }
         return $ul;
     },
