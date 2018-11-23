@@ -441,6 +441,9 @@ let ReportConfig = {
     	 * 初始化浮动模块
     	 */
     	let floatIndex = this.floatIndex;
+    	let cw_title = []
+    	let cw_contents = []
+    	let cw_dom;
     	floatIndex.forEach((item,index)=>{
     		let floatParentId = this.floatTitle[index]['float_parent'];//浮动的父节点id
     		let titleId;
@@ -454,15 +457,55 @@ let ReportConfig = {
     					this.formTitle.push(this.floatTitle[index])
     				}else {
     					//财务模块浮动
-    					console.log(this.floatTitle[index],this.floatContents[index])
+    					cw_title.push(this.floatTitle[index])
+    					cw_contents.push(this.floatContents[index])
+    					cw_dom = $("#title"+i)
     				}
     				
     			}
     		})
-			
-    			
-    			
     	})
+    	console.log(cw_title,cw_contents)
+    	let cw_top_html = ''
+    	cw_title.forEach((item,index)=>{
+    		//初始化财务模块
+    		let this_content = cw_contents[index];
+    		if(item.sort === 1) {
+    			//财务模块杂七腊八的配置
+    			let radioArr = this_content[1]["get_source"].split("&");
+    			
+    			cw_top_html += `<div class="top-html mx-4">
+    								<div class="cw-box d-flex justify-content-between align-items-center mt-4">
+    									<div class="firm-name form-inline">
+    										<label class="mr-3" style="font-weight:600">${this_content[0].temp_name}</label>
+    										<input type="text" style="width:14rem" class="form-control" id=${this_content[0].column_name} placeholder=${this_content[0].place_hold} name=${this_content[0].column_name}>
+    									</div>
+    									<div class="is-merge form-inline">
+    										<label class="mr-3" style="font-weight:600">${this_content[1].temp_name}</label>
+    										<div class="form-check form-check-inline">
+	    										<input class="form-check-input" type="radio" name=${this_content[1].column_name} id=${this_content[1].column_name} value=${radioArr[0].split(":")[0]}>
+				                                <label class="form-check-label mx-0" for="">${radioArr[0].split(":")[1]}</label>
+			                                </div>
+						    				<div class="form-check form-check-inline">
+							    				<input class="form-check-input" type="radio" name=${this_content[1].column_name} id=${this_content[1].column_name} value=${radioArr[1].split(":")[0]}>
+							    				<label class="form-check-label mx-0" for="">${radioArr[1].split(":")[1]}</label>
+						    				</div>
+    									</div>
+    									<div class="btn-group">
+    										<button class="btn btn-default mr-3">${this_content[2].temp_name}</button>
+						    				<button class="btn btn-primary">${this_content[3].temp_name}</button>
+    									</div>
+    								</div>
+    								<div class="cw-unit">
+    									<div class="form-inline">
+    										<label style="font-weight:600">${this_content[4].temp_name}</label>
+    										<select></select>
+    									</div>
+    								</div>
+    							</div>`
+    		}
+    	})
+    	$(cw_dom).after(cw_top_html)
     	
     },
     initContent(){
@@ -708,80 +751,7 @@ let ReportConfig = {
                 			break;
                 		case '2':
                 			//附件类型
-                			contentHtml += ` <div class="order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
-					                			 <div class="uploadFile mt-3 mr-3 ml-3">
-					                               <div class="over-box">
-					                                   <img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
-					                                   <p class="mt-2">暂无附件</p>
-					                               </div>
-					                           </div>
-				                			</div>`
-                			let url = item.title.get_source;
-                			url = BASE_PATH + url;
-                			$.ajax({
-                				url,
-                				type:'post',
-                				data:{
-                					orderId:_this.rows.id
-                				},
-                				success:(data)=>{
-                					if(data.statusCode === 1) {
-                						let files = data.files;
-                						
-                				   	       
-            				   	        if(data.files.length === 0){
-            				   	        	
-            				   	        	return
-            				   	        }
-            				   	        $(".order-detail").html("");
-//            				        	$(".uploadFile:not(.upload-over)").show()
-            				   	        for (var i = 0;i<files.length; i++){
-            				   	        	let filetype = files[i].ext.toLowerCase()
-            				   	        	let fileicon = ''
-            				   	        	if(filetype === 'doc' || filetype === 'docx') {
-            				   		             fileicon = '/static/credit/imgs/order/word.png'
-            				   		           }else if(filetype === 'xlsx' || filetype === 'xls') {
-            				   		             fileicon = '/static/credit/imgs/order/Excel.png'
-            				   		           }else if(filetype === 'png') {
-            				   		             fileicon = '/static/credit/imgs/order/PNG.png'
-            				   		           }else if(filetype === 'jpg') {
-            				   		             fileicon = '/static/credit/imgs/order/JPG.png'
-            				   		           }else if(filetype === 'pdf') {
-            				   		             fileicon = '/static/credit/imgs/order/PDF.png'
-            				   		           }
-            				   	        	let fileArr = ''
-            				   	        	let filename = data.files[i].originalname
-            				   	        	let all_name = filename + filetype
-            				   	    		let num = filename.split(".").length;
-            				   	            let filename_qz = []
-            				   	            for(let i=0;i<num;i++){  
-            				   	              filename_qz =  filename_qz.concat(filename.split(".")[i])
-            				   	            }
-            				   	            filename_qz_str = filename_qz.join('.')
-            				   	            if(filename_qz_str.length>4) {
-            				   	              filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
-            				   	            }
-            				   	            
-            				   	            filename = filename_qz_str + '.' +filetype
-            				   	        	fileArr += '<div class="uploadFile mt-3 mr-4 mb-5 upload-over" fileId="'+data.files[i].id+'" url="'+data.files[i].view_url+'" style="cursor:pointer">'+
-            				   	        				'<div class="over-box">'+
-            				   		        				'<img src="'+fileicon+'" class="m-auto"/>'+
-            				   		        				 '<p class="filename" title="'+all_name+'">'+filename+'</p>'+
-            				   	        				 '</div>'+
-            				   	        				 '</div>'
-            				   	        
-            							  $(".order-detail").append(fileArr)	
-            				   	           $(".upload-over").click(function(e){
-            				   	        	   if($(e.target).parent().attr("class") === 'close') {
-            				   	        		   return
-            				   	        	   }
-            				   	        	   window.open($(this).attr("url"))
-            				   	        	   
-            				   	           })
-            				   	        }
-	            					}
-                				}
-                			})
+                			contentHtml += Public.fileConfig(item,_this.rows)
                 			break;
                 		case '5':
                 			//固定底部的按钮组
