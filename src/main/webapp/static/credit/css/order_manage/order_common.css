@@ -877,6 +877,8 @@
     font-size: 1.125rem;
 }
 .bar_box .bar-span-box{
+    position: relative;
+    left: -8.5rem;
     height: 3rem;
     margin-bottom: 0.5rem;
 }
