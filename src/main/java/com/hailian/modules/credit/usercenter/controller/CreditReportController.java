@@ -6,6 +6,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.util.word.BaseInfoZh;
 import com.hailian.util.word.BusinessZh;
+import com.hailian.util.word.CreditZh;
 
 /**
  * @className UserLoginController.java
@@ -23,6 +24,7 @@ public class CreditReportController extends BaseProjectController{
             //test.reportTable();
             //BusinessZh test = new BaseInfoZh();
             BusinessZh.reportTable();
+            //CreditZh.reportTable();
 		}
 
 

@@ -82,7 +82,7 @@ public class NoticeModel extends BaseProjectModel<NoticeModel> {
 				// 排序
 				sql.append(" order by t2.read_unread desc,t.create_date desc");
 				Page<NoticeModel> page = NoticeModel.dao
-						.paginate(paginator, "select t.*,t2.read_unread", sql.toString(),params.toArray());
+						.paginate(paginator, "select t.*,t2.read_unread,t2.label", sql.toString(),params.toArray());
 				return page;
 	}
 

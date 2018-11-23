@@ -38,11 +38,13 @@ import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
+import com.hailian.modules.credit.mail.service.MailService;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.DateAddUtil;
 import com.jfinal.kit.HttpKit;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
@@ -357,6 +359,7 @@ public class OrderPoiController extends BaseProjectController {
 			parseArray = JSON.parseArray(jsonString, CreditOrderInfoModel.class);
 			Date now = new Date();
 			Integer userid = getSessionUser().getUserid();
+			List<CreditOrderInfoModel> modellist=new ArrayList<CreditOrderInfoModel>();
 			for(CreditOrderInfoModel model:parseArray){
 			  String num =CreditOrderInfo.dao.getNumber();
 			  model.set("num", num);
@@ -419,14 +422,15 @@ public class OrderPoiController extends BaseProjectController {
 					  msg="提交成功，但该订单没有找到合适的代理，请注意!";
 				  }
 			  }
-			 
-			
-			  boolean save = model.save();
-				if(save==false){
-					msg="提交失败";
-					flag=false;
-				}
+			  modellist.add(model);
 			 }
+			 Db.batchSave(modellist, modellist.size());
+			 for(CreditOrderInfoModel model:modellist){
+				 if(model.get("agent_id")!= null){
+					 MailService.service.toSendMail("1", model.getStr("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
+				 }
+				 }
+					
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

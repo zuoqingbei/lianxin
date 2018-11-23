@@ -1,10 +1,15 @@
 package com.hailian.system.dict;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
+
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.util.StrUtils;
 import com.hailian.util.cache.Cache;
 import com.hailian.util.cache.CacheManager;
@@ -41,7 +46,15 @@ public class DictCache {
 	 */
 	public static void initDict() {
 		Map<Integer, SysDictDetail> dictMap = new LinkedHashMap<Integer, SysDictDetail>();
+		//财务字典表
+		List<CreditCompanyFinancialDict> simplifiedChineseDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where sys_language=612 order by sort_no,id");
+		List<CreditCompanyFinancialDict>  englishDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where sys_language=613 order by sort_no,id");
+		List<CreditCompanyFinancialDict> chineseTraditionalDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where sys_language=614 order by sort_no,id");
+		Map<String,List<CreditCompanyFinancialDict>>  FinancialDictMap = new HashMap<>();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+		FinancialDictMap.put(ReportInfoGetData.SimplifiedChinese, simplifiedChineseDict);
+		FinancialDictMap.put(ReportInfoGetData.English, englishDict);
+		FinancialDictMap.put(ReportInfoGetData.traditionalChinese, chineseTraditionalDict);
 		// detailSort
 		listDetail = SysDictDetail.dao.findByWhere(" order by detail_sort,detail_id");
 		
@@ -65,14 +78,17 @@ public class DictCache {
 			
 		}
 		cache.add("map", dictMap);
-		
+		cache.add("financialDictMap", FinancialDictMap);
 		
 	}
 
 	public static Map<Integer, SysDictDetail> getCacheMap() {
 		return cache.get("map");
 	}
-
+	
+	public static Map<String,List<CreditCompanyFinancialDict>> getFinancialDictMap() {
+		return cache.get("financialDictMap");
+	}
 	//////////////////////////jstl 标签/////////////////////////////
 
 	/**

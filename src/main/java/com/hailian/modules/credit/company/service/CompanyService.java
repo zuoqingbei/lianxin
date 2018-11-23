@@ -14,6 +14,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
+import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.http.HttpTest;
 import com.jfinal.plugin.activerecord.Page;
@@ -96,10 +97,19 @@ public class CompanyService {
 			String Province = jsonResulet.getString("Province"); //所在省
 			String Scope = jsonResulet.getString("Scope"); //经营范围
 			String Status = jsonResulet.getString("Status"); //登记状态
-			System.out.println(Status+"!!!!!!!!!1");
 			CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
 			companyinfoModel.set("registration_num", No);
-			companyinfoModel.set("company_type", EconKind);
+			
+			List<SysDictDetail> companytype = SysDictDetail.dao.getDictDetailBy(EconKind,"companyType");
+			if(companytype !=null && CollectionUtils.isNotEmpty(companytype)){
+				companyinfoModel.set("company_type", companytype.get(0).get("detail_id"));
+			}else{
+				SysDictDetail detailmodel=new SysDictDetail();
+				detailmodel.set("dict_type", "companyType");
+				detailmodel.set("detail_name", EconKind);
+				detailmodel.save();
+				companyinfoModel.set("company_type", detailmodel.get("detail_id"));
+			}
 			companyinfoModel.set("register_code_type", "632");
 			companyinfoModel.set("register_codes", CreditCode);
 			companyinfoModel.set("principal", OperName);
@@ -111,13 +121,21 @@ public class CompanyService {
 				companyinfoModel.set("currency","274");
 			}
 			
-			
-			companyinfoModel.set("establishment_date", StartDate);
+			String replaceStartDate = StartDate.replace("00:00:00", "");
+			companyinfoModel.set("establishment_date", replaceStartDate);
 			companyinfoModel.set("business_date_start", TermStart);
-			companyinfoModel.set("business_date_end", TeamEnd);
+			String replaceTeamEnd = TeamEnd.replace("00:00:00", "");
+			companyinfoModel.set("business_date_end", replaceTeamEnd);
+			
 			List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");
-			if(CollectionUtils.isNotEmpty(dictDetailBy)){
+			if(CollectionUtils.isNotEmpty(dictDetailBy) && dictDetailBy!=null){
 				companyinfoModel.set("registration_status", dictDetailBy.get(0).get("detail_id"));
+			}else{
+				SysDictDetail detailmodel=new SysDictDetail();
+				detailmodel.set("dict_type", "registration_status");
+				detailmodel.set("detail_name", Status);
+				detailmodel.save();
+				companyinfoModel.set("registration_status", detailmodel.get("detail_id"));
 			}
 			companyinfoModel.set("registration_authority", BelongOrg);
 			companyinfoModel.set("address", Address);
@@ -162,9 +180,14 @@ public class CompanyService {
 					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
 					if(dictDetailBy2 !=null && CollectionUtils.isNotEmpty(dictDetailBy2)){
 						managementModel.set("position", dictDetailBy2.get(0).get("detail_id"));
+					}else{
+						SysDictDetail detailmodel=new SysDictDetail();
+						detailmodel.set("dict_type", "position");
+						detailmodel.set("detail_name", job);
+						detailmodel.save();
+						companyinfoModel.set("position", detailmodel.get("detail_id"));
 					}
 					managementModel.set("name", name);
-//					managementModel.set("position", job);
 					managementModel.set("company_id", companyId);
 					managementModel.set("sys_language", sys_language);
 					managementModel.save();
@@ -196,9 +219,7 @@ public class CompanyService {
 				}
 			}
 		}
+		DictCache.initDict();//缓存刷新
 		return flag;
-	}
-	public static void main(String[] args) {
-		String s="185000万元人民币";
 	}
 }

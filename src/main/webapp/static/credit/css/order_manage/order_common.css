@@ -166,7 +166,7 @@
     margin-right: 1.25rem;
 }
 .bar_box .world_active{
-    color:var(--titleColor);
+    color:var(--fontTitleColor);
     font-weight: 600;
 }
 /*流程进度 end*/
@@ -423,7 +423,7 @@
     margin-right: 1.25rem;
 }
 .bar_box .world_active{
-    color:var(--titleColor);
+    color:var(--fontTitleColor);
     font-weight: 600;
 }
 /*流程进度 end*/
@@ -680,7 +680,7 @@
     margin-right: 1.25rem;
 }
 .bar_box .world_active{
-    color:var(--titleColor);
+    color:var(--fontTitleColor);
     font-weight: 600;
 }
 /*流程进度 end*/
@@ -937,7 +937,7 @@
     margin-right: 1.25rem;
 }
 .bar_box .world_active{
-    color:var(--titleColor);
+    color:var(--fontTitleColor);
     font-weight: 600;
 }
 /*流程进度 end*/

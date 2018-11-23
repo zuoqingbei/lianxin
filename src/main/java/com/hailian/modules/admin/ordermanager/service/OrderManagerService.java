@@ -307,7 +307,7 @@ public class OrderManagerService {
 		
 		return CreditOrderInfo.dao.getOrders( model, orderby, c);
 	}
-
+	
 	public Page<CreditOrderInfo> getOrdersService(Paginator pageinator, CreditOrderInfo model,
 			String status,SysUser user,String sortname,String sortorder) {
 		// TODO Auto-generated method stub
