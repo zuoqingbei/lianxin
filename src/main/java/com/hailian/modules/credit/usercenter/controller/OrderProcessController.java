@@ -809,7 +809,7 @@ public class OrderProcessController extends BaseProjectController{
             }
             //上传文件
             ResultType result = uploadFile(orderId,oldStatus,upFileList);
-            CreditOperationLog.dao.addOneEntry(this, null, "订单管理/订单核实/订单核实/提交","/credit/front/orderProcess/statusSaveWithFileUpLoad");//操作日志记录
+            CreditOperationLog.dao.addOneEntry(this, null, "","/credit/front/orderProcess/statusSaveWithFileUpLoad");//操作日志记录
             if(result.getStatusCode()==0){
                 renderJson(result);
             }else{

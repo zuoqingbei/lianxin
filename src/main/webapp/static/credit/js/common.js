@@ -243,7 +243,7 @@ let Public = {
                   </div>
               </div>
 			</div>`
-			let url = item.title.get_source;
+			let url = item.title.get_source?item.title.data_source:item.title.data_source;
 			url = BASE_PATH + url;
 			$.ajax({
 				url,
