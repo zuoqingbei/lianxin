@@ -2,30 +2,22 @@ let OrderDetail = {
     init() {
         this.rows = JSON.parse(localStorage.getItem("row"));
         console.log('--rows', this.rows);
-        BASE_PATH += 'credit/front/';
-        // this.processNames = ['录入新订单', '报告核实', '信息录入', '报告质检', '分析', '分析质检', '翻译', '翻译质检', '递交客户'];
-        this.processNames = ['订单分配', '信息录入', '订单核实', '订单查档', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成'];
-
-
+        this.BASE_PATH = BASE_PATH + 'credit/front/';
+        this.processNames = this.rows.country === '中国大陆' ?
+            ['订单分配', '信息录入', '订单核实', '订单查档', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成']
+            : ['订单查档', '订单分配', '信息录入', '订单核实', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成'];
         this.initContent();
-        /*/!**初始化函数 *!/
-        this.initTable();
-       /!* 股东及管理层背景*!/
-        this.initTable2();
-        /!*投资情况*!/
-        this.initTable3();
-        /!*质检意见*!/
-        this.initTable4();
-        /!*附件*!/
-        //this.fileJudge();
-         /!*出资比例环形图*!/
-        this.initEchartsPie();*/
+
+        /*附件*/
+        // this.fileJudge();
+        // /*出资比例环形图*/
+        // this.initEchartsPie();
     },
     initContent() {
         let _this = this;
         let id = this.rows.id;
         let reportType = this.rows.report_type;
-        $.get(`${BASE_PATH}getmodule/detail/`,
+        $.get(`${this.BASE_PATH}getmodule/detail/`,
             {id, reportType, type: 0},
             (data) => {
                 setTimeout(() => {
@@ -40,10 +32,14 @@ let OrderDetail = {
     },
     // 设置内容
     setContent() {
-        let $moduleWrap = $('<div class="module-wrap bg-f company-info"></div>');
+        let $moduleWrap = $('<div class="module-wrap bg-f company-info mb-4"></div>');
         let $moduleTitle = $('<div class="l-title"></div>');
         let getUrl = (item) => {
+
             let urlArr = item.title.data_source.split("*");
+            if (urlArr[0] === '') {
+                return
+            }
             let url = '';
             urlArr.forEach((param, index) => {
                 if (index === 0) {
@@ -56,11 +52,11 @@ let OrderDetail = {
                     }
                 }
             });
-            url = `${BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
+            url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
             return url;
         };
         this.data.modules.forEach((item) => {
-            // smallModileType数据类型：0-表单，1-表格，4-流程进度
+            // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度
             let smallModuleType = item.smallModileType;
             let $wrap = $moduleWrap.clone().append($moduleTitle.clone()
                 .attr('id', item.title.id).text(item.title.temp_name));
@@ -75,7 +71,7 @@ let OrderDetail = {
                             </div>`
                     });
                     $wrap.append(`
-                        <div class="order-detail mb-4 order-content">
+                        <div class=" mb-4 order-content">
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
@@ -113,10 +109,14 @@ let OrderDetail = {
                         }
                     });
                     break;
+                case '2':
+                    let html = Public.fileConfig(item, this.rows);
+                    $wrap.append(`<div class="tabelBox p-4">${html}</div></div>`);
+                    // $wrap.append(`<div class="tabelBox p-4">1111111111111</div></div>`);
+                    console.log(html)
+                    break;
                 case '4':
                     let $ul = this.initProcess();
-                    // 绑数
-
                     $.get(`${getUrl(item)}&order_num=${this.rows.num}`, (data) => {
                         if (data) {
                             console.log('流程进度', getUrl(item), data);
@@ -137,7 +137,6 @@ let OrderDetail = {
                         $wrap.append(`<div class="module-wrap bg-f company-info">
                             <div class="bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
                     });
-
                     break;
             }
             $(".main .table-content").append($wrap);
@@ -214,17 +213,17 @@ let OrderDetail = {
                 filename = filename.substr(0, 2) + '..' + filename.substr(filename.length - 2, 2) + '.' + filetype;
             }
             //根据文件类型分配图片
-            let fileicon = '';
+            let fileicon = '../../../static/credit/imgs/order/';
             if (filetype === 'doc' || filetype === 'docx') {
-                fileicon = '../imgs/order/word.png'
+                fileicon += 'word.png'
             } else if (filetype === 'xlsx' || filetype === 'xls') {
-                fileicon = '../imgs/order/Excel.png'
+                fileicon += 'Excel.png'
             } else if (filetype === 'png') {
-                fileicon = '../imgs/order/PNG.png'
+                fileicon += 'PNG.png'
             } else if (filetype === 'jpg') {
-                fileicon = '../imgs/order/JPG.png'
+                fileicon += 'JPG.png'
             } else if (filetype === 'pdf') {
-                fileicon = '../imgs/order/PDF.png'
+                fileicon += 'PDF.png'
             } else {
                 Public.message("info", "不支持上传此种类型文件！");
                 return
