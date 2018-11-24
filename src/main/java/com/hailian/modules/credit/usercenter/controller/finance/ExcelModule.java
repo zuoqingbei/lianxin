@@ -19,6 +19,8 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.hailian.modules.admin.ordermanager.model.CreditReditCompanyFinancialEntry;
@@ -87,16 +89,24 @@ public class ExcelModule extends BaseProjectController  {
 		/**
 		 * 父模块 1-合计表(子模块1) 2-资产负债表(子模块 2-6) 3-利润表(子模块 7-10) 4-重要比率表(子模块11)
 		 */
+		 /**
+		 *	财务子板块
+		 *  1-合计 2-流动资产 3-非流动资产(固定资产) 
+		 *  4-流动负债 5-非流动负债(长期负债) 
+		 *  6-负债及所有者权益 7-毛利润 
+		 *  8-营业利润 9-税前利润
+		 *   10-所得税费用 11-重要比率表 ',
+		 */ 
 		List<List<CreditCompanyFinancialDict>> tempFatherList1 = new ArrayList<>();
-			tempFatherList1.add(sonSectorList.get(1));
+			tempFatherList1.add(sonSectorList.get(0));
 		List<List<CreditCompanyFinancialDict>> tempFatherList2 = new ArrayList<>();
-			tempFatherList2.add(sonSectorList.get(2));tempFatherList2.add(sonSectorList.get(3)); tempFatherList2.add(sonSectorList.get(4)); 
-			tempFatherList2.add(sonSectorList.get(5)); tempFatherList2.add(sonSectorList.get(6));  
+			tempFatherList2.add(sonSectorList.get(1));tempFatherList2.add(sonSectorList.get(2)); tempFatherList2.add(sonSectorList.get(3)); 
+			tempFatherList2.add(sonSectorList.get(4)); tempFatherList2.add(sonSectorList.get(5));  
 		List<List<CreditCompanyFinancialDict>> tempFatherList3 = new ArrayList<>();
-			tempFatherList3.add(sonSectorList.get(7));tempFatherList3.add(sonSectorList.get(8));tempFatherList3.add(sonSectorList.get(9));
-			tempFatherList3.add(sonSectorList.get(10));
+			tempFatherList3.add(sonSectorList.get(6));tempFatherList3.add(sonSectorList.get(7));tempFatherList3.add(sonSectorList.get(8));
+			tempFatherList3.add(sonSectorList.get(9));
 		List<List<CreditCompanyFinancialDict>> tempFatherList4 = new ArrayList<>();
-			tempFatherList4.add(sonSectorList.get(11));
+			tempFatherList4.add(sonSectorList.get(10));
 		pageNumToList.put(0, tempFatherList2);
 		pageNumToList.put(1, tempFatherList3);
 		pageNumToList.put(2, tempFatherList4);
@@ -167,8 +177,6 @@ public class ExcelModule extends BaseProjectController  {
 				sheet.setColumnWidth(key*smallModuleColSpacing+left, cellNumToCellWidth.get(key)*colWidthOffSet);
 				System.out.println("第"+i+"个sheet页,"+"第"+(key*smallModuleColSpacing+left)+"列,宽:"+cellNumToCellWidth.get(key)*colWidthOffSet);
 			}
-			
-			
 		}
 		try {
 			wb.write(ops);
@@ -196,8 +204,10 @@ public class ExcelModule extends BaseProjectController  {
 	 * @param financeConfigId
 	 * @return 上传结果
 	 */
-	public  static String  importExcel(File file,String sysLanguage,String financeConfigId) {
-		if(file==null) {
+	public  static String  importExcel(File file,String sysLanguage,String financeConfigId,Integer userId, String now) {
+		
+		Map<Integer,List<Integer>> sumOptionMap = getSumOption(sysLanguage);
+		if(file==null||file.length()==0) {
 			return "上传文件不能为空!";
 		}
 		InputStream is = null;
@@ -212,29 +222,67 @@ public class ExcelModule extends BaseProjectController  {
 		}
 		
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
+			List<CreditReditCompanyFinancialEntry> allModel = new ArrayList<>();
 			HSSFSheet sheet = wb.getSheetAt(i);
+			CreditReditCompanyFinancialEntry model = new CreditReditCompanyFinancialEntry();
+			model.set("conf_id", financeConfigId).set("update_date", now).set("update_by", userId).set("create_date",now).set("create_by", userId);
+			switch (i) {
 			//解析资产负债表
-			int rowNum = 0;
-			for (int j = 0; j < 5; j++) {
-				HSSFRow row =  sheet.getRow(rowNum);
-				List<CreditReditCompanyFinancialEntry> entryList = new ArrayList<>();
+			case 1:
+				model.set("parent_sector", 1);
+				for (int j = 0; j < 5; j++) {
+					allModel.addAll(parseSonSector(model, left+j*smallModuleColSpacing, top+1, sheet,sumOptionMap));
+				}
 				
+				break;
+
+			default:
+				break;
 			}
 		}
 		return financeConfigId;
 	}
 	
-	
-	public static List<CreditReditCompanyFinancialEntry>  parseSonSector
-	(Integer parentSector,Integer sonSector,List<Integer>  sumOptions,
-	 Integer confId,	  Integer userId,	String now, int colStart,int rowStart,HSSFSheet wb){
-		
-		
-	return null;}
-	
-	
-	
-	
+	/**
+	 *  解析子模块
+	 * @param model
+	 * @param colStart
+	 * @param rowStart
+	 * @param sheet
+	 * @return
+	 */
+	public static List<CreditReditCompanyFinancialEntry>  parseSonSector(CreditReditCompanyFinancialEntry model,int colStart, int rowStart, HSSFSheet sheet,Map<Integer,List<Integer>> sumOptionMap){
+		List<CreditReditCompanyFinancialEntry> list = new ArrayList<>();
+		int maxRow = 65535;
+		 for (int i = 0; i < maxRow; i++) {
+			HSSFRow row = sheet.getRow(rowStart);
+			if(row!=null) {
+				CreditReditCompanyFinancialEntry tempModel = model;
+				HSSFCell itemName = row.getCell(colStart);
+				
+				if(itemName!=null) {
+					itemName.setCellType(CellType.STRING);
+					tempModel.set("item_name", itemName.getStringCellValue());
+				} 
+				
+				HSSFCell beginDateValue = row.getCell(colStart+1);
+				if(beginDateValue!=null) {
+					beginDateValue.setCellType(CellType.STRING);
+					tempModel.set("begin_date_value", beginDateValue.getStringCellValue());
+				}
+				
+				HSSFCell endDateValue = row.getCell(colStart+2);
+				if(endDateValue!=null) {
+					endDateValue.setCellType(CellType.STRING);
+					tempModel.set("end_date_value", endDateValue.getStringCellValue());
+				} 
+				list.add(tempModel);
+			}else {
+				break;
+			}
+		}
+		return list;
+	}
 	
 	
 	
@@ -260,92 +308,43 @@ public class ExcelModule extends BaseProjectController  {
 			}
 			sonSectorList.add(tempList);
 		}
-	/*	List<CreditCompanyFinancialDict> tempList1 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList2 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList3 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList4 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList5 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList6 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList7 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList8 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList9 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList10 = new ArrayList<>();
-		List<CreditCompanyFinancialDict> tempList11 = new ArrayList<>();
-		for (CreditCompanyFinancialDict model : list) {
-				*//**
-				 *	财务子板块
-				 *  1-合计 2-流动资产 3-非流动资产(固定资产) 
-				 *  4-流动负债 5-非流动负债(长期负债) 
-				 *  6-负债及所有者权益 7-毛利润 
-				 *  8-营业利润 9-税前利润
-				 *   10-所得税费用 11-重要比率表 ',
-				 *//*
-				int sonSector = model.get("son_sector");
-				switch (sonSector) {
-				case 1:
-					tempList1.add(model);
-					break;
-				case 2:
-					tempList2.add(model);
-					break;
-				case 3:
-					tempList3.add(model);
-					break;
-				case 4:
-					tempList4.add(model);
-					break;
-				case 5:
-					tempList5.add(model);
-					break;
-				case 6:
-					tempList6.add(model);
-					break;
-				case 7:
-					tempList7.add(model);
-					break;
-				case 8:
-					tempList8.add(model);
-					break;
-				case 9:
-					tempList9.add(model);
-					break;
-				case 10:
-					tempList10.add(model);
-					break;
-				case 11:
-					tempList11.add(model);
-					break;
-
-				default:
-					break;
-				}
-		}
-		sonSectorList.add(tempList1);sonSectorList.add(tempList2);sonSectorList.add(tempList3);sonSectorList.add(tempList4);sonSectorList.add(tempList5);
-		sonSectorList.add(tempList6);sonSectorList.add(tempList7);sonSectorList.add(tempList8);sonSectorList.add(tempList9);sonSectorList.add(tempList10);
-		sonSectorList.add(tempList11);*/
 		return sonSectorList;
 	}
 	
 	
 	/**
-	 * 解析子模块获取子模块代码与对应合计项集合的映射
+	 * 解析子模块获取子模块下标与对应合计项下标集合的映射
 	 * 财务子板块
-	 *  1-合计 2-流动资产 3-非流动资产(固定资产) 
-	 *  4-流动负债 5-非流动负债(长期负债) 
-	 *  6-负债及所有者权益 7-毛利润 
-	 *  8-营业利润 9-税前利润
-	 *   10-所得税费用 11-重要比率表 ',
 	 * @param sonSectorList
-	 * @return 子模块代码与对应合计项集合的映射
+	 * @return 子模块下标与对应合计项下标集合的映射,
 	 */
-	public Map<Integer,List<Integer>> getSumOption(List<List<CreditCompanyFinancialDict>> sonSectorList){
-		
-		
-		
-		return null;
+	public static Map<Integer,List<Integer>> getSumOption(String sysLanguage){
+		List<List<CreditCompanyFinancialDict>> sonSectorList = getSonSectorList( sysLanguage);
+		Map<Integer,List<Integer>> sonCodeToSumOptionMapping = new HashMap<>();
+		for (int i = 0; i < sonSectorList.size(); i++) {
+			List<Integer> sumOptionList = new LinkedList<>();
+			List<CreditCompanyFinancialDict> sonSector = sonSectorList.get(i);
+			for (int j = 0; j < sonSector.size(); j++) {
+				//如果是合计项目
+				if(sonSector.get(j).getInt("is_sum_option")==1) {
+					sumOptionList.add(j);
+				}
+			}
+			sonCodeToSumOptionMapping.put(i, sumOptionList);
+		}
+		return sonCodeToSumOptionMapping;
 	}
-	
-	
+
+	/**
+	 *判断是否是合计项 
+	 * @param sumOptionMap 子模块下标与对应合计项下标集合的映射,
+	 * @param sonSectorCode 子模块下标
+	 * @param index 实体下标
+	 * @return
+	 */
+	public static boolean isSumOption(Map<Integer,List<Integer>> sumOptionMap,Integer sonSectorIndex,Integer entryIndex) {
+		if(sumOptionMap.get(sonSectorIndex).contains(entryIndex)) {return true; }return false;
+	}
 	
 	
 	
