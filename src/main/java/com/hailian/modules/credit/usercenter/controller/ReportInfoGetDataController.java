@@ -12,11 +12,14 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
+import com.hailian.modules.admin.ordermanager.model.CreditReditCompanyFinancialEntry;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
+import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.util.StrUtils;
@@ -26,6 +29,7 @@ import com.jfinal.plugin.activerecord.Record;
 public class ReportInfoGetDataController extends ReportInfoGetData {
 	private TemplateDictService template = new TemplateDictService();
 	private final static String PAKAGENAME_PRE = "com.hailian.modules.admin.ordermanager.model.";
+	private static FinanceService  financeService = new FinanceService();
 
 	/**
 	 * 获取form类型的数据 2018/11/12 10:13 lzg
@@ -497,5 +501,27 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 Arrays.asList(new String[]{sysLanguage}).toArray());
         return (comList!=null && comList.size()>0)?comList.get(0):null;
     }
-
+    
+    /**
+         * 根据财务配置id获取财务信息
+     */
+    public void getFinancialEntrys() {
+    	String financialConfId = getPara("ficConf_id");
+    	if(StrUtils.isEmpty(financialConfId)) {
+    		 renderJson(new ResultType(0, "获取财务信息失败!"));
+			 return;
+    	}
+    	List<CreditReditCompanyFinancialEntry>  row = financeService.getFinancialEntryList(financialConfId);
+    	renderJson(new Record().set("row", row).set("total", row==null?0:row.size()));
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

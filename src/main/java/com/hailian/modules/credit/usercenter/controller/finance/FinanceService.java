@@ -19,12 +19,17 @@ public class FinanceService {
 	/**
 	 * 获取财务配置信息
 	 */
-	public static  List<CreditCompanyFinancialStatementsConf> getFinancialConfig(String companyId,String sysLanguage,String moduleConfId) {
-		if(StrUtils.isEmpty(sysLanguage,companyId,moduleConfId)) {
+	public   List<CreditCompanyFinancialStatementsConf> getFinancialConfig(String companyId,String sysLanguage) {
+		if(StrUtils.isEmpty(sysLanguage)){
+			sysLanguage = ReportInfoGetData.SimplifiedChinese;
+		}
+		if(StrUtils.isEmpty(companyId)) {
 			return null;
 		}
-		ReportInfoGetDataController rgc = new ReportInfoGetDataController();
-		List<CreditCompanyFinancialStatementsConf> list = rgc.getTableData( sysLanguage, companyId, "credit_company_financial_statements_conf", "CreditCompanyFinancialStatementsConf", moduleConfId,"");
+		CreditCompanyFinancialStatementsConf model = new CreditCompanyFinancialStatementsConf();
+		List<CreditCompanyFinancialStatementsConf> list = 
+				model.find("select * from credit_company_financial_statements_conf where companyId=? and sysLanguage=? and del_flag=0",
+				Arrays.asList(new String[] {companyId,sysLanguage}));
 		return list;
 	}
 	
@@ -115,7 +120,7 @@ public class FinanceService {
 	 */
 	public static List<CreditCompanyFinancialDict> getFinancialDict(String sysLanguage) {
 		return DictCache.getFinancialDictMap().get(sysLanguage);
-	}
+	} 
 	
 	
 	/**
@@ -158,7 +163,7 @@ public class FinanceService {
 	public List<CreditReditCompanyFinancialEntry> getFinancialEntryList(String financialConfId ) {
 		CreditReditCompanyFinancialEntry model = new CreditReditCompanyFinancialEntry();
 		List<CreditReditCompanyFinancialEntry> list
-				= model.find("select * from credit_redit_company_financial_entry where conf_id=?  and del_flag=0 ",
+				= model.find("select * from credit_company_financial_entry where conf_id=?  and del_flag=0 ",
 				  Arrays.asList(new String[] {financialConfId}).toArray());
 		return list;
 	}

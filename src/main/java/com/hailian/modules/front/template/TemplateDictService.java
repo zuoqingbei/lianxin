@@ -180,6 +180,9 @@ public class TemplateDictService extends BaseService {
 		//listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
+			if(detail.get(disPalyCol)==null||"".equals(detail.get(disPalyCol))) {
+				continue;
+			}
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
 				sb.append("<option selected='selected' m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(disPalyCol)+"</option>");
 			}else{
