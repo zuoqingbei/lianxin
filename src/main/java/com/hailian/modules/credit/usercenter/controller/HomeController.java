@@ -420,7 +420,7 @@ public class HomeController extends BaseProjectController {
 		CreditOperationLog.dao.addOneEntry(this, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
 		cof.save();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
-		model1.set("business_type", "0");
+		model1.set("business_type", "291");
 		model1.set("business_id", id);
 		int num1=0;
 		String message="";
