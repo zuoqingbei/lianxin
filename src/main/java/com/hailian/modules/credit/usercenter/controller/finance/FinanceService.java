@@ -115,7 +115,7 @@ public class FinanceService {
 	 */
 	public static List<CreditCompanyFinancialDict> getFinancialDict(String sysLanguage) {
 		return DictCache.getFinancialDictMap().get(sysLanguage);
-	}
+	} 
 	
 	
 	/**
