@@ -412,9 +412,16 @@ public class HomeController extends BaseProjectController {
 		cof.set("create_time", model.get("receiver_date"));
 		
 		SysUser user = (SysUser) getSessionUser();
+		Date date1=new Date();
+		model.set("create_date", date1);
+		model.set("update_by", userid);
+		model.set("update_date", date1);
+		String id = OrderManagerService.service.modifyOrder(0,model,user,this);//保存订单
+		CreditOperationLog.dao.addOneEntry(this, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
+		cof.save();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
-		model1.set("business_type", "0");
-		model1.set("business_id", num);
+		model1.set("business_type", "291");
+		model1.set("business_id", id);
 		int num1=0;
 		String message="";
 		int size=upFileList.size();
@@ -449,7 +456,7 @@ public class HomeController extends BaseProjectController {
 							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
 							String url= storePath+"/"+FTPfileName;
 							userid = getSessionUser().getUserid();
-							model1.set("business_id", num);
+							model1.set("business_id", id);
 							String pdfUrl=storePath+"/"+pdf_FTPfileName;
 							UploadFileService.service.save(0,uploadFile, factpath,url,pdfFactpath,pdfUrl,model1,fileName,userid);//记录上传信息
 						}else{
@@ -475,11 +482,7 @@ public class HomeController extends BaseProjectController {
 			}
 		}
 		try {
-			Date date1=new Date();
-			model.set("create_date", date1);
-			OrderManagerService.service.modifyOrder(0,model,user,this);
-			CreditOperationLog.dao.addOneEntry(this, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
-			cof.save();
+			
 			if(!isNeedAgent){
 				ResultType resultType=new ResultType(1,"操作成功");
 				renderJson(resultType);

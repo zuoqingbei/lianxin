@@ -79,7 +79,8 @@ public class MailService {
                         +"Special Note:"+order.get("remarks")+" "
                         +"Please confirm receiving this order."
                         +"Thank you.";
-            	List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(order.getStr("num")+"" , c);
+                //获取创建该订单时的附件
+            	List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusinessType(orderId ,"291", c);
             	//获取项目服务器url
 			 	List<Map<String,String>> list=new ArrayList<Map<String,String>>();
 			 	if(files != null && CollectionUtils.isNotEmpty(files)){
