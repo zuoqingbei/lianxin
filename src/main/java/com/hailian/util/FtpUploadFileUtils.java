@@ -111,9 +111,9 @@ public class FtpUploadFileUtils {
 				return result;
 			}
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
-//			ftp.enterLocalActiveMode();
+			ftp.enterLocalActiveMode();
 			ftp.setControlEncoding("UTF-8");
-			ftp.enterLocalPassiveMode(); 
+//			ftp.enterLocalPassiveMode(); 
 			ftp.setFileTransferMode(ftp.BINARY_FILE_TYPE);
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
 			String s = "/"+storePath;
