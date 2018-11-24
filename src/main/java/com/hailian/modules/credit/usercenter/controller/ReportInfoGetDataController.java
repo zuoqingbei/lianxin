@@ -439,6 +439,23 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     }
     /**
      * 
+    * @Description: 质检意见
+    * @date 2018年11月24日 上午10:50:43
+    * @author: lxy
+    * @version V1.0
+    * @return
+     */
+    public void getquality(){
+        String order_num=	getPara("orderId");
+         List<CreditQualityOpintion> opintion=   CreditQualityOpintion.dao.find("select o.*,u.username as name from credit_quality_opintion o "
+        		+ "LEFT JOIN sys_user u on u.userid=o.create_by "
+        		+ "where  o.order_id=?",order_num);
+        renderJson(opintion);
+        	
+        	
+        }
+    /**
+     * 
     * @Description: 订单流程进度
     * @date 2018年11月22日 上午10:34:09
     * @author: lxy
