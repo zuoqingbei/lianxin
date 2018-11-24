@@ -55,7 +55,7 @@ let OrderDetail = {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info mb-4"></div>');
         let $moduleTitle = $('<div class="l-title"></div>');
         this.data.modules.forEach((item) => {
-            // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度
+            // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，7-多行文本框
             let smallModuleType = item.smallModileType;
             let itemId = item.title.id;
             let $wrap = $moduleWrap.clone().attr('id', itemId)
@@ -87,12 +87,10 @@ let OrderDetail = {
                     });
                     break;
                 case '1':
-                    this.setTable(item,$wrap);
+                    this.setTable(item, $wrap);
                     break;
                 case '11':
-                    let data0 = this.setTable(item,$wrap,true);
-                    // let data = data0.chartData;
-
+                    let data0 = this.setTable(item, $wrap, true);
                     break;
                 case '2':
                     let html = Public.fileConfig(item, this.rows);
@@ -102,7 +100,6 @@ let OrderDetail = {
                     let $ul = this.initProcess();
                     $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
                         if (data) {
-                            console.log('流程进度', this.getUrl(item), data);
                             this.processNames.forEach((name, index) => {
                                 data.forEach((item) => {
                                     if (name === item.order_state) {
@@ -121,6 +118,17 @@ let OrderDetail = {
                             <div class="bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
                     });
                     break;
+                case '7':
+                    $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
+                        if (data) {
+                            $wrap.append(`<div class="border m-4 p-2">${data.rows[0][item.title.column_name]}</div>`)
+                            console.warn(data)
+                        } else {
+                            console.warn(item.title.temp_name + '-总结-没有返回数据！')
+                        }
+
+                    });
+                    break;
             }
             $(".main .table-content").append($wrap);
 
@@ -132,7 +140,9 @@ let OrderDetail = {
         this.data.tabFixed.forEach((item, index) => {
             tabsHtml += `<li><a href="#${item.anchor_id}">${item.temp_name}</a></li>`
         });
-        $("#tabs").html(tabsHtml).children().eq(0).addClass('tab-active');
+        $("#tabs").html(tabsHtml).on('click','li',function () {
+            $(this).addClass('tab-active').siblings().removeClass('tab-active')
+        }).children().eq(0).addClass('tab-active')
     },
     // 设置头部信息
     setHeader() {
@@ -157,73 +167,98 @@ let OrderDetail = {
         }
         return $ul;
     },
-    setTable(item,$wrap,hasChart=false){
+    setTable(item, $wrap, hasChart = false) {
         let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
         let columnNameArr = [];
         let chartData = [];
+        if (hasChart) {
+            let urlArr = item.title.save_source.split("*");
+            if (urlArr[0] === '') {
+                return
+            }
+            let url = '';
+            urlArr.forEach((param, index) => {
+                if (index === 0) {
+                    url = param;
+                } else {
+                    if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
+                        url += `&${param}=${this.rows.id}`
+                    } else {
+                        url += `&${param}=${this.rows[param]}`
+                    }
+                }
+            });
+            url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
+            $.get(url,(data)=>{
+                console.log("~~~~~",data)
+                $wrap.append(`<h3 class="guDongSubTitle">截止时间：${data.rows[0].date}</h3>`)
+            })
+        }
         item.contents.forEach((item) => {
             $table.children('thead').append(`<th>${item.temp_name}</th>`);
             columnNameArr.push(item.column_name);
         });
         // 绑数
         $.get(this.getUrl(item), (data) => {
-
             if (data.rows) {
                 data.rows.forEach((row) => {
                     let $tr = $('<tr></tr>');
-                    if(hasChart){
+                    if (hasChart) {
+                        let money = row.money;
                         chartData.push({
-                            name:row.name,
-                            value:row.money.slice(0,-1)-0
+                            name: row.name,
+                            value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
                         })
                     }
                     columnNameArr.forEach((columnName) => {
-                        $tr.append(`<td>${row[columnName]}</td>`);
+                        $tr.append(`<td>${row[columnName]?row[columnName]:'-'}</td>`);
 
                     });
                     $table.children('tbody').append($tr);
                 });
-                $wrap.append(`<div class="tabelBox p-4">${$table[0].outerHTML}</div>`);
-                if(hasChart){
+                $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
+                if (hasChart) {
                     let itemId = item.title.id;
-                    $("#"+itemId).append(`<div class="chartBox" style="height: 20rem;"></div>`)
+                    $("#" + itemId).append(`
+                        <h3 class="guDongSubTitle">出资比例(%)</h3>
+                        <div class="chartBox" style="height: 20rem;"></div>`)
                     let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
                     chart.setOption(opt_pie);
                     chart.setOption({
-                        series: [
-                            {
-                                data: chartData,
-                            }
+                        // legend:{show:true},
+                        color: [
+                            '#1890ff',
+                            '#13c2c2',
+                            '#2fc25c',
+                            '#facc15',
+                            '#ef4763',
+                            '#8543e0',
+                            '#40a9ff',
+                            '#36cfc9',
+                            '#73d13d',
+                            '#ffec3d',
+                            '#ff4d4f',
+                            '#9254de',
+                        ],
+                        series: [{
+                            data: chartData,
+                        }
                         ].map(function (item) {
-                            return $.extend(true,item,{
-                                type:'pie',
-                                radius : '50%',
-                                startAngle:'0'
+                            return $.extend(true, item, {
+                                type: 'pie',
+                                label: {
+                                    formatter: '{b}: {d}%'
+                                },
+                                radius: '60%',
+                                center: ['50%', '50%'],
+                                startAngle: '0'
                             })
-
                         })
-                    },true);
-                    console.log(chart.getOption())
+                    }, true);
                 }
             } else {
-                console.warn(item.title.temp_name + `-表格${hasChart?'&图表':''}-没有返回数据！`)
+                console.warn(item.title.temp_name + `-表格${hasChart ? '&图表' : ''}-没有返回数据！`)
             }
-        });
-    },
-    /*出资比例环形图*/
-    initEchartsPie() {
-        let ec001_pie = echarts.init($("#ec001_pie")[0]);
-        ec001_pie.clear();
-        ec001_pie.setOption(opt_pie);
-        ec001_pie.setOption({
-            series: [
-                {
-                    data: [
-                        {value: 335, name: '直接访问'},
-                        {value: 310, name: '邮件营销'}
-                    ],
-                }
-            ]
         });
     },
 
