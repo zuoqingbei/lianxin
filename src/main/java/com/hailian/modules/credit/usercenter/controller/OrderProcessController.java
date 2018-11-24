@@ -629,6 +629,7 @@ public class OrderProcessController extends BaseProjectController{
 				//查订单获取companyid
            CreditOrderInfo info= 	CreditOrderInfo.dao.findById(oid);  
            map.put("id", oid);
+           map.put("num", info.get("num"));
            CompanyModel companymodel = CompanyModel.dao.findById(info.get("company_id"));
            String address=null;
            if(companymodel != null){
@@ -745,6 +746,7 @@ public class OrderProcessController extends BaseProjectController{
         try {
             String code = (String) getRequest().getParameter("statusCode");
             String orderId = (String) getRequest().getParameter("orderId");
+             String ids= getPara("ids");
             Map<String,Object> map = new HashMap<>();
             if(code==null||"".equals(code.trim())){
                 map = null;
@@ -755,8 +757,8 @@ public class OrderProcessController extends BaseProjectController{
             String agent_id = (String) getRequest().getParameter("agent_id");
             map.put("agent_id", agent_id);
             Integer userid = getSessionUser().getUserid();
-            String ids[]=orderId.split(",");
-            for (String oid : ids) {
+            String id[]=ids.split(",");
+            for (String oid : id) {
                 CreditOrderInfo orderInfo=	CreditOrderInfo.dao.findById(oid);
                 AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,orderInfo.get("country"),orderInfo.get("speed"));
                 if(agentPrice !=null){

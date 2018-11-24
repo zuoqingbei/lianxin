@@ -230,8 +230,84 @@ let Public = {
                 $(".success-tip").hide()
             }, 2000);
         }
+    },
+    fileConfig(item,row){
+    	let _this = this
+    	_this.rows = row
+    	let content = ''
+    		content += ` <div class="order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
+   			 <div class="uploadFile mt-3 mr-3 ml-3">
+                  <div class="over-box">
+                      <img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
+                      <p class="mt-2">暂无附件</p>
+                  </div>
+              </div>
+			</div>`
+			let url = item.title.get_source?item.title.data_source:item.title.data_source;
+			url = BASE_PATH + url;
+			$.ajax({
+				url,
+				type:'post',
+				data:{
+					orderId:_this.rows.id
+				},
+				success:(data)=>{
+					if(data.statusCode === 1) {
+						let files = data.files;
+					        if(data.files.length === 0){
+					        	return
+					        }
+					        $(".order-detail").html("");
+				//   	$(".uploadFile:not(.upload-over)").show()
+					        for (var i = 0;i<files.length; i++){
+					        	let filetype = files[i].ext.toLowerCase()
+					        	let fileicon = ''
+					        	if(filetype === 'doc' || filetype === 'docx') {
+						             fileicon = '/static/credit/imgs/order/word.png'
+						           }else if(filetype === 'xlsx' || filetype === 'xls') {
+						             fileicon = '/static/credit/imgs/order/Excel.png'
+						           }else if(filetype === 'png') {
+						             fileicon = '/static/credit/imgs/order/PNG.png'
+						           }else if(filetype === 'jpg') {
+						             fileicon = '/static/credit/imgs/order/JPG.png'
+						           }else if(filetype === 'pdf') {
+						             fileicon = '/static/credit/imgs/order/PDF.png'
+						           }
+					        	let fileArr = ''
+					        	let filename = data.files[i].originalname
+					        	let all_name = filename + filetype
+					    		let num = filename.split(".").length;
+					            let filename_qz = []
+					            for(let i=0;i<num;i++){  
+					              filename_qz =  filename_qz.concat(filename.split(".")[i])
+					            }
+					            filename_qz_str = filename_qz.join('.')
+					            if(filename_qz_str.length>4) {
+					              filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
+					            }
+					            
+					            filename = filename_qz_str + '.' +filetype
+					        	fileArr += '<div class="uploadFile mt-3 mr-4 mb-5 upload-over" fileId="'+data.files[i].id+'" url="'+data.files[i].view_url+'" style="cursor:pointer">'+
+					        				'<div class="over-box">'+
+						        				'<img src="'+fileicon+'" class="m-auto"/>'+
+						        				 '<p class="filename" title="'+all_name+'">'+filename+'</p>'+
+					        				 '</div>'+
+					        				 '</div>'
+					        
+						  $(".order-detail").append(fileArr)	
+					           $(".upload-over").click(function(e){
+					        	   if($(e.target).parent().attr("class") === 'close') {
+					        		   return
+					        	   }
+					        	   window.open($(this).attr("url"))
+					        	   
+					           })
+					        }
+					}
+				}
+			})
+			return content
     }
-
 }
 
 $(function(){

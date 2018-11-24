@@ -12,6 +12,7 @@ let creditAnalysis = {
         this.initDateInput();
         this.selectItem();
 		this.searchEvent();
+		this.butExport();
     },
     /**
      * 页面变量中设置勾选的数据
@@ -91,6 +92,18 @@ let creditAnalysis = {
             let deadDate = $("#time").val();//到期日期
           
         })
+    },
+    butExport(){
+		let that=this;
+		 $("#btn_export").click(function(){
+			var reportername=$("#txt_search_reporter").find("option:selected").val();
+			var time=$("#time").val();
+			
+			// $.post("/credit/settle/SettleExport", { time: time, customerId:customerId,agentId:agentId});
+			 window.document.location.href="/credit/achievements/AchievementsExport?time="+time+"&reportername="+reportername;	    
+					   
+			 
+		 })
     },
     initTable() {
         let oT = this;

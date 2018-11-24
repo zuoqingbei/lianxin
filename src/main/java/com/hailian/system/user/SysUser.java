@@ -110,7 +110,7 @@ public class SysUser extends SessionUser<SysUser>  {
 		String sql="select c.* from sys_user c where c.del_flag='0' ";
 		List<Object> params=new ArrayList<Object>();
 		if(userid != null){
-			sql+=" and userid="+userid;
+			sql+=" and userid=?";
 			params.add(userid);
 		}
 		return dao.find(sql,params.toArray());
