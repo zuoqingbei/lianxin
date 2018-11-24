@@ -46,6 +46,18 @@ public class CreditUploadFileModel extends BaseProjectModel<CreditUploadFileMode
 		return dao.find(sql, params.toArray());
 	}
 	/**
+	 * @Description: 获取订单某个流程下上传的附件
+	* @author: dsh 
+	* @date:  2018年11月24日
+	 */
+	public List<CreditUploadFileModel> getByBusIdAndBusinessType(String business_id,String business_type,BaseProjectController c){
+		String sql="select * from credit_upload_file where business_id=? and business_type=? and del_flag=0";
+		List<Object> params=new ArrayList<Object>();
+		params.add(business_id);
+		params.add(business_type);
+		return dao.find(sql, params.toArray());
+	}
+	/**
 	 * 
 	 * @time   2018年9月25日 下午2:21:22
 	 * @author yangdong

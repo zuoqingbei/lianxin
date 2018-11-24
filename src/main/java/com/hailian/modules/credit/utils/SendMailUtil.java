@@ -192,7 +192,7 @@ public class SendMailUtil {
                     "javax.net.ssl.SSLSocketFactory");
             props.setProperty("mail.smtp.socketFactory.fallback", "false");
             props.setProperty("mail.store.protocol", "smtp");
-            props.setProperty("mail.smtp.host", "smtp.qq.com");
+            props.setProperty("mail.smtp.host", "smtp.inter-credit.net");
             props.setProperty("mail.smtp.port", "465");
             props.setProperty("mail.smtp.socketFactory.port", "465");
             props.put("mail.smtp.auth", "true");
@@ -239,12 +239,12 @@ public class SendMailUtil {
     public static void main(String[] args) throws Exception {
 //    	sendMailCode("dou_shai@163.com");
     	//new SendMailUtil("15269274025@163.com", "", "你好", "mycontent", "http://60.205.229.238:9980/zhengxin_File/2018-11-16/1a183ad043a64af0bde653aa718cd144.doc").sendEmail();
-//    	List<Map<String,String>> list=new ArrayList<Map<String,String>>();
-//    	Map<String,String> map=new HashMap<String, String>();
-//    	map.put("哈哈.doc", "http://60.205.229.238:9980/zhengxin_File/2018-11-16/1a183ad043a64af0bde653aa718cd144.doc");
-//    	list.add(map);
-//    	new SendMailUtil("15269274025@163.com", "", "你好", "mycontent", list).sendEmail();
-//    	System.out.println("ok");
+    	List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+    	Map<String,String> map=new HashMap<String, String>();
+    	map.put("哈哈.doc", "http://60.205.229.238:9980/zhengxin_File/2018-11-16/1a183ad043a64af0bde653aa718cd144.doc");
+    	list.add(map);
+    	new SendMailUtil("dou_shuihai@163.com", "", "你好", "mycontent", list).sendEmail();
+    	System.out.println("ok");
     	
 	}
     /**
