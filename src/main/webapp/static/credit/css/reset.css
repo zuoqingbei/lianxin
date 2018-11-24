@@ -105,6 +105,10 @@ label {
     background-color: #fff;
     border: #ccc 1px solid;
 }
+.btn-default:hover {
+    color: var(--activeColor);
+    border: var(--activeColor) 1px solid;
+}
 
 .btn-primary {
     background: #1890ff;
