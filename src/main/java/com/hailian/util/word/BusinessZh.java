@@ -1,28 +1,17 @@
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
-import com.deepoove.poi.data.RowRenderData;
-import com.deepoove.poi.data.TextRenderData;
-import com.deepoove.poi.data.style.Style;
+import com.deepoove.poi.data.PictureRenderData;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
+import com.hailian.modules.credit.utils.SendMailUtil;
+import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
-
-import java.awt.*;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
+
 
 /**
  * 商业信息报告样本
@@ -30,16 +19,23 @@ import java.util.List;
  */
 public class BusinessZh {
 
-    public static void reportTable() {
-        //报告类型
-        String reportType = "8";
-        //语言
-        String sysLanguage = "612";
-        //公司id
-        String companyId = "65"; //77基本  65商业
+    public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
+    public static final int serverPort = Config.getToInt("searver_port");//ftp端口 默认21
+
+    /**
+     * 生成商业报告
+     *
+     * @param reportType  报告类型
+     * @param orderId     订单ID
+     * @param companyId   公司ID
+     * @param sysLanguage 语言
+     * @param userid 当前登录人
+     */
+    public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
 
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("company", "海尔集团");
@@ -72,7 +68,7 @@ public class BusinessZh {
             ReportInfoGetDataController report = new ReportInfoGetDataController();
 
             //1：表格
-            if(tableType!=null&&!"".equals(tableType)) {
+            if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
@@ -85,10 +81,10 @@ public class BusinessZh {
             }
 
             //2：主从表中的- 单个值
-            for(CreditReportModuleConf conf : child){
+            for (CreditReportModuleConf conf : child) {
                 String ci = conf.getInt("id") + "";
                 String s = conf.getStr("get_source");
-                if(s==null||"".equals(s)){
+                if (s == null || "".equals(s)) {
                     continue;
                 }
                 Map<String, String> p = MainWord.parseUrl(s);
@@ -99,22 +95,24 @@ public class BusinessZh {
                 String c = p.get("className");
                 String cn = c.split("\\*")[0];
                 //主表
-                if("credit_company_info".equals(t)){
-                    String word_key = conf.get("word_key")+"";
-                    if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
+                if ("credit_company_info".equals(t)) {
+                    String word_key = conf.get("word_key") + "";
+                    if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
-                        if(rs!=null&&rs.size()>0){
-                            BaseProjectModel model = (BaseProjectModel)rs.get(0);
+                        if (rs != null && rs.size() > 0) {
+                            BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
                             map.put(word_key, v);
                         }
                     }
-                }else{
-                    String word_key = conf.get("word_key")+"";
-                    if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
+                } else {
+                    //取word里配置的关键词
+                    String word_key = conf.get("word_key") + "";
+                    if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
+                        //取数据
                         List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
-                        if(rs!=null&&rs.size()>0){
-                            BaseProjectModel model = (BaseProjectModel)rs.get(0);
+                        if (rs != null && rs.size() > 0) {
+                            BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
                             map.put(word_key, v);
                         }
@@ -123,100 +121,128 @@ public class BusinessZh {
             }
 
             //7 输入框取数
-            if("7".equals(moduleType)){
+            if ("7".equals(moduleType)) {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
-                LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
+                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 //取列值
-                for(int i=0;i< child.size();i++) {
+                for (int i = 0; i < child.size(); i++) {
                     CreditReportModuleConf module = child.get(i);
                     String column_name = module.getStr("column_name");
                     String temp_name = module.getStr("temp_name");
-                    cols.put(column_name,temp_name);
+                    cols.put(column_name, temp_name);
                 }
                 //取数据
                 for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
-                    for(String column : cols.keySet()) {
+                    for (String column : cols.keySet()) {
                         String value = model.get(column) != null ? model.get(column) + "" : "";
-                        map.put(column,value);
+                        map.put(column, value);
                     }
                 }
             }
 
+            //8-单选框
+            if("8".equals(moduleType)){
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
+                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
+                //取列值
+                for (int i = 0; i < child.size(); i++) {
+                    CreditReportModuleConf module = child.get(i);
+                    String column_name = module.getStr("column_name");
+                    String get_source = module.getStr("get_source");
+                    cols.put(column_name, get_source);
+                }
+                //取数据
+                for (int i = 0; i < rows.size(); i++) {
+                    BaseProjectModel model = (BaseProjectModel) rows.get(0);
+                    for (String column : cols.keySet()) {
+                        //取值
+                        String value = model.get(column) != null ? model.get(column) + "" : "";
+                        String get_source = cols.get(column);
+                        String[] items = get_source.split("&");
+                        StringBuffer html = new StringBuffer();
+                        for(int j=0;j<items.length;j++) {
+                            String[] item = items[j].split("-");
+                            if (value.equals(item[0])) {
+                                html.append("(√)" + item[1] + " ");
+                            }else{
+                                html.append("( )" + item[1] + " ");
+                            }
+                        }
+                        map.put(column, html.toString());
+                    }
+                }
+
+
+            }
+
             //图形表
-            if("11".equals(moduleType)){
+            if ("11".equals(moduleType)) {
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
-                List<LinkedHashMap<String,String>> datas = new ArrayList<LinkedHashMap<String,String>>();
+                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
+                List<LinkedHashMap<String, String>> datas = new ArrayList<LinkedHashMap<String, String>>();
                 //取列值
-                for(int i=0;i< child.size();i++) {
+                for (int i = 0; i < child.size(); i++) {
                     CreditReportModuleConf module = child.get(i);
                     String column_name = module.getStr("column_name");
                     String temp_name = module.getStr("temp_name");
-                    cols.put(column_name,temp_name);
+                    cols.put(column_name, temp_name);
                 }
                 //取数据
-                for(int i=0;i< rows.size();i++){
-                    LinkedHashMap<String,String> row = new LinkedHashMap<String,String>();
+                for (int i = 0; i < rows.size(); i++) {
+                    LinkedHashMap<String, String> row = new LinkedHashMap<String, String>();
                     //取行
                     BaseProjectModel model = (BaseProjectModel) rows.get(i);
-                    for(String column : cols.keySet()) {
+                    for (String column : cols.keySet()) {
                         String value = model.get(column) != null ? model.get(column) + "" : "";
                         row.put(column, value);
                     }
                     datas.add(row);
                 }
+                //生成图片
                 DefaultPieDataset pds = new DefaultPieDataset();
-                for(LinkedHashMap<String,String> m : datas){
-                    String[] keys = (String[]) m.keySet().toArray();
-                    pds.setValue(m.get(keys[0]), 100);
+                for (LinkedHashMap<String, String> m : datas) {
+                    Object[] keys = m.keySet().toArray();
+                    String n = m.get(keys[0]);
+                    String v = m.get(keys[2]);
+                    int value = 0;
+                    if (v != null && !"".equals(v)) {
+                        v = m.get(keys[2]);
+                        try {
+                            value = Integer.parseInt(v);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    pds.setValue(n, value);
                 }
-                createPieChart(pds,"h:/pie.jpg");
+                MainWord.createPieChart(pds, _prePath + ".jpg");
+                map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
-        MainWord.buildWord(map, "h://word/_商业信息报告样本.docx", "h://2.docx");
-    }
-
-    public static void main(String[] args) {
-        DefaultPieDataset pds = new DefaultPieDataset();
-        pds.setValue("00点-04点", 100);
-        pds.setValue("04点-08点", 200);
-        pds.setValue("08点-12点", 300);
-        pds.setValue("12点-16点", 400);
-        pds.setValue("16点-20点", 500);
-        pds.setValue("20点-24点", 600);
-        String filePath = "h:/pie.jpg";
-        createPieChart(pds,filePath);
-    }
-
-    public static void createPieChart(DefaultPieDataset pds, String filePath) {
+        MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
+        //上传文件
+        String filePath = MainWord.uploadReport(_prePath + ".docx", orderId, userid);
+        //发送邮件
+        List<Map<String, String>> fileList = new ArrayList<Map<String, String>>();
+        Map<String, String> fileMap = new HashMap<String, String>();
+        fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
+        fileList.add(fileMap);
         try {
-            // 分别是:显示图表的标题、需要提供对应图表的DateSet对象、是否显示图例、是否生成贴士以及是否生成URL链接
-            JFreeChart chart = ChartFactory.createPieChart("出资比例（%）", pds, true, false, true);
-            // 如果不使用Font,中文将显示不出来
-            Font font = new Font("宋体", Font.BOLD, 12);
-            // 设置图片标题的字体
-            chart.getTitle().setFont(font);
-            // 得到图块,准备设置标签的字体
-            PiePlot plot = (PiePlot) chart.getPlot();
-            // 设置标签字体
-            plot.setLabelFont(font);
-            //设置图例字体
-            chart.getLegend().setItemFont(font);
-            plot.setStartAngle(new Float(3.14f / 2f));
-            // 设置plot的前景色透明度
-            plot.setForegroundAlpha(0.7f);
-            // 设置plot的背景色透明度
-            plot.setBackgroundAlpha(0.0f);
-            // 设置标签生成器(默认{0})
-            // {0}:key {1}:value {2}:百分比 {3}:sum
-            plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}({1}占{2})"));
-            // 将内存中的图片写到本地硬盘
-            ChartUtilities.saveChartAsJPEG(new File(filePath), chart, 600, 300);
+            new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 财务
+     */
+    public void financial(){
+
+    }
+
+
 
 }

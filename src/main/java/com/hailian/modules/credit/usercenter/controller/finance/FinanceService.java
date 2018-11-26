@@ -117,7 +117,8 @@ public class FinanceService {
 				"parent_sector",
 				"son_sector",
 				"is_sum_option",
-				"sort_no"
+				"sort_no",
+				"is_default"
 		};
 		CreditCompanyFinancialEntry entrymodel = null;
 		List<CreditCompanyFinancialDict> dictList = getFinancialDict(sysLanguage);

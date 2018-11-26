@@ -828,7 +828,7 @@ public class OrderProcessController extends BaseProjectController{
      * return resultJson
      * @param orderId status
      */
-    private ResultType uploadFile(String businessId, String businessType,List<UploadFile> upFileList){
+    public ResultType uploadFile(String businessId, String businessType,List<UploadFile> upFileList){
         List<File> commonFiles = new ArrayList<File>();
         List<File> pdfFiles = new ArrayList<File>();
         CreditUploadFileModel fileModel = new CreditUploadFileModel();
