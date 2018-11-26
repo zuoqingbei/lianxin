@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.hailian.system.dict.DictCache;
+import com.hailian.system.dict.SysDictDetail;
 import org.apache.commons.lang3.StringUtils;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
@@ -659,9 +662,17 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		renderJson(new ResultType(1,"删除成功!"));
 	}
-    
-	
-	
+
+
+    /**
+     * 将id转化为字典表中对应的字符串
+     * @param id
+     */
+    public static String dictIdToString(String id) {
+        Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
+        SysDictDetail sysDict = cache.get(Integer.parseInt(id));
+        return sysDict.get("detail_name") + "";
+    }
 	
 	
 }

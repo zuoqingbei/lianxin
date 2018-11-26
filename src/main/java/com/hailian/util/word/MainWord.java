@@ -16,6 +16,7 @@ import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.system.dict.DictCache;
@@ -134,7 +135,7 @@ public class MainWord {
                 String fieldType = strs.length == 2 ? strs[1] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? ":" + dictIdToString(value) : ":N/A";
+                    value = !"".equals(value) ? ":" + new ReportInfoGetDataController().dictIdToString(value) : ":N/A";
                 } else {
                     value = !"".equals(value) ? ":" + value : ":N/A";
                 }
@@ -176,7 +177,7 @@ public class MainWord {
                 String fieldType = model.get("field_type") + "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if("select".equals(fieldType)) {
-                    value = !"".equals(value) ? dictIdToString(value) : "";
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "";
                 }else {
                     value = !"".equals(value) ? value : "";
                 }
@@ -295,15 +296,7 @@ public class MainWord {
         }
     }
 
-    /**
-     * 将id转化为字典表中对应的字符串
-     * @param id
-     */
-    public static String dictIdToString(String id) {
-        Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
-        SysDictDetail sysDict = cache.get(Integer.parseInt(id));
-        return sysDict.get("detail_name") + "";
-    }
+
 
     /**
      * 上传文件
@@ -353,7 +346,7 @@ public class MainWord {
 
     /**
      * 发送邮件
-     * @param filePath
+     * @param
      */
     public static void sendReportMail(String toMail,List<Map<String,String>> fileList){
         //List<Map<String,String>> list=new ArrayList<Map<String,String>>();
