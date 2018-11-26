@@ -59,7 +59,7 @@ public class DictCache {
 		// detailSort
 		listDetail = SysDictDetail.dao.findByWhere(" order by detail_sort,detail_id");
 		//财务字典表子模块代码集合
-		List<Integer> sonSectorCodeList = Db.query("select son_sector from credit_company_financial_dict GROUP  BY son_sector where type=1");
+		List<Integer> sonSectorCodeList = Db.query("select son_sector from credit_company_financial_dict GROUP  BY son_sector ");
 		//new SysDictDetail(detail.getInt("detail_id"));
 		
 		//listDetail.remove();
