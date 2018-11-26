@@ -324,10 +324,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			Class<?> table = Class.forName(PAKAGENAME_PRE + className);
 			BaseProjectModel model = (BaseProjectModel) table.newInstance();
 			rows = model.find(
-					"select info.*,cu.`name` as name,de.detail_name as report_language ,det.detail_name as country from credit_order_info  info "
+					"select info.*,detai.detail_name as area,t.name as reportType,cu.`name` as name,de.detail_name as speeds,de.detail_name as report_language ,det.detail_name as country from credit_order_info  info "
 					+ " LEFT JOIN credit_custom_info cu on info.custom_id=cu.id "
 					+ " LEFT JOIN sys_dict_detail de on de.detail_id=info.report_language"
 					+ " LEFT JOIN sys_dict_detail det on det.detail_id=info.country"
+					+ " LEFT JOIN sys_dict_detail deta on deta.detail_id=info.speed"
+					+ " LEFT JOIN sys_dict_detail detai on detai.detail_id=info.continent"
+					+ " LEFT JOIN credit_report_type t on t.id=info.report_type"
 					+ " where info.id=?",
 					orderId);
 			if (!("".equals(selectInfo) || selectInfo == null)) {
