@@ -1,12 +1,20 @@
 package com.hailian.modules.credit.ordertranslate.controller;
 
+import java.util.Iterator;
 import java.util.List;
+
+
+
+
+
+
+
 
 import org.junit.Test;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.alibaba.fastjson.JSON;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
@@ -28,11 +36,16 @@ public class TranslateController extends BaseProjectController {
 	 */
 	@Test
 	public void translate() {
-		List<BaseProjectModel> parseArray;
 //		String jsonString = HttpKit.readData(getRequest());
-		JSONObject fromObject = JSONObject.fromObject("[{name:'a',value:'aa'},{name:'b',value:'bb'},{name:'c',value:'cc'},{name:'d',value:'dd'}]");
-		parseArray = JSON.parseArray("[{name:'a',value:'aa'},{name:'b',value:'bb'},{name:'c',value:'cc'},{name:'d',value:'dd'}]", BaseProjectModel.class);
-		String status = fromObject.getString("Status"); //获取调用api接口的状态码	
+		String json="{\"id\":\"10001\",\"name\":\"肉类\"}";
+		JSONObject jsonObject = JSONObject.fromObject(json);
+		Iterator iterator = jsonObject.keys();
+		System.out.println(json);
+		while(iterator.hasNext()){
+        String   key = (String) iterator.next();
+        String value = jsonObject.getString(key);
+}
+		
 			
 		
 	}
