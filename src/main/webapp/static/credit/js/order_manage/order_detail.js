@@ -26,6 +26,108 @@ let OrderDetail = {
         this.processNames = this.rows.country === '中国大陆' ?
             ['订单分配', '信息录入', '订单核实', '订单查档', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成']
             : ['订单查档', '订单分配', '信息录入', '订单核实', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成'];
+        this.creditLevel = `
+                <div class="credit-level-title pt-3">
+                    信用等级：<strong id="creditLevel" class="pl-3 pr-2"></strong>
+                    <span class="myExplain">(见以下详情评估标准)</span>
+                </div>
+                <div class="table-content1" style="background:#fff">
+                    <div class="bootstrap-table">
+                        <div class="fixed-table-toolbar"></div>
+                        <div class="fixed-table-container" style="padding-bottom: 0px;">
+                            <div class="fixed-table-header" style="display: none;">
+                                <table></table>
+                            </div>
+                            <div class="fixed-table-body">
+                                <div class="fixed-table-loading" style="top: 41px; display: none;">正在努力地加载数据中，请稍候……
+                                </div>
+                                <table id="table7" style="position: relative" class="table table-hover">
+                                    <thead>
+                                    <tr class="border-bottom">
+                                        <th style="width: 25%; " data-field="level">
+                                            <div class="th-inner ">级别:</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="width: 25%; " data-field="describe">
+                                            <div class="th-inner "></div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="width: 25%; " data-field="amount">
+                                            <div class="th-inner ">建议信用额度</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="width: 25%; " data-field="risk_evaluation">
+                                            <div class="th-inner ">信用风险评估</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-index="0">
+                                        <td style="width: 25%; ">CA1</td>
+                                        <td style="width: 25%; ">很小</td>
+                                        <td style="width: 25%; ">可放宽信用额度</td>
+                                        <td style="width: 25%; ">大额度</td>
+                                    </tr>
+                                    <tr data-index="1">
+                                        <td style="width: 25%; ">CA2</td>
+                                        <td style="width: 25%; ">低</td>
+                                        <td style="width: 25%; ">可适当放宽信用额度</td>
+                                        <td style="width: 25%; ">较大额度</td>
+                                    </tr>
+                                    <tr data-index="2">
+                                        <td style="width: 25%; ">CA3</td>
+                                        <td style="width: 25%; ">一般</td>
+                                        <td style="width: 25%; ">可给予一般的信用</td>
+                                        <td style="width: 25%; ">中等额度</td>
+                                    </tr>
+                                    <tr data-index="3">
+                                        <td style="width: 25%; ">CA4</td>
+                                        <td style="width: 25%; ">高于一般</td>
+                                        <td style="width: 25%; ">可在监控的条件下给予信用</td>
+                                        <td style="width: 25%; ">小额度=定期监控</td>
+                                    </tr>
+                                    <tr data-index="4">
+                                        <td style="width: 25%; ">CA5</td>
+                                        <td style="width: 25%; ">较高</td>
+                                        <td style="width: 25%; ">可在有担保的条件下给予信用</td>
+                                        <td style="width: 25%; ">现金交易或小额度</td>
+                                    </tr>
+                                    <tr data-index="5">
+                                        <td style="width: 25%; ">CA6</td>
+                                        <td style="width: 25%; ">高</td>
+                                        <td style="width: 25%; ">建议不给予信用</td>
+                                        <td style="width: 25%; ">现金交易</td>
+                                    </tr>
+                                    <tr data-index="6">
+                                        <td style="width: 25%; ">NR</td>
+                                        <td style="width: 25%; ">无法评定</td>
+                                        <td style="width: 25%; ">无充足的材料</td>
+                                        <td style="width: 25%; ">无法评定</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="fixed-table-footer" style="display: none;">
+                                <table>
+                                    <tbody>
+                                    <tr></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="fixed-table-pagination" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="credit-level-title pt-3">信用等级说明</div>
+                <p class="m-3 ml-4 mt-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
+                <p class="m-3 ml-4">如下所示：
+                <p class="m-3 ml-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
+                <p class="m-3 ml-4">财务状况（40%） 股东背景（10%） 付款记录（10%）</p>
+                <p class="m-3 ml-4">信用历史（15%） 市场趋势（10%） 经营规模（15%）</p>
+                <p class="m-3 ml-4">如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款记录”两项。</p>
+                <p class="m-3 ml-4 pb-4">使用缩写： N/A-不详 CNY-人民币 SC-目标公司</p>`
         this.initContent();
 
         /*附件*/
@@ -41,7 +143,7 @@ let OrderDetail = {
             {id, reportType, type: 0},
             (data) => {
                 setTimeout(() => {
-                    console.log('--data', data)
+                    console.log('--data', data);
                     _this.data = data;
                     _this.setHeader();
                     _this.setTabs();
@@ -55,12 +157,13 @@ let OrderDetail = {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info mb-4"></div>');
         let $moduleTitle = $('<div class="l-title"></div>');
         this.data.modules.forEach((item) => {
-            // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，7-多行文本框
+            // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
             let smallModuleType = item.smallModileType;
             let itemId = item.title.id;
             let $wrap = $moduleWrap.clone().attr('id', itemId)
                 .append($moduleTitle.clone().text(item.title.temp_name));
             switch (smallModuleType) {
+                // 0-表单
                 case '0':
                     let formHtml = '';
                     item.contents.forEach((item) => {
@@ -86,16 +189,20 @@ let OrderDetail = {
                         }
                     });
                     break;
+                // 1-表格
                 case '1':
                     this.setTable(item, $wrap);
                     break;
+                // 11-带饼图的表格
                 case '11':
-                    let data0 = this.setTable(item, $wrap, true);
+                    this.setTable(item, $wrap, true);
                     break;
+                // 2-附件
                 case '2':
                     let html = Public.fileConfig(item, this.rows);
                     $wrap.append(`<div class="tabelBox p-4">${html}</div></div>`);
                     break;
+                // 4-流程进度
                 case '4':
                     let $ul = this.initProcess();
                     $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
@@ -118,10 +225,23 @@ let OrderDetail = {
                             <div class="bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
                     });
                     break;
+                // 6-信用等级
+                case '6':
+                    //绑数
+                    $.get(this.getUrl(item), (data) => {
+                        if (data.rows) {
+                            $wrap.append(`${this.creditLevel}`)
+                                .find("#creditLevel").text(data.rows[0][item.title.column_name])
+                        } else {
+                            console.warn(item.title.temp_name + '-信用等级-没有返回数据！')
+                        }
+                    });
+                    break;
+                // 7-多行文本框
                 case '7':
                     $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
                         if (data) {
-                            $wrap.append(`<div class="border m-4 p-2">${data.rows[0][item.title.column_name]}</div>`)
+                            $wrap.append(`<div class="border multiText m-4 p-2">${data.rows ? data.rows[0][item.title.column_name] : ''}</div><div class="pt-1"></div>`)
                             console.warn(data)
                         } else {
                             console.warn(item.title.temp_name + '-总结-没有返回数据！')
@@ -140,7 +260,7 @@ let OrderDetail = {
         this.data.tabFixed.forEach((item, index) => {
             tabsHtml += `<li><a href="#${item.anchor_id}">${item.temp_name}</a></li>`
         });
-        $("#tabs").html(tabsHtml).on('click','li',function () {
+        $("#tabs").html(tabsHtml).on('click', 'li', function () {
             $(this).addClass('tab-active').siblings().removeClass('tab-active')
         }).children().eq(0).addClass('tab-active')
     },
@@ -189,9 +309,9 @@ let OrderDetail = {
                 }
             });
             url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
-            $.get(url,(data)=>{
-                console.log("~~~~~",data)
-                $wrap.append(`<h3 class="guDongSubTitle">截止时间：${data.rows[0].date}</h3>`)
+            $.get(url, (data) => {
+                console.log("~~~~~", data)
+                $wrap.append(`<h3 class="guDongSubTitle">截止时间：${data.rows ? data.rows[0].date : ''}</h3>`)
             })
         }
         item.contents.forEach((item) => {
@@ -211,13 +331,13 @@ let OrderDetail = {
                         })
                     }
                     columnNameArr.forEach((columnName) => {
-                        $tr.append(`<td>${row[columnName]?row[columnName]:'-'}</td>`);
+                        $tr.append(`<td>${row[columnName] ? row[columnName] : '-'}</td>`);
 
                     });
                     $table.children('tbody').append($tr);
                 });
                 $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
-                if (hasChart) {
+                if (hasChart) { // 绘制饼图
                     let itemId = item.title.id;
                     $("#" + itemId).append(`
                         <h3 class="guDongSubTitle">出资比例(%)</h3>
@@ -225,7 +345,6 @@ let OrderDetail = {
                     let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
                     chart.setOption(opt_pie);
                     chart.setOption({
-                        // legend:{show:true},
                         color: [
                             '#1890ff',
                             '#13c2c2',

@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css?">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
     <style>
+/*        .module-wrap{
+            padding-bottom: .5rem;
+        }*/
         table > thead {
             background-color: var(--bg-thead);
         }
@@ -31,6 +34,28 @@
         }
         .guDongSubTitle:nth-of-type(2){
             margin-bottom: -2rem;
+        }
+        .order-content [id],
+        .multiText{
+            color: var(--fontColor);
+        }
+        .process li.active span{
+            color: var(--fontTitleColor);
+            font-weight: bold;
+        }
+        .credit-level-title{
+            padding-left: 2rem;
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: var(--fontTitleColor);
+        }
+        .credit-level-title strong{
+            font-size: 1.25rem;
+            color: var(--activeColor);
+        }
+        .credit-level-title .myExplain{
+            color: var(--fontColor);
+            font-weight: normal;
         }
     </style>
 </head>
@@ -65,217 +90,11 @@
         <!-- 内容展示 -->
         <div class="table-content">
             <!-- 基本信息 -->
-<!--
-            <div class="module-wrap bg-f company-info">
-                <div class="table-content1 " style="background:#fff">
-                    <div class="bootstrap-table">
-                        <div class="fixed-table-toolbar"></div>
-                        <div class="fixed-table-container" style="padding-bottom: 0px;">
-                            <div class="fixed-table-header" style="display: none;">
-                                <table></table>
-                            </div>
-                            <div class="fixed-table-body">
-                                <div class="fixed-table-loading" style="top: 41px; display: none;">正在努力地加载数据中，请稍候……
-                                </div>
-                                <table id="table7" style="position: relative" class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 25%; " data-field="level">
-                                            <div class="th-inner ">级别:</div>
-                                            <div class="fht-cell"></div>
-                                        </th>
-                                        <th style="width: 25%; " data-field="describe">
-                                            <div class="th-inner "></div>
-                                            <div class="fht-cell"></div>
-                                        </th>
-                                        <th style="width: 25%; " data-field="amount">
-                                            <div class="th-inner ">建议信用额度</div>
-                                            <div class="fht-cell"></div>
-                                        </th>
-                                        <th style="width: 25%; " data-field="risk_evaluation">
-                                            <div class="th-inner ">信用风险评估</div>
-                                            <div class="fht-cell"></div>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr data-index="0">
-                                        <td style="width: 25%; ">CA1</td>
-                                        <td style="width: 25%; ">很小</td>
-                                        <td style="width: 25%; ">可放宽信用额度</td>
-                                        <td style="width: 25%; ">大额度</td>
-                                    </tr>
-                                    <tr data-index="1">
-                                        <td style="width: 25%; ">CA2</td>
-                                        <td style="width: 25%; ">低</td>
-                                        <td style="width: 25%; ">可适当放宽信用额度</td>
-                                        <td style="width: 25%; ">较大额度</td>
-                                    </tr>
-                                    <tr data-index="2">
-                                        <td style="width: 25%; ">CA3</td>
-                                        <td style="width: 25%; ">一般</td>
-                                        <td style="width: 25%; ">可给予一般的信用</td>
-                                        <td style="width: 25%; ">中等额度</td>
-                                    </tr>
-                                    <tr data-index="3">
-                                        <td style="width: 25%; ">CA4</td>
-                                        <td style="width: 25%; ">高于一般</td>
-                                        <td style="width: 25%; ">可在监控的条件下给予信用</td>
-                                        <td style="width: 25%; ">小额度=定期监控</td>
-                                    </tr>
-                                    <tr data-index="4">
-                                        <td style="width: 25%; ">CA5</td>
-                                        <td style="width: 25%; ">较高</td>
-                                        <td style="width: 25%; ">可在有担保的条件下给予信用</td>
-                                        <td style="width: 25%; ">现金交易或小额度</td>
-                                    </tr>
-                                    <tr data-index="5">
-                                        <td style="width: 25%; ">CA6</td>
-                                        <td style="width: 25%; ">高</td>
-                                        <td style="width: 25%; ">建议不给予信用</td>
-                                        <td style="width: 25%; ">现金交易</td>
-                                    </tr>
-                                    <tr data-index="6">
-                                        <td style="width: 25%; ">NR</td>
-                                        <td style="width: 25%; ">无法评定</td>
-                                        <td style="width: 25%; ">无充足的材料</td>
-                                        <td style="width: 25%; ">无法评定</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="fixed-table-footer" style="display: none;">
-                                <table>
-                                    <tbody>
-                                    <tr></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="fixed-table-pagination" style="display: none;"></div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <p class="m-3 ml-4 mt-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
-                <p class="m-3 ml-4">如下所示：
-                <p class="m-3 ml-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
-                <p class="m-3 ml-4">财务状况（40%） 股东背景（10%） 付款记录（10%）</p>
-                <p class="m-3 ml-4">信用历史（15%） 市场趋势（10%） 经营规模（15%）</p>
-                <p class="m-3 ml-4">如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款记录”两项。</p>
-                <p class="m-3 ml-4">使用缩写： N/A-不详 CNY-人民币 SC-目标公司</p>
-            </div>
--->
 
             <!-- 流程进度 -->
-            <!--
-                        <div class="module-wrap bg-f company-info process">
-                            <a name="process" class="target-fix"> </a>
-                            <div class="l-title">
-                                流程进度
-                            </div>
-                            <div class="order-detail mb-4 order-content progress-box">
-                                <div class="row  mb-2">
-                                    &lt;!&ndash;进度条&ndash;&gt;
-                                    <div class="bar_box ml-3">
-                                        <ul>
-                                            <%for(item in cofc){%>
-                                            <% var flag=1;%>
-                                            <li>
-                                                <div class="bar-span-box d-flex align-items-center">
-                                                    <span class="span_circle "></span>
-                                                    <span class="span_bar "></span>
-                                                </div>
-                                                <span>${item.flow_name}</span>
-                                                <%for(item2 in cof){%>
-                                                <%if(item.flow_state==item2.order_state){%>
-                                                <%flag=2;%>
-                                                <span>${item2.name}</span>
-                                                <span>${item2.create_time}</span>
-                                                <%break;%>
-                                                <%}%>
-                                                <%}%>
-                                                <%if(flag==1){%>
-                                                <span style="height:3.95rem;display:inline-block"></span>
-                                                <span style="height:3.7rem;display:inline-block"></span>
-                                                <%}%>
-                                            </li>
-                                            <%}%>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-            -->
             <!-- 基本报告 -->
             <!-- 附件-->
-            <!-- <div class="module-wrap bg-f mt-4">
-                 <a name="accessory"> </a>
-                 <div class="l-title">
-                     附件
-                 </div>
-                 <div class="order-detail mb-4 order-content accessory_box">
-                     <%if(files.~size>0){ %>
-                     <%for(item in files){%>
-                     <div>
-                         <div class="uploadFile mt-3 mr-3 ml-3 ">
-                             <div class="over-box">
-                                 <img src="${BASE_PATH }static/credit/imgs/order/PDF.png" class="m-auto">
-                                 <p title='${item.originalname}.${item.ext}' class="mt-2">
-                                     ${item.originalname}.${item.ext}</p>
-                             </div>
-                         </div>
-                         <div class="order-yulan  mt-3 ml-3 "><a href="#"
-                                                                 onclick="view(''+'${item.view_url}'+'',''+'${item.ext}'+'')">预览</a>
-                         </div>
-                     </div>
-                     <%}%>
-                     <%}else{%>
-                     <div class="uploadFile mt-3 mr-3 ml-3 ">
-                         <div>
-                             <div class="uploadFile mt-3 mr-3 ml-3">
-                                 <div class="over-box">
-                                     <img src="${BASE_PATH }static/credit/imgs/order/PDF.png" class="m-auto"/>
-                                     <p class="mt-2">暂无附件</p>
-                                 </div>
-                             </div>
-                             <div class="order-yulan  mt-3 ml-3 "><a href="#">预览</a></div>
-                         </div>
-                     </div>
-                     <%}%>
-                 </div>
-                 &lt;!&ndash;    变化后的 &ndash;&gt;
-                  <div class="order-detail mb-4 order-content accessory_box">
-                   <div>
-                        <div class="uploadFile mt-3 mr-3 ml-3">
-                            <div class="over-box">
-                                <img src="../imgs/order/！.png" class="m-auto"/>
-                                <p class="mt-2">暂无附件</p>
-                            </div>
-                        </div>
-                        <div class="order-yulan  mt-3 ml-3 "><a href="#">预览</a></div>
-                    </div>
-                 </div>
-
-
-             </div>-->
             <!--质检意见-->
-            <!--<div class="bg-f company-info mt-4 mb-4">
-
-                <a name="operate_log"> </a>
-                <div class="l-title">
-                    质检意见
-                </div>
-                <div class="order-detail order-content">
-                    <table id="table4"
-                           data-toggle="table"
-
-                           style="position: relative"
-                    >
-                    </table>
-                </div>
-            </div>-->
-
         </div>
     </div>
 </div>
