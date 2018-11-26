@@ -194,7 +194,6 @@ public class ExcelModule extends BaseProjectController  {
 				}
 			}
 		}
-		response.reset();
 	}
 	
 
@@ -228,7 +227,7 @@ public class ExcelModule extends BaseProjectController  {
 		model.set("conf_id", financeConfigId).set("update_date", now).set("update_by", userId).set("create_date",now).set("create_by", userId).set("del_flag", "0");
 		//为了适应jfinal框架的Db.saveBatch方法
 		CreditCompanyFinancialEntry tempModel = new CreditCompanyFinancialEntry();
-		tempModel._setAttrs(model).set("parent_sector", "9").set("son_sector", "9").set("is_sum_option", "9"). set("sort_no", "9").set("item_name", "9").set("begin_date_value", "9").set("end_date_value", "9").set("del_flag", "9");
+		tempModel._setAttrs(model).set("parent_sector", "9").set("son_sector", "9").set("is_sum_option", "9"). set("sort_no", "9").set("item_name", "9").set("begin_date_value", "9").set("end_date_value", "9").set("del_flag", "9").set("is_default", "9");
 		allModel.add(tempModel);
 		
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
