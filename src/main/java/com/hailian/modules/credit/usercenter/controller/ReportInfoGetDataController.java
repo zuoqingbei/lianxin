@@ -660,4 +660,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		renderJson(new ResultType(1,"删除成功!"));
 	}
     
+	
+	
+	
+	
 }
