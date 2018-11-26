@@ -358,6 +358,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   * @return
    */
     public void getOrsaveOpintion(){//质检意见新增
+    	Record record = new Record();
     	Integer userId = getSessionUser().getUserid();
 		String now = getNow();
       String orderId = 	getPara("orderId");
@@ -382,8 +383,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
        model.save();
    }else {
 	//查询
-	CreditQualityOpintion opintion2=   CreditQualityOpintion.dao.findFirst("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
-   renderJson(opintion2);
+	List<CreditQualityOpintion> opintion2=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
+   renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
     }
       
   }
@@ -397,6 +398,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
    * @return
     */
     public  void getOrsaveResult(){
+    	Record record = new Record();
     	Integer userId = getSessionUser().getUserid();
 		String now = getNow();
     	 String orderId = 	getPara("orderId");
@@ -420,7 +422,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	List<CreditQualityResult>	results=	CreditQualityResult.dao.find("SELECT re.*  from credit_quality_result re "
 					+ " LEFT JOIN credit_quality_opintion o on o.id=re.parent_id "
 					+ " where o.order_id=? and o.quality_type=?  order BY re.report_model_id",orderId,type);
-		renderJson(results);
+		renderJson(record.set("rows", results).set("total", results!=null?results.size():null));
 		}
     }
     /**
@@ -432,13 +434,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     * @return
      */
     public void getquality(){
+    	Record record = new Record();
         String order_num=	getPara("orderId");
          List<CreditQualityOpintion> opintion=   CreditQualityOpintion.dao.find("select o.*,u.username as name from credit_quality_opintion o "
         		+ "LEFT JOIN sys_user u on u.userid=o.create_by "
         		+ "where  o.order_id=?",order_num);
-        renderJson(opintion);
-        	
-        	
+         
+        renderJson(record.set("rows", opintion).set("total", opintion!=null?opintion.size():null));	
         }
     /**
      * 

@@ -333,6 +333,7 @@ let ReportConfig = {
     	/**
     	 * 初始化浮动模块
     	 */
+    	let _this = this
     	let floatIndex = this.floatIndex;
     	let cw_title = []
     	let cw_contents = []
@@ -439,8 +440,9 @@ let ReportConfig = {
 											</div>`
     						tableCwId.push('tableCwHj')
     					setTimeout(()=>{
-    						InitObj.initCwTable(0,tableCwId,item,this_content)
-    						InitObj.bindCwConfig(conf_id,url)
+    						let id = InitObj.bindCwConfig(conf_id,url)
+    						InitObj.initCwTable(0,tableCwId,item,this_content,_this.cwGetSource,id)
+    						
     					},0)
     				break;
     				case 3:
@@ -505,6 +507,7 @@ let ReportConfig = {
     	this.floatContents = [] //存放float类型模块的Contents
     	this.selectInfoObj = {} //存放选择框信息传给后台
     	this.notMoneyFloatHtml = {} //存放非财务模块的浮动html
+    	this.cwGetSource = '' //存放财务url
     	this.saveStatusUrl = ''
 		this.submitStatusUrl = ''
     	let row = localStorage.getItem("row");
@@ -597,6 +600,7 @@ let ReportConfig = {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType === '10'){
                 		//财务模块
+                		_this.cwGetSource = item.title.get_source
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
