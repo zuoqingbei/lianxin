@@ -14,6 +14,7 @@ import com.hailian.util.StrUtils;
 import com.hailian.util.cache.Cache;
 import com.hailian.util.cache.CacheManager;
 import com.jfinal.log.Log;
+import com.jfinal.plugin.activerecord.Db;
 
 /**
  * 数据字典缓存
@@ -57,10 +58,8 @@ public class DictCache {
 		FinancialDictMap.put(ReportInfoGetData.traditionalChinese, chineseTraditionalDict);
 		// detailSort
 		listDetail = SysDictDetail.dao.findByWhere(" order by detail_sort,detail_id");
-		
-		
-		
-		
+		//财务字典表子模块代码集合
+		List<Integer> sonSectorCodeList = Db.query("select son_sector from credit_company_financial_dict GROUP  BY son_sector");
 		//new SysDictDetail(detail.getInt("detail_id"));
 		
 		//listDetail.remove();
@@ -79,7 +78,7 @@ public class DictCache {
 		}
 		cache.add("map", dictMap);
 		cache.add("financialDictMap", FinancialDictMap);
-		
+		cache.add("sonSectorCodeList", sonSectorCodeList);
 	}
 
 	public static Map<Integer, SysDictDetail> getCacheMap() {
@@ -88,6 +87,10 @@ public class DictCache {
 	
 	public static Map<String,List<CreditCompanyFinancialDict>> getFinancialDictMap() {
 		return cache.get("financialDictMap");
+	}
+	
+	public static List<Integer> getSonSectorCodeList() {
+		return cache.get("sonSectorCodeList");
 	}
 	//////////////////////////jstl 标签/////////////////////////////
 

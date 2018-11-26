@@ -49,10 +49,10 @@ public class StrUtils {
 	public static boolean isEmpty(String... str) {
 		for (int i = 0; i < str.length; i++) {
 			if(StringUtil.isEmpty(str[i])) {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	/**
 	 * 不为空

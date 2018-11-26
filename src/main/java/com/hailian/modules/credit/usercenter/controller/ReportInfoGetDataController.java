@@ -12,20 +12,25 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
+import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.upload.UploadFile;
 
 @ControllerBind(controllerKey = "/credit/front/ReportGetData")
 public class ReportInfoGetDataController extends ReportInfoGetData {
 	private TemplateDictService template = new TemplateDictService();
 	private final static String PAKAGENAME_PRE = "com.hailian.modules.admin.ordermanager.model.";
+	//private static FinanceService  financeService = new FinanceService();
 
 	/**
 	 * 获取form类型的数据 2018/11/12 10:13 lzg
@@ -343,26 +348,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         return rows;
     }
     
-    /**
-     * 根据语言参数下载财务模板
-     */
-	public void getFinanceExcelExport() {
-		String sysLanguage = getPara("sys_language");
-		if(StrUtils.isEmpty(sysLanguage)) {
-			renderJson(new ResultType(0,"参数错误!"));
-			return;
-		}
-		OutputStream ops = null;
-		HttpServletResponse response = this.getResponse();
-		try {
-			//response.reset();
-			ops = response.getOutputStream();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		ExcelModule.exportExcel(response,ops, sysLanguage);
-	}
-	
+   
   /**
    * 
   * @Description: 新增/查询质检意见表
@@ -372,6 +358,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   * @return
    */
     public void getOrsaveOpintion(){//质检意见新增
+    	Record record = new Record();
     	Integer userId = getSessionUser().getUserid();
 		String now = getNow();
       String orderId = 	getPara("orderId");
@@ -396,8 +383,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
        model.save();
    }else {
 	//查询
-	CreditQualityOpintion opintion2=   CreditQualityOpintion.dao.findFirst("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
-   renderJson(opintion2);
+	List<CreditQualityOpintion> opintion2=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
+   renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
     }
       
   }
@@ -411,6 +398,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
    * @return
     */
     public  void getOrsaveResult(){
+    	Record record = new Record();
     	Integer userId = getSessionUser().getUserid();
 		String now = getNow();
     	 String orderId = 	getPara("orderId");
@@ -434,7 +422,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	List<CreditQualityResult>	results=	CreditQualityResult.dao.find("SELECT re.*  from credit_quality_result re "
 					+ " LEFT JOIN credit_quality_opintion o on o.id=re.parent_id "
 					+ " where o.order_id=? and o.quality_type=?  order BY re.report_model_id",orderId,type);
-		renderJson(results);
+		renderJson(record.set("rows", results).set("total", results!=null?results.size():null));
 		}
     }
     /**
@@ -446,13 +434,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     * @return
      */
     public void getquality(){
+    	Record record = new Record();
         String order_num=	getPara("orderId");
          List<CreditQualityOpintion> opintion=   CreditQualityOpintion.dao.find("select o.*,u.username as name from credit_quality_opintion o "
         		+ "LEFT JOIN sys_user u on u.userid=o.create_by "
         		+ "where  o.order_id=?",order_num);
-        renderJson(opintion);
-        	
-        	
+         
+        renderJson(record.set("rows", opintion).set("total", opintion!=null?opintion.size():null));	
         }
     /**
      * 
@@ -497,5 +485,179 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 Arrays.asList(new String[]{sysLanguage}).toArray());
         return (comList!=null && comList.size()>0)?comList.get(0):null;
     }
+    
+    /**
+         * 根据财务配置id获取财务信息
+     */
+    public void getFinancialEntrys() {
+    	String financialConfId = getPara("ficConf_id");
+    	if(StrUtils.isEmpty(financialConfId)) {
+    		 renderJson(new ResultType(0, "获取财务信息失败,缺少ficConf_id!"));
+			 return;
+    	}
+    	List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId);
+    	renderJson(new Record().set("rows", row).set("total", row==null?0:row.size()));
+    }
+    
+    
+    
+	 /**
+	  * 解析并上传财务模板
+	  * lzg 2018/11/24
+	  * 
+	  */
+	public void uploadFinancialEntrys() {
+		String financialConfId = getPara("ficConf_id");
+		String sysLanguage = getPara("sys_language");
+		String userId = getSession().getId();
+		String now = getNow();
+		if(StrUtils.isEmpty(financialConfId)) {
+			renderJson(new ResultType(0, "配置id不能为空!"));
+			return;
+		}
+		if(StrUtils.isEmpty(sysLanguage)) {
+			renderJson(new ResultType(0, "语言参数不能为空!"));
+			return;
+		}
+		UploadFile uploadFile = getFile("file");
+		String message = "上传失败!";
+		try {
+			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), sysLanguage, financialConfId, "8", now);
+		} catch (Exception e) {
+			renderJson( new ResultType(0, message));
+			e.printStackTrace();
+			return;
+		}
+		renderJson(new ResultType(0, message));
+	}
+	
+	 /**
+      *下载财务模板
+      *lzg 2018/11/24
+     */
+	public void getFinanceExcelExport() {
+		String sysLanguage = getPara("sys_language");
+		if(StrUtils.isEmpty(sysLanguage)) {
+			renderJson(new ResultType(0, "语言参数不能为空!"));
+			return;
+		}
+		OutputStream ops = null;
+		HttpServletResponse response = this.getResponse();
+		response.reset();
+		try {
+			response.reset();
+			ops = response.getOutputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0, "导入出现未知异常!"));
+			return;
+		}
+		ExcelModule.exportExcel(response,ops, sysLanguage);
+	}
+	
+	/**
+	 * 增加或修改一条财务实体信息
+	 * lzg 2018/11/24
+	 */
+	public void addOneFinanceOneEntry() {
+		String dataJson = getPara("dataJson");
+		String financialConfId = getPara("ficConf_id");
+		if(StrUtils.isEmpty(dataJson,financialConfId)) {
+			renderJson(new ResultType(0, "请检查这两个个必要参数 dataJson,financialConfId!"));
+			return;
+		}
+		List<Map<Object, Object>> entrys = ReportInfoGetData.parseJsonArray(dataJson);
+		if(entrys.size()!=1) {
+			renderJson(new ResultType(0,"只能单条操作!"));
+			return;
+		}
+		String userId = getSession().getId();
+		String now = getNow();
+		try {
+			FinanceService.alterFinancialEntryList(entrys, "8", now, financialConfId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,"发生未知异常!"));
+			return;
+		}
+		renderJson(new ResultType(1,"操作成功!"));
+	}
+    
+	
+	/**
+	 * 删除一条财务信息
+	 * lzg 2018/11/24
+	 */
+	public void deleteOneFinanceOneEntry() {
+		
+		String entryId = getPara("id");
+		if(StrUtils.isEmpty(entryId)) {
+			renderJson(new ResultType(0, "缺少正确参数entryId!"));
+			return;
+		}
+		String userId = getSession().getId();
+		String now = getNow();
+		try {
+			FinanceService.deleteFinancialEntryList(entryId, "8", now);
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,"发生未知异常!"));
+			return;
+		}
+		renderJson(new ResultType(1,"删除成功!"));
+	}
+    
+	
 
+	/**
+	 * 增加或修改一条财务配置信息
+	 * lzg 2018/11/24
+	 */
+	public void alterFinanceOneConfig() {
+		String dataJson = getPara("dataJson");
+		String sysLanguage = getPara("sys_language");
+		if(StrUtils.isEmpty(dataJson,sysLanguage)) {
+			renderJson(new ResultType(0, "请检查这两个必要参数sysLanguage,dataJson!"));
+			return;
+		}
+		List<Map<Object, Object>> entrys = ReportInfoGetData.parseJsonArray(dataJson);
+		if(entrys.size()!=1) {
+			renderJson(new ResultType(0,"只能单条操作!"));
+			return;
+		}
+		String userId = getSession().getId();
+		String now = getNow();
+		try {
+			FinanceService.alterFinancialConfig(entrys, sysLanguage, "8", now);
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,"发生未知异常!"));
+			return;
+		}
+		renderJson(new ResultType(1,"操作成功!"));
+	}
+    
+	
+	/**
+	 * 删除一条财务配置信息
+	 * lzg 2018/11/24
+	 */
+	public void deleteOneFinanceCconfig() {
+		String financialConfId = getPara("ficConf_id");
+		if(StrUtils.isEmpty(financialConfId)) {
+			renderJson(new ResultType(0, "请检查必要参数financialConfId!"));
+			return;
+		}
+		String userId = getSession().getId();
+		String now = getNow();
+		try {
+			FinanceService.deleteFinancialConfig(financialConfId, "8", now);
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,"发生未知异常!"));
+			return;
+		}
+		renderJson(new ResultType(1,"删除成功!"));
+	}
+    
 }

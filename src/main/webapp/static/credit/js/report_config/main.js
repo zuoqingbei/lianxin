@@ -17,112 +17,6 @@ let ReportConfig = {
         }
        return JSON.stringify(newObj).replace(/\"/g,"").replace("{","").replace("}","").replace(/,/g,";")
     },
-    dateInit(){
-    	/**
-    	 * 日期初始化
-    	 */
-    	layui.use('laydate', function(){
-    		  	const laydate = layui.laydate;
-		    	let dateArr = Array.from($('.date-form input'))
-		    	dateArr.forEach((item,index)=>{
-		    		laydate.render({
-		    			elem: item,
-		    			format: 'yyyy年MM月dd日'
-		    		});
-		    	})
-		    	let dateScopeArr = Array.from($('.date-scope-form input'))
-		    	dateScopeArr.forEach((item,index)=>{
-		    		laydate.render({
-		    			elem: item,
-		    			format: 'yyyy年MM月dd日',
-		    			range:true
-		    		});
-		    	})
-		    	let floatDateArr = Array.from($('.float-date'))
-		    	floatDateArr.forEach((item,index)=>{
-		    		laydate.render({
-		    			elem: item,
-		    			format: 'yyyy年MM月dd日'
-		    		});
-		    	})
-		    	
-		    	//模态窗里面的时间控件初始化
-		    	let modals = Array.from($(".modal"))
-		    	let modalDates = Array.from($(".modal .modal-date input"))
-		    	modals.forEach((item,index)=>{
-		    		modalDates.forEach((item,index)=>{
-		    			laydate.render({
-			    			elem: item,
-			    			format: 'yyyy年MM月dd日'
-			    		});
-		    		})
-		    	})
-    	});
-    },
-    addressInit(){
-    	/**
-    	 * 地址初始化
-    	 */
-    	let addArr = Array.from($('.address-form input'))
-    	addArr.forEach((item,index)=>{
-    		$(item).focus(function (e) {
-    			SelCity(this,e);
-    			let top = $(item).offset().top
-    			$("#PoPy").css("top",top+30+"px")
-    			$(".main").scroll(()=>{
-    				let top = $(item).offset().top
-    				$("#PoPy").css("top",top+30+"px")
-    				if(top < 90) {
-    					$("#cColse").trigger("click")
-    				}
-    			})
-    		});
-    	})
-    	
-    	//模态窗里面的地址控件初始化
-    	let modals = Array.from($(".modal"))
-    	let modalAdd = Array.from($(".modal .modal-address input"))
-    	modals.forEach((item,index)=>{
-    		modalAdd.forEach((item,index)=>{
-    			$(item).focus(function (e) {
-        			SelCity(this,e);
-        			let top = $(item).offset().top
-        			$("#PoPy").css("top",top+30+"px")
-        			$(".main").scroll(()=>{
-        				let top = $(item).offset().top
-        				$("#PoPy").css("top",top+30+"px")
-        				if(top < 90) {
-        					$("#cColse").trigger("click")
-        				}
-        			})
-        		});
-    		})
-    	})
-    },
-    regChecked(){
-    	/**
-    	 * 正则验证
-    	 */
-    	$(".firm-info .form-control").blur((e)=>{
-    		let val = $(e.target).val();
-    		let reg = $(e.target).attr("reg")
-    		if(reg === 'null' || !reg) {
-    			return;
-    		}else {
-    			
-    			if(!eval("("+reg+")").test(val)){
-    				$(e.target).siblings(".errorInfo").show();
-    				$(e.target).val("")
-    				$(e.target).addClass("active")
-    			
-    			}else {
-    			
-    				$(e.target).siblings(".errorInfo").hide();
-    				$(e.target).removeClass("active")
-    			}
-    		}
-    	})
-    },
     initTable(){
     	/**
     	 * 表格初始化
@@ -149,7 +43,7 @@ let ReportConfig = {
         	
         	$table.bootstrapTable({
         		columns: columns(index,item),
-    			 url:url, // 请求后台的URL（*）
+    			url:url, // 请求后台的URL（*）
 			    method : 'post', // 请求方式（*）post/get
 			    queryParams:function(param){
 			    	param.selectInfo = JSON.stringify(selectInfo)
@@ -339,7 +233,6 @@ let ReportConfig = {
     	 */
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
-    	console.log(titles,formIndex)
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
@@ -440,6 +333,7 @@ let ReportConfig = {
     	/**
     	 * 初始化浮动模块
     	 */
+    	let _this = this
     	let floatIndex = this.floatIndex;
     	let cw_title = []
     	let cw_contents = []
@@ -459,52 +353,144 @@ let ReportConfig = {
     					//财务模块浮动
     					cw_title.push(this.floatTitle[index])
     					cw_contents.push(this.floatContents[index])
-    					cw_dom = $("#title"+i)
+    					cw_dom = $("#titleCw"+i)
     				}
     				
     			}
     		})
     	})
-    	console.log(cw_title,cw_contents)
+//    	console.log(cw_title,cw_contents)
     	let cw_top_html = ''
+    	let cw_table_html = ''
+    	let tableCwId = []
     	cw_title.forEach((item,index)=>{
     		//初始化财务模块
     		let this_content = cw_contents[index];
     		if(item.sort === 1) {
     			//财务模块杂七腊八的配置
     			let radioArr = this_content[1]["get_source"].split("&");
-    			
+    			let moneySource = this_content[4].get_source;
+    			let moneyStr = ''
+				let unitSource = this_content[5].get_source;
+    			let unitStr = ''
+    			$.ajax({
+    				url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
+    				async:false,
+    				type:'post',
+    				success:(data)=>{
+    					moneyStr = data.selectStr
+    				}
+    			})
+    			$.ajax({
+    				url:BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
+    				async:false,
+    				type:'post',
+    				success:(data)=>{
+    					unitStr = data.selectStr
+    				}
+    			})
     			cw_top_html += `<div class="top-html mx-4">
     								<div class="cw-box d-flex justify-content-between align-items-center mt-4">
     									<div class="firm-name form-inline">
     										<label class="mr-3" style="font-weight:600">${this_content[0].temp_name}</label>
-    										<input type="text" style="width:14rem" class="form-control" id=${this_content[0].column_name} placeholder=${this_content[0].place_hold} name=${this_content[0].column_name}>
+    										<input type="text" style="width:14rem" class="form-control" id="${this_content[0].column_name}cw" placeholder=${this_content[0].place_hold} name=${this_content[0].column_name}>
     									</div>
     									<div class="is-merge form-inline">
     										<label class="mr-3" style="font-weight:600">${this_content[1].temp_name}</label>
     										<div class="form-check form-check-inline">
-	    										<input class="form-check-input" type="radio" name=${this_content[1].column_name} id=${this_content[1].column_name} value=${radioArr[0].split(":")[0]}>
+	    										<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[0].split(":")[0]}>
 				                                <label class="form-check-label mx-0" for="">${radioArr[0].split(":")[1]}</label>
 			                                </div>
 						    				<div class="form-check form-check-inline">
-							    				<input class="form-check-input" type="radio" name=${this_content[1].column_name} id=${this_content[1].column_name} value=${radioArr[1].split(":")[0]}>
+							    				<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[1].split(":")[0]}>
 							    				<label class="form-check-label mx-0" for="">${radioArr[1].split(":")[1]}</label>
 						    				</div>
     									</div>
     									<div class="btn-group">
-    										<button class="btn btn-default mr-3">${this_content[2].temp_name}</button>
-						    				<button class="btn btn-primary">${this_content[3].temp_name}</button>
+    										<button class="btn btn-default mr-3 cwDown">${this_content[2].temp_name}</button>
+						    				<button class="btn btn-primary cwUp">${this_content[3].temp_name}</button>
     									</div>
     								</div>
     								<div class="cw-unit">
-    									<div class="form-inline">
-    										<label style="font-weight:600">${this_content[4].temp_name}</label>
-    										<select></select>
+    									<div class="form-inline my-3">
+    										<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[4].temp_name}</label>
+    										<select class="form-control mr-3" style="width:10rem" name=${this_content[4].column_name}>${moneyStr}</select>
+    										<select class="form-control mr-3" style="width:10rem" name=${this_content[5].column_name}>${unitStr}</select>
     									</div>
     								</div>
+    								<div class="cw-date form-inline">
+    									<input class="form-control mr-5 my-3" style="margin-left:45%" type="text" name=${this_content[6].column_name} id=${this_content[6].column_name} placeholder=${this_content[6].place_hold} />
+    									<input class="form-control" type="text" name=${this_content[7].column_name} id=${this_content[7].column_name} placeholder=${this_content[7].place_hold} />
+    								</div>
     							</div>`
-    		}
+    		}else {
+    			console.log(item,this_content)
+    			let addtext = cw_title[1].place_hold
+    			let conf_id = cw_title[0].id
+    			let url = cw_title[0].get_source
+    			switch(item.sort) {
+    				case 2:
+    					//合计表
+    					cw_table_html += `<div class="table-content1" style="background:#fff">
+					            				<table id="tableCwHj"
+					            				data-toggle="table"
+					            				style="position: relative"
+					            				>
+					            				</table>
+											</div>`
+    						tableCwId.push('tableCwHj')
+    					setTimeout(()=>{
+    						let id = InitObj.bindCwConfig(conf_id,url)
+    						InitObj.initCwTable(0,tableCwId,item,this_content,_this.cwGetSource,id)
+    						
+    					},0)
+    				break;
+    				case 3:
+    					//资产负债表
+    					for(let i=0;i<5;i++){
+    						cw_table_html += `<div class="table-content1" style="background:#fff">
+    							<table id="tableCwFz${i}"
+    							data-toggle="table"
+    							style="position: relative"
+    							>
+    							</table>
+    							<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn" >+ ${addtext}</button>
+    							</div>`
+    						tableCwId.push(`tableCwFz${i}`)
+    					}
+    				break;	
+    				case 4:
+    					//利润表
+    					for(let i=0;i<4;i++){
+    						cw_table_html += `<div class="table-content1" style="background:#fff">
+    							<table id="tableCwLr${i}"
+    							data-toggle="table"
+    							style="position: relative"
+    							>
+    							</table>
+    							<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn" >+ ${addtext}</button>
+    							</div>`
+    							tableCwId.push(`tableCwLr${i}`)
+    					}
+    					break;	
+    				case 5:
+    					//比率表
+						cw_table_html += `<div class="table-content1" style="background:#fff">
+							<table id="tableCwBl"
+							data-toggle="table"
+							style="position: relative"
+							>
+							</table>
+							<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn" >+ ${addtext}</button>
+							</div>`
+							tableCwId.push(`tableCwBl`)
+    					break;	
+    				default:
+    				break;
+    			}
+     		}
     	})
+    	$(cw_dom).after(cw_table_html)
     	$(cw_dom).after(cw_top_html)
     	
     },
@@ -521,6 +507,7 @@ let ReportConfig = {
     	this.floatContents = [] //存放float类型模块的Contents
     	this.selectInfoObj = {} //存放选择框信息传给后台
     	this.notMoneyFloatHtml = {} //存放非财务模块的浮动html
+    	this.cwGetSource = '' //存放财务url
     	this.saveStatusUrl = ''
 		this.submitStatusUrl = ''
     	let row = localStorage.getItem("row");
@@ -534,11 +521,11 @@ let ReportConfig = {
         	success:(data)=>{
                 setTimeout(()=>{
                 	_this.initModal();
-                	_this.addressInit();
-                	_this.regChecked();
+                	InitObj.addressInit();
+                	InitObj.regChecked();
                 	_this.initTable();
                 	_this.initFloat();
-                	_this.dateInit();
+                	InitObj.dateInit();
                 	_this.bindFormData();
                 	_this.tabChange();
                 	_this.modalClean();
@@ -609,8 +596,12 @@ let ReportConfig = {
                 	 */
                 	_this.entityTitle.push(item.title)
                 	let smallModileType = item.smallModileType
-                	if(item.title.temp_name === null || item.title.temp_name === "") {
+                	if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                	}else if(smallModileType === '10'){
+                		//财务模块
+                		_this.cwGetSource = item.title.get_source
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}
