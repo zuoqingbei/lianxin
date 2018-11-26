@@ -5,6 +5,8 @@ let InitObj = {
 		 * 绑定财务模块表格配置信息
 		 */
 		let paramObj = {}
+		let _this = this
+		let cwModalId = ''
 		paramObj["conf_id"] = conf_id
 		if(url.split("*")[1]) {
 			let tempParam = url.split("*")[1].split("$");//必要参数数组
@@ -15,10 +17,12 @@ let InitObj = {
 		$.ajax({
 			url:BASE_PATH + 'credit/front/ReportGetData/' + url.split("*")[0],
 			type:'post',
+			async:false,
 			data:paramObj,
 			success:(data)=>{
 				console.log(data)
 				data = data.rows
+				cwModalId = data[0]["id"]
 				let cwModalArr = Array.from($(".cwModal"))
 				data.forEach((item,index)=>{
 					let inputs = Array.from($(cwModalArr[index]).siblings(".top-html").find("input[type='text']"))
@@ -41,25 +45,24 @@ let InitObj = {
 				})
 			}
 		})
+		return cwModalId
 	},
-	initCwTable(isEdit,tableCwIds,title,contents){
+	initCwTable(isEdit,tableCwIds,title,contents,url,id){
 		//财务模块表格初始化
 		/**
 		 * tableCwIds:表格id数组 
 		 * isEdit:是否可以编辑 0 不可编辑 1可编辑
 		 * title ：表格的配置信息
 		 * contents :表格的表头信息
+		 * url:财务getsource
+		 * id:财务模块id
 		 */
-		
-		
-		
 		tableCwIds.forEach((item,index)=>{
 			const $table = $('#'+item);
-			console.log($table)
 			$table.bootstrapTable({
         		columns: columns(),
-    			//url:url, // 请求后台的URL（*）
-			    method : 'post', // 请求方式（*）post/get
+    			url:BASE_PATH + 'credit/front/ReportGetData/' + url + '?ficConf_id='+id,
+			    method : 'post', 
 			    sidePagination: 'server',
 			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     			pagination: false, //分页
@@ -70,31 +73,31 @@ let InitObj = {
 			
 			function columns(){
         		let arr = []
-        		contents.forEach((ele,index)=>{
-        			if(ele.temp_name !== '操作|编辑|删除'){
-        				arr.push({
-        					title:ele.temp_name,
-        					field: ele.column_name,
-        					width:(1/contents.length)*100+'%'
-        				})
-        				
-        			}else {
-        				arr.push({
-        					title:'',
-        					field: 'operate',
-        					width:1/contents.length,
-        					events: {
-            					"click .edit":(e,value,row,index)=>{
-            						
-            					},
-            					"click .delete":(e,value,row,index)=>{
-            						
-            					}
-            				},
+        		let ele = contents[0]
+    			if(ele.temp_name !== '操作|编辑|删除'){
+    				arr.push({
+    					title:ele.temp_name,
+    					field: ele.column_name,
+    					width:(1/contents.length)*100+'%'
+    				})
+    				
+    			}else {
+    				arr.push({
+    					title:'',
+    					field: 'operate',
+    					width:1/contents.length,
+    					events: {
+        					"click .edit":(e,value,row,index)=>{
+        						
+        					},
+        					"click .delete":(e,value,row,index)=>{
+        						
+        					}
+        				},
 //            				formatter: function(){return _this.formatBtnArr[tempI]}
-        				})
-        			}
-        		})
+    				})
+    			}
+    		
         		
         		return arr
         	}
