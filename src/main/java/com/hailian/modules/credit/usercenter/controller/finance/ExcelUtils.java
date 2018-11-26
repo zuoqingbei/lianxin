@@ -29,7 +29,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import com.alibaba.fastjson.JSONObject;
 
 
-public class ExportExcel {
+public class ExcelUtils {
 
 
 
@@ -39,7 +39,7 @@ public class ExportExcel {
 	 */
 	private Map<Integer, String> map;
 	// 构造方法，传入要导出的数据
-	public ExportExcel() {
+	public ExcelUtils() {
 		super();
 	}
 

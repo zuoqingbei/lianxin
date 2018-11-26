@@ -23,13 +23,14 @@ import org.apache.poi.ss.usermodel.CellType;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
-import com.hailian.modules.admin.ordermanager.model.CreditReditCompanyFinancialEntry;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.system.dict.DictCache;
+import com.hailian.util.StrUtils;
 public class ExcelModule extends BaseProjectController  {
 	/**
 	 * 列宽系数
 	 */
-	private static int colWidthOffSet = 600;
+	private static int colWidthOffSet = 621;
 	/**
 	 * excel首行值
 	 */
@@ -56,7 +57,7 @@ public class ExcelModule extends BaseProjectController  {
 	/**
 	 * 文件名称
 	 */
-	private static String fileName = "财务模板";
+	private static String fileName = "FinancialModule";
 	
 	/**
 	 * sheet页名称
@@ -136,8 +137,8 @@ public class ExcelModule extends BaseProjectController  {
 			
 			//设置头
 			HSSFRow rowHead = sheet.createRow(top);
-			HSSFCellStyle rowHeadStyle = ExportExcel.getDefaultStyle(wb,true,false);
-			HSSFCellStyle rowHeadStyle2 = ExportExcel.getDefaultStyle(wb,false,false);
+			HSSFCellStyle rowHeadStyle = ExcelUtils.getDefaultStyle(wb,true,false);
+			HSSFCellStyle rowHeadStyle2 = ExcelUtils.getDefaultStyle(wb,false,false);
 			int a = 0;//列位置系数
 			for (int j = 0; j < pageData.size(); j++) {
 					for (int k = 0; k < firstRow.length; k++) {
@@ -192,7 +193,6 @@ public class ExcelModule extends BaseProjectController  {
 					e.printStackTrace();
 				}
 			}
-			response.reset();
 		}
 	}
 	
@@ -204,11 +204,11 @@ public class ExcelModule extends BaseProjectController  {
 	 * @param financeConfigId
 	 * @return 上传结果
 	 */
-	public  static String  importExcel(File file,String sysLanguage,String financeConfigId,Integer userId, String now) {
+	public  static List<CreditCompanyFinancialEntry>  parseExcel(File file,String sysLanguage,String financeConfigId,String userId, String now) {
 		
 		Map<Integer,List<Integer>> sumOptionMap = getSumOption(sysLanguage);
 		if(file==null||file.length()==0) {
-			return "上传文件不能为空!";
+			return null;
 		}
 		InputStream is = null;
 		HSSFWorkbook wb = null;
@@ -220,27 +220,74 @@ public class ExcelModule extends BaseProjectController  {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		List<CreditCompanyFinancialEntry> allModel = new ArrayList<>();
+		
+		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
+		//公共属性
+		model.set("conf_id", financeConfigId).set("update_date", now).set("update_by", userId).set("create_date",now).set("create_by", userId).set("del_flag", "0");
+		//为了适应jfinal框架的Db.saveBatch方法
+		CreditCompanyFinancialEntry tempModel = new CreditCompanyFinancialEntry();
+		tempModel._setAttrs(model).set("parent_sector", "9").set("son_sector", "9").set("is_sum_option", "9"). set("sort_no", "9").set("item_name", "9").set("begin_date_value", "9").set("end_date_value", "9").set("del_flag", "9").set("is_default", "9");
+		allModel.add(tempModel);
 		
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-			List<CreditReditCompanyFinancialEntry> allModel = new ArrayList<>();
 			HSSFSheet sheet = wb.getSheetAt(i);
-			CreditReditCompanyFinancialEntry model = new CreditReditCompanyFinancialEntry();
-			model.set("conf_id", financeConfigId).set("update_date", now).set("update_by", userId).set("create_date",now).set("create_by", userId);
+			if(i==0) {
+				 sheet = wb.getSheetAt(3);
+			}else {
+				sheet = wb.getSheetAt(i-1);
+			}
+			
+			
+			/**
+			 * 父模块 1-合计表(子模块1) 2-资产负债表(子模块 2-6) 3-利润表(子模块 7-10) 4-重要比率表(子模块11)
+			 */
+			int k = 0;
 			switch (i) {
-			//解析资产负债表
-			case 1:
+			//解析合计表
+			case 0:
+				k = 0;
 				model.set("parent_sector", 1);
-				for (int j = 0; j < 5; j++) {
-					allModel.addAll(parseSonSector(model, left+j*smallModuleColSpacing, top+1, sheet,sumOptionMap));
+				for (int j = 0; j < 1; j++) {
+					model.set("son_sector", j+1);
+					allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j)));
+					k++;
 				}
-				
 				break;
-
+				//解析资产负债表
+			case 1:
+				model.set("parent_sector", 2);
+				for (int j = 1; j < 6; j++) {
+					model.set("son_sector", j+1);
+					allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j)));
+					k++;
+				}
+				break;
+				//解析利润表
+			case 2:
+				k = 0;
+				model.set("parent_sector", 3);
+				for (int j = 6; j < 10; j++) {
+					model.set("son_sector", j+1);
+					allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j)));
+					k++;
+				}
+				break;
+				//解析重要比率表
+			case 3:
+				k = 0;
+				model.set("parent_sector", 4);
+				for (int j = 10; j < 11; j++) {
+					model.set("son_sector", j+1);
+					allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j)));
+					k++;
+				}
+				break;
 			default:
 				break;
 			}
 		}
-		return financeConfigId;
+		return allModel;
 	}
 	
 	/**
@@ -251,31 +298,54 @@ public class ExcelModule extends BaseProjectController  {
 	 * @param sheet
 	 * @return
 	 */
-	public static List<CreditReditCompanyFinancialEntry>  parseSonSector(CreditReditCompanyFinancialEntry model,int colStart, int rowStart, HSSFSheet sheet,Map<Integer,List<Integer>> sumOptionMap){
-		List<CreditReditCompanyFinancialEntry> list = new ArrayList<>();
+	public static List<CreditCompanyFinancialEntry>  parseSonSector(CreditCompanyFinancialEntry model,int colStart, int rowStart, HSSFSheet sheet,List<Integer> sumOptionList){
+		List<CreditCompanyFinancialEntry> list = new ArrayList<>();
+		 CreditCompanyFinancialEntry tempModel = new CreditCompanyFinancialEntry();
 		int maxRow = 65535;
-		 for (int i = 0; i < maxRow; i++) {
-			HSSFRow row = sheet.getRow(rowStart);
-			if(row!=null) {
-				CreditReditCompanyFinancialEntry tempModel = model;
+		 for (int i = rowStart; i < maxRow; i++) {
+			 tempModel = new CreditCompanyFinancialEntry();
+			 tempModel.clear()._setAttrs(model);
+			//判断是否是合计项
+			if(sumOptionList!=null&&sumOptionList.contains(i-rowStart)) {
+				tempModel.set("is_sum_option", 1);
+			}else {
+				tempModel.set("is_sum_option", 0);
+			}
+			HSSFRow row = sheet.getRow(i);
+			
+			if(row!=null&&row.getPhysicalNumberOfCells()>0) {
 				HSSFCell itemName = row.getCell(colStart);
-				
+				String str1 = ""; 
 				if(itemName!=null) {
 					itemName.setCellType(CellType.STRING);
-					tempModel.set("item_name", itemName.getStringCellValue());
+					str1 = itemName.getStringCellValue();
+					if(!StrUtils.isEmpty(str1)) {
+						tempModel.set("item_name", str1);
+					} 
 				} 
 				
 				HSSFCell beginDateValue = row.getCell(colStart+1);
+				String str2 = ""; 
 				if(beginDateValue!=null) {
 					beginDateValue.setCellType(CellType.STRING);
-					tempModel.set("begin_date_value", beginDateValue.getStringCellValue());
-				}
+					str2 = beginDateValue.getStringCellValue();
+					if(!StrUtils.isEmpty(str2)) {
+						tempModel.set("begin_date_value", str2);
+					} 
+				} 
 				
 				HSSFCell endDateValue = row.getCell(colStart+2);
+				String str3 = ""; 
 				if(endDateValue!=null) {
 					endDateValue.setCellType(CellType.STRING);
-					tempModel.set("end_date_value", endDateValue.getStringCellValue());
+					str3 = endDateValue.getStringCellValue();
+					if(!StrUtils.isEmpty(str3)) {
+						tempModel.set("end_date_value", str3);
+					} 
 				} 
+				if(StrUtils.isEmpty(str1)&&StrUtils.isEmpty(str2)&&StrUtils.isEmpty(str3)) {
+					break;
+				}
 				list.add(tempModel);
 			}else {
 				break;

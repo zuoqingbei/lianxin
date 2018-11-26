@@ -102,4 +102,11 @@
 	max-width: 40%!important;
 }
 
-
+.cw-unit {
+	overflow:hidden;
+	border-bottom:solid 1px #e5e5e5;
+}
+.cw-date {
+	overflow:hidden;
+	border-bottom:solid 1px #e5e5e5;
+}
