@@ -22,6 +22,7 @@ let InitObj = {
 			success:(data)=>{
 				console.log(data)
 				data = data.rows
+				//获取财务模板id   ////下面 0代表页面自上而下的财务模块
 				cwModalId = data[0]["id"]
 				let cwModalArr = Array.from($(".cwModal"))
 				data.forEach((item,index)=>{
@@ -57,14 +58,36 @@ let InitObj = {
 		 * url:财务getsource
 		 * id:财务模块id
 		 */
+		let returnData;
+		$.ajax({
+			url:BASE_PATH + 'credit/front/ReportGetData/' + url + '?ficConf_id='+id,
+			type:'post',
+			async:false,
+			success:(data)=>{
+				returnData = data
+			}
+		})
+		let tempRows =  []
+		let tempArr = [];
+		
+		returnData['rows'].forEach((item,index)=>{
+			item["begin_date_value"] = `<input type="number" value=${item["begin_date_value"]} class="form-control" style="width:13.5rem"/>`
+			item["end_date_value"] = `<input type="number" value=${item["end_date_value"]} class="form-control" style="width:13.5rem"/>`
+			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
+				if(tempRows.length !== 0){
+					tempArr.push(tempRows)
+					tempRows = []
+				}
+			}
+			tempRows.push(item)
+		})
+		
 		tableCwIds.forEach((item,index)=>{
 			const $table = $('#'+item);
 			$table.bootstrapTable({
         		columns: columns(),
-    			url:BASE_PATH + 'credit/front/ReportGetData/' + url + '?ficConf_id='+id,
-			    method : 'post', 
-			    sidePagination: 'server',
-			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+//    			url:BASE_PATH + 'credit/front/ReportGetData/' + url + '?ficConf_id='+id,
+        		data:tempArr[index],
     			pagination: false, //分页
     			smartDisplay:true,
     			locales:'zh-CN',
@@ -73,31 +96,34 @@ let InitObj = {
 			
 			function columns(){
         		let arr = []
-        		let ele = contents[0]
-    			if(ele.temp_name !== '操作|编辑|删除'){
-    				arr.push({
-    					title:ele.temp_name,
-    					field: ele.column_name,
-    					width:(1/contents.length)*100+'%'
-    				})
-    				
-    			}else {
-    				arr.push({
-    					title:'',
-    					field: 'operate',
-    					width:1/contents.length,
-    					events: {
-        					"click .edit":(e,value,row,index)=>{
-        						
-        					},
-        					"click .delete":(e,value,row,index)=>{
-        						
-        					}
-        				},
-//            				formatter: function(){return _this.formatBtnArr[tempI]}
-    				})
-    			}
-    		
+        		contents.forEach((ele,index)=>{
+	    			if(ele.temp_name !== '操作|编辑|删除'){
+	    				arr.push({
+	    					title:ele.temp_name,
+	    					field: ele.column_name,
+	    					width:(1/contents.length)*100+'%',
+	    					class:'table-margin',
+	    					align:'center',
+	    				})
+	    				
+	    			}else {
+	    				arr.push({
+	    					title:'',
+	    					field: 'operate',
+	    					width:1/contents.length,
+	    					align:'center',
+	    					events: {
+	        					"click .edit":(e,value,row,index)=>{
+	        						
+	        					},
+	        					"click .delete":(e,value,row,index)=>{
+	        						
+	        					}
+	        				},
+	//            				formatter: function(){return _this.formatBtnArr[tempI]}
+	    				})
+	    			}
+        		})
         		
         		return arr
         	}
