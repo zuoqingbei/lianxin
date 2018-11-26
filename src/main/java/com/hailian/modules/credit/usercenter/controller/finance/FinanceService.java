@@ -17,6 +17,7 @@ import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Record;
+import com.sun.star.uno.RuntimeException;
 public class FinanceService {
 
 	
@@ -109,7 +110,7 @@ public class FinanceService {
 	 * @param sysLanguage 系统语言
 	 * @param financialConfId 财务配置id
 	 */
-	public static void addDictConfigToBeFinancialEntry(String financialConfId, String sysLanguage,String userId,String now) {
+	public static  void addDictConfigToBeFinancialEntry(String financialConfId, String sysLanguage,String userId,String now) {
 		//模板里有用字段
 		String [] columnName = new String[] {
 				"item_name",
@@ -120,8 +121,10 @@ public class FinanceService {
 		};
 		CreditCompanyFinancialEntry entrymodel = null;
 		List<CreditCompanyFinancialDict> dictList = getFinancialDict(sysLanguage);
+		if(dictList==null) {
+			throw new RuntimeException("该语言没有对应的字典表!");
+		}
 		List<CreditCompanyFinancialEntry> targetList = new ArrayList<>();
-		if(dictList!=null) {
 			for (CreditCompanyFinancialDict dictModel : dictList) {
 				entrymodel = new CreditCompanyFinancialEntry();
 				for (int i = 0; i < columnName.length; i++) {
@@ -135,7 +138,6 @@ public class FinanceService {
 				targetList.add(entrymodel);
 			}
 			Db.batchSave(targetList, dictList.size());
-		}
 		
 	}
 	

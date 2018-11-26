@@ -490,11 +490,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     public void getFinancialEntrys() {
     	String financialConfId = getPara("ficConf_id");
     	if(StrUtils.isEmpty(financialConfId)) {
-    		 renderJson(new ResultType(0, "获取财务信息失败!"));
+    		 renderJson(new ResultType(0, "获取财务信息失败,缺少ficConf_id!"));
 			 return;
     	}
     	List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId);
-    	renderJson(new Record().set("row", row).set("total", row==null?0:row.size()));
+    	renderJson(new Record().set("rows", row).set("total", row==null?0:row.size()));
     }
     
     
