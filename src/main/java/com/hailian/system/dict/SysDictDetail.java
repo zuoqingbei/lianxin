@@ -3,18 +3,12 @@ package com.hailian.system.dict;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.modules.credit.common.model.ReportTypeModel;
-import com.hailian.modules.credit.utils.DataAuthorUtils;
-import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.util.StrUtils;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
