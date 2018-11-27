@@ -2,9 +2,13 @@ package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.PictureRenderData;
+import com.deepoove.poi.data.RowRenderData;
+import com.deepoove.poi.data.TextRenderData;
 import com.hailian.component.base.BaseProjectModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
+import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
@@ -24,7 +28,6 @@ public class BusinessZh {
 
     /**
      * 生成商业报告
-     *
      * @param reportType  报告类型
      * @param orderId     订单ID
      * @param companyId   公司ID
@@ -172,8 +175,11 @@ public class BusinessZh {
                         map.put(column, html.toString());
                     }
                 }
+            }
 
-
+            //财务
+            if("10".equals(moduleType)){
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
             }
 
             //图形表
@@ -221,6 +227,10 @@ public class BusinessZh {
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
+        //财务模块生成
+        map.put("financial", financial("1"));
+
+
         MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
         //上传文件
         String filePath = MainWord.uploadReport(_prePath + ".docx", orderId, userid);
@@ -239,8 +249,17 @@ public class BusinessZh {
     /**
      * 财务
      */
-    public void financial(){
-
+    public static MiniTableRenderData financial(String financialConfId){
+        List<RowRenderData> rowList = new ArrayList<RowRenderData>();
+        List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId);
+        for(CreditCompanyFinancialEntry ccf:row) {
+            //ccf.getStr("");
+            String itemName = ccf.getStr("item_name");
+            Integer begin = ccf.getInt("begin_date_value");
+            Integer end = ccf.getInt("end_date_value");
+            rowList.add(RowRenderData.build(new TextRenderData(itemName), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
+        }
+        return new MiniTableRenderData(rowList);
     }
 
 

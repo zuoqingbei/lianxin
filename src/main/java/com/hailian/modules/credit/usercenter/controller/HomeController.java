@@ -323,10 +323,10 @@ public class HomeController extends BaseProjectController {
 		CreditOrderInfo model=new CreditOrderInfo();
 		SysUser user = (SysUser) getSessionUser();
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
-		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
+//		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
 		setAttr("user",user);
 		setAttr("customs",customs);
-		setAttr("company",company);
+//		setAttr("company",company);
 		setAttr("model", model);
 		render(path + "/order_manage/create_order.html");
 	}
