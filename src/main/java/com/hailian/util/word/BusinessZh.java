@@ -175,8 +175,11 @@ public class BusinessZh {
                         map.put(column, html.toString());
                     }
                 }
+            }
 
-
+            //财务
+            if("10".equals(moduleType)){
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
             }
 
             //图形表
@@ -225,7 +228,7 @@ public class BusinessZh {
             }
         }
         //财务模块生成
-        map.put("", financial("1"));
+        map.put("financial", financial("1"));
 
 
         MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
