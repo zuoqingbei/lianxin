@@ -9,56 +9,88 @@
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css?">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
     <style>
-        .module-wrap{
-            padding-bottom: 1px;
-        }
-        table > thead {
-            background-color: var(--bg-thead);
+        /*基本类型*/
+        @media all {
+            .module-wrap {
+                padding-bottom: 1px;
+            }
+
+            table > thead {
+                background-color: var(--bg-thead);
+            }
+
+            table > thead th {
+                min-width: 8rem;
+            }
+
+            .bar_box {
+                padding-left: 2rem;
+            }
+
+            .bar_box ul li:first-child .span_bar {
+                visibility: hidden;
+            }
+
+            .guDongSubTitle,h4{
+                margin: 2rem 0 0 2rem;
+                font-size: 1.125rem;
+                font-weight: bold;
+            }
+
+            .guDongSubTitle:nth-of-type(2) {
+                margin-bottom: -2rem;
+            }
+
+            .order-content [id],
+            .multiText {
+                color: var(--fontColor);
+            }
+
+            .process li {
+                vertical-align: top;
+            }
+
+            .process li.current span {
+                color: var(--fontTitleColor);
+                font-weight: bold;
+            }
+
+            .multiText {
+                min-height: 3rem;
+            }
         }
 
-        table > thead th {
-            min-width: 8rem;
-        }
+        /*商业类型*/
+        @media all {
+            .credit-level-title {
+                padding-left: 2rem;
+                font-size: 1.125rem;
+                font-weight: bold;
+                color: var(--fontTitleColor);
+            }
 
-        .bar_box {
-            padding-left: 2rem;
-        }
+            .credit-level-title strong {
+                font-size: 1.25rem;
+                color: var(--activeColor);
+            }
 
-        .bar_box ul li:first-child .span_bar {
-            visibility: hidden;
-        }
-        .guDongSubTitle{
-            margin: 2rem 0 0 2rem;
-            font-size: 1.125rem;
-            font-weight: bold;
-        }
-        .guDongSubTitle:nth-of-type(2){
-            margin-bottom: -2rem;
-        }
-        .order-content [id],
-        .multiText{
-            color: var(--fontColor);
-        }
-        .process li{
-            vertical-align: top;
-        }
-        .process li.current span{
-            color: var(--fontTitleColor);
-            font-weight: bold;
-        }
-        .credit-level-title{
-            padding-left: 2rem;
-            font-size: 1.125rem;
-            font-weight: bold;
-            color: var(--fontTitleColor);
-        }
-        .credit-level-title strong{
-            font-size: 1.25rem;
-            color: var(--activeColor);
-        }
-        .credit-level-title .myExplain{
-            color: var(--fontColor);
-            font-weight: normal;
+            .credit-level-title .myExplain {
+                color: var(--fontColor);
+                font-weight: normal;
+            }
+            h4{
+                margin-top: 1rem;
+            }
+            .type8-content ul{
+                padding-left: 1rem;
+                color: var(--fontColor);
+            }
+            .type8-content ul>li{
+                display: inline-block;
+                margin: 1rem;
+                margin-right: .5rem;
+            }
+
         }
     </style>
 </head>
@@ -78,13 +110,7 @@
             </ul>
             <p class="main-title"><span id="orderName" class="mr-3"></span><span id="orderNum"></span></p>
             <!-- 导航栏 -->
-            <ul class="tab_bar col-md-10" id="tabs">
-                <!--<li class="tab-active"><a href="#basic_info" class="tab-a-active">基本信息</a></li>
-                <li><a href="#process">流程进度</a></li>
-                <li><a href="#credit_report">信用报告</a></li>
-                <li><a href="#accessory">附件</a></li>
-                <li><a href="#operate_log">质检意见</a></li>-->
-            </ul>
+            <ul class="tab_bar col-md-10" id="tabs"></ul>
             <div class="state_box">
                 <span>状态</span>
                 <span id="status"></span>
@@ -93,6 +119,28 @@
         <!-- 内容展示 -->
         <div class="table-content">
             <!-- 基本信息 -->
+<!--
+            <div class="module-wrap bg-f company-info mb-4" id="274">
+                <div class="l-title">付款情况</div>
+                <div class="type8-content">
+                    <h4>总体评价</h4>
+                    <ul class="">
+                        <li>（<span>√</span>）极好</li>
+                        <li>（<span>√</span>）好</li>
+                        <li>（<span>√</span>）一般</li>
+                        <li>（<span>√</span>）较差</li>
+                        <li>（<span>√</span>）差</li>
+                        <li>（<span>√</span>）尚无法评估</li>
+                    </ul>
+                    <h4>拖欠记录</h4>
+                    <div class="border multiText m-4 p-2"></div>
+                    <h4>追讨记录</h4>
+                    <div class="border multiText m-4 p-2"></div>
+                </div>
+                &lt;!&ndash;<div class="pt-1"></div>&ndash;&gt;
+
+            </div>
+-->
 
             <!-- 流程进度 -->
             <!-- 基本报告 -->
