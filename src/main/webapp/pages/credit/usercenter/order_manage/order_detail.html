@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css?">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
     <style>
-/*        .module-wrap{
-            padding-bottom: .5rem;
-        }*/
+        .module-wrap{
+            padding-bottom: 1px;
+        }
         table > thead {
             background-color: var(--bg-thead);
         }
@@ -39,7 +39,10 @@
         .multiText{
             color: var(--fontColor);
         }
-        .process li.active span{
+        .process li{
+            vertical-align: top;
+        }
+        .process li.current span{
             color: var(--fontTitleColor);
             font-weight: bold;
         }
