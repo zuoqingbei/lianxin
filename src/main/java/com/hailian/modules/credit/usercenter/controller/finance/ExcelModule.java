@@ -57,7 +57,7 @@ public class ExcelModule extends BaseProjectController  {
 	/**
 	 * 文件名称
 	 */
-	private static String fileName = "财务模板";
+	private static String fileName = "FinancialModule";
 	
 	/**
 	 * sheet页名称
