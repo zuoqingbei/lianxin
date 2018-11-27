@@ -216,7 +216,9 @@ label.col-md-4{
     margin-top: .1rem;
 }
 
-
+.table-hover tbody tr:hover {
+    background-color: #e6f7ff;
+}
 
  /***面包屑*/
  .breadcrumb {
