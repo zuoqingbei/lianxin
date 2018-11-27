@@ -457,12 +457,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     * @return
      */
     public void getflow(){
+    	Record record = new Record();
     String order_num=	getPara("num");
      List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.id, d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
     		+ "LEFT JOIN sys_dict_detail d on d.detail_id=f.order_state "
     		+ "LEFT JOIN sys_user u on u.userid=f.create_oper "
     		+ "where  f.order_num=?",order_num);
-    renderJson(flows);
+     renderJson(record.set("rows", flows).set("total", flows!=null?flows.size():null));	
     	
     	
     }
