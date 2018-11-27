@@ -157,7 +157,7 @@ let OrderDetail = {
                 <p class="m-3 ml-4">财务状况（40%） 股东背景（10%） 付款记录（10%）</p>
                 <p class="m-3 ml-4">信用历史（15%） 市场趋势（10%） 经营规模（15%）</p>
                 <p class="m-3 ml-4">如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款记录”两项。</p>
-                <p class="m-3 ml-4 pb-4">使用缩写： N/A-不详 CNY-人民币 SC-目标公司</p>`
+                <p class="m-3 ml-4 pb-4">使用缩写： N/A-不详 CNY-人民币 SC-目标公司</p>`;
         this.initContent();
     },
     initContent() {
@@ -209,17 +209,17 @@ let OrderDetail = {
                         </div>`);
                     //绑数
                     $.post(this.getUrl(item),
-                        {selectInfo:`[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position","getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name":"registration_status"}]`},
+                        {selectInfo: `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position","getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name":"registration_status"}]`},
                         (data) => {
-                        if (data.rows) {
-                            $wrap.find('[id]').each(function (index, item) {
-                                let id = $(this).attr('id');
-                                $(this).text(data.rows[0][id])
-                            })
-                        } else {
-                            console.warn(item.title.temp_name + '-表单-没有返回数据！')
-                        }
-                    });
+                            if (data.rows) {
+                                $wrap.find('[id]').each(function (index, item) {
+                                    let id = $(this).attr('id');
+                                    $(this).text(data.rows[0][id])
+                                })
+                            } else {
+                                console.warn(item.title.temp_name + '-表单-没有返回数据！')
+                            }
+                        });
                     break;
                 // 1-表格
                 case '1':
@@ -238,9 +238,9 @@ let OrderDetail = {
                 case '4':
                     let $ul = this.initProcess();
                     $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
-                        if (data) {
+                        if (data.rows) {
                             this.processNames.forEach((name, index) => {
-                                data.forEach((item) => {
+                                data.rows.forEach((item) => {
                                     if (this.processObj[name].includes(item.order_state)) {
                                         $ul.children('li').eq(index).addClass('active').children('span:eq(1)').text(item.create_oper)
                                             .next('span').text(item.create_time)
@@ -274,12 +274,45 @@ let OrderDetail = {
                 case '7':
                     $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
                         if (data.rows) {
-                            $wrap.append(`<div class="border multiText m-4 p-2">${data.rows[0] ? data.rows[0][item.title.column_name] : ''}</div><div class="pt-1"></div>`)
-                            console.warn(data)
+                            $wrap.append(`<div class="border multiText m-4 p-2">${data.rows[0] ?
+                                data.rows[0][item.title.column_name] ? data.rows[0][item.title.column_name] : ''
+                                : ''}</div><div class="pt-1"></div>`);
                         } else {
                             console.warn(item.title.temp_name + '-总结-没有返回数据！')
                         }
 
+                    });
+                    break;
+                // 8-总体评价，一个对勾列表和两个多行文本框
+                case '8':
+                    let $type8_ul = `
+                            <ul class="">
+                                <li>（<span></span>）极好</li>
+                                <li>（<span></span>）好</li>
+                                <li>（<span></span>）一般</li>
+                                <li>（<span></span>）较差</li>
+                                <li>（<span></span>）差</li>
+                                <li>（<span></span>）尚无法评估</li>
+                            </ul>`;
+
+                    $wrap.append(`
+                            <div class="type8-content">
+                                <h4>${item.contents[0].temp_name}</h4>
+                                ${$type8_ul}
+                                <h4>${item.contents[1].temp_name}</h4>
+                                <div class="border multiText m-4 p-2"></div>
+                                <h4>${item.contents[2].temp_name}</h4>
+                                <div class="border multiText m-4 p-2"></div>
+                            </div>`);
+                    $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
+                        if (data.rows) {
+                            console.warn(data);
+                            $wrap.find('ul>li').eq(1 + data.rows[0][item.contents[0].column_name]).find('span').text('√')
+                                .parents('ul').siblings('.multiText:eq(0)').text(data.rows[0][item.contents[1].column_name])
+                                .siblings('.multiText').text(data.rows[0][item.contents[2].column_name]);
+                        } else {
+                            console.warn(item.title.temp_name + '-总体评价-没有返回数据！', `${this.getUrl(item)}&order_num=${this.rows.num}`)
+                        }
                     });
                     break;
             }
@@ -318,7 +351,7 @@ let OrderDetail = {
         for (let i = 0; i < 12; i++) {
             $ul.append($li.clone().children('span:eq(0)').text(this.processNames[i]).end());
         }
-        $ul.children('li:eq(9)').after($li.clone().css("visibility",'hidden')).after('<br>');
+        $ul.children('li:eq(9)').after($li.clone().css("visibility", 'hidden')).after('<br>');
         return $ul;
     },
     setTable(item, $wrap, hasChart = false) {
@@ -355,72 +388,72 @@ let OrderDetail = {
         });
         // 绑数
         $.post(this.getUrl(item),
-            {selectInfo:`[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position"}]`},
+            {selectInfo: `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position"}]`},
             (data) => {
-            if (data.rows) {
-                if (data.rows.length === 0) {
-                    $table.children('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">没有找到匹配的记录</tr></td>`);
-                    $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
-                    return;
-                }
-                data.rows.forEach((row) => {
-                    let $tr = $('<tr></tr>');
-                    if (hasChart) {
-                        let money = row.money;
-                        chartData.push({
-                            name: row.name,
-                            value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
-                        })
+                if (data.rows) {
+                    if (data.rows.length === 0) {
+                        $table.children('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">没有找到匹配的记录</tr></td>`);
+                        $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
+                        return;
                     }
-                    columnNameArr.forEach((columnName) => {
-                        $tr.append(`<td>${row[columnName] ? row[columnName] : '-'}</td>`);
+                    data.rows.forEach((row) => {
+                        let $tr = $('<tr></tr>');
+                        if (hasChart) {
+                            let money = row.money;
+                            chartData.push({
+                                name: row.name,
+                                value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
+                            })
+                        }
+                        columnNameArr.forEach((columnName) => {
+                            $tr.append(`<td>${row[columnName] ? row[columnName] : '-'}</td>`);
 
+                        });
+                        $table.children('tbody').append($tr);
                     });
-                    $table.children('tbody').append($tr);
-                });
-                $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
-                if (hasChart && chartData.length > 0) { // 绘制饼图
-                    let itemId = item.title.id;
-                    $("#" + itemId).append(`
+                    $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
+                    if (hasChart && chartData.length > 0) { // 绘制饼图
+                        let itemId = item.title.id;
+                        $("#" + itemId).append(`
                         <h3 class="guDongSubTitle">出资比例(%)</h3>
                         <div class="chartBox" style="height: 20rem;"></div>`)
-                    let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
-                    chart.setOption(opt_pie);
-                    chart.setOption({
-                        color: [
-                            '#1890ff',
-                            '#13c2c2',
-                            '#2fc25c',
-                            '#facc15',
-                            '#ef4763',
-                            '#8543e0',
-                            '#40a9ff',
-                            '#36cfc9',
-                            '#73d13d',
-                            '#ffec3d',
-                            '#ff4d4f',
-                            '#9254de',
-                        ],
-                        series: [{
-                            data: chartData,
-                        }
-                        ].map(function (item) {
-                            return $.extend(true, item, {
-                                type: 'pie',
-                                label: {
-                                    formatter: '{b}: {d}%'
-                                },
-                                radius: '60%',
-                                center: ['50%', '50%'],
-                                startAngle: '0'
+                        let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
+                        chart.setOption(opt_pie);
+                        chart.setOption({
+                            color: [
+                                '#1890ff',
+                                '#13c2c2',
+                                '#2fc25c',
+                                '#facc15',
+                                '#ef4763',
+                                '#8543e0',
+                                '#40a9ff',
+                                '#36cfc9',
+                                '#73d13d',
+                                '#ffec3d',
+                                '#ff4d4f',
+                                '#9254de',
+                            ],
+                            series: [{
+                                data: chartData,
+                            }
+                            ].map(function (item) {
+                                return $.extend(true, item, {
+                                    type: 'pie',
+                                    label: {
+                                        formatter: '{b}: {d}%'
+                                    },
+                                    radius: '60%',
+                                    center: ['50%', '50%'],
+                                    startAngle: '0'
+                                })
                             })
-                        })
-                    }, true);
+                        }, true);
+                    }
+                } else {
+                    console.warn(item.title.temp_name + `-表格${hasChart ? '&图表' : ''}-没有返回数据！`)
                 }
-            } else {
-                console.warn(item.title.temp_name + `-表格${hasChart ? '&图表' : ''}-没有返回数据！`)
-            }
-        });
+            });
     },
 
 }

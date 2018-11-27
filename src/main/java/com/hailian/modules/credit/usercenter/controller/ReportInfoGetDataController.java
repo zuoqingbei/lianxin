@@ -246,9 +246,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @return
      */
     public List getTableData(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
-		// 解析实体获取required参数
-      String type=	getPara("type");
-      String getSource="";
+        // 解析实体获取required参数
+        String type = null;
+        if(getRequest()!=null){
+            type = getPara("type");
+        }
+        String getSource = "";
     	if (type!=null) {
 			CreditReportDetailConf confModel=CreditReportDetailConf.dao.findById(confId);
 			 getSource = confModel.getStr("data_source");
