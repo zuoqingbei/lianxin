@@ -197,7 +197,9 @@ label {
 .l-title {
 	display:block;
 }
-
+.table-margin input{
+	margin:0 auto;
+}
 
 
 ._citys { width: 450px; display: inline-block; border: 2px solid #eee; padding: 5px; position: relative; background: #fff!important}
