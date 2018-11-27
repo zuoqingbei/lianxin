@@ -1,8 +1,10 @@
 let InitObj = {
-	rows : JSON.parse(localStorage.getItem("row")),
-	bindCwConfig(conf_id,url){
+	bindCwConfig(conf_id,url,tableTitle,i,radioName,rows){
+		
 		/**
 		 * 绑定财务模块表格配置信息
+		 * tableTitle:表格标题
+		 * i:代表第几次调用此方法 1-4 共四次
 		 */
 		let paramObj = {}
 		let _this = this
@@ -11,9 +13,12 @@ let InitObj = {
 		if(url.split("*")[1]) {
 			let tempParam = url.split("*")[1].split("$");//必要参数数组
 			tempParam.forEach((item,index)=>{
-				paramObj[item] = this.rows[item]
+				paramObj[item] = rows[item]
+				console.log(paramObj[item],rows[item])
 			})
 		}
+		console.log(tableTitle)
+		let radioVal = ''
 		$.ajax({
 			url:BASE_PATH + 'credit/front/ReportGetData/' + url.split("*")[0],
 			type:'post',
@@ -22,6 +27,8 @@ let InitObj = {
 			success:(data)=>{
 				console.log(data)
 				data = data.rows
+				if(data.length === 0){return}
+				//获取财务模板id   ////下面 0代表页面自上而下的财务模块
 				cwModalId = data[0]["id"]
 				let cwModalArr = Array.from($(".cwModal"))
 				data.forEach((item,index)=>{
@@ -41,30 +48,71 @@ let InitObj = {
 						let name = $(ele).attr("name")
 						let val = item[name]
 						$("input[name="+name+"][value="+val+"]").attr("checked","checked")
+						radioVal = val
 					})
 				})
 			}
 		})
+		let tables = Array.from($(".table-title"))
+		$(tables[i-1]).html(radioVal==="1"?tableTitle[1]:tableTitle[0])
+		$(document).on('change','input[type=radio][name='+radioName+']',()=>{
+			let val = $('input[type=radio][name='+radioName+']:checked').val()
+			console.log(i-1,tableTitle,val)
+			$(tables[i-1]).html(val==="1"?tableTitle[1]:tableTitle[0])
+		})
 		return cwModalId
 	},
-	initCwTable(isEdit,tableCwIds,title,contents,url,id){
+	initCwTable(tableCwIds,title,contents,url,id){
 		//财务模块表格初始化
 		/**
 		 * tableCwIds:表格id数组 
-		 * isEdit:是否可以编辑 0 不可编辑 1可编辑
+		 * 
 		 * title ：表格的配置信息
 		 * contents :表格的表头信息
 		 * url:财务getsource
 		 * id:财务模块id
 		 */
+		let returnData;
+		$.ajax({
+			url:BASE_PATH + 'credit/front/ReportGetData/' + url + '?ficConf_id='+id,
+			type:'post',
+			async:false,
+			success:(data)=>{
+				returnData = data
+			}
+		})
+		let tempRows =  []
+		let tempArr = [];
+		
+		returnData['rows'].forEach((item,index)=>{
+			if(item.is_sum_option) {
+				//合计项
+				if(index>8){
+					//非合计表合计项 给个class背景变色
+					item["begin_date_value"] = `<input type="number" disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray" style="width:13.5rem"/>`
+					item["end_date_value"] = `<input type="number" disabled="disabled" value=${item["end_date_value"]} class="form-control" style="width:13.5rem"/>`
+				}else {
+					item["begin_date_value"] = `<input type="number" disabled="disabled" value=${item["begin_date_value"]} class="form-control" style="width:13.5rem"/>`
+					item["end_date_value"] = `<input type="number" disabled="disabled" value=${item["end_date_value"]} class="form-control" style="width:13.5rem"/>`
+				}
+			}else {
+				item["begin_date_value"] = `<input type="number" value=${item["begin_date_value"]} class="form-control" style="width:13.5rem"/>`
+				item["end_date_value"] = `<input type="number" value=${item["end_date_value"]} class="form-control" style="width:13.5rem"/>`
+			}
+			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
+				if(tempRows.length !== 0){
+					tempArr.push(tempRows)
+					tempRows = []
+				}
+			}
+			tempRows.push(item)
+		})
+		
 		tableCwIds.forEach((item,index)=>{
 			const $table = $('#'+item);
 			$table.bootstrapTable({
         		columns: columns(),
-    			url:BASE_PATH + 'credit/front/ReportGetData/' + url + '?ficConf_id='+id,
-			    method : 'post', 
-			    sidePagination: 'server',
-			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+        		data:tempArr[index],
     			pagination: false, //分页
     			smartDisplay:true,
     			locales:'zh-CN',
@@ -73,36 +121,42 @@ let InitObj = {
 			
 			function columns(){
         		let arr = []
-        		let ele = contents[0]
-    			if(ele.temp_name !== '操作|编辑|删除'){
-    				arr.push({
-    					title:ele.temp_name,
-    					field: ele.column_name,
-    					width:(1/contents.length)*100+'%'
-    				})
-    				
-    			}else {
-    				arr.push({
-    					title:'',
-    					field: 'operate',
-    					width:1/contents.length,
-    					events: {
-        					"click .edit":(e,value,row,index)=>{
-        						
-        					},
-        					"click .delete":(e,value,row,index)=>{
-        						
-        					}
-        				},
-//            				formatter: function(){return _this.formatBtnArr[tempI]}
-    				})
-    			}
-    		
+        		contents.forEach((ele,index)=>{
+	    			if(ele.temp_name !== '操作|编辑|删除'){
+	    				arr.push({
+	    					title:ele.temp_name,
+	    					field: ele.column_name,
+	    					width:(1/contents.length)*100+'%',
+	    					class:'table-margin',
+	    					align:'center',
+	    				})
+	    				
+	    			}else {
+	    				arr.push({
+	    					title:'',
+	    					field: 'operate',
+	    					width:1/contents.length,
+	    					align:'center',
+	    					events: {
+	        					"click .edit":(e,value,row,index)=>{
+	        						
+	        					},
+	        					"click .delete":(e,value,row,index)=>{
+	        						
+	        					}
+	        				},
+	//            				formatter: function(){return _this.formatBtnArr[tempI]}
+	    				})
+	    			}
+        		})
         		
         		return arr
         	}
 		})
 		
+		setTimeout(()=>{
+			$(".bg-gray").parent("td").parent("tr").css("background","#fafafa")
+		},0)
 		
 	},
 	dateInit(){

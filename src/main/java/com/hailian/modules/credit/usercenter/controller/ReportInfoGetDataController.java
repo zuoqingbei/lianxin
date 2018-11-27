@@ -324,10 +324,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			Class<?> table = Class.forName(PAKAGENAME_PRE + className);
 			BaseProjectModel model = (BaseProjectModel) table.newInstance();
 			rows = model.find(
-					"select info.*,cu.`name` as name,de.detail_name as report_language ,det.detail_name as country from credit_order_info  info "
+					"select info.*,detai.detail_name as area,t.name as reportType,cu.`name` as name,de.detail_name as speeds,de.detail_name as report_language ,det.detail_name as country from credit_order_info  info "
 					+ " LEFT JOIN credit_custom_info cu on info.custom_id=cu.id "
 					+ " LEFT JOIN sys_dict_detail de on de.detail_id=info.report_language"
 					+ " LEFT JOIN sys_dict_detail det on det.detail_id=info.country"
+					+ " LEFT JOIN sys_dict_detail deta on deta.detail_id=info.speed"
+					+ " LEFT JOIN sys_dict_detail detai on detai.detail_id=info.continent"
+					+ " LEFT JOIN credit_report_type t on t.id=info.report_type"
 					+ " where info.id=?",
 					orderId);
 			if (!("".equals(selectInfo) || selectInfo == null)) {
@@ -454,12 +457,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     * @return
      */
     public void getflow(){
+    	Record record = new Record();
     String order_num=	getPara("num");
-     List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
+     List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.detail_id, d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
     		+ "LEFT JOIN sys_dict_detail d on d.detail_id=f.order_state "
     		+ "LEFT JOIN sys_user u on u.userid=f.create_oper "
     		+ "where  f.order_num=?",order_num);
-    renderJson(flows);
+     renderJson(record.set("rows", flows).set("total", flows!=null?flows.size():null));	
     	
     	
     }
