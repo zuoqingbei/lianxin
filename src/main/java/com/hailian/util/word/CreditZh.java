@@ -26,13 +26,21 @@ public class CreditZh {
         //CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
     }
 
-    public static void reportTable() {
+    /**
+     * 生成商业报告
+     * @param reportType  报告类型
+     * @param orderId     订单ID
+     * @param companyId   公司ID
+     * @param sysLanguage 语言
+     * @param userid 当前登录人
+     */
+    public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
         //报告类型
-        String reportType = "8";
+        //String reportType = "8";
         //语言
-        String sysLanguage = "612";
+        //String sysLanguage = "612";
         //公司id
-        String companyId = "7777794"; //77基本  65商业  //7777794信用分析
+        //String companyId = "7777794"; //77基本  65商业  //7777794信用分析
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

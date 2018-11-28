@@ -25,12 +25,12 @@ public class FinanceService {
 	/**
 	 * 增加或者修改财务配置信息(包含在实体表里克隆一份默认的)
 	 * @param dataJson
-	 * @param type
+	 * @param sysLanguage
 	 * @param financialConfigId
 	 * @param userId
 	 * @param now
 	 */
-	public static void alterFinancialConfig(List<Map<Object, Object>> entrys, int type,String userId,String now) {
+	public static void alterFinancialConfig(List<Map<Object, Object>> entrys, String sysLanguage,String userId,String now) {
 		//实体是否存在id
 		boolean exitsId = true; 
 		if(entrys.size()!=1) {
@@ -44,6 +44,9 @@ public class FinanceService {
 	    model.set("update_by", userId);
 		model.set("update_date", now);
 		
+		if(!("".equals(sysLanguage)||sysLanguage==null)) {
+			model.set("sys_language", Integer.parseInt(sysLanguage));
+		}
 		for (Object key : entrys.get(0).keySet()) {
 			model.set((""+key).trim(), (""+(entrys.get(0).get(key))).trim());
 		}
@@ -59,7 +62,7 @@ public class FinanceService {
 					model.set("create_date", now);
 					model.save();
 					Integer financialConfId = model.get("id");
-					addDictConfigToBeFinancialEntry(financialConfId+"",type,userId,now);
+					addDictConfigToBeFinancialEntry(financialConfId+"",sysLanguage,userId,now);
 					return true;
 				}
 			});
@@ -97,17 +100,17 @@ public class FinanceService {
 	/**
 	 * 获取财务字典表信息 
 	 */
-	public static List<CreditCompanyFinancialDict> getFinancialDict(int type) {
-		return DictCache.getFinancialDictMap().get(type);
+	public static List<CreditCompanyFinancialDict> getFinancialDict(String sysLanguage) {
+		return DictCache.getFinancialDictMap().get(sysLanguage);
 	} 
 	
 	
 	/**
 	 * 从字典表获取数据里添加模板到实体表 
-	 * @param type 系统语言
+	 * @param sysLanguage 系统语言
 	 * @param financialConfId 财务配置id
 	 */
-	public static  void addDictConfigToBeFinancialEntry(String financialConfId, int  type,String userId,String now) {
+	public static  void addDictConfigToBeFinancialEntry(String financialConfId, String sysLanguage,String userId,String now) {
 		//模板里有用字段
 		String [] columnName = new String[] {
 				"item_name",
@@ -115,14 +118,12 @@ public class FinanceService {
 				"son_sector",
 				"is_sum_option",
 				"sort_no",
-				"is_default",
-				"class_name1",
-				"class_name2"
+				"is_default"
 		};
 		CreditCompanyFinancialEntry entrymodel = null;
-		List<CreditCompanyFinancialDict> dictList = getFinancialDict(type);
+		List<CreditCompanyFinancialDict> dictList = getFinancialDict(sysLanguage);
 		if(dictList==null) {
-			throw new RuntimeException("该报告类型没有对应的财务字典表!");
+			throw new RuntimeException("该语言没有对应的字典表!");
 		}
 		List<CreditCompanyFinancialEntry> targetList = new ArrayList<>();
 			for (CreditCompanyFinancialDict dictModel : dictList) {
@@ -198,9 +199,9 @@ public class FinanceService {
 	 * 增加或者修改财务实体表信息(excel上传触发)
 	 * financialConfId 财务配置id
 	 */
-	public static String alterFinancialEntryListForUpload(File file,int type,String financeConfigId,String userId, String now) {
+	public static String alterFinancialEntryListForUpload(File file,String sysLanguage,String financeConfigId,String userId, String now) {
 		//解析excel,获取财务实体对象	
-		 List<CreditCompanyFinancialEntry> modelList = ExcelModule.parseExcel(file, type, financeConfigId, userId, now);
+		 List<CreditCompanyFinancialEntry> modelList = ExcelModule.parseExcel(file, sysLanguage, financeConfigId, userId, now);
 		 if(modelList==null||modelList.size()==0) {
 			 return "数据量为0,导入失败!";
 		 }
