@@ -56,6 +56,14 @@ public class BusinessZh {
             String moduleType = crmc.getStr("small_module_type");
             String key = crmc.getStr("word_key");
             String tableType = crmc.getStr("word_table_type");
+
+            List<CreditCompanyFinancialEntry>  finDataRows = null;
+            //财务
+            if("10".equals(moduleType)){
+                //取数据
+                finDataRows = FinanceService.getFinancialEntryList("1");
+            }
+
             //无url的跳过取数
             if (source == null || "".equals(source)) {
                 continue;
@@ -177,11 +185,6 @@ public class BusinessZh {
                 }
             }
 
-            //财务
-            if("10".equals(moduleType)){
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
-            }
-
             //图形表
             if ("11".equals(moduleType)) {
                 String selectInfo = "";
@@ -227,8 +230,9 @@ public class BusinessZh {
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
+
         //财务模块生成
-        map.put("financial", financial("1"));
+        map.put("financial", financial(reportType,companyId,sysLanguage,"1"));
 
 
         MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
@@ -240,25 +244,79 @@ public class BusinessZh {
         fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
         fileList.add(fileMap);
         try {
-            new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
+            //new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 财务
+     * 财务模板
+     * @param reportType
+     * @param companyId
+     * @param sysLanguage
+     * @param financialConfId
+     * @return
      */
-    public static MiniTableRenderData financial(String financialConfId){
+    public static MiniTableRenderData financial(String reportType,String companyId,String sysLanguage,String financialConfId) {
+        ReportInfoGetDataController report = new ReportInfoGetDataController();
+
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
-        List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId);
-        for(CreditCompanyFinancialEntry ccf:row) {
-            //ccf.getStr("");
+        //取数据
+        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId);
+
+        int j = 0;
+        for (CreditCompanyFinancialEntry ccf : finDataRows) {
+            int son_sector = ccf.getInt("son_sector");
+            if(j==0) {
+                String title = "";
+                switch (son_sector){
+                    case 1:
+                        title = "关键财务项目";
+                        break;
+                    case 2:
+                        title = "流动资产";
+                        break;
+                }
+                rowList.add(RowRenderData.build(new TextRenderData(title), new TextRenderData(""), new TextRenderData("")));
+            }
             String itemName = ccf.getStr("item_name");
             Integer begin = ccf.getInt("begin_date_value");
             Integer end = ccf.getInt("end_date_value");
             rowList.add(RowRenderData.build(new TextRenderData(itemName), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
+            j++;
         }
+
+        //取配置
+        /*List<CreditReportModuleConf> confList = CreditReportModuleConf.dao.find("select * from credit_report_module_conf where float_parent in (select id from credit_report_module_conf where report_type="
+                + reportType + " and small_module_type = 10 )");
+        for(CreditReportModuleConf conf : confList){
+            String source = conf.getStr("get_source");
+            if(source!=null&&!"".equals(source)){
+                String ci = conf.getInt("id") + "";
+                String s = conf.getStr("get_source");
+                if (s == null || "".equals(s)) {
+                    continue;
+                }
+                Map<String, String> p = MainWord.parseUrl(s);
+                String t = p.get("tableName");
+                if (t == null || "".equals(t)) {
+                    continue;
+                }
+                String c = p.get("className");
+                String cn = c.split("\\*")[0];
+
+                //取子项
+                List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(conf.get("id").toString(), reportType);
+                //取数据
+                List rows = report.getTableData(false, sysLanguage, companyId, t, cn, ci, "");
+                MiniTableRenderData table = MainWord.createTableS(child, rows);
+
+
+            }
+        }*/
+
+
         return new MiniTableRenderData(rowList);
     }
 
