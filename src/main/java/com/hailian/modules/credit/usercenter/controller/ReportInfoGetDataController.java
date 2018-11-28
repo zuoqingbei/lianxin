@@ -246,9 +246,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @return
      */
     public List getTableData(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
-		// 解析实体获取required参数
-      String type=	getPara("type");
-      String getSource="";
+        // 解析实体获取required参数
+        String type = null;
+        if(getRequest()!=null){
+            type = getPara("type");
+        }
+        String getSource = "";
     	if (type!=null) {
 			CreditReportDetailConf confModel=CreditReportDetailConf.dao.findById(confId);
 			 getSource = confModel.getStr("data_source");
@@ -457,12 +460,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     * @return
      */
     public void getflow(){
+    	Record record = new Record();
     String order_num=	getPara("num");
-     List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.id, d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
+     List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.detail_id, d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
     		+ "LEFT JOIN sys_dict_detail d on d.detail_id=f.order_state "
     		+ "LEFT JOIN sys_user u on u.userid=f.create_oper "
     		+ "where  f.order_num=?",order_num);
-    renderJson(flows);
+     renderJson(record.set("rows", flows).set("total", flows!=null?flows.size():null));	
     	
     	
     }

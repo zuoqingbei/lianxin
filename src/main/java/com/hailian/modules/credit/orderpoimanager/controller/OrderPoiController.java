@@ -27,6 +27,7 @@ import com.feizhou.swagger.annotation.ApiOperation;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
 import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
@@ -416,6 +417,7 @@ public class OrderPoiController extends BaseProjectController {
 				  //代理自动分配
 				  AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroad(countryid,speed);
 				  if(agentPrice!=null){
+					  model.set("status", "295");
 					  model.set("agent_id", agentPrice.get("agent_id"));
 					  model.set("agent_priceId", agentPrice.get("id"));
 				  }else{
@@ -425,6 +427,7 @@ public class OrderPoiController extends BaseProjectController {
 			  modellist.add(model);
 			 }
 			 Db.batchSave(modellist, modellist.size());
+			 CreditOperationLog.dao.addOneEntry(this, null, "订单管理/批量导入/提交","/credit/orderpoimanager/savedata");//操作日志记录
 			 for(CreditOrderInfoModel model:modellist){
 				 if(model.get("agent_id")!= null){
 					 MailService.service.toSendMail("1", model.getStr("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
