@@ -4,6 +4,7 @@ import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.PictureRenderData;
 import com.deepoove.poi.data.RowRenderData;
 import com.deepoove.poi.data.TextRenderData;
+import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
@@ -266,24 +267,78 @@ public class BusinessZh {
         List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId);
 
         int j = 0;
+        Integer old = null;
         for (CreditCompanyFinancialEntry ccf : finDataRows) {
-            int son_sector = ccf.getInt("son_sector");
+            Integer son_sector = ccf.getInt("son_sector");
+            //判断新模块，第一行要加标题
+            if(old==null){
+                old = son_sector;
+            }else{
+                if(son_sector.intValue()!=old.intValue()){
+                    old = son_sector;
+                    j = 0;
+                }
+            }
+            //j=0表示第一条
             if(j==0) {
                 String title = "";
-                switch (son_sector){
+                String unit = "";
+                switch (son_sector.intValue()){
                     case 1:
-                        title = "关键财务项目";
+                        title = "合计";
                         break;
                     case 2:
                         title = "流动资产";
                         break;
+                    case 3:
+                        title = "非流动资产";
+                        break;
+                    case 4:
+                        title = "流动负债";
+                        break;
+                    case 5:
+                        title = "非流动负债";
+                        break;
+                    case 6:
+                        title = "负债及所有者权益";
+                        break;
+                    case 7:
+                        title = "毛利润";
+                        break;
+                    case 8:
+                        title = "营业利润";
+                        break;
+                    case 9:
+                        title = "税前利润";
+                        break;
+                    case 10:
+                        title = "所得税费用";
+                        break;
+                    case 11:
+                        title = "重要比率表";
+                        break;
                 }
-                rowList.add(RowRenderData.build(new TextRenderData(title), new TextRenderData(""), new TextRenderData("")));
+                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("")));
+                //大标题
+                Style titileStyle = new Style();
+                titileStyle.setColor("843C0B");
+                titileStyle.setBold(true);
+                rowList.add(RowRenderData.build(new TextRenderData(title,titileStyle), new TextRenderData(""), new TextRenderData("")));
+                Style header = new Style();
+                header.setBold(true);
+                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("单位：人民币（千元）",header)));
             }
             String itemName = ccf.getStr("item_name");
             Integer begin = ccf.getInt("begin_date_value");
             Integer end = ccf.getInt("end_date_value");
-            rowList.add(RowRenderData.build(new TextRenderData(itemName), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
+            Integer is_sum_option = ccf.getInt("is_sum_option");
+
+            Style sumStyle = new Style();
+            if(is_sum_option.intValue()==1){
+                sumStyle.setBold(true);
+            }
+            rowList.add(RowRenderData.build(new TextRenderData(itemName,sumStyle), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
+
             j++;
         }
 
