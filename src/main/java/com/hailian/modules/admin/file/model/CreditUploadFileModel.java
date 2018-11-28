@@ -67,7 +67,7 @@ public class CreditUploadFileModel extends BaseProjectModel<CreditUploadFileMode
 	 * @return_type   List<CreditUploadFileModel>
 	 */
 	public List<CreditUploadFileModel> getFile(String business_id){
-		String sql="select * from credit_upload_file where business_id=?";
+		String sql="select * from credit_upload_file where business_id=? and del_flag=0";
 		return dao.find(sql, business_id);
 	}
 	public CreditUploadFileModel getById(int id){

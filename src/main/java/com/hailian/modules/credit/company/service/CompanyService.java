@@ -132,7 +132,7 @@ public class CompanyService {
 				String replaceTeamEnd = TeamEnd.replace("00:00:00", "").trim();
 				companyinfoModel.set("business_date_end", replaceTeamEnd);
 			}else{
-				companyinfoModel.set("business_date_end", "无固定期限");
+				companyinfoModel.set("business_date_end", "无期");
 			}
 			
 			List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");

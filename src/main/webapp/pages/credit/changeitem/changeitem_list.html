@@ -12,27 +12,22 @@
 			height : 500,
 			form : document.form1,
 			list : function() {
-				var url = 'credit/translatelibrary/list';
+				var url = 'credit/changeitem/list';
 				this.form.action = url;
 				this.form.submit();
 			},
-			view : function(id) {
-				var url = 'credit/translatelibrary/view/'+id;
-				var title = '查看';
-				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
-			},
 			add : function() {
-				var url = 'credit/translatelibrary/add';
+				var url = 'credit/changeitem/add';
 				var title = '新增';
 				Iframe(url, this.width, this.height, title);
 			},
 			edit : function(id) {
-				var url = 'credit/translatelibrary/edit/'+id;
+				var url = 'credit/changeitem/edit/'+id;
 				var title = '修改';
 				Iframe(url, this.width, this.height, title);
 			},
 			del : function(id) {
-				var url = 'credit/translatelibrary/delete/'+id;
+				var url = 'credit/changeitem/delete/'+id;
 				var title = '确定要删除吗？';
 				Confirm(title, function() {
 					form1.action = url;
@@ -41,7 +36,7 @@
 			}
 		};
 		//显示Menu索引
-		showMenu('page_translate');
+		showMenu('page_changeitem');
 	});
 	
 	//分页
@@ -65,8 +60,8 @@ var bodyContent = {
 			<%  //查询列表 %>
 			错误语句：
 			<div class="form-group">
-					<input class="form-control" type="text" name="attr.error_phrase" value="${attr.error_phrase!''}" 
-						placeholder="请输入错误语句" required='required' />
+					<input class="form-control" type="text" name="attr.nonessentialitems" value="${attr.nonessentialitems!''}" 
+						placeholder="请输入非必需变更项" required='required' />
 			</div>
 			
 			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
@@ -86,8 +81,7 @@ var bodyContent = {
 				<tr>
 					<th>序号</th>
 					<%  // 列表头部 %>
-					<th name="t1.error_phrase" class="sorting">错误语句</th> 
-					<th name="t1.correct_phrase" class="sorting">正确语句</th> 
+					<th name="t1.nonessentialitems" class="sorting">非必需变更项</th> 
 					<th name="t4.realname" class="sorting">创建人</th> 
 					<th name="t1.create_date" class="sorting">创建时间</th> 
 					<th name="t1.remarks" class="sorting">备注</th> 
@@ -99,8 +93,7 @@ var bodyContent = {
 				<tr>
 				<td>${itemLP.index }</td>
 					<%  // 列表内容 %>
-					<td>${item.error_phrase}</td> 
-					<td>${item.correct_phrase}</td> 
+					<td>${item.nonessentialitems}</td> 
 					<td>
 						${item.realname}
 					</td>  
@@ -113,7 +106,6 @@ var bodyContent = {
 						${item.remarks} <% } %>
 					</td>
 				<td>
-				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
 				</td>

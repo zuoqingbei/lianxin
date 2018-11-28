@@ -117,7 +117,7 @@ public class HomeController extends BaseProjectController {
 		//根据id获取num
 		String num=order.getStr("num");
 		//获取附件
-		List<CreditUploadFileModel> files=CreditUploadFileModel.dao.getFile(num);
+		List<CreditUploadFileModel> files=CreditUploadFileModel.dao.getFile(id+"");//修改关联关系
 		for(CreditUploadFileModel file:files) {
 			String view_url=file.get("view_url");
 			String url=file.get("url");
