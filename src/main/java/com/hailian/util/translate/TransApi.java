@@ -11,6 +11,7 @@ import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 public class TransApi {	 
@@ -110,7 +111,10 @@ public class TransApi {
 		return date;
 		
 	}
-	
+	public static void main(String[] args) {
+		String trans = Trans("信息安全及保密承诺书");
+		System.out.println(trans);
 	}
+}
 
 

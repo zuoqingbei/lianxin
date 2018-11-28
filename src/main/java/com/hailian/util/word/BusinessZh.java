@@ -2,9 +2,14 @@ package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.PictureRenderData;
+import com.deepoove.poi.data.RowRenderData;
+import com.deepoove.poi.data.TextRenderData;
+import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
+import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
@@ -24,7 +29,6 @@ public class BusinessZh {
 
     /**
      * 生成商业报告
-     *
      * @param reportType  报告类型
      * @param orderId     订单ID
      * @param companyId   公司ID
@@ -53,6 +57,14 @@ public class BusinessZh {
             String moduleType = crmc.getStr("small_module_type");
             String key = crmc.getStr("word_key");
             String tableType = crmc.getStr("word_table_type");
+
+            List<CreditCompanyFinancialEntry>  finDataRows = null;
+            //财务
+            if("10".equals(moduleType)){
+                //取数据
+                finDataRows = FinanceService.getFinancialEntryList("1");
+            }
+
             //无url的跳过取数
             if (source == null || "".equals(source)) {
                 continue;
@@ -172,8 +184,6 @@ public class BusinessZh {
                         map.put(column, html.toString());
                     }
                 }
-
-
             }
 
             //图形表
@@ -221,6 +231,11 @@ public class BusinessZh {
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
+
+        //财务模块生成
+        map.put("financial", financial(reportType,companyId,sysLanguage,"1"));
+
+
         MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
         //上传文件
         String filePath = MainWord.uploadReport(_prePath + ".docx", orderId, userid);
@@ -230,17 +245,134 @@ public class BusinessZh {
         fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
         fileList.add(fileMap);
         try {
-            new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
+            //new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 财务
+     * 财务模板
+     * @param reportType
+     * @param companyId
+     * @param sysLanguage
+     * @param financialConfId
+     * @return
      */
-    public void financial(){
+    public static MiniTableRenderData financial(String reportType,String companyId,String sysLanguage,String financialConfId) {
+        ReportInfoGetDataController report = new ReportInfoGetDataController();
 
+        List<RowRenderData> rowList = new ArrayList<RowRenderData>();
+        //取数据
+        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId);
+
+        int j = 0;
+        Integer old = null;
+        for (CreditCompanyFinancialEntry ccf : finDataRows) {
+            Integer son_sector = ccf.getInt("son_sector");
+            //判断新模块，第一行要加标题
+            if(old==null){
+                old = son_sector;
+            }else{
+                if(son_sector.intValue()!=old.intValue()){
+                    old = son_sector;
+                    j = 0;
+                }
+            }
+            //j=0表示第一条
+            if(j==0) {
+                String title = "";
+                String unit = "";
+                switch (son_sector.intValue()){
+                    case 1:
+                        title = "合计";
+                        break;
+                    case 2:
+                        title = "流动资产";
+                        break;
+                    case 3:
+                        title = "非流动资产";
+                        break;
+                    case 4:
+                        title = "流动负债";
+                        break;
+                    case 5:
+                        title = "非流动负债";
+                        break;
+                    case 6:
+                        title = "负债及所有者权益";
+                        break;
+                    case 7:
+                        title = "毛利润";
+                        break;
+                    case 8:
+                        title = "营业利润";
+                        break;
+                    case 9:
+                        title = "税前利润";
+                        break;
+                    case 10:
+                        title = "所得税费用";
+                        break;
+                    case 11:
+                        title = "重要比率表";
+                        break;
+                }
+                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("")));
+                //大标题
+                Style titileStyle = new Style();
+                titileStyle.setColor("843C0B");
+                titileStyle.setBold(true);
+                rowList.add(RowRenderData.build(new TextRenderData(title,titileStyle), new TextRenderData(""), new TextRenderData("")));
+                Style header = new Style();
+                header.setBold(true);
+                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("单位：人民币（千元）",header)));
+            }
+            String itemName = ccf.getStr("item_name");
+            Integer begin = ccf.getInt("begin_date_value");
+            Integer end = ccf.getInt("end_date_value");
+            Integer is_sum_option = ccf.getInt("is_sum_option");
+
+            Style sumStyle = new Style();
+            if(is_sum_option.intValue()==1){
+                sumStyle.setBold(true);
+            }
+            rowList.add(RowRenderData.build(new TextRenderData(itemName,sumStyle), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
+
+            j++;
+        }
+
+        //取配置
+        /*List<CreditReportModuleConf> confList = CreditReportModuleConf.dao.find("select * from credit_report_module_conf where float_parent in (select id from credit_report_module_conf where report_type="
+                + reportType + " and small_module_type = 10 )");
+        for(CreditReportModuleConf conf : confList){
+            String source = conf.getStr("get_source");
+            if(source!=null&&!"".equals(source)){
+                String ci = conf.getInt("id") + "";
+                String s = conf.getStr("get_source");
+                if (s == null || "".equals(s)) {
+                    continue;
+                }
+                Map<String, String> p = MainWord.parseUrl(s);
+                String t = p.get("tableName");
+                if (t == null || "".equals(t)) {
+                    continue;
+                }
+                String c = p.get("className");
+                String cn = c.split("\\*")[0];
+
+                //取子项
+                List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(conf.get("id").toString(), reportType);
+                //取数据
+                List rows = report.getTableData(false, sysLanguage, companyId, t, cn, ci, "");
+                MiniTableRenderData table = MainWord.createTableS(child, rows);
+
+
+            }
+        }*/
+
+
+        return new MiniTableRenderData(rowList);
     }
 
 

@@ -419,7 +419,7 @@ let ReportConfig = {
     									</div>
     								</div>
     								<div class="cw-date form-inline">
-    									<input class="form-control mr-5 my-3" style="margin-left:45%" type="text" name=${this_content[6].column_name} id=${this_content[6].column_name} placeholder=${this_content[6].place_hold} />
+    									<input class="form-control my-3" style="margin-left:31.5%;margin-right:11%" type="text" name=${this_content[6].column_name} id=${this_content[6].column_name} placeholder=${this_content[6].place_hold} />
     									<input class="form-control" type="text" name=${this_content[7].column_name} id=${this_content[7].column_name} placeholder=${this_content[7].place_hold} />
     								</div>
     							</div>`
@@ -428,6 +428,18 @@ let ReportConfig = {
     			let addtext = cw_title[1].place_hold
     			let conf_id = cw_title[0].id
     			let url = cw_title[0].get_source
+    			let tableTitle = ''
+    			if(item.temp_name !== null && item.temp_name !== '') {
+    				tableTitle = item.temp_name.split("||");
+    				cw_table_html += `<div class="table-title">${tableTitle}</div>`
+    			}
+    			(function(a,i,radioName){
+    				setTimeout(()=>{
+    					let id = InitObj.bindCwConfig(conf_id,url,a,i,radioName,_this.rows)
+    					InitObj.initCwTable(tableCwId,item,this_content,_this.cwGetSource,id)
+    					
+    				},0)
+    			})(tableTitle,index,cw_contents[0][1].column_name)
     			switch(item.sort) {
     				case 2:
     					//合计表
@@ -439,11 +451,7 @@ let ReportConfig = {
 					            				</table>
 											</div>`
     						tableCwId.push('tableCwHj')
-    					setTimeout(()=>{
-    						let id = InitObj.bindCwConfig(conf_id,url)
-    						InitObj.initCwTable(0,tableCwId,item,this_content,_this.cwGetSource,id)
-    						
-    					},0)
+    					
     				break;
     				case 3:
     					//资产负债表
@@ -864,7 +872,7 @@ let ReportConfig = {
                 	contentHtml += `</div>`
                 })
                 
-                $(".table-content").html(contentHtml)
+                $(".main-content").html(contentHtml)
                 $(".position-fixed").html(bottomBtn)
             }
         })

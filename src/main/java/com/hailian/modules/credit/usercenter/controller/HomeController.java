@@ -117,7 +117,7 @@ public class HomeController extends BaseProjectController {
 		//根据id获取num
 		String num=order.getStr("num");
 		//获取附件
-		List<CreditUploadFileModel> files=CreditUploadFileModel.dao.getFile(num);
+		List<CreditUploadFileModel> files=CreditUploadFileModel.dao.getFile(id+"");//修改关联关系
 		for(CreditUploadFileModel file:files) {
 			String view_url=file.get("view_url");
 			String url=file.get("url");
@@ -323,10 +323,10 @@ public class HomeController extends BaseProjectController {
 		CreditOrderInfo model=new CreditOrderInfo();
 		SysUser user = (SysUser) getSessionUser();
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
-		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
+//		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
 		setAttr("user",user);
 		setAttr("customs",customs);
-		setAttr("company",company);
+//		setAttr("company",company);
 		setAttr("model", model);
 		render(path + "/order_manage/create_order.html");
 	}
