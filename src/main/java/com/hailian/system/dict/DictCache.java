@@ -48,19 +48,18 @@ public class DictCache {
 	public static void initDict() {
 		Map<Integer, SysDictDetail> dictMap = new LinkedHashMap<Integer, SysDictDetail>();
 		//财务字典表
-		List<CreditCompanyFinancialDict> simplifiedChineseDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where type=1 order by sort_no,id");
-		List<CreditCompanyFinancialDict>  englishDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where type=2 order by sort_no,id");
-		List<CreditCompanyFinancialDict> chineseTraditionalDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where type=3 order by sort_no,id");
+		List<CreditCompanyFinancialDict> type1 = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where type=1 order by sort_no,id");
+		List<CreditCompanyFinancialDict>  type2 = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where type=2 order by sort_no,id");
+		List<CreditCompanyFinancialDict> type3 = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where type=3 order by sort_no,id");
 		Map<Integer,List<CreditCompanyFinancialDict>>  FinancialDictMap = new HashMap<>();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
-		FinancialDictMap.put(1, simplifiedChineseDict);
-		FinancialDictMap.put(2, englishDict);
-		FinancialDictMap.put(3, chineseTraditionalDict);
+		FinancialDictMap.put(1, type1);
+		FinancialDictMap.put(2, type2);
+		FinancialDictMap.put(3, type3);
 		// detailSort
 		listDetail = SysDictDetail.dao.findByWhere(" order by detail_sort,detail_id");
-		//财务字典表子模块代码集合
-		List<Integer> sonSectorCodeList = Db.query("select son_sector from credit_company_financial_dict GROUP  BY son_sector ");
-		//new SysDictDetail(detail.getInt("detail_id"));
+		
+		
 		
 		//listDetail.remove();
 		
@@ -78,7 +77,6 @@ public class DictCache {
 		}
 		cache.add("map", dictMap);
 		cache.add("financialDictMap", FinancialDictMap);
-		cache.add("sonSectorCodeList", sonSectorCodeList);
 	}
 
 	public static Map<Integer, SysDictDetail> getCacheMap() {
@@ -89,9 +87,6 @@ public class DictCache {
 		return cache.get("financialDictMap");
 	}
 	
-	public static List<Integer> getSonSectorCodeList() {
-		return cache.get("sonSectorCodeList");
-	}
 	//////////////////////////jstl 标签/////////////////////////////
 
 	/**

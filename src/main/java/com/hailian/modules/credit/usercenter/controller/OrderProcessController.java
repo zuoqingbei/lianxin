@@ -808,7 +808,7 @@ public class OrderProcessController extends BaseProjectController{
                 return;
             }
             //上传文件
-            ResultType result = uploadFile(orderId,oldStatus,upFileList);
+            ResultType result = uploadFile(orderId,oldStatus,upFileList,getSessionUser().getUserid());
             CreditOperationLog.dao.addOneEntry(this, null, "","/credit/front/orderProcess/statusSaveWithFileUpLoad");//操作日志记录
             if(result.getStatusCode()==0){
                 renderJson(result);
@@ -828,7 +828,7 @@ public class OrderProcessController extends BaseProjectController{
      * return resultJson
      * @param orderId status
      */
-    public ResultType uploadFile(String businessId, String businessType,List<UploadFile> upFileList){
+    public static ResultType uploadFile(String businessId, String businessType,List<UploadFile> upFileList,int userid){
         List<File> commonFiles = new ArrayList<File>();
         List<File> pdfFiles = new ArrayList<File>();
         CreditUploadFileModel fileModel = new CreditUploadFileModel();
@@ -899,7 +899,6 @@ public class OrderProcessController extends BaseProjectController{
                     String factpath = storePath + "/" + FTPfileName;
                     String ftpFactpath = storePath + "/" + PDFfileName;
                     //String url = "http://" + ip+"/" + storePath + "/" + FTPfileName;
-                    Integer userid = getSessionUser().getUserid();
                     //将上传信息维护进实体表
                     UploadFileService.service.save(0,upFileList.get(i), factpath,factpath,ftpFactpath,ftpFactpath,fileModel,originalFileName+now,userid);
                 }
