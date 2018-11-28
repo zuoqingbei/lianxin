@@ -1,8 +1,10 @@
 package com.hailian.modules.credit.company.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -17,6 +19,7 @@ import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.http.HttpTest;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.template.ext.directive.Str;
 
@@ -121,11 +124,16 @@ public class CompanyService {
 				companyinfoModel.set("currency","274");
 			}
 			
-			String replaceStartDate = StartDate.replace("00:00:00", "");
+			String replaceStartDate = StartDate.replace("00:00:00", "").trim();
 			companyinfoModel.set("establishment_date", replaceStartDate);
-			companyinfoModel.set("business_date_start", TermStart);
-			String replaceTeamEnd = TeamEnd.replace("00:00:00", "");
-			companyinfoModel.set("business_date_end", replaceTeamEnd);
+			String replaceTermStart = TermStart.replace("00:00:00", "").trim();
+			companyinfoModel.set("business_date_start", replaceTermStart);
+			if(StringUtils.isNotBlank(TeamEnd)){
+				String replaceTeamEnd = TeamEnd.replace("00:00:00", "").trim();
+				companyinfoModel.set("business_date_end", replaceTeamEnd);
+			}else{
+				companyinfoModel.set("business_date_end", "无期");
+			}
 			
 			List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");
 			if(CollectionUtils.isNotEmpty(dictDetailBy) && dictDetailBy!=null){
@@ -153,6 +161,7 @@ public class CompanyService {
 			JSONArray partners = json.getJSONObject("Result").getJSONArray("Partners");
 			if(partners !=null && partners.size()>0){
 				CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
+				List<CreditCompanyShareholder> shareholderlist=new ArrayList<CreditCompanyShareholder>();
 				for(int i=0;i<partners.size();i++){
 					JSONObject partner = (JSONObject)partners.get(i);
 					String name = partner.getString("StockName");//股东
@@ -164,11 +173,13 @@ public class CompanyService {
 					shareholderModel.set("contribution", ShouldCapi);
 					shareholderModel.set("company_id", companyId);
 					shareholderModel.set("sys_language", sys_language);
-					shareholderModel.save();
+					shareholderlist.add(shareholderModel);
 				}
+				Db.batchSave(shareholderlist, shareholderlist.size());
 			}
 			//管理层
 			JSONArray Employees = json.getJSONObject("Result").getJSONArray("Employees");
+			List<CreditCompanyManagement> managementlist=new ArrayList<CreditCompanyManagement>();
 			if(Employees !=null && Employees.size()>0){
 				CreditCompanyManagement.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 				for(int i=0;i<Employees.size();i++){
@@ -177,6 +188,7 @@ public class CompanyService {
 					String name = employee.getString("Name");//管理层姓名
 					String job = employee.getString("Job");//职位
 					CreditCompanyManagement managementModel = new CreditCompanyManagement();
+					
 					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
 					if(dictDetailBy2 !=null && CollectionUtils.isNotEmpty(dictDetailBy2)){
 						managementModel.set("position", dictDetailBy2.get(0).get("detail_id"));
@@ -185,19 +197,21 @@ public class CompanyService {
 						detailmodel.set("dict_type", "position");
 						detailmodel.set("detail_name", job);
 						detailmodel.save();
-						companyinfoModel.set("position", detailmodel.get("detail_id"));
+						managementModel.set("position", detailmodel.get("detail_id"));
 					}
 					managementModel.set("name", name);
 					managementModel.set("company_id", companyId);
 					managementModel.set("sys_language", sys_language);
-					managementModel.save();
+					managementlist.add(managementModel);
 				}
+				Db.batchSave(managementlist, managementlist.size());
 			}
 
 			//变更事项
 			JSONArray ChangeRecords = json.getJSONObject("Result").getJSONArray("ChangeRecords");
 			if(ChangeRecords != null && ChangeRecords.size()>0){
 				CreditCompanyHis.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
+				List<CreditCompanyHis> hisModellist=new ArrayList<CreditCompanyHis>();
 				for(int i=0;i<ChangeRecords.size();i++){
 					JSONObject changerecord = (JSONObject)ChangeRecords.get(i);
 					String ProjectName = changerecord.getString("ProjectName");//变更项
@@ -213,10 +227,11 @@ public class CompanyService {
 						companyhisModel.set("date", ChangeDate);
 						companyhisModel.set("company_id", companyId);
 						companyhisModel.set("sys_language", sys_language);
-						companyhisModel.save();
+						hisModellist.add(companyhisModel);
 					}
-					
 				}
+				Db.batchSave(hisModellist, hisModellist.size());
+				
 			}
 		}
 		DictCache.initDict();//缓存刷新
