@@ -1,10 +1,10 @@
 let OrderDetail = {
-    init() {
+    init: function() {
         this.rows = JSON.parse(localStorage.getItem("row"));
         console.log('--rows', this.rows);
         this.BASE_PATH = BASE_PATH + 'credit/front/';
-        this.getUrl = (item) => {
-            let urlArr = item.title.data_source.split("*");
+        this.getUrl = (item, otherProperty) => {
+            let urlArr = (otherProperty ? item.title[otherProperty] : item.title.data_source).split("*");
             if (urlArr[0] === '') {
                 return
             }
@@ -26,22 +26,6 @@ let OrderDetail = {
         this.processNames = this.rows.country === '中国大陆' ?
             ['订单分配', '信息录入', '订单核实', '订单查档', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成']
             : ['订单查档', '订单分配', '信息录入', '订单核实', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成'];
-        /*
-                this.processObj = [
-                    {'订单分配':['订单分配']},
-                    {'信息录入':['信息录入','信息录入完成']},
-                    {'订单核实':['客户确认']},
-                    {'订单查档':['代理中','代理完成','代理补充']},
-                    {'信息质检':['信息质检中','信息质检不通过','信息质检合格']},
-                    {'分析录入':['分析之作','分析完成']},
-                    {'分析质检':['分析质检中','分析质检不通过','分析质检合格']},
-                    {'翻译录入':['翻译制作','翻译完成']},
-                    {'翻译质检':['翻译质检中','翻译质检不通过','翻译质检合格']},
-                    {'报告完成':['报告完成']},
-                    {'客户内容已更新':['客户内容已更新']},
-                    {'订单完成':['客户内容已更新']},
-                ];
-        */
         this.processObj = {
             '订单分配': ['订单分配'],
             '信息录入': ['信息录入', '信息录入完成'],
@@ -56,8 +40,10 @@ let OrderDetail = {
             '客户内容已更新': ['客户内容已更新'],
             '订单完成': ['客户内容已更新'],
         };
-        this.creditLevel = `
-                <div class="credit-level-title pt-3">
+        // 汉语类型[1,8,10],英语类型[7,9,11]
+        this.english = [7, 9, 11].includes(this.rows.report_type - 0);
+        this.creditLevel = !this.english
+            ? `<div class="credit-level-title pt-3">
                     信用等级：<strong id="creditLevel" class="pl-3 pr-2"></strong>
                     <span class="myExplain">(见以下详情评估标准)</span>
                 </div>
@@ -157,6 +143,107 @@ let OrderDetail = {
                 <p class="m-3 ml-4">财务状况（40%） 股东背景（10%） 付款记录（10%）</p>
                 <p class="m-3 ml-4">信用历史（15%） 市场趋势（10%） 经营规模（15%）</p>
                 <p class="m-3 ml-4">如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款记录”两项。</p>
+                <p class="m-3 ml-4 pb-4">使用缩写： N/A-不详 CNY-人民币 SC-目标公司</p>`
+            : `<div class="credit-level-title pt-3">
+                    CREDIT RATING：<strong id="creditLevel" class="pl-3 pr-2"></strong>
+                    <span class="myExplain">(see below explanatory notes)</span>
+                </div>
+                <div class="table-content1" style="background:#fff">
+                    <div class="bootstrap-table">
+                        <div class="fixed-table-toolbar"></div>
+                        <div class="fixed-table-container" style="padding-bottom: 0px;">
+                            <div class="fixed-table-header" style="display: none;">
+                                <table></table>
+                            </div>
+                            <div class="fixed-table-body">
+                                <div class="fixed-table-loading" style="top: 41px; display: none;">loading……
+                                </div>
+                                <table id="table7" style="position: relative" class="table table-hover">
+                                    <thead>
+                                    <tr class="border-bottom">
+                                        <th style="width: 25%; " data-field="level">
+                                            <div class="th-inner ">RATING KEY:</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="width: 25%; " data-field="describe">
+                                            <div class="th-inner "></div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="width: 25%; " data-field="amount">
+                                            <div class="th-inner ">CREDIT RISK ASSESSMENT</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="width: 25%; " data-field="risk_evaluation">
+                                            <div class="th-inner ">PROPOSED CREDIT LIMIT<br>(in concerned business field)</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-index="0">
+                                        <td style="width: 25%; ">CA1</td>
+                                        <td style="width: 25%; ">Minimal</td>
+                                        <td style="width: 25%; ">Large amount</td>
+                                        <td style="width: 25%; ">Credit can proceed with favorable terms</td>
+                                    </tr>
+                                    <tr data-index="1">
+                                        <td style="width: 25%; ">CA2</td>
+                                        <td style="width: 25%; ">Low</td>
+                                        <td style="width: 25%; ">Fairly large amount</td>
+                                        <td style="width: 25%; ">Credit can proceed promptly</td>
+                                    </tr>
+                                    <tr data-index="2">
+                                        <td style="width: 25%; ">CA3</td>
+                                        <td style="width: 25%; ">Average</td>
+                                        <td style="width: 25%; ">Moderate amount</td>
+                                        <td style="width: 25%; ">Credit can proceed normally</td>
+                                    </tr>
+                                    <tr data-index="3">
+                                        <td style="width: 25%; ">CA4</td>
+                                        <td style="width: 25%; ">Above average</td>
+                                        <td style="width: 25%; ">Small amount – periodical review</td>
+                                        <td style="width: 25%; ">Credit should proceed with monitor</td>
+                                    </tr>
+                                    <tr data-index="4">
+                                        <td style="width: 25%; ">CA5</td>
+                                        <td style="width: 25%; ">Fairly High</td>
+                                        <td style="width: 25%; ">C.O.D. To small amount</td>
+                                        <td style="width: 25%; ">Credit should be extended under guarantee</td>
+                                    </tr>
+                                    <tr data-index="5">
+                                        <td style="width: 25%; ">CA6</td>
+                                        <td style="width: 25%; ">High</td>
+                                        <td style="width: 25%; ">C.O.D.</td>
+                                        <td style="width: 25%; ">Credit is not recommended</td>
+                                    </tr>
+                                    <tr data-index="6">
+                                        <td style="width: 25%; ">NR</td>
+                                        <td style="width: 25%; ">Assessment not conducted</td>
+                                        <td style="width: 25%; ">No recommendation</td>
+                                        <td style="width: 25%; ">Insufficient data available</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="fixed-table-footer" style="display: none;">
+                                <table>
+                                    <tbody>
+                                    <tr></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="fixed-table-pagination" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="credit-level-title pt-3">信用等级说明</div>
+                <p class="m-3 ml-4 mt-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
+                <p class="m-3 ml-4">如下所示：
+                <p class="m-3 ml-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
+                <p class="m-3 ml-4">财务状况（40%） 股东背景（10%） 付款记录（10%）</p>
+                <p class="m-3 ml-4">信用历史（15%） 市场趋势（10%） 经营规模（15%）</p>
+                <p class="m-3 ml-4">如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款记录”两项。</p>
                 <p class="m-3 ml-4 pb-4">使用缩写： N/A-不详 CNY-人民币 SC-目标公司</p>`;
         this.initContent();
     },
@@ -190,6 +277,7 @@ let OrderDetail = {
             // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
             let smallModuleType = item.smallModileType;
             let itemId = item.title.id;
+            let _this = this;
             let $wrap = $moduleWrap.clone().attr('id', itemId)
                 .append($moduleTitle.clone().text(item.title.temp_name));
             switch (smallModuleType) {
@@ -200,7 +288,7 @@ let OrderDetail = {
                         formHtml += `
                             <div class="col-md-4 mt-2 mb-2">
                                 <span>${item.temp_name}：</span>
-                                <span id="${item.column_name}"></span>
+                                <span data-column_name="${item.column_name}"></span>
                             </div>`
                     });
                     $wrap.append(`
@@ -208,6 +296,22 @@ let OrderDetail = {
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
+                    $wrap.find(`span[data-column_name]`).each(function (index, item) {
+                        let column_name = $(this).data('column_name');
+                        $(this).text(_this.rows[column_name])
+                    });
+                    /*$.post(this.getUrl(item),
+                        {selectInfo: `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position","getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name":"registration_status"}]`},
+                        (data) => {
+                            if (data.rows) {
+                                $wrap.find('[id]').each(function (index, item) {
+                                    let id = $(this).attr('id');
+                                    $(this).text(data.rows[0][id])
+                                })
+                            } else {
+                                console.warn(item.title.temp_name + '-表单-没有返回数据！')
+                            }
+                        });*/
                     $.post(this.getUrl(item),
                         {selectInfo: `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position","getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name":"registration_status"}]`},
                         (data) => {
@@ -355,44 +459,31 @@ let OrderDetail = {
         return $ul;
     },
     setTable(item, $wrap, hasChart = false) {
+        // 有图表的有截止时间
+        if (hasChart) {
+            $wrap.append(`<h3 class="guDongSubTitle">${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span> </h3>`);
+            $.get(this.getUrl(item, 'save_source'), (data) => {
+                if (data.rows) {
+                    $wrap.find('.asOf').text(`${data.rows[0] ? data.rows[0].date : ''}`);
+                }
+            });
+        }
         let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
         let columnNameArr = [];
         let chartData = [];
-        if (hasChart) {
-            let urlArr = item.title.save_source.split("*");
-            if (urlArr[0] === '') {
-                return
-            }
-            let url = '';
-            urlArr.forEach((param, index) => {
-                if (index === 0) {
-                    url = param;
-                } else {
-                    if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
-                        url += `&${param}=${this.rows.id}`
-                    } else {
-                        url += `&${param}=${this.rows[param]}`
-                    }
-                }
-            });
-            url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
-            $.get(url, (data) => {
-                if (data.rows) {
-                    $wrap.append(`<h3 class="guDongSubTitle">截止时间：${data.rows[0] ? data.rows[0].date : ''}</h3>`)
-                }
-            })
-        }
+
         item.contents.forEach((item) => {
             $table.children('thead').append(`<th>${item.temp_name}</th>`);
             columnNameArr.push(item.column_name);
         });
         // 绑数
-        $.post(this.getUrl(item),
-            {selectInfo: `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position"}]`},
+        $.post(this.getUrl(item), {
+                selectInfo: `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position"}]`
+            },
             (data) => {
                 if (data.rows) {
                     if (data.rows.length === 0) {
-                        $table.children('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">没有找到匹配的记录</tr></td>`);
+                        $table.children('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</tr></td>`);
                         $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
                         return;
                     }
@@ -416,7 +507,7 @@ let OrderDetail = {
                         let itemId = item.title.id;
                         $("#" + itemId).append(`
                         <h3 class="guDongSubTitle">出资比例(%)</h3>
-                        <div class="chartBox" style="height: 20rem;"></div>`)
+                        <div class="chartBox" style="height: 32rem;"></div>`);
                         let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
                         chart.setOption(opt_pie);
                         chart.setOption({
@@ -443,19 +534,20 @@ let OrderDetail = {
                                     label: {
                                         formatter: '{b}: {d}%'
                                     },
-                                    radius: '60%',
-                                    center: ['50%', '50%'],
-                                    startAngle: '0'
+                                    radius: '28%',
+                                    center: ['50%', '52%'],
+                                    startAngle: '45'
                                 })
                             })
                         }, true);
                     }
                 } else {
-                    console.warn(item.title.temp_name + `-表格${hasChart ? '&图表' : ''}-没有返回数据！`)
+                    console.warn(item.title.temp_name + `-表格${hasChart ? '&图表' : ''}-没有返回数据！`);
+                    $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
                 }
-            });
+            }
+        );
     },
-
-}
+};
 
 OrderDetail.init();
