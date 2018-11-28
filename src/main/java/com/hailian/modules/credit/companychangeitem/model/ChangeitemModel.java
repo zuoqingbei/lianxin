@@ -1,4 +1,4 @@
-package com.hailian.modules.credit.translate.model;
+package com.hailian.modules.credit.companychangeitem.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +15,14 @@ import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 /**
- * 白名单model层
-* @author doushuihai  
-* @date 2018年9月3日上午11:48:31  
-* @TODO
+ * @Description: 公司历史非必须变更项维护
+* @author: dsh 
+* @date:  2018年11月27日下午6:47:51
  */
-@ModelBind(table = "credit_translate")
-public class TranslateModel extends BaseProjectModel<TranslateModel> {
+@ModelBind(table = "credit_companyhistory_changeitem")
+public class ChangeitemModel extends BaseProjectModel<ChangeitemModel> {
 	private static final long serialVersionUID = 1L;
-	public static final TranslateModel dao = new TranslateModel();
+	public static final ChangeitemModel dao = new ChangeitemModel();
 	/**
 	 * 列表展示
 	* @author doushuihai  
@@ -31,18 +30,18 @@ public class TranslateModel extends BaseProjectModel<TranslateModel> {
 	* @date 2018年9月3日下午2:30:06  
 	* @TODO
 	 */
-	public Page<TranslateModel> getPage(Paginator paginator, String orderBy,String error_phrase,BaseProjectController c) {
+	public Page<ChangeitemModel> getPage(Paginator paginator, String orderBy,String nonessentialitems,BaseProjectController c) {
 		// TODO Auto-generated method stub
 		List<Object> params=new ArrayList<Object>();
-		StringBuffer sqlbuffer=new StringBuffer(" from credit_translate t1 ");
+		StringBuffer sqlbuffer=new StringBuffer(" from credit_companyhistory_changeitem t1 ");
 		sqlbuffer.append("left join sys_user t4 on t4.userid = t1.create_by where t1.del_flag=0");
 		if(!c.isAdmin(c.getSessionUser())){
 			sqlbuffer.append(" and t1.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
-		if(StringUtils.isNotBlank(error_phrase)){
-			sqlbuffer.append(" and t1.error_phrase like ? ");
-			params.add('%'+error_phrase+'%');
+		if(StringUtils.isNotBlank(nonessentialitems)){
+			sqlbuffer.append(" and t1.nonessentialitems like ? ");
+			params.add('%'+nonessentialitems+'%');
 		}
 		// 排序
 		if (StrUtils.isEmpty(orderBy)) {
@@ -50,7 +49,7 @@ public class TranslateModel extends BaseProjectModel<TranslateModel> {
 		} else {
 			sqlbuffer.append(" order by ").append(orderBy);
 		}
-		Page<TranslateModel> page = TranslateModel.dao
+		Page<ChangeitemModel> page = ChangeitemModel.dao
 				.paginate(paginator, "select t1.*,t4.realname", sqlbuffer.toString(),params.toArray());
 		return page;
 	}
@@ -62,7 +61,7 @@ public class TranslateModel extends BaseProjectModel<TranslateModel> {
 	 */
 	public void delete(Integer id, Integer userid) {
 		String now = DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
-		String sql="update credit_translate set del_flag=1,update_by=?,update_date=? where id=?";
+		String sql="update credit_companyhistory_changeitem set del_flag=1,update_by=?,update_date=? where id=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(userid);
 		params.add(now);
@@ -76,18 +75,18 @@ public class TranslateModel extends BaseProjectModel<TranslateModel> {
 	* @date 2018年9月7日下午6:17:24  
 	* @TODO
 	 */
-	public TranslateModel getTranslate(Integer paraToInt) {
+	public ChangeitemModel getChangeitem(Integer paraToInt) {
 		// TODO Auto-generated method stub
-		String sql="select t.*,t4.realname as createName,t5.realname as updateName from credit_translate t ";
+		String sql="select t.*,t4.realname as createName,t5.realname as updateName from credit_companyhistory_changeitem t ";
 		sql+=" left join sys_user t4 on t4.userid=t.create_by ";
 		sql+=" left join sys_user t5 on t5.userid=t.update_by ";
 		sql+=" where t.del_flag=0 and t.id=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(paraToInt);
-		TranslateModel findFirst = TranslateModel.dao.findFirst(sql,params.toArray());
+		ChangeitemModel findFirst = ChangeitemModel.dao.findFirst(sql,params.toArray());
 		return findFirst;
 	}
-	public TranslateModel getTranslateByError(String error) {
+	public ChangeitemModel getTranslateByError(String error) {
 		// TODO Auto-generated method stub
 		String sql="select t.*,t4.realname as createName,t5.realname as updateName from credit_translate t ";
 		sql+=" left join sys_user t4 on t4.userid=t.create_by ";
@@ -95,7 +94,7 @@ public class TranslateModel extends BaseProjectModel<TranslateModel> {
 		sql+=" where t.del_flag=0 and t.error_phrase=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(error);
-		TranslateModel findFirst = TranslateModel.dao.findFirst(sql,params.toArray());
+		ChangeitemModel findFirst = ChangeitemModel.dao.findFirst(sql,params.toArray());
 		return findFirst;
 	}
 }

@@ -23,6 +23,8 @@ import net.sf.json.JSONObject;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.credit.translate.model.TranslateModel;
+import com.hailian.modules.credit.translate.service.TranslateService;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.HttpKit;
 
@@ -32,7 +34,7 @@ import com.jfinal.kit.HttpKit;
 * @date:  2018年11月26日上午10:49:09
  */
 @ControllerBind(controllerKey = "/credit/ordertranslate")
-public class TranslateController extends BaseProjectController {
+public class ReportTranslateController extends BaseProjectController {
 	public void translate() {
 //		String jsonString = HttpKit.readData(getRequest());
 		String json="{\"id\":\"hello\",\"name\":\"肉类\"}";
@@ -43,9 +45,11 @@ public class TranslateController extends BaseProjectController {
         String value = jsonObject.getString(key);
         if(isChinese(value)){
         	value = TransApi.Trans(value);
+        	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
+        	if(translateByError!=null){
+        		value = translateByError.get("correct_phrase");//翻译校正
+        	}
         }
-        System.out.println(key+":"+value);
-        
         jsonObject.put(key, value);
 		}
 		System.out.println(jsonObject.toString());
