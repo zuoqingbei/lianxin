@@ -123,7 +123,8 @@ public class MainWord {
             String column_name = module.getStr("column_name");
             String temp_name = module.getStr("temp_name");
             String field_type = module.getStr("field_type");
-            if(!"操作".equals(temp_name)) {
+            if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
+            }else {
                 cols.put(column_name, temp_name + "|" + field_type);
             }
         }
@@ -164,7 +165,8 @@ public class MainWord {
             CreditReportModuleConf module = child.get(i);
             String column_name = module.getStr("column_name");
             String temp_name = module.getStr("temp_name");
-            if(!"操作".equals(temp_name)){
+            if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
+            }else{
                 cols.put(column_name,temp_name);
             }
         }
