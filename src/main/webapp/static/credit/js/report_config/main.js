@@ -359,36 +359,36 @@ let ReportConfig = {
     			}
     		})
     	})
-//    	console.log(cw_title,cw_contents)
+    	console.log(cw_title,cw_contents)
     	let cw_top_html = ''
     	let cw_table_html = ''
     	let tableCwId = []
     	cw_title.forEach((item,index)=>{
     		//初始化财务模块
     		let this_content = cw_contents[index];
+    		let moneySource = cw_contents[0][4].get_source;
+    		let moneyStr = ''
+			let unitSource = cw_contents[0][5].get_source;
+    		let unitStr = ''
+			$.ajax({
+				url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
+				async:false,
+				type:'post',
+				success:(data)=>{
+					moneyStr = data.selectStr
+				}
+			})
+			$.ajax({
+				url:BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
+				async:false,
+				type:'post',
+				success:(data)=>{
+					unitStr = data.selectStr
+				}
+			})
     		if(item.sort === 1) {
     			//财务模块杂七腊八的配置
     			let radioArr = this_content[1]["get_source"].split("&");
-    			let moneySource = this_content[4].get_source;
-    			let moneyStr = ''
-				let unitSource = this_content[5].get_source;
-    			let unitStr = ''
-    			$.ajax({
-    				url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
-    				async:false,
-    				type:'post',
-    				success:(data)=>{
-    					moneyStr = data.selectStr
-    				}
-    			})
-    			$.ajax({
-    				url:BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
-    				async:false,
-    				type:'post',
-    				success:(data)=>{
-    					unitStr = data.selectStr
-    				}
-    			})
     			cw_top_html += `<div class="top-html mx-4">
     								<div class="cw-box d-flex justify-content-between align-items-center mt-4">
     									<div class="firm-name form-inline">
@@ -414,13 +414,13 @@ let ReportConfig = {
     								<div class="cw-unit">
     									<div class="form-inline my-3">
     										<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[4].temp_name}</label>
-    										<select class="form-control mr-3" style="width:10rem" name=${this_content[4].column_name}>${moneyStr}</select>
-    										<select class="form-control mr-3" style="width:10rem" name=${this_content[5].column_name}>${unitStr}</select>
+    										<select class="form-control mr-3 moneySel" style="width:10rem" name=${this_content[4].column_name}>${moneyStr}</select>
+    										<select class="form-control mr-3 unitSel" style="width:10rem" name=${this_content[5].column_name}>${unitStr}</select>
     									</div>
     								</div>
     								<div class="cw-date form-inline">
-    									<input class="form-control my-3" style="margin-left:31.5%;margin-right:11%" type="text" name=${this_content[6].column_name} id=${this_content[6].column_name} placeholder=${this_content[6].place_hold} />
-    									<input class="form-control" type="text" name=${this_content[7].column_name} id=${this_content[7].column_name} placeholder=${this_content[7].place_hold} />
+    									<input class="form-control my-3 dateInp1" style="margin-left:32%;margin-right:11%" type="text" name=${this_content[6].column_name}  placeholder=${this_content[6].place_hold} />
+    									<input class="form-control dateInp2" type="text" name=${this_content[7].column_name}  placeholder=${this_content[7].place_hold} />
     								</div>
     							</div>`
     		}else {
@@ -432,11 +432,33 @@ let ReportConfig = {
     			if(item.temp_name !== null && item.temp_name !== '') {
     				tableTitle = item.temp_name.split("||");
     				cw_table_html += `<div class="table-title">${tableTitle}</div>`
+    				if(index !== 1){
+    					//如果不是合计表，
+    					cw_table_html += `<div class="cw-unit">
+	    						<div class="form-inline my-3">
+	    						<label style="font-weight:600;margin-left:60%" class="mr-3">${cw_contents[0][4].temp_name}</label>
+	    						<select disabled="disabled" class="form-control mr-3 moneySel" style="width:10rem" name=${cw_contents[0][4].column_name}>${moneyStr}</select>
+	    						<select disabled="disabled" class="form-control mr-3 unitSel" style="width:10rem" name=${cw_contents[0][5].column_name}>${unitStr}</select>
+	    						</div>
+    						</div>`
+    					if(index === 3) {
+    						//利润表
+    						cw_table_html += `<div class="cw-date form-inline cw-range">
+    							<input class="form-control my-3" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][6].column_name}  placeholder=${cw_contents[0][6].place_hold} />
+    							<input class="form-control" type="text" name=${cw_contents[0][7].column_name} placeholder=${cw_contents[0][7].place_hold} />
+    							</div>`
+    					}else {
+    						cw_table_html += `<div class="cw-date form-inline">
+    							<input class="form-control my-3 dateInp1" disabled="disabled" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][6].column_name}  placeholder=${cw_contents[0][6].place_hold} />
+    							<input class="form-control dateInp2" disabled="disabled" type="text" name=${cw_contents[0][7].column_name} placeholder=${cw_contents[0][7].place_hold} />
+    							</div>`
+    					}
+    				}
     			}
     			(function(a,i,radioName){
     				setTimeout(()=>{
     					let id = InitObj.bindCwConfig(conf_id,url,a,i,radioName,_this.rows)
-    					InitObj.initCwTable(tableCwId,item,this_content,_this.cwGetSource,id)
+    					InitObj.initCwTable(tableCwId,item,this_content,_this.cwGetSource,_this.cwAlterSource,id)
     					
     				},0)
     			})(tableTitle,index,cw_contents[0][1].column_name)
@@ -462,7 +484,7 @@ let ReportConfig = {
     							style="position: relative"
     							>
     							</table>
-    							<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn" >+ ${addtext}</button>
+    							<button class="btn btn-lg btn-block mb-3 mt-4 addBtn" type="button" >+ ${addtext}</button>
     							</div>`
     						tableCwId.push(`tableCwFz${i}`)
     					}
@@ -476,7 +498,7 @@ let ReportConfig = {
     							style="position: relative"
     							>
     							</table>
-    							<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn" >+ ${addtext}</button>
+    							<button class="btn btn-lg btn-block mb-3 mt-4 addBtn" type="button"  >+ ${addtext}</button>
     							</div>`
     							tableCwId.push(`tableCwLr${i}`)
     					}
@@ -489,7 +511,6 @@ let ReportConfig = {
 							style="position: relative"
 							>
 							</table>
-							<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn" >+ ${addtext}</button>
 							</div>`
 							tableCwId.push(`tableCwBl`)
     					break;	
@@ -500,7 +521,9 @@ let ReportConfig = {
     	})
     	$(cw_dom).after(cw_table_html)
     	$(cw_dom).after(cw_top_html)
-    	
+    	setTimeout(()=>{
+    		InitObj.cwModalCompute()
+    	},0)
     },
     initContent(){
         /**初始化内容 */
@@ -515,7 +538,8 @@ let ReportConfig = {
     	this.floatContents = [] //存放float类型模块的Contents
     	this.selectInfoObj = {} //存放选择框信息传给后台
     	this.notMoneyFloatHtml = {} //存放非财务模块的浮动html
-    	this.cwGetSource = '' //存放财务url
+    	this.cwGetSource = '' //存放获取财务url
+    	this.cwAlterSource = '' //存放修改财务url
     	this.saveStatusUrl = ''
 		this.submitStatusUrl = ''
     	let row = localStorage.getItem("row");
@@ -605,11 +629,12 @@ let ReportConfig = {
                 	_this.entityTitle.push(item.title)
                 	let smallModileType = item.smallModileType
                 	if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent) {
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType === '10'){
                 		//财务模块
-                		_this.cwGetSource = item.title.get_source
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                		_this.cwGetSource = item.title.get_source;
+                		_this.cwAlterSource = item.title.alter_source;
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw1"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}

@@ -65,7 +65,7 @@ let Public = {
         $("#handleMenu").click(()=>{
             if(!this.isSQ){
                 this.isSQ = !this.isSQ
-                //没被收起
+                //被收起
                 $(".fixed-table-header>.table").css("width","99.9%")
                 $(".head-logo-box").removeClass("col-xs-2 col-sm-2 col-md-2 col-lg-2")
                 $("#main_content").css({"width":"99.9%"})
@@ -75,15 +75,17 @@ let Public = {
                 $("#main_content").removeClass("col-md-10")
                 $(".border-div").css({"background":"url(/static/credit/imgs/index/right_arrow.png) no-repeat","backgroundSize":"100% 100%"})
                 $(".abc").addClass("aaa")
+                $(".dateInp1").css({"margin":"0 14% 0 32.5%"})
+                
             }else {
                 this.isSQ = !this.isSQ
-                //被收起
+                //没被收起
                 $(".nav-row").css("width","16.66%")
                 $("#main_content").css("width","83.33%")
                 $(".head-logo-box").css("width","16.6%")
                 $(".border-div").css({"background":"url(/static/credit/imgs/index/left_arrow.png) no-repeat","backgroundSize":"100% 100%"})
                 $(".abc").removeClass("aaa")
-    		
+    		   $(".dateInp1").css({"margin":"0 11% 0 32%"})
             }
         })
         //菜单点击
