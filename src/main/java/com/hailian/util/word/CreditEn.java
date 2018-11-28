@@ -2,8 +2,6 @@ package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.jfinal.kit.PathKit;
@@ -15,7 +13,7 @@ import java.util.*;
  * 商业信息报告样本
  * Created by Thinkpad on 2018/11/17.
  */
-public class CreditZh {
+public class CreditEn {
 
     public static void main(String args[]) throws Exception{
 
@@ -44,6 +42,7 @@ public class CreditZh {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
 
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("company", "海尔集团");
@@ -147,11 +146,7 @@ public class CreditZh {
                 }
             }
         }
-        MainWord.buildWord(map, "h://word/_信用分析报告样本.docx", "h://3.docx");
+        MainWord.buildWord(map, webRoot + "/word/" + "_CREDIT RISK ANALYSIS REPORT.docx", _prePath + ".docx");
     }
-
-
-
-
 
 }
