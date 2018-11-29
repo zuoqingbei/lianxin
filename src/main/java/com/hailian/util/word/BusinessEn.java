@@ -236,13 +236,13 @@ public class BusinessEn {
         map.put("financial", financial(reportType,companyId,sysLanguage,"1"));
 
 
-        MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
+        MainWord.buildWord(map, webRoot + "/word/" + "_BUSINESS INFORMATION REPORT.docx", _prePath + ".docx");
         //上传文件
         String filePath = MainWord.uploadReport(_prePath + ".docx", orderId, userid);
         //发送邮件
         List<Map<String, String>> fileList = new ArrayList<Map<String, String>>();
         Map<String, String> fileMap = new HashMap<String, String>();
-        fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
+        fileMap.put("_BUSINESS INFORMATION REPORT.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
         fileList.add(fileMap);
 
         try {
