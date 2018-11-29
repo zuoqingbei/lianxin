@@ -36,8 +36,8 @@ public class ChangeitemService {
 		ChangeitemModel translate = ChangeitemModel.dao.getChangeitem(paraToInt);
 		return translate;
 	}
-	public ChangeitemModel getTranslateByError(String error) {
-		ChangeitemModel translate = ChangeitemModel.dao.getTranslateByError(error);
-		return translate;
+	public ChangeitemModel getChangeitemByNotNessent(String nonessentialitems) {
+		ChangeitemModel changeitem = ChangeitemModel.dao.getChangeitemByNotNessent(nonessentialitems);
+		return changeitem;
 	}
 }

@@ -231,17 +231,17 @@ let InitObj = {
 		})
 	},
 	
-	initCwTable(tableCwIds,title,contents,getSource,alterSource,id){
+	initCwTable(tableCwIds,contents,getSource,alterSource,deleteSource,id){
 		//财务模块表格初始化
 		/**
 		 * tableCwIds:表格id数组 
-		 * 
-		 * title ：表格的配置信息
 		 * contents :表格的表头信息
 		 * getSource:财务getsource
 		 * alterSource:财务alterSource
+		 * deleteSource: 财务 deleteSource
 		 * id:财务模块id
 		 */
+	
 		let returnData;
 		$.ajax({
 			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
@@ -253,7 +253,9 @@ let InitObj = {
 		})
 		let tempRows =  []
 		let tempArr = [];
-		
+		returnData['rows'].sort((a,b)=>{
+			return a["son_sector"]-b["son_sector"]
+		});
 		returnData['rows'].forEach((item,index)=>{
 			if(item.is_sum_option) {
 				//合计项
@@ -267,6 +269,9 @@ let InitObj = {
 					item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 				}
 			}else {
+				if(!item.is_default){
+					item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
+				}
 				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}
@@ -278,7 +283,7 @@ let InitObj = {
 			}
 			tempRows.push(item)
 		})
-		
+//		console.log(tempArr)
 		let tempObj ={}
 		tableCwIds.forEach((item,index)=>{
 			const $table = $('#'+item);
@@ -313,12 +318,76 @@ let InitObj = {
 	    					width:1/contents.length,
 	    					align:'center',
 	    					events: {
-	        					
 	        					"click .delete":(e,value,row,index)=>{
-	        						
+	        						console.log(value,row)
+	        						let entityId = row.id
+	        						$("#popEnter").on('click', function(){
+            							//确定删除
+            							let url = BASE_PATH + 'credit/front/ReportGetData/' + deleteSource;
+            							$.ajax({
+            								url,
+            								type:'post',
+            								data:{
+            									id:entityId
+            								},
+            								success:(data)=>{
+            									
+            									if(data.statusCode === 1) {
+            										Public.message('success',data.message)
+            										//刷新数据
+            									/*	tableCwIds.forEach((item,index)=>{
+														const $table = $('#'+item);
+														let returnData;
+														$.ajax({
+															url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
+															type:'post',
+															async:false,
+															success:(data)=>{
+																returnData = data
+															}
+														})
+														let tempRows =  []
+														let tempArr = [];
+														returnData['rows'].sort((a,b)=>{
+															return a["son_sector"]-b["son_sector"]
+														});
+														returnData['rows'].forEach((item,index)=>{
+															if(item.is_sum_option) {
+																//合计项
+																if(index>8){
+																	//非合计表合计项 给个class背景变色
+																	item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
+																	item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+																}else {
+																	item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+																	item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+																}
+															}else {
+																if(!item.is_default){
+																	item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
+																}
+																item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+																item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+															}
+															if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
+																if(tempRows.length !== 0){
+																	tempArr.push(tempRows)
+																	tempRows = []
+																}
+															}
+															tempRows.push(item)
+														})
+														$table.bootstrapTable("load",tempArr[index])
+													})*/
+            									}else {
+            										Public.message('error',data.message)
+            									}
+            								}
+            							})
+            						})
 	        					}
 	        				},
-	//            				formatter: function(){return _this.formatBtnArr[tempI]}
+            				formatter: function(){return `<a href="javascript:;" class="delete" data-toggle="modal" data-target="#modal_delete">${ele.temp_name}</a>`}
 	    				})
 	    			}
         		})
@@ -330,25 +399,96 @@ let InitObj = {
 		setTimeout(()=>{
 			$(".bg-gray").parent("td").parent("tr").css("background","#fafafa")
 			
-			$(".addBtn").click((e)=>{
+			//点击新增一行按钮
+			$(".addBtn").unbind().click((e)=>{
 				console.log($(e.target).siblings(".bootstrap-table").find("input"))
 				let $input = $($(e.target).siblings(".bootstrap-table").find("input")[0])
+				let $input2 = $($(e.target).siblings(".bootstrap-table").find("input")[2])
+				let class_name1 = $input.attr("class").split(" ")[$input.attr("class").split(" ").length-1];
+				let class_name2 = $input.attr("class").split(" ")[$input.attr("class").split(" ").length-1].replace("1","2");
+				if(class_name1 === '.amount1'){
+					class_name1 = $input2.attr("class").split(" ")[$input2.attr("class").split(" ").length-1];
+					class_name2 = $input2.attr("class").split(" ")[$input2.attr("class").split(" ").length-1].replace("1","2");
+				}
 				let son_sector = $input.attr("sonsector")
 				let parent_sector = $input.attr("parentsector")
 				let dataJson = []
 				
 				tempObj["son_sector"] = son_sector
 				tempObj["parent_sector"] = parent_sector
+				tempObj["class_name1"] = class_name1
+				tempObj["class_name2"] = class_name2
+				tempObj["conf_id"] = id
 				dataJson.push(tempObj)
 				$.ajax({
 					url:BASE_PATH + 'credit/front/ReportGetData/' + alterSource,
 					type:'post',
 					data:{
 						dataJson:JSON.stringify(dataJson),
-						ficConf_id:id
 					},
 					success:(data)=>{
+						///新增一行成功
 						console.log(data)
+						if(data.statusCode === 1) {
+							tableCwIds.forEach((item,index)=>{
+								const $table = $('#'+item);
+								let returnData;
+								$.ajax({
+									url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
+									type:'post',
+									async:false,
+									success:(data)=>{
+										returnData = data
+									}
+								})
+								let tempRows =  []
+								let tempArr = [];
+								returnData['rows'].sort((a,b)=>{
+									return a["son_sector"]-b["son_sector"]
+								});
+								returnData['rows'].forEach((item,index)=>{
+									if(item.is_sum_option) {
+										//合计项
+										if(index>8){
+											//非合计表合计项 给个class背景变色
+											item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
+											item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+										}else {
+											item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+											item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+										}
+									}else {
+										if(!item.is_default){
+											item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
+										}
+										item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+										item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+									}
+									if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
+										if(tempRows.length !== 0){
+											tempArr.push(tempRows)
+											tempRows = []
+										}
+									}
+									tempRows.push(item)
+								})
+								$table.bootstrapTable("load",tempArr[index])	
+							})
+						}else {
+							Public.message("error",data.message)
+						}
+					}
+				})
+			})
+			
+			//处理默认项的删除A标签
+			let tables = Array.from($(".cw-table").find(".table.table-hover"));
+			tables.forEach((item,index)=>{
+				let trs = Array.from($(item).find("tbody tr"));
+				trs.forEach(ele=>{
+					if($($(ele).find("td")[0]).find("input").length === 0){
+						//默认项
+						$($(ele).find("td")[3]).find("a").hide()
 					}
 				})
 			})

@@ -248,9 +248,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @return
      */
     public List getTableData(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
-		// 解析实体获取required参数
-      String type=	getPara("type");
-      String getSource="";
+        // 解析实体获取required参数
+        String type = null;
+        if(getRequest()!=null){
+            type = getPara("type");
+        }
+        String getSource = "";
     	if (type!=null) {
 			CreditReportDetailConf confModel=CreditReportDetailConf.dao.findById(confId);
 			 getSource = confModel.getStr("data_source");
@@ -529,7 +532,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		int type = getFinanceDictByReportType(reportType);
 		UploadFile uploadFile = getFile("file");
-		String message = "上传失败!";
+		String message = "导入失败,开始值和结束值只能是数字!!";
 		try {
 			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, "8", now);
 		} catch (Exception e) {
@@ -574,16 +577,15 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 */
 	public void alterFinanceOneEntry() {
 		String dataJson = getPara("dataJson");
-		String financialConfId = getPara("ficConf_id");
-		if(StrUtils.isEmpty(dataJson,financialConfId)) {
-			renderJson(new ResultType(0, "请检查这两个个必要参数 dataJson,financialConfId!"));
+		if(StrUtils.isEmpty(dataJson)) {
+			renderJson(new ResultType(0, "请检查这两个必要参数 dataJson!"));
 			return;
 		}
 		List<Map<Object, Object>> entrys = ReportInfoGetData.parseJsonArray(dataJson);
 		String userId = getSession().getId();
 		String now = getNow();
 		try {
-			FinanceService.alterFinancialEntryList(entrys, "8", now, financialConfId);
+			FinanceService.alterFinancialEntryList(entrys, "8", now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -652,7 +654,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 删除一条财务配置信息
 	 * lzg 2018/11/24
 	 */
-	public void deleteOneFinanceCconfig() {
+	public void deleteOneFinanceConfig() {
 		String financialConfId = getPara("ficConf_id");
 		if(StrUtils.isEmpty(financialConfId)) {
 			renderJson(new ResultType(0, "请检查必要参数financialConfId!"));

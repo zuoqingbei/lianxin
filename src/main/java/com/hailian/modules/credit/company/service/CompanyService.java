@@ -15,6 +15,8 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.credit.company.model.CompanyModel;
+import com.hailian.modules.credit.companychangeitem.model.ChangeitemModel;
+import com.hailian.modules.credit.companychangeitem.service.ChangeitemService;
 import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
@@ -83,7 +85,7 @@ public class CompanyService {
 		System.out.println(status);
 		//200调用成功并查到企业相关信息
 		if("200".equals(status)){
-			flag=false;
+			flag=true;
 			JSONObject jsonResulet = json.getJSONObject("Result");
 			//企业基本信息
 			String No = jsonResulet.getString("No"); //注册号
@@ -219,9 +221,9 @@ public class CompanyService {
 					String AfterContent = changerecord.getString("AfterContent");//变更后
 					String ChangeDate = changerecord.getString("ChangeDate");//变更日期
 					CreditCompanyHis companyhisModel=new CreditCompanyHis();
-					List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(ProjectName,"company_history_change_item");
-					if(dictDetailBy2 != null && CollectionUtils.isNotEmpty(dictDetailBy2)){
-						companyhisModel.set("change_items", dictDetailBy2.get(0).get("detail_id"));
+					ChangeitemModel changeitemByNotNessent = ChangeitemService.service.getChangeitemByNotNessent(ProjectName);//看是否为非必需项
+					if(changeitemByNotNessent == null ){
+						companyhisModel.set("change_items", ProjectName);
 						companyhisModel.set("change_font", BeforeContent);
 						companyhisModel.set("change_back", AfterContent);
 						companyhisModel.set("date", ChangeDate);
@@ -230,10 +232,14 @@ public class CompanyService {
 						hisModellist.add(companyhisModel);
 					}
 				}
-				Db.batchSave(hisModellist, hisModellist.size());
-				
+				if(CollectionUtils.isNotEmpty(hisModellist)){
+					Db.batchSave(hisModellist, hisModellist.size());
+				}
 			}
+			
 		}
+		
+		System.out.println(status);
 		DictCache.initDict();//缓存刷新
 		return flag;
 	}

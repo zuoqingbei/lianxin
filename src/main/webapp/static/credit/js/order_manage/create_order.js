@@ -66,8 +66,7 @@ let
 		}
 	    $.ajax({
 	        type: "POST",
-	        //url: "/credit/orderpoimanager/savedata",
-	        url: "/credit/ordertranslate/translate",
+	        url: "/credit/orderpoimanager/savedata",
 	        contentType: "application/json; charset=utf-8",
 	        data: JSON.stringify(jsondata),
 	        dataType: "json",

@@ -115,7 +115,6 @@ let ReportConfig = {
             								}
             							})
             						})
-            						
             					}
             				},
             				formatter: function(){return _this.formatBtnArr[tempI]}
@@ -398,12 +397,12 @@ let ReportConfig = {
     									<div class="is-merge form-inline">
     										<label class="mr-3" style="font-weight:600">${this_content[1].temp_name}</label>
     										<div class="form-check form-check-inline">
-	    										<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[0].split(":")[0]}>
-				                                <label class="form-check-label mx-0" for="">${radioArr[0].split(":")[1]}</label>
+	    										<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[0].split("-")[0]}>
+				                                <label class="form-check-label mx-0" for="">${radioArr[0].split("-")[1]}</label>
 			                                </div>
 						    				<div class="form-check form-check-inline">
-							    				<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[1].split(":")[0]}>
-							    				<label class="form-check-label mx-0" for="">${radioArr[1].split(":")[1]}</label>
+							    				<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[1].split("-")[0]}>
+							    				<label class="form-check-label mx-0" for="">${radioArr[1].split("-")[1]}</label>
 						    				</div>
     									</div>
     									<div class="btn-group">
@@ -458,14 +457,14 @@ let ReportConfig = {
     			(function(a,i,radioName){
     				setTimeout(()=>{
     					let id = InitObj.bindCwConfig(conf_id,url,a,i,radioName,_this.rows)
-    					InitObj.initCwTable(tableCwId,item,this_content,_this.cwGetSource,_this.cwAlterSource,id)
+    					InitObj.initCwTable(tableCwId,this_content,_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,id)
     					
     				},0)
     			})(tableTitle,index,cw_contents[0][1].column_name)
     			switch(item.sort) {
     				case 2:
     					//合计表
-    					cw_table_html += `<div class="table-content1" style="background:#fff">
+    					cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
 					            				<table id="tableCwHj"
 					            				data-toggle="table"
 					            				style="position: relative"
@@ -478,7 +477,7 @@ let ReportConfig = {
     				case 3:
     					//资产负债表
     					for(let i=0;i<5;i++){
-    						cw_table_html += `<div class="table-content1" style="background:#fff">
+    						cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
     							<table id="tableCwFz${i}"
     							data-toggle="table"
     							style="position: relative"
@@ -492,7 +491,7 @@ let ReportConfig = {
     				case 4:
     					//利润表
     					for(let i=0;i<4;i++){
-    						cw_table_html += `<div class="table-content1" style="background:#fff">
+    						cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
     							<table id="tableCwLr${i}"
     							data-toggle="table"
     							style="position: relative"
@@ -505,7 +504,7 @@ let ReportConfig = {
     					break;	
     				case 5:
     					//比率表
-						cw_table_html += `<div class="table-content1" style="background:#fff">
+						cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
 							<table id="tableCwBl"
 							data-toggle="table"
 							style="position: relative"
@@ -523,6 +522,7 @@ let ReportConfig = {
     	$(cw_dom).after(cw_top_html)
     	setTimeout(()=>{
     		InitObj.cwModalCompute()
+
     	},0)
     },
     initContent(){
@@ -540,6 +540,7 @@ let ReportConfig = {
     	this.notMoneyFloatHtml = {} //存放非财务模块的浮动html
     	this.cwGetSource = '' //存放获取财务url
     	this.cwAlterSource = '' //存放修改财务url
+    	this.cwDeleteSource = '' //删除财务url
     	this.saveStatusUrl = ''
 		this.submitStatusUrl = ''
     	let row = localStorage.getItem("row");
@@ -634,6 +635,7 @@ let ReportConfig = {
                 		//财务模块
                 		_this.cwGetSource = item.title.get_source;
                 		_this.cwAlterSource = item.title.alter_source;
+                		_this.cwDeleteSource = item.title.remove_source;
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw1"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`

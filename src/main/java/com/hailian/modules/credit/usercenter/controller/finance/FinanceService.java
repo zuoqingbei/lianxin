@@ -165,7 +165,7 @@ public class FinanceService {
 	 * @param now 当前时间
 	 * @param financialConfId 财务配置id
 	 */
-	public  static void alterFinancialEntryList(List<Map<Object, Object>> entrys,String userId,String now,String financialConfId) {
+	public  static void alterFinancialEntryList(List<Map<Object, Object>> entrys,String userId,String now ) {
 		boolean exitsId = true;
 		if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
 			 exitsId = false;
@@ -216,7 +216,7 @@ public class FinanceService {
 				return true;
 			}
 		});
-		 return  result?"成功导入"+(modelList.size()-1)+"条数据!":"导入失败,请检查文件内容!";
+		 return  result?"成功导入"+(modelList.size()-1)+"条数据!":"导入失败,开始值和结束值只能是数字!";
 	}
 	
 	
