@@ -8,7 +8,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFComment;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -26,6 +32,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.system.dict.DictCache;
 import com.hailian.util.StrUtils;
+import com.jfinal.plugin.activerecord.Db;
 public class ExcelModule extends BaseProjectController  {
 	/**
 	 * 列宽系数
@@ -81,12 +88,42 @@ public class ExcelModule extends BaseProjectController  {
 	 * 导出财务模板
 	 * @param response
 	 * @param ops
-	 * @param sysLanguage
+	 * @param int (模板类型)
 	 */
-	public  static void  exportExcel(HttpServletResponse response, OutputStream ops,String sysLanguage) {
+	public  static void  exportExcel(HttpServletResponse response, OutputStream ops,int type) {
 		
-		List<List<CreditCompanyFinancialDict>> sonSectorList = getSonSectorList(sysLanguage);
-		Map<Integer,List<List<CreditCompanyFinancialDict>>> pageNumToList = new HashMap<>();
+		if(type==1) {
+			smallModuleColSpacing = 5;
+			colWidthOffSet = 620;
+			firstRow = new String[] {
+					"科目",
+					"初始日期值",
+					"结束日期值"
+			}; 
+			fileName = "ChineseFinancialTemplate";
+		}else if(type==2){
+			smallModuleColSpacing = 9;
+			colWidthOffSet = 345;
+			firstRow = new String[] {
+					"itemName",
+					"beginValue",
+					"endValue"
+			};
+			fileName = "EnglishFinancialTemplate";
+		}else if(type==3){
+			smallModuleColSpacing = 9;
+			colWidthOffSet = 345;
+			firstRow = new String[] {
+					"itemName",
+					"beginValue",
+					"endValue"
+			};
+			fileName = "FinancialModuleFor396";
+		}
+		
+		
+		List<List<CreditCompanyFinancialDict>> sonSectorList = getSonSectorList(type);
+		Map<Integer,List<List<CreditCompanyFinancialDict>>> pageNumToList = new LinkedHashMap<>();
 		/**
 		 * 父模块 1-合计表(子模块1) 2-资产负债表(子模块 2-6) 3-利润表(子模块 7-10) 4-重要比率表(子模块11)
 		 */
@@ -98,7 +135,8 @@ public class ExcelModule extends BaseProjectController  {
 		 *  8-营业利润 9-税前利润
 		 *   10-所得税费用 11-重要比率表 ',
 		 */ 
-		List<List<CreditCompanyFinancialDict>> tempFatherList1 = new ArrayList<>();
+		if(type==1||type==2) {
+			List<List<CreditCompanyFinancialDict>> tempFatherList1 = new ArrayList<>();
 			tempFatherList1.add(sonSectorList.get(0));
 		List<List<CreditCompanyFinancialDict>> tempFatherList2 = new ArrayList<>();
 			tempFatherList2.add(sonSectorList.get(1));tempFatherList2.add(sonSectorList.get(2)); tempFatherList2.add(sonSectorList.get(3)); 
@@ -112,6 +150,12 @@ public class ExcelModule extends BaseProjectController  {
 		pageNumToList.put(1, tempFatherList3);
 		pageNumToList.put(2, tempFatherList4);
 		pageNumToList.put(3, tempFatherList1);
+		}else if(type==3){
+			List<List<CreditCompanyFinancialDict>> tempFatherList1 = new ArrayList<>();
+			tempFatherList1.add(sonSectorList.get(0));
+			pageNumToList.put(3, tempFatherList1);
+		}
+	 
 		try {
 			fileName = new String(fileName.getBytes("UTF-8"),"ISO-8859-1" );
 			response.setHeader("Content-Disposition","attachment;filename="+fileName+".xlsx");//指定下载的文件名
@@ -122,16 +166,15 @@ public class ExcelModule extends BaseProjectController  {
 			e.printStackTrace();
 		}
 		HSSFWorkbook wb = new HSSFWorkbook();
-		//按照规定的顺序创建sheet页
-		for (int i = 0; i < moduleOrderMapping.size(); i++) {
-			wb.createSheet(moduleOrderMapping.get(i));
-		}
+		int currentPage = 0 ;
 		//插入数据
-		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-			HSSFSheet sheet = wb.getSheetAt(i);
+		for (Integer pageNum : pageNumToList.keySet()) {
+			//按照规定的顺序创建sheet页
+			wb.createSheet(moduleOrderMapping.get(pageNum));
+			HSSFSheet sheet = wb.getSheetAt(currentPage);
 			
 			//本页数据
-			List<List<CreditCompanyFinancialDict>> pageData = pageNumToList.get(i);
+			List<List<CreditCompanyFinancialDict>> pageData = pageNumToList.get(pageNum);
 			//列宽度映射
 			Map<Integer,Integer> cellNumToCellWidth = new HashMap<>();
 			
@@ -139,6 +182,11 @@ public class ExcelModule extends BaseProjectController  {
 			HSSFRow rowHead = sheet.createRow(top);
 			HSSFCellStyle rowHeadStyle = ExcelUtils.getDefaultStyle(wb,true,false);
 			HSSFCellStyle rowHeadStyle2 = ExcelUtils.getDefaultStyle(wb,false,false);
+			
+	        // 创建HSSFPatriarch对象,HSSFPatriarch是所有注释的容器.
+	        HSSFPatriarch patr = sheet.createDrawingPatriarch();
+	       
+			
 			int a = 0;//列位置系数
 			for (int j = 0; j < pageData.size(); j++) {
 					for (int k = 0; k < firstRow.length; k++) {
@@ -171,17 +219,25 @@ public class ExcelModule extends BaseProjectController  {
 					HSSFCell cell = rowBody.createCell(left+j*smallModuleColSpacing);
 					cell.setCellValue(cellValue);
 					cell.setCellStyle(rowHeadStyle2);
+					 // 定义注释的大小和位置,详见文档
+			        HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)0, 0, (short) 0, 0));
+			        // 设置注释内容
+			        comment.setString(new HSSFRichTextString("该单元格是默认项,禁止修改!"));
+			        // 设置注释作者. 当鼠标移动到单元格上是可以在状态栏中看到该内容.
+			        comment.setAuthor("lzg");
+					cell.setCellComment(comment);
 				}
 			}
 			
 			for (Integer key : cellNumToCellWidth.keySet()) {
 				sheet.setColumnWidth(key*smallModuleColSpacing+left, cellNumToCellWidth.get(key)*colWidthOffSet);
-				System.out.println("第"+i+"个sheet页,"+"第"+(key*smallModuleColSpacing+left)+"列,宽:"+cellNumToCellWidth.get(key)*colWidthOffSet);
+				System.out.println("第"+currentPage+"个sheet页,"+"第"+(key*smallModuleColSpacing+left)+"列,宽:"+cellNumToCellWidth.get(key)*colWidthOffSet);
 			}
+			currentPage++;
 		}
 		try {
+			
 			wb.write(ops);
-			ops.flush();
 			wb.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -189,6 +245,7 @@ public class ExcelModule extends BaseProjectController  {
 			if(ops!=null) {
 				try {
 					ops.close();
+					ops = null;
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -200,13 +257,24 @@ public class ExcelModule extends BaseProjectController  {
 	/**
 	 * 导入财务模板
 	 * @param file
-	 * @param sysLanguage
+	 * @param type
 	 * @param financeConfigId
 	 * @return 上传结果
 	 */
-	public  static List<CreditCompanyFinancialEntry>  parseExcel(File file,String sysLanguage,String financeConfigId,String userId, String now) {
+	public  static List<CreditCompanyFinancialEntry>  parseExcel(File file,int type,String financeConfigId,String userId, String now) {
+		if(type==1) {
+			smallModuleColSpacing = 5;
+			colWidthOffSet = 620;
+		}else if(type==2){
+			smallModuleColSpacing = 9;
+			colWidthOffSet = 345;
+		}else if(type==3){
+			smallModuleColSpacing = 9;
+			colWidthOffSet = 345;
+		}
 		
-		Map<Integer,List<Integer>> sumOptionMap = getSumOption(sysLanguage);
+		
+		Map<Integer,List<Integer>> sumOptionMap = getSumOption(type);
 		if(file==null||file.length()==0) {
 			return null;
 		}
@@ -224,69 +292,90 @@ public class ExcelModule extends BaseProjectController  {
 		
 		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
 		//公共属性
-		model.set("conf_id", financeConfigId).set("update_date", now).set("update_by", userId).set("create_date",now).set("create_by", userId).set("del_flag", "0");
+		model.set("conf_id", financeConfigId).set("update_date", now).set("update_by", userId).set("create_date",now).set("create_by", userId).set("del_flag", 0).set("begin_date_value", "0").set("end_date_value", "0");
 		//为了适应jfinal框架的Db.saveBatch方法
 		CreditCompanyFinancialEntry tempModel = new CreditCompanyFinancialEntry();
-		tempModel._setAttrs(model).set("parent_sector", "9").set("son_sector", "9").set("is_sum_option", "9"). set("sort_no", "9").set("item_name", "9").set("begin_date_value", "9").set("end_date_value", "9").set("del_flag", "9").set("is_default", "9");
+		tempModel._setAttrs(model).set("parent_sector", "9").set("son_sector", "9").set("is_sum_option", "9"). set("sort_no", "9").set("item_name", "9")
+		.set("begin_date_value", "9").set("end_date_value", "9").set("del_flag", "9").set("class_name1", "9").set("class_name2", "9").set("is_default", "9");
 		allModel.add(tempModel);
 		
-		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-			HSSFSheet sheet = wb.getSheetAt(i);
-			if(i==0) {
-				 sheet = wb.getSheetAt(3);
-			}else {
-				sheet = wb.getSheetAt(i-1);
+		if(type==1||type==2) {
+			for (int i = 0; i < wb.getNumberOfSheets(); i++) {
+				HSSFSheet sheet = wb.getSheetAt(i);
+				if(i==0) {
+					 sheet = wb.getSheetAt(3);
+				}else {
+					sheet = wb.getSheetAt(i-1);
+				}
+				/**
+				 * 父模块 1-合计表(子模块1) 2-资产负债表(子模块 2-6) 3-利润表(子模块 7-10) 4-重要比率表(子模块11)
+				 */
+				int k = 0;
+				switch (i) {
+				//解析合计表
+				case 0:
+					k = 0;
+					model.set("parent_sector", 1);
+					for (int j = 0; j < 1; j++) {
+						int targetSonSector = j+1;
+						model.set("son_sector", targetSonSector);
+						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className1 = Db.query("select class_name1 from credit_company_financial_dict where son_sector=? and type=?",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=?",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j),className1,className2,isDefault));
+						k++;
+					}
+					break;
+					//解析资产负债表
+				case 1:
+					model.set("parent_sector", 2);
+					for (int j = 1; j < 6; j++) {
+						int targetSonSector = j+1;
+						model.set("son_sector", targetSonSector);
+						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className1 = Db.query("select class_name1 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j),className1,className2,isDefault)); 
+						k++;
+					}
+					break;
+					//解析利润表
+				case 2:
+					k = 0;
+					model.set("parent_sector", 3);
+					for (int j = 6; j < 10; j++) {
+						int targetSonSector = j+1;
+						model.set("son_sector", targetSonSector);
+						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className1 = Db.query("select class_name1 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j),className1,className2,isDefault)); 
+						k++;
+					}
+					break;
+					//解析重要比率表
+				case 3:
+					k = 0;
+					model.set("parent_sector", 4);
+					for (int j = 10; j < 11; j++) {
+						int targetSonSector = j+1;
+						model.set("son_sector", targetSonSector);
+						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className1 = Db.query("select class_name1"
+								+ " from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j),className1,className2,isDefault)); 
+						k++;
+					}
+					break;
+				default:
+					break;
+				}
 			}
+		}else if(type==3) {
 			
-			
-			/**
-			 * 父模块 1-合计表(子模块1) 2-资产负债表(子模块 2-6) 3-利润表(子模块 7-10) 4-重要比率表(子模块11)
-			 */
-			int k = 0;
-			switch (i) {
-			//解析合计表
-			case 0:
-				k = 0;
-				model.set("parent_sector", 1);
-				for (int j = 0; j < 1; j++) {
-					model.set("son_sector", j+1);
-					allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j)));
-					k++;
-				}
-				break;
-				//解析资产负债表
-			case 1:
-				model.set("parent_sector", 2);
-				for (int j = 1; j < 6; j++) {
-					model.set("son_sector", j+1);
-					allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j)));
-					k++;
-				}
-				break;
-				//解析利润表
-			case 2:
-				k = 0;
-				model.set("parent_sector", 3);
-				for (int j = 6; j < 10; j++) {
-					model.set("son_sector", j+1);
-					allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j)));
-					k++;
-				}
-				break;
-				//解析重要比率表
-			case 3:
-				k = 0;
-				model.set("parent_sector", 4);
-				for (int j = 10; j < 11; j++) {
-					model.set("son_sector", j+1);
-					allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j)));
-					k++;
-				}
-				break;
-			default:
-				break;
-			}
 		}
+		
 		return allModel;
 	}
 	
@@ -298,19 +387,43 @@ public class ExcelModule extends BaseProjectController  {
 	 * @param sheet
 	 * @return
 	 */
-	public static List<CreditCompanyFinancialEntry>  parseSonSector(CreditCompanyFinancialEntry model,int colStart, int rowStart, HSSFSheet sheet,List<Integer> sumOptionList){
+	public static List<CreditCompanyFinancialEntry>  parseSonSector(CreditCompanyFinancialEntry model,int colStart, int rowStart, HSSFSheet sheet,List<Integer> sumOptionList,List<String> className1,List<String> className2,List<String> isDefault){
+		
 		List<CreditCompanyFinancialEntry> list = new ArrayList<>();
 		 CreditCompanyFinancialEntry tempModel = new CreditCompanyFinancialEntry();
 		int maxRow = 65535;
 		 for (int i = rowStart; i < maxRow; i++) {
+			 
 			 tempModel = new CreditCompanyFinancialEntry();
 			 tempModel.clear()._setAttrs(model);
+			//设置默认项
+			if(i-rowStart<isDefault.size()) {
+				 tempModel.set("is_default", isDefault.get(i-rowStart));
+			}
+			//设置字典表已有的className
+			if(i-rowStart<className1.size()) {
+				 tempModel.set("class_name1", className1.get(i-rowStart));
+			 }else {//设置新增的className
+				 if((int)model.get("son_sector")==7) {
+						tempModel.set("class_name1", className1.get(2));
+						tempModel.set("class_name2", className2.get(2));
+					}else {
+						tempModel.set("class_name1", className1.get(0));
+						tempModel.set("class_name2", className2.get(0));	
+					}
+					
+			 }
+			
+			 if(i-rowStart<className2.size()) {
+				 tempModel.set("class_name2", className2.get(i-rowStart));
+			 }
 			//判断是否是合计项
 			if(sumOptionList!=null&&sumOptionList.contains(i-rowStart)) {
 				tempModel.set("is_sum_option", 1);
 			}else {
 				tempModel.set("is_sum_option", 0);
 			}
+			
 			HSSFRow row = sheet.getRow(i);
 			
 			if(row!=null&&row.getPhysicalNumberOfCells()>0) {
@@ -321,6 +434,7 @@ public class ExcelModule extends BaseProjectController  {
 					str1 = itemName.getStringCellValue();
 					if(!StrUtils.isEmpty(str1)) {
 						tempModel.set("item_name", str1);
+						//System.out.println("item_name:"+str1);
 					} 
 				} 
 				
@@ -347,6 +461,7 @@ public class ExcelModule extends BaseProjectController  {
 					break;
 				}
 				list.add(tempModel);
+				//System.out.println((String)tempModel.get("class_name1"));
 			}else {
 				break;
 			}
@@ -357,14 +472,17 @@ public class ExcelModule extends BaseProjectController  {
 	
 	
 	/**
-	 * 找到当前语言下所有子模板集合
-	 * @param sysLanguage
+	 * 找到当前类型下所有子模板集合
+	 * @param type
 	 * @return
 	 */
-	public static List<List<CreditCompanyFinancialDict>> getSonSectorList(String sysLanguage) {
-		List<Integer> sonSectorCodeList =  DictCache.getSonSectorCodeList();
-		//找到当前语言下所有模板实体
-		List<CreditCompanyFinancialDict> list  = FinanceService.getFinancialDict(sysLanguage);
+	public static List<List<CreditCompanyFinancialDict>> getSonSectorList(int type) {
+		//财务字典表子模块代码集合
+		List<Integer> sonSectorCodeList = Db.query
+				("select son_sector from credit_company_financial_dict where type=?  GROUP  BY son_sector",
+			     Arrays.asList(new String[] {type+""}).toArray());
+		//找到当前类型下所有模板实体
+		List<CreditCompanyFinancialDict> list  = FinanceService.getFinancialDict(type);
 		//页码和数据之间的映射
 		List<List<CreditCompanyFinancialDict>>  sonSectorList = new LinkedList<>();
 		
@@ -372,7 +490,7 @@ public class ExcelModule extends BaseProjectController  {
 			List<CreditCompanyFinancialDict> tempList = new ArrayList<>();
 			for (CreditCompanyFinancialDict model : list) {
 				int sonSector = model.get("son_sector");
-				if(sonSector==sonSectorCodeList.get(i)) {
+				if(sonSectorCodeList.get(i)!=null&&sonSector==sonSectorCodeList.get(i)) {
 					tempList.add(model);
 				}
 			}
@@ -388,8 +506,8 @@ public class ExcelModule extends BaseProjectController  {
 	 * @param sonSectorList
 	 * @return 子模块下标与对应合计项下标集合的映射,
 	 */
-	public static Map<Integer,List<Integer>> getSumOption(String sysLanguage){
-		List<List<CreditCompanyFinancialDict>> sonSectorList = getSonSectorList( sysLanguage);
+	public static Map<Integer,List<Integer>> getSumOption(int type){
+		List<List<CreditCompanyFinancialDict>> sonSectorList = getSonSectorList( type);
 		Map<Integer,List<Integer>> sonCodeToSumOptionMapping = new HashMap<>();
 		for (int i = 0; i < sonSectorList.size(); i++) {
 			List<Integer> sumOptionList = new LinkedList<>();

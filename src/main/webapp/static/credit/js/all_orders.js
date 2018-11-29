@@ -140,6 +140,8 @@ let Index = {
     			  agent_id:$("#agentId").find("option:selected").val(),
     			  company_by_report:$("#txt_search_departmentname").val(),
     			  right_company_name_en:$("#txt_search_companyEngName").val(),
+    			  num:$("#num").val(),
+    			  reference_num:$("#reference_num").val(),
     			  status:that.checkchar
 				}
 			});
@@ -216,7 +218,13 @@ let Index = {
                   field: 'custom_id',
                   align: 'center',
                   valign: 'middle',
-                },{
+                },
+                {
+                    title: '客户参考号',
+                    field: 'reference_num',
+                    align: 'center',
+                    valign: 'middle',
+                  },{
                   title: '代理ID',
                   field: 'agent_id',
                   align: 'center',
@@ -374,6 +382,8 @@ let Index = {
     			  agent_id:$("#txt_search_agency").find("option:selected").val(),
     			  company_by_report:$("#txt_search_departmentname").val(),
     			  right_company_name_en:$("#txt_search_companyEngName").val(),
+    			  num:$("#num").val(),
+    			  reference_num:$("#reference_num").val(),
     			  status:_this.checkchar
               };  
             },
@@ -434,6 +444,8 @@ function loadtable(){
     				"attr.agent_id":$("#txt_search_agency").find("option:selected").val(),
     				"attr.company_by_report":$("#txt_search_departmentname").val(),
     				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
+    				"attr.num":$("#num").val(),
+       			    "attr.reference_num":$("#reference_num").val(),
     				"status":checkchar},
     			 dataType:"json",
     			 success:function(data){

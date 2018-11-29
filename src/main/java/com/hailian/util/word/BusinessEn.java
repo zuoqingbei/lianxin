@@ -10,10 +10,10 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
-import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
 import org.jfree.data.general.DefaultPieDataset;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -22,7 +22,7 @@ import java.util.*;
  * 商业信息报告样本
  * Created by Thinkpad on 2018/11/17.
  */
-public class BusinessZh {
+public class BusinessEn {
 
     public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
     public static final int serverPort = Config.getToInt("searver_port");//ftp端口 默认21
@@ -244,6 +244,7 @@ public class BusinessZh {
         Map<String, String> fileMap = new HashMap<String, String>();
         fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
         fileList.add(fileMap);
+
         try {
             //new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
         } catch (Exception e) {

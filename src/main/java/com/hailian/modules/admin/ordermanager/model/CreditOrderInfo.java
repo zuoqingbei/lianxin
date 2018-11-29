@@ -377,7 +377,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String agent_id=model.get("agent_id");
 		//结束时间
 		String end_date = model.get("end_date");
-
+        //订单号
+		String num= model.get("num");
+		//客户参考号
+		String reference_num= model.get("reference_num");
 		//准确公司名称(经过翻译后的公司名称是中文)
 		String company_by_report=model.getStr("company_by_report");
 		if(company_by_report!=null) {
@@ -431,6 +434,14 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if (agent_id!=null) {
 			sql.append(" and t.agent_id=?");
 			params.add(agent_id);
+		}
+		if (StringUtils.isNotBlank(num)) {
+			sql.append(" and t.num  like concat('%',?,'%')");
+			params.add(num.trim());
+		}
+		if (StringUtils.isNotBlank(reference_num)) {
+			sql.append(" and t.reference_num  like concat('%',?,'%')");
+			params.add(reference_num.trim());
 		}
 		if (StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like concat('%',?,'%')");

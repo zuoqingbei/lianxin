@@ -2,30 +2,29 @@ package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.PictureRenderData;
-import com.deepoove.poi.data.RowRenderData;
-import com.deepoove.poi.data.TextRenderData;
-import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
-import com.hailian.modules.credit.utils.SendMailUtil;
-import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
 import org.jfree.data.general.DefaultPieDataset;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
 /**
- * 商业信息报告样本
+ * 基本信息报告样本
  * Created by Thinkpad on 2018/11/17.
  */
-public class BusinessZh {
+public class BaseInfoEn {
 
-    public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
-    public static final int serverPort = Config.getToInt("searver_port");//ftp端口 默认21
+    public static void main(String args[]) throws Exception{
+        //getForm?tableName=credit_company_info&className=CreditCompanyInfo*company_id
+        String s = "getForm?tableName=credit_company_info&className=CreditCompanyInfo*company_id";
+        //Map<String,String> map = parseUrl(s);
+        //System.out.println(map.get("tableName"));
+    }
 
     /**
      * 生成商业报告
@@ -36,6 +35,12 @@ public class BusinessZh {
      * @param userid 当前登录人
      */
     public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
+        //报告类型
+        //String reportType = "1";
+        //语言
+        //String sysLanguage = "612";
+        //公司id
+        //String companyId = "77";
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -232,149 +237,15 @@ public class BusinessZh {
             }
         }
 
-        //财务模块生成
-        map.put("financial", financial(reportType,companyId,sysLanguage,"1"));
+        String str = "该公司目前主要从事管道支吊架、垃圾给料机、钢结构件（除建筑构件）的制造、加工；机械零部件加工；金属材料的批发、零售、代购代销。\n" +
+                "周**先生目前在该公司担任董事长。\n" +
+                "该公司目前有120名员工。\n" +
+                "该公司目前在首页所述之地址办公。该地址位于浙江丽水市***********，面积未能获知。\n";
 
+        //总结
+        map.put("result", str);
 
-        MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
-        //上传文件
-        String filePath = MainWord.uploadReport(_prePath + ".docx", orderId, userid);
-        //发送邮件
-        List<Map<String, String>> fileList = new ArrayList<Map<String, String>>();
-        Map<String, String> fileMap = new HashMap<String, String>();
-        fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
-        fileList.add(fileMap);
-        try {
-            //new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MainWord.buildWord(map, webRoot + "/word/" + "_REGISTRATION REPORT.docx", _prePath + ".docx");
     }
-
-    /**
-     * 财务模板
-     * @param reportType
-     * @param companyId
-     * @param sysLanguage
-     * @param financialConfId
-     * @return
-     */
-    public static MiniTableRenderData financial(String reportType,String companyId,String sysLanguage,String financialConfId) {
-        ReportInfoGetDataController report = new ReportInfoGetDataController();
-
-        List<RowRenderData> rowList = new ArrayList<RowRenderData>();
-        //取数据
-        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId);
-
-        int j = 0;
-        Integer old = null;
-        for (CreditCompanyFinancialEntry ccf : finDataRows) {
-            Integer son_sector = ccf.getInt("son_sector");
-            //判断新模块，第一行要加标题
-            if(old==null){
-                old = son_sector;
-            }else{
-                if(son_sector.intValue()!=old.intValue()){
-                    old = son_sector;
-                    j = 0;
-                }
-            }
-            //j=0表示第一条
-            if(j==0) {
-                String title = "";
-                String unit = "";
-                switch (son_sector.intValue()){
-                    case 1:
-                        title = "合计";
-                        break;
-                    case 2:
-                        title = "流动资产";
-                        break;
-                    case 3:
-                        title = "非流动资产";
-                        break;
-                    case 4:
-                        title = "流动负债";
-                        break;
-                    case 5:
-                        title = "非流动负债";
-                        break;
-                    case 6:
-                        title = "负债及所有者权益";
-                        break;
-                    case 7:
-                        title = "毛利润";
-                        break;
-                    case 8:
-                        title = "营业利润";
-                        break;
-                    case 9:
-                        title = "税前利润";
-                        break;
-                    case 10:
-                        title = "所得税费用";
-                        break;
-                    case 11:
-                        title = "重要比率表";
-                        break;
-                }
-                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("")));
-                //大标题
-                Style titileStyle = new Style();
-                titileStyle.setColor("843C0B");
-                titileStyle.setBold(true);
-                rowList.add(RowRenderData.build(new TextRenderData(title,titileStyle), new TextRenderData(""), new TextRenderData("")));
-                Style header = new Style();
-                header.setBold(true);
-                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("单位：人民币（千元）",header)));
-            }
-            String itemName = ccf.getStr("item_name");
-            Integer begin = ccf.getInt("begin_date_value");
-            Integer end = ccf.getInt("end_date_value");
-            Integer is_sum_option = ccf.getInt("is_sum_option");
-
-            Style sumStyle = new Style();
-            if(is_sum_option.intValue()==1){
-                sumStyle.setBold(true);
-            }
-            rowList.add(RowRenderData.build(new TextRenderData(itemName,sumStyle), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
-
-            j++;
-        }
-
-        //取配置
-        /*List<CreditReportModuleConf> confList = CreditReportModuleConf.dao.find("select * from credit_report_module_conf where float_parent in (select id from credit_report_module_conf where report_type="
-                + reportType + " and small_module_type = 10 )");
-        for(CreditReportModuleConf conf : confList){
-            String source = conf.getStr("get_source");
-            if(source!=null&&!"".equals(source)){
-                String ci = conf.getInt("id") + "";
-                String s = conf.getStr("get_source");
-                if (s == null || "".equals(s)) {
-                    continue;
-                }
-                Map<String, String> p = MainWord.parseUrl(s);
-                String t = p.get("tableName");
-                if (t == null || "".equals(t)) {
-                    continue;
-                }
-                String c = p.get("className");
-                String cn = c.split("\\*")[0];
-
-                //取子项
-                List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(conf.get("id").toString(), reportType);
-                //取数据
-                List rows = report.getTableData(false, sysLanguage, companyId, t, cn, ci, "");
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-
-
-            }
-        }*/
-
-
-        return new MiniTableRenderData(rowList);
-    }
-
-
 
 }

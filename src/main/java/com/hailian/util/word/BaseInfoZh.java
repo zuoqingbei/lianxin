@@ -23,16 +23,25 @@ public class BaseInfoZh {
         //System.out.println(map.get("tableName"));
     }
 
-    public static void reportTable() {
+    /**
+     * 生成商业报告
+     * @param reportType  报告类型
+     * @param orderId     订单ID
+     * @param companyId   公司ID
+     * @param sysLanguage 语言
+     * @param userid 当前登录人
+     */
+    public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
         //报告类型
-        String reportType = "1";
+        //String reportType = "1";
         //语言
-        String sysLanguage = "612";
+        //String sysLanguage = "612";
         //公司id
-        String companyId = "77";
+        //String companyId = "77";
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
 
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("company", "海尔集团");
@@ -107,7 +116,8 @@ public class BaseInfoZh {
         map.put("result", str);
 
 
-        MainWord.buildWord(map, "h://word/_基本信息报告样本.docx", "h://1.docx");
+        //MainWord.buildWord(map, "h://word/_基本信息报告样本.docx", "h://1.docx");
+        MainWord.buildWord(map, webRoot + "/word/" + "_基本信息报告样本.docx", _prePath + ".docx");
 
         //注册信息-表格
         //RowRenderData header2 = RowRenderData.build(new TextRenderData("000000", "姓名"), new TextRenderData("000000", "学历"));
