@@ -165,7 +165,7 @@ public class FinanceService {
 	 * @param now 当前时间
 	 * @param financialConfId 财务配置id
 	 */
-	public  static void alterFinancialEntryList(List<Map<Object, Object>> entrys,String userId,String now,String financialConfId) {
+	public  static void alterFinancialEntryList(List<Map<Object, Object>> entrys,String userId,String now ) {
 		boolean exitsId = true;
 		if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
 			 exitsId = false;
