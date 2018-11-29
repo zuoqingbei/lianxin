@@ -13,15 +13,10 @@ import com.hailian.modules.credit.company.service.CompanyService;
 import org.apache.commons.lang3.StringUtils;
 
 //import ch.qos.logback.core.status.Status;
-
-
-
-
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.component.util.JFlyFoxUtils;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
@@ -35,7 +30,6 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
-import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.model.AgentModel;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
@@ -43,7 +37,6 @@ import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.city.model.CityModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
-import com.hailian.modules.credit.mail.model.MailLogModel;
 import com.hailian.modules.credit.mail.service.MailService;
 import com.hailian.modules.credit.notice.model.NoticeLogModel;
 import com.hailian.modules.credit.notice.model.NoticeModel;
@@ -51,7 +44,6 @@ import com.hailian.modules.credit.province.model.ProvinceModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
-import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
