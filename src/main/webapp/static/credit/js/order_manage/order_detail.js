@@ -128,9 +128,13 @@ let OrderDetail = {
                 case '1':
                     this.setTable(item, $wrap);
                     break;
-                // 11-带饼图的表格
+                // 11-表格+饼图
                 case '11':
-                    this.setTable(item, $wrap, true);
+                    this.setTable(item, $wrap, 'pie');
+                    break;
+                // 22-表格+柱线图
+                case '22':
+                    this.setTable(item, $wrap, 'lineBar');
                     break;
                 // 2-附件
                 case '2':
@@ -204,7 +208,6 @@ let OrderDetail = {
                             </div>`);
                     $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
                         if (data.rows) {
-                            console.warn(data);
                             $wrap.find('ul>li').eq(1 + data.rows[0][item.contents[0].column_name]).find('span').text('√')
                                 .parents('ul').siblings('.multiText:eq(0)').text(data.rows[0][item.contents[1].column_name])
                                 .siblings('.multiText').text(data.rows[0][item.contents[2].column_name]);
@@ -235,6 +238,7 @@ let OrderDetail = {
                         }
                     });
                     break;
+                // 21-单选框判断后加一个表格
                 case '21':
                     const $type21_div = $('<div class="radioBox p-3" ></div>').append(['', '有，详情如下。', '无，根据企业登记机关所示数据，无变更记录。', '企业登记机关并未提供该企业变更记录。']
                         .reduce(function (prev, cur) {
@@ -247,7 +251,7 @@ let OrderDetail = {
                             let radioSelect = data.rows[0][item.title.column_name];
                             $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
                             if (radioSelect === '1') {
-                                this.setTable(item, $wrap, false, 'save_source');
+                                this.setTable(item, $wrap, '', 'save_source');
                             }
                         } else {
                             console.warn(item.title.temp_name + '-102单选&表格-没有返回数据！')
@@ -296,12 +300,12 @@ let OrderDetail = {
      * 加载表格数据
      * @param item 当前模块数据
      * @param $wrap 当前存放DOM的jquery对象
-     * @param hasChart 是否要显示图表
+     * @param chartType 要显示何种图表：'pie','lineBar'
      * @param otherProperty get方法中的其他字段参数
      */
-    setTable(item, $wrap, hasChart = false, otherProperty) {
+    setTable(item, $wrap, chartType, otherProperty) {
         // 有图表的取截止时间
-        if (hasChart) {
+        if (chartType === 'pie') {
             $wrap.append(`<h3 class="guDongSubTitle">${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span> </h3>`);
             $.get(this.getUrl(item, 'save_source'), (data) => {
                 if (data.rows) {
@@ -311,7 +315,6 @@ let OrderDetail = {
         }
         let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
         let columnNameArr = [];
-        let chartData = [];
 
         item.contents.forEach((item) => {
             $table.children('thead').append(`<th>${item.temp_name}</th>`);
@@ -325,53 +328,122 @@ let OrderDetail = {
                         $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
                         return;
                     }
+                    let chartData = [];
                     data.rows.forEach((row) => {
                         let $tr = $('<tr></tr>');
-                        if (hasChart) {
-                            let money = row.money;
-                            chartData.push({
-                                name: row.name,
-                                value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
-                            })
+                        switch (chartType) {
+                            case 'pie':
+                                let money = row.money;
+                                chartData.push({
+                                    name: row.name,
+                                    value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
+                                });
+                                break;
+                            case 'lineBar':
+                                chartData = {
+                                    line: [0.06, 0.062, 0.068, 0.064, 0.062],
+                                    bar: [4800, 4700, 4800, 5000, 4500]
+                                };
+                                break;
                         }
                         columnNameArr.forEach((columnName) => {
                             $tr.append(`<td>${row[columnName] ? row[columnName] : '-'}</td>`);
-
                         });
                         $table.children('tbody').append($tr);
                     });
                     $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
-                    if (hasChart && chartData.length > 0) { // 绘制饼图
-                        let itemId = item.title.id;
-                        $("#" + itemId).append(`
-                        <h3 class="guDongSubTitle">出资比例(%)</h3>
-                        <div class="chartBox" style="height: 32rem;"></div>`);
-                        let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
-                        chart.setOption(opt_pie);
-                        chart.setOption({
-                            color: this.chartColors,
-                            series: [{
-                                data: chartData,
-                            }].map(function (item) {
-                                return $.extend(true, item, {
-                                    type: 'pie',
-                                    label: {
-                                        formatter: '{b}: {d}%'
-                                    },
-                                    radius: '28%',
-                                    center: ['50%', '52%'],
-                                    startAngle: '45'
-                                })
-                            })
-                        }, true);
+                    if (Array.isArray(chartData) && chartData.length > 0 || typeof chartData === 'object' && Object.keys(chartData).length > 0) { // 绘制饼图
+                        this.drawChart(item, chartData)[chartType]();// 绘制图表
                     }
                 } else {
-                    console.warn(item.title.temp_name + `-表格${hasChart ? '&图表' : ''}-没有返回数据！`);
+                    console.warn(item.title.temp_name + `-表格${chartType ? '&图表' : ''}-没有返回数据！`);
                     $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
                 }
             }
         );
     },
+    drawChart(item, chartData) {
+        let itemId = item.title.id;
+        return {
+            pie: () => {
+                $("#" + itemId).append(`
+                        <h3 class="guDongSubTitle">出资比例(%)</h3>
+                        <div class="chartBox" style="height: 32rem;"></div>`);
+                let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
+                chart.setOption(opt_pie);
+                chart.setOption({
+                    color: this.chartColors,
+                    series: [{
+                        data: chartData,
+                    }].map(function (item) {
+                        return $.extend(true, item, {
+                            type: 'pie',
+                            label: {
+                                formatter: '{b}: {d}%'
+                            },
+                            radius: '28%',
+                            center: ['50%', '52%'],
+                            startAngle: '45'
+                        })
+                    })
+                }, true);
+            },
+            lineBar: () => {
+                $("#" + itemId).append(`
+                        <h3 class="guDongSubTitle">出资比例(%)</h3>
+                        <div class="chartBox" style="height: 28rem;"></div>`);
+                let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
+                // chart.setOption(opt_lineBar);
+
+                chart.setOption({
+                    color: ['#1890ff', '#facc15'],
+
+                    legend: {show: true},
+                    xAxis: {
+                        axisLine: {show: false},
+                        axisTick: {show: false},
+                        data: [2014, 2015, 2016, 2017, 2018]
+                    },
+                    // grid:{top:'15%'},
+                    yAxis: [{
+                        name: 'y1',
+                        axisLine: {show: false},
+                        axisTick: {show: false},
+                        // splitNumber:6,
+                        // interval:5
+                    }, {
+                        name: 'y2',
+                        axisLine: {show: false},
+                        axisTick: {show: false},
+                        axisLabel: {interval: 2},
+                        splitLine: {lineStyle: {type: 'dashed'}}
+                        // splitNumber:6,
+                        // interval:5
+                    }],
+                    series: [{
+                        type: 'bar',
+                        name: 'y1',
+                        yAxisIndex: 0,
+                        data: chartData.bar,
+                    }, {
+                        type: 'line',
+                        name: 'y2',
+                        yAxisIndex: 1,
+                        data: chartData.line,
+                    }].map(function (item) {
+                        return $.extend(true, item, {
+                            // type: 'pie',
+                            label: {
+                                formatter: '{b}: {d}%'
+                            },
+                            barWidth: 36 * bodyScale
+                        })
+                    })
+                }, true);
+                // console.log(chart)
+            }
+        }
+    }
 };
 
 OrderDetail.init();

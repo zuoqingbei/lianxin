@@ -213,4 +213,12 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 		String className = getPara("className","");
 		return tableName.equals("credit_company_info")||className.equals("CreditCompanyInfo");
 	}
+	
+	/**
+	 * 根据报告类型判断财务字典类型
+	 */
+	Integer getFinanceDictByReportType(String reportType) {
+		List<Integer> list =   Db.query("select financial_type from credit_report_type where id=?",Arrays.asList(new String[] {reportType}).toArray());
+		return list.size()==0?null:list.get(0);
+	}
 }
