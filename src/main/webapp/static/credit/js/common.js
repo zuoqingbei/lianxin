@@ -143,11 +143,11 @@ let Public = {
 
         })
     },
-    goToOrderDetail(id, param) {
+    goToOrderDetail(id, row) {
         console.log("开始订单详情页跳转")
         //跳转订单详情
         $("#main_content").load(BASE_PATH + 'credit/front/home/orderInfo?id=' + id);
-        localStorage.setItem("row", JSON.stringify(param));
+        localStorage.setItem("row", JSON.stringify(row));
     },
     createOrder() {
         $("#main_content").load(BASE_PATH + 'credit/front/home/createOrder')
@@ -238,7 +238,7 @@ let Public = {
     },
     fileConfig(item, row) {
         let _this = this
-        _this.rows = row
+        _this.row = row
         let content = ''
         content += ` <div class="order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
    			 <div class="uploadFile mt-3 mr-3 ml-3">
@@ -254,7 +254,7 @@ let Public = {
             url,
             type: 'post',
             data: {
-                orderId: _this.rows.id
+                orderId: _this.row.id
             },
             success: (data) => {
                 if (data.statusCode === 1) {
