@@ -529,7 +529,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		int type = getFinanceDictByReportType(reportType);
 		UploadFile uploadFile = getFile("file");
-		String message = "上传失败!";
+		String message = "导入失败,开始值和结束值只能是数字!!";
 		try {
 			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, "8", now);
 		} catch (Exception e) {
@@ -652,7 +652,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 删除一条财务配置信息
 	 * lzg 2018/11/24
 	 */
-	public void deleteOneFinanceCconfig() {
+	public void deleteOneFinanceConfig() {
 		String financialConfId = getPara("ficConf_id");
 		if(StrUtils.isEmpty(financialConfId)) {
 			renderJson(new ResultType(0, "请检查必要参数financialConfId!"));

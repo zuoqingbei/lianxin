@@ -216,7 +216,7 @@ public class FinanceService {
 				return true;
 			}
 		});
-		 return  result?"成功导入"+(modelList.size()-1)+"条数据!":"导入失败,请检查文件内容!";
+		 return  result?"成功导入"+(modelList.size()-1)+"条数据!":"导入失败,开始值和结束值只能是数字!";
 	}
 	
 	
