@@ -5,6 +5,8 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import com.hailian.system.dict.DictCache;
@@ -246,12 +248,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @return
      */
     public List getTableData(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
-        // 解析实体获取required参数
-        String type = null;
-        if(getRequest()!=null){
-            type = getPara("type");
-        }
-        String getSource = "";
+		// 解析实体获取required参数
+      String type=	getPara("type");
+      String getSource="";
     	if (type!=null) {
 			CreditReportDetailConf confModel=CreditReportDetailConf.dao.findById(confId);
 			 getSource = confModel.getStr("data_source");
@@ -460,13 +459,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     * @return
      */
     public void getflow(){
-    	Record record = new Record();
     String order_num=	getPara("num");
-     List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.detail_id, d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
+     List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.id, d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
     		+ "LEFT JOIN sys_dict_detail d on d.detail_id=f.order_state "
     		+ "LEFT JOIN sys_user u on u.userid=f.create_oper "
     		+ "where  f.order_num=?",order_num);
-     renderJson(record.set("rows", flows).set("total", flows!=null?flows.size():null));	
+    renderJson(flows);
     	
     	
     }
@@ -518,21 +516,22 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	  */
 	public void uploadFinancialEntrys() {
 		String financialConfId = getPara("ficConf_id");
-		String sysLanguage = getPara("sys_language");
+		String reportType = getPara("report_type");
 		String userId = getSession().getId();
 		String now = getNow();
 		if(StrUtils.isEmpty(financialConfId)) {
 			renderJson(new ResultType(0, "配置id不能为空!"));
 			return;
 		}
-		if(StrUtils.isEmpty(sysLanguage)) {
-			renderJson(new ResultType(0, "语言参数不能为空!"));
+		if(StrUtils.isEmpty(reportType)) {
+			renderJson(new ResultType(0, "报告类型不能为空!"));
 			return;
 		}
+		int type = getFinanceDictByReportType(reportType);
 		UploadFile uploadFile = getFile("file");
 		String message = "上传失败!";
 		try {
-			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), sysLanguage, financialConfId, "8", now);
+			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, "8", now);
 		} catch (Exception e) {
 			renderJson( new ResultType(0, message));
 			e.printStackTrace();
@@ -546,30 +545,34 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       *lzg 2018/11/24
      */
 	public void getFinanceExcelExport() {
-		String sysLanguage = getPara("sys_language");
-		if(StrUtils.isEmpty(sysLanguage)) {
-			renderJson(new ResultType(0, "语言参数不能为空!"));
+		String reportType = getPara("report_type");
+		if(StrUtils.isEmpty(reportType)) {
+			renderJson(new ResultType(0, "报告类型不能为空!"));
 			return;
 		}
-		OutputStream ops = null;
+		Integer type = getFinanceDictByReportType(reportType);
+		if(type==null) {
+			renderJson(new ResultType(0, "此报告类型下无财务模板!"));
+			return;
+		}
+		ServletOutputStream ops = null;
 		HttpServletResponse response = this.getResponse();
-		response.reset();
 		try {
-			response.reset();
-			ops = response.getOutputStream();
+			ops = response.getOutputStream();response.reset();
 		} catch (IOException e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0, "导入出现未知异常!"));
 			return;
 		}
-		ExcelModule.exportExcel(response,ops, sysLanguage);
+		ExcelModule.exportExcel(response,ops, type);
+		renderJson(new ResultType(0, "导入成功!"));
 	}
 	
 	/**
 	 * 增加或修改一条财务实体信息
 	 * lzg 2018/11/24
 	 */
-	public void addOneFinanceOneEntry() {
+	public void alterFinanceOneEntry() {
 		String dataJson = getPara("dataJson");
 		String financialConfId = getPara("ficConf_id");
 		if(StrUtils.isEmpty(dataJson,financialConfId)) {
@@ -577,10 +580,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			return;
 		}
 		List<Map<Object, Object>> entrys = ReportInfoGetData.parseJsonArray(dataJson);
-		if(entrys.size()!=1) {
-			renderJson(new ResultType(0,"只能单条操作!"));
-			return;
-		}
 		String userId = getSession().getId();
 		String now = getNow();
 		try {
@@ -625,9 +624,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 */
 	public void alterFinanceOneConfig() {
 		String dataJson = getPara("dataJson");
-		String sysLanguage = getPara("sys_language");
-		if(StrUtils.isEmpty(dataJson,sysLanguage)) {
-			renderJson(new ResultType(0, "请检查这两个必要参数sysLanguage,dataJson!"));
+		String reportType = getPara("report_type");
+		if(StrUtils.isEmpty(dataJson)) {
+			renderJson(new ResultType(0, "请检查这两个必要参数reportType,dataJson!"));
 			return;
 		}
 		List<Map<Object, Object>> entrys = ReportInfoGetData.parseJsonArray(dataJson);
@@ -637,8 +636,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String userId = getSession().getId();
 		String now = getNow();
+		int type = getFinanceDictByReportType(reportType);
 		try {
-			FinanceService.alterFinancialConfig(entrys, sysLanguage, "8", now);
+			FinanceService.alterFinancialConfig(entrys, type, "8", now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -669,8 +669,27 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		renderJson(new ResultType(1,"删除成功!"));
 	}
-
-
+	
+	 /**
+	  * 上传商标
+	  * lzg 2018/11/28
+	  */
+	 public void  uploadBrand() {
+		 String financialConfId = getPara("ficConf_id");
+		String orderId = getPara("order_id");
+		//从前台获取文件
+        List<UploadFile>  upFileList = getFiles("file");
+        if(upFileList.size()<1) {
+        	renderJson(new ResultType(0, "上传文件为空!"));
+			return;
+        }
+        if(StrUtils.isEmpty(orderId)) {
+        	renderJson(new ResultType(0, "请检查必要参数reportId!"));
+			return;
+        }
+		renderJson(OrderProcessController.uploadFile(orderId, "-1", upFileList,8));
+	 }
+	
     /**
      * 将id转化为字典表中对应的字符串
      * @param id
@@ -681,5 +700,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         return sysDict.get("detail_name") + "";
     }
 	
+   
 	
 }

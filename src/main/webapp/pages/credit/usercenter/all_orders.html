@@ -45,7 +45,7 @@
                     <form id="formSearch" class="form-inline layui-form" role="form">
                         <div class="form-group row d-flex justify-content-around mb-3">
                             <div class="input-group mt-2 col-md-4">
-                                <label class="control-label col-md-4" for="txt_search_departmentname">公司名称：</label>
+                                <label class="control-label col-md-4" for="txt_search_departmentname">公司中文名称：</label>
                                 <input type="text" class="form-control search-input col-md-8" id="txt_search_departmentname" placeholder="请输入公司名称">
                             </div>
                             <div class="input-group mt-2 col-md-4">
@@ -59,7 +59,7 @@
                         </div>
                         <div id="btnCollapse" class="show row justify-content-around">
                             <div class="input-group mt-2 col-md-4 " id="client">
-                                <label class="control-label col-md-4" for="txt_search_cus">客户：</label>
+                                <label class="control-label col-md-4" for="txt_search_cus">客户ID：</label>
                                 <select class="search-input col-md-8 layui-input" id="txt_search_cus"  name='attr.custom_id'>
                                     <option value="" disabled selected>请选择客户</option>
 
@@ -78,6 +78,16 @@
                                 </select>
                             </div>
                         </div>
+                        <div id="btnCollap" class="show row ">
+                                    <div class="input-group mt-2 col-md-4" >
+                                        <label class="control-label col-md-4" for="txt_search_departmentname">订单编号：</label>
+                                        <input id="num" type="text" class="form-control search-input col-md-8"  placeholder="请输入订单编号">
+                                    </div>
+                                    <div class="input-group mt-2 col-md-4" >
+                                        <label class="control-label col-md-4" for="txt_search_departmentname">客户参考号：</label>
+                                        <input id="reference_num" type="text" class="form-control search-input col-md-8"  placeholder="请输入客户参考号">
+                                    </div>
+                                </div>
                     </form>
                     <div class="btn-row d-flex justify-content-between mt-3 mb-3">
                         <a role="button" class=" ml-5 d-flex align-items-center" href="javascript:;"></a>
