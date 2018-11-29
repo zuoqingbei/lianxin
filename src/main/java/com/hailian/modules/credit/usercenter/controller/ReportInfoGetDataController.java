@@ -574,16 +574,15 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 */
 	public void alterFinanceOneEntry() {
 		String dataJson = getPara("dataJson");
-		String financialConfId = getPara("ficConf_id");
-		if(StrUtils.isEmpty(dataJson,financialConfId)) {
-			renderJson(new ResultType(0, "请检查这两个个必要参数 dataJson,financialConfId!"));
+		if(StrUtils.isEmpty(dataJson)) {
+			renderJson(new ResultType(0, "请检查这两个必要参数 dataJson!"));
 			return;
 		}
 		List<Map<Object, Object>> entrys = ReportInfoGetData.parseJsonArray(dataJson);
 		String userId = getSession().getId();
 		String now = getNow();
 		try {
-			FinanceService.alterFinancialEntryList(entrys, "8", now, financialConfId);
+			FinanceService.alterFinancialEntryList(entrys, "8", now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
