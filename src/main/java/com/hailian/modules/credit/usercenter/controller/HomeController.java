@@ -218,6 +218,12 @@ public class HomeController extends BaseProjectController {
 		if(StringUtils.isNotBlank(getPara("right_company_name_en"))) {
 			model.set("right_company_name_en", getPara("right_company_name_en"));
 		}
+		if(StringUtils.isNotBlank(getPara("num"))) {
+			model.set("num", getPara("num"));
+		}
+		if(StringUtils.isNotBlank(getPara("reference_num"))) {
+			model.set("reference_num", getPara("reference_num"));
+		}
 		String sortname=getPara("sortName");
 		if(!StringUtils.isNotBlank(sortname)) {
 			sortname="create_date";
