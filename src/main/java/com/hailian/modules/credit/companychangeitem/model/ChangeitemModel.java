@@ -86,14 +86,14 @@ public class ChangeitemModel extends BaseProjectModel<ChangeitemModel> {
 		ChangeitemModel findFirst = ChangeitemModel.dao.findFirst(sql,params.toArray());
 		return findFirst;
 	}
-	public ChangeitemModel getTranslateByError(String error) {
+	public ChangeitemModel getChangeitemByNotNessent(String nonessentialitems) {
 		// TODO Auto-generated method stub
-		String sql="select t.*,t4.realname as createName,t5.realname as updateName from credit_translate t ";
+		String sql="select t.*,t4.realname as createName,t5.realname as updateName from credit_companyhistory_changeitem t ";
 		sql+=" left join sys_user t4 on t4.userid=t.create_by ";
 		sql+=" left join sys_user t5 on t5.userid=t.update_by ";
-		sql+=" where t.del_flag=0 and t.error_phrase=?";
+		sql+=" where t.del_flag=0 and t.nonessentialitems=?";
 		List<Object> params=new ArrayList<Object>();
-		params.add(error);
+		params.add(nonessentialitems);
 		ChangeitemModel findFirst = ChangeitemModel.dao.findFirst(sql,params.toArray());
 		return findFirst;
 	}

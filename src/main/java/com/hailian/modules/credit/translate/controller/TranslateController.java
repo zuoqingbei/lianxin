@@ -16,7 +16,7 @@ import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
 import com.hailian.modules.credit.whilte.service.ArchivesWhilteService;
 import com.jfinal.plugin.activerecord.Page;
 /**
- * 白名单维护接口
+ * 翻译校正
 * @author doushuihai  
 * @date 2018年9月3日下午2:32:56  
 * @TODO
