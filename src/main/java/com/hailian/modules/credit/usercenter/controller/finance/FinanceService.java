@@ -4,10 +4,11 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
@@ -166,29 +167,28 @@ public class FinanceService {
 	 */
 	public  static void alterFinancialEntryList(List<Map<Object, Object>> entrys,String userId,String now,String financialConfId) {
 		boolean exitsId = true;
-		if(entrys.size()!=1) {
-			return;
-		}
 		if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
 			 exitsId = false;
 		}
-		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
-		
-	    model.set("update_by", userId);
-		model.set("update_date", now);
-		
-		for (Object key : entrys.get(0).keySet()) {
-			model.set((""+key).trim(), (""+(entrys.get(0).get(key))).trim());
+		List<CreditCompanyFinancialEntry> list = new ArrayList<>();
+		for (Map<Object, Object> entry : entrys) {
+			CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
+		    model.set("update_by", userId);
+			model.set("update_date", now);
+			if(!exitsId){
+				model.set("create_by", userId);
+				model.set("create_date", now);
+			}
+			for (Object key : entry.keySet()) {
+				model.set((""+key).trim(), (""+(entry.get(key))).trim());
+			}
+			list.add(model);
 		}
-		
-		if(exitsId) {
-			model.update();
-		}else {
-			//如果是新增操作 
-			model.set("create_by", userId);
-			model.set("create_date", now);
-			model.set("conf_id", financialConfId);
-			model.save();
+		//批量执行
+		if(!exitsId){
+			Db.batchSave(list, list.size());
+		}else{
+			Db.batchUpdate(list, list.size());
 		}
 	}
 	

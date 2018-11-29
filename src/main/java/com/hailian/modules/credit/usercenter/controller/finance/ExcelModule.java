@@ -18,6 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFComment;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -96,7 +100,7 @@ public class ExcelModule extends BaseProjectController  {
 					"初始日期值",
 					"结束日期值"
 			}; 
-			fileName = "FinancialModuleForChinese";
+			fileName = "ChineseFinancialTemplate";
 		}else if(type==2){
 			smallModuleColSpacing = 9;
 			colWidthOffSet = 345;
@@ -105,7 +109,7 @@ public class ExcelModule extends BaseProjectController  {
 					"beginValue",
 					"endValue"
 			};
-			fileName = "FinancialModuleForEnglish";
+			fileName = "EnglishFinancialTemplate";
 		}else if(type==3){
 			smallModuleColSpacing = 9;
 			colWidthOffSet = 345;
@@ -151,7 +155,7 @@ public class ExcelModule extends BaseProjectController  {
 			tempFatherList1.add(sonSectorList.get(0));
 			pageNumToList.put(3, tempFatherList1);
 		}
-		
+	 
 		try {
 			fileName = new String(fileName.getBytes("UTF-8"),"ISO-8859-1" );
 			response.setHeader("Content-Disposition","attachment;filename="+fileName+".xlsx");//指定下载的文件名
@@ -168,6 +172,7 @@ public class ExcelModule extends BaseProjectController  {
 			//按照规定的顺序创建sheet页
 			wb.createSheet(moduleOrderMapping.get(pageNum));
 			HSSFSheet sheet = wb.getSheetAt(currentPage);
+			
 			//本页数据
 			List<List<CreditCompanyFinancialDict>> pageData = pageNumToList.get(pageNum);
 			//列宽度映射
@@ -177,6 +182,11 @@ public class ExcelModule extends BaseProjectController  {
 			HSSFRow rowHead = sheet.createRow(top);
 			HSSFCellStyle rowHeadStyle = ExcelUtils.getDefaultStyle(wb,true,false);
 			HSSFCellStyle rowHeadStyle2 = ExcelUtils.getDefaultStyle(wb,false,false);
+			
+	        // 创建HSSFPatriarch对象,HSSFPatriarch是所有注释的容器.
+	        HSSFPatriarch patr = sheet.createDrawingPatriarch();
+	       
+			
 			int a = 0;//列位置系数
 			for (int j = 0; j < pageData.size(); j++) {
 					for (int k = 0; k < firstRow.length; k++) {
@@ -209,6 +219,13 @@ public class ExcelModule extends BaseProjectController  {
 					HSSFCell cell = rowBody.createCell(left+j*smallModuleColSpacing);
 					cell.setCellValue(cellValue);
 					cell.setCellStyle(rowHeadStyle2);
+					 // 定义注释的大小和位置,详见文档
+			        HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)0, 0, (short) 0, 0));
+			        // 设置注释内容
+			        comment.setString(new HSSFRichTextString("该单元格是默认项,禁止修改!"));
+			        // 设置注释作者. 当鼠标移动到单元格上是可以在状态栏中看到该内容.
+			        comment.setAuthor("lzg");
+					cell.setCellComment(comment);
 				}
 			}
 			
@@ -219,8 +236,8 @@ public class ExcelModule extends BaseProjectController  {
 			currentPage++;
 		}
 		try {
+			
 			wb.write(ops);
-			ops.flush();
 			wb.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -228,6 +245,7 @@ public class ExcelModule extends BaseProjectController  {
 			if(ops!=null) {
 				try {
 					ops.close();
+					ops = null;
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
