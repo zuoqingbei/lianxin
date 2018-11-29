@@ -398,12 +398,12 @@ let ReportConfig = {
     									<div class="is-merge form-inline">
     										<label class="mr-3" style="font-weight:600">${this_content[1].temp_name}</label>
     										<div class="form-check form-check-inline">
-	    										<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[0].split(":")[0]}>
-				                                <label class="form-check-label mx-0" for="">${radioArr[0].split(":")[1]}</label>
+	    										<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[0].split("-")[0]}>
+				                                <label class="form-check-label mx-0" for="">${radioArr[0].split("-")[1]}</label>
 			                                </div>
 						    				<div class="form-check form-check-inline">
-							    				<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[1].split(":")[0]}>
-							    				<label class="form-check-label mx-0" for="">${radioArr[1].split(":")[1]}</label>
+							    				<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[1].split("-")[0]}>
+							    				<label class="form-check-label mx-0" for="">${radioArr[1].split("-")[1]}</label>
 						    				</div>
     									</div>
     									<div class="btn-group">
@@ -458,14 +458,14 @@ let ReportConfig = {
     			(function(a,i,radioName){
     				setTimeout(()=>{
     					let id = InitObj.bindCwConfig(conf_id,url,a,i,radioName,_this.rows)
-    					InitObj.initCwTable(tableCwId,item,this_content,_this.cwGetSource,_this.cwAlterSource,id)
+    					InitObj.initCwTable(tableCwId,this_content,_this.cwGetSource,_this.cwAlterSource,id)
     					
     				},0)
     			})(tableTitle,index,cw_contents[0][1].column_name)
     			switch(item.sort) {
     				case 2:
     					//合计表
-    					cw_table_html += `<div class="table-content1" style="background:#fff">
+    					cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
 					            				<table id="tableCwHj"
 					            				data-toggle="table"
 					            				style="position: relative"
@@ -478,7 +478,7 @@ let ReportConfig = {
     				case 3:
     					//资产负债表
     					for(let i=0;i<5;i++){
-    						cw_table_html += `<div class="table-content1" style="background:#fff">
+    						cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
     							<table id="tableCwFz${i}"
     							data-toggle="table"
     							style="position: relative"
@@ -492,7 +492,7 @@ let ReportConfig = {
     				case 4:
     					//利润表
     					for(let i=0;i<4;i++){
-    						cw_table_html += `<div class="table-content1" style="background:#fff">
+    						cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
     							<table id="tableCwLr${i}"
     							data-toggle="table"
     							style="position: relative"
@@ -505,7 +505,7 @@ let ReportConfig = {
     					break;	
     				case 5:
     					//比率表
-						cw_table_html += `<div class="table-content1" style="background:#fff">
+						cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
 							<table id="tableCwBl"
 							data-toggle="table"
 							style="position: relative"
@@ -523,6 +523,7 @@ let ReportConfig = {
     	$(cw_dom).after(cw_top_html)
     	setTimeout(()=>{
     		InitObj.cwModalCompute()
+
     	},0)
     },
     initContent(){
