@@ -8,7 +8,8 @@ import java.util.List;
 public class Reporter implements Comparable<Reporter>{
 	String reportId;
 	double finalScore;//报告员评分
-	long inDoingOrderNum;
+	long inDoingOrderNum;//当日在做单量
+	long finishedOrderNum;//当日完成量
 	
 	public String getReportId() {
 		return reportId;
@@ -35,11 +36,20 @@ public class Reporter implements Comparable<Reporter>{
 	}
 	
 	
-	public Reporter(String reportId, double finalScore, long inDoingOrderNum) {
+	public long getFinishedOrderNum() {
+		return finishedOrderNum;
+	}
+
+	public void setFinishedOrderNum(long finishedOrderNum) {
+		this.finishedOrderNum = finishedOrderNum;
+	}
+
+	public Reporter(String reportId, double finalScore, long inDoingOrderNum,long finishedOrderNum) {
 		super();
 		this.reportId = reportId;
 		this.finalScore = finalScore;
 		this.inDoingOrderNum = inDoingOrderNum;
+		this.finishedOrderNum = finishedOrderNum;
 	}
 
 	@Override  
@@ -51,26 +61,33 @@ public class Reporter implements Comparable<Reporter>{
 			return -1;
 		}
 		if(i == 0){ 
-			 double i2=this.finalScore - o.getFinalScore();
-			 if(i2>0){
-				 return -1;
-			 }else if(i2<0){
-				 return 1;
-			 }else{
-				 return 0;
-			 }
+			long j = this.getFinishedOrderNum() - o.getFinishedOrderNum();  
+			if(j>0){
+				return 1;
+			}else if(j<0){
+				return -1;
+			}else{
+				 double i2=this.finalScore - o.getFinalScore();
+				 if(i2>0){
+					 return -1;
+				 }else if(i2<0){
+					 return 1;
+				 }else{
+					 return 0;
+				 }
+			}
 		}
 		return 0;          
 		}
 	public static void main(String[] args) {          
 		List<Reporter> users = new ArrayList<Reporter>(); 
-		users.add(new Reporter("1",88.00, 26));
-		users.add(new Reporter("2",90.00, 23));          
-		users.add(new Reporter("4",92.00,56));          
-		users.add(new Reporter("5",94.00, 23));          
+		users.add(new Reporter("1",88.00, 26,7));
+		users.add(new Reporter("2",90.00, 23,9));          
+		users.add(new Reporter("4",92.00,56,0));          
+		users.add(new Reporter("5",94.00, 23,6));          
 		Collections.sort(users);          
 		for(Reporter user : users){              
-			System.out.println(user.getInDoingOrderNum() + "," + user.getFinalScore());
+			System.out.println(user.getInDoingOrderNum() + ","+user.getFinishedOrderNum()+"," + user.getFinalScore());
 			}  
 	}
 	public String getreporterToOrder(List<Reporter> reporterList){

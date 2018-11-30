@@ -41,6 +41,7 @@ import com.jfinal.plugin.activerecord.Page;
 public class CreditOrderInfoModel extends BaseProjectModel<CreditOrderInfoModel> {
 	//客户姓名
 		private String customId;
+		private String priceId;
 		private String companyId;
 		
 		//客户姓名
@@ -59,16 +60,14 @@ public class CreditOrderInfoModel extends BaseProjectModel<CreditOrderInfoModel>
 		private String companyByReport;
 		//订单来源
 		private String speed;
-		//订单价格
 		private String referenceNum;
-		//公司名称
 		private String address;
-		//公司英文名称
 		private String telphone;
 		private String fax;
 		private String email;
 		private String contacts;
 		private String remarks;
+		private String right_company_name_en;
 
 		
 	
@@ -78,6 +77,14 @@ public class CreditOrderInfoModel extends BaseProjectModel<CreditOrderInfoModel>
 		}
 		public void setCustomId(String customId) {
 			set("custom_id", customId);
+		}
+		
+		
+		public String getPriceId() {
+			return priceId;
+		}
+		public void setPriceId(String priceId) {
+			set("price_id", priceId);
 		}
 		public String getCompanyId() {
 			return companyId;
@@ -178,6 +185,15 @@ public class CreditOrderInfoModel extends BaseProjectModel<CreditOrderInfoModel>
 		}
 		
 		
+
+		public String getRight_company_name_en() {
+			return right_company_name_en;
+		}
+		public void setRight_company_name_en(String right_company_name_en) {
+			set("right_company_name_en", right_company_name_en);
+		}
+
+
 
 		/**
 		 * 
