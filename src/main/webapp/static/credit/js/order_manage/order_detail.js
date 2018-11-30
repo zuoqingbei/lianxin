@@ -1,7 +1,8 @@
 let OrderDetail = {
     init: function () {
-        this.rows = JSON.parse(localStorage.getItem("row"));
-        console.log('--rows', this.rows);
+        this.row = JSON.parse(localStorage.getItem("row"));
+        console.log('--row', this.row);
+        // alert(this.row.qualityCheck);
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         this.getUrl = (item, otherProperty) => {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.data_source).split("*");
@@ -14,31 +15,32 @@ let OrderDetail = {
                     url = param;
                 } else {
                     if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
-                        url += `&${param}=${this.rows.id}`
+                        url += `&${param}=${this.row.id}`
                     } else {
-                        url += `&${param}=${this.rows[param]}`
+                        url += `&${param}=${this.row[param]}`
                     }
                 }
             });
             url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
             return url;
         };
-        this.processNames = this.rows.country === '中国大陆' ?
+        this.processNames = this.row.country === '中国大陆' ?
             ['订单分配', '信息录入', '订单核实', '订单查档', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成']
             : ['订单查档', '订单分配', '信息录入', '订单核实', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成'];
         this.chartColors = ['#1890ff', '#13c2c2', '#2fc25c', '#facc15', '#ef4763', '#8543e0', '#40a9ff', '#36cfc9', '#73d13d', '#ffec3d', '#ff4d4f', '#9254de']
         // 汉语类型[1,8,10],英语类型[7,9,11]
-        this.english = [7, 9, 11].includes(this.rows.report_type - 0);
+        this.english = [7, 9, 11].includes(this.row.report_type - 0);
         this.creditLevel = this.english ? creditLevel_en : creditLevel_cn;
         this.initContent();
     },
     // 页面结构
     initContent() {
         let _this = this;
-        let id = this.rows.id;
-        let reportType = this.rows.report_type;
+        let id = this.row.id;
+        let reportType = this.row.report_type;
+        let type = this.row.qualityCheck ? '' : 0;
         $.get(`${this.BASE_PATH}getmodule/detail/`,
-            {id, reportType, type: 0},
+            {id, reportType, type},
             (data) => {
                 setTimeout(() => {
                     console.log('--data', data);
@@ -104,7 +106,7 @@ let OrderDetail = {
                     if (item.title.temp_name === '基本信息') { //表单头部取数于本地存储
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
                             let column_name = $(this).data('column_name');
-                            $(this).text(_this.rows[column_name])
+                            $(this).text(_this.row[column_name])
                         });
                     } else {
                         $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
@@ -138,13 +140,13 @@ let OrderDetail = {
                     break;
                 // 2-附件
                 case '2':
-                    let html = Public.fileConfig(item, this.rows);
+                    let html = Public.fileConfig(item, this.row);
                     $wrap.append(`<div class="tabelBox p-4">${html}</div></div>`);
                     break;
                 // 4-流程进度
                 case '4':
                     let $ul = this.initProcess();
-                    $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
+                    $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
                         if (data.rows) {
                             this.processNames.forEach((name, index) => {
                                 data.rows.forEach((item) => {
@@ -179,7 +181,7 @@ let OrderDetail = {
                     break;
                 // 7-多行文本框
                 case '7':
-                    $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
+                    $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
                         if (data.rows) {
                             $wrap.append(`<div class="border multiText m-4 p-2">${data.rows[0] ?
                                 data.rows[0][item.title.column_name] ? data.rows[0][item.title.column_name] : ''
@@ -206,13 +208,13 @@ let OrderDetail = {
                                 <h4>${item.contents[2].temp_name}</h4>
                                 <div class="border multiText m-4 p-2"></div>
                             </div>`);
-                    $.get(`${this.getUrl(item)}&order_num=${this.rows.num}`, (data) => {
+                    $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
                         if (data.rows) {
                             $wrap.find('ul>li').eq(1 + data.rows[0][item.contents[0].column_name]).find('span').text('√')
                                 .parents('ul').siblings('.multiText:eq(0)').text(data.rows[0][item.contents[1].column_name])
                                 .siblings('.multiText').text(data.rows[0][item.contents[2].column_name]);
                         } else {
-                            console.warn(item.title.temp_name + '-总体评价-没有返回数据！', `${this.getUrl(item)}&order_num=${this.rows.num}`)
+                            console.warn(item.title.temp_name + '-总体评价-没有返回数据！', `${this.getUrl(item)}&order_num=${this.row.num}`)
                         }
                     });
                     break;
@@ -275,8 +277,8 @@ let OrderDetail = {
     // 设置头部信息
     setHeader() {
         $("#orderName").text(this.data.defaultModule[0].temp_name + " :");
-        $("#orderNum").text(this.rows.num);
-        $("#status").text(this.rows.statusName);
+        $("#orderNum").text(this.row.num);
+        $("#status").text(this.row.statusName);
     },
     initProcess() {
         let $li = $(`<li>
