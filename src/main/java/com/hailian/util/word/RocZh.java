@@ -168,9 +168,9 @@ public class RocZh {
                         for(int j=0;j<items.length;j++) {
                             String[] item = items[j].split("-");
                             if (value.equals(item[0])) {
-                                html.append("(√)" + item[1] + " ");
-                            }else{
-                                html.append("( )" + item[1] + " ");
+                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
+                            } else {
+                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
                             }
                         }
                         map.put(column, html.toString());
