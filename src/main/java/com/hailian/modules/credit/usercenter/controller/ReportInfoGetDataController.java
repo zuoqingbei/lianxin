@@ -575,7 +575,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	public void alterFinanceOneEntry() {
 		String dataJson = getPara("dataJson");
 		if(StrUtils.isEmpty(dataJson)) {
-			renderJson(new ResultType(0, "请检查这两个必要参数 dataJson!"));
+			renderJson(new ResultType(0, "请检查这个必要参数 dataJson!"));
 			return;
 		}
 		List<Map<Object, Object>> entrys = ReportInfoGetData.parseJsonArray(dataJson);
