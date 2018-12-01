@@ -798,5 +798,19 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             return new ResultType(0,"订单状态更新失败!");
         }
     }
+    /**
+     * 
+    * @Description: 质检结果下拉选项
+    * @date 2018年12月1日 下午5:33:00
+    * @author: lxy
+    * @version V1.0
+    * @return
+     */
+    public void selectQuality(){
+    	   Record record = new Record();
+    String type=	getPara("type");
+ List<SysDictDetail> details=   SysDictDetail.dao.find("select detail_id,dict_type,detail_name,detail_code as value from sys_dict_detail where dict_type=?",type);
+    renderJson(record.set("rows", details).set("total", details!=null?details.size():null));	
+    }
 	
 }
