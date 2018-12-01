@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
@@ -674,7 +676,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	  * lzg 2018/11/28
 	  */
 	 public void  uploadBrand() {
-		 String financialConfId = getPara("ficConf_id");
+		String userId = getSession().getId();
+		String randomCode = UUID.randomUUID().toString().replaceAll("-", "");
 		String orderId = getPara("order_id");
 		//从前台获取文件
         List<UploadFile>  upFileList = getFiles("file");
@@ -686,10 +689,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         	renderJson(new ResultType(0, "请检查必要参数reportId!"));
 			return;
         }
-		renderJson(OrderProcessController.uploadFile(orderId, "-1", upFileList,8));
+        OrderProcessController.uploadFile(orderId, "-1", upFileList,8,randomCode);
+        CreditUploadFileModel  file = CreditUploadFileModel.dao.getByRandomCode(orderId+"", "-1",randomCode);
+		renderJson(new Record().set("url", OrderProcessController.ip + ":" + OrderProcessController.searverPort+"/"+file.get("url")));
 	 }
 	
-    /**
+	/**
      * 将id转化为字典表中对应的字符串
      * @param id
      */

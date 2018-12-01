@@ -158,7 +158,7 @@ public class ExcelModule extends BaseProjectController  {
 	 
 		try {
 			fileName = new String(fileName.getBytes("UTF-8"),"ISO-8859-1" );
-			response.setHeader("Content-Disposition","attachment;filename="+fileName+".xlsx");//指定下载的文件名
+			response.setHeader("Content-Disposition","attachment;filename="+fileName+".xls");//指定下载的文件名
 			response.setContentType("multipart/form-data");
 			response.setCharacterEncoding("utf-8");
 		} catch (UnsupportedEncodingException e) {

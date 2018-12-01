@@ -800,7 +800,7 @@ public class OrderProcessController extends BaseProjectController{
                 return;
             }
             //上传文件
-            ResultType result = uploadFile(orderId,oldStatus,upFileList,getSessionUser().getUserid());
+            ResultType result = uploadFile(orderId,oldStatus,upFileList,getSessionUser().getUserid(),null);
             CreditOperationLog.dao.addOneEntry(this, null, "","/credit/front/orderProcess/statusSaveWithFileUpLoad");//操作日志记录
             if(result.getStatusCode()==0){
                 renderJson(result);
@@ -820,12 +820,13 @@ public class OrderProcessController extends BaseProjectController{
      * return resultJson
      * @param orderId status
      */
-    public static ResultType uploadFile(String businessId, String businessType,List<UploadFile> upFileList,int userid){
+    public static ResultType uploadFile(String businessId, String businessType,List<UploadFile> upFileList,int userid,String randomCode){
         List<File> commonFiles = new ArrayList<File>();
         List<File> pdfFiles = new ArrayList<File>();
         CreditUploadFileModel fileModel = new CreditUploadFileModel();
         fileModel.set("business_type", businessType);
         fileModel.set("business_id",businessId);
+        fileModel.set("random_code",randomCode);
         int size = upFileList.size();
         if(size>0){
             //long now = new Date().getTime();
