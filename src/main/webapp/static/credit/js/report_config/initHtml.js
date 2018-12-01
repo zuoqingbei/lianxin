@@ -84,12 +84,30 @@ let InitObj = {
 		
 		return cwModalId
 	},
-	cwModalCompute(i=1){
+	cwModalCompute(alterSource,i=1){
 		//财务计算
 		$(".gjcw"+i+" table").on("blur","input",(e)=>{
 			let className = $(e.target).attr("class")
+			let entityid = $(e.target).attr("entityid")
+			let val = $(e.target).val()
 			//配数据的时候加减法的calssname一定要配置在最后面
 			className = className.split(" ")[className.split(" ").length-1]
+			//调用修改接口
+			let url = BASE_PATH + 'credit/front/ReportGetData/' + alterSource;
+			let dataJson = []
+			let dataObj = {}
+			dataObj[className] = val;
+			dataObj["id"] = entityid;
+			dataJson.push(dataObj)
+			$.ajax({
+				url,
+				data:{dataJson:JSON.stringify(dataJson)},
+				type:'post',
+				success:(data)=>{
+					console.log(data)
+				}
+			})
+			
 			if(className.split("-")[1] || className === 'amount1'|| className === 'amount2'){
 				//减法
 				this.hjArr.forEach((item,index)=>{
@@ -321,7 +339,7 @@ let InitObj = {
 	        					"click .delete":(e,value,row,index)=>{
 	        						console.log(value,row)
 	        						let entityId = row.id
-	        						$("#popEnter").on('click', function(){
+	        						$("#popEnter").unbind().on('click', function(){
             							//确定删除
             							let url = BASE_PATH + 'credit/front/ReportGetData/' + deleteSource;
             							$.ajax({
@@ -335,7 +353,7 @@ let InitObj = {
             									if(data.statusCode === 1) {
             										Public.message('success',data.message)
             										//刷新数据
-            									/*	tableCwIds.forEach((item,index)=>{
+            										tableCwIds.forEach((item,index)=>{
 														const $table = $('#'+item);
 														let returnData;
 														$.ajax({
@@ -378,7 +396,18 @@ let InitObj = {
 															tempRows.push(item)
 														})
 														$table.bootstrapTable("load",tempArr[index])
-													})*/
+														//处理默认项的删除A标签
+														let tables = Array.from($(".cw-table").find(".table.table-hover"));
+														tables.forEach((item,index)=>{
+															let trs = Array.from($(item).find("tbody tr"));
+															trs.forEach(ele=>{
+																if($($(ele).find("td")[0]).find("input").length === 0){
+																	//默认项
+																	$($(ele).find("td")[3]).find("a").hide()
+																}
+															})
+														})
+													})
             									}else {
             										Public.message('error',data.message)
             									}
@@ -472,7 +501,19 @@ let InitObj = {
 									}
 									tempRows.push(item)
 								})
-								$table.bootstrapTable("load",tempArr[index])	
+								$table.bootstrapTable("load",tempArr[index])
+								
+								//处理默认项的删除A标签
+								let tables = Array.from($(".cw-table").find(".table.table-hover"));
+								tables.forEach((item,index)=>{
+									let trs = Array.from($(item).find("tbody tr"));
+									trs.forEach(ele=>{
+										if($($(ele).find("td")[0]).find("input").length === 0){
+											//默认项
+											$($(ele).find("td")[3]).find("a").hide()
+										}
+									})
+								})
 							})
 						}else {
 							Public.message("error",data.message)

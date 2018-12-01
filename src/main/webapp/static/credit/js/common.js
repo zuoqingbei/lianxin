@@ -143,11 +143,11 @@ let Public = {
 
         })
     },
-    goToOrderDetail(id, param) {
+    goToOrderDetail(id, row) {
         console.log("开始订单详情页跳转")
         //跳转订单详情
         $("#main_content").load(BASE_PATH + 'credit/front/home/orderInfo?id=' + id);
-        localStorage.setItem("row", JSON.stringify(param));
+        localStorage.setItem("row", JSON.stringify(row));
     },
     createOrder() {
         $("#main_content").load(BASE_PATH + 'credit/front/home/createOrder')
@@ -238,7 +238,7 @@ let Public = {
     },
     fileConfig(item, row) {
         let _this = this
-        _this.rows = row
+        _this.row = row
         let content = ''
         content += ` <div class="order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
    			 <div class="uploadFile mt-3 mr-3 ml-3">
@@ -254,7 +254,7 @@ let Public = {
             url,
             type: 'post',
             data: {
-                orderId: _this.rows.id
+                orderId: _this.row.id
             },
             success: (data) => {
                 if (data.statusCode === 1) {
@@ -552,4 +552,30 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
     }
     ,type0_extraUrl = `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position","getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name":"registration_status"}]`
     ,type1_extraUrl = `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position"}]`
-    ;
+    ,type23_html = `<div class="type23-content">
+                    <form>
+                        <div class="row justify-content-between">
+                            <div class="col-md-4 my-1">
+                                <label for="grade"></label>
+                                <input class="form-control-plaintext" id="grade" name="grade" value="12">
+                                <span class="unit">分</span>
+                            </div>
+                            <div class="col-md-2 my-3 mr-3">
+                                订单处理：
+                                <div class="radio-box d-inline">
+                                    <label><input type="radio" name="statusCode" checked>完成</label>
+                                    <label><input type="radio" name="statusCode">修改</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-1" style="margin-right: -3rem"><label for="quality_opinion"></label></div>
+                            <div class="col-md-11 pr-0"><textarea class="form-control" name="quality_opinion" id="quality_opinion" rows="10"></textarea></div>
+                        </div>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button class="btn btn-light m-3" id="save" type="button">保存</button>
+                                <button class="btn btn-primary m-3" id="submit" type="button">提交</button>
+                            </div>
+                    </form>
+                </div>`
+    ,ljl = {};
