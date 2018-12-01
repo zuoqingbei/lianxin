@@ -435,7 +435,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
    * @version V1.0
    * @return
     */
-    public  void getOrsaveResult(){
+    public  void getOrSaveResult(){
     	Record record = new Record();
     	Integer userId = getSessionUser().getUserid();
 		String now = getNow();
