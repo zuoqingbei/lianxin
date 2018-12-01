@@ -17,6 +17,7 @@ import javax.net.ssl.X509TrustManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -72,6 +73,7 @@ public class HttpTest {
         //test
 		
     }
+	//企业基本信息
 	public static JSONObject getYjapi(String conpanyName){
 //		HttpGet get = new HttpGet("http://i.yjapi.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
 		HttpGet get = new HttpGet("http://i.yjapi.com/ECIV4/GetDetailsByName?key=791f4eb3af844c53a6bba25f80f033b7&keyword="+conpanyName);//精确查询
@@ -84,6 +86,87 @@ public class HttpTest {
 			Header[] headers = response.getAllHeaders();
 			html = EntityUtils.toString(response.getEntity(), "utf-8");
 			System.out.println(html);
+			json = JSONObject.fromObject(html);
+			return json;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return json;
+	}
+	//裁判文书
+	public static JSONObject getJudgmentDoc(String conpanyName,String pageIndex){
+		if(StringUtils.isBlank(pageIndex)){
+			pageIndex="1";
+		}
+		HttpGet get = new HttpGet("http://i.yjapi.com/JudgeDocV4/SearchJudgmentDoc?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+			return json;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return json;
+	}
+	//裁判文书详情
+	public static JSONObject getJudgmentDocDetail(String id){
+		HttpGet get = new HttpGet("http://i.yjapi.com/JudgeDocV4/GetJudgementDetail?key=791f4eb3af844c53a6bba25f80f033b7&id="+id);//精确查询
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+			return json;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return json;
+	}
+	//法院公告
+	public static JSONObject getCourtAnnouncement(String conpanyName,String pageIndex){
+		if(StringUtils.isBlank(pageIndex)){
+			pageIndex="1";
+		}
+		HttpGet get = new HttpGet("http://i.yjapi.com/CourtNoticeV4/SearchCourtAnnouncement?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&companyName="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+			return json;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return json;
+	}
+	//开庭公告
+	public static JSONObject getCourtNotice(String conpanyName,String pageIndex){
+		if(StringUtils.isBlank(pageIndex)){
+			pageIndex="1";
+		}
+		HttpGet get = new HttpGet("http://i.yjapi.com/CourtAnnoV4/SearchCourtNotice?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
 			json = JSONObject.fromObject(html);
 			return json;
 		} catch (Exception e) {

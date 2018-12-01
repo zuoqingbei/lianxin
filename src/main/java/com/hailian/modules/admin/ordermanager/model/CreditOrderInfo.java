@@ -905,7 +905,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" u1.realname AS reportUser,");
 			selectSql.append(" u2.realname AS translateUser,");
 			selectSql.append(" u3.realname AS analyzeUser,");
-			selectSql.append(" u4.name AS customId ");
+			selectSql.append(" u4.name AS customId, ");
+			selectSql.append(" q.id AS qid ");
 			fromSql.append(" FROM credit_order_info c ");
 			fromSql.append(" LEFT JOIN credit_country s1 ON c.country = s1.id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
@@ -924,7 +925,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s8 ON c.agent_category = s8.detail_id ");//地区
 			//获取文件信息
 			fromSql.append(" LEFT JOIN credit_upload_file u5 ON u5.business_type = c.status and u5.business_id = c.num ");//文件表关联
-			fromSql.append(" where c.del_flag = 0 ");
+			//查询质检
+			fromSql.append(" LEFT JOIN credit_quality_opintion q ON q.order_id = c.id ");//质检意见id
+            fromSql.append(" where c.del_flag = 0 ");
 			//权限语句
 			StringBuffer authority = new StringBuffer();
 			Integer userId = c.getSessionUser().getUserid();
@@ -1116,7 +1119,18 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	 */
 	public CreditOrderInfo getInDoingOrderNum(int reportid){
 		List<Object> params=new ArrayList<Object>();
-		String sql="SELECT count(*) as inDoingOrderNum FROM credit_order_info t where t.del_flag=0 and t.report_user=? and to_days(t.receiver_date) = to_days(now())";
+		String sql="SELECT count(*) as inDoingOrderNum FROM credit_order_info t where t.del_flag=0 and t.status in (291,292,293,294,295,296,297,298,299) and t.report_user=? and to_days(t.receiver_date) = to_days(now())";
+		params.add(reportid);
+		return dao.findFirst(sql, params.toArray());
+	}
+	/**
+	 * @Description:报告员当日完成量
+	* @author: dsh 
+	* @date:  2018年11月28日2018年11月28日
+	 */
+	public CreditOrderInfo getFinishedOrderNum(int reportid){
+		List<Object> params=new ArrayList<Object>();
+		String sql="SELECT count(*) as finishedOrderNum FROM credit_order_info t where t.del_flag=0 and t.status >=300 and t.report_user=? and to_days(t.receiver_date) = to_days(now())";
 		params.add(reportid);
 		return dao.findFirst(sql, params.toArray());
 	}

@@ -412,6 +412,9 @@ public class OrderManagerService {
 	public CreditOrderInfo getInDoingOrderNum(int reportid){
 		return CreditOrderInfo.dao.getInDoingOrderNum(reportid);
 	}
+	public CreditOrderInfo getFinishedOrderNum(int reportid){
+		return CreditOrderInfo.dao.getFinishedOrderNum(reportid);
+	}
 	public String getReportIdtoOrder(){
 		System.out.println("==================================");
 		List<SysUser> reporterlist = SysUser.dao.getReporter();
@@ -420,13 +423,13 @@ public class OrderManagerService {
 		for(SysUser report:reporterlist){
 			int reportid=report.get("userid");
 			double finalScore = getFinalScore(reportid);//报告员评分
-			long inDoingOrderNum = OrderManagerService.service.getInDoingOrderNum(reportid).get("inDoingOrderNum");
+			long inDoingOrderNum = OrderManagerService.service.getInDoingOrderNum(reportid).get("inDoingOrderNum");//当日在做单量
+			long finishedOrderNum=OrderManagerService.service.getFinishedOrderNum(reportid).get("finishedOrderNum");//当日完成量
 			System.out.println(inDoingOrderNum);
-			Reporter reporter=new Reporter(reportid+"", finalScore, inDoingOrderNum);
+			Reporter reporter=new Reporter(reportid+"", finalScore, inDoingOrderNum,finishedOrderNum);//自定义排序
 			reporterList.add(reporter);
 		}
 		Collections.sort(reporterList);//根据分配逻辑进行集合排序
-		System.out.println(reporterList);
 		String reportId=reporterList.get(0).getReportId();
 		return reportId;
 		

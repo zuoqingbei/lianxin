@@ -115,7 +115,6 @@ let ReportConfig = {
             								}
             							})
             						})
-            						
             					}
             				},
             				formatter: function(){return _this.formatBtnArr[tempI]}
@@ -458,7 +457,7 @@ let ReportConfig = {
     			(function(a,i,radioName){
     				setTimeout(()=>{
     					let id = InitObj.bindCwConfig(conf_id,url,a,i,radioName,_this.rows)
-    					InitObj.initCwTable(tableCwId,this_content,_this.cwGetSource,_this.cwAlterSource,id)
+    					InitObj.initCwTable(tableCwId,this_content,_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,id)
     					
     				},0)
     			})(tableTitle,index,cw_contents[0][1].column_name)
@@ -522,7 +521,7 @@ let ReportConfig = {
     	$(cw_dom).after(cw_table_html)
     	$(cw_dom).after(cw_top_html)
     	setTimeout(()=>{
-    		InitObj.cwModalCompute()
+    		InitObj.cwModalCompute(_this.cwAlterSource)
 
     	},0)
     },
@@ -541,6 +540,7 @@ let ReportConfig = {
     	this.notMoneyFloatHtml = {} //存放非财务模块的浮动html
     	this.cwGetSource = '' //存放获取财务url
     	this.cwAlterSource = '' //存放修改财务url
+    	this.cwDeleteSource = '' //删除财务url
     	this.saveStatusUrl = ''
 		this.submitStatusUrl = ''
     	let row = localStorage.getItem("row");
@@ -635,6 +635,7 @@ let ReportConfig = {
                 		//财务模块
                 		_this.cwGetSource = item.title.get_source;
                 		_this.cwAlterSource = item.title.alter_source;
+                		_this.cwDeleteSource = item.title.remove_source;
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw1"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`

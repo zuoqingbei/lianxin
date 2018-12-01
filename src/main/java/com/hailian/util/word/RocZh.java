@@ -1,33 +1,33 @@
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
+import com.deepoove.poi.data.PictureRenderData;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
+import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.jfinal.kit.PathKit;
+import org.jfree.data.general.DefaultPieDataset;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * 商业信息报告样本
+ * _102 ROC Chinese
  * Created by Thinkpad on 2018/11/17.
  */
-public class CreditZh {
+public class RocZh {
 
     public static void main(String args[]) throws Exception{
-
-    }
-
-    public void getSonData(String sonTable,String companyId,String sysLanguage){
-        //获取主表数据
-        //CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
+        //getForm?tableName=credit_company_info&className=CreditCompanyInfo*company_id
+        String s = "getForm?tableName=credit_company_info&className=CreditCompanyInfo*company_id";
+        //Map<String,String> map = parseUrl(s);
+        //System.out.println(map.get("tableName"));
     }
 
     /**
-     * 生成商业报告
+     * 102 ROC Chinese
      * @param reportType  报告类型
      * @param orderId     订单ID
      * @param companyId   公司ID
@@ -35,12 +35,6 @@ public class CreditZh {
      * @param userid 当前登录人
      */
     public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
-        //报告类型
-        //String reportType = "8";
-        //语言
-        //String sysLanguage = "612";
-        //公司id
-        //String companyId = "7777794"; //77基本  65商业  //7777794信用分析
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -62,6 +56,7 @@ public class CreditZh {
             String moduleType = crmc.getStr("small_module_type");
             String key = crmc.getStr("word_key");
             String tableType = crmc.getStr("word_table_type");
+
             //无url的跳过取数
             if (source == null || "".equals(source)) {
                 continue;
@@ -77,7 +72,7 @@ public class CreditZh {
             ReportInfoGetDataController report = new ReportInfoGetDataController();
 
             //1：表格
-            if(tableType!=null&&!"".equals(tableType)) {
+            if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
@@ -90,10 +85,10 @@ public class CreditZh {
             }
 
             //2：主从表中的- 单个值
-            for(CreditReportModuleConf conf : child){
+            for (CreditReportModuleConf conf : child) {
                 String ci = conf.getInt("id") + "";
                 String s = conf.getStr("get_source");
-                if(s==null||"".equals(s)){
+                if (s == null || "".equals(s)) {
                     continue;
                 }
                 Map<String, String> p = MainWord.parseUrl(s);
@@ -104,22 +99,24 @@ public class CreditZh {
                 String c = p.get("className");
                 String cn = c.split("\\*")[0];
                 //主表
-                if("credit_company_info".equals(t)){
-                    String word_key = conf.get("word_key")+"";
-                    if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
+                if ("credit_company_info".equals(t)) {
+                    String word_key = conf.get("word_key") + "";
+                    if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
-                        if(rs!=null&&rs.size()>0){
-                            BaseProjectModel model = (BaseProjectModel)rs.get(0);
+                        if (rs != null && rs.size() > 0) {
+                            BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
                             map.put(word_key, v);
                         }
                     }
-                }else{
-                    String word_key = conf.get("word_key")+"";
-                    if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
+                } else {
+                    //取word里配置的关键词
+                    String word_key = conf.get("word_key") + "";
+                    if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
+                        //取数据
                         List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
-                        if(rs!=null&&rs.size()>0){
-                            BaseProjectModel model = (BaseProjectModel)rs.get(0);
+                        if (rs != null && rs.size() > 0) {
+                            BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
                             map.put(word_key, v);
                         }
@@ -128,32 +125,61 @@ public class CreditZh {
             }
 
             //7 输入框取数
-            if("7".equals(moduleType)){
+            if ("7".equals(moduleType)) {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
-                LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
+                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 //取列值
-                for(int i=0;i< child.size();i++) {
+                for (int i = 0; i < child.size(); i++) {
                     CreditReportModuleConf module = child.get(i);
                     String column_name = module.getStr("column_name");
                     String temp_name = module.getStr("temp_name");
-                    cols.put(column_name,temp_name);
+                    cols.put(column_name, temp_name);
                 }
                 //取数据
                 for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
-                    for(String column : cols.keySet()) {
+                    for (String column : cols.keySet()) {
                         String value = model.get(column) != null ? model.get(column) + "" : "";
-                        map.put(column,value);
+                        map.put(column, value);
+                    }
+                }
+            }
+
+            //8-单选框
+            if("8".equals(moduleType)){
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
+                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
+                //取列值
+                for (int i = 0; i < child.size(); i++) {
+                    CreditReportModuleConf module = child.get(i);
+                    String column_name = module.getStr("column_name");
+                    String get_source = module.getStr("get_source");
+                    cols.put(column_name, get_source);
+                }
+                //取数据
+                for (int i = 0; i < rows.size(); i++) {
+                    BaseProjectModel model = (BaseProjectModel) rows.get(0);
+                    for (String column : cols.keySet()) {
+                        //取值
+                        String value = model.get(column) != null ? model.get(column) + "" : "";
+                        String get_source = cols.get(column);
+                        String[] items = get_source.split("&");
+                        StringBuffer html = new StringBuffer();
+                        for(int j=0;j<items.length;j++) {
+                            String[] item = items[j].split("-");
+                            if (value.equals(item[0])) {
+                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
+                            } else {
+                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
+                            }
+                        }
+                        map.put(column, html.toString());
                     }
                 }
             }
         }
-        //MainWord.buildWord(map, "h://word/_信用分析报告样本.docx", "h://3.docx");
-        MainWord.buildWord(map, webRoot + "/word/" + "_信用分析报告样本", _prePath + ".docx");
+
+        MainWord.buildWord(map, webRoot + "/word/" + "_102 ROC Chinese.docx", _prePath + ".docx");
     }
-
-
-
-
 
 }
