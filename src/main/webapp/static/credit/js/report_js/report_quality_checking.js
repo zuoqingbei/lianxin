@@ -139,15 +139,15 @@ let Verify = {
                     align: 'center',
                     events: {
                         "click .entering_quality": (e, value, row, index) => {
-                            row.qualityCheck = 'entering_quality';
+                            row.quality_type = 'entering_quality';
                             Public.goToOrderDetail(row.id, row)
                         },
                         "click .analyze_quality": (e, value, row, index) => {
-                            row.qualityCheck = 'analyze_quality';
+                            row.quality_type = 'analyze_quality';
                             Public.goToOrderDetail(row.id, row)
                         },
                         "click .translate_quality": (e, value, row, index) => {
-                            row.qualityCheck = 'translate_quality';
+                            row.quality_type = 'translate_quality';
                             Public.goToOrderDetail(row.id, row)
                         },
 
@@ -171,7 +171,6 @@ let Verify = {
             queryParamsType: '',
             contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
-                console.log(params)
                 return {//这里的params是table提供的
                     pageNumber: params.pageNumber,//从数据库第几条记录开始
                     pageSize: params.pageSize,//找多少条
