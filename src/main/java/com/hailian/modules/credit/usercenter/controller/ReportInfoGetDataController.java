@@ -446,11 +446,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
          String moduleId= getPara("report_module_id");
          if (StringUtils.isBlank(id)) {
 			//新增
-        CreditQualityOpintion opintion2=   CreditQualityOpintion.dao.findFirst("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
+       // CreditQualityOpintion opintion2=   CreditQualityOpintion.dao.findFirst("SELECT * from credit_quality_opintion where  order_id=? and quality_type=?",orderId,type);
 	   CreditQualityResult model=new CreditQualityResult();
 	   model.set("quality_result", result);
-	   model.set("parent_id", opintion2.get("id"));
+	 //  model.set("parent_id", opintion2.get("id"));
 	   model.set("report_model_id", moduleId);
+	   model.set("order_id", orderId);
+	   model.set("quality_type", type);
 	   model.set("create_by", userId);
 	   model.set("create_date", now);
 	   model.set("update_by", userId);
@@ -458,9 +460,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
        model.save();
        renderJson(record.set("rows", model).set("total", null));
 		}else {
-	List<CreditQualityResult>	results=	CreditQualityResult.dao.find("SELECT re.*  from credit_quality_result re "
-					+ " LEFT JOIN credit_quality_opintion o on o.id=re.parent_id "
-					+ " where o.order_id=? and o.quality_type=?  order BY re.report_model_id",orderId,type);
+	List<CreditQualityResult>	results=	CreditQualityResult.dao.find("SELECT *  from credit_quality_result  "
+				
+					+ " where order_id=? and quality_type=?  order BY report_model_id",orderId,type);
 		renderJson(record.set("rows", results).set("total", results!=null?results.size():null));
 		}
     }
