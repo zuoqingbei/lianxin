@@ -179,7 +179,7 @@ let Verify = {
                     searchType: "-6"
                 };
             }, onLoadSuccess: function (data) {
-                console.log(data)
+                // console.log(data)
                 let rows = data.rows;
                 rows.forEach((item, index) => {
                     if (!item.country || item.country.trim() !== '中国大陆' || item.companyZHNames) {
