@@ -521,7 +521,7 @@ let ReportConfig = {
     	$(cw_dom).after(cw_table_html)
     	$(cw_dom).after(cw_top_html)
     	setTimeout(()=>{
-    		InitObj.cwModalCompute()
+    		InitObj.cwModalCompute(_this.cwAlterSource)
 
     	},0)
     },
