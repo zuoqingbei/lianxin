@@ -167,13 +167,13 @@ public class TemplateDictService extends BaseService {
 	public String getSysDictDetailString3(String type,Object selectedId,String disPalyCol) {
 		StringBuffer sb=new StringBuffer();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
-		if (type!=null&&"1".equals(type)) {
+		if (type!=null&&"translate_quality".equals(type)) {
 			type="translate_quality";//翻译质检下拉选项
 			selectedId="642";
-		}else if(type!=null&&"2".equals(type)){
+		}else if(type!=null&&"analyze_quality".equals(type)){
 			type="analyze_quality";//分析质检下拉选项
 			selectedId="652";
-		}else if(type!=null&&"3".equals(type)){
+		}else if(type!=null&&"entering_quality".equals(type)){
 			type="entering_quality";//填报质检下拉选项
 			selectedId="646";
 		}
