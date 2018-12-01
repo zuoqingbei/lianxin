@@ -4,6 +4,7 @@ let OrderDetail = {
         ljl.row = this.row = JSON.parse(localStorage.getItem("row"));
         console.log('--row', this.row);
         // alert(this.row.quality_type);
+        this.isQuality = !!this.row.quality_type;
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         this.getUrl = (item, otherProperty, paramObj) => {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.data_source).split("*");
@@ -48,24 +49,20 @@ let OrderDetail = {
         let _this = this;
         let id = this.row.id;
         let reportType = this.row.report_type;
-        let type = this.row.quality_type ? '' : 0;
-        $.get(`${this.BASE_PATH}getmodule/detail/`,
-            {id, reportType, type},
-            (data) => {
-                setTimeout(() => {
-                    console.log('--data', data);
-                    if (!data.defaultModule) {
-                        console.error(`--本页面接口故障：
+        $.get(`${this.BASE_PATH}getmodule/detail/`, {id, reportType}, (data) => {
+            setTimeout(() => {
+                console.log('--data', data);
+                if (!data.defaultModule) {
+                    console.error(`--本页面接口故障：
                         ${this.BASE_PATH}getmodule/detail/?id=${id}&reportType=${reportType}&type=0`);
-                        return;
-                    }
-                    _this.data = data;
-                    _this.setHeader();
-                    _this.setTabs();
-                    _this.setContent();
-                }, 0)
-            }
-        )
+                    return;
+                }
+                _this.data = data;
+                _this.setHeader();
+                _this.setTabs();
+                _this.setContent();
+            }, 0)
+        })
     },
     // 设置内容数据
     setContent() {
@@ -109,7 +106,7 @@ let OrderDetail = {
                         }
                     });
                     $wrap.append(`
-                        <div class=" order-content">
+                        <div class="module-content order-content123">
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
@@ -151,7 +148,7 @@ let OrderDetail = {
                 // 2-附件
                 case '2':
                     let html = Public.fileConfig(item, this.row);
-                    $wrap.append(`<div class="tabelBox p-4">${html}</div>`);
+                    $wrap.append(`<div class="module-content tabelBox p-4">${html}</div>`);
                     break;
                 // 4-流程进度
                 case '4':
@@ -174,7 +171,7 @@ let OrderDetail = {
                         $ul.find('.span_active:last').addClass('circle_active')
                             .end().children('li.active:last').addClass('current');
                         $wrap.append(`<div class="module-wrap bg-f company-info">
-                            <div class="bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
+                            <div class="module-content bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
                     });
                     break;
                 // 6-信用等级
@@ -182,7 +179,7 @@ let OrderDetail = {
                     //绑数
                     $.get(this.getUrl(item), (data) => {
                         if (data.rows) {
-                            $wrap.append(`${this.creditLevel}`)
+                            $wrap.append(`<div class="module-content">${this.creditLevel}</div>`)
                                 .find("#creditLevel").text(data.rows[0][item.title.column_name])
                         } else {
                             console.warn(item.title.temp_name + '-信用等级-没有返回数据！')
@@ -193,9 +190,9 @@ let OrderDetail = {
                 case '7':
                     $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
                         if (data.rows) {
-                            $wrap.append(`<div class="border multiText m-4 p-2">${data.rows[0] ?
+                            $wrap.append(`<div class="module-content"> <div class="border multiText m-4 p-2">${data.rows[0] ?
                                 data.rows[0][item.title.column_name] ? data.rows[0][item.title.column_name] : ''
-                                : ''}</div><div class="pt-1"></div>`);
+                                : ''}</div><div class="pt-1"></div></div>`);
                         } else {
                             console.warn(item.title.temp_name + '-总结-没有返回数据！')
                         }
@@ -210,7 +207,7 @@ let OrderDetail = {
                         });
                     });
                     $wrap.append(`
-                            <div class="type8-content">
+                            <div class="module-content type8-content">
                                 <h4>${item.contents[0].temp_name}</h4>
                                 ${$type8_ul[0].outerHTML}
                                 <h4>${item.contents[1].temp_name}</h4>
@@ -234,7 +231,7 @@ let OrderDetail = {
                         .reduce(function (prev, cur) {
                             return `${prev}<input class="my-2" type="radio" name="embranchment" >${cur}<br>`
                         }));
-                    $wrap.append(`<div class='type20-content'>${$type20_div[0].outerHTML}</div>`);
+                    $wrap.append(`<div class='module-content type20-content'>${$type20_div[0].outerHTML}</div>`);
                     //绑数
                     $.get(this.getUrl(item), (data) => {
                         if (data.rows) {
@@ -256,7 +253,7 @@ let OrderDetail = {
                         .reduce(function (prev, cur) {
                             return `${prev}<input class="my-2" type="radio" name="registration_change" >${cur}<br>`
                         }));
-                    $wrap.append(`<div class='type20-content'>${$type21_div[0].outerHTML}</div>`);
+                    $wrap.append(`<div class='module-content type20-content'>${$type21_div[0].outerHTML}</div>`);
                     //绑数
                     $.get(this.getUrl(item), (data) => {
                         if (data.rows) {
@@ -274,34 +271,35 @@ let OrderDetail = {
                     $wrap.append(type23_html);
                     $wrap.find("[for=grade]").text(item.contents[0].temp_name + ' : ')
                         .end().find("[for=quality_opinion]").text(item.contents[1].temp_name + ' : ');
-                    $wrap.find("#save").on('click',()=>{
+                    $wrap.find("#save").on('click', () => {
 
-                    })
-                    let dealQualityData = () =>{
+                    });
+                    let dealQualityData = (param) => {
+                        let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1
                         $.get(this.getUrl(item, '', {
-                            id: ljl.qualityDataId?ljl.qualityDataId:'',
+                            id: ljl.row.qid ? ljl.row.qid : '',
                             quality_opinion: $wrap.find("#quality_opinion").val(),
                             quality_type: ljl.row.quality_type,
+                            quality_deal: checkedIndex ? checkedIndex : '',
                             report_type: ljl.row.report_type,
                             report_module_id: item.title.id,
                             grade: $wrap.find("#grade").val()
-                        }), (data) => {
-                            console.log(data);
+                        }) + (param === 'update' ? '&update=true' : ''), (data) => {
                             if (data.rows && data.rows.length > 0) {
                                 $("#quality_opinion").val(data.rows[0].quality_opinion);
                                 $("#grade").val(data.rows[0].grade);
                                 $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
-                                ljl.qualityDataId = data.rows[0].id;
+                                ljl.row.qualityDataId = data.rows[0].id;
                             } else {
                                 console.warn(item.title.temp_name + '-质检评分-没有返回数据！')
                             }
                         });
-                    }
+                    };
+                    dealQualityData();
                     $wrap.find('#save').click(function () {
-                        dealQualityData();
-                        }
+                        dealQualityData('update');
+                    });
 
-                    )
 
                     /*const $type23_div = $('<div class="radioBox p-3" ></div>').append(['', '有，详情如下。', '无，根据企业登记机关所示数据，无变更记录。', '企业登记机关并未提供该企业变更记录。']
                         .reduce(function (prev, cur) {
@@ -323,7 +321,28 @@ let OrderDetail = {
                     break;
             }
             $(".main .table-content").append($wrap);
+
+        });
+        if(this.isQuality){
+            this.setQuality();
+        }
+
+
+
+    },
+    // 设置质检数据
+    setQuality(){
+        $.get(this.BASE_PATH+'ReportGetData/getSelete?disPalyCol=detail_name&type='+this.row.quality_type,function (data) {
+            console.log('--',data)
+            $(".l-title").each(function (index,item) {
+                if(!['基本信息','流程进度','质检评分'].includes($(this).text())){
+                    $(this).nextAll('.module-content').after(qualitySelectHtml);
+                }
+            });
+            $(".select2Box select").html(data.selectStr);
+            $('.js-example-basic-multiple').select2({placeholder: "请选择评分项"});
         })
+
     },
     // 设置tabs标签
     setTabs() {
@@ -378,17 +397,16 @@ let OrderDetail = {
         }
         let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
         let columnNameArr = [];
-
         item.contents.forEach((item) => {
             $table.children('thead').append(`<th>${item.temp_name}</th>`);
             columnNameArr.push(item.column_name);
         });
+        $wrap.append(`<div class="module-content tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`)
         // 绑数
         $.post(this.getUrl(item, otherProperty), {selectInfo: type1_extraUrl}, (data) => {
                 if (data.rows) {
                     if (data.rows.length === 0) {
-                        $table.children('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</tr></td>`);
-                        $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
+                        $wrap.find('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</tr></td>`);
                         return;
                     }
                     let chartData = [];
@@ -412,15 +430,15 @@ let OrderDetail = {
                         columnNameArr.forEach((columnName) => {
                             $tr.append(`<td>${row[columnName] ? row[columnName] : '-'}</td>`);
                         });
-                        $table.children('tbody').append($tr);
+                        $wrap.find('tbody').append($tr);
                     });
-                    $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
+                    $wrap.append(`<!--<div class="module-content tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>-->`);
                     if (Array.isArray(chartData) && chartData.length > 0 || typeof chartData === 'object' && Object.keys(chartData).length > 0) { // 绘制饼图
                         this.drawChart(item, chartData)[chartType]();// 绘制图表
                     }
                 } else {
                     console.warn(item.title.temp_name + `-表格${chartType ? '&图表' : ''}-没有返回数据！`);
-                    $wrap.append(`<div class="tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
+                    // $wrap.append(`<div class="module-content tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
                 }
             }
         );
