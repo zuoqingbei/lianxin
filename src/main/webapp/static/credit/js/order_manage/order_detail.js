@@ -1,10 +1,11 @@
 let OrderDetail = {
     init: function () {
-        this.row = JSON.parse(localStorage.getItem("row"));
+        // ljl为此对象之外的页面全局变量
+        ljl.row = this.row = JSON.parse(localStorage.getItem("row"));
         console.log('--row', this.row);
-        // alert(this.row.qualityCheck);
+        // alert(this.row.quality_type);
         this.BASE_PATH = BASE_PATH + 'credit/front/';
-        this.getUrl = (item, otherProperty) => {
+        this.getUrl = (item, otherProperty, paramObj) => {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.data_source).split("*");
             if (urlArr[0] === '') {
                 return
@@ -14,10 +15,19 @@ let OrderDetail = {
                 if (index === 0) {
                     url = param;
                 } else {
-                    if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
-                        url += `&${param}=${this.row.id}`
+                    if (param.includes("$")) {
+                        let paramArr = param.split("$");
+                        paramArr.forEach((item) => {
+                            if (item === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
+                                url += `&${item}=${ljl.row.id}`;
+                            } else {
+                                url += `&${item}=${paramObj[item]}`;
+                            }
+                        });
+                    } else if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
+                        url += `&${param}=${ljl.row.id}`
                     } else {
-                        url += `&${param}=${this.row[param]}`
+                        url += `&${param}=${ljl.row[param]}`
                     }
                 }
             });
@@ -38,7 +48,7 @@ let OrderDetail = {
         let _this = this;
         let id = this.row.id;
         let reportType = this.row.report_type;
-        let type = this.row.qualityCheck ? '' : 0;
+        let type = this.row.quality_type ? '' : 0;
         $.get(`${this.BASE_PATH}getmodule/detail/`,
             {id, reportType, type},
             (data) => {
@@ -141,7 +151,7 @@ let OrderDetail = {
                 // 2-附件
                 case '2':
                     let html = Public.fileConfig(item, this.row);
-                    $wrap.append(`<div class="tabelBox p-4">${html}</div></div>`);
+                    $wrap.append(`<div class="tabelBox p-4">${html}</div>`);
                     break;
                 // 4-流程进度
                 case '4':
@@ -232,7 +242,7 @@ let OrderDetail = {
                             let column_name_text = item.title.column_name.split(',')[1];
                             let radioSelect = data.rows[0][column_name_radio];
                             $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
-                            if (radioSelect === '1') {
+                            if (radioSelect === 1) {
                                 $wrap.find('.type20-content').append(`<div class="border multiText m-4 p-2">${data.rows[0][column_name_text]}</div>`)
                             }
                         } else {
@@ -252,13 +262,64 @@ let OrderDetail = {
                         if (data.rows) {
                             let radioSelect = data.rows[0][item.title.column_name];
                             $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
-                            if (radioSelect === '1') {
+                            if (radioSelect === 1) {
                                 this.setTable(item, $wrap, '', 'save_source');
                             }
                         } else {
                             console.warn(item.title.temp_name + '-102单选&表格-没有返回数据！')
                         }
                     });
+                    break;
+                case '23':
+                    $wrap.append(type23_html);
+                    $wrap.find("[for=grade]").text(item.contents[0].temp_name + ' : ')
+                        .end().find("[for=quality_opinion]").text(item.contents[1].temp_name + ' : ');
+                    $wrap.find("#save").on('click',()=>{
+
+                    })
+                    let dealQualityData = () =>{
+                        $.get(this.getUrl(item, '', {
+                            id: ljl.qualityDataId?ljl.qualityDataId:'',
+                            quality_opinion: $wrap.find("#quality_opinion").val(),
+                            quality_type: ljl.row.quality_type,
+                            report_type: ljl.row.report_type,
+                            report_module_id: item.title.id,
+                            grade: $wrap.find("#grade").val()
+                        }), (data) => {
+                            console.log(data);
+                            if (data.rows && data.rows.length > 0) {
+                                $("#quality_opinion").val(data.rows[0].quality_opinion);
+                                $("#grade").val(data.rows[0].grade);
+                                $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
+                                ljl.qualityDataId = data.rows[0].id;
+                            } else {
+                                console.warn(item.title.temp_name + '-质检评分-没有返回数据！')
+                            }
+                        });
+                    }
+                    $wrap.find('#save').click(function () {
+                        dealQualityData();
+                        }
+
+                    )
+
+                    /*const $type23_div = $('<div class="radioBox p-3" ></div>').append(['', '有，详情如下。', '无，根据企业登记机关所示数据，无变更记录。', '企业登记机关并未提供该企业变更记录。']
+                        .reduce(function (prev, cur) {
+                            return `${prev}<input class="my-2" type="radio" name="registration_change" >${cur}<br>`
+                        }));
+                    $wrap.append(`<div class='type20-content'>${$type21_div[0].outerHTML}</div>`);
+                    //绑数
+                    $.get(this.getUrl(item), (data) => {
+                        if (data.rows) {
+                            let radioSelect = data.rows[0][item.title.column_name];
+                            $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
+                            if (radioSelect === 1) {
+                                this.setTable(item, $wrap, '', 'save_source');
+                            }
+                        } else {
+                            console.warn(item.title.temp_name + '-102单选&表格-没有返回数据！')
+                        }
+                    });*/
                     break;
             }
             $(".main .table-content").append($wrap);
