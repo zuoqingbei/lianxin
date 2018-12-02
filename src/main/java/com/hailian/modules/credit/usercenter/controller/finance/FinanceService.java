@@ -111,7 +111,8 @@ public class FinanceService {
 				"sort_no",
 				"is_default",
 				"class_name1",
-				"class_name2"
+				"class_name2",
+				"type"
 		};
 		CreditCompanyFinancialEntry entrymodel = null;
 		List<CreditCompanyFinancialDict> dictList = getFinancialDict(type);
