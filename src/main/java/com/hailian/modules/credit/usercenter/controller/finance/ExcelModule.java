@@ -30,7 +30,6 @@ import org.apache.poi.ss.usermodel.CellType;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
-import com.hailian.system.dict.DictCache;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 public class ExcelModule extends BaseProjectController  {
@@ -220,7 +219,7 @@ public class ExcelModule extends BaseProjectController  {
 					cell.setCellValue(cellValue);
 					cell.setCellStyle(rowHeadStyle2);
 					 // 定义注释的大小和位置,详见文档
-			        HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)0, 0, (short) 0, 0));
+			        HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)3, 5, (short) 3, 5));
 			        // 设置注释内容
 			        comment.setString(new HSSFRichTextString("该单元格是默认项,禁止修改!"));
 			        // 设置注释作者. 当鼠标移动到单元格上是可以在状态栏中看到该内容.
@@ -292,7 +291,7 @@ public class ExcelModule extends BaseProjectController  {
 		
 		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
 		//公共属性
-		model.set("conf_id", financeConfigId).set("update_date", now).set("update_by", userId).set("create_date",now).set("create_by", userId).set("del_flag", 0).set("begin_date_value", "0").set("end_date_value", "0");
+		model.set("conf_id", financeConfigId).set("update_date", now).set("update_by", userId).set("create_date",now).set("create_by", userId).set("del_flag", 0).set("begin_date_value", "0").set("end_date_value", "0").set("type", type);
 		//为了适应jfinal框架的Db.saveBatch方法
 		CreditCompanyFinancialEntry tempModel = new CreditCompanyFinancialEntry();
 		tempModel._setAttrs(model).set("parent_sector", "9").set("son_sector", "9").set("is_sum_option", "9"). set("sort_no", "9").set("item_name", "9")
@@ -433,7 +432,7 @@ public class ExcelModule extends BaseProjectController  {
 					itemName.setCellType(CellType.STRING);
 					str1 = itemName.getStringCellValue();
 					if(!StrUtils.isEmpty(str1)) {
-						tempModel.set("item_name", str1);
+						tempModel.set("item_name", str1.trim());
 						//System.out.println("item_name:"+str1);
 					} 
 				} 
@@ -444,7 +443,7 @@ public class ExcelModule extends BaseProjectController  {
 					beginDateValue.setCellType(CellType.STRING);
 					str2 = beginDateValue.getStringCellValue();
 					if(!StrUtils.isEmpty(str2)) {
-						tempModel.set("begin_date_value", str2);
+						tempModel.set("begin_date_value", str2.trim());
 					} 
 				} 
 				
@@ -454,10 +453,10 @@ public class ExcelModule extends BaseProjectController  {
 					endDateValue.setCellType(CellType.STRING);
 					str3 = endDateValue.getStringCellValue();
 					if(!StrUtils.isEmpty(str3)) {
-						tempModel.set("end_date_value", str3);
+						tempModel.set("end_date_value", str3.trim());
 					} 
 				} 
-				if(StrUtils.isEmpty(str1)&&StrUtils.isEmpty(str2)&&StrUtils.isEmpty(str3)) {
+				if(StrUtils.isEmpty(str1.trim())&&StrUtils.isEmpty(str2.trim())&&StrUtils.isEmpty(str3.trim())) {
 					break;
 				}
 				list.add(tempModel);
