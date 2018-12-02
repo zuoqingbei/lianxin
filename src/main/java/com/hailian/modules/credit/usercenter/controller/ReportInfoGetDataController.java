@@ -432,7 +432,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 
    /** 
     * 
-   * @Description: 质检结果的查询与新增
+   * @Description: 质检结果的查询与新增，修改
    * @date 2018年11月21日 下午3:30:55
    * @author: lxy
    * @version V1.0
@@ -441,33 +441,60 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     public  void getOrSaveResult(){
     	Record record = new Record();
     	Integer userId = getSessionUser().getUserid();
-		String now = getNow();
+		 String now = getNow();
     	 String orderId = 	getPara("orderId");
          String id =   getPara("id"); 
          String result =  getPara("quality_result");
          String  type =   getPara("quality_type");
          String moduleId= getPara("report_module_id");
-         if (StringUtils.isBlank(id)) {
-			//新增
-       // CreditQualityOpintion opintion2=   CreditQualityOpintion.dao.findFirst("SELECT * from credit_quality_opintion where  order_id=? and quality_type=?",orderId,type);
-	   CreditQualityResult model=new CreditQualityResult();
-	   model.set("quality_result", result);
-	 //  model.set("parent_id", opintion2.get("id"));
-	   model.set("report_model_id", moduleId);
-	   model.set("order_id", orderId);
-	   model.set("quality_type", type);
-	   model.set("create_by", userId);
-	   model.set("create_date", now);
-	   model.set("update_by", userId);
-	   model.set("update_date", now);
-       model.save();
-       renderJson(record.set("rows", model).set("total", null));
-		}else {
-	List<CreditQualityResult>	results=	CreditQualityResult.dao.find("SELECT *  from credit_quality_result  "
-				
-					+ " where order_id=? and quality_type=?  order BY report_model_id",orderId,type);
-		renderJson(record.set("rows", results).set("total", results!=null?results.size():null));
+         String   update= getPara("update");
+         String datajson = getPara("datajson");
+          List<CreditQualityResult> list=new ArrayList<CreditQualityResult>();
+          CreditQualityResult model=new CreditQualityResult();
+          if (update!=null&&update.equals("true")) {//修改
+        	  List<Map<Object, Object>> entrys = parseJsonArray(datajson);
+  			for (Map<Object, Object> entry : entrys) {
+  			 //循环取出parentId的值
+  		     String pid=(String) entry.get("parentId");//取父模板id
+	  		   CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=?",pid);
+	  			model.set("id", result2.get("id"));
+	  			model.set("quality_result", entry.get("quality_result"));
+	  			model.set("create_by", userId);
+				model.set("create_date", now);
+				model.set("update_by", userId);
+				model.set("update_date", now);
+				model.set("report_model_id", pid);
+				model.update();
+				list.add(model);
+  			 
+  			}	
+		}else {//查询或新增
+			//取json数据
+			List<Map<Object, Object>> entrys = parseJsonArray(datajson);
+			for (Map<Object, Object> entry : entrys) {
+			 //循环取出parentId的值
+		     String pid=(String) entry.get("parentId");//取父模板id
+		     //查询当前质检结果是不是有值
+		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=?",pid);
+		     if (result2!=null) {
+				list.add(result2);
+			}else {
+				model.clear();
+				model.set("report_model_id", pid);
+				model.set("quality_result", entry.get("quality_result"));
+				model.set("order_id", orderId);
+				model.set("quality_type", type);
+				model.set("create_by", userId);
+				model.set("create_date", now);
+				model.set("update_by", userId);
+				model.set("update_date", now);
+				model.save();
+				list.add(model);
+			 }	
+		  }	
 		}
+		renderJson(record.set("rows", list).set("total", list!=null?list.size():null));
+		
     }
     /**
      * 
@@ -551,6 +578,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	  * 
 	  */
 	public void uploadFinancialEntrys() {
+		UploadFile uploadFile = getFile("file");
+		if(uploadFile==null) {
+			renderJson(new ResultType(0, "上传文件不能为空!"));
+			return;
+		}
 		String financialConfId = getPara("ficConf_id");
 		String reportType = getPara("report_type");
 		String userId = getSession().getId();
@@ -568,8 +600,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
 			return;
 		}
-		UploadFile uploadFile = getFile("file");
-		String message = "导入失败,开始值和结束值只能是数字!!";
+		String message = "导入失败,请检查文件内容!";
 		try {
 			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, "8", now);
 		} catch (Exception e) {
@@ -577,7 +608,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			e.printStackTrace();
 			return;
 		}
-		renderJson(new ResultType(0, message));
+		renderJson(new ResultType(1, message));
 	}
 	
 	 /**

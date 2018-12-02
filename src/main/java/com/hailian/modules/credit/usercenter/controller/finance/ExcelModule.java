@@ -220,7 +220,7 @@ public class ExcelModule extends BaseProjectController  {
 					cell.setCellValue(cellValue);
 					cell.setCellStyle(rowHeadStyle2);
 					 // 定义注释的大小和位置,详见文档
-			        HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)0, 0, (short) 0, 0));
+			        HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)3, 5, (short) 3, 5));
 			        // 设置注释内容
 			        comment.setString(new HSSFRichTextString("该单元格是默认项,禁止修改!"));
 			        // 设置注释作者. 当鼠标移动到单元格上是可以在状态栏中看到该内容.
