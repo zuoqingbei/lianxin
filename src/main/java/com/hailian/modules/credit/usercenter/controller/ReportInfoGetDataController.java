@@ -440,7 +440,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     */
     public  void getOrSaveResult(){
     	Record record = new Record();
-    	Integer userId = 16;//getSessionUser().getUserid();
+    	Integer userId = getSessionUser().getUserid();
 		 String now = getNow();
     	 String orderId = 	getPara("orderId");
          String id =   getPara("id"); 
