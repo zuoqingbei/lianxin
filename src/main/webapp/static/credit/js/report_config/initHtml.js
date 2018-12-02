@@ -62,7 +62,7 @@ let InitObj = {
 			})
 		})
 	},
-	bindCwConfig(conf_id,url,tableTitle,i,radioName,rows){
+	bindCwConfig(conf_id,cwConfigGetSource,tableTitle,i,radioName,rows){
 		
 		/**
 		 * 绑定财务模块表格配置信息
@@ -73,8 +73,10 @@ let InitObj = {
 		let _this = this
 		let cwModalId = ''
 		paramObj["conf_id"] = conf_id
-		if(url.split("*")[1]) {
-			let tempParam = url.split("*")[1].split("$");//必要参数数组
+		paramObj["company_id"] = rows["company_id"]
+		paramObj["report_type"] = rows["report_type"]
+		if(cwConfigGetSource.split("*")[1]) {
+			let tempParam = cwConfigGetSource.split("*")[1].split("$");//必要参数数组
 			tempParam.forEach((item,index)=>{
 				paramObj[item] = rows[item]
 				console.log(paramObj[item],rows[item])
@@ -83,7 +85,7 @@ let InitObj = {
 		console.log(tableTitle)
 		let radioVal = ''
 		$.ajax({
-			url:BASE_PATH + 'credit/front/ReportGetData/' + url.split("*")[0],
+			url:BASE_PATH + 'credit/front/ReportGetData/' + cwConfigGetSource.split("*")[0],
 			type:'post',
 			async:false,
 			data:paramObj,
@@ -173,6 +175,9 @@ let InitObj = {
 		return cwModalId
 	},
 	cwModalCompute(alterSource){
+		/**
+		 * 财务计算函数
+		 */
 		let cwModals = Array.from($(".gjcw"));
 		//财务计算
 		let _this = this
@@ -481,7 +486,8 @@ let InitObj = {
         		return arr
         	}
 		})
-		
+		//初始化完表格之后自动计算
+		_this.refreshCwModal(tableCwIds,getSource,id)
 		setTimeout(()=>{
 			$(".bg-gray").parent("td").parent("tr").css("background","#fafafa")
 			

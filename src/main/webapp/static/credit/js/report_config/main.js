@@ -351,6 +351,7 @@ let ReportConfig = {
     					this.formTitle.push(this.floatTitle[index])
     				}else {
     					//财务模块浮动
+//    					console.log(this.floatTitle[index])
     					cw_title.push(this.floatTitle[index])
     					cw_contents.push(this.floatContents[index])
     					cw_dom = $("#titleCw"+i)
@@ -361,6 +362,7 @@ let ReportConfig = {
     	})
     	console.log(cw_title,cw_contents)
     	this.cwConfigAlterSource = cw_title[0]['alter_source'];
+    	this.cwConfigGetSource = cw_title[0]['get_source'];
     	let cw_top_html = ''
     	let cw_table_html = ''
     	let cw_bottom_html = ''
@@ -465,10 +467,9 @@ let ReportConfig = {
     								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
     							 </div></div>`
     		}else {
-    			console.log(item,this_content)
     			let addtext = cw_title[1].place_hold
     			let conf_id = cw_title[0].id
-    			let url = cw_title[0].get_source
+    			console.log(item,this_content,conf_id)
     			let tableTitle = ''
     			if(item.temp_name !== null && item.temp_name !== '') {
     				tableTitle = item.temp_name.split("||");
@@ -498,7 +499,7 @@ let ReportConfig = {
     			}
     			(function(a,i,radioName){
     				setTimeout(()=>{
-    					let id = InitObj.bindCwConfig(conf_id,url,a,i,radioName,_this.rows)
+    					let id = InitObj.bindCwConfig(conf_id,_this.cwConfigGetSource,a,i,radioName,_this.rows)
     					InitObj.initCwTable(tableCwId,this_content,_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,id)
     				},0)
     			})(tableTitle,index,cw_contents[0][1].column_name)
