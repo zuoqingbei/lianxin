@@ -21,7 +21,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.sun.star.uno.RuntimeException;
 public class FinanceService {
 
-	
+	public static final FinanceService service = new FinanceService();
 	
 	/**
 	 * 增加或者修改财务配置信息(包含在实体表里克隆一份默认的)

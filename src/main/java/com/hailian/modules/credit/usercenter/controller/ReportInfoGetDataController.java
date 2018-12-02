@@ -518,6 +518,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	  * 
 	  */
 	public void uploadFinancialEntrys() {
+		UploadFile uploadFile = getFile("file");
+		if(uploadFile==null) {
+			renderJson(new ResultType(0, "上传文件不能为空!"));
+			return;
+		}
 		String financialConfId = getPara("ficConf_id");
 		String reportType = getPara("report_type");
 		String userId = getSession().getId();
@@ -531,8 +536,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			return;
 		}
 		int type = getFinanceDictByReportType(reportType);
-		UploadFile uploadFile = getFile("file");
-		String message = "导入失败,开始值和结束值只能是数字!!";
+		
+		String message = "导入失败,请检查文件内容!";
 		try {
 			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, "8", now);
 		} catch (Exception e) {
@@ -540,7 +545,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			e.printStackTrace();
 			return;
 		}
-		renderJson(new ResultType(0, message));
+		renderJson(new ResultType(1, message));
 	}
 	
 	 /**
