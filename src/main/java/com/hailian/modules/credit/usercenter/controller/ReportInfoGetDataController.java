@@ -451,7 +451,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
          String datajson = getPara("datajson");
           List<CreditQualityResult> list=new ArrayList<CreditQualityResult>();
           CreditQualityResult model=new CreditQualityResult();
-          if (update.equals("true")) {//修改
+          if (update!=null&&update.equals("true")) {//修改
         	  List<Map<Object, Object>> entrys = parseJsonArray(datajson);
   			for (Map<Object, Object> entry : entrys) {
   			 //循环取出parentId的值
