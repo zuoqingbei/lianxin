@@ -4,25 +4,18 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
-import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.system.dict.DictCache;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
-import com.jfinal.plugin.activerecord.Record;
 import com.sun.star.uno.RuntimeException;
-public class FinanceService {
 
-	
-	
+public class FinanceService {
 	/**
 	 * 增加或者修改财务配置信息(包含在实体表里克隆一份默认的)
 	 * @param dataJson
@@ -105,7 +98,7 @@ public class FinanceService {
 	
 	/**
 	 * 从字典表获取数据里添加模板到实体表 
-	 * @param type 系统语言
+	 * @param type 财务实体类型
 	 * @param financialConfId 财务配置id
 	 */
 	public static  void addDictConfigToBeFinancialEntry(String financialConfId, int  type,String userId,String now) {
@@ -156,6 +149,16 @@ public class FinanceService {
 		return list;
 	}
 	
+	/**
+	 * 获取财务配置信息
+	 */
+	public static List<CreditCompanyFinancialEntry> getFinancialConfigList(String companyId ) {
+		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
+		List<CreditCompanyFinancialEntry> list
+				= model.find("select * from credit_company_financial_statements_conf where company_id=?  and del_flag=0 order by sort_no,id ",
+				  Arrays.asList(new String[] {companyId}).toArray());
+		return list;
+	}
 	
 	
 	/**
@@ -216,7 +219,7 @@ public class FinanceService {
 				return true;
 			}
 		});
-		 return  result?"成功导入"+(modelList.size()-1)+"条数据!":"导入失败,开始值和结束值只能是数字!";
+		 return  result?"成功导入"+(modelList.size()-1)+"条数据!":"导入失败,请检查文件内容!";
 	}
 	
 	

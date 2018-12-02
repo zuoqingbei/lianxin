@@ -117,6 +117,7 @@ label {
 
 .btn-block:hover {
     color: var(--activeColor);
+    border-color:var(--activeColor);
 }
 
 

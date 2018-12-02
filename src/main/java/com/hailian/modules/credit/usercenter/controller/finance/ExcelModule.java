@@ -220,7 +220,7 @@ public class ExcelModule extends BaseProjectController  {
 					cell.setCellValue(cellValue);
 					cell.setCellStyle(rowHeadStyle2);
 					 // 定义注释的大小和位置,详见文档
-			        HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)0, 0, (short) 0, 0));
+			        HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)3, 5, (short) 3, 5));
 			        // 设置注释内容
 			        comment.setString(new HSSFRichTextString("该单元格是默认项,禁止修改!"));
 			        // 设置注释作者. 当鼠标移动到单元格上是可以在状态栏中看到该内容.
@@ -433,7 +433,7 @@ public class ExcelModule extends BaseProjectController  {
 					itemName.setCellType(CellType.STRING);
 					str1 = itemName.getStringCellValue();
 					if(!StrUtils.isEmpty(str1)) {
-						tempModel.set("item_name", str1);
+						tempModel.set("item_name", str1.trim());
 						//System.out.println("item_name:"+str1);
 					} 
 				} 
@@ -444,7 +444,7 @@ public class ExcelModule extends BaseProjectController  {
 					beginDateValue.setCellType(CellType.STRING);
 					str2 = beginDateValue.getStringCellValue();
 					if(!StrUtils.isEmpty(str2)) {
-						tempModel.set("begin_date_value", str2);
+						tempModel.set("begin_date_value", str2.trim());
 					} 
 				} 
 				
@@ -454,10 +454,10 @@ public class ExcelModule extends BaseProjectController  {
 					endDateValue.setCellType(CellType.STRING);
 					str3 = endDateValue.getStringCellValue();
 					if(!StrUtils.isEmpty(str3)) {
-						tempModel.set("end_date_value", str3);
+						tempModel.set("end_date_value", str3.trim());
 					} 
 				} 
-				if(StrUtils.isEmpty(str1)&&StrUtils.isEmpty(str2)&&StrUtils.isEmpty(str3)) {
+				if(StrUtils.isEmpty(str1.trim())&&StrUtils.isEmpty(str2.trim())&&StrUtils.isEmpty(str3.trim())) {
 					break;
 				}
 				list.add(tempModel);
