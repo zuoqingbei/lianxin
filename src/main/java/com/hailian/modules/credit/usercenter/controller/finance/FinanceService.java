@@ -51,6 +51,7 @@ public class FinanceService {
 				public boolean run() throws SQLException {
 					model.set("create_by", userId);
 					model.set("create_date", now);
+					model.set("type", type);
 					model.save();
 					Integer financialConfId = model.get("id");
 					addDictConfigToBeFinancialEntry(financialConfId+"",type,userId,now);
