@@ -2,6 +2,7 @@ package com.hailian.modules.credit.usercenter.controller;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -530,7 +531,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     }
     
     /**
-         * 根据财务配置id获取财务信息
+     * 根据财务配置id获取财务信息
      */
     public void getFinancialEntrys() {
     	String financialConfId = getPara("ficConf_id");
@@ -562,7 +563,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "报告类型不能为空!"));
 			return;
 		}
-		int type = getFinanceDictByReportType(reportType);
+		Integer type = getFinanceDictByReportType(reportType);
+		if(type==null) {
+			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+			return;
+		}
 		UploadFile uploadFile = getFile("file");
 		String message = "导入失败,开始值和结束值只能是数字!!";
 		try {
@@ -604,7 +609,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	}
 	
 	/**
-	 * 增加或修改一条财务实体信息
+	 * 增加或修改财务实体信息
 	 * lzg 2018/11/24
 	 */
 	public void alterFinanceOneEntry() {
@@ -650,7 +655,36 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		renderJson(new ResultType(1,"删除成功!"));
 	}
     
-	
+	/**
+	 * 获取当前公司下所有财务配置信息
+	 */
+	public void getFinanceConfigs() {
+		String reportType = getPara("report_type");
+		String companyId = getPara("company_id");
+		if(StrUtils.isEmpty(companyId,companyId)) {
+			renderJson(new ResultType(0, "请检查这两个必要参数companyId,companyId!"));
+			return;
+		}
+		Integer type = getFinanceDictByReportType(reportType);
+		if(type==null) {
+			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+			return;
+		}
+		String userId = getSession().getId();
+		String now = getNow();
+	    List<CreditCompanyFinancialEntry> rows = FinanceService.getFinancialConfigList(companyId);
+	    //如果不存在就创建一个默认的
+		if(rows==null||rows.size()==0) {
+			List<Map<Object, Object>> entrys = new ArrayList<Map<Object, Object>>();
+			Map<Object, Object> entryMap = new HashMap<>();
+			entryMap.put("company_id", companyId);
+			entryMap.put("type", type);
+			entrys.add(entryMap);
+			FinanceService.alterFinancialConfig(entrys, type, "8", now);
+			rows = FinanceService.getFinancialConfigList(companyId);
+		}
+		renderJson(new Record().set("rows", rows));
+	}
 
 	/**
 	 * 增加或修改一条财务配置信息
@@ -659,7 +693,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	public void alterFinanceOneConfig() {
 		String dataJson = getPara("dataJson");
 		String reportType = getPara("report_type");
-		if(StrUtils.isEmpty(dataJson)) {
+		if(StrUtils.isEmpty(dataJson,reportType)) {
 			renderJson(new ResultType(0, "请检查这两个必要参数reportType,dataJson!"));
 			return;
 		}
@@ -670,7 +704,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String userId = getSession().getId();
 		String now = getNow();
-		int type = getFinanceDictByReportType(reportType);
+		Integer type = getFinanceDictByReportType(reportType);
+		if(type==null) {
+			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+			return;
+		}
 		try {
 			FinanceService.alterFinancialConfig(entrys, type, "8", now);
 		} catch (Exception e) {
@@ -814,7 +852,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     public void selectQuality(){
     	   Record record = new Record();
     String type=	getPara("type");
- List<SysDictDetail> details=   SysDictDetail.dao.find("select detail_id,dict_type,detail_name,detail_code as value from sys_dict_detail where dict_type=?",type);
+    List<SysDictDetail> details =  SysDictDetail.dao.find("select detail_id,dict_type,detail_name,detail_code as value from sys_dict_detail where dict_type=?",type);
     renderJson(record.set("rows", details).set("total", details!=null?details.size():null));	
     }
 	
