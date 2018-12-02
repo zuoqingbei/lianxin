@@ -299,50 +299,87 @@ let OrderDetail = {
                     $wrap.find('#save').click(function () {
                         dealQualityData('update');
                     });
-
-
-                    /*const $type23_div = $('<div class="radioBox p-3" ></div>').append(['', '有，详情如下。', '无，根据企业登记机关所示数据，无变更记录。', '企业登记机关并未提供该企业变更记录。']
-                        .reduce(function (prev, cur) {
-                            return `${prev}<input class="my-2" type="radio" name="registration_change" >${cur}<br>`
-                        }));
-                    $wrap.append(`<div class='type20-content'>${$type21_div[0].outerHTML}</div>`);
-                    //绑数
-                    $.get(this.getUrl(item), (data) => {
-                        if (data.rows) {
-                            let radioSelect = data.rows[0][item.title.column_name];
-                            $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
-                            if (radioSelect === 1) {
-                                this.setTable(item, $wrap, '', 'save_source');
-                            }
-                        } else {
-                            console.warn(item.title.temp_name + '-102单选&表格-没有返回数据！')
-                        }
-                    });*/
                     break;
             }
             $(".main .table-content").append($wrap);
 
         });
-        if(this.isQuality){
+        if (this.isQuality) {
             this.setQuality();
         }
 
 
-
     },
     // 设置质检数据
-    setQuality(){
-        $.get(this.BASE_PATH+'ReportGetData/getSelete?disPalyCol=detail_name&type='+this.row.quality_type,function (data) {
-            console.log('--',data)
-            $(".l-title").each(function (index,item) {
-                if(!['基本信息','流程进度','质检评分'].includes($(this).text())){
-                    $(this).nextAll('.module-content').after(qualitySelectHtml);
-                }
+    setQuality() {
+        let _this = this;
+        $(".l-title").each(function (index, item) {
+            if (!['基本信息', '流程进度', '质检评分'].includes($(this).text())) {
+                $(this).nextAll('.module-content').after(qualitySelectHtml);
+            }
+        });
+        let BASE_PATH = this.BASE_PATH + 'ReportGetData/';
+        // 获取下拉框选项的内容
+        $.get(BASE_PATH + 'selectQuality?type=' + this.row.quality_type, function (data) {
+            let OptHtml = '';
+            data.rows.forEach((item) => {
+                OptHtml += `<option data-detail_id="${item.detail_id}" data-grade="${item.value}">${item.detail_name}</option>`
             });
-            $(".select2Box select").html(data.selectStr);
+            $(".select2Box select").html(OptHtml)
+                .find('option').each(function (index, option) { //初始化value值
+                $(option).attr("value", $(option).parents(".module-wrap").attr("id") + "_" + $(option).data("detail_id"))
+            });
             $('.js-example-basic-multiple').select2({placeholder: "请选择评分项"});
-        })
 
+            // 赋值
+            let getQualitySelectData = (param) => {
+                let optionData = [];
+                $(".select2Box select").each(function (index, item) {
+                    if($(item).select2('val')){
+                        let detail_id_str = $(item).select2('val').map(function (value) {
+                            return value.split("_")[1]
+                        }).join(' ');
+                        optionData.push({
+                            parentId: $(item).parents(".module-wrap").attr("id"),
+                            quality_result: detail_id_str,
+                        })
+                    }else{
+                        optionData.push({
+                            parentId: $(item).parents(".module-wrap").attr("id"),
+                            quality_result: '',
+                        })
+                    }
+
+                });
+                $.ajax({
+                    url: `${BASE_PATH}getOrSaveResult?orderId=${_this.row.id}&quality_type=${_this.row.quality_type}&${param === 'update' ? 'update=true' : ''}`,
+                    // data:{datajson:optionData},
+                    data: {datajson: JSON.stringify(optionData)},
+                    dataType: "json",
+                    // traditional:true,
+                    success: (data) => {
+                        data.rows.forEach(function (selecte,index) {
+                            let valueArrOld = selecte.quality_result.split(" ")
+                            if(valueArrOld){
+                                console.log(valueArrOld)
+                                let valueArrNew = [];
+                                selecte.quality_result.split(" ").forEach(function (itemValue) {
+                                    valueArrNew.push(selecte.report_model_id + '_' +itemValue)
+                                });
+                                $(`#${selecte.report_model_id}`).find('.js-example-basic-multiple').val(valueArrNew).change()
+                            }
+                        })
+                        console.log('--', data);
+                    }
+                });
+
+            };
+            getQualitySelectData();
+            // 获取下拉框的选中值
+            $("#submit").click(function () {
+                getQualitySelectData('update')
+            })
+        })
     },
     // 设置tabs标签
     setTabs() {
@@ -521,7 +558,6 @@ let OrderDetail = {
                         })
                     })
                 }, true);
-                // console.log(chart)
             }
         }
     }
