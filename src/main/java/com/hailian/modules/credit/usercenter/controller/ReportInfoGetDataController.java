@@ -463,6 +463,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 				model.set("create_date", now);
 				model.set("update_by", userId);
 				model.set("update_date", now);
+				model.set("report_model_id", pid);
 				model.update();
 				list.add(model);
   			 
