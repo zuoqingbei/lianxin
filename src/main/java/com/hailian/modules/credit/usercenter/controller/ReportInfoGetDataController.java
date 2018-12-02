@@ -440,7 +440,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     */
     public  void getOrSaveResult(){
     	Record record = new Record();
-    	Integer userId = getSessionUser().getUserid();
+    	Integer userId = 16;//getSessionUser().getUserid();
 		 String now = getNow();
     	 String orderId = 	getPara("orderId");
          String id =   getPara("id"); 
@@ -456,7 +456,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   			for (Map<Object, Object> entry : entrys) {
   			 //循环取出parentId的值
   		     String pid=(String) entry.get("parentId");//取父模板id
-	  		   CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where repoet_model_id=?",pid);
+	  		   CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=?",pid);
 	  			model.set("id", result2.get("id"));
 	  			model.set("quality_result", entry.get("quality_result"));
 	  			model.set("create_by", userId);
@@ -474,12 +474,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			 //循环取出parentId的值
 		     String pid=(String) entry.get("parentId");//取父模板id
 		     //查询当前质检结果是不是有值
-		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where repoet_model_id=?",pid);
+		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=?",pid);
 		     if (result2!=null) {
 				list.add(result2);
 			}else {
 				model.clear();
-				model.set("report_module_id", pid);
+				model.set("report_model_id", pid);
 				model.set("order_id", orderId);
 				model.set("quality_type", type);
 				model.set("create_by", userId);
