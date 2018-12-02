@@ -450,14 +450,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
          String   update= getPara("update");
          String datajson = getPara("datajson");
           List<CreditQualityResult> list=new ArrayList<CreditQualityResult>();
-          CreditQualityResult model=new CreditQualityResult();
           if (update!=null&&update.equals("true")) {//修改
         	  List<Map<Object, Object>> entrys = parseJsonArray(datajson);
   			for (Map<Object, Object> entry : entrys) {
   			 //循环取出parentId的值
   		     String pid=(String) entry.get("parentId");//取父模板id
 	  		   CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=?",pid);
-	  			model.set("id", result2.get("id"));
+	  		 CreditQualityResult model=new CreditQualityResult();
+	  		   model.set("id", result2.get("id"));
 	  			model.set("quality_result", entry.get("quality_result"));
 	  			model.set("create_by", userId);
 				model.set("create_date", now);
@@ -479,6 +479,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		     if (result2!=null) {
 				list.add(result2);
 			}else {
+			CreditQualityResult model=new CreditQualityResult();
 				model.clear();
 				model.set("report_model_id", pid);
 				model.set("quality_result", entry.get("quality_result"));
