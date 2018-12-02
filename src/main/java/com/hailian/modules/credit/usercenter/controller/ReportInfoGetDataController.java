@@ -481,6 +481,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			}else {
 				model.clear();
 				model.set("report_model_id", pid);
+				model.set("quality_result", entry.get("quality_result"));
 				model.set("order_id", orderId);
 				model.set("quality_type", type);
 				model.set("create_by", userId);
