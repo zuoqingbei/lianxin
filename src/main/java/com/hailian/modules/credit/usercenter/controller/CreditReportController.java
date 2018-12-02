@@ -6,6 +6,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.util.word.BaseInfoEn;
 import com.hailian.util.word.BusinessZh;
+import com.hailian.util.word.RocHy;
 import com.hailian.util.word.RocZh;
 
 /**
@@ -32,7 +33,8 @@ public class CreditReportController extends BaseProjectController{
         //BaseInfoEn.reportTable("7", "", "65", "612", userid);
 
         //报告类型12 订单ID 公司ID65  语言612
-        RocZh.reportTable("12","","7777813", "612", userid);
+        //RocZh.reportTable("12","","7777813", "612", userid);
+        RocHy.reportTable("15","","7777827", "612", userid);
     }
 
 

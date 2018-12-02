@@ -1,23 +1,19 @@
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
-import com.deepoove.poi.data.PictureRenderData;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
-import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.jfinal.kit.PathKit;
-import org.jfree.data.general.DefaultPieDataset;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * _102 ROC Chinese
+ * _102 红印
  * Created by Thinkpad on 2018/11/17.
  */
-public class RocZh {
+public class RocHy {
 
     public static void main(String args[]) throws Exception{
         //getForm?tableName=credit_company_info&className=CreditCompanyInfo*company_id
@@ -145,41 +141,10 @@ public class RocZh {
                 }
             }
 
-            //8-单选框
-            if("8".equals(moduleType)){
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
-                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
-                //取列值
-                for (int i = 0; i < child.size(); i++) {
-                    CreditReportModuleConf module = child.get(i);
-                    String column_name = module.getStr("column_name");
-                    String get_source = module.getStr("get_source");
-                    cols.put(column_name, get_source);
-                }
-                //取数据
-                for (int i = 0; i < rows.size(); i++) {
-                    BaseProjectModel model = (BaseProjectModel) rows.get(0);
-                    for (String column : cols.keySet()) {
-                        //取值
-                        String value = model.get(column) != null ? model.get(column) + "" : "";
-                        String get_source = cols.get(column);
-                        String[] items = get_source.split("&");
-                        StringBuffer html = new StringBuffer();
-                        for(int j=0;j<items.length;j++) {
-                            String[] item = items[j].split("-");
-                            if (value.equals(item[0])) {
-                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
-                            } else {
-                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
-                            }
-                        }
-                        map.put(column, html.toString());
-                    }
-                }
-            }
+
         }
 
-        MainWord.buildWord(map, webRoot + "/word/" + "_102 ROC Chinese.docx", _prePath + ".docx");
+        MainWord.buildWord(map, webRoot + "/word/" + "_102红印.doc", _prePath + ".docx");
     }
 
 }
