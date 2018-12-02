@@ -151,12 +151,13 @@ public class FinanceService {
 	
 	/**
 	 * 获取财务配置信息
+	 * @param type 
 	 */
-	public static List<CreditCompanyFinancialEntry> getFinancialConfigList(String companyId ) {
-		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
-		List<CreditCompanyFinancialEntry> list
-				= model.find("select * from credit_company_financial_statements_conf where company_id=?  and del_flag=0 order by sort_no,id ",
-				  Arrays.asList(new String[] {companyId}).toArray());
+	public static List<CreditCompanyFinancialStatementsConf> getFinancialConfigList(String companyId, Integer type ) {
+		CreditCompanyFinancialStatementsConf model = new CreditCompanyFinancialStatementsConf();
+		List<CreditCompanyFinancialStatementsConf> list
+				= model.find("select * from credit_company_financial_statements_conf where company_id=? and type=? and del_flag=0 order by sort_no,id ",
+				  Arrays.asList(new String[] {companyId,type+""}).toArray());
 		return list;
 	}
 	

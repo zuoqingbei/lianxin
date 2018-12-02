@@ -693,7 +693,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		String reportType = getPara("report_type");
 		String companyId = getPara("company_id");
 		if(StrUtils.isEmpty(companyId,companyId)) {
-			renderJson(new ResultType(0, "请检查这两个必要参数companyId,companyId!"));
+			renderJson(new ResultType(0, "请检查这两个必要参数companyId,report_type!"));
 			return;
 		}
 		Integer type = getFinanceDictByReportType(reportType);
@@ -703,7 +703,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String userId = getSession().getId();
 		String now = getNow();
-	    List<CreditCompanyFinancialEntry> rows = FinanceService.getFinancialConfigList(companyId);
+	    List<CreditCompanyFinancialStatementsConf> rows = FinanceService.getFinancialConfigList(companyId,type);
 	    //如果不存在就创建一个默认的
 		if(rows==null||rows.size()==0) {
 			List<Map<Object, Object>> entrys = new ArrayList<Map<Object, Object>>();
@@ -712,7 +712,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			entryMap.put("type", type);
 			entrys.add(entryMap);
 			FinanceService.alterFinancialConfig(entrys, type, "8", now);
-			rows = FinanceService.getFinancialConfigList(companyId);
+			rows = FinanceService.getFinancialConfigList(companyId,type);
 		}
 		renderJson(new Record().set("rows", rows));
 	}
