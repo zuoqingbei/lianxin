@@ -455,7 +455,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   			for (Map<Object, Object> entry : entrys) {
   			 //循环取出parentId的值
   		     String pid=(String) entry.get("parentId");//取父模板id
-	  		   CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=?",pid);
+	  		   CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=?",pid,type);
 	  		 CreditQualityResult model=new CreditQualityResult();
 	  		   model.set("id", result2.get("id"));
 	  			model.set("quality_result", entry.get("quality_result"));
@@ -475,7 +475,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			 //循环取出parentId的值
 		     String pid=(String) entry.get("parentId");//取父模板id
 		     //查询当前质检结果是不是有值
-		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=?",pid);
+		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=?",pid,type);
 		     if (result2!=null) {
 				list.add(result2);
 			}else {
