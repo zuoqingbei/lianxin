@@ -85,7 +85,7 @@ public class DictCache {
 		return cache.get("map");
 	}
 	
-	public static Map<String,List<CreditCompanyFinancialDict>> getFinancialDictMap() {
+	public static Map<Integer,List<CreditCompanyFinancialDict>> getFinancialDictMap() {
 		return cache.get("financialDictMap");
 	}
 	

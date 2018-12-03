@@ -6,15 +6,18 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/select2/css/select2.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css?">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
     <style>
         /*基本类型*/
         @media all {
             .module-wrap {
-                padding-bottom: 1px;
+                padding-bottom: 1rem;
             }
-
+            .module-content{
+                padding: 0;
+            }
             table > thead {
                 background-color: var(--bg-thead);
             }
@@ -109,9 +112,10 @@
 
         /*质检类型的表单*/
         @media all {
-            .type23-content{
+            .type23-content {
                 color: var(--fontTitleColor);
             }
+
             .type23-content #grade {
                 display: inline;
                 width: 3rem;
@@ -120,9 +124,17 @@
                 font-weight: bold;
                 color: var(--activeColor);
             }
+
             .type23-content .unit {
                 font-size: 1rem;
                 margin-left: .25rem;
+            }
+            .select2Box label{
+                margin-right: -4rem;
+            }
+            .select2-container .select2-selection--multiple{
+                min-height: 2.5rem;
+                border-color: #ced4da;
             }
         }
     </style>
@@ -135,7 +147,7 @@
         <div class="main-header detail_tab-bar">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="javascript:;">订单管理</a>
+                    <a href="javascript:">订单管理</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <a>订单查档</a>
@@ -151,6 +163,19 @@
         </div>
         <!-- 内容展示 -->
         <div class="table-content">
+
+            <!--<div class="module-wrap bg-f company-info mb-4" id="24">
+                <div class="row form-group select2Box">
+                    <label for="q" class="col-1 col-form-label">质检结果:</label>
+                    <div class="col-11 ">
+                        <select style="width: 100%;" class="js-example-basic-multiple" id="q" name="states[]" multiple="multiple">
+                            <option value="AL">Alabama</option>
+                            ...
+                            <option value="WY">Wyoming</option>
+                        </select>
+                    </div>
+                </div>
+            </div>-->
             <!-- 基本信息 -->
             <!-- 流程进度 -->
             <!-- 基本报告 -->
@@ -159,12 +184,15 @@
         </div>
     </div>
 </div>
+<script src="${BASE_PATH }static/credit/assets/select2/js/select2.js"></script>
 <script src="${BASE_PATH }static/credit/js/order_manage/order_common.js"></script>
 <script src="${BASE_PATH }static/credit/js/order_manage/order_detail.js"></script>
 
 <script>
     $(function () {
-        // alert(1)
+        $('.js-example-basic-multiple').each(function (index,item) {
+        // $(item).select2({placeholder:"请选择评分项"});
+        })
     })
 
 
