@@ -391,6 +391,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       String deal=  getPara("quality_deal");
       String grade= getPara("grade");
       String update=  getPara("update");//修改的状态
+      String code = (String) getRequest().getParameter("statusCode");//获取提交的是完成还是修改状态
+      String submit=getPara("submit");
       if (StringUtils.isBlank(update)) {
           if (StringUtils.isBlank(id)) {
 			//id为空新增
@@ -428,6 +430,51 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     	 model.update();
     	  renderJson(record.set("rows", model).set("total", null));
       }
+      if (StringUtils.isNotBlank(submit)) {
+          	String status="";
+             if (type.equals("translate_quality")) {//翻译质检
+  			if (deal.equals("1")) {//1 完成 2修改
+  				status="311";
+  			}else {
+  				status="306";
+  			}
+  		   }else if(type.equals("entering_quality")){//填报质检
+  			   if (deal.equals("1")) {//1 完成 2修改
+  					status="301";
+  				}else {
+  					status="293";	//信息录入
+  				}
+  		  }else if(type.equals("analyze_quality")){
+  			  if (deal.equals("1")) {//1 完成 2修改
+  					status="306";
+  				}else {
+  					status="301";
+  				} 
+  		  }
+              Map<String,Object> map = new HashMap<>();
+              if(code==null||"".equals(code.trim())){
+                  map = null;
+              }else{
+                  map.put("status", status);
+              }
+              
+              CreditOrderInfo model = getModel(CreditOrderInfo.class);
+              model.removeNullValueAttrs();
+              model = getModel(CreditOrderInfo.class);
+              model.set("update_by",userId);
+              model.set("update_date", now);
+              if(map!=null){
+                  for (String key : map.keySet()) {
+                      model.set(key, map.get(key));
+                  }
+              }
+              model.update();
+              //增加跟踪记录
+              CreditOrderFlow.addOneEntry(this, model);
+              CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
+          
+	  }
+      
   }
 
    /** 
