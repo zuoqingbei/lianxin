@@ -1,6 +1,7 @@
 let InitObj = {
 	hjArr:[],
 	cwAlterSource:'',
+	cwType:'',
 	tableColumnNameArr:[],
 	saveCwConfigInfo(url,rows){
 		/**
@@ -22,7 +23,6 @@ let InitObj = {
 			let textareas_bottom = Array.from($(item).find(".bottom-html").find("textarea"))
 			let inputs_all = inputs_top.concat(inputs_bottom)
 			let selects_all = selects_top.concat(selects_bottom)
-			console.log(inputs_all,selects_all)
 			inputs_all.forEach((item,index)=>{
 				let id = $(item).attr("id");
 				let tempObj = this.getFormData($('#'+id));
@@ -62,17 +62,16 @@ let InitObj = {
 			})
 		})
 	},
-	bindCwConfig(conf_id,cwConfigGetSource,tableTitle,i,radioName,rows){
+	bindCwConfig(cwConfigGetSource,radioName,rows,tableTitles){
 		
 		/**
 		 * 绑定财务模块表格配置信息
-		 * tableTitle:表格标题
-		 * i:代表第几次调用此方法 1-4 共四次
+		 * tableTitle:表格标题,tableTitle,i
+		 * 
 		 */
 		let paramObj = {}
 		let _this = this
 		let cwModalId = ''
-		paramObj["conf_id"] = conf_id
 		paramObj["company_id"] = rows["company_id"]
 		paramObj["report_type"] = rows["report_type"]
 		if(cwConfigGetSource.split("*")[1]) {
@@ -82,7 +81,6 @@ let InitObj = {
 				console.log(paramObj[item],rows[item])
 			})
 		}
-		console.log(tableTitle)
 		let radioVal = ''
 		$.ajax({
 			url:BASE_PATH + 'credit/front/ReportGetData/' + cwConfigGetSource.split("*")[0],
@@ -92,6 +90,7 @@ let InitObj = {
 			success:(data)=>{
 				console.log(data)
 				data = data.rows
+				_this.cwType = data[0]["type"]
 				if(data.length === 0){return}
 				//获取财务模板id   ////下面 0代表页面自上而下的财务模块
 				let cwModals = Array.from($(".gjcw"))
@@ -101,6 +100,7 @@ let InitObj = {
 				})
 				let cwModalArr = Array.from($(".cwModal"))
 				data.forEach((item,index)=>{
+					//每个item代表每个财务模块的配置数据
 					let inputs = Array.from($(cwModalArr[index]).siblings(".top-html").find("input[type='text']"))
 					let inputss =  Array.from($(".cw-date"));
 					inputss.forEach((item,index)=>{
@@ -150,12 +150,14 @@ let InitObj = {
 				})
 			}
 		})
+		console.log(tableTitles)
 		let tables = Array.from($(".table-title"))
-		$(tables[i-1]).html(radioVal==="1"?tableTitle[1]:tableTitle[0])
-		$(document).on('change','input[type=radio][name='+radioName+']',()=>{
-			let val = $('input[type=radio][name='+radioName+']:checked').val()
-			console.log(i-1,tableTitle,val)
-			$(tables[i-1]).html(val==="1"?tableTitle[1]:tableTitle[0])
+		tables.forEach((item,i)=>{
+			$(tables[i]).html(radioVal==="1"?tableTitles[i][1]:tableTitles[i][0])
+			$(document).on('change','input[type=radio][name='+radioName+']',()=>{
+				let val = $('input[type=radio][name='+radioName+']:checked').val()
+				$(tables[i]).html(val==="1"?tableTitles[i][1]:tableTitles[i][0])
+			})
 		})
 		$(document).on('change','.moneySel',(e)=>{
 			let val = $('.moneySel option:selected').val()
@@ -354,8 +356,8 @@ let InitObj = {
 		})
 	},
 	
-	initCwTable(tableCwIds,contents,getSource,alterSource,deleteSource,id){
-		//财务模块表格初始化
+	initCwTable(tableCwIds,contents,getSource,alterSource,deleteSource){
+		//财务模块表格初始化  掉了4次
 		/**
 		 * tableCwIds:表格id数组 
 		 * contents :表格的表头信息
@@ -364,7 +366,7 @@ let InitObj = {
 		 * deleteSource: 财务 deleteSource
 		 * id:财务模块id
 		 */
-	
+		let id = $(".gjcw").attr("cwconfigid")
 		let returnData;
 		let _this = this
 		this.cwAlterSource = alterSource
@@ -434,7 +436,7 @@ let InitObj = {
         		contents.forEach((ele,index)=>{
         			_this.tableColumnNameArr.push(ele.column_name);
         			if(ele.column_name !== null){
-        				tempObj[ele.column_name] = ''
+        				index === 0?tempObj[ele.column_name] = '':tempObj[ele.column_name] = 0
         			}
 	    			if(ele.temp_name !== '删除'){
 	    				arr.push({
@@ -453,7 +455,7 @@ let InitObj = {
 	    					align:'center',
 	    					events: {
 	        					"click .delete":(e,value,row,index)=>{
-	        						console.log(value,row)
+//	        						console.log(value,row)
 	        						let entityId = row.id
 	        						$("#popEnter").unbind().on('click', function(){
             							//确定删除
@@ -486,14 +488,16 @@ let InitObj = {
         		return arr
         	}
 		})
-		//初始化完表格之后自动计算
-		_this.refreshCwModal(tableCwIds,getSource,id)
 		setTimeout(()=>{
+			//初始化完表格之后自动计算
+			//自动计算合计
+			const $table_a = $('#'+tableCwIds[1]);
+//			console.log($table_a.find("input")[0])
+			$($table_a.find("input")[0]).trigger("blur")
 			$(".bg-gray").parent("td").parent("tr").css("background","#fafafa")
 			
 			//点击新增一行按钮
 			$(".addBtn").unbind().click((e)=>{
-				console.log($(e.target).siblings(".bootstrap-table").find("input"))
 				let $input = $($(e.target).siblings(".bootstrap-table").find("input")[0])
 				let $input2 = $($(e.target).siblings(".bootstrap-table").find("input")[2])
 				let class_name1 = $input.attr("class").split(" ")[$input.attr("class").split(" ").length-1];
@@ -510,6 +514,7 @@ let InitObj = {
 				tempObj["parent_sector"] = parent_sector
 				tempObj["class_name1"] = class_name1
 				tempObj["class_name2"] = class_name2
+				tempObj["type"] = _this.cwType
 				tempObj["conf_id"] = id
 				dataJson.push(tempObj)
 				$.ajax({
@@ -575,8 +580,8 @@ let InitObj = {
 		 */
 		let _this = this
 		$(document).on("change",'.fileInp',(e)=>{
-			$(e.target).parents(".aa-btn").addClass("loading")
-			//$(e.target).attr("disabled",'disabled')
+			//$(e.target).parents(".aa-btn").addClass("loading")
+			$("body").mLoading("show");//显示loading组件
 			let file = $(e.target).prop('files')[0];
 			let id = $(e.target).parents(".gjcw").attr("cwconfigid")
 			$(e.target).siblings(".report_type").val(rows["report_type"])
@@ -584,8 +589,7 @@ let InitObj = {
 			$(e.target).parent("form").attr("action",BASE_PATH + `credit/front/ReportGetData/` +url)
 			$(e.target).parent("form").ajaxSubmit({
 				success:(data)=>{
-					$(e.target).parents(".aa-btn").removeClass("loading")
-					//$(e.target).removeAttr("disabled")
+					$("body").mLoading("hide");//隐藏loading组件
 					if(data.statusCode === 0){
 						Public.message("error",data.message)
 					}else if(data.statusCode === 1){
@@ -673,61 +677,59 @@ let InitObj = {
 		 * 刷新表格数据
 		 * id:财务模板id
 		 */
+//		console.log(tableCwIds)
+		let returnData;
+		$.ajax({
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
+			type:'post',
+			async:false,
+			success:(data)=>{
+				returnData = data
+			}
+		})
+		let tempRows =  []
+		let tempArr = [];
+		returnData['rows'].sort((a,b)=>{
+			return a["son_sector"]-b["son_sector"]
+		});
+		returnData['rows'].forEach((item,index)=>{
+			if(item.is_sum_option) {
+				//合计项
+				if(index>8){
+					//非合计表合计项 给个class背景变色
+					item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
+					item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+				}else {
+					item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+					item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+				}
+			}else {
+				if(!item.is_default){
+					item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
+				}
+				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+			}
+			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
+				if(tempRows.length !== 0){
+					tempArr.push(tempRows)
+					tempRows = []
+				}
+			}
+			tempRows.push(item)
+		})
+			//合计项放在最后
+		tempArr.forEach((item,index)=>{
+			item.forEach((ele,index)=> {
+				if(ele.is_sum_option === 1) {
+					item.splice($.inArray(ele,item),1)
+					item.push(ele)
+				}
+			})
+		})
 		tableCwIds.forEach((item,index)=>{
 			const $table = $('#'+item);
-			let returnData;
-			$.ajax({
-				url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
-				type:'post',
-				async:false,
-				success:(data)=>{
-					returnData = data
-				}
-			})
-			let tempRows =  []
-			let tempArr = [];
-			returnData['rows'].sort((a,b)=>{
-				return a["son_sector"]-b["son_sector"]
-			});
-			returnData['rows'].forEach((item,index)=>{
-				if(item.is_sum_option) {
-					//合计项
-					if(index>8){
-						//非合计表合计项 给个class背景变色
-						item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
-						item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
-					}else {
-						item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-						item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
-					}
-				}else {
-					if(!item.is_default){
-						item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
-					}
-					item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-					item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
-				}
-				if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
-					if(tempRows.length !== 0){
-						tempArr.push(tempRows)
-						tempRows = []
-					}
-				}
-				tempRows.push(item)
-			})
-				//合计项放在最后
-			tempArr.forEach((item,index)=>{
-				item.forEach((ele,index)=> {
-					if(ele.is_sum_option === 1) {
-						item.splice($.inArray(ele,item),1)
-						item.push(ele)
-					}
-				})
-			})
 			$table.bootstrapTable("load",tempArr[index])
-			//自动计算合计
-			$table.find("input").trigger("blur")
-			
 			//处理默认项的删除A标签
 			let tables = Array.from($(".cw-table").find(".table.table-hover"));
 			tables.forEach((item,index)=>{
@@ -739,7 +741,11 @@ let InitObj = {
 					}
 				})
 			})
+			
 		})
+		//自动计算合计
+		const $table = $('#'+tableCwIds[1]);
+		$($table.find("input")[0]).trigger("blur")
 	},
 	dateInit(){
     	/**
