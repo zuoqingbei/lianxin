@@ -34,7 +34,7 @@ public class CreditReportController extends BaseProjectController{
 
         //报告类型12 订单ID 公司ID65  语言612
         //RocZh.reportTable("12","","7777813", "612", userid);
-        RocHy.reportTable("15","","7777827", "612", userid);
+        RocHy.reportTable("15","","7777829", "612", userid);
     }
 
 

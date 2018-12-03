@@ -3,7 +3,6 @@ let OrderDetail = {
         // ljl为此对象之外的页面全局变量
         ljl.row = this.row = JSON.parse(localStorage.getItem("row"));
         console.log('--row', this.row);
-        // alert(this.row.quality_type);
         this.isQuality = !!this.row.quality_type;
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         this.getUrl = (item, otherProperty, paramObj) => {
@@ -176,11 +175,11 @@ let OrderDetail = {
                     break;
                 // 6-信用等级
                 case '6':
+                    $wrap.append(`<div class="type6-content module-content">${this.creditLevel}</div>`);
                     //绑数
                     $.get(this.getUrl(item), (data) => {
                         if (data.rows) {
-                            $wrap.append(`<div class="module-content">${this.creditLevel}</div>`)
-                                .find("#creditLevel").text(data.rows[0][item.title.column_name])
+                            $wrap.find("#creditLevel").text(data.rows[0][item.title.column_name])
                         } else {
                             console.warn(item.title.temp_name + '-信用等级-没有返回数据！')
                         }
@@ -188,15 +187,15 @@ let OrderDetail = {
                     break;
                 // 7-多行文本框
                 case '7':
+                    $wrap.append(`<div class="type7-content module-content"></div>`);
                     $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
                         if (data.rows) {
-                            $wrap.append(`<div class="module-content"> <div class="border multiText m-4 p-2">${data.rows[0] ?
+                            $wrap.find(".module-content").append(`<div class="border multiText m-4 p-2">${data.rows[0] ?
                                 data.rows[0][item.title.column_name] ? data.rows[0][item.title.column_name] : ''
-                                : ''}</div><div class="pt-1"></div></div>`);
+                                : ''}</div><div class="pt-1"></div>`);
                         } else {
                             console.warn(item.title.temp_name + '-总结-没有返回数据！')
                         }
-
                     });
                     break;
                 // 8-总体评价，一个对勾列表和两个多行文本框
@@ -271,20 +270,24 @@ let OrderDetail = {
                     $wrap.append(type23_html);
                     $wrap.find("[for=grade]").text(item.contents[0].temp_name + ' : ')
                         .end().find("[for=quality_opinion]").text(item.contents[1].temp_name + ' : ');
-                    $wrap.find("#save").on('click', () => {
-
-                    });
-                    let dealQualityData = (param) => {
-                        let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1
+                    let dealQualityData = (param, param2) => {
+                        let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
                         $.get(this.getUrl(item, '', {
-                            id: ljl.row.qid ? ljl.row.qid : '',
+                            id: this.row.qid ? this.row.qid : '',
                             quality_opinion: $wrap.find("#quality_opinion").val(),
+                            quality_deal: checkedIndex,
                             quality_type: ljl.row.quality_type,
-                            quality_deal: checkedIndex ? checkedIndex : '',
                             report_type: ljl.row.report_type,
                             report_module_id: item.title.id,
                             grade: $wrap.find("#grade").val()
-                        }) + (param === 'update' ? '&update=true' : ''), (data) => {
+                        }) + (param === 'update' ? '&update=true' : '') + (param2 === 'submit' ? '&submit=true' : ''), (data) => {
+                            if (data.submit === 'true') {
+                                if (data.rows.quality_deal === '1') { // 页面不能再修改
+                                    $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
+                                } else if (data.rows.quality_deal === '2') {
+                                    $('.select2-container').addClass('disable');
+                                }
+                            }
                             if (data.rows && data.rows.length > 0) {
                                 $("#quality_opinion").val(data.rows[0].quality_opinion);
                                 $("#grade").val(data.rows[0].grade);
@@ -296,53 +299,99 @@ let OrderDetail = {
                         });
                     };
                     dealQualityData();
-                    $wrap.find('#save').click(function () {
-                        dealQualityData('update');
+                    $wrap.find("#save").click(function (e, param) {
+                        console.log(param);
+                        _this.getQualitySelectData('update'); //质检结果
+                        dealQualityData('update', param); //质检意见、分数等
+                        $('#reportbusiness').click();
+                        Public.message('success','保存成功！')
                     });
-
-
-                    /*const $type23_div = $('<div class="radioBox p-3" ></div>').append(['', '有，详情如下。', '无，根据企业登记机关所示数据，无变更记录。', '企业登记机关并未提供该企业变更记录。']
-                        .reduce(function (prev, cur) {
-                            return `${prev}<input class="my-2" type="radio" name="registration_change" >${cur}<br>`
-                        }));
-                    $wrap.append(`<div class='type20-content'>${$type21_div[0].outerHTML}</div>`);
-                    //绑数
-                    $.get(this.getUrl(item), (data) => {
-                        if (data.rows) {
-                            let radioSelect = data.rows[0][item.title.column_name];
-                            $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
-                            if (radioSelect === 1) {
-                                this.setTable(item, $wrap, '', 'save_source');
-                            }
-                        } else {
-                            console.warn(item.title.temp_name + '-102单选&表格-没有返回数据！')
-                        }
-                    });*/
+                    $wrap.find("#submit").click(function () {
+                        $("#save").trigger('click', 'submit');
+                    });
                     break;
             }
             $(".main .table-content").append($wrap);
-
         });
-        if(this.isQuality){
-            this.setQuality();
+        // 质检结果下拉列表
+        if (this.isQuality) {
+            this.setQualitySelect();
         }
-
-
-
     },
-    // 设置质检数据
-    setQuality(){
-        $.get(this.BASE_PATH+'ReportGetData/getSelete?disPalyCol=detail_name&type='+this.row.quality_type,function (data) {
-            console.log('--',data)
-            $(".l-title").each(function (index,item) {
-                if(!['基本信息','流程进度','质检评分'].includes($(this).text())){
-                    $(this).nextAll('.module-content').after(qualitySelectHtml);
-                }
+    // 获取质检结果下拉框的数据并提交
+    getQualitySelectData(param) {
+        let _this = this;
+        let optionData = [];
+        $(".select2Box select").each(function (index, item) {
+            if ($(item).select2('val')) {
+                let detail_id_str = $(item).select2('val').map(function (value) {
+                    return value.split("_")[1]
+                }).join(' ');
+                optionData.push({
+                    parentId: $(item).parents(".module-wrap").attr("id"),
+                    quality_result: detail_id_str,
+                })
+            } else {
+                optionData.push({
+                    parentId: $(item).parents(".module-wrap").attr("id"),
+                    quality_result: '',
+                })
+            }
+        });
+        // 提交下拉框数据，用于增改查(update===true ? 改:(有id ? 查:增))
+        $.ajax({
+            url: `${this.BASE_PATH}ReportGetData/getOrSaveResult?orderId=${_this.row.id}&quality_type=${_this.row.quality_type}&${param === 'update' ? 'update=true' : ''}`,
+            data: {datajson: JSON.stringify(optionData)},
+            dataType: "json",
+            success: (data) => {
+                data.rows.forEach(function (selecte, index) {
+                    let valueArrOld = selecte.quality_result.split(" ");
+                    if (valueArrOld) {
+                        // 赋值
+                        let valueArrNew = [];
+                        selecte.quality_result.split(" ").forEach(function (itemValue) {
+                            valueArrNew.push(selecte.report_model_id + '_' + itemValue);
+                        });
+                        $(`#${selecte.report_model_id}`).find('.js-example-basic-multiple').val(valueArrNew).change()
+                    }
+                });
+                console.log('--', data);
+            }
+        });
+    },
+    // 设置质检结果下拉列表
+    setQualitySelect() {
+        let _this = this;
+        $(".l-title").each(function (index, item) {
+            if (!['基本信息', '流程进度', '质检评分'].includes($(this).text())) {
+                $(this).nextAll('.module-content').after(qualitySelectHtml);
+            }
+        });
+        let BASE_PATH = this.BASE_PATH + 'ReportGetData/';
+        // 获取下拉质检结果框选项的内容
+        $.get(BASE_PATH + 'selectQuality?type=' + this.row.quality_type, function (data) {
+            // 设置option内容
+            let OptHtml = '';
+            data.rows.forEach((item) => {
+                OptHtml += `<option data-detail_id="${item.detail_id}" data-grade="${item.value}">${item.detail_name}</option>`
             });
-            $(".select2Box select").html(data.selectStr);
-            $('.js-example-basic-multiple').select2({placeholder: "请选择评分项"});
-        })
+            $(".select2Box select").html(OptHtml)
+                .find('option').each(function (index, option) { //初始化唯一的value值
+                $(option).attr("value", $(option).parents(".module-wrap").attr("id") + "_" + $(option).data("detail_id"))
+            });
+            // select2初始化并计算分数
+            $('.js-example-basic-multiple').select2({placeholder: "请选择评分项"}).on('change', function () {
+                let grade = 0;
+                $('.js-example-basic-multiple').each(function (index, item) {
+                    $(item).select2('data').forEach(function (selectOption) {
+                        grade += (selectOption.element.dataset.grade - 0);
+                    });
+                });
+                $("#grade").val(grade);
+            });
+            _this.getQualitySelectData();
 
+        })
     },
     // 设置tabs标签
     setTabs() {
@@ -521,10 +570,9 @@ let OrderDetail = {
                         })
                     })
                 }, true);
-                // console.log(chart)
             }
         }
-    }
+    },
 };
 
 OrderDetail.init();

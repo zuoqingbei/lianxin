@@ -15,7 +15,7 @@ import java.util.Random;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 public class TransApi {	 
-	public static String Trans(String q) {
+	public static String Trans(String q,String targetlanguage) {//targetlanguage目标语言  en英语  cht中文繁体
          String appid="20180817000195393";
          String salt=String.valueOf(new Random().nextInt(100));
          String sign=appid+q+salt+"4YtrvyuJWnTOgWplWAQ8";
@@ -45,16 +45,16 @@ public class TransApi {
  			e.printStackTrace();
 
  		} 
- 		 String result=getResult(q,sign,appid,salt);
+ 		 String result=getResult(q,sign,appid,salt,targetlanguage);
          String content="{"+result;
          String json=getDate(content);
          return json;
 	}
 	//百度平台（翻译接口）相关数据
-	public static String getResult(String q,String sign,String appid,String salt){
+	public static String getResult(String q,String sign,String appid,String salt,String targetlanguage){
 		String result="";
 		//拼接相关参数
-		String params="http://api.fanyi.baidu.com/api/trans/vip/translate?q="+q+"&from=auto&to=en"+"&appid="+appid+"&salt="+salt+"&sign="+sign;		
+		String params="http://api.fanyi.baidu.com/api/trans/vip/translate?q="+q+"&from=auto&to="+targetlanguage+"&appid="+appid+"&salt="+salt+"&sign="+sign;		
 		 try {
 			URL url = new URL(params);
 			URLConnection connection = url.openConnection();  
@@ -111,9 +111,12 @@ public class TransApi {
 		return date;
 		
 	}
+ 
 	public static void main(String[] args) {
-		String trans = Trans("信息安全及保密承诺书");
+		String trans = Trans("信息安全及保密承诺书","cht");
+		String transTOEn = Trans("信息安全及保密承诺书","en");
 		System.out.println(trans);
+		System.out.println(transTOEn);
 	}
 }
 

@@ -38,3 +38,136 @@ h3.company_info{
     display: flex;
 }
 
+/********* add by ljl 2018-12-03 *********/
+
+.disable{
+    pointer-events: none;
+    filter:  grayscale(100%);
+    opacity: .7;
+}
+/*基本类型*/
+@media all {
+    .module-wrap {
+        padding-bottom: 1rem;
+    }
+    .module-content{
+        padding: 0;
+    }
+    table > thead {
+        background-color: var(--bg-thead);
+    }
+
+    table > thead th {
+        min-width: 8rem;
+    }
+
+    .bar_box {
+        padding-left: 2rem;
+    }
+
+    .bar_box ul li:first-child .span_bar {
+        visibility: hidden;
+    }
+
+    .guDongSubTitle, h4 {
+        margin: 2rem 0 0 2rem;
+        font-size: 1.125rem;
+        font-weight: bold;
+    }
+
+    .guDongSubTitle:nth-of-type(2) {
+        margin-bottom: -2rem;
+    }
+
+    .order-content [id],
+    .multiText {
+        color: var(--fontColor);
+    }
+
+    .process li {
+        vertical-align: top;
+    }
+
+    .process li.current span {
+        color: var(--fontTitleColor);
+        font-weight: bold;
+    }
+
+    .multiText {
+        min-height: 3rem;
+    }
+}
+
+/*商业类型*/
+@media all {
+    .credit-level-title {
+        padding-left: 2rem;
+        font-size: 1.125rem;
+        font-weight: bold;
+        color: var(--fontTitleColor);
+    }
+
+    .credit-level-title strong {
+        font-size: 1.25rem;
+        color: var(--activeColor);
+    }
+
+    .credit-level-title .myExplain {
+        color: var(--fontColor);
+        font-weight: normal;
+    }
+
+    h4 {
+        margin-top: 1rem;
+    }
+
+    .type8-content ul {
+        padding-left: 1rem;
+        color: var(--fontColor);
+    }
+
+    .type8-content ul > li {
+        display: inline-block;
+        margin: 1rem;
+        margin-right: .5rem;
+    }
+
+}
+
+/*102类型*/
+@media all {
+    [type=radio] {
+        position: relative;
+        top: .25rem;
+        margin-left: 1rem;
+        margin-right: .25rem;
+        pointer-events: none;
+    }
+}
+/*质检类型的表单*/
+@media all {
+    .type23-content {
+        color: var(--fontTitleColor);
+    }
+
+    .type23-content #grade {
+        display: inline;
+        width: 3rem;
+        text-align: right;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--activeColor);
+    }
+
+    .type23-content .unit {
+        font-size: 1rem;
+        margin-left: .25rem;
+    }
+    .select2Box label{
+        margin-right: -4rem;
+    }
+    .select2-container .select2-selection--multiple{
+        min-height: 2.5rem;
+        border-color: #ced4da;
+    }
+}

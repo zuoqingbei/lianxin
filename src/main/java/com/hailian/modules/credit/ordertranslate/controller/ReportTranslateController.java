@@ -7,9 +7,15 @@ import java.util.regex.Pattern;
 
 
 
-import net.sf.json.JSONArray;
 
+
+
+import org.apache.commons.lang.StringUtils;
+//import org.junit.Test;
+
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.translate.model.TranslateModel;
@@ -23,8 +29,13 @@ import com.hailian.util.translate.TransApi;
  */
 @ControllerBind(controllerKey = "/credit/ordertranslate")
 public class ReportTranslateController extends BaseProjectController {
+	//@Test
 	public void translate() {
-//		String jsonString = HttpKit.readData(getRequest());
+//		String json = HttpKit.readData(getRequest());
+		String targetlanguage=getPara("targetlanguage");//目标语言
+		if(StringUtils.isNotBlank(targetlanguage)){
+			targetlanguage="en";
+		}
 		String json="{\"id\":\"hello\",\"name\":\"肉类\"}";
 		JSONObject jsonObject = JSONObject.fromObject(json);
 		Iterator iterator = jsonObject.keys();//遍历翻译代替
@@ -32,7 +43,8 @@ public class ReportTranslateController extends BaseProjectController {
         String   key = (String) iterator.next();
         String value = jsonObject.getString(key);
         if(isChinese(value)){
-        	value = TransApi.Trans(value);
+//        	value = TransApi.Trans(value,targetlanguage);
+        	value = TransApi.Trans(value,"en");
         	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
         	if(translateByError!=null){
         		value = translateByError.get("correct_phrase");//翻译校正
