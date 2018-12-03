@@ -219,6 +219,44 @@ public class MainWord {
         return new MiniTableRenderData(rowRenderData,rowsList);
     }
 
+    /**
+     * 生成表格 - 自定义（无表格）
+     * @param child
+     * @param rows
+     * @param map
+     * @return
+     */
+    public static void createTableZ(List<CreditReportModuleConf> child,List rows,HashMap<String, Object> map){
+        LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
+        //取列值
+        for(int i=0;i< child.size();i++) {
+            CreditReportModuleConf module = child.get(i);
+            String column_name = module.getStr("column_name");
+            String temp_name = module.getStr("temp_name");
+            String field_type = module.getStr("field_type");
+            if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
+            }else {
+                cols.put(column_name, temp_name + "|" + field_type);
+            }
+        }
+        //取数据
+        for (int i = 0; i < rows.size(); i++) {
+            BaseProjectModel model = (BaseProjectModel) rows.get(0);
+            for (String column : cols.keySet()) {
+                String[] strs = cols.get(column).split("\\|");
+                String fieldType = strs.length == 2 ? strs[1] : "";
+                String value = model.get(column) != null ? model.get(column) + "" : "";
+                if ("select".equals(fieldType)) {
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "N/A";
+                } else {
+                    value = !"".equals(value) ? value : "N/A";
+                }
+                //rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
+                map.put(column, value);
+            }
+        }
+    }
+
     public static Map<String,String> getSingleValue(List<CreditReportModuleConf> child,List rows){
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         Map<String,String> m = new HashMap<>();

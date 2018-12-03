@@ -391,6 +391,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       String deal=  getPara("quality_deal");
       String grade= getPara("grade");
       String update=  getPara("update");//修改的状态
+      String code = (String) getRequest().getParameter("statusCode");//获取提交的是完成还是修改状态
+      String submit=getPara("submit");
       if (StringUtils.isBlank(update)) {
           if (StringUtils.isBlank(id)) {
 			//id为空新增
@@ -428,6 +430,52 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     	 model.update();
     	  renderJson(record.set("rows", model).set("total", null));
       }
+      if (StringUtils.isNotBlank(submit)) {
+          	String status="";
+             if (type.equals("translate_quality")) {//翻译质检
+  			if (deal.equals("1")) {//1 完成 2修改
+  				status="311";
+  			}else {
+  				status="306";
+  			}
+  		   }else if(type.equals("entering_quality")){//填报质检
+  			   if (deal.equals("1")) {//1 完成 2修改
+  					status="301";
+  				}else {
+  					status="293";	//信息录入
+  				}
+  		  }else if(type.equals("analyze_quality")){
+  			  if (deal.equals("1")) {//1 完成 2修改
+  					status="306";
+  				}else {
+  					status="301";
+  				} 
+  		  }
+              Map<String,Object> map = new HashMap<>();
+              if(deal==null||"".equals(deal.trim())){
+                  map = null;
+              }else{
+                  map.put("status", status);
+              }
+              
+              CreditOrderInfo model = getModel(CreditOrderInfo.class);
+              model.removeNullValueAttrs();
+              model = getModel(CreditOrderInfo.class);
+              model.set("update_by",userId);
+              model.set("update_date", now);
+              model.set("id", orderId);
+              if(map!=null){
+                  for (String key : map.keySet()) {
+                      model.set(key, map.get(key));
+                  }
+              }
+              model.update();
+              //增加跟踪记录
+              CreditOrderFlow.addOneEntry(this, model);
+              CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
+              renderJson(record.set("submit", submit));  
+	  }
+      
   }
 
    /** 
@@ -455,7 +503,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   			for (Map<Object, Object> entry : entrys) {
   			 //循环取出parentId的值
   		     String pid=(String) entry.get("parentId");//取父模板id
-	  		   CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=?",pid,type);
+	  		   CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=? and order_id=?",pid,type,orderId);
 	  		 CreditQualityResult model=new CreditQualityResult();
 	  		   model.set("id", result2.get("id"));
 	  			model.set("quality_result", entry.get("quality_result"));
@@ -475,7 +523,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			 //循环取出parentId的值
 		     String pid=(String) entry.get("parentId");//取父模板id
 		     //查询当前质检结果是不是有值
-		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=?",pid,type);
+		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=? and order_id=?",pid,type,orderId);
 		     if (result2!=null) {
 				list.add(result2);
 			}else {
