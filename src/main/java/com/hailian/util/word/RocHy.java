@@ -74,10 +74,13 @@ public class RocHy {
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
                     table = MainWord.createTableS(child, rows);
+                    map.put(key, table);
                 } else if ("h".equals(tableType)) {
                     table = MainWord.createTableH(child, rows);
+                    map.put(key, table);
+                }else if("z".equals(tableType)){
+                    MainWord.createTableZ(child,rows,map);
                 }
-                map.put(key, table);
             }
 
             //2：主从表中的- 单个值
@@ -144,7 +147,7 @@ public class RocHy {
 
         }
 
-        MainWord.buildWord(map, webRoot + "/word/" + "_102红印.doc", _prePath + ".docx");
+        MainWord.buildWord(map, webRoot + "/word/" + "_102红印.docx", _prePath + ".docx");
     }
 
 }
