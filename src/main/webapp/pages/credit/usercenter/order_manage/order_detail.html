@@ -9,135 +9,6 @@
     <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/select2/css/select2.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css?">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
-    <style>
-        /*基本类型*/
-        @media all {
-            .module-wrap {
-                padding-bottom: 1rem;
-            }
-            .module-content{
-                padding: 0;
-            }
-            table > thead {
-                background-color: var(--bg-thead);
-            }
-
-            table > thead th {
-                min-width: 8rem;
-            }
-
-            .bar_box {
-                padding-left: 2rem;
-            }
-
-            .bar_box ul li:first-child .span_bar {
-                visibility: hidden;
-            }
-
-            .guDongSubTitle, h4 {
-                margin: 2rem 0 0 2rem;
-                font-size: 1.125rem;
-                font-weight: bold;
-            }
-
-            .guDongSubTitle:nth-of-type(2) {
-                margin-bottom: -2rem;
-            }
-
-            .order-content [id],
-            .multiText {
-                color: var(--fontColor);
-            }
-
-            .process li {
-                vertical-align: top;
-            }
-
-            .process li.current span {
-                color: var(--fontTitleColor);
-                font-weight: bold;
-            }
-
-            .multiText {
-                min-height: 3rem;
-            }
-        }
-
-        /*商业类型*/
-        @media all {
-            .credit-level-title {
-                padding-left: 2rem;
-                font-size: 1.125rem;
-                font-weight: bold;
-                color: var(--fontTitleColor);
-            }
-
-            .credit-level-title strong {
-                font-size: 1.25rem;
-                color: var(--activeColor);
-            }
-
-            .credit-level-title .myExplain {
-                color: var(--fontColor);
-                font-weight: normal;
-            }
-
-            h4 {
-                margin-top: 1rem;
-            }
-
-            .type8-content ul {
-                padding-left: 1rem;
-                color: var(--fontColor);
-            }
-
-            .type8-content ul > li {
-                display: inline-block;
-                margin: 1rem;
-                margin-right: .5rem;
-            }
-
-        }
-
-        /*102类型*/
-        @media all {
-            [type=radio] {
-                position: relative;
-                top: .25rem;
-                margin-left: 1rem;
-                margin-right: .25rem;
-                pointer-events: none;
-            }
-        }
-
-        /*质检类型的表单*/
-        @media all {
-            .type23-content {
-                color: var(--fontTitleColor);
-            }
-
-            .type23-content #grade {
-                display: inline;
-                width: 3rem;
-                text-align: right;
-                font-size: 1.5rem;
-                font-weight: bold;
-                color: var(--activeColor);
-            }
-
-            .type23-content .unit {
-                font-size: 1rem;
-                margin-left: .25rem;
-            }
-            .select2Box label{
-                margin-right: -4rem;
-            }
-            .select2-container .select2-selection--multiple{
-                min-height: 2.5rem;
-                border-color: #ced4da;
-            }
-        }
-    </style>
 </head>
 
 <div id="container" class="row animted fadeIn">
@@ -154,7 +25,6 @@
                 </li>
             </ul>
             <p class="main-title"><span id="orderName" class="mr-3"></span><span id="orderNum"></span></p>
-            <!-- 导航栏 -->
             <ul class="tab_bar col-md-10" id="tabs"></ul>
             <div class="state_box">
                 <span>状态</span>
@@ -164,23 +34,6 @@
         <!-- 内容展示 -->
         <div class="table-content">
 
-            <!--<div class="module-wrap bg-f company-info mb-4" id="24">
-                <div class="row form-group select2Box">
-                    <label for="q" class="col-1 col-form-label">质检结果:</label>
-                    <div class="col-11 ">
-                        <select style="width: 100%;" class="js-example-basic-multiple" id="q" name="states[]" multiple="multiple">
-                            <option value="AL">Alabama</option>
-                            ...
-                            <option value="WY">Wyoming</option>
-                        </select>
-                    </div>
-                </div>
-            </div>-->
-            <!-- 基本信息 -->
-            <!-- 流程进度 -->
-            <!-- 基本报告 -->
-            <!-- 附件-->
-            <!--质检意见-->
         </div>
     </div>
 </div>
@@ -190,12 +43,6 @@
 
 <script>
     $(function () {
-        $('.js-example-basic-multiple').each(function (index,item) {
-        // $(item).select2({placeholder:"请选择评分项"});
-        })
     })
-
-
 </script>
-
 </html>
