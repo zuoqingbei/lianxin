@@ -452,7 +452,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   				} 
   		  }
               Map<String,Object> map = new HashMap<>();
-              if(code==null||"".equals(code.trim())){
+              if(deal==null||"".equals(deal.trim())){
                   map = null;
               }else{
                   map.put("status", status);
@@ -463,6 +463,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
               model = getModel(CreditOrderInfo.class);
               model.set("update_by",userId);
               model.set("update_date", now);
+              model.set("id", orderId);
               if(map!=null){
                   for (String key : map.keySet()) {
                       model.set(key, map.get(key));
@@ -472,7 +473,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
               //增加跟踪记录
               CreditOrderFlow.addOneEntry(this, model);
               CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
-          
+              renderJson(record.set("submit", submit));  
 	  }
       
   }
