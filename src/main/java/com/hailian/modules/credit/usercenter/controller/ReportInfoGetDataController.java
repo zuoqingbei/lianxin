@@ -2,10 +2,12 @@ package com.hailian.modules.credit.usercenter.controller;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +24,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
@@ -388,6 +391,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       String deal=  getPara("quality_deal");
       String grade= getPara("grade");
       String update=  getPara("update");//修改的状态
+      String code = (String) getRequest().getParameter("statusCode");//获取提交的是完成还是修改状态
+      String submit=getPara("submit");
       if (StringUtils.isBlank(update)) {
           if (StringUtils.isBlank(id)) {
 			//id为空新增
@@ -425,44 +430,120 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     	 model.update();
     	  renderJson(record.set("rows", model).set("total", null));
       }
+      if (StringUtils.isNotBlank(submit)) {
+          	String status="";
+             if (type.equals("translate_quality")) {//翻译质检
+  			if (deal.equals("1")) {//1 完成 2修改
+  				status="311";
+  			}else {
+  				status="306";
+  			}
+  		   }else if(type.equals("entering_quality")){//填报质检
+  			   if (deal.equals("1")) {//1 完成 2修改
+  					status="301";
+  				}else {
+  					status="293";	//信息录入
+  				}
+  		  }else if(type.equals("analyze_quality")){
+  			  if (deal.equals("1")) {//1 完成 2修改
+  					status="306";
+  				}else {
+  					status="301";
+  				} 
+  		  }
+              Map<String,Object> map = new HashMap<>();
+              if(deal==null||"".equals(deal.trim())){
+                  map = null;
+              }else{
+                  map.put("status", status);
+              }
+              
+              CreditOrderInfo model = getModel(CreditOrderInfo.class);
+              model.removeNullValueAttrs();
+              model = getModel(CreditOrderInfo.class);
+              model.set("update_by",userId);
+              model.set("update_date", now);
+              model.set("id", orderId);
+              if(map!=null){
+                  for (String key : map.keySet()) {
+                      model.set(key, map.get(key));
+                  }
+              }
+              model.update();
+              //增加跟踪记录
+              CreditOrderFlow.addOneEntry(this, model);
+              CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
+              renderJson(record.set("submit", submit));  
+	  }
+      
   }
 
    /** 
     * 
-   * @Description: 质检结果的查询与新增
+   * @Description: 质检结果的查询与新增，修改
    * @date 2018年11月21日 下午3:30:55
    * @author: lxy
    * @version V1.0
    * @return
     */
-    public  void getOrsaveResult(){
+    public  void getOrSaveResult(){
     	Record record = new Record();
     	Integer userId = getSessionUser().getUserid();
-		String now = getNow();
+		 String now = getNow();
     	 String orderId = 	getPara("orderId");
          String id =   getPara("id"); 
          String result =  getPara("quality_result");
          String  type =   getPara("quality_type");
          String moduleId= getPara("report_module_id");
-         if (StringUtils.isBlank(id)) {
-			//新增
-        CreditQualityOpintion opintion2=   CreditQualityOpintion.dao.findFirst("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
-	   CreditQualityResult model=new CreditQualityResult();
-	   model.set("quality_result", result);
-	   model.set("parent_id", opintion2.get("id"));
-	   model.set("report_model_id", moduleId);
-	   model.set("create_by", userId);
-	   model.set("create_date", now);
-	   model.set("update_by", userId);
-	   model.set("update_date", now);
-       model.save();
-       renderJson(record.set("rows", model).set("total", null));
-		}else {
-	List<CreditQualityResult>	results=	CreditQualityResult.dao.find("SELECT re.*  from credit_quality_result re "
-					+ " LEFT JOIN credit_quality_opintion o on o.id=re.parent_id "
-					+ " where o.order_id=? and o.quality_type=?  order BY re.report_model_id",orderId,type);
-		renderJson(record.set("rows", results).set("total", results!=null?results.size():null));
+         String   update= getPara("update");
+         String datajson = getPara("datajson");
+          List<CreditQualityResult> list=new ArrayList<CreditQualityResult>();
+          if (update!=null&&update.equals("true")) {//修改
+        	  List<Map<Object, Object>> entrys = parseJsonArray(datajson);
+  			for (Map<Object, Object> entry : entrys) {
+  			 //循环取出parentId的值
+  		     String pid=(String) entry.get("parentId");//取父模板id
+	  		   CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=? and order_id=?",pid,type,orderId);
+	  		 CreditQualityResult model=new CreditQualityResult();
+	  		   model.set("id", result2.get("id"));
+	  			model.set("quality_result", entry.get("quality_result"));
+	  			model.set("create_by", userId);
+				model.set("create_date", now);
+				model.set("update_by", userId);
+				model.set("update_date", now);
+				model.set("report_model_id", pid);
+				model.update();
+				list.add(model);
+  			 
+  			}	
+		}else {//查询或新增
+			//取json数据
+			List<Map<Object, Object>> entrys = parseJsonArray(datajson);
+			for (Map<Object, Object> entry : entrys) {
+			 //循环取出parentId的值
+		     String pid=(String) entry.get("parentId");//取父模板id
+		     //查询当前质检结果是不是有值
+		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=? and order_id=?",pid,type,orderId);
+		     if (result2!=null) {
+				list.add(result2);
+			}else {
+			CreditQualityResult model=new CreditQualityResult();
+				model.clear();
+				model.set("report_model_id", pid);
+				model.set("quality_result", entry.get("quality_result"));
+				model.set("order_id", orderId);
+				model.set("quality_type", type);
+				model.set("create_by", userId);
+				model.set("create_date", now);
+				model.set("update_by", userId);
+				model.set("update_date", now);
+				model.save();
+				list.add(model);
+			 }	
+		  }	
 		}
+		renderJson(record.set("rows", list).set("total", list!=null?list.size():null));
+		
     }
     /**
      * 
@@ -526,7 +607,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     }
     
     /**
-         * 根据财务配置id获取财务信息
+     * 根据财务配置id获取财务信息
      */
     public void getFinancialEntrys() {
     	String financialConfId = getPara("ficConf_id");
@@ -546,6 +627,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	  * 
 	  */
 	public void uploadFinancialEntrys() {
+		UploadFile uploadFile = getFile("file");
+		if(uploadFile==null) {
+			renderJson(new ResultType(0, "上传文件不能为空!"));
+			return;
+		}
 		String financialConfId = getPara("ficConf_id");
 		String reportType = getPara("report_type");
 		String userId = getSession().getId();
@@ -558,9 +644,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "报告类型不能为空!"));
 			return;
 		}
-		int type = getFinanceDictByReportType(reportType);
-		UploadFile uploadFile = getFile("file");
-		String message = "导入失败,开始值和结束值只能是数字!!";
+		Integer type = getFinanceDictByReportType(reportType);
+		if(type==null) {
+			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+			return;
+		}
+		String message = "导入失败,请检查文件内容!";
 		try {
 			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, "8", now);
 		} catch (Exception e) {
@@ -568,7 +657,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			e.printStackTrace();
 			return;
 		}
-		renderJson(new ResultType(0, message));
+		renderJson(new ResultType(1, message));
 	}
 	
 	 /**
@@ -600,7 +689,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	}
 	
 	/**
-	 * 增加或修改一条财务实体信息
+	 * 增加或修改财务实体信息
 	 * lzg 2018/11/24
 	 */
 	public void alterFinanceOneEntry() {
@@ -646,7 +735,36 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		renderJson(new ResultType(1,"删除成功!"));
 	}
     
-	
+	/**
+	 * 获取当前公司下所有财务配置信息
+	 */
+	public void getFinanceConfigs() {
+		String reportType = getPara("report_type");
+		String companyId = getPara("company_id");
+		if(StrUtils.isEmpty(companyId,companyId)) {
+			renderJson(new ResultType(0, "请检查这两个必要参数companyId,report_type!"));
+			return;
+		}
+		Integer type = getFinanceDictByReportType(reportType);
+		if(type==null) {
+			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+			return;
+		}
+		String userId = getSession().getId();
+		String now = getNow();
+	    List<CreditCompanyFinancialStatementsConf> rows = FinanceService.getFinancialConfigList(companyId,type);
+	    //如果不存在就创建一个默认的
+		if(rows==null||rows.size()==0) {
+			List<Map<Object, Object>> entrys = new ArrayList<Map<Object, Object>>();
+			Map<Object, Object> entryMap = new HashMap<>();
+			entryMap.put("company_id", companyId);
+			entryMap.put("type", type);
+			entrys.add(entryMap);
+			FinanceService.alterFinancialConfig(entrys, type, "8", now);
+			rows = FinanceService.getFinancialConfigList(companyId,type);
+		}
+		renderJson(new Record().set("rows", rows));
+	}
 
 	/**
 	 * 增加或修改一条财务配置信息
@@ -655,7 +773,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	public void alterFinanceOneConfig() {
 		String dataJson = getPara("dataJson");
 		String reportType = getPara("report_type");
-		if(StrUtils.isEmpty(dataJson)) {
+		if(StrUtils.isEmpty(dataJson,reportType)) {
 			renderJson(new ResultType(0, "请检查这两个必要参数reportType,dataJson!"));
 			return;
 		}
@@ -666,7 +784,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String userId = getSession().getId();
 		String now = getNow();
-		int type = getFinanceDictByReportType(reportType);
+		Integer type = getFinanceDictByReportType(reportType);
+		if(type==null) {
+			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+			return;
+		}
 		try {
 			FinanceService.alterFinancialConfig(entrys, type, "8", now);
 		} catch (Exception e) {
@@ -705,7 +827,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	  * lzg 2018/11/28
 	  */
 	 public void  uploadBrand() {
-		 String financialConfId = getPara("ficConf_id");
+		String userId = getSession().getId();
+		String randomCode = UUID.randomUUID().toString().replaceAll("-", "");
 		String orderId = getPara("order_id");
 		//从前台获取文件
         List<UploadFile>  upFileList = getFiles("file");
@@ -717,10 +840,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         	renderJson(new ResultType(0, "请检查必要参数reportId!"));
 			return;
         }
-		renderJson(OrderProcessController.uploadFile(orderId, "-1", upFileList,8));
+        OrderProcessController.uploadFile(orderId, "-1", upFileList,8,randomCode);
+        CreditUploadFileModel  file = CreditUploadFileModel.dao.getByRandomCode(orderId+"", "-1",randomCode);
+		renderJson(new Record().set("url", OrderProcessController.ip + ":" + OrderProcessController.searverPort+"/"+file.get("url")));
 	 }
 	
-    /**
+	/**
      * 将id转化为字典表中对应的字符串
      * @param id
      */
@@ -795,6 +920,20 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             renderJson(new ResultType(0,"订单状态更新失败!"));
             return new ResultType(0,"订单状态更新失败!");
         }
+    }
+    /**
+     * 
+    * @Description: 质检结果下拉选项
+    * @date 2018年12月1日 下午5:33:00
+    * @author: lxy
+    * @version V1.0
+    * @return
+     */
+    public void selectQuality(){
+    	   Record record = new Record();
+    String type=	getPara("type");
+    List<SysDictDetail> details =  SysDictDetail.dao.find("select detail_id,dict_type,detail_name,detail_code as value from sys_dict_detail where dict_type=?",type);
+    renderJson(record.set("rows", details).set("total", details!=null?details.size():null));	
     }
 	
 }

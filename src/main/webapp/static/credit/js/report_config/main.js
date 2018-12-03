@@ -4,6 +4,7 @@
  * 7 单独小模块的多行输入框 / 8 radio类型 / 9 浮动类型 /10 财务模块 /11 对于填报页面是表格
  */
 let ReportConfig = {
+	cwConfigAlterSource:'',
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -350,6 +351,7 @@ let ReportConfig = {
     					this.formTitle.push(this.floatTitle[index])
     				}else {
     					//财务模块浮动
+//    					console.log(this.floatTitle[index])
     					cw_title.push(this.floatTitle[index])
     					cw_contents.push(this.floatContents[index])
     					cw_dom = $("#titleCw"+i)
@@ -359,8 +361,11 @@ let ReportConfig = {
     		})
     	})
     	console.log(cw_title,cw_contents)
+    	this.cwConfigAlterSource = cw_title[0]['alter_source'];
+    	this.cwConfigGetSource = cw_title[0]['get_source'];
     	let cw_top_html = ''
     	let cw_table_html = ''
+    	let cw_bottom_html = ''
     	let tableCwId = []
     	cw_title.forEach((item,index)=>{
     		//初始化财务模块
@@ -405,28 +410,66 @@ let ReportConfig = {
 							    				<label class="form-check-label mx-0" for="">${radioArr[1].split("-")[1]}</label>
 						    				</div>
     									</div>
+    									<!-- 上传下载按钮 -->
     									<div class="btn-group">
-    										<button class="btn btn-default mr-3 cwDown">${this_content[2].temp_name}</button>
-						    				<button class="btn btn-primary cwUp">${this_content[3].temp_name}</button>
+    										<button class="btn btn-default mr-3 cwDown" >${this_content[2].temp_name}</button>
+						    				<button class="aa-btn btn btn-primary cwUp" style="position:relative">
+						    					<form class="uploadForm" enctype="multipart/form-data" action="" method="POST" >
+						    						<input style="opacity:0;cursor:pointer;width:100%;height:100%;position:absolute;left:0;top:0" type="file" name="file" class="fileInp">
+						    						<input name="report_type" type="hidden" class="report_type"/>
+								    				<input name="ficConf_id" type="hidden" class="ficConf_id"/>
+						    					</form>
+						    					${this_content[3].temp_name}
+						    				</button>
     									</div>
     								</div>
+    									<!-- 单位 -->
     								<div class="cw-unit">
     									<div class="form-inline my-3">
     										<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[4].temp_name}</label>
-    										<select class="form-control mr-3 moneySel" style="width:10rem" name=${this_content[4].column_name}>${moneyStr}</select>
-    										<select class="form-control mr-3 unitSel" style="width:10rem" name=${this_content[5].column_name}>${unitStr}</select>
+    										<select class="form-control mr-3 moneySel" id="${this_content[4].column_name}cw" style="width:10rem" name=${this_content[4].column_name}>${moneyStr}</select>
+    										<select class="form-control mr-3 unitSel" id="${this_content[5].column_name}cw" style="width:10rem" name=${this_content[5].column_name}>${unitStr}</select>
     									</div>
     								</div>
+    								<!-- 日期 -->
     								<div class="cw-date form-inline">
-    									<input class="form-control my-3 dateInp1" style="margin-left:32%;margin-right:11%" type="text" name=${this_content[6].column_name}  placeholder=${this_content[6].place_hold} />
-    									<input class="form-control dateInp2" type="text" name=${this_content[7].column_name}  placeholder=${this_content[7].place_hold} />
+    									<input class="form-control my-3 dateInp1" id="${this_content[6].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${this_content[6].column_name}  placeholder=${this_content[6].place_hold} />
+    									<input class="form-control dateInp2"  id="${this_content[7].column_name}cw" type="text" name=${this_content[7].column_name}  placeholder=${this_content[7].place_hold} />
     								</div>
     							</div>`
+    			let tempUrl = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[10]['get_source'];
+    			let options = ''
+    			$.ajax({
+    				url:tempUrl,
+    				async:false,
+    				success:(data)=>{
+    					options = data.selectStr
+    				}
+    			})
+    			cw_bottom_html +=`<div class="bottom-html"><div class="cw-bottom p-4">
+    								<label class="control-label">${this_content[10].temp_name}</label>
+    								<select class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options}</select>
+    								<textarea class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
+    							 </div>
+    							 <div class="cw-bottom p-4">
+    								<label class="control-label">${this_content[12].temp_name}</label>
+    								<input class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" />
+    								<textarea class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
+    							 </div>
+    							  <div class="cw-bottom p-4">
+    								<label class="control-label">${this_content[14].temp_name}</label>
+    								<input class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" />
+    								<textarea class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
+    							 </div>
+    							 <div class="cw-bottom p-4">
+    								<label class="control-label">${this_content[16].temp_name}</label>
+    								<input class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" />
+    								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
+    							 </div></div>`
     		}else {
-    			console.log(item,this_content)
     			let addtext = cw_title[1].place_hold
     			let conf_id = cw_title[0].id
-    			let url = cw_title[0].get_source
+    			console.log(item,this_content,conf_id)
     			let tableTitle = ''
     			if(item.temp_name !== null && item.temp_name !== '') {
     				tableTitle = item.temp_name.split("||");
@@ -443,8 +486,8 @@ let ReportConfig = {
     					if(index === 3) {
     						//利润表
     						cw_table_html += `<div class="cw-date form-inline cw-range">
-    							<input class="form-control my-3" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][6].column_name}  placeholder=${cw_contents[0][6].place_hold} />
-    							<input class="form-control" type="text" name=${cw_contents[0][7].column_name} placeholder=${cw_contents[0][7].place_hold} />
+    							<input class="form-control my-3" id="${cw_contents[0][8].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][8].column_name}  placeholder=${cw_contents[0][6].place_hold} />
+    							<input class="form-control" id="${cw_contents[0][9].column_name}cw" type="text" name=${cw_contents[0][9].column_name} placeholder=${cw_contents[0][7].place_hold} />
     							</div>`
     					}else {
     						cw_table_html += `<div class="cw-date form-inline">
@@ -456,9 +499,8 @@ let ReportConfig = {
     			}
     			(function(a,i,radioName){
     				setTimeout(()=>{
-    					let id = InitObj.bindCwConfig(conf_id,url,a,i,radioName,_this.rows)
+    					let id = InitObj.bindCwConfig(conf_id,_this.cwConfigGetSource,a,i,radioName,_this.rows)
     					InitObj.initCwTable(tableCwId,this_content,_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,id)
-    					
     				},0)
     			})(tableTitle,index,cw_contents[0][1].column_name)
     			switch(item.sort) {
@@ -518,11 +560,14 @@ let ReportConfig = {
     			}
      		}
     	})
+    	$(cw_dom).after(cw_bottom_html)
     	$(cw_dom).after(cw_table_html)
     	$(cw_dom).after(cw_top_html)
     	setTimeout(()=>{
     		InitObj.cwModalCompute(_this.cwAlterSource)
-
+    		InitObj.downLoadCw(cw_contents[0][2].alter_source,_this.rows);
+			InitObj.upLoadCw(cw_contents[0][3].alter_source,_this.rows,_this.cwGetSource,_this.cwAlterSource,tableCwId);
+			InitObj.addNewCwModal(_this.cwConfigAlterSource,_this.rows);
     	},0)
     },
     initContent(){
@@ -636,7 +681,7 @@ let ReportConfig = {
                 		_this.cwGetSource = item.title.get_source;
                 		_this.cwAlterSource = item.title.alter_source;
                 		_this.cwDeleteSource = item.title.remove_source;
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw1"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}
@@ -896,7 +941,13 @@ let ReportConfig = {
             			default:
             				break;
             		}
-                	contentHtml += `</div>`
+                	
+                	if(smallModileType === '10') {
+                		//财务
+                		contentHtml += `</div><button class="btn mb-3 btn-lg btn-block" id="addCwMdal">增加一个财务模版</button>`
+                	}else {
+                		contentHtml += `</div>`
+                	}
                 })
                 
                 $(".main-content").html(contentHtml)
@@ -1022,6 +1073,7 @@ let ReportConfig = {
     		}
 			 //点击保存按钮
     		$(".position-fixed").on("click","#save",(e)=>{
+    			InitObj.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#save").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
@@ -1102,6 +1154,7 @@ let ReportConfig = {
     		})
     			 //点击提交按钮
     		$(".position-fixed").on("click","#commit",(e)=>{
+    			InitObj.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#commit").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{

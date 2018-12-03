@@ -161,7 +161,7 @@ public class ReportModuleConfController extends BaseProjectController{
 			String temp_name_en=rm.getStr("name_en");
 			//model.set("temp_name_en", temp_name_en);
 		}else {
-		String temp_name_en=TransApi.Trans(model.getStr("temp_name"));
+		String temp_name_en=TransApi.Trans(model.getStr("temp_name"),"en");
 		//model.set("temp_name_en", temp_name_en);
 		}
 

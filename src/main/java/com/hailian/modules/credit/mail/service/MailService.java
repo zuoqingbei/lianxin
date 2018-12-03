@@ -65,20 +65,20 @@ public class MailService {
             AgentModel agent=	AgentModel.dao.findById(agentId);
             String mailaddr=agent.get("memo");
             if(StringUtils.isNotBlank(mailaddr)){
-                String title="New Order";
-                String content="Dear Sir/Madam,Good day!"
+                String title="New Order<br>";
+                String content="Dear Sir/Madam,Good day!<br>"
                         +"We would like to place an order for a complete credit report on the following company:"
-                        +"Speed:" +order.get("reportSpeed")+" "
-                        +"Ref No.:"+order.get("reference_num")+" "
-                        +"Company name:"+order.get("right_company_name_en")+" "
-                        +"Address:"+order.get("address")+" "
-                        +"Country:"+order.get("countryname")+" "
-                        +"Tel:"+order.get("telphone")+" "
-                        +"Fax:"+order.get("fax")+" "
-                        +"E-mail:"+order.get("email")+" "
-                        +"Special Note:"+order.get("remarks")+" "
-                        +"Please confirm receiving this order."
-                        +"Thank you.";
+                        +"Speed:" +order.get("reportSpeed")+" <br>"
+                        +"Ref No.:"+order.get("reference_num")+" <br>"
+                        +"Company name:"+order.get("right_company_name_en")+"<br> "
+                        +"Address:"+order.get("address")+"<br> "
+                        +"Country:"+order.get("countryname")+"<br> "
+                        +"Tel:"+order.get("telphone")+"<br> "
+                        +"Fax:"+order.get("fax")+"<br> "
+                        +"E-mail:"+order.get("email")+"<br> "
+                        +"Special Note:"+order.get("remarks")+"<br> "
+                        +"Please confirm receiving this order.<br>"
+                        +"Thank you.<br>";
                 //获取创建该订单时的附件
             	List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusinessType(orderId ,"291", c);
             	//获取项目服务器url
