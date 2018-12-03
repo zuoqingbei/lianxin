@@ -582,9 +582,6 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                     <label for="" class="col-1 col-form-label">质检结果:</label>
                     <div class="col-11 ">
                         <select style="width: 100%;" class="js-example-basic-multiple" id="" name="states[]" multiple="multiple">
-                            <option value="AL">Alabama</option>
-                            ...
-                            <option value="WY">Wyoming</option>
                         </select>
                     </div>
                 </div>`

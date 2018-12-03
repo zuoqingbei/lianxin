@@ -132,10 +132,7 @@ public class SendMailUtil {
         messageBodyPart.removeHeader("Content-Transfer-Encoding");
         messageBodyPart.addHeader("Content-Type", "text/html; charset=gbk");
         messageBodyPart.addHeader("Content-Transfer-Encoding", "base64");
-        
         messageBodyPart.setContent(content, "text/html;charset=GBK");
-        
-        
         multipart.addBodyPart(messageBodyPart);
         //内嵌图片
         try {
@@ -162,7 +159,6 @@ public class SendMailUtil {
         	                 multipart.addBodyPart(messageBodyPart);
         				  }
         		}
-        		
         	}
            
         } catch (MalformedURLException e) {
@@ -243,7 +239,7 @@ public class SendMailUtil {
     	Map<String,String> map=new HashMap<String, String>();
     	map.put("哈哈.doc", "http://60.205.229.238:9980/zhengxin_File/2018-11-16/1a183ad043a64af0bde653aa718cd144.doc");
     	list.add(map);
-    	new SendMailUtil("dou_shuihai@163.com", "", "你好", "mycontent", list).sendEmail();
+    	new SendMailUtil("dou_shuihai@163.com", "", "你好", "mycontent<br>zzssssssssssssssssssssssssssss<br>", list).sendEmail();
     	System.out.println("ok");
     	
 	}

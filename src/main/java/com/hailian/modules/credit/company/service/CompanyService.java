@@ -123,10 +123,15 @@ public class CompanyService {
 			companyinfoModel.set("principal", OperName);
 			companyinfoModel.set("registered_capital", RegistCapi);
 			int indexOf = RegistCapi.indexOf("万元人民币");
-			if(indexOf !=-1){
+			if(RegistCapi.indexOf("万元人民币") !=-1){
 				String replace = RegistCapi.replace("万元人民币", "0000");
 				companyinfoModel.set("registered_capital", replace);
 				companyinfoModel.set("currency","274");
+			}
+			if(RegistCapi.indexOf("万美元") !=-1){
+				String replace = RegistCapi.replace("万美元", "0000");
+				companyinfoModel.set("registered_capital", replace);
+				companyinfoModel.set("currency","267");
 			}
 			
 			String replaceStartDate = StartDate.replace("00:00:00", "").trim();
@@ -241,6 +246,7 @@ public class CompanyService {
 			}
 			
 		}
+		enterpriseGrabOther(companyId,companyName,sys_language);//抓取企查查裁判文书，法院公告，开庭公告信息数据并保存
 		
 		System.out.println(status);
 		DictCache.initDict();//缓存刷新
@@ -284,7 +290,7 @@ public class CompanyService {
 //						String IsDefendant = judgmentdoc.getString("IsDefendant");//是否被告（供参考）
 //						String CourtYear = judgmentdoc.getString("CourtYear");//开庭时间年份
 						String CaseRole = judgmentdoc.getString("CaseRole");//案件身份
-						model.set("caseRole", CaseRole);
+						model.set("caserole", CaseRole);
 						model.set("company_id", companyId);
 						model.set("sys_language", sys_language);
 						JSONObject judgmentdocdetail = HttpTest.getJudgmentDocDetail(Id);//获取api企业裁判文书详情
@@ -365,7 +371,7 @@ public class CompanyService {
 			CreditCompanyCourtnotice.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 			List<CreditCompanyCourtnotice> list=new ArrayList<CreditCompanyCourtnotice>();
 			for(int i=1;i<=totalpage;i++){
-				JSONObject courtnoticejson = HttpTest.getCourtNotice(companyName,i+"");//获取api企业法院公告
+				JSONObject courtnoticejson = HttpTest.getCourtNotice(companyName,i+"");//获取api企业开庭公告
 				JSONArray jsonArray = courtnoticejson.getJSONArray("Result");
 				if(jsonArray !=null && jsonArray.size()>0){
 					for(int j=0;j<jsonArray.size();j++){

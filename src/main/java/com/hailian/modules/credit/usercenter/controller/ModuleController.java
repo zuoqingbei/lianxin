@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -43,6 +45,9 @@ public class ModuleController extends BaseProjectController{
 		String orederid = getPara("id");
 		//获取报告类型
 		String reportType = getPara("reportType");
+		//是否需要英文模板
+		String istranslate = getPara("istranslate");
+		
 		//根据订单id获取订单信息
 		CreditOrderInfo coi = CreditOrderInfo.dao.findById(orederid);
 		if(coi==null) {
@@ -71,6 +76,39 @@ public class ModuleController extends BaseProjectController{
 		record.set("defaultModule",defaultModule);
 		record.set("modules",list);
 		record.set("tabFixed",tabFixed);
+		
+		//获取英文模板
+		if("true".equals(istranslate)){
+			String reportTypeToEn="";
+			if("1".equals(reportType)){
+				reportTypeToEn = "7";
+			}else if("8".equals(reportType)){
+				reportTypeToEn = "9";
+			}else if("10".equals(reportType)){
+				reportTypeToEn = "11";
+			}else if("12".equals(reportType)){
+				reportTypeToEn = "14";
+			}
+			if(StringUtils.isNotBlank(reportTypeToEn)){
+				//找到当前报告类型下的父节点
+				List<CreditReportModuleConf> crmcsToEn = CreditReportModuleConf.dao.findByReport(reportTypeToEn);
+				List<ModuleJsonData> listToEn = new ArrayList<ModuleJsonData>();
+				//获取默认模板
+				List<CreditReportModuleConf> defaultModuleToEn = CreditReportModuleConf.dao.getDefaultModule(reportTypeToEn);
+				//获取带锚点模板
+				List<CreditReportModuleConf> tabFixedToEn = CreditReportModuleConf.dao.getTabFixed(reportTypeToEn);
+				//defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
+				for(CreditReportModuleConf crmc:crmcsToEn) {
+					//找到当前父节点下的子节点
+					List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportTypeToEn);
+					listToEn.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));
+				}
+				record.set("defaultModuleToEn",defaultModuleToEn);
+				record.set("modulesToEn",listToEn);
+				record.set("tabFixedToEn",tabFixedToEn);
+			}
+			
+		}
 		renderJson(record);
 	}
 	

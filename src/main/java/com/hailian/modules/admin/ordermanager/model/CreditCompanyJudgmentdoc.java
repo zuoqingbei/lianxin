@@ -11,7 +11,7 @@ import com.jfinal.plugin.activerecord.Db;
 * @author: dsh 
 * @date:  2018年11月30日下午2:23:25
  */
-@ModelBind(table = "credit_company_shareholder")
+@ModelBind(table = "credit_company_judgmentdoc")
 //此标签用于模型与数据库表的连接
 public class CreditCompanyJudgmentdoc extends BaseProjectModel<CreditCompanyJudgmentdoc> {
 	private static final long serialVersionUID = 1L;

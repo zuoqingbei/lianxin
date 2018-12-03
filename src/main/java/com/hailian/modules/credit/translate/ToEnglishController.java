@@ -18,7 +18,7 @@ public class ToEnglishController extends BaseProjectController{
 	
 	public void Translate() {
 		String str=getPara("trans");
-		String en=TransApi.Trans("密钥");
+		String en=TransApi.Trans("密钥","en");
 		renderText(en);
 	}
 	
