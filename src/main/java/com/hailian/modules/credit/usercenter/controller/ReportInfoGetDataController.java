@@ -475,7 +475,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			 //循环取出parentId的值
 		     String pid=(String) entry.get("parentId");//取父模板id
 		     //查询当前质检结果是不是有值
-		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=? and order_id",pid,type,orderId);
+		CreditQualityResult result2=  CreditQualityResult.dao.findFirst("select * from credit_quality_result where report_model_id=? and quality_type=? and order_id=?",pid,type,orderId);
 		     if (result2!=null) {
 				list.add(result2);
 			}else {
