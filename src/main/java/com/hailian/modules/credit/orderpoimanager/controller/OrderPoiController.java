@@ -85,6 +85,10 @@ public class OrderPoiController extends BaseProjectController {
 				wb0 = new XSSFWorkbook(fileIn);
 			} else if (FileTypeUtils.getFileType(upLoadFile.get(0).getOriginalFileName()).equals("xls")) {
 				wb0 = new HSSFWorkbook(new POIFSFileSystem(fileIn));
+			}else{
+				ResultType resultType = new ResultType(4, "请通过模板进行操作!");
+				renderJson(resultType);
+				return;
 			}
 			//获取Excel文档中的第一个表单
 			Sheet sht0 = wb0.getSheetAt(0);
