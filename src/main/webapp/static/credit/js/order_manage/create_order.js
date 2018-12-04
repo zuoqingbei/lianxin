@@ -25,7 +25,9 @@ let
 						contentType: false, //
 						success:(data)=>{
 							/**成功 */
-							
+							if(data.statusCode===4){
+								Public.message("error",data.message);
+							}
 							jsondata=data.orderListReal.rows;
 							$("#show_modal").trigger("click")
 							Page.initTable(data.orderList)
