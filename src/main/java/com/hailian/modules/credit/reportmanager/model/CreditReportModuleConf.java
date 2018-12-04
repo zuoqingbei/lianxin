@@ -117,7 +117,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 		String sql = " select a.*  from credit_report_module_conf a "
 				+ " where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=? and report_type=? ) "
 				+ " or  small_module_type=? "
-				+ " and report_type=? order by sort,id ";
+				+ " and report_type=? and del_flag=0 order by sort,id ";
 		params.add(DefaultModule);
 		params.add(reportType);
 		params.add(DefaultModule);
@@ -132,7 +132,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	 */
 	public List<CreditReportModuleConf> getTabFixed(String reportType) {
 		List<Object> params = new ArrayList<>();
-		String sql = "select a.*  from credit_report_module_conf a where a.small_module_type=? and report_type=? order by sort,id  ";
+		String sql = "select a.*  from credit_report_module_conf a where a.small_module_type=? and report_type=? and del_flag=0  order by sort,id  ";
 		params.add(TabFixed);
 		params.add(reportType);
 		return dao.find(sql,params.toArray());

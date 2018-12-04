@@ -7,6 +7,7 @@ import com.deepoove.poi.data.TextRenderData;
 import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
@@ -42,8 +43,12 @@ public class BusinessEn {
         String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
 
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("company", "海尔集团");
-        map.put("code", "123");
+        //获取订单信息
+        CreditCompanyInfo order = CreditCompanyInfo.dao.findById(companyId);
+        //订单公司名称
+        map.put("company", order.getStr("name_en"));
+        //联信编码
+        map.put("code", order.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
 
         //找到当前报告类型下的父节点

@@ -81,7 +81,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @throws IllegalAccessException
 	 */
 	public <T> List<BaseProjectModel> infoEntry(String jsonStr,String className,String sysLanguage,boolean isMainTable) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
-			Integer userId = getSessionUser().getUserid();
+			Integer userId = 8;//getSessionUser().getUserid();
 			String now = getNow();
 			//实体是否存在id
 			boolean exitsId = true; 

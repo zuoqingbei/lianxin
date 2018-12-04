@@ -54,6 +54,7 @@ let Login = {
                 	success:function(data){
                 		console.log(data+"1313");
                 		console.log(data);
+                		alert(JSON.stringify(data.roleIds));
                 		if(data.statusCode===0){
                 			$(".error-tip").show();
                 		}else{

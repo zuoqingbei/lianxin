@@ -125,6 +125,9 @@ let Verify = {
                             	  sortName = row.sortName;
                             	  sortOrder = row.sortOrder;
                             	  reportt = row.report_userKey;
+                              },
+                              "click .translate":(e,value,row,index)=>{
+                            	  Public.goToReportTranslate(row)
                               }
                           },
                           formatter: _this.operateFormatter
@@ -213,7 +216,13 @@ let Verify = {
     },
     /**操作按钮格式化 */
     operateFormatter(){
-        return '<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a><span style="margin-left:.5rem;color: #1890ff">|</span><a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>'
+        return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
+        <span style="margin-left:.5rem;color: #1890ff">|</span>
+        <a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>
+        <span style="margin-left:.5rem;color: #1890ff">|</span>
+        <a href="javascript:;" class="analyze" style="margin-left:.5rem">分析</a>
+        <span style="margin-left:.5rem;color: #1890ff">|</span>
+        <a href="javascript:;" class="translate" style="margin-left:.5rem">翻译</a>`
     },
     modalSubmit(){
         /**模态框提交事件 */
