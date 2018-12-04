@@ -458,15 +458,13 @@ public class OrderManagerService {
 			 submitNum=(orderOnTimeNum/orderNum);//递交率占比
 		}
 //		BigDecimal score =OrderManagerService.service.getScore(reportid).get("score"); //获取报告员质量占比
-		BigDecimal score = null;
+		double score = 0;
 		CreditOrderInfo coreInfo = OrderManagerService.service.getScore(reportid);
 		if(coreInfo!=null){
 			score=coreInfo.get("score");
 		}
-		if(score==null){
-			score=new BigDecimal(0);
-		}
-		double scoreTo=score.doubleValue();
+		
+		double scoreTo=score;
 //		BigDecimal reportnum1 =OrderManagerService.service.getReportNumPart(reportid).get("reportnum");//报告数量占比一
 		BigDecimal reportnum1 = null;
 		BigDecimal reportnum = null;
