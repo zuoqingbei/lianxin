@@ -58,6 +58,10 @@ import com.jfinal.upload.UploadFile;
  * @author lzg
  * todo 订单再分配
  */
+/**
+ * @author zhuch
+ *
+ */
 @Api(tag = "订单流程", description = "订单流程")
 @ControllerBind(controllerKey = "/credit/front/orderProcess")
 public class OrderProcessController extends BaseProjectController{
@@ -260,11 +264,19 @@ public class OrderProcessController extends BaseProjectController{
     /**
      * @todo   展示报告管理下的可配置的填报页面
      * @time   2018年10月26日 上午 11:02
-     * @author zc
+     * @author zhuch
      * @return_type   void
      */
     public void showReportedConfig(){
         render(REPORT_MANAGE_PATH+"report_config.html");
+    }
+    
+    /**
+     * @author zhuch
+     * 
+     */
+    public void showReportedTranslate(){
+    	render(REPORT_MANAGE_PATH+"report_translate.html");
     }
 
     //展示列表功能公共雏形
