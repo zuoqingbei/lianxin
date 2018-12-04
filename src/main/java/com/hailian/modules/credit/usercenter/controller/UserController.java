@@ -1,7 +1,11 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+
+import org.antlr.v4.runtime.RecognitionException;
 
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
@@ -12,6 +16,8 @@ import com.hailian.system.log.SysLog;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.encrypt.Md5Utils;
 import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 /**
  * @className UserLoginController.java
  * @time   2018年9月10日 上午9:30:00
@@ -50,7 +56,9 @@ public class UserController  extends BaseProjectController{
 				//Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
 				//setAttr("user",user);
 				//setAttr("menu", map);
-				renderJson(new ResultType(1, "登录成功!"));
+				Integer userId = Db.queryInt("select userid from sys_user where username=?",Arrays.asList(new String[] {username}).toArray());
+				List<Integer> roleIds = Db.query("select roleid from sys_user_role where userid=?",Arrays.asList(new String[] {userId+""}).toArray());
+				renderJson(new Record().set("statusCode", 1).set("message", "登录成功").set("roleIds", roleIds));
 				//redirect("/credit/front/home/menu");
 			}else{
 				renderJson(new ResultType(0, "账号或者密码错误!"));
