@@ -177,6 +177,13 @@ let Public = {
         });
         localStorage.setItem("row", JSON.stringify(param));
     },
+    goToReportTranslate(param) {
+        /**跳转可配置翻译页面*/
+        $("#main_content").load(BASE_PATH + 'credit/front/orderProcess/showReportedTranslate', () => {
+            this.gotop()
+        });
+        localStorage.setItem("row", JSON.stringify(param));
+    },
     tabFixed(fixedEle, scrollEle, min, max) {
         /**
          * 滚动之后固定tab函数

@@ -1,6 +1,7 @@
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.jfinal.kit.PathKit;
@@ -24,7 +25,7 @@ public class BaseInfoZh {
     }
 
     /**
-     * 生成商业报告
+     * 生成基本报告
      * @param reportType  报告类型
      * @param orderId     订单ID
      * @param companyId   公司ID
@@ -42,10 +43,13 @@ public class BaseInfoZh {
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
-
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("company", "海尔集团");
-        map.put("code", "123");
+        //获取订单信息
+        CreditCompanyInfo order = CreditCompanyInfo.dao.findById(companyId);
+        //订单公司名称
+        map.put("company", order.getStr("name_en"));
+        //联信编码
+        map.put("code", order.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
 
         //找到当前报告类型下的父节点
