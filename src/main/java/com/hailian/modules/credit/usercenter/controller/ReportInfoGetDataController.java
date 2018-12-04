@@ -1,35 +1,30 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
-
 import org.apache.commons.lang3.StringUtils;
-
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
+import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintionHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
-import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
@@ -130,7 +125,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * @param isCompanyMainTable
 	 */
 	public void getBootStrapTable() {
-		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese, null);
+		getBootStrapTable(isCompanyMainTable(), StrUtils.isEmpty(getPara("sys_language"))?SimplifiedChinese:getPara("sys_language"), null);
 	}
 	//详情
 	public void getBootStrapTables() {
@@ -393,6 +388,19 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       String update=  getPara("update");//修改的状态
       String code = (String) getRequest().getParameter("statusCode");//获取提交的是完成还是修改状态
       String submit=getPara("submit");
+      
+      CreditQualityOpintionHistory history=new CreditQualityOpintionHistory(); 
+		      history.set("quality_opinion", opintion);
+		      history.set("quality_type", type);
+		      history.set("order_id", orderId);
+		      history.set("report_type", reportType);
+		      history.set("quality_deal", deal);
+		      history.set("grade", grade);
+		      history.set("create_by", userId);
+		      history.set("create_date", now);
+		      history.set("update_by", userId);
+		      history.set("update_date", now);
+		      history.save();
       if (StringUtils.isBlank(update)) {
           if (StringUtils.isBlank(id)) {
 			//id为空新增
@@ -409,6 +417,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			   model.set("update_date", now);
 		       model.save();
 		       renderJson(record.set("rows", model).set("total", null));
+		     
 		   }else {
 			//查询
 			List<CreditQualityOpintion> opintion2=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
@@ -907,8 +916,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                     model.set(key, map.get(key));
                 }
             }
+            
             model.update();
-            //增加跟踪记录
+            //增加跟踪记录 
             CreditOrderFlow.addOneEntry(this, model);
             CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
             renderJson(new ResultType());
@@ -934,4 +944,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     renderJson(record.set("rows", details).set("total", details!=null?details.size():null));	
     }
 	
+    
+    
 }

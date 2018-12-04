@@ -4,10 +4,7 @@ package com.hailian.modules.credit.usercenter.controller;
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.util.word.BaseInfoEn;
-import com.hailian.util.word.BusinessZh;
-import com.hailian.util.word.RocHy;
-import com.hailian.util.word.RocZh;
+import com.hailian.util.word.*;
 
 /**
  * @className UserLoginController.java
@@ -23,18 +20,18 @@ public class CreditReportController extends BaseProjectController{
     public void report(){
         Integer userid = getSessionUser().getUserid();
         //BaseInfoZh test = new BaseInfoZh();
-        //test.reportTable();
+        //BaseInfoZh.reportTable("1","","7777843","612",userid);
         //BusinessZh test = new BaseInfoZh();
         //报告类型8  订单ID 公司ID65  语言612
         //BusinessZh.reportTable("8","","65","612",userid);
-        //CreditZh.reportTable();
+        CreditZh.reportTable("8","","65","612",userid);
 
         //报告类型7 订单ID 公司ID65  语言612
         //BaseInfoEn.reportTable("7", "", "65", "612", userid);
 
         //报告类型12 订单ID 公司ID65  语言612
         //RocZh.reportTable("12","","7777813", "612", userid);
-        RocHy.reportTable("15","","7777829", "612", userid);
+        //RocHy.reportTable("15","","7777829", "612", userid);
     }
 
 

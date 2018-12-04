@@ -7,6 +7,8 @@ import com.deepoove.poi.data.TextRenderData;
 import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
@@ -40,10 +42,14 @@ public class BusinessZh {
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
-
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("company", "海尔集团");
-        map.put("code", "123");
+
+        //获取订单信息
+        CreditCompanyInfo order = CreditCompanyInfo.dao.findById(companyId);
+        //订单公司名称
+        map.put("company", order.getStr("name_en"));
+        //联信编码
+        map.put("code", order.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
 
         //找到当前报告类型下的父节点
@@ -235,7 +241,6 @@ public class BusinessZh {
         //财务模块生成
         map.put("financial", financial(reportType,companyId,sysLanguage,"1"));
 
-
         MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
         //上传文件
         String filePath = MainWord.uploadReport(_prePath + ".docx", orderId, userid);
@@ -245,7 +250,7 @@ public class BusinessZh {
         fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
         fileList.add(fileMap);
         try {
-            //new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
+            new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -260,12 +265,9 @@ public class BusinessZh {
      * @return
      */
     public static MiniTableRenderData financial(String reportType,String companyId,String sysLanguage,String financialConfId) {
-        ReportInfoGetDataController report = new ReportInfoGetDataController();
-
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //取数据
         List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId);
-
         int j = 0;
         Integer old = null;
         for (CreditCompanyFinancialEntry ccf : finDataRows) {
@@ -338,40 +340,8 @@ public class BusinessZh {
                 sumStyle.setBold(true);
             }
             rowList.add(RowRenderData.build(new TextRenderData(itemName,sumStyle), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
-
             j++;
         }
-
-        //取配置
-        /*List<CreditReportModuleConf> confList = CreditReportModuleConf.dao.find("select * from credit_report_module_conf where float_parent in (select id from credit_report_module_conf where report_type="
-                + reportType + " and small_module_type = 10 )");
-        for(CreditReportModuleConf conf : confList){
-            String source = conf.getStr("get_source");
-            if(source!=null&&!"".equals(source)){
-                String ci = conf.getInt("id") + "";
-                String s = conf.getStr("get_source");
-                if (s == null || "".equals(s)) {
-                    continue;
-                }
-                Map<String, String> p = MainWord.parseUrl(s);
-                String t = p.get("tableName");
-                if (t == null || "".equals(t)) {
-                    continue;
-                }
-                String c = p.get("className");
-                String cn = c.split("\\*")[0];
-
-                //取子项
-                List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(conf.get("id").toString(), reportType);
-                //取数据
-                List rows = report.getTableData(false, sysLanguage, companyId, t, cn, ci, "");
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
-
-
-            }
-        }*/
-
-
         return new MiniTableRenderData(rowList);
     }
 
