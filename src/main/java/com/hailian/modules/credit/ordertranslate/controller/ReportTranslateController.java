@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
+//import org.junit.Test;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -29,7 +29,7 @@ import com.hailian.util.translate.TransApi;
  */
 @ControllerBind(controllerKey = "/credit/ordertranslate")
 public class ReportTranslateController extends BaseProjectController {
-	@Test
+	//@Test
 	public void translate() {
 //		String json = HttpKit.readData(getRequest());
 		String targetlanguage=getPara("targetlanguage");//目标语言
