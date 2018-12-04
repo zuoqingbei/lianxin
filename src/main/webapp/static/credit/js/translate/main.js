@@ -6,7 +6,6 @@
 let ReportConfig = {
 	cwConfigAlterSource:'',
     init(){
-		alert("this is translate")
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
         // this.transition()
@@ -70,56 +69,84 @@ let ReportConfig = {
         					width:(1/contents.length)*100+'%'
         				})
         				
+        			}
+        		})
+        		
+        		return arr
+        	}
+        })
+        this.idArrEn.forEach((item,index)=>{
+        	console.log(item)
+        	const $table = $("#table"+item+"En");
+        	let contents = this.contentsArrEn[index]
+        	let titles = this.titleEn
+        	let urlTemp = titles[index].get_source;
+        	let conf_id = titles[index].id;
+        	/*let url = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	if(urlTemp.split("*")[1]){
+        		let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+        		tempParam.forEach((item,index)=>{
+        			url += `&${item}=${this.rows[item]}`
+        		})
+        	}*/
+        	
+        	let selectInfo = []
+        	selectInfo.push(_this.selectInfoObj)
+        	
+        	$table.bootstrapTable({
+        		columns: columns2(index,item),
+//        		url:url, // 请求后台的URL（*）
+        		method : 'post', // 请求方式（*）post/get
+        		queryParams:function(param){
+        			param.selectInfo = JSON.stringify(selectInfo)
+        			return param
+        		},
+        		sidePagination: 'server',
+        		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+        		pagination: false, //分页
+        		smartDisplay:true,
+        		locales:'zh-CN',
+        	});
+        	
+        	
+        	function columns2(tempI,tempId){
+        		
+        		let arr = []
+        		contents.forEach((ele,index)=>{
+        			if(ele.temp_name !== 'Operation'){
+        				arr.push({
+        					title:ele.temp_name,
+        					field: ele.column_name,
+        					width:(1/contents.length)*100+'%'
+        				})
+        				
         			}else {
         				arr.push({
         					title:ele.temp_name,
         					field: 'operate',
         					width:1/contents.length,
         					events: {
-            					"click .edit":(e,value,row,index)=>{
-            						_this.isAdd = false
-            						_this.rowId = row.id
-            						//回显
-            						let formArr = Array.from($("#modal"+tempId).find(".form-inline"))
-            						formArr.forEach((item,index)=>{
-            							let id = $(item).children("label").siblings().attr("id");
-            							let anotherIdArr = id.split("_")
-            							anotherIdArr.pop();
-            							let anotherId = anotherIdArr.join('_')
-            							if($("#"+id).is('select')) {
-            								//如果是select
-            								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
-            							}else {
-            								
-            								$("#"+id).val(row[anotherId])
-            							}
-            						})
-            					},
-            					"click .delete":(e,value,row,index)=>{
-            						$("#popEnter").on('click', function(){
-            							//确定删除
-            							let urlTemp = _this.title[tempI]["remove_source"];
-            							let url = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp;
-            							$.ajax({
-            								url,
-            								type:'post',
-            								data:{
-            									id:row.id
-            								},
-            								success:(data)=>{
-            									if(data.statusCode === 1) {
-            										Public.message('success',data.message)
-            										//刷新数据
-            										_this.refreshTable($("#table"+tempId));
-            									}else {
-            										Public.message('error',data.message)
-            									}
-            								}
-            							})
-            						})
-            					}
-            				},
-            				formatter: function(){return _this.formatBtnArr[tempI]}
+        						"click .edit":(e,value,row,index)=>{
+        							_this.isAdd = false
+        							_this.rowId = row.id
+        							//回显
+        							let formArr = Array.from($("#modal"+tempId).find(".form-inline"))
+        							formArr.forEach((item,index)=>{
+        								let id = $(item).children("label").siblings().attr("id");
+        								let anotherIdArr = id.split("_")
+        								anotherIdArr.pop();
+        								let anotherId = anotherIdArr.join('_')
+        								if($("#"+id).is('select')) {
+        									//如果是select
+        									$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
+        								}else {
+        									
+        									$("#"+id).val(row[anotherId])
+        								}
+        							})
+        						}
+        					},
+        					formatter: function(){return _this.formatBtnArr[tempI]}
         				})
         			}
         		})
@@ -234,6 +261,8 @@ let ReportConfig = {
     	 */
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
+    	let titlesEn = this.formTitleEn;
+    	let formIndexEn = this.formIndexEn;
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
@@ -315,6 +344,90 @@ let ReportConfig = {
     				}
 				 })
 			 })
+    		
+    	})
+    	formIndexEn.forEach((item,index)=>{
+    		let conf_id = titlesEn[index].id;
+    		let getFormUrl = titlesEn[index].get_source;
+    		console.log(getFormUrl)
+    		if(getFormUrl === null || getFormUrl === ''){return}
+    		let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
+    		let paramObj = {}
+    		if(getFormUrl.split("*")[1]){
+    			let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
+    			tempParam.forEach((item,index)=>{
+    				paramObj[item] = this.rows[item]
+    			})
+    		}
+    		paramObj["conf_id"] = conf_id
+    		let temp;
+    		$.ajax({
+    			url,
+    			type:'post',
+    			async:false,
+    			data:paramObj,
+    			success:(data)=>{
+    				temp = data
+    			}
+    			
+    		})
+    		let arr = Array.from($("#title"+item))
+    		if(temp.rows === null){return}
+    		arr.forEach((item,index)=>{
+    			if($(item).siblings(".radio-con").length !== 0) {
+    				//radio类型绑数
+    				if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+    				let overall_rating =  temp.rows[0].overall_rating;
+    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+    				
+    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+    				return
+    			}
+    			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
+    				//信用等级
+    				let name =$(item).next().find("input").attr("name")
+    				$(item).next().find("input").val(temp.rows[0][name])
+    				return;
+    			}
+    			if($(item).next().hasClass("textarea-module")) {
+    				//无标题多行文本输入框
+    				if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).next().find("textarea").attr("entityid",obid)
+    				let name =$(item).next().find("textarea").attr("name")
+    				$(item).next().find("textarea").val(temp.rows[0][name])
+    				return;
+    			}
+    			if(($(item).next().find("input").hasClass("float-date"))) {
+    				//浮动非财务
+    				if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).next().find("input").attr("entityid",obid)
+    				let name =$(item).next().find("input").attr("name")
+    				$(item).next().find("input").val(temp.rows[0][name])
+    				return;
+    			}
+    			let formArr = Array.from($(item).siblings().find(".form-control"))
+    			if(temp.rows.length === 0){return}
+    			//实体id
+    			let obid = temp.rows[0].id;
+    			formArr.forEach((item,index)=>{
+    				let obj = temp.rows[0];
+    				let id = $(item).attr("id");
+    				let anotherIdArr = id.split("_")
+    				anotherIdArr.pop();
+    				let anotherId = anotherIdArr.join('_')
+    				$("#"+id).attr("entryid",obid)
+    				if($(item).is('select')){
+    					//如果是select
+    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
+    				}else {
+    					$("#"+id).val(obj[anotherId])
+    				}
+    			})
+    		})
     		
     	})
     	
@@ -573,10 +686,15 @@ let ReportConfig = {
         /**初始化内容 */
     	this.entityTitle = [] //存放小模块的实体title
     	this.idArr = []    //存放table类型模块对应的index
+    	this.idArrEn = []    //存放table类型模块对应的index
     	this.contentsArr = [] //存放table类型模块的contents
     	this.title = [] //存放table类型模块的title
+    	this.contentsArrEn = [] //存放table类型模块的contents
+    	this.titleEn = [] //存放table类型模块的title
     	this.formIndex = [] //存放form类型模块对应的index
     	this.formTitle = [] //存放form类型模块的title
+    	this.formIndexEn = [] //存放form类型模块对应的index
+    	this.formTitleEn = [] //存放form类型模块的title
     	this.floatIndex = [] //存放float类型模块对应的index
     	this.floatTitle = [] //存放float类型模块的title
     	this.floatContents = [] //存放float类型模块的Contents
@@ -591,15 +709,15 @@ let ReportConfig = {
     	let _this = this
     	let id = JSON.parse(row).id;
     	let reportType = JSON.parse(row).report_type
+    	let istranslate = true
         $.ajax({
         	type:"get",
         	url:BASE_PATH + "credit/front/getmodule/list",
-        	data:{id,reportType},
+        	data:{id,reportType,istranslate},
         	success:(data)=>{
                 setTimeout(()=>{
                 	_this.initModal();
                 	InitObjTrans.addressInit();
-                	InitObjTrans.regChecked();
                 	_this.initTable();
                 	_this.initFloat();
                 	InitObjTrans.dateInit();
@@ -665,6 +783,7 @@ let ReportConfig = {
                  * 内容模块部分
                  */
                 let modules = data.modules;    
+                let modulesToEn = data.modulesToEn;    
                 let contentHtml = '' 
                 let bottomBtn = ''
                 modules.forEach((item,index)=>{
@@ -703,7 +822,7 @@ let ReportConfig = {
 		                        		if(!field_type) {
 		                        			formGroup += `<div class="form-group">
 		        						            		<label for="" class="mb-2">${item.temp_name}</label>
-		        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		        						            		<input type="text" disabled="disabled" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 		        						            		<p class="errorInfo">${item.error_msg}</p>
 		        					            		</div>`
 		                        		}else {
@@ -712,14 +831,14 @@ let ReportConfig = {
 		                        				case 'text':
 		                        					formGroup += `<div class="form-group">
 	        						            		<label for="" class="mb-2">${item.temp_name}</label>
-	        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+	        						            		<input type="text" disabled="disabled" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 	        						            		<p class="errorInfo">${item.error_msg}</p>
 	        					            		</div>`
 	                        						break;
 		                        				case 'number':
 			                    						formGroup += `<div class="form-group">
 					                        							<label for="" class="mb-2">${item.temp_name}</label>
-					                        							<input type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+					                        							<input disabled="disabled" type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 					                        							<p class="errorInfo">${item.error_msg}</p>
 				                        							</div>`
 		                        					
@@ -727,21 +846,21 @@ let ReportConfig = {
 		                        				case 'date':
 		                        					formGroup += `<div class="form-group date-form">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
-												            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+												            		<input disabled="disabled" type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
 		                        				case 'date_scope':
 		                        					formGroup += `<div class="form-group date-scope-form">
 									            		<label for="" class="mb-2">${item.temp_name}</label>
-									            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+									            		<input type="text" disabled="disabled" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 									            		<p class="errorInfo">${item.error_msg}</p>
 								            		</div>`
 		                        					break;
 							            		case 'address':
 							            			formGroup += ` <div class="form-group address-form"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <input type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
+									                                    <input disabled="disabled"  type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
 									                                </div>`
 							            			break;
 							            		case 'select':
@@ -755,7 +874,7 @@ let ReportConfig = {
 							            				success:(data)=>{
 							            				formGroup += `<div class="form-group">
 										            					<label for="" class="mb-2">${item.temp_name}</label>
-										            					<select name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
+										            					<select disabled="disabled" name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
 										            						${data.selectStr}
 										            					</select>
 							            							</div>`
@@ -766,7 +885,7 @@ let ReportConfig = {
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <textarea class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
+									                                    <textarea disabled="disabled" class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
 									                                </div>`
 									                break;
 		        							    default :
@@ -800,7 +919,6 @@ let ReportConfig = {
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 				</div>`
                 		
                 			break;
@@ -815,7 +933,6 @@ let ReportConfig = {
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 				</div>`
                 		
                 			break;
@@ -825,9 +942,9 @@ let ReportConfig = {
                 			break;
                 		case '5':
                 			//固定底部的按钮组
-                			item.title.column_name === 'save'?_this.saveStatusUrl = item.title.alter_source:_this.submitStatusUrl = item.title.alter_source
+                		/*	item.title.column_name === 'save'?_this.saveStatusUrl = item.title.alter_source:_this.submitStatusUrl = item.title.alter_source
                 			let className = item.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
-                			bottomBtn += `<button id=${item.title.column_name} class="${className}">${item.title.temp_name}</button>`
+                			bottomBtn += `<button id=${item.title.column_name} class="${className}">${item.title.temp_name}</button>`*/
                 			break;
                 		case '6':
                 			//信用等级
@@ -947,6 +1064,276 @@ let ReportConfig = {
                 	}else {
                 		contentHtml += `</div>`
                 	}
+                	
+                	
+                	let item_en = modulesToEn[index]
+                	console.log(item_en)
+                	if(!item_en){return}
+                	let smallModileTypeEn = item_en.smallModileType
+                	if(item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+                	}else if(smallModileTypeEn === '10'){
+                		//财务模块
+//                		_this.cwGetSource = item.title.get_source;
+//                		_this.cwAlterSource = item.title.alter_source;
+//                		_this.cwDeleteSource = item.title.remove_source;
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCwEn${index}">${item_en.title.temp_name}</a>`
+                	}else if(smallModileTypeEn !== '-2' && smallModileTypeEn !== '5'  && smallModileTypeEn !== '2') {
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+                	}
+                	let btnTextEn = item_en.title.place_hold;
+                	let formArrEn = item_en.contents; 
+                	
+                	//英文循环
+                	switch(smallModileTypeEn) {
+            		case '0':
+            			//表单类型
+            			_this.formTitleEn.push(item_en.title)
+            			_this.formIndexEn.push(index)
+            			let ind = index
+            			let rowNum = 0;//代表独占一行的input数量
+            			formArrEn.forEach((item_en,index)=>{
+            				let formGroup = ''
+                    		//判断input的类型
+                    		let field_type = item_en.field_type
+                    		if(!field_type) {
+                    			formGroup += `<div class="form-group">
+    						            		<label for="" class="mb-2">${item_en.temp_name}</label>
+    						            		<input type="text"  class="form-control" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name} reg=${item.reg_validation}>
+    					            		</div>`
+                    		}else {
+                    			
+                    			switch(field_type) {
+                    				case 'text':
+                    					formGroup += `<div class="form-group">
+						            		<label for="" class="mb-2">${item_en.temp_name}</label>
+						            		<input type="text" class="form-control" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name} reg=${item.reg_validation}>
+					            		</div>`
+                						break;
+                    				case 'number':
+                    						formGroup += `<div class="form-group">
+		                        							<label for="" class="mb-2">${item_en.temp_name}</label>
+		                        							<input type="number" class="form-control" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name} reg=${item.reg_validation}>
+	                        							</div>`
+                    					
+                    					break;
+                    				case 'date':
+                    					formGroup += `<div class="form-group date-form">
+									            		<label for="" class="mb-2">${item_en.temp_name}</label>
+									            		<input  type="text" class="form-control" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name}>
+								            		</div>`
+                    					break;
+                    				case 'date_scope':
+                    					formGroup += `<div class="form-group date-scope-form">
+						            		<label for="" class="mb-2">${item_en.temp_name}</label>
+						            		<input type="text"  class="form-control" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item.column_name}>
+					            		</div>`
+                    					break;
+				            		case 'address':
+				            			formGroup += ` <div class="form-group address-form"  style="width: 100%">
+						                                    <label  class="mb-2">${item_en.temp_name}</label>
+						                                    <input  type="text" class="form-control"  style="width: 100%" name=${item_en.column_name} id="${item_en.column_name}_${ind}_En">
+						                                </div>`
+				            			break;
+				            		case 'select':
+				            			if(item_en.get_source === null){return}
+				            			let url = BASE_PATH + 'credit/front/ReportGetData/' + item_en.get_source
+				            			$.ajax({
+				            				type:'get',
+				            				url,
+				            				async:false,
+				            				dataType:'json',
+				            				success:(data)=>{
+				            				formGroup += `<div class="form-group">
+							            					<label for="" class="mb-2">${item_en.temp_name}</label>
+							            					<select name=${item_en.column_name} id="${item.column_name}_${ind}_En" class="form-control">
+							            						${data.selectStr}
+							            					</select>
+				            							</div>`
+				            				}
+				            			})
+				            			
+				            			break;
+				            		case 'textarea':
+				            			formGroup += `  <div class="form-group"  style="width: 100%">
+						                                    <label  class="mb-2">${item_en.temp_name}</label>
+						                                    <textarea class="form-control"  style="width: 100%;height: 6rem" name=${item_en.column_name} id="${item_en.column_name}_${ind}_En"></textarea>
+						                                </div>`
+						                break;
+    							    default :
+    							    	break;
+                    			}
+                    		}
+            				if(formArr[index-1] && formArr[index-1]['field_type'] === 'address')  {
+            					rowNum += 1
+            				}
+                    		
+                    		if((index - rowNum)%3 === 0  || formArrEn[index-1]['field_type'] === 'address' || formArrEn[index]['field_type'] === 'address' || formArrEn[index]['field_type'] === 'textarea'){
+                    			contentHtml += `<div class="firm-info mt-4 px-5 d-flex justify-content-between">`;
+                    		}
+                    		contentHtml += formGroup;
+                    		
+                    		if(((index+1 - rowNum)%3 === 0 && index !==0) || formArrEn[index]['field_type'] === 'address' || (formArrEn[index+1]&&formArrEn[index+1]['field_type'] === 'textarea') || (formArrEn[index+1]&&formArrEn[index+1]['field_type'] === 'address') ||((formArrEn[index+1]&&formArrEn[index+1]['field_type'] === 'textarea') && formArrEn[index+2]&&formArrEn[index+2]['field_type'] === 'textarea')){
+                    			contentHtml += `</div>`    
+                    		}
+                    		
+	                	}) 
+	                	contentHtml += `</div>`   
+	                	break;
+            		case '1':
+            			//table类型
+            			_this.idArrEn.push(index)
+            			_this.contentsArrEn.push(item_en.contents)
+            			_this.titleEn.push(item_en.title)
+            			contentHtml += `<div class="table-content1" style="background:#fff">
+			                				<table id="table${index}En"
+			                				data-toggle="table"
+			                				style="position: relative"
+			                				>
+			                				</table>
+            				</div>`
+            		
+            			break;
+            		case '11':
+            			//table类型
+            			_this.idArrEn.push(index)
+            			_this.contentsArrEn.push(item_en.contents)
+            			_this.titleEn.push(item_en.title)
+            			contentHtml += `<div class="table-content1" style="background:#fff">
+			                				<table id="table${index}En"
+			                				data-toggle="table"
+			                				style="position: relative"
+			                				>
+			                				</table>
+            				</div>`
+            		
+            			break;
+            		case '2':
+            			//附件类型
+//            			contentHtml += Public.fileConfig(item,_this.rows)
+            			break;
+            		case '5':
+            			//固定底部的按钮组
+            			item_en.title.column_name === 'save'?_this.saveStatusUrl = item_en.title.alter_source:_this.submitStatusUrl = item_en.title.alter_source
+            			let className = item_en.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
+            			if(item_en.title.column_name === 'save'){
+            				bottomBtn += `<button id="translateBtn" class="btn btn-primary ml-4">翻译</button><button id=${item_en.title.column_name} class="${className}">${item_en.title.temp_name}</button>`
+            			}else {
+            				bottomBtn += `<button id=${item_en.title.column_name} class="${className}">${item_en.title.temp_name}</button>`
+            			}
+            			break;
+            		case '6':
+            			//信用等级
+            			let inputObj = item.contents[0]
+            			_this.formTitleEn.push(inputObj)
+            			_this.formIndexEn.push(index)
+            			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
+				                          <label >${inputObj.temp_name}</label>
+				                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
+				                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
+				                        </div>`
+            			
+            			let tableContents = []
+            			item_en.contents.forEach((item,index)=>{
+            				if(index > 0 && index < 5) {
+            					tableContents.push(item)
+            				}
+            			})
+            			_this.idArrEn.push(index)
+            			_this.contentsArrEn.push(tableContents)
+            			_this.titleEn.push(item_en.title)
+        				contentHtml += `<div class="table-content1" style="background:#fff">
+			                				<table id="table${index}"
+			                				style="position: relative"
+			                				>
+			                				</table>
+            							</div>`
+        				let explainObj = item.contents[5];
+            			let explainUrl = explainObj.get_source;
+            			let paramObj = {}
+            			if(explainUrl.split("*")[1]) {
+            				let tempParam = explainUrl.split("*")[1].split("$");//必要参数数组
+            				tempParam.forEach((item,index)=>{
+            					paramObj[item] = this.rows[item]
+            				})
+            			}
+            			let conf_id = item.title.id;
+                    	paramObj["conf_id"] = conf_id
+            			let returnData;
+            			$.ajax({
+            				url:BASE_PATH + 'credit/front/ReportGetData/' + explainUrl.split("*")[0],
+            				data:paramObj,
+            				async:false,
+            				type:'post',
+            				success:(data)=>{
+            					console.log(data)
+            					returnData = data.rows
+            				}
+            			})
+            			returnData.forEach((item,index)=>{
+            				contentHtml += `<p class="m-3 ml-4">${item.describe}</p>`
+            			})
+            			break;
+            		case '7':
+            			//单独小模块的多行输入框 保存回显同表单模块
+            			_this.formTitleEn.push(item.title)
+            			_this.formIndexEn.push(index)
+            			let ot_item = item_en
+            			item_en.contents.forEach((item,index)=>{
+            				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
+            					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
+            						<label for="" class="thead-label">${item.temp_name}</label>
+            						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+        						</div>`
+            				}else{
+            					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
+                						<label for="" class="thead-label">${item.temp_name}</label>
+                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+            						</div>`
+            				}
+            			})
+            			break;
+            		case '8':
+            			//radio类型 总体评价模块    保存回显同表单模块
+            			_this.formTitleEn.push(item.title)
+            			_this.formIndexEn.push(index)
+            			
+            			let str = item.contents[0].get_source;
+            			let this_item = item
+            			let strItem = str.split("&")
+            			contentHtml += `<div class="table-content1 form-group radio-con" style="background:#fff">
+				                        	<div class="radio-box">`
+            				strItem.forEach((item,index)=>{
+            				contentHtml += ` <div class="form-check form-check-inline mr-5">
+				                                <input class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+				                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
+				                            </div>`
+            			})
+            				
+            				
+        				contentHtml += `</div></div>`
+            			break;
+            		case '9':
+            			//浮动类型
+            			_this.floatIndex.push(index)
+            			_this.floatTitle.push(item.title)
+            			_this.floatContents.push(item.contents)
+            			if(item.contents.length === 0) {
+            				//非财务模块的浮动
+            				_this.notMoneyFloatHtml[index] = `<div class="form-group form-inline p-4">
+				                          <label >${item.title.temp_name === null?'':item.title.temp_name}</label>
+				                          <input type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
+				                        </div>`
+            			}
+            			break;
+            		case '10':
+            			//财务模块
+            			
+            			break;
+        			default:
+        				break;
+        		}
+            		contentHtml += `</div>`
                 })
                 
                 $(".main-content").html(contentHtml)

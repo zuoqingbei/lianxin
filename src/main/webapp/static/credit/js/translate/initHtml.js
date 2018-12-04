@@ -864,30 +864,7 @@ let InitObjTrans = {
     		})
     	})
     },
-    regChecked(){
-    	/**
-    	 * 正则验证
-    	 */
-    	$(".firm-info .form-control").blur((e)=>{
-    		let val = $(e.target).val();
-    		let reg = $(e.target).attr("reg")
-    		if(reg === 'null' || !reg) {
-    			return;
-    		}else {
-    			
-    			if(!eval("("+reg+")").test(val)){
-    				$(e.target).siblings(".errorInfo").show();
-    				$(e.target).val("")
-    				$(e.target).addClass("active")
-    			
-    			}else {
-    			
-    				$(e.target).siblings(".errorInfo").hide();
-    				$(e.target).removeClass("active")
-    			}
-    		}
-    	})
-    },
+
     getFormData(form) {
     	//序列化
         var unindexed_array = form.serializeArray();

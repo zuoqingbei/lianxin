@@ -1,22 +1,17 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
-
 import org.apache.commons.lang3.StringUtils;
-
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
@@ -30,7 +25,6 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
-import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
@@ -131,7 +125,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * @param isCompanyMainTable
 	 */
 	public void getBootStrapTable() {
-		getBootStrapTable(isCompanyMainTable(), SimplifiedChinese, null);
+		getBootStrapTable(isCompanyMainTable(), StrUtils.isEmpty(getPara("sys_language"))?SimplifiedChinese:getPara("sys_language"), null);
 	}
 	//详情
 	public void getBootStrapTables() {
@@ -922,8 +916,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                     model.set(key, map.get(key));
                 }
             }
+            
             model.update();
-            //增加跟踪记录
+            //增加跟踪记录 
             CreditOrderFlow.addOneEntry(this, model);
             CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
             renderJson(new ResultType());
@@ -949,4 +944,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     renderJson(record.set("rows", details).set("total", details!=null?details.size():null));	
     }
 	
+    
+    
 }
