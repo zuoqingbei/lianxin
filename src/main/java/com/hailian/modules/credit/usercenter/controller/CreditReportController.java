@@ -26,7 +26,7 @@ public class CreditReportController extends BaseProjectController{
         //test.reportTable();
         //BusinessZh test = new BaseInfoZh();
         //报告类型8  订单ID 公司ID65  语言612
-        //BusinessZh.reportTable("8","","65","612",userid);
+        BusinessZh.reportTable("8","","65","612",userid);
         //CreditZh.reportTable();
 
         //报告类型7 订单ID 公司ID65  语言612
@@ -34,7 +34,7 @@ public class CreditReportController extends BaseProjectController{
 
         //报告类型12 订单ID 公司ID65  语言612
         //RocZh.reportTable("12","","7777813", "612", userid);
-        RocHy.reportTable("15","","7777829", "612", userid);
+        //RocHy.reportTable("15","","7777829", "612", userid);
     }
 
 
