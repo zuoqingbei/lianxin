@@ -187,12 +187,14 @@ let Verify = {
         		Public.message("error","公司中文名称不能为空")
         	}else {
         		/*调用接口*/
+        		$("body").mLoading("show");
         		$.ajax({
            			type:"post",
                		url:BASE_PATH+"credit/front/orderProcess/statusSave",
                		data:"statusCode=595&isPa=yes&num="+$("#num").html()+"&model.id="+$("#orderId").val()+"&model.company_by_report="+$("#companyZHNames").val()+"&companyId="+$("#companyId").val(),
                		dataType:"json",
                		success:function(obj){
+               			$("body").mLoading("hide");
                			if(obj.statusCode===1){
                          	Public.message("success",obj.message);
                          	

@@ -66,6 +66,7 @@ let
 			Public.message("error","提交数据有误，请检查数据");
 			return;
 		}
+		$("body").mLoading("show");//显示loading组件
 	    $.ajax({
 	        type: "POST",
 	        url: "/credit/orderpoimanager/savedata",
@@ -73,6 +74,7 @@ let
 	        data: JSON.stringify(jsondata),
 	        dataType: "json",
 	        success: function (data) {
+	        	$("body").mLoading("hide");//
 	        	if(data.statusCode===1){
                	Public.message("success",data.message);
                	$("#importModal").find(".close").trigger("click")
@@ -468,8 +470,10 @@ $(document).ready(function () {
  })
   function tableSubmit(){
 		$("input[name='attr.status']").val("291");
+		$("body").mLoading("show");//显示loading组件
 		$("#orderForm").ajaxSubmit({
 			success:function(data){
+				$("body").mLoading("hide");
 				  if(data.statusCode===1){
             		Public.message("success",data.message);
             		//Public.goList();
@@ -487,6 +491,7 @@ $(document).ready(function () {
 
 			},
 			error:function(data){
+				$("body").mLoading("hide");//显示loading组件
 				Public.message("error",data.message);
 				//Public.goList();
 				reste();
