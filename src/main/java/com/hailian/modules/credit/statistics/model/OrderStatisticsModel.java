@@ -52,7 +52,7 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 		}
 		//客户订单量排名
 		if (type.equals("7")) {
-			sql="select COUNT(ord.id) as num ,cus.name as name from credit_order_info ord LEFT JOIN credit_custom_info cus on cus.id=ord.custom_id where ord.del_flag='0' GROUP BY cus.name ORDER BY ord.id desc";
+			sql="select COUNT(ord.id) as num ,cus.name as name from credit_order_info ord LEFT JOIN credit_custom_info cus on cus.id=ord.custom_id where ord.del_flag='0' GROUP BY cus.name ORDER BY ord.id desc limit 0,10";
 		}
 		//各报告类型占比
         if (type.equals("8")) {
@@ -265,6 +265,30 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 			  + " WHERE (report_user='"+id+"'or translate_user='"+id+"' or IQC='"+id+"' OR analyze_user='"+id+"') "
               + " and status='314' and del_flag='0' and datediff(submit_date,end_date)>0   GROUP BY `year` order BY `year` asc";
 		}
+		return OrderStatisticsModel.dao.find(sql);
+	}
+	
+	/**
+	 * 
+	* @Description: 客服订单趋势
+	* @date 2018年12月3日 下午6:45:56
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public  List<OrderStatisticsModel> getCusOrderTrend(String country,String customer){
+		String sql="";
+		
+		sql="select `month` as time,COUNT(receiver_date) as num  from credit_order_info "
+		  + " where  status='314' and del_flag='0' and datediff(submit_date,end_date)>0 and  date_add(now(),interval -12 month)";
+		
+		if (StringUtils.isNotBlank(country)) {
+			sql+=" and country='"+country+"'";
+		}
+		if (StringUtils.isNotBlank(customer)) {
+			sql+=" and customer='"+customer+"'";
+		}
+		sql+=" limit 0,10";
 		return OrderStatisticsModel.dao.find(sql);
 	}
 }
