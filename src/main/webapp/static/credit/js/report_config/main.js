@@ -335,9 +335,11 @@ let ReportConfig = {
     	 */
     	let _this = this
     	let floatIndex = this.floatIndex;
+    	if(floatIndex.length === 0){return}
     	let cw_title = []
     	let cw_contents = []
     	let cw_dom;
+    	_this.tableTitle = []
     	floatIndex.forEach((item,index)=>{
     		let floatParentId = this.floatTitle[index]['float_parent'];//浮动的父节点id
     		let titleId;
@@ -360,7 +362,7 @@ let ReportConfig = {
     			}
     		})
     	})
-    	console.log(cw_title,cw_contents)
+//    	console.log(cw_title,cw_contents)
     	this.cwConfigAlterSource = cw_title[0]['alter_source'];
     	this.cwConfigGetSource = cw_title[0]['get_source'];
     	let cw_top_html = ''
@@ -469,11 +471,10 @@ let ReportConfig = {
     		}else {
     			let addtext = cw_title[1].place_hold
     			let conf_id = cw_title[0].id
-    			console.log(item,this_content,conf_id)
-    			let tableTitle = ''
+//    			console.log(item,this_content,conf_id)
     			if(item.temp_name !== null && item.temp_name !== '') {
-    				tableTitle = item.temp_name.split("||");
-    				cw_table_html += `<div class="table-title">${tableTitle}</div>`
+    				_this.tableTitle.push(item.temp_name.split("||"));
+    				cw_table_html += `<div class="table-title">${item.temp_name.split("||")}</div>`
     				if(index !== 1){
     					//如果不是合计表，
     					cw_table_html += `<div class="cw-unit">
@@ -497,12 +498,7 @@ let ReportConfig = {
     					}
     				}
     			}
-    			(function(a,i,radioName){
-    				setTimeout(()=>{
-    					let id = InitObj.bindCwConfig(conf_id,_this.cwConfigGetSource,a,i,radioName,_this.rows)
-    					InitObj.initCwTable(tableCwId,this_content,_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,id)
-    				},0)
-    			})(tableTitle,index,cw_contents[0][1].column_name)
+    			
     			switch(item.sort) {
     				case 2:
     					//合计表
@@ -564,6 +560,8 @@ let ReportConfig = {
     	$(cw_dom).after(cw_table_html)
     	$(cw_dom).after(cw_top_html)
     	setTimeout(()=>{
+    		InitObj.bindCwConfig(_this.cwConfigGetSource,cw_contents[0][1].column_name,_this.rows,_this.tableTitle)
+    		InitObj.initCwTable(tableCwId,cw_contents[1],_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource)
     		InitObj.cwModalCompute(_this.cwAlterSource)
     		InitObj.downLoadCw(cw_contents[0][2].alter_source,_this.rows);
 			InitObj.upLoadCw(cw_contents[0][3].alter_source,_this.rows,_this.cwGetSource,_this.cwAlterSource,tableCwId);
@@ -944,7 +942,7 @@ let ReportConfig = {
                 	
                 	if(smallModileType === '10') {
                 		//财务
-                		contentHtml += `</div><button class="btn mb-3 btn-lg btn-block" id="addCwMdal">增加一个财务模版</button>`
+                		contentHtml += `</div><button class="btn mb-3 btn-lg btn-block" id="addCwMdal" style="display:none">增加一个财务模版</button>`
                 	}else {
                 		contentHtml += `</div>`
                 	}
@@ -1056,7 +1054,7 @@ let ReportConfig = {
     	 */
     	let formTitles = this.formTitle;
     	let formIndex = this.formIndex;
-    	console.log(formTitles,formIndex)
+//    	console.log(formTitles,formIndex)
     	let _this = this
     	formIndex.forEach((item,index)=>{
     		let alterSource = formTitles[index]["alter_source"];
