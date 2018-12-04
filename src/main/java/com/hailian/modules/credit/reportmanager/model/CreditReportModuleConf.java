@@ -115,7 +115,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	public List<CreditReportModuleConf> getDefaultModule(String reportType) {
 		List<Object> params = new ArrayList<>();
 		String sql = " select a.*  from credit_report_module_conf a "
-				+ " where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=? and report_type=? ) "
+				+ " where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=? and del_flag=0  and report_type=? ) "
 				+ " or  small_module_type=? "
 				+ " and report_type=? and del_flag=0 order by sort,id ";
 		params.add(DefaultModule);
