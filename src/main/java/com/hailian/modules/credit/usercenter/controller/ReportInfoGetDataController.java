@@ -61,11 +61,19 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 根据参数获取下拉选
 	 */
 	public void getSelete() {
-		String selectStr = template.getSysDictDetailString3(getPara("type"), getPara("selectedId"),
-				getPara("disPalyCol"));
+		String selectStr = "";
+		String type = getPara("type");
+		String disPalyCol =  getPara("disPalyCol");
+		if(!StrUtils.isEmpty(type)&&"country".equals(type)) {
+			if("detail_name_en".equals(disPalyCol)) {
+			 selectStr =  template.getCounty(getPara("selectedId"), "name_en");
+			}else if("name".equals(disPalyCol)) {
+		     selectStr =  template.getCounty(getPara("selectedId"), "name");
+			 }
+		 }
+		selectStr =  template.getSysDictDetailString3(getPara("type"), getPara("selectedId"), disPalyCol);
 		renderJson(new Record().set("selectStr", selectStr));
 	}
-
 	/**
 	 * alterBootStrapTable
 	 */
