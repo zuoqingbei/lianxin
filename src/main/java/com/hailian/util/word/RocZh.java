@@ -5,6 +5,7 @@ import com.deepoove.poi.data.PictureRenderData;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
@@ -43,12 +44,20 @@ public class RocZh {
 
         HashMap<String, Object> map = new HashMap<String, Object>();
         //获取订单信息
-        CreditCompanyInfo order = CreditCompanyInfo.dao.findById(companyId);
+        CreditOrderInfo order =  CreditOrderInfo.dao.findById(orderId);
+        //获取公司主表信息
+        CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findById(companyId);
         //订单公司名称
-        map.put("company", order.getStr("name_en"));
+        map.put("company", companyInfo.getStr("name_en"));
         //联信编码
-        map.put("code", order.getStr("lianxin_id"));
+        map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
+        //订单号
+        map.put("order_id",order.getInt("id"));
+        //报告速度
+        map.put("speed",order.getStr("speed"));
+        //客户参考号
+        map.put("reference_num",order.getStr("reference_num"));
 
         //找到当前报告类型下的父节点
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
@@ -85,6 +94,8 @@ public class RocZh {
                     table = MainWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
                     table = MainWord.createTableH(child, rows);
+                } else if ("z".equals(tableType)){
+                    MainWord.createTableZ(child, rows, map);
                 }
                 map.put(key, table);
             }
@@ -107,12 +118,13 @@ public class RocZh {
                 if ("credit_company_info".equals(t)) {
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        List rs = report.getTableData(true,  companyId, t, cn, ci, "");
-                        if (rs != null && rs.size() > 0) {
-                            BaseProjectModel model = (BaseProjectModel) rs.get(0);
-                            String v = model.get(word_key) + "";
-                            map.put(word_key, v);
-                        }
+                        //List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        //if (rs != null && rs.size() > 0) {
+                        //    BaseProjectModel model = (BaseProjectModel) rs.get(0);
+                        //    String v = model.get(word_key) + "";
+                        //    map.put(word_key, v);
+                        //}
+                        map.put(word_key,companyInfo.get(word_key)+"");
                     }
                 } else {
                     //取word里配置的关键词

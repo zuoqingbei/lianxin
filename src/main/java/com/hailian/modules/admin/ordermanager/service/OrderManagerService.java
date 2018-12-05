@@ -149,8 +149,8 @@ public class OrderManagerService {
 	* @date 2018年11月18日下午5:55:29  
 	* @TODO
 	 */
-	public CreditOrderInfo isTheSameOrder(String companyname,String report_type,BaseProjectController c){
-		return CreditOrderInfo.dao.isTheSameOrder(companyname,report_type, c);
+	public CreditOrderInfo isTheSameOrder(String companyname,String report_type,String report_language,BaseProjectController c){
+		return CreditOrderInfo.dao.isTheSameOrder(companyname,report_type,report_language, c);
 	}
 	/**
 	 * 查找以往是否有该订单公司的真正要引用的报告订单
@@ -158,8 +158,8 @@ public class OrderManagerService {
 	* @date 2018年11月18日下午5:55:29  
 	* @TODO
 	 */
-	public CreditOrderInfo getTheSameOrder(String companyname,String report_type,BaseProjectController c){
-		return CreditOrderInfo.dao.getTheSameOrder(companyname,report_type,c);
+	public CreditOrderInfo getTheSameOrder(String companyname,String report_type,String report_language,BaseProjectController c){
+		return CreditOrderInfo.dao.getTheSameOrder(companyname,report_type,report_language,c);
 	}
 
 	/**

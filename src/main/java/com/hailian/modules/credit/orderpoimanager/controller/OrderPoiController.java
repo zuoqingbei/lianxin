@@ -256,7 +256,7 @@ public class OrderPoiController extends BaseProjectController {
 						}
 						
 						//是否有相同报告
-						CreditOrderInfo theSameOrder = OrderManagerService.service.isTheSameOrder(orderReal.get("company_id")+"",orderReal.get("report_type")+"", this);
+						CreditOrderInfo theSameOrder = OrderManagerService.service.isTheSameOrder(orderReal.get("right_company_name_en")+"",orderReal.get("report_type")+"",orderReal.get("report_language")+"", this);
 						if(theSameOrder!=null){
 							isTheSameOrderNum++;
 							isTheSameOrder+=isTheSameOrderNum+".第"+r+"行，第G列监测到有相同企业名称;";

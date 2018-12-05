@@ -873,8 +873,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      */
     public void selectQuality(){
     	   Record record = new Record();
-    String type=	getPara("type");
-    List<SysDictDetail> details =  SysDictDetail.dao.find("select detail_id,dict_type,detail_name,detail_code as value from sys_dict_detail where dict_type=?",type);
+    String type= getPara("type");
+    String  name= getPara("disPalyCol");
+    String sql="select detail_id,dict_type,"+name
+    		+ " as detail_name,detail_code as value from sys_dict_detail where dict_type=?";
+    
+    List<SysDictDetail> details =  SysDictDetail.dao.find(sql,type);
     renderJson(record.set("rows", details).set("total", details!=null?details.size():null));	
     }
 	

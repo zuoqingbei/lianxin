@@ -291,6 +291,7 @@ public class OrderProcessController extends BaseProjectController{
         //从表单获取排序语句
         String sortName = getPara("sortName");
         String sortOrder = getPara("sortOrder");
+        String statusName=getPara("statusName");
         String orderBy = "";
         if(!StringUtil.isEmpty(sortName)){
             if(sortOrder!=null){
@@ -313,7 +314,7 @@ public class OrderProcessController extends BaseProjectController{
             }
         }
         //分页查询
-        Page<CreditOrderInfo> pager = CreditOrderInfo.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType, this);
+        Page<CreditOrderInfo> pager = CreditOrderInfo.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType,statusName, this);
         //插入回显数据
         for (CreditOrderInfo page : pager.getList()) {
             for (int i = 0; i <  WEB_PARAM_NAMES.get(searchType).size(); i++) {
@@ -407,10 +408,12 @@ public class OrderProcessController extends BaseProjectController{
     public void listJson() {
         //获取查询类型
         String searchType = (String) getRequest().getParameter("searchType");
+        String status =   getPara("statusName");
         //分页查询
         Page<CreditOrderInfo> pager = PublicListMod(searchType);
         List<CreditOrderInfo> rows = pager.getList();
         TemplateSysUserService templete = new TemplateSysUserService();
+       
         //若是搜索类型是订单分配做特殊处理
         if(searchType.equals(orderAllocation)){
             for (CreditOrderInfo creditOrderInfo : rows) {
