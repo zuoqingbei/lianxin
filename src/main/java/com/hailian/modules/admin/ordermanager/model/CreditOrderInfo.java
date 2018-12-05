@@ -906,6 +906,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" u2.realname AS translateUser,");
 			selectSql.append(" u3.realname AS analyzeUser,");
 			selectSql.append(" u4.name AS customId, ");
+			selectSql.append(" c1.id AS company_id_en, ");
+			selectSql.append(" c2.id AS company_id_fan, ");
 			selectSql.append(" q.id AS qid ");
 			fromSql.append(" FROM credit_order_info c ");
 			fromSql.append(" LEFT JOIN credit_country s1 ON c.country = s1.id ");//国家
@@ -920,7 +922,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s6 ON c.speed = s6.detail_id ");//报告速度
 			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
 			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
+			fromSql.append(" LEFT JOIN credit_company_info f ON c.order_ = n.id ");//公司名称
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
+			//以下属性为不同语言下的公司id 
+			fromSql.append(" LEFT JOIN credit_company_info c1 ON c.id = c1.order_id and c1.sys_language=613 ");//语言为英文时公司id
+			fromSql.append(" LEFT JOIN credit_company_info c2 ON c.id = c2.order_id and c2.sys_language=614 ");//语言为繁体时公司id
 			//代理类别
 			fromSql.append(" LEFT JOIN sys_dict_detail s8 ON c.agent_category = s8.detail_id ");//地区
 			//获取文件信息
