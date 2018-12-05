@@ -978,24 +978,28 @@ public class OrderProcessController extends BaseProjectController{
 		           	
 		           	if(!StrUtils.isEmpty(reportUser)) {
 		           		double reportUserKpi = kpiServie.getKpi(2+"" ,modelId);//当前订单的报告员
+		           		System.out.println("报告员绩效:"+reportUserKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", reportUser).set("money", reportUserKpi);
 		           		tempModel.save();
 		           	}
 		           	
 		           	if(!StrUtils.isEmpty(IQC)) {
 		            	double IQCKpi = kpiServie.getKpi(4+"" ,modelId);//当前订单的质检员
+		            	System.out.println("质检员绩效:"+IQCKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", IQC).set("money", IQCKpi);
 		           		tempModel.save();
 		           	}
 		           	
 		           	if(!StrUtils.isEmpty(translateUser)) {
 		           		double translateKpi = kpiServie.getKpi(6+"" ,modelId);//当前订单的翻译
+		           		System.out.println("翻译员绩效:"+translateKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", translateUser).set("money", translateKpi);
 		           		tempModel.save();
 		           	}
 		           	
 		           	if(!StrUtils.isEmpty(analyzeUser)) {
 		           		double analystKpi = kpiServie.getKpi(5+"" ,modelId);//当前订单的分析员
+		           		System.out.println("分析员绩效:"+analystKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", analyzeUser).set("money", analystKpi);
 		           		tempModel.save();
 		           	}

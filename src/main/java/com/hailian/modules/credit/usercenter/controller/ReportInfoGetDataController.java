@@ -1,5 +1,4 @@
 package com.hailian.modules.credit.usercenter.controller;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +17,6 @@ import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
-import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintionHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
@@ -388,19 +386,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       String update=  getPara("update");//修改的状态
       String code = (String) getRequest().getParameter("statusCode");//获取提交的是完成还是修改状态
       String submit=getPara("submit");
-      
-      CreditQualityOpintionHistory history=new CreditQualityOpintionHistory(); 
-		      history.set("quality_opinion", opintion);
-		      history.set("quality_type", type);
-		      history.set("order_id", orderId);
-		      history.set("report_type", reportType);
-		      history.set("quality_deal", deal);
-		      history.set("grade", grade);
-		      history.set("create_by", userId);
-		      history.set("create_date", now);
-		      history.set("update_by", userId);
-		      history.set("update_date", now);
-		      history.save();
       if (StringUtils.isBlank(update)) {
           if (StringUtils.isBlank(id)) {
 			//id为空新增
@@ -417,7 +402,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			   model.set("update_date", now);
 		       model.save();
 		       renderJson(record.set("rows", model).set("total", null));
-		     
 		   }else {
 			//查询
 			List<CreditQualityOpintion> opintion2=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
@@ -929,8 +913,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             return new ResultType(0,"订单状态更新失败!");
         }
     }
+    
     /**
-     * 
     * @Description: 质检结果下拉选项
     * @date 2018年12月1日 下午5:33:00
     * @author: lxy

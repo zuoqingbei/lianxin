@@ -155,9 +155,10 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			return new ArrayList<>();
 		}
 		String jsonStr2 = jsonStr.replace("\"", "");
+		
 		String[] jsonStr3 = jsonStr2.split("}");
 		Map<Object,Object> map = null;
-		if(jsonStr3!=null||"".equals(jsonStr3)){
+		if(jsonStr3!=null&&jsonStr3.length!=0){
 			for (String string : jsonStr3) {
 				map = new LinkedHashMap<>();
 				if(string==null||"".equals(string.trim())||"]".equals(string.trim())){
@@ -173,7 +174,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					if("null".equals(string6)){
 						continue;
 					}
-					map.put(string5.replace("锟斤拷锟斤拷之锟斤拷锟窖э拷锟", ":"), string6.replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷", ","));
+					map.put(string5.replace("锟斤拷锟斤拷之锟斤拷锟窖э拷锟", ":").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷", ",").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷1", "}").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷2", "{").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷3", "]")
+						  , string6.replace("锟斤拷锟斤拷之锟斤拷锟窖э拷锟", ":").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷", ",").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷1", "}").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷2", "{").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷3", "]"));
 				}
 				list.add(map);
 				for (Object key : map.keySet()) {
