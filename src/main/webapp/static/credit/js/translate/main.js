@@ -425,11 +425,14 @@ let ReportConfig = {
     		if(getFormUrl.split("*")[1]){
     			let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
     			tempParam.forEach((item,index)=>{
-    				paramObj[item] = this.rows[item]
+    				if(item === 'company_id') {
+    					paramObj[item] = this.rows[item+'_en']
+    				}else {
+    					paramObj[item] = this.rows[item]
+    				}
     			})
     		}
     		paramObj["conf_id"] = conf_id
-    		paramObj["sys_language"] = 613
     		let temp;
     		$.ajax({
     			url,
@@ -442,7 +445,7 @@ let ReportConfig = {
     			
     		})
     		let arr = Array.from($("#title"+item))
-    		if(temp.rows === null){return}
+    		if(temp.rows === null || temp.rows.length === 0){return}
     		arr.forEach((item,index)=>{
     			if($(item).siblings(".radio-con").length !== 0) {
     				//radio类型绑数
