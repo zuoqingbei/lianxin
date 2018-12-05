@@ -101,7 +101,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			a++;
 		}
 		try {
-			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE + getPara("className"), SimplifiedChinese,isCompanyMainTable());
+			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE + getPara("className"), StrUtils.isEmpty(getPara("sys_language"))?SimplifiedChinese:getPara("sys_language"),isCompanyMainTable());
 			renderJson(new ResultType(1, "操作成功!"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
