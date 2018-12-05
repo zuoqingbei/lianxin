@@ -494,12 +494,13 @@ public class OrdermanagerController extends BaseProjectController{
 	public void isTheSameCompany() throws UnsupportedEncodingException{
 		String companyname=getPara("companyname");
 		String report_type=getPara("report_type");
+		String report_language=getPara("report_language");
 		companyname = URLDecoder.decode(companyname,"UTF-8");
 		//判断该公司是否存在于公司库中
 		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(companyname);
 		CreditOrderInfo theSameOrder=null;
 		if(company!=null){
-			theSameOrder = OrderManagerService.service.isTheSameOrder(company.get("id")+"",report_type, this);
+			theSameOrder = OrderManagerService.service.isTheSameOrder(companyname,report_type,report_language, this);
 		}
 		if(theSameOrder!=null){
 			Map<String,Object> map=new HashMap<String, Object>();
