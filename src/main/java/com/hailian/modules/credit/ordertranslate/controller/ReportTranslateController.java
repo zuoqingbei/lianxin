@@ -23,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 //import org.junit.Test;
 
 
-import org.junit.Test;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -71,7 +70,7 @@ public class ReportTranslateController extends BaseProjectController {
 			
 		
 	}
-	@Test
+	
 	public void translateRe() {
 		String json = HttpKit.readData(getRequest());
 		String targetlanguage=getPara("targetlanguage");//目标语言

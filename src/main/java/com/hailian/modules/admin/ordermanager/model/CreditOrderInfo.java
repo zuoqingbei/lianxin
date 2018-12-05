@@ -13,6 +13,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import ch.qos.logback.core.status.Status;
+
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
@@ -886,7 +888,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	 * @author lzg
 	 * @time 2018/09/14下午 3:20
 	 */
-	public Page<CreditOrderInfo> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,String searchType, BaseProjectController c) {
+	public Page<CreditOrderInfo> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,String searchType,String status,BaseProjectController c) {
 		StringBuffer selectSql = new StringBuffer();
 		StringBuffer fromSql = new StringBuffer();
 		//参数集合
@@ -944,7 +946,19 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.orderFilingOfOrder:
 				//订单查档(国外) ,其维护在字典表中 中国大陆代码106 只有韩国，新加坡，马来西亚需要人工分配，其余国家走自动分配
 				//294为信息录入完成,295代理中
-				fromSql.append(" and status in('294','295') and c.country!='106' ");
+				//已分配
+				if (StringUtils.isNotBlank(status)&&status.equals("2")) {
+					fromSql.append(" and status in('295') and c.country!='106' ");
+				}
+				//未分配
+				if (StringUtils.isNotBlank(status)&&status.equals("1")) {
+					fromSql.append(" and status in('294') and c.country!='106' ");
+				}
+				//全部
+				if (StringUtils.isBlank(status)) {
+					fromSql.append(" and status in('294','295') and c.country!='106' ");
+				}
+				
 //				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
 				break;
 			case OrderProcessController.orderSubmitOfOrder:
@@ -969,7 +983,18 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.orderFilingOfReport:
 				//状态为订单查档(国内) ,其维护在字典表中
 				//294为信息录入完成
-				fromSql.append(" and status in ('294','295') and c.country='106'");
+				//已分配
+				if (StringUtils.isNotBlank(status)&&status.equals("2")) {
+					fromSql.append(" and status in('295') and c.country='106' ");
+				}
+				//未分配
+				if (StringUtils.isNotBlank(status)&&status.equals("1")) {
+					fromSql.append(" and status in('294') and c.country='106' ");
+				}
+				//全部
+				if (StringUtils.isBlank(status)) {
+					fromSql.append(" and status in('294','295') and c.country='106' ");
+				}
 				//权限归属:质检员
 				authority.append(" and (c.IQC= "+userId+")");
 				break;	

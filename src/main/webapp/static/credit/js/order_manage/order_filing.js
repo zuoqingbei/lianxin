@@ -14,7 +14,29 @@ let Filing = {
         this.modalSubmit(this.numarr);
         this.fileEvent();
         this.select();
+        this.dl_btn3();
     },
+    dl_btn3(){
+    	
+    	$("#dl_btn2").click(function(){
+    		$("#table").bootstrapTable(
+    			"refresh",
+    			{query: {statusName: '2'}}
+    		)	
+    	});
+    	$("#dl_btn3").click(function(){
+    		$("#table").bootstrapTable(
+    			"refresh",
+    		)	
+    	});
+    	$("#dl_btn1").click(function(){
+    		$("#table").bootstrapTable(
+    			"refresh",
+    			{query: {statusName: '1'}}
+    		)	
+    	})
+    },
+    
     fileEvent(){
       /**文件上传事件 */
       $(".file-upload").on('change','.uploadFile .file-input',function(){
@@ -718,7 +740,7 @@ let Filing = {
               	  pageSize: params.pageSize,//找多少条  
               	  sortName: params.sortName, 
               	  sortOrder: params.sortOrder,
-              	  searchType: "-4"
+              	  searchType: "-4",
                 };  
             },  
             onCheck:(row)=>{
