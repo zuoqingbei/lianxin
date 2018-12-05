@@ -76,7 +76,6 @@ let ReportConfig = {
         	}
         })
         this.idArrEn.forEach((item,index)=>{
-        	console.log(item)
         	const $table = $("#table"+item+"En");
         	let contents = this.contentsArrEn[index]
         	let titles = this.titleEn
@@ -346,6 +345,7 @@ let ReportConfig = {
 			 })
     		
     	})
+    	//英文绑定表单数据
     	formIndexEn.forEach((item,index)=>{
     		let conf_id = titlesEn[index].id;
     		let getFormUrl = titlesEn[index].get_source;
@@ -360,6 +360,7 @@ let ReportConfig = {
     			})
     		}
     		paramObj["conf_id"] = conf_id
+    		paramObj["sys_language"] = 613
     		let temp;
     		$.ajax({
     			url,
@@ -822,7 +823,7 @@ let ReportConfig = {
 		                        		if(!field_type) {
 		                        			formGroup += `<div class="form-group">
 		        						            		<label for="" class="mb-2">${item.temp_name}</label>
-		        						            		<input type="text" disabled="disabled" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		        						            		<input type="text" readonly="readonly" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 		        						            		<p class="errorInfo">${item.error_msg}</p>
 		        					            		</div>`
 		                        		}else {
@@ -831,14 +832,14 @@ let ReportConfig = {
 		                        				case 'text':
 		                        					formGroup += `<div class="form-group">
 	        						            		<label for="" class="mb-2">${item.temp_name}</label>
-	        						            		<input type="text" disabled="disabled" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+	        						            		<input type="text" readonly="readonly" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 	        						            		<p class="errorInfo">${item.error_msg}</p>
 	        					            		</div>`
 	                        						break;
 		                        				case 'number':
 			                    						formGroup += `<div class="form-group">
 					                        							<label for="" class="mb-2">${item.temp_name}</label>
-					                        							<input disabled="disabled" type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+					                        							<input readonly="readonly" type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 					                        							<p class="errorInfo">${item.error_msg}</p>
 				                        							</div>`
 		                        					
@@ -846,21 +847,21 @@ let ReportConfig = {
 		                        				case 'date':
 		                        					formGroup += `<div class="form-group date-form">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
-												            		<input disabled="disabled" type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+												            		<input readonly="readonly" type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
 		                        				case 'date_scope':
 		                        					formGroup += `<div class="form-group date-scope-form">
 									            		<label for="" class="mb-2">${item.temp_name}</label>
-									            		<input type="text" disabled="disabled" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+									            		<input type="text" readonly="readonly" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 									            		<p class="errorInfo">${item.error_msg}</p>
 								            		</div>`
 		                        					break;
 							            		case 'address':
 							            			formGroup += ` <div class="form-group address-form"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <input disabled="disabled"  type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
+									                                    <input readonly="readonly"  type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
 									                                </div>`
 							            			break;
 							            		case 'select':
@@ -874,7 +875,7 @@ let ReportConfig = {
 							            				success:(data)=>{
 							            				formGroup += `<div class="form-group">
 										            					<label for="" class="mb-2">${item.temp_name}</label>
-										            					<select disabled="disabled" name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
+										            					<select readonly="readonly" name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
 										            						${data.selectStr}
 										            					</select>
 							            							</div>`
@@ -885,7 +886,7 @@ let ReportConfig = {
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <textarea disabled="disabled" class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
+									                                    <textarea readonly="readonly" class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
 									                                </div>`
 									                break;
 		        							    default :
@@ -1440,12 +1441,12 @@ let ReportConfig = {
     	/**
     	 * 底部按钮点击事件
     	 */
-    	let formTitles = this.formTitle;
-    	let formIndex = this.formIndex;
+    	let formTitlesEn = this.formTitleEn;
+    	let formIndexEn = this.formIndexEn;
 //    	console.log(formTitles,formIndex)
     	let _this = this
-    	formIndex.forEach((item,index)=>{
-    		let alterSource = formTitles[index]["alter_source"];
+    	formIndexEn.forEach((item,index)=>{
+    		let alterSource = formTitlesEn[index]["alter_source"];
     		if(alterSource === null || alterSource === ''){return}
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
     		let dataJson = []
@@ -1457,6 +1458,57 @@ let ReportConfig = {
     				dataJsonObj[item] = this.rows[item]
     			})
     		}
+    		//点击翻译按钮
+    		$(".position-fixed").on("click","#translateBtn",(e)=>{
+    			 dataJsonObj = {} 
+    			 let arr = Array.from($("#title"+item))
+    			 arr.forEach((item,index)=>{
+    				 if($(item).siblings(".radio-con").length !== 0) {
+    					 //radio类型绑数
+    					 let radioName = $(item).next().find(".radio-box").find("input").attr("name")
+    					 let val = $('input[name='+radioName+']:checked').val();
+    					 dataJsonObj[radioName] = val
+    				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
+    					 //信用等级
+    					 let name =$(item).next().find("input").attr("name")
+    					 let val =$(item).next().find("input").val()
+    					 dataJsonObj[name] = val
+    				 }else if($(item).next().hasClass("textarea-module")) {
+    					 //无标题多行文本输入框
+    					 let name =$(item).next().find("textarea").attr("name")
+    					 let val =$(item).next().find("textarea").val()
+    					  let id = $(item).next().find("textarea").attr("entityid")
+    					 dataJsonObj[name] = val
+    				 }else if($(item).next().find("input").hasClass("float-date")){
+    					 //浮动非财务
+    					  let name =$(item).next().find("input").attr("name")
+    					  let val =$(item).next().find("input").val()
+    					  let id = $(item).next().find("input").attr("entityid")
+    					  dataJsonObj[name] = val
+    				 }else {
+    					 let formArr = Array.from($(item).siblings().find(".form-control"))
+    					 formArr.forEach((item,index)=>{
+    						 let id = $(item).attr("id");
+    						 let anotherIdArr = id.split("_")
+    						 anotherIdArr.pop();
+    						 let anotherId = anotherIdArr.join('_')
+    						 let tempObj = _this.getFormData($('#'+id))
+    						 for(let i in tempObj){
+    							 if(tempObj.hasOwnProperty(i))
+    								 dataJsonObj[i] = tempObj[i]
+    						 }
+    					 })
+    				 }
+    				 
+    			 })
+    			 console.log(dataJsonObj)
+    			 $.ajax({
+    				 url:BASE_PATH + `credit/ordertranslate/translate`,
+    				 data:{
+    					 dataJson:JSON.stringify(dataJsonObj)
+    				 }
+    			 })
+    		})
 			 //点击保存按钮
     		$(".position-fixed").on("click","#save",(e)=>{
     			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
@@ -1474,14 +1526,14 @@ let ReportConfig = {
     					 //信用等级
     					 let name =$(item).next().find("input").attr("name")
     					 let val =$(item).next().find("input").val()
-    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框
     					 let name =$(item).next().find("textarea").attr("name")
     					 let val =$(item).next().find("textarea").val()
     					  let id = $(item).next().find("textarea").attr("entityid")
     					  dataJsonObj["id"] = id
-    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().find("input").hasClass("float-date")){
     					 //浮动非财务
     					  let name =$(item).next().find("input").attr("name")
@@ -1501,7 +1553,7 @@ let ReportConfig = {
     						 dataJsonObj["id"] = entryid
     						 for(let i in tempObj){
     							 if(tempObj.hasOwnProperty(i))
-    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     						 }
     					 })
     				 }
@@ -1555,14 +1607,14 @@ let ReportConfig = {
     					 //信用等级
     					 let name =$(item).next().find("input").attr("name")
     					 let val =$(item).next().find("input").val()
-    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框
     					 let name =$(item).next().find("textarea").attr("name")
     					 let val =$(item).next().find("textarea").val()
     					 let id = $(item).next().find("textarea").attr("entityid")
     					  dataJsonObj["id"] = id
-    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().find("input").hasClass("float-date")){
     					 //浮动非财务
 	   					  let name =$(item).next().find("input").attr("name")
@@ -1582,7 +1634,7 @@ let ReportConfig = {
     						 dataJsonObj["id"] = entryid
     						 for(let i in tempObj){
     							 if(tempObj.hasOwnProperty(i))
-    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     						 }
     					 })
     				 }
