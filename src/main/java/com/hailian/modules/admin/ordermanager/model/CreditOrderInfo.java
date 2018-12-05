@@ -922,7 +922,6 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s6 ON c.speed = s6.detail_id ");//报告速度
 			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
 			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
-			fromSql.append(" LEFT JOIN credit_company_info f ON c.order_ = n.id ");//公司名称
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
 			//以下属性为不同语言下的公司id 
 			fromSql.append(" LEFT JOIN credit_company_info c1 ON c.id = c1.order_id and c1.sys_language=613 ");//语言为英文时公司id
