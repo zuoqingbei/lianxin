@@ -23,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 //import org.junit.Test;
 
 
-import org.junit.Test;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -33,6 +32,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.translate.model.TranslateModel;
 import com.hailian.modules.credit.translate.service.TranslateService;
+import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.HttpKit;
 
@@ -47,7 +47,7 @@ public class ReportTranslateController extends BaseProjectController {
 //		String json = HttpKit.readData(getRequest());
 		String json = getPara("dataJson");
 		String targetlanguage=getPara("targetlanguage");//目标语言
-		if(StringUtils.isNotBlank(targetlanguage)){
+		if(StringUtils.isBlank(targetlanguage)){
 			targetlanguage="en";
 		}
 //		String json="{\"id\":\"hello\",\"name\":\"肉类\"}";
@@ -67,11 +67,10 @@ public class ReportTranslateController extends BaseProjectController {
         jsonObject.put(key, value);
 		}
 		System.out.println(jsonObject.toString());
-		renderJson(jsonObject);
+		renderJson(jsonObject.toString());
 			
 		
 	}
-	@Test
 	public void translateRe() {
 		String json = HttpKit.readData(getRequest());
 		String targetlanguage=getPara("targetlanguage");//目标语言

@@ -76,7 +76,6 @@ let ReportConfig = {
         	}
         })
         this.idArrEn.forEach((item,index)=>{
-        	console.log(item)
         	const $table = $("#table"+item+"En");
         	let contents = this.contentsArrEn[index]
         	let titles = this.titleEn
@@ -259,10 +258,10 @@ let ReportConfig = {
     	/**
     	 * 绑定表单数据
     	 */
+    	this.formDataArr = []
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
-    	let titlesEn = this.formTitleEn;
-    	let formIndexEn = this.formIndexEn;
+    	let _this = this
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
@@ -284,6 +283,7 @@ let ReportConfig = {
 	    			data:paramObj,
 	    			success:(data)=>{
 	    				temp = data
+	    				_this.formDataArr.push(data.rows[0])
 	    			}
 	    			
 	    		})
@@ -346,19 +346,91 @@ let ReportConfig = {
 			 })
     		
     	})
+    },
+    bindFormDataEn(tempData,i){
+    	//英文绑定表单数据
+    	let titlesEn = this.formTitleEn;
+    	let formIndexEn = this.formIndexEn;
+    	let _this = this
+    	if(tempData){
+    		let arr = Array.from($("#titleEn"+formIndexEn[i]))
+			arr.forEach((item,index)=>{
+    			if($(item).siblings(".radio-con").length !== 0) {
+    				//radio类型绑数
+    				if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+    				let overall_rating =  temp.rows[0].overall_rating;
+    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+    				
+    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+    				return
+    			}
+    			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
+    				//信用等级
+    				let name =$(item).next().find("input").attr("name")
+    				$(item).next().find("input").val(temp.rows[0][name])
+    				return;
+    			}
+    			if($(item).next().hasClass("textarea-module")) {
+    				//无标题多行文本输入框
+    				if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).next().find("textarea").attr("entityid",obid)
+    				let name =$(item).next().find("textarea").attr("name")
+    				$(item).next().find("textarea").val(temp.rows[0][name])
+    				return;
+    			}
+    			if(($(item).next().find("input").hasClass("float-date"))) {
+    				//浮动非财务
+    				if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).next().find("input").attr("entityid",obid)
+    				let name =$(item).next().find("input").attr("name")
+    				$(item).next().find("input").val(temp.rows[0][name])
+    				return;
+    			}
+    			let formArr = Array.from($(item).siblings().find(".form-control"))
+    			//实体id
+    			let obid = tempData.id;
+    			formArr.forEach((item,index)=>{
+    				let obj = tempData;
+    				let id = $(item).attr("id");
+    				let anotherIdArr = id.split("_")
+    				anotherIdArr.pop();
+    				anotherIdArr.pop();
+    				let anotherId = anotherIdArr.join('_')
+    				$("#"+id).attr("entryid",obid)
+    				if($(item).is('select')){
+    					//如果是select
+    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
+    				}else {
+    					$("#"+id).val(obj[anotherId])
+    				}
+    			})
+    		})
+    		return;
+    	}
+    	
+    	
+    	
     	formIndexEn.forEach((item,index)=>{
     		let conf_id = titlesEn[index].id;
     		let getFormUrl = titlesEn[index].get_source;
-    		console.log(getFormUrl)
     		if(getFormUrl === null || getFormUrl === ''){return}
     		let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
     		let paramObj = {}
     		if(getFormUrl.split("*")[1]){
     			let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
     			tempParam.forEach((item,index)=>{
-    				paramObj[item] = this.rows[item]
+    				if(item === 'company_id') {
+    					paramObj[item] = this.rows[item+'_en']
+    				}else {
+    					paramObj[item] = this.rows[item]
+    				}
     			})
     		}
+    		if(!paramObj["company_id"] ){return}
     		paramObj["conf_id"] = conf_id
     		let temp;
     		$.ajax({
@@ -371,8 +443,8 @@ let ReportConfig = {
     			}
     			
     		})
-    		let arr = Array.from($("#title"+item))
-    		if(temp.rows === null){return}
+    		let arr = Array.from($("#titleEn"+item))
+    		if(temp.rows === null || temp.rows.length === 0){return}
     		arr.forEach((item,index)=>{
     			if($(item).siblings(".radio-con").length !== 0) {
     				//radio类型绑数
@@ -417,6 +489,7 @@ let ReportConfig = {
     				let obj = temp.rows[0];
     				let id = $(item).attr("id");
     				let anotherIdArr = id.split("_")
+    				anotherIdArr.pop();
     				anotherIdArr.pop();
     				let anotherId = anotherIdArr.join('_')
     				$("#"+id).attr("entryid",obid)
@@ -722,6 +795,7 @@ let ReportConfig = {
                 	_this.initFloat();
                 	InitObjTrans.dateInit();
                 	_this.bindFormData();
+                	_this.bindFormDataEn();
                 	_this.tabChange();
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
@@ -990,7 +1064,6 @@ let ReportConfig = {
                 				async:false,
                 				type:'post',
                 				success:(data)=>{
-                					console.log(data)
                 					returnData = data.rows
                 				}
                 			})
@@ -1067,7 +1140,6 @@ let ReportConfig = {
                 	
                 	
                 	let item_en = modulesToEn[index]
-                	console.log(item_en)
                 	if(!item_en){return}
                 	let smallModileTypeEn = item_en.smallModileType
                 	if(item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
@@ -1266,7 +1338,6 @@ let ReportConfig = {
             				async:false,
             				type:'post',
             				success:(data)=>{
-            					console.log(data)
             					returnData = data.rows
             				}
             			})
@@ -1440,12 +1511,13 @@ let ReportConfig = {
     	/**
     	 * 底部按钮点击事件
     	 */
-    	let formTitles = this.formTitle;
-    	let formIndex = this.formIndex;
+    	let formTitlesEn = this.formTitleEn;
+    	let formIndexEn = this.formIndexEn;
 //    	console.log(formTitles,formIndex)
     	let _this = this
-    	formIndex.forEach((item,index)=>{
-    		let alterSource = formTitles[index]["alter_source"];
+    	//_this.formDataArr
+    	formIndexEn.forEach((item,index)=>{
+    		let alterSource = formTitlesEn[index]["alter_source"];
     		if(alterSource === null || alterSource === ''){return}
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
     		let dataJson = []
@@ -1454,14 +1526,36 @@ let ReportConfig = {
     			
     			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
     			tempParam.forEach((item,index)=>{
-    				dataJsonObj[item] = this.rows[item]
+    				if(item === 'company_id') {
+    					dataJsonObj[item] = this.rows[item+'_en']
+    				}else {
+    					dataJsonObj[item] = this.rows[item]
+    				}
     			})
     		}
+			if(dataJsonObj["company_id"] && !dataJsonObj["company_id"]){return}
+    		console.log(_this.formDataArr[index])
+    		//点击翻译按钮
+    		$(".position-fixed").on("click","#translateBtn",(e)=>{
+    			 $("body").mLoading("show")
+    			 $.ajax({
+    				 url:BASE_PATH + `credit/ordertranslate/translate`,
+    				 type:'post',
+    				 data:{
+    					 dataJson:JSON.stringify(_this.formDataArr[index])
+    				 },
+    				 success:(data)=>{
+    					 $("body").mLoading("hide")
+    					 _this.bindFormDataEn(data,index)
+    				 }
+    			 })
+    		})
 			 //点击保存按钮
+    		
     		$(".position-fixed").on("click","#save",(e)=>{
     			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#save").addClass("disabled")
-    			 let arr = Array.from($("#title"+item))
+    			 let arr = Array.from($("#titleEn"+item))
     			 arr.forEach((item,index)=>{
     				 if($(item).siblings(".radio-con").length !== 0) {
     					 //radio类型绑数
@@ -1474,14 +1568,14 @@ let ReportConfig = {
     					 //信用等级
     					 let name =$(item).next().find("input").attr("name")
     					 let val =$(item).next().find("input").val()
-    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框
     					 let name =$(item).next().find("textarea").attr("name")
     					 let val =$(item).next().find("textarea").val()
     					  let id = $(item).next().find("textarea").attr("entityid")
     					  dataJsonObj["id"] = id
-    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().find("input").hasClass("float-date")){
     					 //浮动非财务
     					  let name =$(item).next().find("input").attr("name")
@@ -1495,18 +1589,20 @@ let ReportConfig = {
     						 let id = $(item).attr("id");
     						 let anotherIdArr = id.split("_")
     						 anotherIdArr.pop();
+    						 anotherIdArr.pop();
     						 let anotherId = anotherIdArr.join('_')
     						 let tempObj = _this.getFormData($('#'+id))
     						 let entryid = $(item).attr("entryid")
     						 dataJsonObj["id"] = entryid
     						 for(let i in tempObj){
     							 if(tempObj.hasOwnProperty(i))
-    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     						 }
     					 })
     				 }
     				 
     			 })
+    			 
     			 dataJson.push(dataJsonObj)
     			 $.ajax({
     				 url,
@@ -1517,7 +1613,7 @@ let ReportConfig = {
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
     					 $("#save").removeClass("disabled")
-    					 if(data.statusCode === 1 && !formIndex[index+1]) {
+    					 if(data.statusCode === 1 && !formIndexEn[index+1]) {
     						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.saveStatusUrl + `&model.id=${_this.rows["id"]}`;
     						 $.ajax({
     							 url,
@@ -1542,7 +1638,7 @@ let ReportConfig = {
     		$(".position-fixed").on("click","#commit",(e)=>{
     			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#commit").addClass("disabled")
-    			 let arr = Array.from($("#title"+item))
+    			 let arr = Array.from($("#titleEn"+item))
     			 arr.forEach((item,index)=>{
     				 if($(item).siblings(".radio-con").length !== 0) {
     					 //radio类型绑数
@@ -1555,14 +1651,14 @@ let ReportConfig = {
     					 //信用等级
     					 let name =$(item).next().find("input").attr("name")
     					 let val =$(item).next().find("input").val()
-    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框
     					 let name =$(item).next().find("textarea").attr("name")
     					 let val =$(item).next().find("textarea").val()
     					 let id = $(item).next().find("textarea").attr("entityid")
     					  dataJsonObj["id"] = id
-    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().find("input").hasClass("float-date")){
     					 //浮动非财务
 	   					  let name =$(item).next().find("input").attr("name")
@@ -1576,13 +1672,14 @@ let ReportConfig = {
     						 let id = $(item).attr("id");
     						 let anotherIdArr = id.split("_")
     						 anotherIdArr.pop();
+    						 anotherIdArr.pop();
     						 let anotherId = anotherIdArr.join('_')
     						 let tempObj = _this.getFormData($('#'+id))
     						 let entryid = $(item).attr("entryid")
     						 dataJsonObj["id"] = entryid
     						 for(let i in tempObj){
     							 if(tempObj.hasOwnProperty(i))
-    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷')
+    								 dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     						 }
     					 })
     				 }
@@ -1597,7 +1694,7 @@ let ReportConfig = {
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
     					 $("#commit").removeClass("disabled")
-    					 if(data.statusCode === 1 && !formIndex[index+1]) {
+    					 if(data.statusCode === 1 && !formIndexEn[index+1]) {
     						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `&model.id=${_this.rows["id"]}`;
     						 $.ajax({
     							 url,

@@ -34,7 +34,7 @@ public class Word105 {
     public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy",Locale.ENGLISH);
         String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
 
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -81,6 +81,8 @@ public class Word105 {
                     table = MainWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
                     table = MainWord.createTableH(child, rows);
+                }else if("z".equals(tableType)){
+                    MainWord.createTableZ(child,rows,map);
                 }
                 map.put(key, table);
             }
@@ -103,7 +105,7 @@ public class Word105 {
                 if ("credit_company_info".equals(t)) {
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        List rs = report.getTableData(true,  companyId, t, cn, ci, "");
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
@@ -115,7 +117,7 @@ public class Word105 {
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         //取数据
-                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        List rs = report.getTableData(false,  companyId, t, cn, ci, "");
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
