@@ -123,16 +123,16 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * @param isCompanyMainTable
 	 */
 	public void getBootStrapTable() {
-		getBootStrapTable(isCompanyMainTable(), StrUtils.isEmpty(getPara("sys_language"))?SimplifiedChinese:getPara("sys_language"), null);
+		getBootStrapTable(isCompanyMainTable(),  null);
 	}
 	//详情
 	public void getBootStrapTables() {
-		getBootStrapTables(isCompanyMainTable(), SimplifiedChinese,null);
+		getBootStrapTables(isCompanyMainTable(),null);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public void getBootStrapTable(boolean isCompanyMainTable, String sysLanguage,String companyId) {
+	public void getBootStrapTable(boolean isCompanyMainTable,String companyId) {
 
 		Record record = new Record();
 		String tableName = getPara("tableName", "");
@@ -144,69 +144,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		
 		// 获取关联字典表需要转义的下拉选
 		String selectInfo = getPara("selectInfo");
-
-		/*
-		// 解析实体获取required参数
-		CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
-		String getSource = confModel.getStr("get_source");
-		StringBuffer sqlSuf = new StringBuffer();
-		
-		if ((tableName != null && tableName.contains("_dict"))) {
-			sqlSuf.append(" 1=1 and ");
-		}else if ((!("".equals(getSource) || getSource == null)) && getSource.contains("*")) {
-			String[] requireds = getSource.split("\\*");
-			String[] required = requireds[1].split("\\$");
-			for (String str : required) {
-				sqlSuf.append(str.trim() + "=" + getPara(str).trim() + " and ");
-			}
-		} else {
-			sqlSuf.append(" company_id=" + companyId.trim() + " ");
-
-		}
-		
-		if (sqlSuf.length() < 1) {
-			renderJson(record.set("rows", null));
-			return;
-		}
-		
-		// 如果是公司主表,将company_id改为id
-		if (isCompanyMainTable) {
-			String sqlSuf2 = sqlSuf + "";
-			sqlSuf2 = sqlSuf2.replace("company_id", "id");
-			sqlSuf = new StringBuffer(sqlSuf2);
-		}
-		List rows = null;
-		try {
-			Class<?> table = Class.forName(PAKAGENAME_PRE + className);
-			BaseProjectModel model = (BaseProjectModel) table.newInstance();
-			rows = model.find(
-					"select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 and sys_language in(?)",
-					Arrays.asList(new String[] { sysLanguage }).toArray());
-			if (!("".equals(selectInfo) || selectInfo == null)) {
-				
-				// 解析前端传入的字符串
-				List<Map<Object, Object>> selectInfoMap = parseJsonArray(selectInfo);
-				
-				// 将id转化为字典表中对应的字符串
-				dictIdToString(rows, selectInfoMap);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			renderJson(new ResultType(0, "类文件未找到异常!"));
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-			renderJson(new ResultType(0, "实例化异常!"));
-		} catch (IllegalAccessException e) {
-			renderJson(new ResultType(0, "非法存取异常!"));
-			e.printStackTrace();
-		}*/
-
-        List rows = getTableData(isCompanyMainTable,sysLanguage,companyId,tableName,className,confId,selectInfo);
+        List rows = getTableData(isCompanyMainTable,companyId,tableName,className,confId,selectInfo);
 		renderJson(record.set("rows", rows).set("total", rows!=null?rows.size():null));
 	}
 
    //详情模式
-	public void getBootStrapTables(boolean isCompanyMainTable, String sysLanguage,String companyId) {
+	public void getBootStrapTables(boolean isCompanyMainTable, String companyId) {
 		Record record = new Record();
 		String tableName = getPara("tableName", "");
 		String className = getPara("className");
@@ -215,7 +158,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String confId = getPara("conf_id", "");
 		 String orderId = getPara("orderId");
-		  List rows = getTableDatas(isCompanyMainTable,sysLanguage,companyId,tableName,className,confId,orderId);
+		  List rows = getTableDatas(isCompanyMainTable, companyId,tableName,className,confId,orderId);
 			renderJson(record.set("rows", rows).set("total", rows!=null?rows.size():null));
 		}
 
@@ -231,7 +174,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      */
     public List getTableData(String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
         boolean isCompanyMainTable = tableName.equals("credit_company_info")||className.equals("CreditCompanyInfo");
-        return getTableData(isCompanyMainTable,sysLanguage,companyId,tableName,className,confId,selectInfo);
+        return getTableData(isCompanyMainTable,companyId,tableName,className,confId,selectInfo);
     }
 
 
@@ -249,7 +192,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @param selectInfo  下拉框（把id转value）
      * @return
      */
-    public List getTableData(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
+    public List getTableData(boolean isCompanyMainTable,String companyId,String tableName,String className,String confId,String selectInfo){
         // 解析实体获取required参数
         String type = null;
         if(getRequest()!=null){
@@ -300,8 +243,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			Class<?> table = Class.forName(PAKAGENAME_PRE + className);
 			BaseProjectModel model = (BaseProjectModel) table.newInstance();
 			rows = model.find(
-					"select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 and sys_language in(?)",
-					Arrays.asList(new String[] { sysLanguage }).toArray());
+					"select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
 			if (!("".equals(selectInfo) || selectInfo == null)) {
 
 				// 解析前端传入的字符串
@@ -323,7 +265,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         return rows;
     }
     //详情
-    public List getTableDatas(boolean isCompanyMainTable, String sysLanguage,String companyId,String tableName,String className,String confId,String orderId){
+    public List getTableDatas(boolean isCompanyMainTable, String companyId,String tableName,String className,String confId,String orderId){
         // 获取关联字典表需要转义的下拉选
 		String selectInfo = getPara("selectInfo");
 		List rows = null;
