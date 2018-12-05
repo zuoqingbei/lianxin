@@ -54,7 +54,15 @@ let Login = {
                 	success:function(data){
                 		console.log(data+"1313");
                 		console.log(data);
-                		alert(JSON.stringify(data.roleIds));
+//                		alert(JSON.stringify(data.roleIds));
+                		/*
+                		 * 1  管理员
+							2  报告员
+							3  客服
+							4  质检员
+							5  分析员
+							6  翻译员
+                		 */
                 		if(data.statusCode===0){
                 			$(".error-tip").show();
                 		}else{

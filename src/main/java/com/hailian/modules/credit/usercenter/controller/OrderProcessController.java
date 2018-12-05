@@ -24,12 +24,14 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
+import com.hailian.modules.admin.ordermanager.model.CreditKpiResult;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail;
 import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
+import com.hailian.modules.admin.ordermanager.model.CreditReportPrice;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.model.AgentModel;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
@@ -42,15 +44,18 @@ import com.hailian.modules.credit.notice.model.NoticeLogModel;
 import com.hailian.modules.credit.notice.model.NoticeModel;
 import com.hailian.modules.credit.province.model.ProvinceModel;
 import com.hailian.modules.credit.usercenter.model.ResultType;
+import com.hailian.modules.credit.usercenter.service.KpiService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.template.ext.directive.Str;
 import com.jfinal.upload.UploadFile;
 
 /**
@@ -468,14 +473,23 @@ public class OrderProcessController extends BaseProjectController{
             }else{
                 map.put("status", code);
             }
+           
+            //计算绩效
+            if("341".equals(code)) {
+            	 getKpi(code);
+            }
+           
             PublicUpdateMod(map);
+            
             CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
+            
             //添加站内信，
             addNoice(code);
             //调用企查查接口
             if("595".equals(code)){
                 new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report"),"612");
             }
+            
             renderJson(new ResultType());
             return new ResultType();
         } catch (Exception e) {
@@ -935,203 +949,71 @@ public class OrderProcessController extends BaseProjectController{
             renderJson(new ResultType(0, "操作失败!"));
         }
     }
-    /**
-     * 2018/10/15 16:20  2018/10/24 16:20复更
-     * lzg
-     * 报告管理下的信息录入的填报页面的信息(除了企业注册信息信息)
-     */
-    public void reportedJson(){
-        //JFlyFoxUtils.passwordEncrypt(password);
-        //com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail
-        String companyId = getPara("company_id");
-        String flagStr = getPara("flagStr","");
-        String tableName = getPara("tableName","");
-        List<Object> params = new ArrayList<>();
-        params.add(companyId);
-		
-		/*try {
-			Class<?> table = Class.forName("com.hailian.modules.admin.ordermanager.model."+getPara("className"));
-			BaseProjectModel model = (BaseProjectModel) table.newInstance();
-			model.find("select * from "+tableName+" where company_id=? and del_flag=0",params.toArray());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}*/
 
-
-        List rows = null;
-        switch (flagStr) {
-            case  "tableRecord":
-                CreditCompanyHis companyHis = getModel(CreditCompanyHis.class);
-                rows = companyHis.find("select * from credit_company_his where company_id=? and del_flag=0",params.toArray());
-                break;
-            case  "tableShareholdersInfo":
-                CreditCompanyShareholder companyShareholder = getModel(CreditCompanyShareholder.class);
-                rows = companyShareholder.find("select * from credit_company_shareholder where company_id=? and del_flag=0",params.toArray());
-                break;
-            case "tableShareholdersDetail":
-                CreditCompanyLegalShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyLegalShareholderDetail.class);
-                rows = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id=? and del_flag=0",params.toArray());
-                break;
-            case "tableInvestment":
-                CreditCompanyInvestment companyInvestment = getModel(CreditCompanyInvestment.class);
-                rows = companyInvestment.find("select * from credit_company_investment where company_id=? and del_flag=0",params.toArray());
-                break;
-            case "tableManagement":
-                CreditCompanyManagement companyManagement = getModel(CreditCompanyManagement.class);
-                rows = companyManagement.find("select * from credit_company_management where company_id=? and del_flag=0",params.toArray());
-                break;
-            default:
-                rows = new ArrayList<>();
-                break;
-        }
-        ResultType result = new ResultType();
-        result.setRows(rows);
-        renderJson(result);
+    public void getKpi(String statusCode) {
+    	 CreditOrderInfo model = getModel(CreditOrderInfo.class);
+    	 String  modelId = model.get("id")+"";
+    	 if(model==null||modelId==null) {
+    		throw new RuntimeException("实体和实体id不能为空!");
+    	 }
+    	 String now = getNow();
+    	 Integer userId =  getSessionUser().getUserid();
+    	 String reportUser = model.get("report_user");
+    	 String IQC = model.get("IQC");
+    	 String  translateUser = model.get("translate_user");
+    	 String  analyzeUser = model.get("analyze_user");
+    	 model = model.findById();
+    	 
+         //计算绩效
+    	 Db.tx(new IAtom() {
+			@Override
+			public boolean run() throws SQLException {
+				 if ("311".equals(statusCode)) {
+					CreditKpiResult publicModel = new CreditKpiResult();
+					publicModel.set("update_by", userId);
+					publicModel.set("create_by", userId);
+					publicModel.set("update_date", now);
+					publicModel.set("create_date", now);
+					publicModel.set("order_id", modelId);
+					
+					CreditKpiResult tempModel = new CreditKpiResult();
+		           	KpiService kpiServie = new KpiService();
+		           	
+		           	if(!StrUtils.isEmpty(reportUser)) {
+		           		double reportUserKpi = kpiServie.getKpi(2+"" ,modelId);//当前订单的报告员
+		           		System.out.println("报告员绩效:"+reportUserKpi);
+		           		tempModel.clear()._setAttrs(publicModel).set("user_id", reportUser).set("money", reportUserKpi);
+		           		tempModel.save();
+		           	}
+		           	
+		           	if(!StrUtils.isEmpty(IQC)) {
+		            	double IQCKpi = kpiServie.getKpi(4+"" ,modelId);//当前订单的质检员
+		            	System.out.println("质检员绩效:"+IQCKpi);
+		           		tempModel.clear()._setAttrs(publicModel).set("user_id", IQC).set("money", IQCKpi);
+		           		tempModel.save();
+		           	}
+		           	
+		           	if(!StrUtils.isEmpty(translateUser)) {
+		           		double translateKpi = kpiServie.getKpi(6+"" ,modelId);//当前订单的翻译
+		           		System.out.println("翻译员绩效:"+translateKpi);
+		           		tempModel.clear()._setAttrs(publicModel).set("user_id", translateUser).set("money", translateKpi);
+		           		tempModel.save();
+		           	}
+		           	
+		           	if(!StrUtils.isEmpty(analyzeUser)) {
+		           		double analystKpi = kpiServie.getKpi(5+"" ,modelId);//当前订单的分析员
+		           		System.out.println("分析员绩效:"+analystKpi);
+		           		tempModel.clear()._setAttrs(publicModel).set("user_id", analyzeUser).set("money", analystKpi);
+		           		tempModel.save();
+		           	}
+		       
+					}
+				return true;
+			}
+		 });
+        
+         
     }
-
-
-
-
-    /**
-     * 2018/10/12
-     * lzg
-     * 报告管理下的信息录入的填报页面的保存
-     */
-    public void reportedSave(){
-        try {
-            //从前台获取数据
-            String companyHistoryJson = getPara("companyHistory");
-            String tableShareholdersInfoJson = getPara("tableShareholdersInfo");
-            String tableShareholdersDetailJson = getPara("tableShareholdersDetail");
-            String tableInvestmentJson = getPara("tableInvestment");
-            String tableManagementJson = getPara("tableManagement");
-            String companyZhuCeJson = getPara("companyZhuCe");
-            String companyId = getPara("companyId");
-            String userId = getSessionUser().getUserid()+"";
-            String now = getNow();
-            //保存前获取已有数据
-            CreditCompanyHis companyHis = getModel(CreditCompanyHis.class);
-            CreditCompanyInvestment companyInvestment = getModel(CreditCompanyInvestment.class);
-            CreditCompanyManagement companyManagement = getModel(CreditCompanyManagement.class);
-            CreditCompanyShareholder companyShareholder = getModel(CreditCompanyShareholder.class);
-            CreditCompanyLegalShareholderDetail companyShareholderDetail  =  getModel(CreditCompanyLegalShareholderDetail.class);
-
-            final List<CreditCompanyHis> companyHisList = companyHis.find("select * from credit_company_his where company_id = "+companyId);
-            final List<CreditCompanyInvestment> companyInvestmentList = companyInvestment.find("select * from credit_company_investment where company_id = "+companyId);
-            final List<CreditCompanyManagement> companyManagementList = companyManagement.find("select * from credit_company_management where company_id = "+companyId);
-            final List<CreditCompanyShareholder> companyShareholderList = companyShareholder.find("select * from credit_company_shareholder where company_id = "+companyId);
-            final List<CreditCompanyLegalShareholderDetail> companyShareholderDetailList = companyShareholderDetail.find("select * from credit_company_shareholder_detail where company_id = "+companyId);
-            //转化为model集合
-            final List<BaseProjectModel>  companyHistoryModelList = infoEntry(companyHistoryJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyHis");
-            final List<BaseProjectModel>  CreditCompanyInvestmentList = infoEntry(tableInvestmentJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInvestment");
-            final List<BaseProjectModel>  CreditCompanyManagementList = infoEntry(tableManagementJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement");
-            final List<BaseProjectModel>  CreditCompanyShareholderList = infoEntry(tableShareholdersInfoJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder");
-            final List<BaseProjectModel>  CreditCompanyLegalShareholderDetailList = infoEntry(tableShareholdersDetailJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalShareholderDetail");
-            List<BaseProjectModel> companyZhuCeJsonModelList = infoEntry(companyZhuCeJson.trim(),"com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo");
-            //数据库事务
-            Db.tx(new IAtom(){
-                @Override
-                //在这里写要执行的操作，在执行的过程中如果有异常将回滚，如果return false 就也回滚
-                public boolean run() throws SQLException {
-                    //保存前删除已有的记录
-                    companyHisList.forEach( (CreditCompanyHis baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
-                    companyInvestmentList.forEach( (CreditCompanyInvestment baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
-                    companyManagementList.forEach( (CreditCompanyManagement baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
-                    companyShareholderList.forEach( (CreditCompanyShareholder baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
-                    companyShareholderDetailList.forEach( (CreditCompanyLegalShareholderDetail baseProjectModel)->{baseProjectModel.set("del_flag", "1"); baseProjectModel.update();});
-                    //保存操作
-                    companyHistoryModelList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
-                    CreditCompanyInvestmentList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
-                    CreditCompanyManagementList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
-                    CreditCompanyShareholderList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
-                    CreditCompanyLegalShareholderDetailList.forEach( (BaseProjectModel  baseProjectModel) ->{baseProjectModel.remove("id") .set("create_by",userId) .set("create_date", now) .set("company_id", companyId) .save();});
-                    return true;
-                }
-            });
-
-            //公司基本信息更新
-            for (BaseProjectModel<? extends CreditCompanyInfo> baseProjectModel : companyZhuCeJsonModelList) {
-                baseProjectModel.update();
-            }
-            //状态更新
-            if(statusSave().getStatusCode()==0){
-                throw new RuntimeException();
-            }
-            renderJson(new ResultType(1,"操作成功!"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            renderJson(new ResultType(0,"请输入合乎规范的值!"));
-        }
-    }
-
-    /**
-     * 把 形如[{"a":b,"a1":b1},{"c":d,"a1":b1},{"e":f,"a1":b1}]的json数组分解放进model里
-     * @param <T>
-     * @param jsonStr
-     * @param model
-     * @throws ClassNotFoundException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     */
-    @SuppressWarnings("unchecked")
-    private   <T> List<BaseProjectModel> infoEntry(String jsonStr,String entryTypeParam) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
-        if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":"))
-            return new ArrayList<BaseProjectModel>();
-        List<BaseProjectModel> list = new ArrayList<BaseProjectModel>();
-        Map<String,String> map = new HashMap<>();
-        String jsonStr2 = jsonStr.replace("\"", "");
-        String[] jsonStr3 = jsonStr2.split("}");
-        if(jsonStr3!=null||"".equals(jsonStr3)){
-            for (String string : jsonStr3) {
-                if(string==null||"".equals(string.trim())||"]".equals(string.trim())){
-                    continue;
-                }
-                String[] string4 = string.split(",");
-                for (String string2 : string4) {
-                    if(string2==null||"".equals(string2)){
-                        continue;
-                    }
-                    String string5 = string2.substring(string2.indexOf("{")+1,string2.indexOf(":"));
-                    String string6 =  string2.substring(string2.indexOf(":")+1);
-                    if("null".equals(string6)){
-                        continue;
-                    }
-                    map.put(string5, string6);
-                }
-                //反射获取Class对象
-                @SuppressWarnings("rawtypes")
-                Class entryType = null;
-                BaseProjectModel model = null;
-                entryType = Class.forName(entryTypeParam);
-                //根据Class对象创建实例
-                model = (BaseProjectModel) entryType.newInstance();
-                System.out.println("\n\t\t\t\ttable:"+entryTypeParam.substring(entryTypeParam.lastIndexOf(".")+1)+"\n");
-                for (String key : map.keySet()) {
-                    System.out.println(key+":"+map.get(key));
-                    model.set(key.trim(), map.get(key).trim());
-                }
-                model.set("update_by", getSessionUser().getUserid());
-                model.set("update_date", getNow());
-                list.add(model);
-                map.clear();
-            }
-        }
-        return list;
-    }
-
-    
-
-
-
-
-
-
-
-
 
 }
 
