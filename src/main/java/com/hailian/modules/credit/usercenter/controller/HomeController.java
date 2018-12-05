@@ -368,26 +368,30 @@ public class HomeController extends BaseProjectController {
 		//获取订单公司名称
 		String right_company_name_en=model.get("right_company_name_en");
 		
-		//判断该公司是否存在于公司库中
-		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
-		//如果公司不存在则在数据库中增加该公司的记录
-		if(company==null){
+		//非快速递交时创建报告
+		CreditCompanyInfo company=null;
+		CreditCompanyInfo companyEn=null;
+		String is_fastsubmmit=model.get("is_fastsubmmit");
+		CreditOrderInfo theSameOrder=null;
+		//查询到有相同公司报告直接提交
+		if(!is_fastsubmmit.equals("-1")){
+			theSameOrder = OrderManagerService.service.getTheSameOrder(right_company_name_en,model.get("report_type")+"",model.get("report_language")+"", this);
+			model.set("is_fastsubmmit", theSameOrder.get("id"));
+			model.set("company_id", theSameOrder.get("id"));
+			model.set("status", "311");
+		}else{
 			company=new CreditCompanyInfo();
 			company.set("name_en", right_company_name_en);
 			company.save();
-			//获取新增公司
-			//company=CreditCompanyInfo.dao.findByENname(right_company_name_en);
-		}
-		//获取公司id
-		model.set("company_id", company.get("id"));
-		String is_fastsubmmit=model.get("is_fastsubmmit");
-		//判断该公司是否存在于公司库中
-		CreditOrderInfo theSameOrder=null;
-		//查询到有相同公司报告直接提交
-		if(is_fastsubmmit.equals("0")){
-			theSameOrder = OrderManagerService.service.getTheSameOrder(company.get("id")+"",company.get("report_type")+"", this);
-			model.set("is_fastsubmmit", theSameOrder.get("id"));
-			model.set("status", "311");
+			String language=model.get("report_language")+"";
+			if(language.equals("216") || language.equals("217")){
+				companyEn=new CreditCompanyInfo();
+				companyEn.set("name_en", right_company_name_en);
+				companyEn.set("sys_language", "613");
+				companyEn.save();
+			}
+			model.set("company_id", company.get("id"));
+			
 		}
 		//获取报告员id
 		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
@@ -423,6 +427,14 @@ public class HomeController extends BaseProjectController {
 		model.set("update_by", userid);
 		model.set("update_date", date1);
 		String id = OrderManagerService.service.modifyOrder(0,model,user,this);//保存订单
+		if(company !=null){
+			company.set("order_id", id);
+			company.update();
+		}
+		if(companyEn !=null){
+			companyEn.set("order_id", id);
+			companyEn.update();
+		}
 		CreditOperationLog.dao.addOneEntry(this, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
 		cof.save();
 		CreditUploadFileModel model1= new CreditUploadFileModel();

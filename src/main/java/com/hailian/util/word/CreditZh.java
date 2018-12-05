@@ -89,6 +89,8 @@ public class CreditZh {
                     table = MainWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
                     table = MainWord.createTableH(child, rows);
+                }else if("z".equals(tableType)){
+                    MainWord.createTableZ(child,rows,map);
                 }
                 map.put(key, table);
             }
@@ -111,7 +113,7 @@ public class CreditZh {
                 if("credit_company_info".equals(t)){
                     String word_key = conf.get("word_key")+"";
                     if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        List rs = report.getTableData(true,companyId, t, cn, ci, "");
                         if(rs!=null&&rs.size()>0){
                             BaseProjectModel model = (BaseProjectModel)rs.get(0);
                             String v = model.get(word_key) + "";
@@ -121,7 +123,7 @@ public class CreditZh {
                 }else{
                     String word_key = conf.get("word_key")+"";
                     if(word_key!=null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        List rs = report.getTableData(true, companyId, t, cn, ci, "");
                         if(rs!=null&&rs.size()>0){
                             BaseProjectModel model = (BaseProjectModel)rs.get(0);
                             String v = model.get(word_key) + "";
@@ -153,7 +155,7 @@ public class CreditZh {
             }
         }
         //MainWord.buildWord(map, "h://word/_信用分析报告样本.docx", "h://3.docx");
-        MainWord.buildWord(map, webRoot + "/word/" + "_信用分析报告样本", _prePath + ".docx");
+        MainWord.buildWord(map, webRoot + "/word/" + "_信用分析报告样本.docx", _prePath + ".docx");
     }
 
 

@@ -908,6 +908,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" u2.realname AS translateUser,");
 			selectSql.append(" u3.realname AS analyzeUser,");
 			selectSql.append(" u4.name AS customId, ");
+			selectSql.append(" c1.id AS company_id_en, ");
+			selectSql.append(" c2.id AS company_id_fan, ");
 			selectSql.append(" q.id AS qid ");
 			fromSql.append(" FROM credit_order_info c ");
 			fromSql.append(" LEFT JOIN credit_country s1 ON c.country = s1.id ");//国家
@@ -923,6 +925,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
 			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
+			//以下属性为不同语言下的公司id 
+			fromSql.append(" LEFT JOIN credit_company_info c1 ON c.id = c1.order_id and c1.sys_language=613 ");//语言为英文时公司id
+			fromSql.append(" LEFT JOIN credit_company_info c2 ON c.id = c2.order_id and c2.sys_language=614 ");//语言为繁体时公司id
 			//代理类别
 			fromSql.append(" LEFT JOIN sys_dict_detail s8 ON c.agent_category = s8.detail_id ");//地区
 			//获取文件信息
@@ -1181,9 +1186,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	* @date 2018年11月18日下午5:55:29  
 	* @TODO
 	 */
-	public CreditOrderInfo isTheSameOrder(String company_id,String report_type, BaseProjectController c) {
-		String sql="select t.* from credit_order_info t where t.company_id=? and t.report_type=? and t.del_flag=0 and t.status='311' order by t.receiver_date desc";
-		return dao.findFirst(sql,company_id,report_type);
+	public CreditOrderInfo isTheSameOrder(String company_id,String report_type,String report_language, BaseProjectController c) {
+		String sql="select t.* from credit_order_info t where t.right_company_name_en=? and t.report_type=? and t.report_language=? and t.del_flag=0 and t.status='311' order by t.create_date desc";
+		return dao.findFirst(sql,company_id,report_type,report_language);
 	}
 	/**
 	 * 查找以往是否有该订单公司的真正要引用的报告订单
@@ -1191,9 +1196,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	* @date 2018年11月18日下午5:55:29  
 	* @TODO
 	 */
-	public CreditOrderInfo getTheSameOrder(String company_id,String report_type, BaseProjectController c) {
-		String sql="select t.* from credit_order_info t where t.company_id=? and t.report_type=? and t.del_flag=0 and t.status='311' and t.is_fastsubmmit='-1' order by t.receiver_date desc";
-		return dao.findFirst(sql,company_id,report_type);
+	public CreditOrderInfo getTheSameOrder(String company_id,String report_type,String report_language, BaseProjectController c) {
+		String sql="select t.* from credit_order_info t where t.right_company_name_en=? and t.report_type=? and t.report_language=? and t.del_flag=0 and t.status='311' and t.is_fastsubmmit='-1' order by t.create_date ";
+		return dao.findFirst(sql,company_id,report_type,report_language);
 	}
 	public List<CreditOrderInfo> exportAchievements(String reportername,
 			String time, String userid, BaseProjectController c) {

@@ -116,15 +116,16 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					String id = entry.get("company_id")+"";
 					entry.remove("company_id");
 					entry.put("id",id);
+				}else {
+					if(!("".equals(sysLanguage)||sysLanguage==null)) {
+						model.set("sys_language", Integer.parseInt(sysLanguage));
+					}
 				}
 				//根据Class对象创建实例
 			    model = (BaseProjectModel) entryType.newInstance();
 			    model.set("update_by", userId);
 				model.set("update_date", now);
 				
-				if(!("".equals(sysLanguage)||sysLanguage==null)) {
-					model.set("sys_language", Integer.parseInt(sysLanguage));
-				}
 				if(!exitsId){
 					model.set("create_by", userId);
 					model.set("create_date", now);

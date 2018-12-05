@@ -103,7 +103,7 @@ public class RocEn {
                 if ("credit_company_info".equals(t)) {
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        List rs = report.getTableData(true,  companyId, t, cn, ci, "");
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
@@ -115,7 +115,7 @@ public class RocEn {
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         //取数据
-                        List rs = report.getTableData(true, sysLanguage, companyId, t, cn, ci, "");
+                        List rs = report.getTableData(true,   companyId, t, cn, ci, "");
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";

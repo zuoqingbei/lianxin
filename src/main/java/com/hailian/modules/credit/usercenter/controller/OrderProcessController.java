@@ -478,7 +478,10 @@ public class OrderProcessController extends BaseProjectController{
             }
            
             //计算绩效
-            getKpi(code);
+            if("341".equals(code)) {
+            	 getKpi(code);
+            }
+           
             PublicUpdateMod(map);
             
             CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
@@ -952,7 +955,7 @@ public class OrderProcessController extends BaseProjectController{
 
     public void getKpi(String statusCode) {
     	 CreditOrderInfo model = getModel(CreditOrderInfo.class);
-    	 String  modelId = model.get("id");
+    	 String  modelId = model.get("id")+"";
     	 if(model==null||modelId==null) {
     		throw new RuntimeException("实体和实体id不能为空!");
     	 }

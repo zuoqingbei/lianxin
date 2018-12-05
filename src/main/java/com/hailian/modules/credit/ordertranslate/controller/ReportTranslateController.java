@@ -32,6 +32,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.translate.model.TranslateModel;
 import com.hailian.modules.credit.translate.service.TranslateService;
+import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.HttpKit;
 
@@ -46,7 +47,7 @@ public class ReportTranslateController extends BaseProjectController {
 //		String json = HttpKit.readData(getRequest());
 		String json = getPara("dataJson");
 		String targetlanguage=getPara("targetlanguage");//目标语言
-		if(StringUtils.isNotBlank(targetlanguage)){
+		if(StringUtils.isBlank(targetlanguage)){
 			targetlanguage="en";
 		}
 //		String json="{\"id\":\"hello\",\"name\":\"肉类\"}";
@@ -66,51 +67,11 @@ public class ReportTranslateController extends BaseProjectController {
         jsonObject.put(key, value);
 		}
 		System.out.println(jsonObject.toString());
-		renderJson(jsonObject);
+		renderJson(jsonObject.toString());
 			
 		
 	}
-	
-	public void translateRe() {
-		String json = HttpKit.readData(getRequest());
-		String targetlanguage=getPara("targetlanguage");//目标语言
-		if(StringUtils.isNotBlank(targetlanguage)){
-			targetlanguage="en";
-		}
-	 List<Map<String,Map>> list = new ArrayList<Map<String,Map>>();
-//	 String json ="{\"scm\":{\"id\":\"hello\",\"name\":\"肉类\"},\"scm2\":{\"id2\":\"hello2\",\"name2\":\"肉类\"}}";
-		//String json="{\"id\":\"hello\",\"name\":\"肉类\"}";
-		JSONObject jsonObject = JSONObject.fromObject(json);
-		JSONObject jsonObjecttemp=null;
-		Iterator iterator = jsonObject.keys();//遍历翻译代替
-		while(iterator.hasNext()){
-        String   key = (String) iterator.next();
-        Object listArray = new JSONTokener(jsonObject.getString(key)).nextValue();
-        if (listArray instanceof JSONObject) {
-        	JSONObject jsonObject3 = (JSONObject)listArray;
-        	System.out.println(jsonObject3);
-        	Iterator iterator2 = jsonObject3.keys();//遍历翻译代替
-    		while(iterator2.hasNext()){
-    			 String   key2 = (String) iterator2.next();
-    			 String value = jsonObject3.getString(key2);
-    		        if(isChinese(value)){
-//    		        	value = TransApi.Trans(value,targetlanguage);
-    		        	value = TransApi.Trans(value,targetlanguage);
-    		        	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
-    		        	if(translateByError!=null){
-    		        		value = translateByError.get("correct_phrase");//翻译校正
-    		        	}
-    		        }
-    		        jsonObject3.put(key2, value);
-    		}
-    		jsonObject.put(key, jsonObject3);
-		}
-		}
-		System.out.println(jsonObject.toString());
-		renderJson(jsonObject);
-			
-		
-	}
+
 	 public static boolean isChinese(String str){
 
 	      String regEx = "[\\u4e00-\\u9fa5]+";
