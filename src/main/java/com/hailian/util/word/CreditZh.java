@@ -89,6 +89,8 @@ public class CreditZh {
                     table = MainWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
                     table = MainWord.createTableH(child, rows);
+                }else if("z".equals(tableType)){
+                    MainWord.createTableZ(child,rows,map);
                 }
                 map.put(key, table);
             }
@@ -153,7 +155,7 @@ public class CreditZh {
             }
         }
         //MainWord.buildWord(map, "h://word/_信用分析报告样本.docx", "h://3.docx");
-        MainWord.buildWord(map, webRoot + "/word/" + "_信用分析报告样本", _prePath + ".docx");
+        MainWord.buildWord(map, webRoot + "/word/" + "_信用分析报告样本.docx", _prePath + ".docx");
     }
 
 
