@@ -258,10 +258,10 @@ let ReportConfig = {
     	/**
     	 * 绑定表单数据
     	 */
+    	this.formDataArr = []
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
-    	let titlesEn = this.formTitleEn;
-    	let formIndexEn = this.formIndexEn;
+    	let _this = this
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
@@ -283,6 +283,7 @@ let ReportConfig = {
 	    			data:paramObj,
 	    			success:(data)=>{
 	    				temp = data
+	    				_this.formDataArr.push(data.rows[0])
 	    			}
 	    			
 	    		})
@@ -345,7 +346,75 @@ let ReportConfig = {
 			 })
     		
     	})
+    },
+    bindFormDataEn(tempData,i){
     	//英文绑定表单数据
+    	let titlesEn = this.formTitleEn;
+    	let formIndexEn = this.formIndexEn;
+    	let _this = this
+    	if(tempData){
+    		let arr = Array.from($("#titleEn"+formIndexEn[i]))
+			arr.forEach((item,index)=>{
+    			if($(item).siblings(".radio-con").length !== 0) {
+    				//radio类型绑数
+    				if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+    				let overall_rating =  temp.rows[0].overall_rating;
+    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+    				
+    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+    				return
+    			}
+    			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
+    				//信用等级
+    				let name =$(item).next().find("input").attr("name")
+    				$(item).next().find("input").val(temp.rows[0][name])
+    				return;
+    			}
+    			if($(item).next().hasClass("textarea-module")) {
+    				//无标题多行文本输入框
+    				if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).next().find("textarea").attr("entityid",obid)
+    				let name =$(item).next().find("textarea").attr("name")
+    				$(item).next().find("textarea").val(temp.rows[0][name])
+    				return;
+    			}
+    			if(($(item).next().find("input").hasClass("float-date"))) {
+    				//浮动非财务
+    				if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).next().find("input").attr("entityid",obid)
+    				let name =$(item).next().find("input").attr("name")
+    				$(item).next().find("input").val(temp.rows[0][name])
+    				return;
+    			}
+    			let formArr = Array.from($(item).siblings().find(".form-control"))
+    			//实体id
+    			let obid = tempData.id;
+    			formArr.forEach((item,index)=>{
+    				console.log(item)
+    				let obj = tempData;
+    				let id = $(item).attr("id");
+    				let anotherIdArr = id.split("_")
+    				anotherIdArr.pop();
+    				anotherIdArr.pop();
+    				let anotherId = anotherIdArr.join('_')
+    				$("#"+id).attr("entryid",obid)
+    				if($(item).is('select')){
+    					//如果是select
+    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
+    				}else {
+    					$("#"+id).val(obj[anotherId])
+    				}
+    			})
+    		})
+    		return;
+    	}
+    	
+    	
+    	
     	formIndexEn.forEach((item,index)=>{
     		let conf_id = titlesEn[index].id;
     		let getFormUrl = titlesEn[index].get_source;
@@ -723,6 +792,7 @@ let ReportConfig = {
                 	_this.initFloat();
                 	InitObjTrans.dateInit();
                 	_this.bindFormData();
+                	_this.bindFormDataEn();
                 	_this.tabChange();
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
@@ -1445,6 +1515,7 @@ let ReportConfig = {
     	let formIndexEn = this.formIndexEn;
 //    	console.log(formTitles,formIndex)
     	let _this = this
+    	//_this.formDataArr
     	formIndexEn.forEach((item,index)=>{
     		let alterSource = formTitlesEn[index]["alter_source"];
     		if(alterSource === null || alterSource === ''){return}
@@ -1458,54 +1529,19 @@ let ReportConfig = {
     				dataJsonObj[item] = this.rows[item]
     			})
     		}
+    		console.log(_this.formDataArr[index])
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
-    			 dataJsonObj = {} 
-    			 let arr = Array.from($("#title"+item))
-    			 arr.forEach((item,index)=>{
-    				 if($(item).siblings(".radio-con").length !== 0) {
-    					 //radio类型绑数
-    					 let radioName = $(item).next().find(".radio-box").find("input").attr("name")
-    					 let val = $('input[name='+radioName+']:checked').val();
-    					 dataJsonObj[radioName] = val
-    				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
-    					 //信用等级
-    					 let name =$(item).next().find("input").attr("name")
-    					 let val =$(item).next().find("input").val()
-    					 dataJsonObj[name] = val
-    				 }else if($(item).next().hasClass("textarea-module")) {
-    					 //无标题多行文本输入框
-    					 let name =$(item).next().find("textarea").attr("name")
-    					 let val =$(item).next().find("textarea").val()
-    					  let id = $(item).next().find("textarea").attr("entityid")
-    					 dataJsonObj[name] = val
-    				 }else if($(item).next().find("input").hasClass("float-date")){
-    					 //浮动非财务
-    					  let name =$(item).next().find("input").attr("name")
-    					  let val =$(item).next().find("input").val()
-    					  let id = $(item).next().find("input").attr("entityid")
-    					  dataJsonObj[name] = val
-    				 }else {
-    					 let formArr = Array.from($(item).siblings().find(".form-control"))
-    					 formArr.forEach((item,index)=>{
-    						 let id = $(item).attr("id");
-    						 let anotherIdArr = id.split("_")
-    						 anotherIdArr.pop();
-    						 let anotherId = anotherIdArr.join('_')
-    						 let tempObj = _this.getFormData($('#'+id))
-    						 for(let i in tempObj){
-    							 if(tempObj.hasOwnProperty(i))
-    								 dataJsonObj[i] = tempObj[i]
-    						 }
-    					 })
-    				 }
-    				 
-    			 })
-    			 console.log(dataJsonObj)
+    			 $("body").mLoading("show")
     			 $.ajax({
     				 url:BASE_PATH + `credit/ordertranslate/translate`,
+    				 type:'post',
     				 data:{
-    					 dataJson:JSON.stringify(dataJsonObj)
+    					 dataJson:JSON.stringify(_this.formDataArr[index])
+    				 },
+    				 success:(data)=>{
+    					 $("body").mLoading("hide")
+    					 _this.bindFormDataEn(data,index)
     				 }
     			 })
     		})
