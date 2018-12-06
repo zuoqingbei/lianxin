@@ -118,7 +118,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					entry.put("id",id);
 				}else {
 					if(!("".equals(sysLanguage)||sysLanguage==null)) {
-						model.set("sys_language", Integer.parseInt(sysLanguage));
+						entry.put("sys_language", Integer.parseInt(sysLanguage));
 					}
 				}
 				//根据Class对象创建实例
