@@ -965,7 +965,7 @@ public class OrderProcessController extends BaseProjectController{
     	 String IQC = model.get("IQC");
     	 String  translateUser = model.get("translate_user");
     	 String  analyzeUser = model.get("analyze_user");
-    	 model = model.findById();
+    	 model = model.findById(modelId);
     	 
          //计算绩效
     	 Db.tx(new IAtom() {
