@@ -1,16 +1,26 @@
 package com.hailian.modules.credit.ordertranslate.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.translate.model.TranslateModel;
 import com.hailian.modules.credit.translate.service.TranslateService;
+import com.hailian.modules.credit.usercenter.model.ModuleJsonData;
+import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.util.translate.TransApi;
 
 /**
@@ -66,4 +76,38 @@ public class ReportTranslateController extends BaseProjectController {
 	       return false;
 
 	   }
+	 public void alterBootStrapTable(){
+		//订单id
+		String orederid = getPara("id");
+		//获取报告类型
+		String reportType = getPara("reportType");
+		//是否需要英文模板
+		String istranslate = getPara("istranslate");
+		//根据订单id获取订单信息
+		CreditOrderInfo coi = CreditOrderInfo.dao.findById(orederid);
+		if(coi==null) {
+			
+			return;
+		}
+		if("true".equals(istranslate)){
+			//根据订单信息获取公司信息
+			//找到当前报告类型下的父节点
+			List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
+			List<ModuleJsonData> list = new ArrayList<ModuleJsonData>();
+			//defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
+			for(CreditReportModuleConf crmc:crmcs) {
+				//找到当前父节点下的子节点
+				List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportType);
+				list.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));
+			}
+			for(ModuleJsonData data:list){
+				String smallModileType = data.getSmallModileType();
+				
+			}
+			System.out.println(list);
+			System.out.println(list);
+			
+		}
+		
+	 }
 }
