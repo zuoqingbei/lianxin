@@ -61,11 +61,19 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 根据参数获取下拉选
 	 */
 	public void getSelete() {
-		String selectStr = template.getSysDictDetailString3(getPara("type"), getPara("selectedId"),
-				getPara("disPalyCol"));
+		String selectStr = "";
+		String type = getPara("type");
+		String disPalyCol =  getPara("disPalyCol");
+		if(!StrUtils.isEmpty(type)&&"country".equals(type)) {
+			if("detail_name_en".equals(disPalyCol)) {
+			 selectStr =  template.getCounty(getPara("selectedId"), "name_en");
+			}else if("name".equals(disPalyCol)) {
+		     selectStr =  template.getCounty(getPara("selectedId"), "name");
+			 }
+		 }
+		selectStr =  template.getSysDictDetailString3(getPara("type"), getPara("selectedId"), disPalyCol);
 		renderJson(new Record().set("selectStr", selectStr));
 	}
-
 	/**
 	 * alterBootStrapTable
 	 */
@@ -865,8 +873,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      */
     public void selectQuality(){
     	   Record record = new Record();
-    String type=	getPara("type");
-    List<SysDictDetail> details =  SysDictDetail.dao.find("select detail_id,dict_type,detail_name,detail_code as value from sys_dict_detail where dict_type=?",type);
+    String type= getPara("type");
+    String  name= getPara("disPalyCol");
+    String sql="select detail_id,dict_type,"+name
+    		+ " as detail_name,detail_code as value from sys_dict_detail where dict_type=?";
+    
+    List<SysDictDetail> details =  SysDictDetail.dao.find(sql,type);
     renderJson(record.set("rows", details).set("total", details!=null?details.size():null));	
     }
 	

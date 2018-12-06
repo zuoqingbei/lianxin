@@ -107,7 +107,7 @@ let Index = {
 	         $(".fixed-table-body").css({'height':'115%','transition':'all .1s'})
 	         $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"12px",'transition':'all .1s'})
 	        }else if($('#hideBtn').text().trim() === '展开'){
-	         $("#btnCollapse").css({'height':'3rem',"overflow":'visibility'})
+	         $("#btnCollapse").css({'height':'5.2rem',"overflow":'visibility'})
 	         $('#hideBtn').html('收起 <i class="fa fa-angle-up"></i>')
 	         $(".fixed-table-body").css({'height':'100%','transition':'all .1s'})
 	         $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"8px",'transition':'all .1s'})

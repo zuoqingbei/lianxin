@@ -436,13 +436,15 @@ $(document).ready(function () {
  function isTheSameCompany(){
 	 var companyname=$("#right_company_name_en").val();
 	 var report_type=$("select[name='attr.report_type']").find("option:selected").val();
+	 var report_language=$("select[name='attr.report_language']").find("option:selected").val();
    	 $.ajax({
    		 	type: "get",
    		 	contentType: "application/json; charset=utf-8",
    		 	url:"/admin/ordermanager/isTheSameCompany",
 	        data:{
 	        	"companyname":encodeURI(companyname),
-	        	"report_type":report_type
+	        	"report_type":report_type,
+	        	"report_language":report_language
 	        },	
 	        dataType:"json",
 	        success: function(data) {
@@ -451,6 +453,7 @@ $(document).ready(function () {
 	        		$("#reporttime").html(data.result.receiver_date);
 	        		$("#isfinance").html(data.result.is_hava_finance);
 	        		$("#lastFiscalYear").html(data.result.last_fiscal_year);
+	        		$("#is_fastsubmit").val(data.result.id);
 	        		//弹出提示
 	        		$("#show_checked_modal").trigger("click")
            		 }else{
@@ -461,7 +464,7 @@ $(document).ready(function () {
 	    });
 }
  $("#modal_checked_submit").click(function(){
-		  $("#is_fastsubmit").val("0");
+		 
 		  tableSubmit();
  })
  $("#modal_checked_create").click(function(){
