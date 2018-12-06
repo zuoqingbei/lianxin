@@ -1,40 +1,17 @@
 package com.hailian.modules.credit.ordertranslate.controller;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
-
-
-
-
-
-
-
-
-
+import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
-//import org.junit.Test;
-
-
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.util.JSONTokener;
-
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.translate.model.TranslateModel;
 import com.hailian.modules.credit.translate.service.TranslateService;
-import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.util.translate.TransApi;
-import com.jfinal.kit.HttpKit;
 
 /**
  * @Description: 翻译接口

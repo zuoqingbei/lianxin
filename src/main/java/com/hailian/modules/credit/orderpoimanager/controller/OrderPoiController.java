@@ -254,7 +254,6 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
 						}
-						
 						//是否有相同报告
 						CreditOrderInfo theSameOrder = OrderManagerService.service.isTheSameOrder(orderReal.get("right_company_name_en")+"",orderReal.get("report_type")+"",orderReal.get("report_language")+"", this);
 						if(theSameOrder!=null){
