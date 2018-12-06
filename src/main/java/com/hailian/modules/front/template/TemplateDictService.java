@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hailian.jfinal.base.BaseService;
+import com.hailian.modules.admin.ordermanager.model.CreditCountry;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.jfinal.plugin.activerecord.Db;
 
 /**
  * 
@@ -258,6 +260,27 @@ public class TemplateDictService extends BaseService {
 			
 		}
 		return sb.toString();
+	}
+	
+	
+	/**
+	 lzg 2018/12/05
+	 * @return
+	 */
+	public String getCounty(Object selectedId,String showColumnName ) {
+		List<CreditCountry> listDetail = new ArrayList<>();
+		StringBuffer sb=new StringBuffer();
+	 listDetail = CreditCountry.dao.find("select *  from credit_country where del_flag=0");
+	
+		for(CreditCountry detail:listDetail){
+			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
+				sb.append("<option selected='selected' m-detail-id='"+detail.get("id")+"' value='"+detail.get("id")+"'>"+detail.get(showColumnName)+"</option>");
+			}else{
+				sb.append("<option  m-detail-id='"+detail.get("id")+"' value='"+detail.get("id")+"'>"+detail.get(showColumnName)+"</option>");
+			}
+		}
+		return sb.toString();
+	
 	}
 	/**
 	 * 
