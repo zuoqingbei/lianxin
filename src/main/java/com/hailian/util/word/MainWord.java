@@ -204,7 +204,9 @@ public class MainWord {
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if("select".equals(fieldType)) {
                     value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "";
-                }else {
+                } else if("file".equals(fieldType)){
+
+                } else {
                     value = !"".equals(value) ? value : "";
                 }
                 row.put(column, value);
