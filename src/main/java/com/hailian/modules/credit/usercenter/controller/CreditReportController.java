@@ -26,12 +26,12 @@ public class CreditReportController extends BaseProjectController{
         //BusinessZh.reportTable("8","","65","612",userid);
         //CreditZh.reportTable("8","","65","612",userid);
         //CreditEn.reportTable("8","","65","612",userid);
-        //Word105.reportTable("16","","7777831","612",userid);
+        Word105.reportTable("16","777891","7777831","612",userid);
         //报告类型7 订单ID 公司ID65  语言612
         //BaseInfoEn.reportTable("7", "", "65", "612", userid);
 
         //报告类型12 订单ID 公司ID65  语言612
-        RocZh.reportTable("12","777875","7777813", "612", userid);
+        //RocZh.reportTable("12","777875","7777813", "612", userid);
         //RocHy.reportTable("15","","7777829", "612", userid);
     }
 
