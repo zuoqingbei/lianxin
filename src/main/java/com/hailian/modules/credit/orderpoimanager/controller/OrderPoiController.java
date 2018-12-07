@@ -254,12 +254,11 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
 						}
-						
 						//是否有相同报告
 						CreditOrderInfo theSameOrder = OrderManagerService.service.isTheSameOrder(orderReal.get("right_company_name_en")+"",orderReal.get("report_type")+"",orderReal.get("report_language")+"", this);
 						if(theSameOrder!=null){
 							isTheSameOrderNum++;
-							isTheSameOrder+=isTheSameOrderNum+".第"+r+"行，第G列监测到有相同企业名称;";
+							isTheSameOrder+=isTheSameOrderNum+".第"+r+"行，第G列监测到有相同企业报告;";
 						}
 						//获取报告价格
 						if(orderReal.get("type") != null && orderReal.get("speed")!=null && orderReal.get("report_type")!= null  && orderReal.get("order_type")!=null && orderReal.get("custom_id")!=null && orderReal.get("country")!=null){
