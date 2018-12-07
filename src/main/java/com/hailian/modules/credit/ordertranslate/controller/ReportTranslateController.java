@@ -1,5 +1,7 @@
 package com.hailian.modules.credit.ordertranslate.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -45,11 +47,14 @@ public class ReportTranslateController extends BaseProjectController {
         String value = jsonObject.getString(key);
         if(isChinese(value)){
 //        	value = TransApi.Trans(value,targetlanguage);
-        	value = TransApi.Trans(value,targetlanguage);
-        	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
-        	if(translateByError!=null){
-        		value = translateByError.get("correct_phrase");//翻译校正
+        	if(!isValidDate(value)){
+        		value = TransApi.Trans(value,targetlanguage);
+            	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
+            	if(translateByError!=null){
+            		value = translateByError.get("correct_phrase");//翻译校正
+            	}
         	}
+        	
         }
         jsonObject.put(key, value);
 		}
@@ -76,38 +81,23 @@ public class ReportTranslateController extends BaseProjectController {
 	       return false;
 
 	   }
-	 public void alterBootStrapTable(){
-		//订单id
-		String orederid = getPara("id");
-		//获取报告类型
-		String reportType = getPara("reportType");
-		//是否需要英文模板
-		String istranslate = getPara("istranslate");
-		//根据订单id获取订单信息
-		CreditOrderInfo coi = CreditOrderInfo.dao.findById(orederid);
-		if(coi==null) {
-			
-			return;
-		}
-		if("true".equals(istranslate)){
-			//根据订单信息获取公司信息
-			//找到当前报告类型下的父节点
-			List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
-			List<ModuleJsonData> list = new ArrayList<ModuleJsonData>();
-			//defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
-			for(CreditReportModuleConf crmc:crmcs) {
-				//找到当前父节点下的子节点
-				List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportType);
-				list.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));
-			}
-			for(ModuleJsonData data:list){
-				String smallModileType = data.getSmallModileType();
-				
-			}
-			System.out.println(list);
-			System.out.println(list);
-			
-		}
-		
-	 }
+	 public static boolean isValidDate(String str) {
+	      boolean convertSuccess=true;
+	       SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+	       try {
+//设置lenient为false. 否则SimpleDateFormat会比较宽松地验证日期，比如2007/02/29会被接受，并转换成2007/03/01
+	          format.setLenient(false);
+	          format.parse(str);
+	       } catch (ParseException e) {
+	          // e.printStackTrace();
+	// 如果throw java.text.ParseException或者NullPointerException，就说明格式不对
+	           convertSuccess=false;
+	       } 
+	       return convertSuccess;
+	}
+	 public static void main(String[] args) {
+		String s="2007年02月02号";
+		 
+		System.out.println(isValidDate(s));
+	}
 }
