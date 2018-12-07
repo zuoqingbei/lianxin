@@ -130,6 +130,8 @@ public class OrderProcessController extends BaseProjectController{
     public static final String orderFilingOfReport = "-7";
     public static LinkedList<Object> orderFilingOfReportColumns = new LinkedList<>();
     public static LinkedList<Object> orderFilingOfReportParamNames = new LinkedList<>();
+   
+    public static final String orderQualityOfReport = "-8";
     static{
         orderAllocationColumns.add("u1.realname");
         orderAllocationColumns.add("c.num");
@@ -157,6 +159,7 @@ public class OrderProcessController extends BaseProjectController{
         WEB_PARAM_NAMES.put(orderSubmitOfOrder, orderSubmitOfOrderParamNames);
         WEB_PARAM_NAMES.put(infoOfReport, infoOfReportParamNames);
         WEB_PARAM_NAMES.put(orderFilingOfReport, orderFilingOfReportParamNames);
+        WEB_PARAM_NAMES.put(orderQualityOfReport, orderFilingOfReportParamNames);
     }
     /**
      * @todo   展示订单分配页
