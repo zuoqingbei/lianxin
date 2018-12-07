@@ -1007,7 +1007,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.orderQualityOfReport:
 				//状态为质检,其维护在字典表中
 				//信息录入完成后的质检，分析质检，翻译质检
-				fromSql.append(" and status in ('298','301','306') ");
+				fromSql.append(" and status in ('298','303','308') ");
 				//权限归属:报告员,分析员,质检员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")");
 				break;			
