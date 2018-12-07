@@ -6,6 +6,7 @@ import com.deepoove.poi.data.RowRenderData;
 import com.deepoove.poi.data.TextRenderData;
 import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
@@ -70,7 +71,6 @@ public class BusinessZh {
                 //取数据
                 finDataRows = FinanceService.getFinancialEntryList("1");
             }
-
             //无url的跳过取数
             if (source == null || "".equals(source)) {
                 continue;
@@ -216,7 +216,7 @@ public class BusinessZh {
                     }
                     datas.add(row);
                 }
-                //生成图片
+                //jfreechart生成饼图（股东）
                 DefaultPieDataset pds = new DefaultPieDataset();
                 for (LinkedHashMap<String, String> m : datas) {
                     Object[] keys = m.keySet().toArray();
@@ -237,20 +237,43 @@ public class BusinessZh {
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
-
         //财务模块生成
         map.put("financial", financial(reportType,companyId,sysLanguage,"1"));
-
+        //生成word
         MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
+        //重新添加图片
+        replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
+    }
+
+    /**
+     * 替换图片
+     * @param tarPath
+     * @param orderId
+     * @param userid
+     * @param company_id
+     * @param sysLanguage
+     */
+    public static void replaceImg(String tarPath,String orderId,Integer userid,String company_id,String sysLanguage) {
+        //获取图片
+        List<CreditCompanyBrandandpatent> list = CreditCompanyBrandandpatent.dao.find("select * from credit_company_brandandpatent "
+                + "where company_id = " + company_id + " and sys_language=" + sysLanguage + " and del_flag = 0 ");
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        for (CreditCompanyBrandandpatent model : list) {
+            Integer id = model.getInt("id");
+            map.put("img" + id, new PictureRenderData(120, 120, "h://1111.png"));
+        }
+        String sourcePath = tarPath + ".docx";
+        String targetPath = tarPath + "_p.docx";
+        MainWord.buildWord(map, sourcePath, targetPath);
         //上传文件
-        String filePath = MainWord.uploadReport(_prePath + ".docx", orderId, userid);
+        String filePath = MainWord.uploadReport(targetPath, orderId, userid);
         //发送邮件
-        List<Map<String, String>> fileList = new ArrayList<Map<String, String>>();
-        Map<String, String> fileMap = new HashMap<String, String>();
+        List<Map<String, String>> fileList = new ArrayList();
+        Map<String, String> fileMap = new HashMap();
         fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
         fileList.add(fileMap);
         try {
-            new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
+            //new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -334,7 +357,6 @@ public class BusinessZh {
             Integer begin = ccf.getInt("begin_date_value");
             Integer end = ccf.getInt("end_date_value");
             Integer is_sum_option = ccf.getInt("is_sum_option");
-
             Style sumStyle = new Style();
             if(is_sum_option.intValue()==1){
                 sumStyle.setBold(true);
@@ -344,7 +366,4 @@ public class BusinessZh {
         }
         return new MiniTableRenderData(rowList);
     }
-
-
-
 }

@@ -19,6 +19,16 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.credit.companychangeitem.model.ChangeitemModel;
+import com.hailian.modules.credit.companychangeitem.service.ChangeitemService;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
+import com.jfinal.plugin.activerecord.Db;
+import net.sf.json.JSONArray;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -82,15 +92,15 @@ public class HttpCrawler {
         in.close();
         crawler.getMofcomUrl("海尔集团", cookieStore, verifyCode);*/
 		
-		// 3. 香港查册网 - 完成解析
-		//crawler.getIcrisUrl("FNETLINK CO., LIMITED");
+		//3. 香港查册网 - 完成解析
+		crawler.getIcrisUrl("海尔集团有限公司","",null);
 		
 		//4.全国法院被执行人信息
-        HashMap<String,Object> map = crawler.getCourtVerifyCode();
-        Scanner in = new Scanner(System.in);
-        String verifyCode = in.nextLine();
-        in.close();
-		crawler.getCourtUrl("华正",verifyCode,map);
+        //HashMap<String,Object> map = crawler.getCourtVerifyCode();
+        //Scanner in = new Scanner(System.in);
+        //String verifyCode = in.nextLine();
+        //in.close();
+		//crawler.getCourtUrl("华正",verifyCode,map);
 		
 		//crawler.getSource();
 		
@@ -425,8 +435,14 @@ public class HttpCrawler {
     /**
      * 爬取香港查册网站
      * @param company
+     * @param companyId
      */
-	public static void getIcrisUrl(String company) {
+	public static void getIcrisUrl(String company,String companyId,CreditOrderInfo orderInfo) {
+        /*String country = orderInfo.getStr("country");
+        country = new ReportInfoGetDataController().dictIdToString(country);
+        if(!"中国香港".equals(country)){
+            return;
+        }*/
         //第一级页面
         HttpGet get = new HttpGet("https://www.icris.cr.gov.hk/csci/clearsession.jsp?user_type=iguest");
         CloseableHttpClient httpclient = sslClient(null);
@@ -459,7 +475,8 @@ public class HttpCrawler {
         postData.add(new BasicNameValuePair("searchMode", "BYNAME"));
         postData.add(new BasicNameValuePair("firstSearchPage", "True"));
         postData.add(new BasicNameValuePair("mode", "LEFT PARTIAL"));
-        postData.add(new BasicNameValuePair("language", "en"));
+        //en英文  ch繁体中文字
+        postData.add(new BasicNameValuePair("language", "ch"));
         postData.add(new BasicNameValuePair("query", company));
         postData.add(new BasicNameValuePair("page", "1"));
         postData.add(new BasicNameValuePair("companyName", ""));
@@ -515,7 +532,7 @@ public class HttpCrawler {
                     post.setEntity(new UrlEncodedFormEntity(postData, "utf-8"));//捆绑参数
                     response = httpclient.execute(post);
                     html = EntityUtils.toString(response.getEntity(), "utf-8");
-                    parseIcris(html);
+                    parseIcris(html,companyId);
                 }
             } else {
                 System.out.println("香港查册网：未查询到'" + company + "'");
@@ -539,80 +556,120 @@ public class HttpCrawler {
 	 * @param html
 	 * @return
 	 */
-	public static Map<String, String> parseIcris(String html) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		String splitChar = "_";
-		Document doc = Jsoup.parse(html);
-		Elements tables = doc.select("table");
-		//分析结果页面，第四个表格是公司基本信息，第五个表格是变更记录
-		if(tables!=null) {
-			for(int z=0;z<tables.size();z++) {
-				switch(z) {
-					case 3: //公司基本信息
-						Element table = tables.get(z);
-						Elements trs = table.select("tr");
-						for(int i=0;i<trs.size();i++) {
-							Element tr = trs.get(i);
-							Elements tds = tr.select("td");
-							switch (i) {
-								case 0:  //第一行 公司编号
-									result.put("companyNo", icrisPaseTable(tds));
-									break;
-								case 1:  //第二行 公司名称
-									result.put("companyName", icrisPaseTable(tds));
-									break;
-								case 2:  //第三行 公司类别
-									result.put("companyType", icrisPaseTable(tds));
-									break;
-								case 3:  //第四行 成立日期
-									result.put("IncorDate", icrisPaseTable(tds));
-									break;
-								case 4:  //第五行 公司现况
-									result.put("status", icrisPaseTable(tds));
-									break;
-							}		
-						}
-						break;
-					case 4:
-						SortedMap<String,String> changeMap = new TreeMap<String,String>();
-						//公司变更记录
-						Element table2 = tables.get(z);
-						Elements trs2 = table2.select("tr");
-						for(int i=0;i<trs2.size();i++) {
-							Element tr = trs2.get(i);
-							Elements tds = tr.select("td");
-							//解决单元格合并的情况
-							if(tds!=null) {
-								//有合并
-								if(tds.size()==1) {
-									String lk = changeMap.lastKey();
-									String value = changeMap.get(lk);
-									String first = value.split(splitChar)[0];
-									changeMap.put(i+"", first+splitChar+tds.get(0).text());
-								}
-								//未合并
-								if(tds.size()==2) {
-									changeMap.put(i+"", tds.get(0).text()+splitChar+tds.get(1).text());
-								}
-							}
-						}
-						List<HashMap<String,Object>> changeList = new ArrayList<HashMap<String,Object>>();
-						for(String key: changeMap.keySet()) {
-							HashMap<String,Object> map = new HashMap<String,Object>();
-							String v = changeMap.get(key);
-							String[] vs = v.split(splitChar);
-							map.put("data",vs[0]);
-							map.put("name",vs[1]);
-							changeList.add(map);
-						}
-						result.put("changeList", changeList);
-						break;
-				}
-			}	
-		}
-		System.out.println(JSONObject.toJSONString(result));
-		return null;
-	}
+	public static void parseIcris(String html,String companyId) {
+        //公司信息保存
+        CreditCompanyInfo companyInfoModel = new CreditCompanyInfo();
+        //解析结果
+        Map<String, Object> result = new HashMap<String, Object>();
+        String splitChar = "_";
+        Document doc = Jsoup.parse(html);
+        Elements tables = doc.select("table");
+        //分析结果页面，第四个表格是公司基本信息，第五个表格是变更记录
+        if (tables != null) {
+            for (int z = 0; z < tables.size(); z++) {
+                switch (z) {
+                    case 3: //公司基本信息
+                        Element table = tables.get(z);
+                        Elements trs = table.select("tr");
+                        for (int i = 0; i < trs.size(); i++) {
+                            Element tr = trs.get(i);
+                            Elements tds = tr.select("td");
+                            String value = icrisPaseTable(tds);
+                            switch (i) {
+                                case 0:  //第一行 公司编号
+                                    result.put("companyNo", value);
+                                    companyInfoModel.set("register_code",value);
+                                    break;
+                                case 1:  //第二行 公司名称
+                                    result.put("companyName", value);
+                                    companyInfoModel.set("name",value);
+                                    break;
+                                case 2:  //第三行 公司类别
+                                    result.put("companyType", value);
+                                    companyInfoModel.set("company_type",value);
+                                    break;
+                                case 3:  //第四行 成立日期
+                                    result.put("IncorDate", value);
+                                    companyInfoModel.set("establishment_date",value);
+                                    break;
+                                case 4:  //第五行 公司现况
+                                    result.put("status", value);
+                                    companyInfoModel.set("registration_status",value);
+                                    break;
+                            }
+                        }
+                        break;
+                    case 4:
+                        SortedMap<String, String> changeMap = new TreeMap<String, String>();
+                        //公司变更记录
+                        Element table2 = tables.get(z);
+                        Elements trs2 = table2.select("tr");
+                        for (int i = 0; i < trs2.size(); i++) {
+                            Element tr = trs2.get(i);
+                            Elements tds = tr.select("td");
+                            //解决单元格合并的情况
+                            if (tds != null) {
+                                //有合并
+                                if (tds.size() == 1) {
+                                    String lk = changeMap.lastKey();
+                                    String value = changeMap.get(lk);
+                                    String first = value.split(splitChar)[0];
+                                    changeMap.put(i + "", first + splitChar + tds.get(0).text());
+                                }
+                                //未合并
+                                if (tds.size() == 2) {
+                                    changeMap.put(i + "", tds.get(0).text() + splitChar + tds.get(1).text());
+                                }
+                            }
+                        }
+                        HashMap<String, String> changeList = new HashMap<String, String>();
+                        for (String key : changeMap.keySet()) {
+                            HashMap<String, Object> map = new HashMap<String, Object>();
+                            String v = changeMap.get(key);
+                            String[] vs = v.split(splitChar);
+                            map.put("date", vs[0]);
+                            map.put("name", vs[1]);
+                            changeList.put(vs[0], changeList.get(vs[0]) != null ? changeList.get(vs[0]) + " " + vs[1] : vs[1]);
+                        }
+                        result.put("changeList", changeList);
+                        break;
+                }
+            }
+        }
+        System.out.println(JSONObject.toJSONString(result));
+        //保存公司数据
+        companyInfoModel.set("id",companyId);
+        companyInfoModel.update();
+
+        //变更事项
+        HashMap<String, String> changeList = (HashMap<String, String>) result.get("changeList");
+        if(changeList != null && changeList.keySet().size()>0){
+            //根据公司编码和报告类型删除记录
+            CreditCompanyHis.dao.deleteBycomIdAndLanguage(companyId, "612");
+            List<CreditCompanyHis> hisModellist=new ArrayList<CreditCompanyHis>();
+            for(String key : changeList.keySet()) {
+                //变更日期
+                String date = key;
+                //变更项
+                String name = changeList.get(key);
+                CreditCompanyHis companyhisModel = new CreditCompanyHis();
+                //看是否为非必需项
+                //ChangeitemModel changeitemByNotNessent = ChangeitemService.service.getChangeitemByNotNessent(ProjectName);
+                //if (changeitemByNotNessent == null) {
+                    companyhisModel.set("change_items", "公司名称记录");
+                    companyhisModel.set("change_back", name);
+                    companyhisModel.set("date", date);
+                    companyhisModel.set("company_id", companyId);
+                    companyhisModel.set("sys_language", "612");
+                    hisModellist.add(companyhisModel);
+                //}
+            }
+            if(CollectionUtils.isNotEmpty(hisModellist)){
+                Db.batchSave(hisModellist, hisModellist.size());
+            }
+        }
+
+    }
 	
 	//香港查册-解析表格
 	public static String icrisPaseTable(Elements tds) {
