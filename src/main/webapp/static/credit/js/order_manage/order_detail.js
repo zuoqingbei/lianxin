@@ -362,6 +362,8 @@ let OrderDetail = {
     // 设置质检结果下拉列表
     setQualitySelect() {
         let _this = this;
+        this.english = [7, 9, 11].includes(this.row.report_type - 0);
+       var detailname= this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
             if (!['基本信息', '流程进度', '质检评分'].includes($(this).text())) {
                 $(this).nextAll('.module-content').after(qualitySelectHtml);
@@ -369,7 +371,7 @@ let OrderDetail = {
         });
         let BASE_PATH = this.BASE_PATH + 'ReportGetData/';
         // 获取下拉质检结果框选项的内容
-        $.get(BASE_PATH + 'selectQuality?type=' + this.row.quality_type, function (data) {
+        $.get(BASE_PATH + 'selectQuality?type=' + this.row.quality_type+"&disPalyCol="+detailname, function (data) {
             // 设置option内容
             let OptHtml = '';
             data.rows.forEach((item) => {
