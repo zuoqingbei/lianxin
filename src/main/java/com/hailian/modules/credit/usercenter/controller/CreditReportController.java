@@ -1,10 +1,13 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.util.word.*;
+import com.jfinal.plugin.activerecord.Record;
 
 /**
  * @className UserLoginController.java
@@ -33,6 +36,19 @@ public class CreditReportController extends BaseProjectController{
         //报告类型12 订单ID 公司ID65  语言612
         //RocZh.reportTable("12","777875","7777813", "612", userid);
         //RocHy.reportTable("15","","7777829", "612", userid);
+    }
+
+    public void getData(){
+        this.getResponse().setHeader("Access-Control-Allow-Origin", "*");
+        this.getResponse().setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        this.getResponse().setHeader("Access-Control-Max-Age", "3600");
+        this.getResponse().setHeader("Access-Control-Allow-Headers", "x-requested-with");
+
+        CreditCompanySubtables model = CreditCompanySubtables.dao.findById("47");
+        String overview = model.getStr("overview");
+        //JSONObject.toJSONString(result)
+        System.out.println(overview);
+        renderJson(new Record().set("overview", overview));
     }
 
 
