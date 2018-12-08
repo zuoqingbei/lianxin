@@ -140,7 +140,7 @@ let creditAnalysis = {
                           field: '',
                       }, {
                           title: '提成',
-                          field: 'custom_id',
+                          field: 'money',
                       }
 
             ]/*.map(function (item,index) {
