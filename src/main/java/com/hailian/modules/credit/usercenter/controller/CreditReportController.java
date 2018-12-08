@@ -47,7 +47,11 @@ public class CreditReportController extends BaseProjectController{
         CreditCompanySubtables model = CreditCompanySubtables.dao.findById("47");
         String overview = model.getStr("overview");
         //JSONObject.toJSONString(result)
+
+        overview = overview.replaceAll("(\\\\r\\\\n|\\\\n)", "\n");
+
         System.out.println(overview);
+
         renderJson(new Record().set("overview", overview));
     }
 

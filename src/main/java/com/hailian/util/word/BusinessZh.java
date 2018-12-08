@@ -6,10 +6,7 @@ import com.deepoove.poi.data.RowRenderData;
 import com.deepoove.poi.data.TextRenderData;
 import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.model.*;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
@@ -147,14 +144,22 @@ public class BusinessZh {
                     CreditReportModuleConf module = child.get(i);
                     String column_name = module.getStr("column_name");
                     String temp_name = module.getStr("temp_name");
-                    cols.put(column_name, temp_name);
+                    String field_type = module.getStr("field_type");
+                    cols.put(column_name, temp_name + "|" + field_type);
                 }
                 //取数据
                 for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     for (String column : cols.keySet()) {
+                        String[] strs = cols.get(column).split("\\|");
+                        String fieldType = strs.length == 2 ? strs[1] : "";
                         String value = model.get(column) != null ? model.get(column) + "" : "";
-                        map.put(column, value);
+                        if ("textarea".equals(fieldType)) {
+                            value = value.replaceAll("(\\\\r\\\\n|\\\\n)", "\n");
+                            map.put(column, value);
+                        }else{
+                            map.put(column, value);
+                        }
                     }
                 }
             }
@@ -238,7 +243,13 @@ public class BusinessZh {
             }
         }
         //财务模块生成
-        map.put("financial", financial(reportType,companyId,sysLanguage,"1"));
+        //credit_company_financial_statements_conf
+        List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id="+companyId+" and del_flag=0 ");
+        if(finanConfList!=null && finanConfList.size()>0) {
+            String finanId = finanConfList.get(0).getInt("id") + "";
+            map.put("financial", financial(reportType, companyId, sysLanguage, finanId));
+        }
+
         //生成word
         MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
         //重新添加图片
