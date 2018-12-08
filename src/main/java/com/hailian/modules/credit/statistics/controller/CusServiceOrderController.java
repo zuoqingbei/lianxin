@@ -8,6 +8,8 @@ import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.statistics.model.OrderStatisticsModel;
+import com.hailian.modules.credit.statistics.service.OrderStatisticsService;
+import com.hailian.system.dict.SysDictDetail;
 /**
  * 
 * @Title: CusServiceOrderController  
@@ -21,7 +23,11 @@ public class CusServiceOrderController  extends BaseProjectController{
 	
 	private static final String path = "/pages/credit/usercenter/total_manage/total_order_service.html";
 	public void index() {
-		render(path);
+	List<SysDictDetail> country=	SysDictDetail.dao.find("select * from sys_dict_detail where dict_type=?","country");
+	setAttr("country", country);
+	List<SysDictDetail> customerId=	SysDictDetail.dao.find("select * from credit_custom_info ");
+    setAttr("customer", customerId);
+	render(path);
 	}
 	/**
 	 * 
@@ -63,7 +69,11 @@ public class CusServiceOrderController  extends BaseProjectController{
 		         		+ " where  PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( receiver_date, '%Y%m' ) ) =1 "
 		         		+ " and ord.del_flag='0' and cus.name='"+orderStatisticsModel.get("name")+"'  GROUP BY cus.name ORDER BY ord.id desc");
 	   int num=Integer.parseInt(orderStatisticsModel.get("num").toString()) ;   
-	   int num2= Integer.parseInt(model.get("num").toString());
+	   int num2=0;
+	   if (model!=null) {
+		num2 = Integer.parseInt(model.get("num").toString());
+	  }
+	 
 	   rate=df.format(((float)(num-num2)/num2 )*100);
 	   OrderStatisticsModel statisticsModel=new OrderStatisticsModel();
 	   statisticsModel.set("fax", orderStatisticsModel.get("name"));
@@ -71,6 +81,22 @@ public class CusServiceOrderController  extends BaseProjectController{
 	   list.add(statisticsModel);
 	    }   
 	    renderJson(list);
+	}
+	
+	/**
+	 * 
+	* @Description:客户订单量排名
+	* @date 2018年12月8日 下午6:20:10
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public void getCustomerOrder(){
+    //周，月，年
+	String type=	getPara("type");
+	List<OrderStatisticsModel> orderTime =	OrderStatisticsModel.dao.getCustomerOrder(type);
+	 renderJson(orderTime);
+	 
 	}
 
 }

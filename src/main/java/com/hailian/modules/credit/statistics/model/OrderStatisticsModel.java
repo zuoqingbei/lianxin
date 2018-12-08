@@ -291,4 +291,32 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 		sql+=" limit 0,10";
 		return OrderStatisticsModel.dao.find(sql);
 	}
+	/**
+	 * 
+	* @Description: 客户订单量排名，按周，月，年
+	* @date 2018年12月8日 下午6:00:09
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public List<OrderStatisticsModel> getCustomerOrder(String type){
+		String sql="";
+		if (type.equals("week")) {
+		//	sql="select receiver_date as time,count(id) as num from credit_order_info where date_sub(curdate(), INTERVAL 7 DAY) <= create_date and del_flag='0' GROUP BY  receiver_date ORDER BY receiver_date asc";
+		    sql="select COUNT(ord.id) as num ,cus.name as name from credit_order_info ord LEFT JOIN credit_custom_info cus on cus.id=ord.custom_id where date_sub(curdate(), INTERVAL 7 DAY) <= ord.create_date and ord.del_flag='0' GROUP BY ord.receiver_date ORDER BY ord.id desc limit 0,10";
+		}
+		if (type.equals("month")) {
+		//	sql="SELECT COUNT(id) as num,month as time  from credit_order_info WHERE YEAR(receiver_date)=YEAR(NOW()) and del_flag='0' GROUP BY month order by receiver_date asc";
+		    sql="select COUNT(ord.id) as num ,cus.name as name from credit_order_info ord LEFT JOIN credit_custom_info cus on cus.id=ord.custom_id where YEAR(ord.receiver_date)=YEAR(NOW()) and ord.del_flag='0' GROUP BY ord.month  ORDER BY ord.id desc limit 0,10";
+
+		}
+		if (type.equals("year")) {
+		//	sql="SELECT COUNT(id) as num,year as time from  credit_order_info  where  del_flag='0' GROUP BY `year` ORDER BY receiver_date asc";
+		    sql="select COUNT(ord.id) as num ,cus.name as name from credit_order_info ord LEFT JOIN credit_custom_info cus on cus.id=ord.custom_id where  ord.del_flag='0' GROUP BY ord. `year`  ORDER BY ord.id desc limit 0,10";
+
+		}
+		return OrderStatisticsModel.dao.find(sql);
+	}
 }
+
+
