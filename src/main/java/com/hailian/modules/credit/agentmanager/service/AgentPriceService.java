@@ -3,10 +3,16 @@ package com.hailian.modules.credit.agentmanager.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
+import com.hailian.modules.credit.city.model.CityModel;
+import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.currencyrate.model.CurrencyRateModel;
+import com.hailian.modules.credit.province.model.ProvinceModel;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -51,6 +57,29 @@ public class AgentPriceService {
 	 */
 	public boolean updateDelFlagById(Integer id) {
 		return AgentPriceModel.dao.updateDelFlagById(id);
+	}
+	public AgentPriceModel getAgentPriceByOrder(String oid){
+		CreditOrderInfo info= 	CreditOrderInfo.dao.findById(oid);
+		CompanyModel companymodel = CompanyModel.dao.findById(info.get("company_id")+"");
+        AgentPriceModel agentPrice=null;
+        String address=null;
+        if(companymodel != null){
+            address=companymodel.getStr("company_address");
+            if(StringUtils.isNotBlank(address)){
+                String[] strs=address.split("-");
+                String province=strs[0].toString();
+                String city=strs[1].toString();
+                ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
+                CityModel cityByName = CityModel.dao.getCityByName(city);
+                int pid = provinceByName.get("pid");
+                int cid = cityByName.get("cid");
+                if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
+                    agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, info.get("agent_id")+"",info.get("agent_category")+"" );
+                }
+            }
+        }
+        return agentPrice;
+		
 	}
 	/**
 	 * 根据代理id，省，市，代理类别获取代理价格
