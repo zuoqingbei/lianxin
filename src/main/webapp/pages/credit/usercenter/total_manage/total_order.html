@@ -1,216 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>客服订单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/swiper/swiper.min.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/total_manage/total_manage_common.css">
+    <style>
+        #container {
+            margin-top: -.25rem; /*因为页面背景色，需消除导航的下外边距*/
+            background-color: #e6e6e6;
+        }
+
+        main > .row > .col {
+        }
+
+        #container header {
+            padding-top: 1rem;
+            height: 3rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h3 {
+            font-weight: bold;
+            font-size: 1.375rem;
+        }
+
+        .btn-group {
+            margin: auto;
+            margin-right: 0;
+        }
+
+        .btn-group button {
+            padding: .375rem 1rem;
+        }
+    </style>
 </head>
+
 <body>
-<div id="container" class="row animated fadeIn">
-    <div class="main">
+<main id="container" class="row animated fadeIn p-3">
+    <div class="row">
+        <div class="col bg-white mr-3">
+            <header>
+                <h3 class="">客户订单量排名</h3>
+                <div class="btn-group" role="group" aria-label="Basic example" id="">
+                    <button type="button" class="btn btn_active">周</button>
+                    <button type="button" class="btn">月</button>
+                    <button type="button" class="btn">年</button>
+                </div>
+            </header>
+            <div class="echartBox" id="ec01_hBar"></div>
+        </div>
+        <div class="col bg-white">
+            <header>
+                <h3 class="">客户订单同比增长率</h3>
+            </header>
+            <div class="echartBox" id="ec02_vBar"></div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col bg-white">
+            <header class="row justify-content-between">
+                <h3>月订单量趋势图</h3>
+                <div class="">
+                    <label class="control-label mt-2" for="country">国家：</label>
+                    <select id="country" class="search-input w-25 layui-input d-inline-block mr-4" lay-search=""
+                            ay-verify="" name="customId">
+                        <option value="123">全部</option>
+                    </select>
+                    <label class="control-label mt-2" for="customerId">客户ID：</label>
+                    <select id="customerId" class="search-input  w-25 layui-input d-inline-block mr-4" lay-search=""
+                            ay-verify="" name="customId">
+                        <option value="123">全部</option>
+                    </select>
+                </div>
+            </header>
+            <div class="echartBox" id="ec03_line"></div>
+        </div>
+    </div>
+    <!--<main class="main">
         <div class="table-content">
             <div class="row table-content-echarts total-order-top">
                 <div class="col echart-box mr-3 ">
                     <div class="total-order-top-left fl">
-                        <div class="total-order-top-title">当日总订单量</div>
-                        <span class="total-order-top-num">${orderCount}</span>
-                        <div class="total-order-top-trend">
-                       <% if (Dayrate.remarks==-1) { %> 
-                       <img src="${BASE_PATH }static/credit/imgs/total_manage/down_icon.png" height="14" width="16"/> 
-                       <% } 
-                       else if(Dayrate.remarks==0) { %>
-					   <img src="${BASE_PATH }static/credit/imgs/total_manage/etc_icon.png" height="14" width="16"/> 
-                       <% }
-                       else if(Dayrate.remarks==1){ %>
-					   <img src="${BASE_PATH }static/credit/imgs/total_manage/up_icon.png" height="14" width="16"/> 
-					   <% } %>
-				</td>
-                     
-                            <span class="ml-1">${Dayrate.num}%</span>
-                        </div>
-                    </div>
-                    <div class="total-order-top-right fl">
-                        <div  id="echarts_01" style="width: 100%;height:100%"></div>
-                    </div>
-                </div>
-                <div class="col echart-box mr-3 ">
-                    <div class="total-order-top-left fl">
-                        <div class="total-order-top-title">本月总订单量</div>
-                        <span class="total-order-top-num">${month}</span>
-                        <div class="total-order-top-trend">
-                       
-                       <% if (monthrate.remarks==-1) { %> 
-                       <img src="${BASE_PATH }static/credit/imgs/total_manage/down_icon.png" height="14" width="16"/> 
-                       <% } 
-                       else if(monthrate.remarks==0) { %>
-					   <img src="${BASE_PATH }static/credit/imgs/total_manage/etc_icon.png" height="14" width="16"/> 
-                       <% }
-                       else if(monthrate.remarks==1){ %>
-					   <img src="${BASE_PATH }static/credit/imgs/total_manage/up_icon.png" height="14" width="16"/> 
-					   <% } %>
-                        
-                            <span class="ml-1">${monthrate.num}%</span>
-                        </div>
-                    </div>
-                    <div class="total-order-top-right fl">
-                        <div  id="echarts_02" style="width: 100%;height:100%"></div>
-                    </div>
-                </div>
-                <div class="col echart-box">
-                    <div class="total-order-top-left fl">
-                        <div class="total-order-top-title">本年总订单量</div>
-                        <span class="total-order-top-num">${year}</span>
-                        <div class="total-order-top-trend">
-                     <% if (yearRate.remarks==-1) { %> 
-                       <img src="${BASE_PATH }static/credit/imgs/total_manage/down_icon.png" height="14" width="16"/> 
-                       <% } 
-                       else if(yearRate.remarks==0) { %>
-					   <img src="${BASE_PATH }static/credit/imgs/total_manage/etc_icon.png" height="14" width="16"/> 
-                       <% }
-                       else if(yearRate.remarks==1){ %>
-					   <img src="${BASE_PATH }static/credit/imgs/total_manage/up_icon.png" height="14" width="16"/> 
-					   <% } %>
 
-                            <span class="ml-1">${yearRate.num}%</span>
-                        </div>
                     </div>
-                    <div class="total-order-top-right fl">
-                        <div  id="echarts_03" style="width: 100%;height:100%"></div>
-                    </div>
+                </div>
+                <div class="total-order-top-right fl">
+                    <div id="echarts_01" style="width: 100%;height:100%"></div>
                 </div>
             </div>
-            <div class="table-content-echarts mt-3 total-order-center d-flex justify-content-between">
-                <div class="col echart-box mr-3">
-                    <div class="echarts-top">
-                        <div class="echart-title">订单量趋势图</div>
-                    </div>
-                    <div id="echarts_04" style="width: 100%;height:85%"></div>
+            <div class="col echart-box mr-3 ">
+                <div class="total-order-top-left fl">
+                    <div class="total-order-top-title">本月总订单量</div>
+
                 </div>
-                <div class="col-5 echart-box mr-3">
-                    <div class="echarts-top">
-                        <div class="echart-title">订单分布图</div>
-                        <div class="form-box fr">
-                            <div class="input-group mt-2" id="client">
-                                <label class="control-label col-md-4 mt-2" for="txt_search_statu">客户：</label>
-                                <select id="customer" class="search-input col-md-8 layui-input" lay-search="" ay-verify="" name="customId">
-                                    <option value="">全部客户</option>
-                                  <% for(cu in customer){ %>
-                                   <option value="${cu.id}">${cu.name}</option>
-                                  <% } %>  
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="echarts_05" style="width: 100%;height:85%"></div>
-                </div>
-                <div class="col echart-box">
-                    <div class="echarts-top">
-                        <div class="echart-title">各报告类型占比</div>
-                    </div>
-                    <div id="echarts_06" style="width: 100%;height:85%"></div>
-                </div>
-            </div>
-            <div class="table-content-echarts mt-3 total-order-center d-flex justify-content-between">
-                <div class="col echart-box mr-3">
-                    <div class="echarts-top">
-                        <div class="echart-title">总订单量趋势图</div>
-                        <div class="btn-group" role="group" aria-label="Basic example" id="allOrderTrend">
-                            <button type="button" class="btn btn_active">周</button>
-                            <button type="button" class="btn">月</button>
-                            <button type="button" class="btn">年</button>
-                        </div>
-                    </div>
-                    <div id="echarts_07" style="width: 100%;height:85%"></div>
-                </div>
-                <div class="col echart-box">
-                    <div class="echarts-top">
-                        <div class="echart-title">总订单延误率</div>
-                        <div class="btn-group" role="group" aria-label="Basic example" id="allDelay">
-                            <button type="button" class="btn btn_active">周</button>
-                            <button type="button" class="btn">月</button>
-                            <button type="button" class="btn">年</button>
-                        </div>
-                    </div>
-                    <div id="echarts_08" style="width: 100%;height:85%"></div>
-                </div>
-            </div>
-            <div class="row table-content-echarts total-order-top mt-3">
-                <div class="col echart-box">
-                    <div class="echarts-top">
-                        <div class="echart-title">各员工延误率情况</div>
-                    </div>
-                      <!-- Swiper -->
-                    <div class="swiper-container">
-                        <div class="swiper-wrapper">
-                            <ul class="swiper-slide">
-                               
-                             </ul>
-                            <ul class="swiper-slide">
-                            
-                            </ul>
-                        </div>
-                        <!-- Add Arrows -->
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row table-content-echarts mt-3 total-order-center mb-3">
-                <div class="col echart-box mr-3 ">
-                    <div class="echarts-top">
-                        <div class="echart-title">各员工当日情况</div>
-                        <div class="form-box fr">
-                            <form id="formSearch1" class="form-inline layui-form" role="form">
-                                <div class="form-group row d-flex justify-content-around mt-2">
-                                    <input type="text" class="form-control search-input" id="dead_date1" placeholder="请选择日期">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <table id="table"
-                           data-toggle="table"
-                           style="position: relative">
-                    </table>
-                </div>
-                <div class="col echart-box">
-                    <div class="echarts-top">
-                        <div class="echart-title">报告员扣分情况</div>
-                        <div class="form-box fr">
-                            <form id="formSearch2" class="form-inline layui-form" role="form">
-                                <div class="form-group row d-flex justify-content-around mt-2">
-                                    <input type="text" class="form-control search-input" id="dead_date2" placeholder="请选择日期">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div id="echarts_10" style="width: 100%;height:87%"></div>
+                <div class="total-order-top-right fl">
+                    <div id="echarts_02" style="width: 100%;height:100%"></div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="table-content-echarts mt-3 total-order-center d-flex justify-content-between">
+            <div class="col echart-box mr-3">
+                <div class="echarts-top">
+                    <div class="echart-title">订单量趋势图</div>
+                </div>
+                <div id="echarts_04" style="width: 100%;height:85%"></div>
+            </div>
+            <div class="col-5 echart-box mr-3">
+                <div class="echarts-top">
+                    <div class="echart-title">订单分布图</div>
+                    <div class="form-box fr">
+                        <div class="input-group mt-2" id="client">
+                            <label class="control-label col-md-4 mt-2" for="txt_search_statu">客户：</label>
+                            <select id="customer" class="search-input col-md-8 layui-input" lay-search="" ay-verify=""
+                                    name="customId">
+                                <option value="">全部客户</option>
+                                <% for(cu in customer){ %>
+                                <option value="${cu.id}">${cu.name}</option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="echarts_05" style="width: 100%;height:85%"></div>
+            </div>
+            <div class="col echart-box">
+                <div class="echarts-top">
+                    <div class="echart-title">各报告类型占比</div>
+                </div>
+                <div id="echarts_06" style="width: 100%;height:85%"></div>
+            </div>
+        </div>
+        <div class="table-content-echarts mt-3 total-order-center d-flex justify-content-between">
+            <div class="col echart-box mr-3">
+                <div class="echarts-top">
+                    <div class="echart-title">总订单量趋势图</div>
+                    <div class="btn-group" role="group" aria-label="Basic example" id="allOrderTrend">
+                        <button type="button" class="btn btn_active">周</button>
+                        <button type="button" class="btn">月</button>
+                        <button type="button" class="btn">年</button>
+                    </div>
+                </div>
+                <div id="echarts_07" style="width: 100%;height:85%"></div>
+            </div>
+            <div class="col echart-box">
+                <div class="echarts-top">
+                    <div class="echart-title">总订单延误率</div>
+                    <div class="btn-group" role="group" aria-label="Basic example" id="allDelay">
+                        <button type="button" class="btn btn_active">周</button>
+                        <button type="button" class="btn">月</button>
+                        <button type="button" class="btn">年</button>
+                    </div>
+                </div>
+                <div id="echarts_08" style="width: 100%;height:85%"></div>
+            </div>
+        </div>
+        <div class="row table-content-echarts total-order-top mt-3">
+            <div class="col echart-box">
+                <div class="echarts-top">
+                    <div class="echart-title">各员工延误率情况</div>
+                </div>
+                &lt;!&ndash; Swiper &ndash;&gt;
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <ul class="swiper-slide">
+
+                        </ul>
+                        <ul class="swiper-slide">
+
+                        </ul>
+                    </div>
+                    &lt;!&ndash; Add Arrows &ndash;&gt;
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row table-content-echarts mt-3 total-order-center mb-3">
+            <div class="col echart-box mr-3 ">
+                <div class="echarts-top">
+                    <div class="echart-title">各员工当日情况</div>
+                    <div class="form-box fr">
+                        <form id="formSearch1" class="form-inline layui-form" role="form">
+                            <div class="form-group row d-flex justify-content-around mt-2">
+                                <input type="text" class="form-control search-input" id="dead_date1"
+                                       placeholder="请选择日期">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <table id="table"
+                       data-toggle="table"
+                       style="position: relative">
+                </table>
+            </div>
+            <div class="col echart-box">
+                <div class="echarts-top">
+                    <div class="echart-title">报告员扣分情况</div>
+                    <div class="form-box fr">
+                        <form id="formSearch2" class="form-inline layui-form" role="form">
+                            <div class="form-group row d-flex justify-content-around mt-2">
+                                <input type="text" class="form-control search-input" id="dead_date2"
+                                       placeholder="请选择日期">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="echarts_10" style="width: 100%;height:87%"></div>
+            </div>
+        </div>
+    </main>-->
+</main>
 </div>
 </body>
 <script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
 <script src="${BASE_PATH }static/credit/assets/swiper/swiper.min.js"></script>
-<script src="${BASE_PATH }static/credit/js/total_manage/total_manage.js"></script>
+<!--<script src="${BASE_PATH }static/credit/js/total_manage/total_manage.js"></script>-->
 <script>
-$(function () {
-    //周月年代的点击事件
-    let btns=$(".echarts-top .btn-group button");
-    for(var i=0;i<btns.length;i++){
-        btns[i].onclick=function () {
+    $(function () {
+        let orderCustomerService = {
+            init() {
+                this.load
+            }
+        };
+        orderCustomerService.init();
+        //周月年代的点击事件
+        let btns = $(".echarts-top .btn-group button");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].onclick = function () {
 
-            $(this).addClass("btn_active").siblings("button").removeClass("btn_active")
+                $(this).addClass("btn_active").siblings("button").removeClass("btn_active")
+            }
         }
-    };
-    /*轮播图*/
-    var swiper = new Swiper('.swiper-container', {
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-    });
-})
+    })
 </script>
 </html>
