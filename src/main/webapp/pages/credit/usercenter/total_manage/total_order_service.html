@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>客服订单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/swiper/swiper.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/total_manage/total_manage_common.css">
+    <style>
+        #container {
+            margin-top: -.25rem; /*因为页面背景色，需消除导航的下外边距*/
+            background-color: #e6e6e6;
+        }
+
+        main > .row > .col {
+        }
+
+        #container header {
+            padding-top: 1rem;
+            height: 3rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h3 {
+            font-weight: bold;
+            font-size: 1.375rem;
+        }
+
+        .btn-group {
+            margin: auto;
+            margin-right: 0;
+        }
+
+        .btn-group button {
+            padding: .375rem 1rem;
+        }
+        .echartBox{
+            height: calc(100% - 4.5rem);
+        }
+        .myHeight{
+            height: 43vh;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .myLeft{
+            width: 49.5%;
+            background-color: white;
+            float: left;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+<main id="container" class="row animated fadeIn p-3" >
+    <div class="myHeight">
+        <div class="myLeft">
+            <header>
+                <h3 class="">客户订单量排名</h3>
+                <div class="btn-group" role="group" aria-label="Basic example" id="">
+                    <button type="button" class="btn btn_active">周</button>
+                    <button type="button" class="btn">月</button>
+                    <button type="button" class="btn">年</button>
+                </div>
+            </header>
+            <div class="echartBox" id="ec01_hBar"></div>
+        </div>
+        <div class="myLeft">
+            <header>
+                <h3 class="">客户订单同比增长率</h3>
+            </header>
+            <div class="echartBox" id="ec02_vBar"></div>
+        </div>
+    </div>
+    <div class="myHeight " style="margin-top: 1%">
+        <div class="col bg-white">
+            <header class="row justify-content-between">
+                <h3>月订单量趋势图</h3>
+                <div class="">
+                    <label class="control-label mt-2" for="country">国家：</label>
+                    <select id="country" class="search-input w-25 layui-input d-inline-block mr-4" lay-search=""
+                            ay-verify="" name="customId">
+                        <option value="123">全部</option>
+                    </select>
+                    <label class="control-label mt-2" for="customerId">客户ID：</label>
+                    <select id="customerId" class="search-input  w-25 layui-input d-inline-block mr-4" lay-search=""
+                            ay-verify="" name="customId">
+                        <option value="123">全部</option>
+                    </select>
+                </div>
+            </header>
+            <div class="echartBox" id="ec03_line"></div>
+        </div>
+    </div>
+
+</main>
+</body>
+<script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
+<script src="${BASE_PATH }static/credit/assets/swiper/swiper.min.js"></script>
+
+<!--<script src="${BASE_PATH }static/credit/js/total_manage/total_manage.js"></script>-->
+<script>
+    $(function () {
+        // let ec01_hBar = echarts.init($("#ec01_hBar")[0]);
+        let ec01_hBar=echarts.init(document.getElementById('ec01_hBar'));
+        ec01_hBar.clear();
+        ec01_hBar.setOption(opt_bar_horizon);
+        ec01_hBar.setOption({
+            legend: {
+                show:false
+            },
+            yAxis: {
+                type: 'category',
+                data: ['客户1','客户2','客户3','客户4','客户5','客户6']
+            },
+            series:[
+                {
+                    type: 'bar',
+                    data: [18203, 23489, 29034, 104970, 131744, 630230]
+                },
+            ]
+        });
+        let ec02_vBar=echarts.init(document.getElementById('ec02_vBar'));
+        ec02_vBar.clear();
+        ec02_vBar.setOption(opt_bar_vertical);
+        ec02_vBar.setOption({
+            legend: {
+                show:false
+            },
+            xAxis: {
+                type: 'category',
+                data: ['客户1','客户2','客户3','客户4','客户5','客户6','客户7','客户8','客户9','客户10']
+            },
+            yAxis: {
+                name:'增长率/%'
+            },
+            series:[
+                {
+                    type: 'bar',
+                    data: [11, 21, 123, 65, 33, 89, 123, 65, 33, 89]
+                },
+            ]
+        });
+        let ec03_line=echarts.init(document.getElementById('ec03_line'));
+        ec03_line.clear();
+        ec03_line.setOption(opt_line);
+        ec03_line.setOption({
+            grid: {
+
+                left: '4%',
+
+            },
+            xAxis: {
+                type: 'category',
+                data: ['1','2','3','4','5','6','7','8','9','10','11','12']
+            },
+            yAxis: {
+                name:'订单量/个'
+            },
+            series:[
+                {
+                    type: 'line',
+                    data: [12, 22, 45, 11, 5, 55,12, 22, 45, 11, 5, 55]
+                },
+            ]
+        });
+        window.onresize = function(){
+            ec01_hBar.resize();
+            ec02_vBar.resize();
+            ec03_line.resize();
+
+        }
+        //周月年代的点击事件
+        let btns = $(".echarts-top .btn-group button");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].onclick = function () {
+
+                $(this).addClass("btn_active").siblings("button").removeClass("btn_active")
+            }
+        }
+    })
+</script>
+</html>
