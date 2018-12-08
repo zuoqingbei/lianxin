@@ -2,9 +2,10 @@
     position: relative;
     height: calc(100% - 2.7rem);
 }
-.main{
-    overflow: hidden;
+.main {
+	overflow:hidden;
 }
+
 /* 上面用户信息和订单统计 */
 .user-order {
     height: 7rem;
