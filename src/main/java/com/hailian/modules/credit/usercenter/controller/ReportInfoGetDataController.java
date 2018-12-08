@@ -236,7 +236,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 
 			}
 		} else {
-			sqlSuf.append(" company_id=" + companyId.trim() + " ");
+			sqlSuf.append(" company_id=" + companyId.trim() + " and ");
 
 		}
 
