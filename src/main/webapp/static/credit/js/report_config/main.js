@@ -439,33 +439,60 @@ let ReportConfig = {
     									<input class="form-control dateInp2"  id="${this_content[7].column_name}cw" type="text" name=${this_content[7].column_name}  placeholder=${this_content[7].place_hold} />
     								</div>
     							</div>`
-    			let tempUrl = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[10]['get_source'];
-    			let options = ''
+    			let tempUrl1 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[10]['get_source'];
+    			let tempUrl2 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[12]['get_source'];
+    			let tempUrl3 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[14]['get_source'];
+    			let tempUrl4 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[16]['get_source'];
+    			let options1 = ''
     			$.ajax({
-    				url:tempUrl,
+    				url:tempUrl1,
     				async:false,
     				success:(data)=>{
-    					options = data.selectStr
+    					options1 = data.selectStr
     				}
     			})
+    			let options2 = ''
+    				$.ajax({
+    					url:tempUrl2,
+    					async:false,
+    					success:(data)=>{
+    						options2 = data.selectStr
+    					}
+    				})
+				let options3 = ''
+					$.ajax({
+						url:tempUrl3,
+						async:false,
+						success:(data)=>{
+							options3 = data.selectStr
+						}
+					})
+					let options4 = ''
+						$.ajax({
+							url:tempUrl4,
+							async:false,
+							success:(data)=>{
+								options4 = data.selectStr
+							}
+						})
     			cw_bottom_html +=`<div class="bottom-html"><div class="cw-bottom p-4">
     								<label class="control-label">${this_content[10].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options}</select>
+    								<select class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options1}</select>
     								<textarea class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
     							 </div>
     							 <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[12].temp_name}</label>
-    								<input class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" />
+    								<select class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" >${options2}</select>
     								<textarea class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
     							 </div>
     							  <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[14].temp_name}</label>
-    								<input class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" />
+    								<select class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" >${options3}</select>
     								<textarea class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
     							 </div>
     							 <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[16].temp_name}</label>
-    								<input class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" />
+    								<select class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" >${options4}</select>
     								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
     							 </div></div>`
     		}else {
