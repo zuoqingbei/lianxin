@@ -25,19 +25,25 @@ import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
+import org.jfree.chart.*;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.*;
+import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.TextAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 
 /**
@@ -70,18 +76,124 @@ public class MainWord {
         // String[] fieldType = str.split("\\| ");
         //System.out.println(fieldType.length);
 
-        String []rowKeys = {"One", "Two", "Three"};
-        String []colKeys = {"1987", "1997", "2007"};
+        //创建主题样式 ,以下代码用于解决中文乱码问题
+        StandardChartTheme standardChartTheme=new StandardChartTheme("CN");
+        //设置标题字体
+        standardChartTheme.setExtraLargeFont(new Font("宋体",Font.BOLD,20));
+        //设置图例的字体
+        standardChartTheme.setRegularFont(new Font("宋体",Font.PLAIN,15));
+        //设置轴向的字体
+        standardChartTheme.setLargeFont(new Font("宋体",Font.PLAIN,15));
+        //应用主题样式
+        ChartFactory.setChartTheme(standardChartTheme);
 
-        double [][] data = {
-                {50, 20, 30},
-                {20, 10D, 40D},
-                {40, 30.0008D, 38.24D},
-        };
-        CategoryDataset  dataSet = DatasetUtilities.createCategoryDataset(rowKeys, colKeys, data);
-        CategoryDataset  dataSet2 = DatasetUtilities.createCategoryDataset(rowKeys, colKeys, data);
+        // 柱状图数据源
+        DefaultCategoryDataset barDataSet = new DefaultCategoryDataset();
+        barDataSet.addValue(800, "数量", "1月");
+        barDataSet.addValue(600, "数量", "2月");
+        barDataSet.addValue(200, "数量", "3月");
 
-        MainWord.createChart(dataSet,dataSet2,"h://234.jpg");
+        //折线图数据源
+        DefaultCategoryDataset lineDataSet = new DefaultCategoryDataset();
+        lineDataSet.addValue(0.2, "销量", "1月");
+        lineDataSet.addValue(0.35, "销量", "2月");
+        lineDataSet.addValue(0.8, "销量", "3月");
+
+        BarRenderer3D barRender = new BarRenderer3D();
+
+        //展示柱状图数值
+        barRender.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        barRender.setBaseItemLabelsVisible(true);
+        barRender.setBasePositiveItemLabelPosition(new ItemLabelPosition(
+                ItemLabelAnchor.OUTSIDE1, TextAnchor.BASELINE_CENTER));
+
+        //最短的BAR长度，避免数值太小而显示不出
+        barRender.setMinimumBarLength(0.5);
+
+        // 设置柱形图上的文字偏离值
+        barRender.setItemLabelAnchorOffset(10D);
+
+        //设置柱子的最大宽度
+        barRender.setMaximumBarWidth(0.03);
+        barRender.setItemMargin(0.000000005);
+
+        LineAndShapeRenderer lineRender = new LineAndShapeRenderer();
+
+        //展示折线图节点值
+        lineRender.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        lineRender.setBaseItemLabelsVisible(true);
+        lineRender.setBasePositiveItemLabelPosition(
+                new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.BASELINE_CENTER));
+
+        // 设置柱形图上的文字偏离值
+        lineRender.setItemLabelAnchorOffset(5D);
+
+        BasicStroke brokenLine = new BasicStroke(2f,//线条粗细
+                BasicStroke.CAP_SQUARE,           //端点风格
+                BasicStroke.JOIN_MITER,           //折点风格
+                8.f,                              //折点处理办法 ,如果要实线把该参数设置为NULL
+                new float[]{8.0f },               //虚线数组
+                0.0f);
+
+        //设置第一条折线的风格
+        lineRender.setSeriesStroke(0,brokenLine);
+
+        CategoryPlot plot = new CategoryPlot();
+        plot.setDataset(0, barDataSet);
+        plot.setDataset(1, lineDataSet);
+        plot.setRenderer(0, barRender);
+        plot.setRenderer(1, lineRender);
+        plot.setDomainAxis(new CategoryAxis());
+
+        //设置水平方向背景线颜色
+        plot.setRangeGridlinePaint(Color.gray);
+
+        //设置是否显示水平方向背景线,默认值为true
+        plot.setRangeGridlinesVisible(true);
+
+        //设置垂直方向背景线颜色
+        plot.setDomainGridlinePaint(Color.gray);
+
+        //设置是否显示垂直方向背景线,默认值为true
+        plot.setDomainGridlinesVisible(true);
+
+        //设置图表透明图0.0~1.0范围。0.0为完全透明，1.0为完全不透明。
+        plot.setForegroundAlpha(0.7F);
+
+        plot.setRangeAxis(new NumberAxis());
+
+        //设置Y轴刻度
+        plot.setRangeAxis(1, new NumberAxis());
+
+        // 设置折线图数据源应用Y轴右侧刻度
+        plot.mapDatasetToRangeAxis(1, 1);
+
+        for (int i = 0; i < plot.getRangeAxisCount(); i++)
+        {
+            ValueAxis rangeAxis = plot.getRangeAxis(i);
+
+            //设置最高的一个柱与图片顶端的距离
+            rangeAxis.setUpperMargin(0.25);
+        }
+
+        CategoryAxis categoryAxis = plot.getDomainAxis();
+
+        //X轴分类标签以45度倾斜
+        categoryAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+
+        JFreeChart chart = new JFreeChart(plot);
+        chart.setTitle("数量/销量走势图");
+        chart.setBackgroundPaint(SystemColor.WHITE);
+
+        ChartFrame chartFrame=new ChartFrame("数量/销量走势图",chart);
+
+        //以合适的大小展现图形
+        chartFrame.pack();
+
+        //图形是否可见
+        chartFrame.setVisible(true);
+
+
     }
 
 
@@ -189,9 +301,10 @@ public class MainWord {
             CreditReportModuleConf module = child.get(i);
             String column_name = module.getStr("column_name");
             String temp_name = module.getStr("temp_name");
+            String field_type = module.getStr("field_type");
             if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
             }else{
-                cols.put(column_name,temp_name);
+                cols.put(column_name, temp_name + "|" + field_type);
             }
         }
         //取数据
@@ -200,14 +313,18 @@ public class MainWord {
             //取行
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for(String column : cols.keySet()) {
-                String fieldType = model.get("field_type") + "";
+                String[] strs = cols.get(column).split("\\|");
+                String fieldType = strs.length == 2 ? strs[1] : "";
+                Integer id = model.getInt("id");
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if("select".equals(fieldType)) {
                     value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "";
-                }else {
+                } else if("file".equals(fieldType)) {
+                    value = "{{@img" + id + "}}";
+                } else {
                     value = !"".equals(value) ? value : "";
                 }
-                row.put(column, value);
+                row.put(strs.length == 2 ? strs[0] : "", value);
             }
             datas.add(row);
         }
@@ -219,7 +336,7 @@ public class MainWord {
         TextRenderData[] header = new TextRenderData[colSize.length];
         int i=0;
         for(String column : cols.keySet()) {
-            String value = cols.get(column);
+            String value = cols.get(column).split("\\|")[0];
             Style style = new Style();
             style.setBold(true);
             header[i] = new TextRenderData(value,style);
@@ -233,7 +350,7 @@ public class MainWord {
             int j=0;
             String[] row = new String[colSize.length];
             for(String column : cols.keySet()) {
-                row[j] = m.get(column);
+                row[j] = m.get(cols.get(column).split("\\|")[0]);
                 j++;
             }
             RowRenderData rowData = RowRenderData.build(row);

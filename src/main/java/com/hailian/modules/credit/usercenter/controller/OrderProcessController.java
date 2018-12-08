@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import com.hailian.modules.credit.company.service.CompanyService;
 
+import com.hailian.util.http.HttpCrawler;
 import org.apache.commons.lang3.StringUtils;
 
 //import ch.qos.logback.core.status.Status;
@@ -130,6 +131,8 @@ public class OrderProcessController extends BaseProjectController{
     public static final String orderFilingOfReport = "-7";
     public static LinkedList<Object> orderFilingOfReportColumns = new LinkedList<>();
     public static LinkedList<Object> orderFilingOfReportParamNames = new LinkedList<>();
+   
+    public static final String orderQualityOfReport = "-8";
     static{
         orderAllocationColumns.add("u1.realname");
         orderAllocationColumns.add("c.num");
@@ -157,6 +160,7 @@ public class OrderProcessController extends BaseProjectController{
         WEB_PARAM_NAMES.put(orderSubmitOfOrder, orderSubmitOfOrderParamNames);
         WEB_PARAM_NAMES.put(infoOfReport, infoOfReportParamNames);
         WEB_PARAM_NAMES.put(orderFilingOfReport, orderFilingOfReportParamNames);
+        WEB_PARAM_NAMES.put(orderQualityOfReport, orderFilingOfReportParamNames);
     }
     /**
      * @todo   展示订单分配页
@@ -291,6 +295,7 @@ public class OrderProcessController extends BaseProjectController{
         //从表单获取排序语句
         String sortName = getPara("sortName");
         String sortOrder = getPara("sortOrder");
+        String statusName=getPara("statusName");
         String orderBy = "";
         if(!StringUtil.isEmpty(sortName)){
             if(sortOrder!=null){
@@ -313,7 +318,7 @@ public class OrderProcessController extends BaseProjectController{
             }
         }
         //分页查询
-        Page<CreditOrderInfo> pager = CreditOrderInfo.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType, this);
+        Page<CreditOrderInfo> pager = CreditOrderInfo.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType,statusName, this);
         //插入回显数据
         for (CreditOrderInfo page : pager.getList()) {
             for (int i = 0; i <  WEB_PARAM_NAMES.get(searchType).size(); i++) {
@@ -407,10 +412,12 @@ public class OrderProcessController extends BaseProjectController{
     public void listJson() {
         //获取查询类型
         String searchType = (String) getRequest().getParameter("searchType");
+        String status =   getPara("statusName");
         //分页查询
         Page<CreditOrderInfo> pager = PublicListMod(searchType);
         List<CreditOrderInfo> rows = pager.getList();
         TemplateSysUserService templete = new TemplateSysUserService();
+       
         //若是搜索类型是订单分配做特殊处理
         if(searchType.equals(orderAllocation)){
             for (CreditOrderInfo creditOrderInfo : rows) {
@@ -488,6 +495,8 @@ public class OrderProcessController extends BaseProjectController{
             //调用企查查接口
             if("595".equals(code)){
                 new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report"),"612");
+                //调用香港查册网
+                //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
             }
             
             renderJson(new ResultType());
@@ -962,7 +971,7 @@ public class OrderProcessController extends BaseProjectController{
     	 String IQC = model.get("IQC");
     	 String  translateUser = model.get("translate_user");
     	 String  analyzeUser = model.get("analyze_user");
-    	 model = model.findById();
+    	 model = model.findById(modelId);
     	 
          //计算绩效
     	 Db.tx(new IAtom() {

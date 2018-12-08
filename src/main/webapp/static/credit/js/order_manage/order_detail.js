@@ -48,9 +48,12 @@ let OrderDetail = {
         let _this = this;
         let id = this.row.id;
         let reportType = this.row.report_type;
-        $.get(`${this.BASE_PATH}getmodule/detail/`, {id, reportType}, (data) => {
+        let type = this.row.quality_type ? '' : 0;
+        console.log(this.row.quality_type+'=======================')
+        $.get(`${this.BASE_PATH}getmodule/detail/`, {id, reportType,type}, (data) => {
             setTimeout(() => {
-                console.log('--data', data);
+                console.log('-------------data', data);
+                console.log('-------------defaultModule', data.defaultModule);
                 if (!data.defaultModule) {
                     console.error(`--本页面接口故障：
                         ${this.BASE_PATH}getmodule/detail/?id=${id}&reportType=${reportType}&type=0`);
@@ -362,6 +365,8 @@ let OrderDetail = {
     // 设置质检结果下拉列表
     setQualitySelect() {
         let _this = this;
+        this.english = [7, 9, 11].includes(this.row.report_type - 0);
+       var detailname= this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
             if (!['基本信息', '流程进度', '质检评分'].includes($(this).text())) {
                 $(this).nextAll('.module-content').after(qualitySelectHtml);
@@ -369,7 +374,7 @@ let OrderDetail = {
         });
         let BASE_PATH = this.BASE_PATH + 'ReportGetData/';
         // 获取下拉质检结果框选项的内容
-        $.get(BASE_PATH + 'selectQuality?type=' + this.row.quality_type, function (data) {
+        $.get(BASE_PATH + 'selectQuality?type=' + this.row.quality_type+"&disPalyCol="+detailname, function (data) {
             // 设置option内容
             let OptHtml = '';
             data.rows.forEach((item) => {

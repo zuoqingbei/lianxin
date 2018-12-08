@@ -6,17 +6,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
+
 import org.apache.commons.lang3.StringUtils;
+
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
+import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintionHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
@@ -61,11 +66,19 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 根据参数获取下拉选
 	 */
 	public void getSelete() {
-		String selectStr = template.getSysDictDetailString3(getPara("type"), getPara("selectedId"),
-				getPara("disPalyCol"));
+		String selectStr = "";
+		String type = getPara("type");
+		String disPalyCol =  getPara("disPalyCol");
+		if(!StrUtils.isEmpty(type)&&"country".equals(type)) {
+			if("detail_name_en".equals(disPalyCol)) {
+			 selectStr =  template.getCounty(getPara("selectedId"), "name_en");
+			}else if("name".equals(disPalyCol)) {
+		     selectStr =  template.getCounty(getPara("selectedId"), "name");
+			 }
+		 }
+		selectStr =  template.getSysDictDetailString3(getPara("type"), getPara("selectedId"), disPalyCol);
 		renderJson(new Record().set("selectStr", selectStr));
 	}
-
 	/**
 	 * alterBootStrapTable
 	 */
@@ -328,6 +341,19 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       String update=  getPara("update");//修改的状态
       String code = (String) getRequest().getParameter("statusCode");//获取提交的是完成还是修改状态
       String submit=getPara("submit");
+   CreditQualityOpintionHistory history=new CreditQualityOpintionHistory(); 
+      history.set("quality_opinion", opintion);
+      history.set("quality_type", type);
+      history.set("order_id", orderId);
+      history.set("report_type", reportType);
+      history.set("quality_deal", deal);
+      history.set("grade", grade);
+      history.set("create_by", userId);
+      history.set("create_date", now);
+      history.set("update_by", userId);
+      history.set("update_date", now);
+      history.save();
+      
       if (StringUtils.isBlank(update)) {
           if (StringUtils.isBlank(id)) {
 			//id为空新增
@@ -865,8 +891,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      */
     public void selectQuality(){
     	   Record record = new Record();
-    String type=	getPara("type");
-    List<SysDictDetail> details =  SysDictDetail.dao.find("select detail_id,dict_type,detail_name,detail_code as value from sys_dict_detail where dict_type=?",type);
+    String type= getPara("type");
+    String  name= getPara("disPalyCol");
+    String sql="select detail_id,dict_type,"+name
+    		+ " as detail_name,detail_code as value from sys_dict_detail where dict_type=?";
+    
+    List<SysDictDetail> details =  SysDictDetail.dao.find(sql,type);
     renderJson(record.set("rows", details).set("total", details!=null?details.size():null));	
     }
 	

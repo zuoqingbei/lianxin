@@ -188,7 +188,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 		return list;
 	}
 	/**
-	 * 识别传入的参数从而将字典id转化为汉字
+	 * 识别传入的参数从而将字典id转化为自然语言
 	 * @param selectSource
 	 * @param rows
 	 * @param columnName
@@ -196,13 +196,24 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	public static void dictIdToString(List<BaseProjectModel> rows,List<Map<Object,Object>>  selectInfoMap){
 		for (Map<Object, Object> entry : selectInfoMap) {
 			for (Object key : entry.keySet()) {
-				//将字典id转化为汉字
+				//将字典id转化
 				String selectSource = (""+key).trim();
 				String columnName = (""+(entry.get(key))).trim();
 				String type = selectSource.substring(selectSource.indexOf("?type=")+6,selectSource.indexOf("$selectedId=")).trim();
 				String disPalyCol = selectSource.substring(selectSource.indexOf("$disPalyCol=")+12).trim();
 				for (BaseProjectModel model : rows) {
+					if("country".equals(type)) {
+						String value ="";
+						if("detail_name_en".equals(disPalyCol)) {
+						   value = Db.queryStr("select name_en from credit_country where del_flag=0 and id="+ model.get(columnName)+"");
+						}else if("detail_name".equals(disPalyCol)) { 
+					       value = Db.queryStr("select name from credit_country where del_flag=0 and id="+ model.get(columnName)+"");
+						}
+						model.put(columnName,value);
+				}else {
 					model.put(columnName, DictCache.getValueByCode(type, model.get(columnName)+"", disPalyCol));
+					}
+					
 				}
 			}
 		}
