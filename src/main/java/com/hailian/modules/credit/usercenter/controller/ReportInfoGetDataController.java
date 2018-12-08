@@ -33,6 +33,7 @@ import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.usercenter.model.ResultType;
+import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Record;
@@ -790,15 +791,24 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 public void  uploadBrand() {
 		String userId = getSession().getId();
 		String randomCode = UUID.randomUUID().toString().replaceAll("-", "");
-		String orderId = getPara("order_id");
 		//从前台获取文件
         List<UploadFile>  upFileList = getFiles("file");
+		String orderId = getPara("order_id");
+		//获取真实文件名
+        String originalFile = upFileList.get(0).getOriginalFileName();
+        //根据文件后缀名判断文件类型
+        String ext = FileTypeUtils.getFileType(originalFile);
+        //检查格式
+        if(!"png".equals(ext)&&!"jpg".equals(ext)&&!"jpeg".equals(ext)){
+            renderJson(new ResultType(0, "请检查 "+originalFile+"的格式!"));
+			return;
+        }
         if(upFileList.size()<1) {
         	renderJson(new ResultType(0, "上传文件为空!"));
 			return;
         }
         if(StrUtils.isEmpty(orderId)) {
-        	renderJson(new ResultType(0, "请检查必要参数reportId!"));
+        	renderJson(new ResultType(0, "请检查必要参数order_id!"));
 			return;
         }
         OrderProcessController.uploadFile(orderId, "-1", upFileList,8,randomCode);
