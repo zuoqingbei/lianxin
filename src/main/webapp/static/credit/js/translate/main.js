@@ -89,7 +89,7 @@ let ReportConfig = {
         		smartDisplay:true,
         		locales:'zh-CN',
         		onLoadSuccess:(data)=>{
-        			console.log(data)
+//        			console.log(data)
         			_this.tableDataArrEn.push(data)
         		}
         	});
@@ -1507,12 +1507,17 @@ let ReportConfig = {
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表格翻译
+    			
 	   			 let temp = []
-	   			 if(!_this.tableDataArr[index]){return}
+    			
+	   			 if(!_this.tableDataArr[index]){
+	   				 //此表格无数据，返回
+	   				 return
+	   			 }
+	   			 console.log(tableDataArrEn[index]['rows'])
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				if(!tableDataArrEn[index]){return}
-	   				$("body").mLoading("show")
-	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0?tableDataArrEn[index]['rows'][i]["id"]:null;
+	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
 	   				$.ajax({
 	   					url:BASE_PATH + `credit/ordertranslate/translate`,
 	   					type:'post',
@@ -1521,14 +1526,13 @@ let ReportConfig = {
 	   						dataJson:JSON.stringify(ele)
 	   					},
 	   					success:(data)=>{
-	   						$("body").mLoading("hide")
 	   						temp.push(data)
 	   					}
 	   				})
 	   			}) 
-	   			 console.log($("#table"+idArrEn[index] + 'En'),temp)
 	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
 	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("append",temp);
+	   			 
     		})
     		
     		 //点击保存按钮
@@ -1626,8 +1630,7 @@ let ReportConfig = {
 			 })
 		})
 	})
-	
-    	
+			
     	
     	let formTitlesEn = this.formTitleEn;
     	let formIndexEn = this.formIndexEn;
@@ -1738,7 +1741,6 @@ let ReportConfig = {
     							 success:(data)=>{
     								 if(data.statusCode === 1) {
     									 Public.message("success",data.message)
-    									 Public.goToInfoImportPage();
     									 
     								 }else {
     									 Public.message("error",data.message)

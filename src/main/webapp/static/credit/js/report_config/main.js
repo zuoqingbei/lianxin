@@ -608,7 +608,7 @@ let ReportConfig = {
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
             	    Public.tabFixed(".tab-bar",".main",120,90)
-            	    
+            	    Public.textAreaEvent();
             	    let firmArr = Array.from($(".firm-info"));
             	    firmArr.forEach((item,index)=>{
             	    	if($(item).children().length === 2) {
@@ -1141,7 +1141,6 @@ let ReportConfig = {
     								 $("body").mLoading("hide")
     								 if(data.statusCode === 1) {
     									 Public.message("success",data.message)
-    									 Public.goToInfoImportPage();
     									 
     								 }else {
     									 Public.message("error",data.message)

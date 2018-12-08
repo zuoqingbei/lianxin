@@ -127,7 +127,7 @@ let Index = {
         
         let custom_id=$("#custom_id").find("option:selected").val();
         $table.bootstrapTable({
-            height: $(".table-content").height()*0.75,
+            height: $(".table-content").height()*0.68,
             columns: [
                  {
                   title: '订单号',
