@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import com.hailian.modules.credit.company.service.CompanyService;
 
+import com.hailian.util.http.HttpCrawler;
 import org.apache.commons.lang3.StringUtils;
 
 //import ch.qos.logback.core.status.Status;
@@ -131,6 +132,8 @@ public class OrderProcessController extends BaseProjectController{
     public static final String orderFilingOfReport = "-7";
     public static LinkedList<Object> orderFilingOfReportColumns = new LinkedList<>();
     public static LinkedList<Object> orderFilingOfReportParamNames = new LinkedList<>();
+   
+    public static final String orderQualityOfReport = "-8";
     static{
         orderAllocationColumns.add("u1.realname");
         orderAllocationColumns.add("c.num");
@@ -158,6 +161,7 @@ public class OrderProcessController extends BaseProjectController{
         WEB_PARAM_NAMES.put(orderSubmitOfOrder, orderSubmitOfOrderParamNames);
         WEB_PARAM_NAMES.put(infoOfReport, infoOfReportParamNames);
         WEB_PARAM_NAMES.put(orderFilingOfReport, orderFilingOfReportParamNames);
+        WEB_PARAM_NAMES.put(orderQualityOfReport, orderFilingOfReportParamNames);
     }
     /**
      * @todo   展示订单分配页
@@ -493,6 +497,8 @@ public class OrderProcessController extends BaseProjectController{
             //调用企查查接口
             if("595".equals(code)){
                 new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report"),"612");
+                //调用香港查册网
+                //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
             }
             
             renderJson(new ResultType());

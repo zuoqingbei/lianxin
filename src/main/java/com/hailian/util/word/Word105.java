@@ -3,6 +3,7 @@ package com.hailian.util.word;
 import com.deepoove.poi.data.MiniTableRenderData;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.jfinal.kit.PathKit;
@@ -39,12 +40,16 @@ public class Word105 {
 
         HashMap<String, Object> map = new HashMap<String, Object>();
         //获取订单信息
-        CreditCompanyInfo order = CreditCompanyInfo.dao.findById(companyId);
+        CreditOrderInfo order =  CreditOrderInfo.dao.findById(orderId);
+        //获取公司主表信息
+        CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findById(companyId);
         //订单公司名称
-        map.put("company", order.getStr("name_en"));
+        map.put("company", companyInfo.getStr("name_en"));
         //联信编码
-        map.put("code", order.getStr("lianxin_id"));
+        map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
+        //国家
+        map.put("country", new ReportInfoGetDataController().dictIdToString(order.getStr("country")));
 
         //找到当前报告类型下的父节点
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);

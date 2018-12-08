@@ -60,7 +60,7 @@ let Verify = {
             height: $(".table-content").height() * 0.98,
             columns: [
                 {
-                    title: '订单号22',
+                    title: '订单号',
                     field: 'num',
                     align: 'center',
                     valign: 'middle',
@@ -176,7 +176,7 @@ let Verify = {
                     pageSize: params.pageSize,//找多少条
                     sortName: params.sortName,
                     sortOrder: params.sortOrder,
-                    searchType: "-6"
+                    searchType: "-8"
                 };
             }, onLoadSuccess: function (data) {
                 // console.log(data)

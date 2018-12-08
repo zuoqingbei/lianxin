@@ -426,12 +426,12 @@ $(document).ready(function () {
  	$(".upload-over").remove()
  	$(".reste").val("");
     	
-	layui.use('form', function(){
+	/*layui.use('form', function(){
 	  var form = layui.form;
 	  
 	  //各种基于事件的操作，下面会有进一步介绍
 	  form.render('select');
-	});
+	});*/
  }
  function isTheSameCompany(){
 	 var companyname=$("#right_company_name_en").val();
