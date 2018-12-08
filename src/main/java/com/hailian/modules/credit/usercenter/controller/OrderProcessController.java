@@ -1,6 +1,7 @@
 package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -476,10 +477,11 @@ public class OrderProcessController extends BaseProjectController{
             }else{
                 map.put("status", code);
             }
-           
+            CreditOrderInfo model = getModel(CreditOrderInfo.class);
+            int orderId = model.get("id");
             //计算绩效
-            if("341".equals(code)) {
-            	 getKpi(code);
+            if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
+            	 getKpi(model);
             }
            
             PublicUpdateMod(map);
@@ -953,70 +955,102 @@ public class OrderProcessController extends BaseProjectController{
         }
     }
 
-    public void getKpi(String statusCode) {
-    	 CreditOrderInfo model = getModel(CreditOrderInfo.class);
-    	 String  modelId = model.get("id")+"";
-    	 if(model==null||modelId==null) {
+    /**
+        * 获取绩效
+     * @param qualityScore 质检分数
+     */
+    public void getKpi( CreditOrderInfo model ) {
+    	String  orderId = model.get("id")+"";
+    	if(model==null||StrUtils.isEmpty(orderId)) {
     		throw new RuntimeException("实体和实体id不能为空!");
-    	 }
+    	}
+    	 
     	 String now = getNow();
     	 Integer userId =  getSessionUser().getUserid();
     	 String reportUser = model.get("report_user");
     	 String IQC = model.get("IQC");
     	 String  translateUser = model.get("translate_user");
     	 String  analyzeUser = model.get("analyze_user");
-    	 model = model.findById(modelId);
-    	 
+    	 model = model.findById(orderId);
          //计算绩效
-    	 Db.tx(new IAtom() {
+    	boolean isSucceed =  Db.tx(new IAtom() {
 			@Override
 			public boolean run() throws SQLException {
-				 if ("311".equals(statusCode)) {
 					CreditKpiResult publicModel = new CreditKpiResult();
 					publicModel.set("update_by", userId);
 					publicModel.set("create_by", userId);
 					publicModel.set("update_date", now);
 					publicModel.set("create_date", now);
-					publicModel.set("order_id", modelId);
+					publicModel.set("order_id", orderId);
 					
 					CreditKpiResult tempModel = new CreditKpiResult();
 		           	KpiService kpiServie = new KpiService();
-		           	
+		           	boolean isHasKpi = Db.query("select id from credit_kpi_result where order_id="+orderId).size()==0?false:true;
+		           	//如果当前订单kpi已经存在,则不二次计算
+		           	if(isHasKpi) {
+		           		return false;
+		           	}
 		           	if(!StrUtils.isEmpty(reportUser)) {
-		           		double reportUserKpi = kpiServie.getKpi(2+"" ,modelId);//当前订单的报告员
+		           		int coefficient = getCoefficient(2, orderId);//报告员绩效系数
+		           		double reportUserKpi = kpiServie.getKpi(2+"" ,orderId)*coefficient;//当前订单的报告员
 		           		System.out.println("报告员绩效:"+reportUserKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", reportUser).set("money", reportUserKpi);
 		           		tempModel.save();
 		           	}
 		           	
 		           	if(!StrUtils.isEmpty(IQC)) {
-		            	double IQCKpi = kpiServie.getKpi(4+"" ,modelId);//当前订单的质检员
+		            	double IQCKpi = kpiServie.getKpi(4+"" ,orderId);//当前订单的质检员
 		            	System.out.println("质检员绩效:"+IQCKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", IQC).set("money", IQCKpi);
 		           		tempModel.save();
 		           	}
 		           	
 		           	if(!StrUtils.isEmpty(translateUser)) {
-		           		double translateKpi = kpiServie.getKpi(6+"" ,modelId);//当前订单的翻译
+		           		int coefficient = getCoefficient(6, orderId);//翻译绩效系数
+		           		double translateKpi = kpiServie.getKpi(6+"" ,orderId)*coefficient;//当前订单的翻译
 		           		System.out.println("翻译员绩效:"+translateKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", translateUser).set("money", translateKpi);
 		           		tempModel.save();
 		           	}
 		           	
 		           	if(!StrUtils.isEmpty(analyzeUser)) {
-		           		double analystKpi = kpiServie.getKpi(5+"" ,modelId);//当前订单的分析员
+		           		int coefficient = getCoefficient(5, orderId);//翻译绩效系数
+		           		double analystKpi = kpiServie.getKpi(5+"" ,orderId)*coefficient;//当前订单的分析员
 		           		System.out.println("分析员绩效:"+analystKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", analyzeUser).set("money", analystKpi);
 		           		tempModel.save();
 		           	}
-		       
-					}
 				return true;
 			}
 		 });
-        
+    	
+    	
+        if(!isSucceed) {
+        	throw new  RuntimeException("该订单已经计算过绩效,请勿重复计算!");
+        }
          
     }
-
+    /**
+     * 根据角色id和订单id获取绩效
+     * @param roleId
+     * @param orderId
+     * @return系数
+     */
+    public static int getCoefficient(int  roleId,String orderId) {
+    	int qualityType = -1;
+    	if(roleId==2) {
+    		qualityType = 2;
+    	}else  if(roleId==6) {
+    		qualityType = 1;
+    	}else  if(roleId==5) {
+    		qualityType = 3;
+    	}
+    	//分析质检分
+   		String qualityScore = Db.queryStr("select greade from  credit_quality_opintion where quality_type="+qualityType+" del_flag=0 and  order_id="+orderId);
+   		//绩效系数
+   	    Integer coefficient = (100-Integer.parseInt(qualityScore))<0?0:(100-Integer.parseInt(qualityScore)); 
+		return coefficient;
+    }
+    
 }
 
