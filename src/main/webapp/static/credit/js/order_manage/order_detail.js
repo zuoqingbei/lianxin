@@ -48,9 +48,12 @@ let OrderDetail = {
         let _this = this;
         let id = this.row.id;
         let reportType = this.row.report_type;
-        $.get(`${this.BASE_PATH}getmodule/detail/`, {id, reportType}, (data) => {
+        let type = this.row.quality_type ? '' : 0;
+        console.log(this.row.quality_type+'=======================')
+        $.get(`${this.BASE_PATH}getmodule/detail/`, {id, reportType,type}, (data) => {
             setTimeout(() => {
-                console.log('--data', data);
+                console.log('-------------data', data);
+                console.log('-------------defaultModule', data.defaultModule);
                 if (!data.defaultModule) {
                     console.error(`--本页面接口故障：
                         ${this.BASE_PATH}getmodule/detail/?id=${id}&reportType=${reportType}&type=0`);
