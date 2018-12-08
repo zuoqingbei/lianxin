@@ -95,8 +95,8 @@ let InitObjTrans = {
 				//获取财务模板id   ////下面 0代表页面自上而下的财务模块
 				let cwModals = Array.from($(".gjcw"))
 				cwModals.forEach((self,ind)=>{
-					$(self).attr("cwConfigid",data[ind]["id"])
-					cwModalId = data[ind]["id"]
+					$(self).attr("cwConfigid",data[ind]?data[ind]["id"]:'')
+					cwModalId = data[ind]?data[ind]["id"]:''
 				})
 				let cwModalArr = Array.from($(".cwModal"))
 				data.forEach((item,index)=>{

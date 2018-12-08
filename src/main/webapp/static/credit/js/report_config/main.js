@@ -345,7 +345,7 @@ let ReportConfig = {
     		let titleId;
     		this.entityTitle.forEach((item,i)=>{
     			if(item.id === floatParentId ) {
-    				if(floatParentId !== 853) {
+    				if(_this.entityModalType[i] !== '10') {
     					//非财务模块浮动
     					let html = this.notMoneyFloatHtml[index]
     					$("#title"+i).after(html)
@@ -362,7 +362,7 @@ let ReportConfig = {
     			}
     		})
     	})
-//    	console.log(cw_title,cw_contents)
+    	console.log(cw_title,cw_contents)
     	this.cwConfigAlterSource = cw_title[0]['alter_source'];
     	this.cwConfigGetSource = cw_title[0]['get_source'];
     	let cw_top_html = ''
@@ -571,6 +571,7 @@ let ReportConfig = {
     initContent(){
         /**初始化内容 */
     	this.entityTitle = [] //存放小模块的实体title
+    	this.entityModalType = [] //存放小模块的实体类型
     	this.idArr = []    //存放table类型模块对应的index
     	this.contentsArr = [] //存放table类型模块的contents
     	this.title = [] //存放table类型模块的title
@@ -607,7 +608,7 @@ let ReportConfig = {
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
             	    Public.tabFixed(".tab-bar",".main",120,90)
-            	    
+            	    Public.textAreaEvent();
             	    let firmArr = Array.from($(".firm-info"));
             	    firmArr.forEach((item,index)=>{
             	    	if($(item).children().length === 2) {
@@ -671,6 +672,7 @@ let ReportConfig = {
                 	 * 循环模块
                 	 */
                 	_this.entityTitle.push(item.title)
+                	_this.entityModalType.push(item.smallModileType)
                 	let smallModileType = item.smallModileType
                 	if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
@@ -1071,6 +1073,7 @@ let ReportConfig = {
     		}
 			 //点击保存按钮
     		$(".position-fixed").on("click","#save",(e)=>{
+    			$("body").mLoading("show")
     			InitObj.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#save").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
@@ -1135,9 +1138,9 @@ let ReportConfig = {
     							 url,
     							 type:'post',
     							 success:(data)=>{
+    								 $("body").mLoading("hide")
     								 if(data.statusCode === 1) {
     									 Public.message("success",data.message)
-    									 Public.goToInfoImportPage();
     									 
     								 }else {
     									 Public.message("error",data.message)
@@ -1152,6 +1155,7 @@ let ReportConfig = {
     		})
     			 //点击提交按钮
     		$(".position-fixed").on("click","#commit",(e)=>{
+    			 $("body").mLoading("show")
     			InitObj.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#commit").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
@@ -1215,6 +1219,7 @@ let ReportConfig = {
     							 url,
     							 type:'post',
     							 success:(data)=>{
+    								 $("body").mLoading("hide")
     								 if(data.statusCode === 1) {
     									 Public.message("success",data.message)
     									 Public.goToInfoImportPage();

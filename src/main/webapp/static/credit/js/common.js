@@ -132,6 +132,17 @@ let Public = {
             return false;
         });
     },
+    textAreaEvent(){
+    	//获取textarea的内容，替换换行符
+    	$(document).ajaxStop(function(){
+    	  //遍历所有textarea标签
+    	  $('textarea').each(function(){ 
+    	    var text = $(this).html(); 
+    	    text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
+    	    $(this).html(text);
+    	  });
+    	});
+    },
     logoutEvent() {
         $(".user-content").click(function () {
             $(".logout").toggleClass("logout-show")

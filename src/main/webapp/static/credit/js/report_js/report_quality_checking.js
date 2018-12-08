@@ -60,7 +60,7 @@ let Verify = {
             height: $(".table-content").height() * 0.98,
             columns: [
                 {
-                    title: '订单号22',
+                    title: '订单号',
                     field: 'num',
                     align: 'center',
                     valign: 'middle',

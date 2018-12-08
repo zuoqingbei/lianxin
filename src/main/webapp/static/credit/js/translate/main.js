@@ -23,29 +23,42 @@ let ReportConfig = {
     	 * 表格初始化
     	 */
         let _this = this
-        
+        this.tableDataArr = []
+        this.tableDataArrEn = []
         this.idArr.forEach((item,index)=>{
         	const $table = $("#table"+item);
+        	const $tableEn = $("#table"+item+"En");
         	let contents = this.contentsArr[index]
+        	let contentsEn = this.contentsArrEn[index]
         	let titles = this.title
         	let urlTemp = titles[index].get_source;
         	let conf_id = titles[index].id;
         	if(!urlTemp){return}
-        	let url = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	let urlCH = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	let urlEN = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
         	if(urlTemp.split("*")[1]){
         		let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
         		tempParam.forEach((item,index)=>{
-        			url += `&${item}=${this.rows[item]}`
+        			if(item === 'company_id') {
+        				let val = this.rows["company_id_en"]
+        				urlEN += `&${item}=${val}`
+        			}else {
+        				urlEN += `&${item}=${this.rows[item]}`
+        			}
+        			urlCH += `&${item}=${this.rows[item]}`
         		})
         	}
-			 
-			 let selectInfo = []
+        	let selectInfo = []
         	selectInfo.push(_this.selectInfoObj)
         	
+        	let tempRows = []
         	$table.bootstrapTable({
-        		columns: columns(index,item),
-    			url:url, // 请求后台的URL（*）
+        		columns: _this.tableColumns(contents,'ch'),
+    			url:urlCH, // 请求后台的URL（*）
 			    method : 'post', // 请求方式（*）post/get
+			    ajaxOptions:{
+			    	async:false
+			    },
 			    queryParams:function(param){
 			    	param.selectInfo = JSON.stringify(selectInfo)
 			    	return param
@@ -55,121 +68,97 @@ let ReportConfig = {
     			pagination: false, //分页
     			smartDisplay:true,
     			locales:'zh-CN',
+    			onLoadSuccess:(data)=>{
+    				_this.tableDataArr.push(data)
+    			}
         	});
-        	
-        	
-        	function columns(tempI,tempId){
-        		
-        		let arr = []
-        		contents.forEach((ele,index)=>{
-        			if(ele.temp_name !== '操作'){
-        				arr.push({
-        					title:ele.temp_name,
-        					field: ele.column_name,
-        					width:(1/contents.length)*100+'%'
-        				})
-        				
-        			}
-        		})
-        		
-        		return arr
-        	}
-        })
-        this.idArrEn.forEach((item,index)=>{
-        	const $table = $("#table"+item+"En");
-        	let contents = this.contentsArrEn[index]
-        	let titles = this.titleEn
-        	let urlTemp = titles[index].get_source;
-        	let conf_id = titles[index].id;
-        	/*let url = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
-        	if(urlTemp.split("*")[1]){
-        		let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
-        		tempParam.forEach((item,index)=>{
-        			url += `&${item}=${this.rows[item]}`
-        		})
-        	}*/
-        	
-        	let selectInfo = []
-        	selectInfo.push(_this.selectInfoObj)
-        	
-        	$table.bootstrapTable({
-        		columns: columns2(index,item),
-//        		url:url, // 请求后台的URL（*）
+        	$tableEn.bootstrapTable({
+        		columns: _this.tableColumns(contentsEn,'en',index,_this.idArrEn[index]),
+        		url:urlEN, // 请求后台的URL（*）
         		method : 'post', // 请求方式（*）post/get
         		queryParams:function(param){
         			param.selectInfo = JSON.stringify(selectInfo)
         			return param
         		},
+        		 ajaxOptions:{
+ 			    	async:false
+ 			    },
         		sidePagination: 'server',
         		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
         		pagination: false, //分页
         		smartDisplay:true,
         		locales:'zh-CN',
+        		onLoadSuccess:(data)=>{
+//        			console.log(data)
+        			_this.tableDataArrEn.push(data)
+        		}
         	});
         	
         	
-        	function columns2(tempI,tempId){
-        		
-        		let arr = []
-        		contents.forEach((ele,index)=>{
-        			if(ele.temp_name !== 'Operation'){
-        				arr.push({
-        					title:ele.temp_name,
-        					field: ele.column_name,
-        					width:(1/contents.length)*100+'%'
-        				})
-        				
-        			}else {
-        				arr.push({
-        					title:ele.temp_name,
-        					field: 'operate',
-        					width:1/contents.length,
-        					events: {
-        						"click .edit":(e,value,row,index)=>{
-        							_this.isAdd = false
-        							_this.rowId = row.id
-        							//回显
-        							let formArr = Array.from($("#modal"+tempId).find(".form-inline"))
-        							formArr.forEach((item,index)=>{
-        								let id = $(item).children("label").siblings().attr("id");
-        								let anotherIdArr = id.split("_")
-        								anotherIdArr.pop();
-        								let anotherId = anotherIdArr.join('_')
-        								if($("#"+id).is('select')) {
-        									//如果是select
-        									$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
-        								}else {
-        									
-        									$("#"+id).val(row[anotherId])
-        								}
-        							})
-        						}
-        					},
-        					formatter: function(){return _this.formatBtnArr[tempI]}
-        				})
-        			}
-        		})
-        		
-        		return arr
-        	}
         })
+      
     },
-    initModal(){
+    tableColumns(a,lang,tempI,tempId){
+    	let _this = this
+    	let arr = []
+		a.forEach((ele,index)=>{
+			if(ele.temp_name !== '操作' && ele.temp_name !== 'Operation'){
+				arr.push({
+					title:ele.temp_name,
+					field: ele.column_name,
+					width:(1/a.length)*100+'%'
+				})
+				
+			}
+			if(lang === 'en' && (ele.temp_name === '操作' || ele.temp_name === 'Operation')){
+				arr.push({
+					title:'Operation',
+					field: 'operate',
+					width: 1/a.length,
+					events: {
+    					"click .edit":(e,value,row,index)=>{
+    						_this.isAdd = false
+    						_this.rowId = row.id
+    						//回显
+    						let formArr = Array.from($("#modalEn"+tempId).find(".form-inline"))
+    						formArr.forEach((item,index)=>{
+    							let id = $(item).children("label").siblings().attr("id");
+    							let anotherIdArr = id.split("_")
+    							anotherIdArr.pop();
+    							let anotherId = anotherIdArr.join('_')
+    							if($("#"+id).is('select')) {
+    								//如果是select
+    								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
+    							}else {
+    								
+    								$("#"+id).val(row[anotherId])
+    							}
+    						})
+    					}
+    				},
+    				formatter: function(){return _this.formatBtnArr[tempI]}
+				})
+			}
+		})
+		
+		return arr
+    },
+    initmodal(){
     	/**
     	 * 初始化模态窗
     	 */
     	let _this = this
     	let modalHtml = ''
-    	let ids = this.idArr
-    	let contents = this.contentsArr;
-    	let titles = this.title
+    	let ids = this.idArrEn
+    	let contents = this.contentsArrEn;
+    	let titles = this.titleEn
     	//格式化按钮数组
     	this.formatBtnArr = []
     	ids.forEach((item,index)=>{
     		let modalBody = ''
 			let myIndex = index;
     		contents[index].forEach((ele,index)=>{
-    			if(ele.temp_name === '操作') {
+    			if(ele.temp_name === '操作' || ele.temp_name === 'Operation') {
     				return;
     			}
     			
@@ -233,8 +222,8 @@ let ReportConfig = {
     			
     			
     		})
-    		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modal${item}">编辑</a><a href="javascript:;"  class="delete" data-toggle="modal" data-target="#modal_delete">删除</a></div>`)
-    		modalHtml += `<div class="modal fade" id="modal${item}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modalEn${item}">编辑</a></div>`)
+    		modalHtml += `<div class="modal fade" id="modalEn${item}" tabindex="-1" role="dialog" aria-labelledby="examplemodalCenterTitle" aria-hidden="true">
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
 					            <div class="modal-header">
@@ -244,8 +233,8 @@ let ReportConfig = {
 					                ${modalBody}
 					            </div>
 					            <div class="modal-footer">
-					                <button type="button" class="btn btn-primary" id="modal_save${item}" data-dismiss="modal">保存</button>
-					                <button type="button" class="btn btn-default" id="modal_cancel${item}" data-dismiss="modal">取消</button>
+					                <button type="button" class="btn btn-primary" id="modalEn_save${item}" data-dismiss="modal">保存</button>
+					                <button type="button" class="btn btn-default" id="modalEn_cancel${item}" data-dismiss="modal">取消</button>
 					            </div>
 					        </div>
 					    </div>
@@ -789,7 +778,7 @@ let ReportConfig = {
         	data:{id,reportType,istranslate},
         	success:(data)=>{
                 setTimeout(()=>{
-                	_this.initModal();
+                	_this.initmodal();
                 	InitObjTrans.addressInit();
                 	_this.initTable();
                 	_this.initFloat();
@@ -873,7 +862,7 @@ let ReportConfig = {
                 		_this.cwGetSource = item.title.get_source;
                 		_this.cwAlterSource = item.title.alter_source;
                 		_this.cwDeleteSource = item.title.remove_source;
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}
@@ -1149,7 +1138,7 @@ let ReportConfig = {
 //                		_this.cwGetSource = item.title.get_source;
 //                		_this.cwAlterSource = item.title.alter_source;
 //                		_this.cwDeleteSource = item.title.remove_source;
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCwEn${index}">${item_en.title.temp_name}</a>`
+                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCwEn${index}">${item_en.title.temp_name}</a>`
                 	}else if(smallModileTypeEn !== '-2' && smallModileTypeEn !== '5'  && smallModileTypeEn !== '2') {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
                 	}
@@ -1322,6 +1311,7 @@ let ReportConfig = {
             							</div>`
         				let explainObj = item.contents[5];
             			let explainUrl = explainObj.get_source;
+            			if(explainUrl === null) {return;}
             			let paramObj = {}
             			if(explainUrl.split("*")[1]) {
             				let tempParam = explainUrl.split("*")[1].split("$");//必要参数数组
@@ -1419,28 +1409,19 @@ let ReportConfig = {
             let num = filename.split(".").length;
             let filetype = filename.split(".")[num-1];
             if(filetype === 'jpg' || filetype === 'png' || filetype === 'pdf') {
-                $("#modal_logo_icon span").text(filename)
+                $("#modalEn_logo_icon span").text(filename)
             }else {
                 Public.message("info","上传文件格式错误！")
             }
         })
     	
     	this.idArr.forEach((item,index)=>{
-    		//点击新增一条清空模态框中内容
-    		$("#addBtn"+item).click(()=>{
-    			this.isAdd = true
-    			$("#modal"+item+" input").val("");
-    			$("#modal"+item+" input").siblings("span").html("");
-		    	$("#modal"+item+" textarea").val("");
-	    	    $("#modal"+item+" select").find("option:selected").attr("selected", false);
-			    $("#modal"+item+" select").find("option").first().attr("selected", true);
-    
-    		})
+    		
     		//点击模态框保存按钮，新增一条数据
-    		$("#modal_save"+item).unbind().click(()=>{
+    		$("#modalEn_save"+item).unbind().click(()=>{
     			let dataJson = []
     			let dataJsonObj = {}
-    			let formArr = Array.from($("#modal"+item).find(".form-inline"))
+    			let formArr = Array.from($("#modalEn"+item).find(".form-inline"))
 				formArr.forEach((item,index)=>{
 					let id = $(item).children("label").siblings().attr("id");
 					if($("#"+id).is("button")) {
@@ -1461,15 +1442,16 @@ let ReportConfig = {
     			let urlTemp = this.title[index].alter_source
     			if(!urlTemp){return}
     			let url = BASE_PATH  + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] 
-    			if(!this.isAdd){
-    				//是修改保存
-    				dataJsonObj["id"] = this.rowId
-    			}
+				dataJsonObj["id"] = this.rowId
             	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
             	let paramObj = {}
             	tempParam.forEach((item,index)=>{
-            		dataJsonObj[item] = this.rows[item]
-    			 })
+    				if(item === 'company_id') {
+    					dataJsonObj[item] = this.rows[item+'_en']
+    				}else {
+    					dataJsonObj[item] = this.rows[item]
+    				}
+    			})
     			 dataJson.push(dataJsonObj)
             	paramObj["dataJson"] = JSON.stringify(dataJson)
             	//调用新增修改接口
@@ -1481,9 +1463,9 @@ let ReportConfig = {
             		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             		success:(data)=>{
             			if(data.statusCode === 1) {
-            				Public.message("success",this.isAdd?'新增成功！':'修改成功！')
+            				Public.message("success",'修改成功！')
             				//刷新数据
-            				this.refreshTable($("#table"+item));
+            				this.refreshTable($("#table"+item + 'En'));
             			}else {
             				Public.message("error",data.message)
             			}
@@ -1511,10 +1493,149 @@ let ReportConfig = {
     	/**
     	 * 底部按钮点击事件
     	 */
+    	let _this = this
+    	let tableTitlesEn = this.titleEn 
+    	let tableDataArr = this.tableDataArr
+    	let tableDataArrEn = this.tableDataArrEn
+    	let idArrEn = this.idArrEn
+    	console.log(this.tableDataArrEn)
+    	let dataEn  = []
+    	tableTitlesEn.forEach((item,index)=>{
+    		let alterSource = item["alter_source"];
+    		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
+    		let dataJson = []
+    		//点击翻译按钮
+    		$(".position-fixed").on("click","#translateBtn",(e)=>{
+    			 //表格翻译
+    			
+	   			 let temp = []
+    			
+	   			 if(!_this.tableDataArr[index]){
+	   				 //此表格无数据，返回
+	   				 return
+	   			 }
+	   			 console.log(tableDataArrEn[index]['rows'])
+	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
+	   				if(!tableDataArrEn[index]){return}
+	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
+	   				$.ajax({
+	   					url:BASE_PATH + `credit/ordertranslate/translate`,
+	   					type:'post',
+	   					async:false,
+	   					data:{
+	   						dataJson:JSON.stringify(ele)
+	   					},
+	   					success:(data)=>{
+	   						temp.push(data)
+	   					}
+	   				})
+	   			}) 
+	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
+	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("append",temp);
+	   			 
+    		})
+    		
+    		 //点击保存按钮
+    		
+    		$(".position-fixed").on("click","#save",(e)=>{
+    			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
+    			 console.log(data)
+    			 if(data.length === 0 || !Array.isArray(data)){return}
+    			 data.forEach((ele,i)=>{
+    				 if(alterSource.split("*")[1]) {
+		    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
+		    			tempParam.forEach((item,index)=>{
+		    				if(item === 'company_id') {
+		    					console.log(ele)
+		    					ele[item] = _this.rows['company_id_en']
+		    					console.log(ele)
+		    				}else {
+		    					ele[item] =_this.rows[item]
+		    				}
+		    			})
+		    		}
+					
+					let arr = Object.keys(ele) 
+					arr.forEach((item,index)=>{
+						ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
+					})
+    			 })
+    			 let $modals = $("#modalEn"+idArrEn[index])
+    			 let $selects = $modals.find(".modal-body").find("select")
+    			 $selects.each((index,item)=>{
+    				 let name = $(item).attr("name")
+    				 let val = $("#"+$(item).attr("id")+' option:selected').val()
+    				 data.forEach((ele)=>{ 
+    					 if(ele[name]){
+    						 ele[name] = val
+    					 }
+    				 })
+    			 })
+    			 $.ajax({
+    				 url:url,
+    				 data:{
+    					 dataJson:JSON.stringify(data)
+    				 },
+    				 type:'post',
+    				 success:(data)=>{
+    					 console.log(data)
+    				 }
+    			 })
+    		})
+    	//点击提交按钮
+		
+		$(".position-fixed").on("click","#submit",(e)=>{
+			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
+			 console.log(data)
+			 if(data.length === 0){return}
+			 data.forEach((ele,i)=>{
+				 if(alterSource.split("*")[1]) {
+	    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
+	    			tempParam.forEach((item,index)=>{
+	    				if(item === 'company_id') {
+	    					console.log(ele)
+	    					ele[item] = _this.rows['company_id_en']
+	    					console.log(ele)
+	    				}else {
+	    					ele[item] =_this.rows[item]
+	    				}
+	    			})
+	    		}
+				
+				let arr = Object.keys(ele) 
+				arr.forEach((item,index)=>{
+					ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
+				})
+			 })
+			 let $modals = $("#modalEn"+idArrEn[index])
+			 let $selects = $modals.find(".modal-body").find("select")
+			 $selects.each((index,item)=>{
+				 let name = $(item).attr("name")
+				 let val = $("#"+$(item).attr("id")+' option:selected').val()
+				 data.forEach((ele)=>{ 
+					 if(ele[name]){
+						 ele[name] = val
+					 }
+				 })
+			 })
+			 $.ajax({
+				 url:url,
+				 data:{
+					 dataJson:JSON.stringify(data)
+				 },
+				 type:'post',
+				 success:(data)=>{
+					 console.log(data)
+				 }
+			 })
+		})
+	})
+			
+    	
     	let formTitlesEn = this.formTitleEn;
     	let formIndexEn = this.formIndexEn;
 //    	console.log(formTitles,formIndex)
-    	let _this = this
+    
     	//_this.formDataArr
     	formIndexEn.forEach((item,index)=>{
     		let alterSource = formTitlesEn[index]["alter_source"];
@@ -1534,10 +1655,9 @@ let ReportConfig = {
     			})
     		}
 			if(dataJsonObj["company_id"] && !dataJsonObj["company_id"]){return}
-    		console.log(_this.formDataArr[index])
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
-    			 $("body").mLoading("show")
+    			 //表单翻译
     			 $.ajax({
     				 url:BASE_PATH + `credit/ordertranslate/translate`,
     				 type:'post',
@@ -1545,10 +1665,10 @@ let ReportConfig = {
     					 dataJson:JSON.stringify(_this.formDataArr[index])
     				 },
     				 success:(data)=>{
-    					 $("body").mLoading("hide")
     					 _this.bindFormDataEn(data,index)
     				 }
-    			 })
+    			 });
+    			 
     		})
 			 //点击保存按钮
     		
@@ -1621,7 +1741,6 @@ let ReportConfig = {
     							 success:(data)=>{
     								 if(data.statusCode === 1) {
     									 Public.message("success",data.message)
-    									 Public.goToInfoImportPage();
     									 
     								 }else {
     									 Public.message("error",data.message)

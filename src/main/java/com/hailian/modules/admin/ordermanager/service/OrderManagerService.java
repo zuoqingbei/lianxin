@@ -66,6 +66,7 @@ public class OrderManagerService {
 			return coi.get("id")+"";
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception(e);
 		}
 

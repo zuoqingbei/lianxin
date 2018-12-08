@@ -368,10 +368,7 @@ public class HomeController extends BaseProjectController {
 		//获取订单公司名称
 		String right_company_name_en=model.get("right_company_name_en");
 		
-		//非快速递交时创建报告
-		CreditCompanyInfo company=null;
-		CreditCompanyInfo companyEn=null;
-		String is_fastsubmmit=model.get("is_fastsubmmit");
+	    String is_fastsubmmit=model.get("is_fastsubmmit");
 		CreditOrderInfo theSameOrder=null;
 		//查询到有相同公司报告直接提交
 		if(!is_fastsubmmit.equals("-1")){
@@ -379,19 +376,6 @@ public class HomeController extends BaseProjectController {
 			model.set("is_fastsubmmit", theSameOrder.get("id"));
 			model.set("company_id", theSameOrder.get("id"));
 			model.set("status", "311");
-		}else{
-			company=new CreditCompanyInfo();
-			company.set("name_en", right_company_name_en);
-			company.save();
-			String language=model.get("report_language")+"";
-			if(language.equals("216") || language.equals("217")){
-				companyEn=new CreditCompanyInfo();
-				companyEn.set("name_en", right_company_name_en);
-				companyEn.set("sys_language", "613");
-				companyEn.save();
-			}
-			model.set("company_id", company.get("id"));
-			
 		}
 		//获取报告员id
 		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
@@ -427,14 +411,51 @@ public class HomeController extends BaseProjectController {
 		model.set("update_by", userid);
 		model.set("update_date", date1);
 		String id = OrderManagerService.service.modifyOrder(0,model,user,this);//保存订单
-		if(company !=null){
-			company.set("order_id", id);
-			company.update();
+		
+		//非快速递交时创建报告
+		if(is_fastsubmmit.equals("-1")){
+		String language = model.get("report_language")+"";
+		CreditCompanyInfo company = new CreditCompanyInfo();
+		company.set("order_id", id);
+		company.set("update_date", getNow());
+		company.set("create_date", getNow());
+		company.set("create_by", userid);
+		company.set("update_by",userid);
+		company.set("name_en", right_company_name_en);
+		company.set("sys_language", "612");
+		company.save();
+		String companZHId = company.get("id")+"";
+		/** 214	 	中文繁体  
+			215	 	英文
+			216	 	中文简体+英文
+			217	 	中文繁体+英文 */
+		/**612	 	中文简体
+		   613	 	英文
+		   614	 	中文繁体*/
+		if("214".equals(language)){
+			company.set("sys_language", "614");
+			company.remove("id").save();
+		}else if("215".equals(language)){
+			company.set("sys_language", "613");
+			company.remove("id").save();
+		}else if("216".equals(language)){
+			company.set("sys_language", "612");
+			company.remove("id").save();
+			company.set("sys_language", "613");
+			company.remove("id").save();
+		}else if("217".equals(language)){
+			company.set("sys_language", "614");
+			company.remove("id").save();
+			company.set("sys_language", "613");
+			company.remove("id").save();
 		}
-		if(companyEn !=null){
-			companyEn.set("order_id", id);
-			companyEn.update();
+		CreditOrderInfo order = new CreditOrderInfo();
+		order.set("company_id",companZHId);
+		order.set("id",id);
+		order.update();
+		model.set("company_id",companZHId);
 		}
+		
 		CreditOperationLog.dao.addOneEntry(this, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
 		cof.save();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
