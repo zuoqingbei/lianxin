@@ -195,6 +195,13 @@ let Public = {
         });
         localStorage.setItem("row", JSON.stringify(param));
     },
+    goToReportAnalyze(param) {
+    	/**跳转可配置分析页面*/
+    	$("#main_content").load(BASE_PATH + 'credit/front/orderProcess/showReportedAnalyze', () => {
+    		this.gotop()
+    	});
+    	localStorage.setItem("row", JSON.stringify(param));
+    },
     tabFixed(fixedEle, scrollEle, min, max) {
         /**
          * 滚动之后固定tab函数

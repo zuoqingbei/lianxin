@@ -288,6 +288,13 @@ public class OrderProcessController extends BaseProjectController{
     public void showReportedTranslate(){
     	render(REPORT_MANAGE_PATH+"report_translate.html");
     }
+    /**
+     * @author zhuch
+     * 
+     */
+    public void showReportedAnalyze(){
+    	render(REPORT_MANAGE_PATH+"report_analyze.html");
+    }
 
     //展示列表功能公共雏形
     private Page<CreditOrderInfo> PublicListMod(String searchType){
