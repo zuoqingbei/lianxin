@@ -137,9 +137,10 @@ let Public = {
     	$(document).ajaxStop(function(){
     	  //遍历所有textarea标签
     	  $('textarea').each(function(){ 
-    	    var text = $(this).html(); 
+    	    var text = $(this).val();
+            //console.log($(this).attr("name")+"="+text);
     	    text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
-    	    $(this).html(text);
+    	    $(this).val(text);
     	  });
     	});
     },
@@ -194,6 +195,13 @@ let Public = {
             this.gotop()
         });
         localStorage.setItem("row", JSON.stringify(param));
+    },
+    goToReportAnalyze(param) {
+    	/**跳转可配置分析页面*/
+    	$("#main_content").load(BASE_PATH + 'credit/front/orderProcess/showReportedAnalyze', () => {
+    		this.gotop()
+    	});
+    	localStorage.setItem("row", JSON.stringify(param));
     },
     tabFixed(fixedEle, scrollEle, min, max) {
         /**

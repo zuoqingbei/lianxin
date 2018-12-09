@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>reported</title>
+     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/report_css/reported_basic_info.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/report_css/report_business_info.css">
+    <style>
+    	.abc:after{
+    		content: '';
+    		width: 26%;
+ 		}
+ 		.aaa:after {
+ 			content: '';
+    		width: 21%;
+ 		}
+    </style>
+</head>
+<body>
+<div id="container" class="row animated fadeIn">
+    <div class="main">
+        <div class="main-header order-info">
+			   <!-- 面包屑 -->
+                 <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:;" id="infoImport" onclick="Public.goToInfoImportPage()">报告录入</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">填报</li>
+                    </ol>
+                 </nav>
+                    	
+                    <div class="order-box">
+                      
+                    </div>
+                    <div class="tab-bar btn-group">
+                      
+                    </div>
+        </div>
+        <!-- 滚动内容 -->
+        <div class="main-content">
+
+        </div> 
+        
+         <!-- fixed 底部 -->
+                    <div class="position-fixed fixed-btn-well d-flex justify-content-end align-items-center px-5">
+                       
+                    </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					        <div class="modal-content">
+					            <div class="modal-header">
+					              	确认删除？
+					            </div>
+					              <div class="modal-body">
+					               	<div class="d-flex justify-content-center align-items-center"><img src="${BASE_PATH }static/credit/imgs/index/info.png" style="width:1.8rem;margin-right:.2rem"/>是否要删除此行？</div>
+					            </div>
+					            <div class="modal-footer">
+					                <button type="button" class="btn btn-primary" id="popEnter" data-dismiss="modal">删除</button>
+					                <button type="button" class="btn btn-default" id="popCancel" data-dismiss="modal">取消</button>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+<script src="${BASE_PATH }static/credit/assets/city-select/Popt.js"></script>
+ 	<script src="${BASE_PATH }static/credit/assets/city-select/cityJson.js"></script>
+ 	<script src="${BASE_PATH }static/credit/assets/city-select/citySet.js"></script>
+
+<script src="${BASE_PATH }static/credit/js/analyze/main.js" ></script>
+
+</body>
+</html>
