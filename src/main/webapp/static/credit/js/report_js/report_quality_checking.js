@@ -143,8 +143,11 @@ let Verify = {
                             Public.goToOrderDetail(row.id, row)
                         },
                         "click .analyze_quality": (e, value, row, index) => {
-                            row.quality_type = 'analyze_quality';
-                            Public.goToOrderDetail(row.id, row)
+                            if(row.report_type=='8'||row.report_type=='9'||row.report_type=='10'||row.report_type=='11'){
+                                row.quality_type = 'analyze_quality';
+                                Public.goToOrderDetail(row.id, row)
+                            }
+
                         },
                         "click .translate_quality": (e, value, row, index) => {
                             row.quality_type = 'translate_quality';
