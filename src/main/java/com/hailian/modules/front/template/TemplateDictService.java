@@ -17,7 +17,7 @@ import com.jfinal.plugin.activerecord.Db;
  * @author zuoqb
  */
 public class TemplateDictService extends BaseService {
-
+	public static TemplateDictService templatedictservice=new TemplateDictService();
 	
 
 	/**
