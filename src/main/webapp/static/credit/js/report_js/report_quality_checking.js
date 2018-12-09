@@ -145,7 +145,7 @@ let Verify = {
                         "click .analyze_quality": (e, value, row, index) => {
                             if(row.report_type=='8'||row.report_type=='9'||row.report_type=='10'||row.report_type=='11'){
                                 row.quality_type = 'analyze_quality';
-                                Public.goToOrderDetail(row.id, row)
+                                Public.goToOrderDetail(row.id, row);
                             }
 
                         },
@@ -155,7 +155,19 @@ let Verify = {
                         },
 
                     },
-                    formatter: _this.operateFormatter
+                    formatter:function (value, row, index) {
+                        console.log('ss===')
+                        console.log(row)
+                        if(row.report_type=='8'||row.report_type=='9'||row.report_type=='10'||row.report_type=='11'){
+                            return `<a href="javascript:" class="entering_quality">填报</a> ` +
+                                '<a href="javascript:" class="analyze_quality">分析</a> ' +
+                                '<a href="javascript:" class="translate_quality">翻译</a>'
+                        }else {
+                            return `<a href="javascript:" class="entering_quality">填报</a> ` +
+                                '<a href="javascript:" class="analyze_quality" style="color: rgb(204,204,204)">分析</a> ' +
+                                '<a href="javascript:" class="translate_quality">翻译</a>'
+                        }
+                    }
                 }
 
             ],
@@ -202,13 +214,17 @@ let Verify = {
             $table.bootstrapTable('resetView');
         }, 200);
     },
-    operateFormatter() {
-        /**操作按钮格式化 */
-
-        return `<a href="javascript:" class="entering_quality">填报</a> ` +
-            '<a href="javascript:" class="analyze_quality">分析</a> ' +
-            '<a href="javascript:" class="translate_quality">翻译</a>'
-    }
+    // operateFormatter(value, row, index) {
+    //     /**操作按钮格式化 */
+    //     console.log('新家的',row)
+    //     if(row.report_type=='8'||row.report_type=='9'||row.report_type=='10'||row.report_type=='11'){
+    //         return `<a href="javascript:" class="entering_quality">填报</a> ` +
+    //             '<a href="javascript:" class="analyze_quality">分析</a> ' +
+    //             '<a href="javascript:" class="translate_quality">翻译</a>'
+    //     }
+    //
+    //
+    // }
 };
 
 

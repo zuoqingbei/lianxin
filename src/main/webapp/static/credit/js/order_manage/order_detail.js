@@ -387,6 +387,13 @@ let OrderDetail = {
                             || _this.row.report_type === "9" && $(this).text() === 'IndustryAnalyze') {
                             $(this).nextAll('.module-content').after(qualitySelectHtml);
                         }
+                        if (_this.row.report_type === "10" && ($(this).text() === '行业分析' || $(this).text() === '财务分析')
+                                || _this.row.report_type === "11" && ($(this).text() === 'IndustryAnalyze' || $(this).text() === '财务分析')) {
+
+                                if ((_this.row.report_type === "10" || _this.row.report_type === "11") && ($(this).text() === '行业分析' || $(this).text() === '财务分析')) {
+                                    $(this).nextAll('.module-content').after(qualitySelectHtml);
+                                }
+                        }
                         break;
                     case 'translate_quality':
                         if (_this.row.report_type === "10" && ($(this).text() === '行业分析' || $(this).text() === '财务分析')

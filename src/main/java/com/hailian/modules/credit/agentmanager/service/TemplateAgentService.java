@@ -7,6 +7,7 @@ import com.hailian.jfinal.base.BaseService;
 import com.hailian.modules.credit.agentmanager.model.AgentCategoryModel;
 import com.hailian.modules.credit.agentmanager.model.AgentModel;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
 
 public class TemplateAgentService extends BaseService{
@@ -115,12 +116,13 @@ public class TemplateAgentService extends BaseService{
 	public String getAgentCateString(Object selectedAgent,Object selectedAgentCate) {
 		StringBuffer sb=new StringBuffer();
 //		List<AgentCategoryModel> findAll = AgentCategoryModel.dao.findAll(selectedAgent.toString());
-		List<AgentPriceModel> findAll = AgentPriceModel.dao.findAgentCateSelect(selectedAgent.toString(),true);
-		for(AgentPriceModel detail:findAll){
-				if(selectedAgentCate!=null&&selectedAgentCate.toString().equals(detail.get("agent_category").toString())){
-					sb.append("<option selected='selected'  value='"+detail.get("agent_category")+"'>"+detail.get("categoryName")+"</option>");
+		List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("","agentcategory");
+//		List<AgentPriceModel> findAll = AgentPriceModel.dao.findAgentCateSelect(selectedAgent.toString(),true);
+		for(SysDictDetail detail:dictDetailBy){
+				if(selectedAgentCate!=null&&selectedAgentCate.toString().equals(detail.get("detail_id").toString())){
+					sb.append("<option selected='selected'  value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 				}else{
-					sb.append("<option  value='"+detail.get("agent_category")+"'>"+detail.get("categoryName")+"</option>");
+					sb.append("<option  value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 				}			
 		}
 		return sb.toString();

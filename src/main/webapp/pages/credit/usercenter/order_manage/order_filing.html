@@ -17,6 +17,15 @@
     	.bs-checkbox  {
     		height:5.5rem;
     	}
+        .mx-3{
+            background-color: white;
+            border: 1px solid #1890ff;
+            color: #1890ff;
+        }
+        .btn-primaryAc{
+            background-color: #1890ff;
+            color: #ffffff;
+        }
     </style>
 </head>
         <div id="container" class="row  animated fadeIn">
@@ -41,7 +50,7 @@
                     	<button class="btn btn-primary mx-5" id="dl_btn" data-toggle="modal" data-target="#exampleModalCenter_allocation2"> 批量分配</button>
                     	 <button class="btn btn-primary mx-3" id="dl_btn1" data-toggle="modal" data-target="#"modal style="float:right" > 未分配</button>
                          <button class="btn btn-primary mx-3" id="dl_btn2" data-toggle="modal" data-target="#modal" style="float:right" > 已分配</button>
-                        <button class="btn btn-primary mx-3" id="dl_btn3" data-toggle="modal" data-target="#modal" style="float:right"> 全部订单</button>
+                        <button class="btn btn-primary mx-3 btn-primaryAc" id="dl_btn3" data-toggle="modal" data-target="#modal" style="float:right"> 全部订单</button>
                        
                        
                         <table id="table"
@@ -336,8 +345,8 @@
                                     <label class="control-label col-md-4 text-right">是否发送委托邮件：</label>
                                     <select name="" id="entrust_email" class="form-control  col-md-6">
                                         <!--默认 是-->
-                                        <option value="1" >是</option>
-                                        <option value="-1" selected>否</option>
+                                        <option value="1" selected>是</option>
+                                        <option value="-1" >否</option>
                                     </select>
                                 </div>
                                
@@ -372,8 +381,8 @@
                                     <label class="control-label col-md-4 text-right">是否发送委托邮件：</label>
                                     <select name="email" id="entrust_email" class="form-control  col-md-6">
                                         <!--默认 是-->
-                                        <option value="1" >是</option>
-                                        <option value="-1" selected>否</option>
+                                        <option value="1" selected>是</option>
+                                        <option value="-1" >否</option>
                                     </select>
                                 </div>
                                

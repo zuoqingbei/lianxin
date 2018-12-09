@@ -99,8 +99,7 @@ var bodyContent = {
 					<%  // 列表头部 %>
 					<th name="t.name" class="sorting">客户名称</th> 
 					<th name="t.contacts" class="sorting">联系人全称</th> 
-					<th name="t.contacts_short_name" class="sorting">联系人简称</th> 
-					<th name="t.reference_num" class="sorting">客户参考号</th> 
+					
 					<th name="t4.name" class="sorting">公司名称</th> 
 					<th name="t.address" class="sorting">地址</th> 
 					<th name="t.telphone" class="sorting">电话</th> 
@@ -110,8 +109,7 @@ var bodyContent = {
 					<th name="t.money_updatetime" class="sorting">金额更新时间</th>
 					<th name="t.is_arrearage" class="sorting">是否可以欠费</th>
 					<th name="t5.name" class="sorting">所属国家(地区)</th>  
-					<th name="t.usabled" class="sorting">是否可用</th> 
-					<th name="t.is_old_customer" class="sorting">是否为老用户</th> 
+					
  					<th width="300px" style="text-align: center;">操作</th>
 				</tr>
 			</thead>
@@ -122,10 +120,7 @@ var bodyContent = {
 					<%  // 列表内容 %>
 					<td>${item.name}</td> 
 					<td>${item.contacts}</td> 
-					<td>
-						${item.contacts_short_name}
-					</td> 
-					<td>${item.reference_num}</td>
+					
 					<td>
 						${item.companyName}
 					</td>  
@@ -145,8 +140,7 @@ var bodyContent = {
 					<td>${item.money_updatetime}</td>
 					<td>${item.is_arrearage}</td>
 					<td>${item.countryName}</td>
-					<td>${item.usableName}</td>
-					<td>${item.isOldCusName}</td>
+					
 				<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 

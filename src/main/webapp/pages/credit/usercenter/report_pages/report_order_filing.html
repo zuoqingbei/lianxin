@@ -11,6 +11,17 @@
     <script type="text/javascript">
 	    var BASE_PATH = "${BASE_PATH }";
     </script>
+    <style>
+        .mx-3{
+            background-color: white;
+            border: 1px solid #1890ff;
+            color: #1890ff;
+        }
+        .btn-primaryAc{
+            background-color: #1890ff;
+            color: #ffffff;
+        }
+    </style>
 </head>
         <div id="container" class="row  animated fadeIn">
           
@@ -34,7 +45,7 @@
                     <button class="btn btn-primary mx-5" id="dl_btn" data-toggle="modal" data-target="#exampleModalCenter_allocation2"> 批量分配</button>
                      <button class="btn btn-primary mx-3" id="dl_btn1" data-toggle="modal" data-target="#"modal style="float:right" > 未分配</button>
                          <button class="btn btn-primary mx-3" id="dl_btn2" data-toggle="modal" data-target="#modal" style="float:right" > 已分配</button>
-                        <button class="btn btn-primary mx-3" id="dl_btn3" data-toggle="modal" data-target="#modal" style="float:right"> 全部订单</button>  
+                        <button class="btn btn-primary mx-3 btn-primaryAc" id="dl_btn3" data-toggle="modal" data-target="#modal" style="float:right"> 全部订单</button>
                         <table id="table"
                             data-toggle="table"
                             data-url="./data.json"
@@ -320,7 +331,7 @@
                             <div class="row mt-3 mb-2">
                                 <div class="input-group col-md-6 align-items-center">
                                     <label class="control-label col-md-4 text-right">代理ID：</label>
-                                    <select name="" id="agency_id" class="form-control  col-md-6" onchange="agentchange()">
+                                    <select name="" id="agency_id" class="form-control  col-md-6" >
                                        <option value="-1">请选择</option>
                                     </select>
                                 </div>
