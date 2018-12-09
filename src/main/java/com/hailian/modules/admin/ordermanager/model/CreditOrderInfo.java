@@ -491,6 +491,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
 		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
 		sql.append(" left join credit_kpi_result s9 on s9.user_id=t.report_user and s9.order_id=t.id");
+		sql.append(" left join credit_quality_opintion s10 on s10.order_id=t.id");
 		sql.append(" where 1 = 1 and t.del_flag='0' ");
 		if (StringUtils.isNotBlank(end_date1)) {
 			sql.append(" and t.end_date<=?");
@@ -522,7 +523,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
 						pageinator,
-						"select t.*,u.name as customName,s8.realname as reportName,s9.money,"
+						"select t.*,u.name as customName,s8.realname as reportName,s9.money,s10.grade,"
 								+ "c2.name as companyName,c2.name_en as englishName",
 						sql.toString(), params.toArray());
 
