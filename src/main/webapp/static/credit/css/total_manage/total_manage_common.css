@@ -34,7 +34,7 @@
     font-weight: 600;
     border: 1px solid var(--activeColor);
     color:var(--activeColor);
-    box-shadow: 0 0 3px var(--activeColor);
+    /*box-shadow: 0 0 3px var(--activeColor);*/
 }
 .total-order-top{
     height: 10.625rem;
@@ -97,7 +97,7 @@
     padding-top: 0.5rem;
 }*/
 .swiper-button-next, .swiper-button-prev{
-    height: 2.3rem;
+    height: 2rem;
     top: 65%;
 }
 
