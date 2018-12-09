@@ -188,7 +188,7 @@ let InitObj = {
 				let className = $(e.target).attr("class")
 				let entityid = $(e.target).attr("entityid")
 				let val = $(e.target).val()
-				//配数据的时候加减法的calssname一定要配置在最后面
+				//配数据的时候加减法的classname一定要配置在最后面
 				className = className.split(" ")[className.split(" ").length-1]
 				//调用修改接口
 				let $oT_td = $(e.target).parent("td")
@@ -389,18 +389,18 @@ let InitObj = {
 				this.hjArr.push(item.class_name1)
 				if(index>8){
 					//非合计表合计项 给个class背景变色
-					item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
-					item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+					item["begin_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
+					item["end_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 				}else {
-					item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-					item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+					item["begin_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+					item["end_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 				}
 			}else {
 				if(!item.is_default){
-					item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
+					item["item_name"] = `<input disabled="disabled"  type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
 				}
-				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+				item["begin_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["end_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}
 			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
 				if(tempRows.length !== 0){
@@ -471,7 +471,7 @@ let InitObj = {
             									if(data.statusCode === 1) {
             										Public.message('success',data.message)
             										//刷新数据
-            										_this.refreshCwModal(tableCwIds,getSource,id)
+//            										_this.refreshCwModal(tableCwIds,getSource,id)
             									}else {
             										Public.message('error',data.message)
             									}
@@ -480,7 +480,6 @@ let InitObj = {
             						})
 	        					}
 	        				},
-            				formatter: function(){return `<a href="javascript:;" class="delete" data-toggle="modal" data-target="#modal_delete">${ele.temp_name}</a>`}
 	    				})
 	    			}
         		})
@@ -697,18 +696,18 @@ let InitObj = {
 				//合计项
 				if(index>8){
 					//非合计表合计项 给个class背景变色
-					item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
-					item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+					item["begin_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
+					item["end_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 				}else {
-					item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-					item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+					item["begin_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+					item["end_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 				}
 			}else {
 				if(!item.is_default){
-					item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
+					item["item_name"] = `<input type="text" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
 				}
-				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+				item["begin_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["end_date_value"] = `<input type="number" disabled="disabled"  entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}
 			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
 				if(tempRows.length !== 0){

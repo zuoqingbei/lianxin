@@ -58,7 +58,7 @@ public class CreditOrderFlow extends BaseProjectModel<CreditOrderFlow> implement
 		//订单状态
 		cof.set("order_state", model.get("status"));
 		//操作人
-		cof.set("create_oper", c.getSessionUser().getUserid());
+		cof.set("create_oper", c.getSessionUser()==null?444:c.getSessionUser().getUserid());
 		//操作时间
 		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
 		//记录生成时间

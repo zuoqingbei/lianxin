@@ -43,13 +43,13 @@ public class CompanyModel extends BaseProjectModel<CompanyModel> {
 	* @TODO
 	 */
 	public List<CompanyModel> getCompany(Integer id) {
-		StringBuffer sql = new StringBuffer("select * from credit_company_info where del_flag=0");
+		StringBuffer sql = new StringBuffer("select t.id,t.name_en,t.name from credit_company_info t where t.del_flag=0");
 		List<Object> params = new ArrayList<Object>();
 		if (id != null) {
-			sql.append(" and id=?");
+			sql.append(" and t.id=?");
 			params.add(id);
 		}
-		sql.append(" order by name desc");
+		sql.append(" order by t.name desc");
 		List<CompanyModel> find = CompanyModel.dao.find(sql.toString(), params.toArray());
 		return find;
 
