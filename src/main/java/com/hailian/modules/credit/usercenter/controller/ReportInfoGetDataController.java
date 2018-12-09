@@ -28,6 +28,8 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
+import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
+import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
@@ -393,12 +395,16 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     	  renderJson(record.set("rows", model).set("total", null));
       }
       if (StringUtils.isNotBlank(submit)) {
+    	  AgentPriceModel agentPrice=new AgentPriceModel();
           	String status="";
              if (type.equals("translate_quality")) {//翻译质检
   			if (deal.equals("1")) {//1 完成 2修改
   				status="311";
   			}else {
   				status="306";
+  				 agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
+  				
+
   			}
   		   }else if(type.equals("entering_quality")){//填报质检
   			   if (deal.equals("1")) {//1 完成 2修改
@@ -418,6 +424,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                   map = null;
               }else{
                   map.put("status", status);
+                  if (agentPrice!=null) {
+                	map.put("agent_priceId", agentPrice.get("id")); 
+				}
               }
               
               CreditOrderInfo model = getModel(CreditOrderInfo.class);

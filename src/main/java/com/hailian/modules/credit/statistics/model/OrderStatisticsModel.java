@@ -286,9 +286,9 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 			sql+=" and country='"+country+"'";
 		}
 		if (StringUtils.isNotBlank(customer)) {
-			sql+=" and customer='"+customer+"'";
+			sql+=" and custom_id='"+customer+"'";
 		}
-		sql+=" limit 0,10";
+		
 		return OrderStatisticsModel.dao.find(sql);
 	}
 	/**
