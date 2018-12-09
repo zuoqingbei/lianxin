@@ -71,7 +71,7 @@ public class OrderPoiController extends BaseProjectController {
 		String errormark="";
 		String isTheSameOrder="";
 		int isTheSameOrderNum=0;
-		int errornum=0;
+		int errornum=1;
 		List<UploadFile> upLoadFile = getFiles();
 		List<CreditOrderInfo> orderList = new ArrayList<CreditOrderInfo>();
 		List<CreditOrderInfo> orderListReal = new ArrayList<CreditOrderInfo>();
@@ -121,7 +121,7 @@ public class OrderPoiController extends BaseProjectController {
 							List<CustomInfoModel> customById = CustomInfoModel.dao.getCustom(Integer.parseInt(custom_id));
 							if(CollectionUtils.isEmpty(customById)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第A列信息填写错误;";
+								errormark+=errornum+".第"+(r+1)+"行，第A列信息填写错误;";
 							}else{
 								orderReal.set("custom_id", customById.get(0).get("id"));
 								order.put("customerName",customById.get(0).get("name"));
@@ -130,7 +130,7 @@ public class OrderPoiController extends BaseProjectController {
 							
 						}else{
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第A列信息漏填;";
+							errormark+=errornum+".第"+(r+1)+"行，第A列信息漏填;";
 						}
 						
 						if (row.getCell(1) != null) {
@@ -140,14 +140,14 @@ public class OrderPoiController extends BaseProjectController {
 							
 							if(CollectionUtils.isEmpty(continentList)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第B列信息填写错误;";
+								errormark+=errornum+".第"+(r+1)+"行，第B列信息填写错误;";
 							}else{
 								orderReal.set("continent", continentList.get(0).get("detail_id"));
 							}
 							order.set("continent", continent);
 						}else{
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第B列信息漏填;";
+							errormark+=errornum+".第"+(r+1)+"行，第B列信息漏填;";
 						}
 						if (row.getCell(2) != null) {
 							row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
@@ -155,7 +155,7 @@ public class OrderPoiController extends BaseProjectController {
 							List<CountryModel> countryByName = CountryModel.dao.getCountryByName(countryName);
 							if(CollectionUtils.isEmpty(countryByName)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第C列信息填写错误;";
+								errormark+=errornum+".第"+(r+1)+"行，第C列信息填写错误;";
 							}else{
 								orderReal.set("country", countryByName.get(0).get("id"));
 								orderReal.put("type", countryByName.get(0).get("type"));
@@ -163,7 +163,7 @@ public class OrderPoiController extends BaseProjectController {
 							order.set("country", countryName);
 						}else{
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第C列信息漏填;";
+							errormark+=errornum+".第"+(r+1)+"行，第C列信息漏填;";
 						}
 						if (row.getCell(3) != null) {
 							row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
@@ -171,14 +171,14 @@ public class OrderPoiController extends BaseProjectController {
 							List<ReportTypeModel> reportTypeByName = ReportTypeModel.dao.getReportTypeByName(report_type);
 							if(CollectionUtils.isEmpty(reportTypeByName)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第D列信息填写错误;";
+								errormark+=errornum+".第"+(r+1)+"行，第D列信息填写错误;";
 							}else{
 								orderReal.set("report_type", reportTypeByName.get(0).get("id"));
 							}
 							order.set("report_type", report_type);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第D列信息漏填;";
+							errormark+=errornum+".第"+(r+1)+"行，第D列信息漏填;";
 
 						}
 						if (row.getCell(4) != null) {
@@ -187,14 +187,14 @@ public class OrderPoiController extends BaseProjectController {
 							List<SysDictDetail> dictDetailByOrderType = SysDictDetail.dao.getDictDetailByOrderType(order_type);
 							if(CollectionUtils.isEmpty(dictDetailByOrderType)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第E列信息填写错误；";
+								errormark+=errornum+".第"+(r+1)+"行，第E列信息填写错误；";
 							}else{
 								orderReal.set("order_type", dictDetailByOrderType.get(0).get("detail_id"));
 							}
 							order.set("order_type", order_type);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第E列信息漏填;";
+							errormark+=errornum+".第"+(r+1)+"行，第E列信息漏填;";
 						}
 						if (row.getCell(5) != null) {
 							row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
@@ -202,14 +202,14 @@ public class OrderPoiController extends BaseProjectController {
 							List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(report_language,"language");
 							if(CollectionUtils.isEmpty(dictDetailBy)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第F列信息填写错误；";
+								errormark+=errornum+".第"+(r+1)+"行，第F列信息填写错误；";
 							}else{
 								orderReal.set("report_language", dictDetailBy.get(0).get("detail_id"));
 							}
 							order.set("report_language", report_language);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第F列信息漏填;";
+							errormark+=errornum+".第"+(r+1)+"行，第F列信息漏填;";
 						}
 						if (row.getCell(6) != null) {
 							row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
@@ -236,7 +236,7 @@ public class OrderPoiController extends BaseProjectController {
 							
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第G列信息漏填;";
+							errormark+=errornum+".第"+(r+1)+"行，第G列信息漏填;";
 
 						}
 						if (row.getCell(7) != null) {
@@ -245,20 +245,20 @@ public class OrderPoiController extends BaseProjectController {
 							List<SysDictDetail> dictDetailByOrderSpeed = SysDictDetail.dao.getDictDetailByOrderSpeed(speed);
 							if(CollectionUtils.isEmpty(dictDetailByOrderSpeed)){
 								errornum++;
-								errormark+=errornum+".第"+r+"行，第I列信息填写错误;";
+								errormark+=errornum+".第"+(r+1)+"行，第I列信息填写错误;";
 							}else{
 								orderReal.set("speed", dictDetailByOrderSpeed.get(0).get("detail_id"));
 							}
 							order.set("speed", speed);
 						} else {
 							errornum++;
-							errormark+=errornum+".第"+r+"行，第H列信息漏填;";
+							errormark+=errornum+".第"+(r+1)+"行，第H列信息漏填;";
 						}
 						//是否有相同报告
 						CreditOrderInfo theSameOrder = OrderManagerService.service.isTheSameOrder(orderReal.get("right_company_name_en")+"",orderReal.get("report_type")+"",orderReal.get("report_language")+"", this);
 						if(theSameOrder!=null){
 							isTheSameOrderNum++;
-							isTheSameOrder+=isTheSameOrderNum+".第"+r+"行，有相同企业报告;";
+							isTheSameOrder+=isTheSameOrderNum+".第"+(r+1)+"行，有相同企业报告;";
 						}
 						//获取报告价格
 						if(orderReal.get("type") != null && orderReal.get("speed")!=null && orderReal.get("report_type")!= null  && orderReal.get("order_type")!=null && orderReal.get("custom_id")!=null && orderReal.get("country")!=null){
@@ -266,7 +266,7 @@ public class OrderPoiController extends BaseProjectController {
 							if(pricemodel!=null){
 								orderReal.set("price_id", pricemodel.get("id"));
 							}else{
-								errormark+=errornum+".第"+r+"行，此订单没有获取到报告价格，请联系管理员！;";
+								errormark+=errornum+".第"+(r+1)+"行，此订单没有获取到报告价格，请联系管理员！;";
 							}
 						}
 						
