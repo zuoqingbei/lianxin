@@ -39,7 +39,7 @@ public class CreditOperationLog extends BaseProjectModel<CreditOperationLog> imp
 		}
 		
 		//操作人
-		cof.set("create_oper", c.getSessionUser().getUserid());
+		cof.set("create_oper", c.getSessionUser()==null?444:c.getSessionUser().getUserid());
 		cof.set("button", button);
 		cof.set("url", url);
 		//操作时间
