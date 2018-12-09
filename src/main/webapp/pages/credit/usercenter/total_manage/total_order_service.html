@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>客服订单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/swiper/swiper.min.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/total_manage/total_manage_common.css">
+    <style>
+        #container {
+            margin-top: -.25rem; /*因为页面背景色，需消除导航的下外边距*/
+            background-color: #e6e6e6;
+        }
+
+        main > .row > .col {
+        }
+
+        #container header {
+            padding-top: 1rem;
+            height: 3rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h3 {
+            font-weight: bold;
+            font-size: 1.375rem;
+        }
+
+        .btn-group {
+            margin: auto;
+            margin-right: 0;
+        }
+
+        .btn-group button {
+            padding: .375rem 1rem;
+        }
+        .echartBox{
+            height: calc(100% - 4.5rem);
+        }
+        .myHeight{
+            height: 43vh;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .myLeft{
+            width: 49.5%;
+            background-color: white;
+            float: left;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+<main id="container" class="row animated fadeIn p-3" >
+    <div class="myHeight">
+        <div class="myLeft">
+            <header>
+                <h3 class="">客户订单量排名</h3>
+                <div class="btn-group" role="group" aria-label="Basic example" id="">
+                    <button type="button" class="btn btn_active">周</button>
+                    <button type="button" class="btn">月</button>
+                    <button type="button" class="btn">年</button>
+                </div>
+            </header>
+            <div class="echartBox" id="ec01_hBar"></div>
+        </div>
+        <div class="myLeft">
+            <header>
+                <h3 class="">客户订单同比增长率</h3>
+            </header>
+            <div class="echartBox" id="ec02_vBar"></div>
+        </div>
+    </div>
+    <div class="myHeight " style="margin-top: 1%">
+        <div class="col bg-white">
+            <header class="row justify-content-between">
+                <h3>月订单量趋势图</h3>
+                <div class="">
+                    <label class="control-label mt-2" for="country">国家：</label>
+                    <select id="country" class="search-input w-25 layui-input d-inline-block mr-4" lay-search=""
+                            ay-verify="" name="customId">
+                        <option value="">请选择</option>
+                        <% for(cu in country){ %>
+                        <option value="${cu.detail_id}">${cu.detail_name}</option>
+                        <% } %>
+                    </select>
+                    <label class="control-label mt-2" for="customerId">客户ID：</label>
+                    <select id="customerId" class="search-input  w-25 layui-input d-inline-block mr-4" lay-search=""
+                            ay-verify="" name="customId">
+                        <option value="">请选择</option>
+                        <% for(cu in customer){ %>
+                        <option value="${cu.id}">${cu.name}</option>
+                        <% } %>
+                    </select>
+                </div>
+            </header>
+            <div class="echartBox" id="ec03_line"></div>
+        </div>
+    </div>
+
+</main>
+</body>
+<script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
+<script src="${BASE_PATH }static/credit/assets/swiper/swiper.min.js"></script>
+
+<!--<script src="${BASE_PATH }static/credit/js/total_manage/total_manage.js"></script>-->
+<script>
+    $(function () {
+        function ajaxQushi(country,customer) {
+            $.post("/credit/CustomerServiceStatistic/getCusOrderTrend",{'country':country,'customer':customer},function(data){
+                console.log('月订单量趋势图',data);
+                let arr=data;
+                let lineDate=[];
+                let lineInda=[];
+                arr.map( (item,i) => {
+                    lineDate.push(item.num);
+                    lineInda.push(item.time);
+                })
+                drawLine(lineDate,lineInda)
+            })
+        }
+        ajaxQushi('','')
+
+        $.post("/credit/CustomerServiceStatistic/getCusOrderRate",function(data){
+            console.log('客户订单同比增长率',data);
+            let arr=data;
+            let hBarData=[];
+            let inData=[];
+            arr.map( (item,i) => {
+                hBarData.push(item.num);
+                inData.push(item.fax)
+            });
+            drawVbar(hBarData,inData)
+        })
+        function ajaxPaiming(type) {
+            console.log(type)
+            $.post("/credit/CustomerServiceStatistic/getCustomerOrder",{'type':type},function(data){
+                console.log('客户订单排名',data);
+                let arr=data;
+                let vBarData=[];
+                let inxData=[];
+                arr.map( (item,i) => {
+                    vBarData.push(item.num);
+                    inxData.push(item.name)
+                })
+                drawHbar(vBarData,inxData)
+            })
+        }
+        ajaxPaiming('week')
+
+        function drawHbar(vBarData,inxData) {
+            let ec01_hBar=echarts.init(document.getElementById('ec01_hBar'));
+            ec01_hBar.clear();
+            ec01_hBar.setOption(opt_bar_horizon);
+            ec01_hBar.setOption({
+                legend: {
+                    show:false
+                },
+                grid: {
+                    left: '25%',
+                },
+                yAxis: {
+                    type: 'category',
+                    data: inxData
+                },
+                series:[
+                    {
+                        type: 'bar',
+                        data: vBarData
+                    },
+                ]
+            });
+        }
+        function drawVbar(hBarData,inData) {
+            let ec02_vBar=echarts.init(document.getElementById('ec02_vBar'));
+            ec02_vBar.clear();
+            ec02_vBar.setOption(opt_bar_vertical);
+            ec02_vBar.setOption({
+                legend: {
+                    show:false
+                },
+                grid: {
+                    bottom: '20%',
+                },
+                xAxis: {
+                    type: 'category',
+                    data: inData,
+                    axisLabel : {//坐标轴刻度标签的相关设置。
+                        interval:0,
+                        formatter : function(params){
+                            var newParamsName = "";// 最终拼接成的字符串
+                            var paramsNameNumber = params.length;// 实际标签的个数
+                            var provideNumber = 6;// 每行能显示的字的个数
+                            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+                            /**
+                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+                             */
+                            // 条件等同于rowNumber>1
+                            if (paramsNameNumber > provideNumber) {
+                                /** 循环每一行,p表示行 */
+                                for (var p = 0; p < rowNumber; p++) {
+                                    var tempStr = "";// 表示每一次截取的字符串
+                                    var start = p * provideNumber;// 开始截取的位置
+                                    var end = start + provideNumber;// 结束截取的位置
+                                    // 此处特殊处理最后一行的索引值
+                                    if (p == rowNumber - 1) {
+                                        // 最后一次不换行
+                                        tempStr = params.substring(start, paramsNameNumber);
+                                    } else {
+                                        // 每一次拼接字符串并换行
+                                        tempStr = params.substring(start, end) + "\n";
+                                    }
+                                    newParamsName += tempStr;// 最终拼成的字符串
+                                }
+
+                            } else {
+                                // 将旧标签的值赋给新标签
+                                newParamsName = params;
+                            }
+                            //将最终的字符串返回
+                            return newParamsName
+                        }
+
+                    }
+                },
+                yAxis: {
+                    name:'增长率/%'
+                },
+                series:[
+                    {
+                        type: 'bar',
+                        data:hBarData
+                    },
+                ]
+            });
+        }
+        function drawLine(lineDate,lineInda){
+            let ec03_line=echarts.init(document.getElementById('ec03_line'));
+            ec03_line.clear();
+            ec03_line.setOption(opt_line);
+            ec03_line.setOption({
+                grid: {
+
+                    left: '4%',
+
+                },
+                xAxis: {
+                    type: 'category',
+                    data: lineInda
+                },
+                yAxis: {
+                    name:'订单量/个'
+                },
+                series:[
+                    {
+                        type: 'line',
+                        data: lineDate
+                    },
+                ]
+            });
+        }
+
+        window.onresize = function(){
+            let ec01_hBar=echarts.init(document.getElementById('ec01_hBar'));
+            let ec02_vBar=echarts.init(document.getElementById('ec02_vBar'));
+            let ec03_line=echarts.init(document.getElementById('ec03_line'));
+            ec01_hBar.resize();
+            ec02_vBar.resize();
+            ec03_line.resize();
+
+        }
+        //周月年代的点击事件
+        let btns = $(" .btn-group button");
+        for (let i = 0; i < btns.length; i++) {
+
+            btns[i].onclick = function () {
+                $(this).addClass("btn_active").siblings("button").removeClass("btn_active");
+
+                if(i==0){
+                    let type='week'
+                    ajaxPaiming(type)
+                }else if(i==1){
+                    let type='month'
+                    ajaxPaiming(type)
+                }else if(i==2){
+                    let type='year'
+                    ajaxPaiming(type)
+                }
+
+            }
+
+        }
+        //下拉选择
+        let country='';let customer='';
+        $('#country').on('change',function (){
+            console.log($(this).val());
+            country=$(this).val();
+            ajaxQushi(country,customer)
+        });
+        $('#customerId').on('change',function (){
+            console.log($(this).val());
+            customer=$(this).val();
+            ajaxQushi(country,customer)
+        })
+    })
+</script>
+</html>

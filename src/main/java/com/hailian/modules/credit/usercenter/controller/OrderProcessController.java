@@ -666,8 +666,9 @@ public class OrderProcessController extends BaseProjectController{
            CreditOrderInfo info= 	CreditOrderInfo.dao.findById(oid);  
            map.put("id", oid);
            map.put("num", info.get("num"));
+           AgentPriceModel agentPrice=null;
            CompanyModel companymodel = CompanyModel.dao.findById(info.get("company_id"));
-           String address=null;
+          /* String address=null;
            if(companymodel != null){
                address=companymodel.getStr("address");
                if(StringUtils.isNotBlank(address)){
@@ -679,12 +680,14 @@ public class OrderProcessController extends BaseProjectController{
                    int pid = provinceByName.get("pid");
                    int cid = cityByName.get("cid");
                    if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
-                       AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
-                       if(agentPrice !=null){
-                           map.put("agent_priceId", agentPrice.get("id"));
-                       }
+                       agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
+                       
                    }
                }
+           }*/
+           agentPrice = AgentPriceService.service.getAgentPriceByOrder(oid);
+           if(agentPrice !=null){
+               map.put("agent_priceId", agentPrice.get("id"));
            }
            PublicUpdateMod(map);
 			
