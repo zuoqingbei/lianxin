@@ -400,11 +400,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
              if (type.equals("translate_quality")) {//翻译质检
   			if (deal.equals("1")) {//1 完成 2修改
   				status="311";
+ 				 agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
   			}else {
   				status="306";
-  				 agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
-  				
-
   			}
   		   }else if(type.equals("entering_quality")){//填报质检
   			   if (deal.equals("1")) {//1 完成 2修改
