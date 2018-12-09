@@ -5,6 +5,17 @@
     <title>Title</title>
     <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/swiper/swiper.min.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/total_manage/total_manage_common.css">
+    <style>
+        .total-order-top-trend {
+            padding: 0.5rem 0 0 0;
+        }
+        .fixed-table-container thead th .both{
+            background: none;
+        }
+        form-box {
+            position: relative;
+        }
+    </style>
 </head>
 <body>
 <div id="container" class="row animated fadeIn">
@@ -17,13 +28,13 @@
                         <span class="total-order-top-num">${orderCount}</span>
                         <div class="total-order-top-trend">
                        <% if (Dayrate.remarks==-1) { %> 
-                       <img src="${BASE_PATH }static/credit/imgs/total_manage/down_icon.png" height="14" width="16"/> 
+                       <img src="${BASE_PATH }static/credit/imgs/total_manage/down_icon.png" height="12" width="14"/>
                        <% } 
                        else if(Dayrate.remarks==0) { %>
-					   <img src="${BASE_PATH }static/credit/imgs/total_manage/etc_icon.png" height="14" width="16"/> 
+					   <img src="${BASE_PATH }static/credit/imgs/total_manage/etc_icon.png" height="12" width="14"/>
                        <% }
                        else if(Dayrate.remarks==1){ %>
-					   <img src="${BASE_PATH }static/credit/imgs/total_manage/up_icon.png" height="14" width="16"/> 
+					   <img src="${BASE_PATH }static/credit/imgs/total_manage/up_icon.png" height="12" width="14"/>
 					   <% } %>
 				</td>
                      
@@ -83,7 +94,12 @@
             <div class="table-content-echarts mt-3 total-order-center d-flex justify-content-between">
                 <div class="col echart-box mr-3">
                     <div class="echarts-top">
-                        <div class="echart-title">订单量趋势图</div>
+                        <div class="echart-title">客户订单量排名</div>
+                        <div class="btn-group" role="group" aria-label="Basic example" id="customerIds">
+                            <button type="button" class="btn btn_active">周</button>
+                            <button type="button" class="btn">月</button>
+                            <button type="button" class="btn">年</button>
+                        </div>
                     </div>
                     <div id="echarts_04" style="width: 100%;height:85%"></div>
                 </div>
@@ -91,7 +107,9 @@
                     <div class="echarts-top">
                         <div class="echart-title">订单分布图</div>
                         <div class="form-box fr">
-                            <div class="input-group mt-2" id="client">
+                            <div class="input-group mt-2" id="client" style="align-items: center">
+                                <img src="${BASE_PATH }static/credit/imgs/total_manage/down.png" alt="" style="position: absolute;right: 8px;width: 13px;height: 9px;z-index: 99">
+
                                 <label class="control-label col-md-4 mt-2" for="txt_search_statu">客户：</label>
                                 <select id="customer" class="search-input col-md-8 layui-input" lay-search="" ay-verify="" name="customId">
                                     <option value="">全部客户</option>
@@ -163,6 +181,7 @@
                         <div class="form-box fr">
                             <form id="formSearch1" class="form-inline layui-form" role="form">
                                 <div class="form-group row d-flex justify-content-around mt-2">
+                                    <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;right: 20px;width: 16px;height: 18px;">
                                     <input type="text" class="form-control search-input" id="dead_date1" placeholder="请选择日期">
                                 </div>
                             </form>
@@ -179,6 +198,7 @@
                         <div class="form-box fr">
                             <form id="formSearch2" class="form-inline layui-form" role="form">
                                 <div class="form-group row d-flex justify-content-around mt-2">
+                                    <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;right: 20px;width: 16px;height: 18px;">
                                     <input type="text" class="form-control search-input" id="dead_date2" placeholder="请选择日期">
                                 </div>
                             </form>
