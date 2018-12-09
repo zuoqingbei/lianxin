@@ -10,10 +10,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.hailian.modules.credit.company.service.CompanyService;
-
 import com.hailian.util.http.HttpCrawler;
+
 import com.hailian.util.word.MainReport;
 import org.apache.commons.lang3.StringUtils;
+
+
 
 //import ch.qos.logback.core.status.Status;
 import com.feizhou.swagger.annotation.Api;
@@ -50,6 +52,7 @@ import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.usercenter.service.KpiService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
+import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
@@ -356,7 +359,7 @@ public class OrderProcessController extends BaseProjectController{
         CreditOrderInfo model = getModel(CreditOrderInfo.class);
         model.removeNullValueAttrs();
         model = getModel(CreditOrderInfo.class);
-        Integer userid = getSessionUser().getUserid();
+        Integer userid = getSessionUser()==null?444:getSessionUser().getUserid();
         String now = getNow();
         model.set("update_by",userid);
         model.set("update_date", now);
@@ -441,12 +444,9 @@ public class OrderProcessController extends BaseProjectController{
                 //查询代理类型
                 String seleteStr = TemplateAgentService.templateagentservice.getAgentIdString(creditOrderInfo.get("agent_id"));
                 creditOrderInfo.put("seleteAgentStr",seleteStr);
-                Object object = creditOrderInfo.get("agent_id");
-                Object object2 = creditOrderInfo.get("agent_category");
-                if(object!=null && !object.equals("")){
-                    String seleteAgentCateStr = TemplateAgentService.templateagentservice.getAgentCateString(creditOrderInfo.get("agent_id"),creditOrderInfo.get("agent_category"));
-                    creditOrderInfo.put("seleteAgentCateStr",seleteAgentCateStr);
-                }
+                String seleteAgentCateStr = TemplateAgentService.templateagentservice.getAgentCateString(creditOrderInfo.get("agent_id"),creditOrderInfo.get("agent_category"));
+                creditOrderInfo.put("seleteAgentCateStr",seleteAgentCateStr);
+                
             }
         }
         int totalRow = pager.getTotalRow();
@@ -492,9 +492,9 @@ public class OrderProcessController extends BaseProjectController{
             CreditOrderInfo model = getModel(CreditOrderInfo.class);
             int orderId = model.get("id");
             //计算绩效
-            if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
+          //  if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
             	 getKpi(model);
-            }
+            //}
            
             PublicUpdateMod(map);
             
@@ -525,7 +525,7 @@ public class OrderProcessController extends BaseProjectController{
     public  void  addNoice(String status){
         //新增公告内容
         NoticeModel model=new NoticeModel();
-        Integer userid = getSessionUser().getUserid();
+        Integer userid = getSessionUser()==null?444:getSessionUser().getUserid();
         String now = getNow();
         CreditOrderInfoModel orderInfoModel=getModel(CreditOrderInfoModel.class);
         //查订单
@@ -709,14 +709,19 @@ public class OrderProcessController extends BaseProjectController{
                     String city=strs[1].toString();
                     ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
                     CityModel cityByName = CityModel.dao.getCityByName(city);
-                    int pid = provinceByName.get("pid");
-                    int cid = cityByName.get("cid");
-                    if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
-                        AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
-                        if(agentPrice !=null){
-                            map.put("agent_priceId", agentPrice.get("id"));
-                        }
+                    if(provinceByName!=null && cityByName!=null){
+                    	int pid = provinceByName.get("pid");
+                    	 int cid = cityByName.get("cid");
+                    	 if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
+                             AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
+                             if(agentPrice !=null){
+                                 map.put("agent_priceId", agentPrice.get("id"));
+                             }
+                         }
                     }
+                  
+                   
+                   
                 }
             }
             PublicUpdateMod(map);
@@ -976,8 +981,11 @@ public class OrderProcessController extends BaseProjectController{
         }
     }
 
+    
+    
     /**
         * 获取绩效
+     * lzg
      * @param qualityScore 质检分数
      */
     public void getKpi( CreditOrderInfo model ) {
@@ -987,12 +995,13 @@ public class OrderProcessController extends BaseProjectController{
     	}
     	 
     	 String now = getNow();
-    	 Integer userId =  getSessionUser().getUserid();
+    	 Integer userId =  getSessionUser()==null?444:getSessionUser().getUserid();
+    	 model = model.findById(orderId);
     	 String reportUser = model.get("report_user");
     	 String IQC = model.get("IQC");
     	 String  translateUser = model.get("translate_user");
     	 String  analyzeUser = model.get("analyze_user");
-    	 model = model.findById(orderId);
+    	 final CreditOrderInfo modelForTx = CreditOrderInfo.dao._setAttrs(model);
          //计算绩效
     	boolean isSucceed =  Db.tx(new IAtom() {
 			@Override
@@ -1006,45 +1015,48 @@ public class OrderProcessController extends BaseProjectController{
 					
 					CreditKpiResult tempModel = new CreditKpiResult();
 		           	KpiService kpiServie = new KpiService();
-		           	boolean isHasKpi = Db.query("select id from credit_kpi_result where order_id="+orderId).size()==0?false:true;
-		           	//如果当前订单kpi已经存在,则不二次计算
-		           	if(isHasKpi) {
-		           		return false;
-		           	}
+		           	boolean isHasKpi_reportUser = false;
+		           	boolean isHasKpi_IQC = false;
+		           	boolean isHasKpi_translateUser = false;
+		           	boolean isHasKpi_analyzeUser = false;
+		           	//报告员计算逻辑
 		           	if(!StrUtils.isEmpty(reportUser)) {
-		           		int coefficient = getCoefficient(2, orderId);//报告员绩效系数
-		           		double reportUserKpi = kpiServie.getKpi(2+"" ,orderId)*coefficient;//当前订单的报告员
+		           	    isHasKpi_reportUser = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+2).size()==0?false:true;
+		           		double coefficient = getCoefficient(2, orderId);//报告员绩效系数
+		           		double reportUserKpi = kpiServie.getKpi(2+"",modelForTx)*coefficient;//当前订单的报告员
 		           		System.out.println("报告员绩效:"+reportUserKpi);
-		           		tempModel.clear()._setAttrs(publicModel).set("user_id", reportUser).set("money", reportUserKpi);
+		           		tempModel.clear()._setAttrs(publicModel).set("user_id", reportUser).set("money", reportUserKpi).set("role_id", 2);
 		           		tempModel.save();
 		           	}
-		           	
+		        	//质检员计算逻辑
 		           	if(!StrUtils.isEmpty(IQC)) {
-		            	double IQCKpi = kpiServie.getKpi(4+"" ,orderId);//当前订单的质检员
+		           		isHasKpi_IQC = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+4).size()==0?false:true;
+		            	double IQCKpi = kpiServie.getKpi(4+"" ,modelForTx);//当前订单的质检员
 		            	System.out.println("质检员绩效:"+IQCKpi);
-		           		tempModel.clear()._setAttrs(publicModel).set("user_id", IQC).set("money", IQCKpi);
+		           		tempModel.clear()._setAttrs(publicModel).set("user_id", IQC).set("money", IQCKpi).set("role_id", 4);;
 		           		tempModel.save();
 		           	}
-		           	
+		        	//翻译员计算逻辑
 		           	if(!StrUtils.isEmpty(translateUser)) {
-		           		int coefficient = getCoefficient(6, orderId);//翻译绩效系数
-		           		double translateKpi = kpiServie.getKpi(6+"" ,orderId)*coefficient;//当前订单的翻译
+		           		isHasKpi_translateUser = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+6).size()==0?false:true;
+		           		double coefficient = getCoefficient(6, orderId);//翻译绩效系数
+		           		double translateKpi = kpiServie.getKpi(6+"" ,modelForTx)*coefficient;//当前订单的翻译
 		           		System.out.println("翻译员绩效:"+translateKpi);
-		           		tempModel.clear()._setAttrs(publicModel).set("user_id", translateUser).set("money", translateKpi);
+		           		tempModel.clear()._setAttrs(publicModel).set("user_id", translateUser).set("money", translateKpi).set("role_id", 6);;
 		           		tempModel.save();
 		           	}
-		           	
+		           	//分析员计算逻辑
 		           	if(!StrUtils.isEmpty(analyzeUser)) {
-		           		int coefficient = getCoefficient(5, orderId);//翻译绩效系数
-		           		double analystKpi = kpiServie.getKpi(5+"" ,orderId)*coefficient;//当前订单的分析员
+		           		isHasKpi_analyzeUser = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+5).size()==0?false:true;
+		           		double coefficient = getCoefficient(5, orderId);//翻译绩效系数
+		           		double analystKpi = kpiServie.getKpi(5+"" ,modelForTx)*coefficient;//当前订单的分析员
 		           		System.out.println("分析员绩效:"+analystKpi);
-		           		tempModel.clear()._setAttrs(publicModel).set("user_id", analyzeUser).set("money", analystKpi);
+		           		tempModel.clear()._setAttrs(publicModel).set("user_id", analyzeUser).set("money", analystKpi).set("role_id", 5);;
 		           		tempModel.save();
 		           	}
-				return true;
+				return !isHasKpi_reportUser&&!isHasKpi_IQC&&!isHasKpi_translateUser&&!isHasKpi_analyzeUser;
 			}
 		 });
-    	
     	
         if(!isSucceed) {
         	throw new  RuntimeException("该订单已经计算过绩效,请勿重复计算!");
@@ -1052,12 +1064,13 @@ public class OrderProcessController extends BaseProjectController{
          
     }
     /**
-     * 根据角色id和订单id获取绩效
+         * 根据角色id和订单id获取绩效
+     * lzg
      * @param roleId
      * @param orderId
      * @return系数
      */
-    public static int getCoefficient(int  roleId,String orderId) {
+    public static double getCoefficient(int  roleId,String orderId) {
     	int qualityType = -1;
     	if(roleId==2) {
     		qualityType = 2;
@@ -1067,9 +1080,10 @@ public class OrderProcessController extends BaseProjectController{
     		qualityType = 3;
     	}
     	//分析质检分
-   		String qualityScore = Db.queryStr("select greade from  credit_quality_opintion where quality_type="+qualityType+" del_flag=0 and  order_id="+orderId);
+   		String qualityScore = Db.queryStr("select grade from  credit_quality_opintion where quality_type="+qualityType+" and del_flag=0 and  order_id="+orderId);
    		//绩效系数
-   	    Integer coefficient = (100-Integer.parseInt(qualityScore))<0?0:(100-Integer.parseInt(qualityScore)); 
+   		Double coefficient  = qualityScore==null?null:100-Double.parseDouble(qualityScore);
+   		coefficient = coefficient==null?1:(coefficient<0?0:coefficient); 
 		return coefficient;
     }
     

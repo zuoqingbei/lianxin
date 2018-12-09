@@ -118,7 +118,6 @@ let ReportConfig = {
             						})
             					}
             				},
-            				formatter: function(){return _this.formatBtnArr[tempI]}
         				})
         			}
         		})
@@ -399,27 +398,27 @@ let ReportConfig = {
     								<div class="cw-box d-flex justify-content-between align-items-center mt-4">
     									<div class="firm-name form-inline">
     										<label class="mr-3" style="font-weight:600">${this_content[0].temp_name}</label>
-    										<input type="text" style="width:14rem" class="form-control" id="${this_content[0].column_name}cw" placeholder=${this_content[0].place_hold} name=${this_content[0].column_name}>
+    										<input disabled="disabled" type="text" style="width:14rem" class="form-control" id="${this_content[0].column_name}cw" placeholder=${this_content[0].place_hold} name=${this_content[0].column_name}>
     									</div>
     									<div class="is-merge form-inline">
     										<label class="mr-3" style="font-weight:600">${this_content[1].temp_name}</label>
     										<div class="form-check form-check-inline">
-	    										<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[0].split("-")[0]}>
+	    										<input disabled="disabled" class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[0].split("-")[0]}>
 				                                <label class="form-check-label mx-0" for="">${radioArr[0].split("-")[1]}</label>
 			                                </div>
 						    				<div class="form-check form-check-inline">
-							    				<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[1].split("-")[0]}>
+							    				<input disabled="disabled" class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[1].split("-")[0]}>
 							    				<label class="form-check-label mx-0" for="">${radioArr[1].split("-")[1]}</label>
 						    				</div>
     									</div>
     									<!-- 上传下载按钮 -->
     									<div class="btn-group">
-    										<button class="btn btn-default mr-3 cwDown" >${this_content[2].temp_name}</button>
-						    				<button class="aa-btn btn btn-primary cwUp" style="position:relative">
+    										<button disabled="disabled" class="btn btn-default mr-3 cwDown" >${this_content[2].temp_name}</button>
+						    				<button disabled="disabled" class="aa-btn btn btn-primary cwUp" style="position:relative">
 						    					<form class="uploadForm" enctype="multipart/form-data" action="" method="POST" >
 						    						<input style="opacity:0;cursor:pointer;width:100%;height:100%;position:absolute;left:0;top:0" type="file" name="file" class="fileInp">
-						    						<input name="report_type" type="hidden" class="report_type"/>
-								    				<input name="ficConf_id" type="hidden" class="ficConf_id"/>
+						    						<input disabled="disabled" name="report_type" type="hidden" class="report_type"/>
+								    				<input disabled="disabled" name="ficConf_id" type="hidden" class="ficConf_id"/>
 						    					</form>
 						    					${this_content[3].temp_name}
 						    				</button>
@@ -429,14 +428,14 @@ let ReportConfig = {
     								<div class="cw-unit">
     									<div class="form-inline my-3">
     										<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[4].temp_name}</label>
-    										<select class="form-control mr-3 moneySel" id="${this_content[4].column_name}cw" style="width:10rem" name=${this_content[4].column_name}>${moneyStr}</select>
-    										<select class="form-control mr-3 unitSel" id="${this_content[5].column_name}cw" style="width:10rem" name=${this_content[5].column_name}>${unitStr}</select>
+    										<select disabled="disabled" class="form-control mr-3 moneySel" id="${this_content[4].column_name}cw" style="width:10rem" name=${this_content[4].column_name}>${moneyStr}</select>
+    										<select disabled="disabled" class="form-control mr-3 unitSel" id="${this_content[5].column_name}cw" style="width:10rem" name=${this_content[5].column_name}>${unitStr}</select>
     									</div>
     								</div>
     								<!-- 日期 -->
     								<div class="cw-date form-inline">
-    									<input class="form-control my-3 dateInp1" id="${this_content[6].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${this_content[6].column_name}  placeholder=${this_content[6].place_hold} />
-    									<input class="form-control dateInp2"  id="${this_content[7].column_name}cw" type="text" name=${this_content[7].column_name}  placeholder=${this_content[7].place_hold} />
+    									<input disabled="disabled" class="form-control my-3 dateInp1" id="${this_content[6].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${this_content[6].column_name}  placeholder=${this_content[6].place_hold} />
+    									<input disabled="disabled" class="form-control dateInp2"  id="${this_content[7].column_name}cw" type="text" name=${this_content[7].column_name}  placeholder=${this_content[7].place_hold} />
     								</div>
     							</div>`
     			let tempUrl1 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[10]['get_source'];
@@ -477,23 +476,23 @@ let ReportConfig = {
 						})
     			cw_bottom_html +=`<div class="bottom-html"><div class="cw-bottom p-4">
     								<label class="control-label">${this_content[10].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options1}</select>
-    								<textarea class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
+    								<select disabled="disabled"  class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options1}</select>
+    								<textarea disabled="disabled"  class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
     							 </div>
     							 <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[12].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" >${options2}</select>
-    								<textarea class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
+    								<select disabled="disabled"  class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" >${options2}</select>
+    								<textarea disabled="disabled"  class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
     							 </div>
     							  <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[14].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" >${options3}</select>
-    								<textarea class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
+    								<select disabled="disabled"  class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" >${options3}</select>
+    								<textarea disabled="disabled"  class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
     							 </div>
     							 <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[16].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" >${options4}</select>
-    								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
+    								<select disabled="disabled"  class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" >${options4}</select>
+    								<textarea disabled="disabled"  class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
     							 </div></div>`
     		}else {
     			let addtext = cw_title[1].place_hold
@@ -514,13 +513,13 @@ let ReportConfig = {
     					if(index === 3) {
     						//利润表
     						cw_table_html += `<div class="cw-date form-inline cw-range">
-    							<input class="form-control my-3" id="${cw_contents[0][8].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][8].column_name}  placeholder=${cw_contents[0][6].place_hold} />
-    							<input class="form-control" id="${cw_contents[0][9].column_name}cw" type="text" name=${cw_contents[0][9].column_name} placeholder=${cw_contents[0][7].place_hold} />
+    							<input disabled="disabled" class="form-control my-3" id="${cw_contents[0][8].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][8].column_name}  placeholder=${cw_contents[0][6].place_hold} />
+    							<input disabled="disabled" class="form-control" id="${cw_contents[0][9].column_name}cw" type="text" name=${cw_contents[0][9].column_name} placeholder=${cw_contents[0][7].place_hold} />
     							</div>`
     					}else {
     						cw_table_html += `<div class="cw-date form-inline">
-    							<input class="form-control my-3 dateInp1" disabled="disabled" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][6].column_name}  placeholder=${cw_contents[0][6].place_hold} />
-    							<input class="form-control dateInp2" disabled="disabled" type="text" name=${cw_contents[0][7].column_name} placeholder=${cw_contents[0][7].place_hold} />
+    							<input disabled="disabled" class="form-control my-3 dateInp1" disabled="disabled" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][6].column_name}  placeholder=${cw_contents[0][6].place_hold} />
+    							<input disabled="disabled" class="form-control dateInp2" disabled="disabled" type="text" name=${cw_contents[0][7].column_name} placeholder=${cw_contents[0][7].place_hold} />
     							</div>`
     					}
     				}
@@ -548,7 +547,6 @@ let ReportConfig = {
     							style="position: relative"
     							>
     							</table>
-    							<button class="btn btn-lg btn-block mb-3 mt-4 addBtn" type="button" >+ ${addtext}</button>
     							</div>`
     						tableCwId.push(`tableCwFz${i}`)
     					}
@@ -562,7 +560,6 @@ let ReportConfig = {
     							style="position: relative"
     							>
     							</table>
-    							<button class="btn btn-lg btn-block mb-3 mt-4 addBtn" type="button"  >+ ${addtext}</button>
     							</div>`
     							tableCwId.push(`tableCwLr${i}`)
     					}
@@ -731,7 +728,7 @@ let ReportConfig = {
 		                        		if(!field_type) {
 		                        			formGroup += `<div class="form-group">
 		        						            		<label for="" class="mb-2">${item.temp_name}</label>
-		        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		        						            		<input type="text" disabled="disabled" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 		        						            		<p class="errorInfo">${item.error_msg}</p>
 		        					            		</div>`
 		                        		}else {
@@ -740,14 +737,14 @@ let ReportConfig = {
 		                        				case 'text':
 		                        					formGroup += `<div class="form-group">
 	        						            		<label for="" class="mb-2">${item.temp_name}</label>
-	        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+	        						            		<input type="text" disabled="disabled" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 	        						            		<p class="errorInfo">${item.error_msg}</p>
 	        					            		</div>`
 	                        						break;
 		                        				case 'number':
 			                    						formGroup += `<div class="form-group">
 					                        							<label for="" class="mb-2">${item.temp_name}</label>
-					                        							<input type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+					                        							<input disabled="disabled" type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 					                        							<p class="errorInfo">${item.error_msg}</p>
 				                        							</div>`
 		                        					
@@ -755,21 +752,21 @@ let ReportConfig = {
 		                        				case 'date':
 		                        					formGroup += `<div class="form-group date-form">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
-												            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+												            		<input disabled="disabled" type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
 		                        				case 'date_scope':
 		                        					formGroup += `<div class="form-group date-scope-form">
 									            		<label for="" class="mb-2">${item.temp_name}</label>
-									            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+									            		<input disabled="disabled" type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 									            		<p class="errorInfo">${item.error_msg}</p>
 								            		</div>`
 		                        					break;
 							            		case 'address':
 							            			formGroup += ` <div class="form-group address-form"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <input type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
+									                                    <input disabled="disabled" type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
 									                                </div>`
 							            			break;
 							            		case 'select':
@@ -783,7 +780,7 @@ let ReportConfig = {
 							            				success:(data)=>{
 							            				formGroup += `<div class="form-group">
 										            					<label for="" class="mb-2">${item.temp_name}</label>
-										            					<select name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
+										            					<select disabled="disabled" name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
 										            						${data.selectStr}
 										            					</select>
 							            							</div>`
@@ -794,7 +791,7 @@ let ReportConfig = {
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <textarea class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
+									                                    <textarea disabled="disabled" class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
 									                                </div>`
 									                break;
 		        							    default :
@@ -828,7 +825,6 @@ let ReportConfig = {
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 				</div>`
                 		
                 			break;
@@ -843,7 +839,6 @@ let ReportConfig = {
 				                				style="position: relative"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 				</div>`
                 		
                 			break;
@@ -864,7 +859,7 @@ let ReportConfig = {
                 			_this.formIndex.push(index)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
 					                          <label >${inputObj.temp_name}</label>
-					                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
+					                          <input disabled="disabled" type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
 					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 					                        </div>`
                 			
@@ -923,7 +918,7 @@ let ReportConfig = {
                 				}else{
                 					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
 	                						<label for="" class="thead-label">${item.temp_name}</label>
-	                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+	                						<textarea disabled="disabled" name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
                 						</div>`
                 				}
                 			})
@@ -940,8 +935,8 @@ let ReportConfig = {
 					                        	<div class="radio-box">`
                 				strItem.forEach((item,index)=>{
                 				contentHtml += ` <div class="form-check form-check-inline mr-5">
-					                                <input class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
-					                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
+					                                <input  disabled="disabled" class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+					                                <label disabled="disabled" class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
 					                            </div>`
                 			})
                 				
@@ -957,7 +952,7 @@ let ReportConfig = {
                 				//非财务模块的浮动
                 				_this.notMoneyFloatHtml[index] = `<div class="form-group form-inline p-4">
 					                          <label >${item.title.temp_name === null?'':item.title.temp_name}</label>
-					                          <input type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
+					                          <input disabled="disabled" type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
 					                        </div>`
                 			}
                 			break;

@@ -61,6 +61,22 @@ let Filing = {
 	        		}
 	        		this. initEcharts08(type);
 					break;
+                case 'customerIds':
+                    switch(text) {
+                        case '周':
+                            type = 'week';
+                            break;
+                        case '月':
+                            type = 'month';
+                            break;
+                        case '年':
+                            type = 'year';
+                            break;
+                        default:
+                            break;
+                    }
+                    this. initEcharts04(type);
+                    break;
 				default:
 					break;
     		}
@@ -83,8 +99,12 @@ let Filing = {
             ec001_pie.clear();
             ec001_pie.setOption(opt_bar_vertical);
             ec001_pie.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
                 xAxis: {
-                    data: xAxisData
+                    data: xAxisData,
+                    show: false,
                 },
                 grid: {
                     bottom: "25%",//底边留空
@@ -97,9 +117,6 @@ let Filing = {
                     splitLine: { //分割线
                         show: false,
                     },
-                },
-                xAxis: {
-                    show: false,
                 },
                 series: [{
                     data: seriesData,
@@ -122,13 +139,17 @@ let Filing = {
        			xAxisData.push(item.time);
        			seriesData.push(item.num);
        		});
-    
+            console.log('新的',xAxisData)
         let ec001_pie = echarts.init($("#echarts_02")[0]);
         ec001_pie.clear();
         ec001_pie.setOption(opt_bar_vertical);
         ec001_pie.setOption({
+            tooltip: {
+                trigger: 'axis'
+            },
             xAxis: {
-                data: xAxisData
+                data: xAxisData,
+                show: false,
             },
             grid: {
                 bottom: "25%",//底边留空
@@ -142,12 +163,14 @@ let Filing = {
                     show: false,
                 },
             },
-            xAxis: {
-                show: false,
-            },
             series: [{
                 data: seriesData,
-                type: 'bar'
+                type: 'bar',
+                itemStyle:{
+                    normal:{
+                        color:'#975fe4'
+                    }
+                },
             }],
         });
     	})
@@ -166,8 +189,12 @@ let Filing = {
         ec001_pie.clear();
         ec001_pie.setOption(opt_line);
         ec001_pie.setOption({
+            tooltip: {
+                trigger: 'axis'
+            },
             xAxis: {
-                data: xAxisData
+                data: xAxisData,
+                show: false,
             },
             grid: {
                 bottom: "25%",//底边留空
@@ -181,13 +208,19 @@ let Filing = {
                     show: false,
                 },
             },
-            xAxis: {
-                show: false,
-            },
             series: [{
                 data: seriesData,
                 type: 'line',
-                areaStyle: {},
+                areaStyle: {
+                    color:'#13c3c1'
+                },
+                itemStyle : {
+                    normal : {
+                        lineStyle:{
+                            color:'#13c3c1'
+                        }
+                    }
+                },
                 smooth: true,
                 showSymbol: false,
             }],
@@ -195,8 +228,8 @@ let Filing = {
     	})
     },
     /*客户订单量排名*/
-    initEcharts04() {
-    	$.post("/credit/orderStatistic/orderListintface",{"type":"4"},function(data){
+    initEcharts04(type='week') {
+    	$.post("/credit/CustomerServiceStatistic/getCustomerOrder",{"type":type},function(data){
     		var xAxisData=[];
        		var seriesData=[];
        		$.each(data,function(index,item){
