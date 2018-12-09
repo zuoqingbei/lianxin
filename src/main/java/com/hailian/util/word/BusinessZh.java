@@ -29,25 +29,30 @@ public class BusinessZh {
 
     /**
      * 生成商业报告
-     * @param reportType  报告类型
-     * @param orderId     订单ID
-     * @param companyId   公司ID
-     * @param sysLanguage 语言
+     * @param order  订单
      * @param userid 当前登录人
      */
-    public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
+    public static void reportTable(CreditOrderInfo order, Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
         HashMap<String, Object> map = new HashMap<String, Object>();
 
         //获取订单信息
-        CreditCompanyInfo order = CreditCompanyInfo.dao.findById(companyId);
+        //CreditOrderInfo order =  CreditOrderInfo.dao.findById(orderId);
+        String companyId = order.getStr("company_id");
+        String customId = order.getStr("custom_id");
+        String reportType = order.getStr("report_type");
+        String orderId = order.getInt("id")+"";
+
+        //获取公司信息
+        CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findById(companyId);
+        String sysLanguage = companyInfo.getInt("sys_language")+"";
+        String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
         //订单公司名称
-        map.put("company", order.getStr("name_en"));
+        map.put("company", companyInfo.getStr("name_en"));
         //联信编码
-        map.put("code", order.getStr("lianxin_id"));
+        map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
 
         //找到当前报告类型下的父节点
@@ -72,7 +77,7 @@ public class BusinessZh {
             if (source == null || "".equals(source)) {
                 continue;
             }
-            Map<String, String> params = MainWord.parseUrl(source);
+            Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
             if (clName == null || "".equals(clName)) {
@@ -88,9 +93,9 @@ public class BusinessZh {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = MainWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = MainWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(child, rows);
                 }
                 map.put(key, table);
             }
@@ -102,7 +107,7 @@ public class BusinessZh {
                 if (s == null || "".equals(s)) {
                     continue;
                 }
-                Map<String, String> p = MainWord.parseUrl(s);
+                Map<String, String> p = BaseWord.parseUrl(s);
                 String t = p.get("tableName");
                 if (t == null || "".equals(t)) {
                     continue;
@@ -238,7 +243,7 @@ public class BusinessZh {
                     }
                     pds.setValue(n, value);
                 }
-                MainWord.createPieChart(pds, _prePath + ".jpg");
+                BaseWord.createPieChart(pds, _prePath + ".jpg");
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
@@ -255,9 +260,9 @@ public class BusinessZh {
         }
 
         //生成word
-        MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
+        BaseWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
         //重新添加图片
-        replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
+        replaceImg(_prePath, orderId, userid, companyId, sysLanguage,customId);
     }
 
     /**
@@ -267,8 +272,9 @@ public class BusinessZh {
      * @param userid
      * @param company_id
      * @param sysLanguage
+     * @param customerId
      */
-    public static void replaceImg(String tarPath,String orderId,Integer userid,String company_id,String sysLanguage) {
+    public static void replaceImg(String tarPath,String orderId,Integer userid,String company_id,String sysLanguage,String customerId) {
         //获取图片
         List<CreditCompanyBrandandpatent> list = CreditCompanyBrandandpatent.dao.find("select * from credit_company_brandandpatent "
                 + "where company_id = " + company_id + " and sys_language=" + sysLanguage + " and del_flag = 0 ");
@@ -279,18 +285,23 @@ public class BusinessZh {
         }
         String sourcePath = tarPath + ".docx";
         String targetPath = tarPath + "_p.docx";
-        MainWord.buildWord(map, sourcePath, targetPath);
+        BaseWord.buildWord(map, sourcePath, targetPath);
         //上传文件
-        String filePath = MainWord.uploadReport(targetPath, orderId, userid);
+        String filePath = BaseWord.uploadReport(targetPath, orderId, userid);
         //发送邮件
-        List<Map<String, String>> fileList = new ArrayList();
-        Map<String, String> fileMap = new HashMap();
-        fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
-        fileList.add(fileMap);
-        try {
-            //new SendMailUtil("15953295779@126.com", "", "商业信息报告", "商业信息报告", fileList).sendEmail();
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<CreditCustomInfo>  customList = CreditCustomInfo.dao.find("select * from credit_custom_info where id="+customerId+" and del_flag=0 ");
+        if(customList!=null&&customList.size()>0){
+            CreditCustomInfo customInfo = customList.get(0);
+            List<Map<String, String>> fileList = new ArrayList();
+            Map<String, String> fileMap = new HashMap();
+            fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
+            fileList.add(fileMap);
+            try {
+                String email = customInfo.getStr("email");
+                new SendMailUtil(email, "", "商业信息报告", "商业信息报告", fileList).sendEmail();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -134,15 +134,15 @@ let Public = {
     },
     textAreaEvent(){
     	//获取textarea的内容，替换换行符
-    	$(document).ajaxStop(function(){
+    	/*$(document).ajaxStop(function(){
     	  //遍历所有textarea标签
     	  $('textarea').each(function(){ 
     	    var text = $(this).val();
-            //console.log($(this).attr("name")+"="+text);
+            console.log($(this).attr("name")+"="+text);
     	    text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
     	    $(this).val(text);
     	  });
-    	});
+    	});*/
     },
     logoutEvent() {
         $(".user-content").click(function () {
@@ -342,6 +342,15 @@ let Public = {
 }
 
 $(function () {
+    $(document).ajaxStop(function(){
+        //遍历所有textarea标签
+        $('textarea').each(function(){
+            var text = $(this).val();
+            console.log($(this).attr("name")+"="+text);
+            text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
+            $(this).val(text);
+        });
+    });
 
     Public.init();
     window.onload = function () {

@@ -62,7 +62,7 @@ public class RocHy {
             if (source == null || "".equals(source)) {
                 continue;
             }
-            Map<String, String> params = MainWord.parseUrl(source);
+            Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
             if (clName == null || "".equals(clName)) {
@@ -78,13 +78,13 @@ public class RocHy {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = MainWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(child, rows);
                     map.put(key, table);
                 } else if ("h".equals(tableType)) {
-                    table = MainWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(child, rows);
                     map.put(key, table);
                 }else if("z".equals(tableType)){
-                    MainWord.createTableZ(child,rows,map);
+                    BaseWord.createTableZ(child, rows, map);
                 }
             }
 
@@ -95,7 +95,7 @@ public class RocHy {
                 if (s == null || "".equals(s)) {
                     continue;
                 }
-                Map<String, String> p = MainWord.parseUrl(s);
+                Map<String, String> p = BaseWord.parseUrl(s);
                 String t = p.get("tableName");
                 if (t == null || "".equals(t)) {
                     continue;
@@ -152,7 +152,7 @@ public class RocHy {
 
         }
 
-        MainWord.buildWord(map, webRoot + "/word/" + "_102红印.docx", _prePath + ".docx");
+        BaseWord.buildWord(map, webRoot + "/word/" + "_102红印.docx", _prePath + ".docx");
     }
 
 }

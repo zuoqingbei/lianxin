@@ -12,6 +12,7 @@ import java.util.UUID;
 import com.hailian.modules.credit.company.service.CompanyService;
 
 import com.hailian.util.http.HttpCrawler;
+import com.hailian.util.word.MainReport;
 import org.apache.commons.lang3.StringUtils;
 
 //import ch.qos.logback.core.status.Status;
@@ -506,6 +507,10 @@ public class OrderProcessController extends BaseProjectController{
                 new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report"),"612");
                 //调用香港查册网
                 //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
+            }
+            //订单完成
+            if("314".equals(code)){
+                new MainReport().build(orderId,getSessionUser().getUserid());
             }
             
             renderJson(new ResultType());

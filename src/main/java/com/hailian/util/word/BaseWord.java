@@ -53,7 +53,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
  * 1.使用office 工具编辑模板，wps编辑的模块部分版本有问题
  * 2.编码问题，可能会造成word生成失败
  */
-public class MainWord {
+public class BaseWord {
     public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
     public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
     public static final String userName = Config.getStr("ftp_userName");//域用户名
@@ -259,9 +259,9 @@ public class MainWord {
             if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
             }else {
                 //此if判断适用105
-                if(word_key!=null&&!"".equals(word_key)){
-                    cols.put(column_name, temp_name + "|" + field_type);
-                }
+                //if(word_key!=null&&!"".equals(word_key)){
+                cols.put(column_name, temp_name + "|" + field_type);
+                //}
             }
         }
         //取数据
@@ -272,9 +272,9 @@ public class MainWord {
                 String fieldType = strs.length == 2 ? strs[1] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? ":" + new ReportInfoGetDataController().dictIdToString(value) : "N/A";
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "N/A";
                 } else {
-                    value = !"".equals(value) ? ":" + value : "N/A";
+                    value = !"".equals(value) ? value : "N/A";
                 }
                 Style style = new Style();
                 style.setColor("000000");

@@ -3,7 +3,6 @@ package com.hailian.util.word;
 import com.deepoove.poi.data.MiniTableRenderData;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.jfinal.kit.PathKit;
@@ -70,7 +69,7 @@ public class CreditZh {
             if (source == null || "".equals(source)) {
                 continue;
             }
-            Map<String, String> params = MainWord.parseUrl(source);
+            Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
             if (clName == null || "".equals(clName)) {
@@ -86,11 +85,11 @@ public class CreditZh {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = MainWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = MainWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(child, rows);
                 }else if("z".equals(tableType)){
-                    MainWord.createTableZ(child,rows,map);
+                    BaseWord.createTableZ(child, rows, map);
                 }
                 map.put(key, table);
             }
@@ -102,7 +101,7 @@ public class CreditZh {
                 if(s==null||"".equals(s)){
                     continue;
                 }
-                Map<String, String> p = MainWord.parseUrl(s);
+                Map<String, String> p = BaseWord.parseUrl(s);
                 String t = p.get("tableName");
                 if (t == null || "".equals(t)) {
                     continue;
@@ -155,7 +154,7 @@ public class CreditZh {
             }
         }
         //MainWord.buildWord(map, "h://word/_信用分析报告样本.docx", "h://3.docx");
-        MainWord.buildWord(map, webRoot + "/word/" + "_信用分析报告样本.docx", _prePath + ".docx");
+        BaseWord.buildWord(map, webRoot + "/word/" + "_信用分析报告样本.docx", _prePath + ".docx");
     }
 
 
