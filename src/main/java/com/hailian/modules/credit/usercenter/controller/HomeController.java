@@ -40,6 +40,7 @@ import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.usercenter.service.HomeService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.menu.SysMenu;
 import com.hailian.system.user.SysUser;
 import com.hailian.system.user.UserSvc;
@@ -73,6 +74,10 @@ public class HomeController extends BaseProjectController {
 	public static final String ftp_store = Config.getStr("ftp_store");//存储目录
 
 	public void index() {
+		List<SysDictDetail> country=	SysDictDetail.dao.find("select * from sys_dict_detail where dict_type=?","country");
+		setAttr("country", country);
+		List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
+	    setAttr("customer", customerId);
 		render(path+"index.html");
 		
 	}
@@ -81,6 +86,10 @@ public class HomeController extends BaseProjectController {
 		if(user==null||"".equals(user)) {
 			redirect("/credit/front/usercenter/login");
 		}else {
+			List<SysDictDetail> country=	SysDictDetail.dao.find("select * from sys_dict_detail where dict_type=?","country");
+			setAttr("country", country);
+			List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
+		    setAttr("customer", customerId);
 			render(path+"all_orders.html");
 		}
 	}
