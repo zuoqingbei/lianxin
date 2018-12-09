@@ -138,7 +138,7 @@ let Public = {
     	  //遍历所有textarea标签
     	  $('textarea').each(function(){ 
     	    var text = $(this).val();
-            console.log($(this).attr("name")+"="+text);
+            //console.log($(this).attr("name")+"="+text);
     	    text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
     	    $(this).val(text);
     	  });
