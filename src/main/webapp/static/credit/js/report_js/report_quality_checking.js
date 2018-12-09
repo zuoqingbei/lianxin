@@ -151,7 +151,7 @@ let Verify = {
                         },
                         "click .translate_quality": (e, value, row, index) => {
                             row.quality_type = 'translate_quality';
-                            Public.goToOrderDetail(row.id, row)
+                            Public.goToReportedAnalyzeQuality(row)
                         },
 
                     },

@@ -28,7 +28,7 @@ let Filing = {
     	$("#dl_btn3").click(function(){
             $(this).addClass('btn-primaryAc').siblings().removeClass('btn-primaryAc')
     		$("#table").bootstrapTable(
-    			"refresh",
+    			"refresh"
     		)	
     	});
     	$("#dl_btn1").click(function(){
