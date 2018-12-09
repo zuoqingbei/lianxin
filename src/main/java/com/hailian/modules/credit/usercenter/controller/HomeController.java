@@ -40,6 +40,7 @@ import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.usercenter.service.HomeService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.menu.SysMenu;
 import com.hailian.system.user.SysUser;
 import com.hailian.system.user.UserSvc;
@@ -73,6 +74,10 @@ public class HomeController extends BaseProjectController {
 	public static final String ftp_store = Config.getStr("ftp_store");//存储目录
 
 	public void index() {
+		List<SysDictDetail> country=	SysDictDetail.dao.find("select * from sys_dict_detail where dict_type=?","country");
+		setAttr("country", country);
+		List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
+	    setAttr("customer", customerId);
 		render(path+"index.html");
 		
 	}
@@ -81,6 +86,10 @@ public class HomeController extends BaseProjectController {
 		if(user==null||"".equals(user)) {
 			redirect("/credit/front/usercenter/login");
 		}else {
+			List<SysDictDetail> country=	SysDictDetail.dao.find("select * from sys_dict_detail where dict_type=?","country");
+			setAttr("country", country);
+			List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
+		    setAttr("customer", customerId);
 			render(path+"all_orders.html");
 		}
 	}
@@ -414,7 +423,10 @@ public class HomeController extends BaseProjectController {
 		
 		//非快速递交时创建报告
 		if(is_fastsubmmit.equals("-1")){
-		String language = model.get("report_language")+"";
+		String language = model.get("report_language")+"";//报告语言
+		String reprotType = model.get("report_type");//报告类型
+		String infoLanguage = Db.queryStr("select info_language from report_type where del_flag=0 and report_type="+reprotType);//填报语言
+		
 		CreditCompanyInfo company = new CreditCompanyInfo();
 		company.set("order_id", id);
 		company.set("update_date", getNow());
@@ -424,36 +436,50 @@ public class HomeController extends BaseProjectController {
 		company.set("name_en", right_company_name_en);
 		company.set("sys_language", "612");
 		company.save();
-		String companZHId = company.get("id")+"";
-		/** 214	 	中文繁体  
+		String companInfoId = "";//填报语言对应的公司表id
+		/** 报告语言
+		 	213		中文简体
+		    214	 	中文繁体  
 			215	 	英文
 			216	 	中文简体+英文
 			217	 	中文繁体+英文 */
-		/**612	 	中文简体
+		/**自然语言
+		   612	 	中文简体
 		   613	 	英文
 		   614	 	中文繁体*/
 		if("214".equals(language)){
 			company.set("sys_language", "614");
 			company.remove("id").save();
+			if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
 		}else if("215".equals(language)){
 			company.set("sys_language", "613");
 			company.remove("id").save();
+			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
 		}else if("216".equals(language)){
 			company.set("sys_language", "612");
 			company.remove("id").save();
+			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
 			company.set("sys_language", "613");
 			company.remove("id").save();
+			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
 		}else if("217".equals(language)){
 			company.set("sys_language", "614");
 			company.remove("id").save();
+			if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
 			company.set("sys_language", "613");
 			company.remove("id").save();
+			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
+		}else if("213".equals(language)){
+			company.set("sys_language", "612");
+			company.remove("id").save();
+			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
 		}
+		
 		CreditOrderInfo order = new CreditOrderInfo();
-		order.set("company_id",companZHId);
+		order.set("company_id",companInfoId);
 		order.set("id",id);
 		order.update();
-		model.set("company_id",companZHId);
+		model.set("company_id",companInfoId);
 		}
 		
 		CreditOperationLog.dao.addOneEntry(this, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
