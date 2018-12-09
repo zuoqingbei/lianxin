@@ -283,7 +283,7 @@ public class OrderProcessController extends BaseProjectController{
     
     /**
      * @author zhuch
-     * 
+     * 填报翻译
      */
     public void showReportedTranslate(){
     	render(REPORT_MANAGE_PATH+"report_translate.html");
@@ -294,6 +294,13 @@ public class OrderProcessController extends BaseProjectController{
      */
     public void showReportedAnalyze(){
     	render(REPORT_MANAGE_PATH+"report_analyze.html");
+    }
+    /**
+     * @author zhuch
+     * 质检翻译
+     */
+    public void showReportedAnalyzeQuality(){
+    	render(REPORT_MANAGE_PATH+"report_translate_quality.html");
     }
 
     //展示列表功能公共雏形

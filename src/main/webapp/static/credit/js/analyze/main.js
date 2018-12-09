@@ -913,13 +913,20 @@ let ReportConfig = {
                 				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
                 					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
                 						<label for="" class="thead-label">${item.temp_name}</label>
-                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+                						<textarea disabled="disabled" name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
             						</div>`
                 				}else{
-                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
-	                						<label for="" class="thead-label">${item.temp_name}</label>
-	                						<textarea disabled="disabled" name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
-                						</div>`
+                					if(item.id === 10061) {
+                						contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
+                							<label for="" class="thead-label">${item.temp_name}</label>
+                							<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+                							</div>`
+                					}else {
+                						contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
+                							<label for="" class="thead-label">${item.temp_name}</label>
+                							<textarea disabled="disabled" name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+                							</div>`
+                					}
                 				}
                 			})
                 			break;
@@ -1090,6 +1097,15 @@ let ReportConfig = {
     			
     			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
     			tempParam.forEach((item,index)=>{
+    				if(item === 'company_id') {
+    					if(this.rows["info_language"] === '' || this.rows["info_language"] === null || this.rows["info_language"] === 612) {
+    						dataJsonObj[item] = this.rows[item]
+    					}else if(this.rows["info_language"] === 613) {
+    						dataJsonObj[item] = this.rows["company_id_en"]
+    					}else if(this.rows["info_language"] === 614) {
+    						dataJsonObj[item] = this.rows["company_id_fan"]
+    					}
+    				}
     				dataJsonObj[item] = this.rows[item]
     			})
     		}
@@ -1155,20 +1171,7 @@ let ReportConfig = {
     				 success:(data)=>{
     					 $("#save").removeClass("disabled")
     					 if(data.statusCode === 1 && !formIndex[index+1]) {
-    						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.saveStatusUrl + `&model.id=${_this.rows["id"]}`;
-    						 $.ajax({
-    							 url,
-    							 type:'post',
-    							 success:(data)=>{
-    								 $("body").mLoading("hide")
-    								 if(data.statusCode === 1) {
-    									 Public.message("success",data.message)
-    									 
-    								 }else {
-    									 Public.message("error",data.message)
-    								 }
-    							 }
-    						 })
+							 Public.message("success",data.message)
     					 }else if(data.statusCode !== 1){
     						 Public.message("error",data.message)
     					 }
@@ -1236,7 +1239,7 @@ let ReportConfig = {
     				 success:(data)=>{
     					 $("#commit").removeClass("disabled")
     					 if(data.statusCode === 1 && !formIndex[index+1]) {
-    						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `&model.id=${_this.rows["id"]}`;
+    						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `model.id=${_this.rows["id"]}&statusCode=303`;
     						 $.ajax({
     							 url,
     							 type:'post',
