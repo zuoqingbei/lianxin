@@ -128,6 +128,9 @@ let Verify = {
                               },
                               "click .translate":(e,value,row,index)=>{
                             	  Public.goToReportTranslate(row)
+                              },
+                              "click .analyze":(e,value,row,index)=>{
+                            	  Public.goToReportAnalyze(row)
                               }
                           },
                           formatter: _this.operateFormatter
@@ -170,7 +173,12 @@ let Verify = {
                     			$(Array.from($(".recordName"))[index]).attr("data-target","#recordingName")
                     		}
                     		
-                    		
+                    		if(item.report_type !== '8' && item.report_type !== '9' && item.report_type !== '10' && item.report_type !== '11') {
+                    			$($(".analyze").get(index)).css ({"color":"#ccc","cursor":"default"});
+                    			$($(".analyze").get(index)).unbind()
+                    		}else {
+                    			$($(".analyze").get(index)).css({"color":"#007bff","cursor":"pointer"});
+                    		}
                     	})
                     }
                   });

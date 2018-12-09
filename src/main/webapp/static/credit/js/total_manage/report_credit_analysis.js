@@ -137,10 +137,10 @@ let creditAnalysis = {
                           field: 'companyName',
                       }, {
                           title: '扣分情况',
-                          field: '',
+                          field: 'grade',
                       }, {
                           title: '提成',
-                          field: 'custom_id',
+                          field: 'money',
                       }
 
             ]/*.map(function (item,index) {

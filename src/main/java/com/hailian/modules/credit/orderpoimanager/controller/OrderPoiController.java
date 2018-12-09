@@ -258,7 +258,7 @@ public class OrderPoiController extends BaseProjectController {
 						CreditOrderInfo theSameOrder = OrderManagerService.service.isTheSameOrder(orderReal.get("right_company_name_en")+"",orderReal.get("report_type")+"",orderReal.get("report_language")+"", this);
 						if(theSameOrder!=null){
 							isTheSameOrderNum++;
-							isTheSameOrder+=isTheSameOrderNum+".第"+r+"行，第G列监测到有相同企业报告;";
+							isTheSameOrder+=isTheSameOrderNum+".第"+r+"行，有相同企业报告;";
 						}
 						//获取报告价格
 						if(orderReal.get("type") != null && orderReal.get("speed")!=null && orderReal.get("report_type")!= null  && orderReal.get("order_type")!=null && orderReal.get("custom_id")!=null && orderReal.get("country")!=null){
@@ -389,15 +389,7 @@ public class OrderPoiController extends BaseProjectController {
 			  model.set("update_date", now);
 			  model.set("source", "1");//订单来源-批量导入
 			  model.set("receiver_date", now);
-			  /*
-			   * 获取报告价格
-			   */
-//			  CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(countryType, speed, reporttype, orderType, model.getStr("custom_id"), countryid);
-//			  if(pricemodel!=null){
-//				  int price_id=pricemodel.getInt("id");
-//				  model.set("price_id", price_id);
-//			  }
-			 
+
 			  
 			  
 			  List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单分配","orderstate");
@@ -429,13 +421,52 @@ public class OrderPoiController extends BaseProjectController {
 			  }
 			  modellist.add(model);
 			 }
-			 Db.batchSave(modellist, modellist.size());
-			 CreditOperationLog.dao.addOneEntry(this, null, "订单管理/批量导入/提交","/credit/orderpoimanager/savedata");//操作日志记录
+			 //Db.batchSave(modellist, modellist.size());
+			
 			 for(CreditOrderInfoModel model:modellist){
+				 model.save();//保存订单
 				 if(model.get("agent_id")!= null){
 					 MailService.service.toSendMail("1", model.getStr("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
 				 }
-				 }
+					String language = model.get("report_language")+"";
+					CreditCompanyInfo company = new CreditCompanyInfo();
+					company.set("order_id", model.get("id")+"");
+					company.set("update_date", getNow());
+					company.set("create_date", getNow());
+					company.set("create_by", userid);
+					company.set("update_by",userid);
+					company.set("name_en",  model.get("right_company_name_en")+"");
+					company.set("sys_language", "612");
+					company.save();
+					String companZHId = company.get("id")+"";
+					/** 214	 	中文繁体  
+						215	 	英文
+						216	 	中文简体+英文
+						217	 	中文繁体+英文 */
+					/**612	 	中文简体
+					   613	 	英文
+					   614	 	中文繁体*/
+					if("214".equals(language)){
+						company.set("sys_language", "614");
+						company.remove("id").save();
+					}else if("215".equals(language)){
+						company.set("sys_language", "613");
+						company.remove("id").save();
+					}else if("216".equals(language)){
+						company.set("sys_language", "612");
+						company.remove("id").save();
+						company.set("sys_language", "613");
+						company.remove("id").save();
+					}else if("217".equals(language)){
+						company.set("sys_language", "614");
+						company.remove("id").save();
+						company.set("sys_language", "613");
+						company.remove("id").save();
+					}
+					model.set("company_id",companZHId);
+					model.update();
+			 }
+			 CreditOperationLog.dao.addOneEntry(this, null, "订单管理/批量导入/提交","/credit/orderpoimanager/savedata");//操作日志记录
 					
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

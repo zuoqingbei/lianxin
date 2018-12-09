@@ -6,10 +6,7 @@ import com.deepoove.poi.data.RowRenderData;
 import com.deepoove.poi.data.TextRenderData;
 import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.admin.ordermanager.model.*;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
@@ -147,14 +144,22 @@ public class BusinessZh {
                     CreditReportModuleConf module = child.get(i);
                     String column_name = module.getStr("column_name");
                     String temp_name = module.getStr("temp_name");
-                    cols.put(column_name, temp_name);
+                    String field_type = module.getStr("field_type");
+                    cols.put(column_name, temp_name + "|" + field_type);
                 }
                 //取数据
                 for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     for (String column : cols.keySet()) {
+                        String[] strs = cols.get(column).split("\\|");
+                        String fieldType = strs.length == 2 ? strs[1] : "";
                         String value = model.get(column) != null ? model.get(column) + "" : "";
-                        map.put(column, value);
+                        if ("textarea".equals(fieldType)) {
+                            value = value.replaceAll("(\\\\r\\\\n|\\\\n)", "\n");
+                            map.put(column, value);
+                        }else{
+                            map.put(column, value);
+                        }
                     }
                 }
             }
@@ -237,8 +242,18 @@ public class BusinessZh {
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
+
         //财务模块生成
-        map.put("financial", financial(reportType,companyId,sysLanguage,"1"));
+        List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id="+companyId+" and del_flag=0 ");
+        if(finanConfList!=null && finanConfList.size()>0) {
+            CreditCompanyFinancialStatementsConf statementsConf = finanConfList.get(0);
+            String finanId = statementsConf.getInt("id") + "";
+            //财务-表格
+            map.put("financial", financial(reportType, companyId, sysLanguage, finanId));
+            //财务-评价
+            map.put("financial_eval", financialEval(statementsConf));
+        }
+
         //生成word
         MainWord.buildWord(map, webRoot + "/word/" + "_商业信息报告样本.docx", _prePath + ".docx");
         //重新添加图片
@@ -296,19 +311,19 @@ public class BusinessZh {
         for (CreditCompanyFinancialEntry ccf : finDataRows) {
             Integer son_sector = ccf.getInt("son_sector");
             //判断新模块，第一行要加标题
-            if(old==null){
+            if (old == null) {
                 old = son_sector;
-            }else{
-                if(son_sector.intValue()!=old.intValue()){
+            } else {
+                if (son_sector.intValue() != old.intValue()) {
                     old = son_sector;
                     j = 0;
                 }
             }
             //j=0表示第一条
-            if(j==0) {
+            if (j == 0) {
                 String title = "";
                 String unit = "";
-                switch (son_sector.intValue()){
+                switch (son_sector.intValue()) {
                     case 1:
                         title = "合计";
                         break;
@@ -348,22 +363,58 @@ public class BusinessZh {
                 Style titileStyle = new Style();
                 titileStyle.setColor("843C0B");
                 titileStyle.setBold(true);
-                rowList.add(RowRenderData.build(new TextRenderData(title,titileStyle), new TextRenderData(""), new TextRenderData("")));
+                rowList.add(RowRenderData.build(new TextRenderData(title, titileStyle), new TextRenderData(""), new TextRenderData("")));
                 Style header = new Style();
                 header.setBold(true);
-                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("单位：人民币（千元）",header)));
+                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("单位：人民币（千元）", header)));
             }
             String itemName = ccf.getStr("item_name");
             Integer begin = ccf.getInt("begin_date_value");
             Integer end = ccf.getInt("end_date_value");
             Integer is_sum_option = ccf.getInt("is_sum_option");
             Style sumStyle = new Style();
-            if(is_sum_option.intValue()==1){
+            if (is_sum_option.intValue() == 1) {
                 sumStyle.setBold(true);
             }
-            rowList.add(RowRenderData.build(new TextRenderData(itemName,sumStyle), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
+            rowList.add(RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
             j++;
         }
         return new MiniTableRenderData(rowList);
     }
+
+    /**
+     * 财务模块-评价
+     * @param statementsConf
+     * @return
+     */
+    public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf) {
+        ReportInfoGetDataController reportInfoGetDataController = new ReportInfoGetDataController();
+        String profSumup = statementsConf.getInt("profitablity_sumup") + "";
+        String profDetail = statementsConf.getStr("profitablity_detail");
+        String liquSumup = statementsConf.getInt("liquidity_sumup") + "";
+        String liquDetail = statementsConf.getStr("liquidity_detail");
+        String leverSumup = statementsConf.getInt("leverage_sumup") + "";
+        String leverDetail = statementsConf.getStr("leverage_detail");
+        String overSumup = statementsConf.getInt("overall_financial_condition_sumup") + "";
+        String overDetail = statementsConf.getStr("overall_financial_condition_detail");
+
+        StringBuffer str = new StringBuffer();
+        str.append("盈利能力：" + reportInfoGetDataController.dictIdToString(profSumup));
+        str.append("\n");
+        str.append(profDetail);
+        str.append("\n");
+        str.append("周转能力：" + reportInfoGetDataController.dictIdToString(liquSumup));
+        str.append("\n");
+        str.append(liquDetail);
+        str.append("\n");
+        str.append("融资能力：" + reportInfoGetDataController.dictIdToString(leverSumup));
+        str.append("\n");
+        str.append(leverDetail);
+        str.append("\n");
+        str.append("目标公司的总体财务状况：" + reportInfoGetDataController.dictIdToString(overSumup));
+        str.append("\n");
+        str.append(overDetail);
+        return str.toString();
+    }
+
 }
