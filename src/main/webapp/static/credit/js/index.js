@@ -73,7 +73,6 @@ let Index = {
       /**点击重置按钮 */
       $(".resetrFilter").click(function(){
         $('.form-check-input:checkbox').removeAttr('checked');
-      
       })
     },
     searchEvent(){

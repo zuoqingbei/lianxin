@@ -898,6 +898,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" select c.*,c.speed as speedid,c.country as countryid, ");
 			selectSql.append(" s1.name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
+			selectSql.append(" s2.info_language, ");
 			selectSql.append(" s3.detail_name AS continent, ");
 			selectSql.append(" s4.detail_name AS orderType, ");
 			selectSql.append(" s5.detail_name AS reportLanguage, ");
@@ -916,6 +917,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" FROM credit_order_info c ");
 			fromSql.append(" LEFT JOIN credit_country s1 ON c.country = s1.id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
+			//fromSql.append(" LEFT JOIN credit_report_type tbyy ON c.id = tbyy.custom_id ");//填报语言
 			fromSql.append(" LEFT JOIN sys_user u1 ON u1.userid = c.report_user ");//报告员
 			fromSql.append(" LEFT JOIN sys_user u2 ON u2.userid = c.translate_user ");//翻译员
 			fromSql.append(" LEFT JOIN sys_user u3 ON u3.userid = c.analyze_user ");//分析员
@@ -1009,7 +1011,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.orderQualityOfReport:
 				//状态为质检,其维护在字典表中
 				//信息录入完成后的质检，分析质检，翻译质检
-				fromSql.append(" and status in ('298','303','308') ");
+				fromSql.append(" and status in ('298','303','308','294') ");
 				//权限归属:报告员,分析员,质检员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")");
 				break;			
