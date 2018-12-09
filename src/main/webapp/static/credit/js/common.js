@@ -137,9 +137,10 @@ let Public = {
     	$(document).ajaxStop(function(){
     	  //遍历所有textarea标签
     	  $('textarea').each(function(){ 
-    	    var text = $(this).html(); 
+    	    var text = $(this).val();
+            console.log($(this).attr("name")+"="+text);
     	    text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
-    	    $(this).html(text);
+    	    $(this).val(text);
     	  });
     	});
     },
