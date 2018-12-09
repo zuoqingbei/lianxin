@@ -7,6 +7,8 @@ import java.util.List;
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyActivity;
+import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.credit.statistics.model.OrderStatisticsModel;
 import com.hailian.modules.credit.statistics.service.OrderStatisticsService;
 import com.hailian.system.dict.SysDictDetail;
@@ -25,7 +27,7 @@ public class CusServiceOrderController  extends BaseProjectController{
 	public void index() {
 	List<SysDictDetail> country=	SysDictDetail.dao.find("select * from sys_dict_detail where dict_type=?","country");
 	setAttr("country", country);
-	List<SysDictDetail> customerId=	SysDictDetail.dao.find("select * from credit_custom_info ");
+	List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
     setAttr("customer", customerId);
 	render(path);
 	}
@@ -69,7 +71,7 @@ public class CusServiceOrderController  extends BaseProjectController{
 		         		+ " where  PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( receiver_date, '%Y%m' ) ) =1 "
 		         		+ " and ord.del_flag='0' and cus.name='"+orderStatisticsModel.get("name")+"'  GROUP BY cus.name ORDER BY ord.id desc");
 	   int num=Integer.parseInt(orderStatisticsModel.get("num").toString()) ;   
-	   int num2=0;
+	   int num2=1;
 	   if (model!=null) {
 		num2 = Integer.parseInt(model.get("num").toString());
 	  }
