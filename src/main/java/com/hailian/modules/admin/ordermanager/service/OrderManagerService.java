@@ -464,8 +464,13 @@ public class OrderManagerService {
 //		BigDecimal score =OrderManagerService.service.getScore(reportid).get("score"); //获取报告员质量占比
 		double score = 0;
 		CreditOrderInfo coreInfo = OrderManagerService.service.getScore(reportid);
-		if(coreInfo!=null){
-			score=coreInfo.get("score");
+		try {
+			if(coreInfo!=null){
+				score=coreInfo.get("score");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			score = 0;
 		}
 		
 		double scoreTo=score;
