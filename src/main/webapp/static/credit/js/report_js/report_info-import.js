@@ -136,7 +136,8 @@ let Verify = {
                           // formatter: _this.operateFormatter(arr)
                             formatter:function () {
                                 let arr=JSON.parse(sessionStorage.getItem('roleIds'))
-                                if(arr.indexOf(1)>-1||arr.indexOf(3)>-1){
+                                console.log(arr)
+                                if(arr.indexOf(1)>-1||arr.indexOf(3)>-1||arr==''||arr==null){
                                     return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
                                             <span style="margin-left:.5rem;color: #1890ff">|</span>
                                             <a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>
