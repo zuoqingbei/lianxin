@@ -1160,7 +1160,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	 */
 	public CreditOrderInfo getInDoingOrderNum(int reportid){
 		List<Object> params=new ArrayList<Object>();
-		String sql="SELECT count(*) as inDoingOrderNum FROM credit_order_info t where t.del_flag=0 and t.status in (291,292,293,294,295,296,297,298,299) and t.report_user=? and to_days(t.receiver_date) = to_days(now())";
+		String sql="SELECT count(*) as inDoingOrderNum FROM credit_order_info t where t.del_flag=0 and t.status in (292,293,294,295,296,297,298,299) and t.report_user=? and to_days(t.receiver_date) = to_days(now())";
 		params.add(reportid);
 		return dao.findFirst(sql, params.toArray());
 	}

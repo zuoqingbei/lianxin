@@ -98,7 +98,7 @@ public class HttpTest {
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://i.yjapi.com/JudgeDocV4/SearchJudgmentDoc?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://i.yjapi.com/JudgeDocV4/SearchJudgmentDoc?key=791f4eb3af844c53a6bba25f80f033b7&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
@@ -137,7 +137,7 @@ public class HttpTest {
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://i.yjapi.com/CourtNoticeV4/SearchCourtAnnouncement?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&companyName="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://i.yjapi.com/CourtNoticeV4/SearchCourtAnnouncement?key=791f4eb3af844c53a6bba25f80f033b7&companyName="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
@@ -158,7 +158,7 @@ public class HttpTest {
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://i.yjapi.com/CourtAnnoV4/SearchCourtNotice?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://i.yjapi.com/CourtAnnoV4/SearchCourtNotice?key=791f4eb3af844c53a6bba25f80f033b7&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";

@@ -13,7 +13,7 @@ let Verify = {
         /**初始化表格 */
         const $table = $('#table');
         let _this = this
-        	
+
       
         $table.bootstrapTable({
             height: $(".table-content").height()*0.98,
@@ -133,7 +133,29 @@ let Verify = {
                             	  Public.goToReportAnalyze(row)
                               }
                           },
-                          formatter: _this.operateFormatter
+                          // formatter: _this.operateFormatter(arr)
+                            formatter:function () {
+                                let arr=JSON.parse(sessionStorage.getItem('roleIds'))
+                                if(arr.indexOf(1)>-1||arr.indexOf(3)>-1){
+                                    return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
+                                            <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                            <a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>
+                                            <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                            <a href="javascript:;" class="analyze" style="margin-left:.5rem">分析</a>
+                                            <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                            <a href="javascript:;" class="translate" style="margin-left:.5rem">翻译</a>`
+                                }else if(arr.indexOf(2)>-1){
+                                    return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
+                                            <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                            <a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>
+                                            `
+                                }else if(arr.indexOf(5)>-1){
+                                    return`<a href="javascript:;" class="analyze" >分析</a>`
+                                }else if(arr.indexOf(6)>-1){
+                                    return`<a href="javascript:;" class="translate" >翻译</a>`
+                                }
+
+                            }
                         }
                       
                     ],
@@ -223,15 +245,15 @@ let Verify = {
         
     },
     /**操作按钮格式化 */
-    operateFormatter(){
-        return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
-        <span style="margin-left:.5rem;color: #1890ff">|</span>
-        <a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>
-        <span style="margin-left:.5rem;color: #1890ff">|</span>
-        <a href="javascript:;" class="analyze" style="margin-left:.5rem">分析</a>
-        <span style="margin-left:.5rem;color: #1890ff">|</span>
-        <a href="javascript:;" class="translate" style="margin-left:.5rem">翻译</a>`
-    },
+    // operateFormatter(){
+    //     return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
+    //     <span style="margin-left:.5rem;color: #1890ff">|</span>
+    //     <a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>
+    //     <span style="margin-left:.5rem;color: #1890ff">|</span>
+    //     <a href="javascript:;" class="analyze" style="margin-left:.5rem">分析</a>
+    //     <span style="margin-left:.5rem;color: #1890ff">|</span>
+    //     <a href="javascript:;" class="translate" style="margin-left:.5rem">翻译</a>`
+    // },
     modalSubmit(){
         /**模态框提交事件 */
         $("#modal_submit").click(function(){
