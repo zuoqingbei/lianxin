@@ -420,18 +420,21 @@ public class OrderManagerService {
 		System.out.println("==================================");
 		List<SysUser> reporterlist = SysUser.dao.getReporter();
 		List<Reporter> reporterList=new ArrayList<Reporter>();
-		
-		for(SysUser report:reporterlist){
-			int reportid=report.get("userid");
-			double finalScore = getFinalScore(reportid);//报告员评分
-			long inDoingOrderNum = OrderManagerService.service.getInDoingOrderNum(reportid).get("inDoingOrderNum");//当日在做单量
-			long finishedOrderNum=OrderManagerService.service.getFinishedOrderNum(reportid).get("finishedOrderNum");//当日完成量
-			System.out.println(inDoingOrderNum);
-			Reporter reporter=new Reporter(reportid+"", finalScore, inDoingOrderNum,finishedOrderNum);//自定义排序
-			reporterList.add(reporter);
+		String reportId="";
+		if(reporterlist != null){
+			for(SysUser report:reporterlist){
+				int reportid=report.get("userid");
+				double finalScore = getFinalScore(reportid);//报告员评分
+				long inDoingOrderNum = OrderManagerService.service.getInDoingOrderNum(reportid).get("inDoingOrderNum");//当日在做单量
+				long finishedOrderNum=OrderManagerService.service.getFinishedOrderNum(reportid).get("finishedOrderNum");//当日完成量
+				System.out.println(inDoingOrderNum);
+				Reporter reporter=new Reporter(reportid+"", finalScore, inDoingOrderNum,finishedOrderNum);//自定义排序
+				reporterList.add(reporter);
+			}
+			Collections.sort(reporterList);//根据分配逻辑进行集合排序
+			reportId=reporterList.get(0).getReportId();
+			
 		}
-		Collections.sort(reporterList);//根据分配逻辑进行集合排序
-		String reportId=reporterList.get(0).getReportId();
 		return reportId;
 		
 	}
@@ -461,8 +464,13 @@ public class OrderManagerService {
 //		BigDecimal score =OrderManagerService.service.getScore(reportid).get("score"); //获取报告员质量占比
 		double score = 0;
 		CreditOrderInfo coreInfo = OrderManagerService.service.getScore(reportid);
-		if(coreInfo!=null){
-			score=coreInfo.get("score");
+		try {
+			if(coreInfo!=null){
+				score=coreInfo.get("score");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			score = 0;
 		}
 		
 		double scoreTo=score;
@@ -474,8 +482,10 @@ public class OrderManagerService {
 			reportnum=reportNumPart.get("reportnum1");//商业信息/分析报告数量
 			reportnum1=reportNumPart.get("reportnum2");//注册信息报告数量
 		}
-		if(reportNumPart==null){
+		if(reportnum1==null){
 			reportnum1=new BigDecimal(0);
+		}
+		if(reportnum==null){
 			reportnum=new BigDecimal(0);
 		}
 		long reportnumTo=reportnum.longValue();
