@@ -603,7 +603,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String financialConfId = getPara("ficConf_id");
 		String reportType = getPara("report_type");
-		String userId = getSession().getId();
+		String userId = getSessionUser().getUserid()+"";
 		String now = getNow();
 		if(StrUtils.isEmpty(financialConfId)) {
 			renderJson(new ResultType(0, "配置id不能为空!"));
@@ -620,7 +620,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String message = "导入失败,请检查文件内容!";
 		try {
-			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, "8", now);
+			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, userId, now);
 		} catch (Exception e) {
 			renderJson( new ResultType(0, message));
 			e.printStackTrace();
@@ -668,10 +668,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			return;
 		}
 		List<Map<Object, Object>> entrys = ReportInfoGetData.parseJsonArray(dataJson);
-		String userId = getSession().getId();
+		String userId = getSessionUser().getUserid()+"";
 		String now = getNow();
 		try {
-			FinanceService.alterFinancialEntryList(entrys, "8", now);
+			FinanceService.alterFinancialEntryList(entrys, userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -692,10 +692,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "缺少正确参数entryId!"));
 			return;
 		}
-		String userId = getSession().getId();
+		String userId = getSessionUser().getUserid()+"";
 		String now = getNow();
 		try {
-			FinanceService.deleteFinancialEntryList(entryId, "8", now);
+			FinanceService.deleteFinancialEntryList(entryId, userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -719,7 +719,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
 			return;
 		}
-		String userId = getSession().getId();
+		String userId = getSessionUser().getUserid()+"";
 		String now = getNow();
 	    List<CreditCompanyFinancialStatementsConf> rows = FinanceService.getFinancialConfigList(companyId,type);
 	    //如果不存在就创建一个默认的
@@ -729,7 +729,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			entryMap.put("company_id", companyId);
 			entryMap.put("type", type);
 			entrys.add(entryMap);
-			FinanceService.alterFinancialConfig(entrys, type, "8", now);
+			FinanceService.alterFinancialConfig(entrys, type, userId, now);
 			rows = FinanceService.getFinancialConfigList(companyId,type);
 		}
 		renderJson(new Record().set("rows", rows));
@@ -751,7 +751,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0,"只能单条操作!"));
 			return;
 		}
-		String userId = getSession().getId();
+		String userId = getSessionUser().getUserid()+"";
 		String now = getNow();
 		Integer type = getFinanceDictByReportType(reportType);
 		if(type==null) {
@@ -759,7 +759,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			return;
 		}
 		try {
-			FinanceService.alterFinancialConfig(entrys, type, "8", now);
+			FinanceService.alterFinancialConfig(entrys, type, userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -779,10 +779,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "请检查必要参数financialConfId!"));
 			return;
 		}
-		String userId = getSession().getId();
+		String userId = getSessionUser().getUserid()+"";
 		String now = getNow();
 		try {
-			FinanceService.deleteFinancialConfig(financialConfId, "8", now);
+			FinanceService.deleteFinancialConfig(financialConfId, userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -796,7 +796,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	  * lzg 2018/11/28
 	  */
 	 public void  uploadBrand() {
-		String userId = getSession().getId();
+		int userId = getSessionUser().getUserid();
 		String randomCode = UUID.randomUUID().toString().replaceAll("-", "");
 		//从前台获取文件
         List<UploadFile>  upFileList = getFiles("file");
@@ -818,7 +818,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         	renderJson(new ResultType(0, "请检查必要参数order_id!"));
 			return;
         }
-        OrderProcessController.uploadFile(orderId, "-1", upFileList,8,randomCode);
+        OrderProcessController.uploadFile(orderId, "-1", upFileList,userId,randomCode);
         CreditUploadFileModel  file = CreditUploadFileModel.dao.getByRandomCode(orderId+"", "-1",randomCode);
 		renderJson(new Record().set("url", OrderProcessController.ip + ":" + OrderProcessController.searverPort+"/"+file.get("url")));
 	 }
