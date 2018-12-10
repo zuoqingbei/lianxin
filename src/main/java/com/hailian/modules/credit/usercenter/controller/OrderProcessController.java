@@ -512,9 +512,13 @@ public class OrderProcessController extends BaseProjectController{
             addNoice(code);
             //调用企查查接口
             if("595".equals(code)){
-                new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report"),"612");
+            	//根据订单号找到填报语言对应的公司id
+            	String companyId = model.findById(orderId).get("company_id")+"";
+                new CompanyService().enterpriseGrab(companyId,getPara("model.company_by_report"),"612");
                 //调用香港查册网
                 //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
+                //爬虫完毕更新状态
+                CreditOrderInfo model2 = new CreditOrderInfo().dao().set("id", orderId).set("status", 694);  model2.update();
             }
             //订单完成
             if("314".equals(code)){
