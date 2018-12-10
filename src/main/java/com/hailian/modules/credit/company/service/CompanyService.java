@@ -248,7 +248,7 @@ public class CompanyService {
 				}
 				
 			}
-			//enterpriseGrabOther(companyId,companyName,sys_language);//抓取企查查裁判文书，法院公告，开庭公告信息数据并保存
+			enterpriseGrabOther(companyId,companyName,sys_language);//抓取企查查裁判文书，法院公告，开庭公告信息数据并保存
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
