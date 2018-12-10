@@ -134,15 +134,15 @@ let Public = {
     },
     textAreaEvent(){
     	//获取textarea的内容，替换换行符
-    	$(document).ajaxStop(function(){
+    	/*$(document).ajaxStop(function(){
     	  //遍历所有textarea标签
     	  $('textarea').each(function(){ 
     	    var text = $(this).val();
-            //console.log($(this).attr("name")+"="+text);
+            console.log($(this).attr("name")+"="+text);
     	    text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
     	    $(this).val(text);
     	  });
-    	});
+    	});*/
     },
     logoutEvent() {
         $(".user-content").click(function () {
@@ -199,6 +199,13 @@ let Public = {
     goToReportAnalyze(param) {
     	/**跳转可配置分析页面*/
     	$("#main_content").load(BASE_PATH + 'credit/front/orderProcess/showReportedAnalyze', () => {
+    		this.gotop()
+    	});
+    	localStorage.setItem("row", JSON.stringify(param));
+    },
+    goToReportedAnalyzeQuality(param) {
+    	/**跳转可配置质检翻译页面*/
+    	$("#main_content").load(BASE_PATH + 'credit/front/orderProcess/showReportedAnalyzeQuality', () => {
     		this.gotop()
     	});
     	localStorage.setItem("row", JSON.stringify(param));
@@ -342,6 +349,15 @@ let Public = {
 }
 
 $(function () {
+    $(document).ajaxStop(function(){
+        //遍历所有textarea标签
+        $('textarea').each(function(){
+            var text = $(this).val();
+            console.log($(this).attr("name")+"="+text);
+            text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
+            $(this).val(text);
+        });
+    });
 
     Public.init();
     window.onload = function () {

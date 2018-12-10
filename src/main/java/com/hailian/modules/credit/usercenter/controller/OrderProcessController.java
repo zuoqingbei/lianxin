@@ -10,9 +10,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.hailian.modules.credit.company.service.CompanyService;
-
 import com.hailian.util.http.HttpCrawler;
+
+import com.hailian.util.word.MainReport;
+
 import org.apache.commons.lang3.StringUtils;
+
+
 
 //import ch.qos.logback.core.status.Status;
 import com.feizhou.swagger.annotation.Api;
@@ -49,6 +53,7 @@ import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.usercenter.service.KpiService;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
+import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateSysUserService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
@@ -283,7 +288,7 @@ public class OrderProcessController extends BaseProjectController{
     
     /**
      * @author zhuch
-     * 
+     * 填报翻译
      */
     public void showReportedTranslate(){
     	render(REPORT_MANAGE_PATH+"report_translate.html");
@@ -294,6 +299,13 @@ public class OrderProcessController extends BaseProjectController{
      */
     public void showReportedAnalyze(){
     	render(REPORT_MANAGE_PATH+"report_analyze.html");
+    }
+    /**
+     * @author zhuch
+     * 质检翻译
+     */
+    public void showReportedAnalyzeQuality(){
+    	render(REPORT_MANAGE_PATH+"report_translate_quality.html");
     }
 
     //展示列表功能公共雏形
@@ -440,12 +452,9 @@ public class OrderProcessController extends BaseProjectController{
                 //查询代理类型
                 String seleteStr = TemplateAgentService.templateagentservice.getAgentIdString(creditOrderInfo.get("agent_id"));
                 creditOrderInfo.put("seleteAgentStr",seleteStr);
-                Object object = creditOrderInfo.get("agent_id");
-                Object object2 = creditOrderInfo.get("agent_category");
-                if(object!=null && !object.equals("")){
-                    String seleteAgentCateStr = TemplateAgentService.templateagentservice.getAgentCateString(creditOrderInfo.get("agent_id"),creditOrderInfo.get("agent_category"));
-                    creditOrderInfo.put("seleteAgentCateStr",seleteAgentCateStr);
-                }
+                String seleteAgentCateStr = TemplateAgentService.templateagentservice.getAgentCateString(creditOrderInfo.get("agent_id"),creditOrderInfo.get("agent_category"));
+                creditOrderInfo.put("seleteAgentCateStr",seleteAgentCateStr);
+                
             }
         }
         int totalRow = pager.getTotalRow();
@@ -506,6 +515,10 @@ public class OrderProcessController extends BaseProjectController{
                 new CompanyService().enterpriseGrab(getPara("companyId"),getPara("model.company_by_report"),"612");
                 //调用香港查册网
                 //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
+            }
+            //订单完成
+            if("314".equals(code)){
+                new MainReport().build(orderId,getSessionUser().getUserid());
             }
             
             renderJson(new ResultType());
@@ -704,14 +717,19 @@ public class OrderProcessController extends BaseProjectController{
                     String city=strs[1].toString();
                     ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
                     CityModel cityByName = CityModel.dao.getCityByName(city);
-                    int pid = provinceByName.get("pid");
-                    int cid = cityByName.get("cid");
-                    if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
-                        AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
-                        if(agentPrice !=null){
-                            map.put("agent_priceId", agentPrice.get("id"));
-                        }
+                    if(provinceByName!=null && cityByName!=null){
+                    	int pid = provinceByName.get("pid");
+                    	 int cid = cityByName.get("cid");
+                    	 if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
+                             AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
+                             if(agentPrice !=null){
+                                 map.put("agent_priceId", agentPrice.get("id"));
+                             }
+                         }
                     }
+                  
+                   
+                   
                 }
             }
             PublicUpdateMod(map);

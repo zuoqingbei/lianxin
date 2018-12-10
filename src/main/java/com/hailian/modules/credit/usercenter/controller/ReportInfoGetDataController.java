@@ -135,8 +135,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 获取bootstraptable类型的数据 链接形如:
 	 * http://localhost:8080/credit/front/ReportGetData/getBootStrapTable?conf_id=18
 	 * company_id=24&report_type=1&tableName=credit_company_his&className=CreditCompanyHis
-	 * 
-	 * @param isCompanyMainTable
+	 *
 	 */
 	public void getBootStrapTable() {
 		getBootStrapTable(isCompanyMainTable(),  null);
@@ -200,7 +199,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     /**
      * 反向映射数据
      * @param isCompanyMainTable 是否是主表
-     * @param sysLanguage 语言
      * @param companyId 公司id
      * @param tableName 表名
      * @param className 反向映射的类名
@@ -234,7 +232,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 if(str.equals("company_id")){
                     sqlSuf.append(str.trim() + "=" + companyId + " and ");
                 }else{
-                    sqlSuf.append(str.trim() + "=" + getPara(str).trim() + " and ");
+                    if(getRequest()!=null) {
+                        sqlSuf.append(str.trim() + "=" + getPara(str).trim() + " and ");
+                    }
                 }
 
 			}
@@ -400,11 +400,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
              if (type.equals("translate_quality")) {//翻译质检
   			if (deal.equals("1")) {//1 完成 2修改
   				status="311";
+ 				 agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
   			}else {
   				status="306";
-  				 agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
-  				
-
   			}
   		   }else if(type.equals("entering_quality")){//填报质检
   			   if (deal.equals("1")) {//1 完成 2修改

@@ -6,6 +6,7 @@ import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.util.word.*;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -22,11 +23,12 @@ public class CreditReportController extends BaseProjectController{
     //登录
     public void report(){
         Integer userid = getSessionUser().getUserid();
+        CreditOrderInfo order =  CreditOrderInfo.dao.findById("777909");
         //BaseInfoZh test = new BaseInfoZh();
         //BaseInfoZh.reportTable("1","","7777843","612",userid);
         //BusinessZh test = new BaseInfoZh();
         //报告类型8  订单ID 公司ID65  语言612
-        BusinessZh.reportTable("8","","7777838","612",userid);
+        BusinessZh.reportTable(order,userid);
         //CreditZh.reportTable("8","","65","612",userid);
         //CreditEn.reportTable("8","","65","612",userid);
         //Word105.reportTable("16","777891","7777831","612",userid);

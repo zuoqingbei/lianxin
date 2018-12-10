@@ -19,17 +19,20 @@ let Filing = {
     dl_btn3(){
     	
     	$("#dl_btn2").click(function(){
+    	    $(this).addClass('btn-primaryAc').siblings().removeClass('btn-primaryAc')
     		$("#table").bootstrapTable(
     			"refresh",
     			{query: {statusName: '2'}}
     		)	
     	});
     	$("#dl_btn3").click(function(){
+            $(this).addClass('btn-primaryAc').siblings().removeClass('btn-primaryAc')
     		$("#table").bootstrapTable(
-    			"refresh",
+    			"refresh"
     		)	
     	});
     	$("#dl_btn1").click(function(){
+            $(this).addClass('btn-primaryAc').siblings().removeClass('btn-primaryAc')
     		$("#table").bootstrapTable(
     			"refresh",
     			{query: {statusName: '1'}}
