@@ -38,6 +38,7 @@ import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.util.StrUtils;
+import com.hailian.util.word.MainReport;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
@@ -439,6 +440,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                   }
               }
               model.update();
+              //如果报告状态是311 发送邮件，报告
+              if (status.equals("311")) {
+            	  
+                 new MainReport().build(Integer.parseInt(orderId),getSessionUser().getUserid());
+                 		}
+        
               //增加跟踪记录
               CreditOrderFlow.addOneEntry(this, model);
               CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
