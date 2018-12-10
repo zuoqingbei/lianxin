@@ -966,7 +966,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				}
 				//全部
 				if (StringUtils.isBlank(statuCode)) {
-					fromSql.append(" and status  in('291','292','293','294','295','296','297') ");
+					fromSql.append(" and status  in('291','292','293','295','296','297') ");
 				}
 //				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
 				break;
