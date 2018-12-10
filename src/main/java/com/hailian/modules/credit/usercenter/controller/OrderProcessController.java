@@ -518,7 +518,7 @@ public class OrderProcessController extends BaseProjectController{
                 //调用香港查册网
                 //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
                 //爬虫完毕更新状态
-                CreditOrderInfo model2 = new CreditOrderInfo().dao().set("id", orderId).set("status", 694);  model2.update();
+                CreditOrderInfo model2 = new CreditOrderInfo(); model2.set("id", orderId).set("status", 694);  model2.update();
             }
             //订单完成
             if("314".equals(code)){
