@@ -170,7 +170,7 @@ let Filing = {
                  let num = $("#num2").text();
                  let ids=this.numarr;
                  console.log(ids);
-                 $.ajax({
+                $.ajax({
             			type:"post",
             			url:BASE_PATH+"credit/front/orderProcess/orderAgentAbroadSave",
             			data:"agent_id="+agentid+"&ismail="+ismail+"&model.id="+id+"&model.num="+num+"&statusCode="+"295"+"&orderId="+id+"&country="+country+"&speed="+speed+"&ids="+ids,
@@ -178,22 +178,11 @@ let Filing = {
             			success:function(data){
             			
             			if(data.statusCode===1){
-                       	 console.log("此处进入success状态2222222222");
+                       	console.log("此处进入success状态2222222222");
                        	Public.message("success",data.message);
-                      //提交成功关闭模态窗
+                      	//提交成功关闭模态窗
                        	$(".modal-header .close").trigger("click");
-                       	$.ajax({
-    	           			type:"post",
-    	               		url:BASE_PATH+"credit/front/orderProcess/listJson",
-    	               		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
-    	               		dataType:"json",
-    	               		success:function(obj){
-    	           			 	$("#table").bootstrapTable("load",obj);
-    	           			 	console.log(obj);
-    	           			 }
-    	       			})
-                      
-                       
+           			 		$("#table").bootstrapTable("refresh");
                        }else{
                        	 console.log("此处进入error状态");
                        	Public.message("error",data.message);
@@ -753,6 +742,16 @@ let Filing = {
               	  searchType: "-4",
                 };  
             },  
+            onLoadSuccess:(data)=>{
+            	console.log(data)
+            	let rows = data.rows;
+            	rows.forEach((item,index)=>{
+            		if(item.countryid !== '61' && item.countryid !== '62' && item.countryid !== '92') {
+            			$($(".dl").get(index)).css({"color":"#ccc","cursor":"default"})
+            			$($(".dl").get(index)).removeAttr("data-target")
+            		}
+            	})
+            },
             onCheck:(row)=>{
             	console.log(row)
             	this.numarr.push(row.id)
