@@ -159,13 +159,17 @@ let Verify = {
                         console.log('ss===')
                         console.log(row)
                         if(row.report_type=='8'||row.report_type=='9'||row.report_type=='10'||row.report_type=='11'){
-                            return `<a href="javascript:" class="entering_quality">填报</a> ` +
-                                '<a href="javascript:" class="analyze_quality">分析</a> ' +
-                                '<a href="javascript:" class="translate_quality">翻译</a>'
+                            return `<a href="javascript:" class="entering_quality">填报</a> 
+                             <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                <a href="javascript:" class="analyze_quality">分析</a> 
+                                 <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                <a href="javascript:" class="translate_quality">翻译</a>`
                         }else {
-                            return `<a href="javascript:" class="entering_quality">填报</a> ` +
-                                '<a href="javascript:" class="analyze_quality" style="color: rgb(204,204,204)">分析</a> ' +
-                                '<a href="javascript:" class="translate_quality">翻译</a>'
+                            return `<a href="javascript:" class="entering_quality">填报</a>  
+                             <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                <a href="javascript:" class="analyze_quality" style="color: rgb(204,204,204)">分析</a>
+                                 <span style="margin-left:.5rem;color: #1890ff">|</span> 
+                                <a href="javascript:" class="translate_quality">翻译</a>`
                         }
                     }
                 }

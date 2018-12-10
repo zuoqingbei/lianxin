@@ -890,7 +890,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	 * @author lzg
 	 * @time 2018/09/14下午 3:20
 	 */
-	public Page<CreditOrderInfo> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,String searchType,String status,BaseProjectController c) {
+	public Page<CreditOrderInfo> pagerOrder(int pageNumber, int pagerSize, List<Object> keywords, String orderBy,String searchType,String statuCode,BaseProjectController c) {
 		StringBuffer selectSql = new StringBuffer();
 		StringBuffer fromSql = new StringBuffer();
 		//参数集合
@@ -954,22 +954,23 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				break;
 			case OrderProcessController.orderFilingOfOrder:
 				//订单查档(国外) ,其维护在字典表中 中国大陆代码106 只有韩国，新加坡，马来西亚需要人工分配，其余国家走自动分配
+				fromSql.append(" and  c.country!='106' ");
 				//294为信息录入完成,295代理中
-				//已分配
-				if (StringUtils.isNotBlank(status)&&status.equals("2")) {
-					fromSql.append(" and status in('295') and c.country!='106' ");
+				//已代理
+				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("2")) {
+					fromSql.append(" and status in('295')  ");
 				}
-				//未分配
-				if (StringUtils.isNotBlank(status)&&status.equals("1")) {
-					fromSql.append(" and status in('294') and c.country!='106' ");
+				//未代理
+				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
+					fromSql.append(" and status in('291','292','293','294','296','297') ");
 				}
 				//全部
-				if (StringUtils.isBlank(status)) {
-					fromSql.append(" and status in('294','295') and c.country!='106' ");
+				if (StringUtils.isBlank(statuCode)) {
+					fromSql.append(" and status  in('291','292','293','295','296','297') ");
 				}
-				
 //				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
 				break;
+				
 			case OrderProcessController.orderSubmitOfOrder:
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
 				//300为信息质检合格
@@ -978,31 +979,30 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
 				//291为订单分配,293为信息录入，292客户确认 595为系统查询中(爬虫中)
-				fromSql.append(" and status in ('291','292','595','294') ");
+				fromSql.append(" and status in ('291','292','293','294','296','595','694','301','306') ");
 				//权限归属:报告员,分析员,翻译员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.translate_user= "+userId+")");
 				break;
 			case OrderProcessController.orderVerifyOfReport:
 				//状态为订单核实 ,其维护在字典表中
-				//293为信息录入 
-				fromSql.append(" and status in ('293') ");
+				fromSql.append(" and status in ('291','292','293','294','295','296','297','298','299','300')");
 				//权限归属:报告员,分析员,质检员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")");
 				break;	
 			case OrderProcessController.orderFilingOfReport:
 				//状态为订单查档(国内) ,其维护在字典表中
-				//294为信息录入完成
-				//已分配
-				if (StringUtils.isNotBlank(status)&&status.equals("2")) {
-					fromSql.append(" and status in('295') and c.country='106' ");
+				fromSql.append(" and c.country='106' ");//国内
+				//已代理
+				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("2")) {
+					fromSql.append(" and status in('295','296')  ");
 				}
-				//未分配
-				if (StringUtils.isNotBlank(status)&&status.equals("1")) {
-					fromSql.append(" and status in('294') and c.country='106' ");
+				//未代理
+				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
+					fromSql.append(" and status in('291','292','293','294','297') ");
 				}
 				//全部
-				if (StringUtils.isBlank(status)) {
-					fromSql.append(" and status in('294','295') and c.country='106' ");
+				if (StringUtils.isBlank(statuCode)) {
+					fromSql.append(" and status  in('291','292','293','294','295','296','297') ");
 				}
 				//权限归属:质检员
 				authority.append(" and (c.IQC= "+userId+")");
@@ -1045,7 +1045,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}*/
 		if(!c.isAdmin(c.getSessionUser())){
-			fromSql.append(authority);
+			//fromSql.append(authority);
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
