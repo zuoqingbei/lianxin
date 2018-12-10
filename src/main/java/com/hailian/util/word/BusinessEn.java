@@ -74,7 +74,7 @@ public class BusinessEn {
             if (source == null || "".equals(source)) {
                 continue;
             }
-            Map<String, String> params = MainWord.parseUrl(source);
+            Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
             if (clName == null || "".equals(clName)) {
@@ -90,9 +90,9 @@ public class BusinessEn {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = MainWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = MainWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(child, rows);
                 }
                 map.put(key, table);
             }
@@ -104,7 +104,7 @@ public class BusinessEn {
                 if (s == null || "".equals(s)) {
                     continue;
                 }
-                Map<String, String> p = MainWord.parseUrl(s);
+                Map<String, String> p = BaseWord.parseUrl(s);
                 String t = p.get("tableName");
                 if (t == null || "".equals(t)) {
                     continue;
@@ -232,7 +232,7 @@ public class BusinessEn {
                     }
                     pds.setValue(n, value);
                 }
-                MainWord.createPieChart(pds, _prePath + ".jpg");
+                BaseWord.createPieChart(pds, _prePath + ".jpg");
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
@@ -241,9 +241,9 @@ public class BusinessEn {
         map.put("financial", financial(reportType,companyId,sysLanguage,"1"));
 
 
-        MainWord.buildWord(map, webRoot + "/word/" + "_BUSINESS INFORMATION REPORT.docx", _prePath + ".docx");
+        BaseWord.buildWord(map, webRoot + "/word/" + "_BUSINESS INFORMATION REPORT.docx", _prePath + ".docx");
         //上传文件
-        String filePath = MainWord.uploadReport(_prePath + ".docx", orderId, userid);
+        String filePath = BaseWord.uploadReport(_prePath + ".docx", orderId, userid);
         //发送邮件
         List<Map<String, String>> fileList = new ArrayList<Map<String, String>>();
         Map<String, String> fileMap = new HashMap<String, String>();

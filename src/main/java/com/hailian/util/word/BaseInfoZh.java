@@ -64,7 +64,7 @@ public class BaseInfoZh {
             if (source == null || "".equals(source)) {
                 continue;
             }
-            Map<String, String> params = MainWord.parseUrl(source);
+            Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
             if (clName == null || "".equals(clName)) {
@@ -76,37 +76,37 @@ public class BaseInfoZh {
             if ("企业注册信息".equals(tempName)) {
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
+                MiniTableRenderData table = BaseWord.createTableS(child, rows);
                 map.put("regist", table);
             }
             if ("历史变更记录".equals(tempName)) {
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableH(child, rows);
+                MiniTableRenderData table = BaseWord.createTableH(child, rows);
                 map.put("history", table);
             }
             if ("股东信息".equals(tempName)) {
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableH(child, rows);
+                MiniTableRenderData table = BaseWord.createTableH(child, rows);
                 map.put("partner", table);
             }
             if("法人股东详情".equals(tempName)){
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
+                MiniTableRenderData table = BaseWord.createTableS(child, rows);
                 map.put("details", table);
             }
             if("投资情况".equals(tempName)){
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableH(child, rows);
+                MiniTableRenderData table = BaseWord.createTableH(child, rows);
                 map.put("invest", table);
             }
             if("管理层".equals(tempName)){
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                MiniTableRenderData table = MainWord.createTableS(child, rows);
+                MiniTableRenderData table = BaseWord.createTableS(child, rows);
                 map.put("leader", table);
             }
         }
@@ -121,7 +121,7 @@ public class BaseInfoZh {
 
 
         //MainWord.buildWord(map, "h://word/_基本信息报告样本.docx", "h://1.docx");
-        MainWord.buildWord(map, webRoot + "/word/" + "_基本信息报告样本.docx", _prePath + ".docx");
+        BaseWord.buildWord(map, webRoot + "/word/" + "_基本信息报告样本.docx", _prePath + ".docx");
 
         //注册信息-表格
         //RowRenderData header2 = RowRenderData.build(new TextRenderData("000000", "姓名"), new TextRenderData("000000", "学历"));

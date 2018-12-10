@@ -69,7 +69,7 @@ public class CreditEn {
             if (source == null || "".equals(source)) {
                 continue;
             }
-            Map<String, String> params = MainWord.parseUrl(source);
+            Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
             if (clName == null || "".equals(clName)) {
@@ -85,9 +85,9 @@ public class CreditEn {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = MainWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = MainWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(child, rows);
                 }
                 map.put(key, table);
             }
@@ -99,7 +99,7 @@ public class CreditEn {
                 if(s==null||"".equals(s)){
                     continue;
                 }
-                Map<String, String> p = MainWord.parseUrl(s);
+                Map<String, String> p = BaseWord.parseUrl(s);
                 String t = p.get("tableName");
                 if (t == null || "".equals(t)) {
                     continue;
@@ -151,7 +151,7 @@ public class CreditEn {
                 }
             }
         }
-        MainWord.buildWord(map, webRoot + "/word/" + "_CREDIT RISK ANALYSIS REPORT.docx", _prePath + ".docx");
+        BaseWord.buildWord(map, webRoot + "/word/" + "_CREDIT RISK ANALYSIS REPORT.docx", _prePath + ".docx");
     }
 
 }

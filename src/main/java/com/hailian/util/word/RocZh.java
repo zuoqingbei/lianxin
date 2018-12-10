@@ -1,16 +1,12 @@
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
-import com.deepoove.poi.data.PictureRenderData;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
-import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.jfinal.kit.PathKit;
-import org.jfree.data.general.DefaultPieDataset;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -75,7 +71,7 @@ public class RocZh {
             if (source == null || "".equals(source)) {
                 continue;
             }
-            Map<String, String> params = MainWord.parseUrl(source);
+            Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
             if (clName == null || "".equals(clName)) {
@@ -91,11 +87,11 @@ public class RocZh {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = MainWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = MainWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(child, rows);
                 } else if ("z".equals(tableType)){
-                    MainWord.createTableZ(child, rows, map);
+                    BaseWord.createTableZ(child, rows, map);
                 }
                 map.put(key, table);
             }
@@ -107,7 +103,7 @@ public class RocZh {
                 if (s == null || "".equals(s)) {
                     continue;
                 }
-                Map<String, String> p = MainWord.parseUrl(s);
+                Map<String, String> p = BaseWord.parseUrl(s);
                 String t = p.get("tableName");
                 if (t == null || "".equals(t)) {
                     continue;
@@ -196,7 +192,7 @@ public class RocZh {
             }
         }
 
-        MainWord.buildWord(map, webRoot + "/word/" + "_102 ROC Chinese.docx", _prePath + ".docx");
+        BaseWord.buildWord(map, webRoot + "/word/" + "_102 ROC Chinese.docx", _prePath + ".docx");
     }
 
 }

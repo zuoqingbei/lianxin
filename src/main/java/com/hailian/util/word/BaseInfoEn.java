@@ -79,7 +79,7 @@ public class BaseInfoEn {
             if (source == null || "".equals(source)) {
                 continue;
             }
-            Map<String, String> params = MainWord.parseUrl(source);
+            Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
             if (clName == null || "".equals(clName)) {
@@ -95,9 +95,9 @@ public class BaseInfoEn {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = MainWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = MainWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(child, rows);
                 }
                 map.put(key, table);
             }
@@ -109,7 +109,7 @@ public class BaseInfoEn {
                 if (s == null || "".equals(s)) {
                     continue;
                 }
-                Map<String, String> p = MainWord.parseUrl(s);
+                Map<String, String> p = BaseWord.parseUrl(s);
                 String t = p.get("tableName");
                 if (t == null || "".equals(t)) {
                     continue;
@@ -237,7 +237,7 @@ public class BaseInfoEn {
                     }
                     pds.setValue(n, value);
                 }
-                MainWord.createPieChart(pds, _prePath + ".jpg");
+                BaseWord.createPieChart(pds, _prePath + ".jpg");
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
@@ -250,7 +250,7 @@ public class BaseInfoEn {
         //总结
         map.put("result", str);
 
-        MainWord.buildWord(map, webRoot + "/word/" + "_REGISTRATION REPORT.docx", _prePath + ".docx");
+        BaseWord.buildWord(map, webRoot + "/word/" + "_REGISTRATION REPORT.docx", _prePath + ".docx");
     }
 
 }

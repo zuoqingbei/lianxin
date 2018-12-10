@@ -57,7 +57,7 @@ public class Word10702 {
             if (source == null || "".equals(source)) {
                 continue;
             }
-            Map<String, String> params = MainWord.parseUrl(source);
+            Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
             if (clName == null || "".equals(clName)) {
@@ -73,9 +73,9 @@ public class Word10702 {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = MainWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = MainWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(child, rows);
                 }
                 map.put(key, table);
             }
@@ -87,7 +87,7 @@ public class Word10702 {
                 if (s == null || "".equals(s)) {
                     continue;
                 }
-                Map<String, String> p = MainWord.parseUrl(s);
+                Map<String, String> p = BaseWord.parseUrl(s);
                 String t = p.get("tableName");
                 if (t == null || "".equals(t)) {
                     continue;
@@ -175,7 +175,7 @@ public class Word10702 {
             }
         }
 
-        MainWord.buildWord(map, webRoot + "/word/" + "_107-2.docx", _prePath + ".docx");
+        BaseWord.buildWord(map, webRoot + "/word/" + "_107-2.docx", _prePath + ".docx");
     }
 
 }
