@@ -13,7 +13,7 @@ let Filing = {
         this.popperFilter();
         this.modalSubmit(this.numarr);
         this.fileEvent();
-        this.select();
+        // this.select();
         this. dl_btn3();
     },
  dl_btn3(){

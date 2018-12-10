@@ -1066,12 +1066,12 @@ let ReportConfig = {
                 				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
                 					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
                 						<label for="" class="thead-label">${item.temp_name}</label>
-                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+                						<textarea disabled="disabled" name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
             						</div>`
                 				}else{
                 					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
 	                						<label for="" class="thead-label">${item.temp_name}</label>
-	                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+	                						<textarea disabled="disabled" name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
                 						</div>`
                 				}
                 			})
@@ -1088,7 +1088,7 @@ let ReportConfig = {
 					                        	<div class="radio-box">`
                 				strItem.forEach((item,index)=>{
                 				contentHtml += ` <div class="form-check form-check-inline mr-5">
-					                                <input class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+					                                <input disabled="disabled" class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
 					                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
 					                            </div>`
                 			})
@@ -1102,7 +1102,7 @@ let ReportConfig = {
                 				//非财务模块的浮动
                 				_this.notMoneyFloatHtml[index] = `<div class="form-group form-inline p-4">
 					                          <label >${item.title.temp_name === null?'':item.title.temp_name}</label>
-					                          <input type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
+					                          <input disabled="disabled" x	x	type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
 					                        </div>`
                 			}
                 			break;
