@@ -120,7 +120,7 @@ public class SendMailUtil {
         msg.setFrom(new InternetAddress(SenderAddress, nick));
         msg.setRecipients(Message.RecipientType.TO,
                 InternetAddress.parse(recipientAddress, false));
-        msg.addRecipients(Message.RecipientType.CC, InternetAddress.parse(SenderAddress));
+//        msg.addRecipients(Message.RecipientType.CC, InternetAddress.parse(SenderAddress));//抄送给自己
         msg.addRecipients(Message.RecipientType.CC, InternetAddress.parse(recipientAddressCC));
         msg.setSubject(title);
         msg.setSentDate(new Date());
