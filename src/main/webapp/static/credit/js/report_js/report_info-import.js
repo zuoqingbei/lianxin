@@ -187,6 +187,7 @@ let Verify = {
                     	console.log(data)
                     	let rows = data.rows;
                     	rows.forEach((item,index)=>{
+                    		//录入名称
                     		if(!item.country || item.country.trim() !== '中国大陆' || item.companyZHNames){
                     			$(Array.from($(".recordName"))[index]).css({"color":"#ccc","cursor":"default"});
                     			$(Array.from($(".recordName"))[index]).removeAttr("data-target")
@@ -194,12 +195,20 @@ let Verify = {
                     			$(Array.from($(".recordName"))[index]).css({"color":"#007bff","cursor":"pointer"});
                     			$(Array.from($(".recordName"))[index]).attr("data-target","#recordingName")
                     		}
-                    		
+                    		//分析
                     		if(item.report_type !== '8' && item.report_type !== '9' && item.report_type !== '10' && item.report_type !== '11') {
                     			$($(".analyze").get(index)).css ({"color":"#ccc","cursor":"default"});
                     			$($(".analyze").get(index)).unbind()
                     		}else {
                     			$($(".analyze").get(index)).css({"color":"#007bff","cursor":"pointer"});
+                    		}
+                    		//翻译
+                    		if(item.report_language === '215' || item.report_language === '213') {
+                    			//报告语言如果是中文简体或者英文
+                    			$($(".translate").get(index)).css({"color":"#ccc","cursor":"default"})
+                    			$($(".translate").get(index)).unbind()
+                    		}else {
+                    			$($(".translate").get(index)).css({"color":"#007bff","cursor":"pointer"});
                     		}
                     	})
                     }
