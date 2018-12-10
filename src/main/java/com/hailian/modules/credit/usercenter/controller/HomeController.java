@@ -458,7 +458,7 @@ public class HomeController extends BaseProjectController {
 		   613	 	英文
 		   614	 	中文繁体*/
 		
-		if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
+		//if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
 		if("214".equals(language)){
 			company.set("sys_language", "614");
 			company.remove("id").save();
