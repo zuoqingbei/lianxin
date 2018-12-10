@@ -388,6 +388,8 @@ let
             fileicon = '/static/credit/imgs/order/JPG.png'
           }else if(filetype === 'pdf') {
             fileicon = '/static/credit/imgs/order/PDF.png'
+          }else if(filetype === 'html') {
+            fileicon = '/static/credit/imgs/order/html.png'
           }
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
