@@ -37,7 +37,9 @@ let OrderDetail = {
         this.processNames = this.row.country === '中国大陆' ?
             ['订单分配', '信息录入', '订单核实', '订单查档', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成']
             : ['订单查档', '订单分配', '信息录入', '订单核实', '信息质检', '分析录入', '分析质检', '翻译录入', '翻译质检', '报告完成', '客户内容已更新', '订单完成'];
-        this.chartColors = ['#1890ff', '#13c2c2', '#2fc25c', '#facc15', '#ef4763', '#8543e0', '#40a9ff', '#36cfc9', '#73d13d', '#ffec3d', '#ff4d4f', '#9254de']
+        this.chartColors = ['#1890ff', '#13c2c2', '#2fc25c', '#facc15', '#ef4763', '#8543e0', '#40a9ff', '#36cfc9', '#73d13d', '#ffec3d', '#ff4d4f', '#9254de'];
+        // 1-基本信息报告,7-REGISTRATION REPORT,8-商业信息报告,9-BUSINESS INFORMATION REPORT,10-信用分析报告,11-CREDIT RISK ANALYSIS REPORT,
+        // 12-102 ROC Chinese,13-102 ROC English-1,14  102 ROC English,15  102红印,16  105,17  107-1,18  107-2,19  117,20  394,21  396,22  注册,
         // 汉语类型[1,8,10],英语类型[7,9,11]
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         this.creditLevel = this.english ? creditLevel_en : creditLevel_cn;
@@ -80,6 +82,9 @@ let OrderDetail = {
             switch (smallModuleType) {
                 // 0-表单
                 case '0':
+                    if (_this.isQuality) {
+                        return;
+                    }
                     const htmlRoc_registration_status = ['', '未有登记', '正在办理成立登记', '登记成立', '已自行注销登记', '已被吊销登记']
                         .reduce(function (prev, cur) {
                             return `${prev}<input type="radio" name="registration_status" >${cur}`
@@ -147,12 +152,6 @@ let OrderDetail = {
                 case '22':
                     this.setTable(item, $wrap, 'lineBar');
                     break;
-                /*
-                                // 24-表格+文本框
-                                case '24':
-                                    this.setTable(item, $wrap, 'textarea');
-                                    break;
-                */
                 // 2-附件
                 case '2':
                     let html = Public.fileConfig(item, this.row);
@@ -160,6 +159,9 @@ let OrderDetail = {
                     break;
                 // 4-流程进度
                 case '4':
+                    if (_this.isQuality) {
+                        return;
+                    }
                     let $ul = this.initProcess();
                     $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
                         if (data.rows) {
@@ -210,7 +212,8 @@ let OrderDetail = {
                 // 8-总体评价，一个对勾列表和两个多行文本框
                 case '8':
                     let $type8_ul = $('<ul class=""></ul>').append(function () {
-                        return ['', '极好', '好', '一般', '较差', '差', '尚无法评估'].reduce(function (prev, cur) {
+                        let list = _this.english ? ['', 'Excellent', 'Good', 'Average', 'Fair', 'Poor', 'Not yet determined'] : ['', '极好', '好', '一般', '较差', '差', '尚无法评估'];
+                        return list.reduce(function (prev, cur) {
                             return `${prev} <li>（<span></span>）${cur}</li>`
                         });
                     });
@@ -224,7 +227,7 @@ let OrderDetail = {
                                 <div class="border multiText m-4 p-2"></div>
                             </div>`);
                     $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
-                        if (data.rows) {
+                        if (data.rows && data.rows.length > 0) {
                             $wrap.find('ul>li').eq(1 + data.rows[0][item.contents[0].column_name]).find('span').text('√')
                                 .parents('ul').siblings('.multiText:eq(0)').text(data.rows[0][item.contents[1].column_name])
                                 .siblings('.multiText').text(data.rows[0][item.contents[2].column_name]);
@@ -321,7 +324,7 @@ let OrderDetail = {
                     });
                     break;
                 default:
-                    console.warn(item.title.temp_name+'没有找到模块类型！');
+                    console.warn(item.title.temp_name + '没有找到模块类型！');
             }
             $(".main .table-content").append($wrap);
         });
@@ -377,33 +380,24 @@ let OrderDetail = {
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         var detailname = this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
-            if (!['基本信息', '流程进度', '质检评分'].includes($(this).text())) {
+            if (!['基本信息', '流程进度', '质检评分', '附件'].includes($(this).text())) {
                 switch (_this.row.quality_type) {
                     case 'entering_quality':
                         $(this).nextAll('.module-content').after(qualitySelectHtml);
                         break;
                     case 'analyze_quality':
+                        // 8/9-商业中/英文报告
                         if (_this.row.report_type === "8" && $(this).text() === '行业分析'
                             || _this.row.report_type === "9" && $(this).text() === 'IndustryAnalyze') {
                             $(this).nextAll('.module-content').after(qualitySelectHtml);
                         }
-                        if (_this.row.report_type === "10" && ($(this).text() === '行业分析' || $(this).text() === '财务分析')
-                                || _this.row.report_type === "11" && ($(this).text() === 'IndustryAnalyze' || $(this).text() === '财务分析')) {
-
-                                if ((_this.row.report_type === "10" || _this.row.report_type === "11") && ($(this).text() === '行业分析' || $(this).text() === '财务分析')) {
-                                    $(this).nextAll('.module-content').after(qualitySelectHtml);
-                                }
-                        }
-                        break;
-                    case 'translate_quality':
+                        // 10/11-信用中/英文报告
                         if (_this.row.report_type === "10" && ($(this).text() === '行业分析' || $(this).text() === '财务分析')
                             || _this.row.report_type === "11" && ($(this).text() === 'IndustryAnalyze' || $(this).text() === '财务分析')) {
-
-                            if ((_this.row.report_type === "10" || _this.row.report_type === "11") && ($(this).text() === '行业分析' || $(this).text() === '财务分析')) {
-                                $(this).nextAll('.module-content').after(qualitySelectHtml);
-                            }
-                            break;
+                            $(this).nextAll('.module-content').after(qualitySelectHtml);
                         }
+                        break;
+                    // 此页面无翻译功能
                 }
             }
         });
