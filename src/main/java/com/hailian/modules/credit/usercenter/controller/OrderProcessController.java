@@ -1005,13 +1005,15 @@ public class OrderProcessController extends BaseProjectController{
 					
 					CreditKpiResult tempModel = new CreditKpiResult();
 		           	KpiService kpiServie = new KpiService();
-		           	boolean isHasKpi_reportUser = false;
-		           	boolean isHasKpi_IQC = false;
-		           	boolean isHasKpi_translateUser = false;
-		           	boolean isHasKpi_analyzeUser = false;
+		           	boolean isHasKpi_reportUser  = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+2).size()==0?false:true;
+		           	boolean isHasKpi_IQC = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+4).size()==0?false:true;
+		           	boolean isHasKpi_translateUser  = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+6).size()==0?false:true;
+		           	boolean isHasKpi_analyzeUser  = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+5).size()==0?false:true;
+		           	if(!(!isHasKpi_reportUser&&!isHasKpi_IQC&&!isHasKpi_translateUser&&!isHasKpi_analyzeUser)) {
+		           		return false;
+		           	}
 		           	//报告员计算逻辑
 		           	if(!StrUtils.isEmpty(reportUser)) {
-		           	    isHasKpi_reportUser = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+2).size()==0?false:true;
 		           		double coefficient = getCoefficient(2, orderId);//报告员绩效系数
 		           		double reportUserKpi = kpiServie.getKpi(2+"",modelForTx)*coefficient;//当前订单的报告员
 		           		System.out.println("报告员绩效:"+reportUserKpi);
@@ -1020,7 +1022,6 @@ public class OrderProcessController extends BaseProjectController{
 		           	}
 		        	//质检员计算逻辑
 		           	if(!StrUtils.isEmpty(IQC)) {
-		           		isHasKpi_IQC = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+4).size()==0?false:true;
 		            	double IQCKpi = kpiServie.getKpi(4+"" ,modelForTx);//当前订单的质检员
 		            	System.out.println("质检员绩效:"+IQCKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", IQC).set("money", IQCKpi).set("role_id", 4);;
@@ -1028,7 +1029,6 @@ public class OrderProcessController extends BaseProjectController{
 		           	}
 		        	//翻译员计算逻辑
 		           	if(!StrUtils.isEmpty(translateUser)) {
-		           		isHasKpi_translateUser = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+6).size()==0?false:true;
 		           		double coefficient = getCoefficient(6, orderId);//翻译绩效系数
 		           		double translateKpi = kpiServie.getKpi(6+"" ,modelForTx)*coefficient;//当前订单的翻译
 		           		System.out.println("翻译员绩效:"+translateKpi);
@@ -1037,14 +1037,13 @@ public class OrderProcessController extends BaseProjectController{
 		           	}
 		           	//分析员计算逻辑
 		           	if(!StrUtils.isEmpty(analyzeUser)) {
-		           		isHasKpi_analyzeUser = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+5).size()==0?false:true;
 		           		double coefficient = getCoefficient(5, orderId);//翻译绩效系数
 		           		double analystKpi = kpiServie.getKpi(5+"" ,modelForTx)*coefficient;//当前订单的分析员
 		           		System.out.println("分析员绩效:"+analystKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", analyzeUser).set("money", analystKpi).set("role_id", 5);;
 		           		tempModel.save();
 		           	}
-				return !isHasKpi_reportUser&&!isHasKpi_IQC&&!isHasKpi_translateUser&&!isHasKpi_analyzeUser;
+				return true;
 			}
 		 });
     	

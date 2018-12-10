@@ -7,7 +7,7 @@ public class FileTypeUtils {
 	// 创建图片类型数组
 	public static String document1[] = { "doc", "docx"};
 	public static String document2[] = { "xls","xlsx"};
-	public static String document3[] = { "pdf"};
+	public static String document3[] = { "pdf","html"};
 	public static boolean checkType(String ext){
 		boolean flag=false;
 		for (int i = 0; i < img.length; i++) {

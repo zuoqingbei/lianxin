@@ -2,6 +2,7 @@ package com.hailian.modules.credit.usercenter.service;
 import java.util.Arrays;
 import java.util.List;
 
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditKpiPrice;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
@@ -36,10 +37,17 @@ public class KpiService {
 		try {
 			if (StrUtils.isEmpty(companyId, price + "", column1, tableName)) { return 0; 	}
 			// 查询对应表中对应字段是否为空
-			String flagStr = Db.queryColumn(
+			List<Object> flagStrList = Db.query(
 					"select " + column1 + " from " + tableName + " where del_flag=0 and company_id=?  ",
-					Arrays.asList(new String[] { companyId }));
-			if (StrUtils.isEmpty(flagStr.trim())) { return 0; }
+					Arrays.asList(new String[] { companyId }).toArray());
+			
+			if (flagStrList==null||flagStrList.size()==0) { return 0; }
+			int count = 0;
+			for (Object flagStr : flagStrList) {
+				if (!StrUtils.isEmpty(((String)flagStr).trim())) count++;
+			}
+			if(count<1) {return 0; }
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
