@@ -1725,6 +1725,7 @@ let ReportConfig = {
     				 },
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
+    					 $("body").mLoading("hide")
     					 $("#save").removeClass("disabled")
     					 if(data.statusCode === 1 && !formIndexEn[index+1]) {
 							 Public.message("success",data.message)

@@ -272,6 +272,7 @@ let ReportConfig = {
 				 }
 				 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
 					 //信用等级
+					 if(temp.rows.length === 0){return}
 					 let name =$(item).next().find("input").attr("name")
 					 $(item).next().find("input").val(temp.rows[0][name])
 					  return;
@@ -1169,6 +1170,7 @@ let ReportConfig = {
     				 },
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
+    					 $("body").mLoading("hide")
     					 $("#save").removeClass("disabled")
     					 if(data.statusCode === 1 && !formIndex[index+1]) {
 							 Public.message("success",data.message)

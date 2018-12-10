@@ -41,8 +41,14 @@ let Filing = {
     },
 
     fileEvent(){
+    	this.fileNum = 0;
+    	let that = this;
+    	$(".close").click(function(){
+    		that.fileNum = 0;
+    	});
       /**文件上传事件 */
-      $(".file-upload").on('change','.uploadFile .file-input',function(){
+      $(".file-upload").on('change','.uploadFile .file-input',function(e){
+    	  that.fileNum = that.fileNum+1;
           /**如果上传成功 */
           let filename = $(this).val().replace("C:\\fakepath\\","");
           let num = filename.split(".").length;
@@ -68,17 +74,17 @@ let Filing = {
             fileicon = '/static/credit/imgs/order/JPG.png'
           }else if(filetype === 'pdf') {
             fileicon = '/static/credit/imgs/order/PDF.png'
-          }else {
-              Public.message("info","不支持上传此种类型文件！")
-              return
-            }
+          }else if(filetype === 'html') {
+            fileicon = '/static/credit/imgs/order/html.png'
+          }
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
           $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-          if($(".uploadFile").length>4) {
+          if($(e.target).parents(".uploadFile").siblings().length>3) {
             return;
           }
-          $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+      
+          $(e.target).parents(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
                                         <input type="file" name="" id="upload_file" value="" class="file-input" />
                                         <div class="over-box">
                                           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
@@ -88,16 +94,17 @@ let Filing = {
       });
 
       /**附件删除 */
-      $(".file-upload").on('click','.uploadFile .close',function(){
-        $(this).parents(".uploadFile").remove()
-        
-        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4']").length<1 ){
-            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-                <input type="file" name="" id="upload_file" value="" class="file-input" />
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-                <p class="mt-2">上传附件</p>
-            </div>`);
-        }
+      $(".file-upload").on('click','.uploadFile .close',function(e){
+	        if($(e.target).parents(".upload-over").length<6 && $(e.target).parents(".upload-over").siblings(".uploadFile.mt-3.mr-4:not(.upload-over)").length<1 ){
+	        	$(e.target).parents(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+	                <input type="file" name="" id="upload_file" value="" class="file-input" />
+	                 <div class="over-box">
+		                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+		                <p class="mt-2">上传附件</p>
+		               </div>
+	            </div>`);
+	        }
+    	  $(this).parents(".uploadFile").remove()
       })
 
     },

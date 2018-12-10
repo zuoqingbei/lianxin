@@ -28,6 +28,7 @@
 	margin:1.25rem;
 	background: #fff;
 	padding-top: 0;
+	overflow:hidden;
 }
 .table-content label{
 	font-size: 1rem;

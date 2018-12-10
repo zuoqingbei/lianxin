@@ -74,11 +74,12 @@ let Filing = {
             fileicon = '/static/credit/imgs/order/JPG.png'
           }else if(filetype === 'pdf') {
             fileicon = '/static/credit/imgs/order/PDF.png'
+          }else if(filetype === 'html') {
+            fileicon = '/static/credit/imgs/order/html.png'
           }
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
           $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-          console.log($(e.target).parents(".uploadFile").siblings().length)
           if($(e.target).parents(".uploadFile").siblings().length>3) {
             return;
           }

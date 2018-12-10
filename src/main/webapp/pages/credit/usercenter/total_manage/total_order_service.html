@@ -81,22 +81,28 @@
             <header class="row justify-content-between">
                 <h3>月订单量趋势图</h3>
                 <div class="">
-                    <label class="control-label mt-2" for="country">国家：</label>
-                    <select id="country" class="search-input w-25 layui-input d-inline-block mr-4" lay-search=""
-                            ay-verify="" name="customId">
-                        <option value="">请选择</option>
-                        <% for(cu in country){ %>
-                        <option value="${cu.detail_id}">${cu.detail_name}</option>
-                        <% } %>
-                    </select>
-                    <label class="control-label mt-2" for="customerId">客户ID：</label>
-                    <select id="customerId" class="search-input  w-25 layui-input d-inline-block mr-4" lay-search=""
-                            ay-verify="" name="customId">
-                        <option value="">请选择</option>
-                        <% for(cu in customer){ %>
-                        <option value="${cu.id}">${cu.name}</option>
-                        <% } %>
-                    </select>
+                    <div style="position: relative;display: inline-block;">
+                        <img src="${BASE_PATH }static/credit/imgs/total_manage/down.png" alt="" style="position: absolute;right: 32px;width: 13px;top: 14px;height: 9px;z-index: 99">
+                        <label class="control-label mt-2" for="country">国家：</label>
+                        <select id="country" class="search-input w-25 layui-input d-inline-block mr-4" lay-search=""
+                                ay-verify="" name="customId">
+                            <option value="">请选择</option>
+                            <% for(cu in country){ %>
+                            <option value="${cu.detail_id}">${cu.detail_name}</option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div style="position: relative;display: inline-block;">
+                        <img src="${BASE_PATH }static/credit/imgs/total_manage/down.png" alt="" style="position: absolute;right: 32px;width: 13px;top: 14px;height: 9px;z-index: 99">
+                        <label class="control-label mt-2" for="customerId">客户ID：</label>
+                        <select id="customerId" class="search-input  w-25 layui-input d-inline-block mr-4" lay-search=""
+                                ay-verify="" name="customId">
+                            <option value="">请选择</option>
+                            <% for(cu in customer){ %>
+                            <option value="${cu.id}">${cu.name}</option>
+                            <% } %>
+                        </select>
+                    </div>
                 </div>
             </header>
             <div class="echartBox" id="ec03_line"></div>

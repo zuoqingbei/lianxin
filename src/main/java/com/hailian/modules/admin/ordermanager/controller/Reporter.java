@@ -95,10 +95,13 @@ public class Reporter implements Comparable<Reporter>{
 		return reporterList.get(0).getReportId();
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "Reporter [reportId=" + reportId + ", finalScore=" + finalScore + ", inDoingOrderNum=" + inDoingOrderNum
-				+ "]";
+		return "Reporter [reportId=" + reportId + ", finalScore=" + finalScore
+				+ ", inDoingOrderNum=" + inDoingOrderNum
+				+ ", finishedOrderNum=" + finishedOrderNum + "]";
 	}
 
 	@Override
