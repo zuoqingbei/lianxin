@@ -500,9 +500,9 @@ public class OrderProcessController extends BaseProjectController{
             CreditOrderInfo model = getModel(CreditOrderInfo.class);
             int orderId = model.get("id");
             //计算绩效
-          //  if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
+            if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
             	 getKpi(model);
-            //}
+            }
            
             PublicUpdateMod(map);
             

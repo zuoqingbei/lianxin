@@ -620,7 +620,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String message = "导入失败,请检查文件内容!";
 		try {
-			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, "8", now);
+			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, userId, now);
 		} catch (Exception e) {
 			renderJson( new ResultType(0, message));
 			e.printStackTrace();
@@ -671,7 +671,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		String userId = getSession().getId();
 		String now = getNow();
 		try {
-			FinanceService.alterFinancialEntryList(entrys, "8", now);
+			FinanceService.alterFinancialEntryList(entrys, userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -695,7 +695,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		String userId = getSession().getId();
 		String now = getNow();
 		try {
-			FinanceService.deleteFinancialEntryList(entryId, "8", now);
+			FinanceService.deleteFinancialEntryList(entryId, userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -729,7 +729,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			entryMap.put("company_id", companyId);
 			entryMap.put("type", type);
 			entrys.add(entryMap);
-			FinanceService.alterFinancialConfig(entrys, type, "8", now);
+			FinanceService.alterFinancialConfig(entrys, type, userId, now);
 			rows = FinanceService.getFinancialConfigList(companyId,type);
 		}
 		renderJson(new Record().set("rows", rows));
@@ -759,7 +759,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			return;
 		}
 		try {
-			FinanceService.alterFinancialConfig(entrys, type, "8", now);
+			FinanceService.alterFinancialConfig(entrys, type, userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -782,7 +782,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		String userId = getSession().getId();
 		String now = getNow();
 		try {
-			FinanceService.deleteFinancialConfig(financialConfId, "8", now);
+			FinanceService.deleteFinancialConfig(financialConfId, userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
