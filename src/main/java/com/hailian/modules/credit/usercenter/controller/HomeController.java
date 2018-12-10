@@ -78,7 +78,16 @@ public class HomeController extends BaseProjectController {
 		setAttr("country", country);
 		List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
 	    setAttr("customer", customerId);
-		render(path+"index.html");
+	  //订单核实数量
+	  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500'").size();
+	  		//订单查档数量
+	  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295'").size();
+	  		//订单信息质检数量
+	  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('298','303','308')").size();
+	  		setAttr("orderhs", orderhs);
+	  		setAttr("ordercd", ordercd);
+	  		setAttr("orderzj", orderzj1);	
+	    render(path+"index.html");
 		
 	}
 	public void allOrder() {
@@ -276,13 +285,14 @@ public class HomeController extends BaseProjectController {
 		SysUser user= SysUser.dao.getUser(this);
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
-		List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
 		//订单核实数量
-		int orderhs=OrderManagerService.service.getOrdersService("292",null,user,null);
+		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500'").size();
 		//订单查档数量
-		int ordercd=OrderManagerService.service.getOrdersService("294",null,user,null);
+		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295'").size();
 		//订单信息质检数量
-		int orderzj1=OrderManagerService.service.getOrdersService("298",null,user,null);
+		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('298','303','308')").size();
+		List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
+		
 		//分析质检
 		int orderzj2=OrderManagerService.service.getOrdersService("303",null,user,null);
 		//翻译质检
@@ -294,7 +304,7 @@ public class HomeController extends BaseProjectController {
 		record.set("companys", companys);
 		record.set("orderhs", orderhs);
 		record.set("ordercd", ordercd);
-		record.set("orderzj", orderzj1+orderzj2+orderzj3);
+		record.set("orderzj", orderzj1);
 		renderJson(record);
 	}
 	@ApiOperation(url = "/credit/front/home/getCountry",httpMethod="post", 
