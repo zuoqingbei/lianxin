@@ -753,6 +753,16 @@ let Filing = {
               	  searchType: "-4",
                 };  
             },  
+            onLoadSuccess:(data)=>{
+            	console.log(data)
+            	let rows = data.rows;
+            	rows.forEach((item,index)=>{
+            		if(item.countryid !== '61' && item.countryid !== '62' && item.countryid !== '92') {
+            			$($(".dl").get(index)).css({"color":"#ccc","cursor":"default"})
+            			$($(".dl").get(index)).removeAttr("data-target")
+            		}
+            	})
+            },
             onCheck:(row)=>{
             	console.log(row)
             	this.numarr.push(row.id)
