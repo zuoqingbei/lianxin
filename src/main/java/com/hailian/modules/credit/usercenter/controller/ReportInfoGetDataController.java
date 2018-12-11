@@ -415,8 +415,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   				}
   		  }else if(type.equals("analyze_quality")){
   			  if (deal.equals("1")) {//1 完成 2修改
-  					status="306";
-  				}else {
+  				  //分析完成，判断订单报告语言，213，215，没有翻译，质检完成则发送报告邮件
+  				 CreditOrderInfo info=CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?",orderId);
+  				 if (info.get("report_language").equals("213")||info.get("report_language").equals("215")) {
+  					status="311";
+				}else{
+					 status="306";
+				} 
+  			}else {
   					status="301";
   				} 
   		  }
