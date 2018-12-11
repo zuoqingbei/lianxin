@@ -10,6 +10,10 @@ public class MainReport {
     public void build(int orderId,Integer userid){
         CreditOrderInfo order =  CreditOrderInfo.dao.findById(orderId);
         String reportType = order.getStr("report_type");
+        //基本报告类型
+        if("1".equals(reportType)){
+            BaseInfoZh.reportTable(order,userid);
+        }
         //商业报告中文版
         if("8".equals(reportType)){
             BusinessZh.reportTable(order,userid);
