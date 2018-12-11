@@ -178,21 +178,13 @@ public class FinanceService {
 				}else {
 					String itemValue = entry.get("item_name");
 					if(StringUtils.isEmpty(itemValue)) {continue;}
-					String targetValue = TransApi.Trans(itemValue,"en");
+					String targetValue = TransApi.Trans(itemValue,"en");//百度云英文翻译
 					entry.put("item_name_en", targetValue);
 				}
 			}
 		}
 		return entryList;
 	}
-	/*public static List<CreditCompanyFinancialEntry> getFinancialEntryList(String financialConfId ) {
-		if(StrUtils.isEmpty(financialConfId) ) {return new ArrayList<>();}
-		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
-		List<CreditCompanyFinancialEntry> entryList
-				= model.find("select * from credit_company_financial_entry where conf_id=?  and del_flag=0 order by sort_no,id ",
-				  Arrays.asList(new String[] {financialConfId}).toArray());
-		return entryList;
-	}*/
 	/**. 
 	 * 获取财务配置信息
 	 * @param type 
