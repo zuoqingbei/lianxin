@@ -1,31 +1,7 @@
 package com.hailian.modules.admin.ordermanager.model;
 
-import java.sql.Connection;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.feizhou.swagger.utils.StringUtil;
-import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
-import com.hailian.modules.credit.pricemanager.model.ReportPrice;
-import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.credit.common.controller.ReportTimeController;
-import com.hailian.modules.credit.common.model.ReportTimeModel;
-import com.hailian.modules.credit.common.model.ReportTypeModel;
-import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
-import com.hailian.system.user.SysUser;
-import com.hailian.util.StrUtils;
-import com.jfinal.plugin.activerecord.Config;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Model;
-import com.jfinal.plugin.activerecord.Page;
 
 /**
  * 

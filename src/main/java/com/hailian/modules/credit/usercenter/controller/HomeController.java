@@ -462,11 +462,31 @@ public class HomeController extends BaseProjectController {
 		if("214".equals(language)){
 			company.set("sys_language", "614");
 			company.remove("id").save();
-			
+			if(infoLanguage.equals("612")) {
+				company.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
+				company.remove("id").save();
+				companInfoId = company.get("id");
+			}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
+				company.set("sys_language", "613");
+				company.remove("id").save();
+			    companInfoId = company.get("id");
+			}else if(infoLanguage.equals("614")) {
+				companInfoId = company.get("id");//当报告语言为214时默认公司id
+			}
 		}else if("215".equals(language)){
 			company.set("sys_language", "613");
 			company.remove("id").save();
-			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
+			if(infoLanguage.equals("612")) {
+				company.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
+				company.remove("id").save();
+				companInfoId = company.get("id");
+			}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
+			    companInfoId = company.get("id");
+			}else if(infoLanguage.equals("614")) {
+				company.set("sys_language", "614"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
+				company.remove("id").save();
+				companInfoId = company.get("id");//当报告语言为214时默认公司id
+			}
 		}else if("216".equals(language)){
 			company.set("sys_language", "612");
 			company.remove("id").save();
@@ -474,6 +494,7 @@ public class HomeController extends BaseProjectController {
 			company.set("sys_language", "613");
 			company.remove("id").save();
 			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
+			if(infoLanguage.equals("614")) { company.set("sys_language", "614"); company.remove("id").save();companInfoId = company.get("id");}
 		}else if("217".equals(language)){
 			company.set("sys_language", "614");
 			company.remove("id").save();
@@ -481,10 +502,13 @@ public class HomeController extends BaseProjectController {
 			company.set("sys_language", "613");
 			company.remove("id").save();
 			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
+			if(infoLanguage.equals("612")) { company.set("sys_language", "612"); company.remove("id").save();companInfoId = company.get("id");}
 		}else if("213".equals(language)){
 			company.set("sys_language", "612");
 			company.remove("id").save();
 			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
+			if(infoLanguage.equals("613")) { company.set("sys_language", "613"); company.remove("id").save();  companInfoId = company.get("id");}
+			if(infoLanguage.equals("614")) { company.set("sys_language", "614"); company.remove("id").save();  companInfoId = company.get("id");}
 		}
 		
 		CreditOrderInfo order = new CreditOrderInfo();
