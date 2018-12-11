@@ -71,10 +71,10 @@ public class NoticeModel extends BaseProjectModel<NoticeModel> {
 					sql.append("and t2.read_unread = ? ");
 					params.add(status);//传入的参数
 				}
-				if(!c.isAdmin(c.getSessionUser())){
+				/*if(!c.isAdmin(c.getSessionUser())){
 					sql.append(" and t.create_by=? ");
 					params.add(userid);//传入的参数
-				}
+				}*/
 				if(StringUtil.isNotEmpty(userid+"")){
 					sql.append(" and t2.user_id=? ");
 					params.add(userid);//传入的参数
