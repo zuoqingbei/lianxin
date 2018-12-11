@@ -23,9 +23,10 @@ import java.util.*;
  * Created by Thinkpad on 2018/11/17.
  */
 public class BusinessZh {
-
-    public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
-    public static final int serverPort = Config.getToInt("searver_port");//ftp端口 默认21
+    //ftp文件服务器 ip
+    public static final String ip = Config.getStr("ftp_ip");
+    //ftp端口 9980
+    public static final int serverPort = Config.getToInt("searver_port");
 
     /**
      * 生成商业报告
@@ -297,8 +298,9 @@ public class BusinessZh {
             fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
             fileList.add(fileMap);
             try {
-                String email = customInfo.getStr("email");
-                new SendMailUtil(email, "", "商业信息报告", "商业信息报告", fileList).sendEmail();
+                //String email = customInfo.getStr("email");
+                String email = "hu_cheng86@126.com";
+                new SendMailUtil(email, "", "商业信息报告", "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -400,32 +402,47 @@ public class BusinessZh {
      */
     public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf) {
         ReportInfoGetDataController reportInfoGetDataController = new ReportInfoGetDataController();
-        String profSumup = statementsConf.getInt("profitablity_sumup") + "";
+        String profSumup = getIntToString(statementsConf.getInt("profitablity_sumup"));
         String profDetail = statementsConf.getStr("profitablity_detail");
-        String liquSumup = statementsConf.getInt("liquidity_sumup") + "";
+        String liquSumup = getIntToString(statementsConf.getInt("liquidity_sumup"));
         String liquDetail = statementsConf.getStr("liquidity_detail");
-        String leverSumup = statementsConf.getInt("leverage_sumup") + "";
+        String leverSumup = getIntToString(statementsConf.getInt("leverage_sumup"));
         String leverDetail = statementsConf.getStr("leverage_detail");
-        String overSumup = statementsConf.getInt("overall_financial_condition_sumup") + "";
+        String overSumup = getIntToString(statementsConf.getInt("overall_financial_condition_sumup"));
         String overDetail = statementsConf.getStr("overall_financial_condition_detail");
 
+        System.out.println(profSumup == null);
+
         StringBuffer str = new StringBuffer();
-        str.append("盈利能力：" + reportInfoGetDataController.dictIdToString(profSumup));
+        str.append("盈利能力：" + ("".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
         str.append("\n");
         str.append(profDetail);
         str.append("\n");
-        str.append("周转能力：" + reportInfoGetDataController.dictIdToString(liquSumup));
+        str.append("周转能力：" + ("".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup) : ""));
         str.append("\n");
         str.append(liquDetail);
         str.append("\n");
-        str.append("融资能力：" + reportInfoGetDataController.dictIdToString(leverSumup));
+        str.append("融资能力：" + ("".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup) : ""));
         str.append("\n");
         str.append(leverDetail);
         str.append("\n");
-        str.append("目标公司的总体财务状况：" + reportInfoGetDataController.dictIdToString(overSumup));
+        str.append("目标公司的总体财务状况：" + ("".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup) : ""));
         str.append("\n");
         str.append(overDetail);
         return str.toString();
+    }
+
+    /**
+     * Integer 转 String
+     * @param intValue
+     * @return
+     */
+    public static String getIntToString(Integer intValue){
+        if(intValue!=null){
+            return intValue.toString();
+        }else{
+            return "";
+        }
     }
 
 }
