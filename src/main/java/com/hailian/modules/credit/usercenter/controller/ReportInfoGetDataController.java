@@ -357,9 +357,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       history.set("update_by", userId);
       history.set("update_date", now);
       history.save();
-      
+      List<CreditQualityOpintion> opintion2=new ArrayList<CreditQualityOpintion>();
       if (StringUtils.isBlank(update)) {//查询或新增
-    		List<CreditQualityOpintion> opintion2=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?",orderId,type);
+    	  opintion2	=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?",orderId,type);
           if (opintion2.size()<=0) {
         	//如果根据订单id 与质检类型 查询为空 则新增
 			  CreditQualityOpintion model= new CreditQualityOpintion();
@@ -374,7 +374,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			   model.set("update_by", userId);
 			   model.set("update_date", now);
 		       model.save();
-		       renderJson(record.set("rows", model).set("total", null));
+		       opintion2.add(model);
+		       renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
 		   }else {
 			//查询
 		   renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
@@ -392,8 +393,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		   model.set("update_by", userId);
 		   model.set("update_date", now);
 		   model.set("id", id);
-    	 model.update();
-    	  renderJson(record.set("rows", model).set("total", null));
+    	  model.update();
+    	  opintion2.add(model);
+    	  renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
       }
       if (StringUtils.isNotBlank(submit)) {
     	  AgentPriceModel agentPrice=new AgentPriceModel();
