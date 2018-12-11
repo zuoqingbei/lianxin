@@ -4,18 +4,32 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.system.dict.DictCache;
 import com.hailian.util.StrUtils;
+import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.sun.star.uno.RuntimeException;
 
 public class FinanceService {
+	/**
+	 * 财务字典中文版到英文版的类型直接的映射
+	 */
+	 public final static Map<Integer,Integer> ZH_TO_EN_MAPPING = new HashMap<>();
+	 static {
+		 ZH_TO_EN_MAPPING.put(1, 2);
+		 ZH_TO_EN_MAPPING.put(2, 2);
+		 ZH_TO_EN_MAPPING.put(3, 3);
+	 }
 	/**
 	 * 增加或者修改财务配置信息(包含在实体表里克隆一份默认的)
 	 * @param dataJson
@@ -142,16 +156,44 @@ public class FinanceService {
 	
 	/**
 	 * 获取财务实体表信息
+ 	 *@author  lzg
+	 * @param  String financialConfId,
+	 * @param type 
 	 */
-	public static List<CreditCompanyFinancialEntry> getFinancialEntryList(String financialConfId ) {
+	public static List<CreditCompanyFinancialEntry> getFinancialEntryList(String financialConfId, Integer type ) {
+		Integer realType = ZH_TO_EN_MAPPING.get(type);
+		if(StrUtils.isEmpty(financialConfId)||realType==null) {return new ArrayList<>();}
 		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
-		List<CreditCompanyFinancialEntry> list
+		List<CreditCompanyFinancialEntry> entryList
 				= model.find("select * from credit_company_financial_entry where conf_id=?  and del_flag=0 order by sort_no,id ",
 				  Arrays.asList(new String[] {financialConfId}).toArray());
-		return list;
+		//获取当前财务对应的英文版字典
+		List<CreditCompanyFinancialDict> englishDictList = DictCache.getFinancialDictMap().get(realType);
+		if(englishDictList!=null) {
+			int index = 0;
+			for (CreditCompanyFinancialEntry  entry : entryList) {
+				if(entry.getInt("is_default")==1) {//如果该条实体是默认选项
+					String otherLanguageItemValue = englishDictList.get(index).get("item_name");index++;
+					entry.put("item_name_en", otherLanguageItemValue);
+				}else {
+					String itemValue = entry.get("item_name");
+					if(StringUtils.isEmpty(itemValue)) {continue;}
+					String targetValue = TransApi.Trans(itemValue,"en");
+					entry.put("item_name_en", targetValue);
+				}
+			}
+		}
+		return entryList;
 	}
-	
-	/**
+	/*public static List<CreditCompanyFinancialEntry> getFinancialEntryList(String financialConfId ) {
+		if(StrUtils.isEmpty(financialConfId) ) {return new ArrayList<>();}
+		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
+		List<CreditCompanyFinancialEntry> entryList
+				= model.find("select * from credit_company_financial_entry where conf_id=?  and del_flag=0 order by sort_no,id ",
+				  Arrays.asList(new String[] {financialConfId}).toArray());
+		return entryList;
+	}*/
+	/**. 
 	 * 获取财务配置信息
 	 * @param type 
 	 */
