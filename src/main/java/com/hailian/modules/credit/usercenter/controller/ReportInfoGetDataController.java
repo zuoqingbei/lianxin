@@ -595,11 +595,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      */
     public void getFinancialEntrys() {
     	String financialConfId = getPara("ficConf_id");
+    	String reportType = getPara("report_type");
     	if(StrUtils.isEmpty(financialConfId)) {
-    		 renderJson(new ResultType(0, "获取财务信息失败,缺少ficConf_id!"));
+    		 renderJson(new ResultType(0, "获取财务信息失败,需要ficConf_id,report_type这两个参数!"));
 			 return;
     	}
-    	List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId);
+    	Integer type = getFinanceDictByReportType(reportType);
+		if(type==null) { renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!")); return;}
+    	List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId,type);
     	renderJson(new Record().set("rows", row).set("total", row==null?0:row.size()));
     }
     
@@ -798,7 +801,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		String now = getNow();
 		try {
 			FinanceService.deleteFinancialConfig(financialConfId, userId, now);
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
 			return;
