@@ -8,6 +8,7 @@ import com.deepoove.poi.data.style.Style;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.*;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
@@ -68,12 +69,13 @@ public class BusinessZh {
             String key = crmc.getStr("word_key");
             String tableType = crmc.getStr("word_table_type");
 
-            List<CreditCompanyFinancialEntry>  finDataRows = null;
+            //List<CreditCompanyFinancialEntry>  finDataRows = null;
             //财务
-            if("10".equals(moduleType)){
+            //if("10".equals(moduleType)){
                 //取数据
-                finDataRows = FinanceService.getFinancialEntryList("1");
-            }
+            //    Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+                //finDataRows = FinanceService.getFinancialEntryList("1");
+            //}
             //无url的跳过取数
             if (source == null || "".equals(source)) {
                 continue;
@@ -318,7 +320,8 @@ public class BusinessZh {
     public static MiniTableRenderData financial(String reportType,String companyId,String sysLanguage,String financialConfId) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //取数据
-        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId);
+        Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId,type);
         int j = 0;
         Integer old = null;
         for (CreditCompanyFinancialEntry ccf : finDataRows) {
