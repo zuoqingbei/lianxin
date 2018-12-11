@@ -235,12 +235,17 @@ public class NoticeController extends BaseProjectController {
 	 */
 	public void getNoticenum(){
 		Integer userid = getSessionUser().getUserid();
-		String sql="select * from credit_notice n "
-				+ " LEFT JOIN credit_notice_log l on n.id=l.notice_id"
-				+ " where l.user_id='"+userid+"' and l.read_unread='1'";
-	List<NoticeModel> list=	NoticeModel.dao.find(sql);
+		if (userid!=null) {
+			String sql="select * from credit_notice n "
+					+ " LEFT JOIN credit_notice_log l on n.id=l.notice_id"
+					+ " where l.user_id='"+userid+"' and l.read_unread='1'";
+		List<NoticeModel> list=	NoticeModel.dao.find(sql);
+			
+				renderJson(list.size());
+		}else {
+			render("未获取到当前登录人");
+		}
 		
-			renderJson(list.size());
 			
 	}
 

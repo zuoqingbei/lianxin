@@ -67,7 +67,7 @@ public class MailService {
             if(StringUtils.isNotBlank(mailaddr)){
                 String title="New Order<br>";
                 String content="Dear Sir/Madam,Good day!<br>"
-                        +"We would like to place an order for a complete credit report on the following company:"
+                        +"We would like to place an order for a complete credit report on the following company:<br>"
                         +"Speed:" +order.get("reportSpeed")+" <br>"
                         +"Ref No.:"+order.get("reference_num")+" <br>"
                         +"Company name:"+order.get("right_company_name_en")+"<br> "

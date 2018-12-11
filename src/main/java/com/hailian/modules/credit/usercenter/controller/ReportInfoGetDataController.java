@@ -357,10 +357,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       history.set("update_by", userId);
       history.set("update_date", now);
       history.save();
-      
-      if (StringUtils.isBlank(update)) {
-          if (StringUtils.isBlank(id)) {
-			//id为空新增
+      List<CreditQualityOpintion> opintion2=new ArrayList<CreditQualityOpintion>();
+      if (StringUtils.isBlank(update)) {//查询或新增
+    	  opintion2	=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?",orderId,type);
+          if (opintion2.size()<=0) {
+        	//如果根据订单id 与质检类型 查询为空 则新增
 			  CreditQualityOpintion model= new CreditQualityOpintion();
 			   model.set("quality_opinion", opintion);
 			   model.set("quality_type", type);
@@ -373,10 +374,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			   model.set("update_by", userId);
 			   model.set("update_date", now);
 		       model.save();
-		       renderJson(record.set("rows", model).set("total", null));
+		       opintion2.add(model);
+		       renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
 		   }else {
 			//查询
-			List<CreditQualityOpintion> opintion2=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
 		   renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
 		    }
       }else{
@@ -392,8 +393,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		   model.set("update_by", userId);
 		   model.set("update_date", now);
 		   model.set("id", id);
-    	 model.update();
-    	  renderJson(record.set("rows", model).set("total", null));
+    	  model.update();
+    	  opintion2.add(model);
+    	  renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
       }
       if (StringUtils.isNotBlank(submit)) {
     	  AgentPriceModel agentPrice=new AgentPriceModel();
@@ -413,8 +415,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   				}
   		  }else if(type.equals("analyze_quality")){
   			  if (deal.equals("1")) {//1 完成 2修改
-  					status="306";
-  				}else {
+  				  //分析完成，判断订单报告语言，213，215，没有翻译，质检完成则发送报告邮件
+  				 CreditOrderInfo info=CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?",orderId);
+  				 if (info.get("report_language").equals("213")||info.get("report_language").equals("215")) {
+  					status="311";
+				}else{
+					 status="306";
+				} 
+  			}else {
   					status="301";
   				} 
   		  }
@@ -587,11 +595,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      */
     public void getFinancialEntrys() {
     	String financialConfId = getPara("ficConf_id");
+    	String reportType = getPara("report_type");
     	if(StrUtils.isEmpty(financialConfId)) {
-    		 renderJson(new ResultType(0, "获取财务信息失败,缺少ficConf_id!"));
+    		 renderJson(new ResultType(0, "获取财务信息失败,需要ficConf_id,report_type这两个参数!"));
 			 return;
     	}
-    	List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId);
+    	Integer type = getFinanceDictByReportType(reportType);
+		if(type==null) { renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!")); return;}
+    	List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId,type);
     	renderJson(new Record().set("rows", row).set("total", row==null?0:row.size()));
     }
     
@@ -790,7 +801,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		String now = getNow();
 		try {
 			FinanceService.deleteFinancialConfig(financialConfId, userId, now);
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
 			return;

@@ -1,9 +1,6 @@
 package com.hailian.util.http;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
@@ -26,8 +23,10 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.companychangeitem.model.ChangeitemModel;
 import com.hailian.modules.credit.companychangeitem.service.ChangeitemService;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
+import com.hailian.util.http.showapi.ShowApiRequest;
 import com.jfinal.plugin.activerecord.Db;
 import net.sf.json.JSONArray;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -85,15 +84,28 @@ public class HttpCrawler {
         crawler.getCustomsUrl("海尔集团",postValue,verifyCode);*/
 		
 		//2. 商务部- 解析完成
-		/*CookieStore cookieStore = crawler.getMofcomVerifyCode("mofcom_1");
+        /*Map<String,Object> result = crawler.getMofcomVerifyCode("mofcom_1");
+        CookieStore cookieStore = (CookieStore)result.get("cookie");
+        String base64 = (String)result.get("code");
 		String verifyCode = null;//定义验证码变量
- 		Scanner in = new Scanner(System.in);
- 		verifyCode = in.nextLine();
-        in.close();
-        crawler.getMofcomUrl("海尔集团", cookieStore, verifyCode);*/
+        verifyCode = new ShowApiRequest("http://route.showapi.com/184-5","79579","d99c5e196505400084595741668077cd")
+                .addTextPara("img_base64",base64)
+                .addTextPara("typeId","14")
+                .addTextPara("convert_to_jpg","0")
+                .addTextPara("needMorePrecise","0")
+                .post();
+
+        JSONObject jsonObject = (JSONObject)JSONObject.parse(verifyCode);
+        JSONObject jsonObj = (JSONObject)jsonObject.get("showapi_res_body");
+        String code = (String)jsonObj.get("Result");
+        System.out.println(code);
+        if(code!=null){
+            //crawler.getMofcomUrl("海尔集团", cookieStore, code);
+        }*/
+
 		
 		//3. 香港查册网 - 完成解析
-		crawler.getIcrisUrl("海尔集团有限公司","",null);
+		//crawler.getIcrisUrl("海尔集团有限公司","",null);
 		
 		//4.全国法院被执行人信息
         //HashMap<String,Object> map = crawler.getCourtVerifyCode();
@@ -314,23 +326,40 @@ public class HttpCrawler {
 	/**
 	 * 2.1 爬取商务部业务系统网站接口
 	 */
-	public CookieStore getMofcomVerifyCode(String identify){
+	public Map<String,Object> getMofcomVerifyCode(String identify){
+        Map<String,Object> result = new HashMap<>();
 		CookieStore cookieStore = getCookie("http://iecms.mofcom.gov.cn/corpLogin.html");
 		if(null != cookieStore){
-			verifyCodeDownload("http://iecms.mofcom.gov.cn/IdentifyingCode",cookieStore,identify);
-		}
-		return cookieStore;
+			String code = verifyCodeDownload("http://iecms.mofcom.gov.cn/IdentifyingCode",cookieStore,identify);
+            result.put("code",code);
+        }
+        result.put("cookie",cookieStore);
+		return result;
 	}
 
 
     /**
      * 2.2 爬取商务部业务系统网站
-     * @param key
-     * @param cookieStore
-     * @param verifyCode
+     * @param company 公司名称
      * @return
      */
-	public Map<String,String> getMofcomUrl(String key, CookieStore cookieStore, String verifyCode) {
+	public Map<String,String> getMofcomUrl(String company) {
+        Map<String,Object> verifyCode1 = getMofcomVerifyCode("mofcom_1");
+        CookieStore cookieStore = (CookieStore)verifyCode1.get("cookie");
+        String base64 = (String)verifyCode1.get("code");
+        String apiResult = null;//定义验证码变量
+        //调用"万维易源"图形验证码解析接口
+        apiResult = new ShowApiRequest("http://route.showapi.com/184-5","79579","d99c5e196505400084595741668077cd")
+                .addTextPara("img_base64",base64)
+                .addTextPara("typeId","14")
+                .addTextPara("convert_to_jpg","0")
+                .addTextPara("needMorePrecise","0")
+                .post();
+
+        JSONObject jsonObject = (JSONObject)JSONObject.parse(apiResult);
+        JSONObject jsonObj = (JSONObject)jsonObject.get("showapi_res_body");
+        String verifyCode = (String)jsonObj.get("Result");
+
         Map<String, String> result = new HashMap<String,String>();
 		String html = "";
 		if (cookieStore != null) {
@@ -347,7 +376,7 @@ public class HttpCrawler {
 			postData.add(new BasicNameValuePair("submitmode", ""));
 			postData.add(new BasicNameValuePair("submitname", ""));
 			postData.add(new BasicNameValuePair("corpCode", ""));
-			postData.add(new BasicNameValuePair("corpNaCn", key));
+			postData.add(new BasicNameValuePair("corpNaCn", company));
 			postData.add(new BasicNameValuePair("searcc", "查  询"));
 			postData.add(new BasicNameValuePair("scCode", ""));
 			postData.add(new BasicNameValuePair("identifyingCode", verifyCode));
@@ -850,7 +879,7 @@ public class HttpCrawler {
 	 * @param cookieStore 附带的cookie信息
 	 * @param identify 自定义标签
 	 */
-	public static void verifyCodeDownload(String codeUrl,CookieStore cookieStore,String identify) {
+	public static String verifyCodeDownload(String codeUrl,CookieStore cookieStore,String identify) {
         //实例化httpclient
         HttpClient client = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
         //验证码get
@@ -864,6 +893,7 @@ public class HttpCrawler {
             String verifyCodePath = creatVerifyCodeDir(identify);
             fileOutputStream = new FileOutputStream(new File(verifyCodePath));
             response.getEntity().writeTo(fileOutputStream);
+            return getImgBase64(verifyCodePath);
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -877,6 +907,7 @@ public class HttpCrawler {
                 }
             }
         }
+        return null;
     }
 
     /**
@@ -929,8 +960,27 @@ public class HttpCrawler {
             throw new RuntimeException(ex);
         }
     }
-	
-	
+
+    /**
+     * 将图片转换成Base64编码
+     * @param imgFile 待处理图片
+     * @return
+     */
+    public static String getImgBase64(String imgFile) {
+        //将图片文件转化为字节数组字符串，并对其进行Base64编码处理
+        InputStream in = null;
+        byte[] data = null;
+        //读取图片字节数组
+        try {
+            in = new FileInputStream(imgFile);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new String(Base64.encodeBase64(data));
+    }
 	
 	public void test() {
 		//address = system.args[1];//获得命令行第二个参数 接下来会用到

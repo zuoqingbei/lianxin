@@ -912,8 +912,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" u3.realname AS analyzeUser,");
 			selectSql.append(" u4.name AS customId, ");
 			selectSql.append(" c1.id AS company_id_en, ");
-			selectSql.append(" c2.id AS company_id_fan, ");
-			selectSql.append(" q.id AS qid ");
+			selectSql.append(" c2.id AS company_id_fan ");
 			fromSql.append(" FROM credit_order_info c ");
 			fromSql.append(" LEFT JOIN credit_country s1 ON c.country = s1.id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
@@ -936,8 +935,6 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s8 ON c.agent_category = s8.detail_id ");//地区
 			//获取文件信息
 			fromSql.append(" LEFT JOIN credit_upload_file u5 ON u5.business_type = c.status and u5.business_id = c.num ");//文件表关联
-			//查询质检
-			fromSql.append(" LEFT JOIN credit_quality_opintion q ON q.order_id = c.id ");//质检意见id
             fromSql.append(" where c.del_flag = 0 ");
 			//权限语句
 			StringBuffer authority = new StringBuffer();
@@ -979,7 +976,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
 				//291为订单分配,293为信息录入，292客户确认 595为系统查询中(爬虫中)
-				fromSql.append(" and status in ('291','292','293','294','296','595','694','301','306') ");
+				fromSql.append(" and status in ('291','292','293','296','595','694','301','306') ");
 				//权限归属:报告员,分析员,翻译员
 				authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.translate_user= "+userId+")");
 				break;

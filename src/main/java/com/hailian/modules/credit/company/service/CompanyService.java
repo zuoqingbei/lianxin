@@ -9,7 +9,9 @@ import org.apache.commons.lang.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.alibaba.fastjson.JSON;
 import com.hailian.component.base.BaseProjectController;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyCourtannouncement;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyCourtnotice;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
@@ -178,10 +180,11 @@ public class CompanyService {
 						JSONObject partner = (JSONObject)partners.get(i);
 						String name = partner.getString("StockName");//股东
 						String StockPercent = partner.getString("StockPercent");//出资比例
+						String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
 						String ShouldCapi = partner.getString("ShouldCapi");//出资金额
 						CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
 						shareholderModel.set("name", name);
-						shareholderModel.set("money", StockPercent);
+						shareholderModel.set("money", StockPercentEd);
 						shareholderModel.set("contribution", ShouldCapi);
 						shareholderModel.set("company_id", companyId);
 						shareholderModel.set("sys_language", sys_language);
@@ -248,7 +251,7 @@ public class CompanyService {
 				}
 				
 			}
-			//enterpriseGrabOther(companyId,companyName,sys_language);//抓取企查查裁判文书，法院公告，开庭公告信息数据并保存
+			enterpriseGrabOther(companyId,companyName,sys_language);//抓取企查查裁判文书，法院公告，开庭公告信息数据并保存
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -373,6 +376,29 @@ public class CompanyService {
 			if(CollectionUtils.isNotEmpty(list)){
 				Db.batchSave(list, list.size());
 			}
+		}
+		JSONObject brandandpatent = HttpTest.getBrandandpatent(companyName,"");//企业图标
+		String brandandpatentstatus = brandandpatent.getString("Status");
+		if(brandandpatentstatus.equals("200")){
+			JSONObject Paging = brandandpatent.getJSONObject("Paging");
+			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
+			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
+			int totalpage=1;
+			if(TotalRecords%PageSize==0){
+		           totalpage=TotalRecords/PageSize;
+			}else{
+		           totalpage=TotalRecords/PageSize+1;
+			}
+			CreditCompanyBrandandpatent.dao.deleteBycomIdAndLanguage(companyId, sys_language);//
+			for(int i=1;i<=totalpage;i++){
+				JSONObject brandandpatentjson = HttpTest.getBrandandpatent(companyName,i+"");//
+				JSONArray jsonArray = brandandpatentjson.getJSONArray("Result");
+				if(jsonArray !=null && jsonArray.size()>0){
+					List<CreditCompanyBrandandpatent>  list= JSON.parseArray(jsonArray.toString(), CreditCompanyBrandandpatent.class);
+					Db.batchSave(list, list.size());
+			    }
+			}
+			
 		}
 	}
 }

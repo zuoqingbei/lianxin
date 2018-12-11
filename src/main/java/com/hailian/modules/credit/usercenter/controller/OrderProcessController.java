@@ -516,14 +516,14 @@ public class OrderProcessController extends BaseProjectController{
             	String companyId = model.findById(orderId).get("company_id")+"";
                 new CompanyService().enterpriseGrab(companyId,getPara("model.company_by_report"),"612");
                 //调用香港查册网
-                //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
+                HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
                 //爬虫完毕更新状态
                 CreditOrderInfo model2 = new CreditOrderInfo(); model2.set("id", orderId).set("status", 694);  model2.update();
             }
             //订单完成
-            if("314".equals(code)){
-                new MainReport().build(orderId,getSessionUser().getUserid());
-            }
+            //if("314".equals(code)){
+            //    new MainReport().build(orderId,getSessionUser().getUserid());
+            //}
             
             renderJson(new ResultType());
             return new ResultType();
