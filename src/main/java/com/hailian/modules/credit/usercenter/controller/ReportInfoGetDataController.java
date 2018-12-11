@@ -358,9 +358,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
       history.set("update_date", now);
       history.save();
       
-      if (StringUtils.isBlank(update)) {
-          if (StringUtils.isBlank(id)) {
-			//id为空新增
+      if (StringUtils.isBlank(update)) {//查询或新增
+    		List<CreditQualityOpintion> opintion2=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?",orderId,type);
+          if (opintion2.size()<=0) {
+        	//如果根据订单id 与质检类型 查询为空 则新增
 			  CreditQualityOpintion model= new CreditQualityOpintion();
 			   model.set("quality_opinion", opintion);
 			   model.set("quality_type", type);
@@ -376,7 +377,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		       renderJson(record.set("rows", model).set("total", null));
 		   }else {
 			//查询
-			List<CreditQualityOpintion> opintion2=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where  id=?  and order_id=? and quality_type=?",id,orderId,type);
 		   renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
 		    }
       }else{
