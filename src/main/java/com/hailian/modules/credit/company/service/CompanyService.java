@@ -1,5 +1,6 @@
 package com.hailian.modules.credit.company.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,15 +127,18 @@ public class CompanyService {
 				companyinfoModel.set("register_codes", CreditCode);
 				companyinfoModel.set("principal", OperName);
 				companyinfoModel.set("registered_capital", RegistCapi);
-				int indexOf = RegistCapi.indexOf("万元人民币");
 				if(RegistCapi.indexOf("万元人民币") !=-1){
-					String replace = RegistCapi.replace("万元人民币", "0000");
-					companyinfoModel.set("registered_capital", replace);
+					String replace = RegistCapi.replace("万元人民币", "");
+					BigDecimal a = new BigDecimal(replace);
+					BigDecimal b = new BigDecimal("10000");
+					companyinfoModel.set("registered_capital", a.multiply(b).toString());
 					companyinfoModel.set("currency","274");
 				}
 				if(RegistCapi.indexOf("万美元") !=-1){
-					String replace = RegistCapi.replace("万美元", "0000");
-					companyinfoModel.set("registered_capital", replace);
+					String replace = RegistCapi.replace("万美元", "");
+					BigDecimal a = new BigDecimal(replace);
+					BigDecimal b = new BigDecimal("10000");
+					companyinfoModel.set("registered_capital", a.multiply(b).toString());
 					companyinfoModel.set("currency","267");
 				}
 				
