@@ -395,6 +395,10 @@ public class CompanyService {
 				JSONArray jsonArray = brandandpatentjson.getJSONArray("Result");
 				if(jsonArray !=null && jsonArray.size()>0){
 					List<CreditCompanyBrandandpatent>  list= JSON.parseArray(jsonArray.toString(), CreditCompanyBrandandpatent.class);
+					for(CreditCompanyBrandandpatent model:list){
+						model.set("company_id", companyId);
+						model.set("sys_language", sys_language);
+					}
 					Db.batchSave(list, list.size());
 			    }
 			}

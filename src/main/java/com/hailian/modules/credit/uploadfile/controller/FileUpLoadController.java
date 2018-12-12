@@ -80,11 +80,11 @@ public class FileUpLoadController extends BaseProjectController {
 					String pdf_FTPfileName="";
 					ftpfileList.add(uploadFile.getFile());
 					File pdf=null;
-					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
+					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext) && !ext.equalsIgnoreCase("html")){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
 						pdf = Office2PDF.toPdf(uploadFile);
 						pdf_FTPfileName=now+"."+"pdf";
 						ftpfileList.add(pdf);
-					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
+					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext) || ext.equalsIgnoreCase("html")){
 						pdf_FTPfileName=FTPfileName;
 					}
 					boolean storeFile = FtpUploadFileUtils.storeFtpFile(now,ftpfileList,storePath,ip,port,userName,password);//上传
