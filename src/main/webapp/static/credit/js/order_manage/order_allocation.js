@@ -1,9 +1,3 @@
-window.operateEvent={
-    "click .detail3":function(e,value,row,index){
-        console.log('qqq');
-    }
-}
-console.log('evenet',operateEvent)
 let Allocation = {
 	
     init(){
@@ -122,10 +116,16 @@ let Allocation = {
                   field: 'num',
                   align: 'center',
                   valign: 'middle',
-                     events:operateEvent,
+                 events:{
+                     "click .detail3":function(e,value,row,index){
+                         console.log('qqq');
+                         Public.goToOrderDetail(row.id,row)
+                     }
+                 },
                   formatter:function(value,row,index){
                         // console.log(row)
-                      return '<a href="javascript:;" style="color:#1890ff" class="detail3">' + value + '</a>  ';
+                      return '<a href="javascript:;" style="color:#1890ff" class="detail3" row=row>' + value + '</a>  ';
+                      // return `<a href="javascript:;" style="color:#1890ff" class="detail3" data-row=${row}>${value}</a>  `;
                       // let rows=JSON.stringify(row)
                       // console.log(rows)
                       // rows = rows.replace(/</g,'&lt;');
@@ -251,7 +251,7 @@ let Allocation = {
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
-            fixedColumns: true,
+            fixedColumns: false,
             fixedNumber: 1,
             queryParamsType:'',
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
@@ -282,3 +282,8 @@ let Allocation = {
 
 
 Allocation.init();
+// $("table").on('click', '.detail3',function(){
+//     console.log('123')
+//     console.log($(this).attr('row'))
+//
+// })
