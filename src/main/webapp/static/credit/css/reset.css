@@ -93,7 +93,7 @@ label {
     margin:0;
 }
 .form-control {
-    border-radius: 4px!important;
+    border-radius: 5px!important;
 }
 .btn {
     border:none;
@@ -277,6 +277,16 @@ label.col-md-4{
     margin: 0;
     font-size: 2.5rem;
     font-weight: 400;
+    border: none;
+    outline: none;
+}
+.modal-header .close :active{
+    border: none;
+    outline: none;
+}
+.modal-header .close :visited{
+    border: none;
+   outline: none;
 }
 .modal-content {
     min-height: 38.75rem;

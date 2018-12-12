@@ -72,7 +72,7 @@ public class BaseInfoEn {
             //财务
             if("10".equals(moduleType)){
                 //取数据
-                finDataRows = FinanceService.getFinancialEntryList("1");
+                //finDataRows = FinanceService.getFinancialEntryList("1");
             }
 
             //无url的跳过取数
