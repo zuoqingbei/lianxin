@@ -1443,7 +1443,7 @@ let ReportConfig = {
                     ${param === 'update' ? '&update=true' : ''}${param2 === 'submit' ? '&submit=true' : ''}`, {
                         orderId: this.rows.id || '',
                         id: this.rows.qualityDataId || '',
-                        quality_opinion: $("#quality_opinion").val(),
+                        quality_opinion: $("#quality_opinion").val() || '',
                         quality_deal: checkedIndex,
                         quality_type: _this.rows.quality_type,
                         report_type: _this.rows.report_type,

@@ -295,7 +295,7 @@ let OrderDetail = {
                         let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
                         $.get(this.getUrl(item, '', {
                                 id: this.qualityOpinionId,
-                                quality_opinion: $wrap.find("#quality_opinion").val(),
+                                quality_opinion: $wrap.find("#quality_opinion").val() || '',
                                 quality_deal: checkedIndex,
                                 quality_type: _this.row.quality_type,
                                 report_type: _this.row.report_type,
@@ -310,7 +310,7 @@ let OrderDetail = {
                                 let status = this.row.status;
                                 switch (quality_type) {
                                     case 'entering_quality':
-                                        if ($('.select2-container'.length === 0)){
+                                        if ($('.select2-container'.length === 0)) {
                                             this.quality_deal = data.rows.quality_deal;
                                         }
                                         if (!(status === '298' || status === '294')) {
@@ -343,6 +343,7 @@ let OrderDetail = {
 
                                 if (data.rows && data.rows.length > 0) {
                                     $("#quality_opinion").val(data.rows[0].quality_opinion || '');
+                                    console.log('(data.rows[0].grade', data.rows[0].grade);
                                     $("#grade").val(data.rows[0].grade || 0);
                                     $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
                                     _this.row.qualityDataId = data.rows[0].id;
@@ -439,8 +440,8 @@ let OrderDetail = {
                         }
                         break;
                     // 此页面无翻译功能
-                 }
-                if(_this.quality_deal==='2'){
+                }
+                if (_this.quality_deal === '2') {
                     $('.select2-container').addClass('disable');
                 }
             }

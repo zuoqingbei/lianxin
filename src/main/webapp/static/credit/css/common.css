@@ -404,7 +404,7 @@ input::-webkit-inner-spin-button{
 
 /* 禁用样式 */
 .disable{
-    color: #ccc;
+    color: #ccc!important;
     pointer-events: none;
     filter:  grayscale(100%);
     opacity: .7;

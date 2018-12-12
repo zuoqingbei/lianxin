@@ -171,12 +171,12 @@ let Index = {
                 
                 }, {
                   title: '订单公司名称',
-                  field: 'englishName',
+                  field: 'right_company_name_en',//englishName
                   align: 'center',
                   valign: 'middle',
                 },{
                   title: '公司中文名称',
-                  field: 'companyName',
+                  field: 'company_by_report',//companyName
                   align: 'center',
                   valign: 'middle',
                 }, {
