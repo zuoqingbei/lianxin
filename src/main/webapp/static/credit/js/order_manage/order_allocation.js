@@ -1,9 +1,3 @@
-window.operateEvent={
-    "click .detail3":function(e,value,row,index){
-        console.log('qqq');
-    }
-}
-console.log('evenet',operateEvent)
 let Allocation = {
 	
     init(){
@@ -122,10 +116,15 @@ let Allocation = {
                   field: 'num',
                   align: 'center',
                   valign: 'middle',
-                     events:operateEvent,
+                 // events:{
+                 //     "click .detail3":function(e,value,row,index){
+                 //         console.log('qqq');
+                 //         Public.goToOrderDetail(row.id,row)
+                 //     }
+                 // },
                   formatter:function(value,row,index){
-                        // console.log(row)
-                      return '<a href="javascript:;" style="color:#1890ff" class="detail3">' + value + '</a>  ';
+                      rows=encodeURIComponent(JSON.stringify(row));//对json字符串编码
+                      return `<a href="javascript:;" style="color:#1890ff" class="detail3" data-row=${rows}>${value}</a>  `;
                       // let rows=JSON.stringify(row)
                       // console.log(rows)
                       // rows = rows.replace(/</g,'&lt;');
@@ -282,3 +281,9 @@ let Allocation = {
 
 
 Allocation.init();
+//给渲染完的固定列绑定方法
+$("table").on('click', '.detail3',function(){
+    let rows=$(this).attr('data-row');
+    let row=JSON.parse(decodeURIComponent(rows));//解码
+    Public.goToOrderDetail(row.id,row)
+})

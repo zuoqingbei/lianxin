@@ -40,117 +40,156 @@ import com.jfinal.plugin.activerecord.Page;
 @ModelBind(table = "credit_order_info")
 //此标签用于模型与数据库表的连接
 public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implements Serializable{
-	/*//客户姓名
-	private String customName;
-	//国家
-	private String countryName;
-	//订单创建者的username
-	private String createName;
-	//地区
-	private String continentName;
-	//报告类型
-	private String reportType;
-	//报告语言
-	private String reportLanguage;
-	//报告速度
-	private String reportSpeed;
-	//订单来源
-	private String orderType;
-	//订单价格
-	private String price;
-	//公司名称
-	private String companyName;
-	//公司英文名称
-	private String englishName;
+	//客户姓名
+			private String customId;
+			private String priceId;
+			private String companyId;
+			
+			//客户姓名
+			private String customName;
+			//国家
+			private String continent;
+			//订单创建者的username
+			private String country;
+			//地区
+			private String reportType;
+			//报告类型
+			private String orderType;
+			//报告语言
+			private String reportLanguage;
+			//报告速度
+			private String companyByReport;
+			//订单来源
+			private String speed;
+			private String referenceNum;
+			private String address;
+			private String telphone;
+			private String fax;
+			private String email;
+			private String contacts;
+			private String remarks;
+			private String right_company_name_en;
 
-	public String getenglishName() {
-		return get("englishName");
-	}
+			
+		
+			
+			public String getCustomId() {
+				return customId;
+			}
+			public void setCustomId(String customId) {
+				set("custom_id", customId);
+			}
+			
+			
+			public String getPriceId() {
+				return priceId;
+			}
+			public void setPriceId(String priceId) {
+				set("price_id", priceId);
+			}
+			public String getCompanyId() {
+				return companyId;
+			}
+			public void setCompanyId(String companyId) {
+				set("company_id", companyId);
+			}
+			public String getcompanyName() {
+				return get("companyName");
+			}
 
-	public void setenglishName(String englishName) {
-		set("englishName", englishName);
-	}
-
-	public String getcompanyName() {
-		return get("companyName");
-	}
-
-	public void setcompanyName(String companyName) {
-		set("companyName", companyName);
-	}
-
-	public String getCustomName() {
-		return get("customName");
-	}
-
-	public void setCustomName(String customName) {
-		set("customName", customName);
-	}
-
-	public String getCountryName() {
-		return get("countryName");
-	}
-
-	public void setCountryName(String countryName) {
-		set("countryName", countryName);
-	}
-
-	public String getCreateName() {
-		return get("createName");
-	}
-
-	public void setCreateName(String createName) {
-		set("createName", createName);
-	}
-
-	public String getContinentName() {
-		return get("continentName");
-	}
-
-	public void setContinentName(String continentName) {
-		set("continentName", continentName);
-	}
-
-	public String getReportType() {
-		return get("reportType");
-	}
-
-	public void setReportType(String reportType) {
-		set("reportType", reportType);
-	}
-
-	public String getReportLanguage() {
-		return get("reportLanguage");
-	}
-
-	public void setReportLanguage(String reportLanguage) {
-		set("reportLanguage", reportLanguage);
-	}
-
-	public String getOrderType() {
-		return get("orderType");
-	}
-
-	public void setOrderType(String orderType) {
-		set("orderType", orderType);
-	}
-
-	public String getPrice() {
-		return get("price");
-	}
-
-	public void setPrice(String price) {
-		set("price", price);
-	}
-	public int getUseTime() {
-		return get("useTime");
-	}
-
-	public void setUseTime(int useTime) {
-		set("useTime", useTime);
-	}
-	*/
-
+			public void setcompanyName(String companyName) {
+				set("companyName", companyName);
+			}
+			public String getContinent() {
+				return continent;
+			}
+			public void setContinent(String continent) {
+				set("continent", continent);
+			}
+			public String getCountry() {
+				return country;
+			}
+			public void setCountry(String country) {
+				set("country", country);
+			}
+			public String getReportType() {
+				return reportType;
+			}
+			public void setReportType(String reportType) {
+				set("report_type", reportType);
+			}
+			public String getOrderType() {
+				return orderType;
+			}
+			public void setOrderType(String orderType) {
+				set("order_type", orderType);
+			}
+			public String getReportLanguage() {
+				return reportLanguage;
+			}
+			public void setReportLanguage(String reportLanguage) {
+				set("report_language", reportLanguage);
+			}
+			public String getCompanyByReport() {
+				return companyByReport;
+			}
+			public void setCompanyByReport(String companyByReport) {
+				set("company_by_report", companyByReport);
+			}
+			public String getSpeed() {
+				return speed;
+			}
+			public void setSpeed(String speed) {
+				set("speed", speed);
+			}
+			public String getReferenceNum() {
+				return referenceNum;
+			}
+			public void setReferenceNum(String referenceNum) {
+				set("reference_num", referenceNum);
+			}
+			public String getAddress() {
+				return address;
+			}
+			public void setAddress(String address) {
+				set("address", address);
+			}
+			public String getTelphone() {
+				return telphone;
+			}
+			public void setTelphone(String telphone) {
+				set("telphone", telphone);
+			}
+			public String getFax() {
+				return fax;
+			}
+			public void setFax(String fax) {
+				set("fax", fax);
+			}
+			public String getEmail() {
+				return email;
+			}
+			public void setEmail(String email) {
+				set("email", email);
+			}
+			public String getContacts() {
+				return contacts;
+			}
+			public void setContacts(String contacts) {
+				set("contacts", contacts);
+			}
+			public String getRemarks() {
+				return remarks;
+			}
+			public void setRemarks(String remarks) {
+				set("remarks", remarks);
+			}
+			public String getRight_company_name_en() {
+				return right_company_name_en;
+			}
+			public void setRight_company_name_en(String right_company_name_en) {
+				set("right_company_name_en", right_company_name_en);
+			}
 	/**
 	 * 
 	 */
