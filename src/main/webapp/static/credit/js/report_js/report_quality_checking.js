@@ -156,9 +156,9 @@ let Verify = {
 
                     },
                     formatter:function (value, row, index) {
-                        console.log('ss===')
-                        console.log(row)
-                        if(row.report_type=='8'||row.report_type=='9'||row.report_type=='10'||row.report_type=='11'){
+                        // console.log('ss===')
+                        // console.log(row)
+                        if(row.report_type==='8'||row.report_type==='9'||row.report_type==='10'||row.report_type==='11'){
                             return `<a href="javascript:" class="entering_quality">填报</a> 
                              <span style="margin-left:.5rem;color: #1890ff">|</span>
                                 <a href="javascript:" class="analyze_quality">分析</a> 
@@ -167,7 +167,7 @@ let Verify = {
                         }else {
                             return `<a href="javascript:" class="entering_quality">填报</a>  
                              <span style="margin-left:.5rem;color: #1890ff">|</span>
-                                <a href="javascript:" class="analyze_quality" style="color: rgb(204,204,204)">分析</a>
+                                <a href="javascript:" class="analyze_quality disable">分析</a>
                                  <span style="margin-left:.5rem;color: #1890ff">|</span> 
                                 <a href="javascript:" class="translate_quality">翻译</a>`
                         }
@@ -198,17 +198,25 @@ let Verify = {
                     searchType: "-8"
                 };
             }, onLoadSuccess: function (data) {
-                // console.log(data)
                 let rows = data.rows;
+                console.log('data.rows',data.rows)
                 rows.forEach((item, index) => {
-                    if (!item.country || item.country.trim() !== '中国大陆' || item.companyZHNames) {
-                        $(Array.from($(".recordName"))[index]).css({"color": "#ccc", "cursor": "default"});
-                        $(Array.from($(".recordName"))[index]).removeAttr("data-target")
+                   /* if (!item.country || item.country.trim() !== '中国大陆' || item.companyZHNames) {
+                        $(Array.from($(".recordName"))[index]).addClass('disable');
+                        // $(Array.from($(".recordName"))[index]).removeAttr("data-target")
                     } else if (!$(Array.from($(".recordName"))[index]).attr("data-target")) {
-                        $(Array.from($(".recordName"))[index]).css({"color": "#007bff", "cursor": "pointer"});
-                        $(Array.from($(".recordName"))[index]).attr("data-target", "#recordingName")
+                        // $(Array.from($(".recordName"))[index]).css({"color": "#007bff", "cursor": "pointer"});
+                        // $(Array.from($(".recordName"))[index]).attr("data-target", "#recordingName")
+                    }*/
+                    // console.log('item.report_language',item.report_language)
+                    //按鈕禁用
+                    if(item.status === '294' || item.status === '298') {
+                        $(".analyze_quality").eq(index).addClass('disable');
+                        $(".translate_quality").eq(index).addClass('disable');
                     }
-
+                    if(item.report_language === '215' || item.report_language === '213' ||item.status === '303' ) {
+                        $(".translate_quality").eq(index).addClass('disable');
+                    }
 
                 })
             }

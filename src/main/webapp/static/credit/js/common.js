@@ -156,10 +156,12 @@ let Public = {
         })
     },
     goToOrderDetail(id, row) {
-        console.log("开始订单详情页跳转")
+        console.log(row,"开始订单详情页跳转")
         //跳转订单详情
         $("#main_content").load(BASE_PATH + 'credit/front/home/orderInfo?id=' + id);
-        localStorage.setItem("row", JSON.stringify(row));
+        if(row){
+            localStorage.setItem("row", JSON.stringify(row));
+        }
     },
     createOrder() {
         $("#main_content").load(BASE_PATH + 'credit/front/home/createOrder')
@@ -599,7 +601,7 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                         <div class="row justify-content-between">
                             <div class="col-md-4 my-1">
                                 <label for="grade"></label>
-                                <input class="form-control-plaintext" id="grade" name="grade" value="12">
+                                <input class="form-control-plaintext" id="grade" name="grade" value="">
                                 <span class="unit">分</span>
                             </div>
                             <div class="col-md-2 my-3 mr-3">
