@@ -88,7 +88,7 @@ let InitObjTransQua = {
 			async:false,
 			data:paramObj,
 			success:(data)=>{
-				console.log(data)
+				// console.log(data)
 				data = data.rows
 				_this.cwType = data[0]["type"]
 				if(data.length === 0){return}
@@ -150,7 +150,7 @@ let InitObjTransQua = {
 				})
 			}
 		})
-		console.log(tableTitles)
+		// console.log(tableTitles)
 		let tables = Array.from($(".table-title"))
 		tables.forEach((item,i)=>{
 			$(tables[i]).html(radioVal==="1"?tableTitles[i][1]:tableTitles[i][0])

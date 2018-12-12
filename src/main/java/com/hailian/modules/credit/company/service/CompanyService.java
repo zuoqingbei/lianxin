@@ -326,8 +326,8 @@ public class CompanyService {
 					model.set("category", Category);
 					String PublishedDate = CourtAnnouncement.getString("PublishedDate");//刊登日期
 					model.set("publisheddate", PublishedDate);
-					String PublishedPage = CourtAnnouncement.getString("PublishedPage");//刊登版面
-					model.set("publishedpage", PublishedPage);
+//					String PublishedPage = CourtAnnouncement.getString("PublishedPage");//刊登版面
+//					model.set("publishedpage", PublishedPage);
 					String UploadDate = CourtAnnouncement.getString("UploadDate");//上传日期
 					model.set("uploaddate", UploadDate);
 					String Court = CourtAnnouncement.getString("Court");//公告人

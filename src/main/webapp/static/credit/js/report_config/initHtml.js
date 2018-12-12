@@ -471,7 +471,7 @@ let InitObj = {
             									if(data.statusCode === 1) {
             										Public.message('success',data.message)
             										//刷新数据
-            										_this.refreshCwModal(tableCwIds,getSource,id)
+            										_this.refreshCwModal(tableCwIds,getSource,id,rows)
             									}else {
             										Public.message('error',data.message)
             									}
@@ -594,7 +594,7 @@ let InitObj = {
 						Public.message("error",data.message)
 					}else if(data.statusCode === 1){
 						Public.message("success",data.message)
-						_this.refreshCwModal(tableCwId,getSource,id)
+						_this.refreshCwModal(tableCwId,getSource,id,rows)
 						$(e.target).val("")
 						_this.saveCwSummation(alterSource)
 					}
@@ -672,7 +672,7 @@ let InitObj = {
 			})
 		})
 	},
-	refreshCwModal(tableCwIds,getSource,id){
+	refreshCwModal(tableCwIds,getSource,id,rows){
 		/**
 		 * 刷新表格数据
 		 * id:财务模板id
@@ -680,7 +680,7 @@ let InitObj = {
 //		console.log(tableCwIds)
 		let returnData;
 		$.ajax({
-			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id+'&report_type='+rows["report_type"],
 			type:'post',
 			async:false,
 			success:(data)=>{
