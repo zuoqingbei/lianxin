@@ -439,81 +439,7 @@ public class HomeController extends BaseProjectController {
 		
 		//非快速递交时创建报告
 		if(is_fastsubmmit.equals("-1")){
-		String language = model.get("report_language")+"";//报告语言
-		String reprotType = model.get("report_type");//报告类型
-		String infoLanguage = Db.queryInt("select info_language from credit_report_type where del_flag=0 and id="+reprotType)+"";//填报语言
-		
-		CreditCompanyInfo company = new CreditCompanyInfo();
-		company.set("order_id", id);
-		company.set("update_date", getNow());
-		company.set("create_date", getNow());
-		company.set("create_by", userid);
-		company.set("update_by",userid);
-		company.set("name_en", right_company_name_en);
-		int companInfoId = -1;//填报语言对应的公司表id
-		/** 报告语言
-		 	213		中文简体
-		    214	 	中文繁体  
-			215	 	英文
-			216	 	中文简体+英文
-			217	 	中文繁体+英文 */
-		/**自然语言
-		   612	 	中文简体
-		   613	 	英文
-		   614	 	中文繁体*/
-		
-		//if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
-		if("214".equals(language)){
-			company.set("sys_language", "614");
-			company.remove("id").save();
-			if(infoLanguage.equals("612")) {
-				company.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
-				company.remove("id").save();
-				companInfoId = company.get("id");
-			}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
-				company.set("sys_language", "613");
-				company.remove("id").save();
-			    companInfoId = company.get("id");
-			}else if(infoLanguage.equals("614")) {
-				companInfoId = company.get("id");//当报告语言为214时默认公司id
-			}
-		}else if("215".equals(language)){
-			company.set("sys_language", "613");
-			company.remove("id").save();
-			if(infoLanguage.equals("612")) {
-				company.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
-				company.remove("id").save();
-				companInfoId = company.get("id");
-			}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
-			    companInfoId = company.get("id");
-			}else if(infoLanguage.equals("614")) {
-				company.set("sys_language", "614"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
-				company.remove("id").save();
-				companInfoId = company.get("id");//当报告语言为214时默认公司id
-			}
-		}else if("216".equals(language)){
-			company.set("sys_language", "612");
-			company.remove("id").save();
-			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
-			company.set("sys_language", "613");
-			company.remove("id").save();
-			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
-			if(infoLanguage.equals("614")) { company.set("sys_language", "614"); company.remove("id").save();companInfoId = company.get("id");}
-		}else if("217".equals(language)){
-			company.set("sys_language", "614");
-			company.remove("id").save();
-			if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
-			company.set("sys_language", "613");
-			company.remove("id").save();
-			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
-			if(infoLanguage.equals("612")) { company.set("sys_language", "612"); company.remove("id").save();companInfoId = company.get("id");}
-		}else if("213".equals(language)){
-			company.set("sys_language", "612");
-			company.remove("id").save();
-			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
-			if(infoLanguage.equals("613")) { company.set("sys_language", "613"); company.remove("id").save();  companInfoId = company.get("id");}
-			if(infoLanguage.equals("614")) { company.set("sys_language", "614"); company.remove("id").save();  companInfoId = company.get("id");}
-		}
+		int companInfoId = crateReportByOrder(userid, model, id);//根据新订单创建报告
 		
 		CreditOrderInfo order = new CreditOrderInfo();
 		order.set("company_id",companInfoId);
@@ -606,6 +532,85 @@ public class HomeController extends BaseProjectController {
 			renderJson(resultType);
 			return;
 		}
+	}
+	public int crateReportByOrder(Integer userid, CreditOrderInfo model,
+			String id) {
+		String language = model.get("report_language")+"";//报告语言
+		String reprotType = model.get("report_type");//报告类型
+		String infoLanguage = Db.queryInt("select info_language from credit_report_type where del_flag=0 and id="+reprotType)+"";//填报语言
+		
+		CreditCompanyInfo company = new CreditCompanyInfo();
+		company.set("order_id", id);
+		company.set("update_date", getNow());
+		company.set("create_date", getNow());
+		company.set("create_by", userid);
+		company.set("update_by",userid);
+		company.set("name_en", model.get("right_company_name_en"));
+		int companInfoId = -1;//填报语言对应的公司表id
+		/** 报告语言
+		 	213		中文简体
+		    214	 	中文繁体  
+			215	 	英文
+			216	 	中文简体+英文
+			217	 	中文繁体+英文 */
+		/**自然语言
+		   612	 	中文简体
+		   613	 	英文
+		   614	 	中文繁体*/
+		
+		//if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
+		if("214".equals(language)){
+			company.set("sys_language", "614");
+			company.remove("id").save();
+			if(infoLanguage.equals("612")) {
+				company.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
+				company.remove("id").save();
+				companInfoId = company.get("id");
+			}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
+				company.set("sys_language", "613");
+				company.remove("id").save();
+			    companInfoId = company.get("id");
+			}else if(infoLanguage.equals("614")) {
+				companInfoId = company.get("id");//当报告语言为214时默认公司id
+			}
+		}else if("215".equals(language)){
+			company.set("sys_language", "613");
+			company.remove("id").save();
+			if(infoLanguage.equals("612")) {
+				company.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
+				company.remove("id").save();
+				companInfoId = company.get("id");
+			}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
+			    companInfoId = company.get("id");
+			}else if(infoLanguage.equals("614")) {
+				company.set("sys_language", "614"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
+				company.remove("id").save();
+				companInfoId = company.get("id");//当报告语言为214时默认公司id
+			}
+		}else if("216".equals(language)){
+			company.set("sys_language", "612");
+			company.remove("id").save();
+			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
+			company.set("sys_language", "613");
+			company.remove("id").save();
+			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
+			if(infoLanguage.equals("614")) { company.set("sys_language", "614"); company.remove("id").save();companInfoId = company.get("id");}
+		}else if("217".equals(language)){
+			company.set("sys_language", "614");
+			company.remove("id").save();
+			if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
+			company.set("sys_language", "613");
+			company.remove("id").save();
+			if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
+			if(infoLanguage.equals("612")) { company.set("sys_language", "612"); company.remove("id").save();companInfoId = company.get("id");}
+		}else if("213".equals(language)){
+			company.set("sys_language", "612");
+			company.remove("id").save();
+			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
+			if(infoLanguage.equals("613")) { company.set("sys_language", "613"); company.remove("id").save();  companInfoId = company.get("id");}
+			if(infoLanguage.equals("614")) { company.set("sys_language", "614"); company.remove("id").save();  companInfoId = company.get("id");}
+		}
+		return companInfoId;
 	}
 	/**
 	 * 

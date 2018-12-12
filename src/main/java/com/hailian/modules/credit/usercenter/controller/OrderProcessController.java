@@ -513,14 +513,18 @@ public class OrderProcessController extends BaseProjectController{
             //调用企查查接口
             if("595".equals(code)){
             	//根据订单号找到填报语言对应的公司id
-            	String companyId = model.findById(orderId).get("company_id")+"";
-                new CompanyService().enterpriseGrab(companyId,getPara("model.company_by_report"),"612");
+                CreditOrderInfo orderInfo = model.findById(orderId);
+            	String companyId = orderInfo.get("company_id")+"";
+                //new CompanyService().enterpriseGrab(companyId,getPara("model.company_by_report"),"612");
                 //调用香港查册网
-                HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
+                //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
                 //爬取商务部业务系统网站
                 //HttpCrawler.getMofcomUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
                 //爬虫完毕更新状态
-                CreditOrderInfo model2 = new CreditOrderInfo(); model2.set("id", orderId).set("status", 694);  model2.update();
+                //CreditOrderInfo model2 = new CreditOrderInfo(); model2.set("id", orderId).set("status", 694);  model2.update();
+                //使用线程调用爬虫接口
+                Thread td = new Thread(new CrawlerThreed(companyId,getPara("model.company_by_report"),orderInfo));
+                td.start();
             }
             //订单完成
             //if("314".equals(code)){
@@ -1099,6 +1103,49 @@ public class OrderProcessController extends BaseProjectController{
    		coefficient = coefficient==null?1:(coefficient<0?0:coefficient); 
 		return coefficient;
     }
-    
 }
 
+//爬虫通过线程操作
+class CrawlerThreed implements Runnable{
+    String companyId = "";
+    String company = "";
+    CreditOrderInfo orderInfo = null;
+
+    /**
+     * 数据初始化
+     * @param companyId  公司id
+     * @param company  公司名称
+     * @param orderInfo 订单信息
+     */
+    public CrawlerThreed(String companyId,String company,CreditOrderInfo orderInfo){
+        this.companyId = companyId;
+        this.company = company;
+        this.orderInfo = orderInfo;
+    }
+
+    @Override
+    public void run() {
+        try {
+            //调用企查查接口
+            new CompanyService().enterpriseGrab(companyId, company, "612");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            //调用香港查册网
+            HttpCrawler.getIcrisUrl(company, companyId, orderInfo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            //爬取商务部业务系统网站
+            HttpCrawler.getMofcomUrl(company, companyId, orderInfo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //爬虫完毕更新状态
+        CreditOrderInfo model2 = new CreditOrderInfo();
+        model2.set("id", orderInfo.getInt("id")).set("status", 694);
+        model2.update();
+    }
+}
