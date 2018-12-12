@@ -116,16 +116,15 @@ let Allocation = {
                   field: 'num',
                   align: 'center',
                   valign: 'middle',
-                 events:{
-                     "click .detail3":function(e,value,row,index){
-                         console.log('qqq');
-                         Public.goToOrderDetail(row.id,row)
-                     }
-                 },
+                 // events:{
+                 //     "click .detail3":function(e,value,row,index){
+                 //         console.log('qqq');
+                 //         Public.goToOrderDetail(row.id,row)
+                 //     }
+                 // },
                   formatter:function(value,row,index){
-                        // console.log(row)
-                      return '<a href="javascript:;" style="color:#1890ff" class="detail3" row=row>' + value + '</a>  ';
-                      // return `<a href="javascript:;" style="color:#1890ff" class="detail3" data-row=${row}>${value}</a>  `;
+                      rows=encodeURIComponent(JSON.stringify(row));//对json字符串编码
+                      return `<a href="javascript:;" style="color:#1890ff" class="detail3" data-row=${rows}>${value}</a>  `;
                       // let rows=JSON.stringify(row)
                       // console.log(rows)
                       // rows = rows.replace(/</g,'&lt;');
@@ -251,7 +250,7 @@ let Allocation = {
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
-            fixedColumns: false,
+            fixedColumns: true,
             fixedNumber: 1,
             queryParamsType:'',
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
@@ -282,8 +281,9 @@ let Allocation = {
 
 
 Allocation.init();
-// $("table").on('click', '.detail3',function(){
-//     console.log('123')
-//     console.log($(this).attr('row'))
-//
-// })
+//给渲染完的固定列绑定方法
+$("table").on('click', '.detail3',function(){
+    let rows=$(this).attr('data-row');
+    let row=JSON.parse(decodeURIComponent(rows));//解码
+    Public.goToOrderDetail(row.id,row)
+})
