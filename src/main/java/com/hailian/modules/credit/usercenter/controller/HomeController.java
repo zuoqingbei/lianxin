@@ -83,7 +83,7 @@ public class HomeController extends BaseProjectController {
 	  		//订单查档数量
 	  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295'").size();
 	  		//订单信息质检数量
-	  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('298','303','308')").size();
+	  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('294','303','308')").size();
 	  		setAttr("orderhs", orderhs);
 	  		setAttr("ordercd", ordercd);
 	  		setAttr("orderzj", orderzj1);	
