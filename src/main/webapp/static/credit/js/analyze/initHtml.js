@@ -1,4 +1,4 @@
-let InitObj = {
+let InitObjAnalyze = {
 	hjArr:[],
 	cwAlterSource:'',
 	cwType:'',
@@ -356,7 +356,7 @@ let InitObj = {
 		})
 	},
 	
-	initCwTable(tableCwIds,contents,getSource,alterSource,deleteSource){
+	initCwTable(tableCwIds,contents,getSource,alterSource,deleteSource,rows){
 		//财务模块表格初始化  掉了4次
 		/**
 		 * tableCwIds:表格id数组 
@@ -371,7 +371,7 @@ let InitObj = {
 		let _this = this
 		this.cwAlterSource = alterSource
 		$.ajax({
-			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id+'&report_type='+rows["report_type"],
 			type:'post',
 			async:false,
 			success:(data)=>{
