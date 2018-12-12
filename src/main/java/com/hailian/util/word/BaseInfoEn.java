@@ -5,6 +5,7 @@ import com.deepoove.poi.data.PictureRenderData;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
@@ -29,31 +30,29 @@ public class BaseInfoEn {
 
     /**
      * 生成商业报告
-     * @param reportType  报告类型
-     * @param orderId     订单ID
-     * @param companyId   公司ID
-     * @param sysLanguage 语言
+     * @param order  订单
      * @param userid 当前登录人
      */
-    public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
-        //报告类型
-        //String reportType = "1";
-        //语言
-        //String sysLanguage = "612";
-        //公司id
-        //String companyId = "77";
+    public static void reportTable(CreditOrderInfo order,String reportType, Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
-
         HashMap<String, Object> map = new HashMap<String, Object>();
+
         //获取订单信息
-        CreditCompanyInfo order = CreditCompanyInfo.dao.findById(companyId);
+        String companyId = order.getStr("company_id");
+        String customId = order.getStr("custom_id");
+        //String reportType = order.getStr("report_type");
+        String orderId = order.getInt("id") + "";
+
+        //获取公司信息
+        CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findById(companyId);
+        String sysLanguage = companyInfo.getInt("sys_language") + "";
+        String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
         //订单公司名称
-        map.put("company", order.getStr("name_en"));
+        map.put("company", companyInfo.getStr("name_en"));
         //联信编码
-        map.put("code", order.getStr("lianxin_id"));
+        map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
 
         //找到当前报告类型下的父节点
