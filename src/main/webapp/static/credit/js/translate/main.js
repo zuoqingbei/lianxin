@@ -72,6 +72,7 @@ let ReportConfig = {
     				_this.tableDataArr.push(data)
     			}
         	});
+        	console.log(contentsEn)
         	$tableEn.bootstrapTable({
         		columns: _this.tableColumns(contentsEn,'en',index,_this.idArrEn[index]),
         		url:urlEN, // 请求后台的URL（*）
@@ -248,9 +249,11 @@ let ReportConfig = {
     	 * 绑定表单数据
     	 */
     	this.formDataArr = []
+    	this.formTitleArr = []
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
     	let _this = this
+    	console.log(formIndex)
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
@@ -271,14 +274,17 @@ let ReportConfig = {
 	    			async:false,
 	    			data:paramObj,
 	    			success:(data)=>{
+	    				console.log(data)
 	    				temp = data
 	    				_this.formDataArr.push(data.rows[0])
+	    				_this.formTitleArr.push(item)
 	    			}
 	    			
 	    		})
 			 let arr = Array.from($("#title"+item))
 			 if(temp.rows === null){return}
 			 arr.forEach((item,index)=>{
+				 console.log(item)
 				 if($(item).siblings(".radio-con").length !== 0) {
 					 //radio类型绑数
 					 if(temp.rows.length === 0){return}
@@ -341,8 +347,9 @@ let ReportConfig = {
     	let titlesEn = this.formTitleEn;
     	let formIndexEn = this.formIndexEn;
     	let _this = this
+    	console.log(tempData,i,formIndexEn)
     	if(tempData){
-    		let arr = Array.from($("#titleEn"+formIndexEn[i]))
+    		let arr = Array.from($("#titleEn"+i))
 			arr.forEach((item,index)=>{
     			if($(item).siblings(".radio-con").length !== 0) {
     				//radio类型绑数
@@ -508,11 +515,26 @@ let ReportConfig = {
     	 */
     	let _this = this
     	let floatIndex = this.floatIndex;
+    	let floatIndexEn = this.floatIndexEn;
     	if(floatIndex.length === 0){return}
     	let cw_title = []
     	let cw_contents = []
     	let cw_dom;
     	_this.tableTitle = []
+    	floatIndexEn.forEach((item,index)=>{
+    		let floatParentIdEn = this.floatTitleEn[index]['float_parent'];//浮动的父节点id
+    		this.entityTitleEn.forEach((item,i)=>{
+    			if(item.id === floatParentIdEn ) {
+    				if(floatParentIdEn !== 4648) {
+    					//非财务模块浮动
+    					let html = this.notMoneyFloatHtmlEn[i+1]
+    					$("#titleEn"+i).after(html)
+    					this.formIndexEn.push(i)
+    					this.formTitleEn.push(this.floatTitleEn[index])
+    				}
+    			}
+    		})
+    	})
     	floatIndex.forEach((item,index)=>{
     		let floatParentId = this.floatTitle[index]['float_parent'];//浮动的父节点id
     		let titleId;
@@ -520,7 +542,7 @@ let ReportConfig = {
     			if(item.id === floatParentId ) {
     				if(floatParentId !== 853) {
     					//非财务模块浮动
-    					let html = this.notMoneyFloatHtml[index]
+    					let html = this.notMoneyFloatHtml[i+1]
     					$("#title"+i).after(html)
     					this.formIndex.push(i)
     					this.formTitle.push(this.floatTitle[index])
@@ -572,44 +594,32 @@ let ReportConfig = {
     								<div class="cw-box d-flex justify-content-between align-items-center mt-4">
     									<div class="firm-name form-inline">
     										<label class="mr-3" style="font-weight:600">${this_content[0].temp_name}</label>
-    										<input type="text" style="width:14rem" class="form-control" id="${this_content[0].column_name}cw" placeholder=${this_content[0].place_hold} name=${this_content[0].column_name}>
+    										<input disabled="disabled" type="text" style="width:14rem" class="form-control" id="${this_content[0].column_name}cw" placeholder=${this_content[0].place_hold} name=${this_content[0].column_name}>
     									</div>
     									<div class="is-merge form-inline">
     										<label class="mr-3" style="font-weight:600">${this_content[1].temp_name}</label>
     										<div class="form-check form-check-inline">
-	    										<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[0].split("-")[0]}>
+	    										<input disabled="disabled" class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[0].split("-")[0]}>
 				                                <label class="form-check-label mx-0" for="">${radioArr[0].split("-")[1]}</label>
 			                                </div>
 						    				<div class="form-check form-check-inline">
-							    				<input class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[1].split("-")[0]}>
+							    				<input disabled="disabled" class="form-check-input" type="radio" name=${this_content[1].column_name} id="${this_content[1].column_name}cw" value=${radioArr[1].split("-")[0]}>
 							    				<label class="form-check-label mx-0" for="">${radioArr[1].split("-")[1]}</label>
 						    				</div>
-    									</div>
-    									<!-- 上传下载按钮 -->
-    									<div class="btn-group">
-    										<button class="btn btn-default mr-3 cwDown" >${this_content[2].temp_name}</button>
-						    				<button class="aa-btn btn btn-primary cwUp" style="position:relative">
-						    					<form class="uploadForm" enctype="multipart/form-data" action="" method="POST" >
-						    						<input style="opacity:0;cursor:pointer;width:100%;height:100%;position:absolute;left:0;top:0" type="file" name="file" class="fileInp">
-						    						<input name="report_type" type="hidden" class="report_type"/>
-								    				<input name="ficConf_id" type="hidden" class="ficConf_id"/>
-						    					</form>
-						    					${this_content[3].temp_name}
-						    				</button>
     									</div>
     								</div>
     									<!-- 单位 -->
     								<div class="cw-unit">
     									<div class="form-inline my-3">
     										<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[4].temp_name}</label>
-    										<select class="form-control mr-3 moneySel" id="${this_content[4].column_name}cw" style="width:10rem" name=${this_content[4].column_name}>${moneyStr}</select>
-    										<select class="form-control mr-3 unitSel" id="${this_content[5].column_name}cw" style="width:10rem" name=${this_content[5].column_name}>${unitStr}</select>
+    										<select disabled="disabled" class="form-control mr-3 moneySel" id="${this_content[4].column_name}cw" style="width:10rem" name=${this_content[4].column_name}>${moneyStr}</select>
+    										<select disabled="disabled" class="form-control mr-3 unitSel" id="${this_content[5].column_name}cw" style="width:10rem" name=${this_content[5].column_name}>${unitStr}</select>
     									</div>
     								</div>
     								<!-- 日期 -->
     								<div class="cw-date form-inline">
-    									<input class="form-control my-3 dateInp1" id="${this_content[6].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${this_content[6].column_name}  placeholder=${this_content[6].place_hold} />
-    									<input class="form-control dateInp2"  id="${this_content[7].column_name}cw" type="text" name=${this_content[7].column_name}  placeholder=${this_content[7].place_hold} />
+    									<input disabled="disabled" class="form-control my-3 dateInp1" id="${this_content[6].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${this_content[6].column_name}  placeholder=${this_content[6].place_hold} />
+    									<input disabled="disabled" class="form-control dateInp2"  id="${this_content[7].column_name}cw" type="text" name=${this_content[7].column_name}  placeholder=${this_content[7].place_hold} />
     								</div>
     							</div>`
     			let tempUrl = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[10]['get_source'];
@@ -623,23 +633,23 @@ let ReportConfig = {
     			})
     			cw_bottom_html +=`<div class="bottom-html"><div class="cw-bottom p-4">
     								<label class="control-label">${this_content[10].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options}</select>
-    								<textarea class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
+    								<select disabled="disabled" class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options}</select>
+    								<textarea disabled="disabled" class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
     							 </div>
     							 <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[12].temp_name}</label>
-    								<input class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" />
-    								<textarea class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
+    								<input disabled="disabled" class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" />
+    								<textarea disabled="disabled" class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
     							 </div>
     							  <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[14].temp_name}</label>
-    								<input class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" />
-    								<textarea class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
+    								<input disabled="disabled" class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" />
+    								<textarea disabled="disabled" class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
     							 </div>
     							 <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[16].temp_name}</label>
-    								<input class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" />
-    								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
+    								<input disabled="disabled" class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" />
+    								<textarea disabled="disabled" class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
     							 </div></div>`
     		}else {
     			let addtext = cw_title[1].place_hold
@@ -660,13 +670,13 @@ let ReportConfig = {
     					if(index === 3) {
     						//利润表
     						cw_table_html += `<div class="cw-date form-inline cw-range">
-    							<input class="form-control my-3" id="${cw_contents[0][8].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][8].column_name}  placeholder=${cw_contents[0][6].place_hold} />
-    							<input class="form-control" id="${cw_contents[0][9].column_name}cw" type="text" name=${cw_contents[0][9].column_name} placeholder=${cw_contents[0][7].place_hold} />
+    							<input disabled="disabled" class="form-control my-3" id="${cw_contents[0][8].column_name}cw" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][8].column_name}  placeholder=${cw_contents[0][6].place_hold} />
+    							<input disabled="disabled" class="form-control" id="${cw_contents[0][9].column_name}cw" type="text" name=${cw_contents[0][9].column_name} placeholder=${cw_contents[0][7].place_hold} />
     							</div>`
     					}else {
     						cw_table_html += `<div class="cw-date form-inline">
-    							<input class="form-control my-3 dateInp1" disabled="disabled" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][6].column_name}  placeholder=${cw_contents[0][6].place_hold} />
-    							<input class="form-control dateInp2" disabled="disabled" type="text" name=${cw_contents[0][7].column_name} placeholder=${cw_contents[0][7].place_hold} />
+    							<input disabled="disabled" class="form-control my-3 dateInp1" disabled="disabled" style="margin-left:32%;margin-right:11%" type="text" name=${cw_contents[0][6].column_name}  placeholder=${cw_contents[0][6].place_hold} />
+    							<input disabled="disabled" class="form-control dateInp2" disabled="disabled" type="text" name=${cw_contents[0][7].column_name} placeholder=${cw_contents[0][7].place_hold} />
     							</div>`
     					}
     				}
@@ -694,7 +704,6 @@ let ReportConfig = {
     							style="position: relative"
     							>
     							</table>
-    							<button class="btn btn-lg btn-block mb-3 mt-4 addBtn" type="button" >+ ${addtext}</button>
     							</div>`
     						tableCwId.push(`tableCwFz${i}`)
     					}
@@ -708,7 +717,6 @@ let ReportConfig = {
     							style="position: relative"
     							>
     							</table>
-    							<button class="btn btn-lg btn-block mb-3 mt-4 addBtn" type="button"  >+ ${addtext}</button>
     							</div>`
     							tableCwId.push(`tableCwLr${i}`)
     					}
@@ -734,7 +742,7 @@ let ReportConfig = {
     	$(cw_dom).after(cw_top_html)
     	setTimeout(()=>{
     		InitObjTrans.bindCwConfig(_this.cwConfigGetSource,cw_contents[0][1].column_name,_this.rows,_this.tableTitle)
-    		InitObjTrans.initCwTable(tableCwId,cw_contents[1],_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource)
+    		InitObjTrans.initCwTable(tableCwId,cw_contents[1],_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,_this.rows)
     		InitObjTrans.cwModalCompute(_this.cwAlterSource)
     		InitObjTrans.downLoadCw(cw_contents[0][2].alter_source,_this.rows);
 			InitObjTrans.upLoadCw(cw_contents[0][3].alter_source,_this.rows,_this.cwGetSource,_this.cwAlterSource,tableCwId);
@@ -744,6 +752,7 @@ let ReportConfig = {
     initContent(){
         /**初始化内容 */
     	this.entityTitle = [] //存放小模块的实体title
+    	this.entityTitleEn = [] //存放小模块的实体title
     	this.idArr = []    //存放table类型模块对应的index
     	this.idArrEn = []    //存放table类型模块对应的index
     	this.contentsArr = [] //存放table类型模块的contents
@@ -756,9 +765,12 @@ let ReportConfig = {
     	this.formTitleEn = [] //存放form类型模块的title
     	this.floatIndex = [] //存放float类型模块对应的index
     	this.floatTitle = [] //存放float类型模块的title
+    	this.floatIndexEn = [] //存放float类型模块对应的index
+    	this.floatTitleEn = [] //存放float类型模块的title
     	this.floatContents = [] //存放float类型模块的Contents
     	this.selectInfoObj = {} //存放选择框信息传给后台
     	this.notMoneyFloatHtml = {} //存放非财务模块的浮动html
+    	this.notMoneyFloatHtmlEn = {} //存放非财务模块的浮动html
     	this.cwGetSource = '' //存放获取财务url
     	this.cwAlterSource = '' //存放修改财务url
     	this.cwDeleteSource = '' //删除财务url
@@ -851,6 +863,9 @@ let ReportConfig = {
                 	 * 循环模块
                 	 */
                 	_this.entityTitle.push(item.title)
+                	if(modulesToEn[index]){
+                		_this.entityTitleEn.push(modulesToEn[index]["title"])
+                	}
                 	let smallModileType = item.smallModileType
                 	if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent) {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
@@ -1013,7 +1028,7 @@ let ReportConfig = {
                 			_this.formIndex.push(index)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
 					                          <label >${inputObj.temp_name}</label>
-					                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
+					                          <input disabled="disabled" type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
 					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 					                        </div>`
                 			
@@ -1098,11 +1113,14 @@ let ReportConfig = {
                 			break;
                 		case '9':
                 			//浮动类型
+                			_this.floatIndex.push(index)
+                			_this.floatTitle.push(item.title)
+                			_this.floatContents.push(item.contents)
                 			if(item.contents.length === 0) {
                 				//非财务模块的浮动
                 				_this.notMoneyFloatHtml[index] = `<div class="form-group form-inline p-4">
 					                          <label >${item.title.temp_name === null?'':item.title.temp_name}</label>
-					                          <input disabled="disabled" x	x	type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
+					                          <input disabled="disabled" type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
 					                        </div>`
                 			}
                 			break;
@@ -1279,7 +1297,7 @@ let ReportConfig = {
             			break;
             		case '6':
             			//信用等级
-            			let inputObj = item.contents[0]
+            			let inputObj = item_en.contents[0]
             			_this.formTitleEn.push(inputObj)
             			_this.formIndexEn.push(index)
             			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydjEn">
@@ -1350,7 +1368,7 @@ let ReportConfig = {
             			break;
             		case '8':
             			//radio类型 总体评价模块    保存回显同表单模块
-            			_this.formTitleEn.push(item.title)
+            			_this.formTitleEn.push(item_en.title)
             			_this.formIndexEn.push(index)
             			
             			let str = item.contents[0].get_source;
@@ -1370,14 +1388,13 @@ let ReportConfig = {
             			break;
             		case '9':
             			//浮动类型
-            			_this.floatIndex.push(index)
-            			_this.floatTitle.push(item.title)
-            			_this.floatContents.push(item.contents)
-            			if(item.contents.length === 0) {
+            			_this.floatIndexEn.push(index)
+            			_this.floatTitleEn.push(item_en.title)
+            			if(item_en.contents.length === 0) {
             				//非财务模块的浮动
-            				_this.notMoneyFloatHtml[index] = `<div class="form-group form-inline p-4">
-				                          <label >${item.title.temp_name === null?'':item.title.temp_name}</label>
-				                          <input type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
+            				_this.notMoneyFloatHtmlEn[index] = `<div class="form-group form-inline p-4">
+				                          <label >${item_en.title.temp_name === null?'':item_en.title.temp_name}</label>
+				                          <input  type="text" placeholder=${item_en.title.place_hold} name=${item_en.title.column_name} class="form-control mx-3 float-date" >
 				                        </div>`
             			}
             			break;
@@ -1501,13 +1518,14 @@ let ReportConfig = {
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表格翻译
-    			
+    			 $("body").mLoading("show")
 	   			 let temp = []
     			
 	   			 if(!_this.tableDataArr[index]){
 	   				 //此表格无数据，返回
 	   				 return
 	   			 }
+	   		
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				if(!tableDataArrEn[index]){return}
 	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
@@ -1523,6 +1541,9 @@ let ReportConfig = {
 	   					}
 	   				})
 	   			}) 
+	   			setTimeout(()=>{
+	   				$("body").mLoading("hide")
+	   			},0)
 	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
 	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("append",temp);
 	   			 
@@ -1627,7 +1648,6 @@ let ReportConfig = {
     	
     	let formTitlesEn = this.formTitleEn;
     	let formIndexEn = this.formIndexEn;
-//    	console.log(formTitles,formIndex)
     
     	//_this.formDataArr
     	formIndexEn.forEach((item,index)=>{
@@ -1647,7 +1667,7 @@ let ReportConfig = {
     				}
     			})
     		}
-			if(dataJsonObj["company_id"] && !dataJsonObj["company_id"]){return}
+    		if(!_this.formDataArr[index]){return}
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表单翻译
@@ -1658,11 +1678,12 @@ let ReportConfig = {
     					 dataJson:JSON.stringify(_this.formDataArr[index])
     				 },
     				 success:(data)=>{
-    					 _this.bindFormDataEn(data,index)
+    					 _this.bindFormDataEn(data,_this.formTitleArr[index])
     				 }
     			 });
     			 
     		})
+    		if(dataJsonObj["company_id"] && !dataJsonObj["company_id"] || !_this.formDataArr[index]){return}
 			 //点击保存按钮
     		
     		$(".position-fixed").on("click","#save",(e)=>{

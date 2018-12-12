@@ -65,10 +65,10 @@ public class BusinessEn {
 
             List<CreditCompanyFinancialEntry>  finDataRows = null;
             //财务
-            if("10".equals(moduleType)){
+            //if("10".equals(moduleType)){
                 //取数据
-                finDataRows = FinanceService.getFinancialEntryList("1");
-            }
+            //    finDataRows = FinanceService.getFinancialEntryList("1");
+            //}
 
             //无url的跳过取数
             if (source == null || "".equals(source)) {
@@ -270,7 +270,8 @@ public class BusinessEn {
 
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //取数据
-        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId);
+        Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId,type);
 
         int j = 0;
         Integer old = null;
