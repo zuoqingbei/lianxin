@@ -364,7 +364,7 @@ public class HomeController extends BaseProjectController {
 	 * @throws Exception 
 	 * @return_type   void
 	 */
-	public void saveOrder() throws Exception {
+	public void saveOrder()  {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
 		Integer userid = getSessionUser().getUserid();
 		List<File> ftpfileList=new ArrayList<File>();
@@ -429,7 +429,13 @@ public class HomeController extends BaseProjectController {
 		model.set("create_date", date1);
 		model.set("update_by", userid);
 		model.set("update_date", date1);
-		String id = OrderManagerService.service.modifyOrder(0,model,user,this);//保存订单
+		String id = "";
+		try {
+			id = OrderManagerService.service.modifyOrder(0,model,user,this);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			renderJson(new ResultType(0,"订单创建失败!"));
+		}//保存订单
 		
 		//非快速递交时创建报告
 		if(is_fastsubmmit.equals("-1")){
@@ -444,8 +450,6 @@ public class HomeController extends BaseProjectController {
 		company.set("create_by", userid);
 		company.set("update_by",userid);
 		company.set("name_en", right_company_name_en);
-		company.set("sys_language", "612");
-		company.save();
 		int companInfoId = -1;//填报语言对应的公司表id
 		/** 报告语言
 		 	213		中文简体
