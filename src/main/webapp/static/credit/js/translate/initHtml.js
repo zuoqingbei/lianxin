@@ -397,7 +397,7 @@ let InitObjTrans = {
 				}
 			}else {
 				if(!item.is_default){
-					item["item_name_en"] = `<input disabled="disabled" type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
+					item["item_name_en"] = `<input  type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name_en'] === null?'':item['item_name_en']}" class="form-control" style="width:13.5rem"/>`
 				}
 				item["begin_date_value"] = `<input disabled="disabled"  type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
@@ -438,6 +438,7 @@ let InitObjTrans = {
         			if(ele.column_name !== null){
         				index === 0?tempObj[ele.column_name] = '':tempObj[ele.column_name] = 0
         			}
+        			ele.column_name = ele.column_name&&ele.column_name === "item_name"? ele.column_name+'_en':ele.column_name
 	    			if(ele.temp_name !== '删除'){
 	    				arr.push({
 	    					title:ele.temp_name,
@@ -527,7 +528,7 @@ let InitObjTrans = {
 						///新增一行成功
 						console.log(data)
 						if(data.statusCode === 1) {
-							_this.refreshCwModal(tableCwIds,getSource,id)
+							_this.refreshCwModal(tableCwIds,getSource,id,rows)
 						}else {
 							Public.message("error",data.message)
 						}
@@ -594,7 +595,7 @@ let InitObjTrans = {
 						Public.message("error",data.message)
 					}else if(data.statusCode === 1){
 						Public.message("success",data.message)
-						_this.refreshCwModal(tableCwId,getSource,id)
+						_this.refreshCwModal(tableCwId,getSource,id,rows)
 						$(e.target).val("")
 						_this.saveCwSummation(alterSource)
 					}
@@ -672,7 +673,7 @@ let InitObjTrans = {
 			})
 		})
 	},
-	refreshCwModal(tableCwIds,getSource,id){
+	refreshCwModal(tableCwIds,getSource,id,rows){
 		/**
 		 * 刷新表格数据
 		 * id:财务模板id
@@ -680,7 +681,7 @@ let InitObjTrans = {
 //		console.log(tableCwIds)
 		let returnData;
 		$.ajax({
-			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id+'&report_type='+rows["report_type"],
 			type:'post',
 			async:false,
 			success:(data)=>{
@@ -705,7 +706,7 @@ let InitObjTrans = {
 				}
 			}else {
 				if(!item.is_default){
-					item["item_name_en"] = `<input disabled="disabled" type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
+					item["item_name_en"] = `<input  type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name_en'] === null?'':item['item_name_en']}" class="form-control" style="width:13.5rem"/>`
 				}
 				item["begin_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`

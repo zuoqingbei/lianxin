@@ -1508,7 +1508,6 @@ let ReportConfig = {
     	let tableDataArr = this.tableDataArr
     	let tableDataArrEn = this.tableDataArrEn
     	let idArrEn = this.idArrEn
-    	console.log(this.tableDataArrEn)
     	let dataEn  = []
     	tableTitlesEn.forEach((item,index)=>{
     		let alterSource = item["alter_source"];
@@ -1517,9 +1516,7 @@ let ReportConfig = {
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表格翻译
-    			 $("body").mLoading("show")
 	   			 let temp = []
-    			
 	   			 if(!_this.tableDataArr[index]){
 	   				 //此表格无数据，返回
 	   				 return
@@ -1540,12 +1537,9 @@ let ReportConfig = {
 	   					}
 	   				})
 	   			}) 
-	   			setTimeout(()=>{
-	   				$("body").mLoading("hide")
-	   			},0)
 	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
 	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("append",temp);
-	   			 
+	   			
     		})
     		
     		 //点击保存按钮
