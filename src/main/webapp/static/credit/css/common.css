@@ -401,3 +401,14 @@ input::-webkit-inner-spin-button{
 	-webkit-appearance: none !important;
 	margin: 0;
 }
+
+/* 禁用样式 */
+.disable{
+    color: #ccc!important;
+    pointer-events: none;
+    filter:  grayscale(100%);
+    opacity: .7;
+}
+.disable .select2-selection__choice{
+    color: #000;
+}

@@ -417,14 +417,9 @@ let Filing = {
       field: 'num',
       align: 'center',
       valign: 'middle',
-      events:{
-          "click .detail3":function(e,value,row,index){
-              console.log('orderfill');
-              Public.goToOrderDetail(row.id,row)
-          }
-      },
       formatter:function(value,row,index){
-          return '<a href="javascript:;" style="color:#1890ff" class="detail3">' + value + '</a>  ';
+          rows=encodeURIComponent(JSON.stringify(row));//对json字符串编码
+          return `<a href="javascript:;" style="color:#1890ff" class="detail3" data-row=${rows}>${value}</a>  `;
       }
     },{
       field: 'receiver_date',
@@ -796,19 +791,10 @@ let Filing = {
                 '<a href="javascript:;" class="order-cancel" style="margin-left:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a></div>'
           }             
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Filing.init();
+//给渲染完的固定列绑定方法
+$("table").on('click', '.detail3',function(){
+    let rows=$(this).attr('data-row');
+    let row=JSON.parse(decodeURIComponent(rows));//解码
+    Public.goToOrderDetail(row.id,row)
+})
