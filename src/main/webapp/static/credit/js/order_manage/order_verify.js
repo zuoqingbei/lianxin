@@ -250,14 +250,9 @@ let Verify = {
     field: 'num',
     align: 'center',
     valign: 'middle',
-    events:{
-        "click .detail3":function(e,value,row,index){
-            console.log('orderfill');
-            Public.goToOrderDetail(row.id,row)
-        }
-    },
     formatter:function(value,row,index){
-        return '<a href="javascript:;" style="color:#1890ff" class="detail3">' + value + '</a>  ';
+        rows=encodeURIComponent(JSON.stringify(row));//对json字符串编码
+        return `<a href="javascript:;" style="color:#1890ff" class="detail3" data-row=${rows}>${value}</a>  `;
     }
   },{
     field: 'receiver_date',
@@ -468,7 +463,7 @@ let Verify = {
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
-            fixedColumns: false,
+            fixedColumns: true,
             fixedNumber: 1,
             queryParamsType:'',
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
@@ -502,3 +497,9 @@ let Verify = {
 
 
 Verify.init();
+//给渲染完的固定列绑定方法
+$("table").on('click', '.detail3',function(){
+    let rows=$(this).attr('data-row');
+    let row=JSON.parse(decodeURIComponent(rows));//解码
+    Public.goToOrderDetail(row.id,row)
+})
