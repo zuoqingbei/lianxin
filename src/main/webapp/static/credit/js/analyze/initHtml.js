@@ -1,4 +1,4 @@
-let InitObj = {
+let InitObjAnalyze = {
 	hjArr:[],
 	cwAlterSource:'',
 	cwType:'',
