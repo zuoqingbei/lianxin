@@ -174,6 +174,27 @@ public class HttpTest {
 		}
 		return json;
 	}
+		//企业商标 
+	public static JSONObject getBrandandpatent(String conpanyName,String pageIndex){
+		if(StringUtils.isBlank(pageIndex)){
+			pageIndex="1";
+		}
+		HttpGet get = new HttpGet("http://i.yjapi.com/tm/Search?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&keyword="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+			return json;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return json;
+	}
 	public static void getSaicUrl(){
 		HttpGet get = new HttpGet("http://wsjs.saic.gov.cn/");
 		get.setHeader("User-Agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");

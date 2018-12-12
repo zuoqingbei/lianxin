@@ -54,7 +54,6 @@ public class ReportTranslateController extends BaseProjectController {
             		value = translateByError.get("correct_phrase");//翻译校正
             	}
         	}
-        	
         }
         jsonObject.put(key, value);
 		}
