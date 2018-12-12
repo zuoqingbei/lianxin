@@ -34,7 +34,7 @@ public class BusinessZh {
      * @param order  订单
      * @param userid 当前登录人
      */
-    public static void reportTable(CreditOrderInfo order, Integer userid) {
+    public static void reportTable(CreditOrderInfo order,String reportType, Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -44,7 +44,7 @@ public class BusinessZh {
         //CreditOrderInfo order =  CreditOrderInfo.dao.findById(orderId);
         String companyId = order.getStr("company_id");
         String customId = order.getStr("custom_id");
-        String reportType = order.getStr("report_type");
+        //String reportType = order.getStr("report_type");
         String orderId = order.getInt("id")+"";
 
         //获取公司信息

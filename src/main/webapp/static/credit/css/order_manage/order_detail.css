@@ -40,11 +40,11 @@ h3.company_info{
 
 /********* add by ljl 2018-12-03 *********/
 
-.disable{
+/*.disable{
     pointer-events: none;
     filter:  grayscale(100%);
     opacity: .7;
-}
+}*/
 /*基本类型*/
 @media all {
     .module-wrap {

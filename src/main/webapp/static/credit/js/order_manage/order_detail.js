@@ -1,9 +1,13 @@
+// import $ from "../../assets/wangEditor-3.1.1/src/js/util/dom-core";
+
 let OrderDetail = {
     init: function () {
         // ljl为此对象之外的页面全局变量
         ljl.row = this.row = JSON.parse(localStorage.getItem("row"));
         console.log('~~row：', this.row);
         this.isQuality = !!this.row.quality_type;
+        this.quality_deal = '';
+        this.qualityOpinionId = '';
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         this.getUrl = (item, otherProperty, paramObj) => {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.data_source).split("*");
@@ -18,16 +22,21 @@ let OrderDetail = {
                     if (param.includes("$")) {
                         let paramArr = param.split("$");
                         paramArr.forEach((item) => {
-                            if (item === 'orderId' || item === 'company_id') {//这里的orderId对应rows的id，和填报配置中不一样
-                                url += `&${item}=${ljl.row.id}`;
+                            if (item === 'orderId') { //这里的orderId对应rows的id，和填报配置中不一样
+                                url += `&${item}=${this.row.id}`;
                             } else {
-                                url += `&${item}=${paramObj[item]}`;
+                                if (paramObj[item]) {
+                                    url += `&${item}=${paramObj[item]}`;
+                                } else {
+                                    url += `&${item}=${this.row[item]}`
+                                }
+
                             }
                         });
                     } else if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
-                        url += `&${param}=${ljl.row.id}`
+                        url += `&${param}=${this.row.id}`
                     } else {
-                        url += `&${param}=${ljl.row[param]}`
+                        url += `&${param}=${this.row[param]}`
                     }
                 }
             });
@@ -54,8 +63,7 @@ let OrderDetail = {
         // console.log(this.row.quality_type+'=======================')
         $.get(`${this.BASE_PATH}getmodule/detail/`, {id, reportType, type}, (data) => {
             setTimeout(() => {
-                console.log('~~data：', data);
-                // console.log('-------------defaultModule', data.defaultModule);
+                console.log('~~~data：', data);
                 if (!data.defaultModule) {
                     console.error(`--本页面接口故障：
                         ${this.BASE_PATH}getmodule/detail/?id=${id}&reportType=${reportType}&type=0`);
@@ -189,7 +197,7 @@ let OrderDetail = {
                     $wrap.append(`<div class="type6-content module-content">${this.creditLevel}</div>`);
                     //绑数
                     $.get(this.getUrl(item), (data) => {
-                        if (data.rows) {
+                        if (data.rows && data.rows.length > 0) {
                             $wrap.find("#creditLevel").text(data.rows[0][item.title.column_name])
                         } else {
                             console.warn(item.title.temp_name + '-信用等级-没有返回数据！')
@@ -200,7 +208,7 @@ let OrderDetail = {
                 case '7':
                     $wrap.append(`<div class="type7-content module-content"></div>`);
                     $.get(`${this.getUrl(item, '', {report_type: this.row.report_type})}&order_num=${this.row.num}`, (data) => {
-                        if (data.rows) {
+                        if (data.rows && data.rows.length > 0) {
                             $wrap.find(".module-content").append(`<div class="border multiText m-4 p-2">${data.rows[0] ?
                                 data.rows[0][item.title.column_name] ? data.rows[0][item.title.column_name] : ''
                                 : ''}</div><div class="pt-1"></div>`);
@@ -286,37 +294,71 @@ let OrderDetail = {
                     let dealQualityData = (param, param2) => {
                         let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
                         $.get(this.getUrl(item, '', {
-                            id: this.row.qid ? this.row.qid : '',
-                            quality_opinion: $wrap.find("#quality_opinion").val(),
-                            quality_deal: checkedIndex,
-                            quality_type: ljl.row.quality_type,
-                            report_type: ljl.row.report_type,
-                            report_module_id: item.title.id,
-                            grade: $wrap.find("#grade").val()
-                        }) + (param === 'update' ? '&update=true' : '') + (param2 === 'submit' ? '&submit=true' : ''), (data) => {
-                            if (data.submit === 'true') {
-                                if (data.rows.quality_deal === '1') { // 页面不能再修改
-                                    $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
-                                } else if (data.rows.quality_deal === '2') {
-                                    $('.select2-container').addClass('disable');
+                                id: this.qualityOpinionId,
+                                quality_opinion: $wrap.find("#quality_opinion").val() || '',
+                                quality_deal: checkedIndex,
+                                quality_type: _this.row.quality_type,
+                                report_type: _this.row.report_type,
+                                report_module_id: item.title.id,
+                                grade: $wrap.find("#grade").val()
+                            }) + (param === 'update' ? '&update=true' : '')
+                            + (param2 === 'submit' ? '&submit=true' : ''),
+                            (data) => {
+
+                                this.qualityOpinionId = data.rows[0].id ? data.rows[0].id : '';
+                                let quality_type = this.row.quality_type;
+                                let status = this.row.status;
+                                switch (quality_type) {
+                                    case 'entering_quality':
+                                        if ($('.select2-container'.length === 0)) {
+                                            this.quality_deal = data.rows.quality_deal;
+                                        }
+                                        if (!(status === '298' || status === '294')) {
+                                            $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
+                                            this.quality_deal = data.rows.quality_deal;
+                                        } else if (data.rows.quality_deal === '2') {// 还可以修改质检意见
+                                            $('.select2-container').addClass('disable');
+                                            this.quality_deal = data.rows.quality_deal;
+                                        }
+                                        break;
+                                    case 'analyze_quality':
+                                        if (status !== '303') {
+                                            $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
+                                            this.quality_deal = data.rows.quality_deal;
+                                        } else if (data.rows.quality_deal === '2') {
+                                            $('.select2-container').addClass('disable');
+                                            this.quality_deal = data.rows.quality_deal;
+                                        }
+                                        break;
+                                    case 'translate_quality':
+                                        if (status !== '308') {
+                                            $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
+                                            this.quality_deal = data.rows.quality_deal;
+                                        } else if (data.rows.quality_deal === '2') {
+                                            $('.select2-container').addClass('disable');
+                                            this.quality_deal = data.rows.quality_deal;
+                                        }
+                                        break;
                                 }
-                            }
-                            if (data.rows && data.rows.length > 0) {
-                                $("#quality_opinion").val(data.rows[0].quality_opinion);
-                                $("#grade").val(data.rows[0].grade);
-                                $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
-                                ljl.row.qualityDataId = data.rows[0].id;
-                            } else {
-                                console.warn(item.title.temp_name + '-质检评分-没有返回数据！')
-                            }
-                        });
+
+                                if (data.rows && data.rows.length > 0) {
+                                    $("#quality_opinion").val(data.rows[0].quality_opinion || '');
+                                    console.log('(data.rows[0].grade', data.rows[0].grade);
+                                    $("#grade").val(data.rows[0].grade || 0);
+                                    $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
+                                    _this.row.qualityDataId = data.rows[0].id;
+                                } else {
+                                    console.warn(item.title.temp_name + '-质检评分-没有返回数据！')
+                                }
+                            });
                     };
                     dealQualityData();
                     $wrap.find("#save").click(function (e, param) {
-                        console.log(param);
                         _this.getQualitySelectData('update'); //质检结果
                         dealQualityData('update', param); //质检意见、分数等
-                        $('#reportbusiness').click();
+                        setTimeout(function () {
+                            $('#reportbusiness').click();
+                        }, 1500);
                         Public.message('success', '保存成功！')
                     });
                     $wrap.find("#submit").click(function () {
@@ -333,7 +375,7 @@ let OrderDetail = {
             this.setQualitySelect();
         }
     },
-    // 获取质检结果下拉框的数据并提交
+    // 获取质检结果下拉框的数据
     getQualitySelectData(param) {
         let _this = this;
         let optionData = [];
@@ -355,7 +397,7 @@ let OrderDetail = {
         });
         // 提交下拉框数据，用于增改查(update===true ? 改:(有id ? 查:增))
         $.ajax({
-            url: `${this.BASE_PATH}ReportGetData/getOrSaveResult?orderId=${_this.row.id}&quality_type=${_this.row.quality_type}&${param === 'update' ? 'update=true' : ''}`,
+            url: `${this.BASE_PATH}ReportGetData/getOrSaveResult?orderId=${_this.row.id}&quality_type=${_this.row.quality_type}&${param === 'update' ? 'update=true&id=' : ''}`,
             data: {datajson: JSON.stringify(optionData)},
             dataType: "json",
             success: (data) => {
@@ -378,7 +420,7 @@ let OrderDetail = {
     setQualitySelect() {
         let _this = this;
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
-        var detailname = this.english ? 'detail_name_en' : 'detail_name';
+        let detailname = this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
             if (!['基本信息', '流程进度', '质检评分', '附件'].includes($(this).text())) {
                 switch (_this.row.quality_type) {
@@ -399,10 +441,13 @@ let OrderDetail = {
                         break;
                     // 此页面无翻译功能
                 }
+                if (_this.quality_deal === '2') {
+                    $('.select2-container').addClass('disable');
+                }
             }
         });
         let BASE_PATH = this.BASE_PATH + 'ReportGetData/';
-        // 获取下拉质检结果框选项的内容
+        // 添加并获取质检结果下拉框选项的内容
         $.get(BASE_PATH + 'selectQuality?type=' + this.row.quality_type + "&disPalyCol=" + detailname, function (data) {
             // 设置option内容
             let OptHtml = '';
