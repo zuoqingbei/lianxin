@@ -3,17 +3,20 @@ package com.hailian.modules.admin.home;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.jfinal.component.db.SQLUtils;
 import com.hailian.modules.CommonController;
 import com.hailian.modules.admin.article.TbArticle;
 import com.hailian.modules.admin.comment.TbComment;
 import com.hailian.modules.admin.pageview.TbPageView;
+import com.hailian.system.department.DepartmentSvc;
 import com.hailian.system.user.SysUser;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;
 
 @ControllerBind(controllerKey = "/admin/home")
 public class AdminHomeController extends BaseProjectController {
 
-	private static final String path = "/pages/admin/home/";
+	private static final String path = "/pages/system/user/";
 
 	public void index() {
 		SysUser user = (SysUser) getSessionUser();
@@ -21,7 +24,7 @@ public class AdminHomeController extends BaseProjectController {
 			redirect(CommonController.firstPage);
 			return;
 		}
-		setAttr("nowUser", user);
+		/*setAttr("nowUser", user);
 
 		// 最新文件
 		Page<TbArticle> articlePage = TbArticle.dao.paginate(new Paginator(1, 10), "select t.*,f.name as folderName " //
@@ -47,6 +50,33 @@ public class AdminHomeController extends BaseProjectController {
 				" from tb_pageview t order by id desc ");
 		setAttr("pageViews", pageViewPage.getList());
 
-		render(path + "home.html");
+		render(path + "user_list.html");*/
+		list();
+	}
+	public void list() {
+		SysUser model = getModelByAttr(SysUser.class);
+		SQLUtils sql = new SQLUtils(" from sys_user t " //
+				+ " left join sys_department d on d.id = t.departid " //
+				+ " where 1 = 1 and userid != 1 ");
+		if (model.getAttrValues().length != 0) {
+			sql.whereLike("username", model.getStr("username"));
+			sql.whereLike("realname", model.getStr("realname"));
+			sql.whereEquals("usertype", model.getInt("usertype"));
+			sql.whereEquals("departid", model.getInt("departid"));
+		}
+		// 排序
+		String orderBy = getBaseForm().getOrderBy();
+		if (StrUtils.isEmpty(orderBy)) {
+			sql.append(" order by userid desc");
+		} else {
+			sql.append(" order by ").append(orderBy);
+		}
+		Page<SysUser> page = SysUser.dao.paginate(getPaginator(), "select t.*,d.name as departname ", sql.toString()
+				.toString());
+		// 下拉框
+		setAttr("departSelect", new DepartmentSvc().selectDepart(model.getInt("departid")));
+		setAttr("page", page);
+		setAttr("attr", model);
+		render(path + "user_list.html");
 	}
 }
