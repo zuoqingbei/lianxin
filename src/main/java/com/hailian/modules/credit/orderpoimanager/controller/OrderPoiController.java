@@ -40,6 +40,7 @@ import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.mail.service.MailService;
+import com.hailian.modules.credit.usercenter.controller.HomeController;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.dict.SysDictDetail;
@@ -357,14 +358,14 @@ public class OrderPoiController extends BaseProjectController {
 	public void savedata() {
 		boolean flag=true;
 		String msg="提交成功";
-		List<CreditOrderInfoModel> parseArray;
+		List<CreditOrderInfo> parseArray;
 		try {
 			String jsonString = HttpKit.readData(getRequest());
-			parseArray = JSON.parseArray(jsonString, CreditOrderInfoModel.class);
+			parseArray = JSON.parseArray(jsonString, CreditOrderInfo.class);
 			Date now = new Date();
 			Integer userid = getSessionUser().getUserid();
-			List<CreditOrderInfoModel> modellist=new ArrayList<CreditOrderInfoModel>();
-			for(CreditOrderInfoModel model:parseArray){
+			List<CreditOrderInfo> modellist=new ArrayList<CreditOrderInfo>();
+			for(CreditOrderInfo model:parseArray){
 			  String num =CreditOrderInfo.dao.getNumber();
 			  model.set("num", num);
 			  String countryid=model.getStr("country");
@@ -423,85 +424,12 @@ public class OrderPoiController extends BaseProjectController {
 			 }
 			 //Db.batchSave(modellist, modellist.size());
 			
-			 for(CreditOrderInfoModel model:modellist){
+			 for(CreditOrderInfo model:modellist){
 				 model.save();//保存订单
 				 if(model.get("agent_id")!= null){
-					 MailService.service.toSendMail("1", model.getStr("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
+					 MailService.service.toSendMail("1", model.get("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
 				 }
-					String language = model.get("report_language")+"";
-					CreditCompanyInfo company = new CreditCompanyInfo();
-					company.set("order_id", model.get("id")+"");
-					company.set("update_date", getNow());
-					company.set("create_date", getNow());
-					company.set("create_by", userid);
-					company.set("update_by",userid);
-					company.set("name_en",  model.get("right_company_name_en")+"");
-					company.set("sys_language", "612");
-					company.save();
-					int companInfoId = -1;//填报语言对应的公司表id
-					/** 报告语言
-					 	213		中文简体
-					    214	 	中文繁体  
-						215	 	英文
-						216	 	中文简体+英文
-						217	 	中文繁体+英文 */
-					/**自然语言
-					   612	 	中文简体
-					   613	 	英文
-					   614	 	中文繁体*/
-					String infoLanguage = Db.queryInt("select info_language from credit_report_type where del_flag=0 and id="+model.get("report_type"))+"";//填报语言
-					//if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
-					if("214".equals(language)){
-						company.set("sys_language", "614");
-						company.remove("id").save();
-						if(infoLanguage.equals("612")) {
-							company.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
-							company.remove("id").save();
-							companInfoId = company.get("id");
-						}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
-							company.set("sys_language", "613");
-							company.remove("id").save();
-						    companInfoId = company.get("id");
-						}else if(infoLanguage.equals("614")) {
-							companInfoId = company.get("id");//当报告语言为214时默认公司id
-						}
-					}else if("215".equals(language)){
-						company.set("sys_language", "613");
-						company.remove("id").save();
-						if(infoLanguage.equals("612")) {
-							company.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
-							company.remove("id").save();
-							companInfoId = company.get("id");
-						}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
-						    companInfoId = company.get("id");
-						}else if(infoLanguage.equals("614")) {
-							company.set("sys_language", "614"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
-							company.remove("id").save();
-							companInfoId = company.get("id");//当报告语言为214时默认公司id
-						}
-					}else if("216".equals(language)){
-						company.set("sys_language", "612");
-						company.remove("id").save();
-						if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
-						company.set("sys_language", "613");
-						company.remove("id").save();
-						if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
-						if(infoLanguage.equals("614")) { company.set("sys_language", "614"); company.remove("id").save();companInfoId = company.get("id");}
-					}else if("217".equals(language)){
-						company.set("sys_language", "614");
-						company.remove("id").save();
-						if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
-						company.set("sys_language", "613");
-						company.remove("id").save();
-						if(infoLanguage.equals("613")) { companInfoId = company.get("id");}
-						if(infoLanguage.equals("612")) { company.set("sys_language", "612"); company.remove("id").save();companInfoId = company.get("id");}
-					}else if("213".equals(language)){
-						company.set("sys_language", "612");
-						company.remove("id").save();
-						if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
-						if(infoLanguage.equals("613")) { company.set("sys_language", "613"); company.remove("id").save();  companInfoId = company.get("id");}
-						if(infoLanguage.equals("614")) { company.set("sys_language", "614"); company.remove("id").save();  companInfoId = company.get("id");}
-					}
+					int companInfoId = new HomeController().crateReportByOrder(userid, model,  model.get("id")+"");
 					model.set("company_id",companInfoId);
 					model.update();
 			 }
@@ -527,7 +455,7 @@ public class OrderPoiController extends BaseProjectController {
 			ResultType resultType = new ResultType(2, msg);
 			renderJson(resultType);
 		}
-		
+	
 	}
 	
 	
