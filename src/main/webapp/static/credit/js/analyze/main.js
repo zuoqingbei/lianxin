@@ -247,76 +247,77 @@ let ReportConfig = {
 			 paramObj["conf_id"] = conf_id
 			 let temp;
 			 $.ajax({
-	    			url,
-	    			type:'post',
-	    			async:false,
-	    			data:paramObj,
-	    			success:(data)=>{
-	    				temp = data
-	    			}
-	    			
-	    		})
-			 let arr = Array.from($("#title"+item))
-			 if(temp.rows === null){return}
-			 arr.forEach((item,index)=>{
-				 if($(item).siblings(".radio-con").length !== 0) {
-					 //radio类型绑数
-					 if(temp.rows.length === 0){return}
-					 let obid = temp.rows[0].id;
-					 $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
-					 let overall_rating =  temp.rows[0].overall_rating;
-					 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-					 
-					 $("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
-					 return
+				 url,
+				 type:'post',
+				 data:paramObj,
+				 success:(data)=>{
+					 temp = data
+					 let arr = Array.from($("#title"+item))
+					 if(temp.rows === null){return}
+					 arr.forEach((item,index)=>{
+						 if($(item).siblings(".radio-con").length !== 0) {
+							 //radio类型绑数
+							 if(temp.rows.length === 0){return}
+							 let obid = temp.rows[0].id;
+							 $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+							 let overall_rating =  temp.rows[0].overall_rating;
+							 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+							 
+							 $("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+							 return
+						 }
+						 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
+							 //信用等级
+							 if(temp.rows.length === 0){return}
+							 let name =$(item).next().find("input").attr("name")
+							 $(item).next().find("input").val(temp.rows[0][name])
+							 return;
+						 }
+						 if($(item).next().hasClass("textarea-module")) {
+							 //无标题多行文本输入框
+							 if(temp.rows.length === 0){return}
+							 let obid = temp.rows[0].id;
+							 $(item).next().find("textarea").attr("entityid",obid)
+							 let name =$(item).next().find("textarea").attr("name")
+							 $(item).next().find("textarea").val(temp.rows[0][name])
+							 return;
+						 }
+						 if(($(item).next().find("input").hasClass("float-date"))) {
+							 //浮动非财务
+							 if(temp.rows.length === 0){return}
+							 let obid = temp.rows[0].id;
+							 $(item).next().find("input").attr("entityid",obid)
+							 let name =$(item).next().find("input").attr("name")
+							 $(item).next().find("input").val(temp.rows[0][name])
+							 return;
+						 }
+						 let formArr = Array.from($(item).siblings().find(".form-control"))
+						 if(!temp.rows || temp.rows.length === 0){return}
+						 //实体id
+						 let obid = temp.rows[0].id;
+						 formArr.forEach((item,index)=>{
+							 let obj = temp.rows[0];
+							 console.log(obid)
+							 let id = $(item).attr("id");
+							 let anotherIdArr = id.split("_")
+							 anotherIdArr.pop();
+							 let anotherId = anotherIdArr.join('_')
+							 $("#"+id).attr("entryid",obid)
+							 if($(item).is('select')){
+								 //如果是select
+								 $("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
+							 }else {
+								 console.log($("#"+id),obj[anotherId])
+								 $("#"+id).val(obj[anotherId])
+							 }
+						 })
+					 })
 				 }
-				 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
-					 //信用等级
-					 if(temp.rows.length === 0){return}
-					 let name =$(item).next().find("input").attr("name")
-					 $(item).next().find("input").val(temp.rows[0][name])
-					  return;
-				 }
-				 if($(item).next().hasClass("textarea-module")) {
-					 //无标题多行文本输入框
-					 if(temp.rows.length === 0){return}
-					 let obid = temp.rows[0].id;
-					 $(item).next().find("textarea").attr("entityid",obid)
-					 let name =$(item).next().find("textarea").attr("name")
-					 $(item).next().find("textarea").val(temp.rows[0][name])
-					 return;
-				 }
-				 if(($(item).next().find("input").hasClass("float-date"))) {
-					 //浮动非财务
-					 if(temp.rows.length === 0){return}
-					 let obid = temp.rows[0].id;
-					 $(item).next().find("input").attr("entityid",obid)
-					  let name =$(item).next().find("input").attr("name")
-					 $(item).next().find("input").val(temp.rows[0][name])
-					 return;
-				 }
-				 let formArr = Array.from($(item).siblings().find(".form-control"))
-				 if(temp.rows.length === 0){return}
-				 //实体id
-				 let obid = temp.rows[0].id;
-				 formArr.forEach((item,index)=>{
-					 let obj = temp.rows[0];
-    				let id = $(item).attr("id");
-    				let anotherIdArr = id.split("_")
-    				anotherIdArr.pop();
-    				let anotherId = anotherIdArr.join('_')
-    				$("#"+id).attr("entryid",obid)
-    				if($(item).is('select')){
-    					//如果是select
-    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
-    				}else {
-    					$("#"+id).val(obj[anotherId])
-    				}
-				 })
 			 })
-    		
-    	})
+	    	
     	
+    	
+    	})
     },
     tabChange(){
         /**tab切换事件 */
