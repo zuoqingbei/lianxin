@@ -156,22 +156,14 @@ let Public = {
         })
     },
     goToOrderDetail(id, row) {
-<<<<<<< HEAD
-        console.log(row,"开始订单详情页跳转")
-=======
         console.log("开始订单详情页跳转");
         console.log(id);
         console.log(row)
->>>>>>> branch 'deploy' of https://github.com/zuoqingbei/lianxin.git
         //跳转订单详情
         $("#main_content").load(BASE_PATH + 'credit/front/home/orderInfo?id=' + id);
         if(row){
             localStorage.setItem("row", JSON.stringify(row));
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'deploy' of https://github.com/zuoqingbei/lianxin.git
     },
     createOrder() {
         $("#main_content").load(BASE_PATH + 'credit/front/home/createOrder')

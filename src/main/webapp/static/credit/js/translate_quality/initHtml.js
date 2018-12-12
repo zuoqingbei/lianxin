@@ -1,4 +1,4 @@
-let InitObjTrans = {
+let InitObjTransQua = {
 	hjArr:[],
 	cwAlterSource:'',
 	cwType:'',
@@ -88,7 +88,7 @@ let InitObjTrans = {
 			async:false,
 			data:paramObj,
 			success:(data)=>{
-				console.log(data)
+				// console.log(data)
 				data = data.rows
 				_this.cwType = data[0]["type"]
 				if(data.length === 0){return}
@@ -150,7 +150,7 @@ let InitObjTrans = {
 				})
 			}
 		})
-		console.log(tableTitles)
+		// console.log(tableTitles)
 		let tables = Array.from($(".table-title"))
 		tables.forEach((item,i)=>{
 			$(tables[i]).html(radioVal==="1"?tableTitles[i][1]:tableTitles[i][0])
@@ -356,7 +356,7 @@ let InitObjTrans = {
 		})
 	},
 	
-	initCwTable(tableCwIds,contents,getSource,alterSource,deleteSource){
+	initCwTable(tableCwIds,contents,getSource,alterSource,deleteSource,rows){
 		//财务模块表格初始化  掉了4次
 		/**
 		 * tableCwIds:表格id数组 
@@ -371,7 +371,7 @@ let InitObjTrans = {
 		let _this = this
 		this.cwAlterSource = alterSource
 		$.ajax({
-			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id+'&report_type='+rows["report_type"],
 			type:'post',
 			async:false,
 			success:(data)=>{

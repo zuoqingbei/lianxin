@@ -6,6 +6,7 @@ let OrderDetail = {
         ljl.row = this.row = JSON.parse(localStorage.getItem("row"));
         console.log('~~row：', this.row);
         this.isQuality = !!this.row.quality_type;
+        this.quality_deal = '';
         this.qualityOpinionId = '';
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         this.getUrl = (item, otherProperty, paramObj) => {
@@ -24,9 +25,9 @@ let OrderDetail = {
                             if (item === 'orderId') { //这里的orderId对应rows的id，和填报配置中不一样
                                 url += `&${item}=${this.row.id}`;
                             } else {
-                                if(paramObj[item]){
+                                if (paramObj[item]) {
                                     url += `&${item}=${paramObj[item]}`;
-                                }else{
+                                } else {
                                     url += `&${item}=${this.row[item]}`
                                 }
 
@@ -207,7 +208,7 @@ let OrderDetail = {
                 case '7':
                     $wrap.append(`<div class="type7-content module-content"></div>`);
                     $.get(`${this.getUrl(item, '', {report_type: this.row.report_type})}&order_num=${this.row.num}`, (data) => {
-                        if (data.rows&&data.rows.length>0) {
+                        if (data.rows && data.rows.length > 0) {
                             $wrap.find(".module-content").append(`<div class="border multiText m-4 p-2">${data.rows[0] ?
                                 data.rows[0][item.title.column_name] ? data.rows[0][item.title.column_name] : ''
                                 : ''}</div><div class="pt-1"></div>`);
@@ -309,37 +310,40 @@ let OrderDetail = {
                                 let status = this.row.status;
                                 switch (quality_type) {
                                     case 'entering_quality':
-                                        if (status !== '298' && status !== '294') {
+                                        if ($('.select2-container'.length === 0)){
+                                            this.quality_deal = data.rows.quality_deal;
+                                        }
+                                        if (!(status === '298' || status === '294')) {
                                             $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
-                                        } else {
-                                            if (data.rows.quality_deal === '2') { // 还可以修改质检意见
-                                                $('.select2-container').addClass('disable');
-                                            }
+                                            this.quality_deal = data.rows.quality_deal;
+                                        } else if (data.rows.quality_deal === '2') {// 还可以修改质检意见
+                                            $('.select2-container').addClass('disable');
+                                            this.quality_deal = data.rows.quality_deal;
                                         }
                                         break;
                                     case 'analyze_quality':
                                         if (status !== '303') {
                                             $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
-                                        } else {
-                                            if (data.rows.quality_deal === '2') { // 还可以修改质检意见
-                                                $('.select2-container').addClass('disable');
-                                            }
+                                            this.quality_deal = data.rows.quality_deal;
+                                        } else if (data.rows.quality_deal === '2') {
+                                            $('.select2-container').addClass('disable');
+                                            this.quality_deal = data.rows.quality_deal;
                                         }
                                         break;
                                     case 'translate_quality':
                                         if (status !== '308') {
                                             $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
-                                        } else {
-                                            if (data.rows.quality_deal === '2') { // 还可以修改质检意见
-                                                $('.select2-container').addClass('disable');
-                                            }
+                                            this.quality_deal = data.rows.quality_deal;
+                                        } else if (data.rows.quality_deal === '2') {
+                                            $('.select2-container').addClass('disable');
+                                            this.quality_deal = data.rows.quality_deal;
                                         }
                                         break;
                                 }
 
                                 if (data.rows && data.rows.length > 0) {
-                                    $("#quality_opinion").val(data.rows[0].quality_opinion);
-                                    $("#grade").val(data.rows[0].grade);
+                                    $("#quality_opinion").val(data.rows[0].quality_opinion || '');
+                                    $("#grade").val(data.rows[0].grade || 0);
                                     $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
                                     _this.row.qualityDataId = data.rows[0].id;
                                 } else {
@@ -349,7 +353,6 @@ let OrderDetail = {
                     };
                     dealQualityData();
                     $wrap.find("#save").click(function (e, param) {
-                        console.log(param);
                         _this.getQualitySelectData('update'); //质检结果
                         dealQualityData('update', param); //质检意见、分数等
                         setTimeout(function () {
@@ -371,7 +374,7 @@ let OrderDetail = {
             this.setQualitySelect();
         }
     },
-    // 获取质检结果下拉框的数据并提交
+    // 获取质检结果下拉框的数据
     getQualitySelectData(param) {
         let _this = this;
         let optionData = [];
@@ -436,6 +439,9 @@ let OrderDetail = {
                         }
                         break;
                     // 此页面无翻译功能
+                 }
+                if(_this.quality_deal==='2'){
+                    $('.select2-container').addClass('disable');
                 }
             }
         });

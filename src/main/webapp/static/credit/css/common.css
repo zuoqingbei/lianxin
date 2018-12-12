@@ -409,3 +409,6 @@ input::-webkit-inner-spin-button{
     filter:  grayscale(100%);
     opacity: .7;
 }
+.disable .select2-selection__choice{
+    color: #000;
+}
