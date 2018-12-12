@@ -1,3 +1,9 @@
+window.operateEvent={
+    "click .detail3":function(e,value,row,index){
+        console.log('qqq');
+    }
+}
+console.log('evenet',operateEvent)
 let Allocation = {
 	
     init(){
@@ -116,9 +122,20 @@ let Allocation = {
                   field: 'num',
                   align: 'center',
                   valign: 'middle',
-                  formatter:function(value,row,index){ 
-                  	return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  '; 
-                  } 
+                     events:operateEvent,
+                  formatter:function(value,row,index){
+                        // console.log(row)
+                      return '<a href="javascript:;" style="color:#1890ff" class="detail3">' + value + '</a>  ';
+                      // let rows=JSON.stringify(row)
+                      // console.log(rows)
+                      // rows = rows.replace(/</g,'&lt;');
+                      // rows = rows.replace(/>/g,'&gt;');
+
+                      // console.log(rows)
+                  	// return '<a href="javascript:;" style="color:#1890ff" onclick="Public.goToOrderDetail(' + row.id + ')">' + value + '</a>  ';
+                    // return`<a href="javascript:;" style="color:#1890ff" onclick="$('#main_content').load(BASE_PATH + 'credit/front/home/orderInfo?id=` + `${row.id}\'`+`);localStorage.setItem('row',${rows});">${value}</a> `
+                      // return `<a href="javascript:;" style="color:#1890ff" onclick='Public.goToOrderDetail(${row.id},${rows})'>${value}</a>`;
+                  }
                 },{
                   field: 'receiver_date',
                   title: '订单日期',
