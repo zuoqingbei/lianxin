@@ -64,18 +64,25 @@ import org.jsoup.select.Elements;
 import com.alibaba.fastjson.JSONObject;
 
 
+
+
+
 /**
  * 爬虫
  * @author Thinkpad
  *
  */
 public class HttpCrawler {
-	
+
+
+
 	//商标网随机数
 	public static Integer random = 11;
 	
 	public static void main(String[] args) throws Exception {
-		HttpCrawler crawler = new HttpCrawler();
+
+
+		//HttpCrawler crawler = new HttpCrawler();
 		//1. 中华人民共和国海关总署网站
 		/*Map<String,String> postValue = crawler.getCustomersVerifyCode("2");
 		String verifyCode = null;//定义验证码变量
@@ -344,13 +351,13 @@ public class HttpCrawler {
      * @param company 公司名称
      * @return
      */
-	public static Map<String,String> getMofcomUrl(String company,String companyId,CreditOrderInfo orderInfo) {
+	public static Map<String,String> getMofcomUrl(String company,String companyId,CreditOrderInfo orderInfo) throws Exception{
         Map<String,Object> verifyCode1 = getMofcomVerifyCode("mofcom_1");
         CookieStore cookieStore = (CookieStore)verifyCode1.get("cookie");
         String base64 = (String)verifyCode1.get("code");
         String apiResult = null;//定义验证码变量
         //调用"万维易源"图形验证码解析接口
-        apiResult = new ShowApiRequest("http://route.showapi.com/184-5","79579","d99c5e196505400084595741668077cd")
+        apiResult = new ShowApiRequest("http://route.showapi.com/184-5","82770","640631e4c99e4e65b10fa6a533cf48f9")
                 .addTextPara("img_base64",base64)
                 .addTextPara("typeId","14")
                 .addTextPara("convert_to_jpg","0")
@@ -395,39 +402,48 @@ public class HttpCrawler {
 					System.out.println(headers[i].getName() + "==" + headers[i].getValue());
 				}
 				html = EntityUtils.toString(response.getEntity(), "utf-8");
+                System.out.println(html);
 				Document doc = Jsoup.parse(html);
-				Elements attr = doc.select("table[class=m-table]").get(0).getElementsByTag("a");
-				for (Element element : attr) {
-					String href = "http://iecms.mofcom.gov.cn" + element.attr("href");
-					//System.out.println("href====" + href);
-					HttpGet get = new HttpGet(href);
-					response = httpclient.execute(get);
-					html = EntityUtils.toString(response.getEntity(), "utf-8");
-                    result = parseMofcom(html);
+                Elements eles = doc.select("table[class=m-table]");
+                if(eles.size()>0){
+                    Elements attr = doc.select("table[class=m-table]").get(0).getElementsByTag("a");
+                    for (Element element : attr) {
+                        String href = "http://iecms.mofcom.gov.cn" + element.attr("href");
+                        //System.out.println("href====" + href);
+                        HttpGet get = new HttpGet(href);
+                        response = httpclient.execute(get);
+                        html = EntityUtils.toString(response.getEntity(), "utf-8");
+                        result = parseMofcom(html);
+                        System.out.println(JSONObject.toJSONString(result));
 
-                    //修改海关代码
-                    List<CreditCompanyLegalstru> list = CreditCompanyLegalstru.dao.findByWhere("select * from credit_company_legalstru where company_id=? and del_flag=0");
-                    if(list!=null&&list.size()>0){
-                        String sql="update credit_company_legalstru set hs_code=? where company_id=? ";
-                        List<Object> params=new ArrayList<Object>();
-                        params.add(result.get("code"));
-                        params.add(companyId);
-                        Db.update(sql, params.toArray());
-                    }else{
-                        CreditCompanyLegalstru companyLegalstru=new CreditCompanyLegalstru();
-                        companyLegalstru.set("hs_code",result.get("code"));
-                        companyLegalstru.set("company_id",companyId);
-                        companyLegalstru.set("sys_language","612");
-                        companyLegalstru.save();
+                        //修改海关代码
+                        List<Object> par=new ArrayList<Object>();
+                        par.add(companyId);
+                        List<CreditCompanyLegalstru> list = CreditCompanyLegalstru.dao.find("select * from credit_company_legalstru where company_id=? and del_flag=0 ", par.toArray());
+                        if(list!=null && list.size()>0){
+                            String sql="update credit_company_legalstru set hs_code=? where company_id=? ";
+                            List<Object> params=new ArrayList<Object>();
+                            params.add(result.get("code"));
+                            params.add(companyId);
+                            Db.update(sql, params.toArray());
+                        }else {
+                            CreditCompanyLegalstru companyLegalstru = new CreditCompanyLegalstru();
+                            companyLegalstru.set("hs_code", result.get("code"));
+                            companyLegalstru.set("company_id", companyId);
+                            companyLegalstru.set("sys_language", "612");
+                            companyLegalstru.save();
+                        }
+                        //公司英文名称
+                        /*CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
+                        companyinfoModel.set("id",companyId);
+                        companyinfoModel.set("name_en",result.get("nameEn"));
+                        companyinfoModel.update();*/
+                        System.out.println(JSONObject.toJSONString(result));
+                        break;
                     }
-                    //公司英文名称
-                    CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
-                    companyinfoModel.set("id",companyId);
-                    companyinfoModel.set("name_en",result.get("nameEn"));
-                    companyinfoModel.update();
-                    System.out.println(JSONObject.toJSONString(result));
-                    break;
-				}
+                }else{
+                    System.out.println("请求响应的页面格式不正确，可能是因为验证码错误造成！");
+                }
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -489,11 +505,11 @@ public class HttpCrawler {
      * @param companyId
      */
 	public static void getIcrisUrl(String company,String companyId,CreditOrderInfo orderInfo) {
-        /*String country = orderInfo.getStr("country");
+        String country = orderInfo.getStr("country");
         country = new ReportInfoGetDataController().dictIdToString(country);
         if(!"中国香港".equals(country)){
             return;
-        }*/
+        }
         //第一级页面
         HttpGet get = new HttpGet("https://www.icris.cr.gov.hk/csci/clearsession.jsp?user_type=iguest");
         CloseableHttpClient httpclient = sslClient(null);
