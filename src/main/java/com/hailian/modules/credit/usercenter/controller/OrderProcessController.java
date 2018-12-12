@@ -518,7 +518,7 @@ public class OrderProcessController extends BaseProjectController{
                 //调用香港查册网
                 HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
                 //爬取商务部业务系统网站
-                HttpCrawler.getMofcomUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
+                //HttpCrawler.getMofcomUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
                 //爬虫完毕更新状态
                 CreditOrderInfo model2 = new CreditOrderInfo(); model2.set("id", orderId).set("status", 694);  model2.update();
             }
@@ -716,7 +716,7 @@ public class OrderProcessController extends BaseProjectController{
             CompanyModel companymodel = CompanyModel.dao.findById(companyid);
             String address=null;
             if(companymodel != null){
-                address=companymodel.getStr("address");
+                address=companymodel.getStr("company_address");
                 if(StringUtils.isNotBlank(address)){
                     String[] strs=address.split("-");
                     String province=strs[0].toString();
