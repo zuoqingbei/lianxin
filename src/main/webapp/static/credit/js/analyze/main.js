@@ -587,7 +587,7 @@ let ReportConfig = {
     	$(cw_dom).after(cw_top_html)
     	setTimeout(()=>{
     		InitObj.bindCwConfig(_this.cwConfigGetSource,cw_contents[0][1].column_name,_this.rows,_this.tableTitle)
-    		InitObj.initCwTable(tableCwId,cw_contents[1],_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource)
+    		InitObj.initCwTable(tableCwId,cw_contents[1],_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,_this.rows)
     		InitObj.cwModalCompute(_this.cwAlterSource)
     		InitObj.downLoadCw(cw_contents[0][2].alter_source,_this.rows);
 			InitObj.upLoadCw(cw_contents[0][3].alter_source,_this.rows,_this.cwGetSource,_this.cwAlterSource,tableCwId);
