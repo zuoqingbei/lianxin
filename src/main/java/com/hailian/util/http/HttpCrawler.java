@@ -64,18 +64,25 @@ import org.jsoup.select.Elements;
 import com.alibaba.fastjson.JSONObject;
 
 
+
+
+
 /**
  * 爬虫
  * @author Thinkpad
  *
  */
 public class HttpCrawler {
-	
+
+
+
 	//商标网随机数
 	public static Integer random = 11;
 	
 	public static void main(String[] args) throws Exception {
-		HttpCrawler crawler = new HttpCrawler();
+
+
+		//HttpCrawler crawler = new HttpCrawler();
 		//1. 中华人民共和国海关总署网站
 		/*Map<String,String> postValue = crawler.getCustomersVerifyCode("2");
 		String verifyCode = null;//定义验证码变量
@@ -412,7 +419,7 @@ public class HttpCrawler {
                         //修改海关代码
                         List<Object> par=new ArrayList<Object>();
                         par.add(companyId);
-                        List<CreditCompanyLegalstru> list = CreditCompanyLegalstru.dao.find("select * from credit_company_legalstru where company_id=? and del_flag=0 ",par.toArray());
+                        List<CreditCompanyLegalstru> list = CreditCompanyLegalstru.dao.find("select * from credit_company_legalstru where company_id=? and del_flag=0 ", par.toArray());
                         if(list!=null && list.size()>0){
                             String sql="update credit_company_legalstru set hs_code=? where company_id=? ";
                             List<Object> params=new ArrayList<Object>();
