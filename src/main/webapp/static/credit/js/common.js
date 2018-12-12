@@ -156,10 +156,15 @@ let Public = {
         })
     },
     goToOrderDetail(id, row) {
-        console.log("开始订单详情页跳转")
+        console.log("开始订单详情页跳转");
+        console.log(id);
+        console.log(row)
         //跳转订单详情
         $("#main_content").load(BASE_PATH + 'credit/front/home/orderInfo?id=' + id);
-        localStorage.setItem("row", JSON.stringify(row));
+        if(row){
+            localStorage.setItem("row", JSON.stringify(row));
+        }
+
     },
     createOrder() {
         $("#main_content").load(BASE_PATH + 'credit/front/home/createOrder')
@@ -353,7 +358,6 @@ $(function () {
         //遍历所有textarea标签
         $('textarea').each(function(){
             var text = $(this).val();
-            console.log($(this).attr("name")+"="+text);
             text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
             $(this).val(text);
         });

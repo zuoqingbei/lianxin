@@ -158,7 +158,7 @@ public class FinanceService {
 	 * 获取财务实体表信息
  	 *@author  lzg
 	 * @param  String financialConfId,
-	 * @param type 
+	 * @param type 财务类型
 	 */
 	public static List<CreditCompanyFinancialEntry> getFinancialEntryList(String financialConfId, Integer type ) {
 		Integer realType = ZH_TO_EN_MAPPING.get(type);

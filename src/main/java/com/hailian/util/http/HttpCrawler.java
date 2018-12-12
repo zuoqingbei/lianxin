@@ -19,6 +19,7 @@ import javax.net.ssl.X509TrustManager;
 
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyLegalstru;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.companychangeitem.model.ChangeitemModel;
 import com.hailian.modules.credit.companychangeitem.service.ChangeitemService;
@@ -326,7 +327,7 @@ public class HttpCrawler {
 	/**
 	 * 2.1 爬取商务部业务系统网站接口
 	 */
-	public Map<String,Object> getMofcomVerifyCode(String identify){
+	public static Map<String,Object> getMofcomVerifyCode(String identify){
         Map<String,Object> result = new HashMap<>();
 		CookieStore cookieStore = getCookie("http://iecms.mofcom.gov.cn/corpLogin.html");
 		if(null != cookieStore){
@@ -343,7 +344,7 @@ public class HttpCrawler {
      * @param company 公司名称
      * @return
      */
-	public Map<String,String> getMofcomUrl(String company) {
+	public static Map<String,String> getMofcomUrl(String company,String companyId,CreditOrderInfo orderInfo) {
         Map<String,Object> verifyCode1 = getMofcomVerifyCode("mofcom_1");
         CookieStore cookieStore = (CookieStore)verifyCode1.get("cookie");
         String base64 = (String)verifyCode1.get("code");
@@ -403,6 +404,27 @@ public class HttpCrawler {
 					response = httpclient.execute(get);
 					html = EntityUtils.toString(response.getEntity(), "utf-8");
                     result = parseMofcom(html);
+
+                    //修改海关代码
+                    List<CreditCompanyLegalstru> list = CreditCompanyLegalstru.dao.findByWhere("select * from credit_company_legalstru where company_id=? and del_flag=0");
+                    if(list!=null&&list.size()>0){
+                        String sql="update credit_company_legalstru set hs_code=? where company_id=? ";
+                        List<Object> params=new ArrayList<Object>();
+                        params.add(result.get("code"));
+                        params.add(companyId);
+                        Db.update(sql, params.toArray());
+                    }else{
+                        CreditCompanyLegalstru companyLegalstru=new CreditCompanyLegalstru();
+                        companyLegalstru.set("hs_code",result.get("code"));
+                        companyLegalstru.set("company_id",companyId);
+                        companyLegalstru.set("sys_language","612");
+                        companyLegalstru.save();
+                    }
+                    //公司英文名称
+                    CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
+                    companyinfoModel.set("id",companyId);
+                    companyinfoModel.set("name_en",result.get("nameEn"));
+                    companyinfoModel.update();
                     System.out.println(JSONObject.toJSONString(result));
                     break;
 				}
@@ -426,7 +448,7 @@ public class HttpCrawler {
      * @param html
      * @return
      */
-	public Map<String, String> parseMofcom(String html) {
+	public static Map<String, String> parseMofcom(String html) {
         Map<String, String> result = new HashMap<String,String>();
         Document doc = Jsoup.parse(html);
         Elements tables = doc.select("table[class=m-table1]");
