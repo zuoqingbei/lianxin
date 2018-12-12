@@ -586,12 +586,12 @@ let ReportConfig = {
     	$(cw_dom).after(cw_table_html)
     	$(cw_dom).after(cw_top_html)
     	setTimeout(()=>{
-    		InitObj.bindCwConfig(_this.cwConfigGetSource,cw_contents[0][1].column_name,_this.rows,_this.tableTitle)
-    		InitObj.initCwTable(tableCwId,cw_contents[1],_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,_this.rows)
-    		InitObj.cwModalCompute(_this.cwAlterSource)
-    		InitObj.downLoadCw(cw_contents[0][2].alter_source,_this.rows);
-			InitObj.upLoadCw(cw_contents[0][3].alter_source,_this.rows,_this.cwGetSource,_this.cwAlterSource,tableCwId);
-			InitObj.addNewCwModal(_this.cwConfigAlterSource,_this.rows);
+    		InitObjAnalyze.bindCwConfig(_this.cwConfigGetSource,cw_contents[0][1].column_name,_this.rows,_this.tableTitle)
+    		InitObjAnalyze.initCwTable(tableCwId,cw_contents[1],_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,_this.rows)
+    		InitObjAnalyze.cwModalCompute(_this.cwAlterSource)
+    		InitObjAnalyze.downLoadCw(cw_contents[0][2].alter_source,_this.rows);
+			InitObjAnalyze.upLoadCw(cw_contents[0][3].alter_source,_this.rows,_this.cwGetSource,_this.cwAlterSource,tableCwId);
+			InitObjAnalyze.addNewCwModal(_this.cwConfigAlterSource,_this.rows);
     	},0)
     },
     initContent(){
@@ -624,11 +624,11 @@ let ReportConfig = {
         	success:(data)=>{
                 setTimeout(()=>{
                 	_this.initModal();
-                	InitObj.addressInit();
-                	InitObj.regChecked();
+                	InitObjAnalyze.addressInit();
+                	InitObjAnalyze.regChecked();
                 	_this.initTable();
                 	_this.initFloat();
-                	InitObj.dateInit();
+                	InitObjAnalyze.dateInit();
                 	_this.bindFormData();
                 	_this.tabChange();
                 	_this.modalClean();
@@ -1114,7 +1114,7 @@ let ReportConfig = {
 			 //点击保存按钮
     		$(".position-fixed").on("click","#save",(e)=>{
     			$("body").mLoading("show")
-    			InitObj.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
+    			InitObjAnalyze.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#save").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
@@ -1184,7 +1184,7 @@ let ReportConfig = {
     			 //点击提交按钮
     		$(".position-fixed").on("click","#commit",(e)=>{
     			 $("body").mLoading("show")
-    			InitObj.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
+    			InitObjAnalyze.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#commit").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
