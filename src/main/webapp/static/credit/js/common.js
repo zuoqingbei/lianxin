@@ -284,7 +284,7 @@ let Public = {
                       <p class="mt-2">暂无附件</p>
                   </div>
               </div>
-			</div>`
+			</div>`;
         let url = item.title.get_source ? item.title.get_source : item.title.data_source;
         url = BASE_PATH + url;
         $.ajax({
@@ -587,7 +587,7 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
         '订单核实': ['客户确认'],
         '订单查档': ['代理中', '代理完成', '代理补充'],
         '信息质检': ['信息质检中', '信息质检不通过', '信息质检合格'],
-        '分析录入': ['分析之作', '分析完成'],
+        '分析录入': ['分析制作', '分析完成'],
         '分析质检': ['分析质检中', '分析质检不通过', '分析质检合格'],
         '翻译录入': ['翻译制作', '翻译完成'],
         '翻译质检': ['翻译质检中', '翻译质检不通过', '翻译质检合格'],

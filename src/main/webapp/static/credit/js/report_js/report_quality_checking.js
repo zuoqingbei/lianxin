@@ -204,14 +204,6 @@ let Verify = {
                 let rows = data.rows;
                 console.log('data.rows',data.rows)
                 rows.forEach((item, index) => {
-                   /* if (!item.country || item.country.trim() !== '中国大陆' || item.companyZHNames) {
-                        $(Array.from($(".recordName"))[index]).addClass('disable');
-                        // $(Array.from($(".recordName"))[index]).removeAttr("data-target")
-                    } else if (!$(Array.from($(".recordName"))[index]).attr("data-target")) {
-                        // $(Array.from($(".recordName"))[index]).css({"color": "#007bff", "cursor": "pointer"});
-                        // $(Array.from($(".recordName"))[index]).attr("data-target", "#recordingName")
-                    }*/
-                    // console.log('item.report_language',item.report_language)
                     //按鈕禁用
                     if(item.status === '294' || item.status === '298') {
                         $(".analyze_quality").eq(index).addClass('disable');
