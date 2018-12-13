@@ -56,9 +56,6 @@ let ReportConfig = {
         		columns: _this.tableColumns(contents,'ch'),
     			url:urlCH, // 请求后台的URL（*）
 			    method : 'post', // 请求方式（*）post/get
-			    ajaxOptions:{
-			    	async:false
-			    },
 			    queryParams:function(param){
 			    	param.selectInfo = JSON.stringify(selectInfo)
 			    	return param
@@ -69,7 +66,7 @@ let ReportConfig = {
     			smartDisplay:true,
     			locales:'zh-CN',
     			onLoadSuccess:(data)=>{
-    				_this.tableDataArr.push(data)
+    				_this.tableDataArr[index]=data
     			}
         	});
         	console.log(contentsEn)
@@ -81,9 +78,6 @@ let ReportConfig = {
         			param.selectInfo = JSON.stringify(selectInfo)
         			return param
         		},
-        		 ajaxOptions:{
- 			    	async:false
- 			    },
         		sidePagination: 'server',
         		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
         		pagination: false, //分页
@@ -91,7 +85,7 @@ let ReportConfig = {
         		locales:'zh-CN',
         		onLoadSuccess:(data)=>{
 //        			console.log(data)
-        			_this.tableDataArrEn.push(data)
+        			_this.tableDataArrEn[index]=data
         		}
         	});
         	
@@ -271,7 +265,6 @@ let ReportConfig = {
 			 $.ajax({
 	    			url,
 	    			type:'post',
-	    			async:false,
 	    			data:paramObj,
 	    			success:(data)=>{
 	    				console.log(data)
@@ -352,7 +345,7 @@ let ReportConfig = {
 			arr.forEach((item,index)=>{
     			if($(item).siblings(".radio-con").length !== 0) {
     				//radio类型绑数
-    				let obid = temp.rows[0].id;
+    				let obid = tempData.id;
     				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
     				let overall_rating =  tempData.overall_rating;
     				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
@@ -368,7 +361,7 @@ let ReportConfig = {
     			}
     			if($(item).next().hasClass("textarea-module")) {
     				//无标题多行文本输入框
-    				let obid = temp.rows[0].id;
+    				let obid = tempData.id;
     				$(item).next().find("textarea").attr("entityid",obid)
     				let name =$(item).next().find("textarea").attr("name")
     				$(item).next().find("textarea").val(tempData[name])
@@ -376,7 +369,7 @@ let ReportConfig = {
     			}
     			if(($(item).next().find("input").hasClass("float-date"))) {
     				//浮动非财务
-    				let obid = temp.rows[0].id;
+    				let obid = tempData.id;
     				$(item).next().find("input").attr("entityid",obid)
     				let name =$(item).next().find("input").attr("name")
     				$(item).next().find("input").val(tempData[name])
@@ -428,70 +421,70 @@ let ReportConfig = {
     		$.ajax({
     			url,
     			type:'post',
-    			async:false,
     			data:paramObj,
     			success:(data)=>{
     				temp = data
+    				let arr = Array.from($("#titleEn"+item))
+    	    		if(temp.rows === null || temp.rows.length === 0){return}
+    	    		arr.forEach((item,index)=>{
+    	    			if($(item).siblings(".radio-con").length !== 0) {
+    	    				//radio类型绑数
+    	    				if(temp.rows.length === 0){return}
+    	    				let obid = temp.rows[0].id;
+    	    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+    	    				let overall_rating =  temp.rows[0].overall_rating;
+    	    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+    	    				
+    	    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+    	    				return
+    	    			}
+    	    			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
+    	    				//信用等级
+    	    				let name =$(item).next().find("input").attr("name")
+    	    				$(item).next().find("input").val(temp.rows[0][name])
+    	    				return;
+    	    			}
+    	    			if($(item).next().hasClass("textarea-module")) {
+    	    				//无标题多行文本输入框
+    	    				if(temp.rows.length === 0){return}
+    	    				let obid = temp.rows[0].id;
+    	    				$(item).next().find("textarea").attr("entityid",obid)
+    	    				let name =$(item).next().find("textarea").attr("name")
+    	    				$(item).next().find("textarea").val(temp.rows[0][name])
+    	    				return;
+    	    			}
+    	    			if(($(item).next().find("input").hasClass("float-date"))) {
+    	    				//浮动非财务
+    	    				if(temp.rows.length === 0){return}
+    	    				let obid = temp.rows[0].id;
+    	    				$(item).next().find("input").attr("entityid",obid)
+    	    				let name =$(item).next().find("input").attr("name")
+    	    				$(item).next().find("input").val(temp.rows[0][name])
+    	    				return;
+    	    			}
+    	    			let formArr = Array.from($(item).siblings().find(".form-control"))
+    	    			if(temp.rows.length === 0){return}
+    	    			//实体id
+    	    			let obid = temp.rows[0].id;
+    	    			formArr.forEach((item,index)=>{
+    	    				let obj = temp.rows[0];
+    	    				let id = $(item).attr("id");
+    	    				let anotherIdArr = id.split("_")
+    	    				anotherIdArr.pop();
+    	    				anotherIdArr.pop();
+    	    				let anotherId = anotherIdArr.join('_')
+    	    				$("#"+id).attr("entryid",obid)
+    	    				if($(item).is('select')){
+    	    					//如果是select
+    	    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
+    	    				}else {
+    	    					$("#"+id).val(obj[anotherId])
+    	    				}
+    	    			})
+    	    		})
+    	    		
     			}
     			
-    		})
-    		let arr = Array.from($("#titleEn"+item))
-    		if(temp.rows === null || temp.rows.length === 0){return}
-    		arr.forEach((item,index)=>{
-    			if($(item).siblings(".radio-con").length !== 0) {
-    				//radio类型绑数
-    				if(temp.rows.length === 0){return}
-    				let obid = temp.rows[0].id;
-    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
-    				let overall_rating =  temp.rows[0].overall_rating;
-    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-    				
-    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
-    				return
-    			}
-    			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
-    				//信用等级
-    				let name =$(item).next().find("input").attr("name")
-    				$(item).next().find("input").val(temp.rows[0][name])
-    				return;
-    			}
-    			if($(item).next().hasClass("textarea-module")) {
-    				//无标题多行文本输入框
-    				if(temp.rows.length === 0){return}
-    				let obid = temp.rows[0].id;
-    				$(item).next().find("textarea").attr("entityid",obid)
-    				let name =$(item).next().find("textarea").attr("name")
-    				$(item).next().find("textarea").val(temp.rows[0][name])
-    				return;
-    			}
-    			if(($(item).next().find("input").hasClass("float-date"))) {
-    				//浮动非财务
-    				if(temp.rows.length === 0){return}
-    				let obid = temp.rows[0].id;
-    				$(item).next().find("input").attr("entityid",obid)
-    				let name =$(item).next().find("input").attr("name")
-    				$(item).next().find("input").val(temp.rows[0][name])
-    				return;
-    			}
-    			let formArr = Array.from($(item).siblings().find(".form-control"))
-    			if(temp.rows.length === 0){return}
-    			//实体id
-    			let obid = temp.rows[0].id;
-    			formArr.forEach((item,index)=>{
-    				let obj = temp.rows[0];
-    				let id = $(item).attr("id");
-    				let anotherIdArr = id.split("_")
-    				anotherIdArr.pop();
-    				anotherIdArr.pop();
-    				let anotherId = anotherIdArr.join('_')
-    				$("#"+id).attr("entryid",obid)
-    				if($(item).is('select')){
-    					//如果是select
-    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
-    				}else {
-    					$("#"+id).val(obj[anotherId])
-    				}
-    			})
     		})
     		
     	})
@@ -745,7 +738,6 @@ let ReportConfig = {
     		InitObjTrans.cwModalCompute(_this.cwAlterSource)
     		InitObjTrans.downLoadCw(cw_contents[0][2].alter_source,_this.rows);
 			InitObjTrans.upLoadCw(cw_contents[0][3].alter_source,_this.rows,_this.cwGetSource,_this.cwAlterSource,tableCwId);
-			InitObjTrans.addNewCwModal(_this.cwConfigAlterSource,_this.rows);
     	},0)
     },
     initContent(){
@@ -1198,7 +1190,7 @@ let ReportConfig = {
                     				case 'date_scope':
                     					formGroup += `<div class="form-group date-scope-form">
 						            		<label for="" class="mb-2">${item_en.temp_name}</label>
-						            		<input type="text"  class="form-control" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item.column_name}>
+						            		<input type="text"  class="form-control" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name}>
 					            		</div>`
                     					break;
 				            		case 'address':
@@ -1546,8 +1538,8 @@ let ReportConfig = {
     		
     		$(".position-fixed").on("click","#save",(e)=>{
     			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
-    			 console.log(data)
     			 if(data.length === 0 || !Array.isArray(data)){return}
+    			 console.log(data)
     			 data.forEach((ele,i)=>{
     				 if(alterSource.split("*")[1]) {
 		    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
@@ -1569,6 +1561,7 @@ let ReportConfig = {
     			 })
     			 let $modals = $("#modalEn"+idArrEn[index])
     			 let $selects = $modals.find(".modal-body").find("select")
+    			 console.log(data)
     			 $selects.each((index,item)=>{
     				 let name = $(item).attr("name")
     				 let val = $("#"+$(item).attr("id")+' option:selected').val()
@@ -1578,6 +1571,7 @@ let ReportConfig = {
     					 }
     				 })
     			 })
+    			 console.log(data)
     			 $.ajax({
     				 url:url,
     				 data:{
@@ -1645,7 +1639,8 @@ let ReportConfig = {
     	//_this.formDataArr
     	formIndexEn.forEach((item,index)=>{
     		let alterSource = formTitlesEn[index]["alter_source"];
-    		if(alterSource === null || alterSource === ''){return}
+    		if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){return}
+    		console.log(formTitlesEn[index])
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
     		let dataJson = []
     		let dataJsonObj = {} 
@@ -1680,7 +1675,7 @@ let ReportConfig = {
 			 //点击保存按钮
     		
     		$(".position-fixed").on("click","#save",(e)=>{
-    			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
+//    			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#save").addClass("disabled")
     			 let arr = Array.from($("#titleEn"+item))
     			 arr.forEach((item,index)=>{
@@ -1751,7 +1746,7 @@ let ReportConfig = {
     		})
     			 //点击提交按钮
     		$(".position-fixed").on("click","#commit",(e)=>{
-    			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
+//    			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			$("#commit").addClass("disabled")
     			 let arr = Array.from($("#titleEn"+item))
     			 arr.forEach((item,index)=>{

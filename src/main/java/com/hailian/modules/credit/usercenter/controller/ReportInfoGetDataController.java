@@ -257,19 +257,21 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		List rows = null;
 		try {
-			Class<?> table = Class.forName(PAKAGENAME_PRE + className);
-			BaseProjectModel model = (BaseProjectModel) table.newInstance();
-			rows = model.find(
-					"select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
-			if (!("".equals(selectInfo) || selectInfo == null)) {
+            Class<?> table = Class.forName(PAKAGENAME_PRE + className);
+            BaseProjectModel model = (BaseProjectModel) table.newInstance();
+            //rows = model.find("select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
+            //使用ehcache缓存数据
+            System.out.println(tableName + sqlSuf);
+            rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
+            if (!("".equals(selectInfo) || selectInfo == null)) {
 
-				// 解析前端传入的字符串
-				List<Map<Object, Object>> selectInfoMap = parseJsonArray(selectInfo);
+                // 解析前端传入的字符串
+                List<Map<Object, Object>> selectInfoMap = parseJsonArray(selectInfo);
 
-				// 将id转化为字典表中对应的字符串
-				dictIdToString(rows, selectInfoMap);
-			}
-		} catch (ClassNotFoundException e) {
+                // 将id转化为字典表中对应的字符串
+                dictIdToString(rows, selectInfoMap);
+            }
+        } catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0, "类文件未找到异常!"));
 		} catch (InstantiationException e) {
@@ -555,14 +557,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     * @return
      */
     public void getflow(){
+    	
+    Record record = new Record();	
     String order_num=	getPara("num");
      List<CreditOrderFlow> flows=   CreditOrderFlow.dao.find("select d.detail_id, d.detail_name as order_state,u.username as create_oper,f.create_time from credit_order_flow f "
     		+ "LEFT JOIN sys_dict_detail d on d.detail_id=f.order_state "
     		+ "LEFT JOIN sys_user u on u.userid=f.create_oper "
     		+ "where  f.order_num=?",order_num);
-    renderJson(flows);
-    	
-    	
+     renderJson(record.set("rows", flows).set("total", flows!=null?flows.size():null));		
     }
     /**
      * 查询主表数据
