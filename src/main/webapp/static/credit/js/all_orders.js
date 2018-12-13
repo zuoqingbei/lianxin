@@ -104,18 +104,37 @@ let Index = {
             evt.stopPropagation();
         })
 
-        /**点击确定按钮 */
-        $(".btn-primary").click(function(){
-            $('.deal-state').toggleClass("deal-state-show")
-            var value1 = $("#defaultCheck1").prop("checked");
-
-
+        $(".enterFilter").click(function(){
+            that.checked=[];
+            that.checkchar="";
+            $("input[name='status']:checked").each(function(i){
+                that.checked[i] = $(this).val();
+                that.checkchar+=that.checked[i]+","
+            });
+            $("#table").bootstrapTable("refresh",{
+                query:{
+                    pageNo: that.paramsObj.pageNumber,//页码
+                    recordsperpage:  that.paramsObj.pageSize,//每页多少条
+                    sortName: that.paramsObj.sortName,
+                    sortOrder: that.paramsObj.sortOrder,
+                    custom_id:$("#custom_id").find("option:selected").val(),
+                    country:$("#country").find("option:selected").val(),
+                    end_date:$("#dead_date").val(),
+                    agent_id:$("#agentId").find("option:selected").val(),
+                    company_by_report:$("#txt_search_departmentname").val(),
+                    right_company_name_en:$("#txt_search_companyEngName").val(),
+                    num:$("#num").val(),
+                    reference_num:$("#reference_num").val(),
+                    status:that.checkchar
+                }
+            });
+            getMessage();
+            console.log('orde')
         })
 
         /**点击重置按钮 */
         $(".resetrFilter").click(function(){
             $('.form-check-input:checkbox').removeAttr('checked');
-            
         })
     },
     searchEvent(){
@@ -124,9 +143,9 @@ let Index = {
         	that.checked=[];
 			 that.checkchar="";
 	     	$("input[name='status']:checked").each(function(i){
-	           that.checked[i] = $(this).val();
-	           that.checkchar+=that.checked[i]+","
-	     	});
+                that.checked[i] = $(this).val();
+                that.checkchar+=that.checked[i]+","
+            });
         	/**发起ajax请求  获取表格数据*/
            $("#table").bootstrapTable("refresh",{
 				query:{
@@ -155,14 +174,16 @@ let Index = {
 
             console.log(companyName,orderCName,deadDate,client,proxy,country)
 
-            /***发起ajax请求 获取表格数据*/
-             $("#btn_reset").click(function(){
-		        $("#formSearch div input").val("");
-		        $("#client option:first").prop("selected","selected")
-		        $("#proxy option:first").prop("selected","selected")
-		        $("#country option:first").prop("selected","selected")
-		      })
         })
+        /***发起ajax请求 获取表格数据*/
+        //清空统一写在common.js
+        // $("#btn_reset").click(function(){
+        //     $("#formSearch div input").val("");
+        //     $("#client option:first").prop("selected","selected")
+        //     $("#proxy option:first").prop("selected","selected")
+        //     $("#country option:first").prop("selected","selected")
+        //     $("#btn_query").trigger("click")
+        // })
     },
     hideShowStyle(){
         /**展开收起样式 */
@@ -197,10 +218,10 @@ let Index = {
                   field: 'num',
                   align: 'center',
                   valign: 'middle',
-                  formatter:function(value,row,index){ 
-  
-                	var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
-                	return url; 
+                  formatter:function(value,row,index){
+
+                	var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  ';
+                	return url;
               		}
             	},
                 {
@@ -458,4 +479,9 @@ function orderinfo(id){
 		};
 
 
+$('input').keyup(function (e) {//捕获文档对象的按键弹起事件
+    if (e.keyCode == 13) {//按键信息对象以参数的形式传递进来了
+        $('#btn_query').trigger("click")
+    }
+});
 

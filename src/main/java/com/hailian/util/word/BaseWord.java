@@ -60,22 +60,7 @@ public class BaseWord {
     public static final String password = Config.getStr("ftp_password");//域用户密码
     public static final String ftpStore = Config.getStr("ftp_store");//ftp文件夹
 
-    public static void main(String args[]) {
-        /*RowRenderData header = RowRenderData.build(new TextRenderData("000000", "姓名"), new TextRenderData("000000", "学历"));
-        RowRenderData row0 = RowRenderData.build("张三", "研究生");
-        RowRenderData row1 = RowRenderData.build("李四", "博士");
-        RowRenderData row2 = RowRenderData.build("王五", "博士后");
-        MiniTableRenderData list = new MiniTableRenderData(header, Arrays.asList(row0, row1, row2));
-
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("title", "test");
-        map.put("table", list);
-
-        MainWord.buildWord(map, "d://template.docx","d://123.docx");*/
-        //String str = "登记状态|";
-        // String[] fieldType = str.split("\\| ");
-        //System.out.println(fieldType.length);
-
+    public static void main(String args[]) throws Exception{
         //创建主题样式 ,以下代码用于解决中文乱码问题
         StandardChartTheme standardChartTheme=new StandardChartTheme("CN");
         //设置标题字体
@@ -185,13 +170,13 @@ public class BaseWord {
         chart.setTitle("数量/销量走势图");
         chart.setBackgroundPaint(SystemColor.WHITE);
 
-        ChartFrame chartFrame=new ChartFrame("数量/销量走势图",chart);
-
+        //ChartFrame chartFrame=new ChartFrame("数量/销量走势图",chart);
         //以合适的大小展现图形
-        chartFrame.pack();
-
+        //chartFrame.pack();
         //图形是否可见
-        chartFrame.setVisible(true);
+        //chartFrame.setVisible(true);
+        // 将内存中的图片写到本地硬盘
+        ChartUtilities.saveChartAsJPEG(new File("h://555.jpg"), chart, 600, 300);
 
 
     }
@@ -479,72 +464,104 @@ public class BaseWord {
         }
     }
 
-    private static void createChart(CategoryDataset dataSetColumn,
-                             CategoryDataset dataSetLine, String filePath) {
+    public static void createPieChart2(DefaultPieDataset pds, String filePath) {
+        //创建主题样式 ,以下代码用于解决中文乱码问题
+        StandardChartTheme standardChartTheme = new StandardChartTheme("CN");
+        //设置标题字体
+        standardChartTheme.setExtraLargeFont(new Font("宋体", Font.BOLD, 20));
+        //设置图例的字体
+        standardChartTheme.setRegularFont(new Font("宋体", Font.PLAIN, 15));
+        //设置轴向的字体
+        standardChartTheme.setLargeFont(new Font("宋体", Font.PLAIN, 15));
+        //应用主题样式
+        ChartFactory.setChartTheme(standardChartTheme);
+
+        // 柱状图数据源
+        DefaultCategoryDataset barDataSet = new DefaultCategoryDataset();
+        barDataSet.addValue(800, "数量", "1月");
+        barDataSet.addValue(600, "数量", "2月");
+        barDataSet.addValue(200, "数量", "3月");
+
+        //折线图数据源
+        DefaultCategoryDataset lineDataSet = new DefaultCategoryDataset();
+        lineDataSet.addValue(0.2, "销量", "1月");
+        lineDataSet.addValue(0.35, "销量", "2月");
+        lineDataSet.addValue(0.8, "销量", "3月");
+
+        BarRenderer3D barRender = new BarRenderer3D();
+        //展示柱状图数值
+        barRender.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        barRender.setBaseItemLabelsVisible(true);
+        barRender.setBasePositiveItemLabelPosition(new ItemLabelPosition(
+                ItemLabelAnchor.OUTSIDE1, TextAnchor.BASELINE_CENTER));
+
+        //最短的BAR长度，避免数值太小而显示不出
+        barRender.setMinimumBarLength(0.5);
+        //设置柱形图上的文字偏离值
+        barRender.setItemLabelAnchorOffset(10D);
+        //设置柱子的最大宽度
+        barRender.setMaximumBarWidth(0.03);
+        barRender.setItemMargin(0.000000005);
+
+        LineAndShapeRenderer lineRender = new LineAndShapeRenderer();
+        //展示折线图节点值
+        lineRender.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        lineRender.setBaseItemLabelsVisible(true);
+        lineRender.setBasePositiveItemLabelPosition(
+                new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.BASELINE_CENTER));
+
+        // 设置柱形图上的文字偏离值
+        lineRender.setItemLabelAnchorOffset(5D);
+        BasicStroke brokenLine = new BasicStroke(2f,//线条粗细
+                BasicStroke.CAP_SQUARE,           //端点风格
+                BasicStroke.JOIN_MITER,           //折点风格
+                8.f,                              //折点处理办法 ,如果要实线把该参数设置为NULL
+                new float[]{8.0f},               //虚线数组
+                0.0f);
+
+        //设置第一条折线的风格
+        lineRender.setSeriesStroke(0, brokenLine);
+        CategoryPlot plot = new CategoryPlot();
+        plot.setDataset(0, barDataSet);
+        plot.setDataset(1, lineDataSet);
+        plot.setRenderer(0, barRender);
+        plot.setRenderer(1, lineRender);
+        plot.setDomainAxis(new CategoryAxis());
+
+        //设置水平方向背景线颜色
+        plot.setRangeGridlinePaint(Color.gray);
+        //设置是否显示水平方向背景线,默认值为true
+        plot.setRangeGridlinesVisible(true);
+        //设置垂直方向背景线颜色
+        plot.setDomainGridlinePaint(Color.gray);
+        //设置是否显示垂直方向背景线,默认值为true
+        plot.setDomainGridlinesVisible(true);
+        //设置图表透明图0.0~1.0范围。0.0为完全透明，1.0为完全不透明。
+        plot.setForegroundAlpha(0.7F);
+        plot.setRangeAxis(new NumberAxis());
+        //设置Y轴刻度
+        plot.setRangeAxis(1, new NumberAxis());
+        // 设置折线图数据源应用Y轴右侧刻度
+        plot.mapDatasetToRangeAxis(1, 1);
+        for (int i = 0; i < plot.getRangeAxisCount(); i++) {
+            ValueAxis rangeAxis = plot.getRangeAxis(i);
+            //设置最高的一个柱与图片顶端的距离
+            rangeAxis.setUpperMargin(0.25);
+        }
+        CategoryAxis categoryAxis = plot.getDomainAxis();
+        //X轴分类标签以45度倾斜
+        categoryAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+        JFreeChart chart = new JFreeChart(plot);
+        chart.setTitle("数量/销量走势图");
+        chart.setBackgroundPaint(SystemColor.WHITE);
+
         try {
-            //setChartTheme();
-            Font font = new Font("宋体", Font.BOLD, 12);
-
-            // 创建图形对象
-            JFreeChart chart = ChartFactory.createBarChart("", // 图表标题
-                    "", // 目录轴的显示标签
-                    "",// 数值轴的显示标签
-                    dataSetColumn, // 数据集
-                    PlotOrientation.VERTICAL,// 图表方向：水平、垂直
-                    false, // 是否显示图例(对于简单的柱状图必须是false)
-                    true,// 是否生成工具
-                    false);// 是否生成URL链接
-            chart.getTitle().setFont(font);
-            // 图表的背景色(默认为白色)
-            chart.setBackgroundPaint(Color.white);
-            // 设置图片背景色
-            GradientPaint gradientPaint = new GradientPaint(0, 1000, Color.WHITE,
-                    0, 0, Color.WHITE, false);
-            chart.setBackgroundPaint(gradientPaint);
-
-            CategoryPlot categoryPlot = (CategoryPlot) chart.getPlot();
-
-            // 设置图形的背景色
-            categoryPlot.setBackgroundPaint(Color.WHITE);
-            // 设置图形上竖线是否显示
-            categoryPlot.setDomainGridlinesVisible(false);
-            // 设置图形上竖线的颜色
-            categoryPlot.setDomainGridlinePaint(Color.GRAY);
-            // 设置图形上横线的颜色
-            categoryPlot.setRangeGridlinePaint(Color.GRAY);
-
-            // 设置柱状图的Y轴显示样式
-            //setNumberAxisToColumn(categoryPlot);
-            CategoryAxis categoryaxis = categoryPlot.getDomainAxis();
-            categoryaxis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_45);// 横轴斜45度
-            // 设置折线图的Y轴显示样式
-            //setNumberAxisLine(categoryPlot);
-
-            categoryPlot.setDataset(1, dataSetLine);// 设置数据集索引
-            categoryPlot.mapDatasetToRangeAxis(1, 1);// 将该索引映射到axis
-            // 第一个参数指数据集的索引,第二个参数为坐标轴的索引
-            LineAndShapeRenderer lineAndShapeRenderer = new LineAndShapeRenderer();
-            // 数据点被填充即不是空心点
-            lineAndShapeRenderer.setShapesFilled(true);
-            // 数据点间连线可见
-            lineAndShapeRenderer.setLinesVisible(true);
-            // 设置折线拐点的形状，圆形
-            lineAndShapeRenderer.setSeriesShape(0, new Ellipse2D.Double(-2D, -2D,4D, 4D));
-
-            // 设置某坐标轴索引上数据集的显示样式
-            categoryPlot.setRenderer(1, lineAndShapeRenderer);
-            // 设置两个图的前后顺序
-            // ，DatasetRenderingOrder.FORWARD表示后面的图在前者上面，DatasetRenderingOrder.REVERSE表示
-            // 表示后面的图在前者后面
-            categoryPlot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
-
-            //createPicture(picName, jfreeChart);
+            // 将内存中的图片写到本地硬盘
             ChartUtilities.saveChartAsJPEG(new File(filePath), chart, 600, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     /**
      * 上传文件

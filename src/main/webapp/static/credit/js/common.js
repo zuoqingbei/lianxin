@@ -25,6 +25,7 @@ let Public = {
                 //各种基于事件的操作，下面会有进一步介绍
                 form.render('select');
             });
+            $("#btn_query").trigger("click")
         });
     },
     bellEvent() {
@@ -33,7 +34,12 @@ let Public = {
             url: BASE_PATH + 'credit/sysuser/notice/getNoticenum',
             type: 'get',
             success: (data) => {
-                $(".layui-badge").html(data)
+                if(data ==0){
+                    $(".layui-badge").hide();
+                }else {
+                    $(".layui-badge").html(data)
+                }
+
             }
         })
 
