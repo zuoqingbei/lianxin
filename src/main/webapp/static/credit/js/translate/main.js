@@ -247,7 +247,7 @@ let ReportConfig = {
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
     	let _this = this
-    	console.log(formIndex)
+//    	console.log(formIndex)
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
@@ -267,14 +267,14 @@ let ReportConfig = {
 	    			type:'post',
 	    			data:paramObj,
 	    			success:(data)=>{
-	    				console.log(data)
+//	    				console.log(data)
 	    				temp = data
 	    				_this.formDataArr.push(data.rows[0])
 	    				_this.formTitleArr.push(item)
 	    				 let arr = Array.from($("#title"+item))
 	    				 if(temp.rows === null){return}
 	    				 arr.forEach((item,index)=>{
-	    					 console.log(item)
+//	    					 console.log(item)
 	    					 if($(item).siblings(".radio-con").length !== 0) {
 	    						 //radio类型绑数
 	    						 if(temp.rows.length === 0){return}
@@ -339,7 +339,6 @@ let ReportConfig = {
     	let titlesEn = this.formTitleEn;
     	let formIndexEn = this.formIndexEn;
     	let _this = this
-    	console.log(tempData,i,formIndexEn)
     	if(tempData){
     		let arr = Array.from($("#titleEn"+i))
 			arr.forEach((item,index)=>{
@@ -1509,29 +1508,33 @@ let ReportConfig = {
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表格翻译
 	   			 let temp = []
+	   			 let flag = false
 	   			 if(!_this.tableDataArr[index]){
 	   				 //此表格无数据，返回
 	   				 return
 	   			 }
 	   		
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
-	   				if(!tableDataArrEn[index]){return}
+	   				//循环每个表格中的条数进行翻译
+	   				if(!tableDataArrEn[index]){flag=true;return}
 	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
 	   				$.ajax({
 	   					url:BASE_PATH + `credit/ordertranslate/translate`,
 	   					type:'post',
-	   					async:false,
+//	   					async:false,
 	   					data:{
 	   						dataJson:JSON.stringify(ele)
 	   					},
 	   					success:(data)=>{
-	   						temp.push(data)
+	   						temp[i] = data
 	   					}
 	   				})
-	   			}) 
-	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
-	   			 $("#table"+idArrEn[index] + 'En').bootstrapTable("append",temp);
-	   			
+	   			})
+	   			let t1 = setInterval(()=>{
+	   				$("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
+	   				$("#table"+idArrEn[index] + 'En').bootstrapTable("append",temp);
+	   			},500)
+	   			if(temp.length !== 0){clearInterval(t1)}
     		})
     		
     		 //点击保存按钮
