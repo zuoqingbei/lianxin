@@ -3,6 +3,7 @@ package com.hailian.modules.credit.agentmanager.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.feizhou.swagger.utils.StringUtil;
@@ -131,10 +132,7 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 	* @date 2018年11月7日下午2:05:22  
 	* @TODO
 	 */
-	public AgentPriceModel getAgentPrice(int pid,int cid,String agent_id,String agent_category,boolean isSpecial) {
-		if(StringUtils.isEmpty(pid+"") || StringUtils.isEmpty(cid+"") || StringUtils.isEmpty(agent_id) || StringUtils.isEmpty(agent_category)){
-			return null;
-		}
+	public AgentPriceModel getAgentPrice(String pid,String cid,String agent_id,String agent_category,boolean isSpecial) {
 		StringBuffer sb=new StringBuffer("select t.* from credit_agent_price t ");
 		sb.append(" where 1=1 and t.del_flag=0 ");
 		List<Object> params=new ArrayList<Object>();
@@ -142,22 +140,42 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 			sb.append(" and t.agent_id=?");
 			params.add(agent_id);
 		}
-		if(StringUtils.isNotBlank(pid+"")){
+		if(StringUtils.isNotBlank(agent_category+"")){
+			sb.append(" and t.agent_category=?");
+			params.add(agent_category);
+		}
+		if(NumberUtils.isNumber(pid+"")){
 			sb.append(" and t.province=?");
 			params.add(pid);
 		}
 		if(!isSpecial){
-				sb.append(" and t.city is null or t.city=-1");
+				sb.append(" and t.city is null or t.city=''");
 		}
 		if(isSpecial){
-			if(StringUtils.isNotBlank(cid+"")){
+			if(NumberUtils.isNumber(cid+"")){
 				sb.append(" and t.city=?");
 				params.add(cid);
 			}
 		}
+		
+		sb.append(" order by t.id ");
+		return AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
+	}
+	public AgentPriceModel getAgentPriceBycategory(String agent_id,String agent_category) {
+		StringBuffer sb=new StringBuffer("select t.* from credit_agent_price t ");
+		sb.append(" where 1=1 and t.del_flag=0 ");
+		List<Object> params=new ArrayList<Object>();
+		if(StringUtils.isNotBlank(agent_id)){
+			sb.append(" and t.agent_id=?");
+			params.add(agent_id);
+		}
 		if(StringUtils.isNotBlank(agent_category+"")){
 			sb.append(" and t.agent_category=?");
 			params.add(agent_category);
+		}
+		if(true){
+			sb.append(" and t.province is null or t.province=''");
+			sb.append(" and t.city is null or t.city=''");
 		}
 		sb.append(" order by t.id ");
 		return AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());

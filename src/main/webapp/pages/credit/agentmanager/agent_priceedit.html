@@ -59,7 +59,7 @@ var oper = {
    		success:function(data){
    			console.log(data)
       		 console.log(${model.city});
-      		  html+="<option value='-1' >请选择</option>"
+      		  html+="<option value='' >请选择</option>"
       		  $.each(data,function(index,item){
       			 if(item.codes=='${model.city}'){
 						 html+="<option selected='selected'  m-type='"+item.cid+"' value='"+item.cid+"'>"+item.city+"</option>";
