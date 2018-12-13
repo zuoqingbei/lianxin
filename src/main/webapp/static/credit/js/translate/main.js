@@ -1320,7 +1320,7 @@ let ReportConfig = {
 			                				>
 			                				</table>
             							</div>`
-        				let explainObj = item.contents[5];
+        				let explainObj = item_en.contents[5];
             			let explainUrl = explainObj.get_source;
             			if(explainUrl === null) {return;}
             			let paramObj = {}
