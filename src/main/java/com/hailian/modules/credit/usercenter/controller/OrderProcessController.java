@@ -924,8 +924,8 @@ public class OrderProcessController extends BaseProjectController{
                         return new ResultType(0, originalFile+" 必须小于5兆!");
                     }
                     File pdf = null;
-                    //如果上传文档不是pdf或者图片则转化为pdf，以作预览
-                    if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){
+                    //如果上传文档不是pdf或者图片或者则转化为pdf，以作预览
+                    if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)&&!ext.equalsIgnoreCase("html")){
                         pdf = Office2PDF.toPdf(uploadFile);
                     }
                     commonFiles.add(uploadFile.getFile());
