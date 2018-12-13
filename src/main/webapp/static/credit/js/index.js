@@ -307,7 +307,11 @@ let Index = {
       }       
     }
 Index.init();
-
+$('input').keyup(function (e) {//捕获文档对象的按键弹起事件
+    if (e.keyCode == 13) {//按键信息对象以参数的形式传递进来了
+        $('#btn_query').trigger("click")
+    }
+});
 function loadtable(){
 	var checked=[];
 	 var checkchar=""
