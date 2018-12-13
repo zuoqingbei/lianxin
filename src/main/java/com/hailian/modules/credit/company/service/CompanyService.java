@@ -369,7 +369,7 @@ public class CompanyService {
 						model.set("caseno", CaseNo);
 						String LianDate = CourtAnnouncement.getString("LianDate");//开庭日期
 						model.set("liandate", LianDate);
-						String CaseReason = CourtAnnouncement.getString("CaseReason");//案由
+						String CaseReason = CourtAnnouncement.getString("CaseReason").replace(" ", "");//案由
 						model.set("casereason", CaseReason);
 						String Prosecutorlist = CourtAnnouncement.getString("Prosecutorlist");//原告/上诉人
 						model.set("prosecutorlist", Prosecutorlist);
