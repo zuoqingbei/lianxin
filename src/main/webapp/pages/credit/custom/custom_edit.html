@@ -61,10 +61,14 @@ var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal"
 		 role="form" >
-	<input type="hidden" name="model.id" value="${model.id}" />
+	<input type="hidden" name="model.table_id" value="${model.table_id}" /> 
 	<table class="table">
 		<%  // 列表头部%>
 				<tr>
+					<td>客户编码</td>
+					<td>
+						<input class="form-control" type="text" name="model.id" value="${model.id}" valid="vtext" validname="客户编码"/>
+					</td>
 					<td>客户名称</td>
 					<td>
 						<input class="form-control" type="text" name="model.name" value="${model.name}" valid="vtext" validname="客户名称"/>
@@ -81,29 +85,15 @@ var bodyContent = {
 					</td>
 				</tr>
 				<tr>
-					<td>公司名称</td>
-					<!-- <td>
-					<input class="form-control" type="text" name="model.company_id" value="${model.company_id}" />
-					</td> -->
-					<td>
-						<div class="form-group">
-						<select name="model.company_id" class="form-control" >
-						<option value="-1" >请选择</option>
-						 <% for(item in company){ %>
-						 	<% if((model.company_id+"")==(item.id+"")){ %>
-							 	<option  m-type="${item.name_en}" selected="selected" value="${item.id}">${item.name}</option>
-							<% }else{ %>
-								<option  m-type="${item.name_en}" value="${item.id}">${item.name}</option>
-							<%}%>
-						 <% } %>
-						</select>
-						</div>
-					</td>
+					
 					<td>电话</td>
 					<td>
 					<input class="form-control" type="text" name="model.telphone" value="${model.telphone}" />
 					</td>
-					
+					<td>邮箱</td>
+					<td colspan="3">
+					<input class="form-control" type="text" rows="1",cols="20" name="model.email" value="${model.email}" />
+					</td>
 				</tr>
 				
 				<tr>
@@ -131,13 +121,7 @@ var bodyContent = {
 					</td>
 				</tr>
 				<tr>
-					<td>是否可用</td>
-					<td>
-					<select name="model.usabled" class="form-control" >
-					${usabled!}
-					</select>
-					<!-- <input class="form-control" type="text" name="model.usabled" value="${model.usabled}" /> -->
-					</td>
+					
 					<td>是否为老用户</td>
 					<td>
 					<!-- <input class="form-control" type="text" name="model.is_old_customer" value="${model.is_old_customer}" /> -->
@@ -152,12 +136,7 @@ var bodyContent = {
 					<textarea class="form-control" rows="1" cols="20" name="model.address">${model.address}</textarea>
 					</td>
 				</tr>
-				<tr>
-					<td>邮箱</td>
-					<td colspan="3">
-					<input class="form-control" type="text" rows="1",cols="20" name="model.email" value="${model.email}" />
-					</td>
-				</tr>
+				
 				<tr>
 					<td>备注</td>
 					<td colspan="3">
@@ -168,7 +147,7 @@ var bodyContent = {
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
-		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+		<button class="btn btn-primary" onclick="oper.save(${model.table_id!'0'});return false;">保 存</button>
 		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
 	  </div>
 	</nav>
