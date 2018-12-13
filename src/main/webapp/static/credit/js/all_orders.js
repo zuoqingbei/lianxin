@@ -197,10 +197,9 @@ let Index = {
                   field: 'num',
                   align: 'center',
                   valign: 'middle',
-                  formatter:function(value,row,index){ 
-  
-                	var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
-                	return url; 
+                  formatter:function(value,row,index){
+                      rows=encodeURIComponent(JSON.stringify(row));//对json字符串编码
+                      return `<a href="javascript:;" style="color:#1890ff" class="detail3" data-row=${rows}>${value}</a>  `;
               		}
             	},
                 {
@@ -453,9 +452,11 @@ function loadtable(){
     			 }
     		});
 };
-function orderinfo(id){
-			Public.goToOrderDetail(id)
-		};
-
+//给渲染完的固定列绑定方法
+$("table").on('click', '.detail3',function(){
+    let rows=$(this).attr('data-row');
+    let row=JSON.parse(decodeURIComponent(rows));//解码
+    Public.goToOrderDetail(row.id,row)
+})
 
 

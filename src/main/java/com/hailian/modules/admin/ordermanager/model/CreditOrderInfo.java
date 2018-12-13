@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -452,8 +453,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null and t.status is not null ");
 		if (!"1".equals(user.getInt("usertype").toString())) {
-			sql.append(" and t.create_by=? ");
-			params.add(user.get("userid").toString());
+			String userId = user.get("userid")+"";
+			//sql.append(" and t.create_by=? ");
+			//params.add(user.get("userid").toString());
+			sql.append(" and  t.report_user="+userId+" or t.analyze_user= "+userId+" or t.translate_user= "+userId+" or t.IQC= "+userId);
 		}
 
 		if (StringUtils.isNotBlank(custom_id)) {
@@ -506,7 +509,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
 								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime  ",
 						sql.toString(), params.toArray());
-
+		System.out.println("杨东listSql:"+sql);
+		System.out.println("杨东listParams:"+Arrays.toString(params.toArray()));
 		return page;
 	}
 	/*
@@ -1081,7 +1085,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}*/
 		if(!c.isAdmin(c.getSessionUser())){
-			//fromSql.append(authority);
+			fromSql.append(authority);
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
