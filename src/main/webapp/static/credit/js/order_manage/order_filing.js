@@ -536,13 +536,13 @@ let Filing = {
       	  $(".detail").removeAttr("data-toggle");
       	  $(".detail").removeAttr("data-target");
       	  var status=$("#status").val();
-      	  if("295"!=status) {
+      	/*  if("295"!=status) {
       		Public.message("error","请先进行代理分配才可以上传附件");
-      	  }else {
+      	  }else {*/
       		//data-toggle="modal" data-target="#exampleModalCenter" 
       		  $(".detail").attr("data-toggle","modal");
       		  $(".detail").attr("data-target","#exampleModalCenter");
-      	  }
+      	 /* }*/
           
         },
         "click .dl":(e,value,row,index)=>{
@@ -747,7 +747,7 @@ let Filing = {
             	console.log(data)
             	let rows = data.rows;
             	rows.forEach((item,index)=>{
-            		if(item.countryid !== '61' && item.countryid !== '62' && item.countryid !== '92') {
+            		if("295"===item.status) {
             			$($(".dl").get(index)).css({"color":"#ccc","cursor":"default"})
             			$($(".dl").get(index)).removeAttr("data-target")
             		}
