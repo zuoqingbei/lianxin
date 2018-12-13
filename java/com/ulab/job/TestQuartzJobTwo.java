@@ -37,6 +37,9 @@ public class TestQuartzJobTwo implements Job {
 				 if(rate>arr.length-1){
 					 rate=arr.length-1;
 				 }
+				 if(Double.parseDouble(order.getStr("rate"))>100){
+					 order.set("rate", order.get("ri"));
+				 }
 				 int change=Integer.parseInt(order.getStr("interval").split(",")[index]);
 				 double rateChange=Double.parseDouble(arr[rate]);
 				 System.out.println("change-----"+rateChange+"----"+(Double.parseDouble(order.get("rate")+"")+rateChange));
