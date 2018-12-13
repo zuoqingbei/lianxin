@@ -56,53 +56,55 @@ let Allocation = {
     },
     popperFilter(){
         /**筛选图标事件 */
-        var referenceElement = document.querySelector(".fa-filter");
-        var onPopper = document.querySelector(".deal-state");
-        var popper = new Popper(referenceElement, onPopper, {
-          placement: 'top'
-        });
+        // var referenceElement = document.querySelector(".fa-filter");
+        // var onPopper = document.querySelector(".deal-state");
+        // var popper = new Popper(referenceElement, onPopper, {
+        //   placement: 'top'
+        // });
         /**点击筛选图标 */
-        $(".fa-filter").click(function(e){
-          let evt = e || window.event;
-          evt.stopPropagation();
-          $('.deal-state').toggleClass("deal-state-show")
-        })
+        // $(".fa-filter").click(function(e){
+        //   let evt = e || window.event;
+        //   evt.stopPropagation();
+        //   $('.deal-state').toggleClass("deal-state-show")
+        // })
         /**点击任意地方隐藏 */
-        $(document).click(function(){
-          if($('.deal-state').hasClass("deal-state-show")) {
-            $('.deal-state').toggleClass("deal-state-show")
-          }
-        })
-        /**阻止冒泡 */
-        $('.deal-state').click(function(e){
-          let evt = e || window.event;
-          evt.stopPropagation();
-        })
+        // $(document).click(function(){
+        //   if($('.deal-state').hasClass("deal-state-show")) {
+        //     $('.deal-state').toggleClass("deal-state-show")
+        //   }
+        // })
+        // /**阻止冒泡 */
+        // $('.deal-state').click(function(e){
+        //   let evt = e || window.event;
+        //   evt.stopPropagation();
+        // })
   
         /**点击确定按钮 */
-        $(".enterFilter").click(function(){
-          $('.deal-state').toggleClass("deal-state-show")
-          var value1 = $("#defaultCheck1").prop("checked");
-  
-          /**发起ajax请求  获取表格数据*/
-        })
-
-          /**点击重置按钮 */
-          $(".resetrFilter").click(function(){
-            $('.form-check-input:checkbox').removeAttr('checked');
-          })
+        // $(".enterFilter").click(function(){
+        //   $('.deal-state').toggleClass("deal-state-show")
+        //   var value1 = $("#defaultCheck1").prop("checked");
+        //
+        //   /**发起ajax请求  获取表格数据*/
+        // })
+        //
+        //   /**点击重置按钮 */
+        //   $(".resetrFilter").click(function(){
+        //     $('.form-check-input:checkbox').removeAttr('checked');
+        //   })
       },
     searchEvent(){
         /**搜索事件 */
         $("#btn_query").unbind().click(function(){
-          let reporter = $("#txt_search_reporter").val();//报告员
-          let orderNum = $("#txt_search_orderNum").val();//订单号
-          let firmName = $("#txt_search_firmName").val();//订单公司名称
-          console.log(reporter)
+          // let reporter = $("#txt_search_reporter").val();//报告员
+          // let orderNum = $("#txt_search_orderNum").val();//订单号
+          // let firmName = $("#txt_search_firmName").val();//订单公司名称
+          // console.log(reporter)
           //跳转到第一页
           $('#table').bootstrapTable('refreshOptions',{pageNumber:1});
 
-        })
+        });
+
+
       },
     initTable(){
         /**初始化表格 */
@@ -151,7 +153,8 @@ let Allocation = {
                   align: 'center',
                   valign: 'middle',
                 }, {
-                  title: `订单状态 &nbsp;<i class="fa fa-filter"></i>`,
+                    // title: `订单状态 &nbsp;<i class="fa fa-filter"></i>`,
+                  title: '订单状态',
                   field: 'statusName',
                   align: 'center',
                   valign: 'middle',
