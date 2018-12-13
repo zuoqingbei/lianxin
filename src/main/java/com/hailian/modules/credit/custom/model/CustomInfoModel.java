@@ -18,7 +18,7 @@ import com.jfinal.plugin.activerecord.Page;
 * @date 2018年9月3日上午11:48:31  
 * @TODO
  */
-@ModelBind(table = "credit_custom_info")
+@ModelBind(table = "credit_custom_info",key = "table_id")
 public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 	private static final long serialVersionUID = 1L;
 	public static final CustomInfoModel dao = new CustomInfoModel();
@@ -97,7 +97,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 	 */
 	public void delete(Integer id, Integer userid) {
 		String now = DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
-		String sql="update credit_custom_info set del_flag=1,update_by=?,update_date=? where id=?";
+		String sql="update credit_custom_info set del_flag=1,update_by=?,update_date=? where table_id=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(userid);
 		params.add(now);
@@ -109,7 +109,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 		StringBuffer sql=new StringBuffer("select * from credit_custom_info where del_flag=0");
 		List<Object> params=new ArrayList<Object>();
 		if(id !=null){
-			sql.append(" and id=?");
+			sql.append(" and table_id=?");
 			params.add(id);
 		}
 		List<CustomInfoModel> find = CustomInfoModel.dao.find(sql.toString(),params.toArray());
@@ -122,7 +122,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 		sql.append(" left join sys_dict_detail t3 on t.is_old_customer=t3.detail_id ");
 		sql.append(" left join credit_company_info t4 on t.company_id=t4.id ");
 		sql.append(" left join credit_country t5 on t.country=t5.id ");
-		sql.append(" where 1=1 and t.del_flag=0 and t.id=?");
+		sql.append(" where 1=1 and t.del_flag=0 and t.table_id=?");
 		params.add(paraToInt);
 		CustomInfoModel findFirst = CustomInfoModel.dao.findFirst(sql.toString(),params.toArray());
 		return findFirst;

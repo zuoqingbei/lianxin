@@ -336,7 +336,7 @@ public class CompanyService {
 					model.set("uploaddate", UploadDate);
 					String Court = CourtAnnouncement.getString("Court");//公告人
 					model.set("court", Court);
-					String Content = CourtAnnouncement.getString("Content");//内容
+					String Content = CourtAnnouncement.getString("Content").replace(" ", "");//内容
 					model.set("content", Content);
 					model.set("company_id", companyId);
 					model.set("sys_language", sys_language);

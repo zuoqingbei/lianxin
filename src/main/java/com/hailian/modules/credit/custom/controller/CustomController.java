@@ -54,9 +54,7 @@ public class CustomController extends BaseProjectController {
 	public void add() {
 		// 获取页面信息,设置目录传入
 		CustomInfoModel attr = getModel(CustomInfoModel.class);
-		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
 		setAttr("model", attr);
-		setAttr("company", company);
 		render(path + "add.html");
 	}
 	/**
@@ -69,8 +67,6 @@ public class CustomController extends BaseProjectController {
 		Integer paraToInt = getParaToInt();
 		CustomInfoModel model = CustomInfoModel.dao.findById(paraToInt);
 		setAttr("model", model);
-		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
-		setAttr("company", company);
 		// 查询下拉框
 		render(path + "edit.html");
 	}
@@ -104,7 +100,7 @@ public class CustomController extends BaseProjectController {
 		if (pid != null && pid > 0) { // 更新
 			model.update();
 		} else { // 新增
-			model.remove("id");
+			model.remove("table_id");
 			model.set("create_by", userid);
 			model.set("create_date", now);
 			model.save();
