@@ -90,7 +90,7 @@ let OrderDetail = {
             switch (smallModuleType) {
                 // 0-表单
                 case '0':
-                    if (_this.isQuality) {
+                    if (_this.isQuality&&(item.title.temp_name === '基本信息'||item.title.temp_name === '基本信息')) {
                         return;
                     }
                     const htmlRoc_registration_status = ['', '未有登记', '正在办理成立登记', '登记成立', '已自行注销登记', '已被吊销登记']
@@ -206,12 +206,10 @@ let OrderDetail = {
                     break;
                 // 7-多行文本框
                 case '7':
-                    $wrap.append(`<div class="type7-content module-content"></div>`);
+                    $wrap.append(`<div class="type7-content module-content"><div class="border multiText m-4 p-2"></div><div class="pt-1"></div></div>`);
                     $.get(`${this.getUrl(item, '', {report_type: this.row.report_type})}&order_num=${this.row.num}`, (data) => {
                         if (data.rows && data.rows.length > 0) {
-                            $wrap.find(".module-content").append(`<div class="border multiText m-4 p-2">${data.rows[0] ?
-                                data.rows[0][item.title.column_name] ? data.rows[0][item.title.column_name] : ''
-                                : ''}</div><div class="pt-1"></div>`);
+                            $wrap.find(".module-content .multiText").text(data.rows[0][item.title.column_name] || '');
                         } else {
                             console.warn(item.title.temp_name + '-总结-没有返回数据！')
                         }
@@ -293,6 +291,7 @@ let OrderDetail = {
                         .end().find("[for=quality_opinion]").text(item.contents[1].temp_name + ' : ');
                     let dealQualityData = (param, param2) => {
                         let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
+                        console.log('$wrap.find("#quality_opinion").val()',$wrap.find("#quality_opinion").val())
                         $.get(this.getUrl(item, '', {
                                 id: this.qualityOpinionId,
                                 quality_opinion: $wrap.find("#quality_opinion").val() || '',
@@ -304,7 +303,6 @@ let OrderDetail = {
                             }) + (param === 'update' ? '&update=true' : '')
                             + (param2 === 'submit' ? '&submit=true' : ''),
                             (data) => {
-
                                 this.qualityOpinionId = data.rows[0].id ? data.rows[0].id : '';
                                 let quality_type = this.row.quality_type;
                                 let status = this.row.status;
@@ -342,8 +340,8 @@ let OrderDetail = {
                                 }
 
                                 if (data.rows && data.rows.length > 0) {
+                                    console.log('data.rows[0].quality_opinion',data.rows[0].quality_opinion)
                                     $("#quality_opinion").val(data.rows[0].quality_opinion || '');
-                                    console.log('(data.rows[0].grade', data.rows[0].grade);
                                     $("#grade").val(data.rows[0].grade || 0);
                                     $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
                                     _this.row.qualityDataId = data.rows[0].id;
@@ -373,6 +371,7 @@ let OrderDetail = {
         // 质检结果下拉列表
         if (this.isQuality) {
             this.setQualitySelect();
+            $(".main-header .tab_bar>li:lt(2)").hide();
         }
     },
     // 获取质检结果下拉框的数据
@@ -412,7 +411,6 @@ let OrderDetail = {
                         $(`#${selecte.report_model_id}`).find('.js-example-basic-multiple').val(valueArrNew).change()
                     }
                 });
-                // console.log('--', data);
             }
         });
     },
@@ -422,7 +420,7 @@ let OrderDetail = {
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         let detailname = this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
-            if (!['基本信息', '流程进度', '质检评分', '附件'].includes($(this).text())) {
+            if (!['基本信息', '流程进度', '质检评分','质检意见', '附件'].includes($(this).text())) {
                 switch (_this.row.quality_type) {
                     case 'entering_quality':
                         $(this).nextAll('.module-content').after(qualitySelectHtml);
