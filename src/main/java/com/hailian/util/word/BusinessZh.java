@@ -59,6 +59,7 @@ public class BusinessZh {
 
         //找到当前报告类型下的父节点
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
+
         for (CreditReportModuleConf crmc : crmcs) {
             //找到当前父节点下的子节点
             List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(), reportType);

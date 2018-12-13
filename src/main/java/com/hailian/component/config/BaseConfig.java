@@ -16,6 +16,7 @@
  */
 package com.hailian.component.config;
 
+import com.jfinal.plugin.ehcache.EhCachePlugin;
 import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal3.JFinal3BeetlRenderFactory;
 
@@ -79,6 +80,8 @@ import com.jfinal.plugin.activerecord.dialect.Sqlite3Dialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.render.ViewType;
 import com.jfinal.template.Engine;
+
+import java.net.URL;
 
 /**
  * API引导式配置
@@ -160,6 +163,10 @@ public class BaseConfig extends JFinalConfig {
 			arp.setDialect(new OracleDialect());
 			arp.setContainerFactory(new CaseInsensitiveContainerFactory(true));
 		}
+
+        //启用ehcache
+        URL url = getClass().getResource("resources/ehcache.xml");
+        me.add(new EhCachePlugin(url));
 
 		new AutoBindModels(arp);
 	}
