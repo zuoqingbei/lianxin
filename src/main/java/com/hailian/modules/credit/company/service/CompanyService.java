@@ -167,8 +167,11 @@ public class CompanyService {
 				companyinfoModel.set("address", Address);
 				companyinfoModel.set("province", Province);
 				companyinfoModel.set("operation_scope", Scope);
+				
 				companyinfoModel.set("id", companyId);
 				companyinfoModel.set("sys_language", sys_language);
+				companyinfoModel.set("name", companyName);
+				
 				JSONObject ContactInfo = json.getJSONObject("Result").getJSONObject("ContactInfo");//联系信息
 				String PhoneNumber = ContactInfo.getString("PhoneNumber");//电话
 				String Email = ContactInfo.getString("Email");//邮箱
