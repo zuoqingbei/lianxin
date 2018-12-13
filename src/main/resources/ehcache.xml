@@ -4,19 +4,45 @@
    <!-- 设置磁盘持久化的位置 -->  
     <diskStore path="C:/temp" />   
     <defaultCache maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />  
-    <cache name="kentrasoftCache"  
+    <cache name="kentrasoftCache"
            maxElementsInMemory="0"  
            maxElementsOnDisk="90000"   
            eternal="false"   
            overflowToDisk="true"   
            diskSpoolBufferSizeMB="2048"  
-           timeToIdleSeconds="7200"   
-           timeToLiveSeconds="7200"   
+           timeToIdleSeconds="7200"
+           timeToLiveSeconds="7200"
            memoryStoreEvictionPolicy="LFU"  
            diskPersistent="true"   
            logging="false"  
-            />  
-      <!--  
+            />
+
+    <cache name="reportModuleConf"
+           maxElementsInMemory="0"
+           maxElementsOnDisk="90000"
+           eternal="false"
+           overflowToDisk="true"
+           diskSpoolBufferSizeMB="2048"
+           timeToIdleSeconds="7200"
+           timeToLiveSeconds="7200"
+           memoryStoreEvictionPolicy="LFU"
+           diskPersistent="true"
+           logging="false"
+            />
+
+    <cache name="company"
+           maxElementsInMemory="0"
+           maxElementsOnDisk="90000"
+           eternal="false"
+           overflowToDisk="true"
+           diskSpoolBufferSizeMB="2048"
+           timeToIdleSeconds="5"
+           timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LFU"
+           diskPersistent="true"
+           logging="false"
+            />
+    <!--
     name：Cache的唯一标识  
     maxElementsInMemory：内存中最大缓存对象数  
     maxElementsOnDisk：磁盘中最大缓存对象数，若是0表示无穷大  
@@ -27,6 +53,10 @@
     diskPersistent：是否缓存虚拟机重启期数据  
     diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认是120秒  
     diskSpoolBufferSizeMB：这个参数设置DiskStore（磁盘缓存）的缓存区大小。默认是30MB。每个Cache都应该有自己的一个缓冲区  
-     memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。默认策略是LRU（最近最少使用）。你可以设置为FIFO（先进先出）或是LFU（较少使用）   
-    -->  
+    memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。默认策略是LRU（最近最少使用）。你可以设置为FIFO（先进先出）或是LFU（较少使用）
+
+   timeToIdleSeconds=120；
+   timeToLiveSeconds=180；
+   上面的表示此缓存最多可以存活3分钟，如果期间超过2分钟未访问 那么此缓存失效！
+   -->
 </ehcache>
