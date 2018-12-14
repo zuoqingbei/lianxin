@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.system.dict.DictCache;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 
@@ -211,9 +212,21 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 						}
 						model.put(columnName,value);
 				}else {
-					model.put(columnName, DictCache.getValueByCode(type, model.get(columnName)+"", disPalyCol));
+					//如果是多选
+					String targetValue =  model.get(columnName)+"";
+					String a = "";
+					if(targetValue.contains(",")) {
+						String[] tempStrs = targetValue.split(",");
+						 if(tempStrs!=null) {
+							 for (String tempStr : tempStrs) {
+								if(!StrUtils.isEmpty(tempStr)) {
+									a += DictCache.getValueByCode(type, tempStr, disPalyCol);
+								}
+							 }
+						 }
 					}
-					
+					model.put(columnName, DictCache.getValueByCode(type, a, disPalyCol));
+					}
 				}
 			}
 		}
