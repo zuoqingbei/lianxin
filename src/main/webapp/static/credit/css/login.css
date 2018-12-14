@@ -61,6 +61,13 @@ body {
     box-shadow: none;
     border-radius: 4px;
 }
+.form-control2 {
+    height: 4.125rem;
+    width: 14.22rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+}
 .form-control:focus {
     border-color:none;
 }
@@ -70,11 +77,19 @@ body {
 .password {
     margin-top: 1.875rem;
 }
-
+.verify{
+    margin-top: 1.875rem;
+}
+#conVer{
+    width: 9rem;
+    height: 4.125rem;
+    margin-left: 0.33rem;
+    background-color: rebeccapurple;
+}
 .btn-login {
     width: 100%;
     height: 4.375rem;
-    margin-top: 3.75rem;
+    margin-top: 1.875rem;
     letter-spacing: .5em;
     font-size: 1.625rem;
     border-radius: 14px;
@@ -111,6 +126,17 @@ body {
     padding: 0 1rem;
     color: var(--errColor);
  }
+.error-tip2 {
+    display: none;
+    height: 3rem;
+    background: #fff1f0;
+    line-height: 3rem;
+    border: solid 1px #d00;
+    border-radius: 4px;
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+    color: var(--errColor);
+}
 .username,.password {
     margin-bottom: .5rem;
 }

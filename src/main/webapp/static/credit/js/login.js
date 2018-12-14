@@ -3,10 +3,23 @@ let Login = {
         /** *初始化函数 */
     	$(".error-tip").hide();
         this.login();
+
     },
     login(){
         /** 是否为空验证 */
-        $(".btn-login").click(this.logining)
+        var verifyCode = new GVerify("conVer");
+        let tis=this
+        $(".btn-login").click(
+            function () {
+                var res = verifyCode.validate(document.getElementById("veri").value);
+                // if(res){
+                //     alert("验证正确");
+                // }else{
+                //     alert("验证码错误");
+                // }
+                tis.logining(res)
+            }
+        )
         $("#username").keydown((e)=>{
         	if(e.keyCode === 13) {
         		this.logining()
@@ -16,11 +29,22 @@ let Login = {
         	if(e.keyCode === 13) {
         		this.logining()
         	}
+        });
+        $("#veri").keydown((e)=>{
+            if(e.keyCode === 13) {
+                this.logining()
+            }
         })
     },
-    logining(){
+    logining(res){
         let user = $("#username").val();
         let psw = $("#psw").val();
+        if(!res){
+            $(".error-tip2").show();
+            return
+        }else{
+            $(".error-tip2").hide();
+        }
         if(!user) {
             $(".userTip").show()
             $(".username span").addClass("border-error")
