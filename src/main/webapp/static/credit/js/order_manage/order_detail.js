@@ -9,6 +9,7 @@ let OrderDetail = {
         this.quality_deal = '';
         this.qualityOpinionId = '';
         this.cwModules = [];
+        [this.type9MulText, this.type9TableHead, this.type10Items] = [{}, [], {}];
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         this.getUrl = (item, otherProperty, paramObj) => {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.data_source).split("*");
@@ -86,8 +87,12 @@ let OrderDetail = {
             let smallModuleType = item.smallModileType;
             let itemId = item.title.id;
             let _this = this;
-            let $wrap = $moduleWrap.clone().attr('id', itemId)
-                .append($moduleTitle.clone().text(item.title.temp_name));
+            let $wrap;
+            if(smallModuleType!=='9'){
+                $wrap = $moduleWrap.clone().attr('id', itemId)
+                    .append($moduleTitle.clone().text(item.title.temp_name));
+            }
+
             switch (smallModuleType) {
                 // 0-表单
                 case '0':
@@ -245,12 +250,16 @@ let OrderDetail = {
                     break;
                 // 9-财务模块结构和多行文本框数据
                 case '9':
-                    _this.cwModules.push(item);
+                    if (item.title.sort === '1') {
+                        _this.type9MulText = item;
+                    } else {
+                        _this.type9TableHead.push(item)
+                    }
                     break;
                 // 10-财务模块表格数据
                 case '10':
                     $wrap.append(`<div class="module-content type10-content"></div>`);
-                    _this.cwModules.push(item);
+                    _this.type10Items = item;
                     break;
                 // 20-单选框判断后加一个多行文本框
                 case '20':
@@ -387,36 +396,61 @@ let OrderDetail = {
     },
     //财务部分
     setCwData() {
-        console.log(this.cwModules);
-        let [type9MulText, type9TableHead, type10Items] = [{}, [], {}];
-        this.cwModules.forEach(function (item) {
-            if (item.smallModileType === '9') {
-                if (item.title.sort === '1') {
-                    type9MulText = item;
-                } else {
-                    type9TableHead.push(item)
-                }
-            } else if (item.smallModileType === '10') {
-                type10Items = item;
-            }
-        });
+        let [type9MulText, type9TableHead, type10Items] = [this.type9MulText, this.type9TableHead, this.type10Items];
         console.info('type9MulText', type9MulText, '\ntype9TableHead', type9TableHead, '\ntype10Items', type10Items);
-        let $tableBox = $('<div class="tableBox"><h4 class="text-center p-3"></h4><table class="table"><thead><th></th><th>时间1</th><th>时间2</th></thead><tbody></tbody></table></div>');
+        let $tableBox = $('<div class="tableBox m-4"><h4 class="text-center p-3"></h4></div>');
         let $allTable = $('<div class="tableAll"></div>');
         type9TableHead.forEach(function (item) {
             // $allTable.append($tableBox.find('h4').text(item.title.temp_name).end());
             $allTable.append($tableBox.find('h4').text(item.title.temp_name).end()[0].outerHTML);
         });
-        // 获取表格数据内容
+        // 通过type10获取表格数据内容
+        let addTableMark = [];
         // $.get(BASE_PATH+`credit/front/ReportGetData/${type10Items.title.data_source}?ficConf_id=${this.row.id}&report_type=${this.row.report_type}`,(data) =>{
-        $.get(BASE_PATH+`credit/front/ReportGetData/${type10Items.title.data_source}?ficConf_id=${198}&report_type=${this.row.report_type}`,(data) =>{
-            console.log(data)
-            data.rows.forEach((row)=>{
-                $allTable.children().eq(row.parent_sector-1).find('tbody')
-                    .append(`<tr><td>${row.item_name}</td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
+        $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.data_source}?ficConf_id=${198}&report_type=${8}`, (data) => {
+            data.rows.forEach((row) => {
+                if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
+                    //孩子顺序是固定的
+                    let firstSonOrder = addTableMark.find((str) => str.slice(0, 1) === row.parent_sector + '').split('-')[1];
+                    $allTable.children().eq(row.parent_sector - 1).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
+                        .append(`<tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
+                } else {
+                    $allTable.children().eq(row.parent_sector - 1)
+                        .append(`<table class="table"><tbody><tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr></tbody></table>`)
+                    addTableMark.push(row.parent_sector + '-' + row.son_sector);
+                }
+            })
+            // 通过企业父title获取表格头部的日期、单位和多行文本框们
+            $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.data_source}?company_id=${7777887}&report_type=${this.row.report_type}`, (data) => {
+                $allTable.find('.tableBox').each(function (index, item) {
+                    let [dateStart, dateEnd] = [data.rows[0].date1, data.rows[0].date2];
+                    if ($(this).find('h4').text().includes('利润表')) {
+                        [dateStart, dateEnd] = [data.rows[0].date3, data.rows[0].date4];
+                    }
+                    $(this).find('table:eq(0)').prepend(`<thead>
+                    <tr><th></th><th></th><th>${type9MulText.contents[4].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
+                    <tr><th></th><th>${dateStart || '&emsp;'}</th><th>${dateEnd || '&emsp;'}</th></tr>
+                </thead>`);
+                });
+                // 通过企业父title的某个内容获取下拉框来转换单位
+                $.when(
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[4].data_source}`),
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[5].data_source}`)
+                ).done(function (unitData, currencyUbitData) {
+                    let [currency, currency_ubit] = [data.rows[0].currency, data.rows[0].currency_ubit]
+                    let $select1 = $(`<select id="currencyUnitTrans">${unitData[0].selectStr}</select>`);
+                    let $select2 = $(`<select id="currencyUbitDataTrans">${currencyUbitData[0].selectStr}</select>`);
+                    let currencyText = $select1.val(currency).find("option:selected").text();
+                    let currencyUbitText = $select2.val(currency_ubit).find("option:selected").text();
+                    $allTable.find(".currency").text(currencyText);
+                    $allTable.find(".currency_ubit").text(currencyUbitText);
+                    console.log(unitData[0].selectStr,currencyText,currencyUbitData[0].selectStr, currencyUbitText)
+
+                });
+
 
             })
-        })
+        });
         $(".type10-content").append($allTable);
     },
     // 获取质检结果下拉框的数据
