@@ -33,32 +33,35 @@ import com.hailian.util.translate.TransApi;
 @ControllerBind(controllerKey = "/credit/ordertranslate")
 public class ReportTranslateController extends BaseProjectController {
 	public void translate() {
-//		String json = HttpKit.readData(getRequest());
-		String json = getPara("dataJson");
-		String targetlanguage=getPara("targetlanguage");//目标语言
-		if(StringUtils.isBlank(targetlanguage)){
-			targetlanguage="en";
+		try {
+			String json = getPara("dataJson");
+			String targetlanguage=getPara("targetlanguage");//目标语言
+			if(StringUtils.isBlank(targetlanguage)){
+				targetlanguage="en";
+			}
+			JSONObject jsonObject = JSONObject.fromObject(json);
+			Iterator iterator = jsonObject.keys();//遍历翻译代替
+			while(iterator.hasNext()){
+			String   key = (String) iterator.next();
+			String value = jsonObject.getString(key);
+			if(isChinese(value)){
+				if(!isValidDate(value)){
+					value = TransApi.Trans(value,targetlanguage);
+			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
+			    	if(translateByError!=null){
+			    		value = translateByError.get("correct_phrase");//翻译校正
+			    	}
+				}
+			}
+			jsonObject.put(key, value);
+			}
+			System.out.println(jsonObject.toString());
+			renderJson(jsonObject.toString());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			renderJson("Translation failure!");
 		}
-//		String json="{\"id\":\"hello\",\"name\":\"肉类\"}";
-		JSONObject jsonObject = JSONObject.fromObject(json);
-		Iterator iterator = jsonObject.keys();//遍历翻译代替
-		while(iterator.hasNext()){
-        String   key = (String) iterator.next();
-        String value = jsonObject.getString(key);
-        if(isChinese(value)){
-//        	value = TransApi.Trans(value,targetlanguage);
-        	if(!isValidDate(value)){
-        		value = TransApi.Trans(value,targetlanguage);
-            	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
-            	if(translateByError!=null){
-            		value = translateByError.get("correct_phrase");//翻译校正
-            	}
-        	}
-        }
-        jsonObject.put(key, value);
-		}
-		System.out.println(jsonObject.toString());
-		renderJson(jsonObject.toString());
 			
 		
 	}
@@ -95,8 +98,9 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		String s="2007年02月02号";
-		 
-		System.out.println(isValidDate(s));
+		String s="深圳市惟谷科技有限公司：本院受理原告深圳市阿拉町科技发展有限公司诉被告上海寻梦信息技术有限公司、深圳市惟谷科技有限公司侵害外观设计专利权纠纷一案，案号为(2018)粤03民初2956号。现因你下落不明，依照《中华人民共和国民事诉讼法》第九 十二条之规定，向你公告送达本案的民事起诉状副本、原告证据副本、应诉通知书...".replace(" ", "");
+		System.out.println(s);
+		s = TransApi.Trans(s,"en");
+		System.out.println(s);
 	}
 }

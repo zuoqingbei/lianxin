@@ -7,8 +7,17 @@ let Index = {
         this.popperFilter();
         this.hideShowStyle();
         this.searchEvent();
+        this.contronNewAdd();
         $(".left-nav ul li:first").addClass("active").siblings().removeClass("active");
 
+    },
+    contronNewAdd(){
+        //报告员隐藏新建订单
+        var con= JSON.parse(sessionStorage.getItem('roleIds'));
+        console.log(con);
+        if(con.indexOf(2)>-1){
+            $('#newAdd').css({'height':'0','padding':'0','overflow':'hidden'})
+        }
     },
     dateForm(){
         /**日期控件 */
@@ -68,6 +77,7 @@ let Index = {
 				}
 			});
        		getMessage();
+       		console.log('index')
       })
 
       /**点击重置按钮 */
@@ -88,14 +98,15 @@ let Index = {
         console.log(companyName,orderCName,deadDate,client,proxy,country)
 
         /***发起ajax请求 获取表格数据*/
-        
-         $("#btn_reset").click(function(){
-	        $("#formSearch div input").val("");
-	        $("#client option:first").prop("selected","selected")
-	        $("#proxy option:first").prop("selected","selected")
-	        $("#country option:first").prop("selected","selected")
-	      })
+
       })
+        // $("#btn_reset").click(function(){
+        //     $("#formSearch div input").val("");
+        //     $("#client option:first").prop("selected","selected")
+        //     $("#proxy option:first").prop("selected","selected")
+        //     $("#country option:first").prop("selected","selected");
+        //     $("#btn_query").trigger("click")
+        // })
     },
     hideShowStyle(){
       /**展开收起样式 */
@@ -103,7 +114,7 @@ let Index = {
 		 if($('#hideBtn').text().trim() === '收起'){
 	         $("#btnCollapse").css({'height':'0',"overflow":'hidden'})
 	         $('#hideBtn').html('展开 <i class="fa fa-angle-down"></i>')
-	         $(".fixed-table-body").css({'height':'115%','transition':'all .1s'})
+	         $(".fixed-table-body").css({'height':'125%','transition':'all .1s'})
 	         $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"12px",'transition':'all .1s'})
 	        }else if($('#hideBtn').text().trim() === '展开'){
 	         $("#btnCollapse").css({'height':'5.2rem',"overflow":'visibility'})
@@ -305,7 +316,11 @@ let Index = {
       }       
     }
 Index.init();
-
+$('input').keyup(function (e) {//捕获文档对象的按键弹起事件
+    if (e.keyCode == 13) {//按键信息对象以参数的形式传递进来了
+        $('#btn_query').trigger("click")
+    }
+});
 function loadtable(){
 	var checked=[];
 	 var checkchar=""
