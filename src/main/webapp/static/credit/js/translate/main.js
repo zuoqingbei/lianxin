@@ -176,7 +176,13 @@ let ReportConfig = {
 				    						<label for="" class="control-label" >${ele.temp_name}：</label>
 				    						<input type="number" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     							</div>`
-    					break;
+    						break;
+    				case 'textarea':
+    					modalBody += ` <div class="form-inline justify-content-center my-3">
+    						<label for="" class="control-label" >${ele.temp_name}：</label>
+    						<textarea  class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" ></textarea>
+    						</div>`
+    						break;
     				case 'select':
     					if(!ele.get_source) {return}
     					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
@@ -196,6 +202,26 @@ let ReportConfig = {
             						</div>`
             				}
             			})
+    					break;
+    				case 'select2':
+    					if(!ele.get_source) {return}
+    					let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
+    					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
+    					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					$.ajax({
+    						type:'get',
+    						url:url1,
+    						async:false,
+    						dataType:'json',
+    						success:(data)=>{
+    							modalBody += ` <div class="form-inline justify-content-center my-3">
+    								<label for="" class="control-label" >${ele.temp_name}：</label>
+    								<select  class="form-control select2" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+    									${data.selectStr}
+    								</select>
+    								</div>`
+    						}
+    					})
     					break;
     				case 'file':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
@@ -785,6 +811,7 @@ let ReportConfig = {
                 	_this.initTable();
                 	_this.initFloat();
                 	InitObjTrans.dateInit();
+                	InitObjTrans.initSelect2();
                 	_this.bindFormData();
                 	_this.bindFormDataEn();
                 	_this.tabChange();
@@ -1505,7 +1532,7 @@ let ReportConfig = {
     	let dataEn  = []
     	let Ajaxnum = 0
     	let xhNum = 0
-    	
+    	this.numCop = 0
     	function removeEmptyArrayEle(arr){    
     		  for(var i = 0; i < arr.length; i++) {
     		   if(arr[i] == undefined) {
@@ -1619,9 +1646,8 @@ let ReportConfig = {
     		})
     	//点击提交按钮
 		
-		$(".position-fixed").on("click","#submit",(e)=>{
+		$(".position-fixed").on("click","#commit",(e)=>{
 			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
-			 console.log(data)
 			 if(data.length === 0){return}
 			 data.forEach((ele,i)=>{
 				 delete ele["mySort"]
@@ -1670,12 +1696,10 @@ let ReportConfig = {
     	setTimeout(()=>{
     	let formTitlesEn = this.formTitleEn;
     	let formIndexEn = this.formIndexEn;
-    
     	//_this.formDataArr
     	formIndexEn.forEach((item,index)=>{
     		let alterSource = formTitlesEn[index]["alter_source"];
-    		if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){return}
-    		console.log(formTitlesEn[index])
+    		if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){ return}
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
     		let dataJson = []
     		let dataJsonObj = {} 
@@ -1690,8 +1714,12 @@ let ReportConfig = {
     				}
     			})
     		}
-    		console.log(_this.formDataArr)
-    		if(!_this.formDataArr[index]){return}
+    	/*	console.log(_this.formDataArr)
+    		if(!_this.formDataArr[index]){
+    			this.numCop++;
+    			console.log(this.numCop,formIndexEn.length);
+    			return
+			 }*/
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表单翻译
@@ -1825,16 +1853,20 @@ let ReportConfig = {
     				 }
     			 })
     			 dataJson.push(dataJsonObj)
+    		
     			 $.ajax({
     				 url,
     				 type:'post',
+    				 async:false,
     				 data:{
     					 dataJson:JSON.stringify(dataJson)
     				 },
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
-    					 console.log(index,formIndexEn.length)
-						 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `statusCode=308&model.id=${_this.rows["id"]}`;
+    					 this.numCop++;
+						 console.log(this.numCop) 
+    						 
+						let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `statusCode=308&model.id=${_this.rows["id"]}`;
 						 $.ajax({
 							 url,
 							 type:'post',
@@ -1847,7 +1879,7 @@ let ReportConfig = {
     			 })
     		})
     	})
-    	},1000)
+    	},1500)
     }
 }
 

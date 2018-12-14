@@ -209,6 +209,26 @@ let ReportConfig = {
                             }
                         })
                         break;
+                	case 'select2':
+    					if(!ele.get_source) {return}
+    					let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
+    					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
+    					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					$.ajax({
+    						type:'get',
+    						url:url1,
+    						async:false,
+    						dataType:'json',
+    						success:(data)=>{
+    							modalBody += ` <div class="form-inline justify-content-center my-3">
+    								<label for="" class="control-label" >${ele.temp_name}：</label>
+    								<select  class="form-control select2" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+    									${data.selectStr}
+    								</select>
+    								</div>`
+    						}
+    					})
+    					break;
                     case 'file':
                         modalBody += ` <div class="form-inline justify-content-center my-3">
 						                    <label for="" class="control-label">${ele.temp_name}：</label>
@@ -814,6 +834,7 @@ let ReportConfig = {
                     _this.initTable();
                     _this.initFloat();
                     InitObjTransQua.dateInit();
+                    InitObjTransQua.initSelect2();
                     _this.bindFormData();
                     _this.bindFormDataEn();
                     _this.tabChange();

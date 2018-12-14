@@ -196,7 +196,7 @@ let Verify = {
                     			$(Array.from($(".recordName"))[index]).attr("data-target","#recordingName")
                     		}
                     		//分析
-                    		if(item.report_type !== '8' && item.report_type !== '9' && item.report_type !== '10' && item.report_type !== '11') {
+                    		if( item.report_type !== '10' && item.report_type !== '11') {
                     			$($(".analyze").get(index)).css ({"color":"#ccc","cursor":"default"});
                     			$($(".analyze").get(index)).unbind()
                     		}else {
