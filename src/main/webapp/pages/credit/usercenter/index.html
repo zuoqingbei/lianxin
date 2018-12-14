@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <!-- 表格 -->
-                <div class="table-content">
+                <div class="table-content" style="height: calc(100% - 4.7rem)">
                     <div class="bg-f">
                         <div class="form-box">
                             <form id="formSearch" class="form-inline layui-form" role="form">
@@ -109,7 +109,7 @@
                                	</div>
                             </form>
                             <div class="btn-row d-flex justify-content-between mt-3 mb-3">
-                                <a role="button" class="btn btn-primary ml-5 d-flex align-items-center" href="javascript:;" onclick="Public.createOrder()"><i class="fa fa-plus pr-2"></i>新增订单</a>
+                                <a role="button" class="btn btn-primary ml-5 d-flex align-items-center" id="newAdd" href="javascript:;" onclick="Public.createOrder()"><i class="fa fa-plus pr-2"></i>新增订单</a>
                                 <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
                                     <button type="button" id="btn_query" class="btn btn-primary enterFilter">查询</button>
                                     <button type="button" id="btn_reset" class="btn btn-light">重置</button>
