@@ -98,7 +98,8 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		String s="深圳市惟谷科技有限公司：本院受理原告深圳市阿拉町科技发展有限公司诉被告上海寻梦信息技术有限公司、深圳市惟谷科技有限公司侵害外观设计专利权纠纷一案，案号为(2018)粤03民初2956号。现因你下落不明，依照《中华人民共和国民事诉讼法》第九十二条之规定，向你公告送达本案的民事起诉状副本、原告 证据".replace(" ", "");
+		String s="深圳市惟谷科技有限公司：本院受理原告深圳市阿拉町科技发展有限公司诉被告上海寻梦信息技术有限公司、深圳市惟谷科技有限公司侵害外观设计专利权纠纷一案，案号为(2018)粤03民初2956号。现因你下落不明，依照《中华人民共和国民事诉讼法》第九 十二条之规定，向你公告送达本案的民事起诉状副本、原告证据副本、应诉通知书...".replace(" ", "");
+		System.out.println(s);
 		s = TransApi.Trans(s,"en");
 		System.out.println(s);
 	}

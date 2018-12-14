@@ -8,6 +8,7 @@ let OrderDetail = {
         this.isQuality = !!this.row.quality_type;
         this.quality_deal = '';
         this.qualityOpinionId = '';
+        this.cwModules = [];
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         this.getUrl = (item, otherProperty, paramObj) => {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.data_source).split("*");
@@ -90,7 +91,7 @@ let OrderDetail = {
             switch (smallModuleType) {
                 // 0-表单
                 case '0':
-                    if (_this.isQuality&&(item.title.temp_name === '基本信息'||item.title.temp_name === '基本信息')) {
+                    if (_this.isQuality && (item.title.temp_name === '基本信息' || item.title.temp_name === '基本信息')) {
                         return;
                     }
                     const htmlRoc_registration_status = ['', '未有登记', '正在办理成立登记', '登记成立', '已自行注销登记', '已被吊销登记']
@@ -121,7 +122,7 @@ let OrderDetail = {
                         }
                     });
                     $wrap.append(`
-                        <div class="module-content order-content123">
+                        <div class="type1-content module-content order-content123">
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
@@ -163,7 +164,7 @@ let OrderDetail = {
                 // 2-附件
                 case '2':
                     let html = Public.fileConfig(item, this.row);
-                    $wrap.append(`<div class="module-content tabelBox p-4">${html}</div>`);
+                    $wrap.append(`<div class="type2-content module-content tabelBox p-4">${html}</div>`);
                     break;
                 // 4-流程进度
                 case '4':
@@ -172,7 +173,7 @@ let OrderDetail = {
                     }
                     let $ul = this.initProcess();
                     $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
-                        if (data.rows) {
+                        if (data.rows && data.rows.length > 0) {
                             this.processNames.forEach((name, index) => {
                                 data.rows.forEach((item) => {
                                     if (processObj[name].includes(item.order_state)) {
@@ -189,7 +190,7 @@ let OrderDetail = {
                         $ul.find('.span_active:last').addClass('circle_active')
                             .end().children('li.active:last').addClass('current');
                         $wrap.append(`<div class="module-wrap bg-f company-info">
-                            <div class="module-content bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
+                            <div class="type4-content module-content bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
                     });
                     break;
                 // 6-信用等级
@@ -242,6 +243,15 @@ let OrderDetail = {
                         }
                     });
                     break;
+                // 9-财务模块结构和多行文本框数据
+                case '9':
+                    _this.cwModules.push(item);
+                    break;
+                // 10-财务模块表格数据
+                case '10':
+                    $wrap.append(`<div class="module-content type10-content"></div>`);
+                    _this.cwModules.push(item);
+                    break;
                 // 20-单选框判断后加一个多行文本框
                 case '20':
                     const $type20_div = $('<div class="radioBox p-3" ></div>').append(['', '有，详情如下。', '无，根据企业登记机关所示数据，该企业并未设立任何分支机构。', '企业登记机关并未提供该企业分支机构数据。']
@@ -291,10 +301,10 @@ let OrderDetail = {
                         .end().find("[for=quality_opinion]").text(item.contents[1].temp_name + ' : ');
                     let dealQualityData = (param, param2) => {
                         let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
-                        console.log('$wrap.find("#quality_opinion").val()',$wrap.find("#quality_opinion").val())
+                        console.log('$wrap.find("#quality_opinion").val()', $wrap.find("#quality_opinion").val())
                         $.get(this.getUrl(item, '', {
                                 id: this.qualityOpinionId,
-                                quality_opinion: $wrap.find("#quality_opinion").val() || '',
+                                quality_opinion: $wrap.find("#quality_opinion").val() ? $wrap.find("#quality_opinion").val() : '',
                                 quality_deal: checkedIndex,
                                 quality_type: _this.row.quality_type,
                                 report_type: _this.row.report_type,
@@ -303,6 +313,7 @@ let OrderDetail = {
                             }) + (param === 'update' ? '&update=true' : '')
                             + (param2 === 'submit' ? '&submit=true' : ''),
                             (data) => {
+                                console.log('$wrap.find("#quality_opinion").val()2', $wrap.find("#quality_opinion").val())
                                 this.qualityOpinionId = data.rows[0].id ? data.rows[0].id : '';
                                 let quality_type = this.row.quality_type;
                                 let status = this.row.status;
@@ -340,7 +351,6 @@ let OrderDetail = {
                                 }
 
                                 if (data.rows && data.rows.length > 0) {
-                                    console.log('data.rows[0].quality_opinion',data.rows[0].quality_opinion)
                                     $("#quality_opinion").val(data.rows[0].quality_opinion || '');
                                     $("#grade").val(data.rows[0].grade || 0);
                                     $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
@@ -368,11 +378,46 @@ let OrderDetail = {
             }
             $(".main .table-content").append($wrap);
         });
+        this.setCwData();
         // 质检结果下拉列表
         if (this.isQuality) {
             this.setQualitySelect();
             $(".main-header .tab_bar>li:lt(2)").hide();
         }
+    },
+    //财务部分
+    setCwData() {
+        console.log(this.cwModules);
+        let [type9MulText, type9TableHead, type10Items] = [{}, [], {}];
+        this.cwModules.forEach(function (item) {
+            if (item.smallModileType === '9') {
+                if (item.title.sort === '1') {
+                    type9MulText = item;
+                } else {
+                    type9TableHead.push(item)
+                }
+            } else if (item.smallModileType === '10') {
+                type10Items = item;
+            }
+        });
+        console.info('type9MulText', type9MulText, '\ntype9TableHead', type9TableHead, '\ntype10Items', type10Items);
+        let $tableBox = $('<div class="tableBox"><h4 class="text-center p-3"></h4><table class="table"><thead><th></th><th>时间1</th><th>时间2</th></thead><tbody></tbody></table></div>');
+        let $allTable = $('<div class="tableAll"></div>');
+        type9TableHead.forEach(function (item) {
+            // $allTable.append($tableBox.find('h4').text(item.title.temp_name).end());
+            $allTable.append($tableBox.find('h4').text(item.title.temp_name).end()[0].outerHTML);
+        });
+        // 获取表格数据内容
+        // $.get(BASE_PATH+`credit/front/ReportGetData/${type10Items.title.data_source}?ficConf_id=${this.row.id}&report_type=${this.row.report_type}`,(data) =>{
+        $.get(BASE_PATH+`credit/front/ReportGetData/${type10Items.title.data_source}?ficConf_id=${198}&report_type=${this.row.report_type}`,(data) =>{
+            console.log(data)
+            data.rows.forEach((row)=>{
+                $allTable.children().eq(row.parent_sector-1).find('tbody')
+                    .append(`<tr><td>${row.item_name}</td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
+
+            })
+        })
+        $(".type10-content").append($allTable);
     },
     // 获取质检结果下拉框的数据
     getQualitySelectData(param) {
@@ -420,7 +465,7 @@ let OrderDetail = {
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         let detailname = this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
-            if (!['基本信息', '流程进度', '质检评分','质检意见', '附件'].includes($(this).text())) {
+            if (!['基本信息', '流程进度', '质检评分', '质检意见', '附件'].includes($(this).text())) {
                 switch (_this.row.quality_type) {
                     case 'entering_quality':
                         $(this).nextAll('.module-content').after(qualitySelectHtml);
