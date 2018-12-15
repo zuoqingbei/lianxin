@@ -6,7 +6,6 @@
     <title>联信</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/select2/css/select2.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css?">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
     <style>
@@ -21,10 +20,22 @@
         .select2-container--default.select2-container--focus .select2-selection--multiple{
             border-color: #1890ff;
         }
-
+        .type10-content table{
+            border-bottom: 1px solid #dee2e6;
+            /*margin-bottom: 1.5rem;*/
+        }
+        .type10-content table td{
+            text-align: center;
+            width: 30%;
+        }
+        .type10-content table .trName{
+            width: 10rem;
+            text-align: left;
+            display: inline-block;
+        }
     </style>
 </head>
-
+<body>
 <div id="container" class="row animted fadeIn">
 
     <div class="main">
@@ -51,7 +62,7 @@
         </div>
     </div>
 </div>
-<script src="${BASE_PATH }static/credit/assets/select2/js/select2.js"></script>
+
 <script src="${BASE_PATH }static/credit/js/order_manage/order_common.js"></script>
 <script src="${BASE_PATH }static/credit/js/order_manage/order_detail.js"></script>
 
@@ -59,4 +70,5 @@
     $(function () {
     })
 </script>
+</body>
 </html>

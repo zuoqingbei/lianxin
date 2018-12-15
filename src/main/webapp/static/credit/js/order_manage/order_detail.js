@@ -8,6 +8,8 @@ let OrderDetail = {
         this.isQuality = !!this.row.quality_type;
         this.quality_deal = '';
         this.qualityOpinionId = '';
+        this.cwModules = [];
+        [this.type9MulText, this.type9TableHead, this.type10Items] = [{}, [], {}];
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         this.getUrl = (item, otherProperty, paramObj) => {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.data_source).split("*");
@@ -85,12 +87,16 @@ let OrderDetail = {
             let smallModuleType = item.smallModileType;
             let itemId = item.title.id;
             let _this = this;
-            let $wrap = $moduleWrap.clone().attr('id', itemId)
-                .append($moduleTitle.clone().text(item.title.temp_name));
+            let $wrap;
+            if(smallModuleType!=='9'){
+                $wrap = $moduleWrap.clone().attr('id', itemId)
+                    .append($moduleTitle.clone().text(item.title.temp_name));
+            }
+
             switch (smallModuleType) {
                 // 0-表单
                 case '0':
-                    if (_this.isQuality&&(item.title.temp_name === '基本信息'||item.title.temp_name === '基本信息')) {
+                    if (_this.isQuality && (item.title.temp_name === '基本信息' || item.title.temp_name === '基本信息')) {
                         return;
                     }
                     const htmlRoc_registration_status = ['', '未有登记', '正在办理成立登记', '登记成立', '已自行注销登记', '已被吊销登记']
@@ -121,7 +127,7 @@ let OrderDetail = {
                         }
                     });
                     $wrap.append(`
-                        <div class="module-content order-content123">
+                        <div class="type1-content module-content order-content123">
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
@@ -163,7 +169,7 @@ let OrderDetail = {
                 // 2-附件
                 case '2':
                     let html = Public.fileConfig(item, this.row);
-                    $wrap.append(`<div class="module-content tabelBox p-4">${html}</div>`);
+                    $wrap.append(`<div class="type2-content module-content tabelBox p-4">${html}</div>`);
                     break;
                 // 4-流程进度
                 case '4':
@@ -172,7 +178,7 @@ let OrderDetail = {
                     }
                     let $ul = this.initProcess();
                     $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
-                        if (data.rows) {
+                        if (data.rows && data.rows.length > 0) {
                             this.processNames.forEach((name, index) => {
                                 data.rows.forEach((item) => {
                                     if (processObj[name].includes(item.order_state)) {
@@ -189,7 +195,7 @@ let OrderDetail = {
                         $ul.find('.span_active:last').addClass('circle_active')
                             .end().children('li.active:last').addClass('current');
                         $wrap.append(`<div class="module-wrap bg-f company-info">
-                            <div class="module-content bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
+                            <div class="type4-content module-content bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
                     });
                     break;
                 // 6-信用等级
@@ -242,6 +248,19 @@ let OrderDetail = {
                         }
                     });
                     break;
+                // 9-财务模块结构和多行文本框数据
+                case '9':
+                    if (item.title.sort === '1') {
+                        _this.type9MulText = item;
+                    } else {
+                        _this.type9TableHead.push(item)
+                    }
+                    break;
+                // 10-财务模块表格数据
+                case '10':
+                    $wrap.append(`<div class="module-content type10-content"></div>`);
+                    _this.type10Items = item;
+                    break;
                 // 20-单选框判断后加一个多行文本框
                 case '20':
                     const $type20_div = $('<div class="radioBox p-3" ></div>').append(['', '有，详情如下。', '无，根据企业登记机关所示数据，该企业并未设立任何分支机构。', '企业登记机关并未提供该企业分支机构数据。']
@@ -291,10 +310,10 @@ let OrderDetail = {
                         .end().find("[for=quality_opinion]").text(item.contents[1].temp_name + ' : ');
                     let dealQualityData = (param, param2) => {
                         let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
-                        console.log('$wrap.find("#quality_opinion").val()',$wrap.find("#quality_opinion").val())
+                        console.log('$wrap.find("#quality_opinion").val()', $wrap.find("#quality_opinion").val())
                         $.get(this.getUrl(item, '', {
                                 id: this.qualityOpinionId,
-                                quality_opinion: $wrap.find("#quality_opinion").val() || '',
+                                quality_opinion: $wrap.find("#quality_opinion").val() ? $wrap.find("#quality_opinion").val() : '',
                                 quality_deal: checkedIndex,
                                 quality_type: _this.row.quality_type,
                                 report_type: _this.row.report_type,
@@ -303,6 +322,7 @@ let OrderDetail = {
                             }) + (param === 'update' ? '&update=true' : '')
                             + (param2 === 'submit' ? '&submit=true' : ''),
                             (data) => {
+                                console.log('$wrap.find("#quality_opinion").val()2', $wrap.find("#quality_opinion").val())
                                 this.qualityOpinionId = data.rows[0].id ? data.rows[0].id : '';
                                 let quality_type = this.row.quality_type;
                                 let status = this.row.status;
@@ -340,7 +360,6 @@ let OrderDetail = {
                                 }
 
                                 if (data.rows && data.rows.length > 0) {
-                                    console.log('data.rows[0].quality_opinion',data.rows[0].quality_opinion)
                                     $("#quality_opinion").val(data.rows[0].quality_opinion || '');
                                     $("#grade").val(data.rows[0].grade || 0);
                                     $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
@@ -368,11 +387,71 @@ let OrderDetail = {
             }
             $(".main .table-content").append($wrap);
         });
+        this.setCwData();
         // 质检结果下拉列表
         if (this.isQuality) {
             this.setQualitySelect();
             $(".main-header .tab_bar>li:lt(2)").hide();
         }
+    },
+    //财务部分
+    setCwData() {
+        let [type9MulText, type9TableHead, type10Items] = [this.type9MulText, this.type9TableHead, this.type10Items];
+        console.info('type9MulText', type9MulText, '\ntype9TableHead', type9TableHead, '\ntype10Items', type10Items);
+        let $tableBox = $('<div class="tableBox m-4"><h4 class="text-center p-3"></h4></div>');
+        let $allTable = $('<div class="tableAll"></div>');
+        type9TableHead.forEach(function (item) {
+            // $allTable.append($tableBox.find('h4').text(item.title.temp_name).end());
+            $allTable.append($tableBox.find('h4').text(item.title.temp_name).end()[0].outerHTML);
+        });
+        // 通过type10获取表格数据内容
+        let addTableMark = [];
+        // $.get(BASE_PATH+`credit/front/ReportGetData/${type10Items.title.data_source}?ficConf_id=${this.row.id}&report_type=${this.row.report_type}`,(data) =>{
+        $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.data_source}?ficConf_id=${198}&report_type=${8}`, (data) => {
+            data.rows.forEach((row) => {
+                if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
+                    //孩子顺序是固定的
+                    let firstSonOrder = addTableMark.find((str) => str.slice(0, 1) === row.parent_sector + '').split('-')[1];
+                    $allTable.children().eq(row.parent_sector - 1).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
+                        .append(`<tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
+                } else {
+                    $allTable.children().eq(row.parent_sector - 1)
+                        .append(`<table class="table"><tbody><tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr></tbody></table>`)
+                    addTableMark.push(row.parent_sector + '-' + row.son_sector);
+                }
+            })
+            // 通过企业父title获取表格头部的日期、单位和多行文本框们
+            $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.data_source}?company_id=${7777887}&report_type=${this.row.report_type}`, (data) => {
+                $allTable.find('.tableBox').each(function (index, item) {
+                    let [dateStart, dateEnd] = [data.rows[0].date1, data.rows[0].date2];
+                    if ($(this).find('h4').text().includes('利润表')) {
+                        [dateStart, dateEnd] = [data.rows[0].date3, data.rows[0].date4];
+                    }
+                    $(this).find('table:eq(0)').prepend(`<thead>
+                    <tr><th></th><th></th><th>${type9MulText.contents[4].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
+                    <tr><th></th><th>${dateStart || '&emsp;'}</th><th>${dateEnd || '&emsp;'}</th></tr>
+                </thead>`);
+                });
+                // 通过企业父title的某个内容获取下拉框来转换单位
+                $.when(
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[4].data_source}`),
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[5].data_source}`)
+                ).done(function (unitData, currencyUbitData) {
+                    let [currency, currency_ubit] = [data.rows[0].currency, data.rows[0].currency_ubit]
+                    let $select1 = $(`<select id="currencyUnitTrans">${unitData[0].selectStr}</select>`);
+                    let $select2 = $(`<select id="currencyUbitDataTrans">${currencyUbitData[0].selectStr}</select>`);
+                    let currencyText = $select1.val(currency).find("option:selected").text();
+                    let currencyUbitText = $select2.val(currency_ubit).find("option:selected").text();
+                    $allTable.find(".currency").text(currencyText);
+                    $allTable.find(".currency_ubit").text(currencyUbitText);
+                    console.log(unitData[0].selectStr,currencyText,currencyUbitData[0].selectStr, currencyUbitText)
+
+                });
+
+
+            })
+        });
+        $(".type10-content").append($allTable);
     },
     // 获取质检结果下拉框的数据
     getQualitySelectData(param) {
@@ -420,7 +499,7 @@ let OrderDetail = {
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         let detailname = this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
-            if (!['基本信息', '流程进度', '质检评分','质检意见', '附件'].includes($(this).text())) {
+            if (!['基本信息', '流程进度', '质检评分', '质检意见', '附件'].includes($(this).text())) {
                 switch (_this.row.quality_type) {
                     case 'entering_quality':
                         $(this).nextAll('.module-content').after(qualitySelectHtml);

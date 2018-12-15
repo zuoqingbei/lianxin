@@ -329,6 +329,26 @@ public class TemplateDictService extends BaseService {
 			
 		return allDict;
 	}
+
+    /**
+     * 下拉框value显示detail_code
+     * @param type
+     * @param detailName
+     * @return
+     */
+    public String getSysDictDetailCode(String type,String detailName) {
+        StringBuffer sb=new StringBuffer();
+        List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+        listDetail.addAll(DictCache.getSysDictDetailByType(type));
+        for(SysDictDetail detail:listDetail){
+            if(detailName!=null&&detailName.toString().equals(detail.get("detail_name").toString())){
+                sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_name")+"'>"+detail.get("detail_remark")+"</option>");
+            }else {
+                sb.append("<option m-detail-id='" + detail.get("detail_id") + "' m-detail-content='" + detail.get("detail_content") + "' m-detail-code='" + detail.get("detail_code") + "'  m-english='" + detail.get("detail_name_en") + "' value='" + detail.get("detail_name") + "'>" + detail.get("detail_remark") + "</option>");
+            }
+        }
+        return sb.toString();
+    }
 	
 
 	

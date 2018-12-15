@@ -164,6 +164,12 @@ let ReportConfig = {
 				    						<input type="number" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     							</div>`
     					break;
+    				case 'textarea':
+    					modalBody += ` <div class="form-inline justify-content-center my-3">
+    						<label for="" class="control-label" >${ele.temp_name}：</label>
+    						<textarea  class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" ></textarea>
+    						</div>`
+    						break;
     				case 'select':
     					if(!ele.get_source) {return}
     					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
@@ -183,6 +189,26 @@ let ReportConfig = {
             						</div>`
             				}
             			})
+    					break;
+    				case 'select2':
+    					if(!ele.get_source) {return}
+    					let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
+    					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
+    					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					$.ajax({
+    						type:'get',
+    						url:url1,
+    						async:false,
+    						dataType:'json',
+    						success:(data)=>{
+    							modalBody += ` <div class="form-inline justify-content-center my-3">
+    								<label for="" class="control-label" >${ele.temp_name}：</label>
+    								<select  class="form-control select2" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+    									${data.selectStr}
+    								</select>
+    								</div>`
+    						}
+    					})
     					break;
     				case 'file':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
@@ -629,6 +655,7 @@ let ReportConfig = {
                 	_this.initTable();
                 	_this.initFloat();
                 	InitObjAnalyze.dateInit();
+                	InitObjAnalyze.initSelect2();
                 	_this.bindFormData();
                 	_this.tabChange();
                 	_this.modalClean();
