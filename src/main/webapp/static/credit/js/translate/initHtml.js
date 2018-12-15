@@ -651,28 +651,6 @@ let InitObjTrans = {
 			}
 		})
 	},
-	addNewCwModal(cwConfigAlterSource,rows){
-		/**
-		 * 新增一个财务模块
-		 */
-		$(document).on("click","#addCwMdal",(e)=>{
-			let dataJson = []
-			let obj = {}
-			obj["company_id"] = rows["company_id"]
-			dataJson.push(obj)
-			$.ajax({
-				url:BASE_PATH + 'credit/front/ReportGetData/' + cwConfigAlterSource,
-				type:'post',
-				data:{
-					dataJson:JSON.stringify(dataJson),
-					report_type:rows["report_type"]
-				},
-				success:(data)=>{
-					console.log(data)
-				}
-			})
-		})
-	},
 	refreshCwModal(tableCwIds,getSource,id,rows){
 		/**
 		 * 刷新表格数据
@@ -876,6 +854,11 @@ let InitObjTrans = {
         });
 
         return indexed_array;
+    },
+    initSelect2(){
+    	$(".select2").select2({
+    		 multiple: true,
+    	})
     }
 }
 

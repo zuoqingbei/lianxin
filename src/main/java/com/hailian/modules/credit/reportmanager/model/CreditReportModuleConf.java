@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.hailian.util.StrUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
@@ -64,7 +65,9 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	public List<CreditReportModuleConf> findSon(String parent_temp, String report) {
 		String sql="select t.* from credit_report_module_conf t where"
 				+ " t.del_flag=0 and t.parent_temp=? and t.report_type=? order by t.sort,t.id ";
-		return dao.find(sql, parent_temp,report);
+		//return dao.find(sql, parent_temp,report);
+        //缓存2个小时
+        return dao.findByCache("reportModuleConf","credit_report_module_conf"+parent_temp+report,sql,parent_temp,report);
 	}
 	
 	public List<CreditReportModuleConf> findReportNodes(String report) {
@@ -88,7 +91,9 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	public List<CreditReportModuleConf> findByReport(String report) {
 		String sql="select t.* from credit_report_module_conf t where"
 				+ " t.del_flag=0 and t.node_level=1 and t.report_type=? and t.small_module_type not in(-1,-2) order by t.sort,t.id";
-		return dao.find(sql,report);
+		//return dao.find(sql,report);
+        //缓存2个小时
+        return dao.findByCache("reportModuleConf","credit_report_module_conf"+report,sql,report);
 	}
 	public List<CreditReportModuleConf> findReportType() {
 		String sql="select t.* from credit_report_module_conf t where"
@@ -122,7 +127,9 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 		params.add(reportType);
 		params.add(DefaultModule);
 		params.add(reportType);
-		return dao.find(sql,params.toArray());
+		//return dao.find(sql,params.toArray());
+        //缓存2个小时
+        return dao.findByCache("reportModuleConf","credit_report_module_conf"+DefaultModule+reportType+DefaultModule+reportType,sql,params.toArray());
 	}
 	/**
 	 * Author:lzg
@@ -135,9 +142,34 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 		String sql = "select a.*  from credit_report_module_conf a where a.small_module_type=? and report_type=? and del_flag=0  order by sort,id  ";
 		params.add(TabFixed);
 		params.add(reportType);
-		return dao.find(sql,params.toArray());
+		//return dao.find(sql,params.toArray());
+        //缓存2个小时
+        return dao.findByCache("reportModuleConf","credit_report_module_conf"+TabFixed+reportType,sql,params.toArray());
 	}
-		
-	
-	
+
+    /**
+     * 分页查询字段
+     * @param pageNumber
+     * @param pageSize
+     * @param keyword
+     * @param params
+     * @return
+     */
+    public Page<CreditReportModuleConf> findSon(int pageNumber,int pageSize,String keyword ,String orderBy,List<Object> params) {
+        StringBuffer from = new StringBuffer("select t.* ") ;
+        StringBuffer where = new StringBuffer(" from credit_report_module_conf t where t.del_flag = 0 ");
+        where.append(" and t.parent_temp=? and t.report_type=? ");
+        if(StringUtils.isNotEmpty(keyword)){
+            where.append(" and t.temp_name like concat('%',?,'%')");
+            params.add(keyword);
+        }
+        //排序
+        if (StrUtils.isEmpty(orderBy)) {
+            where.append(" order by t.sort,t.id");
+        } else {
+            where.append(" order by ").append(orderBy);
+        }
+        Page<CreditReportModuleConf> page = dao.paginate(new Paginator(pageNumber, pageSize), from.toString(),where.toString(), params.toArray());
+        return page;
+    }
 }

@@ -1,0 +1,199 @@
+<% var headContent = { include("/pages/template/head.html"){} %>
+<script type="text/javascript">
+
+    var oper;
+    jQuery(function($) {
+        // 页面方法
+        oper = {
+            width : 400,
+            height : 500,
+            form : document.form1,
+            list : function() {
+                var url = 'credit/reportColumn/list';
+                this.form.action = url;
+                this.form.submit();
+            },
+            view : function(id) {
+                var url = 'credit/reportColumn/view?id='+id;
+                var title = '查看详细字段';
+                Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+            },
+            add : function() {
+                var url = 'credit/reportColumn/add';
+                var title = '添加字段';
+                Iframe(url, this.width, this.height, title);
+            },
+            edit : function(id) {
+                var url = 'credit/reportColumn/edit?id='+id;
+                var title = '修改字段';
+                Iframe(url, this.width, this.height, title);
+            },
+            del : function(id) {
+                var url = 'credit/reportColumn/del?id='+id;
+                var title = '确认要删除该字段？';
+                Confirm(title, function() {
+                    //window.location.href =  url;
+                    form1.action = url;
+                    form1.submit();
+                });
+
+            }
+        };
+        //显示Menu索引
+        showMenu('page_report_manager');
+    });
+
+    //分页
+    var paginator = function(page) {
+        oper.list();
+    };
+</script>
+
+<% }; var bodyContent = { %>
+<form name="form1" action="" method="post" class="form-inline" role="form">
+    <input type="hidden" name="form.orderColumn" value="${form.orderColumn!''}" />
+    <input type="hidden" name="form.orderAsc" value="${form.orderAsc!''}" />
+    <input type="hidden" name="pid" value="${pid!''}" />
+    <input type="hidden" name="reportType" value="${reportType!''}" />
+    <!-- 菜单 -->
+    <% include("/pages/template/menu.html"){} %>
+
+    <div class="tableSearch">
+        <% //查询列表 %>
+        搜索内容
+        <div class="form-group">
+            <input class="form-control" type="text" name="keyWord" value="${keyWord!''}" placeholder="请输入关键字" required='required' />
+        </div>
+        <button type="button" class="btn btn-default" onclick="oper.list();" name="search"/>
+            <span class="glyphicon glyphicon-search"></span> 查 询
+        </button>
+        <button type="button" class="btn btn-default" onclick="resetForm();">
+            <span class="glyphicon glyphicon-refresh"></span> 重 置
+        </button>
+        <button type="button" class="btn btn-default" onclick="oper.add();">
+            <span class="glyphicon glyphicon-plus"></span> 新 增
+        </button>
+    </div>
+    <!-- 数据列表 -->
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>序号</th> <% // 列表头部 %>
+            <th name="t.name" class="sorting">字段名称</th>
+            <th name="t.name_en" class="sorting">字段类型</th>
+            <th name="t.name_trad" class="sorting">表字段名</th>
+            <th name="t.tpl_path" class="sorting">输入提示</th>
+            <th name="u.realname" class="sorting">后缀描述</th>
+            <th name="t.order_no" class="sorting">验证正则</th>
+            <th name="t.remarks" class="sorting">错误提示</th>
+            <th name="t.create_date" class="sorting">占位符(word模板)</th>
+            <th name="t.create_date" class="sorting">表格形式(word模板)</th>
+            <th name="t.create_date" class="sorting">排序</th>
+            <th name="t.create_date" class="sorting">备注</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(item in page.list){ %>
+        <tr>
+            <td>${item.id }</td>
+            <td title="${item.temp_name!}">
+                <% if (strutil.length(item.temp_name) >25) { %>
+                    ${strutil.subStringTo(item.temp_name, 0, 25)}...
+                <% } else { %>
+                    ${item.temp_name}
+                <% } %>
+            </td>
+            <td title="${item.field_type!}">
+                <% if (strutil.length(item.field_type) >25) { %>
+                    ${strutil.subStringTo(item.field_type, 0, 25)}...
+                <% } else { %>
+                    ${item.field_type}
+                <% } %>
+            </td>
+
+            <td title="${item.column_name!}">
+                <% if (strutil.length(item.column_name) >25) { %>
+                    ${strutil.subStringTo(item.column_name, 0, 25)}...
+                <% } else { %>
+                    ${item.column_name}
+                <% } %>
+            </td>
+
+            <td title="${item.place_hold!}">
+                <% if (strutil.length(item.place_hold) >25) { %>
+                ${strutil.subStringTo(item.place_hold, 0, 25)}...
+                <% } else { %>
+                ${item.place_hold}
+                <% } %>
+            </td>
+
+            <td title="${item.suffix!}">
+                <% if (strutil.length(item.suffix) >25) { %>
+                ${strutil.subStringTo(item.suffix, 0, 25)}...
+                <% } else { %>
+                ${item.suffix}
+                <% } %>
+            </td>
+
+            <td title="${item.reg_validation!}">
+                <% if (strutil.length(item.reg_validation) >25) { %>
+                ${strutil.subStringTo(item.reg_validation, 0, 25)}...
+                <% } else { %>
+                ${item.reg_validation}
+                <% } %>
+            </td>
+
+            <td title="${item.error_msg!}">
+                <% if (strutil.length(item.error_msg) >25) { %>
+                ${strutil.subStringTo(item.error_msg, 0, 25)}...
+                <% } else { %>
+                ${item.error_msg}
+                <% } %>
+            </td>
+
+            <td title="${item.word_key!}">
+                <% if (strutil.length(item.word_key) >25) { %>
+                ${strutil.subStringTo(item.word_key, 0, 25)}...
+                <% } else { %>
+                ${item.word_key}
+                <% } %>
+            </td>
+
+            <td title="${item.word_table_type!}">
+                <% if (strutil.length(item.word_table_type) >25) { %>
+                ${strutil.subStringTo(item.word_table_type, 0, 25)}...
+                <% } else { %>
+                ${item.word_table_type}
+                <% } %>
+            </td>
+
+            <td title="${item.sort!}">
+                ${item.sort}
+            </td>
+
+            <td title="${item.remark!}">
+                <% if (strutil.length(item.remark) >25) { %>
+                ${strutil.subStringTo(item.remark, 0, 25)}...
+                <% } else { %>
+                ${item.remark}
+                <% } %>
+            </td>
+
+            <td>
+                <a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a>
+                <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>
+                <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
+            </td>
+        </tr>
+        <% } %>
+        </tbody>
+        </br>
+    </table>
+    <%include("/pages/includes/paginator.html"){} %>
+    </nav>
+</form>
+
+<%}; %> <%
+layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){
+%> <%} %>

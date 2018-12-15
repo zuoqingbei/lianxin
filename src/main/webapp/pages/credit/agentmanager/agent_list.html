@@ -11,7 +11,7 @@ jQuery(function($) {
 	// 页面方法
 	oper = {
 		width :800,
-		height : 620,
+		height : 250,
 		form : document.form1,
 		list : function() {
 			var url = '/credit/agentmanager/list/';
@@ -84,7 +84,7 @@ var paginator = function(page) {
 				<th name="a.agent_name" class="sorting">代理名称</th>
 				<th name="a.postal_code" class="sorting">邮政编码</th>
 				<th name="a.memo " class="sorting">邮箱</th>		
-				<th name="a.usabled" class="sorting">是否禁用</th>
+				
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -96,10 +96,10 @@ var paginator = function(page) {
 				<td>${item.agent_name}</td>
 				<td>${item.postal_code}</td>
 				<td>${item.memo}</td>
-				<td>${item.Usabled}</td>
+				
 				<td>
 					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.editBasic(${item.agent_id});">修改代理基本信息</a> 
-					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.agent_id});">配置代理信息</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.agent_id});">配置代理价格</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.agent_id});">删除</a>
 				</td>
 			</tr>

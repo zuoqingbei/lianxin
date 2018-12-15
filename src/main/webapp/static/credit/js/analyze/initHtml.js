@@ -897,6 +897,11 @@ let InitObjAnalyze = {
         });
 
         return indexed_array;
+    },
+    initSelect2(){
+    	$(".select2").select2({
+    		 multiple: true,
+    	})
     }
 }
 

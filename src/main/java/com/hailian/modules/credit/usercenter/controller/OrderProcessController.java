@@ -1,5 +1,6 @@
 package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1042,31 +1043,31 @@ public class OrderProcessController extends BaseProjectController{
 		           	}
 		           	//报告员计算逻辑
 		           	if(!StrUtils.isEmpty(reportUser)) {
-		           		double coefficient = getCoefficient(2, orderId);//报告员绩效系数
-		           		double reportUserKpi = kpiServie.getKpi(2+"",modelForTx)*coefficient;//当前订单的报告员
+		           		BigDecimal coefficient = getCoefficient(2, orderId);//报告员绩效系数
+		           		BigDecimal reportUserKpi = kpiServie.getKpi(2+"",modelForTx).multiply(coefficient);//当前订单的报告员
 		           		System.out.println("报告员绩效:"+reportUserKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", reportUser).set("money", reportUserKpi).set("role_id", 2);
 		           		tempModel.save();
 		           	}
 		        	//质检员计算逻辑
 		           	if(!StrUtils.isEmpty(IQC)) {
-		            	double IQCKpi = kpiServie.getKpi(4+"" ,modelForTx);//当前订单的质检员
+		           		BigDecimal IQCKpi = kpiServie.getKpi(4+"" ,modelForTx);//当前订单的质检员
 		            	System.out.println("质检员绩效:"+IQCKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", IQC).set("money", IQCKpi).set("role_id", 4);;
 		           		tempModel.save();
 		           	}
 		        	//翻译员计算逻辑
 		           	if(!StrUtils.isEmpty(translateUser)) {
-		           		double coefficient = getCoefficient(6, orderId);//翻译绩效系数
-		           		double translateKpi = kpiServie.getKpi(6+"" ,modelForTx)*coefficient;//当前订单的翻译
+		           		BigDecimal coefficient = getCoefficient(6, orderId);//翻译绩效系数
+		           		BigDecimal translateKpi = kpiServie.getKpi(6+"" ,modelForTx).multiply(coefficient);//当前订单的翻译
 		           		System.out.println("翻译员绩效:"+translateKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", translateUser).set("money", translateKpi).set("role_id", 6);;
 		           		tempModel.save();
 		           	}
 		           	//分析员计算逻辑
 		           	if(!StrUtils.isEmpty(analyzeUser)) {
-		           		double coefficient = getCoefficient(5, orderId);//翻译绩效系数
-		           		double analystKpi = kpiServie.getKpi(5+"" ,modelForTx)*coefficient;//当前订单的分析员
+		           		BigDecimal coefficient = getCoefficient(5, orderId);//翻译绩效系数
+		           		BigDecimal analystKpi = kpiServie.getKpi(5+"" ,modelForTx).multiply(coefficient);//当前订单的分析员
 		           		System.out.println("分析员绩效:"+analystKpi);
 		           		tempModel.clear()._setAttrs(publicModel).set("user_id", analyzeUser).set("money", analystKpi).set("role_id", 5);;
 		           		tempModel.save();
@@ -1087,7 +1088,7 @@ public class OrderProcessController extends BaseProjectController{
      * @param orderId
      * @return系数
      */
-    public static double getCoefficient(int  roleId,String orderId) {
+    public static   BigDecimal getCoefficient(int  roleId,String orderId) {
     	int qualityType = -1;
     	if(roleId==2) {
     		qualityType = 2;
@@ -1099,12 +1100,32 @@ public class OrderProcessController extends BaseProjectController{
     	//分析质检分
    		String qualityScore = Db.queryStr("select grade from  credit_quality_opintion where quality_type="+qualityType+" and del_flag=0 and  order_id="+orderId);
    		//绩效系数
-   		Double coefficient  = qualityScore==null?null:100-Double.parseDouble(qualityScore);
-   		coefficient = coefficient==null?1:(coefficient<0?0:coefficient); 
+   		BigDecimal coefficient  = qualityScore==null?null:new BigDecimal(100).subtract(new BigDecimal(qualityScore)); 
+   		coefficient = coefficient==null?new BigDecimal(1):(coefficient.compareTo(new BigDecimal(0))==-1?new BigDecimal(0):coefficient); 
 		return coefficient;
     }
+    
 }
-
+	
+	/*//加法  
+	 * int a = bigdemical.compareTo(bigdemical2)
+		a = -1,表示bigdemical小于bigdemical2；
+		a = 0,表示bigdemical等于bigdemical2；
+		a = 1,表示bigdemical大于bigdemical2；
+		6 bignum3 =  bignum1.add(bignum2);       
+		7 System.out.println("和 是：" + bignum3);  
+		8   
+		9 //减法  
+		10 bignum3 = bignum1.subtract(bignum2);  
+		11 System.out.println("差  是：" + bignum3);  
+		12   
+		13 //乘法  
+		14 bignum3 = bignum1.multiply(bignum2);  
+		15 System.out.println("积  是：" + bignum3);  
+		16   
+		17 //除法  
+		18 bignum3 = bignum1.divide(bignum2);  
+		19 System.out.println("商  是：" + bignum3);   */
 //爬虫通过线程操作
 class CrawlerThreed implements Runnable{
     String companyId = "";

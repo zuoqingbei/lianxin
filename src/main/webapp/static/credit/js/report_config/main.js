@@ -55,6 +55,16 @@ let ReportConfig = {
     			pagination: false, //分页
     			smartDisplay:true,
     			locales:'zh-CN',
+    			onLoadSuccess:(data)=>{
+    				console.log(data)
+    				let rows = data.rows
+    				rows.forEach((item,index)=>{
+    					if(item.brand_url) {
+    						item["brand_url"] = `<img src="http://${item["brand_url"]}" style="height:40px;width:40px">`
+    					}
+    				})
+    				$table.bootstrapTable("load",rows)
+    			}
         	});
         	
         	
@@ -62,13 +72,19 @@ let ReportConfig = {
         		
         		let arr = []
         		contents.forEach((ele,index)=>{
-        			if(ele.temp_name !== '操作'){
+        			if(ele.temp_name !== '操作' && ele.temp_name !== 'brand_url'){
         				arr.push({
         					title:ele.temp_name,
         					field: ele.column_name,
         					width:(1/contents.length)*100+'%'
         				})
         				
+        			}else if(ele.temp_name === 'brand_url'){
+        				arr.push({
+        					title:ele.temp_name,
+        					field: ele.column_name,
+        					width:(1/contents.length)*100+'%'
+        				})
         			}else {
         				arr.push({
         					title:ele.temp_name,
@@ -141,6 +157,7 @@ let ReportConfig = {
     	ids.forEach((item,index)=>{
     		let modalBody = ''
 			let myIndex = index;
+    		console.log(contents[index])
     		contents[index].forEach((ele,index)=>{
     			if(ele.temp_name === '操作') {
     				return;
@@ -165,6 +182,12 @@ let ReportConfig = {
 				    						<input type="number" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     							</div>`
     					break;
+    				case 'textarea':
+    					modalBody += ` <div class="form-inline justify-content-center my-3">
+    						<label for="" class="control-label" >${ele.temp_name}：</label>
+    						<textarea  class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" ></textarea>
+    						</div>`
+    						break;
     				case 'select':
     					if(!ele.get_source) {return}
     					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
@@ -185,12 +208,34 @@ let ReportConfig = {
             				}
             			})
     					break;
+    				case 'select2':
+    					if(!ele.get_source) {return}
+    					let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
+    					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
+    					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					$.ajax({
+    						type:'get',
+    						url:url1,
+    						async:false,
+    						dataType:'json',
+    						success:(data)=>{
+    							modalBody += ` <div class="form-inline justify-content-center my-3">
+    								<label for="" class="control-label" >${ele.temp_name}：</label>
+    								<select  class="form-control select2" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+    									${data.selectStr}
+    								</select>
+    								</div>`
+    						}
+    					})
+    					break;
     				case 'file':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
 						                    <label for="" class="control-label">${ele.temp_name}：</label>
 						                    <button type="button" class="form-control" id="modal_logo_icon">
 						                        <span style="display:block;height:1.5rem">${ele.place_hold}</span>
-						                        <input type="file" class="file-input" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+						                        <form class="iconUp" action="/credit/front/ReportGetData/uploadBrand" class="form-inline " enctype="multipart/form-data" method="post">
+						                        	<input type="file" class="file-input" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+						                  		</form>
 						                    </button>
 						                </div>`
     					break;
@@ -298,7 +343,7 @@ let ReportConfig = {
 						 let obid = temp.rows[0].id;
 						 formArr.forEach((item,index)=>{
 							 let obj = temp.rows[0];
-							 console.log(obid)
+//							 console.log(obid)
 							 let id = $(item).attr("id");
 							 let anotherIdArr = id.split("_")
 							 anotherIdArr.pop();
@@ -308,7 +353,7 @@ let ReportConfig = {
 								 //如果是select
 								 $("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
 							 }else {
-								 console.log($("#"+id),obj[anotherId])
+//								 console.log($("#"+id),obj[anotherId])
 								 $("#"+id).val(obj[anotherId])
 							 }
 						 })
@@ -446,57 +491,59 @@ let ReportConfig = {
     			let tempUrl3 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[14]['get_source'];
     			let tempUrl4 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[16]['get_source'];
     			let options1 = ''
-    			$.ajax({
+				let options2 = ''
+				let options3 = ''
+				let options4 = ''
+    			$.when($.ajax({
     				url:tempUrl1,
     				async:false,
     				success:(data)=>{
     					options1 = data.selectStr
     				}
-    			})
-    			let options2 = ''
+    			}),
     				$.ajax({
     					url:tempUrl2,
     					async:false,
     					success:(data)=>{
     						options2 = data.selectStr
     					}
-    				})
-				let options3 = ''
+    				}),
 					$.ajax({
 						url:tempUrl3,
 						async:false,
 						success:(data)=>{
 							options3 = data.selectStr
 						}
-					})
-					let options4 = ''
+					}),
 						$.ajax({
 							url:tempUrl4,
 							async:false,
 							success:(data)=>{
 								options4 = data.selectStr
 							}
+						})).done(()=>{
+							
+							cw_bottom_html +=`<div class="bottom-html"><div class="cw-bottom p-4">
+								<label class="control-label">${this_content[10].temp_name}</label>
+								<select class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options1}</select>
+								<textarea class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
+								</div>
+								<div class="cw-bottom p-4">
+								<label class="control-label">${this_content[12].temp_name}</label>
+								<select class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" >${options2}</select>
+								<textarea class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
+								</div>
+								<div class="cw-bottom p-4">
+								<label class="control-label">${this_content[14].temp_name}</label>
+								<select class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" >${options3}</select>
+								<textarea class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
+								</div>
+								<div class="cw-bottom p-4">
+								<label class="control-label">${this_content[16].temp_name}</label>
+								<select class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" >${options4}</select>
+								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
+								</div></div>`
 						})
-    			cw_bottom_html +=`<div class="bottom-html"><div class="cw-bottom p-4">
-    								<label class="control-label">${this_content[10].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options1}</select>
-    								<textarea class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
-    							 </div>
-    							 <div class="cw-bottom p-4">
-    								<label class="control-label">${this_content[12].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" >${options2}</select>
-    								<textarea class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
-    							 </div>
-    							  <div class="cw-bottom p-4">
-    								<label class="control-label">${this_content[14].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" >${options3}</select>
-    								<textarea class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
-    							 </div>
-    							 <div class="cw-bottom p-4">
-    								<label class="control-label">${this_content[16].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" >${options4}</select>
-    								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
-    							 </div></div>`
     		}else {
     			let addtext = cw_title[1].place_hold
     			let conf_id = cw_title[0].id
@@ -632,6 +679,7 @@ let ReportConfig = {
                 	_this.initTable();
                 	_this.initFloat();
                 	InitObj.dateInit();
+                	InitObj.initSelect2();
                 	_this.bindFormData();
                 	_this.tabChange();
                 	_this.modalClean();
@@ -703,7 +751,7 @@ let ReportConfig = {
                 	_this.entityTitle.push(item.title)
                 	_this.entityModalType.push(item.smallModileType)
                 	let smallModileType = item.smallModileType
-                	if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent) {
+                	if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent || item.title.temp_name === '行业分析') {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType === '10'){
                 		//财务模块
@@ -916,19 +964,21 @@ let ReportConfig = {
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
                 			let ot_item = item
-                			item.contents.forEach((item,index)=>{
-                				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
-                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
-                						<label for="" class="thead-label">${item.temp_name}</label>
-                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
-            						</div>`
-                				}else{
-                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
+                			if(item["title"]["temp_name"] !== '行业分析'){
+	                			item.contents.forEach((item,index)=>{
+	                				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
+	                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
 	                						<label for="" class="thead-label">${item.temp_name}</label>
 	                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
-                						</div>`
-                				}
-                			})
+	            						</div>`
+	                				}else{
+	                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
+		                						<label for="" class="thead-label">${item.temp_name}</label>
+		                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+	                						</div>`
+	                				}
+	                			})
+                			}
                 			break;
                 		case '8':
                 			//radio类型 总体评价模块    保存回显同表单模块
@@ -986,12 +1036,21 @@ let ReportConfig = {
     },
     modalClean(){
     	/**上传图标 */
+    	let _this =this
         $(".file-input").change(function(){
             let filename = $(this).val().replace("C:\\fakepath\\","");
             let num = filename.split(".").length;
-            let filetype = filename.split(".")[num-1];
-            if(filetype === 'jpg' || filetype === 'png' || filetype === 'pdf') {
+            let filetype = filename.split(".")[num-1].toLowerCase();
+            if(filetype === 'jpeg' || filetype === 'jpg' || filetype === 'png' ) {
                 $("#modal_logo_icon span").text(filename)
+               $(".iconUp").ajaxSubmit({
+            	   data:{
+            		 "order_id":_this.rows["id"]  
+            	   },
+            	   success:(data)=>{
+            		   $(".file-input").attr("iconurl",data["url"])
+            	   }
+               })
             }else {
                 Public.message("info","上传文件格式错误！")
             }
@@ -1016,8 +1075,9 @@ let ReportConfig = {
 				formArr.forEach((item,index)=>{
 					let id = $(item).children("label").siblings().attr("id");
 					if($("#"+id).is("button")) {
-						let name = $('#'+$('#'+id).children("input").attr("id")).attr("name")
-						let val = $('#'+id).children("span").html()
+						//商标
+						let name = $('#'+$('#'+id).find("input").attr("id")).attr("name")
+						let val = $('#'+$('#'+id).find("input").attr("id")).attr("iconurl")
 						dataJsonObj[name] = val
 					}
 					
@@ -1043,6 +1103,7 @@ let ReportConfig = {
             		dataJsonObj[item] = this.rows[item]
     			 })
     			 dataJson.push(dataJsonObj)
+    			 console.log(dataJson)
             	paramObj["dataJson"] = JSON.stringify(dataJson)
             	//调用新增修改接口
             	$.ajax({
