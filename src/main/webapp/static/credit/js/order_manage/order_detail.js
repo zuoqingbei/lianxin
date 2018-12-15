@@ -224,9 +224,15 @@ let OrderDetail = {
                 // 8-总体评价，一个对勾列表和两个多行文本框
                 case '8':
                     let $type8_ul = $('<ul class=""></ul>').append(function () {
+/*
                         let list = _this.english ? ['', 'Excellent', 'Good', 'Average', 'Fair', 'Poor', 'Not yet determined'] : ['', '极好', '好', '一般', '较差', '差', '尚无法评估'];
                         return list.reduce(function (prev, cur) {
                             return `${prev} <li>（<span></span>）${cur}</li>`
+                        });
+*/
+                        let list = _this.english ? ['', 'Excellent', 'Good', 'Average', 'Fair', 'Poor', 'Not yet determined'] : ['', '极好', '好', '一般', '较差', '差', '尚无法评估'];
+                        return list.reduce(function (prev, cur) {
+                            return `${prev} <li><input type="radio" name="${item.title.id}_zongtipingjia">${cur}</li>`
                         });
                     });
                     $wrap.append(`
@@ -240,7 +246,8 @@ let OrderDetail = {
                             </div>`);
                     $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
                         if (data.rows && data.rows.length > 0) {
-                            $wrap.find('ul>li').eq(1 + data.rows[0][item.contents[0].column_name]).find('span').text('√')
+                            // $wrap.find('ul>li').eq(1 + data.rows[0][item.contents[0].column_name]).find('span').text('√')
+                            $wrap.find('ul>li').eq(data.rows[0][item.contents[0].column_name]-1).find('[type=radio]').prop('checked',true)
                                 .parents('ul').siblings('.multiText:eq(0)').text(data.rows[0][item.contents[1].column_name])
                                 .siblings('.multiText').text(data.rows[0][item.contents[2].column_name]);
                         } else {
@@ -430,7 +437,6 @@ let OrderDetail = {
         let addTableMark = [];
         // 通过企业父title获取表格头部的日期、单位和多行文本框们
         $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.data_source}?company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9MulTextData) => {
-
             $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.data_source}?ficConf_id=${type9MulTextData.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
                 data.rows.forEach((row) => {
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
@@ -467,9 +473,7 @@ let OrderDetail = {
                     let currencyUbitText = $select2.val(currency_ubit).find("option:selected").text();
                     $allTable.find(".currency").text(currencyText);
                     $allTable.find(".currency_ubit").text(currencyUbitText);
-
                 });
-
                 // 多行文本框赋值
                 $.get(BASE_PATH + `credit/front/ReportGetData/getSelete?type=profitablity_sumup&selectedId=670&disPalyCol=detail_name`, (optionStr) => {
                     // let sumup = data.rows[0]
@@ -482,7 +486,6 @@ let OrderDetail = {
                 });
             })
         });
-
         $(".type10-content").append($allTable, $mulTextBox);
     },
     // 获取质检结果下拉框的数据
