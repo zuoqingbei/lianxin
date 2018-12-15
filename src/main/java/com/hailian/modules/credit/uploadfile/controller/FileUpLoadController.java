@@ -239,9 +239,10 @@ public class FileUpLoadController extends BaseProjectController {
 	* @date 2018年12月14日 上午10:32:39
 	* @author: lxy
 	* @version V1.0
+	 * @return 
 	* @return
 	 */
-	public void upload(UploadFile uploadFile,Integer report_typeId,String reportName,Integer userId){
+	public String upload(UploadFile uploadFile,String reportName,Integer userId){
 
 		List<File> ftpfileList=new ArrayList<File>();
 		Integer pid = getParaToInt();
@@ -252,6 +253,7 @@ public class FileUpLoadController extends BaseProjectController {
 		int size=0;
 		String originalFileName=null;
 		String ext="";
+		String pathurl="";
 		// 文件附件
 		try {
 			if(uploadFile != null){
@@ -276,10 +278,12 @@ public class FileUpLoadController extends BaseProjectController {
 						String url=storePath+"/"+FTPfileName;
 						String pdfUrl=storePath+"/"+pdf_FTPfileName;
 						UploadFileService.service.save(pid,uploadFile, factpath,url,pdfFactpath,pdfUrl,model,fileName,userId);//记录上传信息
+			           pathurl="ftp://120.27.46.160:9999"+storePath+FTPfileName;
 					}else{
 						failnumber+=1;
 						markFile+=uploadFile.getOriginalFileName()+"上传失败!";
 					}
+					 
 				}else{
 					failnumber+=1;
 					markFile+=uploadFile.getOriginalFileName()+"上传失败，文件不符合要求!";
@@ -299,11 +303,12 @@ public class FileUpLoadController extends BaseProjectController {
 			markFile+=successNum+"个文件上传成功";
 			Map<String,Object> map=new HashMap<String, Object>();
 			map.put("mark", markFile);
-			List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id,business_id+"",this);
-			map.put("fileList", fileList);
+		//	List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id,business_id+"",this);
+		//	map.put("fileList", fileList);
 			renderJson(map);
 			renderMessage(markFile);
 		}
+		return pathurl;
 	
 	}
 }

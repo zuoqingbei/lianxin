@@ -133,16 +133,11 @@ public class ReportTypeController extends BaseProjectController {
 		ReportTypeModel model = getModel(ReportTypeModel.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-	/*	model.set("name", getPara("name"));
-		model.set("tpl_path", getPara("tpl_path"));
-		model.set("order_no", getPara("order_no"));
-		model.set("remarks", getPara("remarks"));
-		model.set("update_by",userid);
-		model.set("update_date", now);*/
 		FileUpLoadController fileconController=new FileUpLoadController();
-		// fileconController.upload(getFile("file_url"), pid,getPara("name"),userid);
+		String reportName=model.get("name");
+		String url= fileconController.upload(getFile("file_url"), reportName,userid);
+		model.set("tpl_path", url);
 		if (pid != null && pid > 0) { // 更新
-			model.set("id", pid);
 			model.update();
 			renderMessage("修改成功");
 		} else { // 新增
