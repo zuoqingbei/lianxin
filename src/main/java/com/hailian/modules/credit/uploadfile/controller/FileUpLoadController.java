@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.template.ext.directive.Date;
 import com.jfinal.upload.UploadFile;
 
 /**
@@ -231,4 +233,82 @@ public class FileUpLoadController extends BaseProjectController {
 		list();
 	}
 	
+	/**
+	 * 
+	* @Description: 上传文件方法，有参数
+	* @date 2018年12月14日 上午10:32:39
+	* @author: lxy
+	* @version V1.0
+	 * @return 
+	* @return
+	 */
+	public String upload(UploadFile uploadFile,String reportName,Integer userId){
+
+		List<File> ftpfileList=new ArrayList<File>();
+		Integer pid = getParaToInt();
+		CreditUploadFileModel model = null;
+		String business_id = null;
+		String markFile="";
+		int failnumber=0;
+		int size=0;
+		String originalFileName=null;
+		String ext="";
+		String pathurl="";
+		// 文件附件
+		try {
+			if(uploadFile != null){
+				size=1;
+				ext=FileTypeUtils.getFileType(uploadFile.getOriginalFileName());
+				if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+					String storePath ="report_type/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
+					originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
+					 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+					String FTPfileName=reportName+df.format(new Date())+"."+ext;//生成指定的名称（报告类型加时间）
+					String fileName=originalFileName;//上传的文件名称
+					String pdf_FTPfileName="";
+					ftpfileList.add(uploadFile.getFile());
+					File pdf=null;
+					boolean storeFile = FtpUploadFileUtils.storeFtpFile(FTPfileName,ftpfileList,storePath,ip,port,userName,password);//上传
+					if(storeFile){
+						if(pdf!=null){
+							pdf.delete();
+						}
+						String factpath=storePath+"/"+FTPfileName;
+						String pdfFactpath=storePath+"/"+pdf_FTPfileName;
+						String url=storePath+"/"+FTPfileName;
+						String pdfUrl=storePath+"/"+pdf_FTPfileName;
+						UploadFileService.service.save(pid,uploadFile, factpath,url,pdfFactpath,pdfUrl,model,fileName,userId);//记录上传信息
+			           pathurl="ftp://120.27.46.160:9999"+storePath+FTPfileName;
+					}else{
+						failnumber+=1;
+						markFile+=uploadFile.getOriginalFileName()+"上传失败!";
+					}
+					 
+				}else{
+					failnumber+=1;
+					markFile+=uploadFile.getOriginalFileName()+"上传失败，文件不符合要求!";
+				}
+			}else{
+				markFile+="上传文件不能为空";
+				renderMessage(markFile);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			failnumber+=1;
+			markFile+="出现未知异常，上传失败！";
+		}finally{
+			int successNum=size-failnumber;
+			markFile+=successNum+"个文件上传成功";
+			Map<String,Object> map=new HashMap<String, Object>();
+			map.put("mark", markFile);
+		//	List<CreditUploadFileModel> fileList = UploadFileService.service.getByBusIdAndBusType(business_id,business_id+"",this);
+		//	map.put("fileList", fileList);
+			renderJson(map);
+			renderMessage(markFile);
+		}
+		return pathurl;
+	
+	}
 }
