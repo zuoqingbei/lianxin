@@ -1079,6 +1079,15 @@ let ReportConfig = {
 						let name = $('#'+$('#'+id).find("input").attr("id")).attr("name")
 						let val = $('#'+$('#'+id).find("input").attr("id")).attr("iconurl")
 						dataJsonObj[name] = val
+						return
+					}
+					if($("#"+id).hasClass("select2")) {
+						let name = $('#'+id).attr("name")
+						let val = $('#'+id).val()
+						val = val.join("$")
+						console.log(val)
+						dataJsonObj[name] = val
+						return
 					}
 					
 					//调用form格式化数据函数
@@ -1127,6 +1136,7 @@ let ReportConfig = {
     },
     refreshTable(ele){
     	//刷新表格中的数据
+    	alert(1)
     	$(ele).bootstrapTable("refresh")
     },
     getFormData(form) {
