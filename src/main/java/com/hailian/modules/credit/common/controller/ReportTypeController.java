@@ -10,6 +10,7 @@ import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.common.service.ReportTypeService;
 import com.hailian.modules.credit.uploadfile.controller.FileUpLoadController;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.upload.UploadFile;
 
 /**
  * @todo 报告类型
@@ -130,13 +131,21 @@ public class ReportTypeController extends BaseProjectController {
 	 */
 	public void save() {
 		Integer pid = getParaToInt("id");
-		ReportTypeModel model = getModel(ReportTypeModel.class);
+		String name=  getPara("name");
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		FileUpLoadController fileconController=new FileUpLoadController();
-		String reportName=model.get("name");
-		String url= fileconController.upload(getFile("file_url"), reportName,userid);
-		model.set("tpl_path", url);
+		
+       UploadFile uploadFile=getFile("file_url");
+       String url="";
+       if (uploadFile!=null) {
+   		url= fileconController.upload(pid,getFile("file_url"), name,userid);	
+	    }
+       ReportTypeModel model = getModel(ReportTypeModel.class);
+       if (url!=null) {
+    	   model.set("tpl_path", url);
+	   }
+		
 		if (pid != null && pid > 0) { // 更新
 			model.update();
 			renderMessage("修改成功");
