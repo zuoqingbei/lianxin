@@ -216,7 +216,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					String targetValue =  model.get(columnName)+"";
 					String a = "";
 					if(targetValue.contains(",")) {
-						String[] tempStrs = targetValue.split(",");
+						String[] tempStrs = targetValue.split("$");
 						 if(tempStrs!=null) {
 							 for (String tempStr : tempStrs) {
 								if(!StrUtils.isEmpty(tempStr)) {
