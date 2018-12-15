@@ -509,7 +509,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
 								+ "s5.detail_name as reportSpeed,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime  ",
 						sql.toString(), params.toArray());
-		System.out.println("杨东listSql:"+sql);
+		System.out.println("杨东FormSql:"+sql);
 		System.out.println("杨东listParams:"+Arrays.toString(params.toArray()));
 		return page;
 	}
