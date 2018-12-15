@@ -6,14 +6,11 @@ include("/pages/template/head.html"){}
 %>
 <script type="text/javascript">
     var oper = {
-        save:function(id){
+        save:function(){
             if(!validForm()) {
                 return false;
             }
-            console.log(id);
-            id = id;
-            console.log(id);
-            var url = 'credit/reportColumn/save?id='+id;
+            var url = 'credit/reportColumn/addColumn';
             form1.action = url;
             form1.submit();
             return true;
@@ -27,12 +24,12 @@ var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal"
       role="form" >
-    <input type="hidden" name="model.id" value="${model.id}" />
+    <input type="hidden" name="pid" value="${pid}" />
     <table class="table">
         <thead>
         <tr>
             <th name="t.name" class="sorting">字段名称</th>
-            <th name="t.name_en" class="sorting">字段类型</th>
+            <!--<th name="t.name_en" class="sorting">字段类型</th>-->
             <th name="t.name_trad" class="sorting">表字段名</th>
             <th name="t.remark" class="sorting">备注</th>
             <th>操作</th>
@@ -41,21 +38,23 @@ var bodyContent = {
         <% for(item in page.list){ %>
         <tr>
             <td>${item.id }</td>
+            <!--<td>${item.id }</td>-->
             <td>${item.id }</td>
             <td>${item.id }</td>
-            <td>${item.id }</td>
-            <td><input type="checkbox" value="${item.id}"/></td>
+            <td><input type="checkbox" name="columnId" value="${item.id}"/></td>
         </tr>
         <% } %>
     </table>
 
+
     <div style="height: 50px;clear: both;">&nbsp;</div>
     <nav class="navbar navbar-default navbar-fixed-bottom">
         <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
-            <button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+            <button class="btn btn-primary" onclick="oper.save();return false;">保 存</button>
             <button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
         </div>
     </nav>
+    <%include("/pages/includes/paginator.html"){} %>
 </form>
 <%}; %>
 
