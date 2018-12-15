@@ -291,7 +291,7 @@ public class HomeController extends BaseProjectController {
 		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295'").size();
 		//订单信息质检数量
 		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('298','303','308')").size();
-		List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
+        List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
 		
 		//分析质检
 		int orderzj2=OrderManagerService.service.getOrdersService("303",null,user,null);

@@ -25,7 +25,7 @@ var headContent = {
 var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal"
-		role="form" >
+	enctype="multipart/form-data"	role="form" >
 	<input type="hidden" name="model.id" value="${model.id}" />
 	<table class="table">
 		<%  // 列表头部%>
@@ -35,26 +35,20 @@ var bodyContent = {
 					<input class="form-control" type="text" name="model.name" value="${model.name }"  valid='vtext' validname='报告名称'  />
 					</td>
 				</tr>
-				<tr>
-					<td>报告英文名称</td>
-					<td>
-					<input class="form-control" type="text" name="model.name_en" value="${model.name_en }"   validname='报告英文名称'  />
-					</td>
-				</tr>
 				
-				<tr>
-					<td>报告繁体名称</td>
-					<td>
-					<input class="form-control" type="text" name="model.name_trad" value="${model.name_trad }"    />
-					</td>
-				</tr>
+			
 				<tr>
 					<td>报告路径</td>
 					<td>
-					<input class="form-control" type="text" name="model.tpl_path" valid='vtext' validname='报告路径' value="${model.tpl_path }"  />
+					<input class="form-control" type="text" name="model.tpl_path" valid='vtext' validname='报告路径' value="${model.tpl_path }"  readonly="readonly" />
 					</td>
 				</tr>
-				
+				<tr>
+					<td>上传word</td>
+					<td>
+					<input class="" type="file" name="file_url" valid='' validname='上传word' value=""  />
+					</td>
+				</tr>
 				<tr>
 					<td>排序</td>
 					<td>
