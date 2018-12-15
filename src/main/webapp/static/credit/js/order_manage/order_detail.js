@@ -446,7 +446,7 @@ let OrderDetail = {
                             .append(`<tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
                     } else {
                         $allTable.children().eq(row.parent_sector - 1)
-                            .append(`<table class="table"><tbody><tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr></tbody></table>`)
+                            .append(`<table class="table table-hover"><tbody><tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr></tbody></table>`)
                         addTableMark.push(row.parent_sector + '-' + row.son_sector);
                     }
                 });
