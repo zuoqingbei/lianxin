@@ -56,8 +56,8 @@ public class UserController  extends BaseProjectController{
 				//Map<Integer, List<SysMenu>> map = new UserSvc().getQTMap(user);
 				//setAttr("user",user);
 				//setAttr("menu", map);
-				Integer userId = Db.queryInt("select userid from sys_user where username=?",Arrays.asList(new String[] {username}).toArray());
-				List<Integer> roleIds = Db.query("select roleid from sys_user_role where userid=?",Arrays.asList(new String[] {userId+""}).toArray());
+				Integer userId = Db.queryInt("select userid from sys_user where username=? and del_flag=0",Arrays.asList(new String[] {username}).toArray());
+				List<Integer> roleIds = Db.query("select roleid from sys_user_role where userid=? and del_flag=0",Arrays.asList(new String[] {userId+""}).toArray());
 				renderJson(new Record().set("statusCode", 1).set("message", "登录成功").set("roleIds", roleIds));
 				//redirect("/credit/front/home/menu");
 			}else{
