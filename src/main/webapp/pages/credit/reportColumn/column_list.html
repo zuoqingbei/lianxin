@@ -5,7 +5,7 @@
     jQuery(function($) {
         // 页面方法
         oper = {
-            width : 400,
+            width : 450,
             height : 500,
             form : document.form1,
             list : function() {
@@ -19,8 +19,8 @@
                 Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
             },
             add : function() {
-                var url = 'credit/reportColumn/add';
-                var title = '添加字段';
+                var url = "credit/reportColumn/add?pid=${pid!''}";
+                var title = '所有字段';
                 Iframe(url, this.width, this.height, title);
             },
             edit : function(id) {
@@ -87,7 +87,7 @@
             <th name="t.order_no" class="sorting">验证正则</th>
             <th name="t.remarks" class="sorting">错误提示</th>
             <th name="t.create_date" class="sorting">占位符(word模板)</th>
-            <th name="t.create_date" class="sorting">表格形式(word模板)</th>
+            <!--<th name="t.create_date" class="sorting">表格形式(word模板)</th>-->
             <th name="t.create_date" class="sorting">排序</th>
             <th name="t.create_date" class="sorting">备注</th>
             <th>操作</th>
@@ -160,13 +160,13 @@
                 <% } %>
             </td>
 
-            <td title="${item.word_table_type!}">
+            <!--<td title="${item.word_table_type!}">
                 <% if (strutil.length(item.word_table_type) >25) { %>
                 ${strutil.subStringTo(item.word_table_type, 0, 25)}...
                 <% } else { %>
                 ${item.word_table_type}
                 <% } %>
-            </td>
+            </td>-->
 
             <td title="${item.sort!}">
                 ${item.sort}
@@ -181,7 +181,6 @@
             </td>
 
             <td>
-                <a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a>
                 <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>
                 <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
             </td>
