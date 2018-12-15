@@ -25,7 +25,7 @@
                 <!-- 个人信息 -->
                 <div class="user-order d-flex justify-content-between align-items-center">
                     <div class="user-info d-flex flex-column justify-content-center">
-                        <p class="regards mb-1">您好，<span id="name">w</span>，祝你开心每一天！</p>
+                        <p class="regards">您好，<span id="name">w</span>，祝你开心每一天！</p>
                         <p class="job-title mt-2">                            
                             <span id="role"></span>
                              <span id="company"></span>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <!-- 表格 -->
-                <div class="table-content">
+                <div class="table-content" style="height: calc(100% - 4.7rem)">
                     <div class="bg-f">
                         <div class="form-box">
                             <form id="formSearch" class="form-inline layui-form" role="form">
@@ -109,7 +109,7 @@
                                	</div>
                             </form>
                             <div class="btn-row d-flex justify-content-between mt-3 mb-3">
-                                <a role="button" class="btn btn-primary ml-5 d-flex align-items-center" href="javascript:;" onclick="Public.createOrder()"><i class="fa fa-plus pr-2"></i>新增订单</a>
+                                <a role="button" class="btn btn-primary ml-5 d-flex align-items-center" id="newAdd" href="javascript:;" onclick="Public.createOrder()"><i class="fa fa-plus pr-2"></i>新增订单</a>
                                 <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
                                     <button type="button" id="btn_query" class="btn btn-primary enterFilter">查询</button>
                                     <button type="button" id="btn_reset" class="btn btn-light">重置</button>
@@ -126,7 +126,7 @@
                             <div class="deal-state"> 
                             	<%for(item in orderstatus){%>
                             		 <div class="form-check">
-	                                    <input name="status" type="checkbox" class="form-check-input"  value="${item.detail_id}"> 
+	                                    <input name="status" type="checkbox" class="form-check-input"  value="${item.detail_id}">
 	                                    <label class="form-check-label" for="defaultCheck1">${item.detail_name}</label>
                                 	</div>
                                 <%}%>
@@ -303,7 +303,7 @@
 				 }
 			});
 		}
-		
+
 		
 	
 	</script>

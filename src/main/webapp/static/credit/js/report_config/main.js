@@ -446,57 +446,59 @@ let ReportConfig = {
     			let tempUrl3 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[14]['get_source'];
     			let tempUrl4 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[16]['get_source'];
     			let options1 = ''
-    			$.ajax({
+				let options2 = ''
+				let options3 = ''
+				let options4 = ''
+    			$.when($.ajax({
     				url:tempUrl1,
     				async:false,
     				success:(data)=>{
     					options1 = data.selectStr
     				}
-    			})
-    			let options2 = ''
+    			}),
     				$.ajax({
     					url:tempUrl2,
     					async:false,
     					success:(data)=>{
     						options2 = data.selectStr
     					}
-    				})
-				let options3 = ''
+    				}),
 					$.ajax({
 						url:tempUrl3,
 						async:false,
 						success:(data)=>{
 							options3 = data.selectStr
 						}
-					})
-					let options4 = ''
+					}),
 						$.ajax({
 							url:tempUrl4,
 							async:false,
 							success:(data)=>{
 								options4 = data.selectStr
 							}
+						})).done(()=>{
+							
+							cw_bottom_html +=`<div class="bottom-html"><div class="cw-bottom p-4">
+								<label class="control-label">${this_content[10].temp_name}</label>
+								<select class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options1}</select>
+								<textarea class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
+								</div>
+								<div class="cw-bottom p-4">
+								<label class="control-label">${this_content[12].temp_name}</label>
+								<select class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" >${options2}</select>
+								<textarea class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
+								</div>
+								<div class="cw-bottom p-4">
+								<label class="control-label">${this_content[14].temp_name}</label>
+								<select class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" >${options3}</select>
+								<textarea class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
+								</div>
+								<div class="cw-bottom p-4">
+								<label class="control-label">${this_content[16].temp_name}</label>
+								<select class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" >${options4}</select>
+								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
+								</div></div>`
 						})
-    			cw_bottom_html +=`<div class="bottom-html"><div class="cw-bottom p-4">
-    								<label class="control-label">${this_content[10].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options1}</select>
-    								<textarea class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
-    							 </div>
-    							 <div class="cw-bottom p-4">
-    								<label class="control-label">${this_content[12].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" >${options2}</select>
-    								<textarea class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
-    							 </div>
-    							  <div class="cw-bottom p-4">
-    								<label class="control-label">${this_content[14].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" >${options3}</select>
-    								<textarea class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
-    							 </div>
-    							 <div class="cw-bottom p-4">
-    								<label class="control-label">${this_content[16].temp_name}</label>
-    								<select class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" >${options4}</select>
-    								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
-    							 </div></div>`
     		}else {
     			let addtext = cw_title[1].place_hold
     			let conf_id = cw_title[0].id
@@ -703,7 +705,7 @@ let ReportConfig = {
                 	_this.entityTitle.push(item.title)
                 	_this.entityModalType.push(item.smallModileType)
                 	let smallModileType = item.smallModileType
-                	if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent) {
+                	if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent || item.title.temp_name === '行业分析') {
                 		contentHtml +=  `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 	}else if(smallModileType === '10'){
                 		//财务模块
@@ -916,19 +918,21 @@ let ReportConfig = {
                 			_this.formTitle.push(item.title)
                 			_this.formIndex.push(index)
                 			let ot_item = item
-                			item.contents.forEach((item,index)=>{
-                				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
-                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
-                						<label for="" class="thead-label">${item.temp_name}</label>
-                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
-            						</div>`
-                				}else{
-                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
+                			if(item["title"]["temp_name"] !== '行业分析'){
+	                			item.contents.forEach((item,index)=>{
+	                				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
+	                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
 	                						<label for="" class="thead-label">${item.temp_name}</label>
 	                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
-                						</div>`
-                				}
-                			})
+	            						</div>`
+	                				}else{
+	                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
+		                						<label for="" class="thead-label">${item.temp_name}</label>
+		                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+	                						</div>`
+	                				}
+	                			})
+                			}
                 			break;
                 		case '8':
                 			//radio类型 总体评价模块    保存回显同表单模块
