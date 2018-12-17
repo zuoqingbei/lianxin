@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.hailian.api.constant.RoleCons;
+import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.util.http.HttpCrawler;
 
@@ -504,7 +506,16 @@ public class OrderProcessController extends BaseProjectController{
             if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
             	 getKpi(model);
             }
-           
+
+            //报告填报完成
+            if("294".equals(code)){
+                //todo 报告填报完成后需要分配质检员
+                String iqcId = OrderManagerService.service.getUserIdtoOrder(RoleCons.IQC);
+                if(iqcId!=null){
+                    map.put("IQC",iqcId);
+                }
+            }
+            //修改订单状态
             PublicUpdateMod(map);
             
             CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
@@ -527,11 +538,6 @@ public class OrderProcessController extends BaseProjectController{
                 Thread td = new Thread(new CrawlerThreed(companyId,getPara("model.company_by_report"),orderInfo));
                 td.start();
             }
-            //订单完成
-            //if("314".equals(code)){
-            //    new MainReport().build(orderId,getSessionUser().getUserid());
-            //}
-            
             renderJson(new ResultType());
             return new ResultType();
         } catch (Exception e) {

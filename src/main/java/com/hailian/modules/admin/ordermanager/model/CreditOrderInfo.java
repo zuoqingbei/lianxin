@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.hailian.api.constant.RoleCons;
+import com.hailian.system.userrole.SysUserRole;
 import org.apache.commons.lang.StringUtils;
 
 import ch.qos.logback.core.status.Status;
@@ -1119,11 +1121,61 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	* @TODO
 	 */
 	public CreditOrderInfo getOrderNum(int reportid){
-		List<Object> params=new ArrayList<Object>();
+		/*List<Object> params=new ArrayList<Object>();
 		String sql="select count(*) as orderNum FROM credit_order_info t where t.report_user=? and  t.del_flag=0 and receiver_date between date_sub(now(),interval 3 month) and now()";
 		params.add(reportid);
-		return dao.findFirst(sql, params.toArray());
+		return dao.findFirst(sql, params.toArray());*/
+        return getOrderNum(reportid,RoleCons.REPORTER);
 	}
+
+    /**
+     * 获取质检员做单量
+     * @param reportid
+     * @return
+     */
+    public CreditOrderInfo getOrderNumIqc(int reportid) {
+        return getOrderNum(reportid,RoleCons.IQC);
+    }
+
+    /**
+     * 获取分析员做单量
+     * @param reportid
+     * @return
+     */
+    public CreditOrderInfo getOrderNumAnal(int reportid) {
+        return getOrderNum(reportid,RoleCons.ANALER);
+    }
+
+    /**
+     * 获取翻译员做单量
+     * @param reportid
+     * @return
+     */
+    public CreditOrderInfo getOrderNumTrans(int reportid) {
+        return getOrderNum(reportid,RoleCons.TRANSER);
+    }
+
+    /**
+     * 根据用户角色获取做单量
+     * @param reportid
+     * @param roleId
+     * @return
+     */
+    public CreditOrderInfo getOrderNum(int reportid,int roleId) {
+        List<Object> params = new ArrayList<Object>();
+        String str = " t.report_user";
+        if (RoleCons.ANALER == roleId) {
+            str = " t.analyze_user";
+        } else if (RoleCons.TRANSER == roleId) {
+            str = " t.translate_user";
+        } else if (RoleCons.IQC == roleId) {
+            str = " t.IQC";
+        }
+        String sql = "select count(*) as orderNum FROM credit_order_info t where " + str + "=? and  t.del_flag=0 and receiver_date between date_sub(now(),interval 3 month) and now()";
+        params.add(reportid);
+        return dao.findFirst(sql, params.toArray());
+    }
+
 	/**
 	 * 根据报告员获取按时递交数
 	 * @return 
@@ -1301,4 +1353,82 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		return dao.find(sql.toString(), params.toArray());
 			
 	}
+
+
+    /**
+     * 质检员当日在做单量
+     * @author doushuihai
+     * @date 2018年10月9日上午9:54:45
+     * @TODO
+     */
+    public CreditOrderInfo getInDoingOrderNumIqc(int reportid){
+        List<Object> params=new ArrayList<Object>();
+        String sql="SELECT count(*) as inDoingOrderNum FROM credit_order_info t where t.del_flag=0 and t.status in (298,299,303,304) and t.IQC=? and to_days(t.receiver_date) = to_days(now())";
+        params.add(reportid);
+        return dao.findFirst(sql, params.toArray());
+    }
+
+    /**
+     * 质检员当日完成量
+     * @author: dsh
+     * @date:  2018年11月28日2018年11月28日
+     */
+    public CreditOrderInfo getFinishedOrderNumIqc(int reportid){
+        List<Object> params=new ArrayList<Object>();
+        String sql="SELECT count(*) as finishedOrderNum FROM credit_order_info t where t.del_flag=0 and t.status >=300 and t.IQC=? and to_days(t.receiver_date) = to_days(now())";
+        params.add(reportid);
+        return dao.findFirst(sql, params.toArray());
+    }
+
+
+    /**
+     * 分析员当日在做单量
+     * @author doushuihai
+     * @date 2018年10月9日上午9:54:45
+     * @TODO
+     */
+    public CreditOrderInfo getInDoingOrderNumAnal(int reportid){
+        List<Object> params=new ArrayList<Object>();
+        String sql="SELECT count(*) as inDoingOrderNum FROM credit_order_info t where t.del_flag=0 and t.status in (298,299,303,304) and t.IQC=? and to_days(t.receiver_date) = to_days(now())";
+        params.add(reportid);
+        return dao.findFirst(sql, params.toArray());
+    }
+
+    /**
+     * 分析员当日完成量
+     * @author: dsh
+     * @date:  2018年11月28日2018年11月28日
+     */
+    public CreditOrderInfo getFinishedOrderNumAnal(int reportid){
+        List<Object> params=new ArrayList<Object>();
+        String sql="SELECT count(*) as finishedOrderNum FROM credit_order_info t where t.del_flag=0 and t.status >=300 and t.IQC=? and to_days(t.receiver_date) = to_days(now())";
+        params.add(reportid);
+        return dao.findFirst(sql, params.toArray());
+    }
+
+
+    /**
+     * 翻译员当日在做单量
+     * @author doushuihai
+     * @date 2018年10月9日上午9:54:45
+     * @TODO
+     */
+    public CreditOrderInfo getInDoingOrderNumTrans(int reportid){
+        List<Object> params=new ArrayList<Object>();
+        String sql="SELECT count(*) as inDoingOrderNum FROM credit_order_info t where t.del_flag=0 and t.status in (298,299,303,304) and t.IQC=? and to_days(t.receiver_date) = to_days(now())";
+        params.add(reportid);
+        return dao.findFirst(sql, params.toArray());
+    }
+
+    /**
+     * 翻译员当日完成量
+     * @author: dsh
+     * @date:  2018年11月28日2018年11月28日
+     */
+    public CreditOrderInfo getFinishedOrderNumTrans(int reportid){
+        List<Object> params=new ArrayList<Object>();
+        String sql="SELECT count(*) as finishedOrderNum FROM credit_order_info t where t.del_flag=0 and t.status >=300 and t.IQC=? and to_days(t.receiver_date) = to_days(now())";
+        params.add(reportid);
+        return dao.findFirst(sql, params.toArray());
+    }
 }
