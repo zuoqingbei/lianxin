@@ -116,7 +116,9 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 	}
 
 	public List<AgentModel> findAll() {
-		
 		return AgentModel.dao.find("select * from credit_agent t where t.del_flag=0");
+	}
+	public List<AgentModel> findByAgentid(String agent_id) {
+		return AgentModel.dao.find("select * from credit_agent t where t.del_flag=0 and t.agent_id=?",agent_id);
 	}
 }
