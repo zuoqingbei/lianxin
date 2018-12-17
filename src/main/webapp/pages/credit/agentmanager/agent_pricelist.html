@@ -10,11 +10,12 @@ var oper;
 jQuery(function($) {
 	// 页面方法
 	oper = {
-		width :800,
-		height : 450,
+		width :700,
+		height : 500,
 		form : document.form1,
 		list : function() {
-			var url = '/credit/agentmanager/list/';
+			let id = location.href.split("/")[location.href.split("/").length-1]
+			var url = '/credit/agentmanager/agentPriceList/'+id;
 			this.form.action = url;
 			this.form.submit();
 		},
@@ -22,17 +23,18 @@ jQuery(function($) {
 			console.log(location.href)
 			let id = location.href.split("/")[location.href.split("/").length-1]
 			var url = '/credit/agentmanager/addPrice/'+id;
-			var title = '添加代理信息';
+			var title = '添加代理价格';
 			Iframe(url, this.width, this.height, title);
 		},
 		edit : function(id) {
 			var url = '/credit/agentmanager/editPrice/'+id 
-			var title = '修改代理信息';
+			var title = '修改代理价格';
 			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
-			var url = '/credit/agentmanager/delete/'+id;
-			var title = '确认要删除该代理信息？';
+			let agent_id = location.href.split("/")[location.href.split("/").length-1]
+			var url = '/credit/agentmanager/deletePrice?id='+id+'&agent_id='+agent_id;
+			var title = '确认要删除该代理价格？';
 			Confirm(title, function() {
 				form1.action = url;
 				form1.submit();
@@ -98,7 +100,7 @@ var paginator = function(page) {
 				</td>
 				<td>
 					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.id});">修改</a> 
-					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.agent_id});">删除</a>
+					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.id});">删除</a>
 				</td>
 			</tr>
 		<% } %>

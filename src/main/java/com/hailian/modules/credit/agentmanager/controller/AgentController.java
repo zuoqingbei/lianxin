@@ -125,6 +125,12 @@ public class AgentController extends BaseProjectController {
 	public void save() {
 		Integer id = getParaToInt("id");
 		AgentModel model = getModel(AgentModel.class);
+		String agent_id = model.get("agent_id").toString();
+		List<AgentModel> findByAgentid = AgentModel.dao.findByAgentid(agent_id);
+		if(findByAgentid!=null){
+			renderMessage("该代理编码已存在，请勿重复添加");
+			return;
+		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by", userid);
@@ -148,30 +154,9 @@ public class AgentController extends BaseProjectController {
 		}
 	}
 
-	private void updateAgentCate(int agent_id, List<String> categoryList) {
-		Db.update("delete from credit_agent_category where agent_id="+agent_id);
-		for(String categoryId:categoryList){
-			AgentCategoryModel categorymodel=new AgentCategoryModel();
-			categorymodel.set("agent_id",agent_id);
-			categorymodel.set("agent_category", categoryId);
-			categorymodel.save();
-		}
-	}
 
-	private void updateAgentcateStr(Integer id, AgentModel model) {
-		String categoryStr="";
-		List<AgentCategoryModel> agentCategory = AgentCategoryModel.dao.findAll(id+"");
-		int size = agentCategory.size();
-		for(int i=0;i<size;i++){
-			if(i==size-1){
-				categoryStr+=agentCategory.get(i).get("categoryName");
-			}else{
-				categoryStr+=agentCategory.get(i).get("categoryName")+",";
-			}
-		}
-		model.set("agent_category", categoryStr);
-		model.update();
-	}
+
+
 
 	/**
 	 * 
@@ -215,6 +200,38 @@ public class AgentController extends BaseProjectController {
 		}
 	}
 	/**
+	 * @Description: 删除代理价格
+	* @author: dsh 
+	* @date:  2018年12月17日2018年12月17日
+	 */
+	public void deletePrice() {
+		Integer id = Integer.parseInt(getPara("id"));
+		String agent_id=getPara("agent_id");
+		if (AgentPriceService.service.updateDelFlagById(id)) {
+			AgentPriceModel attr = getModelByAttr(AgentPriceModel.class);
+			String orderBy = getBaseForm().getOrderBy();
+			Page<AgentPriceModel> pager = AgentPriceService.service.getAgent(getPaginator(),orderBy,this,agent_id);
+			for(AgentPriceModel agent:pager.getList()) {
+				String country="";
+				Object cid=agent.get("country");
+				if(cid==null) {
+					continue;
+				}
+				List<CountryModel> list=CountryModel.dao.findByIds(cid.toString());
+				for(CountryModel cm:list) {
+					country+=cm.get("name").toString()+",";
+				}
+				//country=country.substring(0, country.length()-1);
+				agent.set("country", country);
+			}
+			setAttr("page", pager);
+			setAttr("attr", attr);
+			render(path+"pricelist.html");
+		} else {
+			renderText("failure");
+		}
+	}
+	/**
 	 * 代理价格
 	* @author doushuihai  
 	* @date 2018年11月5日下午2:10:53  
@@ -240,6 +257,7 @@ public class AgentController extends BaseProjectController {
 		}
 		setAttr("page", pager);
 		setAttr("attr", attr);
+		
 		render(path+"pricelist.html");
 	}
 	/**
@@ -278,20 +296,11 @@ public class AgentController extends BaseProjectController {
 		}
 		String pid=model.get("province");
 		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
-		List<AgentCategoryModel> agentCategoryList = AgentCategoryModel.dao.findAll(para+"");
 		List<String> catelist=new ArrayList<String>();
-		if(agentCategoryList!=null){
-			for(AgentCategoryModel catemodel:agentCategoryList ){
-				String agent_category=catemodel.get("agent_category")+"";
-				catelist.add(agent_category);
-				
-			}
-			
-		}
+	
 		model.put("agentCategoryList", catelist);
 		setAttr("model", model);
 		setAttr("countrys", Json.getJson().toJson(countrys));
-		setAttr("agentCategoryList", agentCategoryList);
 		setAttr("province", province);
 		
 		render(path + "priceedit.html");

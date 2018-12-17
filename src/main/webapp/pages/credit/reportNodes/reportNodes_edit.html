@@ -1,0 +1,126 @@
+<% var field_type = tempDict.getSysDictDetailCode('fieldType',model.field_type!);%>
+<%
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+    var oper = {
+        save:function(id){
+            if(!validForm()) {
+                return false;
+            }
+            console.log(id);
+            id = id;
+            console.log(id);
+            var url = 'credit/reportColumn/save?id='+id;
+            form1.action = url;
+            form1.submit();
+            return true;
+        }
+    };
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+      role="form" >
+    <input type="hidden" name="model.id" value="${model.id}" />
+    <table class="table">
+        <%  // 列表头部%>
+        <th name="t.id" class="sorting">父节点ID</t>
+            <th name="d.small_module_type_name" class="sorting">父节点类型</t>
+            <th name="t.temp_name" class="sorting">父节点名称</th>
+               <th name="t.float_parent" class="sorting">浮动父节点ID</th>
+            <th name="t.word_table_type" class="sorting">word模板方向</th>
+            <th name="t.anchor_id" class="sorting">对应锚点的ID</th>
+            <th name="t.place_hold" class="sorting">模板增加记录提示</th>
+            <th name="t.sort" class="sorting">排序</th>
+             <th name="t.remark" class="sorting">备注</th>
+        <tr>
+            <td>父节点ID</td>
+            <td>
+                <input class="form-control" type="text" name="model.temp_name" value="${model.temp_name }"  valid='vtext' validname='父节点ID'  />
+            </td>
+        </tr>
+        <tr>
+            <td>字段类型</td>
+            <td>
+                <select name="model.field_type" class="form-control" validname="字段类型">
+                    ${field_type!}
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td>表字段名</td>
+            <td>
+                <input class="form-control" type="text" name="model.column_name" value="${model.column_name }" disabled  validname="表字段名" />
+            </td>
+        </tr>
+        <tr>
+            <td>输入提示</td>
+            <td>
+                <input class="form-control" type="text" name="model.place_hold"  validname='输入提示' value="${model.place_hold }"  />
+            </td>
+        </tr>
+        <tr>
+            <td>后缀描述</td>
+            <td>
+                <input class="form-control" type="text" name="model.suffix" validname='后缀描述' value="${model.suffix }"  />
+            </td>
+        </tr>
+        <tr>
+            <td>验证正则</td>
+            <td>
+                <input class="form-control" type="text" name="model.reg_validation" validname='验证正则' value="${model.reg_validation }"  />
+            </td>
+        </tr>
+        <tr>
+            <td>错误提示</td>
+            <td>
+                <input class="form-control" type="text" name="model.error_msg"  validname='错误提示' value="${model.error_msg }"  />
+            </td>
+        </tr>
+        <tr>
+            <td>占位符(word模板)</td>
+            <td>
+                <input class="form-control" type="text" name="model.word_key"  validname='占位符(word模板)' value="${model.word_key }"  />
+            </td>
+        </tr>
+        <!--<tr>-->
+            <!--<td>表格形式(word模板)</td>-->
+            <!--<td>-->
+                <!--<input class="form-control" type="text" name="model.word_table_type"  validname='表格形式(word模板)' value="${model.word_table_type }"  />-->
+            <!--</td>-->
+        <!--</tr>-->
+        <tr>
+            <td>排序</td>
+            <td>
+                <input class="form-control" type="text" name="model.sort"  validname='排序' value="${model.sort }"  />
+            </td>
+        </tr>
+        <tr>
+            <td>备注</td>
+            <td>
+                <textarea class="form-control" type="text" name="model.remark" >${model.remark }</textarea>
+            </td>
+        </tr>
+    </table>
+
+    <div style="height: 50px;clear: both;">&nbsp;</div>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+            <button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+            <button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+        </div>
+    </nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%}
+DIRECTIVE SAFE_OUTPUT_CLOSE;
+%>

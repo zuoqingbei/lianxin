@@ -11,7 +11,7 @@ jQuery(function($) {
 	// 页面方法
 	oper = {
 		width :800,
-		height : 250,
+		height : 450,
 		form : document.form1,
 		list : function() {
 			var url = '/credit/agentmanager/list/';
@@ -34,6 +34,7 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title); 
 		},
 		edit : function(id) {
+			
 			window.open('/credit/agentmanager/agentPriceList/'+id,"_blank"); 
 		},
 		del : function(id) {

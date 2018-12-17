@@ -15,6 +15,14 @@
  			content: '';
     		width: 21%;
  		}
+        .return_back{
+            color: #A5A5A5;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .return_back:hover{color: #A5A5A5}
+        .return_back img{display: inline-block;vertical-align: top}
+        .return_back span{padding-left: 8px}
     </style>
 </head>
 <body>
@@ -22,13 +30,13 @@
     <div class="main">
         <div class="main-header order-info">
 			   <!-- 面包屑 -->
-                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javascript:;" id="infoImport" onclick="Public.goToInfoImportPage()">报告录入</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">填报</li>
-                    </ol>
-                 </nav>
-                    	
+                 <!--<nav aria-label="breadcrumb">-->
+                    <!--<ol class="breadcrumb">-->
+                        <!--<li class="breadcrumb-item"><a href="javascript:;" id="infoImport" onclick="Public.goToInfoImportPage()">报告录入</a></li>-->
+                        <!--<li class="breadcrumb-item active" aria-current="page">填报</li>-->
+                    <!--</ol>-->
+                 <!--</nav>-->
+            <a href="" class="return_back"><img src="${BASE_PATH }static/credit/imgs/order/reback.png"/><span>返回上一级</span></a>
                     <div class="order-box">
                       
                     </div>

@@ -93,14 +93,25 @@ let Login = {
                 		if(data.statusCode===0){
                             $(".error-tip").show();
                         }else{
-                            $(".error-tip").hide();
-                            window.location.href = "/credit/front/home/menu";
-                            $("#main_content").load("/credit/front/home");
-                            sessionStorage.setItem('pageUrl', '/credit/front/home');
-                            sessionStorage.setItem('menuId',$(".left-nav ul li:first").attr("id"));
-                            $(".leftNav").find("li").removeClass("active");
-                            $("#work_console").addClass("active");
-                            sessionStorage.setItem('roleIds',JSON.stringify(data.roleIds));
+                        	$(".error-tip").hide();
+                        	if(!data["isExpired"]){
+                        		//如果账号未过期
+	                            window.location.href = "/credit/front/home/menu";
+	                            $("#main_content").load("/credit/front/home");
+                        		sessionStorage.setItem('pageUrl', '/credit/front/home');
+                        		sessionStorage.setItem('menuId','work_console');
+                        	}else {
+                        		//账号已过期
+                        		Public.message("info","密码已过期，请重置密码！")
+                        		setTimeout(()=>{
+                        			window.location.href = "/credit/front/home/menu";
+                        			$("#main_content").load("/credit/sysuser/resetpassword");
+                        		},3000)
+	                            sessionStorage.setItem('pageUrl', '/credit/sysuser/resetpassword');
+                        		sessionStorage.setItem('menuId','passwordReset');
+                        		sessionStorage.setItem('isResetPw',1);
+                        	}
+                        	sessionStorage.setItem('roleIds',JSON.stringify(data.roleIds));
                         }
                 	}
                 });

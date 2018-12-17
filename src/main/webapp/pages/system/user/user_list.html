@@ -122,6 +122,7 @@ var bodyContent = {
 			<th name="username" class="sorting">登陆名</th>
 			<th name="realname" class="sorting">真实姓名</th>
 			<th name="usertype" class="sorting">类型</th>
+			<th name="rolename" >角色</th>
 			<th name="state" class="sorting">状态</th>
 			<th name="email" class="sorting">Email</th>
 			<th name="tel" class="sorting">手机号</th>
@@ -158,13 +159,16 @@ var bodyContent = {
 				<%	} %>
 			</td>
 			<td>
+				${item.rolename}		
+			</td>  
+			<td>
 				<% if(item.state==10) { %>
-				正常
+				自动分配
 				<%	} %>
 				<% if(item.state==30) { %>
 				手动分配
 				<%	} %>
-				<% if(item.usertype==40) { %>
+				<% if(item.state==40) { %>
 				暂停分配
 				<%	} %>
 			</td>

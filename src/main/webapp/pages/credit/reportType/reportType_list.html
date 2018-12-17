@@ -14,9 +14,9 @@
 				this.form.submit();
 			},
 			view : function(id) {
-				var url = 'credit/reportType/view?id='+id;
-				var title = '查看详细报告类型';
-				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+				var url = '/credit/reportNodes/list?reportType='+id;
+				this.form.action = url;
+				this.form.submit();
 			},
 			add : function() {
 				var url = 'credit/reportType/add';

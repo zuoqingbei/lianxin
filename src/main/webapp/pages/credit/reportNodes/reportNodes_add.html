@@ -1,0 +1,97 @@
+<% var headContent = { include("/pages/template/head.html"){} %>
+<script type="text/javascript">
+
+    var oper;
+    jQuery(function($) {
+        // 页面方法
+        oper = {
+            width : 450,
+            height : 500,
+            form : document.form1,
+            list : function() {
+                var url = 'credit/reportNodes/add';
+                this.form.action = url;
+                this.form.submit();
+            },
+            view : function(id) {
+                var url = 'credit/reportNodes/view?id='+id;
+                var title = '查看详细父节点';
+                Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+            },
+            add : function() {
+                var url = "credit/reportNodes/add?pid=${pid!''}";
+                var title = '所有父节点';
+                Iframe(url, this.width*1.3, this.height*1.2, title);
+            },
+            edit : function(id) {
+                var url = 'credit/reportNodes/edit?id='+id;
+                var title = '修改父节点';
+                Iframe(url, this.width, this.height, title);
+            },
+            del : function(id) {
+                var url = 'credit/reportNodes/del?id='+id;
+                var title = '确认要删除父节点？';
+                Confirm(title, function() {
+                    //window.location.href =  url;
+                    form1.action = url;
+                    form1.submit();
+                });
+
+            }, save:function(){
+            	alert("进入保存js功能")
+                if(!validForm()) {
+                    return false;
+                }
+                var url = 'credit/reportNodes/addNodes?reportType=${reportType!''}';
+                form1.action = url;
+                form1.submit();
+                return true;
+            }
+        };
+        //显示Menu索引
+        showMenu('page_report_manager');
+    });
+
+    //分页
+    var paginator = function(page) {
+        oper.list();
+    };
+</script>
+
+<% }; var bodyContent = { %>
+<form name="form1" action="" method="post" class="form-horizontal"
+      role="form" >
+    <input type="hidden" name="reportType" value="${reportType!''}" />
+    <table class="table">
+        <thead>
+        <tr>
+           	<th name="t.id" class="sorting">节点id</th>
+           	  <th name="t.temp_name" class="sorting">节点名称</th>
+            <th name="smallModuleType" class="sorting">节点类型</th>
+          
+            <th>操作</th>
+        </tr>
+        </thead>
+        <% for(item in page.list){ %>
+        <tr>
+            <td>${item.id }</td>
+             <td>${item.temp_name }</td>
+            <td>${item.smallModuleType }</td>
+            <td><input type="checkbox" name="nodesId" value="${item.id}"/></td>
+        </tr>
+        <% } %>
+    </table>
+
+
+    <div style="height: 50px;clear: both;">&nbsp;</div>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+            <button class="btn btn-primary" onclick="oper.save();return false;">保 存</button>
+            <button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+        </div>
+    </nav>
+    <%include("/pages/includes/paginator.html"){} %>
+</form>
+<%}; %> <%
+layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){
+%> <%} %>

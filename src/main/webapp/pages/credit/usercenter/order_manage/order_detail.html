@@ -39,6 +39,14 @@
         table{
             word-break: break-all;
         }
+        .return_back{
+            color: #A5A5A5;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .return_back:hover{color: #A5A5A5}
+        .return_back img{display: inline-block;vertical-align: top}
+        .return_back span{padding-left: 8px;}
     </style>
 </head>
 <body>
@@ -47,14 +55,16 @@
     <div class="main">
         <!--标题-->
         <div class="main-header detail_tab-bar">
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="javascript:">订单管理</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    <a>订单查档</a>
-                </li>
-            </ul>
+            <!--<ul class="breadcrumb">-->
+                <!--<li class="breadcrumb-item">-->
+                    <!--<a href="javascript:">订单管理</a>-->
+                <!--</li>-->
+                <!--<li class="breadcrumb-item active">-->
+                    <!--<a>订单查档</a>-->
+                <!--</li>-->
+            <!--</ul>-->
+
+            <a href="" class="return_back"><img src="${BASE_PATH }static/credit/imgs/order/reback.png"/><span>返回上一级</span></a>
             <p class="main-title"><span id="orderName" class="mr-3"></span><span id="orderNum"></span></p>
             <ul class="tab_bar col-md-10" id="tabs"></ul>
             <div class="state_box">
@@ -75,7 +85,7 @@
 <script>
     $(function () {
         window.status = "详情页"
-    })
+    });
 </script>
 </body>
 </html>

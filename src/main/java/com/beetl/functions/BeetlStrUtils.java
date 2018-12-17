@@ -74,7 +74,11 @@ public class BeetlStrUtils extends StrUtils {
 			return 0;
 		return str.length();
 	}
-
+	public int length(Integer str) {
+		if (isEmpty(str+""))
+			return 0;
+		return (str+"").length();
+	}
 	public String subStringTo(String str, int start, int end) {
 		if (isEmpty(str))
 			return str;
