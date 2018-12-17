@@ -1,6 +1,7 @@
 package com.hailian.system.user;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -55,7 +56,7 @@ public class SysUser extends SessionUser<SysUser>  {
 	public SysUser findByUserName(String username) {
 		List<Object> params = new ArrayList<>();
 		params.add(username);
-		return super.findFirstByWhere(" where username=?", params.toArray());
+		return super.findFirstByWhere(" where username=? and del_flag=0", params.toArray());
 	}
 	
 	/**
@@ -114,10 +115,11 @@ public class SysUser extends SessionUser<SysUser>  {
 		}
 		return dao.find(sql,params.toArray());
 	}
-	public int updatePwdById(Object userid,String password) {
+	public int updatePwdById(Object userid,String password,String now) {
 		List<Object> params=new ArrayList<Object>();
-		String sql="update sys_user set password=? where userid=?";
+		String sql="update sys_user set password=?,update_time=? where userid=?";
 		params.add(password);
+		params.add(now);
 		params.add(userid);
 		return Db.update(sql, params.toArray());
 		

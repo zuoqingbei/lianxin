@@ -101,7 +101,8 @@ public class ResetPassWordController extends BaseProjectController{
 		}else{
 			Integer userid = getSessionUser().getUserid();
 			String targetPwd = 	JFlyFoxUtils.passwordEncrypt(password);
-			int isSuccess = SysUser.dao.updatePwdById(userid, targetPwd);
+			String now=getNow();
+			int isSuccess = SysUser.dao.updatePwdById(userid, targetPwd,now);
 			if(isSuccess>0){
 				ResultType resultType = new ResultType();
 				renderJson(resultType);
