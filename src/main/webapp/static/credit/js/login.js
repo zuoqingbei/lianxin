@@ -6,7 +6,7 @@ let Login = {
 
     },
     login(){
-        /** 是否为空验证 GVerify*/
+        /** 是否为空验证 */
         var verifyCode = new GVerify("conVer");
         let tis=this
         $(".btn-login").click(
