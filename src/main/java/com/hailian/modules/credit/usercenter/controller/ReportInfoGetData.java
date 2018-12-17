@@ -212,17 +212,25 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 						}
 						model.put(columnName,value);
 					}else {
+						if(columnName.contains("position")){
+							System.out.println(14);
+						}
 						String targetValue =  model.get(columnName)+"";
-						String a = "";
-						String[] tempStrs = targetValue.split("$");
-						 if(tempStrs!=null) {
-							 for (String tempStr : tempStrs) {
-								if(!StrUtils.isEmpty(tempStr)) {
-									a += ","+DictCache.getValueByCode(type, tempStr, disPalyCol);
-								}
+						if(!StrUtils.isEmpty(targetValue)) {
+							String a = "";
+							String[] tempStrs = targetValue.split("\\$");
+							 if(tempStrs!=null) {
+								 for (String tempStr : tempStrs) {
+									if(!StrUtils.isEmpty(tempStr)) {
+										a += ","+DictCache.getValueByCode(type, tempStr, disPalyCol);
+									}
+								 }
 							 }
-						 }
-						model.put(columnName,a.substring(1,a.length()));
+							 model.put(columnName,a.substring(1,a.length()));
+						}else {
+							model.put(columnName,"");
+						}
+						
 					}
 				}
 			}

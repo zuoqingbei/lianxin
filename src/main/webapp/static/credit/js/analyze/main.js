@@ -248,6 +248,7 @@ let ReportConfig = {
 					        </div>
 					    </div>
 					</div>`
+			$("#modal"+item).remove()
     	})
     	
     	$("#container").append(modalHtml)

@@ -14,9 +14,8 @@
    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/login.css">
    <script type="text/javascript"> let path ="${BASE_PATH }";</script>
    <script type="text/javascript">
-	    let BASE_PATH = "${BASE_PATH }";
+	    var BASE_PATH = "${BASE_PATH }";
 	    console.log(BASE_PATH)
-	    //  console.log(${CONTEXT_PATH })
     </script>
 </head>
 <body>
@@ -36,7 +35,7 @@
                             <span class="input-group-addon d-flex justify-content-center align-items-center">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                             </span>
-                            <input name="username" type="text" class="form-control border-left-0" id="username">
+                            <input name="username" autofocus="autofocus" type="text" class="form-control border-left-0" id="username">
                         </div>
                         <small class="userTip">请输入用户名</small>
                     </div>
@@ -78,16 +77,16 @@
     
 
     <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
+    <script src="${BASE_PATH }static/credit/js/gVerify.js"></script>
     <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
     <script src="${BASE_PATH }static/credit/js/common.js"></script>
-    <script src="${BASE_PATH }static/credit/js/gVerify.js"></script>
-    <script src="${BASE_PATH }static/credit/js/login.js"></script>
     <script>
         window.onresize=function () {
             var verifyCode = new GVerify("conVer");
 
         }
     </script>
+    <script src="${BASE_PATH }static/credit/js/login.js"></script>
 
 </body>
 </html>
