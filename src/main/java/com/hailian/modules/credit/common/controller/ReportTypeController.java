@@ -8,7 +8,9 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.common.service.ReportTypeService;
+import com.hailian.modules.credit.uploadfile.controller.FileUpLoadController;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.upload.UploadFile;
 
 /**
  * @todo 报告类型
@@ -129,11 +131,21 @@ public class ReportTypeController extends BaseProjectController {
 	 */
 	public void save() {
 		Integer pid = getParaToInt("id");
-		ReportTypeModel model = getModel(ReportTypeModel.class);
+		String name=  getPara("name");
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-		model.set("update_by",userid);
-		model.set("update_date", now);
+		FileUpLoadController fileconController=new FileUpLoadController();
+		
+       UploadFile uploadFile=getFile("file_url");
+       String url="";
+       if (uploadFile!=null) {
+   		url= fileconController.upload(pid,getFile("file_url"), name,userid);	
+	    }
+       ReportTypeModel model = getModel(ReportTypeModel.class);
+       if (url!=null) {
+    	   model.set("tpl_path", url);
+	   }
+		
 		if (pid != null && pid > 0) { // 更新
 			model.update();
 			renderMessage("修改成功");
@@ -144,7 +156,7 @@ public class ReportTypeController extends BaseProjectController {
 			model.save();
 			renderMessage("保存成功");
 		}
-		
+		 
 	}
 	
 }
