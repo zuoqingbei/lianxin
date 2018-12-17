@@ -58,7 +58,7 @@ public class UserController  extends BaseProjectController{
 				//setAttr("menu", map);
 				Integer userId = Db.queryInt("select userid from sys_user where username=? and del_flag=0",Arrays.asList(new String[] {username}).toArray());
 				List<Integer> roleIds = Db.query("select roleid from sys_user_role where userid=?",Arrays.asList(new String[] {userId+""}).toArray());
-				long datediff = Db.queryLong("select datediff(t.update_time,?) from sys_user t where t.userid=?",Arrays.asList(new String[] {getNow(),userId+""}).toArray());//修改密码时间至今的天数以作安全考虑，判断是否过期
+				long datediff = Db.queryLong("select datediff(?,t.update_time) from sys_user t where t.userid=?",Arrays.asList(new String[] {getNow(),userId+""}).toArray());//修改密码时间至今的天数以作安全考虑，判断是否过期
 				System.out.println(datediff);
 				boolean isExpired=false;//密码是否过期
 				if(30<datediff){
