@@ -93,14 +93,30 @@ let Login = {
                 		if(data.statusCode===0){
                             $(".error-tip").show();
                         }else{
-                            $(".error-tip").hide();
-                            window.location.href = "/credit/front/home/menu";
-                            $("#main_content").load("/credit/front/home");
-                            sessionStorage.setItem('pageUrl', '/credit/front/home');
-                            sessionStorage.setItem('menuId',$(".left-nav ul li:first").attr("id"));
-                            $(".leftNav").find("li").removeClass("active");
-                            $("#work_console").addClass("active");
-                            sessionStorage.setItem('roleIds',JSON.stringify(data.roleIds));
+                        	alert(data["isExpired"])
+                        	if(data["isExpired"]){
+                        		//如果账号未过期
+                        		$(".error-tip").hide();
+	                            window.location.href = "/credit/front/home/menu";
+	                            $("#main_content").load("/credit/front/home");
+                        		sessionStorage.setItem('pageUrl', '/credit/front/home');
+                        		sessionStorage.setItem('menuId','work_console');
+//                        		$(".leftNav").find("li").removeClass("active");
+//                        		$("#work_console").addClass("active");
+                        	}else {
+                        		//账号已过期
+                        		$(".error-tip").hide();
+	                            window.location.href = "/credit/front/home/menu";
+	                            $("#main_content").load("/credit/sysuser/resetpassword");
+	                            console.log( $(".left-nav>ul>li:last"))
+	                            $(".left-nav>ul>li:last").addClass("show")
+	                            $(".left-nav>ul>li:last ul").show()
+	                            sessionStorage.setItem('pageUrl', '/credit/sysuser/resetpassword');
+                        		sessionStorage.setItem('menuId','passwordReset');
+//                        		$(".leftNav").find("li").removeClass("active");
+//                        		$("#passwordReset").addClass("active");
+                        	}
+                        	sessionStorage.setItem('roleIds',JSON.stringify(data.roleIds));
                         }
                 	}
                 });
