@@ -14,7 +14,8 @@ jQuery(function($) {
 		height : 450,
 		form : document.form1,
 		list : function() {
-			var url = '/credit/agentmanager/list/';
+			let id = location.href.split("/")[location.href.split("/").length-1]
+			var url = '/credit/agentmanager/agentPriceList/'+id;
 			this.form.action = url;
 			this.form.submit();
 		},
@@ -31,7 +32,8 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
-			var url = '/credit/agentmanager/deletePrice/'+id;
+			let agent_id = location.href.split("/")[location.href.split("/").length-1]
+			var url = '/credit/agentmanager/deletePrice?id='+id+'&agent_id='+agent_id;
 			var title = '确认要删除该代理价格？';
 			Confirm(title, function() {
 				form1.action = url;
@@ -98,7 +100,7 @@ var paginator = function(page) {
 				</td>
 				<td>
 					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.id});">修改</a> 
-					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.agent_id});">删除</a>
+					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.id});">删除</a>
 				</td>
 			</tr>
 		<% } %>
