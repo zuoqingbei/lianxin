@@ -114,6 +114,12 @@ public class UserController extends BaseProjectController {
 		String title_url="";
 		List<File> filelist=new ArrayList<File>();
 		UploadFile uploadFile=getFile("model.title_url");
+		SysUser model = getModel(SysUser.class);
+		SysUser findByUserName = SysUser.dao.findByUserName(model.get("username"));
+		if(null!=findByUserName){
+			renderMessage("登录名不允许重复！请重新修改登录名");
+			return;
+		}
 		if(uploadFile != null){
 			String ext=FileTypeUtils.getFileType(uploadFile.getOriginalFileName());//获取上传文件类型
 			if(FileTypeUtils.isImg(ext)){
@@ -137,7 +143,7 @@ public class UserController extends BaseProjectController {
 		}
 		
 		Integer pid = getParaToInt();
-		SysUser model = getModel(SysUser.class);
+		
 
 		// 日志添加
 		Integer userid = getSessionUser().getUserid();

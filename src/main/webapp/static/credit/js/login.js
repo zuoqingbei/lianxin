@@ -6,7 +6,7 @@ let Login = {
 
     },
     login(){
-        /** 是否为空验证 */
+        /** 是否为空验证 GVerify*/
         var verifyCode = new GVerify("conVer");
         let tis=this
         $(".btn-login").click(
@@ -22,17 +22,20 @@ let Login = {
         )
         $("#username").keydown((e)=>{
         	if(e.keyCode === 13) {
-        		this.logining()
+                var res = verifyCode.validate(document.getElementById("veri").value);
+                this.logining(res)
         	}
         })
         $("#psw").keydown((e)=>{
         	if(e.keyCode === 13) {
-        		this.logining()
+                var res = verifyCode.validate(document.getElementById("veri").value);
+                this.logining(res)
         	}
         });
         $("#veri").keydown((e)=>{
             if(e.keyCode === 13) {
-                this.logining()
+            	var res = verifyCode.validate(document.getElementById("veri").value);
+                this.logining(res)
             }
         })
     },

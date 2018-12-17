@@ -683,67 +683,20 @@ public class OrderProcessController extends BaseProjectController{
             map.put("agent_category", agent_category);
             if (StringUtils.isBlank(companyid)) {
 				//说明批量操作
-            String ids=	getPara("ids");
-            String [] orderId=	ids.split(",");
-            for (String oid : orderId) {
-				//查订单获取companyid
-           CreditOrderInfo info= 	CreditOrderInfo.dao.findById(oid);  
-           map.put("id", oid);
-           map.put("num", info.get("num"));
-           AgentPriceModel agentPrice=null;
-           CompanyModel companymodel = CompanyModel.dao.findById(info.get("company_id"));
-          /* String address=null;
-           if(companymodel != null){
-               address=companymodel.getStr("address");
-               if(StringUtils.isNotBlank(address)){
-                   String[] strs=address.split("-");
-                   String province=strs[0].toString();
-                   String city=strs[1].toString();
-                   ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
-                   CityModel cityByName = CityModel.dao.getCityByName(city);
-                   int pid = provinceByName.get("pid");
-                   int cid = cityByName.get("cid");
-                   if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
-                       agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
-                       
-                   }
-               }
-           }*/
-           agentPrice = AgentPriceService.service.getAgentPriceByOrder(oid);
-           if(agentPrice !=null){
-               map.put("agent_priceId", agentPrice.get("id"));
-           }
-           PublicUpdateMod(map);
-			
-			}
-			}else{
-            
-            CompanyModel companymodel = CompanyModel.dao.findById(companyid);
-            String address=null;
-            if(companymodel != null){
-                address=companymodel.getStr("company_address");
-                if(StringUtils.isNotBlank(address)){
-                    String[] strs=address.split("-");
-                    String province=strs[0].toString();
-                    String city=strs[1].toString();
-                    ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
-                    CityModel cityByName = CityModel.dao.getCityByName(city);
-                    if(provinceByName!=null && cityByName!=null){
-                    	int pid = provinceByName.get("pid");
-                    	 int cid = cityByName.get("cid");
-                    	 if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
-                             AgentPriceModel agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, agent_id, agent_category);
-                             if(agentPrice !=null){
-                                 map.put("agent_priceId", agentPrice.get("id"));
-                             }
-                         }
-                    }
-                  
-                   
-                   
-                }
-            }
-            PublicUpdateMod(map);
+	            String ids=	getPara("ids");
+	            String [] orderId=	ids.split(",");
+	            for (String oid : orderId) {
+						//查订单获取companyid
+		           CreditOrderInfo info= 	CreditOrderInfo.dao.findById(oid);  
+		           map.put("id", oid);
+		           map.put("num", info.get("num"));
+		           AgentPriceModel agentPrice=null;
+		           agentPrice = AgentPriceService.service.getAgentPriceByOrder(oid);
+		           if(agentPrice !=null){
+		               map.put("agent_priceId", agentPrice.get("id"));
+		           }
+		           PublicUpdateMod(map);
+				}
 			}
             renderJson(new ResultType());
         } catch (Exception e) {

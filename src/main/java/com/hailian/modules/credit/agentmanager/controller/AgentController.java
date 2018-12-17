@@ -86,14 +86,7 @@ public class AgentController extends BaseProjectController {
 	 */
 	public void add() {
 		AgentModel model = getModel(AgentModel.class);
-		List<String> catelist=new ArrayList<String>();
-		model.put("agentCategoryList", catelist);
 		setAttr("model", model);
-		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
-		setAttr("province", province);
-		String pid=model.get("province");
-		List<CityModel> city = CityModel.dao.getCity("", pid, this);//获取省份下的城市
-		setAttr("city", city);
 		render(path + "add.html");
 	}
 
@@ -107,29 +100,7 @@ public class AgentController extends BaseProjectController {
 	public void edit() {
 		Integer para = getParaToInt();
 		AgentModel model = AgentModel.dao.findById(para);
-		List<CountryModel> countrys=null;
-		Object cid=model.get("country");
-		if(cid!=null) {
-		countrys=CountryModel.dao.findByIds(cid.toString());		
-		}
-		String pid=model.get("province");
-		List<ProvinceModel> province = ProvinceModel.dao.getProvince("");//获取全部省份
-		List<AgentCategoryModel> agentCategoryList = AgentCategoryModel.dao.findAll(para+"");
-		List<String> catelist=new ArrayList<String>();
-		if(agentCategoryList!=null){
-			for(AgentCategoryModel catemodel:agentCategoryList ){
-				String agent_category=catemodel.get("agent_category")+"";
-				catelist.add(agent_category);
-				
-			}
-			
-		}
-		model.put("agentCategoryList", catelist);
 		setAttr("model", model);
-		setAttr("countrys", Json.getJson().toJson(countrys));
-		setAttr("agentCategoryList", agentCategoryList);
-		setAttr("province", province);
-		
 		render(path + "edit.html");
 	}
 	
@@ -152,38 +123,22 @@ public class AgentController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void save() {
-		Integer id = getParaToInt("agent_id");
-		String[] category = getParaValues("agent_category");
-		String country=StringUtils.join(getParaValues("country"), ",");
+		Integer id = getParaToInt("id");
 		AgentModel model = getModel(AgentModel.class);
-		if(!StringUtil.isBlank(country)) {
-		model.set("country", country);
-		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-		//		model.set("agent_id", id);
 		model.set("update_by", userid);
 		model.set("update_date", now);
 		if (id != null && id > 0) { // 更新
 			model.update();
-			if(category!=null){//对代理类别表进行维护
-				List<String> categoryList = Arrays.asList(category);
-				updateAgentCate(id, categoryList);//维护代理类别从表
-				updateAgentcateStr(id, model);//此步是在维护完代理和代理类别后再维护代理表的agent_category做列表展示
-			}
+			
 			renderMessage("修改成功");
 		} else { // 新增
-			model.remove("agent_id");
-			//			model.set("create_by", null);
+			model.remove("id");
 			model.set("create_by", userid);
 			model.set("create_date", now);
 			boolean save = model.save();
-			int agent_id=model.get("agent_id");
-			if(category!=null){
-				List<String> categoryList = Arrays.asList(category);
-				updateAgentCate(agent_id, categoryList);
-				updateAgentcateStr(agent_id, model);//此步是在维护完代理和代理类别后再维护代理表的agent_category做列表展示
-			}
+			
 			if(save){
 				renderMessage("保存成功");
 			}else{
