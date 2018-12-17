@@ -14,7 +14,17 @@ include("/pages/template/head.html"){}
             form1.action = url;
             form1.submit();
             return true;
+        },
+        list : function() {
+            var url = 'credit/reportColumn/add';
+            form1.action = url;
+            form1.submit();
         }
+    };
+
+    //分页
+    var paginator = function(page) {
+        oper.list();
     };
 </script>
 
@@ -37,24 +47,27 @@ var bodyContent = {
         </thead>
         <% for(item in page.list){ %>
         <tr>
-            <td>${item.id }</td>
+            <td>${item.temp_name }</td>
             <!--<td>${item.id }</td>-->
-            <td>${item.id }</td>
-            <td>${item.id }</td>
+            <td>${item.column_name }</td>
+            <td>${item.remark }</td>
             <td><input type="checkbox" name="columnId" value="${item.id}"/></td>
         </tr>
         <% } %>
+        <tr>
+            <td colspan="4"><%include("/pages/includes/paginator.html"){} %></td>
+        </tr>
+
     </table>
 
-
-    <div style="height: 50px;clear: both;">&nbsp;</div>
-    <nav class="navbar navbar-default navbar-fixed-bottom">
+    <div style="height: 10px;clear: both;">&nbsp;</div>
+    <nav class="navbar navbar-default navbar-fixed-bottom" style="margin-top: 70px;">
         <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
             <button class="btn btn-primary" onclick="oper.save();return false;">保 存</button>
             <button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
         </div>
     </nav>
-    <%include("/pages/includes/paginator.html"){} %>
+
 </form>
 <%}; %>
 
