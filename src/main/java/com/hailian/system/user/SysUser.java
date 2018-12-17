@@ -115,11 +115,11 @@ public class SysUser extends SessionUser<SysUser>  {
 		}
 		return dao.find(sql,params.toArray());
 	}
-	public int updatePwdById(Object userid,String password) {
+	public int updatePwdById(Object userid,String password,String now) {
 		List<Object> params=new ArrayList<Object>();
 		String sql="update sys_user set password=?,update_time=? where userid=?";
 		params.add(password);
-		params.add(new Date());
+		params.add(now);
 		params.add(userid);
 		return Db.update(sql, params.toArray());
 		

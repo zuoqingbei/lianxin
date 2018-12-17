@@ -1,9 +1,3 @@
-<% var usabled = tempDict.getSysDictDetailString2('usabled',model.usabled ); %>
-<% var currency = tempDict.getSysDictDetailString2('currency',model.currency ); %>
-<% var agenttype = tempDict.getSysDictDetailString2('agenttype',model.agent_type ); %>
-<% var speed = tempDict.getSysDictDetailString2('agentspeed',model.speed ); %>
-<% var agent_category = tempDict.getSysDictDetailCheckboxString('agentcategory',model.agentCategoryList,'9' ); %>
-<% var country = country.getCountryString(); %>
 <% 
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -24,96 +18,13 @@ var oper = {
 			return false;
 		}
 		id = id || '0';
-		var url = 'credit/agentmanager/save?agent_id='+id;
+		var url = 'credit/agentmanager/save?id='+id;
 		form1.action = url;
 		form1.submit();
 		return true;
-	},
-    sandbarChange:function(){
-   	 var grade = document.getElementById("sandbar");
-   	 var value=$("#sandbar").find("option:selected").val();
-   	 var html="";
-   	 $.ajax({
-   		 url:'credit/agentmanager/getCitySelect',
-   		data:{"attr.continent":value},
-   		dataType:"json",
-   		success:function(data){
-   			console.log(data)
-      		 console.log(${model.city});
-      		  html+="<option value='-1' >请选择</option>"
-      		  $.each(data,function(index,item){
-      			 if(item.codes=='${model.city}'){
-						 html+="<option selected='selected'  m-type='"+item.cid+"' value='"+item.cid+"'>"+item.city+"</option>";
-					 }else{
-						html+="<option  m-type='"+item.cid+"' value='"+item.cid+"'>"+item.city+"</option>";
-					 };
-      		  }); 
-   	           $("select[name='model.city']").html(html);
-   		}
-   	 });
-   },
-   agentChange:function(){
-	   	 var agent = document.getElementById("agent");
-	   	 var value=$("#agent").find("option:selected").text();
-	   	 if(value=='国外'){
-	   		 $("#countryin").addClass("countryout")
-	   		 $("#sandbar").removeAttr("valid")
-	   		 $("#countryout").removeClass("countryout")
-	   		 oper.countryList();
-	   	 }else if(value=='国内'){
-	   		$("#countryin").removeClass("countryout")
-	   		$("#sandbar").attr("valid","vselect")
-	   		$("#countryout").addClass("countryout")
-	   		oper.sandbarChange();
-	   	 }
-	   },
-   //省份发生变化
-   initpage:function(){
-	   var agent = $("#agent").find("option:selected").text();
-	   alert(agent)
-	   	 if(agent=='264'){
-	   		console.log($(".table"))
-	   		 $(".table tbody tr:last").hide()
-	   		 $("#sandbar").removeAttr("valid")
-	   	 }else if(agent=='263'){
-	   		$(".table tbody tr:last").show()
-	   		$("#sandbar").attr("valid","vselect")
-	   	 }
-   	//默认选择第一个国家
-   	 //$("select[name='model.city'] option:first").attr('selected','selected')
-   	
-   },
-	countryList:function(){
-		var html="";
-		var countrys=${countrys}
-		console.log(countrys)
-		$.get("/credit/country/getCountrySelect",function(data){
-			for(item in data){
-				var flag=1;
-				for(item2 in countrys){
-					if(data[item].id==countrys[item2].id){
-						console.log("itemid:"+data[item].id+","+"item2id:"+countrys[item2].id)
-						flag=2
-						html+="<option selected='selected'  value='"+data[item].id+"'>"+data[item].name+"</option>"
-						break;
-					}
-				}
-				if(flag==1){
-					html+="<option   value='"+data[item].id+"'>"+data[item].name+"</option>"
-				}
-			}
-			$("#country").html(html)
-		})
-		
 	}
-	 
 };
-$(function(){
-	oper.agentChange();
-	$("#country").select2({
-        tags: true
-    });
-})	
+
 </script>
 <style>
 .tags {
@@ -155,20 +66,22 @@ $(function(){
 var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal">
-	<input type="hidden" name="model.agent_id" value=" ${model.agent_id}" />
+	<input type="hidden" name="model.id" value=" ${model.id}" />
 	<!-- 数据列表 -->
 	<table class="table">
 	
 		
 		<tr>
+			<td>代理编码</td>
+			<td> <input type="text" name="model.agent_id" class="form-control"  valid="vtext" validname="代理编码" style="width: 200px;"
+				value="${model.agent_id}"/> 
+			</td>
 			<td>代理名称</td>
 			<td><input type="text" name="model.agent_name"  style="width: 200px;" class="form-control"  valid="vtext" validname="代理名称"
 				value="${model.agent_name}" />
 			</td>
-			<td>邮箱</td>
-			<td> <input type="text" name="model.memo" class="form-control"  valid="vemail" style="width: 200px;"
-				value="${model.memo}"/> 
-			</td>
+			
+			
 		</tr>
 		<tr>
 			<td>邮政编码</td>
@@ -176,17 +89,16 @@ var bodyContent = {
 				<input type="text" name="model.postal_code" class="form-control"  style="width: 200px;"
 				value="${model.postal_code}"/>
 			 </td>
-			<td>是否禁用</td>
-			<td><select name="model.usabled" class="form-control" style="width: 200px;" >
-					${usabled!}
-				</select>
+			<td>邮箱</td>
+			<td> <input type="text" name="model.memo" class="form-control"  valid="vemail" style="width: 200px;"
+				value="${model.memo}"/> 
 			</td>
 		</tr>
 	</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
-	  		<button class="btn btn-primary save" onclick="oper.save(${model.agent_id!'0'});return false;">确定</button>
+	  		<button class="btn btn-primary save" onclick="oper.save(${model.id!'0'});return false;">确定</button>
 			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
 	  </div>
 	</nav>
