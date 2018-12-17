@@ -37,7 +37,7 @@ public class TestQuartzJobTwo implements Job {
 				 if(rate>arr.length-1){
 					 rate=arr.length-1;
 				 }
-				 if(Double.parseDouble(order.getStr("rate"))>100){
+				 if(Double.parseDouble(order.get("rate")+"")>100){
 					 order.set("rate", order.get("ri"));
 				 }
 				 int change=Integer.parseInt(order.getStr("interval").split(",")[index]);
@@ -69,6 +69,12 @@ public class TestQuartzJobTwo implements Job {
 				 }
 			 }
 		 }
+		 for(OrderNumModel order:list){
+			 if(Double.parseDouble(order.get("rate")+"")>100){
+				 order.set("rate", order.get("ri")).update();
+			 }
+		 }
+		 
 	}
 	public boolean isBelong(){
 
