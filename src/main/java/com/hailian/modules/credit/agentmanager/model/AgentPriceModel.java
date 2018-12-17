@@ -103,10 +103,7 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 		return false;
 	}
 
-	public List<AgentPriceModel> findAll() {
-		
-		return AgentPriceModel.dao.find("select * from credit_agent t where t.del_flag=0");
-	}
+	
 	public List<AgentPriceModel> findAgentCateSelect(String agent_id,boolean isCate) {
 		if(StringUtils.isBlank(agent_id)){
 			return null;

@@ -215,6 +215,19 @@ public class AgentController extends BaseProjectController {
 		}
 	}
 	/**
+	 * @Description: 删除代理价格
+	* @author: dsh 
+	* @date:  2018年12月17日2018年12月17日
+	 */
+	public void deletePrice() {
+		Integer id = getParaToInt();
+		if (AgentPriceService.service.updateDelFlagById(id)) {
+			agentPriceList();
+		} else {
+			renderText("failure");
+		}
+	}
+	/**
 	 * 代理价格
 	* @author doushuihai  
 	* @date 2018年11月5日下午2:10:53  
