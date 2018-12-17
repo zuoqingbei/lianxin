@@ -96,8 +96,12 @@ let Public = {
             }
         })
         //菜单点击
-        $leftNav.find("li").click(function () {
-
+        $leftNav.find("li").click(function (e) {
+        	
+        	if(sessionStorage.getItem("isResetPw")) {
+        		Public.message("info","请先重置密码！")
+        		return false
+        	}
             if ($(this).hasClass("hasChild")) {
                 if ($(this).hasClass("show")) {
                     $(this).children("ul").slideUp(150, function () {
@@ -259,22 +263,22 @@ let Public = {
     message(state, text) {
         let txt = text || '获取数据失败！'
         if (state === 'info') {
-            $(".info-tip").show();
+            $(".infoTip").show();
             $(".info-text").html(txt)
             setTimeout(() => {
-                $(".info-tip").hide()
+                $(".infoTip").hide()
             }, 2000);
         } else if (state === 'error') {
-            $(".error-tip").show();
+            $(".errorTip").show();
             $(".error-text").html(txt)
             setTimeout(() => {
-                $(".error-tip").hide()
+                $(".errorTip").hide()
             }, 2000);
         } else if (state === 'success') {
-            $(".success-tip").show();
+            $(".successTip").show();
             $(".success-text").html(txt)
             setTimeout(() => {
-                $(".success-tip").hide()
+                $(".successTip").hide()
             }, 2000);
         }
     },
