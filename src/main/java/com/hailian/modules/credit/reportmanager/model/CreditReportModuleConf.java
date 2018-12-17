@@ -11,6 +11,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.hailian.modules.admin.ordermanager.model.CreditReportModuleParentNodesDict;
 import com.jfinal.plugin.activerecord.Page;
 @ModelBind(table = "credit_report_module_conf")
 public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleConf>{
@@ -163,6 +164,24 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
             where.append(" and t.temp_name like concat('%',?,'%')");
             params.add(keyword);
         }
+        //排序
+        if (StrUtils.isEmpty(orderBy)) {
+            where.append(" order by t.sort,t.id");
+        } else {
+            where.append(" order by ").append(orderBy);
+        }
+        Page<CreditReportModuleConf> page = dao.paginate(new Paginator(pageNumber, pageSize), from.toString(),where.toString(), params.toArray());
+        return page;
+    }
+    
+    public Page<CreditReportModuleConf> page(int pageNumber,int pageSize,String keyword ,String orderBy,List<Object> params) {
+        StringBuffer from = new StringBuffer("select t.*,d.small_module_type_name As  smallModuleType ") ;
+        StringBuffer where = new StringBuffer(" from credit_report_module_conf t left join credit_report_small_module_type_dict d on t.small_module_type=d.small_module_type where t.del_flag = 0 ");
+         
+        /*if(StringUtils.isNotEmpty(keyword)){
+            where.append(" and t.temp_name like concat('%',?,'%')");
+            params.add(keyword);
+        }*/
         //排序
         if (StrUtils.isEmpty(orderBy)) {
             where.append(" order by t.sort,t.id");
