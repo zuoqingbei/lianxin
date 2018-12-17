@@ -32,7 +32,8 @@ let Login = {
         });
         $("#veri").keydown((e)=>{
             if(e.keyCode === 13) {
-                this.logining()
+            	var res = verifyCode.validate(document.getElementById("veri").value);
+                this.logining(res)
             }
         })
     },
