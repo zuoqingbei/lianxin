@@ -102,7 +102,7 @@ let Login = {
                         		sessionStorage.setItem('menuId','work_console');
                         	}else {
                         		//账号已过期
-                        		Public.message("error","密码已过期，请重置密码！")
+                        		Public.message("info","密码已过期，请重置密码！")
                         		setTimeout(()=>{
                         			window.location.href = "/credit/front/home/menu";
                         			$("#main_content").load("/credit/sysuser/resetpassword");
