@@ -93,6 +93,11 @@ public class CustomController extends BaseProjectController {
 		Integer pid = getParaToInt();
 		// 日志添加
 		CustomInfoModel model = getModel(CustomInfoModel.class);
+		List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(model.get("id"));
+		if(customByid!=null){
+			renderMessage("客户编码已经存在，请修改客户编码！");
+			return;
+		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by", userid);
