@@ -3,6 +3,7 @@ package com.hailian.system.user;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,6 +63,12 @@ public class UserController extends BaseProjectController {
 		}
 		Page<SysUser> page = SysUser.dao.paginate(getPaginator(), "select t.*,d.name as departname ", sql.toString()
 				.toString());
+		List<SysUser> list = page.getList();
+		for(SysUser user:list){
+			String userid = user.get("userid").toString();
+			 List<Object> query = Db.query("select t2.`name` as rolename from sys_user_role t LEFT JOIN sys_role t2 on t.roleid=t2.id where t.userid=?",Arrays.asList(new String[] {userid+""}).toArray());
+			 user.put("rolename", query);
+		}
 		// 下拉框
 		setAttr("departSelect", new DepartmentSvc().selectDepart(model.getInt("departid")));
 		setAttr("page", page);
