@@ -12,7 +12,6 @@ let Public = {
         }, 30000)
 
     },
-
     initReset() {
         /**重置form表单**/
         const $btnReset = $('#btn_reset');
