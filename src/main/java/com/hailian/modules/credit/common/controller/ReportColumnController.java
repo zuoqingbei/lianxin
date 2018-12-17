@@ -164,7 +164,34 @@ public class ReportColumnController extends BaseProjectController {
      * 选择字段
      */
     public void addColumn(){
+        String pid = getPara("pid");
+        String[] columnIds = getParaValues("columnId");
+        if(columnIds!=null&&columnIds.length>0){
+            for(String id:columnIds){
+                CreditReportModuleColumn column = CreditReportModuleColumn.dao.findById(id);
+                CreditReportModuleConf moduleConf = CreditReportModuleConf.dao.findById(pid);
+                String reportType = moduleConf.get("report_type");
+                moduleConf.clear();
+                moduleConf.set("parent_temp", pid);
+                moduleConf.set("node_level","2");
+                moduleConf.set("report_type",reportType);
+                moduleConf.set("temp_name",column.get("temp_name"));
+                moduleConf.set("column_name",column.get("column_name"));
+                moduleConf.set("get_source",column.get("get_source"));
+                moduleConf.set("remove_source",column.get("remove_source"));
+                moduleConf.set("alter_source",column.get("alter_source"));
+                moduleConf.set("word_key",column.get("word_key"));
+                moduleConf.set("field_type",column.get("field_type"));
+                moduleConf.set("place_hold",column.get("place_hold"));
+                moduleConf.set("suffix",column.get("suffix"));
+                moduleConf.set("error_msg",column.get("error_msg"));
+                moduleConf.set("reg_validation",column.get("reg_validation"));
+                moduleConf.set("remark",column.get("remark"));
+                moduleConf.save();
 
+            }
+        }
+        renderMessage("保存成功");
     }
 	
 }

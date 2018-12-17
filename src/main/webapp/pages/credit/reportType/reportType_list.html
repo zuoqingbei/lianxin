@@ -82,8 +82,8 @@
 			<tr>
 				<th>序号</th> <% // 列表头部 %>
 				<th name="t.name" class="sorting">报告名称</th>
-				<th name="t.name_en" class="sorting">报告英文名称</th>
-				<th name="t.name_trad" class="sorting">报告繁体名称</th>
+				<!-- <th name="t.name_en" class="sorting">报告英文名称</th>
+				<th name="t.name_trad" class="sorting">报告繁体名称</th> -->
 				<th name="t.tpl_path" class="sorting">报告路径</th>
 				<th name="u.realname" class="sorting">创建人</th>
 				<th name="t.order_no" class="sorting">排序</th>
@@ -107,7 +107,7 @@
 				<td title="${item.name!}"><% if (strutil.length(item.name) >
 					25) { %> ${strutil.subStringTo(item.name, 0, 25)}... <% } else { %>
 					${item.name} <% } %></td>
-				<td title="${item.name_en!}"><% if
+			<!-- 	<td title="${item.name_en!}"><% if
 					(strutil.length(item.name_en) > 25) { %>
 					${strutil.subStringTo(item.name_en, 0, 25)}... <% } else { %>
 					${item.name_en} <% } %></td>
@@ -115,7 +115,7 @@
 				<td title="${item.name_trad!}"><% if
 					(strutil.length(item.name_trad) > 25) { %>
 					${strutil.subStringTo(item.name_trad, 0, 25)}... <% } else { %>
-					${item.name_trad} <% } %></td>
+					${item.name_trad} <% } %></td> -->
 
 				<td title="${item.tpl_path!}"><% if
 					(strutil.length(item.tpl_path) > 25) { %>
@@ -138,8 +138,8 @@
 					
 				<td title="${item.create_date!}">${item.create_date,dateFormat="yyyy-MM-dd HH:mm:ss"}</td>	
 		<td><a href="javascript:void(0);" class="btn btn-sm btn-success"
-			onclick="oper.view(${item.id});">查看</a> <a href="javascript:void(0);"
-			class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>
+			onclick="oper.view(${item.id});">配置</a> <a href="javascript:void(0);"
+			class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">编辑</a>
 			<a href="javascript:void(0);" class="btn btn-sm btn-danger"
 			onclick="oper.del(${item.id});">删除</a></td>
 		</tr>

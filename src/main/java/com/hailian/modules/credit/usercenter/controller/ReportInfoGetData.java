@@ -211,21 +211,26 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					       value = Db.queryStr("select name from credit_country where del_flag=0 and id="+ model.get(columnName)+"");
 						}
 						model.put(columnName,value);
-				}else {
-					//如果是多选
-					String targetValue =  model.get(columnName)+"";
-					String a = "";
-					if(targetValue.contains(",")) {
-						String[] tempStrs = targetValue.split(",");
-						 if(tempStrs!=null) {
-							 for (String tempStr : tempStrs) {
-								if(!StrUtils.isEmpty(tempStr)) {
-									a += DictCache.getValueByCode(type, tempStr, disPalyCol);
-								}
+					}else {
+						if(columnName.contains("position")){
+							System.out.println(14);
+						}
+						String targetValue =  model.get(columnName)+"";
+						if(!StrUtils.isEmpty(targetValue)) {
+							String a = "";
+							String[] tempStrs = targetValue.split("\\$");
+							 if(tempStrs!=null) {
+								 for (String tempStr : tempStrs) {
+									if(!StrUtils.isEmpty(tempStr)) {
+										a += ","+DictCache.getValueByCode(type, tempStr, disPalyCol);
+									}
+								 }
 							 }
-						 }
-					}
-					model.put(columnName, DictCache.getValueByCode(type, a, disPalyCol));
+							 model.put(columnName,a.substring(1,a.length()));
+						}else {
+							model.put(columnName,"");
+						}
+						
 					}
 				}
 			}
