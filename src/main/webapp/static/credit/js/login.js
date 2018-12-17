@@ -7,17 +7,17 @@ let Login = {
     },
     login(){
         /** 是否为空验证 */
-        // var verifyCode = new GVerify("conVer");
+        var verifyCode = new GVerify("conVer");
         let tis=this
         $(".btn-login").click(
             function () {
-                // var res = verifyCode.validate(document.getElementById("veri").value);
+                var res = verifyCode.validate(document.getElementById("veri").value);
                 // if(res){
                 //     alert("验证正确");
                 // }else{
                 //     alert("验证码错误");
                 // }
-                tis.logining(1)
+                tis.logining(res)
             }
         )
         $("#username").keydown((e)=>{
