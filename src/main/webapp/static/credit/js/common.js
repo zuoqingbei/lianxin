@@ -323,6 +323,8 @@ let Public = {
                             fileicon = '/static/credit/imgs/order/JPG.png'
                         } else if (filetype === 'pdf') {
                             fileicon = '/static/credit/imgs/order/PDF.png'
+                        }else if(filetype === 'html') {
+                            fileicon = '/static/credit/imgs/order/html.png'
                         }
                         let fileArr = ''
                         let filename = data.files[i].originalname
@@ -373,6 +375,14 @@ $(function () {
 
     Public.init();
     window.onload = function () {
+    	if(sessionStorage.getItem("isResetPw") === '1') {
+    		setTimeout(()=>{
+    		console.log($(".warning"))
+    		$(".warning").css("display","flex")},0)
+    	}else {
+    		setTimeout(()=>{
+    		$(".warning").hide()},0)
+    	}
         let id = sessionStorage.getItem('menuId') ? sessionStorage.getItem('menuId') : $(".left-nav ul").children("li").eq(0).attr("id")
         $("#main_content").load(sessionStorage.getItem('pageUrl') ? sessionStorage.getItem('pageUrl') : '/credit/front/home', () => {
             Public.initReset()
@@ -384,6 +394,7 @@ $(function () {
             $('#' + id).parents("ul").show(200)
 
         }
+    	
     }
 });
 
