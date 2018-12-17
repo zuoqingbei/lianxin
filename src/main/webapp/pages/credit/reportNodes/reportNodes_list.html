@@ -19,7 +19,7 @@
                 Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
             },
             add : function() {
-                var url = "credit/reportNodes/add?pid=${pid!''}";
+                var url = "credit/reportNodes/add?reportType=${reportType!''}";
                 var title = '所有父节点';
                 Iframe(url, this.width*1.2, this.height*1.2, title);
             },
@@ -79,13 +79,15 @@
         <thead>
         <tr>
           <th name="t.id" class="sorting">父节点ID</t>
-            <th name="d.smallModuleType" class="sorting">父节点类型</t>
+            <th name="d.small_module_type_name" class="sorting">父节点类型</t>
             <th name="t.temp_name" class="sorting">父节点名称</th>
-            <th name="t.word_table_type" class="sorting">word模板:h标题横向 s标题竖向</th>
+               <th name="t.float_parent" class="sorting">浮动父节点ID</th>
+            <th name="t.word_table_type" class="sorting">word模板方向</th>
+            <th name="t.anchor_id" class="sorting">对应锚点的ID</th>
             <th name="t.place_hold" class="sorting">模板增加记录提示</th>
             <th name="t.sort" class="sorting">排序</th>
              <th name="t.remark" class="sorting">备注</th>
-             <th name="t.anchor_id" class="sorting">对应锚点的ID</th>
+           
             <th>操作</th>
         </tr>
         </thead>
@@ -100,22 +102,28 @@
                 <% } %>
             </td>
             <td title="${item.smallModuleType!}">
-                <% if (strutil.length(item.small_module_type) >25) { %>
-                    ${strutil.subStringTo(item.small_module_type, 0, 25)}...
+                <% if (strutil.length(item.smallModuleType) >25) { %>
+                    ${strutil.subStringTo(item.smallModuleType, 0, 25)}...
                 <% } else { %>
-                    ${item.small_module_type}
+                    ${item.smallModuleType}
                 <% } %>
             </td>
 
-
-            <td title="${item.temp_name!}">
+            
+			 <td title="${item.temp_name!}">
                 <% if (strutil.length(item.temp_name) >25) { %>
                     ${strutil.subStringTo(item.temp_name, 0, 25)}...
                 <% } else { %>
                     ${item.temp_name}
                 <% } %>
             </td>
-
+            <td title="${item.float_parent!}">
+                <% if (strutil.length(item.float_parent) >25) { %>
+                    ${strutil.subStringTo(item.float_parent, 0, 25)}...
+                <% } else { %>
+                    ${item.float_parent}
+                <% } %>
+            </td>
             <td title="${item.word_table_type!}">
                 <% if (strutil.length(item.word_table_type) >25) { %>
                 ${strutil.subStringTo(item.word_table_type, 0, 25)}...
@@ -123,7 +131,13 @@
                 ${item.word_table_type}
                 <% } %>
             </td>
-
+			   <td title="${item.anchor_id!}">
+                <% if (strutil.length(item.anchor_id) >25) { %>
+                ${strutil.subStringTo(item.anchor_id, 0, 25)}...
+                <% } else { %>
+                ${item.anchor_id}
+                <% } %>
+            </td>
             <td title="${item.place_hold!}">
                 <% if (strutil.length(item.place_hold) >25) { %>
                 ${strutil.subStringTo(item.place_hold, 0, 25)}...
@@ -147,13 +161,7 @@
                 <% } %>
             </td>
 
-            <td title="${item.anchor_id!}">
-                <% if (strutil.length(item.anchor_id) >25) { %>
-                ${strutil.subStringTo(item.anchor_id, 0, 25)}...
-                <% } else { %>
-                ${item.anchor_id}
-                <% } %>
-            </td>
+         
 
             <td>
                 <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>
