@@ -176,7 +176,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
     
     public Page<CreditReportModuleConf> page(int pageNumber,int pageSize,String keyword ,String orderBy,List<Object> params) {
         StringBuffer from = new StringBuffer("select t.*,d.small_module_type_name As  smallModuleType ") ;
-        StringBuffer where = new StringBuffer(" from credit_report_module_conf t left join credit_report_small_module_type_dict d on t.small_module_type=d.small_module_type where t.del_flag = 0 ");
+        StringBuffer where = new StringBuffer(" from credit_report_module_conf t left join credit_report_small_module_type_dict d on t.small_module_type=d.small_module_type where t.del_flag = 0 and report_type=? and parent_temp='-9999999' ");
          
         /*if(StringUtils.isNotEmpty(keyword)){
             where.append(" and t.temp_name like concat('%',?,'%')");
