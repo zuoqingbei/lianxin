@@ -998,11 +998,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				//294为信息录入完成,295代理中
 				//已代理
 				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("2")) {
-					fromSql.append(" and status in('295')  ");
+					fromSql.append(" and status in('295','296')  ");
 				}
 				//未代理
 				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
-					fromSql.append(" and status in('291','292','293','294','296','297') ");
+					fromSql.append(" and status in('291','292','293','294','297') ");
 				}
 				//全部
 				if (StringUtils.isBlank(statuCode)) {

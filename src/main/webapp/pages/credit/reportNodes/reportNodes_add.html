@@ -42,7 +42,7 @@
                 if(!validForm()) {
                     return false;
                 }
-                var url = 'credit/reportNodes/addNodes';
+                var url = 'credit/reportNodes/addNodes?reportType=${reportType!''}';
                 form1.action = url;
                 form1.submit();
                 return true;
@@ -61,7 +61,7 @@
 <% }; var bodyContent = { %>
 <form name="form1" action="" method="post" class="form-horizontal"
       role="form" >
-    <input type="hidden" name="pid" value="${pid}" />
+    <input type="hidden" name="reportType" value="${reportType!''}" />
     <table class="table">
         <thead>
         <tr>

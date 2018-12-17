@@ -24,7 +24,13 @@ var oper = {
 		return true;
 	}
 };
-
+$(function(){
+	
+console.log($("input[name='model.agent_id']"))
+if($("input[name='model.agent_id']").val() !== '') {
+	$("input[name='model.agent_id']").attr("readonly","readonly")
+}
+})
 </script>
 <style>
 .tags {
