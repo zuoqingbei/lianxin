@@ -8,6 +8,7 @@ import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditReportModuleParentNodesDict;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -34,6 +35,8 @@ public class ReportNodeController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void list() {
+		String reportType = getPara("reportType");
+		if(StrUtils.isEmpty(reportType)) {renderMessage("缺少必要参数reportType!"); return;}
 		int pageNumber = getParaToInt("pageNo", 1);
 		int pageSize = getParaToInt("pageSize", 10);
 		//从表单获取排序语句
@@ -43,9 +46,10 @@ public class ReportNodeController extends BaseProjectController {
 		//分页查询
         List<Object> params = new ArrayList<>();
         //params.add(getPara("pid"));
-        params.add(getPara("reportType")); 
+        params.add(reportType); 
 		Page<CreditReportModuleConf> pager = CreditReportModuleConf.dao.page(pageNumber, pageSize, "", orderBy, params);
         setAttr("page", pager);
+        setAttr("reportType", reportType);
 		keepPara();
 		render(path+"list.html");
 	}
@@ -164,7 +168,8 @@ public class ReportNodeController extends BaseProjectController {
      */
     public void addNodes(){
     	int result = -1;
-        String pid = getPara("pid");
+        String reportType = getPara("reportType");
+        if(StrUtils.isEmpty(reportType)) {renderMessage("缺少必要参数reportType!");return;}
         String[] columnIds = getParaValues("nodesId");
         if(columnIds!=null&&columnIds.length>0){  
         	CreditReportModuleParentNodesDict model = new CreditReportModuleParentNodesDict();
@@ -174,7 +179,7 @@ public class ReportNodeController extends BaseProjectController {
     		model.set("update_date", now);
     		model.set("create_by", userid);
 			model.set("create_date", now);
-			
+			model.set("report_type", reportType);
             for(String id:columnIds){
             	CreditReportModuleParentNodesDict model2 = new CreditReportModuleParentNodesDict();
             	model2._setAttrs(model).set("id", id);
