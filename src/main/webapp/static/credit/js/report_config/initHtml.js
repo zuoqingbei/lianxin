@@ -900,7 +900,7 @@ let InitObj = {
         return indexed_array;
     },
     initSelect2(){
-    	$(".select2").select2({
+    	$("select.select2.form-control").select2({
     		 multiple: true,
     	})
     }

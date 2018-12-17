@@ -122,6 +122,21 @@ let ReportConfig = {
     							let anotherIdArr = id.split("_")
     							anotherIdArr.pop();
     							let anotherId = anotherIdArr.join('_')
+    							if($("#"+id).hasClass('select2')) {
+    								let str = row[anotherId];
+    								let arr = str.split(",")
+    								arr.forEach((item,index)=>{
+    									$(`#${id} option`).each((i,it)=>{
+    										 if($(it).text() === item) {
+    											 let val = $(it).attr("value")
+    											 arr[index] = val
+    										 }
+    									})
+    								})
+    								console.log($("#"+id),arr)
+    								$("#"+id).val(arr).change()
+    								return 
+    							}
     							if($("#"+id).is('select')) {
     								//如果是select
     								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
@@ -1456,10 +1471,21 @@ let ReportConfig = {
 				formArr.forEach((item,index)=>{
 					let id = $(item).children("label").siblings().attr("id");
 					if($("#"+id).is("button")) {
-						let name = $('#'+$('#'+id).children("input").attr("id")).attr("name")
-						let val = $('#'+id).children("span").html()
+						//商标
+						let name = $('#'+$('#'+id).find("input").attr("id")).attr("name")
+						let val = $('#'+$('#'+id).find("input").attr("id")).attr("iconurl")
 						dataJsonObj[name] = val
+						return
 					}
+					if($("#"+id).hasClass("select2")) {
+						let name = $('#'+id).attr("name")
+						let val = $('#'+id).val()
+						console.log(val)
+						val = val.join("$")
+						dataJsonObj[name] = val
+						return
+					}
+					
 					
 					//调用form格式化数据函数
 					let tempObj = this.getFormData($('#'+id));

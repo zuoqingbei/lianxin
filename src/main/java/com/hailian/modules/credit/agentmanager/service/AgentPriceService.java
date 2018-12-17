@@ -69,13 +69,17 @@ public class AgentPriceService {
                 String[] strs=address.split("-");
                 String province=strs[0].toString();
                 String city=strs[1].toString();
+                String pid = "";
+                String cid = "";
                 ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
-                CityModel cityByName = CityModel.dao.getCityByName(city);
-                int pid = provinceByName.get("pid");
-                int cid = cityByName.get("cid");
-                if(StringUtils.isNotBlank(pid+"") && StringUtils.isNotBlank(cid+"")){
-                    agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, info.get("agent_id")+"",info.get("agent_category")+"" );
+                if(provinceByName!=null){
+                	pid = provinceByName.get("pid").toString();
                 }
+                CityModel cityByName = CityModel.dao.getCityByName(city);
+                if(cityByName!=null){
+                	pid = cityByName.get("cid").toString();
+                }
+                agentPrice = AgentPriceService.service.getAgentPrice(pid, cid, info.get("agent_id")+"",info.get("agent_category")+"" );
             }
         }
         return agentPrice;
@@ -87,13 +91,14 @@ public class AgentPriceService {
 	* @date 2018年11月7日下午1:57:44  
 	* @TODO
 	 */
-	public AgentPriceModel getAgentPrice(int pid,int cid,String agent_id,String agent_category) {
-		AgentPriceModel agentpricemodel = AgentPriceModel.dao.getAgentPrice(pid, cid,agent_id,agent_category,true);
+	public AgentPriceModel getAgentPrice(String pid,String cid,String agent_id,String agent_category) {
+		AgentPriceModel agentpricemodel = AgentPriceModel.dao.getAgentPrice(pid, cid,agent_id,agent_category,true);//根据优先级 先根据省市代理类别代理id获取价格
 		if(agentpricemodel== null){
-			agentpricemodel = AgentPriceModel.dao.getAgentPrice(pid, cid,agent_id,agent_category,false);
+			agentpricemodel = AgentPriceModel.dao.getAgentPrice(pid, cid,agent_id,agent_category,false);//根据优先级 先根据省代理类别代理id获取价格
+		}else{
+			agentpricemodel = AgentPriceModel.dao.getAgentPriceBycategory(agent_id,agent_category);//根据优先级 先根据省代理类别代理id获取价格
 		}
 		return agentpricemodel;
-
 	}
 	/*
 	 * 国外人工代理分配根据代理id，国家，速度获取代理价格

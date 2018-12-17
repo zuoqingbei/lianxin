@@ -22,17 +22,17 @@ jQuery(function($) {
 			console.log(location.href)
 			let id = location.href.split("/")[location.href.split("/").length-1]
 			var url = '/credit/agentmanager/addPrice/'+id;
-			var title = '添加代理信息';
+			var title = '添加代理价格';
 			Iframe(url, this.width, this.height, title);
 		},
 		edit : function(id) {
 			var url = '/credit/agentmanager/editPrice/'+id 
-			var title = '修改代理信息';
+			var title = '修改代理价格';
 			Iframe(url, this.width, this.height, title); 
 		},
 		del : function(id) {
-			var url = '/credit/agentmanager/delete/'+id;
-			var title = '确认要删除该代理信息？';
+			var url = '/credit/agentmanager/deletePrice/'+id;
+			var title = '确认要删除该代理价格？';
 			Confirm(title, function() {
 				form1.action = url;
 				form1.submit();
