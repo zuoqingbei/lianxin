@@ -93,7 +93,7 @@ let Password = {
                 Public.message("info",'请输入密码！')
                 return false;
             }else if(psd && !psd2) {
-                Public.message("info",'请再次输入验证码！')
+                Public.message("info",'请再次输入密码！')
                 return false;
             }
             that.resetPassword(psd,psd2)//密码后台修改
@@ -119,11 +119,12 @@ let Password = {
     	})
     },
     resetPassword(password,passwordConfirm){
-        /**接收验证码 */
+        /** */
     	$.post("/credit/sysuser/resetpassword/reset",{password:password,passwordConfirm:passwordConfirm},function(data){
     		if(data.statusCode===1){
     			$(".success").show().siblings().hide();
                 $(".stage ul>li").eq(2).addClass('active').siblings().removeClass('active')
+                sessionStorage.removeItem("isResetPw")
               }else{
            	   Public.message("error",'修改没有成功，请稍后再试！')
               }

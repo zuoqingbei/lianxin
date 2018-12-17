@@ -93,28 +93,23 @@ let Login = {
                 		if(data.statusCode===0){
                             $(".error-tip").show();
                         }else{
-                        	alert(data["isExpired"])
-                        	if(data["isExpired"]){
+                        	$(".error-tip").hide();
+                        	if(!data["isExpired"]){
                         		//如果账号未过期
-                        		$(".error-tip").hide();
 	                            window.location.href = "/credit/front/home/menu";
 	                            $("#main_content").load("/credit/front/home");
                         		sessionStorage.setItem('pageUrl', '/credit/front/home');
                         		sessionStorage.setItem('menuId','work_console');
-//                        		$(".leftNav").find("li").removeClass("active");
-//                        		$("#work_console").addClass("active");
                         	}else {
                         		//账号已过期
-                        		$(".error-tip").hide();
-	                            window.location.href = "/credit/front/home/menu";
-	                            $("#main_content").load("/credit/sysuser/resetpassword");
-	                            console.log( $(".left-nav>ul>li:last"))
-	                            $(".left-nav>ul>li:last").addClass("show")
-	                            $(".left-nav>ul>li:last ul").show()
+                        		Public.message("error","密码已过期，请重置密码！")
+                        		setTimeout(()=>{
+                        			window.location.href = "/credit/front/home/menu";
+                        			$("#main_content").load("/credit/sysuser/resetpassword");
+                        		},3000)
 	                            sessionStorage.setItem('pageUrl', '/credit/sysuser/resetpassword');
                         		sessionStorage.setItem('menuId','passwordReset');
-//                        		$(".leftNav").find("li").removeClass("active");
-//                        		$("#passwordReset").addClass("active");
+                        		sessionStorage.setItem('isResetPw',1);
                         	}
                         	sessionStorage.setItem('roleIds',JSON.stringify(data.roleIds));
                         }
