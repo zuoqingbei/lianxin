@@ -59,7 +59,7 @@ var oper = {
    		success:function(data){
    			console.log(data)
       		 console.log(${model.city});
-      		  html+="<option value='-1' >请选择</option>"
+      		  html+="<option value='' >请选择</option>"
       		  $.each(data,function(index,item){
       			 if(item.codes=='${model.city}'){
 						 html+="<option selected='selected'  m-type='"+item.cid+"' value='"+item.cid+"'>"+item.city+"</option>";
@@ -225,7 +225,7 @@ var bodyContent = {
 			<td>省份</td>
 						<td>
 						<select id="sandbar" name="model.province" class="form-control"   valid="vselect" validname="省份不能为空" onchange="oper.sandbarChange()" style="width: 200px;">
-						<option value="-1" >请选择</option>
+						<option value="" >请选择</option>
 						 <% for(item in province){ %>
 						 	<% if((model.province+"")==(item.pid+"")){ %>
 							 	<option  m-type="${item.credit_province}" selected="selected" value="${item.pid}">${item.credit_province}</option>
@@ -245,7 +245,7 @@ var bodyContent = {
 		<tr id="countryout" class="">
 			<td>国家</td>
 			<td>
-				<select id="country"  name="model.country"  class="form-control" multiple="multiple" style="width: 200px;">
+				<select id="country"  name="model.country"  class="form-control"  style="width: 200px;">
 				
 				</select>
 			</td>

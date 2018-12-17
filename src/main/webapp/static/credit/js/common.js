@@ -96,8 +96,12 @@ let Public = {
             }
         })
         //菜单点击
-        $leftNav.find("li").click(function () {
-
+        $leftNav.find("li").click(function (e) {
+        	
+        	if(sessionStorage.getItem("isResetPw")) {
+        		Public.message("info","请先重置密码！")
+        		return false
+        	}
             if ($(this).hasClass("hasChild")) {
                 if ($(this).hasClass("show")) {
                     $(this).children("ul").slideUp(150, function () {
@@ -259,22 +263,22 @@ let Public = {
     message(state, text) {
         let txt = text || '获取数据失败！'
         if (state === 'info') {
-            $(".info-tip").show();
+            $(".infoTip").show();
             $(".info-text").html(txt)
             setTimeout(() => {
-                $(".info-tip").hide()
+                $(".infoTip").hide()
             }, 2000);
         } else if (state === 'error') {
-            $(".error-tip").show();
+            $(".errorTip").show();
             $(".error-text").html(txt)
             setTimeout(() => {
-                $(".error-tip").hide()
+                $(".errorTip").hide()
             }, 2000);
         } else if (state === 'success') {
-            $(".success-tip").show();
+            $(".successTip").show();
             $(".success-text").html(txt)
             setTimeout(() => {
-                $(".success-tip").hide()
+                $(".successTip").hide()
             }, 2000);
         }
     },
@@ -480,7 +484,6 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                 <div class="credit-level-title pt-3">信用等级说明</div>
                 <p class="m-3 ml-4 mt-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
                 <p class="m-3 ml-4">如下所示：
-                <p class="m-3 ml-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
                 <p class="m-3 ml-4">财务状况（40%） 股东背景（10%） 付款记录（10%）</p>
                 <p class="m-3 ml-4">信用历史（15%） 市场趋势（10%） 经营规模（15%）</p>
                 <p class="m-3 ml-4">如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款记录”两项。</p>
@@ -578,14 +581,14 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                     </div>
                     <div class="clearfix"></div>
                 </div>
-                <div class="credit-level-title pt-3">信用等级说明</div>
-                <p class="m-3 ml-4 mt-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
-                <p class="m-3 ml-4">如下所示：
-                <p class="m-3 ml-4">以上级别可用来评估该公司的信用风险和确定给予该公司的信用额度。它是经过计算本报告每部分内容综合进行评估的因素和它们在评估中所占的比重（%）</p>
-                <p class="m-3 ml-4">财务状况（40%） 股东背景（10%） 付款记录（10%）</p>
-                <p class="m-3 ml-4">信用历史（15%） 市场趋势（10%） 经营规模（15%）</p>
-                <p class="m-3 ml-4">如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款记录”两项。</p>
-                <p class="m-3 ml-4 pb-4">使用缩写： N/A-不详 CNY-人民币 SC-目标公司</p>`
+                <div class="credit-level-title pt-3">CREDIT RATING</div>
+                <p class="m-3 ml-4 mt-4">This rating serves as a reference to assess SC’s credit risk and to set the amount of credit to be extended.  It is calculated from a composite of weighted scores obtained from each of the major sections of this report.  </p>
+                <p class="m-3 ml-4">The assessed factors and their relative weights (as indicated through %) in our credit analysis are as follows:
+                <p class="m-3 ml-4">Financial condition (40%) Ownership background (10%) Payment record (10%)</p>
+                <p class="m-3 ml-4">Credit history (15%) Market trend (10%) Operational size (15%)</p>
+                <p class="m-3 ml-4">In case of unlimited companies, newly established companies, or lack of financial data, more weight is given to ‘Ownership background’ and ‘Payment record’ in our analysis.</p>
+                <p class="m-3 ml-4 pb-4">Adopted abbreviations：
+                <br>N/A – not available	CNY – China Yuan Renminbi	SC – subject company (the company inquired by you) </p>`
     ,processObj = {
         '订单分配': ['订单分配'],
         '信息录入': ['信息录入', '信息录入完成'],

@@ -34,6 +34,7 @@ jQuery(function($) {
 			Iframe(url, this.width, this.height, title); 
 		},
 		edit : function(id) {
+			
 			window.open('/credit/agentmanager/agentPriceList/'+id,"_blank"); 
 		},
 		del : function(id) {
@@ -98,7 +99,7 @@ var paginator = function(page) {
 				<td>${item.memo}</td>
 				
 				<td>
-					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.editBasic(${item.agent_id});">修改代理基本信息</a> 
+					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.editBasic(${item.id});">修改代理基本信息</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.agent_id});">配置代理价格</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.agent_id});">删除</a>
 				</td>

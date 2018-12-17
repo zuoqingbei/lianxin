@@ -1,0 +1,173 @@
+<% var headContent = { include("/pages/template/head.html"){} %>
+<script type="text/javascript">
+
+    var oper;
+    jQuery(function($) {
+        // 页面方法
+        oper = {
+            width : 450,
+            height : 500,
+            form : document.form1,
+            list : function() {
+                var url = 'credit/reportNodes/list';
+                this.form.action = url;
+                this.form.submit();
+            },
+            view : function(id) {
+                var url = 'credit/reportNodes/view?id='+id;
+                var title = '查看详细父节点';
+                Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+            },
+            add : function() {
+                var url = "credit/reportNodes/add?pid=${pid!''}";
+                var title = '所有父节点';
+                Iframe(url, this.width*1.2, this.height*1.2, title);
+            },
+            edit : function(id) {
+                var url = 'credit/reportNodes/edit?id='+id;
+                var title = '修改父节点';
+                Iframe(url, this.width, this.height, title);
+            },
+            del : function(id) {
+                var url = 'credit/reportNodes/del?id='+id;
+                var title = '确认要删除父节点？';
+                Confirm(title, function() {
+                    //window.location.href =  url;
+                    form1.action = url;
+                    form1.submit();
+                });
+
+            }
+        };
+        //显示Menu索引
+        showMenu('page_report_manager');
+    });
+
+    //分页
+    var paginator = function(page) {
+        oper.list();
+    };
+</script>
+
+<% }; var bodyContent = { %>
+<form name="form1" action="" method="post" class="form-inline" role="form">
+    <input type="hidden" name="form.orderColumn" value="${form.orderColumn!''}" />
+    <input type="hidden" name="form.orderAsc" value="${form.orderAsc!''}" />
+    <input type="hidden" name="pid" value="${pid!''}" />
+    <input type="hidden" name="reportType" value="${reportType!''}" />
+    <!-- 菜单 -->
+    <% include("/pages/template/menu.html"){} %>
+
+    <div class="tableSearch">
+        <% //查询列表 %>
+        搜索内容
+        <div class="form-group">
+            <input class="form-control" type="text" name="keyWord" value="${keyWord!''}" placeholder="请输入关键字" required='required' />
+        </div>
+        <button type="button" class="btn btn-default" onclick="oper.list();" name="search"/>
+            <span class="glyphicon glyphicon-search"></span> 查 询
+        </button>
+        <button type="button" class="btn btn-default" onclick="resetForm();">
+            <span class="glyphicon glyphicon-refresh"></span> 重 置
+        </button>
+        <button type="button" class="btn btn-default" onclick="oper.add();">
+            <span class="glyphicon glyphicon-plus"></span> 新 增
+        </button>
+    </div>
+    <!-- 数据列表 -->
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+          <th name="t.id" class="sorting">父节点ID</t>
+            <th name="d.smallModuleType" class="sorting">父节点类型</t>
+            <th name="t.temp_name" class="sorting">父节点名称</th>
+            <th name="t.word_table_type" class="sorting">word模板:h标题横向 s标题竖向</th>
+            <th name="t.place_hold" class="sorting">模板增加记录提示</th>
+            <th name="t.sort" class="sorting">排序</th>
+             <th name="t.remark" class="sorting">备注</th>
+             <th name="t.anchor_id" class="sorting">对应锚点的ID</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(item in page.list){ %>
+        <tr>
+            <td title="${item.id!}">
+                <% if (strutil.length(item.id) >25) { %>
+                    ${strutil.subStringTo(item.id, 0, 25)}...
+                <% } else { %>
+                    ${item.id}
+                <% } %>
+            </td>
+            <td title="${item.smallModuleType!}">
+                <% if (strutil.length(item.small_module_type) >25) { %>
+                    ${strutil.subStringTo(item.small_module_type, 0, 25)}...
+                <% } else { %>
+                    ${item.small_module_type}
+                <% } %>
+            </td>
+
+
+            <td title="${item.temp_name!}">
+                <% if (strutil.length(item.temp_name) >25) { %>
+                    ${strutil.subStringTo(item.temp_name, 0, 25)}...
+                <% } else { %>
+                    ${item.temp_name}
+                <% } %>
+            </td>
+
+            <td title="${item.word_table_type!}">
+                <% if (strutil.length(item.word_table_type) >25) { %>
+                ${strutil.subStringTo(item.word_table_type, 0, 25)}...
+                <% } else { %>
+                ${item.word_table_type}
+                <% } %>
+            </td>
+
+            <td title="${item.place_hold!}">
+                <% if (strutil.length(item.place_hold) >25) { %>
+                ${strutil.subStringTo(item.place_hold, 0, 25)}...
+                <% } else { %>
+                ${item.place_hold}
+                <% } %>
+            </td>
+            <td title="${item.sort!}">
+                <% if (strutil.length(item.sort) >25) { %>
+                ${strutil.subStringTo(item.sort, 0, 25)}...
+                <% } else { %>
+                ${item.sort}
+                <% } %>
+            </td>
+
+            <td title="${item.remark!}">
+                <% if (strutil.length(item.remark) >25) { %>
+                ${strutil.subStringTo(item.remark, 0, 25)}...
+                <% } else { %>
+                ${item.remark}
+                <% } %>
+            </td>
+
+            <td title="${item.anchor_id!}">
+                <% if (strutil.length(item.anchor_id) >25) { %>
+                ${strutil.subStringTo(item.anchor_id, 0, 25)}...
+                <% } else { %>
+                ${item.anchor_id}
+                <% } %>
+            </td>
+
+            <td>
+                <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>
+                <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
+            </td>
+        </tr>
+        <% } %>
+        </tbody>
+        </br>
+    </table>
+    <%include("/pages/includes/paginator.html"){} %>
+    </nav>
+</form>
+
+<%}; %> <%
+layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){
+%> <%} %>

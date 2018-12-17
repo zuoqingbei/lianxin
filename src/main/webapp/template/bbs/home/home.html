@@ -48,7 +48,7 @@
                     <!--验证码-->
                     <div class="form-group">
                         <div class="input-group verify">
-                            <input name="password" type="text" class="form-control2" id="veri">
+                            <input type="text" class="form-control2" id="veri">
                             <div id="conVer"></div>
                         </div>
                         <small  class="verTip">请输入验证码</small>
@@ -70,7 +70,19 @@
        
         
     </div>
-    
+     <!-- 全局提示 -->
+        <div class="infoTip all-tip animated slideInDown faster">
+        	<img src="${BASE_PATH }static/credit/imgs/index/info.png"/>
+            <span class="info-text">获取数据失败</span>
+        </div>
+        <div class="successTip all-tip animated slideInDown faster">
+            <img src="${BASE_PATH }static/credit/imgs/index/success.png"/>
+            <span class="success-text">获取数据失败</span>
+        </div>
+        <div class="errorTip all-tip animated slideInDown faster">
+            <img src="${BASE_PATH }static/credit/imgs/index/error.png"/>
+            <span class="error-text">获取数据失败</span>
+        </div>
 
     <script src="${BASE_PATH }static/credit/assets/jquery/jquery-2.1.0.js"></script>
     <script src="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>

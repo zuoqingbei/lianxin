@@ -17,7 +17,7 @@ import com.jfinal.plugin.activerecord.Page;
 * @time 2018年9月12日 上午11:45:31
 * @todo
 */
-@ModelBind(table = "credit_agent", key = "agent_id")
+@ModelBind(table = "credit_agent", key = "id")
 public class AgentModel extends BaseProjectModel<AgentModel> {
 	private static final long serialVersionUID = 1L;
 	public static final AgentModel dao = new AgentModel();
@@ -116,7 +116,9 @@ public class AgentModel extends BaseProjectModel<AgentModel> {
 	}
 
 	public List<AgentModel> findAll() {
-		
 		return AgentModel.dao.find("select * from credit_agent t where t.del_flag=0");
+	}
+	public List<AgentModel> findByAgentid(String agent_id) {
+		return AgentModel.dao.find("select * from credit_agent t where t.del_flag=0 and t.agent_id=?",agent_id);
 	}
 }

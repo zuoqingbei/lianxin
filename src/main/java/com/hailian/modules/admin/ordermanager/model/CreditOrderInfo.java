@@ -458,9 +458,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			String userId = user.get("userid")+"";
 			//sql.append(" and t.create_by=? ");
 			//params.add(user.get("userid").toString());
-			sql.append(" and  t.report_user="+userId+" or t.analyze_user= "+userId+" or t.translate_user= "+userId+" or t.IQC= "+userId);
-		}
-
+			sql.append(" and  (t.create_by= "+userId+" or t.report_user="+userId+" or t.analyze_user= "+userId+" or t.translate_user= "+userId+" or t.IQC= "+userId+")");
+		} 
+		
 		if (StringUtils.isNotBlank(custom_id)) {
 			sql.append(" and t.custom_id=?");
 			params.add(custom_id);
@@ -1000,11 +1000,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				//294为信息录入完成,295代理中
 				//已代理
 				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("2")) {
-					fromSql.append(" and status in('295')  ");
+					fromSql.append(" and status in('295','296')  ");
 				}
 				//未代理
 				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
-					fromSql.append(" and status in('291','292','293','294','296','297') ");
+					fromSql.append(" and status in('291','292','293','294','297') ");
 				}
 				//全部
 				if (StringUtils.isBlank(statuCode)) {
@@ -1090,7 +1090,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}*/
 		if(!c.isAdmin(c.getSessionUser())){
 			//fromSql.append(authority);
-			fromSql.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")"+" or c.translate_user= "+userId);
+			fromSql.append(" and (c.create_by="+userId+" or c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")"+" or c.translate_user= "+userId);
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
