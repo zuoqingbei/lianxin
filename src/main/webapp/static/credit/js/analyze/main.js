@@ -1218,6 +1218,7 @@ let ReportConfig = {
     					 //信用等级
     					 let name =$(item).next().find("select").attr("name")
     					 let val =$(item).next().find("select option:selected").val()
+    					  val = val?val:''
     					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3")
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框
@@ -1288,6 +1289,7 @@ let ReportConfig = {
     					 //信用等级
     					 let name =$(item).next().find("select").attr("name")
     					 let val =$(item).next().find("select option:selected").val()
+    					  val = val?val:''
     					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3")
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框
