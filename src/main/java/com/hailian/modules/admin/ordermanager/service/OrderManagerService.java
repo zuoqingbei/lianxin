@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.hailian.api.constant.RoleCons;
 import org.apache.commons.lang.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
@@ -416,9 +417,14 @@ public class OrderManagerService {
 	public CreditOrderInfo getFinishedOrderNum(int reportid){
 		return CreditOrderInfo.dao.getFinishedOrderNum(reportid);
 	}
+
+    /**
+     * 给订单自动分配报告员
+     * @return
+     */
 	public String getReportIdtoOrder(){
 		System.out.println("==================================");
-		List<SysUser> reporterlist = SysUser.dao.getReporter();
+		List<SysUser> reporterlist = SysUser.dao.getReporter("2");
 		List<Reporter> reporterList=new ArrayList<Reporter>();
 		String reportId="";
 		if(reporterlist != null){
@@ -433,15 +439,71 @@ public class OrderManagerService {
 			}
 			Collections.sort(reporterList);//根据分配逻辑进行集合排序
 			reportId=reporterList.get(0).getReportId();
-			
+
 		}
 		return reportId;
-		
 	}
+
+    /**
+     * 给订单自动分配业务人员
+     *  2报告员 3翻译员 4质检员 5分析员
+     * @return
+     */
+    public String getUserIdtoOrder(int roleId){
+        List<SysUser> reporterlist = SysUser.dao.getReporter(roleId+"");
+        List<Reporter> reporterList=new ArrayList<Reporter>();
+        String reportId = null;
+        if(reporterlist != null){
+            if(reporterlist.size()==0){
+                System.out.println("未查到相关业务人员，请先创建相关角色，角色ID="+roleId);
+                return null;
+            }else if(reporterlist.size()==1){
+                //相应角色只有一个人的话，直接分配人员
+                reportId = reporterlist.get(0).get("id");
+            }else {
+                //业务人员不止一人时，通过计算得到
+                for (SysUser report : reporterlist) {
+                    int reportid = report.get("userid");
+                    //报告员评分
+                    double finalScore = getFinalScoreBusi(reportid, roleId);
+                    //当日在做单量
+                    long inDoingOrderNum = 0;
+                    //当日完成量
+                    long finishedOrderNum = 0;
+                    if (RoleCons.REPORTER == roleId) {
+                        //报告员
+                        inDoingOrderNum = CreditOrderInfo.dao.getInDoingOrderNum(reportid).get("inDoingOrderNum");
+                        finishedOrderNum = CreditOrderInfo.dao.getFinishedOrderNum(reportid).get("finishedOrderNum");
+                    } else if (RoleCons.TRANSER == roleId) {
+                        //翻译员
+                        inDoingOrderNum = CreditOrderInfo.dao.getInDoingOrderNumTrans(reportid).get("inDoingOrderNum");
+                        finishedOrderNum = CreditOrderInfo.dao.getFinishedOrderNumTrans(reportid).get("finishedOrderNum");
+                    } else if (RoleCons.IQC == roleId) {
+                        //4质检员
+                        inDoingOrderNum = CreditOrderInfo.dao.getInDoingOrderNumIqc(reportid).get("inDoingOrderNum");
+                        finishedOrderNum = CreditOrderInfo.dao.getFinishedOrderNumIqc(reportid).get("finishedOrderNum");
+                    } else if (RoleCons.ANALER == roleId) {
+                        //5分析员
+                        inDoingOrderNum = CreditOrderInfo.dao.getInDoingOrderNumAnal(reportid).get("inDoingOrderNum");
+                        finishedOrderNum = CreditOrderInfo.dao.getFinishedOrderNumAnal(reportid).get("finishedOrderNum");
+                    }
+                    System.out.println(inDoingOrderNum);
+                    //自定义排序
+                    Reporter reporter = new Reporter(reportid + "", finalScore, inDoingOrderNum, finishedOrderNum);
+                    reporterList.add(reporter);
+                }
+                //根据分配逻辑进行集合排序
+                Collections.sort(reporterList);
+                reportId = reporterList.get(0).getReportId();
+            }
+        }
+        return reportId;
+    }
+
 	/**
 	 * 获取报告员评分
-	* @author doushuihai  
-	* @date 2018年10月9日上午9:30:41  
+	* @author doushuihai
+	* @date 2018年10月9日上午9:30:41
 	* @TODO
 	 */
 	private double getFinalScore(int reportid) {
@@ -503,6 +565,69 @@ public class OrderManagerService {
 		double finalScore=orderNum*rate1+submitNum*rate3+scoreTo*rate4+reportnumAll*rate2;
 		return finalScore;
 	}
+
+
+    /**
+     * 获取业务员（翻译员/分析员/质检员）评分
+     * @author whc
+     * @date
+     * @TODO
+     */
+    private double getFinalScoreBusi(int reportid,int roleId) {
+        //获取分配规则规定的比率
+        Float rate1 = OrderAlloctionRuleService.service.getOne(501, null).get("allocation_value");//做单量占比
+        Float rate2 = OrderAlloctionRuleService.service.getOne(589, null).get("allocation_value");//报告数量占比占比
+        Float rate3 = OrderAlloctionRuleService.service.getOne(502, null).get("allocation_value");//递交率占比
+        Float rate4 = OrderAlloctionRuleService.service.getOne(503, null).get("allocation_value");//质量占比
+        Float rate5 = OrderAlloctionRuleService.service.getOne(504, null).get("allocation_value");//商业信息/分析报告数量占比
+        Float rate6 = OrderAlloctionRuleService.service.getOne(506, null).get("allocation_value");//注册信息数量占比
+        Float rate7 = OrderAlloctionRuleService.service.getOne(505, null).get("allocation_value");//国外报告数量占比
+        Long orderNum = CreditOrderInfo.dao.getOrderNum(reportid,roleId).get("orderNum");//订单数量
+        //Long orderOnTimeNum =OrderManagerService.service.getOnTimeSubmitOrderNum(reportid).get("orderOnTimeNum");//根据报告员获取按时递交数
+        double submitNum=0;
+        if(orderNum==0){
+            submitNum=0;
+        }
+        //else{
+        //    submitNum=(orderOnTimeNum/orderNum);//递交率占比
+        //}
+        double score = 0;
+        CreditOrderInfo coreInfo = OrderManagerService.service.getScore(reportid);
+        try {
+            if(coreInfo!=null){
+                score=coreInfo.get("score");
+            }
+        } catch (Exception e) {
+            score = 0;
+        }
+        double scoreTo=score;
+        BigDecimal reportnum1 = null;
+        BigDecimal reportnum = null;
+        CreditOrderInfo reportNumPart = OrderManagerService.service.getReportNumPart(reportid);
+        if(reportNumPart!=null){
+            reportnum=reportNumPart.get("reportnum1");//商业信息/分析报告数量
+            reportnum1=reportNumPart.get("reportnum2");//注册信息报告数量
+        }
+        if(reportnum1==null){
+            reportnum1=new BigDecimal(0);
+        }
+        if(reportnum==null){
+            reportnum=new BigDecimal(0);
+        }
+        long reportnumTo=reportnum.longValue();
+        long reportnum1To=reportnum1.longValue();
+        long reportnum2=0;
+        CreditOrderInfo orderPeportAbroad= OrderManagerService.service.getOrderPeportAbroad(reportid);
+        if(orderPeportAbroad!=null){
+            reportnum2=orderPeportAbroad.get("orderPeportAbroad");//国外报告数量
+        }
+        //根据动态规则获取报告数量占比
+        long reportnumAll=(long) (reportnumTo*rate5+reportnum1To*rate6+reportnum2*rate7);
+        double finalScore=orderNum*rate1+submitNum*rate3+scoreTo*rate4+reportnumAll*rate2;
+        return finalScore;
+    }
+
+
 	public Record getReportTime(String countryType,String speed,String reporttype,String receivedate) throws ParseException{
 		if("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
 			countryType="148";
@@ -591,4 +716,7 @@ public class OrderManagerService {
 			BaseProjectController c) {
 		return CreditOrderInfo.dao.exportAchievements(reportername,time,userid,c);
 	}
+
+
+
 }
