@@ -56,6 +56,11 @@ let ReportConfig = {
     			smartDisplay:true,
     			locales:'zh-CN',
     			onLoadSuccess:(data)=>{
+    				console.log(data)
+    				if(data.rows === null){
+    					alert("出错了")
+    					return
+    				}
     				let rows = data.rows
     				rows.forEach((item,index)=>{
     					if(item.brand_url) {
@@ -872,7 +877,7 @@ let ReportConfig = {
 							            			})
 							            			
 							            			break;
-							            		case 'select2':
+							            		case 'select3':
 							            			if(item.get_source === null){return}
 							            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
 							            			$.ajax({
@@ -881,11 +886,13 @@ let ReportConfig = {
 							            				async:false,
 							            				dataType:'json',
 							            				success:(data)=>{
+							            					let a = data.selectStr.replace(/value/g,'a')
 							            					formGroup += `<div class="form-group">
 							            						<label for="" class="mb-2">${item.temp_name}</label>
-								            						<select name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
-								            							${data.selectStr}
-								            						</select>
+							            						<input name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
+							            						<datalist id="cars">
+							            							${a}
+							            						</datalist>
 							            						</div>`
 							            				}
 							            			})
@@ -964,7 +971,7 @@ let ReportConfig = {
                 			_this.formIndex.push(index)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
 					                          <label >${inputObj.temp_name}</label>
-					                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
+					                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
 					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 					                        </div>`
                 			
