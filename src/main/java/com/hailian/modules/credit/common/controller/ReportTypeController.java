@@ -9,7 +9,9 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.common.service.ReportTypeService;
 import com.hailian.modules.credit.uploadfile.controller.FileUpLoadController;
+import com.hailian.util.Config;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 /**
@@ -24,6 +26,9 @@ import com.jfinal.upload.UploadFile;
 @ControllerBind(controllerKey = "/credit/reportType")
 public class ReportTypeController extends BaseProjectController {
 	private static final String path = "/pages/credit/reportType/reportType_";
+	//文件下载使用
+	public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
+	public static final int port = Config.getToInt("searver_port");//服务器端口
 	
 	/**
 	 * @todo   报告类型列表集
@@ -158,5 +163,18 @@ public class ReportTypeController extends BaseProjectController {
 		}
 		 
 	}
-	
+	/**
+	 * 
+	* @Description: 获取下载的路径
+	* @date 2018年12月18日 下午5:27:15
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public void getUrl(){
+		 String id=getPara("id");
+		ReportTypeModel model=ReportTypeModel.dao.findById(id);
+		String url=ip+":"+port+"/"+model.get("tpl_path");
+		renderJson(new Record().set("url", url));
+	}
 }
