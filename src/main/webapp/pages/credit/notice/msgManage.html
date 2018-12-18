@@ -11,13 +11,13 @@
     <style>
 .bg-f {
             min-height: 0;
-            padding: 1rem;
+            padding:0 1rem 1rem;
         }
 
         .nav-tabs .nav-link {
             color: var(--fontColor);
             font-size: 1.375rem;
-            padding: 0 2rem 1.5rem;
+            padding:  1rem 1.5rem;
         }
 
         .nav-tabs .nav-item.show .nav-link,
@@ -44,8 +44,8 @@
             position: relative;
             margin-bottom:0;
             padding: 1rem 0 1rem;
-            font-size: 1.375rem;
-            font-weight: bold;
+            font-size: 1.25rem;
+            /*font-weight: bold;*/
             color: var(--fontColor);
         }
 
@@ -56,10 +56,12 @@
         .tab-content ul > li.unread > h4:before {
             content: '';
             position: absolute;
-            top: 63%;
+            top: 50%;
             left: -1rem;
-            width: .625rem;
-            height: .625rem;
+            /*width: .625rem;*/
+            /*height: .625rem;*/
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             transform: translateY(-50%);
             background-color: var(--activeColor);
@@ -79,6 +81,9 @@
 
         .buttonWrap {
             flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
         }
 
         .pagination li {
