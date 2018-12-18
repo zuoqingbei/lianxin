@@ -1,7 +1,10 @@
 package com.hailian.modules.credit.company.service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -141,14 +144,13 @@ public class CompanyService {
 					companyinfoModel.set("registered_capital", a.multiply(b).toString());
 					companyinfoModel.set("currency","267");
 				}
-				
-				String replaceStartDate = StartDate.replace("00:00:00", "").trim();
-				companyinfoModel.set("establishment_date", replaceStartDate);
-				String replaceTermStart = TermStart.replace("00:00:00", "").trim();
-				companyinfoModel.set("business_date_start", replaceTermStart);
+				String StartDateFor = dateFormat(StartDate);//转成年月日
+				companyinfoModel.set("establishment_date", StartDateFor);
+				String TermStartFor = dateFormat(TermStart);//转成年月日
+				companyinfoModel.set("business_date_start", TermStartFor);
 				if(StringUtils.isNotBlank(TeamEnd)){
-					String replaceTeamEnd = TeamEnd.replace("00:00:00", "").trim();
-					companyinfoModel.set("business_date_end", replaceTeamEnd);
+					String TeamEndFor = dateFormat(TeamEnd);//转成年月日
+					companyinfoModel.set("business_date_end", TeamEndFor);
 				}else{
 					companyinfoModel.set("business_date_end", "无期");
 				}
@@ -266,6 +268,19 @@ public class CompanyService {
 		
 		DictCache.initDict();//缓存刷新
 		return flag;
+	}
+
+	private String dateFormat(String StartDate)  {
+		Date date;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd").parse(StartDate);
+			StartDate = new SimpleDateFormat("yyyy年MM月dd日").format(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return StartDate;
 	}
 	public void enterpriseGrabOther(String companyId,String companyName,String sys_language){
 		JSONObject caipanjson = HttpTest.getJudgmentDoc(companyName,"");//获取api企业信息裁判文书数据

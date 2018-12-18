@@ -71,7 +71,7 @@ let ReportConfig = {
     				rows.forEach((item,index)=>{
     					if(item.brand_url) {
     						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
-    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+							item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
     					}
     				})
     				$table.bootstrapTable("load",rows)
@@ -1606,8 +1606,13 @@ let ReportConfig = {
 	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
 	   				xhNum ++;
 	   				ele["mySort"] = i
+	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
+	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
+	   					//102报告类型需要传参
+	   					url += `?targetlanguage=cht`
+	   				}
 	   				$.ajax({
-	   					url:BASE_PATH + `credit/ordertranslate/translate`,
+	   					url,
 	   					type:'post',
 //	   					async:false,
 	   					data:{
@@ -1766,8 +1771,13 @@ let ReportConfig = {
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表单翻译
+    			let url = BASE_PATH + `credit/ordertranslate/translate`;
+   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
+   					//102报告类型需要传参
+   					url += `?targetlanguage=cht`
+   				}
     			 $.ajax({
-    				 url:BASE_PATH + `credit/ordertranslate/translate`,
+    				 url,
     				 type:'post',
     				 data:{
     					 dataJson:JSON.stringify(_this.formDataArr[index])

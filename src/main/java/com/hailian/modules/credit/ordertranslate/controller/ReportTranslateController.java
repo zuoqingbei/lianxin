@@ -44,13 +44,19 @@ public class ReportTranslateController extends BaseProjectController {
 			while(iterator.hasNext()){
 			String   key = (String) iterator.next();
 			String value = jsonObject.getString(key);
+			String value_en="";
+			String value_cht="";
 			if(isChinese(value)){
 				if(!isValidDate(value)){
-					value = TransApi.Trans(value,targetlanguage);
+					value_en = TransApi.Trans(value,"en");
+					if("cht".equals(targetlanguage)){
+						value_cht=TransApi.Trans(value,targetlanguage);
+					}
 			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
 			    	if(translateByError!=null){
-			    		value = translateByError.get("correct_phrase");//翻译校正
+			    		value_en = translateByError.get("correct_phrase");//翻译校正
 			    	}
+			    	value=value_en+value_cht;
 				}
 			}
 			jsonObject.put(key, value);
@@ -87,20 +93,24 @@ public class ReportTranslateController extends BaseProjectController {
 	      boolean convertSuccess=true;
 	       SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
 	       try {
-//设置lenient为false. 否则SimpleDateFormat会比较宽松地验证日期，比如2007/02/29会被接受，并转换成2007/03/01
 	          format.setLenient(false);
 	          format.parse(str);
 	       } catch (ParseException e) {
-	          // e.printStackTrace();
-	// 如果throw java.text.ParseException或者NullPointerException，就说明格式不对
 	           convertSuccess=false;
 	       } 
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		String s="深圳市惟谷科技有限公司：本院受理原告深圳市阿拉町科技发展有限公司诉被告上海寻梦信息技术有限公司、深圳市惟谷科技有限公司侵害外观设计专利权纠纷一案，案号为(2018)粤03民初2956号。现因你下落不明，依照《中华人民共和国民事诉讼法》第九 十二条之规定，向你公告送达本案的民事起诉状副本、原告证据副本、应诉通知书...".replace(" ", "");
-		System.out.println(s);
-		s = TransApi.Trans(s,"en");
-		System.out.println(s);
+		  Date date;
+		try {
+			 date = new SimpleDateFormat("yyyy-MM-dd").parse("2005-06-09 12:00:00");
+			 String now = new SimpleDateFormat("yyyy年MM月dd日").format(date);
+			 System.out.println(now);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		 
 	}
 }
