@@ -2,10 +2,9 @@ package com.hailian.util.word;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 
@@ -218,6 +217,61 @@ public class BaseWord {
                     template.close();
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 根据网络路径生成word基础类
+     * @param dataMap 数据集合
+     * @param netUrl 网络路径
+     * @param targetDoc 目标名称
+     */
+    public static void buildNetWord(HashMap<String, Object> dataMap,String netUrl,String targetDoc) {
+        FileOutputStream out = null;
+        XWPFTemplate template = null;
+        InputStream iputstream = null;
+        try {
+            URL url = new URL(netUrl);
+            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+            //设置是否要从 URL 连接读取数据,默认为true
+            uc.setDoInput(true);
+            uc.connect();
+            iputstream = uc.getInputStream();
+            //调用模板生成word
+            template = XWPFTemplate.compile(iputstream).render(dataMap);
+            out = new FileOutputStream(targetDoc);
+            template.write(out);
+            out.flush();
+            out.close();
+            template.close();
+            iputstream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (template != null) {
+                try {
+                    template.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if(iputstream!=null){
+                try {
+                    iputstream.close();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }

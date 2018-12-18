@@ -271,7 +271,7 @@ public class FileUpLoadController extends BaseProjectController {
 					ftpfileList.add(uploadFile.getFile());
 					File pdf=null;
 					boolean storeFile = FtpUploadFileUtils.storeFtpFile(reportName+"-"+date,ftpfileList,storePath,ip,port,userName,password);//上传
-					 pathurl="ftp://120.27.46.160:9999/"+storePath+"/"+reportName+"-"+date+"."+ext;
+					 pathurl=storePath+"/"+reportName+"-"+date+"."+ext;
 					if(storeFile){
 						if(pdf!=null){
 							pdf.delete();
