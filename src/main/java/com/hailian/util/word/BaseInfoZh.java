@@ -4,11 +4,17 @@ import com.deepoove.poi.data.MiniTableRenderData;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -22,6 +28,22 @@ public class BaseInfoZh {
     //ftp端口 9980
     public static final int serverPort = Config.getToInt("searver_port");
 
+    public static void main(String []args){
+        try {
+            String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
+            URL url = new URL(urlStr);
+            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+            //设置是否要从 URL 连接读取数据,默认为true
+            uc.setDoInput(true);
+            uc.connect();
+            InputStream iputstream = uc.getInputStream();
+            //System.out.println(file.getName());
+            //BaseWord.buildWord(null, iputstream, "");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 生成基本报告
      * @param order  订单
@@ -32,6 +54,11 @@ public class BaseInfoZh {
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         HashMap<String, Object> map = new HashMap<String, Object>();
+
+        //获取报告信息
+        ReportTypeModel reportTypeModel = ReportTypeModel.dao.findById(reportType);
+        //报告文件路劲
+        String tplPath = reportTypeModel.getStr("tpl_path");
 
         //获取订单信息
         String companyId = order.getStr("company_id");
@@ -115,9 +142,8 @@ public class BaseInfoZh {
 
         //总结
         map.put("result", str);
-
-        BaseWord.buildWord(map, webRoot + "/word/" + "_基本信息报告样本.docx", _prePath + ".docx");
-
+        //生成报告
+        BaseWord.buildNetWord(map, tplPath, _prePath + ".docx");
         //上传文件
         String filePath = BaseWord.uploadReport(_prePath + ".docx", orderId, userid);
         //发送邮件
