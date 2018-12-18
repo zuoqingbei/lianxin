@@ -1,4 +1,4 @@
-<% var field_type = tempDict.getSysDictDetailCode('fieldType',model.field_type!);%>
+<% var smallModuleType = tempDict.getSysDictDetailString3('small_module_type',model.small_module_type+'','detail_name');%>
 <%
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
@@ -42,14 +42,14 @@ var bodyContent = {
         <tr>
             <td>父节点ID</td>
             <td>
-                <input class="form-control" type="text" name="model.temp_name" value="${model.temp_name }"  valid='vtext' validname='父节点ID'  />
+                <input class="form-control" type="text" readonly name="model.id" value="${model.id }"  valid='vtext' validname='父节点ID'  />
             </td>
         </tr>
         <tr>
-            <td>字段类型</td>
+            <td>父节点类型</td>
             <td>
-                <select name="model.field_type" class="form-control" validname="字段类型">
-                    ${field_type!}
+                <select name="model.smallModuleType" class="form-control" validname="字段类型">
+                    ${smallModuleType!}
                 </select>
             </td>
         </tr>
