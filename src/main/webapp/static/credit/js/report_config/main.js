@@ -57,10 +57,15 @@ let ReportConfig = {
     			locales:'zh-CN',
     			onLoadSuccess:(data)=>{
     				console.log(data)
+    				if(data.rows === null){
+    					alert("出错了")
+    					return
+    				}
     				let rows = data.rows
     				rows.forEach((item,index)=>{
     					if(item.brand_url) {
-    						item["brand_url"] = `<img src="http://${item["brand_url"]}" style="height:40px;width:40px">`
+    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+    						item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
     					}
     				})
     				$table.bootstrapTable("load",rows)
@@ -197,6 +202,13 @@ let ReportConfig = {
 				    						<input type="number" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     							</div>`
     					break;
+    				case 'money':
+    					modalBody += ` <div class="form-inline justify-content-center my-3">
+    						<label for="" class="control-label" >${ele.temp_name}：</label>
+    						<input type="text" class="form-control money-checked" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+    						<small></small>
+    						</div>`
+    						break;
     				case 'textarea':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
     						<label for="" class="control-label" >${ele.temp_name}：</label>
@@ -818,6 +830,14 @@ let ReportConfig = {
 				                        							</div>`
 		                        					
 		                        					break;
+		                        				case 'money':
+		                        					formGroup += `<div class="form-group">
+		                        						<label for="" class="mb-2">${item.temp_name}</label>
+		                        						<input type="text" class="form-control money-checked" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		                        						<p class="errorInfo">${item.error_msg}</p>
+		                        						</div>`
+		                        						
+		                        						break;
 		                        				case 'date':
 		                        					formGroup += `<div class="form-group date-form">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
@@ -853,6 +873,27 @@ let ReportConfig = {
 										            						${data.selectStr}
 										            					</select>
 							            							</div>`
+							            				}
+							            			})
+							            			
+							            			break;
+							            		case 'select3':
+							            			if(item.get_source === null){return}
+							            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
+							            			$.ajax({
+							            				type:'get',
+							            				url:urls,
+							            				async:false,
+							            				dataType:'json',
+							            				success:(data)=>{
+							            					let a = data.selectStr.replace(/value/g,'a')
+							            					formGroup += `<div class="form-group">
+							            						<label for="" class="mb-2">${item.temp_name}</label>
+							            						<input name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
+							            						<datalist id="cars">
+							            							${a}
+							            						</datalist>
+							            						</div>`
 							            				}
 							            			})
 							            			
@@ -930,7 +971,7 @@ let ReportConfig = {
                 			_this.formIndex.push(index)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
 					                          <label >${inputObj.temp_name}</label>
-					                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
+					                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
 					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 					                        </div>`
                 			
@@ -1083,6 +1124,25 @@ let ReportConfig = {
 			    $("#modal"+item+" select").find("option").first().attr("selected", true);
     
     		})
+    		//自动计算出生年月和年龄
+    		if($("#modal"+item).find(".modal-header").text().trim() === '自然人股东详情') {
+    			$("#id_no_4").blur(()=>{
+    				let val = $("#id_no_4").val()
+    				if(val.length === 18 && typeof Number(val) === 'number' && Number(val) !== NaN) {
+    					val = val.substring(6,14)
+    					let  aDate = new Date(val.substring(0,4)+'-'+val.substring(4,6)+'-'+val.substring(6,8));
+    					let bDate = new Date();
+    					let age = bDate.getFullYear() - aDate.getFullYear();
+    					$("#age_4").val(age)
+    					$("#birth_date_4").val(val.substring(0,4)+'年'+val.substring(4,6)+'月'+val.substring(6,8)+'日')
+    				}else {
+    					$("#age_4").val('')
+    					$("#birth_date_4").val('')
+    				}
+    				
+    			})
+    			
+    		}
     		//点击模态框保存按钮，新增一条数据
     		$("#modal_save"+item).unbind().click(()=>{
     			let dataJson = []

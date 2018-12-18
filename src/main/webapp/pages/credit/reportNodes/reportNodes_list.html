@@ -37,6 +37,12 @@
                     form1.submit();
                 });
 
+            },
+            peizhi : function(id) {
+                var url = 'credit/reportColumn/list?pid='+id+"&reportType=${reportType!''}";
+                var title = '查看详细父节点';
+                //Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+                window.location.href = url;
             }
         };
         //显示Menu索引
@@ -161,9 +167,8 @@
                 <% } %>
             </td>
 
-         
-
             <td>
+                <a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.peizhi(${item.id});">配置</a>
                 <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>
                 <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
             </td>

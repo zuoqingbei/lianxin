@@ -67,6 +67,14 @@ let ReportConfig = {
     			locales:'zh-CN',
     			onLoadSuccess:(data)=>{
     				_this.tableDataArr[index]=data
+    				let rows = data.rows
+    				rows.forEach((item,index)=>{
+    					if(item.brand_url) {
+    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+							item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
+    					}
+    				})
+    				$table.bootstrapTable("load",rows)
     			}
         	});
         	console.log(contentsEn)
@@ -86,6 +94,14 @@ let ReportConfig = {
         		onLoadSuccess:(data)=>{
 //        			console.log(data)
         			_this.tableDataArrEn[index]=data
+        			let rows = data.rows
+        			rows.forEach((item,index)=>{
+    					if(item.brand_url) {
+    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+    					}
+    				})
+    				$tableEn.bootstrapTable("load",rows)
         		}
         	});
         	
@@ -422,6 +438,7 @@ let ReportConfig = {
     			//实体id
     			let obid = tempData.id;
     			formArr.forEach((item,index)=>{
+    				console.log(item)
     				let obj = tempData;
     				let id = $(item).attr("id");
     				let anotherIdArr = id.split("_")
@@ -992,6 +1009,27 @@ let ReportConfig = {
 							            			})
 							            			
 							            			break;
+							            		case 'select3':
+							            			if(item.get_source === null){return}
+							            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
+							            			$.ajax({
+							            				type:'get',
+							            				url:urls,
+							            				async:false,
+							            				dataType:'json',
+							            				success:(data)=>{
+							            					let a = data.selectStr.replace(/value/g,'a')
+							            					formGroup += `<div class="form-group">
+							            						<label for="" class="mb-2">${item.temp_name}</label>
+							            						<input disabled="disabled" name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
+							            						<datalist id="cars">
+							            							${a}
+							            						</datalist>
+							            						</div>`
+							            				}
+							            			})
+							            			
+							            			break;
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
@@ -1063,7 +1101,7 @@ let ReportConfig = {
                 			_this.formIndex.push(index)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
 					                          <label >${inputObj.temp_name}</label>
-					                          <input disabled="disabled" type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
+					                          <input disabled="disabled" type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
 					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 					                        </div>`
                 			
@@ -1262,6 +1300,27 @@ let ReportConfig = {
 				            			})
 				            			
 				            			break;
+				            		case 'select3':
+				            			if(item_en.get_source === null){return}
+				            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item_en.get_source
+				            			$.ajax({
+				            				type:'get',
+				            				url:urls,
+				            				async:false,
+				            				dataType:'json',
+				            				success:(data)=>{
+				            					let a = data.selectStr.replace(/value/g,'a')
+				            					formGroup += `<div class="form-group">
+				            						<label for="" class="mb-2">${item_en.temp_name}</label>
+				            						<input  name=${item_en.column_name} id="${item_en.column_name}_${ind}" class="form-control" list="cars1">
+				            						<datalist id="cars1">
+				            							${a}
+				            						</datalist>
+				            						</div>`
+				            				}
+				            			})
+				            			
+				            			break;
 				            		case 'textarea':
 				            			formGroup += `  <div class="form-group"  style="width: 100%">
 						                                    <label  class="mb-2">${item_en.temp_name}</label>
@@ -1272,7 +1331,7 @@ let ReportConfig = {
     							    	break;
                     			}
                     		}
-            				if(formArr[index-1] && formArr[index-1]['field_type'] === 'address')  {
+            				if(formArrEn[index-1] && formArrEn[index-1]['field_type'] === 'address')  {
             					rowNum += 1
             				}
                     		
@@ -1337,7 +1396,7 @@ let ReportConfig = {
             			_this.formIndexEn.push(index)
             			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydjEn">
 				                          <label >${inputObj.temp_name}</label>
-				                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
+				                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
 				                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 				                        </div>`
             			
@@ -1406,8 +1465,8 @@ let ReportConfig = {
             			_this.formTitleEn.push(item_en.title)
             			_this.formIndexEn.push(index)
             			
-            			let str = item.contents[0].get_source;
-            			let this_item = item
+            			let str = item_en.contents[0].get_source;
+            			let this_item = item_en
             			let strItem = str.split("&")
             			contentHtml += `<div class="table-content1 form-group radio-con" style="background:#fff">
 				                        	<div class="radio-box">`
@@ -1429,7 +1488,7 @@ let ReportConfig = {
             				//非财务模块的浮动
             				_this.notMoneyFloatHtmlEn[index] = `<div class="form-group form-inline p-4">
 				                          <label >${item_en.title.temp_name === null?'':item_en.title.temp_name}</label>
-				                          <input  type="text" placeholder=${item_en.title.place_hold} name=${item_en.title.column_name} class="form-control mx-3 float-date" >
+				                          <input  type="text" id=${item_en.title.column_name} placeholder=${item_en.title.place_hold} name=${item_en.title.column_name} class="form-control mx-3 float-date" >
 				                        </div>`
             			}
             			break;
@@ -1589,8 +1648,13 @@ let ReportConfig = {
 	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
 	   				xhNum ++;
 	   				ele["mySort"] = i
+	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
+	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
+	   					//102报告类型需要传参
+	   					url += `?targetlanguage=cht`
+	   				}
 	   				$.ajax({
-	   					url:BASE_PATH + `credit/ordertranslate/translate`,
+	   					url,
 	   					type:'post',
 //	   					async:false,
 	   					data:{
@@ -1749,8 +1813,13 @@ let ReportConfig = {
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表单翻译
+    			let url = BASE_PATH + `credit/ordertranslate/translate`;
+   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
+   					//102报告类型需要传参
+   					url += `?targetlanguage=cht`
+   				}
     			 $.ajax({
-    				 url:BASE_PATH + `credit/ordertranslate/translate`,
+    				 url,
     				 type:'post',
     				 data:{
     					 dataJson:JSON.stringify(_this.formDataArr[index])
