@@ -89,8 +89,6 @@ public class ModuleController extends BaseProjectController{
 				reportTypeToEn = "11";
 			}else if("12".equals(reportType)){
 				reportTypeToEn = "14";
-			}else if("15".equals(reportType)){
-				reportTypeToEn = "14";
 			}
 			if(StringUtils.isNotBlank(reportTypeToEn)){
 				//找到当前报告类型下的父节点

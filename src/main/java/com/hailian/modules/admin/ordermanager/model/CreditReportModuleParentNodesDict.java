@@ -24,8 +24,8 @@ public class CreditReportModuleParentNodesDict extends BaseProjectModel<CreditRe
      * @return
      */
     public Page<CreditReportModuleParentNodesDict> page(int pageNumber,int pageSize,String keyword ,String orderBy,List<Object> params) {
-        StringBuffer from = new StringBuffer("select t.*,d.small_module_type_name As  smallModuleType ") ;
-        StringBuffer where = new StringBuffer(" from credit_report_module_parent_nodes_dict t left join credit_report_small_module_type_dict d on t.small_module_type=d.small_module_type where t.del_flag = 0 ");
+        StringBuffer from = new StringBuffer("select t.*,d.detail_name As  smallModuleType,d.detail_code As detailCode") ;
+        StringBuffer where = new StringBuffer(" from credit_report_module_parent_nodes_dict t left join (select detail_name,detail_code from sys_dict_detail where detail_type=small_module_type and del_flag=0) d on t.small_module_type=d.detail_code where t.del_flag = 0 ");
          
         /*if(StringUtils.isNotEmpty(keyword)){
             where.append(" and t.temp_name like concat('%',?,'%')");
