@@ -11,7 +11,8 @@ import java.util.List;
 //此标签用于模型与数据库表的连接
 public class CreditCompanyIndustryRevenue extends BaseProjectModel<CreditCompanyIndustryRevenue> {
 	private static final long serialVersionUID = 1L;
-	public static final CreditCompanyIndustryRevenue dao = new CreditCompanyIndustryRevenue();//名字都叫dao，统一命名
+    //名字都叫dao，统一命名
+	public static final CreditCompanyIndustryRevenue dao = new CreditCompanyIndustryRevenue();
 	public void deleteBycomIdAndLanguage(String companyid,String sys_language){
 		String sql="update credit_company_his set del_flag=1 where company_id=? and sys_language=?";
 		List<Object> params=new ArrayList<Object>();
@@ -19,6 +20,5 @@ public class CreditCompanyIndustryRevenue extends BaseProjectModel<CreditCompany
 		params.add(sys_language);
 		Db.update(sql, params.toArray());
 	}
-	
 
 }
