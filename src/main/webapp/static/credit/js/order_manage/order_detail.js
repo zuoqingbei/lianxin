@@ -577,7 +577,8 @@ let OrderDetail = {
     setQualitySelect() {
         let _this = this;
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
-        let detailname = this.english ? 'detail_name_en' : 'detail_name';
+        // let detailname = this.english ? 'detail_name_en' : 'detail_name';
+        let detailname = 'detail_name';
         $(".l-title").each(function (index, item) {
             if (!['基本信息', '流程进度', '质检评分', '质检意见', '附件'].includes($(this).text())) {
                 switch (_this.row.quality_type) {
