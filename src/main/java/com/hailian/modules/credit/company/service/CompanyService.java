@@ -194,7 +194,9 @@ public class CompanyService {
 						CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
 						shareholderModel.set("name", name);
 						shareholderModel.set("money", StockPercentEd);
-						shareholderModel.set("contribution", ShouldCapi);
+						BigDecimal a = new BigDecimal(ShouldCapi);
+						BigDecimal b = new BigDecimal("10000");
+						shareholderModel.set("contribution", a.multiply(b).toString());
 						shareholderModel.set("company_id", companyId);
 						shareholderModel.set("sys_language", sys_language);
 						shareholderlist.add(shareholderModel);
@@ -260,7 +262,10 @@ public class CompanyService {
 				}
 				
 			}
-			enterpriseGrabOther(companyId,companyName,sys_language);//抓取企查查裁判文书，法院公告，开庭公告信息数据并保存
+			//线程爬取企查查裁判文书，法院公告，开庭公告信息数据并保存
+			Thread th=new Thread(new threadEnterpriseGrabOther(companyId, companyName, sys_language));
+			th.start();
+//			enterpriseGrabOther(companyId,companyName,sys_language);//抓取企查查裁判文书，法院公告，开庭公告信息数据并保存
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -283,118 +288,149 @@ public class CompanyService {
 		return StartDate;
 	}
 	public void enterpriseGrabOther(String companyId,String companyName,String sys_language){
-		JSONObject caipanjson = HttpTest.getJudgmentDoc(companyName,"");//获取api企业信息裁判文书数据
+		JSONObject caipanjson = HttpTest.getJudgmentDoc(companyName,"");//裁判文书
 		String caipanstatus = caipanjson.getString("Status");
 		if("200".equals(caipanstatus)){
-			
-			CreditCompanyJudgmentdoc.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
+			JSONObject Paging = caipanjson.getJSONObject("Paging");
+			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
+			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
+			int totalpage=1;
+			if(TotalRecords%PageSize==0){
+		           totalpage=TotalRecords/PageSize;
+			}else{
+		           totalpage=TotalRecords/PageSize+1;
+			}
+			CreditCompanyJudgmentdoc.dao.deleteBycomIdAndLanguage(companyId, sys_language);//删除
 			List<CreditCompanyJudgmentdoc> judgmentdoclist=new ArrayList<CreditCompanyJudgmentdoc>();
-			
-			JSONObject json = HttpTest.getJudgmentDoc(companyName,"");//获取api企业裁判文书信息数据
-			JSONArray jsonArray = json.getJSONArray("Result");
-			 
-			if(jsonArray !=null && jsonArray.size()>0){
-									for(int j=0;j<jsonArray.size();j++){
-					CreditCompanyJudgmentdoc model=new CreditCompanyJudgmentdoc();
-					JSONObject judgmentdoc = (JSONObject)jsonArray.get(j);
-					String Id = judgmentdoc.getString("Id");
-					String Court = judgmentdoc.getString("Court");//执行法院
-					model.set("court", Court);
-					String CaseName = judgmentdoc.getString("CaseName");//裁判文书名字   案件名称
-					model.set("casename", CaseName);
-					String CaseNo = judgmentdoc.getString("CaseNo");//裁判文书编号   案件编号
-					model.set("caseno", CaseNo);
-					String CaseType = judgmentdoc.getString("CaseType");//裁判文书类型
-					String SubmitDate = judgmentdoc.getString("SubmitDate");//发布时间
-					model.set("submitdate", SubmitDate);
-//						String UpdateDate = judgmentdoc.getString("UpdateDate");//审判时间
-//						String IsProsecutor = judgmentdoc.getString("IsProsecutor");//是否原告
-//						String IsDefendant = judgmentdoc.getString("IsDefendant");//是否被告（供参考）
-//						String CourtYear = judgmentdoc.getString("CourtYear");//开庭时间年份
-					String CaseRole = judgmentdoc.getString("CaseRole");//案件身份
-					model.set("caserole", CaseRole);
-					model.set("company_id", companyId);
-					model.set("sys_language", sys_language);
-					JSONObject judgmentdocdetail = HttpTest.getJudgmentDocDetail(Id);//获取api企业裁判文书详情
-					if(judgmentdocdetail.getString("Status").equals("200")){
-						String CaseReason=judgmentdocdetail.getJSONObject("Result").getString("CaseReason");//案由
-						model.set("casereason", CaseReason);
-//							JSONArray defendantjson =judgmentdocdetail.getJSONObject("Result").getJSONArray("Defendantlist");//被告
-//							JSONArray prosecutorjson=judgmentdocdetail.getJSONObject("Result").getJSONArray("Prosecutorlist");//原告
+			for(int i=1;i<=totalpage;i++){
+				JSONObject json = HttpTest.getJudgmentDoc(companyName,i+"");//获取每页
+				JSONArray jsonArray = json.getJSONArray("Result");
+				 
+				if(jsonArray !=null && jsonArray.size()>0){
+										for(int j=0;j<jsonArray.size();j++){
+						CreditCompanyJudgmentdoc model=new CreditCompanyJudgmentdoc();
+						JSONObject judgmentdoc = (JSONObject)jsonArray.get(j);
+						String Id = judgmentdoc.getString("Id");
+						String Court = judgmentdoc.getString("Court");
+						model.set("court", Court);
+						String CaseName = judgmentdoc.getString("CaseName");
+						model.set("casename", CaseName);
+						String CaseNo = judgmentdoc.getString("CaseNo");
+						model.set("caseno", CaseNo);
+						String CaseType = judgmentdoc.getString("CaseType");
+						String SubmitDate = judgmentdoc.getString("SubmitDate");
+						model.set("submitdate", dateFormat(SubmitDate));
+//						String CaseRole = judgmentdoc.getString("CaseRole");//案件身份
+						JSONArray CaseRole = judgmentdoc.getJSONArray("CaseRole");//案件身份
+						String value="";
+						for(int l=0;l<CaseRole.size();l++){
+							JSONObject caserole=(JSONObject) CaseRole.get(l);
+							String role=caserole.getString("R");
+							String name=caserole.getString("P");
+							value+=role+"-"+name+";";
+						}
+						model.set("caserole", value);
+						model.set("company_id", companyId);
+						model.set("sys_language", sys_language);
+						JSONObject judgmentdocdetail = HttpTest.getJudgmentDocDetail(Id);//鑾峰彇api浼佷笟瑁佸垽鏂囦功璇︽儏
+						if(judgmentdocdetail.getString("Status").equals("200")){
+						String CaseReason=judgmentdocdetail.getJSONObject("Result").getString("CaseReason");//妗堢敱
+							model.set("casereason", CaseReason);//案由
 					}
-					judgmentdoclist.add(model);
+						judgmentdoclist.add(model);
+					}
 				}
 			}
-			
 			if(CollectionUtils.isNotEmpty(judgmentdoclist)){
 				Db.batchSave(judgmentdoclist, judgmentdoclist.size());
 			}
 		}
-		JSONObject courtannouncement = HttpTest.getCourtAnnouncement(companyName,"");//获取api企业法院公告
+		JSONObject courtannouncement = HttpTest.getCourtAnnouncement(companyName,"");//法院公告
 		String courtannouncementstatus = courtannouncement.getString("Status");
 		if(courtannouncementstatus.equals("200")){
-			CreditCompanyCourtannouncement.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
+			JSONObject Paging = courtannouncement.getJSONObject("Paging");
+			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
+			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
+			int totalpage=1;
+			if(TotalRecords%PageSize==0){
+		           totalpage=TotalRecords/PageSize;
+			}else{
+		           totalpage=TotalRecords/PageSize+1;
+			}
+			CreditCompanyCourtannouncement.dao.deleteBycomIdAndLanguage(companyId, sys_language);
 			List<CreditCompanyCourtannouncement> list=new ArrayList<CreditCompanyCourtannouncement>();
-			JSONObject CourtAnnouncementjson = HttpTest.getCourtAnnouncement(companyName,"");//获取api企业法院公告
-			JSONArray jsonArray = CourtAnnouncementjson.getJSONArray("Result");
-			if(jsonArray !=null && jsonArray.size()>0){
-				for(int j=0;j<jsonArray.size();j++){
-					JSONObject CourtAnnouncement = (JSONObject)jsonArray.get(j);
-					CreditCompanyCourtannouncement model=new CreditCompanyCourtannouncement();
-					String Id = CourtAnnouncement.getString("Id");//id
-					String Party = CourtAnnouncement.getString("Party");//当事人
-					model.set("party", Party);
-					String Category = CourtAnnouncement.getString("Category");//裁判文书
-					model.set("category", Category);
-					String PublishedDate = CourtAnnouncement.getString("PublishedDate");//刊登日期
-					model.set("publisheddate", PublishedDate);
-//					String PublishedPage = CourtAnnouncement.getString("PublishedPage");//刊登版面
-//					model.set("publishedpage", PublishedPage);
-					String UploadDate = CourtAnnouncement.getString("UploadDate");//上传日期
-					model.set("uploaddate", UploadDate);
-					String Court = CourtAnnouncement.getString("Court");//公告人
-					model.set("court", Court);
-					String Content = CourtAnnouncement.getString("Content").replace(" ", "");//内容
-					model.set("content", Content);
-					model.set("company_id", companyId);
-					model.set("sys_language", sys_language);
-					list.add(model);
-				}
+			for(int i=1;i<=totalpage;i++){
+				JSONObject CourtAnnouncementjson = HttpTest.getCourtAnnouncement(companyName,i+"");
+				JSONArray jsonArray = CourtAnnouncementjson.getJSONArray("Result");
+				if(jsonArray !=null && jsonArray.size()>0){
+					for(int j=0;j<jsonArray.size();j++){
+						JSONObject CourtAnnouncement = (JSONObject)jsonArray.get(j);
+						CreditCompanyCourtannouncement model=new CreditCompanyCourtannouncement();
+						String Id = CourtAnnouncement.getString("Id");//id
+						String Party = CourtAnnouncement.getString("Party");
+						model.set("party", Party);
+						String Category = CourtAnnouncement.getString("Category");
+						model.set("category", Category);
+						String PublishedDate = CourtAnnouncement.getString("PublishedDate");//刊登日期
+						model.set("publisheddate", dateFormat(PublishedDate));
+						String PublishedPage = CourtAnnouncement.getString("PublishedPage");
+						model.set("publishedpage", PublishedPage);
+						String UploadDate = CourtAnnouncement.getString("UploadDate");//上传日期
+						model.set("uploaddate", dateFormat(UploadDate));
+						String Court = CourtAnnouncement.getString("Court");
+						model.set("court", Court);
+						String Content = CourtAnnouncement.getString("Content");
+						model.set("content", Content);
+						model.set("company_id", companyId);
+						model.set("sys_language", sys_language);
+						list.add(model);
+					}
+			}
 		}
-		
-		if(CollectionUtils.isNotEmpty(list)){//保存
+		if(CollectionUtils.isNotEmpty(list)){//淇濆瓨
 			Db.batchSave(list, list.size());
 		}
 		}
 		
 		
-		JSONObject courtnotice = HttpTest.getCourtNotice(companyName,"");//获取api企业开庭公告
+		JSONObject courtnotice = HttpTest.getCourtNotice(companyName,"");//开庭公告
 		String courtnoticestatus = courtnotice.getString("Status");
 		if(courtnoticestatus.equals("200")){
-			CreditCompanyCourtnotice.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
+			JSONObject Paging = courtnotice.getJSONObject("Paging");
+			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
+			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
+			int totalpage=1;
+			if(TotalRecords%PageSize==0){
+		           totalpage=TotalRecords/PageSize;
+			}else{
+		           totalpage=TotalRecords/PageSize+1;
+			}
+			CreditCompanyCourtnotice.dao.deleteBycomIdAndLanguage(companyId, sys_language);//鏍规嵁鍏徃缂栫爜鍜屾姤鍛婄被鍨嬪垹闄よ褰�
 			List<CreditCompanyCourtnotice> list=new ArrayList<CreditCompanyCourtnotice>();
-				JSONObject courtnoticejson = HttpTest.getCourtNotice(companyName,"");//获取api企业开庭公告
+			for(int i=1;i<=totalpage;i++){
+				JSONObject courtnoticejson = HttpTest.getCourtNotice(companyName,i+"");//鑾峰彇api浼佷笟寮�搴叕鍛�
 				JSONArray jsonArray = courtnoticejson.getJSONArray("Result");
 				if(jsonArray !=null && jsonArray.size()>0){
 					for(int j=0;j<jsonArray.size();j++){
 						JSONObject CourtAnnouncement = (JSONObject)jsonArray.get(j);
 						CreditCompanyCourtnotice model=new CreditCompanyCourtnotice();
 						String Id = CourtAnnouncement.getString("Id");//id
-						String CaseNo = CourtAnnouncement.getString("CaseNo");//暗号
+						String CaseNo = CourtAnnouncement.getString("CaseNo");//鏆楀彿
 						model.set("caseno", CaseNo);
-						String LianDate = CourtAnnouncement.getString("LianDate");//开庭日期
+						String LianDate = CourtAnnouncement.getString("LianDate");//寮�搴棩鏈�
 						model.set("liandate", LianDate);
-						String CaseReason = CourtAnnouncement.getString("CaseReason").replace(" ", "");//案由
+						String CaseReason = CourtAnnouncement.getString("CaseReason");//妗堢敱
 						model.set("casereason", CaseReason);
-						String Prosecutorlist = CourtAnnouncement.getString("Prosecutorlist");//原告/上诉人
+						String Prosecutorlist = CourtAnnouncement.getString("Prosecutorlist");//鍘熷憡/涓婅瘔浜�
 						model.set("prosecutorlist", Prosecutorlist);
-						String Defendantlist = CourtAnnouncement.getString("Defendantlist");//被告/被上诉人
+						String Defendantlist = CourtAnnouncement.getString("Defendantlist");//琚憡/琚笂璇変汉
 						model.set("defendantlist", Defendantlist);
 						model.set("company_id", companyId);
 						model.set("sys_language", sys_language);
 						list.add(model);
 					}
 			   }
+			}
 			if(CollectionUtils.isNotEmpty(list)){
 				Db.batchSave(list, list.size());
 			}
@@ -424,7 +460,49 @@ public class CompanyService {
 					Db.batchSave(list, list.size());
 			    }
 			}
-			
+		}
+	}
+	class threadEnterpriseGrabOther implements Runnable{
+		String companyId = "";
+	    String company = "";
+	    String sys_language="";
+		public threadEnterpriseGrabOther(String companyId, String company,
+				String sys_language) {
+			super();
+			this.companyId = companyId;
+			this.company = company;
+			this.sys_language = sys_language;
+		}
+		@Override
+		public void run() {
+			try {
+				enterpriseGrabOther(companyId,company,sys_language);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	public static void main(String[] args) {
+		JSONObject json = HttpTest.getJudgmentDoc("武汉斗鱼网络科技有限公司","");//获取每页
+		JSONArray jsonArray = json.getJSONArray("Result");
+		 
+		if(jsonArray !=null && jsonArray.size()>0){
+								for(int j=0;j<jsonArray.size();j++){
+				JSONObject judgmentdoc = (JSONObject)jsonArray.get(j);
+				String Id = judgmentdoc.getString("Id");
+				
+//				String CaseRole = judgmentdoc.getString("CaseRole");//案件身份
+				JSONArray CaseRole = judgmentdoc.getJSONArray("CaseRole");//案件身份
+				for(int i=0;i<CaseRole.size();i++){
+					JSONObject caserole=(JSONObject) CaseRole.get(i);
+					String role=caserole.getString("R");
+					String name=caserole.getString("P");
+					String value=role+"-"+name+"  ";
+					System.out.println(value);
+				}
+			}
 		}
 	}
 }

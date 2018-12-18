@@ -96,7 +96,7 @@ public class AgentPriceService {
 		if(agentpricemodel== null){
 			agentpricemodel = AgentPriceModel.dao.getAgentPrice(pid, cid,agent_id,agent_category,false);//根据优先级 先根据省代理类别代理id获取价格
 		}else{
-			agentpricemodel = AgentPriceModel.dao.getAgentPriceBycategory(agent_id,agent_category);//根据优先级 先根据省代理类别代理id获取价格
+			agentpricemodel = AgentPriceModel.dao.getAgentPriceBycategory(agent_id,agent_category);//根据优先级 根据代理类别代理id获取价格
 		}
 		return agentpricemodel;
 	}
