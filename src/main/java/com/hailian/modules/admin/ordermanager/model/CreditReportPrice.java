@@ -61,7 +61,7 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 		}
 	public CreditReportPrice getoldPrice(String countryid, String reporttype, String speed, Integer size) {
 		List<Object> params=new ArrayList<Object>();
-		StringBuffer sql=new StringBuffer(" select t.* from credit_report_price t where t.del_flag='0' and t.versions='老系统' ");
+		StringBuffer sql=new StringBuffer(" select t.* from credit_report_price t where t.del_flag='0'  ");//and t.versions='老系统'
 		if (StringUtils.isNotBlank(countryid)) {
 			sql.append(" and t.country_id=?");
 			params.add(countryid);
