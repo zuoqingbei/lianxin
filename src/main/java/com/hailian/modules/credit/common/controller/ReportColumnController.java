@@ -94,11 +94,12 @@ public class ReportColumnController extends BaseProjectController {
 	public void add() {
         int pageNumber = getParaToInt("pageNo", 1);
         int pageSize = getParaToInt("pageSize", 10);
+        String pid = getPara("pid");
         //从表单获取排序语句
         String orderBy = getBaseForm().getOrderBy();
         //分页查询
         List<Object> params = new ArrayList<>();
-        params.add(1);
+        params.add(pid);
         Page<CreditReportModuleColumn> pager = CreditReportModuleColumn.dao.page(pageNumber, pageSize, "", orderBy, params);
         setAttr("page", pager);
         keepPara();

@@ -829,6 +829,27 @@ let ReportConfig = {
 							            			})
 							            			
 							            			break;
+							            		case 'select3':
+							            			if(item.get_source === null){return}
+							            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
+							            			$.ajax({
+							            				type:'get',
+							            				url:urls,
+							            				async:false,
+							            				dataType:'json',
+							            				success:(data)=>{
+							            					let a = data.selectStr.replace(/value/g,'a')
+							            					formGroup += `<div class="form-group">
+							            						<label for="" class="mb-2">${item.temp_name}</label>
+							            						<input disabled="disabled" name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
+							            						<datalist id="cars">
+							            							${a}
+							            						</datalist>
+							            						</div>`
+							            				}
+							            			})
+							            			
+							            			break;
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
@@ -900,7 +921,7 @@ let ReportConfig = {
                 			_this.formIndex.push(index)
                 			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
 					                          <label >${inputObj.temp_name}</label>
-					                          <input disabled="disabled" type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
+					                          <input disabled="disabled" type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
 					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
 					                        </div>`
                 			
