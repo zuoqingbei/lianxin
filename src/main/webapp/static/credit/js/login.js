@@ -102,11 +102,8 @@ let Login = {
                         		sessionStorage.setItem('menuId','work_console');
                         	}else {
                         		//账号已过期
-                        		Public.message("info","密码已过期，请重置密码！")
-                        		setTimeout(()=>{
-                        			window.location.href = "/credit/front/home/menu";
-                        			$("#main_content").load("/credit/sysuser/resetpassword");
-                        		},3000)
+                    			window.location.href = "/credit/front/home/menu";
+                    			$("#main_content").load("/credit/sysuser/resetpassword");
 	                            sessionStorage.setItem('pageUrl', '/credit/sysuser/resetpassword');
                         		sessionStorage.setItem('menuId','passwordReset');
                         		sessionStorage.setItem('isResetPw',1);

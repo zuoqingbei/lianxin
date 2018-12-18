@@ -89,9 +89,14 @@ public class SysUser extends SessionUser<SysUser>  {
 		return dao.find(sql);
 	}
 
-	public List<SysUser> getReporter() {
-		String sql="select c.* from sys_user c left join sys_user_role r on c.userid=r.userid where c.del_flag='0' and c.state='10' and r.roleid='2' order by create_time desc" ;
-		return dao.find(sql);
+    /**
+     * 获取自动分配状态的业务操作人员（报告员、质检员、分析员、翻译员）
+     * @param roleId 2报告员 3翻译员 4质检员 5分析员
+     * @return
+     */
+	public List<SysUser> getReporter(String roleId) {
+		String sql="select c.* from sys_user c left join sys_user_role r on c.userid=r.userid where c.del_flag='0' and c.state='10' and r.roleid=? order by create_time desc" ;
+		return dao.find(sql,roleId);
 	}
 	/**
 	 * 根据角色ID获取

@@ -10,6 +10,8 @@ import java.util.UUID;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hailian.api.constant.RoleCons;
+import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 
@@ -331,145 +333,161 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   * @version V1.0
   * @return
    */
-    public void getOrsaveOpintion(){//质检意见新增
-    	Record record = new Record();
-    	Integer userId = getSessionUser().getUserid();
-		String now = getNow();
-		// CreditQualityOpintion model=getModel(CreditQualityOpintion.class);
-          String orderId = 	getPara("orderId");
-      String id =   getPara("id"); 
-      String opintion =  getPara("quality_opinion");
-      String  type =   getPara("quality_type");
-      String reportType =  getPara("report_type");
-      String moduleId= getPara("report_module_id");
-      String deal=  getPara("quality_deal");
-      String grade= getPara("grade");
-      String update=  getPara("update");//修改的状态
-      String code = (String) getRequest().getParameter("statusCode");//获取提交的是完成还是修改状态
-      String submit=getPara("submit");
-   CreditQualityOpintionHistory history=new CreditQualityOpintionHistory(); 
-      history.set("quality_opinion", opintion);
-      history.set("quality_type", type);
-      history.set("order_id", orderId);
-      history.set("report_type", reportType);
-      history.set("quality_deal", deal);
-      history.set("grade", grade);
-      history.set("create_by", userId);
-      history.set("create_date", now);
-      history.set("update_by", userId);
-      history.set("update_date", now);
-      history.save();
-      List<CreditQualityOpintion> opintion2=new ArrayList<CreditQualityOpintion>();
-      if (StringUtils.isBlank(update)) {//查询或新增
-    	  opintion2	=   CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?",orderId,type);
-          if (opintion2.size()<=0) {
-        	//如果根据订单id 与质检类型 查询为空 则新增
-			  CreditQualityOpintion model= new CreditQualityOpintion();
-			   model.set("quality_opinion", opintion);
-			   model.set("quality_type", type);
-			   model.set("order_id", orderId);
-			   model.set("report_type", reportType);
-			   model.set("quality_deal", deal);
-			   model.set("grade", grade);
-			   model.set("create_by", userId);
-			   model.set("create_date", now);
-			   model.set("update_by", userId);
-			   model.set("update_date", now);
-		       model.save();
-		       opintion2.add(model);
-		       renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
-		   }else {
-			//查询
-		   renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
-		    }
-      }else{
-    	  CreditQualityOpintion model= new CreditQualityOpintion();
-		   model.set("quality_opinion", opintion);
-		   model.set("quality_type", type);
-		   model.set("order_id", orderId);
-		   model.set("report_type", reportType);
-		   model.set("quality_deal", deal);
-		   model.set("grade", grade);
-		   model.set("create_by", userId);
-		   model.set("create_date", now);
-		   model.set("update_by", userId);
-		   model.set("update_date", now);
-		   model.set("id", id);
-    	  model.update();
-    	  opintion2.add(model);
-    	  renderJson(record.set("rows", opintion2).set("total", opintion2!=null?opintion2.size():null));
-      }
-      if (StringUtils.isNotBlank(submit)) {
-    	  AgentPriceModel agentPrice=new AgentPriceModel();
-          	String status="";
-             if (type.equals("translate_quality")) {//翻译质检
-	  			if (deal.equals("1")) {//1 完成 2修改
-	  				status="311";
-	 				 agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
-	  			}else {
-	  				status="306";
-	  			}
-  		   }else if(type.equals("entering_quality")){//填报质检
-  			   if (deal.equals("1")) {//1 完成 2修改
-  			//如果是信用分析报告走分析流程，其他则质检走翻译流程
-		  	  		 CreditOrderInfo info=CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?",orderId);
-		              if(info.get("report_type").equals("10")||info.get("report_type").equals("11")){
-		                   status="301"; //走分析
-		                  }else {
-						status="306";//走翻译
-					      }	
-  		        }else {
-  					status="293";	//信息录入
-  				}
-  		  }else if(type.equals("analyze_quality")){
-  			  if (deal.equals("1")) {//1 完成 2修改
-  				  //分析完成，判断订单报告语言，213，215，没有翻译，质检完成则发送报告邮件
-  				 CreditOrderInfo info=CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?",orderId);
-		  				 if (info.get("report_language").equals("213")||info.get("report_language").equals("215")) {
-		  					status="311";
-		  	 				 agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
-						}else{
-							 status="306";
-						} 
-  			  }else {
-  					status="301";
-  				} 
-  		  }
-              Map<String,Object> map = new HashMap<>();
-              if(deal==null||"".equals(deal.trim())){
-                  map = null;
-              }else{
-                  map.put("status", status);
-                  if (agentPrice!=null) {
-                	map.put("agent_priceId", agentPrice.get("id")); 
-				}
-              }
-              
-              CreditOrderInfo model = getModel(CreditOrderInfo.class);
-              model.removeNullValueAttrs();
-              model = getModel(CreditOrderInfo.class);
-              model.set("update_by",userId);
-              model.set("update_date", now);
-              model.set("id", orderId);
-              if(map!=null){
-                  for (String key : map.keySet()) {
-                      model.set(key, map.get(key));
-                  }
-              }
-              model.update();
-              //如果报告状态是311 发送邮件，报告
-              if (status.equals("311")) {
-            	  
-                 new MainReport().build(Integer.parseInt(orderId),getSessionUser().getUserid());
-                 		}
-        
-              //增加跟踪记录
-              CreditOrderFlow.addOneEntry(this, model);
-              CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
-              renderJson(record.set("submit", submit));  
-	  }
-      
-  }
+    public void getOrsaveOpintion() {//质检意见新增
+        Record record = new Record();
+        Integer userId = getSessionUser().getUserid();
+        String now = getNow();
+        // CreditQualityOpintion model=getModel(CreditQualityOpintion.class);
+        String orderId = getPara("orderId");
+        String id = getPara("id");
+        String opintion = getPara("quality_opinion");
+        String type = getPara("quality_type");
+        String reportType = getPara("report_type");
+        String moduleId = getPara("report_module_id");
+        String deal = getPara("quality_deal");
+        String grade = getPara("grade");
+        String update = getPara("update");//修改的状态
+        String code = (String) getRequest().getParameter("statusCode");//获取提交的是完成还是修改状态
+        String submit = getPara("submit");
+        CreditQualityOpintionHistory history = new CreditQualityOpintionHistory();
+        history.set("quality_opinion", opintion);
+        history.set("quality_type", type);
+        history.set("order_id", orderId);
+        history.set("report_type", reportType);
+        history.set("quality_deal", deal);
+        history.set("grade", grade);
+        history.set("create_by", userId);
+        history.set("create_date", now);
+        history.set("update_by", userId);
+        history.set("update_date", now);
+        history.save();
+        List<CreditQualityOpintion> opintion2 = new ArrayList<CreditQualityOpintion>();
+        if (StringUtils.isBlank(update)) {//查询或新增
+            opintion2 = CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?", orderId, type);
+            if (opintion2.size() <= 0) {
+                //如果根据订单id 与质检类型 查询为空 则新增
+                CreditQualityOpintion model = new CreditQualityOpintion();
+                model.set("quality_opinion", opintion);
+                model.set("quality_type", type);
+                model.set("order_id", orderId);
+                model.set("report_type", reportType);
+                model.set("quality_deal", deal);
+                model.set("grade", grade);
+                model.set("create_by", userId);
+                model.set("create_date", now);
+                model.set("update_by", userId);
+                model.set("update_date", now);
+                model.save();
+                opintion2.add(model);
+                renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
+            } else {
+                //查询
+                renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
+            }
+        } else {
+            CreditQualityOpintion model = new CreditQualityOpintion();
+            model.set("quality_opinion", opintion);
+            model.set("quality_type", type);
+            model.set("order_id", orderId);
+            model.set("report_type", reportType);
+            model.set("quality_deal", deal);
+            model.set("grade", grade);
+            model.set("create_by", userId);
+            model.set("create_date", now);
+            model.set("update_by", userId);
+            model.set("update_date", now);
+            model.set("id", id);
+            model.update();
+            opintion2.add(model);
+            renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
+        }
+        if (StringUtils.isNotBlank(submit)) {
+            //自动分配的分析员ID
+            String analerId = null;
+            //自动分配的翻译员ID
+            String transerId = null;
+            AgentPriceModel agentPrice = new AgentPriceModel();
+            String status = "";
+            if (type.equals("translate_quality")) {//翻译质检
+                if (deal.equals("1")) {//1 完成 2修改
+                    status = "311";
+                    agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
+                } else {
+                    status = "306";
+                }
+            } else if (type.equals("entering_quality")) {//填报质检
+                if (deal.equals("1")) {//1 完成 2修改
+                    //如果是信用分析报告走分析流程，其他则质检走翻译流程
+                    CreditOrderInfo info = CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?", orderId);
+                    if (info.get("report_type").equals("10") || info.get("report_type").equals("11")) {
+                        status = "301"; //走分析
+                        //todo 填报质检完成后自动分配分析员
+                        analerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.ANALER);
+                    } else {
+                        status = "306";//走翻译
+                    }
+                } else {
+                    status = "293";    //信息录入
+                }
+            } else if (type.equals("analyze_quality")) {
+                if (deal.equals("1")) {//1 完成 2修改
+                    //分析完成，判断订单报告语言，213，215，没有翻译，质检完成则发送报告邮件
+                    CreditOrderInfo info = CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?", orderId);
+                    if (info.get("report_language").equals("213") || info.get("report_language").equals("215")) {
+                        status = "311";
+                        agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
+                    } else {
+                        status = "306";
+                        //todo 分析质检完成后自动分配翻译员
+                        transerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.TRANSER);
+                    }
+                } else {
+                    status = "301";
+                }
+            }
+            Map<String, Object> map = new HashMap<>();
+            if (deal == null || "".equals(deal.trim())) {
+                map = null;
+            } else {
+                map.put("status", status);
+                if (agentPrice != null) {
+                    map.put("agent_priceId", agentPrice.get("id"));
+                }
+                //分配分析员
+                if (analerId != null) {
+                    map.put("analyze_user",analerId);
+                }
+                //分配翻译员
+                if (transerId != null) {
+                    map.put("translate_user",transerId);
+                }
+            }
+
+            CreditOrderInfo model = getModel(CreditOrderInfo.class);
+            model.removeNullValueAttrs();
+            model = getModel(CreditOrderInfo.class);
+            model.set("update_by", userId);
+            model.set("update_date", now);
+            model.set("id", orderId);
+            if (map != null) {
+                for (String key : map.keySet()) {
+                    model.set(key, map.get(key));
+                }
+            }
+            model.update();
+            //如果报告状态是311 发送邮件，报告
+            if (status.equals("311")) {
+
+                new MainReport().build(Integer.parseInt(orderId), getSessionUser().getUserid());
+            }
+
+            //增加跟踪记录
+            CreditOrderFlow.addOneEntry(this, model);
+            CreditOperationLog.dao.addOneEntry(this, null, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
+            renderJson(record.set("submit", submit));
+        }
+
+    }
 
    /** 
     * 

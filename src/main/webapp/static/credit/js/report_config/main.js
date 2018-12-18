@@ -56,11 +56,11 @@ let ReportConfig = {
     			smartDisplay:true,
     			locales:'zh-CN',
     			onLoadSuccess:(data)=>{
-    				console.log(data)
     				let rows = data.rows
     				rows.forEach((item,index)=>{
     					if(item.brand_url) {
-    						item["brand_url"] = `<img src="http://${item["brand_url"]}" style="height:40px;width:40px">`
+    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
     					}
     				})
     				$table.bootstrapTable("load",rows)
@@ -1083,6 +1083,25 @@ let ReportConfig = {
 			    $("#modal"+item+" select").find("option").first().attr("selected", true);
     
     		})
+    		//自动计算出生年月和年龄
+    		if($("#modal"+item).find(".modal-header").text().trim() === '自然人股东详情') {
+    			$("#id_no_4").blur(()=>{
+    				let val = $("#id_no_4").val()
+    				if(val.length === 18 && typeof Number(val) === 'number' && Number(val) !== NaN) {
+    					val = val.substring(6,14)
+    					let  aDate = new Date(val.substring(0,4)+'-'+val.substring(4,6)+'-'+val.substring(6,8));
+    					let bDate = new Date();
+    					let age = bDate.getFullYear() - aDate.getFullYear();
+    					$("#age_4").val(age)
+    					$("#birth_date_4").val(val.substring(0,4)+'年'+val.substring(4,6)+'月'+val.substring(6,8)+'日')
+    				}else {
+    					$("#age_4").val('')
+    					$("#birth_date_4").val('')
+    				}
+    				
+    			})
+    			
+    		}
     		//点击模态框保存按钮，新增一条数据
     		$("#modal_save"+item).unbind().click(()=>{
     			let dataJson = []

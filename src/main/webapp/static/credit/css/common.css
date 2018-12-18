@@ -121,6 +121,7 @@ header {
 .bg-f {
     min-height: 100%;
     background: #fff;
+    box-shadow: 0px 0px 5px 1px #cfcfcf;
 }
 .menu1 .fa {
     margin-right: 1rem;

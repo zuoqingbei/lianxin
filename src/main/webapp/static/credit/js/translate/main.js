@@ -67,6 +67,14 @@ let ReportConfig = {
     			locales:'zh-CN',
     			onLoadSuccess:(data)=>{
     				_this.tableDataArr[index]=data
+    				let rows = data.rows
+    				rows.forEach((item,index)=>{
+    					if(item.brand_url) {
+    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+    					}
+    				})
+    				$table.bootstrapTable("load",rows)
     			}
         	});
         	console.log(contentsEn)
@@ -86,6 +94,14 @@ let ReportConfig = {
         		onLoadSuccess:(data)=>{
 //        			console.log(data)
         			_this.tableDataArrEn[index]=data
+        			let rows = data.rows
+        			rows.forEach((item,index)=>{
+    					if(item.brand_url) {
+    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+    					}
+    				})
+    				$tableEn.bootstrapTable("load",rows)
         		}
         	});
         	
@@ -422,6 +438,7 @@ let ReportConfig = {
     			//实体id
     			let obid = tempData.id;
     			formArr.forEach((item,index)=>{
+    				console.log(item)
     				let obj = tempData;
     				let id = $(item).attr("id");
     				let anotherIdArr = id.split("_")
@@ -1272,7 +1289,7 @@ let ReportConfig = {
     							    	break;
                     			}
                     		}
-            				if(formArr[index-1] && formArr[index-1]['field_type'] === 'address')  {
+            				if(formArrEn[index-1] && formArrEn[index-1]['field_type'] === 'address')  {
             					rowNum += 1
             				}
                     		
@@ -1429,7 +1446,7 @@ let ReportConfig = {
             				//非财务模块的浮动
             				_this.notMoneyFloatHtmlEn[index] = `<div class="form-group form-inline p-4">
 				                          <label >${item_en.title.temp_name === null?'':item_en.title.temp_name}</label>
-				                          <input  type="text" placeholder=${item_en.title.place_hold} name=${item_en.title.column_name} class="form-control mx-3 float-date" >
+				                          <input  type="text" id=${item_en.title.column_name} placeholder=${item_en.title.place_hold} name=${item_en.title.column_name} class="form-control mx-3 float-date" >
 				                        </div>`
             			}
             			break;
