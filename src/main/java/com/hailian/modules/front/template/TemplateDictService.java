@@ -8,6 +8,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCountry;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 
 /**
@@ -168,6 +169,7 @@ public class TemplateDictService extends BaseService {
 	
 	public String getSysDictDetailString3(String type,Object selectedId,String disPalyCol) {
 		StringBuffer sb=new StringBuffer();
+		String flagStr = "detail_id";
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
 		if (type!=null&&"translate_quality".equals(type)) {
 			type="translate_quality";//翻译质检下拉选项
@@ -179,19 +181,39 @@ public class TemplateDictService extends BaseService {
 			type="entering_quality";//填报质检下拉选项
 			selectedId="646";
 		}else if(type!=null&&"small_module_type".equals(type)){
+			if(StrUtils.isEmpty((String)(selectedId))){
+				selectedId = "1";
+			}
 			//type="entering_quality";//小模板类型
-			selectedId=  Db.query(" select detail_id from sys_dict_detail where del_flag=0 and dict_type='small_module_type' and detail_code="+selectedId).get(0);
+			flagStr = "detail_code";
+			selectedId=  Db.query(" select detail_code from sys_dict_detail where del_flag=0 and dict_type='small_module_type' and detail_code="+selectedId).get(0);
+		}else if(type!=null&&"word_table_type".equals(type)){
+			if(StrUtils.isEmpty((String)(selectedId))){
+				selectedId = "s";
+			}
+			flagStr = "detail_code";
+			//type="entering_quality"; 
+			selectedId=  Db.query(" select detail_code from sys_dict_detail where del_flag=0 and dict_type='word_table_type' and detail_code='"+selectedId+"'").get(0);
+		}else if(type!=null&&"boolean".equals(type)){
+			if(StrUtils.isEmpty((String)(selectedId))){
+				selectedId = "0";
+			}
+			flagStr = "detail_code";
+			//type="entering_quality"; 
+			selectedId=  Db.query(" select detail_code from sys_dict_detail where del_flag=0 and dict_type='boolean' and detail_code='"+selectedId+"'").get(0);
 		}
+		
 		//listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
 			if(detail.get(disPalyCol)==null||"".equals(detail.get(disPalyCol))) {
 				continue;
 			}
-			 if(selectedId!=null&& selectedId.toString() .equals(detail.get("detail_id").toString())){
-				sb.append("<option selected='selected' m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(disPalyCol)+"</option>");
+		 
+			 if(selectedId!=null&& selectedId.toString().equals(detail.get(flagStr))){
+				sb.append("<option selected='selected' m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get(flagStr)+"'>"+detail.get(disPalyCol)+"</option>");
 			}else{
-			    sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(disPalyCol)+"</option>");
+			    sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get(flagStr)+"'>"+detail.get(disPalyCol)+"</option>");
 			}
 			
 		}
