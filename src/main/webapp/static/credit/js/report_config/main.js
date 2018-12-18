@@ -60,7 +60,7 @@ let ReportConfig = {
     				rows.forEach((item,index)=>{
     					if(item.brand_url) {
     						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
-    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+    						item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
     					}
     				})
     				$table.bootstrapTable("load",rows)
@@ -197,6 +197,13 @@ let ReportConfig = {
 				    						<input type="number" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     							</div>`
     					break;
+    				case 'money':
+    					modalBody += ` <div class="form-inline justify-content-center my-3">
+    						<label for="" class="control-label" >${ele.temp_name}：</label>
+    						<input type="text" class="form-control money-checked" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+    						<small></small>
+    						</div>`
+    						break;
     				case 'textarea':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
     						<label for="" class="control-label" >${ele.temp_name}：</label>
@@ -818,6 +825,14 @@ let ReportConfig = {
 				                        							</div>`
 		                        					
 		                        					break;
+		                        				case 'money':
+		                        					formGroup += `<div class="form-group">
+		                        						<label for="" class="mb-2">${item.temp_name}</label>
+		                        						<input type="text" class="form-control money-checked" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		                        						<p class="errorInfo">${item.error_msg}</p>
+		                        						</div>`
+		                        						
+		                        						break;
 		                        				case 'date':
 		                        					formGroup += `<div class="form-group date-form">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
@@ -853,6 +868,25 @@ let ReportConfig = {
 										            						${data.selectStr}
 										            					</select>
 							            							</div>`
+							            				}
+							            			})
+							            			
+							            			break;
+							            		case 'select2':
+							            			if(item.get_source === null){return}
+							            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
+							            			$.ajax({
+							            				type:'get',
+							            				url:urls,
+							            				async:false,
+							            				dataType:'json',
+							            				success:(data)=>{
+							            					formGroup += `<div class="form-group">
+							            						<label for="" class="mb-2">${item.temp_name}</label>
+								            						<select name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
+								            							${data.selectStr}
+								            						</select>
+							            						</div>`
 							            				}
 							            			})
 							            			
