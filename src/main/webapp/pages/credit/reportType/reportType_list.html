@@ -37,7 +37,22 @@
 					form1.submit();
 				});
 				
+			},
+			down : function(id) {
+				$.ajax({
+					url:"/credit/reportType/getUrl?id="+id,
+			        type:"get",
+				    success: function(data){
+				    var url=$("#url").text();
+				   
+				   	window.location.href = "http://"+data.url;	
+				     
+				   }
+				    
+				})
+				
 			}
+		
 		};
 		//显示Menu索引
         showMenu('page_report_manager');
@@ -47,6 +62,8 @@
 	var paginator = function(page) {
 		oper.list();
 	};
+	
+
 </script>
 
 <% }; var bodyContent = { %>
@@ -117,7 +134,7 @@
 					${strutil.subStringTo(item.name_trad, 0, 25)}... <% } else { %>
 					${item.name_trad} <% } %></td> -->
 
-				<td title="${item.tpl_path!}"><% if
+				<td  id="plurl" title="${item.tpl_path!}"><% if
 					(strutil.length(item.tpl_path) > 25) { %>
 					${strutil.subStringTo(item.tpl_path, 0, 25)}... <% } else { %>
 					${item.tpl_path} <% } %></td>
@@ -140,6 +157,8 @@
 		<td><a href="javascript:void(0);" class="btn btn-sm btn-success"
 			onclick="oper.view(${item.id});">配置</a> <a href="javascript:void(0);"
 			class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">编辑</a>
+			<a href="javascript:void(0);" class="btn btn-sm btn-primary"
+			onclick="oper.down(${item.id});">下载模板</a>
 			<a href="javascript:void(0);" class="btn btn-sm btn-danger"
 			onclick="oper.del(${item.id});">删除</a></td>
 		</tr>
