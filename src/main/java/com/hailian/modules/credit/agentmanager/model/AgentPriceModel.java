@@ -131,7 +131,7 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 	 */
 	public AgentPriceModel getAgentPrice(String pid,String cid,String agent_id,String agent_category,boolean isSpecial) {
 		StringBuffer sb=new StringBuffer("select t.* from credit_agent_price t ");
-		sb.append(" where 1=1 and t.del_flag=0 ");
+		sb.append(" where 1=1 and t.del_flag=0 and t.agent_type='263' ");
 		List<Object> params=new ArrayList<Object>();
 		if(StringUtils.isNotBlank(agent_id)){
 			sb.append(" and t.agent_id=?");
@@ -160,7 +160,7 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 	}
 	public AgentPriceModel getAgentPriceBycategory(String agent_id,String agent_category) {
 		StringBuffer sb=new StringBuffer("select t.* from credit_agent_price t ");
-		sb.append(" where 1=1 and t.del_flag=0 ");
+		sb.append(" where 1=1 and t.del_flag=0 and t.agent_type='263' ");
 		List<Object> params=new ArrayList<Object>();
 		if(StringUtils.isNotBlank(agent_id)){
 			sb.append(" and t.agent_id=?");

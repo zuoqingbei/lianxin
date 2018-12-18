@@ -260,6 +260,13 @@ let Public = {
             $('.main').animate({scrollTop: 0}, 'normal');
         });
     },
+    thousandBitSeparator(num) {
+        return num && num
+            .toString()
+            .replace(/(\d)(?=(\d{3})+\.)/g, function($0, $1) {
+                return $1 + ",";
+            });
+    },
     message(state, text) {
         let txt = text || '获取数据失败！'
         if (state === 'info') {

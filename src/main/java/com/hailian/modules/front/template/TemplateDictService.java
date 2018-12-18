@@ -178,6 +178,9 @@ public class TemplateDictService extends BaseService {
 		}else if(type!=null&&"entering_quality".equals(type)){
 			type="entering_quality";//填报质检下拉选项
 			selectedId="646";
+		}else if(type!=null&&"small_module_type".equals(type)){
+			//type="entering_quality";//小模板类型
+			selectedId=  Db.query(" select detail_id from sys_dict_detail where del_flag=0 and dict_type='small_module_type' and detail_code="+selectedId).get(0);
 		}
 		//listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
@@ -185,7 +188,7 @@ public class TemplateDictService extends BaseService {
 			if(detail.get(disPalyCol)==null||"".equals(detail.get(disPalyCol))) {
 				continue;
 			}
-			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
+			 if(selectedId!=null&& selectedId.toString() .equals(detail.get("detail_id").toString())){
 				sb.append("<option selected='selected' m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(disPalyCol)+"</option>");
 			}else{
 			    sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(disPalyCol)+"</option>");
