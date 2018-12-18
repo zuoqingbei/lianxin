@@ -55,6 +55,17 @@ let ReportConfig = {
     			pagination: false, //分页
     			smartDisplay:true,
     			locales:'zh-CN',
+    			onLoadSuccess:(data)=>{
+    				console.log(data)
+    				let rows = data.rows
+    				rows.forEach((item,index)=>{
+    					if(item.brand_url) {
+    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+    					}
+    				})
+    				$table.bootstrapTable("load",rows)
+    			}
         	});
         	
         	

@@ -224,12 +224,12 @@ let OrderDetail = {
                 // 8-总体评价，一个对勾列表和两个多行文本框
                 case '8':
                     let $type8_ul = $('<ul class=""></ul>').append(function () {
-/*
-                        let list = _this.english ? ['', 'Excellent', 'Good', 'Average', 'Fair', 'Poor', 'Not yet determined'] : ['', '极好', '好', '一般', '较差', '差', '尚无法评估'];
-                        return list.reduce(function (prev, cur) {
-                            return `${prev} <li>（<span></span>）${cur}</li>`
-                        });
-*/
+                        /*
+                                                let list = _this.english ? ['', 'Excellent', 'Good', 'Average', 'Fair', 'Poor', 'Not yet determined'] : ['', '极好', '好', '一般', '较差', '差', '尚无法评估'];
+                                                return list.reduce(function (prev, cur) {
+                                                    return `${prev} <li>（<span></span>）${cur}</li>`
+                                                });
+                        */
                         let list = _this.english ? ['', 'Excellent', 'Good', 'Average', 'Fair', 'Poor', 'Not yet determined'] : ['', '极好', '好', '一般', '较差', '差', '尚无法评估'];
                         return list.reduce(function (prev, cur) {
                             return `${prev} <li><input type="radio" name="${item.title.id}_zongtipingjia">${cur}</li>`
@@ -247,7 +247,7 @@ let OrderDetail = {
                     $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
                         if (data.rows && data.rows.length > 0) {
                             // $wrap.find('ul>li').eq(1 + data.rows[0][item.contents[0].column_name]).find('span').text('√')
-                            $wrap.find('ul>li').eq(data.rows[0][item.contents[0].column_name]-1).find('[type=radio]').prop('checked',true)
+                            $wrap.find('ul>li').eq(data.rows[0][item.contents[0].column_name] - 1).find('[type=radio]').prop('checked', true)
                                 .parents('ul').siblings('.multiText:eq(0)').text(data.rows[0][item.contents[1].column_name])
                                 .siblings('.multiText').text(data.rows[0][item.contents[2].column_name]);
                         } else {
@@ -329,7 +329,7 @@ let OrderDetail = {
                             }) + (param === 'update' ? '&update=true' : '')
                             + (param2 === 'submit' ? '&submit=true' : ''),
                             (data) => {
-                                console.log('$wrap.find("#quality_opinion").val()2', $wrap.find("#quality_opinion").val())
+                                console.log('$wrap.find("#quality_opinion").val()2', $wrap.find("#quality_opinion").val());
                                 this.qualityOpinionId = data.rows[0].id ? data.rows[0].id : '';
                                 let quality_type = this.row.quality_type;
                                 let status = this.row.status;
@@ -389,6 +389,50 @@ let OrderDetail = {
                         $("#save").trigger('click', 'submit');
                     });
                     break;
+                // 企业结构树形图
+                case '25':
+                    /*$("#" + itemId).append(`<div class="ec03_tree" style="height: 32rem;"></div>`);
+                    let data = [
+                        '人/男人/老头,中年男子,小男孩',
+                        '人/女人/老太太,中年妇女,小姑娘',
+                        '人/机器人',
+                        '神仙'
+                    ];
+                    let [obj,currentObj] = [{},obj];
+                    data.forEach((item,index)=>{
+                        item.split("/").forEach((leverData,index)=>{
+                            if(leverData.includes(',')){
+                                leverData.split(",").forEach((child)=>{
+                                    obj.children.push({name:leverData});
+                                })
+                            }
+                            currentObj.children.push({name:leverData});
+                            obj = currentObj;
+                            currentObj = currentObj[0].children;
+
+                        })
+                    })
+                    console.log(obj)
+                    let chart = echarts.init($(`#${itemId} #ec03_tree`)[0]);
+                    chart.setOption(opt_pie);
+                    chart.setOption({
+                        color: this.chartColors,
+                        series: [{
+                            data: chartData,
+                        }].map(function (item) {
+                            return $.extend(true, item, {
+                                type: 'pie',
+                                label: {
+                                    formatter: '{b}: {d}%'
+                                },
+                                radius: '28%',
+                                center: ['50%', '52%'],
+                                startAngle: '45'
+                            })
+                        })
+                    }, true);
+
+                    break;*/
                 default:
                     console.warn(item.title.temp_name + '没有找到模块类型！');
             }
@@ -420,6 +464,7 @@ let OrderDetail = {
         });
         // 获取多行文本框的标签
         let $mulTextBox = $('<div class="mulTextBox"></div>');
+        if(!type9MulText.contents){return}
         type9MulText.contents.forEach(function (content, index) {
             if (index < 9) {
                 return
@@ -532,7 +577,8 @@ let OrderDetail = {
     setQualitySelect() {
         let _this = this;
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
-        let detailname = this.english ? 'detail_name_en' : 'detail_name';
+        // let detailname = this.english ? 'detail_name_en' : 'detail_name';
+        let detailname = 'detail_name';
         $(".l-title").each(function (index, item) {
             if (!['基本信息', '流程进度', '质检评分', '质检意见', '附件'].includes($(this).text())) {
                 switch (_this.row.quality_type) {

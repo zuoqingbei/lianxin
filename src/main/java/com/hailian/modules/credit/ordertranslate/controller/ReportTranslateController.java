@@ -44,13 +44,19 @@ public class ReportTranslateController extends BaseProjectController {
 			while(iterator.hasNext()){
 			String   key = (String) iterator.next();
 			String value = jsonObject.getString(key);
+			String value_en="";
+			String value_cht="";
 			if(isChinese(value)){
 				if(!isValidDate(value)){
-					value = TransApi.Trans(value,targetlanguage);
+					value_en = TransApi.Trans(value,"en");
+					if("cht".equals(targetlanguage)){
+						value_cht=TransApi.Trans(value,targetlanguage);
+					}
 			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
 			    	if(translateByError!=null){
-			    		value = translateByError.get("correct_phrase");//翻译校正
+			    		value_en = translateByError.get("correct_phrase");//翻译校正
 			    	}
+			    	value=value_en+value_cht;
 				}
 			}
 			jsonObject.put(key, value);
@@ -87,12 +93,9 @@ public class ReportTranslateController extends BaseProjectController {
 	      boolean convertSuccess=true;
 	       SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
 	       try {
-//设置lenient为false. 否则SimpleDateFormat会比较宽松地验证日期，比如2007/02/29会被接受，并转换成2007/03/01
 	          format.setLenient(false);
 	          format.parse(str);
 	       } catch (ParseException e) {
-	          // e.printStackTrace();
-	// 如果throw java.text.ParseException或者NullPointerException，就说明格式不对
 	           convertSuccess=false;
 	       } 
 	       return convertSuccess;
