@@ -204,8 +204,8 @@ public class ReportNodeController extends BaseProjectController {
               		"	`update_date`," + 
               		"	`create_date`," + 
               		"	`del_flag`," + 
-              		"	`is_merger_next`" + 
-
+              		"	`is_merger_next`," + 
+              		"	`table_id`" + 
               		") " + 
               		"	SELECT" + 
               		"		 " + 
@@ -234,7 +234,8 @@ public class ReportNodeController extends BaseProjectController {
               		"			`update_date`," + 
               		"			`create_date`," + 
               		"			`del_flag`," + 
-              		"			`is_merger_next`" + 
+              		"			`is_merger_next`," + 
+              		"			`id`" + 	
               		" " + 
               		"	FROM" + 
               		"		credit_report_module_parent_nodes_dict" + 
