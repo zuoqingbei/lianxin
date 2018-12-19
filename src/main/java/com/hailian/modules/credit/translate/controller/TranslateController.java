@@ -107,4 +107,14 @@ public class TranslateController extends BaseProjectController{
 		}
 		renderMessage("保存成功");
 	}
+	public void saveTranslate(){
+		String error_phrase_en=getPara("error_phrase_en");//错误的英文
+		String correct_phrase_en=getPara("correct_phrase_en");//应该翻译成的正确的英文
+		String correct_phrase_ch=getPara("correct_phrase_ch");//应该翻译成的正确的中文
+		TranslateModel model = getModel(TranslateModel.class);
+		model.set("error_phrase", error_phrase_en);
+		model.set("correct_phrase", correct_phrase_en);
+		model.set("correct_phrase_ch", correct_phrase_ch);
+		model.save();
+	}
 }

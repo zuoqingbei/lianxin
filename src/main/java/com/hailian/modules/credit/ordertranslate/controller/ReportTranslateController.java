@@ -52,7 +52,7 @@ public class ReportTranslateController extends BaseProjectController {
 					if("cht".equals(targetlanguage)){
 						value_cht=TransApi.Trans(value,targetlanguage);
 					}
-			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
+			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);//翻译校正
 			    	if(translateByError!=null){
 			    		value_en = translateByError.get("correct_phrase");//翻译校正
 			    	}

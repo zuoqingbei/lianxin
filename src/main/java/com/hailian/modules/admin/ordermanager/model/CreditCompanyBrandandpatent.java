@@ -48,6 +48,7 @@ public class CreditCompanyBrandandpatent extends BaseProjectModel<CreditCompanyB
 		params.add(companyid);
 		params.add(sys_language);
 		Db.update(sql, params.toArray());
+		
 	}
 	
 }
