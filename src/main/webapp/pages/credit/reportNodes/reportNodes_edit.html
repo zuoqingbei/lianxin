@@ -1,24 +1,68 @@
 <% var smallModuleType = tempDict.getSysDictDetailString3('small_module_type',model.small_module_type+'','detail_name');%>
+<% var wordTableType = tempDict.getSysDictDetailString3('word_table_type',model.word_table_type+'','detail_name');%>
+<% var isMergerNext = tempDict.getSysDictDetailString3('boolean',model.is_merger_next+'','detail_name');%>
 <%
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
 include("/pages/template/head.html"){}
 %>
 <script type="text/javascript">
-    var oper = {
-        save:function(id){
+var oper;
+jQuery(function($) {
+    // 页面方法
+    oper = {
+        width : 450,
+        height : 500,
+        form : document.form1,
+        list : function() {
+            var url = 'credit/reportNodes/add';
+            this.form.action = url;
+            this.form.submit();
+        },
+        view : function(id) {
+            var url = 'credit/reportNodes/view?id='+id;
+            var title = '查看详细父节点';
+            Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
+        },
+        add : function() {
+            var url = "credit/reportNodes/add?pid=${pid!''}";
+            var title = '所有父节点';
+            Iframe(url, this.width*1.3, this.height*1.2, title);
+        },
+        edit : function(id) {
+            var url = 'credit/reportNodes/edit?id='+id;
+            var title = '修改父节点';
+            Iframe(url, this.width, this.height, title);
+        },
+        del : function(id) {
+            var url = 'credit/reportNodes/del?id='+id;
+            var title = '确认要删除父节点？';
+            Confirm(title, function() {
+                //window.location.href =  url;
+                form1.action = url;
+                form1.submit();
+            });
+
+        }, save:function(){
+         
             if(!validForm()) {
                 return false;
             }
-            console.log(id);
-            id = id;
-            console.log(id);
-            var url = 'credit/reportColumn/save?id='+id;
+       		 var url = 'credit/reportNodes/save';
             form1.action = url;
             form1.submit();
             return true;
         }
     };
+    //显示Menu索引
+    showMenu('page_report_manager');
+});
+
+//分页
+var paginator = function(page) {
+    oper.list();
+};
+    
 </script>
 
 <%
@@ -27,7 +71,6 @@ var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal"
       role="form" >
-    <input type="hidden" name="model.id" value="${model.id}" />
     <table class="table">
        
         <tr>
@@ -39,58 +82,55 @@ var bodyContent = {
         <tr>
             <td>父节点类型</td>
             <td>
-                <select name="model.smallModuleType" class="form-control" validname="字段类型">
+                <select name="model.small_module_type" class="form-control" validname="字段类型">
                     ${smallModuleType!}
                 </select>
             </td>
         </tr>
 
         <tr>
-            <td>表字段名</td>
+            <td>父节点名称</td>
             <td>
-                <input class="form-control" type="text" name="model.column_name" value="${model.column_name }" disabled  validname="表字段名" />
+                <input class="form-control" type="text" name="model.temp_name" value="${model.temp_name }"    validname="父节点名称" />
+            </td>
+        </tr>
+        <tr>
+            <td>浮动父节点ID</td>
+            <td>
+                <input class="form-control" type="number" name="model.float_parent"  validname='请输入数字类型!' value="${model.float_parent!'' }"  />
+            </td>
+        </tr>
+        <tr>
+            <td>word模板方向</td>
+            <td>
+            	 <select name="model.word_table_type" class="form-control" validname="字段类型">
+                   ${wordTableType!}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>对应锚点ID</td>
+            <td>
+                <input class="form-control" type="number" name="model.anchor_id" validname='请输入数字类型!' value="${model.anchor_id }"  />
+            </td>
+        </tr>
+         <tr>
+            <td>是否和下一个模板合并</td>
+            <td>
+            	 <select name="model.is_merger_next" class="form-control" validname="字段类型">
+                   ${isMergerNext!}
+                </select>
             </td>
         </tr>
         <tr>
             <td>输入提示</td>
             <td>
-                <input class="form-control" type="text" name="model.place_hold"  validname='输入提示' value="${model.place_hold }"  />
+                <input class="form-control" type="text" name="model.place_hold"  validname='错误提示' value="${model.place_hold }"  />
             </td>
         </tr>
-        <tr>
-            <td>后缀描述</td>
-            <td>
-                <input class="form-control" type="text" name="model.suffix" validname='后缀描述' value="${model.suffix }"  />
-            </td>
-        </tr>
-        <tr>
-            <td>验证正则</td>
-            <td>
-                <input class="form-control" type="text" name="model.reg_validation" validname='验证正则' value="${model.reg_validation }"  />
-            </td>
-        </tr>
-        <tr>
-            <td>错误提示</td>
-            <td>
-                <input class="form-control" type="text" name="model.error_msg"  validname='错误提示' value="${model.error_msg }"  />
-            </td>
-        </tr>
-        <tr>
-            <td>占位符(word模板)</td>
-            <td>
-                <input class="form-control" type="text" name="model.word_key"  validname='占位符(word模板)' value="${model.word_key }"  />
-            </td>
-        </tr>
-        <!--<tr>-->
-            <!--<td>表格形式(word模板)</td>-->
-            <!--<td>-->
-                <!--<input class="form-control" type="text" name="model.word_table_type"  validname='表格形式(word模板)' value="${model.word_table_type }"  />-->
-            <!--</td>-->
-        <!--</tr>-->
-        <tr>
             <td>排序</td>
             <td>
-                <input class="form-control" type="text" name="model.sort"  validname='排序' value="${model.sort }"  />
+                <input class="form-control" type="number" name="model.sort"  validname='排序' value="${model.sort }"  />
             </td>
         </tr>
         <tr>
@@ -104,7 +144,7 @@ var bodyContent = {
     <div style="height: 50px;clear: both;">&nbsp;</div>
     <nav class="navbar navbar-default navbar-fixed-bottom">
         <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
-            <button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+            <button class="btn btn-primary" onclick="oper.save();return false;">保 存</button>
             <button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
         </div>
     </nav>

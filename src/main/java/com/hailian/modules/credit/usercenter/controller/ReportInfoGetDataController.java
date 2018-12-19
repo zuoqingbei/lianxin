@@ -425,6 +425,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                         analerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.ANALER);
                     } else {
                         status = "306";//走翻译
+                        //todo 分析质检完成后自动分配翻译员
+                        transerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.TRANSER);
                     }
                 } else {
                     status = "293";    //信息录入

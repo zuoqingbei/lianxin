@@ -279,7 +279,7 @@ public class BaseConfig extends JFinalConfig {
 	 * @todo  定义模板
 	 * @time   2018年8月27日 下午5:44:46
 	 * @author zuoqb
-	 * @params
+	 * @params 
 	 */
 	private void configDirective(Constants me) {
 		//站点标签------------------

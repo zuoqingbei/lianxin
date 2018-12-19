@@ -5,6 +5,7 @@ import java.util.List;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.hailian.modules.credit.reportmanager.model.CreditReportModuleColumn;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -25,7 +26,7 @@ public class CreditReportModuleParentNodesDict extends BaseProjectModel<CreditRe
      */
     public Page<CreditReportModuleParentNodesDict> page(int pageNumber,int pageSize,String keyword ,String orderBy,List<Object> params) {
         StringBuffer from = new StringBuffer("select t.*,d.detail_name As  smallModuleType,d.detail_code As detailCode") ;
-        StringBuffer where = new StringBuffer(" from credit_report_module_parent_nodes_dict t left join (select detail_name,detail_code from sys_dict_detail where detail_type=small_module_type and del_flag=0) d on t.small_module_type=d.detail_code where t.del_flag = 0 ");
+        StringBuffer where = new StringBuffer(" from credit_report_module_parent_nodes_dict t left join (select detail_name,detail_code from sys_dict_detail where 	dict_type ='small_module_type' and del_flag=0) d on t.small_module_type=d.detail_code where t.del_flag = 0 ");
          
         /*if(StringUtils.isNotEmpty(keyword)){
             where.append(" and t.temp_name like concat('%',?,'%')");
@@ -40,4 +41,5 @@ public class CreditReportModuleParentNodesDict extends BaseProjectModel<CreditRe
         Page<CreditReportModuleParentNodesDict> page = dao.paginate(new Paginator(pageNumber, pageSize), from.toString(),where.toString(), params.toArray());
         return page;
     }
+
 }

@@ -175,9 +175,17 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
     }
     
     public Page<CreditReportModuleConf> page(int pageNumber,int pageSize,String keyword ,String orderBy,List<Object> params) {
-        StringBuffer from = new StringBuffer("select t.*,d.small_module_type_name As  smallModuleType ") ;
-        StringBuffer where = new StringBuffer(" from credit_report_module_conf t left join credit_report_small_module_type_dict d on t.small_module_type=d.small_module_type where t.del_flag = 0 and report_type=? and parent_temp='-9999999' ");
-         
+        StringBuffer from = new StringBuffer("select t.*,d.detail_name As  smallModuleType,s.detail_name As wordTableTypeName, e.detail_name As isMergerNext") ;
+        StringBuffer where = new StringBuffer(" from credit_report_module_conf t ");
+        where.append(" left join sys_dict_detail d on d.detail_code=t.small_module_type and d.dict_type='small_module_type' ");
+        where.append(" left join sys_dict_detail e on e.detail_code=t.is_merger_next and e.dict_type='boolean'  ");
+        where.append(" left join sys_dict_detail s on s.detail_code=t.word_table_type  and s.dict_type='word_table_type' ");
+        where.append(" where t.del_flag = 0 and t.report_type=? "
+        		+ "and t.parent_temp='-9999999' "
+        		 );
+        if(keyword!=null&&!StrUtils.isEmpty(keyword.trim())) {
+       	 where.append(" and t.temp_name like concat('%','"+keyword+"','%')  ");
+       }
         /*if(StringUtils.isNotEmpty(keyword)){
             where.append(" and t.temp_name like concat('%',?,'%')");
             params.add(keyword);
