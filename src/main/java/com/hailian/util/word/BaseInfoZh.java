@@ -15,6 +15,7 @@ import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import java.io.*;
@@ -54,7 +55,7 @@ public class BaseInfoZh {
     }
 
     /**
-     * 生成基本报告
+     * 报告生成
      * @param order  订单
      * @param userid 当前登录人
      */
@@ -128,6 +129,8 @@ public class BaseInfoZh {
                     table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
                     table = BaseWord.createTableH(child, rows);
+                }else if("z".equals(tableType)){
+                    BaseWord.createTableZ(child,rows,map);
                 }
                 map.put(key, table);
             }
@@ -238,26 +241,7 @@ public class BaseInfoZh {
             if ("11".equals(moduleType)) {
                 String selectInfo = "";
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
-                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
-                List<LinkedHashMap<String, String>> datas = new ArrayList<LinkedHashMap<String, String>>();
-                //取列值
-                for (int i = 0; i < child.size(); i++) {
-                    CreditReportModuleConf module = child.get(i);
-                    String column_name = module.getStr("column_name");
-                    String temp_name = module.getStr("temp_name");
-                    cols.put(column_name, temp_name);
-                }
-                //取数据
-                for (int i = 0; i < rows.size(); i++) {
-                    LinkedHashMap<String, String> row = new LinkedHashMap<String, String>();
-                    //取行
-                    BaseProjectModel model = (BaseProjectModel) rows.get(i);
-                    for (String column : cols.keySet()) {
-                        String value = model.get(column) != null ? model.get(column) + "" : "";
-                        row.put(column, value);
-                    }
-                    datas.add(row);
-                }
+                List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child, rows);
                 //jfreechart生成饼图（股东）
                 DefaultPieDataset pds = new DefaultPieDataset();
                 for (LinkedHashMap<String, String> m : datas) {
@@ -277,6 +261,38 @@ public class BaseInfoZh {
                 }
                 BaseWord.createPieChart(pds, _prePath + ".jpg");
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
+            }
+
+            //行业详情-柱图/线图
+            if("行业情况".equals(tempName)){
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
+                List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child,rows);
+                //准备图形数据
+                DefaultCategoryDataset barDataSet = new DefaultCategoryDataset();
+                DefaultCategoryDataset lineDataSet = new DefaultCategoryDataset();
+                for (LinkedHashMap<String, String> m : datas) {
+                    Object[] keys = m.keySet().toArray();
+                    String n = m.get(keys[0]);
+                    String v1 = m.get(keys[1]);
+                    String v2 = m.get(keys[2]);
+                    Double value1 = 0d , value2=0d;
+                    try {
+                        if (v1 != null && !"".equals(v1)) {
+                            v1 = m.get(keys[1]);
+                            value1 = Double.parseDouble(v1);
+                        }
+                        if (v2 != null && !"".equals(v2)) {
+                            v2 = m.get(keys[2]);
+                            value2 = Double.parseDouble(v2);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    barDataSet.addValue(value1, "y1", n);
+                    lineDataSet.addValue(value2,"y2",n);
+                }
+                BaseWord.createBarChart("",barDataSet,lineDataSet, _prePath + ".jpg");
+                map.put("bar", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
 
