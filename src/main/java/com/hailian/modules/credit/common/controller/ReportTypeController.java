@@ -147,11 +147,13 @@ public class ReportTypeController extends BaseProjectController {
    		url= fileconController.upload(pid,getFile("file_url"), name,userid);	
 	    }
        ReportTypeModel model = getModel(ReportTypeModel.class);
-       if (url!=null) {
+       if (url!=null&&!"".equals(url)) {
     	   model.set("tpl_path", url);
 	   }
 		
 		if (pid != null && pid > 0) { // 更新
+			model.set("update_by", userid);
+			model.set("update_date", now);
 			model.update();
 			renderMessage("修改成功");
 		} else { // 新增
