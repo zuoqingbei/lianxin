@@ -71,7 +71,7 @@ let ReportConfig = {
     				rows.forEach((item,index)=>{
     					if(item.brand_url) {
     						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
-    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+							item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
     					}
     				})
     				$table.bootstrapTable("load",rows)
@@ -348,8 +348,9 @@ let ReportConfig = {
 	    					 }
 	    					 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
 	    						 //信用等级
-	    						 let name =$(item).next().find("input").attr("name")
-	    						 $(item).next().find("input").val(temp.rows[0][name])
+	    						 if(temp.rows.length === 0){return}
+								 let name =$(item).next().find("select").attr("name")
+								 $(item).next().find("select").val(temp.rows[0][name])
 	    						  return;
 	    					 }
 	    					 if($(item).next().hasClass("textarea-module")) {
@@ -414,8 +415,9 @@ let ReportConfig = {
     			}
     			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     				//信用等级
-    				let name =$(item).next().find("input").attr("name")
-    				$(item).next().find("input").val(tempData[name])
+    				 if(temp.rows.length === 0){return}
+					 let name =$(item).next().find("select").attr("name")
+					 $(item).next().find("select").val(temp.rows[0][name])
     				return;
     			}
     			if($(item).next().hasClass("textarea-module")) {
@@ -500,8 +502,9 @@ let ReportConfig = {
     	    			}
     	    			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     	    				//信用等级
-    	    				let name =$(item).next().find("input").attr("name")
-    	    				$(item).next().find("input").val(temp.rows[0][name])
+    	    				 if(temp.rows.length === 0){return}
+							 let name =$(item).next().find("select").attr("name")
+							 $(item).next().find("select").val(temp.rows[0][name])
     	    				return;
     	    			}
     	    			if($(item).next().hasClass("textarea-module")) {
@@ -919,16 +922,34 @@ let ReportConfig = {
                 		_this.entityTitleEn.push(modulesToEn[index]["title"])
                 	}
                 	let smallModileType = item.smallModileType
-                	if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent) {
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                	}else if(smallModileType === '10'){
-                		//财务模块
-                		_this.cwGetSource = item.title.get_source;
-                		_this.cwAlterSource = item.title.alter_source;
-                		_this.cwDeleteSource = item.title.remove_source;
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
-                	}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                	if(item.title.is_merger_next === '0'){
+                		if(item.title.temp_name === '行业分析' || item.title.temp_name === 'industry_analysis'){
+                				return
+                		}
+                		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
+                			contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                		}else if(smallModileType === '10'){
+                			//财务模块
+                			_this.cwGetSource = item.title.get_source;
+                			_this.cwAlterSource = item.title.alter_source;
+                			_this.cwDeleteSource = item.title.remove_source;
+                			contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
+                			contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                		}
+                		
+                	}else {
+                		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent || item.title.temp_name === '行业分析') {
+                			contentHtml +=  `<div class="bg-f pb-4" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                		}else if(smallModileType === '10'){
+                			//财务模块
+                			_this.cwGetSource = item.title.get_source;
+                			_this.cwAlterSource = item.title.alter_source;
+                			_this.cwDeleteSource = item.title.remove_source;
+                			contentHtml +=  `<div class="bg-f pb-4gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
+                			contentHtml +=  `<div class="bg-f pb-4 "><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                		}
                 	}
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
@@ -1009,6 +1030,27 @@ let ReportConfig = {
 							            			})
 							            			
 							            			break;
+							            		case 'select3':
+							            			if(item.get_source === null){return}
+							            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
+							            			$.ajax({
+							            				type:'get',
+							            				url:urls,
+							            				async:false,
+							            				dataType:'json',
+							            				success:(data)=>{
+							            					let a = data.selectStr.replace(/value/g,'a')
+							            					formGroup += `<div class="form-group">
+							            						<label for="" class="mb-2">${item.temp_name}</label>
+							            						<input disabled="disabled" name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
+							            						<datalist id="cars">
+							            							${a}
+							            						</datalist>
+							            						</div>`
+							            				}
+							            			})
+							            			
+							            			break;
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
@@ -1078,11 +1120,22 @@ let ReportConfig = {
                 			let inputObj = item.contents[0]
                 			_this.formTitle.push(inputObj)
                 			_this.formIndex.push(index)
-                			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
-					                          <label >${inputObj.temp_name}</label>
-					                          <input disabled="disabled" type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
-					                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
-					                        </div>`
+                			let selectUrl = BASE_PATH + 'credit/front/ReportGetData/' + item.contents[0]["remove_source"]
+	            			$.ajax({
+	            				type:'get',
+	            				url:selectUrl,
+	            				async:false,
+	            				dataType:'json',
+	            				success:(data)=>{
+	            					contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
+	            						<label >${inputObj.temp_name}</label>
+	            						<select disabled="disabled" type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
+	            							 ${data["selectStr"]}
+	            						</select>
+	            						<span id="helpId" class="text-muted">${inputObj.suffix}</span>
+	            						</div>`
+	            				}
+            				})
                 			
                 			let tableContents = []
                 			item.contents.forEach((item,index)=>{
@@ -1279,6 +1332,27 @@ let ReportConfig = {
 				            			})
 				            			
 				            			break;
+				            		case 'select3':
+				            			if(item_en.get_source === null){return}
+				            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item_en.get_source
+				            			$.ajax({
+				            				type:'get',
+				            				url:urls,
+				            				async:false,
+				            				dataType:'json',
+				            				success:(data)=>{
+				            					let a = data.selectStr.replace(/value/g,'a')
+				            					formGroup += `<div class="form-group">
+				            						<label for="" class="mb-2">${item_en.temp_name}</label>
+				            						<input  name=${item_en.column_name} id="${item_en.column_name}_${ind}" class="form-control" list="cars1">
+				            						<datalist id="cars1">
+				            							${a}
+				            						</datalist>
+				            						</div>`
+				            				}
+				            			})
+				            			
+				            			break;
 				            		case 'textarea':
 				            			formGroup += `  <div class="form-group"  style="width: 100%">
 						                                    <label  class="mb-2">${item_en.temp_name}</label>
@@ -1352,11 +1426,22 @@ let ReportConfig = {
             			let inputObj = item_en.contents[0]
             			_this.formTitleEn.push(inputObj)
             			_this.formIndexEn.push(index)
-            			contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydjEn">
-				                          <label >${inputObj.temp_name}</label>
-				                          <input type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:blue">
-				                          <span id="helpId" class="text-muted">${inputObj.suffix}</span>
-				                        </div>`
+            			let selectUrl = BASE_PATH + 'credit/front/ReportGetData/' + item_en.contents[0]["remove_source"]
+	            			$.ajax({
+	            				type:'get',
+	            				url:selectUrl,
+	            				async:false,
+	            				dataType:'json',
+	            				success:(data)=>{
+	            					contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydjEn">
+	            						<label >${inputObj.temp_name}</label>
+	            						<select type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
+	            							 ${data["selectStr"]}
+	            						</select>
+	            						<span id="helpId" class="text-muted">${inputObj.suffix}</span>
+	            						</div>`
+	            				}
+            				})
             			
             			let tableContents = []
             			item_en.contents.forEach((item,index)=>{
@@ -1423,8 +1508,8 @@ let ReportConfig = {
             			_this.formTitleEn.push(item_en.title)
             			_this.formIndexEn.push(index)
             			
-            			let str = item.contents[0].get_source;
-            			let this_item = item
+            			let str = item_en.contents[0].get_source;
+            			let this_item = item_en
             			let strItem = str.split("&")
             			contentHtml += `<div class="table-content1 form-group radio-con" style="background:#fff">
 				                        	<div class="radio-box">`
@@ -1606,8 +1691,13 @@ let ReportConfig = {
 	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
 	   				xhNum ++;
 	   				ele["mySort"] = i
+	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
+	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
+	   					//102报告类型需要传参
+	   					url += `?targetlanguage=cht`
+	   				}
 	   				$.ajax({
-	   					url:BASE_PATH + `credit/ordertranslate/translate`,
+	   					url,
 	   					type:'post',
 //	   					async:false,
 	   					data:{
@@ -1766,8 +1856,13 @@ let ReportConfig = {
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表单翻译
+    			let url = BASE_PATH + `credit/ordertranslate/translate`;
+   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
+   					//102报告类型需要传参
+   					url += `?targetlanguage=cht`
+   				}
     			 $.ajax({
-    				 url:BASE_PATH + `credit/ordertranslate/translate`,
+    				 url,
     				 type:'post',
     				 data:{
     					 dataJson:JSON.stringify(_this.formDataArr[index])
@@ -1794,8 +1889,9 @@ let ReportConfig = {
     					 dataJsonObj["id"] = id
     				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     					 //信用等级
-    					 let name =$(item).next().find("input").attr("name")
-    					 let val =$(item).next().find("input").val()
+    					 let name =$(item).next().find("select").attr("name")
+    					 let val =$(item).next().find("select option:selected").val()
+    					 val = val?val:''
     					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框
@@ -1860,8 +1956,9 @@ let ReportConfig = {
     					 dataJsonObj["id"] = id
     				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     					 //信用等级
-    					 let name =$(item).next().find("input").attr("name")
-    					 let val =$(item).next().find("input").val()
+    					 let name =$(item).next().find("select").attr("name")
+    					 let val =$(item).next().find("select option:selected").val()
+    					  val = val?val:''
     					 dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
     				 }else if($(item).next().hasClass("textarea-module")) {
     					 //无标题多行文本输入框

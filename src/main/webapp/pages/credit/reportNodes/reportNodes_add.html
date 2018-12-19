@@ -38,7 +38,6 @@
                 });
 
             }, save:function(){
-            	alert("进入保存js功能")
                 if(!validForm()) {
                     return false;
                 }
@@ -65,16 +64,16 @@
     <table class="table">
         <thead>
         <tr>
-           	<th name="t.id" class="sorting">节点id</th>
-           	  <th name="t.temp_name" class="sorting">节点名称</th>
-            <th name="smallModuleType" class="sorting">节点类型</th>
+           	<!-- <th name="t.id" >节点id</th> -->
+           	  <th name="t.temp_name" >节点名称</th>
+            <th name="smallModuleType"  >节点类型</th>
           
             <th>操作</th>
         </tr>
         </thead>
         <% for(item in page.list){ %>
         <tr>
-            <td>${item.id }</td>
+          <!--   <td>${item.id }</td> -->
              <td>${item.temp_name }</td>
             <td>${item.smallModuleType }</td>
             <td><input type="checkbox" name="nodesId" value="${item.id}"/></td>

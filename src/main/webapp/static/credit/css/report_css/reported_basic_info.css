@@ -64,6 +64,9 @@ label {
 .firm-info .form-control {
     width: var(--inputWidthMD);
 }
+#xydj .form-control,#xydjEn .form-control {
+	 width: var(--inputWidthsm);
+}
 
 .table-content1,.table-content2,.table-content3,.table-content4,.table-content5,.table-content6,.table-content7,.table-content9,.table-content10 {
     padding: 1.25rem 2rem;
@@ -113,6 +116,7 @@ label {
 }
 .bg-f {
     min-height: auto;
+    box-shadow:none;
 }
 
 .btn-block:hover {
