@@ -18,6 +18,7 @@ import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
 import com.feizhou.swagger.annotation.Params;
+import com.hailian.api.constant.RoleCons;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
@@ -428,7 +429,8 @@ public class HomeController extends BaseProjectController {
 			model.set("status", "311");
 		}
 		//获取报告员id
-		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
+		String reportIdtoOrder = OrderManagerService.service.getUserIdtoOrder(RoleCons.REPORTER);//根据自动分配规则获取该订单指定的报告员
+//		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
 		model.set("report_user", reportIdtoOrder);
 		//国外代理自动分配 除韩国新加坡马来西亚
 		boolean isNeedAgent=false;//是否需要自动分配
