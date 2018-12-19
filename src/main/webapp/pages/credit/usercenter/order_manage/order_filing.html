@@ -22,9 +22,21 @@
             border: 1px solid #1890ff;
             color: #1890ff;
         }
+
+
+        .my_tab:hover{
+            color: #1890ff;
+            border-bottom: .25rem solid #1990FF;
+        }
+        .my_tab{
+            color: rgb(102,102,102);
+            font-size: 1.375rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+        }
         .btn-primaryAc{
-            background-color: #1890ff;
-            color: #ffffff;
+            color: #1890ff;
+            border-bottom: .25rem solid #1990FF;
         }
     </style>
 </head>
@@ -48,9 +60,9 @@
                 <div class="table-content">
                     <div class="bg-f pt-4">
                     	<button class="btn btn-primary mx-5" id="dl_btn" data-toggle="modal" data-target="#exampleModalCenter_allocation2"> 批量分配</button>
-                    	 <button class="btn btn-primary mx-3" id="dl_btn1" data-toggle="modal" data-target="#"modal style="float:right" > 未分配</button>
-                         <button class="btn btn-primary mx-3" id="dl_btn2" data-toggle="modal" data-target="#modal" style="float:right" > 已分配</button>
-                        <button class="btn btn-primary mx-3 btn-primaryAc" id="dl_btn3" data-toggle="modal" data-target="#modal" style="float:right"> 全部订单</button>
+                    	 <div class="my_tab" id="dl_btn1" data-toggle="modal" data-target="#modal" style="float:right;margin-right: 2.5rem" > 未分配</div>
+                         <div class="my_tab" id="dl_btn2" data-toggle="modal" data-target="#modal" style="float:right" > 已分配</div>
+                        <div class="my_tab btn-primaryAc" id="dl_btn3" data-toggle="modal" data-target="#modal" style="float:right"> 全部订单</div>
                        
                        
                         <table id="table"
