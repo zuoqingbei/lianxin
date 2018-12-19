@@ -24,6 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.alibaba.fastjson.JSON;
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
+import com.hailian.api.constant.RoleCons;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
@@ -399,7 +400,8 @@ public class OrderPoiController extends BaseProjectController {
 				  model.set("status", status);
 			  }
 			  try {
-				String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();//根据自动分配规则获取该订单指定的报告员
+				String reportIdtoOrder = OrderManagerService.service.getUserIdtoOrder(RoleCons.REPORTER);//根据自动分配规则获取该订单指定的报告员
+//				String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
 				model.set("report_user", reportIdtoOrder);//自动分配订单
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
