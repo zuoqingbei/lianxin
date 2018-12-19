@@ -681,7 +681,7 @@ public class OrderProcessController extends BaseProjectController{
             }else{
                 map.put("status", code);
             }
-            String ismail = (String) getRequest().getParameter("ismail");
+          
             String companyid = (String) getRequest().getParameter("company_id");
             String agent_id = (String) getRequest().getParameter("agent_id");
             map.put("agent_id", agent_id);
@@ -703,7 +703,14 @@ public class OrderProcessController extends BaseProjectController{
 		           }
 		           PublicUpdateMod(map);
 				}
-			}
+			}else {
+				  String oid = (String) getRequest().getParameter("model.id");
+                AgentPriceModel agentPrice = AgentPriceService.service.getAgentPriceByOrder(oid);
+                if(agentPrice !=null){
+                    map.put("agent_priceId", agentPrice.get("id"));
+                }
+                PublicUpdateMod(map);
+		   }
             renderJson(new ResultType());
         } catch (Exception e) {
             e.printStackTrace();
