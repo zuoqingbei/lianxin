@@ -178,71 +178,71 @@ public class ReportNodeController extends BaseProjectController {
             	CreditReportModuleParentNodesDict model2 = new CreditReportModuleParentNodesDict();
             	model2._setAttrs(model).set("id", id);
     			model2.update();
-               result =  Db.update("INSERT INTO  `credit_report_module_conf` (" + 
-              		"	`parent_temp`," + 
-              		"	`small_module_type`," + 
-              		"	`node_level`," + 
-              		"	`report_type`," + 
-              		"	`float_parent`," + 
-              		"	`get_source`," + 
-              		"	`remove_source`," + 
-              		"	`alter_source`," + 
-              		"	`remark`," + 
-              		"	`word_key`," + 
-              		"	`word_table_type`," + 
-              		"	`temp_name`," + 
-              		"	`column_name`," + 
-              		"	`sort`," + 
-              		"	`field_type`," + 
-              		"	`place_hold`," + 
-              		"	`suffix`," + 
-              		"	`error_msg`," + 
-              		"	`reg_validation`," + 
-              		"	`anchor_id`," + 
-              		"	`create_by`," + 
-              		"	`update_by`," + 
-              		"	`update_date`," + 
-              		"	`create_date`," + 
-              		"	`del_flag`," + 
-              		"	`is_merger_next`," + 
-              		"	`table_id`" + 
-              		") " + 
-              		"	SELECT" + 
-              		"		 " + 
-              		"			`parent_temp`," + 
-              		"			`small_module_type`," + 
-              		"			`node_level`," + 
-              		"			`report_type`," + 
-              		"			`float_parent`," + 
-              		"			`get_source`," + 
-              		"			`remove_source`," + 
-              		"			`alter_source`," + 
-              		"			`remark`," + 
-              		"			`word_key`," + 
-              		"			`word_table_type`," + 
-              		"			`temp_name`," + 
-              		"			`column_name`," + 
-              		"			`sort`," + 
-              		"			`field_type`," + 
-              		"			`place_hold`," + 
-              		"			`suffix`," + 
-              		"			`error_msg`," + 
-              		"			`reg_validation`," + 
-              		"			`anchor_id`," + 
-              		"			`create_by`," + 
-              		"			`update_by`," + 
-              		"			`update_date`," + 
-              		"			`create_date`," + 
-              		"			`del_flag`," + 
-              		"			`is_merger_next`," + 
-              		"			`id`" + 	
-              		" " + 
-              		"	FROM" + 
-              		"		credit_report_module_parent_nodes_dict" + 
-              		"	WHERE" + 
-              		"		id= " + 
+               result =  Db.update("INSERT INTO  `credit_report_module_conf` (" +
+              		"	`parent_temp`," +
+              		"	`small_module_type`," +
+              		"	`node_level`," +
+              		"	`report_type`," +
+              		"	`float_parent`," +
+              		"	`get_source`," +
+              		"	`remove_source`," +
+              		"	`alter_source`," +
+              		"	`remark`," +
+              		"	`word_key`," +
+              		"	`word_table_type`," +
+              		"	`temp_name`," +
+              		"	`column_name`," +
+              		"	`sort`," +
+              		"	`field_type`," +
+              		"	`place_hold`," +
+              		"	`suffix`," +
+              		"	`error_msg`," +
+              		"	`reg_validation`," +
+              		"	`anchor_id`," +
+              		"	`create_by`," +
+              		"	`update_by`," +
+              		"	`update_date`," +
+              		"	`create_date`," +
+              		"	`del_flag`," +
+              		"	`is_merger_next`," +
+              		"	`table_id`" +
+              		") " +
+              		"	SELECT" +
+              		"		 " +
+              		"			`parent_temp`," +
+              		"			`small_module_type`," +
+              		"			`node_level`," +
+              		"			`report_type`," +
+              		"			`float_parent`," +
+              		"			`get_source`," +
+              		"			`remove_source`," +
+              		"			`alter_source`," +
+              		"			`remark`," +
+              		"			`word_key`," +
+              		"			`word_table_type`," +
+              		"			`temp_name`," +
+              		"			`column_name`," +
+              		"			`sort`," +
+              		"			`field_type`," +
+              		"			`place_hold`," +
+              		"			`suffix`," +
+              		"			`error_msg`," +
+              		"			`reg_validation`," +
+              		"			`anchor_id`," +
+              		"			`create_by`," +
+              		"			`update_by`," +
+              		"			`update_date`," +
+              		"			`create_date`," +
+              		"			`del_flag`," +
+              		"			`is_merger_next`," +
+              		"			`id`" +
+              		" " +
+              		"	FROM" +
+              		"		credit_report_module_parent_nodes_dict" +
+              		"	WHERE" +
+              		"		id= " +
               		id);
-             
+
 
             }
         }

@@ -67,7 +67,7 @@ public class BaseInfoZh {
         //获取报告信息
         ReportTypeModel reportTypeModel = ReportTypeModel.dao.findById(reportType);
         //报告文件路劲
-        String tplPath = reportTypeModel.getStr("tpl_path");
+        String tplPath = "http://"+ ip + ":" + serverPort +"/"+ reportTypeModel.getStr("tpl_path");
         //报告名称
         String reportName = reportTypeModel.getStr("name");
 

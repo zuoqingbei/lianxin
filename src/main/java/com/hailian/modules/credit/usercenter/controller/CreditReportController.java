@@ -23,7 +23,7 @@ public class CreditReportController extends BaseProjectController{
     //登录
     public void report(){
         Integer userid = getSessionUser().getUserid();
-        CreditOrderInfo order =  CreditOrderInfo.dao.findById("777976");
+        CreditOrderInfo order =  CreditOrderInfo.dao.findById("778157");
         //BaseInfoZh test = new BaseInfoZh();
         BaseInfoZh.reportTable(order,"1",userid);
         //BusinessZh test = new BaseInfoZh();
