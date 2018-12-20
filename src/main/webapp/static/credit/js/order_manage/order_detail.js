@@ -81,7 +81,7 @@ let OrderDetail = {
     // 设置内容数据
     setContent() {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info mb-4"></div>');
-        let $moduleTitle = $('<div class="l-title"></div>');
+        let $moduleTitle = $('<h3 class="l-title"></h3>');
         this.data.modules.forEach((item) => {
             // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
             let smallModuleType = item.smallModileType;
@@ -277,7 +277,7 @@ let OrderDetail = {
                     $wrap.append(`<div class='module-content type20-content'>${$type20_div[0].outerHTML}</div>`);
                     //绑数
                     $.get(this.getUrl(item), (data) => {
-                        if (data.rows) {
+                        if (data.rows && data.rows.length > 0) {
                             let column_name_radio = item.title.column_name.split(',')[0];
                             let column_name_text = item.title.column_name.split(',')[1];
                             let radioSelect = data.rows[0][column_name_radio];
@@ -296,10 +296,10 @@ let OrderDetail = {
                         .reduce(function (prev, cur) {
                             return `${prev}<input class="my-2" type="radio" name="registration_change" >${cur}<br>`
                         }));
-                    $wrap.append(`<div class='module-content type20-content'>${$type21_div[0].outerHTML}</div>`);
+                    $(".main .table-content").append($wrap);
                     //绑数
                     $.get(this.getUrl(item), (data) => {
-                        if (data.rows) {
+                        if (data.rows && data.rows.length > 0) {
                             let radioSelect = data.rows[0][item.title.column_name];
                             $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
                             if (radioSelect === 1) {
@@ -310,7 +310,7 @@ let OrderDetail = {
                         }
                     });
                     break;
-                // 质检表单
+                // 23-质检表单
                 case '23':
                     $wrap.append(type23_html);
                     $wrap.find("[for=grade]").text(item.contents[0].temp_name + ' : ')
@@ -389,54 +389,142 @@ let OrderDetail = {
                         $("#save").trigger('click', 'submit');
                     });
                     break;
-                // 企业结构树形图
+                // 25-企业结构树形图
                 case '25':
-                    /*$("#" + itemId).append(`<div class="ec03_tree" style="height: 32rem;"></div>`);
+                    $wrap.append(`<div class='module-content type25-content'><div id="ec03_tree" style="height: 32rem;"></div></div>`);
+                    $(".main .table-content").append($wrap);
+                    let getLastChildren = str => {
+                        if (!str) {
+                            return ''
+                        }
+                        let lastIndex = str.lastIndexOf('[')
+                        str = str.substr(0, lastIndex)
+                        return str;
+                    };
                     let data = [
-                        '人/男人/老头,中年男子,小男孩',
-                        '人/女人/老太太,中年妇女,小姑娘',
-                        '人/机器人',
-                        '神仙'
+                        '人/男人/老头,小男孩',
+                        '神仙/天神',
+                        '人/男人/男子',
+                        '人/女人/老太太',
+                        '人/机器人/alpha狗',
+                        '魔鬼',
+                        '人/女人/妇女,小姑娘',
                     ];
-                    let [obj,currentObj] = [{},obj];
-                    data.forEach((item,index)=>{
-                        item.split("/").forEach((leverData,index)=>{
-                            if(leverData.includes(',')){
-                                leverData.split(",").forEach((child)=>{
-                                    obj.children.push({name:leverData});
-                                })
-                            }
-                            currentObj.children.push({name:leverData});
-                            obj = currentObj;
-                            currentObj = currentObj[0].children;
+                    // 逗号问题
+                    let newData = [];
+                    data = data.forEach(function (item) {
+                        if (item.includes(',')) {
+                            let arr = item.substring(item.lastIndexOf('/') + 1).split(',').forEach(function (str) {
+                                newData.push(item.substring(0, item.lastIndexOf('/') + 1) + str)
+                            });
+                        } else {
+                            newData.push(item)
+                        }
+                    });
 
-                        })
-                    })
-                    console.log(obj)
-                    let chart = echarts.init($(`#${itemId} #ec03_tree`)[0]);
-                    chart.setOption(opt_pie);
-                    chart.setOption({
-                        color: this.chartColors,
-                        series: [{
-                            data: chartData,
-                        }].map(function (item) {
-                            return $.extend(true, item, {
-                                type: 'pie',
+                    // 封装成数组
+                    let objArr = [];
+                    newData.forEach((item, index) => {
+                        let obj = {};
+                        item.split("/").forEach((leverData, levelIndex) => {
+                            let path = '.children[0]'.repeat(levelIndex);
+                            eval('obj' + path).children = [];
+                            eval('obj' + path).children.push({name: leverData});
+                        });
+                        objArr.push(obj)
+                    });
+                    console.log("~~~对象数组：", objArr);
+
+                    //递归初始化
+                    let [targetPosition, currPosition] = ['', ''];
+                    let targetObj = objArr[0];
+                    objArr.forEach(function (obj, index) {
+                        if (index > 0) {
+                            targetPosition = '.children[0]';
+                            currPosition = '.children[0]';
+                            process(obj);
+                        }
+                    });
+
+                    //递归调用遍历属性
+                function process(obj) {
+                    let i = '';
+                    eval('targetObj' + getLastChildren(targetPosition)).forEach(function (node, index) {
+                        console.log(node)
+                        if (node.name === eval('obj' + currPosition + '.name')) {
+                            targetPosition = getLastChildren(targetPosition) + '[' + index + ']';
+                            i = index;
+                        }
+                    });
+                    if (typeof i !== 'number') { //属性不存在，直接添加
+                        eval('targetObj' + getLastChildren(targetPosition)).push(eval('obj' + currPosition))
+                        return;
+                    }
+                    targetPosition += '.children[0]'
+                    currPosition += '.children[0]'
+                    if (eval('obj' + getLastChildren(currPosition))) {
+                        process(obj)
+                    }
+                }
+
+                    console.log("~~~targetObj：", JSON.stringify(targetObj, undefined, 2));
+                    let myChart = echarts.init($("#ec03_tree")[0]);
+                    myChart.setOption(option = {
+                        tooltip: {
+                            trigger: 'item',
+                            triggerOn: 'mousemove'
+                        },
+                        series: [
+                            {
+                                type: 'tree',
+                                data: [$.extend(true, {name: '所有'}, targetObj)],
+                                left: '2%',
+                                right: '2%',
+                                top: '8%',
+                                bottom: '20%',
+                                symbol: 'emptyCircle',
+                                orient: 'vertical',
+                                expandAndCollapse: true,
+                                initialTreeDepth: 3,
                                 label: {
-                                    formatter: '{b}: {d}%'
+                                    normal: {
+                                        position: 'top',
+                                        // rotate: -90,
+                                        verticalAlign: 'middle',
+                                        align: 'right',
+                                        fontSize: 9
+                                    }
                                 },
-                                radius: '28%',
-                                center: ['50%', '52%'],
-                                startAngle: '45'
-                            })
-                        })
-                    }, true);
-
-                    break;*/
+                                leaves: {
+                                    label: {
+                                        normal: {
+                                            position: 'bottom',
+                                            // rotate: -90,
+                                            verticalAlign: 'middle',
+                                            align: 'left'
+                                        }
+                                    }
+                                },
+                                animationDurationUpdate: 750
+                            }
+                        ]
+                    });
+                    break;
+                // 26-文本框+柱线图
+                case '26':
+                    $wrap.append(`<div class='module-content type26-content'>
+                                    <div class="border multiText m-4 p-2"></div>
+                                    <div class="chartBox" id="ec03_lineBar" style="height: 32rem;"></div>
+                                </div>`);
+                    $(".main .table-content").append($wrap);
+                    this.drawChart($wrap)['lineBar']('#ec03_lineBar');// 绘制图表
+                    break;
                 default:
                     console.warn(item.title.temp_name + '没有找到模块类型！');
             }
-            $(".main .table-content").append($wrap);
+            if (!['1', '11', '22','26'].includes(smallModuleType)) {
+                $(".main .table-content").append($wrap);
+            }
         });
         this.setCwData();
         // 质检结果下拉列表
@@ -455,7 +543,6 @@ let OrderDetail = {
         * type10Items：其data_source可获取表格数据内容，其中parent_sector、son_sector和表格顺序对应
         * */
         let [type9MulText, type9TableHead, type10Items] = [this.type9MulText, this.type9TableHead, this.type10Items];
-        console.info('type9MulText', type9MulText, '\ntype9TableHead', type9TableHead, '\ntype10Items', type10Items);
         let $tableBox = $('<div class="tableBox m-4"><h4 class="text-center p-3"></h4></div>');
         let $allTable = $('<div class="tableAll"></div>');
         type9TableHead.forEach(function (item) {
@@ -464,7 +551,9 @@ let OrderDetail = {
         });
         // 获取多行文本框的标签
         let $mulTextBox = $('<div class="mulTextBox"></div>');
-        if(!type9MulText.contents){return}
+        if (!type9MulText.contents) {
+            return
+        }
         type9MulText.contents.forEach(function (content, index) {
             if (index < 9) {
                 return
@@ -661,7 +750,7 @@ let OrderDetail = {
         for (let i = 0; i < 12; i++) {
             $ul.append($li.clone().children('span:eq(0)').text(this.processNames[i]).end());
         }
-        $ul.children('li:eq(9)').after($li.clone().css("visibility", 'hidden')).after('<br>');
+        $ul.children('li:eq(7)').after($li.clone().css("visibility", 'hidden')).after('<br>');
         return $ul;
     },
     /**
@@ -672,11 +761,12 @@ let OrderDetail = {
      * @param otherProperty get方法中的其他字段参数
      */
     setTable(item, $wrap, chartType, otherProperty) {
+        $wrap.append(`<div class="module-content type${item.smallModileType}-content tabelBox px-4 pt-4 pb-0"></div>`);
         // 有图表的取截止时间
-        if (chartType === 'pie') {
-            $wrap.append(`<h3 class="guDongSubTitle">${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span> </h3>`);
+        if (item.smallModileType === '11') {
+            $wrap.find(".module-content").append(`<h4>${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span> </h4>`);
             $.get(this.getUrl(item, 'save_source'), (data) => {
-                if (data.rows) {
+                if (data.rows && data.rows.length > 0) {
                     $wrap.find('.asOf').text(`${data.rows[0] ? data.rows[0].date : ''}`);
                 }
             });
@@ -687,56 +777,55 @@ let OrderDetail = {
             $table.children('thead').append(`<th>${item.temp_name}</th>`);
             columnNameArr.push(item.column_name);
         });
-        $wrap.append(`<div class="module-content tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`)
+        $wrap.find(".module-content").append(`${$table[0].outerHTML}`)
+        $(".main .table-content").append($wrap);
         // 绑数
         $.post(this.getUrl(item, otherProperty), {selectInfo: type1_extraUrl}, (data) => {
-                if (data.rows) {
+                if (data.rows && data.rows.length > 0) {
                     if (data.rows.length === 0) {
                         $wrap.find('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</tr></td>`);
                         return;
                     }
                     let chartData = [];
                     data.rows.forEach((row) => {
-                        let $tr = $('<tr></tr>');
-                        switch (chartType) {
-                            case 'pie':
+                        // 封装图表数据
+                        switch (item.smallModileType) {
+                            //饼图
+                            case '11':
                                 let money = row.money;
                                 chartData.push({
                                     name: row.name,
                                     value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
                                 });
                                 break;
-                            case 'lineBar':
-                                chartData = {
-                                    line: [0.06, 0.062, 0.068, 0.064, 0.062],
-                                    bar: [4800, 4700, 4800, 5000, 4500]
-                                };
+                            //柱线组合图
+                            case '22':
+                                // 这里遍历组合图表数据
                                 break;
                         }
-                        columnNameArr.forEach((columnName) => {
-                            $tr.append(`<td>${row[columnName] ? row[columnName] : '-'}</td>`);
+                        let $tr = $('<tr></tr>');
+                        columnNameArr.forEach(columnName => {
+                            $tr.append(`<td>${row[columnName] ? row[columnName] : '-'}</td>`);// 没数据的显示 “-”
                         });
                         $wrap.find('tbody').append($tr);
                     });
-                    $wrap.append(`<!--<div class="module-content tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>-->`);
                     if (Array.isArray(chartData) && chartData.length > 0 || typeof chartData === 'object' && Object.keys(chartData).length > 0) { // 绘制饼图
-                        this.drawChart(item, chartData)[chartType]();// 绘制图表
+                        this.drawChart($wrap, chartData)[chartType]();// 绘制图表
                     }
                 } else {
-                    console.warn(item.title.temp_name + `-表格${chartType ? '&图表' : ''}-没有返回数据！`);
-                    // $wrap.append(`<div class="module-content tabelBox px-4 pt-4 pb-0">${$table[0].outerHTML}</div>`);
+                    if (item.smallModileType === '22') {
+                        this.drawChart($wrap)['lineBar']();// 绘制图表
+                    }
+                    console.warn(item.title.temp_name + `-表格${chartType ? '&柱线图表' : ''}-没有返回数据！`);
                 }
             }
         );
     },
-    drawChart(item, chartData) {
-        let itemId = item.title.id;
+    drawChart($wrap, chartData) {
         return {
             pie: () => {
-                $("#" + itemId).append(`
-                        <h3 class="guDongSubTitle">出资比例(%)</h3>
-                        <div class="chartBox" style="height: 32rem;"></div>`);
-                let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
+                $wrap.find(".module-content").append(`<h4 class="guDongSubTitle">出资比例(%)</h4><div class="chartBox" id="ec01_pie" style="height: 32rem;"></div>`)
+                let chart = echarts.init($wrap.find(".module-content .chartBox")[0]);
                 chart.setOption(opt_pie);
                 chart.setOption({
                     color: this.chartColors,
@@ -755,37 +844,38 @@ let OrderDetail = {
                     })
                 }, true);
             },
-            lineBar: () => {
-                $("#" + itemId).append(`
-                        <h3 class="guDongSubTitle">出资比例(%)</h3>
-                        <div class="chartBox" style="height: 28rem;"></div>`);
-                let chart = echarts.init($(`#${itemId} .chartBox`)[0]);
-                // chart.setOption(opt_lineBar);
-
+            lineBar: (elem) => {
+                let chart;
+                if(elem){
+                    chart = echarts.init($(elem)[0]);
+                }else{
+                    $wrap.find(".module-content").append(`<div class="chartBox" id="ec02_lineBar" style="height: 24rem;"></div>`)
+                    chart = echarts.init($wrap.find(".module-content .chartBox")[0]);
+                }
+                chartData = chartData || {
+                    line: [0.06, 0.062, 0.068, 0.064, 0.062],
+                    bar: [4800, 4700, 4800, 5000, 4500],
+                    xAxisData: [ '这是', '测试', '数据',2016, 2017]
+                };
                 chart.setOption({
                     color: ['#1890ff', '#facc15'],
-
                     legend: {show: true},
                     xAxis: {
                         axisLine: {show: false},
                         axisTick: {show: false},
-                        data: [2014, 2015, 2016, 2017, 2018]
+                        data: chartData.xAxisData
                     },
                     // grid:{top:'15%'},
                     yAxis: [{
                         name: 'y1',
                         axisLine: {show: false},
                         axisTick: {show: false},
-                        // splitNumber:6,
-                        // interval:5
                     }, {
                         name: 'y2',
                         axisLine: {show: false},
                         axisTick: {show: false},
                         axisLabel: {interval: 2},
                         splitLine: {lineStyle: {type: 'dashed'}}
-                        // splitNumber:6,
-                        // interval:5
                     }],
                     series: [{
                         type: 'bar',
@@ -799,7 +889,6 @@ let OrderDetail = {
                         data: chartData.line,
                     }].map(function (item) {
                         return $.extend(true, item, {
-                            // type: 'pie',
                             label: {
                                 formatter: '{b}: {d}%'
                             },
