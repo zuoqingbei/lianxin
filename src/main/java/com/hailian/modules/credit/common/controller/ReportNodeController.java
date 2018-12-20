@@ -47,7 +47,7 @@ public class ReportNodeController extends BaseProjectController {
         List<Object> params = new ArrayList<>();
         //params.add(getPara("pid"));
         params.add(reportType); 
-		Page<CreditReportModuleConf> pager = CreditReportModuleConf.dao.page(pageNumber, pageSize, "", orderBy, params);
+		Page<CreditReportModuleConf> pager = CreditReportModuleConf.dao.page(pageNumber, pageSize, keyword, orderBy, params);
         setAttr("page", pager);
         setAttr("reportType", reportType);
 		keepPara();
@@ -145,22 +145,16 @@ public class ReportNodeController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void save() {
-		Integer pid = getParaToInt("id");
         CreditReportModuleConf model = getModel(CreditReportModuleConf.class);
+        if(StrUtils.isEmpty(model.get("id")+"")) {
+        	renderMessage("实体id不能为空!");
+        }
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by",userid);
 		model.set("update_date", now);
-		if (pid != null && pid > 0) { // 更新
-			model.update();
-			renderMessage("修改成功");
-		} else { // 新增
-			model.remove("id");
-			model.set("create_by", userid);
-			model.set("create_date", now);
-			model.save();
-			renderMessage("保存成功");
-		}
+	    model.update();
+	    renderMessage("修改成功");
 	}
 
     /**
@@ -209,7 +203,9 @@ public class ReportNodeController extends BaseProjectController {
               		"	`update_by`," + 
               		"	`update_date`," + 
               		"	`create_date`," + 
-              		"	`del_flag`" + 
+              		"	`del_flag`," + 
+              		"	`is_merger_next`," + 
+              		"	`table_id`" + 
               		") " + 
               		"	SELECT" + 
               		"		 " + 
@@ -237,7 +233,9 @@ public class ReportNodeController extends BaseProjectController {
               		"			`update_by`," + 
               		"			`update_date`," + 
               		"			`create_date`," + 
-              		"			`del_flag`" + 
+              		"			`del_flag`," + 
+              		"			`is_merger_next`," + 
+              		"			`id`" + 	
               		" " + 
               		"	FROM" + 
               		"		credit_report_module_parent_nodes_dict" + 

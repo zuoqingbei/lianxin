@@ -39,6 +39,7 @@
 
             },
             peizhi : function(id) {
+            	alert(id)
                 var url = 'credit/reportColumn/list?pid='+id+"&reportType=${reportType!''}";
                 var title = '查看详细父节点';
                 //Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
@@ -66,7 +67,7 @@
 
     <div class="tableSearch">
         <% //查询列表 %>
-        搜索内容
+        <b>父节点名称:</b>
         <div class="form-group">
             <input class="form-control" type="text" name="keyWord" value="${keyWord!''}" placeholder="请输入关键字" required='required' />
         </div>
@@ -88,9 +89,10 @@
             <th name="d.small_module_type_name" class="sorting">父节点类型</t>
             <th name="t.temp_name" class="sorting">父节点名称</th>
                <th name="t.float_parent" class="sorting">浮动父节点ID</th>
-            <th name="t.word_table_type" class="sorting">word模板方向</th>
+            <th name="s.detail_name " class="sorting">word模板方向</th>
             <th name="t.anchor_id" class="sorting">对应锚点的ID</th>
-            <th name="t.place_hold" class="sorting">模板增加记录提示</th>
+             <th name="e.detail_name" class="sorting">是否和下一个模板合并</th>
+            <th name="t.place_hold" class="sorting">输入提示</th>
             <th name="t.sort" class="sorting">排序</th>
              <th name="t.remark" class="sorting">备注</th>
            
@@ -130,11 +132,11 @@
                     ${item.float_parent}
                 <% } %>
             </td>
-            <td title="${item.word_table_type!}">
-                <% if (strutil.length(item.word_table_type) >25) { %>
-                ${strutil.subStringTo(item.word_table_type, 0, 25)}...
+            <td title="${item.wordTableTypeName!}">
+                <% if (strutil.length(item.wordTableTypeName) >25) { %>
+                ${strutil.subStringTo(item.wordTableTypeName, 0, 25)}...
                 <% } else { %>
-                ${item.word_table_type}
+                ${item.wordTableTypeName}
                 <% } %>
             </td>
 			   <td title="${item.anchor_id!}">
@@ -142,6 +144,13 @@
                 ${strutil.subStringTo(item.anchor_id, 0, 25)}...
                 <% } else { %>
                 ${item.anchor_id}
+                <% } %>
+            </td>
+              <td title="${item.isMergerNext!}">
+                <% if (strutil.length(item.isMergerNext) >25) { %>
+                ${strutil.subStringTo(item.isMergerNext, 0, 25)}...
+                <% } else { %>
+                ${item.isMergerNext}
                 <% } %>
             </td>
             <td title="${item.place_hold!}">
@@ -168,7 +177,7 @@
             </td>
 
             <td>
-                <a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.peizhi(${item.id});">配置</a>
+                <a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.peizhi(${item.table_id});">配置</a>
                 <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a>
                 <a href="javascript:void(0);" class="btn btn-sm btn-danger" onclick="oper.del(${item.id});">删除</a>
             </td>

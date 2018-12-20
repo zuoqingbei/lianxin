@@ -250,7 +250,7 @@ public class CompanyService {
 							companyhisModel.set("change_items", ProjectName);
 							companyhisModel.set("change_font", BeforeContent);
 							companyhisModel.set("change_back", AfterContent);
-							companyhisModel.set("date", ChangeDate);
+							companyhisModel.set("date", dateFormat(ChangeDate));
 							companyhisModel.set("company_id", companyId);
 							companyhisModel.set("sys_language", sys_language);
 							hisModellist.add(companyhisModel);
