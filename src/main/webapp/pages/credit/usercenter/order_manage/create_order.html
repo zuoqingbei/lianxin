@@ -327,6 +327,7 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
 			var form = layui.form;  
 			form.render(); //更新全部
 			form.on('select(customChange)',function(data){
+				price();//获取代理价格
 				$.post('/admin/ordermanager/getCustom',{"id":data.value},function(data1){
 					console.log(data1)
 	   			$("#client_userNname").val(data1.name);
@@ -367,53 +368,7 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
 	   		
 		});
 	   
-   		/* $(function(){
-   			$.get('/credit/front/home/getMessage',function(data){
-   				getCompany(data.companys);
-			})	
-   		}) */
-   		
-   	/*  	 function reportTypeChange(){
-   	 		//languagechange();
-   	 		price()
-   	 		usetime()
-   	 	} 
-   	 	function ordertypechange(){
-   	 	usetime();
-   	 	price()
-   	 	} */
-   	 	/*  function countrychange(){
-   	 	 $("select[name='attr.country'] option:first").attr("selected","selected");
-   	 		//查询用时
-   	    	usetime();
-   	    	//查询语言
-   	    	//languagechange()
-   	    	price()
-   	 	}  */
-   	 	
-   /* 	 	function speedchange(){
-   	 		usetime();
-   	 		price()
-   	 	} */
-   	 	/* function languagechange(){
-   	 	var value1=  $("select[name='attr.country']").find("option:selected").attr("m-type");
-    	var value3=$("select[name='attr.report_type']").find("option:selected").val();
-   	 	var html="";
-	   	 $.ajax({
-		        url:"/admin/ordermanager/getLanguage?countrytype="+value1+"&reporttype="+value3,
-		        type:"get",
-		        dataType:"json",
-		        success: function(data) {
-		        	console.log(data)
-		        	if(data!=null){
-		        		for(item in data){
-		        			html+="<option value='"+data[item].language_id+"'>"+data[item].languageName+"</option>";
-		        		}
-		        	}
-		        	$("select[name='attr.report_language']").html(html);
-		          }
-		    });
-    	} */
+
 
    	 	function usetime(){
    	 	var value1=$("select[name='attr.country']").find("option:selected").attr("m-type");
@@ -474,15 +429,7 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
 		          }
 		    });
    	 	}
-   	/*  	function getCompany(data){
-   	 	var html=""
-				for(item in data){
-					html+="<option m-type2='"+data[item].name_en+"'  m-type1='"+data[item].name+"'  value='"+data[item].id+"'>"+data[item].name+"</option>";
-				}
-				$("select[name='attr.company_id']").append(html);	
-				console.log(html);
-				//重新渲染 否则option不能显示
-   	 	} */
+
    	 	
    	
    </script>

@@ -403,7 +403,7 @@ let Filing = {
           let _this = this
         
           $table.bootstrapTable({
-              height: $(".table-content").height()*0.9,
+              height: $(".table-content").height()*0.95,
               clickToSelect:true,
               columns: [
 	  {

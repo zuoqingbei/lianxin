@@ -211,7 +211,7 @@ let Index = {
      	});
         const $table = $('#table');
         $table.bootstrapTable({
-            height: $(".table-content").height()*0.7,
+            height: $(".table-content").height()*0.74,
             columns: [
             	{
                   title: '订单号',

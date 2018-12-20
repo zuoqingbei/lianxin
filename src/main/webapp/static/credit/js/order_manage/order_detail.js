@@ -27,7 +27,7 @@ let OrderDetail = {
                             if (item === 'orderId') { //这里的orderId对应rows的id，和填报配置中不一样
                                 url += `&${item}=${this.row.id}`;
                             } else {
-                                if (paramObj[item]) {
+                                if (paramObj[item]||paramObj[item]==='') {
                                     url += `&${item}=${paramObj[item]}`;
                                 } else {
                                     url += `&${item}=${this.row[item]}`
@@ -317,10 +317,10 @@ let OrderDetail = {
                         .end().find("[for=quality_opinion]").text(item.contents[1].temp_name + ' : ');
                     let dealQualityData = (param, param2) => {
                         let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
-                        console.log('$wrap.find("#quality_opinion").val()', $wrap.find("#quality_opinion").val())
+                        // console.log('$wrap.find("#quality_opinion").val()', $wrap.find("#quality_opinion").val())
                         $.get(this.getUrl(item, '', {
                                 id: this.qualityOpinionId,
-                                quality_opinion: $wrap.find("#quality_opinion").val() ? $wrap.find("#quality_opinion").val() : '',
+                                quality_opinion: $wrap.find("#quality_opinion").val() || '',
                                 quality_deal: checkedIndex,
                                 quality_type: _this.row.quality_type,
                                 report_type: _this.row.report_type,
@@ -329,7 +329,7 @@ let OrderDetail = {
                             }) + (param === 'update' ? '&update=true' : '')
                             + (param2 === 'submit' ? '&submit=true' : ''),
                             (data) => {
-                                console.log('$wrap.find("#quality_opinion").val()2', $wrap.find("#quality_opinion").val());
+                                // console.log('$wrap.find("#quality_opinion").val()2', $wrap.find("#quality_opinion").val());
                                 this.qualityOpinionId = data.rows[0].id ? data.rows[0].id : '';
                                 let quality_type = this.row.quality_type;
                                 let status = this.row.status;
@@ -522,7 +522,7 @@ let OrderDetail = {
                 default:
                     console.warn(item.title.temp_name + '没有找到模块类型！');
             }
-            if (!['1', '11', '22','26'].includes(smallModuleType)) {
+            if (!['1', '11', '22', '26'].includes(smallModuleType)) {
                 $(".main .table-content").append($wrap);
             }
         });
@@ -699,6 +699,7 @@ let OrderDetail = {
             // 设置option内容
             let OptHtml = '';
             data.rows.forEach((item) => {
+                /** @namespace item.detail_id */
                 OptHtml += `<option data-detail_id="${item.detail_id}" data-grade="${item.value}">${item.detail_name}</option>`
             });
             $(".select2Box select").html(OptHtml)
@@ -774,10 +775,10 @@ let OrderDetail = {
         let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
         let columnNameArr = [];
         item.contents.forEach((item) => {
-            $table.children('thead').append(`<th>${item.temp_name}</th>`);
+            $table.children('thead').append(`<th${['日期', '成立日期', '注册日期', '合作时间', '操作时间'].includes(item.temp_name) ? ' style=min-width:10rem' : ''}>${item.temp_name}</th>`);
             columnNameArr.push(item.column_name);
         });
-        $wrap.find(".module-content").append(`${$table[0].outerHTML}`)
+        $wrap.find(".module-content").append(`${$table[0].outerHTML}`);
         $(".main .table-content").append($wrap);
         // 绑数
         $.post(this.getUrl(item, otherProperty), {selectInfo: type1_extraUrl}, (data) => {
@@ -844,18 +845,22 @@ let OrderDetail = {
                     })
                 }, true);
             },
+            /**
+             * 画柱线组合图
+             * @param elem 传入的dom选择器，用于测试
+             */
             lineBar: (elem) => {
                 let chart;
-                if(elem){
+                if (elem) {
                     chart = echarts.init($(elem)[0]);
-                }else{
+                } else {
                     $wrap.find(".module-content").append(`<div class="chartBox" id="ec02_lineBar" style="height: 24rem;"></div>`)
                     chart = echarts.init($wrap.find(".module-content .chartBox")[0]);
                 }
                 chartData = chartData || {
                     line: [0.06, 0.062, 0.068, 0.064, 0.062],
                     bar: [4800, 4700, 4800, 5000, 4500],
-                    xAxisData: [ '这是', '测试', '数据',2016, 2017]
+                    xAxisData: ['这是', '测试', '数据', 2016, 2017]
                 };
                 chart.setOption({
                     color: ['#1890ff', '#facc15'],
