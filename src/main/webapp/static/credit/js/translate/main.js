@@ -53,6 +53,7 @@ let ReportConfig = {
         	
         	let tempRows = []
         	$table.bootstrapTable({
+        		height:300,
         		columns: _this.tableColumns(contents,'ch'),
     			url:urlCH, // 请求后台的URL（*）
 			    method : 'post', // 请求方式（*）post/get
@@ -75,10 +76,19 @@ let ReportConfig = {
     					}
     				})
     				$table.bootstrapTable("load",rows)
+    				setTimeout(() => {
+	    				if(rows.length < 1) {
+	    					$table.parents(".fixed-table-container").css("height","80px!important")
+	    					console.log($table.parents(".fixed-table-container"))
+	    				}else if(rows.length < 4) {
+	    					$table.parents(".fixed-table-container").css("height","180px")
+	    				}
+    				 }, 200);
     			}
         	});
-        	console.log(contentsEn)
+        	if(!contentsEn){return}
         	$tableEn.bootstrapTable({
+        		height:300,
         		columns: _this.tableColumns(contentsEn,'en',index,_this.idArrEn[index]),
         		url:urlEN, // 请求后台的URL（*）
         		method : 'post', // 请求方式（*）post/get
@@ -93,6 +103,7 @@ let ReportConfig = {
         		locales:'zh-CN',
         		onLoadSuccess:(data)=>{
 //        			console.log(data)
+//        			console.log(index,data)
         			_this.tableDataArrEn[index]=data
         			let rows = data.rows
         			rows.forEach((item,index)=>{
@@ -102,6 +113,14 @@ let ReportConfig = {
     					}
     				})
     				$tableEn.bootstrapTable("load",rows)
+    				setTimeout(() => {
+	    				if(rows.length < 1) {
+	    					$table.parents(".fixed-table-container").css("height","80px!important")
+	    					console.log($table.parents(".fixed-table-container"))
+	    				}else if(rows.length < 4) {
+	    					$table.parents(".fixed-table-container").css("height","180px")
+	    				}
+    				 }, 200);
         		}
         	});
         	
@@ -440,7 +459,7 @@ let ReportConfig = {
     			//实体id
     			let obid = tempData.id;
     			formArr.forEach((item,index)=>{
-    				console.log(item)
+//    				console.log(item)
     				let obj = tempData;
     				let id = $(item).attr("id");
     				let anotherIdArr = id.split("_")
@@ -927,7 +946,11 @@ let ReportConfig = {
                 				return
                 		}
                 		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
-                			contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			if(item.title.word_key !== 'hangyexinxi'){
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3"  style="display:none" ><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			}else {
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			}
                 		}else if(smallModileType === '10'){
                 			//财务模块
                 			_this.cwGetSource = item.title.get_source;
@@ -1671,7 +1694,9 @@ let ReportConfig = {
     		   }
     		   return arr;
     		};
+    		console.log(this.idArr.length,this.titleEn.length)
     	tableTitlesEn.forEach((item,index)=>{
+    		//循环表格表头
     		let alterSource = item["alter_source"];
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
     		let dataJson = []
@@ -1684,9 +1709,10 @@ let ReportConfig = {
 	   				 return
 	   			 }
 	   				*/
-   				
+   				//console.log(_this.tableDataArr[index])
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				//循环每个表格中的条数进行翻译
+	   				console.log(tableDataArrEn[index],index)
 	   				if(!tableDataArrEn[index]){return}
 	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
 	   				xhNum ++;
@@ -1704,6 +1730,7 @@ let ReportConfig = {
 	   						dataJson:JSON.stringify(ele)
 	   					},
 	   					success:(data)=>{
+	   						console.log(index)
    							temp[i] = data
 	   					}
 	   				})
@@ -1711,7 +1738,7 @@ let ReportConfig = {
 	   			})
 	   			let t1 = setInterval(()=>{
    					if(removeEmptyArrayEle(temp).length ===temp.length ){
-   						console.log(temp)
+   						//console.log(temp)
    							temp.sort((a,b)=>{
    	   							return a["mySort"] -b["mySort"]
    	   						})

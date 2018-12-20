@@ -48,10 +48,10 @@ public class TemplateDictService extends BaseService {
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
-				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+				sb.append("<option  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 			}else{
 				if("ALL".equals(detail.getStr("detail_name_en"))){
-					sb.append("<option  selected='selected'  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+					sb.append("<option    m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 				}else{
 					sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 				}
@@ -76,10 +76,10 @@ public class TemplateDictService extends BaseService {
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
-				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_name")+"'>"+detail.get("detail_name")+"</option>");
+				sb.append("<option  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_name")+"'>"+detail.get("detail_name")+"</option>");
 			}else{
 				if("ALL".equals(detail.getStr("detail_name_en"))){
-					sb.append("<option  selected='selected'  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value=''>"+detail.get("detail_name")+"</option>");
+					sb.append("<option    m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value=''>"+detail.get("detail_name")+"</option>");
 				}else{
 					sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_name")+"'>"+detail.get("detail_name")+"</option>");
 				}
@@ -108,7 +108,7 @@ public class TemplateDictService extends BaseService {
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
 			if("普通".equals(detail.get("detail_name"))) {
-				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+				sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 
 			}else {
 				sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
@@ -133,10 +133,10 @@ public class TemplateDictService extends BaseService {
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
-				sb.append("<option selected='selected' m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+				sb.append("<option  m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 			}else{
 				if("ALL".equals(detail.getStr("detail_name_en"))){
-					sb.append("<option  selected='selected'  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+					sb.append("<option   m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 				}else{
 					sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 				}
@@ -153,10 +153,10 @@ public class TemplateDictService extends BaseService {
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
-				sb.append("<option selected='selected' m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_id")+"</option>");
+				sb.append("<option  m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_id")+"</option>");
 			}else{
 				if("ALL".equals(detail.getStr("detail_name_en"))){
-					sb.append("<option  selected='selected'  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
+					sb.append("<option    m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_name")+"</option>");
 				}else{
 					sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get("detail_id")+"</option>");
 				}
@@ -189,7 +189,7 @@ public class TemplateDictService extends BaseService {
 				continue;
 			}
 			 if(selectedId!=null&& selectedId.toString() .equals(detail.get("detail_id").toString())){
-				sb.append("<option selected='selected' m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(disPalyCol)+"</option>");
+				sb.append("<option  m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(disPalyCol)+"</option>");
 			}else{
 			    sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(disPalyCol)+"</option>");
 			}
@@ -252,10 +252,10 @@ public class TemplateDictService extends BaseService {
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
 		for(SysDictDetail detail:listDetail){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
-				sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(showColumnName)+"</option>");
+				sb.append("<option  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(showColumnName)+"</option>");
 			}else{
 				if("ALL".equals(detail.getStr("detail_name_en"))){
-					sb.append("<option  selected='selected'  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(showColumnName)+"</option>");
+					sb.append("<option    m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(showColumnName)+"</option>");
 				}else{
 					sb.append("<option m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_id")+"'>"+detail.get(showColumnName)+"</option>");
 				}
@@ -277,7 +277,7 @@ public class TemplateDictService extends BaseService {
 	
 		for(CreditCountry detail:listDetail){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
-				sb.append("<option selected='selected' m-detail-id='"+detail.get("id")+"' value='"+detail.get("id")+"'>"+detail.get(showColumnName)+"</option>");
+				sb.append("<option  m-detail-id='"+detail.get("id")+"' value='"+detail.get("id")+"'>"+detail.get(showColumnName)+"</option>");
 			}else{
 				sb.append("<option  m-detail-id='"+detail.get("id")+"' value='"+detail.get("id")+"'>"+detail.get(showColumnName)+"</option>");
 			}
@@ -345,7 +345,7 @@ public class TemplateDictService extends BaseService {
         listDetail.addAll(DictCache.getSysDictDetailByType(type));
         for(SysDictDetail detail:listDetail){
             if(detailName!=null&&detailName.toString().equals(detail.get("detail_name").toString())){
-                sb.append("<option selected='selected' m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_name")+"'>"+detail.get("detail_remark")+"</option>");
+                sb.append("<option  m-detail-id='"+detail.get("detail_id")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get("detail_name")+"'>"+detail.get("detail_remark")+"</option>");
             }else {
                 sb.append("<option m-detail-id='" + detail.get("detail_id") + "' m-detail-content='" + detail.get("detail_content") + "' m-detail-code='" + detail.get("detail_code") + "'  m-english='" + detail.get("detail_name_en") + "' value='" + detail.get("detail_name") + "'>" + detail.get("detail_remark") + "</option>");
             }

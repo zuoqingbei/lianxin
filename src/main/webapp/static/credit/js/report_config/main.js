@@ -43,6 +43,7 @@ let ReportConfig = {
         	selectInfo.push(_this.selectInfoObj)
         	
         	$table.bootstrapTable({
+        		height:300,
         		columns: columns(index,item),
     			url:url, // 请求后台的URL（*）
 			    method : 'post', // 请求方式（*）post/get
@@ -53,7 +54,7 @@ let ReportConfig = {
 			    sidePagination: 'server',
 			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     			pagination: false, //分页
-    			smartDisplay:true,
+    			smartDisplay:false,
     			locales:'zh-CN',
     			onLoadSuccess:(data)=>{
     				console.log(data)
@@ -69,9 +70,18 @@ let ReportConfig = {
     					}
     				})
     				$table.bootstrapTable("load",rows)
+    				setTimeout(() => {
+	    				if(rows.length < 1) {
+	    					$table.parents(".fixed-table-container").css("height","80px!important")
+	    					console.log($table.parents(".fixed-table-container"))
+	    				}else if(rows.length < 4) {
+	    					$table.parents(".fixed-table-container").css("height","180px")
+	    				}
+    				 }, 200);
     			}
         	});
-        	
+			 
+	         
         	
         	function columns(tempI,tempId){
         		
@@ -786,7 +796,11 @@ let ReportConfig = {
                 				return
                 		}
                 		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
-                			contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			if(item.title.word_key !== 'hangyexinxi'){
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3"  style="display:none" ><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			}else {
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			}
                 		}else if(smallModileType === '10'){
                 			//财务模块
                 			_this.cwGetSource = item.title.get_source;
@@ -1149,6 +1163,7 @@ let ReportConfig = {
     		//点击新增一条清空模态框中内容
     		$("#addBtn"+item).click(()=>{
     			this.isAdd = true
+    			$("#modal"+item+" select.select2").val(null).trigger("change" )
     			$("#modal"+item+" input").val("");
     			$("#modal"+item+" input").siblings("span").html("");
 		    	$("#modal"+item+" textarea").val("");
@@ -1157,19 +1172,25 @@ let ReportConfig = {
     
     		})
     		//自动计算出生年月和年龄
-    		if($("#modal"+item).find(".modal-header").text().trim() === '自然人股东详情') {
-    			$("#id_no_4").blur(()=>{
-    				let val = $("#id_no_4").val()
+    		if($("#modal"+item).find(".modal-header").text().trim() === '自然人股东详情' || $("#modal"+item).find(".modal-header").text().trim() === '管理层') {
+    			let $idCard = $("#id_no_"+(item-1))
+				if($("#modal"+item).find(".modal-header").text().trim() === '管理层'){
+					$idCard = $("#id_card_"+(item-1))
+				}
+    			let $age = $("#age_"+(item-1))
+    			let $birth = $("#birth_date_"+(item-1))
+    			$idCard.blur(()=>{
+    				let val = $idCard.val()
     				if(val.length === 18 && typeof Number(val) === 'number' && Number(val) !== NaN) {
     					val = val.substring(6,14)
     					let  aDate = new Date(val.substring(0,4)+'-'+val.substring(4,6)+'-'+val.substring(6,8));
     					let bDate = new Date();
     					let age = bDate.getFullYear() - aDate.getFullYear();
-    					$("#age_4").val(age)
-    					$("#birth_date_4").val(val.substring(0,4)+'年'+val.substring(4,6)+'月'+val.substring(6,8)+'日')
+    					$age.val(age)
+    					$birth.val(val.substring(0,4)+'年'+val.substring(4,6)+'月'+val.substring(6,8)+'日')
     				}else {
-    					$("#age_4").val('')
-    					$("#birth_date_4").val('')
+    					$age.val('')
+    					$birth.val('')
     				}
     				
     			})
