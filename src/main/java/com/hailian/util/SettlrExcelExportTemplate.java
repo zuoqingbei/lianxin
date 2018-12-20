@@ -1,7 +1,6 @@
 package  com.hailian.util;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,6 +102,36 @@ public abstract class SettlrExcelExportTemplate<T> implements ExcelExportTemplat
         ouputStream.close(); 
         
 	}
+
+    /**
+     * 下载excel到指定目录
+     * @throws IOException
+     */
+    public void downloadExcel(String path) throws IOException{
+        File file = new File(path);
+        String[] sheetNames = this.getSheetNames();
+        Validate.notEmpty(sheetNames);
+        this.workbook = new SXSSFWorkbook(getRowAccessWindowSize());
+        this.titles = this.getTitles();
+        this.captionRowSytle = crateCaptionCellStyle();
+        this.titleRowStyle = crateTitleCellStyle();
+        this.bodyRowStyle = crateBodyCellStyle();
+        this.afterCreateWorkBook();
+        for (int i = 0; i < sheetNames.length; i++) {
+            Sheet sheet = workbook.createSheet(sheetNames[i]);
+            this.sheets.add(sheet);
+            afterBuildSheet(i);
+            buildCaption(i);
+            buildTitle(i);
+            afterBuildTitle(i);
+            buildBody(i);
+            afterBuildBody(i);
+        }
+        BufferedOutputStream ouputStream = new BufferedOutputStream(new FileOutputStream(file));
+        workbook.write(ouputStream);
+        ouputStream.flush();
+        ouputStream.close();
+    }
 
 	/**
 	 * 创建单元格

@@ -432,6 +432,7 @@ public class OrdermanagerController extends BaseProjectController{
 	public void getPrice() {
         CreditReportPrice price = new CreditReportPrice();
         String countryType = getPara("countrytype", "");
+        //207香港 208台湾 209澳门  148国外
         if ("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
             countryType = "148";
         }

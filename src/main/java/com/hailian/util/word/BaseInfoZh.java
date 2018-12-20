@@ -1,6 +1,5 @@
 package com.hailian.util.word;
 
-import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.PictureRenderData;
 import com.deepoove.poi.data.RowRenderData;
@@ -17,11 +16,9 @@ import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -99,13 +96,6 @@ public class BaseInfoZh {
             String key = crmc.getStr("word_key");
             String tableType = crmc.getStr("word_table_type");
 
-            //List<CreditCompanyFinancialEntry>  finDataRows = null;
-            //财务
-            //if("10".equals(moduleType)){
-            //取数据
-            //    Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
-            //finDataRows = FinanceService.getFinancialEntryList("1");
-            //}
             //无url的跳过取数
             if (source == null || "".equals(source)) {
                 continue;
@@ -297,53 +287,48 @@ public class BaseInfoZh {
         }
 
         //财务模块生成
-        List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id="+companyId+" and del_flag=0 ");
+        String excelPath = "";
+        List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
         if(finanConfList!=null && finanConfList.size()>0) {
             CreditCompanyFinancialStatementsConf statementsConf = finanConfList.get(0);
             String finanId = statementsConf.getInt("id") + "";
             //财务-表格
-            map.put("financial", financial(reportType, companyId, sysLanguage, finanId));
+            map.put("financial", financial(reportType, finanId));
             //财务-评价
             map.put("financial_eval", financialEval(statementsConf));
+            //生成财务报告
+            excelPath = financialExcel(reportType,finanId,_prePath,orderId,userid);
         }
 
         //生成word
         BaseWord.buildNetWord(map, tplPath, _prePath + ".docx");
-        //重新添加图片
-        replaceImg(_prePath, orderId, userid, companyId, sysLanguage,customId,reportName);
+        //重新添加图片并生成word
+        String wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
 
-        /*//生成报告
-        BaseWord.buildNetWord(map, tplPath, _prePath + ".docx");
-        //上传文件
-        String filePath = BaseWord.uploadReport(_prePath + ".docx", orderId, userid);
         //发送邮件
-        List<CreditCustomInfo> customList = CreditCustomInfo.dao.find("select * from credit_custom_info where id=" + customId + " and del_flag=0 ");
-        if (customList != null && customList.size() > 0) {
-            CreditCustomInfo customInfo = customList.get(0);
-            List<Map<String, String>> fileList = new ArrayList();
-            Map<String, String> fileMap = new HashMap();
-            fileMap.put(reportName+".doc", "http://" + ip + ":" + serverPort + "/" + filePath);
-            fileList.add(fileMap);
-            try {
-                String email = customInfo.getStr("email");
-                new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
+        String _pre = "http://" + ip + ":" + serverPort + "/";
+        List<Map<String, String>> fileList = new ArrayList<>();
+        Map<String, String> fileMap = new HashMap();
+        fileMap.put(reportName,_pre + wordPath);
+        if(!"".equals(excelPath)) {
+            fileMap.put(reportName, _pre + excelPath);
+        }
+        fileList.add(fileMap);
+        sendMail(customId, fileList);
     }
 
     /**
-     * 替换图片-重新生成word模板
+     * poi-tl工具类不支持在table中插入图片
+     * 1. 第一次生成时table中插入{{@var}}占位符
+     * 2. 第二次用插入图片的方法替换掉占位符
+     * 具体参见poi-tl的文档
      * @param tarPath
      * @param orderId
      * @param userid
      * @param companyId
      * @param sysLanguage
-     * @param customerId
-     * @param reportName
      */
-    public static void replaceImg(String tarPath,String orderId,Integer userid,String companyId,String sysLanguage,String customerId,String reportName) {
+    public static String replaceImg(String tarPath,String orderId,Integer userid,String companyId,String sysLanguage) {
         //图片保存路径
         String brandPath = PathKit.getWebRootPath()+ "/upload/brand";
         //获取图片
@@ -358,14 +343,18 @@ public class BaseInfoZh {
         String targetPath = tarPath + "_p.docx";
         BaseWord.buildWord(map, sourcePath, targetPath);
         //上传文件
-        String filePath = BaseWord.uploadReport(targetPath, orderId, userid);
+        return BaseWord.uploadReport(targetPath, orderId, userid);
+    }
+
+    /**
+     * 发送带附件邮件
+     * @param customerId
+     * @param fileList
+     */
+    public static void sendMail(String customerId,List<Map<String, String>> fileList){
         //发送邮件
         CreditCustomInfo  customInfo = CreditCustomInfo.dao.getCustomerById(customerId);
-        if(customInfo!=null){
-            List<Map<String, String>> fileList = new ArrayList();
-            Map<String, String> fileMap = new HashMap();
-            fileMap.put("商业信息报告.doc", "http://" + ip + ":" + serverPort + "/" + filePath);
-            fileList.add(fileMap);
+        if(customerId!=null) {
             try {
                 //String email = customInfo.getStr("email");
                 String email = "hu_cheng86@126.com";
@@ -377,9 +366,9 @@ public class BaseInfoZh {
     }
 
     /**
-     * 下载网络文件
-     * @param netUrl
-     * @param path
+     * 下载专利图片
+     * @param netUrl  网络路径
+     * @param path   保存位置
      */
     public static String downloadFile(String netUrl,String path) {
         InputStream iputstream = null;
@@ -421,14 +410,12 @@ public class BaseInfoZh {
     }
 
     /**
-     * 财务模板
+     * 财务模板生成
      * @param reportType
-     * @param companyId
-     * @param sysLanguage
      * @param financialConfId
      * @return
      */
-    public static MiniTableRenderData financial(String reportType,String companyId,String sysLanguage,String financialConfId) {
+    public static MiniTableRenderData financial(String reportType,String financialConfId) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //取数据
         Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
@@ -485,15 +472,26 @@ public class BaseInfoZh {
                         title = "重要比率表";
                         break;
                 }
-                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("")));
+                rowList.add(RowRenderData.build(
+                        new TextRenderData(""),
+                        new TextRenderData(""),
+                        new TextRenderData("")));
+
                 //大标题
                 Style titileStyle = new Style();
                 titileStyle.setColor("843C0B");
                 titileStyle.setBold(true);
-                rowList.add(RowRenderData.build(new TextRenderData(title, titileStyle), new TextRenderData(""), new TextRenderData("")));
+                rowList.add(RowRenderData.build(
+                        new TextRenderData(title, titileStyle),
+                        new TextRenderData(""),
+                        new TextRenderData("")));
+
                 Style header = new Style();
                 header.setBold(true);
-                rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData(""), new TextRenderData("单位：人民币（千元）", header)));
+                rowList.add(RowRenderData.build(
+                        new TextRenderData(""),
+                        new TextRenderData(""),
+                        new TextRenderData("单位：人民币（千元）", header)));
             }
             String itemName = ccf.getStr("item_name");
             Integer begin = ccf.getInt("begin_date_value");
@@ -507,6 +505,29 @@ public class BaseInfoZh {
             j++;
         }
         return new MiniTableRenderData(rowList);
+    }
+
+    /**
+     * 财务生成Excel
+     * @param reportType
+     * @param financialConfId
+     */
+    public static String financialExcel(String reportType,String financialConfId,String _prePath,String orderId,int userid){
+        String filePath = "";
+        //取数据
+        Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, type);
+        FinancialExcelExport export = new FinancialExcelExport(finDataRows);
+        try {
+            String path = _prePath + ".xls";
+            export.downloadExcel(path);
+            //上传文件
+            filePath = BaseWord.uploadReport(path, orderId, userid);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return filePath;
     }
 
     /**
@@ -524,8 +545,6 @@ public class BaseInfoZh {
         String leverDetail = statementsConf.getStr("leverage_detail");
         String overSumup = getIntToString(statementsConf.getInt("overall_financial_condition_sumup"));
         String overDetail = statementsConf.getStr("overall_financial_condition_detail");
-
-        System.out.println(profSumup == null);
 
         StringBuffer str = new StringBuffer();
         str.append("盈利能力：" + ("".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
