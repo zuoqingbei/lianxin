@@ -28,9 +28,9 @@ public class SettleController extends BaseController{
 	private static final String path = "/pages/credit/usercenter/total_manage/";
 	public void index() throws ParseException {
 		//查询客户id，跟代理id
-	List<CustomInfoModel> customer=	CustomInfoModel.dao.find("select id from credit_custom_info");
+	List<CustomInfoModel> customer=	CustomInfoModel.dao.find("select id from credit_custom_info where del_flag=0");
 	setAttr("customer", customer);
-	 List<AgentModel> agent=  AgentModel.dao.find("select agent_id from credit_agent");
+	 List<AgentModel> agent=  AgentModel.dao.find("select agent_id from credit_agent where del_flag=0");
 	setAttr("agent", agent);
 	render(path+"total_settle.html");
 	}
