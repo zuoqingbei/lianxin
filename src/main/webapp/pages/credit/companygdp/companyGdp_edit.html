@@ -1,0 +1,80 @@
+<% 
+DIRECTIVE SAFE_OUTPUT_OPEN;
+var headContent = {
+	include("/pages/template/head.html"){}
+%>
+<script type="text/javascript">
+	var oper = {
+		save:function(id){
+			/* if(!validForm()) {
+				return false;
+			} */
+			console.log(id);
+			id = id;
+			console.log(id);
+		    var year= $("#year").val();
+		    var gdp=$("#gdp").val();
+		    var rate=$("#growth_rate").val();
+		    if (year == "" || year == null ) {
+                alert("请输入年份");
+            }else if(gdp == "" || gdp == null ) {
+                alert("请输入GDP金额");
+            }else if (rate == "" || rate == null ) {
+                alert("请输入GDP比值");
+            }else{
+            	var url = 'credit/companyGdp/save?id='+id+'&year='+year+"&gdp="+gdp+"&rate="+rate;
+    			form1.action = url;
+    			form1.submit();
+    			return true;
+            }
+			
+		}	
+	};
+</script>
+
+<%
+};
+var bodyContent = {
+%>
+<form name="form1" action="" method="post" class="form-horizontal"
+	enctype="multipart/form-data"	role="form" >
+	<input type="hidden" name="dao.id" value="${model.id}" />
+	<table class="table">
+		<%  // 列表头部%>
+				<tr>
+					<td>年份</td>
+					<td>
+					<input class="form-control" type="text" id="year" name="year" value="${model.year}" placeholder="请输入格式YYYY" valid='vtext' validname='报告名称' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" />
+					</td>
+				</tr>
+				
+			
+				<tr>
+					<td>GDP总值</td>
+					<td>
+					<input class="form-control" type="text" id="gdp" name="gdp" valid='vtext' validname='' value="${model.gdp }" placeholder="请输入数字" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"   />
+					</td>
+				</tr>
+				
+				<tr>
+					<td>GDP比值</td>
+					<td>
+					<input class="form-control" type="text" id="growth_rate" name="growth_rate" valid='vnum_y' validname='' value="${model.growth_rate }" placeholder="请输入数字" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"/>
+					</td>
+				</tr> 
+	</table>
+	
+	<div style="height: 50px;clear: both;">&nbsp;</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
+		<button class="btn btn-primary" onclick="oper.save(${model.id!'0'});return false;">保 存</button>
+		<button class="btn btn-default" onclick="closeIframe();return false;">关 闭</button>
+	  </div>
+	</nav>
+</form>
+<%}; %>
+
+<% layout("/pages/template/_layout.html",{head:headContent,body:bodyContent}){ %>
+<%}
+DIRECTIVE SAFE_OUTPUT_CLOSE; 
+%>
