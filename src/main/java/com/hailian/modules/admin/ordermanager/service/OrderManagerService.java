@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.hailian.api.constant.RoleCons;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
@@ -672,43 +673,48 @@ public class OrderManagerService {
 		record.set("enddate", enddate);
 		return record;
 	}
+	/**
+	 * @Description: 根据订单获取报告价格
+	* @author: dsh 
+	* @date:  2018年12月20日
+	 */
 	public CreditReportPrice getOrderprice(String countryType,String speed,String reporttype,String orderType,String customid,String countryid){
-		CreditReportPrice price=new CreditReportPrice();
-		if("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
-			countryType="148";
-		}
-		//根据客户id判断新老客户新老客户价格区分字段是versions=老系统
-		CreditCustomInfo cci=CreditCustomInfo.dao.findById(customid);
-		if("0".equals(cci.getStr("is_old_customer"))) {
-			//3种不同类型老客户
-			if("373".equals(customid)) {
-				//获取上月的第5天
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-				 Calendar c = Calendar.getInstance();    
-				 c.add(Calendar.MONTH, -1);//上月
-				 c.set(Calendar.DAY_OF_MONTH,5);//设置为5号,当前日期既为上月第5天 
-				 String first = format.format(c.getTime());
-				 Calendar ca = Calendar.getInstance();
-				 ca.add(Calendar.MONTH, 1);//本月
-				 ca.set(Calendar.DAY_OF_MONTH, 5);//本月5日  
-				 String last = format.format(ca.getTime());
-				//此客户依据每月订单量和国家决定订单价格
-				//求该客户的该月订单量
-				List<CreditOrderInfo> list=CreditOrderInfo.dao.findByCustom(customid,first,last);
-				Integer size=list.size();
-				price=CreditReportPrice.dao.getoldPrice( countryid,null,null,size);
-				
-			}else if("399".equals(customid)) {
-				//此客户依据国家决定订单价格
-				price=CreditReportPrice.dao.getoldPrice( countryid,null,null,null);
-			}else {
-				//此类客户依据国家,报告类型,和速度决定订单价格
-				price=CreditReportPrice.dao.getoldPrice( countryid,reporttype,speed,null);
-			}
-		}else {
-			price=OrderManagerService.service.getPrice(countryType,speed,reporttype,orderType);
-		}
-		return price;
+		 CreditReportPrice price = new CreditReportPrice();
+	        if ("207".equals(countryType) || "208".equals(countryType) || "209".equals(countryType)) {
+	            countryType = "148";
+	        }
+	        //根据客户id判断新老客户新老客户价格区分字段是versions=老系统
+	        CreditCustomInfo cci = CreditCustomInfo.dao.findById(customid);
+	        if ("261".equals(cci.getStr("is_old_customer"))) {
+	            //3种不同类型老客户
+	            if ("373".equals(customid)) {
+	                //获取上月的第5天
+	                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	                Calendar c = Calendar.getInstance();
+	                c.add(Calendar.MONTH, -1);//上月
+	                c.set(Calendar.DAY_OF_MONTH, 5);//设置为5号,当前日期既为上月第5天
+	                String first = format.format(c.getTime());
+	                Calendar ca = Calendar.getInstance();
+	                ca.add(Calendar.MONTH, 0);//本月
+	                ca.set(Calendar.DAY_OF_MONTH, 5);//本月5日
+	                String last = format.format(ca.getTime());
+	                //此客户依据每月订单量和国家决定订单价格
+	                //求该客户的该月订单量
+	                List<CreditOrderInfo> list = CreditOrderInfo.dao.findByCustom(customid, first, last);
+	                Integer size = list.size();
+	                price = CreditReportPrice.dao.getoldPrice(customid, countryid, null, null, size,null);
+	            } else if ("399".equals(customid)) {
+	                //此客户依据国家决定订单价格
+	                price = CreditReportPrice.dao.getoldPrice(customid,countryid, null, null, null,null);
+	            } else {
+	                //此类客户依据国家,报告类型,和速度,订单类型决定订单价格
+	                price = CreditReportPrice.dao.getoldPrice(customid,countryid, reporttype, speed, null,orderType);
+	            }
+	        } else {
+	        	//获取新客户价格
+	            price = OrderManagerService.service.getPrice(countryType, speed, reporttype, orderType);
+	        }
+	        return price;
 	}
 
 	public List<CreditOrderInfo> exportAchievements(String reportername,
