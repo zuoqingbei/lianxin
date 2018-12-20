@@ -1,19 +1,10 @@
 package com.hailian.modules.credit.translate.controller;
 
-import java.util.List;
-
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.admin.file.service.UploadFileService;
-import com.hailian.modules.credit.common.model.ReportTypeModel;
-import com.hailian.modules.credit.custom.model.CustomInfoModel;
-import com.hailian.modules.credit.custom.service.CustomService;
-import com.hailian.modules.credit.pricemanager.service.ReportPriceService;
 import com.hailian.modules.credit.translate.model.TranslateModel;
 import com.hailian.modules.credit.translate.service.TranslateService;
-import com.hailian.modules.credit.whilte.model.ArchivesWhilteModel;
-import com.hailian.modules.credit.whilte.service.ArchivesWhilteService;
+import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.jfinal.plugin.activerecord.Page;
 /**
  * 翻译校正
@@ -106,5 +97,22 @@ public class TranslateController extends BaseProjectController{
 			model.save();
 		}
 		renderMessage("保存成功");
+	}
+	public void saveTranslate(){
+		String error_phrase_en=getPara("error_phrase_en");//错误的英文
+		String correct_phrase_en=getPara("correct_phrase_en");//应该翻译成的正确的英文
+		String correct_phrase_ch=getPara("correct_phrase_ch");//应该翻译成的正确的中文
+		TranslateModel model = getModel(TranslateModel.class);
+		model.set("error_phrase", error_phrase_en);
+		model.set("correct_phrase", correct_phrase_en);
+		model.set("correct_phrase_ch", correct_phrase_ch);
+		boolean flag = model.save();
+		if(flag){
+			ResultType resultType = new ResultType();
+			renderJson(resultType);
+		}else{
+			ResultType resultType = new ResultType(0,"操作失败");
+			renderJson(resultType);
+		}
 	}
 }

@@ -33,13 +33,13 @@ import com.hailian.util.translate.TransApi;
 @ControllerBind(controllerKey = "/credit/ordertranslate")
 public class ReportTranslateController extends BaseProjectController {
 	public void translate() {
+		String json = getPara("dataJson");
+		String targetlanguage=getPara("targetlanguage");//目标语言
+		JSONObject jsonObject = JSONObject.fromObject(json);
 		try {
-			String json = getPara("dataJson");
-			String targetlanguage=getPara("targetlanguage");//目标语言
 			if(StringUtils.isBlank(targetlanguage)){
 				targetlanguage="en";
 			}
-			JSONObject jsonObject = JSONObject.fromObject(json);
 			Iterator iterator = jsonObject.keys();//遍历翻译代替
 			while(iterator.hasNext()){
 			String   key = (String) iterator.next();
@@ -48,11 +48,19 @@ public class ReportTranslateController extends BaseProjectController {
 			String value_cht="";
 			if(isChinese(value)){
 				if(!isValidDate(value)){
-					value_en = TransApi.Trans(value,"en");
-					if("cht".equals(targetlanguage)){
-						value_cht=TransApi.Trans(value,targetlanguage);
+					try {
+						value_en = TransApi.Trans(value,"en");
+					} catch (Exception e) {
+						value_en="英文翻译失败!";
 					}
-			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);
+					if("cht".equals(targetlanguage)){
+						try {
+							value_cht=TransApi.Trans(value,targetlanguage);
+						} catch (Exception e) {
+							value_cht="繁体翻译失败";
+						}
+					}
+			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);//翻译校正
 			    	if(translateByError!=null){
 			    		value_en = translateByError.get("correct_phrase");//翻译校正
 			    	}
@@ -66,7 +74,7 @@ public class ReportTranslateController extends BaseProjectController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			renderJson("Translation failure!");
+			renderJson(jsonObject.toString());
 		}
 			
 		

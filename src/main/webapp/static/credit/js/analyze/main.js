@@ -43,6 +43,7 @@ let ReportConfig = {
         	selectInfo.push(_this.selectInfoObj)
         	
         	$table.bootstrapTable({
+        		height:300,
         		columns: columns(index,item),
     			url:url, // 请求后台的URL（*）
 			    method : 'post', // 请求方式（*）post/get
@@ -65,6 +66,14 @@ let ReportConfig = {
     					}
     				})
     				$table.bootstrapTable("load",rows)
+    				setTimeout(() => {
+	    				if(rows.length < 1) {
+	    					$table.parents(".fixed-table-container").css("height","80px!important")
+	    					console.log($table.parents(".fixed-table-container"))
+	    				}else if(rows.length < 4) {
+	    					$table.parents(".fixed-table-container").css("height","180px")
+	    				}
+    				 }, 200);
     			}
         	});
         	
@@ -745,7 +754,11 @@ let ReportConfig = {
                 				return
                 		}
                 		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
-                			contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			if(item.title.word_key !== 'hangyexinxi'){
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3"  style="display:none" ><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			}else {
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			}
                 		}else if(smallModileType === '10'){
                 			//财务模块
                 			_this.cwGetSource = item.title.get_source;
