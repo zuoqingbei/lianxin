@@ -23,8 +23,10 @@ let ReportConfig = {
     	 * 表格初始化
     	 */
         let _this = this
+        this.total= 0
         this.tableDataArr = []
         this.tableDataArrEn = []
+//        console.log(this.contentsArr,this.contentsArrEn)
         this.idArr.forEach((item,index)=>{
         	const $table = $("#table"+item);
         	const $tableEn = $("#table"+item+"En");
@@ -33,7 +35,7 @@ let ReportConfig = {
         	let titles = this.title
         	let urlTemp = titles[index].get_source;
         	let conf_id = titles[index].id;
-        	if(!urlTemp){return}
+//        	if(!urlTemp){return}
         	let urlCH = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
         	let urlEN = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
         	if(urlTemp.split("*")[1]){
@@ -67,6 +69,7 @@ let ReportConfig = {
     			smartDisplay:true,
     			locales:'zh-CN',
     			onLoadSuccess:(data)=>{
+    				_this.total += data.rows.length
     				_this.tableDataArr[index]=data
     				let rows = data.rows
     				rows.forEach((item,index)=>{
@@ -79,14 +82,13 @@ let ReportConfig = {
     				setTimeout(() => {
 	    				if(rows.length < 1) {
 	    					$table.parents(".fixed-table-container").css("height","80px!important")
-	    					console.log($table.parents(".fixed-table-container"))
 	    				}else if(rows.length < 4) {
 	    					$table.parents(".fixed-table-container").css("height","180px")
 	    				}
     				 }, 200);
+    				console.log(_this.total)
     			}
         	});
-        	if(!contentsEn){return}
         	$tableEn.bootstrapTable({
         		height:300,
         		columns: _this.tableColumns(contentsEn,'en',index,_this.idArrEn[index]),
@@ -102,8 +104,6 @@ let ReportConfig = {
         		smartDisplay:true,
         		locales:'zh-CN',
         		onLoadSuccess:(data)=>{
-//        			console.log(data)
-//        			console.log(index,data)
         			_this.tableDataArrEn[index]=data
         			let rows = data.rows
         			rows.forEach((item,index)=>{
@@ -115,10 +115,9 @@ let ReportConfig = {
     				$tableEn.bootstrapTable("load",rows)
     				setTimeout(() => {
 	    				if(rows.length < 1) {
-	    					$table.parents(".fixed-table-container").css("height","80px!important")
-	    					console.log($table.parents(".fixed-table-container"))
+	    					$tableEn.parents(".fixed-table-container").css("height","80px!important")
 	    				}else if(rows.length < 4) {
-	    					$table.parents(".fixed-table-container").css("height","180px")
+	    					$tableEn.parents(".fixed-table-container").css("height","180px")
 	    				}
     				 }, 200);
         		}
@@ -1476,7 +1475,7 @@ let ReportConfig = {
             			_this.contentsArrEn.push(tableContents)
             			_this.titleEn.push(item_en.title)
         				contentHtml += `<div class="table-content1" style="background:#fff">
-			                				<table id="table${index}"
+			                				<table id="table${index}En"
 			                				style="position: relative"
 			                				>
 			                				</table>
@@ -1681,20 +1680,21 @@ let ReportConfig = {
     	let tableDataArrEn = this.tableDataArrEn
     	let idArrEn = this.idArrEn
     	let dataEn  = []
-    	let Ajaxnum = 0
-    	let xhNum = 0
     	this.numCop = 0
     	function removeEmptyArrayEle(arr){    
     		  for(var i = 0; i < arr.length; i++) {
-    		   if(arr[i] == undefined) {
-    		      arr.splice(i,1);
-    		      i = i - 1; // i - 1 ,因为空元素在数组下标 2 位置，删除空之后，后面的元素要向前补位，
-    		                       // 这样才能真正去掉空元素,觉得这句可以删掉的连续为空试试，然后思考其中逻辑
-    		    }
-    		   }
-    		   return arr;
-    		};
-    		console.log(this.idArr.length,this.titleEn.length)
+		   if(arr[i] == undefined) {
+		      arr.splice(i,1);
+		      i = i - 1; // i - 1 ,因为空元素在数组下标 2 位置，删除空之后，后面的元素要向前补位，
+		                       // 这样才能真正去掉空元素,觉得这句可以删掉的连续为空试试，然后思考其中逻辑
+		    }
+		   }
+		   return arr;
+		};
+		console.log(this.idArr.length,this.titleEn.length)
+		//计算所有表格一共有多少条
+		
+	
     	tableTitlesEn.forEach((item,index)=>{
     		//循环表格表头
     		let alterSource = item["alter_source"];
@@ -1703,19 +1703,14 @@ let ReportConfig = {
     		//点击翻译按钮
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表格翻译
-	   			 let temp = []
-	   			/* if(!_this.tableDataArr[index]){
-	   				 //此表格无数据，返回
-	   				 return
-	   			 }
-	   				*/
-   				//console.log(_this.tableDataArr[index])
+	   			 let oneTableData = []
+	   			
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				//循环每个表格中的条数进行翻译
 	   				console.log(tableDataArrEn[index],index)
-	   				if(!tableDataArrEn[index]){return}
-	   				ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
-	   				xhNum ++;
+	   				if(tableDataArrEn[index]){
+	   					ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
+	   				}
 	   				ele["mySort"] = i
 	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
 	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
@@ -1725,32 +1720,34 @@ let ReportConfig = {
 	   				$.ajax({
 	   					url,
 	   					type:'post',
-//	   					async:false,
 	   					data:{
 	   						dataJson:JSON.stringify(ele)
 	   					},
 	   					success:(data)=>{
-	   						console.log(index)
-   							temp[i] = data
+	   						//index代表每个表格的索引
+	   						this.numCop++;
+	   						console.log(this.numCop,this.total,data)
+   							oneTableData[i] = data
+//   							if(i === 0 && temp)
 	   					}
 	   				})
 	   				
 	   			})
-	   			let t1 = setInterval(()=>{
-   					if(removeEmptyArrayEle(temp).length ===temp.length ){
+	   			/*let t1 = setInterval(()=>{
+   					if(removeEmptyArrayEle(oneTableData).length ===oneTableData.length ){
    						//console.log(temp)
    							temp.sort((a,b)=>{
    	   							return a["mySort"] -b["mySort"]
    	   						})
    						$("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
-   						$("#table"+idArrEn[index] + 'En').bootstrapTable("append",temp);
+   						$("#table"+idArrEn[index] + 'En').bootstrapTable("append",oneTableData);
    					}
    				},10)
 
 				setTimeout(()=>{
 					clearInterval(t1)
 					Public.message("success","翻译完成!")
-				},5000)
+				},5000)*/
 	   			
 	   			
     		})
