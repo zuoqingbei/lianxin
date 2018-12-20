@@ -70,6 +70,7 @@ label {
 
 .table-content1,.table-content2,.table-content3,.table-content4,.table-content5,.table-content6,.table-content7,.table-content9,.table-content10 {
     padding: 1.25rem 2rem;
+  /*   height:20rem; */
 }
 .bootstrap-table {
     margin: 0;
@@ -80,9 +81,9 @@ label {
     border:dashed 1px #e5e5e5;
     color: var(--fontColor);
 }
-.fixed-table-container {
-    height: auto!important;
-}
+/* .fixed-table-container {
+    max-height: 300px;
+} */
 
 .modal-dialog {
     max-width: 60%!important;

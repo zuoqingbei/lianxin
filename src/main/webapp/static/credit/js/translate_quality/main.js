@@ -21,86 +21,114 @@ let ReportConfig = {
         return JSON.stringify(newObj).replace(/\"/g, "").replace("{", "").replace("}", "").replace(/,/g, ";")
     },
     initTable() {
-        /**
-         * 表格初始化
-         */
+    	/**
+    	 * 表格初始化
+    	 */
         let _this = this
         this.tableDataArr = []
         this.tableDataArrEn = []
-        this.idArr.forEach((item, index) => {
-            const $table = $("#table" + item);
-            const $tableEn = $("#table" + item + "En");
-            let contents = this.contentsArr[index]
-            let contentsEn = this.contentsArrEn[index]
-            let titles = this.title
-            let urlTemp = titles[index].get_source;
-            let conf_id = titles[index].id;
-            if (!urlTemp) {
-                return
-            }
-            let urlCH = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] + `&conf_id=${conf_id}`
-            let urlEN = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] + `&conf_id=${conf_id}`
-            if (urlTemp.split("*")[1]) {
-                let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
-                tempParam.forEach((item, index) => {
-                    if (item === 'company_id') {
-                        let val = this.rows["company_id_en"]
-                        urlEN += `&${item}=${val}`
-                    } else {
-                        urlEN += `&${item}=${this.rows[item]}`
-                    }
-                    urlCH += `&${item}=${this.rows[item]}`
-                })
-            }
-            let selectInfo = []
-            selectInfo.push(_this.selectInfoObj)
-
-            let tempRows = []
-            $table.bootstrapTable({
-                columns: _this.tableColumns(contents, 'ch'),
-                url: urlCH, // 请求后台的URL（*）
-                method: 'post', // 请求方式（*）post/get
-                ajaxOptions: {
-                    async: false
-                },
-                queryParams: function (param) {
-                    param.selectInfo = JSON.stringify(selectInfo)
-                    return param
-                },
-                sidePagination: 'server',
-                contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-                pagination: false, //分页
-                smartDisplay: true,
-                locales: 'zh-CN',
-                onLoadSuccess: (data) => {
-                    _this.tableDataArr.push(data)
-                }
-            });
-            $tableEn.bootstrapTable({
-                columns: _this.tableColumns(contentsEn, 'en', index, _this.idArrEn[index]),
-                url: urlEN, // 请求后台的URL（*）
-                method: 'post', // 请求方式（*）post/get
-                queryParams: function (param) {
-                    param.selectInfo = JSON.stringify(selectInfo)
-                    return param
-                },
-                ajaxOptions: {
-                    async: false
-                },
-                sidePagination: 'server',
-                contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-                pagination: false, //分页
-                smartDisplay: true,
-                locales: 'zh-CN',
-                onLoadSuccess: (data) => {
+        this.idArr.forEach((item,index)=>{
+        	const $table = $("#table"+item);
+        	const $tableEn = $("#table"+item+"En");
+        	let contents = this.contentsArr[index]
+        	let contentsEn = this.contentsArrEn[index]
+        	let titles = this.title
+        	let urlTemp = titles[index].get_source;
+        	let conf_id = titles[index].id;
+        	if(!urlTemp){return}
+        	let urlCH = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	let urlEN = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+        	if(urlTemp.split("*")[1]){
+        		let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+        		tempParam.forEach((item,index)=>{
+        			if(item === 'company_id') {
+        				let val = this.rows["company_id_en"]
+        				urlEN += `&${item}=${val}`
+        			}else {
+        				urlEN += `&${item}=${this.rows[item]}`
+        			}
+        			urlCH += `&${item}=${this.rows[item]}`
+        		})
+        	}
+        	let selectInfo = []
+        	selectInfo.push(_this.selectInfoObj)
+        	
+        	let tempRows = []
+        	$table.bootstrapTable({
+        		height:300,
+        		columns: _this.tableColumns(contents,'ch'),
+    			url:urlCH, // 请求后台的URL（*）
+			    method : 'post', // 请求方式（*）post/get
+			    queryParams:function(param){
+			    	param.selectInfo = JSON.stringify(selectInfo)
+			    	return param
+			    },
+			    sidePagination: 'server',
+			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+    			pagination: false, //分页
+    			smartDisplay:true,
+    			locales:'zh-CN',
+    			onLoadSuccess:(data)=>{
+    				_this.tableDataArr[index]=data
+    				let rows = data.rows
+    				rows.forEach((item,index)=>{
+    					if(item.brand_url) {
+    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+							item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
+    					}
+    				})
+    				$table.bootstrapTable("load",rows)
+    				setTimeout(() => {
+	    				if(rows.length < 1) {
+	    					$table.parents(".fixed-table-container").css("height","80px!important")
+	    					console.log($table.parents(".fixed-table-container"))
+	    				}else if(rows.length < 4) {
+	    					$table.parents(".fixed-table-container").css("height","180px")
+	    				}
+    				 }, 200);
+    			}
+        	});
+        	if(!contentsEn){return}
+        	$tableEn.bootstrapTable({
+        		height:300,
+        		columns: _this.tableColumns(contentsEn,'en',index,_this.idArrEn[index]),
+        		url:urlEN, // 请求后台的URL（*）
+        		method : 'post', // 请求方式（*）post/get
+        		queryParams:function(param){
+        			param.selectInfo = JSON.stringify(selectInfo)
+        			return param
+        		},
+        		sidePagination: 'server',
+        		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+        		pagination: false, //分页
+        		smartDisplay:true,
+        		locales:'zh-CN',
+        		onLoadSuccess:(data)=>{
 //        			console.log(data)
-                    _this.tableDataArrEn.push(data)
-                }
-            });
-
-
+//        			console.log(index,data)
+        			_this.tableDataArrEn[index]=data
+        			let rows = data.rows
+        			rows.forEach((item,index)=>{
+    					if(item.brand_url) {
+    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+    					}
+    				})
+    				$tableEn.bootstrapTable("load",rows)
+    				setTimeout(() => {
+	    				if(rows.length < 1) {
+	    					$table.parents(".fixed-table-container").css("height","80px!important")
+	    					console.log($table.parents(".fixed-table-container"))
+	    				}else if(rows.length < 4) {
+	    					$table.parents(".fixed-table-container").css("height","180px")
+	    				}
+    				 }, 200);
+        		}
+        	});
+        	
+        	
         })
-
+      
     },
     tableColumns(a, lang, tempI, tempId) {
         let _this = this
@@ -907,17 +935,39 @@ let ReportConfig = {
                      */
                     _this.entityTitle.push(item.title)
                     let smallModileType = item.smallModileType
-                    if (item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent) {
-                        contentHtml += `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                    } else if (smallModileType === '10') {
-                        //财务模块
-                        _this.cwGetSource = item.title.get_source;
-                        _this.cwAlterSource = item.title.alter_source;
-                        _this.cwDeleteSource = item.title.remove_source;
-                        contentHtml += `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
-                    } else if (smallModileType !== '-2' && smallModileType !== '5') {
-                        contentHtml += `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                    }
+                    if(item.title.is_merger_next === '0'){
+                		if(item.title.temp_name === '行业分析' || item.title.temp_name === 'industry_analysis'){
+                				return
+                		}
+                		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
+                			if(item.title.word_key !== 'hangyexinxi'){
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3"  style="display:none" ><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			}else {
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			}
+                		}else if(smallModileType === '10'){
+                			//财务模块
+                			_this.cwGetSource = item.title.get_source;
+                			_this.cwAlterSource = item.title.alter_source;
+                			_this.cwDeleteSource = item.title.remove_source;
+                			contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
+                			contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                		}
+                		
+                	}else {
+                		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent || item.title.temp_name === '行业分析') {
+                			contentHtml +=  `<div class="bg-f pb-4" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                		}else if(smallModileType === '10'){
+                			//财务模块
+                			_this.cwGetSource = item.title.get_source;
+                			_this.cwAlterSource = item.title.alter_source;
+                			_this.cwDeleteSource = item.title.remove_source;
+                			contentHtml +=  `<div class="bg-f pb-4gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
+                			contentHtml +=  `<div class="bg-f pb-4 "><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                		}
+                	}
                     let btnText = item.title.place_hold;
                     let formArr = item.contents;
                     //模块的类型

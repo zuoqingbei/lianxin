@@ -367,6 +367,8 @@ public class HomeController extends BaseProjectController {
 	 */
 	public void saveOrder()  {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
+		
+		
 		Integer userid = getSessionUser().getUserid();
 		List<File> ftpfileList=new ArrayList<File>();
 		String num =CreditOrderInfo.dao.getNumber();
@@ -376,11 +378,39 @@ public class HomeController extends BaseProjectController {
 	    String year=String.valueOf(calendar.get(Calendar.YEAR));
 	    String month=String.valueOf(calendar.get(Calendar.MONTH)+1);
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		toString(model,380);
+		if((String)model.get("continent")==null) {
+			renderJson(new ResultType(0,"缺失 "+"地区参数"+" ,订单创建失败!"));
+			return;
+		}
+		if((String)model.get("country")==null) {
+			renderJson(new ResultType(0,"缺失 "+"国家ID"+" ,订单创建失败!"));
+			return;
+		}
+		if((String)model.get("report_type")==null) {
+			renderJson(new ResultType(0,"缺失 "+"报告类型参数"+" ,订单创建失败!"));
+			return;
+		}
+		if((String)model.get("order_type")==null) {
+			renderJson(new ResultType(0,"缺失 "+"订单类型"+" ,订单创建失败!"));
+			return;
+		}
+		if( model.get("report_language")==null) {
+			renderJson(new ResultType(0,"缺失 "+"报告语言"+" ,订单创建失败!"));
+			return;
+		}
+		if((String)model.get("speed")==null) {
+			renderJson(new ResultType(0,"缺失 "+"报告速度"+" ,订单创建失败!"));
+			return;
+		}
+		
+		
+		toString(model,400);
 		String countryId = model.get("country");
 		if(countryId!=null&&!"".equals(countryId)){
 			Db.update("update credit_country set `scale`=`scale`+1 where id="+countryId);
 		}
-		
+		toString(model,405);
 		model.set("num", num);
 		model.set("receiver_date", date);
 		model.set("year", year);
@@ -393,6 +423,7 @@ public class HomeController extends BaseProjectController {
 		//查询到有相同公司报告直接提交
 		if(!is_fastsubmmit.equals("-1")){
 			theSameOrder = OrderManagerService.service.getTheSameOrder(right_company_name_en,model.get("report_type")+"",model.get("report_language")+"", this);
+			toString(model,418);
 			model.set("is_fastsubmmit", theSameOrder.get("id"));
 			model.set("company_id", theSameOrder.get("id"));
 			model.set("status", "311");
@@ -433,10 +464,13 @@ public class HomeController extends BaseProjectController {
 		model.set("update_date", date1);
 		String id = "";
 		try {
+			toString(model,458);
 			id = OrderManagerService.service.modifyOrder(0,model,user,this);
+			toString(model,460);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			renderJson(new ResultType(0,"订单创建失败!"));
+			return;
 		}//保存订单
 		
 		//非快速递交时创建报告
@@ -789,7 +823,31 @@ public class HomeController extends BaseProjectController {
 		renderJson(custom);
 	}
 
+	//打桩机
+	static void toString(CreditOrderInfo model,int lineNum) {
+		System.out.println("代码第"+lineNum+"行:");
+		System.out.println("report_type========="+(String)model.get("report_type"));
+		System.out.println("continent========="+(String)model.get("continent"));
+		System.out.println("country========="+(String)model.get("country"));
+		System.out.println("speed========="+(String)model.get("speed"));
+		System.out.println("order_type========="+(String)model.get("order_type"));
+		System.out.println("id========="+ model.get("id")+"");
+		System.out.println("country========="+(String)model.get("country"));
+	}
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 

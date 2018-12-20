@@ -111,7 +111,7 @@ let Allocation = {
         const $table = $('#table');
         let _this = this
         $table.bootstrapTable({
-            height: $(".table-content").height()*0.92,
+            height: $(".table-content").height()*0.95,
             columns: [
                  {
                   title: '订单号',
