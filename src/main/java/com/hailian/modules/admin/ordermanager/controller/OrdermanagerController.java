@@ -453,7 +453,7 @@ public class OrdermanagerController extends BaseProjectController{
                 c.set(Calendar.DAY_OF_MONTH, 5);//设置为5号,当前日期既为上月第5天
                 String first = format.format(c.getTime());
                 Calendar ca = Calendar.getInstance();
-                ca.add(Calendar.MONTH, 1);//本月
+                ca.add(Calendar.MONTH, 0);//本月
                 ca.set(Calendar.DAY_OF_MONTH, 5);//本月5日
                 String last = format.format(ca.getTime());
                 //此客户依据每月订单量和国家决定订单价格
@@ -470,6 +470,7 @@ public class OrdermanagerController extends BaseProjectController{
                 price = CreditReportPrice.dao.getoldPrice(countryid, reporttype, speed, null);
             }
         } else {
+        	//获取新客户价格
             price = OrderManagerService.service.getPrice(countryType, speed, reporttype, orderType);
         }
 		/*

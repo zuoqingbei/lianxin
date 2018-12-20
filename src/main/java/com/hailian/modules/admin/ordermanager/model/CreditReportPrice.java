@@ -56,7 +56,7 @@ public class CreditReportPrice extends BaseProjectModel<CreditReportPrice>{
 				sql.append(" and t.order_type=?");
 				params.add(orderType);
 			}
-			
+			sql.append(" and t.customer_id is null or t.customer_id='' ");
 			return CreditReportPrice.dao.findFirst(sql.toString(),params.toArray());
 		}
 	public CreditReportPrice getoldPrice(String countryid, String reporttype, String speed, Integer size) {
