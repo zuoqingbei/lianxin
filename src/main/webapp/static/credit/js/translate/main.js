@@ -182,6 +182,7 @@ let ReportConfig = {
     							}else {
     								
     								$("#"+id).val(row[anotherId])
+    								$("#"+id).attr("en_bak",row[anotherId])
     							}
     						})
     					}
@@ -299,7 +300,7 @@ let ReportConfig = {
     			
     		})
     		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modalEn${item}">编辑</a></div>`)
-    		modalHtml += `<div class="modal fade" id="modalEn${item}" tabindex="-1" role="dialog" aria-labelledby="examplemodalCenterTitle" aria-hidden="true">
+    		modalHtml += `<div class="modal fade" id="modalEn${item}" tabindex="-2" role="dialog" aria-labelledby="examplemodalCenterTitle" aria-hidden="true">
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
 					            <div class="modal-header">
@@ -317,7 +318,7 @@ let ReportConfig = {
 					</div>`
     	})
     	
-    	$("#container").append(modalHtml)
+    	$("body").append(modalHtml)
     },
     bindFormData(){
     	/**
@@ -1575,7 +1576,18 @@ let ReportConfig = {
         })
     	
     	this.idArr.forEach((item,index)=>{
-    		
+    		$("#modalEn"+item).find("input").blur((e)=>{
+    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".triggerModal").trigger("click")
+    			}
+    		})
+    		$("#modalEn"+item).find("textarea").blur((e)=>{
+    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".triggerModal").trigger("click")
+    			}
+    		})
     		//点击模态框保存按钮，新增一条数据
     		$("#modalEn_save"+item).unbind().click(()=>{
     			let dataJson = []
@@ -2056,6 +2068,11 @@ let ReportConfig = {
     			},
     			success:(data)=>{
     				console.log(data)
+    				if(data.statusCode === 1) {
+    					Public.message("success",data.message)
+    				}else {
+    					Public.message("error",data.message)
+    				}
     			}
     		})
     	})
