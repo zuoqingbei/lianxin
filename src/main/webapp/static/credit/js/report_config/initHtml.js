@@ -874,8 +874,8 @@ let InitObj = {
     		if(reg === 'null' || !reg) {
     			return;
     		}else {
-    			
-    			if(!eval("("+reg+")").test(val)){
+    			let exp = eval(reg)
+    			if(!exp.test(val)){
     				$(e.target).siblings(".errorInfo").show();
     				$(e.target).val("")
     				$(e.target).addClass("active")
