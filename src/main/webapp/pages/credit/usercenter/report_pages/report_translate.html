@@ -51,28 +51,11 @@
         </div> 
         <div class="triggerModal" data-toggle="modal" data-target="#modal_revise" style="visibility:hidden"></div>
          <!-- fixed 底部 -->
-                    <div class="position-fixed fixed-btn-well d-flex justify-content-end align-items-center px-5">
-                       
-                    </div>
+            <div class="position-fixed fixed-btn-well d-flex justify-content-end align-items-center px-5">
+               
+            </div>
     </div>
-</div>
-<div class="modal fade" id="modal_delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-              	确认删除？
-            </div>
-              <div class="modal-body">
-               	<div class="d-flex justify-content-center align-items-center"><img src="${BASE_PATH }static/credit/imgs/index/info.png" style="width:1.8rem;margin-right:.2rem"/>是否要删除此行？</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="popEnter" data-dismiss="modal">删除</button>
-                <button type="button" class="btn btn-default" id="popCancel" data-dismiss="modal">取消</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 翻译校正模态窗 -->
+    <!-- 翻译校正模态窗 -->
 <div class="modal fade" id="modal_revise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -102,6 +85,24 @@
         </div>
     </div>
 </div>
+</div>
+<div class="modal fade" id="modal_delete" tabindex="-2" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              	确认删除？
+            </div>
+              <div class="modal-body">
+               	<div class="d-flex justify-content-center align-items-center"><img src="${BASE_PATH }static/credit/imgs/index/info.png" style="width:1.8rem;margin-right:.2rem"/>是否要删除此行？</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="popEnter" data-dismiss="modal">删除</button>
+                <button type="button" class="btn btn-default" id="popCancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="${BASE_PATH }static/credit/assets/city-select/Popt.js"></script>
  	<script src="${BASE_PATH }static/credit/assets/city-select/cityJson.js"></script>
  	<script src="${BASE_PATH }static/credit/assets/city-select/citySet.js"></script>
