@@ -27,7 +27,7 @@ let OrderDetail = {
                             if (item === 'orderId') { //这里的orderId对应rows的id，和填报配置中不一样
                                 url += `&${item}=${this.row.id}`;
                             } else {
-                                if (paramObj[item]||paramObj[item]==='') {
+                                if (paramObj[item] || paramObj[item] === '') {
                                     url += `&${item}=${paramObj[item]}`;
                                 } else {
                                     url += `&${item}=${this.row[item]}`
@@ -391,7 +391,7 @@ let OrderDetail = {
                     break;
                 // 25-企业结构树形图
                 case '25':
-                    $wrap.append(`<div class='module-content type25-content'><div id="ec03_tree" style="height: 32rem;"></div></div>`);
+                    $wrap.append(`<div class='module-content type25-content'><div id="ec04_tree" style="height: 32rem;"></div></div>`);
                     $(".main .table-content").append($wrap);
                     let getLastChildren = str => {
                         if (!str) {
@@ -468,7 +468,7 @@ let OrderDetail = {
                 }
 
                     console.log("~~~targetObj：", JSON.stringify(targetObj, undefined, 2));
-                    let myChart = echarts.init($("#ec03_tree")[0]);
+                    let myChart = echarts.init($("#ec04_tree")[0]);
                     myChart.setOption(option = {
                         tooltip: {
                             trigger: 'item',
@@ -514,10 +514,42 @@ let OrderDetail = {
                 case '26':
                     $wrap.append(`<div class='module-content type26-content'>
                                     <div class="border multiText m-4 p-2"></div>
-                                    <div class="chartBox" id="ec03_lineBar" style="height: 32rem;"></div>
+                                    <div class="chartBox" id="ec02_lineBar" ></div>
                                 </div>`);
                     $(".main .table-content").append($wrap);
-                    this.drawChart($wrap)['lineBar']('#ec03_lineBar');// 绘制图表
+                    $.get(this.getUrl(item), data => {
+                        let chartData = {xAxisData: [], y1Data: [], y2Data: []};
+                        let [title, remark] = ['', ''];
+                        item.contents.forEach((content, i) => {//5个数据分别是标题，备注，图表的x轴、y1轴、y2轴
+                            let [param, url] = ['', ''];
+                            if (content.data_source) {
+                                param = content.data_source.split('*')[1];
+                                url = BASE_PATH + `credit/front/ReportGetData/${content.data_source.split('*')[0]}&${param}=${this.row[param]}&conf_id=${item.title.id}`;
+                            }
+                            if (i === 0) {
+                                title = content.temp_name;
+                                $.get(url, data => {
+                                    if (data.rows[0][content.column_name]) {
+                                        $wrap.find('h3').text(data.rows[0][content.column_name])
+                                    }
+                                })
+                            } else if (i === 1) {
+                                remark = content.temp_name;
+                                $.get(url, data => {
+                                    $wrap.find('.multiText').text(data.rows[0][content.column_name])
+                                })
+                            } else {
+                                let arr = ['xAxis', 'y1', 'y2'];
+                                chartData[arr[i - 2] + 'Name'] = content.temp_name;
+                                data.rows.forEach(oneData => {
+                                    chartData[arr[i - 2] + 'Data'].push(oneData[content.column_name])
+                                })
+                            }
+                        });
+                        if (data.rows.length > 0) {
+                            this.drawChart($wrap, chartData)['lineBar']('#ec02_lineBar');// 绘制图表
+                        }
+                    });
                     break;
                 default:
                     console.warn(item.title.temp_name + '没有找到模块类型！');
@@ -852,31 +884,37 @@ let OrderDetail = {
             lineBar: (elem) => {
                 let chart;
                 if (elem) {
+                    $(elem).css('height', '32rem');
                     chart = echarts.init($(elem)[0]);
                 } else {
-                    $wrap.find(".module-content").append(`<div class="chartBox" id="ec02_lineBar" style="height: 24rem;"></div>`)
+                    $wrap.find(".module-content").append(`<div class="chartBox" id="ec_lineBar" style="height: 32rem;"></div>`)
                     chart = echarts.init($wrap.find(".module-content .chartBox")[0]);
                 }
                 chartData = chartData || {
-                    line: [0.06, 0.062, 0.068, 0.064, 0.062],
-                    bar: [4800, 4700, 4800, 5000, 4500],
-                    xAxisData: ['这是', '测试', '数据', 2016, 2017]
+                    xAxisName: 'x轴',
+                    y1Name: 'y1轴',
+                    y2Name: 'y2轴',
+                    xAxisData: ['这是', '测试', '数据', 2016, 2017],
+                    y1Data: [4800, 4700, 4800, 5000, 4500], //bar
+                    y2Data: [0.06, 0.062, 0.068, 0.064, 0.062], //line
                 };
                 chart.setOption({
                     color: ['#1890ff', '#facc15'],
                     legend: {show: true},
                     xAxis: {
+                        name: '\n' + chartData.xAxisName,
+                        nameGap: bodyScale * 20,
                         axisLine: {show: false},
                         axisTick: {show: false},
                         data: chartData.xAxisData
                     },
                     // grid:{top:'15%'},
                     yAxis: [{
-                        name: 'y1',
+                        name: chartData.y1Name,
                         axisLine: {show: false},
                         axisTick: {show: false},
                     }, {
-                        name: 'y2',
+                        name: chartData.y2Name,
                         axisLine: {show: false},
                         axisTick: {show: false},
                         axisLabel: {interval: 2},
@@ -884,14 +922,14 @@ let OrderDetail = {
                     }],
                     series: [{
                         type: 'bar',
-                        name: 'y1',
+                        name: chartData.y1Name,
                         yAxisIndex: 0,
-                        data: chartData.bar,
+                        data: chartData.y1Data,
                     }, {
                         type: 'line',
-                        name: 'y2',
+                        name: chartData.y2Name,
                         yAxisIndex: 1,
-                        data: chartData.line,
+                        data: chartData.y2Data,
                     }].map(function (item) {
                         return $.extend(true, item, {
                             label: {
