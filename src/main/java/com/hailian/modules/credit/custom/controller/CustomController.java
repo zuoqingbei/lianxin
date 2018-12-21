@@ -94,7 +94,6 @@ public class CustomController extends BaseProjectController {
 		// 日志添加
 		CustomInfoModel model = getModel(CustomInfoModel.class);
 		List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(model.get("id"));//根据客户编码查找
-		
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by", userid);
@@ -102,14 +101,14 @@ public class CustomController extends BaseProjectController {
 		if (pid != null && pid > 0) { // 更新
 			CustomInfoModel findById = CustomInfoModel.dao.findById(pid);//根据主键查找
 			if(!findById.get("id").equals(model.get("id"))){
-				if(customByid!=null){
+				if(customByid.size()>0){
 					renderMessage("客户编码已经存在，请修改客户编码！");
 					return;
 				}
 			}
 			model.update();
 		} else { // 新增
-			if(customByid!=null){
+			if(customByid.size()>0){
 				renderMessage("客户编码已经存在，请修改客户编码！");
 				return;
 			}

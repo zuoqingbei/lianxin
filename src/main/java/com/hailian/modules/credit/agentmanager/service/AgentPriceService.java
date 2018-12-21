@@ -58,6 +58,9 @@ public class AgentPriceService {
 	public boolean updateDelFlagById(Integer id) {
 		return AgentPriceModel.dao.updateDelFlagById(id);
 	}
+	public void updateDelFlagByAgentId(Integer agentid) {
+		AgentPriceModel.dao.updateDelFlagByAgentId(agentid);
+	}
 	public AgentPriceModel getAgentPriceByOrder(String oid){
 		CreditOrderInfo info= 	CreditOrderInfo.dao.findById(oid);
 		CompanyModel companymodel = CompanyModel.dao.findById(info.get("company_id")+"");

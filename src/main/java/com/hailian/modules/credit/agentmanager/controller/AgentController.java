@@ -20,6 +20,9 @@ import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.agentmanager.service.AgentService;
 import com.hailian.modules.credit.city.model.CityModel;
 import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.modules.credit.currencyrate.model.CurrencyRateModel;
+import com.hailian.modules.credit.currencyrate.service.CurrencyRateService;
+import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.province.model.ProvinceModel;
 import com.jfinal.json.Json;
 import com.jfinal.plugin.activerecord.Db;
@@ -127,19 +130,27 @@ public class AgentController extends BaseProjectController {
 		AgentModel model = getModel(AgentModel.class);
 		String agent_id = model.get("agent_id").toString();
 		List<AgentModel> findByAgentid = AgentModel.dao.findByAgentid(agent_id);
-		if(findByAgentid!=null){
-			renderMessage("该代理编码已存在，请勿重复添加");
-			return;
-		}
+		
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by", userid);
 		model.set("update_date", now);
 		if (id != null && id > 0) { // 更新
+			AgentModel findById = AgentModel.dao.findById(id);//根据主键查找
+			if(!findById.get("agent_id").equals(model.get("agent_id"))){
+				if(findByAgentid.size()>0){
+					renderMessage("客户编码已经存在，请修改客户编码！");
+					return;
+				}
+			}
 			model.update();
 			
 			renderMessage("修改成功");
 		} else { // 新增
+			if(findByAgentid.size()>0){
+				renderMessage("该代理编码已存在，请勿重复添加");
+				return;
+			}
 			model.remove("id");
 			model.set("create_by", userid);
 			model.set("create_date", now);
@@ -192,11 +203,13 @@ public class AgentController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void delete() {
-		Integer id = getParaToInt();
+		Integer id = Integer.parseInt(getPara("id"));
+		Integer agentid = Integer.parseInt(getPara("agentid"));
 		if (AgentService.service.updateDelFlagById(id)) {
+			AgentPriceService.service.updateDelFlagByAgentId(agentid);//删除相关代理价格
 			list();
 		} else {
-			renderText("failure");
+			renderMessage("保存失败");
 		}
 	}
 	/**
@@ -314,6 +327,12 @@ public class AgentController extends BaseProjectController {
 	public void savePrice() {
 		Integer id = getParaToInt("id");
 		AgentPriceModel model = getModel(AgentPriceModel.class);
+		//校验维护的该价格币种是否有维护对人民币的汇率
+		CurrencyRateModel rateByA2B = CurrencyRateService.service.getRateByA2B(model.get("currency"), "274");
+		if(rateByA2B==null){
+			renderMessage("您维护的该币种没有配置汇率，请先维护该币种对人民币的汇率配置维护！");
+			return;
+		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		//		model.set("agent_id", id);
