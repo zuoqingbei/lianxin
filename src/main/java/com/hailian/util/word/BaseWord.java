@@ -592,7 +592,7 @@ public class BaseWord {
             //X轴分类标签以45度倾斜
             categoryAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
             JFreeChart chart = new JFreeChart(plot);
-            chart.setTitle("数量/销量走势图");
+            chart.setTitle(title);
             chart.setBackgroundPaint(SystemColor.WHITE);
             //ChartFrame chartFrame=new ChartFrame("数量/销量走势图",chart);
             //以合适的大小展现图形

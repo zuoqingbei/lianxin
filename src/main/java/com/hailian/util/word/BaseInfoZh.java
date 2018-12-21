@@ -14,6 +14,7 @@ import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
+import org.apache.commons.lang.StringUtils;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import java.io.*;
@@ -238,19 +239,19 @@ public class BaseInfoZh {
                     Object[] keys = m.keySet().toArray();
                     String n = m.get(keys[0]);
                     String v = m.get(keys[2]);
-                    int value = 0;
+                    Double value = 0d;
                     if (v != null && !"".equals(v)) {
                         v = m.get(keys[2]);
                         try {
-                            value = Integer.parseInt(v);
+                            value = Double.parseDouble(v);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                     pds.setValue(n, value);
                 }
-                BaseWord.createPieChart(pds, _prePath + ".jpg");
-                map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
+                BaseWord.createPieChart(pds, _prePath + "pie.jpg");
+                map.put("pie", new PictureRenderData(660, 330, _prePath + "pie.jpg"));
             }
 
             //行业详情-柱图/线图
@@ -281,8 +282,8 @@ public class BaseInfoZh {
                     barDataSet.addValue(value1, "y1", n);
                     lineDataSet.addValue(value2,"y2",n);
                 }
-                BaseWord.createBarChart("",barDataSet,lineDataSet, _prePath + ".jpg");
-                map.put("bar", new PictureRenderData(600, 300, _prePath + ".jpg"));
+                BaseWord.createBarChart("",barDataSet,lineDataSet, _prePath + "bar.jpg");
+                map.put("bar", new PictureRenderData(660, 330, _prePath + "bar.jpg"));
             }
         }
 
@@ -309,12 +310,12 @@ public class BaseInfoZh {
         String _pre = "http://" + ip + ":" + serverPort + "/";
         List<Map<String, String>> fileList = new ArrayList<>();
         Map<String, String> fileMap = new HashMap();
-        fileMap.put(reportName,_pre + wordPath);
+        fileMap.put(reportName + ".doc",_pre + wordPath);
         if(!"".equals(excelPath)) {
-            fileMap.put(reportName, _pre + excelPath);
+            fileMap.put(reportName + ".xls", _pre + excelPath);
         }
         fileList.add(fileMap);
-        sendMail(customId, fileList);
+        sendMail(reportName,customId, fileList);
     }
 
     /**
@@ -337,7 +338,9 @@ public class BaseInfoZh {
         for (CreditCompanyBrandandpatent model : list) {
             Integer id = model.getInt("id");
             String url = model.getStr("brand_url");
-            map.put("img" + id, new PictureRenderData(120, 120, downloadFile(url,brandPath)));
+            if(StringUtils.isNotEmpty(url)) {
+                map.put("img" + id, new PictureRenderData(120, 120, downloadFile(url, brandPath)));
+            }
         }
         String sourcePath = tarPath + ".docx";
         String targetPath = tarPath + "_p.docx";
@@ -351,14 +354,13 @@ public class BaseInfoZh {
      * @param customerId
      * @param fileList
      */
-    public static void sendMail(String customerId,List<Map<String, String>> fileList){
+    public static void sendMail(String reportName,String customerId,List<Map<String, String>> fileList){
         //发送邮件
         CreditCustomInfo  customInfo = CreditCustomInfo.dao.getCustomerById(customerId);
         if(customerId!=null) {
             try {
-                //String email = customInfo.getStr("email");
-                String email = "hu_cheng86@126.com";
-                new SendMailUtil(email, "", "商业信息报告", "", fileList).sendEmail();
+                String email = customInfo.getStr("email");
+                new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -547,19 +549,19 @@ public class BaseInfoZh {
         String overDetail = statementsConf.getStr("overall_financial_condition_detail");
 
         StringBuffer str = new StringBuffer();
-        str.append("盈利能力：" + ("".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
+        str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
         str.append("\n");
         str.append(profDetail);
         str.append("\n");
-        str.append("周转能力：" + ("".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup) : ""));
+        str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup) : ""));
         str.append("\n");
         str.append(liquDetail);
         str.append("\n");
-        str.append("融资能力：" + ("".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup) : ""));
+        str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup) : ""));
         str.append("\n");
         str.append(leverDetail);
         str.append("\n");
-        str.append("目标公司的总体财务状况：" + ("".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup) : ""));
+        str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup) : ""));
         str.append("\n");
         str.append(overDetail);
         return str.toString();
