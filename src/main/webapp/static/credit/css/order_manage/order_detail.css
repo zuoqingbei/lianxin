@@ -53,7 +53,7 @@ h3.company_info{
     }
 
     table > thead th {
-        min-width: 8rem;
+        /*min-width: 8rem;*/
     }
 
     .bar_box {
