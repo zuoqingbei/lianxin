@@ -50,5 +50,18 @@ public class CreditCompanyBrandandpatent extends BaseProjectModel<CreditCompanyB
 		Db.update(sql, params.toArray());
 		
 	}
+
+    /**
+     * 获取公司专利和荣誉信息
+     * @param companyId 公司id
+     * @param sysLanguage 语言
+     * @return
+     */
+    public List<CreditCompanyBrandandpatent> getBrandandpatent(String companyId,String sysLanguage){
+        return dao.find("select * from credit_company_brandandpatent " +
+                "where company_id = ? and sys_language=? and del_flag = 0",
+                companyId,
+                sysLanguage);
+    }
 	
 }

@@ -33,4 +33,13 @@ public class CreditCustomInfo  extends BaseProjectModel<CreditCustomInfo>{
 		return list;
 	}
 
+    /**
+     * 根据ID获取客户信息
+     * @param customerId
+     * @return
+     */
+    public CreditCustomInfo getCustomerById(String customerId){
+        return dao.findFirst("select * from credit_custom_info where id=? and del_flag=0",customerId);
+    }
+
 }

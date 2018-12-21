@@ -101,7 +101,13 @@ var bodyContent = {
             </td>
         </tr>
         <tr>
-            <td>word模板方向</td>
+            <td>占位符(word模板)</td>
+            <td>
+                <input class="form-control" type="text" name="model.word_key" value="${model.word_key }"    validname="占位符(word模板)" />
+            </td>
+        </tr>
+        <tr>
+            <td>表格样式(word模板)</td>
             <td>
             	 <select name="model.word_table_type" class="form-control" validname="字段类型">
                    ${wordTableType!}
@@ -115,7 +121,7 @@ var bodyContent = {
             </td>
         </tr>
          <tr>
-            <td>是否和下一个模板合并</td>
+            <td>合并下个节点</td>
             <td>
             	 <select name="model.is_merger_next" class="form-control" validname="字段类型">
                    ${isMergerNext!}

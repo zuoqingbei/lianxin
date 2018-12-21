@@ -37,8 +37,8 @@ jQuery(function($) {
 			
 			window.open('/credit/agentmanager/agentPriceList/'+id,"_blank"); 
 		},
-		del : function(id) {
-			var url = '/credit/agentmanager/delete/'+id;
+		del : function(id,agentid) {
+			var url = '/credit/agentmanager/delete?id='+id+'&agentid='+agentid;
 			var title = '确认要删除该代理信息？';
 			Confirm(title, function() {
 				form1.action = url;
@@ -101,7 +101,7 @@ var paginator = function(page) {
 				<td>
 					<a href="javascript:void(0);" class="btn btn-sm btn-success"  onclick="oper.editBasic(${item.id});">修改代理基本信息</a> 
 					<a href="javascript:void(0);" class="btn btn-sm btn-primary"  onclick="oper.edit(${item.agent_id});">配置代理价格</a> 
-					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.agent_id});">删除</a>
+					<a href="javascript:void(0);" class="btn btn-sm btn-danger"  onclick="oper.del(${item.id},${item.agent_id});">删除</a>
 				</td>
 			</tr>
 		<% } %>

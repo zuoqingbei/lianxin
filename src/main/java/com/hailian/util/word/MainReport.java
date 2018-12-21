@@ -7,38 +7,36 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
  */
 public class MainReport {
 
-    public void build(int orderId,Integer userid){
-        CreditOrderInfo order =  CreditOrderInfo.dao.findById(orderId);
+    public void build(int orderId,Integer userid) {
+        CreditOrderInfo order = CreditOrderInfo.dao.findById(orderId);
         String reportType = order.getStr("report_type");
         String report_language = order.getStr("report_language");
-        //基本报告类型
-        if("1".equals(reportType)){
-            //中文简体
-            if("213".equals(report_language)){
-                BaseInfoZh.reportTable(order,"1",userid);
-            }
-            //中文简体+英文
-            if("216".equals(report_language)){
-                BaseInfoZh.reportTable(order,"1",userid);
-                BaseInfoEn.reportTable(order,"1",userid);
-            }
-        }
 
-        //商业报告中文版
-        if("8".equals(reportType)){
-            //中文简体
-            if("213".equals(report_language)) {
-                BusinessZh.reportTable(order, reportType, userid);
-            }
+        //中文简体
+        if ("213".equals(report_language)) {
+            BaseInfoZh.reportTable(order, reportType, userid);
+        }else if("215".equals(report_language)){
             //英文
-            if("215".equals(reportType)){
-                BusinessEn.reportTable(order, reportType, userid);
-            }
+            BaseInfoZh.reportTable(order, reportType, userid);
+        }else if("216".equals(report_language)) {
             //中文简体+英文
-            if("216".equals(report_language)){
-                BusinessZh.reportTable(order, reportType, userid);
-                BusinessEn.reportTable(order, reportType, userid);
+            if("1".equals(reportType)){
+                BaseInfoZh.reportTable(order, "1", userid);
+                BaseInfoZh.reportTable(order, "7", userid);
+            }else if("8".equals(reportType)){
+                BaseInfoZh.reportTable(order, "8", userid);
+                BaseInfoZh.reportTable(order, "9", userid);
+            }else if("10".equals(reportType)){
+                BaseInfoZh.reportTable(order, "10", userid);
+                BaseInfoZh.reportTable(order, "11", userid);
+            }else if("12".equals(reportType)){
+                BaseInfoZh.reportTable(order, "12", userid);
+                BaseInfoZh.reportTable(order, "14", userid);
+            }else{
+                BaseInfoZh.reportTable(order, reportType, userid);
             }
+        }else {
+            BaseInfoZh.reportTable(order, reportType, userid);
         }
     }
 
