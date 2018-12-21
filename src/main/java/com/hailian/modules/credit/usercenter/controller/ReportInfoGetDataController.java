@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyGdp;
 import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
@@ -363,28 +364,29 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         history.save();
         List<CreditQualityOpintion> opintion2 = new ArrayList<CreditQualityOpintion>();
         if (StringUtils.isBlank(update)) {//查询或新增
-            opintion2 = CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?", orderId, type);
-            if (opintion2.size() <= 0) {
-                //如果根据订单id 与质检类型 查询为空 则新增
-                CreditQualityOpintion model = new CreditQualityOpintion();
-                model.set("quality_opinion", opintion);
-                model.set("quality_type", type);
-                model.set("order_id", orderId);
-                model.set("report_type", reportType);
-                model.set("quality_deal", deal);
-                model.set("grade", grade);
-                model.set("create_by", userId);
-                model.set("create_date", now);
-                model.set("update_by", userId);
-                model.set("update_date", now);
-                model.save();
-                opintion2.add(model);
-                renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
-            } else {
                 //查询
                 renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
-            }
+            
         } else {
+        	//通过查询该订单下 该质检类型的质检意见是否存在，因不同订单不同类型质检一条数据，可以确定是否新增或修改
+        	 opintion2 = CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?", orderId, type);
+             if (opintion2.size() <= 0) {
+                 //如果根据订单id 与质检类型 查询为空 则新增
+                 CreditQualityOpintion model = new CreditQualityOpintion();
+                 model.set("quality_opinion", opintion);
+                 model.set("quality_type", type);
+                 model.set("order_id", orderId);
+                 model.set("report_type", reportType);
+                 model.set("quality_deal", deal);
+                 model.set("grade", grade);
+                 model.set("create_by", userId);
+                 model.set("create_date", now);
+                 model.set("update_by", userId);
+                 model.set("update_date", now);
+                 model.save();
+                 opintion2.add(model);
+                 renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
+             }else{
             CreditQualityOpintion model = new CreditQualityOpintion();
             model.set("quality_opinion", opintion);
             model.set("quality_type", type);
@@ -400,7 +402,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             model.update();
             opintion2.add(model);
             renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
-        }
+             }
+          }
         if (StringUtils.isNotBlank(submit)) {
             //自动分配的分析员ID
             String analerId = null;
@@ -965,5 +968,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     }
 	
     
+    public void selectGdp(){
+   List<CreditCompanyGdp>  gdps= CreditCompanyGdp.dao.find("select * from credit_company_growth_rate");
+   renderJson(new Record().set("rows", gdps).set("total", gdps!=null?gdps.size():null));	
+
+    }
     
 }

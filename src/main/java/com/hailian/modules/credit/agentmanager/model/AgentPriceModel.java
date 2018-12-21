@@ -215,6 +215,7 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 			sb.append(" and cap.speed=? ");
 			params.add(speed);
 		}
+		sb.append(" and cap.agent_type='264' ");
 		sb.append(" order by price asc,cap.proxy_time ASC ");
 		sb.append(" ) A LIMIT 0,1 ");
 		AgentPriceModel pricemodel = AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());

@@ -26,7 +26,7 @@ let ReportConfig = {
         this.total= 0
         this.tableDataArr = []
         this.tableDataArrEn = []
-//        console.log(this.contentsArr,this.contentsArrEn)
+        let tableNum = 0;//计数器
         this.idArr.forEach((item,index)=>{
         	const $table = $("#table"+item);
         	const $tableEn = $("#table"+item+"En");
@@ -69,6 +69,7 @@ let ReportConfig = {
     			smartDisplay:true,
     			locales:'zh-CN',
     			onLoadSuccess:(data)=>{
+    				tableNum++;
     				_this.total += data.rows.length
     				_this.tableDataArr[index]=data
     				let rows = data.rows
@@ -86,7 +87,11 @@ let ReportConfig = {
 	    					$table.parents(".fixed-table-container").css("height","180px")
 	    				}
     				 }, 200);
-    				console.log(_this.total)
+    				console.log(_this.total,index,this.idArr.length)
+    				if( this.idArr.length === tableNum) {
+    					//中文表格数据加载完成，可以点翻译按钮啦
+    					$("#translateBtn").removeClass("disable")
+    				}
     			}
         	});
         	$tableEn.bootstrapTable({
@@ -177,6 +182,7 @@ let ReportConfig = {
     							}else {
     								
     								$("#"+id).val(row[anotherId])
+    								$("#"+id).attr("en_bak",row[anotherId])
     							}
     						})
     					}
@@ -294,7 +300,7 @@ let ReportConfig = {
     			
     		})
     		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modalEn${item}">编辑</a></div>`)
-    		modalHtml += `<div class="modal fade" id="modalEn${item}" tabindex="-1" role="dialog" aria-labelledby="examplemodalCenterTitle" aria-hidden="true">
+    		modalHtml += `<div class="modal fade" id="modalEn${item}" tabindex="-2" role="dialog" aria-labelledby="examplemodalCenterTitle" aria-hidden="true">
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
 					            <div class="modal-header">
@@ -312,7 +318,7 @@ let ReportConfig = {
 					</div>`
     	})
     	
-    	$("#container").append(modalHtml)
+    	$("body").append(modalHtml)
     },
     bindFormData(){
     	/**
@@ -418,8 +424,9 @@ let ReportConfig = {
     	let titlesEn = this.formTitleEn;
     	let formIndexEn = this.formIndexEn;
     	let _this = this
-    	if(tempData){
+    	if(tempData ){
     		let arr = Array.from($("#titleEn"+i))
+    		console.log($("#titleEn"+i))
 			arr.forEach((item,index)=>{
     			if($(item).siblings(".radio-con").length !== 0) {
     				//radio类型绑数
@@ -471,105 +478,104 @@ let ReportConfig = {
     					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
     				}else {
     					$("#"+id).val(obj[anotherId])
+    					$("#"+id).attr("en_bak",obj[anotherId])
     				}
     			})
-    		})
-    		return;
-    	}
-    	
-    	
-    	
-    	formIndexEn.forEach((item,index)=>{
-    		let conf_id = titlesEn[index].id;
-    		let getFormUrl = titlesEn[index].get_source;
-    		if(getFormUrl === null || getFormUrl === ''){return}
-    		let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
-    		let paramObj = {}
-    		if(getFormUrl.split("*")[1]){
-    			let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
-    			tempParam.forEach((item,index)=>{
-    				if(item === 'company_id') {
-    					paramObj[item] = this.rows[item+'_en']
-    				}else {
-    					paramObj[item] = this.rows[item]
-    				}
-    			})
-    		}
-    		if(!paramObj["company_id"] ){return}
-    		paramObj["conf_id"] = conf_id
-    		let temp;
-    		$.ajax({
-    			url,
-    			type:'post',
-    			data:paramObj,
-    			success:(data)=>{
-    				temp = data
-    				let arr = Array.from($("#titleEn"+item))
-    	    		if(temp.rows === null || !temp.rows|| temp.rows.length === 0){return}
-    	    		arr.forEach((item,index)=>{
-    	    			if($(item).siblings(".radio-con").length !== 0) {
-    	    				//radio类型绑数
-    	    				if(temp.rows.length === 0){return}
-    	    				let obid = temp.rows[0].id;
-    	    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
-    	    				let overall_rating =  temp.rows[0].overall_rating;
-    	    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-    	    				
-    	    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
-    	    				return
-    	    			}
-    	    			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
-    	    				//信用等级
-    	    				 if(temp.rows.length === 0){return}
-							 let name =$(item).next().find("select").attr("name")
-							 $(item).next().find("select").val(temp.rows[0][name])
-    	    				return;
-    	    			}
-    	    			if($(item).next().hasClass("textarea-module")) {
-    	    				//无标题多行文本输入框
-    	    				if(temp.rows.length === 0){return}
-    	    				let obid = temp.rows[0].id;
-    	    				$(item).next().find("textarea").attr("entityid",obid)
-    	    				let name =$(item).next().find("textarea").attr("name")
-    	    				$(item).next().find("textarea").val(temp.rows[0][name])
-    	    				return;
-    	    			}
-    	    			if(($(item).next().find("input").hasClass("float-date"))) {
-    	    				//浮动非财务
-    	    				if(temp.rows.length === 0){return}
-    	    				let obid = temp.rows[0].id;
-    	    				$(item).next().find("input").attr("entityid",obid)
-    	    				let name =$(item).next().find("input").attr("name")
-    	    				$(item).next().find("input").val(temp.rows[0][name])
-    	    				return;
-    	    			}
-    	    			let formArr = Array.from($(item).siblings().find(".form-control"))
-    	    			if(temp.rows.length === 0){return}
-    	    			//实体id
-    	    			let obid = temp.rows[0].id;
-    	    			formArr.forEach((item,index)=>{
-    	    				let obj = temp.rows[0];
-    	    				let id = $(item).attr("id");
-    	    				let anotherIdArr = id.split("_")
-    	    				anotherIdArr.pop();
-    	    				anotherIdArr.pop();
-    	    				let anotherId = anotherIdArr.join('_')
-    	    				$("#"+id).attr("entryid",obid)
-    	    				if($(item).is('select')){
-    	    					//如果是select
-    	    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
-    	    				}else {
-    	    					$("#"+id).val(obj[anotherId])
-    	    				}
-    	    			})
-    	    		})
-    	    		
-    			}
-    			
     		})
     		
-    	})
-    	
+    	}else if(!i){
+	    	formIndexEn.forEach((item,index)=>{
+	    		let conf_id = titlesEn[index].id;
+	    		let getFormUrl = titlesEn[index].get_source;
+	    		if(getFormUrl === null || getFormUrl === ''){return}
+	    		let url = BASE_PATH  + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0] 
+	    		let paramObj = {}
+	    		if(getFormUrl.split("*")[1]){
+	    			let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
+	    			tempParam.forEach((item,index)=>{
+	    				if(item === 'company_id') {
+	    					paramObj[item] = this.rows[item+'_en']
+	    				}else {
+	    					paramObj[item] = this.rows[item]
+	    				}
+	    			})
+	    		}
+	    		if(!paramObj["company_id"] ){return}
+	    		paramObj["conf_id"] = conf_id
+	    		let temp;
+	    		$.ajax({
+	    			url,
+	    			type:'post',
+	    			data:paramObj,
+	    			success:(data)=>{
+	    				temp = data
+	    				let arr = Array.from($("#titleEn"+item))
+	    	    		if(temp.rows === null || !temp.rows|| temp.rows.length === 0){return}
+	    	    		arr.forEach((item,index)=>{
+	    	    			if($(item).siblings(".radio-con").length !== 0) {
+	    	    				//radio类型绑数
+	    	    				if(temp.rows.length === 0){return}
+	    	    				let obid = temp.rows[0].id;
+	    	    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+	    	    				let overall_rating =  temp.rows[0].overall_rating;
+	    	    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+	    	    				
+	    	    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+	    	    				return
+	    	    			}
+	    	    			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
+	    	    				//信用等级
+	    	    				 if(temp.rows.length === 0){return}
+								 let name =$(item).next().find("select").attr("name")
+								 $(item).next().find("select").val(temp.rows[0][name])
+	    	    				return;
+	    	    			}
+	    	    			if($(item).next().hasClass("textarea-module")) {
+	    	    				//无标题多行文本输入框
+	    	    				if(temp.rows.length === 0){return}
+	    	    				let obid = temp.rows[0].id;
+	    	    				$(item).next().find("textarea").attr("entityid",obid)
+	    	    				let name =$(item).next().find("textarea").attr("name")
+	    	    				$(item).next().find("textarea").val(temp.rows[0][name])
+	    	    				return;
+	    	    			}
+	    	    			if(($(item).next().find("input").hasClass("float-date"))) {
+	    	    				//浮动非财务
+	    	    				if(temp.rows.length === 0){return}
+	    	    				let obid = temp.rows[0].id;
+	    	    				$(item).next().find("input").attr("entityid",obid)
+	    	    				let name =$(item).next().find("input").attr("name")
+	    	    				$(item).next().find("input").val(temp.rows[0][name])
+	    	    				return;
+	    	    			}
+	    	    			let formArr = Array.from($(item).siblings().find(".form-control"))
+	    	    			if(temp.rows.length === 0){return}
+	    	    			//实体id
+	    	    			let obid = temp.rows[0].id;
+	    	    			formArr.forEach((item,index)=>{
+	    	    				let obj = temp.rows[0];
+	    	    				let id = $(item).attr("id");
+	    	    				let anotherIdArr = id.split("_")
+	    	    				anotherIdArr.pop();
+	    	    				anotherIdArr.pop();
+	    	    				let anotherId = anotherIdArr.join('_')
+	    	    				$("#"+id).attr("entryid",obid)
+	    	    				if($(item).is('select')){
+	    	    					//如果是select
+	    	    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
+	    	    				}else {
+	    	    					$("#"+id).val(obj[anotherId])
+	    	    					$("#"+id).attr("en_bak",obj[anotherId])
+	    	    				}
+	    	    			})
+	    	    		})
+	    	    		
+	    			}
+	    			
+	    		})
+	    		
+	    	})
+    	}
     },
     tabChange(){
         /**tab切换事件 */
@@ -870,8 +876,9 @@ let ReportConfig = {
                 	_this.tabChange();
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
+                	_this.showTranslateMadal();
             	    Public.tabFixed(".tab-bar",".main",120,90)
-            	    
+//            	    $(".triggerModal").trigger("click")
             	    let firmArr = Array.from($(".firm-info"));
             	    firmArr.forEach((item,index)=>{
             	    	if($(item).children().length === 2) {
@@ -940,39 +947,22 @@ let ReportConfig = {
                 		_this.entityTitleEn.push(modulesToEn[index]["title"])
                 	}
                 	let smallModileType = item.smallModileType
-                	if(item.title.is_merger_next === '0'){
-                		if(item.title.temp_name === '行业分析' || item.title.temp_name === 'industry_analysis'){
-                				return
-                		}
-                		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
-                			if(item.title.word_key !== 'hangyexinxi'){
-                				contentHtml +=  `<div class="bg-f pb-4 mb-3"  style="display:none" ><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                			}else {
-                				contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                			}
-                		}else if(smallModileType === '10'){
-                			//财务模块
-                			_this.cwGetSource = item.title.get_source;
-                			_this.cwAlterSource = item.title.alter_source;
-                			_this.cwDeleteSource = item.title.remove_source;
-                			contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
-                		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
-                			contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                		}
+            		if(item.title.temp_name === '行业分析' || item.title.temp_name === 'industry_analysis'){
+            				return
+            		}
+            		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
+        				contentHtml +=  `<div class="bg-f pb-4 mb-3"  style="display:none" ><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+            		}else if(smallModileType === '10'){
+            			//财务模块
+            			_this.cwGetSource = item.title.get_source;
+            			_this.cwAlterSource = item.title.alter_source;
+            			_this.cwDeleteSource = item.title.remove_source;
+            			contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+            		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
+            			contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+            		}
                 		
-                	}else {
-                		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent || item.title.temp_name === '行业分析') {
-                			contentHtml +=  `<div class="bg-f pb-4" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                		}else if(smallModileType === '10'){
-                			//财务模块
-                			_this.cwGetSource = item.title.get_source;
-                			_this.cwAlterSource = item.title.alter_source;
-                			_this.cwDeleteSource = item.title.remove_source;
-                			contentHtml +=  `<div class="bg-f pb-4gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
-                		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
-                			contentHtml +=  `<div class="bg-f pb-4 "><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                		}
-                	}
+                	
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
                 	//模块的类型
@@ -1438,7 +1428,7 @@ let ReportConfig = {
             			item_en.title.column_name === 'save'?_this.saveStatusUrl = item_en.title.alter_source:_this.submitStatusUrl = item_en.title.alter_source
             			let className = item_en.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
             			if(item_en.title.column_name === 'save'){
-            				bottomBtn += `<button id="translateBtn" class="btn btn-primary ml-4">翻译</button><button id=${item_en.title.column_name} class="${className}">${item_en.title.temp_name}</button>`
+            				bottomBtn += `<button id="translateBtn" class="btn btn-primary ml-4 disable">翻译</button><button id=${item_en.title.column_name} class="${className}">${item_en.title.temp_name}</button>`
             			}else {
             				bottomBtn += `<button id=${item_en.title.column_name} class="${className}">${item_en.title.temp_name}</button>`
             			}
@@ -1586,7 +1576,18 @@ let ReportConfig = {
         })
     	
     	this.idArr.forEach((item,index)=>{
-    		
+    		$("#modalEn"+item).find("input").blur((e)=>{
+    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".triggerModal").trigger("click")
+    			}
+    		})
+    		$("#modalEn"+item).find("textarea").blur((e)=>{
+    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".triggerModal").trigger("click")
+    			}
+    		})
     		//点击模态框保存按钮，新增一条数据
     		$("#modalEn_save"+item).unbind().click(()=>{
     			let dataJson = []
@@ -1680,21 +1681,8 @@ let ReportConfig = {
     	let tableDataArrEn = this.tableDataArrEn
     	let idArrEn = this.idArrEn
     	let dataEn  = []
-    	this.numCop = 0
-    	function removeEmptyArrayEle(arr){    
-    		  for(var i = 0; i < arr.length; i++) {
-		   if(arr[i] == undefined) {
-		      arr.splice(i,1);
-		      i = i - 1; // i - 1 ,因为空元素在数组下标 2 位置，删除空之后，后面的元素要向前补位，
-		                       // 这样才能真正去掉空元素,觉得这句可以删掉的连续为空试试，然后思考其中逻辑
-		    }
-		   }
-		   return arr;
-		};
-		console.log(this.idArr.length,this.titleEn.length)
-		//计算所有表格一共有多少条
-		
-	
+    	this.numCop = 0   //计数器
+		let allTableData = [] //存放翻译过所有表格数据
     	tableTitlesEn.forEach((item,index)=>{
     		//循环表格表头
     		let alterSource = item["alter_source"];
@@ -1704,10 +1692,10 @@ let ReportConfig = {
     		$(".position-fixed").on("click","#translateBtn",(e)=>{
     			 //表格翻译
 	   			 let oneTableData = []
-	   			
+	   			$("body").mLoading("show")
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				//循环每个表格中的条数进行翻译
-	   				console.log(tableDataArrEn[index],index)
+//	   				console.log(tableDataArrEn[index],index)
 	   				if(tableDataArrEn[index]){
 	   					ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
 	   				}
@@ -1726,29 +1714,28 @@ let ReportConfig = {
 	   					success:(data)=>{
 	   						//index代表每个表格的索引
 	   						this.numCop++;
-	   						console.log(this.numCop,this.total,data)
-   							oneTableData[i] = data
-//   							if(i === 0 && temp)
+	   						oneTableData[i] = data
+	   						allTableData[index] = oneTableData
+//	   						console.log(index,this.numCop,this.total,data)
+	   						if(this.numCop === this.total){
+	   							//如果计数器的值等于中文所有表格数据的总条数，则翻译完成！
+	   							this.numCop = 0
+//	   							console.log(allTableData)
+	   							$("body").mLoading("hide")
+	   							tableTitlesEn.forEach((item,index)=>{
+	   								if(allTableData[index]){
+	   									$("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
+	   									$("#table"+idArrEn[index] + 'En').bootstrapTable("append",allTableData[index]);
+	   								}
+	   							})
+	   							
+	   						}
+//   							
 	   					}
 	   				})
 	   				
 	   			})
-	   			/*let t1 = setInterval(()=>{
-   					if(removeEmptyArrayEle(oneTableData).length ===oneTableData.length ){
-   						//console.log(temp)
-   							temp.sort((a,b)=>{
-   	   							return a["mySort"] -b["mySort"]
-   	   						})
-   						$("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
-   						$("#table"+idArrEn[index] + 'En').bootstrapTable("append",oneTableData);
-   					}
-   				},10)
-
-				setTimeout(()=>{
-					clearInterval(t1)
-					Public.message("success","翻译完成!")
-				},5000)*/
-	   			
+	
 	   			
     		})
     		 //点击保存按钮
@@ -1756,16 +1743,16 @@ let ReportConfig = {
     		$(".position-fixed").on("click","#save",(e)=>{
     			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
     			 if(data.length === 0 || !Array.isArray(data)){return}
-    			 console.log(data)
+//    			 console.log(data)
     			 data.forEach((ele,i)=>{
     				 delete ele["mySort"]
     				 if(alterSource.split("*")[1]) {
 		    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
 		    			tempParam.forEach((item,index)=>{
 		    				if(item === 'company_id') {
-		    					console.log(ele)
+//		    					console.log(ele)
 		    					ele[item] = _this.rows['company_id_en']
-		    					console.log(ele)
+//		    					console.log(ele)
 		    				}else {
 		    					ele[item] =_this.rows[item]
 		    				}
@@ -1789,7 +1776,7 @@ let ReportConfig = {
     					 }
     				 })
     			 })
-    			 console.log(data)
+//    			 console.log(data)
     			 $.ajax({
     				 url:url,
     				 data:{
@@ -1885,6 +1872,7 @@ let ReportConfig = {
    					//102报告类型需要传参
    					url += `?targetlanguage=cht`
    				}
+   				console.log(_this.formDataArr,index)
     			 $.ajax({
     				 url,
     				 type:'post',
@@ -1892,7 +1880,8 @@ let ReportConfig = {
     					 dataJson:JSON.stringify(_this.formDataArr[index])
     				 },
     				 success:(data)=>{
-    					 _this.bindFormDataEn(data,_this.formTitleArr[index])
+    					 console.log(_this.formIndex,_this.formIndexEn,index)
+    					 _this.bindFormDataEn(data,_this.formIndexEn[index])
     				 }
     			 });
     			 
@@ -2044,6 +2033,49 @@ let ReportConfig = {
     		})
     	})
     	},1500)
+    },
+    showTranslateMadal(){
+    	this.formIndexEn.forEach((item,index)=>{
+    		let $ele = $("#titleEn"+item);
+    		$ele.siblings().find("input").blur((e)=>{
+    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".triggerModal").trigger("click")
+    			}
+    		})
+    		$ele.siblings().find("textarea").blur((e)=>{
+    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".triggerModal").trigger("click")
+    			}
+    		})
+    	})
+    	
+    	//点击提交按钮
+    	$("#submit_revise").click(()=>{
+    		let error_phrase_en = $(".wrongEn").val();
+    		let correct_phrase_en = $(".correctEn").val();
+    		let correct_phrase_ch = $(".correctCh").val();
+    		if(correct_phrase_en===''||correct_phrase_en==='') {
+    			Public.message("info","错误的英文和正确的英文不能为空")
+    			return
+    		}
+    		$.ajax({
+    			url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
+    			type:'post',
+    			data:{
+    				error_phrase_en,correct_phrase_en,correct_phrase_ch
+    			},
+    			success:(data)=>{
+    				console.log(data)
+    				if(data.statusCode === 1) {
+    					Public.message("success",data.message)
+    				}else {
+    					Public.message("error",data.message)
+    				}
+    			}
+    		})
+    	})
     }
 }
 
