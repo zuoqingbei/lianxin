@@ -80,35 +80,8 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 		
 		 return dao.find("select t.* from credit_report_module_conf t where t.del_flag='0'  ");
 	}
-	/**
-	 * 
-	 * @time   2018年10月25日 下午1:04:15
-	 * @author yangdong
-	 * @todo   TODO 根据报告类型和节点类型查找父模板
-	 * @param  @param report
-	 * @param  @return
-	 * @return_type   List<CreditReportTempConf>
-	 */
-	public List<CreditReportModuleConf> findByReport(String report,String type) {
-		
-		
-		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.node_level=1 and t.report_type=? and t.small_module_type not in(-1,-2)";
-		if (type.equals("1")) {//查填报
-			sql+=" and t.is_enter='0'";
-			
-		}else if (type.equals("2")) {//查详情
-			sql+=" and t.is_detail='0'";
-		}else if(type.equals("3")){//查质检的
-			sql+=" and t.is_quality='0'";
-		}
-		sql+=" order by t.sort,t.id";
-		return dao.find(sql,report);
-        //缓存2个小时
-        //return dao.findByCache("reportModuleConf","credit_report_module_conf"+report,sql,report);
-	}
 	
-public List<CreditReportModuleConf> findByReport(String report) {
+  public List<CreditReportModuleConf> findByReport(String report) {
 		
 		
 		String sql="select t.* from credit_report_module_conf t where"
