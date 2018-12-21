@@ -23,12 +23,12 @@ public class CreditReportController extends BaseProjectController{
     //登录
     public void report(){
         Integer userid = getSessionUser().getUserid();
-        CreditOrderInfo order =  CreditOrderInfo.dao.findById("777976");
+        CreditOrderInfo order =  CreditOrderInfo.dao.findById("778137");
         //BaseInfoZh test = new BaseInfoZh();
-        //BaseInfoZh.reportTable("1","","7777843","612",userid);
+        BaseInfoZh.reportTable(order,"8",userid);
         //BusinessZh test = new BaseInfoZh();
         //报告类型8  订单ID 公司ID65  语言612
-        BusinessZh.reportTable(order,"8",userid);
+        //BusinessZh.reportTable(order,"8",userid);
         //CreditZh.reportTable("8","","65","612",userid);
         //CreditEn.reportTable("8","","65","612",userid);
         //Word105.reportTable("16","777891","7777831","612",userid);
