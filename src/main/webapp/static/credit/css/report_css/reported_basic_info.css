@@ -81,12 +81,16 @@ label {
     border:dashed 1px #e5e5e5;
     color: var(--fontColor);
 }
-/* .fixed-table-container {
-    max-height: 300px;
-} */
+
 
 .modal-dialog {
     max-width: 60%!important;
+}
+#modal_revise .modal-dialog {
+    max-width: 45%!important;
+}
+#modal_revise .modal-content{
+	min-height: 31.75rem;
 }
 
 .modal-header {
@@ -94,8 +98,13 @@ label {
     font-size: 1.15rem;
     font-weight: 600;
     padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
 }
-
+.modal-header button {
+	padding:0!important;
+}
 .btn {
     padding: .5rem 1.75rem;
     font-size:1rem;
