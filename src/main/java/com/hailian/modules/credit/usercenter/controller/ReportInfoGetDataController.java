@@ -261,6 +261,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		List rows = null;
 		try {
+            System.out.println(confId+"="+className);
             Class<?> table = Class.forName(PAKAGENAME_PRE + className);
             BaseProjectModel model = (BaseProjectModel) table.newInstance();
             //rows = model.find("select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
