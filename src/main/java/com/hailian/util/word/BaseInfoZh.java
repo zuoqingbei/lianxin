@@ -90,21 +90,21 @@ public class BaseInfoZh {
         for (CreditReportModuleConf crmc : crmcs) {
             //找到当前父节点下的子节点
             List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(), reportType);
-            String tempName = crmc.getStr("temp_name");
+            //String tempName = crmc.getStr("temp_name");
             String source = crmc.getStr("get_source");
             String confId = crmc.getInt("id") + "";
             String moduleType = crmc.getStr("small_module_type");
             String key = crmc.getStr("word_key");
             String tableType = crmc.getStr("word_table_type");
-
+            String tableId = crmc.getInt("table_id")+"";
             //无url的跳过取数
-            if (source == null || "".equals(source)) {
+            if (StringUtils.isEmpty(source)) {
                 continue;
             }
             Map<String, String> params = BaseWord.parseUrl(source);
             String tableName = params.get("tableName");
             String clName = params.get("className");
-            if (clName == null || "".equals(clName)) {
+            if(StringUtils.isEmpty(tableName) || StringUtils.isEmpty(clName)){
                 continue;
             }
             String[] requireds = clName.split("\\*");
@@ -198,14 +198,8 @@ public class BaseInfoZh {
             //8-单选框
             if("8".equals(moduleType)){
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
-                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 //取列值
-                for (int i = 0; i < child.size(); i++) {
-                    CreditReportModuleConf module = child.get(i);
-                    String column_name = module.getStr("column_name");
-                    String get_source = module.getStr("get_source");
-                    cols.put(column_name, get_source);
-                }
+                LinkedHashMap<String, String> cols = BaseWord.getModuleCols(child);
                 //取数据
                 for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
@@ -235,6 +229,7 @@ public class BaseInfoZh {
                 List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child, rows);
                 //jfreechart生成饼图（股东）
                 DefaultPieDataset pds = new DefaultPieDataset();
+                Double total = 100d;
                 for (LinkedHashMap<String, String> m : datas) {
                     Object[] keys = m.keySet().toArray();
                     String n = m.get(keys[0]);
@@ -249,13 +244,15 @@ public class BaseInfoZh {
                         }
                     }
                     pds.setValue(n, value);
+                    total = total-value;
                 }
+                pds.setValue("", total);
                 BaseWord.createPieChart(pds, _prePath + "pie.jpg");
                 map.put("pie", new PictureRenderData(660, 330, _prePath + "pie.jpg"));
             }
 
             //行业详情-柱图/线图
-            if("行业情况".equals(tempName)){
+            if("10392".equals(tableId)){
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
                 List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child,rows);
                 //准备图形数据
@@ -305,7 +302,6 @@ public class BaseInfoZh {
         BaseWord.buildNetWord(map, tplPath, _prePath + ".docx");
         //重新添加图片并生成word
         String wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
-
         //发送邮件
         String _pre = "http://" + ip + ":" + serverPort + "/";
         List<Map<String, String>> fileList = new ArrayList<>();
