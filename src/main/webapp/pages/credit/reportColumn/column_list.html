@@ -19,7 +19,7 @@
                 Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
             },
             add : function() {
-                var url = "credit/reportColumn/add?pid=${pid!''}";
+                var url = "credit/reportColumn/add?id=${id!''}&tid=${tid!''}";
                 var title = '所有字段';
                 Iframe(url, this.width, this.height, title);
             },
@@ -53,7 +53,8 @@
 <form name="form1" action="" method="post" class="form-inline" role="form">
     <input type="hidden" name="form.orderColumn" value="${form.orderColumn!''}" />
     <input type="hidden" name="form.orderAsc" value="${form.orderAsc!''}" />
-    <input type="hidden" name="pid" value="${pid!''}" />
+    <input type="hidden" name="id" value="${id!''}" />
+    <input type="hidden" name="tid" value="${tid!''}" />
     <input type="hidden" name="reportType" value="${reportType!''}" />
     <!-- 菜单 -->
     <% include("/pages/template/menu.html"){} %>

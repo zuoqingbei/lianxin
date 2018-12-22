@@ -43,7 +43,7 @@ public class ReportColumnController extends BaseProjectController {
 		String keyword = getPara("keyWord");
 		//分页查询
         List<Object> params = new ArrayList<>();
-        params.add(getPara("pid"));
+        params.add(getPara("id"));
         params.add(getPara("reportType"));
 		Page<CreditReportModuleConf> pager = CreditReportModuleConf.dao.findSon(pageNumber, pageSize, keyword, orderBy, params);
         setAttr("page", pager);
@@ -73,7 +73,7 @@ public class ReportColumnController extends BaseProjectController {
         String keyword = getPara("keyWord");
         //分页查询
         List<Object> params = new ArrayList<>();
-        params.add(getPara("pid"));
+        params.add(getPara("id"));
         params.add(getPara("reportType"));
         Page<CreditReportModuleConf> pager = CreditReportModuleConf.dao.findSon(pageNumber, pageSize, keyword, orderBy, params);
         renderJson(pager);
@@ -94,12 +94,12 @@ public class ReportColumnController extends BaseProjectController {
 	public void add() {
         int pageNumber = getParaToInt("pageNo", 1);
         int pageSize = getParaToInt("pageSize", 10);
-        String pid = getPara("pid");
+        String tid = getPara("tid");
         //从表单获取排序语句
         String orderBy = getBaseForm().getOrderBy();
         //分页查询
         List<Object> params = new ArrayList<>();
-        params.add(pid);
+        params.add(tid);
         Page<CreditReportModuleColumn> pager = CreditReportModuleColumn.dao.page(pageNumber, pageSize, "", orderBy, params);
         setAttr("page", pager);
         keepPara();
@@ -165,15 +165,15 @@ public class ReportColumnController extends BaseProjectController {
      * 选择字段
      */
     public void addColumn(){
-        String pid = getPara("pid");
+        String id = getPara("id");
         String[] columnIds = getParaValues("columnId");
         if(columnIds!=null&&columnIds.length>0){
-            for(String id:columnIds){
-                CreditReportModuleColumn column = CreditReportModuleColumn.dao.findById(id);
-                CreditReportModuleConf moduleConf = CreditReportModuleConf.dao.findById(pid);
-                String reportType = moduleConf.get("report_type");
+            for(String cid:columnIds){
+                CreditReportModuleColumn column = CreditReportModuleColumn.dao.findById(cid);
+                CreditReportModuleConf moduleConf = CreditReportModuleConf.dao.findById(id);
+                String reportType = moduleConf.get("report_type")+"";
                 moduleConf.clear();
-                moduleConf.set("parent_temp", pid);
+                moduleConf.set("parent_temp", id);
                 moduleConf.set("node_level","2");
                 moduleConf.set("report_type",reportType);
                 moduleConf.set("temp_name",column.get("temp_name"));
