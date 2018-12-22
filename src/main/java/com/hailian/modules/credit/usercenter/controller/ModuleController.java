@@ -48,7 +48,7 @@ public class ModuleController extends BaseProjectController{
 		String reportType = getPara("reportType");
 		//是否需要英文模板
 		String istranslate = getPara("istranslate");
-		String  tyep = "1";//getPara("type");//1填报 2 详情 3质检
+		String  tyep = getPara("type");//1填报 2 详情 3质检
 		//根据订单id获取订单信息
 		CreditOrderInfo coi = CreditOrderInfo.dao.findById(orederid);
 		if(coi==null) {
