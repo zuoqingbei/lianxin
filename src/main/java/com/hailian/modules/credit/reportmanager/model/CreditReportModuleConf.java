@@ -150,6 +150,41 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
         //return dao.findByCache("reportModuleConf","credit_report_module_conf"+DefaultModule+reportType+DefaultModule+reportType,sql,params.toArray());
 	}
 	/**
+	 * 
+	* @Description: TODO
+	* @date 2018年12月21日 上午10:32:39
+	* @author: lxy
+	* @version V1.0
+	* @return
+	 */
+	public List<CreditReportModuleConf> getDefaultModule2(String reportType,String type) {
+		List<Object> params = new ArrayList<>();
+		String sql = " select a.*  from credit_report_module_conf a "
+				+ " where parent_temp=(SELECT id from credit_report_module_conf where small_module_type=? and del_flag=0  and report_type=? ) "
+				+ " or  small_module_type=? "
+				+ " and report_type=? ";
+		if (type.equals("1")) {//查填报
+			sql+=" and is_enter=?";
+			
+		}else if (type.equals("2")) {//查详情
+			sql+=" and is_detail=?";
+		}else if(type.equals("3")){//查质检的
+			sql+=" and is_quality=?";
+		}		
+			sql	+= "and del_flag=0 order by sort,id ";
+		params.add(DefaultModule);
+		params.add(reportType);
+		params.add(DefaultModule);
+		params.add(reportType);
+		params.add("0");
+		return dao.find(sql,params.toArray());
+        //缓存2个小时
+        //return dao.findByCache("reportModuleConf","credit_report_module_conf"+DefaultModule+reportType+DefaultModule+reportType,sql,params.toArray());
+	}
+	
+	
+	
+	/**
 	 * Author:lzg
 	 * 获取带锚点模板
 	 * 依据small_module_type=-2
@@ -160,6 +195,35 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 		String sql = "select a.*  from credit_report_module_conf a where a.small_module_type=? and report_type=? and del_flag=0  order by sort,id  ";
 		params.add(TabFixed);
 		params.add(reportType);
+		return dao.find(sql,params.toArray());
+        //缓存2个小时
+        //return dao.findByCache("reportModuleConf","credit_report_module_conf"+TabFixed+reportType,sql,params.toArray());
+	}
+	
+	
+    /**
+     * 
+    * @Description: 填报与详情合并获取带锚点的标题
+    * @date 2018年12月21日 上午10:22:31
+    * @author: lxy
+    * @version V1.0
+    * @return
+     */
+	public List<CreditReportModuleConf> getTabFixed2(String reportType,String type) {
+		List<Object> params = new ArrayList<>();
+		String sql = "select a.*  from credit_report_module_conf a where a.small_module_type=? and report_type=? ";
+		if (type.equals("1")) {//查填报
+			sql+=" and is_enter=?";
+			
+		}else if (type.equals("2")) {//查详情
+			sql+=" and is_detail=?";
+		}else if(type.equals("3")){//查质检的
+			sql+=" and is_quality=?";
+		}
+		sql+=" and del_flag=0  order by sort,id  ";
+		params.add(TabFixed);
+		params.add(reportType);
+		params.add("0");
 		return dao.find(sql,params.toArray());
         //缓存2个小时
         //return dao.findByCache("reportModuleConf","credit_report_module_conf"+TabFixed+reportType,sql,params.toArray());

@@ -212,18 +212,19 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      */
     public List getTableData(boolean isCompanyMainTable,String companyId,String tableName,String className,String confId,String selectInfo){
         // 解析实体获取required参数
-        String type = null;
+      /*  String type = null;
         if(getRequest()!=null){
             type = getPara("type");
         }
-        String getSource = "";
+        
     	if (type!=null) {
 			CreditReportDetailConf confModel=CreditReportDetailConf.dao.findById(confId);
 			 getSource = confModel.getStr("data_source");
-    	}else{
+    	}else{*/
+    	String getSource = "";
 			CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
 			 getSource = confModel.getStr("get_source");
-		}
+//		}
 		
 		StringBuffer sqlSuf = new StringBuffer();
 
@@ -426,7 +427,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                         status = "301"; //走分析
                         //todo 填报质检完成后自动分配分析员
                         analerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.ANALER);
-                    } else {
+                    }else if(info.get("report_language").equals("")){
+                    	
+                    }
+                    
+                    
+                    else {
                         status = "306";//走翻译
                         //todo 分析质检完成后自动分配翻译员
                         transerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.TRANSER);
