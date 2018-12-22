@@ -819,7 +819,8 @@ let OrderDetail = {
                         $wrap.find('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</tr></td>`);
                         return;
                     }
-                    let chartData = [];
+                    let chartData = chartType === 'pie' ? [] : {xAxisData: [], y1Data: [], y2Data: []};
+                    let arr = ['xAxis', 'y1', 'y2'];
                     data.rows.forEach((row) => {
                         // 封装图表数据
                         switch (item.smallModileType) {
@@ -833,6 +834,10 @@ let OrderDetail = {
                                 break;
                             //柱线组合图
                             case '22':
+                                item.contents.forEach((content, i) => {//5个数据分别是标题，备注，图表的x轴、y1轴、y2轴
+                                    chartData[arr[i] + 'Name'] = content.temp_name;
+                                    chartData[arr[i] + 'Data'].push(row[content.column_name])
+                                });
                                 // 这里遍历组合图表数据
                                 break;
                         }
@@ -847,7 +852,7 @@ let OrderDetail = {
                     }
                 } else {
                     if (item.smallModileType === '22') {
-                        this.drawChart($wrap)['lineBar']();// 绘制图表
+                        // this.drawChart($wrap)['lineBar']();// 绘制测试图表
                     }
                     console.warn(item.title.temp_name + `-表格${chartType ? '&柱线图表' : ''}-没有返回数据！`);
                 }
@@ -887,7 +892,7 @@ let OrderDetail = {
                     $(elem).css('height', '32rem');
                     chart = echarts.init($(elem)[0]);
                 } else {
-                    $wrap.find(".module-content").append(`<div class="chartBox" id="ec_lineBar" style="height: 32rem;"></div>`)
+                    $wrap.find(".module-content").append(`<div class="chartBox" id="ec_lineBar" style="height: 32rem;"></div>`);
                     chart = echarts.init($wrap.find(".module-content .chartBox")[0]);
                 }
                 chartData = chartData || {
@@ -908,7 +913,7 @@ let OrderDetail = {
                         axisTick: {show: false},
                         data: chartData.xAxisData
                     },
-                    // grid:{top:'15%'},
+                    grid:{top:'10%'},
                     yAxis: [{
                         name: chartData.y1Name,
                         axisLine: {show: false},
