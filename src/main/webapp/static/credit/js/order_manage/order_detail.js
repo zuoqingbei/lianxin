@@ -847,7 +847,7 @@ let OrderDetail = {
                         });
                         $wrap.find('tbody').append($tr);
                     });
-                    if (Array.isArray(chartData) && chartData.length > 0 || typeof chartData === 'object' && Object.keys(chartData).length > 0) { // 绘制饼图
+                    if (['11','22'].includes(item.smallModileType)) {
                         this.drawChart($wrap, chartData)[chartType]();// 绘制图表
                     }
                 } else {
