@@ -116,7 +116,7 @@ public class ReportColumnController extends BaseProjectController {
         CreditReportModuleConf model = getModel(CreditReportModuleConf.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
-		model.set("id",getPara("id"));
+		model.set("id",getPara("sid"));
 		model.set("update_by", userid);
 		model.set("update_date", now);
 		model.set("del_flag", 1);
@@ -166,6 +166,7 @@ public class ReportColumnController extends BaseProjectController {
      */
     public void addColumn(){
         String id = getPara("id");
+        String tid = getPara("tid");
         String[] columnIds = getParaValues("columnId");
         if(columnIds!=null&&columnIds.length>0){
             for(String cid:columnIds){
