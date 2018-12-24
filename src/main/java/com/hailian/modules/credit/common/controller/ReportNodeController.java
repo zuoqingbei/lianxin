@@ -178,6 +178,7 @@ public class ReportNodeController extends BaseProjectController {
             	CreditReportModuleParentNodesDict model2 = new CreditReportModuleParentNodesDict();
             	model2._setAttrs(model).set("id", id);
     			model2.update();
+    			//增加父Id所在的实体
                result =  Db.update("INSERT INTO  `credit_report_module_conf` (" + 
               		"	`parent_temp`," + 
               		"	`small_module_type`," + 
@@ -242,7 +243,8 @@ public class ReportNodeController extends BaseProjectController {
               		"	WHERE" + 
               		"		id= " + 
               		id);
-             
+             //增加父Id所对应的儿子们
+               
 
             }
         }
