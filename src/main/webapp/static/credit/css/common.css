@@ -248,6 +248,11 @@ label {
     display: flex;
     flex-wrap: wrap;
 }
+.file-upload2{
+    padding-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
 .uploadFile {
     position: relative;
     display: flex;
