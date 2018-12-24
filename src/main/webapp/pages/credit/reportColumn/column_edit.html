@@ -99,6 +99,27 @@ var bodyContent = {
                 <textarea class="form-control" type="text" name="model.remark" >${model.remark }</textarea>
             </td>
         </tr>
+        <tr>
+            <td>填报</td>
+            <td>
+                <input type="radio" name="model.is_enter" value="0" <%if (model.is_enter=='0') {%>checked<%}%> />是 &nbsp;&nbsp;
+                <input type="radio" name="model.is_enter" value="1" <%if (model.is_enter=='1') {%>checked<%}%> />否
+            </td>
+        </tr>
+        <tr>
+            <td>详情</td>
+            <td>
+                <input type="radio" name="model.is_detail" value="0" <%if (model.is_detail=='0') {%>checked<%}%> />是 &nbsp;&nbsp;
+                <input type="radio" name="model.is_detail" value="1" <%if (model.is_detail=='1') {%>checked<%}%> />否
+            </td>
+        </tr>
+        <tr>
+            <td>质检</td>
+            <td>
+                <input type="radio" name="model.is_quality" value="0" <%if (model.is_quality=='0') {%>checked<%}%>/>是 &nbsp;&nbsp;
+                <input type="radio" name="model.is_quality" value="1" <%if (model.is_quality=='1') {%>checked<%}%>/>否
+            </td>
+        </tr>
     </table>
 
     <div style="height: 50px;clear: both;">&nbsp;</div>
