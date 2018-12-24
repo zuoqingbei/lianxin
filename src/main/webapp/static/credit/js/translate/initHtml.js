@@ -803,6 +803,30 @@ let InitObjTrans = {
 		    	})
     	});
     },
+    regChecked(){
+    	/**
+    	 * 正则验证
+    	 */
+    	$(".firm-info .form-control").blur((e)=>{
+    		let val = $(e.target).val();
+    		let reg = $(e.target).attr("reg")
+    		if(reg === 'null' || !reg) {
+    			return;
+    		}else {
+    			let exp = eval(reg)
+    			if(exp && !exp.test(val)){
+    				$(e.target).siblings(".errorInfo").show();
+    				$(e.target).val("")
+    				$(e.target).addClass("active")
+    			
+    			}else {
+    			
+    				$(e.target).siblings(".errorInfo").hide();
+    				$(e.target).removeClass("active")
+    			}
+    		}
+    	})
+    },
     addressInit(){
     	/**
     	 * 地址初始化

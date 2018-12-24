@@ -13,6 +13,7 @@ import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.util.StrUtils;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -102,7 +103,10 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 		}
 		return false;
 	}
-
+	public void updateDelFlagByAgentId(Integer agentid) {
+		String sql="update credit_agent_price set del_flag='1' where agent_id=?";
+		Db.update(sql, agentid);
+	}
 	
 	public List<AgentPriceModel> findAgentCateSelect(String agent_id,boolean isCate) {
 		if(StringUtils.isBlank(agent_id)){
@@ -199,12 +203,14 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 		sb.append(" order by t.id ");
 		return AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
 	}
+	/**
+	 * @Description:自动 获取国外代理价格
+	* @author: dsh 
+	* @date:  2018年12月21日上午10:41:48
+	 */
 	public AgentPriceModel getAgentAbroad(String country,String speed) {
-		if(StringUtils.isEmpty(country) || StringUtils.isEmpty(speed)){
-			return null;
-		}
-		StringBuffer sb=new StringBuffer("SELECT * FROM (");
-		sb.append("select cap.*,cap.price*cr.rate as pricenum from credit_agent_price cap left join credit_rate cr on cap.currency=cr.currency_a and cr.currency_b='274' ");
+		StringBuffer sb=new StringBuffer();
+		sb.append("select cap.*,CASE WHEN cap.currency = '274' THEN cap.price ELSE ROUND(cr.rate * cap.price, 2) END AS rmb from credit_agent_price cap left join credit_rate cr on cap.currency=cr.currency_a and cr.currency_b='274' ");
 		sb.append(" where 1=1 and cap.del_flag=0 ");
 		List<Object> params=new ArrayList<Object>();
 		if(StringUtils.isNotBlank(country)){
@@ -216,8 +222,8 @@ public class AgentPriceModel extends BaseProjectModel<AgentPriceModel> {
 			params.add(speed);
 		}
 		sb.append(" and cap.agent_type='264' ");
-		sb.append(" order by price asc,cap.proxy_time ASC ");
-		sb.append(" ) A LIMIT 0,1 ");
+		sb.append(" order by rmb ASC,cap.proxy_time ASC ");
+		
 		AgentPriceModel pricemodel = AgentPriceModel.dao.findFirst(sb.toString(), params.toArray());
 		return pricemodel;
 	}

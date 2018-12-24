@@ -393,7 +393,14 @@ let ReportConfig = {
                                 //如果是select
                                 $("#" + id).find("option[value='" + obj[anotherId] + "']").attr("selected", true);
                             } else {
-                                $("#" + id).val(obj[anotherId])
+                            	if($("#"+id).hasClass("money-checked")){
+									 //如果是金融
+									 if(obj[anotherId]){
+										 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
+									 }
+								 }else {
+									 $("#"+id).val(obj[anotherId])
+								 }
                             }
                         })
                     })
@@ -458,7 +465,14 @@ let ReportConfig = {
                         //如果是select
                         $("#" + id).find("option[value='" + obj[anotherId] + "']").attr("selected", true);
                     } else {
-                        $("#" + id).val(obj[anotherId])
+                    	if($("#"+id).hasClass("money-checked")){
+							 //如果是金融
+							 if(obj[anotherId]){
+								 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
+							 }
+						 }else {
+							 $("#"+id).val(obj[anotherId])
+						 }
                     }
                 })
             })
@@ -941,7 +955,7 @@ let ReportConfig = {
                 		}
                 		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
                 			if(item.title.word_key !== 'hangyexinxi'){
-                				contentHtml +=  `<div class="bg-f pb-4 mb-3"  style="display:none" ><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                				contentHtml +=  `<div class="bg-f mb-3"><a   style="display:none"  class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 			}else {
                 				contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 			}
@@ -1008,6 +1022,14 @@ let ReportConfig = {
 				                        							</div>`
 
                                             break;
+                                        case 'money':
+                        					formGroup += `<div class="form-group">
+                        						<label for="" class="mb-2">${item.temp_name}</label>
+                        						<input disabled="disabled" type="text" class="form-control money-checked" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+                        						<p class="errorInfo">${item.error_msg}</p>
+                        						</div>`
+                        						
+                        						break;
                                         case 'date':
                                             formGroup += `<div class="form-group date-form">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
@@ -1301,6 +1323,14 @@ let ReportConfig = {
 	                        							</div>`
 
                                             break;
+                                    	case 'money':
+                        					formGroup += `<div class="form-group">
+                        						<label for="" class="mb-2">${item_en.temp_name}</label>
+                        						<input disabled="disabled" type="text" class="form-control money-checked" id="${item_en.column_name}_${ind}" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
+                        						<p class="errorInfo">${item_en.error_msg}</p>
+                        						</div>`
+                        						
+                        						break;
                                         case 'date':
                                             formGroup += `<div class="form-group date-form">
 									            		<label for="" class="mb-2">${item_en.temp_name}</label>

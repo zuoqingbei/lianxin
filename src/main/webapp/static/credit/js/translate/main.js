@@ -182,6 +182,7 @@ let ReportConfig = {
     							}else {
     								
     								$("#"+id).val(row[anotherId])
+    								$("#"+id).attr("en_bak",row[anotherId])
     							}
     						})
     					}
@@ -299,7 +300,7 @@ let ReportConfig = {
     			
     		})
     		this.formatBtnArr.push(`<div class="operate"><a href="javascript:;" class="edit" data-toggle="modal" data-target="#modalEn${item}">编辑</a></div>`)
-    		modalHtml += `<div class="modal fade" id="modalEn${item}" tabindex="-1" role="dialog" aria-labelledby="examplemodalCenterTitle" aria-hidden="true">
+    		modalHtml += `<div class="modal fade" id="modalEn${item}" tabindex="-2" role="dialog" aria-labelledby="examplemodalCenterTitle" aria-hidden="true">
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
 					            <div class="modal-header">
@@ -316,8 +317,38 @@ let ReportConfig = {
 					    </div>
 					</div>`
     	})
+    	$("body").append(modalHtml)
+    	$("body").append(`<div class="modal fade" id="modal_revise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            	<span class="headtxt"></span>
+           		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="align-items:center">
+               	<div class="form-group my-3">
+               		<label class="control-label mb-1">错误的英文</label>
+               		<input type="text" class="form-control wrongEn">
+               	</div>
+               	<div class="form-group my-3">
+               		<label class="control-label mb-1">正确的英文</label>
+               		<input type="text" class="form-control correctEn">
+               	</div>
+               	<div class="form-group my-3">
+               		<label class="control-label mb-1">正确的中文</label>
+               		<input type="text" class="form-control correctCh">
+               	</div>
+            </div>
+            <div class="modal-footer" style="justify-content:center">
+                <button type="button" class="btn btn-primary" id="submit_revise" >提交</button>
+            </div>
+        </div>
+    </div>
+</div>`)
     	
-    	$("#container").append(modalHtml)
+    	
     },
     bindFormData(){
     	/**
@@ -409,7 +440,14 @@ let ReportConfig = {
 	    	    					//如果是select
 	    	    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
 	    	    				}else {
-	    	    					$("#"+id).val(obj[anotherId])
+	    	    					 if($("#"+id).hasClass("money-checked")){
+										 //如果是金融
+										 if(obj[anotherId]){
+											 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
+										 }
+									 }else {
+										 $("#"+id).val(obj[anotherId])
+									 }
 	    	    				}
 	    					 })
 	    				 })
@@ -476,7 +514,14 @@ let ReportConfig = {
     					//如果是select
     					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
     				}else {
-    					$("#"+id).val(obj[anotherId])
+    					 if($("#"+id).hasClass("money-checked")){
+							 //如果是金融
+							 if(obj[anotherId]){
+								 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
+							 }
+						 }else {
+							 $("#"+id).val(obj[anotherId])
+						 }
     					$("#"+id).attr("en_bak",obj[anotherId])
     				}
     			})
@@ -858,14 +903,16 @@ let ReportConfig = {
     	let id = JSON.parse(row).id;
     	let reportType = JSON.parse(row).report_type
     	let istranslate = true
+    	let type = 1
         $.ajax({
         	type:"get",
         	url:BASE_PATH + "credit/front/getmodule/list",
-        	data:{id,reportType,istranslate},
+        	data:{id,reportType,istranslate,type},
         	success:(data)=>{
                 setTimeout(()=>{
                 	_this.initmodal();
                 	InitObjTrans.addressInit();
+                	InitObjTrans.regChecked();
                 	_this.initTable();
                 	_this.initFloat();
                 	InitObjTrans.dateInit();
@@ -950,7 +997,7 @@ let ReportConfig = {
             				return
             		}
             		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
-        				contentHtml +=  `<div class="bg-f pb-4 mb-3"  style="display:none" ><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+        				contentHtml +=  `<div class="bg-f mb-3"  ><a style="display:none"  class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
             		}else if(smallModileType === '10'){
             			//财务模块
             			_this.cwGetSource = item.title.get_source;
@@ -1002,6 +1049,14 @@ let ReportConfig = {
 				                        							</div>`
 		                        					
 		                        					break;
+		                        				case 'money':
+		                        					formGroup += `<div class="form-group">
+		                        						<label for="" class="mb-2">${item.temp_name}</label>
+		                        						<input disabled="disabled" type="text" class="form-control money-checked" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		                        						<p class="errorInfo">${item.error_msg}</p>
+		                        						</div>`
+		                        						
+		                        						break;
 		                        				case 'date':
 		                        					formGroup += `<div class="form-group date-form">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
@@ -1302,10 +1357,19 @@ let ReportConfig = {
                     				case 'number':
                     						formGroup += `<div class="form-group">
 		                        							<label for="" class="mb-2">${item_en.temp_name}</label>
-		                        							<input type="number" class="form-control" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name} reg=${item.reg_validation}>
+		                        							<input type="number" class="form-control" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
 	                        							</div>`
                     					
                     					break;
+                    				case 'money':
+                    					formGroup += `<div class="form-group">
+                    						<label for="" class="mb-2">${item_en.temp_name}</label>
+                    						<input type="text" class="form-control money-checked" id="${item_en.column_name}_${ind}" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
+                    						<p class="errorInfo">${item_en.error_msg}</p>
+                    						</div>`
+                    						
+                    						break;
+                    				
                     				case 'date':
                     					formGroup += `<div class="form-group date-form">
 									            		<label for="" class="mb-2">${item_en.temp_name}</label>
@@ -1575,7 +1639,18 @@ let ReportConfig = {
         })
     	
     	this.idArr.forEach((item,index)=>{
-    		
+    		$("#modalEn"+item).find("input").blur((e)=>{
+    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".triggerModal").trigger("click")
+    			}
+    		})
+    		$("#modalEn"+item).find("textarea").blur((e)=>{
+    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".triggerModal").trigger("click")
+    			}
+    		})
     		//点击模态框保存按钮，新增一条数据
     		$("#modalEn_save"+item).unbind().click(()=>{
     			let dataJson = []
@@ -1707,6 +1782,7 @@ let ReportConfig = {
 //	   						console.log(index,this.numCop,this.total,data)
 	   						if(this.numCop === this.total){
 	   							//如果计数器的值等于中文所有表格数据的总条数，则翻译完成！
+	   							Public.message("success","翻译完成！")
 	   							this.numCop = 0
 //	   							console.log(allTableData)
 	   							$("body").mLoading("hide")
@@ -1764,7 +1840,7 @@ let ReportConfig = {
     					 }
     				 })
     			 })
-//    			 console.log(data)
+//    			 console.log(url,data)
     			 $.ajax({
     				 url:url,
     				 data:{
@@ -1812,6 +1888,7 @@ let ReportConfig = {
 					 }
 				 })
 			 })
+			
 			 $.ajax({
 				 url:url,
 				 data:{
@@ -2044,7 +2121,7 @@ let ReportConfig = {
     		let error_phrase_en = $(".wrongEn").val();
     		let correct_phrase_en = $(".correctEn").val();
     		let correct_phrase_ch = $(".correctCh").val();
-    		if(correct_phrase_en===''||correct_phrase_en==='') {
+    		if(error_phrase_en===''||correct_phrase_en==='') {
     			Public.message("info","错误的英文和正确的英文不能为空")
     			return
     		}
@@ -2056,6 +2133,12 @@ let ReportConfig = {
     			},
     			success:(data)=>{
     				console.log(data)
+    				if(data.statusCode === 1) {
+    					$("#modal_revise .close").trigger("click")
+    					Public.message("success",data.message)
+    				}else {
+    					Public.message("error",data.message)
+    				}
     			}
     		})
     	})

@@ -214,9 +214,9 @@ let ReportConfig = {
     					break;
     				case 'money':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
-    						<label for="" class="control-label" >${ele.temp_name}：</label>
-    						<input type="text" class="form-control money-checked" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
-    						<small></small>
+    						<label for="" class="control-label">${ele.temp_name}</label>
+    						<input type="text" class="form-control money-checked" id="${ele.column_name + '_' + myIndex}" placeholder="" name=${ele.column_name} reg=${ele.reg_validation}>
+    						<p class="errorInfo">${item.error_msg}</p>
     						</div>`
     						break;
     				case 'textarea':
@@ -393,7 +393,15 @@ let ReportConfig = {
 								 $("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
 							 }else {
 //								 console.log($("#"+id),obj[anotherId])
-								 $("#"+id).val(obj[anotherId])
+								
+								 if($("#"+id).hasClass("money-checked")){
+									 //如果是金融
+									 if(obj[anotherId]){
+										 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
+									 }
+								 }else {
+									 $("#"+id).val(obj[anotherId])
+								 }
 							 }
 						 })
 					 })
@@ -706,10 +714,11 @@ let ReportConfig = {
     	let _this = this
     	let id = JSON.parse(row).id;
     	let reportType = JSON.parse(row).report_type
+    	let type = 1
         $.ajax({
         	type:"get",
         	url:BASE_PATH + "credit/front/getmodule/list",
-        	data:{id,reportType},
+        	data:{id,reportType,type},
         	success:(data)=>{
                 setTimeout(()=>{
                 	_this.initModal();
@@ -797,7 +806,7 @@ let ReportConfig = {
                 		}
                 		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
                 			if(item.title.word_key !== 'hangyexinxi'){
-                				contentHtml +=  `<div class="bg-f pb-4 mb-3"  style="display:none" ><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                				contentHtml +=  `<div class="bg-f mb-3"  ><a  style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 			}else {
                 				contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 			}

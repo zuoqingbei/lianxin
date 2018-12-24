@@ -342,9 +342,7 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
 	    		  for(item in data){
 					html+="<option  m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";	        	
 	 	           }
-	 	           
 	 	           $("select[name='attr.country']").html(html);
-		 	        
 				   form.render('select'); 
 		 	       
 	    	 })
