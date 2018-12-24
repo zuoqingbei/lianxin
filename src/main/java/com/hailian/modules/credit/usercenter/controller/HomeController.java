@@ -384,8 +384,9 @@ public class HomeController extends BaseProjectController {
 	 */
 	public void saveOrder()  {
 		List<UploadFile>  upFileList = getFiles("Files");//从前台获取文件
-		
-		
+		if(upFileList.size()>0){
+			System.out.println(upFileList.get(0).getFileName());
+		}
 		Integer userid = getSessionUser().getUserid();
 		List<File> ftpfileList=new ArrayList<File>();
 		String num =CreditOrderInfo.dao.getNumber();
