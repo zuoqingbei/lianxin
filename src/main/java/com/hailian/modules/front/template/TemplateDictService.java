@@ -205,7 +205,7 @@ public class TemplateDictService extends BaseService {
 		
 		//listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
-		sb.append("<option>请选择  </option>");
+		sb.append("<option value='-1'>请选择  </option>");
 		for(SysDictDetail detail:listDetail){
 			if(detail.get(disPalyCol)==null||"".equals(detail.get(disPalyCol))) {
 				continue;
