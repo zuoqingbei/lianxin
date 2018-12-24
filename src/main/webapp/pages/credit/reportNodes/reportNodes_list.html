@@ -86,8 +86,8 @@
         <thead>
         <tr>
             <th name="t.id" class="sorting">父节点ID</t>
-            <th name="d.small_module_type_name" class="sorting">父节点类型</t>
             <th name="t.temp_name" class="sorting">父节点名称</th>
+            <th name="d.small_module_type_name" class="sorting">父节点类型</t>
             <th name="t.float_parent" class="sorting">浮动父节点ID</th>
             <th name="s.detail_name " class="sorting">占位符(word模板)</th>
             <th name="s.detail_name " class="sorting">表格样式(word模板)</th>
@@ -109,6 +109,13 @@
                     ${item.id}
                 <% } %>
             </td>
+            <td title="${item.temp_name!}">
+                <% if (strutil.length(item.temp_name) >25) { %>
+                ${strutil.subStringTo(item.temp_name, 0, 25)}...
+                <% } else { %>
+                ${item.temp_name}
+                <% } %>
+            </td>
             <td title="${item.smallModuleType!}">
                 <% if (strutil.length(item.smallModuleType) >25) { %>
                     ${strutil.subStringTo(item.smallModuleType, 0, 25)}...
@@ -118,13 +125,7 @@
             </td>
 
             
-			 <td title="${item.temp_name!}">
-                <% if (strutil.length(item.temp_name) >25) { %>
-                    ${strutil.subStringTo(item.temp_name, 0, 25)}...
-                <% } else { %>
-                    ${item.temp_name}
-                <% } %>
-            </td>
+
             <td title="${item.float_parent!}">
                 <% if (strutil.length(item.float_parent) >25) { %>
                     ${strutil.subStringTo(item.float_parent, 0, 25)}...

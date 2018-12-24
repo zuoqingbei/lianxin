@@ -365,13 +365,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         history.set("update_date", now);
         history.save();
         List<CreditQualityOpintion> opintion2 = new ArrayList<CreditQualityOpintion>();
+   	     opintion2 = CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?", orderId, type);
         if (StringUtils.isBlank(update)) {//查询或新增
                 //查询
                 renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
             
         } else {
         	//通过查询该订单下 该质检类型的质检意见是否存在，因不同订单不同类型质检一条数据，可以确定是否新增或修改
-        	 opintion2 = CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?", orderId, type);
              if (opintion2.size() <= 0) {
                  //如果根据订单id 与质检类型 查询为空 则新增
                  CreditQualityOpintion model = new CreditQualityOpintion();
