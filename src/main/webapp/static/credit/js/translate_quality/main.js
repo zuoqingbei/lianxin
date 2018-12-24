@@ -864,11 +864,12 @@ let ReportConfig = {
         let _this = this
         let id = JSON.parse(row).id;
         let reportType = JSON.parse(row).report_type
-        let istranslate = true
+        let istranslate = true;
+        let type=1;
         $.ajax({
             type: "get",
             url: BASE_PATH + "credit/front/getmodule/list",
-            data: {id, reportType, istranslate},
+            data: {id, reportType, istranslate,type},
             success: (data) => {
                 setTimeout(() => {
                     _this.initmodal();
