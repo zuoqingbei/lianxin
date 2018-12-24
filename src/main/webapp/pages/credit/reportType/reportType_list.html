@@ -17,6 +17,7 @@
 				var url = '/credit/reportNodes/list?reportType='+id;
                 $("input[name='form.orderColumn']").val("");
                 $("input[name='form.orderAsc']").val("");
+                $("input[name='pageNo']").val(1);
 				this.form.action = url;
 				this.form.submit();
 			},
