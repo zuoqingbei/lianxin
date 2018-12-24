@@ -1,4 +1,4 @@
-var bodyScale = parent.bodyScale;
+var bodyScale = parent.bodyScale || 1;
 function mapSphere(myChart) {
     var opts;
     $.ajax({
@@ -242,11 +242,11 @@ function mapSphere(myChart) {
                     },
                     itemStyle: {
                         normal: {
-                            width: 0.5*parent.bodyScale,
-                            borderWidth: 0.5*parent.bodyScale,
+                            width: 0.5*bodyScale, 
+                            borderWidth: 0.5*bodyScale,
                             borderColor: '#00ffff',
                             areaStyle: {
-                                color: 'rgba(0, 0, 0, 0)'
+                                color: 'rgba(0,0,0,0)'
                             },
                         }
                     },
@@ -263,7 +263,9 @@ function mapSphere(myChart) {
                         zoom: 1.2,
                         minZoom: 1.2,
                         maxZoom: 1.2,
-                        focus:"中国"
+                        focus:"中国",
+                        autoRotate: false,//是否自动旋转
+                        autoRotateAfterStill: 30, 
                         // focus:"Pakistan"
                     }
                 }]
@@ -293,7 +295,7 @@ function mapSphere(myChart) {
                                 // 线宽，这里线宽是屏幕的像素大小
                                 width: 1000,
                                 // 线的透明度
-                                opacity: 1
+                                opacity: 1 
                             }
                         },
 /*
