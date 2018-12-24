@@ -91,7 +91,7 @@ public class SysUser extends SessionUser<SysUser>  {
 
     /**
      * 获取自动分配状态的业务操作人员（报告员、质检员、分析员、翻译员）
-     * @param roleId 2报告员 3翻译员 4质检员 5分析员
+     * @param roleId 2报告员 3客服 4质检员 5分析员 6翻译员
      * @return
      */
 	public List<SysUser> getReporter(String roleId) {

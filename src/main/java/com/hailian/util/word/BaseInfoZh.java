@@ -88,8 +88,8 @@ public class BaseInfoZh {
         //找到当前报告类型下的父节点
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
         for (CreditReportModuleConf crmc : crmcs) {
-            //找到当前父节点下的子节点
-            List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(), reportType);
+            //找到当前父节点下的子节点  type=2表示详情
+            List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(), reportType, "2");
             //String tempName = crmc.getStr("temp_name");
             String source = crmc.getStr("get_source");
             String confId = crmc.getInt("id") + "";
@@ -195,30 +195,36 @@ public class BaseInfoZh {
                 }
             }
 
-            //8-单选框
+            //8-单选框 - 商业报告付款情况
             if("8".equals(moduleType)){
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
                 //取列值
-                LinkedHashMap<String, String> cols = BaseWord.getModuleCols(child);
+                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
+                //取列值
+                for (int i = 0; i < child.size(); i++) {
+                    CreditReportModuleConf module = child.get(i);
+                    String column_name = module.getStr("column_name");
+                    String temp_name = module.getStr("temp_name");
+                    String field_type = module.getStr("field_type");
+                    cols.put(column_name, temp_name + "|" + field_type);
+                }
                 //取数据
-                for (int i = 0; i < rows.size(); i++) {
+                if (rows!=null && rows.size()>0) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
-                    for (String column : cols.keySet()) {
-                        //取值
-                        String value = model.get(column) != null ? model.get(column) + "" : "";
-                        String get_source = cols.get(column);
-                        String[] items = get_source.split("&");
-                        StringBuffer html = new StringBuffer();
-                        for(int j=0;j<items.length;j++) {
-                            String[] item = items[j].split("-");
-                            if (value.equals(item[0])) {
-                                html.append("(√)" + item[1] + " ");
-                            }else{
-                                html.append("( )" + item[1] + " ");
-                            }
+                    //取单选数据
+                    String get_source = "1-极好&2-好&3-一般&4-较差&5-差&6-尚无法评估";
+                    String value = model.getStr("overall_rating");
+                    String[] items = get_source.split("&");
+                    StringBuffer html = new StringBuffer();
+                    for (int j = 0; j < items.length; j++) {
+                        String[] item = items[j].split("-");
+                        if (item[0].equals(value)) {
+                            html.append("(√)" + item[1] + " ");
+                        } else {
+                            html.append("( )" + item[1] + " ");
                         }
-                        map.put(column, html.toString());
                     }
+                    map.put("overall_rating", html.toString());
                 }
             }
 
@@ -246,9 +252,9 @@ public class BaseInfoZh {
                     pds.setValue(n, value);
                     total = total-value;
                 }
-                pds.setValue("", total);
+                pds.setValue("未知", total);
                 BaseWord.createPieChart(pds, _prePath + "pie.jpg");
-                map.put("pie", new PictureRenderData(660, 330, _prePath + "pie.jpg"));
+                map.put("pie", new PictureRenderData(620, 310, _prePath + "pie.jpg"));
             }
 
             //行业详情-柱图/线图
@@ -280,7 +286,7 @@ public class BaseInfoZh {
                     lineDataSet.addValue(value2,"y2",n);
                 }
                 BaseWord.createBarChart("",barDataSet,lineDataSet, _prePath + "bar.jpg");
-                map.put("bar", new PictureRenderData(660, 330, _prePath + "bar.jpg"));
+                map.put("bar", new PictureRenderData(620, 310, _prePath + "bar.jpg"));
             }
         }
 

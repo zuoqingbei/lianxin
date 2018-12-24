@@ -192,7 +192,7 @@ public class CompanyService {
 						String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
 						String ShouldCapi = partner.getString("ShouldCapi");//出资金额
 						CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
-						shareholderModel.set("name", name);
+						shareholderModel.set("sh_name", name);
 						shareholderModel.set("money", StockPercentEd);
 						BigDecimal a = new BigDecimal(ShouldCapi);
 						BigDecimal b = new BigDecimal("10000");

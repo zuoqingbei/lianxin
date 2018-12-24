@@ -2,8 +2,8 @@
 DIRECTIVE SAFE_OUTPUT_OPEN;
 var headContent = {
 	include("/pages/template/head.html"){}
-	include("/pages/includes/my97.html"){}
 %>
+	<%include("/pages/includes/my97.html"){}%>
 <link href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/bootstrap.min.css" rel="stylesheet" />
 <link href="${BASE_PATH }static/credit/assets/bootstrap-4.1.1-dist/css/select2.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.8.0/popper.es5.min.js"></script> 

@@ -32,6 +32,7 @@ let ReportConfig = {
         	const $tableEn = $("#table"+item+"En");
         	let contents = this.contentsArr[index]
         	let contentsEn = this.contentsArrEn[index]
+        	console.log(contents,contentsEn)
         	let titles = this.title
         	let urlTemp = titles[index].get_source;
         	let conf_id = titles[index].id;
@@ -133,6 +134,7 @@ let ReportConfig = {
       
     },
     tableColumns(a,lang,tempI,tempId){
+    	if(!a){return}
     	let _this = this
     	let arr = []
 		a.forEach((ele,index)=>{
@@ -661,8 +663,11 @@ let ReportConfig = {
     	floatIndex.forEach((item,index)=>{
     		let floatParentId = this.floatTitle[index]['float_parent'];//浮动的父节点id
     		let titleId;
+//    		console.log(this.entityTitle, this.floatTitle)
     		this.entityTitle.forEach((item,i)=>{
+    			console.log(item.id,floatParentId)
     			if(item.id === floatParentId ) {
+    				console.log(floatParentId)
     				if(floatParentId !== 853) {
     					//非财务模块浮动
     					let html = this.notMoneyFloatHtml[i+1]
@@ -671,7 +676,7 @@ let ReportConfig = {
     					this.formTitle.push(this.floatTitle[index])
     				}else {
     					//财务模块浮动
-//    					console.log(this.floatTitle[index])
+    					console.log(this.floatTitle[index])
     					cw_title.push(this.floatTitle[index])
     					cw_contents.push(this.floatContents[index])
     					cw_dom = $("#titleCw"+i)
@@ -680,7 +685,7 @@ let ReportConfig = {
     			}
     		})
     	})
-//    	console.log(cw_title,cw_contents)
+    	console.log(cw_title,cw_contents)
     	this.cwConfigAlterSource = cw_title[0]['alter_source'];
     	this.cwConfigGetSource = cw_title[0]['get_source'];
     	let cw_top_html = ''
@@ -1501,7 +1506,8 @@ let ReportConfig = {
             			let inputObj = item_en.contents[0]
             			_this.formTitleEn.push(inputObj)
             			_this.formIndexEn.push(index)
-            			let selectUrl = BASE_PATH + 'credit/front/ReportGetData/' + item_en.contents[0]["remove_source"]
+            			if(item_en.contents[0]){
+            				let selectUrl = BASE_PATH + 'credit/front/ReportGetData/' + item_en.contents[0]["remove_source"]
 	            			$.ajax({
 	            				type:'get',
 	            				url:selectUrl,
@@ -1517,7 +1523,7 @@ let ReportConfig = {
 	            						</div>`
 	            				}
             				})
-            			
+            			}
             			let tableContents = []
             			item_en.contents.forEach((item,index)=>{
             				if(index > 0 && index < 5) {
@@ -1534,8 +1540,8 @@ let ReportConfig = {
 			                				</table>
             							</div>`
         				let explainObj = item_en.contents[5];
+            			if(!item_en.contents[5]) {return;}
             			let explainUrl = explainObj.get_source;
-            			if(explainUrl === null) {return;}
             			let paramObj = {}
             			if(explainUrl.split("*")[1]) {
             				let tempParam = explainUrl.split("*")[1].split("$");//必要参数数组

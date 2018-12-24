@@ -26,7 +26,7 @@ var oper = {
 	
 	versionChange:function(){
 		var value=$("select[name='model.versions']").find("option:selected").val();
-		if(value=="标准版"){
+		if(value=="新版"){
 			//重置老版本输出
 			$(".old input").val("");
     		$(".old select").val("");
@@ -159,7 +159,7 @@ var bodyContent = {
 			 <td>
 			 	<select onchange="oper.versionChange()"  name="model.versions" valid="vselect" validname="请选择版本" class="form-control" style="width: 200px;">
 			 		<option selected="selected" value="">请选择版本</option>
-			 		<option value="标准版">标准版</option>
+			 		<option value="新版">新版</option>
 			 		<option value="老系统">老系统</option>
 			 	</select>
 			</td>	
@@ -167,7 +167,7 @@ var bodyContent = {
 	<tr class="old custom373 custom399 others">
 		<td>请选择客户类型</td>
 		<td>
-			  <select onchange="oper.customChange()" name="custom" class="form-control" style="width: 200px;">
+			  <select onchange="oper.customChange()" name="custom" class="form-control" style='width: 200px;' valid="vselect">
 					<option selected="selected" value="">请选择客户类型</option>
 			 		<option value="373">373</option>
 			 		<option value="399">399</option>
@@ -198,6 +198,17 @@ var bodyContent = {
 			${country!}
 		</select>
 		</td>
+	</tr>
+	<tr class="old custom373 custom399 others">
+		<td>客户ID</td>
+			<td><input type="text" name="model.customer_id" class="form-control"  
+				value="${model.customer_id!}" /></td>
+	</tr>
+		<tr class="old others othersonly">
+			<td>订单类型</td>
+			<td>  <select name="model.order_type" class="form-control" style="width: 200px;">
+						${ordertype!}
+			</select> </td>
 	</tr>
 	<tr class="old others othersonly">
 		<td>报告速度</td>
@@ -238,11 +249,12 @@ var bodyContent = {
 			</select> </td>
 		</tr>
 		<tr  class="new">
-			<td>国家</td>
+			<td>国家或地区</td>
 			<td><select name="model.country_type" class="form-control" style="width: 200px;">
 						${countrytype!}
 			</select> </td>
 		</tr>
+		
 		<tr >
 			<td>报告点数</td>
 			<td><input type="text" name="model.points" class="form-control" valid='vnum_y' 
@@ -261,13 +273,7 @@ var bodyContent = {
 				</select>
 			</td>
 		</tr>
-		<tr >
-			<td>是否禁用</td>
-			<td> <select name="model.usabled" class="form-control" style="width: 200px;">
-					${usabled!}
-			</select>
-			</td>
-		</tr>
+		
 	</table>
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">

@@ -290,7 +290,7 @@ public class BaseConfig extends JFinalConfig {
 		me.setRenderFactory(rf);
 		GroupTemplate groupTemplate = rf.groupTemplate;
 		groupTemplate.registerFunctionPackage("strutil", BeetlStrUtils.class);
-		groupTemplate.registerFunctionPackage("flyfox", BeeltFunctions.class);
+		groupTemplate.registerFunctionPackage("flyfox", BeeltFunctions.class); 
 		groupTemplate.registerFunctionPackage("temp", TemplateService.class);
 		groupTemplate.registerFunctionPackage("tempImage", TemplateImageService.class);
 		groupTemplate.registerFunctionPackage("tempVideo", TemplateVideoService.class);
