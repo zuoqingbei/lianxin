@@ -128,6 +128,9 @@ public class ReportPriceController extends BaseProjectController {
 			model.set("order_speed", getPara("order_speed",""));
 			model.set("report_type", getPara("report_type",""));
 		}
+		if("207".equals(model.getStr("country_type")) || "208".equals(model.getStr("country_type")) || "209".equals(model.getStr("country_type"))){
+			model.set("country_type", "148");
+		}
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		if (id != null && id > 0) { // 更新

@@ -40,6 +40,7 @@ let OrderDetail = {
                     }
                 }
             });
+            console.assert(url,item);
             url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
             return url;
         };
@@ -80,7 +81,8 @@ let OrderDetail = {
     setContent() {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info mb-4"></div>');
         let $moduleTitle = $('<h3 class="l-title"></h3>');
-        this.data.modules.forEach((item) => {
+        console.dir(this.data.modules[0])
+        this.data.modules.forEach((item,index) => {
             // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
             let smallModuleType = item.smallModileType;
             let itemId = item.title.id;
@@ -192,7 +194,7 @@ let OrderDetail = {
                         }
                         $ul.find('.span_active:last').addClass('circle_active')
                             .end().children('li.active:last').addClass('current');
-                        $wrap.append(`<div class="module-wrap bg-f company-info">
+                        $wrap.append(`<div class="module-wrap company-info">
                             <div class="type4-content module-content bar_box py-3 process">${$ul[0].outerHTML}</div></div>`);
                     });
                     break;
@@ -520,10 +522,11 @@ let OrderDetail = {
                         let [title, remark] = ['', ''];
                         item.contents.forEach((content, i) => {//5个数据分别是标题，备注，图表的x轴、y1轴、y2轴
                             let [param, url] = ['', ''];
-                            if (content.data_source) {
-                                param = content.data_source.split('*')[1];
-                                url = BASE_PATH + `credit/front/ReportGetData/${content.data_source.split('*')[0]}&${param}=${this.row[param]}&conf_id=${item.title.id}`;
+                            if (content.get_source) {
+                                param = content.get_source.split('*')[1];
+                                url = BASE_PATH + `credit/front/ReportGetData/${content.get_source.split('*')[0]}&${param}=${this.row[param]}&conf_id=${item.title.id}`;
                             }
+                            // console.assert(url,url,item);
                             if (i === 0) {
                                 title = content.temp_name;
                                 $.get(url, data => {
@@ -796,7 +799,7 @@ let OrderDetail = {
         // 有图表的取截止时间
         if (item.smallModileType === '11') {
             $wrap.find(".module-content").append(`<h4>${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span> </h4>`);
-            $.get(this.getUrl(item, 'alter_source'), (data) => {
+            $.get(this.getUrl(item, 'remark'), (data) => {
                 if (data.rows && data.rows.length > 0) {
                     $wrap.find('.asOf').text(`${data.rows[0] ? data.rows[0].date : ''}`);
                 }
@@ -805,6 +808,7 @@ let OrderDetail = {
         let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
         let columnNameArr = [];
         item.contents.forEach((item) => {
+            // 带日期的单元格加宽
             $table.children('thead').append(`<th${['日期', '成立日期', '注册日期', '合作时间', '操作时间'].includes(item.temp_name) ? ' style=min-width:10rem' : ''}>${item.temp_name}</th>`);
             columnNameArr.push(item.column_name);
         });

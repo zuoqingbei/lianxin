@@ -100,6 +100,8 @@ public class HomeController extends BaseProjectController {
 			setAttr("country", country);
 			List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
 		    setAttr("customer", customerId);
+			CreditOrderInfo model=new CreditOrderInfo();
+			setAttr("model", model);
 			render(path+"all_orders.html");
 		}
 	}
@@ -346,6 +348,21 @@ public class HomeController extends BaseProjectController {
 	 * @return_type   void
 	 */
 	public void createOrder() {
+		CreditOrderInfo model=new CreditOrderInfo();
+		SysUser user = (SysUser) getSessionUser();
+		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
+//		List<CreditCompanyInfo> company=OrderManagerService.service.getCompany();
+		setAttr("user",user);
+		setAttr("customs",customs);
+//		setAttr("company",company);
+		setAttr("model", model);
+		render(path + "/order_manage/create_order.html");
+	}
+
+	/**
+	 * neironggengxin
+	 */
+	public void updateOrder() {
 		CreditOrderInfo model=new CreditOrderInfo();
 		SysUser user = (SysUser) getSessionUser();
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();

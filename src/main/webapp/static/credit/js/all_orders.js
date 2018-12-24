@@ -7,6 +7,7 @@ let Index = {
         this.hideShowStyle();
         this.searchEvent();
         this.fileEvent();
+
     },
     dateForm(){
         /**日期控件 */
@@ -21,20 +22,20 @@ let Index = {
     		that.fileNum = 0;
     	});
       /**文件上传事件 */
-      $(".file-upload").on('change','.uploadFile .file-input',function(){
+      $("#exampleModalCenter3 .file-upload2").on('change','.uploadFile .file-input',function(){
     	  that.fileNum = that.fileNum+1;
           /**如果上传成功 */
           let filename = $(this).val().replace("C:\\fakepath\\","");
           let num = filename.split(".").length;
           let filename_qz = []
-          for(let i=0;i<num-1;i++){  
+          for(let i=0;i<num-1;i++){
             filename_qz =  filename_qz.concat(filename.split(".")[i])
           }
           filename_qz_str = filename_qz.join('.')
           if(filename_qz_str.length>4) {
             filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
           }
-          
+
           let filetype = filename.split(".")[num-1];
           filename = filename_qz_str + '.' +filetype
           let fileicon = '';
@@ -48,14 +49,17 @@ let Index = {
             fileicon = '/static/credit/imgs/order/JPG.png'
           }else if(filetype === 'pdf') {
             fileicon = '/static/credit/imgs/order/PDF.png'
+          }else if(filetype === 'html') {
+              fileicon = '/static/credit/imgs/order/html.png'
           }
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
+          console.log('文件图标',)
           $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-          if($(".uploadFile").length>4) {
+          if($("#exampleModalCenter3 .uploadFile").length>4) {
             return;
           }
-          $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+          $("#exampleModalCenter3 .file-upload2").append(`<div class="uploadFile mt-3 mr-4">
                                         <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
                                         <div class="over-box">
                                           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
@@ -65,11 +69,11 @@ let Index = {
       });
 
       /**附件删除 */
-      $(".file-upload").on('click','.uploadFile .close',function(){
+      $("#exampleModalCenter3 .file-upload2").on('click','.uploadFile .close',function(){
         $(this).parents(".uploadFile").remove()
         
-        if($(".upload-over").length<5 && $("[class='uploadFile mt-3 mr-4']").length<1 ){
-            $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+        if($("#exampleModalCenter3 .upload-over").length<5 && $("[class='uploadFile mt-3 mr-4']").length<1 ){
+            $("#exampleModalCenter3 .file-upload2").append(`<div class="uploadFile mt-3 mr-4">
                 <input type="file" name="" id="upload_file" value="" class="file-input" />
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
                 <p class="mt-2">上传附件</p>
@@ -211,7 +215,7 @@ let Index = {
      	});
         const $table = $('#table');
         $table.bootstrapTable({
-            height: $(".table-content").height()*0.74,
+            height: $(".table-content").height()*0.7,
             columns: [
             	{
                   title: '订单号',
@@ -336,21 +340,47 @@ let Index = {
                         
                         },
                         "click .order-update":(e,value,row,index)=>{
-                          $("#orderNum").text(row.num);
-                          $("#customId1").text(row.custom_id);
-                          $("#customName1").text(row.customName);
-                          $("#receiveDate1").text(row.receiver_date);
-                          $("#area1").text(row.continentName);
-                          $("#country2").text(row.countryName);
-                          $("#reportType1").text(row.reportType);
-                          $("#orderType1").text(row.orderType);
-                          $("#reportLanguage1").text(row.reportLanguage);
-                          $("#orderCompany1").text(row.englishName);
-                          $("#useTime1").text(row.useTime);
-                          $("#companyName1").text(row.companyName);
-                          $("#reportSpeed1").text(row.reportSpeed);
-                          $("#orderid1").val(row.id);
-                          $("#update_reason").val(row.update_reason);
+                            $("#exampleModalCenter3 .file-upload2 .close").trigger('click')
+                            console.log('这是row',row)
+                          $("#orderNum3").text(row.num);
+                          $("#client_userNname").val(row.customName);
+                          let da=row.create_date;
+                          $("#client_order_date").val(da.split(' ')[0]);
+                          $('#right_company_name_en').val(row.companyName);
+                          $('#client_reportTime').val(row.useTime);
+                            $('#client_referenceNumber').val(row.reference_num);
+                            $('#client_address').val(row.address);
+                            $('#client_telephone').val(row.telphone);
+                            $('#client_contact').val(row.contacts);
+                            $('#client_fax').val(row.fax);
+                            $('#client_email').val(row.email);
+                            $('#client_country').append(`<option selected value="${row.country}">${row.countryName}</option>`)
+
+                            layui.use('form', function(){
+                                var form = layui.form;
+                                $('#client_area').val(row.continent);
+                                $('#client_reportType').val(row.report_type)
+                                // $('#client_country').val(row.country)
+                                $("#client_orderType").val(row.order_type);
+                                $('#client_ID').val(row.custom_id);
+                                $('#right_company_name_en').val(row.englishName);
+                                $('#client_reportLanguage').val(row.report_language);
+                                $('#client_speed').val(row.speed);
+                                $('#client_referenceNumber').val(row.reference_num);
+                                $('#client_address').val(row.address);
+                                $('#client_telephone').val(row.telphone);
+                                $('#client_fax').val(row.fax);
+                                $('#client_contact').val(row.contacts);
+                                $('#client_email').val(row.email);
+                                $('#remakes').val(row.remarks);
+                                $('#myId').val(row.id);
+                                console.log('gngixn')
+                                form.render('select');
+
+                                //各种基于事件的操作，下面会有进一步介绍
+                            });
+
+
                         },
                         "click .ask":(e,value,row,index)=>{
                         	let id = row.id;
@@ -448,7 +478,7 @@ let Index = {
 		        '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
 		        '<a href="javacript:;" class="order-cancel" style="margin-right:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a>' +
 		        '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
-		        '<a href="javacript:;" class="order-update" data-toggle="modal" data-target="#exampleModalCenter2">内容更新</a>'
+		        '<a href="javacript:;" class="order-update" data-toggle="modal" data-target="#exampleModalCenter3">内容更新</a>'
     }
 }
 Index.init();
