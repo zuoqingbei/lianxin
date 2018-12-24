@@ -393,6 +393,7 @@ public class BaseInfoZh {
                 bos.write(buff, 0, count);
             }
         } catch (Exception e) {
+            System.out.println(netUrl);
             e.printStackTrace();
         } finally {
             if (iputstream != null) {
