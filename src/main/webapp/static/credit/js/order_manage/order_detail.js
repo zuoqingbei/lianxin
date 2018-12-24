@@ -1,5 +1,3 @@
-// import $ from "../../assets/wangEditor-3.1.1/src/js/util/dom-core";
-
 let OrderDetail = {
     init: function () {
         // ljl为此对象之外的页面全局变量
@@ -12,7 +10,7 @@ let OrderDetail = {
         [this.type9MulText, this.type9TableHead, this.type10Items] = [{}, [], {}];
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         this.getUrl = (item, otherProperty, paramObj) => {
-            let urlArr = (otherProperty ? item.title[otherProperty] : item.title.data_source).split("*");
+            let urlArr = (otherProperty ? item.title[otherProperty] : item.title.get_source).split("*");
             if (urlArr[0] === '') {
                 return
             }
@@ -61,9 +59,9 @@ let OrderDetail = {
         let _this = this;
         let id = this.row.id;
         let reportType = this.row.report_type;
-        let type = this.row.quality_type ? '' : 0;// 质检页面type传'',详情页面type传0
-        // console.log(this.row.quality_type+'=======================')
-        $.get(`${this.BASE_PATH}getmodule/detail/`, {id, reportType, type}, (data) => {
+        // type:1-填报，2-详情，3-质检
+        let type = this.row.quality_type ? 3 : 2;// 质检页面type传'',详情页面type传0
+        $.get(`${this.BASE_PATH}getmodule/list/`, {id, reportType, type}, (data) => {
             setTimeout(() => {
                 console.log('~~~data：', data);
                 if (!data.defaultModule) {
@@ -236,7 +234,7 @@ let OrderDetail = {
                         });
                     });
                     $wrap.append(`
-                            <div class="module-content type8-content">
+                            <div class="module-content type8-content px-4 pt-4">
                                 <h4>${item.contents[0].temp_name}</h4>
                                 ${$type8_ul[0].outerHTML}
                                 <h4>${item.contents[1].temp_name}</h4>
@@ -257,7 +255,7 @@ let OrderDetail = {
                     break;
                 // 9-财务模块结构和多行文本框数据
                 case '9':
-                    if (item.title.sort === '1') {
+                    if (item.title.sort === 1) {
                         _this.type9MulText = item;
                     } else {
                         _this.type9TableHead.push(item)
@@ -303,7 +301,7 @@ let OrderDetail = {
                             let radioSelect = data.rows[0][item.title.column_name];
                             $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
                             if (radioSelect === 1) {
-                                this.setTable(item, $wrap, '', 'save_source');
+                                this.setTable(item, $wrap, '', 'alter_source');
                             }
                         } else {
                             console.warn(item.title.temp_name + '-102单选&表格-没有返回数据！')
@@ -602,8 +600,8 @@ let OrderDetail = {
         // 通过type10获取表格数据内容
         let addTableMark = [];
         // 通过企业父title获取表格头部的日期、单位和多行文本框们
-        $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.data_source}?company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9MulTextData) => {
-            $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.data_source}?ficConf_id=${type9MulTextData.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
+        $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.get_source}?company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9MulTextData) => {
+            $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.get_source}?ficConf_id=${type9MulTextData.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
                 data.rows.forEach((row) => {
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
                         //孩子顺序是固定的
@@ -798,7 +796,7 @@ let OrderDetail = {
         // 有图表的取截止时间
         if (item.smallModileType === '11') {
             $wrap.find(".module-content").append(`<h4>${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span> </h4>`);
-            $.get(this.getUrl(item, 'save_source'), (data) => {
+            $.get(this.getUrl(item, 'alter_source'), (data) => {
                 if (data.rows && data.rows.length > 0) {
                     $wrap.find('.asOf').text(`${data.rows[0] ? data.rows[0].date : ''}`);
                 }
@@ -826,11 +824,12 @@ let OrderDetail = {
                         switch (item.smallModileType) {
                             //饼图
                             case '11':
-                                let money = row.money;
+                                let money = row[item.contents[2].column_name];
                                 chartData.push({
-                                    name: row.name,
+                                    name: row[item.contents[0].column_name],
                                     value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
                                 });
+
                                 break;
                             //柱线组合图
                             case '22':
@@ -847,7 +846,19 @@ let OrderDetail = {
                         });
                         $wrap.find('tbody').append($tr);
                     });
-                    if (['11','22'].includes(item.smallModileType)) {
+                    if(chartType === 'pie'){//饼图中如果参股人的百分比之和小于100，则补上“未知”
+                        let sum = chartData.reduce(function (prev, cur) {
+                            return cur.value + prev
+                        },0);
+                        if (sum < 100) {
+                            chartData.push({
+                                name: '未知',
+                                value: 100 - sum
+                            })
+                        }
+                    }
+
+                    if (['11', '22'].includes(item.smallModileType)) {
                         this.drawChart($wrap, chartData)[chartType]();// 绘制图表
                     }
                 } else {
@@ -913,7 +924,7 @@ let OrderDetail = {
                         axisTick: {show: false},
                         data: chartData.xAxisData
                     },
-                    grid:{top:'10%'},
+                    grid: {top: '10%'},
                     yAxis: [{
                         name: chartData.y1Name,
                         axisLine: {show: false},
