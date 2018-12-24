@@ -58,23 +58,25 @@ public class ModuleController extends BaseProjectController{
 		//根据订单信息获取公司信息
 		CreditCompanyInfo cci = CreditCompanyInfo.dao.findById(Arrays.asList(new String[]{coi.get("company_id")}));
 		//找到当前报告类型下的父节点
-		List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
-	//	List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByType(reportType,tyep);
+	//	List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
+		List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByType(reportType,tyep);
 
 		List<ModuleJsonData> list = new ArrayList<ModuleJsonData>();
 		//获取默认模板
-		List<CreditReportModuleConf> defaultModule = CreditReportModuleConf.dao.getDefaultModule(reportType);
-	//	List<CreditReportModuleConf> defaultModule = CreditReportModuleConf.dao.getDefaultModule2(reportType,tyep);	
+	//	List<CreditReportModuleConf> defaultModule = CreditReportModuleConf.dao.getDefaultModule(reportType);
+		List<CreditReportModuleConf> defaultModule = CreditReportModuleConf.dao.getDefaultModule2(reportType,tyep);	
 		//获取带锚点模板
-		List<CreditReportModuleConf> tabFixed = CreditReportModuleConf.dao.getTabFixed(reportType);
-	//	List<CreditReportModuleConf> tabFixed = CreditReportModuleConf.dao.getTabFixed2(reportType,tyep);
+	//	List<CreditReportModuleConf> tabFixed = CreditReportModuleConf.dao.getTabFixed(reportType);
+		List<CreditReportModuleConf> tabFixed = CreditReportModuleConf.dao.getTabFixed2(reportType,tyep);
 
 		
 		double start = new Date().getTime();
 		//defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
 		for(CreditReportModuleConf crmc:crmcs) {
 			//找到当前父节点下的子节点
-			List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportType);
+		//	List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportType);
+			List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(),reportType,tyep);
+
 			list.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));
 		}
 		System.out.println("运行时间===================================="+(double)(new Date().getTime()-start));
@@ -111,7 +113,8 @@ public class ModuleController extends BaseProjectController{
 				//defaultModule.forEach((CreditReportModuleConf model)->{model.removeNullValueAttrs().remove("del_flag");});
 				for(CreditReportModuleConf crmc:crmcsToEn) {
 					//找到当前父节点下的子节点
-					List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportTypeToEn);
+				//	List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportTypeToEn);
+					List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(),reportTypeToEn,tyep);
 					listToEn.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));
 				}
 				record.set("defaultModuleToEn",defaultModuleToEn);

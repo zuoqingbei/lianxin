@@ -415,21 +415,14 @@ public class BaseWord {
     }
 
     /**
-     * 格式化数据
+     * 将模块的数据，整理成类似table格式
      * @param child
      * @param rows
      * @return
      */
     public static List<LinkedHashMap<String, String>> formatData(List<CreditReportModuleConf> child,List rows){
-        LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
         List<LinkedHashMap<String, String>> datas = new ArrayList<LinkedHashMap<String, String>>();
-        //取列值
-        for (int i = 0; i < child.size(); i++) {
-            CreditReportModuleConf module = child.get(i);
-            String column_name = module.getStr("column_name");
-            String temp_name = module.getStr("temp_name");
-            cols.put(column_name, temp_name);
-        }
+        LinkedHashMap<String, String> cols = getModuleCols(child);
         //取数据
         for (int i = 0; i < rows.size(); i++) {
             LinkedHashMap<String, String> row = new LinkedHashMap<String, String>();
@@ -445,15 +438,32 @@ public class BaseWord {
     }
 
     /**
+     * 模块取字段值
+     * @param child 当前模块对应的子节点
+     * @return
+     */
+    public static LinkedHashMap<String, String> getModuleCols(List<CreditReportModuleConf> child){
+        LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
+        //取列值
+        for (int i = 0; i < child.size(); i++) {
+            CreditReportModuleConf module = child.get(i);
+            String column_name = module.getStr("column_name");
+            String temp_name = module.getStr("temp_name");
+            cols.put(column_name, temp_name);
+        }
+        return cols;
+    }
+
+    /**
      * 解析url
      *
      * @param url
      * @return
      */
     public static Map<String,String> parseUrl(String url) {
+        System.out.println("url="+url);
         Map<String,String> map = new HashMap<String,String>();
         String[] urlParts = url.split("\\?");
-        //entity.baseUrl = urlParts[0];
         //没有参数
         if (urlParts.length == 1) {
             return map;

@@ -65,7 +65,23 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 	}
 	public List<CreditReportModuleConf> findSon(String parent_temp, String report) {
 		String sql="select t.* from credit_report_module_conf t where"
-				+ " t.del_flag=0 and t.parent_temp=? and t.report_type=? order by t.sort,t.id ";
+				+ " t.del_flag=0 and t.parent_temp=? and t.report_type=?  order by t.sort,t.id";
+		return dao.find(sql, parent_temp,report);
+        //缓存2个小时
+        //return dao.findByCache("reportModuleConf","credit_report_module_conf"+parent_temp+report,sql,parent_temp,report);
+	}
+	public List<CreditReportModuleConf> findSon2(String parent_temp, String report,String type) {
+		String sql="select t.* from credit_report_module_conf t where"
+				+ " t.del_flag=0 and t.parent_temp=? and t.report_type=? ";
+		if (type.equals("1")) {//查填报
+			sql+=" and t.is_enter='0'";
+			
+		}else if (type.equals("2")) {//查详情
+			sql+=" and t.is_detail='0'";
+		}else if(type.equals("3")){//查质检的
+			sql+=" and t.is_quality='0'";
+		}
+		sql+=" order by t.sort,t.id";
 		return dao.find(sql, parent_temp,report);
         //缓存2个小时
         //return dao.findByCache("reportModuleConf","credit_report_module_conf"+parent_temp+report,sql,parent_temp,report);

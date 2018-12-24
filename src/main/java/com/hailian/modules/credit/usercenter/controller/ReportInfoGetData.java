@@ -15,6 +15,7 @@ import com.hailian.system.dict.DictCache;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
+import com.sun.star.sdb.application.CopyTableContinuation;
 
 public abstract class ReportInfoGetData extends BaseProjectController {
   /**
@@ -203,6 +204,9 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 				String type = selectSource.substring(selectSource.indexOf("?type=")+6,selectSource.indexOf("$selectedId=")).trim();
 				String disPalyCol = selectSource.substring(selectSource.indexOf("$disPalyCol=")+12).trim();
 				for (BaseProjectModel model : rows) {
+					/*if(model.get("get_source")==null) {
+						continue;
+					} */
 					if("country".equals(type)) {
 						String value ="";
 						if("detail_name_en".equals(disPalyCol)) {

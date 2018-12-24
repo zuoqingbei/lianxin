@@ -714,10 +714,11 @@ let ReportConfig = {
     	let _this = this
     	let id = JSON.parse(row).id;
     	let reportType = JSON.parse(row).report_type
+    	let type = 1
         $.ajax({
         	type:"get",
         	url:BASE_PATH + "credit/front/getmodule/list",
-        	data:{id,reportType},
+        	data:{id,reportType,type},
         	success:(data)=>{
                 setTimeout(()=>{
                 	_this.initModal();
