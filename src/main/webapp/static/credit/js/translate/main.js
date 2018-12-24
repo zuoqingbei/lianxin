@@ -32,6 +32,7 @@ let ReportConfig = {
         	const $tableEn = $("#table"+item+"En");
         	let contents = this.contentsArr[index]
         	let contentsEn = this.contentsArrEn[index]
+        	console.log(contents,contentsEn)
         	let titles = this.title
         	let urlTemp = titles[index].get_source;
         	let conf_id = titles[index].id;
@@ -133,6 +134,7 @@ let ReportConfig = {
       
     },
     tableColumns(a,lang,tempI,tempId){
+    	if(!a){return}
     	let _this = this
     	let arr = []
 		a.forEach((ele,index)=>{
