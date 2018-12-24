@@ -114,7 +114,7 @@ public class ModuleController extends BaseProjectController{
 				for(CreditReportModuleConf crmc:crmcsToEn) {
 					//找到当前父节点下的子节点
 				//	List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportTypeToEn);
-					List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(),reportType,tyep);
+					List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(),reportTypeToEn,tyep);
 					listToEn.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));
 				}
 				record.set("defaultModuleToEn",defaultModuleToEn);
