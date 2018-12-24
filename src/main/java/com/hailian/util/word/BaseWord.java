@@ -399,7 +399,7 @@ public class BaseWord {
         }
         //取数据
         for (int i = 0; i < rows.size(); i++) {
-            BaseProjectModel model = (BaseProjectModel) rows.get(0);
+            BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
                 String[] strs = cols.get(column).split("\\|");
                 String fieldType = strs.length == 2 ? strs[1] : "";

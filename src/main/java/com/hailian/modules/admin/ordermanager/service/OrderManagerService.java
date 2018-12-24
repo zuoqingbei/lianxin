@@ -447,7 +447,7 @@ public class OrderManagerService {
 
     /**
      * 给订单自动分配业务人员
-     *  2报告员 3翻译员 4质检员 5分析员
+     *  2报告员 3客服 4质检员 5分析员 6翻译员
      * @return
      */
     public String getUserIdtoOrder(int roleId){
