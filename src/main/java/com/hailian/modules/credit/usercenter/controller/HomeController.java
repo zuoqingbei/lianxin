@@ -430,7 +430,6 @@ public class HomeController extends BaseProjectController {
 		}
 		//获取报告员id
 		String reportIdtoOrder = OrderManagerService.service.getUserIdtoOrder(RoleCons.REPORTER);//根据自动分配规则获取该订单指定的报告员
-//		String reportIdtoOrder = OrderManagerService.service.getReportIdtoOrder();
 		model.set("report_user", reportIdtoOrder);
 		//国外代理自动分配 除韩国新加坡马来西亚
 		boolean isNeedAgent=false;//是否需要自动分配
@@ -484,7 +483,7 @@ public class HomeController extends BaseProjectController {
 		model.set("company_id",companInfoId);
 		}
 		
-		CreditOperationLog.dao.addOneEntry(this, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
+		CreditOperationLog.dao.addOneEntry(userid, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
 		cof.save();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
 		model1.set("business_type", "291");

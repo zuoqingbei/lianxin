@@ -495,7 +495,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 
             //增加跟踪记录
             CreditOrderFlow.addOneEntry(this, model);
-            CreditOperationLog.dao.addOneEntry(this, null, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
+            CreditOperationLog.dao.addOneEntry(userId, null, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
             renderJson(record.set("submit", submit));
         }
 
@@ -946,7 +946,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             model.update();
             //增加跟踪记录 
             CreditOrderFlow.addOneEntry(this, model);
-            CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
+            CreditOperationLog.dao.addOneEntry(userid, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
             renderJson(new ResultType());
             return new ResultType();
         } catch (Exception e) {
