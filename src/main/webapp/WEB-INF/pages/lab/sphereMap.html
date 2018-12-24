@@ -44,8 +44,11 @@
 </body>
 <script>
 
+    let url = location.href;
+    if(url.includes('bg')){
+        $('body').css('background','url("/hlht/static/img/bg-2.jpg")')
+    }
     var contextPath='${contextPath!}';
-
     // 路径配置
     require.config({
         paths: {
