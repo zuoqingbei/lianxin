@@ -435,7 +435,7 @@ public class OrderPoiController extends BaseProjectController {
 					model.set("company_id",companInfoId);
 					model.update();
 			 }
-			 CreditOperationLog.dao.addOneEntry(this, null, "订单管理/批量导入/提交","/credit/orderpoimanager/savedata");//操作日志记录
+			 CreditOperationLog.dao.addOneEntry(userid, null, "订单管理/批量导入/提交","/credit/orderpoimanager/savedata");//操作日志记录
 					
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

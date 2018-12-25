@@ -50,6 +50,17 @@ var bodyContent = {
 					<input class="" type="file" name="file_url" valid='' validname='上传word' value=""  />
 					</td>
 				</tr>
+                <tr>
+                    <td>是否有财务</td>
+                    <td>
+                        <select name="financialType">
+                            <option value="0" <%if (model.financialType=='0') {%>selected<%}%> >无</option>
+                            <option value="1" <%if (model.financialType=='1') {%>selected<%}%> >中文财务(含大数)</option>
+                            <option value="2" <%if (model.financialType=='2') {%>selected<%}%> >英文财务(含大数)</option>
+                            <option value="3" <%if (model.financialType=='3') {%>selected<%}%> >仅大数</option>
+                        </select>
+                    </td>
+                </tr>
 				<tr>
 					<td>排序</td>
 					<td>

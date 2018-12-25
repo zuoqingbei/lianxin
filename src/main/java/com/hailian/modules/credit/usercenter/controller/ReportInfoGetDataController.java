@@ -365,13 +365,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         history.set("update_date", now);
         history.save();
         List<CreditQualityOpintion> opintion2 = new ArrayList<CreditQualityOpintion>();
+   	     opintion2 = CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?", orderId, type);
         if (StringUtils.isBlank(update)) {//查询或新增
                 //查询
                 renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
             
         } else {
         	//通过查询该订单下 该质检类型的质检意见是否存在，因不同订单不同类型质检一条数据，可以确定是否新增或修改
-        	 opintion2 = CreditQualityOpintion.dao.find("SELECT * from credit_quality_opintion where order_id=? and quality_type=?", orderId, type);
              if (opintion2.size() <= 0) {
                  //如果根据订单id 与质检类型 查询为空 则新增
                  CreditQualityOpintion model = new CreditQualityOpintion();
@@ -495,7 +495,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 
             //增加跟踪记录
             CreditOrderFlow.addOneEntry(this, model);
-            CreditOperationLog.dao.addOneEntry(this, null, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
+            CreditOperationLog.dao.addOneEntry(userId, null, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
             renderJson(record.set("submit", submit));
         }
 
@@ -639,8 +639,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     		 renderJson(new ResultType(0, "获取财务信息失败,需要ficConf_id,report_type这两个参数!"));
 			 return;
     	}
-    	Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) { renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!")); return;}
+    	//Integer type = getFinanceDictByReportType(reportType);
+    	String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) { renderJson(new ResultType(0, "缺少财务类型参数!")); return;}
     	List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId,type);
     	renderJson(new Record().set("rows", row).set("total", row==null?0:row.size()));
     }
@@ -670,14 +671,15 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "报告类型不能为空!"));
 			return;
 		}
-		Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) {
-			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+		//Integer type = getFinanceDictByReportType(reportType);
+		String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) {
+			renderJson(new ResultType(0, "缺少财务类型参数!"));
 			return;
 		}
 		String message = "导入失败,请检查文件内容!";
 		try {
-			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, userId, now);
+			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), Integer.parseInt(type), financialConfId, userId, now);
 		} catch (Exception e) {
 			renderJson( new ResultType(0, message));
 			e.printStackTrace();
@@ -696,9 +698,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "报告类型不能为空!"));
 			return;
 		}
-		Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) {
-			renderJson(new ResultType(0, "此报告类型下无财务模板!"));
+		//Integer type = getFinanceDictByReportType(reportType);
+		String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) {
+			renderJson(new ResultType(0, "缺少财务类型参数!"));
 			return;
 		}
 		ServletOutputStream ops = null;
@@ -710,7 +713,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "导入出现未知异常!"));
 			return;
 		}
-		ExcelModule.exportExcel(response,ops, type);
+		ExcelModule.exportExcel(response,ops, Integer.parseInt(type));
 		renderJson(new ResultType(0, "导入成功!"));
 	}
 	
@@ -771,9 +774,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "请检查这两个必要参数companyId,report_type!"));
 			return;
 		}
-		Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) {
-			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+		//Integer type = getFinanceDictByReportType(reportType);
+		String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) {
+			renderJson(new ResultType(0, "缺少财务类型参数!"));
 			return;
 		}
 		String userId = getSessionUser().getUserid()+"";
@@ -786,7 +790,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			entryMap.put("company_id", companyId);
 			entryMap.put("type", type);
 			entrys.add(entryMap);
-			FinanceService.alterFinancialConfig(entrys, type, userId, now);
+			FinanceService.alterFinancialConfig(entrys, Integer.parseInt(type), userId, now);
 			rows = FinanceService.getFinancialConfigList(companyId,type);
 		}
 		renderJson(new Record().set("rows", rows));
@@ -810,13 +814,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String userId = getSessionUser().getUserid()+"";
 		String now = getNow();
-		Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) {
-			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+		//Integer type = getFinanceDictByReportType(reportType);
+		String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) {
+			renderJson(new ResultType(0, "缺少财务类型参数!"));
 			return;
 		}
 		try {
-			FinanceService.alterFinancialConfig(entrys, type, userId, now);
+			FinanceService.alterFinancialConfig(entrys, Integer.parseInt(type), userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));
@@ -887,7 +892,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     public static String dictIdToString(String id) {
         Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
         SysDictDetail sysDict = cache.get(Integer.parseInt(id));
-        return sysDict.get("detail_name") + "";
+        if(sysDict!=null){
+            return sysDict.get("detail_name") + "";
+        }
+        return "";
     }
 	
     
@@ -946,7 +954,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             model.update();
             //增加跟踪记录 
             CreditOrderFlow.addOneEntry(this, model);
-            CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
+            CreditOperationLog.dao.addOneEntry(userid, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
             renderJson(new ResultType());
             return new ResultType();
         } catch (Exception e) {

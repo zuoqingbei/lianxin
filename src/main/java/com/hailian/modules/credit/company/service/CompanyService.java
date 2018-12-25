@@ -30,6 +30,7 @@ import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.http.HttpTest;
+import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.template.ext.directive.Str;
@@ -116,13 +117,16 @@ public class CompanyService {
 				CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
 				companyinfoModel.set("registration_num", No);
 				
-				List<SysDictDetail> companytype = SysDictDetail.dao.getDictDetailBy(EconKind,"companyType");
+				List<SysDictDetail> companytype = SysDictDetail.dao.getDictDetailBy(EconKind.trim(),"companyType");
 				if(companytype !=null && CollectionUtils.isNotEmpty(companytype)){
 					companyinfoModel.set("company_type", companytype.get(0).get("detail_id"));
 				}else{
 					SysDictDetail detailmodel=new SysDictDetail();
 					detailmodel.set("dict_type", "companyType");
-					detailmodel.set("detail_name", EconKind);
+					detailmodel.set("detail_name", EconKind.trim());
+					String value_en = TransApi.Trans(EconKind.trim(),"en");
+					detailmodel.set("detail_name_en", value_en);
+					detailmodel.set("isprimitive", "1");
 					detailmodel.save();
 					companyinfoModel.set("company_type", detailmodel.get("detail_id"));
 				}
@@ -155,13 +159,16 @@ public class CompanyService {
 					companyinfoModel.set("business_date_end", "无期");
 				}
 				
-				List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status,"registration_status");
+				List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status.trim(),"registration_status");
 				if(CollectionUtils.isNotEmpty(dictDetailBy) && dictDetailBy!=null){
 					companyinfoModel.set("registration_status", dictDetailBy.get(0).get("detail_id"));
 				}else{
 					SysDictDetail detailmodel=new SysDictDetail();
 					detailmodel.set("dict_type", "registration_status");
-					detailmodel.set("detail_name", Status);
+					detailmodel.set("detail_name", Status.trim());
+					String value_en = TransApi.Trans(Status.trim(),"en");
+					detailmodel.set("detail_name_en", value_en);
+					detailmodel.set("isprimitive", "1");
 					detailmodel.save();
 					companyinfoModel.set("registration_status", detailmodel.get("detail_id"));
 				}
@@ -215,13 +222,16 @@ public class CompanyService {
 						String job = employee.getString("Job");//职位
 						CreditCompanyManagement managementModel = new CreditCompanyManagement();
 						
-						List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job,"position");
+						List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job.trim(),"position");
 						if(dictDetailBy2 !=null && CollectionUtils.isNotEmpty(dictDetailBy2)){
 							managementModel.set("position", dictDetailBy2.get(0).get("detail_id"));
 						}else{
 							SysDictDetail detailmodel=new SysDictDetail();
 							detailmodel.set("dict_type", "position");
-							detailmodel.set("detail_name", job);
+							detailmodel.set("detail_name", job.trim());
+							String value_en = TransApi.Trans(job.trim(),"en");
+							detailmodel.set("detail_name_en", value_en);
+							detailmodel.set("isprimitive", "1");
 							detailmodel.save();
 							managementModel.set("position", detailmodel.get("detail_id"));
 						}

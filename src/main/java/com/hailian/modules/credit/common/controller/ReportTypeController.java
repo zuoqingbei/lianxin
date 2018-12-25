@@ -158,16 +158,21 @@ public class ReportTypeController extends BaseProjectController {
 	   }
        
        if(!StrUtils.isEmpty(financialType))
+    	 
        Db.tx(new IAtom() {
-		//先删除
-    	   
-    	//再添加
 		public boolean run() throws SQLException {
-			//0无 1中文 2英文 3大数
+			//先删除
+			String sql = "";
+			sql += "update credit_report_module_conf  ";
+			sql += "set del_flag=1";
+			sql += "set update_by="+userid;
+			sql += "set update_date="+now;
+			sql += " where table_id=-1 and report_type= "+pid;
+	    	   Db.update(sql);
+	    	//再添加
+			//0-无 1-中文加大数 2-英文加大数 3-只有大数
 			 switch (financialType) {
-				case "0":
-					
-					break;
+				case "0": break;
 				case "1":
 					
 					break;
@@ -214,4 +219,49 @@ public class ReportTypeController extends BaseProjectController {
 		String url=ip+":"+port+"/"+model.get("tpl_path");
 		renderJson(new Record().set("url", url));
 	}
+	
+	/**
+	 * 根据报告类型插入根实体
+	 * @author lzg
+	 * @param reportType
+	 * @return
+	 */
+	public Integer insertRootEntry(String reportType) {
+		                               
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
