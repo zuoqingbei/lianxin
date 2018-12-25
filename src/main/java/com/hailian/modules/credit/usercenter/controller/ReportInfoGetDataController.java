@@ -428,8 +428,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                         status = "301"; //走分析
                         //todo 填报质检完成后自动分配分析员
                         analerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.ANALER);
-                    }else if(info.get("report_language").equals("216")&&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
-                    	//报告语言，中文简体+英文 除信用报告 其余都是走翻译
+                    }else if((info.get("report_language").equals("216")||info.get("report_language").equals("217"))&&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
+                    	//报告语言，中文简体+英文  ，中文繁体+英文 除信用报告 其余都是走翻译
                         status = "306";//走翻译
                         //todo 分析质检完成后自动分配翻译员
                         transerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.TRANSER);
