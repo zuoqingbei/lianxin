@@ -126,7 +126,8 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
 						<label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
 						<select name="attr.report_language" valid="vselect"
 							validname="报告语言" class="search-input  col-md-8 layui-input"
-							id="client_reportLanguage"> ${language!}
+							id="client_reportLanguage"> 
+						<option m-type="" value="0" disabled selected>请选择报告语言</option>
 						</select>
 						<p class="errorInfo col-md-8">请选择报告语言</p>
 					</div>
@@ -357,6 +358,31 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
 	   	 		price();
 	   		})
 	   		form.on('select(reportTypeChange)',function(data){
+	   			var html="";
+	   	        var report_id=data.value   
+	    		if(report_id==='1'||report_id==='8'||report_id==='10'){
+					html+="<option  m-type='' value='213'>中文简体 </option>";	
+					html+="<option  m-type='' value='216'>中文简体+英文 </option>";	        	
+	    		}
+	    		else if(report_id==='7'||report_id==='9'||report_id==='11'){
+					html+="<option  m-type='' value='215'>英文 </option>";	
+					html+="<option  m-type='' value='216'>中文简体+英文 </option>";	        	
+	    		}
+	    		else if(report_id==='12'||report_id==='14'||report_id==='11'){
+					html+="<option  m-type='' value='217'>中文繁体+英文 </option>";	
+					       	
+	    		}
+	    		else if(report_id==='15'){
+					html+="<option  m-type='' value='213'>中文简体 </option>";	
+					       	
+	    		}
+	    		else if(report_id==='16'||report_id==='17'||report_id==='18'
+	    				||report_id==='19'||report_id==='20'||report_id==='21'){
+					html+="<option  m-type='' value='215'>英文 </option>";	
+					       	
+	    		}
+	 	           $("select[name='attr.report_language']").html(html);
+				   form.render('select'); 
 	   			usetime();
 	   	 		price();
 	   		})

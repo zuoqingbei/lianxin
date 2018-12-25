@@ -13,11 +13,15 @@ import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataControl
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.util.Config;
+import com.hailian.util.StrUtils;
 import com.jfinal.kit.PathKit;
+import com.jfinal.plugin.activerecord.Db;
+
 import org.apache.commons.lang.StringUtils;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -298,12 +302,22 @@ public class BaseInfoZh {
             String begin = statementsConf.get("date1");
             String end = statementsConf.get("date2");
             String finanId = statementsConf.getInt("id") + "";
-            //财务-表格
-            map.put("financial", financial(reportType, finanId,begin,end));
+            //取到对应的财务类型
+            Integer  financeType = -1;
+            for (Integer tempType :  FinanceService.FINANCIAL_TYPE) {
+            	financeType =  getFinancialType(companyId,tempType);
+            	if(financeType!=-1) {break;}
+			}
+            
+            if(financeType!=-1) { 
+            	//财务-表格
+                map.put("financial", financial(financeType+"", finanId,begin,end));
+                //生成财务报告
+                excelPath = financialExcel(financeType+"",finanId,_prePath,orderId,userid,begin,end);
+            }
             //财务-评价
             map.put("financial_eval", financialEval(statementsConf));
-            //生成财务报告
-            excelPath = financialExcel(reportType,finanId,_prePath,orderId,userid,begin,end);
+            
         }
 
         //生成word
@@ -418,17 +432,17 @@ public class BaseInfoZh {
 
     /**
      * 财务模板生成
-     * @param reportType
+     * @param financeType
      * @param financialConfId
      * @param begin
      * @param end
      * @return
      */
-    public static MiniTableRenderData financial(String reportType,String financialConfId,String begin,String end) {
+    public static MiniTableRenderData financial(String financeType,String financialConfId,String begin,String end) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //取数据
-        Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
-        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, type);
+        //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType);
         int j = 0;
         Integer old = null;
         for (CreditCompanyFinancialEntry ccf : finDataRows) {
@@ -518,7 +532,7 @@ public class BaseInfoZh {
 
     /**
      * 财务生成Excel
-     * @param reportType
+     * @param financeType
      * @param financialConfId
      * @param _prePath
      * @param orderId
@@ -527,11 +541,11 @@ public class BaseInfoZh {
      * @param end
      * @return
      */
-    public static String financialExcel(String reportType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end){
+    public static String financialExcel(String financeType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end){
         String filePath = "";
         //取数据
-        Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
-        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, type);
+        //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType);
         FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end);
         try {
             String path = _prePath + ".xls";
@@ -592,5 +606,36 @@ public class BaseInfoZh {
             return "";
         }
     }
-
+    
+    
+    public static  Integer getFinancialType (String companyId,Integer type) {
+		try {
+			if (type==null) { return -1; }
+			if (StrUtils.isEmpty(companyId,type+"")) { return -1; }
+			// 查询公司id下的财务配置
+			List<String> flagStr = Db.query(
+					"select date1,date2,id from credit_company_financial_statements_conf where del_flag=0 and company_id=?  ",
+					Arrays.asList(new String[] { companyId   }));
+			String dateStr1 = flagStr.get(0);
+			String dateStr2 = flagStr.get(1);
+			if (StrUtils.isEmpty(dateStr1, dateStr2)) { return -1; }
+			//查询配置下的财务信息
+			String confId = flagStr.get(2)+"";
+			List<Integer> targetValueList =  Db.query(
+					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=? and type=? ",
+					Arrays.asList(new String[] { confId ,type+""}));
+			
+			if(targetValueList!=null) {
+				for (Integer integer : targetValueList) {
+					if(integer!=null) { if(!(integer==null||integer==0)) { return type; } }
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+		return -1;
+	}
+    
 }

@@ -1,5 +1,7 @@
 package com.hailian.modules.credit.common.controller;
 
+import java.sql.SQLException;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -10,6 +12,9 @@ import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.common.service.ReportTypeService;
 import com.hailian.modules.credit.uploadfile.controller.FileUpLoadController;
 import com.hailian.util.Config;
+import com.hailian.util.StrUtils;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
@@ -137,6 +142,7 @@ public class ReportTypeController extends BaseProjectController {
 	public void save() {
 		Integer pid = getParaToInt("id");
 		String name=  getPara("name");
+		String financialType = getPara("financialType");//财务类型
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		FileUpLoadController fileconController=new FileUpLoadController();
@@ -150,11 +156,45 @@ public class ReportTypeController extends BaseProjectController {
        if (url!=null&&!"".equals(url)) {
     	   model.set("tpl_path", url);
 	   }
-		
+       
+       if(!StrUtils.isEmpty(financialType))
+    	 
+       Db.tx(new IAtom() {
+		public boolean run() throws SQLException {
+			//先删除
+			String sql = "";
+			sql += "update credit_report_module_conf  ";
+			sql += "set del_flag=1";
+			sql += "set update_by="+userid;
+			sql += "set update_date="+now;
+			sql += " where table_id=-1 and report_type= "+pid;
+	    	   Db.update(sql);
+	    	//再添加
+			//0-无 1-中文加大数 2-英文加大数 3-只有大数
+			 switch (financialType) {
+				case "0": break;
+				case "1":
+					
+					break;
+				case "2":
+				
+				break;
+				case "3":
+				
+				break;
+				default:
+					break;
+				}
+			return true;
+		}
+	});
+    
+       
 		if (pid != null && pid > 0) { // 更新
 			model.set("update_by", userid);
 			model.set("update_date", now);
 			model.update();
+			
 			renderMessage("修改成功");
 		} else { // 新增
 			model.remove("id");
@@ -179,4 +219,49 @@ public class ReportTypeController extends BaseProjectController {
 		String url=ip+":"+port+"/"+model.get("tpl_path");
 		renderJson(new Record().set("url", url));
 	}
+	
+	/**
+	 * 根据报告类型插入根实体
+	 * @author lzg
+	 * @param reportType
+	 * @return
+	 */
+	public Integer insertRootEntry(String reportType) {
+		                               
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
