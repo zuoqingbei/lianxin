@@ -295,13 +295,15 @@ public class BaseInfoZh {
         List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
         if(finanConfList!=null && finanConfList.size()>0) {
             CreditCompanyFinancialStatementsConf statementsConf = finanConfList.get(0);
+            String begin = statementsConf.get("date1");
+            String end = statementsConf.get("date2");
             String finanId = statementsConf.getInt("id") + "";
             //财务-表格
-            map.put("financial", financial(reportType, finanId));
+            map.put("financial", financial(reportType, finanId,begin,end));
             //财务-评价
             map.put("financial_eval", financialEval(statementsConf));
             //生成财务报告
-            excelPath = financialExcel(reportType,finanId,_prePath,orderId,userid);
+            excelPath = financialExcel(reportType,finanId,_prePath,orderId,userid,begin,end);
         }
 
         //生成word
@@ -418,9 +420,11 @@ public class BaseInfoZh {
      * 财务模板生成
      * @param reportType
      * @param financialConfId
+     * @param begin
+     * @param end
      * @return
      */
-    public static MiniTableRenderData financial(String reportType,String financialConfId) {
+    public static MiniTableRenderData financial(String reportType,String financialConfId,String begin,String end) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //取数据
         Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
@@ -488,8 +492,8 @@ public class BaseInfoZh {
                 titileStyle.setBold(true);
                 rowList.add(RowRenderData.build(
                         new TextRenderData(title, titileStyle),
-                        new TextRenderData(""),
-                        new TextRenderData("")));
+                        new TextRenderData(begin),
+                        new TextRenderData(end)));
 
                 Style header = new Style();
                 header.setBold(true);
@@ -499,14 +503,14 @@ public class BaseInfoZh {
                         new TextRenderData("单位：人民币（千元）", header)));
             }
             String itemName = ccf.getStr("item_name");
-            Integer begin = ccf.getInt("begin_date_value");
-            Integer end = ccf.getInt("end_date_value");
+            Integer beginValue = ccf.getInt("begin_date_value");
+            Integer endValue = ccf.getInt("end_date_value");
             Integer is_sum_option = ccf.getInt("is_sum_option");
             Style sumStyle = new Style();
             if (is_sum_option.intValue() == 1) {
                 sumStyle.setBold(true);
             }
-            rowList.add(RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(begin.toString()), new TextRenderData(end.toString())));
+            rowList.add(RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString()), new TextRenderData(endValue.toString())));
             j++;
         }
         return new MiniTableRenderData(rowList);
@@ -516,13 +520,19 @@ public class BaseInfoZh {
      * 财务生成Excel
      * @param reportType
      * @param financialConfId
+     * @param _prePath
+     * @param orderId
+     * @param userid
+     * @param begin
+     * @param end
+     * @return
      */
-    public static String financialExcel(String reportType,String financialConfId,String _prePath,String orderId,int userid){
+    public static String financialExcel(String reportType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end){
         String filePath = "";
         //取数据
         Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
         List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, type);
-        FinancialExcelExport export = new FinancialExcelExport(finDataRows);
+        FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end);
         try {
             String path = _prePath + ".xls";
             export.downloadExcel(path);

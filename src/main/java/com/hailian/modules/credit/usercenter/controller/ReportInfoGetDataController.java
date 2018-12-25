@@ -888,7 +888,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     public static String dictIdToString(String id) {
         Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
         SysDictDetail sysDict = cache.get(Integer.parseInt(id));
-        return sysDict.get("detail_name") + "";
+        if(sysDict!=null){
+            return sysDict.get("detail_name") + "";
+        }
+        return "";
     }
 	
     
