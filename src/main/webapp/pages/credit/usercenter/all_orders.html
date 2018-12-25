@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <% var orderstatus = tempDict.getListSysDictDetail('orderstate'); %>
 <% var agent = agent.getAgentIdString(); %>
+<% var sandbar =
+tempDict.getSysDictDetailString('continent',model.continent); %> <% var
+ordertype = tempDict.getSysDictDetailString('ordertype'); %> <% var
+language = tempDict.getSysDictDetailString('language'); %> <% var
+orderspeed = tempDict.getSysDictDetailString('orderspeed'); %> <% var
+reportType = reportType.getReportTypeString2(model.report_type!''); %>
+<% var upload_busType =
+tempDict.getSysDictDetailString('upload_busType',model.business_type !);
+%>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -10,16 +19,24 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/assets/layui/css/layui.css">
       <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
-    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
+
    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/create_order.css">
+    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
     <style>
     	#table tbody tr td:first-child {
     		color:var(--fontColor)!important;
     	}
-    	
+        .table-content {
+            padding: 0;
+        }
+        .right-btn {
+            padding-right: 0rem;
+        }
     </style>
     <script type="text/javascript">
 	    var BASE_PATH = "${BASE_PATH }";
+
     </script>
 </head>
 <div id="container" class="row  animated fadeIn">
@@ -325,119 +342,338 @@
     </div>
 </div>
 <!-- Modal 内容更新-->
-<div class="modal fade order_cancel" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!--<div class="modal fade order_cancel" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<h5 class="modal-title" id="exampleModalLongTitle">-->
+                    <!--<span>订单号：</span>-->
+                    <!--<span id="orderNum">0001288784932</span>-->
+                <!--</h5>-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                    <!--<span aria-hidden="true">&times;</span>-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<div class="order-detail mb-4">-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>客户ID：</span>-->
+                            <!--<span id="customId1">001354574</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>客户用户名：</span>-->
+                            <!--<span id="customName1">王彩军</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>接单日期：</span>-->
+                            <!--<span id="receiveDate1">2018-09-10</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>地区：</span>-->
+                            <!--<span id="area1">亚洲</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>国家：</span>-->
+                            <!--<span id="country2">中国</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>报告类型：</span>-->
+                            <!--<span id="reportType1">基本信用报告</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>订单类型：</span>-->
+                            <!--<span id="orderType1">new</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>报告语言：</span>-->
+                            <!--<span id="reportLanguage1">中文</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>订单公司名称：</span>-->
+                            <!--<span id="orderCompany1">北京小米科技有限公司</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>报告速度：</span>-->
+                            <!--<span id="reportSpeed1">普通</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>报告用时：</span>-->
+                            <!--<span id="useTime1">5天</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>公司中文名称：</span>-->
+                            <!--<span id="companyName1">北京小米科技有限公司</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-12 d-flex">-->
+                            <!--<span style="width: 6.1rem">确认原因：</span>-->
+                            <!--<span>对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<form id="updateForm" enctype="multipart/form-data"   action="/credit/front/home/update" method="post">-->
+                    <!--<div class="file-upload">-->
+                        <!--<div class="row mt-3 mb-2">-->
+                            <!--<div class="input-group col-md-12 align-items-top">-->
+                                <!--<label class="control-label">更新原因：</label>-->
+                                <!--&lt;!&ndash;<input type="text" class="form-control">&ndash;&gt;-->
+                                <!--<textarea name="update_reason" id="update_reason" cols="50" rows="10"></textarea>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<label class="mt-3 ml-3">上传附件：</label>-->
+                        <!--<div class="uploadFile mt-3 mr-4 mb-5">-->
+                            <!--<input type="file" name="file_url" id="upload_file" value="" class="file-input" />-->
+                            <!--<div class="over-box">-->
+                                <!--<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">-->
+                                <!--<p class="mt-2">上传附件</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<input type="hidden" id="orderid1" name="orderid1">-->
+                <!--</form>-->
+
+            <!--</div>-->
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-primary" id="modal_submit" onclick="update()">确认更新</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<div class="modal fade order_cancel" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">
+                <h5 class="modal-title" id="exampleModalLongTitle3">
                     <span>订单号：</span>
-                    <span id="orderNum">0001288784932</span>
+                    <span id="orderNum3">0001288784932</span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="order-detail mb-4">
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>客户ID：</span>
-                            <span id="customId1">001354574</span>
+                <div class="table-content" style="background-color: transparent">
+                    <form id="orderForm" class="form-inline layui-form "
+                          enctype="multipart/form-data" action="/credit/front/home/saveOrder"
+                          method="post" lay-filter="myForm">
+                        <div class="form-group row d-flex justify-content-around mb-3">
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for=""><span>*</span>客户ID：</label>
+                                <select name="attr.custom_id" lay-filter="customChange"
+                                        valid="vselect" validname="客户ID"
+                                        class="search-input  col-md-8 layui-input" id="client_ID">
+                                     <%for(item
+                                    in customer){%>
+                                    <option value="${item.id}">${item.id}</option> <%}%>
+                                </select>
+                                <p class="errorInfo col-md-8">请输入客户ID</p>
+                            </div>
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for="">客户用户名：</label> <input
+                                    name="customname" type="text" class="form-control  col-md-8"
+                                    id="client_userNname" placeholder="请输入客户用户名" disabled>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <span>客户用户名：</span>
-                            <span id="customName1">王彩军</span>
+                        <div class="form-group row d-flex justify-content-around mb-3">
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for=""><span>*</span>地区：</label>
+                                <select name="attr.continent" lay-filter="continentchange"
+                                        valid="vselect" validname="地区"
+                                        class="search-input  col-md-8 layui-input" id="client_area">
+                                    ${sandbar!}
+                                </select>
+                                <p class="errorInfo col-md-8">请选择地区</p>
+                            </div>
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for=""><span>*</span>国家：</label>
+                                <select name="attr.country" lay-filter="countrychange"
+                                        valid="vselect" validname="国家" class=" col-md-8" lay-search=""
+                                        ay-verify="" id="client_country">
+                                    <option m-type="" value="0" disabled selected>请选择国家</option>
+                                </select>
+                                <p class="errorInfo col-md-8">请选择国家</p>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <span>接单日期：</span>
-                            <span id="receiveDate1">2018-09-10</span>
+                        <div class="form-group row d-flex justify-content-around mb-3">
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for=""><span>*</span>接单日期：</label>
+                                <input name="attr.receiver_date" valid="vselect" validname="接单日期"
+                                       type="text" class="form-control  col-md-8" id="client_order_date"
+                                       disabled />
+                            </div>
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for=""><span>*</span>报告类型：</label>
+                                <select name="attr.report_type" lay-filter="reportTypeChange"
+                                        valid="vselect" validname="报告类型"
+                                        class="search-input  col-md-8 layui-input" id="client_reportType">
+                                    ${reportType!}
+                                </select>
+                                <p class="errorInfo col-md-8">请选择报告类型</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>地区：</span>
-                            <span id="area1">亚洲</span>
+                        <div class="form-group row d-flex justify-content-around mb-3">
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for=""><span>*</span>订单类型：</label>
+                                <select name="attr.order_type" lay-filter="ordertypechange"
+                                        valid="vselect" validname="订单类型"
+                                        class="search-input  col-md-8 layui-input"
+                                        id="client_orderType"> ${ordertype!}
+                                </select>
+                                <p class="errorInfo col-md-8">请选择订单类型</p>
+                            </div>
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for=""><span>*</span>报告语言：</label>
+                                <select name="attr.report_language" valid="vselect"
+                                        validname="报告语言" class="search-input  col-md-8 layui-input"
+                                        id="client_reportLanguage"> ${language!}
+                                </select>
+                                <p class="errorInfo col-md-8">请选择报告语言</p>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <span>国家：</span>
-                            <span id="country2">中国</span>
+                        <div class="form-group row d-flex justify-content-around mb-3">
+                            <div class="input-group mt-2 col-md-6 layui-form">
+                                <label class="control-label col-md-4" for="txt_search_statu"><span>*</span>订单公司名称：</label>
+                                <input class="reste col-md-8 layui-input formInput"
+                                       id="right_company_name_en" name="attr.right_company_name_en"
+                                       type="text" value="">
+                                <!--  <select name="attr.company_id" class=" col-md-8 layui-input" lay-search="" ay-verify="" >
+                                                    <option value="0" disabled selected>请选择公司</option>
+                                                </select> -->
+                                <p class="errorInfo col-md-8">请输入订单公司名称</p>
+                            </div>
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for=""><span>*</span>速度：</label>
+                                <select name="attr.speed" lay-filter="speedchange" valid="vselect"
+                                        validname="速度" class=" search-input  col-md-8 layui-input"
+                                        id="client_speed"> ${orderspeed!}
+                                </select>
+                                <p class="errorInfo col-md-8">请选择速度</p>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <span>报告类型：</span>
-                            <span id="reportType1">基本信用报告</span>
+                        <div class="form-group row d-flex justify-content-around mb-3">
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for="">报告用时：</label> <input
+                                    name="attr.user_time" type="text" class="form-control  col-md-8"
+                                    id="client_reportTime" readonly> <input
+                                    name="attr.user_time_id" type="hidden"
+                                    class="form-control  col-md-8">
+
+                            </div>
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for="">客户参考号：</label> <input
+                                    name="attr.reference_num" type="text"
+                                    class="reste form-control  col-md-8" id="client_referenceNumber"
+                                    placeholder="请输入客户参考号">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>订单类型：</span>
-                            <span id="orderType1">new</span>
+                        <div class="form-group row d-flex justify-content-around mb-3">
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for="">地址：</label> <input
+                                    name="attr.address" type="text"
+                                    class="reste form-control  col-md-8" id="client_address"
+                                    placeholder="请输入地址">
+                            </div>
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for="">电话：</label> <input
+                                    name="attr.telphone" type="text"
+                                    class="reste form-control  col-md-8" id="client_telephone"
+                                    placeholder="请输入电话">
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <span>报告语言：</span>
-                            <span id="reportLanguage1">中文</span>
+                        <div class="form-group row d-flex justify-content-around mb-3">
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for="">传真：</label> <input
+                                    name="attr.fax" type="text" class="reste form-control  col-md-8"
+                                    id="client_fax" placeholder="请输入传真">
+                            </div>
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for="">联系人：</label> <input
+                                    name="attr.contacts" type="text"
+                                    class="reste form-control  col-md-8" id="client_contact"
+                                    placeholder="请输入联系人">
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <span>订单公司名称：</span>
-                            <span id="orderCompany1">北京小米科技有限公司</span>
+                        <div class="form-group row d-flex justify-content-start mb-4">
+                            <div class="input-group mt-2 col-md-6">
+                                <label class="control-label col-md-4" for="">Email：</label> <input
+                                    name="attr.email" type="text"
+                                    class="reste form-control search-input col-md-8"
+                                    id="client_email" onblur="Events.emailAdd(this)"
+                                    placeholder="请输入邮箱地址">
+                                <p class="errorInfo col-md-8">请输入正确格式</p>
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>报告速度：</span>
-                            <span id="reportSpeed1">普通</span>
+                        <div class="form-group row d-flex justify-content-start mb-4">
+                            <div class="input-group mt-2 col-md-12">
+                                <label class="control-label col-md-2" for="">备注：</label><textarea name="attr.remarks"
+                                          class="reste form-control search-input  col-md-10" name=""
+                                          rows="4" cols="" placeholder="请输入其他细节" id="remakes"></textarea>
+                            </div>
+
                         </div>
-                        <div class="col-md-4">
-                            <span>报告用时：</span>
-                            <span id="useTime1">5天</span>
+                        <div class="reste form-group row d-flex mb-4 file-upload-box" style="padding-left: 4.5rem">
+                            <div class="file-upload2">
+                                <label class=" ml-3">上传相关资料：</label>
+                                <div class="uploadFile mr-3 mt-3">
+                                    <input type="file" name="file_url" id="upload_file" value=""
+                                           class="file-input" />
+                                    <div class="over-box">
+                                        <img
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                                        <p class="mt-2">上传附件</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <span>公司中文名称：</span>
-                            <span id="companyName1">北京小米科技有限公司</span>
+                        <div class="form-group row d-flex justify-content-start mb-4">
+                            <div class="input-group mt-2 col-md-12">
+                                <label class="control-label col-md-2" for="">更新原因：</label><textarea name="attr.update_reason"
+                                          class="reste form-control search-input  col-md-10" name=""
+                                          rows="4" cols="" placeholder="请输更新原因"></textarea>
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-12 d-flex">
-                            <span style="width: 6.1rem">确认原因：</span>
-                            <span>对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
-                        </div>
-                    </div>
+                        <input name="attr.status" type="hidden" value="0"> <input
+                            name="id" type="hidden" value="0"> <input id="priceid"
+                                                                      name="attr.price_id" type="hidden" value="0"> <input
+                            id="is_fastsubmit" name="attr.is_fastsubmmit" type="hidden"
+                            value="-1"> <input name="attr.source" type="hidden"
+                                               value="0"> <input name="attr.end_date" type="hidden"
+                                                                 value="0"> <input name="attr.company_by_report"
+                                                                                   type="hidden" value=""> <input
+                            name="attr.right_company_name_en" type="hidden" value="">
+                        <input name="attr.id" type="hidden" id="myId">
+                        <button type="button" id="btn_submit"
+                                class="btn btn-primary btn-submit" style="display: block;margin: 0 auto">确认更新</button>
+                    </form>
+
                 </div>
-                <form id="updateForm" enctype="multipart/form-data"   action="/credit/front/home/update" method="post">
-                <div class="file-upload">
-                    <div class="row mt-3 mb-2">
-                        <div class="input-group col-md-12 align-items-top">
-                            <label class="control-label">更新原因：</label>
-                            <!--<input type="text" class="form-control">-->
-                            <textarea name="update_reason" id="update_reason" cols="50" rows="10"></textarea>
-                        </div>
-                    </div>
-                    <label class="mt-3 ml-3">上传附件：</label>
-                    <div class="uploadFile mt-3 mr-4 mb-5">
-                        <input type="file" name="file_url" id="upload_file" value="" class="file-input" />
-                        <div class="over-box">
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-                            <p class="mt-2">上传附件</p>
-                        </div>
-                    </div>
-                </div>
-                 <input type="hidden" id="orderid1" name="orderid1">
-                </form>
-               
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="modal_submit" onclick="update()">确认更新</button>
-            </div>
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-primary" id="modal_submit" onclick="">确认更新</button>-->
+            <!--</div>-->
         </div>
     </div>
 </div>
 <script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
 <script src="${BASE_PATH }static/credit/js/all_orders.js"></script>
+<script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>
 <script type="text/javascript">
 $(function(){
 	$.get('/credit/front/home/getMessage',function(data){
 		getCustoms(data.customs);
 		getCountry(data.country);
-	})	
+	})	;
+
 });
 function getCustoms(data){
 	console.log(data);
@@ -515,6 +751,121 @@ function update(){
 	});
 }
 </script>
+<script type="text/javascript">
 
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render(); //更新全部
+        price();
+        usetime();
+        console.log('初始更新')
+        form.on('select(customChange)',function(data){
+            price();//获取代理价格
+            $.post('/admin/ordermanager/getCustom',{"id":data.value},function(data1){
+                console.log(data1)
+                $("#client_userNname").val(data1.name);
+                $("#client_userNname").attr("disabled","disabled");
+            })
+        })
+        form.on('select(continentchange)',function(data){
+            var html="";
+            console.log(data.value)
+            $.post('/credit/country/getCountrySelect2',{"attr.continent":data.value},function(data){
+                console.log(data)
+                for(item in data){
+                    html+="<option  m-type='"+data[item].type+"' value='"+data[item].id+"'>"+data[item].name+"</option>";
+                }
+                $("select[name='attr.country']").html(html);
+                form.render('select');
+
+            })
+
+        })
+        form.on('select(countrychange)',function(data){
+            console.log('改变country')
+            usetime();
+            price()
+        })
+        form.on('select(speedchange)',function(data){
+            console.log('改变speed')
+            usetime();
+            price();
+        })
+        form.on('select(reportTypeChange)',function(data){
+            console.log('改变reporttype')
+            usetime();
+            price();
+        })
+        form.on('select(ordertypechange)',function(data){
+            console.log('改变ordertype')
+            price();
+        })
+
+    });
+
+
+
+    function usetime(){
+        var value1=$("select[name='attr.country']").find("option:selected").attr("m-type");
+        var value2=$("select[name='attr.speed']").find("option:selected").val();
+        var value3=$("select[name='attr.report_type']").find("option:selected").val();
+        var value4=$("select[name='attr.order_type']").find("option:selected").val();
+        var value5=$("#client_order_date").val();
+        console.log('走了time方法')
+        console.log(value5);
+        var html="";
+        $.ajax({
+            url:"/admin/ordermanager/getTime",
+            data:{
+                "countrytype":value1,
+                "speed":value2,
+                "reporttype":value3,
+                "ordertype":value4,
+                "receivedate":encodeURI(value5),
+            },
+            type:"get",
+            dataType:"json",
+            success: function(data) {
+                console.log(data)
+                if(data!=null){
+                    $("input[name='attr.user_time']").val(data.usetime.use_time)
+                    $("input[name='attr.user_time_id']").val(data.usetime.id)
+                    $("input[name='attr.end_date']").val(data.enddate)
+                }
+            },
+        });
+    }
+    function price(){
+        var value1=$("select[name='attr.country']").find("option:selected").attr("m-type");
+        var value2=$("select[name='attr.speed']").find("option:selected").val();
+        var value3=$("select[name='attr.report_type']").find("option:selected").val();
+        var value4=$("select[name='attr.order_type']").find("option:selected").val();
+        var value5=$("#client_ID").val();
+        var value6=$("#client_country").find("option:selected").val();
+        console.log('走了price方法1',value5,value6)
+        var html="";
+        $.ajax({
+            url:"/admin/ordermanager/getPrice",
+            data:{
+                "countrytype":value1,
+                "speed":value2,
+                "reporttype":value3,
+                "ordertype":value4,
+                "customid":value5,
+                "countryid":value6
+            },
+            type:"post",
+            dataType:"json",
+            success: function(data) {
+                console.log('1222')
+                if(data!=null){
+                    $("#priceid").val(data.id)
+                }
+
+            }
+        });
+    }
+
+</script>
 </body>
 </html>

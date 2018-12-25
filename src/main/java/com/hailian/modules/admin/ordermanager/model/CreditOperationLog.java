@@ -2,6 +2,7 @@ package com.hailian.modules.admin.ordermanager.model;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.hailian.component.base.BaseProjectModel;
@@ -27,7 +28,7 @@ public class CreditOperationLog extends BaseProjectModel<CreditOperationLog> imp
 
 	
 	
-	public static void addOneEntry(BaseController c,CreditOrderInfo model,String button,String url) {
+	public static void addOneEntry(Integer userid,CreditOrderInfo model,String button,String url) {
 		//获取操作记录对象
 		CreditOperationLog cof = new CreditOperationLog();
 		if(model != null){
@@ -39,13 +40,13 @@ public class CreditOperationLog extends BaseProjectModel<CreditOperationLog> imp
 		}
 		
 		//操作人
-		cof.set("create_oper", c.getSessionUser()==null?444:c.getSessionUser().getUserid());
+		cof.set("create_oper", userid);
 		cof.set("button", button);
 		cof.set("url", url);
 		//操作时间
 		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
 		//记录生成时间
-		cof.set("create_date", c.getNow());
+		cof.set("create_date", new Date());
 		cof.save();
 	}
 }
