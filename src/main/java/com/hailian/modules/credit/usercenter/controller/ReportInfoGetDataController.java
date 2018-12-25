@@ -428,17 +428,18 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                         status = "301"; //走分析
                         //todo 填报质检完成后自动分配分析员
                         analerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.ANALER);
-                    }else if(info.get("report_language").equals("")){
-                    	
-                    }
-                    
-                    
-                    else {
+                    }else if(info.get("report_language").equals("216")&&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
+                    	//报告语言，中文简体+英文 除信用报告 其余都是走翻译
                         status = "306";//走翻译
                         //todo 分析质检完成后自动分配翻译员
                         transerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.TRANSER);
+                    
+                    }else if((info.get("report_language").equals("213")||info.get("report_language").equals("215"))&&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
+                       //报告语言是中文，或英文，除信用分析，全部直接结束报告
+		                status = "311";
+		                agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
                     }
-                } else {
+                } else { 
                     status = "293";    //信息录入
                 }
             } else if (type.equals("analyze_quality")) {
