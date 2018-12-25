@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
-
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
@@ -20,16 +18,26 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.sun.star.uno.RuntimeException;
 
+/**
+ * @author lzg
+ */
 public class FinanceService {
+	
+	/**
+	 * 财务类型
+	 */
+	public final static List<Integer>   FINANCIAL_TYPE = new ArrayList<>();
 	/**
 	 * 财务字典中文版到英文版的类型直接的映射
 	 */
-	 public final static Map<Integer,Integer> ZH_TO_EN_MAPPING = new HashMap<>();
+	 public final static Map<String,Integer> ZH_TO_EN_MAPPING = new HashMap<>();
 	 static {
-		 ZH_TO_EN_MAPPING.put(1, 2);
-		 ZH_TO_EN_MAPPING.put(2, 2);
-		 ZH_TO_EN_MAPPING.put(3, 3);
+		 ZH_TO_EN_MAPPING.put(1+"", 2);
+		 ZH_TO_EN_MAPPING.put(2+"", 2);
+		 ZH_TO_EN_MAPPING.put(3+"", 3);
+		 FINANCIAL_TYPE.add(1);FINANCIAL_TYPE.add(2);FINANCIAL_TYPE.add(3);
 	 }
+	 
 	/**
 	 * 增加或者修改财务配置信息(包含在实体表里克隆一份默认的)
 	 * @param dataJson
@@ -160,7 +168,7 @@ public class FinanceService {
 	 * @param  String financialConfId,
 	 * @param type 财务类型
 	 */
-	public static List<CreditCompanyFinancialEntry> getFinancialEntryList(String financialConfId, Integer type ) {
+	public static List<CreditCompanyFinancialEntry> getFinancialEntryList(String financialConfId, String type ) {
 		Integer realType = ZH_TO_EN_MAPPING.get(type);
 		if(StrUtils.isEmpty(financialConfId)||realType==null) {return new ArrayList<>();}
 		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
@@ -190,7 +198,7 @@ public class FinanceService {
 	 * 获取财务配置信息
 	 * @param type 
 	 */
-	public static List<CreditCompanyFinancialStatementsConf> getFinancialConfigList(String companyId, Integer type ) {
+	public static List<CreditCompanyFinancialStatementsConf> getFinancialConfigList(String companyId, Object type ) {
 		CreditCompanyFinancialStatementsConf model = new CreditCompanyFinancialStatementsConf();
 		List<CreditCompanyFinancialStatementsConf> list
 				= model.find("select * from credit_company_financial_statements_conf where company_id=? and type=? and del_flag=0 order by sort_no,id ",

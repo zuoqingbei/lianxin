@@ -640,8 +640,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     		 renderJson(new ResultType(0, "获取财务信息失败,需要ficConf_id,report_type这两个参数!"));
 			 return;
     	}
-    	Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) { renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!")); return;}
+    	//Integer type = getFinanceDictByReportType(reportType);
+    	String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) { renderJson(new ResultType(0, "缺少财务类型参数!")); return;}
     	List<CreditCompanyFinancialEntry>  row = FinanceService.getFinancialEntryList(financialConfId,type);
     	renderJson(new Record().set("rows", row).set("total", row==null?0:row.size()));
     }
@@ -671,14 +672,15 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "报告类型不能为空!"));
 			return;
 		}
-		Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) {
-			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+		//Integer type = getFinanceDictByReportType(reportType);
+		String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) {
+			renderJson(new ResultType(0, "缺少财务类型参数!"));
 			return;
 		}
 		String message = "导入失败,请检查文件内容!";
 		try {
-			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), type, financialConfId, userId, now);
+			message = FinanceService.alterFinancialEntryListForUpload(uploadFile.getFile(), Integer.parseInt(type), financialConfId, userId, now);
 		} catch (Exception e) {
 			renderJson( new ResultType(0, message));
 			e.printStackTrace();
@@ -697,9 +699,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "报告类型不能为空!"));
 			return;
 		}
-		Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) {
-			renderJson(new ResultType(0, "此报告类型下无财务模板!"));
+		//Integer type = getFinanceDictByReportType(reportType);
+		String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) {
+			renderJson(new ResultType(0, "缺少财务类型参数!"));
 			return;
 		}
 		ServletOutputStream ops = null;
@@ -711,7 +714,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "导入出现未知异常!"));
 			return;
 		}
-		ExcelModule.exportExcel(response,ops, type);
+		ExcelModule.exportExcel(response,ops, Integer.parseInt(type));
 		renderJson(new ResultType(0, "导入成功!"));
 	}
 	
@@ -772,9 +775,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "请检查这两个必要参数companyId,report_type!"));
 			return;
 		}
-		Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) {
-			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+		//Integer type = getFinanceDictByReportType(reportType);
+		String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) {
+			renderJson(new ResultType(0, "缺少财务类型参数!"));
 			return;
 		}
 		String userId = getSessionUser().getUserid()+"";
@@ -787,7 +791,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			entryMap.put("company_id", companyId);
 			entryMap.put("type", type);
 			entrys.add(entryMap);
-			FinanceService.alterFinancialConfig(entrys, type, userId, now);
+			FinanceService.alterFinancialConfig(entrys, Integer.parseInt(type), userId, now);
 			rows = FinanceService.getFinancialConfigList(companyId,type);
 		}
 		renderJson(new Record().set("rows", rows));
@@ -811,13 +815,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		}
 		String userId = getSessionUser().getUserid()+"";
 		String now = getNow();
-		Integer type = getFinanceDictByReportType(reportType);
-		if(type==null) {
-			renderJson(new ResultType(0, "此报告类型下没有对应的财务类型!"));
+		//Integer type = getFinanceDictByReportType(reportType);
+		String type = getPara("type"); 
+		if(StrUtils.isEmpty(type)) {
+			renderJson(new ResultType(0, "缺少财务类型参数!"));
 			return;
 		}
 		try {
-			FinanceService.alterFinancialConfig(entrys, type, userId, now);
+			FinanceService.alterFinancialConfig(entrys, Integer.parseInt(type), userId, now);
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJson(new ResultType(0,"发生未知异常!"));

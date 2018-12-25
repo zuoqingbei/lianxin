@@ -277,7 +277,7 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
         where.append(" left join sys_dict_detail d on d.detail_code=t.small_module_type and d.dict_type='small_module_type' ");
         where.append(" left join sys_dict_detail e on e.detail_code=t.is_merger_next and e.dict_type='boolean'  ");
         where.append(" left join sys_dict_detail s on s.detail_code=t.word_table_type  and s.dict_type='word_table_type' ");
-        where.append(" where t.del_flag = 0 and t.report_type=? "
+        where.append(" where t.del_flag = 0 and t.report_type=? and t.table_id !='-1' "//table_id不为-1(即不为财务)
         		+ "and t.parent_temp='-9999999' "
         		 );
         if(keyword!=null&&!StrUtils.isEmpty(keyword.trim())) {

@@ -258,19 +258,19 @@ public class BusinessEn {
 
     /**
      * 财务模板
-     * @param reportType
+     * @param financeType
      * @param companyId
      * @param sysLanguage
      * @param financialConfId
      * @return
      */
-    public static MiniTableRenderData financial(String reportType,String companyId,String sysLanguage,String financialConfId) {
+    public static MiniTableRenderData financial(String financeType,String companyId,String sysLanguage,String financialConfId) {
         ReportInfoGetDataController report = new ReportInfoGetDataController();
 
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //取数据
-        Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
-        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId,type);
+        //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId,financeType);
 
         int j = 0;
         Integer old = null;

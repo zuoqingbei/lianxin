@@ -318,11 +318,11 @@ public class BusinessZh {
      * @param financialConfId
      * @return
      */
-    public static MiniTableRenderData financial(String reportType,String companyId,String sysLanguage,String financialConfId) {
+    public static MiniTableRenderData financial(String financeType,String companyId,String sysLanguage,String financialConfId) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //取数据
-        Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
-        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId,type);
+        //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId,financeType);
         int j = 0;
         Integer old = null;
         for (CreditCompanyFinancialEntry ccf : finDataRows) {
