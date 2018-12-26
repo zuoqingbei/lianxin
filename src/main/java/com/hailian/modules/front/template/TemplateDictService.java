@@ -186,7 +186,13 @@ public class TemplateDictService extends BaseService {
 			}
 			//type="entering_quality";//小模板类型
 			flagStr = "detail_code";
-			selectedId=  Db.query(" select detail_code from sys_dict_detail where del_flag=0 and dict_type='small_module_type' and detail_code="+selectedId).get(0);
+			List tempList = Db.query(" select detail_code from sys_dict_detail where del_flag=0 and dict_type='small_module_type' and detail_code="+selectedId);
+			if(!(tempList==null||tempList.size()==0)) {
+				selectedId = tempList.get(0);
+			}else {
+				selectedId = -1000;
+			}
+			
 		}else if(type!=null&&"word_table_type".equals(type)){
 			if(StrUtils.isEmpty((String)(selectedId))){
 				selectedId = "s";
