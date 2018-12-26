@@ -1288,7 +1288,7 @@ let ReportConfig = {
     				 }
     				 
     			 })
-    			 dataJson.push(dataJsonObj)
+    			 dataJson[0] = dataJsonObj
     			 $.ajax({
     				 url,
     				 type:'post',
@@ -1358,7 +1358,7 @@ let ReportConfig = {
     					 })
     				 }
     			 })
-    			 dataJson.push(dataJsonObj)
+    			  dataJson[0] = dataJsonObj
     			 $.ajax({
     				 url,
     				 type:'post',
@@ -1395,3 +1395,15 @@ let ReportConfig = {
 }
 
 ReportConfig.init();
+$('.return_back').on('click',function () {
+    layer.confirm('是否要保存？', {
+        btn: ['保存','取消'] //按钮
+    }, function(){
+        $('#save').trigger('click')
+
+        location.reload();
+    }, function(){
+        location.reload();
+    });
+
+})

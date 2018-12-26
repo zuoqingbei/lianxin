@@ -7,13 +7,16 @@ import com.feizhou.swagger.annotation.Params;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditReportModuleParentNodesDict;
+import com.hailian.modules.credit.reportmanager.model.CreditReportModuleColumn;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @todo 报告类型
@@ -116,6 +119,9 @@ public class ReportNodeController extends BaseProjectController {
 	 */
 	public void del() {
         CreditReportModuleConf model = getModel(CreditReportModuleConf.class);
+        if(StrUtils.isEmpty(getPara("id"))) {
+        	renderMessage("缺少ID!");return;
+        }
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("id",getPara("id"));
@@ -123,6 +129,12 @@ public class ReportNodeController extends BaseProjectController {
 		model.set("update_date", now);
 		model.set("del_flag", 1);
 		model.update();
+		String findSonsSql = " select * from credit_report_module_conf where del_flag=0 and parent_temp=? ";
+        List<CreditReportModuleConf> sonConfModels = CreditReportModuleConf.dao.find(findSonsSql,Arrays.asList(new String[] {getPara("id")+""}).toArray());
+        for (CreditReportModuleConf son : sonConfModels) {
+			son.set("update_by", userid).set("update_date", now).set("del_flag", 1);
+			son.update();
+		}
 		list();
 	}
 	
@@ -161,94 +173,71 @@ public class ReportNodeController extends BaseProjectController {
      * 选择字段
      */
     public void addNodes(){
-    	int result = -1;
-        String reportType = getPara("reportType");
-        if(StrUtils.isEmpty(reportType)) {renderMessage("缺少必要参数reportType!");return;}
-        String[] columnIds = getParaValues("nodesId");
-        if(columnIds!=null&&columnIds.length>0){  
-        	CreditReportModuleParentNodesDict model = new CreditReportModuleParentNodesDict();
-        	Integer userid = getSessionUser().getUserid();
-    		String now = getNow();
-    		model.set("update_by",userid);
-    		model.set("update_date", now);
-    		model.set("create_by", userid);
-			model.set("create_date", now);
-			model.set("report_type", reportType);
-            for(String id:columnIds){
-            	CreditReportModuleParentNodesDict model2 = new CreditReportModuleParentNodesDict();
-            	model2._setAttrs(model).set("id", id);
-    			model2.update();
-              		
-               result =  Db.update("INSERT INTO  `credit_report_module_conf` (" +
-              		"	`parent_temp`," +
-              		"	`small_module_type`," +
-              		"	`node_level`," +
-              		"	`report_type`," +
-              		"	`float_parent`," +
-              		"	`get_source`," +
-              		"	`remove_source`," +
-              		"	`alter_source`," +
-              		"	`remark`," +
-              		"	`word_key`," +
-              		"	`word_table_type`," +
-              		"	`temp_name`," +
-              		"	`column_name`," +
-              		"	`sort`," +
-              		"	`field_type`," +
-              		"	`place_hold`," +
-              		"	`suffix`," +
-              		"	`error_msg`," +
-              		"	`reg_validation`," +
-              		"	`anchor_id`," +
-              		"	`create_by`," +
-              		"	`update_by`," +
-              		"	`update_date`," +
-              		"	`create_date`," +
-              		"	`del_flag`," +
-              		"	`is_merger_next`," +
-              		"	`table_id`" +
-              		") " +
-              		"	SELECT" +
-              		"		 " +
-              		"			`parent_temp`," +
-              		"			`small_module_type`," +
-              		"			`node_level`," +
-              		"			`report_type`," +
-              		"			`float_parent`," +
-              		"			`get_source`," +
-              		"			`remove_source`," +
-              		"			`alter_source`," +
-              		"			`remark`," +
-              		"			`word_key`," +
-              		"			`word_table_type`," +
-              		"			`temp_name`," +
-              		"			`column_name`," +
-              		"			`sort`," +
-              		"			`field_type`," +
-              		"			`place_hold`," +
-              		"			`suffix`," +
-              		"			`error_msg`," +
-              		"			`reg_validation`," +
-              		"			`anchor_id`," +
-              		"			`create_by`," +
-              		"			`update_by`," +
-              		"			`update_date`," +
-              		"			`create_date`," +
-              		"			`del_flag`," +
-              		"			`is_merger_next`," +
-              		"			`id`" +
-              		" " +
-              		"	FROM" +
-              		"		credit_report_module_parent_nodes_dict" +
-              		"	WHERE" +
-              		"		id= " +
-              		id);
- 
-
-
+    	try {
+    		//int result = -1;
+            String reportType = getPara("reportType");
+            if(StrUtils.isEmpty(reportType)) {renderMessage("缺少必要参数reportType!");return;}
+            String[] columnIds = getParaValues("nodesId");
+            if(columnIds!=null&&columnIds.length>0){  
+            	CreditReportModuleParentNodesDict model = new CreditReportModuleParentNodesDict();
+            	Integer userid = getSessionUser().getUserid();
+        		String now = getNow();
+        		model.set("update_by",userid);
+        		model.set("update_date", now);
+        		model.set("create_by", userid);
+    			model.set("create_date", now);
+    			model.set("report_type", reportType);
+                for(String id:columnIds){
+                	CreditReportModuleParentNodesDict model2 = new CreditReportModuleParentNodesDict();
+                	model2._setAttrs(model).set("id", id);
+        			model2.update();//操作信息的更新
+                   CreditReportModuleParentNodesDict nodeModel = CreditReportModuleParentNodesDict.dao.findById(id);
+                   CreditReportModuleConf confRootModel = new CreditReportModuleConf();
+                   Map<String,Object> entryMap = nodeModel.getAttrs();
+                   for (String key : entryMap.keySet()) {
+                	   if("id".equals(key)) {continue;}
+                	   confRootModel.set(key, entryMap.get(key));
+                   }
+                   confRootModel.set("table_id",  nodeModel.get("id"));
+                   confRootModel.set("is_detail", 1);
+                   confRootModel.set("update_by",userid).set("update_date", now).set("create_by", userid).set("create_date", now).set("report_type", reportType);
+                   //插入父节点
+                   confRootModel.save();
+                   //获取父节点ID
+                   String confRootId =  confRootModel.get("id")+"";
+                   //插入子节点 
+                   String findSonsSql = " select * from credit_report_module_column where del_flag=0 and table_id=? ";
+                   List<CreditReportModuleColumn> columnModels = CreditReportModuleColumn.dao.find(findSonsSql,Arrays.asList(new String[] {nodeModel.get("id")+""}).toArray());
+                   for (CreditReportModuleColumn columnModel : columnModels) {
+                	   CreditReportModuleConf confsonModel = new CreditReportModuleConf();
+                       Map<String,Object> columnEntryMap = columnModel.getAttrs();
+                       for (String key : columnEntryMap.keySet()) {
+                    	   if("id".equals(key)||"table_name".equals(key)) {continue;}
+                    	   confsonModel.set(key, columnEntryMap.get(key));
+                       }
+                       confsonModel.set("is_detail", 1).set("parent_temp", confRootId)
+                	   .set("update_by",userid).set("update_date", now).set("create_by", userid).set("create_date", now).set("report_type", reportType);
+                       confsonModel.save();
+                   }
+                   
+                }
             }
-        }
-        renderMessage(result>0?"保存成功":"保存失败") ;
+            
+        	 
+    		 
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderMessage( " 保存失败!") ;
+		}
+    
+        renderMessage( "保存成功!" ) ;
     }
 	
+    
+    
+    
+    
+    
+    
+    
 }

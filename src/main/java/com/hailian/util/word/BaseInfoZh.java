@@ -256,9 +256,12 @@ public class BaseInfoZh {
                     pds.setValue(n, value);
                     total = total-value;
                 }
-                pds.setValue("未知", total);
+                //如果所有股东投资比例和不等于1，加上未知项
+                if(total!=0) {
+                    pds.setValue("未知", total);
+                }
                 BaseWord.createPieChart(pds, _prePath + "pie.jpg");
-                map.put("pie", new PictureRenderData(620, 310, _prePath + "pie.jpg"));
+                map.put("pie", new PictureRenderData(600, 300, _prePath + "pie.jpg"));
             }
 
             //行业详情-柱图/线图
@@ -290,7 +293,7 @@ public class BaseInfoZh {
                     lineDataSet.addValue(value2,"y2",n);
                 }
                 BaseWord.createBarChart("",barDataSet,lineDataSet, _prePath + "bar.jpg");
-                map.put("bar", new PictureRenderData(620, 310, _prePath + "bar.jpg"));
+                map.put("bar", new PictureRenderData(600, 300, _prePath + "bar.jpg"));
             }
         }
 
@@ -440,93 +443,99 @@ public class BaseInfoZh {
      */
     public static MiniTableRenderData financial(String financeType,String financialConfId,String begin,String end) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
-        //取数据
-        //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
-        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType);
-        int j = 0;
-        Integer old = null;
-        for (CreditCompanyFinancialEntry ccf : finDataRows) {
-            Integer son_sector = ccf.getInt("son_sector");
-            //判断新模块，第一行要加标题
-            if (old == null) {
-                old = son_sector;
-            } else {
-                if (son_sector.intValue() != old.intValue()) {
+        if("3".equals(financeType)){
+            //todo 大数渲染
+        }else{
+            //财务
+            //取数据
+            //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+            List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType);
+            int j = 0;
+            Integer old = null;
+            for (CreditCompanyFinancialEntry ccf : finDataRows) {
+                Integer son_sector = ccf.getInt("son_sector");
+                //判断新模块，第一行要加标题
+                if (old == null) {
                     old = son_sector;
-                    j = 0;
+                } else {
+                    if (son_sector.intValue() != old.intValue()) {
+                        old = son_sector;
+                        j = 0;
+                    }
                 }
-            }
-            //j=0表示第一条
-            if (j == 0) {
-                String title = "";
-                String unit = "";
-                switch (son_sector.intValue()) {
-                    case 1:
-                        title = "合计";
-                        break;
-                    case 2:
-                        title = "流动资产";
-                        break;
-                    case 3:
-                        title = "非流动资产";
-                        break;
-                    case 4:
-                        title = "流动负债";
-                        break;
-                    case 5:
-                        title = "非流动负债";
-                        break;
-                    case 6:
-                        title = "负债及所有者权益";
-                        break;
-                    case 7:
-                        title = "毛利润";
-                        break;
-                    case 8:
-                        title = "营业利润";
-                        break;
-                    case 9:
-                        title = "税前利润";
-                        break;
-                    case 10:
-                        title = "所得税费用";
-                        break;
-                    case 11:
-                        title = "重要比率表";
-                        break;
+                //j=0表示第一条
+                if (j == 0) {
+                    String title = "";
+                    String unit = "";
+                    switch (son_sector.intValue()) {
+                        case 1:
+                            title = "合计";
+                            break;
+                        case 2:
+                            title = "流动资产";
+                            break;
+                        case 3:
+                            title = "非流动资产";
+                            break;
+                        case 4:
+                            title = "流动负债";
+                            break;
+                        case 5:
+                            title = "非流动负债";
+                            break;
+                        case 6:
+                            title = "负债及所有者权益";
+                            break;
+                        case 7:
+                            title = "毛利润";
+                            break;
+                        case 8:
+                            title = "营业利润";
+                            break;
+                        case 9:
+                            title = "税前利润";
+                            break;
+                        case 10:
+                            title = "所得税费用";
+                            break;
+                        case 11:
+                            title = "重要比率表";
+                            break;
+                    }
+                    rowList.add(RowRenderData.build(
+                            new TextRenderData(""),
+                            new TextRenderData(""),
+                            new TextRenderData("")));
+
+                    //大标题
+                    Style titileStyle = new Style();
+                    titileStyle.setColor("843C0B");
+                    titileStyle.setBold(true);
+                    rowList.add(RowRenderData.build(
+                            new TextRenderData(title, titileStyle),
+                            new TextRenderData(begin),
+                            new TextRenderData(end)));
+
+                    Style header = new Style();
+                    header.setBold(true);
+                    rowList.add(RowRenderData.build(
+                            new TextRenderData(""),
+                            new TextRenderData(""),
+                            new TextRenderData("单位：人民币（千元）", header)));
                 }
-                rowList.add(RowRenderData.build(
-                        new TextRenderData(""),
-                        new TextRenderData(""),
-                        new TextRenderData("")));
-
-                //大标题
-                Style titileStyle = new Style();
-                titileStyle.setColor("843C0B");
-                titileStyle.setBold(true);
-                rowList.add(RowRenderData.build(
-                        new TextRenderData(title, titileStyle),
-                        new TextRenderData(begin),
-                        new TextRenderData(end)));
-
-                Style header = new Style();
-                header.setBold(true);
-                rowList.add(RowRenderData.build(
-                        new TextRenderData(""),
-                        new TextRenderData(""),
-                        new TextRenderData("单位：人民币（千元）", header)));
+                String itemName = ccf.getStr("item_name");
+                Integer beginValue = ccf.getInt("begin_date_value");
+                Integer endValue = ccf.getInt("end_date_value");
+                Integer is_sum_option = ccf.getInt("is_sum_option");
+                Style sumStyle = new Style();
+                if (is_sum_option.intValue() == 1) {
+                    sumStyle.setBold(true);
+                }
+                rowList.add(RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString()), new TextRenderData(endValue.toString())));
+                j++;
             }
-            String itemName = ccf.getStr("item_name");
-            Integer beginValue = ccf.getInt("begin_date_value");
-            Integer endValue = ccf.getInt("end_date_value");
-            Integer is_sum_option = ccf.getInt("is_sum_option");
-            Style sumStyle = new Style();
-            if (is_sum_option.intValue() == 1) {
-                sumStyle.setBold(true);
-            }
-            rowList.add(RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString()), new TextRenderData(endValue.toString())));
-            j++;
         }
+
         return new MiniTableRenderData(rowList);
     }
 
@@ -543,18 +552,22 @@ public class BaseInfoZh {
      */
     public static String financialExcel(String financeType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end){
         String filePath = "";
-        //取数据
-        //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
-        List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType);
-        FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end);
-        try {
-            String path = _prePath + ".xls";
-            export.downloadExcel(path);
-            //上传文件
-            filePath = BaseWord.uploadReport(path, orderId, userid);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if("3".equals(financeType)){
+            //todo 大数渲染
+        }else{
+            //财务
+            //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
+            List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType);
+            FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end);
+            try {
+                String path = _prePath + ".xls";
+                export.downloadExcel(path);
+                //上传文件
+                filePath = BaseWord.uploadReport(path, orderId, userid);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         return filePath;
     }
@@ -606,8 +619,13 @@ public class BaseInfoZh {
             return "";
         }
     }
-    
-    
+
+    /**
+     * 获取财务类型
+     * @param companyId
+     * @param type
+     * @return
+     */
     public static  Integer getFinancialType (String companyId,Integer type) {
 		try {
 			if (type==null) { return -1; }
@@ -616,6 +634,9 @@ public class BaseInfoZh {
 			List<String> flagStr = Db.query(
 					"select date1,date2,id from credit_company_financial_statements_conf where del_flag=0 and company_id=?  ",
 					Arrays.asList(new String[] { companyId   }));
+            if(flagStr.size()==0){
+                return -1;
+            }
 			String dateStr1 = flagStr.get(0);
 			String dateStr2 = flagStr.get(1);
 			if (StrUtils.isEmpty(dateStr1, dateStr2)) { return -1; }

@@ -668,7 +668,7 @@ let ReportConfig = {
     			console.log(item.id,floatParentId)
     			if(item.id === floatParentId ) {
     				console.log(floatParentId)
-    				if(floatParentId !== 853) {
+    				if(floatParentId !== 12411) {
     					//非财务模块浮动
     					let html = this.notMoneyFloatHtml[i+1]
     					$("#title"+i).after(html)
@@ -2011,7 +2011,7 @@ let ReportConfig = {
     				 
     			 })
     			 
-    			 dataJson.push(dataJsonObj)
+    			 dataJson[0] = dataJsonObj
     			 $.ajax({
     				 url,
     				 type:'post',
@@ -2076,7 +2076,7 @@ let ReportConfig = {
     					 })
     				 }
     			 })
-    			 dataJson.push(dataJsonObj)
+    			 dataJson[0] = dataJsonObj
     		
     			 $.ajax({
     				 url,
@@ -2152,3 +2152,15 @@ let ReportConfig = {
 }
 
 ReportConfig.init();
+$('.return_back').on('click',function () {
+    layer.confirm('是否要保存？', {
+        btn: ['保存','取消'] //按钮
+    }, function(){
+        $('#save').trigger('click')
+
+        location.reload();
+    }, function(){
+        location.reload();
+    });
+
+})

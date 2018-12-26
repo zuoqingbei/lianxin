@@ -786,7 +786,7 @@ public class OrderProcessController extends BaseProjectController{
                    map.put("id", oid);
                    map.put("num", orderInfo.get("num"));
                    PublicUpdateMod(map);
-                   MailService.service.toSendMail(ismail, orderId,agent_id,userid,this);//代理分配发送邮件
+                   MailService.service.toSendMail(ismail, oid,agent_id,userid,this);//代理分配发送邮件
                }
 		   }else {
                 AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,country,speed);

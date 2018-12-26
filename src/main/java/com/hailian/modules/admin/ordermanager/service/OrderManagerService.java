@@ -55,15 +55,15 @@ public class OrderManagerService {
 	 * @return_type   void
 	 * 修改订单/添加订单
 	 */
-	public String modifyOrder(int id, CreditOrderInfo coi, SysUser user, BaseProjectController c) throws Exception {
+	public String modifyOrder(CreditOrderInfo coi, SysUser user, BaseProjectController c) throws Exception {
 
 		try {
-			if (id != 0) {
-				coi.set("id", id);
-				coi.update();
-			} else {
+			if (coi.get("id")==null) {
 				coi.save();
 				
+			} else {
+				coi.set("status", "293");//信息录入状态
+				coi.update();
 			}
 			return coi.get("id")+"";
 
@@ -460,7 +460,7 @@ public class OrderManagerService {
                 return null;
             }else if(reporterlist.size()==1){
                 //相应角色只有一个人的话，直接分配人员
-                reportId = reporterlist.get(0).get("id");
+                reportId = reporterlist.get(0).getInt("userid")+"";
             }else {
                 //业务人员不止一人时，通过计算得到
                 for (SysUser report : reporterlist) {

@@ -9,16 +9,24 @@
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
     <style>
+        h3.l-title{
+            padding-left: 0;
+        }
+        label{
+            font-weight: normal;
+        }
         .select2Box{
             display: flex;
             justify-content: space-between;
+            margin-top: 1.5rem;
         }
         .select2Box label {
-            padding-left: 2rem;
+            padding-left: 0;
 
         }
-        .select2Box div.col-11{
-            padding-left: 0;
+        .select2Box div{
+            width: calc(100% - 6rem);
+            /*padding-left: 2rem;*/
         }
         .select2-container .select2-selection--multiple,
         .select2-container--default.select2-container--focus .select2-selection--multiple{
@@ -40,21 +48,40 @@
         .type10-content .mulTextBox h4{
             margin-left: 1.5rem;
         }
+
+        .module-content.tabelBox{
+            overflow-x: auto;
+            max-width: 100%;
+        }
         table{
             word-break: break-all;
         }
         table.table thead th{
-            /*min-width: 11rem;*/
+            white-space: nowrap;
+            min-width: 4rem;
             border-top: none;
             border-bottom: none;
         }
         table.table tbody tr:first-child td{
             border-top: none;
         }
+        table.table tbody tr td:nth-of-type(3) img{
+            max-height: 3rem;
+        }
         .return_back{
             color: #A5A5A5;
             font-size: 14px;
             cursor: pointer;
+            position: fixed;
+            top: 4rem;
+            left: 16.6%;
+            padding-left: 20px;
+            z-index: 99;
+            display: inline-block;
+            height: 1.5rem;
+            width: 100%;
+            line-height: 1.5rem;
+            background-color: white;
         }
         .return_back:hover{color: #A5A5A5}
         .return_back img{display: inline-block;vertical-align: middle;width: 14px;margin-top: -3px}
@@ -85,7 +112,7 @@
                 <!--</li>-->
             <!--</ul>-->
 
-            <a href="" class="return_back"><img src="${BASE_PATH }static/credit/imgs/order/reback.png"/><span>返回上一级</span></a>
+            <a href="javascript:" class="return_back"><img src="${BASE_PATH }static/credit/imgs/order/reback.png"/><span>返回上一级</span></a>
             <p class="main-title"><span id="orderName" class="mr-3"></span><span id="orderNum"></span></p>
             <ul class="tab_bar col-md-10" id="tabs"></ul>
             <div class="state_box">
@@ -106,6 +133,9 @@
 <script>
     $(function () {
         window.status = "详情页"
+        $('.return_back').on('click',function () {
+            location.reload();
+        })
     });
 </script>
 </body>

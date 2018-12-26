@@ -1018,7 +1018,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.orderSubmitOfOrder:
 				//状态为递交订单(翻译质检合格) ,其维护在字典表中
 				//300为信息质检合格
-				fromSql.append(" and status='300' ");
+				fromSql.append(" and status='300' and c.custom_id=394 ");
 				break;
 			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中

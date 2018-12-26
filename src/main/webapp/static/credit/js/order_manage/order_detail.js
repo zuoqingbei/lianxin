@@ -9,8 +9,17 @@ let OrderDetail = {
         this.cwModules = [];
         [this.type9MulText, this.type9TableHead, this.type10Items] = [{}, [], {}];
         this.BASE_PATH = BASE_PATH + 'credit/front/';
-        this.getUrl = (item, otherProperty, paramObj) => {
+        /**
+         *
+         * @param item 本次循环的数据
+         * @param otherProperty 如果地址不是放在get_source里面
+         * @param paramObj 附加的object用于传参
+         * @param fromContents 地址在 .contents[0].get_source里面 暂时弃用
+         * @return {string}
+         */
+        this.getUrl = (item, otherProperty, paramObj, fromContents) => {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.get_source).split("*");
+            urlArr = fromContents === 'fromContents' ? item.contents[0].get_source.split("*") : urlArr;
             if (urlArr[0] === '') {
                 return
             }
@@ -40,7 +49,7 @@ let OrderDetail = {
                     }
                 }
             });
-            console.assert(url,item);
+            console.assert(url, item);
             url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
             return url;
         };
@@ -79,10 +88,10 @@ let OrderDetail = {
     },
     // 设置内容数据
     setContent() {
-        let $moduleWrap = $('<div class="module-wrap bg-f company-info mb-4"></div>');
+        let $moduleWrap = $('<div class="module-wrap bg-f company-info px-4 mb-4"></div>');
         let $moduleTitle = $('<h3 class="l-title"></h3>');
-        console.dir(this.data.modules[0])
-        this.data.modules.forEach((item,index) => {
+        // console.dir(this.data.modules[0])
+        this.data.modules.forEach((item, index) => {
             // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
             let smallModuleType = item.smallModileType;
             let itemId = item.title.id;
@@ -127,14 +136,14 @@ let OrderDetail = {
                         }
                     });
                     $wrap.append(`
-                        <div class="type1-content module-content order-content123">
+                        <div class="type1-content module-content">
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
                     if (item.title.temp_name === '基本信息') { //表单头部取数于本地存储
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
-                            let column_name = $(this).data('column_name');
-                            $(this).text(_this.row[column_name])
+                            let text = _this.row[$(this).data('column_name')];
+                            $(this).text(Public.textFilter(text,'null'));
                         });
                     } else {
                         $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
@@ -145,7 +154,7 @@ let OrderDetail = {
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
-                                        $(this).text(data.rows[0][column_name])
+                                        $(this).text(Public.textFilter(data.rows[0][column_name],'null'));
                                     }
                                 })
                             } else {
@@ -202,7 +211,7 @@ let OrderDetail = {
                 case '6':
                     $wrap.append(`<div class="type6-content module-content">${this.creditLevel}</div>`);
                     //绑数
-                    $.get(this.getUrl(item), (data) => {
+                    $.get(this.getUrl(item, 'alter_source'), {selectInfo: `[{"getSelete?type=credit_level$selectedId=767$disPalyCol=detail_name":"credit_level"}]`}, (data) => {
                         if (data.rows && data.rows.length > 0) {
                             $wrap.find("#creditLevel").text(data.rows[0][item.title.column_name])
                         } else {
@@ -212,7 +221,7 @@ let OrderDetail = {
                     break;
                 // 7-多行文本框
                 case '7':
-                    $wrap.append(`<div class="type7-content module-content"><div class="border multiText m-4 p-2"></div><div class="pt-1"></div></div>`);
+                    $wrap.append(`<div class="type7-content module-content"><div class="border multiText mt-4 p-2"></div><div class="pt-1"></div></div>`);
                     $.get(`${this.getUrl(item, '', {report_type: this.row.report_type})}&order_num=${this.row.num}`, (data) => {
                         if (data.rows && data.rows.length > 0) {
                             $wrap.find(".module-content .multiText").text(data.rows[0][item.title.column_name] || '');
@@ -236,13 +245,13 @@ let OrderDetail = {
                         });
                     });
                     $wrap.append(`
-                            <div class="module-content type8-content px-4 pt-4">
+                            <div class="module-content type8-content pt-4">
                                 <h4>${item.contents[0].temp_name}</h4>
                                 ${$type8_ul[0].outerHTML}
                                 <h4>${item.contents[1].temp_name}</h4>
-                                <div class="border multiText m-4 p-2"></div>
+                                <div class="border multiText mt-4 p-2"></div>
                                 <h4>${item.contents[2].temp_name}</h4>
-                                <div class="border multiText m-4 p-2"></div>
+                                <div class="border multiText mt-4 p-2"></div>
                             </div>`);
                     $.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
                         if (data.rows && data.rows.length > 0) {
@@ -283,7 +292,7 @@ let OrderDetail = {
                             let radioSelect = data.rows[0][column_name_radio];
                             $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
                             if (radioSelect === 1) {
-                                $wrap.find('.type20-content').append(`<div class="border multiText m-4 p-2">${data.rows[0][column_name_text]}</div>`)
+                                $wrap.find('.type20-content').append(`<div class="border multiText mt-4 p-2">${data.rows[0][column_name_text]}</div>`)
                             }
                         } else {
                             console.warn(item.title.temp_name + '-102单选&文本框-没有返回数据！')
@@ -513,7 +522,7 @@ let OrderDetail = {
                 // 26-文本框+柱线图
                 case '26':
                     $wrap.append(`<div class='module-content type26-content'>
-                                    <div class="border multiText m-4 p-2"></div>
+                                    <div class="border multiText mt-4 p-2"></div>
                                     <div class="chartBox" id="ec02_lineBar" ></div>
                                 </div>`);
                     $(".main .table-content").append($wrap);
@@ -603,8 +612,8 @@ let OrderDetail = {
         // 通过type10获取表格数据内容
         let addTableMark = [];
         // 通过企业父title获取表格头部的日期、单位和多行文本框们
-        $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.get_source}?company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9MulTextData) => {
-            $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.get_source}?ficConf_id=${type9MulTextData.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
+        $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.get_source}&company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9MulTextData) => {
+            $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.get_source}&ficConf_id=${type9MulTextData.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
                 data.rows.forEach((row) => {
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
                         //孩子顺序是固定的
@@ -617,7 +626,15 @@ let OrderDetail = {
                         addTableMark.push(row.parent_sector + '-' + row.son_sector);
                     }
                 });
-                //表格头部的日期
+                //根据合并设置标题
+                $allTable.find('h4').each(function () {
+                    if (type9MulTextData.rows[0].is_merge === '1') {
+                        $(this).text($(this).text().split('||')[1])
+                    } else {
+                        $(this).text($(this).text().split('||')[0])
+                    }
+                });
+                //表格头部的日期和单位
                 $allTable.find('.tableBox').each(function (index, item) {
                     let [dateStart, dateEnd] = [type9MulTextData.rows[0].date1, type9MulTextData.rows[0].date2];
                     if ($(this).find('h4').text().includes('利润表')) {
@@ -625,13 +642,13 @@ let OrderDetail = {
                     }
                     $(this).find('table:eq(0)').prepend(`<thead>
                     <tr><th></th><th></th><th>${type9MulText.contents[4].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
-                    <tr><th></th><th>${dateStart || '&emsp;'}</th><th>${dateEnd || '&emsp;'}</th></tr>
+                    <tr><th></th><th>开始日期：${dateStart || '&emsp;'}</th><th>结束日期：${dateEnd || '&emsp;'}</th></tr>
                 </thead>`);
                 });
                 // 通过企业父title的某个内容获取下拉框来转换单位
                 $.when(
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[4].data_source}`),
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[5].data_source}`)
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[4].get_source}`),
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[5].get_source}`)
                 ).done(function (unitData, currencyUbitData) {
                     let [currency, currency_ubit] = [type9MulTextData.rows[0].currency, type9MulTextData.rows[0].currency_ubit]
                     let $select1 = $(`<select id="currencyUnitTrans">${unitData[0].selectStr}</select>`);
@@ -757,11 +774,12 @@ let OrderDetail = {
     setTabs() {
         let tabsHtml = '';
         this.data.tabFixed.forEach((item, index) => {
-            tabsHtml += `<li><a href="#${item.anchor_id}">${item.temp_name}</a></li>`
+            tabsHtml += `<li><a href="#${item.anchor_id}" style="padding: 1.25rem 2.125rem;">${item.temp_name}</a></li>`
         });
         $("#tabs").html(tabsHtml).on('click', 'li', function () {
             $(this).addClass('tab-active').siblings().removeClass('tab-active')
         }).children().eq(0).addClass('tab-active')
+        Public.tabFixed(".tab_bar",".main",120,90)
     },
     // 设置头部信息
     setHeader() {
@@ -795,10 +813,10 @@ let OrderDetail = {
      * @param otherProperty get方法中的其他字段参数
      */
     setTable(item, $wrap, chartType, otherProperty) {
-        $wrap.append(`<div class="module-content type${item.smallModileType}-content tabelBox px-4 pt-4 pb-0"></div>`);
+        $wrap.append(`<div class="module-content type${item.smallModileType}-content tabelBox pt-4 pb-0"></div>`);
         // 有图表的取截止时间
         if (item.smallModileType === '11') {
-            $wrap.find(".module-content").append(`<h4>${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span> </h4>`);
+            $wrap.find(".module-content").append(`<h4>${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span></h4>`);
             $.get(this.getUrl(item, 'remark'), (data) => {
                 if (data.rows && data.rows.length > 0) {
                     $wrap.find('.asOf').text(`${data.rows[0] ? data.rows[0].date : ''}`);
@@ -815,10 +833,10 @@ let OrderDetail = {
         $wrap.find(".module-content").append(`${$table[0].outerHTML}`);
         $(".main .table-content").append($wrap);
         // 绑数
-        $.post(this.getUrl(item, otherProperty), {selectInfo: type1_extraUrl}, (data) => {
-                if (data.rows && data.rows.length > 0) {
+        $.post(this.getUrl(item, otherProperty), {selectInfo: type0_extraUrl}, (data) => {
+                if (data.rows) {
                     if (data.rows.length === 0) {
-                        $wrap.find('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</tr></td>`);
+                        $wrap.find('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</td></tr>`);
                         return;
                     }
                     let chartData = chartType === 'pie' ? [] : {xAxisData: [], y1Data: [], y2Data: []};
@@ -845,15 +863,22 @@ let OrderDetail = {
                                 break;
                         }
                         let $tr = $('<tr></tr>');
-                        columnNameArr.forEach(columnName => {
-                            $tr.append(`<td>${row[columnName] ? row[columnName] : '-'}</td>`);// 没数据的显示 “-”
+                        columnNameArr.forEach((columnName, index) => {
+                            //商标和专利部分需要显示缩略图
+                            let [isBrand, aHref] = [false, ''];
+                            if (item.title.temp_name === '商标和专利' && index === 2) {
+                                isBrand = true;
+                                aHref = row[columnName].includes('http') ? row[columnName] : 'http://' + row[columnName];
+                            }
+                            let tdData = isBrand ? `<a href= ${aHref} target="_blank"><img src=${aHref} alt="商标"></a>` : row[columnName];
+                            $tr.append(`<td>${Public.textFilter(row[columnName],'null','-')}</td>`);// 没数据的显示 “-”
                         });
                         $wrap.find('tbody').append($tr);
                     });
-                    if(chartType === 'pie'){//饼图中如果参股人的百分比之和小于100，则补上“未知”
+                    if (chartType === 'pie') {//饼图中如果参股人的百分比之和小于100，则补上“未知”
                         let sum = chartData.reduce(function (prev, cur) {
                             return cur.value + prev
-                        },0);
+                        }, 0);
                         if (sum < 100) {
                             chartData.push({
                                 name: '未知',
