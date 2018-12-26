@@ -284,12 +284,12 @@ public class CompanyService {
 		DictCache.initDict();//缓存刷新
 		return flag;
 	}
-
-	private String dateFormat(String StartDate)  {
+	
+	private static String dateFormat(String StartDate)  {
 		Date date;
 		try {
-			date = new SimpleDateFormat("yyyy-MM-dd").parse(StartDate);
-			StartDate = new SimpleDateFormat("yyyy年MM月dd日").format(date);
+			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(StartDate);
+			StartDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -495,24 +495,7 @@ public class CompanyService {
 		
 	}
 	public static void main(String[] args) {
-		JSONObject json = HttpTest.getJudgmentDoc("武汉斗鱼网络科技有限公司","");//获取每页
-		JSONArray jsonArray = json.getJSONArray("Result");
-		 
-		if(jsonArray !=null && jsonArray.size()>0){
-								for(int j=0;j<jsonArray.size();j++){
-				JSONObject judgmentdoc = (JSONObject)jsonArray.get(j);
-				String Id = judgmentdoc.getString("Id");
-				
-//				String CaseRole = judgmentdoc.getString("CaseRole");//案件身份
-				JSONArray CaseRole = judgmentdoc.getJSONArray("CaseRole");//案件身份
-				for(int i=0;i<CaseRole.size();i++){
-					JSONObject caserole=(JSONObject) CaseRole.get(i);
-					String role=caserole.getString("R");
-					String name=caserole.getString("P");
-					String value=role+"-"+name+"  ";
-					System.out.println(value);
-				}
-			}
-		}
+		String date="2018-11-11 11:11:11";
+		System.out.println(dateFormat(date));
 	}
 }
