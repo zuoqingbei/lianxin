@@ -273,7 +273,7 @@ public class OrdermanagerController extends BaseProjectController{
 			}
 		}
 		try {
-			OrderManagerService.service.modifyOrder(id,model,user,this);
+			OrderManagerService.service.modifyOrder(model,user,this);
 			cof.save();
 			OrderManagerService.service.addOrderHistory(id, user);
 			renderMessage("保存成功");

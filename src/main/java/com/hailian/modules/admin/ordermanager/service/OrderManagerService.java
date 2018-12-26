@@ -55,15 +55,15 @@ public class OrderManagerService {
 	 * @return_type   void
 	 * 修改订单/添加订单
 	 */
-	public String modifyOrder(int id, CreditOrderInfo coi, SysUser user, BaseProjectController c) throws Exception {
+	public String modifyOrder(CreditOrderInfo coi, SysUser user, BaseProjectController c) throws Exception {
 
 		try {
-			if (id != 0) {
-				coi.set("id", id);
-				coi.update();
-			} else {
+			if (coi.get("id")==null) {
 				coi.save();
 				
+			} else {
+				coi.set("status", "293");//信息录入状态
+				coi.update();
 			}
 			return coi.get("id")+"";
 
