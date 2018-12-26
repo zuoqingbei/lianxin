@@ -71,7 +71,7 @@ if($("input[name='model.agent_id']").val() !== '') {
 };
 var bodyContent = {
 %>
-<form name="form1" action="" method="post" class="form-horizontal">
+<form name="form1" action="" method="post" class="form-horizontal" role="form">
 	<input type="hidden" name="model.id" value=" ${model.id}" />
 	<!-- 数据列表 -->
 	<table class="table">
@@ -79,7 +79,8 @@ var bodyContent = {
 		
 		<tr>
 			<td>代理编码</td>
-			<td> <input class="form-control" type="text"   name="model.agent_id" value="${model.agent_id}" valid="vtext" validname="代理编码"/> 
+			<td> 
+				 <input class="form-control" type="text" name="model.agent_id" value="${model.agent_id}" valid="vtext" validname="代理编码"/>
 			</td>
 			<td>代理名称</td>
 			<td><input type="text" name="model.agent_name"  style="width: 200px;" class="form-control"  
@@ -91,12 +92,11 @@ var bodyContent = {
 		<tr>
 			<td>邮政编码</td>
 			 <td> 
-				<input type="text" name="model.postal_code" class="form-control"  style="width: 200px;"
-				value="${model.postal_code}"/>
-			 </td>
+				<input class="form-control" type="text" name="model.postal_code"  value="${model.postal_code}"   style="width: 200px;"
+				/>
+			 </td>  
 			<td>邮箱</td>
-			<td> <input type="text" name="model.memo" class="form-control"  valid="vemail" style="width: 200px;"
-				value="${model.memo}"/> 
+			<td> <input class="form-control" type="text" name="model.memo" value="${model.memo}" valid="vtext" validname="邮箱" style="width: 200px;"/> 
 			</td>
 		</tr>
 	</table>
