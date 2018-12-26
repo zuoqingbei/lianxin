@@ -54,7 +54,6 @@ public class CompanyService {
 
 		return CompanyModel.dao.updateDelFlagById(id);
 	}
-
 	/**
 	 * 
 	 * @time   2018年9月11日 上午9:58:27
