@@ -80,11 +80,11 @@ public class HomeController extends BaseProjectController {
 		List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
 	    setAttr("customer", customerId);
 	  //订单核实数量
-	  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500'").size();
+	  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500' and del_flag='0'").size();
 	  		//订单查档数量
-	  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295'").size();
+	  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295' and del_flag='0' ").size();
 	  		//订单信息质检数量
-	  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('294','303','308')").size();
+	  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('294','303','308') and del_flag='0'").size();
 	  		setAttr("orderhs", orderhs);
 	  		setAttr("ordercd", ordercd);
 	  		setAttr("orderzj", orderzj1);	
@@ -675,8 +675,21 @@ public class HomeController extends BaseProjectController {
 	 */
 	public void cheXiao() {
 		String id=getPara("id");
+		String  ids = getPara("ids");//批量撤销ids
 		String revoke_reason=getPara("revoke_reason");
 		try {
+			if(StringUtils.isNotBlank(ids)){
+	      String id2 []=ids.split(",");
+	      for (String id3 : id2) {
+	    	//根据id查找订单
+	  		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id3);
+	  		//更新订单
+	  		coi.set("status","313");
+	  		coi.set("revoke_reason", revoke_reason);
+	  		//保存订单
+	  		coi.update();
+		   }
+	    }else{
 		//根据id查找订单
 		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
 		//更新订单
@@ -684,6 +697,7 @@ public class HomeController extends BaseProjectController {
 		coi.set("revoke_reason", revoke_reason);
 		//保存订单
 		coi.update();
+	    }
 		ResultType resultType=new ResultType(1,"操作成功");
 		renderJson(resultType);
 		}catch(Exception e) {
