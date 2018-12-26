@@ -84,7 +84,7 @@ public class KpiService {
 			//查询配置下的财务信息
 			String confId = flagStr.get(2)+"";
 			List<Integer> targetValueList =  Db.query(
-					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0 and is_default=0 and conf_id=?  ",
+					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=?  ",
 					Arrays.asList(new String[] { confId }));
 			
 			if(targetValueList!=null) {

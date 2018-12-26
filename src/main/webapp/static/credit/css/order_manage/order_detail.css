@@ -65,7 +65,7 @@ h3.company_info{
     }
 
     h4 {
-        margin: 2rem 0 1rem .5rem;
+        margin: 2rem 0 1rem 0;
         font-size: 1.125rem;
         font-weight: bold;
     }
@@ -93,7 +93,7 @@ h3.company_info{
 /*商业类型*/
 @media all {
     .credit-level-title {
-        padding-left: 2rem;
+        /*padding-left: 2rem;*/
         font-size: 1.125rem;
         font-weight: bold;
         color: var(--fontTitleColor);

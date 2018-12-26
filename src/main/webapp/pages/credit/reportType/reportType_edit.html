@@ -13,7 +13,8 @@ var headContent = {
 			id = id;
 			console.log(id);
 		    var name= $("#name").val();
-			var url = 'credit/reportType/save?id='+id+'&name='+name;
+		    var financialType =  $("#financialType").val();
+			var url = 'credit/reportType/save?id='+id+'&name='+name+"&financialType="+financialType;
 			form1.action = url;
 			form1.submit();
 			return true;
@@ -50,6 +51,18 @@ var bodyContent = {
 					<input class="" type="file" name="file_url" valid='' validname='上传word' value=""  />
 					</td>
 				</tr>
+			 
+                <tr>
+                    <td>是否有财务</td>
+                    <td>
+                        <select id="financialType" name="financialType"> 
+                            <option value="0"  <%if (model.financial_type==0) {%>selected<%}%> > 无</option>
+                            <option value="1"  <%if (model.financial_type==1) {%>selected<%}%>  >中文财务(含大数)</option>
+                            <option value="2"  <%if (model.financial_type==2) {%>selected<%}%>  >英文财务(含大数)</option>
+                            <option value="3"  <%if (model.financial_type==3) {%>selected<%}%>>仅大数</option>
+                        </select>
+                    </td>
+                </tr>
 				<tr>
 					<td>排序</td>
 					<td>

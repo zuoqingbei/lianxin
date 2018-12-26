@@ -460,7 +460,7 @@ public class OrderManagerService {
                 return null;
             }else if(reporterlist.size()==1){
                 //相应角色只有一个人的话，直接分配人员
-                reportId = reporterlist.get(0).get("id");
+                reportId = reporterlist.get(0).get("userid");
             }else {
                 //业务人员不止一人时，通过计算得到
                 for (SysUser report : reporterlist) {
