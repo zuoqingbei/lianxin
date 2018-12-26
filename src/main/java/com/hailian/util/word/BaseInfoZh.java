@@ -256,9 +256,12 @@ public class BaseInfoZh {
                     pds.setValue(n, value);
                     total = total-value;
                 }
-                pds.setValue("未知", total);
+                //如果所有股东投资比例和不等于1，加上未知项
+                if(total!=0) {
+                    pds.setValue("未知", total);
+                }
                 BaseWord.createPieChart(pds, _prePath + "pie.jpg");
-                map.put("pie", new PictureRenderData(620, 310, _prePath + "pie.jpg"));
+                map.put("pie", new PictureRenderData(600, 300, _prePath + "pie.jpg"));
             }
 
             //行业详情-柱图/线图
@@ -290,7 +293,7 @@ public class BaseInfoZh {
                     lineDataSet.addValue(value2,"y2",n);
                 }
                 BaseWord.createBarChart("",barDataSet,lineDataSet, _prePath + "bar.jpg");
-                map.put("bar", new PictureRenderData(620, 310, _prePath + "bar.jpg"));
+                map.put("bar", new PictureRenderData(600, 300, _prePath + "bar.jpg"));
             }
         }
 
@@ -631,6 +634,9 @@ public class BaseInfoZh {
 			List<String> flagStr = Db.query(
 					"select date1,date2,id from credit_company_financial_statements_conf where del_flag=0 and company_id=?  ",
 					Arrays.asList(new String[] { companyId   }));
+            if(flagStr.size()==0){
+                return -1;
+            }
 			String dateStr1 = flagStr.get(0);
 			String dateStr2 = flagStr.get(1);
 			if (StrUtils.isEmpty(dateStr1, dateStr2)) { return -1; }

@@ -19,7 +19,7 @@ let OrderDetail = {
          */
         this.getUrl = (item, otherProperty, paramObj, fromContents) => {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.get_source).split("*");
-            urlArr = fromContents === 'fromContents'?item.contents[0].get_source.split("*"):urlArr;
+            urlArr = fromContents === 'fromContents' ? item.contents[0].get_source.split("*") : urlArr;
             if (urlArr[0] === '') {
                 return
             }
@@ -90,7 +90,7 @@ let OrderDetail = {
     setContent() {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info px-4 mb-4"></div>');
         let $moduleTitle = $('<h3 class="l-title"></h3>');
-        console.dir(this.data.modules[0])
+        // console.dir(this.data.modules[0])
         this.data.modules.forEach((item, index) => {
             // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
             let smallModuleType = item.smallModileType;
@@ -142,8 +142,8 @@ let OrderDetail = {
                     //绑数
                     if (item.title.temp_name === '基本信息') { //表单头部取数于本地存储
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
-                            let column_name = $(this).data('column_name');
-                            $(this).text(_this.row[column_name])
+                            let text = _this.row[$(this).data('column_name')];
+                            $(this).text(text && text !== 'null' ? text : '-');
                         });
                     } else {
                         $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
@@ -154,7 +154,8 @@ let OrderDetail = {
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
-                                        $(this).text(data.rows[0][column_name])
+                                        let text = data.rows[0][column_name];
+                                        $(this).text(text && text !== 'null' ? text : '');
                                     }
                                 })
                             } else {
@@ -211,7 +212,7 @@ let OrderDetail = {
                 case '6':
                     $wrap.append(`<div class="type6-content module-content">${this.creditLevel}</div>`);
                     //绑数
-                    $.get(this.getUrl(item,'alter_source'), {selectInfo: `[{"getSelete?type=credit_level$selectedId=767$disPalyCol=detail_name":"credit_level"}]`},(data) => {
+                    $.get(this.getUrl(item, 'alter_source'), {selectInfo: `[{"getSelete?type=credit_level$selectedId=767$disPalyCol=detail_name":"credit_level"}]`}, (data) => {
                         if (data.rows && data.rows.length > 0) {
                             $wrap.find("#creditLevel").text(data.rows[0][item.title.column_name])
                         } else {
@@ -612,8 +613,8 @@ let OrderDetail = {
         // 通过type10获取表格数据内容
         let addTableMark = [];
         // 通过企业父title获取表格头部的日期、单位和多行文本框们
-        $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.get_source}?company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9MulTextData) => {
-            $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.get_source}?ficConf_id=${type9MulTextData.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
+        $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.get_source}&company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9MulTextData) => {
+            $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.get_source}&ficConf_id=${type9MulTextData.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
                 data.rows.forEach((row) => {
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
                         //孩子顺序是固定的
@@ -633,8 +634,8 @@ let OrderDetail = {
                     } else {
                         $(this).text($(this).text().split('||')[0])
                     }
-                })
-                //表格头部的日期
+                });
+                //表格头部的日期和单位
                 $allTable.find('.tableBox').each(function (index, item) {
                     let [dateStart, dateEnd] = [type9MulTextData.rows[0].date1, type9MulTextData.rows[0].date2];
                     if ($(this).find('h4').text().includes('利润表')) {
@@ -642,13 +643,13 @@ let OrderDetail = {
                     }
                     $(this).find('table:eq(0)').prepend(`<thead>
                     <tr><th></th><th></th><th>${type9MulText.contents[4].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
-                    <tr><th></th><th>${dateStart || '&emsp;'}</th><th>${dateEnd || '&emsp;'}</th></tr>
+                    <tr><th></th><th>开始日期：${dateStart || '&emsp;'}</th><th>结束日期：${dateEnd || '&emsp;'}</th></tr>
                 </thead>`);
                 });
                 // 通过企业父title的某个内容获取下拉框来转换单位
                 $.when(
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[4].data_source}`),
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[5].data_source}`)
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[4].get_source}`),
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[5].get_source}`)
                 ).done(function (unitData, currencyUbitData) {
                     let [currency, currency_ubit] = [type9MulTextData.rows[0].currency, type9MulTextData.rows[0].currency_ubit]
                     let $select1 = $(`<select id="currencyUnitTrans">${unitData[0].selectStr}</select>`);
@@ -774,11 +775,12 @@ let OrderDetail = {
     setTabs() {
         let tabsHtml = '';
         this.data.tabFixed.forEach((item, index) => {
-            tabsHtml += `<li><a href="#${item.anchor_id}">${item.temp_name}</a></li>`
+            tabsHtml += `<li><a href="#${item.anchor_id}" style="padding: 1.25rem 2.125rem;">${item.temp_name}</a></li>`
         });
         $("#tabs").html(tabsHtml).on('click', 'li', function () {
             $(this).addClass('tab-active').siblings().removeClass('tab-active')
         }).children().eq(0).addClass('tab-active')
+        Public.tabFixed(".tab_bar",".main",120,90)
     },
     // 设置头部信息
     setHeader() {
@@ -867,10 +869,10 @@ let OrderDetail = {
                             let [isBrand, aHref] = [false, ''];
                             if (item.title.temp_name === '商标和专利' && index === 2) {
                                 isBrand = true;
-                                aHref = row[columnName] ? 'http://' + row[columnName] : '';
+                                aHref = row[columnName].includes('http') ? row[columnName] : 'http://' + row[columnName];
                             }
-                            let tdData = isBrand ? `<a href= ${aHref} target="_blank"><img src=http://${row[columnName]} alt="商标"></a>` : row[columnName];
-                            $tr.append(`<td>${row[columnName] ? tdData : '-'}</td>`);// 没数据的显示 “-”
+                            let tdData = isBrand ? `<a href= ${aHref} target="_blank"><img src=${aHref} alt="商标"></a>` : row[columnName];
+                            $tr.append(`<td>${row[columnName] && row[columnName] !== 'null' ? tdData : '-'}</td>`);// 没数据的显示 “-”
                         });
                         $wrap.find('tbody').append($tr);
                     });
