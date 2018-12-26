@@ -72,6 +72,16 @@
             color: #A5A5A5;
             font-size: 14px;
             cursor: pointer;
+            position: fixed;
+            top: 4rem;
+            left: 16.6%;
+            padding-left: 20px;
+            z-index: 99;
+            display: inline-block;
+            height: 1.5rem;
+            width: 100%;
+            line-height: 1.5rem;
+            background-color: white;
         }
         .return_back:hover{color: #A5A5A5}
         .return_back img{display: inline-block;vertical-align: middle;width: 14px;margin-top: -3px}
@@ -102,7 +112,7 @@
                 <!--</li>-->
             <!--</ul>-->
 
-            <a href="" class="return_back"><img src="${BASE_PATH }static/credit/imgs/order/reback.png"/><span>返回上一级</span></a>
+            <a href="javascript:" class="return_back"><img src="${BASE_PATH }static/credit/imgs/order/reback.png"/><span>返回上一级</span></a>
             <p class="main-title"><span id="orderName" class="mr-3"></span><span id="orderNum"></span></p>
             <ul class="tab_bar col-md-10" id="tabs"></ul>
             <div class="state_box">
@@ -123,6 +133,9 @@
 <script>
     $(function () {
         window.status = "详情页"
+        $('.return_back').on('click',function () {
+            location.reload();
+        })
     });
 </script>
 </body>
