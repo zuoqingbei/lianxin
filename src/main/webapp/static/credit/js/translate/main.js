@@ -182,9 +182,8 @@ let ReportConfig = {
     								//如果是select
     								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
     							}else {
-    								
     								$("#"+id).val(row[anotherId])
-    								$("#"+id).attr("en_bak",row[anotherId])
+//    								$("#"+id).attr("en_bak",row[anotherId])
     							}
     						})
     					}
@@ -448,7 +447,13 @@ let ReportConfig = {
 											 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
 										 }
 									 }else {
-										 $("#"+id).val(obj[anotherId])
+										 if($("#"+id).attr("name") === 'emp_num_date'&& obj[anotherId]==='') {
+											 //2、报告摘要--员工人数统计时间默认填报当天
+											 let nowDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()
+											 $("#"+id).val(nowDate)
+										 }else {
+											 $("#"+id).val(obj[anotherId])
+										 }
 									 }
 	    	    				}
 	    					 })
@@ -522,9 +527,15 @@ let ReportConfig = {
 								 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
 							 }
 						 }else {
-							 $("#"+id).val(obj[anotherId])
+							 if($("#"+id).attr("name") === 'emp_num_date'&& obj[anotherId]==='') {
+								 //2、报告摘要--员工人数统计时间默认填报当天
+								 let nowDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()
+								 $("#"+id).val(nowDate)
+							 }else {
+								 $("#"+id).val(obj[anotherId])
+							 }
 						 }
-    					$("#"+id).attr("en_bak",obj[anotherId])
+//    					$("#"+id).attr("en_bak",obj[anotherId])
     				}
     			})
     		})
@@ -611,7 +622,7 @@ let ReportConfig = {
 	    	    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
 	    	    				}else {
 	    	    					$("#"+id).val(obj[anotherId])
-	    	    					$("#"+id).attr("en_bak",obj[anotherId])
+//	    	    					$("#"+id).attr("en_bak",obj[anotherId])
 	    	    				}
 	    	    			})
 	    	    		})
@@ -1645,15 +1656,17 @@ let ReportConfig = {
         })
     	
     	this.idArr.forEach((item,index)=>{
-    		$("#modalEn"+item).find("input").blur((e)=>{
-    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    		$("#modalEn"+item).find("input").focus((e)=>{
+    			if($(e.target).val() !== ''&& $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
     			}
     		})
-    		$("#modalEn"+item).find("textarea").blur((e)=>{
-    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    		$("#modalEn"+item).find("textarea").focus((e)=>{
+    			if($(e.target).val() !== '' && $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
     			}
     		})
@@ -1762,6 +1775,7 @@ let ReportConfig = {
     			 //表格翻译
 	   			 let oneTableData = []
 	   			$("body").mLoading("show")
+	   			if(!_this.tableDataArr[index]){return}
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				//循环每个表格中的条数进行翻译
 //	   				console.log(tableDataArrEn[index],index)
@@ -2106,17 +2120,20 @@ let ReportConfig = {
     	},1500)
     },
     showTranslateMadal(){
+    	//翻译校正模态窗
     	this.formIndexEn.forEach((item,index)=>{
     		let $ele = $("#titleEn"+item);
-    		$ele.siblings().find("input").blur((e)=>{
-    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    		$ele.siblings().find("input").focus((e)=>{
+    			if($(e.target).val() !== '' && $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
     			}
     		})
-    		$ele.siblings().find("textarea").blur((e)=>{
-    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    		$ele.siblings().find("textarea").focus((e)=>{
+    			if($(e.target).val() !== ''&& $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
     			}
     		})

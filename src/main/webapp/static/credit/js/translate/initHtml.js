@@ -659,8 +659,9 @@ let InitObjTrans = {
 		 */
 //		console.log(tableCwIds)
 		let returnData;
+		let symbol =  getSource.includes("?")?'&':'?'
 		$.ajax({
-			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id+'&report_type='+rows["report_type"],
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + symbol + 'ficConf_id='+id+'&report_type='+rows["report_type"],
 			type:'post',
 			async:false,
 			success:(data)=>{
@@ -737,14 +738,12 @@ let InitObjTrans = {
 		    	dateArr.forEach((item,index)=>{
 		    		laydate.render({
 		    			elem: item,
-		    			format: 'yyyy年MM月dd日'
 		    		});
 		    	})
 		    	let dateScopeArr = Array.from($('.date-scope-form input'))
 		    	dateScopeArr.forEach((item,index)=>{
 		    		laydate.render({
 		    			elem: item,
-		    			format: 'yyyy年MM月dd日',
 		    			range:true
 		    		});
 		    	})
@@ -752,7 +751,6 @@ let InitObjTrans = {
 		    	floatDateArr.forEach((item,index)=>{
 		    		laydate.render({
 		    			elem: item,
-		    			format: 'yyyy年MM月dd日'
 		    		});
 		    	})
 		    	
@@ -763,7 +761,6 @@ let InitObjTrans = {
 		    		modalDates.forEach((item,index)=>{
 		    			laydate.render({
 			    			elem: item,
-			    			format: 'yyyy年MM月dd日'
 			    		});
 		    		})
 		    	})
@@ -775,7 +772,6 @@ let InitObjTrans = {
 			    		cw_date.forEach((item,index)=>{
 			    			laydate.render({
 				    			elem: item,
-				    			format: 'yyyy年MM月dd日',
 				    			range:true
 				    		});
 			    		})
@@ -784,7 +780,6 @@ let InitObjTrans = {
 		    			cw_date.forEach((item,index)=>{
 		    				laydate.render({
 		    					elem: item,
-		    					format: 'yyyy年MM月dd日',
 		    					done:function(value){
 		    						if($(item).hasClass("dateInp1")){
 		    							let dateInps1 = Array.from($(".dateInp1"))
