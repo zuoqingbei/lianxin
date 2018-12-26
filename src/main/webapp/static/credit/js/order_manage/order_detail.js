@@ -143,7 +143,7 @@ let OrderDetail = {
                     if (item.title.temp_name === '基本信息') { //表单头部取数于本地存储
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
                             let text = _this.row[$(this).data('column_name')];
-                            $(this).text(text && text !== 'null' ? text : '-');
+                            $(this).text(Public.textFilter(text,'null'));
                         });
                     } else {
                         $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
@@ -154,8 +154,7 @@ let OrderDetail = {
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
-                                        let text = data.rows[0][column_name];
-                                        $(this).text(text && text !== 'null' ? text : '');
+                                        $(this).text(Public.textFilter(data.rows[0][column_name],'null'));
                                     }
                                 })
                             } else {
@@ -872,7 +871,7 @@ let OrderDetail = {
                                 aHref = row[columnName].includes('http') ? row[columnName] : 'http://' + row[columnName];
                             }
                             let tdData = isBrand ? `<a href= ${aHref} target="_blank"><img src=${aHref} alt="商标"></a>` : row[columnName];
-                            $tr.append(`<td>${row[columnName] && row[columnName] !== 'null' ? tdData : '-'}</td>`);// 没数据的显示 “-”
+                            $tr.append(`<td>${Public.textFilter(row[columnName],'null','-')}</td>`);// 没数据的显示 “-”
                         });
                         $wrap.find('tbody').append($tr);
                     });

@@ -171,7 +171,7 @@ public class ReportTypeController extends BaseProjectController {
 			if(!StrUtils.isEmpty(financialType))
 			if(!StrUtils.isEmpty(reportType)) {
 				 //0-无 1-中文加大数 2-英文加大数 3-只有大数
-			     Db.update(" call insertRootEntry('"+financialType+"','"+reportType+"')");
+			     Db.update(" call insertRootEntry('"+userid+"','"+financialType+"','"+reportType+"')");
 			   }
 			renderMessage("修改成功");
 		} else { // 新增
@@ -184,7 +184,7 @@ public class ReportTypeController extends BaseProjectController {
 			if(!StrUtils.isEmpty(financialType))
 			   if(!StrUtils.isEmpty(reportType)) {
 				 //0-无 1-中文加大数 2-英文加大数 3-只有大数
-			     Db.update(" call insertRootEntry('"+financialType+"','"+reportType+"')");
+				   Db.update(" call insertRootEntry('"+userid+"','"+financialType+"','"+reportType+"')");
 			   }
 			renderMessage("保存成功");
 		}
