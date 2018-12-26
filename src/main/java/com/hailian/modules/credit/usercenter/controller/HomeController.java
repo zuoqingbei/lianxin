@@ -80,11 +80,11 @@ public class HomeController extends BaseProjectController {
 		List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
 	    setAttr("customer", customerId);
 	  //订单核实数量
-	  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500'").size();
+	  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500' and del_flag='0'").size();
 	  		//订单查档数量
-	  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295'").size();
+	  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295' and del_flag='0' ").size();
 	  		//订单信息质检数量
-	  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('294','303','308')").size();
+	  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('294','303','308') and del_flag='0'").size();
 	  		setAttr("orderhs", orderhs);
 	  		setAttr("ordercd", ordercd);
 	  		setAttr("orderzj", orderzj1);	
@@ -447,8 +447,10 @@ public class HomeController extends BaseProjectController {
 			model.set("status", "311");
 		}
 		//获取报告员id
-		String reportIdtoOrder = OrderManagerService.service.getUserIdtoOrder(RoleCons.REPORTER);//根据自动分配规则获取该订单指定的报告员
-		model.set("report_user", reportIdtoOrder);
+		if(model.get("id")==null){
+			String reportIdtoOrder = OrderManagerService.service.getUserIdtoOrder(RoleCons.REPORTER);//根据自动分配规则获取该订单指定的报告员
+			model.set("report_user", reportIdtoOrder);
+		}
 		//国外代理自动分配 除韩国新加坡马来西亚
 		boolean isNeedAgent=false;//是否需要自动分配
 		boolean isagent=false;//自动分配是否成功
@@ -482,7 +484,7 @@ public class HomeController extends BaseProjectController {
 		String id = "";
 		try {
 			toString(model,458);
-			id = OrderManagerService.service.modifyOrder(0,model,user,this);
+			id = OrderManagerService.service.modifyOrder(model,user,this);//创建订单或订单更新
 			toString(model,460);
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -501,7 +503,7 @@ public class HomeController extends BaseProjectController {
 		model.set("company_id",companInfoId);
 		}
 		
-		CreditOperationLog.dao.addOneEntry(userid, model, "订单管理/新建订单/提交","/credit/front/home/saveOrder");//操作日志记录
+		CreditOperationLog.dao.addOneEntry(userid, model, "","/credit/front/home/saveOrder");//操作日志记录
 		cof.save();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
 		model1.set("business_type", "291");
@@ -675,8 +677,21 @@ public class HomeController extends BaseProjectController {
 	 */
 	public void cheXiao() {
 		String id=getPara("id");
+		String  ids = getPara("ids");//批量撤销ids
 		String revoke_reason=getPara("revoke_reason");
 		try {
+			if(StringUtils.isNotBlank(ids)){
+	      String id2 []=ids.split(",");
+	      for (String id3 : id2) {
+	    	//根据id查找订单
+	  		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id3);
+	  		//更新订单
+	  		coi.set("status","313");
+	  		coi.set("revoke_reason", revoke_reason);
+	  		//保存订单
+	  		coi.update();
+		   }
+	    }else{
 		//根据id查找订单
 		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
 		//更新订单
@@ -684,6 +699,7 @@ public class HomeController extends BaseProjectController {
 		coi.set("revoke_reason", revoke_reason);
 		//保存订单
 		coi.update();
+	    }
 		ResultType resultType=new ResultType(1,"操作成功");
 		renderJson(resultType);
 		}catch(Exception e) {

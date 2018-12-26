@@ -636,18 +636,49 @@ public class OrderProcessController extends BaseProjectController{
      * @version V1.0
      * @return
      */
-    public ResultType askOrder(){
+    public void askOrder(){
         String status=getPara("status");
         String id=getPara("id");
+        String ids= getPara("ids");//接收批量催问的id参数
         NoticeModel model=new NoticeModel();
         Integer userid = getSessionUser().getUserid();
         String now = getNow();
+        try {
+			
+		
+        if(StringUtils.isNotBlank(ids)&&StringUtils.isBlank(id)){
+        	//批量催问订单id不是空
+          String [] id2 = 	ids.split(",");
+         for (String id3 : id2) {
+        	//查订单
+             CreditOrderInfo info=	CreditOrderInfo.dao.getId(Integer.parseInt(id3), null);
+             //公告子表添加
+             NoticeLogModel logModel=new NoticeLogModel();
+             //是否催问过，催问后改变订单催问状态
+                 logModel.set("user_id", info.get("report_user"));
+                 model.clear();
+                 model.set("notice_title", "订单催问");
+                 model.set("notice_content", "您有订单催问，请及时处理。");
+                 //修改订单催问信息
+                 CreditOrderInfo orderInfo=new CreditOrderInfo();
+                 orderInfo.set("id",info.get("id") );
+                 orderInfo.set("is_ask", "1");
+                 orderInfo.update();
+                 model.set("create_by", userid);
+                 model.set("create_date", now);
+                 model.save();
+                 logModel.set("notice_id", model.get("id"));
+                 logModel.set("read_unread", "1");
+                 logModel.save();   
+		    }
+         renderJson(new ResultType(1,"订单催问成功!"));
+        }else{ 
         //查订单
         CreditOrderInfo info=	CreditOrderInfo.dao.getId(Integer.parseInt(id), null);
         //公告子表添加
         NoticeLogModel logModel=new NoticeLogModel();
         //是否催问过，催问后改变订单催问状态
-        if (status!=null&&status.equals("003")) {
+       
             logModel.set("user_id", info.get("report_user"));
             model.clear();
             model.set("notice_title", "订单催问");
@@ -657,15 +688,18 @@ public class OrderProcessController extends BaseProjectController{
             orderInfo.set("id",info.get("id") );
             orderInfo.set("is_ask", "1");
             orderInfo.update();
-        }
-        model.set("create_by", userid);
-        model.set("create_date", now);
-        model.save();
-        logModel.set("notice_id", model.get("id"));
-        logModel.set("read_unread", "1");
-        logModel.save();
-        renderJson(new ResultType(1,"订单催问成功!"));
-        return new ResultType(1,"订单催问成功!");
+            model.set("create_by", userid);
+            model.set("create_date", now);
+            model.save();
+            logModel.set("notice_id", model.get("id"));
+            logModel.set("read_unread", "1");
+            logModel.save();
+            renderJson(new ResultType(1,"订单催问成功!"));
+       }
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	renderJson(new ResultType(0,"订单催问失败!"));
+		}
     }
     /**
      * 订单代理分配国内
@@ -752,7 +786,7 @@ public class OrderProcessController extends BaseProjectController{
                    map.put("id", oid);
                    map.put("num", orderInfo.get("num"));
                    PublicUpdateMod(map);
-                   MailService.service.toSendMail(ismail, orderId,agent_id,userid,this);//代理分配发送邮件
+                   MailService.service.toSendMail(ismail, oid,agent_id,userid,this);//代理分配发送邮件
                }
 		   }else {
                 AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,country,speed);

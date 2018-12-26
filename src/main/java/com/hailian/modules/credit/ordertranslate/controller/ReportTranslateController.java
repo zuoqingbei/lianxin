@@ -2,11 +2,8 @@ package com.hailian.modules.credit.ordertranslate.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,13 +13,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.translate.model.TranslateModel;
 import com.hailian.modules.credit.translate.service.TranslateService;
-import com.hailian.modules.credit.usercenter.model.ModuleJsonData;
-import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.util.translate.TransApi;
 
 /**
@@ -51,13 +43,13 @@ public class ReportTranslateController extends BaseProjectController {
 					try {
 						value_en = TransApi.Trans(value,"en");
 					} catch (Exception e) {
-						value_en="英文翻译失败!";
+						value_en="Translation failure!";
 					}
 					if("cht".equals(targetlanguage)){
 						try {
 							value_cht=TransApi.Trans(value,targetlanguage);
 						} catch (Exception e) {
-							value_cht="繁体翻译失败";
+							value_cht="翻譯失敗!";
 						}
 					}
 			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);//翻译校正
@@ -99,7 +91,7 @@ public class ReportTranslateController extends BaseProjectController {
 	   }
 	 public static boolean isValidDate(String str) {
 	      boolean convertSuccess=true;
-	       SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+	       SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	       try {
 	          format.setLenient(false);
 	          format.parse(str);

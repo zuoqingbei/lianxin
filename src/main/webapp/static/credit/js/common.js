@@ -12,6 +12,20 @@ let Public = {
         }, 30000)
 
     },
+    /**
+     * 如果文本是逻辑false或传来的参数是includesStr或其中一项则返回outPutStr
+     * @param text 输入文本
+     * @param includesStr 判断范围
+     * @param outPutStr 被替换的文本
+     * @return {*} 原样输出
+     */
+    textFilter(text, includesStr, outPutStr = "") {
+        if (!text || Array.isArray(includesStr) && includesStr.includes(text) || text === includesStr) {
+            return outPutStr;
+        } else {
+            return text;
+        }
+    },
     initReset() {
         /**重置form表单**/
         const $btnReset = $('#btn_reset');
@@ -606,42 +620,41 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                 <p class="m-3 ml-4 pb-4">Adopted abbreviations：
                 <br>N/A – not available	CNY – China Yuan Renminbi	SC – subject company (the company inquired by you) </p>`
     , processObj = {
-        '订单分配': ['订单分配'],
-        '信息录入': ['信息录入', '信息录入完成'],
-        '订单核实': ['客户确认'],
-        '订单查档': ['代理中', '代理完成', '代理补充'],
-        '信息质检': ['信息质检中', '信息质检不通过', '信息质检合格'],
-        '分析录入': ['分析制作', '分析完成'],
-        '分析质检': ['分析质检中', '分析质检不通过', '分析质检合格'],
-        '翻译录入': ['翻译制作', '翻译完成'],
-        '翻译质检': ['翻译质检中', '翻译质检不通过', '翻译质检合格'],
-        '报告完成': ['报告完成'],
-        '客户内容已更新': ['客户内容已更新'],
-        '订单完成': ['客户内容已更新'],
-    }
-    , type0_extraUrl = '['+JSON.stringify({
-        // "getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name": "change_items",
-        "getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name": "register_code_type",
-        "getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name": "principal_type",
-        "getSelete?type=companyType$selectedId=318$disPalyCol=detail_name": "company_type",
-        "getSelete?type=currency$selectedId=267$disPalyCol=detail_name": "currency",
-        "getSelete?type=gender$selectedId=630$disPalyCol=detail_name": "gender",
-        "getSelete?type=id_type$selectedId=628$disPalyCol=detail_name": "id_type",
-        "getSelete?type=position$selectedId=615$disPalyCol=detail_name": "position",
-        "getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name": "registration_status",
-        // "getSelete?type=currency$selectedId=267$disPalyCol=detail_name": "credit_line_currency",
-        "getSelete?type=capital_type$selectedId=267$disPalyCol=detail_name": "capital_type",
-        "getSelete?type=is_regular_check$selectedId=762$disPalyCol=detail_name": "is_regular_check"
-    })+']'
+    '订单分配': ['订单分配'],
+    '信息录入': ['信息录入', '信息录入完成'],
+    '订单核实': ['客户确认'],
+    '订单查档': ['代理中', '代理完成', '代理补充'],
+    '信息质检': ['信息质检中', '信息质检不通过', '信息质检合格'],
+    '分析录入': ['分析制作', '分析完成'],
+    '分析质检': ['分析质检中', '分析质检不通过', '分析质检合格'],
+    '翻译录入': ['翻译制作', '翻译完成'],
+    '翻译质检': ['翻译质检中', '翻译质检不通过', '翻译质检合格'],
+    '报告完成': ['报告完成'],
+    '客户内容已更新': ['客户内容已更新'],
+    '订单完成': ['客户内容已更新'],
+}
+    , type0_extraUrl = '[' + JSON.stringify({
+    "getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name": "register_code_type",
+    "getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name": "principal_type",
+    "getSelete?type=companyType$selectedId=318$disPalyCol=detail_name": "company_type",
+    "getSelete?type=currency$selectedId=267$disPalyCol=detail_name": "currency",
+    "getSelete?type=gender$selectedId=630$disPalyCol=detail_name": "gender",
+    "getSelete?type=id_type$selectedId=628$disPalyCol=detail_name": "id_type",
+    "getSelete?type=position$selectedId=615$disPalyCol=detail_name": "position",
+    "getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name": "registration_status",
+    "getSelete?type=capital_type$selectedId=267$disPalyCol=detail_name": "capital_type",
+    "getSelete?type=is_regular_check$selectedId=762$disPalyCol=detail_name": "is_regular_check"
+}) + ']'
     , type23_html = `<div class="module-content type23-content">
                     <form>
                         <div class="row justify-content-between">
-                            <div class="col-md-4 my-1">
+                            <div class="my-1">
                                 <label for="grade"></label>
-                                <input class="form-control-plaintext" id="grade" name="grade" value="">
+                                <!--<output></output>-->
+                                <output style="pointer-events: none;" class="ml-3" id="grade" name="grade"></output>
                                 <span class="unit">分</span>
                             </div>
-                            <div class="col-md-3 text-right my-3 mr-3">
+                            <div class="text-right my-3 mr-3">
                                 订单处理：
                                 <div class="radio-box d-inline">
                                     <label><input type="radio" name="statusCode" checked>完成</label>
@@ -650,13 +663,13 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-1" style="margin-right: -3rem"><label for="quality_opinion"></label></div>
-                            <div class="col-md-11 pr-0"><textarea class="form-control" name="quality_opinion" id="quality_opinion" rows="10"></textarea></div>
+                            <div style="width: 6rem"><label for="quality_opinion"></label></div>
+                            <div class="pr-0 flex-grow-1"><textarea class="form-control" name="quality_opinion" id="quality_opinion" rows="10"></textarea></div>
                         </div>
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <button class="btn btn-light m-3" id="save" type="button">保存</button>
-                                <button class="btn btn-primary m-3" id="submit" type="button">提交</button>
-                            </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button class="btn btn-light m-3" id="save" type="button">保存</button>
+                            <button class="btn btn-primary m-3" id="submit" type="button">提交</button>
+                        </div>
                     </form>
                 </div>`
     , qualitySelectHtml = `<div class="row form-group select2Box">

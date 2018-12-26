@@ -62,8 +62,8 @@ public class MailService {
     public void toSendMail(String ismail, String orderId,String agentId,Integer userid,BaseProjectController c) throws Exception {
         if("1".equals(ismail)){
             CreditOrderInfo order = OrderManagerService.service.getOrder(orderId, c);
-            AgentModel agent=	AgentModel.dao.findById(agentId);
-            String mailaddr=agent.get("memo");
+            List<AgentModel> findByAgentid = AgentModel.dao.findByAgentid(agentId);
+            String mailaddr=findByAgentid.get(0).get("memo");
             if(StringUtils.isNotBlank(mailaddr)){
                 String title="New Order<br>";
                 String content="Dear Sir/Madam,Good day!<br>"
