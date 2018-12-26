@@ -883,14 +883,16 @@ let ReportConfig = {
 		                        						
 		                        						break;
 		                        				case 'date':
-		                        					formGroup += `<div class="form-group date-form">
+		                        					formGroup += `<div class="form-group date-form" style="position: relative">
+                                                                    <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;right: 1rem;top: 2.4rem;width: 1rem;height: 1.125rem;">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
 												            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
 		                        				case 'date_scope':
-		                        					formGroup += `<div class="form-group date-scope-form">
+		                        					formGroup += `<div class="form-group date-scope-form" style="position: relative;">
+                                                        <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;right: 1rem;top: 2.4rem;width: 1rem;height: 1.125rem;">
 									            		<label for="" class="mb-2">${item.temp_name}</label>
 									            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 									            		<p class="errorInfo">${item.error_msg}</p>
@@ -1119,7 +1121,8 @@ let ReportConfig = {
                 			_this.floatContents.push(item.contents)
                 			if(item.contents.length === 0) {
                 				//非财务模块的浮动
-                				_this.notMoneyFloatHtml[index] = `<div class="form-group form-inline p-4">
+                				_this.notMoneyFloatHtml[index] = `<div class="form-group form-inline p-4" style="position: relative">
+                                              <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;left: 13.5rem;top: 2.1rem;width: 1rem;height: 1.125rem;">
 					                          <label >${item.title.temp_name === null?'':item.title.temp_name}</label>
 					                          <input type="text" placeholder=${item.title.place_hold} name=${item.title.column_name} class="form-control mx-3 float-date" >
 					                        </div>`
