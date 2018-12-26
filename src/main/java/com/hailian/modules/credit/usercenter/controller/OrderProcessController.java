@@ -14,10 +14,11 @@ import com.hailian.api.constant.RoleCons;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.util.http.HttpCrawler;
-
 import com.hailian.util.word.MainReport;
 
 import org.apache.commons.lang3.StringUtils;
+
+
 
 
 
@@ -517,8 +518,8 @@ public class OrderProcessController extends BaseProjectController{
             }
             //修改订单状态
             PublicUpdateMod(map);
-            
-            CreditOperationLog.dao.addOneEntry(this, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
+            Integer userid = getSessionUser().getUserid();
+            CreditOperationLog.dao.addOneEntry(userid, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
             
             //添加站内信，
             addNoice(code);
@@ -751,7 +752,7 @@ public class OrderProcessController extends BaseProjectController{
                    map.put("id", oid);
                    map.put("num", orderInfo.get("num"));
                    PublicUpdateMod(map);
-                   MailService.service.toSendMail(ismail, orderId,agent_id,userid,this);//代理分配发送邮件
+                   MailService.service.toSendMail(ismail, oid,agent_id,userid,this);//代理分配发送邮件
                }
 		   }else {
                 AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroadPrice(agent_id,country,speed);
@@ -843,7 +844,8 @@ public class OrderProcessController extends BaseProjectController{
             }
             //上传文件
             ResultType result = uploadFile(orderId,oldStatus,upFileList,getSessionUser().getUserid(),null);
-            CreditOperationLog.dao.addOneEntry(this, null, "","/credit/front/orderProcess/statusSaveWithFileUpLoad");//操作日志记录
+            Integer userid = getSessionUser().getUserid();
+            CreditOperationLog.dao.addOneEntry(userid, null, "","/credit/front/orderProcess/statusSaveWithFileUpLoad");//操作日志记录
             if(result.getStatusCode()==0){
                 renderJson(result);
             }else{

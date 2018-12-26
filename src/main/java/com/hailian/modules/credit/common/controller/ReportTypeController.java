@@ -1,5 +1,7 @@
 package com.hailian.modules.credit.common.controller;
 
+import java.sql.SQLException;
+
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
@@ -10,6 +12,9 @@ import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.common.service.ReportTypeService;
 import com.hailian.modules.credit.uploadfile.controller.FileUpLoadController;
 import com.hailian.util.Config;
+import com.hailian.util.StrUtils;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
@@ -137,6 +142,8 @@ public class ReportTypeController extends BaseProjectController {
 	public void save() {
 		Integer pid = getParaToInt("id");
 		String name=  getPara("name");
+		String financialType = getPara("financialType");//财务类型
+		
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		FileUpLoadController fileconController=new FileUpLoadController();
@@ -147,23 +154,42 @@ public class ReportTypeController extends BaseProjectController {
    		url= fileconController.upload(pid,getFile("file_url"), name,userid);	
 	    }
        ReportTypeModel model = getModel(ReportTypeModel.class);
+       if(!StrUtils.isEmpty(financialType)) {
+			 model.set("financial_type", financialType);
+		}
        if (url!=null&&!"".equals(url)) {
     	   model.set("tpl_path", url);
 	   }
-		
+       
+      
+       
 		if (pid != null && pid > 0) { // 更新
 			model.set("update_by", userid);
 			model.set("update_date", now);
 			model.update();
+			String reportType = model.get("id")+"";
+			if(!StrUtils.isEmpty(financialType))
+			if(!StrUtils.isEmpty(reportType)) {
+				 //0-无 1-中文加大数 2-英文加大数 3-只有大数
+			     Db.update(" call insertRootEntry('"+financialType+"','"+reportType+"')");
+			   }
 			renderMessage("修改成功");
 		} else { // 新增
 			model.remove("id");
 			model.set("create_by", userid);
 			model.set("create_date", now);
 			model.save();
+			String reportType = model.get("id")+"";
+			if(!StrUtils.isEmpty(financialType))
+			if(!StrUtils.isEmpty(financialType))
+			   if(!StrUtils.isEmpty(reportType)) {
+				 //0-无 1-中文加大数 2-英文加大数 3-只有大数
+			     Db.update(" call insertRootEntry('"+financialType+"','"+reportType+"')");
+			   }
 			renderMessage("保存成功");
 		}
-		 
+	  
+	   
 	}
 	/**
 	 * 
@@ -179,4 +205,35 @@ public class ReportTypeController extends BaseProjectController {
 		String url=ip+":"+port+"/"+model.get("tpl_path");
 		renderJson(new Record().set("url", url));
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

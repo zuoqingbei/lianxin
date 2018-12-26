@@ -65,7 +65,7 @@ h3.company_info{
     }
 
     h4 {
-        margin: 2rem 0 1rem .5rem;
+        margin: 2rem 0 1rem 0;
         font-size: 1.125rem;
         font-weight: bold;
     }
@@ -93,7 +93,7 @@ h3.company_info{
 /*商业类型*/
 @media all {
     .credit-level-title {
-        padding-left: 2rem;
+        /*padding-left: 2rem;*/
         font-size: 1.125rem;
         font-weight: bold;
         color: var(--fontTitleColor);
@@ -142,11 +142,15 @@ h3.company_info{
         color: var(--fontTitleColor);
     }
 
+    .type23-content [for=grade] {
+        font-size: 1.25rem;
+    }
     .type23-content #grade {
-        display: inline;
+        margin-top: .5rem;
+        margin-left: 1rem;
         width: 3rem;
         text-align: right;
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         font-weight: bold;
         color: var(--activeColor);
     }

@@ -16,12 +16,16 @@ import java.util.List;
 
 public class FinancialExcelExport extends SettlrExcelExportTemplate {
 	
-private List<CreditCompanyFinancialEntry> list = new ArrayList<CreditCompanyFinancialEntry>();
-	
-	public FinancialExcelExport(List<CreditCompanyFinancialEntry> list) {
+    private List<CreditCompanyFinancialEntry> list = new ArrayList<CreditCompanyFinancialEntry>();
+    private String begin;
+    private String end;
+
+	public FinancialExcelExport(List<CreditCompanyFinancialEntry> list,String begin,String end) {
 		super();
 		this.list = list;
-	}
+	    this.begin = begin;
+        this.end = end;
+    }
 
 	@Override
 	public String[] getSheetNames() {
@@ -132,7 +136,7 @@ private List<CreditCompanyFinancialEntry> list = new ArrayList<CreditCompanyFina
                 font.setColor(HSSFColor.ORANGE.index);
                 font.setBold(true);
                 cellStyle.setFont(font);
-                rowList.add(new Object[]{new Object[]{title,cellStyle},new Object[]{"",null},new Object[]{"",null}});
+                rowList.add(new Object[]{new Object[]{title,cellStyle},new Object[]{begin,null},new Object[]{end,null}});
 
                 //Style header = new Style();
                 //header.setBold(true);

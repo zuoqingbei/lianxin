@@ -1371,7 +1371,7 @@ let ReportConfig = {
     				 }
     				 
     			 })
-    			 dataJson.push(dataJsonObj)
+    			 dataJson[0] = dataJsonObj
     			 $.ajax({
     				 url,
     				 type:'post',
@@ -1441,7 +1441,7 @@ let ReportConfig = {
     					 })
     				 }
     			 })
-    			 dataJson.push(dataJsonObj)
+    			 dataJson[0] = dataJsonObj
     			 $.ajax({
     				 url,
     				 type:'post',

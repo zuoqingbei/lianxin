@@ -33,9 +33,9 @@ let Public = {
             url: BASE_PATH + 'credit/sysuser/notice/getNoticenum',
             type: 'get',
             success: (data) => {
-                if(data ==0){
+                if (data == 0) {
                     $(".layui-badge").hide();
-                }else {
+                } else {
                     $(".layui-badge").html(data)
                 }
 
@@ -82,26 +82,29 @@ let Public = {
                     "backgroundSize": "100% 100%"
                 })
                 $(".abc").addClass("aaa")
-                $(".dateInp1").css({"margin":"0 14% 0 32.5%"})
+                $(".dateInp1").css({"margin": "0 14% 0 32.5%"})
             } else {
                 this.isSQ = !this.isSQ
                 //没被收起
-                $(".nav-row").css("width","16.66%")
-                $("#main_content").css("width","83.33%")
-                $(".head-logo-box").css("width","16.6%")
-                $(".border-div").css({"background":"url(/static/credit/imgs/index/left_arrow.png) no-repeat","backgroundSize":"100% 100%"})
+                $(".nav-row").css("width", "16.66%")
+                $("#main_content").css("width", "83.33%")
+                $(".head-logo-box").css("width", "16.6%")
+                $(".border-div").css({
+                    "background": "url(/static/credit/imgs/index/left_arrow.png) no-repeat",
+                    "backgroundSize": "100% 100%"
+                })
                 $(".abc").removeClass("aaa")
-    		   $(".dateInp1").css({"margin":"0 11% 0 32%"})
+                $(".dateInp1").css({"margin": "0 11% 0 32%"})
 
             }
         })
         //菜单点击
         $leftNav.find("li").click(function (e) {
-        	
-        	if(sessionStorage.getItem("isResetPw")) {
-        		Public.message("info","请先重置密码！")
-        		return false
-        	}
+
+            if (sessionStorage.getItem("isResetPw")) {
+                Public.message("info", "请先重置密码！")
+                return false
+            }
             if ($(this).hasClass("hasChild")) {
                 if ($(this).hasClass("show")) {
                     $(this).children("ul").slideUp(150, function () {
@@ -141,17 +144,17 @@ let Public = {
             return false;
         });
     },
-    textAreaEvent(){
-    	//获取textarea的内容，替换换行符
-    	/*$(document).ajaxStop(function(){
-    	  //遍历所有textarea标签
-    	  $('textarea').each(function(){ 
-    	    var text = $(this).val();
+    textAreaEvent() {
+        //获取textarea的内容，替换换行符
+        /*$(document).ajaxStop(function(){
+          //遍历所有textarea标签
+          $('textarea').each(function(){
+            var text = $(this).val();
             console.log($(this).attr("name")+"="+text);
-    	    text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
-    	    $(this).val(text);
-    	  });
-    	});*/
+            text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
+            $(this).val(text);
+          });
+        });*/
     },
     logoutEvent() {
         $(".user-content").click(function () {
@@ -170,7 +173,7 @@ let Public = {
         console.log(row)
         //跳转订单详情
         $("#main_content").load(BASE_PATH + 'credit/front/home/orderInfo?id=' + id);
-        if(row){
+        if (row) {
             localStorage.setItem("row", JSON.stringify(row));
         }
     },
@@ -210,18 +213,18 @@ let Public = {
         localStorage.setItem("row", JSON.stringify(param));
     },
     goToReportAnalyze(param) {
-    	/**跳转可配置分析页面*/
-    	$("#main_content").load(BASE_PATH + 'credit/front/orderProcess/showReportedAnalyze', () => {
-    		this.gotop()
-    	});
-    	localStorage.setItem("row", JSON.stringify(param));
+        /**跳转可配置分析页面*/
+        $("#main_content").load(BASE_PATH + 'credit/front/orderProcess/showReportedAnalyze', () => {
+            this.gotop()
+        });
+        localStorage.setItem("row", JSON.stringify(param));
     },
     goToReportedAnalyzeQuality(param) {
-    	/**跳转可配置质检翻译页面*/
-    	$("#main_content").load(BASE_PATH + 'credit/front/orderProcess/showReportedAnalyzeQuality', () => {
-    		this.gotop()
-    	});
-    	localStorage.setItem("row", JSON.stringify(param));
+        /**跳转可配置质检翻译页面*/
+        $("#main_content").load(BASE_PATH + 'credit/front/orderProcess/showReportedAnalyzeQuality', () => {
+            this.gotop()
+        });
+        localStorage.setItem("row", JSON.stringify(param));
     },
     tabFixed(fixedEle, scrollEle, min, max) {
         /**
@@ -323,7 +326,7 @@ let Public = {
                             fileicon = '/static/credit/imgs/order/JPG.png'
                         } else if (filetype === 'pdf') {
                             fileicon = '/static/credit/imgs/order/PDF.png'
-                        }else if(filetype === 'html') {
+                        } else if (filetype === 'html') {
                             fileicon = '/static/credit/imgs/order/html.png'
                         }
                         let fileArr = ''
@@ -364,9 +367,9 @@ let Public = {
 }
 
 $(function () {
-    $(document).ajaxStop(function(){
+    $(document).ajaxStop(function () {
         //遍历所有textarea标签
-        $('textarea').each(function(){
+        $('textarea').each(function () {
             var text = $(this).val();
             text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
             $(this).val(text);
@@ -375,14 +378,16 @@ $(function () {
 
     Public.init();
     window.onload = function () {
-    	if(sessionStorage.getItem("isResetPw") === '1') {
-    		setTimeout(()=>{
-    		console.log($(".warning"))
-    		$(".warning").css("display","flex")},0)
-    	}else {
-    		setTimeout(()=>{
-    		$(".warning").hide()},0)
-    	}
+        if (sessionStorage.getItem("isResetPw") === '1') {
+            setTimeout(() => {
+                console.log($(".warning"))
+                $(".warning").css("display", "flex")
+            }, 0)
+        } else {
+            setTimeout(() => {
+                $(".warning").hide()
+            }, 0)
+        }
         let id = sessionStorage.getItem('menuId') ? sessionStorage.getItem('menuId') : $(".left-nav ul").children("li").eq(0).attr("id")
         $("#main_content").load(sessionStorage.getItem('pageUrl') ? sessionStorage.getItem('pageUrl') : '/credit/front/home', () => {
             Public.initReset()
@@ -394,7 +399,7 @@ $(function () {
             $('#' + id).parents("ul").show(200)
 
         }
-    	
+
     }
 });
 
@@ -499,7 +504,7 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                 <p class="m-3 ml-4">信用历史（15%） 市场趋势（10%） 经营规模（15%）</p>
                 <p class="m-3 ml-4">如果是个体户或无限责任性质的公司，新建立的或缺少财务资料的公司，评估的比重会增加到“股东背景”和“付款记录”两项。</p>
                 <p class="m-3 ml-4 pb-4">使用缩写： N/A-不详 CNY-人民币 SC-目标公司</p>`
-    ,creditLevel_en = `<div class="credit-level-title pt-3">
+    , creditLevel_en = `<div class="credit-level-title pt-3">
                     CREDIT RATING：<strong id="creditLevel" class="pl-3 pr-2"></strong>
                     <span class="myExplain">(see below explanatory notes)</span>
                 </div>
@@ -600,7 +605,7 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                 <p class="m-3 ml-4">In case of unlimited companies, newly established companies, or lack of financial data, more weight is given to ‘Ownership background’ and ‘Payment record’ in our analysis.</p>
                 <p class="m-3 ml-4 pb-4">Adopted abbreviations：
                 <br>N/A – not available	CNY – China Yuan Renminbi	SC – subject company (the company inquired by you) </p>`
-    ,processObj = {
+    , processObj = {
         '订单分配': ['订单分配'],
         '信息录入': ['信息录入', '信息录入完成'],
         '订单核实': ['客户确认'],
@@ -614,17 +619,28 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
         '客户内容已更新': ['客户内容已更新'],
         '订单完成': ['客户内容已更新'],
     }
-    ,type0_extraUrl = `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position","getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name":"registration_status","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"credit_line_currency"}]`
-    ,type1_extraUrl = `[{"getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name":"change_items","getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name":"register_code_type","getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name":"principal_type","getSelete?type=companyType$selectedId=318$disPalyCol=detail_name":"company_type","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"currency","getSelete?type=gender$selectedId=630$disPalyCol=detail_name":"gender","getSelete?type=id_type$selectedId=628$disPalyCol=detail_name":"id_type","getSelete?type=position$selectedId=615$disPalyCol=detail_name":"position","getSelete?type=currency$selectedId=267$disPalyCol=detail_name":"credit_line_currency"}]`
-    ,type23_html = `<div class="module-content type23-content">
+    , type0_extraUrl = '['+JSON.stringify({
+        "getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name": "register_code_type",
+        "getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name": "principal_type",
+        "getSelete?type=companyType$selectedId=318$disPalyCol=detail_name": "company_type",
+        "getSelete?type=currency$selectedId=267$disPalyCol=detail_name": "currency",
+        "getSelete?type=gender$selectedId=630$disPalyCol=detail_name": "gender",
+        "getSelete?type=id_type$selectedId=628$disPalyCol=detail_name": "id_type",
+        "getSelete?type=position$selectedId=615$disPalyCol=detail_name": "position",
+        "getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name": "registration_status",
+        "getSelete?type=capital_type$selectedId=267$disPalyCol=detail_name": "capital_type",
+        "getSelete?type=is_regular_check$selectedId=762$disPalyCol=detail_name": "is_regular_check"
+    })+']'
+    , type23_html = `<div class="module-content type23-content">
                     <form>
                         <div class="row justify-content-between">
-                            <div class="col-md-4 my-1">
+                            <div class="my-1">
                                 <label for="grade"></label>
-                                <input class="form-control-plaintext" id="grade" name="grade" value="">
+                                <!--<output></output>-->
+                                <output style="pointer-events: none;" class="ml-3" id="grade" name="grade"></output>
                                 <span class="unit">分</span>
                             </div>
-                            <div class="col-md-2 my-3 mr-3">
+                            <div class="text-right my-3 mr-3">
                                 订单处理：
                                 <div class="radio-box d-inline">
                                     <label><input type="radio" name="statusCode" checked>完成</label>
@@ -633,8 +649,8 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-1" style="margin-right: -3rem"><label for="quality_opinion"></label></div>
-                            <div class="col-md-11 pr-0"><textarea class="form-control" name="quality_opinion" id="quality_opinion" rows="10"></textarea></div>
+                            <div style="width: 6rem"><label for="quality_opinion"></label></div>
+                            <div class="pr-0 flex-grow-1"><textarea class="form-control" name="quality_opinion" id="quality_opinion" rows="10"></textarea></div>
                         </div>
                             <div class="col-md-12 d-flex justify-content-end">
                                 <button class="btn btn-light m-3" id="save" type="button">保存</button>
@@ -642,11 +658,11 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                             </div>
                     </form>
                 </div>`
-    ,qualitySelectHtml=`<div class="row form-group select2Box">
-                    <label for="" class="col-1 col-form-label">质检结果:</label>
-                    <div class="col-11 ">
+    , qualitySelectHtml = `<div class="row form-group select2Box">
+                    <label for="" class="col-form-label">质检结果:</label>
+                    <div class="">
                         <select style="width: 100%;" class="js-example-basic-multiple" id="" name="states[]" multiple="multiple">
                         </select>
                     </div>
                 </div>`
-    ,ljl = {};
+    , ljl = {};

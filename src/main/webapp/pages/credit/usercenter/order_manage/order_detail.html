@@ -9,16 +9,24 @@
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_common.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/order_manage/order_detail.css">
     <style>
+        h3.l-title{
+            padding-left: 0;
+        }
+        label{
+            font-weight: normal;
+        }
         .select2Box{
             display: flex;
             justify-content: space-between;
+            margin-top: 1.5rem;
         }
         .select2Box label {
-            padding-left: 2rem;
+            padding-left: 0;
 
         }
-        .select2Box div.col-11{
-            padding-left: 0;
+        .select2Box div{
+            width: calc(100% - 6rem);
+            /*padding-left: 2rem;*/
         }
         .select2-container .select2-selection--multiple,
         .select2-container--default.select2-container--focus .select2-selection--multiple{
@@ -40,16 +48,25 @@
         .type10-content .mulTextBox h4{
             margin-left: 1.5rem;
         }
+
+        .module-content.tabelBox{
+            overflow-x: auto;
+            max-width: 100%;
+        }
         table{
             word-break: break-all;
         }
         table.table thead th{
-            /*min-width: 11rem;*/
+            white-space: nowrap;
+            min-width: 4rem;
             border-top: none;
             border-bottom: none;
         }
         table.table tbody tr:first-child td{
             border-top: none;
+        }
+        table.table tbody tr td:nth-of-type(3) img{
+            max-height: 3rem;
         }
         .return_back{
             color: #A5A5A5;
