@@ -620,7 +620,6 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
         '订单完成': ['客户内容已更新'],
     }
     , type0_extraUrl = '['+JSON.stringify({
-        // "getSelete?type=company_history_change_item$selectedId=603$disPalyCol=detail_name": "change_items",
         "getSelete?type=register_code_type$selectedId=632$disPalyCol=detail_name": "register_code_type",
         "getSelete?type=principal_type$selectedId=638$disPalyCol=detail_name": "principal_type",
         "getSelete?type=companyType$selectedId=318$disPalyCol=detail_name": "company_type",
@@ -629,19 +628,19 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
         "getSelete?type=id_type$selectedId=628$disPalyCol=detail_name": "id_type",
         "getSelete?type=position$selectedId=615$disPalyCol=detail_name": "position",
         "getSelete?type=registration_status$selectedId=596$disPalyCol=detail_name": "registration_status",
-        // "getSelete?type=currency$selectedId=267$disPalyCol=detail_name": "credit_line_currency",
         "getSelete?type=capital_type$selectedId=267$disPalyCol=detail_name": "capital_type",
         "getSelete?type=is_regular_check$selectedId=762$disPalyCol=detail_name": "is_regular_check"
     })+']'
     , type23_html = `<div class="module-content type23-content">
                     <form>
                         <div class="row justify-content-between">
-                            <div class="col-md-4 my-1">
+                            <div class="my-1">
                                 <label for="grade"></label>
-                                <input class="form-control-plaintext" id="grade" name="grade" value="">
+                                <!--<output></output>-->
+                                <output style="pointer-events: none;" class="ml-3" id="grade" name="grade"></output>
                                 <span class="unit">分</span>
                             </div>
-                            <div class="col-md-3 text-right my-3 mr-3">
+                            <div class="text-right my-3 mr-3">
                                 订单处理：
                                 <div class="radio-box d-inline">
                                     <label><input type="radio" name="statusCode" checked>完成</label>
@@ -650,8 +649,8 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-1" style="margin-right: -3rem"><label for="quality_opinion"></label></div>
-                            <div class="col-md-11 pr-0"><textarea class="form-control" name="quality_opinion" id="quality_opinion" rows="10"></textarea></div>
+                            <div style="width: 6rem"><label for="quality_opinion"></label></div>
+                            <div class="pr-0 flex-grow-1"><textarea class="form-control" name="quality_opinion" id="quality_opinion" rows="10"></textarea></div>
                         </div>
                             <div class="col-md-12 d-flex justify-content-end">
                                 <button class="btn btn-light m-3" id="save" type="button">保存</button>
