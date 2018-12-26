@@ -243,7 +243,11 @@ public class ReportNodeController extends BaseProjectController {
               		"	WHERE" +
               		"		id= " +
               		id);
- 
+               CreditReportModuleParentNodesDict nodeModel = CreditReportModuleParentNodesDict.dao.findById(id);
+               nodeModel.getAttrs();
+               CreditReportModuleConf conf = new CreditReportModuleConf();
+               
+              // conf._setAttrs(model);
 
 
             }

@@ -51,13 +51,13 @@ public class ReportTranslateController extends BaseProjectController {
 					try {
 						value_en = TransApi.Trans(value,"en");
 					} catch (Exception e) {
-						value_en="英文翻译失败!";
+						value_en="";
 					}
 					if("cht".equals(targetlanguage)){
 						try {
 							value_cht=TransApi.Trans(value,targetlanguage);
 						} catch (Exception e) {
-							value_cht="繁体翻译失败";
+							value_cht="";
 						}
 					}
 			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);//翻译校正
