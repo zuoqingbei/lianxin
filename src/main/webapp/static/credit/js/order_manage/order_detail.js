@@ -142,8 +142,8 @@ let OrderDetail = {
                     //绑数
                     if (item.title.temp_name === '基本信息') { //表单头部取数于本地存储
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
-                            let column_name = $(this).data('column_name');
-                            $(this).text(_this.row[column_name])
+                            let text = _this.row[$(this).data('column_name')];
+                            $(this).text(text&&text!=='null'?text:'-');
                         });
                     } else {
                         $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
@@ -154,7 +154,8 @@ let OrderDetail = {
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
-                                        $(this).text(data.rows[0][column_name])
+                                        let text = data.rows[0][column_name];
+                                        $(this).text(text&&text!=='null'?text:'');
                                     }
                                 })
                             } else {
@@ -867,10 +868,10 @@ let OrderDetail = {
                             let [isBrand, aHref] = [false, ''];
                             if (item.title.temp_name === '商标和专利' && index === 2) {
                                 isBrand = true;
-                                aHref = row[columnName] ? 'http://' + row[columnName] : '';
+                                aHref = row[columnName].includes('http') ? row[columnName] : 'http://' + row[columnName];
                             }
-                            let tdData = isBrand ? `<a href= ${aHref} target="_blank"><img src=http://${row[columnName]} alt="商标"></a>` : row[columnName];
-                            $tr.append(`<td>${row[columnName] ? tdData : '-'}</td>`);// 没数据的显示 “-”
+                            let tdData = isBrand ? `<a href= ${aHref} target="_blank"><img src=${aHref} alt="商标"></a>` : row[columnName];
+                            $tr.append(`<td>${row[columnName]&&row[columnName]!=='null' ? tdData : '-'}</td>`);// 没数据的显示 “-”
                         });
                         $wrap.find('tbody').append($tr);
                     });
