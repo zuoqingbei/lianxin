@@ -357,13 +357,13 @@ label {
 }
 
 .tab-fixed {
-    z-index: 999;
+    z-index: 99;
     width: 100%;
     position: fixed;
     top: 5.5rem;
     background: #fff;
     left: 16.6667%;
-    padding-left: 2.5rem;
+    padding-left: 2.5rem!important;
     border-top: solid 1px #e5e5e5;
     box-shadow: 0px 2px 2px #e5e5e5;
 }
