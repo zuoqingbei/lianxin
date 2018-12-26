@@ -564,7 +564,7 @@ let InitObj = {
 				},
 				success:(data)=>{
 					Public.message("success","下载成功！")
-					let $eleForm = $("<form method='get' style='visibility:none'><input name='report_type' style='visibility:none' value="+rows["report_type"]+"></form>");
+					let $eleForm = $("<form method='get' style='visibility:none'><input name='report_type' style='visibility:none' value="+rows["report_type"]+"><input name="+url.split("?")[1].split("=")[0]+" style='visibility:none' value="+url.split("?")[1].split("=")[1]+"></form>");
 					$eleForm.attr("action", BASE_PATH + `credit/front/ReportGetData/` +url);
 					$(".main").append($eleForm);
 					//提交表单，实现下载
@@ -680,8 +680,9 @@ let InitObj = {
 		 */
 //		console.log(tableCwIds)
 		let returnData;
+		let symbol =  getSource.includes("?")?'&':'?'
 		$.ajax({
-			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id+'&report_type='+rows["report_type"],
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + symbol + 'ficConf_id='+id+'&report_type='+rows["report_type"],
 			type:'post',
 			async:false,
 			success:(data)=>{
@@ -758,14 +759,12 @@ let InitObj = {
 		    	dateArr.forEach((item,index)=>{
 		    		laydate.render({
 		    			elem: item,
-		    			format: 'yyyy年MM月dd日'
 		    		});
 		    	})
 		    	let dateScopeArr = Array.from($('.date-scope-form input'))
 		    	dateScopeArr.forEach((item,index)=>{
 		    		laydate.render({
 		    			elem: item,
-		    			format: 'yyyy年MM月dd日',
 		    			range:true
 		    		});
 		    	})
@@ -773,7 +772,6 @@ let InitObj = {
 		    	floatDateArr.forEach((item,index)=>{
 		    		laydate.render({
 		    			elem: item,
-		    			format: 'yyyy年MM月dd日'
 		    		});
 		    	})
 		    	
@@ -784,7 +782,6 @@ let InitObj = {
 		    		modalDates.forEach((item,index)=>{
 		    			laydate.render({
 			    			elem: item,
-			    			format: 'yyyy年MM月dd日'
 			    		});
 		    		})
 		    	})
@@ -796,7 +793,6 @@ let InitObj = {
 			    		cw_date.forEach((item,index)=>{
 			    			laydate.render({
 				    			elem: item,
-				    			format: 'yyyy年MM月dd日',
 				    			range:true
 				    		});
 			    		})
@@ -805,7 +801,6 @@ let InitObj = {
 		    			cw_date.forEach((item,index)=>{
 		    				laydate.render({
 		    					elem: item,
-		    					format: 'yyyy年MM月dd日',
 		    					done:function(value){
 		    						if($(item).hasClass("dateInp1")){
 		    							let dateInps1 = Array.from($(".dateInp1"))

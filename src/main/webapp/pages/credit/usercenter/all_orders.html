@@ -124,6 +124,9 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
                     </div>
 
                 </div>
+           
+               <button type="button" class="btn btn-primary mx-4 mb-3" id="modal_submit_allocation2">批量催问</button>
+               <button class="btn btn-primary mb-3" id="dl_btn" data-toggle="modal" data-target="#exampleModalCenter2"> 批量撤销</button>
                 <table id="table"
                        data-toggle="table"
                        data-url="./data.json"
@@ -243,6 +246,39 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
     </div>
 
 </div>
+
+<!--批量撤销  -->
+<div class="modal fade order_cancel" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+            <div class="modal-body">  
+                <div class="file-upload">
+                    <div class="row mt-3 mb-2">
+                        <div class="input-group col-md-12 align-items-top">
+                            <label class="control-label">撤销原因：</label>
+                            <!--<input type="text" class="form-control">-->
+                            <textarea name="" id="revoke_reason" cols="50" rows="10" ></textarea>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="exampleModalCenter3" >提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--批量撤销  -->
+
+
 <!-- Modal 订单撤销 -->
 <div class="modal fade order_cancel" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

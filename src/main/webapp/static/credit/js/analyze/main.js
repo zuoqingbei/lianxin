@@ -368,7 +368,13 @@ let ReportConfig = {
 										 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
 									 }
 								 }else {
-									 $("#"+id).val(obj[anotherId])
+									 if($("#"+id).attr("name") === 'emp_num_date'&& obj[anotherId]==='') {
+										 //2、报告摘要--员工人数统计时间默认填报当天
+										 let nowDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()
+										 $("#"+id).val(nowDate)
+									 }else {
+										 $("#"+id).val(obj[anotherId])
+									 }
 								 }
 							 }
 						 })

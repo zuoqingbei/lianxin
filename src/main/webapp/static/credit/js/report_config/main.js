@@ -400,7 +400,13 @@ let ReportConfig = {
 										 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
 									 }
 								 }else {
-									 $("#"+id).val(obj[anotherId])
+									 if($("#"+id).attr("name") === 'emp_num_date'&& obj[anotherId]==='') {
+										 //2、报告摘要--员工人数统计时间默认填报当天
+										 let nowDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()
+										 $("#"+id).val(nowDate)
+									 }else {
+										 $("#"+id).val(obj[anotherId])
+									 }
 								 }
 							 }
 						 })
@@ -1185,12 +1191,13 @@ let ReportConfig = {
     		})
     		//自动计算出生年月和年龄
     		if($("#modal"+item).find(".modal-header").text().trim() === '自然人股东详情' || $("#modal"+item).find(".modal-header").text().trim() === '管理层') {
-    			let $idCard = $("#id_no_"+(item-1))
+    			let $idCard = $("#id_no_"+(item-9))
 				if($("#modal"+item).find(".modal-header").text().trim() === '管理层'){
-					$idCard = $("#id_card_"+(item-1))
+					$idCard = $("#id_card_"+(item-9))
 				}
-    			let $age = $("#age_"+(item-1))
-    			let $birth = $("#birth_date_"+(item-1))
+    			let $age = $("#age_"+(item-9))
+    			let $birth = $("#birth_date_"+(item-9))
+    			console.log($idCard,item)
     			$idCard.blur(()=>{
     				let val = $idCard.val()
     				if(val.length === 18 && typeof Number(val) === 'number' && Number(val) !== NaN) {
@@ -1199,7 +1206,7 @@ let ReportConfig = {
     					let bDate = new Date();
     					let age = bDate.getFullYear() - aDate.getFullYear();
     					$age.val(age)
-    					$birth.val(val.substring(0,4)+'年'+val.substring(4,6)+'月'+val.substring(6,8)+'日')
+    					$birth.val(val.substring(0,4)+'-'+val.substring(4,6)+'-'+val.substring(6,8))
     				}else {
     					$age.val('')
     					$birth.val('')
