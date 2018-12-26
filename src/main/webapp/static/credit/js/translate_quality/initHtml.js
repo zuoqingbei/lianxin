@@ -370,8 +370,9 @@ let InitObjTransQua = {
 		let returnData;
 		let _this = this
 		this.cwAlterSource = alterSource
+		let symbol =  getSource.includes("?")?'&':'?'
 		$.ajax({
-			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id+'&report_type='+rows["report_type"],
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + symbol + 'ficConf_id='+id+'&report_type='+rows["report_type"],
 			type:'post',
 			async:false,
 			success:(data)=>{
