@@ -12,6 +12,16 @@
     <script type="text/javascript">
 	    var BASE_PATH = "${BASE_PATH }";
     </script>
+    <style>
+        .re_in{
+            width: calc(100% - 6rem);
+            display: inline-block;
+        }
+        #re_address{
+            width: calc(100% - 5rem);
+        }
+
+    </style>
 </head>
 
 <div id="container" class="row  animated fadeIn">
@@ -225,18 +235,44 @@
                     <input  name="model.id" id="orderId"  type="hidden" value="">
                      <input  name="statusCode" id="status"  type="hidden" value="">
                 <div class="file-upload">
+                    <!--<div class="row mt-3 mb-2">-->
+                        <!--<div class="input-group col-md-12 align-items-top">-->
+                            <!--<label class="control-label">确认原因：</label>-->
+                            <!--<textarea name="model.confirm_reason" id="cfr" cols="50" rows="10" class="report-textarea-big form-control"></textarea>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="row mt-3 mb-2">
-                        <div class="input-group col-md-12 align-items-top">
-                            <label class="control-label">确认原因：</label>
-                            <textarea name="model.confirm_reason" id="cfr" cols="50" rows="10" class="report-textarea-big form-control"></textarea>
+                        <div class="col-md-4">
+                            <span>名称：</span>
+                            <input type="text" disabled class="form-control re_in" id="re_name"/>
+                        </div>
+                        <div class="col-md-4">
+                            <span>联系方式：</span>
+                            <input type="text" disabled class="form-control re_in" id="re_contact"/>
+                        </div>
+                        <div class="col-md-4">
+                            <span>联系人：</span>
+                            <input type="text" disabled class="form-control re_in" id="re_linker"/>
+                        </div>
+                    </div>
+                    <div class="row mt-3 mb-2">
+                        <div class="col-md-12">
+                            <span>地址：</span>
+                            <input type="text" disabled class="form-control re_in" id="re_address"/>
+                        </div>
+                    </div>
+                    <div class="row mt-3 mb-2">
+                        <div class="col-md-12">
+                            <span style="float: left">备注：</span>
+                            <textarea id="re_remark" class=" form-control search-input" rows="2" cols="" style="width:calc(100% - 5rem)!important;margin-left: 0.3rem;float: left;height: 3rem;" disabled></textarea>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-            	<button type="button" class="btn btn-default" id="modal_save">保存</button>
-                <button type="button" class="btn btn-primary" id="modal_submit">提交</button>
-            </div>
+            <!--<div class="modal-footer">-->
+            	<!--<button type="button" class="btn btn-default" id="modal_save">保存</button>-->
+                <!--<button type="button" class="btn btn-primary" id="modal_submit">提交</button>-->
+            <!--</div>-->
         </div>
     </div>
 </div>
