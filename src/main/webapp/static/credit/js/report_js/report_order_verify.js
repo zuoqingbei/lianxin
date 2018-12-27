@@ -257,10 +257,11 @@ let Verify = {
                         	sortName = row.sortName;
                         	sortOrder = row.sortOrder;
                             $("#verify_name").val(row.verify_name);
-                            $("#contacts").val(row.contacts);
-                            $("#telphone").val(row.telphone);
-                            $("#address").html(row.address);
-                            $("#remarks").html(row.remarks);
+                            $("#re_linker").val(row.contacts);
+                            $("#re_contact").val(row.telphone);
+                            $("#re_address").val(row.address);
+                            $("#re_remark").val(row.remarks);
+                            $("#re_name").val(row.companyNames)
                     }
                     },
                     formatter: _this.operateFormatter
@@ -303,7 +304,7 @@ let Verify = {
     },
     operateFormatter(){
         /**操作按钮格式化 */
-        return '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter">核实</a>'
+        return '<a href="javascript:;" class="detail" data-toggle="modal" data-target="#exampleModalCenter">核实信息</a>'
     }
 };
 
