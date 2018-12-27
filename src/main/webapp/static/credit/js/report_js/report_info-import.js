@@ -152,7 +152,7 @@ let Verify = {
                                   $("#reporter_select23").html(row.seleteStr);
                                   // $("#confirm_reason").html(row.confirm_reason);
                                   $("#orderId").val(row.id);
-                                  $("#num2").html(row.num);
+                                  $("#num23").html(row.num);
                                   pageNumber = row.pageNumber;
                                   pageSize = row.pageSize;
                                   sortName = row.sortName;
@@ -195,10 +195,12 @@ let Verify = {
                                             <a href="javascript:;" class="analyze" style="margin-left:.5rem">分析</a>
                                             <span style="margin-left:.5rem;color: #1890ff">|</span>
                                             <a href="javascript:;" class="translate" style="margin-left:.5rem">翻译</a>
-                                            <span style="margin-left:.5rem;color: #1890ff">|</span>
-                                            <a href="javascript:;" class="chadang" style="margin-left:.5rem" data-toggle="modal" data-target="#exampleModalCenter_allocation">发起查档</a>
-                                            <span style="margin-left:.5rem;color: #1890ff">|</span>
-                                            <a href="javascript:;" class="heshi" style="margin-left:.5rem" data-toggle="modal" data-target="#exampleModalCenter">发起核实</a>`
+                                     
+                                            <div style="margin-top: 0.5rem">
+                                                <a href="javascript:;" class="chadang" style="margin-left:.5rem;margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter_allocation">发起查档</a>
+                                                <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                                <a href="javascript:;" class="heshi" style="margin-left:.5rem;margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter">发起核实</a>
+                                            </div>`
                                 }else if(arr!=null&&arr.indexOf(2)>-1){
                                     return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
                                             <span style="margin-left:.5rem;color: #1890ff">|</span>
@@ -417,3 +419,28 @@ let Verify = {
 };
 
 Verify.init();
+$('body').on('blur','#registered_capital_1',function () {
+    var vals=$(this).val();
+    $('#registered_capital_7').val(vals).trigger('blur');
+    $('#registered_capital_6').val(vals).trigger('blur');
+
+});
+$('body').on('change','#currency_1',function () {
+    console.log($(this).val())
+    let nows=$(this).val()
+    layui.use('form', function(){
+        var form = layui.form;
+        $("#currency_6").val(nows)
+        $("#currency_7").val(nows)
+        form.render('select');
+    });
+});
+$('body').on('change','#capital_type_1',function () {
+    let nows=$(this).val()
+    layui.use('form', function(){
+        var form = layui.form;
+        $("#capital_type_6").val(nows)
+        $("#capital_type_7").val(nows)
+        form.render('select');
+    });
+})
