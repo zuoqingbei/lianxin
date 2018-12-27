@@ -165,7 +165,7 @@ let Verify = {
                                   $("#country2").html(row.country);
                                   $('#continent2').html(row.continent);
                                   $("#reportType2").html(row.reportType);
-                                  $("#orderType23").html(row.orderType)
+                                  $("#orderType2").html(row.orderType)
                                   $("#reportLanguage2").html(row.reportLanguage);
                                   $("#companyNames2").html(row.companyNames);
                                   $("#speed2").html(row.speed);
@@ -299,6 +299,47 @@ let Verify = {
                 +pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
                 +"&searchType=-2&model.confirm_reason="+$("#cfr").val()
                 +"&statusCode="+$("#status").val(),
+                dataType:"json",
+                success:function(data){
+                    //提交成功关闭模态窗
+                    $(".modal-header .close").trigger("click");
+                    if(data.statusCode===1){
+                        console.log("此处进入success状态2222222222");
+                        Public.message("success",data.message);
+                    }else{
+                        console.log("此处进入error状态");
+                        Public.message("error",data.message);
+                    }
+                    //回显
+                    console.log("提交成功,开始回显:"+data.message);
+                    $.ajax({
+                        type:"post",
+                        url:BASE_PATH+"credit/front/orderProcess/listJson",
+                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-2",
+                        dataType:"json",
+                        success:function(obj){
+                            console.log("回显的数据:"+obj);
+                            $("#table").bootstrapTable("load",obj)
+                        }
+                    })
+
+                    console.log("回显完毕");
+                }
+            })
+        })
+        //点击发起查档提交
+        $("#modal_submit2").click(function(){
+            $("#status2").val("818");
+            let remarks = $("#remarks").val();
+            let id = $("#orderId").val();
+            console.log('dasdsadasdas',$("#agent_category").val());
+            $.ajax({
+                type:"post",
+                url:BASE_PATH+"credit/front/orderProcess/statusSave",
+                data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
+                +pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
+                +"&searchType=-6&model.report_filing_agent_id="+$("#agent_category").val()
+                +"&statusCode="+$("#status2").val(),
                 dataType:"json",
                 success:function(data){
                     //提交成功关闭模态窗
