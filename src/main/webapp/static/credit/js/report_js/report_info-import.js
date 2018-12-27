@@ -1,5 +1,9 @@
 let Verify = {
     init(){
+        this.pageNumber = "";
+        this.pageSize = "";
+        this.sortName = "";
+        this.sortOrder = "";
         /**初始化函数 */
         this.initTable();
 //        this.operateFormatter();
@@ -131,6 +135,53 @@ let Verify = {
                               },
                               "click .analyze":(e,value,row,index)=>{
                             	  Public.goToReportAnalyze(row)
+                              },
+                              "click .chadang":(e,value,row,index)=>{
+                                  $("#custom_id23").html(row.custom_id);
+                                  $("#customId23").html(row.customId);
+                                  $("#receiver_date23").html(row.receiver_date);
+                                  $("#country23").html(row.country);
+                                  $('#continent23').html(row.continent)
+                                  $("#reportType23").html(row.reportType);
+                                  $("#orderType23").html(row.orderType);
+                                  $("#reportLanguage23").html(row.reportLanguage);
+                                  $("#companyNames23").html(row.companyNames);
+                                  $("#speed23").html(row.speed);
+                                  $("#user_time23").html(row.user_time);
+                                  $("#companyZHNames23").html(row.companyZHNames);
+                                  $("#reporter_select23").html(row.seleteStr);
+                                  // $("#confirm_reason").html(row.confirm_reason);
+                                  $("#orderId").val(row.id);
+                                  $("#num23").html(row.num);
+                                  pageNumber = row.pageNumber;
+                                  pageSize = row.pageSize;
+                                  sortName = row.sortName;
+                                  sortOrder = row.sortOrder;
+                              },
+                              "click .heshi":(e,value,row,index)=>{
+                                  $("#custom_id2").html(row.custom_id);
+                                  $("#customId2").html(row.customId);
+                                  $("#receiver_date2").html(row.receiver_date);
+                                  $("#country2").html(row.country);
+                                  $('#continent2').html(row.continent);
+                                  $("#reportType2").html(row.reportType);
+                                  $("#orderType2").html(row.orderType)
+                                  $("#reportLanguage2").html(row.reportLanguage);
+                                  $("#companyNames2").html(row.companyNames);
+                                  $("#speed2").html(row.speed);
+                                  $("#user_time2").html(row.user_time);
+                                  $("#companyZHNames2").html(row.companyZHNames);
+                                  $("#reporter_select2").html(row.seleteStr);
+                                  // $("#confirm_reason").html(row.confirm_reason);
+                                  $("#orderId2").val(row.id);
+                                  $("#num2").html(row.num);
+                                  pageNumber = row.pageNumber;
+                                  pageSize = row.pageSize;
+                                  sortName = row.sortName;
+                                  sortOrder = row.sortOrder;
+                                  $("#cfr").val("");
+                                  $("#cfr").val(row.confirm_reason);
+
                               }
                           },
                           // formatter: _this.operateFormatter(arr)
@@ -143,7 +194,13 @@ let Verify = {
                                             <span style="margin-left:.5rem;color: #1890ff">|</span>
                                             <a href="javascript:;" class="analyze" style="margin-left:.5rem">分析</a>
                                             <span style="margin-left:.5rem;color: #1890ff">|</span>
-                                            <a href="javascript:;" class="translate" style="margin-left:.5rem">翻译</a>`
+                                            <a href="javascript:;" class="translate" style="margin-left:.5rem">翻译</a>
+                                     
+                                            <div style="margin-top: 0.5rem">
+                                                <a href="javascript:;" class="chadang" style="margin-left:.5rem;margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter_allocation">发起查档</a>
+                                                <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                                <a href="javascript:;" class="heshi" style="margin-left:.5rem;margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter">发起核实</a>
+                                            </div>`
                                 }else if(arr!=null&&arr.indexOf(2)>-1){
                                     return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
                                             <span style="margin-left:.5rem;color: #1890ff">|</span>
@@ -229,7 +286,88 @@ let Verify = {
             $table.bootstrapTable('resetView');
         }, 200);
         
-        
+        //点击核实提交
+        $("#modal_submit").click(function(){
+            $("#status").val("500");
+            let remarks = $("#remarks").val();
+            let id = $("#orderId2").val();
+            //console.log(reporter,remarks);
+            $.ajax({
+                type:"post",
+                url:BASE_PATH+"credit/front/orderProcess/statusSave",
+                data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
+                +pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
+                +"&searchType=-2&model.confirm_reason="+$("#cfr").val()
+                +"&statusCode="+$("#status").val(),
+                dataType:"json",
+                success:function(data){
+                    //提交成功关闭模态窗
+                    $(".modal-header .close").trigger("click");
+                    if(data.statusCode===1){
+                        console.log("此处进入success状态2222222222");
+                        Public.message("success",data.message);
+                    }else{
+                        console.log("此处进入error状态");
+                        Public.message("error",data.message);
+                    }
+                    //回显
+                    console.log("提交成功,开始回显:"+data.message);
+                    $.ajax({
+                        type:"post",
+                        url:BASE_PATH+"credit/front/orderProcess/listJson",
+                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-2",
+                        dataType:"json",
+                        success:function(obj){
+                            console.log("回显的数据:"+obj);
+                            $("#table").bootstrapTable("load",obj)
+                        }
+                    })
+
+                    console.log("回显完毕");
+                }
+            })
+        })
+        //点击发起查档提交
+        $("#modal_submit2").click(function(){
+            $("#status2").val("818");
+            let remarks = $("#remarks").val();
+            let id = $("#orderId").val();
+            console.log('dasdsadasdas',$("#agent_category").val());
+            $.ajax({
+                type:"post",
+                url:BASE_PATH+"credit/front/orderProcess/statusSave",
+                data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
+                +pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
+                +"&searchType=-6&model.report_filing_agent_id="+$("#agent_category").val()
+                +"&statusCode="+$("#status2").val(),
+                dataType:"json",
+                success:function(data){
+                    //提交成功关闭模态窗
+                    $(".modal-header .close").trigger("click");
+                    if(data.statusCode===1){
+                        console.log("此处进入success状态2222222222");
+                        Public.message("success",data.message);
+                    }else{
+                        console.log("此处进入error状态");
+                        Public.message("error",data.message);
+                    }
+                    //回显
+                    console.log("提交成功,开始回显:"+data.message);
+                    $.ajax({
+                        type:"post",
+                        url:BASE_PATH+"credit/front/orderProcess/listJson",
+                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-2",
+                        dataType:"json",
+                        success:function(obj){
+                            console.log("回显的数据:"+obj);
+                            $("#table").bootstrapTable("load",obj)
+                        }
+                    })
+
+                    console.log("回显完毕");
+                }
+            })
+        })
         /**
          * 点击录入名称提交
          */
@@ -322,3 +460,28 @@ let Verify = {
 };
 
 Verify.init();
+$('body').on('blur','#registered_capital_1',function () {
+    var vals=$(this).val();
+    $('#registered_capital_7').val(vals).trigger('blur');
+    $('#registered_capital_6').val(vals).trigger('blur');
+
+});
+$('body').on('change','#currency_1',function () {
+    console.log($(this).val())
+    let nows=$(this).val()
+    layui.use('form', function(){
+        var form = layui.form;
+        $("#currency_6").val(nows)
+        $("#currency_7").val(nows)
+        form.render('select');
+    });
+});
+$('body').on('change','#capital_type_1',function () {
+    let nows=$(this).val()
+    layui.use('form', function(){
+        var form = layui.form;
+        $("#capital_type_6").val(nows)
+        $("#capital_type_7").val(nows)
+        form.render('select');
+    });
+})
