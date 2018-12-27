@@ -338,7 +338,7 @@ let Verify = {
                 url:BASE_PATH+"credit/front/orderProcess/statusSave",
                 data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
                 +pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
-                +"&searchType=-6&model.report_filing_agent_id="+$("#agent_category").val()
+                +"&searchType=-6&model.agent_category="+$("#agent_category").val()
                 +"&statusCode="+$("#status2").val(),
                 dataType:"json",
                 success:function(data){
