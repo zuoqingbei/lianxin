@@ -48,9 +48,9 @@ public class DictCache {
 	public static void initDict() {
 		Map<Integer, SysDictDetail> dictMap = new LinkedHashMap<Integer, SysDictDetail>();
 		//财务字典表
-		List<CreditCompanyFinancialDict> simplifiedChineseDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where type=1 order by sort_no,id");
-		List<CreditCompanyFinancialDict>  englishDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where type=2 order by sort_no,id");
-		List<CreditCompanyFinancialDict> chineseTraditionalDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where type=3 order by sort_no,id");
+		List<CreditCompanyFinancialDict> simplifiedChineseDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where del_flag=0 and type=1 order by sort_no,id");
+		List<CreditCompanyFinancialDict>  englishDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where del_flag=0 and type=2 order by sort_no,id");
+		List<CreditCompanyFinancialDict> chineseTraditionalDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where del_flag=0 and type=3 order by sort_no,id");
 		Map<Integer,List<CreditCompanyFinancialDict>>  FinancialDictMap = new HashMap<>();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
 		FinancialDictMap.put(1, simplifiedChineseDict);

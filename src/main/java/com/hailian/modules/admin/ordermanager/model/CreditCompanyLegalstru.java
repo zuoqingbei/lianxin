@@ -13,6 +13,4 @@ import java.util.List;
 public class CreditCompanyLegalstru extends BaseProjectModel<CreditCompanyLegalstru> {
 	private static final long serialVersionUID = 1L;
 	public static final CreditCompanyLegalstru dao = new CreditCompanyLegalstru();//名字都叫dao，统一命名
-
-
 }
