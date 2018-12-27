@@ -422,3 +422,6 @@ input::-webkit-inner-spin-button{
 .disable .select2-selection__choice{
     color: #000;
 }
+.layui-layer-btn .layui-layer-btn0{
+    color: white!important;
+}

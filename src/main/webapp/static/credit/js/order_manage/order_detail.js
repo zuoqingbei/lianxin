@@ -66,7 +66,7 @@ let OrderDetail = {
     let tis=this
         $('.return_back').on('click',function () {
             if(tis.isQuality){
-                layer.confirm('是否要保存？', {
+                layer.confirm('是否保存已录入信息？', {
                     btn: ['保存','取消'] //按钮
                 }, function(){
                     $('#save').trigger('click')
