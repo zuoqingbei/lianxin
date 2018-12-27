@@ -266,6 +266,9 @@ public class BaseInfoZh {
 
             //行业详情-柱图/线图
             if("10392".equals(tableId)){
+                //取行业情况
+                CreditCompanyIndustryInfo industryInfo = CreditCompanyIndustryInfo.dao.findFirst("select * from credit_company_industry_info t where t.sys_language=? and t.company_id=? and t.del_flag=0",sysLanguage,companyId);
+                String title = industryInfo.getStr("chart_title");
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
                 List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child,rows);
                 //准备图形数据
@@ -292,7 +295,7 @@ public class BaseInfoZh {
                     barDataSet.addValue(value1, "y1", n);
                     lineDataSet.addValue(value2,"y2",n);
                 }
-                BaseWord.createBarChart("",barDataSet,lineDataSet, _prePath + "bar.jpg");
+                BaseWord.createBarChart(title,barDataSet,lineDataSet, _prePath + "bar.jpg");
                 map.put("bar", new PictureRenderData(600, 300, _prePath + "bar.jpg"));
             }
         }

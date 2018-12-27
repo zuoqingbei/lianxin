@@ -1,5 +1,6 @@
-
 <!DOCTYPE html>
+<% var option =
+tempDict.getSysDictDetailString('agentcategory',''); %>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -230,6 +231,201 @@
                         <button type="button" class="btn btn-primary" id="modal_submit_allocation">提交</button>
                     </div>
                 </div>
+    </div>
+</div>
+<!--model核实-->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <span>订单号：</span>
+                    <span id="num2">0001288784932</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="order-detail mb-4">
+                    <div class="row mt-2 mb-2" id="div12">
+                        <div class="col-md-4">
+                            <span>客户ID：</span>
+                            <span id="custom_id2">##</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>客户用户名：</span>
+                            <span id="customId2">##</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>接单日期：</span>
+                            <span id="receiver_date2">##</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2" id="div22">
+                        <div class="col-md-4">
+                            <span>地区：</span>
+                            <span id="continent2">##</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>国家：</span>
+                            <span id="country2">##</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告类型：</span>
+                            <span id="reportType2">##</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2" id="div32">
+                        <div class="col-md-4">
+                            <span>订单类型：</span>
+                            <span id="orderType2">##</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告语言：</span>
+                            <span id="reportLanguage2">##</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>订单公司名称：</span>
+                            <span id="companyNames2">##</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2" id="div42">
+                        <div class="col-md-4">
+                            <span>报告速度</span>
+                            <span id="speed2">##</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告用时：</span>
+                            <span id="user_time2">##</span>天
+                        </div>
+                        <div class="col-md-4">
+                            <span>公司中文名称：</span>
+                            <span id="companyZHNames2">##</span>
+                        </div>
+                    </div>
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-12 d-flex">-->
+                            <!--<span style="width: 8.7rem">确认原因：</span>-->
+                            <!--<span id="confirm_reason">对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <input  name="model.id" id="orderId2"  type="hidden" value="">
+                <input  name="statusCode" id="status"  type="hidden" value="">
+                <input  name="statusCode" id="remarks"  type="hidden" value="">
+                <div class="file-upload">
+                    <div class="row mt-3 mb-2">
+                        <div class="input-group col-md-12 align-items-top">
+                            <label class="control-label">确认原因：</label>
+                            <textarea name="model.confirm_reason" id="cfr" cols="50" rows="10" class="report-textarea-big form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal_submit">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal 查档-->
+<div class="modal  fade" id="exampleModalCenter_allocation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle_allocation2">
+                    <span>订单号：</span>
+                    <span id="num23">**</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="order-detail mb-5">
+                    <div class="row mt-2 mb-2" id="div1">
+                        <div class="col-md-4">
+                            <span>客户ID：</span>
+                            <span id="custom_id23">**</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>客户用户名：</span>
+                            <span id="customId23">**</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>接单日期：</span>
+                            <span id="receiver_date23">**</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2" id="div23">
+                        <div class="col-md-4">
+                            <span>地区：</span>
+                            <span id="continent23">**</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>国家：</span>
+                            <span id="country23">**</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告类型：</span>
+                            <span id="reportType23">**</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2" id="div33">
+                        <div class="col-md-4">
+                            <span>订单类型：</span>
+                            <span id="orderType23">**</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告语言：</span>
+                            <span id="reportLanguage23">**</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>订单公司名称：</span>
+                            <span id="companyNames23">**</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2" id="div43">
+                        <div class="col-md-4">
+                            <span>报告速度</span>
+                            <span id="speed23">**</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span>报告用时：</span>
+                            <span id="user_time23">**</span>天
+                        </div>
+                        <div class="col-md-4">
+                            <span>公司中文名称：</span>
+                            <span id="companyZHNames23">**</span>
+                        </div>
+
+                        <input type="hidden" name="orderId" id="orderId23">
+                        <input type="hidden" name="companyId2" id="companyId2">
+                        <input  name="statusCode" id="status2"  type="hidden" value="">
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <div class="row mt-3 mb-2">
+                        <!--<div class="input-group col-md-6 align-items-center">-->
+                            <!--<label class="control-label text-right">代理ID：</label>-->
+                            <!--<select name="" id="agency_id" class="form-control  col-md-6" >-->
+                                <!--<option value="-1">请选择</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                        <div class="input-group col-md-6 align-items-center mt-3">
+                            <label class="control-label text-right">代理类别：</label>
+                            <select name="attr.agentcategory" id="agent_category" valid="vselect" validname="代理类别" class="form-control  col-md-6">
+                                ${option!}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal_submit2">提交</button>
+            </div>
+        </div>
     </div>
 </div>
 <script src="${BASE_PATH}static/credit/js/report_js/report_info-import.js"></script>

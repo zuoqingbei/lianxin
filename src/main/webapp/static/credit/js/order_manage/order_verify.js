@@ -136,7 +136,7 @@ let Verify = {
     	
         $("#modal_submit").click(function(){
         	console.log("点击提交");
-        	$("#status").val("292");
+        	$("#status").val("816");
         	$(".tableValue").ajaxSubmit({
         		success:function(data){
         			console.log("状态为成功,message:"+data.message);
