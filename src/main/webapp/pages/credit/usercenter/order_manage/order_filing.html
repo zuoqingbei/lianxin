@@ -414,229 +414,229 @@
 <!-- 批量分配 -->
 
 <!-- 订单核实Modal -->
-        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">
-                    <span>订单号：</span>
-                    <span id="num">0001288784932</span>
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                    <div class="order-detail mb-4">
-                        <div class="row mt-2 mb-2" id="div1"> 
-                                <div class="col-md-4">
-                                    <span>客户ID：</span>
-                                    <span id="custom_id4">001354574</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span>客户用户名：</span>
-                                    <span id="customId4">row</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span>接单日期：</span>
-                                    <span id="receiver_date4">2018-09-10</span>
-                                </div>
-                            </div>
-                            <div class="row mt-2 mb-2" id="div2">
-                                <div class="col-md-4">
-                                    <span>地区：</span>
-                                    <span id="continent4"></span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span>国家：</span>
-                                    <span id="country4">中国</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span>报告类型：</span>
-                                    <span id="reportType4">基本信用报告</span>
-                                </div>
-                            </div>
-                            <div class="row mt-2 mb-2" id="div3">
-                                <div class="col-md-4">
-                                    <span>订单类型：</span>
-                                    <span id="orderType4"></span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span>报告语言：</span>
-                                    <span id="reportLanguage4">中文</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span>订单公司名称：</span>
-                                    <span id="companyNames4">北京小米科技有限公司</span>
-                                </div>
-                            </div>
-                            <div class="row mt-2 mb-2" id="div4">
-                                <div class="col-md-4">
-                                    <span>报告速度</span>
-                                    <span id="speed4">普通</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <span>报告用时：</span>
-                                    <span id="user_time4">5天</span>天
-                                </div>
-                                <div class="col-md-4">
-                                    <span>公司中文名称：</span>
-                                    <span id="companyZHNames4">北京小米科技有限公司</span>
-                                </div>
-                            </div>
-                        <div class="row mt-2 mb-2">
-                            <div class="col-md-12 d-flex">
-                                <span style="width: 8.7rem">确认原因：</span>
-                                <span id="confirm_reason4">对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
-                            </div>
-                        </div>
-                    </div>
-                        <div class="row mt-3 mb-2 pl-4 pt-4" style="border-top:solid 1px #ddd">
-	                                <div class="input-group col-md-4 align-items-center">
-	                                    <label class="control-label">名称：</label>
-	                                    <input name="model.verify_name" id="verify_name4" type="text" class="form-control">
-	                                </div>
-	                                <div class="input-group col-md-4 align-items-center">
-	                                    <label class="control-label">联系人：</label>
-	                                    <input name="model.contacts"  id="contacts4" type="text" class="form-control">
-	                                </div>
-	                                <div class="input-group col-md-4 align-items-center">
-	                                    <label class="control-label">联系方式：</label>
-	                                    <input  name="model.telphone" id="telphone4" type="text" class="form-control">
-	                                </div>
-	                            </div>
-	                            <div class="row mt-4 mb-4 pl-4">
-	                                <div class="input-group col-md-6 align-items-center">
-	                                    <label class="control-label">地址：</label>
-	                                    <textarea name="model.address" id="address4" type="text" class="form-control" style="height:5rem"></textarea>
-	                                </div>
-	                                <div class="input-group col-md-6 align-items-center">
-	                                    <label class="control-label">备注：</label>
-	                                    <textarea name="model.remarks" id="remarks4" type="text" class="form-control" style="height:5rem"></textarea>
-	                                </div>
-	                            </div>
-                        <label class="mt-3 ml-3">上传附件：</label>
-                    <form class="tableValue1 pl-4" action="/credit/front/orderProcess/statusSaveWithFileUpLoad" class="form-inline " enctype="multipart/form-data" method="post">
-                   	 <div class="file-upload" style="border:0">
-                        <div class="uploadFile mt-3 mr-4 mb-5">
-                            <input type="file" name="Files_0" id="upload_file" value="" class="file-input" />
-                            <div class="over-box"> 
-                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-                                <p class="mt-2">上传附件</p>
-                            </div>
-                        </div>
-                   </div>
-               	 </form>
-                    <input  name="model.id" id="orderId3" type="hidden" >
-	                <input  name="searchType"  type="hidden" value="-3">
-	                <input  name="statusCode" id="status"  type="hidden" value="">
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="modal_submit1">提交</button>
-                    <button type="button" class="btn btn-default" id="modal_save">保存</button>
-                </div>
-                 </div>
-            </div>
-            </div>
-        </div>
+        <!--<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+            <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+            <!--<div class="modal-content">-->
+                <!--<div class="modal-header">-->
+                <!--<h5 class="modal-title" id="exampleModalLongTitle">-->
+                    <!--<span>订单号：</span>-->
+                    <!--<span id="num">0001288784932</span>-->
+                <!--</h5>-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                    <!--<span aria-hidden="true">&times;</span>-->
+                <!--</button>-->
+                <!--</div>-->
+                <!--<div class="modal-body">-->
+                    <!--<div class="order-detail mb-4">-->
+                        <!--<div class="row mt-2 mb-2" id="div1"> -->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>客户ID：</span>-->
+                                    <!--<span id="custom_id4">001354574</span>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>客户用户名：</span>-->
+                                    <!--<span id="customId4">row</span>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>接单日期：</span>-->
+                                    <!--<span id="receiver_date4">2018-09-10</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="row mt-2 mb-2" id="div2">-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>地区：</span>-->
+                                    <!--<span id="continent4"></span>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>国家：</span>-->
+                                    <!--<span id="country4">中国</span>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>报告类型：</span>-->
+                                    <!--<span id="reportType4">基本信用报告</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="row mt-2 mb-2" id="div3">-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>订单类型：</span>-->
+                                    <!--<span id="orderType4"></span>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>报告语言：</span>-->
+                                    <!--<span id="reportLanguage4">中文</span>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>订单公司名称：</span>-->
+                                    <!--<span id="companyNames4">北京小米科技有限公司</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="row mt-2 mb-2" id="div4">-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>报告速度</span>-->
+                                    <!--<span id="speed4">普通</span>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>报告用时：</span>-->
+                                    <!--<span id="user_time4">5天</span>天-->
+                                <!--</div>-->
+                                <!--<div class="col-md-4">-->
+                                    <!--<span>公司中文名称：</span>-->
+                                    <!--<span id="companyZHNames4">北京小米科技有限公司</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--<div class="row mt-2 mb-2">-->
+                            <!--<div class="col-md-12 d-flex">-->
+                                <!--<span style="width: 8.7rem">确认原因：</span>-->
+                                <!--<span id="confirm_reason4">对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                        <!--<div class="row mt-3 mb-2 pl-4 pt-4" style="border-top:solid 1px #ddd">-->
+	                                <!--<div class="input-group col-md-4 align-items-center">-->
+	                                    <!--<label class="control-label">名称：</label>-->
+	                                    <!--<input name="model.verify_name" id="verify_name4" type="text" class="form-control">-->
+	                                <!--</div>-->
+	                                <!--<div class="input-group col-md-4 align-items-center">-->
+	                                    <!--<label class="control-label">联系人：</label>-->
+	                                    <!--<input name="model.contacts"  id="contacts4" type="text" class="form-control">-->
+	                                <!--</div>-->
+	                                <!--<div class="input-group col-md-4 align-items-center">-->
+	                                    <!--<label class="control-label">联系方式：</label>-->
+	                                    <!--<input  name="model.telphone" id="telphone4" type="text" class="form-control">-->
+	                                <!--</div>-->
+	                            <!--</div>-->
+	                            <!--<div class="row mt-4 mb-4 pl-4">-->
+	                                <!--<div class="input-group col-md-6 align-items-center">-->
+	                                    <!--<label class="control-label">地址：</label>-->
+	                                    <!--<textarea name="model.address" id="address4" type="text" class="form-control" style="height:5rem"></textarea>-->
+	                                <!--</div>-->
+	                                <!--<div class="input-group col-md-6 align-items-center">-->
+	                                    <!--<label class="control-label">备注：</label>-->
+	                                    <!--<textarea name="model.remarks" id="remarks4" type="text" class="form-control" style="height:5rem"></textarea>-->
+	                                <!--</div>-->
+	                            <!--</div>-->
+                        <!--<label class="mt-3 ml-3">上传附件：</label>-->
+                    <!--<form class="tableValue1 pl-4" action="/credit/front/orderProcess/statusSaveWithFileUpLoad" class="form-inline " enctype="multipart/form-data" method="post">-->
+                   	 <!--<div class="file-upload" style="border:0">-->
+                        <!--<div class="uploadFile mt-3 mr-4 mb-5">-->
+                            <!--<input type="file" name="Files_0" id="upload_file" value="" class="file-input" />-->
+                            <!--<div class="over-box"> -->
+                                <!--<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">-->
+                                <!--<p class="mt-2">上传附件</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                   <!--</div>-->
+               	 <!--</form>-->
+                    <!--<input  name="model.id" id="orderId3" type="hidden" >-->
+	                <!--<input  name="searchType"  type="hidden" value="-3">-->
+	                <!--<input  name="statusCode" id="status"  type="hidden" value="">-->
+                <!---->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-primary" id="modal_submit1">提交</button>-->
+                    <!--<button type="button" class="btn btn-default" id="modal_save">保存</button>-->
+                <!--</div>-->
+                 <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <!-- Modal 订单撤销 -->
-<div class="modal fade order_cancel" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">
-                    <span>订单号：</span>
-                    <span id="orderNum1">0001288784932</span>
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="order-detail mb-4">
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span >客户ID：</span>
-                            <span id="custom_id1"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>客户用户名：</span>
-                            <span id="customId1"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>接单日期：</span>
-                            <span id="receiveDate1"></span>
-                        </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>地区：</span>
-                            <span id="area1"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>国家：</span>
-                            <span id="country1"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>报告类型：</span>
-                            <span id="reportType1"></span>
-                        </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>订单类型：</span>
-                            <span id="orderType1"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>报告语言：</span>
-                            <span id="reportLanguage1"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>订单公司名称：</span>
-                            <span id="companyNames1"></span>
-                        </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-4">
-                            <span>报告速度：</span>
-                            <span id="speed1"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>报告用时：</span>
-                            <span id="user_time1"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>公司中文名称：</span>
-                            <span id="companyZHNames1"></span>
-                        </div>
-                    </div>
-                    <div class="row mt-2 mb-2">
-                        <div class="col-md-12 d-flex">
-                            <span style="width: 6.1rem">确认原因：</span>
-                            <span id="confirm_reason1">对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>
-                        </div>
-                    </div>
-                     <input  name="model.id" id="orderId1" type="hidden" >
-                </div>
-                <div class="file-upload">
-                    <div class="row mt-3 mb-2">
-                        <div class="input-group col-md-12 align-items-top">
-                            <label class="control-label">撤销原因：</label>
-                            <!--<input type="text" class="form-control">-->
-                            <textarea name="" id="revoke_reason" cols="50" rows="10"></textarea>
-                        </div>
+<!--<div class="modal fade order_cancel" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<h5 class="modal-title" id="exampleModalLongTitle">-->
+                    <!--<span>订单号：</span>-->
+                    <!--<span id="orderNum1">0001288784932</span>-->
+                <!--</h5>-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                    <!--<span aria-hidden="true">&times;</span>-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<div class="order-detail mb-4">-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span >客户ID：</span>-->
+                            <!--<span id="custom_id1"></span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>客户用户名：</span>-->
+                            <!--<span id="customId1"></span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>接单日期：</span>-->
+                            <!--<span id="receiveDate1"></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>地区：</span>-->
+                            <!--<span id="area1"></span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>国家：</span>-->
+                            <!--<span id="country1"></span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>报告类型：</span>-->
+                            <!--<span id="reportType1"></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>订单类型：</span>-->
+                            <!--<span id="orderType1"></span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>报告语言：</span>-->
+                            <!--<span id="reportLanguage1"></span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>订单公司名称：</span>-->
+                            <!--<span id="companyNames1"></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>报告速度：</span>-->
+                            <!--<span id="speed1"></span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>报告用时：</span>-->
+                            <!--<span id="user_time1"></span>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<span>公司中文名称：</span>-->
+                            <!--<span id="companyZHNames1"></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row mt-2 mb-2">-->
+                        <!--<div class="col-md-12 d-flex">-->
+                            <!--<span style="width: 6.1rem">确认原因：</span>-->
+                            <!--<span id="confirm_reason1">对于只使用浏览、电子邮件等系统自带的网络应用程序，Windows防火墙根本不会产生影响。也就是说，用Internet Explorer、OutlookExpress等系统自带的程序进行网络连接，防火墙是默认不干预的。</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                     <!--<input  name="model.id" id="orderId1" type="hidden" >-->
+                <!--</div>-->
+                <!--<div class="file-upload">-->
+                    <!--<div class="row mt-3 mb-2">-->
+                        <!--<div class="input-group col-md-12 align-items-top">-->
+                            <!--<label class="control-label">撤销原因：</label>-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control">&ndash;&gt;-->
+                            <!--<textarea name="" id="revoke_reason" cols="50" rows="10"></textarea>-->
+                        <!--</div>-->
 
 
-                    </div>
+                    <!--</div>-->
 
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="modal_cancel" >确认撤销</button>
-            </div>
-        </div>
-    </div>
-</div>   
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-primary" id="modal_cancel" >确认撤销</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>   -->
   
 </html>
 <script type="text/javascript">
