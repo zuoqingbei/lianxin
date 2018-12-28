@@ -655,7 +655,10 @@ let ReportConfig = {
     	if(floatIndex.length === 0){return}
     	let cw_title = []
     	let cw_contents = []
+    	let ds_cw_title = []
+    	let ds_cw_contents = []
     	let cw_dom;
+    	let ds_dom;
     	_this.tableTitle = []
     	floatIndexEn.forEach((item,index)=>{
     		let floatParentIdEn = this.floatTitleEn[index]['float_parent'];//浮动的父节点id
@@ -676,27 +679,102 @@ let ReportConfig = {
     		let titleId;
 //    		console.log(this.entityTitle, this.floatTitle)
     		this.entityTitle.forEach((item,i)=>{
-    			console.log(item.id,floatParentId)
+//    			console.log(item.id,floatParentId)
     			if(item.id === floatParentId ) {
-    				console.log(floatParentId)
-    				if(floatParentId !== 12411) {
+    				console.log(_this.entityModalType,i)
+    				if(_this.entityModalType[i] !== '10') {
     					//非财务模块浮动
     					let html = this.notMoneyFloatHtml[i+1]
     					$("#title"+i).after(html)
     					this.formIndex.push(i)
     					this.formTitle.push(this.floatTitle[index])
     				}else {
-    					//财务模块浮动
-    					console.log(this.floatTitle[index])
-    					cw_title.push(this.floatTitle[index])
-    					cw_contents.push(this.floatContents[index])
-    					cw_dom = $("#titleCw"+i)
+    					console.log(_this.entityTitle[i]["get_source"])
+    					if(_this.entityTitle[i]["get_source"].includes("type=3")){
+    						//大数财务模块浮动
+    						ds_cw_title.push(this.floatTitle[index])
+    						ds_cw_contents.push(this.floatContents[index])
+    						ds_dom = $("#titleDs"+i)
+    					}else {
+    						//财务模块浮动
+    						cw_title.push(this.floatTitle[index])
+    						cw_contents.push(this.floatContents[index])
+    						cw_dom = $("#titleCw"+i)
+    					}
     				}
     				
     			}
     		})
     	})
-    	console.log(cw_title,cw_contents)
+    	//大数财务逻辑
+    	let ds_top_html = ''
+		let ds_table_html = ''
+		ds_cw_title.forEach((item,index)=>{
+			//初始化大数财务模块
+			let this_content = ds_cw_contents[index];
+    		let moneySource = ds_cw_contents[0][0].get_source;
+    		let moneyStr = ''
+			let unitSource = ds_cw_contents[0][1].get_source;
+    		let unitStr = ''
+			$.ajax({
+				url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
+				async:false,
+				type:'post',
+				success:(data)=>{
+					moneyStr = data.selectStr
+				}
+			})
+			$.ajax({
+				url:BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
+				async:false,
+				type:'post',
+				success:(data)=>{
+					unitStr = data.selectStr
+				}
+			})
+			if(item.sort === 1) {
+				ds_top_html += `<div class="top-html mx-4">
+					<div class="d-flex justify-content-between align-items-center mt-4">
+						<!-- 单位 -->
+						<div class="ds-unit" style="width:100%">
+							<div class="form-inline my-3" >
+								<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[0].temp_name}</label>
+								<select class="form-control mr-3" id="${this_content[0].column_name}ds" style="width:10rem" name=${this_content[0].column_name}>${moneyStr}</select>
+								<select class="form-control mr-3" id="${this_content[1].column_name}ds" style="width:10rem" name=${this_content[1].column_name}>${unitStr}</select>
+							</div>
+						</div>
+					</div>
+					<div class="d-flex justify-content-between align-items-center mt-4">
+						<!-- 日期 -->
+						<div class="ds-date form-inline" style="width:100%">
+							<input class="form-control  my-3" id="${this_content[2].column_name}ds" style="margin-left:44%;margin-right:20%" type="text" name=${this_content[2].column_name}  placeholder=${this_content[2].place_hold} />
+							<input class="form-control"  id="${this_content[3].column_name}ds" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
+						</div>
+					</div>`
+			}else {
+				ds_table_html += `<div class="table-content1 ds-table" style="background:#fff">
+									<table id="tableDs"
+										data-toggle="table"
+										style="position: relative"
+									>
+									</table>
+								</div>`
+			}
+		})
+		if(ds_dom){
+			ds_dom.after(ds_table_html)
+			ds_dom.after(ds_top_html)
+		}
+    	setTimeout(()=>{
+    		if(ds_cw_title[0]){
+    			InitObjTrans.bindDsConfig(ds_cw_title[0]['get_source'],_this.rows)
+	    		InitObjTrans.initDsTable(ds_cw_contents[1],_this.dsGetSource,_this.dsAlterSource,_this.rows)
+    		}
+    	},0)
+    	
+    	//财务逻辑
+//    	console.log(cw_title)
+    	if(cw_title.length === 0){return}
     	this.cwConfigAlterSource = cw_title[0]['alter_source'];
     	this.cwConfigGetSource = cw_title[0]['get_source'];
     	let cw_top_html = ''
@@ -891,6 +969,7 @@ let ReportConfig = {
         /**初始化内容 */
     	this.entityTitle = [] //存放小模块的实体title
     	this.entityTitleEn = [] //存放小模块的实体title
+    	this.entityModalType = [] //存放小模块的实体类型
     	this.idArr = []    //存放table类型模块对应的index
     	this.idArrEn = []    //存放table类型模块对应的index
     	this.contentsArr = [] //存放table类型模块的contents
@@ -912,6 +991,8 @@ let ReportConfig = {
     	this.cwGetSource = '' //存放获取财务url
     	this.cwAlterSource = '' //存放修改财务url
     	this.cwDeleteSource = '' //删除财务url
+		this.dsGetSource = '' //存放大数获取财务url
+		this.dsAlterSource = '' //存放大数修改财务url
     	this.saveStatusUrl = ''
 		this.submitStatusUrl = ''
     	let row = localStorage.getItem("row");
@@ -1005,6 +1086,7 @@ let ReportConfig = {
                 	 * 循环模块
                 	 */
                 	_this.entityTitle.push(item.title)
+                	_this.entityModalType.push(item.smallModileType)
                 	if(modulesToEn[index]){
                 		_this.entityTitleEn.push(modulesToEn[index]["title"])
                 	}
@@ -1016,10 +1098,17 @@ let ReportConfig = {
         				contentHtml +=  `<div class="bg-f mb-3"  ><a style="display:none"  class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
             		}else if(smallModileType === '10'){
             			//财务模块
-            			_this.cwGetSource = item.title.get_source;
-            			_this.cwAlterSource = item.title.alter_source;
-            			_this.cwDeleteSource = item.title.remove_source;
-            			contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+            			if(item["title"]["get_source"].includes("type=3")){
+            				//大数
+            				_this.dsGetSource = item.title.get_source;
+            				_this.dsAlterSource = item.title.alter_source;
+            				contentHtml +=  `<div class="bg-f pb-4 mb-3 gjds"><a class="l-title dsModal" name="anchor${item.title.id}" id="titleDs${index}">${item.title.temp_name}</a>`
+            			}else {
+            				_this.cwGetSource = item.title.get_source;
+            				_this.cwAlterSource = item.title.alter_source;
+            				_this.cwDeleteSource = item.title.remove_source;
+            				contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+            			}
             		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
             			contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
             		}
@@ -2170,7 +2259,7 @@ let ReportConfig = {
 
 ReportConfig.init();
 $('.return_back').on('click',function () {
-    layer.confirm('是否要保存？', {
+    layer.confirm('是否保存已录入信息？', {
         btn: ['保存','取消'] //按钮
     }, function(){
         $('#save').trigger('click')
