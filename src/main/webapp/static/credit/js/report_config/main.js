@@ -60,7 +60,7 @@ let ReportConfig = {
     			onLoadSuccess:(data)=>{
     				console.log(data)
     				if(data.rows === null){
-    					alert("出错了")
+//    					alert("出错了")
     					return
     				}
     				let rows = data.rows
