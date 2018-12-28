@@ -644,69 +644,70 @@ let ReportConfig = {
     	//大数财务逻辑
     	let ds_top_html = ''
 		let ds_table_html = ''
-		ds_cw_title.forEach((item,index)=>{
-			//初始化大数财务模块
-			let this_content = ds_cw_contents[index];
-    		let moneySource = ds_cw_contents[0][0].get_source;
-    		let moneyStr = ''
-			let unitSource = ds_cw_contents[0][1].get_source;
-    		let unitStr = ''
-			$.ajax({
-				url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
-				async:false,
-				type:'post',
-				success:(data)=>{
-					moneyStr = data.selectStr
-				}
-			})
-			$.ajax({
-				url:BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
-				async:false,
-				type:'post',
-				success:(data)=>{
-					unitStr = data.selectStr
-				}
-			})
-			if(item.sort === 1) {
-				ds_top_html += `<div class="top-html mx-4">
-					<div class="d-flex justify-content-between align-items-center mt-4">
-						<!-- 单位 -->
-						<div class="ds-unit" style="width:100%">
-							<div class="form-inline my-3" >
-								<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[0].temp_name}</label>
-								<select class="form-control mr-3" id="${this_content[0].column_name}ds" style="width:10rem" name=${this_content[0].column_name}>${moneyStr}</select>
-								<select class="form-control mr-3" id="${this_content[1].column_name}ds" style="width:10rem" name=${this_content[1].column_name}>${unitStr}</select>
+		if(ds_cw_title.length!==0){
+			ds_cw_title.forEach((item,index)=>{
+				//初始化大数财务模块
+				let this_content = ds_cw_contents[index];
+	    		let moneySource = ds_cw_contents[0][0].get_source;
+	    		let moneyStr = ''
+				let unitSource = ds_cw_contents[0][1].get_source;
+	    		let unitStr = ''
+				$.ajax({
+					url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
+					async:false,
+					type:'post',
+					success:(data)=>{
+						moneyStr = data.selectStr
+					}
+				})
+				$.ajax({
+					url:BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
+					async:false,
+					type:'post',
+					success:(data)=>{
+						unitStr = data.selectStr
+					}
+				})
+				if(item.sort === 1) {
+					ds_top_html += `<div class="top-html mx-4">
+						<div class="d-flex justify-content-between align-items-center mt-4">
+							<!-- 单位 -->
+							<div class="ds-unit" style="width:100%">
+								<div class="form-inline my-3" >
+									<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[0].temp_name}</label>
+									<select class="form-control mr-3" id="${this_content[0].column_name}ds" style="width:10rem" name=${this_content[0].column_name}>${moneyStr}</select>
+									<select class="form-control mr-3" id="${this_content[1].column_name}ds" style="width:10rem" name=${this_content[1].column_name}>${unitStr}</select>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="d-flex justify-content-between align-items-center mt-4">
-						<!-- 日期 -->
-						<div class="ds-date form-inline" style="width:100%">
-							<input class="form-control  my-3" id="${this_content[2].column_name}ds" style="margin-left:44%;margin-right:20%" type="text" name=${this_content[2].column_name}  placeholder=${this_content[2].place_hold} />
-							<input class="form-control"  id="${this_content[3].column_name}ds" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
-						</div>
-					</div>`
-			}else {
-				ds_table_html += `<div class="table-content1 ds-table" style="background:#fff">
-									<table id="tableDs"
-										data-toggle="table"
-										style="position: relative"
-									>
-									</table>
-								</div>`
+						<div class="d-flex justify-content-between align-items-center mt-4">
+							<!-- 日期 -->
+							<div class="ds-date form-inline" style="width:100%">
+								<input class="form-control  my-3" id="${this_content[2].column_name}ds" style="margin-left:44%;margin-right:20%" type="text" name=${this_content[2].column_name}  placeholder=${this_content[2].place_hold} />
+								<input class="form-control"  id="${this_content[3].column_name}ds" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
+							</div>
+						</div>`
+				}else {
+					ds_table_html += `<div class="table-content1 ds-table" style="background:#fff">
+										<table id="tableDs"
+											data-toggle="table"
+											style="position: relative"
+										>
+										</table>
+									</div>`
+				}
+			})
+			if(ds_dom){
+				ds_dom.after(ds_table_html)
+				ds_dom.after(ds_top_html)
 			}
-		})
-		if(ds_dom){
-			ds_dom.after(ds_table_html)
-			ds_dom.after(ds_top_html)
+	    	setTimeout(()=>{
+	    		if(ds_cw_title[0]){
+	    			InitObjTransQua.bindDsConfig(ds_cw_title[0]['get_source'],_this.rows)
+	    			InitObjTransQua.initDsTable(ds_cw_contents[1],_this.dsGetSource,_this.dsAlterSource,_this.rows)
+	    		}
+	    	},0)
 		}
-    	setTimeout(()=>{
-    		if(ds_cw_title[0]){
-    			InitObjTransQua.bindDsConfig(ds_cw_title[0]['get_source'],_this.rows)
-    			InitObjTransQua.initDsTable(ds_cw_contents[1],_this.dsGetSource,_this.dsAlterSource,_this.rows)
-    		}
-    	},0)
-    	
     	
     	//财务逻辑
     	if(cw_title.length === 0){return}

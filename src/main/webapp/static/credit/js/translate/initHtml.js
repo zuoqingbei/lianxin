@@ -553,7 +553,7 @@ let InitObjTrans = {
         		let arr = []
         		contents.forEach((ele,index)=>{
         			_this.tableColumnNameArr.push(ele.column_name);
-        			if(ele.column_name !== null){
+        			if(ele.column_name !== null && ele.column_name !== ''){
         				index === 0?tempObj[ele.column_name] = '':tempObj[ele.column_name] = 0
         			}
         			ele.column_name = ele.column_name&&ele.column_name === "item_name"? ele.column_name+'_en':ele.column_name

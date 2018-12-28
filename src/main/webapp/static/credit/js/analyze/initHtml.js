@@ -553,7 +553,7 @@ let InitObjAnalyze = {
         		let arr = []
         		contents.forEach((ele,index)=>{
         			_this.tableColumnNameArr.push(ele.column_name);
-        			if(ele.column_name !== null){
+        			if(ele.column_name !== null && ele.column_name !== ''){
         				index === 0?tempObj[ele.column_name] = '':tempObj[ele.column_name] = 0
         			}
 	    			if(ele.temp_name !== '删除'){
@@ -644,7 +644,7 @@ let InitObjAnalyze = {
 						///新增一行成功
 						console.log(data)
 						if(data.statusCode === 1) {
-							_this.refreshCwModal(tableCwIds,getSource,id)
+							_this.refreshCwModal(tableCwIds,getSource,id,rows)
 						}else {
 							Public.message("error",data.message)
 						}
