@@ -196,8 +196,8 @@ let Verify = {
                                             <span style="margin-left:.5rem;color: #1890ff">|</span>
                                             <a href="javascript:;" class="translate" style="margin-left:.5rem">翻译</a>
                                      
-                                            <div style="margin-top: 0.5rem">
-                                                <a href="javascript:;" class="chadang" style="margin-left:.5rem;margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter_allocation">发起查档</a>
+                                            <div style="margin-top: 0.5rem;text-align: left">
+                                                <a href="javascript:;" class="chadang" style="margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter_allocation">发起查档</a>
                                                 <span style="margin-left:.5rem;color: #1890ff">|</span>
                                                 <a href="javascript:;" class="heshi" style="margin-left:.5rem;margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter">发起核实</a>
                                             </div>`
