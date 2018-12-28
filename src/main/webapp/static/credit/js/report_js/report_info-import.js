@@ -461,13 +461,17 @@ let Verify = {
 
 Verify.init();
 $('body').on('blur','#registered_capital_1',function () {
-    var vals=$(this).val();
+    let vals=$(this).val();
     $('#registered_capital_7').val(vals).trigger('blur');
     $('#registered_capital_6').val(vals).trigger('blur');
 
 });
+$('body').on('blur','#registered_capital_6,#registered_capital_7',function () {
+    let vals=$(this).val();
+    $('#registered_capital_1').val(vals).trigger('blur');
+
+});
 $('body').on('change','#currency_1',function () {
-    console.log($(this).val())
     let nows=$(this).val()
     layui.use('form', function(){
         var form = layui.form;
@@ -485,3 +489,20 @@ $('body').on('change','#capital_type_1',function () {
         form.render('select');
     });
 })
+$('body').on('change','#capital_type_6，#capital_type_7',function () {
+    let nows=$(this).val()
+    layui.use('form', function(){
+        var form = layui.form;
+        $("#capital_type_1").val(nows)
+        form.render('select');
+    });
+});
+$('body').on('change','#currency_6,#currency_7',function () {
+
+    let nows=$(this).val()
+    layui.use('form', function(){
+        var form = layui.form;
+        $("#currency_1").val(nows)
+        form.render('select');
+    });
+});
