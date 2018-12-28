@@ -991,7 +991,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				break;
 			case OrderProcessController.orderVerifyOfOrder:
 				//客户确认(订单核实)状态 ,其维护在字典表中
-				//500为订单核实中
+				//500为订单核实中 816为核实完成
 				fromSql.append(" and status in ('500') ");
 				break;
 			case OrderProcessController.orderFilingOfOrder:
@@ -1004,11 +1004,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				}
 				//未代理
 				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
-					fromSql.append(" and status in('291','292','293','294','297') ");
+					fromSql.append(" and status in('814') ");
 				}
 				//全部
 				if (StringUtils.isBlank(statuCode)) {
-					fromSql.append(" and status  in('291','292','293','295','296','297') ");
+					fromSql.append(" and status  in('814','295','296') ");
 				}
 //				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
 				//权限归属:报告员,分析员,翻译员
@@ -1023,13 +1023,13 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
 				//291为订单分配,293为信息录入，292客户确认 595为系统查询中(爬虫中)
-				fromSql.append(" and status in ('291','292','293','296','595','694','301','306') ");
+				fromSql.append(" and status in ('291','292','293','296','595','694','301','306','814','816') ");
 				//权限归属:报告员,分析员,翻译员
 				//authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.translate_user= "+userId+")");
 				break;
 			case OrderProcessController.orderVerifyOfReport:
-				//状态为订单核实 ,其维护在字典表中
-				fromSql.append(" and status in ('291','292','293','294','295','296','297','298','299','300')");
+				//500状态为订单核实中,816为核实完成 ,其维护在字典表中 
+				fromSql.append(" and status in ('500','816')");
 				//权限归属:报告员,分析员,质检员
 				//authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")");
 				break;	
@@ -1042,16 +1042,16 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				}
 				//未代理
 				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
-					fromSql.append(" and status in('291','292','293','294','297') ");
+					//fromSql.append(" and status in('291','292','293','294','297') ");
+					  fromSql.append(" and status in('814') ");
 				}
 				//全部
 				if (StringUtils.isBlank(statuCode)) {
-					fromSql.append(" and status  in('291','292','293','294','295','296','297') ");
+					fromSql.append(" and status  in('814','295',296') ");
 				}
 				//权限归属:质检员
 				//authority.append(" and (c.IQC= "+userId+")");
 				break;	
-				
 			case OrderProcessController.orderQualityOfReport:
 				//状态为质检,其维护在字典表中
 				//信息录入完成后的质检，分析质检，翻译质检
@@ -1081,7 +1081,6 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				fromSql.append(columnNames.get(i)+preStr);
 				params.add(keywords.get(i));//传入的参数
 			}
-			
 		}
 		//权限区分
 		/*if(!c.isAdmin(c.getSessionUser())){
@@ -1090,7 +1089,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}*/
 		if(!c.isAdmin(c.getSessionUser())){
 			//fromSql.append(authority);
-			fromSql.append(" and (c.create_by="+userId+" or c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")"+" or c.translate_user= "+userId);
+			fromSql.append(" and (c.create_by="+userId+" or c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+" or c.translate_user= "+userId+")");
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {

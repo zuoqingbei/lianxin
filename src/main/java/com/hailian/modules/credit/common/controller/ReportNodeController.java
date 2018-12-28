@@ -199,7 +199,7 @@ public class ReportNodeController extends BaseProjectController {
                 	   confRootModel.set(key, entryMap.get(key));
                    }
                    confRootModel.set("table_id",  nodeModel.get("id"));
-                   confRootModel.set("is_detail", 1);
+                   confRootModel.set("is_detail", 0);
                    confRootModel.set("update_by",userid).set("update_date", now).set("create_by", userid).set("create_date", now).set("report_type", reportType);
                    //插入父节点
                    confRootModel.save();
@@ -215,7 +215,7 @@ public class ReportNodeController extends BaseProjectController {
                     	   if("id".equals(key)||"table_name".equals(key)) {continue;}
                     	   confsonModel.set(key, columnEntryMap.get(key));
                        }
-                       confsonModel.set("is_detail", 1).set("parent_temp", confRootId)
+                       confsonModel.set("is_detail", 0).set("parent_temp", confRootId)
                 	   .set("update_by",userid).set("update_date", now).set("create_by", userid).set("create_date", now).set("report_type", reportType);
                        confsonModel.save();
                    }

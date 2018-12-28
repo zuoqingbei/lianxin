@@ -63,6 +63,24 @@ let OrderDetail = {
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         this.creditLevel = this.english ? creditLevel_en : creditLevel_cn;
         this.initContent();
+    let tis=this
+        $('.return_back').on('click',function () {
+            if(tis.isQuality){
+                layer.confirm('是否保存已录入信息？', {
+                    btn: ['保存','取消'] //按钮
+                }, function(){
+                    $('#save').trigger('click')
+
+                    location.reload();
+                }, function(){
+                    location.reload();
+                });
+            }else{
+                location.reload();
+            }
+
+
+        })
     },
     // 页面结构
     initContent() {

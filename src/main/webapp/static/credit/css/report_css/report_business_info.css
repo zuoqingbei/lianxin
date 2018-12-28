@@ -102,11 +102,11 @@
 	max-width: 40%!important;
 }
 
-.cw-unit {
+.cw-unit,.ds-unit {
 	overflow:hidden;
 	border-bottom:solid 1px #e5e5e5;
 }
-.cw-date {
+.cw-date,.ds-date {
 	overflow:hidden;
 	border-bottom:solid 1px #e5e5e5;
 }
