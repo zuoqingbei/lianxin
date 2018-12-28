@@ -205,6 +205,11 @@ let Verify = {
                                     return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
                                             <span style="margin-left:.5rem;color: #1890ff">|</span>
                                             <a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>
+                                            <div style="margin-top: 0.5rem;text-align: left">
+                                                <a href="javascript:;" class="chadang" style="margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter_allocation">发起查档</a>
+                                                <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                                <a href="javascript:;" class="heshi" style="margin-left:.5rem;margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter">发起核实</a>
+                                            </div>
                                             `
                                 }else if(arr!=null&&arr.indexOf(5)>-1){
                                     return`<a href="javascript:;" class="analyze" >分析</a>`
