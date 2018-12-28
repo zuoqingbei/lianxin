@@ -306,7 +306,7 @@ let Verify = {
                 url:BASE_PATH+"credit/front/orderProcess/statusSave",
                 data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
                 +pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
-                +"&searchType=-2&model.confirm_reason="+$("#cfr").val()
+                +"&model.confirm_reason="+$("#cfr").val()
                 +"&statusCode="+$("#status").val(),
                 dataType:"json",
                 success:function(data){
@@ -324,7 +324,7 @@ let Verify = {
                     $.ajax({
                         type:"post",
                         url:BASE_PATH+"credit/front/orderProcess/listJson",
-                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-2",
+                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-6",
                         dataType:"json",
                         success:function(obj){
                             console.log("回显的数据:"+obj);
@@ -338,7 +338,7 @@ let Verify = {
         })
         //点击发起查档提交
         $("#modal_submit2").click(function(){
-            $("#status2").val("818");
+            $("#status2").val("814");
             let remarks = $("#remarks").val();
             let id = $("#orderId").val();
             console.log('dasdsadasdas',$("#agent_category").val());
@@ -347,7 +347,7 @@ let Verify = {
                 url:BASE_PATH+"credit/front/orderProcess/statusSave",
                 data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
                 +pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
-                +"&searchType=-6&model.agent_category="+$("#agent_category").val()
+                +"&model.agent_category="+$("#agent_category").val()
                 +"&statusCode="+$("#status2").val(),
                 dataType:"json",
                 success:function(data){
@@ -365,7 +365,7 @@ let Verify = {
                     $.ajax({
                         type:"post",
                         url:BASE_PATH+"credit/front/orderProcess/listJson",
-                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-2",
+                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-6",
                         dataType:"json",
                         success:function(obj){
                             console.log("回显的数据:"+obj);
