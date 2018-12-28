@@ -1089,7 +1089,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}*/
 		if(!c.isAdmin(c.getSessionUser())){
 			//fromSql.append(authority);
-			fromSql.append(" and (c.create_by="+userId+" or c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+")"+" or c.translate_user= "+userId);
+			fromSql.append(" and (c.create_by="+userId+" or c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+" or c.translate_user= "+userId+")");
 		}
 		//排序
 		if (StrUtils.isEmpty(orderBy)) {
