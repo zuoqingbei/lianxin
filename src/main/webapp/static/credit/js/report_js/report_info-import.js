@@ -268,7 +268,7 @@ let Verify = {
                     			$($(".translate").get(index)).css({"color":"#007bff","cursor":"pointer"});
                     		}
                     		
-                    		//检测订单流程  当status为301的时候只能进行分析；为306的时候只能进行翻译
+                    		//检测订单流程  当status为301的时候只能进行分析；为306的时候只能进行翻译;293,694的时候只能进行填报
                     		if(item.status === '301'){
                     			$($(".recordName").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
@@ -277,6 +277,10 @@ let Verify = {
                     			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".write").get(index)).addClass("disable")
+                    		}else if(item.status === '293'||item.status === '694') {
+                    			$($(".recordName").get(index)).addClass("disable")
+                    			$($(".analyze").get(index)).addClass("disable")
+                    			$($(".translate").get(index)).addClass("disable")
                     		}
                     	})
                     }
