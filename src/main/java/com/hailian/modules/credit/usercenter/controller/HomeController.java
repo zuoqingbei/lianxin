@@ -79,7 +79,7 @@ public class HomeController extends BaseProjectController {
 		setAttr("country", country);
 		List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
 	    setAttr("customer", customerId);
-	  //订单核实数量
+	        //订单核实数量
 	  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500' and del_flag='0'").size();
 	  		//订单查档数量
 	  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295' and del_flag='0' ").size();
@@ -288,12 +288,12 @@ public class HomeController extends BaseProjectController {
 		SysUser user= SysUser.dao.getUser(this);
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
-		//订单核实数量
-		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500'").size();
-		//订单查档数量
-		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295'").size();
-		//订单信息质检数量
-		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('298','303','308')").size();
+		   //订单核实数量
+  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500' and del_flag='0'").size();
+  		//订单查档数量
+  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295' and del_flag='0' ").size();
+  		//订单信息质检数量
+  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('294','303','308') and del_flag='0'").size();
         List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
 		
 		//分析质检
