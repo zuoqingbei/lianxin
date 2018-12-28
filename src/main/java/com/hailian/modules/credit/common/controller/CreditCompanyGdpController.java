@@ -140,7 +140,7 @@ public class CreditCompanyGdpController extends BaseProjectController {
 			renderMessage("修改成功");
 		} else { // 新增
 			
-			CreditCompanyGdp dGdp=CreditCompanyGdp.dao.findFirst("select * from credit_company_growth_rate where yaer=?",getPara("year"));
+			CreditCompanyGdp dGdp=CreditCompanyGdp.dao.findFirst("select * from credit_company_growth_rate where year=?",getPara("year"));
 			 if(dGdp!=null){
 				 renderMessage("该年度已存在GDP,请前去修改"); 
 			 }else{
