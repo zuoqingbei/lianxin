@@ -518,6 +518,7 @@ let ReportConfig = {
     				let anotherId = anotherIdArr.join('_')
     				$("#"+id).attr("entryid",obid)
     				if($(item).is('select')){
+//    					console.log($(item),obj[anotherId])
     					//如果是select
     					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
     				}else {
@@ -1505,7 +1506,7 @@ let ReportConfig = {
 				            				success:(data)=>{
 				            				formGroup += `<div class="form-group">
 							            					<label for="" class="mb-2">${item_en.temp_name}</label>
-							            					<select name=${item_en.column_name} id="${item.column_name}_${ind}_En" class="form-control">
+							            					<select name=${item_en.column_name} id="${item_en.column_name}_${ind}_En" class="form-control">
 							            						${data.selectStr}
 							            					</select>
 				            							</div>`
@@ -2055,7 +2056,7 @@ let ReportConfig = {
     					 dataJson:JSON.stringify(_this.formDataArr[index])
     				 },
     				 success:(data)=>{
-    					 console.log(_this.formIndex,_this.formIndexEn,index)
+//    					 console.log(_this.formIndex,_this.formIndexEn,index)
     					 _this.bindFormDataEn(data,_this.formIndexEn[index])
     				 }
     			 });
