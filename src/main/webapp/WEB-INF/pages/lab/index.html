@@ -1,11 +1,35 @@
-## layout("ulab.html",{title:"U-lab全球互联数据中心"}){
 <html lang="zh-CN">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+<meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title> ${title!'U-lab全球互联数据中心'}</title>
+<script> var contextPath = '${contextPath!}';</script>
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script>
+    /*屏幕描述
+     一共 7x3 个屏幕，每一块屏幕是1360x768，
+     总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
+
+    var pageH = $(window).height();
+    var pageW = pageH * 16 * 7 / (9 * 3);
+    var bodyScale = pageH / 595;
+    var bodyFontSize = bodyScale * 100 + "%";
+    if (pageH > 2300) { // 如果是大屏幕(2304)
+        pageW -= 52
+    }
+    function pageResize() {
+        $("body").css("font-size", bodyFontSize);
+        $("#content").css("width", pageW);
+        $(".fullScreen_map").css("width", pageW);//全屏页面是绝对定位,宽度100%只能取自屏幕
+        console.log("~~~~~~~~~窗口高度：" + pageH + ",\n宽度:"+pageW+" \nbody字号：" + bodyFontSize)
+    }
+</script>
+
 <link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">
 <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
-<link rel="stylesheet" href="${contextPath!}/static/css/index_left180508.css">
+<!--<link rel="stylesheet" href="${contextPath!}/static/css/index_left180508.css">-->
 <link rel="stylesheet" href="${contextPath!}/static/css/index_right.css">
-<!--<link rel="stylesheet" href="${contextPath!}/static/css/fullScreen_map.css">-->
-<!--<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>-->
 <script src="${contextPath!}/static/asserts/js/bootstrap.min.js"></script>
 <script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
 <script src="${contextPath!}/static/js/manyEcharts.js"></script>
@@ -16,47 +40,18 @@
 <div id="content" class="contai">
 
     <script>
-
-        /* background-img: url('${contextPath!}/static/img/bg-2.jpg') */
-        // videoFadeOut();
-/*
-        //进入时的视频淡出效果，开发时注掉下面这些代码
-        function videoFadeOut() {
-            $("body").prepend('<div id="mask" style="background-color: black">' +
-                '<video src="' + contextPath + '/static/img/movieHead_4480.ogv"  width="' + pageW*1.04 + '" height="105%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
-                '</div>'
-            );
-            var $video = $('video');
-            $video.click(function () {
-                $(this)[0].play()
-            });
-            $video[0].addEventListener('ended', function () {
-                $(this).parent().animate({
-                    opacity: 0
-                }, 3000, function () {
-                    $(this).hide();
-                })
-            });
-        }
-*/
         pageResize();
     </script>
 
     ##layout("left180508.html", {}){
     ##}
 
-    ##layout("cover.html", {}){
-    ##}
 
     ##layout("right.html", {}){
     ##}
 
-    ##layout("lab.html", {}){
-    ##}
-
-
 </div>
-<audio id="clickSounds" hidden src="${contextPath!}/static/sounds/cha.wav">123</audio>
+<audio id="clickSounds" hidden src="${contextPath!}/static/sounds/cha.wav"></audio>
 <script>
 
 
@@ -83,5 +78,5 @@
 </script>
 </body>
 </html>
-##}
+
 

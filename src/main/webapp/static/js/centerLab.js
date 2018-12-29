@@ -166,7 +166,7 @@ function inittwo() {
             },
             series: [
                 {
-                    barWidth: 60,
+                    barWidth: 30*bodyScale,
                     // symbolSize: ['50%', '10%'],
                     data: centerLabOrderHgRate(data)
                 }
@@ -251,8 +251,6 @@ function initThree() {
                     name: "月份",
                     type: 'category',
                     data: centerLabOrderRateLengend(data),
-                    //data:  ["01","02","03","04","05","06","07","08","09","10","11","12"],
-                    //data: last_year_month(),
                     nameTextStyle: {
                         fontSize: bodyScale * 10
                     },
@@ -260,11 +258,6 @@ function initThree() {
                 }
             ],
             grid: {
-                // x: "10%",
-//		            x2: "25%",
-//		            y: '22%',
-//		            y2: "26%",
-
                 x: "6%",
                 x2: "5%",
                 y: '20%',
@@ -272,8 +265,7 @@ function initThree() {
             },
             series: [
                 {
-                    barWidth: 60,
-                    // symbolSize: ['50%', '10%'],
+                    barWidth: 30*bodyScale,
                     data: centerLabOrderHgRate(data)
                 }
             ]
@@ -281,6 +273,13 @@ function initThree() {
     });
 }
 
+function getCurrentMonth() {
+    var date = new Date;
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" + month : month);
+    return month.toString();
+}
 //按照产线统计某年各月份详细订单及时率  数据结果 订单及时率 折线图
 function initfour() {
     $.post(contextPath + '/lab/findOrderYearRateForJSLAjax', {

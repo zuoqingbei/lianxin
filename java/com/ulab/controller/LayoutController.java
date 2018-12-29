@@ -68,5 +68,9 @@ public class LayoutController extends BaseController {
 	public void hallMap() {
 		render("hallMap.html");
 	}
-	
+
+	public void lab() {
+		render("lab.html");
+	}
+
 }

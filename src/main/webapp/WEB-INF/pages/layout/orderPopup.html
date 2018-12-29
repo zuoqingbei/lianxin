@@ -6,9 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>订单弹出页面</title>
     <link rel="stylesheet" href="${contextPath!}/static/css/orderPopup.css">
+    <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
 </head>
 <body>
-<header></header>
+    <script>
+        // let bodyScale = parent.bodyScale;
+        // $("body").css("font-size", parent.bodyFontSize);
+    </script>
 <div id="container">
     <nav class="left-nav">
         <ul>
@@ -255,7 +259,7 @@
 </div>
 <script>
     var contextPath = '${contextPath!}';
-    var bodyScale = parent.bodyScale*.7;
+    bodyScale = parent.parent.bodyScale*.7;
     function getCurrentMonth() {
         var date = new Date;
         var year = date.getFullYear();
@@ -266,7 +270,6 @@
     function getBarEcharts() {}
     function getLineEcharts() {}
 </script>
-<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
 <script>
     function leftNavAction() {
         $(".left-nav>ul>li").click(function () {

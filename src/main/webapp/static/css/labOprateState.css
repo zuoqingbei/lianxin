@@ -10,7 +10,8 @@
     display: flex;
     width: 100%;
     flex-direction: column;
-    padding: 2.4% 1% 2%;
+    padding: 1rem;
+    padding-top: 2.5rem;
     height: 100%;
 }
 
@@ -178,7 +179,7 @@ span strong {
     position: absolute;
     width: 84.5em;
     height: 45em;
-    right: -3.75em;
+    right: -3.5em;
     padding-top: 2em;
     z-index: 1;
 }

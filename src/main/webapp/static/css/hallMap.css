@@ -47,7 +47,7 @@ strong{
 
     .left,
     .right {
-        flex: .8;
+        flex: 0 0 22%;
         display: flex;
         flex-direction: column;
         padding-top: .5rem;
@@ -69,7 +69,7 @@ strong{
     }
 
     .mid {
-        flex: 2;
+        flex: 0 0 56%;
     }
 }
 

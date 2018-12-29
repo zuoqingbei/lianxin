@@ -1,31 +1,22 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>海尔全球实验室</title>
-    <link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/common.css">
-    <link rel="stylesheet" href="../static/css/lab.css">
-    <link rel="stylesheet" href="../static/css/labMain.css">
-    <link rel="stylesheet" href="../static/css/labAnalysis.css">
-    <link rel="stylesheet" href="../static/css/labOprateState.css">
-    <link rel="stylesheet" href="../static/css/labCurve.css">
-    <link rel="stylesheet" href="../static/css/centerLab.css">
-    <script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
-</head>
-<body>
-<script>
-    let bodyScale = parent.bodyScale;
-    let contextPath = parent.contextPath;
-    $("body").css("font-size", parent.bodyFontSize);
-</script>
+<link rel="stylesheet" href="../static/css/lab.css">
+<link rel="stylesheet" href="../static/css/labMain.css">
+
+<link rel="stylesheet" href="../static/css/labAnalysis.css">
+<link rel="stylesheet" href="../static/css/labOprateState.css">
+<link rel="stylesheet" href="../static/css/labCurve.css">
+<link rel="stylesheet" href="../static/css/centerLab.css">
+##if(toLabData=='toLabData'){
+<div class="lab">
+    ##}else{
     <div class="lab">
+        ##}
+        <div class="btn-back">
+            <span class="icon"></span>
+            <!--<span>返回总状态</span>-->
+        </div>
         <!--頂部標題-->
         <div class="lab_head">
             <h2 id="labName_world">检测中心</h2>
-
             <div class="btn-totalStatus">
                 <div class="icon"></div>
                 <span>返回总状态</span>
@@ -123,7 +114,6 @@
                                 <div class="la_top">
                                     <div class="la_data_left">
                                         <h3>一次合格率</h3>
-
                                         <div class="la_datal_content clearfloat">
                                             <div class="la_datal_legend">
                                                 <ul>
@@ -140,7 +130,6 @@
                                     </div>
                                     <div class="la_data_right">
                                         <p>月度一次合格率趋势图</p>
-
                                         <div class="right_echart" id="echart_two"></div>
                                     </div>
                                 </div>
@@ -148,7 +137,6 @@
                                 <div class="la_center">
                                     <div class="la_data_left">
                                         <h3>订单及时率</h3>
-
                                         <div class="la_datal_content clearfloat">
                                             <div class="la_datal_legend">
                                                 <ul>
@@ -165,16 +153,13 @@
                                     </div>
                                     <div class="la_data_right">
                                         <p>月度订单及时率趋势图</p>
-
                                         <div class="right_echart" id="echart_four"></div>
                                     </div>
-                                </div>
-                                <!--center-->
+                                </div><!--center-->
                                 <div class="la_bottom">
 
                                     <div class="la_data_left">
                                         <h3>用户满意度</h3>
-
                                         <div class="la_datal_content clearfloat">
                                             <div class="la_datal_legend">
                                                 <ul>
@@ -191,11 +176,9 @@
                                     </div>
                                     <div class="la_data_right">
                                         <p>月度用户满意度趋势图</p>
-
                                         <div class="right_echart" id="echart_six"></div>
                                     </div>
-                                </div>
-                                <!--la_bottom-->
+                                </div><!--la_bottom-->
                             </div>
                         </div>
                     </div>
@@ -285,67 +268,60 @@
             </div>
         </div>
     </div>
-</div>
-    <script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
-    <script src="${contextPath!}/static/js/manyEcharts.js"></script>
-    <script src="${contextPath!}/static/js/common.js"></script>
-    <!--Error:Internal error: (java.io.FileNotFoundException) 请求的操作无法在使用用户映射区域打开的文件上执行。)-->
 
     <script>
-    $(document).ready(function (e) {
-        resetDataCenterLabWorld();
-        $(".labMain_cbr_tab").click(function () {
+        $(document).ready(function (e) {
+            resetDataCenterLabWorld();
+            $(".labMain_cbr_tab").click(function () {
 //            $(this).addClass("active_right").siblings().removeClass("active_right");
-            // 3. 获取到当前菜单的索引号
-            var index = $(this).index() + 1;
-            // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
-            //.selected display:flex
-            $(".labMain_content_country .labMain_cb_left:eq(" + index + ")").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
-            labCurveResize();
+                // 3. 获取到当前菜单的索引号
+                var index = $(this).index() + 1;
+                // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
+                //.selected display:flex
+                $(".labMain_content_country .labMain_cb_left:eq(" + index + ")").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
+                labCurveResize();
+            });
         });
-    });
 
-    function labCurveResize() {
-        myChartWorld1.resize();
-        myChartWorld2.resize();
-        myChart1.resize();
-        myChart2.resize();
-    }
-</script>
-<script src="../static/js/centerLab.js"></script>
-<script src="../static/js/centerLabWorld_3rd.js"></script>
-<script src="../static/js/labData.js"></script>
-<script src="../static/js/labAction.js"></script>
-<!--<script src="../static/asserts/video/swfobject.js?time=New Date()"></script>-->
-<!--来自centerlabWorld,待整理-->
+        function labCurveResize() {
+            myChartWorld1.resize();
+            myChartWorld2.resize();
+            myChart1.resize();
+            myChart2.resize();
+        }
+    </script>
+    <script src="../static/js/centerLab.js"></script>
+    <script src="../static/js/centerLabWorld_3rd.js"></script>
+    <script src="../static/js/labData.js"></script>
+    <script src="../static/js/labAction.js"></script>
+    <!--<script src="../static/asserts/video/swfobject.js?time=New Date()"></script>-->
+    <!--来自centerlabWorld,待整理-->
 
-<script>
-    $(function () {
+    <script>
+        $(function () {
 
 
-        //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
-        var $labMain_ct_btn = $(".labMain_content_country .labMain_ct_btn");
-        $labMain_ct_btn.eq(0).hover(function () {
-            $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus_active.png)")
-        }, function () {
-            $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus.png)")
-        }).click(function () {
-            $(".labMain_content_country").hide();
-            $("#r").show();
-            var $li = $(".left3x3").find(".flat-footer .legend ul.legend-bottom li");
-            $li.removeClass("active").each(function () {
-                bgImgOff($(this))
+            //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
+            var $labMain_ct_btn = $(".labMain_content_country .labMain_ct_btn");
+            $labMain_ct_btn.eq(0).hover(function () {
+                $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus_active.png)")
+            }, function () {
+                $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus.png)")
+            }).click(function () {
+                $(".labMain_content_country").hide();
+                $("#r").show();
+                var $li = $(".left3x3").find(".flat-footer .legend ul.legend-bottom li");
+                $li.removeClass("active").each(function () {
+                    bgImgOff($(this))
+                })
+            });
+            $labMain_ct_btn.eq(1).hover(function () {
+                $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home_active.png)")
+            }, function () {
+                $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home.png)")
+            }).click(function () {
+                $(".zhbr_lab").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
             })
-        });
-        $labMain_ct_btn.eq(1).hover(function () {
-            $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home_active.png)")
-        }, function () {
-            $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home.png)")
-        }).click(function () {
-            $(".zhbr_lab").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
         })
-    })
-</script>
-
-</body>
-</html>
+    </script>
+</div>

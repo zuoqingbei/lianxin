@@ -1,10 +1,10 @@
 
 .labMain_cb_left {
-    flex: 3;
+    /*flex: 3;*/
     /*background: url(../img/labMain/lab_left_border_wider.png) 0 0 no-repeat;*/
     /*background-size: 100% 100%;*/
     position: relative;
-    margin: .8em 1em;
+    margin: 0 1em;
     display: flex;
     flex-direction: row;
 }
@@ -119,7 +119,7 @@
 
 
 .labMain_cblt_ttwo img {
-    width: 71em;
+    width: 70em;
     max-height: 44em;
     margin-left: 1.5em;
     margin-top: -.2em;

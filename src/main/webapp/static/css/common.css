@@ -111,13 +111,15 @@ h3 {
 }
 
 #l {
-    flex: 3;
+    flex: 0 0 42.86%;
 }
 
 #r {
-    flex: 4;
+    flex: 0 0 57.14%;
 }
-
+#r>iframe{
+    height: 100%;
+}
 #mask {
     position: absolute;
     width: 100%;
@@ -156,8 +158,8 @@ video {
         }
     }
     body {
-        /* background-color:black;*/
-        background: url(../img/bg-2.jpg) no-repeat;
+         background-color:transparent;
+        /*background: url(../img/bg-2.jpg) no-repeat;*/
     	background-size: 100% 100%;
         /*overflow: hidden;*/
        /*  animation-name: webEase;

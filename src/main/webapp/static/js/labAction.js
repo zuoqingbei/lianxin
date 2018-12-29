@@ -16,7 +16,7 @@ $(function () {
     //中心实验室顶上的“返回总状态”按钮
     $(".btn-totalStatus").click(function () {
         $("#r").show().siblings(".lab").hide();
-        resetSizeRight();
+        // resetSizeRight();
     });
     //国内外切换
     var $navHeadLi = $(".labMainNav>header>ul>li");
