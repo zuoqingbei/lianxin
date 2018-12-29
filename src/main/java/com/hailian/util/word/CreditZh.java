@@ -89,7 +89,7 @@ public class CreditZh {
                 } else if ("h".equals(tableType)) {
                     //table = BaseWord.createTableH(child, rows);
                 }else if("z".equals(tableType)){
-                    BaseWord.createTableZ(child, rows, map);
+                    //BaseWord.createTableZ(child, rows, map);
                 }
                 map.put(key, table);
             }

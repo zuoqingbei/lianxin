@@ -506,7 +506,7 @@ public class HttpCrawler {
      */
 	public static void getIcrisUrl(String company,String companyId,CreditOrderInfo orderInfo) {
         String country = orderInfo.getStr("country");
-        country = new ReportInfoGetDataController().dictIdToString(country);
+        country = new ReportInfoGetDataController().dictIdToString(country,"");
         if(!"中国香港".equals(country)){
             return;
         }

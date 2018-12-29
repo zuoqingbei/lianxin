@@ -121,11 +121,11 @@ public class BaseInfoZh {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(reportType,child, rows);
+                    table = BaseWord.createTableS(reportType,child, rows,sysLanguage);
                 } else if ("h".equals(tableType)) {
-                    table = BaseWord.createTableH(reportType,child, rows);
+                    table = BaseWord.createTableH(reportType,child, rows,sysLanguage);
                 }else if("z".equals(tableType)){
-                    BaseWord.createTableZ(child,rows,map);
+                    BaseWord.createTableZ(child,rows,map,sysLanguage);
                 }
                 map.put(key, table);
             }
@@ -322,7 +322,7 @@ public class BaseInfoZh {
                 excelPath = financialExcel(financeType+"",finanId,_prePath,orderId,userid,begin,end);
             }
             //财务-评价
-            map.put("financial_eval", financialEval(statementsConf));
+            map.put("financial_eval", financialEval(statementsConf,sysLanguage));
             
         }
 
@@ -580,9 +580,10 @@ public class BaseInfoZh {
     /**
      * 财务模块-评价
      * @param statementsConf
+     * @param sysLanguage
      * @return
      */
-    public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf) {
+    public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf,String sysLanguage) {
         ReportInfoGetDataController reportInfoGetDataController = new ReportInfoGetDataController();
         String profSumup = getIntToString(statementsConf.getInt("profitablity_sumup"));
         String profDetail = statementsConf.getStr("profitablity_detail");
@@ -594,19 +595,19 @@ public class BaseInfoZh {
         String overDetail = statementsConf.getStr("overall_financial_condition_detail");
 
         StringBuffer str = new StringBuffer();
-        str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
+        str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(profDetail);
         str.append("\n");
-        str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup) : ""));
+        str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(liquDetail);
         str.append("\n");
-        str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup) : ""));
+        str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(leverDetail);
         str.append("\n");
-        str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup) : ""));
+        str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(overDetail);
         return str.toString();

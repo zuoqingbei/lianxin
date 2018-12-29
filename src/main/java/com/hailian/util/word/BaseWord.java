@@ -263,7 +263,7 @@ public class BaseWord {
      * @param rows
      * @return
      */
-    public static MiniTableRenderData createTableS(String reportType,List<CreditReportModuleConf> child,List rows){
+    public static MiniTableRenderData createTableS(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage){
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         //取列值
@@ -289,7 +289,7 @@ public class BaseWord {
                 String fieldType = strs.length == 2 ? strs[1] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "N/A";
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,sysLanguage) : "N/A";
                 } else {
                     value = !"".equals(value) ? value : "N/A";
                 }
@@ -311,9 +311,10 @@ public class BaseWord {
      * 生成表格 - 横表
      * @param child
      * @param rows
+     * @param sysLanguage
      * @return
      */
-    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows){
+    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage){
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         List<LinkedHashMap<String,String>> datas = new ArrayList<LinkedHashMap<String,String>>();
@@ -339,7 +340,7 @@ public class BaseWord {
                 Integer id = model.getInt("id");
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "";
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,sysLanguage) : "";
                 } else if("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 } else {
@@ -397,9 +398,10 @@ public class BaseWord {
      * @param child
      * @param rows
      * @param map
+     * @param sysLanguage
      * @return
      */
-    public static void createTableZ(List<CreditReportModuleConf> child,List rows,HashMap<String, Object> map){
+    public static void createTableZ(List<CreditReportModuleConf> child,List rows,HashMap<String, Object> map,String sysLanguage){
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         //取列值
         for(int i=0;i< child.size();i++) {
@@ -420,7 +422,7 @@ public class BaseWord {
                 String fieldType = strs.length == 2 ? strs[1] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "N/A";
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,sysLanguage) : "N/A";
                 } else {
                     value = !"".equals(value) ? value : "N/A";
                 }

@@ -87,11 +87,11 @@ public class RocZh {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(reportType,child, rows);
+                    //table = BaseWord.createTableS(reportType,child, rows,sys);
                 } else if ("h".equals(tableType)) {
                     //table = BaseWord.createTableH(child, rows);
                 } else if ("z".equals(tableType)){
-                    BaseWord.createTableZ(child, rows, map);
+                    //BaseWord.createTableZ(child, rows, map);
                 }
                 map.put(key, table);
             }

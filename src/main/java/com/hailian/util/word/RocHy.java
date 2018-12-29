@@ -84,7 +84,7 @@ public class RocHy {
                     //table = BaseWord.createTableH(child, rows);
                     map.put(key, table);
                 }else if("z".equals(tableType)){
-                    BaseWord.createTableZ(child, rows, map);
+                    //BaseWord.createTableZ(child, rows, map);
                 }
             }
 
