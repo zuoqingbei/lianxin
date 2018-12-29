@@ -428,8 +428,9 @@ let Index = {
                             $('#client_contact').val(row.contacts);
                             $('#client_fax').val(row.fax);
                             $('#client_email').val(row.email);
-                            $('#client_country').append(`<option selected value="${row.country}">${row.country}</option>`)
-
+                            $('#client_country').append(`<option selected value="${row.countryId}">${row.country}</option>`)
+                            $('#createBy').val(row.create_by);
+                            $('#myId').val(row.id);
                             layui.use('form', function(){
                                 var form = layui.form;
                                 $('#client_area').val(row.continent);
