@@ -115,6 +115,7 @@ let
         },
 		formSubmit: function(){
 			//$("#orderForm").submit();
+			console.log('提交订单')
 			let that = null,
 				formSelect = formInput = true;
 				
