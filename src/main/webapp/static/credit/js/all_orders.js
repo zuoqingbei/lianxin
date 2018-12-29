@@ -283,7 +283,7 @@ let Index = {
      	});
         const $table = $('#table');
         $table.bootstrapTable({
-            height: $(".table-content").height()*0.7,
+            height: $(".table-content").height()*0.6,
             columns: [
                       {
                           checkbox: true,
@@ -574,7 +574,7 @@ let Index = {
 		        '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
 		        '<a href="javacript:;" class="order-cancel" style="margin-right:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a>' +
 		        '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
-		        '<a href="javacript:;" class="order-update" data-toggle="modal" data-target="#exampleModalCenter3">内容更新</a>'
+		        '<a href="javacript:;" class="order-update" data-toggle="modal" data-target="#exampleModalCenter4">内容更新</a>'
     }
 }
 Index.init();

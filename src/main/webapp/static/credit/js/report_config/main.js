@@ -60,7 +60,7 @@ let ReportConfig = {
     			onLoadSuccess:(data)=>{
     				console.log(data)
     				if(data.rows === null){
-    					alert("出错了")
+//    					alert("出错了")
     					return
     				}
     				let rows = data.rows
@@ -1419,7 +1419,6 @@ let ReportConfig = {
 			 //点击保存按钮
     		$(".position-fixed").on("click","#save",(e)=>{
     			$("body").mLoading("show")
-    			alert(11)
     			InitObj.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			InitObj.saveDsConfigInfo(_this.dsConfigAlterSource,_this.rows);
     			$("#save").addClass("disabled")

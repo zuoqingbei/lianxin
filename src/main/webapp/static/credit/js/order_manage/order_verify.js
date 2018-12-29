@@ -276,7 +276,7 @@ let Verify = {
   
 
         $table.bootstrapTable({
-            height: $(".table-content").height()*0.98,
+            height: $(".table-content").height()*0.93,
             columns: [
 {
     checkbox: true,

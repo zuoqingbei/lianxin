@@ -518,6 +518,7 @@ let ReportConfig = {
     				let anotherId = anotherIdArr.join('_')
     				$("#"+id).attr("entryid",obid)
     				if($(item).is('select')){
+//    					console.log($(item),obj[anotherId])
     					//如果是select
     					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
     				}else {
@@ -1420,8 +1421,13 @@ let ReportConfig = {
                 	let item_en = modulesToEn[index]
                 	if(!item_en){return}
                 	let smallModileTypeEn = item_en.smallModileType
+                	if(item_en.title.temp_name === 'Key Fiancial Items' || item_en.title.temp_name === 'industry_analysis'){
+        				return
+            		}
+                	if(item_en.title.temp_name && item_en.title.float_parent) {return}
+                	if((item_en.title.temp_name === null || item_en.title.temp_name === "")&&item_en.title.float_parent){return}
                 	if(item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+                			contentHtml +=  `<div class="bg-f pb-4 mb-3"  ><a style="display:none" class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
                 	}else if(smallModileTypeEn === '10'){
                 		//财务模块
 //                		_this.cwGetSource = item.title.get_source;
@@ -1505,7 +1511,7 @@ let ReportConfig = {
 				            				success:(data)=>{
 				            				formGroup += `<div class="form-group">
 							            					<label for="" class="mb-2">${item_en.temp_name}</label>
-							            					<select name=${item_en.column_name} id="${item.column_name}_${ind}_En" class="form-control">
+							            					<select name=${item_en.column_name} id="${item_en.column_name}_${ind}_En" class="form-control">
 							            						${data.selectStr}
 							            					</select>
 				            							</div>`
@@ -2055,7 +2061,7 @@ let ReportConfig = {
     					 dataJson:JSON.stringify(_this.formDataArr[index])
     				 },
     				 success:(data)=>{
-    					 console.log(_this.formIndex,_this.formIndexEn,index)
+//    					 console.log(_this.formIndex,_this.formIndexEn,index)
     					 _this.bindFormDataEn(data,_this.formIndexEn[index])
     				 }
     			 });

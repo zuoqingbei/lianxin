@@ -205,6 +205,11 @@ let Verify = {
                                     return `<a href="javascript:;" class="recordName"  data-toggle="modal" data-target="#recordingName">录入名称</a>
                                             <span style="margin-left:.5rem;color: #1890ff">|</span>
                                             <a href="javascript:;" class="write" style="margin-left:.5rem">填报</a>
+                                            <div style="margin-top: 0.5rem;text-align: left">
+                                                <a href="javascript:;" class="chadang" style="margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter_allocation">发起查档</a>
+                                                <span style="margin-left:.5rem;color: #1890ff">|</span>
+                                                <a href="javascript:;" class="heshi" style="margin-left:.5rem;margin-top: .5rem" data-toggle="modal" data-target="#exampleModalCenter">发起核实</a>
+                                            </div>
                                             `
                                 }else if(arr!=null&&arr.indexOf(5)>-1){
                                     return`<a href="javascript:;" class="analyze" >分析</a>`
@@ -301,7 +306,7 @@ let Verify = {
                 url:BASE_PATH+"credit/front/orderProcess/statusSave",
                 data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
                 +pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
-                +"&searchType=-2&model.confirm_reason="+$("#cfr").val()
+                +"&model.confirm_reason="+$("#cfr").val()
                 +"&statusCode="+$("#status").val(),
                 dataType:"json",
                 success:function(data){
@@ -319,7 +324,7 @@ let Verify = {
                     $.ajax({
                         type:"post",
                         url:BASE_PATH+"credit/front/orderProcess/listJson",
-                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-2",
+                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-6",
                         dataType:"json",
                         success:function(obj){
                             console.log("回显的数据:"+obj);
@@ -333,7 +338,7 @@ let Verify = {
         })
         //点击发起查档提交
         $("#modal_submit2").click(function(){
-            $("#status2").val("818");
+            $("#status2").val("814");
             let remarks = $("#remarks").val();
             let id = $("#orderId").val();
             console.log('dasdsadasdas',$("#agent_category").val());
@@ -342,7 +347,7 @@ let Verify = {
                 url:BASE_PATH+"credit/front/orderProcess/statusSave",
                 data:"model.id="+id+"&pageNumber="+pageNumber+"&pageSize="
                 +pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder
-                +"&searchType=-6&model.agent_category="+$("#agent_category").val()
+                +"&model.agent_category="+$("#agent_category").val()
                 +"&statusCode="+$("#status2").val(),
                 dataType:"json",
                 success:function(data){
@@ -360,7 +365,7 @@ let Verify = {
                     $.ajax({
                         type:"post",
                         url:BASE_PATH+"credit/front/orderProcess/listJson",
-                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-2",
+                        data:"pageNumber="+pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-6",
                         dataType:"json",
                         success:function(obj){
                             console.log("回显的数据:"+obj);

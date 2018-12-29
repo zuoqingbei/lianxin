@@ -3,7 +3,7 @@
     height: calc(100% - 2.7rem);
 }
 .main {
-	overflow:hidden;
+	/*overflow:hidden;*/
 }
 
 /* 上面用户信息和订单统计 */
